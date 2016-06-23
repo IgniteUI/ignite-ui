@@ -1,0 +1,88 @@
+.ui-igdialog { padding:0.1em; overflow:hidden; }
+.ui-igdialog .ui-igdialog-content, 
+.ui-igdialog-content { 
+    position:relative;
+    box-sizing:content-box;  
+    padding:0.5em 1em 1em; 
+    border:0; 
+    background:none; 
+    overflow:auto; 
+    zoom:1; 
+}
+.ui-igdialog .ui-igdialog-content-iframe, .ui-igdialog-content-iframe { padding:0px; }
+.ui-igdialog .ui-igdialog-header { padding:0.4em 1em; white-space:nowrap; cursor:default; line-height: 1.2em; }
+.ui-igdialog .ui-igdialog-headertext { font-weight: bold; float:left; overflow:hidden; white-space: nowrap; margin: 0px !important;/* Bug 211422, 06.01.2016 S.D., Close button vertical align fix line-height:1.4em;*/line-height:18px;} 
+.ui-igdialog-headertext-minimized { width:2em; } 
+.ui-igdialog-headerimage { float:left; margin-top:3px; margin-right:2px; } 
+
+.ui-igdialog-headerbutton { 
+    /* Bug 211422, 21.12.2015 S.D., Close button vertical align fix 
+    margin:-10px 0 0 0.3em;
+    top:0.6em;
+    */
+    float:right; cursor:pointer; 
+    width:16px; 
+    height:16px; 
+    overflow:hidden; 
+    position:relative; 
+    box-sizing:content-box; 
+}
+.ui-igdialog-minimize-icon { margin-top:3px; }
+.ui-igdialog-footer {white-space:nowrap; cursor:default; font-weight:normal; border-width: 1px 0 0; line-height:1.4em;
+    margin: 0;
+    padding: 0.3em 1em 0.5em 0.4em;
+    text-align: left;}
+.ui-igdialog-resizing { filter:alpha(opacity=70); opacity:0.7; }
+.ui-igdialog-dragging { filter:alpha(opacity=70); opacity:0.7; }
+.ui-igdialog-unmovable { cursor: default !important; }
+.ui-igdialog-header-focus { }
+.ui-draggable .ui-igdialog-header { cursor:move; }
+.ui-igdialog .ui-resizable-se { width:14px; height:14px; right:3px; bottom:3px; }
+
+
+.ui-igdialog-buttonpane { text-align:left; border-width:1px 0 0 0; background-image:none; margin:0.5em 0 0 0; padding:0.3em 1em 0.5em 0.4em; }
+.ui-igdialog-buttonpane .ui-igdialog-buttonset { float:right; }
+.ui-igdialog-buttonpane button { margin:0.5em 0.4em 0.5em 0; cursor:pointer; }
+
+.ui-dialog .ui-widget-content.ui-button {
+   border-width:1px;
+}
+
+/* Touch friendly */
+
+.touch .ui-igdialog .ui-igdialog-header,
+.touchevents .ui-igdialog .ui-igdialog-header,
+.pointerevents .ui-igdialog .ui-igdialog-header
+{
+    line-height: 1.6em;
+}
+
+.touch .ui-dialog .ui-dialog-titlebar,
+.touchevents .ui-dialog .ui-dialog-titlebar,
+.pointerevents .ui-dialog .ui-dialog-titlebar 
+{
+    padding: 1em!important;
+}
+
+.touch .ui-igdialog  .ui-igdialog-headerbutton,
+.touchevents .ui-igdialog  .ui-igdialog-headerbutton,
+.pointerevents .ui-igdialog  .ui-igdialog-headerbutton
+{
+    height:30px;
+    width:44px;
+    position:relative;
+    top:0.8em;
+    margin:-15px 0 0 0.3em;
+}
+
+.touch .ui-igdialog  .ui-igdialog-headerbutton .ui-icon,
+.touchevents .ui-igdialog  .ui-igdialog-headerbutton .ui-icon,
+.pointerevents .ui-igdialog  .ui-igdialog-headerbutton .ui-icon
+{
+    position:absolute;
+    top:50%;
+    margin-top:-8px;
+    left:50%;
+    margin-left:-8px;
+}
+

@@ -1,0 +1,400 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - List items example </title>
+	<link type="text/css" href="../../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+	
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>
+	<!--<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.ui.notifier.js"></script>-->
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.notifier.js"></script>
+	
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.js"></script>
+	
+	
+	
+	
+	<link type="text/css" href="../../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+	<!-- Links to external extensions -->
+	<script type='text/javascript' src='../../../../../Builds/JavaScript/bower_components/knockoutjs/build/output/knockout-latest.debug.js'></script>
+	
+	<!-- Links to extensions -->
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../../../Source/ClientUI/js/modules/infragistics.ui.editors.knockout-extensions.js"></script>-->
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.knockout-extensions.js"></script>
+	
+	
+
+	
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
+	$(document).ready(function () {
+        var  testID;
+		QUnit.config.reorder = false;
+		function viewModel() {
+			nonObservable = "11/17/2007";
+			this.nullable = ko.observable(null);
+			this.dateValue = ko.observable(new Date("12/12/2012"));
+			
+			setDefaultDate = function() {
+				this.dateValue(new Date("11/11/2011"));
+			};
+			setDefaultDate1 = function() {
+				var d = new Date("Wed Dec 12 2012 00:00:00");
+				this.dateValue(d);
+			};
+			setDefaultDate2 = function() {
+				var dd = new Date("10/10/2014");
+				dd = Date.parse(dd);
+				this.dateValue(new Date(dd));
+			};
+			setDefaultDate3 = function() {
+				//Update set it using the other way -> setDate(getYear(), getDay()....
+				var d = new Date("10/15/2008")
+				var date = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
+				
+				this.dateValue(date);
+			};
+			setDefaultDate4 = function() {
+				this.dateValue(new Date());
+			};
+			setDefaultDate5 = function () {
+				this.dateValue("/Date(1224043200000)/");  
+			}
+		};
+		
+		model = new viewModel();
+        ko.applyBindings(model);
+    	
+		function loadTestbeds() {
+			$("#outerInput").igDatePicker();			
+		}
+			
+		initialized = false;
+		module('igDatePicker KnockoutJS', {
+				setup: function() {
+					//pause testing until tree is initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 100);
+						initialized = true;
+					}
+				},
+				teardown: function() {
+				}
+		});
+		
+		testID = "Initializing igDatePicker" ;
+		test(testID, 8, function () { //Passing
+			//
+			ok(typeof(ko.bindingHandlers.igDatePicker) !== 'undefined', 'igDatePicker knockoutJS extention script is not loaded');
+			ok(typeof(ko.bindingHandlers.igDatePicker) === 'object', 'igDatePicker knockoutJS extention is of a wrong type');
+			ok($('#inputEditor1').data("igDatePicker") !== undefined, 'Creating igDatePicker in an input');
+			ok($('#divEditor1').data("igDatePicker") !== undefined, 'Creating igDatePicker in a div');
+			ok($('#tdEditor1').data("igDatePicker") !== undefined, 'Creating igDatePicker in a td');
+			var date;
+			//Check Initial expected value
+			date = new Date("12/12/2012");
+			equal($('#inputEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
+			
+			equal($('#divEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
+			
+			equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), 'The initial value is as expexted');
+			
+		});
+		testID = "Update model -> editor (input)" ;
+		test(testID, 6, function () { //Passing
+			var editor = $('#inputEditor1');
+			editor.igDatePicker("showDropDown");
+			var calendar = editor.igDatePicker("getCalendar");
+			//editor.datepicker("setDate", new Date(2012, 9, 12)); // This doesn't work in PhantomJS, use the code below.
+			editor.val("10/12/2012");
+			editor.datepicker("hide");
+			editor.blur();
+
+			checkEditorsValues("10/12/2012", "Values are as expected");
+			checkFieldsValues(new Date(2012, 9, 12).toString(), "Values are as expected");
+		});
+		
+		testID = "Update Model, check editors";
+		test(testID, 30, function () { //Partially Passing (Chrome fail)
+			var date;
+			$("#resetButton4").click();
+			date = new Date();
+			checkEditorsValues(getShortDateAsString(date), "Values are as expected", date);			
+			checkFieldsValues(date.toString(), "Values are as expected");		
+			$("#resetButton3").click();
+			//Split the logic for editors and the divs/spans and inputs
+			date = new Date(2008, 9, 15, 0, 0, 0, 0);
+			checkEditorsValues("10/15/2008", "Values are as expected", date);
+			checkFieldsValues(date.toString(), "Values are as expected");
+			$("#resetButton2").click();
+	
+			checkEditorsValues("10/10/2014", "Values are as expected");
+			date = new Date("10/10/2014");
+			checkFieldsValues(date.toString(), "Values are as expected");
+			//Set invalid Date - all the editors should fallback to the previous state
+			$("#resetButton1").click();
+            date = new Date("Wed Dec 12 2012 00:00:00");
+			checkEditorsValues("12/12/2012", "Values are as expected", date);
+			checkFieldsValues(date.toString(), "Values are as expected");
+			$("#resetButton").click();
+			checkEditorsValues("11/11/2011", "Values are as expected");
+			date = new Date("11/11/2011");
+			checkFieldsValues(date.toString(), "Values are as expected");
+			
+			
+		});
+		testID = "updateMode set to not allowed value";
+			test(testID, 1, function () { //Passing
+			var err;
+			QUnit.throws(function () {
+				$("#tempContainer").empty();
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igDateEditor: { value: dateValue, width: 160, updateMode:\"none\" }'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+			}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
+			$("#tempContainer").empty();
+		});
+			
+
+
+		
+		testID = "update from outside input";		
+			test(testID, 24, function () {	//Passing	
+				var date;
+				
+				date = new Date();
+				$('#inputValue').val(date.toString()).change();
+				checkEditorsValues(getShortDateAsString(date), "Values are as expected", date);			
+				checkFieldsValues(date.toString(), "Values are as expected");		
+				
+				
+				var d = new Date("05/15/2008")
+				date = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 13, 45, 29, 10);
+				$('#inputValue').val(date.toString()).change();
+				date = new Date(2008, 4, 15, 13, 45, 29, 10);
+				checkEditorsValues("5/15/2008", "Values are as expected", date);
+				checkFieldsValues(date.toString(), "Values are as expected");
+				
+				//Split the logic for editors and the divs/spans and inputs
+				var dd = new Date("10/10/2014");
+				dd = Date.parse(dd);
+				date = new Date(dd);
+				$('#inputValue').val(date.toString()).change();
+				
+				
+				checkEditorsValues("10/10/2014", "Values are as expected");
+				date = new Date("10/10/2014");
+				checkFieldsValues(date.toString(), "Values are as expected");
+				
+
+				date = new Date("11/11/2011");
+				$('#inputValue').val(date.toString()).change();
+				checkEditorsValues("11/11/2011", "Values are as expected");
+				
+				checkFieldsValues(date.toString(), "Values are as expected");
+				
+			});
+		}); // Document Ready handler
+
+		
+			function inputCheckImmediate() {
+				var date = new Date("10/10/2009"), val;	
+				val = "10/10/2009";
+				
+				equal($('#divEditor1').igDatePicker("text"), val, "Text Updated" + " (divEditor1)");
+				equal($('#divEditor1').igDatePicker("value").toString(), date.toString(), "Text Updated" + " (divEditor1) date");
+				equal($('#tdEditor1').igDatePicker("text"), val, "Text Updated" + " (tdEditor1)");
+				equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), "Text Updated" + " (tdEditor1) date");				
+			}
+			function divCheckImmediate() {
+				var message = "Text Updated", val;
+				var date = new Date("10/10/2009");	
+					val = "10/10/2009";
+				equal($('#inputEditor1').igDatePicker("text"), val, message + " (inputEditor) text");
+				equal($('#inputEditor1').igDatePicker("value").toString(), date.toString(), message + " (inputEditor) date");
+				equal($('#tdEditor1').igDatePicker("text"), val, message + " (tdEditor1)");
+				equal($('#tdEditor1').igDatePicker("value").toString(), date.toString(), message + " (tdEditor1) date");			
+			}
+			function tdCheckImmediate() {
+				var message = "Text Updated", val;
+				var date = new Date("10/10/2009");
+				val = "10/10/2009";
+
+				equal($('#inputEditor1').igDatePicker("text"), val, message + " (inputEditor) text");
+				equal($('#inputEditor1').igDatePicker("value").toString(), date.toString(), message + " (inputEditor) date");
+				equal($('#divEditor1').igDatePicker("text"), val, message + " (divEditor1)");
+				equal($('#divEditor1').igDatePicker("value").toString(), date.toString(), message + " (divEditor1) date");		
+			}
+		
+		function checkEditorsValues(val, message, fullDate) {
+			var dateObject;
+			if (fullDate !== undefined) {
+				dateObject = fullDate;
+			} else {
+				dateObject = new Date(val);
+			}
+			
+			
+			equal($('#inputEditor1').igDatePicker("value").toString(), dateObject.toString(), message + " (inputEditor) date");
+			
+			equal($('#divEditor1').igDatePicker("value").toString(), dateObject.toString(), message + " (divEditor1) date");
+			
+			equal($('#tdEditor1').igDatePicker("value").toString(), dateObject.toString(), message + " (tdEditor1) date");
+		}
+		
+		function checkFieldsValues(val, message) {
+			equal($("#spanValue").html(), val, message + " (spanValue)");
+			equal($("#inputValue").val(), val, message + " (inputValue)");
+			equal($("#divValue").html(), val, message + " (divValue)");			
+		}
+		function getShortDateAsString(date) {
+			//TODO check if the date val is date or not
+			var result = "";
+			result += date.getMonth() + 1;
+			result += "/";
+			result += date.getDate();
+			result += "/";
+			result += date.getFullYear();
+			return result;
+		}
+		function keyboardType(element, keyCode) {
+			var evt;
+			evt = $.Event("keydown");
+			evt.keyCode = keyCode;
+			element.trigger(evt);
+			evt = $.Event("keypress");
+			evt.keyCode = keyCode;
+			element.trigger(evt);
+			evt = $.Event("keyup");
+			evt.keyCode = keyCode;
+			element.trigger(evt);			
+		}
+
+		QUnit.log = function (details) {
+		    if (window.console && window.console.log) {
+		        window.console.log(details.result + ' :: ' + details.message);
+		    }
+		};
+</script>
+</head>
+<body>
+<div style="float:right;width:500px;overflow:auto">
+     <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px;">
+
+
+<table style="cell-padding: 2px; border: black solid 1px; width:350px;">
+	
+		<tr>
+			
+			<th style="width: 100px;">Component Type</th>
+			<th style="width: 60px;">Element</th>
+			<th style="width: 260px;">Component</th>
+			
+		</tr>
+		<tr>
+		<td>igDatePicker</td>	
+		<td>input</td>
+		<td>
+			<input id="inputEditor1" 
+				data-bind="igDatePicker: {
+					value: dateValue,
+					width: '160px'
+				}">
+			</input>		
+		</td>
+		</tr>
+		<tr>
+		<td>igDatePicker</td>		
+		<td>div</td>
+		<td>
+		<div id="divEditor1" 
+			data-bind="igDatePicker: {
+				value: dateValue,
+				width: '160px'
+			}">
+		</div>
+		</td>
+		</tr>
+		<tr>
+		<td>igDatePicker</td>		
+		<td>td</td>
+		<span id="tdEditor1" data-bind="igDatePicker: {
+		    value: dateValue,
+		    width: '160px'
+	    }">
+        </span>
+		
+		</tr>
+	<tr>
+		<td>Bind Span</td>		
+		<td>span</td>
+		<td> <span id="spanValue" data-bind="text: dateValue"></span><br /> 
+		</td>
+	</tr>
+	<tr>
+		<td>Bind input</td>		
+		<td>input</td>
+		<td> <input id="inputValue" data-bind="value: dateValue"></input> 
+		</td>
+	</tr>
+	<tr>
+		<td>Bind div</td>		
+		<td>div</td>
+		<td> <div id="divValue" data-bind="text: dateValue"></div> 
+		</td>
+	</tr>
+	<tr>
+		<td>Helper</td>
+		<td><input id="outerInput"></input></td>
+		<td>
+			<input id="resetButton" type="button" data-bind="click: setDefaultDate" value="Reset Date"></input><br />
+			<input id="resetButton1" type="button" data-bind="click: setDefaultDate1" value="Reset Date"></input><br />
+			<input id="resetButton2" type="button" data-bind="click: setDefaultDate2" value="Reset Date"></input><br />
+			<input id="resetButton3" type="button" data-bind="click: setDefaultDate3" value="Reset Date"></input><br />
+			<input id="resetButton4" type="button" data-bind="click: setDefaultDate4" value="Reset Date"></input><br/>
+			<input id="resetButton5" type="button" data-bind="click: setDefaultDate5" value="Reset Date"></input><br/>
+			
+		</td>
+	</tr>
+</table>
+<div id="tempContainer"></div>
+<div id="nullable">
+			<input id="nullEditor1" 
+				data-bind="igDatePicker: {
+					value: nullable,
+					width: '160px'
+				}">
+			</input>
+						<input id="nullEditor2" 
+				data-bind="igDatePicker: {
+					value: nullable,
+					width: '160px'
+				}">
+			</input></div>
+</div>
+</body>
+</html>
+

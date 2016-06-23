@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Currency Editors </title>
+	<link type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.notifier.js"></script>                                   
+	
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage.
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.editors.js"></script> -->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.js"></script>
+
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+	<!-- Links to external extensions -->
+	
+	
+	<!-- Links to extensions -->
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../../../Source/ClientUI/js/modules/infragistics.ui.editors.knockout-extensions.js"></script>-->
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	$(document).ready(function () {
+		// Create a editors
+		function loadTestbeds() {
+			$(function () {
+				$("#currencyEditor1").igCurrencyEditor({
+					currencySymbol: "#"
+				});
+				
+				$("#currencyEditor2").igCurrencyEditor({
+					positivePattern: ")n("
+				});
+				
+				$("#currencyEditor3").igCurrencyEditor({
+					positivePattern: "$=n=",
+					currencySymbol: "*",
+					value: "23"
+				});
+				
+				$("#currencyEditor4").igCurrencyEditor({
+					dataMode: "invalidMode",
+					maxDecimals: 55
+				});
+				
+				$("#currencyEditor5").igCurrencyEditor({
+					minDecimals: 10,
+					maxDecimals: 6
+				});
+			});
+		}
+		initialized = false;
+		module("Currency Editor ", {
+			setup: function() {
+				//pause testing until editors are initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 100);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+		
+		testId = "Currency Symbol";
+		test(testId, 4, function () {
+		var container = $('#currencyEditor1');
+			$('#currencyEditor1').igCurrencyEditor("value", 99);
+		    container.blur();
+			equal($('#currencyEditor1').igCurrencyEditor('displayValue'), "#99.00", "The value is not correct");
+			$('#currencyEditor1').igCurrencyEditor("option", "currencySymbol", "@");
+			$('#currencyEditor1').igCurrencyEditor("value", 17.32);
+		    container.blur();
+		    equal($('#currencyEditor1').igCurrencyEditor('displayValue'), "@17.32", "The value is not correct");
+
+			// intertnal parse :
+		    strictEqual($('#currencyEditor1').data("igCurrencyEditor")._valueFromText("@1264.89"), 1264.89, "The parsed value is not correct");
+		    strictEqual($('#currencyEditor5').data("igCurrencyEditor")._valueFromText("$50.34"), 50.34, "The parsed value is not correct");
+		});
+		
+		testId = "Positive Pattern";
+		test(testId, 2, function () {
+		var container = $('#currencyEditor2');
+			$('#currencyEditor2').igCurrencyEditor("value", 004);
+		    container.blur();
+			equal($('#currencyEditor2').igCurrencyEditor('displayValue'), ")4.00(", "The display value is not correct");
+			$('#currencyEditor2').igCurrencyEditor("option", "positivePattern", "_n_");
+			$('#currencyEditor2').igCurrencyEditor("value", 9750.8);
+		    container.blur();
+			equal($('#currencyEditor2').igCurrencyEditor('displayValue'), "_9,750.80_", "The display value is not correct");
+		});
+		
+		testId = "Method Currency Symbol";
+		test(testId, 3, function () {
+		var container = $('#currencyEditor3');
+			equal($('#currencyEditor3').igCurrencyEditor('displayValue'), "*=23.00=", "The display value is not correct");
+			equal($('#currencyEditor3').igCurrencyEditor('currencySymbol'), "*", "The currency symbol is not correct");
+			$('#currencyEditor3').igCurrencyEditor("currencySymbol", "^");
+			$('#currencyEditor3').igCurrencyEditor("value", 44);
+		    container.blur();
+			equal($('#currencyEditor3').igCurrencyEditor('displayValue'), "^=44.00=", "The display value is not correct");
+		});
+		
+		testId = "MaxDecimals greater than TypeMaxDecimals";
+		test(testId, 1, function () {
+		var container = $('#currencyEditor4');
+			$('#currencyEditor4').igCurrencyEditor("value", 10.1234567890123456789);
+		    container.blur();
+			equal($('#currencyEditor4').igCurrencyEditor('displayValue'), "$10.123456789012346", "The display value is not correct");
+		});
+		
+		testId = "MinValue greater than MaxValue";
+		test(testId, 1, function () {
+		var container = $('#currencyEditor5');
+			$('#currencyEditor5').igCurrencyEditor("value", 10.123456789012);
+		    container.blur();
+			equal($('#currencyEditor5').igCurrencyEditor('displayValue'), "$10.1234567890", "The display value is not correct");
+		});
+
+		testId = "Group and decimal Separators";
+		test(testId, 1, function () {
+		    var containerInput = $('#currencyEditor5').igCurrencyEditor("field");
+
+		    // For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
+		    $("#currencyEditor5").igCurrencyEditor("option", "decimalSeparator", ",");
+		    $("#currencyEditor5").igCurrencyEditor("option", "groupSeparator", "");
+		    $("#currencyEditor5").igCurrencyEditor("option", "value", 1264.89);
+		    equal($("#currencyEditor5").igCurrencyEditor("displayValue"), "$1264,8900000000", "The decimal value is not correct");
+		});
+	});
+	function paste(input, newVal) {
+		// create a mouse click event
+		var event = document.createEvent('Event');
+		event.initEvent('paste', true, true);
+		event.target = input;
+		event.srcElement = input;
+		$(input).val(newVal);
+		// send click to element
+		input.dispatchEvent(event);
+	}
+	function testSelection(input, start, end ) {
+		equal(input[0].selectionStart, start, "The selection doesn't start from index 0 ");
+		equal(input[0].selectionEnd, end, "The selection doesn't start from index 0 ");
+	}
+	function keyInteraction(key, target, special) {
+		keyDownChar(key, target, special);
+		keyPressChar(key, target, special);
+		keyUpChar(key, target, special);
+	}
+	function keyDownChar(key, target, special) {
+		var evt = $.Event("keydown");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function keyPressChar(key, target, special) {
+		var evt = $.Event("keypress");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function keyUpChar(key, target, special) {
+		var evt = $.Event("keyup");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function mouseup(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mouseup', true, true, window, 1, 0, 0);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	function mousedown(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mousedown', true, true, window, 1, 0, 0);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	function mouseover(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mouseover', true, true, window, 1, 0, 0);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	function mouseout(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mouseout', true, true, window, 1, 0, 0);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	function mouseclick(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('click', true, true, window, 1, 0, 0);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+
+	QUnit.log = function (details) {
+		if (window.console && window.console.log) {
+		    window.console.log(details.result + ' :: ' + details.message);
+		}
+	};
+	</script>
+
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+     <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+    <div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+        <br />
+        <div id="currencyEditor1"></div>
+		<br />
+        <div id="currencyEditor2"></div>
+		<br />
+        <div id="currencyEditor3"></div>
+		<br />
+        <div id="currencyEditor4"></div>
+		<br />
+        <div id="currencyEditor5"></div>
+    </div>
+</body>
+</html>
+

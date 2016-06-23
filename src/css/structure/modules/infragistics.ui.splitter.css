@@ -1,0 +1,332 @@
+.ui-igsplitter {
+	overflow: hidden!important;
+	border-color: #DCDCDC; 
+}
+
+.ui-igsplitter-no-scroll {
+	overflow: hidden!important; 
+}
+
+.ui-igsplitter-splitbar-default {
+	background: #DCDCDC; 
+}
+
+.ui-igsplitter-panel-vertical {
+	overflow: auto;
+	border: none;
+	float: left;
+	height: 100%;
+}
+
+.ui-igsplitter-panel-horizontal {
+	overflow: auto;
+	border: none;
+	float: none;
+	width: 100%;
+}
+
+/*Currently this style works well with igSPlitter, but breaks the layout of the igTileManager*/
+/*div:not(.ui-igtilemanager) .ui-igsplitter-panel-vertical, .ui-igsplitter-panel-horizontal {
+    box-sizing: border-box;
+}*/
+
+.ui-igsplitter-splitbar-resize-handler-vertical {
+    position: relative;
+	width: 100%;
+	height: 0px;
+	top: 0px;
+	left: 0px;
+}
+
+.ui-igsplitter-splitbar-resize-handler-inner-vertical {
+    position: absolute;
+	margin-right: -6px;
+	right: 10px;
+	width: 4px;
+    cursor: col-resize;
+}
+
+.ui-igsplitter-splitbar-resize-handler-horizontal {
+    position: relative;
+	width: 0px;
+	height: 100%;
+	bottom: 4px;
+	right: 0px;
+}
+
+.ui-igsplitter-splitbar-resize-handler-inner-horizontal {
+    position: absolute;
+	margin-top: -4px;
+	top: 4px;
+	height: 4px;
+    cursor: row-resize;
+}
+
+/* vertical splitter */
+.ui-igsplitter-splitbar-vertical {
+    border: 1px solid transparent;
+    cursor: col-resize;
+	float: left;
+    width: 4px;
+    box-sizing: content-box;
+}
+.ui-igsplitter-collapse-button-vertical-left,
+.ui-igsplitter-collapse-button-vertical-right 
+{
+    position: relative;
+	cursor: pointer;
+	top: 50%;
+    height:22px;
+    width:4px;
+    margin-left:-1px;
+    outline:none;
+	overflow: hidden;
+}
+.ui-igsplitter-collapse-button-vertical-left { 
+	margin-top: -33px;
+}
+.ui-igsplitter-collapse-button-vertical-right { 
+	margin-top: 22px;
+}
+.ui-igsplitter-splitbar-vertical .ui-icon 
+{
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-top:-8px;
+    margin-left:-8px;
+    outline:none;
+}
+/* Styles for only one button displayed in the bar */
+.ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-left,
+.ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-right,
+.ui-igsplitter-collapse-button-vertical-left.ui-igsplitter-collapse-single-button,
+.ui-igsplitter-collapse-button-vertical-right.ui-igsplitter-collapse-single-button
+{
+    margin-top:-11px;
+}
+
+/*  horizontal splitter  */
+.ui-igsplitter-splitbar-horizontal {  
+    border: 1px solid transparent;
+    cursor: n-resize;
+    cursor: row-resize;
+	float: none;
+	width: 100%;
+	height: 4px;
+    box-sizing: content-box;
+}
+.ui-igsplitter-collapse-button-horizontal-left,
+.ui-igsplitter-collapse-button-horizontal-right
+{    
+	cursor: pointer;
+	left: 50%;
+	position: relative;
+    width:22px;
+    height:4px;
+	overflow: hidden;
+}
+.ui-igsplitter-collapse-button-horizontal-left { 
+	margin-left: -33px;
+    margin-top:-1px;
+}
+
+.ui-igsplitter-collapse-button-horizontal-right { 
+	margin-left: 11px;
+    margin-top:-6px;
+}
+/* Styles for only one button displayed in the bar */
+.ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-left,
+.ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-right,
+.ui-igsplitter-collapse-button-horizontal-left.ui-igsplitter-collapse-single-button,
+.ui-igsplitter-collapse-button-horizontal-right.ui-igsplitter-collapse-single-button
+{
+    margin-left:-11px;
+}
+.ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-right,
+.ui-igsplitter-collapse-button-horizontal-right.ui-igsplitter-collapse-single-button
+{
+	margin-top: -1px;
+}
+
+.ui-igsplitter-splitbar-horizontal .ui-icon 
+{
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-top:-8px;
+    margin-left:-8px;
+}
+
+
+/* When collapsed restore cursor to default */
+.ui-igsplitter-splitbar-collapsed,
+.ui-igsplitter-splitbar-collapsed .ui-igsplitter-splitbar-resize-handler-inner-vertical,
+.ui-igsplitter-splitbar-collapsed .ui-igsplitter-splitbar-resize-handler-inner-horizontal {
+    cursor: default;
+}
+
+.ui-igsplitter-splitbar-invalid {
+    border-color: red;
+}
+
+/* Touch-specific styles */
+   
+        /* vertical splitter */
+        .touch .ui-igsplitter-splitbar-vertical,
+		.touchevents .ui-igsplitter-splitbar-vertical,
+		.pointerevents .ui-igsplitter-splitbar-vertical
+        {
+            width:16px;
+        } 
+
+        .touch .ui-igsplitter-collapse-button-vertical-left,
+		.touchevents .ui-igsplitter-collapse-button-vertical-left,
+		.pointerevents .ui-igsplitter-collapse-button-vertical-left,
+        .touch .ui-igsplitter-collapse-button-vertical-right,
+		.touchevents .ui-igsplitter-collapse-button-vertical-right,
+		.pointerevents .ui-igsplitter-collapse-button-vertical-right
+        {
+            width:16px;
+            height:44px;
+        }
+        .touch .ui-igsplitter-collapse-button-vertical-left,
+		.touchevents .ui-igsplitter-collapse-button-vertical-left,
+		.pointerevents .ui-igsplitter-collapse-button-vertical-left
+		{ 
+	        margin-top: -66px;
+        }
+        .touch .ui-igsplitter-collapse-button-vertical-right,
+		.touchevents .ui-igsplitter-collapse-button-vertical-right,
+		.pointerevents .ui-igsplitter-collapse-button-vertical-right
+		{ 
+	        margin-top: 44px;
+        }
+
+        /* Styles for only one button displayed in the bar */
+        .touch .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-left,
+		.touchevents .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-left,
+		.pointerevents .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-left,
+        .touch .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-right,
+		.touchevents .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-right,
+		.pointerevents .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-right,
+        .touch .ui-igsplitter-collapse-button-vertical-left.ui-igsplitter-collapse-single-button,
+		.touchevents .ui-igsplitter-collapse-button-vertical-left.ui-igsplitter-collapse-single-button,
+		.pointerevents .ui-igsplitter-collapse-button-vertical-left.ui-igsplitter-collapse-single-button,
+        .touch .ui-igsplitter-collapse-button-vertical-right.ui-igsplitter-collapse-single-button,
+		.touchevents .ui-igsplitter-collapse-button-vertical-right.ui-igsplitter-collapse-single-button,
+		.pointerevents .ui-igsplitter-collapse-button-vertical-right.ui-igsplitter-collapse-single-button
+        {
+            margin-top:-22px;
+        }
+
+        /*  horizontal splitter  */
+        .touch .ui-igsplitter-splitbar-horizontal,
+		.touchevents .ui-igsplitter-splitbar-horizontal,
+		.pointerevents .ui-igsplitter-splitbar-horizontal,
+        {
+            height:16px;
+        }
+        .touch .ui-igsplitter-collapse-button-horizontal-left,
+		.touchevents .ui-igsplitter-collapse-button-horizontal-left,
+		.pointerevents .ui-igsplitter-collapse-button-horizontal-left,
+        .touch .ui-igsplitter-collapse-button-horizontal-right,
+		.touchevents .ui-igsplitter-collapse-button-horizontal-right,
+		.pointerevents .ui-igsplitter-collapse-button-horizontal-right
+        {    
+            width:44px;
+            height:16px;
+        }
+        .touch .ui-igsplitter-collapse-button-horizontal-left,
+		.touchevents .ui-igsplitter-collapse-button-horizontal-left,
+		.pointerevents .ui-igsplitter-collapse-button-horizontal-left
+		{ 
+	        margin-left: -66px;
+        }
+
+        .touch .ui-igsplitter-collapse-button-horizontal-right,
+		.touchevents .ui-igsplitter-collapse-button-horizontal-right,
+		.pointerevents .ui-igsplitter-collapse-button-horizontal-right
+		{ 
+	        margin-left: 22px;
+            margin-top:-18px;
+        }
+        
+        /* Styles for only one button displayed in the bar */
+        .touch .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-left,
+		.touchevents .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-left,
+		.pointerevents .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-left,
+        .touch .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-right,
+		.touchevents .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-right,
+		.pointerevents .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-right,
+        .touch .ui-igsplitter-collapse-button-horizontal-left.ui-igsplitter-collapse-single-button,
+		.touchevents .ui-igsplitter-collapse-button-horizontal-left.ui-igsplitter-collapse-single-button,
+		.pointerevents .ui-igsplitter-collapse-button-horizontal-left.ui-igsplitter-collapse-single-button,
+        .touch .ui-igsplitter-collapse-button-horizontal-right.ui-igsplitter-collapse-single-button,
+		.touchevents .ui-igsplitter-collapse-button-horizontal-right.ui-igsplitter-collapse-single-button,
+		.pointerevents .ui-igsplitter-collapse-button-horizontal-right.ui-igsplitter-collapse-single-button
+        {
+            margin-left:-22px;
+            margin-top:-1px;
+        }
+
+/* Removing webkit outline */
+.ui-igsplitter-splitbar-default:focus 
+{
+    outline: none;
+}
+
+
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) { 
+  
+  /* Retina-specific stuff here */
+    
+        /* vertical splitter */
+
+        .ui-igsplitter-collapse-button-vertical-left,
+        .ui-igsplitter-collapse-button-vertical-right 
+        {
+            height:44px;
+        }
+        .ui-igsplitter-collapse-button-vertical-left { 
+	        margin-top: -66px;
+        }
+        .ui-igsplitter-collapse-button-vertical-right { 
+	        margin-top: 44px;
+        }
+
+        .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-left,
+        .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-vertical-right 
+        {
+            margin-top:-22px;
+        }
+
+        /*  horizontal splitter  */
+        .ui-igsplitter-collapse-button-horizontal-left,
+        .ui-igsplitter-collapse-button-horizontal-right
+        {    
+            width:44px;
+        }
+        .ui-igsplitter-collapse-button-horizontal-left { 
+	        margin-left: -66px;
+        }
+
+        .ui-igsplitter-collapse-button-horizontal-right { 
+	        margin-left: 22px;
+        }
+        .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-left,
+        .ui-igsplitter-splitbar-collapsed .ui-igsplitter-collapse-button-horizontal-right 
+        {
+            margin-left:-22px;
+        }
+
+
+}
+

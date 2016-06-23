@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - List items example </title>
+	<link type="text/css" href="../../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../Source/ClientUI/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+	
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.dataSource-en.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.tree-en.js"></script>
+	                                   
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>
+	<!--<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.ui.notifier.js"></script>-->
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.notifier.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.ui.combo.js"></script>
+	<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.ui.tree.js"></script>
+	
+	<link type="text/css" href="../../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+	<!-- Links to external extensions -->
+	<script type='text/javascript' src='../../../../../Builds/JavaScript/bower_components/knockoutjs/build/output/knockout-latest.debug.js'></script>
+	
+	
+	<!-- Links to extensions -->
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../../Source/ClientUI/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>-->
+	<script type="text/javascript" src="../../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.knockout-extensions.js"></script>
+	
+	
+
+	
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
+	$(document).ready(function () {
+        var  testID;
+		QUnit.config.reorder = false;
+		function viewModel() {
+			nonObservable = "8a6d";
+			this.number = ko.observable(25);
+			this.currencyNumber = ko.observable(32);
+			this.maskValue = ko.observable("8a6d");
+			this.textValue = ko.observable("Some Val");
+			this.maskValue1 = ko.observable("9f2s");
+			setDefaultNumber = function() {
+				this.number(27);   
+			};
+			setDefaultText = function() {
+				this.textValue("Default Text");
+			}
+			setDefaultMaskValue = function () {
+				this.maskValue("9f2s");
+			}
+		};
+		
+		model = new viewModel();
+        ko.applyBindings(model);
+    	
+		function loadTestbeds() {
+			$("#outerInput").igMaskEditor();			
+		}
+			
+		initialized = false;
+		module('igMaskEditors KnockoutJS', {
+				setup: function() {
+					//pause testing until tree is initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 100);
+						initialized = true;
+					}
+				},
+				teardown: function() {
+				}
+		});
+		
+		testID = "Initializing igMaskEditor" ;
+		test(testID, 8, function () {
+			//
+			ok(typeof(ko.bindingHandlers.igMaskEditor) !== 'undefined', 'igMaskEditor knockoutJS extention script is not loaded');
+			ok(typeof(ko.bindingHandlers.igMaskEditor) === 'object', 'igMaskEditor knockoutJS extention is of a wrong type');
+			ok($('#inputEditor1').data("igMaskEditor") !== undefined, 'Creating igMaskEditor in an input');
+			ok($('#divEditor1').data("igMaskEditor") !== undefined, 'Creating igMaskEditor in a div');
+			ok($('#tdEditor1').data("igMaskEditor") !== undefined, 'Creating igMaskEditor in a td');
+			
+			//Check Initial expected value
+			equal($('#inputEditor1').igMaskEditor("value"), "8a6d", 'The initial value is as expexted');
+			equal($('#divEditor1').igMaskEditor("value"), "8a6d", 'The initial value is as expexted');
+			equal($('#tdEditor1').igMaskEditor("value"), "8a6d", 'The initial value is as expexted');
+		});
+		
+		testID = "Update model -> editor (input)" ;
+		test(testID, 6, function () {
+			$('#inputEditor1').on("igmaskeditorvaluechanged", function (evt, ui) {
+				checkAllValues("5g7s", "Values are as expected");
+			});
+			$('#inputEditor1').igMaskEditor("setFocus");
+			$('#inputEditor1').focus().val("5g7s");
+			$("#outerInput").focus();
+
+
+		});
+		//	$('#inputEditor1').igMaskEditor("setFocus");
+		//	$('#inputEditor1').val("5g7s").change();
+		//	$("#outerInput").igMaskEditor("setFocus");
+		//	stop();
+		//	setTimeout(function () {
+		//		checkAllValues("5g7s", "Values are as expected");	
+		//		start();
+		//	}, 200);
+			
+		//});
+
+		
+
+		
+
+		testID = "Update model -> editor (div)";
+		test(testID, 6, function () {
+			stop();
+			setTimeout(function () {
+				//Update div Editor and check
+				start();
+				
+				$('#divEditor1').bind('igmaskeditorvaluechanged', function (evt, ui) {
+					checkAllValues("5s6d", "Values are as expected");
+				});
+				
+				$('#divEditor1').igMaskEditor("setFocus");	
+				$('#divEditor1').find('input').focus().val("5s6d");
+        
+				$('#outerInput').focus();
+			}, 200);
+		});
+		
+		testID = "Update model -> editor (td)";
+		test(testID, 6, function () {
+			stop();
+			setTimeout(function () {
+				//Update td Editor and check
+				start();
+				
+				$('#tdEditor1').bind('igmaskeditorvaluechanged', function (evt, ui) {
+					checkAllValues("6a7b", "Values are as expected");
+				});
+				
+				$('#tdEditor1').find('input').focus().val("6a7b");
+
+				$('#outerInput').focus();		
+			}, 200);
+		});
+		
+		testID = "Update Model, check editors";
+		test(testID, 6, function () {
+			$("#resetButton").click();
+			checkAllValues("9f2s", "Values are as expected");
+		});
+
+		testID = "updateMode set to not allowed value";
+			test(testID, 1, function () {
+			var err;
+			QUnit.throws(function () {
+				$("#tempContainer").empty();
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igMaskEditor: { value: maskValue, width: 160, updateMode:\"none\" }'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+			}, function (err) {
+			    return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1;
+			}, 'An error was correctly thrown when updateMode option is not correctly changed');
+			ko.cleanNode(document.getElementById("tempEditor"));
+			$("#tempContainer").empty();
+		});
+		
+		testID = "Value set to nonObservable value";
+			test(testID, 5, function () {
+			stop();
+			setTimeout(function () {
+				start();
+				var err, evt;			
+					$("#tempContainer").empty();
+					//Default Update Mode
+					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igMaskEditor: { value: nonObservable, inputMask: \"9&9&\", width: 160 }'></input>");
+					ko.applyBindings(model, document.getElementById("tempEditor"));
+					equal($("#tempEditor").igMaskEditor("value"), nonObservable, "NonObservable value is assigned correctly");
+					//$("#tempEditor").igNumericEditor("value", "New non Observable");
+					evt = $.Event("keypress");
+					evt.keyCode = 51;
+					$("#outerInput").trigger(evt);
+					notEqual($("#tempEditor").igMaskEditor("value"), $('#inputEditor1').igMaskEditor("value"), "The value should not be updated");
+					//Set Defaul value from the model
+					$("#resetButton").click();
+					//The value of the nonObservable should not be updated
+					notEqual($("#tempEditor").igMaskEditor("value"), $('#inputEditor1').igMaskEditor("value"), "The value should not be updated");
+					$("#tempContainer").empty();
+					//immediate update mode
+					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igMaskEditor: { value: nonObservable, width: 160, inputMask: \"9&9&\", updateMode:\"onchange\" }'></input>");
+					ko.applyBindings(model, document.getElementById("tempEditor"));
+					equal($("#tempEditor").igMaskEditor("value"), nonObservable, "NonObservable value is assigned correctly");
+					keyboardType($("#tempEditor"), 57);
+					keyboardType($("#tempEditor"), 70);
+					keyboardType($("#tempEditor"), 50);
+					keyboardType($("#tempEditor"), 83);
+					
+					notEqual($("#tempEditor").igMaskEditor("value"), $('#inputEditor1').igMaskEditor("value"), "The value should not be updated");
+					$("#tempContainer").empty();
+				}, 200);
+		});
+
+			testID = "updateMode -> onChange";
+			test(testID, 6, function () {
+
+				ko.cleanNode(document.getElementById("inputEditor1"));
+				elementParent = $("#inputEditor1").parent()
+				elementParent.empty();
+				elementParent.append("<input id=\"inputEditor1\" data-bind='igMaskEditor: { value: maskValue, width: 160, updateMode:\"onchange\" }'></input>");
+				ko.applyBindings(model, document.getElementById("inputEditor1"));
+
+				$('#inputEditor1').igMaskEditor('setFocus');
+				//$('#inputEditor1').igNumericEditor('value', "");
+				editorInput = $("#inputEditor1").igMaskEditor("field");
+				editorInput.focus().val("9f2s");
+				$('#outerInput').focus();
+				testChange();
+				function testChange(element) {
+					checkAllValues("9f2s", "The value is updated on keyUp");
+				}
+				
+			});
+
+
+			testID = "update from outside input";
+			test(testID, 6, function () {
+				$("#GoshoEditor1").focus().val("9f2s").change();
+				checkAllValues("9f2s", "Values are as expected");
+			});
+
+
+
+		
+		
+		});//document ready
+
+	function mouseInteraction(type, element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent(type, true, true, window, 1, 0, 0);
+		if (type === "mousemove") {
+			event.pageX = 100;
+			event.pageY = 100;
+		}
+		// send click to element
+		element.dispatchEvent(event);
+
+	}
+	function keyInteraction(key, target, special) {
+		keyDownChar(key, target, special);
+		keyPressChar(key, target, special);
+		keyUpChar(key, target, special);
+	}
+	function keyDownChar(key, target, special) {
+		var evt = $.Event("keydown");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function keyPressChar(key, target, special) {
+		var evt = $.Event("keypress");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function keyUpChar(key, target, special) {
+		var evt = $.Event("keyup");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+		
+		function keyboardType(element, keyCode) {
+			var evt;
+			evt = $.Event("keydown");
+			evt.keyCode = keyCode;
+			element.trigger(evt);
+			evt = $.Event("keypress");
+			evt.keyCode = keyCode;
+			element.trigger(evt);
+			evt = $.Event("keyup");
+			evt.keyCode = keyCode;
+			element.trigger(evt);			
+		}
+		function checkAllValues(val, message) {
+			checkEditors(val, message);
+			checkFields(val, message);
+		}
+		function checkEditors(val, message) {
+			equal($('#inputEditor1').igMaskEditor("value"), val, message + " (inputEditor)");
+			equal($('#divEditor1').igMaskEditor("value"), val, message + " (divEditor1)");
+			equal($('#tdEditor1').igMaskEditor("value"), val, message + " (tdEditor1)");			
+		}
+		function checkFields(val, message) {
+			equal($("#inputValue").val(), val, message + " (inputValue)");
+			
+			if (typeof(val) === 'string') {
+				
+				equal($("#spanValue").html().replace(/&nbsp;/g, " "), val, message + " (spanValue)");
+				equal($("#divValue").html().replace(/&nbsp;/g, " "), val, message + " (divValue)");
+			} else {
+				equal($("#spanValue").html(), val, message + " (spanValue)");
+				equal($("#divValue").html(), val, message + " (divValue)");			
+			}
+		}
+		function replaceCharAt(stringValue, index, char) {
+			return stringValue.substring(0, index) + char + stringValue.substring(index + 1);
+		}
+		QUnit.log = function (details) {
+		    if (window.console && window.console.log) {
+		        window.console.log(details.result + ' :: ' + details.message);
+		    }
+		};
+</script>
+</head>
+<body>
+<div style="float:right;width:500px;overflow:auto">
+     <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px;">
+
+
+<table style="cell-padding: 2px; border: black solid 1px; width:350px;">
+	
+		<tr>
+			
+			<th style="width: 100px;">Component Type</th>
+			<th style="width: 60px;">Element</th>
+			<th style="width: 260px;">Component</th>
+			
+		</tr>
+		<tr>
+		<td>igMaskEditor</td>	
+		<td>input</td>
+		<td>
+			<input id="inputEditor1" 
+				data-bind="igMaskEditor: {
+					value: maskValue,
+					inputMask: '9&9&',
+					width: '160px'
+				}">
+			</input>		
+		</td>
+		</tr>
+		<tr>
+		<td>igMaskEditor</td>		
+		<td>div</td>
+		<td>
+		<div id="divEditor1" 
+			data-bind="igMaskEditor: {
+				value: maskValue,
+				inputMask: '9&9&',
+				width: '160px'
+			}">
+		</div> 
+		</td>
+		</tr>
+		<tr>
+		<td>igMaskEditor</td>		
+		<td>td</td>
+		<span id="tdEditor1" data-bind="igMaskEditor: {
+		    value: maskValue,
+			inputMask: '9&9&',
+		    width: '160px'
+	    }">
+        </span>
+		
+		</tr>
+	<tr>
+		<td>Bind Span</td>		
+		<td>span</td>
+		<td> <span id="spanValue" data-bind="text: maskValue"></span><br /> 
+		</td>
+	</tr>
+	<tr>
+		<td>Bind input</td>		
+		<td>input</td>
+		<td> <input id="inputValue" data-bind="value: maskValue"></input> 
+		</td>
+	</tr>
+	<tr>
+		<td>Bind div</td>		
+		<td>div</td>
+		<td> <div id="divValue" data-bind="text: maskValue"></div> 
+		</td>
+	</tr>
+	<tr>
+		<td>Helper</td>
+		<td><input id="outerInput"></input></td>
+		<td><input id="resetButton" type="button" data-bind="click: setDefaultMaskValue" value="Reset Text Value"></input>
+	</tr>
+</table>
+	<input id="GoshoEditor1" data-bind=" value: maskValue" /></input>
+		<input id="outerInputTest"></input>
+		<div id="tempContainer"></div>
+		<div id="tempContainer1"></div>
+	<span id="tempContainer13" data-bind=" text: maskValue1"> </span>
+	<input id="tempContainer12" data-bind=" value: maskValue1"></input>
+	<div id="tempContainer13" data-bind ="igMaskEditor: { value: maskValue1, width: 160, inputMask1: '9&9&' }"></div>
+	
+		<input id="myButton" type="button" value="Nothing">
+</div>
+</body>
+</html>
+

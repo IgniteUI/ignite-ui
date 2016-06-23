@@ -1,0 +1,5 @@
+jquery - 1.4.4
+jquery.tmpl - beta1
+jquery-ui - 1.8.7
+jquery.mockjax.js - 1.4.0
+jquery.xmldom.js - 1.0

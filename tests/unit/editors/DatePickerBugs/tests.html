@@ -1,0 +1,397 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - DatePicker  Editors </title>
+	<link type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.notifier.js"></script>                                     
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.validator.js"></script> 
+
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage.
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.editors.js"></script>-->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.js"></script> 
+	
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" /> 
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+	<!-- Links to external extensions -->
+	
+	<!-- Links to extensions -->
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../../../Source/ClientUI/js/modules/infragistics.ui.editors.knockout-extensions.js"></script>-->
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+		$(document).ready(function () {
+			// Create a editors
+
+				function loadTestbeds() {
+					var testbedIDs = ["206040", "211360", "213900", "215046", "215992", "220775"];
+					for (var i = 0; i < testbedIDs.length; i++) {
+						var testBed = "Bug" + testbedIDs[i].trim() + "Testbed";
+						if (window[testBed]) {
+							window[testBed]();
+						}
+					}
+
+				}
+				// 211360
+				window.Bug206040Testbed = function () {
+					$("#206040Editor1").igDatePicker({ dateInputFormat: "dd/MM/yyyy" });
+
+				}
+
+				window.Bug211360Testbed = function () {
+					$("#211360Editor1").igDatePicker({
+						width: 280,
+						dateInputFormat: "dd/MM/yyyy"
+					});
+				}
+				
+				window.Bug213900Testbed = function () {
+					$("#igDatePicker1").igDatePicker();
+					$("#igDatePicker2").igDatePicker();
+
+				}
+				window.Bug215046Testbed = function () {
+					$("#215046picker").igDatePicker({
+						width: 280,
+						dateInputFormat: "dateTime",
+						regional: "en-US",
+						placeHolder: "Pick Date",
+						datepickerOptions: {
+							showWeek: true
+						},
+						value: new Date(2016, 1, 1),
+						dataMode: "editModeText"
+					});
+
+				}
+				
+				window.Bug215992Testbed = function () {
+					$("#215992Editor1").igDatePicker();
+					$("#215992Editor2").igDatePicker();
+
+				}
+				window.Bug220775Testbed = function () {
+					$("#220775Editor1").igDatePicker();
+					
+				}
+				initialized = false;
+				module("DatePicker Bugs Unit Tests ", {
+					setup: function () {
+						//pause testing until editors are initialized
+						if (!initialized) {
+							stop();
+							loadTestbeds();
+							setTimeout(function () { start(); }, 100);
+							initialized = true;
+						}
+					},
+					teardown: function () {
+					}
+				});
+			
+			testId = 'Bug 213900';
+			test(testId, 4, function () {
+				equal($("#igDatePicker1").data("igDatePicker")._editorInput.attr("id"), "igDatePicker1EditingInput", "The id of the input should be igDatePicker1editingInput");
+				equal($("#igDatePicker1").data("igDatePicker")._editorContainer.attr("id"), "igDatePicker1", "The id of the span should be igDatePicker1");
+				equal($("#igDatePicker2").data("igDatePicker")._editorInput.attr("id"), "igDatePicker2EditingInput", "The id of the input should be igDatePicker2editingInput");
+				equal($("#igDatePicker2").data("igDatePicker")._editorInput.parent().attr("id"), "igDatePicker2", "The id of the span should be igDatePicker2");
+			});
+			testId = 'Bug 206040';
+			test(testId, 2, function () {
+				var calendar;
+				$("#206040Editor1").igDatePicker("dropDownButton").click();
+				calendar = $("#206040Editor1").igDatePicker("getCalendar");
+				$(calendar).find(".ui-datepicker-today").find("a").click();
+				equal($("#206040Editor1").igDatePicker("field").val(), getDDmmYYYY(new Date()), "The value is changed to " + getDDmmYYYY(new Date()));
+				$("#206040Editor1").igDatePicker("field").blur();
+				equal($("#206040Editor1").igDatePicker("field").val(), getDDmmYYYY(new Date()), "The value is changed to " + getDDmmYYYY(new Date()));
+				
+			});
+			
+			testId = 'Bug 211360';
+			test(testId, 4, function () {
+				stop();
+				setTimeout(function () {
+					var calendar, flag = false, i = 1;
+					start();
+					$("#211360Editor1").one("igdatepickertextchanged", function (evt, ui) {
+						flag = true;
+							equal(ui.text, "__/__/____", "The text should be __/__/____");
+						
+					});
+					$("#211360Editor1").igDatePicker("dropDownButton").click();
+					$("#211360Editor1").one("igdatepickertextchanged", function (evt, ui) {
+						equal(ui.text, getMMDDYYYY(new Date()), "The text should be " + getMMDDYYYY(new Date()) + " Real Value: " + ui.text);
+					});
+					calendar = $("#211360Editor1").igDatePicker("getCalendar");
+					$(calendar).find(".ui-datepicker-today").find("a").click();
+
+					equal($("#211360Editor1").igDatePicker("field").val(), getDDmmYYYY(new Date()), "The text is changed to " + getDDmmYYYY(new Date()));
+					ok(flag, "Textchaged event should be fired");
+				}, 1500);
+			});
+
+			testId = 'Bug 215046';
+			test(testId, 1, function () {
+				var editor = $("#215046picker"),
+					field = $("#215046picker").igDatePicker("field");
+
+				stop();
+				setTimeout(function () {
+					start();
+					editor.igDatePicker("setFocus");
+					field.val("02/01/2016 02:12 AM");
+					field.blur();
+
+					// Value is expected as string, cause the dataMode is "editModeText".
+					equal(editor.igDatePicker("value"), "02/01/2016 02:12 AM", "The value is not properly set");
+				}, 100);
+			});
+			testId = 'Bug 215046';
+			test(testId, 2, function () {
+				$("#215992Editor1").igDatePicker()
+				var button1 = $("#215992Editor1").data("igDatePicker")._dropDownButton,
+				button2 = $("#215992Editor2").data("igDatePicker")._dropDownButton;
+				stop();
+				setTimeout(function () {
+					start();
+					button1.click();
+					button2.click();
+					ok($("#215992Editor2").data("igDatePicker")._focused, "The second editor should be focused");
+					stop();
+					setTimeout(function () {
+						start();
+						ok($("#215992Editor2").data("igDatePicker")._dropDownList.is(":visible"), "The calendar of the second editor should be visible");
+					}, 700);
+					
+				}, 200);
+			});
+			testId = 'Bug 220775';
+			test(testId, 1, function () {
+				// focus editor and set value
+				$("#220775Editor1").igDatePicker("field").click().focus();
+				//open dropdown
+				$("#220775Editor1").igDatePicker("dropDownButton").click();
+
+				equal($("#220775Editor1").igDatePicker("field").val(), "__/__/____", "Opening dropdown caused the entered text to be __/__/____");
+			});
+		});
+
+		function getDDmmYYYYHHSS(date) {
+			var result = "", day, month, minutes, hours;
+			if (typeof date.getTime !== "function") {
+				return;
+			}
+			day = date.getDate();
+			if (day < 10) {
+				day = "0" + day.toString();
+			} else {
+				day = day.toString();
+			}
+			month = date.getMonth() + 1;
+			if (month < 10) {
+				month = "0" + month.toString();
+			} else {
+				month = month.toString();
+			}
+			hours = date.getHours();
+			if (hours < 10) {
+				hours = "0" + hours;
+			} else {
+				hours = hours.toString();
+			}
+			minutes = date.getMinutes();
+			if (minutes < 10) {
+				minutes = "0" + minutes;
+			} else {
+				minutes = minutes.toString();
+			}
+			result += day;
+			result += "/";
+			result += month;
+			result += "/";
+			result += date.getFullYear();
+			result += " ";
+			result += hours;
+			result += ":";
+			result += minutes;
+
+			return result;
+		}
+		function getDDmmYYYY(date) {
+			var result = "", day, month;
+			if (typeof date.getTime !== "function") {
+				return;
+			}
+			day = date.getDate();
+			if (day < 10) {
+				day = "0" + day.toString();
+			} else {
+				day = day.toString();
+			}
+			month = date.getMonth() + 1;
+			if (month < 10) {
+				month = "0" + month.toString();
+			} else {
+				month = month.toString();
+			}
+			result += day;
+			result += "/";
+			result += month;
+			result += "/";
+			result += date.getFullYear();
+			return result;
+		}
+		function getMMDDYYYY(date) {
+			var result = "", day, month;
+			if (typeof date.getTime !== "function") {
+				return;
+			}
+			day = date.getDate();
+			if (day < 10) {
+				day = "0" + day.toString();
+			} else {
+				day = day.toString();
+			}
+			month = date.getMonth() + 1;
+			if (month < 10) {
+				month = "0" + month.toString();
+			} else {
+				month = month.toString();
+			}
+			result += month;
+			result += "/";
+			result += day;
+			result += "/";
+			result += date.getFullYear();
+			return result;
+		}
+		function emulateKeyBoard(key, ctrl, shift, alt, element) {
+			var keyDown = jQuery.Event("keydown"),
+				keyUp = jQuery.Event("keyup");
+
+			keyDown.ctrlKey = keyUp.ctrlKey = ctrl;
+			keyDown.altKey = keyUp.altKey = alt;
+			keyDown.shiftKey = keyUp.shiftKey = shift;
+
+			switch (key) {
+				case "up": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.UP; break;
+				case "left": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.LEFT; break;
+				case "right": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.RIGHT; break;
+				case "down": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.DOWN; break;
+				default: keyDown.keyCode = keyUp.keyCode = key; break;
+			}
+
+			element.trigger(keyDown);
+			element.trigger(keyUp);
+		}
+		function typeInInput(characters, element) {
+			var keyDown = jQuery.Event("keydown"),
+			   keyPress = jQuery.Event("keypress"),
+			   keyUp = jQuery.Event("keyup"),
+			   value = "";
+
+			characters.split('').forEach(function (ch) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				value = value + ch;
+				element.val(value);
+				element.trigger(keyUp);
+			});
+		}
+		function typeInMaskedInput(characters, element) {
+			var keyDown = jQuery.Event("keydown"),
+			   keyPress = jQuery.Event("keypress"),
+			   keyUp = jQuery.Event("keyup"),
+			   value = element.val(), selectionStart = 0;
+
+			characters.split('').forEach(function (ch) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				value = value.replaceAt(selectionStart++, ch);
+				element.val(value);
+				element.trigger(keyUp);
+			});
+		}
+		String.prototype.replaceAt = function (index, character) {
+			return this.substr(0, index) + character + this.substr(index + character.length);
+		}
+		function clickElement(element, ctrl, shift) {
+			var mouseDown = jQuery.Event("mousedown"), mouseUp = jQuery.Event("mouseup");
+			ctrl = (typeof ctrl === 'undefined') ? false : ctrl;
+			shift = (typeof shift === 'undefined') ? false : shift;
+			mousedown(element[0], ctrl, shift);
+			mouseup(element[0], ctrl, shift);
+		}
+		function mouseup(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
+		}
+		function mousedown(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
+		}
+		QUnit.log = function (details) {
+			if (window.console && window.console.log) {
+				window.console.log(details.result + ' :: ' + details.message);
+			}
+		};
+	</script>
+
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+
+		
+		<input id="206040Editor1" type="text" />
+		<input id="207321Editor2" type="text" />
+		
+		<input id="211360Editor1" type="text" />
+		<div id="igDatePicker1"></div>
+		<span id="igDatePicker2"></span>
+		<br />
+		<div id="215046picker"></div>
+		<input id="215992Editor1" type="text" />
+		<input id="215992Editor2" type="text" />
+		<input id="220775Editor1" type="text" />
+		
+	</div></body>
+</html>
+

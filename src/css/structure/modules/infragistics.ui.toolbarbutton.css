@@ -1,0 +1,294 @@
+.ui-igtoolbarbutton.ui-igbutton.ui-state-hover {
+        border: 1px solid #999;
+        background-color: #CCC;
+        color: #666;
+    }
+
+.ui-igtoolbarbutton.ui-button {
+    width: 18px;
+    height: 18px;
+    padding: 3px;
+    margin-left: 3px;
+}
+
+.ui-igtoolbarbutton.ui-button-text-icon-primary .ui-icon {
+    margin-left: 4px;
+}
+
+.ui-igbutton .ui-igbutton-collapse,
+.ui-igbutton.ui-state-hover .ui-igbutton-collapse {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 0;
+}
+
+.ui-igbutton .ui-igbutton-expand,
+.ui-igbutton.ui-state-hover .ui-igbutton-expand {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -16px;
+}
+
+.ui-igbutton .ui-igbutton-redo,
+.ui-igbutton.ui-state-hover .ui-igbutton-redo {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -32px;
+}
+
+.ui-igbutton .ui-igbutton-undo,
+.ui-igbutton.ui-state-hover .ui-igbutton-undo {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -48px;
+}
+
+.ui-igbutton .ui-igbutton-increasefontsize,
+.ui-igbutton.ui-state-hover .ui-igbutton-increasefontsize {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -80px;
+}
+
+.ui-igbutton .ui-igbutton-decreasefontsize,
+.ui-igbutton.ui-state-hover .ui-igbutton-decreasefontsize {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -96px;
+}
+
+.ui-igbutton .ui-igbutton-viewsource-icon,
+.ui-igbutton.ui-state-hover .ui-igbutton-viewsource-icon {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -160px;
+}
+
+.ui-igbutton .ui-igbutton-html,
+.ui-igbutton.ui-state-hover .ui-igbutton-html {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -112px;
+}
+
+.ui-igbutton .ui-igbutton-html-add,
+.ui-igbutton.ui-state-hover .ui-igbutton-html-add {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -128px;
+}
+
+.ui-igbutton .ui-igbutton-html-delete,
+.ui-igbutton.ui-state-hover .ui-igbutton-html-delete {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -144px;
+}
+
+.ui-igbutton .ui-igbutton-html-valid,
+.ui-igbutton.ui-state-hover .ui-igbutton-html-valid {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -176px;
+}
+
+.ui-igbutton .ui-igbutton-addimage,
+.ui-igbutton.ui-state-hover .ui-igbutton-addimage {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -192px;
+}
+
+.ui-igbutton .ui-igbutton-link,
+.ui-igbutton.ui-state-hover .ui-igbutton-link {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -208px;
+}
+
+.ui-igbutton .ui-igbutton-addlink,
+.ui-igbutton.ui-state-hover .ui-igbutton-addlink {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -224px;
+}
+
+.ui-igbutton .ui-igbutton-unlink,
+.ui-igbutton.ui-state-hover .ui-igbutton-unlink {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -240px;
+}
+
+.ui-igbutton .ui-igbutton-copy,
+.ui-igbutton.ui-state-hover .ui-igbutton-copy {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -256px;
+}
+
+.ui-igbutton .ui-igbutton-cut,
+.ui-igbutton.ui-state-hover .ui-igbutton-cut {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -272px;
+}
+
+.ui-igbutton .ui-igbutton-paste,
+.ui-igbutton.ui-state-hover .ui-igbutton-paste {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -288px;
+}
+
+.ui-igbutton .ui-igbutton-table,
+.ui-igbutton.ui-state-hover .ui-igbutton-table {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -304px;
+}
+
+.ui-igbutton .ui-igbutton-addrow ,
+.ui-igbutton.ui-state-hover .ui-igbutton-addrow {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -320px;
+}
+
+.ui-igbutton .ui-igbutton-addcolumn,
+.ui-igbutton.ui-state-hover .ui-igbutton-addcolumn {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -336px;
+}
+
+.ui-igbutton .ui-igbutton-removerow,
+.ui-igbutton.ui-state-hover .ui-igbutton-removerow {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -352px;
+}
+
+.ui-igbutton .ui-igbutton-removecolumn,
+.ui-igbutton.ui-state-hover .ui-igbutton-removecolumn {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -368px;
+}
+
+.ui-igbutton .ui-igbutton-justifyleft,
+.ui-igbutton.ui-state-hover .ui-igbutton-justifyleft {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -384px;
+}
+
+.ui-igbutton .ui-igbutton-justifycenter,
+.ui-igbutton.ui-state-hover .ui-igbutton-justifycenter {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -400px;
+}
+
+.ui-igbutton .ui-igbutton-justifyright,
+.ui-igbutton.ui-state-hover .ui-igbutton-justifyright {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -416px;
+}
+
+.ui-igbutton .ui-igbutton-justifyfull,
+.ui-igbutton.ui-state-hover .ui-igbutton-justifyfull {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -432px;
+}
+
+.ui-igbutton .ui-igbutton-forecolor,
+.ui-igbutton.ui-state-hover .ui-igbutton-forecolor {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -448px;
+}
+
+.ui-igbutton .ui-igbutton-backcolor,
+.ui-igbutton.ui-state-hover .ui-igbutton-backcolor {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -464px;
+}
+
+.ui-igbutton .ui-igbutton-bold,
+.ui-igbutton.ui-state-hover .ui-igbutton-bold {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -480px;
+}
+
+.ui-igbutton .ui-igbutton-italic,
+.ui-igbutton.ui-state-hover .ui-igbutton-italic {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -496px;
+}
+
+.ui-igbutton .ui-igbutton-underline,
+.ui-igbutton.ui-state-hover .ui-igbutton-underline {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -512px;
+}
+
+.ui-igbutton .ui-igbutton-strikethrough,
+.ui-igbutton.ui-state-hover .ui-igbutton-strikethrough {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -528px;
+}
+
+.ui-igbutton .ui-igbutton-horizontalrule,
+.ui-igbutton.ui-state-hover .ui-igbutton-horizontalrule {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -544px;
+}
+
+.ui-igbutton .ui-igbutton-indent,
+.ui-igbutton.ui-state-hover .ui-igbutton-indent {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -560px;
+}
+
+.ui-igbutton .ui-igbutton-removeindent,
+.ui-igbutton.ui-state-hover .ui-igbutton-removeindent {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -576px;
+}
+
+.ui-igbutton .ui-igbutton-unorderedlist,
+.ui-igbutton.ui-state-hover .ui-igbutton-unorderedlist {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -592px;
+}
+
+.ui-igbutton .ui-igbutton-orderedlist,
+.ui-igbutton.ui-state-hover .ui-igbutton-orderedlist {
+    background-image: url(../images/igHtmlEditor/html-editor-sprite.png);
+    background-position: 0 -608px;
+}
+
+/*special buttons forecolor and backcolor*/
+.ui-igbutton .ui-igbutton-forecolor,
+.ui-igbutton .ui-igbutton-backcolor {
+    height: 13px;
+    border-radius: 0;
+}
+
+.ui-igbutton .ui-igbutton-forecolor {
+    border-bottom: 3px solid #000000;
+}
+
+.ui-igbutton .ui-igbutton-backcolor {
+    border-bottom: 3px solid transparent;
+}
+
+
+/* Touch support */
+
+.touch .ui-igtoolbarbutton.ui-button,
+.touchevents .ui-igtoolbarbutton.ui-button,
+.pointerevents .ui-igtoolbarbutton.ui-button
+{
+    min-height: 44px;
+    min-width: 44px;
+}
+.touch .ui-igtoolbarbutton.ui-button .ui-button-text,
+.touchevents .ui-igtoolbarbutton.ui-button .ui-button-text,
+.pointerevents .ui-igtoolbarbutton.ui-button .ui-button-text
+{
+    line-height: 2.6em;
+}
+
+.ui-igtoolbarbutton .ui-icon, .ui-igbutton-viewsource .ui-icon {
+    left: 50%;
+    top: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+}
+
+.ui-igtoolbarbutton .ui-igbutton-forecolor {
+    height: 13px;
+}
+/* 215932, S.D., 17.06.2016 Not needed for font icons
+.ui-igtoolbarbutton .ui-igbutton-backcolor {
+    height: 13px;
+}*/

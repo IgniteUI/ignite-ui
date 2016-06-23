@@ -1,0 +1,467 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Common </title>
+	<link type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.notifier.js"></script>-->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.notifier.js"></script>
+									
+	
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.editors.js"></script>--> 
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.js"></script>
+	
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+	<script type="text/javascript">
+	var messages = {
+		info: "Heads up! This alert needs your attention, but it's not super important.",
+		success: "Well done! You successfully read this important alert message.",
+		warning: "Warning! Better check yourself, you're not looking too good.",
+		error: "Oh snap! Change a few things up and try submitting again."
+	};
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	$(document).ready(function () {
+		// Create a editors
+		function loadTestbeds() {
+			$(function () {
+				$("#inputEditor1").igTextEditor({
+					value: "input value",
+					maxLength: 15
+				});
+				$("#igTextEditorNotification").igTextEditor({
+					value: "input value",
+					maxLength: 15
+				});
+				$("#igMaskEditorNotification").igMaskEditor({
+					inputMask: 'AaaL/aa',
+					dataMode: 'rawTextWithRequiredPrompts',
+				});
+				$("#divEditor1").igTextEditor({ value: "div value" })
+					.igNotifier({
+						direction: "right",
+						messages: messages
+					});
+				$("#eventEditor").igTextEditor();
+				$("#textEditorMethods").igTextEditor();
+				$("#textEditorSetOptions").igTextEditor({ button: 'dropdown' });
+				$('#igEditorLocale').igNumericEditor({
+					listItems: [1, 2, 3],
+					buttonType: ' clear , dropdown ,spin' ,
+				});
+
+				$('#igNumericEditorNotification').igNumericEditor({
+					value: 4,
+					minValue: 0,
+					maxValue: 5
+				});
+
+				$('#igDateEditorNotification').igDateEditor({
+					minValue: "12/12/2016",
+					maxValue: "12/12/2014"
+				});
+				$("#texteditorSetOptions").igTextEditor({
+					tabIndex: 2
+				});
+
+			});
+		}
+		initialized = false;
+		module("Editors Common", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 500);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+		
+		var testId = 'Editors initialization.';
+		test(testId, 6,function () {
+			ok(typeof($("#inputEditor1").igTextEditor)  === 'function', "Editors Script is not loaded");
+			ok($('#inputEditor1').data("igTextEditor") !== undefined, 'Error creating igTextEditor in an input');
+			ok($('#divEditor1').data("igTextEditor") !== undefined, 'Error creating igTextEditor in a div');
+			throws( function() {
+				$("#divEditor2").igBaseEditor();
+				}, "Base editor should not be instantiated");
+			equal($('#inputEditor1').igTextEditor("value"), "input value", 'The initial value is not as expexted');
+			equal($('#divEditor1').igTextEditor("value"), "div value", 'The initial value is not as expexted');
+			
+		});
+		testId = 'Base/TextEditor Events';
+		test(testId, 11,function () {
+			var editor = $('#eventEditor').igTextEditor("field"), flag = false, container = $('#eventEditor').igTextEditor("editorContainer"),
+				newText = "1";
+			$('#eventEditor').on("igtexteditormousedown", function() {
+				flag = true;
+			});
+			$('#eventEditor').on("igtexteditormouseup", function () {
+				flag = true;
+			});
+			$('#eventEditor').on("igtexteditormousemove", function() {
+				flag = true;
+			});
+			$('#eventEditor').on("igtexteditormouseover", function() {
+				flag = true;
+			});
+			$('#eventEditor').on("igtexteditormouseout", function () {
+				flag = true;
+			});
+
+
+
+			$('#eventEditor').on("igtexteditorkeydown", function () {
+				flag = true;
+			});
+			$('#eventEditor').on("igtexteditorkeyup", function () {
+				flag = true;
+			});
+			$('#eventEditor').on("igtexteditorkeypress", function () {
+				flag = true;
+			});
+			$('#eventEditor').on("igtexteditorfocus", function () {
+				flag = true;
+			});
+			$('#eventEditor').on("igtexteditortextchanged", function (evt, ui) {
+				console.log("igtexteditortextchanged", flag);
+				flag = ui.oldText === "" && ui.text === newText;
+			});
+			$('#eventEditor').on("igtexteditorblur", function () {
+				flag = true;
+			});
+			editor.trigger("mousedown");
+			ok(flag, "mousedown not fired");
+			flag = false;
+
+			container.trigger('mouseup');
+			ok(flag, "mouseup not fired");
+			flag = false;
+			
+			container.trigger('mouseover');
+			ok(flag, "mouseover not fired");
+			flag = false;
+			
+			mouseout(container[0]);
+			ok(flag, "mouseout not fired");
+			flag = false;
+
+			$('#eventEditor').trigger('mousemove');
+			ok(flag, "mouseover not fired");
+			flag = false;
+
+
+
+			$('#eventEditor').trigger('keydown');
+			ok(flag, "keydown not fired");
+			flag = false;
+			$('#eventEditor').trigger('keyup');
+			ok(flag, "keyup not fired");
+			flag = false;
+			$('#eventEditor').trigger('keypress');
+			ok(flag, "keypres not fired");
+			flag = false;
+			editor.trigger('focus');
+			ok(flag, "focus not fired");
+			flag = false;
+
+			$('#eventEditor').off("igtexteditorkeydown igtexteditorkeyup igtexteditorkeypress"); 
+			editor.trigger('keydown');
+			editor.val(newText);
+			editor.trigger('keypress').trigger('keyup');
+			ok(flag, "textChanged not fired");
+			editor.trigger('blur');
+			ok(flag, "blur not fired");
+			flag = false;
+			
+		});
+		testId = 'Base/TextEditor Main Methods';
+		test(testId, 4, function () {
+			$('#divEditor1').igTextEditor("inputName", "nameattr");
+			equal($('#divEditor1').igTextEditor("inputName"), "nameattr", 'The name attribute is not as expected');
+			//Value set to null 
+			$("#textEditorMethods").igTextEditor("value", null);
+
+			// TODO: It's not sure what happens if we st null.
+			equal($("#textEditorMethods").igTextEditor("value"), "", 'The value is not correctly set to null');
+			//Value set to null when property nullable set to false
+			$("#textEditorMethods").igTextEditor("option", "allowNullValue", false);
+			$("#textEditorMethods").igTextEditor("value", null);
+			equal($("#textEditorMethods").igTextEditor("value"), "", 'The value is not correctly set to an Empty string');
+			$("#textEditorMethods").igTextEditor("option", "allowNullValue", false);
+			//console.log($("#textEditorMethods").igTextEditor("value"));
+			$("#textEditorMethods").igTextEditor("value", "MyVal");
+			equal($("#textEditorMethods").igTextEditor("value"), "MyVal", 'The value is not correctly set to MyVal string');
+		});
+		testId = 'Base/TextEditor Set Options';
+		test(testId, 2, function () {
+
+			$("#textEditorSetOptions").igTextEditor("option", "value", "newVal");
+			equal($("#textEditorSetOptions").igTextEditor("value"), "newVal", 'The value is not correctly set to "newVal" string');
+			$("#textEditorSetOptions").igTextEditor("option", "value", null);
+
+			// TODO: It's not sure what happens if we st null.
+			equal($("#textEditorSetOptions").igTextEditor("value"), "", 'The value is not correctly set to null string');
+		});
+
+		testId = 'Test Locale option';
+		test(testId, 4, function () {
+			ok($("#igEditorLocale .ui-igedit-button-common[title='Increment']").length == 1, "Spin up button doesn't have a title");
+			ok($("#igEditorLocale .ui-igedit-button-common[title='Decrement']").length == 1, "Spin down button doesn't have a title");
+			ok($("#igEditorLocale .ui-igedit-button-common[title='Show list']").length == 1, "Dropdown button doesn't have a title");
+			ok($("#igEditorLocale .ui-igedit-button-common[title='Clear value']").length == 1, "Clear button doesn't have a title");
+		});
+		testId = 'Test Notifier basics';
+		test(testId, 32, function () {
+			/* show success */
+			var editor = $("#divEditor1");
+			editor.igNotifier("notify", "success");
+			ok(editor.data("igNotifier").popover.is(":visible"), "Notification not visible");
+			ok(editor.data("igNotifier").popover.hasClass($.ui.igNotifier.prototype.css.successState), "Notification state class not applied");
+			ok(editor.hasClass($.ui.igNotifier.prototype.css.successState), "Notification target state class not applied");
+			ok(editor.igNotifier("getContent").indexOf($.ui.igNotifier.prototype.css.successIcon) === -1, "Notification state icon visible with showIcons off");
+			editor.igNotifier("option", "showIcon", true);
+			ok(editor.igNotifier("getContent").indexOf($.ui.igNotifier.prototype.css.successIcon) > -1, "Notification state icon not visible");
+
+			/* hide */
+			editor.igNotifier("hide");
+			ok(editor.data("igNotifier").popover.is(":animated") && !editor.igNotifier("isVisible"), "Notification not hidden");
+			ok(!editor.hasClass($.ui.igNotifier.prototype.css.successState), "Notification target state class not cleared");
+			editor.igNotifier("show");
+
+			/* set message */
+			var message = "cool yo 1";
+			editor.igNotifier("option", "messages", { success: message });
+			ok(editor.igNotifier("isVisible"), "Notification not visible");
+			ok(editor.igNotifier("getContent").indexOf($.ui.igNotifier.prototype.css.successIcon) > -1, "Notification state icon not visible");
+			ok(editor.igNotifier("getContent").indexOf(message) > -1, "Notification message not applied");
+
+			editor.igNotifier("notify", "success", "Temp");
+			ok(editor.igNotifier("getContent").indexOf("Temp") > -1, "Notification message not applied");
+			ok(editor.igNotifier("option", "messages").success === message, "Notification message defaults not preserved");
+
+			/* contentTemplate */
+			var newContent = "<div id='newContent'>nothing to replace</div>";
+			editor.igNotifier("option", "messages", { success: message });
+			editor.igNotifier("option", "contentTemplate", newContent);
+			ok(editor.igNotifier("getContent") === $(newContent).get(0).outerHTML, "Html content/template not applied");
+			editor.igNotifier("option", "contentTemplate", $.ui.igNotifier.prototype.options.contentTemplate);
+
+			/* set states */
+			editor.igNotifier("option", "state", "random" );
+			ok(editor.igNotifier("option", "state") === "success", "Wrong notification state accepted");
+			editor.igNotifier("option", "state", "error");
+			ok(editor.igNotifier("isVisible"), "Notification not visible");
+			ok(editor.igNotifier("option", "state") === "error", "Error notification state not set");
+			ok(editor.hasClass($.ui.igNotifier.prototype.css.errorState) && editor.data("igNotifier").popover.hasClass($.ui.igNotifier.prototype.css.errorState), "Error notification state not applied");
+			ok(editor.igNotifier("getContent").indexOf(messages.error) > -1, "Notification message not applied");
+
+			/* set notifyLevel and animationSlideDistance (Bug 216623: base widget _setOption) */
+			editor.igNotifier("option", "notifyLevel", "error");
+			editor.igNotifier("notify", "success");
+			ok(editor.igNotifier("option", "notifyLevel") === "error", "notifyLevel not set");
+			ok(!editor.igNotifier("isVisible"), "Notification still visible with wrong level");
+			editor.igNotifier("notify", "error");
+			ok(editor.igNotifier("isVisible"), "Notification not visible with acceptable level");
+
+			editor.igNotifier("option", "notifyLevel", "success");
+			editor.igNotifier("notify", "success");
+			ok(editor.igNotifier("option", "notifyLevel") === "success", "notifyLevel not set");
+			ok(editor.igNotifier("isVisible"), "Notification not visible with acceptable level");
+
+			editor.igNotifier("option", "animationSlideDistance", "0");
+			editor.igNotifier("notify", "info");
+			// parse "Npx" and sum to ignore direcition checks
+			var originalCoords = parseInt(editor.igNotifier("getCoordinates").top) + parseInt(editor.igNotifier("getCoordinates").left);
+			ok(editor.igNotifier("option", "animationSlideDistance") === "0", "animationSlideDistance not set");
+			editor.igNotifier("option", "animationSlideDistance", 10);
+			editor.igNotifier("notify", "info");
+			ok((parseInt(editor.igNotifier("getCoordinates").top) + parseInt(editor.igNotifier("getCoordinates").left)) - originalCoords === 10, "Slide Distance not applied");
+
+
+			/* destroy */
+			var $popover = editor.data("igNotifier").popover;
+			editor.igNotifier("destroy");
+			ok(editor.data("igNotifier") === undefined && $popover.closest(document.documentElement).length === 0, "Notification not removed");
+			ok(editor.attr('class').indexOf("ui-ignotify") === -1, "Notification styles not removed");
+
+			editor.igNotifier({ notifyLevel: "warning" }).igNotifier("show");
+			/* inline */
+			editor.igNotifier("option", "mode", "random");
+			ok(editor.igNotifier("option", "mode") === "auto", "Wrong notification mode accepted");
+			editor.igNotifier("option", "mode", "inline");
+			ok(editor.igNotifier("isVisible"), "Inline changed visible state");
+			ok(editor.igNotifier("option", "mode") === "inline"
+				&& editor.data("igNotifier").popover.hasClass($.ui.igNotifier.prototype.css.inline)
+				&& editor.data("igNotifier").popover.prev()[0] === editor[0]
+				, "Inline mode not applied");
+			editor.igNotifier("option", "mode", "popover");
+			ok(editor.igNotifier("isVisible") && !editor.data("igNotifier").popover.hasClass($.ui.igNotifier.prototype.css.inline), "Inline state did not get properly switched");
+
+			// Multiple show() calls positioning for Bug 220794:igNotifier is not positioned correctly inside a grid
+			editor.igNotifier("destroy");
+			// first message must be considerably longer to push the container way up
+			editor.igNotifier({ contentTemplate: "<p>Entry reached the maximum value of 99999 for this field 323122p3 12321 213 123 123123 123 12333</p>", direction: "top" }).igNotifier("show");
+			stop();
+			setTimeout(function () {
+				start();
+				var popoverBottom = parseInt(editor.igNotifier("getCoordinates").top) + editor.igNotifier("container").closest(".ui-igpopover").height(), // bottom point of popover
+						distanceToEditor = $.ig.util.offset(editor).top // top point of target
+								- popoverBottom;
+				equal(distanceToEditor, editor.igNotifier("option", "animationSlideDistance"), "Notifier not positioned correctly above editor");
+				
+				console.log(distanceToEditor, editor.igNotifier("getCoordinates"));
+			}, editor.igNotifier("option", "animationDuration"));
+			//immediately fire another show with smalller message
+			$(editor).igNotifier("setContent", "<p>Entry reached the maximum value of 99999 for this field</p>").igNotifier("show");
+		});
+
+		testId = 'Test Notifier hiding when value method is called';
+		test(testId, 6, function () {
+			var tEditor = $("#igTextEditorNotification"),
+				nEditor = $("#igNumericEditorNotification"),
+				mEditor = $("#igMaskEditorNotification"),
+				dEditor = $("#igDateEditorNotification");
+
+			tEditor.igTextEditor("value", "I'm very long message ha ha");
+			ok(tEditor.igNotifier("isVisible"), "Notifier is shown");
+			tEditor.igTextEditor("value", "I'm short");
+			ok(!tEditor.igNotifier("isVisible"), "Notifier is hidden");
+
+			nEditor.igNumericEditor("value", 6);
+			ok(nEditor.igNotifier("isVisible"), "Notifier is shown");
+			nEditor.igNumericEditor("value", 3);
+			ok(!nEditor.igNotifier("isVisible"), "Notifier is hidden");
+
+			dEditor.igDateEditor("value", new Date(2018, 11, 12));
+			ok(dEditor.igNotifier("isVisible"), "Notifier is shown");
+			dEditor.igDateEditor("value", new Date(2015, 11, 12));
+			ok(!nEditor.igNotifier("isVisible"), "Notifier is hidden");
+		});
+
+		testId = 'Editor Set Options';
+		test(testId, 2, function () {
+
+			equal($("#texteditorSetOptions").igTextEditor("field").attr('tabindex'), "2", "The tab index should be 2");
+			$("#texteditorSetOptions").igTextEditor("option", "tabIndex", 5);
+			equal($("#texteditorSetOptions").igTextEditor("field").attr('tabindex'), "5", "The tab index should be 5");
+		});
+
+		testId = 'Test Notifier contentTemplate function and title';
+		test(testId, 5, function () {
+			var lastState, expectedHtml, $title,
+				title = 'There\'s a message below to take notice of:',
+				template = "<span class='{0}'><span class='{1}'></span></span> {2} <span class='{0}'><span class='{1}'></span></span> ",
+				templFunc = function () {
+					return template;
+				}
+				$notifier = $("#notifierTarget");
+
+
+			$notifier.igNotifier({
+				mode: "popover",
+				contentTemplate: function (state) {
+					lastState = state;
+					return templFunc();
+				},
+				state: "success",
+				messages: { success: "message!" },
+				showOn: "click",
+				showIcon: true,
+				headerTemplate: {
+					closeButton: true,
+					title: title
+				}
+			});
+
+			lastState = "";
+			$notifier.click();
+
+			// title
+			$title = $("#notifierTarget").igNotifier("container").closest(".ui-ignotify").find("." + $.ui.igNotifier.prototype.css.titleClass).eq(0);
+			ok($title.length && $title.is(":visible"));
+			equal($title.text(), title, "Title not correct");
+
+			// contentTemplate
+			expectedHtml = template.replace(/\{0\}/g, $.ui.igNotifier.prototype.css.iconContainer)
+				.replace(/\{1\}/g, $.ui.igNotifier.prototype.css[lastState + "Icon"])
+				.replace(/\{2\}/g, "message!");
+
+			equal(lastState, $notifier.igNotifier("option", "state"), "State argument in template function is not correct");
+			equal($notifier.igNotifier("getContent"), $('<div>').append(expectedHtml).html(), "Content from template function is not correct.");
+
+			// contentTemplate as jQuery object
+			templFunc = function () {
+				return $('<div>').append("<div>Ea</div>");
+			}
+			$notifier.igNotifier("show");
+			equal($notifier.igNotifier("getContent"), $('<div>').append("<div>Ea</div>").html(), "Content from template function is not correct.");
+		});
+
+		function mouseout(element) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mouseout', true, true, window, 1, 0, 0);
+
+			// send click to element
+			element.dispatchEvent(event);
+		}
+
+	});
+	QUnit.log = function (details) {
+		if (window.console && window.console.log) {
+			window.console.log(details.result + ' :: ' + details.message);
+		}
+	};
+	</script>
+	<script type="text/javascript" src="../../testswarm/inject.js"></script>
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
+	<input type="text" id="inputEditor1"  />
+	<div id="divEditor1"></div>
+	<div id="divEditor2"></div>
+	<input type="text" id="eventEditor" />
+
+	<span>Methods</span>
+	<input type="text" id="textEditorMethods" />
+
+	<span>Set Options</span>
+	<input type="text" id="textEditorSetOptions" />
+	<div id="igEditorLocale"></div>
+	<div id="igTextEditorNotification"></div>
+	<div id="igNumericEditorNotification"></div>
+	<div id="igMaskEditorNotification"></div>
+	<div id="igDateEditorNotification"></div>
+	<input type="text" id="texteditorSetOptions" />
+	<p id="notifierTarget"></p>
+</div>
+</body>
+</html>
+

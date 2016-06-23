@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.grid.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+
+
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.dataSource-en.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.grid-en.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.dataSource.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.shared.js"></script>
+    <!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+    To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+    <!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>-->
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.popover.js"></script>    
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.editors.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.grid.framework.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.grid.tooltips.js"></script>
+
+    <script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+    <style>
+        body {
+            font-size: 0.75em;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            var namedData = new Array();
+            namedData[0] = { "ProductID": 1, "UnitsInStock": 100, "ProductDescription": "Quite a long long long long long long long long content to be tested against" };
+            namedData[1] = { "ProductID": 2, "UnitsInStock": 15, "ProductDescription": "Hamburger" };
+            namedData[2] = { "ProductID": 3, "UnitsInStock": 4.356, "ProductDescription": "Beer" };
+            namedData[3] = { "ProductID": 4, "UnitsInStock": 7, "ProductDescription": "Quite a long content to be tested with" };
+            namedData[4] = { "ProductID": 5, "UnitsInStock": 799, "ProductDescription": "Lemon Juice" };
+
+            function loadTestbeds()
+            {
+                $( "#grid3" ).igGrid( {
+                    autoGenerateColumns: false,
+                    width: 400,
+                    dataSource: namedData,
+                    fixedHeaders: false,
+                    columns: [
+                        { headerText: "Product ID", key: "ProductID", width: "20%" },
+                        { headerText: "Units in Stock", key: "UnitsInStock", width: "20%", dataType: "number" },
+                        { headerText: "Product Description", key: "ProductDescription", width: "*", dataType: "string" }
+                    ],
+                    features: [{
+                        name: "Tooltips",
+                        columnSettings: [
+                            { columnKey: "ProductID", allowTooltips: true },
+                            { columnKey: "UnitsInStock", allowTooltips: true },
+                            { columnKey: "ProductDescription", allowTooltips: true }
+                        ],
+                        visibility: "always",
+                        showDelay: 500,
+                        hideDelay: 200,
+                        style: "popover"
+                    }]
+                } );
+
+                $( "#textEditor" ).igTextEditor();
+                $( "#dateEditor" ).igDateEditor();
+                $( "#maskEditor" ).igMaskEditor();
+                $( "#numericEditor" ).igNumericEditor();
+                $( "#submitButton" ).igButton( {
+                    labelText: "Register",
+                    centerLabel: true
+                } );
+
+                $( "#registrationForm" ).igPopover( {
+                    direction: "right",
+                    position: "start",
+                    closeOnBlur: false,
+                    selectors: "[title]",
+                    animationDuration: 150,
+                    maxHeight: null,
+                    maxWidth: 170,
+                    headerTemplate: {
+                        closeButton: true,
+                        title: null
+                    },
+                    showOn: "click"
+                } );
+
+                $( '#popoverTooltip' ).igPopover( {
+                    direction: "right",
+                    position: "start",
+                    closeOnBlur: true,
+                    animationDuration: 5,
+                    maxHeight: null,
+                    maxWidth: 260,
+                    contentTemplate: contentFunction,
+                    selectors: "input",
+                    headerTemplate: {
+                        closeButton: true,
+                        title: "To display the location of the city is used Google maps"
+                    },
+                    showOn: "focus"
+                } );
+
+                $( '#img1' ).igPopover( {
+                    direction: "right",
+                    position: "start",
+                    //closeOnBlur: false,
+                    animationDuration: 100,
+                    width: 400,
+                    height: 300,
+                    maxHeight: "450px",
+                    maxWidth: "450px",
+                    contentTemplate: "<input type='checkbox' onclick='clickMe()' value='Checkbox' /> Infragistics' Logo",
+                    headerTemplate: {
+                        closeButton: true,
+                        title: "No title"
+                    },
+                    showOn: "mouseenter"
+                } );
+            }
+
+            loadTestbeds();
+
+            module("igPopover");
+
+            //$("#img1").igPopover("show");
+
+
+            // Rendering tests
+            var testId_11 = "igPopover options test 1.1: rendering test";
+
+            // Options tests
+            var testId_21 = "test 2.1 igPopover target option";
+            var testId_22 = "test 2.2 igPopover selectors option";
+            var testId_23 = "test 2.3 igPopover content option";
+            var testId_24 = "test 2.4 igPopover contentFunction option";
+            var testId_25 = "test 2.5 igPopover showOn option";
+            var testId_26 = "test 2.6 igPopover title option";
+            var testId_27 = "test 2.7 igPopover renderCloseButton option";
+            var testId_28 = "test 2.8 igPopover closeOnBlur option";
+            var testId_29 = "test 2.9 igPopover all sizes options";
+            var testId_30 = "test 3.0 igPopover animationDuration option";
+
+            // Events tests
+            var testId_31 = "test 3.1 igPopover event showing";
+            var testId_32 = "test 3.2 igPopover event showing cancel";
+            var testId_33 = "test 3.3 igPopover event hiding";
+            var testId_34 = "test 3.4 igPopover event hiding cancel";
+
+            // Position test
+            var testId_41 = "test 4.1 igPopover position option";
+            var testId_42 = "test 4.2 igPopover direction option";
+            var testId_43 = "test 4.3 igPopover containment option";
+
+            // Methods test
+            var testId_51 = "test 5.1 igPopover show method";
+            var testId_52 = "test 5.2 igPopover hide method";
+            var testId_53 = "test 5.3 igPopover setContent method";
+            var testId_54 = "test 5.4 igPopover getContent method";
+
+            // IgGrid Tooltips Popover test
+            var testId_71 = "igGridTooltips popover test 7.1.: popover test";
+
+            // Destroy test
+            var testId_81 = "igGridTooltips popover test 8.1.: destroy test";
+            var testId_82 = "igPopover test 8.2.: destroy test";
+
+            // Test showing whether the tooltips are rendered correctly.
+            test(testId_11, 11, function () {
+                stop();
+                $("#img1").igPopover("show");
+                setTimeout(function () {
+                    ok($('#grid3_tooltips').length > 0, "Widget grid rendered.");
+                    ok($('#img1_popover').length > 0, "Widget popover rendered.");
+
+                    var widget = $('#img1_popover');
+                    var widgetContent = $('#img1_popover_contentFrame');
+                    var arrow = $('#img1_popover_arrow');
+                    var title = $('#img1_popover_title');
+                    var closeBtn = $('#img1_popover_closeBtn');
+
+                    checkClass(widget, 'ui-igpopover');
+                    checkClass(widget, 'ui-widget');
+                    checkClass(closeBtn, 'ui-icon-closethick');
+                    checkClass(closeBtn, 'ui-icon');
+                    checkClass(widgetContent, 'ui-widget-content');
+                    checkClass(widgetContent, 'ui-corner-all');
+                    checkClass(arrow, 'ui-igpopover-arrow-left');
+                    checkClass(title, 'ui-igpopover-title');
+
+                    ok(widget.is(":visible"), "Popover is visible");
+
+                    start();
+                }, 500);
+            });
+
+            test(testId_21, 6, function () {
+                stop();
+                $("#img1").igPopover("show");
+                var target = $("#img1");
+                var eventForce = jQuery.Event("mousemove");
+                var pos = getAbsoluteTargetPosition(target);
+                eventForce.pageX = pos.X + 3;
+                eventForce.pageY = pos.Y + 3;
+                eventForce.target = target;
+                $(target).trigger(eventForce);
+                setTimeout(function () {
+                    ok($('#img1_popover').css("display") !== "none", "Popover not shown!");
+                    ok($('#img1_popover_contentFrame').css("display") !== "none", "Popover content not shown!");
+                    ok($('#img1_popover_arrow').css("display") !== "none", "Popover arrow not shown!");
+                    ok($('#img1_popover_title').css("display") !== "none", "Popover doesn't have a title!");
+                    ok($('#img1_popover_closeBtn').css("display") !== "none", "Popover doesn't have a close button!");
+                    checkClass($('#img1_popover_arrow'), 'ui-igpopover-arrow-left');
+                    $('#img1_popover_closeBtn').trigger("click");
+                    //setTimeout( function ()
+                    //{
+                    //    ok( $( '#img1_popover' ).css( "display" ) === "none", "Popover shown after close button is clicked!" );
+                    //}, 500 );
+                    start();
+                }, 500);
+            });
+
+            test(testId_22, 31, function () {
+                stop();
+                var firstIteration = true;
+                $('#popoverTooltip').children('input').each(function (index, element) {
+                    var target = $(this);
+                    var event = jQuery.Event("focusin");
+                    var pos = getAbsoluteTargetPosition(target);
+                    event.pageX = pos.X + 3;
+                    event.pageY = pos.Y + 3;
+                    event.target = target;
+                    $(target).trigger(event);
+                    setTimeout(function () {
+                        if (firstIteration) {
+
+                            ok($('#popoverTooltip_popover').css("display") !== "none", "Popover not shown!");
+                            firstIteration = false;
+                        }
+                        ok($('#popoverTooltip_popover_contentFrame').css("display") !== "none", "Popover content not shown!");
+                        ok($('#popoverTooltip_popover_arrow').css("display") !== "none", "Popover arrow not shown!");
+                        ok($('#popoverTooltip_popover_title').css("display") !== "none", "Popover doesn't have a title!");
+                        ok($('#popoverTooltip_popover_closeBtn').css("display") !== "none", "Popover doesn't have a close button!");
+                        checkClass($('#popoverTooltip_popover_arrow'), 'ui-igpopover-arrow-left');
+                        $('#popoverTooltip_popover_closeBtn').trigger("click");
+                        //setTimeout( function ()
+                        //{
+                        //   ok( $( '#popoverTooltip_popover' ).css( "display" ) === "none", "Popover shown after close buttons is clicked!" );                        
+                        //}, 500 );
+                        if (index == $('#popoverTooltip').children('input').length - 1) {
+                            start();
+                        }
+                    }, 500);
+
+                });
+            });
+
+            test(testId_23, 6, function () {
+                stop();
+                var target = $("#img1");
+                $('#popoverTooltip').igPopover("option", "contentTemplate", "<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' />");
+                var event = jQuery.Event("mouseenter");
+                var pos = getAbsoluteTargetPosition(target);
+                event.pageX = pos.X + 3;
+                event.pageY = pos.Y + 3;
+                event.target = target;
+                $(target).trigger(event);
+                setTimeout(function () {
+                    ok($('#img1_popover_contentFrame').css("display") !== "none", "Popover content not shown!");
+                    ok($('#img1_popover_arrow').css("display") !== "none", "Popover arrow not shown!");
+                    ok($('#img1_popover_title').css("display") !== "none", "Popover doesn't have a title!");
+                    ok($('#img1_popover_closeBtn').css("display") !== "none", "Popover doesn't have a close button!");
+                    checkClass($('#img1_popover_arrow'), 'ui-igpopover-arrow-left');
+                    $('#img1_popover_closeBtn').trigger("click");
+                    setTimeout(function () {
+                        ok($('#img1_popover').css("display") === "none", "Popover shown after close button is clicked!");
+                        start();
+                    }, 1000);
+
+                }, 1000);
+            });
+
+            test(testId_26, 4, function () {
+                stop();
+                var target = $("#img1");
+                var event = jQuery.Event("mouseenter");
+                var pos = getAbsoluteTargetPosition(target);
+                event.pageX = pos.X + 3;
+                event.pageY = pos.Y + 3;
+                event.target = target;
+                $(target).trigger(event);
+                setTimeout(function () {
+                    ok($('#img1_popover_title').css("display") !== "none", "Popover doesn't have a title!");
+                    ok($('#img1_popover_title').html() === "No title", "Popover doesn't have a title value set!");
+                    checkClass($('#img1_popover_arrow'), 'ui-igpopover-arrow-left');
+                    $('#img1_popover_closeBtn').trigger("click");
+                    setTimeout(function () {
+                        ok($('#img1_popover').css("display") === "none", "Popover shown after close button is clicked!");
+                        start();
+                    }, 1000);
+
+                }, 1000);
+            });
+
+            test(testId_29, 6, function () {
+                stop();
+                var target = $("#img1");
+                var event = jQuery.Event("mouseenter");
+                var pos = getAbsoluteTargetPosition(target);
+                event.pageX = pos.X + 3;
+                event.pageY = pos.Y + 3;
+                event.target = target;
+                $(target).trigger(event);
+                setTimeout(function () {
+                    start();
+                    ok($('#img1_popover_contentFrame').css("display") !== "none", "Popover content not shown!");
+                    ok($('#img1_popover_contentFrame').css("max-height") === "450px", "The max-height is not equal to the set one");
+                    ok($('#img1_popover_contentFrame').css("max-width") === "450px", "The max-width is not equal to the set one");
+                    ok($('#img1_popover_contentFrame').css("height") === "300px", "The height is not equal to the set one");
+                    ok($('#img1_popover_contentFrame').css("width") === "400px", "The width is not equal to the set one");
+                    checkClass($('#img1_popover_arrow'), 'ui-igpopover-arrow-left');
+                    $('#img1_popover_closeBtn').trigger("click");
+                    //setTimeout( function ()
+                    //{
+                    //    start();
+                    //    ok( $( '#img1_popover' ).css( "display" ) === "none", "Popover shown after close button is clicked!" );
+                    //}, 500 );
+
+                }, 1000);
+            });
+
+            var cancelS = false;
+            var cancelH = false;
+            $("#img1").bind({
+                igpopovershowing: function (event, ui) {
+                    if (cancelS === false) {
+                        return true;
+                    }
+                    return false;
+                },
+                igpopoverhiding: function (event, ui) {
+                    if (cancelH === false) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            // Showing trigger test.
+            test(testId_31, 2, function () {
+                // Get
+                stop();
+                var animationDuration = $('#img1').igPopover("option", "animationDuration"), shownTrigger = false;
+                var target = $("#img1");
+                target.one("igpopovershown", function () {
+                	shownTrigger = true;
+                });
+                var eventForce = jQuery.Event("mouseenter");
+                var pos = getAbsoluteTargetPosition(target);
+                eventForce.pageX = pos.X + 3;
+                eventForce.pageY = pos.Y + 3;
+                eventForce.target = target;
+                $(target).trigger(eventForce);
+                setTimeout(function () {
+                    start();
+                    ok($('#img1_popover').css("display") !== "none", "Showing failed!");
+                    ok(shownTrigger, "Shown event not triggered");
+                    $('#img1_popover_closeBtn').trigger("click");
+
+                }, animationDuration + 500);
+            });
+
+            //// Showing cancel test
+            test(testId_32, 1, function () {
+                stop();
+                var animationDuration = $('#img1').igPopover("option", "animationDuration");
+                var target = $("#img1");
+                var eventForce = jQuery.Event("mouseenter");
+                var pos = getAbsoluteTargetPosition(target);
+                eventForce.pageX = pos.X + 3;
+                eventForce.pageY = pos.Y + 3;
+                eventForce.target = target;
+
+                cancelS = true;
+                $(target).trigger(eventForce);
+
+                setTimeout(function () {
+                    start();
+                    ok($('#img1_popover').css("display") === "none", "Showing cancel failed");
+                    $("#img1").unbind("igpopovershowing");
+                }, 1000);
+            });
+
+            //// Hiding trigger test
+            test(testId_33, 2, function () {
+                stop();
+                var animationDuration = $('#img1').igPopover("option", "animationDuration"), hiddenTrigger = false;
+                //    $( "#img1" ).trigger( "mouseleave" );
+                var target = $("#img1");
+                target.one("igpopoverhidden", function () {
+                	hiddenTrigger = true;
+                });
+                target.igPopover("show");
+                var eventForce = jQuery.Event("mouseleave");
+                var pos = getAbsoluteTargetPosition(target);
+                eventForce.pageX = pos.X + 3;
+                eventForce.pageY = pos.Y + 3;
+                eventForce.target = target;
+                $(target).trigger(eventForce);
+                setTimeout(function () {
+                	ok($('#img1_popover').css("display") === "none", "Hiding failed!");
+                	ok(hiddenTrigger, "Hidden event not triggered");
+                    start();
+                }, animationDuration + 1000);
+            });
+
+            // Hiding cancel test
+            test(testId_34, 1, function () {
+                stop();
+                var animationDuration = $('#img1').igPopover("option", "animationDuration");
+                var target = $("#img1")
+                var event = jQuery.Event("mouseenter");
+                var pos = getAbsoluteTargetPosition(target);
+                event.pageX = pos.X + 3;
+                event.pageY = pos.Y + 3;
+                event.target = target;
+                cancelH = true;
+                $(target).trigger(event);
+
+                setTimeout(function () {
+                    // $( "#img1" ).trigger( "mouseleave" );
+                    target = $("#img1")
+                    event = jQuery.Event("mouseenter");
+                    pos = getAbsoluteTargetPosition(target);
+                    event.pageX = pos.X + 3;
+                    event.pageY = pos.Y + 3;
+                    event.target = target;
+                    cancelH = true;
+                    $(target).trigger(event);
+                    setTimeout(function () {
+
+                        ok($('#img1_popover').css("display") !== "none", "Cancel hiding failed!");
+                        $("#img1").unbind("igpopoverhiding");
+                        start();
+                    }, 1000);
+
+                }, 1000);
+            });
+
+            test(testId_51, 2, function () {
+                stop();
+                var target = $("#img1"), shownTriggers = 0;
+                target.on("igpopovershown.test igpopovershowing.test", function () {
+                	shownTriggers++;
+                });
+                $('#img1').igPopover("show", target,
+                     "<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' />");
+                setTimeout(function () {
+
+                	ok($('#img1_popover').css("display") !== "none", "Popover content is  shown!");
+                	strictEqual(shownTriggers, 0, "Shown/-ing events triggered through API!");
+                	target.off(".test");
+                    //ok( $( '#img1_popover_arrow' ).css( "display" ) !== "none", "Popover arrow not shown!" );
+                    //ok( $( '#img1_popover_title' ).css( "display" ) !== "none", "Popover doesn't have a title!" );
+                    //ok( $( '#img1_popover_closeBtn' ).css( "display" ) !== "none", "Popover doesn't have a close button!" );
+                    //checkClass( $( '#img1_popover_arrow' ), 'ui-igpopover-arrow-left' );          
+                    start();
+                }, 1000);
+
+            });
+
+            test(testId_52, 2, function () {
+            	stop();
+            	var target = $("#img1"), hideTriggers = 0;
+            	target.on("igpopoverhidden.test igpopoverhiding.test", function () {
+            		hideTriggers++;
+            	});
+                $('#img1').igPopover("hide");
+                setTimeout(function () {
+
+                	ok($('#img1_popover').css("display") === "none", "Popover content not shown!");
+                	strictEqual(hideTriggers, 0, "Hidden/hiding events triggered through API!");
+                	target.off(".test");
+                    start();
+                }, 1000);
+            });
+
+            test(testId_53, 1, function () {
+                stop();
+                var target = $("#img1");
+                var newContent = "<img title='IG logo' src='http://www.infragistics.com/assets/images/logo.png'>";
+                $("#img1").igPopover("setContent", newContent);
+
+                var eventForce = jQuery.Event("mouseenter");
+                var pos = getAbsoluteTargetPosition(target);
+                eventForce.pageX = pos.X + 3;
+                eventForce.pageY = pos.Y + 3;
+                eventForce.target = target;
+                $(target).trigger(eventForce);
+
+                setTimeout(function () {
+
+                    var getContent = $("#img1").igPopover("getContent");
+                    ok($('#img1_popover_contentInner').html() === getContent, "Popover content not shown!");
+                    start();
+                }, 1000);
+            });
+
+            // Popover Test
+            test(testId_71, 6, function () {
+                stop();
+                var showTimeOut = $("#grid3").igGridTooltips("option", "showDelay");
+                var target = $($("#grid3 tbody tr")[2]).find("td")[2]; // 3rd row 3rd cell
+                var event = jQuery.Event("mousemove");
+                var pos = getAbsolutePosition(target);
+                event.pageX = pos.X + 3;
+                event.pageY = pos.Y + 3;
+                event.target = target;
+
+                $("#grid3").trigger("mouseenter");
+                $(target).trigger(event);
+                setTimeout(function () {
+
+                    ok($('#grid3_tooltips').css("display") !== "none", "Popover not shown!");
+                    ok($('#grid3_tooltips_popover').css("display") !== "none", "Popover not shown!");
+                    ok($('#rid3_tooltips_popover_contentFrame').css("display") !== "none", "Popover not shown!");
+                    ok($('#grid3_tooltips_popover_closeBtn').css("display") !== "none", "Popover doesn't have close button!");
+                    ok($('#grid3_toogrid3_tooltips_popover_contentInnerltips').css("display") !== "none", "Popover not shown!");
+                    ok($('#grid3_tooltips_popover_arrow').css("display") !== "none", "Popover not shown!");
+                    //                     checkClass( $( '#grid3_tooltips_popover_arrow' ), 'ui-igpopover-arrow-top' );
+                    //                     $( '#grid3_tooltips_popover_closeBtn' ).trigger( "click" );
+                    setTimeout(function () {
+                        start();
+                        //  ok( $( '#grid3_tooltips_popover' ).css( "display" ) === "none", "Popover shown after close buttons is clicked!" );
+                    }, 500);
+                }, 1000);
+            });
+
+            test(testId_81, 6, function () {
+                $("#grid3").igGridTooltips("destroy");
+
+                ok($('#grid3_tooltips').length === 0, "Popover not shown!");
+                ok($('#grid3_tooltips_popover').length === 0, "Popover not shown!");
+                ok($('#grid3_tooltips_popover_contentFrame').length === 0, "Popover not shown!");
+                ok($('#grid3_tooltips_popover_closeBtn').length === 0, "Popover doesn't have close button!");
+                ok($('#grid3_toogrid3_tooltips_popover_contentInnerltips').length === 0, "Popover not shown!");
+                ok($('#grid3_tooltips_popover_arrow').length === 0, "Popover arrow not shown!");
+            });
+
+            test(testId_82, 5, function () {
+                $("#img1").igPopover("destroy");
+
+                ok($('#img1_popover').length === 0, "Popover not shown!");
+                ok($('#img1_popover_contentFrame').length === 0, "Popover content not shown!");
+                ok($('#img1_popover_arrow').length === 0, "Popover arrow not shown!");
+                ok($('#img1_popover_closeBtn').length === 0, "Popover doesn't have close button!");
+                ok($('#img1_popover_title').length === 0, "Popover doesn't have a title!");
+            });
+        } );
+
+        function contentFunction()
+        {
+            var imgTemplate = "<img class='map' alt='${value}' src='http://maps.google.com/maps/api/staticmap?zoom=10&size=250x250&maptype=terrain&sensor=false&center=${value}'>";
+            var element = $( this );
+            var data = [{ value: element.attr( "value" ) }];
+            return $.ig.tmpl( imgTemplate, data );
+        }
+
+        function checkClass( cont, classToCheck )
+        {
+            ok( cont.hasClass( classToCheck ), 'The control with id: ' + cont[0].id + ' does not contain the class: ' + classToCheck );
+        }
+
+        function getAbsoluteTargetPosition( element )
+        {
+            var position = { X: 0, Y: 0 };
+            var cElement = element;
+            if ( ( cElement !== null ) && ( cElement.offset() !== null ) )
+            {
+                position.X += cElement.offset().left;
+                position.Y += cElement.offset().top;
+            } else
+            {
+                position.X += cElement.offsetLeft;
+                position.Y += cElement.offsetTop;
+            }
+            return position;
+        }
+
+        function getAbsolutePosition( element )
+        {
+            var position = { X: 0, Y: 0 };
+            var cElement = element;
+            while ( cElement !== null )
+            {
+                position.X += cElement.offsetLeft;
+                position.Y += cElement.offsetTop;
+
+                cElement = cElement.offsetParent;
+            }
+            return position;
+        }
+
+        function showTooltip() {
+            $("#img1").igPopover("show");
+        }
+
+        function hideTooltip() {
+            $("#img1").igPopover("hide");
+        }
+    </script>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div style="float: left;">
+
+        <table id="grid3"></table>
+
+        <div id="registrationForm" style="position: relative; left: 200px;">
+            <table>
+                <tr>
+                    <td>
+                        <label>Name</label>
+                    </td>
+                    <td>
+                        <input id="textEditor" type="text" title="Please enter your first and last name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Age</label>
+                    </td>
+                    <td>
+                        <input id="numericEditor" type="number" title="Please enter your age" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Birthdate</label>
+                    </td>
+                    <td>
+                        <input id="dateEditor" type="date" title="Please enter your birthdate in format dd/MM/yyyy" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Email</label>
+                    </td>
+                    <td>
+                        <input id="maskEditor" type="email" title="Please enter your email for confirmation" />
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="float: right">
+                        <input type="submit" value="Register" id="submitButton" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="popoverTooltip">
+            <input id="sofia" style="width: 200px" title="Sofia,Bulgaria" value="Sofia,Bulgaria" />
+            <br />
+            <input id="madrid" style="width: 200px" title="Madrid,Spain" value="Madrid,Spain" />
+            <br />
+            <input id="montevideo" style="width: 200px" title="Montevideo,Uruguay" value="Montevideo,Uruguay" />
+            <br />
+            <input id="prague" style="width: 200px" title="Prague,Czech republic" value="Prague,Czech republic" />
+            <br />
+            <input id="tokyo" style="width: 200px" title="Tokyo,Japan" value="Tokyo,Japan" />
+            <br />
+            <input id="london" style="width: 200px" title="London,England" value="London,England" />
+            <br />
+        </div>
+
+        <div id="imgPopover" style="position: relative; width:160px;height:260px;">
+            <table>
+                <tr>
+                    <td style="align-items: initial">
+                        <input value="Show" id="showBth" type='button' onclick="return showTooltip();" title="Show" />
+                        <br />
+                        <input value="Hide" id="hideBth" type='button' onclick="return hideTooltip();" title="Hide" />
+                    </td>
+                    <td>
+                        <img id="img1" src='http://www.infragistics.com/assets/images/logo.png' title="Default title" alt="ALT text for the IG logo" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

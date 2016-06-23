@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html PUBLIC "//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+    <link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+	
+
+ 
+	<!--JS Debug-->
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/regional/infragistics.ui.regional-bg.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/regional/infragistics.ui.regional-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/regional/infragistics.ui.regional-es.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+
+	<script type="text/javascript">
+		function runFormatterTests() {
+			test("testnumbertype", function() {
+				// change the regional default
+				$.ig.setRegionalDefault("en-US");
+				var stringValue = $.ig.formatter(55, "number");
+				equal("55", stringValue);
+				stringValue = $.ig.formatter(55, "number", "number");
+				equal("55", stringValue);
+				stringValue = $.ig.formatter(55, "number", "currency");
+				equal("$55.00", stringValue);
+				stringValue = $.ig.formatter(0.55, "number", "percent");
+				equal("55.00%", stringValue);
+				stringValue = $.ig.formatter(55, "number", "int");
+				equal("55", stringValue);
+				stringValue = $.ig.formatter(55, "number", "double");
+				equal("55", stringValue);
+				stringValue = $.ig.formatter(55.123456789, "number", "double");
+				equal("55.123456789", stringValue);
+				stringValue = $.ig.formatter(55, "number", "0.00");
+				equal("55.00", stringValue);
+				stringValue = $.ig.formatter(5555555, "number");
+				equal("5,555,555", stringValue);
+				stringValue = $.ig.formatter(-5555555, "number");
+				equal("-5,555,555", stringValue);
+				stringValue = $.ig.formatter(5555555.55, "number");
+				equal("5,555,555.55", stringValue);
+				stringValue = $.ig.formatter(5555555.55678, "number");
+				equal("5,555,555.56", stringValue);
+				
+				
+				stringValue = $.ig.formatter(-55, "number", "currency");
+				equal("-$55.00", stringValue);
+				stringValue = $.ig.formatter(5555555.55678, "number", "currency");
+				equal("$5,555,555.56", stringValue);
+
+				stringValue = $.ig.formatter(-0.55, "number", "percent");
+				equal("-55.00%", stringValue);
+				stringValue = $.ig.formatter(.55789, "number", "percent");
+				equal("55.79%", stringValue);
+
+				// change the regional default
+				$.ig.setRegionalDefault("bg");
+				
+				stringValue = $.ig.formatter(55, "number", "currency");
+				equal("55,00 лв", stringValue);
+				stringValue = $.ig.formatter(55, "number", "0.00");
+				equal("55,00", stringValue);
+				stringValue = $.ig.formatter(.55, "number", "percent");
+				equal("55,00 %", stringValue);
+			});
+			
+			test("testdatetype", function() {
+				// d - day 1 digit
+				// dd - day 2 digits
+				// ddd - weekday short name
+				// dddd - weekday long name
+				// M - month 1 digit
+				// MM - month 2 digits
+				// MMM - month short name
+				// MMMM - month long name
+				// yy - year short
+				// yyyy - year long
+				// H - hour 1 digit 24 hour format
+				// HH - hour 2 digits 24 hour format
+				// tt - AM/PM
+				// change the regional default
+				$.ig.setRegionalDefault("en-US");
+				var stringValue = $.ig.formatter(new Date(2013, 0, 1), "date");
+				equal("1/1/2013", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "date");
+				equal("1/1/2013", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dateLong");
+				equal("Tuesday, January 01, 2013", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 3), "date", "dateTime");
+				equal("1/1/2013 3:00 AM", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 3), "date", "time");
+				equal("3:00 AM", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 3), "date", "timeLong");
+				equal("3:00:00 AM", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "MM/dd/yyyy");
+				equal("01/01/2013", stringValue);
+				
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "M/d/yyyy");
+				equal("1/1/2013", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "M/d/yy");
+				equal("1/1/13", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "MM/dd/yy");
+				equal("01/01/13", stringValue);	
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "yy/MM/dd");
+				equal("13/01/01", stringValue);	
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "yyyy-MM-dd");
+				equal("2013-01-01", stringValue);	
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dd-MMM-yy");
+				equal("01-Jan-13", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dddd, MMMM d, yyyy");
+				equal("Tuesday, January 1, 2013", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "h:mm tt");
+				equal("12:00 AM", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 15), "date", "h:mm tt");
+				equal("3:00 PM", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 1), "date", "h:mm:ss tt");
+				equal("1:00:00 AM", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 1), "date", "hh:mm tt");
+				equal("01:00 AM", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 15), "date", "H:mm");
+				equal("15:00", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 1), "date", "HH:mm");
+				equal("01:00", stringValue);
+				
+				// bug: 184712 - enableUTCDates is ignored when using a format of 'dddd'
+				//$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, displayStyle)
+				stringValue = $.ig.formatter(new Date(2014, 0, 1, 1, 40), "date", "dddd", true, false);
+				equal("Wednesday", stringValue);
+				stringValue = $.ig.formatter(new Date(2014, 0, 1, 1, 40), "date", "dddd", true, true);
+				equal("Tuesday", stringValue);
+
+				stringValue = $.ig.formatter(new Date(2014, 0, 1, 1, 40), "date", "ddd", true, false);
+				equal("Wed", stringValue);
+				stringValue = $.ig.formatter(new Date(2014, 0, 1, 1, 40), "date", "ddd", true, true);
+				equal("Tue", stringValue);
+
+				// change the regional default
+				$.ig.setRegionalDefault("bg");
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date");
+				equal("01.01.2013 г.", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "date");
+				equal("01.01.2013 г.", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dateLong");
+				// M.P. Note: in Bulgarian the names of the months and weekdays are written in lowercase, so I think there is a bug in the Bulgarian regional settings
+				equal("01 Януари 2013 г.", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 3), "date", "dateTime");
+				equal("01.01.2013 г. 03:00", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 3), "date", "time");
+				equal("03:00", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1, 3), "date", "timeLong");
+				equal("03:00:00", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "MM/dd/yyyy");
+				equal("01/01/2013", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dddd, d MMMM, yyyy");
+				equal("Вторник, 1 Януари, 2013", stringValue);
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "ddd, d MMM, yyyy");
+				equal("Вто, 1 Яну, 2013", stringValue);
+
+				$.ig.setRegionalDefault("es");
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dddd, dd \\de MMMM \\de yyyy");
+				equal("Martes, 01 de Enero de 2013", stringValue);
+				
+				// check that the escape sequence for the special character placeholders works
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "\\d \\y \\M\\M\\M \\m \\s \\t \\f");
+				equal("d y MMM m s t f", stringValue);
+
+				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "\\ddddd \\y \\M\\M\\M \\m \\s \\t \\f \\h \\H");
+				equal("dMartes y MMM m s t f h H", stringValue);
+			});
+		}
+		
+		module("Formatter Tests");
+        // run tests
+		runFormatterTests();
+	</script>
+</head>
+<body>
+	<div style="float:right;width:400px;overflow:auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+</body>
+</html>

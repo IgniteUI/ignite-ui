@@ -1,0 +1,1137 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - List items example </title>
+	<link type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.notifier.js"></script>                                   
+	
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage.
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.editors.js"></script>-->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.js"></script> 
+	
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+	<!-- Links to external extensions -->
+	
+	
+	<!-- Links to extensions -->
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../../../Source/ClientUI/js/modules/infragistics.ui.editors.knockout-extensions.js"></script>-->
+	
+	
+	
+
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	$(document).ready(function () {
+		// Create a editors
+		function loadTestbeds() {
+			$(function () {
+				try {
+					$('#inputEditor1').igBaseEditor();
+				} catch (e) {
+					console.log(e);
+				}
+				$("#inputEditor1").igTextEditor({
+					includeKeys: "abc",
+					maxLength: 10,
+					selectionOnFocus: "atStart",
+					preventSubmitOnEnter: true
+				});
+				$("#inputEditor2").igTextEditor({
+					includeKeys: "~!@#$%^&*(){}[]\\'*\"",
+					selectionOnFocus: "browserDefault"
+				});
+				
+				$("#inputEditor3").igTextEditor({
+					excludeKeys: "abc",
+				});
+				$("#inputEditor4").igTextEditor({
+					excludeKeys: "~!@#$%^&*(){}[]\\'*\"",
+				});
+				$("#inputEditor5").igTextEditor({
+					inputName: 'firstName',
+					tabIndex: 2,
+					buttonType: "dropdown",
+					placeHolder: "enter a value",
+					dropDownAnimationType: "nonValid",
+					listItems: ["item1", "item2"],
+					dropDownAnimationDuration: 1,
+					dropDownOrientation: "top"
+				});
+				$("#listEditor").igTextEditor({
+					buttonType: "dropdown,spin,clear,nonvalid",
+					width: 200,
+					listWidth: 200,
+					height: 20,
+					listItems: ["item1", "item2", "item3"],
+					dropDownAnimationDuration: 1,
+					revertIfNotValid: false,
+					isLimitedToListValues: true
+				});
+				$("#listEditor1").igTextEditor({
+					buttonType: "dropdown,spin,clear,nonvalid",
+					width: 200,
+					listWidth: 200,
+					height: 20,
+					listItems: ["item1", "item2", "item3"],
+					dropDownAnimationDuration: 1,
+					spinWrapAround: true,
+					isLimitedToListValues: true
+				});
+				$("#allEditor").igTextEditor({
+					selectionOnFocus: "selectAll",
+					value: "abc"
+				});
+				$("#atStartEditor").igTextEditor({
+					selectionOnFocus: "atStart",
+					value: "abc"
+				});
+				$("#atEndEditor").igTextEditor({
+					selectionOnFocus: "atEnd",
+					value: "abc"
+				});
+				$("#defaultEditor").igTextEditor({
+					selectionOnFocus: "browserDefault",
+					value: "abc"
+				});
+				$("#readonlyEditor").igTextEditor({
+					value: "readOnly",
+					readOnly: true
+				});
+				$("#disabledEditor").igTextEditor({
+					buttonType: "clear",
+					width: 300,
+					height: 70
+				});
+				$("#clearEditor").igTextEditor({
+					value: "has value",
+					buttonType: "clear, spin",
+					visibleItemsCount: 2,
+					listItems: ["item1", "item2", "item3"],
+					dropDownAttachedToBody: true,
+					allowNullValue: true,
+					tabIndex: 2
+				});
+				$("#multilineEditor").igTextEditor({
+					textMode: "multiline"
+				});
+				try {
+					$("#textareaEditorFake").igTextEditor();
+				} catch (e) {
+					console.log("You should have the type of the editor as multiline")
+				}
+				$("#textareaEditor").igTextEditor({
+					textMode: "multiline"
+				});
+				$("#passEditor").igTextEditor({
+					textMode: "password"
+				});
+				$("#passDiv").igTextEditor({
+					textMode: "password"
+				});
+				$("#editorTopList").igTextEditor({
+					//textMode: "password",
+					dropDownAttachedToBody: true,
+					listItems: ["item1", "item2", "item3"]
+				});
+				$("#toUpperEditor").igTextEditor({
+					toUpper: true
+				});
+				$("#toLowerEditor").igTextEditor({
+					toLower: true
+				});
+				try {
+					$("#imgEditor").igTextEditor();
+				} catch (e) {
+
+				}
+
+				$("#testEditor").igTextEditor({
+					visibleItemsCount: 2,
+					listItems: ["item1", "item2", "item3"],
+					dropDownAttachedToBody: true,
+					value: "item1"
+				});
+				
+			});
+		}
+		initialized = false;
+		module("Text Editor", {
+			setup: function() {
+				//pause testing until editors are initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 100);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+		
+		var testId = 'includeKeys/excludeKeys Tests';
+		test(testId, 54,function () {
+			var editorInput = $('#inputEditor1').igTextEditor("field"), flag = false;			
+			$('#inputEditor1').on("igtexteditorkeypress", function () {
+				flag = true;
+			});
+			$('#inputEditor2').on("igtexteditorkeypress", function () {
+				flag = true;
+			});
+			$('#inputEditor3').on("igtexteditorkeypress", function () {
+				flag = true;
+			});
+			$('#inputEditor4').on("igtexteditorkeypress", function () {
+				flag = true;
+			});
+			keyPressChar(97, editorInput);
+			ok(flag, "a char not typed");
+			flag = false;
+			keyPressChar(98, editorInput);
+			ok(flag, "b char not typed");
+			flag = false;			
+			keyPressChar(99, editorInput);
+			ok(flag, "c char not typed");
+			flag = false;
+			
+			keyPressChar(100, editorInput);
+			ok(!flag, "d char is typed");
+			flag = false;
+			keyPressChar(101, editorInput);
+			ok(!flag, "e char is typed");
+			flag = false;			
+			keyPressChar(102, editorInput);
+			ok(!flag, "f char is typed");
+			
+			editorInput = $('#inputEditor2').igTextEditor("field");
+			keyPressChar(100, editorInput);
+			ok(!flag, "d char is typed");
+			flag = false;
+			keyPressChar(101, editorInput);
+			ok(!flag, "e char is typed");
+			flag = false;			
+			keyPressChar(102, editorInput);
+			ok(!flag, "f char is typed");
+			//Special characters 
+			keyPressChar(126, editorInput);
+			ok(flag, "~ char not typed");
+			flag = false;
+			keyPressChar(33, editorInput);
+			ok(flag, "! char not typed");
+			flag = false;			
+			keyPressChar(64, editorInput);
+			ok(flag, "@ char not typed");
+			flag = false;
+			keyPressChar(35, editorInput);
+			ok(flag, "# char not typed");
+			flag = false;
+			keyPressChar(36, editorInput);
+			ok(flag, "$ char not typed");
+			flag = false;			
+			keyPressChar(37, editorInput);
+			ok(flag, "% char not typed");
+			flag = false;
+			keyPressChar(94, editorInput);
+			ok(flag, "^ char not typed");
+			flag = false;
+			keyPressChar(38, editorInput);
+			ok(flag, "& char not typed");
+			flag = false;			
+			keyPressChar(42, editorInput);
+			ok(flag, "* char not typed");
+			flag = false;
+			keyPressChar(40, editorInput);
+			ok(flag, "( char not typed");
+			flag = false;
+			keyPressChar(41, editorInput);
+			ok(flag, ") char not typed");
+			flag = false;			
+			keyPressChar(39, editorInput);
+			ok(flag, "' char not typed");
+			flag = false;
+			keyPressChar(34, editorInput);
+			ok(flag, "\" char not typed");
+			flag = false;
+			keyPressChar(91, editorInput);
+			ok(flag, "[ char not typed");
+			flag = false;			
+			keyPressChar(93, editorInput);
+			ok(flag, "] char not typed");
+			flag = false;
+			keyPressChar(123, editorInput);
+			ok(flag, "{ char not typed");
+			flag = false;			
+			keyPressChar(125, editorInput);
+			ok(flag, "} char not typed");
+			flag = false;
+			keyPressChar(92, editorInput);
+			ok(flag, "\\ char not typed");
+			flag = false;			
+
+			//excludeKey
+			editorInput = $('#inputEditor3').igTextEditor("field");
+			keyPressChar(97, editorInput);
+			ok(!flag, "a char is typed");
+			flag = false;
+			keyPressChar(98, editorInput);
+			ok(!flag, "b char is typed");
+			flag = false;			
+			keyPressChar(99, editorInput);
+			ok(!flag, "c char is typed");
+			flag = false;
+			keyPressChar(100, editorInput);
+			ok(flag, "d char is not typed");
+			flag = false;
+			keyPressChar(101, editorInput);
+			ok(flag, "e char is not typed");
+			flag = false;			
+			keyPressChar(102, editorInput);
+			ok(flag, "f char is not typed");
+			
+			editorInput = $('#inputEditor4').igTextEditor("field");
+			keyPressChar(100, editorInput);
+			ok(flag, "d char is typed");
+			flag = false;
+			keyPressChar(101, editorInput);
+			ok(flag, "e char is typed");
+			flag = false;			
+			keyPressChar(102, editorInput);
+			ok(flag, "f char is typed");
+			//Special characters 
+			flag = false;
+			keyPressChar(126, editorInput);
+			ok(!flag, "~ char not typed");
+			flag = false;
+			keyPressChar(33, editorInput);
+			ok(!flag, "! char not typed");
+			flag = false;			
+			keyPressChar(64, editorInput);
+			ok(!flag, "@ char not typed");
+			flag = false;
+			keyPressChar(35, editorInput);
+			ok(!flag, "# char not typed");
+			flag = false;
+			keyPressChar(36, editorInput);
+			ok(!flag, "$ char not typed");
+			flag = false;			
+			keyPressChar(37, editorInput);
+			ok(!flag, "% char not typed");
+			flag = false;
+			keyPressChar(94, editorInput);
+			ok(!flag, "^ char not typed");
+			flag = false;
+			keyPressChar(38, editorInput);
+			ok(!flag, "& char not typed");
+			flag = false;			
+			keyPressChar(42, editorInput);
+			ok(!flag, "* char not typed");
+			flag = false;
+			keyPressChar(40, editorInput);
+			ok(!flag, "( char not typed");
+			flag = false;
+			keyPressChar(41, editorInput);
+			ok(!flag, ") char not typed");
+			flag = false;			
+			keyPressChar(39, editorInput);
+			ok(!flag, "' char not typed");
+			flag = false;
+			keyPressChar(34, editorInput);
+			ok(!flag, "\" char not typed");
+			flag = false;
+			keyPressChar(91, editorInput);
+			ok(!flag, "[ char not typed");
+			flag = false;			
+			keyPressChar(93, editorInput);
+			ok(!flag, "] char not typed");
+			flag = false;
+			keyPressChar(123, editorInput);
+			ok(!flag, "{ char not typed");
+			flag = false;			
+			keyPressChar(125, editorInput);
+			ok(!flag, "} char not typed");
+			flag = false;
+			keyPressChar(92, editorInput);
+			ok(!flag, "\\ char not typed");
+			flag = false;		
+		});
+		testId = "Options/Method tests";
+		test(testId, 35, function () {
+			var container = $('#inputEditor5').igTextEditor("editorContainer"),
+				editor = $('#inputEditor5').igTextEditor("field"),
+				list = $('#inputEditor5').igTextEditor("dropDownContainer"),
+				ddButton = editor.igTextEditor("dropDownButton");
+
+			equal($("#inputEditor5").igTextEditor("option", "inputName"), "firstName", "The initial value of the inputName is not firstName");
+			equal($("#inputEditor5").igTextEditor("option", "tabIndex"), 2, "The initial value of the tabIndex is not 2");
+			equal(editor.attr("placeHolder"), "enter a value", "The placeHolder attribute is not set corretly");
+			equal($('#inputEditor4').igTextEditor("field").attr("placeHolder"), undefined, "The placeHolder attribute should not be set");
+
+			equal($('#inputEditor5').igTextEditor("inputName"), "firstName", "name is not properly set");
+			equal($("#atStartEditor").igTextEditor("value"), "abc", "value is not properly set");
+
+			$('#inputEditor5').igTextEditor("inputName", "fName");
+			$("#atStartEditor").igTextEditor("value", "ABC");
+			equal($("#atStartEditor").igTextEditor("value"), "ABC", "value is not properly set");
+			equal($('#inputEditor5').igTextEditor("inputName"), "fName", "name is not properly set");
+			$("#atStartEditor").igTextEditor("value", null);
+			equal($("#atStartEditor").igTextEditor("value"), "", "value is not properly set");
+
+			equal($("#passEditor").igTextEditor("field").attr("type"), "password");
+			equal($("#passDiv").igTextEditor("field").attr("type"), "password");
+
+			$('#editorTopList').data("igTextEditor")._toggleDropDown();
+			equal($('#editorTopList').data("igTextEditor")._calculateDropDownListOrientation(), "top");
+			$('#inputEditor1').igTextEditor("setFocus");
+			ok($('#inputEditor1').igTextEditor("hasFocus"), "element is focused");
+			$("#defaultEditor").igTextEditor("setFocus", 1000);
+				
+			$("#defaultEditor").igTextEditor("hide");
+			ok(!$('#defaultEditor').is(":visible"), "element is not hidden");
+			$("#defaultEditor").igTextEditor("show");
+			ok($('#defaultEditor').is(":visible"), "element is visible");
+			$("#defaultEditor").igTextEditor("validate");
+			ok($("#defaultEditor").igTextEditor("isValid"), "The value should be valid");
+
+			$("#inputEditor5").igTextEditor("showDropDown");
+			ok($('#inputEditor5').igTextEditor("dropDownContainer").is(":visible"), "drop down is visible");
+			$("#inputEditor5").igTextEditor("hideDropDown");
+			//ok(!$('#inputEditor5').igTextEditor("dropDownContainer").is(":visible"), "drop down is not visible");
+
+			$('#inputEditor1').igTextEditor("setFocus");
+			$('#inputEditor1').igTextEditor("value", "abcdefg");
+			stop();
+			setTimeout(function () {
+				start();
+				var text = $("#inputEditor1").igTextEditor("getSelectedText");
+				equal(text, "", "selected text is wrong");
+				var startSel = $("#inputEditor1").igTextEditor("getSelectionStart");
+				var endSel = $("#inputEditor1").igTextEditor("getSelectionEnd");
+				equal(startSel, 7, "start is wrong");
+				equal(endSel, 7, "end is wrong");
+
+				$("#inputEditor1").igTextEditor("select", 0, 2);
+				stop();
+				setTimeout(function () {
+					start();
+					startSel = $("#inputEditor1").igTextEditor("getSelectionStart");
+					endSel = $("#inputEditor1").igTextEditor("getSelectionEnd");
+					equal(startSel, 0, "start is wrong");
+					equal(endSel, 2, "end is wrong");
+
+					$('#inputEditor1').igTextEditor("value", "");
+					$('#inputEditor1').igTextEditor("insert", "ab");
+					equal($('#inputEditor1').igTextEditor("value"), "ab", "The value should be ab");
+					$('#inputEditor1').igTextEditor("setFocus");
+					stop();
+					setTimeout(function () {
+						start();
+						$('#inputEditor1').igTextEditor("insert", "ba");
+						equal($('#inputEditor1').igTextEditor("value"), "baab", "The value should be valid");
+						stop();
+						setTimeout(function () {
+							start();
+							$('#inputEditor1').igTextEditor("insert", undefined);
+							equal($('#inputEditor1').igTextEditor("value"), "baab", "The value should be valid");
+
+							var index = $('#listEditor1').igTextEditor("findListItemIndex", "2");
+							equal(index, 1, "Index is found");
+							var index = $('#listEditor1').igTextEditor("findListItemIndex", "2", "endsWith");
+							equal(index, 1, "Index is found");
+							var index = $('#listEditor1').igTextEditor("findListItemIndex", "2", "startsWith");
+							equal(index, -1, "Index should not be found");
+							var index = $('#listEditor1').igTextEditor("findListItemIndex", "item3", "exact");
+							equal(index, 2, "Index is found");
+							var index = $('#listEditor1').igTextEditor("findListItemIndex", "iTem3", "exact");
+							equal(index, -1, "Index should not be found");
+
+							var index = $('#listEditor1').igTextEditor("selectedListIndex");
+							equal(index, -1, "Correct item is selected");
+
+							$('#listEditor1').igTextEditor("selectedListIndex", 2);
+							var index = $('#listEditor1').igTextEditor("selectedListIndex");
+							equal(index, 2, "Correct item is selected");
+							var index = $('#listEditor1').igTextEditor("selectedListIndex");
+							equal(index, 2, "Correct item is selected");
+							var index = $('#listEditor1').igTextEditor("selectedListIndex");
+							equal(index, 2, "Correct item is selected");
+							$('#listEditor1').igTextEditor("selectedListIndex", 1);
+							var index = $('#listEditor1').igTextEditor("selectedListIndex");
+							equal(index, 1, "Correct item is selected");
+						}, 100);
+					}, 100);
+				}, 100);
+			}, 100);
+		});
+
+		testId = "Events testing";
+		test(testId, 8, function () {
+			//id=testEditor
+			var editor = $("#testEditor"), textChanged = 0,
+				editorInput = editor.igTextEditor("field"),
+				text;
+
+			editorInput[0].onkeypress = function (e) {
+				this.value += String.fromCharCode(e.charCode)
+			}
+			editorInput.focus();
+			editor.on("igtexteditortextchanged", function (evt, args) {
+				equal(args.text, text, "Text changed event is not fired with correct new value");
+				textChanged++;
+			});
+			stop();
+			setTimeout(function () {
+				start();
+				text = editorInput.val();
+				text += "t"
+				keyInteraction(text.charCodeAt(text.length - 1), editorInput);
+				equal(textChanged, 1, "textChanged event not fired");
+				text += "e"
+				keyInteraction(text.charCodeAt(text.length - 1), editorInput);
+				equal(textChanged, 2, "textChanged event not fired");
+				text += "s"
+				keyInteraction(text.charCodeAt(text.length - 1), editorInput);
+				equal(textChanged, 3, "textChanged event not fired");
+				text += "t"
+				keyInteraction(text.charCodeAt(text.length - 1), editorInput);
+				equal(textChanged, 4, "textChanged event not fired");
+				editor.off("igtexteditortextchanged");
+			}, 100);
+		});
+
+		testId = "Lists testing";
+		test(testId, 25, function () {
+			//id=listEditor
+			var editor = $('#listEditor'),
+				container = editor.igTextEditor("editorContainer"),
+				list = editor.igTextEditor("dropDownContainer"),
+				opening = false, opened = false, closing = false, closed = false,
+				itemselecting = false, itemselected = false, textChanged = false,
+				valueChanging = false, valueChanged = false,
+				ddButton = editor.igTextEditor("dropDownButton"),
+				item1, editorInput = editor.igTextEditor("field");
+
+			equal(container.outerWidth(), 200, "The width of the container is not set to 200px");
+			equal(container.outerHeight(), 20, "The heigth of the container is not set to 20px");
+			$('#listEditor').on("igtexteditordropdownlistopening", function () {
+				opening = true;
+			});
+			$('#listEditor').on("igtexteditordropdownlistopened", function () {
+				opened = true;
+			});
+			$('#listEditor').on("igtexteditordropdownlistclosing", function () {
+				closing = true;
+			});
+			$('#listEditor').on("igtexteditordropdownlistclosed", function () {
+				closed = true;
+			});
+			$('#listEditor').on("igtexteditordropdownitemselecting", function () {
+				itemselecting = true;
+			});
+			$('#listEditor').on("igtexteditordropdownitemselected", function () {
+				itemselected = true;
+			});
+			$('#listEditor').on("igtexteditortextchanged", function (evt, args) {
+				equal(args.text, "item1", "Text changed event is not fired with correct new value");
+				textChanged = true;
+			});
+			$('#listEditor').on("igtexteditorvaluechanging", function (evt, args) {
+				equal(args.newValue, "item1", "Value changing event is not fired with correct new value");
+				valueChanging = true;
+			});
+			$('#listEditor').on("igtexteditorvaluechanged", function (evt, args) {
+				equal(args.newValue, "item1", "Value changing event is not fired with correct new value");
+				valueChanged = true;
+			});
+			ddButton.click();
+			ok(opening, "dropDownListOpening event not fired");
+			// Use document.activeElement to test focus: https://github.com/ariya/phantomjs/issues/10427
+			ok(editor.igTextEditor("field")[0] === document.activeElement, "Input field not focused on dropDownListOpening");
+
+			//check if ddlist opened
+			ok(editor.igTextEditor("dropDownVisible"), "The dropDown is not opened");
+
+
+			item1 = list.children(".ui-igedit-listitem")[0];
+			
+			//Check the classes
+			mouseInteraction("mouseover", item1);
+			mouseInteraction("mousedown", item1);
+			mouseInteraction("mouseout", item1);
+			mouseInteraction("mouseover", item1);
+
+			mouseInteraction("click", item1);
+			ok($(item1).hasClass("ui-igedit-listitemselected"), "The selected item is missing ui-igedit-listitemselected class applied");
+			ok(closing, "dropDownListClosing event not fired");
+			stop()
+			setTimeout(function () {
+				start();
+				ok(closed, "dropDownListClosed event not fired");
+				ok(valueChanging, "ValueChanging event not fired");
+				ok(valueChanged, "valueChanged event not fired");
+				ok(textChanged, "textChanged event not fired");
+				$('#listEditor').off("igtexteditorvaluechanging");
+				$('#listEditor').off("igtexteditorvaluechanged");
+				$('#listEditor').off("igtexteditortextchanged");
+				closing = false;
+				closed = false;
+
+				mouseInteraction("mouseover", ddButton[0]);
+				ok(ddButton.hasClass("ui-igedit-buttonhover"), "The hovered item is missing ui-igedit-buttonhover class applied");
+				mouseInteraction("mouseout", ddButton[0]);
+
+				//notOk assert doesn't seem to work in current version of the QUinit we are using. 
+				equal(ddButton.hasClass("ui-igedit-buttonhover"), false, "The unhovered item contains ui-igedit-buttonhover class applied");
+				mouseInteraction("mousedown", ddButton[0]);
+				ok(ddButton.hasClass("ui-igedit-buttonpressed"), "The pressed item is missing ui-igedit-buttonpressed class applied");
+				mouseInteraction("mouseup", ddButton[0]);
+				equal(ddButton.hasClass("ui-igedit-buttonpressed"), false, "The released button item contains ui-igedit-buttonpressed class applied");
+				editor.igTextEditor("showDropDown");
+				ok(editor.igTextEditor("dropDownVisible"), "The dropDown is not opened");
+				closing = false;
+				closed = false;
+				editorInput.trigger("blur");
+				ok(closing, "dropDownListClosing event not fired");
+				stop()
+				setTimeout(function () {
+					start();
+					ok(closed, "dropDownListClosed event not fired");
+					paste(editorInput[0], "newVal");
+					editorInput.trigger("blur");
+					equal($('#listEditor').igTextEditor("value"), "", "The value after paste is not newVal");
+					editor.igTextEditor("value", "newVal1");
+					equal($('#listEditor').igTextEditor("value"), "", "The value after paste is empty");
+					editor.igTextEditor("option", "isLimitedToListValues", false);
+					paste(editorInput[0], "newValnewVal");
+					equal($('#listEditor').igTextEditor("value"), "", "The value after paste is empty");
+					editor.igTextEditor("value", "newVal1");
+					equal($('#listEditor').igTextEditor("value"), "newVal1", "The value after paste is not newVal");
+				}, 500);
+			}, 500);
+		});
+		testId = "Keyboard/Mouse testing";
+		test(testId, 16, function () {
+			var listEditor = $("#listEditor"),
+				listContainer = listEditor.igTextEditor("editorContainer"),
+				listInput = listEditor.igTextEditor("field"),
+				list = listEditor.igTextEditor("dropDownContainer"),
+				listDDBtn = listEditor.igTextEditor("dropDownButton"),
+				listItem =  listEditor.data("igTextEditor")._getListItemByIndex(0),
+				listItemLast = listEditor.data("igTextEditor")._getListItemByIndex(0),
+				listClearBtn = listEditor.igTextEditor("clearButton"),
+				
+				listEditor1 = $("#listEditor1"),
+				listContainer1 = $('#listEditor1').igTextEditor("editorContainer"),
+				listInput1 = $('#listEditor1').igTextEditor("field"),
+
+				editor = $("#inputEditor1"),
+				editorInput = $("#inputEditor1").igTextEditor("field");
+
+
+			keyInteraction(38, listInput1);
+			keyInteraction(40, listInput1);
+			keyInteraction(40, listInput1);
+			keyInteraction(40, listInput1);
+			keyInteraction(40, listInput1);
+			keyInteraction(40, listInput1);
+			keyInteraction(40, listInput1);
+			keyInteraction(38, listInput1);
+			keyInteraction(38, listInput1);
+			keyInteraction(38, listInput1);
+			keyInteraction(38, listInput1);
+			keyInteraction(38, listInput1);
+			keyInteraction(38, listInput1);
+
+
+			editorInput.val("newValue");
+			keyPressChar(13, editorInput);
+			keyInteraction(13, editorInput);
+			equal(editor.igTextEditor("value"), "newValue", "Value should be changed");
+			editorInput.val("1234567890987654");
+			keyInteraction(13, editorInput);
+			equal(editor.igTextEditor("value"), "newValue", "Value should be limited to 10 symbols");
+			listEditor.igTextEditor("option", "preventSubmitOnEnter", true);
+			editorInput.val("newNewValue");
+			keyInteraction(13, editorInput);
+			equal(editor.igTextEditor("value"), "newValue", "Value should stay with the previouse value");
+			editor.igTextEditor("value", "newValueto");
+			keyInteraction(56, editorInput);
+			equal(editor.igTextEditor("value"), "newValueto", "Value should stay with the previouse value");
+
+
+			mouseInteraction("mouseover", editorInput[0]);
+			mouseInteraction("mousedown", editorInput[0]);
+			mouseInteraction("mousemove", editorInput[0]);
+			mouseInteraction("mousedown", editorInput[0]);
+			mouseInteraction("mouseout", editorInput[0]);
+
+			listDDBtn.click();
+			keyInteraction(40, listInput);
+			keyInteraction(13, listInput);
+			equal(listEditor.igTextEditor("value"), $(listItem).html(), "the item 1 should be selected");
+
+			listDDBtn.click();
+			listClearBtn.click();
+			equal(listEditor.igTextEditor("value"), "", "the item 1 should be cleared");
+			listDDBtn.click(); // close dropdown
+			listInput.val("item2");
+			keyInteraction(13, listInput);
+			equal(listEditor.igTextEditor("value"), "item2", "the item 2 should not be selected");
+
+			listEditor.igTextEditor("option", "isLimitedToListValues", true);
+			listInput.val("item22");
+			keyInteraction(13, listInput);
+			equal(listEditor.igTextEditor("value"), "", "the item 2 should stay selected");
+
+			listDDBtn.click();
+			keyInteraction(38, listInput);
+			stop();
+			setTimeout(function () {
+				start();
+				ok(!listEditor.igTextEditor("dropDownVisible"), "The dropDown is not closed");
+
+				listEditor.igTextEditor("value", "item3");
+				listDDBtn.click();
+				keyInteraction(38, listInput);
+				ok(listEditor.igTextEditor("dropDownVisible"), "The dropDown is not opened");
+				keyInteraction(38, listInput);
+				stop();
+				setTimeout(function () {
+					start();
+					ok(!listEditor.igTextEditor("dropDownVisible"), "The dropDown is not closed");
+					keyInteraction(38, listInput);
+					stop();
+					setTimeout(function () {
+						start();
+						ok(!listEditor.igTextEditor("dropDownVisible"), "The dropDown is not closed");
+						
+						listDDBtn.click();
+						mouseInteraction("mouseover", listItemLast[0]);
+						keyInteraction(38, listInput, "altKey");
+						stop();
+						setTimeout(function () {
+							start();
+							ok(!listEditor.igTextEditor("dropDownVisible"), "The dropDown is not closed");
+
+							keyInteraction(40, listInput);
+							ok(listEditor.igTextEditor("dropDownVisible"), "The dropDown is not opened");
+							keyInteraction(40, listInput);
+							keyInteraction(40, listInput);
+							keyInteraction(40, listInput);
+							keyInteraction(27, listInput); // Close drop down with Esc
+							stop();
+							setTimeout(function () {
+								start();
+								ok(!listEditor.igTextEditor("dropDownVisible"), "The dropDown is not closed");
+
+								keyInteraction(40, listInput, "altKey");
+								ok(listEditor.igTextEditor("dropDownVisible"), "The dropDown is not opened");
+							}, 100);
+						}, 100);
+					}, 100);
+				}, 100);
+			}, 100);
+
+		});
+
+		testId = "Spin buttons";
+		test(testId, 4, function () {
+			var listEditor = $("#listEditor"),
+				listContainer = listEditor.igTextEditor("editorContainer"),
+				listInput = listEditor.igTextEditor("field"),
+				list = listEditor.igTextEditor("dropDownContainer"),
+				listDDBtn = listEditor.igTextEditor("dropDownButton"),
+				listItem = list.children(".ui-igedit-listitem")[0],
+				listItemLast = list.children(".ui-igedit-listitem")[2],
+				listClearBtn = listEditor.igTextEditor("clearButton"),
+				listUp = listEditor.igTextEditor("spinUpButton"),
+				listDown = listEditor.igTextEditor("spinDownButton");
+
+			listEditor.igTextEditor("option", "disabled", true);
+			listEditor.igTextEditor("option", "disabled", false);
+			ok(!list.hasClass("ui-state-disabled"), "Disabled class is not removed from the drop down");
+			ok(!listDDBtn.hasClass("ui-state-disabled"), "Disabled class is not removed from the drop down button")
+			listDDBtn.click();
+
+			// SpinUp using keyboard navigation
+			mouseInteraction("mouseover", listUp[0]);
+			mouseInteraction("mousedown", listUp[0]);
+			mouseInteraction("mousepress", listUp[0]);
+			mouseInteraction("mouseup", listUp[0]);
+			mouseInteraction("mouseout", listUp[0]);
+
+			// SpinUp using API
+			listEditor.igTextEditor("spinUp");
+
+			// SpinDown using keyboard navigation
+			mouseInteraction("mouseover", listDown[0]);
+			mouseInteraction("mousedown", listDown[0]);
+			mouseInteraction("mousepress", listDown[0]);
+			mouseInteraction("mouseup", listDown[0]);
+			mouseInteraction("mouseout", listDown[0]);
+
+			ok($(listItem).attr("data-active"), "active class should be applied on the last item");
+
+			// SpinDown using API
+			listEditor.igTextEditor("spinDown");
+			listEditor.igTextEditor("spinDown");
+
+			ok($(listItemLast).attr("data-active"), "active class should be applied on the last item");
+		});
+
+		testId = "SelectionOnFocus";
+		test(testId, 6, function () {
+			var allInput = $("#allEditor").igTextEditor("field"),
+				browserDefaultInput = $("#defaultEditor").igTextEditor("field");
+
+			$("#allEditor").igTextEditor("setFocus");
+			stop();
+			setTimeout(function () {
+				var atStartInput = $("#atStartEditor").igTextEditor("field");
+
+				start();
+				testSelection(allInput, 0, 3);
+				$("#atStartEditor").igTextEditor("setFocus");
+				stop();
+				setTimeout(function ()
+				{
+					var atEndInput = $("#atEndEditor").igTextEditor("field");
+					start();
+					testSelection(atStartInput, 0, 0);
+					$("#atEndEditor").igTextEditor("setFocus");
+					stop();
+					setTimeout(function () {
+
+						start();
+						testSelection(atEndInput, 3, 3);
+					}, 100);
+				}, 100);
+			}, 100);
+		});
+		testId = "SetOption";
+		test(testId, 20, function () {
+			var readEditorInput = $("#readonlyEditor").igTextEditor("field"),
+				readEditorContainer = $("#readonlyEditor").igTextEditor("editorContainer"),
+				readEditorValueInput = readEditorContainer.find("input:hidden"),
+				disabledEditorInput = $("#disabledEditor").igTextEditor("field"),
+				disabledEditorInputEditorContainer = $("#disabledEditor").igTextEditor("editorContainer"),
+				disabledEditorInputEditorValueInput = disabledEditorInputEditorContainer.find("input:hidden"),
+				editor5 = $("#inputEditor5");
+			ok(readEditorInput.prop("readonly"), "readonly attribute is missing");
+			ok(readEditorValueInput.prop("readonly"), "readonly attribute is missing");
+			ok(disabledEditorInput.prop("disabled"), "readonly attribute is missing");
+			ok(disabledEditorInputEditorValueInput.prop("disabled"), "readonly attribute is missing");
+			$("#readonlyEditor").igTextEditor("option", "disabled", true);
+			ok(readEditorInput.prop("disabled"), "readonly attribute is missing");
+			ok(readEditorValueInput.prop("disabled"), "readonly attribute is missing");
+			$("#readonlyEditor").igTextEditor("option", "disabled", false);
+			$("#readonlyEditor").igTextEditor("option", "readOnly", false);
+
+			equal(readEditorInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(readEditorValueInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(readEditorInput.prop("readonly"), false, "The readonly attribute exists");
+			equal(readEditorValueInput.prop("readonly"), false, "The readonly attribute exists");
+
+			//setting this option to nonExisting element should default to editable
+			equal(readEditorInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(readEditorValueInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(readEditorInput.prop("readonly"), false, "The readonly attribute exists");
+			equal(readEditorValueInput.prop("readonly"), false, "The readonly attribute exists");
+			$("#readonlyEditor").igTextEditor("option", "value", "read it only!");
+			equal($("#readonlyEditor").igTextEditor("option", "value"), "read it only!", "Value not changed");
+			$("#readonlyEditor").igTextEditor("option", "value", "");
+			//equal($("#readonlyEditor").igTextEditor("option", "value"), "read it only!", "Value should not be changed");
+			equal($("#readonlyEditor").igTextEditor("option", "value"), "", "Value should be empty string");
+			try {
+				$("#readonlyEditor").igTextEditor("option", "visibleItemsCount", 3);
+			} catch (e) {
+				console.log("Cannot set dynamically those options");
+			}
+			try {
+				$("#readonlyEditor").igTextEditor("option", "buttonType", "spin");
+			} catch (e) {
+				console.log("Cannot set dynamically those options");
+			}
+			try {
+				$("#readonlyEditor").igTextEditor("option", "dropDownMaxHeight", 200);
+			} catch (e) {
+				console.log("Cannot set dynamically those options");
+			}
+			try {
+				$("#readonlyEditor").igTextEditor("option", "dropDownAttachedToBody", true);
+			} catch (e) {
+				console.log("Cannot set dynamically those options");
+			}
+
+			// Enable a editor that is not readonly
+			$("#disabledEditor").igTextEditor("option", "disabled", false);
+			equal(disabledEditorInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(disabledEditorInputEditorValueInput.prop("disabled"), false, "The disabled attribute exists");
+			editor5.igTextEditor("option", "disabled", true);
+			equal(editor5.igTextEditor("field").prop("disabled"), true, "The disabled attribute exists");
+			editor5.igTextEditor("option", "disabled", false);
+			equal(editor5.igTextEditor("field").prop("disabled"), false, "The disabled attribute exists");
+			editor5.igTextEditor("option", "disabled", true);
+
+		});
+		testId = "Clear Button";
+		test(testId, 4, function () {
+			var container = $('#clearEditor').igTextEditor("editorContainer"),
+				clearButton = $('#clearEditor').igTextEditor("clearButton");
+			equal($('#clearEditor').igTextEditor("value"), "has value", "Initial value is not correct");
+			clearButton.click();
+			equal($('#clearEditor').igTextEditor("value"), null, "Initial value is not correct");
+			$('#clearEditor').igTextEditor("value", null);
+			$('#clearEditor').igTextEditor("value", undefined);
+			equal($('#clearEditor').igTextEditor("value"), null, "Initial value is not correct");
+
+			$('#clearEditor').igTextEditor("option", "allowNullValue", false);
+			$('#clearEditor').igTextEditor("option", "allowNullValue", false); // Set twice so we ensure that the same value is not set and coverage is fullfilled.
+			clearButton.click();
+			equal($('#clearEditor').igTextEditor("value"), "", "Initial value is not correct");
+
+
+		});
+		testId = 'Check width/height';
+		test(testId, 6, function () {
+			var $editor1 = $('#clearEditor'), $editor2 = $("#disabledEditor");
+
+			// Default stlye from CSS
+			equal($editor1.igTextEditor("editorContainer").css("width"), "200px", "Width is not correct");
+			equal($editor1.igTextEditor("editorContainer").css("height"), "32px", "Height is not correct");
+
+			$editor1.igTextEditor("option", "width", 100);
+			$editor1.igTextEditor("option", "height", 100);
+			equal($editor1.igTextEditor("editorContainer").css("width"), "100px", "Width is not correct");
+			equal($editor1.igTextEditor("editorContainer").css("height"), "100px", "Height is not correct");
+
+			// Style set from the options
+			equal($editor2.igTextEditor("editorContainer").css("width"), "300px", "Width is not correct");
+			equal($editor2.igTextEditor("editorContainer").css("height"), "70px", "Height is not correct");
+		});
+		testId = 'Multiline/textarea';
+		test(testId, 2, function () {
+			editor = $("#multilineEditor");
+			ok(editor.igTextEditor("field").is("textarea"), "It should be textare");
+			ok(editor.data("igTextEditor")._valueInput.is("textarea"), "It should be textare");
+		});
+		testId = 'Password';
+		test(testId, 1, function () {
+			editor = $("#passEditor");
+			equal(editor.igTextEditor("field").attr("type"), "password", "Type should be password");
+		});
+		testId = "ToUpper and ToLower";
+		test(testId, 8, function () {
+			var keyCode, toUpperEditorInput = $('#toUpperEditor').igTextEditor("field"),
+				toLowerEditorInput = $('#toLowerEditor').igTextEditor("field");
+			// toUpper keyPress
+			$('#toUpperEditor').on("igtexteditorkeypress", function (evt,args) {
+				keyCode = args.key;
+			});
+			keyPressChar(100, toUpperEditorInput);		   
+			equal(String.fromCharCode(keyCode), "D", "toUpper is not working");
+			equal($("#toUpperEditor")[0].value, "D", "character is not set to upper");
+			// toLower keyPress
+			$('#toLowerEditor').on("igtexteditorkeypress", function (evt, args) {
+				keyCode = args.key;
+			});
+			keyPressChar(1071, toLowerEditorInput);
+			equal(String.fromCharCode(keyCode), "я", "toLower is not working");
+			equal($("#toLowerEditor")[0].value, "я", "character is not set to lower");
+			// toUpper paste
+			//paste(toUpperEditorInput[0], "newVal1");
+			$("#toUpperEditor").igTextEditor("value", "newVal1");
+
+			stop();
+			setTimeout(function () {
+				equal($("#toUpperEditor")[0].value, "NEWVAL1", "(Bug #209012)(Bug #209067) Value is not made upper");
+				equal($("#toUpperEditor").igTextEditor("value"), "NEWVAL1", "Value is not made upper");
+				start();
+			},100);		   
+		   
+			// toLower paste
+			//paste(toLowerEditorInput[0], "NewVaL1");
+			$("#toLowerEditor").igTextEditor("value", "NewVal1");
+		  
+			stop();
+			setTimeout(function () {
+				equal($("#toLowerEditor")[0].value, "newval1", "(Bug #209012)(Bug #209067) Value is not made lower");
+				equal($("#toLowerEditor").igTextEditor("value"), "newval1", "Value is not made lower");
+				start();
+			}, 100);		    		   		   
+		});
+		testId = 'Check destroy';
+		asyncTest(testId, 7, function () {
+			var $editor1 = $('#clearEditor'), $editor2 = $("#disabledEditor");
+			setTimeout(function () {
+				start();
+				$editor1.igTextEditor("destroy");
+				$editor2.igTextEditor("destroy");
+				equal($editor1.data("igTextEditor"), undefined, 'Error destroying igCheckboxEditor in an input');
+				equal($editor2.data("igTextEditor"), undefined, 'Error destroying igCheckboxEditor in a div');
+				equal($('#clearEditor_clearButton')[0], undefined, 'Clear button is not removed');
+				equal($('#clearEditor_spinUpButton')[0], undefined, 'Spin Up button is not removed');
+				equal($('#clearEditor_spinDownButton')[0], undefined, 'Spin Down button is not removed');
+				$._data($editor1[0], "events");
+				$._data($editor2[0], "events");
+				ok($editor1.attr("class") === undefined, "Some classes are still not removed");
+				ok($editor2.attr("class") === undefined, "Some classes are still not removed");
+			}, 100);
+		});
+		
+	});
+
+	// Helper functions
+	function testSelection(input, start, end ) {
+		equal(input[0].selectionStart, start, "The selection doesn't start from index" + start);
+		equal(input[0].selectionEnd, end, "The selection doesn't end at index " + end);
+	}
+	function paste(input, newVal) {
+		// create a mouse click event
+		var event = document.createEvent('Event');
+		event.initEvent('paste', true, true);
+		event.target = input;
+		event.srcElement = input;
+		$(input).val(newVal);
+		// send click to element
+		input.dispatchEvent(event);
+	}
+	function keyInteraction(key, target, special) {
+		keyDownChar(key, target, special);
+		keyPressChar(key, target, special);
+		keyUpChar(key, target, special);
+	}
+	function keyDownChar(key, target, special) {
+		var evt = $.Event("keydown");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function keyPressChar(key, target, special) {
+		var evt = $.Event("keypress");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function keyUpChar(key, target, special) {
+		var evt = $.Event("keyup");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function mouseInteraction(type, element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent(type, true, true, window, 1, 0, 0);
+		if (type === "mousemove") {
+			event.pageX = 100;
+			event.pageY = 100;
+		}
+		// send click to element
+		element.dispatchEvent(event);
+
+	}
+	function mouseup(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, false, false, false, false, 0, null);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	function mousedown(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, null, null, false, false, false, false, 0, null);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+
+	QUnit.log = function (details) {
+		if (window.console && window.console.log) {
+			window.console.log(details.result + ' :: ' + details.message);
+		}
+	};
+	</script>
+
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<input type="text" id="inputEditor1"  />
+	<input type="text" id="inputEditor2"  />
+	<input type="text" id="inputEditor3"  />
+	<input type="text" id="inputEditor4"  />
+	
+	<input type="text" id="inputEditor5" />
+
+	<input type="text" id="listEditor" />
+	<input type="text" id="listEditor1" />
+
+	<span>all</span>
+	<input id="allEditor" type="text" />
+	<span>atStart</span>
+	<input id="atStartEditor" type="text" />
+	<span>atEnd</span>
+	<input id="atEndEditor" type="text" />
+	<span>default</span>
+	<input id="defaultEditor" type="text" />
+
+	<span>Modes</span>
+	<input id="readonlyEditor" type="text" />
+	<div id="disabledEditor" type="text" name="disabledEditor" tabindex="1" disabled readonly value="disabled"></div>
+	<br />
+	<span>clear Value</span>
+	<input id="clearEditor" />
+	<span id="multilineEditor"></span>
+	<textarea id="textareaEditorFake"></textarea>
+	<textarea id="textareaEditor"></textarea>
+	<input id="passEditor" name="password" />
+	<div id="passDiv" ></div>
+	<img id="imgEditor" />
+	<span>ToUpper/ToLower</span>
+	<input id="toUpperEditor" type="text" />
+	<input id="toLowerEditor" type="text" />
+	<input id="testEditor" type="text" />
+</div>
+
+	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>
+	
+	
+</body>
+</html>
+

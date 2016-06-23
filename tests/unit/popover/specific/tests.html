@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.grid.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+
+
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.dataSource-en.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.grid-en.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.dataSource.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.shared.js"></script>
+    <!--The control source is instrumented and used by the Istnabul to generated code coverage.
+    To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+    <!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>-->
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.editors.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.grid.framework.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.grid.tooltips.js"></script>
+
+    <script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+    <style>
+        .ui-menu {
+            width: 200px;
+        }
+
+        nav ul {
+            list-style: none !important;
+            list-style-image: none;
+        }
+
+            nav ul li {
+                float: left;
+                display: inline-block;
+                margin: auto 4px;
+                padding: 2px;
+                border: 1px solid gray;
+            }
+
+                nav ul li:hover {
+                    background-color: #eee;
+                    cursor: pointer;
+                }
+    </style>
+
+    <script type="text/javascript">
+        var columnDefinitions = [
+            { headerText: "Product ID", key: "ProductID", dataType: "number" },
+            { headerText: "Units in Stock", key: "UnitsInStock", dataType: "number" },
+            { headerText: "Product Description", key: "ProductDescription", dataType: "string" },
+            { headerText: "Unit Price", key: "UnitPrice", dataType: "string" },
+            { headerText: "Date Added", key: "DateAdded", dataType: "string" },
+            { headerText: "Date Second", key: "DateSecond", dataType: "string" },
+            { headerText: "Unit Sold", key: "DateSold", dataType: "string" },
+            { headerText: "Unit Removed", key: "DateRemoved", dataType: "string" }
+        ];
+        var namedData = new Array();
+        namedData[0] = { "ProductID": "1", "UnitsInStock": "100", "ProductDescription": "Laptop", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[1] = { "ProductID": "2", "UnitsInStock": "15", "ProductDescription": "Hamburger", "UnitPrice": "$ 10", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[2] = { "ProductID": "3", "UnitsInStock": "4356", "ProductDescription": "Beer", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[3] = { "ProductID": "4", "UnitsInStock": "32", "ProductDescription": "mobile phone", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[4] = { "ProductID": "5", "UnitsInStock": "65", "ProductDescription": "trainers", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[5] = { "ProductID": "6", "UnitsInStock": "25", "ProductDescription": "coffee cup", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[6] = { "ProductID": "7", "UnitsInStock": "98", "ProductDescription": "BMW 323 CI", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[7] = { "ProductID": "8", "UnitsInStock": "998", "ProductDescription": "mouse", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[8] = { "ProductID": "9", "UnitsInStock": "43", "ProductDescription": "keyboard", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[9] = { "ProductID": "10", "UnitsInStock": "69", "ProductDescription": "fish", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[10] = { "ProductID": "11", "UnitsInStock": "100", "ProductDescription": "Laptop", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[11] = { "ProductID": "12", "UnitsInStock": "15", "ProductDescription": "Hamburger", "UnitPrice": "$ 10", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[12] = { "ProductID": "13", "UnitsInStock": "4356", "ProductDescription": "Beer", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[13] = { "ProductID": "14", "UnitsInStock": "32", "ProductDescription": "mobile phone", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[14] = { "ProductID": "15", "UnitsInStock": "65", "ProductDescription": "trainers", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[15] = { "ProductID": "16", "UnitsInStock": "25", "ProductDescription": "coffee cup", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[16] = { "ProductID": "17", "UnitsInStock": "98", "ProductDescription": "BMW 323 CI", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[17] = { "ProductID": "18", "UnitsInStock": "998", "ProductDescription": "mouse", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[18] = { "ProductID": "19", "UnitsInStock": "43", "ProductDescription": "keyboard", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        namedData[19] = { "ProductID": "20", "UnitsInStock": "69", "ProductDescription": "fish", "UnitPrice": "$ 1000", "DateAdded": new Date(), "DateSecond": new Date(), "DateSold": new Date(), "DateRemoved": new Date() };
+        $(function () {
+
+            module("Popover specific tests", {
+                setup: function () {
+                    stop();
+                    $("#testarea").append("<table id='grid'></table>");
+                    $("#grid").igGrid({
+                        autoGenerateColumns: false,
+                        width: 1150,
+                        height: 550,
+                        columns: [
+                            { headerText: "Product ID", key: "ProductID", dataType: "number", width: 100 },
+                            { headerText: "Units in Stock", key: "UnitsInStock", dataType: "number", width: 150 },
+                            { headerText: "Product Description", key: "ProductDescription", dataType: "string", width: 150 },
+                            { headerText: "Unit Price", key: "UnitPrice", dataType: "string", width: 150 },
+                            { headerText: "Date Added", key: "DateAdded", dataType: "string", width: 150 },
+                            { headerText: "Date Second", key: "DateSecond", dataType: "string", width: 150 },
+                            { headerText: "Unit Sold", key: "DateSold", dataType: "string", width: 150 },
+                            { headerText: "Unit Removed", key: "DateRemoved", dataType: "string", width: 150 }
+                        ],
+                        defaultColumnWidth: 140,
+                        columns: columnDefinitions,
+                        features: [
+                        {
+                            name: "Tooltips",
+                            visibility: "always",
+                            style: "popover"
+                        }
+                        ],
+                        dataSource: namedData,
+                        responseDataKey: "ProductID"
+                    });
+
+                    setTimeout(function () { start(); }, 200);
+
+                },
+                teardown: function () {
+                    $("#testarea").empty();
+                }
+            });
+
+            // bug 192052
+            test("Test tooltips popover when it is positioned to the left", function () {
+                var showTimeOut, target, event, pos, delta;
+
+                showTimeOut = $("#grid").igGridTooltips("option", "showDelay");
+                target = $($("#grid tbody tr")[1]).find("td")[6]; // 3rd row 3rd cell
+                event = jQuery.Event("mousemove");
+                pos = getAbsolutePosition(target);
+                event.pageX = pos.X + 3;
+                event.pageY = pos.Y + 3;
+                event.target = target;
+
+                $("#grid_tooltips").igPopover({ direction: "left" });
+                $("#grid3").trigger("mouseenter");
+                $(target).trigger(event);
+
+                stop();
+                setTimeout(function () {
+                    popover = $("#grid_tooltips_popover");
+                    popoverMidpoint = popover.position().top + popover.height() / 2;
+                    delta = Math.abs(popover.position().left + popover.width() - $(target).position().left);
+                    //popover should be shown to left
+                    ok(delta <= 11, "Horizontal position is correct");
+                    ok($(target).offset().top < popoverMidpoint, "Popover's midpoint should be bellow the top of the target");
+                    ok(popoverMidpoint < $(target).offset().top + $(target).height(), "Popover's midpoint should be bellow the bottom of the target");
+                    start();
+                }, showTimeOut + 200);
+            });
+            function getAbsolutePosition(element) {
+                var position = { X: 0, Y: 0 };
+                var cElement = element;
+                while (cElement !== null) {
+                    position.X += cElement.offsetLeft;
+                    position.Y += cElement.offsetTop;
+
+                    cElement = cElement.offsetParent;
+                }
+                return position;
+            }
+
+            //bug 192052
+
+            test("Test popover when initialized on multiple items without ID on the parent", function () {
+                stop();
+                var popover, target;
+                $('nav ul').igPopover({
+                    contentTemplate: function contentFunction() {
+                        return "<p> Dummy content </p>";
+                    },
+                    selectors: "li",
+                    showOn: "click"
+                });
+                setTimeout(function () {
+                    start();
+                    target = $("nav > ul > li > a").first();
+                    target.trigger("click");
+
+                    stop();
+                    setTimeout(function () {
+                        start();
+                        popover = $('nav ul').data().igPopover.popover;
+                        ok(popover.length > 0 && popover.closest(document.documentElement).length > 0 && popover.is(":visible"), "Popover element should exist and should be visible");
+                    }, 100);
+
+
+                }, 200);
+
+            });
+        });
+    </script>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div style="clear:both;"></div>
+    <div>
+        <nav>
+            <ul>
+                <li> <a>Products</a> </li>
+                <li> <a>Downloads</a> </li>
+                <li> <a>Support</a> </li>
+            </ul>
+        </nav>
+    </div>
+    <div id="testarea">
+    </div>
+</body>
+</html>

@@ -1,0 +1,1362 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Date Editors </title>
+	<link type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.notifier.js"></script>                                     
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.validator.js"></script> 
+
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage.
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.editors.js"></script>-->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.js"></script> 
+	
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" /> 
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+	<!-- Links to external extensions -->
+	<!-- Links to extensions -->
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../../../Source/ClientUI/js/modules/infragistics.ui.editors.knockout-extensions.js"></script>-->
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+		$(document).ready(function () {
+			// Create a editors
+			function loadTestbeds() {
+				$(function () {
+					$("#inputEditor1").igDateEditor({
+						value: "10/10/2010",
+						buttonType: "clear,spin",
+						textAlign: "right",
+						selectionOnFocus: "browserDefault",
+						placeholder: "empty",
+						dateInputFormat: "dateTime"
+					});
+
+					$("#dropdown").datepicker({
+						
+					});
+
+					$("#inputEditor2").igDateEditor({
+						value: "10/10/2010",
+						validatorOptions: { required: true, notificationOptions: { mode: "popover" } }
+					});
+
+					$("#inputEditor3").igDateEditor({
+						value: "10/10/2010",	 
+						dateDisplayFormat: "dateTime"
+					});
+
+					$("#inputEditor4").igDateEditor({
+						value: '01/09/50',
+						dateInputFormat: "dd/MM/yyyy",
+						dateDisplayFormat: "dd/MM/yyyy",
+						centuryThreshold: 101
+					});
+
+					$("#inputEditor7").igDateEditor({
+						value: '1/9/90',
+						dateInputFormat: "M/d/yy"
+					});
+
+					$("#inputEditor8").igDateEditor({
+						dateInputFormat: "dd,MM,yyyy hh:m:ss ff tt"
+					});
+
+					$("#inputEditor8a").igDateEditor({
+						dateInputFormat: "dd,MM,yyyy hh:m:ss fff tt"
+					});
+
+					$("#inputEditor9").igDateEditor({
+						dateInputFormat: "yyyy/MM/dd",
+						minValue: new Date(2015, 6, 1),
+						maxValue: "2020/12/31"
+					});
+
+					$('#inputEditor10').igDateEditor({
+						dateInputFormat: "HH:mm:ss"
+					});
+
+					$('#inputEditor11').igDateEditor({
+						dateInputFormat: "H:m:s",
+						dateDisplayFormat: "H:m:ss"
+					});
+
+					$("#inputEditor12").igDateEditor({
+						value: '01/09/15',
+						dateInputFormat: "dd/MM/yy"
+					});
+					$('#inputEditor13').igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "HH:mm:ss"
+					});
+					$('#inputEditor14').igDateEditor({
+						dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+						enableUTCDates: true
+					});
+					$("#validInEditModeEditor").igDateEditor({
+						dateInputFormat: "yyyy/MM/dd"
+					});
+					$("#inputEditor15").igDateEditor({
+						width: 300,
+						value: new Date(2015, 11, 30, 23, 58, 58, 999),
+						buttonType: "clear,spin",
+						selectionOnFocus: "browserDefault",
+						dateInputFormat: "dateTime"
+					});
+					$("#inputEditor16").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						dateInputFormat: "HH:mm:ss:f",
+						dateDispalyFormat: "HH:mm:ss:f",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+					$("#inputEditor17").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						dateInputFormat: "HH:mm:ss:ff",
+						dateDispalyFormat: "HH:mm:ss:ff",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+					$("#inputEditor18").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						dateInputFormat: "HH:mm:ss:fff",
+						dateDispalyFormat: "HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+					$("#inputEditor19").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+
+					$("#inputEditor20").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						value: new Date(2015, 10, 30, 23, 59, 59)
+					});
+
+					$("#inputEditor21").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						value: new Date(2015, 0, 1, 0, 1, 1)
+					});
+					$("#inputEditor22").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						limitSpinToCurrentField: true,
+						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						value: new Date(2015, 10, 30, 23, 59, 59)
+					});
+
+					$("#inputEditor23").igDateEditor({
+						buttonType: "spin",
+						width: 300,
+						limitSpinToCurrentField: true,
+						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						value: new Date(2015, 0, 1, 0, 0, 0)
+					});
+
+					$("#inputEditor24").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						dateInputFormat: "dateTime",
+						dateDisplayFormat: "dateTime"
+					});
+
+					$("#inputEditor25").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						dateInputFormat: "dateTime",
+						dateDisplayFormat: "dateTime"
+					});  
+
+					$("#inputEditor26").igDateEditor();  
+
+					$("#inputEditor27").igDateEditor({
+						width: 300,
+						buttonType: "spin",
+						dateInputFormat: "dateTime",
+						dateDisplayFormat: "dateTime",
+						value: new Date(2015, 2, 1, 0, 0, 0)
+					});
+
+					$("#inputEditor28").igDateEditor({
+						value: "3/1/2015"
+					});
+
+					$("#inputEditor28").igValidator({
+						date:true
+					});
+
+					$("#inputEditor29").igDateEditor();
+					$("#inputEditor30").igDateEditor();
+					$("#inputEditor31").igDateEditor();
+					$("#inputEditor32").igDateEditor({
+						allowNullValue: true,
+						dateInputFormat: "HH:mm",
+						tabIndex: 1,
+						keydown: function (e, args) {
+							if (e.keyCode === 38 || e.keyCode === 40) {
+								e.preventDefault();
+								return false;
+							}
+						}
+					});
+					$("#inputEditor33").igDateEditor();
+					$("#inputEditor34").igDateEditor();
+				});
+			}
+			initialized = false;
+			module("Date Editor ", {
+				setup: function () {
+					//pause testing until editors are initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 100);
+						initialized = true;
+					}
+				},
+				teardown: function () {
+				}
+			});
+
+			var testId = 'Date Editor initialization.';
+			test(testId, 5, function () {
+				ok(typeof ($("#inputEditor1").igDateEditor) === 'function', "Editors Script is not loaded");
+				ok($('#inputEditor1').data("igDateEditor") !== undefined, 'Error creating igDateEditor in an input');
+				notStrictEqual($('#inputEditor1').igDateEditor("value"), new Date(2010, 9, 10), 'The initial value is not as expexted');
+				equal($('#inputEditor1').igDateEditor("displayValue"), "10/10/2010 12:00 AM", 'The initial value is not as expexted');
+				// Bug 208280: igDateEditor hidden/sent date values format review when dataMode is Date object
+				equal($('#inputEditor1').data("igDateEditor")._valueInput.val(), new Date("10/10/2010").toISOString(), 'The internal(submit) value is not in expexted ISO format');
+			});
+
+			var testId = 'Date Editor methods.';
+			test(testId, 0, function () {
+				var editor = $('#inputEditor1');
+
+				//editor.igDateEditor("setFocus");
+				//editor.igDateEditor("spinUp");
+
+				//editor.igDateEditor("spinUp", 5);
+			});
+
+			var testId = 'Validator with notifier popup';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor2');
+				$dtEditor.igDateEditor("option", "value", "");
+				$dtEditor.trigger("blur");
+				equal($('#inputEditor2').igValidator("notifier").popover.css("display"), "block", 'Popover is not shown');
+				equal($('#inputEditor2').igValidator("notifier").popover.text(), "This field is required", "Required messige is missing");
+				//close it
+				$(".ui-ignotify-error .ui-igpopover-close-button").click();
+			});
+
+			var testId = 'Validator triggers though API';
+			test(testId, 7, function () {
+				// configured though validatorOptions
+				var $dtEditor = $('#inputEditor2'), $dtEditor2 = $('#inputEditor28'), validated = false;
+
+
+				$dtEditor.igDateEditor("option", "value", "10/10/2015");
+				$dtEditor.igDateEditor("validator")._setOption("custom", function () {
+					validated = true;
+					return false;
+				});
+
+				strictEqual($dtEditor.igDateEditor("validate"), false, "validate method didn't return false");
+				equal($dtEditor.igValidator("notifier").popover.css("display"), "block", 'Error popover is not shown through editor API');
+				ok($dtEditor.igValidator("notifier").popover.hasClass("ui-ignotify-error"), 'Error popover not with proper styles');
+				ok(validated, "Editor validate() API did not trigger igValidator");
+				//close it
+				$dtEditor.igValidator("notifier").hide();
+				$dtEditor.igDateEditor("validator")._setOption("custom", null);
+				strictEqual($dtEditor.igDateEditor("validate"), true, "validate method didn't return true");
+
+				// externally created
+				validated = false;
+				$dtEditor2.igDateEditor("validator")._setOption("custom", function () {
+					validated = true;
+					return true;
+				});
+				strictEqual($dtEditor.igDateEditor("validate"), true, "validate method didn't return true");
+				strictEqual(validated, false, "validate method triggered externally created igValidator (not though validatorOptions)");
+				$dtEditor2.igDateEditor("validator")._setOption("custom", null);
+			});
+
+			var testId = 'Set options, Apply options test';			
+			test(testId, 2, function () {			 
+				// if prevValue is same as the newVal
+				$('#inputEditor3').igDateEditor("value", "10/10/2010");			   
+
+				// set MinVal
+				throws(function () {
+					$('#inputEditor3').igDateEditor("option", "minValue", "01/10/2010");
+				}, "Uncaught Error: MinValue option can not be set runtime.");
+
+				// set MinVal
+				throws(function () {
+					$('#inputEditor3').igDateEditor("option", "maxValue", "01/12/2015");
+				}, "Uncaught Error: MaxValue option can not be set runtime.");
+			});
+
+			var testId = 'Initialize minVal and maxVal with wrong values';
+			test(testId, 3, function () {			  
+
+				equal($('#inputEditor4').igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is bigger than 99');
+
+				// init MinVal
+				throws(function () {
+					$("#inputEditor5").igDateEditor({			            
+						minValue: "wrong value"
+					});
+				}, "Uncaught Error: minValue option is not valid date");
+
+				// init MinVal
+				throws(function () {
+					$("#inputEditor6").igDateEditor({
+						maxValue: "wrong value"
+					});
+				}, "Uncaught Error: maxValue option is not valid date");
+			});
+			// Bug 
+			var testId = 'Date Editor initialization with short date format';
+			test(testId, 4, function () {
+				var currentValue = $('#inputEditor7').igDateEditor("value");
+				var newDate = new Date(1990, 0, 9);
+
+				equal(currentValue.getFullYear(), newDate.getFullYear(), 'The initial year is not as expexted');
+				equal(currentValue.getMonth(), newDate.getMonth(), 'The initial month is not as expexted');
+				equal(currentValue.getDate(), newDate.getDate(), 'The initial day is not as expexted');
+				equal($('#inputEditor7').igDateEditor("displayValue"), "1/9/90", 'The initial value is not as expexted');
+			});
+
+			//Bug 207713
+			var testId = 'Testing date format with milliseconds ';
+			test(testId, 4, function () {
+				var $dtEditor = $('#inputEditor8'), currValue, testValue;
+			   
+				typeInInput("30,10,2016 10:25:56 12 PM", $dtEditor.igDateEditor("field"));			   
+				$dtEditor.trigger("blur");
+			   
+				currValue = $dtEditor.igDateEditor("value");
+				testValue = new Date(2016, 9, 30, 22, 25, 56, 120);
+				equal(currValue.getTime(), testValue.getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "30,10,2016 10:25:56 12 PM", 'The initial value is not as expexted');
+								
+				typeInInput("30,10,2016 13:25:56 12", $dtEditor.igDateEditor("field"));
+
+				$dtEditor.trigger("blur");
+				equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2016, 9, 30, 13, 25, 56, 120).getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "30,10,2016 01:25:56 12 PM", 'The initial value is not as expexted');
+			});
+
+			// The same as the previous, but format of the editor is with 'fff' instead of 'ff'.
+			test(testId, 4, function () {
+				var $dtEditor = $('#inputEditor8a'), currValue, testValue;
+
+				typeInInput("30,10,2016 10:25:56 12", $dtEditor.igDateEditor("field"));
+
+				$dtEditor.trigger("blur");
+				equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2016, 9, 30, 10, 25, 56, 120).getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "30,10,2016 10:25:56 120 AM", 'The initial value is not as expexted');
+
+				typeInInput("30,10,2016 10:25:56 112 PM", $dtEditor.igDateEditor("field"));
+				$dtEditor.trigger("blur");
+
+				currValue = $dtEditor.igDateEditor("value");
+				testValue = new Date(2016, 9, 30, 22, 25, 56, 112);
+				equal(currValue.getTime(), testValue.getTime(), 'The initial value is not as expexted');
+				// Bug #208887
+				equal($dtEditor.igDateEditor("displayValue"), "30,10,2016 10:25:56 112 PM", '(Bug #208887) The initial display value is not as expected');
+			});
+
+			var testId = 'Test min and maxValues';
+			test(testId, 6, function () {
+				var $dtEditor = $('#inputEditor9');
+				// Initial value is "" and the incorrect value should be returned to ""
+				// Test maxValue			    
+				$dtEditor.igDateEditor("value", "2021/12/31");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("value"), new Date("2020/12/31").toString(), 'The max value is not correctly applied');
+				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
+				//$(".ui-ignotify-warn .ui-igpopover-close-button").click();
+
+				// Set value different from ""			  
+				$dtEditor.igDateEditor("value", "2016/12/31");
+				$dtEditor.trigger("blur");
+
+				equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2016, 11, 31).getTime(), 'The value is not set');
+				equal($dtEditor.igDateEditor("displayValue"), "2016/12/31", 'The display value is not as expexted');
+
+				// Test minValue
+				//var newDate = 
+				$dtEditor.igDateEditor("value", "2015/05/01");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("value"), new Date(2015, 6, 1).toString(), 'The value is not set to min');
+				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
+
+			});
+			
+			var testId = 'Test invalid day';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor4');
+				$dtEditor.igDateEditor("option", "value", "24/04/2015");
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(0);
+					typeInMaskedInput("32/04/2015", $dtEditor.igDateEditor("field"));
+					$dtEditor.trigger("blur");
+					equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2015, 03, 30).getTime(), 'The initial value is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), "30/04/2015", 'The initial value is not as expexted');
+				}, 200);
+			});
+
+			var testId = 'Test invalid month';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor3');
+				$dtEditor.igDateEditor("value", "12/29/2015");
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(0);
+					typeInMaskedInput("15/29/2016", $dtEditor.igDateEditor("field"));
+					$dtEditor.trigger("blur");
+					equal($dtEditor.igDateEditor("value").getTime(), new Date(2017, 2, 29).getTime(), 'The initial value is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), "3/29/2017 12:00 AM", 'The initial value is not as expexted');
+				}, 200);
+			});
+
+		   var testId = 'Test invalid hour';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor10');
+				$dtEditor.igDateEditor("option", "value", "23:56:59");
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(0);
+					typeInMaskedInput("26:59:89", $dtEditor.igDateEditor("field"));
+					$dtEditor.trigger("blur");
+					value = $dtEditor.igDateEditor("value");
+					value = new Date(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds());
+					expectedValue = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 3, 00, 29);
+					// use setDate to add a day, otherwise date won't increase correctly
+					expectedValue.setDate(expectedValue.getDate() + 1);
+					equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), "03:00:29", 'The initial value is not as expexted');
+				}, 200);
+			});
+
+			var testId = 'Test seconds with one digit';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor11'), expectedValue, value;
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(0);
+					typeInMaskedInput("20:59:9", $dtEditor.igDateEditor("field"));
+					$dtEditor.trigger("blur");
+					value = $dtEditor.igDateEditor("value");
+					value = new Date(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds());
+					expectedValue = new Date(value.getFullYear(), value.getMonth(), value.getDate(), 20, 59, 9);
+					equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), "20:59:09", 'The initial value is not as expexted');
+				}, 200);
+			});
+
+			var testId = 'Testing date format with two digits year';
+			test(testId, 3, function () {
+
+				var $dtEditor = $('#inputEditor12');
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(0);
+					typeInMaskedInput("29/11/16", $dtEditor.igDateEditor("field"));
+					$dtEditor.trigger("blur");
+					equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2016, 10, 29).getTime(), 'The initial value is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), "29/11/16", 'The initial value is not as expexted');
+					ok($dtEditor.igDateEditor("isValid"), "Value is not valid or method isValid is not working");
+				}, 200);
+			});
+
+			var testId = 'Testing time with spin buttons and cursor position at hours';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor13'), today = new Date();
+				$dtEditor.igDateEditor("value", new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22, 01, 20));
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(0);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					clickElement(spinUpButton, false, false);
+					stop();
+					setTimeout(function () {
+						start();
+						clickElement(spinUpButton, false, false);
+						$dtEditor.trigger("blur");
+						value = $dtEditor.igDateEditor("value");
+						value = new Date(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds());
+						expectedValue = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 1, 20);
+						expectedValue = new Date(expectedValue.setDate(expectedValue.getDate() + 1));
+						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), "00:01:20", 'The initial value is not as expexted');
+					}, 300);
+				}, 200);
+			});
+
+			var testId = 'Testing time with spin buttons and cursor position at minutes';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor13'), today = new Date();
+				$dtEditor.igDateEditor("value", new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22, 01, 20));
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(3);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					clickElement(spinUpButton, false, false);
+					stop();
+					setTimeout(function () {
+						start();
+						clickElement(spinUpButton, false, false);
+						$dtEditor.trigger("blur");
+						value = $dtEditor.igDateEditor("value");
+						value = new Date(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds());
+						expectedValue = new Date(value.getFullYear(), value.getMonth(), new Date().getDate(), 22, 3, 20);
+						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), "22:03:20", 'The initial value is not as expexted');
+					}, 300);
+				}, 200);
+			});
+
+			var testId = 'Testing time with spin buttons and cursor position at seconds';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor13'), today = new Date();
+				$dtEditor.igDateEditor("value", new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22, 01, 20));
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(6);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					clickElement(spinUpButton, false, false);
+					stop();
+					setTimeout(function () {
+						start();
+						clickElement(spinUpButton, false, false);
+						$dtEditor.trigger("blur");
+						value = $dtEditor.igDateEditor("value");
+						value = new Date(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds());
+						expectedValue = new Date(value.getFullYear(), value.getMonth(), new Date().getDate(), 22, 1, 22);
+						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), "22:01:22", 'The initial value is not as expexted');
+					}, 300);
+				}, 200);
+			});
+
+			var testId = 'Testing UTC date';
+			test(testId, 4, function () {
+				var $dtEditor = $('#inputEditor14');
+
+				typeInInput("30/10/2016 10:25:56", $dtEditor.igDateEditor("field"));
+				$dtEditor.trigger("blur");
+
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(Date.UTC(2016, 9, 30, 10, 25, 56)).getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 10:25:56", 'The initial value is not as expexted');
+
+				typeInInput("30/10/2016 13:25:56", $dtEditor.igDateEditor("field"));
+
+				$dtEditor.trigger("blur");
+				equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(Date.UTC(2016, 9, 30, 13, 25, 56)).getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 13:25:56", 'The initial value is not as expexted');
+			});
+			testId = "isValid in edit mode"
+			test(testId, 4, function () {
+				$("#validInEditModeEditor").igDateEditor("field").focus();
+				$("#validInEditModeEditor").data("igDateEditor")._enterEditMode();
+				ok(!$("#validInEditModeEditor").igDateEditor("isValid"), "Not all required fields are filled");
+				$("#validInEditModeEditor").igDateEditor("field").val("2012/__/__");
+				ok($("#validInEditModeEditor").igDateEditor("isValid"), "Not all required fields are filled");
+				$("#validInEditModeEditor").igDateEditor("field").val("____/__/__");
+				ok(!$("#validInEditModeEditor").igDateEditor("isValid"), "All required fields are filled");
+				$("#validInEditModeEditor").igDateEditor("field").val("2012/10/10").blur();
+				$("#validInEditModeEditor").data("igDateEditor")._exitEditMode();
+				ok($("#validInEditModeEditor").igDateEditor("isValid"), "All required fields are filled");
+			});
+			
+			var testId = 'Testing spin hours to next day in edit mode';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor15'), today = new Date();
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(12);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					clickElement(spinUpButton, false, false);
+					stop();
+					setTimeout(function () {
+						start();
+						clickElement(spinUpButton, false, false);
+						$dtEditor.trigger("blur");
+						value = $dtEditor.igDateEditor("value");
+						expectedValue = new Date(2015, 11, 31, 1, 58, 58, 999);
+						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), "12/31/2015 1:58 AM", 'The initial value is not as expexted');
+					}, 300);
+				}, 200);
+			});
+
+			var testId = 'Testing spin milliseconds display mode with f mask';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor16'), today = new Date();
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(10);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					clickElement(spinUpButton, false, false);
+					stop();
+					setTimeout(function () {
+						start();
+						clickElement(spinUpButton, false, false);
+						value = $dtEditor.igDateEditor("value");
+						expectedValue = new Date(2015, 10, 11, 23, 5, 10, 200);
+						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), "23:05:10:2", 'The initial value is not as expexted');
+					}, 300);
+				}, 200);
+			});
+
+			var testId = 'Testing spin milliseconds display mode with ff mask';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor17'), today = new Date();
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(10);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					clickElement(spinUpButton, false, false);
+					stop();
+					setTimeout(function () {
+						start();
+						clickElement(spinUpButton, false, false);
+						value = $dtEditor.igDateEditor("value");
+						expectedValue = new Date(2015, 10, 11, 23, 5, 10, 20);
+						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), "23:05:10:02", 'The initial value is not as expexted');
+					}, 300);
+				}, 200);
+			});
+
+			var testId = 'Testing spin milliseconds display mode with fff mask';
+			test(testId, 2, function () {
+				var $dtEditor = $('#inputEditor18'), today = new Date();
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(10);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					clickElement(spinUpButton, false, false);
+					stop();
+					setTimeout(function () {
+						start();
+						clickElement(spinUpButton, false, false);
+						value = $dtEditor.igDateEditor("value");
+						expectedValue = new Date(2015, 10, 11, 23, 5, 10, 2);
+						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), "23:05:10:002", 'The initial value is not as expexted');
+					}, 300);
+				}, 200);
+			});
+
+			var testId = '(Bug #209538) Testing spin seconds, munites, hours, days, months, years edit mode';
+			test(testId, 16, function () {
+				var $dtEditor = $('#inputEditor19'), today = new Date();
+				$dtEditor.igDateEditor("setFocus");
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(18);
+				var spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+					spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				clickElement(spinDownButton, false, false);
+				clickElement(spinDownButton, false, false);
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinDownButton, false, false);
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(9);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinDownButton, false, false);
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(6);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinDownButton, false, false);
+				clickElement(spinDownButton, false, false);
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinUpButton, false, false);
+				clickElement(spinDownButton, false, false);
+				clickElement(spinDownButton, false, false);
+
+				$dtEditor.trigger("blur");
+				value = $dtEditor.igDateEditor("value");
+				expectedValue = new Date(2016, 11, 13, 0, 4, 11, 0);
+				equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "2016/12/13 00:04:11:000", 'The initial value is not as expexted');
+
+				var $dtEditor = $('#inputEditor20');
+				$dtEditor.igDateEditor("setFocus");
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(18);
+				var spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+					spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(9);
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(6);
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				clickElement(spinUpButton, false, false);
+
+				$dtEditor.trigger("blur");
+				value = $dtEditor.igDateEditor("value");
+				expectedValue = new Date(2017, 0, 2, 1, 1, 0, 0);
+				equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "2017/01/02 01:01:00:000", 'The initial value is not as expexted');
+
+				var $dtEditor = $('#inputEditor21');
+				$dtEditor.igDateEditor("setFocus");
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(18);
+				var spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+					spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(9);
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(6);
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				clickElement(spinDownButton, false, false);
+
+				$dtEditor.trigger("blur");
+				value = $dtEditor.igDateEditor("value");
+				expectedValue = new Date(2013, 10, 30, 23, 0, 0, 0);
+				equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "2013/11/30 23:00:00:000", 'The initial value is not as expexted');
+
+				var $dtEditor = $('#inputEditor22');
+				$dtEditor.igDateEditor("setFocus");
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(18);
+				var spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+					spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(9);
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(6);
+				clickElement(spinUpButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				clickElement(spinUpButton, false, false);
+
+				$dtEditor.trigger("blur");
+				value = $dtEditor.igDateEditor("value");
+				expectedValue = new Date(2016, 11, 30, 23, 59, 59);
+				equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "2016/12/30 23:59:59:000", 'The initial value is not as expexted');
+
+				$dtEditor = $('#inputEditor23');
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+					spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				$dtEditor.igDateEditor("setFocus");
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(18);
+
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(9);
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(6);
+				clickElement(spinDownButton, false, false);
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				clickElement(spinDownButton, false, false);
+
+				$dtEditor.trigger("blur");
+				value = $dtEditor.igDateEditor("value");
+				expectedValue = new Date(2014, 0, 1, 0, 0, 0, 0);
+				equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "2014/01/01 00:00:00:000", 'The initial value is not as expexted');
+
+				var $dtEditor = $('#inputEditor19'), today = new Date();
+				$dtEditor.igDateEditor("setFocus");
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(21);
+				var spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+					spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				// SpinUp once and SpinDown once
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.data("igDateEditor")._setCursorPosition(21);
+				clickElement(spinUpButton, false, false);
+				expectedValue = new Date(2016, 11, 13, 0, 4, 11, 1);
+				$dtEditor.trigger("blur");
+				value = $dtEditor.igDateEditor("value");
+				equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "2016/12/13 00:04:11:001", 'The initial value is not as expexted');
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.data("igDateEditor")._setCursorPosition(21);
+				clickElement(spinDownButton, false, false);
+				expectedValue = new Date(2016, 11, 13, 0, 4, 11, 0);
+				$dtEditor.trigger("blur");
+				value = $dtEditor.igDateEditor("value");
+				equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "2016/12/13 00:04:11:000", 'The initial value is not as expexted');
+
+				// SpinDown and the value should stay the same, cause limitSpinToCurrentField is true
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.igDateEditor("option", "limitSpinToCurrentField", true);
+				$dtEditor.data("igDateEditor")._setCursorPosition(21);
+				clickElement(spinDownButton, false, false);
+				expectedValue = new Date(2016, 11, 13, 0, 4, 11, 0);
+				$dtEditor.trigger("blur");
+				value = $dtEditor.igDateEditor("value");
+				equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("displayValue"), "2016/12/13 00:04:11:000", 'The initial value is not as expexted');
+
+			});
+
+			var testId = 'Setting options on run time';
+			test(testId, 1 , function(){
+
+				throws(function () {
+					$("#inputEditor26").igDateEditor("option","dateInputFormat","timeLong");
+				},"This option cann't be set on run time, but the error doesn't appear.");
+				
+			});
+
+			var testId = "Dropdown methods";
+			test(testId, 6, function(){
+				throws(function(){
+					$("#inputEditor29").igDateEditor("dropDownButton");
+				}, "The dropDownButton method didn't throws exception.");
+
+
+				throws(function(){
+					$("#inputEditor29").igDateEditor("dropDownContainer");
+				}, "The dropDownContainer method didn't throws exception.");
+
+				throws(function(){
+					$("#inputEditor29").igDateEditor("dropDownVisible");
+				}, "The dropDownVisible method didn't throws exception.");
+
+				
+				throws(function(){
+					$("#inputEditor29").igDateEditor("findListItemIndex");
+				}, "The findListItemIndex method didn't throws exception.");
+				
+				throws(function(){
+					$("#inputEditor29").igDateEditor("getSelectedListItem");
+				}, "The getSelectedListItem method didn't throws exception.");
+
+				
+				throws(function(){
+					$("#inputEditor29").igDateEditor("selectedListIndex");
+				}, "The selectedListIndex method didn't throws exception.");
+			});
+
+			var testId = 'Testing spin on empty editor';
+			test(testId, 3, function () {
+				var $dtEditor = $('#inputEditor24'), today = new Date();
+				$dtEditor.igDateEditor("setFocus");
+
+				$dtEditor.data("igDateEditor")._setCursorPosition(3);
+				var spinUpButton = $dtEditor.igDateEditor("spinUpButton"),
+					spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				clickElement(spinUpButton, false, false);
+				$dtEditor.trigger("blur");
+				value = $dtEditor.igDateEditor("value");
+				equal(value.getFullYear(), today.getFullYear(), 'The year is not correct');
+				equal(value.getMonth(), today.getMonth(), 'The month is not correct');
+				equal(value.getDate(), today.getDate(), 'The date is not correct');
+			}); 
+
+			var testId = "Getting value from text";
+			test(testId, 3, function(){
+				var value, newDate = new Date(2015, 2, 1, 0, 0, 0);
+				stop();
+				setTimeout(function(){
+					start();
+					//setting wrong value for the dataMode
+					$("#inputEditor28").igDateEditor("option", "dataMode", "data");
+					$("#inputEditor28").data("igDateEditor")._valueFromText("03/01/2015");
+					$("#inputEditor28").blur();
+					$("#inputEditor28").blur();			
+
+					$("#inputEditor28").igDateEditor("option", "dataMode", "date");
+					$("#inputEditor28").igDateEditor("setFocus");
+					value = $("#inputEditor28").igDateEditor("value");
+					equal(value.toString(), newDate.toString(), "The date mode didn't return the proper value formatting.");
+
+					stop();
+					setTimeout(function(){
+						start();
+						$("#inputEditor28").igDateEditor("option", "dataMode", "displayModeText");
+						$("#inputEditor28").blur();
+						$("#inputEditor28").blur();
+						$("#inputEditor28").igDateEditor("setFocus");
+						value = $("#inputEditor28").igDateEditor("value");
+						equal(value.toString(), "3/1/2015", "The displayModeText mode didn't return the proper value formatting.");
+
+						stop();
+						setTimeout(function(){
+							start();
+							$("#inputEditor28").igDateEditor("option", "dataMode", "editModeText");
+							$("#inputEditor28").blur();
+							$("#inputEditor28").blur();
+
+							$("#inputEditor28").igDateEditor("setFocus");
+							value = $("#inputEditor28").igDateEditor("value");
+							equal(value.toString(), "03/01/2015", "The editModeText mode didn't return the proper value formatting.");
+						}, 200);
+					}, 200);
+				}, 200);
+			});
+
+			var testId = 'Trigger key down, key up';
+			test(testId, 2, function(){
+				var currentValue = $("#inputEditor27").igDateEditor("value"), changedValue,
+				editorInput = $("#inputEditor27").igDateEditor("field");				
+				stop();
+				setTimeout(function() {
+					start();				
+					$("#inputEditor27").igDateEditor("setFocus");
+					stop();
+					setTimeout(function() {
+						start();	
+						keyInteraction(38, editorInput);
+
+						$("#inputEditor27").blur();
+						changedValue = $("#inputEditor27").igDateEditor("value");
+						ok(currentValue.toString() !== changedValue.toString(),"The spinDownButton doen't change the date.");
+
+						 $("#inputEditor27").igDateEditor("setFocus");
+						stop();
+						setTimeout(function() {
+							start();
+						 keyInteraction(40, editorInput);
+						 $("#inputEditor27").blur();
+						changedValue = $("#inputEditor27").igDateEditor("value");
+						ok(currentValue.toString() === changedValue.toString(),"The spinDownButton doen't change the date.");
+					},200);
+					},200);
+				}, 100);
+			});
+
+			var testId = 'Replacing displayed value';
+			test(testId, 1, function(){
+				var currentValue = $("#inputEditor27").igDateEditor("value"), changedValue;
+				stop();
+				setTimeout(function() {
+					start();		
+				$("#inputEditor27").igDateEditor("setFocus");
+				$("#inputEditor27").igDateEditor("select", 2, 4);
+				$("#inputEditor27").igDateEditor("insert", "05");					
+					stop();
+					setTimeout(function() {
+						start();
+						$("#inputEditor27").blur();
+						changedValue = $("#inputEditor27").igDateEditor("value");
+						ok(currentValue.toString() !== changedValue.toString(),"The new value was not inserted.");
+					}, 200);
+				}, 100);
+			});
+
+			// Bug #215134
+			var testId = 'Testing empty mask';
+			test(testId, 1, function () {
+				var editor = $("#inputEditor30"),
+					editorInput = editor.igDateEditor("field"),
+					currentValue = editor.igDateEditor("value");
+
+				stop();
+				setTimeout(function () {
+					start();
+					editor.igDateEditor("setFocus");
+					editor.igDateEditor("select", 3, 4);
+					editor.igDateEditor("insert", "2");
+					stop();
+
+					setTimeout(function () {
+						var field = $("#inputEditor30").igDateEditor("field")
+						start();
+
+						editor.igDateEditor("select", 3, 4);
+						keyInteraction(38, field);
+						newValue = field.val();
+						var today = new Date();
+						zero = (today.getMonth() + 1 > 9) ? "" : "0";
+						checkValue = zero + (today.getMonth() + 1) + "/03/" +
+							today.getFullYear();
+						equal(newValue, checkValue, "Mask doesn't match");
+					}, 300);
+				}, 100);
+			});
+
+			// Bug #215134
+			var testId = 'Testing empty mask';
+			test(testId, 1, function () {
+				var editor = $("#inputEditor31"),
+					editorInput = editor.igDateEditor("field"),
+					currentValue = editor.igDateEditor("value"), currentDay;
+
+				stop();
+				setTimeout(function () {
+					start();
+					editor.igDateEditor("setFocus");
+					editor.igDateEditor("select", 0, 2);
+					editor.igDateEditor("insert", "10");
+					stop();
+
+					setTimeout(function () {
+						var field = $("#inputEditor31").igDateEditor("field")
+						start();
+
+						editor.igDateEditor("select", 0, 2);
+						keyInteraction(40, field);
+						newValue = field.val();
+						var today = new Date();
+						currentDay = today.getDate();
+						if (currentDay < 10) {
+							currentDay = "0" + currentDay;
+						}
+						checkValue = "09/" +
+							currentDay + "/" + today.getFullYear();
+						equal(newValue, checkValue, "Mask doesn't match");
+					}, 200);
+				}, 100);
+			});
+
+			// Bug #215523
+			var testId = 'Testing canceling of the events.';
+			test(testId, 1, function () {
+				var editor = $("#inputEditor32"),
+					editorInput = editor.igDateEditor("field"),
+					currentValue = editor.igDateEditor("value");
+
+				stop();
+				setTimeout(function () {
+					start();
+					editor.igDateEditor("setFocus");
+					keyInteraction(40, editorInput);
+					newValue = editorInput.val();
+					equal(newValue, "__:__", "Event is not canceled.");
+				}, 100);
+			});
+
+			// Bug #216293
+			var testId = 'Testing empty mask and year';
+			test(testId, 1, function () {
+				var editor = $("#inputEditor33"),
+					editorInput = editor.igDateEditor("field"),
+					currentValue = editor.igDateEditor("value");
+
+				stop();
+				setTimeout(function () {
+					start();
+					editor.igDateEditor("setFocus");
+					editor.igDateEditor("select", 7, 8);
+					editor.igDateEditor("insert", "7");
+					stop();
+
+					setTimeout(function () {
+						var field = $("#inputEditor33").igDateEditor("field")
+						start();
+
+						editor.igDateEditor("select", 7, 8);
+						keyInteraction(38, field);
+						newValue = field.val();
+						var today = new Date();
+						zero = (today.getMonth() + 1 > 9) ? "" : "0";
+						zeroDay = (today.getDate() > 9) ? "" : "0";
+						checkValue = zero + (today.getMonth() + 1) + "/" + zeroDay + today.getDate() +
+							"/0008";
+						equal(newValue, checkValue, "Mask doesn't match");
+					}, 300);
+				}, 100);
+			});
+
+			// Bug #216293
+			var testId = 'Testing empty mask and year';
+			test(testId, 1, function () {
+				var editor = $("#inputEditor34"),
+					editorInput = editor.igDateEditor("field"),
+					currentValue = editor.igDateEditor("value");
+
+				stop();
+				setTimeout(function () {
+					start();
+					editor.igDateEditor("setFocus");
+					editor.igDateEditor("select", 7, 10);
+					editor.igDateEditor("insert", "100");
+					stop();
+
+					setTimeout(function () {
+						var field = $("#inputEditor34").igDateEditor("field")
+						start();
+
+						editor.igDateEditor("select", 7, 8);
+						keyInteraction(40, field);
+						newValue = field.val();
+						var today = new Date();
+						zero = (today.getMonth() + 1 > 9) ? "" : "0";
+						zeroDay = (today.getDate() > 9) ? "" : "0";
+						checkValue = zero + (today.getMonth() + 1) + "/" + zeroDay + today.getDate() +
+							"/0099";
+						equal(newValue, checkValue, "Mask doesn't match");
+					}, 300);
+				}, 100);
+			});
+		});
+
+		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
+		//     var keyDown = jQuery.Event("keydown"),
+  //               keyUp = jQuery.Event("keyup");
+
+		//     keyDown.ctrlKey = keyUp.ctrlKey = ctrl;
+		//     keyDown.altKey = keyUp.altKey = alt;
+		//     keyDown.shiftKey = keyUp.shiftKey = shift;
+
+		//     switch (key) {
+		//         case "up": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.UP; break;
+		//         case "left": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.LEFT; break;
+		//         case "right": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.RIGHT; break;
+		//         case "down": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.DOWN; break;
+		//         default: keyDown.keyCode = keyUp.keyCode = key; break;
+		//     }
+
+		//     element.trigger(keyDown);
+		//     element.trigger(keyUp);
+		// }
+		function keyInteraction(key, target, special) {
+			keyDownChar(key, target, special);
+			keyPressChar(key, target, special);
+			keyUpChar(key, target, special);
+		}
+		function keyDownChar(key, target, special) {
+			var evt = $.Event("keydown");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function keyPressChar(key, target, special) {
+			var evt = $.Event("keypress");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function keyUpChar(key, target, special) {
+			var evt = $.Event("keyup");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function typeInInput(characters, element) {
+			var keyDown = jQuery.Event("keydown"),
+			   keyPress = jQuery.Event("keypress"),
+			   keyUp = jQuery.Event("keyup"),
+			   value = "";
+
+			characters.split('').forEach(function (ch) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				value = value + ch;
+				element.val(value);
+				element.trigger(keyUp);
+			});
+		}
+		function typeInMaskedInput(characters, element) {
+			var keyDown = jQuery.Event("keydown"),
+			   keyPress = jQuery.Event("keypress"),
+			   keyUp = jQuery.Event("keyup"),
+			   value = element.val(), selectionStart = 0;
+
+			characters.split('').forEach(function (ch) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				value = value.replaceAt(selectionStart++, ch);
+				element.val(value);
+				element.trigger(keyUp);
+			});
+		}
+
+
+		String.prototype.replaceAt = function (index, character) {
+			return this.substr(0, index) + character + this.substr(index + character.length);
+		}
+		function clickElement(element, ctrl, shift) {
+			var mouseDown = jQuery.Event("mousedown"), mouseUp = jQuery.Event("mouseup");
+			ctrl = (typeof ctrl === 'undefined') ? false : ctrl;
+			shift = (typeof shift === 'undefined') ? false : shift;
+			mousedown(element[0], ctrl, shift);
+			mouseup(element[0], ctrl, shift);
+		}
+		function mouseup(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
+		}
+		function mousedown(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
+		}
+		function keyPressChar(key, target, special) {
+			var evt = $.Event("keypress");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		QUnit.log = function (details) {
+			if (window.console && window.console.log) {
+				window.console.log(details.result + ' :: ' + details.message);
+			}
+		};
+	</script>
+
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+		<input id="inputEditor1" />
+		<input id="inputEditor2" />
+		<input id="inputEditor3" />
+		<input id="inputEditor4" />
+		<input id="inputEditor5" />
+		<input id="inputEditor6" />
+		<input id="inputEditor7" />
+		<input id="inputEditor8" />
+		<input id="inputEditor8a" />
+		<input id="inputEditor9" />
+		<input id="inputEditor10" />
+		<input id="inputEditor11" />
+		<input id="inputEditor12" />
+		<input id="inputEditor13" />
+		<input id="inputEditor14" />
+		<input id="dropdown"/>
+		<input type="text" id="validInEditModeEditor" />
+		<input id="inputEditor15" />
+		<input id="inputEditor16" />
+		<input id="inputEditor17" />
+		<input id="inputEditor18" />
+		<input id="inputEditor19" />
+		<input id="inputEditor20" />
+		<input id="inputEditor21" />
+		<input id="inputEditor22" />
+		<input id="inputEditor23" />
+		<input id="inputEditor24" />
+		<input id="inputEditor25" />
+		<input id="inputEditor26" />        
+		<input id="inputEditor27" />       
+		<input id="inputEditor28" />     
+		<input id="inputEditor29" />
+		<input id="inputEditor30" />
+		<input id="inputEditor31" />
+		<input id="inputEditor32" />
+		<input id="inputEditor33" />
+		<input id="inputEditor34" />
+	</div>
+</body>
+</html>
+

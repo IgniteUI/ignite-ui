@@ -1,0 +1,765 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title> Infragistics jQuery Video Player - QUnit tests </title>
+    <link type="text/css" href="../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.videoplayer.css" rel="stylesheet" />
+	<link type="text/css" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.html5.css" rel="stylesheet" />
+    <link type="text/css" href="../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+    <script type="text/javascript" src="../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="mockVideo.js"></script>
+	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/i18n/infragistics.ui.videoplayer-en.js"></script>
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.ui.videoplayer.js"></script>-->
+	<script type="text/javascript" src="../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.videoplayer.js"></script>
+	<script type="text/javascript" src="igVideoPlayerUnitTesting.js"></script>
+
+	<style type="text/css">
+		body {
+			font-family: Verdana;
+			font-size: 11pt;
+		}
+	</style>
+	<script type="text/javascript"> 
+	document.oldCreateElement = document.createElement;
+	document.createElement = customCreateElement;
+	function customCreateElement(tag) {
+		return tag === 'video' ? $.createMockVideo(document.mockOptions) : document.oldCreateElement(tag);
+	}
+
+	
+	
+	function loadTestbeds() {
+		$(function () {
+			$("#player1").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+						  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+				],
+				width: 800,
+				height: 340,
+				posterUrl: 'http://sublimevideo.net/demo/dartmoor.jpg?1290104465',
+				fullscreen: false,
+				browserControls:false,
+				autoplay: false,
+				muted: false,
+				autohide: false
+			});
+			
+			$("#player2").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+						  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+				],
+				width: 800,
+				height: 340,
+				posterUrl: 'http://sublimevideo.net/demo/dartmoor.jpg?1290104465',
+				fullscreen: false,
+				browserControls:false,
+				autoplay: true,
+				muted: true,
+				autohide: false
+			});
+			
+			$("#player3").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+						  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+				],
+				width: 800,
+				height: 340,
+				posterUrl: 'http://sublimevideo.net/demo/dartmoor.jpg?1290104465',
+				fullscreen: false,
+				browserControls:false,
+				autoplay: false,
+				muted: true,
+				autohide: false,
+				bookmarks: [
+					{
+						title: 'mark1',
+						description: 'Here we see a nice green field.',
+						time: 120
+					},
+					{
+						title: 'mark2',
+						description: 'Here we see a nice green field.',
+						time: 20,
+						disabled: true
+					},
+					{
+						title: 'mark3',
+						description: 'Here we see a nice green field.',
+						time: 60
+					}
+				]
+			});
+			
+			$("#player4").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+						"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+				],
+				width: 800,
+				height: 340,
+				posterUrl: 'http://sublimevideo.net/demo/dartmoor.jpg?1290104465',
+				fullscreen: false,
+				browserControls:false,
+				autoplay: false,
+				title: 'Welcome to Green Field video...',
+				muted: true,
+				autohide: true,
+				banners: [{
+					imageUrl: 'http://www.portabellasgrille.com/menu/img/pizza.gif',
+					link: 'http://mrpizza.bg/',
+					times: [5, 20, 60],
+					visible: false,
+					closeBanner: true,
+					animate: false,
+					autohide: false,
+					width: "350px",
+					height: "40px"
+				}]
+			});
+			
+			$("#player5").igVideoPlayerUnitTesting({
+				sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+						  "http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						  "http://medias.jilion.com/sublimevideo/dartmoor.ogv"],
+				width: 800,
+				height: 340,
+				fullscreen: false,
+				browserControls:false,
+				autoplay: false,
+				title: 'Welcome to green grass...',
+				muted: true,
+				autohide: true,
+				commercials: {
+					embeddedCommercials: [
+					{
+						startTime: 20,
+						endTime: 30,
+						title: 'Some nice commercial.',
+						link: 'http://www.neowin.net'
+					}, 
+					{
+						startTime: 50,
+						endTime: 60,
+						link: 'http://www.winbeta.org'
+					}],
+					alwaysPlayCommercials: false, // Get or set whether the commercials will always play or not.
+					showBookmarks: true, // Get or set whether to show commercial locations or not.
+					adMessage: {
+						animate: false, // Get or set whether to animate the showing of the ad message.
+						autoHide: false, // Get or set whether the ad message will auto hide.
+						hideDelay: 20000 // Get or set the ad message hide delay.
+					}
+				}
+			});
+			
+			document.mockOptions = {};
+			document.mockOptions.oldBrowser = true;
+			$("#player6").igVideoPlayerUnitTesting({
+				sources: [],
+				width: 800,
+				height: 340,
+				browserControls:false,
+				autoplay: false,
+				autohide: false
+			});
+			$("#player6_video").css('display', 'none');
+			document.mockOptions = {};
+
+			$("#player7").igVideoPlayerUnitTesting({
+				sources: [],
+				width: 800,
+				height: 340,
+				browserControls:false,
+				autoplay: false,
+				autohide: false
+			});
+		});
+	}
+
+	initialized = false;
+	module("igVideoPlayer", {
+		setup: function() {
+			//pause testing until grid is rendered
+			if (!initialized) {
+				stop();
+				loadTestbeds();
+				setTimeout(function () { start(); }, 3000);
+				initialized = true;
+			}
+		},
+		teardown: function() {
+		}
+	});
+
+	// Options tests
+	var testId_1 = "igVideoPlayer options test 1: volume test";
+	var testId_2 = "igVideoPlayer options test 2: autoplay test";
+	var testId_3 = "igVideoPlayer browser controls test 3: play to position and verifies the slider position, current time, progress label value and format";
+	var testId_4 = "igVideoPlayer options test 4: muted test";
+	var testId_5 = "igVideoPlayer buffering test 5: check when video is loading that buffer progress is updated.";
+	// API tests
+	var testId_6 = "igVideoPlayer API test 6: play() test";
+	var testId_7 = "igVideoPlayer API test 7: pause() test";
+	// Custom controls rendering tests
+	var testId_8 = "igVideoPlayer controls rendering test 8";
+	var testId_9 = "igVideoPlayer missing sources test 9";
+	var testId_10 = "igVideoPlayer play/pause button test 10";
+	var testId_11 = "igVideoPlayer volume control mute on click test 12";
+	var testId_12 = "igVideoPlayer volume control slider show on hover test 12";
+	var testId_13 = "igVideoPlayer seeking test 13 - move slider and check currentTime.";
+	var testId_14 = "igVideoPlayer seek tooltip test 14 - check tooltip value in some point.";
+	var testId_15 = "igVideoPlayer play/pause on video element click test 15.";
+	var testId_16 = "igVideoPlayer title controls rendering test 16";
+	var testId_17 = "igVideoPlayer title controls play test 17";
+	var testId_18 = "igVideoPlayer bookmarks rendering test 18";
+	var testId_19 = "igVideoPlayer poster url test 19";
+	var testId_20 = "igVideoPlayer is big play shown on end test 20";
+	var testId_21 = "igVideoPlayer is waiting shown on waiting 21";
+	var testId_22 = "igVideoPlayer is waiting button rendering 22";
+	var testId_23 = "igVideoPlayer is big play button rendering 23";
+	var testId_24 = "igVideoPlayer is seek tooltip rendering 24";
+	var testId_25 = "igVideoPlayer keyboard navigation between control buttons 25";
+	var testId_26 = "igVideoPlayer autohide test 26";
+	var testId_27 = "igVideoPlayer destroy test 27";
+	var testId_28 = "igVideoPlayer Banner Rendering test 28";
+	var testId_29 = "igVideoPlayer Banner Show/Close test 29";
+	var testId_30 = "igVideoPlayer Embedded Commercials test 30";
+	var testId_31 = "igVideoPlayer Ad Message test 31";
+	var testId_32 = "igVideoPlayer Ad Message Close test 32";
+	var testId_33 = "igVideoPlayer Not Supported Video test 33";
+	var testId_34 = "igVideoPlayer No Compatible video source test 34";
+	
+	test(testId_16, function() {
+		var controls = $('#player1_title_ctrls');
+		ok(controls.length > 0, "Title controls are not rendered!");
+		checkClass(controls, 'ui-igplayer-controls');
+		checkClass(controls, 'ui-igplayer-grid');
+		checkClass(controls, 'ui-igplayer-title-controls');
+		var playButton = $('#player1_title_ctrls_play'),
+			spanPlay = playButton.children().first(),
+			spanTime = playButton.children().first().next();
+		checkClass(playButton, 'ui-igplayer-playbutton');
+		checkClass(playButton, 'ui-igplayer-playback-with-time');
+		checkClass(playButton, 'ui-state-default');
+		checkClass(playButton, 'ui-corner-all');
+		checkClass(playButton, 'ui-priority-primary');
+		
+		checkClass(spanPlay, 'ui-icon');
+		checkClass(spanPlay, 'ui-icon-play');
+		checkClass(spanPlay, 'ui-igplayer-playbutton-icon');
+		equal(spanPlay.attr('title'), $.ig.VideoPlayer.locale.play, "Should have title!");
+		
+		checkClass(spanTime, 'ui-igplayer-playbutton-text');
+		equal(spanTime.attr('title'), '4:20', "Should have title!");
+	});
+	
+	test(testId_17, function() {
+		var playButton = $('#player1_title_ctrls_play'),
+			video = $('#player1_video'),
+			click = jQuery.Event("click");
+		click.button = 0;
+		playButton.trigger(click); // should play.
+		ok(!video[0].paused, 'Video should be playing.');
+		ok($('#player1_title_ctrls').length === 0, 'Title controls shoud be destroyed.');
+		video.trigger(click); // should pause.
+		ok(video[0].paused, 'Video should be paused.');
+	});
+	
+	test(testId_1, function() {
+		var volume = $("#player1").igVideoPlayerUnitTesting('option', 'volume');
+		var videoVolume = $("#player1_video")[0].volume;
+		equal(volume, videoVolume, "Volume should be equal to video elem volume.");
+		$("#player1").igVideoPlayerUnitTesting('option', 'volume', 0.2);
+		var volume2 = $("#player1").igVideoPlayerUnitTesting('option', 'volume');
+		var videoVolume2 = $("#player1_video")[0].volume;
+		equal(volume2, videoVolume2.toFixed(1), "Volume should be equal to video elem volume.");
+		$("#player1").igVideoPlayerUnitTesting('option', 'volume', volume);
+	});
+	test(testId_2, 0, function () {
+
+	});
+	test(testId_3, function() {
+		$("#player1").data('igVideoPlayerUnitTesting').togglePlay();
+		$("#player1").data('igVideoPlayerUnitTesting').togglePlay();
+		var videoElem = $('#player1_video')[0];
+		videoElem.playTo(100);
+		//check progress label should be 
+		equal($('#player1_ctrls_pl').html(), '1:40 / 4:20', "Progress label has incorrect value"); // 100 sec of total 260 sec.
+		// check slider handle moved to right spot:
+		var left = $("#player1_ctrls_s").children().first()[0].style.left;
+		equal(left, ((videoElem.currentTime / videoElem.duration).toFixed(2) * 100) + '%');
+	});
+	test(testId_4, function() {
+		var muted = $("#player1").igVideoPlayerUnitTesting('option', 'muted');
+		var videoMuted = $("#player1_video")[0].muted;
+		equal(muted, videoMuted, "Muted should be equal to video elem muted.");
+		$("#player1").igVideoPlayerUnitTesting('option', 'muted', !muted);
+		var muted2 = $("#player1").igVideoPlayerUnitTesting('option', 'muted');
+		var videoMuted2 = $("#player1_video")[0].muted;
+		equal(muted2, videoMuted2, "Muted should be equal to video elem muted.");
+		$("#player1").igVideoPlayerUnitTesting('option', 'muted', muted);
+	});
+	test(testId_5, function() {
+		var videoElem = $('#player1_video')[0];
+		videoElem.bufferTo(videoElem.duration / 2);
+		equal($('#player1_ctrls_pb_progress')[0].style.width, '50%', "Half of movie should be buffered.");
+	});
+	test(testId_6, function() {
+		var pass = false;
+		$('#player1_video').one('timeupdate', function() {
+			pass = true;
+		});
+		$("#player1").igVideoPlayerUnitTesting("play");
+		ok(!$('#player1_video')[0].paused, 'Paused should be false.');
+		$("#player1").igVideoPlayerUnitTesting("pause");
+		ok($('#player1_video')[0].paused, 'Paused should be true.');
+		ok(pass);
+	});
+	test(testId_7, function() {
+		var videoElem = $('#player1_video')[0];
+		$("#player1").igVideoPlayerUnitTesting("play");
+		ok(!videoElem.paused, 'Paused should be false.');
+		$("#player1").igVideoPlayerUnitTesting("pause");
+		ok(videoElem.paused, 'Paused should be true.');
+	});
+	test(testId_8, function() {
+		ok(!$("#player1").igVideoPlayerUnitTesting('option', 'browserControls'), "Player controls are turned off.");
+		ok($('#player1_ctrls').length > 0, "Controls are not rendered!");
+		ok($('#player1_ctrls_play').length > 0, "Play button control is not rendered!");
+		ok($('#player1_ctrls_s').length > 0, "Progress slider control is not rendered!");
+		ok($('#player1_ctrls_pb').length > 0, "Progress bar control is not rendered!");
+		ok($('#player1_ctrls_pl').length > 0, "Progress label control is not rendered!");
+		ok($('#player1_ctrls_vc_btn').length > 0, "Volume controls button control is not rendered!");
+		ok($('#player1_ctrls_vs').length > 0, "Volume slider control is not rendered!");
+		ok($('#player1_ctrls_fs_btn').length > 0, "Fullscreen button control is not rendered!");
+		
+		var controls = $('#player1_ctrls');
+		checkClass(controls, 'ui-igplayer-controls');
+		checkClass(controls, 'ui-igplayer-grid');
+
+		// checks for play button:
+		var playButton = $('#player1_ctrls_play');
+		checkButton(playButton);
+		checkClass(playButton, 'ui-igplayer-playbutton');
+		
+		// checks for volume control button:
+		var volumeControlButton = $('#player1_ctrls_vc_btn');
+		checkButton(volumeControlButton);
+		checkClass(volumeControlButton, 'ui-igplayer-volumecontrol');
+		
+		// checks for full screen button:
+		var fullScreenButton = $('#player1_ctrls_fs_btn');
+		checkButton(fullScreenButton);
+		checkClass(fullScreenButton, 'ui-igplayer-fullscreen-button');
+		
+		checkClass($('#player1_ctrls_pl'), 'ui-igplayer-progresslabel');
+		// check volume slider classes: ui-igplayer-volumeslider ui-igslider-vertical ui-igslider ui-widget ui-widget-content ui-corner-all
+		var volumeSlider = $('#player1_ctrls_vs');
+		checkClass(volumeSlider, 'ui-igplayer-volumeslider');
+		checkClass(volumeSlider, 'ui-igslider-vertical');
+		checkClass(volumeSlider, 'ui-igslider');
+		checkClass(volumeSlider, 'ui-widget');
+		checkClass(volumeSlider, 'ui-widget-content');
+		checkClass(volumeSlider, 'ui-corner-all');
+		
+		// check progress slider classes: ui-igplayer-progressbar ui-corner-all ui-igslider-horizontal ui-igslider ui-widget ui-widget-content
+		var progressSlider = $('#player1_ctrls_s');
+		checkClass(progressSlider, 'ui-igplayer-progressbar');
+		checkClass(progressSlider, 'ui-igslider-horizontal');
+		checkClass(progressSlider, 'ui-igslider');
+		checkClass(progressSlider, 'ui-widget');
+		checkClass(progressSlider, 'ui-widget-content');
+		checkClass(progressSlider, 'ui-corner-all');
+		
+		// check progress bar classes: ui-igplayer-progressbuffer ui-igprogressbar-horizontal ui-igprogressbar ui-widget ui-widget-content ui-corner-all
+		var progressBar = $('#player1_ctrls_pb');
+		//checkClass(progressBar, 'ui-igplayer-progressbuffer'); no such class yet
+		checkClass(progressBar, 'ui-igprogressbar-horizontal');
+		checkClass(progressBar, 'ui-igprogressbar');
+		checkClass(progressBar, 'ui-widget');
+		checkClass(progressBar, 'ui-widget-content');
+		checkClass(progressBar, 'ui-corner-all');
+	});
+
+	test(testId_9, 0, function() {
+		
+	});
+	
+	test(testId_10, function() {
+		var playButton = $('#player1_ctrls_play');
+		var playIcon = playButton.children().first();
+		checkClass(playIcon, 'ui-icon');
+		checkClass(playIcon, 'ui-igplayer-playbutton-icon');
+		checkClass(playIcon, 'ui-icon-play');
+		$("#player1").igVideoPlayerUnitTesting("play");
+		checkClass(playIcon, 'ui-icon-pause');
+		$("#player1").igVideoPlayerUnitTesting("pause");
+		checkClass(playIcon, 'ui-icon-play');
+	});
+	
+	test(testId_11, function() {
+		var volumeControlButton = $('#player1_ctrls_vc_btn');
+		var volumeIcon = volumeControlButton.children().first();
+		checkClass(volumeIcon, 'ui-icon');
+		checkClass(volumeIcon, 'ui-igbutton-icon');
+		checkClass(volumeIcon, $("#player1").igVideoPlayerUnitTesting("option", 'muted') ? 'ui-icon-volume-off' : 'ui-icon-volume-on');
+		volumeControlButton.click();
+		checkClass(volumeIcon, 'ui-icon');
+		checkClass(volumeIcon, $("#player1").igVideoPlayerUnitTesting("option", 'muted') ? 'ui-icon-volume-off' : 'ui-icon-volume-on');
+	});
+	
+	test(testId_12, function() {
+		var volumeControlButton = $('#player1_controls_volumeControl'),
+			volumeSlider = $('#player1_controls_volumeSlider');
+		volumeControlButton.trigger('mouseover');
+		ok(volumeSlider.css('display') !== 'none', 'Volume slider should be visible');
+		volumeControlButton.trigger('mouseout');
+	});
+	
+	test(testId_13, 0, function() {
+		// TODO!
+		var handle = $('.ui-igslider-handle', $('#player1_ctrls_s')),
+			videoElem = $('#player1_video')[0],
+			currentTime = videoElem.currentTime,
+			mousemove = jQuery.Event("mousemove");
+		mousemove.pageX = handle.offset().left + 20;
+		mousemove.button = 0;
+		handle.trigger('mousedown');
+		handle.trigger(mousemove);
+		handle.trigger('mouseup');
+		// TODO: ok(currentTime < videoElem.currentTime, 'Video has been seeked forward.');
+	});
+	
+	test(testId_14, 0, function() {
+		
+	});
+	
+	test(testId_15, function() {
+		var video = $('#player1_video'),
+			playButton = $('#player1_ctrls_play'),
+			playIcon = playButton.children().first(),
+			click = jQuery.Event("click");
+		checkClass(playIcon, 'ui-icon');
+		checkClass(playIcon, 'ui-igplayer-playbutton-icon');
+		checkClass(playIcon, 'ui-icon-play');
+		click.button = 0;
+		video.trigger(click); // should play.
+		ok(!video[0].paused, 'Video should be playing.');
+		checkClass(playIcon, 'ui-icon-pause');
+		video.trigger(click); // should pause.
+		ok(video[0].paused, 'Video should be paused.');
+		checkClass(playIcon, 'ui-icon-play');
+	});
+	
+	test(testId_18, function() {
+		var playButton = $('#player3_title_ctrls_play'),
+			video = $('#player3_video'),
+			click = jQuery.Event("click"),
+			slider = $('#player3_ctrls_s');
+		click.button = 0;
+		// setup third player to start playing so that bookmarks are rendered
+		playButton.trigger(click); // should play.
+		video.trigger(click); // should pause.
+		// start bookmarks test
+		
+		var bookmarksObjects = $('#player3').igVideoPlayerUnitTesting('option', 'bookmarks');
+		var bookmarkElems = $('.ui-igslider-bookmark', slider);
+		var disabledBookmarkElems = $('.ui-igslider-bookmark-disabled', slider);
+		equal(bookmarkElems.length + disabledBookmarkElems.length, bookmarksObjects.length, 'The number of bookmarks rendered should be equal to the json array number.');
+
+		bookmarkElems.each(function (i) {
+			checkClass($(this), 'ui-igslider-bookmark');
+			checkClass($(this), 'ui-state-default');
+
+			var bkElem = $(bookmarkElems[i]);
+			var bk = bookmarksObjects[bkElem.data('index.ui-igslider-bookmark')];
+			equal(bkElem[0].style.left, ((bk.time / video[0].duration).toFixed(2) * 100) + '%', 'Bookmark is not properly positioned.');
+		});
+		
+		disabledBookmarkElems.each(function (i) {
+			checkClass($(this), 'ui-igslider-bookmark-disabled');
+			
+			var bkElem = $(bookmarkElems[i]);
+			var bk = bookmarksObjects[bkElem.data('index.ui-igslider-bookmark')];
+			equal(bkElem[0].style.left, ((bk.time / video[0].duration).toFixed(2) * 100) + '%', 'Bookmark is not properly positioned.');
+		});
+		
+		var bookmarkArea = $('#player3_bookmarks');
+		ok(bookmarkArea.length > 0, 'Bookmarks area should be rendered!');
+		checkClass(bookmarkArea, 'ui-igplayer-bookmark-container');
+		checkClass(bookmarkArea.children().first(), 'ui-igplayer-bookmark-header');
+		checkClass(bookmarkArea.children().first().next(), 'ui-igplayer-bookmark-list');
+		
+		var bookmarkAreaLis = $('li', bookmarkArea.children().first().next());
+		bookmarkAreaLis.each(function (i) {
+			var li = $(this),
+				timeSpan = li.children().first(),
+				titleSpan = li.children().first().next();
+			checkClass(timeSpan, 'ui-igplayer-bookmark-item-time');
+			equal(titleSpan.attr('title'), titleSpan.html());
+			equal(titleSpan.html(), bookmarksObjects[li.data('bookmark-index')].title);
+			/* equal(timeSpan.html(),  $('#player3').data("igVideoPlayerUnitTesting").prototype._toTimeString(bookmarksObjects[li.data('bookmark-index')].value)); */
+			checkClass(titleSpan, 'ui-igplayer-bookmark-item-title');
+		});
+	});
+	
+	test(testId_19, function() {
+		equal($("#player1").igVideoPlayerUnitTesting('option', 'posterUrl'), $('#player1_video')[0].poster);
+	});
+	
+	test(testId_20, function() {
+		var videoElem = $('#player2_video')[0];
+		videoElem.playTo(260);
+		ok($('#player2_play').css('display') !== 'none', 'Big play should be visible on end.');
+	});
+	
+	test(testId_21, function() {
+		var videoElem = $('#player2_video')[0];
+		videoElem.playTo(10);
+		videoElem.pause();
+		videoElem.play();
+		videoElem.waitForData();
+		ok($('#player2_waiting').css('display') !== 'none', 'Waiting indicator should be shown.');
+		videoElem.stopWaitingForData();
+		ok($('#player2_waiting').css('display') == 'none', 'Waiting indicator should not be visible.');
+		videoElem.pause();
+	});
+	
+	test(testId_22, function() {
+		var waiting = $('#player1_waiting');
+		ok(waiting.length > 0, 'Big waiting button is not rendered.');
+		checkClass(waiting, 'ui-igplayer-waiting');
+		checkClass(waiting, 'ui-state-default');
+		checkClass(waiting.children().first(), 'ui-igplayer-waiting-icon');
+	});
+	
+	test(testId_23, function() {
+		var bigPlay = $('#player1_play');
+		ok(bigPlay.length > 0, 'Big waiting button is not rendered.');
+		checkClass(bigPlay, 'ui-igplayer-centerplaybutton-pause');
+		checkClass(bigPlay, 'ui-state-default');
+		checkClass(bigPlay.children().first(), 'ui-igplayer-centerplaybutton-icon');
+	});
+	
+	test(testId_24, function() {
+		var seekTooltip = $('#player1_seek_tooltip');
+		ok($("#player1").igVideoPlayerUnitTesting('option', 'showSeekTime'), 'Show seek tooltip should be true!');
+		if ($("#player1").igVideoPlayerUnitTesting('option', 'showSeekTime')) {
+			ok(seekTooltip.length > 0, 'Big waiting button is not rendered.');
+			checkClass(seekTooltip, 'ui-igplayer-seektooltip');
+			checkClass(seekTooltip, 'ui-widget');
+			checkClass(seekTooltip, 'ui-igpopover');
+			checkClass(seekTooltip.children().first(), 'ui-widget-content');
+			checkClass(seekTooltip.children().first().next(), 'ui-igpopover-arrow-bottom');
+		}
+	});
+
+	test(testId_25, 0, function() {
+		// TODO!
+	});
+	
+	test(testId_26, function() {
+		$('#player2').igVideoPlayerUnitTesting('option', 'autohide', true);
+		var video = $('#player2_video'),
+			controls = $('#player2_ctrls').parent();
+		video.trigger('mouseout');
+		checkClass(controls, 'ui-igplayer-controls-hide');
+		video.trigger('mouseover');
+		ok(!controls.hasClass('ui-igplayer-controls-hide'));
+		video.trigger('mouseout');
+		checkClass(controls, 'ui-igplayer-controls-hide');
+		$('#player2').igVideoPlayerUnitTesting('option', 'autohide', false);
+	});
+	
+	test(testId_28, function() {
+		var banner = $('#player4_banner_grid0'),
+			close = $('#player4_banner_grid0_banner_close'),
+			icon = $('span.ui-icon', close);
+		ok(banner !== null && banner !== undefined, 'banner should be defined.');
+		ok(close.length === 1, 'Banner should have close button.');
+		checkClass(banner, 'ui-igplayer-banner');
+		checkClass(close, 'ui-igbutton');
+		checkClass(close, 'ui-button-icon-only');
+		ok(icon.length === 1, 'Banner should have close icon.');
+		checkClass(icon, 'ui-icon-close');
+		ok($('img', banner).length === 1, 'Banner should have image rendered from template.');
+	});
+	
+	test(testId_29, function() {
+		$("#player4").data('igVideoPlayerUnitTesting').togglePlay();
+		$("#player4").data('igVideoPlayerUnitTesting').togglePlay();
+		var banner = $('#player4_banner_grid0'),
+			close = $('#player4_banner_grid0_banner_close'),
+			click = jQuery.Event("click"),
+			videoElem = $('#player4_video')[0];
+		videoElem.playTo(5);
+		ok(banner.is(':visible'), 'Banner should be visible.');
+		click.button = 0;
+		close.trigger(click);
+		ok(!banner.is(':visible'), 'Banner should not be visible.');
+	});
+	
+	test(testId_31, function() {
+		var adMessage = $('#player5_ad_msg_c'),
+			span = $('#player5_ad_msg'),
+			closeButton = $('#player5_ad_msg_close');
+		ok(adMessage.length === 1, 'Ad message rendered');
+		ok(span.length === 1, 'Ad span message rendered');
+		ok(closeButton.length === 1, 'Ad message close rendered');
+		checkClass(adMessage, 'ui-igplayer-ad-msg-container');
+		checkClass(span, 'ui-igplayer-ad-msg');					
+		checkClass(closeButton, 'ui-igplayer-ad-msg-close');
+		checkClass(closeButton, 'ui-igbutton');
+	});
+
+	test(testId_30, function() {
+		$("#player5").data('igVideoPlayerUnitTesting').togglePlay();
+		$("#player5").data('igVideoPlayerUnitTesting').togglePlay();
+		var videoElem = $('#player5_video')[0],
+			adMessage = $('#player5_ad_msg_c'),
+			span = $('#player5_ad_msg');
+		ok(!adMessage.is(':visible'), 'Ad message should not be visible.');
+		videoElem.playTo(19);
+		ok(!adMessage.is(':visible'), 'Ad message should not be visible.');
+		videoElem.playTo(20);
+		ok(adMessage.is(':visible'), 'Ad message should be visible.');
+		equal(span.html(), 'Ad: Video will resume in 10 seconds.', 'Message mismatch:');
+		videoElem.playTo(31);
+		ok(!adMessage.is(':visible'), 'Ad message should not be visible.');
+	});
+	
+	test(testId_32, function() {
+		$("#player5").data('igVideoPlayerUnitTesting').togglePlay();
+		$("#player5").data('igVideoPlayerUnitTesting').togglePlay();
+		var videoElem = $('#player5_video')[0],
+			click = jQuery.Event("click"),
+			adMessage = $('#player5_ad_msg_c'),
+			closeButton = $('#player5_ad_msg_close');
+		ok(!adMessage.is(':visible'), 'Ad message should not be visible.');
+		videoElem.playTo(50);
+		ok(adMessage.is(':visible'), 'Ad message should be visible.');
+		click.button = 0;
+		closeButton.trigger(click);
+		ok(!adMessage.is(':visible'), 'Ad message should not be visible.');
+	});
+	
+	test(testId_34, function() {
+		var noCompatibleVideoSource = $('#player7_detectError');
+		equal(noCompatibleVideoSource.attr('title'), $.ig.VideoPlayer.locale.unsupportedVideoSource, 'The title should match the locale text.');
+		checkClass(noCompatibleVideoSource, 'ui-igplayer-not-supported-video-source');
+		ok(noCompatibleVideoSource.is(':visible'), 'No compatible video source msg should be visible!');
+	});
+	
+	// This test should always be executed last.
+	test(testId_27, function() {
+		var a = 0,
+			click = jQuery.Event("click"),
+			player1 = $('#player1');
+		player1.bind('click', function () {
+			a = 1;
+		});
+		player1.igVideoPlayerUnitTesting('destroy');
+		player1.trigger(click);
+		ok(a === 1, 'Click event should still fire after, widget is destroyed!');
+		ok(player1.empty(), 'Player DIV should be empty!');
+
+		$('#player2').igVideoPlayerUnitTesting('destroy');
+		ok($('#player2').empty(), 'Player DIV should be empty!');
+		$('#player3').igVideoPlayerUnitTesting('destroy');
+		ok($('#player3').empty(), 'Player DIV should be empty!');
+		$('#player4').igVideoPlayerUnitTesting('destroy');
+		ok($('#player4').empty(), 'Player DIV should be empty!');
+		$('#player5').igVideoPlayerUnitTesting('destroy');
+		ok($('#player5').empty(), 'Player DIV should be empty!');
+	});
+	
+	test(testId_33, function() {
+		var messageDiv = $('#player6').children().last(),
+			currentBrowserLabel = messageDiv.children().first(),
+			nonHtml5Msg = messageDiv.children().first().next(),
+			browserList = $('ul', messageDiv);
+		checkClass(messageDiv, 'ui-html5-non-html5-supported-message');
+		checkClass(messageDiv, 'ui-helper-clearfix');
+		checkClass(currentBrowserLabel, 'ui-html5-current-browser-label');
+		ok(currentBrowserLabel.html().indexOf('Current browser:') !== -1);
+		checkClass(nonHtml5Msg, 'ui-html5-non-html5-text');
+		equal(nonHtml5Msg.html(), $.ig.VideoPlayer.locale.unsupportedBrowser.replace('<br/>','<br>'), 'Browser message is not rendered!');
+		checkClass(browserList, 'ui-html5-browsers-list');
+		ok(browserList.children().length === 5, 'Five browser icons should be shown!');
+		$('#player6').igVideoPlayerUnitTesting('destroy');
+		ok($('#player6').empty(), 'Player DIV should be empty!');
+	});
+	
+	function checkButton(button) {
+		checkClass(button, 'ui-widget');
+		checkClass(button, 'ui-state-default');
+		checkClass(button, 'ui-corner-all');
+		checkClass(button, 'ui-igbutton');
+		ok(button.attr('role') === 'button', 'The button with id: ' + button[0].id + ' does not contain the attr role: button');
+		ok(button.attr('href') === '#', 'The button with id: ' + button[0].id + ' does not contain the attr href: #');
+	}
+	
+	function checkClass(button, classs) {
+		ok(button.hasClass(classs), 'The button with id: ' + button[0].id + ' does not contain the class: ' + classs);
+	}
+
+	QUnit.log = function(result, message)
+	{  
+		if (window.console && window.console.log)  
+		{  
+			window.console.log(result +' :: '+ message);  
+		}  
+	}
+	</script>
+	<script type="text/javascript" src="../testswarm/inject.js"></script>
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+     <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+<h1>igVideoPlayer 1</h1>
+<div id="player1"></div>
+<br/>
+<br/>
+<h1>igVideoPlayer 2</h1>
+<div id="player2"></div>
+<br/>
+<br/>
+<h1>igVideoPlayer 3</h1>
+<div id="player3"></div>
+<br/>
+<br/>
+<h1>igVideoPlayer 4</h1>
+<div id="player4"></div>
+<br/>
+<br/>
+<h1>igVideoPlayer 5</h1>
+<div id="player5"></div>
+<br/>
+<br/>
+<h1>igVideoPlayer 6</h1>
+<div id="player6"></div>
+<br/>
+<br/>
+<h1>igVideoPlayer 7</h1>
+<div id="player7"></div>
+</body>
+</html>

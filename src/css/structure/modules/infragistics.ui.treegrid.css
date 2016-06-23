@@ -1,0 +1,74 @@
+/* css for treegrid widget */
+
+.ui-igtreegrid-expandcell
+{
+	display: inline-block;
+	margin: 0 6px 0 0px;
+	min-width: 16px;
+	cursor: pointer;
+}
+
+.ui-igtreegrid-expansion-indicator
+{
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin: 0;
+} 
+
+.ui-igtreegrid-expansion-column-container
+{
+	display: inline-block;
+	min-width: 10px;
+	cursor: pointer;
+}
+
+
+.ui-igtreegrid-record-not-matchfiltering
+{
+	opacity: 0.5;
+	/* IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    /* Older FF / Mobile */
+    -moz-opacity: 0.5;
+    /* IE 5-7 */
+    filter: alpha(opacity=50);
+}
+/*TreeGrid Paging Context Row*/
+.ui-igtreegrid-contextrow
+{	
+	/*moved color styles to theme files*/
+    
+}
+.ui-igtreegrid-contextrow td
+{
+    padding: 4px;
+    font-size: .8em;
+}
+.ui-igtreegrid-contextrow-icon
+{
+	display: inline-block;
+	    margin-right: 5px;
+    vertical-align: bottom;
+}
+.ui-igtreegrid-contextrow-context
+{
+	float: left;
+}
+/* //TreeGrid Paging Context Row*/
+
+/* TreeGrid RowSelectors */
+
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-checked .ui-icon-check,
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-checked .ui-icon-check-p,
+.ui-iggrid th.ui-iggrid-rowselector-class.ui-state-checked .ui-icon-check-f,
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-checked .ui-icon-check
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-checked .ui-icon-check-p
+.ui-iggrid .ui-ig-altrecord th.ui-iggrid-rowselector-class.ui-state-checked .ui-icon-check-f
+{
+  /* for parent nodes when checkboxMode is triState */
+  opacity:1;
+  filter:alpha(opacity=100);
+}
+
+/* //TreeGrid RowSelectors */

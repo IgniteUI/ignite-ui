@@ -1,0 +1,100 @@
+.ui-igtilemanager {
+	position: relative;
+    overflow: auto;
+}
+
+.ui-igtilemanager .ui-igtilemanager-left {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: block;
+}
+
+.ui-igtilemanager .ui-igtilemanager-right {
+    height: 100%;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.ui-igtile {
+	background-color: #f3f3f3;
+	padding: 5px;
+	border: 1px solid #d3d3d3;
+    z-index: 1;
+    overflow: hidden;
+    display: block;
+}
+
+.ui-igtile-inner-container {
+	padding:10px;
+	height:100%;
+	border:1px solid #d3d3d3;
+	background-color:#FFF;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+.ig-tile-minimize-button {
+	border: none;
+
+	cursor:pointer;
+	float:right;
+    z-index:5;
+}
+
+.ig-tile-minimize-button .ig-tile-minimize-icon {
+    display: block;
+	background-image:url(../images/icon_sprite.png);
+	background-color: transparent;
+	background-repeat:no-repeat;
+	background-position:0px -209px;
+	border: none;
+	width: 32px;
+	height: 32px;
+}
+
+.ig-tile-minimize-button .ui-state-hover {
+    background-color:rgba(0,0,0,0.2);
+}
+
+.ui-igtile-minimized {
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.ui-igtile-minimized .ig-tile-minimize-button {
+    display: none;
+}
+
+.ui-igtilemanager .ui-igtile-minimized,
+.ui-igtile-minimized .ui-igtile-inner-container,
+.ui-igtilemanager .ui-igtile-maximized {
+    overflow: hidden;
+}
+
+.ui-igtile-maximized .ui-igtile-inner-container {
+    overflow: auto;
+}
+
+.ui-helper-visibility-hidden {
+    visibility: hidden;
+}
+
+.ui-helper-overflow-hidden {
+    overflow: hidden!important;
+}
+
+.ui-helper-overflow-visible {
+    overflow: visible!important;
+}
+
+.ui-igtilemanager.ui-igsplitter .ui-igsplitter-collapse-single-button {
+    border: 0;
+}
+
+.ui-igtilemanager.ui-igsplitter .ui-igsplitter-collapse-button-vertical-left, 
+.ui-igtilemanager.ui-igsplitter .ui-igsplitter-collapse-button-vertical-right {
+    height: 24px;
+    width: 6px;
+}

@@ -1,0 +1,173 @@
+﻿@font-face {
+	font-family: 'icomoon';
+	src: url('../fonts/icomoon.eot');
+}
+@font-face {
+	font-family: 'icomoon';
+	src: url(data:application/x-font-ttf;charset=utf-8;base64,AAEAAAALAIAAAwAwT1MvMg8SAioAAAC8AAAAYGNtYXAaVsyHAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZsZxW2YAAAF4AAAAdGhlYWQG8KybAAAB7AAAADZoaGVhB20DxgAAAiQAAAAkaG10eAoA//8AAAJIAAAAFGxvY2EAKABOAAACXAAAAAxtYXhwAAgADAAAAmgAAAAgbmFtZZlKCfsAAAKIAAABhnBvc3QAAwAAAAAEEAAAACAAAwMAAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADmAAPA/8AAQAPAAEAAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg5gD//f//AAAAAAAg5gD//f//AAH/4xoEAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAAC////7wOsA5cABAAJAAATAQcBNyEXAScBUwNTVfyuVAMFVPytVANTA5f8rVUDU1VV/K1VA1MAAAEAAAABAAD6ylYPXw889QALBAAAAAAA0hM0DAAAAADSEzQM////7wOsA5cAAAAIAAIAAAAAAAAAAQAAA8D/wAAABAD//wAAA6wAAQAAAAAAAAAAAAAAAAAAAAUEAAAAAAAAAAAAAAACAAAABAD//wAAAAAACgAUAB4AOgABAAAABQAKAAIAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAADgCuAAEAAAAAAAEABwAAAAEAAAAAAAIABwBgAAEAAAAAAAMABwA2AAEAAAAAAAQABwB1AAEAAAAAAAUACwAVAAEAAAAAAAYABwBLAAEAAAAAAAoAGgCKAAMAAQQJAAEADgAHAAMAAQQJAAIADgBnAAMAAQQJAAMADgA9AAMAAQQJAAQADgB8AAMAAQQJAAUAFgAgAAMAAQQJAAYADgBSAAMAAQQJAAoANACkaWNvbW9vbgBpAGMAbwBtAG8AbwBuVmVyc2lvbiAxLjAAVgBlAHIAcwBpAG8AbgAgADEALgAwaWNvbW9vbgBpAGMAbwBtAG8AbwBuaWNvbW9vbgBpAGMAbwBtAG8AbwBuUmVndWxhcgBSAGUAZwB1AGwAYQByaWNvbW9vbgBpAGMAbwBtAG8AbwBuRm9udCBnZW5lcmF0ZWQgYnkgSWNvTW9vbi4ARgBvAG4AdAAgAGcAZQBuAGUAcgBhAHQAZQBkACAAYgB5ACAASQBjAG8ATQBvAG8AbgAuAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==) format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.ui-ignotify-icon-container {
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 2px;
+    height: 1.3em;
+}
+
+.ui-widget.ui-ignotify.ui-ignotify-inline {
+    position: static;
+    margin-bottom: 5px;
+    font-size:0.8em;
+}
+
+/* Notification States (theme?) */
+.ui-ignotify-success
+{
+    border-color: #009346;
+}
+.ui-ignotify-success.ui-ignotify-inline
+{
+    color: #009346;
+}
+.ui-igpopover.ui-ignotify-success > .ui-widget-content {
+    color: #134d30;
+	border-color: #b7edc7;
+    background-color: #b7edc7;
+}
+.ui-igpopover.ui-ignotify-success > .ui-igpopover-arrow-left {
+    border-right-color: #b7edc7;
+}
+
+.ui-igpopover.ui-ignotify-success > .ui-igpopover-arrow-bottom {
+    border-top-color: #b7edc7;
+}
+
+.ui-igpopover.ui-ignotify-success > .ui-igpopover-arrow-top {
+    border-bottom-color: #b7edc7;
+}
+
+.ui-igpopover.ui-ignotify-success > .ui-igpopover-arrow-right {
+    border-left-color: #b7edc7;
+}
+
+.ui-ignotify-warn
+{
+    border-color: #ffa357;
+}
+.ui-ignotify-warn.ui-ignotify-inline
+{
+    color: #ffa357;
+}
+.ui-igpopover.ui-ignotify-warn > .ui-widget-content {
+    color: #630;
+	border-color: #ffde66;
+    background-color: #ffde66;
+}
+
+.ui-igpopover.ui-ignotify-warn > .ui-igpopover-arrow-left {
+    border-right-color: #ffde66;
+}
+
+.ui-igpopover.ui-ignotify-warn > .ui-igpopover-arrow-bottom {
+    border-top-color: #ffde66;
+}
+
+.ui-igpopover.ui-ignotify-warn > .ui-igpopover-arrow-top {
+    border-bottom-color: #ffde66;
+}
+
+.ui-igpopover.ui-ignotify-warn > .ui-igpopover-arrow-right {
+    border-left-color: #ffde66;
+}
+
+.ui-ignotify-error
+{
+    border-color: #f33;
+}
+.ui-ignotify-error.ui-ignotify-inline
+{
+    color: #f33;
+}
+.ui-igpopover.ui-ignotify-error > .ui-widget-content {
+    color: #fff;
+	border-color: #f33;
+    background-color: #f33;
+}
+
+.ui-igpopover.ui-ignotify-error > .ui-igpopover-arrow-left {
+    border-right-color: #f33;
+}
+
+.ui-igpopover.ui-ignotify-error > .ui-igpopover-arrow-bottom {
+    border-top-color: #f33;
+}
+
+.ui-igpopover.ui-ignotify-error > .ui-igpopover-arrow-top {
+    border-bottom-color: #f33;
+}
+
+.ui-igpopover.ui-ignotify-error > .ui-igpopover-arrow-right {
+    border-left-color: #f33;
+}
+
+.ui-ignotify-info
+{
+	border-color:#5d5d5d;
+}
+.ui-ignotify-info.ui-ignotify-inline
+{
+	color:#5d5d5d;
+}
+.ui-igpopover.ui-ignotify-info > .ui-widget-content
+{
+	color: #5d5d5d;
+    background-color: #ededed;
+	border: 1px solid #ededed;
+}
+.ui-igpopover.ui-ignotify-info > .ui-igpopover-arrow-left
+{
+	border-right-color: #ededed;
+}
+.ui-igpopover.ui-ignotify-info > .ui-igpopover-arrow-bottom
+{
+	border-top-color: #ededed;
+}
+.ui-igpopover.ui-ignotify-info > .ui-igpopover-arrow-top
+{
+	border-bottom-color: #ededed;
+}
+.ui-igpopover.ui-ignotify-info > .ui-igpopover-arrow-right
+{
+	border-left-color: #ededed;
+}
+.ui-igpopover > .ui-widget-content{font-size:14px;padding:10px 17px 10px 15px;}
+
+/* S.D. New font icon for close button */
+
+.ui-icon.ui-icon-closethick.ui-igpopover-close-button
+{
+	width:12px;
+	height:12px;
+	font-size:12px;
+	background:none;
+	text-indent:0;
+	overflow:visible;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+	opacity:0.6;
+	
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.ui-icon.ui-icon-closethick.ui-igpopover-close-button:before{content: "\e600";}
+.ui-icon.ui-icon-closethick.ui-igpopover-close-button:hover{-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";opacity:1;}

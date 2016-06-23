@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Toolbar Button Tests</title>
+	<link type="text/css" rel="stylesheet"href="../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" />
+
+    <link type="text/css" rel="stylesheet" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.shared.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.toolbarbutton.css" media="screen" />
+
+
+    <link type="text/css" href="../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+     
+	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+    <script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.toolbarbutton.js"></script>
+
+	<script type="text/javascript">
+	    var equalWithEpsilon = function (a, b, epsilon) {
+	        return Math.abs(a - b) < epsilon;
+	    }
+
+	    var unitTestsSetup = {
+	        toolbarButtonSelector: "toolbar-button",
+	        actualToolbarButton: null,
+	        setup: function () {
+	            $('body').append($("<div></div>").attr("id", this.toolbarButtonSelector));
+	            $(this.id(this.toolbarButtonSelector)).igToolbarButton();
+	            this.actualToolbarButton = $(this.id(this.toolbarButtonSelector)).data("ui-igToolbarButton");
+	        },
+	        teardown: function () {
+	            $(this.id(this.toolbarButtonSelector)).remove();
+	        },
+	        id: function (selector) {
+	            return "#" + selector;
+	        }
+	    };
+
+	    module("igToolbarButton unit tests", unitTestsSetup);
+
+	    test("_setOptions", function () {
+	        ok(this.actualToolbarButton.options.allowToggling, "allowToggling is true");
+	        this.actualToolbarButton._setOption("allowToggling", false);
+	        ok(!this.actualToolbarButton.options.allowToggling, "allowToggling is false");
+
+	        ok(!this.actualToolbarButton.options.isSelected, "isSelected is false");
+	        this.actualToolbarButton._setOption("isSelected", true);
+	        ok(this.actualToolbarButton.options.isSelected, "isSelected is true");
+	    });
+	</script>
+</head>
+<body>
+	<!--div id="qunit"></div>
+    <div id="qunit-fixture"></div>-->
+	
+	
+	<div style="float:right;width:400px;overflow:auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+	
+</body>
+</html>

@@ -1,0 +1,447 @@
+.ig-layout-item {
+	/* border: 1px black solid; */
+	/* display: inline; */
+	overflow: auto;
+}
+
+.ig-layout-griditem-rel {
+	display: inline-block;
+	position: relative;
+	float: left;
+	overflow: auto;
+	vertical-align: top;
+}
+
+.ig-layout-griditem-abs {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	position: absolute;
+	padding: 5px;
+}
+
+.ig-layout-item-title {
+	width: 100%;
+	text-align: center;
+	background-color: #EBEBEB;
+}
+
+.ig-layout {
+	/* border: 1px solid gray; */
+	display: block;
+}
+
+.ig-layout-float {
+	/* width */
+}
+
+.ig-layout-item-float {
+	float: left;
+	margin: 5px;
+	/* width */
+}
+
+.ig-layout-item-v {
+	float: left;
+}
+
+/* flow layout */
+.ig-layout-flow {
+    /* D.A. October 7th, 2013 Bug #154162 Flow layout container dimensions are 0x0 */
+    overflow: auto;
+	/* K.D. April 10th, 2013 Bug #139538 Under IE the UL has 40px default padding left and appears as a stand-alone inline element shifting the last item in the row */
+	padding: 0;
+}
+
+.ig-layout-flow-item {
+	float: left;
+	margin: 5px;
+	width: 10%;
+	list-style-type: none;
+	border: 1px solid #D3D3D3;
+	height: 100px;
+	overflow: hidden;
+}
+
+/* vertical layout */
+.ig-layout-vertical {
+    overflow: auto;
+}
+
+.ig-layout-vertical-item {
+	margin: 5px;
+	width: 10%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px solid #D3D3D3;
+	height: 100px;
+	overflow: hidden;
+}
+/* column layout */
+
+/* border layout  - holy grail  */
+.ig-layout-border {
+    position: relative;
+    -webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.ig-layout-border-item {
+	position: relative;
+}
+
+.ig-layout-border-container {
+	height: 100%;
+	width: 100%;
+}
+
+.ig-layout-border-wrapper1 {
+	position: relative;
+	float: left;
+	width:100%;
+	/*
+	background-color: blue;
+	*/
+}
+
+.ig-layout-border-wrapper2 {
+	position: relative;
+	float: left;
+	width:100%;
+	/*
+	background-color: red;
+	*/
+}
+
+/* K.D. May 23rd, 2013 Bug #139637 When applying CSS like paddings, borders, etc. the container 
+   grows outward and the layout breaks. Applying border-box box-sizing to grow the container inwards */
+.ig-layout-border-header {
+    position: absolute;
+    top: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	text-align: center;
+	font-size: large;
+    padding: 0.3em 0;
+}
+
+/* K.D. May 23rd, 2013 Bug #139637 When applying CSS like paddings, borders, etc. the container 
+   grows outward and the layout breaks. Applying border-box box-sizing to grow the container inwards */
+.ig-layout-border-footer {
+    position: absolute;
+    bottom: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	text-align: center;
+	font-size: large;
+    padding: 0.3em 0;
+}
+
+/* K.D. May 23rd, 2013 Bug #139637 When applying CSS like paddings, borders, etc. the container 
+   grows outward and the layout breaks. Applying border-box box-sizing to grow the container inwards */
+.ig-layout-border-left {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	/* K.D. May 28th, 2013 Bug #140104 Horizontal scrollbar is always displayed in the browser when using border layout */
+	/*right: 200px;*/
+	/*margin-left: -100%;*/
+	height: 100%;
+	overflow: hidden;
+	float: left;
+}
+
+/* K.D. May 23rd, 2013 Bug #139637 When applying CSS like paddings, borders, etc. the container 
+   grows outward and the layout breaks. Applying border-box box-sizing to grow the container inwards */
+.ig-layout-border-center {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow: auto;
+	height: 100%;
+}
+
+/* K.D. May 23rd, 2013 Bug #139637 When applying CSS like paddings, borders, etc. the container 
+   grows outward and the layout breaks. Applying border-box box-sizing to grow the container inwards */
+.ig-layout-border-right {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	/* K.D. May 28th, 2013 Bug #140104 Horizontal scrollbar is always displayed in the browser when using border layout */
+	/*margin-right: -100%;*/
+	height: 100%;
+	overflow: hidden;
+	float: right;
+}
+
+/* three column layouts - variations */
+
+/* 12-column fluid layout */
+/* container */
+.ig-layout-col {
+  padding-left: 20px;
+  padding-right: 20px;
+  *zoom: 1; /* IE6 & 7 */
+}
+
+.ig-layout-col:after {
+    clear: both;
+}
+
+.ig-layout-col:before, .ig-layout-col:after {
+    content: "";
+    display: table;
+    line-height: 0;
+	clear: both;
+}
+
+/* row */
+.ig-layout-col .row  {
+	width: 100%;
+	clear: both;
+	*zoom: 1; /* IE 6 and 7 */
+}
+
+/* col common */
+.ig-layout-col .row [class*="col"] {
+	float: left;
+	width: 100%;
+	min-height: 30px;
+	margin-left: 2.127659574468085%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	display: block;
+}
+
+.ig-layout-col .row [class*="col"]:first-child {
+    margin-left: 0;
+}
+
+/* Predefined 12 column layout */
+.ig-layout-col .row .col1 {
+	width: 6.382978723404255%;
+}
+.ig-layout-col .row .col2 {
+	width: 14.893617021276595%;
+}
+.ig-layout-col .row .col3 {
+	width: 23.404255319148934%;
+}
+
+.ig-layout-col .row .col4 {
+	width: 31.914893617021278%;
+}
+
+.ig-layout-col .row .col5 {
+	width: 40.42553191489362%;
+}
+
+.ig-layout-col .row .col6 {
+	width: 48.93617021276595%;
+}
+
+.ig-layout-col .row .col7 {
+	width: 57.44680851063829%;
+}
+
+.ig-layout-col .row .col8 {
+	width: 65.95744680851064%;
+}
+
+.ig-layout-col .row .col9 {
+	width: 74.46808510638297%;
+}
+
+.ig-layout-col .row .col10 {
+	width: 82.97872340425532%;
+}
+
+.ig-layout-col .row .col11 {
+	width: 91.48936170212765%;
+}
+
+.ig-layout-col .row .col12 {
+	width: 100%;
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+	.ig-layout-col .row {
+	  width: 100%;
+	  *zoom: 1;
+	}
+	.ig-layout-col .row [class*="col"] {
+		float: left;
+		width: 100%;
+		min-height: 30px;
+		margin-left: 2.7624309392265194%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+		display: block;
+	}
+	
+	.ig-layout-col .row [class*="col"]:first-child {
+		margin-left: 0;
+	}
+	/* Predefined 12 column layout */
+	.ig-layout-col .row .col1 {
+		width: 5.801104972375691%;
+	}
+	.ig-layout-col .row .col2 {
+		width: 14.3646408839779%;
+	}
+	.ig-layout-col .row .col3 {
+		width: 22.92817679558011%;
+	}
+
+	.ig-layout-col .row .col4 {
+		width: 31.491712707182323%;
+	}
+
+	.ig-layout-col .row .col5 {
+		width: 40.05524861878453%;
+	}
+
+	.ig-layout-col .row .col6 {
+		width: 48.61878453038674%;
+	}
+
+	.ig-layout-col .row .col7 {
+		width: 57.18232044198895%;
+	}
+
+	.ig-layout-col .row .col8 {
+		width: 65.74585635359117%;
+	}
+
+	.ig-layout-col .row .col9 {
+		width: 74.30939226519337%;
+	}
+
+	.ig-layout-col .row .col10 {
+		width: 82.87292817679558%;
+	}
+
+	.ig-layout-col .row .col11 {
+		width: 91.43646408839778%;
+	}
+
+	.ig-layout-col .row .col12 {
+		width: 100%;
+	}
+}
+
+@media handheld, only screen and (max-width: 767px) {
+
+	.ig-layout-col .row {
+	  width: 100%;
+	  *zoom: 1;
+	}
+	.ig-layout-col .row [class*="col"] {
+		width: 100%;
+		min-height: 30px;
+		margin-left: 0;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+		display: block;
+		float: none;
+	}
+	.ig-layout-col .row .col12 {
+		width: 100%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+}
+
+@media (min-width: 1200px) {
+	.ig-layout-col .row {
+	  width: 100%;
+	  *zoom: 1;
+	}
+	.ig-layout-col .row [class*="col"] {
+		float: left;
+		width: 100%;
+		min-height: 30px;
+		margin-left: 2.564102564102564%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+		display: block;
+	}
+	
+	.ig-layout-col .row [class*="col"]:first-child {
+		margin-left: 0;
+	}
+	/* Predefined 12 column layout */
+	.ig-layout-col .row .col1 {
+		width: 5.982905982905983%;
+	}
+	.ig-layout-col .row .col2 {
+		width: 14.52991452991453%;
+	}
+	.ig-layout-col .row .col3 {
+		width: 23.076923076923077%;
+	}
+
+	.ig-layout-col .row .col4 {
+		width: 31.623931623931625%;
+	}
+
+	.ig-layout-col .row .col5 {
+		width: 40.17094017094017%;
+	}
+
+	.ig-layout-col .row .col6 {
+		width: 48.717948717948715%;
+	}
+
+	.ig-layout-col .row .col7 {
+		width: 57.26495726495726%;
+	}
+
+	.ig-layout-col .row .col8 {
+		width: 65.81196581196582%;
+	}
+
+	.ig-layout-col .row .col9 {
+		width: 74.35897435897436%;
+	}
+
+	.ig-layout-col .row .col10 {
+		width: 82.90598290598291%;
+	}
+
+	.ig-layout-col .row .col11 {
+		width: 91.45299145299145%;
+	}
+
+	.ig-layout-col .row .col12 {
+		width: 100%;
+	}
+}

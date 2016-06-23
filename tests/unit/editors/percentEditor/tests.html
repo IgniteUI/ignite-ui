@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Numeric Editors </title>
+	<link type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.notifier.js"></script>                                  
+	
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage.
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.editors.js"></script>  -->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.editors.js"></script>
+
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+	<!-- Links to external extensions -->
+	
+	
+	<!-- Links to extensions -->
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../../../Source/ClientUI/js/modules/infragistics.ui.editors.knockout-extensions.js"></script>-->
+	
+	
+	
+
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+		$(document).ready(function () {
+			// Create a editors
+			function loadTestbeds() {
+				$(function () {
+					$("#pEditor1").igPercentEditor({
+						dataMode: 'float',
+						displayFactor: 1,
+						value: 10,
+						percentSymbol: "%%"
+					});
+					$("#pEditor2").igPercentEditor({
+						displayFactor: 1,
+						value: 30,
+						positivePattern: "%(n)"
+					});
+					$("#pEditor4").igPercentEditor({
+						displayFactor: 100,
+						dataMode: 'float',
+						value: 0.05
+					});
+					$("#pEditor6").igPercentEditor({
+					   displayFactor: 1
+					});
+					$("#pEditor7").igPercentEditor({
+						buttonType: "spin",
+						maxDecimals: 5,
+						minValue: 0.2,
+						maxValue: 0.6
+					});
+					$("#emptyEditor").igPercentEditor({
+						displayFactor: 1,
+						buttonType: "spin, clear"
+					});
+					$("#percentEditorList").igPercentEditor({
+						listItems: [0.12, 0.53, 1.00, 1.50],
+						isLimitedToListValues: true
+					});
+				});
+			}
+			initialized = false;
+			module("Percentage Editor", {
+				setup: function () {
+					//pause testing until tree is initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 100);
+						initialized = true;
+					}
+				},
+				teardown: function () {
+				}
+			});
+
+			var testId = 'Percent Editor initialization.';
+			test(testId, 5, function () {
+				ok(typeof ($("#pEditor1").igPercentEditor) === 'function', "Editors Script is not loaded");
+				ok($('#pEditor1').data("igPercentEditor") !== undefined, 'Error creating igPercentEditor in an input');
+				ok($('#pEditor2').data("igPercentEditor") !== undefined, 'Error creating igPercentEditor in a div');
+				equal($('#pEditor1').igPercentEditor("value"), 10, 'The initial value is not as expexted');
+				equal($('#pEditor2').igPercentEditor("value"), 30, 'The initial value is not as expexted');
+
+			});
+
+			var testId = 'Percent Editor API';
+			test(testId, 6, function () {
+				var editor = $('#pEditor1'), value;
+				value = editor.igPercentEditor("displayValue");
+				equal(value, "10.00%%", "Initial Value");
+				editor.igPercentEditor("percentSymbol", "%");
+				value = editor.igPercentEditor("displayValue");
+				equal(value, "10.00%", "Value after change");
+				equal(editor.igPercentEditor("percentSymbol"), "%");
+				editor.igPercentEditor("option", "positivePattern", "+n%");
+				value = editor.igPercentEditor("displayValue");
+				equal(value, "+10.00%", "Value after change");
+
+				//internal value parse
+				$("#pEditor6").igPercentEditor("option", "decimalSeparator", "x");
+				strictEqual($('#pEditor6').data("igPercentEditor")._valueFromText("1264x89"), 1264.89, "The parsed value is not correct");
+				strictEqual($('#pEditor4').data("igPercentEditor")._valueFromText("22%"), 0.22, "The parsed value is not correct");
+			});
+
+			var testId = 'Editors initialization with display factor different from 1 and 100';
+			test(testId, 3, function () {			   
+				throws(function () {
+				  $("#pEditor3").igPercentEditor({
+					   displayFactor: 50
+					});
+				}, "There is no exception when the display factor is not 1 or 100");
+				throws(function () {
+					$("#pEditor5").igPercentEditor({
+					   displayFactor: "50"
+					});
+				}, "DisplayFactor option is of type number");	
+				throws(function () {
+					$("#pEditor4").igPercentEditor("option", "displayFactor", "14");
+				}, "DisplayFactor option is of type number");	
+			});
+			
+			var testId = 'Testing display factor with default value of 100';
+			test(testId, 18, function () {
+				equal($('#pEditor4').igPercentEditor("value"), 0.05, 'The initial value is not as expexted');
+				$("#pEditor4").igPercentEditor("value", -2.14);
+				equal($('#pEditor4').igPercentEditor("value"), -2.14, "New value is not correct");
+				equal($("#pEditor4").igPercentEditor("displayValue"), "-214.00%", "Display value by displayFactor = 100 is wrong");
+				throws(function () {
+					$("#pEditor4").igPercentEditor("option", "displayFactor", 14);
+				}, "There is no exception when the display factor is not 1 or 100");
+				
+				$("#pEditor7").igPercentEditor("value", 700);
+				equal($('#pEditor7').igPercentEditor("value"), 0.6, "New value is not correct");
+				$("#pEditor7").igPercentEditor("value", 0.3);
+				equal($('#pEditor7').igPercentEditor("value"), 0.3, "New value is not correct");
+				equal($('#pEditor7').igPercentEditor("displayValue"), "30.00%", "New dispaly value is not correct");
+				$("#pEditor7").igPercentEditor("value", 700);
+				equal($('#pEditor7').igPercentEditor("value"), 0.6, "New value is not correct");
+
+				//$("#pEditor7").igPercentEditor("setFocus");
+				$("#pEditor7").igPercentEditor("field").val(30);
+				$("#pEditor7").igPercentEditor("field").trigger("paste");
+				// need to blur to update value..
+				$("#pEditor7").igPercentEditor("field").trigger("blur");
+				equal($('#pEditor7').igPercentEditor("value"), 0.3, "New value is not correct");
+
+				$("#pEditor7").igPercentEditor("field").val(90);
+				$("#pEditor7").igPercentEditor("field").trigger("paste");
+				$("#pEditor7").igPercentEditor("field").trigger("blur");
+				equal($('#pEditor7').igPercentEditor("value"), 0.6, "Max value not set");
+
+
+				$("#pEditor7").igPercentEditor("field").val(20);
+				$("#pEditor7").igPercentEditor("field").trigger("paste");
+				$("#pEditor7").igPercentEditor("field").trigger("blur");
+				equal($('#pEditor7').igPercentEditor("value"), 0.2, "New value is not correct");
+
+				$("#pEditor7").igPercentEditor("field").val(10);
+				$("#pEditor7").igPercentEditor("field").trigger("paste");
+				$("#pEditor7").igPercentEditor("field").trigger("blur");
+				equal($('#pEditor7').igPercentEditor("value"), 0.2, "New value is not correct");
+
+				// 207134: Entered value of 12.12 is chaged to 12.11 in the Percent Editor
+				var field = $('#pEditor4').igPercentEditor("field");
+				field.focus();
+				field.val("12.12");
+				field.blur();
+				equal($('#pEditor4').igPercentEditor("displayValue"), "12.12%", "Decimal percent display value changed");
+				equal($('#pEditor4').igPercentEditor("value"), 0.1212, "Decimal percent value changed");
+
+				// 20719:  Entered value is not correct after blurring the editor
+				field.focus();
+				field.val("33.33");
+				field.blur();
+				equal($('#pEditor4').igPercentEditor("displayValue"), "33.33%", "Decimal percent display value changed");
+				equal($('#pEditor4').igPercentEditor("value"), 0.3333, "Decimal percent value changed");
+				field.focus();
+				field.val("15.50");
+				field.blur();
+				equal($('#pEditor4').igPercentEditor("displayValue"), "15.50%", "Decimal percent display value changed");
+				equal($('#pEditor4').igPercentEditor("value"), 0.155, "Decimal percent value changed");
+			});
+
+			testId = "Group and decimal Separators";
+			test(testId, 1, function () {
+				var containerInput = $('#pEditor6').igPercentEditor("field");
+
+				// For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
+				$("#pEditor6").igPercentEditor("option", "decimalSeparator", ",");
+				$("#pEditor6").igPercentEditor("option", "groupSeparator", "");
+				$("#pEditor6").igPercentEditor("option", "value", 1264.89);
+				equal($("#pEditor6").igPercentEditor("displayValue"), "1264,89%", "The decimal value is not correct");
+			});
+			testId = "Spin functionality";
+			test(testId, 4, function () {
+				// For 207435 Spinning up and down is not possible when the editor is empty
+				$("#percentEditor3").igPercentEditor("value", null);
+				$("#emptyEditor").igPercentEditor("spinUp");
+				equal($("#emptyEditor").igPercentEditor("value"), $("#emptyEditor").igPercentEditor("option", "spinDelta"), "Spin failed with no intial value");
+
+				// spin in edit mode:
+				$("#pEditor7").igPercentEditor("value", 0.57);
+				$("#pEditor7").igPercentEditor("field").focus();
+				$("#pEditor7").igPercentEditor("spinDown");
+				equal($("#pEditor7").igPercentEditor("field").val(), "56", "Edit value after spin down is not correct");
+				$("#pEditor7").igPercentEditor("field").blur();
+
+				// spin without edit mode
+				$("#pEditor7").igPercentEditor("value", 0.57);
+				$("#pEditor7").igPercentEditor("spinDown");
+				equal($('#pEditor7').igPercentEditor("value"), 0.56, "New value after spin down is not correct");
+				equal($('#pEditor7').igPercentEditor("displayValue"), "56.00%", "Display value after spin down is not correct");
+			});
+
+			testId = "List items";
+			test(testId, 2, function () {
+				var field = $('#percentEditorList').igPercentEditor("field");
+
+				// For 207200: Values > 100 cannot be entered or selected when 'isLimitedToListValues: true'
+				field.focus();
+				field.val("100");
+				field.blur();
+				equal($("#percentEditorList").igPercentEditor("displayValue"), "100.00%", "Entered value is not accepted");
+				$('#percentEditorList').igPercentEditor("dropDownButton").click();
+				$('#percentEditorList').igPercentEditor("dropDownContainer").find(".ui-igedit-listitem").filter(function () {
+					return $(this).text() === "150";
+				}).click();
+				equal($("#percentEditorList").igPercentEditor("value"), 1.5, "Selected value is not accepted");
+			});
+		});
+
+	QUnit.log = function (details) {
+		if (window.console && window.console.log) {
+			window.console.log(details.result + ' :: ' + details.message);
+		}
+	};
+	</script>
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="pEditor1"></div>
+	<input id="pEditor2" />
+	<input id="pEditor3" />
+	<input id="pEditor4" />
+	<input id="pEditor5" />
+	<input id="pEditor6" />
+	<input id="pEditor7" />
+	<input id="emptyEditor" />
+	<input id="percentEditorList" />
+</div>
+</body>
+</html>
+

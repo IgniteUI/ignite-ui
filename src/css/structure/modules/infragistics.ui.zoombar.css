@@ -1,0 +1,143 @@
+.ui-igzoombar-container {
+	/*width: 100%;*/
+	/*height: 100%;*/
+	position: relative;
+}
+
+.ui-igzoombar-scrollbar {
+	background-color: #DADADA;
+}
+
+.ui-igzoombar-scrollbar-thumb {
+	height: 16px;
+	position: absolute;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    text-align:center;
+    line-height: 6px;
+}
+
+.ui-igzoombar-scrollbar-button {
+	width: 16px;
+	height: 16px;
+	margin: 0 0 0 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.ui-igzoombar-scrollbar-button .ui-icon {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+ }
+
+.ui-igzoombar-mask {
+	position: absolute;
+	margin-top: 1px;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%; 
+	cursor: move;
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	/* Needs to be interactable in IE */
+	background:rgba(0,0,0,0);
+	filter:alpha(opacity=0);
+}
+
+.ui-igzoombar-window-grabbing.ui-igzoombar-mask  {
+	cursor: move;
+	cursor: grabbing;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
+}
+
+.ui-igzoombar-fade {
+	position: relative;
+	background: rgba(255, 255, 255, 0.5);
+	border-color: #B9B9B9;
+	border-width: 1px;
+	margin-top: -1px;
+	height: 100%;
+	border-top-style: solid;
+	border-bottom-style: none;
+	cursor: auto;
+}
+
+.ui-igzoombar-fade-left-appendix {
+	float: left;
+	width: 16px;
+	margin-left: -16px;
+}
+
+.ui-igzoombar-fade-right-appendix {
+	float: right;
+	width: 16px;
+	margin-right: -16px;
+}
+
+.ui-igzoombar-fade-left {
+	float: left;
+	border-right-style: solid;
+	border-left-style: none;
+}
+
+.ui-igzoombar-fade-right {
+	float: right;
+	border-right-style: none;
+	border-left-style: solid;
+}
+
+.ui-igzoombar-window-handle {
+	width: 8px;
+	height: 20px;
+	position: absolute;
+	top: 50%;
+	margin-top: -10px;
+	cursor: e-resize;
+}
+
+.ui-igzoombar-window-handle-left {
+	left: 100%;
+	margin-left: -4px;
+    text-align:center;
+    line-height: 11px;
+}
+
+.ui-igzoombar-window-handle-right {
+	left: 0%;
+	margin-left: -5px;
+    text-align:center;
+    line-height: 11px;
+}
+
+.ui-igzoombar-window-handle-left:after,
+.ui-igzoombar-window-handle-right:after {
+    content:"\0131\0131";
+    font-size: 11px;
+}
+.ui-igzoombar-scrollbar-thumb:after {
+    content:"\0131\0131\0131";
+    font-size: 11px;
+    cursor: default;
+}
+
+.ui-igzoombar-scrollbar-thumb,
+.ui-igzoombar-window-handle
+{
+    /* default colours */
+    background-color: #F9F9F9;
+    background-image: none;
+    background-repeat: no-repeat;
+    border: 1px solid #B9B9B9;
+    color: #4B4B4B;
+    font-weight: normal;
+}
+
+.ui-igzoombar-scrollbar-thumb.ui-state-hover,
+.ui-igzoombar-window-handle.ui-state-hover
+{
+    /* default colours */
+    background-color: #E8E8E8;
+}

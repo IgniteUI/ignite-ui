@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title> Infragistics jQuery Data Source - Tests for general properties, API methods different than filtering, sorting or paging </title> 
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.dataSource.js"></script>-->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.dataSource.js"></script>
+	
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/igDataSource/ig.dataSource-en.js"></script>-->
+
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+	
+	<script type="text/javascript"> 
+	 
+	 var dataBindingFired = false;
+	 var dataBoundFired = false;
+	 
+	 $(document).ready(function () {
+	
+		// define a simple data source control
+		var ds1 = new $.ig.DataSource();
+		ds1.settings.dataBinding = function () { dataBindingFired = true; };
+		ds1.settings.dataBound = function () { dataBoundFired = true; };
+		ds1.dataBind();
+		
+		startTesting();
+			
+		function startTesting()
+		{
+
+			QUnit.init();
+			QUnit.start();
+
+			module("igDataSource");
+			
+			test("igDataSource events test: DataBinding", function() {
+				
+				equal(true, dataBindingFired, true);
+			});
+			
+			test("igDataSource events test: DataBound", function() {
+
+				equal(true, dataBoundFired, true);
+			});
+			
+			test("igDataSource properties test: fields property", function () {
+			
+				var fields = ds1.fields([{name: "test1"}, {name: "test2"}]).fields();
+				equal(2, fields.length, 2);
+				
+			});
+			
+			test("igDataSource properties test: Schema property", function () {
+			
+				var schema = ds1.schema({type:"unknown"}).schema();
+				equal("unknown", schema._type, "unknown");
+			});
+			
+			test("igDataSource properties test: paging settings property", function () {
+				
+				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
+				equal(5, ps.pageSize, 5);
+				
+			});
+			
+			test("igDataSource properties test: filtering settings property", function () {
+			
+				var fs = ds1.filterSettings({filterExprUrlKey: "f"}).filterSettings();
+				equal("f", fs.filterExprUrlKey, "f");
+			});
+			
+			test("igDataSource properties test: sort settings property", function () {
+			
+				var ss = ds1.sortSettings({exprString: "col1 ASC"}).sortSettings();
+				equal("col1 ASC", ss.exprString, "col1 ASC");
+			});
+			
+			
+			test("igDataSource properties test: dataSource property test", function () {
+			
+				var ds = ds1.dataSource("http://www.infragistics.com").dataSource();
+				equal("http://www.infragistics.com", ds, "http://www.infragistics.com");
+			});
+		
+			test("igDataSource properties test: type property test", function () {
+			
+				var t = ds1.type("unknown").type();
+				if ((t === "unknown" || t === "empty") && t !== undefined && t != null) {
+					ok (true, "type is ok", true);
+				} else {
+					ok(false, "type is not ok", false);
+				}
+				equal("unknown", ds1.settings.type, "unknown");
+			});
+			
+			// page index
+			test("igDataSource properties test: page index property", function () {
+				
+				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
+				equal(0, ds1.pageIndex(), 0);
+				
+			});
+			
+			// page count
+			test("igDataSource properties test: page count property", function () {
+				
+				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
+				equal(1, ds1.pageCount(), 1);
+				
+			});
+		}
+			
+		QUnit.log = function(result, message)  
+		{  
+			if (window.console && window.console.log)  
+			{  
+				window.console.log(result +' :: '+ message);  
+			}  
+		}  
+
+	});
+	
+	
+	</script>
+	<script type="text/javascript" src="../../testswarm/inject.js"></script>
+</head>
+<body>
+<div id="div1"></div>
+<div style="float:right;width:400px;overflow:auto"">
+    <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+
+</body>
+</html>

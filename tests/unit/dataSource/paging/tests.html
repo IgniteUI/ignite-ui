@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title> Infragistics jQuery Data Source - Paging QUnit tests </title> 
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.dataSource.js"></script>-->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.dataSource.js"></script>
+	
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/igDataSource/ig.dataSource-en.js"></script>-->
+
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+	
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	
+		<style type="text/css">
+		body {
+			font-family: Verdana;
+			font-size: 11pt;
+		}
+		
+		body table {
+			border-width: 1px;
+			border-color: green;
+			border-style: solid;
+			background-color: lightGrey;
+		}
+		
+		body table td {
+			border: 1px green solid;
+		}
+	</style>
+	
+	<script id="template1" type="text/x-jquery-tmpl">
+		${firstName} <strong> ${lastName} </strong> <br/>
+	</script>
+	
+	<script id="tableTemplate" type="text/x-jquery-tmpl">
+		<tr> <td> ${col1} </td> <td> ${col2} </td> <td> ${col3} </td>  <td> ${col4} </td> </tr>
+	</script>
+	
+	<script type="text/javascript"> 
+
+		var tableDs = null;
+		var jsonDs = null;
+		
+		var dataObject = {
+			firstName: "John",
+			lastName: "Resig",
+			url: "http://ejohn.org/",
+			cities: [
+				"Boston, MA",
+				"San Francisco, CA"
+			]
+		}
+		
+		var arrayOfDataObjects = [ 
+			dataObject
+			, 
+			{
+				firstName: "Dave",
+				lastName: "Reed",
+				url: "http://dave.org/",
+				cities: [
+					"Seattle, WA",
+					"Los Angeles, CA",
+					"New York, NY"
+				]
+			},
+			{
+				firstName: "Boris",
+				lastName: "Moore",
+				url: "http://boris.org/",
+				cities: [
+					"Redmond, WA",
+					"Seattle, WA",
+					"New York, NY"
+				]
+			},
+			{
+				firstName: "Angel",
+				lastName: "Todorov",
+				url: "http://www.infragistics.com",
+				cities: [
+					"Redmond, WA",
+					"Seattle, WA",
+					"New York, NY"
+				]
+			},
+			{
+				firstName: "Murtaza",
+				lastName: "Abdeali",
+				url: "http://www.infragistics.com",
+				cities: [
+					"Redmond, WA",
+					"Seattle, WA",
+					"New York, NY"
+				]
+			},
+			{
+				firstName: "Alex",
+				lastName: "Kartavov",
+				url: "http://www.infragistics.com",
+				cities: [
+					"Redmond, WA",
+					"Seattle, WA",
+					"New York, NY"
+				]
+			},
+			{
+				firstName: "Lubo",
+				lastName: "Toshev",
+				url: "http://www.infragistics.com",
+				cities: [
+					"Redmond, WA",
+					"Seattle, WA",
+					"New York, NY"
+				]
+			},
+			{
+				firstName: "Boris",
+				lastName: "Moore",
+				url: "http://boris.org/",
+				cities: [
+					"Redmond, WA",
+					"Seattle, WA",
+					"New York, NY"
+				]
+			}
+		];
+		
+		$(document).ready(function () {
+		
+			// create the data sources
+			tableDs = new $.ig.HtmlTableDataSource({ schema: { fields:[ {name : "col1"}, {name : "col2", type: "number"}, {name : "col3"}, {name : "col4"} ]}, 
+				paging: {enabled:true, type: "local", pageSize: 3}, dataSource: $("#t1")[0] 
+			}).dataBind();
+			
+			// here we are specifying a default sort direction, which will be applied immediately after the source is bound 
+			jsonDs = new $.ig.ArrayDataSource( {sorting: { type: "local", defaultDirection: "asc" }, dataSource: arrayOfDataObjects }).dataBind();
+			
+			// use jQuery templating to render the processed/transformed data source 
+			$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
+			
+		});
+		
+	startTesting();
+		
+	function startTesting()
+	{
+
+		$(function () {
+
+			QUnit.init();
+			QUnit.start();
+
+			module("igDataSource");
+			
+			
+			var testId_1 = "Paging test 1 - apply page size and check number of records for dataView and total data records";
+			var testId_2 = "Paging test 2 - change page size and rebind";
+			var testId_3 = "Paging test 3 - go to previous page programatically";
+			var testId_4 = "Paging test 3 - go to the next page programatically";
+			
+			test(testId_1, function() {
+				
+				equal(3, tableDs.dataView().length, 3);
+				equal(11, tableDs.data().length, 11);
+				// number of pages
+				equal(4, tableDs.pageCount(), 4);
+				equal(0, tableDs.pageIndex(), 0);
+				
+			});
+			
+			test(testId_2, function() {
+			
+				tableDs.pageSize(4);
+				equal(4, tableDs.dataView().length, 4);
+				equal(11, tableDs.data().length, 11);
+				equal(3, tableDs.pageCount(), 3);
+				equal(0, tableDs.pageIndex(), 0);
+				
+				// get the last paga data (page idex is zero based) 
+				var lastPageData = tableDs.recordsForPage(2);
+				equal(3, lastPageData.length, 3);
+				equal("keyboard", lastPageData[0].col3, "keyboard");
+			});
+			
+			test(testId_3, function() {
+				
+				tableDs.pageSize(4);
+				tableDs.prevPage();
+				equal(0, tableDs.pageIndex(), 0);
+				tableDs.pageIndex(1);
+				equal(1, tableDs.pageIndex(), 1);
+				tableDs.prevPage();
+				equal(0, tableDs.pageIndex(), 0);
+				equal(4, tableDs.dataView().length, 4);
+				
+			});
+			
+			test(testId_4, function() {
+				
+				tableDs.pageSize(4);
+				tableDs.nextPage();
+				equal(1, tableDs.pageIndex(), 1);
+				equal(4, tableDs.dataView().length, 4);
+				
+				// check the first rec
+				equal("trainers", tableDs.dataView()[0].col3, "trainers");
+			});
+			
+		});
+
+	}
+		
+	QUnit.log = function(result, message)  
+	{  
+		if (window.console && window.console.log)  
+		{  
+			window.console.log(result +' :: '+ message);  
+		}  
+	}  
+		
+	</script>
+	<script type="text/javascript" src="../../testswarm/inject.js"></script>
+</head>
+<body>
+<div id="div1"></div>
+<div style="float:right;width:400px;overflow:auto"">
+    <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+<table id="t1">
+<tbody>
+<tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr>
+<tr> <td>2</td> <td>15</td> <td>Hamburger</td>  <td>$ 33 </td> </tr>
+<tr> <td>3</td> <td>2000</td> <td>mobile phone</td>  <td>$ 5454 </td> </tr>
+<tr> <td>4</td> <td>45</td> <td>Beer</td>  <td>$ 2323232 </td> </tr>
+<tr> <td>5</td> <td>78</td> <td>trainers</td>  <td>$ 545454 </td> </tr>
+<tr> <td>6</td> <td>32</td> <td>coffee cup</td>  <td>$ 22 </td> </tr>
+<tr> <td>7</td> <td>987</td> <td>BMW 323 CI</td>  <td>$ 1000000 </td> </tr>
+<tr> <td>8</td> <td>434343</td> <td>mouse</td>  <td>$ 545454 </td> </tr>
+<tr> <td>9</td> <td>2356</td> <td>keyboard</td>  <td>$ 34 </td> </tr>
+<tr> <td>10</td> <td>33</td> <td>fish</td>  <td>$ 22 </td> </tr>
+<tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr>
+</tbody>
+</table>
+
+<input type="button" value="sort by table col 2" onclick="sortCol2(); return false;" />
+<input type="button" value="sort by table col 3" onclick="sortCol3(); return false;" />
+<input type="button" value="sort by table by col 2 AND col 3" onclick="sortByCol2AndCol3(); return false;" />
+
+<input type="button" value="sort list by first name" onclick="sortJsonListByFirstName(); return false;" />
+<input type="button" value="sort list by last name" onclick="sortJsonListByLastName(); return false;" />
+
+<ul id="list1">
+</ul>
+</body>
+</html>

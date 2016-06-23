@@ -1,0 +1,74 @@
+.ui-splitbutton-list {
+    position: absolute;
+    display: none;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+    .ui-splitbutton-list .ui-igbutton {
+        display: block;
+        margin-right: 0;
+    }
+
+    .ui-splitbutton-list .ui-menu-item a.ui-state-default {
+        border: 1px solid;
+    }
+
+    .ui-splitbutton-list .ui-menu-item a.ui-state-default,
+    .ui-splitbutton-list .ui-menu-item a.ui-state-hover,
+    .ui-splitbutton-list .ui-menu-item a.ui-state-focus {
+        margin: 0;
+        box-shadow: none;
+    }
+
+.ui-splitbutton {
+    display: inline-block;
+    letter-spacing: -4px;
+    word-spacing: -4px;
+}
+
+    .ui-splitbutton.ui-widget {
+        font-size: 0.9em;
+    }
+
+    .ui-splitbutton.ui-state-default {
+        border-width: 1px;
+        border-style: solid;
+    }
+
+    .ui-splitbutton .ui-igtoolbarbutton.ui-button {
+        margin: 0;
+        border: none!important; /* Needed to prevent various jquery ui interaction state scenarios */
+    }
+
+    .ui-splitbutton .ui-splitbutton-cleargaps {
+        letter-spacing: normal;
+        word-spacing: normal;
+        margin-right: 0;
+    }
+
+    .ui-splitbutton .ui-button-text {
+        padding: 0;
+    }
+
+    .ui-splitbutton .ui-button.ui-splitbutton-arrow {
+        margin-left: 0;
+        border-left: none;
+        width: 10px;
+    }
+
+.ui-splitbutton-hidden-input {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    height: 1px;
+    left: 1px;
+    outline: medium none;
+    position: absolute;
+    top: 1px;
+    width: 1px;
+    z-index: 0;
+}
+
+.ui-splitbutton .ui-effects-wrapper {
+    display: block;
+}

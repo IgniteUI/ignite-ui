@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Toolbar Tests</title>
+	<link type="text/css" href="../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+    
+    <link type="text/css" rel="stylesheet" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.toolbar.css" media="screen" />
+	<link type="text/css" rel="stylesheet"href="../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" />
+     
+	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+
+
+	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.toolbarbutton.js"></script>
+    <script type="text/javascript" src="../../../Source/ClientUI/js/modules/i18n/infragistics.ui.toolbar-en.js"></script>
+    <script type="text/javascript" src="../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.toolbar.js"></script>
+
+
+	<script type="text/javascript">
+        
+	    var equalWithEpsilon = function(a,b,epsilon){
+	        return Math.abs(a - b) < epsilon;
+	    }
+	    var igToolbarTestSetup = {
+	        igToolbarId: "igToolbar",
+	        igToolbarSelector: "#igToolbar",
+	        setup: function () {
+	            $('body').append("<div id=" + this.igToolbarId + "></div>");
+	            $(this.igToolbarSelector).igToolbar();
+	        },
+	        teardown: function () {
+	            $(this.igToolbarSelector).remove();
+	        }
+	    };
+
+	    module("igToolbar initializing", igToolbarTestSetup);
+		
+	    test("Initializing ", function () {
+	        var initialized = $(this.igToolbarSelector).length > 0;
+	        equal(initialized, true, "Should be true");
+	    });
+
+	    asyncTest("Collapsing event with isExpanded true", function () {
+	        $(this.igToolbarSelector + "_collapseButton").click();
+	        var selector = this.igToolbarSelector;
+	        setTimeout(function () {
+	            start();
+	            equal($(selector).igToolbar("option", "isExpanded"), false, "should be false");
+	        }, 500);
+	    });
+
+	    asyncTest("Collapsing event with isExpanded false", function () {
+	        $(this.igToolbarSelector + "_collapseButton").click();
+	        $(this.igToolbarSelector + "_collapseButton").click();
+	        var selector = this.igToolbarSelector;
+	        setTimeout(function () {
+	            start();
+	            equal($(selector).igToolbar("option", "isExpanded"), true, "should be false");
+	        }, 500);
+	    });
+
+	    test("setOptions height and width", function () {
+	        var actualWidth, actualHeight,
+                expectedWidth = 100,
+	            expectedHeight = 200;
+
+	        $(this.igToolbarSelector).igToolbar("option", "width", expectedWidth);
+	        $(this.igToolbarSelector).igToolbar("option", "height", expectedHeight);
+
+	        actualWidth = $(this.igToolbarSelector).data().igToolbar.options.width;
+	        actualHeight = $(this.igToolbarSelector).data().igToolbar.options.height;
+
+	        equal(actualWidth, expectedWidth, "Should be 100");
+	        equal(actualHeight, expectedHeight, "Should be 200");
+	    });
+
+	    test("get height and width", function () {
+	        var actualWidth, actualHeight,
+                expectedWidth = 100,
+	            expectedHeight = 200;
+
+	        $(this.igToolbarSelector).igToolbar("option", "width", expectedWidth);
+	        $(this.igToolbarSelector).igToolbar("option", "height", expectedHeight);
+
+	        actualWidth = $(this.igToolbarSelector).igToolbar("option", "width");
+	        actualHeight = $(this.igToolbarSelector).igToolbar("option", "height");
+
+	        equal(actualWidth, expectedWidth, "Should be 100");
+	        equal(actualHeight, expectedHeight, "Should be 200");
+	    });
+
+	    test("setOptions allowCollapsiong", function () {
+	        var actualAllowCollapsing;
+
+	        $(this.igToolbarSelector).igToolbar("option", "allowCollapsing", false);
+
+	        actualAllowCollapsing = $(this.igToolbarSelector).data().igToolbar.options.allowCollapsing;
+
+	        equal(actualAllowCollapsing, false, "Should be false");
+	    });
+
+	    test("destroy method", function () {
+	        $(this.igToolbarSelector).igToolbar("destroy");
+
+	        equal($(this.igToolbarSelector).children().length, 0, "Should be 0");
+	    });
+	</script>
+</head>
+<body>
+   <!-- <div id="qunit"></div>
+    <div id="qunit-fixture"></div>-->
+    <div style="float:right;width:400px;overflow:auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+</body>
+</html>

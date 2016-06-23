@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Rating - common example </title>
+	<link id="Link1" type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />	
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.rating.css" rel="stylesheet" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.rating.js"></script>-->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.rating.js"></script>
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+	
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	$(function () {
+		// Create ratings
+		$('#rating1').igRating();
+		$('#rating2').igRating({
+			vertical: true,
+			precision: 'exact',
+			value: 0.8
+		});
+		$('#rating3').igRating({
+			voteCount: 6,
+			value: 0.8,
+			precision: 'half'
+		});
+		$('#rating4').igRating({
+			vertical: true,
+			voteCount: 6,
+			value: 0.8,
+			precision: 'half'
+		});
+		$('#rating5').igRating({
+			voteCount: 4,
+			swapDirection: true,
+			value: 0.8,
+			precision: 'whole'
+		});
+		$('#rating6').igRating({
+			vertical: true,
+			voteCount: 4,
+			swapDirection: true,
+			value: 0.8,
+			precision: 'whole'
+		});
+	});
+	// START TESTING
+	module('igRatingCommon');
+	var testId = '[ID1] rating common';
+	test(testId, function () {
+		var i, elem, good, main, val0, val, rating = $('#rating1');
+		val = rating.igRating('value');
+		val0 = 0;
+		equal(val, val0, 'Value of rating1');
+		QUnit.log(val === val0, testId + ' value in rating1 was correct');
+		//
+		rating = $('#rating2');
+		val = rating.igRating('value');
+		val0 = 0.8;
+		equal(val, val0, 'Value of rating2');
+		QUnit.log(val === val0, testId + ' value in rating2 was correct');
+		//
+		rating = $('#rating3');
+		val = rating.igRating('value');
+		good = Math.abs(val - 0.8) < 0.002;
+		ok(good, 'Value of rating3 is correct');
+		QUnit.log(good, testId + ' value in rating3 was correct');
+		//
+		rating = $('#rating4');
+		val = rating.igRating('value');
+		good = Math.abs(val - 0.8) < 0.002;
+		ok(good, 'Value of rating4 is correct');
+		QUnit.log(good, testId + ' value in rating4 was correct');
+		//
+		rating = $('#rating5');
+		val = rating.igRating('value');
+		val0 = 0;
+		good = Math.abs(val - 0.8) < 0.002;
+		ok(good, 'Value of rating5 is correct');
+		QUnit.log(good, testId + ' value in rating5 was correct');
+		//
+		rating = $('#rating6');
+		val = rating.igRating('value');
+		good = Math.abs(val - 0.8) < 0.002;
+		ok(good, 'Value of rating6 is correct');
+		QUnit.log(good, testId + ' value in rating6 was correct');
+		//
+		for (i = 1; i < 3; i++) {
+			main = $('#rating' + i).data('igRating').element;
+			elem = main.find('.ui-igrating-vote');
+			good = elem && elem.length === 15;
+			ok(good, 'Vote elements in rating' + i + ' is 15');
+			QUnit.log(good, testId + ' vote elements in rating' + i + ' is 15');
+			elem = main.find('.ui-igrating-voteselected');
+			good = elem && elem.length === 5;
+			ok(good, 'Selected votes in rating' + i + ' is 5');
+			QUnit.log(good, testId + ' selected votes in rating' + i + ' is 5');
+			elem = main.find('.ui-igrating-votehover');
+			good = elem && elem.length === 5;
+			ok(good, 'Hover votes in rating' + i + ' is 5');
+			QUnit.log(good, testId + ' hover votes in rating' + i + ' is 5');
+			//
+			main = $('#rating' + (i + 2)).data('igRating').element;
+			elem = main.find('.ui-igrating-vote');
+			good = elem && elem.length === 18;
+			ok(good, 'Vote elements in rating' + (i + 2) + ' is 18');
+			QUnit.log(good, testId + ' vote elements in rating' + (i + 2) + ' is 18');
+			elem = main.find('.ui-igrating-voteselected');
+			good = elem && elem.length === 6;
+			ok(good, 'Selected votes in rating' + (i + 2) + ' is 6');
+			QUnit.log(good, testId + ' selected votes in rating' + (i + 2) + ' is 6');
+			elem = main.find('.ui-igrating-votehover');
+			good = elem && elem.length === 6;
+			ok(good, 'Hover votes in rating' + (i + 2) + ' is 6');
+			QUnit.log(good, testId + ' hover votes in rating' + (i + 2) + ' is 6');
+			//
+			main = $('#rating' + (i + 4)).data('igRating').element;
+			elem = main.find('.ui-igrating-vote');
+			good = elem && elem.length === 12;
+			ok(good, 'Vote elements in rating' + (i + 4) + ' is 12');
+			QUnit.log(good, testId + ' vote elements in rating' + (i + 4) + ' is 12');
+			elem = main.find('.ui-igrating-voteselected');
+			good = elem && elem.length === 4;
+			ok(good, 'Selected votes in rating' + (i + 4) + ' is 4');
+			QUnit.log(good, testId + ' selected votes in rating' + (i + 4) + ' is 4');
+			elem = main.find('.ui-igrating-votehover');
+			good = elem && elem.length === 4;
+			ok(good, 'Hover votes in rating' + (i + 4) + ' is 4');
+			QUnit.log(good, testId + ' hover votes in rating' + (i + 4) + ' is 4');
+		}
+		val = rating.find('*').length;
+		good = val > 10;
+		ok(good, 'rating has child elements');
+		QUnit.log(good, testId + ' rating has child elements');
+		rating.igRating('destroy');
+		val = rating.find('*').length;
+		good = val === 0;
+		ok(good, 'destroyed rating has no child elements');
+		QUnit.log(good, testId + ' destroyed rating has no child elements');
+	});
+	module('igRatingCommon');
+	testId = '[ID2] rating common';
+	test(testId, function () {
+		var val, rating = $('#rating2');
+		val = rating.igRating('value');
+		equal(val, 0.8, 'rating value');
+		QUnit.log(val === 0.8, testId + ' rating value');
+		//
+		val = rating.igRating('valueHover');
+		equal(val, 0.8, 'rating valueHover');
+		QUnit.log(val === 0.8, testId + ' rating valueHover');
+		//
+		rating.igRating('valueHover', 0.5);
+		val = rating.igRating('valueHover');
+		equal(val, 0.5, 'rating valueHover set to 0.5');
+		QUnit.log(val === 0.5, testId + ' rating valueHover set to 0.5');
+		//
+		rating.igRating('value', 0.3);
+		val = rating.igRating('value');
+		equal(val, 0.3, 'rating value set to 0.3');
+		QUnit.log(val === 0.3, testId + ' rating value set to 0.3');
+		//
+		val = rating.igRating('option', 'precision');
+		equal(val, 'exact', 'rating precision is correct');
+		QUnit.log(val === 'exact', testId + ' rating precision is correct');
+		//
+		rating.igRating('option', 'precision', 'whole');
+		val = rating.igRating('option', 'precision');
+		equal(val, 'whole', 'rating precision was changed');
+		QUnit.log(val === 'whole', testId + ' rating precision was changed');
+		//
+		val = rating.igRating('value');
+		equal(val, 0.3, 'rating get value is correct');
+		QUnit.log(val === 0.3, testId + ' rating get value is correct');
+		//
+		val = rating.igRating('valueHover');
+		equal(val, 0.5, 'rating whole precision valueHover');
+		QUnit.log(val === 0.5, testId + ' rating whole precision valueHover');
+		//
+		rating.igRating('valueHover', 0.3);
+		val = rating.igRating('valueHover');
+		equal(val, 0.3, 'rating whole precision valueHover set to 0.3');
+		QUnit.log(val === 0.3, testId + ' rating whole precision valueHover set to 0.3');
+		//
+		val = rating.igRating('hasFocus');
+		ok(!val, 'rating has no focus');
+		QUnit.log(!val, testId + ' rating has no focus');
+		//
+		rating.igRating('focus');
+		setTimeout(function () {
+			var testId = '[ID3] rating common';
+			test(testId, function () {
+				stop();
+				val = rating.igRating('hasFocus');
+				ok(val, 'rating has focus');
+				QUnit.log(val, testId + ' rating has focus');
+				start();
+			});
+		}, 300);
+	});
+	QUnit.log = function (result, message) {
+		if (window.console && window.console.log) {
+			window.console.log(result + ' :: ' + message);
+		}
+	};
+	</script>
+	<script type="text/javascript" src="../../testswarm/inject.js"></script>
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+     <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;">
+	<div id="rating1"></div>
+	<div id="rating2"></div>
+	<div id="rating3"></div>
+	<div id="rating4"></div>
+	<div id="rating5"></div>
+	<div id="rating6"></div>
+</div>
+</body>
+</html>
+
