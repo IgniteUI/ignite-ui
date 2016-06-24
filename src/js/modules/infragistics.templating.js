@@ -18,7 +18,6 @@
 	3. block RegExp matches terminated block statements
 		e.g. {{if condition}} do something {{else}} do something else {{/if}}
 		limitation: Regular expressions are equivalent to finite automatons as described by theory of computation and more precisely the formal languages and automata computability theory. This means that they are limited to recognizing languages of the type AB^nC but noy languages of the type [AB]^n which are recognized by context-free grammars (Regular expressions are still a subset of context-free grammars). However the A^nB^n is recognized due to the fact that we can use greedy regular expressions allowing us to match the last existing token of a type. Thus nested if-statements would not be recognized without stack-tokenizing the block statement.
-	4. TO DO: Find a way to encorporate ? conditionals
  */
 /*global jQuery */
 (function ($) {
@@ -28,7 +27,7 @@
 	$.extend($.ig, {
 	/* pluginName="igTemplating" */
 		tmpl: function (template, data, args) {
-			/*  Templates the given template with the provided data. If data is a function that requires arguments, the arguments need to be provided as an array following the data. tmpl(template, data[, args])
+			/*  Populates the given template with the provided data. If data is a function that requires arguments, the arguments need to be provided as an array following the data. tmpl(template, data[, args])
 				paramType="string" optional="false" Specifies the template string
 				paramType="object|array|function" optional="false" Specifies the data to be templated in the template. If function is provided, then it has to be object or array returning function, possible receiving arguments array which can be specified as the third parameter
 				paramType="array" optional="true" If function is provided as the second parameter, then this parameter is the arguments for the function.
@@ -74,7 +73,7 @@
 					this._internalTmplCache[ cacheConst ]._hasBlock = this._hasBlock;
 					this._internalTmplCache[ cacheConst ].tmpl = tmpl;
 				}
-				if (!this.tokens) {
+				if (!this.tokens.length) {
 
 					// Nothing got tokenized
 					return tmpl;// An exception can be thrown here
@@ -346,12 +345,12 @@
 		},
 		_populateTemplate: function (template, data) {
 			var i, j, result = "", temp;
-			if (!data.length) {
+			if ($.type(data) !== "array") {
 				for (i = 0; i < this.tokens.length; i++) {
 					template = this._populateArgumentValue(data, this.tokens[ i ], template);
 				}
 				result = template;
-			} else if (data.length) {
+			} else {
 				for (j = 0; j < data.length; j++) {
 					temp = template;
 					for (i = 0; i < this.tokens.length; i++) {
@@ -365,7 +364,7 @@
 		},
 		_compileTemplate: function (template, data) {
 			var i, j, k, result = "", temp, tempArgs = [ ], arg = "", f;
-			if (!data.length) {
+			if ($.type(data) !== "array") {
 				for (j = 0; j < this.args.length; j++) {
 					arg = this.args[ j ];
 					for (i = 0; i < this.tokens.length; i++) {
@@ -387,7 +386,7 @@
 				template = template.replace(/\$i/g, 0);
 				/*jshint -W054 */
 				result = new Function("args", template).call(this, tempArgs) || "";
-			} else if (data.length) {
+			} else {
 				temp = template.replace(this.regExp.index, "args[" + this.args.length + "]");
 				f = new Function("args", temp);
 				/*jshint +W054 */

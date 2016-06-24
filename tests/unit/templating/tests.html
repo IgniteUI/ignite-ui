@@ -94,6 +94,7 @@
 			testId16 = "igTemplating sequential {{each}}";
 			testId17 = "igTemplating properties with spaces";
 			testId18 = "igTemplating resolving methods";
+			testId19 = "igTemplating handling objects with 'length' property"
 			
 			test(testId1, function () {
 				ok($.ig, '$.ig is undefined');
@@ -108,9 +109,12 @@
 			test(testId2, function () {
 				var tmpl1 = '<div #Some comment#>Test # Comment goes in here # </div>',
 					tmpl = '<a href="#">${Template}</a><a href="#"></a>',
+					tmpl2 = '<a href="#">Nothing should be replaced</a><a href="#">yeah?</a>',
 					result1 = $.ig.tmpl(tmpl1, data1),
-					result = $.ig.tmpl(tmpl, data1);
+					result = $.ig.tmpl(tmpl, data1),
+					result2 = $.ig.tmpl(tmpl2, data1);
 				
+				equal(result2, '<a href="#">Nothing should be replaced</a><a href="#">yeah?</a>', 'Templating handled incorrectly a no template string.');
 				equal(result1, '<div>Test </div>', 'Comment was not correctly removed from the template');
 				equal(result, '<a href="#">Success</a><a href="#"></a>', 'Comment was not correctly removed from the template');
 			});
@@ -364,6 +368,17 @@
 					];
 				equal($.ig.tmpl(tmpl, data), '<div><span>1</span><span><p>1</p></span><span>prop1 value</span><span><p>prop2 value</p></span></div>', 'The properties which are functions were not correctly read');
 				equal($.ig.tmpl(tmpl, data2), '<div><span>1</span><span><p>1</p></span><span>prop1 value</span><span><p>prop2 value</p></span></div><div><span>2</span><span><p>2</p></span><span>prop1 value 2</span><span><p>prop2 value 2</p></span></div>', 'The properties which are functions were not correctly read');
+			});
+			
+			test(testId19, function () {
+				var tmpl = '<div>${length}</div>',
+					data = [
+                      { "Name": "John Smith", "Age": 45, "length":1 },
+                      { "Name": "Mary Johnson", "Age": 32 , "length":1 },
+                      { "Name": "Bob Ferguson", "Age": 27 , "length":1 }
+					],
+					result = $.ig.tmpl(tmpl, data);
+				equal(result, '<div>1</div><div>1</div><div>1</div>', 'The properties with spaces were not correctly read');
 			});
 		});
 	</script>
