@@ -35,30 +35,39 @@ module.exports = function (grunt) {
 				maxErrors: null,
 				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
+		},
+		clean: {
+			jshint: ["jshint"],
+			jscs: ["jscs"]
 		}
     });
 
+	grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs");
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
+		var config;
 		if (!!control) {
-			grunt.config("jshint.all", grunt.file.readJSON('build/config/' + control + '/jshint.json').config);
-			grunt.task.run("jshint:all");
+			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
 		} else {
-			grunt.config("jshint.all", grunt.file.readJSON('build/config/all/jshint.json').config);
-			grunt.task.run("jshint:all");
+			config = grunt.file.readJSON('build/config/all/jshint.json').config;
 		}
+		grunt.task.run("clean:jshint");
+		grunt.config("jshint.all", config);
+		grunt.task.run("jshint:all");
 	});
 
 	grunt.task.registerTask("cs", "A sample task to run JSCS", function (control) {
+		var config;
 		if (!!control) {
-			grunt.config("jscs.src", grunt.file.readJSON('build/config/' + control + '/jshint.json').config);
-			grunt.task.run("jscs");
+			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
 		} else {
-			grunt.config("jscs.src", grunt.file.readJSON('build/config/all/jshint.json').config);
-			grunt.task.run("jscs");
+			config = grunt.file.readJSON('build/config/all/jshint.json').config;
 		}
+		grunt.task.run("clean:jscs");
+		grunt.config("jscs.src", config);
+		grunt.task.run("jscs");
 	});
 	
 	grunt.task.registerTask("verify", "A sample task to run jshint, instrument files, dev tests and coverage.", function(control) {
