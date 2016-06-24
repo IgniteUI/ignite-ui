@@ -14,6 +14,10 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
+# Test output folders for hint, JSCS, etc:
+jshint
+jscs
+
 # nyc test coverage
 .nyc_output
 
