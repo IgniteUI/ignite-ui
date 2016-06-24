@@ -1,0 +1,39 @@
+{
+	"config": [
+
+		"<%= config.modulesDir %>/i18n/**/*.js",
+		"<%= config.modulesDir %>/encoding/**/*.js",
+		"<%= config.scriptsDir %>/i18n/**/*.js",
+		"<%= config.mobileScriptsDir %>/i18n/**/*.js",
+
+		"<%= config.modulesDir %>/infragistics.olap.*.js",
+		"<%= config.modulesDir %>/infragistics.olapflatdatasource.js",
+		"<%= config.modulesDir %>/infragistics.olapxmladatasource.js",
+
+		"<%= config.modulesDir %>/infragistics.documents.*.js",
+		"<%= config.modulesDir %>/infragistics.excel*.js",
+		"<%= config.modulesDir %>/infragistics.xml.js",
+
+		"<%= config.modulesDir %>/infragistics.datachart.js",
+		"<%= config.modulesDir %>/infragistics.dv.*.js",
+		"<%= config.modulesDir %>/infragistics.barcode.js",
+		"<%= config.modulesDir %>/infragistics.ui.barcode.js",
+		"<%= config.modulesDir %>/infragistics.bulletgraph.js",
+		"<%= config.modulesDir %>/infragistics.ui.bulletgraph.js",
+		"<%= config.modulesDir %>/infragistics.ui.doughnutchart.js",
+		"<%= config.modulesDir %>/infragistics.ui.funnelchart.js",
+		"<%= config.modulesDir %>/infragistics.lineargauge.js",
+		"<%= config.modulesDir %>/infragistics.ui.lineargauge.js",
+		"<%= config.modulesDir %>/infragistics.radial*.js",
+		"<%= config.modulesDir %>/infragistics.ui.radial*.js",
+		"<%= config.modulesDir %>/infragistics.sparkline.js",
+		"<%= config.modulesDir %>/infragistics.ui.sparkline.js",
+		"<%= config.modulesDir %>/infragistics.barcode_*.js",
+		"<%= config.modulesDir %>/infragistics.chart_*.js",
+		"<%= config.modulesDir %>/infragistics.gauge_*.js",
+		"<%= config.modulesDir %>/infragistics.geographicmap*.js",
+		"<%= config.modulesDir %>/infragistics.radialmenu_*.js",
+		"<%= config.modulesDir %>/infragistics.ui.chart.template.js",
+		"<%= config.modulesDir %>/infragistics.ui.map.template.js"
+	]
+}

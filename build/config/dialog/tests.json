@@ -1,0 +1,5 @@
+{
+	"config": [
+		"<%= config.devTestsDir %>/dialog/**/*test*.htm*"
+	]
+}

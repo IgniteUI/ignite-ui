@@ -1,0 +1,5 @@
+{
+	"config": [
+		"<%= config.extensionsDir%>/igniteui-angular.js"
+	]
+}

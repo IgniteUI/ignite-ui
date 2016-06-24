@@ -1,0 +1,5 @@
+{
+	"config": [
+		"<%= config.devTestsDir %>/loader/*test*.htm*"
+	]
+}

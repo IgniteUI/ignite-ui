@@ -1,0 +1,6 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.dataSource.js",
+		"<%= config.modulesDir%>/infragistics.util.js"
+	]
+}

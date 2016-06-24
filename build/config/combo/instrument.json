@@ -1,0 +1,7 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.combo*.js",
+		"<%= config.modulesDir%>/infragistics.dataSource.js",
+		"<%= config.extensionsDir%>/infragistics.ui.combo.knockout-extensions.js"
+	]
+}

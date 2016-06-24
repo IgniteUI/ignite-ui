@@ -1,0 +1,14 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.htmleditor*.js",
+		"<%= config.modulesDir%>/infragistics.ui.colorpicker*.js",
+		"<%= config.modulesDir%>/infragistics.ui.popover.js",
+		"<%= config.modulesDir%>/infragistics.ui.splitbutton.js",
+		"<%= config.modulesDir%>/infragistics.ui.toolbar*.js",
+		"<%= config.modulesDir%>/infragistics.ui.combo.js",
+		"<%= config.modulesDir%>/infragistics.dataSource.js",
+		"<%= config.modulesDir%>/infragistics.ui.dialog.js",
+		"<%= config.modulesDir%>/infragistics.ui.shared.js",
+		"<%= config.modulesDir%>/infragistics.util.js"
+	]
+}

@@ -1,0 +1,10 @@
+{
+	"config": [
+		"<%= config.devTestsDir %>/datasource/**/*test*.htm*",
+		"<%= config.devTestsDir %>/grid/**/*test*.htm*",
+		"<%= config.devTestsDir %>/combo/**/*test*.htm*",
+		"<%= config.devTestsDir %>/tree/**/*test*.htm*",
+		"<%= config.devTestsDir %>/tilemanager/**/*test*.htm*",
+		"<%= config.devTestsDir %>/treegrid/**/*test*.htm*"
+	]
+}

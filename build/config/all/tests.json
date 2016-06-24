@@ -1,0 +1,9 @@
+{
+	"config": [
+		"<%= config.devTests%>",
+		"<%= config.excelTestsDir %>/infragistics.excel.unitTests.qunit*.html",
+		"!<%= config.devTestsDir%>/editors_old/**/*test*.htm*",
+		"!<%= config.devTestsDir%>/gridexcelexporter/**/*test*.htm*",
+		"!<%= config.devTestsDir%>/olap/**/*test*.htm*"
+	]
+}
