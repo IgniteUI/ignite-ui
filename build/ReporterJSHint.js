@@ -11,7 +11,7 @@
 		reportHtml += "<h2>JSHint for build: jQuery_{{build_number}} </h2><br />" + date;
 		reportHtml += "<p>Check JSHint from console using 'grunt hint' or 'grunt hint:controlName' or go to <a href='http://www.jshint.com/' target='_blank'>http://www.jshint.com/</a> and paste the code.</p>";
 		reportHtml += "<p>More about <a href='http://www.jshint.com/docs/' target='_blank'>JSHint.</a></p>";
-		http://jshint.com/docs/#options
+		// http://jshint.com/docs/#options
 			reportHtml += "<table border=1 cellpadding=5 cellspacing=0 style='font-family:Verdana; font-size:11pt; border-width:1px; border: 1px solid black;width:600px;'>";
 
 		// JSON report
@@ -23,13 +23,12 @@
 
 
 			file = files[iFile];
-			fileName = file.file.replace("../../Source/ClientUI/js/", "");
+			fileName = file.file.replace("src/js/", "");
 			fileNameLink = fileName.replace("/", "_");
 			fileNameLink = fileNameLink.replace(/\./mg, "_");
 			fileNameLink = fileNameLink.replace("extensions/", "");
 			fileNameLink = fileNameLink.replace("modules/", "");
 			fileNameLink = fileNameLink.replace("infragistics.", "");
-			fileNameLink = fileNameLink.replace("../../Source/MobileUI/js/", "");
 			fileNameLink = fileNameLink.replace(".js", "");
 			if (!file.errors) {
 				reportHtml += "<tr><td style='background-color:#E8FFCF;'>" + fileName + "</td><td style='background-color:#E8FFCF;'>passed</td></tr>";

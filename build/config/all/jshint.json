@@ -1,6 +1,5 @@
 {
 	"config": [
-		"<%= config.scripts %>", 
-		"<%= config.mobileScripts %>"
+		"<%= config.scripts %>"
 	]
 }
