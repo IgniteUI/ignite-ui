@@ -1,10 +1,9 @@
 {
 	"config": [
 		"<%= config.extensions%>",
-		"<%= config.modulesDir%>/infragistics.ui.grid*.js",
 		"<%= config.modulesDir%>/infragistics.dataSource.js",
 		"<%= config.modulesDir%>/infragistics.ui.combo*.js",
 		"<%= config.modulesDir%>/infragistics.ui.editors*.js",
-		"<%= config.modulesDir%>/infragistics.ui.tree*.js"
+		"<%= config.modulesDir%>/infragistics.ui.tree.js"
 	]
 }

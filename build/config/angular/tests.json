@@ -1,5 +1,0 @@
-{
-	"config": [
-		"<%= config.devTestsDir %>/angular/**/*test*.htm*"
-	]
-}
