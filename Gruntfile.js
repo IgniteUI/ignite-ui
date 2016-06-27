@@ -19,8 +19,8 @@ module.exports = function (grunt) {
 			options: {
 				jshintrc: true,
 				globals: {},
-				reporter: "build/ReporterJSHint.js",
-				reporterOutput: "jshint/report.html",
+				//reporter: "build/ReporterJSHint.js",
+				//reporterOutput: "jshint/report.html",
 				ignores: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			},
 			changed: {}
