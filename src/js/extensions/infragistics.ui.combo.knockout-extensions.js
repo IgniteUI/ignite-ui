@@ -13,6 +13,29 @@
 
 /*global ko, jQuery*/
 (function ($) {
+    function selectItems(combo, selectedItems) {
+        var valueKey = combo.igCombo("option", "valueKey"),
+			selectedValues = [],
+			index, item, value;
+
+        if (selectedItems) {
+            selectedItems = ko.utils.unwrapObservable(selectedItems);
+            for (index = 0; index < selectedItems.length; index++) {
+                item = selectedItems[ index ];
+                if (typeof item === "function") {
+                    item = item();
+                }
+                if (typeof item === "object") {
+                    value = item[ valueKey ];
+                } else {
+                    value = item;
+                }
+                selectedValues.push(value);
+            }
+            combo.igCombo("value", selectedValues);
+        }
+    }
+    
     ko.bindingHandlers.igCombo = {
         init: function (element, valueAccessor) {
             var combo = $(element),
@@ -185,27 +208,4 @@
             combo.css("display", visible() ? "inline-block" : "none");
         }
     };
-
-    function selectItems(combo, selectedItems) {
-        var valueKey = combo.igCombo("option", "valueKey"),
-			selectedValues = [],
-			index, item, value;
-
-        if (selectedItems) {
-            selectedItems = ko.utils.unwrapObservable(selectedItems);
-            for (index = 0; index < selectedItems.length; index++) {
-                item = selectedItems[ index ];
-                if (typeof item === "function") {
-                    item = item();
-                }
-                if (typeof item === "object") {
-                    value = item[ valueKey ];
-                } else {
-                    value = item;
-                }
-                selectedValues.push(value);
-            }
-            combo.igCombo("value", selectedValues);
-        }
-    }
 }(jQuery));
