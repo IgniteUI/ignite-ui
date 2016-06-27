@@ -36,6 +36,30 @@ module.exports = function (grunt) {
 				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
 		},
+		qunit: {
+			all: ["<%= config.devTests%>"],
+			options: {
+				force: false,
+				timeout: 180000,
+				"--web-security": "no",
+				coverage: {
+					src: grunt.file.readJSON('build/config/all/instrument.json').config,
+					instrumentedFiles: "src/instrumentedFiles",
+					htmlReport: "coverage/reportHTML",
+					jsonSummaryReport: "coverage/reportJSON",
+					lcovReport: "coverage/reportLCOV",
+					disposeCollector: true,
+					reportOnFail: true,
+					linesThresholdPct: 85,
+					statementsThresholdPct: 85,
+					functionsThresholdPct: 85,
+					branchesThresholdPct: 85
+				},
+				page: {
+					viewportSize: { width: 1600, height: 800 }
+				}
+			}
+		},
 		clean: {
 			jshint: ["jshint"],
 			jscs: ["jscs"]
@@ -45,6 +69,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs");
+	grunt.loadNpmTasks("grunt-qunit-istanbul");
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
 		var config;
@@ -70,11 +95,16 @@ module.exports = function (grunt) {
 		grunt.task.run("jscs");
 	});
 	
+	grunt.task.registerTask("test", "A sample task to run dev tests and coverage for a single control or for all of them.", function(control) {
+		grunt.config("qunit.all", ["<%= config.devTestsDir %>/editors/dateEditor/**/*test*.htm*"]);
+		grunt.task.run("qunit:all");
+	});
+
 	grunt.task.registerTask("verify", "A sample task to run jshint, instrument files, dev tests and coverage.", function(control) {
 	    if (!!control) {
-	        grunt.task.run("hint:" + control, "cs:" + control);
+	        grunt.task.run("hint:" + control, "cs:" + control, "test:" + control);
 	    } else {
-	    	grunt.task.run("hint", "jscs");
+	    	grunt.task.run("hint", "jscs", "test");
 		}
 	});
 };

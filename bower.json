@@ -1,0 +1,21 @@
+{
+  "name": "ignite-ui",
+  "version": "0.1.0",
+  "ignore": [
+    "**/.*",
+    "*.md",
+    ".jshintrc",
+    ".jscsrc",
+    ".travis.yml",
+    "bower.json",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "jquery": "^3.0.0",
+    "jquery-ui": "^1.11.4"
+  },
+  "devDependencies": {
+    "qunit": "^1.10.0"
+  }
+}
