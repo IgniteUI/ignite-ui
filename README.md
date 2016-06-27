@@ -103,7 +103,7 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 |[Grid](http://www.igniteui.com/grid/bind-grid-with-ko)						|:x:				|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/iggrid-configuring-knockout-support) &nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igGrid/03_Features/11_igGrid_Configuring_Knockout_Support.md) |
 |[Chart](http://www.igniteui.com/data-chart/bind-data-chart-with-ko)		|:x:				|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/igdatachart-knockoutjs-support) &nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igDataChart/04_Configuring/05_igDataChart_KnockoutJS_Support.md) |
 |																			|					|											|																		|					|
-|MVC Extensions																|:white_check_mark:	|:white_check_mark: 						|:white_check_mark:														||
+|MVC Extensions																|:x:	      |:white_check_mark: 						|:white_check_mark:														||
 |Developer Support 24/5														|:x:				|:white_check_mark: 						|:white_check_mark:														||
 
 
