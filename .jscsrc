@@ -1,0 +1,16 @@
+{
+    "preset": "jquery",
+    "requireSpacesInsideParentheses": false,
+    "disallowSpacesInFunctionExpression": false,
+    "disallowSpacesInAnonymousFunctionExpression": false,
+    "validateLineBreaks": "CRLF",
+    "requireSpacesInsideBrackets": {
+        "allExcept": [ "[", "]", "{", "}" ]
+    },
+    "requireCapitalizedComments": false,
+    "maximumLineLength": {
+        "value": 100,
+        "allExcept": [ "regex", "comments", "urlComments" ]
+    },
+    "requirePaddingNewLinesBeforeLineComments": { "allExcept": "firstAfterCurly" }
+}

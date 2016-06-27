@@ -1,0 +1,10 @@
+{
+	"config": [
+		"<%= config.devTestsDir %>/htmleditor/**/*test*.htm*",
+		"<%= config.devTestsDir %>/colorpicker/**/*test*.htm*",
+		"<%= config.devTestsDir %>/colorpickersplitbutton/**/*test*.htm*",
+		"<%= config.devTestsDir %>/splitbutton/**/*test*.htm*",
+		"<%= config.devTestsDir %>/toolbar/**/*test*.html",
+		"<%= config.devTestsDir %>/toolbarbutton/**/*test*.htm*"
+	]
+}

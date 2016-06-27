@@ -1,0 +1,8 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.htmleditor*.js",
+		"<%= config.modulesDir%>/infragistics.ui.colorpicker*.js",
+		"<%= config.modulesDir%>/infragistics.ui.splitbutton.js",
+		"<%= config.modulesDir%>/infragistics.ui.toolbar*.js"
+	]
+}

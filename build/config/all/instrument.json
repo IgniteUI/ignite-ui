@@ -1,0 +1,31 @@
+{
+	"config": [
+		"<%= config.extensions%>",
+		"<%= config.modulesDir%>/infragistics.datasource.js",
+		"<%= config.modulesDir%>/infragistics.templating.js",
+		"<%= config.modulesDir%>/infragistics.ui.colorpicker.js",
+		"<%= config.modulesDir%>/infragistics.ui.colorpickersplitbutton.js",
+		"<%= config.modulesDir%>/infragistics.ui.combo*.js",
+		"<%= config.modulesDir%>/infragistics.ui.dialog.js",
+		"<%= config.modulesDir%>/infragistics.ui.editors*.js",
+		"<%= config.modulesDir%>/infragistics.ui.htmleditor.js",
+		"<%= config.modulesDir%>/infragistics.ui.layoutmanager.js",
+		"<%= config.scriptsDir%>/infragistics.loader.js",
+		"<%= config.modulesDir%>/infragistics.ui.notifier.js",
+		"<%= config.modulesDir%>/infragistics.ui.popover.js",
+		"<%= config.modulesDir%>/infragistics.ui.rating.js",
+		"<%= config.modulesDir%>/infragistics.ui.scroll.js",
+		"<%= config.modulesDir%>/infragistics.ui.shared.js",
+		"<%= config.modulesDir%>/infragistics.ui.splitter.js",
+		"<%= config.modulesDir%>/infragistics.ui.splitbutton.js",
+		"<%= config.modulesDir%>/infragistics.ui.tilemanager.js",
+		"<%= config.modulesDir%>/infragistics.ui.toolbar.js",
+		"<%= config.modulesDir%>/infragistics.ui.toolbarbutton.js",
+		"<%= config.modulesDir%>/infragistics.ui.tree.js",
+		"<%= config.modulesDir%>/infragistics.ui.upload.js",
+		"<%= config.modulesDir%>/infragistics.ui.validator.js",
+		"<%= config.modulesDir%>/infragistics.ui.videoplayer.js",
+		"<%= config.modulesDir%>/infragistics.ui.zoombar.js",
+		"<%= config.modulesDir%>/infragistics.util.js"
+	]
+}

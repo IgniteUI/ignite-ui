@@ -1,0 +1,13 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.treegrid*.js",
+		"<%= config.modulesDir%>/infragistics.ui.grid*.js",
+		"<%= config.modulesDir%>/infragistics.ui.shared.js",
+		"<%= config.modulesDir%>/infragistics.ui.popover.js",
+		"<%= config.modulesDir%>/infragistics.ui.notifier.js",
+		"<%= config.modulesDir%>/infragistics.ui.editors.js",
+		"<%= config.modulesDir%>/infragistics.dataSource.js",
+		"<%= config.modulesDir%>/infragistics.util.js",
+		"<%= config.modulesDir%>/infragistics.templating.js"
+	]
+}

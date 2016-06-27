@@ -1,0 +1,10 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.treegrid*.js",
+		"<%= config.modulesDir%>/infragistics.dataSource.js",
+		"<%= config.modulesDir%>/infragistics.templating.js",
+		"<%= config.modulesDir%>/infragistics.ui.grid.framework.js",
+		"<%= config.modulesDir%>/infragistics.ui.shared.js",
+		"<%= config.modulesDir%>/infragistics.util.js"
+	]
+}

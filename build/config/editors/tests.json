@@ -1,0 +1,6 @@
+{
+	"config": [
+		"<%= config.devTestsDir %>/editors/**/*test*.htm*",
+		"<%= config.devTestsDir %>/knockout/editors/**/*test*.htm*"
+	]
+}
