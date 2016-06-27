@@ -17,6 +17,7 @@ coverage
 # Test output folders for hint, JSCS, etc:
 jshint
 jscs
+src/instrumentedFiles
 
 # nyc test coverage
 .nyc_output
