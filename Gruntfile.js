@@ -70,6 +70,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-qunit-istanbul");
 
+	grunt.option("force", true );
+
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
 		var config;
 
@@ -83,7 +85,7 @@ module.exports = function (grunt) {
 		grunt.task.run("jshint:all");
 	});
 
-	grunt.task.registerTask("cs", "A sample task to run JSCS", function (control) {
+	grunt.task.registerTask("cs", "Task to run JSCS", function (control) {
 		var config;
 
 		if (!!control) {
@@ -96,20 +98,57 @@ module.exports = function (grunt) {
 		grunt.task.run("jscs");
 	});
 	
-	grunt.task.registerTask("test", "A sample task to run dev tests and coverage for a single control or for all of them.", function(control) {
+	grunt.task.registerTask("test", "Task to run dev tests and generate coverage for a single control or for all of them.", function(control) {
 		var config;
 
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/tests.json').config;
 		} else {
-			config = grunt.file.readJSON('build/config/all/tests.json').config;
+			config = grunt.file.readJSON('build/config/editors/tests.json').config;
+			// config = grunt.file.readJSON('build/config/all/tests.json').config;
 		}
 		grunt.task.run("clean:coverage");
 		grunt.config("qunit.all", config);
+		grunt.task.run("qunitReport:init");
 		grunt.task.run("qunit:all");
+		grunt.task.run("qunitReport:finalize");
 	});
 
-	grunt.task.registerTask("verify", "A sample task to run jshint, instrument files, dev tests and coverage.", function(control) {
+	grunt.task.registerTask("qunitReport", "Task to write QUnit report in HTML format", function(phase) {
+		var done;
+		if(phase === "finalize") {
+			done = this.async();
+		}
+		require('./build/ReporterQUnit.js').writeReport(phase, done);
+	});
+	grunt.event.on("qunit.moduleStart", function (name) {
+		require('./build/ReporterQUnit.js').initModule(name);
+	});
+	grunt.event.on("qunit.moduleDone", function(name, failed, passed, total) {
+		require('./build/ReporterQUnit.js').endModule(name, failed, passed, total);
+	});
+	grunt.event.on("qunit.done", function(failed, passed, total, runtime) {
+		require('./build/ReporterQUnit.js').endTest(failed, passed, total, runtime);
+	});
+	grunt.event.on('qunit.log', function (result, actual, expected, message, source) {
+		if (!result) {
+			require('./build/ReporterQUnit.js').onError(message, source, result, actual, expected);
+		}
+	});
+	grunt.event.on("qunit.error", function (message, stackTrace) {
+		require('./build/ReporterQUnit.js').onError(message, stackTrace);
+	});
+	grunt.event.on("qunit.error.onError", function (message, stackTrace) {
+		require('./build/ReporterQUnit.js').onError(message, stackTrace);
+	});
+	grunt.event.on("qunit.fail ", function (message, stackTrace) {
+		require('./build/ReporterQUnit.js').onError(message, stackTrace);
+	});
+	grunt.event.on("qunit.fail.timeout", function () {
+		require('./build/ReporterQUnit.js').onError("Timeout due to wrong references: Qunit and all other external references should reference files in Bower folder. The IgniteUI files should reference Source folder; ");
+	});
+	
+	grunt.task.registerTask("verify", "A sample task to run jshint, jscs, instrument files, run dev tests and produce coverage report.", function(control) {
 	    if (!!control) {
 	        grunt.task.run("hint:" + control, "cs:" + control, "test:" + control);
 	    } else {
