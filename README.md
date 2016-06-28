@@ -1,5 +1,6 @@
 # Ignite UI  
 [![Build Status](https://travis-ci.org/IgniteUI/ignite-ui.svg?branch=master)](https://travis-ci.org/IgniteUI/ignite-ui)
+[![Coverage Status](https://coveralls.io/repos/github/IgniteUI/ignite-ui/badge.svg?branch=master)](https://coveralls.io/github/IgniteUI/ignite-ui?branch=master)
 
 Ignite UI™ helps you build powerful, high-performance web-based applications. Inside Ignite UI you'll find user experience controls and components for creating engaging line-of-business web applications which target the browsers for both mobile & desktop environments.
 
