@@ -18,6 +18,7 @@ coverage
 jshint
 jscs
 src/instrumentedFiles
+qunit
 
 # nyc test coverage
 .nyc_output
