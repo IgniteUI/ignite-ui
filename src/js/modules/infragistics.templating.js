@@ -8,7 +8,7 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- *
+ *	jquery-1.4.3.js
  */
 
  /*
