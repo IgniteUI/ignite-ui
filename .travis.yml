@@ -3,6 +3,7 @@ node_js:
   - "4"
 before_script:
   - npm install -g grunt
+  - npm install -g bower
 script:
   - grunt verify
   - grunt coveralls
