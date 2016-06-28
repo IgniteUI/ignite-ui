@@ -61,7 +61,7 @@ module.exports = function (grunt) {
 		clean: {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
-			coverage: ["coverage"]
+			coverage: ["coverage", "instrumentedFiles"]
 		}
     });
 
@@ -72,6 +72,7 @@ module.exports = function (grunt) {
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
 		var config;
+
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
 		} else {
@@ -84,6 +85,7 @@ module.exports = function (grunt) {
 
 	grunt.task.registerTask("cs", "A sample task to run JSCS", function (control) {
 		var config;
+
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
 		} else {
@@ -95,8 +97,15 @@ module.exports = function (grunt) {
 	});
 	
 	grunt.task.registerTask("test", "A sample task to run dev tests and coverage for a single control or for all of them.", function(control) {
+		var config;
+
+		if (!!control) {
+			config = grunt.file.readJSON('build/config/' + control + '/tests.json').config;
+		} else {
+			config = grunt.file.readJSON('build/config/all/tests.json').config;
+		}
 		grunt.task.run("clean:coverage");
-		grunt.config("qunit.all", ["<%= config.devTestsDir %>/editors/**/*test*.htm*"]);
+		grunt.config("qunit.all", config);
 		grunt.task.run("qunit:all");
 	});
 
