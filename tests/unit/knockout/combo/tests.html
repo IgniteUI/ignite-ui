@@ -3,9 +3,9 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>Infragistics jQuery Client Editors - List items example </title>
-	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/jquery-ui/themes/base/jquery.ui.all.css" rel="stylesheet" />
-	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
-	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../bower_components/jquery-ui/themes/base/jquery-ui.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
 	<style type="text/css">
 		.test-container { position: relative; border: 1px solid black; border-radius: 10px; padding: 10px; position: relative; width: 90%; }
 		.test-coantiner label { font-size: 30px; }
@@ -13,23 +13,23 @@
 		.float-clear { clear: both; }
 		.buttons-container { float: right; width: 300px;  } 
 	</style>
-	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
-	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
-	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/knockoutjs/build/output/knockout-latest.debug.js"></script>
-	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/knockout.mapping/knockout.mapping.js"></script>
-	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
-	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.templating.js"></script>
-	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.dataSource.js"></script>
-	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.dataSource-en.js"></script>
-	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.combo.js"></script>
-	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.tree.js"></script>
-	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.combo-en.js"></script>
-	<!--The control source is instrumented and used by the Istnabul to generated code coverage.
-	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
-	<!-- <script type="text/javascript" src="../../../../Source/ClientUI/js/extensions/infragistics.ui.combo.knockout-extensions.js"></script> -->
-	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.combo.knockout-extensions.js"></script>
-	<link type="text/css" rel="stylesheet" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" media="screen" />
-	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/knockout/dist/knockout.debug.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/knockout.mapping/knockout.mapping.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.dataSource.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.combo.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.tree.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+	
+	
+	<!-- <script type="text/javascript" src="../../../../src/js/extensions/infragistics.ui.combo.knockout-extensions.js"></script> -->
+	<script type="text/javascript" src="../../../../src/js/extensions/infragistics.ui.combo.knockout-extensions.js"></script>
+	<link type="text/css" rel="stylesheet" href="../../../../bower_components/qunit/qunit/qunit.css" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	
 	<script type="text/html" id="data-template">
 		<li>
@@ -370,7 +370,7 @@
 			}
 		}
 	</script>
-	<script type="text/javascript" src="../../testswarm/inject.js"></script>
+	
 </head>
 <body>
 <div style="float:right;width:400px;overflow:auto">

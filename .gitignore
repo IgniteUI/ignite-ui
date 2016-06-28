@@ -17,6 +17,8 @@ coverage
 # Test output folders for hint, JSCS, etc:
 jshint
 jscs
+src/instrumentedFiles
+qunit
 
 # nyc test coverage
 .nyc_output
@@ -33,6 +35,7 @@ build/Release
 # Dependency directories
 node_modules
 jspm_packages
+bower_components
 
 # Optional npm cache directory
 .npm

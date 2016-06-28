@@ -2,18 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title> Infragistics jQuery Data Source - filtering QUnit tests </title> 
-	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
-	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-tmpl/jquery.tmpl.js"></script>
-	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
-	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
-	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
-	<!--<script type="text/javascript" src="../../../../../Source/ClientUI/js/modules/infragistics.dataSource.js"></script>-->
-	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.dataSource.js"></script>
-	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/igDataSource/ig.dataSource-en.js"></script>-->
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 
-
-	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.dataSource.js"></script>
+	
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	
 	<style type="text/css">
 		body {
@@ -819,16 +815,15 @@
 
 			});
 		
-	QUnit.log = function(result, message)  
-	{  
+	QUnit.log(function(result, message) {  
 		if (window.console && window.console.log)  
 		{  
 			window.console.log(result +' :: '+ message);  
 		}  
-	}  
+	});
 		
 	</script>
-	<!-- <script type="text/javascript" src="../../testswarm/inject.js"></script> -->
+	<!--  -->
 </head>
 <body>
 <div id="div1"></div>

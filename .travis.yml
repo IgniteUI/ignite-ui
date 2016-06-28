@@ -1,7 +1,10 @@
 language: node_js
 node_js:
   - "4"
+before_install:
+  - npm install -g bower
 before_script:
   - npm install -g grunt
 script:
   - grunt verify
+  - grunt coveralls
