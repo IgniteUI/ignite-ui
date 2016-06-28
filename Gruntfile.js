@@ -61,7 +61,7 @@ module.exports = function (grunt) {
 		clean: {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
-			coverage: ["coverage", "instrumentedFiles"]
+			tests: ["qunit", "coverage", "instrumentedFiles"]
 		},
 		coveralls: {
 			// LCOV coverage file (can be string, glob or array)
@@ -119,7 +119,7 @@ module.exports = function (grunt) {
 			config = grunt.file.readJSON('build/config/editors/tests.json').config;
 			// config = grunt.file.readJSON('build/config/all/tests.json').config;
 		}
-		grunt.task.run("clean:coverage");
+		grunt.task.run("clean:tests");
 		grunt.config("qunit.all", config);
 		grunt.task.run("qunitReport:init");
 		grunt.task.run("qunit:all");
