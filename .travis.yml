@@ -5,3 +5,4 @@ before_script:
   - npm install -g grunt
 script:
   - grunt verify
+  - grunt coveralls

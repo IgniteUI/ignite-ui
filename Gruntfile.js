@@ -62,6 +62,17 @@ module.exports = function (grunt) {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
 			coverage: ["coverage", "instrumentedFiles"]
+		},
+		coveralls: {
+			// LCOV coverage file (can be string, glob or array)
+			src: './coverage/reportLCOV/*.info',
+			// Options relevant to all targets
+			options: {
+				// When true, grunt-coveralls will only print a warning rather than
+				// an error, to prevent CI builds from failing unnecessarily (e.g. if
+				// coveralls.io is down). Optional, defaults to false.
+				force: false
+			}
 		}
     });
 
@@ -69,6 +80,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-qunit-istanbul");
+	grunt.loadNpmTasks("grunt-coveralls");
 
 	grunt.option("force", true );
 
