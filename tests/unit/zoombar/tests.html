@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<link type="text/css" href="../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-	<link type="text/css" href="../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
-	<link type="text/css" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" /> 
-	<link type="text/css" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.html5.css" rel="stylesheet" />
-	<link type="text/css" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.chart.css" rel="stylesheet" />
-	<link type="text/css" href="../../../Source/ClientUI/css/structure/modules/infragistics.ui.zoombar.css" rel="stylesheet" />
+	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<link type="text/css" href="../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" /> 
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.html5.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.chart.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.zoombar.css" rel="stylesheet" />
 
-	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
-	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery-tmpl/jquery.tmpl.js"></script>
-	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
 
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/i18n/infragistics.dataSource-en.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/i18n/infragistics.util-en.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/i18n/infragistics.dvcommonwidget-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.util-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.dvcommonwidget-en.js"></script>
 
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.dataSource.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.dv.core.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.dvcommonwidget.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.templating.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.ui.shared.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.ui.chartlegend.js"></script>
-	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
-	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
-	<!--<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.ui.zoombar.js"></script>-->
-	<script type="text/javascript" src="../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.zoombar.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.ui.chart.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.chart_annotationchart.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.chart_categorychart.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.chart_financialchart.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.chart_funnelchart.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.chart_rangecategorychart.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.chart_scatterchart.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.chart_sparkline.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/infragistics.chart_stackedchart.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.dataSource.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.dv.core.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.dvcommonwidget.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.chartlegend.js"></script>
+	 
 	
-	<script type="text/javascript" src="../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+	<!--<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.zoombar.js"></script>-->
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.zoombar.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.chart.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_annotationchart.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_categorychart.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_financialchart.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_funnelchart.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_rangecategorychart.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_scatterchart.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_sparkline.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_stackedchart.js"></script>
+	
+	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
 	
 	<script type="text/javascript">
 		$(document).ready(function () {

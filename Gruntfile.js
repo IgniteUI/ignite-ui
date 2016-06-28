@@ -18,12 +18,10 @@ module.exports = function (grunt) {
 			all: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
 				jshintrc: true,
-				globals: {},
 				//reporter: "build/ReporterJSHint.js",
 				//reporterOutput: "jshint/report.html",
 				ignores: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
-			},
-			changed: {}
+			}
 		},
 		jscs: {
 			src: grunt.file.readJSON('build/config/all/jshint.json').config,
@@ -62,7 +60,8 @@ module.exports = function (grunt) {
 		},
 		clean: {
 			jshint: ["jshint"],
-			jscs: ["jscs"]
+			jscs: ["jscs"],
+			coverage: ["coverage"]
 		}
     });
 
@@ -96,7 +95,8 @@ module.exports = function (grunt) {
 	});
 	
 	grunt.task.registerTask("test", "A sample task to run dev tests and coverage for a single control or for all of them.", function(control) {
-		grunt.config("qunit.all", ["<%= config.devTestsDir %>/editors/dateEditor/**/*test*.htm*"]);
+		grunt.task.run("clean:coverage");
+		grunt.config("qunit.all", ["<%= config.devTestsDir %>/editors/**/*test*.htm*"]);
 		grunt.task.run("qunit:all");
 	});
 
