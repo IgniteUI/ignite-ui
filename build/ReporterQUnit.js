@@ -37,6 +37,10 @@ module.exports.writeReport = function (phase, done) {
 
 		reportJSON = JSON.stringify(jsonObj);
 
+		if (!fs.existsSync("./coverage/")){
+			fs.mkdirSync("./coverage/");
+		}
+
 		// Wirite the JSON report
 		fs.writeFile("./coverage/qunitReport.json", reportJSON);
 
@@ -66,6 +70,9 @@ module.exports.endModule = function (name, failed, passed, total, duration) {
 	if(failed && !testsFailed) {
 		fs = require('fs');
 		testsFailed = true;
+		if (!fs.existsSync("./coverage/")) {
+			fs.mkdirSync("./coverage/");
+		}
 		fs.writeFile("./coverage/err", "One of the tests has failed");
 	}
 };
@@ -139,6 +146,9 @@ module.exports.onError = function (message, source, result, actual, expected) {
 	if (!testsFailed) {
 		fs = require('fs');
 		testsFailed = true;
+		if (!fs.existsSync("./coverage/")){
+			fs.mkdirSync("./coverage/");
+		}
 		fs.writeFile("./coverage/err", "Failed due to an error");
 	}
 }
