@@ -64,7 +64,7 @@ module.exports = function (grunt) {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
 			tests: ["qunit", "coverage", "instrumentedFiles"],
-			build: ["dist/js/**/*"]
+			build: ["dist/js/**/*", "dist/css/**/*"]
 		},
 		coveralls: {
 			// LCOV coverage file (can be string, glob or array)
@@ -96,6 +96,19 @@ module.exports = function (grunt) {
 				dest: './dist/',
 			}
 		},
+		cssmin: {
+			all: {
+				files: [{
+					expand: true,
+					cwd: 'dist/css/',
+					src: ['**/*.css', '!**/*.min.css'],
+					dest: 'dist/css'
+				},
+				{
+					'dist/css/structure/infragistics.css': ['dist/css/structure/modules/*.css']
+				}]
+			}
+		},
 		uglify: require('./build/config/all/combined-files.js')
     });
 
@@ -106,6 +119,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-coveralls");
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 	grunt.option("force", true );
 
