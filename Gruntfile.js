@@ -61,7 +61,8 @@ module.exports = function (grunt) {
 		clean: {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
-			tests: ["qunit", "coverage", "instrumentedFiles"]
+			tests: ["qunit", "coverage", "instrumentedFiles"],
+			build: ["dist/js/**/*"]
 		},
 		coveralls: {
 			// LCOV coverage file (can be string, glob or array)
@@ -73,7 +74,8 @@ module.exports = function (grunt) {
 				// coveralls.io is down). Optional, defaults to false.
 				force: false
 			}
-		}
+		},
+		uglify: grunt.file.readJSON('build/config/all/combined-files.json')
     });
 
 	grunt.loadNpmTasks("grunt-contrib-clean");
@@ -81,6 +83,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-qunit-istanbul");
 	grunt.loadNpmTasks("grunt-coveralls");
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 	grunt.option("force", true );
 
@@ -166,5 +169,10 @@ module.exports = function (grunt) {
 	    } else {
 	    	grunt.task.run("hint", "jscs", "test");
 		}
+	});
+
+	grunt.task.registerTask("build", "Combine output files and prepare output", function() {
+		grunt.task.run("clean:build");
+	    grunt.task.run("uglify:combine");
 	});
 };
