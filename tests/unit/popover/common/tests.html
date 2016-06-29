@@ -3,7 +3,6 @@
 <head>
     <link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
     <link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
-    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.grid.css" rel="stylesheet" />
     <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
     <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
 
@@ -11,20 +10,14 @@
     <script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
     <script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
 
-
-    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
-    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.grid-en.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
-    <script type="text/javascript" src="../../../../src/js/modules/infragistics.dataSource.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>    
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
-    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.grid.framework.js"></script>
-    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.grid.tooltips.js"></script>
 
     <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 
@@ -35,38 +28,9 @@
     </style>
     <script type="text/javascript">
         $(document).ready( function () {
-            var namedData = new Array();
-            namedData[0] = { "ProductID": 1, "UnitsInStock": 100, "ProductDescription": "Quite a long long long long long long long long content to be tested against" };
-            namedData[1] = { "ProductID": 2, "UnitsInStock": 15, "ProductDescription": "Hamburger" };
-            namedData[2] = { "ProductID": 3, "UnitsInStock": 4.356, "ProductDescription": "Beer" };
-            namedData[3] = { "ProductID": 4, "UnitsInStock": 7, "ProductDescription": "Quite a long content to be tested with" };
-            namedData[4] = { "ProductID": 5, "UnitsInStock": 799, "ProductDescription": "Lemon Juice" };
 
             function loadTestbeds()
             {
-                $( "#grid3" ).igGrid( {
-                    autoGenerateColumns: false,
-                    width: 400,
-                    dataSource: namedData,
-                    fixedHeaders: false,
-                    columns: [
-                        { headerText: "Product ID", key: "ProductID", width: "20%" },
-                        { headerText: "Units in Stock", key: "UnitsInStock", width: "20%", dataType: "number" },
-                        { headerText: "Product Description", key: "ProductDescription", width: "*", dataType: "string" }
-                    ],
-                    features: [{
-                        name: "Tooltips",
-                        columnSettings: [
-                            { columnKey: "ProductID", allowTooltips: true },
-                            { columnKey: "UnitsInStock", allowTooltips: true },
-                            { columnKey: "ProductDescription", allowTooltips: true }
-                        ],
-                        visibility: "always",
-                        showDelay: 500,
-                        hideDelay: 200,
-                        style: "popover"
-                    }]
-                } );
 
                 $( "#textEditor" ).igTextEditor();
                 $( "#dateEditor" ).igDateEditor();
@@ -132,10 +96,6 @@
 
             //$("#img1").igPopover("show");
 
-
-            // Rendering tests
-            var testId_11 = "igPopover options test 1.1: rendering test";
-
             // Options tests
             var testId_21 = "test 2.1 igPopover target option";
             var testId_22 = "test 2.2 igPopover selectors option";
@@ -165,41 +125,8 @@
             var testId_53 = "test 5.3 igPopover setContent method";
             var testId_54 = "test 5.4 igPopover getContent method";
 
-            // IgGrid Tooltips Popover test
-            var testId_71 = "igGridTooltips popover test 7.1.: popover test";
-
             // Destroy test
-            var testId_81 = "igGridTooltips popover test 8.1.: destroy test";
             var testId_82 = "igPopover test 8.2.: destroy test";
-
-            // Test showing whether the tooltips are rendered correctly.
-            test(testId_11, 11, function () {
-                stop();
-                $("#img1").igPopover("show");
-                setTimeout(function () {
-                    ok($('#grid3_tooltips').length > 0, "Widget grid rendered.");
-                    ok($('#img1_popover').length > 0, "Widget popover rendered.");
-
-                    var widget = $('#img1_popover');
-                    var widgetContent = $('#img1_popover_contentFrame');
-                    var arrow = $('#img1_popover_arrow');
-                    var title = $('#img1_popover_title');
-                    var closeBtn = $('#img1_popover_closeBtn');
-
-                    checkClass(widget, 'ui-igpopover');
-                    checkClass(widget, 'ui-widget');
-                    checkClass(closeBtn, 'ui-icon-closethick');
-                    checkClass(closeBtn, 'ui-icon');
-                    checkClass(widgetContent, 'ui-widget-content');
-                    checkClass(widgetContent, 'ui-corner-all');
-                    checkClass(arrow, 'ui-igpopover-arrow-left');
-                    checkClass(title, 'ui-igpopover-title');
-
-                    ok(widget.is(":visible"), "Popover is visible");
-
-                    start();
-                }, 500);
-            });
 
             test(testId_21, 6, function () {
                 stop();
@@ -512,47 +439,6 @@
                 }, 1000);
             });
 
-            // Popover Test
-            test(testId_71, 6, function () {
-                stop();
-                var showTimeOut = $("#grid3").igGridTooltips("option", "showDelay");
-                var target = $($("#grid3 tbody tr")[2]).find("td")[2]; // 3rd row 3rd cell
-                var event = jQuery.Event("mousemove");
-                var pos = getAbsolutePosition(target);
-                event.pageX = pos.X + 3;
-                event.pageY = pos.Y + 3;
-                event.target = target;
-
-                $("#grid3").trigger("mouseenter");
-                $(target).trigger(event);
-                setTimeout(function () {
-
-                    ok($('#grid3_tooltips').css("display") !== "none", "Popover not shown!");
-                    ok($('#grid3_tooltips_popover').css("display") !== "none", "Popover not shown!");
-                    ok($('#rid3_tooltips_popover_contentFrame').css("display") !== "none", "Popover not shown!");
-                    ok($('#grid3_tooltips_popover_closeBtn').css("display") !== "none", "Popover doesn't have close button!");
-                    ok($('#grid3_toogrid3_tooltips_popover_contentInnerltips').css("display") !== "none", "Popover not shown!");
-                    ok($('#grid3_tooltips_popover_arrow').css("display") !== "none", "Popover not shown!");
-                    //                     checkClass( $( '#grid3_tooltips_popover_arrow' ), 'ui-igpopover-arrow-top' );
-                    //                     $( '#grid3_tooltips_popover_closeBtn' ).trigger( "click" );
-                    setTimeout(function () {
-                        start();
-                        //  ok( $( '#grid3_tooltips_popover' ).css( "display" ) === "none", "Popover shown after close buttons is clicked!" );
-                    }, 500);
-                }, 1000);
-            });
-
-            test(testId_81, 6, function () {
-                $("#grid3").igGridTooltips("destroy");
-
-                ok($('#grid3_tooltips').length === 0, "Popover not shown!");
-                ok($('#grid3_tooltips_popover').length === 0, "Popover not shown!");
-                ok($('#grid3_tooltips_popover_contentFrame').length === 0, "Popover not shown!");
-                ok($('#grid3_tooltips_popover_closeBtn').length === 0, "Popover doesn't have close button!");
-                ok($('#grid3_toogrid3_tooltips_popover_contentInnerltips').length === 0, "Popover not shown!");
-                ok($('#grid3_tooltips_popover_arrow').length === 0, "Popover arrow not shown!");
-            });
-
             test(testId_82, 5, function () {
                 $("#img1").igPopover("destroy");
 
@@ -624,8 +510,6 @@
         <ol id="qunit-tests"></ol>
     </div>
     <div style="float: left;">
-
-        <table id="grid3"></table>
 
         <div id="registrationForm" style="position: relative; left: 200px;">
             <table>
