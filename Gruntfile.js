@@ -1,4 +1,6 @@
-var config = {
+var buildVersion = require("./package.json").version,
+    year = new Date().getFullYear(),
+	config = {
 	scripts: "src/js/**/*.js",
 	scriptsDir: "src/js",
 	modulesDir: "src/js/modules",
@@ -75,6 +77,25 @@ module.exports = function (grunt) {
 				force: false
 			}
 		},
+		copy: {
+			js: {
+				expand: true,
+				cwd: './src/',
+				src: 'js/**/*.js',
+				dest: './dist/',
+				options: {
+					process: function (content, srcpath) {
+						return content.replace("<build_number>", buildVersion).replace("<year>", year);
+					}
+				},
+			},
+			css: {
+				expand: true,
+				cwd: './src/',
+				src: 'css/**',
+				dest: './dist/',
+			}
+		},
 		uglify: require('./build/config/all/combined-files.js')
     });
 
@@ -83,6 +104,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-qunit-istanbul");
 	grunt.loadNpmTasks("grunt-coveralls");
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 	grunt.option("force", true );
@@ -173,6 +195,7 @@ module.exports = function (grunt) {
 
 	grunt.task.registerTask("build", "Combine output files and prepare output", function() {
 		grunt.task.run("clean:build");
-	    grunt.task.run("uglify:combine");
+		grunt.task.run("copy");
+	    grunt.task.run("uglify:combine");		
 	});
 };
