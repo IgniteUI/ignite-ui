@@ -116,8 +116,7 @@ module.exports = function (grunt) {
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/tests.json').config;
 		} else {
-			config = grunt.file.readJSON('build/config/editors/tests.json').config;
-			// config = grunt.file.readJSON('build/config/all/tests.json').config;
+			config = grunt.file.readJSON('build/config/all/tests.json').config;
 		}
 		grunt.task.run("clean:tests");
 		grunt.config("qunit.all", config);
