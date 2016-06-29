@@ -38,11 +38,11 @@ if (typeof jQuery !== "function") {
 			value: null,
 			/* type="number" Gets/Sets value in tabIndex for editor. */
 			tabIndex: null,
-			/* type="bool" Sets/Gets ability to prevent null value.
+			/* type="bool" Gets/Sets ability to prevent null value.
 				If that option is false, and editor has no value, then value is set to an empty string.
 			*/
 			allowNullValue: false,
-			/* type="string|number|null" Sets/Gets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string */
+			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string */
 			nullValue: null,
 			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element. */
 			inputName: null,
@@ -50,7 +50,7 @@ if (typeof jQuery !== "function") {
 			readOnly: false,
 			/* type="bool" Gets/Sets the disabled attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is not sent into the request*/
 			disabled: false,
-			/* type="object" Sets/Gets options supported by the igValidator widget.
+			/* type="object" Gets/Sets options supported by the igValidator widget.
 				Note: Validation rules of igValidator, such as min and max value/length are applied separately triggering errors,
 				while similar options of the editor work to prevent wrong values from being entered.
 			*/
