@@ -1,17 +1,18 @@
-{
+module.exports = {
     "options": {
-        "preserveComments": "some"
+        "preserveComments": /(?:^!|@(?:license|preserve|cc_on))/,
+        "compress": false,
+        "mangle": false
     },
     "combine": {
         "files": {
-            "./dist/js/i18n/infragistics-en.js": "./src/js/modules/i18n/*-en.js",
-            "./dist/js/infragistics.core.js": [
+            "./dist/js/infragistics.core-lite.js": [
                 "./dist/js/i18n/infragistics-en.js",
                 "./src/js/modules/infragistics.util.js",
                 "./src/js/modules/infragistics.dataSource.js",
                 "./src/js/modules/infragistics.templating.js",
-                "./src/js/modules/infragistics.shared.js",
-                "./src/js/modules/infragistics.scroll.js"
+                "./src/js/modules/infragistics.ui.shared.js",
+                "./src/js/modules/infragistics.ui.scroll.js"
             ],
             "./dist/js/infragistics.lob-lite.js": [
                 "./src/js/modules/infragistics.ui.combo.js",
@@ -37,4 +38,16 @@
             ]
         }
     }
+};
+/**
+ * Prepare bundles for each localization
+ */
+var locales = ["bg", "de", "en", "es", "fr", "ja", "ru"], newFiles = {}, i;
+for (var i = 0; i < locales.length; i++) {
+    newFiles["./dist/js/i18n/infragistics-" + locales[i] + ".js"] = "./src/js/modules/i18n/*-en.js"; 
 }
+// keep order
+for (var key in module.exports.combine.files) {
+     newFiles[key] = module.exports.combine.files[key];
+}
+module.exports.combine.files = newFiles;

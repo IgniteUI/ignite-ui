@@ -75,7 +75,7 @@ module.exports = function (grunt) {
 				force: false
 			}
 		},
-		uglify: grunt.file.readJSON('build/config/all/combined-files.json')
+		uglify: require('./build/config/all/combined-files.js')
     });
 
 	grunt.loadNpmTasks("grunt-contrib-clean");
