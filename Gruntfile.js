@@ -29,7 +29,7 @@ module.exports = function (grunt) {
 				config: ".jscsrc.json",
 				reporter: "build/ReporterJSCS.js",
 				reporterOutput: "jscs/report.html",
-				force: true,
+				force: false,
 				maxErrors: null,
 				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
@@ -81,8 +81,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-qunit-istanbul");
 	grunt.loadNpmTasks("grunt-coveralls");
-
-	grunt.option("force", true );
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
 		var config;
