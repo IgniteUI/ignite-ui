@@ -5224,7 +5224,7 @@
                 prevSelValues = this._valuesFromItems(prevSelItems);
 
                 // This compares the prev and new selected values for equality
-                // Z.K. June 30, 2016 - not() behavior is changed in jQuery 3.0.0 #17 from gitHub
+                // Z.K. June 30, 2016 - not() behavior is changed in jQuery 3.0.0
                 if (!this._areArraysEqual(selectedValues, prevSelValues)) {
                     selChanged = true;
                 }
