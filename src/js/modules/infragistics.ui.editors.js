@@ -22,27 +22,27 @@ if (typeof jQuery !== "function") {
 	/* The igBaseEditor is a widget based on jQuery UI. */
 	$.widget("ui.igBaseEditor", {
 		options: {
-			/* type="string|number|null Gets sets how the width of the control can be set."
+			/* type="string|number|null Gets/Sets how the width of the control can be set."
 				string The widget width can be set in pixels (px) and percentage (%).
 				number The widget width can be set as a number in pixels.
 				null type="object" will stretch to fit data, if no other widths are defined.
 			*/
 			width: null,
-			/* type="string|number|null Gets sets how the height of the control can be set."
+			/* type="string|number|null Gets/Sets how the height of the control can be set."
 				string The height can be set in pixels (px) and percentage (%).
 				number The height can be set as a number in pixels.
 				null type="object" will fit the editor inside its parent container, if no other heights are defined.
 			*/
 			height: null,
-			/* type="object" Gets sets value in editor. The effect of setting/getting that option depends on type of editor and on dataMode options for every type of editor.*/
+			/* type="object" Gets/Sets value in editor. The effect of setting/getting that option depends on type of editor and on dataMode options for every type of editor.*/
 			value: null,
-			/* type="number" Gets sets value in tabIndex for editor. */
+			/* type="number" Gets/Sets value in tabIndex for editor. */
 			tabIndex: null,
-			/* type="bool" Sets gets ability to prevent null value.
+			/* type="bool" Gets/Sets ability to prevent null value.
 				If that option is false, and editor has no value, then value is set to an empty string.
 			*/
 			allowNullValue: false,
-			/* type="string|number|null" Sets gets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string */
+			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string */
 			nullValue: null,
 			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element. */
 			inputName: null,
@@ -50,7 +50,7 @@ if (typeof jQuery !== "function") {
 			readOnly: false,
 			/* type="bool" Gets/Sets the disabled attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is not sent into the request*/
 			disabled: false,
-			/* type="object" Sets gets options supported by the igValidator widget.
+			/* type="object" Gets/Sets options supported by the igValidator widget.
 				Note: Validation rules of igValidator, such as min and max value/length are applied separately triggering errors,
 				while similar options of the editor work to prevent wrong values from being entered.
 			*/
@@ -684,7 +684,7 @@ if (typeof jQuery !== "function") {
 		},
 		/* igBaseEditor public methods */
 		inputName: function (newValue) {
-			/* Gets sets name attribute applied to the editor element.
+			/* Gets/Sets name attribute applied to the editor element.
 				paramType="string" optional="true" The new input name.
 				returnType="string" Current input name. */
 			if (newValue) {
@@ -854,7 +854,7 @@ if (typeof jQuery !== "function") {
 			revertIfNotValid: true,
 			/* type="bool" Sets the ability of the editor to prevent form submition on enter key pressed.*/
 			preventSubmitOnEnter: false,
-			/* type="auto|bottom|top" Gets sets drop down opening orientation for the dorp down list when open button is clicked. If auto option is set the component calculates if there is enough space at the bottom, if not checks the space above the component and if in both directions there is not enough space it openes the dropdown down way.
+			/* type="auto|bottom|top" Gets/Sets drop down opening orientation for the dorp down list when open button is clicked. If auto option is set the component calculates if there is enough space at the bottom, if not checks the space above the component and if in both directions there is not enough space it openes the dropdown down way.
 				'auto' type="string"
 				'bottom' type="string"
 				'top' type="string"
@@ -1484,28 +1484,30 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_renderList: function () {
-			var i, list = this.options.listItems, itemValue, currentItem, itemHeight, currentItemId;
-			var dropdown = $("<div id='" + this.id + "_list" + "' tabindex='-1'></div>)")
-				.addClass(this.css.dropDownList);
+			var i, list = this.options.listItems, itemValue, currentItem, itemHeight, dropdown,
+				id = this.id, html;
+
+			html = "<div id='" + id + "_list" + "' tabindex='-1' class='" +
+				this.css.dropDownList + "' role='listbox' aria-activedescendant='" +
+				this._editorInputId + "'>";
 			this._editorInput.attr("aria-owns", this.id + "_list");
-			dropdown.attr("role", "listbox");
-			dropdown.attr("aria-activedescendant", this._editorInputId);
 			for (i = 0; i < list.length; i++) {
-				currentItemId = dropdown.attr("id");
-				currentItemId = currentItemId.toString();
-				currentItemId += "_item_";
-				currentItemId += (i + 1).toString();
-				currentItem = $("<span id='" +
-					currentItemId +
-					"' tabindex='-1' role='option' aria-selected='false' aria-posinset='" +
-					(i + 1).toString() +
-					"'></span>").addClass(this.css.listItem);
 				itemValue = this.options.displayFactor ?
 					this._multiplyWithPrecision(list[ i ], this.options.displayFactor) :
 					list[ i ];
-				currentItem.attr("title", itemValue);
-				currentItem.append(itemValue).appendTo(dropdown);
+				currentItem = "<span id='" + id + "_item_" + (i + 1) +
+					"' tabindex='-1' role='option' aria-selected='false' aria-posinset='" +
+					(i + 1).toString() + "' class='" + this.css.listItem + "' title='" +
+					itemValue + "'>" + itemValue +
+					"</span>";
+				html += currentItem;
 			}
+			html += "</div>";
+			dropdown = $(html);
+			if (currentItem) {
+				currentItem = $(currentItem);
+			}
+
 			if (this.options.dropDownAttachedToBody) {
 				$(document.body).append(dropdown);
 			} else {
@@ -4782,7 +4784,7 @@ if (typeof jQuery !== "function") {
 			listItemHoverDuration: 0,
 			/* type="bool" @Skipped@ Sets the ability to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed*/
 			isLimitedToListValues: false,
-			/* type="auto|bottom|top" @Skipped@ Gets sets drop down opening orientation for the dorp down list when open button is clicked. If auto option is set the component calculates if there is enough space at the bottom, if not checks the space above the component and if in both directions there is not enough space it openes the dropdown down way.
+			/* type="auto|bottom|top" @Skipped@ Gets/Sets drop down opening orientation for the dorp down list when open button is clicked. If auto option is set the component calculates if there is enough space at the bottom, if not checks the space above the component and if in both directions there is not enough space it openes the dropdown down way.
 				'auto' type="string"
 				'bottom' type="string"
 				'top' type="string"
@@ -4794,7 +4796,7 @@ if (typeof jQuery !== "function") {
 				multiline type="string" multiline editor based on TEXTAREA element is created.
 			*/
 			textMode: "text",
-			/* type="number" @Skipped@ Gets sets how many items should be shown at once.
+			/* type="number" @Skipped@ Gets/Sets how many items should be shown at once.
 				Notes:
 				That option is overwritten if the number of list items is less than the value. In that case the height of the dropdown is adjusted to the number of items.
 				Note! This option can not be set runtime.

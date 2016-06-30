@@ -1,9 +1,7 @@
 {
 	"config": [
-		"<%= config.modulesDir%>/infragistics.ui.grid*.js",
 		"<%= config.modulesDir%>/infragistics.dataSource.js",
 		"<%= config.extensionsDir%>/infragistics.datasource.knockoutjs.js",
-		"<%= config.extensionsDir%>/infragistics.ui.grid.knockout-extensions.js",
 		"<%= config.modulesDir%>/infragistics.ui.combo*.js",
 		"<%= config.extensionsDir%>/infragistics.ui.combo.knockout-extensions.js",
 		"<%= config.modulesDir%>/infragistics.ui.tree*.js",
