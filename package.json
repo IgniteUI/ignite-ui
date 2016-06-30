@@ -1,6 +1,20 @@
 {
   "name": "ignite-ui",
   "version": "0.0.1",
+  "description": "Ignite UI by Infragistics",
+  "homepage": "http://www.igniteui.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IgniteUI/ignite-ui.git"
+  },
+  "keywords": [
+    "igniteui",
+    "ignite ui",
+    "infragistics",
+    "jquery controls",
+    "jquery widgets"
+  ],
+  "license": "Apache-2.0",
   "scripts": {
     "postinstall": "bower install"
   },
