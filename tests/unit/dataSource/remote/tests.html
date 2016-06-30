@@ -5,7 +5,7 @@
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/infragistics.dataSource.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/JSON-js/json2.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/xmldom/dom.js"></script>
@@ -43,7 +43,7 @@
 			}
 		});
 
-				$.mockjax({
+		$.mockjax({
 			url: 'http://services.odata.org/OData/OData.svc/Products?$format=json',
 			contentType: 'text/json',
 			responseText: {
@@ -198,378 +198,238 @@
 		});
 
 		var render = function (success, error) {
-
-			if (success) {
-				$("#list").empty();
-				$("#template1").tmpl(ds.dataView()).appendTo("#list");
-				
-				startTesting();
-				
-			} else {
-				alert(error);
-			}
-			
-			
 		};
 		
 		var render1 = function (success, error) {
-
-			if (success) {
-				$("#list").empty();
-				$("#template1").tmpl(ds.dataView()).appendTo("#list");
-				
-				startTesting1();
-				
-			} else {
-				alert(error);
-			}
 		};
 		
 		var renderWrong = function (success, error) {
-			
-			if (!success) {
-				startTestingWrong();
-			}
 		};
 		
 		var dsJSONBareRender = function (success, error) {
-
-			if (success) {
-				$("#list").empty();
-				$("#template1").tmpl(ds.dataView()).appendTo("#list");
-				
-				startTestingJSONBare();
-				
-			} else {
-				alert(error);
-			}
-			
-			
 		};
 		
 		var dsJSONWrappedRender = function (success, error) {
-
-			if (success) {
-				$("#list").empty();
-				$("#template1").tmpl(ds.dataView()).appendTo("#list");
-				
-				startTestingJSONWrapped();
-				
-			} else {
-				alert(error);
-			}
-			
-			
 		};
 		
 		var dsXMLBareRender = function (success, error) {
-
-			if (success) {
-				$("#list").empty();
-				$("#template1").tmpl(ds.dataView()).appendTo("#list");
-				
-				startTestingXMLBare();
-				
-			} else {
-				alert(error);
-			}
-			
-			
 		};
 		
 		var dsXMLWrappedRender = function (success, error) {
-
-			if (success) {
-				$("#list").empty();
-				$("#template1").tmpl(ds.dataView()).appendTo("#list");
-				
-				startTestingXMLWrapped();
-				
-			} else {
-				alert(error);
-			}
 		};
 
-		ds = new $.ig.RemoteDataSource({callback:render, responseDataType: "json", 
-		responseTotalRecCountKey: "data.paging.total",
-		paging: {enabled: true},
-		dataSource: "products", schema: {searchField : "data.results", fields:[{name: "ProductID"}]}} ).dataBind();
+		module("igDataSource", {
+			setup: function() {
+				//pause testing until tree is initialized
+				QUnit.stop();
+				ds = new $.ig.RemoteDataSource({callback:render, responseDataType: "json", 
+					responseTotalRecCountKey: "data.paging.total",
+					paging: {enabled: true},
+					dataSource: "products", schema: {searchField : "data.results", fields:[{name: "ProductID"}]}} ).dataBind();
 
-		ds1 = new $.ig.RemoteDataSource({callback:render1, responseDataType: "json", dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json", schema: {fields: [{name : "Price"}, {name : "Name"}, {name: "ID"}], searchField: "data.d"}}).dataBind();
+				ds1 = new $.ig.RemoteDataSource({callback:render1, responseDataType: "json", dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json", schema: {fields: [{name : "Price"}, {name : "Name"}, {name: "ID"}], searchField: "data.d"}}).dataBind();
+				
+				dsWrong = new $.ig.RemoteDataSource({ callback: renderWrong, responseDataType: "json", dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json", schema: { fields: [{ name: "Price" }, { name: "Name" }, { name: "ID" }], searchField: "data.d" } }).dataBind();
+				
+				dsJSONBare = new $.ig.RemoteDataSource( {callback:dsJSONBareRender, dataSource: "WCFJSONBare", 
+					responseDataType: "json",
+					schema: {fields:[ {name : "ProductID"}, {name : "ProductName"} ], searchField: "data"}
+					}).dataBind();
+				
+				dsJSONWrapped = new $.ig.RemoteDataSource( {callback:dsJSONWrappedRender, dataSource: "WCFJSONWrapped",
+					responseDataType: "json",
+					schema: {fields:[ {name : "ProductID"}, {name : "ProductName"} ], searchField : "data.GetProductsResult"}
+					}).dataBind();
+				
+				dsXMLBare = new $.ig.RemoteDataSource( {callback:dsXMLBareRender, dataSource: "WCFXMLBare",
+					schema: {fields:[ {name : "ProductID", xpath: "ProductID"}, {name : "ProductName", xpath : "ProductName"} ], searchField:"Product"}
+					}).dataBind();
+				
+				dsXMLWrapped = new $.ig.RemoteDataSource( {callback:dsXMLWrappedRender, dataSource: "WCFXMLWrapped",
+					schema: {fields:[ {name : "ProductID", xpath: "ProductID"}, {name : "ProductName", xpath : "ProductName"} ], searchField:"Product"}
+					}).dataBind();
+				setTimeout(function () { QUnit.start(); }, 500);
+			},
+			teardown: function() {
+			}
+		});
 		
-		dsWrong = new $.ig.RemoteDataSource({ callback: renderWrong, responseDataType: "json", dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json", schema: { fields: [{ name: "Price" }, { name: "Name" }, { name: "ID" }], searchField: "data.d" } }).dataBind();
 		
-		dsJSONBare = new $.ig.RemoteDataSource( {callback:dsJSONBareRender, dataSource: "WCFJSONBare", 
-			responseDataType: "json",
-			schema: {fields:[ {name : "ProductID"}, {name : "ProductName"} ], searchField: "data"}
-			}).dataBind();
+		test("Remote data bind", function() {
+			equal(ds.dataView().length, 4, 4);
+		});
 		
-		dsJSONWrapped = new $.ig.RemoteDataSource( {callback:dsJSONWrappedRender, dataSource: "WCFJSONWrapped",
-			responseDataType: "json",
-			schema: {fields:[ {name : "ProductID"}, {name : "ProductName"} ], searchField : "data.GetProductsResult"}
-			}).dataBind();
+		// OData tests for select params, paging params, filtering params, sorting params
+		test("OData select parameters", function() {
+			
+			// configure select params
+			//ds.settings.schema = {fields: [{name : "Price"}, {name : "Name"}, {name: "ID"}]};
+			ds.settings.localSchemaTransform = false;
+			ds.settings.filtering.exprString = "";
+			ds.settings.sorting.exprString = "";
+			ds.settings.sorting.expressions = [];
+			ds.settings.filtering.expressions = [];
+			ds.settings.paging.enabled=false;
+			// compare the "params" string with the expected one 
+			var params = $.param(ds._encodeUrl());
+			
+			equal(params, "%24select=ProductID", "%24select=ProductID");
+		});
 		
-		dsXMLBare = new $.ig.RemoteDataSource( {callback:dsXMLBareRender, dataSource: "WCFXMLBare",
-			schema: {fields:[ {name : "ProductID", xpath: "ProductID"}, {name : "ProductName", xpath : "ProductName"} ], searchField:"Product"}
-			}).dataBind();
+		test("OData paging parameters", function() {
+			ds.settings.localSchemaTransform = true;
+			ds.settings.filtering.exprString = "";
+			ds.settings.sorting.exprString = "";
+			ds.settings.sorting.expressions = [];
+			ds.settings.filtering.expressions = [];
+			ds.settings.paging.pageSize=15;
+			ds.settings.paging.enabled = true;
+			ds.settings.paging.pageIndex = 1;
+			// compare the "params" string with the expected one 
+			var params = $.param(ds._encodeUrl());
+			equal(params, "%24skip=15&%24top=15&%24inlinecount=allpages", "%24skip=15&%24top=15&%24inlinecount=allpages");
+		});
 		
-		dsXMLWrapped = new $.ig.RemoteDataSource( {callback:dsXMLWrappedRender, dataSource: "WCFXMLWrapped",
-			schema: {fields:[ {name : "ProductID", xpath: "ProductID"}, {name : "ProductName", xpath : "ProductName"} ], searchField:"Product"}
-			}).dataBind();
+		test("OData sorting parameters", function() {
+			ds.settings.localSchemaTransform = true;
+			ds.settings.filtering.exprString = "";
+			ds.settings.sorting.exprString = "ProductID asc, Name desc";
+			//ds.settings.sorting.expressions = [];
+			ds.settings.filtering.expressions = [];
+			ds.settings.paging.enabled = false;
+			// compare the "params" string with the expected one 
+			var params = $.param(ds._encodeUrl());
+			equal(params, "%24orderby=ProductID+asc%2CName+desc", "%24orderby=ProductID+asc%2CName+desc");
+		});
 		
-		QUnit.init();
+		test("OData filtering parameters", function() { 
+		
+			ds.settings.localSchemaTransform = true;
+			ds.settings.filtering.exprString = "";
+			ds.settings.filtering.type = "remote";
+			//ds.settings.filtering.filterExprUrlKey = "filter";
+			
+			ds.settings.sorting.exprString = "";
+			ds.settings.sorting.expressions = [];
+			ds.settings.filtering.expressions = [
+				{fieldName: "ProductID", cond: "startsWith", expr: "a"}, 
+				{fieldName: "Name", cond: "endsWith", expr: "b"},
+				{fieldName: "Price", cond: "contains", expr: ""}, 
+				{fieldName: "ProductID", cond: "doesNotContain", expr: "c"},
+				{fieldName: "Name", cond: "equals", expr: "1"},
+				{fieldName: "Name", cond: "equals", expr: 1},
+				{fieldName: "Name", cond: "doesNotEqual", expr: "abc"},
+				{fieldName: "Name", cond: "greaterThan", expr: "5"},
+				{fieldName: "Name", cond: "lessThan", expr: "2"},
+				{fieldName: "Name", cond: "greaterThanOrEqualTo", expr: "4"},
+				{fieldName: "Name", cond: "lessThanOrEqualTo", expr: "7"}
+			];
+			//ds.settings.filtering.exprString = "";
+			ds.settings.paging.enabled = false;
+			// compare the "params" string with the expected one 
+			var params = $.param(ds._encodeUrl());
+
+			equal(params, "%24filter=startswith(tolower(ProductID)%2C'a')+eq+true+and+endswith(tolower(Name)%2C'b')+eq+true+and+indexof(tolower(Price)%2C'')+ge+0+and+indexof(tolower(ProductID)%2C'c')+eq+-1+and+tolower(Name)+eq+'1'+and+Name+eq+1+and+tolower(Name)+ne+'abc'+and+Name+gt+5+and+Name+lt+2+and+Name+ge+4+and+Name+le+7", "%24filter=startswith(tolower(ProductID)%2C'a')+eq+true+and+endswith(tolower(Name)%2C'b')+eq+true+and+indexof(tolower(Price)%2C'')+ge+0+and+indexof(tolower(ProductID)%2C'c')+eq+-1+and+tolower(Name)+eq+'1'+and+Name+eq+1+and+tolower(Name)+ne+'abc'+and+Name+gt+5+and+Name+lt+2+and+Name+ge+4+and+Name+le+7");
+			
+		});
+		
+		test("Custom sorting parameters", function() {
+			ds.settings.localSchemaTransform = true;
+			ds.settings.filtering.exprString = "";
+			ds.settings.sorting.exprString = "ProductID asc, Name desc";
+			//ds.settings.sorting.expressions = [];
+			ds.settings.filtering.expressions = [];
+			ds.settings.paging.enabled = false;
+			ds.settings.sorting.sortUrlKey = "sort";
+			ds.settings.sorting.sortUrlAscValueKey = "asc";
+			ds.settings.sorting.sortUrlDescValueKey = "desc";
+			// compare the "params" string with the expected one 
+			var params = $.param(ds._encodeUrl());
+			equal(params, "sort(ProductID)=asc&sort(Name)=desc", "sort(ProductID)=asc&sort(Name)=desc");
+		});
+		
+		test("Custom filtering parameters", function() {
+			ds.settings.localSchemaTransform = true;
+			ds.settings.filtering.exprString = "";
+			ds.settings.sorting.exprString = null;
+			ds.settings.sorting.expressions = [];
+			ds.settings.filtering.expressions = [
+				{fieldName: "ProductID", cond: "StartsWith", expr: "a"}, 
+				{fieldName: "Name", cond: "EndsWith", expr: "b"},
+				{fieldName: "Price", cond: "Contains", expr: ""}, 
+				{fieldName: "ProductID2", cond: "DoesNotContain", expr: "c"},
+				{fieldName: "Name2", cond: "Equals", expr: "1"},
+				{fieldName: "Name3", cond: "Equals", expr: 1},
+				{fieldName: "Name4", cond: "DoesNotEqual", expr: "abc"},
+				{fieldName: "Name5", cond: "GreaterThan", expr: "5"},
+				{fieldName: "Name6", cond: "LessThan", expr: "2"},
+				{fieldName: "Name7", cond: "GreaterThanOrEqualTo", expr: "4"},
+				{fieldName: "Name8", cond: "LessThanOrEqualTo", expr: "7"}
+			];
+			ds.settings.filtering.filterExprUrlKey = "filter";
+			//ds.settings.filtering.exprString = "";
+			ds.settings.paging.enabled = false;
+			// compare the "params" string with the expected one 
+			var params = $.param(ds._encodeUrl());
+			equal(params, "filter(ProductID)=StartsWith(a)&filter(Name)=EndsWith(b)&filter(Price)=Contains()&filter(ProductID2)=DoesNotContain(c)&filter(Name2)=Equals(1)&filter(Name3)=Equals(1)&filter(Name4)=DoesNotEqual(abc)&filter(Name5)=GreaterThan(5)&filter(Name6)=LessThan(2)&filter(Name7)=GreaterThanOrEqualTo(4)&filter(Name8)=LessThanOrEqualTo(7)", "filter(ProductID)=StartsWith(a)&filter(Name)=EndsWith(b)&filter(Price)=Contains()&filter(ProductID2)=DoesNotContain(c)&filter(Name2)=equal(1)&filter(Name3)=equal(1)&filter(Name4)=DoesNotEqual(abc)&filter(Name5)=GreaterThan(5)&filter(Name6)=LessThan(2)&filter(Name7)=GreaterThanOrEqualTo(4)&filter(Name8)=LessThanOrEqualTo(7)");
+		});
+		
+		test("Custom paging parameters", function() {
+			ds.settings.localSchemaTransform = true;
+			ds.settings.filtering.exprString = "";
+			ds.settings.sorting.exprString = "";
+			ds.settings.sorting.expressions = [];
+			ds.settings.filtering.expressions = [];
+			ds.settings.paging.pageSize=15;
+			ds.settings.paging.enabled = true;
+			ds.settings.paging.pageIndex = 1;
+			ds.settings.paging.pageSizeUrlKey = "psize";
+			ds.settings.paging.pageIndexUrlKey = "page";
+			// compare the "params" string with the expected one 
+			var params = $.param(ds._encodeUrl());
+			equal(params, "page=1&psize=15", "page=1&psize=15");
+		});
+		test("OData Service - $format=json response", function() {
+			
+			// check number of records
+			var count = ds1.dataView().length;
+			equal(count, 9, count);
+			// check the cell values in the first row
+			equal("Bread", ds1.dataView()[0]['Name'], "Bread");
+			
+		});
+		test("WCF REST Service - JSON response - bare", function() {
+			var view = dsJSONBare.dataView();
+			equal(view.length, 77, 77);
+			
+			equal("Chai", dsJSONBare.dataView()[0]['ProductName'], "Chai");
+		});
+		test("WCF REST Service - JSON response - wrapped", function() {
+			var view = dsJSONWrapped.dataView();
+			equal(view.length, 77, 77);
+			
+			equal("Chai", dsJSONWrapped.dataView()[0]['ProductName'], "Chai");
+		});
+		test("WCF REST Service - XML response - bare", function() {
+			var view = dsXMLBare.dataView();
+			equal(view.length, 77, 77);
+			
+			equal("Chai", dsXMLBare.dataView()[0]['ProductName'], "Chai");
+		});
+		test("WCF REST Service - XML response - wrapped", function() {
+			var view = dsXMLWrapped.dataView();
+			equal(view.length, 77, 77);
+			
+			equal("Chai", dsXMLWrapped.dataView()[0]['ProductName'], "Chai");
+			
+		});
+		test("Testing wrong data type - so that the error handler is executed ", function() {
+		
+			equal(dsWrong.dataView().length, 0, dsWrong.dataView().length);
+		
+		});
 
 	});
-	
-	function startTesting()
-	{
-			QUnit.start();
-			module("igDataSource");
-			
-			test("Remote data bind", function() {
-
-				equal(4, ds.dataView().length, 4);
-				
-			});
-			
-			//test("Remote data bind with paging, sorting and filtering enabled - testing encoding of the URL parameters ", function() {
-			//
-			//	ds.settings.paging.type = "remote";
-			//	ds.settings.paging.pageSize = 2;
-			//	
-			//	ds.settings.sorting.type = "remote";
-			//	ds.settings.sorting.exprString = "ProductID asc";
-			//	
-			//	ds.settings.filtering.type = "remote";
-			//	ds.settings.filtering.exprString = "ProductID LIKE a";
-			//	
-			////	ds.dataBind();
-			//	
-			//});
-			
-			// OData tests for select params, paging params, filtering params, sorting params
-			test("OData select parameters", function() {
-				
-				// configure select params
-				//ds.settings.schema = {fields: [{name : "Price"}, {name : "Name"}, {name: "ID"}]};
-				ds.settings.localSchemaTransform = false;
-				ds.settings.filtering.exprString = "";
-				ds.settings.sorting.exprString = "";
-				ds.settings.sorting.expressions = [];
-				ds.settings.filtering.expressions = [];
-				ds.settings.paging.enabled=false;
-				// compare the "params" string with the expected one 
-				var params = $.param(ds._encodeUrl());
-				
-				equal("%24select=ProductID", params, "%24select=ProductID");
-			});
-			
-			test("OData paging parameters", function() {
-				ds.settings.localSchemaTransform = true;
-				ds.settings.filtering.exprString = "";
-				ds.settings.sorting.exprString = "";
-				ds.settings.sorting.expressions = [];
-				ds.settings.filtering.expressions = [];
-				ds.settings.paging.pageSize=15;
-				ds.settings.paging.enabled = true;
-				ds.settings.paging.pageIndex = 1;
-				// compare the "params" string with the expected one 
-				var params = $.param(ds._encodeUrl());
-				equal("%24skip=15&%24top=15&%24inlinecount=allpages", params, "%24skip=15&%24top=15&%24inlinecount=allpages");
-			});
-			
-			test("OData sorting parameters", function() {
-				ds.settings.localSchemaTransform = true;
-				ds.settings.filtering.exprString = "";
-				ds.settings.sorting.exprString = "ProductID asc, Name desc";
-				//ds.settings.sorting.expressions = [];
-				ds.settings.filtering.expressions = [];
-				ds.settings.paging.enabled = false;
-				// compare the "params" string with the expected one 
-				var params = $.param(ds._encodeUrl());
-				equal("%24orderby=ProductID+asc%2CName+desc", params, "%24orderby=ProductID+asc%2CName+desc");
-			});
-			
-			test("OData filtering parameters", function() { 
-			
-				ds.settings.localSchemaTransform = true;
-				ds.settings.filtering.exprString = "";
-				ds.settings.filtering.type = "remote";
-				//ds.settings.filtering.filterExprUrlKey = "filter";
-				
-				ds.settings.sorting.exprString = "";
-				ds.settings.sorting.expressions = [];
-				ds.settings.filtering.expressions = [
-					{fieldName: "ProductID", cond: "startsWith", expr: "a"}, 
-					{fieldName: "Name", cond: "endsWith", expr: "b"},
-					{fieldName: "Price", cond: "contains", expr: ""}, 
-					{fieldName: "ProductID", cond: "doesNotContain", expr: "c"},
-					{fieldName: "Name", cond: "equals", expr: "1"},
-					{fieldName: "Name", cond: "equals", expr: 1},
-					{fieldName: "Name", cond: "doesNotEqual", expr: "abc"},
-					{fieldName: "Name", cond: "greaterThan", expr: "5"},
-					{fieldName: "Name", cond: "lessThan", expr: "2"},
-					{fieldName: "Name", cond: "greaterThanOrEqualTo", expr: "4"},
-					{fieldName: "Name", cond: "lessThanOrEqualTo", expr: "7"}
-				];
-				//ds.settings.filtering.exprString = "";
-				ds.settings.paging.enabled = false;
-				// compare the "params" string with the expected one 
-				var params = $.param(ds._encodeUrl());
-
-				equal("%24filter=startswith(tolower(ProductID)%2C'a')+eq+true+and+endswith(tolower(Name)%2C'b')+eq+true+and+indexof(tolower(Price)%2C'')+ge+0+and+indexof(tolower(ProductID)%2C'c')+eq+-1+and+tolower(Name)+eq+'1'+and+Name+eq+1+and+tolower(Name)+ne+'abc'+and+Name+gt+5+and+Name+lt+2+and+Name+ge+4+and+Name+le+7", params, "%24filter=startswith(tolower(ProductID)%2C'a')+eq+true+and+endswith(tolower(Name)%2C'b')+eq+true+and+indexof(tolower(Price)%2C'')+ge+0+and+indexof(tolower(ProductID)%2C'c')+eq+-1+and+tolower(Name)+eq+'1'+and+Name+eq+1+and+tolower(Name)+ne+'abc'+and+Name+gt+5+and+Name+lt+2+and+Name+ge+4+and+Name+le+7");
-				
-			});
-			
-			test("Custom sorting parameters", function() {
-				ds.settings.localSchemaTransform = true;
-				ds.settings.filtering.exprString = "";
-				ds.settings.sorting.exprString = "ProductID asc, Name desc";
-				//ds.settings.sorting.expressions = [];
-				ds.settings.filtering.expressions = [];
-				ds.settings.paging.enabled = false;
-				ds.settings.sorting.sortUrlKey = "sort";
-				ds.settings.sorting.sortUrlAscValueKey = "asc";
-				ds.settings.sorting.sortUrlDescValueKey = "desc";
-				// compare the "params" string with the expected one 
-				var params = $.param(ds._encodeUrl());
-				equal("sort(ProductID)=asc&sort(Name)=desc", params, "sort(ProductID)=asc&sort(Name)=desc");
-			});
-			
-			test("Custom filtering parameters", function() {
-				ds.settings.localSchemaTransform = true;
-				ds.settings.filtering.exprString = "";
-				ds.settings.sorting.exprString = null;
-				ds.settings.sorting.expressions = [];
-				ds.settings.filtering.expressions = [
-					{fieldName: "ProductID", cond: "StartsWith", expr: "a"}, 
-					{fieldName: "Name", cond: "EndsWith", expr: "b"},
-					{fieldName: "Price", cond: "Contains", expr: ""}, 
-					{fieldName: "ProductID2", cond: "DoesNotContain", expr: "c"},
-					{fieldName: "Name2", cond: "Equals", expr: "1"},
-					{fieldName: "Name3", cond: "Equals", expr: 1},
-					{fieldName: "Name4", cond: "DoesNotEqual", expr: "abc"},
-					{fieldName: "Name5", cond: "GreaterThan", expr: "5"},
-					{fieldName: "Name6", cond: "LessThan", expr: "2"},
-					{fieldName: "Name7", cond: "GreaterThanOrEqualTo", expr: "4"},
-					{fieldName: "Name8", cond: "LessThanOrEqualTo", expr: "7"}
-				];
-				ds.settings.filtering.filterExprUrlKey = "filter";
-				//ds.settings.filtering.exprString = "";
-				ds.settings.paging.enabled = false;
-				// compare the "params" string with the expected one 
-				var params = $.param(ds._encodeUrl());
-				equal("filter(ProductID)=StartsWith(a)&filter(Name)=EndsWith(b)&filter(Price)=Contains()&filter(ProductID2)=DoesNotContain(c)&filter(Name2)=Equals(1)&filter(Name3)=Equals(1)&filter(Name4)=DoesNotEqual(abc)&filter(Name5)=GreaterThan(5)&filter(Name6)=LessThan(2)&filter(Name7)=GreaterThanOrEqualTo(4)&filter(Name8)=LessThanOrEqualTo(7)", params, "filter(ProductID)=StartsWith(a)&filter(Name)=EndsWith(b)&filter(Price)=Contains()&filter(ProductID2)=DoesNotContain(c)&filter(Name2)=equal(1)&filter(Name3)=equal(1)&filter(Name4)=DoesNotEqual(abc)&filter(Name5)=GreaterThan(5)&filter(Name6)=LessThan(2)&filter(Name7)=GreaterThanOrEqualTo(4)&filter(Name8)=LessThanOrEqualTo(7)");
-			});
-			
-			test("Custom paging parameters", function() {
-				ds.settings.localSchemaTransform = true;
-				ds.settings.filtering.exprString = "";
-				ds.settings.sorting.exprString = "";
-				ds.settings.sorting.expressions = [];
-				ds.settings.filtering.expressions = [];
-				ds.settings.paging.pageSize=15;
-				ds.settings.paging.enabled = true;
-				ds._pageIndex = 1;
-				ds.settings.paging.pageSizeUrlKey = "psize";
-				ds.settings.paging.pageIndexUrlKey = "page";
-				// compare the "params" string with the expected one 
-				var params = $.param(ds._encodeUrl());
-				equal("page=1&psize=15", params, "page=1&psize=15");
-			});
-			
-		}
-		
-		function startTesting1() {
-			
-			QUnit.start();
-			module("igDataSource");
-			
-			test("OData Service - $format=json response", function() {
-				
-				// check number of records
-				var count = ds1.dataView().length;
-				equal(count, 9, count);
-				// check the cell values in the first row
-				equal("Bread", ds1.dataView()[0]['Name'], "Bread");
-				
-			});
-		}
-		
-		function startTestingJSONBare() {
-						
-			QUnit.start();
-			module("igDataSource");
-			
-			test("WCF REST Service - JSON response - bare", function() {
-				var view = dsJSONBare.dataView();
-				equal(77, view.length, 77);
-				
-				equal("Chai", dsJSONBare.dataView()[0]['ProductName'], "Chai");
-			});
-		}
-		
-		function startTestingJSONWrapped() {
-			
-			QUnit.start();
-			module("igDataSource");
-			
-			test("WCF REST Service - JSON response - wrapped", function() {
-				var view = dsJSONWrapped.dataView();
-				equal(77, view.length, 77);
-				
-				equal("Chai", dsJSONWrapped.dataView()[0]['ProductName'], "Chai");
-			});
-		}
-		
-		function startTestingXMLBare() {
-						
-			QUnit.start();
-			module("igDataSource");
-			
-			test("WCF REST Service - XML response - bare", function() {
-				var view = dsXMLBare.dataView();
-				equal(77, view.length, 77);
-				
-				equal("Chai", dsXMLBare.dataView()[0]['ProductName'], "Chai");
-			});
-		}
-		
-		function startTestingXMLWrapped() {
-					
-			QUnit.start();
-			module("igDataSource");
-			
-			test("WCF REST Service - XML response - wrapped", function() {
-				var view = dsXMLWrapped.dataView();
-				equal(77, view.length, 77);
-				
-				equal("Chai", dsXMLWrapped.dataView()[0]['ProductName'], "Chai");
-				
-			});
-		}
-		
-		function startTestingWrong() {
-			
-			QUnit.start();
-			module("igDataSource");
-			
-			test("Testing wrong data type - so that the error handler is executed ", function() {
-			
-				equal(dsWrong.dataView().length, 0, dsWrong.dataView().length);
-			
-			});
-		}
-			
-		// include different tests here for the same data but with different responseDataType / responseContentType
-	
-	QUnit.log = function(result, message)  
-	{  
-		if (window.console && window.console.log)  
-		{  
-			window.console.log(result +' :: '+ message);  
-		}  
-	} 
 	
 	</script>
 	

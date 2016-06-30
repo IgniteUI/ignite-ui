@@ -71,7 +71,9 @@
 		reportJSON = JSON.stringify(jsonObj);
 
 		fs = require('fs');
-		fs.mkdir("./jshint");
+		if (!fs.existsSync("./jshint/")) {
+			fs.mkdir("./jshint");
+		}
 
 		// Wirite the JSON report
 		fs.writeFile("./jshint/report.json", reportJSON);

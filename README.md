@@ -1,6 +1,8 @@
 # Ignite UI  
 [![Build Status](https://travis-ci.org/IgniteUI/ignite-ui.svg?branch=master)](https://travis-ci.org/IgniteUI/ignite-ui)
 [![Coverage Status](https://coveralls.io/repos/github/IgniteUI/ignite-ui/badge.svg?branch=master)](https://coveralls.io/github/IgniteUI/ignite-ui?branch=master)
+[![Issue Stats](http://issuestats.com/github/IgniteUI/ignite-ui/badge/pr?style=flat)](http://issuestats.com/github/IgniteUI/ignite-ui)
+[![Issue Stats](http://issuestats.com/github/IgniteUI/ignite-ui/badge/issue?style=flat)](http://issuestats.com/github/IgniteUI/ignite-ui)
 
 Ignite UI™ helps you build powerful, high-performance web-based applications. Inside Ignite UI you'll find user experience controls and components for creating engaging line-of-business web applications which target the browsers for both mobile & desktop environments.
 
@@ -99,13 +101,13 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 |[igPivotView](http://www.igniteui.com/pivot-view/overview)					|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.igPivotView)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/igpivotview)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/02_Controls/igPivotView) |
 |																			|					|											|																		|					|
 |**Knockout Extensions**													|					|											|																		|					|
-|[Combo](http://www.igniteui.com/combo/bind-combo-with-ko)					|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/igcombo-knockoutjs-support)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igCombo/04_Configuring/04_igCombo_KnockoutJS_Support.md) |
-|[Editors](http://www.igniteui.com/editors/bind-editors-with-ko)			|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/configuring-knockout-support-(editors)) &nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igEditors/Config/02_Configuring%20Knockout%20Support%20(Editors).md) |
-|[Tree](http://www.igniteui.com/tree/bind-tree-with-ko)						|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/igtree-knockoutjs-support)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igTree/13_igTree_KnockoutJS_Support.md) |
-|[Grid](http://www.igniteui.com/grid/bind-grid-with-ko)						|:x:				|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/iggrid-configuring-knockout-support) &nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igGrid/03_Features/11_igGrid_Configuring_Knockout_Support.md) |
-|[Chart](http://www.igniteui.com/data-chart/bind-data-chart-with-ko)		|:x:				|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/igdatachart-knockoutjs-support) &nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igDataChart/04_Configuring/05_igDataChart_KnockoutJS_Support.md) |
+|[Combo](http://www.igniteui.com/combo/bind-combo-with-ko)					|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/igcombo-knockoutjs-support) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igCombo/04_Configuring/04_igCombo_KnockoutJS_Support.md) |
+|[Editors](http://www.igniteui.com/editors/bind-editors-with-ko)			|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/configuring-knockout-support-(editors)) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igEditors/Config/02_Configuring%20Knockout%20Support%20(Editors).md) |
+|[Tree](http://www.igniteui.com/tree/bind-tree-with-ko)						|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/igtree-knockoutjs-support) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igTree/13_igTree_KnockoutJS_Support.md) |
+|[Grid](http://www.igniteui.com/grid/bind-grid-with-ko)						|:x:				|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/iggrid-configuring-knockout-support) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igGrid/03_Features/11_igGrid_Configuring_Knockout_Support.md) |
+|[Chart](http://www.igniteui.com/data-chart/bind-data-chart-with-ko)		|:x:				|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/igdatachart-knockoutjs-support) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igDataChart/04_Configuring/05_igDataChart_KnockoutJS_Support.md) |
 |																			|					|											|																		|					|
-|MVC Extensions																|:x:	      |:white_check_mark: 						|:white_check_mark:														||
+|MVC Extensions																|:x:	      |:white_check_mark: 						|:white_check_mark:														|[help](http://www.igniteui.com/help/asp.net-mvc-landingpage) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/05_ASP-NET-MVC)|
 |Developer Support 24/5														|:x:				|:white_check_mark: 						|:white_check_mark:														||
 
 

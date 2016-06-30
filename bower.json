@@ -12,15 +12,16 @@
     "package.json"
   ],
   "dependencies": {
-    "jquery": "^3.0.0",
+    "jquery": "^2.2.4",
     "jquery-ui": "^1.11.4"
   },
   "devDependencies": {
-    "qunit": "^1.10.0",
+    "qunit": "1.10.0",
     "jquery-mockjax": "^2.2.0",
     "knockout": "^3.4.0",
     "knockout.mapping": "^2.0.1",
     "jquery-tmpl": "*",
-    "JSON-js": "*"
+    "JSON-js": "*",
+    "xmldom": "^0.1.16"
   }
 }

@@ -1,6 +1,5 @@
 {
 	"config": [
-
 		"<%= config.modulesDir %>/i18n/**/*.js",
 		"<%= config.modulesDir %>/encoding/**/*.js",
 		"<%= config.scriptsDir %>/i18n/**/*.js"
