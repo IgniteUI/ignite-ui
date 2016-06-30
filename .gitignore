@@ -46,3 +46,4 @@ bower_components
 #Build output
 dist/js
 dist/css
+dist/bower.json

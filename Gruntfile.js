@@ -64,18 +64,11 @@ module.exports = function (grunt) {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
 			tests: ["qunit", "coverage", "instrumentedFiles"],
-			build: ["dist/js/**/*", "dist/css/**/*"]
+			build: ["dist/js/**/*", "dist/css/**/*", "dist/bower.json"]
 		},
 		coveralls: {
 			// LCOV coverage file (can be string, glob or array)
-			src: './coverage/reportLCOV/*.info',
-			// Options relevant to all targets
-			options: {
-				// When true, grunt-coveralls will only print a warning rather than
-				// an error, to prevent CI builds from failing unnecessarily (e.g. if
-				// coveralls.io is down). Optional, defaults to false.
-				force: false
-			}
+			src: './coverage/reportLCOV/*.info'
 		},
 		copy: {
 			js: {
@@ -94,6 +87,10 @@ module.exports = function (grunt) {
 				cwd: './src/',
 				src: 'css/**',
 				dest: './dist/',
+			},
+			resources: {
+				src: 'bower.json',
+				dest: './dist/'
 			}
 		},
 		cssmin: {
@@ -107,7 +104,6 @@ module.exports = function (grunt) {
 			},
 			structure: {
 				options: {
-					// relativeTo: './dist/css/structure/',
 					rebase: true
 				},
 				files: [{
