@@ -8955,15 +8955,17 @@ if (typeof jQuery !== "function") {
 					var pickerOptions = this._editorInput.data("datepicker").settings,
 						settings, self = this;
 					settings = $.extend(value, this._pickerDefaults());
-					pickerOptions = $.extend(pickerOptions, settings);
+
+				    //A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
+					options = $.extend(pickerOptions, settings);
 
 					if (settings.onSelect) {
 						var igOnSelect = settings.onSelect;
-						pickerOptions.onSelect = function (dateText, inst) {
-							igOnSelect.call(this);
+						options.onSelect = function (dateText, inst) {
+							igOnSelect.call(this, dateText, inst);
 							if (self.options.datepickerOptions &&
 								self.options.datepickerOptions.onSelect) {
-								self.pickerOptions.datepickerOptions
+								self.options.datepickerOptions
 									.onSelect.call(this, dateText, inst);
 							}
 						};
@@ -8974,7 +8976,7 @@ if (typeof jQuery !== "function") {
 							igOnClose.call(this);
 							if (self.options.datepickerOptions &&
 								self.options.datepickerOptions.onClose) {
-								self.pickerOptions.datepickerOptions
+								self.options.datepickerOptions
 									.onClose.call(this, dateText, inst);
 							}
 						};
