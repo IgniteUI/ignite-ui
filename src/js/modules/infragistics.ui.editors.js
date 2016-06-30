@@ -9182,7 +9182,11 @@ if (typeof jQuery !== "function") {
 			*/
 			iconClass: "ui-icon-check",
 			/* type="number" Gets/Sets value in tabIndex for Checkbox Editor. */
-			tabIndex: 0
+			tabIndex: 0,
+			/*@Skipped@*/
+			allowNullValue: false,
+			/*@Skipped@*/
+			nullValue: null,
 		},
 		css: {
 			/* Classes applied to the top element when editor is rendered in container. Default value is 'ui-state-default ui-corner-all ui-widget ui-checkbox-container ui-igcheckbox-normal' */
