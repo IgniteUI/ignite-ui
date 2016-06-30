@@ -8953,7 +8953,7 @@ if (typeof jQuery !== "function") {
 			switch (option) {
 				case "datepickerOptions": {
 					var pickerOptions = this._editorInput.data("datepicker").settings,
-						settings, self = this;
+						settings, self = this, options;
 					settings = $.extend(value, this._pickerDefaults());
 
 				    //A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
