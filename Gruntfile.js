@@ -103,8 +103,14 @@ module.exports = function (grunt) {
 					cwd: 'dist/css/',
 					src: ['**/*.css', '!**/*.min.css'],
 					dest: 'dist/css'
+				}]
+			},
+			structure: {
+				options: {
+					// relativeTo: './dist/css/structure/',
+					rebase: true
 				},
-				{
+				files: [{
 					'dist/css/structure/infragistics.css': ['dist/css/structure/modules/*.css']
 				}]
 			}
@@ -210,6 +216,7 @@ module.exports = function (grunt) {
 	grunt.task.registerTask("build", "Combine output files and prepare output", function() {
 		grunt.task.run("clean:build");
 		grunt.task.run("copy");
-	    grunt.task.run("uglify:combine");		
+	    grunt.task.run("uglify:combine");
+	    grunt.task.run("cssmin");			
 	});
 };
