@@ -41,6 +41,15 @@ module.exports = {
                 "./dist/js/modules/infragistics.ui.zoombar.js"
             ]
         }
+    },
+    "all": {
+        files: [{
+          expand: true,
+          cwd: 'dist/',
+          src: ['**/*.js', '**/*-lite.js'],
+          dest: 'dist/'
+        }
+      ]
     }
 };
 

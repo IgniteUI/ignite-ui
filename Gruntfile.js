@@ -212,7 +212,7 @@ module.exports = function (grunt) {
 	grunt.task.registerTask("build", "Combine output files and prepare output", function() {
 		grunt.task.run("clean:build");
 		grunt.task.run("copy");
-	    grunt.task.run("uglify:combine");
+	    grunt.task.run("uglify");
 	    grunt.task.run("cssmin");			
 	});
 };
