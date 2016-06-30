@@ -54,7 +54,8 @@ module.exports = function (grunt) {
 					branchesThresholdPct: 0
 				},
 				page: {
-					viewportSize: { width: 1600, height: 800 }
+					viewportSize: { width: 1600, height: 800 },
+					zoomFactor: 1
 				}
 			}
 		},
