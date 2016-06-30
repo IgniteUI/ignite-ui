@@ -41,7 +41,7 @@
 				number The default height can be set as a number.
             */
             height: null,
-            /* type="number|string" Gets sets width of drop down list in pixels 
+            /* type="number|string" Gets sets width of drop down list in pixels
                 string The default drop down width can be set in pixels (px).
 				number The default drop down width can be set as a number.
             */
@@ -58,8 +58,8 @@
             responseTotalRecCountKey: null,
             /* type="string" see $.ig.DataSource. This is basically the property in the responses where data records are held, if the response is wrapped. */
             responseDataKey: null,
-            /* 
-				type="json|xml|html|script|jsonp|text" Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType 
+            /*
+				type="json|xml|html|script|jsonp|text" Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType
 				json type="string"
 				xml type="string"
 				html type="string"
@@ -82,10 +82,10 @@
             itemTemplate: null,
             /* type="string" Gets sets template used to render header in drop-down list. The template is rendered inside of DIV html element. */
             headerTemplate: null,
-            /* type="string" Gets sets template used to render footer in drop-down list. 
+            /* type="string" Gets sets template used to render footer in drop-down list.
 				Notes:
 					1. The template is rendered inside of DIV html element.
-					2. The following variables can be used: 
+					2. The following variables can be used:
 						- {0}: Number of records in igCombo (view of dataSource)
 						- {1}: Number of records in dataSource
 						- {2}: Number of (filtered) records on server
@@ -128,9 +128,9 @@
                 /* type="number" Gets sets number of records loaded on each request.  */
                 pageSize: 16
             },
-            /* type="number" Gets sets how many items should be shown at once. 
+            /* type="number" Gets sets how many items should be shown at once.
 			   Notes:
-			   That options is used for virtualization in order to render initial list items. 
+			   That options is used for virtualization in order to render initial list items.
 			*/
             visibleItemsCount: 15,
             /* type="string" Gets sets value that is displayed when input field is empty. That is an override for the $.ig.Combo.locale.placeHolder. */
@@ -211,7 +211,7 @@
             }],
             /* type="bool" Gets sets ability to prevent form submitting on enter key press */
             preventSubmitOnEnter: true,
-            /* type="string" Gets or sets the format string that is used to format the text display values in the combo. 
+            /* type="string" Gets or sets the format string that is used to format the text display values in the combo.
 				Valid options are:
 				"auto" (default) - uses automatic formatting for Date and number objects.
 				"none", "", or null - will disable formatting
@@ -227,7 +227,7 @@
             dropDownButtonTitle: null,
             /* type="string" Gets sets title for html element which represend clear button. That is an override for the $.ig.Combo.locale.clearButtonTitle. */
             clearButtonTitle: null,
-            /* type="auto|bottom|top" Gets sets drop down opening orientation for the drop down list when open button is clicked 
+            /* type="auto|bottom|top" Gets sets drop down opening orientation for the drop down list when open button is clicked
 			   'auto' type="string"
 			   'bottom' type="string"
 			   'top' type="string"
@@ -1075,7 +1075,7 @@
 
             // Z.K. November 30, 2015 Fixing Bug #209806 - Items do not render when binding to an array of strings provided through the DataSourceUrl
             this._convertToArrayOfObjects(options);
-            
+
             // Set schema when loading remote url because filtering cannot work withouth it
             if (!options.dataSource.settings.schema && options.dataSource && dataView.length > 0) {
                 schema = this._initSchema(this._unwrapData(dataView)[0]);
@@ -1629,7 +1629,7 @@
 
             return result;
         },
-        // Keeping the function private to ensure always calling it with correct 
+        // Keeping the function private to ensure always calling it with correct
         // parameters and faster execution time for large amount of data
         // Param "data" can be single data or array of data
         _itemsFromData: function (data) {
@@ -1733,7 +1733,7 @@
             // Reapply readonly attribute
             if (readonly) {
                 this._options.$input.attr('readonly', readonly);
-            }            
+            }
         },
         _refreshVisualStylesForItem: function ($item, data) {
             var isSelected = this._isDataSelected(data);
@@ -2175,13 +2175,13 @@
             if (this.options.autoComplete && this._options.composition.isAutocompleteNeeded()) {
                 oldInputVal = this._options.inputVal;
                 newInputVal = oldInputVal + autoCompleteText;
-                       
+
                 // P.P 26-Feb-2016 #212236: Incorrect input of Japanese symbols using IME
                 this._options.composition.autocompleteText = autoCompleteText;
                 this._options.composition.inputVal = oldInputVal;
 
                 // Set auto completed input value
-                this._options.$input.val(newInputVal);         
+                this._options.$input.val(newInputVal);
 
                 // Select the auto completed part
                 this._setInputSelection(oldInputVal.length, newInputVal.length);
@@ -2367,7 +2367,7 @@
                 event &&
                 event.which === 8 && // backspace
                 _options.hadInputSelectionOnKeydown) {
-                // Remove the character before the selection instead of removing the selection 
+                // Remove the character before the selection instead of removing the selection
                 // when backspace is pressed and there was selection done by the auto complete
                 curVal = curVal.slice(0, curVal.length - 1);
                 _options.$input.val(curVal);
@@ -2546,7 +2546,7 @@
                         this._navigateToItem($item, true, true, event);
                     }
 
-                    // S.T. June 26th, 2015 Bug #201716: In the matter when grouping is enabled, 
+                    // S.T. June 26th, 2015 Bug #201716: In the matter when grouping is enabled,
                     // the intial rendered header group count should be extrated from visibleItemsCount.
                     visibleItemsCount = options.visibleItemsCount - 1;
                     if (options.grouping) {
@@ -3045,16 +3045,16 @@
             // In FF it works fine - fix is not needed
             if ($.ig.util.isFF) {
                 return;
-            }            
+            }
 
             this._options.composition.isCompositionEndFired = true;
 
             // P.P 02-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
             if (this._options.composition.isConfirmationNeeded) {
-                this._options.composition.isConfirmationNeeded = false;                
+                this._options.composition.isConfirmationNeeded = false;
 
                 if ($.ig.util.isIE || $.ig.util.isEdge) {
-                    this._inputInputHandler();                    
+                    this._inputInputHandler();
                 }
 
                 this._updateAutoComplete();
@@ -3094,18 +3094,18 @@
                         } else {
                             // P.P 10-Jun-2016 #219244: Composing 2 Japanese charachters in a row and then confirming cause their doubling
                             oldInputVal = val.slice(0, -val.length / 2); // dwindle twice the ammount of the characters
-                        }                   
+                        }
 
                         // Backspace key is used at the end of composition
                         if (oldInputVal.length === this.inputVal.length - 1 &&
                             oldInputVal === this.inputVal.slice(0, -1))
                         {
-                            oldInputVal = this.inputVal;                  
+                            oldInputVal = this.inputVal;
                         }
 
                         newInputVal = oldInputVal + this.autocompleteText;
 
-                        // Something clear the selection in Safari after it is set here, 
+                        // Something clear the selection in Safari after it is set here,
                         // so reordering of the functions with setTimeout is used
                         if ($.ig.util.isSafari) {
                             setTimeout(function () {
@@ -3405,7 +3405,7 @@
                             $this = $(this);
 
                             if (event.shiftKey && options.multiSelection.enabled) {
-                                // Select all items between the navigation item 
+                                // Select all items between the navigation item
                                 // and the selected item upon shift + click
                                 self._handleShiftClick(event);
                             } else {
@@ -3563,7 +3563,7 @@
             itemRatio = itemHeight / this._dropDownHeight(itemHeight, dataView.length);
             // S.T. 27th November 2015 Bug #208075: Use ceil instead parse int because sometimes dividing is float number.
             offset = this._calculateOffset(containerRatio, itemRatio);
-            
+
             return offset;
         },
         _calculateOffset: function (containerRatio, itemRatio) {
@@ -3683,7 +3683,7 @@
                     _options.$input.attr('placeholder', value);
                     break;
                 case 'multiSelection':
-                    // Update selection to the first selected item when switching from multi selection to single 
+                    // Update selection to the first selected item when switching from multi selection to single
                     this._selectData(this._options.selectedData[0]);
                     // S.T. March 11th, 2015 Bug #190156: Render items after change.
                     this._renderItems(null, null, this.options.dataSource);
@@ -3753,8 +3753,8 @@
                 // S.T. March 11th, 2015 Bug #190266: Add date.
                 // Z.K. December 3, 15 - Extracting repeated code into separate function
                 this._convertToArrayOfObjects(options);
-                
-                // Analyze the schema only when the data source is array or function 
+
+                // Analyze the schema only when the data source is array or function
                 if (!schema && options.dataSource && ($.isArray(options.dataSource) || $.isFunction(options.dataSource))) {
                     // N.A. 5/18/2015 Bug #193129: Unwrap before extracting the schema from the first field element.
                     schema = this._initSchema(this._unwrapData(options.dataSource)[0]);
@@ -4456,6 +4456,18 @@
             return (val1 !== null && val1 !== undefined && val2 !== null && val2 !== undefined) ?
                 $.ig.encode(val1.toString()) === $.ig.encode(val2.toString()) : false;
         },
+        // Check wheather certain array of values is equal to another array
+        _areArraysEqual: function (array1, array2) {
+            if (!array1 || !array2) { return false; }
+
+            if (array1.length !== array2.length) { return false; }
+
+            for (var i = 0; i < array1.length; i++) {
+                if (array1.indexOf(array2[i]) === -1) { return false; }
+            }
+
+            return true;
+        },
         // Checks whether certain value is contained in array of values while converting the values to string, because of data-attributes always being a string
         // This should be unsed instead of $.inArray/indexOf to find if value is contained in an array
         _isValueInArray: function (val, vals) {
@@ -4611,8 +4623,8 @@
             return this;
         },
         refreshValue: function () {
-            /* Forces an update of the igCombo value according to the current text in the igCombo input. 
-				The refresh is primarily intended to be used with allowCustomValue=true. 
+            /* Forces an update of the igCombo value according to the current text in the igCombo input.
+				The refresh is primarily intended to be used with allowCustomValue=true.
 				The refresh will take the current text and, if no selection is applied, will set it as igCombo value provided that allowCustomValue=true.
                 returnType="object" Returns reference to this combo.
 			*/
@@ -4771,27 +4783,27 @@
             return this.itemsFromValue(value);
         },
         items: function () {
-            /* Gets array with objects representing li elements in combo box 
+            /* Gets array with objects representing li elements in combo box
                 returnType="array" The null or array with objects containing following members: data - the associated data, element - the jquery element of the li
             */
             return this._itemsFromData(this.options.dataSource.data());
         },
         filteredItems: function () {
-            /* Gets array with objects representing the filtered li elements in combo box 
+            /* Gets array with objects representing the filtered li elements in combo box
                 returnType="array" The null or array with objects containing following members: data - the associated data, element - the jquery element of the li
             */
             return this._itemsFromData(this.options.dataSource.dataView());
         },
         selectedItems: function () {
-            /* Gets array with objects representing selected li elements in combo box 
+            /* Gets array with objects representing selected li elements in combo box
                 returnType="array" The null or array with objects containing following members: data - the associated data, element - the jquery element of the li
             */
             return this._options.selectedData.length > 0 ? this._itemsFromData(this._options.selectedData) : null;
         },
         filter: function (texts, event) {
             /* Trigger filtering.
-                paramType="string|array" optional="true" Filter by string, or array of strings. 
-                paramType="object" optional="true" Reference to browser event. 
+                paramType="string|array" optional="true" Filter by string, or array of strings.
+                paramType="object" optional="true" Reference to browser event.
                 returnType="object" Returns reference to this igCombo.
             */
             var noCancel,
@@ -4857,7 +4869,7 @@
             return this;
         },
         clearFiltering: function (event) {
-            /* Clear filtering. 
+            /* Clear filtering.
                 returnType="object" Returns reference to this igCombo.
             */
             var ds = this.options.dataSource,
@@ -4869,8 +4881,8 @@
                 (expression.length === 1 && expression[0].expr === "")) {
 
                 // S.T. June 18th 2015, Bug #200569: When filtering is remote closing the dropdown with value having partial item separator do not clear the input.
-                // We should update the input here when we having remote filter and not applied filter because the clearFiltering function exit here and 
-                // no further update is executed. 
+                // We should update the input here when we having remote filter and not applied filter because the clearFiltering function exit here and
+                // no further update is executed.
                 if (this._options.updateInputValuesOnRemoteFilter && this._endsPartialyWithItemSep(this._options.inputVal)) {
                     this._updateInputValues();
                     this._hideClearButton();
@@ -5134,7 +5146,7 @@
             this._options.$clearCont.show();
         },
         isSelected: function ($item) {
-            /* Verifies whether the specified li is selected 
+            /* Verifies whether the specified li is selected
                 paramType="object" optional="false" jQuery object with item to verify whether it is selected.
                 returnType="bool" Returns boolean representing whether the item is selected
             */
@@ -5154,7 +5166,7 @@
             */
             return this.isValueSelected(this.options.dataSource.data()[index][this.options.valueKey]);
         },
-        // Keeping the function private to ensure always calling it with correct 
+        // Keeping the function private to ensure always calling it with correct
         // parameters and faster execution time for large amount of data
         _selectData: function (data, options, event) {
             /* Selects list item/items from the drop down list by specified value or array of values. When called witout params will return the value of the selected item or if multiple selection is enabled array of selected values.
@@ -5212,10 +5224,14 @@
                 prevSelValues = this._valuesFromItems(prevSelItems);
 
                 // This compares the prev and new selected values for equality
-                if (!($(selectedValues).not(prevSelValues).length === 0 &&
-                    $(prevSelValues).not(selectedValues).length === 0)) {
+                // Z.K. June 30, 2016 - not() behavior is changed in jQuery 3.0.0 #17 from gitHub
+                if (!this._areArraysEqual(selectedValues, prevSelValues)) {
                     selChanged = true;
                 }
+                // if (!($(selectedValues).not(prevSelValues).length === 0 &&
+                //     $(prevSelValues).not(selectedValues).length === 0)) {
+                //     selChanged = true;
+                // }
             }
 
             // Reset auto selected item
@@ -5608,7 +5624,7 @@
             return this;
         },
         deselectAll: function (options, event) {
-            /* Deselects all selected items from the drop down list 
+            /* Deselects all selected items from the drop down list
                 paramType="object" optional="true" Object with set of options controling the behavior of this api method.
                     focusCombo (boolean): Set to true to focus combo after the deselection.
                     keepInputText (boolean): Set to true to keep input text unchanged after the deselection. By default input text is updated.
