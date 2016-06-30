@@ -1,10 +1,22 @@
 language: node_js
 node_js:
-  - "4"
+- "4"
 before_install:
-  - npm install -g bower
+- npm install -g bower
 before_script:
-  - npm install -g grunt
+- npm install -g grunt
 script:
-  - grunt verify
-  - grunt coveralls
+- grunt verify
+- grunt coveralls
+after_success:
+- grunt build
+before_deploy: "cd dist"
+deploy:
+  provider: npm
+  skip_cleanup: true
+  email: igniteui@infragistics.com
+  api_key:
+    secure: JeRvlOs2mLvzJHqtpVLvEtTVrZZqB4kufmz7+4RNk9XgzcSwXVbp5ZCpdYkZy/2HypJTjyryN98FuqCQo4cnmnkVS2phiejA9b9YVl3uFtCeFxGJJ4st/98UT3f7OrDgqFIh4v+MtzIS76+Erv2YmV8RBtEgoOpfCpuO5aBpi3oJR49iw8TN2dZwfyvUtb2ytMfzyR1q7xsl+Q0qYzwhX00BxVxGY6UkKF1VaRjsfGYrfC4FkpAT4u5mD+KtUMwRHGpMyQm1LYusS99+ugwOloq4gFArham/J/06tLwCXXjW/xhVH4HyQRiMZE649rl7TI/j88vZrGUKw16SQT+K/0+3sw4/BtwwlEjNiD1UIr97lRL7oFTZp/NYBs1PgNHd+xYGLnWA34NuUWlo9pviUz5U/mVaRVPZ5u1oLKHjPYX2VElE/GgqjQuj08il8rtRr7UHP0O5y0MPJ+t1WgWnivc0ISs+AHe+edLPoGAMHiK7vEcsM10y8z7Lfx7BbuWLFfv2eoWeruO1B0kEP+jeuognOBcyjSD/zKMfmosW/L+muhHCCPI1yDSmtutq24HVzktq0ggF9i5g4jTpH9kORBGKOirXuMP1Hf412IvzeQ71LK4A9W9z+mKje+9ygqrPDrbyYaclDiCrwOrAi3IGrpoi5F5ACdY13ObZpKG71RA=
+  on:
+    tags: true
+    repo: IgniteUI/ignite-ui
