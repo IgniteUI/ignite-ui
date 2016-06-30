@@ -55,7 +55,7 @@ module.exports = function (grunt) {
 				},
 				page: {
 					viewportSize: { width: 1600, height: 800 },
-					zoomFactor: 0.95
+					zoomFactor: 0.9
 				}
 			}
 		},
