@@ -9036,7 +9036,11 @@ if (typeof jQuery !== "function") {
 			// Close dropdown
 			//T.P. 15th March 2016. When there are two editors and the drpdown is opened - when we click the dropwodn button
 			//of the other editor - click event is triggered prior to blur of the previous editor
-			if (this._dropDownList.is(":visible") && !!this._focused) {
+			//M.S. 26th June 2016. Closing the dropdown with dropdown button if "readOnly: true, dropDownOnReadOnly : true"
+			//Adding internal flag for calendar visibility. 
+			if (this._dropDownList.is(":visible") &&
+				(!!this._focused || this.options.readOnly) &&
+				!!this._dropDownOpened) {
 
 					// Proceed with hiding
 					this._hideDropDownList();
@@ -9061,6 +9065,8 @@ if (typeof jQuery !== "function") {
 			this._trigger(this.events.itemSelected, null, args);
 		},
 		_showDropDownList: function () { //DatePicker
+
+			this._dropDownOpened = true;
 
 			// Open Dropdown
 			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue;
@@ -9110,6 +9116,7 @@ if (typeof jQuery !== "function") {
 			});
 		},
 		_hideDropDownList: function () {
+			this._dropDownOpened = false;
 			this._editorInput.datepicker("hide");
 			this._editorInput.attr("aria-expanded", false);
 		},
