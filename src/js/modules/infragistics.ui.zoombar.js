@@ -17,14 +17,15 @@
 (function ($) {
 	/*
 		igZoombar is a widget based on jQuery UI that provides ability to easily zoom in and out a chart or other compatible control.
-	*/
+	*/ 
 	$.widget("ui.igZoombar", {
 		options: {
-			/* type="igdatachart|auto" specifies the type of control the Zoombar is attached to.
-				igdatachart type="string" The Zoombar will attach to the igDataChart control initialized on the target element
-				auto type="string" The Zoombar will attach to the first widget from the supported ones it finds initialized on the target element
+			/* type="string|object|auto" specifies a provider which interfaces with widget that is being zoomed
+				auto type="string" the Zoombar will try to match one of its built-in providers with the widgets initialized on the target element
+				string the name of a Class in the $.ig namespace to initialize a provider from. The provider should implement all methods in the $.ig.ZoombarProviderDefault class and is suggested to be extended from it.
+				object an instance of a provider to use. The provider should implement all methods in the $.ig.ZoombarProviderDefault class and is suggested to be extended from it.
 			*/
-			type: "auto",
+			provider: "auto",
 			/* type="string|object" specifies the element on which the widget the Zoombar is attached to is initialized
 				string A valid jQuery selector that the Zoombar can use to find the element
 				object A valid jQuery object, the first element of which is that element
@@ -91,6 +92,13 @@
 			Use ui.owner to get reference to igZoombar.
 			*/
 			zoomChanged: "zoomChanged",
+			/* Event fired after a provider is created based on the options.provider value. If an instance is passed as a value for the option the event won't fire.
+			Use the event when utilizing a custom provider to assign options such as the zoomed widget's instance so that the provider's API is usable when igZoombar initializes its rendering.
+			Function takes arguments evt and ui.
+			Use ui.provider to get the reference the created provider
+			Use ui.owner to get reference to igZoombar
+			*/
+			providerCreated: "providerCreated",
 			/* cancel="true" Event fired when the user attempts to drag the zoom window
 			Function takes arguments evt and ui.
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
@@ -335,12 +343,10 @@
 				opts.width = w;
 				opts.height = h;
 				/* init widget */
-				cloneContainer[ this._provider.widgetName() ](opts);
+				this._provider.createClone(cloneContainer, opts);
 				/* finally sync minimal zoom widths for the target and the zoombar */
 				this._provider.syncMinWidth(this.options.zoomWindowMinWidth / 100);
 			}
-			/* remove some classes from the zoombar clone */
-			cloneContainer.children().first().removeClass("ui-corner-all ui-widget-content");
 			return cloneContainer;
 		},
 		_renderScrollbar: function () {
@@ -729,33 +735,42 @@
 			} else {
 				throw new Error($.ig.Zoombar.locale.zoombarTargetNotSpecified);
 			}
-			if (typeof opts.type === "string" && opts.type === "auto") {
+			rc = this.options.clone !== "none";
+			co = typeof this.options.clone === "object" ? this.options.clone : null;
+			if (opts.provider === "auto") {
 				// we"ll find the first supported widget on the target
 				for (key in this._target.data()) {
 					if (this._target.data().hasOwnProperty(key)) {
 						if ($.inArray(key, this._supportedWidgets) > -1) {
 							widgetName = key;
+							break;
 						}
 					}
 				}
+				if (!widgetName || typeof widgetName !== "string") {
+					throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
+				}
+				/* find specific widget */
+				switch (widgetName.toLowerCase()) {
+					case "igdatachart":
+						provider = new $.ig.ZoombarProviderDataChart({
+							targetObject: this._target.data("igDataChart"),
+							cloneOptions: co,
+							renderClone: rc
+						});
+						break;
+					default: throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
+				}
+				this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
+			} else if ($.type(opts.provider) === "string") {
+				if ($.ig[opts.provider]) {
+					provider = new $.ig[opts.provider]();
+				}
+				this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
+			} else if ($.type(opts.provider) === "object") {
+				provider = opts.provider;
 			} else {
-				widgetName = opts.type;
-			}
-			if (!widgetName || typeof widgetName !== "string") {
-				throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
-			}
-			rc = this.options.clone !== "none";
-			co = typeof this.options.clone === "object" ? this.options.clone : null;
-			/* find specific widget */
-			switch (widgetName.toLowerCase()) {
-				case "igdatachart":
-					provider = new $.ig.ZoombarProviderDataChart({
-						targetObject: this._target.data("igDataChart"),
-						cloneOptions: co,
-						renderClone: rc
-					});
-					break;
-				default: throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
+				throw new Error($.ig.Zoombar.locale.zoombarProviderNotRecognized);
 			}
 			return provider;
 		},
@@ -1061,9 +1076,17 @@
 	});
 
 	$.ig.ZoombarProviderDefault = $.ig.ZoombarProviderDefault || Class.extend({
+		settings: {
+			targetObject: null,
+			cloneOptions: null,
+			renderClone: true
+		},
 		/*jshint unused:false*/
 		init: function (options) {
 			/* Initializes a new instance of the provider */
+			if (options) {
+				this.settings = options;
+			}
 			return this;
 		},
 		getBaseOpts: function (options) {
@@ -1073,6 +1096,10 @@
 		cleanOptsForZoom: function (options) {
 			/* Alters specific options so that the the clone is more suitable for its purpose */
 			return options;
+		},
+		createClone: function (container, options) {
+			/* Will be called by the Zoombar if a clone of the target widget should be created */
+			return container;
 		},
 		widgetName: function () {
 			/* Returns the provider"s widget name */
@@ -1088,7 +1115,10 @@
 		},
 		targetObject: function (obj) {
 			/* Gets/sets the target object */
-			return this._targetObject;
+			if (obj) {
+				this.settings.targetObject = obj;
+			}
+			return this.settings.targetObject;
 		},
 		update: function (a, b) {
 			/* Updates the target widget with new zoom. Returns success status if available. */
@@ -1105,13 +1135,12 @@
 		$.ig.ZoombarProviderDataChart || $.ig.ZoombarProviderDefault.extend({
 		// inherited
 		init: function (options) {
-			this._targetObject = options.targetObject || null;
 			this._evt = "windowRectChanged";
 			this._super(options);
 			return this;
 		},
 		getBaseOpts: function (options) {
-			var topts = options || this._targetObject.options;
+			var topts = options || this.settings.targetObject.options;
 			return this._copyRelevantOpts(topts);
 		},
 		cleanOptsForZoom: function (options) {
@@ -1141,26 +1170,34 @@
 			}
 			return options;
 		},
+		createClone: function (container, options) {
+			container.igDataChart(options);
+			/* remove some classes from the zoombar clone container */
+			container.children().first().removeClass("ui-corner-all ui-widget-content");
+			return container;
+		},
 		widgetName: function () {
 			return "igDataChart";
 		},
 		targetWidth: function () {
-			return this._targetObject.options.width || this._targetObject._chart._width || this._super();
+			return this.settings.targetObject.options.width ||
+				this.settings.targetObject._chart._width ||
+				this._super();
 		},
 		targetObject: function (obj) {
 			if (!obj) {
-				return this._targetObject;
+				return this.settings.targetObject;
 			}
-			this._targetObject = obj;
-			this._targetObject.element.bind("igdatachartwindowrectchanged", this._handler);
+			this.settings.targetObject = obj;
+			this.settings.targetObject.element.bind("igdatachartwindowrectchanged", this._handler);
 		},
 		syncMinWidth: function (minWidth) {
-			this._targetObject._chart.windowRectMinWidth(minWidth);
+			this.settings.targetObject._chart.windowRectMinWidth(minWidth);
 			return true;
 		},
 		update: function (a, b) {
-			var cw = this._targetObject._chart.windowRect();
-			this._targetObject._chart.windowRect(
+			var cw = this.settings.targetObject._chart.windowRect();
+			this.settings.targetObject._chart.windowRect(
 				new $.ig.Rect(0, a, cw.top(), Math.abs(b - a), cw.height())
 			);
 		},
