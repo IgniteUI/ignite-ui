@@ -21,6 +21,7 @@
     "knockout": "^3.4.0",
     "knockout.mapping": "^2.0.1",
     "jquery-tmpl": "*",
-    "JSON-js": "*"
+    "JSON-js": "*",
+    "xmldom": "^0.1.16"
   }
 }

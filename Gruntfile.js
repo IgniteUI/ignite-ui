@@ -18,8 +18,8 @@ module.exports = function (grunt) {
 			all: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
 				jshintrc: true,
-				//reporter: "build/ReporterJSHint.js",
-				//reporterOutput: "jshint/report.html",
+				reporter: "build/ReporterJSHint.js",
+				reporterOutput: "jshint/report.html",
 				ignores: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
 		},
@@ -29,7 +29,7 @@ module.exports = function (grunt) {
 				config: ".jscsrc.json",
 				reporter: "build/ReporterJSCS.js",
 				reporterOutput: "jscs/report.html",
-				force: true,
+				force: false,
 				maxErrors: null,
 				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
@@ -48,13 +48,14 @@ module.exports = function (grunt) {
 					lcovReport: "coverage/reportLCOV",
 					disposeCollector: true,
 					reportOnFail: true,
-					linesThresholdPct: 85,
-					statementsThresholdPct: 85,
-					functionsThresholdPct: 85,
-					branchesThresholdPct: 85
+					linesThresholdPct: 0,
+					statementsThresholdPct: 0,
+					functionsThresholdPct: 0,
+					branchesThresholdPct: 0
 				},
 				page: {
-					viewportSize: { width: 1600, height: 800 }
+					viewportSize: { width: 1600, height: 800 },
+					zoomFactor: 1
 				}
 			}
 		},
@@ -81,8 +82,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-qunit-istanbul");
 	grunt.loadNpmTasks("grunt-coveralls");
-
-	grunt.option("force", true );
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
 		var config;
