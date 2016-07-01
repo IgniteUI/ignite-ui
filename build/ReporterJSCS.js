@@ -1,7 +1,7 @@
 ﻿module.exports = function (errors) {
 		var reportHtmlJS = "",
 			errorHtmlJS = "",
-			jscsObj = null, iError = 0, fileName = "",
+			iError = 0, fileName = "",
 			error = null, errorLine = 0, errorCode, errorReason, fs,
 			date = new Date(), isDummy = false;
 		
@@ -9,11 +9,6 @@
 		reportHtmlJS += "<h2>JSCS for build: jQuery_{{build_number}} </h2><br />" + date;
 		reportHtmlJS += "<p>Check JSCS from console using 'grunt cs' or 'grunt cs:controlName'.";
 		reportHtmlJS += "<table border=1 cellpadding=5 cellspacing=0 style='font-family:Verdana; font-size:11pt; border-width:1px; border: 1px solid black;width:600px;'>";
-
-		// JSON report
-		jscsObj = new Object();
-		jscsObj["RunOn"] = date;
-		jscsObj["CodeAnalysisRunDetail"] = [];
 
 		for (iErr = 0; iErr < errors.length; iErr++) {
 

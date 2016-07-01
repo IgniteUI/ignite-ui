@@ -9090,10 +9090,13 @@ if (typeof jQuery !== "function") {
 					currentDate = new Date(currentDate.getUTCFullYear(),
 						currentDate.getUTCMonth(), currentDate.getUTCDate());
 				}
+				currentInputValue = this._editorInput.val();
 				$(this._editorInput).datepicker("setDate", currentDate);
 
 			}
-			currentInputValue = this._editorInput.val();
+			if (currentInputValue === undefined) {
+				currentInputValue = this._editorInput.val();
+			}
 			try {
 				this._editorInput.datepicker("option", "showOptions", { direction: direction });
 
