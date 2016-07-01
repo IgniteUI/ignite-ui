@@ -381,12 +381,6 @@
 		equal($("#inputValue").val(), val, message + " (inputValue)");
 		equal($("#divValue").html(), val, message + " (divValue)");
 	}
-	
-	QUnit.log = function (details) {
-		if (window.console && window.console.log) {
-			window.console.log(details.result + ' :: ' + details.message);
-		}
-	};
 </script>
 </head>
 <body>

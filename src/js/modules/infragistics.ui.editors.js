@@ -8953,7 +8953,7 @@ if (typeof jQuery !== "function") {
 			switch (option) {
 				case "datepickerOptions": {
 					var pickerOptions = this._editorInput.data("datepicker").settings,
-						settings, self = this;
+						settings, self = this, options;
 					settings = $.extend(value, this._pickerDefaults());
 
 				    //A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
@@ -9090,10 +9090,13 @@ if (typeof jQuery !== "function") {
 					currentDate = new Date(currentDate.getUTCFullYear(),
 						currentDate.getUTCMonth(), currentDate.getUTCDate());
 				}
+				currentInputValue = this._editorInput.val();
 				$(this._editorInput).datepicker("setDate", currentDate);
 
 			}
-			currentInputValue = this._editorInput.val();
+			if (currentInputValue === undefined) {
+				currentInputValue = this._editorInput.val();
+			}
 			try {
 				this._editorInput.datepicker("option", "showOptions", { direction: direction });
 

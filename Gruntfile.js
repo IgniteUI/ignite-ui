@@ -2,7 +2,7 @@ var config = {
 	scripts: "src/js/**/*.js",
 	scriptsDir: "src/js",
 	modulesDir: "src/js/modules",
-	extensions: "src/extensions/**/*.js",
+	extensions: "src/js/extensions/**/*.js",
 	extensionsDir: "src/js/extensions",
 	devTests: "tests/unit/**/*test*.htm*",
 	devTestsDir: "tests/unit",
@@ -18,8 +18,8 @@ module.exports = function (grunt) {
 			all: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
 				jshintrc: true,
-				reporter: "build/ReporterJSHint.js",
-				reporterOutput: "jshint/report.html",
+				// reporter: "build/ReporterJSHint.js",
+				// reporterOutput: "jshint/report.html",
 				ignores: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
 		},
@@ -38,13 +38,11 @@ module.exports = function (grunt) {
 			all: ["<%= config.devTests%>"],
 			options: {
 				force: false,
-				timeout: 180000,
 				"--web-security": "no",
 				coverage: {
 					src: grunt.file.readJSON('build/config/all/instrument.json').config,
 					instrumentedFiles: "src/instrumentedFiles",
 					htmlReport: "coverage/reportHTML",
-					jsonSummaryReport: "coverage/reportJSON",
 					lcovReport: "coverage/reportLCOV",
 					disposeCollector: true,
 					reportOnFail: true,
