@@ -38,7 +38,6 @@ module.exports = function (grunt) {
 			all: ["<%= config.devTests%>"],
 			options: {
 				force: false,
-				timeout: 600000,
 				"--web-security": "no",
 				coverage: {
 					src: grunt.file.readJSON('build/config/all/instrument.json').config,
@@ -143,17 +142,20 @@ module.exports = function (grunt) {
 			require('./build/ReporterQUnit.js').onError(message, source, result, actual, expected);
 		}
 	});
-	grunt.event.on("qunit.error", function (message, stackTrace) {
-		require('./build/ReporterQUnit.js').onError(message, stackTrace);
-	});
 	grunt.event.on("qunit.error.onError", function (message, stackTrace) {
 		require('./build/ReporterQUnit.js').onError(message, stackTrace);
+		console.log(message + "\n onError");
 	});
-	grunt.event.on("qunit.fail ", function (message, stackTrace) {
-		require('./build/ReporterQUnit.js').onError(message, stackTrace);
+	grunt.event.on("qunit.fail.load ", function (url) {
+		require('./build/ReporterQUnit.js').onError(url);
+		console.log(url + "\n fail");
 	});
 	grunt.event.on("qunit.fail.timeout", function () {
 		require('./build/ReporterQUnit.js').onError("Timeout due to wrong references: Qunit and all other external references should reference files in Bower folder. The IgniteUI files should reference Source folder; ");
+	});
+	grunt.event.on("qunit.spawn", function (url) {
+		require('./build/ReporterQUnit.js').onError(url);
+		console.log(url + "\n spawn");
 	});
 	
 	grunt.task.registerTask("verify", "A sample task to run jshint, jscs, instrument files, run dev tests and produce coverage report.", function(control) {
