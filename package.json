@@ -2,7 +2,8 @@
   "name": "ignite-ui",
   "version": "0.0.1",
   "scripts": {
-    "postinstall" : "bower install"
+    "preinstall": "npm install -g bower",
+    "postinstall" : "npm install -g grunt-cli && bower install"
   },
   "dependencies": {},
   "devDependencies": {
