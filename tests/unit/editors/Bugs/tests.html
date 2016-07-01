@@ -635,7 +635,7 @@
 				stop();
 				setTimeout(function () {
 					start();
-					var calendar, getDDmmYYYYHHSS;
+					var calendar, getDDmmYYYYHHSS, targetDate;
 					getDDmmYYYYHHSS = function (date) {
 						var result = "", day, month, minutes, hours;
 						if (typeof date.getTime !== "function") {
@@ -677,17 +677,18 @@
 
 						return result;
 					}
-					var date = new Date();
+					targetDate = new Date();
+
 					$("#211062Editor1").one("igdatepickervaluechanged", function (evt, ui) {
-						equal(getDDmmYYYYHHSS(ui.newValue), getDDmmYYYYHHSS(date), "Date should be " + getDDmmYYYYHHSS(date));
+						equal(getDDmmYYYYHHSS(ui.newValue), getDDmmYYYYHHSS(targetDate), "Date should be " + getDDmmYYYYHHSS(targetDate));
 					});
 
 					$("#211062Editor1").igDatePicker("dropDownButton").click();
 					calendar = $("#211062Editor1").igDatePicker("getCalendar");
 					$(calendar).find(".ui-datepicker-today").find("a").click();
-					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(date), "The value is changed to" + getDDmmYYYYHHSS(date));
+					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The value is changed to" + getDDmmYYYYHHSS(targetDate));
 					$("#211062Editor1").igDatePicker("field").blur();
-					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(date), "The value is changed to" + getDDmmYYYYHHSS(date));
+					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The value is changed to" + getDDmmYYYYHHSS(targetDate));
 				}, 1000); //This timeout is need because the test requires calendar which needs focus
 			});
 			
