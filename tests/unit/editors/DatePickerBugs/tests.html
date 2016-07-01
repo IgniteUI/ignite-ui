@@ -33,7 +33,7 @@
 			// Create a editors
 
 				function loadTestbeds() {
-					var testbedIDs = ["206040", "211360", "213900", "215046", "215992", "220775","221368"];
+					var testbedIDs = ["206040", "211360", "213900", "215046", "215992", "220775","221368", "221414"];
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i].trim() + "Testbed";
 						if (window[testBed]) {
@@ -92,6 +92,10 @@
 					});
 
 					$('#221368Editor2').igDatePicker();
+				}
+
+				window.Bug221414Testbed = function () {
+				    $("#221414Editor1").igDatePicker();
 				}
 				
 				initialized = false;
@@ -217,6 +221,21 @@
 				$("#220775Editor1").igDatePicker("dropDownButton").click();
 
 				equal($("#220775Editor1").igDatePicker("field").val(), "__/__/____", "Opening dropdown caused the entered text to be __/__/____");
+			});
+
+			testId = 'Bug 221414';
+			test(testId, 1, function () {
+			    var calendar, calendarVisibility;
+			    $("#221414Editor1").igDatePicker({ datepickerOptions: { minDate: new Date(2016, 06, 05) } });
+			    $("#221414Editor1").igDatePicker("dropDownButton").click();
+			    calendar = $("#221414Editor1").igDatePicker("getCalendar");
+			    $(calendar).find("a:last").click();
+			    stop();
+			    setTimeout(function () {
+			        start();
+			        calendarVisibility = $("#221414Editor1").igDatePicker("dropDownVisible");
+			        ok(!calendarVisibility, "The dropdown container is visible, but it shouldn't be.");
+			    }, 1500);
 			});
 		});
 
@@ -410,6 +429,7 @@
 		<input id="215992Editor1" type="text" />
 		<input id="215992Editor2" type="text" />
 		<input id="220775Editor1" type="text" />
+		<div id="221414Editor1"></div>
 		
 	</div></body>
 </html>
