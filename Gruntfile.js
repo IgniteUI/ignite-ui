@@ -1,4 +1,6 @@
-var config = {
+var buildVersion = require("./package.json").version,
+    year = new Date().getFullYear(),
+	config = {
 	scripts: "src/js/**/*.js",
 	scriptsDir: "src/js",
 	modulesDir: "src/js/modules",
@@ -59,19 +61,55 @@ module.exports = function (grunt) {
 		clean: {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
-			tests: ["qunit", "coverage", "instrumentedFiles"]
+			tests: ["qunit", "coverage", "instrumentedFiles"],
+			build: ["dist/js/**/*", "dist/css/**/*", "dist/bower.json"]
 		},
 		coveralls: {
 			// LCOV coverage file (can be string, glob or array)
-			src: './coverage/reportLCOV/*.info',
-			// Options relevant to all targets
-			options: {
-				// When true, grunt-coveralls will only print a warning rather than
-				// an error, to prevent CI builds from failing unnecessarily (e.g. if
-				// coveralls.io is down). Optional, defaults to false.
-				force: false
+			src: './coverage/reportLCOV/*.info'
+		},
+		copy: {
+			js: {
+				expand: true,
+				cwd: './src/',
+				src: 'js/**/*.js',
+				dest: './dist/',
+				options: {
+					process: function (content, srcpath) {
+						return content.replace("<build_number>", buildVersion).replace("<year>", year);
+					}
+				},
+			},
+			css: {
+				expand: true,
+				cwd: './src/',
+				src: 'css/**',
+				dest: './dist/',
+			},
+			resources: {
+				src: ['bower.json', "README.md", "LICENSE"],
+				dest: './dist/'
 			}
-		}
+		},
+		cssmin: {
+			all: {
+				files: [{
+					expand: true,
+					cwd: 'dist/css/',
+					src: ['**/*.css', '!**/*.min.css'],
+					dest: 'dist/css'
+				}]
+			},
+			structure: {
+				options: {
+					rebase: true
+				},
+				files: [{
+					'dist/css/structure/infragistics.css': ['dist/css/structure/modules/*.css']
+				}]
+			}
+		},
+		uglify: require('./build/config/all/combined-files.js')
     });
 
 	grunt.loadNpmTasks("grunt-contrib-clean");
@@ -79,6 +117,9 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks("grunt-qunit-istanbul");
 	grunt.loadNpmTasks("grunt-coveralls");
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
 		var config;
@@ -161,5 +202,12 @@ module.exports = function (grunt) {
 	    } else {
 	    	grunt.task.run("hint", "jscs", "test");
 		}
+	});
+
+	grunt.task.registerTask("build", "Combine output files and prepare output", function() {
+		grunt.task.run("clean:build");
+		grunt.task.run("copy");
+	    grunt.task.run("uglify");
+	    grunt.task.run("cssmin");			
 	});
 };
