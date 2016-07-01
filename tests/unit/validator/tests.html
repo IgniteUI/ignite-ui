@@ -1146,11 +1146,6 @@
                 ok($('#reloadedField').data("igValidator")._validateInternal(null, null, true, "value"), "Internal validate did not fail with empty value and required.");
             });
         });
-        QUnit.log = function (details) {
-            if (window.console && window.console.log) {
-                window.console.log(details.result + ' :: ' + details.message);
-            }
-        };
         function keyInteraction(key, target, special, set) {
             keyDownChar(key, target, special);
             if (set) {
