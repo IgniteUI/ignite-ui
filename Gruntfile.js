@@ -44,7 +44,6 @@ module.exports = function (grunt) {
 					src: grunt.file.readJSON('build/config/all/instrument.json').config,
 					instrumentedFiles: "src/instrumentedFiles",
 					htmlReport: "coverage/reportHTML",
-					jsonSummaryReport: "coverage/reportJSON",
 					lcovReport: "coverage/reportLCOV",
 					disposeCollector: true,
 					reportOnFail: true,
