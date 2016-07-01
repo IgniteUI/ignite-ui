@@ -2,7 +2,7 @@ var config = {
 	scripts: "src/js/**/*.js",
 	scriptsDir: "src/js",
 	modulesDir: "src/js/modules",
-	extensions: "src/extensions/**/*.js",
+	extensions: "src/js/extensions/**/*.js",
 	extensionsDir: "src/js/extensions",
 	devTests: "tests/unit/**/*test*.htm*",
 	devTestsDir: "tests/unit",
