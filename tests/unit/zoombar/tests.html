@@ -5,37 +5,35 @@
 	<link type="text/css" href="../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" /> 
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.html5.css" rel="stylesheet" />
-	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.chart.css" rel="stylesheet" />
+	<link type="text/css" href="http://cdn-na.infragistics.com/igniteui/latest/css/structure/modules/infragistics.ui.chart.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.zoombar.css" rel="stylesheet" />
 
 	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
 
-	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.util-en.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.dvcommonwidget-en.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/i18n/infragistics.dvcommonwidget-en.js"></script>
 
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.dataSource.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.dv.core.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.dvcommonwidget.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.datasource.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.dv.core.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.dvcommonwidget.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.templating.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.chartlegend.js"></script>
-	 
-	
-	<!--<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.zoombar.js"></script>-->
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ui.chartlegend.js"></script>
+
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.zoombar.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.chart.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_annotationchart.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_categorychart.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_financialchart.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_funnelchart.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_rangecategorychart.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_scatterchart.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_sparkline.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.chart_stackedchart.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ui.chart.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.chart_annotationchart.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.chart_categorychart.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.chart_financialchart.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.chart_funnelchart.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.chart_rangecategorychart.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.chart_scatterchart.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.chart_sparkline.js"></script>
+	<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.chart_stackedchart.js"></script>
 	
 	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
 	
@@ -59,22 +57,22 @@
 			];
 			// window.onerror = function () { /* Overwrite QUnit handler that causes the tests to fail on a java script error */ };
 			function generateBasicDataSource() {
-                var num = 10, data = [];
-                for (var i = 0; i < num; i++) {
-                    var val1 = Math.round(Math.random() * 100);
-                    var val2 = Math.round(Math.random() * 100);
-                    var val3 = Math.round(Math.random() * 100);
-                    data[i] = { Label: i.toString(), Value1: val1, Value2: val2, Value3: val3 };
-                }
-                genData = data;
-                genDataSource = new $.ig.DataSource({ dataSource: genData });
+				var num = 10, data = [];
+				for (var i = 0; i < num; i++) {
+					var val1 = Math.round(Math.random() * 100);
+					var val2 = Math.round(Math.random() * 100);
+					var val3 = Math.round(Math.random() * 100);
+					data[i] = { Label: i.toString(), Value1: val1, Value2: val2, Value3: val3 };
+				}
+				genData = data;
+				genDataSource = new $.ig.DataSource({ dataSource: genData });
 				genericOpts.dataSource = genDataSource;
 				barOpts.dataSource = genDataSource;
 				rangeOpts.dataSource = genDataSource;
 				scatterOpts.dataSource = genDataSource;
 				finOpts.series[0].dataSource = finData;
 				finOpts.axes[0].dataSource = finData;
-            }
+			}
 
 			module("igZoombar", {
 				setup: function() {
@@ -98,66 +96,66 @@
 				windowResponse: "immediate"
 			};
 			$.extend(true, genericOpts, basicOpts, {
-                axes: [
+				axes: [
 					{ name: "xAxis", type: "categoryX", label: "Label"},
 					{ name: "yAxis", type: "numericY" }
-                ],
-                series: [{
-                    name: "series3",
-                    title: "Mazda",
-                    type: "area",
-                    xAxis: "xAxis",
-                    yAxis: "yAxis",
-                    valueMemberPath: "Value3",
-                    showTooltip: false
-                }],
+				],
+				series: [{
+					name: "series3",
+					title: "Mazda",
+					type: "area",
+					xAxis: "xAxis",
+					yAxis: "yAxis",
+					valueMemberPath: "Value3",
+					showTooltip: false
+				}],
 			});
 			$.extend(true, barOpts, basicOpts, {
 				axes: [
 					{ name: "yAxis", type: "categoryY", label: "Label" },
 					{ name: "xAxis", type: "numericX" }
-                ],
+				],
 				series: [{
-                    name: "series1",
-                    title: "Test Series",
-                    type: "bar",
-                    xAxis: "xAxis",
-                    yAxis: "yAxis",
-                    valueMemberPath: "Value1",
-                    markerType: "circle",
-                    showTooltip: true,
-                    isHighlightingEnabled: true,
-                    trendLineType: "linearFit",
-                    trendLineBrush: "red"
-                }]
+					name: "series1",
+					title: "Test Series",
+					type: "bar",
+					xAxis: "xAxis",
+					yAxis: "yAxis",
+					valueMemberPath: "Value1",
+					markerType: "circle",
+					showTooltip: true,
+					isHighlightingEnabled: true,
+					trendLineType: "linearFit",
+					trendLineBrush: "red"
+				}]
 			});
 			$.extend(true, rangeOpts, basicOpts, {
-                axes: [
+				axes: [
 					{ name: "xAxis", type: "categoryX", label: "Label" },
 					{ name: "yAxis", type: "numericY" }
-                ],
-                series: [{
-                    name: "series1",
-                    type: "rangeArea",
-                    xAxis: "xAxis",
-                    yAxis: "yAxis",
-                    lowMemberPath: "Value1",
-                    highMemberPath: "Value2"
-                }]
-            });
+				],
+				series: [{
+					name: "series1",
+					type: "rangeArea",
+					xAxis: "xAxis",
+					yAxis: "yAxis",
+					lowMemberPath: "Value1",
+					highMemberPath: "Value2"
+				}]
+			});
 			$.extend(true, scatterOpts, basicOpts, {
 				axes: [
 					{ name: "xAxis", type: "numericX" },
 					{ name: "yAxis", type: "numericY" }
 				],
-                series: [{
-                    name: "series1",
-                    type: "scatter",
-                    xAxis: "xAxis",
-                    yAxis: "yAxis",
-                    xMemberPath: "Index",
-                    yMemberPath: "Value1"
-                }]	
+				series: [{
+					name: "series1",
+					type: "scatter",
+					xAxis: "xAxis",
+					yAxis: "yAxis",
+					xMemberPath: "Index",
+					yMemberPath: "Value1"
+				}]	
 			});
 			$.extend(true, finOpts, basicOpts, {
 				axes: [{
@@ -662,7 +660,10 @@
 				setTimeout(function () {
 					zoom.igZoombar("destroy");
 					zoom.igZoombar({
-						type: "igdatachart",
+						provider: "ZoombarProviderDataChart",
+						providerCreated: function (evt, ui) {
+							ui.provider.settings.targetObject = $(".testclass").data("igDataChart");
+						},
 						target: ".testclass",
 						clone: "none",
 						width: "600px",
@@ -671,7 +672,7 @@
 					notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
 					notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
 					strictEqual(typeof zoom.igZoombar("clone").data("igDataChart"), "undefined", "clone none should not create a clone assert");
-					strictEqual(typeof zoom.data("igZoombar")._provider._targetObject, "object", "zoombar should still create a provider assert");
+					strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
 					strictEqual(zoom.outerWidth(), 600, "zoombar assings proper width assert");
 					strictEqual(zoom.outerHeight(), 300, "zoombar assings proper height assert");
 					setTimeout(function () {
@@ -690,19 +691,19 @@
 						notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
 						notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
 						strictEqual(typeof zoom.igZoombar("clone").data("igDataChart"), "object", "clone none should not create a clone assert");
-						strictEqual(typeof zoom.data("igZoombar")._provider._targetObject, "object", "zoombar should still create a provider assert");
+						strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
 						strictEqual(zoom.outerWidth(), 500, "zoombar assings proper width assert");
 						strictEqual(zoom.outerHeight(), 70, "zoombar assings proper height assert");
 						strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.40", "zoombar assings proper left for window assert");
 						strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.20", "zoombar assings proper width for window assert");
-						strictEqual(chart.data("igDataChart")._chart.windowRect().__left.toFixed(2), "0.40", "zoombar assings proper left to chart assert");
-						strictEqual(chart.data("igDataChart")._chart.windowRect().__width.toFixed(2), "0.20", "zoombar assings proper width to chart assert");
+						strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.40", "zoombar assings proper left to chart assert");
+						strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "0.20", "zoombar assings proper width to chart assert");
 						// test zoomWindowMoveDistance
 						$("#tzoombar_zoombar_buttons_right").children().first().trigger("click");
 						strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.60", "zoombar assings proper left for window assert");
 						strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.20", "zoombar assings proper width for window assert");
-						strictEqual(chart.data("igDataChart")._chart.windowRect().__left.toFixed(2), "0.60", "zoombar assings proper left to chart assert");
-						strictEqual(chart.data("igDataChart")._chart.windowRect().__width.toFixed(2), "0.20", "zoombar assings proper width to chart assert");
+						strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.60", "zoombar assings proper left to chart assert");
+						strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "0.20", "zoombar assings proper width to chart assert");
 					}, 500);
 				}, 500);
 				// test zoomWindowMinWidth
@@ -718,13 +719,13 @@
 				zoom.igZoombar("zoom", 10, 50);
 				strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.10", "zoom method assings proper left for window assert");
 				strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "0.50", "zoom method assings proper width for window assert");
-				strictEqual(chart.data("igDataChart")._chart.windowRect().__left.toFixed(2), "0.10", "zoom method assings proper left to chart assert");
-				strictEqual(chart.data("igDataChart")._chart.windowRect().__width.toFixed(2), "0.50", "zoom method assings proper width to chart assert");
+				strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.10", "zoom method assings proper left to chart assert");
+				strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "0.50", "zoom method assings proper width to chart assert");
 				zoom.igZoombar("zoom", -100, 200);
 				strictEqual(zoom.data("igZoombar")._cw.left.toFixed(2), "0.00", "zoom method assings proper left for window assert");
 				strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "1.00", "zoom method assings proper width for window assert");
-				strictEqual(chart.data("igDataChart")._chart.windowRect().__left.toFixed(2), "0.00", "zoom method assings proper left to chart assert");
-				strictEqual(chart.data("igDataChart")._chart.windowRect().__width.toFixed(2), "1.00", "zoom method assings proper width to chart assert");
+				strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.00", "zoom method assings proper left to chart assert");
+				strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "1.00", "zoom method assings proper width to chart assert");
 			});
 		});
 	</script>

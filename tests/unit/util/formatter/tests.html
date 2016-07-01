@@ -130,12 +130,12 @@
 				//$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, displayStyle)
 				stringValue = $.ig.formatter(new Date(2014, 0, 1, 1, 40), "date", "dddd", true, false);
 				equal("Wednesday", stringValue);
-				stringValue = $.ig.formatter(new Date(2014, 0, 1, 1, 40), "date", "dddd", true, true);
+				stringValue = $.ig.formatter(new Date("January 1, 2014, 00:01:40 UTC+2"), "date", "dddd", true, true);
 				equal("Tuesday", stringValue);
 
 				stringValue = $.ig.formatter(new Date(2014, 0, 1, 1, 40), "date", "ddd", true, false);
 				equal("Wed", stringValue);
-				stringValue = $.ig.formatter(new Date(2014, 0, 1, 1, 40), "date", "ddd", true, true);
+				stringValue = $.ig.formatter(new Date("January 1, 2014, 00:01:40 UTC+2"), "date", "ddd", true, true);
 				equal("Tue", stringValue);
 
 				// change the regional default
