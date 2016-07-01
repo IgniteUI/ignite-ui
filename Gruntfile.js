@@ -18,8 +18,8 @@ module.exports = function (grunt) {
 			all: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
 				jshintrc: true,
-				reporter: "build/ReporterJSHint.js",
-				reporterOutput: "jshint/report.html",
+				// reporter: "build/ReporterJSHint.js",
+				// reporterOutput: "jshint/report.html",
 				ignores: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
 		},
