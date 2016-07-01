@@ -89,7 +89,7 @@ module.exports = function (grunt) {
 				dest: './dist/',
 			},
 			resources: {
-				src: ['bower.json', "README.md"],
+				src: ['bower.json', "README.md", "LICENSE"],
 				dest: './dist/'
 			}
 		},
