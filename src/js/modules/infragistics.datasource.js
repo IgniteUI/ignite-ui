@@ -4096,7 +4096,7 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, len = data.length, resLen, gbExpr, res, gbRec, collapsed;
+			var i, j, len = data.length, resLen, gbExpr, res, gbRec;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
