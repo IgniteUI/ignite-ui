@@ -42,6 +42,13 @@
 				}
 			}
 		});
+		
+		$.mockjax({
+			url: 'error',
+			responseText: {
+				status: 'error'
+			}
+		});
 
 		$.mockjax({
 			url: 'http://services.odata.org/OData/OData.svc/Products?$format=json',
@@ -229,7 +236,7 @@
 
 				ds1 = new $.ig.RemoteDataSource({callback:render1, responseDataType: "json", dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json", schema: {fields: [{name : "Price"}, {name : "Name"}, {name: "ID"}], searchField: "data.d"}}).dataBind();
 				
-				dsWrong = new $.ig.RemoteDataSource({ callback: renderWrong, responseDataType: "json", dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json", schema: { fields: [{ name: "Price" }, { name: "Name" }, { name: "ID" }], searchField: "data.d" } }).dataBind();
+				dsWrong = new $.ig.RemoteDataSource({ callback: renderWrong, responseDataType: "json", dataSource: "error" }).dataBind();
 				
 				dsJSONBare = new $.ig.RemoteDataSource( {callback:dsJSONBareRender, dataSource: "WCFJSONBare", 
 					responseDataType: "json",
@@ -424,8 +431,7 @@
 			
 		});
 		test("Testing wrong data type - so that the error handler is executed ", function() {
-		
-			equal(dsWrong.dataView().length, 0, dsWrong.dataView().length);
+			equal(dsWrong.dataView().status, "error", dsWrong.dataView().length);
 		
 		});
 
