@@ -1,0 +1,2299 @@
+<!DOCTYPE html PUBLIC "//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<link type="text/css" href="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/bower_components/qunit/qunit/qunit.js"></script>
+	
+    <script type="text/javascript" src="DB.js"></script>
+
+	<link type="text/css" href="../../../../Source/ClientUI/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.tree.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.grid.css" rel="stylesheet" /> 
+    <link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../Source/ClientUI/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	
+ 	<!--<script type="text/javascript" src="../../qunit/jquery.js"></script>
+	<script type="text/javascript" src="../../qunit/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../qunit/jquery-ui.js"></script>--> 
+
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.dataSource-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.grid-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.tree-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+
+ 
+	<!--JS Debug-->
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.dataSource.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.notifier.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.framework.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.shared.js"></script>
+    <script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.validator.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.hierarchical.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.updating.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.tooltips.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.summaries.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.sorting.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.selection.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.rowselectors.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.resizing.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.paging.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.hiding.js"></script>
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.featurechooser.js"></script>
+    <script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.filtering.js"></script>
+	<!--The control source is instrumented and used by the Istnabul to generated code coverage. 
+	To update the instrumented files with latest, go to Build/JavaScript and run 'grunt instrument'. -->
+	<!--<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.grid.groupby.js"></script>-->
+	<script type="text/javascript" src="../../../../Builds/JavaScript/tests/instrumentedFiles/infragistics.ui.grid.groupby.js"></script>	
+	
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.ui.tree.js"></script>
+	
+	<script type="text/javascript" src="../../../../Source/ClientUI/js/modules/infragistics.templating.js"></script>
+
+	<script type="text/javascript" src="../../common/data/AdventureWorks.js"></script>
+	<script src="http://www.igniteui.com/data-files/northwind.js"></script>
+	<script type="text/javascript" src="../../js/jquery.simulate.js"></script>
+	
+	<script type="text/javascript">
+
+        var data = [
+                {
+                    Name: "Food",
+                    Products: [
+                        { Name: "Bread", Quantity: 3 },
+                        { Name: "Pizza", Quantity: 4 }
+                    ]
+                },
+                {
+                    Name: "Beverages",
+                    Products: [
+                        { Name: "Milk", Quantity: 1 },
+                        { Name: "Fruit punch", Quantity: 4 }
+                    ]
+                }
+        ];
+		var products = [
+                     { "ProductID": 1, "ProductGroup": "9001", "Name": "Adjustable Race", "ProductNumber": "AR-5381" },
+                     { "ProductID": 2, "ProductGroup": "9001", "Name": "Bearing Ball", "ProductNumber": "BA-8327" },
+                     { "ProductID": 3, "ProductGroup": "8010", "Name": "BB Ball Bearing", "ProductNumber": "BE-2349" },
+                     { "ProductID": 4, "ProductGroup": "9001", "Name": "Headset Ball Bearings", "ProductNumber": "BE-2908" },
+                     { "ProductID": 316, "ProductGroup": "8010", "Name": "Blade", "ProductNumber": "BL-2036" },
+                     { "ProductID": 318, "ProductGroup": "8010", "Name": "ML Crankarm", "ProductNumber": "CA-6738" },
+                     { "ProductID": 319, "ProductGroup": "8010", "Name": "HL Crankarm", "ProductNumber": "CA-7457" },
+                     { "ProductID": 320, "ProductGroup": "9001", "Name": "Chainring Bolts", "ProductNumber": "CB-2903" }
+		];
+
+		function simulateEvent(target, name, options) {
+			var event = jQuery.Event(name, options);
+			event.target = target;
+			
+			$(target).trigger(event);
+		}
+		
+		var optionsTests = {
+			dataSource: adventureWorks,
+			autoGenerateColumns: false,
+			width: 600,
+			height: 500,
+			columns: [
+				{ headerText: "Product ID", key: "ProductID", dataType: "number" },
+				{ headerText: "Product Name", key: "Name", dataType: "string" },
+				{ headerText: "Color", key: "Color", dataType: "string", width: "200px" },
+				{ headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+				{ headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+			],
+			features: [
+				{
+					name: "GroupBy",
+					type: "local",
+					indentation: 90,
+					groupByLabelWidth: 99,
+					groupByAreaVisibility: 'hidden',
+					initialExpand: false,
+					expandTooltip: "expand me",
+					collapseTooltip: "collapse me",
+					removeButtonTooltip: "remove me",
+					groupedRowTextTemplate: "${key}: ${val} kkur (${count})",
+					emptyGroupByAreaContent: "Djami"
+				}
+			],
+			rendered: function () {
+				//resume testing
+				start();
+			}
+		};
+		
+		function runBasicGroupByTests() {
+			test("testcolgroup", function() {
+		        // tests the default col
+		        equal($("#grid1").find("colgroup col").length, 5);
+		    });
+		    // check if headers have the correct styles applied to them (such that the hover style is applied) 
+			test("testheaders", function() {
+		        equal($("#grid1_Color").hasClass("ui-draggable"), true, " testing if the Grid header for 'Color' has the ui-draggable class applied");
+		        $("#grid1_Color").mouseover();
+		        // now test if the ui-state-hover is applied
+		        equal($("#grid1_Color").hasClass("ui-state-hover"), true, " testing if the Grid header for 'Color' has the ui-state-hover class applied when it is hovered");
+		    });
+		    // check if the groupbyrow is rendered correctly with the correct number of cells and colspan 
+		    // also check that all styles are correctly set
+		    // including the text / span 
+			test("testgroupbyrowstructure", function() {
+		        // group by some column programatically
+		        $("#grid1").igGridGroupBy("groupByColumn", "Color");
+		        equal($("#grid1").children("tbody").children().first().children().length, 2, "The grouped row should have two cells - TDs");
+		        equal($("#grid1").children("tbody").children().first().hasClass("ui-iggrid-groupedrow"), true, "The grouped row must have the ui-iggrid-groupedrow class");
+		        equal($("#grid1").children("tbody").children().first().attr("data-grouprow"), "true", "The grouped row must have the data-grouprow=true attribute set");
+		        equal($("#grid1").children("tbody").children().first().attr("data-state"), "expanded", "The grouped row must have the data-expanded=true attribute set");
+		        equal($("#grid1").children("tbody").children().first().attr("data-glevel"), "0", "The grouped row must have the data-glevel=0 attribute set");
+		        // the second TD in the group row must have a colspan of 5 set
+		        equal($($("#grid1").children("tbody").children().first().children()[1]).attr('colspan'), 5, "the cell must have a colspan of 6");
+		        // the grouprow contents must be Color: (248)
+		        equal($($("#grid1").children("tbody").children().first().children()[1]).text().replace(/\s+/, ""), 'Color:(248)', "the cell have content Color:  (248)");
+		    });
+
+			test("testgroupbybutton", function() {
+		        $("#grid1").igGridGroupBy("groupByColumn", "Color");
+		        equal($("#grid1").children("tbody").children().first().children().first().hasClass("ui-iggrid-expandcolumn"), true, "the grouped row first cell must have the ui-iggrid-expandcolumn class applied");
+		        // the expand button must have a span child
+		        equal($("#grid1").children("tbody").children().first().children().first().find("span").length, 2, "the expand button must have two span childs");
+		        equal($("#grid1").children("tbody").children().first().children().first().find("span").hasClass("ui-iggrid-expandbutton"), true, "the expand button's span must have the ui-iggrid-expandbutton class applied");
+		        equal($("#grid1").children("tbody").children().first().children().first().find("span").hasClass("ui-iggrid-expandbuttoncontainer-group-by"), true, "the expand button's span must have the ui-iggrid-expandbuttoncontainer-group-by  class applied");
+		        equal($("#grid1").children("tbody").children().first().children().first().find("span").hasClass("ui-icon"), true, "the expand button's span musr have the ui-icon class applied");
+		        equal($("#grid1").children("tbody").children().first().children().first().find("span").hasClass("ui-icon-minus"), true, "the expand button's span musr have the ui-icon-minus class applied");
+		    });
+		    // test that groups have correct content (meaning that we don't have two groups for the same grouped value
+			test("testgroupbycorrectness", function() {
+		        // 1. group by color 
+		        $("#grid1").igGridGroupBy("groupByColumn", "Color");
+		        // 2. there should be 10 groups (10 group rows)
+		        equal($("#grid1").find("[data-grouprow=true]").length, 10, "There should be 10 grouped rows after grouping by the Color column");
+		        // check the number of rows in every grouped row - in brackets
+		        var results = [248, 93, 26, 1, 8, 38, 43, 7, 4, 36];
+		        var i = 0;
+		        $("#grid1").find("[data-grouprow=true]").each(function () {
+		            var tdtext = $(this).find('td').last().text();
+		            var count = tdtext.substring(tdtext.indexOf("(") + 1, tdtext.indexOf(")"));
+		            equal(parseInt(count), results[i], "The group row count doesn't match the expected one.");
+		            i++;
+		        });
+
+		        // now also group by Safety Level
+		        $("#grid1").igGridGroupBy("groupByColumn", "SafetyStockLevel");
+		        // now there should be 10 + 27 grouped rows = 37 
+		        equal($("#grid1").find("[data-grouprow=true]").length, 37, "There should be 37 grouped rows after grouping by the Color and then by the Safety Level columns");
+		        // check the safety level group counts for the first group
+		        var levels = [152, 14, 54, 5, 23];
+		        var levelrows = $("#grid1").find("[data-glevel=1]");
+		        for (i = 0; i <= 4; i++) {
+		            var tdtext = $(levelrows[i]).find('td').last().text();
+		            var count = tdtext.substring(tdtext.indexOf("(") + 1, tdtext.indexOf(")"));
+					equal(parseInt(count) , levels[i], "The group row count doesn't match the expected one.");
+		        }
+		    });
+		    // tests grouping a column through the UI by simulating drag and drop end user interactions
+		    // This is not applicable because it's more suitable for an automated framework to click with the real mouse
+			test("testgroupbycolumnfromUI", function() {
+		        /*
+					// 1. Simulate mouse down on a column header
+					$("#grid1_Color").mousedown();
+					
+					// 2. simulate a mouse move
+					$("#grid1_Color").mousemove();
+					
+					// 3. simulate a mouse up on the groupBy area
+					$("#grid1_groupbyarea").mouseup();
+				*/
+		        $("#grid1_Color").simulate("drag", {
+		            dx: 0,
+		            dy: -50
+		        });
+		        if (!$.ig.util.isIE9) {
+		            stop();
+		            setTimeout(function () {
+		                // now test that everything is fine (The color column should be dragged and dropped)
+		                equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").length, 1, "The GroupBy area list must have one child List item");
+		                // ui-iggrid-groupedcolumnlabel ui-state-default ui-draggable ui-droppable
+						equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find('li').first().hasClass("ui-iggrid-groupedcolumnlabel") , true, "The GroupBy area list must have one child List item");
+
+		                equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").attr('data-key'), 'Color', "The GroupBy area list must have a list item with attr data-key=Color");
+
+		                equal($("#grid1").data('igGridGroupBy').options.groupedColumns.length, 1, "After calling ungroupAll(), the grid shouldn't have any grouped columns");
+		                // there shouldn't be any labels 
+		                equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").length, 1, "There shouldn't be any groupby labels after ungroupAll is called");
+		                // there shouldn't be any groupby rows rendered in the grid
+		                equal($("#grid1").find("[data-grouprow=true]").length, 10, "There should be exactly 10 group rows after the Color column is grouped by");
+		                start();
+		            }, 1000);
+		        }
+		    });
+		    // content for the group row
+			test("testgroupedrowcontents", function() {
+		        // groupBy color
+		        $("#grid1").igGridGroupBy("groupByColumn", "Color");
+		        var text = $($("#grid1").find("[data-grouprow=true]")[0]).find("td").last().text();
+		        equal(text.replace(/\s+/, ""), "Color:(248)", "The expected group row text doesn't match");
+		    });
+		    // structure of the rendering
+			test("testgroupbyarearendering", function() {
+		        equal($("#grid1_groupbyarea").length, 1, "There must be a groupbyarea rendered");
+		        equal($("#grid1_groupbyarea").hasClass("ui-iggrid-groupbyarea ui-droppable"), true, "the groupby area must have the following classes applied: ui-iggrid-groupbyarea ui-droppable");
+		        equal($("#grid1_groupbyarea").find("span").length, 1, "The GroupBy area must have a child SPAN");
+		        equal($("#grid1_groupbyarea").find("span").text(), "Drag a column here or select columns to Group By", "The expected default groupby area text doesn't match");
+		    });
+		    // test the grouped row label existance and structure
+			test("testgroupbyarealabelrendering", function() {
+		        // groupBy the Color column
+		        $("#grid1").igGridGroupBy("groupByColumn", "Color");
+		        // check the groupby label
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").length, 1, "The groupby area must contain a UL with the class ui-iggrid-grouparealist applied");
+		        // the UL must have one child
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").length, 1, "The GroupBy area list must have one child List item");
+		        // ui-iggrid-groupedcolumnlabel ui-state-default ui-draggable ui-droppable
+				equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find('li').first().hasClass("ui-iggrid-groupedcolumnlabel") , true, "The GroupBy area list must have one child List item");
+
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").attr('data-key'), 'Color', "The GroupBy area list must have a list item with attr data-key=Color");
+
+		        //data-layout should be empty string
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").attr('data-layout'), '', "The GroupBy area list must have a list item with attr data-layout equal to an empty string");
+
+		        // the list item must be with float:left
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").css('float'), 'left', "The GroupBy area list must have a list item with a CSS attribute of float:left");
+
+		        // the list item must have 4 SPANs
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").children().length, 4, "the list item must have 4 SPANs");
+		        // the remove button's span must be invisible
+		        // ui-iggrid-groupbyremovebutton
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").find(".ui-iggrid-groupbyremovebutton").hasClass("ui-icon-circle-close"), false, "The remove button must be invisible");
+		        // the first span for the groupby label must have the following classes applied: ui-iggrid-groupedcolumnlabel ui-state-default ui-iggrid-groupbylabelrightedgeend (and no other classes) 
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").children().first().attr('class'), "ui-iggrid-groupedcolumnlabel ui-state-default ui-iggrid-groupbylabelrightedgeend", "the first span for the groupby label must have the following classes applied: ui-iggrid-groupedcolumnlabel ui-state-default ui-iggrid-groupbylabelrightedgeend (and no other classes) ");
+		        // the first span must be with float: right
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").children().first().css('float'), "right", "the first span must be with float: right");
+		        // the first span must have a data-edge=true attribute set
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").children().first().attr('data-marker'), "edge", "the first span must have the data-marker=edge attribute set ");
+
+		        // the second span must have the following attributes set: ui-iggrid-asc ui-icon ui-icon-arrowthick-1-n
+		        equal($($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").children()[2]).attr('class'), "ui-iggrid-asc ui-icon ui-icon-arrowthick-1-n", "the second span must have the following classes set, and no others: ui-iggrid-asc ui-icon ui-icon-arrowthick-1-n");
+
+		        // the second span's text must be equal to Color
+		        equal($($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").children()[1]).text(), "Color", "the second span text must be equal to Color");
+
+		    });
+			test("testexpandtooltip", function() {
+		        // group by the color column 
+		        $("#grid1").igGridGroupBy("groupByColumn", "Color");
+		        var title = $("#grid1").find("[data-grouprow=true]").first().find(".ui-iggrid-expandbutton").attr("title");
+		        equal(title, "Collapse Grouped Row", "The titles must match");
+
+		    });
+			test("testcollapsetooltip", function() {
+		        // group by the color column 
+		        $("#grid1").igGridGroupBy("groupByColumn", "Color");
+		        // click on the plus
+		        $("#grid1").find("[data-grouprow=true]").first().find(".ui-iggrid-expandbutton").mousedown();
+		        var title = $("#grid1").find("[data-grouprow=true]").first().find(".ui-iggrid-expandbutton").attr("title");
+		        equal(title, "Expand Grouped Row", "The titles must match");
+
+		    });
+			test("testremovebuttontooltip", function() {
+		        $("#grid1").igGridGroupBy("groupByColumn", "Color");
+		        // hover over the list item 
+		        $("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").mouseover();
+		        // check the tooltip of the remove button
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li > .ui-iggrid-groupbyremovebutton").attr("title"), "Remove Grouped Column", "Title mismatch");
+		        // the button must be visible now
+		        equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li > .ui-iggrid-groupbyremovebutton").is(":visible"), true, "The remove button must be visible after the grouped column label is hovered, after the column has been grouped");
+		    });
+
+		    //Bug 186470 - T.B.
+		    test("testhorizontalscrollbar", function () {
+		        stop();
+		        $('<table id="grid3"></table>')
+                .appendTo(document.body)
+                .igGrid({
+                    dataSource: adventureWorks,
+                    autoGenerateColumns: false,
+                    virtualization: true,
+                    virtualizationMode: "continuous",
+                    width: 600,
+                    height: 500,
+                    defaultColumnWidth: 200,
+                    columns: [
+                        { headerText: "Product ID", key: "ProductID", dataType: "number" },
+                        { headerText: "Product Name", key: "Name", dataType: "string" },
+                        { headerText: "Color", key: "Color", dataType: "string" },
+                        { headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+                        { headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+                    ],
+                    features: [
+                        {
+                            name: "GroupBy",
+                            type: "local"
+                        }
+                    ],
+                    rendered: function () {
+                        start();
+                    }
+                });
+		        $("#grid3").igGridGroupBy("groupByColumn", "ProductID");
+		        $("#grid3").igGridGroupBy("groupByColumn", "Name");
+		        $("#grid3").igGridGroupBy("groupByColumn", "Color");
+		        $("#grid3_horizontalScrollContainer").scrollLeft(600);
+		        stop();
+		        setTimeout(function () {
+
+		            start();
+		            equal($("#grid3_headers").width(), $("#grid3_horizontalScrollContainer").children().width());
+		        }, 200);
+		    });
+            
+		    //Bug 186482 - T.B.
+		    test("testfilteringinputwidth", function () {
+		        stop();
+		        $('<table id="hierarchicalGrid"></table>')
+                .appendTo(document.body)
+			    .igHierarchicalGrid({
+			        width: "600px",
+			        dataSource: data, //Array of objects defined above
+			        autoGenerateLayouts: true,
+			        features: [
+                    { name: "Selection" },
+                    { name: "RowSelectors" },
+                    {
+                        name: "Sorting",
+                        inherit: true
+                    },
+                    {
+                        name: "Filtering",
+                        inherit: true
+                    },
+                    {
+                        name: "GroupBy",
+                        inherit: true
+                    }
+			        ]
+			    });
+		        $("#hierarchicalGrid").on("ighierarchicalgridrowexpanded", function () {
+		            $("#hierarchicalGrid").off("ighierarchicalgridrowexpanded");
+		            $("#hierarchicalGrid").igGridGroupBy("groupByColumn", "Name");
+		            var headerRowWidth = $("#hierarchicalGrid").find("tr[data-header-row] > th[role='columnheader']").outerWidth();
+		            start();
+		            equal($("#hierarchicalGrid").find(".ui-iggrid-filterrow > .ui-iggrid-filtercell").width(), headerRowWidth, "Fitering input width is correct");
+		        });
+		        $("#hierarchicalGrid").find(".ui-iggrid-expandbutton").eq(0).trigger('mousedown');
+		    });
+
+			//bug 211270
+		    test("Verify header and cells are aligned when row selectors are enabled", function () {
+		    	$('<table id="grid_rs"></table>')
+					.appendTo(document.body)
+            		.igGrid({
+            			primaryKey: "ProductID",
+            			width: "100%",
+            			autoGenerateColumns: false,
+            			dataSource: adventureWorks,
+            			responseDataKey: "results",
+            			dataSourceType: "json",
+            			columns: [
+							{ headerText: "Product ID", key: "ProductID", dataType: "number" },
+							{ headerText: "Product Name", key: "Name", dataType: "string" },
+							{ headerText: "Color", key: "Color", dataType: "string" },
+							{ headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+							{ headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+            			],
+            			features: [
+							{
+								name: "GroupBy",
+								type: "local",
+								emptyGroupByAreaContent: "",
+								groupByAreaVisibility: "hidden",
+								columnSettings: [
+									{
+										columnKey: "SafetyStockLevel",
+										isGroupBy: true,
+									}
+								]
+
+							},
+							{
+								name: 'RowSelectors',
+								enableCheckBoxes: true
+							},
+							{
+								name: 'Selection',
+								multipleSelection: true
+							}
+            			]
+            		});
+		    	stop();
+		    	setTimeout(function () {
+		    		start();
+		    		var dataRow = $("#grid_rs").find("tbody > tr:not(.ui-iggrid-groupedrow)").first();
+		    		equal($("#grid_rs").find("tr[data-header-row]").children().length, dataRow.children().length, "Header row and data row should have the same number of th/td elements");
+		    		equal(dataRow.find("td.ui-iggrid-nongrouprowemptycell").length, 1, "There should be an empty cell due to the grouped column.");
+		    		equal(dataRow.find("th.ui-iggrid-rowselector-class").length, 1, "There should a row selector cell due to the row selectors feature.");
+		    	}, 100);
+		    });
+		}
+		
+		function runOptionsTests() {
+			// test if the groupby area is hidden or shown, depending on the option value
+			test("testgroupbyareavisibility", function() {
+				// check that the groupby are is not rendered
+				equal($("#grid1_groupbyarea").length, 0, "When groupbyAreaVisibility is hidden, it shouldn't be rendered");
+				// revert
+				optionsTests.features[0].groupByAreaVisibility = 'top';
+			});
+			//test if grouped rows are initially expanded or collapsed after groupby is performed 
+			test("testinitialexpand", function() {
+				// if we groupby the color, the groups should be collapsed initially
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				equal($("#grid1").find("[data-grouprow=true]").first().find('.ui-icon-plus').length, 1, "The grouped rows should be initially collapsed");
+			});
+			// test the content of the groupby area when there are no grouped rows 
+			test("testemptygroupbyareacontent", function() {
+				equal($("#grid1_groupbyarea").find(".ui-iggrid-groupbyareatext").text() , "Djami", "The empty groupby area content custom text doesn't match");
+			});
+			// test that expand indicators aren't rendered in the expansion cell, when the value of the expandsionindicatorvisibility is false
+			test("testexpansionindicatorvisibilityfalse", function() {
+				// there shouldn't be any elements with this class applied
+				equal($("#grid1").find(".ui-iggrid-expandbutton").length, 0, "there shouldn't be any elements with the class ui-iggrid-expandbuttongb applied");
+			});
+			// test the groupByLabelWidth option 
+			test("testgroupbylabelwidth", function() {
+				// groupBy the Color column:
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				// now check that the color groupby label width is 99
+				equal(Math.ceil($("#grid1_container").find("[data-key=Color]").width()), 121, "The width of the label should be set to 121px");
+			});
+			// test the indentation option
+			test("testindentation", function() {
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				equal(Math.ceil($("#grid1_container").find(".ui-iggrid-expandheadercellgb").outerWidth()), 90, "The width of the indented cells must be 90 px as specified in the options");
+			});
+			// test the value of options.groupedColumns (length), after columns are grouped by
+			test("testgroupedcolumnscount", function() {
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns.length, 1, "The groupedColumns array must have one entry");
+				$("#grid1").igGridGroupBy("groupByColumn", "Name");
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns.length, 2, "The groupedColumns array must have two entries");
+			});
+			// test what the groupedColumns contains 
+			test("testgroupedcolumnscontents", function() {
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns[0].dir, "asc", "the direction must be ascending");
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns[0].key, "Color", "the column key must be equal to Color");
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns[0].col.headerText, "Color", "the header text of the referenced column must be equal to Color");
+			});
+			// test custom template for the grouped row
+			test("testgroupedrowtexttemplate", function() {
+				//Color: kkur (248)
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				equal($($($("#grid1").find("tr")[0]).find("td")[1]).text().replace(/\s+/g, ""), "Color:kkur(248)", "text mismatch - the template was probably not correctly applied");
+			});
+			//test("testsummarysettingsmultisummarydelimiter", function() {
+			//
+			//});
+			test("testexpandtooltip", function() {
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				var title = $("#grid1").find("[data-grouprow=true]").first().find(".ui-iggrid-expandbutton").attr("title");
+				equal(title, "expand me", "The titles must match");
+			});
+			test("testcollapsetooltip", function() {
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				$("#grid1").find("[data-grouprow=true]").first().find(".ui-iggrid-expandbutton").mousedown();
+				var title = $("#grid1").find("[data-grouprow=true]").first().find(".ui-iggrid-expandbutton").attr("title");
+				equal(title, "collapse me", "The titles must match");
+			});
+			test("testremovebuttontooltip", function() {
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li > .ui-iggrid-groupbyremovebutton").attr("title"), "remove me", "Title mismatch");
+			});
+		}
+		
+		function runProgrammaticGroupByTests() {
+			test("testinitialgroupedcolumn", function() {
+				// there should be initial GroupBy Color
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns.length, 1, "The groupedColumns must contain one entry");
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns[0].key, "Color", "The groupedColumns must contain the Color column");
+			});
+			//test("testgroupcolumnlabel", function() {
+			//	// this is already covered
+			//});
+			test("testallowgroupingfalse", function() {
+				// it shouldn't be possible to group the Color column through the UI
+				$("#grid1_Color").simulate("drag", {
+					dx: 0,
+					dy: -50
+				});
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns.length, 1, "The groupedColumns shouldn't contain any entries");
+			});
+			test("testsummaries", function() {
+				// Color: (248) StandardCost Jami 2,238.48
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				// check if the summaries are applied correctly
+				equal($("#grid1").find("tr>td:eq(1)").text().replace(/\s+/g, ""), "Color:(248)StandardCostJami2,238.48", "text mismatch - the summary was probably not correctly applied");
+			});
+			//test("testgroupbymultiplecolumns", function() {
+			//
+			//});
+			//// test summaries with paging
+			//test("testsummariesandpaging", function() {
+			//
+			//});
+			//// test group row Counts with Paging
+			//test("testgrouprowcountswhenpagingenabled", function() {
+			//
+			//});
+			//// test Metadata structure
+			//test("testmetadatastructure", function() {
+			//
+			//});
+		}
+		
+		function runAPITests() {
+			// test the groupByColumn() and ungroupByColumn() API
+			//test("testgroupbycolumnapi", function() {
+			//	$("#grid1").igGridGroupBy("groupByColumn", "Color");
+			//	// this is already covered 
+			//});
+			test("testungroupbycolumnapi", function() {
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				$("#grid1").igGridGroupBy("groupByColumn", "SafetyStockLevel");
+				// now ungroup by Color
+				$("#grid1").igGridGroupBy("ungroupByColumn", "Color");
+				// check that only Color is ungrouped, and SafetyStockLevel remains.
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns.length, 1, "The groupedColumns must contain one entry");
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns[0].key, "SafetyStockLevel", "The groupedColumns must contain SafetyStockLevel");
+			});
+			// test that after calling destroy() on the widget, columns cannot be grouped by and styles are removed 
+			test("testdestroyapi", function() {
+				$("#grid1").igGridGroupBy("destroy");
+				// test that there is no group area, and the headers don't have the draggable class applied
+				equal($("#grid1_groupbyarea").length, 0, "After calling destroy(), the groupby area shouldn't exist");
+				equal($("#grid1_ProductNumber").hasClass("ui-draggable"), false, "after calling destroy(), draggable classes shouldn't be applied on the column headers");
+				equal($("#grid1").data("igGridGroupBy"), null, "After destroying the widget the element shouldn't have any reference to the widget in its data");
+			});
+			// test the ungroupAll() API
+			test("testungroupallapi", function() {
+				// group by two columns first
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				$("#grid1").igGridGroupBy("groupByColumn", "ProductID");
+				// now call ungroupBy
+				$("#grid1").igGridGroupBy("ungroupAll");
+				// now check
+				// 1. the options.groupedColumns
+				equal($("#grid1").data('igGridGroupBy').options.groupedColumns.length, 0, "After calling ungroupAll(), the grid shouldn't have any grouped columns");
+				// there shouldn't be any labels 
+				equal($("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("li").length, 0, "There shouldn't be any groupby labels after ungroupAll is called");
+				// there shouldn't be any groupby rows rendered in the grid
+				equal($("#grid1").find("[data-grouprow=true]").length, 0, "There shouldn't be any groupby rows rendered");
+				
+			});
+			//test("testgroupbycolumnsapi", function() {
+			//
+			//});
+			
+			//test closeGroupByDialog() API
+			test("testclosegroupbydialogapi",function(){
+			//open dialogGrid1_link_selectcolumns
+			 $('#Grid1_link_selectcolumns').click();
+			 //close dialog		 
+			$('#grid1').igGridGroupBy('closeGroupByDialog');
+			 //check if dialog is visible.			
+			 var $modalDialog=$("#grid1_groupby_modalDialog");
+			 ok($modalDialog.is(":hidden"), "After closing the modal dialog,it should be invisible");			 
+			});
+			test("testgridgetcelltextapi", function () {
+                // 1 column grouped
+			    $("#grid1").igGridGroupBy("groupByColumn", "ProductID");
+			    $("#grid2").igGridGroupBy("groupByColumn", "ProductID");
+			    // by row index and column key
+			    var actualCellText = $("#grid1").igGrid("getCellText", 5, "Name");
+			    equal(actualCellText, "BB Ball Bearing", "the getCellText API doesn't return the correct value");
+			    // by row index and column index
+			    actualCellText = $("#grid1").igGrid("getCellText", 5, 2);
+			    equal(actualCellText, "BB Ball Bearing", "the getCellText API doesn't return the correct value");
+			    // by primary key and column key
+			    actualCellText = $("#grid2").igGrid("getCellText", 4, "Name");
+			    equal(actualCellText, "Headset Ball Bearings", "the getCellText API doesn't return the correct value");
+			    // by primary key and column index
+			    actualCellText = $("#grid2").igGrid("getCellText", 4, 2);
+			    equal(actualCellText, "Headset Ball Bearings", "the getCellText API doesn't return the correct value");
+			    $("#grid1").igGridGroupBy("groupByColumn", "Name");
+			    $("#grid2").igGridGroupBy("groupByColumn", "Name");
+                // 2 columns grouped
+			    // by row index and column key
+			    var actualCellText = $("#grid1").igGrid("getCellText", 5, "Name");
+			    equal(actualCellText, "Bearing Ball", "the getCellText API doesn't return the correct value");
+			    // by row index and column index
+			    actualCellText = $("#grid1").igGrid("getCellText", 5, 2);
+			    equal(actualCellText, "Bearing Ball", "the getCellText API doesn't return the correct value");
+			    // by primary key and column key
+			    actualCellText = $("#grid2").igGrid("getCellText", 4, "Name");
+			    equal(actualCellText, "Headset Ball Bearings", "the getCellText API doesn't return the correct value");
+			    // by primary key and column index
+			    actualCellText = $("#grid2").igGrid("getCellText", 4, 2);
+			    equal(actualCellText, "Headset Ball Bearings", "the getCellText API doesn't return the correct value");
+			});
+
+		    test("testgridgetcellvalueapi", function () {
+		        // 1 column grouped
+		        $("#grid1").igGridGroupBy("groupByColumn", "ProductID");
+		        $("#grid2").igGridGroupBy("groupByColumn", "ProductID");
+		        // by row index and column key
+		        //var actualCellText = $("#grid1").igGrid("getCellValue", 5, "Name");
+		        //equal(actualCellText, "BB Ball Bearing", "the getCellValue API doesn't return the correct value");
+		        // by row index and column index
+		        //actualCellText = $("#grid1").igGrid("getCellValue", 5, 2);
+		        //equal(actualCellText, "BB Ball Bearing", "the getCellValue API doesn't return the correct value");
+		        // by primary key and column key
+		        actualCellText = $("#grid2").igGrid("getCellValue", 4, "Name");
+		        equal(actualCellText, "Headset Ball Bearings", "the getCellValue API doesn't return the correct value");
+		        // by primary key and column index
+		        //actualCellText = $("#grid2").igGrid("getCellValue", 4, 2);
+		        //equal(actualCellText, "Headset Ball Bearings", "the getCellValue API doesn't return the correct value");
+		        $("#grid1").igGridGroupBy("groupByColumn", "Name");
+		        $("#grid2").igGridGroupBy("groupByColumn", "Name");
+		        // 2 columns grouped
+		        // by row index and column key
+		        //var actualCellText = $("#grid1").igGrid("getCellValue", 5, "Name");
+		        //equal(actualCellText, "Bearing Ball", "the getCellValue API doesn't return the correct value");
+		        // by row index and column index
+		        //actualCellText = $("#grid1").igGrid("getCellValue", 5, 2);
+		        //equal(actualCellText, "Bearing Ball", "the getCellValue API doesn't return the correct value");
+		        // by primary key and column key
+		        actualCellText = $("#grid2").igGrid("getCellValue", 4, "Name");
+		        equal(actualCellText, "Headset Ball Bearings", "the getCellValue API doesn't return the correct value");
+		        // by primary key and column index
+		        //actualCellText = $("#grid2").igGrid("getCellValue", 4, 2);
+		        //equal(actualCellText, "Headset Ball Bearings", "the getCellValue API doesn't return the correct value");
+		    });
+		}
+		function runEventsTests() {
+			// test the groupedColumnsChanging event and its arguments
+			test("testgroupedcolumnschanging", function() {
+				var fired = false;
+				$("#grid1").delegate("iggridgroupbygroupedcolumnschanging", new function () { fired = true; });
+				$("#grid1_Color").simulate("drag", {
+					dx: 0,
+					dy: -50
+				});
+				// check if the event has fired
+				equal(fired, true, "The event should fire since grouping is done through the UI");
+			});
+			test("testcancelgroupedcolumnschanging", function() {
+				var fired = false;
+				$("#grid1").bind("iggridgroupbygroupedcolumnschanging", function () { return false; });
+					$("#grid1").bind("iggridgroupbygroupedcolumnschanged", function () { alert ('6ukar es klasa'); fired = true; });
+				$("#grid1_Color").simulate("drag", {
+					dx: 0,
+					dy: -50
+				});
+				// check if the event has fired
+				stop();
+				setTimeout(function () {
+					equal(fired, false, "The event shouldn't have fired since we cancelled the ing event");
+					start();
+				}, 500);
+			});
+			// test the groupedColumnsChanged event and its arguments
+			test("testgroupedcolumnschanged", function() {
+				var fired = false;
+				$("#grid1").delegate("iggridgroupbygroupedcolumnschanged", new function () { fired = true; });
+				$("#grid1_Color").simulate("drag", {
+					dx: 0,
+					dy: -50
+				});
+				// check if the event has fired
+				equal(fired, true, "The event should fire since grouping is done through the UI");
+			});
+		}
+		function runSortingTests() {
+			test("testgroupedcolumnlabelclick", function() {
+				// groupby Color, click the sorting arrow, then check the results
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				// now sort by clicking the label
+				$("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("[data-key=Color]").mousedown().mouseup();
+				// check that sorting is changed
+				equal($($($("#grid1").find("tr")[0]).find("td")[1]).text(), "Color: Yellow (36)", "Sorting should be correct after clicking on the groupby label");
+			});
+			test("testgroupingandsinglesorting", function() {
+				// test that - if grouping is enabled, a column can be sorted/unsorted by clicking on its header
+				// also test that if we group by a column, we can then sort that column and groups won't break
+				$("#grid1").igGridGroupBy("groupByColumn", "Color");
+				// click two times on the Color header to sort
+				$("#grid1_Color").find("a").click().click();
+				// check  that the first grouped row text is "Color:(248)"
+				equal($($($("#grid1").find("tr")[0]).find("td")[1]).text().replace(/\s+/g,''), "Color:(248)", "Sorting should be correct after clicking on the column header in order to get descending sorting");
+			});
+		}
+		function runColumnSettingsTests() {
+			// test that after setting allowGrouping = false for a particular column, grouping can't be performed through the UI, but can be
+			// performed through the API
+			test("testallowgrouping", function() {
+				//the ProductID column shouldn't have a ui-draggable class applied because allowGrouping is set to false to it
+				equal($("#grid1_ProductID").hasClass("ui-draggable"), false, "The ui-draggable class shouldn't be applied to the ProductID column because it is not marked with allowGrouping = false ");
+			});
+			// test that columns can be initially grouped by 
+			test("testisgroupby", function() {
+				// test that the Color column is grouped by initiall 
+				var exists = $("#grid1_groupbyarea").find("ul.ui-iggrid-grouparealist").find("[data-key=Color]").length === 1;
+				equal(exists, true, "The color column must be in the list of grouped columns");
+				equal($("#grid1").find("[data-grouprow=true]").length > 0, true, "After grouping initially, there should be grouped rows rendered");
+			});
+			//// test a custom group comparer function
+			//test("testgroupcomparerfunction", function() {
+			//
+			//});
+			//// test a custom summaries summary function 
+			//test("testsummariessummaryfunction", function() {
+			//
+			//});
+			//// test setting a custom text for a summary
+			//test("testsummarysettingstext", function() {
+			//
+			//});
+			//test("testsummarysettingscustomsummary", function() {
+			//
+			//});
+		}
+		
+		module("Basic GroupBy Tests", {
+            setup: function() {
+				//pause testing until grid is rendered
+				stop();
+				$('<table id="grid1"></table>').appendTo(document.body).igGrid({
+					dataSource: adventureWorks,
+					width: 600,
+					height: 500,
+					autoGenerateColumns: false,
+					columns: [
+						{ headerText: "Product ID", key: "ProductID", dataType: "number" },
+						{ headerText: "Product Name", key: "Name", dataType: "string" },
+					//	{ headerText: "Product Number", key: "ProductNumber", dataType: "string" },
+						{ headerText: "Color", key: "Color", dataType: "string" },
+						{ headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+						{ headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+					],
+					features: [
+						{
+							name: "GroupBy",
+							type: "local",
+							
+						}
+					],
+					rendered: function () {
+						//resume testing
+						start();
+					}
+				});
+			},
+			teardown: function() {
+				$("#grid1").igGrid('destroy').remove();
+			}
+		});
+        // run tests
+		runBasicGroupByTests();
+		//bug 183464
+		test("Test destroy and recreate the grid", function () {
+		    //create
+		    stop();
+		    $('<table id="grid_destroy"></table>').appendTo(document.body).igGrid(optionsTests);
+		    //destroy
+
+		    var errorCount = 0;
+		    try {
+		        $("#grid_destroy").igGrid('destroy');
+		    }
+		    catch (e) {
+		        errorCount++;
+		        ok(false, "An error was thrown on destroy:" + e.message);
+		    }
+		    stop();
+		    //wait for destruction
+
+		    try {
+		        $("#grid_destroy").igGrid(optionsTests);
+		        stop();
+		    }
+		    catch (e) {
+		        errorCount++;
+		        ok(false, "An error was thrown on create:" + e.message);
+		    }          
+		    setTimeout(function () {
+		        //check if widgets are initiated
+		        start();
+		        ok($("#grid_destroy").data("igGrid") != null, "The igGrid widget should be created.");
+		        ok($("#grid_destroy").children().length > 0, "The grid should have content");
+		        equal(errorCount, 0, "There should be no errors");
+		    }, 100);
+
+		});
+
+		//Automating bug 218306 - V.K
+		test("testGroupbyHeadertext", function () {
+		    stop();
+		    $('<table id="grid154"></table>')
+           .appendTo(document.body)
+           .igGrid({
+               autoGenerateColumns: true,
+               dataSource: products,
+               height: "400px",
+               features: [{
+                   name: "GroupBy",
+                   type: "local",
+                   columnSettings: [{
+                       columnKey: "ProductGroup",
+                       isGroupBy: true,
+                       summaries: [
+                               {
+                                   summaryFunction: "count",
+                                   text: "Total Count:"
+                               }
+                       ]
+                   }]
+               }]
+           });
+		   start();
+		   equal($($("#grid154").find("td[data-gbsummary=true]")[0]).text(), "ProductGroup: 8010 (4) ProductGroup Total Count: 4.00", "Grouped row header is correct");
+		   $("#grid154").remove();
+		});
+
+        test("Test Grouping is not supported with fixed virtualization and throws an error", function () {
+            try {
+                $('<table id="grid3"></table>')
+                    .appendTo(document.body)
+                    .igGrid({
+                        dataSource: adventureWorks,
+                        autoGenerateColumns: false,
+                        width: 600,
+                        height: 500,
+                        rowVirtualization: true,
+                        virtualizationMode: "fixed",
+                        columns: [
+                            { headerText: "Product ID", key: "ProductID", dataType: "number" },
+                            { headerText: "Product Name", key: "Name", dataType: "string" },
+                            { headerText: "Color", key: "Color", dataType: "string", width: "200px" },
+                            { headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+                            { headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+                        ],
+                        features: [
+                            {
+                                name: "GroupBy"
+                            }
+                        ],
+                        rendered: function () {
+                            ok(false, "Grouping with fixed virtualization should throw an error.");
+                        }
+                    });
+
+            } catch (e) {
+                ok(true,"Grouping with fixed virtualization should throw an error.");
+            }
+            $("#grid3").remove();
+        });
+        //Task 203287 QUnit automation for aria-read only attribute
+        test("Test Grouping and aria-readonly attribute", function () {
+            try {
+                $('<table id="grid4"></table>')
+                    .appendTo(document.body)
+                    .igGrid({
+                        dataSource: adventureWorks,
+                        autoGenerateColumns: false,
+                        width: 600,
+                        height: 500,
+                        virtualization: true,
+                        virtualizationMode: "fixed",
+                        columns: [
+                            { headerText: "Product ID", key: "ProductID", dataType: "number" },
+                            { headerText: "Product Name", key: "Name", dataType: "string" },
+                            { headerText: "Color", key: "Color", dataType: "string", width: "200px" },
+                            { headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+                            { headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+                        ],
+                        features: [
+                            {
+                                name: "GroupBy"
+                            },
+                            {
+                                name: "Updating",
+                                columnSettings: [
+                                    {
+                                        columnKey: "Name",
+                                        readOnly: true
+                                    }
+                                ]
+                            }
+                        ],
+                        
+                    });
+                var ariaReadonlyBeforeGrouping = $("#grid4 tr td:eq(1)").attr('aria-readonly');
+                $("#grid4").igGridGroupBy("groupByColumn", "Name");
+                var ariaReadonlyAfterGrouping = $("#grid4 tr:eq(1) td:eq(2)").attr('aria-readonly');
+            } catch (e) {
+                equal(ariaReadonlyBeforeGrouping, ariaReadonlyAfterGrouping, "Aria-readonly is not changed after grouping");
+            }
+            $("#grid4").remove();
+        });
+
+
+        test("Test Grouping is not supported with virtualization: true and throws an error", function () {
+            try {
+                $('<table id="grid4"></table>')
+                    .appendTo(document.body)
+                    .igGrid({
+                        dataSource: adventureWorks,
+                        autoGenerateColumns: false,
+                        width: 600,
+                        height: 500,
+                        virtualization: true,
+                        virtualizationMode: "fixed",
+                        columns: [
+                            { headerText: "Product ID", key: "ProductID", dataType: "number" },
+                            { headerText: "Product Name", key: "Name", dataType: "string" },
+                            { headerText: "Color", key: "Color", dataType: "string", width: "200px" },
+                            { headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+                            { headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+                        ],
+                        features: [
+                            {
+                                name: "GroupBy"
+                            }
+                        ],
+                        rendered: function () {
+                            ok(false, "Grouping with fixed virtualization should throw an error.");
+                        }
+                    });
+
+            } catch (e) {
+                ok(true, "Grouping with fixed virtualization should throw an error.");
+            }
+            $("#grid4").remove();
+        });
+
+        test("Test Grouping is not supported with columnVirtualization: true and throws an error", function () {
+            try {
+                $('<table id="grid5"></table>')
+                    .appendTo(document.body)
+                    .igGrid({
+                        dataSource: adventureWorks,
+                        autoGenerateColumns: false,
+                        width: 600,
+                        height: 500,
+                        columnVirtualization: true,
+                        columns: [
+                            { headerText: "Product ID", key: "ProductID", dataType: "number" },
+                            { headerText: "Product Name", key: "Name", dataType: "string" },
+                            { headerText: "Color", key: "Color", dataType: "string", width: "200px" },
+                            { headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+                            { headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+                        ],
+                        features: [
+                            {
+                                name: "GroupBy"
+                            }
+                        ],
+                        rendered: function () {
+                            ok(false, "Grouping with column virtualization should throw an error.");
+                        }
+                    });
+
+            } catch (e) {
+                ok(true, "Grouping with column virtualization should throw an error.");
+            }
+            $("#grid5").remove();
+        });
+		
+		module("Options GroupBy Tests", {
+			setup: function() {
+				//pause testing until grid is rendered
+				stop();
+				$('<table id="grid1"></table>').appendTo(document.body).igGrid(optionsTests);
+			},
+			teardown: function() {
+				$("#grid1").igGrid('destroy').remove();
+			}
+		});
+        // run tests
+		runOptionsTests();
+		
+		module("Column Settings GroupBy Tests", {
+			setup: function() {
+				//pause testing until grid is rendered
+				stop();
+				$('<table id="grid1"></table>').appendTo(document.body).igGrid({
+					dataSource: adventureWorks,
+					width: 600,
+					height: 500,
+					autoGenerateColumns: false,
+					columns: [
+						{ headerText: "Product ID", key: "ProductID", dataType: "number" },
+						{ headerText: "Product Name", key: "Name", dataType: "string" },
+						//{ headerText: "Product Number", key: "ProductNumber", dataType: "string" },
+						{ headerText: "Color", key: "Color", dataType: "string" },
+						{ headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+						{ headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+					],
+					features: [
+						{
+							name: "GroupBy",
+							type: "local",
+							columnSettings: [
+								{columnKey: "ProductID", allowGrouping: false },
+								{columnKey: "Color", isGroupBy: true }
+							]
+						}
+					],
+					rendered: function () {
+						//resume testing
+						start();
+					}
+				});
+			},
+			teardown: function() {
+				$("#grid1").igGrid('destroy').remove();
+			}
+		});
+        // run tests
+		runColumnSettingsTests();
+		
+		module("Programmatic GroupBy Tests", {
+			setup: function() {
+				//pause testing until grid is rendered
+				stop();
+				$('<table id="grid1"></table>').appendTo(document.body).igGrid({
+					dataSource: adventureWorks,
+					autoGenerateColumns: false,
+					width: 600,
+					height: 500,
+					columns: [
+						{ headerText: "Product ID", key: "ProductID", dataType: "number" },
+						{ headerText: "Product Name", key: "Name", dataType: "string" },
+						//{ headerText: "Product Number", key: "ProductNumber", dataType: "string" },
+						{ headerText: "Color", key: "Color", dataType: "string" },
+						{ headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+						{ headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+					],
+					features: [
+						{
+							name: "GroupBy",
+							type: "local",
+							columnSettings: [
+								{
+									columnKey: "Color", 
+									isGroupBy: true, 
+									allowGrouping: false
+								},
+								{
+									columnKey: "StandardCost",
+									summaries: [
+										{
+											summaryFunction: "sum",
+											text: "Jami"
+										}
+									]
+								}
+							]
+						}
+					],
+					rendered: function () {
+						//resume testing
+						start();
+					}
+				});
+			},
+			teardown: function () {
+				$("#grid1").igGrid('destroy').remove();
+			}
+		});
+        // run tests
+		runProgrammaticGroupByTests();
+		
+		module("GroupBy API Tests", {
+			setup: function() {
+				//pause testing until grid is rendered
+				stop();
+				$('<table id="grid1"></table>').appendTo(document.body).igGrid({
+					dataSource: adventureWorks,
+					autoGenerateColumns: false,
+					width: 600,
+					height: 500,
+					columns: [
+						{ headerText: "Product ID", key: "ProductID", dataType: "number"},
+						{ headerText: "Product Name", key: "Name", dataType: "string" },
+						//{ headerText: "Product Number", key: "ProductNumber", dataType: "string" },
+						{ headerText: "Color", key: "Color", dataType: "string" },
+						{ headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+						{ headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+					],
+					features: [
+						{
+							name: "GroupBy",
+							type: "local"
+						}
+					],
+					rendered: function () {
+						//resume testing
+						//start();
+					}
+				});
+				$('<table id="grid2"></table>').appendTo(document.body).igGrid({
+				    dataSource: adventureWorks,
+				    autoGenerateColumns: false,
+				    width: 600,
+				    height: 500,
+				    primaryKey: "ProductID",
+				    columns: [
+						{ headerText: "Product ID", key: "ProductID", dataType: "number" },
+						{ headerText: "Product Name", key: "Name", dataType: "string" },
+						//{ headerText: "Product Number", key: "ProductNumber", dataType: "string" },
+						{ headerText: "Color", key: "Color", dataType: "string" },
+						{ headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+						{ headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+				    ],
+				    features: [
+						{
+						    name: "GroupBy",
+						    type: "local"
+						}
+				    ],
+				    rendered: function () {
+				        //resume testing
+						start();
+					}
+				});
+			},
+			teardown: function() {
+				$("#grid1").igGrid('destroy').remove();
+			    $("#grid2").igGrid('destroy').remove();
+			}
+		});
+        // run tests
+		runAPITests();
+		
+		module("GroupBy Events Tests", {
+			setup: function() {
+				//pause testing until grid is rendered
+				stop();
+				$('<table id="grid1"></table>').appendTo(document.body).igGrid({
+					dataSource: adventureWorks,
+					autoGenerateColumns: false,
+					width: 600,
+					height: 500,
+					columns: [
+						{ headerText: "Product ID", key: "ProductID", dataType: "number"},
+						{ headerText: "Product Name", key: "Name", dataType: "string" },
+					//	{ headerText: "Product Number", key: "ProductNumber", dataType: "string" },
+						{ headerText: "Color", key: "Color", dataType: "string" },
+						{ headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+						{ headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+					],
+					features: [
+						{
+							name: "GroupBy",
+							type: "local"
+						}
+					],
+					rendered: function () {
+						//resume testing
+						start();
+					}
+				});
+			},
+			teardown: function() {
+				$("#grid1").igGrid('destroy').remove();
+			}
+		});
+        // run tests
+		runEventsTests();
+		
+		module("GroupBy Sorting tests", {
+			setup: function() {
+				//pause testing until grid is rendered
+				stop();
+				$('<table id="grid1"></table>').appendTo(document.body).igGrid({
+					dataSource: adventureWorks,
+					autoGenerateColumns: false,
+					width: 600,
+					height: 500,
+					columns: [
+						{ headerText: "Product ID", key: "ProductID", dataType: "number"},
+						{ headerText: "Product Name", key: "Name", dataType: "string" },
+					//	{ headerText: "Product Number", key: "ProductNumber", dataType: "string" },
+						{ headerText: "Color", key: "Color", dataType: "string" },
+						{ headerText: "Safety Level", key: "SafetyStockLevel", dataType: "string" },
+						{ headerText: "Standard Cost", key: "StandardCost", dataType: "number" }
+					],
+					features: [
+						{
+							name: "GroupBy",
+							type: "local"
+						},
+						{
+							name: "Sorting",
+							type: "local"
+						}
+					],
+					rendered: function () {
+						//resume testing
+						start();
+					}
+				});
+			},
+			teardown: function() {
+				$("#grid1").igGrid('destroy').remove();
+			}
+		});
+        // run tests
+		runSortingTests();
+
+        /***************** Touch support tests *******************/
+        TestTouchSupportGroupBy();
+
+        var isInitialized = false, 
+            timeout = 500, 
+            gridColumns = [
+			    {
+			    key: 'CustomerID',
+			    headerText: 'CustomerID',
+			    width: null,
+			    dataType: 'number'
+			    },
+			    {
+			    key: 'TerritoryID',
+			    headerText: 'TerritoryID',
+			    width: null,
+			    dataType: 'number'
+			    },
+			    {
+			    key: 'AccountNumber',
+			    headerText: 'AccountNumber',
+			    width: null,
+			    dataType: 'string'
+			    },
+			    {
+			    key: 'ModifiedDate',
+			    headerText: 'ModifiedDate',
+			    width: null,
+			    dataType: 'date'
+			    },
+			    {
+			    key: 'GeneratedSales',
+			    headerText: 'GeneratedSales',
+			    width: null,
+			    dataType: 'number'
+			    }
+		    ];
+
+        function setupModuleTest() {
+			if (!isInitialized) {
+                stop();
+                LoadTestbeds();
+                setTimeout(function () { start(); }, 500);
+				isInitialized = true;
+			}
+		}
+
+        function TestTouchSupportGroupBy () {
+
+            module("igGridGroupBy - Touch Support", {
+				setup: function() {
+					setupModuleTest();
+				},
+				teardown: function() {
+				}
+			});
+            
+			test("Test modal dialog properly rendered and open", function () {
+			    var $modalDialog = $('#grid1_groupby_modalDialog');
+
+			    equal($modalDialog.length, 1, "Modal dialog should be rendered in html");
+			    equal($('#grid1_link_selectcolumns').length, 1, "Link which opens modal dialog should be rendered");
+			    ok($modalDialog.is(":hidden"), "Modal dialog should be hidden html");
+
+			    $('#grid1_link_selectcolumns').trigger('click');
+			    stop();
+			    setTimeout(function () {
+			        var columnsProperlyRendered = true, $ul = $('#grid1_groupby_modalDialog_ungroupedcolumns ul');
+
+			        ok($modalDialog.is(":visible"), "Modal dialog should be shown");
+			        equal($('#grid1_groupby_modalDialog_groupedcolumns ul li').length, 0, 'Grouped columns should be 0 for root layout');
+			        equal($('#grid1_groupby_modalDialog_ungroupedcolumns ul li').length, 5, 'Ungrouped columns should be 5 for root layout');
+			        equal($('#grid1_groupby_modalDialog_layoutsDDField').text(), 'Root', 'Check whether root layout is properly set in layouts dropdown');
+			        // test whether columns are properly ordered in ungrouped columns list
+			        $.each(gridColumns, function (ind, val) {
+                        if ($ul.find('li:eq(' + ind + ') span.ui-iggrid-dialog-text').text() !== val.headerText) { 
+                            columnsProperlyRendered = false;
+                            return false;
+                        }
+			        });
+
+			        ok(columnsProperlyRendered, "Columns should be properly rendered at init state for root layout")
+			        start();
+			    }, timeout);
+			});
+
+			test("Test modal dialog click to group by/ungroup columns and rendering", function () { 
+                 $.each(gridColumns, function (ind, val) {
+                    var $li = $('#grid1_' + val.key + '_groupbydialog_grouped_li');
+                    $li.trigger('click');
+			    });
+
+                stop();
+                setTimeout(function () {
+                    equal($('#grid1_groupbydialog_reset_button').length, 1, "Clear all button should be rendered");
+                    start();
+                    $.each(gridColumns, function (ind, val) {
+                        var $li = $('#grid1_' + val.key + '_groupbydialog_grouped_li'), 
+                            $buttonUngroup = $('#grid1_' + val.key + '_groupbydialog_groupedcolumns_buttonungroup'),
+                            $buttonAscDesc = $('#grid1_' + val.key + '_groupbydialog_groupedcolumns_buttonascdesc');
+                        
+                        equal($li.find('span.ui-icon-arrowthick-1-n').length, 1, "Default sorting should be asc");
+                        $li.trigger('click');
+                        equal($li.find('span.ui-icon-arrowthick-1-s').length, 1, "Default sorting should be desc");
+                        equal($li.closest('div').attr('id'), 'grid1_groupby_modalDialog_groupedcolumns', 'Column should be in grouped columns list');
+                        equal($buttonUngroup.length, 1, 'Button for ungroup column ' + val.key + ' should be rendered');
+                        $buttonUngroup.trigger('click');                        
+			        });
+                }, timeout);
+            });
+
+            test("Test whether user ungroups columns they are rendered properly", function () {
+                stop();
+                setTimeout(function () {
+                    start();
+                    $.each(gridColumns, function (ind, val) {
+                        var $li = $('#grid1_' + val.key + '_groupbydialog_grouped_li'), 
+                            $buttonUngroup = $('#grid1_' + val.key + '_groupbydialog_groupedcolumns_buttonungroup'),
+                            $buttonAscDesc = $('#grid1_' + val.key + '_groupbydialog_groupedcolumns_buttonascdesc');
+
+                        equal($li.closest('div').attr('id'), 'grid1_groupby_modalDialog_ungroupedcolumns', 'Column should be in ungrouped columns list');
+                        equal($buttonUngroup.length, 0, 'Button to ungroup column for columnKey ' + val.key + ' should NOT be rendered');
+                        equal($buttonAscDesc.length, 0, 'Button to sort asc/desc for columnKey ' + val.key + ' should NOT be rendered');
+                    });
+                    $('#grid1_CustomerID_groupbydialog_grouped_li').trigger('click');
+                    $('#grid1_TerritoryID_groupbydialog_grouped_li').trigger('click');
+                    $('#grid1_groupby_modalDialog_footer_buttonok').trigger('click');
+                }, timeout);
+            });
+
+            test("Test whether groupby is properly applied and whether group columns are properly rendered", function () {
+                stop();
+                setTimeout(function () { 
+                    start();
+                    equal($('#grid1_groupbyarea ul li').length, 2, "There should be 2 grouped columns");
+                    $('#grid1_link_selectcolumns').trigger('click');
+                }, timeout);
+            });
+
+            test("Test ungroup columns, group columns from child layouts", function () {
+                stop();
+                setTimeout(function () { 
+                    equal($('#grid1_groupby_modalDialog_groupedcolumns ul li').length, 2, 'Grouped columns should be 2');
+                    equal($('#grid1_groupby_modalDialog_ungroupedcolumns ul li').length, 3, 'Ungrouped columns should be 3');
+                    $('#grid1_CustomerID_groupbydialog_groupedcolumns_buttonungroup').trigger('click');
+                    $('#grid1_TerritoryID_groupbydialog_groupedcolumns_buttonungroup').trigger('click');
+                    $('#grid1_groupby_modalDialog_layoutsDDField').trigger('mousedown');
+                    setTimeout(function () {
+                        $('#grid1_groupby_modal_treeLayouts ul li[data-path=0_0] a:eq(0)').trigger('click');
+                        start();
+                    }, timeout);
+                }, timeout);
+            });
+
+            test("Test whether dropdown of child layouts is removed and columns are properly rendered for the selected child layout", function () {
+                stop();
+
+                setTimeout(function () { 
+                    var columns = ['CustomerID', 'AddressID', 'AddressTypeID', 'ModifiedDate'], 
+                        $ul = $('#grid1_groupby_modalDialog_ungroupedcolumns ul');
+
+                    $.each(columns, function (ind, val) {
+                        var $li = $('#grid1_' + val + '_groupbydialog_grouped_li');
+                        equal($li.length, 1, "List items for column " + val + " should be defined");
+                        $li.trigger('click');
+                    });
+                    $('#grid1_groupby_modalDialog_footer_buttonok').trigger('click');
+                    start();
+                }, timeout);
+            });
+
+            test("Test whether groupby is properly applied for child layout and click button clear all", function () {
+                stop();
+
+                setTimeout(function () { 
+                    var columns = ['CustomerID', 'AddressID', 'AddressTypeID', 'ModifiedDate'],
+                        listItems = $('#grid1_groupbyarea ul li');
+
+                    $.each(listItems, function (ind, val) {
+                        equal($(val).attr('data-key'), columns[ind], 'Check for column key ' + columns[ind] + ' whether it is properly groupedby');
+                    });
+                    $('#grid1_link_selectcolumns').trigger('click');
+                    setTimeout(function () {
+                        $('#grid1_groupbydialog_reset_button').trigger('click');
+                        //$('#grid1_groupby_modalDialog_footer_buttonok').trigger('click');
+                        $('#grid1_groupby_modalDialog_layoutsDDField').trigger('mousedown');
+                        setTimeout(function () {
+                            $('#grid1_groupby_modal_treeLayouts ul li[data-path=0_0] a:eq(0)').trigger('click');
+                            start();
+                        }, timeout);
+                    }, timeout);
+                }, timeout);
+            });
+
+            test('Test whether clear all has properly removed all grouped columns in modal dialog and whether ungroup action is properly applied in igGrid', function () { 
+                stop();
+
+                setTimeout(function () { 
+                    equal($('#grid1_groupby_modalDialog_ungroupedcolumns ul li').length, 4, 'Ungrouped columns should 4');
+                    equal($('#grid1_groupby_modalDialog_groupedcolumns ul li').length, 0, 'Grouped columns should 0');
+
+                    $('#grid1_groupby_modalDialog_footer_buttonok').trigger('click');
+                    start();
+                }, timeout);
+            });
+
+            test('Test whether clear all has properly removed all grouped columns in modal dialog and whether ungroup action is properly applied in igGrid', function () { 
+                stop();
+
+                setTimeout(function () { 
+                    equal($('#grid1_groupby_modalDialog_ungroupedcolumns ul li').length, 4, 'Ungrouped columns should 4');
+                    equal($('#grid1_groupby_modalDialog_groupedcolumns ul li').length, 0, 'Grouped columns should 0');
+
+                    $('#grid1_groupby_modalDialog_footer_buttonok').trigger('click');
+                    start();
+                }, timeout);
+            });
+
+            test('Test whether clear all has properly removed all grouped columns in modal dialog', function () { 
+                stop();
+
+                setTimeout(function () { 
+                    equal($('#grid1_groupbyarea ul li').length, 0, 'Grouped columns in grid group area should be 0');
+                    start();
+                }, timeout);
+            });
+            
+
+            // test events
+            test('Test modal dialog events', function () {
+                var handlerOpening, handlerOpened, handlerClosing, handlerClosed, handlerContentsRendering,
+                    handlerContentsRendered, handlerButtonApplyClick, handlerButtonResetClick,
+                    handlerGroupColumn, handlerUngroupColumn, handlerSortGroupedColumn,
+                    handlerOpeningCalled = false,
+                    handlerOpenedCalled = false,
+                    handlerClosingCalled = false,
+                    handlerClosedCalled = false,
+                    handlerContentsRenderingCalled = false,
+                    handlerContentsRenderedCalled = false,
+                    handlerButtonApplyClickCalled = false,
+                    handlerButtonResetClickCalled = false,
+                    handlerGroupColumnCalled = false,
+                    handlerUngroupColumnCalled = false,
+                    handlerSortGroupedColumnCalled = false;
+
+                handlerOpening = function (evt, ui) {
+                    start();
+                    handlerOpeningCalled = true;
+                };
+
+                handlerOpened = function (evt, ui) {
+                    start();
+                    handlerOpenedCalled = true;
+                }
+
+                handlerClosing = function (evt, ui) {
+                    handlerClosingCalled = true;
+                };
+
+                handlerClosed = function (evt, ui) {
+                    handlerClosedCalled = true;
+                }
+                
+                handlerContentsRendering = function (evt, ui) {
+                    handlerContentsRenderingCalled = true;
+                }
+
+                handlerContentsRendered = function (evt, ui) {
+                    handlerContentsRenderedCalled = true;
+                }
+
+                handlerButtonApplyClick = function (evt, ui) {
+                    handlerButtonApplyClickCalled = true;
+                }
+
+                handlerButtonResetClick = function (evt, ui) {
+                    handlerButtonResetClickCalled = true;
+                }
+
+                handlerGroupColumn = function (evt, ui) {
+                    //start();
+                    equal(ui.key, "CustomerID", "Test inside event GroupColumn whether columnKey is properly grouped");
+                    //equal(ui.isAsc, false, "Test inside event SortingChanged whether isAscending is properly set");
+                    handlerGroupColumnCalled = true;
+                }
+
+                handlerUngroupColumn = function (evt, ui) {
+                    //start();
+                    equal(ui.key, "CustomerID", "Test inside event ungroup column whether columnKey is properly ungrouped");
+                    //equal(ui.isAsc, false, "Test inside event SortingChanged whether isAscending is properly set");
+                    handlerUngroupColumnCalled = true;
+                }
+
+                handlerSortGroupedColumn = function (evt, ui) {
+                    handlerSortGroupedColumnCalled = true;
+                    equal(ui.key, "CustomerID", "Test inside event SortGroupedColumn whether grouped column is properly sorted");
+                    equal(ui.isAsc, false, "Test inside event SortGroupedColumn whether sorting direction of grouped column is properly set");
+                }
+
+                $('#grid1').bind('iggridgroupbymodaldialogopening', handlerOpening);
+                $('#grid1').bind('iggridgroupbymodaldialogopened', handlerOpened);
+                $('#grid1').bind('iggridgroupbymodaldialogclosing', handlerClosing);
+                $('#grid1').bind('iggridgroupbymodaldialogclosed', handlerClosed);
+                $('#grid1').bind('iggridgroupbymodaldialogcontentsrendering', handlerContentsRendering);
+                $('#grid1').bind('iggridgroupbymodaldialogcontentsrendered', handlerContentsRendered);
+                $('#grid1').bind('iggridgroupbymodaldialogbuttonapplyclick', handlerButtonApplyClick);
+                $('#grid1').bind('iggridgroupbymodaldialogbuttonresetclick', handlerButtonResetClick);
+                
+                $('#grid1').bind('iggridgroupbymodaldialoggroupcolumn', handlerGroupColumn);
+                $('#grid1').bind('iggridgroupbymodaldialogungroupcolumn', handlerUngroupColumn);
+                $('#grid1').bind('iggridgroupbymodaldialogsortgroupedcolumn', handlerSortGroupedColumn);
+                
+                // count of stop() should be equal to count of start()
+                stop();
+                stop();
+                $('#grid1').igGridGroupBy('openGroupByDialog');
+                ok(handlerOpeningCalled, "Modal dialog event opening should be called");
+                ok(handlerOpenedCalled, "Modal dialog event opening should be called");
+                ok(handlerContentsRenderingCalled, "Modal dialog event contents rendering should be called");
+                ok(handlerContentsRenderedCalled, "Modal dialog event contents rendered should be called");
+                
+                // click to group by this column
+                $('#grid1_CustomerID_groupbydialog_grouped_li').trigger('click');
+                // click to change sorting
+                $('#grid1_CustomerID_groupbydialog_grouped_li').trigger('click');
+
+                // click to ungroup by this column
+                $('#grid1_CustomerID_groupbydialog_groupedcolumns_buttonungroup').trigger('click');
+
+                ok(handlerGroupColumnCalled, "Modal dialog event grouped column should be called");
+                ok(handlerSortGroupedColumnCalled, "Modal dialog event for changing sorting of grouped column should be called");
+                ok(handlerUngroupColumnCalled, "Modal dialog event for ungroup column should be called");
+                
+                $('#grid1_CustomerID_groupbydialog_grouped_li').trigger('click');
+                $('#grid1_groupbydialog_reset_button').trigger('click');
+                
+                ok(handlerButtonResetClickCalled, "Modal dialog button reset clicked event should be called");
+
+                $('#grid1_groupby_modalDialog_footer_buttonok').trigger('click');
+				stop();
+                ok(handlerClosingCalled, "Modal dialog closing event should be called");
+                setTimeout(function () {
+					start();
+					ok(handlerClosedCalled, "Modal dialog closed event should be called");
+					// we should unbind these events
+					$('#grid1').unbind('iggridgroupbymodaldialogopening', handlerOpening);
+					$('#grid1').unbind('iggridgroupbymodaldialogopened', handlerOpened);
+					$('#grid1').unbind('iggridgroupbymodaldialogclosing', handlerClosing);
+					$('#grid1').unbind('iggridgroupbymodaldialogclosed', handlerClosed);
+					$('#grid1').unbind('iggridgroupbymodaldialogcontentsrendering', handlerContentsRendering);
+					$('#grid1').unbind('iggridgroupbymodaldialogcontentsrendered', handlerContentsRendered);
+					$('#grid1').unbind('iggridgroupbymodaldialogbuttonapplyclick', handlerButtonApplyClick);
+					$('#grid1').unbind('iggridgroupbymodaldialogbuttonresetclick', handlerButtonResetClick);
+                
+					$('#grid1').unbind('iggridgroupbymodaldialoggroupcolumn', handlerGroupColumn);
+					$('#grid1').unbind('iggridgroupbymodaldialogungroupcolumn', handlerUngroupColumn);
+					$('#grid1').unbind('iggridgroupbymodaldialogsortgroupcolumn', handlerSortGroupedColumn);
+				}, 500);
+            });
+            module("Test GridGroupBy touch support for flat grid", {
+				setup: function() {
+					setupModuleTest();
+				},
+				teardown: function() {
+				}
+			});
+
+            test("Test modal dialog properly rendered and open", function () {
+			    var $modalDialog = $('#grid2_groupby_modalDialog');
+
+			    equal($modalDialog.length, 1, "Modal dialog should be rendered in html");
+			    equal($('#grid2_link_selectcolumns').length, 1, "Link which opens modal dialog should be rendered");
+			    ok($modalDialog.is(":hidden"), "Modal dialog should be hidden html");
+
+			    $('#grid2_link_selectcolumns').trigger('click');
+			    stop();
+			    setTimeout(function () {
+			        var columnsProperlyRendered = true, $ul = $('#grid2_groupby_modalDialog_ungroupedcolumns ul');
+
+			        ok($modalDialog.is(":visible"), "Modal dialog should be shown");
+			        equal($('#grid2_groupby_modalDialog_groupedcolumns ul li').length, 0, 'Grouped columns should be 0 for root layout');
+			        equal($('#grid2_groupby_modalDialog_ungroupedcolumns ul li').length, 5, 'Ungrouped columns should be 5 for root layout');
+			        equal($('#grid2_groupby_modalDialog_layoutsDDField').length, 0, 'DropDown layers should NOT be rendered');
+			        // test whether columns are properly ordered in ungrouped columns list
+			        $.each(gridColumns, function (ind, val) {
+                        if ($ul.find('li:eq(' + ind + ') span.ui-iggrid-dialog-text').text() !== val.headerText) { 
+                            columnsProperlyRendered = false;
+                            return false;
+                        }
+			        });
+
+			        ok(columnsProperlyRendered, "Columns should be properly rendered at init state for root layout")
+			        start();
+			    }, timeout);
+			});
+
+			module("GroupBy with Mapper Tests", {
+				setup: function () {
+					var i = 0;
+					var northwindProductsJSON = [];
+					for (i = 0 ; i < 100 ; i++) {
+						northwindProductsJSON.push({ "ID": i, "Name": "Bread " + i, "Description": "Whole grain bread" + i, "ReleaseDate": "\/Date(694224000000)\/", "DiscontinuedDate": "\/Date(1159660800000)\/", "Rating": 4, "Price": "2.5", "Category": { "ID": i % 3, "Name": "Food " + i % 3, "Date": "\/Date(1159660800000)\/" } });
+					}
+					stop();
+					$('<table id="mappedGrid"></table>').appendTo(document.body).igGrid({
+						primaryKey: "ID",
+						width: '800px',
+						height: 400,
+						columns: [
+							 { headerText: "", key: "ID", dataType: "number", width: "200px" },
+							 { headerText: "Name", key: "Name", dataType: "string", width: "200px" },
+							 {
+								headerText: "Category", key: "Category", dataType: "object", width: "200px", mapper: function (record) {
+							 		return record.Category.Name;
+							 	}
+							 }
+						],
+						autoGenerateColumns: false,
+						dataSource: northwindProductsJSON,
+						features: [
+							{
+								name: "GroupBy",
+								type: "local"
+							},
+							{
+								name: "Sorting",
+								type: "local"
+							}
+						],
+						rendered: function () {
+							//resume testing
+							start();
+						}
+					});
+
+
+				},
+				teardown: function () {
+					$("#mappedGrid").igGrid('destroy').remove();
+				}
+			});
+
+			test("Test grouping by mapped value ", function () {
+				//Group by Category
+				var expectedGroupSummary = ["Category: Food 0 (34)", "Category: Food 1 (33)", "Category: Food 2 (33)"];
+				$("#mappedGrid").igGridGroupBy("groupByColumn", "Category");
+				var groupedRows = $("#mappedGrid").find("tr[data-grouprow='true']");
+
+				//check group rows
+				equal(groupedRows.length, 3, "There should be 3 groups");
+
+				$(groupedRows).each(function (index) {
+					equal($(this).text(), expectedGroupSummary[index], "The group summary is correct.");
+				});
+
+			});
+
+			test("Test initially grouped column with mapper", function () {
+				var expectedGroupSummary = ["Category: Food 0 (34)", "Category: Food 1 (33)", "Category: Food 2 (33)"];
+				var groupBy = $("#mappedGrid").data("igGridGroupBy");
+				groupBy.options.columnSettings = [
+                      { columnKey: "Category", isGroupBy: true }
+				];
+				$("#mappedGrid").igGrid("dataBind");
+				stop();
+				setTimeout(function () {
+					start();
+					var groupedRows = $("#mappedGrid").find("tr[data-grouprow='true']");
+					//check group rows
+					equal(groupedRows.length, 3, "There should be 3 groups");
+
+					$(groupedRows).each(function (index) {
+						equal($(this).text(), expectedGroupSummary[index], "The group summary is correct.");
+					});
+				}, 100);
+			});
+        }
+
+        module("igGridGroupBy - Setting a custom compare function via the columnSettings", {
+        	setup: function () {
+        		stop();
+        		LoadTestbedsCompareFunc();
+        		setTimeout(function () { start(); }, 100);
+        		isInitialized = true;
+
+        	},
+        	teardown: function () {
+        		$("#compareFunc_Grid").igGrid("destroy").remove();
+        	}
+        });
+        function LoadTestbedsCompareFunc(colSettings) {
+
+        	function compareCountry(a, b, recordsData) {
+        		var countryX = recordsData.recordX["Country"];
+        		var countryY = recordsData.recordY["Country"];
+
+        		return countryX > countryY ? 1 : countryX < countryY ? -1 : 0;
+
+        	}
+        	if (!colSettings) {
+        		colSettings = [{
+        			columnKey: "City",
+        			compareFunc: compareCountry
+        		},
+						{
+							columnKey: "BirthDate",
+							compareFunc: function (a, b, recordsData) {
+								return a > b ? 1 : a < b ? -1 : 0;
+							}
+						}
+        		];
+        	}
+
+        	//single sort
+        	var options = {
+        		autoGenerateColumns: false,
+        		width: "100%",
+        		columns: [
+                    { headerText: "Employee ID", key: "EmployeeID", dataType: "number", width: "15%" },
+                    { headerText: "First Name", key: "FirstName", dataType: "string", width: "20%" },
+                    { headerText: "Last Name", key: "LastName", dataType: "string", width: "20%" },
+                    { headerText: "Birth Date", key: "BirthDate", dataType: "date", width: "15%" },
+                    { headerText: "City", key: "City", dataType: "string", width: "15%" },
+					{ headerText: "Country", key: "Country", dataType: "string", width: "15%" },
+                    { headerText: "Postal Code", key: "PostalCode", dataType: "string", width: "15%" }
+        		],
+        		dataSource: northwind,
+        		responseDataKey: "results",
+        		features: [
+                    {
+                    	name: "GroupBy",
+                    	type: "local",
+                    	columnSettings: colSettings
+                    }
+        		]
+        	};
+        	$('<table id="compareFunc_Grid"></table>').appendTo(document.body).igGrid(options);
+
+        }
+        
+        test("Test single sort on column, which has a defined compareFunc", function () {
+        	//groupBy City
+        	$("#compareFunc_Grid").igGridGroupBy("groupByColumn", "City");
+        	equal($($("#compareFunc_Grid").find(".ui-iggrid-groupedrow")[1]).text(), "City: Seattle (1)", "Summary text should be correct.");
+        	//check groups count
+        	equal($("#compareFunc_Grid").find(".ui-iggrid-groupedrow").length, 6, "Groups count should be 6");
+
+        	equal($($("#compareFunc_Grid").find(".ui-iggrid-groupedrow")[1]).next().find("td:nth-child(7)").text(), "USA", "Should be sorted by Country");
+        	equal($($("#compareFunc_Grid").find(".ui-iggrid-groupedrow")[1]).next().find("td:nth-child(6)").text(), "Seattle", "Group row text should be Seattle.");
+
+        	equal($($("#compareFunc_Grid").find(".ui-iggrid-groupedrow")[2]).next().find("td:nth-child(7)").text(), "USA", "Should be sorted by Country");
+        	equal($($("#compareFunc_Grid").find(".ui-iggrid-groupedrow")[2]).next().find("td:nth-child(6)").text(), "Tacoma", "Group row text should be Tacoma.");
+        
+        });
+
+       test("Test multi sort on columns, which have compareFunc", function () {
+       	//groupBy City
+       	$("#compareFunc_Grid").igGridGroupBy("groupByColumn", "City");
+       	$("#compareFunc_Grid").igGridGroupBy("groupByColumn", "BirthDate");
+
+       	var groupRowsCity = $("#compareFunc_Grid").find('tr[aria-describedby="compareFunc_Grid_City"]');
+       	var groupRowsBirthDate = $("#compareFunc_Grid").find('tr[aria-describedby="compareFunc_Grid_BirthDate"]');
+
+       	//city should be sorted customly by Country
+       	equal($(groupRowsCity[0]).text(), "City: London (4)", "First group should be from Country UK - London");
+       	equal($(groupRowsCity[1]).text(), "City: Redmond (1)", "Next group should be from Country USA - Redmond ");
+       	equal($(groupRowsCity[2]).text(), "City: Seattle (1)", "Next group should be from Country USA - Seattle ");
+       	equal($(groupRowsCity[3]).text(), "City: Tacoma (1)", "Next group should be from Country USA - Tacoma ");
+
+       	//Date should be sorted inside the main group
+       	equal($(groupRowsBirthDate[0]).text(), "Birth Date: 3/4/1955 (1)", "Summary text is correct.");
+       	equal($(groupRowsBirthDate[1]).text(), "Birth Date: 5/29/1960 (1)", "Summary text is correct.");
+       	equal($(groupRowsBirthDate[2]).text(), "Birth Date: 7/2/1963 (1)", "Summary text is correct.");
+       	equal($(groupRowsBirthDate[3]).text(), "Birth Date: 1/27/1966 (1)", "Summary text is correct.");
+
+       });
+	  
+        test("Test multi sort on columns, where one has compareFunc and the other doesn't", function () {
+        	$("#compareFunc_Grid").igGridGroupBy("groupByColumn", "City");
+        	$("#compareFunc_Grid").igGridGroupBy("groupByColumn", "EmployeeID");
+
+        	var groupRowsCity = $("#compareFunc_Grid").find('tr[aria-describedby="compareFunc_Grid_City"]');
+        	var groupRowsEmployeeID = $("#compareFunc_Grid").find('tr[aria-describedby="compareFunc_Grid_EmployeeID"]');
+
+        	//city should be sorted customly by Country
+        	equal($(groupRowsCity[0]).text(), "City: London (4)", "First group should be from Country UK - London");
+        	
+        	equal($(groupRowsCity[1]).text(), "City: Seattle (1)", "Next group should be from Country USA - Seattle ");
+        	equal($(groupRowsCity[2]).text(), "City: Tacoma (1)", "Next group should be from Country USA - Tacoma ");
+        	equal($(groupRowsCity[3]).text(), "City: Kirkland (1)", "Next group should be from Country USA - Kirkland   ");
+
+        	//EmployeeID should be sorted inside the main group
+        	equal($(groupRowsEmployeeID[0]).text(), "Employee ID: 5 (1)", "Summary text is correct.");
+        	equal($(groupRowsEmployeeID[1]).text(), "Employee ID: 6 (1)", "Summary text is correct.");
+        	equal($(groupRowsEmployeeID[2]).text(), "Employee ID: 7 (1)", "Summary text is correct.");
+        	equal($(groupRowsEmployeeID[3]).text(), "Employee ID: 9 (1)", "Summary text is correct.");
+
+	   
+        });
+       test("Test if custom comparer function is taken into account when initial sorting is set", function () {
+
+       $("#compareFunc_Grid").igGrid("destroy").remove();
+	  
+       	var colSettings = [
+				{
+					columnKey: "City",
+					currentSortDirection: 'desc',
+					compareFunc: function (a, b, recordsData) {
+						var countryX = recordsData.recordX["Country"];
+						var countryY = recordsData.recordY["Country"];
+	  
+						return countryX > countryY ? 1 : countryX < countryY ? -1 : 0;
+	  
+        }
+				}
+       	];
+
+       	LoadTestbedsCompareFunc(colSettings);
+	  
+       	stop();
+       	setTimeout(function () {
+       		$("#compareFunc_Grid").igGridGroupBy("groupByColumn", "City");
+       		start();
+       		var groupRowsCity = $("#compareFunc_Grid").find('tr[aria-describedby="compareFunc_Grid_City"]');
+
+       		//city should be sorted customly by Country
+       		equal($(groupRowsCity[0]).text(), "City: London (4)", "First group should be from Country UK - London");
+       		equal($(groupRowsCity[1]).text(), "City: Seattle (1)", "Next group should be from Country USA - Seattle ");
+       		equal($(groupRowsCity[2]).text(), "City: Tacoma (1)", "Next group should be from Country USA - Tacoma ");
+       		equal($(groupRowsCity[3]).text(), "City: Kirkland (1)", "Next group should be from Country USA - Kirkland   ");
+       	}, 100);
+	  
+       });
+
+		function LoadTestbeds () {
+            $('<table id="grid1"></table>')
+                .appendTo(document.body)
+                .igHierarchicalGrid({
+			        //dataSourceUrl:'/samplesbrowser/grid/GridGetData?controller=Hierarchical&sampleid=f6a1b307-3a8c-4c33-8f99-2d8764231cca',
+			        dataSource: dataSource,
+			        dataSourceType: 'json',
+			        autoGenerateColumns: false,
+			        autoGenerateLayouts: false,
+			        responseDataKey: 'Records',
+			        generateCompactJSONResponse: false,
+			        features: [
+			        /*{
+			        recordCountKey:'TotalRecordsCount',
+			        pageIndexUrlKey:'page',
+			        pageSizeUrlKey:'pageSize',
+			        name:'Paging',
+			        totalRecordsCount:19185
+			        }*/
+			        {
+			            name: 'Hiding'
+		            },
+                    {
+                        name: 'GroupBy',
+                        inherit: true
+                    },
+			        {
+				        name: 'Filtering'
+			        },
+			        {
+				        name: 'Summaries',
+				        inherit: true
+			        }
+		        ],
+		        initialDataBindDepth: -1,
+		        primaryKey: 'CustomerID',
+		        width: '750px',
+		        localSchemaTransform: true,
+		        columns: gridColumns,
+		        columnLayouts: [
+			        {
+			        autoGenerateColumns: false,
+			        autoGenerateLayouts: false,
+			        responseDataKey: 'Records',
+			        generateCompactJSONResponse: false,
+			        columns: [
+				        {
+					        key: 'CustomerID',
+					        headerText: 'CustomerID',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'AddressID',
+					        headerText: 'AddressID',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'AddressTypeID',
+					        headerText: 'AddressTypeID',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'ModifiedDate',
+					        headerText: 'ModifiedDate',
+					        width: null,
+					        dataType: 'date'
+				        }
+				        ],
+			        columnLayouts: [
+				        {
+					        autoGenerateColumns: false,
+					        autoGenerateLayouts: false,
+					        responseDataKey: 'Records',
+					        generateCompactJSONResponse: false,
+					        columns: [
+						        {
+						        key: 'CustomerID',
+						        headerText: 'CustomerID',
+						        width: null,
+						        dataType: 'number'
+						        },
+						        {
+						        key: 'ContactID',
+						        headerText: 'ContactID',
+						        width: null,
+						        dataType: 'number'
+						        },
+						        {
+						        key: 'ContactTypeID',
+						        headerText: 'ContactTypeID',
+						        width: null,
+						        dataType: 'number'
+						        },
+						        {
+						        key: 'rowguid',
+						        headerText: 'rowguid',
+						        width: null,
+						        dataType: 'string'
+						        },
+						        {
+						        key: 'ModifiedDate',
+						        headerText: 'ModifiedDate',
+						        width: null,
+						        dataType: 'date'
+						        }
+					        ],
+					        columnLayouts: [
+						        {
+						        autoGenerateColumns: false,
+						        autoGenerateLayouts: false,
+						        responseDataKey: 'Records',
+						        generateCompactJSONResponse: false,
+						        columns: [
+							        {
+								        key: 'ContactID',
+								        headerText: 'ContactID',
+								        width: null,
+								        dataType: 'number'
+							        },
+							        {
+								        key: 'CreditCardID',
+								        headerText: 'CreditCardID',
+								        width: null,
+								        dataType: 'number'
+							        },
+							        {
+								        key: 'ModifiedDate',
+								        headerText: 'ModifiedDate',
+								        width: null,
+								        dataType: 'date'
+							        }
+							        ],
+						        key: 'ContactCreditCards',
+						        primaryKey: 'CreditCardID',
+						        foreignKey: 'ContactID',
+						        localSchemaTransform: true
+						        }
+					        ],
+					        key: 'StoreContacts',
+					        primaryKey: 'ContactID',
+					        foreignKey: 'CustomerID',
+					        caption: 'child grid for STORE CONTACTS',
+					        localSchemaTransform: true
+				        }
+				        ],
+			        key: 'CustomerAddresses',
+			        primaryKey: 'AddressID',
+			        foreignKey: 'CustomerID',
+			        caption: 'CHILD GRID for Customer addresses',
+			        localSchemaTransform: true
+			        },
+			        {
+			        autoGenerateColumns: false,
+			        autoGenerateLayouts: false,
+			        responseDataKey: 'Records',
+			        generateCompactJSONResponse: false,
+			        columns: [
+				        {
+					        key: 'SalesPersonID',
+					        headerText: 'SalesPersonID',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'TerritoryID',
+					        headerText: 'TerritoryID',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'SalesQuota',
+					        headerText: 'SalesQuota',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'Bonus',
+					        headerText: 'Bonus',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'CommissionPct',
+					        headerText: 'CommissionPct',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'SalesYTD',
+					        headerText: 'SalesYTD',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'SalesLastYear',
+					        headerText: 'SalesLastYear',
+					        width: null,
+					        dataType: 'number'
+				        },
+				        {
+					        key: 'rowguid',
+					        headerText: 'rowguid',
+					        width: null,
+					        dataType: 'string'
+				        },
+				        {
+					        key: 'ModifiedDate',
+					        headerText: 'ModifiedDate',
+					        width: null,
+					        dataType: 'date'
+				        }
+				        ],
+			        columnLayouts: [
+				        {
+					        autoGenerateColumns: false,
+					        autoGenerateLayouts: false,
+					        responseDataKey: 'Records',
+					        generateCompactJSONResponse: false,
+					        columns: [
+						        {
+						        key: 'SalesPersonID2',
+						        headerText: 'SalesPersonID2',
+						        width: null,
+						        dataType: 'number'
+						        },
+						        {
+						        key: 'QuotaDate',
+						        headerText: 'QuotaDate',
+						        width: null,
+						        dataType: 'date'
+						        },
+						        {
+						        key: 'SalesQuota',
+						        headerText: 'SalesQuota',
+						        width: null,
+						        dataType: 'number'
+						        },
+						        {
+						        key: 'rowguid',
+						        headerText: 'rowguid',
+						        width: null,
+						        dataType: 'string'
+						        },
+						        {
+						        key: 'ModifiedDate',
+						        headerText: 'ModifiedDate',
+						        width: null,
+						        dataType: 'date'
+						        }
+					        ],
+					        key: 'SalesPersonQuotaHistories',
+					        primaryKey: 'QuotaDate',
+					        foreignKey: 'SalesPersonID2',
+					        localSchemaTransform: true
+				        }
+				        ],
+			        key: 'SalesPersons',
+			        primaryKey: 'SalesPersonID',
+			        foreignKey: 'TerritoryID',
+			        caption: 'CHILD GRID for Sales person associated by territory',
+			        localSchemaTransform: true
+			        }
+		        ]
+	        });
+
+            $('<table id="grid2"></table>')
+                .appendTo(document.body)
+                .igGrid({
+			        dataSource: dataSource,
+			        dataSourceType: 'json',
+			        autoGenerateColumns: false,
+			        autoGenerateLayouts: false,
+			        responseDataKey: 'Records',
+			        generateCompactJSONResponse: false,
+			        features: [
+			        /*{
+			        recordCountKey:'TotalRecordsCount',
+			        pageIndexUrlKey:'page',
+			        pageSizeUrlKey:'pageSize',
+			        name:'Paging',
+			        totalRecordsCount:19185
+			        }*/
+			        {
+			            name: 'Hiding'
+		            },
+                    {
+                        name: 'GroupBy',
+                        inherit: true
+                    },
+			        {
+				        name: 'Filtering'
+			        },
+			        {
+				        name: 'Summaries',
+				        inherit: true
+			        }
+		        ],
+		        initialDataBindDepth: -1,
+		        primaryKey: 'CustomerID',
+		        width: '750px',
+		        localSchemaTransform: true,
+		        columns: gridColumns,
+	        });
+		}
+		/***** Test bug fixes  ******/
+		module("Test bug fixes", {
+		    teardown: function () {
+		        $('#grid').remove();
+		    }
+		});
+		// test bug 217266 - [IgGrid] rowVirtualization property is not compatible with Hidden column
+		test("Test 217266", function () {
+		    var d, id = "grid", $grid, dr, $lastEditingCell, $colgroup, cols, errMsg = "";
+		    cols = [
+					{ headerText: "ID", key: "ProductID", dataType: "number", hidden: true },
+					{ headerText: "Units in Stock", key: "UnitsInStock", dataType: "string", width: "20%" },
+					{ headerText: "Product Description", key: "ProductDescription", dataType: "string", width: "30%" },
+					{ headerText: "Unit Price", key: "UnitPrice", dataType: "number", format: "#.##", width: "20%" },
+					{ headerText: "Date Added", key: "DateAdded", dataType: "date", width: "30%" }
+		    ];
+		    createGrid({
+		        columns: cols,
+		        features: [
+					{
+					    name: 'GroupBy',
+					    columnSettings: [{
+					        columnKey: 'UnitsInStock',
+					        isGroupBy: true
+					    }]
+					}
+		        ],
+		        width: '100%',
+		        height: '500px'
+		    });
+		    $grid = $('#' + id);
+		    $colgroup = $grid.find('>colgroup');
+		    ok($colgroup.find('>col').length === 5 && $colgroup.find('>col[data-skip]').length === 1,
+				"Test colgroups");
+		    $colgroup.find('>col').each(function (ind, c) {
+		        if (!cols[ind].hidden && cols[ind].width !== c.style.width) {
+		            errMsg = "Width is not properly set for column with key " + cols[ind].key;
+		            return false;
+		        }
+		    });
+		    ok(!errMsg, "Test widths of columns in colgroup")
+		});
+
+
+		function createGrid(opts) {
+		    var gridId = 'grid', $grid, defOpts, namedData = [], i;
+		    // generate DataSource
+		    for (i = 0; i < 100; i++) {
+		        namedData.push({
+		            ProductID: i,
+		            UnitsInStock: 'Units In Stock ' + i,
+		            ProductDescription: 'Description ' + i,
+		            UnitPrice: i + 100000,
+		            DateAdded: new Date(),
+		            IsEven: i % 2 === 0
+		        });
+		    }
+		    $('#' + gridId).remove();
+		    $grid = $('<table id="' + gridId + '"></table>').appendTo(document.body);
+		    defOpts = {
+		        dataSource: namedData, //{ "ProductID": "1", "UnitsInStock": "100", "ProductDescription": "Laptop", "UnitPrice": "$ 1000", "DateAdded": new Date() };
+		        primaryKey: "ProductID",
+		        width: "800px",
+		        height: "600px",
+		        autoGenerateColumns: false,
+		        columns: [
+					{ headerText: "ID", key: "ProductID", dataType: "number" },
+					{ headerText: "Units in Stock", key: "UnitsInStock", dataType: "string" },
+					{ headerText: "Product Description", key: "ProductDescription", dataType: "string" },
+					{ headerText: "Unit Price", key: "UnitPrice", dataType: "number", format: "#.##" },
+					{ headerText: "Date Added", key: "DateAdded", dataType: "date" },
+					{ headerText: "In Stock", key: "InStock", dataType: "bool" }
+		        ],
+		        features: [
+					{
+					    name: "GroupBy"
+					}
+		        ]
+		    };
+		    opts = opts || {};
+		    opts = $.extend(false, {}, defOpts, opts);
+		    $grid.igGrid(opts);
+		}
+		/***** //Test bug fixes  ******/
+
+
+	</script>
+</head>
+<body>
+	<div style="float:right;width:400px;overflow:auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+</body>
+</html>
