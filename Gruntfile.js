@@ -38,7 +38,6 @@ module.exports = function (grunt) {
 			all: ["<%= config.devTests%>"],
 			options: {
 				force: false,
-				timeout: 180000,
 				"--web-security": "no",
 				coverage: {
 					src: grunt.file.readJSON('build/config/all/instrument.json').config,
