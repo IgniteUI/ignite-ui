@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - List items example </title>
+	<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                    
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script> 
+	
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	$(document).ready(function () {
+		// Create a editors
+		function loadTestbeds() {
+			$(function () {
+				var listData = []
+				for (var i = 1; i < 20; i++) {
+					listData.push("item" + i);
+				}
+				$("#divEditor").igTextEditor({
+					buttonType: "dropdown,spin,clear",
+					width: 400,
+					placeHolder: "Enter Text",
+					listItems: ["item1", "item2", "item3", "item4", "item5", "item6", "item7"]
+				});
+				$("#divEditor1").igCurrencyEditor({
+					buttonType: "dropdown,spin,clear",
+					width: 400,
+					tabIndex: -1,
+					placeHolder: "Enter Currency",
+					listItems: ["item1", "item2"]
+				});
+				$("#divEditor2").igDateEditor({
+					buttonType: "spin,clear",
+					placeHolder: "Enter Date",
+					width: 400
+				});
+				$("#divEditor3").igDatePicker({
+					buttonType: "dropdown,spin,clear",
+					placeHolder: "Select Date",
+					width: 400
+				});
+				$("#divEditor4").igMaskEditor({
+					buttonType: "clear",
+					placeHolder: "Fill Mask",
+					width: 400,
+
+				});
+				$("#divEditor5").igNumericEditor({
+					buttonType: "dropdown,spin,clear",
+					placeHolder: "Enter Number",
+					width: 400,
+					listItems: [1, 2, 3]
+				});
+				$("#divEditor6").igPercentEditor({
+					buttonType: "dropdown,spin,clear",
+					placeHolder: "Enter Percent",
+					width: 400,
+					listItems: [1, 2, 3, 4, 5, 6, 7, 8, 43, 43, 23, 2, 32, 3, 2]
+				});
+				
+			});
+		}
+		initialized = false;
+		module("Text Editor", {
+			setup: function() {
+				//pause testing until editors are initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 100);
+					initialized = true;
+				}
+			},
+			teardown: function () {
+				
+			}
+		});
+		
+		var testId = 'Aria Rendering';
+		test(testId, 28, function () {
+			var dropDownButton, clearButton, spinUpButton, spinDownButton, ddlist, listitem;
+			dropDownButton = $("#divEditor").data("igTextEditor")._dropDownButton;
+
+			equal(dropDownButton.attr("role"), "button", "role='button' attribute is not rendered");
+			equal(dropDownButton.attr("aria-label"), $("#divEditor").data("igTextEditor")._getLocaleOption("ariaDropDownButton"), "The aria-label attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaDropDownButton"));
+			equal(dropDownButton.attr("id"), "divEditor_dropDownButton", "The id of the dropDownButton should be divEditor_dropDownButton");
+			// Bug 214846:igGrid Paging dropdown in the header has negative tabindex
+			// Make sure tabIndex is only applied when set
+			equal($("#divEditor").igTextEditor("field").attr("tabIndex"), undefined, "Input not rendered with default tab index");
+			equal($("#divEditor1").igCurrencyEditor("field").attr("tabIndex"), "-1", "Input not rendered with set tab index");
+
+			clearButton = $("#divEditor").data("igTextEditor")._clearButton;
+			equal(clearButton.attr("role"), "button", "role='button' attribute is not rendered");
+			equal(clearButton.attr("aria-label"), $("#divEditor").data("igTextEditor")._getLocaleOption("ariaClearButton"), "The aria-label attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaClearButton"));
+			equal(clearButton.attr("id"), "divEditor_clearButton", "The id of the clearButton should be divEditor_clearButton");
+			spinUpButton = $("#divEditor").data("igTextEditor")._spinUpButton;
+			equal(spinUpButton.attr("role"), "button", "role='button' attribute is not rendered");
+			equal(spinUpButton.attr("aria-label"), $("#divEditor").data("igTextEditor")._getLocaleOption("ariaSpinUpButton"), "The aria-label attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaSpinUpButton"));
+			equal(spinUpButton.attr("id"), "divEditor_spinUpButton", "The id of the spinUpButton should be divEditor_spinUpButton");
+			spinDownButton = $("#divEditor").data("igTextEditor")._spinDownButton;
+			equal(spinDownButton.attr("role"), "button", "role='button' attribute is not rendered");
+			equal(spinDownButton.attr("aria-label"), $("#divEditor").data("igTextEditor")._getLocaleOption("ariaSpinDownButton"), "The aria-label attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaSpinDownButton"));
+			equal(spinDownButton.attr("id"), "divEditor_spinDownButton", "The id of the spinDownButton should be divEditor_spinDownButton");
+			ddlist = $("#divEditor").data("igTextEditor")._dropDownList;
+			equal(ddlist.attr("id"), "divEditor_list", "The list id should be divEditor_list");
+			equal(ddlist.attr("role"), "listbox", "The dropdown role should be listbox");
+			equal(ddlist.attr("aria-activedescendant"), "divEditorEditingInput", "THe aria-activedescendant should be equal to the editor ID= " + ddlist.attr("aria-activedescendant"));
+			listitem = ddlist.children(".ui-igedit-listitem")[3];
+			listitem = $(listitem);
+			equal(listitem.attr("role"), "option", "The item should have role option");
+			equal(listitem.attr("aria-selected"), "false", "The aria-selected attribute should be false");
+			equal(listitem.attr("aria-posinset"), "4", "The arin-posinset attribute should be 4");
+			equal(listitem.attr("title"), "item4", "The title of the item should be item4");
+			//AriaLabelText for all editors. 
+			equal($("#divEditor").igTextEditor("field").attr("aria-label"),
+				$("#divEditor").data("igTextEditor")._getLocaleOption("ariaTextEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor").data("igTextEditor")._getLocaleOption("ariaTextEditorFieldLabel"));
+			equal($("#divEditor1").igCurrencyEditor("field").attr("aria-label"),
+				$("#divEditor1").data("igCurrencyEditor")._getLocaleOption("ariaCurrencyEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor1").data("igCurrencyEditor")._getLocaleOption("ariaCurrencyEditorFieldLabel"));
+			equal($("#divEditor2").igDateEditor("field").attr("aria-label"),
+				$("#divEditor2").data("igDateEditor")._getLocaleOption("ariaDateEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor2").data("igDateEditor")._getLocaleOption("ariaDateEditorFieldLabel"));
+			equal($("#divEditor3").igDatePicker("field").attr("aria-label"),
+				$("#divEditor3").data("igDatePicker")._getLocaleOption("ariaDatePickerFieldLabel"),
+				"The aria-label should be: " + $("#divEditor3").data("igDatePicker")._getLocaleOption("ariaDatePickerFieldLabel"));
+			equal($("#divEditor4").igMaskEditor("field").attr("aria-label"),
+				$("#divEditor4").data("igMaskEditor")._getLocaleOption("ariaMaskEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor4").data("igMaskEditor")._getLocaleOption("ariaMaskEditorFieldLabel"));
+			equal($("#divEditor5").igNumericEditor("field").attr("aria-label"),
+				$("#divEditor5").data("igNumericEditor")._getLocaleOption("ariaNumericEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor5").data("igNumericEditor")._getLocaleOption("ariaNumericEditorFieldLabel"));
+			equal($("#divEditor6").igPercentEditor("field").attr("aria-label"),
+				$("#divEditor6").data("igPercentEditor")._getLocaleOption("ariaPercentEditorFieldLabel"),
+				"The aria-label should be: " + $("#divEditor6").data("igPercentEditor")._getLocaleOption("ariaPercentEditorFieldLabel"));
+		});
+		var testId = 'Aria List Rendering';
+		test(testId, 0, function () {
+
+		});
+		
+	});
+	</script>
+
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<br />
+	<div id="divEditor">
+	</div>
+	<div id="divEditor1">
+	</div>
+	<div id="divEditor2">
+	</div>
+	<div id="divEditor3">
+	</div>
+	<div id="divEditor4">
+	</div>
+	<div id="divEditor5">
+	</div>
+	<div id="divEditor6">
+	</div>
+	<div id="divEditor7">
+	</div></body>
+</html>
+

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+		<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.layout.css" rel="stylesheet" />
+		<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+		
+		<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+		<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+		<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+		<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.layoutmanager.js"></script>	
+		
+		<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+		<script type="text/javascript" src="../../common/test-util.js"></script>
+		
+		<script type="text/javascript">
+			var itemArray = [
+				{
+					width: "10%",
+					height: "150px"
+				},
+				{
+					width: "40%",
+					height: "250px"
+				},
+				{
+					width: "40%",
+					height: "150px"
+				},
+				{
+					width: "20%",
+					height: "150px"
+				},
+				{
+					width: "50%",
+					height: "150px"
+				}
+			];
+			$(document).ready(function () {
+				
+				function loadTestbeds() {
+					$('#layoutmanager').on("iglayoutmanageritemrendered", function (event, args) {
+						// get the element
+						if (args.region === 'header') {
+							args.element.css('background-color', 'red');
+						}
+						if (args.region === 'footer') {
+							args.element.css('background-color', 'green');
+						}
+						args.element.css({
+							'border': '1px solid #000',
+							'padding': '20'
+						});
+					});
+					$('#layoutmanager').igLayoutManager({
+						layoutMode: 'border'
+					});
+					$('#flow').on("iglayoutmanageritemrendered", function (e, args) {
+						args.item.text(args.index);
+						args.item.css("background-color", "#2CBDF9");
+					});
+					$('#flow').igLayoutManager({
+						layoutMode: "flow",
+						items: itemArray
+					});
+					$('#vertical').igLayoutManager({
+						layoutMode: "vertical",
+						items: itemArray
+					});
+				}
+				
+				initialized = false;
+				module("igLayoutManager", {
+					setup: function() {
+						//pause testing until tree is initialized
+						if (!initialized) {
+							stop();
+							loadTestbeds();
+							setTimeout(function () { start(); }, 100);
+							initialized = true;
+						}
+					},
+					teardown: function() {
+					}
+				});
+				
+				/* ***************** igTileManager Rendering ***************** */
+				
+				var testId_1 = 'igLayoutManager script loading.';
+				var testId_2 = 'igLayoutManager border layout.';
+				var testId_3 = 'igLayoutManager flow layout.';
+				var testId_4 = 'igLayoutManager vertical layout.';
+				
+				test(testId_1, function () {
+					ok(typeof $('#layoutmanager').igLayoutManager === 'function', 'igLayoutManager is not defined.');
+				});
+				
+				test(testId_2, function () {
+				    // Check classes and element existance
+				    var totalHeight;
+					$.ig.TestUtil.checkClass($('#layoutmanager'), 'ig-layout');
+					equal($('#layoutmanager').children().length, 3, 'The border layout was not initialized with 3 items: header, border container, footer.');
+					equal($('#layoutmanager').children('.ig-layout-border-container').children().length, 3, 'The border layout was not initialized with 3 items: left, right, center.');
+					equal($('#layoutmanager').find('.ig-layout-border-header').length, 1, 'Header is missing or there is more than one header.');
+					equal($('#layoutmanager').find('.ig-layout-border-footer').length, 1, 'Footer is missing or there is more than one footer.');
+					equal($('#layoutmanager').find('.ig-layout-border-left').length, 1, 'Left is missing or there is more than one left.');
+					equal($('#layoutmanager').find('.ig-layout-border-center').length, 1, 'Center is missing or there is more than one center.');
+					equal($('#layoutmanager').find('.ig-layout-border-right').length, 1, 'Right is missing or there is more than one right.');
+					$.ig.TestUtil.checkClass($('#layoutmanager').find('.ig-layout-border-header'), 'ig-layout-border-item');
+					$.ig.TestUtil.checkClass($('#layoutmanager').find('.ig-layout-border-footer'), 'ig-layout-border-item');
+					$.ig.TestUtil.checkClass($('#layoutmanager').find('.ig-layout-border-center'), 'ig-layout-border-item');
+					$.ig.TestUtil.checkClass($('#layoutmanager').find('.ig-layout-border-left'), 'ig-layout-border-item');
+					$.ig.TestUtil.checkClass($('#layoutmanager').find('.ig-layout-border-right'), 'ig-layout-border-item');
+					equal($('#layoutmanager').outerWidth(), 600, 'The outer element has grown more than the set pixel value.');
+					equal($('#layoutmanager').outerWidth(), $('#layoutmanager').find('.ig-layout-border-header').outerWidth(), 'The header is with a different width than the containing element');
+					equal($('#layoutmanager').outerWidth(), $('#layoutmanager').find('.ig-layout-border-footer').outerWidth(), 'The footer is with a different width than the containing element');
+					equal($('#layoutmanager').outerWidth(), $('#layoutmanager').find('.ig-layout-border-container').outerWidth(), 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerWidth() * 0.2, $('#layoutmanager').find('.ig-layout-border-left').outerWidth(), 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerWidth() * 0.7, $('#layoutmanager').find('.ig-layout-border-center').outerWidth(), 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerWidth() * 0.1, $('#layoutmanager').find('.ig-layout-border-right').outerWidth(), 'The center holder is with a different width than the containing element');
+					$('#layoutmanager').igLayoutManager('destroy');
+					equal($('#layoutmanager').children().length, 0, 'The containers were not removed after a destroy.');
+					ok(!$('#layoutmanager').hasClass('ig-layout'), 'The rool level class was not removed.');
+					$('#layoutmanager').igLayoutManager({
+					    layoutMode: 'border',
+                        height: 500,
+						borderLayout: {
+							leftWidth: '20%',
+							rightWidth: '30%'
+						}
+					});
+					equal($('#layoutmanager').outerWidth() * 0.2, $('#layoutmanager').find('.ig-layout-border-left').outerWidth(), 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerWidth() * 0.5, $('#layoutmanager').find('.ig-layout-border-center').outerWidth(), 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerWidth() * 0.3, $('#layoutmanager').find('.ig-layout-border-right').outerWidth(), 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerHeight(), 500, 'The height of the element does not match');
+					totalHeight = 0;
+					$('#layoutmanager').children().each(function () { totalHeight += $(this).outerHeight(true) });
+					equal(totalHeight, 500, 'The height of the children does not match');
+					$('#layoutmanager').igLayoutManager('destroy')
+						.append('<div class="header"></div><div class="footer"></div>')
+						.igLayoutManager({
+						    layoutMode: 'border',
+                            height: 350,
+							borderLayout: {
+								leftWidth: '20%',
+								rightWidth: '30%'
+							}
+						});
+					equal($('#layoutmanager').outerWidth() * 0.2, $('#layoutmanager').find('.ig-layout-border-left').outerWidth(), 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerWidth() * 0.5, $('#layoutmanager').find('.ig-layout-border-center').outerWidth(), 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerWidth() * 0.3, $('#layoutmanager').find('.ig-layout-border-right').outerWidth(), 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerHeight(), 350, 'The height of the element does not match');
+					totalHeight = 0;
+					$('#layoutmanager').children().each(function () { totalHeight += $(this).outerHeight(true) });
+					equal(totalHeight, 350, 'The height of the children does not match');
+					$('#layoutmanager').igLayoutManager('destroy');
+					equal($('#layoutmanager').children().length, 2, 'The header and footer containers were removed after a destroy.');
+					equal($('#layoutmanager').children('.header').attr('class'), 'header', 'The classes were not correctly removed from the header after destroy.');
+					equal($('#layoutmanager').children('.footer').attr('class'), 'footer', 'The classes were not correctly removed from the footer after destroy.');
+					$('#layoutmanager').empty().width(1000).igLayoutManager({
+					    layoutMode: 'border',
+                        height: 1000,
+						borderLayout: {
+							leftWidth: 200,
+							rightWidth: 250
+						}
+					});
+					equal($('#layoutmanager').find('.ig-layout-border-left').outerWidth(), 200, 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').find('.ig-layout-border-center').outerWidth(), 550, 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').find('.ig-layout-border-right').outerWidth(), 250, 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerHeight(), 1000, 'The height of the element does not match');
+					totalHeight = 0;
+					$('#layoutmanager').children().each(function () { totalHeight += $(this).outerHeight(true) });
+					equal(totalHeight, 1000, 'The height of the children does not match');
+					$('#layoutmanager').igLayoutManager('destroy');
+					equal($('#layoutmanager').children().length, 0, 'The containers were not removed after a destroy.');
+					$('#layoutmanager').igLayoutManager({
+					    layoutMode: 'border',
+                        height: 225,
+						borderLayout: {
+							leftWidth: 200,
+							rightWidth: '15%'
+						}
+					});
+					equal($('#layoutmanager').find('.ig-layout-border-left').outerWidth(), 200, 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').find('.ig-layout-border-center').outerWidth(), 650, 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').find('.ig-layout-border-right').outerWidth(), 150, 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerHeight(), 225, 'The height of the element does not match');
+					totalHeight = 0;
+					$('#layoutmanager').children().each(function () { totalHeight += $(this).outerHeight(true) });
+					equal(totalHeight, 225, 'The height of the children does not match');
+					$('#layoutmanager').igLayoutManager('destroy');
+					equal($('#layoutmanager').children().length, 0, 'The containers were not removed after a destroy.');
+					$('#layoutmanager').igLayoutManager({
+					    layoutMode: 'border',
+                        height: 100,
+						borderLayout: {
+							leftWidth: '30%',
+							rightWidth: 150
+						}
+					});
+					equal($('#layoutmanager').find('.ig-layout-border-left').outerWidth(), 300, 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').find('.ig-layout-border-center').outerWidth(), 550, 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').find('.ig-layout-border-right').outerWidth(), 150, 'The center holder is with a different width than the containing element');
+					equal($('#layoutmanager').outerHeight(), 100, 'The height of the element does not match');
+					totalHeight = 0;
+					$('#layoutmanager').children().each(function () { totalHeight += $(this).outerHeight(true) });
+					equal(totalHeight, 100, 'The height of the children does not match');
+					$('#layoutmanager').igLayoutManager('destroy');
+					equal($('#layoutmanager').children().length, 0, 'The containers were not removed after a destroy.');
+				});
+				
+				test(testId_3, function () {
+					equal($('#flow').children().length, 5, 'The five items were not rendered in the flow container.');
+					$.ig.TestUtil.checkClass($('#flow'), 'ig-layout');
+					$.ig.TestUtil.checkClass($('#flow'), 'ig-layout-flow');
+					$('#flow').children().each(function (index, element) {
+						var element = $(this);
+						$.ig.TestUtil.checkClass(element, 'ig-layout-flow-item');
+						equal(itemArray[index].width, this.style.width, 'The width of the item does not match the given.');
+						equal(itemArray[index].height, this.style.height, 'The width of the item does not match the given.');
+					});
+					$('#flow').igLayoutManager('destroy');
+					ok(!$('#flow').hasClass('ig-layout'), 'The ig-layout class was not removed on destroy,');
+					ok(!$('#flow').hasClass('ig-layout-flow'), 'The ig-layout class was not removed on destroy,');
+					equal($('#flow').children().length, 0, 'The items were not correctly cleared on destroy.');
+					$('#flow').igLayoutManager({
+						layoutMode: "flow",
+						itemCount: 10
+					});
+					equal($('#flow').children().length, 10, 'The five items were not rendered in the flow container.');
+					$.ig.TestUtil.checkClass($('#flow'), 'ig-layout');
+					$.ig.TestUtil.checkClass($('#flow'), 'ig-layout-flow');
+					$('#flow').children().each(function (index, element) {
+						var element = $(this);
+						$.ig.TestUtil.checkClass(element, 'ig-layout-flow-item');
+					});
+					$('#flow').igLayoutManager('destroy');
+					ok(!$('#flow').hasClass('ig-layout'), 'The ig-layout class was not removed on destroy,');
+					ok(!$('#flow').hasClass('ig-layout-flow'), 'The ig-layout class was not removed on destroy,');
+					equal($('#flow').children().length, 0, 'The items were not correctly cleared on destroy.');
+					$('#flow').append('<div /><div /><div /><div /><div /><div />').igLayoutManager({
+						layoutMode: "flow"
+					});
+					equal($('#flow').children().length, 6, 'The five items were not rendered in the flow container.');
+					$.ig.TestUtil.checkClass($('#flow'), 'ig-layout');
+					$.ig.TestUtil.checkClass($('#flow'), 'ig-layout-flow');
+					$('#flow').children().each(function (index, element) {
+						var element = $(this);
+						$.ig.TestUtil.checkClass(element, 'ig-layout-flow-item');
+					});
+					$('#flow').igLayoutManager('destroy');
+					ok(!$('#flow').hasClass('ig-layout'), 'The ig-layout class was not removed on destroy,');
+					ok(!$('#flow').hasClass('ig-layout-flow'), 'The ig-layout class was not removed on destroy,');
+					equal($('#flow').children().length, 6, 'The items were not correctly cleared on destroy.');
+					$('#flow').igLayoutManager({
+						layoutMode: "flow",
+						items: [
+							{width: "15%", height: "100px"},
+							{width: "15%", height: "100px"},
+							{width: "15%", height: "100px"},
+							{width: "15%", height: "100px"},
+							{width: "15%", height: "100px"}
+						]
+					});
+					equal($('#flow').children().length, 5, 'The flow layout container did not clear its children before rendering items.');
+					$('#flow').igLayoutManager('destroy');
+					equal($('#flow').children().length, 0, 'The flow layout container did not clear its children before rendering items.');
+				});
+				
+				test(testId_4, function () {
+					equal($('#vertical').children().length, 5, 'The five items were not rendered in the vertical container.');
+					$.ig.TestUtil.checkClass($('#vertical'), 'ig-layout');
+					$.ig.TestUtil.checkClass($('#vertical'), 'ig-layout-vertical');
+					$('#vertical').children().each(function (index, element) {
+						var element = $(this);
+						$.ig.TestUtil.checkClass(element, 'ig-layout-vertical-item');
+						equal(itemArray[index].width, this.style.width, 'The width of the item does not match the given.');
+						equal(itemArray[index].height, this.style.height, 'The width of the item does not match the given.');
+					});
+					$('#vertical').igLayoutManager('destroy');
+					ok(!$('#vertical').hasClass('ig-layout'), 'The ig-layout class was not removed on destroy,');
+					ok(!$('#vertical').hasClass('ig-layout-vertical'), 'The ig-layout class was not removed on destroy,');
+					equal($('#vertical').children().length, 0, 'The items were not correctly cleared on destroy.');
+					$('#vertical').igLayoutManager({
+						layoutMode: "vertical",
+						itemCount: 10
+					});
+					equal($('#vertical').children().length, 10, 'The five items were not rendered in the vertical container.');
+					$.ig.TestUtil.checkClass($('#vertical'), 'ig-layout');
+					$.ig.TestUtil.checkClass($('#vertical'), 'ig-layout-vertical');
+					$('#vertical').children().each(function (index, element) {
+						var element = $(this);
+						$.ig.TestUtil.checkClass(element, 'ig-layout-vertical-item');
+					});
+					$('#vertical').igLayoutManager('destroy');
+					ok(!$('#vertical').hasClass('ig-layout'), 'The ig-layout class was not removed on destroy,');
+					ok(!$('#vertical').hasClass('ig-layout-vertical'), 'The ig-layout class was not removed on destroy,');
+					equal($('#vertical').children().length, 0, 'The items were not correctly cleared on destroy.');
+					$('#vertical').append('<div /><div /><div /><div /><div /><div />').igLayoutManager({
+						layoutMode: "vertical"
+					});
+					equal($('#vertical').children().length, 6, 'The five items were not rendered in the vertical container.');
+					$.ig.TestUtil.checkClass($('#vertical'), 'ig-layout');
+					$.ig.TestUtil.checkClass($('#vertical'), 'ig-layout-vertical');
+					$('#vertical').children().each(function (index, element) {
+						var element = $(this);
+						$.ig.TestUtil.checkClass(element, 'ig-layout-vertical-item');
+					});
+					$('#vertical').igLayoutManager('destroy');
+					ok(!$('#vertical').hasClass('ig-layout'), 'The ig-layout class was not removed on destroy,');
+					ok(!$('#vertical').hasClass('ig-layout-vertical'), 'The ig-layout class was not removed on destroy,');
+					equal($('#vertical').children().length, 6, 'The items were not correctly cleared on destroy.');
+					$('#vertical').igLayoutManager({
+						layoutMode: "vertical",
+						items: [
+							{width: "15%", height: "100px"},
+							{width: "15%", height: "100px"},
+							{width: "15%", height: "100px"},
+							{width: "15%", height: "100px"},
+							{width: "15%", height: "100px"}
+						]
+					});
+					equal($('#vertical').children().length, 5, 'The flow layout container did not clear its children before rendering items.');
+					$('#vertical').igLayoutManager('destroy');
+					equal($('#vertical').children().length, 0, 'The flow layout container did not clear its children before rendering items.');
+				});
+			});
+		</script>
+		<style>
+			#layoutmanager {
+				position: absolute;
+				width: 600px;
+			}
+			#flow {
+				position: absolute;
+				top: 200px;
+				width: 50%;
+			}
+			#vertical {
+				position: absolute;
+				top: 400px;
+				width: 50%;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="float: right; width: 400px; overflow: auto; z-index: 100;position: relative;">
+			<h1 id="qunit-header">Test results</h1>
+			<h2 id="qunit-banner"></h2>
+			<h2 id="qunit-userAgent"></h2>
+			<ol id="qunit-tests"></ol>
+		</div>
+		<div id="layoutmanager"></div>
+		<div id="flow"></div>
+		<div id="vertical"></div>
+	</body>
+</html>

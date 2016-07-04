@@ -1,0 +1,374 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>Infragistics jQuery Client Dialog </title>
+    <link type="text/css" href="../../../src/css/structure/jquery.ui.all.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/jquery.ui.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.dialog.css" rel="stylesheet" />
+    
+    <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.dialog.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-en.js"></script>
+    
+    <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+    <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="../common/test-util.js"></script>
+
+    <script type="text/javascript">
+        /*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+        $(function () {
+            $('#dialog1').igDialog({
+                resizable: false,
+                draggable: false,
+                width: 250,
+                height: 250,
+                imageClass: 'ui-icon ui-icon-info',
+                headerText: 'Dialog1 Caption'
+            });
+            $('#dialog2').igDialog({
+                width: 250,
+                height: 250,
+                showMinimizeButton: true,
+                showMaximizeButton: true,
+                showFooter: true,
+                imageClass: 'ui-icon ui-icon-info',
+                headerText: 'Dialog2 Caption'
+            });
+            $('#dialog3').igDialog({
+                width: 250,
+                height: 250,
+                showMinimizeButton: true,
+                showMaximizeButton: true,
+                showPinButton: true,
+                showFooter: true,
+                footerText: 'Footer',
+                imageClass: 'ui-icon ui-icon-info',
+                headerText: 'Dialog3 Caption'
+            });
+            $("#dialog4").igDialog({
+                state: "closed",
+                modal: true,
+                enableHeaderFocus: true,
+                trackFocus: true
+            });
+        });
+        // START TESTING
+        module('igDialog');
+        var testId = '[ID1] dialog structure and layout';
+        test(testId, function () {
+            var elem, main, good, i = 0;
+            while (i++ < 3) {
+                // find main element
+                main = elem = $('#dialog' + i).igDialog('mainElement');
+                //
+                good = elem && elem.length === 1 && elem[0].nodeName === 'DIV';
+                ok(good, 'Dialog' + i + ' has correct main element');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct main element');
+                //
+                elem = main.find('.ui-igdialog-headertext');
+                good = elem && elem.length === 1 && elem[0].nodeName === 'SPAN' && elem.html().indexOf('Dialog') === 0;
+                ok(good, 'Dialog' + i + ' has correct caption in header');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct caption in header');
+                //
+                elem = main.find('.ui-icon-alert');
+                good = elem && elem.length === 1;
+                ok(good, 'Dialog' + i + ' has correct content');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct content');
+                //
+                elem = main.find('.ui-icon-info');
+                good = elem && elem.length === 1 && elem[0].nodeName === 'SPAN';
+                ok(good, 'Dialog' + i + ' has correct imageClass element');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct imageClass element');
+                //
+                elem = elem[0].parentNode;
+                good = elem && elem.nodeName === 'DIV' && elem.className.indexOf('ui-igdialog-header') >= 0;
+                ok(good, 'Dialog' + i + ' has imageClass element located in its header');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has imageClass element located in its header');
+                //
+                elem = main.find('.ui-igdialog-close-icon');
+                good = elem && elem.length === 1 && elem[0].nodeName === 'SPAN';
+                ok(good, 'Dialog' + i + ' has correct element with close icon');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct element with close icon');
+                //
+                elem = elem[0].parentNode;
+                good = elem && elem.nodeName === 'A' && elem.className.indexOf('ui-igdialog-headerbutton') >= 0;
+                ok(good, 'Dialog' + i + ' has close icon element located in button');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has close icon element located in button');
+                //
+                elem = elem.parentNode;
+                good = elem && elem.nodeName === 'DIV' && elem.className.indexOf('ui-igdialog-header') >= 0;
+                ok(good, 'Dialog' + i + ' has close button located in its header');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has close button located in its header');
+                //
+                elem = main.find('.ui-igdialog-minimize-icon');
+                good = elem && elem.length === 1 && elem[0].nodeName === 'SPAN';
+                good = good === (i > 1);
+                ok(good, 'Dialog' + i + ' has(does not have) correct element with minimized icon');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has(does not have) correct element with minimized icon');
+                //
+                elem = main.find('.ui-igdialog-maximize-icon');
+                good = elem && elem.length === 1 && elem[0].nodeName === 'SPAN';
+                good = good === (i > 1);
+                ok(good, 'Dialog' + i + ' has(does not have) correct element with maximized icon');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has(does not have) correct element with maximized icon');
+                //
+                elem = main.find('.ui-igdialog-footer');
+                good = elem && elem.length === 1 && elem[0].nodeName === 'DIV';
+                good = good === (i > 1);
+                ok(good, 'Dialog' + i + ' has(does not have) footer');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has(does not have) footer');
+                //
+                good = elem && elem.html() === 'Footer';
+                good = good === (i > 2);
+                ok(good, 'Dialog' + i + ' has(does not have) footer text');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has(does not have) footer text');
+                //
+                elem = main.find('.ui-igdialog-pin-icon');
+                good = elem && elem.length === 1 && elem[0].nodeName === 'SPAN';
+                good = good === (i > 2);
+                ok(good, 'Dialog' + i + ' has(does not have) element with pin icon');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has(does not have) element with pin icon');
+                //
+                elem = main.find('.ui-resizable-handle');
+                good = elem && elem.length > 3 && main[0].className.indexOf('ui-resizable') >= 0;
+                good = good === (i > 1);
+                ok(good, 'Dialog' + i + ' is(is not) resizable');
+                //QUnit.log(good, testId + ' Dialog' + i + ' is(is not) resizable');
+                //
+                good = main[0].className.indexOf('ui-draggable') >= 0;
+                good = good === (i > 1);
+                ok(good, 'Dialog' + i + ' is(is not) draggable');
+                //QUnit.log(good, testId + ' Dialog' + i + ' is(is not) draggable');
+            }
+        });
+        testId = '[ID2] dialog actions';
+        test(testId, function () {
+            var val, elem, main, dialog, good, j, i = 0;
+            while (i++ < 3) {
+                dialog = $('#dialog' + i).data('igDialog');
+                // find main element
+                main = elem = dialog.mainElement();
+                //
+                val = (elem && elem.length === 1) ? elem[0].offsetWidth : 0;
+                good = val >= 250 && val < 260;
+                ok(good, 'Dialog' + i + ' has correct width:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct width:' + val);
+                //
+                val = (elem && elem.length === 1) ? elem[0].offsetHeight : 0;
+                good = val >= 250 && val < 260;
+                ok(good, 'Dialog' + i + ' has correct height:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct height:' + val);
+                //
+                elem = main.find('.ui-igdialog-header');
+                val = (elem && elem.length === 1) ? elem[0].offsetHeight : 0;
+                good = val >= 25 && val < 50;
+                ok(good, 'Dialog' + i + ' has correct height of header:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct height of header:' + val);
+                //
+                val = dialog.state();
+                good = val === 'opened';
+                ok(good, 'Dialog' + i + ' has correct state:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct state:' + val);
+                //
+                if (i === 1) {
+                    dialog.state('closed');
+                } else if (i === 2) {
+                    dialog.close();
+                } else {
+                    dialog._setOption('state', 'closed');
+                }
+                val = dialog.state();
+                good = val === 'closed';
+                ok(good, 'Dialog' + i + ' was closed by state:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' was closed by state:' + val);
+                //
+                elem = main;
+                val = (elem && elem.length === 1) ? elem[0].offsetWidth : 10;
+                good = val === 0;
+                ok(good, 'Dialog' + i + ' was closed:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' was closed:' + val);
+                //
+                if (i === 1) {
+                    dialog.state('maximized');
+                } else if (i === 2) {
+                    dialog.maximize();
+                } else {
+                    dialog._setOption('state', 'maximized');
+                }
+                val = (elem && elem.length === 1) ? elem.outerHeight() : 0;
+
+                // Height of the dialog is always one or two pixels less then the window height.
+                // If the test fails then we can decrease the window height with some more pixels
+                good = (val >= $(window).height() - 2);
+                ok(good, 'Dialog' + i + ' was maximized:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' was maximized:' + val);
+                ok(dialog.element.parent().is('body'), "The maximized dialog is not attached to the body.");
+                //
+                if (i === 1) {
+                    dialog.state('minimized');
+                } else if (i === 2) {
+                    dialog.minimize();
+                } else {
+                    dialog._setOption('state', 'minimized');
+                }
+                val = (elem && elem.length === 1) ? elem[0].offsetHeight : 0;
+                good = val > 25 && val < 50;
+                ok(good, 'Dialog' + i + ' was minimized:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' was minimized:' + val);
+                //
+                elem = main[0].parentNode;
+                good = elem && elem.nodeName === 'DIV';
+                ok(good, 'Dialog' + i + ' has correct parent');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct parent');
+                //
+                if (i === 1) {
+                    dialog.pin();
+                } else {
+                    dialog._setOption('pinned', true);
+                }
+                dialog.state('pinned');
+                elem = main[0].parentNode;
+                good = elem && elem.nodeName === 'DIV';
+                ok(good, 'Dialog' + i + ' has correct parent in pinned state');
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct parent in pinned state');
+                //
+                if (i === 1) {
+                    dialog.unpin();
+                } else {
+                    dialog._setOption('pinned', false);
+                }
+                elem = main[0].parentNode;
+                good = elem && elem.nodeName === 'DIV';
+                ok(good, 'Dialog' + i + ' got correct parent in unpinned state');
+                //QUnit.log(good, testId + ' Dialog' + i + ' got correct parent in unpinned state');
+                //
+                elem = main;
+                if (i === 1) {
+                    dialog.state('opened');
+                } else {
+                    dialog._setOption('state', 'opened');
+                }
+                val = (elem && elem.length === 1) ? elem[0].offsetHeight : 0;
+                good = val >= 250 && val < 260;
+                ok(good, 'Dialog' + i + ' got correct height in normal state:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' has correct height in normal state:' + val);
+                //
+                good = !dialog.getTopModal();
+                ok(good, 'Dialog' + i + ' is not TopModal');
+                //QUnit.log(good, testId + ' Dialog' + i + ' is not TopModal');
+                //
+                good = !dialog.isTopModal();
+                ok(good, 'Dialog' + i + ' is not top modal');
+                //QUnit.log(good, testId + ' Dialog' + i + ' is not top modal');
+                //
+                ok(good, 'Dialog' + i + ' is on top:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' is on top:' + val);
+                dialog.moveToTop();
+                val = main[0].style.zIndex;
+                good = true;
+                // find dialog which has larger zIndex then current
+                for (j = 1; j < 4; j++) {
+                    if (j !== i) {
+                        if ($('#dialog' + j).data('igDialog').mainElement()[0].style.zIndex >= val) {
+                            good = false;
+                            break;
+                        }
+                    }
+                }
+                good = val > 0;
+                ok(good, 'Dialog' + i + ' is on top:' + val + '. Bad dialog:' + j);
+                //QUnit.log(good, testId + ' Dialog' + i + ' is on top:' + val + '. Bad dialog:' + j);
+            }
+            i = 0;
+            while (i++ < 3) {
+                $('#dialog' + i).data('igDialog').destroy();
+                elem = $('#dialog' + i);
+                val = elem[0].parentNode.id;
+                good = val === 'container1';
+                ok(good, 'Dialog' + i + ' was destroyed parent:' + val);
+                //QUnit.log(good, testId + ' Dialog' + i + ' was destroyed parent:' + val);
+            }
+        });
+        test("igDialog API", function () {
+            $("#dialog1").igDialog();
+            var content = $("#dialog1").igDialog("content");
+            $.ig.TestUtil.checkClass(content, "ui-igdialog-content");
+            $.ig.TestUtil.checkClass(content, "ui-widget-content");
+            $.ig.TestUtil.checkClass(content, "ui-dialog-content");
+            content.html("Content changed.");
+            equal($("#dialog1").find(".ui-igdialog-content").html(), "Content changed.", "The content in the igDialog didn't change after being set on the content container retrieved by API.");
+            $("#dialog1").igDialog("content", "Content changed again.");
+            equal($("#dialog1").find(".ui-igdialog-content").html(), "Content changed again.", "The content in the igDialog didn't change after being set on the content container retrieved by API.");
+            $("#dialog1").igDialog("destroy");
+            equal($("#dialog1").html(), "Content changed again.", "The content is different than the expected value after destroy.");
+        });
+
+        test("Focus handling", function () {
+            $("#dialog4").igDialog("open");
+            var $frameBody = $("#testFrame").contents().find('body'), $input,
+                $header = $("#dialog4").find("." + $.ui.igDialog.prototype.css.header.split(" ").join("."));
+
+            $frameBody.html('<input type="text" id="frameInput" value="" />');
+            $input = $frameBody.find("#frameInput");
+
+            // focus handler on a 100 timeout... + previous tests
+            QUnit.stop();
+            setTimeout(function () {
+                QUnit.start();
+                ok($header.hasClass($.ui.igDialog.prototype.css.headerFocus), "header doesn't have focus class on open");
+                $("#dialog4").igDialog("close");
+            }, 250);
+        });
+
+        test("Inner controls/frames", function () {
+            var $frameBody = $("#testFrame").contents().find('body'),
+                text = "test text";
+            // Bug 209633: the internal frame with text mocks and HTML Editor and should not reload on dialog actions
+            $("#testFrame").contents().find('body').text(text);
+            $("#dialog4").igDialog("open");
+
+            $("#dialog4").igDialog("minimize").igDialog("pin");
+            equal($("#testFrame").contents().find('body').text(), text, "Internal frame lost its content on pin");
+            $("#dialog4").igDialog("minimize").igDialog("unpin");
+            equal($("#testFrame").contents().find('body').text(), text, "Internal frame lost its content on unpin");
+
+            // when the dialog is on body maximize/minimize should retain content without moving
+            $("#dialog4").appendTo("body");
+            $("#testFrame").contents().find('body').text(text);
+
+            $("#dialog4").igDialog("maximize");
+            equal($("#testFrame").contents().find('body').text(), text, "Internal frame lost its content on maximize");
+            $("#dialog4").igDialog("minimize");
+            equal($("#testFrame").contents().find('body').text(), text, "Internal frame lost its content on minimize");
+            $("#dialog4").appendTo("body").igDialog("close");
+        });
+    </script>
+</head>
+<body id="rootBody">
+    <div style="float:right;width:400px;overflow:auto">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div id="container1" style="float:left;overflow:auto;padding:20px;position:absolute;width:400px;">
+        <div id="dialog1" title="Title of DIV" style="background-color:orange;">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Content for Dialog1</p>
+        </div>
+        <div id="dialog2" title="Title of DIV" style="background-color:orange;">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Content for Dialog2</p>
+        </div>
+        <div id="dialog3" title="Title of DIV" style="background-color:orange;">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Content for Dialog3</p>
+        </div>
+        <div id="dialog4" title="Focus tracking" style="background-color:orange;">
+            <iframe id="testFrame"></iframe>
+        </div>
+    </div>
+</body>
+</html>

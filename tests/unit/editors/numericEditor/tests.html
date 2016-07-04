@@ -1,0 +1,1192 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Numeric Editors </title>
+	<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                      
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	$(document).ready(function () {
+		// Create a editors
+		function loadTestbeds() {
+			$(function () {
+				$("#inputEditor1").igNumericEditor({
+					value: 10,
+					numericMaxDecimals: 4,
+					numericMinDecimals: 5
+				});
+				$("#divEditor1").igNumericEditor({
+					value: 30,
+					numericMaxDecimals: 6,
+					numericMinDecimals: 3
+				});
+
+				$('#numEditor').igNumericEditor({
+					width: "300",
+					value: "3",
+					dataMode: "int"
+				});
+
+				$("#numericData").igNumericEditor({
+					value: "143.23e10",
+					dataMode: "gosho",
+
+				});
+
+				//dataModes
+				$("#doubleEditor").igNumericEditor({
+					value: "123.6548",
+					numericMaxDecimals: 18,
+					numericMinDecimals: 3,
+					width: 300,
+					dataMode: "double",
+					numericGroups: [3, 2, 1]
+				});
+				$("#floatEditor").igNumericEditor({
+					value: "123.6548",
+					numericMaxDecimals: 18,
+					dataMode: "float",
+				});
+				$("#longEditor").igNumericEditor({
+					value: "123.6548",
+					numericMaxDecimals: 18,
+					dataMode: "long",
+				});
+				$("#ulongEditor").igNumericEditor({
+					value: "123.6548",
+					dataMode: "ulong",
+				});
+				$("#intEditor").igNumericEditor({
+					value: "123.6548",
+					dataMode: "int",
+				});
+				$("#uintEditor").igNumericEditor({
+					value: "123.6548",
+					dataMode: "uint",
+				});
+				$("#shortEditor").igNumericEditor({
+					value: "123.6548",
+					dataMode: "short",
+				});
+				$("#ushortEditor").igNumericEditor({
+					value: "123.6548",
+					dataMode: "ushort",
+				});
+				$("#sbyteEditor").igNumericEditor({
+					value: "123.6548",
+					dataMode: "sbyte",
+				});
+				$("#byteEditor").igNumericEditor({
+					value: "123.6548",
+					dataMode: "byte",
+				});
+				$("#clearEditor").igNumericEditor({
+					value: "001",
+					buttonType: "clear",
+					listItems: ["111", "222", "333"],
+					dropDownAttachedToBody: true,
+					allowNullValue: true,
+					revertIfNotValid: false
+				});
+				$("#clearEditor1").igNumericEditor({
+					value: 1,
+					width: 230,
+					nullValue: 7777,
+					buttonType: "clear",
+					listItems: ["111", "222", "333"],
+					dropDownAttachedToBody: true,
+					allowNullValue: true
+				});
+				try {
+					$("#listEditor").igNumericEditor({
+						buttonType: "dropdown,spin,clear,nonvalid",
+						width: 200,
+						listWidth: 200,
+						height: 20,
+						listItems: [1, 2, 3],
+						dropDownAnimationDuration: 1,
+						revertIfNotValid: false,
+						isLimitedToListValues: true,
+						spinDelta: "spin" // this is not valid and EXCEPTION is thrown. Needed for coverage.
+					});
+				} catch (e) { }
+				try {
+					$("#listEditor1").igNumericEditor({
+						buttonType: "dropdown,spin,clear,nonvalid",
+						width: 200,
+						listWidth: 200,
+						height: 20,
+						listItems: [1, 2, 3],
+						dropDownAnimationDuration: 0,
+						revertIfNotValid: false,
+						isLimitedToListValues: true,
+						spinDelta: -69, // this is not valid and EXCEPTION is thrown. Needed for coverage.
+						maxLength: 10
+					});
+				} catch (e) { }
+				try {
+					$("#disabledEditor").igNumericEditor({
+						buttonType: "clear,spin",
+						dataMode: "int",
+						width: 300,
+						height: 70,
+						spinDelta: 1.5
+					});
+				} catch (e) { }
+				try {
+					$("#readonlyEditor").igNumericEditor({
+						value: "readOnly",
+						buttonType: "spin",
+						readOnly: true,
+						spinDelta: 1.5, // this is not valid and EXCEPTION is thrown. Needed for coverage.
+						maxLength: 10
+					});
+				} catch (e) { }
+
+				$("#allEditor").igNumericEditor({
+					selectionOnFocus: "selectAll",
+					value: "123"
+				});
+				$("#atStartEditor").igNumericEditor({
+					selectionOnFocus: "atStart",
+					value: "123"
+				});
+				$("#atEndEditor").igNumericEditor({
+					selectionOnFocus: "atEnd",
+					value: "123"
+				});
+				$("#defaultEditor").igNumericEditor({
+					selectionOnFocus: "browserDefault",
+					value: "123"
+				});
+
+				$("#scientificFormat").igNumericEditor({
+					scientificFormat: "e",
+					buttonType: "spin"
+				});
+
+				$("#scientificFormatEPlus").igNumericEditor({
+					scientificFormat: "e+",
+					buttonType: "spin"
+				});
+
+				$("#spinDelta").igNumericEditor({
+					buttonType: "spin",
+					spinDelta: 3,
+					value: 0
+				});
+
+				$("#spinDeltaInteger").igNumericEditor({
+					dataMode: "int",
+					buttonType: "spin",
+					value: 1
+				});
+
+				$("#keyDownTest").igNumericEditor({
+					selectionOnFocus: "atEnd",
+					value: "12345"
+				});
+
+				$("#defaultDataMode").igNumericEditor({
+					dataMode: "nba",
+					selectionOnFocus: "browserDefault"
+				});
+
+				$("#minMaxValue").igNumericEditor({
+					minValue: 10,
+					maxValue: 99,
+					excludeKeys: "ABC",
+					decimalSeparator: ".",
+					selectionOnFocus: "atEnd",
+					revertIfNotValid: true
+				});
+
+				$("#minMaxDisableSpins").igNumericEditor({
+					minValue: 10,
+					maxValue: 99,
+					value: 10,
+					buttonType: "spin",
+					spinWrapAround: false
+				});
+
+				$("#spinWrapAround").igNumericEditor({
+					minValue: 10,
+					maxValue: 99,
+					value: 10,
+					buttonType: "spin",
+					spinWrapAround: true
+				});
+
+				$("#convertScientificToNumeric").igNumericEditor({
+					scientificFormat: "e",
+					value: 4
+				});
+
+				$("#pEditor1").igPercentEditor({
+					value: 10,
+					percentSymbol: "%%"
+				});
+
+				$("#pEditor2").igPercentEditor({
+					value: 30,
+					positivePattern: "%(n)"
+				});
+
+				$("#currencyEditor1").igCurrencyEditor({
+					currencySymbol: "#"
+				});
+
+				$("#currencyEditor2").igCurrencyEditor({
+					positivePattern: ")n("
+				});
+
+				$("#excludeKeysEditor").igNumericEditor({
+					excludeKeys: "1, 3"
+				});
+
+				$("#negativeEditor1").igNumericEditor({
+					scientificFormat: "E",
+					spinDelta: 2,
+					maxlength: 5,
+					value: -10
+				});
+
+				$("#spinScientific").igNumericEditor({
+					scientificFormat: "E",
+					buttonType: "spin"
+				});
+
+				$("#decimalSeparatorEditor").igNumericEditor({
+					decimalSeparator: ","
+				});
+			});
+		}
+		initialized = false;
+		module("Numeric Editor ", {
+			setup: function() {
+				//pause testing until editors are initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 100);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+		
+		var testId = 'Numeric Editor initialization.';
+		test(testId, 10, function () {
+			ok(typeof($("#inputEditor1").igNumericEditor)  === 'function', "Editors Script is not loaded");
+			ok($('#inputEditor1').data("igNumericEditor") !== undefined, 'Error creating igNumericEditor in an input');
+			ok($('#divEditor1').data("igNumericEditor") !== undefined, 'Error creating igNumericEditor in a div');
+			ok($("#listEditor1").data("igNumericEditor") !== undefined, 'Error creating igNumericEditor in a div')
+			equal($('#inputEditor1').igNumericEditor("value"), 10, 'The initial value is not as expexted');
+			equal($('#divEditor1').igNumericEditor("value"), 30, 'The initial value is not as expexted');
+			
+			//internal value parse
+			strictEqual($('#inputEditor1').data("igNumericEditor")._valueFromText("-3.33333"), -3.33333, "The parsed value is not correct");
+			equal($('#negativeEditor1').data("igNumericEditor")._valueFromText("-2e+1"), -2E+1, "The parsed value is not correct");
+			strictEqual($('#negativeEditor1').data("igNumericEditor")._valueFromText("-500"), "-5e+2", "The parsed value is not correct");
+			strictEqual($('#convertScientificToNumeric').data("igNumericEditor")._valueFromText("22"), "2.2e+1", "The parsed value is not correct");
+		});
+
+		testId = "Events testing";
+		test(testId, 8, function () {
+			//id=listEditor1
+			var editor = $("#listEditor1"), textChanged = 0,
+				editorInput = editor.igNumericEditor("field"),
+				text = editorInput.val();
+
+			editorInput[0].onkeypress = function (e) {
+				this.value += String.fromCharCode(e.charCode)
+			}
+
+			editorInput.focus();
+			editor.on("ignumericeditortextchanged", function (evt, args) {
+				equal(args.text, text, "Text changed event is not fired with correct new value");
+				textChanged++;
+			});
+			stop();
+			setTimeout(function () {
+				start();
+				text += "1"
+				keyInteraction(text.charCodeAt(text.length - 1), editorInput);
+				equal(textChanged, 1, "textChanged event not fired");
+				text += "2"
+				keyInteraction(text.charCodeAt(text.length - 1), editorInput);
+				equal(textChanged, 2, "textChanged event not fired");
+				text += "3"
+				keyInteraction(text.charCodeAt(text.length - 1), editorInput);
+				equal(textChanged, 3, "textChanged event not fired");
+				text += "4"
+				keyInteraction(text.charCodeAt(text.length - 1), editorInput);
+				equal(textChanged, 4, "textChanged event not fired");
+				editor.off("ignumericeditortextchanged");
+			}, 100);
+		});
+
+		testId = "Spin buttons disabling when the min/max value is exceeded";
+		test(testId, 14, function () {
+			var container = $('#minMaxDisableSpins').igNumericEditor("editorContainer"),
+				containerInput = $('#minMaxDisableSpins').igNumericEditor("field"),
+				spinUpButton = $('#minMaxDisableSpins').igNumericEditor("spinUpButton"),
+				spinDownButton = $('#minMaxDisableSpins').igNumericEditor("spinDownButton");
+			//spin down to disable spin Down button
+			mousedown(spinDownButton[0]);
+			mouseup(spinDownButton[0]);
+			$('#minMaxDisableSpins').igNumericEditor("option", "suppressNotifications", true);
+			//equal(container.find("span:contains('Min value exceeded')").length, 1, "Notifier text 'Min value exceeded' is missing");
+			equal($('#minMaxDisableSpins').igNumericEditor("value"), "10", "The minValue is not respected");
+			equal(spinDownButton.hasClass("ui-state-disabled"), true, "Button spinDown is not disabled");
+			equal(spinDownButton.attr("disabled"), "disabled", "Button spinDown desn't have disabled attribute");
+			ok(!$('#minMaxDisableSpins').hasClass($.ui.igNotifier.prototype.css.warningState), "The minMaxDisableSpins has warning class with suppressed notifications");
+
+			// spin up to remove disabled state
+			mousedown(spinUpButton[0]);
+			mouseup(spinUpButton[0]);
+			//equal(container.find("span:contains('Min value exceeded')").length, 0, "Notifier text 'Min value exceeded' is not hidden");
+			equal($('#minMaxDisableSpins').igNumericEditor("value"), "11", "The minValue is not respected");
+			equal(spinDownButton.hasClass("ui-state-disabled"), false, "Button spinDown is not disabled");
+			equal(spinDownButton.attr("disabled"), undefined, "Button spinDown desn't have disabled attribute");
+
+			$('#minMaxDisableSpins').igNumericEditor("value",99);
+			container.blur();
+
+			mousedown(spinUpButton[0]);
+			mouseup(spinUpButton[0]);
+			//equal(container.find("span:contains('Max value exceeded')").length, 1, "Notifier text 'Max value exceeded' is missing");
+			equal($('#minMaxDisableSpins').igNumericEditor("value"), "99", "The maxValue is not respected");
+			equal(spinUpButton.hasClass("ui-state-disabled"), true, "Button spinUp is not disabled");
+			equal(spinUpButton.attr("disabled"), "disabled", "Button spinDown desn't have disabled attribute");
+
+			// spin down to remove disabled state
+			mousedown(spinDownButton[0]);
+			mouseup(spinDownButton[0]);
+			//equal(container.find("span:contains('Max value exceeded')").length, 0, "Notifier text 'Max value exceeded' is not hidden");
+			equal($('#minMaxDisableSpins').igNumericEditor("value"), "98", "The minValue is not respected");
+			equal(spinDownButton.hasClass("ui-state-disabled"), false, "Button spinDown is not disabled");
+			equal(spinDownButton.attr("disabled"), undefined, "Button spinDown desn't have disabled attribute");
+
+			$('#minMaxDisableSpins').igNumericEditor("option", "suppressNotifications", false);
+			mousedown(spinUpButton[0]);
+			mouseup(spinUpButton[0]);
+			ok($('#minMaxDisableSpins').hasClass($.ui.igNotifier.prototype.css.warningState), "The minMaxDisableSpins missing warning class without suppressed notifications");
+		});
+
+		var testId = 'Clear value';
+		test(testId, 6, function () {
+			var numericEditor = $('#clearEditor1'),
+				editorInput = $('#clearEditor1').igNumericEditor("field"),
+				clearButton = numericEditor.igNumericEditor("clearButton"),
+				ddButton = numericEditor.igNumericEditor("dropDownButton"),
+				list = $('#clearEditor1').igNumericEditor("dropDownContainer"), item1 = list.children(".ui-igedit-listitem")[0], opening = false, opened = false, closing = false, closed = false,
+				itemselecting = false, itemselected = false, valueChanging = false, valueChanged = false,opened = false;
+			equal($('#clearEditor1').igNumericEditor("value"), "1", "Initial value is not correct");
+			$("#clearEditor1").igNumericEditor("option", "value", "-214");
+			equal($('#clearEditor1').igNumericEditor("value"), "-214", "New value is not correct");
+			ok($(editorInput).hasClass("ui-igedit-negative"), "The selected item is missing ui-igedit-negative class applied");
+			numericEditor.igNumericEditor("setFocus");
+			ok(!editorInput.hasClass("ui-igedit-negative"), "The selected item has ui-igedit-negative class applied");
+			clearButton.click();
+			equal($('#clearEditor1').igNumericEditor("value"), "7777", "Value after cleaning is not correct");
+			$("#clearEditor1").igNumericEditor("option", "width", 230);
+			equal($('#clearEditor1').igNumericEditor("option", "width"), 230, "Value after cleaning is not correct");
+		});
+		
+		testId = "Clear Button";
+		test(testId, 3, function () {
+			var container = $('#clearEditor'),
+				clearButton = container.igNumericEditor("clearButton");
+			equal($('#clearEditor').igNumericEditor("value"), "001", "Initial value is not correct");
+			clearButton.click();
+			equal($('#clearEditor').igNumericEditor("value"), null, "Value after cleaning is not correct");
+
+			$('#clearEditor').igNumericEditor("value", 2);
+			$('#clearEditor').igNumericEditor("option", "allowNullValue", false);
+			$('#clearEditor').igNumericEditor("option", "allowNullValue", false); // Set twice so we ensure that the same value is not set and coverage is fullfilled.
+			$('#clearEditor').igNumericEditor("value", "abc");
+			clearButton.click();
+			equal($('#clearEditor').igNumericEditor("value"), "", "Value after cleaning is not correct");
+		});
+				
+		var testId = 'Convert Scientific to Numeric';
+		test(testId, 1,function () {
+			equal($('#convertScientificToNumeric').igNumericEditor("value"), 4, 'The initial value is not as expexted');		
+		});
+		
+		testId = "Spin Delta";
+		test(testId, 11, function () {
+			var container = $('#spinDelta'),
+				editorInput = container.igNumericEditor("field"),
+				listUp = container.igNumericEditor("spinUpButton"),
+				integerContainer = $('#spinDeltaInteger'),
+				listUpInteger = integerContainer.igNumericEditor("spinUpButton");
+
+			mousedown(listUp[0]);
+			mouseup(listUp[0]);
+			equal($('#spinDelta').igNumericEditor("value"), 3, "Value is not correct");
+			
+			$("#spinDelta").igNumericEditor("option", "spinDelta", 2)
+			mousedown(listUp[0]);
+			mouseup(listUp[0]);
+			equal($('#spinDelta').igNumericEditor("value"), 5, "Value is not correct");
+			throws(function() {
+				$("#spinDelta").igNumericEditor("option", "spinDelta", -2); 
+			}, " Error should be thrown");
+			mousedown(listUp[0]);
+			mouseup(listUp[0]);
+			equal($('#spinDelta').igNumericEditor("value"), 7, "Value is not correct");
+			
+			throws(function() {
+				$("#spinDelta").igNumericEditor("option", "spinDelta", "alex"); 
+			}, " Error should be thrown");
+			mousedown(listUp[0]);
+			mouseup(listUp[0]);
+			equal($('#spinDelta').igNumericEditor("value"), 9, "Value is not correct");
+			
+			$("#spinDelta").igNumericEditor("option", "maxDecimals", 2); 
+			$("#spinDelta").igNumericEditor("option", "spinDelta", 2.123456789); 
+			mousedown(listUp[0]);
+			mouseup(listUp[0]);
+			equal($('#spinDelta').igNumericEditor("value"), 11.12, "Value is not correct");
+			
+			throws(function() {
+				$("#spinDelta").igNumericEditor("option", "maxDecimals", "");
+				$("#spinDelta").igNumericEditor("option", "spinDelta", 2.1294);
+			}, " Error should be thrown");
+
+			mousedown(listUp[0]);
+			mouseup(listUp[0]);
+			equal($('#spinDelta').igNumericEditor("value"), 13.24, "Value is not correct");
+			
+			throws(function() {
+				$("#spinDeltaInteger").igNumericEditor("option", "spinDelta", 2.127); 
+			}, " Error should be thrown");
+			mousedown(listUpInteger[0]);
+			mouseup(listUpInteger[0]);
+			equal($('#spinDeltaInteger').igNumericEditor("value"), 2, "Value is not correct");
+		});
+		
+		testId = "Spin via keyboard";
+		test(testId, 4, function () {
+			var container = $('#spinDelta'), editorInput = $('#spinDelta').igNumericEditor("field"), flag;
+			$('#spinDelta').on("ignumericeditorkeypress", function () {
+				flag = true;
+			});
+			$("#spinDelta").igNumericEditor("option", "value", 0);
+			$("#spinDelta").igNumericEditor("option", "spinDelta", 2);
+			container.click();
+			keyInteraction(38, editorInput);
+			ok(!flag, "up is not send");
+			container.blur();
+			equal($('#spinDelta').igNumericEditor("value"), 2, "The value is not correct");
+			flag = false;
+			
+			container.click();
+			keyInteraction(40, editorInput);
+			ok(!flag, "down is not send");
+			container.blur();
+			equal($('#spinDelta').igNumericEditor("value"), 0, "The value is not correct");
+		});
+		
+		testId = "Keys tests";
+		test(testId, 3, function () {
+			var editorInput = $('#inputEditor1').igNumericEditor("field"),
+				floatEditorInput = $('#floatEditor').igNumericEditor("field"),
+				doubleEditorInput = $('#doubleEditor').igNumericEditor("field"),
+				flag = true, i = 0;
+
+			$('#doubleEditor').one("ignumericeditorkeypress", function (evt, ui) {
+				if (i == 0) {
+					equal(evt.keyCode, 51, "The keyCode is not equal to 51");
+					i++;
+				} else {
+					equal(evt.keyCode, 54, "The keyCode is not equal to 54");
+					i = 0;
+				}
+			});
+			$('#inputEditor1').one("ignumericeditorfocus", function () {
+				editorInput.val(12);
+				editorInput.trigger("blur");
+			});
+			$('#inputEditor1').one("ignumericeditorvaluechanged", function () {
+				equal(editorInput = $('#inputEditor1').igNumericEditor("value"), "12", "The value is not as expexted ");
+			});
+			editorInput.trigger("focus");
+			$('#floatEditor').one("ignumericeditorfocus", function () {
+				floatEditorInput.val("12.321654987");
+				floatEditorInput.trigger("blur");
+			});
+			$('#floatEditor').one("ignumericeditorvaluechanged", function () {
+				equal(floatEditorInput = $('#floatEditor').igNumericEditor("value"), "12.3216549", "The value is not as expexted ");
+			});
+			floatEditorInput.trigger("focus");
+
+			$('#doubleEditor').one("ignumericeditorfocus", function () {
+				keyPressChar(51, doubleEditorInput);
+				keyPressChar(54, doubleEditorInput);
+				doubleEditorInput.trigger("blur");
+			});
+			doubleEditorInput.trigger("focus");
+		});
+		
+		testId = "Default Data mode";
+		test(testId, 1, function () {
+			equal($('#defaultDataMode').igNumericEditor("option", "dataMode"), "double", "The default data mode is not set");
+		});
+		
+		testId = "Default selectionOnFocus";
+		test(testId, 2, function () {
+		var containerInput = $('#defaultDataMode').igNumericEditor("field");
+			equal($('#defaultDataMode').igNumericEditor("option", "selectionOnFocus"), "browserDefault", "The selectionOnFocus is not correct");
+			$("#defaultDataMode").igNumericEditor("option", "value", "905");
+			containerInput.focus();
+			containerInput.blur();
+			equal($('#defaultDataMode').igNumericEditor("value"), "905", "The value is not correct");
+		});
+		
+		testId = "Min/Max value";
+		test(testId, 4, function () {
+			var container = $('#minMaxValue'), containerInput = $('#minMaxValue').igNumericEditor("field");
+
+			container.igNumericEditor("value", 9);
+			equal($('#minMaxValue').igNumericEditor("value"), 10, "The minValue is not respected");
+			container.igNumericEditor("value", 100);
+			equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
+			container.igNumericEditor("value", "fail");
+			equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
+
+			container.igNumericEditor("value", null);
+			equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
+
+		});		
+
+		testId = "Scientific spin buttons";
+		test(testId, 2, function () {
+			var container = $('#scientificFormat'),
+				containerInput = container.igNumericEditor("field"),
+				listUp = container.igNumericEditor("spinUpButton"),
+				containerEPlus = $('#scientificFormatEPlus'),
+				listUpEPlus = containerEPlus.igNumericEditor("spinUpButton");
+
+			container.igNumericEditor("value", 0);
+			mousedown(listUp[0]);
+			mouseup(listUp[0]);
+			equal(container.igNumericEditor("value"), "1e+0", "Value is not correct");
+			
+			containerEPlus.igNumericEditor("value", 0);
+			mousedown(listUpEPlus[0]);
+			mouseup(listUpEPlus[0]);
+			equal(containerEPlus.igNumericEditor("value"), "1e+0", "Value is not correct");
+		}); 
+		
+		testId = "Scientific format";
+		test(testId, 3, function () {
+			var mainContainer = $('#scientificFormat'),
+				editorInput = $('#scientificFormat').igNumericEditor("field"), container = $('#clearEditor');
+			editorInput.click();
+			$("#scientificFormat").igNumericEditor("option", "value", "94");
+			container.click();
+			equal(editorInput.val(), "9.4e+1", "Value is not correct");
+
+			//Change scientificFormat to "E"
+			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "E");
+			editorInput.click();
+			$("#scientificFormat").igNumericEditor("option", "value", "22");
+			container.click();
+			equal(editorInput.val(), "2.2E+1", "Value is not correct");
+
+			//Change scientificFormat to invalid value
+
+			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "s");
+			editorInput.click();
+			try {
+				$("#scientificFormat").igNumericEditor("option", "value", "3");
+			} catch (e) {
+				console.log();
+			}
+			container.click();
+			equal(editorInput.val(), "2.2E+1", "Value is not correct");
+		});
+
+		testId = "Group and decimal Separators";
+		test(testId, 5, function () {
+			var val = 1264.89;
+			var containerInput = $('#inputEditor1').igNumericEditor("field");
+			$("#inputEditor1").igNumericEditor("option", "decimalSeparator", ",");
+			$("#inputEditor1").igNumericEditor("option", "groupSeparator", " ");
+			$("#inputEditor1").igNumericEditor("option", "value", 1264.89);
+			equal(containerInput.val(), "1 264,89000", "The decimal value is not correct");
+
+			// For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
+			$("#inputEditor1").igNumericEditor("option", "groupSeparator", "");
+			$("#inputEditor1").igNumericEditor("option", "value", 1264.89);
+			equal($("#inputEditor1").igNumericEditor("displayValue"), "1264,89000", "The decimal value is not correct");
+
+			// For when 208296 gets fixed
+			$("#inputEditor1").igNumericEditor("option", "groupSeparator", ".");
+			$("#inputEditor1").igNumericEditor("option", "value", "1264,89");
+			equal(containerInput.val(), "1.264,89000", "The group separator was not applied is not correct");
+			equal($("#inputEditor1").igNumericEditor("value"), 1264.89, "Decimal value not parsed correctly with decimal ','");
+
+			// For 207448: exception is thrown when trying to spin the value (with modified decimalSeparator)
+			containerInput.focus();
+			keyInteraction(38, containerInput); //arrow up
+			containerInput.blur();
+			equal($("#inputEditor1").igNumericEditor("value"), val + $("#inputEditor1").igNumericEditor("option", "spinDelta"), "Decimal value is not correct after spin");
+		});
+
+		testId = "Multiple decimalSeparators";
+		test(testId, 5, function () {
+		var container = $('#minMaxValue'), containerInput = $('#minMaxValue').igNumericEditor("field"), flag = false;
+			$('#minMaxValue').on("ignumericeditorkeypress", function () {
+				flag = true;
+			});
+			containerInput.val("15.11");
+			containerInput.blur();
+			equal($('#minMaxValue').igNumericEditor("value"), "15.11", "The value is not correct");
+			containerInput.click();
+			keyInteraction(190, containerInput);
+			ok(!flag, "'.' char is typed");
+			container.blur();
+			equal($('#minMaxValue').igNumericEditor("value"), "15.11", "The value is not correct");
+			
+			$('#longEditor').on("ignumericeditorkeypress", function () {
+				flag = true;
+			});
+			containerInput.click();
+			keyInteraction(190, containerInput);
+			ok(!flag, "'.' char is typed");
+			container.blur();
+			equal($('#longEditor').igNumericEditor("value"), "123", "The value is not correct");
+		});
+		
+		testId = "Lists testing";
+		test(testId, 22, function () {
+			var container = $('#listEditor'), list = $('#listEditor').igNumericEditor("dropDownContainer"), opening = false, opened = false, closing = false, closed = false,
+				itemselecting = false, itemselected = false, valueChanging = false, valueChanged = false, textChanged = false,
+				ddButton = container.igNumericEditor("dropDownButton"), item1, editorInput = $('#listEditor input');
+			
+			equal(container.outerWidth(), 200, "The width of the container is not set to 200px");
+			equal(container.outerHeight(), 20, "The heigth of the container is not set to 20px");
+			
+			$('#listEditor').on("ignumericeditordropdownlistopening", function () {
+				opening = true;
+			});
+			$('#listEditor').on("ignumericeditordropdownlistopened", function () {
+				opened = true;
+			});
+			$('#listEditor').on("ignumericeditordropdownlistclosing", function () {
+				closing = true;
+			});
+			$('#listEditor').on("ignumericeditordropdownlistclosed", function () {
+				closed = true;
+			});
+			$('#listEditor').on("ignumericeditordropdownitemselecting", function () {
+				itemselecting = true;
+			});
+			$('#listEditor').on("ignumericeditordropdownitemselected", function () {
+				itemselected = true;
+			});
+			$('#listEditor').on("ignumericeditortextchanged", function (evt, args) {
+				equal(args.text, "1", "Text changed event is not fired with correct new value");
+				textChanged = true;
+			});
+			$('#listEditor').on("ignumericeditorvaluechanging", function (evt, args) {
+				equal(args.newValue, "1", "Value changing event is not fired with correct new value");
+				valueChanging = true;
+			});
+			$('#listEditor').on("ignumericeditorvaluechanged", function (evt, args) {
+				equal(args.newValue, "1", "Value changing event is not fired with correct new value");
+				valueChanged = true;
+			});
+			
+			ddButton.click();
+			ok(opening, "dropDownListOpening event not fired");
+			//check if ddlist opened
+			
+			ok(list.is(":visible"), "The dropDown is not opened");
+
+			item1 = list.children(".ui-igedit-listitem")[0];	
+			
+			//Check the classes
+			$(item1).click();
+			//mouseclick($(item1)[0]);
+			ok($(item1).hasClass("ui-igedit-listitemselected"), "The selected item is missing ui-igedit-listitemselected class applied");
+			ok(closing, "dropDownListClosing event not fired");
+			ok(valueChanging, "ValueChanging event not fired");
+			stop()
+			setTimeout(function () {
+				start()
+				ok(closed, "dropDownListClosed event not fired");
+				ok(valueChanged, "valueChanged event not fired");
+				ok(textChanged, "textChanged event not fired");
+				$('#listEditor').off("ignumericeditorvaluechanging");
+				$('#listEditor').off("ignumericeditorvaluechanged");
+				$('#listEditor').off("ignumericeditortextchanged");
+				closing = false;
+				closed = false;
+				ddButton.click();
+				ddButton.click();
+				ok(closing, "dropDownListClosing event not fired");
+
+				//equal(list.is(":visible"), false,  "The dropDown is not closed");
+				//mouseover(ddButton[0]);
+				ddButton.mouseover();
+
+				ok(ddButton.hasClass("ui-igedit-buttonhover"), "The hovered item is missing ui-igedit-buttonhover class applied");
+
+				//mouseout(ddButton[0]);
+				ddButton.mouseleave();
+				//notOk assert doesn't seem to work in current version of the QUinit we are using. 
+				equal(ddButton.hasClass("ui-igedit-buttonhover"), false, "The unhovered item contains ui-igedit-buttonhover class applied");
+				//mousedown(ddButton[0]);
+				mousedown(ddButton[0]);
+				ok(ddButton.hasClass("ui-igedit-buttonpressed"), "The pressed item is missing ui-igedit-buttonpressed class applied");
+				//mouseup(ddButton[0]);
+				mouseup(ddButton[0]);
+				equal(ddButton.hasClass("ui-igedit-buttonpressed"), false, "The released button item contains ui-igedit-buttonpressed class applied");
+				ddButton.click();
+				ok(list.is(":visible"), "THe dropDown is not opened");
+				closing = false;
+				closed = false;
+				editorInput.trigger("blur");
+				ok(closing, "dropDownListClosing event not fired");
+				stop();
+				setTimeout(function () {
+					start();
+					ok(closed, "dropDownListClosed event not fired");
+					paste(editorInput[0], "1");
+					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");
+				}, 100);
+			}, 100);
+		});		
+		
+		
+		testId = "SetOption";
+		test(testId, 20, function () {
+			var readEditorInput = $("#readonlyEditor").igNumericEditor("field"),
+				readEditorContainer = $("#readonlyEditor").igNumericEditor("editorContainer"),
+				readEditorValueInput = readEditorContainer.find("input:hidden"),
+				disabledEditorInput = $("#disabledEditor").igNumericEditor("field"),
+				disabledEditorInputEditorContainer = $("#disabledEditor").igNumericEditor("editorContainer"),
+				disabledEditorInputEditorValueInput = disabledEditorInputEditorContainer.find("input:hidden"),
+				editor1 = $("#inputEditor1");
+			ok(readEditorInput.prop("readonly"), "readonly attribute is missing");
+			ok(readEditorValueInput.prop("readonly"), "readonly attribute is missing");
+			ok(disabledEditorInput.prop("disabled"), "disabled attribute is missing");
+			ok(disabledEditorInputEditorValueInput.prop("disabled"), "disabled attribute is missing");
+			
+			$("#readonlyEditor").igNumericEditor("option", "disabled", true);
+			ok(readEditorInput.prop("disabled"), "disabled attribute is missing");
+			ok(readEditorValueInput.prop("disabled"), "disabled attribute is missing");
+			$("#readonlyEditor").igNumericEditor("option", "disabled", false);
+			$("#readonlyEditor").igNumericEditor("option", "readOnly", false);
+			equal(readEditorInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(readEditorValueInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(readEditorInput.prop("readonly"), false, "The readonly attribute exists");
+			equal(readEditorValueInput.prop("readonly"), false, "The readonly attribute exists");
+
+			//setting this option to nonExisting element should default to editable
+			equal(readEditorInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(readEditorValueInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(readEditorInput.prop("readonly"), false, "The readonly attribute exists");
+			equal(readEditorValueInput.prop("readonly"), false, "The readonly attribute exists");		
+			$("#readonlyEditor").igNumericEditor("option", "value", 19);
+			equal($("#readonlyEditor").igNumericEditor("option", "value"), 19, "Value not changed");
+			$("#readonlyEditor").igNumericEditor("option", "value", "abcde");
+			equal($("#readonlyEditor").igNumericEditor("option", "value"), "abcde", "Value should be empty string");
+			try {
+				$("#readonlyEditor").igNumericEditor("option", "visibleItemsCount", 3);
+			} catch (e) {
+				console.log("Cannot set dynamically those options");
+			}
+			try {
+				$("#readonlyEditor").igNumericEditor("option", "buttonType", "spin");
+			} catch (e) {
+				console.log("Cannot set dynamically those options");
+			}
+			try {
+				$("#readonlyEditor").igNumericEditor("option", "dropDownMaxHeight", 200);
+			} catch (e) {
+				console.log("Cannot set dynamically those options");
+			}
+			try {
+				$("#readonlyEditor").igNumericEditor("option", "dropDownAttachedToBody", true);
+			} catch (e) {
+				console.log("Cannot set dynamically those options");
+			}
+			// Enable a editor that is not readonly
+			$("#disabledEditor").igNumericEditor("option", "disabled", false);
+			equal(disabledEditorInput.prop("disabled"), false, "The disabled attribute exists");
+			equal(disabledEditorInputEditorValueInput.prop("disabled"), false, "The disabled attribute exists");
+			editor1.igNumericEditor("option", "disabled", true);
+			equal(editor1.igNumericEditor("field").prop("disabled"), true, "The disabled attribute exists");
+			editor1.igNumericEditor("option", "disabled", false);
+			equal(editor1.igNumericEditor("field").prop("disabled"), false, "The disabled attribute exists");
+		});		
+			
+		testId = 'Check width/height';
+		test(testId, 6, function () {
+			var $editor1 = $('#clearEditor'), $editor2 = $("#disabledEditor");
+
+			// Default stlye from CSS
+			equal($editor1.igNumericEditor("editorContainer").css("width"), "200px", "Width is not correct");
+			equal($editor1.igNumericEditor("editorContainer").css("height"), "32px", "Height is not correct");
+
+			$editor1.igNumericEditor("option", "width", 100);
+			$editor1.igNumericEditor("option", "height", 100);
+			equal($editor1.igNumericEditor("editorContainer").css("width"), "100px", "Width is not correct");
+			equal($editor1.igNumericEditor("editorContainer").css("height"), "100px", "Height is not correct");
+
+			// Style set from the options
+			equal($editor2.igNumericEditor("editorContainer").css("width"), "300px", "Width is not correct");
+			equal($editor2.igNumericEditor("editorContainer").css("height"), "70px", "Height is not correct");
+		});
+
+		testId = 'Check excludeKeys';
+		test(testId, 1, function () {
+		var container = $('#excludeKeysEditor'), containerInput = $('#excludeKeysEditor').igNumericEditor("field");
+
+			container.igNumericEditor("value", 123);
+			equal($('#excludeKeysEditor').igNumericEditor("value"), 123, "ExcludeKeys are respected!");
+		});
+
+		testId = 'Check spinDelta scientificFormat';
+		test(testId, 1, function () {
+		var container = $('#spinScientific'), spinUpButton = $('#spinScientific').igNumericEditor("spinUpButton");
+
+
+			$('#spinScientific').igNumericEditor("option", "spinDelta", 1E1);
+			mousedown(spinUpButton[0]);
+			mouseup(spinUpButton[0]);
+			equal($('#spinScientific').igNumericEditor("value"), 10, "The value is not correct");
+		});
+
+		testId = 'Check excludeKeys/includeKeys at runtime';
+		test(testId, 2, function () {
+		var container = $('#spinScientific');
+
+		throws(function () {
+				$('#spinScientific').igNumericEditor("option", "excludeKeys", "2");
+				}, " Error should be thrown");
+		throws(function () {
+				$('#spinScientific').igNumericEditor("option", "includeKeys", "1, 3, 5, 7, 9");
+				}, " Error should be thrown");
+		});
+
+		testId = 'Check decimalSeparator';
+		test(testId, 1, function () {
+		var container = $('#decimalSeparatorEditor'), containerInput = $('#decimalSeparatorEditor').igNumericEditor("field");
+
+			container.igNumericEditor("value", 123.4);
+			equal($('#decimalSeparatorEditor').igNumericEditor("value"), 123.4, "Dot sign not allowed!");
+		});
+
+		testId = 'Check maxDecimals with spinDelta';
+		test(testId, 2, function () {
+			throws(function () {
+				$("#spinDelta1").igNumericEditor({dataMode: "float", maxDecimals: 2, value: "2.124", spinDelta: 2.516});
+				}, " Error should be thrown");
+			equal($('#spinDelta1').igNumericEditor("value"), 2.12, "maxDecimals not respected!");
+		});
+
+		testId = 'Check negative value when using scientificFormat';
+		test(testId, 2, function () {
+			var container = $('#negativeEditor1 input:first');
+
+			equal($('#negativeEditor1').igNumericEditor("value"), -1E+1, "Value is not correct!");
+			equal(container.hasClass("ui-igedit-negative"), true, "Negative class is not applied!");
+		});
+
+		testId = 'Check many digits';
+		test(testId, 1, function () {
+		var container = $('#excludeKeysEditor'), containerInput = $('#excludeKeysEditor').igNumericEditor("field");
+
+			container.igNumericEditor("value", "42.25.51");
+			equal($('#excludeKeysEditor').igNumericEditor("value"), 42.25, "The value is not correct!");
+		});
+
+		testId = 'Check destroy';
+		asyncTest(testId, 4, function () {
+			var $editor1 = $('#clearEditor'), $editor2 = $("#disabledEditor");
+			setTimeout(function () {
+				start();
+				$editor1.igNumericEditor("destroy");
+				$editor2.igNumericEditor("destroy");
+				equal($editor1.data("igNumericEditor"), undefined, 'Error destroying igNumericEditor in a div');
+				equal($editor2.data("igNumericEditor"), undefined, 'Error destroying igNumericEditor in an input');
+				$._data($editor1[0], "events");
+				$._data($editor2[0], "events");
+				ok($editor1.attr("class") === undefined, "Some classes are still not removed");
+				ok($editor2.attr("class") === undefined, "Some classes are still not removed");
+			}, 100);
+		});
+	});
+	function paste(input, newVal) {
+		// create a mouse click event
+		var event = document.createEvent('Event');
+		event.initEvent('paste', true, true);
+		event.target = input;
+		event.srcElement = input;
+		$(input).val(newVal);
+		// send click to element
+		input.dispatchEvent(event);
+	}
+	function testSelection(input, start, end) {
+		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
+		equal(input[0].selectionEnd, end, "The selection doesn't end from index " + end);
+	}
+	function keyInteraction(key, target, special) {
+		keyDownChar(key, target, special);
+		keyPressChar(key, target, special);
+		keyUpChar(key, target, special);
+	}
+	function keyDownChar(key, target, special) {
+		var evt = $.Event("keydown");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function keyPressChar(key, target, special) {
+		var evt = $.Event("keypress");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function keyUpChar(key, target, special) {
+		var evt = $.Event("keyup");
+		evt.keyCode = key;
+		evt.charCode = key;
+		if (special) {
+			evt[special] = true;
+		}
+		target.trigger(evt);
+	}
+	function mouseup(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, false, false, false, false, 0, null);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	function mousedown(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, null, null, false, false, false, false, 0, null);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	function mouseover(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mouseover', true, true, window, 1, 0, 0);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	function mouseout(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('mouseout', true, true, window, 1, 0, 0);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	function mouseclick(element) {
+		// create a mouse click event
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('click', true, true, window, 1, 0, 0);
+
+		// send click to element
+		element.dispatchEvent(event);
+	}
+	</script>
+
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+		<input type="text" id="inputEditor1" />
+		<div id="divEditor1"></div>
+
+
+		<br />
+		<br />
+		<br />
+		<h3>dataModes</h3>
+		<span>dataMode: double (15) </span>
+		<br />
+		<div id="doubleEditor">
+		</div>
+		<br />
+		<span>dataMode: float (7)-> 3.40282347e38 </span>
+		<br />
+		<div id="floatEditor">
+		</div>
+		<br />
+		<span>dataMode: long (+/- 9223372036854775807)</span>
+		<br />
+		<div id="longEditor">
+		</div>
+		<br />
+		<span>dataMode: ulong (18446744073709551615)</span>
+		<br />
+		<div id="ulongEditor">
+		</div>
+		<br />
+		<span>dataMode: int (+/- 2147483647)</span>
+		<br />
+		<div id="intEditor">
+		</div>
+		<br />
+		<span>dataMode: uint (4294967295)</span>
+		<br />
+		<div id="uintEditor">
+		</div>
+		<br />
+		<span>dataMode: short (-/+ 32768)</span>
+		<br />
+		<div id="shortEditor">
+		</div>
+		<br />
+		<span>dataMode: ushort (65535)</span>
+		<br />
+		<div id="ushortEditor">
+		</div>
+		<br />
+		<span>Spin Delta</span>
+		<div id="spinDelta">
+		</div>
+		<br />
+		<input id="spinDeltaInteger" type="text" />
+		<span>all</span>
+		<input id="allEditor" type="text" />
+		<span>atStart</span>
+		<input id="atStartEditor" type="text" />
+		<span>atEnd</span>
+		<input id="atEndEditor" type="text" />
+		<span>default</span>
+		<input id="defaultEditor" type="text" />
+		<br />
+
+		<span>dataMode: sbyte (+/- 126(7))</span>
+		<br />
+		<div id="sbyteEditor">
+		</div>
+		<br />
+		<span>dataMode: byte (256)</span>
+		<br />
+		<div id="byteEditor">
+		</div>
+		<br />
+		<h3>Native Input</h3>
+		<input type="number" />
+
+		<h3>Negative/Positive patterns</h3>
+		
+		<span>negative pattern</span>
+		<br />
+		<div id="negativeEditor">
+		</div>
+		<br />
+
+		<span>positive Pattern</span>
+		<br />
+		<div id="positiveEditor">
+		</div>
+
+		<span>Clear button</span>
+		<br />
+		<div id="clearEditor">
+		</div>
+		<br />
+		<div id="clearEditor1">
+		</div>
+		<br />
+
+		<input id="readonlyEditor" type="text" />
+		<br />
+
+		<span>List Editors</span>
+		<br />
+		<div id="listEditor"></div>
+		<div id="listEditor1"></div>
+		<div id="pasteEditor"></div>
+		<br />
+		<input id="disabledEditor" type="text" name="disabledEditor" tabindex="1" disabled=disabled readonly=readonly value="disabled" /></input>
+		<br />
+		<div id="scientificFormat">
+		</div>
+		<br />
+		<div id="scientificFormatEPlus">
+		</div>
+		<br />
+		<div id="keyDownTest">
+		</div>
+		<br />
+		<span>Default Data Mode Test</span>
+		<br />
+		<div id="defaultDataMode"></div>
+		<br />
+		minMaxValue: 
+		<input id="minMaxValue" type="text" />
+		<br />
+		<input id="convertScientificToNumeric" type="text" />
+		<br />
+		<div id="minMaxDisableSpins"></div>
+
+		<div id="pEditor1"></div>
+		<input id="pEditor2" />
+
+		<div id="currencyEditor1"></div>
+		<br />
+		<div id="currencyEditor2"></div>
+		<br />
+		<div id="excludeKeysEditor"></div>
+		<br />
+		<div id="decimalSeparatorEditor"></div>
+		<br />
+		<div id="spinDelta1"></div>
+		<br />
+		<div id="negativeEditor1"></div>
+		<br />
+		<div id="spinScientific"></div>
+	</div>
+</body>
+</html>
+

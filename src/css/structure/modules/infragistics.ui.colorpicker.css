@@ -1,0 +1,56 @@
+.ui-igColorPicker
+{
+	padding:5px 0;
+}
+
+.ui-igColorPicker 
+{
+    width:200px;
+}
+
+.ui-igColorPicker .igColorPicker-table, 
+.ui-igtoolbar .igColorPicker-table igColorPicker-row, 
+.igColorPicker-table igColorPicker-row {
+	padding: 0;
+	margin: 0;
+	list-style: none outside none;
+	line-height: 1%;
+}
+
+.ui-igColorPicker .igColorPicker-color {
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	border: 1px solid #CDCDCD;
+	margin: 1px;
+	zoom: 1; /* IE7 hasLayout fix */
+    *display: inline;/* IE7 hasLayout fix */
+}
+
+.ui-igColorPicker .igColorPicker-table .ui-colorpicker-standardcolors {
+	margin-top: 10px;
+}
+
+.ui-igColorPicker .igColorPicker-table .selected-color
+{
+	border: 1px dotted black;
+	background-image: url(../images/igHtmlEditor/check.png); 
+	background-position: center center;
+	background-repeat: no-repeat;
+	
+}
+
+.touch .ui-igColorPicker .igColorPicker-color,
+.touchevents .ui-igColorPicker .igColorPicker-color,
+.pointerevents .ui-igColorPicker .igColorPicker-color
+{
+     height:44px;
+     width:44px;
+}
+
+.touch .ui-igColorPicker,
+.touchevents .ui-igColorPicker,
+.pointerevents .ui-igColorPicker
+{
+    width:480px;
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+    <link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+
+    <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+    <style>
+        .ui-menu {
+            width: 200px;
+        }
+
+        nav ul {
+            list-style: none !important;
+            list-style-image: none;
+        }
+
+            nav ul li {
+                float: left;
+                display: inline-block;
+                margin: auto 4px;
+                padding: 2px;
+                border: 1px solid gray;
+            }
+
+                nav ul li:hover {
+                    background-color: #eee;
+                    cursor: pointer;
+                }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+
+            module("Popover specific tests", {
+                setup: function () {
+                },
+                teardown: function () {
+                }
+            });
+
+            //bug 192052
+
+            test("Test popover when initialized on multiple items without ID on the parent", function () {
+                stop();
+                var popover, target;
+                $('nav ul').igPopover({
+                    contentTemplate: function contentFunction() {
+                        return "<p> Dummy content </p>";
+                    },
+                    selectors: "li",
+                    showOn: "click"
+                });
+                setTimeout(function () {
+                    start();
+                    target = $("nav > ul > li > a").first();
+                    target.trigger("click");
+
+                    stop();
+                    setTimeout(function () {
+                        start();
+                        popover = $('nav ul').data().igPopover.popover;
+                        ok(popover.length > 0 && popover.closest(document.documentElement).length > 0 && popover.is(":visible"), "Popover element should exist and should be visible");
+                    }, 100);
+
+                }, 200);
+
+            });
+        });
+    </script>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div style="clear:both;"></div>
+    <div>
+        <nav>
+            <ul>
+                <li> <a>Products</a> </li>
+                <li> <a>Downloads</a> </li>
+                <li> <a>Support</a> </li>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

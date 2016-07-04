@@ -1,0 +1,912 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Mask Editors </title>
+	<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>  
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+		$(document).ready(function () {
+			// Create a editors
+			function loadTestbeds() {
+				$(function () {
+					$("#editor1").igMaskEditor({
+						value: "CCC",
+						width: 400,
+						inputName: "firstName",
+						selectionOnFocus: "selectAll",
+						buttonType: "clear",
+						maxLength: 1,
+						listItems: [1, 2, 3]
+					});
+					$("#editor11").igMaskEditor({
+						value: "CCC",
+						width: 400,
+						inputName: "firstName",
+						selectionOnFocus: "selectAll",
+						buttonType: "clear",
+						maxLength: 1,
+						listItems: [1, 2, 3]
+					});
+					$("#editor2").igMaskEditor({
+						includeKeys: "~!@#$%^&*(){}[]\\'*\"",
+						selectionOnFocus: "browserDefault",
+						inputMask: "NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C"
+					});
+
+					$("#editor3").igMaskEditor({
+						
+					});
+					$("#editor4").igMaskEditor({
+						excludeKeys: "~!@#$%^&*(){}[]\\'*\"",
+					});
+					try {
+						$("#editor5").igMaskEditor({
+							inputName: 'firstName',
+							tabIndex: 2,
+							buttonType: "dropdown",
+							placeHolder: "enter a value",
+						});
+					} catch (e) { }
+					
+					$("#editor6").igMaskEditor({
+						inputMask: "990",
+						//dataMode: "rawText",
+						promptChar: "_",
+						padChar: "~",
+						emptyChar: "?",
+						value: 34
+					});
+
+					$("#editor7").igMaskEditor({
+						buttonType: "clear",
+						width: 300,
+						height: 70
+					});
+
+					var listData = []
+					for (var i = 1; i < 30; i++) {
+						listData.push("item" + i);
+					}
+
+					$('#divEditor').igMaskEditor({
+						width: "380",
+						inputName: "firstName",
+						selectionOnFocus: "selectAll",
+						placeHolder: "Enter Val",
+						inputMask: 'NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C'
+
+					});
+					$('#rawTextEditor').igMaskEditor({
+						width: "380",
+						dataMode: "rawText",
+						inputName: "firstName",
+						selectionOnFocus: "atStart",
+						placeHolder: "Enter Val",
+						emptyChar: "%",
+						inputMask: 'NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C',
+						value: '',
+
+					});
+					$('#rawTextWithRequiredPromptsEditor').igMaskEditor({
+						width: "380",
+						dataMode: "rawTextWithRequiredPrompts",
+						inputName: "firstName",
+						selectionOnFocus: "atEnd",
+						placeHolder: "Enter Val",
+						inputMask: 'NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C',
+						value: '',
+
+					});
+					$('#rawTextWithAllPromptsEditor').igMaskEditor({
+						width: "380",
+						dataMode: "rawTextWithAllPrompts",
+						inputName: "rawTextWithAllPrompts",
+						selectionOnFocus: "browserDefault",
+						placeHolder: "Enter Val",
+						inputMask: 'NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C',
+						value: '',
+
+					});
+					$('#rawTextWithLiteralsEditor').igMaskEditor({
+						width: "380",
+						dataMode: "rawTextWithLiterals",
+						inputName: "rawTextWithLiterals",
+						selectionOnFocus: "selectAll",
+						placeHolder: "Enter Val",
+						inputMask: 'NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C',
+						value: '',
+
+					});
+					$('#rawTextWithRequiredPromptsAndLiteralsEditor').igMaskEditor({
+						width: "380",
+						dataMode: "rawTextWithRequiredPromptsAndLiterals",
+						inputName: "firstName",
+						selectionOnFocus: "selectAll",
+						placeHolder: "Enter Val",
+						inputMask: 'NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C',
+						value: ''
+
+					});
+
+					$('#maskeditorList').igMaskEditor({
+						width: "380",
+						buttonType: "dropdown,spin,clear",
+						listItems: listData,
+						dataMode: "rawTextWithRequiredPromptsAndLiterals",
+						inputName: "firstName",
+						selectionOnFocus: "selectAll",
+						placeHolder: "Enter Val",
+						inputMask: 'NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C',
+						value: '',
+
+					});
+					//#unfilledCharsPromptEditor1
+					$("#unfilledCharsPromptEditor1").igMaskEditor({
+						width: '150',
+						placeHolder: 'Phone',
+						inputMask: '099-999-99',
+						unfilledCharsPrompt: '0',
+					});
+					$("#unfilledCharsPromptEditor2").igMaskEditor({
+						width: '150',
+						placeHolder: 'Phone',
+						inputMask: '099-999-99',
+						unfilledCharsPrompt: '0',
+						value: "45000403"
+					});
+					// rawTextWithRequiredPromptsAndLiteralsEditor
+					$("#getValues").click(function () {
+						var result = "";
+						result += "allTextEidtor: ";
+						result += $('#divEditor').igMaskEditor("value");
+						result += "<br />";
+
+						result += "rawTextEditor: ";
+						result += $('#rawTextEditor').igMaskEditor("value");
+						result += "<br />";
+
+						result += "rawTextWithRequiredPromptsEditor: ";
+						result += $('#rawTextWithRequiredPromptsEditor').igMaskEditor("value");
+						result += "<br />";
+
+						result += "rawTextWithAllPromptsEditor: ";
+						result += $('#rawTextWithAllPromptsEditor').igMaskEditor("value");
+						result += "<br />";
+
+						result += "rawTextWithLiteralsEditor: ";
+						result += $('#rawTextWithLiteralsEditor').igMaskEditor("value");
+						result += "<br />";
+
+						result += "rawTextWithRequiredPromptsAndLiteralsEditor: ";
+						result += $('#rawTextWithRequiredPromptsAndLiteralsEditor').igMaskEditor("value");
+						result += "<br />";
+
+						$("#valuesContainer").empty();
+						$("#valuesContainer").append(result);
+					});
+
+					$("form").submit(function (event) { });
+					$("#toLowerEditor").igMaskEditor({
+						toLower: true
+					});
+					$("#toUpperEditor").igMaskEditor({
+						toUpper: true
+
+					});
+					
+					$("#toUppertoLowerMaskEditor").igMaskEditor({
+						inputMask: "\\C>CC>CC<CC<\\?>C<C>C&"
+
+					});
+					$("#customNullValueEditor").igMaskEditor({
+						allowNullValue: true,
+						nullValue: "Zero",
+						inputMask: "CCCC"
+					});
+
+					
+					$("#nullValueEditor").igMaskEditor({
+						allowNullValue: true,
+						inputMask: "CCCC"
+
+					});
+					$("#notNullValueEditor").igMaskEditor({
+						allowNullValue: false,
+						inputMask: "CC&&",
+
+					});
+					$("#validInEditModeEditor").igMaskEditor({
+						inputMask: "&&00"
+					});
+					$("#pasteHandlerInput").igMaskEditor({
+						inputMask: "CCR00"
+					});
+					$("#pasteHandlerInput1").igMaskEditor({
+						inputMask: "CCR00"
+					});
+					
+					$("#keydownEditor1").igMaskEditor({
+						inputMask: ">?CC",
+						value: "VAL"
+					});
+					$("#keydownEditor2").igMaskEditor({
+						inputMask: "<ACC",
+						value: "val"
+					});
+					$("#keydownEditor3").igMaskEditor({
+						inputMask: "###"
+						
+					});
+				});
+			}
+			initialized = false;
+			module("Mask Editor", {
+				setup: function () {
+					//pause testing until editors are initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 100);
+						initialized = true;
+					}
+				},
+				teardown: function () {
+				}
+			});
+
+			var testId = 'Mask Editor initialization.';
+			test(testId, 3, function () {
+				ok(typeof ($("#editor1").igMaskEditor) === 'function', "Editors Script is not loaded");
+				ok($('#editor1').data("igMaskEditor") !== undefined, 'Error creating igMaskEditor in an input');
+				equal($('#editor1').igMaskEditor("value"), "CCC       ", 'The initial value is not as expexted');
+
+			});
+
+
+			var testId = 'Mask Editor test typing.';
+			test(testId, 9, function () {
+				var editor = $('#editor4');
+
+				editor.igMaskEditor("setFocus");
+				editor.igMaskEditor("field").val("a_________");
+				checkMaskState(editor, 65, "a_________", "a", "a         ");
+
+				editor.igMaskEditor("setFocus");
+				editor.igMaskEditor("field").val("ab________");
+				checkMaskState(editor, 66, "ab________", "ab", "ab        ");
+
+				editor.igMaskEditor("setFocus");
+				editor.igMaskEditor("field").val("abc_______");
+				checkMaskState(editor, 67, "abc_______", "abc", "abc       ");
+			});
+
+			testId = "Events testing";
+			test(testId, 4, function () {
+				//id=editor4
+				var $editor6 = $('#editor6'),
+					textChanged = 0,
+					editorInput = $editor6.igMaskEditor("field"),
+					text;
+
+				editorInput.on("keypress.test", function (e) {
+					var cursor = this.selectionStart;
+					// mask validation resets value and selects the char to be replaced by the press:
+					this.value = this.value.slice(0, this.selectionStart) + String.fromCharCode(e.charCode) + this.value.substr(this.selectionEnd);
+					// push cursor to next position
+					this.setSelectionRange(cursor + 1, cursor + 1);
+				});
+				$editor6.igMaskEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					// move to first position (don't replace prev. value)
+					editorInput[0].setSelectionRange(0,0);
+					$editor6.on("igmaskeditortextchanged", function (evt, args) {
+						equal(args.text, text, "Text changed event is not fired with correct new value");
+						textChanged++;
+					});
+					start();
+					text = editorInput.val();
+					text = text.substr(0, textChanged) + "1" + text.substr(textChanged + 1, text.length);
+					keyInteraction(text.charCodeAt(textChanged), editorInput);
+					equal(textChanged, 1, "textChanged event not fired");
+					text = text.substr(0, textChanged) + "2" + text.substr(textChanged + 1, text.length);
+					keyInteraction(text.charCodeAt(textChanged), editorInput);
+					equal(textChanged, 2, "textChanged event not fired");
+					$editor6.off("igmaskeditortextchanged");
+					editorInput.off("keypress.test");
+					editorInput.blur();
+				}, 200);
+			});
+
+			var testId = 'Mask Editor Options.';
+			test(testId, 16, function () {
+				var editor = $('#editor1');
+
+				editor.igMaskEditor("option", "placeholder", "Enter Val");
+
+				throws(function () {
+					editor.igMaskEditor("option", "inputMask", "NM234K\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C");
+				}, " Error should be thrown");
+
+				editor = $('#editor4');
+
+				editor.igMaskEditor("option", "dataMode", "rawText");
+				editor.igMaskEditor("setFocus");
+				editor.igMaskEditor("field").val("abcd______");
+				checkMaskState(editor, 67, "abcd______", "abcd", "abcd");
+
+				editor.igMaskEditor("option", "dataMode", "rawTextWithRequiredPrompts");
+				editor.igMaskEditor("setFocus");
+				editor.igMaskEditor("field").val("abcd______");
+				checkMaskState(editor, 67, "abcd______", "abcd", "abcd");
+
+				editor.igMaskEditor("option", "dataMode", "rawTextWithAllPrompts");
+				editor.igMaskEditor("setFocus");
+				editor.igMaskEditor("field").val("abcd______");
+				checkMaskState(editor, 67, "abcd______", "abcd", "abcd      ");
+
+				editor.igMaskEditor("option", "dataMode", "rawTextWithLiterals");
+				editor.igMaskEditor("setFocus");
+				editor.igMaskEditor("field").val("abcd______");
+				checkMaskState(editor, 67, "abcd______", "abcd", "abcd");
+
+				editor.igMaskEditor("option", "dataMode", "rawTextWithRequiredPromptsAndLiterals");
+				editor.igMaskEditor("setFocus");
+				editor.igMaskEditor("field").val("abcd______");
+				checkMaskState(editor, 67, "abcd______", "abcd", "abcd");
+
+			});
+
+			testId = 'Check width/height';
+			test(testId, 6, function () {
+				var $editor1 = $('#editor1'), $editor2 = $("#editor7");
+
+				// Default stlye from CSS
+				equal($editor1.igMaskEditor("editorContainer").css("width"), "400px", "Width is not correct");
+				equal($editor1.igMaskEditor("editorContainer").css("height"), "32px", "Height is not correct");
+
+				$editor1.igMaskEditor("option", "width", 100);
+				$editor1.igMaskEditor("option", "height", 100);
+				equal($editor1.igMaskEditor("editorContainer").css("width"), "100px", "Width is not correct");
+				equal($editor1.igMaskEditor("editorContainer").css("height"), "100px", "Height is not correct");
+
+				// Style set from the options
+				equal($editor2.igMaskEditor("editorContainer").css("width"), "300px", "Width is not correct");
+				equal($editor2.igMaskEditor("editorContainer").css("height"), "70px", "Height is not correct");
+			});
+
+			var testId = 'Mask Editor Methods.';
+			test(testId, 9, function () {
+				var editor = $('#editor11');
+
+				editor.igMaskEditor("field").focus();
+				QUnit.stop();
+				setTimeout(function () {
+					QUnit.start();
+					var text = editor.igMaskEditor("getSelectedText");
+					equal(text, "CCC_______", "Selected text is not correct");
+					var start = editor.igMaskEditor("getSelectionStart");
+					var end = editor.igMaskEditor("getSelectionEnd");
+					equal(start, 0, "Selection start is correct");
+					equal(end, 10, "Selection start is correct");
+
+					var btn = editor.igMaskEditor("clearButton");
+					btn.click();
+					checkMaskState(editor, 0, "__________", "", "");
+	
+					editor.igMaskEditor("field").blur();
+					text = editor.igMaskEditor("getSelectedText");
+					equal(text, "", "Selected text is not correct");
+					
+					editor.igMaskEditor("setFocus");
+					stop();
+					setTimeout(function () {
+						QUnit.start();
+						editor.igMaskEditor("insert", "abc");
+						editor.igMaskEditor("select", 0, 3);
+						text = editor.igMaskEditor("getSelectedText");
+						// TODO: The problem is in the test timeout, not the control. Fix later!!!
+						//equal(text, "abc", "Selected text is not correct");
+						start = editor.igMaskEditor("getSelectionStart");
+						end = editor.igMaskEditor("getSelectionEnd");
+						equal(start, 0, "Selection start is correct");
+						equal(end, 3, "Selection start is correct");
+					}, 100);
+				}, 200);
+			});
+			testId = "isValid in edit mode"
+			test(testId, 4, function () {
+				$("#validInEditModeEditor").igMaskEditor("field").focus();
+				$("#validInEditModeEditor").data("igMaskEditor")._enterEditMode();
+				ok(!$("#validInEditModeEditor").igMaskEditor("isValid"), "Not all required fields are filled");
+				$("#validInEditModeEditor").igMaskEditor("field").val("zz__");
+				ok(!$("#validInEditModeEditor").igMaskEditor("isValid"), "Not all required fields are filled");
+				$("#validInEditModeEditor").igMaskEditor("field").val("zz99");
+				ok($("#validInEditModeEditor").igMaskEditor("isValid"), "All required fields are filled");
+				$("#validInEditModeEditor").igMaskEditor("field").blur();
+				$("#validInEditModeEditor").data("igMaskEditor")._exitEditMode();
+				ok($("#validInEditModeEditor").igMaskEditor("isValid"), "All required fields are filled");
+			});
+			testId = 'mask editor toLower/toUpper on paste';
+			test(testId, 16, function () {
+				//$("#toUpperEditor")
+				var field = $("#toUpperEditor").igMaskEditor("field");
+				$("#toUpperEditor").data("igMaskEditor")._enterEditMode();
+				$("#toUpperEditor").data("igMaskEditor")._insert("nnAA");
+				equal(field.val(), "NNAA______", "Text is not NNAA______");
+				$("#toUpperEditor").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#toUpperEditor').igMaskEditor("value"), "NNAA      ", "Value is not NNAA");
+				$("#toUpperEditor").data("igMaskEditor")._exitEditMode();
+				equal($('#toUpperEditor').igMaskEditor("displayValue"), "NNAA", "Value is not NNAA");
+
+				field = $("#toLowerEditor").igMaskEditor("field");
+				$("#toLowerEditor").data("igMaskEditor")._enterEditMode();
+				$("#toLowerEditor").data("igMaskEditor")._insert("nnAA");
+				equal(field.val(), "nnaa______", "Text is not nnaa______");
+				$("#toLowerEditor").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#toLowerEditor').igMaskEditor("value"), "nnaa      ", "Value is not NNAA");
+				$("#toLowerEditor").data("igMaskEditor")._exitEditMode();
+				equal($('#toLowerEditor').igMaskEditor("displayValue"), "nnaa", "Value is not NNAA");
+
+
+				
+				field = $("#toUppertoLowerMaskEditor").igMaskEditor("field");
+				
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._enterEditMode();
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("nnAAMMfRu");
+				equal(field.val(), "CNNAAmm?FrU_", "Text is not CNNAAmm?FrU_");
+
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "CNNAAmm?FrU ", "Value is not CNNAAmm?FrU ");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CNNAAmm?FrU ", "displayValue is not CNNAAmm?FrU ");
+
+				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "dataMode", "rawTextWithRequiredPrompts");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._enterEditMode();
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("fnAAMMfRu");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "FNAAmmFrU ", "Value is not FNAAmmFrU ");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CFNAAmm?FrU ", "displayValue is not CFNAAmm?FrU");
+
+
+				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "dataMode", "rawTextWithRequiredPromptsAndLiterals");
+				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "padChar", "*");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._enterEditMode();
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("hnAAMMfRu");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "CHNAAmm?FrU ", "Value is not HNAAmmFrU ");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CHNAAmm?FrU*", "displayValue is not CHNAAmm?FrU*");
+
+				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "padChar", " ");
+				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "dataMode", "nonExisting");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._enterEditMode();
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("nnAAMMfRu");
+				equal(field.val(), "CNNAAmm?FrU_", "Text is not CNNAAmm?FrU_");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "CNNAAmm?FrU ", "Value is not CNNAAmm?FrU ");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CNNAAmm?FrU ", "displayValue is not CNNAAmm?FrU ");
+
+			});
+			testId = 'mask editor _update -> Null Value';
+			test(testId, 9, function () {
+				$("#customNullValueEditor").data("igMaskEditor")._updateValue(null);
+				equal($('#customNullValueEditor').igMaskEditor("value"), "Zero", "Value is not Zero ");
+				equal($("#customNullValueEditor").data("igMaskEditor")._valueInput.val(), "Zero", "Hidden Input value is not Zero ");
+				equal($('#customNullValueEditor').igMaskEditor("displayValue"), "Zero", "displayValue is not Zero");
+				//nullValueEditor
+				$("#nullValueEditor").data("igMaskEditor")._updateValue(null);
+				equal($('#nullValueEditor').igMaskEditor("value"), null, "Value is not null ");
+				equal($("#nullValueEditor").data("igMaskEditor")._valueInput.val(), "", "Hidden Input value is not Zero ");
+				equal($('#nullValueEditor').igMaskEditor("displayValue"), "", "displayValue is not Zero");
+				//notNullValueEditor
+				$("#notNullValueEditor").data("igMaskEditor")._updateValue(null);
+				equal($('#notNullValueEditor').igMaskEditor("value"), "", "Value is not null ");
+				equal($("#notNullValueEditor").data("igMaskEditor")._valueInput.val(), "", "Hidden Input value is not Zero ");
+				equal($('#notNullValueEditor').igMaskEditor("displayValue"), "", "displayValue is not Zero");
+
+			});
+			testId = 'mask editor Coverage part 1';
+			test(testId, 11, function () {
+				//
+				$("#pasteHandlerInput").igMaskEditor("field").focus();
+				paste($("#pasteHandlerInput").igMaskEditor("field")[0], "aaR15");
+				equal($('#pasteHandlerInput').igMaskEditor("field").val(), "aaR15", "The value is aaR15");
+				$('#pasteHandlerInput').igMaskEditor("field").blur();
+				$("#pasteHandlerInput").igMaskEditor("field").focus();
+				$('#pasteHandlerInput').igMaskEditor("option", "revertIfNotValid", true);
+				$('#pasteHandlerInput').data("igMaskEditor")._processInternalValueChanging("as;dlfkasdfl;kjasf");
+				equal($('#pasteHandlerInput').igMaskEditor("field").val(), "aaR15", "The value is aaR15");
+				$('#pasteHandlerInput').igMaskEditor("option", "revertIfNotValid", false);
+				$("#pasteHandlerInput").igMaskEditor("field").focus();
+				$('#pasteHandlerInput').data("igMaskEditor")._processInternalValueChanging("as;dlfkasdfl;kjasf");
+				equal($('#pasteHandlerInput').igMaskEditor("field").val(), "__R__", "The field should empty mask with prompts");
+				equal($('#pasteHandlerInput').igMaskEditor("value"), "", "The value should be empty");
+
+				equal($('#pasteHandlerInput').data("igMaskEditor")._valueFromText("bbR23"), "bbR23", "The value is bb23");
+				ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("zz23"), "The value zz23 is valid");
+				ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("23Rsd"), "The value 23Rsd is not valid");
+				ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask(""), "The value zz23 is valid");
+				ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("ffR23"), "The value ffdd is valid");
+				ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateRequiredPrompts(""), "The value \"\" is not valid");
+				$("#pasteHandlerInput1").igMaskEditor("field").focus();
+				$("#pasteHandlerInput1").data("igMaskEditor")._setCursorPosition(2);
+				var evt = $.Event("keydown");
+				evt.keyCode = 50;
+				evt.charCode = 50;
+				ok($('#pasteHandlerInput1').data("igMaskEditor")._validateKey(evt), "2 is allowed");
+			});
+			testId = 'mask editor triggerKeyDown';
+			test(testId, 9, function () {
+				//keydownEditor1
+				$("#keydownEditor1").igMaskEditor("field").focus().select();
+				keyInteraction(8, $("#keydownEditor1").igMaskEditor("field"));
+				keyInteraction(8, $("#keydownEditor1").igMaskEditor("field"));
+				equal($('#keydownEditor1').igMaskEditor("field").val(), "___", "The field should empty mask with prompts");
+				
+				keyInteraction(86, $("#keydownEditor1").igMaskEditor("field"));
+				keyInteraction(69, $("#keydownEditor1").igMaskEditor("field"));
+				keyInteraction(82, $("#keydownEditor1").igMaskEditor("field"));
+				equal($('#keydownEditor1').igMaskEditor("field").val(), "VER", "The field should be VER");
+				$("#keydownEditor2").igMaskEditor("field").focus().select();
+				keyInteraction(46, $("#keydownEditor2").igMaskEditor("field"));
+				keyInteraction(46, $("#keydownEditor2").igMaskEditor("field"));
+				equal($('#keydownEditor2').igMaskEditor("field").val(), "___", "The field should empty mask with prompts");
+				$('#keydownEditor2').data("igMaskEditor")._setCursorPosition(0);
+				keyInteraction(86, $("#keydownEditor2").igMaskEditor("field"));
+				keyInteraction(69, $("#keydownEditor2").igMaskEditor("field"));
+				keyInteraction(82, $("#keydownEditor2").igMaskEditor("field"));
+				equal($('#keydownEditor2').igMaskEditor("field").val(), "ver", "The field should be ver");
+				$("#keydownEditor3").igMaskEditor("field").focus().select();
+				keyInteraction(8, $("#keydownEditor3").igMaskEditor("field"));
+				equal($('#keydownEditor3').igMaskEditor("field").val(), "___", "The field should be ___");
+				$('#keydownEditor2').data("igMaskEditor")._setCursorPosition(0);
+				keyInteraction(86, $("#keydownEditor3").igMaskEditor("field"));
+				equal($('#keydownEditor3').igMaskEditor("field").val(), "___", "The field should be ___");
+				var evt = $.Event("keydown");
+				evt.keyCode = 50;
+				evt.charCode = 50;
+				ok($('#keydownEditor3').data("igMaskEditor")._validateKey(evt), "2 is allowed");
+				var ev = $.Event("keydown");
+				ev.keyCode = 65;
+				ev.charCode = 65;
+				ok(!$('#keydownEditor3').data("igMaskEditor")._validateKey(ev), "a is not allowed allowed");
+				$("#keydownEditor3").igMaskEditor("field").blur();
+
+
+				ok(!$("#editor6").igMaskEditor("isValid"), "The value is not valid");
+			});
+
+			testId = "mask editor - unsupported methods and options"
+			test(testId, 14, function () {
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("option", "excludeKeys", "abe")
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
+				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("option", "includeKeys", "abe")
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
+				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+				//Unsupported Methods
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("dropDownContainer");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("showDropDown");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("hideDropDown");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("dropDownButton");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("spinUpButton");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("spinDownButton");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("dropDownVisible");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("findListItemIndex");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("selectedListIndex");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("getSelectedListItem");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("spinUp");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+
+				throws(function () {
+					$('#keydownEditor3').igMaskEditor("spinDown");
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.maskEditorNoSuchMethod) > -1;
+				}, $.ig.Editor.locale.maskEditorNoSuchMethod + "not shown");
+			});
+			testId = "unfilled Chars Prompt";
+			test(testId, 6, function () {
+				//unfilledCharsPromptEditor1
+				//keyInteraction(key, target, special) {
+				var editorInput = $("#unfilledCharsPromptEditor1").igMaskEditor("field");
+				editorInput.focus().select();
+				keyInteraction(48, editorInput);
+				equal(editorInput.val(), "000-000-00", "The value should be 000-000-00");
+				editorInput.blur();
+				equal(editorInput.val(), "0--", "The value should be 0--");
+				editorInput = $("#unfilledCharsPromptEditor2").igMaskEditor("field");
+				equal(editorInput.val(), "450-004-03", "The value should be 450-004-03");
+				equal(editorInput.igMaskEditor("value"), "450-004-03", "The value should be 450-004-03");
+				$("#unfilledCharsPromptEditor2").igMaskEditor("value", "053-400-03");
+				equal(editorInput.val(), "053-400-03", "The value should be 053-400-03");
+				equal(editorInput.igMaskEditor("value"), "053-400-03", "The value should be 053-400-03");
+			});
+		});
+
+		function checkMaskState(editor, keyCode, editValue, displayValue, value) {
+			keyInteraction(65, editor);
+			equal(editor.igMaskEditor("field").val(), editValue, "Edit value is incorrect");
+			editor.igMaskEditor("field").blur();
+			equal(editor.igMaskEditor("displayValue"), displayValue, "Display value is incorrect");
+			equal(editor.igMaskEditor("value"), value, "Value that needs to be sent to the server is incorrect");
+		}
+
+		function paste(input, newVal) {
+			// create a mouse click event
+			var event = document.createEvent('Event');
+			event.initEvent('paste', true, true);
+			event.target = input;
+			event.srcElement = input;
+			$(input).val(newVal);
+			// send click to element
+			input.dispatchEvent(event);
+		}
+		function fireKeyEvent(target, type, keyCode) {
+			var evt = document.createEvent('KeyboardEvent');
+
+			// Chromium Hack
+			Object.defineProperty(evt, 'keyCode', {
+				get: function () {
+					return this.keyCodeVal;
+				}
+			});
+			Object.defineProperty(evt, 'which', {
+				get: function () {
+					return this.keyCodeVal;
+				}
+			});
+			//Object.defineProperty(evt, 'charCode', {
+			//	get: function () {
+			//		return String.fromCharCode(this.keyCodeVal);
+			//	}
+			//});
+
+			if (evt.initKeyboardEvent) {
+				evt.initKeyboardEvent(type, true, true, document.defaultView, false, false, false, false, keyCode, keyCode);
+			} else {
+				evt.initKeyEvent(type, true, true, document.defaultView, false, false, false, false, keyCode, 0);
+			}
+
+			evt.keyCodeVal = keyCode;
+
+			if (evt.keyCode !== keyCode) {
+				alert("keyCode mismatch " + evt.keyCode + "(" + evt.which + ")");
+			}
+
+			target.dispatchEvent(evt);
+		}
+		function keyInteraction(key, target, special) {
+			keyDownChar(key, target, special);
+			keyPressChar(key, target, special);
+			keyUpChar(key, target, special);
+		}
+		function keyDownChar(key, target, special) {
+			var evt = $.Event("keydown");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function keyPressChar(key, target, special) {
+			var evt = $.Event("keypress");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function keyUpChar(key, target, special) {
+			var evt = $.Event("keyup");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function mouseInteraction(type, element) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent(type, true, true, window, 1, 0, 0);
+			if (type === "mousemove") {
+				event.pageX = 100;
+				event.pageY = 100;
+			}
+			// send click to element
+			element.dispatchEvent(event);
+
+		}
+		function mouseup(element) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, false, false, false, false, 0, null);
+
+			// send click to element
+			element.dispatchEvent(event);
+		}
+		function mousedown(element) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, null, null, false, false, false, false, 0, null);
+
+			// send click to element
+			element.dispatchEvent(event);
+		}
+	</script>
+
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+		<input type="text" id="editor1" />
+		<input type="text" id="editor11" />
+		<div type="text" id="editor2"></div>
+		<div type="text" id="editor3" ></div>
+		<input type="text" id="editor4" />
+		<span type="text" id="editor5" ></span>
+		<input type="text" id="editor6" />
+		<div id="editor7" type="text" name="disabledEditor" tabindex="1" disabled=disabled disabled=disabled readonly=readonly value="disabled"></div>
+
+
+		<form id="registerSubmit" method="post">
+			<span>Div Editor Mask: NMK\\AOIU\\CY0TGFC9\\A&:C\\A\\L\\a\\9C<br /> allText</span>
+			<br />
+			<div id="divEditor">
+			</div>
+			<br />
+			<span>Mask: NMK\\AOIU\\CY0TGFC9\\A&:C\\A\\L\\a\\9C <br /> rawText</span>
+			<br />
+			<div id="rawTextEditor"></div>
+			<br />
+			<br />
+			<span>Mask: NMK\\AOIU\\CY0TGFC9\\A&:C\\A\\L\\a\\9C <br /> rawTextWithRequiredPrompts</span>
+			<br />
+			<div id="rawTextWithRequiredPromptsEditor"></div>
+			<br />
+
+			<br />
+			<span>Mask: NMK\\AOIU\\CY0TGFC9\\A&:C\\A\\L\\a\\9C <br /> rawTextWithAllPrompts</span>
+			<br />
+			<div id="rawTextWithAllPromptsEditor"></div>
+			<br />
+
+			<br />
+			<span>Mask: NMK\\AOIU\\CY0TGFC9\\A&:C\\A\\L\\a\\9C <br /> rawTextWithLiterals</span>
+			<br />
+			<div id="rawTextWithLiteralsEditor"></div>
+			<br />
+			<br />
+			<span>Mask: NMK\\AOIU\\CY0TGFC9\\A&:C\\A\\L\\a\\9C <br /> rawTextWithRequiredPromptsAndLiterals</span>
+			<br />
+			<div id="rawTextWithRequiredPromptsAndLiteralsEditor"></div>
+			<br />
+			<input type="button" value="GetValues" id="getValues" />
+
+			<br />
+			<span>Values:</span>
+			<br />
+			<div id="valuesContainer"></div>
+			<br />
+			<br />
+			<br />
+			<br />
+			<input type="text" id="toLowerEditor" />
+			<input type="text" id="toUpperEditor" />
+			<input type="text" id="toUppertoLowerMaskEditor" />
+
+			<br />
+			<br />
+			<input type="text" id="nullValueEditor" />
+			<input type="text" id="customNullValueEditor" />
+			<input type="text" id="notNullValueEditor" />
+			<!--
+		<input id="readonlyManipulator" type="checkbox" value="ReadOnly" /><label>ReadOnly</label>
+		<input id="disabledManipulator" type="checkbox" value="Disabled" /><label>disabled</label>-->
+			<input type="text" id="validInEditModeEditor" />
+			<input type="text" id="pasteHandlerInput"/>
+			<input type="text" id="pasteHandlerInput1" />
+			<input type="text" id="keydownEditor1" />
+			<input type="text" id="keydownEditor2" />
+			<input type="text" id="keydownEditor3" />
+			<input type="text" id="unfilledCharsPromptEditor1" />
+			<input type="text" id="unfilledCharsPromptEditor2" />
+		<input type='submit' value="Submit" />
+		</form>
+	</div>
+</body>
+</html>
+

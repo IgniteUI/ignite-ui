@@ -1,0 +1,173 @@
+.ui-igtree {
+	list-style: none;
+	overflow: auto;
+	padding-bottom: 0.2em;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+.ui-igtree ul { 
+    list-style: none;
+	padding-left: 0;
+	margin-left: 0;
+}
+.ui-igtree .ui-igtree-root { 
+	padding-left: 0;
+	margin-left: 0;
+}
+.ui-igtree-root { 
+	padding-left: 0;
+	margin-left: 0;
+}
+.ui-igtree li {
+	position:relative;
+	line-height:1.9em;
+	padding-top:0.1em;
+	padding-bottom:0.1em;
+}
+.ui-igtree-collection {
+	white-space: nowrap;
+}
+.ui-igtree-expander {
+	position: absolute;
+	left:0.8em;
+	top:0.8em;
+	margin-top: -8px;
+	margin-left: -8px;
+	width:16px;
+	height:16px;
+}
+.ui-igtree a { 
+    text-decoration: none;
+    padding:1px 3px;
+}
+.ui-igtree a.ui-state-hover, 
+.ui-igtree a.ui-state-active, 
+.ui-igtree a.ui-state-focus 
+{
+    padding:0 2px;/*compensating for the 1px borders of these other states*/
+}
+.ui-igtree li a:focus, .ui-igtree li a:active {
+    outline:0 none;
+}
+.ui-igtree-parentnode
+{
+    padding-left: 1.9em;
+}
+.ui-igtree .ui-igtree-parentnode>ul 
+{
+    margin-top:0.1em;
+    margin-bottom:0.1em;
+}
+
+.ui-igtree img 
+{
+    padding-right:0.2em;
+	vertical-align: baseline;
+}
+.ui-igtree .ui-igcheckbox-normal 
+{
+    position:relative;
+    height: 1.6em;
+	width: 1.6em;
+	vertical-align:top;
+	margin-top:1px;
+	margin-right:0.4em;
+	font-size:0.8em;
+}
+
+.ui-igtree .ui-igcheckbox-small 
+{
+    height:13px;
+    width:13px;
+    position:relative;
+    vertical-align: baseline;
+}
+
+.ui-state-hidden {
+	display: none;
+	visibility: hidden;
+}
+
+.ui-igtree-node-contents {
+}
+
+.ui-igtree-node-haschildren {
+	margin-left: -1.9em;
+}
+
+.ui-igtree-node-nochildren {
+	margin-left: 1.9em; 
+}
+
+.ui-igtree-checkbox {
+	display: block;
+	width: 15px;
+	height: 15px;
+	margin-top: 6px;
+	line-height: 15px;
+	overflow: hidden;
+    background-repeat: no-repeat;
+    cursor:pointer;
+}
+.ui-igcheckbox-normal-on {
+	position:relative;
+	top:50%;
+	left:50%;
+	margin-top:-8px;
+	margin-left:-8px;
+}
+.ui-igcheckbox-normal-off {
+	width:1.6em;
+	height:1.6em;
+}
+
+/*////////////////////////////////// Drag and Drop CSS ////////////////////////////////////////////////*/
+
+.ui-igtree-dropindicator 
+{
+    clear:left;
+    float:left;
+    overflow:visible;
+    white-space:nowrap;
+	/* K.D. September 3rd, 2012 Bug #118026 The drag markup is positioned underneath the cursor for nodes without children. */
+	margin-left:35px;
+}
+
+.ui-igtree-dropindicator .ui-icon
+{
+    position:relative;
+    float:left;
+    margin-top:-8px;
+    margin-right: 0.3em;
+    top:0.9em;
+}
+
+
+.ui-igtree-dropindicator p
+{
+    line-height: 1.8em;
+    margin: 0;
+    padding: 0 0.7em;
+}
+
+.ui-igtree-insertline.ui-state-default 
+{
+    height: 0; 
+    border-width:1px 0 0; 
+    background: transparent none;
+    margin:-1px 0 0;
+	width: 50%;
+	position:relative;
+	bottom:-0.1em;
+}
+
+
+/* Touch friendly */
+.touch .ui-igtree,
+.touchevents .ui-igtree,
+.pointerevents .ui-igtree
+{
+    font-size: 1.3em;
+}

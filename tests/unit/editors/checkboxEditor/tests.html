@@ -1,0 +1,355 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Common </title>
+	<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>   
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script> 
+	
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	$(document).ready(function () {
+		// Create a editors
+		var errorSpan;
+		function loadTestbeds() {
+			$(function () {
+			    $("#chkInput").igCheckboxEditor({ tabIndex: 2 });
+			    $("#chkInput2").igCheckboxEditor();
+			    $("#chkInput3").igCheckboxEditor({
+			        value: "accpetedRules",
+			        valueChanged: function (evt, ui) {
+			            // t/f	t/f value
+			            $("#chkInput3Row > td").eq(0).text(ui.owner._valueInput[0].checked);
+			            $("#chkInput3Row > td").eq(1).text(ui.newState);
+			            $("#chkInput3Row > td").eq(2).text(ui.newValue);
+			        }
+			    });
+				$("#chkContainer").igCheckboxEditor({ checked: true, value: "Agree", inputName: "agree", tabIndex: 1 });
+				$("#chkSpan").igCheckboxEditor();
+				$("#chkInputche").igCheckboxEditor({
+					width: 64, height: 48, tabIndex: 0,
+					valueChanging: function (evts, args) {
+						return false;
+					}
+			});
+				try {
+					$("#chkLabel").igCheckboxEditor();
+				} catch (e) {
+					errorSpan = e;
+		}
+				$("#chkStyled").igCheckboxEditor({ iconClass: "ui-icon-close", checked: true });
+				$("#chkAttr").igCheckboxEditor();
+			});
+		}
+		initialized = false;
+		module("Checkbox Editor", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 100);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+		
+		var testId = '[ID1] Checkbox Editor initialization.';
+		test(testId, 9, function () {
+			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'), $chkLabel = $('#chkLabel'), $chkSpan = $('#chkSpan');
+			equal(typeof ($chkInput.igCheckboxEditor), 'function', "Editors Scripts not loaded");
+			notStrictEqual($chkInput.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in an INPUT');
+			notStrictEqual($chkContainer.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a DIV');
+			notStrictEqual($chkSpan.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a SPAN');
+			equal($chkInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
+			equal(errorSpan, $.ig.Editor.locale.instantiateCheckBoxErrMsg, "Error message is wrong");
+			equal($chkInput.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
+			equal($chkContainer.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
+			equal($chkContainer.igCheckboxEditor("inputName"), "agree", 'Input name shoud be set');
+		});
+
+		testId = '[ID2] Check for stlye';
+		test(testId, 12, function () {
+			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'),
+				css = $chkInput.data("igCheckboxEditor").css;
+
+			ok($chkContainer.hasClass(css.containerChecked), "Checked container style not applied");
+			ok($chkContainer.hasClass(css.container.split(" ")[0]), "Container classes not applied");
+			ok($chkContainer.hasClass(css.container.split(" ")[1]), "Container classes not applied");
+			ok($chkContainer.hasClass(css.container.split(" ")[2]), "Container classes not applied");
+			$chkContainer.mouseover();
+			ok($chkContainer.hasClass(css.hover), "Hover class not applied");
+			$chkContainer.mousedown();
+			ok($chkContainer.hasClass(css.active), "Active class not applied");
+			ok($chkContainer.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not applied");
+			ok($chkContainer.hasClass(css.containerChecked), "Checked class not applied on the container");
+			$chkContainer.mouseup();
+			$chkContainer.mouseout();
+
+			$chkContainer.igCheckboxEditor("toggle");
+			ok(!$chkContainer.hasClass(css.containerChecked), "Checked class not removed form the container");
+			$chkContainer.igCheckboxEditor("toggle");
+
+			$chkInput.mouseover();
+			ok($chkInput.data("igCheckboxEditor")._editorContainer.hasClass(css.hover), "Hover class not applied");
+			$chkInput.mousedown();
+			ok($chkInput.data("igCheckboxEditor")._editorContainer.hasClass(css.active), "Active class not applied");
+			ok($chkInput.data("igCheckboxEditor")._editorContainer.hasClass(css.focus), "Focus class not applied");
+			$chkInput.mouseup();
+			$chkInput.mouseout();
+		});
+
+		testId = '[ID3] Check for checked';
+		test(testId, 14, function () {
+			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'), $chkSpan = $("#chkSpan");
+
+			ok(isChecked($chkInput, false), 'The initial value is not as expexted');
+			ok(isChecked($chkContainer, "Agree", true), 'The initial value is not as expexted');
+			ok(isValueChanged($chkContainer, "Agree"), 'The value attribute is not as expected');
+			$chkContainer.igCheckboxEditor("option", "value", "Don't agree");
+			ok(isValueChanged($chkContainer, "Don't agree"), 'The value attribute is not as expected');
+			$chkInput.click();
+			ok(isChecked($chkInput, true), 'The value is not updated properly');
+			$chkInput.click().click().click().click().click().blur().click().click();
+			ok(isChecked($chkInput, false), 'The value is not updated properly');
+			$chkInput.igCheckboxEditor("toggle");
+			ok(isChecked($chkInput, true), 'The value after toggle is not updated correctly');
+			$chkInput.igCheckboxEditor("toggle");
+			ok(isChecked($chkInput, false), 'The value after toggle is not updated correctly');
+			$chkContainer.igCheckboxEditor("value", false);
+			ok(isValueChanged($chkContainer, false), 'The value after toggle is not updated correctly');
+			// Set the value as string
+			$chkContainer.igCheckboxEditor("value", "true");
+			ok(isValueChanged($chkContainer, "true"), 'The value after toggle is not updated correctly');
+			$chkContainer.igCheckboxEditor("value", "false");
+
+			$chkInput.igCheckboxEditor("value", true);
+			ok(isChecked($chkInput, true), 'The value is not updated properly');
+
+			try {
+				$chkInput.igCheckboxEditor("value", "fail");
+			} catch (e) {
+				console.log(e);
+				ok(isChecked($chkInput, true), 'The value is not updated properly');
+			}
+			fireKeyEvent($chkInput, 32);
+			ok(isChecked($chkInput, false), 'The value is not updated properly');
+			equal($chkSpan.igCheckboxEditor("field").attr("id"), $chkSpan.attr("id"), "editorInput is equal to the input");
+		});
+
+		testId = '[ID4] Check width/height';
+		test(testId, 7, function () {
+			var $chkInput = $("#chkInputche"), $chkContainer = $('#chkContainer'), css = $chkInput.data("igCheckboxEditor").css;
+
+			// Default stlye from CSS
+			equal($chkContainer.igCheckboxEditor("editorContainer").css("width"), "16px", "Width is not correct");
+			equal($chkContainer.igCheckboxEditor("editorContainer").css("height"), "16px", "Height is not correct");
+
+			$chkContainer.igCheckboxEditor("option", "width", 32);
+			$chkContainer.igCheckboxEditor("option", "height", 32);
+			equal($chkContainer.igCheckboxEditor("editorContainer").css("width"), "32px", "Width is not correct");
+			equal($chkContainer.igCheckboxEditor("editorContainer").css("height"), "32px", "Height is not correct");
+			ok($chkContainer.igCheckboxEditor("field").hasClass(css.iconCentered), "Style is not applied");
+
+			// Style set from the options
+			equal($chkInput.igCheckboxEditor("editorContainer").css("width"), "64px", "Width is not correct");
+			equal($chkInput.igCheckboxEditor("editorContainer").css("height"), "48px", "Height is not correct");
+		});
+
+		testId = '[ID5] Disabled/readonly and other options and methods';
+		test(testId, 6, function () {
+			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'), $chkSpan = $("#chkSpan"), $chkAttr = $("#chkAttr");
+
+			$chkContainer.igCheckboxEditor("option", "readOnly", true);
+			$chkContainer.click();
+			//ok(isChecked($chkContainer, "Agree", true), 'Read only should not allow the value to changed');
+			$chkContainer.igCheckboxEditor("option", "readOnly", false);
+
+			$chkContainer.igCheckboxEditor("option", "disabled", true);
+			ok(isDisabled($chkContainer, true), 'The checkbox is not disabled');
+			$chkContainer.igCheckboxEditor("option", "disabled", false);
+			$chkContainer.igCheckboxEditor("option", "disabled", false); // Set the same value in order to have coverage
+			ok(isDisabled($chkContainer, false), 'The checkbox is not enabled');
+			$chkContainer.igCheckboxEditor("option", "fake", false); // Set fake value in order to have coverage
+			$chkContainer.igCheckboxEditor("inputName", "notagree");
+			equal($chkContainer.igCheckboxEditor("inputName"), "notagree", 'Input name is not changed');
+
+			$chkSpan.igCheckboxEditor("option", "checked", false);
+			$chkSpan.igCheckboxEditor("option", "size", "large");
+			$chkSpan.igCheckboxEditor("option", "checked", true);
+			equal($chkSpan.igCheckboxEditor("value"), true, "Not checked");
+			ok($chkSpan.data("igCheckboxEditor")._editorInput.hasClass("ui-igcheckbox-large-on"), "Large style not applied");
+			$chkAttr.igCheckboxEditor("option", "disabled", false);
+			$chkAttr.click();
+			ok($chkAttr.igCheckboxEditor("option", "checked", true), "Should stay as checked");
+		});
+
+		testId = '[ID6] Check styled properties';
+		test(testId, 2, function () {
+			var $chk = $("#chkStyled");
+			ok($chk.data("igCheckboxEditor")._editorInput.hasClass("ui-icon-close"), "Close icon not applied");
+			$chk.igCheckboxEditor("option", "iconClass", "ui-icon-plus");
+			ok($chk.data("igCheckboxEditor")._editorInput.hasClass("ui-icon-plus"), "Plus icon not applied");
+		});
+
+		testId = '[ID7] Check events';
+		test(testId, 1, function () {
+			$chkInput = $("#chkInputche");
+
+			$chkInput.click();
+			ok(isChecked($chkInput, false), 'The value should not be checked, cause the valueChanging event is canceled');
+		});
+
+		testId = '[ID8] Check destroy';
+		test(testId, 10, function () {
+			var $chkInput = $("#chkInput"), $chkContainer = $('#chkContainer'), $chkAttr = $("#chkAttr");
+			// Put some wrong value to the true/false values and expect an exception
+			$chkInput.val("fail");
+			try {
+				$chkInput.igCheckboxEditor("value");
+			} catch (e) {
+				console.log(e);
+				//Destroy the widget then
+			$chkInput.igCheckboxEditor("destroy");
+			}
+			$chkContainer.igCheckboxEditor("destroy");
+			equal($chkInput.data("igCheckboxEditor"), undefined, 'Error destroying igCheckboxEditor in an input');
+			equal($chkContainer.data("igCheckboxEditor"), undefined, 'Error destroying igCheckboxEditor in a div');
+			$._data($chkInput[0], "events");
+			$._data($chkContainer[0], "events");
+			ok($chkInput.attr("class") === undefined, "Some classes are still not removed");
+			ok($chkContainer.attr("class") === undefined, "Some classes are still not removed");
+
+			// Are the attributes recovered
+			$chkAttr.igCheckboxEditor("destroy");
+			equal($chkAttr.attr("name"), "name1", "Attr is not recovered after destroying");
+			equal($chkAttr.attr("value"), "value1", "Attr is not recovered after destroying");
+			equal($chkAttr.attr("checked"), "checked", "Attr is not recovered after destroying");
+			equal($chkAttr.attr("readonly"), "readonly", "Attr is not recovered after destroying");
+			equal($chkAttr.attr("disabled"), "disabled", "Attr is not recovered after destroying");
+			equal($chkAttr.attr("aria-labelledby"), "aria-labelledby", "Attr is not recovered after destroying");
+		});
+
+		testId = '[ID9] Check label click support';
+		test(testId, 8, function () {
+		    var $chkInput2 = $("#chkInput2"), $chkLabel2 = $('#label2'),
+                $chkInput3 = $("#chkInput3"), $chkLabel3 = $('#label3');
+
+		    // state == value, state != internal
+		    click($chkLabel2[0]); // only native click works for labels
+		    ok(isChecked($chkInput2, true, true), 'Clicking the label did not toggle the ckeckbox');
+		    strictEqual($chkInput2.data("igCheckboxEditor")._valueInput[0].checked, true, "Internal input checked was modified incorrectly without explicit value!");
+		    click($chkLabel2[0]);
+		    ok(isChecked($chkInput2, false, false), 'Clicking the label did not toggle the ckeckbox');
+		    strictEqual($chkInput2.data("igCheckboxEditor")._valueInput[0].checked, true, "Internal input checked was modified incorrectly without explicit value!");
+
+		    // state != value, state == internal
+
+		    click($chkLabel3[0]); // only native click works for labels
+		    ok(isChecked($chkInput3, "accpetedRules", true), 'Clicking the label did not toggle the ckeckbox');
+		    strictEqual($chkInput3.data("igCheckboxEditor")._valueInput[0].checked, true, "Internal input checked was modified incorrectly without explicit value!");
+		    click($chkLabel3[0]);
+		    ok(isChecked($chkInput3, "accpetedRules", false), 'Clicking the label did not toggle the ckeckbox');
+		    strictEqual($chkInput3.data("igCheckboxEditor")._valueInput[0].checked, false, "Internal input checked was modified incorrectly without explicit value!");
+		});
+
+		testId = '[ID9] Check focus using the focus API';
+		test(testId, 3, function () {
+		    $chk = $("#chkStyled"), $chk1 = $("#chkInput2"), css = $chk.data("igCheckboxEditor").css;
+		    $chk.igCheckboxEditor("setFocus");
+		    ok($chk.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not applied");
+		    ok($(document.activeElement).html() === $chk.igCheckboxEditor("editorContainer").html(), "Focus class not applied");
+		    console.log($(document.activeElement).html());
+		    console.log($chk.igCheckboxEditor("editorContainer").html());
+		    $chk1.igCheckboxEditor("setFocus");
+		    ok($chk1.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not removed");
+		});
+
+		function isChecked($input, expectedValue, expectedState) {
+			return $input.igCheckboxEditor("value") === expectedValue &&
+				$input.data("igCheckboxEditor").options.checked === (expectedState !== undefined ? expectedState : expectedValue);
+		}
+		function isValueChanged($input, expectedValue) {
+			return $input.igCheckboxEditor("option", "value") === expectedValue &&
+				$input.data("igCheckboxEditor").options.value === expectedValue;
+		}
+		function isDisabled($input, expectedValue) {
+			return $input.igCheckboxEditor("option", "disabled") === expectedValue &&
+				$input.data("igCheckboxEditor").options.disabled === expectedValue &&
+				$input.data("igCheckboxEditor")._editorInput.prop("disabled") === expectedValue;
+		}
+		function fireKeyEvent(chk, keyCode) {
+			var e = jQuery.Event("keydown");
+			e.keyCode = keyCode;
+			e.which = keyCode; // Press Space
+			chk.trigger(e);
+			e = jQuery.Event("keypress");
+			e.keyCode = keyCode;
+			e.which = keyCode;
+			chk.trigger(e);
+			e = jQuery.Event("keyup");
+			e.keyCode = keyCode;
+			e.which = keyCode;
+			chk.trigger(e);
+		}
+
+		function click(el) {
+		    var ev = document.createEvent("MouseEvent");
+		    ev.initMouseEvent(
+                "click",
+                true /* bubble */, true /* cancelable */,
+                window, null,
+                0, 0, 0, 0, /* coordinates */
+                false, false, false, false, /* modifier keys */
+                0 /*left*/, null
+            );
+		    el.dispatchEvent(ev);
+		}
+	});
+	</script>
+</head>
+<body>
+    <div style="float:right;width:400px;overflow:auto">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
+        <label id="label1" for="chkInput">Label 1</label>
+        <input id="chkInput" />
+        <label id="label2" for="chkInput2">Label 2</label>
+        <input id="chkInput2" type="checkbox" />
+        <label id="label3" for="chkInput3">Label 3</label>
+        <input aria-labelledby="label3" id="chkInput3" />
+        <div id="chkContainer"></div>
+        <span id="chkSpan"></span>
+        <label id="chkLabel"></label>
+        <input id="chkInputche" />
+        <input id="chkStyled" />
+        <span id="chkAttr" name="name1" value="value1" checked='checked' readonly='readonly' disabled='disabled' aria-labelledby="aria-labelledby"></span>
+        <form></form>
+    </div>
+</body>
+</html>
+

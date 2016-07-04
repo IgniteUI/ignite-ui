@@ -1,0 +1,11 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.editors*.js",
+		"<%= config.modulesDir%>/infragistics.ui.popover.js",
+		"<%= config.modulesDir%>/infragistics.ui.notifier.js",
+		"<%= config.modulesDir%>/infragistics.ui.validator.js",
+		"<%= config.modulesDir%>/infragistics.ui.shared.js",
+		"<%= config.modulesDir%>/infragistics.util.js",
+		"<%= config.extensionsDir%>/infragistics.ui.editors.knockout-extensions.js"
+	]
+}

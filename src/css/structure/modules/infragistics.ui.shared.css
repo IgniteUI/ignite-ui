@@ -1,0 +1,475 @@
+/*////////////////////////////////// INFRAGISTICS SHARED WIDGETS CSS //////////////////////////////////*/
+
+
+/*////////////////////////////////// igProgressBar CSS ////////////////////////////////////////////////*/
+.ui-igprogressbar { position: relative; text-align: left; }
+.ui-igprogressbar .ui-igprogressbar-range { 
+    position: absolute; 
+    z-index: 1; 
+    font-size: .7em; 
+    display: block; 
+    border: 0; 
+    background-position: 0 0; 
+    background-color: lightgray;
+}
+
+.ui-igprogressbar-horizontal { height: .8em; }
+.ui-igprogressbar-horizontal .ui-igprogressbar-range { top: 0; height: 100%; }
+
+.ui-igprogressbar-vertical { width: .8em; height: 100px; }
+.ui-igprogressbar-vertical .ui-igprogressbar-range { left: 0; width: 100%; }
+/*////////////////////////////////// END igProgressBar CSS ////////////////////////////////////////////*/
+
+/*///////////////////////////////////////// igSlider CSS //////////////////////////////////////////////*/
+
+.ui-igslider { position: relative; text-align: left; }
+.ui-igslider .ui-igslider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
+.ui-igslider .ui-igslider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
+
+.ui-igslider-horizontal { height: .8em; }
+.ui-igslider-horizontal .ui-igslider-handle { top: -5px; margin-left: -.6em; }
+.ui-igslider-horizontal .ui-igslider-range { top: 0; height: 100%; }
+.ui-igslider-horizontal .ui-igslider-range-min { left: 0; }
+.ui-igslider-horizontal .ui-igslider-range-max { right: 0; }
+
+.ui-igslider-vertical { width: .8em; height: 100px; }
+.ui-igslider-vertical .ui-igslider-handle { left: -.3em; margin-left: 0; margin-bottom: -.6em; }
+.ui-igslider-vertical .ui-igslider-range { left: 0; width: 100%; }
+.ui-igslider-vertical .ui-igslider-range-min { bottom: 0; }
+.ui-igslider-vertical .ui-igslider-range-max { top: 0; }
+
+.ui-igslider .ui-igslider-progress { background-color: red; }
+.ui-igslider .ui-igslider-bookmark  
+{
+    cursor: pointer; 
+    width: 11px; 
+    height: 11px; 
+    position: absolute; 
+    
+    z-index: 2; 
+    top: .15em;
+    
+    background: none;
+    border:none!important;
+}
+
+    .ui-igslider .ui-igslider-bookmark.ui-state-default 
+    {
+        background: url("../images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0px 0px;    
+    }
+
+    .ui-igslider .ui-igslider-bookmark.ui-state-hover 
+    {
+        background: url("../images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0px -19px;    
+    }
+
+    .ui-igslider .ui-igslider-bookmark.ui-state-active 
+    {
+        background: url("../images/igVideoPlayer/igVPBookmarkSprite.png") no-repeat 0px -18px;
+    }
+
+.ui-igslider .ui-igslider-bookmark-disabled { cursor: default; height: .2em; position: absolute; width: .2em; z-index: 2; top: .3em; }
+.ui-igslider .ui-igslider-bookmark-tooltip  
+{
+    cursor: default;
+    position: absolute; 
+    width: 5.5em; 
+    z-index: 10; 
+    overflow: hidden;
+}
+
+/*/////////////////////////////////////////END igSlider CSS ///////////////////////////////////////*/
+
+/*////////////////////////////////////igBrowseButton CSS ///////////////////////////////////////////*/
+
+.ui-igbrowsebutton {
+    font-weight:bold; font-size:1.3em;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+	background:#f2f2f2;
+	color:#3366cc;
+	border:1px solid #ccc;
+	cursor:pointer !important;
+	padding:1px;	
+}
+
+.ui-igbrowsebutton-filepicker {
+    position : absolute;
+	margin: -5px 0 0 -175px;
+	padding: 0;
+	width: 220px;
+	height: 30px;
+	fontSize: 14px;
+	opacity: 0;
+	cursor: pointer;
+	display : none;
+	zIndex :  2147483583;
+	filter:alpha(opacity=0);
+}
+
+.ui-igbrowsebutton-label 
+{    
+    }
+/*//////////////////////////END igBrowseButton CSS /////////////////////////////////////////*/
+
+/*//////////////////////////  igButton CSS /////////////////////////////////////////////////*/
+
+.ui-igbutton 
+{
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 0.1em;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    text-decoration: none !important;
+}
+
+.ui-igbutton .ui-state-hover { }
+
+.ui-igbutton .ui-state-focus { }
+
+.ui-igbutton .ui-state-active { }
+
+.ui-igbutton-icon 
+{
+    height: 16px;
+    width: 16px;
+}
+
+.ui-igbutton-label  
+{
+}
+
+/*/////////////////////////  END igButton CSS //////////////////////////////////////////////////*/
+
+/*////////////////////////////////// igPlayerTooltip CSS ////////////////////////////////////////////////*/
+
+.ui-igplayer-tooltip {
+	position: absolute;
+	z-index: 10000; 
+}
+
+.ui-igplayer-tooltip .ui-widget-content {
+	padding: 4px;
+	overflow: hidden;	
+	font-size:11px;	
+	background:url("../images/igTooltip/igTooltipBackground.svg") no-repeat;	
+	background-color: #DADADA;
+    background-image:none;    
+    /* Added to make a consistent look and feel among all Jquery themes */
+    color:#333333;
+    font-weight:normal;
+    
+    background-color: -moz-linear-gradient(center top , #ffffff, #DADADA);
+	background-image: -moz-linear-gradient(top, #ffffff, #DADADA);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ffffff),color-stop(1, #DADADA));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%, #DADADA)); 
+	
+	border:1px solid #B1B1B1;
+    -moz-box-shadow: 	0px 0px 10px black;
+    -webkit-box-shadow: 0px 0px 10px black;
+    box-shadow: 		0px 0px 10px black;
+}
+
+.ui-igplayer-tooltip  ui-igtooltip-arrow-top {
+	z-index: 10000;
+	background: transparent url("../images/igTooltip/igTooltipArrowTop.png") no-repeat 100% 100%;
+	width: 14px;
+	height: 7px;
+	
+	position:relative;
+	left:50%;
+	top:-1px;
+	margin-left:-7px;
+}
+
+.ui-igplayer-tooltip  ui-igtooltip-arrow-left {
+	z-index: 10000;
+	background: transparent url("../images/igTooltip/igTooltipArrowLeft.png") no-repeat 100% 100%;
+	width: 7px;
+	height: 14px;	
+	position:relative;
+	top:50%;
+	left:-1px;
+	margin-top:7px;
+}
+
+.ui-igplayer-tooltip  ui-igtooltip-arrow-right {
+	z-index: 10000;
+	background: transparent url("../images/igTooltip/igTooltipArrowRight.png") no-repeat 100% 100%;
+	width: 7px;
+	height: 14px;
+	
+	position:relative;
+	top:50%;
+	left:-1px;
+	margin-top:7px;
+}
+
+.ui-igplayer-tooltip ui-igtooltip-arrow-bottom {
+	z-index: 10000;
+	background: transparent url("../images/igTooltip/igTooltipArrowBottom.png") no-repeat 100% 100%;
+	width: 14px;
+	height: 7px;	
+	position:relative;
+	left:50%;
+	top:-1px;
+	margin-left:-7px;
+}
+
+
+/*////////////////////////////////// END igPlayerTooltip CSS ////////////////////////////////////////////*/
+
+
+
+
+/* igLoadingMsg */
+
+.ui-igloadingmsg {
+	/*background-image: url(../images/ui-anim_basic_16x16.gif);
+	width: 16px;
+	height: 16px;*/
+	position: absolute;
+	z-index: 20000;
+}
+
+.ui-igloadingmsg {
+	background-image: url(../images/igLoadingSmall.gif);
+	width: 64px;
+	height: 64px;
+}
+
+.ui-iggrid-indicatorcontainer {
+	display:inline;
+}
+
+/* ////////////////////////////// igCheckbox CSS ////////////////////////////// */
+
+.ui-igcheckbox-normal {
+	display: inline-block;
+	_display: inline;
+	
+	/*font-size: 1px;*/ 
+	overflow: hidden;
+	
+	width:16px;
+	height:16px;
+}
+
+/*Bug 203650, S.D. 17.09.2015 Checkbox in RowSelector not displaying in IE
+.ui-igcheckbox-normal-off {
+	background: none !important;
+}
+*/
+/* D.K. Important, because in treegrid the row can be selected and not checked */
+.ui-igcheckbox-normal-off,
+.ui-igcheckbox-small-off,
+.ui-igcheckbox-verysmall-off,
+.ui-igcheckbox-large-off {
+    opacity:0 !important;
+    -ms-filter:"alpha(opacity=0)" !important;
+    filter: alpha(opacity=0) !important;
+}
+
+.ui-igcheckbox-normal-on,
+.ui-igcheckbox-small-on,
+.ui-igcheckbox-verysmall-on,
+.ui-igcheckbox-large-on {
+    opacity:1;
+    -ms-filter:"alpha(opacity=1)";
+    filter: alpha(opacity=1);
+}
+/* End Bug Fix 203650 */
+
+.ui-igcheckbox-normal {
+    color: transparent;
+}
+/* Bug 216951, S.D. 11.04.2016, igCheckboxEditor icons are not properly aligned
+.ui-igcheckbox-normal-on {
+	text-indent: 0px;
+}
+*/
+.ui-igcheckbox-normal-on {
+    margin-left: 1px;
+    margin-top: 1px;
+	text-indent: 0px;
+}
+.ui-igcheckbox-small {
+	display: inline-block;
+	width: 13px;
+	height: 13px;
+	/*font-size: 1px;*/
+	overflow: hidden;
+    color: transparent;
+}
+
+.ui-igcheckbox-small-off {
+	background: none !important;
+}
+
+.ui-igcheckbox-small-on {
+	margin-left: -0.5px;
+	text-indent: 0px;
+}
+
+.ui-igcheckbox-verysmall {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	/*font-size: 1px;*/
+	overflow: hidden;
+    color: transparent;
+}
+
+.ui-igcheckbox-verysmall-off {
+	background: none !important;
+}
+/* Bug 216951, S.D. 11.04.2016, igCheckboxEditor icons are not properly aligned
+.ui-igcheckbox-verysmall-on {
+	margin-left: -3px;
+	margin-right: -3px;
+	margin-top: -3px;
+	text-indent: 0px;
+}
+*/
+.ui-igcheckbox-verysmall-on {
+	margin-left: -2px;
+	margin-right: -2px;
+	margin-top: -2px;
+	text-indent: 0px;
+}
+.ui-igcheckbox-large {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	font-size: 1px;
+	overflow: hidden;
+    color: transparent;
+}
+
+.ui-igcheckbox-large-off {
+	background: none !important;
+}
+/* Bug 216951, S.D. 11.04.2016, igCheckboxEditor icons are not properly aligned
+.ui-igcheckbox-large-on {
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 2px;
+	text-indent: 0px;
+}
+*/
+.ui-igcheckbox-large-on {
+	margin-left: 3px;
+	margin-right: 2px;
+	margin-top: 3px;
+	text-indent: 0px;
+}
+.ui-igcheckbox-container {
+	width: 100%;
+	overflow: hidden;
+	text-align: center;
+    vertical-align: middle;
+}
+
+.ui-iggrid-editingcell > .ui-igedit + .ui-igcheckbox-container {
+visibility:hidden;
+}
+
+/* ////////////////////////////// END igCheckbox CSS ////////////////////////////// */
+/* igFileUploader */
+/*.ui-igfileupload .ui-igprogressbar 
+{
+    background-color: -moz-linear-gradient(center top , #e0e0e0, #f9f9f9);
+	background-image: -moz-linear-gradient(top, #e0e0e0, #f9f9f9);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #e0e0e0),color-stop(1, #f9f9f9));
+	filter          :  progid:DXImageTransform.Microsoft.gradient(startColorStr='#e0e0e0', EndColorStr='#f9f9f9');
+	-ms-filter      : "progid:DXImageTransform.Microsoft.gradient(startColorStr='#e0e0e0', EndColorStr='#f9f9f9')";
+}*/
+
+
+/* Touch friendly */
+.touch .ui-datepicker table,
+.touchevents .ui-datepicker table,
+.pointerevents .ui-datepicker table
+{
+    font-size: 1.2em;
+}
+
+.touch .ui-datepicker,
+.touchevents .ui-datepicker,
+.pointerevents .ui-datepicker
+{
+    width: 20em;
+}
+
+/* Classes used to hide/display elements based on window sizes (RWD support) */
+.ui-hidden {
+    display: none;
+    visibility: hidden;
+}
+
+/*
+   Disables selection for this element.
+   To support unselectable in IE8+ attibute unselectable="on" should be added.
+*/
+.ui-unselectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.ui-visible-phone {
+	display: none !important;
+}
+
+.ui-visible-tablet {
+	display: none !important;
+}
+
+.ui-hidden-desktop {
+	display: none !important;
+}
+
+.ui-visible-desktop {
+    display: inherit !important;
+}
+
+@media(min-width:768px) and (max-width:979px) {
+	.ui-hidden-desktop {
+		display: inherit !important;
+	}
+
+	.ui-visible-desktop {
+		display: none !important;
+	}
+
+	.ui-visible-tablet {
+		display: inherit !important;
+	}
+
+	.ui-hidden-tablet {
+		display: none !important;
+	}
+}
+
+@media(max-width:767px) {
+	.ui-hidden-desktop {
+		display: inherit !important;
+	}
+
+	.ui-visible-desktop {
+		display: none !important;
+	}
+
+	.ui-visible-phone {
+		display: inherit !important;
+	}
+
+	.ui-hidden-phone {
+		display: none !important
+	}
+}

@@ -1,0 +1,5 @@
+{
+	"config": [
+		"<%= config.scriptsDir%>/infragistics.ui.loader.js"
+	]
+}

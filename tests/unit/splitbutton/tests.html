@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>igSplit Button Tests</title>
+	    <link type="text/css" rel="stylesheet" href="../../../src/css/themes/infragistics/infragistics.theme.css" />
+	    <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.shared.css" media="screen" />
+        <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.splitbutton.css" media="screen" />
+	    <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+    
+		<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
+		<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
+		<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	    <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+	    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
+        <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.toolbarbutton.js"></script>
+        <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitbutton.js"></script>
+    
+        <script type="text/javascript">
+            $(function () {
+                var $sButton = $("#igSplitButton"),
+			        iconSelector = "#igSplitButton_Name1",
+			        iconPicSelector = "#igSplitButton_Name1_picn",
+			        iconLabelSelector = "#igSplitButton_Name1_lbl",
+			        arrowSelector = "#igSplitButton_arrow",
+			        arrowPicSelector = "#igSplitButton_arrow_picn",
+			        arrowLabelSelector = "#igSplitButton_arrow_lbl",
+			        itemsListSelector = ".ui-splitbutton-list",
+			        menuItemsSelector = ".ui-menu-item",
+			        menuItemAnchorSelector = "#igSplitButton_Name2",
+			        menuItemPicSelector = "#igSplitButton_Name2_picn",
+			        menuItemLabelSelector = "#igSplitButton_Name2_lbl",
+			        firstItemName = "Name1",
+			        firstItemLabel = "Label1",
+			        secondItemName = "Name2",
+			        secondItemLabel = "Label2",
+			        iconClass = "ui-icon-gear";
+
+                function createSplitButton() {
+                    $sButton.igSplitButton({
+                        defaultItemName: firstItemName,
+                        items: [{
+                            name: firstItemName,
+                            label: firstItemLabel,
+                            iconClass: iconClass
+                        }, {
+                            name: secondItemName,
+                            label: secondItemLabel,
+                            iconClass: iconClass
+                        }]
+                    });
+                };
+
+                function destroySplitButton() {
+                    $sButton.igSplitButton("destroy");
+                };
+
+                function createEventsTestSplitButton(clickElemName) {
+                    var expanding = false,
+                        expanded = false,
+                        collapsing = false,
+                        collapsed = false,
+                        itemsList;
+
+                    destroySplitButton();
+
+                    $sButton.igSplitButton({
+                        defaultItemName: firstItemName,
+                        items: [{
+                            name: firstItemName,
+                            label: firstItemLabel,
+                            iconClass: iconClass
+                        }, {
+                            name: secondItemName,
+                            label: secondItemLabel,
+                            iconClass: iconClass
+                        }],
+                        click: function (event, ui) {
+                            equal(event.type, 'igsplitbuttonclick', 'Click event type is incorrect.');
+                            equal(ui.name, clickElemName, 'The clicked element name is incorrect.');
+                        },
+                        expanding: function (event, ui) {
+                            expanding = true;
+                            equal(expanded, false, 'The expanded event is fired before expanding.');
+                            equal(event.type, 'igsplitbuttonexpanding', 'Expanding event type is incorrect.');
+                            equal(ui.owner.element.attr('id'), 'igSplitButton', 'The expanding event owner argument is incorrect.');
+                        },
+                        expanded: function (event, ui) {
+                            itemsList = $sButton.find(itemsListSelector);
+
+                            expanded = true;
+                            equal(expanding, true, 'The expanding event is fired before expanded.');
+                            equal(event.type, 'igsplitbuttonexpanded', 'Expanded event type is incorrect.');
+                            equal(ui.owner.element.attr('id'), 'igSplitButton', 'The expanded event owner argument is incorrect.');
+                            ok($sButton.hasClass('ui-state-active'), 'The ui-state-active class is not applied to the split button.');
+                            ok(itemsList.is(':visible'), 'The items list is not shown after expanding.');
+                        },
+                        collapsing: function (event, ui) {
+                            collapsing = true;
+                            equal(collapsed, false, 'The collapsed event is fired before collapsing.');
+                            equal(event.type, 'igsplitbuttoncollapsing', 'Collapsing event type is incorrect.');
+                            equal(ui.owner.element.attr('id'), 'igSplitButton', 'The collapsing event owner argument is incorrect.');
+                        },
+                        collapsed: function (event, ui) {
+                            itemsList = $sButton.find(itemsListSelector);
+
+                            // Start the test
+                            // The collapsing is done
+                            start();
+
+                            collapsed = true;
+                            equal(collapsing, true, 'The collapsing event is fired before collapsed');
+                            equal(event.type, 'igsplitbuttoncollapsed', 'Collapsed event type is incorrect.');
+                            equal(ui.owner.element.attr('id'), 'igSplitButton', 'The collapsed event owner argument is incorrect.');
+                            ok(!$sButton.hasClass('ui-state-active'), "The ui-state-active class is not applied to the split button.");
+                            ok(!itemsList.is(':visible'), 'The items list is not hidden after collapsing.');
+                        }
+                    });
+                };
+
+                function initialize() {
+                    createSplitButton();
+                };
+
+                initialize();
+
+                var testId_1 = "Script loading.",
+                    testId_2 = "Container rendering.",
+                    testId_3 = "Icon rendering.",
+                    testId_4 = "Arrow rendering.",
+                    testId_5 = "Items list rendering.",
+                    testId_6 = "Default item click.",
+                    testId_7 = "Menu item click.",
+                    testId_8 = "Events focus click blur.",
+                    testId_9 = "Events focus click click.",
+                    testId_10 = "Events click click.",
+                    testId_11 = "Events enter pressing",
+                    testId_12 = "API methods",
+                    testId_13 = "API methods and user interaction",
+                    testId_14 = "Destroying.";
+
+                module("igSplitButton");
+
+                // Script loading
+                test(testId_1, function () {
+                    ok(typeof $sButton.igSplitButton === 'function', 'igSplitButton is not defined.');
+                });
+
+                // Container rendering
+                test(testId_2, function () {
+                    ok($sButton.hasClass('ui-splitbutton'), 'The ui-splitbutton class is not applied to the split button.');
+                    ok($sButton.hasClass('ui-widget'), 'The ui-widget class is not applied to the split button.');
+                    ok($sButton.hasClass('ui-state-default'), 'The ui-state-default class is not applied to the split button.');
+                    equal($sButton.attr('tabindex'), 0, 'The tabindex attribute on the split button does not match.');
+
+                    // Hovering
+                    $sButton.mouseenter();
+                    ok($sButton.hasClass('ui-splitbutton-hover'), 'The ui-splitbutton-hover class is not applied to the split button on hover.');
+                    $sButton.mouseleave();
+                    ok(!$sButton.hasClass('ui-splitbutton-hover'), 'The ui-splitbutton-hover class is not applied to the split button on hover.');
+                });
+
+                // Icon rendering
+                test(testId_3, function () {
+                    var $sButtonIcon = $sButton.find(iconSelector),
+                        $sButtonIconPic = $sButtonIcon.find(iconPicSelector),
+                        $sButtonIconLabel = $sButtonIcon.find(iconLabelSelector);
+
+                    // Icon
+                    ok($sButtonIcon.length, 'The split button icon is not rendered.');
+                    ok($sButtonIcon.is('div'), 'The split button icon is not a div element.');
+                    ok($sButtonIcon.hasClass('ui-button-icon-only'), 'The ui-button-icon-only class is not applied to the split button icon.');
+                    ok($sButtonIcon.hasClass('ui-button'), 'The ui-button class is not applied to the split button icon.');
+                    ok($sButtonIcon.hasClass('ui-igbutton'), 'The ui-igbutton class is not applied to the split button icon.');
+                    ok($sButtonIcon.hasClass('ui-widget'), 'The ui-widget class is not applied to the split button icon.');
+                    ok($sButtonIcon.hasClass('ui-widget-content'), 'The ui-widget-content class is not applied to the split button icon.');
+                    ok($sButtonIcon.hasClass('ui-state-default'), 'The ui-state-default class is not applied to the split button icon.');
+                    ok($sButtonIcon.hasClass('ui-igtoolbarbutton'), 'The ui-igtoolbarbutton class is not applied to the split button icon.');
+                    ok($sButtonIcon.hasClass('ui-splitbutton-cleargaps'), 'The ui-splitbutton-cleargaps class is not applied to the split button icon.');
+                    ok($sButtonIcon.hasClass('ui-corner-left'), 'The ui-corner-left class is not applied to the split button icon.');
+                    equal($sButtonIcon.attr('aria-disabled'), 'false', 'The aria-disabled attribute on the split button icon does not match.');
+                    equal($sButtonIcon.attr('title'), firstItemLabel, 'The title attribute on the split button icon does not match.');
+                    equal($sButtonIcon.attr('tabindex'), '1', 'The tabindex attribute on the split button icon does not match.');
+
+                    // Icon picture
+                    ok($sButtonIconPic.length, 'The split button icon picture is not rendered.');
+                    ok($sButtonIconPic.is('span'), 'The split button icon picture is not a span element.');
+                    ok($sButtonIconPic.hasClass('ui-button-icon-primary'), 'The ui-button-icon-primary class is not applied to the split button icon picture.');
+                    ok($sButtonIconPic.hasClass('ui-icon'), 'The ui-icon class is not applied to the split button icon picture.');
+                    ok($sButtonIconPic.hasClass('ui-icon-gear'), 'The ui-icon-gear class is not applied to the split button icon picture.');
+
+                    // Icon label
+                    ok($sButtonIconLabel.length, 'The split button icon label is not rendered.');
+                    ok($sButtonIconLabel.is('span'), 'The split button icon label is not a span element.');
+                    ok($sButtonIconLabel.hasClass('ui-button-text'), 'The ui-button-text class is not applied to the split button icon label.');
+                });
+
+                // Arrow rendering
+                test(testId_4, function () {
+                    var $sButtonArrow = $sButton.find(arrowSelector),
+                        $sButtonArrowPic = $sButtonArrow.find(arrowPicSelector),
+                        $sButtonArrowLabel = $sButtonArrow.find(arrowLabelSelector);
+
+                    // Arrow
+                    ok($sButtonArrow.length, 'The split button arrow is not rendered.');
+                    ok($sButtonArrow.is('div'), 'The split button arrow is not a div element.');
+                    ok($sButtonArrow.hasClass('ui-splitbutton-arrow'), 'The ui-splitbutton-arrow class is not applied to the split button arrow.');
+                    ok($sButtonArrow.hasClass('ui-button-icon-only'), 'The ui-button-icon-only class is not applied to the split button arrow.');
+                    ok($sButtonArrow.hasClass('ui-button'), 'The ui-button class is not applied to the split button arrow.');
+                    ok($sButtonArrow.hasClass('ui-igbutton'), 'The ui-splitbutton-arrow class is not applied to the split button arrow.');
+                    ok($sButtonArrow.hasClass('ui-widget'), 'The ui-widget class is not applied to the split button arrow.');
+                    ok($sButtonArrow.hasClass('ui-widget-content'), 'The ui-widget-content class is not applied to the split button arrow.');
+                    ok($sButtonArrow.hasClass('ui-state-default'), 'The ui-state-default class is not applied to the split button arrow.');
+                    ok($sButtonArrow.hasClass('ui-splitbutton-cleargaps'), 'The ui-splitbutton-cleargaps class is not applied to the split button arrow.');
+                    ok($sButtonArrow.hasClass('ui-corner-right'), 'The ui-corner-right class is not applied to the split button arrow.');
+                    equal($sButtonArrow.attr('aria-disabled'), 'false', 'The aria-disabled attribute on the split button arrow does not match.');
+                    equal($sButtonArrow.attr('tabindex'), '1', 'The tabindex attribute on the split button arrow does not match.');
+
+                    // Arrow picture
+                    ok($sButtonArrowPic.length, 'The split button arrow picture is not rendered.');
+                    ok($sButtonArrowPic.is('span'), 'The split button arrow picture is not a span element.');
+                    ok($sButtonArrowPic.hasClass('ui-button-icon-primary'), 'The ui-button-icon-primary class is not applied to the split button arrow picture.');
+                    ok($sButtonArrowPic.hasClass('ui-icon'), 'The ui-icon class is not applied to the split button arrow picture.');
+                    ok($sButtonArrowPic.hasClass('ui-icon-triangle-1-s'), 'The ui-icon-triangle-1-s class is not applied to the split button arrow picture.');
+
+                    // Arrow label
+                    ok($sButtonArrowLabel.length, 'The split button arrow label is not rendered.');
+                    ok($sButtonArrowLabel.is('span'), 'The split button arrow label is not a span element.');
+                    ok($sButtonArrowLabel.hasClass('ui-button-text'), 'The ui-button-text class is not applied to the split button arrow label.');
+                });
+
+                // Items list rendering
+                test(testId_5, function () {
+                    var $sButtonItemsList = $(itemsListSelector),
+                        $sButtonMenuItems = $sButtonItemsList.find(menuItemsSelector),
+                        $sButtonMenuItemAnchor = $sButtonMenuItems.find(menuItemAnchorSelector),
+                        $sButtonMenuItemPic = $sButtonMenuItemAnchor.find(menuItemPicSelector),
+                        $sButtonMenuItemLabel = $sButtonMenuItemAnchor.find(menuItemLabelSelector);
+
+                    // Items list
+                    ok($sButtonItemsList.length, 'The split button items list is not rendered.');
+                    ok($sButtonItemsList.is('ul'), 'The split button items list is not an ul element.');
+                    ok($sButtonItemsList.hasClass('ui-splitbutton-list'), 'The ui-splitbutton-list class is not applied to the split button items list.');
+                    ok($sButtonItemsList.hasClass('ui-menu'), 'The ui-menu class is not applied to the split button items list.');
+                    ok($sButtonItemsList.hasClass('ui-widget'), 'The ui-widget class is not applied to the split button items list.');
+                    ok($sButtonItemsList.hasClass('ui-widget-content'), 'The ui-widget-content class is not applied to the split button items list.');
+                    ok($sButtonItemsList.hasClass('ui-corner-all'), 'The ui-corner-all class is not applied to the split button items list.');
+
+                    // Menu items
+                    equal($sButtonMenuItems.length, 1, 'The split button did not render the correct number of menu items.');
+                    ok($sButtonMenuItems.is('li'), 'The split button menu item is not a li element.');
+                    ok($sButtonMenuItems.hasClass('ui-menu-item'), 'The ui-splitbutton-list class is not applied to the split button items list.');
+
+                    // Menu item anchor
+                    ok($sButtonMenuItemAnchor.length, 'The split button menu item anchor is not rendered.');
+                    ok($sButtonMenuItemAnchor.is('a'), 'The split button menu item anchor is not an anchor element.');
+                    ok($sButtonMenuItemAnchor.hasClass('ui-corner-all'), 'The ui-corner-all class is not applied to the split button menu item anchor.');
+                    ok($sButtonMenuItemAnchor.hasClass('ui-button-icon-only'), 'The ui-button-icon-only class is not applied to the split button menu item anchor.');
+                    ok($sButtonMenuItemAnchor.hasClass('ui-button'), 'The ui-button class is not applied to the split button menu item anchor.');
+                    ok($sButtonMenuItemAnchor.hasClass('ui-igbutton'), 'The ui-igbutton class is not applied to the split button menu item anchor.');
+                    ok($sButtonMenuItemAnchor.hasClass('ui-widget'), 'The ui-widget class is not applied to the split button menu item anchor.');
+                    ok($sButtonMenuItemAnchor.hasClass('ui-widget-content'), 'The ui-widget-content class is not applied to the split button menu item anchor.');
+                    ok($sButtonMenuItemAnchor.hasClass('ui-state-default'), 'The ui-widget-content class is not applied to the split button menu item anchor.');
+                    ok($sButtonMenuItemAnchor.hasClass('ui-igtoolbarbutton'), 'The ui-widget-content class is not applied to the split button menu item anchor.');
+                    ok($sButtonMenuItemAnchor.hasClass('ui-splitbutton-cleargaps'), 'The ui-widget-content class is not applied to the split button menu item anchor.');
+                    equal($sButtonMenuItemAnchor.attr('aria-disabled'), 'false', 'The aria-disabled attribute on the split button menu item anchor does not match.');
+                    equal($sButtonMenuItemAnchor.attr('title'), secondItemLabel, 'The title attribute on the split button menu item anchor does not match.');
+                    equal($sButtonMenuItemAnchor.attr('tabindex'), '1', 'The tabindex attribute on the split button menu item anchor does not match.');
+
+                    // Menu item picture
+                    ok($sButtonMenuItemPic.length, 'The split button menu item picture is not rendered.');
+                    ok($sButtonMenuItemPic.is('span'), 'The split button menu item picture is not a span element.');
+                    ok($sButtonMenuItemPic.hasClass('ui-button-icon-primary'), 'The ui-button-icon-primary class is not applied to the split button menu item picture.');
+                    ok($sButtonMenuItemPic.hasClass('ui-icon'), 'The ui-icon class is not applied to the split button menu item picture.');
+                    ok($sButtonMenuItemPic.hasClass('ui-icon-gear'), 'The ui-icon-gear class is not applied to the split button menu item picture.');
+
+                    // Menu item label
+                    ok($sButtonMenuItemLabel.length, 'The split button menu item label is not rendered.');
+                    ok($sButtonMenuItemLabel.is('span'), 'The split button menu item label is not a span element.');
+                    ok($sButtonMenuItemLabel.hasClass('ui-button-text'), 'The ui-button-text class is not applied to the split button menu item label.');
+                });
+
+                // Default item click
+                test(testId_6, function () {
+                    expect(2);
+                    createEventsTestSplitButton(firstItemName);
+
+                    $sButton
+                        .find(iconSelector)
+                            .click();
+                });
+
+                // Menu item click
+                test(testId_7, function () {
+                    expect(2);
+                    createEventsTestSplitButton(secondItemName);
+
+                    $sButton
+                        .find(menuItemAnchorSelector)
+                            .click();
+                });
+
+                // Async tests waiting for collapsing, which has 150ms timeout.
+
+                // Events focus click blur
+                // Simulates clicking on the arrow, then clicking something else
+                asyncTest(testId_8, function () {
+                    expect(16);
+                    createEventsTestSplitButton();
+
+                    $sButton
+                        .find(arrowSelector)
+                            .focus()
+                            .click()
+                            .blur();
+                });
+
+                // This test never calls start() when run headless
+
+                // Events focus click click
+                // Simulates clicking the arrow, then clicking it again
+                //asyncTest(testId_9, function () {
+                //    expect(16);
+                //    createEventsTestSplitButton();
+
+                //    $sButton
+                //        .find(arrowSelector)
+                //            .focus()
+                //            .click()
+                //            .click();
+                //});
+
+                // Events click click
+                // Simulate IE case
+                // In IE clicks on the arrow does not focus it
+                // Instead the inner span is clicked and blur is called
+                asyncTest(testId_10, function () {
+                    expect(16);
+                    createEventsTestSplitButton();
+
+                    $sButton
+                        .find(arrowSelector)
+                            .click()
+                            .blur(); 
+                });
+
+                // Enter press
+                // Simulates open/close by pressing the enter
+                asyncTest(testId_11, function () {
+                    expect(16);
+                    createEventsTestSplitButton();
+
+                    var enterPress = $.Event("keypress", {
+                        which: 13,
+                        keyCode: 13,
+                        originalEvent: {}
+                    });
+
+                    $sButton
+                        .trigger(enterPress)
+                        .trigger(enterPress);
+                });
+
+                // API Methods
+                test(testId_12, function () {
+                    createSplitButton();
+
+                    var itemsList = $sButton.find(itemsListSelector);
+
+                    // Expand
+                    $sButton.igSplitButton("expand");
+                    ok($sButton.hasClass('ui-state-active'), "The ui-state-active class is not applied to the split button.");
+                    ok(itemsList.is(':visible'), 'The items list is not shown after expanding.');
+
+                    // Collapse
+                    $sButton.igSplitButton("collapse");
+                    ok(!$sButton.hasClass('ui-state-active'), "The ui-state-active class is not applied to the split button.");
+                    ok(!itemsList.is(':visible'), 'The items list is not hidden after collapsing.');
+                });
+
+                // API Methods and user interaction
+                // API Expand, interaction close
+                asyncTest(testId_13, function () {
+                    createEventsTestSplitButton();
+
+                    var itemsList = $sButton.find(itemsListSelector);
+
+                    // Expand
+                    $sButton.igSplitButton("expand");
+                    ok($sButton.hasClass('ui-state-active'), "The ui-state-active class is not applied to the split button.");
+                    ok(itemsList.is(':visible'), 'The items list is not shown after expanding.');
+
+                    $sButton
+                        .find(arrowSelector)
+                            .blur();
+                });
+
+                // Destroying
+                test(testId_14, function () {
+                    destroySplitButton();
+
+                    ok(!$sButton.is("igSplitButton"), "The widget was not destroyed.");
+                    ok(!$sButton.hasClass('ui-splitbutton'), 'The ui-splitbutton class was not removed from the split button.');
+                    ok(!$sButton.hasClass('ui-widget'), 'The ui-widget class was not removed from the split button.');
+                    ok(!$sButton.hasClass('ui-state-default'), 'The ui-state-default class was not removed from the split button.');
+                    equal($sButton.children().length, 0, "The children of the split button were not removed.");
+                    equal($sButton.attr('tabindex'), undefined, 'The tabindex attribute was not removed from the split button.');
+                    equal($._data($sButton[0], "events"), undefined, 'Some events were not removed from the split button.');
+                });
+            });
+	    </script>
+    </head>
+    <body>
+	    <div style="float:right;width:400px;overflow:auto;">
+		    <h1 id="qunit-header">Test results</h1>
+		    <h2 id="qunit-banner"></h2>
+		    <h2 id="qunit-userAgent"></h2>
+		    <ol id="qunit-tests"></ol>
+	    </div>
+	    <div id="igSplitButton"></div>
+    </body>
+</html>

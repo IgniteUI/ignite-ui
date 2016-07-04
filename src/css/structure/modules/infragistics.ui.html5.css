@@ -1,0 +1,70 @@
+﻿.ui-html5-non-html5 {
+    background-color: #FFFFFF;
+    border: 1px solid #808080;
+}
+.ui-html5-non-html5-supported-message {
+    color: #808080;
+    text-align: center;
+    display: block;
+    font-size: 1em;
+    width:99%;
+    height:99%;
+}
+
+.ui-html5-non-html5-supported-message .ui-html5-current-browser-label  {
+    color: #808080;
+}
+
+.ui-html5-non-html5-supported-message .ui-html5-non-html5-text {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list {
+    display: block;
+    left: -200px;
+    margin: auto 50%;
+    padding: 0;
+    position: relative;
+    width: 400px;
+}
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list li {
+    float: left;
+    list-style: none;
+    display: block;
+    width: 80px;
+    font-size: 12px;
+}
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a {
+    text-decoration: none;
+    color: #000000;
+    display: block;
+    padding-top: 80px;
+    padding-bottom: 10px;
+    background: transparent url(../images/igBrowserLogos.png) no-repeat -5px 10px;
+    width: 64px;
+    margin-left: 7px;
+}
+
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list li:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-chrome-icon {
+    background-position: -5px 10px;
+}
+
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-firefox-icon {
+    background-position: -79px 10px;
+}
+
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-Opera-icon {
+    background-position: -147px 10px;
+}
+
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-safari-icon {
+    background-position: -213px 10px;
+}
+
+.ui-html5-non-html5-supported-message .ui-html5-browsers-list a.ui-html5-ie-icon {
+    background-position: -284px 10px;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Color Picker Tests</title>
+	<link type="text/css" rel="stylesheet"href="../../../src/css/themes/infragistics/infragistics.theme.css" />
+
+    <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.colorpicker.css" media="screen" />
+	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+     
+	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.colorpicker.js"></script>
+
+	<script type="text/javascript">
+	    var equalWithEpsilon = function(a,b,epsilon){
+	        return Math.abs(a - b) < epsilon;
+	    }
+		
+	    var unitTestsSetup = {
+	        colorPickerSelector: "color-picker",
+	        actualColorPicker: null,
+	        firstColor: null,
+            setup: function () {
+                $('body').append($("<div></div>").attr("id", this.colorPickerSelector));
+                $(this.id(this.colorPickerSelector)).igColorPicker();
+                this.actualColorPicker = $(this.id(this.colorPickerSelector)).data("igColorPicker");
+                this.firstColor = $($(this.id(this.colorPickerSelector)).find(".igColorPicker-color")[0]);
+	        },
+	        teardown: function () {
+	            $(this.id(this.colorPickerSelector)).remove();
+	        },
+	        id: function (selector) {
+	            return "#" + selector;
+	        }
+		};
+
+	    module("igColorPicker unit tests", unitTestsSetup);
+
+	    test("_create", function () {
+	        var expectedHtmlMarkup = '<div class="igColorPicker-customColors"><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #ffffff;"></div><div class="igColorPicker-color" style="background-color: #000000;"></div><div class="igColorPicker-color" style="background-color: #EEECE1;"></div><div class="igColorPicker-color" style="background-color: #1F497D;"></div><div class="igColorPicker-color" style="background-color: #4F81BD;"></div><div class="igColorPicker-color" style="background-color: #C0504D;"></div><div class="igColorPicker-color" style="background-color: #9BBB59;"></div><div class="igColorPicker-color" style="background-color: #8064A2;"></div><div class="igColorPicker-color" style="background-color: #4BACC6;"></div><div class="igColorPicker-color" style="background-color: #F79646;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #F2F2F2;"></div><div class="igColorPicker-color" style="background-color: #7F7F7F;"></div><div class="igColorPicker-color" style="background-color: #DDD9C3;"></div><div class="igColorPicker-color" style="background-color: #C6D9F0;"></div><div class="igColorPicker-color" style="background-color: #DBE5F1;"></div><div class="igColorPicker-color" style="background-color: #F2DCDB;"></div><div class="igColorPicker-color" style="background-color: #EBF1DD;"></div><div class="igColorPicker-color" style="background-color: #E5E0EC;"></div><div class="igColorPicker-color" style="background-color: #DBEEF3;"></div><div class="igColorPicker-color" style="background-color: #FDEADA;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #D8D8D8;"></div><div class="igColorPicker-color" style="background-color: #595959;"></div><div class="igColorPicker-color" style="background-color: #C4BD97;"></div><div class="igColorPicker-color" style="background-color: #8DB3E2;"></div><div class="igColorPicker-color" style="background-color: #B8CCE4;"></div><div class="igColorPicker-color" style="background-color: #E5B9B7;"></div><div class="igColorPicker-color" style="background-color: #D7E3BC;"></div><div class="igColorPicker-color" style="background-color: #CCC1D9;"></div><div class="igColorPicker-color" style="background-color: #B7DDE8;"></div><div class="igColorPicker-color" style="background-color: #FAC08F;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #BFBFBF;"></div><div class="igColorPicker-color" style="background-color: #3F3F3F;"></div><div class="igColorPicker-color" style="background-color: #938953;"></div><div class="igColorPicker-color" style="background-color: #548DD4;"></div><div class="igColorPicker-color" style="background-color: #95B3D7;"></div><div class="igColorPicker-color" style="background-color: #D99694;"></div><div class="igColorPicker-color" style="background-color: #C3D69B;"></div><div class="igColorPicker-color" style="background-color: #B2A1C7;"></div><div class="igColorPicker-color" style="background-color: #92CDDC;"></div><div class="igColorPicker-color" style="background-color: #FAC08F;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #A5A5A5;"></div><div class="igColorPicker-color" style="background-color: #262626;"></div><div class="igColorPicker-color" style="background-color: #494429;"></div><div class="igColorPicker-color" style="background-color: #17365D;"></div><div class="igColorPicker-color" style="background-color: #366092;"></div><div class="igColorPicker-color" style="background-color: #953734;"></div><div class="igColorPicker-color" style="background-color: #76923C;"></div><div class="igColorPicker-color" style="background-color: #5F497A;"></div><div class="igColorPicker-color" style="background-color: #31859B;"></div><div class="igColorPicker-color" style="background-color: #E36C09;"></div></div><div class="igColorPicker-row"><div class="igColorPicker-color" style="background-color: #7F7F7F;"></div><div class="igColorPicker-color" style="background-color: #0C0C0C;"></div><div class="igColorPicker-color" style="background-color: #1D1B10;"></div><div class="igColorPicker-color" style="background-color: #0F243E;"></div><div class="igColorPicker-color" style="background-color: #244061;"></div><div class="igColorPicker-color" style="background-color: #632423;"></div><div class="igColorPicker-color" style="background-color: #4F6128;"></div><div class="igColorPicker-color" style="background-color: #3F3151;"></div><div class="igColorPicker-color" style="background-color: #205867;"></div><div class="igColorPicker-color" style="background-color: #974806;"></div></div></div><div class="ui-colorpicker-standardcolors"><div class="igColorPicker-color" style="background-color: #C00000;"></div><div class="igColorPicker-color" style="background-color: #FF0000;"></div><div class="igColorPicker-color" style="background-color: #FFC000;"></div><div class="igColorPicker-color" style="background-color: #FFFF00;"></div><div class="igColorPicker-color" style="background-color: #92D050;"></div><div class="igColorPicker-color" style="background-color: #00B050;"></div><div class="igColorPicker-color" style="background-color: #00B0F0;"></div><div class="igColorPicker-color" style="background-color: #0070C0;"></div><div class="igColorPicker-color" style="background-color: #002060;"></div><div class="igColorPicker-color" style="background-color: #7030A0;"></div></div>';
+
+	        deepEqual($(this.actualColorPicker._colorTable).html(), expectedHtmlMarkup, "_create does not append right markup");
+	    });
+
+	    test("_changeSelectedColor", function () {
+	        this.actualColorPicker._changeSelectedColor(this.firstColor);
+	        ok(this.firstColor.hasClass("selected-color"), "first color selected");
+	    });
+	</script>
+</head>
+<body>
+	<!--<div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+	-->
+	
+	<div style="float:right;width:400px;overflow:auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+	
+</body>
+</html>

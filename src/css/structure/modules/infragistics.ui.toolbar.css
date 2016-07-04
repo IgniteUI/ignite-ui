@@ -1,0 +1,112 @@
+.ui-igtoolbar .ui-button {
+	width:18px;
+	height:18px;
+	margin-left:4px;
+}
+
+.ui-ightmleditor  .ui-button.ui-state-hover .ui-button-text {
+	box-shadow:none;
+}
+
+.ui-ightmleditor .ui-igtoolbar>.ui-button:first-child {
+    margin-left:0;
+}
+ 
+.ui-igtoolbar ul li.ui-igcombo-listitem {
+    margin-left: 0;
+}
+
+.ui-igtoolbar .ui-igcombo-wrapper {
+    height: 24px;
+}
+
+.ui-ightmleditor .ui-igtoolbar .ui-igcombo 
+{
+    vertical-align:top;
+    margin:0 0 0 4px;
+}  
+ 
+.ui-ightmleditor .ui-igtoolbar 
+{
+    white-space:nowrap;
+}
+
+.ui-igtoolbar
+{
+	overflow:hidden;
+	display: inline-block;
+	padding: 4px;
+	margin-right: 4px;
+}
+.ui-igtoolbar-wrap 
+{
+	margin-bottom: 5px;
+}
+.ui-igtoolbar ul
+{
+	list-style: none outside none;
+	margin: 0;
+	padding: 3px;
+}
+
+.ui-igtoolbar ul li
+{
+	margin-left: 4px;
+}
+
+.ui-igtoolbar .ig-toolbar-separator
+{
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 0;
+	border-width: 0 1px 0 0;
+	background:transparent;
+	margin:0 4px 0 3px;
+    display: inline-block;
+    height: 14px;
+	position: relative;
+    text-indent: -1000px;
+    top: 1px;
+}
+
+.ui-igtoolbar-collapse-btn
+{
+	width:12px; 
+	height:24px; 
+	float:left; 
+	cursor:pointer;
+}
+
+.ui-igtoolbar .ui-igcombo {
+	margin-right: 4px;
+}
+
+/* IE 7 hasLayout fixes*/
+.ui-igtoolbar,
+.ui-igtoolbar > div,
+.ui-igtoolbar > span,
+.ui-igtoolbar .ui-igbutton,
+.ui-igtoolbar .ui-splitbutton,
+.ui-ightmleditor .ui-splitbutton .ui-button.ui-splitbutton-arrow,
+.ui-igtoolbar .ui-igcombo
+{
+    zoom: 1; /* IE7 hasLayout fix */
+    *display: inline!important;/* IE7 hasLayout fix */
+}
+
+/* Hide in IE7*/
+.ui-igtoolbar.hidden,
+.ui-igtoolbar.hidden > div,
+.ui-igtoolbar.hidden > span,
+.ui-igtoolbar.hidden .ui-igbutton,
+.ui-igtoolbar.hidden .ui-splitbutton,
+.ui-ightmleditor .hidden .ui-splitbutton .ui-button.ui-splitbutton-arrow,
+.ui-igtoolbar.hidden .ui-igcombo
+{
+    *display: none!important;/* IE7 hasLayout fix */
+}
+
+.ig-toolbar-buttons-holder{
+	display: inline-block;
+	width: auto;
+}

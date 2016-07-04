@@ -1,0 +1,111 @@
+/*////////////////////////////////// INFRAGISTICS SHARED WIDGETS CSS //////////////////////////////////*/
+
+/*
+ * jQuery UI Popover @VERSION
+ *
+ * Copyright 2013, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ */
+
+/*////////////////////////////////// igPopover CSS ////////////////////////////////////////////////*/
+
+.ui-igpopover {
+    position: absolute;
+    z-index: 10000;
+    display: none;
+    white-space: normal;
+    word-wrap: break-word;
+    position: absolute;
+}
+
+.ui-igpopover > .ui-widget-content {
+    padding: 5px;
+    overflow: hidden;	
+    font-size:11px;		
+    background-color: #E5E5E5;
+    background-image:none; 
+    color:#333333;
+    font-weight:normal;
+    border : 1px solid  #E5E5E5; /* #B1B1B1; */
+}
+
+ .ui-igpopover-arrow {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 11px;
+    z-index: 11000;
+    border-style: solid;
+    border-color: transparent;
+    /* Default sizing required for height calculations */
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+ }
+
+.ui-igpopover-arrow-bottom {
+    left: 50%;
+    bottom : 0px; 
+    margin-left: -11px;
+    border-bottom-width: 0;
+    border-top-color:  #E5E5E5 ;
+}
+
+.ui-igpopover-arrow-top {    
+    left: 50%;
+    top: 0px; 
+    margin-left: -11px;
+    border-top-width: 0;
+    border-bottom-color: #E5E5E5;
+}
+
+.ui-igpopover-arrow-right {
+    top: 50%;  
+    right: 0px;
+    margin-top: -11px;
+    border-right-width: 0;
+    border-left-color:#E5E5E5;
+}
+
+.ui-igpopover-arrow-left  {
+    top: 50%; 
+    left: 0px; 
+    margin-top: -11px;
+    border-left-width: 0;
+    border-right-color:#E5E5E5;
+}
+
+.ui-igpopover-title {
+    margin-right: 15px;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+    border-bottom: 1px solid #ebebeb;
+ }
+
+.ui-igpopover-close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+/* Touch support */
+
+.touch .ui-igpopover .ui-widget-content,
+.touchevents .ui-igpopover .ui-widget-content,
+.pointerevents .ui-igpopover .ui-widget-content
+{	
+    font-size:1.1em;			
+}
+
+.touch .ui-igpopover .ui-icon-close,
+.touchevents .ui-igpopover .ui-icon-close,
+.pointerevents .ui-igpopover .ui-icon-close
+{  
+    width:20px;
+    height:20px;
+}
+
+/*////////////////////////////////// END igPopover CSS ////////////////////////////////////////////*/

@@ -1,0 +1,13 @@
+﻿/*.ui-igvalidator-target, .ui-dialog .ui-igvalidator-target{ border-color:#d05050; }*/
+.ui-igvalidator-required-indication {
+    vertical-align:top; 
+    padding: 0 0.2em; 
+    color: #B11F1F;
+    /*float: left;*/
+}
+
+.ui-igvalidator-optional-indication {
+    vertical-align:middle; 
+    padding: 0 0.2em; 
+    color: #b2b2b2;
+}

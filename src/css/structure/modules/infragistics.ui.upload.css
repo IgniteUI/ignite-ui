@@ -1,0 +1,420 @@
+.ui-igupload
+{
+    padding:15px;
+    font-size: 13px;
+}
+
+.ui-igupload-basemaincontainer
+{
+    padding: 19px; /* M.H. Fix bug 74132*/
+}
+
+
+.ui-igupload .ui-igupload-browsebutton
+{
+   /*display:block;
+    it should be display:block - otherwise if it is display:inline-block - on show details click - does not work correctly in IE
+    */
+   width: 100px;/**/
+   display:inline-block;
+}
+
+.ui-igupload-container
+{
+    display:block;
+    
+    background:transparent!important;
+    border-left: 0 none !important;
+    border-right: 0 none !important;
+    border-top: 0 none !important;
+    
+    margin-top:15px;
+    padding-bottom:3px;
+}
+.ui-iguploadsingle .ui-igupload-container.ui-widget-content 
+{
+    border:none;    
+}
+
+    
+    /* Cancel button next to file uploading */
+    .ui-igupload-container a
+    {
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+.ui-igupload-uploadprogress
+{
+    margin: 10px 0;
+}
+
+
+.ui-igupload .ui-igprogressbar 
+{
+    height:3px;
+}
+
+/*  ProgressBar inner HTML  */
+.ui-igupload-progressbar-container
+{
+    z-index:10;
+    display:block; 
+    
+    line-height: 17px;
+    font-size:13px;
+}
+
+.ui-igupload-progressbar-filename
+{
+    float:left;
+}
+
+/* File Extension Icons */
+.ui-igupload-progressbar-icon
+{
+    margin:1px 2px 0 2px;     
+    float:left;
+    margin: 1px 5px;
+}
+
+.ui-igupload-progressbar-icon-exe
+{   
+    background-repeat:no-repeat;    
+    width:14px;
+    height:15px;
+}
+
+
+.ui-igupload-progressbar-icon-default
+{   
+    background-repeat:no-repeat;    
+    width:18px;
+    height:15px;
+}
+
+.ui-igupload-progressbar-icon-video
+{   
+    background-repeat:no-repeat;    
+    width:16px;
+    height:16px;
+}
+
+
+.ui-igupload-progressbar-icon-music
+{   
+    margin:1px 2px 0 2px;
+    background-repeat:no-repeat;    
+    width:16px;
+    height:16px;
+}
+
+.ui-igupload-progressbar-icon-images
+{   
+    background-repeat:no-repeat;    
+    width:16px;
+    height:16px;
+}
+
+.ui-igupload-progressbar-icon-docs
+{   
+    background-repeat:no-repeat;    
+    width:16px;
+    height:16px;
+}
+/* //File Extension Icons */
+
+
+.ui-igupload-progressbar-filesize
+{
+    float:right;
+    margin-top: 1px;
+    margin-right:5px;
+    font-size: 11px;
+}
+
+/*  //ProgressBar inner HTML  */
+
+.ui-igupload-clear
+{
+    clear:both;
+}
+
+.ui-igupload-summaryprogress 
+{
+    padding:5px;
+}
+
+.ui-iguploadmultiple
+{
+    margin:0px;
+    padding: 0px;
+    overflow:auto;
+    overflow-x:hidden;
+}
+
+.ui-igupload-progressbar-upload {
+    margin-right: 15px;    
+}
+.ui-iguploadsingle
+{
+    margin: 0px;
+    padding: 0px;
+    overflow:auto;
+    overflow-x:hidden;
+}
+.ui-igupload-summaryprogressbar
+{
+    height: 20px !important;
+    margin-right: 110px;
+    height:1.8em!important;
+}
+
+/* Cancel button for progress bar - single file upload*/
+.ui-igupload-cancelbutton
+{
+    display:inline-block;
+    background-position: 32px 0;
+    width:32px;
+    height:32px;
+}
+
+.ui-igupload-cancelbutton-disabled
+{
+    display:inline-block;    
+    border:solid 1px #00A000;
+    background-position: 0 0;
+    width:32px;
+    height:32px;       
+}
+/* //Cancel button for progress bar*/
+
+/* summary information - uploaded files, show/hide buttons */
+.ui-igupload-summaryinformation-container
+{
+    margin-bottom:5px;
+    margin-left: 5px;
+    font-size:13px;
+}
+
+.ui-igupload-summaryuploadedfiles-label
+{
+}
+
+.ui-igupload-showhidedetails-button 
+{
+    margin-left:5px;
+}
+
+/* //summary information - uploaded files, show/hide buttons */
+.ui-igupload-summaryprogresscontainer 
+{
+   margin-top: 10px;
+}
+
+.ui-igupload-summaryprogresscontainer a
+{
+    margin-left:7px;
+    margin-top: -2px;
+}
+
+.ui-igupload-summaryprogress-label 
+{
+    position: relative;
+    display: block; 
+    width: 100%; 
+    text-align: right; 
+    font-size:17px;    
+    font-weight:normal!important;
+    border:none!important;
+    background:none!important;
+    right: 10px; 
+    
+    overflow:hidden;  
+}
+
+.ui-igupload-summaryprogress-secondary-label
+{
+    overflow:hidden;
+}
+
+.ui-igupload-summaryprogres_summpbar_progress
+{
+    overflow:hidden;
+    font-size:1em;
+}
+
+/* Button Continue/Cancel */
+.ui-igupload-button-continue-cancel 
+{
+    width:76px;
+}
+/* Button ClearAllButton */
+.ui-igupload-button-clear-all 
+{
+    text-decoration:underline!important;
+    background:none!important;
+    border:none!important;
+    font-size:13px !important;
+    color:inherit!important;
+}
+
+.ui-igupload-cancel-button
+{
+    width:16px!important;
+    height:16px!important;
+    
+    border: none!important;
+    background: none!important;
+    
+    margin-right: 16px;
+    margin-top:2px;
+}
+
+
+    .ui-igupload-cancel-button .ui-button-icon-primary
+    {
+        top:0;
+        left:0;
+        margin:0;
+        
+        position:relative;
+        display:block;
+    }
+
+.ui-igupload .ui-button-icon-primary.ui-icon.ui-icon-check{
+    position:relative;
+    top:0;
+}
+    
+.ui-igupload-progress-container {
+   margin-bottom: 0;
+   padding: 6px 0 6px 12px;
+}
+
+.ui-container-button-cancel-class {
+    float:right;
+}
+
+.ui-igupload-summary-button {
+    float:right;
+    width:100px;
+}
+
+/*******************
+*    IE6 fixes     *
+*******************/
+.ui-ie6 .ui-igupload-button-clear-all {
+    margin-left:10px;
+    position:relative;
+    top:-5px;
+}
+
+.ui-ie6 .ui-igupload {
+    padding-bottom:0px;    
+}
+
+.ui-ie6 .ui-igupload-cancel-button .ui-button-icon-primary{
+	overflow: hidden;
+}
+
+.ui-ie6 .ui-igupload-progressbar-upload {
+    margin-right: 0;
+}
+
+.ui-ie6 .ui-igupload-progressbar-container{
+    padding-left: 0;
+}
+
+.ui-ie6 .ui-igupload-progress-container{
+    padding-bottom: 3px;
+    padding-left: 9px;
+}
+
+.ui-ie6 .ui-igupload-progressbar-upload {
+	margin-right: -24px;
+}
+
+.ui-ie6 .ui-igprogressbar-range {
+	height:2px!important;
+	
+	position: absolute; 
+    z-index: 1; 
+    font-size: .7em; 
+    display: block;
+    border:1px solid #2686ae; 
+    background-position: 0 0; 
+    
+}
+
+.ui-ie6 .ui-igupload-summaryprogressbar .ui-igprogressbar-range {
+	height:22px!important;
+	
+	position: absolute; 
+    z-index: 1; 
+    font-size: .7em; 
+    border:1px solid #2686ae; 
+    display: block; 
+    background-position: 0 0; 
+}
+
+/* Fix bug #75947 M.H. 27 May 2011 */
+.ui-ie6 .ui-iguploadmultiple, .ui-ie6 .ui-igupload-basemaincontainer
+{
+    position: relative !important;    
+}
+
+/* Fix bug #73126 M.H. 28 May 2011 */
+.ui-ie6 .ui-helper-clearfix { position: relative; }
+
+/*******************
+*    IE7 fixes     *
+*******************/
+.ui-ie7 .ui-igupload-button-clear-all {
+    margin-left:10px;
+    position: relative;
+    top:-5px;
+}
+
+.ui-ie7 .ui-igupload {
+    padding-bottom:0px;    
+}
+
+.ui-ie7 .ui-igupload-cancel-button .ui-button-icon-primary{
+	overflow: hidden;
+}
+
+.ui-ie7 .ui-igupload-progressbar-upload {
+    margin-right: 0;
+}
+
+.ui-ie7 .ui-igupload-progressbar-container{
+    padding-left: 0;
+}
+
+.ui-ie7 .ui-igupload-progress-container{
+    padding-bottom: 3px;
+    padding-left: 9px;
+}
+
+.ui-ie7 .ui-igupload-progressbar-upload {
+	margin-right: -24px;
+}
+
+/* Fix bug #75947 M.H. 27 May 2011 */
+.ui-ie7 .ui-iguploadmultiple, .ui-ie7 .ui-igupload-basemaincontainer,
+{
+    position: relative;
+}
+/* Fix bug #73126 M.H. 28 May 2011 */
+.ui-ie7 .ui-helper-clearfix { position: relative; }
+
+
+/*********************************
+*    Chrome and Safari fixes     *
+**********************************/
+
+.ui-webkit .ui-igupload-summary-button
+{
+    top: -3px;
+}

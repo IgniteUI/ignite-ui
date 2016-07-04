@@ -1,0 +1,223 @@
+﻿.ui-igedit,
+.ui-widget .ui-igedit
+{
+    background: #ffffff;
+    font-size: 1em;
+     /* Prevent background color leak outs */
+  -webkit-background-clip: padding-box; 
+  -moz-background-clip:    padding; 
+  background-clip:         padding-box;
+  
+}
+.ui-igedit-container
+{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	display: inline-block;
+	position: relative;
+	width: 200px;
+	height: 32px;
+
+}
+.ui-igedit-checkbox-container {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+}
+.ui-igedit-negative
+{
+    color: #e00000;
+}
+.ui-igeditor-input-container {
+	height: 100%;
+	overflow: hidden;
+}
+.ui-igedit-buttonimage {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+}
+.ui-igedit-input,
+.ui-iggrid .ui-iggrid-pager .ui-igedit-input
+{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+    border: 0!important;
+    border-radius:0!important;
+	margin: 0;
+	padding: 1px 2px 1px 2px;
+	outline: 0; 
+}
+.ui-igedit-input::-ms-clear {
+   display: none;
+}
+.ui-igeditor-button-area {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	float: right;
+}
+.ui-igedit-dropdown-button {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	float: left;
+}
+.ui-igedit-dropdown {
+	  position: absolute;
+	  /* matches the container left border */
+	  left: -1px;
+	  overflow-x: hidden;
+	  overflow-y: auto;
+	  /*border-top: 0; L.A. removed this so the dropdown box has a top border too*/
+	  z-index: 100000;
+	  -webkit-box-sizing: border-box;
+	  -moz-box-sizing: border-box;
+	  box-sizing: border-box;
+}
+
+/* Styles copied from combo control adapted for igedit-dropdown */
+
+.ui-igedit-dropdown-orientation-top {
+    border-bottom: 0;
+}
+
+.ui-igedit-dropdown-orientation-bottom {
+    border-top: 0;
+}
+
+/* Prevent all duplicating borders of drop down list items */
+.ui-igedit-listitem.ui-igedit-listitemselected + .ui-igedit-listitem.ui-state-hover {
+    border-top-color: transparent;
+}
+.ui-igedit-listitem.ui-igedit-listitemselected + .ui-igedit-listitem.ui-state-active {
+    border-top-color: transparent;
+}
+.ui-igedit-listitem.ui-state-hover + .ui-igedit-listitem.ui-igedit-listitemselected {
+    border-top-color: transparent;
+}
+.ui-igedit-listitem.ui-state-active + .ui-igedit-listitem.ui-igedit-listitemselected {
+    border-top-color: transparent;
+}
+.ui-igedit-listitem.ui-state-active + .ui-igedit-listitem.ui-state-hover {
+    border-top-color: transparent;
+}
+.ui-igedit-listitem.ui-state-hover + .ui-igedit-listitem.ui-state-active {
+    border-top-color: transparent;
+}
+
+.ui-igedit-spinarea {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	float: left;
+	display: inline;
+}
+.ui-igedit-cleararea {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	float: left;
+	display: inline;
+}
+.ui-igedit-button-common {
+	float: right;
+	  position: relative;
+	  height: 100%;
+	  min-width: 16px;
+	  min-height: 16px;
+	  cursor: pointer;
+	  padding: 0px 5px;
+	  -webkit-box-sizing: content-box;
+	  -moz-box-sizing: content-box;
+	  box-sizing: content-box;
+}
+.ui-igedit-spinbutton {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	float: left;
+	display: inline;
+}
+.ui-igedit-list {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.ui-igedit-listitem {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	display: block;
+}
+.ui-igedit-button-ltr,
+.ui-widget-header .ui-igedit-button-ltr,
+.ui-state-default .ui-igedit-button-ltr,
+.ui-state-hover .ui-igedit-button-ltr,
+.ui-state-focus .ui-igedit-button-ltr,
+.ui-iggrid .ui-iggrid-footer .ui-igedit-button-ltr,
+.ui-iggrid .ui-iggrid-toolbar .ui-igedit-button-ltr {
+	border-width: 0 0 0 1px;
+}
+.ui-igedit-button-rtl,
+.ui-widget-header .ui-igedit-button-rtl,
+.ui-state-default .ui-igedit-button-rtl,
+.ui-state-hover .ui-igedit-button-rtl,
+.ui-state-focus .ui-igedit-button-rtl,
+.ui-iggrid .ui-iggrid-footer .ui-igedit-button-rtl,
+.ui-iggrid .ui-iggrid-toolbar .ui-igedit-button-rtl {
+	border-width: 0 1px 0 0;
+}
+
+.ui-igedit-placeholder::-webkit-input-placeholder {
+	color: rgba(128, 128, 128, .5);
+	
+}
+.ui-igedit-placeholder::-moz-placeholder {
+	color: rgba(128, 128, 128, .5);
+	
+}
+.ui-igedit-placeholder:-moz-placeholder {   /* Older versions of Firefox */
+	color: rgba(128, 128, 128, .5);
+	
+}
+.ui-igedit-placeholder:-ms-input-placeholder { 
+	color: rgba(128, 128, 128, .5);
+	
+}
+
+.ui-checkbox-container {
+    /* prevent Bootstrap border-box */
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+	position: relative;
+}
+
+.ui-checkbox-container .ui-icon-custom {
+    margin: auto;
+	position: absolute;
+	top: 0; 
+	left: 0; 
+	bottom: 0; 
+	right: 0;
+}
+
+.ui-checkbox-container .ui-icon:focus{
+    outline: none;
+}
+
+.ui-state-checkbox-checked {
+	
+}
+
+.ui-igedit-textarea {
+	resize: none;
+}

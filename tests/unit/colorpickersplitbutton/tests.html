@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Color Picker Split Button Tests</title>
+	<link type="text/css" rel="stylesheet"href="../../../src/css/themes/infragistics/infragistics.theme.css" />
+
+    <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.shared.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.toolbarbutton.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.popover.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.splitbutton.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.colorpicker.css" media="screen" />
+	
+	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+     
+	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.colorpicker.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.toolbarbutton.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitbutton.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.colorpickersplitbutton.js"></script>
+
+	<script type="text/javascript">
+	    var equalWithEpsilon = function (a, b, epsilon) {
+	        return Math.abs(a - b) < epsilon;
+	    }
+
+	    var unitTestsSetup = {
+	        colorPickerSplitButtonSelector: "color-picker-split-button",
+	        actualColorPickerSplitButton: null,
+	        setup: function () {
+	            $('body').append($("<div></div>").attr("id", this.colorPickerSplitButtonSelector));
+	            $(this.id(this.colorPickerSplitButtonSelector)).igColorPickerSplitButton({
+	                items: [{
+	                    name: "textColor",
+	                    label: "Font Color",
+	                    icon: "ui-igbutton-forecolor"
+	                }],
+	                defaultItemName: "textColor",
+	                selectedTextColor: "red"
+	            });
+	            this.actualColorPickerSplitButton = $(this.id(this.colorPickerSplitButtonSelector)).data("ui-igColorPickerSplitButton");
+	        },
+	        teardown: function () {
+	            this.actualColorPickerSplitButton.destroy()
+	            $(this.id(this.colorPickerSplitButtonSelector)).remove();
+	        },
+	        id: function (selector) {
+	            return "#" + selector;
+	        }
+	    };
+
+	    module("igColorPickerSplitButton unit tests", unitTestsSetup);
+
+	    test("_onColorSelect", function () {
+	        var ui = { color: "#f1f1f1" };
+	        this.actualColorPickerSplitButton._onColorSelect({}, ui);
+	        deepEqual(this.actualColorPickerSplitButton.options.defaultColor, ui.color, "changed default color");
+	    });
+	</script>
+</head>
+<body>
+	<!--<div id="qunit"></div>
+    <div id="qunit-fixture"></div>-->
+	
+	
+	<div style="float:right;width:400px;overflow:auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+	
+</body>
+</html>

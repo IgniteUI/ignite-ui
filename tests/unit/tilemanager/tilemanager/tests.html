@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.layout.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.tilemanager.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.splitter.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+
+    <script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.splitter-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.layoutmanager.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.splitter.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.tilemanager.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.tilemanager-en.js"></script>
+    
+    <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="../../common/test-util.js"></script>
+    <script type="text/javascript" src="dataSource.js"></script>
+    <script type="text/javascript" src="dataSource2.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var tm1Markup = [],
+                tm1MinimizedMarkup = [],
+                tm1MaximizedMarkup = [],
+                tm1MarkupPlusTheBtn = [],
+                minimizedTemplatesHTML = [],
+                maximizedTemplatesHTML = [],
+                maximizedTemplatesNoBtn = [],
+                btnMarkup = '<span class="ig-button ig-tile-minimize-button"><span class="ig-tile-minimize-icon"></span></span>',
+                loremIpsumText = 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature',
+                //imageMarkup = '<img src="assets/IMG_1556.jpg" title="assets/IMG_1556.jpg" alt="error">',
+                scrollWidth, scrollHeight, i;
+
+            function loadTestbeds() {
+                $('#tilemanager1>div').each(function (index) {
+                    var tile = $(this),
+                        html = tile.html();
+
+                    tm1Markup[index] = html;
+                    tm1MarkupPlusTheBtn[index] = btnMarkup + html;
+                    tm1MinimizedMarkup[index] = tile.find('.minimized').html();
+                    tm1MaximizedMarkup[index] = tile.find('.maximized').html();
+                });
+
+                for (i = 0; i < 20; i++) {
+                    minimizedTemplatesHTML[i] = '<h3>Minimized Header ' + i + '</h3>';
+                    maximizedTemplatesHTML[i] = btnMarkup + '<h3>Maximized Header ' + i + '</h3>' + '<p>' + loremIpsumText + '</p>';
+                    maximizedTemplatesNoBtn[i] = '<h3>Maximized Header ' + i + '</h3>' + '<p>' + loremIpsumText + '</p>';
+                }
+
+                scrollWidth = $.ig.util.getScrollWidth();
+                scrollHeight = $.ig.util.getScrollHeight();
+            }
+
+            var initialized = false;
+            module("igTileManager", {
+                setup: function () {
+                    // Pause testing until tree is initialized
+                    if (!initialized) {
+                        stop();
+                        loadTestbeds();
+                        setTimeout(function () { start(); }, 100);
+                        initialized = true;
+                    }
+                },
+                teardown: function () {
+                }
+            });
+
+            /* ***************** igTileManager Rendering ***************** */
+
+            var testId_1 = 'igTileManager script loading.',
+                testId_2 = 'igTileManager initialize on markup. Default config',
+                testId_3 = 'igTileManager initialize on markup. ColumnWidth and columnHeight in px.',
+                testId_4 = 'igTileManager initialize on markup. ColumnWidth and columnHeight in percent.',
+                testId_5 = 'igTileManager initialize on markup. Items configuration',
+                testId_6 = 'igTileManager initialize on markup. Default config with maximziedTileIndex',
+                testId_7 = 'igTileManager initialize on markup. MaximziedTileIndex with items provided. Use api events.',
+                testId_8 = 'igTileManager initialize on markup. Set options test. Container with vertical scroll.',
+                testId_9 = 'igTileManager initialize on markup. Set options test. Container with vertical scroll. Calling set option while a tile is maximized.',
+                testId_10 = 'igTileManager initialize on data source. Default config',
+                testId_11 = 'igTileManager initialize on data source. ColumnWidth/Height in px. Container with vertical scrollbar. Use API methods. ',
+                testId_12 = 'igTileManager initialize on data source. ColumnWidth and columnHeight in percent and cols option. Container with vertical and horizontal scrollbar. RearrangeItems false.',
+                testId_13 = 'igTileManager initialize on data source. Items configuration. Rearrange false. Half of the container is empty.',
+                testId_14 = 'igTileManager initialize on data source. MaximziedTileIndex with items provided.',
+                testId_15 = 'igTileManager initialize on data source. Set options test.',
+                testId_16 = 'igTileManager events.',
+                testId_17 = 'igTileManager splitter events.',
+                testId_18 = 'igTileManager splitter collapsible option.',
+                testId_19 = 'igTileManager splitter collapsed option.'
+                testId_20 = 'igTileManager splitter setting collapsible and collapsed options.';
+
+            test(testId_1, function () {
+                ok(typeof $('#tilemanager1').igTileManager === 'function', 'igTileManager is not defined.');
+            });
+
+            // Test igTileManager initialize on markup. Default config
+            test(testId_2, function () {
+
+                // Expected values
+                var container = $('#tilemanager1'),
+                    containerWidth = 1000,
+                    containerHeight = 1000,
+                    cols = 3, rows = 3,
+                    colWidth = 333, colHeight = 333,
+                    marginLeft = 0, marginTop = 0,
+                    tilesCount = 9, rightPanelCols = 1,
+                    rightPanelTilesWidth = null,
+                    rightPanelTilesHeight = null,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 0, tileToSwap = 1, items = null,
+                    minimizedState = null, maximizedState = null,
+                    showRightPanelScroll = true, enableSplitter = true,
+                    useApiMethods = false, fromMarkup = true,
+                    splitterInitiallyCollapsed = false;
+
+                $('#tilemanager1').width(1000).height(1000).igTileManager({
+                    animationDuration: 0
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, enableSplitter, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on markup. ColumnWidth and columnHeight in px.
+            test(testId_3, function () {
+
+                // Expected values
+                var container = $('#tilemanager1'),
+                    containerWidth = 650,
+                    containerHeight = 600,
+                    cols = 3, rows = 3,
+                    marginLeft = 20, marginTop = 25,
+                    colWidth = 180, colHeight = 175,
+                    tilesCount = 9, rightPanelCols = 2,
+                    rightPanelTilesWidth = 100,
+                    rightPanelTilesHeight = 100,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 1, tileToSwap = 0, items = null,
+                    minimizedState = ".minimized", maximizedState = ".maximized",
+                    showRightPanelScroll = false, splitterEnabled = true,
+                    useApiMethods = true, fromMarkup = true,
+                    splitterInitiallyCollapsed = false;
+
+                // ColumnWidth/Height in px.
+                $('#tilemanager1').width(650).height(600).igTileManager({
+                    columnWidth: '180',
+                    columnHeight: "175px",
+                    marginLeft: 20,
+                    marginTop: 25,
+                    showRightPanelScroll: false,
+                    rightPanelCols: 2,
+                    rightPanelTilesWidth: 100,
+                    rightPanelTilesHeight: 100,
+                    splitterOptions: {
+                        enabled: splitterEnabled
+                    },
+                    animationDuration: 0,
+                    minimizedState: ".minimized",
+                    maximizedState: ".maximized"
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on markup. ColumnWidth and columnHeight in percent.
+            test(testId_4, function () {
+
+                // Expected values
+                var container = $('#tilemanager1'),
+                    containerWidth = 750,
+                    containerHeight = 750,
+                    cols = 2, rows = 5,
+                    marginLeft = 10, marginTop = 33,
+                    colWidth = Math.floor(containerWidth * 0.5 - marginLeft),
+                    colHeight = Math.floor(containerHeight * 0.2 - marginTop),
+                    tilesCount = 9, rightPanelCols = 3,
+                    rightPanelTilesWidth = 75,
+                    rightPanelTilesHeight = 100,
+                    rightPanelHasScroll = false,
+                    tileToMaximize = 3, tileToSwap = 6, items = null,
+                    minimizedState = ".minimized", maximizedState = ".maximized",
+                    showRightPanelScroll = true, splitterEnabled = true,
+                    useApiMethods = false, fromMarkup = true,
+                    splitterInitiallyCollapsed = false;
+
+                // ColumnWidth/Height in percent.
+                $('#tilemanager1').width(750).height(750).igTileManager({
+                    columnWidth: '50%',
+                    columnHeight: '20%',
+                    marginLeft: 10,
+                    marginTop: 33,
+                    showRightPanelScroll: true,
+                    rightPanelCols: 3,
+                    rightPanelTilesWidth: 75,
+                    rightPanelTilesHeight: 100,
+                    splitterOptions: {
+                        enabled: splitterEnabled
+                    },
+                    animationDuration: 0,
+                    minimizedState: ".minimized",
+                    maximizedState: ".maximized"
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Test igTileManager initialize on markup. Items configuration
+            test(testId_5, function () {
+
+                // Expected values
+                var container = $('#tilemanager1'),
+                    containerWidth = 1000,
+                    containerHeight = 500,
+                    cols = 3, rows = 6,
+                    marginLeft = 8, marginTop = 15,
+                    colWidth = Math.floor(containerWidth / cols - marginLeft),
+                    colHeight = Math.floor(containerHeight / rows - marginTop),
+                    tilesCount = 9, rightPanelCols = 1,
+                    rightPanelTilesWidth = null,
+                    rightPanelTilesHeight = null,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 6, tileToSwap = 5,
+                    minimizedState = ".minimized", maximizedState = ".maximized",
+                    showRightPanelScroll = true, splitterEnabled = true,
+                    useApiMethods = false, fromMarkup = true,
+                    splitterInitiallyCollapsed = false,
+                    items = [{ colSpan: 2, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 2, colIndex: 0, rowIndex: 1 },
+                            { colSpan: 2, rowSpan: 3, colIndex: 1, rowIndex: 1 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 3 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 5 }];
+
+                // Items configuration
+                $('#tilemanager1').width(1000).height(500).igTileManager({
+                    marginLeft: 8,
+                    marginTop: 15,
+                    items: items,
+                    animationDuration: 0,
+                    minimizedState: ".minimized",
+                    maximizedState: ".maximized"
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on markup. Default config with maximziedTileIndex.
+            test(testId_6, function () {
+
+                // Expected values
+                var maximizedTileIndex = 2,
+                    container = $('#tilemanager1'),
+                    containerWidth = 1000,
+                    containerHeight = 1000,
+                    cols = 3, rows = 3,
+                    colWidth = 333, colHeight = 333,
+                    marginLeft = 0, marginTop = 0,
+                    tilesCount = 9, tileToMaximize = 0, items = null,
+                    minimizedState = null, maximizedState = null,
+                    useApiMethods = false, fromMarkup = true,
+                    splitterInitiallyCollapsed = false;
+
+                $('#tilemanager1').width(1000).height(1000)
+                    .igTileManager({
+                        maximizedTileIndex: 2,
+                        animationDuration: 0
+                    });
+
+                testTileManagerWithMaximizedTileIndex(maximizedTileIndex, container,
+                    containerWidth, containerHeight, cols, rows, colWidth, colHeight,
+                    marginLeft, marginTop, tilesCount, tileToMaximize, items,
+                    minimizedState, maximizedState, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on markup. MaximziedTileIndex with items provided. Use api events.
+            test(testId_7, function () {
+
+                // Expected values
+                var maximizedTileIndex = 5,
+                    container = $('#tilemanager1'),
+                    containerWidth = 750,
+                    containerHeight = 600,
+                    cols = 4, rows = 3,
+                    marginLeft = 15, marginTop = 15,
+                    colWidth = Math.floor(750 / cols - marginLeft),
+                    colHeight = Math.floor(600 / rows - marginTop),
+                    tilesCount = 9,
+                    tileToMaximize = 0,
+                    minimizedState = ".minimized", maximizedState = ".maximized",
+                    useApiMethods = true, fromMarkup = true,
+                    items = [{ rowIndex: 0, colIndex: 0, rowSpan: 1, colSpan: 1 },
+                        { rowIndex: 0, colIndex: 1, rowSpan: 1, colSpan: 1 },
+                        { rowIndex: 0, colIndex: 2, rowSpan: 1, colSpan: 1 },
+                        { rowIndex: 0, colIndex: 3, rowSpan: 1, colSpan: 1 },
+                        { rowIndex: 1, colIndex: 0, rowSpan: 1, colSpan: 1 },
+                        { rowIndex: 1, colIndex: 1, rowSpan: 2, colSpan: 2 },
+                        { rowIndex: 1, colIndex: 3, rowSpan: 1, colSpan: 1 },
+                        { rowIndex: 2, colIndex: 0, rowSpan: 1, colSpan: 1 },
+                        { rowIndex: 2, colIndex: 3, rowSpan: 1, colSpan: 1 }];
+
+                $('#tilemanager1').width(750).height(600)
+                    .igTileManager({
+                        marginLeft: 15,
+                        marginTop: 15,
+                        items: items,
+                        maximizedTileIndex: 5,
+                        minimizedState: ".minimized",
+                        maximizedState: ".maximized",
+                        animationDuration: 0
+                    });
+
+                testTileManagerWithMaximizedTileIndex(maximizedTileIndex, container,
+                    containerWidth, containerHeight, cols, rows, colWidth, colHeight,
+                    marginLeft, marginTop, tilesCount, tileToMaximize, items,
+                    minimizedState, maximizedState, useApiMethods, fromMarkup);
+            });
+
+            // Initialize on markup. Set options test. Container with vertical scroll.
+            test(testId_8, function () {
+
+                // Initial setup
+                $('#tilemanager1').width(500).height(500).igTileManager({
+                    columnWidth: 100,
+                    columnHeight: 100,
+                    marginLeft: 10,
+                    marginTop: 10,
+                    rearrangeItems: false,
+                    rightPanelCols: 1,
+                    rightPanelTilesWidth: 100,
+                    rightPanelTilesHeight: 100,
+                    minimizedState: ".maximized",
+                    animationDuration: 0
+                });
+
+                // Expected values
+                var container = $('#tilemanager1'),
+                    containerWidth = 1000,
+                    containerHeight = 1000,
+                    cols = 2, rows = 8,
+                    marginLeft = 20, marginTop = 0,
+                    colWidth = Math.floor((containerWidth - scrollWidth) * 0.5 - marginLeft),
+                    colHeight = 150,
+                    tilesCount = 9, rightPanelCols = 2,
+                    rightPanelTilesWidth = 125,
+                    rightPanelTilesHeight = 75,
+                    rightPanelHasScroll = false,
+                    tileToMaximize = 6, tileToSwap = 5,
+                    minimizedState = ".minimized", maximizedState = ".maximized",
+                    showRightPanelScroll = true, splitterEnabled = false,
+                    useApiMethods = false, fromMarkup = true,
+                    splitterInitiallyCollapsed = false,
+                    items = [{ colSpan: 2, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 2, colIndex: 0, rowIndex: 1 },
+                            { colSpan: 2, rowSpan: 3, colIndex: 1, rowIndex: 1 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 3 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 5 }];
+
+                // Set new options
+                $('#tilemanager1')
+                   .width(1000)
+                   .height(1000)
+                   .igTileManager('option', 'rearrangeItems', true)
+                   .igTileManager('option', 'items', items)
+                   .igTileManager('option', 'columnWidth', '50%')
+                   .igTileManager('option', 'columnHeight', '150px')
+                   .igTileManager('option', 'marginLeft', 20)
+                   .igTileManager('option', 'marginTop', 0)
+                   .igTileManager('option', 'animationDuration', 0)
+                   .igTileManager('option', 'minimizedState', '.minimized')
+                   .igTileManager('option', 'maximizedState', '.maximized')
+                   .igTileManager('option', 'rightPanelCols', 2)
+                   .igTileManager('option', 'rightPanelTilesWidth', 125)
+                   .igTileManager('option', 'rightPanelTilesHeight', 75)
+                   .igTileManager('option', 'showRightPanelScroll', true)
+                   .igTileManager('option', 'splitterOptions', { enabled: splitterEnabled });
+
+                // In this configuration the items are rearranged by the Layout Manager.
+                // For the test we provide the items configuration as it should be after the rearranging.
+                // Only the colIndex and rowIndex are changed
+                items = [{ colSpan: 2, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 1 },
+                   { colSpan: 1, rowSpan: 2, colIndex: 1, rowIndex: 1 },
+                   { colSpan: 2, rowSpan: 3, colIndex: 0, rowIndex: 3 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 2 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 6 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 6 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 7 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 7 }];
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                   colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                   rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                   tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                   showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on markup. Set options test. Container with vertical scroll. Calling set option while a tile is maximized.
+            test(testId_9, function () {
+
+                // Initial setup
+                $('#tilemanager1').width(500).height(500).igTileManager({
+                    columnWidth: 100,
+                    columnHeight: 100,
+                    marginLeft: 10,
+                    marginTop: 10,
+                    rearrangeItems: false,
+                    rightPanelCols: 1,
+                    rightPanelTilesWidth: 100,
+                    rightPanelTilesHeight: 100,
+                    minimizedState: ".maximized",
+                    animationDuration: 0
+                });
+
+                // Expected values
+                var container = $('#tilemanager1'),
+                    containerWidth = 1000,
+                    containerHeight = 1000,
+                    cols = 2, rows = 8,
+                    marginLeft = 20, marginTop = 0,
+                    colWidth = Math.floor((containerWidth - scrollWidth) * 0.5 - marginLeft),
+                    colHeight = 150,
+                    tilesCount = 9, rightPanelCols = 2,
+                    rightPanelTilesWidth = 125,
+                    rightPanelTilesHeight = 75,
+                    rightPanelHasScroll = false,
+                    tileToMaximize = 6, tileToSwap = 5,
+                    minimizedState = ".minimized", maximizedState = ".maximized",
+                    showRightPanelScroll = true, splitterEnabled = false,
+                    useApiMethods = false, fromMarkup = true,
+                    splitterInitiallyCollapsed = false,
+                    items = [{ colSpan: 2, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 2, colIndex: 0, rowIndex: 1 },
+                            { colSpan: 2, rowSpan: 3, colIndex: 1, rowIndex: 1 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 3 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 5 }];
+
+                // Set new options while tile is maximized
+                $('#tilemanager1')
+                    .igTileManager('maximize', $('[data-index=0]'))
+                    .width(1000)
+                    .igTileManager('maximize', $('[data-index=1]'))
+                    .height(1000)
+                    .igTileManager('maximize', $('[data-index=2]'))
+                    .igTileManager('option', 'rearrangeItems', true)
+                    .igTileManager('maximize', $('[data-index=3]'))
+                    .igTileManager('option', 'cols', 5)
+                    .igTileManager('maximize', $('[data-index=4]'))
+                    .igTileManager('option', 'rows', 5)
+                    .igTileManager('maximize', $('[data-index=5]'))
+                    .igTileManager('option', 'items', items)
+                    .igTileManager('maximize', $('[data-index=6]'))
+                    .igTileManager('option', 'columnWidth', '50%')
+                    .igTileManager('maximize', $('[data-index=7]'))
+                    .igTileManager('option', 'columnHeight', '150px')
+                    .igTileManager('maximize', $('[data-index=8]'))
+                    .igTileManager('option', 'marginLeft', 20)
+                    .igTileManager('maximize', $('[data-index=0]'))
+                    .igTileManager('option', 'marginTop', 0)
+                    .igTileManager('maximize', $('[data-index=1]'))
+                    .igTileManager('option', 'animationDuration', 0)
+                    .igTileManager('maximize', $('[data-index=2]'))
+                    .igTileManager('option', 'minimizedState', '.minimized')
+                    .igTileManager('maximize', $('[data-index=3]'))
+                    .igTileManager('option', 'maximizedState', '.maximized')
+                    .igTileManager('maximize', $('[data-index=4]'))
+                    .igTileManager('option', 'rightPanelCols', 2)
+                    .igTileManager('maximize', $('[data-index=5]'))
+                    .igTileManager('option', 'rightPanelTilesWidth', 125)
+                    .igTileManager('maximize', $('[data-index=6]'))
+                    .igTileManager('option', 'rightPanelTilesHeight', 75)
+                    .igTileManager('maximize', $('[data-index=7]'))
+                    .igTileManager('option', 'showRightPanelScroll', false)
+                    .igTileManager('maximize', $('[data-index=8]'))
+                    .igTileManager('option', 'splitterOptions', { enabled: splitterEnabled })
+                    .igTileManager('minimize');
+
+                // In this configuration the items are rearranged by the Layout Manager.
+                // For the test we provide the items configuration as it should be after the rearranging.
+                // Only the colIndex and rowIndex are changed
+                items = [{ colSpan: 2, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 1 },
+                   { colSpan: 1, rowSpan: 2, colIndex: 1, rowIndex: 1 },
+                   { colSpan: 2, rowSpan: 3, colIndex: 0, rowIndex: 3 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 2 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 6 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 6 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 7 },
+                   { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 7 }];
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on data source. Default config
+            test(testId_10, function () {
+
+                // Expected values
+                var container = $('#tilemanager2'),
+                    containerWidth = 666,
+                    containerHeight = 999,
+                    cols = 4, rows = 4,
+                    marginLeft = 0, marginTop = 0,
+                    colWidth = Math.floor(containerWidth / cols),
+                    colHeight = Math.floor(containerHeight / rows),
+                    tilesCount = 13, rightPanelCols = 1,
+                    rightPanelTilesWidth = null,
+                    rightPanelTilesHeight = null,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 0, tileToSwap = 1,
+                    minimizedState = null, maximizedState = null,
+                    items = null, showRightPanelScroll = true,
+                    splitterEnabled = true, useApiMethods = false,
+                    fromMarkup = false, splitterInitiallyCollapsed = false;
+
+                // Default config
+                $('#tilemanager2').width(666).height(999).igTileManager({
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on data source. ColumnWidth/Height in px.
+            // Container with vertical scrollbar. Use API methods.
+            test(testId_11, function () {
+
+                // Expected values
+                var container = $('#tilemanager2'),
+                    containerWidth = 540,
+                    containerHeight = 444,
+                    cols = 2, rows = 7,
+                    colWidth = 170, colHeight = 100,
+                    marginLeft = 10, marginTop = 10,
+                    tilesCount = 13, rightPanelCols = 2,
+                    rightPanelTilesWidth = 100,
+                    rightPanelTilesHeight = 100,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 1, tileToSwap = 0,
+                    minimizedState = null, maximizedState = null,
+                    items = null, showRightPanelScroll = false,
+                    splitterEnabled = true, useApiMethods = true,
+                    fromMarkup = false, splitterInitiallyCollapsed = false;
+
+                // ColumnWidth/Height in px. Container with scrollbars
+                $('#tilemanager2').width(540).height(444).igTileManager({
+                    columnWidth: 170,
+                    columnHeight: 100,
+                    marginLeft: 10,
+                    marginTop: 10,
+                    showRightPanelScroll: false,
+                    rightPanelCols: 2,
+                    rightPanelTilesWidth: 100,
+                    rightPanelTilesHeight: 100,
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on data source. ColumnWidth and columnHeight in percent and cols option.
+            // Container with vertical and horizontal scrollbar. RearrangeItems false.
+            test(testId_12, function () {
+
+                // Expected values
+                var container = $('#tilemanager2'),
+                    containerWidth = 1000,
+                    containerHeight = 1000,
+                    cols = 4, rows = 4,
+                    marginLeft = 0, marginTop = 24,
+                    colWidth = Math.floor((containerWidth - scrollWidth) * 0.5 - marginLeft),
+                    colHeight = Math.floor((containerHeight - scrollHeight) * 0.33 - marginTop),
+                    tilesCount = 13,
+                    rightPanelCols = 1,
+                    rightPanelTilesWidth = 125,
+                    rightPanelTilesHeight = 100,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 3, tileToSwap = 6,
+                    minimizedState = null, maximizedState = null, items = null,
+                    showRightPanelScroll = true, splitterEnabled = false,
+                    useApiMethods = false, fromMarkup = false,
+                    splitterInitiallyCollapsed = false;
+
+                // ColumnWidth and columnHeight in percent and cols option.
+                // Container with vertical and horizontal scrollbar. RearrangeItems false.
+                $('#tilemanager2').width(1000).height(1000).igTileManager({
+                    columnWidth: '50%',
+                    columnHeight: "33%",
+                    marginTop: 24,
+                    cols: 4,
+                    rearrangeItems: false,
+                    showRightPanelScroll: true,
+                    rightPanelCols: 1,
+                    rightPanelTilesWidth: 125,
+                    rightPanelTilesHeight: 100,
+                    splitterOptions: {
+                        enabled: splitterEnabled
+                    },
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on data source. Items configuration.
+            // Rearrange false. Half of the container is empty.
+            test(testId_13, function () {
+
+                // Expected values
+                var container = $('#tilemanager2'),
+                    containerWidth = 500,
+                    containerHeight = 500,
+                    cols = 3, rows = 7,
+                    marginLeft = 0, marginTop = 0,
+                    colWidth = 100,
+                    colHeight = containerHeight * 0.1,
+                    tilesCount = 13, rightPanelCols = 1,
+                    rightPanelTilesWidth = null,
+                    rightPanelTilesHeight = null,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 3, tileToSwap = 6,
+                    minimizedState = null, maximizedState = null,
+                    showRightPanelScroll = false, splitterEnabled = true,
+                    useApiMethods = false, fromMarkup = false,
+                    splitterInitiallyCollapsed = false,
+                    items = [{ colSpan: 2, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 2, colIndex: 0, rowIndex: 1 },
+                            { colSpan: 2, rowSpan: 3, colIndex: 1, rowIndex: 1 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 3 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 5 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 5 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 5 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 6 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 6 }];
+
+                // Init
+                $('#tilemanager2').width(500).height(500).igTileManager({
+                    columnWidth: 100,
+                    columnHeight: '10%',
+                    cols: 100,
+                    rows: 100,
+                    rearrangeItems: false,
+                    items: items,
+                    showRightPanelScroll: false,
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Initialize on data source. MaximziedTileIndex with items provided.
+            test(testId_14, function () {
+
+                // Expected values
+                var maximizedTileIndex = 3,
+                    container = $('#tilemanager2'),
+                    containerWidth = 500,
+                    containerHeight = 500,
+                    cols = 2, rows = 10,
+                    marginLeft = 20, marginTop = 33,
+                    containerWidthNoScroll = containerWidth - scrollWidth,
+                    colWidth = Math.floor(containerWidthNoScroll * 0.5 - marginLeft),
+                    colHeight = Math.floor(500 * 0.25 - marginTop),
+                    tilesCount = 13,
+                    tileToMaximize = 6,
+                    minimizedState = null, maximizedState = null,
+                    useApiMethods = false, fromMarkup = false,
+                    items = [{ colSpan: 2, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 2, colIndex: 0, rowIndex: 1 },
+                            { colSpan: 2, rowSpan: 3, colIndex: 1, rowIndex: 1 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 3 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 5 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 5 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 5 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 6 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 6 }];
+
+                // Init
+                $('#tilemanager2').width(500).height(500).igTileManager({
+                    columnWidth: '50%',
+                    columnHeight: '25%',
+                    marginLeft: 20,
+                    marginTop: 33,
+                    items: items,
+                    maximizedTileIndex: 3,
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0
+                });
+
+                testTileManagerWithMaximizedTileIndex(maximizedTileIndex, container,
+                    containerWidth, containerHeight, cols, rows, colWidth, colHeight,
+                    marginLeft, marginTop, tilesCount, tileToMaximize, items,
+                    minimizedState, maximizedState, useApiMethods, fromMarkup);
+            });
+
+            // Initialize on data source. Set options test. Change DataSource. RearrangeItems false.
+            test(testId_15, function () {
+
+                // Initial setup
+                $('#tilemanager2').width(500).height(500).igTileManager({
+                    columnWidth: 100,
+                    columnHeight: 100,
+                    marginLeft: 10,
+                    marginTop: 10,
+                    rearrangeItems: false,
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3>',
+                    rightPanelCols: 1,
+                    rightPanelTilesWidth: 100,
+                    rightPanelTilesHeight: 100,
+                    animationDuration: 0
+                });
+
+                // Expected values
+                var container = $('#tilemanager2'),
+                    containerWidth = 1000,
+                    containerHeight = 1000,
+                    cols = 3, rows = 5,
+                    marginLeft = 26, marginTop = 12,
+                    colWidth = 200,
+                    colHeight = Math.floor(containerHeight / rows - marginTop),
+                    tilesCount = 8, rightPanelCols = 2,
+                    rightPanelTilesWidth = 125,
+                    rightPanelTilesHeight = 75,
+                    rightPanelHasScroll = false,
+                    tileToMaximize = 6, tileToSwap = 5,
+                    minimizedState = ".minimized", maximizedState = ".maximized",
+                    showRightPanelScroll = true, splitterEnabled = true,
+                    useApiMethods = false, fromMarkup = false,
+                    splitterInitiallyCollapsed = false,
+                    items = [{ colSpan: 2, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 0 },
+                            { colSpan: 1, rowSpan: 2, colIndex: 0, rowIndex: 1 },
+                            { colSpan: 2, rowSpan: 3, colIndex: 1, rowIndex: 1 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 3 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 1, rowIndex: 4 },
+                            { colSpan: 1, rowSpan: 1, colIndex: 2, rowIndex: 4 }];
+
+                // Set new options
+                $('#tilemanager2')
+                   .width(1000)
+                   .height(1000)
+                   .igTileManager('option', 'dataSource', dataSource2)
+                   .igTileManager('option', 'items', items)
+                   .igTileManager('option', 'columnWidth', '200px')
+                   .igTileManager('option', 'columnHeight', '') // Set columnHeight to be auto evaluated
+                   .igTileManager('option', 'marginLeft', 26)
+                   .igTileManager('option', 'marginTop', 12)
+                   .igTileManager('option', 'animationDuration', 0)
+                   .igTileManager('option', 'minimizedState', '<h3>Minimized ${header}</h3>')
+                   .igTileManager('option', 'maximizedState', '<h3>Maximized ${header}</h3><p>${text}</p>')
+                   .igTileManager('option', 'rightPanelCols', 2)
+                   .igTileManager('option', 'rightPanelTilesWidth', 125)
+                   .igTileManager('option', 'rightPanelTilesHeight', 75)
+                   .igTileManager('option', 'showRightPanelScroll', true)
+                   .igTileManager('option', 'splitterOptions', { enabled: splitterEnabled });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup,
+                    splitterInitiallyCollapsed);
+            });
+
+            // Test igTileManager events.
+            test(testId_16, function () {
+
+                var container = $('#tilemanager2'),
+                    dataBinding = false,
+                    dataBound = false,
+                    rendering = false,
+                    rendered = false,
+                    swap = false;
+
+                container = $('#tilemanager2').igTileManager({
+                    columnWidth: 200,
+                    columnHeight: 200,
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0,
+                    dataBinding: function (event, ui) {
+                        dataBinding = true;
+                        equal(dataBound, false, 'The dataBound event is fired before dataBinding.');
+                        equal(event.type, 'igtilemanagerdatabinding', 'The native event argument type is not correct.');
+                        equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+                        ok(ui.dataSource instanceof $.ig.DataSource, 'The dataSource is not an $.ig.DataSource instance.');
+                    },
+                    dataBound: function (event, ui) {
+                        dataBound = true;
+                        equal(dataBinding, true, 'The dataBound event is fired before dataBinding.');
+                        equal(event.type, 'igtilemanagerdatabound', 'The native event argument type is not correct.');
+                        equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+                        ok(ui.success, 'The databinding failed.');
+                        equal(ui.dataView.length, 13, 'The dataView does not reflect the items the tile manager is bound to.');
+                    },
+                    rendering: function (event, ui) {
+                        rendering = true;
+                        equal(rendered, false, 'The rendered event is fired before rendering.');
+                        equal(event.type, 'igtilemanagerrendering', 'The native event argument type is not correct.');
+                        equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+                        equal(ui.tiles.length, 13, 'The data does not reflect the items the tile manager is bound to.');
+                        equal(ui.items.length, 13, 'The item definitions do not reflect the items the tile manager is bound to.');
+                    },
+                    rendered: function (event, ui) {
+                        rendered = true;
+                        equal(rendering, true, 'The rendered event is fired before rendering.');
+                        equal(event.type, 'igtilemanagerrendered', 'The native event argument type is not correct.');
+                        equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+                    },
+                    // TODO: Add tileRendering/tileRendered tests
+                    tileMaximizing: function (event, ui) {
+                        if (!swap) {
+                            equal(event.type, 'igtilemanagertilemaximizing', 'The native event argument type is not correct.');
+                            equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+                            equal(ui.tile.attr('data-index'), '0', 'There is a mismatch in the index argument.');
+                            equal(ui.minimizingTile, null, 'The simultaniously minimizing tile does not match.');
+                        } else {
+                            equal(event.type, 'igtilemanagertilemaximizing', 'The native event argument type is not correct.');
+                            equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+                            equal(ui.tile.attr('data-index'), '1', 'There is a mismatch in the index argument.');
+                            equal(ui.minimizingTile.attr('data-index'), '0', 'The simultaniously minimizing tile does not match.');
+                        }
+                    },
+                    tileMaximized: function (event, ui) {
+                        equal(event.type, 'igtilemanagertilemaximized', 'The native event argument type is not correct.');
+                        equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+
+                        if (!swap) {
+                            equal(ui.tile.attr('data-index'), '0', 'There is a mismatch in the index argument.');
+                        } else {
+                            equal(ui.tile.attr('data-index'), '1', 'There is a mismatch in the index argument.');
+                        }
+                    },
+                    tileMinimizing: function (event, ui) {
+                        if (!swap) {
+                            equal(event.type, 'igtilemanagertileminimizing', 'The native event argument type is not correct.');
+                            equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+                            equal(ui.tile.attr('data-index'), '1', 'There is a mismatch in the index argument.');
+                            equal(ui.maximizingTile, null, 'The simultaniously maximizing tile does not match.');
+                        } else {
+                            equal(event.type, 'igtilemanagertileminimizing', 'The native event argument type is not correct.');
+                            equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+                            equal(ui.tile.attr('data-index'), '0', 'There is a mismatch in the index argument.');
+                            equal(ui.maximizingTile.attr('data-index'), '1', 'The simultaniously maximizing tile does not match.');
+                        }
+                    },
+                    tileMinimized: function (event, ui) {
+                        equal(event.type, 'igtilemanagertileminimized', 'The native event argument type is not correct.');
+                        equal(ui.owner.element.attr('id'), 'tilemanager2', 'There is a mismatch in the owner argument.');
+                        if (!swap) {
+                            equal(ui.tile.attr('data-index'), '1', 'There is a mismatch in the index argument.');
+                        } else {
+                            equal(ui.tile.attr('data-index'), '0', 'There is a mismatch in the index argument.');
+                        }
+                    }
+                });
+
+                // Maximize
+                container.find('.ui-igtilemanager-left').children(':first').click();
+
+                // Swap
+                swap = true;
+                container.find('.ui-igtilemanager-right').children(':first').click();
+
+                // Minimize
+                swap = false;
+                container.find('.ui-igtilemanager-left').children(':first').find('.ig-tile-minimize-button').click();
+
+                container.igTileManager('destroy');
+            });
+
+            // Test igTileManager splitter events
+            test(testId_17, function () {
+                var container, splitter,
+                    newCollapsedEvent = function (event, ui) {
+                        equal(event.type, 'igsplittercollapsed', 'The native event argument type is not correct.');
+                        equal(ui.index, 1, 'The collapsed panel index is not correct.');
+                    },
+                    newExpandedEvent = function (event, ui) {
+                        equal(event.type, 'igsplitterexpanded', 'The native event argument type is not correct.');
+                        equal(ui.index, 1, 'The expanded panel index is not correct.');
+
+                        start();
+
+                        container.igTileManager('destroy');
+                    }
+
+                container = $('#tilemanager2').igTileManager({
+                    columnWidth: 200,
+                    columnHeight: 200,
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0,
+                    splitterOptions: {
+                        enabled: true,
+                        collapsible: true,
+                        events: {
+                            collapsed: function (event, ui) {
+                                equal(event.type, 'igsplittercollapsed', 'The native event argument type is not correct.');
+                                equal(ui.index, 1, 'The collapsed panel index is not correct.');
+                            },
+                            expanded: function (event, ui) {
+                                equal(event.type, 'igsplitterexpanded', 'The native event argument type is not correct.');
+                                equal(ui.index, 1, 'The expanded panel index is not correct.');
+
+                                // Testing setting of the events
+                                $('#tilemanager2').igTileManager({
+                                    splitterOptions: {
+                                        events: {
+                                            collapsed: newCollapsedEvent,
+                                            expanded: newExpandedEvent
+                                        }
+                                    }
+                                });
+
+                                splitter.collapseAt(1);
+                                splitter.expandAt(1);
+                            }
+                        }
+                    }
+                });
+
+                stop();
+
+                // Maximize
+                container.find('.ui-igtilemanager-left').children(':first').click();
+
+                // Collapse and expand
+                splitter = $('#tilemanager2').igTileManager("splitter");
+                splitter.collapseAt(1);
+                splitter.expandAt(1);
+            });
+
+            // Test igTileManager splitter collapsible option
+            test(testId_18, function () {
+                var container, splitter,
+                    initialLeftTileManagerPanelWidth, initialRightTileManagerPanelWidth,
+                    tileManagerOptions = {
+                        columnWidth: 200,
+                        columnHeight: 200,
+                        dataSource: dataSource,
+                        minimizedState: '<h3>Minimized ${header}</h3>',
+                        maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                        animationDuration: 0,
+                        splitterOptions: {
+                            enabled: true,
+                            collapsible: false
+                        }
+                    };
+
+                container = $('#tilemanager2').igTileManager(tileManagerOptions);
+
+                // Maximize
+                container.find('.ui-igtilemanager-left').children(':first').click();
+
+                initialLeftTileManagerPanelWidth = $(".ui-igtilemanager-left").width();
+                initialRightTileManagerPanelWidth = $(".ui-igtilemanager-right").width();
+
+                splitter = $('#tilemanager2').igTileManager("splitter");
+                splitter.collapseAt(1);
+
+                equal(initialLeftTileManagerPanelWidth, $(".ui-igtilemanager-left").width(), 'Tile manager\'s left panel\'s width is not correct.');
+                equal(initialRightTileManagerPanelWidth, $(".ui-igtilemanager-right").width(), 'Tile manager\'s right panel\'s width is not correct.');
+
+                container.igTileManager('destroy');
+
+                tileManagerOptions.splitterOptions.collapsible = true;
+                $('#tilemanager2').igTileManager(tileManagerOptions);
+
+                splitter = $('#tilemanager2').igTileManager("splitter");
+                splitter.collapseAt(1);
+
+                equal(initialLeftTileManagerPanelWidth + initialRightTileManagerPanelWidth, $(".ui-igtilemanager-left").width(),
+                    'Tile manager\'s left panel\'s width is not correct.');
+                equal(0, $(".ui-igtilemanager-right").width(), 'Tile manager\'s right panel\'s width is not correct.');
+
+                container.igTileManager('destroy');
+            });
+
+            // Test igTileManager splitter collapsed option
+            test(testId_19, function () {
+                // Expected values
+                var container = $('#tilemanager2'),
+                    containerWidth = 700,
+                    containerHeight = 700,
+                    cols = 4, rows = 4,
+                    marginLeft = 0, marginTop = 0,
+                    colWidth = Math.floor(containerWidth / cols),
+                    colHeight = Math.floor(containerHeight / rows),
+                    tilesCount = 13, rightPanelCols = 1,
+                    rightPanelTilesWidth = null,
+                    rightPanelTilesHeight = null,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 0, tileToSwap = 1,
+                    minimizedState = null, maximizedState = null,
+                    items = null, showRightPanelScroll = true,
+                    splitterEnabled = true, useApiMethods = false,
+                    fromMarkup = false, splitterInitiallyCollapsed = true;
+
+
+                $('#tilemanager2').width(containerWidth).height(containerHeight).igTileManager({
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0,
+                    splitterOptions: {
+                        enabled: splitterEnabled,
+                        collapsed: true,
+                        collapsible: true
+                    }
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup, splitterInitiallyCollapsed);
+            });
+            
+            // Test igTileManager splitter setting collapsbile and collapsed options 
+            test(testId_20, function () {
+                var container,
+                    setCollapsibleOptionFunc,
+                    setCollapsedOptionFunc;
+                
+                container = $('#tilemanager2').igTileManager({
+                    columnWidth: 200,
+                    columnHeight: 200,
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0,
+                    splitterOptions: {
+                        enabled: true,
+                        collapsible: false,
+                        collapsed: false
+                    }
+                });
+
+                var setCollapsibleOptionToTrueFunc = function () {
+                    $('#tilemanager2').igTileManager({
+                        splitterOptions: {
+                            collapsible: true
+                        }
+                    });
+                }
+
+                throws(setCollapsibleOptionToTrueFunc, Error, "Must throw error when trying to set collapsible option for th splitter.");
+
+                var setCollapsedOptionToTrueFunc = function () {
+                    $('#tilemanager2').igTileManager({
+                        splitterOptions: {
+                            collapsed: true
+                        }
+                    });
+                }
+
+                throws(setCollapsedOptionToTrueFunc, Error, "Must throw error when trying to set collapsed option for th splitter.");
+                
+                container.igTileManager('destroy');
+            });
+
+            // Tests given container's initialization from markup and tiles interactions
+            // Give the expected values as the arguments containerWidth/Height, cols/rows, colWidth/Height, marginTop/Left, tilesCount, items, minimizedState, maximizedState, useApiMethods
+            // Choose which tile to maximize and then which tile to swap by setting tileToMaximize, tileToSwap
+            function testTileManager(container, containerWidth, containerHeight, cols, rows,
+                colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll, tileToMaximize,
+                tileToSwap, items, minimizedState, maximizedState, showRightPanelScroll,
+                enableSplitter, useApiMethods, fromMarkup, splitterInitiallyCollapsed) {
+
+                var tiles = container.find('.ui-igtilemanager-left').children(),
+                    leftPanel = container.find('.ui-igtilemanager-left'),
+                    rightPanel = container.find('.ui-igtilemanager-right'),
+                    splitter = container.find('.ui-igsplitter-splitbar-vertical'),
+                    layoutConfig = container.igTileManager('layoutManager')._opt.gridLayout,
+                    layoutItems = leftPanel.igLayoutManager('option', 'items'),
+                    tile, innerContainer, minimizeBtn, minimizeIcon,
+
+                    // Calculate the other expected values
+                    borderWidth = 2,
+                    padding = 5,
+                    tilePaddings = padding * 2 + borderWidth,
+                    splitterWidth = splitter.outerWidth(),
+                    rightPanelTilesWidth = rightPanelTilesWidth || colWidth,
+                    rightPanelTilesHeight = rightPanelTilesHeight || colHeight,
+                    rightPanelHasScroll = showRightPanelScroll && rightPanelHasScroll,
+                    rightPanelWidth = rightPanelCols * (rightPanelTilesWidth + marginLeft) + (rightPanelHasScroll ? scrollWidth : 0),
+                    rightPanelHeight = containerHeight,
+                    leftPanelWidth = containerWidth,
+                    leftPanelMaximizedWidth = containerWidth - 2 * marginLeft - splitterWidth - rightPanelWidth,
+                    leftPanelHeight = containerHeight,
+                    maximizedTileWidth = leftPanelMaximizedWidth,
+                    maximizedTileHeight = leftPanelHeight - 2 * marginTop,
+                    innerContainerMaximizedWidth = maximizedTileWidth - tilePaddings,
+                    innerContainerMaximizedHeight = maximizedTileHeight - tilePaddings,
+                    innerContainerMinimizedWidth = rightPanelTilesWidth - tilePaddings,
+                    innerContainerMinimizedHeight = rightPanelTilesHeight - tilePaddings;
+
+                if (splitterInitiallyCollapsed) {
+                    leftPanelMaximizedWidth += rightPanelWidth;
+                    maximizedTileWidth += rightPanelWidth;
+                    innerContainerMaximizedWidth += rightPanelWidth;
+                    rightPanelWidth = 0;
+                }
+
+                // INITIALIZATION
+                // Configuration setup
+                equal(layoutConfig.rows, rows, 'Number of rows in the layout configuration did not match.');
+                equal(layoutConfig.cols, cols, 'Number of cols in the layout configuration did not match.');
+                equal(layoutConfig.columnWidth, colWidth, 'The columnWidth in the layout configuration did not match.');
+                equal(layoutConfig.columnHeight, colHeight, 'The columnHeight in the layout configuration did not match.');
+                equal(layoutConfig.marginLeft, marginLeft, 'The left margin in the layout configuration did not match.');
+                equal(layoutConfig.marginTop, marginTop, 'The top margin in the layout configuration did not match.');
+                equal(layoutItems.length, tilesCount, 'The items in the layout configuration did not match.');
+                equal(tiles.length, tilesCount, 'The number of tiles did not match.');
+
+                // Left/right panels and the splitter
+                equal(leftPanel.children().length, tilesCount, 'The left panel number of tiles did not match.');
+                equal(leftPanel.width(), leftPanelWidth, 'The left panel width did not match.');
+                equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
+                ok(leftPanel.hasClass('ui-igtilemanager-left'), 'The left panel tile manager class did not apply.');
+                ok(leftPanel.hasClass('ig-layout'), 'The left panel layout manager classes did not apply.');
+                ok(leftPanel.hasClass('ui-igsplitter-panel-vertical') && leftPanel.hasClass('ui-widget-content'), 'The left panel splitter classes did not apply.');
+
+                equal(rightPanel.children().length, 0, 'The right panel number of tiles did not match.');
+                ok(rightPanel.hasClass('ui-helper-hidden'), 'The right panel did not hide.');
+                ok(rightPanel.hasClass('ui-igtilemanager-right'), 'The right panel tile manaegr classes did not apply.');
+                ok(rightPanel.hasClass('ui-igsplitter-panel-vertical') && rightPanel.hasClass('ui-widget-content'), 'The right panel layout manager classes did not apply.');
+
+                ok(splitter.hasClass('ui-helper-hidden'), 'The splitter did not hide.');
+                ok(splitter.hasClass('ui-igsplitter-splitbar-vertical') && splitter.hasClass('ui-igsplitter-splitbar-default') && splitter.hasClass('ui-state-default'), 'The split bar splitter classes did not apply.');
+
+                if (!enableSplitter) {
+                    ok(splitter.hasClass('ui-helper-visibility-hidden'), 'The splitter did not hide.');
+                }
+
+                ok(container.hasClass('ui-widget') && container.hasClass('ui-igtilemanager') && container.hasClass('ui-widget-content'), 'Tile manager container classes did not apply to the container.');
+                ok(container.hasClass('ui-igsplitter'), 'Splitter classes did not apply to the container.');
+
+                // Tiles initial positioning and rendering
+                tiles.each(function (index, element) {
+                    var tile = $(this),
+                        innerContainer = tile.find('.ui-igtile-inner-container'),
+                        row = Math.floor(index / cols),
+                        col = index % cols,
+                        colSpan = 1,
+                        rowSpan = 1,
+                        minimizeBtn, minimizeIcon, tileWidth, tileHeight;
+
+                    if (items) {
+                        row = layoutItems[index].rowIndex;
+                        col = layoutItems[index].colIndex;
+                        colSpan = layoutItems[index].colSpan;
+                        rowSpan = layoutItems[index].rowSpan;
+                    }
+
+                    tileWidth = colSpan * (colWidth + marginLeft) - marginLeft;
+                    tileHeight = rowSpan * (colHeight + marginTop) - marginTop;
+
+                    ok(tile.hasClass('ui-widget-content') && tile.hasClass('ui-igtile'), "The content class did not apply to the tile " + index + '.');
+                    ok(tile.hasClass('ig-layout-item') && tile.hasClass('ig-layout-griditem-abs'), "The layout manager classes did not apply to the tile " + index + '.');
+                    ok(tile.hasClass('ui-igtile-minimized'), "The minimized class did not apply tile " + index + '.');
+
+                    equal(tile.css('left'), (col * (colWidth + marginLeft) + marginLeft) + 'px', 'The left property of the ' + index + ' tile did not match.');
+                    equal(tile.css('top'), (row * (colHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+                    equal(tile.outerWidth(), tileWidth, 'The width of the ' + index + ' tile did not match.');
+                    equal(tile.outerHeight(), tileHeight, 'The height of the ' + index + ' tile did not match.');
+                    equal(tile.children().length, 1, 'The children count of the ' + index + ' tile did not match.');
+                    equal(tile.attr('data-index'), index + '', 'The index property of the ' + index + ' tile did not match.');
+
+                    tile.mouseover();
+                    ok(tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile did not apply.');
+                    tile.mouseout();
+                    ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile was not removed.');
+
+                    equal(innerContainer.outerWidth(), tileWidth - tilePaddings, 'The inner container width of the ' + index + ' tile did not match.');
+                    equal(innerContainer.outerHeight(), tileHeight - tilePaddings, 'The inner container height of the ' + index + ' tile did not match.');
+
+                    // Minimize button in minimized tiles is rendered only from markup
+                    if (fromMarkup) {
+                        minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+                        minimizeIcon = minimizeBtn.find('.ig-tile-minimize-icon');
+
+                        equal(minimizeBtn.css('display'), 'none', 'The minimize button of the ' + index + ' is not hidden.');
+                        ok(minimizeBtn.hasClass('ig-button') && minimizeBtn.hasClass('ig-tile-minimize-button'), 'The minimize button classes did not match.');
+                        ok(minimizeIcon.hasClass('ig-tile-minimize-icon'), 'The minimize icon classes did not match.');
+
+                        // Check the markup shown
+                        if (minimizedState) {
+                            // Check if all the children except the minimized markup of the tile are hidden.
+                            ok(Array.prototype.every.call(innerContainer.children().not(minimizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+
+                            ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + index + " tile is not shown.");
+                            equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[index], 'The minimized markup of the ' + index + ' tile did not match.');
+                        } else {
+                            // If not minimized state is provided all the markup should be shown as minimized state.
+                            ok(Array.prototype.every.call(innerContainer.children().not(minimizeBtn), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+                            equal(innerContainer.html(), tm1MarkupPlusTheBtn[index], 'The minimized markup of the ' + index + ' tile did not match.');
+                        }
+
+                    } else {
+                        equal(innerContainer.html(), minimizedTemplatesHTML[index], 'The minimized template of the ' + index + ' tile did not match');
+                    }
+                });
+
+                if (useApiMethods) {
+
+                    equal(container.igTileManager('widget').attr('id'), container.attr('id'), 'The widget method did not return the element.');
+                    equal(container.igTileManager('maximizedTile'), null, 'The tile returned by the maximizedTile method did not match.');
+                    equal(container.igTileManager('minimizedTiles').length, tilesCount, 'The tiles returned by the minimizedTiles method did not match.');
+                }
+
+                // MAXIMIZING
+                tile = tiles.eq(tileToMaximize);
+
+                if (!useApiMethods) {
+                    tile.click();
+                } else {
+                    container.igTileManager('maximize', tile);
+
+                    equal(container.igTileManager('maximizedTile').attr('data-index'), tile.attr('data-index'), 'The tile returned by the maximized tile method did not match.');
+                    equal(container.igTileManager('minimizedTiles').length, tilesCount - 1, 'The tiles returned by the minimizedTiles method did not match.');
+                }
+
+                innerContainer = tile.find('.ui-igtile-inner-container');
+                minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+                minimizeIcon = minimizeBtn.find('.ig-tile-minimize-icon');
+
+                // Left/right panels and the splitter
+                equal(leftPanel.width(), leftPanelMaximizedWidth, 'The left panel width did not match.');
+                equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
+                equal(leftPanel.css('margin-right'), marginLeft + 'px', 'The right margin of the left panel did not match.');
+                equal(leftPanel.css('margin-left'), marginLeft + 'px', 'The left margin of the left panel did not match.');
+                equal(leftPanel.children().length, 1, 'The leftPanel number of children did not match.');
+
+                ok(!rightPanel.hasClass('ui-helper-hidden'), 'The right panel is not shown.');
+                equal(rightPanel.width(), rightPanelWidth, 'The width of the right panel did not match.');
+                equal(rightPanel.height(), rightPanelHeight, 'The height of the right panel did not match.');
+                equal(rightPanel.children().length, tilesCount - 1, 'The right panel number of children did not match.');
+
+                if (!showRightPanelScroll) {
+                    ok(rightPanel.hasClass('ui-helper-overflow-hidden'), 'The right panel overflow hidden class is not set.');
+                }
+
+                ok(!splitter.hasClass('ui-helper-hidden'), 'The splitter is not shown.');
+
+                if (!enableSplitter) {
+                    ok(splitter.hasClass('ui-helper-visibility-hidden'), 'The splitter did not hide.');
+                }
+
+                // Check the maximized tile
+                ok(tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
+                equal(tile.css('left'), '0px', 'The left property of the maximized tile did not match.');
+                equal(tile.css('top'), marginTop + 'px', 'The top property of the maximized tile did not match.');
+                equal(tile.outerWidth(), maximizedTileWidth, 'The width of the maximized tile did not match.');
+                equal(tile.outerHeight(), maximizedTileHeight, 'The height of the maximized tile did not match.');
+                equal(tile.attr('data-index'), tileToMaximize + '', 'The index property of the maximized tile did not match.');
+
+                equal(innerContainer.outerWidth(), innerContainerMaximizedWidth, 'The inner container width of the maximized tile did not match.');
+                equal(innerContainer.outerHeight(), innerContainerMaximizedHeight, 'The inner container height of the maximized tile did not match.');
+
+                ok(minimizeBtn.css('display'), 'block', 'The minimize button of the maximized tile is not shown.');
+
+                // Check the button hover effect
+                minimizeBtn.mouseover();
+                ok(minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile did not apply.');
+                minimizeBtn.mouseout();
+                ok(!minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile was not removed.');
+
+                if (fromMarkup) {
+                    // Check the markup shown
+                    if (maximizedState) {
+                        // Check if all the children except the maximized markup of the tile are hidden.
+                        ok(Array.prototype.every.call(innerContainer.children().not(maximizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'The maximized state markup did not match.');
+
+                        ok(!innerContainer.find(maximizedState).hasClass('ui-helper-hidden'), "The maximized content of the maximized tile is not shown.");
+                        equal(innerContainer.find(maximizedState).html(), tm1MaximizedMarkup[tileToMaximize], 'The maximized markup of the maximized tile did not match.');
+                    } else {
+                        // If not maximized state is provided all the markup should be shown as maximized state.
+                        ok(Array.prototype.every.call(innerContainer.children(), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'The maximized state markup did not match.');
+                        equal(innerContainer.html(), tm1MarkupPlusTheBtn[tileToMaximize], 'The maximized state markup did not match.');
+                    }
+                } else {
+                    equal(innerContainer.html(), maximizedTemplatesHTML[tileToMaximize], 'The maximized template of the maximized tile did not match');
+                }
+
+                // The minimized tiles positioning
+                tiles.not(tile).each(function (index, element) {
+                    var tile = $(this),
+                        innerContainer = tile.find('.ui-igtile-inner-container'),
+                        expectedIndex = (index < tileToMaximize ? index : index + 1),
+                        minimizeBtn, minimizeIcon;
+
+                    equal(tile.css('top'), (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+                    equal(tile.css('left'), ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
+
+                    equal(tile.outerWidth(), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
+                    equal(tile.outerHeight(), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
+                    ok(tile.hasClass('ui-igtile-minimized'), 'The minimized class of the ' + index + ' tile did not apply.');
+                    equal(tile.attr('data-index'), expectedIndex + '', 'The data index of the ' + index + ' tile did not match.');
+
+                    equal(innerContainer.outerWidth(), innerContainerMinimizedWidth, 'The inner container width of the ' + index + ' tile did not match.');
+                    equal(innerContainer.outerHeight(), innerContainerMinimizedHeight, 'The inner container height of the ' + index + ' tile did not match.');
+
+                    // Minimize button in minimized tiles is rendered only from markup
+                    if (fromMarkup) {
+                        minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+
+                        equal(minimizeBtn.css('display'), 'none', 'The minimize button of the ' + index + ' is not hidden.');
+
+                        // Check the markup shown
+                        if (minimizedState) {
+                            // Check if all the children except the minimized markup of the tile are hidden.
+                            ok(Array.prototype.every.call(innerContainer.children().not(minimizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+
+                            ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + index + " tile is not shown.");
+                            equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
+                        } else {
+                            // If not minimized state is provided all the markup should be shown as minimized state.
+                            ok(Array.prototype.every.call(innerContainer.children().not(minimizeBtn), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+                            equal(innerContainer.html(), tm1MarkupPlusTheBtn[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
+                        }
+                    } else {
+                        equal(innerContainer.html(), minimizedTemplatesHTML[expectedIndex], 'The minimized template of the ' + index + ' tile did not match');
+                    }
+                });
+
+                // MAXIMIZED TILE SWAP
+                tile = tiles.eq(tileToSwap);
+
+                if (useApiMethods) {
+                    container.igTileManager('maximize', tile);
+                } else {
+                    tile.click();
+                }
+
+                innerContainer = tile.find('.ui-igtile-inner-container');
+                minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+                minimizeIcon = minimizeBtn.find('.ig-tile-minimize-icon');
+
+                // Left/right panels and the splitter
+                equal(leftPanel.width(), leftPanelMaximizedWidth, 'The left panel width did not match.');
+                equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
+                equal(leftPanel.css('margin-right'), marginLeft + 'px', 'The right margin of the left panel did not match.');
+                equal(leftPanel.css('margin-left'), marginLeft + 'px', 'The left margin of the left panel did not match.');
+                equal(leftPanel.children().length, 1, 'The leftPanel number of children did not match.');
+
+                ok(!rightPanel.hasClass('ui-helper-hidden'), 'The right panel is not shown.');
+                equal(rightPanel.width(), rightPanelWidth, 'The width of the right panel did not match.');
+                equal(rightPanel.height(), rightPanelHeight, 'The height of the right panel did not match.');
+                equal(rightPanel.children().length, tilesCount - 1, 'The right panel number of children did not match.');
+
+                if (!showRightPanelScroll) {
+                    ok(rightPanel.hasClass('ui-helper-overflow-hidden'), 'The right panel overflow hidden class is not set.');
+                }
+
+                ok(!splitter.hasClass('ui-helper-hidden'), 'The splitter is not shown.');
+
+                if (!enableSplitter) {
+                    ok(splitter.hasClass('ui-helper-visibility-hidden'), 'The splitter did not hide.');
+                }
+
+                // Check the maximized tile
+                ok(tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
+                equal(tile.css('left'), '0px', 'The left property of the maximized tile did not match.');
+                equal(tile.css('top'), marginTop + 'px', 'The top property of the maximized tile did not match.');
+                equal(tile.outerWidth(), maximizedTileWidth, 'The width of the maximized tile did not match.');
+                equal(tile.outerHeight(), maximizedTileHeight, 'The height of the maximized tile did not match.');
+                equal(tile.attr('data-index'), tileToSwap + '', 'The index property of the maximized tile did not match.');
+
+                equal(innerContainer.outerWidth(), innerContainerMaximizedWidth, 'The inner container width of the maximized tile did not match.');
+                equal(innerContainer.outerHeight(), innerContainerMaximizedHeight, 'The inner container height of the maximized tile did not match.');
+
+                ok(minimizeBtn.css('display'), 'block', 'The minimize button of the maximized tile is not shown.');
+
+                // Check the button hover effect
+                minimizeBtn.mouseover();
+                ok(minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile did not apply.');
+                minimizeBtn.mouseout();
+                ok(!minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile was not removed.');
+
+                if (fromMarkup) {
+                    // Check the markup shown
+                    if (maximizedState) {
+                        // Check if all the children except the maximized markup of the tile are hidden.
+                        ok(Array.prototype.every.call(innerContainer.children().not(maximizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'The maximized state markup did not match.');
+
+                        ok(!innerContainer.find(maximizedState).hasClass('ui-helper-hidden'), "The maximized content of the maximized tile is not shown.");
+                        equal(innerContainer.find(maximizedState).html(), tm1MaximizedMarkup[tileToSwap], 'The maximized markup of the maximized tile did not match.');
+                    } else {
+                        // If not maximized state is provided all the markup should be shown as maximized state.
+                        ok(Array.prototype.every.call(innerContainer.children(), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'The maximized state markup did not match.');
+                        equal(innerContainer.html(), tm1MarkupPlusTheBtn[tileToSwap], 'The maximized state markup did not match.');
+                    }
+                } else {
+                    equal(innerContainer.html(), maximizedTemplatesHTML[tileToSwap], 'The maximized template of the maximized tile did not match');
+                }
+
+                // The minimized tiles positioning
+                tiles.not(tile).each(function (index, element) {
+                    var tile = $(this),
+                        innerContainer = tile.find('.ui-igtile-inner-container'),
+                        expectedIndex = (index < tileToSwap ? index : index + 1),
+                        minimizeBtn, minimizeIcon;
+
+                    equal(tile.css('top'), (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+                    equal(tile.css('left'), ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
+
+                    equal(tile.outerWidth(), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
+                    equal(tile.outerHeight(), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
+                    ok(tile.hasClass('ui-igtile-minimized'), 'The minimized class of the ' + index + ' tile did not apply.');
+                    equal(tile.attr('data-index'), expectedIndex + '', 'The data index of the ' + index + ' tile did not match.');
+
+                    equal(innerContainer.outerWidth(), innerContainerMinimizedWidth, 'The inner container width of the ' + index + ' tile did not match.');
+                    equal(innerContainer.outerHeight(), innerContainerMinimizedHeight, 'The inner container height of the ' + index + ' tile did not match.');
+
+                    // Minimize button in minimized tiles is rendered only from markup
+                    if (fromMarkup) {
+                        minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+
+                        equal(minimizeBtn.css('display'), 'none', 'The minimize button of the ' + index + ' is not hidden.');
+
+                        // Check the markup shown
+                        if (minimizedState) {
+                            // Check if all the children except the minimized markup of the tile are hidden.
+                            ok(Array.prototype.every.call(innerContainer.children().not(minimizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+
+                            ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + index + " tile is not shown.");
+                            equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
+                        } else {
+                            // If not minimized state is provided all the markup should be shown as minimized state.
+                            ok(Array.prototype.every.call(innerContainer.children().not(minimizeBtn), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+                            equal(innerContainer.html(), tm1MarkupPlusTheBtn[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
+                        }
+                    } else {
+                        equal(innerContainer.html(), minimizedTemplatesHTML[expectedIndex], 'The minimized template of the ' + index + ' tile did not match');
+                    }
+                });
+
+                // MINIMIZING
+                if (!useApiMethods) {
+                    minimizeBtn.click();
+                } else {
+                    container.igTileManager('minimize');
+                }
+
+                equal(leftPanel.children().length, tilesCount, 'The left panel number of tiles did not match.');
+                equal(leftPanel.width(), leftPanelWidth, 'The left panel width did not match.');
+                equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
+                equal(leftPanel.css('margin-right'), '0px', 'The right margin of the left panel did not match.');
+                equal(leftPanel.css('margin-left'), '0px', 'The left margin of the left panel did not match.');
+
+                equal(rightPanel.children().length, 0, 'The right panel number of tiles did not match.');
+                ok(rightPanel.hasClass('ui-helper-hidden'), 'The right panel did not hide.');
+
+                ok(splitter.hasClass('ui-helper-hidden'), 'The splitter did not hide.');
+
+                if (!enableSplitter) {
+                    ok(splitter.hasClass('ui-helper-visibility-hidden'), 'The splitter did not hide.');
+                }
+
+                tiles.each(function (index, element) {
+                    var tile = $(this),
+                        innerContainer = tile.find('.ui-igtile-inner-container'),
+                        row = Math.floor(index / cols),
+                        col = index % cols,
+                        colSpan = 1,
+                        rowSpan = 1,
+                        minimizeBtn, minimizeIcon, tileWidth, tileHeight;
+
+                    if (items) {
+                        row = layoutItems[index].rowIndex;
+                        col = layoutItems[index].colIndex;
+                        colSpan = layoutItems[index].colSpan;
+                        rowSpan = layoutItems[index].rowSpan;
+                    }
+
+                    tileWidth = colSpan * (colWidth + marginLeft) - marginLeft;
+                    tileHeight = rowSpan * (colHeight + marginTop) - marginTop;
+
+                    ok(tile.hasClass('ui-widget-content') && tile.hasClass('ui-igtile'), "The content class did not apply to the tile " + index + '.');
+                    ok(tile.hasClass('ig-layout-item') && tile.hasClass('ig-layout-griditem-abs'), "The layout manager classes did not apply to the tile " + index + '.');
+                    ok(tile.hasClass('ui-igtile-minimized'), "The minimized class did not apply tile " + index + '.');
+
+                    equal(tile.css('left'), (col * (colWidth + marginLeft) + marginLeft) + 'px', 'The left property of the ' + index + ' tile did not match.');
+                    equal(tile.css('top'), (row * (colHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+                    equal(tile.outerWidth(), tileWidth, 'The width of the ' + index + ' tile did not match.');
+                    equal(tile.outerHeight(), tileHeight, 'The height of the ' + index + ' tile did not match.');
+                    equal(tile.children().length, 1, 'The children count of the ' + index + ' tile did not match.');
+                    equal(tile.attr('data-index'), index + '', 'The index property of the ' + index + ' tile did not match.');
+
+                    tile.mouseover();
+                    ok(tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile did not apply.');
+                    tile.mouseout();
+                    ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile was not removed.');
+
+                    equal(innerContainer.outerWidth(), tileWidth - tilePaddings, 'The inner container width of the ' + index + ' tile did not match.');
+                    equal(innerContainer.outerHeight(), tileHeight - tilePaddings, 'The inner container height of the ' + index + ' tile did not match.');
+
+                    // Minimize button in minimized tiles is rendered only from markup
+                    if (fromMarkup) {
+                        minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+                        minimizeIcon = minimizeBtn.find('.ig-tile-minimize-icon');
+
+                        equal(minimizeBtn.css('display'), 'none', 'The minimize button of the ' + index + ' is not hidden.');
+                        ok(minimizeBtn.hasClass('ig-button') && minimizeBtn.hasClass('ig-tile-minimize-button'), 'The minimize button classes did not match.');
+                        ok(minimizeIcon.hasClass('ig-tile-minimize-icon'), 'The minimize icon classes did not match.');
+
+                        // Check the markup shown
+                        if (minimizedState) {
+                            // Check if all the children except the minimized markup of the tile are hidden.
+                            ok(Array.prototype.every.call(innerContainer.children().not(minimizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+
+                            ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + index + " tile is not shown.");
+                            equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[index], 'The minimized markup of the ' + index + ' tile did not match.');
+                        } else {
+                            // If not minimized state is provided all the markup should be shown as minimized state.
+                            ok(Array.prototype.every.call(innerContainer.children().not(minimizeBtn), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+                            equal(innerContainer.html(), tm1MarkupPlusTheBtn[index], 'The minimized markup of the ' + index + ' tile did not match.');
+                        }
+                    } else {
+                        equal(innerContainer.html(), minimizedTemplatesHTML[index], 'The minimized template of the ' + index + ' tile did not match');
+                    }
+                });
+
+                // DESTROYING
+                container.igTileManager('destroy');
+                tiles = container.children();
+
+                ok(!container.hasClass('ui-widget') && !container.hasClass('ui-igtilemanager') && !container.hasClass('ui-igsplitter') && !container.hasClass('ui-widget-content'), 'Tile manager did not remove classes from the container.');
+
+                if (fromMarkup) {
+                    equal(tiles.length, tilesCount, 'The number of elements after destroing did not match.');
+                    ok(!(container.find('ui-igtilemanager-left').length > 0), 'The tile manager did not destroy the left panel.');
+                    ok(!(container.find('ui-igtilemanager-right').length > 0), 'The tile manager did not destroy the right panel.');
+                    ok(!(container.find('ui-igsplitter-splitbar-vertical').length > 0), 'The tile manager did not destroy the splitter.');
+
+                    tiles.each(function (index, element) {
+                        var tile = $(this);
+
+                        ok(!tile.hasClass('ui-igtile-minimized') && !tile.hasClass('ui-widget-content') && !tile.hasClass('ui-igtile'), "The tile manager did not remove the classes from tile " + index + ".");
+                        equal(tile.html(), tm1Markup[index], 'The markup of the ' + index + ' tile did not match.');
+
+                        ok(!tile.hasClass('ig-layout-item') && !tile.hasClass('ig-layout-griditem-abs'), "The layout manager did not remove the classes from tile " + index + ".");
+                        ok(!tile.attr('data-index'), 'The layout manager did not remove the data-index from tile ' + index + '.');
+                    });
+                } else {
+                    equal(tiles.length, 0, 'igTileManager did not destroy all tiles.');
+                }
+            }
+
+            // Test tile manager configuration using maximized tile index option.
+            // The test expect the items array to be sorted by the tiles position, from first to last.
+            // The first position is considered the row:0, col:0. the last is row: last, col: last.
+            function testTileManagerWithMaximizedTileIndex(maximizedTileIndex, container,
+                containerWidth, containerHeight, cols, rows, colWidth, colHeight, marginLeft,
+                marginTop, tilesCount, tileToMaximize, items, minimizedState,
+                maximizedState, useApiMethods, fromMarkup) {
+
+                var tiles = container.children(),
+                    maximizedTile = tiles.eq(maximizedTileIndex),
+                    layoutConfig = container.igTileManager('layoutManager')._opt.gridLayout,
+                    layoutItems = container.igLayoutManager('option', 'items'),
+                    borderWidth = 2,
+                    padding = 5,
+                    tilePaddings = padding * 2 + borderWidth,
+                    tile, innerContainer, minimizeBtn, prevMaximizedTile, prevMaximizedTileWidth,
+                    prevMaximizedTileHeight, prevMaximizedTileTop, prevMaximizedTileLeft,
+                    prevMaximizedTileIndex, maximizedTileWidth, maximizedTileHeight,
+                    maximizedTileLeft, maximizedTileTop;
+
+                // INITIALIZATION
+                // Configuration setup
+                equal(layoutConfig.rows, rows, 'Number of rows in the layout configuration did not match.');
+                equal(layoutConfig.cols, cols, 'Number of cols in the layout configuration did not match.');
+                equal(layoutConfig.columnWidth, colWidth, 'The columnWidth in the layout configuration did not match.');
+                equal(layoutConfig.columnHeight, colHeight, 'The columnHeight in the layout configuration did not match.');
+                equal(layoutConfig.marginLeft, marginLeft, 'The left margin in the layout configuration did not match.');
+                equal(layoutConfig.marginTop, marginTop, 'The top margin in the layout configuration did not match.');
+                equal(layoutItems.length, tilesCount, 'The items in the layout configuration did not match.');
+                equal(tiles.length, tilesCount, 'The number of tiles did not match.');
+
+                // Container
+                equal(container.width(), containerWidth, 'The container width did not match.');
+                equal(container.height(), containerHeight, 'The container height did not match.');
+                ok(container.hasClass('ui-widget') && container.hasClass('ui-igtilemanager') && container.hasClass('ui-widget-content'), 'Tile manager container classes did not apply to the container.');
+
+                // Tiles initial positioning and rendering
+                tiles.each(function (index, element) {
+                    var tile = $(this),
+                        innerContainer = tile.find('.ui-igtile-inner-container'),
+                        row = Math.floor(index / cols),
+                        col = index % cols,
+                        colSpan = 1,
+                        rowSpan = 1,
+                        minimizeBtn = innerContainer.find('.ig-tile-minimize-button'),
+                        isMaximized = index === maximizedTileIndex,
+                        tileWidth, tileHeight, tileLeft, tileTop;
+
+                    if (items) {
+                        row = layoutItems[index].rowIndex;
+                        col = layoutItems[index].colIndex;
+                        colSpan = layoutItems[index].colSpan;
+                        rowSpan = layoutItems[index].rowSpan;
+                    }
+
+                    tileWidth = colSpan * (colWidth + marginLeft) - marginLeft;
+                    tileHeight = rowSpan * (colHeight + marginTop) - marginTop;
+                    tileLeft = col * (colWidth + marginLeft) + marginLeft;
+                    tileTop = row * (colHeight + marginTop) + marginTop;
+
+                    if (isMaximized) {
+                        maximizedTileWidth = tileWidth;
+                        maximizedTileHeight = tileHeight;
+                        maximizedTileLeft = tileLeft;
+                        maximizedTileTop = tileTop;
+                    }
+
+                    ok(tile.hasClass('ui-widget-content') && tile.hasClass('ui-igtile'), "The content class did not apply to the tile " + index + '.');
+                    ok(tile.hasClass('ig-layout-item') && tile.hasClass('ig-layout-griditem-abs'), "The layout manager classes did not apply to the tile " + index + '.');
+
+                    if (isMaximized) {
+                        ok(tile.hasClass('ui-igtile-maximized'), "The maximized class did not apply tile " + index + '.');
+                    } else {
+                        ok(tile.hasClass('ui-igtile-minimized'), "The minimized class did not apply tile " + index + '.');
+                    }
+
+                    equal(tile.css('left'), tileLeft + 'px', 'The left property of the ' + index + ' tile did not match.');
+                    equal(tile.css('top'), tileTop + 'px', 'The top property of the ' + index + ' tile did not match.');
+                    equal(tile.outerWidth(), tileWidth, 'The width of the ' + index + ' tile did not match.');
+                    equal(tile.outerHeight(), tileHeight, 'The height of the ' + index + ' tile did not match.');
+                    equal(tile.children().length, 1, 'The children count of the ' + index + ' tile did not match.');
+                    equal(tile.attr('data-index'), index + '', 'The index property of the ' + index + ' tile did not match.');
+
+                    if (isMaximized) {
+                        tile.mouseover();
+                        ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile applied incorrectly.');
+                        tile.mouseout();
+                        ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile was not removed.');
+                    } else {
+                        tile.mouseover();
+                        ok(tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile did not apply.');
+                        tile.mouseout();
+                        ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile was not removed.');
+                    }
+
+                    equal(innerContainer.outerWidth(), tileWidth - tilePaddings, 'The inner container width of the ' + index + ' tile did not match.');
+                    equal(innerContainer.outerHeight(), tileHeight - tilePaddings, 'The inner container height of the ' + index + ' tile did not match.');
+
+                    ok(minimizeBtn.length === 0, 'The minimize button of the ' + index + 'tile was incorrectly rendered.');
+
+                    if (fromMarkup) {
+                        // Check the markup shown
+                        if (isMaximized) {
+                            if (maximizedState) {
+                                // Check if all the children except the maximized markup of the tile are hidden.
+                                ok(Array.prototype.every.call(innerContainer.children().not(maximizedState), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Markup other than the maximized of the ' + index + ' tile is incorrectly shown.');
+
+                                ok(!innerContainer.find(maximizedState).hasClass('ui-helper-hidden'), "The maximized content of the " + index + " tile is not shown.");
+                                equal(innerContainer.find(maximizedState).html(), tm1MaximizedMarkup[index], 'The maximized markup of the ' + index + ' tile did not match.');
+                            } else {
+                                // If not maximized state is provided all the markup should be shown as maximized state.
+                                ok(Array.prototype.every.call(innerContainer.children(), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+                                equal(innerContainer.html(), tm1Markup[index], 'The minimized markup of the ' + index + ' tile did not match.');
+                            }
+                        } else {
+                            if (minimizedState) {
+                                // Check if all the children except the minimized markup of the tile are hidden.
+                                ok(Array.prototype.every.call(innerContainer.children().not(minimizedState), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Markup other than the minimized of the ' + index + ' tile is incorrectly shown.');
+
+                                ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + index + " tile is not shown.");
+                                equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[index], 'The minimized markup of the ' + index + ' tile did not match.');
+                            } else {
+                                // If not minimized state is provided all the markup should be shown as minimized state.
+                                ok(Array.prototype.every.call(innerContainer.children(), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+                                equal(innerContainer.html(), tm1Markup[index], 'The minimized markup of the ' + index + ' tile did not match.');
+                            }
+                        }
+                    } else {
+                        if (isMaximized) {
+                            equal(innerContainer.html(), maximizedTemplatesNoBtn[index], 'The maximized template of the ' + index + ' tile did not match');
+                        } else {
+                            equal(innerContainer.html(), minimizedTemplatesHTML[index], 'The minimized template of the ' + index + ' tile did not match');
+                        }
+                    }
+                });
+
+                if (useApiMethods) {
+                    equal(container.igTileManager('widget').attr('id'), container.attr('id'), 'The widget method did not return the element.');
+                    equal(container.igTileManager('maximizedTile').attr('data-index'), maximizedTileIndex, 'The tile returned by the maximizedTile method did not match.');
+                    equal(container.igTileManager('minimizedTiles').length, tilesCount - 1, 'The tiles returned by the minimizedTiles method did not match.');
+                }
+
+                // MAXIMIZING
+                tile = tiles.eq(tileToMaximize);
+
+                // The current maximized tile should transition to the position of the new maximized tile
+                prevMaximizedTile = maximizedTile;
+                prevMaximizedTileWidth = tile.outerWidth();
+                prevMaximizedTileHeight = tile.outerHeight();
+                prevMaximizedTileLeft = tile.css('left');
+                prevMaximizedTileTop = tile.css('top');
+                prevMaximizedTileIndex = parseInt(maximizedTile.attr('data-index'), 10);
+
+                if (!useApiMethods) {
+                    tile.click();
+                } else {
+                    container.igTileManager('maximize', tile);
+
+                    equal(container.igTileManager('maximizedTile').attr('data-index'), tile.attr('data-index'), 'The tile returned by the maximized tile method did not match.');
+                    equal(container.igTileManager('minimizedTiles').length, tilesCount - 1, 'The tiles returned by the minimizedTiles method did not match.');
+                }
+
+                innerContainer = tile.find('.ui-igtile-inner-container');
+                minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+
+                // Check the maximized tile
+                ok(tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
+                equal(tile.outerWidth(), maximizedTileWidth, 'The width of the maximized tile did not match.');
+                equal(tile.outerHeight(), maximizedTileHeight, 'The height of the maximized tile did not match.');
+                equal(tile.css('left'), maximizedTileLeft + 'px', 'The left property of the maximized tile did not match.');
+                equal(tile.css('top'), maximizedTileTop + 'px', 'The top property of the maximized tile did not match.');
+                equal(tile.attr('data-index'), tileToMaximize + '', 'The index property of the maximized tile did not match.');
+
+                ok(minimizeBtn.length === 0, 'The minimize button is rendered incorrectly.');
+
+                equal(innerContainer.outerWidth(), maximizedTileWidth - tilePaddings, 'The inner container width of the maximized tile did not match.');
+                equal(innerContainer.outerHeight(), maximizedTileHeight - tilePaddings, 'The inner container height of the maximized tile did not match.');
+
+                tile.mouseover();
+                ok(!tile.hasClass('ui-state-hover'), 'The hover class of the maximized tile applied incorrectly.');
+                tile.mouseout();
+                ok(!tile.hasClass('ui-state-hover'), 'The hover class of the maximized tile was not removed.');
+
+                if (fromMarkup) {
+                    // Check the markup shown
+                    if (maximizedState) {
+                        // Check if all the children except the maximized markup of the tile are hidden.
+                        ok(Array.prototype.every.call(innerContainer.children().not(maximizedState), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Markup other than the maximized of the maximized tile is incorrectly shown.');
+
+                        ok(!innerContainer.find(maximizedState).hasClass('ui-helper-hidden'), "The maximized content of the maximized tile is not shown.");
+                        equal(innerContainer.find(maximizedState).html(), tm1MaximizedMarkup[tileToMaximize], 'The maximized markup of the maximized tile did not match.');
+                    } else {
+                        // If not maximized state is provided all the markup should be shown as maximized state.
+                        ok(Array.prototype.every.call(innerContainer.children(), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Maximized state markup of the maximized tile did not match.');
+                        equal(innerContainer.html(), tm1Markup[tileToMaximize], 'The maximized markup of the maximized tile did not match.');
+                    }
+                } else {
+                    equal(innerContainer.html(), maximizedTemplatesNoBtn[tileToMaximize], 'The maximized template of the maximized tile did not match');
+                }
+
+                // PrevMaximizedTileIndex position and content after maximizing another tile.
+                ok(prevMaximizedTile.hasClass('ui-igtile-minimized'), 'The minimized class did not apply to the prev maximized tile.');
+                ok(!prevMaximizedTile.hasClass('ui-igtile-maximized'), 'The maximized class was not removed from the prev maximized tile.');
+                equal(prevMaximizedTile.outerWidth(), prevMaximizedTileWidth, 'The width of the prev maximized tile did not match.');
+                equal(prevMaximizedTile.outerHeight(), prevMaximizedTileHeight, 'The height of the prev maximized tile did not match.');
+                equal(prevMaximizedTile.css('left'), prevMaximizedTileLeft, 'The left property of the prev maximized tile did not match.');
+                equal(prevMaximizedTile.css('top'), prevMaximizedTileTop, 'The top property of the prev maximized tile did not match.');
+                equal(prevMaximizedTile.attr('data-index'), prevMaximizedTileIndex + '', 'The index property of the prev maximized tile did not match.');
+
+                innerContainer = prevMaximizedTile.find('.ui-igtile-inner-container');
+                minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+
+                ok(minimizeBtn.length === 0, 'The minimize button is rendered incorrectly.');
+
+                equal(innerContainer.outerWidth(), prevMaximizedTileWidth - tilePaddings, 'The inner container width of the prev maximized tile did not match.');
+                equal(innerContainer.outerHeight(), prevMaximizedTileHeight - tilePaddings, 'The inner container height of the prev maximized tile did not match.');
+
+                prevMaximizedTile.mouseover();
+                ok(prevMaximizedTile.hasClass('ui-state-hover'), 'The hover class of the prev maximized tile did not apply.');
+                prevMaximizedTile.mouseout();
+                ok(!prevMaximizedTile.hasClass('ui-state-hover'), 'The hover class of the prev maximized tile was not removed.');
+
+                if (fromMarkup) {
+                    if (minimizedState) {
+                        // Check if all the children except the minimized markup of the tile are hidden.
+                        ok(Array.prototype.every.call(innerContainer.children().not(minimizedState), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Markup other than the minimized of the prev maximized tile is incorrectly shown.');
+
+                        ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the prev maximized tile is not shown.");
+                        equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[prevMaximizedTileIndex], 'The minimized markup of the prev maximized tile did not match.');
+                    } else {
+                        // If not minimized state is provided all the markup should be shown as minimized state.
+                        ok(Array.prototype.every.call(innerContainer.children(), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the prev maximized did not match.');
+                        equal(innerContainer.html(), tm1Markup[prevMaximizedTileIndex], 'The minimized markup of the prev maximized tile did not match.');
+                    }
+                } else {
+                    equal(innerContainer.html(), minimizedTemplatesHTML[prevMaximizedTileIndex], 'The minimized template of the prev maximized tile did not match');
+                }
+
+                // Rest tiles positioning
+                tiles.not(prevMaximizedTile).not(tile).each(function (index, element) {
+                    var tile = $(this),
+                        tileIndex = parseInt(tile.attr('data-index'), 10),
+                        innerContainer = tile.find('.ui-igtile-inner-container'),
+                        row = Math.floor(tileIndex / cols),
+                        col = tileIndex % cols,
+                        colSpan = 1,
+                        rowSpan = 1,
+                        minimizeBtn = innerContainer.find('.ig-tile-minimize-button'),
+                        tileWidth, tileHeight, tileLeft, tileTop;
+
+                    if (items) {
+                        row = layoutItems[tileIndex].rowIndex;
+                        col = layoutItems[tileIndex].colIndex;
+                        colSpan = layoutItems[tileIndex].colSpan;
+                        rowSpan = layoutItems[tileIndex].rowSpan;
+                    }
+
+                    tileWidth = colSpan * (colWidth + marginLeft) - marginLeft;
+                    tileHeight = rowSpan * (colHeight + marginTop) - marginTop;
+                    tileLeft = col * (colWidth + marginLeft) + marginLeft;
+                    tileTop = row * (colHeight + marginTop) + marginTop;
+
+                    ok(tile.hasClass('ui-widget-content') && tile.hasClass('ui-igtile'), "The content class did not apply to the tile " + tileIndex + '.');
+                    ok(tile.hasClass('ig-layout-item') && tile.hasClass('ig-layout-griditem-abs'), "The layout manager classes did not apply to the tile " + tileIndex + '.');
+
+                    ok(tile.hasClass('ui-igtile-minimized'), "The minimized class did not apply tile " + tileIndex + '.');
+
+                    equal(tile.css('left'), tileLeft + 'px', 'The left property of the ' + tileIndex + ' tile did not match.');
+                    equal(tile.css('top'), tileTop + 'px', 'The top property of the ' + tileIndex + ' tile did not match.');
+                    equal(tile.outerWidth(), tileWidth, 'The width of the ' + tileIndex + ' tile did not match.');
+                    equal(tile.outerHeight(), tileHeight, 'The height of the ' + tileIndex + ' tile did not match.');
+                    equal(tile.children().length, 1, 'The children count of the ' + tileIndex + ' tile did not match.');
+                    equal(tile.attr('data-index'), tileIndex + '', 'The index property of the ' + tileIndex + ' tile did not match.');
+
+                    tile.mouseover();
+                    ok(tile.hasClass('ui-state-hover'), 'The hover class of the ' + tileIndex + ' tile did not apply.');
+                    tile.mouseout();
+                    ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + tileIndex + ' tile was not removed.');
+
+                    equal(innerContainer.outerWidth(), tileWidth - tilePaddings, 'The inner container width of the ' + tileIndex + ' tile did not match.');
+                    equal(innerContainer.outerHeight(), tileHeight - tilePaddings, 'The inner container height of the ' + tileIndex + ' tile did not match.');
+
+                    ok(minimizeBtn.length === 0, 'The minimize button of the ' + tileIndex + 'tile was incorrectly rendered.');
+
+                    if (fromMarkup) {
+                        if (minimizedState) {
+                            // Check if all the children except the minimized markup of the tile are hidden.
+                            ok(Array.prototype.every.call(innerContainer.children().not(minimizedState), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Markup other than the minimized of the ' + tileIndex + ' tile is incorrectly shown.');
+
+                            ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + tileIndex + " tile is not shown.");
+                            equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[tileIndex], 'The minimized markup of the ' + tileIndex + ' tile did not match.');
+                        } else {
+                            // If not minimized state is provided all the markup should be shown as minimized state.
+                            ok(Array.prototype.every.call(innerContainer.children(), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + tileIndex + ' did not match.');
+                            equal(innerContainer.html(), tm1Markup[tileIndex], 'The minimized markup of the ' + tileIndex + ' tile did not match.');
+                        }
+                    } else {
+                        equal(innerContainer.html(), minimizedTemplatesHTML[tileIndex], 'The minimized template of the ' + tileIndex + ' tile did not match');
+                    }
+                });
+
+                // TODO: Trigger second maximize and check again all the positions and markup
+
+                // DESTROYING
+                container.igTileManager('destroy');
+                tiles = container.children();
+
+                ok(!container.hasClass('ui-widget') && !container.hasClass('ui-igtilemanager') && !container.hasClass('ui-igsplitter') && !container.hasClass('ui-widget-content'), 'Tile manager did not remove classes from the container.');
+
+                if (fromMarkup) {
+                    equal(tiles.length, tilesCount, 'The number of elements after destroing did not match.');
+
+                    tiles.each(function (index, element) {
+                        var tile = $(this);
+
+                        ok(!tile.hasClass('ui-igtile-minimized') && !tile.hasClass('ui-widget-content') && !tile.hasClass('ui-igtile'), "The tile manager did not remove the classes from tile " + index + ".");
+                        equal(tile.html(), tm1Markup[index], 'The markup of the ' + index + ' tile did not match.');
+
+                        ok(!tile.hasClass('ig-layout-item') && !tile.hasClass('ig-layout-griditem-abs'), "The layout manager did not remove the classes from tile " + index + ".");
+                        ok(!tile.attr('data-index'), 'The layout manager did not remove the data-index from tile ' + index + '.');
+                    });
+                } else {
+                    equal(tiles.length, 0, 'igTileManager did not destroy all tiles.');
+                }
+            }
+        });
+    </script>
+
+    <style>
+        #tilemanager1 {
+            width: 1000px;
+            height: 1000px;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        #tilemanager2 {
+            position: relative;
+            left: 50px;
+            top: 100px;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto; z-index: 100;position: relative;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+
+    <div style="float: left;">
+        <div id="tilemanager1">
+            <div>
+                <div class="minimized"><p>Minimized state text</p></div>
+                <div class="maximized"><img src="assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+            </div>
+            <div>
+                <div class="minimized"><p>Minimized state text</p></div>
+                <div class="maximized"><img src="assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+            </div>
+            <div>
+                <div class="minimized"><p>Minimized state text</p></div>
+                <div class="maximized"><img src="assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+            </div>
+            <div>
+                <div class="minimized"><p>Minimized state text</p></div>
+                <div class="maximized"><img src="assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+            </div>
+            <div>
+                <div class="minimized"><p>Minimized state text</p></div>
+                <div class="maximized"><img src="assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+            </div>
+            <div>
+                <div class="minimized"><p>Minimized state text</p></div>
+                <div class="maximized"><img src="assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+            </div>
+            <div>
+                <div class="minimized"><p>Minimized state text</p></div>
+                <div class="maximized"><img src="assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+            </div>
+            <div>
+                <div class="minimized"><p>Minimized state text</p></div>
+                <div class="maximized"><img src="assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+            </div>
+            <div>
+                <div class="minimized"><p>Minimized state text</p></div>
+                <div class="maximized"><img src="assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 800px; height: 800px;">
+        <div id="tilemanager2" style="padding:20px;"></div>
+    </div>
+</body>
+</html>

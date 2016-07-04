@@ -1,0 +1,1130 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Date Editors </title>
+	<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script> 
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script> 
+	
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" /> 
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+		$(document).ready(function () {
+			// Create a editors
+
+				function loadTestbeds() {
+					var testbedIDs = ["208808", "209067", "209174", "209912", "209641", "209696",
+						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
+						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
+					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
+					"218836", "218752", "220479", "220712", "221118"];
+					for (var i = 0; i < testbedIDs.length; i++) {
+						var testBed = "Bug" + testbedIDs[i] + "Testbed";
+						if (window[testBed]) {
+							window[testBed]();
+						}
+					}
+
+				}
+				window.Bug208808Testbed = function () {
+					$("#208808").igDateEditor({ dateInputFormat: "yyyy/MM/dd" });
+
+				}
+
+				window.Bug209067Testbed = function () {
+					$("#209067textEditor").igTextEditor({
+						toUpper: true
+					});
+					$("#209067textEditor1").igTextEditor({
+						toLower: true
+					});
+					$("#209067button").click(function () {
+						$("#209067textEditor").igTextEditor("value", "nwsfsd");
+						$("#209067textEditor1").igTextEditor("value", "NWSFSD");
+					});
+
+
+				}
+				window.Bug209174Testbed = function () {
+					$("#209174textEditor").igTextEditor({
+						value: 'Stamen'
+					});
+					$("#209174textEditor1").igTextEditor({
+						value: 'Stamen',
+						allowNullValue: true
+					});
+					$("#209174button").click(function () {
+						$("#209174textEditor").igTextEditor("value", null);
+						$("#209174textEditor1").igTextEditor("value", null);
+					});
+				}
+				window.Bug209641Testbed = function () {
+					$('#209641textEditor').igNumericEditor({
+						negativeSign: "$",
+						value: -34
+					});
+					$("#209641button").click(function () {
+						$("#209641textEditor").igNumericEditor("value", -30);
+					});
+
+
+				}
+
+				window.Bug209912Testbed = function () {
+					$("#209912").igNumericEditor({
+						scientificFormat: "E",
+						spinDelta: 10,
+						buttonType: "spin"
+					 });
+				}
+				window.Bug209696Testbed = function () {
+					$('#209696DateEditor').igDateEditor({
+						dateInputFormat: "dd,MM,yyyy hh:m tt",
+					});
+					$('#209696DateEditor1').igDateEditor({
+						dateInputFormat: "dd,MM,yyyy hh:m tt",
+					});
+				}
+				window.Bug208809Testbed = function () {
+					$('#208809').igPercentEditor({
+						
+					});
+				}
+				window.Bug208887Testbed = function () {
+					$("#208887Editor1").igDateEditor({
+						dateInputFormat: "dd,MM,yyyy hh:m:ss ff tt",
+						//dateDispalyFormat: "dd,MM,yyyy hh:m:ss fff tt"
+						width: 400
+					});
+					$("#208887Editor2").igDateEditor({
+						dateInputFormat: "dd,MM,yyyy hh:m:ss fff tt",
+						//dateDispalyFormat: "dd,MM,yyyy hh:m:ss fff tt"
+						width: 400
+					});
+				}
+				window.Bug209012Testbed = function () {
+					$("#209012Editor1").igTextEditor({
+						toUpper: true
+					});
+					$("#209012Editor2").igTextEditor({
+						toLower: true
+					});
+				}
+			
+				window.Bug208350Testbed = function () {
+					$("#208350Editor1").igDateEditor({
+						dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+						enableUTCDates: true
+					});
+					$("#208350Editor2").igDatePicker({
+						enableUTCDates: true,
+						dateInputFormat: "dd/MM/yyyy HH:mm:ss"
+					});
+				}
+				window.Bug208448Testbed = function () {
+					$("#208448Editor1").igDatePicker({
+						dateInputFormat: "dd/MM/yyyy",
+						value: new Date("05/25/2012")
+					});
+				}
+				window.Bug208036Testbed = function () {
+					$("#208036Editor1").igDatePicker({
+						dataMode: 'date',
+						dateInputFormat: "dd/MM/yyyy"
+					});
+
+				}
+				window.Bug208264Testbed = function () {
+					$("#208264Editor1").igDateEditor({
+						dateInputFormat: "H:m:s",
+						dateDisplayFormat: "H:m:ss"
+					});
+
+				}
+				
+				window.Bug210971Testbed = function () {
+					$("#210971Editor1").igTextEditor({
+						listItems: ["1", "2", "3", "4", "5", "6"],
+						width: 200
+					});
+
+				}
+				window.Bug211010Testbed = function () {
+
+					$('#211010Editor1').igTextEditor({
+						placeHolder: "Company name",
+						readOnly: true
+					});
+					$('#211010Editor2').igTextEditor({
+						placeHolder: "Company name",
+						readOnly: true,
+						dropDownOnReadOnly: true,
+						listItems: [1, 2, 3]
+					});
+					$('#211010Editor3').igNumericEditor({
+						placeHolder: "Company name",
+						readOnly: true,
+						buttonType: 'clear,spin'
+					});
+
+				}
+				window.Bug211062Testbed = function () {
+
+					$('#211062Editor1').igDatePicker({
+						width: "200px",
+						dataMode: "date",
+						dateInputFormat: "dd/MM/yyyy HH:mm",
+						minValue: new Date(2015, 6, 1)
+					});
+
+				}
+				
+				window.Bug210990Testbed = function () {
+
+					$('#210990Editor1').igMaskEditor({
+						inputMask: '000-000-0000',			
+						width: 300
+					});
+
+				}
+				
+				window.Bug208274Testbed = function () {
+
+					$('#208274Editor1').igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "HH:mm:ss",
+						
+					});
+
+				}
+
+
+				window.Bug207546Testbed = function () {
+
+					$('#207546Editor1').igDatePicker()
+
+				}
+				
+				window.Bug207321Testbed = function () {
+
+					$('#207321Editor1').igMaskEditor({ value: "value1" });
+					$('#207321Editor2').igMaskEditor({ value: "value1" });
+				}
+
+				window.Bug211575Testbed = function () {
+
+					$('#211575Editor2').igDateEditor({
+						dataMode: 'editModeText', 
+						dateDisplayFormat: 'yyyy/MM/dd',
+						dateInputFormat: 'yyyy/MM/dd'
+					});
+				}
+				window.Bug211751Testbed = function () {
+
+					$('#211751Editor1').igPercentEditor({
+						listItems: [0.12, 0.53, 1.00, 1.50]
+					});
+				}
+				
+				window.Bug212596Testbed = function () {
+
+					$('#212596Editor1').igNumericEditor();
+					$('#212596Editor2').igMaskEditor({
+						inputMask: "CC//CC"
+					});
+					$('#212596Editor3').igDateEditor({
+						value: new Date()
+					});
+				}
+				
+				window.Bug212374Testbed = function () {
+
+					$('#212374Editor1').igTextEditor({
+						buttonType: "dropdown",
+						listItems : [
+							"item 1",
+							"item 2",
+							"item 3"
+						]
+					});
+					$('#212374Editor1').igTextEditor("selectedListIndex", 0);
+				}
+				window.Bug212642Testbed = function () {
+
+					$('#212642Editor1').igDateEditor({
+						dateInputFormat: "yyyy/MM/dd"
+					});
+				}
+
+				window.Bug215549Testbed = function () {
+					$('#215549Editor1').igDatePicker();
+				}
+
+				window.Bug217214Testbed = function () {
+					$('#217214Editor1').igNumericEditor();
+				}
+			//216789
+				window.Bug216789Testbed = function () {
+					$('#216789Editor1').igTextEditor({
+						includeKeys: '12345'
+					});
+					$('#216789Editor2').igTextEditor({
+						excludeKeys: '12345'
+					});
+					$('#216789Editor3').igTextEditor({
+						includeKeys: '12345',
+						excludeKeys: '23'
+					});
+				}
+				window.Bug218836Testbed = function () {
+					$('#218836Editor1').igMaskEditor({
+				
+					
+						inputMask: '(000) 000-0000',
+						dataMode: 'rawTextWithRequiredPromptsAndLiterals',
+						keypress: function (evt, ui) {
+							if (ui.originalEvent.keyCode == 13) {
+								$('#work_nbr').igMaskEditor("value", "1111111111");
+							}
+							return false;
+						}
+					});
+				}
+				
+				window.Bug218752Testbed = function () {
+					$('#218752Editor1').igDateEditor({
+						width : 120,
+						dateInputFormat : 'yyyy/MM/dd',
+						value: "2016/01/30",
+						
+					});
+				}
+					
+				window.Bug220479Testbed = function () {
+					$("#220479Editor1").igPercentEditor({
+				
+					});
+					$("#220479Editor2").igPercentEditor({
+				
+					});
+					$("#220479Editor3").igCurrencyEditor({
+				
+					});
+					$("#220479Editor4").igCurrencyEditor({
+				
+					});
+				}
+				window.Bug220712Testbed = function () {
+					$("#220712Editor1").igTextEditor({
+						listItems: [1, 2, 3, 4]
+					});
+				}
+				
+				window.Bug221118Testbed = function () {
+					$('#221118Editor1').igNumericEditor({
+						listItems: [1, 2, 3, 4],
+						value: 2
+					});
+				}
+
+				initialized = false;
+				module("Editors Bugs Unit Tests ", {
+					setup: function () {
+						//pause testing until editors are initialized
+						if (!initialized) {
+							stop();
+							loadTestbeds();
+							setTimeout(function () { start(); }, 100);
+							initialized = true;
+						}
+					},
+					teardown: function () {
+					}
+				});
+
+			var testId = 'Bug 208808';
+			test(testId, 2, function () {
+				$("#208808").click();
+				typeInInput("0000/00/00", $("#208808").igDateEditor("field"));
+				$("#208808").trigger("blur");
+				equal($("#208808").igDateEditor("field").val(), "2000/05/01", "The display value is changed to \"2000/05/01\"");
+				var dd = new Date("2000/05/01");
+				equal($("#208808").igDateEditor("value").getTime(), dd.getTime(), "The value is changed to \"2000/05/01\"");
+			});
+			testId = 'Bug 208036';
+			test(testId, 2, function () {
+				var calendar, getDDmmYYYY;
+				getDDmmYYYY = function (date) {
+					var result = "", day, month;
+					if (typeof date.getTime !== "function") {
+						return;
+					}
+					day = date.getDate();
+					if (day < 10) {
+						day = "0" + day.toString();
+					} else {
+						day = day.toString();
+					}
+					month = date.getMonth() + 1;
+					if (month < 10) {
+						month = "0" + month.toString();
+					} else {
+						month = month.toString();
+					}
+					result += day;
+					result += "/";
+					result += month;
+					result += "/";
+					result += date.getFullYear();
+					return result;
+				}
+				$("#208036Editor1").one("igdatepickervaluechanged", function (evt, ui) {
+					equal(getDDmmYYYY(ui.newValue), getDDmmYYYY(new Date()), "Date should be " + getDDmmYYYY(new Date()));
+				});
+				
+				
+
+				$("#208036Editor1").igDatePicker("dropDownButton").click();
+				calendar = $("#208036Editor1").igDatePicker("getCalendar");
+				$(calendar).find(".ui-datepicker-today").find("a").click();
+				equal($("#208036Editor1").igDatePicker("field").val(), getDDmmYYYY(new Date()), "The value is changed to" + getDDmmYYYY(new Date()));
+
+			});
+			testId = 'Bug 209067';
+			test(testId, 4, function () {
+				$("#209067button").click();
+
+
+				equal($("#209067textEditor").igTextEditor("field").val(), "NWSFSD", "The display value is changed to NWSFSD");
+				equal($("#209067textEditor").igTextEditor("value"), "NWSFSD", "The value is changed to NWSFSD");
+				equal($("#209067textEditor1").igTextEditor("field").val(), "nwsfsd", "The display value is changed to NWSFSD");
+				equal($("#209067textEditor1").igTextEditor("value"), "nwsfsd", "The value is changed to NWSFSD");
+			});
+			testId = 'Bug 209174';
+			test(testId, 4, function () {
+				$("#209174button").click();
+
+
+				equal($("#209174textEditor").igTextEditor("field").val(), "", "The display value is changed to \"\"");
+				equal($("#209174textEditor").igTextEditor("value"), "", "The value is changed to \"\"");
+				equal($("#209174textEditor1").igTextEditor("field").val(), "", "The display value is changed to \"\"");
+				equal($("#209174textEditor1").igTextEditor("value"), null, "The value is changed to null");
+			});
+
+			 testId = 'Bug 209912';
+			test(testId, 1, function () {
+				spinDownButton = $('#209912').igNumericEditor("spinDownButton");
+				mousedown(spinDownButton[0]);
+				mouseup(spinDownButton[0]);
+				equal($('#209912').igNumericEditor("value"), "-1e+1", "The value is not in correct scientific format!");	
+			});
+			
+			testId = 'Bug 209641';
+			test(testId, 8, function () {
+				equal($("#209641textEditor").igNumericEditor("field").val(), "$34", "The display value is changed to \"\"");
+				equal($("#209641textEditor").igNumericEditor("value"), -34, "The value is changed to \"\"");
+				$("#209641button").click();
+				equal($("#209641textEditor").igNumericEditor("field").val(), "$30", "The display value is changed to \"\"");
+				equal($("#209641textEditor").igNumericEditor("value"), -30, "The value is changed to null");
+				$("#209641textEditor").data("igNumericEditor")._enterEditMode();
+				equal($("#209641textEditor").igNumericEditor("field").val(), "$30", "The value is changed to null");
+				$("#209641textEditor").igNumericEditor("field").val("$50").blur();
+				equal($("#209641textEditor").igNumericEditor("field").val(), "$50", "The display value is changed to \"\"");
+				equal($("#209641textEditor").igNumericEditor("value"), -50, "The value is changed to \"\"");
+				ok($("#209641textEditor").igNumericEditor("field").hasClass($("#209641textEditor").data("igNumericEditor").css.negative), "the negative class is not correctly applied")
+			});
+
+			testId = 'Bug 209696';
+			test(testId, 4, function () {
+				var date1, date2;
+				date1 = new Date(2015, 10, 13, 00, 34);
+				$("#209696DateEditor").igDateEditor("field").focus().val("13,11,2015 12:34 AM").blur();
+				equal($("#209696DateEditor").igDateEditor("field").val(), "13,11,2015 12:34 AM", "The display value is changed to 13,11,2015 12:34 AM");
+				equal($("#209696DateEditor").igDateEditor("value").getTime(), date1.getTime() , "The value is changed to" + new Date(2015, 10, 13, 00, 34));
+				
+
+				date2 = new Date(2015, 10, 13, 12, 34);
+				$("#209696DateEditor1").igDateEditor("field").focus().val("13,11,2015 12:34 PM").blur();
+				equal($("#209696DateEditor1").igDateEditor("field").val(), "13,11,2015 12:34 PM", "The display value is changed to 13,11,2015 12:34 PM");
+				equal($("#209696DateEditor1").igDateEditor("value").getTime(), date2.getTime(), "The value is changed to " + new Date(2015, 10, 13, 12, 34));
+
+			});
+			testId = 'Bug 208809';
+			test(testId, 2, function () {
+				$("#208809").igPercentEditor("field").focus().val("123456789").blur();
+				equal($("#208809").igPercentEditor("field").val(), "123,456,789.00%", "The value is changed to 123,456,789.00%");
+				$("#208809").igPercentEditor("field").focus();
+				equal($("#208809").igPercentEditor("field").val(), "123456789", "The value is changed to 123456789");
+			
+			});
+			testId = 'Bug 208887, 216017';
+			test(testId, 7, function () {
+				$("#208887Editor1").igDateEditor("field").focus().val("30,10,2016 10:25:56 12 AM");
+				equal($("#208887Editor1").igDateEditor("field").val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+				$("#208887Editor1").igDateEditor("field").blur();
+				equal($("#208887Editor1").igDateEditor("field").val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+				$("#208887Editor1").igDateEditor("field").focus();
+				equal($("#208887Editor1").igDateEditor("field").val(), "30,10,2016 10:25:56 12 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+				$("#208887Editor2").igDateEditor("field").focus().val("30,10,2016 10:25:56 12_ AM");
+				equal($("#208887Editor2").igDateEditor("field").val(), "30,10,2016 10:25:56 12_ AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+				$("#208887Editor2").igDateEditor("field").blur();
+				equal($("#208887Editor2").igDateEditor("field").val(), "30,10,2016 10:25:56 120 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+				$("#208887Editor2").igDateEditor("field").focus();
+				equal($("#208887Editor2").igDateEditor("field").val(), "30,10,2016 10:25:56 120 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+
+				// Bug #216017
+				$("#208887Editor1").igDateEditor("field").focus().val("00,00,0000 00:00:00 00 AM");
+				$("#208887Editor1").igDateEditor("field").blur();
+				equal($("#208887Editor1").igDateEditor("field").val(), "30,10,2000 12:0:00 00 AM", "The value is changed to 30,10,2016 10:25:56 12 AM");
+
+			});
+			
+			testId = 'Bug 209012';
+			test(testId, 4, function () {
+				$("#209012Editor1").igTextEditor("field").focus();
+				$("#209012Editor1").data("igTextEditor")._insert("NewVal1", "");
+				equal($("#209012Editor1").igTextEditor("field").val(), "NEWVAL1", "The value is changed to NEWVAL1");
+				$("#209012Editor1").igTextEditor("field").blur();
+				equal($("#209012Editor1").igTextEditor("field").val(), "NEWVAL1", "The value is changed to NEWVAL1");
+				$("#209012Editor2").igTextEditor("field").focus();
+				$("#209012Editor2").data("igTextEditor")._insert("NewVal1", "");
+				equal($("#209012Editor2").igTextEditor("field").val(), "newval1", "The value is changed to newval1");
+				$("#209012Editor2").igTextEditor("field").blur();
+				equal($("#209012Editor2").igTextEditor("field").val(), "newval1", "The value is changed to newval1");
+			});
+			testId = 'Bug 208350';
+			test(testId, 7, function () {
+				$("#208350Editor1").igDateEditor("field").focus().val("15/10/2016 10:25:56");
+				equal($("#208350Editor1").igDateEditor("field").val(), "15/10/2016 10:25:56", "The text is changed to 15/10/2016 10:25:56");
+				$("#208350Editor1").igDateEditor("field").blur();
+				equal($("#208350Editor1").igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
+				$("#208350Editor1").igDateEditor("field").focus();
+				equal($("#208350Editor1").igDateEditor("value").getTime(), "1476527156000", "The value is changed to 15/10/2016 10:25:56");
+
+
+				equal($("#208350Editor1").igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
+				$("#208350Editor2").igDatePicker("field").focus().val("15/10/2016 10:25:56");
+				equal($("#208350Editor2").igDatePicker("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
+				$("#208350Editor2").igDatePicker("field").blur();
+				equal($("#208350Editor2").igDatePicker("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
+				$("#208350Editor2").igDatePicker("field").focus();
+				equal($("#208350Editor2").igDatePicker("value").getTime(), "1476527156000", "The value is changed to 1476527156000");
+			});
+			testId = 'Bug 208356';
+			test(testId, 1, function () {
+
+				QUnit.throws(function () {
+					$("#208356Editor1").igTextEditor({ buttonType: "dropdown" })
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.noListItemsNoButton) > -1;
+				}, $.ig.Editor.locale.noListItemsNoButton + "not shown");
+
+			});
+			testId = 'Bug 208448';
+			test(testId, 3, function () {
+
+
+				$("#208448Editor1").igDatePicker("field").focus();
+				equal($("#208448Editor1").igDatePicker("field").val(), "25/05/2012", "The text is changed to 25/05/2012");
+
+				$("#208448Editor1").igDatePicker("dropDownButton").click();
+				equal($("#208448Editor1").igDatePicker("field").val(), "25/05/2012", "The value is changed to 25/05/2012");
+				$("#208448Editor1").igDatePicker("dropDownButton").click();
+				equal($("#208448Editor1").igDatePicker("field").val(), "25/05/2012", "The value is changed to 25/05/2012");
+			});
+			
+			
+			testId = 'Bug 208264';
+			test(testId, 3, function () {
+
+
+				$("#208264Editor1").igDateEditor("field").focus();
+				$("#208264Editor1").data("igDateEditor")._insert("10:10:_9");
+				equal($("#208264Editor1").igDateEditor("field").val(), "10:10:_9", "The text is changed to 10:10:9");
+				$("#208264Editor1").igDateEditor("field").blur()
+				
+				equal($("#208264Editor1").igDateEditor("field").val(), "10:10:09", "The value is changed to 10:10:9");
+				$("#208264Editor1").igDateEditor("field").focus();
+				equal($("#208264Editor1").igDateEditor("field").val(), "10:10:09", "The value is changed to 25/05/2012");
+			});
+			testId = 'Bug 210971';
+			test(testId, 5, function () {
+				$("#210971Editor1").igTextEditor("dropDownButton").click();
+				equal($("#210971Editor1").igTextEditor("field").val(), "", "The text is changed to empty string");
+				
+				var ddList = $("#210971Editor1").igTextEditor("dropDownContainer"), item;
+				ok(ddList.is(":visible"), "The dropdown should be visible");
+				items = ddList.find(".ui-igedit-listitem");
+				ok(items.length == 6, "exist 6");
+				$(items[3]).click();
+				equal($("#210971Editor1").igTextEditor("field").val(), "4", "The text is changed to 4");
+				equal($("#210971Editor1").igTextEditor("value"), "4", "The text is changed to 4");
+
+			});
+			testId = 'Bug 220479';
+			test(testId, 7, function () {
+				
+
+
+				$('#220479Editor2').igPercentEditor("insert", "20");
+				equal($('#220479Editor2').igPercentEditor("field").val(), "20.00%", "The value in the field should be 20.00%");
+
+				equal($('#220479Editor2').igPercentEditor("value"), "0.2", "The value in the field should be 0.2");
+
+
+				$("#220479Editor3").igCurrencyEditor("field").focus();
+				$('#220479Editor3').igCurrencyEditor("insert", "20");
+				equal($('#220479Editor3').igCurrencyEditor("field").val(), "20", "The value in the field should be 20");
+
+				//
+				$("#220479Editor3").igCurrencyEditor("field").blur();
+				equal($('#220479Editor3').igCurrencyEditor("field").val(), "$20.00", "The value in the field should be $20.00");
+
+				equal($('#220479Editor3').igCurrencyEditor("value"), "20", "The value in the field should be 20");
+
+
+				$('#220479Editor4').igCurrencyEditor("insert", "20");
+				equal($('#220479Editor4').igCurrencyEditor("field").val(), "$20.00", "The value in the field should be $20.00");
+
+				equal($('#220479Editor4').igCurrencyEditor("value"), "20", "The value in the field should be 20");
+
+			});
+			testId = 'Bug 211010';
+			test(testId, 12, function () {
+				ok(!$("#211010Editor1").igTextEditor("editorContainer").hasClass("ui-state-disabled"), "The ui-state-disabled class should not be applied");
+				ok($("#211010Editor1").igTextEditor("field").attr("readonly") !== undefined, "The readonly attribute should  be applied");
+				ok(!$("#211010Editor2").igTextEditor("editorContainer").hasClass("ui-state-disabled"), "The ui-state-disabled class should not be applied")
+				ok($("#211010Editor2").igTextEditor("field").attr("readonly") !== undefined, "The readonly attribute should  be applied")
+				ok(!$("#211010Editor3").igNumericEditor("editorContainer").hasClass("ui-state-disabled"), "The ui-state-disabled class should not be applied")
+				ok($("#211010Editor3").igNumericEditor("field").attr("readonly") !== undefined, "The readonly attribute should not be applied")
+				$("#211010Editor1").igTextEditor("option", "disabled", true);
+				$("#211010Editor2").igTextEditor("option", "disabled", true);
+				$("#211010Editor3").igNumericEditor("option", "disabled", true);
+				ok($("#211010Editor1").igTextEditor("editorContainer").hasClass("ui-state-disabled"), "The ui-state-disabled class should not be applied");
+				ok($("#211010Editor1").igTextEditor("field").attr("disabled") !== undefined, "The disabled attribute should  be applied");
+				ok(!$("#211010Editor2").igTextEditor("editorContainer").hasClass("ui-state-disabled"), "The ui-state-disabled class should not be applied")
+				ok($("#211010Editor2").igTextEditor("field").attr("disabled") !== undefined, "The disabled attribute should  be applied")
+				ok($("#211010Editor3").igNumericEditor("editorContainer").hasClass("ui-state-disabled"), "The ui-state-disabled class should not be applied")
+				ok($("#211010Editor3").igNumericEditor("field").attr("disabled") !== undefined, "The disabled attribute should not be applied")
+			});
+			
+
+
+			testId = 'Bug 211062';
+			test(testId, 3, function () {
+				stop();
+				setTimeout(function () {
+					start();
+					var calendar, getDDmmYYYYHHSS, targetDate;
+					getDDmmYYYYHHSS = function (date) {
+						var result = "", day, month, minutes, hours;
+						if (typeof date.getTime !== "function") {
+							return;
+						}
+						day = date.getDate();
+						if (day < 10) {
+							day = "0" + day.toString();
+						} else {
+							day = day.toString();
+						}
+						month = date.getMonth() + 1;
+						if (month < 10) {
+							month = "0" + month.toString();
+						} else {
+							month = month.toString();
+						}
+						hours = date.getHours();
+						if (hours < 10) {
+							hours = "0" + hours;
+						} else {
+							hours = hours.toString();
+						}
+						minutes = date.getMinutes();
+						if (minutes < 10) {
+							minutes = "0" + minutes;
+						} else {
+							minutes = minutes.toString();
+						}
+						result += day;
+						result += "/";
+						result += month;
+						result += "/";
+						result += date.getFullYear();
+						result += " ";
+						result += hours;
+						result += ":";
+						result += minutes;
+
+						return result;
+					}
+					targetDate = new Date();
+
+					$("#211062Editor1").one("igdatepickervaluechanged", function (evt, ui) {
+						equal(getDDmmYYYYHHSS(ui.newValue), getDDmmYYYYHHSS(targetDate), "Date should be " + getDDmmYYYYHHSS(targetDate));
+					});
+
+					$("#211062Editor1").igDatePicker("dropDownButton").click();
+					calendar = $("#211062Editor1").igDatePicker("getCalendar");
+					$(calendar).find(".ui-datepicker-today").find("a").click();
+					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The value is changed to" + getDDmmYYYYHHSS(targetDate));
+					$("#211062Editor1").igDatePicker("field").blur();
+					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The value is changed to" + getDDmmYYYYHHSS(targetDate));
+				}, 1000); //This timeout is need because the test requires calendar which needs focus
+			});
+			
+			testId = 'Bug 210990';
+			test(testId, 3, function () {
+				$("#210990Editor1").igMaskEditor("value", "");
+				equal($("#210990Editor1").igMaskEditor("field").val(), "", "The text is changed to an empty string");
+				$("#210990Editor1").igMaskEditor("field").focus();
+				equal($("#210990Editor1").igMaskEditor("field").val(), $("#210990Editor1").data("igMaskEditor")._maskWithPrompts, "The text is changed to 4");
+				equal($("#210990Editor1").igMaskEditor("value"), "", "The text is changed to to an empty string");
+
+			});
+			
+			testId = 'Bug 210106';
+			test(testId, 1, function () {
+
+				QUnit.throws(function () {
+					$("#210106Editor1").igPercentEditor({
+						displayFactor: 100,
+						dataMode: "int"
+					});
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint) > -1;
+				}, $.ig.Editor.locale.spinDeltaIncorrectFloatingPoint + "not shown");
+
+			});
+
+			testId = 'Bug 208274';
+			test(testId, 2, function () {
+
+
+				$("#208274Editor1").igDateEditor("field").focus();
+				$("#208274Editor1").data("igDateEditor")._insert("20:01:05");
+				$("#208274Editor1").igDateEditor("field").blur();
+				
+				
+				equal($("#208274Editor1").igDateEditor("field").val(), "20:01:05", "The text is changed to 20:01:05");
+				$("#208274Editor1").igDateEditor("field").focus();
+
+				equal($("#208274Editor1").igDateEditor("field").val(), "20:01:05", "The value is changed to 20:01:05");
+		
+			});
+			
+			testId = 'Bug 207546';
+			test(testId, 2, function () {
+				var flag = true;
+				$("#207546Editor1").on("igdatepickervaluechanged", function (evt, ui) {
+					flag = false;
+				})
+				$("#207546Editor1").igDatePicker("dropDownButton").click();
+				$("#207546button").click();
+				ok($("#207546Editor1").igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
+				ok(flag, "Value changed should not be fired.")
+
+			});
+			
+			testId = 'Bug 207321';
+			test(testId, 1, function () {
+
+
+				$("#207321Editor1").igMaskEditor("field").focus();
+				$("#207321Editor1").data("igMaskEditor")._handleDeleteKey();
+				
+				equal($("#207321Editor1").data("igMaskEditor")._getCursorPosition(), 10, "the cursor should be on position 10");
+				
+				
+
+			});
+			testId = 'Bug 211575';
+			test(testId, 1, function () {
+
+
+				$("#211575Editor2").igDateEditor("field").focus();
+				$("#211575Editor2").data("igDateEditor")._insert("2015/10/10");
+				$("#211575Editor2").igDateEditor("field").blur()
+
+
+				equal($("#211575Editor2").data("igDateEditor")._valueInput.val(), "2015/10/10", "The value is changed to 2015/10/10");
+
+			});
+			
+
+			testId = 'Bug 212596';
+			test(testId, 3, function () {
+				$("#212596Editor1").igNumericEditor("field").focus();
+				$("#212596Editor1").data("igNumericEditor")._enterEditMode();
+				$("#212596Editor1").igNumericEditor("value", "1234");
+				equal($("#212596Editor1").igNumericEditor("field").val(), "1234", "The value in edit mode should be 1234. It's: " + $("#212596Editor1").igNumericEditor("field").val());
+				$("#212596Editor2").data("igMaskEditor")._enterEditMode();
+				$("#212596Editor2").igMaskEditor("value", "abcd");
+				equal($("#212596Editor2").igMaskEditor("field").val(), "ab//cd", "The value in edit mode should be ab//cd");
+				$("#212596Editor3").data("igDateEditor")._enterEditMode();
+				$("#212596Editor3").igDateEditor("value", "2002/10/10");
+				equal($("#212596Editor3").igDateEditor("field").val(), "10/10/2002", "The value in edit mode should be \"10/10/2002\". It is: " + $("#212596Editor3").igDateEditor("field").val());
+
+			});
+			
+			testId = 'Bug 212374';
+			test(testId, 3, function () {
+				$("#212374Editor1").igTextEditor("option", "listItems", ["item 4", "item 5", "item 6"]); 
+				var list = $("#212374Editor1").data("igTextEditor")._dropDownList;
+				equal($(list.find("span")[0]).text(), "item 4", "The first item should be item 4");
+				ok($("#212374Editor1").data("igTextEditor")._dropDownButton.is(":visible"), "The button is rerendered");
+				equal($("#212374Editor1").data("igTextEditor")._editorInput.val(), "", "The value should be cleared");
+
+			});
+			testId = 'Bug 212642';
+			test(testId, 2, function () {
+				
+				$('#212642Editor1').data("igDateEditor")._enterEditMode();
+				$('#212642Editor1').igDateEditor("field").val("_111/10/10");
+				$('#212642Editor1').igDateEditor("field").blur();
+				equal($('#212642Editor1').igDateEditor("field").val(), "111/10/10", "The value should be \"111/10/10\"");
+				$('#212642Editor1').data("igDateEditor")._enterEditMode();
+				equal($('#212642Editor1').igDateEditor("field").val(), "0111/10/10", "The value should be \"111/10/10\"");
+			});
+			
+			testId = 'Bug 215549';
+			test(testId, 1, function () {
+
+				ok($('#215549Editor1').data("igDatePicker")._dropDownList.hasClass("ui-igedit-dropdown-orientation-bottom"), "The dropDownContainer should be with ui-igedit-dropdown-orientation-bottom class applied");
+				
+				
+			});
+
+			testId = 'Bug 217214';
+			test(testId, 1, function () {
+				$('#217214Editor1').data("igNumericEditor")._insert("69", "");
+				//ok(.hasClass("ui-igedit-dropdown-orientation-bottom"), "The dropDownContainer should be with ui-igedit-dropdown-orientation-bottom class applied");
+				equal($('#217214Editor1').igNumericEditor("field").val(), "69", "The value in the field should be 69");
+				
+			});
+			//216789
+			testId = 'Bug 216789';
+			test(testId, 3, function () {
+				$('#216789Editor1').igTextEditor("field").focus();
+				$('#216789Editor1').data("igTextEditor")._insert("1a2b3c4d5e6f7g8h9i0", "");
+				$('#216789Editor2').igTextEditor("field").focus();
+				$('#216789Editor2').data("igTextEditor")._insert("1a2b3c4d5e6f7g8h9i0", "");
+				$('#216789Editor3').igTextEditor("field").focus();
+				$('#216789Editor3').data("igTextEditor")._insert("1a2b3c4d5e6f7g8h9i0", "");
+				//ok(.hasClass("ui-igedit-dropdown-orientation-bottom"), "The dropDownContainer should be with ui-igedit-dropdown-orientation-bottom class applied");
+				equal($('#216789Editor1').igTextEditor("field").val(), "12345", "The value in the field should be 12345");
+				equal($('#216789Editor2').igTextEditor("field").val(), "abcde6f7g8h9i0", "The value in the field should be abcde6f7g8h9i0");
+				equal($('#216789Editor3').igTextEditor("field").val(), "145", "The value in the field should be 145");
+
+			});
+
+			//218836
+			testId = 'Bug 218836';
+			test(testId, 3, function () {
+				$('#218836Editor1').igMaskEditor("field").focus();
+				$('#218836Editor1').igMaskEditor("value", "1111111111");
+				equal($('#218836Editor1').igMaskEditor("field").val(), "(111) 111-1111", "The value in the field should be (111) 111-1111");
+				$('#218836Editor1').igMaskEditor("field").blur();
+				equal($('#218836Editor1').igMaskEditor("field").val(), "(111) 111-1111", "The value in the field should be (111) 111-1111");
+				equal($('#218836Editor1').igMaskEditor("value"), "(111) 111-1111", "The value in the field should be (111) 111-1111");
+			});
+
+			testId = 'Bug 218752';
+			test(testId, 4, function () {
+				$('#218752Editor1').igDateEditor("field").focus();
+				$('#218752Editor1').igDateEditor("field").val("2016/02/10");
+				$('#218752Editor1').igDateEditor("field").blur();
+				equal($('#218752Editor1').igDateEditor("field").val(), "2016/02/10", "The value in the field should be 2016/02/10");
+				var valueDate = $('#218752Editor1').igDateEditor("value");
+				
+				equal(valueDate.getFullYear(), 2016, "The year in the field should be 2016");
+				equal(valueDate.getMonth(), 1, "The month in the field should be 1");
+				equal(valueDate.getDate(), 10, "The value in the field should be 10");
+			});
+			testId = 'Bug 220479 - 1';
+			test(testId, 3, function () {
+				
+					$("#220479Editor1").igPercentEditor("field").click().focus();
+					stop();
+					setTimeout(function () {
+						start();
+						$('#220479Editor1').igPercentEditor("insert", "20");
+						equal($('#220479Editor1').igPercentEditor("field").val(), "20", "The value in the field should be 20. Actual - " + $('#220479Editor1').igPercentEditor("field").val());
+
+					//
+						$("#220479Editor1").igPercentEditor("field").blur();
+						equal($('#220479Editor1').igPercentEditor("field").val(), "20.00%", "The value in the field should be 20.00%. Actual - " + $('#220479Editor1').igPercentEditor("field").val());
+
+						equal($('#220479Editor1').igPercentEditor("value"), "0.2", "The value in the field should be 0.2. Actual: " + $('#220479Editor1').igPercentEditor("value"));
+
+					}, 1000);
+				
+			});
+
+			testId = 'Bug 220712 - typed text is reverted to previous value in case the drop down is opened';
+			test(testId, 1, function () {
+				// focus editor and set value
+				$("#220712Editor1").igTextEditor("field").click().focus();
+				$("#220712Editor1").igTextEditor("field").val("text");
+				//open dropdown
+				$("#220712Editor1").igTextEditor("dropDownButton").click();
+
+				equal($("#220712Editor1").igTextEditor("field").val(), "text", "Opening dropdown caused the entered text to be reverted");
+			});
+
+			testId = 'Bug 221118';
+			test(testId, 2, function () {
+				var editor = $("#221118Editor1"),
+					input = editor.igNumericEditor("field"),
+					ddBtn = editor.igNumericEditor("dropDownButton"),
+					item = editor.data("igNumericEditor")._getListItemByIndex(0);
+
+				ddBtn.click();
+				keyInteraction(40, input);
+				equal(editor.igNumericEditor("value"), 2, "The value should stay unchanged");
+				keyInteraction(13, input);
+				equal(editor.igNumericEditor("value"), 1, "The value 1 should be selected");
+			});
+		});
+
+		function emulateKeyBoard(key, ctrl, shift, alt, element) {
+			var keyDown = jQuery.Event("keydown"),
+				keyUp = jQuery.Event("keyup");
+
+			keyDown.ctrlKey = keyUp.ctrlKey = ctrl;
+			keyDown.altKey = keyUp.altKey = alt;
+			keyDown.shiftKey = keyUp.shiftKey = shift;
+
+			switch (key) {
+				case "up": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.UP; break;
+				case "left": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.LEFT; break;
+				case "right": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.RIGHT; break;
+				case "down": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.DOWN; break;
+				default: keyDown.keyCode = keyUp.keyCode = key; break;
+			}
+
+			element.trigger(keyDown);
+			element.trigger(keyUp);
+		}
+		function typeInInput(characters, element) {
+			var keyDown = jQuery.Event("keydown"),
+			   keyPress = jQuery.Event("keypress"),
+			   keyUp = jQuery.Event("keyup"),
+			   value = "";
+
+			characters.split('').forEach(function (ch) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				value = value + ch;
+				element.val(value);
+				element.trigger(keyUp);
+			});
+		}
+		function typeInMaskedInput(characters, element) {
+			var keyDown = jQuery.Event("keydown"),
+			   keyPress = jQuery.Event("keypress"),
+			   keyUp = jQuery.Event("keyup"),
+			   value = element.val(), selectionStart = 0;
+
+			characters.split('').forEach(function (ch) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				value = value.replaceAt(selectionStart++, ch);
+				element.val(value);
+				element.trigger(keyUp);
+			});
+		}
+		String.prototype.replaceAt = function (index, character) {
+			return this.substr(0, index) + character + this.substr(index + character.length);
+		}
+		function clickElement(element, ctrl, shift) {
+			var mouseDown = jQuery.Event("mousedown"), mouseUp = jQuery.Event("mouseup");
+			ctrl = (typeof ctrl === 'undefined') ? false : ctrl;
+			shift = (typeof shift === 'undefined') ? false : shift;
+			mousedown(element[0], ctrl, shift);
+			mouseup(element[0], ctrl, shift);
+		}
+		function mouseup(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
+		}
+		function mousedown(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
+		}
+
+		function keyInteraction(key, target, special) {
+			keyDownChar(key, target, special);
+			keyPressChar(key, target, special);
+			keyUpChar(key, target, special);
+		}
+		function keyDownChar(key, target, special) {
+			var evt = $.Event("keydown");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function keyPressChar(key, target, special) {
+			var evt = $.Event("keypress");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function keyUpChar(key, target, special) {
+			var evt = $.Event("keyup");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+	</script>
+
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+		<input id="inputEditor1" />
+		<input id="inputEditor2" />
+		<input id="inputEditor3" />
+		<input id="inputEditor4" />
+		<input id="inputEditor5" />
+		<input id="inputEditor6" />
+		<input id="inputEditor7" />
+		<input id="inputEditor8" />
+		<input id="inputEditor8a" />
+		<input id="inputEditor9" />
+		<input id="inputEditor10" />
+		<input id="inputEditor11" />
+		<input id="inputEditor12" />
+		<input id="inputEditor13" />
+		<input id="inputEditor14" />
+		<input id="dropdown" />
+		<input id="208808" value="2015/05/01" />
+		<input id="209067textEditor" type="text" />
+		<input id="209067textEditor1" type="text" />
+		<input type="button" id="209067button" value="Click" />
+
+		<input id="209174textEditor" type="text" />
+		<input id="209174textEditor1" type="text" />
+		<input type="button" id="209174button" value="Click" />
+
+
+		<input id="209641textEditor" type="text" />
+		<input type="button" id="209641button" value="Click" />
+
+		<input id="209912" />
+
+
+		<div id="209696DateEditor"></div>
+		<div id="209696DateEditor1"></div>
+		<input id="208809" type="text" />
+		<input id="208887Editor1" type="text" />
+		<input id="208887Editor2" type="text" />
+
+		<input id="209012Editor1" type="text" />
+		<input id="209012Editor2" type="text" />
+
+		<input id="208350Editor1" type="text" />
+		<input id="208350Editor2" type="text" />
+
+		<input id="208356Editor1" type="text" />
+		<input id="208448Editor1" type="text" />
+		<input id="208036Editor1" type="text" />
+
+		<input id="208264Editor1" type="text" />
+		<input id="210971Editor1" type="text" />
+
+		<input id="211010Editor1" type="text" />
+		<input id="211010Editor2" type="text" />
+		<input id="211010Editor3" type="text" />
+
+		<input id="211062Editor1" type="text" />
+
+		<input id="210990Editor1" type="text" />
+
+		<input id="210106Editor1" type="text" />
+
+		<input id="208274Editor1" type="text" />
+		<input id="207546Editor1" type="text" />
+		<input type="button" id="207546button" />
+		
+		<input id="207321Editor1" type="text" />
+		<input id="207321Editor2" type="text" />
+
+		<input id="211575Editor2" type="text" />
+
+	
+		<input id="211751Editor1" type="text" />
+		
+		<input id="212596Editor1" type="text" />
+		<input id="212596Editor2" type="text" />
+		<input id="212596Editor3" type="text" />
+		
+		<input id="212374Editor1" type="text" />
+
+		
+		<input id="212642Editor1" type="text" value="2015/05/01" />
+		<input id="215549Editor1" type="text" />
+		<input id="217214Editor1" type="text" />
+		
+		
+		<input id="216789Editor1" type="text" />
+		<input id="216789Editor2" type="text" />
+		<input id="216789Editor3" type="text" />
+		
+		<input id="218836Editor1" type="text" />
+		<input id="218752Editor1" type="text" />
+
+		<input id="220479Editor1" type="text" />
+		<input id="220479Editor2" type="text" />
+
+		<input id="220479Editor3" type="text" />
+		<input id="220479Editor4" type="text" />
+
+		<input id="220712Editor1" type="text" />
+		<input id="221118Editor1" />
+	</div></body>
+</html>
+

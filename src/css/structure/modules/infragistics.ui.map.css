@@ -1,0 +1,287 @@
+﻿.ui-chart-palette-1
+{
+    border-color: #226CC8;
+    background-color: #448ADF; 
+}
+
+.ui-chart-palette-2
+{
+    border-color: #A82E0B;
+    background-color: #DA3C0E;   
+}
+
+.ui-chart-palette-3
+{
+    border-color: #556420;
+    background-color: #7C932F;   
+}
+
+.ui-chart-palette-4
+{
+    border-color: #D6BB03;
+    background-color: #FCE22E;   
+}
+
+.ui-chart-palette-5
+{
+    border-color: #DA1896;
+    background-color: #EB49B3;   
+}
+
+.ui-chart-palette-6
+{
+    border-color: #6D438F;
+    background-color: #8F5FB8;   
+}
+
+.ui-chart-palette-7
+{
+    border-color: #5B91F4;
+    background-color: #8FB4F8;   
+}
+
+.ui-chart-palette-8
+{
+    border-color: #FF464A;
+    background-color: #FF6F72;   
+}
+
+.ui-chart-palette-9
+{
+    border-color: #C78A0C;
+    background-color: #F1A70E;   
+}
+
+.ui-chart-palette-10
+{
+    border-color: #562B79;
+    background-color: #763AA7;     
+}
+
+.ui-chart-palette-11
+{
+    border-color: #789818;
+    background-color: #92B81F;   
+}
+
+.ui-chart-palette-12
+{
+    border-color: #EE6C1E;
+    background-color: #DA3C0E; 
+}
+
+.ui-chart-container
+{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:13px;
+}
+
+.ui-chart-axis
+{
+    border-color: #989EA3;
+    background-color: #989EA3;
+}
+
+.ui-chart-legend-items-list
+{
+    padding: 0;
+    margin: 5px;
+}
+
+.ui-chart-legend-item-text
+{
+    vertical-align: middle;
+}
+
+.ui-chart-legend-item-badge
+{
+    vertical-align: middle;   
+}
+
+.ui-chart-tooltip
+{
+    -moz-box-shadow: 0 0 2px #555555;
+    -webkit-box-shadow: 0 0 2px #555555;
+    box-shadow: 0 0 2px #555555;
+    padding:3px;
+}
+
+.ui-chart-non-html5 {
+    background-color: #FFFFFF;
+    border: 1px solid #808080;
+}
+.ui-chart-non-html5-supported-message {
+    color: #808080;
+    text-align: center;
+    display: block;
+    font-size: 1em;
+    width:99%;
+    height:99%;
+}
+
+.ui-chart-non-html5-supported-message .ui-chart-current-browser-label  {
+    color: #808080;
+}
+
+.ui-chart-non-html5-supported-message .ui-chart-non-html5-text {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.ui-chart-non-html5-supported-message .ui-chart-browsers-list {
+    display: block;
+    left: -200px;
+    margin: auto 50%;
+    padding: 0;
+    position: relative;
+    width: 400px;
+}
+.ui-chart-non-html5-supported-message .ui-chart-browsers-list li {
+    float: left;
+    list-style: none;
+    display: block;
+    width: 80px;
+    font-size: 12px;
+}
+.ui-chart-non-html5-supported-message .ui-chart-browsers-list a {
+    text-decoration: none;
+    color: #000000;
+    display: block;
+    padding-top: 80px;
+    padding-bottom: 10px;
+    background: transparent url(../images/igBrowserLogos.png) no-repeat -5px 10px;
+    width: 64px;
+    margin-left: 7px;
+}
+
+.ui-chart-non-html5-supported-message .ui-chart-browsers-list li:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.ui-chart-non-html5-supported-message .ui-chart-browsers-list a.ui-chart-chrome-icon {
+    background-position: -5px 10px;
+}
+
+.ui-chart-non-html5-supported-message .ui-chart-browsers-list a.ui-chart-firefox-icon {
+    background-position: -79px 10px;
+}
+
+.ui-chart-non-html5-supported-message .ui-chart-browsers-list a.ui-chart-Opera-icon {
+    background-position: -147px 10px;
+}
+
+.ui-chart-non-html5-supported-message .ui-chart-browsers-list a.ui-chart-safari-icon {
+    background-position: -213px 10px;
+}
+
+.ui-chart-non-html5-supported-message .ui-chart-browsers-list a.ui-chart-ie-icon {
+    background-position: -284px 10px;
+}
+.ui-chart-toolbar {
+	position: absolute;
+	width: 100%;
+	text-align:center;
+	font-size: 0;
+}
+.ui-chart-toolbar ul 
+{
+}
+.ui-chart-toolbar li 
+{
+    list-style: none;
+    /*float: left;*/
+    display: table-cell;
+    vertical-align: middle;
+}
+.ui-chart-slider {
+	width: 40px; 
+	padding:5px 9px; 
+}
+.ui-chart-opd-button {
+	position: absolute !important; top: 5px; right: 5px;
+}
+
+.ui-chart-toolbar
+{  
+}
+.ui-chart-toolbar button
+{
+    height:18px;
+    width:18px;
+    margin:2px;
+}
+.ui-chart-toolbar button .ui-button-text
+{
+    line-height:8px;
+}
+.ui-chart-toolbar .ui-slider-handle 
+{
+    height:18px;
+    margin-left: -12px;
+    top: -9px;
+}
+/* Touch Support */
+.touch .ui-chart-opd-button,
+.touchevents .ui-chart-opd-button,
+.pointerevents .ui-chart-opd-button,
+.touch .ui-chart-toolbar,
+.touchevents .ui-chart-toolbar,
+.pointerevents .ui-chart-toolbar
+{
+    font-size:20px;
+}
+.touch .ui-chart-toolbar,
+.touchevents .ui-chart-toolbar,
+.pointerevents .ui-chart-toolbar
+{
+    display:table;
+   background-color: rgba(79, 79, 79, 0.40);
+}
+.touch .ui-chart-toolbar ul,
+.touchevents .ui-chart-toolbar ul,
+.pointerevents .ui-chart-toolbar ul
+{
+    display:table-row;
+}
+.touch .ui-chart-toolbar li,
+.touchevents .ui-chart-toolbar li,
+.pointerevents .ui-chart-toolbar li
+{
+    display:table-cell;
+}
+
+.touch .ui-chart-toolbar .ui-chart-slider-holder,
+.touchevents .ui-chart-toolbar .ui-chart-slider-holder,
+.pointerevents .ui-chart-toolbar .ui-chart-slider-holder
+{
+    width:100%;
+}
+.touch .ui-chart-toolbar button,
+.touchevents .ui-chart-toolbar button,
+.pointerevents .ui-chart-toolbar button
+{
+    width:44px;
+    height:44px;
+    margin:5px;
+}
+.touch .ui-chart-toolbar button .ui-button-text,
+.touchevents .ui-chart-toolbar button .ui-button-text,
+.pointerevents .ui-chart-toolbar button .ui-button-text
+{
+    line-height:35px;
+}
+.touch .ui-chart-slider,
+.touchevents .ui-chart-slider,
+.pointerevents .ui-chart-slider
+{
+ width:90%;    
+ padding: 0 30px;
+}
+.touch .ui-chart-toolbar .ui-slider-handle,
+.touchevents .ui-chart-toolbar .ui-slider-handle,
+.pointerevents .ui-chart-toolbar .ui-slider-handle
+{
+    width:30px;
+    height:30px;
+    margin-left: -15px;
+    top: -15px;
+}

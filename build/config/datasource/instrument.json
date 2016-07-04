@@ -1,0 +1,13 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.dataSource.js",
+		"<%= config.extensionsDir%>/infragistics.datasource.knockoutjs.js",
+		"<%= config.modulesDir%>/infragistics.ui.combo*.js",
+		"<%= config.extensionsDir%>/infragistics.ui.combo.knockout-extensions.js",
+		"<%= config.modulesDir%>/infragistics.ui.tree*.js",
+		"<%= config.extensionsDir%>/infragistics.ui.tree.knockout-extensions.js",
+		"<%= config.modulesDir%>/infragistics.ui.layoutmanager.js",
+		"<%= config.modulesDir%>/infragistics.ui.tilemanager.js",
+		"<%= config.modulesDir%>/infragistics.ui.splitter.js"
+	]
+}

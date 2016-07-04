@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - Date Picker </title>
+	<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+		$(document).ready(function () {
+		    var onselect = false, onclose = false;
+			// Create a editors
+			function loadTestbeds() {
+				$(function () {
+					$("#inputEditor1").igDatePicker({
+						value: "12/10/2010",
+						buttonType: "clear"
+					});
+
+					$("#divEditor1").igDatePicker();
+					
+
+					$("#inputEditor2").igDatePicker({
+						value: new Date(2015, 11, 12)
+					});
+
+					$("#inputEditor3").igDatePicker({
+						datepickerOptions:{
+							minDate:new Date(2015, 9, 17),
+							maxDate : new Date(2015, 9, 30)
+						}
+					});
+
+					$("#inputEditor4").igDatePicker();
+
+					$("#inputEditor5").igDatePicker({
+					    datepickerOptions: {
+					        onClose: function (dateText, inst) {
+					            onclose = true;
+					        },
+					        onSelect: function (dateText, inst) {
+					            onselect = true;
+					        }
+					    },
+					    dropDownAnimationDuration: 1
+					});
+					$("#inputEditor6").igDatePicker({
+					    readOnly: true,
+					    dropDownOnReadOnly : true,
+							buttonType:"spin, clear"
+					});
+					$("#inputEditor7").igDatePicker();
+
+					// Bug #213961
+					$("#inputEditor8").igDatePicker({
+						buttonType: "spin",
+						enableUTCDates: true,
+						dateDisplayFormat: "time",
+						dateInputFormat: "time",
+						dataMode: "date"
+					});
+
+					$("#datePickerUTC").igDatePicker({
+					    placeHolder: "Select Date...",
+					    readOnly: false,
+					    dateInputFormat: "dateTime",
+					    enableUTCDates: true,
+					    focusOnDropDownOpen: true,
+					    dataMode: "editModeText",
+					    value: null,
+					    tabIndex: 20
+					});
+				});
+			}
+
+			initialized = false;
+			module("Date Picker ", {
+				setup: function () {
+					//pause testing until editors are initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 100);
+						initialized = true;
+					}
+				},
+				teardown: function () {
+				}
+			});
+
+			var testId = 'Date Picker initialization.';
+			test(testId, 5, function () {
+				ok(typeof ($("#inputEditor1").igDatePicker) === 'function', "Editors Script is not loaded");
+				ok($('#inputEditor1').data("igDatePicker") !== undefined, 'Error creating igDatePicker in an input');
+				var date = $('#inputEditor1').igDatePicker("value");
+
+				equal(date.getFullYear(), 2010, 'The initial year is not as expexted');
+				equal(date.getMonth(), 12 - 1, 'The initial year is not as expexted');
+				equal(date.getDate(), 10, 'The initial year is not as expexted');
+			});
+
+			var testId = 'Date Picker methods.';
+			test(testId, 3, function () {
+				var editor = $('#inputEditor1'), date, testDate = new Date(2006, 10, 22) ;
+				editor.igDatePicker("selectDate", testDate);
+				date = editor.igDatePicker("getSelectedDate");
+				equal(date.getTime(), testDate.getTime(), "date is not correct");
+
+				editor.igDatePicker("spinUp");
+				editor.igDatePicker("spinUp");
+
+				date = editor.igDatePicker("getSelectedDate");
+				testDate.setDate(testDate.getDate() + 2);
+				equal(date.getTime(), testDate.getTime(), "date is not correct");
+
+				editor.igDatePicker("spinDown");
+				editor.igDatePicker("spinDown");
+				editor.igDatePicker("spinDown");
+
+				date = editor.igDatePicker("getSelectedDate");
+				testDate.setDate(testDate.getDate() - 3);
+				equal(date.getTime(), testDate.getTime(), "date is not correct");
+
+			});
+
+			var testId = 'Date Picker set options.';
+			test(testId, 0, function () {
+				var editor = $('#inputEditor1');
+
+				editor.igDatePicker("option", "isLimitedToListValues", false);
+			});
+
+			var testId = 'Date Picker onSelect event.';
+			test(testId,2,function(){
+				var editor = $('#inputEditor2').igDatePicker("field"),
+				ddButton = editor.igDatePicker("dropDownButton");
+
+				ddButton.click();
+				stop();
+				setTimeout(function () {
+					start();
+					var selectedDate = $("a.ui-state-default:eq(14)")[0];
+					mouseInteraction("click", selectedDate);
+
+					stop();
+					setTimeout(function () {
+						start();
+						var value = $("#inputEditor2").igDatePicker("value"),
+						date = new Date(2015, 11, 15);
+						ok(value.toString() === date.toString(), "The selected date is not the same.");
+
+						$("#inputEditor2").igDatePicker("value","");
+						ddButton.click();
+						stop();
+						setTimeout(function(){
+							start();
+							var selectedDate = $("a.ui-state-default:eq(14)")[0];
+							mouseInteraction("click", selectedDate);
+							stop();
+							setTimeout(function(){
+								start();
+								var newDate = $("#inputEditor2").igDatePicker("value");
+
+								ok(!newDate.toString().contains("00:00:00"), "The time is not correct.")
+							},100);
+						},100);
+					},100);
+				},100);
+			});
+
+			var testId = 'Apply datepicker options';
+			test(testId, 3, function(){
+				var datepickerOptions = $("#inputEditor3").igDatePicker("option", "datepickerOptions"),
+				minDisplayDate , maxDisplayDate ,
+				minDate = new Date(2016, 1, 17), maxDate = new Date(2016, 1, 30),
+				newOptions = {minDate : new Date(2016, 1, 17), maxDate : new Date(2016, 1, 30) };
+
+				ok(datepickerOptions, "The datepicker options are not set.");
+
+				$("#inputEditor3").igDatePicker("option", "datepickerOptions", newOptions);
+				datepickerOptions = $("#inputEditor3").igDatePicker("option", "datepickerOptions");
+				minDisplayDate = datepickerOptions["minDate"], maxDisplayDate = datepickerOptions["maxDate"]
+				ok(minDisplayDate.toString() === minDate.toString(), "The minDate option is not set right.");
+				ok(maxDisplayDate.toString() === maxDate.toString(), "The maxDate option is not set right.");
+			});
+
+			var testId = 'Apply datepicker options';
+			test(testId, 2, function(){
+				throws(function () {
+			        $("#inputEditor2").igDatePicker("option", "buttonType", "clear");
+			    }, "Uncaught Error: The buttonType error is not thrown.");
+
+			    throws(function () {
+			        $("#inputEditor2").igDatePicker("option", "buttonType", "spin");
+			    }, "Uncaught Error: The buttonType error is not thrown.");
+
+			    $("#inputEditor2").igDatePicker("option", "buttonType", "dropdown");
+			    $("#inputEditor1").igDatePicker("option", "buttonTypes", "dropdown");
+
+			});
+
+			var testId = 'Trigger key down, key up';
+			test(testId, 3, function(){
+				var inputField = $("#inputEditor4").igDatePicker("field"),
+				calendarVisibility,
+				dpButton = inputField.igDatePicker("dropDownButton");
+
+				dpButton.click();
+				keyInteraction(38, inputField);
+				calendarVisibility = $("#inputEditor4").igDatePicker("dropDownVisible")
+				ok(calendarVisibility, "The dropdown container is not visible.");
+				// Use document.activeElement to test focus: https://github.com/ariya/phantomjs/issues/10427
+				ok(inputField[0] === document.activeElement, "Input field not focused on dropDownListOpening");
+
+				dpButton.click();
+				stop();
+				setTimeout(function () {
+					start();
+					keyInteraction(40, inputField);
+					calendarVisibility = $("#inputEditor4").igDatePicker("dropDownVisible")
+					ok(!calendarVisibility,"The dropdown container is visible, but it shouldn't be.");
+	 			},1000);
+			});
+
+		    var testId = 'Trigger onSelect and onClose';
+		    test(testId, 6, function () {
+
+		        var editor = $("#inputEditor5"), editorInput = editor.igDatePicker("field"), opened = false, closed = false, itemselected = false;
+		        var ddButton = editorInput.igDatePicker("dropDownButton");
+
+		        $("#inputEditor5").on("igdatepickerdropdownlistclosed", function () {
+		            closed = true;
+		        });
+		        $("#inputEditor5").on("igdatepickeritemselected", function (ev, ui) {
+		        	ok((ui.owner !== undefined &&
+						ui.dateFromPicker !== undefined &&
+						ui.item instanceof jQuery &&
+						ui.calendar instanceof jQuery),
+						"itemSelected event is not fired with.");
+
+					itemselected = true;
+		        });
+		        $("#inputEditor5").on("igdatepickerdropdownlistopened", function () {
+		            opened = true;
+		        });
+
+		        ddButton.click();
+		        stop();
+		        setTimeout(function () {
+		            start();
+		            var selectedDate = $("a.ui-state-default:eq(6)")[0];
+		            mouseInteraction("click", selectedDate);
+		            stop();
+		            setTimeout(function () {
+		                start();
+		                var value = $("#inputEditor2").igDatePicker("value"),
+                        date = new Date(2015, 11, 15);
+		                ok(onselect, "Custom onSelect is not fired.");
+		                ok(onclose, "Custom onClose is not fired.");
+		                ok(closed, "dropDownListClosed event is not fired.");
+		                ok(opened, "dropDownListOpened event is not fired.");
+		                ok(itemselected, "itemSelected event is not fired.");
+		            }, 200);
+		        }, 200);
+		    });
+
+			var testId = 'Disable igDatePicker';
+			test(testId, 5, function(){
+				var ddButton = $("#inputEditor6").igDatePicker("dropDownButton"),
+						ddButtonDisable = $("#inputEditor7").igDatePicker("dropDownButton"),
+						spinUpButton = $("#inputEditor6").igDatePicker("spinUpButton"),
+						spinDownButton = $("#inputEditor6").igDatePicker("spinDownButton"),
+						clearButton = $("#inputEditor6").igDatePicker("clearButton");
+
+				ok(!ddButton.hasClass("ui-state-disabled"), "The igDatePicker is disabled.The DropDownButton is enabled.");
+				ok(spinUpButton.hasClass("ui-state-disabled"), "The igDatePicker's spinUp button is disabled.");
+				ok(spinDownButton.hasClass("ui-state-disabled"), "The igDatePicker's spinDown button is disabled.");
+				ok(clearButton.hasClass("ui-state-disabled"), "The igDatePicker's clear button is disabled.");
+
+				$("#inputEditor7").igDatePicker("option","readOnly",true);
+				ok(ddButtonDisable.hasClass("ui-state-disabled"), "The igDatePicker is disabled.");
+			});
+
+			var testId = 'UTC igDatePicker';
+			test(testId, 4, function () {
+				var editor = $("#inputEditor8"),
+					field = $("#inputEditor8").igDatePicker("field");
+
+				editor.focus();
+				field.val("12:12 AM");
+				editor.blur();
+				var today = new Date();
+				var expectedDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, 0));
+				equal(editor.igDatePicker("value").getTime(), expectedDate.getTime(), "The value is not set");
+
+			    var dp = $("#datePickerUTC"), newDate;
+
+                // Bug #212365 - Set value correctly in UTC mode.
+			    dp.igDatePicker("value", "7/1/2000");
+			    newDate = new Date(dp.igDatePicker("value"));
+			    equal(newDate.getFullYear(), 2000, "Year is not set correctly");
+			    equal(newDate.getMonth(), 6, "Year is not set correctly");
+			    equal(newDate.getDate(), 1, "Year is not set correctly");
+			});
+
+			testId = 'Check destroy';
+			asyncTest(testId, 4, function () {
+				var $editor1 = $('#inputEditor1'), $editor2 = $("#divEditor1");
+				setTimeout(function () {
+					start();
+					$editor1.igDatePicker("destroy");
+					$editor2.igDatePicker("destroy");
+					equal($editor1.data("igDatePicker"), undefined, 'Error destroying igDatePicker in an input');
+					equal($editor2.data("igDatePicker"), undefined, 'Error destroying igDatePicker in a div');
+					$._data($editor1[0], "events");
+					$._data($editor2[0], "events");
+					ok($editor1.attr("class") === undefined, "Some classes are still not removed");
+					ok($editor2.attr("class") === undefined, "Some classes are still not removed");
+				}, 100);
+			});
+
+	    });
+		function mouseInteraction(type, element) {
+		    // create a mouse click event
+		    var event = document.createEvent('MouseEvents');
+		    event.initMouseEvent(type, true, true, window, 1, 0, 0);
+		    if (type === "mousemove") {
+		        event.pageX = 100;
+		        event.pageY = 100;
+		    }
+		    // send click to element
+		    element.dispatchEvent(event);
+
+		}
+		function keyInteraction(key, target, special) {
+		    keyDownChar(key, target, special);
+		    keyPressChar(key, target, special);
+		    keyUpChar(key, target, special);
+		}
+		function keyDownChar(key, target, special) {
+		    var evt = $.Event("keydown");
+		    evt.keyCode = key;
+		    evt.charCode = key;
+		    if (special) {
+		        evt[special] = true;
+		    }
+		    target.trigger(evt);
+		}
+		function keyPressChar(key, target, special) {
+		    var evt = $.Event("keypress");
+		    evt.keyCode = key;
+		    evt.charCode = key;
+		    if (special) {
+		        evt[special] = true;
+		    }
+		    target.trigger(evt);
+		}
+		function keyUpChar(key, target, special) {
+		    var evt = $.Event("keyup");
+		    evt.keyCode = key;
+		    evt.charCode = key;
+		    if (special) {
+		        evt[special] = true;
+		    }
+		    target.trigger(evt);
+		}
+	</script>
+
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+     <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+    <div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+        <input type="text" id="inputEditor1" />
+        <input type="text" id="inputEditor2" />
+        <input type="text" id="inputEditor3" />
+        <input type="text" id="inputEditor4" />
+        <input type="text" id="inputEditor5" />
+        <input type="text" id="inputEditor6" />
+        <input type="text" id="inputEditor7" />
+		<input type="text" id="inputEditor8" />
+		<div id="divEditor1"></div>
+        <input id="datePickerUTC" />
+    </div>
+</body>
+</html>

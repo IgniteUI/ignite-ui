@@ -1,0 +1,250 @@
+﻿.ui-igcombo-wrapper {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+	/* K.D. March 2nd, 2015 Bug #188517 The combo wrapper should not have a z-index because it hides other combo lists */
+    /*z-index: 1000;*/
+    width: 200px;
+    height: 32px;
+}
+
+.ui-igcombo {
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ui-igcombo-mode-dropdown .ui-igcombo-field, .ui-igcombo-mode-readonlylist .ui-igcombo-field {
+    cursor: pointer;
+}
+
+.ui-igcombo-fieldholder { 
+	height: 100%;
+	overflow: hidden;
+}
+
+.ui-igcombo.ui-widget .ui-igcombo-clear {
+    background: transparent none;
+}
+
+.ui-igcombo-button, .ui-igcombo-clear {
+	float: right;
+	position: relative;
+	height: 100%;
+    min-width: 16px;
+    min-height: 16px;
+    cursor: pointer;
+    padding: 0px 5px;
+    /* D.A. 18th March 2015, Bug #190684 Combo drop down indicator and clear button are misaligned when Bootstrap styles are referenced */
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.ui-igcombo-mode-readonly .ui-igcombo-button, .ui-igcombo-mode-readonly .ui-igcombo-clear {
+    cursor: default;
+}
+
+.ui-igcombo-buttonicon, .ui-igcombo-clearicon {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+}
+
+.ui-igcombo-button.ui-state-default.ui-igcombo-button-ltr {
+    border-width: 0px 0px 0px 1px;
+}
+
+.ui-igcombo-button.ui-state-default.ui-igcombo-button-ltr.ui-state-hover {
+    border-width: 0px 0px 0px 1px;
+}
+
+.ui-igcombo-button.ui-state-default.ui-igcombo-button-rtl {
+    border-width: 0px 1px 0px 0px;
+    float: left;
+}
+
+.ui-igcombo-button.ui-state-default.ui-igcombo-button-rtl.ui-state-hover {
+    border-width: 0px 1px 0px 0px;
+}
+
+.ui-igcombo-clear.ui-igcombo-clear-rtl{
+    float: left;
+}
+
+.ui-igcombo-field {
+	width: 100%;
+	height: 100%;
+	border: none;
+	margin: 0;
+	padding: 1px 2px 1px 2px;
+    outline: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ui-igcombo-field::-ms-clear {
+    display: none;
+}
+
+.ui-igcombo-dropdown {
+    position: absolute;
+    width: 100%;
+    font-size: 1em;
+    border-top: 0px;
+    z-index: 100000;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ui-igcombo-list {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.ui-igcombo-list-overflow {
+    overflow: hidden;
+}
+
+.ui-igcombo-listitemholder {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    overflow-x: hidden;
+}
+
+.ui-igcombo-listitemholder .ui-igcombo-listitem {
+    position: relative;
+	padding: 3px;
+    border: none;
+    cursor: default;
+	white-space: nowrap;
+    background-image: none;
+}
+
+.ui-igcombo-listitemtextwithcheckbox {
+    margin-left: 18px;
+	/* S.D. August 5th, 2015 Bug #189209 When dir="rtl", checkboxes overlap the text. We should have margin both on the left and on the right side for each case */
+	margin-right: 18px;
+}
+
+.ui-igcombo-checkbox {
+    position: absolute;
+    top: 50%;
+}
+
+.ui-igcombo-checkbox.ui-igcheckbox-small {
+    margin-top: -7.5px;
+}
+
+.ui-igcombo-scrollholder {
+    position: absolute;
+    height: 100%;
+    right: 0;
+    z-index: 1;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.ui-igcombo-highlight {
+    font-weight: bold;
+}
+
+.ui-igcombo-no-border {
+    border-width: 0px;
+}
+
+.ui-igcombo-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1000000;
+    background-color: rgba(255, 255, 255, 0.35);
+    background-image: url("../images/igLoadingSmall.gif");
+    background-repeat: no-repeat;
+    background-position: 49% 49%;
+    background-size: 48px 48px;
+}
+
+.ui-igcombo-nomatchfound {
+    cursor: default;
+    padding: 4px;
+    border: none;
+}
+
+.ui-igcombo-group .ui-igcombo-listitem {
+    padding-left: 10px;
+}
+
+.ui-igcombo-group-header {
+    margin: 0;
+    padding: 3px;
+    font-weight: bold;
+}
+
+.ui-igcombo-orientation-top {
+    -moz-border-radius-bottomleft: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top: 1px solid #ccc;
+    border-bottom: 0px;
+}
+
+.ui-igcombo-orientation-bottom {
+    border-top: 0px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Prevent all duplicating borders of drop down list items */
+li.ui-igcombo-listitem.ui-state-active + li.ui-igcombo-listitem.ui-state-active {
+    border-top-color: transparent;
+}
+
+li.ui-igcombo-listitem.ui-igcombo-item-in-focus + li.ui-igcombo-listitem.ui-igcombo-item-in-focus {
+    border-top-color: transparent;
+}
+
+li.ui-igcombo-listitem.ui-state-active + li.ui-igcombo-listitem.ui-igcombo-item-in-focus {
+    border-top-color: transparent;
+}
+
+li.ui-igcombo-listitem.ui-igcombo-item-in-focus + li.ui-igcombo-listitem.ui-state-active {
+    border-top-color: transparent;
+}
+
+li.ui-igcombo-listitem.ui-state-hover + li.ui-igcombo-listitem.ui-state-active {
+    border-top-color: transparent;
+}
+
+li.ui-igcombo-listitem.ui-state-active + li.ui-igcombo-listitem.ui-state-hover {
+    border-top-color: transparent;
+}
+
+li.ui-igcombo-listitem.ui-state-hover + li.ui-igcombo-listitem.ui-igcombo-item-in-focus {
+    border-top-color: transparent;
+}
+
+li.ui-igcombo-listitem.ui-igcombo-item-in-focus + li.ui-igcombo-listitem.ui-state-hover {
+    border-top-color: transparent;
+}
+
+/* S.D. August 10th, 2015 Bug #189210 when dir="rtl" use class ig-rtl to align the list to the right */
+.ig-rtl
+{
+    text-align: right;
+}
+
+/* Z.K. September 1st, 2015 Bug #189210 when dir="rtl" use class ig-rtl to align the list to the right */
+.ig-rtl .ui-igcombo-checkbox
+{
+    right:3px;
+}

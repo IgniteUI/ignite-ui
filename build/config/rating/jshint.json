@@ -1,0 +1,6 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.rating.js",
+		"<%= config.modulesDir%>/infragistics.util.js"
+	]
+}

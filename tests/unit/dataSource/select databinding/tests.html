@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Infragistics jQuery Data Source - select databinding QUnit tests </title> 
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+    
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+</head>
+<body>
+	<div style="float:right;width:400px;overflow:auto">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+
+    <select id="sel">
+        <option value="1">John Smith</option>
+        <option value="2">Mary Johnson</option>
+        <option value="3">Bob Ferguson</option>
+    </select>
+
+    <select id="sel_optgrp">
+        <optgroup label="German cars">
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+        </optgroup>
+        <optgroup label="Swedish cars">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+        </optgroup>
+    </select>
+    <script type="text/javascript">
+
+        var testId_1 = 'Select data binding',
+            testId_2 = 'Select data binding with opt group';
+
+        test(testId_1, function () {
+            var i, data,
+                $select = $('#sel'),
+                schema = {
+                    fields: [{
+                        name: 'value',
+                        type: 'string'
+                    }, {
+                        name: 'text',
+                        type: 'string'
+                    }]
+                },
+                dataSource = new $.ig.DataSource({
+                    dataSource: $select[0],
+                    schema: schema
+                }),
+                expData = [{
+                    text: 'John Smith',
+                    value: '1'
+                }, {
+                    text: 'Mary Johnson',
+                    value: '2'
+                }, {
+                    text: 'Bob Ferguson',
+                    value: '3'
+                }];
+
+            dataSource.dataBind();
+            data = dataSource._data;
+
+            strictEqual(data.length, expData.length, 'Length of data does not match');
+            strictEqual(dataSource.type(), 'htmlSelectDom', 'Data type is incorrect');
+
+            // Check parsing
+            for (i = 0; i < data.length; i++) {
+                strictEqual(data[i].text, expData[i].text, 'Text field of item ' + i + ' does not match.');
+                strictEqual(data[i].value, expData[i].value, 'Value field of item ' + i + ' does not match.');
+            }
+        });
+
+        test(testId_2, function () {
+            var i, j, data, curGroup, curExpGroup,
+                $select = $('#sel_optgrp'),
+                schema = {
+                    fields: [{
+                        name: 'value',
+                        type: 'string'
+                    }, {
+                        name: 'text',
+                        type: 'string'
+                    }]
+                },
+                dataSource = new $.ig.DataSource({
+                    dataSource: $select[0],
+                    schema: schema
+                }),
+                expData = [{
+                    Group: {
+                        groupItems: [{
+                            text: 'Mercedes',
+                            value: 'mercedes'
+                        }, {
+                            text: 'Audi',
+                            value: 'audi'
+                        }],
+                        groupName: 'German cars'
+                    }
+                }, {
+                    Group: {
+                        groupItems: [{
+                            text: 'Volvo',
+                            value: 'volvo'
+                        }, {
+                            text: 'Saab',
+                            value: 'saab'
+                        }],
+                        groupName: 'Swedish cars'
+                    }
+                }];
+
+            dataSource.dataBind();
+            data = dataSource._data;
+
+            strictEqual(data.length, expData.length, 'Length of data does not match');
+            strictEqual(dataSource.type(), 'htmlSelectDom', 'Data type is incorrect');
+
+            // Check parsing
+            for (i = 0; i < data.length; i++) {
+                curGroup = data[i].Group;
+                curExpGroup = expData[i].Group;
+
+                strictEqual(curGroup.groupName, curExpGroup.groupName, 'Group name of group ' + i + ' does not match.');
+                strictEqual(curGroup.groupItems.length, curExpGroup.groupItems.length, 'Group items length of group ' + i + ' does not match.');
+
+                for (j = 0; j < curGroup.groupItems.length; j++) {
+                    strictEqual(curGroup.groupItems[j].text, curExpGroup.groupItems[j].text, 'Text of group item ' + j + ' in group ' + i + ' does not match.');
+                    strictEqual(curGroup.groupItems[j].value, curExpGroup.groupItems[j].value, 'Value of group item ' + j + ' in group ' + i + ' does not match.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

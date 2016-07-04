@@ -1,0 +1,549 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - List items example </title>
+	<link type="text/css" href="../../../../bower_components/jquery-ui/themes/base/jquery-ui.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+	<style type="text/css">
+		.test-container { position: relative; border: 1px solid black; border-radius: 10px; padding: 10px; position: relative; width: 90%; }
+		.test-coantiner label { font-size: 30px; }
+		.float-left { float: left; padding: 10px; }
+		.float-clear { clear: both; }
+		.buttons-container { float: right; width: 300px;  } 
+	</style>
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/knockout/dist/knockout.debug.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/knockout.mapping/knockout.mapping.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.combo.js"></script>
+	
+	<script type="text/javascript" src="../../../../src/js/extensions/infragistics.ui.combo.knockout-extensions.js"></script>
+	<link type="text/css" rel="stylesheet" href="../../../../bower_components/qunit/qunit/qunit.css" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	
+	<script type="text/html" id="data-template">
+		<li>
+			<input data-bind="value: text" />
+			<input data-bind="value: value" />
+		</li>
+	</script>
+
+	<script type="text/javascript">
+		/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+		var ds1, ds2, dsCountry, dsCascDistrict, dsCascTowns,
+			selectingItems, selectedItems, oldItems, dsDataBound, dsModelSelectionChanged;
+
+		// Combo Data Sources
+		ds1 = [{ value: 0, name: 'name0' }, { value: 1, name: 'name1' }, { value: 2, name: 'name2' }, { value: 3, name: 'name3' }, { value: 4, name: 'name4'}];
+		ds2 = ['name0', 'name1', 'name2', 'name3', 'name4'];
+
+		dsModelSelectionChanged = [
+				{ cd: "12345" }
+		];
+
+		var model186778 = [
+			{ cd: "nm1191", cdName: "Adam Sandler" },
+			{ cd: "nm0222", cdName: "Brooke Shields" },
+			{ cd: "nm0122", cdName: "Charles Chaplin" },
+			{ cd: "nm0234", cdName: "Charlize Theron" }
+		];
+
+		var initialData = {
+			actorCd: null
+		};
+
+		var globalViewModel;
+
+		function Item(value, text) {
+			this.value = ko.observable(value);
+			this.text = ko.observable(text);
+		};
+		var model, modelModified;
+		// MVVM-M
+		model = [
+			{ name: "name1", value: "value1" },
+			{ name: "name2", value: "value2" },
+			{ name: "name3", value: "value3" }
+		];
+		modelModified = [
+			{ name: "name11", value: "value1" },
+			{ name: "name22", value: "value2" },
+			{ name: "name3333", value: "value3" }
+		];
+
+		$(function () {
+			"use strict"
+
+			// Define Model
+			function ViewModel() {
+				var self = this, i;
+
+				self.data = ko.observableArray(ds1);
+				ds1[0] = ko.observable(ds1[0]);
+				ds1[1].name = ko.observable(ds1[1].name);
+
+				self.codeList = dsModelSelectionChanged;
+				self.selectedItems = ko.observableArray();
+
+
+				self.item = { name: "name5", value: 5 };
+				self.addItem = function () {
+					self.data.push(self.item);
+				}
+				self.removeItem = function () {
+					self.data.remove(function (item) {
+						return item.name === self.item.name && item.value === self.item.value;
+					});
+				}
+				self.editItem = function () {
+					self.data()[0]({ name: "name007", value: 777 });
+				}
+				self.editItem2 = function () {
+					self.data()[1].name("name007");
+				}
+				self.customersNames = ko.computed(function () {
+					var names = [];
+					for (var i = 0; i < self.data().length; i++) {
+						names.push(ko.utils.unwrapObservable(self.data()[i]).name);
+					}
+					return names;
+				});
+
+				self.model = {};
+				self.model.condition = ko.mapping.fromJS({});
+
+				self.actorsList = model186778;
+
+				self.combo = {};
+
+				self.combo.actors = ko.observableArray(self.actorsList);
+
+				self.model.condition = ko.mapping.fromJS(initialData);
+
+				self.getName = function (list, cd) {
+					var selectedItem = ko.utils.arrayFirst(list, function (elem) {
+						return ko.utils.unwrapObservable(cd) == elem.cd;
+					});
+					return (selectedItem) ? selectedItem.cdName : '';
+				};
+
+				self.model.condition.actorName = ko.computed(function () {
+					return self.getName(self.actorsList, self.model.condition.actorCd());
+				});
+
+				self.reset = (function () {
+					self.model.condition = ko.mapping.fromJS(initialData, {}, self.model.condition);
+				});
+
+
+				// View Model for new tests.
+				self.dataNew = ko.observableArray(model);
+				self.dataNewObsItem = ko.observable(modelModified);
+				for (i = 0; i < modelModified.length; i++) {
+					modelModified[i] = ko.observable(modelModified[i]);
+				}
+				self.dataObservableItem = ko.observableArray([
+						new Item(1, "One description"),
+						new Item(2, "Two description"),
+						new Item(3, "Three description"),
+						new Item(4, "Four description"),
+						new Item(5, "Five description"),
+						new Item(6, "Six description")
+				]);
+				self.selectedItemsWhole = ko.observableArray([model[1]]);
+				self.selectedItemsValue = ko.observableArray(["value2"]);
+				self.newItem = { name: "name4", value: "value4" };
+				self.addOption = function () {
+					self.data.push(self.newItem);
+				}
+				self.removeOption = function () {
+					self.data.remove(function (item) {
+						return item.name === self.newItem.name && item.value === self.newItem.value;
+					});
+				}
+				self.editOption = function () {
+					self.data1()[0]({ name: "name1", value: "value1" });
+				}
+
+
+				self.selectedChangingHandler = function (event, ui) {
+					//ui.newNodes[0].data[ui.newNodes[0].binding.textKey](ui.newNodes[0].data[ui.newNodes[0].binding.textKey]() + " selected");
+				}
+
+				self.selectedChangedHandler = function (event, ui) {
+					$("#extInput").val(ui.owner.text());
+
+					var textKey = ui.owner.options.textKey;
+					var valueKey = ui.owner.options.valueKey;
+					if (ui.items) {
+						var item = ui.items[0];
+						if (ko.isObservable(item.data[textKey])) {
+							//item.data[textKey](item.data[textKey]().replace("name", "game"));
+						}
+					}
+				}
+			}
+
+			ko.applyBindings(globalViewModel = new ViewModel());
+
+
+			$("#comboSelectedItems").on("igcombodatabound", function (evt, ui) {
+				dsDataBound = ui.dataSource;
+			});
+			$("#comboSelectedItems").on("igcomboselectionchanging", function (evt, ui) {
+				selectingItems = ui.items;
+				oldItems = ui.oldItems;
+			});
+			$("#comboSelectedItems").on("igcomboselectionchanged", function (evt, ui) {
+				selectedItems = ui.items;
+			});
+		});
+
+		var initialized = false,
+			testId_1 = '[ID1] Knockout and igCombo Initializing',
+			testId_2 = '[ID2] Change igCombo UI --> affect ViewModel and vice versa',
+			testId_9 = '[ID9] Adding and Deleting Items',
+			testId_10 = '[ID10] Editing igCombo DropDown item',
+			testId_11 = '[ID11] Test value as onservable',
+			testId_12 = '[ID12] Empty data',
+			testId_13 = '[ID13] Test selected indexes',
+			testId_14 = '[ID14] Test event attributes and igCombo API',
+			testId_15 = '[ID15] Test enableSelectionChangedUpdate property',
+			testId_16 = '[ID16] Bug #186778 Test setting values with null';
+
+		module("igComboMVVM");
+
+		test(testId_1, function () {
+			ok(typeof (ko.bindingHandlers.igCombo) !== 'undefined', 'igCombo extension for KnockoutJS is not loaded.');
+			ok(typeof (ko.bindingHandlers.igCombo) === 'object', 'igCombo extension for KnockoutJS is not an object.');
+			ok($('#comboBasic').data("igCombo"), 'igCombo is not loaded');
+		});
+		test(testId_2, function () {
+			var itemList = $('#comboBasic').data("igCombo")._options.$dropDownCont.find("li");
+
+			emulateClick($(itemList[4]));
+			testBasic('name4', '4');
+
+			emulateClick($(itemList[3]));
+			testBasic('name3', '3');
+
+			emulateClick($(itemList[1]));
+			testBasic('name1', '1');
+
+			globalViewModel.selectedItems([2]);
+			testBasic('name2', '2', false);
+		});
+		test(testId_9, 24, function () {
+			var itemList;
+
+			globalViewModel.addItem();
+			checkViewForNew(6, 5, 'name5', 5);
+			itemList = $('#comboBasic').data("igCombo")._options.$dropDownCont.find("li");
+			emulateClick($(itemList[5]));
+			testBasic('name5', '5');
+
+			globalViewModel.selectedItems([1]);
+			testBasic('name1', '1', false);
+
+			globalViewModel.selectedItems([5]);
+			testBasic('name5', '5', false);
+
+			globalViewModel.removeItem();
+			checkViewForNew(5, 0, 'name0', 0);
+
+		});
+		test(testId_10, function () {
+			var combo = $('#comboCascadingChild'),
+				items, item1, item2;
+
+			globalViewModel.editItem();
+			checkComboItems("name007", 0);
+			globalViewModel.editItem2();
+			checkComboItems("name007", 1);
+		});
+		test(testId_11, function () {
+			var combo1 = $('#combo1'),
+				combo2 = $('#combo2'),
+				combo3 = $('#combo3'),
+				combo4 = $('#combo4');
+
+			var itemList1 = combo1.data("igCombo")._options.$dropDownCont.find("li");
+			var itemList2 = combo2.data("igCombo")._options.$dropDownCont.find("li");
+			emulateClick($(itemList1[2]), true);
+			ok(globalViewModel.selectedItemsValue().length === 2, "selected items length");
+			emulateClick($(itemList2[0]), true);
+			ok(globalViewModel.selectedItemsWhole().length === 2, "selected items length");
+			globalViewModel.selectedItemsValue(['value1']);
+			ok(globalViewModel.selectedItemsValue().length === 1, "selected items length");
+
+			globalViewModel.selectedItemsWhole([model[1]]);
+			ok(globalViewModel.selectedItemsWhole().length === 1, "selected items length");
+		});
+
+		test(testId_12, function () {
+			var combo1 = $('#comboBasic'),
+				combo2 = $('#comboVirtualization');
+
+			globalViewModel.data.removeAll();
+			var itemList1 = combo1.igCombo("listItems");
+			var itemList2 = combo2.igCombo("listItems");
+
+			ok(itemList1.length === 0, "All items are deleted.");
+			ok(itemList2.length === 0, "All items are deleted.");
+			globalViewModel.data.push(globalViewModel.item);
+
+			itemList1 = combo1.igCombo("listItems");
+			itemList2 = combo2.igCombo("listItems");
+			ok(itemList1.length === 1, "First item is added.");
+			ok(itemList2.length === 1, "First item is added.");
+
+		});
+
+		function testBasic(newText, newValue, input) {
+			ok($('#comboBasic').igCombo('text') === newText, 'The igCombo is not updated properly from the knockout extension');
+			ok($('#comboSelectedItems').igCombo('text') === newText, 'The igCombo is not updated properly from the knockout extension');
+			if (input === undefined || input) {
+				ok($('#extInput').val() === newText, 'The exteranl INPUT is not updated properly from the knockout extension');
+			}
+			ok($('#extSelect').val() === newValue, 'The exteranl SELECT is not updated properly from the knockout extension');
+			ok($('#comboBasic').igCombo('valueInput').val() === newValue, 'The igCombo is not updated properly from the knockout extension');
+			ok($('#comboSelectedItems').igCombo('valueInput').val() === newValue, 'The igCombo is not updated properly from the knockout extension');
+
+		}
+
+		function emulateClick($element, ctrl, shift) {
+			var mouseDown = jQuery.Event("mousedown"), mouseUp = jQuery.Event("mouseup");
+			//mouseDown.button = mouseUp.button = 0;
+			mouseDown.which = mouseUp.which = 1;
+
+			mouseUp.ctrlKey = mouseDown.ctrlKey = ctrl === true;
+			mouseUp.shiftKey = mouseDown.shiftKey = shift === true;
+
+			$element.trigger(mouseDown);
+			$element.trigger(mouseUp);
+		}
+
+		function openCloseAll() {
+			$('#comboBasic').igCombo("openDropDown");
+			$('#comboBasic').igCombo("closeDropDown");
+			$('#comboSelectedItems').igCombo("openDropDown");
+			$('#comboSelectedItems').igCombo("closeDropDown");
+		}
+		
+		function checkViewForNew(itemLength, value, text, index) {
+			var combo = $('#comboBasic'),
+				comboList = combo.data("igCombo")._options.$dropDownCont.find("li"),
+				dataSource = combo.igCombo('option','dataSource').data(),
+				newItem = combo.igCombo("itemsFromIndex", index);
+			ok(dataSource.length === itemLength, "The length of the data source items is not changed");
+			ok(comboList.length === itemLength, "The length of the rendered items is not changed");
+			if (value !== undefined && text !== undefined) {
+				ok(unwrapValue(newItem.data).value === value, "The value of the data source is not updated");
+				ok(unwrapValue(newItem.data).name === text, "The text of the data source is not updated");
+			}
+		}
+		function checkComboItems(text, index) {
+			var combo;
+			combo = $("#comboBasic");
+			checkCombo(combo, text, index);
+			combo = $("#comboSelectedItems");
+			checkCombo(combo, text, index);
+		}
+		function checkCombo(combo, text, index) {
+			ok(unwrapValue(unwrapValue(combo.igCombo("itemsFromIndex", index).data).name) === text, "The igCombo item is not updated properly");
+		}
+		function unwrapValue(value) {
+			if (typeof value === "function") {
+				return value();
+			} else {
+				return value;
+			}
+		}
+	</script>
+	
+</head>
+<body>
+<div style="float:right;width:400px;overflow:auto">
+	 <h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;position:absolute;width:900px;">
+	<div class="test-container">
+		<div class="buttons-container">
+			<button id="addToModel" data-bind="click: addItem">Add to model 5th element</button>
+			<button id="deleteFromModel" data-bind="click: removeItem">Delete from model 5th element</button>
+			<button id="editModel" data-bind="click: editItem">Edit item 1</button>
+			<button id="editModel2" data-bind="click: editItem2">Edit item 2</button>
+		</div>
+		<br />comboBasic<br />
+		<input type="text" id="comboBasic" data-bind="igCombo:
+												{
+													dataSource: data,
+													textKey: 'name',
+													valueKey: 'value',
+													selectedItems: selectedItems,
+													selectionChanged: selectedChangedHandler
+												}
+		" />
+		<input type="text" id="extInput" /><br />
+		<span id="extSpan"></span><br />
+		<select id="extSelect" style="width: 200px;" data-bind="options: data, optionsText: 'name', optionsValue: 'value', selectedOptions: selectedItems"></select><br />
+
+		<!--Bug #186695-->
+		<input id="comboSCUpdate" data-bind="igCombo: {
+				enableClearButton: true,
+				textKey: 'cd',
+				valueKey: 'cd',
+				dataSource: codeList
+			}" />
+	</div>
+	<div class="test-container">
+		<br />comboVirtualization<br />
+		<input type="text" id="comboVirtualization" data-bind="igCombo:
+												{
+													dataSource: data,
+													textKey: 'name',
+													valueKey: 'value',
+													virtualization: true
+												}
+		" />
+		<br />comboSelectedItems<br />
+		<input type="text" id="comboSelectedItems" data-bind="igCombo:
+												{
+													dataSource: data,
+													textKey: 'name',
+													valueKey: 'value',
+													selectedItems: selectedItems,
+													multiSelection: {
+														enabled: true,
+														addWithKeyModifier: true
+													}
+												}
+		" />
+	</div>
+	<div class="test-container">
+		<button id="resetActorCd" data-bind="click: reset" >Reset</button><br />
+		<br />
+		<div class="horizontal-container">
+			<input id="comboActorCd" class="combo-class" data-bind="igCombo: {
+					width: '100px',
+					dropDownWidth: '300px',
+					headerTemplate: '<table><thead><tr><th width=100px>code</th><th width=200px>Name     </th></tr></thead></table>',
+					itemTemplate:   '<table><tbody><tr><td width=100px>${cd} </th></td><td width=200px>${cdName}</th></td></tr></tbody></table>',
+					enableSelectionChangedUpdate: true,
+					dataSource: combo.actors,
+					text: model.condition.actorCd
+			}" />
+			<input id="textActorName" data-bind="value: model.condition.actorName" />
+		</div>
+	</div>
+	<div class="clear-floating"></div>
+	<div class="view-container">
+		<!--MVVM-V-->
+		<label class="view-container">Combo Views</label><br /><br /><br />
+		<label>From Input</label>
+		<input id="combo1" data-bind="igCombo:
+                                            {
+                                                dataSource: dataNew,
+                                                textKey: 'name',
+                                                valueKey: 'value',
+												selectedItems: selectedItemsValue,
+												selectionChanging: selectedChangingHandler,
+												selectionChanged: selectedChangedHandler,
+												multiSelection: {
+													enabled: true,
+													addWithKeyModifier: true
+												}
+                                            }
+        " /><br /><br /><br />
+
+		<label>From Div</label>
+		<div id="combo2" data-bind="igCombo:
+                                    {
+                                        dataSource: dataNew,
+                                        textKey: 'name',
+                                        valueKey: 'value',
+										selectedItems: selectedItemsWhole,
+										selectionChanging: selectedChangingHandler,
+                                        selectionChanged: selectedChangedHandler,
+										multiSelection: {
+											enabled: true,
+											addWithKeyModifier: true
+										},
+                                        autoComplete: true
+                                    }
+        "></div>
+		<br /><br /><br />
+		<label>From Input</label>
+		<input id="combo3" data-bind="igCombo:
+                                            {
+                                                dataSource: dataObservableItem,
+                                                textKey: 'text',
+                                                valueKey: 'value',
+												selectionChanging: selectedChangingHandler,
+												selectionChanged: selectedChangedHandler,
+												multiSelection: {
+													enabled: true,
+													addWithKeyModifier: true
+												}
+                                            }
+        " /><br /><br /><br />
+		<label>From Input</label>
+		<input id="combo4" data-bind="igCombo:
+                                            {
+                                                dataSource: dataNewObsItem,
+                                                textKey: 'name',
+                                                valueKey: 'value',
+												multiSelection: {
+													enabled: true,
+													addWithKeyModifier: true
+												}
+                                            }
+        " /><br /><br /><br />
+
+		<!--<input id="Text2" data-bind="igCombo:
+			{
+				text: valueOfTheComboAndInput,
+				dataSource: []
+			}
+		" /><br /><br /><br />-->
+		<!--MVVM-V-->
+	</div>
+	<div class="test-container">
+		<label class="view-container">External Views</label><br /><div class="clear-floating"></div><br /><br /><br />
+		<label>Input</label>
+		<input id="external-input" /><br />
+
+		<label>Span</label>
+		<span id="external-span"></span>
+
+		<select data-bind="options: dataNew, optionsText: 'name', optionsValue: 'value', selectedOptions: selectedItemsValue" multiple="true"></select>
+		<select data-bind="options: dataNew, optionsText: 'name', selectedOptions: selectedItemsWhole" multiple="true"></select>
+	</div>
+	<div class="clear-floating"></div>
+	<div class="test-container">
+		<h2>KO Template bound to ItemsModel</h2>
+		<ul data-bind="template: { name: 'data-template', foreach: dataObservableItem }" style="list-style: none"></ul>
+		<ul data-bind="template: { name: 'data-template', foreach: dataObservableItem }" style="list-style: none"></ul>
+		<input data-bind="value: dataObservableItem()[0].text" />
+	</div>
+	<div class="test-container">
+		<label class="view-container">Edit Model and Combo</label><br />
+		<button id="addToModel" data-bind="click: addOption">Add to model 4th element</button>
+		<button id="deleteFromModel" data-bind="click: removeOption">Delete from model 4th element</button>
+		<button id="editModel" data-bind="click: editOption">Edit model</button>
+		<div class="clear-floating"></div>
+	</div>
+	<div class="clear-floating"></div>
+</div>
+</body>
+</html>

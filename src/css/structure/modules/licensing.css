@@ -1,0 +1,11 @@
+.ui-igtrialwatermark
+{
+	width: 160px;
+	height: 20px;
+    background-image: url(../images/trial.png);
+    opacity: .25; /* Standard: FF gt 1.5, Opera, Safari */
+    filter: alpha(opacity=25); /* IE lt 8 */
+    -ms-filter: "alpha(opacity=25)"; /* IE 8 */
+    -khtml-opacity: .25; /* Safari 1.x */
+    -moz-opacity: .25; /* FF lt 1.5, Netscape */
+}

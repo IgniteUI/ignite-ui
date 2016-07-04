@@ -1,0 +1,5 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.templating.js"
+	]
+}

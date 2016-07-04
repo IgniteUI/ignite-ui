@@ -1,0 +1,1304 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>Infragistics jQuery Client Validator</title>
+    <link type="text/css" href="../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.notifier.js"></script>
+    <!--<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.notifier.js"></script>-->
+
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.rating.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.editors.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.combo.js"></script>
+    <!--<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.editors.js"></script>-->
+    
+    
+    <!--<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>-->
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>
+
+    <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+    <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+
+    <script type="text/javascript">
+		//var ttest = test;
+		//test = function () { }
+
+        // TODO: 
+        // handle form event after validator, assert cancellation in handler
+        // test: global form showAllErrorsOnSubmit flag
+        // test: change handlers should ignore alts/shift/caps keys
+        // test: click X on message, make sure it closes with event
+
+        /*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+        $(document).ready(function () {
+                fields = [{
+                    selector: "#grpEdit1",
+                    onsubmit: true,
+                    onblur: false
+                },
+                    {
+                        selector: $("#grpEdit2"),
+                        date: true,
+                        required: false,
+                        onchange: true,
+                        valueRange: [new Date()]
+                    }, /* {
+                        selector: "#rating",
+                        required: true,
+                        onchange: true,
+                        valueRange: [0.5]
+                    },
+                    {
+                        selector: "#combo2",
+                        onsubmit: true,
+                        onchange: true,
+                        lengthRange: [2]
+                    },*/
+                    {
+                        selector: "#igCheckboxEditor",
+                        required: true,
+                        onchange: true
+                    }
+                ];
+            
+
+            $('form').on('submit', function () {
+                // prevent forms from ever submitting
+                // TODO: handle form event after validator, assert isDefaultPrevented
+                return false;
+            });
+
+            function loadTestbeds() {
+                // Create controls
+                $(function () {
+                    $('#input1').igValidator({
+                        email: true,
+                        successMessage: "Yay",
+                        notificationOptions: { mode: "popover" }
+                    });
+                    $('#input2').igValidator({
+                        email: true
+                    });
+                    $('#emptyTarget').igValidator();
+                    $('#emptyFormTarget').igValidator();
+                    $('#reloadedField').igValidator({ required: true });
+                    $("#rulesInput").igValidator();
+
+                    $('#rangeDateEditor').igValidator({
+                        date: true
+                    });
+
+                    $('#textEditor').igTextEditor({
+                        inputName: "pass",
+                        textMode: "password",
+                        validatorOptions: {
+                            required: true,
+                            onblur: true,
+                            lengthRange: {
+                                min: 6
+                            },
+                            requiredIndication: true
+                        }
+                    });
+
+                    $('#textEditor1').igNumericEditor({
+                        listItems: [1, 2, 22],
+                        buttonType: 'spin', isLimitedToListValues: true, width: 400
+                    }).igValidator({
+                        equalTo: $('#textEditor')
+                    });
+
+                    $('#textEditor2').igTextEditor({ placeHolder: "Place Holder", revertIfNotValid: false, maxLength: 2 }).igValidator({ valueRange: [0, 2] });
+
+                    $('#textEditor3').igValidator({
+                        lengthRange: [2, 3],
+                        onchange: true
+                    });
+                    
+                    $("#radioOptions").igValidator({
+                        required: true,
+                        onchange: true
+                    });
+
+                    $("#TestTextBox1").igTextEditor({
+                        validatorOptions: {
+                            onchange: true,
+                            required: true
+                        }
+                    });
+
+                    $('#spinEditor').igNumericEditor({
+                        dataMode: 'int',
+                        buttonType: 'spin',
+                        spinDelta: 1,
+                        validatorOptions: {
+                            number: true,
+                            required: true,
+                            onchange: true,
+                            valueRange: [0,5]
+                        }
+                    });
+
+                    $('#maskEditor').igMaskEditor({
+                        inputMask: "&ccccc",
+                        dataMode: "rawText",
+                        validatorOptions: {
+                            required: true,
+                            onchange: true
+                        }
+                    });
+
+                    $('#dateEditor').igDateEditor({
+                        validatorOptions: {
+                            date: true,
+                            required: true,
+                            onchange: true,
+                            valueRange: [new Date(2015, 10, 25), new Date(2015, 10, 27)]
+                        }
+                    });
+
+                    $("#singleCheck").igValidator({
+                        required: true
+                    });
+                    $("#check1").igValidator({
+                        onchange: true, required: true, custom: function (val, field) {
+                            return !val;
+                        }
+                    });
+                    $("#check4").igValidator({ required: true, onchange: true, lengthRange: [2] });
+
+                    $("#singleSelect").igValidator({ onblur: true, required: true });
+                    $("#multipleSelect").igValidator({ onblur: true, lengthRange: [2, 3] });
+
+                    var data = [{ ID: "BG", Name: "Bulgaria", Code: 359 },
+                        { ID: "US", Name: "United States", Code: 1 },
+                        { ID: "DE", Name: "Germany", Code: 2 },
+                        { ID: "UK", Name: "United Kingdom", Code: 3 },
+                        { ID: "FI", Name: "Finland", Code: 4 },
+                        { ID: "DN", Name: "Denmark", Code: 5 },
+                        { ID: "SP", Name: "Spain", Code: 6 },
+                        { ID: "IT", Name: "Italy", Code: 7 },
+                        { ID: "SW", Name: "Switzerland", Code: 8 },
+                        { ID: "AU", Name: "Austria", Code: 9 },
+                        { ID: "JA", Name: "Japan", Code: 10 }];
+
+                    $('#combo').igCombo({
+                        width: 200,
+                        inputName: "country",
+                        dataSource: data,
+                        textKey: 'Name',
+                        valueKey: "ID",
+                        validatorOptions: { required: true, notificationOptions: { mode: "popover" } }
+                    });
+
+                    //$('#combo2').igCombo({
+                    //    width: 200,
+                    //    inputName: "country",
+                    //    dataSource: data,
+                    //    allowCustomValue: true,
+                    //    textKey: 'Name',
+                    //    valueKey: "ID",
+                    //    multiSelection: {
+                    //        enabled: true
+                    //    },
+                    //    selectionChanged: function (evt, ui) {
+                    //        if (ui.items.length > 2) {
+                    //            ui.owner.closeDropDown(/* null, evt */);
+                    //        }
+                    //    },
+                    //    validatorOptions: {
+                    //        onsubmit: true,
+                    //        onblur: true,
+                    //        required: true,
+                    //        lengthRange: [2]
+                    //    }
+                    //});
+
+                    //$("#rating").igRating({
+                    //    precision: "half",
+                    //    valueChange: function (evt, ui) {
+                    //        /*setTimeout(function() {
+                    //            $("#rating").igRating("value", ui.value).igRating("validate");
+                    //        }, 50);*/
+                    //    }
+                    //});
+
+                    $("#ratingStandalone").igRating({
+                        precision: "whole",
+                        valueAsPercent: false,
+                        validatorOptions: {
+                            successMessage: "Thanks!",
+                            required: true,
+                            onchange: true,
+                            valueRange: [3],
+                            errorMessage: "At least 3 stars required (custom message)",
+                            notificationOptions: { mode: "popover", direction: "bottom" }
+                        }
+                    });
+
+                    $("#igCheckboxEditor").igCheckboxEditor();
+
+                    // multi-field
+                    $('#validationForm').igValidator({
+                        required: true,
+                        onsubmit: true,
+                        successMessage: "Thanks!",
+                        fields: fields
+                    });
+
+                    $('#validationForm2').igValidator({
+                        required: true,
+                        fields: [{
+                            selector: ".test"
+                        }, {
+                            selector: "#msgInput",
+                            number: true,
+                            valueRange: [-315, -15],
+                            messageTarget: "#msgLabel"
+                        }]
+                    });
+
+                    $('#submitHandlerForm').igValidator({
+                        onsubmit: false,
+                        fields: [{
+                            selector: "#nonsubmitEditor",
+                            valueRange: [5, 6]
+                        }]
+                    });
+                    
+                    $("#validationContainer").igValidator({
+                        required: true,
+                        fields: [{
+                            selector: "#iDontExist"
+                        }, {
+                            selector: "#areaInput"
+                        }]
+                    });
+                });
+            }
+            initialized = false;
+            module("Validator", {
+                setup: function() {
+                    //pause testing until tree is initialized
+                    if (!initialized) {
+                        stop();
+                        loadTestbeds();
+                        setTimeout(function () { start(); }, 500);
+                        initialized = true;
+                    }
+                },
+                teardown: function() {
+                }
+            });
+
+            var testId = 'Init/destroy.';
+            test(testId, 18 + fields.length, function () {
+                var field, initialized = false;
+                ok(typeof ($('#input1').igValidator) === 'function', "Validator Script is not loaded");
+                ok($('#input1').data("igValidator") !== undefined, 'Error creating igValidator on an input');
+                ok($('#textEditor').igTextEditor("editorContainer").data("igValidator") !== undefined, 'Error creating igValidator through igEditor options');
+                // containers:
+                ok($('#emptyTarget').data("igValidator") !== undefined, 'Error creating igValidator on empty div');
+                ok($('#emptyFormTarget').data("igValidator") !== undefined, 'Failed creating igValidator on empty from');
+                ok($('#emptyFormTarget').igValidator("option", "_ignored") && !$('#emptyFormTarget').hasClass($.ui.igValidator.prototype.css.target), 'Failed to initalize properly igValidator on empty from');
+                
+                try {
+                    // TODO: Should this case be handled?
+                    $('#emptyTarget').igValidator("isValid");
+                    ok(true, "Validation should fail silently on containers with no fields");
+                } catch (e) {
+                    ok(false, "Validation failed on container with no fields");
+                }
+
+                ok($('#validationForm').data("igValidator") !== undefined, 'Error creating igValidator in a form');
+                for (var i = 0; i < fields.length; i++) {
+                    field = $(fields[i].selector);
+                    // verify all fields are initialized with proper class:
+                    ok(field.hasClass($.ui.igValidator.prototype.css.target) && field.data("igValidatorField") !== undefined , 'Field not initialized with proper class');
+                }
+                ok($._data($(fields[0].selector)[0], 'events').blur && $._data($(fields[0].selector)[0], 'events').blur[0].namespace == "validator", 'Field events not attached');
+
+                var initializedCheckboxes = $("#check4").hasClass($.ui.igValidator.prototype.css.target) ? 1 : 0;
+                initializedCheckboxes += $("#check3").hasClass($.ui.igValidator.prototype.css.target) ? 1 : 0;
+                equal(initializedCheckboxes, 2, 'Checkboxes group with same name not initialized properly');
+
+                // verify getErrorMessages returns empty arrays before any validations is made
+                equal($('#validationForm2').igValidator("getErrorMessages").length, 0, "Unvalidated fields returned error messages");
+                equal($('#input1').igValidator("getErrorMessages").length, 0, "Unvalidated input returned error message");
+                equal($('#textEditor').igTextEditor("validator").getErrorMessages().length, 0, "Unvalidated editor returned error message");
+
+            	// indication on editor container
+                ok($("#textEditor").igTextEditor("editorContainer").next(".ui-igvalidator-required-indication").length === 1, "Required indication not rendered on igEditor");
+                
+                // destroys
+                $('#emptyTarget').igValidator("destroy");
+                ok($('#emptyTarget').data("igValidator") === undefined && !$('#emptyTarget').hasClass($.ui.igValidator.prototype.css.target), 'igValidator did not destoy correctly');
+
+                $('#validationForm').igValidator("destroy");
+                ok($('#validationForm').data("igValidator") === undefined, 'igValidator did not destoy correctly on container');
+                ok(!$(fields[1].selector).hasClass($.ui.igValidator.prototype.css.target) && $(fields[2].selector).data("igValidatorField") === undefined, 'Fields not cleared when valiadtor got detroyed');
+                ok(!($._data( $(fields[0].selector)[0], 'events' ) && $._data( $(fields[0].selector)[0], 'events' ).blur), 'Fields events not detached when valiadtor got detroyed');
+                // restore state for next tests
+                $('#validationForm').igValidator({
+                    required: true,
+                    onsubmit: true,
+                    fields: fields
+                });
+            });
+
+            testId = 'Events';
+            test(testId, 38, function () {
+                function resetFlagsCounters() {
+                    flag = successFlag = errorFlag = cancelEvent = false,
+                    validatedCounter = 0;
+                };
+
+                function attachShowingHiding(namespace) {
+                	$('#input1').on("igvalidatorerrorshowing" + namespace, function (e, ui) {
+                		validateMsgArgsOnce(e, ui);
+                		if (cancelEvent) {
+                			return false;
+                		}
+                	}).on("igvalidatorerrorshown" + namespace, function (e, ui) {
+                		validateMsgArgsOnce(e, ui);
+                		errorFlag = true;
+                	}).on("igvalidatorerrorhiding" + namespace, function (e, ui) {
+                		validateMsgArgsOnce(e, ui);
+                		if (cancelEvent) {
+                			return false;
+                		}
+                	}).on("igvalidatorerrorhidden" + namespace, function (e, ui) {
+                		validateMsgArgsOnce(e, ui);
+                		errorFlag = false;
+                	}).on("igvalidatorsuccessshowing" + namespace, function (e, ui) {
+                		validateMsgArgsOnce(e, ui);
+                		if (cancelEvent) {
+                			return false;
+                		}
+                	}).on("igvalidatorsuccessshown" + namespace, function (e, ui) {
+                		validateMsgArgsOnce(e, ui);
+                		successFlag = true;
+                	}).on("igvalidatorsuccesshiding" + namespace, function (e, ui) {
+                		validateMsgArgsOnce(e, ui);
+                		if (cancelEvent) {
+                			return false;
+                		}
+                	}).on("igvalidatorsuccesshidden" + namespace, function (e, ui) {
+                		validateMsgArgsOnce(e, ui);
+                		successFlag = false;
+                	});
+                };
+
+                function validateMsgArgsOnce(e, ui) {
+                	if (eventsValidated.indexOf(e.type) == -1) {
+                		ok(validateMsgArgs(ui), e.type.replace("igvalidator", "") + " arguments are not valid");
+                		eventsValidated.push(e.type);
+                	}
+                }
+
+                function validateBaseArgs(ui) {
+                	if (!(ui.owner instanceof $.ui.igValidator)) {
+                		return false;
+                	}
+                	if (typeof ui.fieldOptions === "undefined") {
+                		return false;
+                	}
+                	return true;
+                }
+
+                function validateMsgArgs(ui) {
+                	if (!validateBaseArgs(ui)) {
+                		return false;
+                	}
+                	if (!ui.message || !$('#input1').is(ui.target) || Object.keys(ui).length > 4) {
+                		return false;
+                	}
+                	return true;
+                }
+
+                function validateEvtArgs(ui) {
+                	if (!validateBaseArgs(ui)) {
+                		return false;
+                	}
+                	if (typeof ui.valid !== "boolean" || typeof ui.value === "undefined" || !ui.message) {
+                		return false;
+                	}
+                	return true;
+                }
+
+                function validateFormEvtArgs(ui, finished) {
+                	if (!(ui.owner instanceof $.ui.igValidator) || !$('#validationForm').is(ui.target)) {
+                		return false;
+                	}
+                	if (finished && typeof ui.valid !== "boolean") {
+                		return false;
+                	}
+                	return true;
+                }
+
+                var $form = $('#validationForm'), $button = $("input[type=submit]", $form),
+                    $input = $("#input1"),
+                    flag = successFlag = errorFlag = cancelEvent = false,
+                    validatedCounter = 0, 
+                    eventsValidated = [];
+
+                $('#validationForm').on("igvalidatorvalidated", function (e) {
+                    validatedCounter++;
+                }).on("igvalidatorformvalidating", function (e, ui) {
+                	if (cancelEvent) {
+                		ok(validateFormEvtArgs(ui), e.type.replace("igvalidator", "") + " arguments are not valid");
+                        return false;
+                    }
+                }).on("igvalidatorformvalidated", function (e) {
+                    flag = true;
+                }).on("igvalidatorformsuccess", function (e) {
+                    successFlag = flag;
+                }).on("igvalidatorformerror", function (e, ui) {
+                	ok(validateFormEvtArgs(ui, true), e.type.replace("igvalidator", "") + " arguments are not valid");
+                    errorFlag = flag;
+                });
+
+            	$('#input1').on("igvalidatorvalidating.validate", function (e, ui) {
+            		if (cancelEvent) {
+            			ok(validateBaseArgs(ui) && typeof ui.value !== "undefined", e.type.replace("igvalidator", "") + " arguments are not valid");
+                		return false;
+                	}
+                }).on("igvalidatorvalidated.validate", function (e, ui) {
+                	ok(validateEvtArgs(ui), e.type.replace("igvalidator", "") + " arguments are not valid");
+                	flag = true;
+                }).on("igvalidatorsuccess.validate", function (e) {
+                	successFlag = flag;
+                }).on("igvalidatorerror.validate", function (e, ui) {
+                	ok(validateEvtArgs(ui) && ui.rule, e.type.replace("igvalidator", "") + " arguments are not valid");
+                	errorFlag = flag;
+                });
+
+
+                cancelEvent = true;
+                $button.click();
+                ok(!flag, "Form validation not canceled");
+                resetFlagsCounters();
+
+                $button.click();
+                ok(flag, "Form validation not fired");
+                equal(validatedCounter, fields.length, "Validated event not fired for all fields.")
+                ok(!successFlag, "Form success fired on error!");
+                ok(errorFlag, "Form error not fired");
+                resetFlagsCounters();
+
+                cancelEvent = true;
+                $('#input1').blur();
+                ok(!flag, "Validation event not canceled");
+                resetFlagsCounters();
+
+                $('#input1').blur();
+                ok(flag, "Validation event not fired");
+                ok(successFlag, "Validation success not fired");
+                ok(!errorFlag, "Validation error fired on suceess");
+                resetFlagsCounters();
+				
+                $('#input1').val("not email").blur();
+                ok(flag, "Validation event not fired");
+                ok(!successFlag, "Validation success not fired");
+                ok(errorFlag, "Validation error fired not fired");
+                resetFlagsCounters();
+
+            	// hiding/showing setup
+                $('#input1').off(".validate");
+                $('#input1').data("igNotifier").hide();
+                attachShowingHiding(".notify");
+
+            	
+            	// cancel error message
+                cancelEvent = true;
+                $('#input1').val("not email").blur();
+                ok(!errorFlag, "Error showing not canceled");
+                resetFlagsCounters();
+
+            	// allow error message
+                $('#input1').blur();
+                ok(errorFlag, "Show error not fired");
+                ok(!successFlag, "Show success fired on suceess");
+                resetFlagsCounters();
+
+            	// hide error message
+                errorFlag = true; //make sure hidden event doesn't set the false
+                $('#input1').igNotifier("option", "animationDuration", 0); //avoid waiting for animation to end
+                $('#input1').data("igNotifier").popover.find(".ui-igpopover-close-button").click();
+                ok(!errorFlag, "Error message didn't trigger");
+                $('#input1').blur();
+                resetFlagsCounters();
+				
+            	// chain cancel new success message (error should remain visible)
+                cancelEvent = true;
+                errorFlag = true; //make sure hidden event doesn't set the false
+                $('#input1').val("email@email").blur();
+                ok(!successFlag, "Success show not canceled");
+                ok(errorFlag, "Error hiding not canceled");
+                ok($('#input1').igNotifier("isVisible") && $('#input1').igNotifier("option", "state") === "error", "Error remained visible");
+                resetFlagsCounters();
+
+                errorFlag = true; //make sure hidden event doesn't set the false
+                $('#input1').blur();
+                ok(successFlag, "Success message not shown");
+                ok(!errorFlag, "Error hidden not triggered on success");
+                resetFlagsCounters();
+
+				// hide success
+                $('#input1').val("not email").blur();
+                ok(!successFlag, "Success message not hidden");
+                resetFlagsCounters();
+                $('#input1').off(".notify");
+
+                // Bug 216717:igValidator success showing will trigger even where there's no message set
+                $('#input2').on("igvalidatorsuccessshowing.notify", function (e) {
+                        successFlag = true;
+                    });
+                $('#input2').val("email@email").blur();
+                ok(!successFlag, "Success showing triggered without message");
+                ok(!$('#input2').igValidator("isMessageDisplayed"), "Success shown without message");
+                $('#input2').off(".notify");
+            });
+
+            testId = 'API';
+            test(testId, 65, function () {
+                var $indication = $("#textEditor").next(".ui-igvalidator-required-indication"),
+                    successText = "Success",
+                    flag = false,
+                    event,
+                    value;
+
+                $('#validationForm').igValidator("option", "fields", []);
+                equal($('#validationForm').igValidator("option", "fields").length, 3, "Options improperly set after initialization");
+
+                $("#textEditor").igValidator("option", "requiredIndication", false);
+                equal($indication.parent().length, 0, "Required indication not removed after changing option");
+
+                $('#input1').val("").igValidator("option", "successMessage", successText).blur();
+                equal($('#input1').igValidator("notifier").container().text(), successText, "Success message not set");
+                console.log($('#input1').val());
+                // TODO: Should handle more message set variants? change while visible without extra validation?
+
+                $('#input1').on("igvalidatorvalidated.change", function (e) {
+                    flag = true;
+                });
+                $('#input1').igValidator("option", "onblur", false).blur();
+                ok(!flag, "Validation fired after setting blur to false");
+                $('#input1').igValidator("option", "onchange", true);
+
+                event = $.Event('keyup');
+                event.keyCode = 73;
+                $('#input1').trigger(event);
+                ok(flag, "Validation not fired when onchange is true");
+                $('#input1').off(".change");
+
+                // one field is invalid, should be ignored without exceptions:
+                ok($("#validationContainer").igValidator("isValid"), "Validation failed on valid + non-existing fields");
+
+                // Fields
+                $('#validationForm2').igValidator("addField", {
+                    selector: "#numericEditor",
+                    requred: true
+                }).on("igvalidatorvalidated.change", function (e, ui) {
+                    if (ui.fieldOptions && ui.fieldOptions.selector === "#numericEditor") {
+                        value = ui.value;
+                    }
+                });
+
+                ok($('#validationForm2').igValidator("option", "fields").length === 3 && !$("#numericEditor").hasClass($.ui.igValidator.prototype.css.target), "addField failed");
+                $('#validationForm2').trigger("submit");
+                ok(!value, "Newly added field should not get validated");
+
+                $("#numericEditor").igNumericEditor({ value: 6 });
+                $('#validationForm2').igValidator("updateField", "#numericEditor");
+                ok($("#numericEditor").hasClass($.ui.igValidator.prototype.css.target) && $("#numericEditor").data("igValidatorField") !== undefined, "Filed did not initialize after update calll")
+                $('#validationForm2').trigger("submit");
+                strictEqual(value, 6, "Updated field did not validate with actual igNumericEditor value");
+
+                $('#validationForm2').igValidator("updateField", 2, {
+                    selector: "#numericEditor",
+                    optionalIndication: true,
+					required: false
+                });
+                ok($("#numericEditor").igNumericEditor("editorContainer").next(".ui-igvalidator-optional-indication").length === 1, "Indication not rendered on update field");
+
+            	// verify requiredIndication is inherited:
+                $('#validationForm2').igValidator("option", "requiredIndication", true);
+                ok($($('#validationForm2').igValidator("option", "fields")[0].selector).next(".ui-igvalidator-required-indication").length === 1, "Indication not rendered when setting global requiredIndication");
+                ok($($('#validationForm2').igValidator("option", "fields")[1].selector).next(".ui-igvalidator-required-indication").length === 1, "Indication not rendered when setting global requiredIndication");
+                $('#validationForm2').igValidator("option", "requiredIndication", false);
+                ok($($('#validationForm2').igValidator("option", "fields")[1].selector).next(".ui-igvalidator-required-indication").length === 0, "Indication not removed when setting global requiredIndication");
+
+                $('#validationForm2').igValidator("removeField", 2);
+                ok($('#validationForm2').igValidator("option", "fields").length === 2 && $("#numericEditor").data("igValidatorField") === undefined, "removeField failed");
+                ok($(".ui-igvalidator-optional-indication").length === 0, "Indication not removed with field");
+
+                //Bug 220806:igValidator - successs not shown on submit
+                $('#validationForm2').igValidator("addField", {
+                	selector: "#numericEditor",
+                	successMessage: "Valid",
+                	required: true,
+                	number: true,
+                	onsubmit: true,
+                	onblur: false
+                });
+                $("#numericEditor").val(6);
+                $('#validationForm2').trigger("submit");
+                ok($('#validationForm2').igValidator("isMessageDisplayed", 2) && $('#validationForm2').igValidator("notifier", 2).options.state === "success", "Success not shown on submit");
+                $('#validationForm2').igValidator("removeField", 2);
+
+                // per-field form handling
+                $('#submitHandlerForm').igValidator("updateField", 0, {
+                    selector: "#nonsubmitEditor",
+                    valueRange: [5, 6],
+                    onsubmit: true
+                });
+                equal($('#submitHandlerForm').data("igValidator")._formHandleCounter, 1, "Form handler not added on field update");
+                $('#submitHandlerForm').igValidator("updateField", 0, {
+                    selector: "#nonsubmitEditor",
+                    valueRange: [5, 6],
+                    onsubmit: false
+                });
+                $('#submitHandlerForm').find("input[type=submit]").click();
+                equal($("#nonsubmitEditor").data("igValidatorField").isValid, undefined, "Validation was triggered on submit after field update");
+                equal($('#submitHandlerForm').data("igValidator")._formHandleCounter, 0, "Form handler not removed on field update");
+
+                // TODO:
+                //$('#submitHandlerForm').igValidator("option", "onsubmit", true);
+                //equal($('#submitHandlerForm').data("igValidator")._formHandleCounter, 1, "Form handler not added on option set");
+                $('#submitHandlerForm').igValidator("addField", {
+                    selector: "#submitEditor",
+                    required: true,
+                    onsubmit: true
+                });
+                $('#submitHandlerForm').find("input[type=submit]").click();
+                strictEqual($("#submitEditor").data("igValidatorField").isValid, false, "Validation was not triggered on submit after field add");
+                equal($('#submitHandlerForm').data("igValidator")._formHandleCounter, 1, "Form handler missing on field add");
+                $('#submitHandlerForm').igValidator("removeField", "#submitEditor");
+                equal($('#submitHandlerForm').data("igValidator")._formHandleCounter, 0, "Form handler not removed on field remove");
+
+                // Messages
+                ok($('#input1').igValidator("isMessageDisplayed"), "Success message not visible");
+                equal($('#input1').igValidator("getErrorMessages").length, 0, "Error messages returned on valid input");
+
+                $('#input1').igValidator("hide");
+                ok(!$('#input1').igValidator("isMessageDisplayed"), "Success message not hidden");
+
+                $('#input1').igValidator("isValid");
+                ok(!$('#input1').igValidator("isMessageDisplayed"), "Success message shown on isValid call");
+
+                $('#input1').igValidator("validate");
+                ok($('#input1').igValidator("isMessageDisplayed"), "Success message not shown on validate call");
+
+            	//For Bug 217826: Updating calling isValid() should not hide current errors (no chance to react to them)
+                $('#input1').val("wrong").igValidator("isValid");
+                ok($('#input1').igValidator("isMessageDisplayed"), "Success message hidden on isValid call");
+				// force error and then revert back to empty to get valid field
+                $('#input1').igValidator("validate");
+                $('#input1').val("").igValidator("isValid");
+                ok($('#input1').igValidator("isMessageDisplayed") && $('#input1').igValidator("notifier").options.state == "error", "Error message hidden on isValid call");
+                
+                value = new Date();
+                value.setHours(0, 0, 0, 0);
+                $('#rangeDateEditor').igValidator("option", "valueRange", [value]);
+                $('#rangeDateEditor').focus();
+                $('#rangeDateEditor').val(value.getFullYear() - 1).blur();
+                equal($('#rangeDateEditor').igValidator("getErrorMessages")[0], $.ig.Validator.locale.minValueMessage.replace("{0}", value.toLocaleString()), "Wrong date min value message");
+
+                $('#rangeDateEditor').igValidator("option", "valueRange", [null, value]);
+                $('#rangeDateEditor').focus();
+                $('#rangeDateEditor').val(value.getFullYear() + 1).blur();
+                equal($('#rangeDateEditor').igValidator("getErrorMessages")[0], $.ig.Validator.locale.maxValueMessage.replace("{0}", value.toLocaleString()), "Wrong date max value message");
+                
+
+                $('#rangeDateEditor').igValidator("option", "valueRange", [value, new Date(value.getFullYear() + 1, value.getMonth(), value.getDate())]);
+                $('#rangeDateEditor').val(value.getFullYear() + 2).blur();
+                equal($('#rangeDateEditor').igValidator("getErrorMessages")[0], 
+                            $.ig.Validator.locale.rangeValueMessage
+                                .replace("{0}", value.toLocaleString())
+                                .replace("{1}", new Date(value.getFullYear() + 1, value.getMonth(), value.getDate()).toLocaleString()),
+                            "Wrong date range value message");
+
+                // messageTarget
+                $('#input1').igValidator("option", "messageTarget", "input1");
+                ok($('[data-valmsg-for="input1"]').hasClass("field-validation-valid"), "Message target not marked with proper class");
+                $('#input1').val("wrong");
+                $('#input1').igValidator("option", "messageTarget", "#msgLabel2").igValidator("validate");
+                ok(!$('[data-valmsg-for="input1"]').is(".field-validation-error, field-validation-valid") && $('[data-valmsg-for="input1"]').text() === "", "Old message target not properly cleared");
+                ok($('#msgLabel2').hasClass("field-validation-error"), "New message target not marked with proper class");
+                ok($('#msgLabel2').text() === $('#input1').igValidator("getErrorMessages")[0], "New message target contents not set");
+
+                $('#input1').igValidator("option", "messageTarget", "");
+                ok($('#input1').igValidator("notifier").isVisible(), "Setting invalid message target did not revert to notifier");
+
+
+                // Field messages:
+                ok($('#validationForm2').igValidator("isMessageDisplayed", 0), "isMessageDisplayed returned false on field with error");
+                ok($('#validationForm2').igValidator("isMessageDisplayed", "#msgInput"), "isMessageDisplayed returned false on field with messageTarget");
+                ok(!$('#validationForm2').igValidator("isMessageDisplayed", 2), "isMessageDisplayed returned cumulative true for bad field prameter");
+                ok($('#validationForm2').igValidator("isMessageDisplayed"), "isMessageDisplayed returned cumulative false for fields with visible error");
+
+                equal($('#validationForm').igValidator("getErrorMessages").length, 2, "Wrong count of messages from getErrorMessages");
+                ok($('#validationForm').igValidator("isMessageDisplayed", 0), "isMessageDisplayed returned false for field with visible error");
+                ok(!$('#validationForm').igValidator("isMessageDisplayed", 1), "isMessageDisplayed returned true for valid field with no success message");
+
+                // Field messageTarget
+                equal($("#msgLabel").text(), $("#validationForm2").igValidator("getErrorMessages", "#msgInput"), "Error message not set properly on target");
+                ok($("#msgLabel").hasClass("field-validation-error"), "Message target not marked with proper class");
+                $("#msgInput").val(-33);
+                $('#validationForm2').igValidator("validate", '#msgInput');
+                ok(!$('#validationForm2').igValidator("isMessageDisplayed", '#msgInput'), "Error-only messageTarget not hidden on success");
+                ok($("#msgLabel").hasClass("field-validation-error"), "Message target not marked with proper class");
+
+                $('#validationForm2').igValidator("updateField", '#msgInput', { successMessage: "Success" }); //Update merge
+                ok($('#validationForm2').igValidator("option", 'fields')[1].successMessage === "Success" &&
+						$('#validationForm2').igValidator("option", 'fields')[1].number, "updateField method failed to merge filed options");
+                $('#validationForm2').igValidator("validate", '#msgInput');
+                ok($('#validationForm2').igValidator("isMessageDisplayed", '#msgInput'), "Success messageTarget not shown");
+                ok($("#msgLabel").hasClass("field-validation-valid"), "Message target not marked with proper class");
+        
+            	
+            	//pre-check state:
+                ok($('#validationForm2').igValidator("isMessageDisplayed", 0) && $('#validationForm2').igValidator("isMessageDisplayed", 1));
+                $('#validationForm2').igValidator("hide", $('#validationForm2').igValidator("option", "fields")[1]);
+                ok(!$('#validationForm2').igValidator("isMessageDisplayed", 1), "isMessageDisplayed returned true for field after hide call");
+
+            	// Bug 216715:igValidator hide method not working correctly with fields collection
+                ok($('#validationForm2').igValidator("isMessageDisplayed", 0), "Wrong error message hidden on hide call with field parameter");
+
+                // Wrong index is ignored
+                $('#validationForm2').igValidator("hide", 5);
+                ok($('#validationForm2').igValidator("isMessageDisplayed", 0), "Hide method applied to all fields with wrong index.");
+
+                $('#validationForm2').igValidator("hide");
+                ok(!$('#validationForm2').igValidator("isMessageDisplayed"), "Hide method not applied to all fields.");
+
+                // Notifier
+                equal($('#validationForm').igValidator("notifier", 0).widgetName, $.ui.igNotifier.prototype.widgetName, "Notifier not returned for field.");
+                equal($('#validationForm').igValidator("notifier", 3), null, "Notifier method returned wrong value for invalid field index");
+                //notifier required to apply target classes at minimum, must be initialized regardless of messageTarget
+                equal($('#validationForm2').igValidator("notifier", "#msgInput").widgetName, $.ui.igNotifier.prototype.widgetName, "Notifier not initialized on field with messageTarget");
+                $('#validationForm').igValidator("updateField", 0, { notificationOptions: {mode: "popover"}});
+                equal($('#validationForm').igValidator("notifier", 0).options.mode, "popover", "Notifier option not set for field.");
+                $('#validationForm').igValidator("option", "notificationOptions", { mode: "inline" });
+                equal($('#validationForm').igValidator("notifier", 1).options.mode, "inline", "Notifier global option not set for field.");
+                equal($('#validationForm').igValidator("notifier", 0).options.mode, "popover", "Notifier global option overrode field.");
+
+                // fields onsubmit
+                $('#validationForm').igValidator("updateField", 0, { "onsubmit": false });
+                $('#validationForm').igValidator("option", "onsubmit", false);
+                equal($('#validationForm').data("igValidator")._formHandleCounter, 0, "fields onsubmit handlers not removed.");
+                $('#validationForm').igValidator("option", "onsubmit", true);
+                equal($('#validationForm').data("igValidator")._formHandleCounter, 2, "fields onsubmit handlers not added.");
+            });
+
+            testId = 'Validation targets/types';
+            test(testId, 21, function () {
+                //HTML checkbox
+                ok(!$("#singleCheck").igValidator("isValid"), "Single checkbox: required passed without being checked.");
+                $("#singleCheck").click();
+                ok($("#singleCheck").igValidator("isValid"), "Single checked checkbox: required failed.");
+                
+                //HTML checkboxeS
+                $("#check3").click();
+                equal($("#check4").igValidator("getErrorMessages")[0], "At least 2 item(s) should be selected", "Checkbox: No validation on group interaction");
+                $("#check4").focus();
+                keyInteraction(32, $('#check4')); // space to toggle
+                $("#check4").attr("checked", true);
+                keyInteraction(9, $('#check4')); // tab (should be ignored)
+                equal($("#check4").igValidator("getErrorMessages").length, 1, "Checkbox: Validation triggered on tab without blur");
+                $("#check4").blur();
+                equal($("#check4").igValidator("getErrorMessages").length, 0, "Checkbox: No validation on group interaction");
+
+                // radio
+                equal($("#radioOptions").igValidator("isValid"), false, "Radio: Required group validated without selection");
+                $("#radioOptions").one("igvalidatorvalidated", function (evt, ui) {
+                    equal(ui.valid, true, "Radio: Required group not valid after secondary one is checked");
+                    equal(ui.value[0], "Option 2", "Radio: Value for group not correct");
+                });
+                $("input[name=options]").eq(1).prop("checked", true).trigger("change");
+
+                // select
+                ok(!$("#singleSelect").igValidator("isValid"), "Select: required select validated without selection");
+                $("#singleSelect").one("igvalidatorvalidated", function (evt, ui) {
+                    equal(ui.valid, true, "Select: Required select not valid after selection");
+                    equal(ui.value, "3", "Select: Value for group not correct");
+                });
+                $("#singleSelect").val("3").blur();
+
+                // multiselect
+                $("#multipleSelect").one("igvalidatorvalidated", function (evt, ui) {
+                    equal(ui.valid, true, "Multi-Select: Range 2-3 select not valid with 2 selections");
+                    equal(ui.value[1], "3", "Multi-Select: Value for group not correct");
+                });
+                $("#multipleSelect").val([2, 3]).blur();
+                $("#multipleSelect").one("igvalidatorvalidated", function (evt, ui) {
+                    equal(ui.valid, false, "Multi-Select: Range 2-3 select validated with 4 selections");
+                });
+                $("#multipleSelect").val([2, 3, 1, 4]).blur();
+
+                // text area
+                $("#validationContainer").on("igvalidatorvalidated", function (evt, ui) {
+                   equal(ui.value, "line,\r\nline2", "Textarea: Validation wrong value");
+               });
+                $("#areaInput").blur();
+
+                // Input, keyup, blur
+                $('#textEditor3').on("igvalidatorvalidating", function (evt, ui) {
+                    equal(ui.value, "2", "Input: Change handler failed to validate proper value");
+                });
+                $('#textEditor3').val("2").blur();
+                $('#textEditor3').focus();
+                keyInteraction(50, $('#textEditor3'));
+                $('#textEditor3').off("igvalidatorvalidating");
+
+
+                // nested check beacause of nasty timeouts, TODO:
+                $('#textEditor3').one("igvalidatorvalidating", function (evt, ui) {
+                    QUnit.start();
+                    equal(ui.value, "", "Input: Cut handler failed to validate proper value");
+
+                    // cut:
+                    $('#textEditor3').one("igvalidatorvalidating", function (evt, ui) {
+                        QUnit.start();
+                        equal(ui.value, "3333333333", "Input: Paste handler  failed to validate proper value");
+
+                        // dragend:
+                        $('#textEditor3').one("igvalidatorvalidating", function (evt, ui) {
+                            QUnit.start();
+                            equal(ui.value, "", "Input: Dragend (value moved away from input) failed to validate proper value");
+
+                            // drop
+                            $('#textEditor3').one("igvalidatorvalidating", function (evt, ui) {
+                                QUnit.start();
+                                equal(ui.value, "dropped", "Input: Drop handler failed to validate proper value");
+                            }).val("dropped").trigger("drop");
+                            QUnit.stop();
+                        }).val("").trigger("dragend");
+                        QUnit.stop();
+
+                    }).val("3333333333").trigger("paste");
+                    QUnit.stop();
+
+                }).val("").trigger("cut");
+                QUnit.stop();
+            });
+
+            testId = 'Validation rules';
+            test(testId, 39, function () {
+                //required
+                ok($('#rulesInput').igValidator("isValid"), "Editor should be valid with initial value");
+                $("#rulesInput").igValidator("option", "required", true);
+                ok(!$('#rulesInput').igValidator("isValid"), "Empty editor valid with required");
+                $("#rulesInput").val(" ");
+                ok($('#rulesInput').igValidator("isValid"), "Empty editor valid with required"); // TODO: Allow spaces?
+                $("#rulesInput").val("w");
+                ok($('#rulesInput').igValidator("isValid"), "Non-empty editor invalid with required");
+
+                // number
+                $("#rulesInput").igValidator("option", "number", true);
+                ok(!$('#rulesInput').igValidator("isValid"), "Letter validated as number");
+                $("#rulesInput").val("27.5");
+                ok($('#rulesInput').igValidator("isValid"), "Number not validated");
+                $("#rulesInput").val("27,5").igValidator("option", "number", { decimalSeparator: "," });
+                ok($('#rulesInput').igValidator("isValid"), "Number not validated");
+                $("#rulesInput").igValidator("option", "number", false);
+
+                //date
+                $("#rulesInput").igValidator("option", "date", true);
+                ok(!$('#rulesInput').igValidator("isValid"), "Letter validated as date");
+                $("#rulesInput").val("2207-10-25");
+                ok($('#rulesInput').igValidator("isValid"), "Date not validated");
+                $("#rulesInput").igValidator("option", "date", false);
+
+                // length min 6:
+                $('#textEditor').igTextEditor("value", "four");
+                ok(!$('#textEditor').igValidator("isValid"), "Editor be invalid with less tah required min length");
+                $('#textEditor').igTextEditor("value", "itsenough");
+                ok($('#textEditor').igValidator("isValid"), "Editor is invalid with acceptable value");
+                $('#textEditor').igValidator("option", "lengthRange", [2, 5]);
+                ok(!$('#textEditor').igValidator("isValid"), "Editor valid with less more than required max length");
+                $('#textEditor').igTextEditor("value", "22");
+                ok($('#textEditor').igValidator("isValid"), "Editor invalid within required length");
+
+                // value range
+                $('#textEditor2').igTextEditor("value", "-1");
+                ok(!$('#textEditor2').igValidator("isValid"), "Editor valid with value below range");
+                $('#textEditor2').igTextEditor("value", "2");
+                ok($('#textEditor2').igValidator("isValid"), "Editor invalid with value in range");
+                $('#textEditor2').igTextEditor("value", "22");
+                ok(!$('#textEditor2').igValidator("isValid"), "Editor valid with value above range");
+
+                $("#rulesInput").igValidator("option", "date", true);
+                $("#rulesInput").igValidator("option", "valueRange", { min: null, max: new Date(2015, 11, 31) });
+                $("#rulesInput").val("2016-10-25");
+                ok(!$('#rulesInput').igValidator("isValid"), "Editor valid with value above range");
+                $("#rulesInput").igValidator("option", "valueRange", { min: new Date(2015, 9, 1), max: new Date(2015, 11, 31) });
+                $("#rulesInput").val("2015-09-25");
+                ok(!$('#rulesInput').igValidator("isValid"), "Editor valid with value below range");
+                $("#rulesInput").val("2015-11-25");
+                ok($('#rulesInput').igValidator("isValid"), "Editor invalid with value in range");
+                $("#rulesInput").igValidator("option", "date", false).igValidator("option", "valueRange", [null, null]);
+
+                //control specific
+                // list values:
+                $('#textEditor1').igNumericEditor("value", "7");
+                ok(!$('#textEditor1').igValidator("isValid"), "Editor valid with value no in control list");
+
+                //equals to:
+                $('#textEditor').igTextEditor("value", "2");
+                $('#textEditor1').igNumericEditor("value", "22");
+                ok(!$('#textEditor1').igValidator("isValid"), "Editor valid with value not matching equalsTo target");
+                $('#textEditor').igTextEditor("value", "22");
+                ok($('#textEditor1').igValidator("isValid"), "Editor invalid with value matching equalsTo target");
+
+                // Bug 211119: equalTo doesn't work with html inputs
+                $('#textEditor').igValidator("option", "lengthRange", null);
+                $('#textEditor').igValidator("option", "equalTo", "#rulesInput");
+                ok(!$('#textEditor').igValidator("isValid"), "Editor valid with value not matching equalsTo input target");
+                $('#textEditor').igTextEditor("value", "2015-11-25");
+                ok($('#textEditor').igValidator("isValid"), "Editor invalid with value matching equalsTo input target");
+
+                // invalid euqualTo field:
+                $('#textEditor').igValidator("option", "equalTo", "form");
+                ok(!$('#textEditor').igValidator("isValid"), "Editor valid with invalid euqualTo field");
+                // invalid euqualTo selector:
+                $('#textEditor').igValidator("option", "equalTo", "#notFound");
+                ok(!$('#textEditor').igValidator("isValid"), "Editor valid with invalid euqualTo selector");
+
+                // pattern:
+                $("#rulesInput").igValidator("option", "pattern", /^test$/);
+                $("#rulesInput").val(" test");
+                ok(!$('#rulesInput').igValidator("isValid"), "Editor valid with value not matching pattern");
+                $("#rulesInput").val("test");
+                ok($('#rulesInput').igValidator("isValid"), "Editor invalid with value matching pattern");
+                $("#rulesInput").igValidator("option", "pattern", "\\d\\d");
+                $("#rulesInput").val("22");
+                ok($('#rulesInput').igValidator("isValid"), "Editor invalid with value matching pattern");
+                // Bug 211530: Misspelled "expression" in pattern option, keeping both versions per customer request
+                $("#rulesInput").igValidator("option", "pattern", { expresion: "^nomatch$" });
+                ok(!$('#rulesInput').igValidator("isValid"), "Editor valid with value not matching pattern");
+                $("#rulesInput").igValidator("option", "pattern", { expresion: "\\d\\d" });
+                ok($('#rulesInput').igValidator("isValid"), "Editor invalid with value matching pattern");
+                $("#rulesInput").igValidator("option", "pattern", { expression: "^nomatch$" });
+                ok(!$('#rulesInput').igValidator("isValid"), "Editor valid with value not matching pattern");
+                $("#rulesInput").igValidator("option", "pattern", { expression: "\\d\\d" });
+                ok($('#rulesInput').igValidator("isValid"), "Editor invalid with value matching pattern");
+                $("#rulesInput").igValidator("option", "pattern", null);
+
+
+                // custom:
+                $("#rulesInput").igValidator("option", "custom", function (value, fieldOptions) {
+                    //also validate custom function params and context:
+                    equal(this, $("#rulesInput").data("igValidator"), "");
+                    equal(fieldOptions, undefined, "fieldOptions should not be present");
+                    equal(value, 66, "");
+                    return false;
+                });
+                $("#rulesInput").val("66");
+                var valid = $('#rulesInput').igValidator("isValid");
+                ok(!valid, "Custom rule result not applied");
+
+                window.customValidationFunc = function (value, fieldOptions) {
+                    equal(fieldOptions.selector, "#msgInput", "fieldOptions not set correctly");
+                    return true;
+                }
+                $('#validationForm2').igValidator("option", 'fields')[1].custom = "customValidationFunc";
+                valid = $('#validationForm2').igValidator("isValid", "#msgInput");
+                ok(valid, "Custom rule result not applied");
+            });
+
+            testId = 'igControls integration';
+            test(testId, 19, function () {
+                var event, value, rule, valid;
+                //triggered by igControl
+                
+                // igCheckbox:
+                $('#validationForm').one("igvalidatorvalidating", function (evt, ui) {
+                    equal(ui.value, true, "igCheckboxEditor change validation wrong value");
+                });
+                keyInteraction(32, $("#igCheckboxEditor"));
+                $('#validationForm').one("igvalidatorvalidating", function (evt, ui) {
+                    equal(ui.value, false, "igCheckboxEditor change validation wrong value");
+                });
+                $("#igCheckboxEditor").click();
+                $('#validationForm').one("igvalidatorvalidating", function (evt, ui) {
+                    equal(ui.value, false, "igCheckboxEditor blur validation wrong value");
+                });
+                $("#igCheckboxEditor").blur();
+
+                // igRating:
+                $("#ratingStandalone").one("igvalidatorvalidating", function (evt, ui) {
+                    equal(ui.value, 4, "igRating blur validation wrong value");
+                });
+                $("#ratingStandalone").find(".ui-igrating-votehover").eq(3).trigger("mouseover").trigger("mousedown").trigger("mouseup");
+
+                //igTextEditor on change
+                value = "3";
+                valid = true;
+                $("#TestTextBox1").on("igvalidatorvalidated", function (evt, ui) {
+                    // Bug 209772: validation onchange does not work correctly when in edit mode
+                    strictEqual(ui.value, value, "Wrong text value on change validation");
+                    strictEqual(ui.valid, valid, "On change validation failed for igTextEditor");
+                });
+                $("#TestTextBox1").igTextEditor("field").focus();
+                keyInteraction(51, $("#TestTextBox1").igTextEditor("field"), null, true); // enter 3
+                value = "";
+                valid = false;
+                keyDownChar(8, $('#spinEditor').igNumericEditor("field")); // backspace / delete + empty string for value
+                keyPressChar(8, $('#spinEditor').igNumericEditor("field"));
+                $('#spinEditor').igNumericEditor("field").val('');
+                keyUpChar(8, $('#spinEditor').igNumericEditor("field"));
+                $("#TestTextBox1").off("igvalidatorvalidated");
+            
+                $("#spinEditor").one("igvalidatorvalidating", function (evt, ui) {
+                    // Bug 209772: validation onchange does not work correctly when in edit mode
+                    strictEqual(ui.value, 3, "Wrong numeric value on change validation");
+                });
+                $("#spinEditor").igNumericEditor("field").focus();
+                keyInteraction(51, $("#spinEditor").igNumericEditor("field"), null, true); // enter 3
+              
+                $("#spinEditor").one("igvalidatorvalidated", function (evt, ui) {
+
+                    //console.log(JSON.stringify({ "value,": ui.value, "ui.rule": ui.rule, "ui.valid": ui.valid }));
+                    ok(!ui.value, "Wrong numeric value on change validation");
+                    ok(!ui.valid && ui.rule === "required", "Validation did not fail for required numeric editor.");
+                });
+                keyDownChar(8, $('#spinEditor').igNumericEditor("field")); // backspace / delete + empty string for value
+                keyPressChar(8, $('#spinEditor').igNumericEditor("field"));
+                $('#spinEditor').igNumericEditor("field").val('');
+                keyUpChar(8, $('#spinEditor').igNumericEditor("field"));
+                $("#spinEditor").igNumericEditor("field").blur();
+                
+                // spin change igNumericEditor
+                $("#spinEditor").one("igvalidatorvalidating", function (evt, ui) {
+                    strictEqual(ui.value, 1, "Wrong value on spin validation ");
+                });
+                event = $.Event("mousedown");
+                event.button = 0;
+                $("#spinEditor").igNumericEditor("spinUpButton").trigger(event).trigger("mouseup");
+                equal($("#spinEditor").igNumericEditor("validator").isValid(), true, "igNumericEditor should be valid after spin");
+                
+                //onchange mask editor
+                value = "";
+                $('#maskEditor').on("igvalidatorvalidating", function (evt, ui) {
+                    equal(ui.value, value, "Mask Editor wrong value on change");
+                });
+                $('#maskEditor').igMaskEditor("setFocus");
+                value = "5";
+                keyDownChar(53, $('#maskEditor').igMaskEditor("field"));
+                keyPressChar(53, $('#maskEditor').igMaskEditor("field"));
+                $('#maskEditor').igMaskEditor("field").val("5ccccc");
+                keyUpChar(53, $('#maskEditor').igMaskEditor("field"));
+                $('#maskEditor').off("igvalidatorvalidating");
+
+                //onchange date editor
+                value = new Date();
+                rule = "control";
+                $('#dateEditor').on("igvalidatorvalidated", function (evt, ui) {
+                    // compare shorter strings to ignore ms differences, Note: toLocaleDateString varsly varies between cultures, phantom 
+                    equal(ui.value.toLocaleDateString(), value.toLocaleDateString(), "Date Editor wrong value on change");
+                    ok(!ui.valid && ui.rule === rule, "Date Editor wrong value on change");
+                });
+                $('#dateEditor').igDateEditor("setFocus");
+                value = new Date(2015, 10, 11);
+                rule = "valueRange";
+                keyDownChar(53, $('#dateEditor').igDateEditor("field"));
+                keyPressChar(53, $('#dateEditor').igDateEditor("field"));
+                $('#dateEditor').igDateEditor("field").val('11/11/2015');
+                keyUpChar(53, $('#dateEditor').igDateEditor("field"));
+                $('#dateEditor').off("igvalidatorvalidated");
+
+                // igcombo
+                equal($('#combo').igValidator("isValid"), false, "igCombo validated with required");
+                $('#combo').igCombo("select",  $('#combo').igCombo("dropDown").find("li").eq(0));
+                ok( $('#combo').igCombo("validator").isValid(), "igcombo not valid with selection");
+            });
+
+            testId = 'Edge cases';
+            test(testId, 4, function () {
+                // because _validateInternal is externally called private funcition
+                // will keep redundant checks and test the function responds to various calls and conditions:
+                ok($('#emptyFormTarget').data("igValidator")._validateInternal(), "Internal validate failed on empty target with no rules.");
+                ok($('#emptyFormTarget').data("igValidator")._validateInternal(null, $.Event("blur", { target: "#randomSelector" })), "Internal validate failed on empty target with no rules.");
+                
+                // in case other controls re-render the target and it looses it's field data
+                $('#reloadedField').data("igValidatorField", null);
+                ok(!$('#reloadedField').data("igValidator")._validateInternal(null, null, true, ""), "Internal validate did not fail with empty value and required.");
+                ok($('#reloadedField').data("igValidator")._validateInternal(null, null, true, "value"), "Internal validate did not fail with empty value and required.");
+            });
+        });
+        function keyInteraction(key, target, special, set) {
+            keyDownChar(key, target, special);
+            if (set) {
+                target.val(String.fromCharCode(key));
+            }
+            keyPressChar(key, target, special);
+            keyUpChar(key, target, special);
+        }
+        function keyDownChar(key, target, special) {
+            var evt = $.Event("keydown");
+            evt.keyCode = key;
+            evt.charCode = key;
+            if (special) {
+                evt[special] = true;
+            }
+            target.trigger(evt);
+        }
+        function keyPressChar(key, target, special) {
+            var evt = $.Event("keypress");
+            evt.keyCode = key;
+            evt.charCode = key;
+            if (special) {
+                evt[special] = true;
+            }
+            target.trigger(evt);
+        }
+        function keyUpChar(key, target, special) {
+            var evt = $.Event("keyup");
+            evt.keyCode = key;
+            evt.charCode = key;
+            if (special) {
+                evt[special] = true;
+            }
+            target.trigger(evt);
+        }
+    </script>
+</head>
+<body>
+    <div style="float:right;width:400px;overflow:auto">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
+        <p> email input ( onblur, onchange API)</p>
+        <input type="text" id="input1" />
+        <input type="text" id="input2" />
+        <label data-valmsg-for="input1"></label>
+        <label id='msgLabel2'> message target2 </label>
+        <input type="text" id="rangeDateEditor" />
+
+        <div id="emptyTarget"></div>
+        <form id="emptyFormTarget"></form>
+        <input type="text" id="reloadedField" />
+
+        <p>Validation form</p>
+        <form id="validationForm" action="">
+            <fieldset>
+                <h4> Fields collection ( required on submit)</h4>
+                <input type="text" id="grpEdit1" />
+
+                <p> ( date, onblur, not required on submit)</p>
+                <input type="text" id="grpEdit2" />
+                <p> rating, min half(2.5) onsubmit</p>
+                <div id="rating"></div>
+                <p> CheckboxEditor, required onsubmit</p>
+                <div id="igCheckboxEditor"></div>
+                <div id='numericEditor'></div>
+                <p> combo, 2 min selection, required onsubmit</p>
+                <div id='combo2'></div>
+                <input type="submit" value="Submit" />
+            </fieldset>
+        </form>
+
+        <p>Validation form</p>
+        <form id="validationForm2" action="">
+            <fieldset>
+                <input type="text" class="test"/>
+                <div id='numericEditor'></div>
+                <input type="number" id="msgInput" value="2" />
+                <label id='msgLabel'> message target </label>
+                <input type="submit" value="Submit" />
+            </fieldset>
+        </form>
+
+        <form id="submitHandlerForm" action="">
+            <input type="number" id="nonsubmitEditor" value="2" />
+            <div>
+                <div>
+                    <input type="text" id="submitEditor" value="" />
+                </div>
+                <input type="submit" value="Submit" />
+            </div>
+        </form>
+
+        <input type="checkbox" id="singleCheck" />
+        <input id="radioOptions" type="radio" name="options" value="Option 1" />Option 1
+        <br />
+        <input type="radio" name="options" value="Option 2" />Option 2
+
+        <div id="validationContainer">
+            <textarea id="areaInput">line,
+line2</textarea>
+        </div>
+
+        <form id="validationForm3" action="">
+            <input type="text" id="rulesInput" />
+            <h3>Form:</h3>
+            <p> paste this text below (required, min 2 chars, on submit):</p>
+            <div id="textEditor"></div>
+            <p> only 1,2 accepted, equalTo above field (validation on submit)</p>
+            <div id="textEditor1"></div>
+            <p> values between 0 and 2 (on submit, editor revert disabled):</p>
+            <div id="textEditor2"></div>
+            <p> keepFocus once workaround ( 2-3 length, onchange)</p>
+            <input type="text" id="textEditor3" />
+
+            <p> checkbox group, (2 required, onsubmit)</p>
+            <label for="check3"> check3 in Form </label>
+            <input type="checkbox" name="checkboxname" value="check3" id="check3" />
+            <label for="check4"> check4 in Form </label>
+            <input type="checkbox" name="checkboxname" value="check4" id="check4" />
+
+            <p> select (required onblur, onsubmit)</p>
+            <select id="singleSelect">
+                <option value="" selected=selected>select..</option>
+                <option value="1">one</option>
+                <option value="2">two</option>
+                <option value="3">three</option>
+                <option value="4">four</option>
+            </select>
+
+            <p> multi-select, 2-3 selcted (onblur, not required)</p>
+            <select id="multipleSelect" multiple=multiple>
+                <option value="1">one</option>
+                <option value="2">two</option>
+                <option value="3">three</option>
+                <option value="4">four</option>
+            </select>
+            <input type="submit" value="Submit" />
+        </form>
+
+        <h4> Editors with validationOptions</h4>
+        <p>Combo-initialized test, required onsubmit: </p>
+        <div id='combo' dir="rtl"></div>
+        <p> Standalone rating validation test:</p>
+        <div id="ratingStandalone"></div>
+        <div id="TestTextBox1"></div>
+        <div id="spinEditor"></div>
+        <div id="maskEditor"></div>
+        <div id="dateEditor"></div>
+    </div>
+
+</body>
+</html>

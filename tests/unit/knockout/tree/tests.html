@@ -1,0 +1,548 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.tree.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/knockout/dist/knockout.debug.js"></script>
+    
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.tree-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.tree.js"></script>
+	<script type="text/javascript" src="../../../../src/js/extensions/infragistics.ui.tree.knockout-extensions.js"></script>
+	 
+	
+	<!--<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.tree.knockout-extensions.js"></script>-->
+	<script type="text/javascript" src="../../../../src/js/extensions/infragistics.ui.tree.knockout-extensions.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
+	
+	<script type="text/html" id="data-template">
+		<li>
+			<input data-bind="value: name" />
+			<input data-bind="value: id" />
+			<input data-bind="value: url" />
+			<input data-bind="value: image" />
+		</li>
+	</script>
+	
+	<script type="text/javascript">
+		var itemsModel, hierarchicalData;
+
+		function Item(id, name, children, url, image) {
+			this.id = ko.observable(id);
+			this.name = ko.observable(name);
+			this.url = ko.observable(url);
+			this.image = ko.observable(image);
+			this.children = children;
+		};
+		$(document).ready(function () {
+			hierarchicalData = ko.observableArray([
+					new Item(1, "One child", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
+					new Item(2, "Two child"),
+					new Item(3, "Three child", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
+					new Item(4, "Four child"),
+					new Item(5, "Five child"),
+					new Item(6, "Six child", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png')
+				]);
+			hierarchicalData2 = ko.observableArray([
+					new Item(1, "One child", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
+					new Item(2, "Two child"),
+					new Item(3, "Three child", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
+					new Item(4, "Four child"),
+					new Item(5, "Five child"),
+					new Item(6, "Six child", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png')
+				]);
+			function loadTestbeds() {
+				function ItemsViewModel() {
+					var self = this;
+
+					// add some items manually
+					this.data = ko.observableArray([
+						new Item(1, "One description", hierarchicalData, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
+						new Item(2, "Two description", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
+						new Item(3, "Three description", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
+						new Item(4, "Four description"),
+						new Item(5, "Five description"),
+						new Item(6, "Six description", hierarchicalData, 'http://google.com', '../../tree/databinding/images/bin_empty.png')
+					]);
+					
+					this.primaryData = ko.observableArray([
+						new Item(1, "One description", hierarchicalData2, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
+						new Item(2, "Two description", null, 'http://google.com', '../../tree/databinding/images/bin_empty.png'),
+						new Item(3, "Six description", hierarchicalData2, 'http://google.com', '../../tree/databinding/images/bin_empty.png')
+					]);
+					
+					this.nonObservable = ko.observableArray([
+						{ name: 'a', id: 1, url: 'http://google.com', image: '../../tree/databinding/images/bin_empty.png' },
+						{ name: 'b', id: 2, url: 'http://google.com', image: '../../tree/databinding/images/bin_empty.png' },
+						{ name: 'c', id: 3, url: 'http://google.com', image: '../../tree/databinding/images/bin_empty.png' }
+					]);
+				}
+				itemsModel = new ItemsViewModel();
+				ko.applyBindings(itemsModel);
+			}
+			
+			initialized = false;
+			module("igTree KnockoutJS", {
+				setup: function() {
+					//pause testing until tree is initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 100);
+						initialized = true;
+					}
+				},
+				teardown: function() {
+				}
+			});
+			
+			var testId_1 = 'igTree knockout script loaded test.';
+			var testId_2 = 'igTree check if data is accurately attached.';
+			var testId_3 = 'igTreeNode check if node data is accurately attached.';
+			var testId_4 = 'igTreeNode check if changes are correctly applied on editing.';
+			var testId_5 = 'igTree add node to top level and to viewmodel';
+			var testId_6 = 'igTree remove node from top level and from viewmodel';
+			var testId_7 = 'igTree add node to child level and to child viewmodel';
+			var testId_8 = 'igTree remove node from child level and from viewmodel';
+			var testId_9 = 'igTree non-observable add/remove';
+			var testId_10 = 'igTree observable primaryKey';
+			
+			test(testId_1, function () {
+				ok(typeof(ko.bindingHandlers.igTree) !== 'undefined', 'igTree knockoutJS extention script is not loaded');
+				ok(typeof(ko.bindingHandlers.igTree) === 'object', 'igTree knockoutJS extention is of a wrong type');
+				ok(typeof(ko.bindingHandlers.igTreeNode) !== 'undefined', 'igTree knockoutJS extention script is not loaded');
+				ok(typeof(ko.bindingHandlers.igTreeNode) === 'object', 'igTree knockoutJS extention is of a wrong type');
+			});
+			
+			test(testId_2, function () {
+				var data = ko.dataFor($('#tree1')[0]);
+				equal(data.data().length, 6, 'The number of data items differs from the number of items inside the item model.');
+				equal(data.data()[0].name(), $('#tree1 li[data-role=node]:first a:first').text(), 'The text of the first node is different from the name of the first data item in the view model.');
+				equal(data.data()[0].id(), parseInt($('#tree1 li[data-role=node]:first').attr('data-value'), 10), 'The value of the first node is different from the name of the first data item in the view model.');
+				data = ko.dataFor($('#tree2')[0]);
+				equal(data.data().length, 6, 'The number of data items differs from the number of items inside the item model.');
+				equal(data.data()[0].name(), $('#tree2 li[data-role=node]:first a:first').text(), 'The text of the first node is different from the name of the first data item in the view model.');
+				ok(!$('#tree2 li[data-role=node]:first').attr('data-value'), 'Value is applied on #tree2 even though it does not have valueKey defined in bindings.');
+				data = ko.dataFor($('#tree7')[0]);
+				equal(data.data().length, 6, 'The number of data items differs from the number of items inside the item model.');
+				equal("Name: " + data.data()[0].name(), $('#tree7 li[data-role=node]:first a:first').text(), 'The text of the first node is different from the name of the first data item in the view model.');
+				equal(data.data()[0].id(), parseInt($('#tree7 li[data-role=node]:first').attr('data-value'), 10), 'The value of the first node is different from the name of the first data item in the view model.');
+				data = ko.dataFor($('#tree5')[0]);
+				equal(data.primaryData().length, 3, 'The number of data items differs from the number of items inside the item model.');
+				equal(data.primaryData()[0].name(), $('#tree5 li[data-role=node]:first a:first').text(), 'The text of the first node is different from the name of the first data item in the view model.');
+				equal(data.primaryData()[0].id(), parseInt($('#tree5 li[data-role=node]:first').attr('data-path'), 10), 'The value of the first node is different from the name of the first data item in the view model.');
+				data = ko.dataFor($('#tree6')[0]);
+				equal(data.primaryData().length, 3, 'The number of data items differs from the number of items inside the item model.');
+				equal(data.primaryData()[0].name(), $('#tree6 li[data-role=node]:first a:first').text(), 'The text of the first node is different from the name of the first data item in the view model.');
+				ok(!$('#tree6 li[data-role=node]:first').attr('data-value'), 'Value is applied on #tree2 even though it does not have valueKey defined in bindings.');
+			});
+			
+			test(testId_3, function () {
+				var data = ko.dataFor($('#tree1 li[data-path=0]')[0]);
+				equal(data.name(), 'One description', 'The name data member for the first not did not match.');
+				equal(data.id(), 1, 'The name data member for the first not did not match.');
+				equal(data.children().length, 6, 'The name data member for the first not did not match.');
+				data = ko.dataFor($('#tree1 li[data-path=1]')[0]);
+				equal(data.name(), 'Two description', 'The name data member for the first not did not match.');
+				equal(data.id(), 2, 'The name data member for the first not did not match.');
+				equal(data.children, undefined, 'The name data member for the first not did not match.');
+				data = ko.dataFor($('#tree1 li[data-path=0_0]')[0]);
+				equal(data.name(), 'One child', 'The name data member for the first not did not match.');
+				equal(data.id(), 1, 'The name data member for the first not did not match.');
+				equal(data.children, undefined, 'The name data member for the first not did not match.');
+			});
+			
+			test(testId_4, function () {
+				var node1 = $('#tree1 > ul > li:first'), node2 = $('#tree2 > ul > li:first'), node3 = $('#tree7 > ul > li:first'), node4, node5, node6;
+				equal(node1.children('a').text(), 'One description', 'Text of the first node does not match.');
+				equal(node1.attr('data-value'), '1', 'Value of the first node does not match.');
+				equal(node2.children('a').text(), 'One description', 'Text of the first node does not match.');
+				ok(!node2.attr('data-value'), 'Value of the first node does not match.');
+				equal(node3.children('a').text(), 'Name: One description', 'Text of the first node does not match.');
+				equal(node3.attr('data-value'), '1', 'Value of the first node does not match.');
+				$('#reference li:first input').val(22).change();
+				node1 = $('#tree1 > ul > li:first'); 
+				node2 = $('#tree2 > ul > li:first');
+				node3 = $('#tree7 > ul > li:first');
+				equal(node1.children('a').text(), '22', 'Text of the first node does not match.');
+				equal(node1.attr('data-value'), '22', 'Value of the first node does not match.');
+				equal(node1.children('a').attr('href'), '22', 'Text of the first node does not match.');
+				equal(node1.children('img[data-role=node-image]').attr('src'), '22', 'Value of the first node does not match.');
+				equal(node2.children('a').text(), '22', 'Text of the first node does not match.');
+				ok(!node2.attr('data-value'), 'Value of the first node does not match.');
+				equal(node2.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node2.children('img[data-role=node-image]').attr('src'), '22', 'Value of the first node does not match.');
+				equal(node3.children('a').text(), 'Name: 22', 'Text of the first node does not match.');
+				equal(node3.attr('data-value'), '22', 'Value of the first node does not match.');
+				equal(node3.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node3.children('img[data-role=node-image]').attr('src'), '22', 'Value of the first node does not match.');
+				$('#reference2 li:first input').val(33).change();
+				node1 = $('#tree1 > ul > li:first li:first');
+				node2 = $('#tree1 > ul > li:eq(5) li:first');
+				node3 = $('#tree2 > ul > li:first li:first');
+				node4 = $('#tree2 > ul > li:eq(5) li:first');
+				node5 = $('#tree7 > ul > li:first li:first');
+				node6 = $('#tree7 > ul > li:eq(5) li:first');
+				equal(node1.children('a').text(), '33', 'Text of the first node does not match.');
+				equal(node1.attr('data-value'), '33', 'Value of the first node does not match.');
+				equal(node1.children('a').attr('href'), '33', 'Text of the first node does not match.');
+				equal(node1.children('img[data-role=node-image]').attr('src'), '33', 'Value of the first node does not match.');
+				equal(node2.children('a').text(), '33', 'Text of the first node does not match.');
+				equal(node2.attr('data-value'), '33', 'Value of the first node does not match.');
+				equal(node2.children('a').attr('href'), '33', 'Text of the first node does not match.');
+				equal(node2.children('img[data-role=node-image]').attr('src'), '33', 'Value of the first node does not match.');
+				equal(node3.children('a').text(), '33', 'Text of the first node does not match.');
+				ok(!node3.attr('data-value'), 'Value of the first node does not match.');
+				equal(node3.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node3.children('img[data-role=node-image]').attr('src'), '33', 'Value of the first node does not match.');
+				equal(node4.children('a').text(), '33', 'Text of the first node does not match.');
+				ok(!node4.attr('data-value'), 'Value of the first node does not match.');
+				equal(node4.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node4.children('img[data-role=node-image]').attr('src'), '33', 'Value of the first node does not match.');
+				equal(node5.children('a').text(), 'Name: 33', 'Text of the first node does not match.');
+				equal(node5.attr('data-value'), '33', 'Value of the first node does not match.');
+				equal(node5.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node5.children('img[data-role=node-image]').attr('src'), '33', 'Value of the first node does not match.');
+				equal(node6.children('a').text(), 'Name: 33', 'Text of the first node does not match.');
+				equal(node6.attr('data-value'), '33', 'Value of the first node does not match.');
+				equal(node6.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node6.children('img[data-role=node-image]').attr('src'), '33', 'Value of the first node does not match.');
+			});
+			
+			test(testId_5, function () {
+				var item = new Item(10, "View Model Data", hierarchicalData, 'http://yahoo.com', '../../tree/databinding/images/bin_empty.png');
+				itemsModel.data.push(item);
+				equal($('#tree1 .ui-igtree-noderoot').length, 7, 'The item was not added to #tree1');
+				equal($('#tree1 .ui-igtree-noderoot:eq(6) li').length, 6, 'The item children were not added to #tree1');
+				equal($('#tree2 .ui-igtree-noderoot').length, 7, 'The item was not added to #tree2');
+				equal($('#tree2 .ui-igtree-noderoot:eq(6) li').length, 6, 'The item children were not added to #tree2');
+				equal($('#tree7 .ui-igtree-noderoot').length, 7, 'The item was not added to #tree7');
+				equal($('#tree7 .ui-igtree-noderoot:eq(6) li').length, 6, 'The item children were not added to #tree7');
+				$('#reference li:last input').val(55).change();
+				var node1 = $('#tree1 .ui-igtree-noderoot:eq(6)'), node2 = $('#tree2 .ui-igtree-noderoot:eq(6)'), node3 = $('#tree7 .ui-igtree-noderoot:eq(6)');
+				equal(node1.children('a').text(), '55', 'Text of the first node does not match.');
+				equal(node1.attr('data-value'), '55', 'Value of the first node does not match.');
+				equal(node1.children('a').attr('href'), '55', 'Text of the first node does not match.');
+				equal(node1.children('img[data-role=node-image]').attr('src'), '55', 'Value of the first node does not match.');
+				equal(node2.children('a').text(), '55', 'Text of the first node does not match.');
+				ok(!node2.attr('data-value'), 'Value of the first node does not match.');
+				equal(node2.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node2.children('img[data-role=node-image]').attr('src'), '55', 'Value of the first node does not match.');
+				equal(node3.children('a').text(), 'Name: 55', 'Text of the first node does not match.');
+				equal(node3.attr('data-value'), '55', 'Value of the first node does not match.');
+				equal(node3.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node3.children('img[data-role=node-image]').attr('src'), '55', 'Value of the first node does not match.');
+				item = new Item(5, "Tree Added Data", hierarchicalData, 'http://yahoo.com', '../../tree/databinding/images/bin_empty.png');
+				$('#tree1').igTree('addNode', item);
+				equal($('#tree1 .ui-igtree-noderoot').length, 8, 'The item was not added to #tree1');
+				equal($('#tree1 .ui-igtree-noderoot:eq(7) li').length, 6, 'The item children were not added to #tree1');
+				equal($('#tree2 .ui-igtree-noderoot').length, 8, 'The item was not added to #tree2');
+				equal($('#tree2 .ui-igtree-noderoot:eq(7) li').length, 6, 'The item children were not added to #tree2');
+				equal($('#tree7 .ui-igtree-noderoot').length, 8, 'The item was not added to #tree7');
+				equal($('#tree7 .ui-igtree-noderoot:eq(7) li').length, 6, 'The item children were not added to #tree7');
+				equal(itemsModel.data().length, 8, 'ViewModel did not get updated from the tree handler');
+				$('#reference li:last input').val(55).change();
+				node1 = $('#tree1 .ui-igtree-noderoot:eq(7)'), node2 = $('#tree2 .ui-igtree-noderoot:eq(7)'), node3 = $('#tree7 .ui-igtree-noderoot:eq(7)');
+				equal(node1.children('a').text(), '55', 'Text of the first node does not match.');
+				equal(node1.attr('data-value'), '55', 'Value of the first node does not match.');
+				equal(node1.children('a').attr('href'), '55', 'Text of the first node does not match.');
+				equal(node1.children('img[data-role=node-image]').attr('src'), '55', 'Value of the first node does not match.');
+				equal(node2.children('a').text(), '55', 'Text of the first node does not match.');
+				ok(!node2.attr('data-value'), 'Value of the first node does not match.');
+				equal(node2.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node2.children('img[data-role=node-image]').attr('src'), '55', 'Value of the first node does not match.');
+				equal(node3.children('a').text(), 'Name: 55', 'Text of the first node does not match.');
+				equal(node3.attr('data-value'), '55', 'Value of the first node does not match.');
+				equal(node3.children('a').attr('href'), '#', 'Text of the first node does not match.');
+				equal(node3.children('img[data-role=node-image]').attr('src'), '55', 'Value of the first node does not match.');
+				item = new Item(5, "Added at index", hierarchicalData, 'http://yahoo.com', '../../tree/databinding/images/bin_empty.png');
+				$('#tree1').igTree('addNode', item, 3);
+				equal($('#tree1 .ui-igtree-noderoot').length, 9, 'The item was not added to #tree1');
+				equal($('#tree1 .ui-igtree-noderoot:eq(3) li').length, 6, 'The item children were not added to #tree1');
+				equal($('#tree1 .ui-igtree-noderoot:eq(3) a:first').text(), 'Added at index', 'Text does not match #tree1');
+				equal($('#tree2 .ui-igtree-noderoot').length, 9, 'The item was not added to #tree2');
+				equal($('#tree2 .ui-igtree-noderoot:eq(3) li').length, 6, 'The item children were not added to #tree2');
+				equal($('#tree2 .ui-igtree-noderoot:eq(3) a:first').text(), 'Added at index', 'Text does not match #tree2');
+				equal($('#tree7 .ui-igtree-noderoot').length, 9, 'The item was not added to #tree2');
+				equal($('#tree7 .ui-igtree-noderoot:eq(3) li').length, 6, 'The item children were not added to #tree2');
+				equal($('#tree7 .ui-igtree-noderoot:eq(3) a:first').text(), 'Name: Added at index', 'Text does not match #tree2');
+				equal(itemsModel.data().length, 9, 'ViewModel did not get updated from the tree handler');
+			});
+			
+			test(testId_9, function () {
+				var item = { name: 'd', id: 4, url: 'http://yahoo.com', image: '../../tree/databinding/images/bin_empty.png' };
+				itemsModel.nonObservable.push(item);
+				equal($('#tree3 .ui-igtree-noderoot').length, 4, 'The item was not added to #tree1');
+				equal($('#tree4 .ui-igtree-noderoot').length, 4, 'The item was not added to #tree2');
+				itemsModel.nonObservable.splice(0, 1);
+				itemsModel.nonObservable.valueHasMutated();
+				equal($('#tree3 .ui-igtree-noderoot').length, 3, 'The item was not added to #tree1');
+				equal($('#tree4 .ui-igtree-noderoot').length, 3, 'The item was not added to #tree2');
+			});
+			
+			test(testId_6, function () {
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#tree2 .ui-igtree-noderoot').length, 'The two trees have a different number of root nodes.');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#tree7 .ui-igtree-noderoot').length, 'The two trees have a different number of root nodes.');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#reference li').length, 'The number of root nodes and of templated items differs.');
+				equal($('#tree1 .ui-igtree-noderoot').length, 9, 'The number of root nodes is not 8.');
+				$('#tree2').igTree('removeAt', '1');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#tree2 .ui-igtree-noderoot').length, 'The two trees have a different number of root nodes.');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#tree7 .ui-igtree-noderoot').length, 'The two trees have a different number of root nodes.');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#reference li').length, 'The number of root nodes and of templated items differs.');
+				equal($('#tree1 .ui-igtree-noderoot').length, 8, 'The number of root nodes is not 7 after a remove.');
+				itemsModel.data().splice(1, 1);
+				itemsModel.data.valueHasMutated();
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#tree2 .ui-igtree-noderoot').length, 'The two trees have a different number of root nodes.');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#tree7 .ui-igtree-noderoot').length, 'The two trees have a different number of root nodes.');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#reference li').length, 'The number of root nodes and of templated items differs.');
+				equal($('#tree1 .ui-igtree-noderoot').length, 7, 'The number of root nodes is not 6 after a remove.');
+				$('#tree1').igTree('removeAt', '1');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#tree2 .ui-igtree-noderoot').length, 'The two trees have a different number of root nodes.');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#tree7 .ui-igtree-noderoot').length, 'The two trees have a different number of root nodes.');
+				equal($('#tree1 .ui-igtree-noderoot').length, $('#reference li').length, 'The number of root nodes and of templated items differs.');
+				equal($('#tree1 .ui-igtree-noderoot').length, 6, 'The number of root nodes is not 5 after a remove.');
+			});
+			
+			test(testId_7, function () {
+				var children1 = $('#tree1 li[data-path=0]').children('ul').children('li[data-role=node]'),
+					children2 = $('#tree2 li[data-path=0]').children('ul').children('li[data-role=node]'),
+					children3 = $('#tree7 li[data-path=0]').children('ul').children('li[data-role=node]');
+				equal($('#reference2 li').length, children1.length, 'Child count at node 0 (#tree1) is not the same as templated node count.');
+				equal($('#reference2 li').length, children2.length, 'Child count at node 0 (#tree2) is not the same as templated node count.');
+				equal($('#reference2 li').length, children3.length, 'Child count at node 0 (#tree7) is not the same as templated node count.');
+				hierarchicalData.push(new Item(1, 1));
+				hierarchicalData.valueHasMutated();
+				children1 = $('#tree1 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree2 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children3 = $('#tree7 li[data-path=0]').children('ul').children('li[data-role=node]');
+				equal($('#reference2 li').length, children1.length, 'Child count at node 0 (#tree1) is not the same as templated node count.');
+				equal($('#reference2 li').length, children2.length, 'Child count at node 0 (#tree2) is not the same as templated node count.');
+				equal($('#reference2 li').length, children3.length, 'Child count at node 0 (#tree7) is not the same as templated node count.');
+				equal(children1.length, 7, 'Child count at node 0 (#tree1) is not one more: 7.');
+				$('#tree1').igTree('addNode', new Item(1, 'New child'), $('#tree1 li[data-path=0]'));
+				children1 = $('#tree1 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree2 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children3 = $('#tree7 li[data-path=0]').children('ul').children('li[data-role=node]');
+				equal($('#reference2 li').length, children1.length, 'Child count at node 0 (#tree1) is not the same as templated node count.');
+				equal($('#reference2 li').length, children2.length, 'Child count at node 0 (#tree2) is not the same as templated node count.');
+				equal($('#reference2 li').length, children3.length, 'Child count at node 0 (#tree7) is not the same as templated node count.');
+				equal(children1.length, 8, 'Child count at node 0 (#tree1) is not one more: 8.');
+				$('#tree2').igTree('addNode', new Item(1, 'New child'), $('#tree2 li[data-path=0]'));
+				children1 = $('#tree1 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree2 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children3 = $('#tree7 li[data-path=0]').children('ul').children('li[data-role=node]');
+				equal($('#reference2 li').length, children1.length, 'Child count at node 0 (#tree1) is not the same as templated node count.');
+				equal($('#reference2 li').length, children2.length, 'Child count at node 0 (#tree2) is not the same as templated node count.');
+				equal($('#reference2 li').length, children3.length, 'Child count at node 0 (#tree7) is not the same as templated node count.');
+				equal(children1.length, 9, 'Child count at node 0 (#tree1) is not one more: 9.');
+			});
+			
+			test(testId_8, function () {
+				hierarchicalData.splice(0, 1);
+				var children1 = $('#tree1 li[data-path=0]').children('ul').children('li[data-role=node]'),
+					children2 = $('#tree2 li[data-path=0]').children('ul').children('li[data-role=node]'),
+					children3 = $('#tree7 li[data-path=0]').children('ul').children('li[data-role=node]');
+				equal($('#reference2 li').length, children1.length, 'Child count at node 0 (#tree1) is not the same as templated node count.');
+				equal($('#reference2 li').length, children2.length, 'Child count at node 0 (#tree2) is not the same as templated node count.');
+				equal($('#reference2 li').length, children3.length, 'Child count at node 0 (#tree7) is not the same as templated node count.');
+				equal(children1.length, 8, 'Child count at node 0 (#tree1) is not one less: 8.');
+				$('#tree1').igTree('removeAt', '0_0');
+				children1 = $('#tree1 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree2 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children3 = $('#tree7 li[data-path=0]').children('ul').children('li[data-role=node]');
+				equal($('#reference2 li').length, children1.length, 'Child count at node 0 (#tree1) is not the same as templated node count.');
+				equal($('#reference2 li').length, children2.length, 'Child count at node 0 (#tree2) is not the same as templated node count.');
+				equal($('#reference2 li').length, children3.length, 'Child count at node 0 (#tree7) is not the same as templated node count.');
+				equal(children1.length, 7, 'Child count at node 0 (#tree1) is not one less: 7.');
+				$('#tree2').igTree('removeAt', '0_0');
+				children1 = $('#tree1 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree2 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children3 = $('#tree7 li[data-path=0]').children('ul').children('li[data-role=node]');
+				equal($('#reference2 li').length, children1.length, 'Child count at node 0 (#tree1) is not the same as templated node count.');
+				equal($('#reference2 li').length, children2.length, 'Child count at node 0 (#tree2) is not the same as templated node count.');
+				equal($('#reference2 li').length, children3.length, 'Child count at node 0 (#tree7) is not the same as templated node count.');
+				equal(children1.length, 6, 'Child count at node 0 (#tree1) is not one less: 6.');
+				hierarchicalData.splice(0, 6);
+				children1 = $('#tree1 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree2 li[data-path=0]').children('ul').children('li[data-role=node]');
+				children3 = $('#tree7 li[data-path=0]').children('ul').children('li[data-role=node]');
+				equal($('#reference2 li').length, children1.length, 'Child count at node 0 (#tree1) is not the same as templated node count.');
+				equal($('#reference2 li').length, children2.length, 'Child count at node 0 (#tree2) is not the same as templated node count.');
+				equal($('#reference2 li').length, children3.length, 'Child count at node 0 (#tree7) is not the same as templated node count.');
+				equal(children1.length, 0, 'Child count at node 0 (#tree1) is not 0.');
+				equal($('#tree1 li[data-path=0]').children('span[data-role=expander]').length, 0, "The expand indicator for the node wasn't removed.");
+			});
+			
+			test(testId_10, function () {
+				var item = { name: 'd', id: 4, url: 'http://yahoo.com', image: '../../tree/databinding/images/bin_empty.png' },
+					node1 = $('#tree5 > ul > li:first'), node2 = $('#tree6 > ul > li:first'), input1 = $('#reference4 li:first input:first');
+				// ValueMutation on change
+				equal(input1.val(), node1.children('a').text(), "The node text and the templated input value differ.");
+				equal(input1.val(), node2.children('a').text(), "The node text and the templated input value differ.");
+				input1.val("New desc").change();
+				equal(input1.val(), "New desc", "The node text and the templated input value differ.");
+				equal(input1.val(), node1.children('a').text(), "The node text and the templated input value differ.");
+				equal(input1.val(), node2.children('a').text(), "The node text and the templated input value differ.");
+				// Collection mutation on add/remove
+				itemsModel.primaryData.push(item);
+				equal($('#tree5 .ui-igtree-noderoot').length, 4, 'The item was not added to #tree5');
+				equal($('#tree6 .ui-igtree-noderoot').length, 4, 'The item was not added to #tree6');
+				equal($('#reference4 li').length, 4, 'The item was not added to the templated list');
+				itemsModel.primaryData().splice(0, 1);
+				itemsModel.primaryData.valueHasMutated();
+				equal($('#tree5 .ui-igtree-noderoot').length, 3, 'The item was not removed from #tree5');
+				equal($('#tree6 .ui-igtree-noderoot').length, 3, 'The item was not removed from #tree6');
+				equal($('#reference4 li').length, 3, 'The item was not removed from the templated list');
+				var item = new Item(5, 'abc');
+				$('#tree5').igTree('addNode', item);
+				equal($('#tree5 .ui-igtree-noderoot').length, 4, 'The item was not added to #tree5');
+				equal($('#tree6 .ui-igtree-noderoot').length, 4, 'The item was not added to #tree6');
+				equal($('#reference4 li').length, 4, 'The item was not added to the templated list');
+				$('#tree5').igTree('removeAt', '2');
+				equal($('#tree5 .ui-igtree-noderoot').length, 3, 'The item was not removed from #tree5');
+				equal($('#tree6 .ui-igtree-noderoot').length, 3, 'The item was not removed from #tree6');
+				equal($('#reference4 li').length, 3, 'The item was not removed from the templated list');
+				// ValueMutation on change
+				node1 = $('#tree5 > ul > li:first');
+				node2 = $('#tree6 > ul > li:first');
+				input1 = $('#reference4 li:first input:first');
+				equal(input1.val(), node1.children('a').text(), "The node text and the templated input value differ.");
+				equal(input1.val(), node2.children('a').text(), "The node text and the templated input value differ.");
+				input1.val("New desc").change();
+				equal(input1.val(), "New desc", "The node text and the templated input value differ.");
+				equal(input1.val(), node1.children('a').text(), "The node text and the templated input value differ.");
+				equal(input1.val(), node2.children('a').text(), "The node text and the templated input value differ.");
+				// Collection mutation on add/remove in the child data
+				// remove
+				var children1 = $('#tree5 li[data-path=3]').children('ul').children('li[data-role=node]'),
+					children2 = $('#tree6 li[data-path=3]').children('ul').children('li[data-role=node]');
+				equal($('#reference5 li').length, children1.length, 'Child count at node 0 (#tree5) is not the same as templated node count.');
+				equal($('#reference5 li').length, children2.length, 'Child count at node 0 (#tree6) is not the same as templated node count.');
+				equal(children2.length, children1.length, 'Child count at node 0 (#tree6) is not the same as child count at node 0 (#tree1).');
+				equal(children1.length, 6, 'Child count at node 0 (#tree5) is not one less: 6.');
+				$('#tree5').igTree('removeAt', '3_1');
+				children1 = $('#tree5 li[data-path=3]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree6 li[data-path=3]').children('ul').children('li[data-role=node]');
+				equal($('#reference5 li').length, children1.length, 'Child count at node 0 (#tree5) is not the same as templated node count.');
+				equal($('#reference5 li').length, children2.length, 'Child count at node 0 (#tree6) is not the same as templated node count.');
+				equal(children2.length, children1.length, 'Child count at node 0 (#tree6) is not the same as child count at node 0 (#tree1).');
+				equal(children1.length, 5, 'Child count at node 0 (#tree5) is not one less: 5.');
+				$('#tree5').igTree('removeAt', '3_2');
+				children1 = $('#tree5 li[data-path=3]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree6 li[data-path=3]').children('ul').children('li[data-role=node]');
+				equal($('#reference5 li').length, children1.length, 'Child count at node 0 (#tree5) is not the same as templated node count.');
+				equal($('#reference5 li').length, children2.length, 'Child count at node 0 (#tree6) is not the same as templated node count.');
+				equal(children2.length, children1.length, 'Child count at node 0 (#tree6) is not the same as child count at node 0 (#tree1).');
+				equal(children1.length, 4, 'Child count at node 0 (#tree5) is not one less: 4.');
+				// add
+				hierarchicalData2.push(new Item(1, 1));
+				hierarchicalData2.valueHasMutated();
+				children1 = $('#tree5 li[data-path=3]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree6 li[data-path=3]').children('ul').children('li[data-role=node]');
+				equal($('#reference5 li').length, children1.length, 'Child count at node 0 (#tree5) is not the same as templated node count.');
+				equal($('#reference5 li').length, children2.length, 'Child count at node 0 (#tree6) is not the same as templated node count.');
+				equal(children2.length, children1.length, 'Child count at node 0 (#tree6) is not the same as child count at node 0 (#tree1).');
+				equal(children1.length, 5, 'Child count at node 0 (#tree5) is not one more: 5.');
+				$('#tree5').igTree('addNode', new Item(2, 'New child'), $('#tree5 li[data-path=3]'));
+				children1 = $('#tree5 li[data-path=3]').children('ul').children('li[data-role=node]');
+				children2 = $('#tree6 li[data-path=3]').children('ul').children('li[data-role=node]');
+				equal($('#reference5 li').length, children1.length, 'Child count at node 0 (#tree5) is not the same as templated node count.');
+				equal($('#reference5 li').length, children2.length, 'Child count at node 0 (#tree6) is not the same as templated node count.');
+				equal(children2.length, children1.length, 'Child count at node 0 (#tree6) is not the same as child count at node 0 (#tree1).');
+				equal(children1.length, 6, 'Child count at node 0 (#tree5) is not one more: 6.');
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<div style="float: right; width: 400px; overflow: auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+	<div id="tree1" data-bind="igTree: {
+		dataSource: data,
+		bindings: {
+			textKey: 'name',
+			valueKey: 'id',
+			imageUrlKey: 'image',
+			navigateUrlKey: 'url',
+			childDataProperty: 'children'
+		}
+	}"></div>
+	<div id="tree2" data-bind="igTree: {
+		dataSource: data,
+		bindings: {
+			textKey: 'name',
+			imageUrlKey: 'image',
+			childDataProperty: 'children'
+		}
+	}"></div>
+	<div id="tree3" data-bind="igTree: {
+		dataSource: nonObservable,
+		bindings: {
+			textKey: 'name',
+			valueKey: 'id',
+			imageUrlKey: 'image',
+			navigateUrlKey: 'url',
+			childDataProperty: 'children'
+		}
+	}"></div>
+	<div id="tree4" data-bind="igTree: {
+		dataSource: nonObservable,
+		bindings: {
+			textKey: 'name',
+			valueKey: 'id',
+			imageUrlKey: 'image',
+			navigateUrlKey: 'url',
+			childDataProperty: 'children'
+		}
+	}"></div>
+	<div id="tree5" data-bind="igTree: {
+		dataSource: primaryData,
+		bindings: {
+			textKey: 'name',
+			primaryKey: 'id',
+			imageUrlKey: 'image',
+			navigateUrlKey: 'url',
+			childDataProperty: 'children'
+		}
+	}"></div>
+	<div id="tree6" data-bind="igTree: {
+		dataSource: primaryData,
+		bindings: {
+			textKey: 'name',
+			primaryKey: 'id',
+			imageUrlKey: 'image',
+			navigateUrlKey: 'url',
+			childDataProperty: 'children'
+		}
+	}"></div>
+	<div id="tree7" data-bind="igTree: {
+		dataSource: data,
+		bindings: {
+			textKey: 'name',
+			valueKey: 'id',
+			imageUrlKey: 'image',
+			childDataProperty: 'children',
+			nodeContentTemplate: 'Name: ${name}'
+		}
+	}"></div>
+	<ul id="reference" data-bind="template: { name: 'data-template', foreach: data }" style="list-style: none"></ul>
+	<ul id="reference2" data-bind="template: { name: 'data-template', foreach: data()[0].children }" style="list-style: none"></ul>
+	<ul id="reference3" data-bind="template: { name: 'data-template', foreach: nonObservable }" style="list-style: none"></ul>
+	<ul id="reference4" data-bind="template: { name: 'data-template', foreach: primaryData }" style="list-style: none"></ul>
+	<ul id="reference5" data-bind="template: { name: 'data-template', foreach: hierarchicalData2 }" style="list-style: none"></ul>
+</body>
+</html>

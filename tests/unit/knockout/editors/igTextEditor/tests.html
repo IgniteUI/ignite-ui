@@ -1,0 +1,475 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Numeric Editor KnockoutJS</title>
+	
+	<link type="text/css" href="../../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+	<script type="text/javascript" src="../../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.tree-en.js"></script>
+	                                    
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<!--<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.notifier.js"></script>-->
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	
+
+	<link type="text/css" href="../../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	
+	<script type='text/javascript' src='../../../../../bower_components/knockout/dist/knockout.debug.js'></script>
+	
+	
+	 
+	
+	<!--<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>-->
+	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script> -
+	
+	
+
+	
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
+	$(document).ready(function () {
+        var  testID;
+		QUnit.config.reorder = false;
+		function viewModel() {
+			nonObservable = "NonObservable";
+			this.number = ko.observable(25);
+			this.textValue = ko.observable("Some Val");
+			setDefaultNumber = function() {
+				this.number(27);   
+			};
+			setDefaultText = function() {
+				this.textValue("Default Text");
+			}
+		};
+		
+		model = new viewModel();
+        ko.applyBindings(model);
+    	
+		function loadTestbeds() {
+			$("#outerInput").igTextEditor();			
+		}
+			
+		initialized = false;
+		module('igTextEditor KnockoutJS', {
+				setup: function() {
+					//pause testing until tree is initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 100);
+						initialized = true;
+					}
+				},
+				teardown: function() {
+				}
+		});
+		
+		testID = "Initializing igTextEditors" ;
+		test(testID, 8, function () {
+			//
+			ok(typeof(ko.bindingHandlers.igTextEditor) !== 'undefined', 'igTextEditor knockoutJS extention script is not loaded');
+			ok(typeof(ko.bindingHandlers.igTextEditor) === 'object', 'igTextEditor knockoutJS extention is of a wrong type');
+			ok($('#inputEditor1').data("igTextEditor") !== undefined, 'Creating igTextEditor in an input');
+			ok($('#divEditor1').data("igTextEditor") !== undefined, 'Creating igTextEditor in a div');
+			ok($('#tdEditor1').data("igTextEditor") !== undefined, 'Creating igTextEditor in a td');
+			
+			//Check Initial expected value
+			equal($('#inputEditor1').igTextEditor("value"), "Some Val", 'The initial value is as expexted');
+			equal($('#divEditor1').igTextEditor("value"), "Some Val", 'The initial value is as expexted');
+			equal($('#tdEditor1').igTextEditor("value"), "Some Val", 'The initial value is as expexted');
+		});
+		testID = "Update model -> editor (input) -> Parent" ;
+		test(testID, 0, function () {	
+			$('#inputEditor1').on("igtexteditorvaluechanged", function (evt, ui) {
+				expect(6);
+				checkAllValues("New IV", "Values are as expected");	
+			});
+				
+			$('#inputEditor1').igTextEditor("setFocus");
+			$('#inputEditor1').val("New IV");
+			$('#outerInput').focus();
+			stop();
+			setTimeout(function () {
+				start();
+					$("#outerInput").igTextEditor("setFocus");
+			}, 200);
+		});
+
+
+
+		testID = "Update model -> editor (div)";
+		test(testID, function () {
+			stop();
+			setTimeout(function () {
+				//Update div Editor and check
+				start();
+				expect(0); // This + expect(6) down, is hack when executing asserts in timeout and inside event handlers.
+
+				$('#divEditor1').bind('igtexteditorvaluechanged', function (evt, ui) {
+					expect(6);
+					checkAllValues("New Div Value", "Values are as expected");
+				});
+				$('#divEditor1').igTextEditor("setFocus");	
+				$('#divEditor1').find('input').val("New Div Value");
+        
+				$('#outerInput').focus();
+				stop();
+				setTimeout(function () {
+					start();
+					$("#outerInput").igTextEditor("setFocus");
+					
+				}, 200);			
+			}, 200);
+		});
+		testID = "Update model -> editor (td)";
+		test(testID, function () {
+			stop();
+			setTimeout(function () {
+				//Update td Editor and check
+				start();
+				expect(0); // This + expect(6) down, is hack when executing asserts in timeout and inside event handlers.
+
+				$('#tdEditor1').bind('igtexteditorvaluechanged', function (evt, ui) {
+					expect(6);
+					checkAllValues("New td Value", "Values are as expected");
+				});
+				$('#tdEditor1').igTextEditor("setFocus");	
+				$('#tdEditor1').find('input').val("New td Value");
+
+				$('#outerInput').focus();
+				stop();
+				setTimeout(function () {
+					start();
+					$("#outerInput").igTextEditor("setFocus");
+					$('#tdEditor1').bind('igtexteditorvaluechanged')
+				}, 200);			
+			}, 200);
+		});
+		
+		testID = "Update Model, check editors";
+		test(testID, 6, function () {
+			$("#resetButton").click();
+			checkAllValues("Default Text", "Values are as expected");
+		});
+		testID = "updateMode set to not allowed value";
+			test(testID, 1, function () {
+			var err;
+			QUnit.throws(function () {
+				$("#tempContainer").empty();
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igTextEditor: { value: textValue, width: 160, updateMode:\"none\" }'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+			}, function (err) { return err.message.indexOf($.ig.Editor.locale.updateModeUnsupportedValue) > -1; }, 'An error was correctly thrown when updateMode option is not correctly changed');
+			ko.cleanNode(document.getElementById("tempEditor"));
+			$("#tempContainer").empty();
+		});
+		testID = "Value set to nonObservable value";
+			test(testID, 5, function () {
+			stop();
+			setTimeout(function () {
+				start();
+				var err, evt;			
+					$("#tempContainer").empty();
+					//Default Update Mode
+					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igTextEditor: { value: nonObservable, width: 160 }'></input>");
+					ko.applyBindings(model, document.getElementById("tempEditor"));
+					equal($("#tempEditor").igTextEditor("value"), nonObservable, "NonObservable value is assigned correctly");
+					$("#tempEditor").igTextEditor("value", "New non Observable");
+					evt = $.Event("keypress");
+					evt.keyCode = 88;
+					$("#outerInput").trigger(evt);
+					notEqual($("#tempEditor").igTextEditor("value"), $('#inputEditor1').igTextEditor("value"), "The value should not be updated");
+					//Set Defaul value from the model
+					$("#resetButton").click();
+					//The value of the nonObservable should not be updated
+					notEqual($("#tempEditor").igTextEditor("value"), $('#inputEditor1').igTextEditor("value"), "The value should not be updated");
+					$("#tempContainer").empty();
+					//immediate update mode
+					$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igTextEditor: { value: nonObservable, width: 160, updateMode:\"immediate\" }'></input>");
+					ko.applyBindings(model, document.getElementById("tempEditor"));
+					equal($("#tempEditor").igTextEditor("value"), nonObservable, "NonObservable value is assigned correctly");
+					evt = $.Event("keydown");
+					evt.keyCode = 65;
+					$("#tempEditor").trigger(evt);
+					evt = $.Event("keypress");
+					evt.keyCode = 65;
+					$("#tempEditor").trigger(evt);
+					evt = $.Event("keyup");
+					evt.keyCode = 65;
+					$("#tempEditor").trigger(evt);
+					
+					evt = $.Event("keydown");
+					evt.keyCode = 56;
+					$("#tempEditor").trigger(evt);
+					evt = $.Event("keypress");
+					evt.keyCode = 56;
+					$("#tempEditor").trigger(evt);
+					evt = $.Event("keyup");
+					evt.keyCode = 56;
+					$("#tempEditor").trigger(evt);
+					notEqual($("#tempEditor").igTextEditor("value"), $('#inputEditor1').igTextEditor("value"), "The value should not be updated");
+					$("#tempContainer").empty();
+				}, 200);
+		});
+		testID = "ListItem change -> immediate";
+		test(testID, 13, function () {
+			$("#tempContainer").empty();
+				$("#tempContainer").append("<input id=\"tempEditor\" data-bind='igTextEditor: { value: textValue, width: 160, updateMode:\"immediate\" , listItems : [\"red\", \"blue\", \"yellow\" ],button: \"dropdown\"}'></input>");
+				ko.applyBindings(model, document.getElementById("tempEditor"));
+
+			$("#tempEditor").igTextEditor("dropDownButton").click();
+			stop();
+			setTimeout(function () {
+				start();
+				var item3 = $("#tempEditor").data("igTextEditor")._listItems()[2];
+				mouseInteraction("click", item3);
+				checkAllValues("yellow", "The value is updated on list selection changed");
+				$("#tempEditor").igTextEditor("dropDownButton").click();
+				stop();
+				setTimeout(function () {
+					start();
+					var item1 = $("#tempEditor").data("igTextEditor")._listItems()[0];
+					mouseInteraction("click", item1);
+				checkAllValues("red", "The value is updated on on list selection changed");
+				$("#resetButton").click();
+				//Check if this editor defaults the value
+				equal($("#tempEditor").igTextEditor("value"), "Default Text", "The default text is correct");
+				$("#tempContainer").empty();
+				}, 100);
+			}, 100);
+
+		});
+
+
+		testID = "updateMode -> onChange";
+		test(testID, 6, function () {
+
+			var elementParent = $("#inputEditor1").parent();
+			ko.cleanNode(document.getElementById("inputEditor1"));
+
+			elementParent.empty();
+			elementParent.append("<input id=\"inputEditor1\" data-bind='igTextEditor: { value: textValue, width: 160, updateMode:\"onchange\" }'></input>");
+			ko.applyBindings(model, document.getElementById("inputEditor1"));
+			
+			$('#inputEditor1').igTextEditor('setFocus');
+			$('#inputEditor1').igTextEditor('value', "");
+			testChange("input");
+		});
+		testID = "updateMode -> immediate";
+		test(testID, 18, function () {
+			var elementParent;
+		//reinitialize all the 3 editors editors
+			
+			ko.cleanNode(document.getElementById("inputEditor1"));
+			elementParent = $("#inputEditor1").parent()
+						elementParent.empty();
+						elementParent.append("<input id=\"inputEditor1\" data-bind='igTextEditor: { value: textValue, width: 160, updateMode:\"immediate\" }'></input>");
+						ko.applyBindings(model, document.getElementById("inputEditor1"));
+			$('#inputEditor1').igTextEditor('setFocus');
+			$('#inputEditor1').igTextEditor('value', "");
+			$('#inputEditor1').on("igtexteditorkeypress", function (evt, ui) {
+				var char = String.fromCharCode(evt.charCode);
+				ui.editorInput.val(ui.editorInput.val() + char);
+		});
+
+			testImmediate("input");
+						
+						
+		});
+		testID = "update from outside input";		
+		test(testID, 6, function () {		
+			$('#inputValue').val("New Pesho").change();
+			checkAllValues("New Pesho", "Values are as expected");
+		});
+						
+		function testImmediate(element) {
+			//editorID is the element postfixed with Editor1
+			var editorID = element + "Editor1", editorInput;
+			editorInput = $("#" + editorID).igTextEditor("field");
+			keyInteraction(69, editorInput);
+			checkAllTextValues("E", "The value is updated on keyUp");
+			keyInteraction(54, editorInput);
+			checkAllTextValues("E6", "The value is updated on keyUp");
+			keyInteraction(88, editorInput);
+			checkAllTextValues("E6X", "The value is updated on keyUp");
+					}; 
+		function testChange(element) {
+			//editorID is the element postfixed with Editor1
+			var editorID = element + "Editor1", editorInput;
+			editorInput = $("#" + editorID).igTextEditor("field");
+			editorInput.focus();
+			editorInput.val("E6X").change();
+			
+			$('#outerInput').focus();
+			checkAllValues("E6X", "The value is updated on change");
+		};
+
+		});
+		function checkAllTextValues(val, message) { //used in editMode
+			equal($('#inputEditor1').igTextEditor("field").val(), val, message + " (inputEditor)");
+			equal($('#divEditor1').igTextEditor("field").val(), val, message + " (divEditor1)");
+			equal($('#tdEditor1').igTextEditor("field").val(), val, message + " (tdEditor1)");
+			equal($("#spanValue").html(), val, message + " (spanValue)");
+			equal($("#inputValue").val(), val, message + " (inputValue)");
+			equal($("#divValue").html(), val, message + " (divValue)");
+		}
+		function checkAllValues(val, message) {
+			equal($('#inputEditor1').igTextEditor("value"), val, message + " (inputEditor)");
+			equal($('#divEditor1').igTextEditor("value"), val, message + " (divEditor1)");
+			equal($('#tdEditor1').igTextEditor("value"), val, message + " (tdEditor1)");
+			equal($("#spanValue").html(), val, message + " (spanValue)");
+			equal($("#inputValue").val(), val, message + " (inputValue)");
+			equal($("#divValue").html(), val, message + " (divValue)");
+		}
+		function mouseInteraction(type, element) {
+		  // create a mouse click event
+		  var event = document.createEvent('MouseEvents');
+		  event.initMouseEvent(type, true, true, window, 1, 0, 0);
+		  if (type === "mousemove") {
+		   event.pageX = 100;
+		   event.pageY = 100;
+		  }
+		  // send click to element
+		  element.dispatchEvent(event);
+	
+		 }
+		function keyInteraction(key, target, special) {
+			keyDownChar(key, target, special);
+			keyPressChar(key, target, special);
+			keyUpChar(key, target, special);
+		}
+		function keyDownChar(key, target, special) {
+			var evt = $.Event("keydown");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function keyPressChar(key, target, special) {
+			var evt = $.Event("keypress");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+		function keyUpChar(key, target, special) {
+			var evt = $.Event("keyup");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		}
+</script>
+</head>
+<body>
+<div style="float:right;width:500px;overflow:auto">
+     <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px;height: 1000px;">
+
+
+<table style="cell-padding: 2px; border: black solid 1px; width:350px;">
+	
+		<tr>
+			
+			<th style="width: 100px;">Component Type</th>
+			<th style="width: 60px;">Element</th>
+			<th style="width: 260px;">Component</th>
+			
+		</tr>
+		<tr>
+		<td>igTextEditor</td>	
+		<td>input</td>
+		<td>
+			<input id="inputEditor1" 
+				data-bind="igTextEditor: {
+					value: textValue,
+					width: '160px'
+				}">
+			</input>		
+		</td>
+		</tr>
+		<tr>
+		<td>igTextEditor</td>		
+		<td>div</td>
+		<td>
+		<div id="divEditor1" 
+			data-bind="igTextEditor: {
+				value: textValue,
+				width: '160px'
+			}">
+		</div>
+		</td>
+		</tr>
+		<tr>
+		<td>igTextEditor</td>		
+		<td>td</td>
+		<td>
+		<span id="tdEditor1" data-bind="igTextEditor: {
+		    value: textValue,
+		    width: '160px'
+	    }">
+        </span>
+        </td>
+		</tr>
+	<tr>
+		<td>Bind Span</td>		
+		<td>span</td>
+		<td> <span id="spanValue" data-bind="text: textValue"></span><br /> 
+		</td>
+	</tr>
+	<tr>
+		<td>Bind input</td>		
+		<td>input</td>
+		<td> <input id="inputValue" data-bind="value: textValue"></input> 
+		</td>
+	</tr>
+	<tr>
+		<td>Bind div</td>		
+		<td>div</td>
+		<td> <div id="divValue" data-bind="text: textValue"></div> 
+		</td>
+	</tr>
+	<tr>
+		<td>Helper</td>
+		<td><input id="outerInput"></input></td>
+		<td><input id="resetButton" type="button" data-bind="click: setDefaultText" value="Reset Text Value"></input>
+	</tr>
+</table>
+		<input id="GoshoEditor1" data-bind="value: textValue"></input>
+		<input id="outerInputTest" type="text"></input>
+		<div id="tempContainer"></div>
+		<div id="tempContainer1"></div>
+		<input id="myButton" type="button" value="Nothing">
+</div>
+</body>
+</html>
+

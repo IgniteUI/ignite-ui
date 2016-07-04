@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title> Infragistics jQuery Data Source - Tests for general properties, API methods different than filtering, sorting or paging </title> 
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+	
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/data/AdventureWorks.js"></script>
+	<script type="text/javascript"> 
+	 
+	 $(document).ready(function () {
+		
+		// load data
+		
+		
+		// define a simple data source control
+		var ds1 = new $.ig.DataSource({dataSource: adventureWorks, aggregateTransactions: false, primaryKey: "ProductID"});
+		ds1.dataBind();
+		
+		var ds2 = new $.ig.DataSource({dataSource: adventureWorks, aggregateTransactions: true, primaryKey: "ProductID"});
+		ds2.dataBind();
+		
+		startTesting();
+			
+		function startTesting()
+		{
+			QUnit.init();
+			QUnit.start();
+
+			module("igDataSource transactions (autoCommit - ");
+			
+			test("check addRow => deleteRow (same row) generates two transactions when aggregateTransactions is false", function() {
+				ds1.addRow(11101, {ProductID: 11101, Name: "Raz dva tri", MakeFlag: true}, false);
+				// delete the row
+				ds1.deleteRow(11101);
+				equal(ds1.pendingTransactions().length > 0, true);
+				ds1.rollback();
+			});
+			
+			test("check that addRow => deleteRow (same row) generates no transactions when aggregateTransactions is true", function() {
+				ds2.addRow(11101, {ProductID: 11101, Name: "Raz dva tri", MakeFlag: true}, false);
+				// delete the row
+				ds2.deleteRow(11101);
+				equal(ds2.pendingTransactions().length, 0);
+			});
+			
+			test("check when a cell is edited, then edited again to its original value, there are two transactions when aggregateTransactions is false", function() {
+				ds1.setCellValue(1, "Name", "new value");
+				ds1.setCellValue(1, "Name", "Adjustable Race");
+//				Datasource.js: An optimization was made to lower down the transaction log count, so the case is to have only 1 transaction
+//				_addTransaction: function (t) {
+//							var exists = false, i = 0, prop, globalt, j, dirty = true, k;
+//							if (t.type === "cell") {
+//								// check if we don't have an existing transaction and if we do, overwrite it
+//								for (i = 0; i < this._transactionLog.length; i++) {
+				equal(ds1.pendingTransactions().length, 1);
+				ds1.rollback();
+			});
+			
+			test("check when a cell is edited, then edited again to its original value, there are no transactions when aggregateTransactions is true", function() {
+				ds2.setCellValue(1, "Name", "new value");
+				ds2.setCellValue(1, "Name", "Adjustable Race");
+				equal(ds2.pendingTransactions().length, 0);
+				ds2.rollback();
+			});
+			
+			test("check when cells in a row is edited, then edited again to its original value, there are two transactions when aggregateTransactions is false", function() {
+				ds1.updateRow(1, {Name: "new value", ProductNumber : "AR-111111"});
+				ds1.updateRow(1, {Name: "Adjustable Race", ProductNumber : "AR-5381"});
+				equal(ds1.pendingTransactions().length, 1);
+				ds1.rollback();
+			});
+			
+			test("check when cells in a row is edited, then edited again to its original value, there are no transactions when aggregateTransactions is true", function() {
+				ds2.updateRow(1, {Name: "new value", ProductNumber : "AR-111111"});
+				ds2.updateRow(1, {Name: "Adjustable Race", ProductNumber : "AR-5381"});
+				equal(ds2.pendingTransactions().length, 0);
+				ds2.rollback();
+			});
+		}
+	});
+	
+	
+	</script>
+	
+</head>
+<body>
+<div id="div1"></div>
+<div style="float:right;width:400px;overflow:auto"">
+    <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+
+</body>
+</html>

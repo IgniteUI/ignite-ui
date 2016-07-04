@@ -1,0 +1,8 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.layoutmanager.js",
+		"<%= config.modulesDir%>/infragistics.ui.tilemanager.js",
+		"<%= config.modulesDir%>/infragistics.ui.splitter.js",
+		"<%= config.modulesDir%>/infragistics.dataSource.js"
+	]
+}

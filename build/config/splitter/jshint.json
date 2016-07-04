@@ -1,0 +1,7 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.splitter.js",
+		"<%= config.modulesDir%>/infragistics.ui.shared.js",
+		"<%= config.modulesDir%>/infragistics.util.js"
+	]
+}
