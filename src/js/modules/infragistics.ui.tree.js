@@ -96,16 +96,16 @@ if (typeof jQuery !== "function") {
 			insertLine: "ui-state-default ui-igtree-insertline"
 		},
         options: {
-			/* type="string|number|null Gets sets how the width of the control can be set."
+			/* type="string|number|null" Gets sets the width of the control container.
                 string The widget width can be set in pixels (px) and percentage (%).
                 number The widget width can be set as a number in pixels.
-                null type="object" will stretch to fit data, if no other widths are defined.
+                null type="object" No width will be applied to the container and it will be rendered by default for the browser rendering engine.
             */
 			width: null,
-			/* type="string|number|null Gets sets how the height of the control can be set."
-                string The height width can be set in pixels (px) and percentage (%).
-                number The height width can be set as a number in pixels.
-                null type="object" will fit the tree inside its parent container, if no other widths are defined.
+			/* type="string|number|null" Gets sets how the height of of the control container.
+                string The widget height can be set in pixels (px) and percentage (%).
+                number The widget height can be set as a number in pixels.
+                null type="object" No height will be applied to the container and it will be rendered default for the browser rendering engine.
             */
 			height: null,
 			/* type="off|biState|triState" Gets the type of checkboxes rendered before the tree nodes. Can be set only at initialization.
@@ -2840,47 +2840,6 @@ if (typeof jQuery !== "function") {
 				collection.push(self.nodeFromElement($(this).closest("li[data-role=node]")));
 			});
 
-			// if (parent && parent.length > 0) {
-				// data = this.nodeDataFor(parent.attr('data-path'));
-				// binding = this._retrieveCurrentDepthBinding(parent.parent().attr('data-depth'));
-				// if (binding.hasOwnProperty('childDataProperty') && data.hasOwnProperty(binding.childDataProperty)) {
-					// data = data[binding.childDataProperty];
-					// tempPath = parent.attr('data-path') + this.options.pathSeparator;
-					// if (binding.hasOwnProperty('bindings')) {
-						// binding = binding.bindings;
-					// }
-				// } else {
-					// return collection;
-				// }
-			// } else {
-				// data = this.options.dataSource.root().data();
-				// binding = this.options.bindings;
-				// tempPath = '';
-			// }
-
-			// if (data) {
-				// for (i = 0; i < data.length; i++) {
-					// if (data[i][binding.textKey].toString() === text) {
-						// if (binding.hasOwnProperty('primaryKey') && data[i].hasOwnProperty(binding.primaryKey)) {
-							// tempNode = this.nodeByPath(tempPath + data[i][binding.primaryKey]);
-							// collection.push(this.nodeFromElement(tempNode));
-							// collection = collection.concat(this.findNodesByText(text, tempNode));
-						// } else {
-							// tempNode = this.nodeByPath(tempPath + i);
-							// collection.push(this.nodeFromElement(tempNode));
-							// collection = collection.concat(this.findNodesByText(text, tempNode));
-						// }
-					// } else {
-						// if (binding.hasOwnProperty('primaryKey') && data[i].hasOwnProperty(binding.primaryKey)) {
-							// tempNode = this.nodeByPath(tempPath + data[i][binding.primaryKey]);
-							// collection = collection.concat(this.findNodesByText(text, tempNode));
-						// } else {
-							// tempNode = this.nodeByPath(tempPath + i);
-							// collection = collection.concat(this.findNodesByText(text, tempNode));
-						// }
-					// }
-				// }
-			// }
 			return collection;
 		},
 		findImmediateNodesByText: function (text, parent) {
@@ -2897,44 +2856,6 @@ if (typeof jQuery !== "function") {
 				collection.push(self.nodeFromElement($(this).closest("li[data-role=node]")));
 			});
 
-			// if (parent && parent.length > 0) {
-				// binding = this._retrieveCurrentDepthBinding(parent.parent().attr('data-depth'));
-				// data = this.nodeDataFor(parent.attr('data-path'));
-				// if (binding.hasOwnProperty('childDataProperty') && data.hasOwnProperty(binding.childDataProperty)) {
-					// data = data[binding.childDataProperty];
-					// tempPath = parent.attr('data-path');
-					// if (binding.hasOwnProperty('bindings')) {
-						// binding = binding.bindings;
-					// }
-				// } else {
-					// return collection;
-				// }
-				// for (i = 0; i < data.length; i++) {
-					// if (data[i][binding.textKey].toString() === text) {
-						// if (binding.hasOwnProperty('primaryKey') && data[i].hasOwnProperty(binding.primaryKey)) {
-							// tempNode = this.nodeByPath(tempPath + this.options.pathSeparator + data[i][binding.primaryKey]);
-							// collection.push(this.nodeFromElement(tempNode));
-						// } else {
-							// tempNode = this.nodeByPath(tempPath + this.options.pathSeparator + i);
-							// collection.push(this.nodeFromElement(tempNode));
-						// }
-					// }
-				// }
-			// } else {
-				// binding = this.options.bindings;
-				// data = this.options.dataSource.root().data();
-				// for (i = 0; i < data.length; i++) {
-					// if (data[i][binding.textKey].toString() === text) {
-						// if (binding.hasOwnProperty('primaryKey') && data[i].hasOwnProperty(binding.primaryKey)) {
-							// tempNode = this.nodeByPath(data[i][binding.primaryKey]);
-							// collection.push(this.nodeFromElement(tempNode));
-						// } else {
-							// tempNode = this.nodeByPath(i);
-							// collection.push(this.nodeFromElement(tempNode));
-						// }
-					// }
-				// }
-			// }
 			return collection;
 		},
 		nodeByIndex: function (index, parent) {
