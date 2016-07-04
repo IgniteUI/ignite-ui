@@ -68,7 +68,6 @@
     cursor: col-resize;
 	float: left;
     width: 4px;
-    box-sizing: content-box;
 }
 .ui-igsplitter-collapse-button-vertical-left,
 .ui-igsplitter-collapse-button-vertical-right 
@@ -114,8 +113,16 @@
 	float: none;
 	width: 100%;
 	height: 4px;
+}
+
+/* keep splitter layout working properly when bootstrap is used on the page */
+.ui-igsplitter-splitbar-horizontal,
+.ui-igsplitter-splitbar-vertical,
+.ui-igsplitter-splitbar-horizontal div,
+.ui-igsplitter-splitbar-vertical div {
     box-sizing: content-box;
 }
+
 .ui-igsplitter-collapse-button-horizontal-left,
 .ui-igsplitter-collapse-button-horizontal-right
 {    
