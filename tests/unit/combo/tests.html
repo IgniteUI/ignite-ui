@@ -691,6 +691,7 @@
                     strictEqual($item.find("div.ui-igcombo-listitemtextwithcheckbox").length, 1, "Combo list item[" + i + "] div element does not have ui-igcombo-listitemtextwithcheckbox class applied");
                 }
             }
+            $.mockjaxSettings.logging = 0;  // only critical error messages
             // Mock remote binding
             $.mockjax({
                 url: "http://localhost/api/invoices*",

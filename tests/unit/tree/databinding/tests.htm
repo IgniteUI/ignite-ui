@@ -157,7 +157,7 @@
 				}]
 			};
 		$(document).ready(function () {
-
+			$.mockjaxSettings.logging = 0;  // only critical error messages
 			$.mockjax({
 				url: '/api/items',
 				contentType: 'text/json',

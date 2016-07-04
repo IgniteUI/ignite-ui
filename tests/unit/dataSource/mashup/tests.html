@@ -49,6 +49,7 @@
 		namedData2[8] = { "ID": "8", "Name": "Djonka", "Price": "8"};
 		namedData2[9] = { "ID": "9", "Name": "no match", "Price": "9"};
 		
+		$.mockjaxSettings.logging = 0;  // only critical error messages
 		$.mockjax({
 			url: 'http://services.odata.org/OData/OData.svc/Products?$format=json',
 			contentType: 'text/json',
