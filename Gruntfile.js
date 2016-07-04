@@ -109,7 +109,7 @@ module.exports = function (grunt) {
 				}]
 			}
 		},
-		uglify: require('./build/config/all/combined-files.js')
+		uglify: require('./build/packages/combined-files.js')
     });
 
 	grunt.loadNpmTasks("grunt-contrib-clean");
