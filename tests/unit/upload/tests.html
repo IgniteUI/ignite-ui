@@ -44,6 +44,8 @@
                 isTest10Started = false;
                 uploader2 = $('#' + uploader3Id);
 	        // Test mockServer
+			
+			$.mockjaxSettings.logging = 0;  // only critical error messages
 
 	        id = $.mockjax({
 	            url: 'http://localhost/asdfasdf*',

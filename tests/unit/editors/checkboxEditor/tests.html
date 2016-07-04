@@ -279,8 +279,6 @@
 		    $chk.igCheckboxEditor("setFocus");
 		    ok($chk.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not applied");
 		    ok($(document.activeElement).html() === $chk.igCheckboxEditor("editorContainer").html(), "Focus class not applied");
-		    console.log($(document.activeElement).html());
-		    console.log($chk.igCheckboxEditor("editorContainer").html());
 		    $chk1.igCheckboxEditor("setFocus");
 		    ok($chk1.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not removed");
 		});
