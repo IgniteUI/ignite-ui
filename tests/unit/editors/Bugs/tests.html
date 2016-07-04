@@ -632,65 +632,67 @@
 
 			testId = 'Bug 211062';
 			test(testId, 3, function () {
+				var calendar, getDDmmYYYYHHSS, targetDate;
+				getDDmmYYYYHHSS = function (date) {
+					var result = "", day, month, minutes, hours;
+					if (typeof date.getTime !== "function") {
+						return;
+					}
+					day = date.getDate();
+					if (day < 10) {
+						day = "0" + day.toString();
+					} else {
+						day = day.toString();
+					}
+					month = date.getMonth() + 1;
+					if (month < 10) {
+						month = "0" + month.toString();
+					} else {
+						month = month.toString();
+					}
+					hours = date.getHours();
+					if (hours < 10) {
+						hours = "0" + hours;
+					} else {
+						hours = hours.toString();
+					}
+					minutes = date.getMinutes();
+					if (minutes < 10) {
+						minutes = "0" + minutes;
+					} else {
+						minutes = minutes.toString();
+					}
+					result += day;
+					result += "/";
+					result += month;
+					result += "/";
+					result += date.getFullYear();
+					result += " ";
+					result += hours;
+					result += ":";
+					result += minutes;
+
+					return result;
+				}
+				
+				$("#211062Editor1").one("igdatepickervaluechanged", function (evt, ui) {
+					equal(getDDmmYYYYHHSS(ui.newValue), getDDmmYYYYHHSS(targetDate), "Date should be " + getDDmmYYYYHHSS(targetDate));
+				});
+
+				$("#211062Editor1").igDatePicker("dropDownButton").click();
+				calendar = $("#211062Editor1").igDatePicker("getCalendar");
+				targetDate = new Date(); // keep date as close to the click time
+				$(calendar).find(".ui-datepicker-today").find("a").click();
+				equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The text should've changed to " + getDDmmYYYYHHSS(targetDate));
+				$("#211062Editor1").igDatePicker("field").blur();
 				stop();
 				setTimeout(function () {
+					//wait blur/focus dance on selection:
 					start();
-					var calendar, getDDmmYYYYHHSS, targetDate;
-					getDDmmYYYYHHSS = function (date) {
-						var result = "", day, month, minutes, hours;
-						if (typeof date.getTime !== "function") {
-							return;
-						}
-						day = date.getDate();
-						if (day < 10) {
-							day = "0" + day.toString();
-						} else {
-							day = day.toString();
-						}
-						month = date.getMonth() + 1;
-						if (month < 10) {
-							month = "0" + month.toString();
-						} else {
-							month = month.toString();
-						}
-						hours = date.getHours();
-						if (hours < 10) {
-							hours = "0" + hours;
-						} else {
-							hours = hours.toString();
-						}
-						minutes = date.getMinutes();
-						if (minutes < 10) {
-							minutes = "0" + minutes;
-						} else {
-							minutes = minutes.toString();
-						}
-						result += day;
-						result += "/";
-						result += month;
-						result += "/";
-						result += date.getFullYear();
-						result += " ";
-						result += hours;
-						result += ":";
-						result += minutes;
-
-						return result;
-					}
-					targetDate = new Date();
-
-					$("#211062Editor1").one("igdatepickervaluechanged", function (evt, ui) {
-						equal(getDDmmYYYYHHSS(ui.newValue), getDDmmYYYYHHSS(targetDate), "Date should be " + getDDmmYYYYHHSS(targetDate));
-					});
-
-					$("#211062Editor1").igDatePicker("dropDownButton").click();
-					calendar = $("#211062Editor1").igDatePicker("getCalendar");
-					$(calendar).find(".ui-datepicker-today").find("a").click();
-					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The value is changed to" + getDDmmYYYYHHSS(targetDate));
-					$("#211062Editor1").igDatePicker("field").blur();
-					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The value is changed to" + getDDmmYYYYHHSS(targetDate));
-				}, 1000); //This timeout is need because the test requires calendar which needs focus
+					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The text after blur should've been " + getDDmmYYYYHHSS(targetDate));
+				}, 50);
 			});
+			
 			
 			testId = 'Bug 210990';
 			test(testId, 3, function () {
