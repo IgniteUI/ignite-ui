@@ -6,7 +6,9 @@ script:
 - grunt coveralls
 after_success:
 - grunt build
-before_deploy: "cd dist"
+before_deploy:
+- cd dist
+- npm version "$TRAVIS_TAG" --save
 deploy:
   provider: npm
   skip_cleanup: true
