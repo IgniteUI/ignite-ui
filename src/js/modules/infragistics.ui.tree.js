@@ -108,75 +108,77 @@ if (typeof jQuery !== "function") {
                 null type="object" No height will be applied to the container and it will be rendered default for the browser rendering engine.
             */
 			height: null,
-			/* type="off|biState|triState" Gets the type of checkboxes rendered before the tree nodes. Can be set only at initialization.
-				off type="string" Checkboxes are turned off and not rendered for the tree.
+			/* type="off|biState|triState" Gets the behavior and type of the checkboxes rendered for the tree nodes. Can be set only at initialization.
+				off type="string" Checkboxes are turned off and are not rendered for the tree.
 				biState type="string" Checkboxes are rendered and support two states (checked and unchecked). Checkboxes do not cascade down or up in this mode.
 				triState type="string" Checkboxes are rendered and support three states (checked, partial and unchecked). Checkboxes cascade up and down in this mode.
             */
 			checkboxMode: "off",
 			/* type="bool" If set to true then only one branch at each level of the tree can be expanded at a time. Otherwise multiple branches can be expanded at a time. */
 			singleBranchExpand: false,
-			/* type="bool" Setting this option to false would make the tree to not apply hover styles on the nodes when they are hovered */
+			/* type="bool" Setting this option to false would make the tree to not apply hover styles on the nodes when they are hovered. */
 			hotTracking: true,
-			/* type="string"
-				string Image with the specified URL will be rendered for each node that has children (If you define both image URL and class the URL would be rendered).
+			/* type="string|null"
+				string Image with the specified URL will be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
 				null Option is ignored
             */
 			parentNodeImageUrl: null,
-			/* type="string"
-				string Specified class with a CSS sprite would be rendered for each node that has children (If you define both image URL and class the URL would be rendered).
+			/* type="string|null"
+				string Specified class with a CSS sprite that would be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
 				null Option is ignored
             */
 			parentNodeImageClass: null,
-			/* type="string"
+			/* type="string|null"
 				string Specified a tooltip that would be rendered for each node that has children.
 				null Option is ignored
             */
 			parentNodeImageTooltip: null,
-			/* type="string"
-				string Image with the specified URL will be rendered for each node that has no children (If you define both image URL and class the URL would be rendered).
+			/* type="string|null"
+				string Image with the specified URL will be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
 				null Option is ignored
             */
 			leafNodeImageUrl: null,
-			/* type="string"
-				string Specified class with a CSS sprite would be rendered for each node that has no children (If you define both image URL and class the URL would be rendered).
+			/* type="string|null"
+				string Specified class with a CSS sprite that would be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
 				null Option is ignored
             */
 			leafNodeImageClass: null,
-			/* type="string"
+			/* type="string|null"
 				string Specified a tooltip that would be rendered for each node that has no children.
 				null Option is ignored
             */
 			leafNodeImageTooltip: null,
 			/* type="number" Specifies the duration of each animation such as the expand/collapse. */
 			animationDuration: 200,
-			/* type="string" Specifies the node data-path separator character. */
+			/* type="string" Specifies the node data-path attribute separator character. */
 			pathSeparator: "_",
-			/* type="object" Specifies any valid data source accepted by $.ig.DataSource, or an instance of an $.ig.DataSource itself. */
+			/* type="object" Specifies any valid data source accepted by $.ig.DataSource, or an instance of an $.ig.DataSource itself. 
+				Once the data source is initialized, this option becomes an instance of the $.ig.HierarchicalDataSource.
+			*/
 			dataSource: null,
-			/* type="string" Specifies a remote URL accepted by $.ig.DataSource in order to request data from it */
+			/* type="string|null" Specifies a remote URL accepted by $.ig.DataSource in order to request data from it. */
 			dataSourceUrl: null,
-			/* type="string" Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource and its type property. */
+			/* type="string|null" Delegates the value to $.ig.DataSource.settings.type. Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource.settings.type. */
 			dataSourceType: null,
-			/* type="string" see $.ig.DataSource.
+			/* type="string|null" Delegates the value to $.ig.DataSource.settings.responseDataKey. Please refer to the documentation of $.ig.DataSource.settings.responseDataKey.
 				string Specifies the name of the property in which data records are held if the response is wrapped.
 				null Option is ignored.
 			*/
 			responseDataKey: null,
-			/* type="string"
-				string Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource and its type property.
+			/* type="string|null" Delegates the value to $.ig.DataSource.settings.responseDataType. Please refer to the documentation of $.ig.DataSource.settings.responseDataType.
+				string Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType .
 				null Option is ignored.
 			*/
 			responseDataType: null,
-			/* type="string" specifies the HTTP verb to be used to issue the request */
+			/* type="string" Specifies the HTTP verb to be used to issue the requests to the dataSourceUrl. */
 			requestType: "GET",
-			/* type="string" content type of the response. See http://api.jquery.com/jQuery.ajax/ => contentType */
+			/* type="string" Content type of the response from the dataSourceUrl. See http://api.jquery.com/jQuery.ajax/ => contentType */
 			responseContentType: null,
 			/* type="number" Specifies the depth down to which the tree would be expanded upon initial render. */
 			initialExpandDepth: -1,
-			/* type="bool" Specifies all the data would be bound initially or each child collection would be bound upon demand. */
+			/* type="bool" Specifies whether all the data would be bound initially or each child collection would be bound upon expand. */
 			loadOnDemand: false,
-			/* type="object" Specifies the data binding properties and keys. */
+			/* type="object" Specifies the data binding properties and keys. The igTree uses these to extract the corresponding data from the dataSource. */
 			bindings: {
 				/* type="string" Specifies the name of the data source property the value of which would be the node text. */
 				textKey: "Text",
@@ -226,7 +228,7 @@ if (typeof jQuery !== "function") {
 					/* Recursively defines next layer fo bindings */
 				}
 			},
-			/* type="string" Specifies the default target of the node anchor. */
+			/* type="string" Specifies the default target attribute value for the node anchors. */
 			defaultNodeTarget: "_self",
 			/* type="boolean" If set to true it would enable drag and drop functionality. */
 			dragAndDrop: false,
@@ -234,11 +236,12 @@ if (typeof jQuery !== "function") {
 			updateUrl: null,
 			/* type="object" Specific settings for the drag and drop functionality. */
 			dragAndDropSettings: {
-				/* type="boolean" Specifies whether the widget will accept D&D from other controls. boolean. Default value is false. */
+				/* type="boolean" Specifies whether the widget will accept drag and drop from other controls. */
 				allowDrop: false,
-				/* type="default|copy|move" Specifies the D&D mode. Accepted values "default", "copy", "move". Where "default" is "copy"
-											when Ctrl key is hold, else it means "move". Just like in Windows explorer.
-											None means the tree does not accept this node.
+				/* type="default|copy|move" Specifies the drag and drop mode. 
+					default type="string" Performs "copy" when holding the Ctrl key, otherwise "move" is performed.
+					copy type="string" Makes a copy of the dragged node at the drop location.
+					move type="string" Moves the dragged node at the drop location.
 				*/
 				dragAndDropMode: "default",
 				/* type="number" Specifies the opacity of the drag helper: 0 is fully transparent while 1 is fully opaque.
@@ -254,27 +257,28 @@ if (typeof jQuery !== "function") {
 				*/
 				zIndex: 10,
 				/* type="number" Specifies the delay between mousedown and the start of the actual drag. Smaller values make the nodes
-									more sensitive to drag.
+									more sensitive to drag and may interfere with selection.
 				*/
 				dragStartDelay: 200,
-				/* type="boolean" Specifies whether when dragging over a collapsed node with children the node will expand after
-									the timeout specified in the expandDelay option.
-				*/
+				/* type="boolean" Specifies whether when dragging over a collapsed node with children will trigger the node to expand. */
 				expandOnDragOver: true,
-				/* type="number" Specifies the delay after hovering a parent node before it expands to show its children during drag.
-				*/
+				/* type="number" Specifies the delay after hovering a parent node before expanding that node during drag with expandOnDragOver: true. */
 				expandDelay: 1000,
-				/* type="string|function" Specifies the helper for the drag operation. 'default' would render the internal helper,
-											while a function returning a jQuery element can build entirely custom helper.
+				/* type="function|default" Specifies the helper to be rendered for the drag operation. 
+					function A function that will return a DOMElement to use while dragging.
+					default type="string" would render the default igTree helper.
 				*/
 				helper: "default",
-				/* type="function" Returning true from this function would render the drop point valid, while false would make it invalid.
-									The function has one parameter which is the current drop point and the context of the function is the
-									drag element.
+				/* type="function|null" Returning true from this function would render the drop point valid, while false would make it invalid.
+					The function has one parameter which is the current drop point and the context (this) of the function is the drag element.
 				*/
 				customDropValidation: null,
 				/* type="boolean|selector|element|string|array" Specifies the containment for the drag helper. The area inside of which the
-									helper is contained would be scrollable while dragging.
+					helper is contained would be scrollable while dragging.
+					selector The draggable element will be contained to the bounding box of the first element found by the selector. If no element is found, no containment will be set.
+					element The draggable element will be contained to the bounding box of this element.
+					string Possible values: "parent", "document", "window".
+					array An array defining a bounding box in the form [ x1, y1, x2, y2 ].
 				*/
 				containment: false,
 				/* type="string" Specifies the HTML markup for the invalid helper.
