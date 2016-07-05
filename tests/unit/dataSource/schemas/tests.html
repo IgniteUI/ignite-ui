@@ -12,9 +12,9 @@
 	
 	<script type="text/javascript"> 
 
-			var result1, result2, result3, result4, result5;
+	var result1, result2, result3, result4, result5;
 		
-	 $(document).ready(function () {
+	 $(function () {
 	
 		var arrayOfObjects = [
 			{make:"Chevrolet",model:"Bel Air",year:1957},
@@ -80,9 +80,9 @@
 		var xml = '<Response><Session>542235629</Session><Tracks  start="1" count="10" total="98" errorCount="0"  defaultSort="popularity+"  description="Top 100 Tracks"  name="Top 100 Tracks"  ><Track id="59672468" rating="-1" title="I Kissed A Girl"><Artist id="30326214" rating="-1">Katy Perry</Artist><ItemInfo><ChartPosition last="26" this="1"/></ItemInfo></Track><Track id="47973564" rating="-1" title="Shake It"><Artist id="45575683" rating="-1">Metro Station</Artist><ItemInfo><ChartPosition last="27" this="2"/></ItemInfo></Track><Track id="52207363" rating="-1" title="Bleeding Love"><Artist id="37956508" rating="-1">Leona Lewis</Artist><ItemInfo><ChartPosition last="28" this="3"/></ItemInfo></Track></Tracks></Response>';
 		//var xml = "";
 		
-			var corruptXml = '<Response><Session>542235629</Session><Tracks  start="1" count="10" total="98" errorCount="0"  defaultSort="popularity+"  description="Top 100 Tracks"  name="Top 100 Tracks"  ><Track id="59672468" rating="-1" title="I Kissed A Girl"><Artist id="30326214" rating="-1">Katy Perry</Artist><ItemInfo><ChartPosition last="26" this="1"/></ItemInfo></Track><Track id="47973564" rating="-1" title="Shake It"><Artist id="45575683" rating="-1">Metro Station</Artist><ItemInfo><ChartPosition last="27" this="2"/></ItemInfo></Track><Track id="52207363" rating="-1" title="Bleeding Love"><Artist id="37956508" rating="-1">Leona Lewis</Artist><ItemInfo><ChartPosition last="28" this="3"/></ItemInfo>/Track></Tracks></Response>';
-			
-			var table_string = "<table id='table1'> <tbody><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr><tr> <td>2</td> <td>15</td> <td>Hamburger</td>  <td>$ 33 </td> </tr><tr> <td>3</td> <td>2000</td> <td>mobile phone</td>  <td>$ 5454 </td> </tr><tr> <td>4</td> <td>45</td> <td>Beer</td>  <td>$ 2323232 </td> </tr><tr> <td>5</td> <td>78</td> <td>trainers</td>  <td>$ 545454 </td> </tr><tr> <td>6</td> <td>32</td> <td>coffee cup</td>  <td>$ 22 </td> </tr><tr> <td>7</td> <td>987</td> <td>BMW 323 CI</td>  <td>$ 1000000 </td> </tr><tr> <td>8</td> <td>434343</td> <td>mouse</td>  <td>$ 545454 </td> </tr><tr> <td>9</td> <td>2356</td> <td>keyboard</td>  <td>$ 34 </td> </tr><tr> <td>10</td> <td>33</td> <td>fish</td>  <td>$ 22 </td> </tr><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr></tbody></table>";
+		var corruptXml = '<Response><Session>542235629</Session><Tracks  start="1" count="10" total="98" errorCount="0"  defaultSort="popularity+"  description="Top 100 Tracks"  name="Top 100 Tracks"  ><Track id="59672468" rating="-1" title="I Kissed A Girl"><Artist id="30326214" rating="-1">Katy Perry</Artist><ItemInfo><ChartPosition last="26" this="1"/></ItemInfo></Track><Track id="47973564" rating="-1" title="Shake It"><Artist id="45575683" rating="-1">Metro Station</Artist><ItemInfo><ChartPosition last="27" this="2"/></ItemInfo></Track><Track id="52207363" rating="-1" title="Bleeding Love"><Artist id="37956508" rating="-1">Leona Lewis</Artist><ItemInfo><ChartPosition last="28" this="3"/></ItemInfo>/Track></Tracks></Response>';
+		
+		var table_string = "<table id='table1'> <tbody><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr><tr> <td>2</td> <td>15</td> <td>Hamburger</td>  <td>$ 33 </td> </tr><tr> <td>3</td> <td>2000</td> <td>mobile phone</td>  <td>$ 5454 </td> </tr><tr> <td>4</td> <td>45</td> <td>Beer</td>  <td>$ 2323232 </td> </tr><tr> <td>5</td> <td>78</td> <td>trainers</td>  <td>$ 545454 </td> </tr><tr> <td>6</td> <td>32</td> <td>coffee cup</td>  <td>$ 22 </td> </tr><tr> <td>7</td> <td>987</td> <td>BMW 323 CI</td>  <td>$ 1000000 </td> </tr><tr> <td>8</td> <td>434343</td> <td>mouse</td>  <td>$ 545454 </td> </tr><tr> <td>9</td> <td>2356</td> <td>keyboard</td>  <td>$ 34 </td> </tr><tr> <td>10</td> <td>33</td> <td>fish</td>  <td>$ 22 </td> </tr><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr></tbody></table>";
 		
 		// utility function
 		 function StringtoXML (text) {
@@ -96,50 +96,61 @@
 			}
 			return doc;
 		}
-		
-		// outputResultsName is optional, by default it is "results"
-		// type is optional 
-		var arrayOfObjectsSchema = new $.ig.DataSchema("array", { outputResultsName: "res_data", fields:[ {name: "make", type: "string"}, {name: "model", type: "string"}, {name: "year", type: "number"} ]} ); 
+		var arrayOfObjectsSchema, arrayOfArraysSchema, jsonSchema,
+			xmlSchema, tableSchema, tableSchema, unknownSchema,
+			ds1, ds2, ds3, ds4, ds5;
 
-		// since here we do not have name-value pairs, they will be annotated in the resulting object automatically 
-		var arrayOfArraysSchema = new $.ig.DataSchema("array", { fields:[ {name: "make"}, {name: "model"}, {name: "year"} ]}); 
-		// search field denotes the location of the data
-		var jsonSchema = new $.ig.DataSchema("json", {fields:[ {name : "day"}, {name : "activity"} ], searchField:"program[0]['weekly schedule']"}); 
+		function loadTestbeds() {
+			// outputResultsName is optional, by default it is "results"
+			// type is optional 
+			arrayOfObjectsSchema = new $.ig.DataSchema("array", { outputResultsName: "res_data", fields:[ {name: "make", type: "string"}, {name: "model", type: "string"}, {name: "year", type: "number"} ]} ); 
 
-		// searchField here is the Xpath for the location of the input data
-		var xmlSchema = new $.ig.DataSchema("xml", {fields:[ {name : "song", xpath: "@title"}, {name : "artist", xpath : "Artist"} ], searchField:"//Track"}); 
-		
-		// set explicit string type, in order to cover this part of the conversion functionality 
-		var tableSchema = new $.ig.DataSchema("htmlTableDom", { fields:[ {name: "make", type: "string"}, {name: "model"}, {name: "year"} ]}); 
-		
-		// define an invalid schema that we will test later 
-		var unknownSchema = new $.ig.DataSchema(-1, {fields: []});
-		
-		// doesn't need to be wrapped in an IgSchema object 
-		var ds1 = new $.ig.DataSource({dataSource: arrayOfObjects, schema: arrayOfObjectsSchema}).dataBind(); 
-		var ds2 = new $.ig.DataSource({dataSource: arrayOfArrays, schema: arrayOfArraysSchema}).dataBind(); 
-		var ds3 = new $.ig.DataSource({type: "json", dataSource: json, schema: jsonSchema}).dataBind(); 
-		var ds4 = new $.ig.DataSource({type: "xml", dataSource:xml, schema: xmlSchema}).dataBind(); 
-		var ds5 = new $.ig.DataSource({paging: { enabled:true }, dataSource: $("#t1")[0], schema: tableSchema}).dataBind(); 
+			// since here we do not have name-value pairs, they will be annotated in the resulting object automatically 
+			arrayOfArraysSchema = new $.ig.DataSchema("array", { fields:[ {name: "make"}, {name: "model"}, {name: "year"} ]}); 
+			// search field denotes the location of the data
+			jsonSchema = new $.ig.DataSchema("json", {fields:[ {name : "day"}, {name : "activity"} ], searchField:"program[0]['weekly schedule']"}); 
 
-		// we can just get the normalized data by using IgDataSchema only
-		result1 = arrayOfObjectsSchema.transform(arrayOfObjects);
-		result2 = arrayOfArraysSchema.transform(arrayOfArrays);
-		result3 = jsonSchema.transform(json);
-		result4 = xmlSchema.transform(StringtoXML(xml));
-		result5 = tableSchema.transform($("#t1")[0]);
-		
-	
-	startTesting();
-		
-	function startTesting()
-	{
+			// searchField here is the Xpath for the location of the input data
+			xmlSchema = new $.ig.DataSchema("xml", {fields:[ {name : "song", xpath: "@title"}, {name : "artist", xpath : "Artist"} ], searchField:"//Track"}); 
+			
+			// set explicit string type, in order to cover this part of the conversion functionality 
+			tableSchema = new $.ig.DataSchema("htmlTableDom", { fields:[ {name: "make", type: "string"}, {name: "model"}, {name: "year"} ]}); 
+			
+			// define an invalid schema that we will test later 
+			unknownSchema = new $.ig.DataSchema(-1, {fields: []});
+			
+			// doesn't need to be wrapped in an IgSchema object 
+			ds1 = new $.ig.DataSource({dataSource: arrayOfObjects, schema: arrayOfObjectsSchema}).dataBind(); 
+			ds2 = new $.ig.DataSource({dataSource: arrayOfArrays, schema: arrayOfArraysSchema}).dataBind(); 
+			ds3 = new $.ig.DataSource({type: "json", dataSource: json, schema: jsonSchema}).dataBind(); 
+			ds4 = new $.ig.DataSource({type: "xml", dataSource:xml, schema: xmlSchema}).dataBind(); 
+			ds5 = new $.ig.DataSource({paging: { enabled:true }, dataSource: $("#t1")[0], schema: tableSchema}).dataBind(); 
 
-		QUnit.init();
-		QUnit.start();
-
-		module("igDataSource");
+			// we can just get the normalized data by using IgDataSchema only
+			result1 = arrayOfObjectsSchema.transform(arrayOfObjects);
+			result2 = arrayOfArraysSchema.transform(arrayOfArrays);
+			result3 = jsonSchema.transform(json);
+			result4 = xmlSchema.transform(StringtoXML(xml));
+			result5 = tableSchema.transform($("#t1")[0]);
+		}
 		
+		initialized = false;
+		module("igDataSource Schemas", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 500);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+		
+
+
 		var testId_1 = "DataSchema test 1: Loading Array of objects with schema / data types";
 		//var testId_2 = "DataSchema test 2: Loading array of objects without schema";
 		var testId_2 = "DataSchema test 2: Loading array of arrays with schema / data types";
@@ -355,7 +366,6 @@
 			var ds = new $.ig.DataSource({dataSource: $("#t1")[0]}).dataBind();
 			equal(11, ds.dataView().length, 11);
 		});			
-	}
 	});
 	
 	
