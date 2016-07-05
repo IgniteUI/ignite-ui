@@ -46,7 +46,7 @@ if (typeof jQuery !== "function") {
 			nullValue: null,
 			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element. */
 			inputName: null,
-			/* type="bool" Gets/Sets the readonly attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is sent into the request.*/
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is sent into the request.*/
 			readOnly: false,
 			/* type="bool" Gets/Sets the disabled attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is not sent into the request*/
 			disabled: false,
@@ -9195,10 +9195,12 @@ if (typeof jQuery !== "function") {
 			iconClass: "ui-icon-check",
 			/* type="number" Gets/Sets value in tabIndex for Checkbox Editor. */
 			tabIndex: 0,
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.*/
+			readOnly: false,
 			/*@Skipped@*/
 			allowNullValue: false,
 			/*@Skipped@*/
-			nullValue: null,
+			nullValue: null
 		},
 		css: {
 			/* Classes applied to the top element when editor is rendered in container. Default value is 'ui-state-default ui-corner-all ui-widget ui-checkbox-container ui-igcheckbox-normal' */
