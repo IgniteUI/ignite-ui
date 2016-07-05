@@ -337,11 +337,6 @@
 		function replaceCharAt(stringValue, index, char) {
 			return stringValue.substring(0, index) + char + stringValue.substring(index + 1);
 		}
-		QUnit.log = function (details) {
-		    if (window.console && window.console.log) {
-		        window.console.log(details.result + ' :: ' + details.message);
-		    }
-		};
 </script>
 </head>
 <body>

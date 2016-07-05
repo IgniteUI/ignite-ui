@@ -139,7 +139,6 @@
 				flag = true;
 			});
 			$('#eventEditor').on("igtexteditortextchanged", function (evt, ui) {
-				console.log("igtexteditortextchanged", flag);
 				flag = ui.oldText === "" && ui.text === newText;
 			});
 			$('#eventEditor').on("igtexteditorblur", function () {
@@ -204,7 +203,7 @@
 			$("#textEditorMethods").igTextEditor("value", null);
 			equal($("#textEditorMethods").igTextEditor("value"), "", 'The value is not correctly set to an Empty string');
 			$("#textEditorMethods").igTextEditor("option", "allowNullValue", false);
-			//console.log($("#textEditorMethods").igTextEditor("value"));
+			
 			$("#textEditorMethods").igTextEditor("value", "MyVal");
 			equal($("#textEditorMethods").igTextEditor("value"), "MyVal", 'The value is not correctly set to MyVal string');
 		});
@@ -325,7 +324,6 @@
 								- popoverBottom;
 				equal(distanceToEditor, editor.igNotifier("option", "animationSlideDistance"), "Notifier not positioned correctly above editor");
 				
-				console.log(distanceToEditor, editor.igNotifier("getCoordinates"));
 			}, editor.igNotifier("option", "animationDuration"));
 			//immediately fire another show with smalller message
 			$(editor).igNotifier("setContent", "<p>Entry reached the maximum value of 99999 for this field</p>").igNotifier("show");
@@ -423,11 +421,6 @@
 		}
 
 	});
-	QUnit.log = function (details) {
-		if (window.console && window.console.log) {
-			window.console.log(details.result + ' :: ' + details.message);
-		}
-	};
 	</script>
 	
 </head>

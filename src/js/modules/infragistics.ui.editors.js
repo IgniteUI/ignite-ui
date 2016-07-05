@@ -8953,17 +8953,19 @@ if (typeof jQuery !== "function") {
 			switch (option) {
 				case "datepickerOptions": {
 					var pickerOptions = this._editorInput.data("datepicker").settings,
-						settings, self = this;
+						settings, self = this, options;
 					settings = $.extend(value, this._pickerDefaults());
-					pickerOptions = $.extend(pickerOptions, settings);
+
+				    //A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
+					options = $.extend(pickerOptions, settings);
 
 					if (settings.onSelect) {
 						var igOnSelect = settings.onSelect;
-						pickerOptions.onSelect = function (dateText, inst) {
-							igOnSelect.call(this);
+						options.onSelect = function (dateText, inst) {
+							igOnSelect.call(this, dateText, inst);
 							if (self.options.datepickerOptions &&
 								self.options.datepickerOptions.onSelect) {
-								self.pickerOptions.datepickerOptions
+								self.options.datepickerOptions
 									.onSelect.call(this, dateText, inst);
 							}
 						};
@@ -8974,7 +8976,7 @@ if (typeof jQuery !== "function") {
 							igOnClose.call(this);
 							if (self.options.datepickerOptions &&
 								self.options.datepickerOptions.onClose) {
-								self.pickerOptions.datepickerOptions
+								self.options.datepickerOptions
 									.onClose.call(this, dateText, inst);
 							}
 						};
@@ -9036,7 +9038,11 @@ if (typeof jQuery !== "function") {
 			// Close dropdown
 			//T.P. 15th March 2016. When there are two editors and the drpdown is opened - when we click the dropwodn button
 			//of the other editor - click event is triggered prior to blur of the previous editor
-			if (this._dropDownList.is(":visible") && !!this._focused) {
+			//M.S. 26th June 2016. Closing the dropdown with dropdown button if "readOnly: true, dropDownOnReadOnly : true"
+			//Adding internal flag for calendar visibility. 
+			if (this._dropDownList.is(":visible") &&
+				(!!this._focused || this.options.readOnly) &&
+				!!this._dropDownOpened) {
 
 					// Proceed with hiding
 					this._hideDropDownList();
@@ -9062,6 +9068,8 @@ if (typeof jQuery !== "function") {
 		},
 		_showDropDownList: function () { //DatePicker
 
+			this._dropDownOpened = true;
+
 			// Open Dropdown
 			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue;
 			this._cancelBlurDatePickerOpen = true;
@@ -9082,10 +9090,13 @@ if (typeof jQuery !== "function") {
 					currentDate = new Date(currentDate.getUTCFullYear(),
 						currentDate.getUTCMonth(), currentDate.getUTCDate());
 				}
+				currentInputValue = this._editorInput.val();
 				$(this._editorInput).datepicker("setDate", currentDate);
 
 			}
-			currentInputValue = this._editorInput.val();
+			if (currentInputValue === undefined) {
+				currentInputValue = this._editorInput.val();
+			}
 			try {
 				this._editorInput.datepicker("option", "showOptions", { direction: direction });
 
@@ -9110,6 +9121,7 @@ if (typeof jQuery !== "function") {
 			});
 		},
 		_hideDropDownList: function () {
+			this._dropDownOpened = false;
 			this._editorInput.datepicker("hide");
 			this._editorInput.attr("aria-expanded", false);
 		},
@@ -9185,6 +9197,10 @@ if (typeof jQuery !== "function") {
 			tabIndex: 0,
 			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.*/
 			readOnly: false,
+			/*@Skipped@*/
+			allowNullValue: false,
+			/*@Skipped@*/
+			nullValue: null
 		},
 		css: {
 			/* Classes applied to the top element when editor is rendered in container. Default value is 'ui-state-default ui-corner-all ui-widget ui-checkbox-container ui-igcheckbox-normal' */

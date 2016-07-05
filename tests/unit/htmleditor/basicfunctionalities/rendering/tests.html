@@ -30,7 +30,7 @@
     <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.splitbutton.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.colorpicker.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.colorpickersplitbutton.js"></script>
-	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.dataSource.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.datasource.js"></script>
 
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.combo.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.toolbar-en.js"></script>
@@ -92,7 +92,7 @@
 	                if ($(e).is(":ui-igSplitButton") || $(e).is(":ui-igColorPickerSplitButton")) {
 	                    css = "ui-splitbutton ui-widget";
 	                }
-	                console.log(e.id, $(e).is(":ui-igSplitButton") || $(e).is(":ui-igColorPickerSplitButton"), css);
+	                //console.log(e.id, $(e).is(":ui-igSplitButton") || $(e).is(":ui-igColorPickerSplitButton"), css);
 	                ok($(e).hasClass(css), "The element (" + e.id + ") have all expected classes.");
 	            });
 	        },
