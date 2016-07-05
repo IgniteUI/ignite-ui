@@ -268,7 +268,7 @@ if (typeof jQuery !== "function") {
 					The function has one parameter which is the current drop point and the context (this) of the function is the drag element.
 				*/
 				customDropValidation: null,
-				/* type="boolean|selector|element|string|array" Specifies the containment for the drag helper. The area inside of which the
+				/* type="boolean|selector|element|string|array" Gets the containment for the drag helper. The area inside of which the
 					helper is contained would be scrollable while dragging.
 					selector The draggable element will be contained to the bounding box of the first element found by the selector. If no element is found, no containment will be set.
 					element The draggable element will be contained to the bounding box of this element.
@@ -276,31 +276,31 @@ if (typeof jQuery !== "function") {
 					array An array defining a bounding box in the form [ x1, y1, x2, y2 ].
 				*/
 				containment: false,
-				/* type="string" Specifies the HTML markup for the invalid helper.
+				/* type="string" Gets the HTML markup for the invalid helper.
 				*/
 				invalidMoveToMarkup: "<div><p><span></span><strong>{0}</strong></p></div>",
-				/* type="string" Specifies the HTML markup for the "move to" helper.
+				/* type="string" Gets the HTML markup for the "move to" helper.
 				*/
 				moveToMarkup: "<div><p><span></span><strong>Move to</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "move between" helper.
+				/* type="string" Gets the HTML markup for the "move between" helper.
 				*/
 				moveBetweenMarkup: "<div><p><span></span><strong>Move between</strong> {0} and {1}</p></div>",
-				/* type="string" Specifies the HTML markup for the "move after" helper.
+				/* type="string" Gets the HTML markup for the "move after" helper.
 				*/
 				moveAfterMarkup: "<div><p><span></span><strong>Move after</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "move before" helper.
+				/* type="string" Gets the HTML markup for the "move before" helper.
 				*/
 				moveBeforeMarkup: "<div><p><span></span><strong>Move before</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "copy to" helper.
+				/* type="string" Gets the HTML markup for the "copy to" helper.
 				*/
 				copyToMarkup: "<div><p><span></span><strong>Copy to</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "copy between" helper.
+				/* type="string" Gets the HTML markup for the "copy between" helper.
 				*/
 				copyBetweenMarkup: "<div><p><span></span><strong>Copy between</strong> {0} and {1}</p></div>",
-				/* type="string" Specifies the HTML markup for the "copy after" helper.
+				/* type="string" Gets the HTML markup for the "copy after" helper.
 				*/
 				copyAfterMarkup: "<div><p><span></span><strong>Copy after</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "copy before" helper.
+				/* type="string" Gets the HTML markup for the "copy before" helper.
 				*/
 				copyBeforeMarkup: "<div><p><span></span><strong>Copy before</strong> {0}</p></div>"
 			}
