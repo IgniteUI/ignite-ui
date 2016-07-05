@@ -87,8 +87,15 @@ module.exports = function (grunt) {
 				dest: './dist/',
 			},
 			resources: {
-				src: ['bower.json', "README.md", "LICENSE"],
-				dest: './dist/'
+				files: [{
+					src: ['bower.json', "LICENSE"],
+					dest: './dist/'
+				}, {
+					expand: true,
+					cwd: './build/packages/',
+					src:  ["package.json", "README.md"],
+					dest: './dist/'
+				}]
 			}
 		},
 		cssmin: {
@@ -109,7 +116,7 @@ module.exports = function (grunt) {
 				}]
 			}
 		},
-		uglify: require('./build/config/all/combined-files.js')
+		uglify: require('./build/packages/combined-files.js')
     });
 
 	grunt.loadNpmTasks("grunt-contrib-clean");

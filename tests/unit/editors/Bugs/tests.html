@@ -631,7 +631,7 @@
 
 
 			testId = 'Bug 211062';
-			test(testId, 3, function () {
+			test(testId, 2, function () {
 				var calendar, getDDmmYYYYHHSS, targetDate;
 				getDDmmYYYYHHSS = function (date) {
 					var result = "", day, month, minutes, hours;
@@ -684,13 +684,6 @@
 				targetDate = new Date(); // keep date as close to the click time
 				$(calendar).find(".ui-datepicker-today").find("a").click();
 				equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The text should've changed to " + getDDmmYYYYHHSS(targetDate));
-				$("#211062Editor1").igDatePicker("field").blur();
-				stop();
-				setTimeout(function () {
-					//wait blur/focus dance on selection:
-					start();
-					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The text after blur should've been " + getDDmmYYYYHHSS(targetDate));
-				}, 50);
 			});
 			
 			

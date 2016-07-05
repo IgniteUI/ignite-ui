@@ -44,8 +44,4 @@ bower_components
 .node_repl_history
 
 #Build output
-dist/js
-dist/css
-dist/bower.json
-dist/README.md
-dist/LICENSE
+dist
