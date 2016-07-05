@@ -22,8 +22,9 @@ before_deploy:
 - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 
 # update package versions
-- npm version "${TRAVIS_TAG}" --save
-- bower version "${TRAVIS_TAG}" --save
+- npm version "${TRAVIS_TAG}" --no-git-tag-version --save
+# can't skip git commit on bower version call, bower/bower#2019
+# - bower version "${TRAVIS_TAG}" --save
 
 # commit bower
 - git add .
