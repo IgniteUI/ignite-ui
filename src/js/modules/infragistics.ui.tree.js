@@ -460,7 +460,7 @@ if (typeof jQuery !== "function") {
 		_createWidget: function (options) {
 			/* !Strip dummy objects from options, because they are defined for documentation purposes only! */
 			this.options.bindings = null;
-			if (options.dragAndDrop) {
+			if (options && options.dragAndDrop) {
 				this.options.dragAndDropSettings.moveToMarkup =
 					"<div><p><span></span>" + $.ig.Tree.locale.moveTo + "</p></div>";
 				this.options.dragAndDropSettings.moveBetweenMarkup =
