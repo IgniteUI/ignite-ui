@@ -1775,8 +1775,8 @@
 		_getFieldTypeFromSchema: function (fieldName) {
 			var field = this._fields[ fieldName ], type, ds = this.dataSource();
 
-			if (ds !== null && ds !== undefined && this.settings.responseDataKey !== null) {
-				ds = ds[ this.settings.responseDataKey ];
+			if (this.settings.type === "json" && ds !== null && ds !== undefined && this.settings.responseDataKey !== null) {
+				ds = $.ig.findPath(ds, this.settings.responseDataKey)
 			}
 			if (!field) {
 				return undefined;
