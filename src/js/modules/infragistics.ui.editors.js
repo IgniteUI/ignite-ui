@@ -46,7 +46,7 @@ if (typeof jQuery !== "function") {
 			nullValue: null,
 			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element. */
 			inputName: null,
-			/* type="bool" Gets/Sets the readonly attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is sent into the request.*/
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is sent into the request.*/
 			readOnly: false,
 			/* type="bool" Gets/Sets the disabled attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is not sent into the request*/
 			disabled: false,
@@ -2957,7 +2957,8 @@ if (typeof jQuery !== "function") {
 				If number of digits in fractional part of number is less than the value of this option, then the "0" characters are used to fill missing digits.
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option supports values below or equal to 20. */
 			minDecimals: null,
 			/* type="left|right|center" Gets/Sets horizontal alignment of text in editor. If that option is not set, then 'right' is used for 'numeric', 'currency' and 'percent' editors and the 'left' is used for all other types of editor.
 				left type="string"
@@ -4784,12 +4785,14 @@ if (typeof jQuery !== "function") {
 			listItemHoverDuration: 0,
 			/* type="bool" @Skipped@ Sets the ability to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed*/
 			isLimitedToListValues: false,
-			/* type="auto|bottom|top" @Skipped@ Gets/Sets drop down opening orientation for the dorp down list when open button is clicked. If auto option is set the component calculates if there is enough space at the bottom, if not checks the space above the component and if in both directions there is not enough space it openes the dropdown down way.
-				'auto' type="string"
-				'bottom' type="string"
-				'top' type="string"
-			*/
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
 			dropDownOrientation: "auto",
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			dropDownAttachedToBody: false,
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			dropDownAnimationDuration: 300,
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			dropDownOnReadOnly: false,
 			/* type="text|password|multiline" @Skipped@ Sets gets text mode of editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
 				text type="string" Single line text editor based on INPUT element is created.
 				password type="string" Editor based on INPUT element with type password is created.
@@ -4801,7 +4804,10 @@ if (typeof jQuery !== "function") {
 				That option is overwritten if the number of list items is less than the value. In that case the height of the dropdown is adjusted to the number of items.
 				Note! This option can not be set runtime.
 			*/
-			visibleItemsCount: 5
+			visibleItemsCount: 5,
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor
+			*/
+			maxLength: null
 		},
 		events: {
 			/* igWidget events go here */
@@ -8729,6 +8735,9 @@ if (typeof jQuery !== "function") {
 			buttonType: "dropdown",
 			/* type="object" Gets/Sets options supported by the jquery.ui.datepicker. Only options related to drop-down calendar are supported. */
 			datepickerOptions: null,
+			/* type="bool" Gets ability to limit igDatePicker to be used only from the calendar. When set to true the editor input is not editable.
+				Note! This option can not be set runtime. */
+			dropDownOnReadOnly: false,
 			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			dropDownAttachedToBody: false,
 			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
@@ -9195,10 +9204,12 @@ if (typeof jQuery !== "function") {
 			iconClass: "ui-icon-check",
 			/* type="number" Gets/Sets value in tabIndex for Checkbox Editor. */
 			tabIndex: 0,
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.*/
+			readOnly: false,
 			/*@Skipped@*/
 			allowNullValue: false,
 			/*@Skipped@*/
-			nullValue: null,
+			nullValue: null
 		},
 		css: {
 			/* Classes applied to the top element when editor is rendered in container. Default value is 'ui-state-default ui-corner-all ui-widget ui-checkbox-container ui-igcheckbox-normal' */
