@@ -20,8 +20,6 @@ module.exports = function (grunt) {
 			all: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
 				jshintrc: true,
-				// reporter: "build/ReporterJSHint.js",
-				// reporterOutput: "jshint/report.html",
 				ignores: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
 		},
@@ -29,8 +27,6 @@ module.exports = function (grunt) {
 			src: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
 				config: ".jscsrc.json",
-				reporter: "build/ReporterJSCS.js",
-				reporterOutput: "jscs/report.html",
 				force: false,
 				maxErrors: null,
 				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
@@ -139,28 +135,38 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
-		var config;
+		var config, reporter, output;
 
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
+			reporter = "build/ReporterJSHint.js";
+			output = "jshint/report.html";
 		} else {
 			config = grunt.file.readJSON('build/config/all/jshint.json').config;
+			reporter = output = undefined;
 		}
 		grunt.task.run("clean:jshint");
 		grunt.config("jshint.all", config);
+		grunt.config("jshint.options.reporter", reporter);
+		grunt.config("jshint.options.reporterOutput", output);
 		grunt.task.run("jshint:all");
 	});
 
 	grunt.task.registerTask("cs", "Task to run JSCS", function (control) {
-		var config;
+		var config, reporter, output;
 
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
+			reporter = "build/ReporterJSCS.js";
+			output = "jscs/report.html";
 		} else {
 			config = grunt.file.readJSON('build/config/all/jshint.json').config;
+			reporter = output = undefined;
 		}
 		grunt.task.run("clean:jscs");
 		grunt.config("jscs.src", config);
+		grunt.config("jscs.options.reporter", reporter);
+		grunt.config("jscs.options.reporterOutput", output);
 		grunt.task.run("jscs");
 	});
 	
