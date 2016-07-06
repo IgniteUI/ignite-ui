@@ -76,6 +76,10 @@ module.exports = function (grunt) {
 				dest: './dist/',
 				options: {
 					process: function (content, srcpath) {
+						if (srcpath.indexOf("infragistics.loader.js") >= 0){
+							// Set loader default locale:
+							content = content.replace(/_defaultLocale:\s*""/, "_defaultLocale: \"en\"");
+						}
 						return content.replace("<build_number>", buildVersion).replace("<year>", year);
 					}
 				},
