@@ -264,6 +264,12 @@
     <div class="cont">
         <div id="combo-option-branch"></div>
     </div>
+    <div class="cont">
+        <div dir="rtl" id="ltr-testing"></div>
+    </div>
+    <div>
+        <div id="header-footer-setters"></div>
+    </div>
     <script type="text/javascript">
         $(function () {
             var testId_1 = 'igCombo existence',
@@ -345,6 +351,8 @@
                 testId_70 = 'Load on demand items count when loading new items';
                 testId_71 = 'Blur while loading';
                 testId_72 = '_setOption branching tests';
+                testId_73 = 'LTR coverage';
+                testId_74 = 'Header/Footer Getters/Setters';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -4460,6 +4468,212 @@
                     $.ig.Combo.locale.errorIncorrectGroupingKey,
                     "Invalid dataSource with missing group key throws error"
                 );
+            });
+
+            asyncTest(testId_73, function() {
+
+                var data = [
+                    {'ID': 1, 'Name': 'C#', 'Type': 'Compiled', 'Paradigm': 'Multi'},
+                    {'ID': 2, 'Name': 'C++', 'Type': 'Compiled', 'Paradigm': 'Multi'},
+                    {'ID': 3, 'Name': 'Javascript', 'Type': 'Scripting', 'Paradigm': 'Multi'},
+                    {'ID': 4, 'Name': 'Python', 'Type': 'Scripting', 'Paradigm': 'Multi'},
+                    {'ID': 5, 'Name': 'F#', 'Type': 'Compiled', 'Paradigm': 'Functional'},
+                    {'ID': 6, 'Name': 'Haskell', 'Type': 'Compiled', 'Paradigm': 'Functional'},
+                ];
+
+
+                function emulateKeyBoard(key, ctrl, shift, alt, element) {
+                    var keyDown = jQuery.Event("keydown"),
+                        keyUp = jQuery.Event("keyup");
+
+                    keyDown.ctrlKey = keyUp.ctrlKey = ctrl;
+                    keyDown.altKey = keyUp.altKey = alt;
+                    keyDown.shiftKey = keyUp.shiftKey = shift;
+
+                    switch (key) {
+                        case "up": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.UP; break;
+                        case "left": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.LEFT; break;
+                        case "right": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.RIGHT; break;
+                        case "down": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.DOWN; break;
+                        case "enter": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.ENTER; break;
+                        case "esc": keyDown.keyCode = keyUp.keyCode = $.ui.keyCode.ESCAPE; break;
+                        default: keyDown.keyCode = keyUp.keyCode = key; break;
+                    }
+
+                    element.trigger(keyDown);
+                    element.trigger(keyUp);
+                }
+
+                function typeInInput(key, element) {
+                    var keyDown = jQuery.Event("keydown"),
+                        keyUp = jQuery.Event("keyup");
+
+                    keyDown.keyCode = keyUp.keyCode = key;
+
+                    element.trigger(keyDown);
+                    element.val(key);
+                    element.trigger(keyUp);
+                }
+
+                function clickElement(element, ctrl, shift) {
+                    var mouseDown = jQuery.Event("mousedown"), mouseUp = jQuery.Event("mouseup");
+
+                    mouseUp.ctrlKey = mouseDown.ctrlKey = ctrl === true;
+                    mouseUp.shiftKey = mouseDown.shiftKey = shift === true;
+                    mouseDown.which = mouseUp.which = 1;
+                    element.trigger(mouseDown);
+                    element.trigger(mouseUp);
+                }
+
+
+                var $comboWrapper = $("#ltr-testing"), $input,
+                    $listItemsDiv, $items;
+                $comboWrapper.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    dataSource: data,
+                    footerTemplate: "<div class='dropDownFooterClass'><strong><em>Total: {0} out of {1}</em></strong></div>",
+                    headerTemplate: "<div class='dropDownHeaderClass'><em>Available languages</em></div>",
+                    itemTemplate: "<span class='language_class'>${Name} - ${Paradigm}</span>",
+                    grouping: {
+                        key: "Type",
+                        dir: "asc"
+                    },
+                    multiSelection: {
+                        enabled: true,
+                        itemSeparator: ';'
+                    },
+                    placeHolder: "Select language",
+                    filteringCondition: 'startsWith',
+                    filteringType: 'local',
+                    textKey: "Name",
+                    valueKey: "ID",
+                    visibleItemsCount: 10,
+                    width: "370px",
+                    height: "25px"
+                });
+                $input = $comboWrapper.find('.ui-igcombo-field');
+
+                typeInInput('py', $input);
+                setTimeout(function() {
+                    start();
+                    $listItemsDiv = $comboWrapper.igCombo('dropDown');
+                    $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                    ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                    ok($items.eq(0).hasClass('ui-igcombo-group-header'), 'Header template rendered');
+                    ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'First mathing item should be focused');
+                    emulateKeyBoard('enter', false, false, false, $input);
+                    ok($input.val() === 'Python', 'Select value matches');
+                    emulateKeyBoard('up', false, false, false, $input);
+                    emulateKeyBoard('enter', false, false, false, $input);
+                    emulateKeyBoard('esc', false, false, false, $input);
+                    emulateKeyBoard('down', false, false, false, $input);
+                    ok($comboWrapper.igCombo('dropDown').height() > 0, 'Dropdown is left opened');
+                    emulateKeyBoard('up', false, false, true, $input);
+                    ok($comboWrapper.igCombo('dropDown').height() === 0, 'Dropdown is closed');
+                    
+                    setTimeout(function() {
+                        start();
+                        data = data.concat([
+                            {'ID': 7, 'Name': 'Perl', 'Type': 'Scripting', "Paradigm": 'Multi'},
+                            {'ID': 8, 'Name': 'Java', 'Type': 'Compiled', 'Paradigm': 'Object-oriented'},
+                            {'ID': 9, 'Name': 'Lisp', 'Type': 'Compiled/Scripting', 'Paradigm': 'Functional'}
+                        ]);
+                        $comboWrapper.igCombo('option', 'dataSource', data);
+                        $listItemsDiv = $comboWrapper.igCombo('dropDown');
+                        $items = $listItemsDiv.find('li').not('.ui-helper-hidden').not('.ui-igcombo-group-header');
+                        strictEqual($items.length, data.length, 'Number of items matches');
+                    }, 300);
+                    stop();
+                }, 100);
+            });
+
+            test(testId_74, function() {
+                
+                var $comboWrapper = $('#header-footer-setters'),
+                    $header, $footer;
+                $comboWrapper.igCombo({
+                    dataSource: [
+                        {"ID": 0, "Name": "", "Age": 0, "Country": "", "SEQ": 0},
+                        {"ID": 1, "Name": "John Doe", "Age": 23, "Country": "US", "SEQ": 1},
+                        {"ID": 2, "Name": "Jane Doe", "Age": 21, "Country": "US", "SEQ": 2},
+                        {"ID": 3, "Name": "Mark Plier", "Age": 31, "Country": "CA", "SEQ": 3},
+                        {"ID": 4, "Name": "Donny Hall", "Age": 33, "Country": "CA", "SEQ": 4},
+                        {"ID": 5, "Name": "Guido Van Rosum", "Age": 45, "Country": "NL", "SEQ": 5},
+                        {"ID": 6, "Name": "Sarah Sharp", "Age": 19, "Country": "UK", "SEQ": 6},
+                    ],
+                    headerTemplate: 'Initial Header',
+                    footerTemplate: 'Initial Footer',
+                    valueKey: "ID",
+                    textKey: "Name"
+                });
+
+                // Initial header/footer exist and matches
+                $header = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-header');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($header.length, 1, 'Initial header exists');
+                equal($footer.length, 1, 'Initial footer exists');
+                equal($header.text(), 'Initial Header', 'Initial header matches');
+                equal($footer.text(), 'Initial Footer', 'Initial footer matches');
+
+                $comboWrapper.igCombo('destroy');
+
+                $comboWrapper.igCombo({
+                    dataSource: [
+                        {"ID": 0, "Name": "", "Age": 0, "Country": "", "SEQ": 0},
+                        {"ID": 1, "Name": "John Doe", "Age": 23, "Country": "US", "SEQ": 1},
+                        {"ID": 2, "Name": "Jane Doe", "Age": 21, "Country": "US", "SEQ": 2},
+                        {"ID": 3, "Name": "Mark Plier", "Age": 31, "Country": "CA", "SEQ": 3},
+                        {"ID": 4, "Name": "Donny Hall", "Age": 33, "Country": "CA", "SEQ": 4},
+                        {"ID": 5, "Name": "Guido Van Rosum", "Age": 45, "Country": "NL", "SEQ": 5},
+                        {"ID": 6, "Name": "Sarah Sharp", "Age": 19, "Country": "UK", "SEQ": 6},
+                    ],
+                    valueKey: "ID",
+                    textKey: "Name",
+                });
+
+                // No initial header/footer is rendered
+                $header = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-header');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($header.length, 0, 'No header exists');
+                equal($footer.length, 0, 'No footer exists');
+
+                $comboWrapper.igCombo('option', 'headerTemplate', 'Test Header');
+                $comboWrapper.igCombo('option', 'footerTemplate', 'Test Footer');
+
+                // Setters are working when setting them with initial empty state
+                $header = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-header');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($header.text(), 'Test Header', 'Header exists and matches');
+                equal($footer.text(), 'Test Footer', 'Footer exists and matches');
+
+                $comboWrapper.igCombo('option', 'headerTemplate', '<div>Changed Header</div>');
+                $comboWrapper.igCombo('option', 'footerTemplate', '<div>Changed Footer</div>');
+
+                $header = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-header');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($header.text(), 'Changed Header', 'Header exists and matches');
+                equal($footer.text(), 'Changed Footer', 'Footer exists and matches');
+
+                $comboWrapper.igCombo('option', 'footerTemplate', '<div>Total: {0} out of {1}</div>');
+                $footer = $comboWrapper.igCombo('dropDown').find('.ui-igcombo-footer');
+                equal($footer.text(), 'Total: 7 out of 7', 'Footer records match');
+
+                var newdata = [
+                    {"ID": 0, "Name": "", "Age": 0, "Country": "", "SEQ": 0},
+                    {"ID": 1, "Name": "John Doe", "Age": 23, "Country": "US", "SEQ": 1},
+                    {"ID": 2, "Name": "Jane Doe", "Age": 21, "Country": "US", "SEQ": 2},
+                    {"ID": 3, "Name": "Mark Plier", "Age": 31, "Country": "CA", "SEQ": 3},
+                    {"ID": 4, "Name": "Donny Hall", "Age": 33, "Country": "CA", "SEQ": 4},
+                    {"ID": 5, "Name": "Guido Van Rosum", "Age": 45, "Country": "NL", "SEQ": 5},
+                    {"ID": 6, "Name": "Sarah Sharp", "Age": 19, "Country": "UK", "SEQ": 6},
+                    {"ID": 7, "Name": "Sarah Sharp1", "Age": 19, "Country": "UK", "SEQ": 7},
+                    {"ID": 8, "Name": "Sarah Sharp2", "Age": 19, "Country": "UK", "SEQ": 8},
+                ];
+
+                $comboWrapper.igCombo('option', 'dataSource', newdata);
+                equal($footer.text(), 'Total: 9 out of 9', 'Footer records match');
             });
         });
     </script>
