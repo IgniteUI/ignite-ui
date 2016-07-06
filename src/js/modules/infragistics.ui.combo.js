@@ -706,9 +706,69 @@
 					.addClass(this.css.unselectable);
             }
         },
+        _renderHeaderTemplate: function(css, options, parent) {
+            var $header, headerClass, $existingHeader;
+
+            headerClass = '.' + css.header;
+            $existingHeader = parent.find(headerClass);
+
+            // Remove old template
+            if ($existingHeader.length) {
+                if (typeof options.headerTemplate === 'string') {
+                    $existingHeader.remove();
+                }
+            }
+
+            $header = $('<div>')
+                .addClass(css.header)
+                .html(options.headerTemplate);
+
+            $header.prependTo(parent);
+
+            // Preserve refenreces
+            this._options.$header = $header;
+        },
+        _renderFooterTemplate: function(css, options, parent, combo) {
+            var $footer, footerMarkup, footerClass, $existingFooter;
+
+            footerClass = '.' + css.footer;
+            $existingFooter = parent.find(footerClass);
+
+            // Remove old template
+            if ($existingFooter.length) {
+                if (typeof options.footerTemplate === 'string') {
+                    $existingFooter.remove();
+                }
+            }
+
+            footerMarkup = options.footerTemplate
+					.replace(combo.RECORDS_VIEW, '<span class=' + css.recordsView + '></span>')
+					.replace(combo.RECORDS_DATA, '<span class=' + css.recordsData + '></span>')
+					.replace(combo.RECORDS_SERVER, '<span class=' + css.recordsServer + '></span>')
+					.replace(combo.RECORDS_SERVER_TOTAL, '<span class=' + css.recordsServerTotal + '></span>');
+
+            combo._options.hasFooterVariables = footerMarkup !== options.footerTemplate;
+            if (combo._options.hasFooterVariables) {
+                $footer = $('<div>')
+                    .addClass(css.footer)
+                    .html(footerMarkup);
+
+                $footer.appendTo(parent);
+                combo._options.$footer = $footer;
+                return;
+            }
+
+            $footer = $('<div>')
+                .addClass(css.footer)
+                .html(footerMarkup);
+
+            $footer.appendTo(parent);
+
+            // Preserve references
+            this._options.$footer = $footer;
+        },
         _render: function () {
-            var $header, $footer, footerMarkup,
-				css = this.css,
+            var css = this.css,
 				options = this.options,
 				_options = this._options,
 				$comboWrapper = (_options.$comboWrapper || $('<div>')).addClass(css.comboWrapper),
@@ -765,28 +825,12 @@
 
             // Header template
             if (typeof options.headerTemplate === 'string') {
-                $header = $('<div>')
-					.addClass(css.header)
-					.html(options.headerTemplate);
-
-                $header.prependTo($dropDownCont);
+                this._renderHeaderTemplate(css, options, $dropDownCont);
             }
 
             // Footer template
             if (typeof options.footerTemplate === 'string') {
-                footerMarkup = options.footerTemplate
-					.replace(this.RECORDS_VIEW, '<span class=' + css.recordsView + '></span>')
-					.replace(this.RECORDS_DATA, '<span class=' + css.recordsData + '></span>')
-					.replace(this.RECORDS_SERVER, '<span class=' + css.recordsServer + '></span>')
-					.replace(this.RECORDS_SERVER_TOTAL, '<span class=' + css.recordsServerTotal + '></span>');
-
-                _options.hasFooterVariables = footerMarkup !== options.footerTemplate;
-
-                $footer = $('<div>')
-					.addClass(css.footer)
-					.html(footerMarkup);
-
-                $footer.appendTo($dropDownCont);
+                this._renderFooterTemplate(this.css, this.options, $dropDownCont, this);
             }
 
             if (options.virtualization) {
@@ -871,8 +915,6 @@
             _options.$dropDownCont = $dropDownCont;
             _options.$dropDownListCont = $dropDownListCont;
             _options.$dropDownList = $dropDownList;
-            _options.$header = $header;
-            _options.$footer = $footer;
             _options.$loading = $loading;
 
             // Update input val
@@ -3665,6 +3707,14 @@
                 case 'height':
                     _options.$comboWrapper.outerHeight(value);
                     this.positionDropDown();
+                    break;
+                case 'headerTemplate':
+                    this._renderHeaderTemplate(this.css, this.options, _options.$dropDownCont);
+                    break;
+                case 'footerTemplate':
+                    this._renderFooterTemplate(this.css, this.options, _options.$dropDownCont, this);
+                    // Update footer vars if set in the new template
+                    this._updateFooterVariables();
                     break;
                 case 'dropDownWidth':
                     this.positionDropDown();
