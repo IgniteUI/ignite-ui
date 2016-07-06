@@ -4023,9 +4023,15 @@
 
 		/* GroupBy functionallity*/
 		groupByData: function () {
+			/* returns collection of data and non-data(grouped) records. Flat representation of hierarchical data
+			returnType="array" array of records
+			*/
 			return this._gbData;
 		},
 		visibleGroupByData: function () {
+			/* returns collection of data and non-data(grouped) records. Returns only visible records(children of collapsed grouped records are not included in the collection)
+			returnType="array" array of records
+			*/
 			return this._vgbData;
 		},
 		_groupedRecordsByExpr: function (data, startInd, gbExpr) {
@@ -4062,12 +4068,14 @@
 			return res;
 		},
 		toggleGroupByRecord: function (id, collapsed) {
+			/* Toggle grouped record with the specified id and updates collections visible groupby data and data view
+			paramType="string" id of the grouped record
+			paramType="bool" if true the record should be collapsed, otherwise expanded
+			*/
 			var ds = this._gbData, i, len = ds.length, res = [], lvl,
 				row, hidden, gbrow, p = this.settings.paging;
 			this._gbCollapsed = this._gbCollapsed || {};
 			this._gbCollapsed[ id ] = !!collapsed;
-			/* update visible groupby data
-			add only visible records(children of collapsed groupby records should NOT be added in _vgbData)*/
 			for (i = 0; i < len; i++) {
 				row = ds[ i ];
 				gbrow = row.__gbRecord;
@@ -4089,6 +4097,7 @@
 				}
 				res.push(row);
 			}
+			/* visible groupby data and the data view should be populated */
 			this._vgbData = res;
 			this._dataView = this._vgbData;
 			if (p.enabled && p.type === "local") {
@@ -4096,6 +4105,10 @@
 			}
 		},
 		isGroupByRecordCollapsed: function (gbRec) {
+			/* Check whether the specified gorupby record is collapsed
+			paramType="string|object" id of the grouped record OR grouped record
+			returnType="bool" if true the grouped record is collapsed 
+			 */
 			var id = typeof gbRec === "string" || !gbRec ? gbRec : gbRec.id,
 				state;
 			this._gbCollapsed = this._gbCollapsed || {};
@@ -4104,7 +4117,8 @@
 						this.settings.groupby.defaultCollapseState :
 						state;
 		},
-		resetGroupByCollapseStates: function () {
+		_resetGroupByCollapseStates: function () {
+			/* reset collection that holds information aboult collapsed state. NOTE: visibleGroupByData and dataView are not updated. */
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
@@ -4153,7 +4167,7 @@
 		_generateGroupByData: function (data,
 									gbExprs,
 									collapsedRows) {
-			// data should be sorted
+			// data should be sorted when this functions is called - otherwise grouping will not be correct
 			data = data || this._data;
 			gbExprs = gbExprs || [];
 			this._gbData = [];
@@ -4170,6 +4184,9 @@
 			this._vgbData = [];
 		},
 		isGroupByApplied: function (exprs) {
+			/* check whether grouping is applied for the specified sorting expressions.
+			paramType="array" optional="true" array of sorting expressions. If not set check expressions defined in sorting settings
+			returnType="bool" Returns true if grouping is applied */
 			exprs = exprs || this.settings.sorting.expressions;
 			return !!(exprs && exprs.length && exprs[ 0 ].isGroupBy);
 		}
