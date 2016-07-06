@@ -79,7 +79,7 @@ module.exports = {
         files: [{
           expand: true,
           cwd: 'dist/',
-          src: ['**/*.js', '**/*-lite.js'],
+          src: ['**/*.js', '!**/*-lite.js'],
           dest: 'dist/'
         }
       ]
@@ -90,7 +90,7 @@ module.exports = {
  * Prepare bundles for each localization
  */
 for (var i = 0; i < locales.length; i++) {
-    newFiles["./dist/js/i18n/infragistics-" + locales[i] + ".js"] = "./dist/js/modules/i18n/*-en.js"; 
+    newFiles["./dist/js/i18n/infragistics-" + locales[i] + ".js"] = "./dist/js/modules/i18n/*-" + locales[i] + ".js"; 
 }
 // keep order
 for (var key in module.exports.combine.files) {
