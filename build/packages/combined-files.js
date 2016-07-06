@@ -1,5 +1,35 @@
 var locales = ["bg", "de", "en", "es", "fr", "ja", "ru"], newFiles = {}, i;
 
+/**
+ * Get all locale files per locale and return merge pairs like:
+ * { "modules/*.js": "i18n/*-en.js", "modules/*.js" }
+ */
+function buildLocaleMergePairs (locale) {
+    var pairs = {},
+        modulePath = "./dist/js/modules/",
+        i18nPath = modulePath + "i18n/",
+        fileName = "",
+        grunt = require('grunt'),
+        localeFiles = grunt.file.expand(i18nPath + "*-" + locale + ".js");
+
+    for (i = 0; i < localeFiles.length; i++) {
+        fileName = localeFiles[i].split("/").pop();
+        if (fileName === "infragistics.shared-" + locale + ".js") {
+             // shared resource file doesn't have "ui" in it.
+            pairs[modulePath + "infragistics.ui.shared.js"] = [
+                localeFiles[i],
+                modulePath + "infragistics.ui.shared.js"
+            ]
+        } else {
+            pairs[modulePath + fileName.replace("-" + locale, "")] = [
+                localeFiles[i],
+                modulePath + fileName.replace("-" + locale, "")
+            ]
+        }
+    }
+    return pairs;
+}
+
 module.exports = {
     "options": {
 
@@ -41,6 +71,9 @@ module.exports = {
                 "./dist/js/modules/infragistics.ui.zoombar.js"
             ]
         }
+    },
+    "mergeLocales": {
+        "files": buildLocaleMergePairs("en")
     },
     "all": {
         files: [{
