@@ -547,14 +547,13 @@
 			this._hideScrollBars(false);
 			//this._showScrollBars(true, true, 0.01);
 
+			console.log(this.element);
 			this._trigger("rendered", {});
 		},
 
 		_getContentPositionX: function () {
 			if (Modernizr.touch && !this._bMixedEnvironment) {
-				var transform3d = this._content.css("-webkit-transform");
-				var values = transform3d ? transform3d.match(/-?[\d\.]+/g) : undefined;
-				var posX = values ? -Number(values[ 4 ]) : 0;
+				var posX = - this._getTransform3dValueX(this._content);
 
 				return posX;
 			} else {
@@ -564,14 +563,50 @@
 
 		_getContentPositionY: function () {
 			if (Modernizr.touch && !this._bMixedEnvironment) {
-				var transform3d = this._content.css("-webkit-transform");
-				var values = transform3d ? transform3d.match(/-?[\d\.]+/g) : undefined;
-				var posY = values ? -Number(values[ 5 ]) : 0;
+				var posY = - this._getTransform3dValueY(this._content);
 
 				return posY;
 			} else {
 				return this._container.scrollTop();
 			}
+		},
+
+		_getTransform3dValueX: function (jqElem) {
+			var matrix, values, posX;
+			if (jqElem.css("-webkit-transform")) {
+				matrix = jqElem.css("-webkit-transform");
+				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
+				posX = values ? Number(values[4]) : 0;
+			} else if (jqElem.css("-moz-transform")) {
+				matrix = jqElem.css("-moz-transform");
+				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
+				posX = values ? Number(values[4]) : 0;
+			} else if (jqElem.css("-ms-transform")) {
+				matrix = jqElem.css("-ms-transform");
+				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
+				posX = values ? Number(values[13]) : 0;
+			}
+
+			return posX;
+		},
+
+		_getTransform3dValueY: function (jqElem) {
+			var matrix, values, posY;
+			if (jqElem.css("-webkit-transform")) {
+				matrix = jqElem.css("-webkit-transform");
+				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
+				posY = values ? Number(values[5]) : 0;
+			} else if (jqElem.css("-moz-transform")) {
+				matrix = jqElem.css("-moz-transform");
+				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
+				posY = values ? Number(values[5]) : 0;
+			} else if (jqElem.css("-ms-transform")) {
+				matrix = jqElem.css("-ms-transform");
+				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
+				posY = values ? Number(values[14]) : 0;
+			}
+
+			return posY;
 		},
 
 		_getScrollbarVPoisition: function() {
@@ -847,6 +882,7 @@
 			if (this._vBarArrowUp)  {
 				this._vBarArrowUp.bind({
 					mousedown: function () {
+						self._bMixedEnvironment = true;
 						self._bMouseDownV = true;
 						self._bUseArrowUp = true;
 						self._vBarArrowUp.switchClass("igscroll-uparrow", "igscroll-uparrow-active");
@@ -871,8 +907,11 @@
 						}
 					},
 
+					mouseout: function () {
+						clearTimeout(self._holdTimeoutID);
+					},
+
 					touchstart: commonEvts.touchstart,
-					mouseout: commonEvts.clearHold,
 					mouseenter: commonEvts.mouseenter,
 					mouseleave: commonEvts.mouseleave
 				});
@@ -881,6 +920,7 @@
 			if (this._vBarArrowDown) {
 				this._vBarArrowDown.bind({
 					mousedown: function () {
+						self._bMixedEnvironment = true;
 						self._bMouseDownV = true;
 						self._bUseArrowDown = true;
 						self._vBarArrowDown.switchClass("igscroll-downarrow", "igscroll-downarrow-active");
@@ -905,8 +945,11 @@
 						}
 					},
 
+					mouseout: function () {
+						clearTimeout(self._holdTimeoutID);
+					},
+
 					touchstart: commonEvts.touchstart,
-					mouseout: commonEvts.clearHold,
 					mouseenter: commonEvts.mouseenter,
 					mouseleave: commonEvts.mouseleave
 				});
@@ -914,7 +957,8 @@
 
 			if (this._vBarDrag) {
 				this._vBarDrag.bind({
-					mousedown: function(evt) {
+					mousedown: function (evt) {
+						self._bMixedEnvironment = true;
 						self._bMouseDownV = true;
 						self._dragLastY = evt.pageY;
 						self._bUseVDrag = true;
@@ -928,16 +972,15 @@
 			if (this._vBarTrack) {
 				this._vBarTrack.bind({
 					mousedown: function (evt) {
+						self._bMixedEnvironment = true;
 						if (evt.target.id == self._vBarDrag[0].id) {
 							return false;
 						}
 
-						var matrix = self._vBarDrag.css("-webkit-transform"),
-							values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined,
-							dragStartY = values ? Number(values[ 5 ]) : 0;
-
-						var curPosY = self._getContentPositionY(),
+						var dragStartY = self._getTransform3dValueY(self._vBarDrag),
+							curPosY = self._getContentPositionY(),
 							scrollStep = self._contentHeight * self._percentInViewV;
+						
 
 						if (evt.offsetY > dragStartY + self._vDragHeight) {
 							/* Scroll down */
@@ -952,9 +995,16 @@
 						return false;
 					},
 
+
+					mouseup: function () {
+						clearTimeout(self._holdTimeoutID);
+					},
+
+					mouseout: function () {
+						clearTimeout(self._holdTimeoutID);
+					},
+
 					touchstart: commonEvts.touchstart,
-					mouseup: commonEvts.clearHold,
-					mouseout: commonEvts.clearHold,
 					mouseenter: commonEvts.mouseenter,
 					mouseleave: commonEvts.mouseleave
 				});
@@ -1113,6 +1163,7 @@
 			if (this._hBarArrowLeft) {
 				this._hBarArrowLeft.bind({
 					mousedown: function () {
+						self._bMixedEnvironment = true;
 						self._bMouseDownH = true;
 						self._bUseArrowLeft = true;
 						self._hBarArrowLeft.switchClass("igscroll-leftarrow", "igscroll-leftarrow-active");
@@ -1156,6 +1207,7 @@
 							return;
 						}
 
+						self._bMixedEnvironment = true;
 						self._bMouseDownH = true;
 						self._bUseArrowRight = true;
 						self._hBarArrowRight.switchClass("igscroll-rightarrow", "igscroll-rightarrow-active");
@@ -1211,12 +1263,10 @@
 						if (evt.target.id == self._hBarDrag[ 0 ].id) {
 							return false;
 						}
+						self._bMixedEnvironment = true;
 
-						var matrix = self._hBarDrag.css("-webkit-transform"),
-							values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined,
-							dragStartX = values ? Number(values[ 4 ]) : 0;
-
-						var curPosX = self._getContentPositionX(),
+						var dragStartX = self._getTransform3dValueX(self._hBarDrag),
+							curPosX = self._getContentPositionX(),
 							scrollStep = self._contentWidth * self._percentInViewH;
 
 						if (evt.offsetX > dragStartX + self._hDragWidth) {
@@ -1377,25 +1427,16 @@
 				if (self._hBarDrag) {
 					self._hBarDrag
 						.css("-webkit-transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)") /* Safari */
-						.css("-moz-transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)") /* Mozilla */
-						.css("-ms-transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)") /* IE */
-						.css("-o-transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)") /* Opera */
-						.css("transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)"); /* Other */
+						.css("-moz-transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)") /* Firefox */
+						.css("-ms-transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)"); /* IE */
 				}
 				if (self._vBarDrag) {
-					var calculatedDest = 0;
-					if (Modernizr.touch) {
-						calculatedDest = destY * self._percentInViewV;
-					} else {
-						calculatedDest = destY * (self._elemHeight - 3 * 15) / self._contentHeight;
-					}
+					var calculatedDest = destY * (self._elemHeight - 3 * 15) / self._contentHeight;
 
 					self._vBarDrag
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
 						.css("-moz-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
-						.css("-ms-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
-						.css("-o-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
-						.css("transform", "translate3d(0px, " + calculatedDest + "px, 0px)");
+						.css("-ms-transform", "translate3d(0px, " + calculatedDest + "px, 0px)");
 				}
 			}
 
