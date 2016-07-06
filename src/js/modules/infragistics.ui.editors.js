@@ -9680,7 +9680,7 @@ if (typeof jQuery !== "function") {
 				if (this._inputValue === undefined) {
 					/*no explicit value */
 					var result = this._tryParseBool(newValue);
-					if (result.ret) {
+					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
 						throw ($.ig.Editor.locale.cannotSetNonBoolValue);
