@@ -9188,14 +9188,14 @@ if (typeof jQuery !== "function") {
 	});
 	$.widget("ui.igCheckboxEditor", $.ui.igBaseEditor, {
 		options: {
-			/* type="number" Gets/Sets either the editor is checked or not. */
+			/* type="bool" Gets/Sets either the editor is checked or not. */
 			checked: false,
 			/* type="verysmall|small|normal|large" Gets/Sets size of the checkbox based on preset styles.
 				For different sizes, define 'width' and 'height' options instead.
-				verysmall The size of the Checkbox editor is very small.
-				small The size of the Checkbox editor is small.
-				normal The size of the Checkbox editor is normal.
-				large The size of the Checkbox editor is large.
+				verysmall type="string" The size of the Checkbox editor is very small.
+				small type="string" The size of the Checkbox editor is small.
+				normal type="string" The size of the Checkbox editor is normal.
+				large type="string" The size of the Checkbox editor is large.
 			*/
 			size: "normal",
 			/* type="string" Applies custom class on the checkbox, so that custom image can be used.
