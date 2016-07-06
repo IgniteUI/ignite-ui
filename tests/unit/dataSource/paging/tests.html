@@ -128,32 +128,34 @@
 			}
 		];
 		
-		$(document).ready(function () {
-		
-			// create the data sources
-			tableDs = new $.ig.HtmlTableDataSource({ schema: { fields:[ {name : "col1"}, {name : "col2", type: "number"}, {name : "col3"}, {name : "col4"} ]}, 
-				paging: {enabled:true, type: "local", pageSize: 3}, dataSource: $("#t1")[0] 
-			}).dataBind();
-			
-			// here we are specifying a default sort direction, which will be applied immediately after the source is bound 
-			jsonDs = new $.ig.ArrayDataSource( {sorting: { type: "local", defaultDirection: "asc" }, dataSource: arrayOfDataObjects }).dataBind();
-			
-			// use jQuery templating to render the processed/transformed data source 
-			$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
-			
-		});
-		
-	startTesting();
-		
-	function startTesting()
-	{
-
 		$(function () {
+			function loadTestbeds() {
+				// create the data sources
+				tableDs = new $.ig.HtmlTableDataSource({ schema: { fields:[ {name : "col1"}, {name : "col2", type: "number"}, {name : "col3"}, {name : "col4"} ]}, 
+					paging: {enabled:true, type: "local", pageSize: 3}, dataSource: $("#t1")[0] 
+				}).dataBind();
+				
+				// here we are specifying a default sort direction, which will be applied immediately after the source is bound 
+				jsonDs = new $.ig.ArrayDataSource( {sorting: { type: "local", defaultDirection: "asc" }, dataSource: arrayOfDataObjects }).dataBind();
+				
+				// use jQuery templating to render the processed/transformed data source 
+				$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
+			}
 
-			QUnit.init();
-			QUnit.start();
-
-			module("igDataSource");
+			initialized = false;
+			module("igDataSource Paging", {
+				setup: function() {
+					//pause testing until tree is initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 500);
+						initialized = true;
+					}
+				},
+				teardown: function() {
+				}
+			});
 			
 			
 			var testId_1 = "Paging test 1 - apply page size and check number of records for dataView and total data records";
@@ -210,8 +212,6 @@
 			});
 			
 		});
-
-	}
 	</script>
 	
 </head>

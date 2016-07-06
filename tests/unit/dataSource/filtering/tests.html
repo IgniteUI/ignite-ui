@@ -184,8 +184,11 @@
             { "employeeId": 21, "supervisorId": 20, "firstName": "Jeremy", "lastName": "Donaldson", "Category": { "ID": 2, "Name": "Name2" } }
 		];
 
+		var yearsCount = { 'lastYear': 0, 'thisYear': 0, 'nextYear': 0 };
+		var monthsCount = { 'lastMonth': 0, 'thisMonth': 0, 'nextMonth': 0 };
+		
 			$(document).ready(function () {
-
+				function loadTestbeds() {
 				// create the data sources
 				tableDs = new $.ig.DataSource({ schema: { fields: [{ name: "col1", type: "number" }, { name: "col2", type: "number" },
 			{ name: "col3" }, { name: "col4" }, { name: "col5", type: "date" }, { name: "col6", type: "boolean"}]
@@ -248,9 +251,6 @@
 
 				// we need to make sure our data is fresh and we get matches for "Today", "Before", "After", "Yesterday", "thisMonth", "NextMonth", "ThisYear", "NextYear", "LastYear"
 
-				var yearsCount = { 'lastYear': 0, 'thisYear': 0, 'nextYear': 0 };
-				var monthsCount = { 'lastMonth': 0, 'thisMonth': 0, 'nextMonth': 0 };
-
 				date = new Date();
 				before1 = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1, 0, 0, 0, 0);
 				before2 = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate(), 0, 0, 0, 0);
@@ -306,512 +306,514 @@
 						monthsCount['nextMonth']++;
 					}
 				}
-
-				startTesting();
-
-				function startTesting() {
-
-					$(function () {
-
-						QUnit.init();
-						QUnit.start();
-
-						module("igDataSource");
-
-						var testId_1 = "IgDataSource filtering test 1: Filtering with schema - StartsWith";
-						var testId_2 = "IgDataSource filtering test 2: Filtering with schema - EndsWith";
-						var testId_3 = "IgDataSource filtering test 3: Filtering with schema - Contains";
-						var testId_4 = "IgDataSource filtering test 4: Filtering with schema - DoesNotContain";
-						var testId_5 = "IgDataSource filtering test 5: Filtering with schema - Equals";
-						var testId_6 = "IgDataSource filtering test 6: Filtering with schema - DoesNotEqual";
-						var testId_7 = "IgDataSource filtering test 7: Filtering with schema - GreaterThan";
-						var testId_8 = "IgDataSource filtering test 8: Filtering with schema - LessThan";
-						var testId_9 = "IgDataSource filtering test 9: Filtering with schema - GreaterThanOrEqualTo";
-						var testId_10 = "IgDataSource filtering test 10: Filtering with schema - True";
-						var testId_11 = "IgDataSource filtering test 11: Filtering with schema - False";
-						var testId_12 = "IgDataSource filtering test 12: Filtering with schema - After";
-						var testId_13 = "IgDataSource filtering test 13: Filtering with schema - Before";
-						var testId_14 = "IgDataSource filtering test 14: Filtering with schema - Today";
-						var testId_15 = "IgDataSource filtering test 15: Filtering with schema - Yesterday";
-						var testId_16 = "IgDataSource filtering test 16: Filtering with schema - ThisMonth";
-						var testId_17 = "IgDataSource filtering test 17: Filtering with schema - LastMonth";
-						var testId_18 = "IgDataSource filtering test 18: Filtering with schema - NextMonth";
-						var testId_19 = "IgDataSource filtering test 19: Filtering with schema - ThisYear";
-						var testId_20 = "IgDataSource filtering test 20: Filtering with schema - LastYear";
-						var testId_21 = "IgDataSource filtering test 20: Filtering with schema - NextYear";
-
-						var testId_22 = "IgDataSource filtering test 20: Filtering without schema by Index - Contains";
-						var testId_23 = "IgDataSource filtering test 20: Filtering without schema by Index - GreaterThan";
-						var testId_24 = "IgDataSource filtering test 20: Filtering without schema by Index - Before";
-						var testId_25 = "IgDataSource filtering test 20: Filtering without schema by Index - Equals";
-
-						var testId_26 = "IgDataSource filtering test 20: Filtering with expressions array - multiple 1";
-						var testId_27 = "IgDataSource filtering test 20: Filtering with expressions array - multiple 2";
-						var testId_28 = "IgDataSource filtering test 20: Filtering with expression string  1";
-						var testId_29 = "IgDataSource filtering test 20: Filtering with expression string 2";
-
-						var testId_30 = "IgDataSource filtering test 20: Filtering with expression string 3 - not like SQL";
-						var testId_31 = "IgDataSource filtering test 20: Filtering with expression string 4 - greater than or equal SQL";
-						var testId_32 = "IgDataSource filtering test 20: Filtering with expression string 5 - less than or equal SQL";
-
-						var testId_33 = "IgDataSource filtering test 33: filtering with RegExp";
-						var testId_34 = "IgDataSource filtering test 34: Filtering field with mapper function defined";
-						var testId_35 = "IgTreeHierarchicalDataSource filtering test 35-  Filtering field with mapper function defined";
-
-						// IgDataSource filtering test 1: Filtering with schema - StartsWith
-						test(testId_1, function () {
-
-							tableDs.filter([{ fieldName: "col3", expr: "l", cond: "startsWith"}], true);
-
-							// 1. check the number of records
-							equal(tableDs.dataView().length, 2, 2);
-							// 2. check that they both start with "l"
-							equal("Laptop", tableDs.dataView()[0].col3, "Laptop");
-							equal("Laptop", tableDs.dataView()[1].col3, "Laptop");
-
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col3", expr: "", cond: "startsWith"}], true);
-
-							equal(tableDs.dataView().length, 11, 11);
-
-							$("#t1 tbody").empty();
-							$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-						});
-
-						// IgDataSource filtering test 2: Filtering with schema - EndsWith
-						test(testId_2, function () {
-
-							tableDs.filter([{ fieldName: "col3", expr: "r", cond: "endsWith"}], true);
-
-							// 1. check the number of records
-							equal(tableDs.dataView().length, 2, 2);
-							// 2. check that they both start with "l"
-							equal("Hamburger", tableDs.dataView()[0].col3, "Hamburger");
-							equal("Beer", tableDs.dataView()[1].col3, "Beer");
-
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col3", expr: "", cond: "endsWith"}], true);
-
-							equal(tableDs.dataView().length, 11, 11);
-
-							$("#t1 tbody").empty();
-							$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-						});
-
-						// IgDataSource filtering test 3: Filtering with schema - Contains
-						test(testId_3, function () {
-
-							tableDs.filter([{ fieldName: "col3", expr: "m", cond: "contains"}], true);
-
-							// 1. check the number of records
-							equal(tableDs.dataView().length, 4, 4);
-
-							equal("Hamburger", tableDs.dataView()[0].col3, "Hamburger");
-							equal("mouse", tableDs.dataView()[3].col3, "mouse");
-
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col3", expr: "", cond: "contains"}], true);
-
-							equal(tableDs.dataView().length, 11, 11);
-
-							$("#t1 tbody").empty();
-							$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-
-						});
-
-						// IgDataSource filtering test 4: Filtering with schema - DoesNotContain
-						test(testId_4, function () {
-
-							tableDs.filter([{ fieldName: "col3", expr: "e", cond: "doesNotContain"}], true);
-
-							// 1. check the number of records
-							equal(tableDs.dataView().length, 4, 4);
-
-							equal("Laptop", tableDs.dataView()[0].col3, "Laptop");
-							equal("fish", tableDs.dataView()[2].col3, "fish");
-
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col3", expr: "", cond: "doesNotContain"}], true);
-
-							equal(tableDs.dataView().length, 11, 11);
-
-							$("#t1 tbody").empty();
-							$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-
-						});
-
-						// IgDataSource filtering test 5: Filtering with schema - Equal
-						test(testId_5, function () {
-
-							tableDs.filter([{ fieldName: "col3", expr: "fish", cond: "equals"}], true);
-
-							// 1. check the number of records
-							equal(tableDs.dataView().length, 1, 1);
-							equal("fish", tableDs.dataView()[0].col3, "fish");
-
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col3", expr: "", cond: "equals"}], true);
-
-							equal(tableDs.dataView().length, 11, 11);
-
-							$("#t1 tbody").empty();
-							$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-
-							// now test Equals for numeric and date columns 
-
-							tableDs.filter([{ fieldName: "col2", expr: 987, cond: "equals"}], true);
-							equal(tableDs.dataView().length, 1, 1);
-							equal(987, tableDs.dataView()[0].col2, 987);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col2", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: date.toString(), cond: "equals"}], true);
-							equal(tableDs.dataView().length, 1, 1);
-							deepEqual(date, tableDs.dataView()[0].col5, date);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 6: Filtering with schema - DoesNotEqual
-						test(testId_6, function () {
-
-							tableDs.filter([{ fieldName: "col3", expr: "Laptop", cond: "doesNotEqual"}], true);
-
-							// 1. check the number of records
-							equal(tableDs.dataView().length, 9, 9);
-							equal("Hamburger", tableDs.dataView()[0].col3, "Hamburger");
-
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col3", expr: "", cond: "doesNotEqual"}], true);
-
-							equal(tableDs.dataView().length, 11, 11);
-
-							$("#t1 tbody").empty();
-							$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-
-							// now test Does Not Equal for numeric and date columns 
-
-							tableDs.filter([{ fieldName: "col2", expr: 987, cond: "doesNotEqual"}], true);
-							equal(tableDs.dataView().length, 10, 10);
-							equal(100, tableDs.dataView()[0].col2, 100);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col2", expr: "", cond: "doesNotEqual"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: date.toString(), cond: "doesNotEqual"}], true);
-							equal(tableDs.dataView().length, 10, 10);
-							//same(date, tableDs.dataView()[0].col5, date);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "doesNotEqual"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-
-						});
-
-						// IgDataSource filtering test 7: Filtering with schema - GreaterThan
-						test(testId_7, function () {
-
-							// now test GreaterThan for numeric and date columns 
-
-							tableDs.filter([{ fieldName: "col2", expr: 100, cond: "greaterThan"}], true);
-							equal(tableDs.dataView().length, 4, 4);
-							equal(2000, tableDs.dataView()[0].col2, 2000);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col2", expr: "", cond: "greaterThan"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-
-						});
-
-						// IgDataSource filtering test 8: Filtering with schema - LessThan
-						test(testId_8, function () {
-
-							tableDs.filter([{ fieldName: "col2", expr: 100, cond: "lessThan"}], true);
-							equal(tableDs.dataView().length, 5, 5);
-							equal(15, tableDs.dataView()[0].col2, 15);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col2", expr: "", cond: "lessThan"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-
-						});
-
-						// IgDataSource filtering test 9: Filtering with schema - GreaterThanOrEqualTo
-						test(testId_9, function () {
-
-							tableDs.filter([{ fieldName: "col2", expr: 100, cond: "greaterThanOrEqualTo"}], true);
-							equal(tableDs.dataView().length, 6, 6);
-							equal(100, tableDs.dataView()[0].col2, 100);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col2", expr: "", cond: "greaterThanOrEqualTo"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-
-						});
-
-						// IgDataSource filtering test 10: Filtering with schema - True
-						test(testId_10, function () {
-
-							tableDs.filter([{ fieldName: "col6", cond: "true"}], true);
-							equal(tableDs.dataView().length, 6, 6);
-							equal(true, tableDs.dataView()[0].col6, true);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col6", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 11: Filtering with schema - False
-						test(testId_11, function () {
-
-							tableDs.filter([{ fieldName: "col6", cond: "false"}], true);
-							equal(tableDs.dataView().length, 5, 5);
-							equal(false, tableDs.dataView()[0].col6, false);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col6", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 12: Filtering with schema - After
-						test(testId_12, function () {
-
-							tableDs.filter([{ fieldName: "col5", expr: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 1, 0).toString(), cond: "after"}], true);
-							equal(tableDs.dataView().length, 5, 5);
-							//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-
-						});
-
-						// IgDataSource filtering test 13: Filtering with schema - Before
-						test(testId_13, function () {
-
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: date.toString(), cond: "before"}], true);
-							equal(tableDs.dataView().length, 5, 5);
-							//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-
-						});
-
-						// IgDataSource filtering test 14: Filtering with schema - Today
-						test(testId_14, function () {
-
-							//dates 
-                            var col5Date, countTodayRecords = 0, today = new Date(), y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
-                            for (i = 0; i < tableDs.dataView().length; ++i) {
-                                col5Date = tableDs.dataView()[i].col5;
-                                if (col5Date.getFullYear() === y && col5Date.getMonth() === m && col5Date.getDate() === d) {
-                                    countTodayRecords++;
-                                }
-                            }
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "today"}], true);
-							equal(tableDs.dataView().length, countTodayRecords, "Today count records should be " + countTodayRecords);
-							//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-
-						});
-
-						// IgDataSource filtering test 15: Filtering with schema - Yesterday
-						test(testId_15, function () {
-
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "yesterday"}], true);
-							equal(tableDs.dataView().length, 1, 1);
-							//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 16: Filtering with schema - ThisMonth
-						test(testId_16, function () {
-
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "thisMonth"}], true);
-							equal(tableDs.dataView().length, monthsCount['thisMonth'], monthsCount['thisMonth']);
-							//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 17: Filtering with schema - LastMonth
-						test(testId_17, function () {
-
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "lastMonth"}], true);
-							equal(tableDs.dataView().length, monthsCount['lastMonth'], monthsCount['lastMonth']);
-							//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 18: Filtering with schema - NextMonth
-						test(testId_18, function () {
-
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "nextMonth"}], true);
-							equal(tableDs.dataView().length, monthsCount['nextMonth'], monthsCount['nextMonth']);
-							//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 19: Filtering with schema - ThisYear
-						test(testId_19, function () {
-
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "thisYear"}], true);
-							equal(tableDs.dataView().length, yearsCount['thisYear'], yearsCount['thisYear']);
-							//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 20: Filtering with schema - LastYear
-						test(testId_20, function () {
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "lastYear"}], true);
-							equal(tableDs.dataView().length, yearsCount['lastYear'], yearsCount['lastYear']);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 21: Filtering with schema - NextYear
-						test(testId_21, function () {
-
-							//dates 
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "nextYear"}], true);
-							equal(tableDs.dataView().length, yearsCount['nextYear'], yearsCount['nextYear']);
-							//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 22: Filtering without schema by Index - Contains
-						/*
-						test(testId_22, function() {
-						ok(true);
-						});
-			
-						test(testId_23, function() {
-						ok(true);
-						});
-			
-						test(testId_24, function() {
-						ok(true);
-						});
-			
-						test(testId_25, function() {
-						ok(true);
-						});
-						*/
-
-						//IgDataSource filtering test 20: Filtering with expressions array - multiple 1 -  "AND logic"
-						test(testId_26, function () {
-
-							tableDs.filter([{ fieldName: "col2", expr: 100, cond: "greaterThan", logic: "AND" }, { fieldName: "col3", expr: "m", cond: "startsWith", logic: "AND"}], true);
-							equal(tableDs.dataView().length, 2, 2);
-							equal(2000, tableDs.dataView()[0].col2, 2000);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col2", expr: "", cond: "greaterThan", logic: "AND" }, { fieldName: "col3", expr: "", cond: "startsWith", logic: "AND"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						//IgDataSource filtering test 20: Filtering with expressions array - multiple 2 -  "OR logic"
-						test(testId_27, function () {
-
-							tableDs.filter([{ fieldName: "col2", expr: 100, cond: "greaterThan", logic: "OR" }, { fieldName: "col3", expr: "m", cond: "startsWith", logic: "OR"}], true);
-							equal(tableDs.dataView().length, 4, 4);
-							equal(2000, tableDs.dataView()[0].col2, 2000);
-							// remove the filter and check if all records are back there
-							tableDs.filter([{ fieldName: "col2", expr: "", cond: "greaterThan", logic: "OR" }, { fieldName: "col3", expr: "", cond: "startsWith", logic: "OR"}], true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 28: Filtering with expression string  1 -  "AND logic"
-						test(testId_28, function () {
-
-							tableDs.filter("col2 > 100 AND col3 LIKE m%", true);
-							equal(tableDs.dataView().length, 2, 2);
-							equal(2000, tableDs.dataView()[0].col2, 2000);
-							// remove the filter and check if all records are back there
-							tableDs.filter("", true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 29: Filtering with expression string  2 - "OR logic"
-						test(testId_29, function () {
-
-							tableDs.filter("col2 > 100 OR col3 LIKE m%", true);
-							equal(tableDs.dataView().length, 4, 4);
-							equal(2000, tableDs.dataView()[0].col2, 2000);
-							// remove the filter and check if all records are back there
-							tableDs.filter("", true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 30: Filtering with expression string 3 - not like SQL
-						test(testId_30, function () {
-
-							tableDs.filter("col2 <> 100", true);
-							equal(tableDs.dataView().length, 9, 9);
-							//equal(2000, tableDs.dataView()[0].col2, 2000);
-							// remove the filter and check if all records are back there
-							tableDs.filter("", true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 31: Filtering with expression string 3 - greater than or equal
-						test(testId_31, function () {
-
-							tableDs.filter("col2 >= 100", true);
-							equal(tableDs.dataView().length, 6, 6);
-							equal(100, tableDs.dataView()[0].col2, 100);
-							// remove the filter and check if all records are back there
-							tableDs.filter("", true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						// IgDataSource filtering test 32: Filtering with expression string 3 - less than or equal
-						test(testId_32, function () {
-
-							tableDs.filter("col2 <= 100", true);
-							equal(tableDs.dataView().length, 7, 7);
-							equal(100, tableDs.dataView()[0].col2, 100);
-							// remove the filter and check if all records are back there
-							tableDs.filter("", true);
-							equal(tableDs.dataView().length, 11, 11);
-						});
-
-						test(testId_34, function () {
-							mapperDs.filter([{ fieldName: "Category", expr: "Electronics", cond: "contains" }], "AND", true);
-
-							equal(mapperDs.dataView().length, 2, "There should be 2 records that match the filtering condition.");
-							equal(mapperDs.dataView()[0].Category.Name, "Electronics", "DataView should be filtered correctly.");
-							equal(mapperDs.dataView()[1].Category.Name, "Electronics", "DataView should be filtered correctly.");
-						});
-
-						test(testId_35, function () {
-							treeDs.filter([{ fieldName: "Category", expr: 1 , cond: "lessThan" }], "AND", true);
-							
-							$(treeDs.flatDataView()).each(function () {
-								equal(this.__matchFiltering === true, this.Category.ID === 0, "Check if filtering parameter __matchFiltering was appled based on the mapped value: Category.ID");
-							});
-						});
-
-					});
 				}
+				initialized = false;
+				module("igDataSource", {
+					setup: function() {
+						//pause testing until tree is initialized
+						if (!initialized) {
+							stop();
+							loadTestbeds();
+							setTimeout(function () { start(); }, 500);
+							initialized = true;
+						}
+					},
+					teardown: function() {
+					}
+				});
+				
+				
+				var testId_1 = "IgDataSource filtering test 1: Filtering with schema - StartsWith";
+				var testId_2 = "IgDataSource filtering test 2: Filtering with schema - EndsWith";
+				var testId_3 = "IgDataSource filtering test 3: Filtering with schema - Contains";
+				var testId_4 = "IgDataSource filtering test 4: Filtering with schema - DoesNotContain";
+				var testId_5 = "IgDataSource filtering test 5: Filtering with schema - Equals";
+				var testId_6 = "IgDataSource filtering test 6: Filtering with schema - DoesNotEqual";
+				var testId_7 = "IgDataSource filtering test 7: Filtering with schema - GreaterThan";
+				var testId_8 = "IgDataSource filtering test 8: Filtering with schema - LessThan";
+				var testId_9 = "IgDataSource filtering test 9: Filtering with schema - GreaterThanOrEqualTo";
+				var testId_10 = "IgDataSource filtering test 10: Filtering with schema - True";
+				var testId_11 = "IgDataSource filtering test 11: Filtering with schema - False";
+				var testId_12 = "IgDataSource filtering test 12: Filtering with schema - After";
+				var testId_13 = "IgDataSource filtering test 13: Filtering with schema - Before";
+				var testId_14 = "IgDataSource filtering test 14: Filtering with schema - Today";
+				var testId_15 = "IgDataSource filtering test 15: Filtering with schema - Yesterday";
+				var testId_16 = "IgDataSource filtering test 16: Filtering with schema - ThisMonth";
+				var testId_17 = "IgDataSource filtering test 17: Filtering with schema - LastMonth";
+				var testId_18 = "IgDataSource filtering test 18: Filtering with schema - NextMonth";
+				var testId_19 = "IgDataSource filtering test 19: Filtering with schema - ThisYear";
+				var testId_20 = "IgDataSource filtering test 20: Filtering with schema - LastYear";
+				var testId_21 = "IgDataSource filtering test 20: Filtering with schema - NextYear";
+
+				var testId_22 = "IgDataSource filtering test 20: Filtering without schema by Index - Contains";
+				var testId_23 = "IgDataSource filtering test 20: Filtering without schema by Index - GreaterThan";
+				var testId_24 = "IgDataSource filtering test 20: Filtering without schema by Index - Before";
+				var testId_25 = "IgDataSource filtering test 20: Filtering without schema by Index - Equals";
+
+				var testId_26 = "IgDataSource filtering test 20: Filtering with expressions array - multiple 1";
+				var testId_27 = "IgDataSource filtering test 20: Filtering with expressions array - multiple 2";
+				var testId_28 = "IgDataSource filtering test 20: Filtering with expression string  1";
+				var testId_29 = "IgDataSource filtering test 20: Filtering with expression string 2";
+
+				var testId_30 = "IgDataSource filtering test 20: Filtering with expression string 3 - not like SQL";
+				var testId_31 = "IgDataSource filtering test 20: Filtering with expression string 4 - greater than or equal SQL";
+				var testId_32 = "IgDataSource filtering test 20: Filtering with expression string 5 - less than or equal SQL";
+
+				var testId_33 = "IgDataSource filtering test 33: filtering with RegExp";
+				var testId_34 = "IgDataSource filtering test 34: Filtering field with mapper function defined";
+				var testId_35 = "IgTreeHierarchicalDataSource filtering test 35-  Filtering field with mapper function defined";
+
+				// IgDataSource filtering test 1: Filtering with schema - StartsWith
+				test(testId_1, function () {
+
+					tableDs.filter([{ fieldName: "col3", expr: "l", cond: "startsWith"}], true);
+
+					// 1. check the number of records
+					equal(tableDs.dataView().length, 2, 2);
+					// 2. check that they both start with "l"
+					equal("Laptop", tableDs.dataView()[0].col3, "Laptop");
+					equal("Laptop", tableDs.dataView()[1].col3, "Laptop");
+
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col3", expr: "", cond: "startsWith"}], true);
+
+					equal(tableDs.dataView().length, 11, 11);
+
+					$("#t1 tbody").empty();
+					$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+				});
+
+				// IgDataSource filtering test 2: Filtering with schema - EndsWith
+				test(testId_2, function () {
+
+					tableDs.filter([{ fieldName: "col3", expr: "r", cond: "endsWith"}], true);
+
+					// 1. check the number of records
+					equal(tableDs.dataView().length, 2, 2);
+					// 2. check that they both start with "l"
+					equal("Hamburger", tableDs.dataView()[0].col3, "Hamburger");
+					equal("Beer", tableDs.dataView()[1].col3, "Beer");
+
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col3", expr: "", cond: "endsWith"}], true);
+
+					equal(tableDs.dataView().length, 11, 11);
+
+					$("#t1 tbody").empty();
+					$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+				});
+
+				// IgDataSource filtering test 3: Filtering with schema - Contains
+				test(testId_3, function () {
+
+					tableDs.filter([{ fieldName: "col3", expr: "m", cond: "contains"}], true);
+
+					// 1. check the number of records
+					equal(tableDs.dataView().length, 4, 4);
+
+					equal("Hamburger", tableDs.dataView()[0].col3, "Hamburger");
+					equal("mouse", tableDs.dataView()[3].col3, "mouse");
+
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col3", expr: "", cond: "contains"}], true);
+
+					equal(tableDs.dataView().length, 11, 11);
+
+					$("#t1 tbody").empty();
+					$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+
+				});
+
+				// IgDataSource filtering test 4: Filtering with schema - DoesNotContain
+				test(testId_4, function () {
+
+					tableDs.filter([{ fieldName: "col3", expr: "e", cond: "doesNotContain"}], true);
+
+					// 1. check the number of records
+					equal(tableDs.dataView().length, 4, 4);
+
+					equal("Laptop", tableDs.dataView()[0].col3, "Laptop");
+					equal("fish", tableDs.dataView()[2].col3, "fish");
+
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col3", expr: "", cond: "doesNotContain"}], true);
+
+					equal(tableDs.dataView().length, 11, 11);
+
+					$("#t1 tbody").empty();
+					$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+
+				});
+
+				// IgDataSource filtering test 5: Filtering with schema - Equal
+				test(testId_5, function () {
+
+					tableDs.filter([{ fieldName: "col3", expr: "fish", cond: "equals"}], true);
+
+					// 1. check the number of records
+					equal(tableDs.dataView().length, 1, 1);
+					equal("fish", tableDs.dataView()[0].col3, "fish");
+
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col3", expr: "", cond: "equals"}], true);
+
+					equal(tableDs.dataView().length, 11, 11);
+
+					$("#t1 tbody").empty();
+					$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+
+					// now test Equals for numeric and date columns 
+
+					tableDs.filter([{ fieldName: "col2", expr: 987, cond: "equals"}], true);
+					equal(tableDs.dataView().length, 1, 1);
+					equal(987, tableDs.dataView()[0].col2, 987);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col2", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: date.toString(), cond: "equals"}], true);
+					equal(tableDs.dataView().length, 1, 1);
+					deepEqual(date, tableDs.dataView()[0].col5, date);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 6: Filtering with schema - DoesNotEqual
+				test(testId_6, function () {
+
+					tableDs.filter([{ fieldName: "col3", expr: "Laptop", cond: "doesNotEqual"}], true);
+
+					// 1. check the number of records
+					equal(tableDs.dataView().length, 9, 9);
+					equal("Hamburger", tableDs.dataView()[0].col3, "Hamburger");
+
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col3", expr: "", cond: "doesNotEqual"}], true);
+
+					equal(tableDs.dataView().length, 11, 11);
+
+					$("#t1 tbody").empty();
+					$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+
+					// now test Does Not Equal for numeric and date columns 
+
+					tableDs.filter([{ fieldName: "col2", expr: 987, cond: "doesNotEqual"}], true);
+					equal(tableDs.dataView().length, 10, 10);
+					equal(100, tableDs.dataView()[0].col2, 100);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col2", expr: "", cond: "doesNotEqual"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: date.toString(), cond: "doesNotEqual"}], true);
+					equal(tableDs.dataView().length, 10, 10);
+					//same(date, tableDs.dataView()[0].col5, date);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "doesNotEqual"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+
+				});
+
+				// IgDataSource filtering test 7: Filtering with schema - GreaterThan
+				test(testId_7, function () {
+
+					// now test GreaterThan for numeric and date columns 
+
+					tableDs.filter([{ fieldName: "col2", expr: 100, cond: "greaterThan"}], true);
+					equal(tableDs.dataView().length, 4, 4);
+					equal(2000, tableDs.dataView()[0].col2, 2000);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col2", expr: "", cond: "greaterThan"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+
+				});
+
+				// IgDataSource filtering test 8: Filtering with schema - LessThan
+				test(testId_8, function () {
+
+					tableDs.filter([{ fieldName: "col2", expr: 100, cond: "lessThan"}], true);
+					equal(tableDs.dataView().length, 5, 5);
+					equal(15, tableDs.dataView()[0].col2, 15);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col2", expr: "", cond: "lessThan"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+
+				});
+
+				// IgDataSource filtering test 9: Filtering with schema - GreaterThanOrEqualTo
+				test(testId_9, function () {
+
+					tableDs.filter([{ fieldName: "col2", expr: 100, cond: "greaterThanOrEqualTo"}], true);
+					equal(tableDs.dataView().length, 6, 6);
+					equal(100, tableDs.dataView()[0].col2, 100);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col2", expr: "", cond: "greaterThanOrEqualTo"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+
+				});
+
+				// IgDataSource filtering test 10: Filtering with schema - True
+				test(testId_10, function () {
+
+					tableDs.filter([{ fieldName: "col6", cond: "true"}], true);
+					equal(tableDs.dataView().length, 6, 6);
+					equal(true, tableDs.dataView()[0].col6, true);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col6", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 11: Filtering with schema - False
+				test(testId_11, function () {
+
+					tableDs.filter([{ fieldName: "col6", cond: "false"}], true);
+					equal(tableDs.dataView().length, 5, 5);
+					equal(false, tableDs.dataView()[0].col6, false);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col6", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 12: Filtering with schema - After
+				test(testId_12, function () {
+
+					tableDs.filter([{ fieldName: "col5", expr: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 1, 0).toString(), cond: "after"}], true);
+					equal(tableDs.dataView().length, 5, 5);
+					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+
+				});
+
+				// IgDataSource filtering test 13: Filtering with schema - Before
+				test(testId_13, function () {
+
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: date.toString(), cond: "before"}], true);
+					equal(tableDs.dataView().length, 5, 5);
+					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+
+				});
+
+				// IgDataSource filtering test 14: Filtering with schema - Today
+				test(testId_14, function () {
+
+					//dates 
+					var col5Date, countTodayRecords = 0, today = new Date(), y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
+					for (i = 0; i < tableDs.dataView().length; ++i) {
+						col5Date = tableDs.dataView()[i].col5;
+						if (col5Date.getFullYear() === y && col5Date.getMonth() === m && col5Date.getDate() === d) {
+							countTodayRecords++;
+						}
+					}
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "today"}], true);
+					equal(tableDs.dataView().length, countTodayRecords, "Today count records should be " + countTodayRecords);
+					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+
+				});
+
+				// IgDataSource filtering test 15: Filtering with schema - Yesterday
+				test(testId_15, function () {
+
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "yesterday"}], true);
+					equal(tableDs.dataView().length, 1, 1);
+					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 16: Filtering with schema - ThisMonth
+				test(testId_16, function () {
+
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "thisMonth"}], true);
+					equal(tableDs.dataView().length, monthsCount['thisMonth'], monthsCount['thisMonth']);
+					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 17: Filtering with schema - LastMonth
+				test(testId_17, function () {
+
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "lastMonth"}], true);
+					equal(tableDs.dataView().length, monthsCount['lastMonth'], monthsCount['lastMonth']);
+					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 18: Filtering with schema - NextMonth
+				test(testId_18, function () {
+
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "nextMonth"}], true);
+					equal(tableDs.dataView().length, monthsCount['nextMonth'], monthsCount['nextMonth']);
+					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 19: Filtering with schema - ThisYear
+				test(testId_19, function () {
+
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "thisYear"}], true);
+					equal(tableDs.dataView().length, yearsCount['thisYear'], yearsCount['thisYear']);
+					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 20: Filtering with schema - LastYear
+				test(testId_20, function () {
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "lastYear"}], true);
+					equal(tableDs.dataView().length, yearsCount['lastYear'], yearsCount['lastYear']);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 21: Filtering with schema - NextYear
+				test(testId_21, function () {
+
+					//dates 
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "nextYear"}], true);
+					equal(tableDs.dataView().length, yearsCount['nextYear'], yearsCount['nextYear']);
+					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col5", expr: "", cond: "equals"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 22: Filtering without schema by Index - Contains
+				/*
+				test(testId_22, function() {
+				ok(true);
+				});
+	
+				test(testId_23, function() {
+				ok(true);
+				});
+	
+				test(testId_24, function() {
+				ok(true);
+				});
+	
+				test(testId_25, function() {
+				ok(true);
+				});
+				*/
+
+				//IgDataSource filtering test 20: Filtering with expressions array - multiple 1 -  "AND logic"
+				test(testId_26, function () {
+
+					tableDs.filter([{ fieldName: "col2", expr: 100, cond: "greaterThan", logic: "AND" }, { fieldName: "col3", expr: "m", cond: "startsWith", logic: "AND"}], true);
+					equal(tableDs.dataView().length, 2, 2);
+					equal(2000, tableDs.dataView()[0].col2, 2000);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col2", expr: "", cond: "greaterThan", logic: "AND" }, { fieldName: "col3", expr: "", cond: "startsWith", logic: "AND"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				//IgDataSource filtering test 20: Filtering with expressions array - multiple 2 -  "OR logic"
+				test(testId_27, function () {
+
+					tableDs.filter([{ fieldName: "col2", expr: 100, cond: "greaterThan", logic: "OR" }, { fieldName: "col3", expr: "m", cond: "startsWith", logic: "OR"}], true);
+					equal(tableDs.dataView().length, 4, 4);
+					equal(2000, tableDs.dataView()[0].col2, 2000);
+					// remove the filter and check if all records are back there
+					tableDs.filter([{ fieldName: "col2", expr: "", cond: "greaterThan", logic: "OR" }, { fieldName: "col3", expr: "", cond: "startsWith", logic: "OR"}], true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 28: Filtering with expression string  1 -  "AND logic"
+				test(testId_28, function () {
+
+					tableDs.filter("col2 > 100 AND col3 LIKE m%", true);
+					equal(tableDs.dataView().length, 2, 2);
+					equal(2000, tableDs.dataView()[0].col2, 2000);
+					// remove the filter and check if all records are back there
+					tableDs.filter("", true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 29: Filtering with expression string  2 - "OR logic"
+				test(testId_29, function () {
+
+					tableDs.filter("col2 > 100 OR col3 LIKE m%", true);
+					equal(tableDs.dataView().length, 4, 4);
+					equal(2000, tableDs.dataView()[0].col2, 2000);
+					// remove the filter and check if all records are back there
+					tableDs.filter("", true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 30: Filtering with expression string 3 - not like SQL
+				test(testId_30, function () {
+
+					tableDs.filter("col2 <> 100", true);
+					equal(tableDs.dataView().length, 9, 9);
+					//equal(2000, tableDs.dataView()[0].col2, 2000);
+					// remove the filter and check if all records are back there
+					tableDs.filter("", true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 31: Filtering with expression string 3 - greater than or equal
+				test(testId_31, function () {
+
+					tableDs.filter("col2 >= 100", true);
+					equal(tableDs.dataView().length, 6, 6);
+					equal(100, tableDs.dataView()[0].col2, 100);
+					// remove the filter and check if all records are back there
+					tableDs.filter("", true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				// IgDataSource filtering test 32: Filtering with expression string 3 - less than or equal
+				test(testId_32, function () {
+
+					tableDs.filter("col2 <= 100", true);
+					equal(tableDs.dataView().length, 7, 7);
+					equal(100, tableDs.dataView()[0].col2, 100);
+					// remove the filter and check if all records are back there
+					tableDs.filter("", true);
+					equal(tableDs.dataView().length, 11, 11);
+				});
+
+				test(testId_34, function () {
+					mapperDs.filter([{ fieldName: "Category", expr: "Electronics", cond: "contains" }], "AND", true);
+
+					equal(mapperDs.dataView().length, 2, "There should be 2 records that match the filtering condition.");
+					equal(mapperDs.dataView()[0].Category.Name, "Electronics", "DataView should be filtered correctly.");
+					equal(mapperDs.dataView()[1].Category.Name, "Electronics", "DataView should be filtered correctly.");
+				});
+
+				test(testId_35, function () {
+					treeDs.filter([{ fieldName: "Category", expr: 1 , cond: "lessThan" }], "AND", true);
+					
+					$(treeDs.flatDataView()).each(function () {
+						equal(this.__matchFiltering === true, this.Category.ID === 0, "Check if filtering parameter __matchFiltering was appled based on the mapped value: Category.ID");
+					});
+				});
 
 			});
 	</script>
