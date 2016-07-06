@@ -95,7 +95,17 @@ module.exports = function (grunt) {
 					cwd: './build/packages/',
 					src:  ["package.json", "README.md"],
 					dest: './dist/'
-				}]
+				}],
+				options: {
+					process: function (content, srcpath) {
+						if (srcpath.indexOf("bower.json") >= 0) {
+							var config = JSON.parse(content);
+							config.version = buildVersion;
+							content = JSON.stringify(config, null, '  ') + '\n';
+						}
+						return content;
+					}
+				}
 			}
 		},
 		cssmin: {
