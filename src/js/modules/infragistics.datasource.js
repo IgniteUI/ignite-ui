@@ -2798,6 +2798,7 @@
 		},
 		_sortByFieldExpression: function (data, f, direction, convertf) {
 			var arr = [], i, dataLen = data.length, reverse, sortF,
+				caseSensitive =  this.settings.sorting.caseSensitive,
 				compareValFunc = f.compareFunc, rec, val, formatter = f.formatter,
 				self = this, mapper = this._hasMapper;
 			if (f.dir !== undefined && f.dir !== null) {
@@ -2817,6 +2818,12 @@
 					override the default data source type conversion logic */
 					val = convertf(val, f.fieldName);
 				}
+				/* A.T. 19 Jan 2011 - Fix for bug #62963 - igDataSource - case sensitivity is not applied to sorting */
+				if (caseSensitive === false &&
+						val !== undefined &&
+						val !== null && val.toLowerCase) {
+					val = val.toLowerCase();
+				}
 				arr.push({
 					val: val,
 					rec: rec
@@ -2827,8 +2834,8 @@
 					var arr1, arr2,
 						a = obj1.val, b = obj2.val,
 						recordsData, recordsDataReverse;
-					recordsData = { fieldName: f.fieldName, recordX: obj1, recordY: obj2 };
-					recordsDataReverse = { fieldName: f.fieldName, recordX: obj2, recordY: obj1 };
+					recordsData = { fieldName: f.fieldName, recordX: obj1.rec, recordY: obj2.rec };
+					recordsDataReverse = { fieldName: f.fieldName, recordX: obj2.rec, recordY: obj1.rec };
 					arr1 = reverse * compareValFunc(a, b, recordsData);
 					arr2 = reverse * compareValFunc(b, a, recordsDataReverse);
 					if (arr1 < arr2) {
@@ -2841,14 +2848,13 @@
 				};
 			};
 			arr = arr.sort(sortF());
-			data = [];
 			for (i = 0; i < dataLen; i++) {
-				data.push(arr[ i ].rec);
+				data[ i ] = arr[ i ].rec;
 			}
 			return data;
 		},
 		_sortDataRecursive: function (data, fields, fieldIndex, defSortDir, convertFunc) {
-			var i, j, len = data.length, res = [], expr, gbExpr, gbData, gbDataLen,
+			var i, j, len = data.length, expr, gbExpr, gbData, gbDataLen,
 				fieldsLen = fields.length;
 			fieldIndex = fieldIndex || 0;
 			if (fieldIndex > fieldsLen - 1 || len <= 1) {
@@ -2867,11 +2873,11 @@
 					gbData = this._sortDataRecursive(gbData, fields, fieldIndex + 1, defSortDir, convertFunc);
 				}
 				for (j = 0; j < gbDataLen; j++) {
-					res.push(gbData[ j ]);
+					data[ i + j ] = gbData[ j ];
 				}
 				i += gbDataLen - 1;
 			}
-			return res;
+			return data;
 		},
 		/* multi-column sorting  (third column - whether sorting should be preserved or cleared )
 		field can be a schema field, or an index of the column
@@ -2891,8 +2897,12 @@
 			*/
 			/* check if there is a custom function defined */
 			var s = this.settings.sorting, convertFunc, isGb, gbFields, i,
-				p = this.settings.paging, data, resetPaging = false, settings = this.settings;
-			fields = this._getSortingExpressionsForLayout(fields, settings.layoutName);
+				p = this.settings.paging, data, resetPaging = false;
+			/* we allow the developer to provide a single string of sort expressions, in the following format:
+			"col1 asc, col2 desc, col3 asc" ...  */
+			if ($.type(fields) === "string") {
+				fields = this._parseSortExpressions(fields);
+			}
 			isGb = this.isGroupByApplied(fields);
 			if (fields === undefined || fields === null) {
 				throw new Error($.ig.DataSourceLocale.locale.noSortingFields);
@@ -2957,10 +2967,10 @@
 					if (data.length > 1) {
 						/* check if a custom compare function is set */
 						if ($.type(s.compareFunc) === "function") {
-							data.sort(s.compareFunc(fields, this.settings.schema, 
-										direction.toLowerCase().startsWith("asc") ?
-												false : true, 
-										convertFunc));
+							data.sort(s.compareFunc(fields,
+									this.settings.schema,
+									direction.toLowerCase().startsWith("asc") ? false : true,
+									convertFunc));
 						} else {
 							data = this._sortDataRecursive(data, fields, 0, direction, convertFunc);
 						}
@@ -2977,13 +2987,6 @@
 					}
 				}
 				this._generateGroupByData(data, gbFields);
-			}
-			if (resetPaging) {
-				if (!this._filter) {
-					this._data = data;
-				} else {
-					this._filteredData = data;
-				}
 			}
 			/* now if paging is enabled, and "applyToAllData" is true, we need to re-initialize the dataView */
 			if (resetPaging && p.type === "local") {
@@ -4026,21 +4029,30 @@
 			return this._vgbData;
 		},
 		_groupedRecordsByExpr: function (data, startInd, gbExpr) {
-			var i, res = [], cmpRes, groupval,
-				cmpFunc = gbExpr.cmpFunc,
+			var i, res = [], cmpRes, groupval, currval,
+				mapper = this._hasMapper,
+				cmpFunc = gbExpr.compareFunc,
 				key = gbExpr.fieldName,
 				len = data.length;
 			if (!cmpFunc) {
-				cmpFunc = function (gbExpr, val1, val2) {
+				cmpFunc = function (val1, val2) {
 					return val1 === val2;
 				};
 			}
 			startInd = startInd || 0;
 			res.push(data[ startInd ]);
-			groupval = data[ startInd ][ key ];
+			groupval = mapper ?
+							this.getCellValue(key, data [ startInd ]) : 
+							data[ startInd ][ key ];
 			startInd++;
 			for (i = startInd; i < len; i++) {
-				cmpRes = cmpFunc(gbExpr, data[ i ][ key ], groupval);
+				currval = mapper ? this.getCellValue(key, data [ i ]) : data[ i ][ key ];
+				cmpRes = cmpFunc(currval, groupval,
+									{
+										fieldName: key,
+										recordX: data[ startInd ],
+										recordY: data[ i ]
+									});
 				if (cmpRes === 0 || cmpRes === true) {
 					res.push(data[ i ]);
 				} else {
@@ -4157,22 +4169,9 @@
 			this._gbData = [];
 			this._vgbData = [];
 		},
-		_getSortingExpressionsForLayout: function (exprs, layoutName) {
-			exprs = exprs || this.settings.sorting.expressions;
-			layoutName = layoutName || this.settings.layoutName;
-			var i, nexprs = [];
-			for (i = 0; i < exprs.length; i++) {
-				if (exprs[ i ].layout && exprs[ i ].layout !== layoutName) {
-					continue;
-				}
-				nexprs.push(exprs[ i ]);
-			}
-			return nexprs;
-		},
 		isGroupByApplied: function (exprs) {
 			exprs = exprs || this.settings.sorting.expressions;
-			var ne = this._getSortingExpressionsForLayout(exprs);
-			return !!(ne && ne.length && ne[ 0 ].isGroupBy);
+			return !!(exprs && exprs.length && exprs[ 0 ].isGroupBy);
 		}
 		/* //GroupBy functionallity*/
 	});
