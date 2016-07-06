@@ -40,7 +40,6 @@ module.exports = function (grunt) {
 				coverage: {
 					src: grunt.file.readJSON('build/config/all/instrument.json').config,
 					instrumentedFiles: "src/instrumentedFiles",
-					htmlReport: "coverage/reportHTML",
 					lcovReport: "coverage/reportLCOV",
 					disposeCollector: true,
 					reportOnFail: true,
@@ -135,16 +134,22 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
-		var config, reporter, output;
-
+		var config, reporter, output, report = grunt.option('report');
+		
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
+			
+		} else {
+			config = grunt.file.readJSON('build/config/all/jshint.json').config;
+		}
+
+		if (report !== undefined) {
 			reporter = "build/ReporterJSHint.js";
 			output = "jshint/report.html";
 		} else {
-			config = grunt.file.readJSON('build/config/all/jshint.json').config;
 			reporter = output = undefined;
 		}
+
 		grunt.task.run("clean:jshint");
 		grunt.config("jshint.all", config);
 		grunt.config("jshint.options.reporter", reporter);
@@ -153,16 +158,21 @@ module.exports = function (grunt) {
 	});
 
 	grunt.task.registerTask("cs", "Task to run JSCS", function (control) {
-		var config, reporter, output;
+		var config, reporter, output, report = grunt.option('report');
 
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
+		} else {
+			config = grunt.file.readJSON('build/config/all/jshint.json').config;
+		}
+
+		if (report !== undefined) {
 			reporter = "build/ReporterJSCS.js";
 			output = "jscs/report.html";
 		} else {
-			config = grunt.file.readJSON('build/config/all/jshint.json').config;
 			reporter = output = undefined;
 		}
+
 		grunt.task.run("clean:jscs");
 		grunt.config("jscs.src", config);
 		grunt.config("jscs.options.reporter", reporter);
@@ -171,7 +181,7 @@ module.exports = function (grunt) {
 	});
 	
 	grunt.task.registerTask("test", "Task to run dev tests and generate coverage for a single control or for all of them.", function(control) {
-		var config;
+		var config, report = grunt.option('report');
 
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/tests.json').config;
@@ -180,9 +190,14 @@ module.exports = function (grunt) {
 		}
 		grunt.task.run("clean:tests");
 		grunt.config("qunit.all", config);
-		grunt.task.run("qunitReport:init");
+		grunt.config("qunit.options.coverage.htmlReport", report !== undefined ? "coverage/reportHTML" : undefined);
+		if (report !== undefined) {
+			grunt.task.run("qunitReport:init");
+		}
 		grunt.task.run("qunit:all");
-		grunt.task.run("qunitReport:finalize");
+		if (report !== undefined) {
+			grunt.task.run("qunitReport:finalize");
+		}
 	});
 
 	grunt.task.registerTask("qunitReport", "Task to write QUnit report in HTML format", function(phase) {
