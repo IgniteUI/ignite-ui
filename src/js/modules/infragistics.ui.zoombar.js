@@ -219,6 +219,8 @@
 		destroy: function () {
 			/* destroys the Zoombar widget */
 			this._unregisterEvents();
+			this._provider.clean();
+			delete this._provider;
 			if (this._responsive) {
 				this._responsive.removeCallback(this._callBackId);
 			}
@@ -282,13 +284,13 @@
 		/* render functions */
 		_renderZoombar: function () {
 			var tc, sc;
-			/* first we"ll render the main zoombar container */
+			/* first we'll render the main zoombar container */
 			this._renderMainContainer();
-			/* then we"ll render the scrollbar */
+			/* then we'll render the scrollbar */
 			sc = this._renderScrollbar();
-			/* we"ll get some dimensions that will be needed later */
+			/* we'll get some dimensions that will be needed later */
 			this._resetDimensions();
-			/* then we"ll render everything else */
+			/* then we'll render everything else */
 			tc = this._renderClone();
 			/* render the upper layer */
 			this._renderMaskContainer(tc);
@@ -755,8 +757,7 @@
 					case "igdatachart":
 						provider = new $.ig.ZoombarProviderDataChart({
 							targetObject: this._target.data("igDataChart"),
-							cloneOptions: co,
-							renderClone: rc
+							zoomChangedCallback: this._targetWindowChangedHandler
 						});
 						break;
 					default: throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
@@ -782,7 +783,7 @@
 			return false;
 		},
 		_resetDimensions: function () {
-			var cont = this.container();
+			var cont = this.container(), clone = this.clone();
 			cont.css({
 				"width": this.element.width(),
 				"height": this.element.height()
@@ -792,16 +793,12 @@
 			this._buttonWidth = cont.children().last()
 				.children(".ui-igzoombar-scrollbar-button").outerWidth();
 			this._cwidth = this._width - 2 * this._buttonWidth;
-			this.clone()[ this._provider.widgetName() ](
-				"option",
-				"width",
-				this._width - 2 * this._buttonWidth
-			);
-			this.clone()[ this._provider.widgetName() ](
-				"option",
-				"height",
-				this._height - this._buttonWidth
-			);
+			if (clone.length) {
+				this._provider.setSize(
+					this._width - 2 * this._buttonWidth,
+					this._height - this._buttonWidth
+				);
+			}
 		},
 		_ensureWindow: function () {
 			// basic window integrity checks
@@ -1032,9 +1029,6 @@
 				"keydown": this._windowKeyDownHandler,
 				"keyup": this._windowKeyUpHandler
 			});
-			/* backwards communication */
-			this._provider.targetObject().element
-				.bind(this._provider.event(), this._targetWindowChangedHandler);
 		},
 		_unregisterEvents: function () {
 			var wnd = $(window),
@@ -1069,24 +1063,35 @@
 				"keydown": this._windowKeyDownHandler,
 				"keyup": this._windowKeyUpHandler
 			});
-			/* backwards communication */
-			this._provider.targetObject().element
-				.unbind(this._provider.event(), this._targetWindowChangedHandler);
 		}
 	});
 
 	$.ig.ZoombarProviderDefault = $.ig.ZoombarProviderDefault || Class.extend({
 		settings: {
 			targetObject: null,
-			cloneOptions: null,
-			renderClone: true
+			/* expects two parameters
+			a jQuery Event to pass as original for Zoombar's own zoomChanged event
+			an object with the following structure:
+				{
+					oldLeft: number,
+					oldWidth: number,
+					newLeft: number,
+					newWdith: number
+				}
+			The values should represent the fractions of the total width of the zoomed component in a number ranging from 0 to 1 
+			*/
+			zoomChangedCallback: null
 		},
-		/*jshint unused:false*/
+		/* jshint unused: false */
 		init: function (options) {
 			/* Initializes a new instance of the provider */
 			if (options) {
 				this.settings = options;
 			}
+			return this;
+		},
+		clean: function () {
+			/* Will be called before the provider instance is deleted (to unbind jQuery events, etc.) */
 			return this;
 		},
 		getBaseOpts: function (options) {
@@ -1113,6 +1118,16 @@
 			/* Sets the target widget min window width (to be in sync with the same property of the zoombar) */
 			return false;
 		},
+		setSize: function (width, height) {
+			/* Sets the width and height of the clone component */
+			var cont = this.settings.cloneContainer;
+			if (cont && cont.length) {
+				cont.css({
+					width: width,
+					height: height
+				});
+			}
+		},
 		targetObject: function (obj) {
 			/* Gets/sets the target object */
 			if (obj) {
@@ -1123,21 +1138,22 @@
 		update: function (a, b) {
 			/* Updates the target widget with new zoom. Returns success status if available. */
 			return false;
-		},
-		event: function () {
-			/* Returns the full event name that the widget fires when its own zoom is applied */
-			return "";
 		}
-		/*jshint unused:true*/
+		/* jshint unused: true */
 	});
 
 	$.ig.ZoombarProviderDataChart =
 		$.ig.ZoombarProviderDataChart || $.ig.ZoombarProviderDefault.extend({
 		// inherited
 		init: function (options) {
-			this._evt = "windowRectChanged";
 			this._super(options);
+			/* backwards communication */
+			this._bind();
 			return this;
+		},
+		clean: function () {
+			this._unbind();
+			return this._super();
 		},
 		getBaseOpts: function (options) {
 			var topts = options || this.settings.targetObject.options;
@@ -1145,7 +1161,7 @@
 		},
 		cleanOptsForZoom: function (options) {
 			var i;
-			/* we don"t want grid behind for the zoombar chart */
+			/* we don't want grid behind for the zoombar chart */
 			options.gridMode = "none";
 			/* zoombar chart should be static */
 			options.isSurfaceInteractionDisabled = false;
@@ -1174,6 +1190,7 @@
 			container.igDataChart(options);
 			/* remove some classes from the zoombar clone container */
 			container.children().first().removeClass("ui-corner-all ui-widget-content");
+			this.settings.cloneContainer = container;
 			return container;
 		},
 		widgetName: function () {
@@ -1188,12 +1205,17 @@
 			if (!obj) {
 				return this.settings.targetObject;
 			}
+			this._unbind();
 			this.settings.targetObject = obj;
-			this.settings.targetObject.element.bind("igdatachartwindowrectchanged", this._handler);
+			this._bind();
 		},
 		syncMinWidth: function (minWidth) {
 			this.settings.targetObject._chart.windowRectMinWidth(minWidth);
 			return true;
+		},
+		setSize: function (width, height) {
+			this.settings.cloneContainer.igDataChart("option", "width", width);
+			this.settings.cloneContainer.igDataChart("option", "height", height);
 		},
 		update: function (a, b) {
 			var cw = this.settings.targetObject._chart.windowRect();
@@ -1201,10 +1223,25 @@
 				new $.ig.Rect(0, a, cw.top(), Math.abs(b - a), cw.height())
 			);
 		},
-		event: function () {
-			return this.widgetName().toLowerCase() + this._evt.toLowerCase();
-		},
 		/* specific */
+		_bind: function () {
+			var t = this.settings.targetObject;
+			if (t && t.element && t.element.length) {
+				t.element.on("igdatachartwindowrectchanged.zoombar",
+					$.proxy(this._windowRectChanged, this));
+			}
+		},
+		_unbind: function () {
+			var t = this.settings.targetObject;
+			if (t && t.element && t.element.length) {
+				t.element.off(".zoombar");
+			}
+		},
+		_windowRectChanged: function (evt, ui) {
+			if ($.type(this.settings.zoomChangedCallback) === "function") {
+				this.settings.zoomChangedCallback(evt, ui);
+			}
+		},
 		_copyRelevantOpts: function (opts) {
 			var ref = $.isArray(opts) ? [] : {}, type, self = this, props = false, cval;
 			$.each(opts, function (key, val) {
