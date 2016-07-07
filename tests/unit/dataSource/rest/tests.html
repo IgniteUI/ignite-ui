@@ -62,17 +62,66 @@
 			{ type: "cell", rowId: 317, col: "Name", value: "Mercedes" }
 		];
 		
-		$(document).ready(function () {
+		$(function () {
 			var testId_11, testId_21,
 				testId_22, testId_23, testId_24, testId_25,
 				testId_31, testId_32, testId_33, testId_34, testId_35,
 				testId_41, testId_42, testId_43,
 				feature, rs, ds, id, cdom, params, opts,
 				tUrl1, tUrl2, tUrl3, tTmpl1, tTmpl2, tTmpl3;
-			// Initialize environment
-			QUnit.init();
-			QUnit.start();
-			module("WebApi/Rest DataSource");
+
+			function loadTestbeds() {
+				rs = {
+					create: {
+						url: "/api/products/"
+					}
+				};
+				empty = {
+					create: {
+						url: null,
+						template: null,
+						batch: false
+					},
+					update: {
+						url: null,
+						template: null,
+						batch: false
+					},
+					remove: {
+						url: null,
+						template: null,
+						batch: false
+					},
+					encodeRemoveInRequestUri: true,
+					contentSerializer: null,
+					contentType: 'application/json; charset=utf-8'
+				}
+				tUrl1 = "/api/create/products/";
+				tUrl2 = "/api/update/products/";
+				tUrl3 = "/api/delete/products/";
+				tTmpl1 = "/api/create/products(${id})/";
+				tTmpl2 = "/api/update/products(${id})/";
+				tTmpl3 = "/api/delete/products(${id})/";
+				id = 5;
+				ds = getDataSourceWithParams(rs);
+				ds.dataBind();
+			}
+			
+			initialized = false;
+			module("WebApi/Rest DataSource", {
+				setup: function() {
+					//pause testing until tree is initialized
+					if (!initialized) {
+						stop();
+						loadTestbeds();
+						setTimeout(function () { start(); }, 500);
+						initialized = true;
+					}
+				},
+				teardown: function() {
+				}
+			});
+
 			// Initialize REST state tests
 			testId_11 = "Test 1.1: init function tests";
 			// Non-batch call tests
@@ -93,41 +142,7 @@
 			testId_42 = "Test 4.2: lazy urls test";
 			testId_43 = "Test 4.3: proper url test";
 			testId_44 = "Test 4.4: custom content serializer test";
-			// Set some commonly used variables
-			rs = {
-				create: {
-					url: "/api/products/"
-				}
-			};
-			empty = {
-				create: {
-					url: null,
-					template: null,
-					batch: false
-				},
-				update: {
-					url: null,
-					template: null,
-					batch: false
-				},
-				remove: {
-					url: null,
-					template: null,
-					batch: false
-				},
-				encodeRemoveInRequestUri: true,
-				contentSerializer: null,
-				contentType: 'application/json; charset=utf-8'
-			}
-			tUrl1 = "/api/create/products/";
-			tUrl2 = "/api/update/products/";
-			tUrl3 = "/api/delete/products/";
-			tTmpl1 = "/api/create/products(${id})/";
-			tTmpl2 = "/api/update/products(${id})/";
-			tTmpl3 = "/api/delete/products(${id})/";
-			id = 5;
-			ds = getDataSourceWithParams(rs);
-			ds.dataBind();
+
 			// Initialize REST state tests (Init function of the RESTDataSource)
 			test(testId_11, 21, function () {
 				//check options
