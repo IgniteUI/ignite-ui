@@ -62,6 +62,9 @@
 						listItems: [0.12, 0.53, 1.00, 1.50],
 						isLimitedToListValues: true
 					});
+					$("#pEditor8").igPercentEditor({
+						scientificFormat : "e"
+					});
 				});
 			}
 			initialized = false;
@@ -233,6 +236,16 @@
 				}).click();
 				equal($("#percentEditorList").igPercentEditor("value"), 1.5, "Selected value is not accepted");
 			});
+			
+			var testId = 'Percent Editor Scientific format.';
+			test(testId, 1, function () {
+				var field = $('#pEditor8').igPercentEditor("field");
+
+				field.focus();
+				field.val("10");
+				field.blur();
+				equal($("#pEditor8").igPercentEditor("displayValue"), "1e+1%", "Displayed value is not correct!");
+			});
 		});
 	</script>
 </head>
@@ -253,6 +266,7 @@
 	<input id="pEditor7" />
 	<input id="emptyEditor" />
 	<input id="percentEditorList" />
+	<input id="pEditor8" />
 </div>
 </body>
 </html>
