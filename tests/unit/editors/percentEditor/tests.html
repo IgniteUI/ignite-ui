@@ -239,9 +239,12 @@
 			
 			var testId = 'Percent Editor Scientific format.';
 			test(testId, 1, function () {
-				$("#pEditor8").igPercentEditor("field").val(10);
-				$("#pEditor8").igPercentEditor("field").trigger("blur");
-				equal($('#pEditor8').igPercentEditor("displayValue"), 1e+1%, "Displayed text is not correct");
+				var field = $('#pEditor8').igPercentEditor("field");
+
+				field.focus();
+				field.val("10");
+				field.blur();
+				equal($("#pEditor8").igPercentEditor("displayValue"), "1e+1%", "Displayed value is not correct!");
 			});
 		});
 	</script>
