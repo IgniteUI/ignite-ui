@@ -1,5 +1,35 @@
 var locales = ["bg", "de", "en", "es", "fr", "ja", "ru"], newFiles = {}, i;
 
+/**
+ * Get all locale files per locale and return merge pairs like:
+ * { "modules/*.js": "i18n/*-en.js", "modules/*.js" }
+ */
+function buildLocaleMergePairs (locale) {
+    var pairs = {},
+        modulePath = "./dist/js/modules/",
+        i18nPath = modulePath + "i18n/",
+        fileName = "",
+        grunt = require('grunt'),
+        localeFiles = grunt.file.expand(i18nPath + "*-" + locale + ".js");
+
+    for (i = 0; i < localeFiles.length; i++) {
+        fileName = localeFiles[i].split("/").pop();
+        if (fileName === "infragistics.shared-" + locale + ".js") {
+             // shared resource file doesn't have "ui" in it.
+            pairs[modulePath + "infragistics.ui.shared.js"] = [
+                localeFiles[i],
+                modulePath + "infragistics.ui.shared.js"
+            ]
+        } else {
+            pairs[modulePath + fileName.replace("-" + locale, "")] = [
+                localeFiles[i],
+                modulePath + fileName.replace("-" + locale, "")
+            ]
+        }
+    }
+    return pairs;
+}
+
 module.exports = {
     "options": {
 
@@ -42,11 +72,14 @@ module.exports = {
             ]
         }
     },
+    "mergeLocales": {
+        "files": buildLocaleMergePairs("en")
+    },
     "all": {
         files: [{
           expand: true,
           cwd: 'dist/',
-          src: ['**/*.js', '**/*-lite.js'],
+          src: ['**/*.js', '!**/*-lite.js'],
           dest: 'dist/'
         }
       ]
@@ -57,7 +90,7 @@ module.exports = {
  * Prepare bundles for each localization
  */
 for (var i = 0; i < locales.length; i++) {
-    newFiles["./dist/js/i18n/infragistics-" + locales[i] + ".js"] = "./dist/js/modules/i18n/*-en.js"; 
+    newFiles["./dist/js/i18n/infragistics-" + locales[i] + ".js"] = "./dist/js/modules/i18n/*-" + locales[i] + ".js"; 
 }
 // keep order
 for (var key in module.exports.combine.files) {
