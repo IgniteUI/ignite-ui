@@ -152,8 +152,9 @@
 			if (_aNull(val)) {
 				return this._getContentPositionX();
 			}
-			if (Modernizr.touch) {
-				this._scrollTouchToXY(val, 0);
+			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+				var posY = this._getContentPositionY();
+				this._scrollTouchToXY(val, posY);
 			} else {
 				this._scrollToX(val);
 			}
@@ -167,8 +168,9 @@
 			if (_aNull(val)) {
 				return this._getContentPositionY();
 			}
-			if (Modernizr.touch) {
-				this._scrollTouchToXY(0, val);
+			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+				var posX = this._getContentPositionX();
+				this._scrollTouchToXY(posX, val);
 			} else {
 				this._scrollToY(val);
 			}
@@ -222,6 +224,12 @@
 			if (key === "syncedElemsV") {
 				this._linkElementsV(value);
 			}
+			if (key === "scrollbarH") {
+				this._bindHScrollbar(value);
+			}
+			if (key === "scrollbarV") {
+				this._bindVScrollbar(value);
+			}
 		},
 		_setOptions: function (options) {
 			var self = this;
@@ -254,13 +262,15 @@
 			this._mOverContainer = false;
 			this._mOverScrollbars = false;
 
+			this._noReposNextScroll = false;
+
 			if (this.options.modifyDOM) {
 				var contentWidth = elem[ 0 ].scrollWidth;
 				elem.addClass("igscroll-scrollable");
 				this._content = $("<div id='content' class='igscroll-content'/>")
 					.appendTo(elem)
 					.append(elem.children());
-				//if (!Modernizr.touch) {
+				//if (!$.ig.util.isTouch) {
 				//	this._content
 				//		.css("padding-right", 17 + "px")
 				//		.css("padding-bottom", 17 + "px");
@@ -305,18 +315,20 @@
 					moving = false;
 
 			self.evts = {
-				scroll: function () {
-					if (!$.ig.util.isTouch) {
-						self._syncElemsX(self._container[ 0 ], false);
+				scroll: function (e) {
+					//Sync needed element in case the scrollable content hasn't been scrolled by any of the igScroll provided methods
+					self._bMixedEnvironment = true;
+					self._syncElemsX(self._container[ 0 ], false);
+					self._syncElemsY(self._container[0], false);
 
-						//self._syncHBar(self._container[ 0 ], false);
-
-						if (!self.options.scrollOnlyVBar) {
-							//self._syncVBar(self._container[ 0 ], false);
-						}
-
-						self._updateScrollBars(self._container.scrollLeft(), self._container.scrollTop());
+					if (!self.options.scrollOnlyVBar) {
+						self._syncVBar(self._container[ 0 ], false);
 					}
+					if (!self.options.scrollOnlyHBar) {
+						self._syncHBar(self._container[ 0 ], false);
+					}
+
+					self._updateScrollBars(self._container.scrollLeft(), self._container.scrollTop());
 
 					return false;
 				},
@@ -401,8 +413,13 @@
 					moving = false;
 				},
 				touchstart: function (e) {
-					var touch = e.originalEvent.touches[ 0 ];
-					startX = self._getContentPositionX();
+					var touch = e.originalEvent.touches[0];
+
+					if (self.options.scrollOnlyHBar) {
+						startX = self._getScrollbarHPoisition();
+					} else {
+						startX = self._getContentPositionX();
+					}
 					if (self.options.scrollOnlyVBar) {
 						startY = self._getScrollbarVPoisition();
 					} else {
@@ -547,12 +564,11 @@
 			this._hideScrollBars(false);
 			//this._showScrollBars(true, true, 0.01);
 
-			console.log(this.element);
 			this._trigger("rendered", {});
 		},
 
 		_getContentPositionX: function () {
-			if (Modernizr.touch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
 				var posX = - this._getTransform3dValueX(this._content);
 
 				return posX;
@@ -562,7 +578,7 @@
 		},
 
 		_getContentPositionY: function () {
-			if (Modernizr.touch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
 				var posY = - this._getTransform3dValueY(this._content);
 
 				return posY;
@@ -636,11 +652,11 @@
 				}
 
 				if (typeof scrollOptions.scrollbarH !== "undefined") {
-					this.linkHScrollbar(scrollOptions.scrollbarH);
+					this._bindHScrollbar(scrollOptions.scrollbarH);
 				}
 
 				if (typeof scrollOptions.scrollbarV !== "undefined") {
-					this.linkVScrollbar(scrollOptions.scrollbarV);
+					this._bindVScrollbar(scrollOptions.scrollbarV);
 				}
 
 				if (scrollOptions.scrollbarHParent) {
@@ -670,6 +686,7 @@
 
 			return this.element;
 		},
+
 		_setScrollHeight: function (inHeight) {
 			/* Do NOT refresh after calling this function!!! The custom height will be lost. */
 			this._elemHeight = this._container.innerHeight();
@@ -679,6 +696,7 @@
 
 			return this.element;
 		},
+
 		_refreshScrollbarsDrag: function () {
 			if (!this.options.useNative && this._vBarDrag && this._hBarDrag) {
 				var vDragHeight = this._elemHeight * this._percentInViewV;
@@ -688,6 +706,7 @@
 				this._hBarDrag.css("width", hDragWidth + "px");
 			}
 		},
+
 		_linkElementsH: function (inElements) {
 			this._linkedHElems = [];
 			if (inElements) {
@@ -704,6 +723,7 @@
 
 			return this._linkedHElems;
 		},
+
 		_linkElementsV: function (inElements) {
 			this._linkedVElems = [];
 			if (inElements) {
@@ -720,7 +740,8 @@
 
 			return this._linkedVElems;
 		},
-		linkHScrollbar: function (inElement) {
+
+		_bindHScrollbar: function (inElement) {
 			var self = this;
 
 			if (inElement) {
@@ -735,12 +756,18 @@
 							if (ignoreSync || self.options.scrollOnlyHBar) {
 								return false;
 							} else {
+								//We set mixed environment because linked scrollbar can be used only under desktop and hybrid env.
+								self._bMixedEnvironment = true;
 								self._syncContentX(e.target, false);
 								self._syncElemsX(e.target, false);
 							}
 						}
 					});
 
+					if (this._linkedHBar) {
+						//make sure if there ware prviously linked another scrollbar to not scroll
+						this._linkedHBar.unbind();
+					}
 					this._linkedHBar = elemObject;
 				} else {
 					console.log("Element does not exists");
@@ -749,7 +776,8 @@
 
 			return this._linkedHBar;
 		},
-		linkVScrollbar: function (inElement) {
+
+		_bindVScrollbar: function (inElement) {
 			var self = this;
 
 			if (inElement) {
@@ -765,12 +793,19 @@
 							if (ignoreSync || self.options.scrollOnlyVBar) {
 								return false;
 							} else {
+								//We set mixed environment because linked scrollbar can be used only under desktop and hybrid env.
+								self._bMixedEnvironment = true;
 								self._syncContentY(e.target, false);
 								self._syncElemsY(e.target, false);
 							}
 						}
 
 					});
+
+					if (this._linkedVBar) {
+						//make sure if there ware prviously linked another scrollbar to not scroll
+						this._linkedVBar.unbind();
+					}
 					this._linkedVBar = elemObject;
 				} else {
 					console.log("Element does not exists");
@@ -1686,7 +1721,7 @@
 			self._updateScrollBars(destX, destY);
 
 			//No need to sync these bars since they don't show on safari and we use custom ones.
-			//self._syncHBar(this._content, true);
+			self._syncHBar(this._content, true);
 			self._syncVBar(this._content, true);
 		},
 
@@ -1939,7 +1974,7 @@
 			}
 
 			if (this._linkedHBar) {
-				self._ignoreHScrollBarEvents = true;
+				this._ignoreHScrollBarEvents = true;
 				this._linkedHBar.scrollLeft(destX);
 			}
 		},
@@ -1953,23 +1988,18 @@
 			var destY;
 			if (useTransform) {
 				destY = this._getContentPositionY();
-				var calculatedDestY = 0;
-				if (Modernizr.touch) {
-					calculatedDestY = destY * this._percentInViewV;
-				} else {
-					calculatedDestY = destY * (this._elemHeight - 3 * 17) / this._contentHeight;
-				}
+				var calculatedDestY = destY * (this._elemHeight - 3 * 17) / this._contentHeight;
 
-				if (this.options.scrollbarV) {
-					this.options.scrollbarV.css({
+				if (this._linkedVBar) {
+					this._linkedVBar.css({
 						"-webkit-transform": "translate3d(0px," + calculatedDestY + "px, 0px)"
 					});
 				}
 			} else {
 				destY = baseElem.scrollTop;
-				if (this.options.scrollbarV) {
-					self._ignoreVScrollBarEvents = true;
-					this.options.scrollbarV.scrollTop(destY);
+				if (this._linkedVBar) {
+					this._ignoreVScrollBarEvents = true;
+					this._linkedVBar.scrollTop(destY);
 				}
 			}
 		},
