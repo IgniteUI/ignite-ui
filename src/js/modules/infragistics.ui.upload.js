@@ -540,7 +540,7 @@ if (typeof jQuery !== "function") {
 			uploadUrl: "ig_fua34sf345sdf13sdf3454erdsf2345asd3425df5235d54df345.aspx",
 			/* type="string" Get or set URL of HTTPHandler to get information about file upload, current size and also to get commands */
 			progressUrl: "IGUploadStatusHandler.ashx",
-			/* type="string" Get or set file allowed file extensions. When this array is empty - it is not made such validation. Example ["gif", "jpg", "bmp"]. */
+			/* type="array" Get or set file allowed file extensions. When this array is empty - it is not made such validation. Example ["gif", "jpg", "bmp"]. */
 			allowedExtensions: [],
 			/* type="bool" Get or set whether to show File Extension icon */
 			showFileExtensionIcon: true,
@@ -551,7 +551,7 @@ if (typeof jQuery !== "function") {
 			fileExtensionIcons: [
 				/* good practice is to set at the beginning of array default classes */
 				{
-					/* type="string" Array of string for file extensions */
+					/* type="array" Array of string for file extensions */
 					ext: [],
 					/* type="string" Css classes which sets icon. */
 					css: "",
