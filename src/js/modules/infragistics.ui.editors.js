@@ -3901,14 +3901,12 @@ if (typeof jQuery !== "function") {
 				displayValue = this._applyGroups(value.toString(), groups, groupSeparator);
 
 			}
-			if (value < 0 &&
-				(this.options.scientificFormat === null || displayValue.indexOf("e") === -1)) {
+			if (value < 0 ) {
 				negativeSign = this.options.negativeSign;
 				displayValue = displayValue.replace("-", "");
 				displayValue = negativePattern
 					.replace("n", displayValue).replace("$", symbol).replace("-", negativeSign);
-			} else if (positivePattern &&
-				(this.options.scientificFormat === null || displayValue.indexOf("e") === -1)) {
+			} else if (positivePattern) {
 
 				// Apply Positive Pattern
 				displayValue = positivePattern.replace("n", displayValue).replace("$", symbol);
