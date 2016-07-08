@@ -765,11 +765,16 @@
 				this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
 			} else if ($.type(opts.provider) === "string") {
 				if ($.ig[opts.provider]) {
-					provider = new $.ig[opts.provider]();
+					provider = new $.ig[opts.provider]({
+						zoomChangedCallback: this._targetWindowChangedHandler
+					});
 				}
 				this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
 			} else if ($.type(opts.provider) === "object") {
 				provider = opts.provider;
+				if (provider.settings) {
+					provider.settings.zoomChangedCallback = this._targetWindowChangedHandler;
+				}
 			} else {
 				throw new Error($.ig.Zoombar.locale.zoombarProviderNotRecognized);
 			}
@@ -1068,6 +1073,7 @@
 
 	$.ig.ZoombarProviderDefault = $.ig.ZoombarProviderDefault || Class.extend({
 		settings: {
+			/* contains the target component's instance */
 			targetObject: null,
 			/* expects two parameters
 			a jQuery Event to pass as original for Zoombar's own zoomChanged event
@@ -1082,9 +1088,11 @@
 			*/
 			zoomChangedCallback: null
 		},
-		/* jshint unused: false */
+		/*jshint unused: false*/
 		init: function (options) {
-			/* Initializes a new instance of the provider */
+			/* Initializes a new instance of the provider
+			paramType="object" Options to initialize the provider with
+			*/
 			if (options) {
 				this.settings = options;
 			}
@@ -1095,15 +1103,22 @@
 			return this;
 		},
 		getBaseOpts: function (options) {
-			/* Gets basic options for initializing the clone, based on the options the target is initialized with */
+			/* Gets basic options for initializing the clone, based on the options the target is initialized with
+			paramType="object" if the Zoombar has a copy of the options object it'll pass it to the provider
+			*/
 			return options;
 		},
 		cleanOptsForZoom: function (options) {
-			/* Alters specific options so that the the clone is more suitable for its purpose */
+			/* Alters specific options so that the the clone is more suitable for its purpose
+			paramType="object" the base options of the widget obtained from getBaseOpts
+			*/
 			return options;
 		},
 		createClone: function (container, options) {
-			/* Will be called by the Zoombar if a clone of the target widget should be created */
+			/* Will be called by the Zoombar if a clone of the target widget should be created
+			paramType="jQuery" a jQuery wrapped element to create the clone component in
+			paramType="object" the options that are obtained from cleanOptsForZoom
+			*/
 			return container;
 		},
 		widgetName: function () {
@@ -1115,11 +1130,16 @@
 			return "100%";
 		},
 		syncMinWidth: function (minWidth) {
-			/* Sets the target widget min window width (to be in sync with the same property of the zoombar) */
+			/* Sets the target widget min window width (to be in sync with the same property of the zoombar)
+			paramType="number" a number from 0 to 1 representing the minimal width (i.e. maximal zoom) the zoom window can take as a fraction of the total one
+			*/
 			return false;
 		},
 		setSize: function (width, height) {
-			/* Sets the width and height of the clone component */
+			/* Sets the width and height of the clone component
+			paramType="number|string" The width to set in pixels or string (px or % -affixed).
+			paramType="number|string" The height to set in pixels or string (px or % -affixed).
+			*/
 			var cont = this.settings.cloneContainer;
 			if (cont && cont.length) {
 				cont.css({
@@ -1129,17 +1149,22 @@
 			}
 		},
 		targetObject: function (obj) {
-			/* Gets/sets the target object */
+			/* Gets/sets the target object
+			paramType="object" optional="true" the new target component instance to set
+			*/
 			if (obj) {
 				this.settings.targetObject = obj;
 			}
 			return this.settings.targetObject;
 		},
-		update: function (a, b) {
-			/* Updates the target widget with new zoom. Returns success status if available. */
+	 	update: function (a, b) { /*jshint ignore:line*/
+			/* Updates the target widget with a new zoom range.
+			paramType="number" a number from 0 to 1 representing the left edge of the new zoom window to be applied to the target component
+			paramType="number" a number from 0 to 1 representing the right edge of the new zoom window to be applied to the target component
+			returnType="bool" success status if applicable */
 			return false;
 		}
-		/* jshint unused: true */
+		/*jshint unused: true*/
 	});
 
 	$.ig.ZoombarProviderDataChart =
