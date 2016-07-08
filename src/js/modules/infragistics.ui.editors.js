@@ -1176,7 +1176,8 @@ if (typeof jQuery !== "function") {
 			this._editorInput.addClass(this.css.editor);
 			this._editorInput.css("height", "100%");
 
-			if (this.element.is("input") && this._editorInput.attr("id") !== undefined) {
+			if ((this.element.is("input") || this.element.is("textarea")) &&
+				this._editorInput.attr("id") !== undefined) {
 				this._editorInputId = this._editorInput.attr("id");
 			} else {
 				this._editorInput.attr("id", this.id + "EditingInput");
