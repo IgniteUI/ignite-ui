@@ -662,7 +662,7 @@
 					zoom.igZoombar({
 						provider: "ZoombarProviderDataChart",
 						providerCreated: function (evt, ui) {
-							ui.provider.settings.targetObject = $(".testclass").data("igDataChart");
+							ui.provider.targetObject($(".testclass").data("igDataChart"));
 						},
 						target: ".testclass",
 						clone: "none",
