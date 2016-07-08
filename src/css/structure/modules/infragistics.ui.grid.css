@@ -561,7 +561,7 @@ right: 3px;
 .pointerevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-button,
 .touch .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
 .touchevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
-.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
+.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button
 {
 	height:1.4em!important;
 	-webkit-box-sizing: border-box;
@@ -573,7 +573,7 @@ right: 3px;
 .pointerevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-field,
 .touch .ui-iggrid-results .ui-igedit-container .ui-igedit-field,
 .touchevents .ui-iggrid-results .ui-igedit-container .ui-igedit-field,
-.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-field,
+.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-field
 {
 	width:3.4em!important;
 }
@@ -582,7 +582,7 @@ right: 3px;
 .pointerevents .ui-iggrid-pager .ui-igedit-container .ui-igedit-button,
 .touch .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
 .touchevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
-.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button,
+.pointerevents .ui-iggrid-results .ui-igedit-container .ui-igedit-button
 {
 	width:1.4em!important;			
 	padding: 0!important;
