@@ -8990,6 +8990,15 @@ if (typeof jQuery !== "function") {
 						};
 					}
 					this._editorInput.data("datepicker").settings = pickerOptions;
+					// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
+					if (value.minDate && (this._editorInput.data("datepicker").settings.minDate !== this.options.minValue))
+					{
+						this.options.minValue = this._editorInput.data("datepicker").settings.minDate;
+					}
+					if (value.maxDate && (this._editorInput.data("datepicker").settings.maxDate !== this.options.maxValue))
+					{
+						this.options.maxValue = this._editorInput.data("datepicker").settings.maxDate;
+					}
 				}
 					break;
 				default: {
