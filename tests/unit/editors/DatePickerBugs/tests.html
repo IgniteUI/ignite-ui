@@ -33,7 +33,7 @@
 			// Create a editors
 
 				function loadTestbeds() {
-					var testbedIDs = ["206040", "211360", "213900", "215046", "215992", "220775","221368", "221414", "84"];
+					var testbedIDs = ["206040", "211360", "213900", "215046", "215992", "220775","221368", "221414", "84", "89"];
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i].trim() + "Testbed";
 						if (window[testBed]) {
@@ -102,6 +102,14 @@
 					$("#84Editor1").igDatePicker({
 						datepickerOptions: {
 							minDate : new Date(2016, 06, 15)
+						}
+					});
+				}
+				
+				window.Bug84Testbed = function () {
+					$("#89Editor1").igDatePicker({
+						datepickerOptions: {
+							minDate : new Date(2016, 06, 12)
 						}
 					});
 				}
@@ -257,6 +265,32 @@
 			        start();
 			        calendarVisibility = $("#84Editor1").igDatePicker("dropDownVisible");
 			        ok(!calendarVisibility, "The dropdown container is visible, but it shouldn't be.");
+			    }, 1500);
+			});
+			
+			testId = 'Issue 89';
+			test(testId, 3, function () {
+			    var calendar, calendarVisibility, notifierVisibility, field;
+				field = $("#89Editor1").igDatePicker("field");
+			    $("#89Editor1").igDatePicker("dropDownButton").click();
+				calendar = $("#89Editor1").igDatePicker("getCalendar");
+			    $(calendar).find("a:last").click();
+			    stop();
+			    setTimeout(function () {
+			        start();
+			        calendarVisibility = $("#89Editor1").igDatePicker("dropDownVisible");
+			        ok(!calendarVisibility, "The dropdown container is visible, but it shouldn't be.");
+					field.blur();
+			    }, 1500);
+				$(calendar).find("a:last").click();
+				field.blur();
+			    stop();
+			    setTimeout(function () {
+			        start();
+			        calendarVisibility = $("#89Editor1").igDatePicker("dropDownVisible");
+			        ok(!calendarVisibility, "The dropdown container is visible, but it shouldn't be.");
+					notifierVisibility = $(".ui-ignotify").is(":visible");
+					ok(!notifierVisibility, "The notifier is visible, but it shouldn't be.");
 			    }, 1500);
 			});
 		});
@@ -453,6 +487,7 @@
 		<input id="220775Editor1" type="text" />
 		<div id="221414Editor1"></div>
 		<input id="84Editor1" />
+		<input id="89Editor1" />
 		
 	</div></body>
 </html>
