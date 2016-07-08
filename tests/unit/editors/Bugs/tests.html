@@ -37,7 +37,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300"];
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
@@ -344,6 +344,21 @@
 					$('#221118Editor1').igNumericEditor({
 						listItems: [1, 2, 3, 4],
 						value: 2
+					});
+				}
+
+				window.Bug221494Testbed = function () {
+					$("#221494Editor1").igTextEditor({
+						textMode: "multiline"
+					});
+				}
+
+				window.Bug221300Testbed = function () {
+					$("#221300Editor1").igTextEditor({
+						width: "145px",
+						height: "54px",
+						value: "John Smith, with long test",
+						textMode: "multiline"
 					});
 				}
 
@@ -899,6 +914,31 @@
 				keyInteraction(13, input);
 				equal(editor.igNumericEditor("value"), 1, "The value 1 should be selected");
 			});
+
+			testId = 'Bug 221494';
+			test(testId, 1, function () {
+				equal($('#221494Editor1').igTextEditor("field").attr("id"), "221494Editor1", "The input id should be the defined one");
+			});
+			testId = 'Bug 221300';
+			test(testId, 4, function () {
+				var input = $('#221300Editor1').igTextEditor("field");
+				input[0].setSelectionRange(6, 6);
+				$("#221300Editor1").igTextEditor("field").click().focus();
+				emulateKeyBoard(13, false, false, true, input);
+				$("#221300Editor1").igTextEditor("field").blur();
+				var value = $('#221300Editor1').igTextEditor("value");
+				equal(value, "John S\nmith, with long test", "Word is not carried over the new line");
+				equal($('#221300Editor1').igTextEditor("getSelectionStart"), 7, "Cursor position is wrong");
+
+				input[0].setSelectionRange(10, 10);
+				$("#221300Editor1").igTextEditor("field").click().focus();
+				emulateKeyBoard(13, false, false, true, input);
+				$("#221300Editor1").igTextEditor("field").blur();
+				var value = $('#221300Editor1').igTextEditor("value");
+				equal(value, "John S\nmit\nh, with long test", "Word is not carried over the new line");
+				equal($('#221300Editor1').igTextEditor("getSelectionStart"), 11, "Cursor position is wrong");
+				//equal($('#221300Editor1').igTextEditor("field").attr("id"), "221494Editor1", "The input id should be the defined one");
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1120,6 +1160,8 @@
 
 		<input id="220712Editor1" type="text" />
 		<input id="221118Editor1" />
+		<textarea id="221494Editor1"></textarea>
+		<textarea id="221300Editor1"></textarea>
 	</div></body>
 </html>
 
