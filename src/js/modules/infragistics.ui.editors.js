@@ -9121,6 +9121,8 @@ if (typeof jQuery !== "function") {
 					currentDate = new Date(currentDate.getUTCFullYear(),
 						currentDate.getUTCMonth(), currentDate.getUTCDate());
 				}
+				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
+				this._enterEditMode();
 				currentInputValue = this._editorInput.val();
 				$(this._editorInput).datepicker("setDate", currentDate);
 
