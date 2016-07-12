@@ -191,10 +191,12 @@
 			this._mOverContainer = false;
 			this._mOverScrollbars = false;
 
+			//Determines if the scroll event for the content is triggered when trying to sync it on a specific axis
 			this._scrollFromSyncContentH = false;
 			this._scrollFromSyncContentV = false;
-			
-			this._noReposNextScroll = false;
+
+			//Counter for how many animation for smooth wheel scrolling are present. When 0 we are no longer scrolling with wheel
+			this._numSmoothAnimation = 0;
 
 			if (this.options.modifyDOM) {
 				var contentWidth = elem[ 0 ].scrollWidth;
@@ -255,18 +257,16 @@
 						self._switchFromTouchToMixed();
 					}
 
-					//Sync needed element in case the scrollable content hasn't been scrolled by any of the igScroll provided methods
-					self._syncElemsX(self._container[ 0 ], false);
-					self._syncElemsY(self._container[ 0 ], false);
-
 					if (!self.options.scrollOnlyVBar && !self._scrollFromSyncContentV) {
-						self._syncVBar(self._container[ 0 ], false);
+						self._syncVBar(self._container[0], false);
+						self._syncElemsY(self._container[0], false);
 					} else {
 						self._scrollFromSyncContentV = false;
 					}
 
 					if (!self.options.scrollOnlyHBar && !self._scrollFromSyncContentH) {
-						self._syncHBar(self._container[ 0 ], false);
+						self._syncHBar(self._container[0], false);
+						self._syncElemsX(self._container[0], false);
 					} else {
 						self._scrollFromSyncContentH = false;
 					}
@@ -300,6 +300,15 @@
 
 						var scrollStep = self.options.wheelStep;
 						self._scrollToY(startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep);
+
+						//Trigger scrolled event
+						self._trigger("scrolled", null, {
+							owner: self,
+							smallIncrement: 0,
+							bigIncrement: 0,
+							horizontal: false,
+							touch: false
+						});
 					}
 
 					return false;
@@ -343,7 +352,7 @@
 					}
 
 					var touchPos = e.originalEvent;
-					self._scrollToX(startX + touchStartX - touchPos.screenX);
+					self._scrollToX(startX + touchStartX - touchPos.screenX, true);
 					self._scrollToY(startY + touchStartY - touchPos.screenY);
 				},
 
@@ -429,7 +438,7 @@
 					//Check if browser is Firefox
 					if (navigator.userAgent.indexOf("Firefox") > -1 || self._bMixedEnvironment) {
 						//Better performance on Firefox for Android
-						self._scrollToX(destX);
+						self._scrollToX(destX, true);
 						self._scrollToY(destY);
 					} else {
 						//console.log("Dests: " + destX + " " + destY);
@@ -461,6 +470,15 @@
 						moving = true;
 					} else {
 						self._hideScrollBars(true, true);
+
+						//Trigger scrolled event
+						self._trigger("scrolled", null, {
+							owner: self,
+							smallIncrement: 0,
+							bigIncrement: 0,
+							horizontal: true,
+							touch: true
+						});
 					}
 
 					moving = false;
@@ -539,10 +557,10 @@
 				}
 				//Lastly change position to be sure that all elements are linked
 				if (typeof scrollOptions.scrollTop !== "undefined") {
-					this._scrollTop(scrollOptions.scrollTop);
+					this._scrollTop(scrollOptions.scrollTop ,false);
 				}
 				if (typeof scrollOptions.scrollLeft !== "undefined") {
-					this._scrollLeft(scrollOptions.scrollLeft);
+					this._scrollLeft(scrollOptions.scrollLeft, false);
 				}
 			}
 		},
@@ -572,10 +590,10 @@
 				}
 			}
 			if (key === "scrollTop") {
-				this._scrollTop(value);
+				this._scrollTop(value, true);
 			}
 			if (key === "scrollLeft") {
-				this._scrollLeft(value);
+				this._scrollLeft(value, true);
 			}
 			if (key === "scrollHeight") {
 				this._setScrollHeight(value);
@@ -672,7 +690,7 @@
 		},
 
 		//Internal scrollLeft function that handles scrolling on the X axis
-		_scrollLeft: function (val) {
+		_scrollLeft: function (val, triggerEvents) {
 			/* Gets sets the position of the content horizontally.
 				paramType="number" optional="true" new value for scrollLeft.
 				returnType="number|object" Returns scrollLeft or reference to igScroll.
@@ -682,15 +700,27 @@
 			}
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
 				var posY = this._getContentPositionY();
-				this._scrollTouchToXY(val, posY);
+				this._scrollTouchToXY(val, posY, triggerEvents);
 			} else {
-				this._scrollToX(val);
+				this._scrollToX(val, triggerEvents);
 			}
+
+			if (triggerEvents) {
+				//Trigger scrolled event
+				var self = this;
+				this._trigger("scrolled", null, {
+					owner: self,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: true
+				});
+			}
+
 			return this;
 		},
 
 		//Internal scrollLTop function that handles scrolling on the Y axis
-		_scrollTop: function (val) {
+		_scrollTop: function (val, triggerEvents) {
 			/* Gets sets the position of the content vertically.
 				paramType="number" optional="true" new value for scrollTop.
 				returnType="number|object" Returns scrollTop or reference to igScroll.
@@ -700,9 +730,20 @@
 			}
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
 				var posX = this._getContentPositionX();
-				this._scrollTouchToXY(posX, val);
+				this._scrollTouchToXY(posX, val, triggerEvents);
 			} else {
-				this._scrollToY(val);
+				this._scrollToY(val, triggerEvents);
+			}
+
+			if (triggerEvents) {
+				//Trigger scrolled event
+				var self = this;
+				this._trigger("scrolled", null, {
+					owner: self,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: true
+				});
 			}
 
 			return this;
@@ -943,6 +984,7 @@
 			this._dragLastY = 0;
 			this._bUseVDrag = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseVTrack = false;
+			this._lastBigIncDirV = 0;
 
 			var commonEvts = {
 				mouseenter: function () {
@@ -981,7 +1023,8 @@
 			};
 
 			function scrollTimeoutY(step, bSmallIncement) {
-				var eventArgs = {
+				var bNoCancel,
+					eventArgs = {
 					owner: self,
 					smallIncrement: 0,
 					bigIncrement: 0,
@@ -993,33 +1036,39 @@
 					eventArgs.smallIncrement = Math.sign(step);
 				} else {
 					eventArgs.bigIncrement = Math.sign(step);
+					self._lastBigIncDir = Math.sign(step);
 				}
-				self._trigger("scrolling", null, eventArgs);
+				bNoCancel = self._trigger("scrolling", null, eventArgs);
 
-				var curPosY = self._getContentPositionY();
-				self._scrollTop(curPosY + step);
+				if (bNoCancel) {
+					var curPosY = self._getContentPositionY();
+					self._scrollTop(curPosY + step, false);
 
-				self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(step, bSmallIncement) }, 50);
+					self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(step, bSmallIncement) }, 50);
+				}
 			}
 
 			if (this._vBarArrowUp)  {
 				this._vBarArrowUp.bind({
 					mousedown: function () {
-						self._trigger("scrolling", null, {
+						var bNoCancel = self._trigger("scrolling", null, {
 							owner: self,
 							smallIncrement: -1,
 							bigIncrement: 0,
-							horizontal: false
+							horizontal: false,
+							touch: false
 						});
 
-						//self._bMixedEnvironment = true;
-						self._bMouseDownV = true;
-						self._bUseArrowUp = true;
-						self._vBarArrowUp.switchClass("igscroll-uparrow", "igscroll-uparrow-active");
+						if (bNoCancel) {
+							//self._bMixedEnvironment = true;
+							self._bMouseDownV = true;
+							self._bUseArrowUp = true;
+							self._vBarArrowUp.switchClass("igscroll-uparrow", "igscroll-uparrow-active");
 
-						var curPosY = self._getContentPositionY();
-						self._scrollTop(curPosY - 40);
-						self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-40, true) }, 250);
+							var curPosY = self._getContentPositionY();
+							self._scrollTop(curPosY - 40, false);
+							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-40, true) }, 250);
+						}
 
 						return false;
 					},
@@ -1050,21 +1099,24 @@
 			if (this._vBarArrowDown) {
 				this._vBarArrowDown.bind({
 					mousedown: function () {
-						self._trigger("scrolling", null, {
+						var bNoCancel = self._trigger("scrolling", null, {
 							owner: self,
 							smallIncrement: 1,
 							bigIncrement: 0,
-							horizontal: false
+							horizontal: false,
+							touch: false
 						});
 
-						//self._bMixedEnvironment = true;
-						self._bMouseDownV = true;
-						self._bUseArrowDown = true;
-						self._vBarArrowDown.switchClass("igscroll-downarrow", "igscroll-downarrow-active");
+						if (bNoCancel) {
+							//self._bMixedEnvironment = true;
+							self._bMouseDownV = true;
+							self._bUseArrowDown = true;
+							self._vBarArrowDown.switchClass("igscroll-downarrow", "igscroll-downarrow-active");
 
-						var curPosY = self._getContentPositionY();
-						self._scrollTop(curPosY + 40);
-						self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(40, true) }, 250);
+							var curPosY = self._getContentPositionY();
+							self._scrollTop(curPosY + 40, false);
+							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(40, true) }, 250);
+						}
 
 						return false;
 					},
@@ -1122,62 +1174,71 @@
 
 						var dragStartY = self._getTransform3dValueY(self._vBarDrag),
 							curPosY = self._getContentPositionY(),
-							scrollStep = self._contentHeight * self._percentInViewV;
+							scrollStep = self._contentHeight * self._percentInViewV,
+							bNoCancel;
 						
 
 						if (evt.offsetY > dragStartY + self._vDragHeight) {
 							/* Scroll down */
-							self._trigger("scrolling", null, {
+							self._lastBigIncDir = 1;
+							bNoCancel = self._trigger("scrolling", null, {
 								owner: self,
 								smallIncrement: 0,
 								bigIncrement: 1,
-								horizontal: false
+								horizontal: false,
+								touch: false
 							});
 
-							self._scrollTop(curPosY + scrollStep);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(scrollStep, false) }, 250);
+							if (bNoCancel) {
+								self._scrollTop(curPosY + scrollStep, false);
+								self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(scrollStep, false) }, 250);
+							}
 						} else if (evt.offsetY < dragStartY) {
 							/* Scroll up */
-							self._trigger("scrolling", null, {
+							self._lastBigIncDir = -1
+							bNoCancel = self._trigger("scrolling", null, {
 								owner: self,
 								smallIncrement: 0,
 								bigIncrement: -1,
-								horizontal: false
+								horizontal: false,
+								touch: false
 							});
 
-							self._scrollTop(curPosY - scrollStep);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-scrollStep, false) }, 250);
+							if (bNoCancel) {
+								self._scrollTop(curPosY - scrollStep, false);
+								self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-scrollStep, false) }, 250);
+							}
 						}
 
 						return false;
 					},
 
 
-					mouseup: function () {
+					mouseup: function (evt) {
 						clearTimeout(self._holdTimeoutID);
 
-						//to do increment sign
 						if (self._bUseVTrack) {
 							self._trigger("scrolled", null, {
 								owner: self,
 								smallIncrement: 0,
-								bigIncrement: 1,
-								horizontal: false
+								bigIncrement: self._lastBigIncDir,
+								horizontal: false,
+								touch: false
 							});
 						}
 						self._bUseVTrack = false;
 					},
 
-					mouseout: function () {
+					mouseout: function (evt) {
 						clearTimeout(self._holdTimeoutID);
 
-						//to do increment sign
 						if (self._bUseVTrack) {
 							self._trigger("scrolled", null, {
 								owner: self,
 								smallIncrement: 0,
-								bigIncrement: 1,
-								horizontal: false
+								bigIncrement: self._lastBigIncDir,
+								horizontal: false,
+								touch: false
 							});
 						}
 						self._bUseVTrack = false;
@@ -1214,7 +1275,7 @@
 						offset = evt.pageY - self._dragLastY;
 						var nextPosY = curPosY + (offset * (self._contentHeight / (self._elemHeight - 3 * 17)));
 
-						self._scrollTop(nextPosY);
+						self._scrollTop(nextPosY, false);
 						self._dragLastY = evt.pageY;
 					}
 				}
@@ -1233,7 +1294,8 @@
 						owner: self,
 						smallIncrement: -1,
 						bigIncrement: 0,
-						horizontal: false
+						horizontal: false,
+						touch: false
 					});
 				}
 				if (self._bUseArrowDown) {
@@ -1244,7 +1306,8 @@
 						owner: self,
 						smallIncrement: 1,
 						bigIncrement: 0,
-						horizontal: false
+						horizontal: false,
+						touch: false
 					});
 				}
 
@@ -1327,6 +1390,7 @@
 			this._bUseHDrag = false; //Used to distinquis which on which element left mouse if being hold
 			this._dragLastX = 0;
 			this._bUseHTrack = false;
+			this._lastBigIncDirH = 0;
 
 			var commonEvts = {
 				mouseenter: function () {
@@ -1365,12 +1429,14 @@
 			};
 
 			function scrollTimeoutX(step, bSmallIncement) {
-				var eventArgs = {
-					owner: self,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: true
-				}
+				var bNoCancel,
+					eventArgs = {
+						owner: self,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: true,
+						touch: false
+					}
 
 				//Trigger scrolling event
 				if (bSmallIncement) {
@@ -1378,33 +1444,38 @@
 				} else {
 					eventArgs.bigIncrement = Math.sign(step);
 				}
-				self._trigger("scrolling", null, eventArgs);
+				bNoCancel = self._trigger("scrolling", null, eventArgs);
 
-				//Scroll content
-				var curPosY = self._getContentPositionX();
-				self._scrollLeft(curPosY + step);
+				if (bNoCancel) {
+					//Scroll content
+					var curPosY = self._getContentPositionX();
+					self._scrollLeft(curPosY + step, false);
 
-				self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(step, bSmallIncement); }, 50);
+					self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(step, bSmallIncement); }, 50);
+				}
 			}
 
 			if (this._hBarArrowLeft) {
 				this._hBarArrowLeft.bind({
 					mousedown: function () {
-						self._trigger("scrolling", null, {
+						var bNoCancel = self._trigger("scrolling", null, {
 							owner: self,
 							smallIncrement: -1,
 							bigIncrement: 0,
-							horizontal: true
+							horizontal: true,
+							touch: false
 						});
 
-						//self._bMixedEnvironment = true;
-						self._bMouseDownH = true;
-						self._bUseArrowLeft = true;
-						self._hBarArrowLeft.switchClass("igscroll-leftarrow", "igscroll-leftarrow-active");
+						if (bNoCancel) {
+							//self._bMixedEnvironment = true;
+							self._bMouseDownH = true;
+							self._bUseArrowLeft = true;
+							self._hBarArrowLeft.switchClass("igscroll-leftarrow", "igscroll-leftarrow-active");
 
-						var curPosX = self._getContentPositionX();
-						self._scrollLeft(curPosX - 40);
-						self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(-40, true); }, 250);
+							var curPosX = self._getContentPositionX();
+							self._scrollLeft(curPosX - 40, false);
+							self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(-40, true); }, 250);
+						}
 
 						return false;
 					},
@@ -1420,7 +1491,8 @@
 							owner: self,
 							smallIncrement: -1,
 							bigIncrement: 0,
-							horizontal: true
+							horizontal: true,
+							touch: false
 						});
 					},
 
@@ -1443,21 +1515,24 @@
 			if (this._hBarArrowRight) {
 				this._hBarArrowRight.bind({
 					mousedown: function () {
-						self._trigger("scrolling", null, {
+						var bNoCancel = self._trigger("scrolling", null, {
 							owner: self,
 							smallIncrement: 1,
 							bigIncrement: 0,
-							horizontal: true
+							horizontal: true,
+							touch: false
 						});
 
-						//self._bMixedEnvironment = true;
-						self._bMouseDownH = true;
-						self._bUseArrowRight = true;
-						self._hBarArrowRight.switchClass("igscroll-rightarrow", "igscroll-rightarrow-active");
+						if (bNoCancel) {
+							//self._bMixedEnvironment = true;
+							self._bMouseDownH = true;
+							self._bUseArrowRight = true;
+							self._hBarArrowRight.switchClass("igscroll-rightarrow", "igscroll-rightarrow-active");
 
-						var curPosX = self._getContentPositionX();
-						self._scrollLeft(curPosX + 40);
-						self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(40, true); }, 250);
+							var curPosX = self._getContentPositionX();
+							self._scrollLeft(curPosX + 40, false);
+							self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(40, true); }, 250);
+						}
 
 						return false;
 					},
@@ -1473,7 +1548,8 @@
 							owner: self,
 							smallIncrement: 1,
 							bigIncrement: 0,
-							horizontal: true
+							horizontal: true,
+							touch: false
 						});
 					},
 
@@ -1504,7 +1580,7 @@
 
 						self._trigger("thumbDragStart", null, {
 							owner: self,
-							horizontal: true
+							horizontal: true,
 						});
 					},
 
@@ -1523,30 +1599,40 @@
 
 						var dragStartX = self._getTransform3dValueX(self._hBarDrag),
 							curPosX = self._getContentPositionX(),
-							scrollStep = self._contentWidth * self._percentInViewH;
+							scrollStep = self._contentWidth * self._percentInViewH,
+							bNoCancel;
 
 						if (evt.offsetX > dragStartX + self._hDragWidth) {
 							//scroll right
-							self._trigger("scrolling", null, {
+							self._lastBigIncDirH = 1;
+							bNoCancel = self._trigger("scrolling", null, {
 								owner: self,
 								smallIncrement: 0,
 								bigIncrement: 1,
-								horizontal: true
+								horizontal: true,
+								touch: false
 							});
 
-							self._scrollLeft(curPosX + scrollStep);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(scrollStep, false); }, 250);
+							if (bNoCancel) {
+								self._scrollLeft(curPosX + scrollStep, false);
+								self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(scrollStep, false); }, 250);
+							}
 						} else if (evt.offsetX < dragStartX) {
 							//scroll left
-							self._trigger("scrolling", null, {
+							self._lastBigIncDirH = -1;
+							bNoCancel = self._trigger("scrolling", null, {
 								owner: self,
 								smallIncrement: 0,
 								bigIncrement: -1,
-								horizontal: true
+								horizontal: true,
+								touch: false
 							});
 
-							self._scrollLeft(curPosX - scrollStep);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(-scrollStep, false); }, 250);
+
+							if (bNoCancel) {
+								self._scrollLeft(curPosX - scrollStep, false);
+								self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(-scrollStep, false); }, 250);
+							}
 						}
 
 						return false;
@@ -1561,7 +1647,8 @@
 								owner: self,
 								smallIncrement: 0,
 								bigIncrement: 1,
-								horizontal: true
+								horizontal: true,
+								touch: false
 							});
 						}
 						self._bUseHTrack = false;
@@ -1576,7 +1663,8 @@
 								owner: self,
 								smallIncrement: 0,
 								bigIncrement: 1,
-								horizontal: true
+								horizontal: true,
+								touch: false
 							});
 						}
 						self._bUseHTrack = false;
@@ -1612,7 +1700,7 @@
 						var curPosX = self._getContentPositionX();
 						offset = evt.pageX - self._dragLastX;
 
-						self._scrollLeft(curPosX + (offset * (self._contentWidth / self._elemWidth)));
+						self._scrollLeft(curPosX + (offset * (self._contentWidth / self._elemWidth)), false);
 						self._dragLastX = evt.pageX;
 					}
 				}
@@ -1631,7 +1719,8 @@
 						owner: self,
 						smallIncrement: -1,
 						bigIncrement: 0,
-						horizontal: true
+						horizontal: true,
+						touch: false
 					});
 				}
 				if (self._bUseArrowRight) {
@@ -1642,7 +1731,8 @@
 						owner: self,
 						smallIncrement: 1,
 						bigIncrement: 0,
-						horizontal: true
+						horizontal: true,
+						touch: false
 					});
 				}
 
@@ -1896,9 +1986,26 @@
 		/** Scrolls content to on the X axis using default scrollLeft.
 		*	Should be used when sure it's desktop/hybrid environment.
 		*	If not sure how to use, use the internal _scrollLeft. */
-		_scrollToX: function (destX) {
+		_scrollToX: function (destX, triggerEvents) {
 			if (!this._isScrollableH && !this.options.scrollOnlyHBar) {
 				return;
+			}
+
+			if (triggerEvents) {
+				//Trigger scrolling event
+				var bNoCancel,
+					self = this;
+
+				bNoCancel = this._trigger("scrolling", null, {
+					owner: self,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: true,
+					touch: false
+				});
+				if (!bNoCancel) {
+					return;
+				}
 			}
 
 			if (this.options.scrollOnlyHBar) {
@@ -1911,7 +2018,7 @@
 				}
 
 				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
-				this._syncElemsX(this._container[ 0 ], false);
+				this._syncElemsX(this._container[0], false);
 				//self._syncHBar(this._container[ 0 ], false);
 
 				var curY = this._getContentPositionY();
@@ -1927,6 +2034,21 @@
 				return;
 			}
 
+			//Trigger scrolling event
+			var bNoCancel,
+				self = this;
+
+			bNoCancel = this._trigger("scrolling", null, {
+				owner: self,
+				smallIncrement: 0,
+				bigIncrement: 0,
+				horizontal: false,
+				touch: false
+			});
+			if (!bNoCancel) {
+				return;
+			}
+
 			if (this.options.scrollOnlyVBar) {
 				this._moveVBarY(destY);
 			} else {
@@ -1937,7 +2059,7 @@
 				}
 
 				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
-				this._syncElemsY(this._container[ 0 ], false);
+				this._syncElemsY(this._container[0], false);
 				//this._syncVBar(this._container[ 0 ], false);
 
 				var curX = this._getContentPositionX();
@@ -1963,8 +2085,21 @@
 			function inertiaStep() {
 				if (x > 1) {
 					cancelAnimationFrame(animationId);
+					self._numSmoothAnimation -=1;
+
+					if (!self._numSmoothAnimation) {
+						self._trigger("scrolled", null, {
+							owner: self,
+							smallIncrement: 0,
+							bigIncrement: 0,
+							horizontal: false,
+							touch: false
+						});
+					}
+
 					return;
 				}
+
 				self._nextY += ((-3 * x * x + 3) * (deltaY > 0 ? 1 : -1) * 2) * smoothingStep;
 				self._scrollToY(self._nextY);
 
@@ -1974,6 +2109,7 @@
 			}
 
 			//Start the inertia and continue it recursively
+			self._numSmoothAnimation += 1;
 			animationId = requestAnimationFrame(inertiaStep);
 		},
 
@@ -1987,20 +2123,34 @@
 			/* Switch to using scrollTop and scrollLeft attributes instead of transform3d when we have mouse + touchscreen, because they will interfere with each othe r*/
 			if (startX !== 0 || startY !== 0) {
 				//Reset the transform3d position to 0.
-				this._scrollTouchToXY(0, 0);
+				this._scrollTouchToXY(0, 0, false);
 
 				//Go back to the scrolled position but using scrollTop and scrollLeft this time
 				//console.log(startX + " " + startY);
-				this._scrollToX(-startX);
-				this._scrollToY(-startY);
+				this._scrollToX(-startX, false);
+				this._scrollToY(-startY, false);
 			}
 		},
 
 		/** Scroll content on the X and Y axis using 3d accelerated transformation. This makes scrolling on touch devices faster
 		*	Should be used when sure it's mobile environment.
 		*	If not sure how to use, use the internal _scrollTop and _scrollLeft. */
-		_scrollTouchToXY: function (destX, destY) {
-			var self = this;
+		_scrollTouchToXY: function (destX, destY, triggerEvents) {
+			var bNoCancel,
+				self = this;
+
+			if (triggerEvents) {
+				bNoCancel = this._trigger("scrolling", null, {
+					owner: self,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: false,
+					touch: true
+				});
+				if (!bNoCancel) {
+					return;
+				}
+			}
 
 			if (destX === undefined || destX < 0) {
 				destX = 0;
@@ -2075,6 +2225,14 @@
 				if (x > 6) {
 					self._hideScrollBars(true, true); //hide scrollbars when inertia ends naturally
 					cancelAnimationFrame(animationID);
+
+					self._trigger("scrolled", null, {
+						owner: self,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: true,
+						touch: true
+					});
 					return;
 				}
 
@@ -2096,7 +2254,7 @@
 
 				//If we have mixed environment we use the default behaviour. i.e. touchscreen + mouse
 				if (bDefaultScroll) {
-					self._scrollToX(self._nextX);
+					self._scrollToX(self._nextX, true);
 					self._scrollToY(self._nextY);
 				} else {
 					self._scrollTouchToXY(self._nextX, self._nextY);
