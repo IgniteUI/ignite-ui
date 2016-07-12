@@ -12,7 +12,7 @@
 * infragistics.util.js
 */
 
-/*global jQuery,setTimeout,window,document,Modernizr,MSGesture*/
+/*global jQuery,setTimeout,window,document,MSGesture*/
 (function ($) {
 	var _attr = "data-scroll",
 	_aNull = function (val) {
@@ -39,14 +39,15 @@
 	prefixes = [ "ms", "moz", "webkit", "o" ];
 
 	/** Start requestAnimationFrame and cancelAnimationFrame polyfill **/
-	for (var x = 0; x < prefixes.length && (!window.requestAnimationFrame || !window.cancelAnimationFrame); ++x) {
+	for (var x = 0; x < prefixes.length &&
+			(!window.requestAnimationFrame || !window.cancelAnimationFrame) ; ++x) {
 		window.requestAnimationFrame = window[ prefixes[ x ] + "RequestAnimationFrame" ];
 		window.cancelAnimationFrame = window[ prefixes[ x ] + "CancelAnimationFrame" ] ||
 										window[ prefixes[ x ] + "CancelRequestAnimationFrame" ];
 	}
 
 	if (!window.requestAnimationFrame) {
-		window.requestAnimationFrame = function (callback, element) {
+		window.requestAnimationFrame = function (callback) {
 			var currTime = Date.now();
 			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
 			var id = window.setTimeout(function () { callback(currTime + timeToCall); },
@@ -199,16 +200,10 @@
 			this._numSmoothAnimation = 0;
 
 			if (this.options.modifyDOM) {
-				var contentWidth = elem[ 0 ].scrollWidth;
 				elem.addClass("igscroll-scrollable");
 				this._content = $("<div id='content' class='igscroll-content'/>")
 					.appendTo(elem)
 					.append(elem.children());
-				//if (!$.ig.util.isTouch) {
-				//	this._content
-				//		.css("padding-right", 17 + "px")
-				//		.css("padding-bottom", 17 + "px");
-				//}
 
 				this._container = $("<div id='container' class='igscroll-container' />")
 					.css({
@@ -249,7 +244,7 @@
 					moving = false;
 
 			self.evts = {
-				scroll: function (e) {
+				scroll: function () {
 					if (!self._bMixedEnvironment) {
 						self._bMixedEnvironment = true;
 
@@ -258,15 +253,15 @@
 					}
 
 					if (!self.options.scrollOnlyVBar && !self._scrollFromSyncContentV) {
-						self._syncVBar(self._container[0], false);
-						self._syncElemsY(self._container[0], false);
+						self._syncVBar(self._container[ 0 ], false);
+						self._syncElemsY(self._container[ 0 ], false);
 					} else {
 						self._scrollFromSyncContentV = false;
 					}
 
 					if (!self.options.scrollOnlyHBar && !self._scrollFromSyncContentH) {
-						self._syncHBar(self._container[0], false);
-						self._syncElemsX(self._container[0], false);
+						self._syncHBar(self._container[ 0 ], false);
+						self._syncElemsX(self._container[ 0 ], false);
 					} else {
 						self._scrollFromSyncContentH = false;
 					}
@@ -316,7 +311,6 @@
 
 				pointerdown: function (e) {
 					var evt = e.originalEvent;
-
 					if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch")) {
 						return;
 					}
@@ -330,6 +324,16 @@
 						this._gestureObject.target = self._container[ 0 ];
 					}
 					this._gestureObject.addPointer(self._pointer);
+				},
+
+				pointerup: function (e) {
+					if (!self._pointer) {
+						return;
+					}
+					/* releasePointerCaptureFName is the name of the function that is supported */
+					e.target[ releasePointerCaptureFName ](self._pointer);
+
+					delete self._pointer;
 				},
 
 				MSGestureStart: function (e) {
@@ -350,7 +354,7 @@
 					if (!moving) {
 						return;
 					}
-
+					console.log("MSGestureChange");
 					var touchPos = e.originalEvent;
 					self._scrollToX(startX + touchStartX - touchPos.screenX, true);
 					self._scrollToY(startY + touchStartY - touchPos.screenY);
@@ -361,7 +365,7 @@
 				},
 
 				touchstart: function (e) {
-					var touch = e.originalEvent.touches[0];
+					var touch = e.originalEvent.touches[ 0 ];
 
 					if (self.options.scrollOnlyHBar) {
 						startX = self._getScrollbarHPoisition();
@@ -394,7 +398,6 @@
 					var touch = e.originalEvent.touches[ 0 ];
 					var destX = startX + touchStartX - touch.pageX;
 					var destY = startY + touchStartY - touch.pageY;
-					//console.log("Touch: " + (touchStartY - touch.pageY) + " " + startY);
 
 					/*Handle complex touchmoves when swipe stops but the toch doesn't end and then a swipe is initiated again */
 					/***********************************************************/
@@ -441,7 +444,6 @@
 						self._scrollToX(destX, true);
 						self._scrollToY(destY);
 					} else {
-						//console.log("Dests: " + destX + " " + destY);
 						self._scrollTouchToXY(destX, destY);
 					}
 
@@ -498,11 +500,11 @@
 				mouseleave: function () {
 					self._mOverContainer = false;
 
-					if(!self._bMouseDownH && !self._bMouseDownV) {
+					if (!self._bMouseDownH && !self._bMouseDownV) {
 						//Hide scrollbars after 2 secs. We cencel the timeout if we enter scrollbars area.
 						self._hideScrollbarID = setTimeout(function () {
 							self._hideScrollBars(false);
-						}, 2000)
+						}, 2000);
 					}
 				}
 			};
@@ -520,7 +522,7 @@
 
 			this._createScrollBars();
 			this._hideScrollBars(false);
-			//this._showScrollBars(true, true, 0.01);
+			/*this._showScrollBars(true, true, 0.01);*/
 
 			this._trigger("rendered", null, {
 				owner: this
@@ -542,22 +544,22 @@
 					this._bindVScrollbar(scrollOptions.scrollbarV);
 				}
 				if (scrollOptions.scrollbarHParent) {
-					var parentObject = $(scrollOptions.scrollbarHParent);
+					var parentObjectH = $(scrollOptions.scrollbarHParent);
 
-					if (parentObject.length) {
-						this._HBarParent = parentObject;
+					if (parentObjectH.length) {
+						this._HBarParent = parentObjectH;
 					}
 				}
 				if (scrollOptions.scrollbarVParent) {
-					var parentObject = $(scrollOptions.scrollbarVParent);
+					var parentObjectV = $(scrollOptions.scrollbarVParent);
 
-					if (parentObject.length) {
-						this._VBarParent = parentObject;
+					if (parentObjectV.length) {
+						this._VBarParent = parentObjectV;
 					}
 				}
-				//Lastly change position to be sure that all elements are linked
+				/* Lastly change position to be sure that all elements are linked */
 				if (typeof scrollOptions.scrollTop !== "undefined") {
-					this._scrollTop(scrollOptions.scrollTop ,false);
+					this._scrollTop(scrollOptions.scrollTop, false);
 				}
 				if (typeof scrollOptions.scrollLeft !== "undefined") {
 					this._scrollLeft(scrollOptions.scrollLeft, false);
@@ -617,7 +619,7 @@
 
 		_getContentPositionX: function () {
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
-				var posX = - this._getTransform3dValueX(this._content);
+				var posX = -this._getTransform3dValueX(this._content);
 
 				return posX;
 			} else {
@@ -627,7 +629,7 @@
 
 		_getContentPositionY: function () {
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
-				var posY = - this._getTransform3dValueY(this._content);
+				var posY = -this._getTransform3dValueY(this._content);
 
 				return posY;
 			} else {
@@ -640,15 +642,15 @@
 			if (jqElem.css("-webkit-transform")) {
 				matrix = jqElem.css("-webkit-transform");
 				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-				posX = values ? Number(values[4]) : 0;
+				posX = values ? Number(values[ 4 ]) : 0;
 			} else if (jqElem.css("-moz-transform")) {
 				matrix = jqElem.css("-moz-transform");
 				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-				posX = values ? Number(values[4]) : 0;
+				posX = values ? Number(values[ 4 ]) : 0;
 			} else if (jqElem.css("-ms-transform")) {
 				matrix = jqElem.css("-ms-transform");
 				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-				posX = values ? Number(values[13]) : 0;
+				posX = values ? Number(values[ 13 ]) : 0;
 			}
 
 			return posX;
@@ -659,15 +661,15 @@
 			if (jqElem.css("-webkit-transform")) {
 				matrix = jqElem.css("-webkit-transform");
 				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-				posY = values ? Number(values[5]) : 0;
+				posY = values ? Number(values[ 5 ]) : 0;
 			} else if (jqElem.css("-moz-transform")) {
 				matrix = jqElem.css("-moz-transform");
 				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-				posY = values ? Number(values[5]) : 0;
+				posY = values ? Number(values[ 5 ]) : 0;
 			} else if (jqElem.css("-ms-transform")) {
 				matrix = jqElem.css("-ms-transform");
 				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-				posY = values ? Number(values[14]) : 0;
+				posY = values ? Number(values[ 14 ]) : 0;
 			}
 
 			return posY;
@@ -805,7 +807,7 @@
 					if (elemObject.length) {
 						this._linkedVElems.push(elemObject);
 					} else {
-						console.log("Element does not exists");
+						console.log("Error: Element does not exists");
 					}
 				}
 			}
@@ -830,7 +832,6 @@
 							} else {
 								//We set mixed environment because linked scrollbar can be used only under desktop and hybrid env.
 								if (!self._bMixedEnvironment) {
-									console.log("switch");
 									self._bMixedEnvironment = true;
 
 									/* Make sure we are not scrolled using 3d transformation */
@@ -849,7 +850,7 @@
 					}
 					this._linkedHBar = elemObject;
 				} else {
-					console.log("Element does not exists");
+					console.log("Error: Element does not exists");
 				}
 			}
 
@@ -874,7 +875,6 @@
 							} else {
 								//We set mixed environment because linked scrollbar can be used only under desktop and hybrid env.
 								if (!self._bMixedEnvironment) {
-									console.log("switch");
 									self._bMixedEnvironment = true;
 
 									/* Make sure we are not scrolled using 3d transformation */
@@ -894,7 +894,7 @@
 					}
 					this._linkedVBar = elemObject;
 				} else {
-					console.log("Element does not exists");
+					console.log("Error: Element does not exists");
 				}
 			}
 
@@ -902,8 +902,6 @@
 		},
 
 		_createScrollBars: function () {
-			var self = this;
-
 			if (this.options.useNative) {
 				this._createNativeScrollbars();
 			} else {
@@ -949,42 +947,58 @@
 		},
 
 		_initCustomScrollBarV: function() {
-			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar' class='igscroll-vcontainer'></div>")
+			this._vBarContainer =
+				$("<div id='" + this.element.attr("id") + "_vBar' class='igscroll-vcontainer'></div>")
 				.css("height", this._elemHeight - 15 + "px");
 
-			this._vBarArrowUp = $("<div id='" + this.element.attr("id") + "_vBar_arrowUp' class='igscroll-varrow igscroll-uparrow'></div>");
-			this._vBarTrack = $("<div id='" + this.element.attr("id") + "_vBar_track' class='igscroll-vtrack'></div>")
+			this._vBarArrowUp =
+				$("<div id='" +
+					this.element.attr("id") +
+				"_vBar_arrowUp' class='igscroll-varrow igscroll-uparrow'></div>");
+
+			this._vBarTrack =
+				$("<div id='" + this.element.attr("id") + "_vBar_track' class='igscroll-vtrack'></div>")
 				.css("height", this._elemHeight - (3 * 15) + "px");
-			this._vBarArrowDown = $("<div id='" + this.element.attr("id") + "_vBar_arrowDown' class='igscroll-varrow igscroll-downarrow'></div>");
+
+			this._vBarArrowDown =
+				$("<div id='" +
+					this.element.attr("id") +
+				"_vBar_arrowDown' class='igscroll-varrow igscroll-downarrow'></div>");
 
 			this._vDragHeight = this._elemHeight * ((this._elemHeight - 2 * 15) / this._contentHeight);
-			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag' class='igscroll-vdrag'></span>")
+			this._vBarDrag =
+				$("<span id='" + this.element.attr("id") + "_vBar_drag' class='igscroll-vdrag'></span>")
 				.css("height", this._vDragHeight + "px");
-			
+
 			if (this.options.scrollbarVParent) {
-				this._vBarContainer.append(this._vBarArrowUp).append(this._vBarTrack.append(this._vBarDrag)).append(this._vBarArrowDown).appendTo(this.options.scrollbarVParent);
+				this._vBarContainer
+					.append(this._vBarArrowUp)
+					.append(this._vBarTrack.append(this._vBarDrag))
+					.append(this._vBarArrowDown)
+					.appendTo(this.options.scrollbarVParent);
 			} else {
-				this._vBarContainer.append(this._vBarArrowUp).append(this._vBarTrack.append(this._vBarDrag)).append(this._vBarArrowDown).appendTo(this._container[0].parentElement);
+				this._vBarContainer
+					.append(this._vBarArrowUp)
+					.append(this._vBarTrack.append(this._vBarDrag))
+					.append(this._vBarArrowDown)
+					.appendTo(this._container[ 0 ].parentElement);
 			}
 
 			this._bindCustomScrollBarV();
 		},
-		
+
 		_bindCustomScrollBarV: function() {
 			var self = this;
-			this._holdTimeoutID = 0;
-			var startX, startY,
-				touchStartX,
-				touchStartY,
-				moving = false;
 
+			this._holdTimeoutID = 0;
 			this._bMouseDownV = false; //Used to track if mouse is holded on any of the vertical scrollbar elements
 			this._bUseArrowUp = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseArrowDown = false; //Used to distinquis which on which element left mouse if being hold
-			this._dragLastY = 0;
+			this._dragLastY = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
 			this._bUseVDrag = false; //Used to distinquis which on which element left mouse if being hold
-			this._bUseVTrack = false;
-			this._lastBigIncDirV = 0;
+			this._bUseVTrack = false; //Determines if the vertical track area is being used
+			this._lastBigIncDirV = 0; //Used to determine the last direction of the scroll when using the scrollbar track area
+			this._mTrackLastPosV = 0; //Last know position of the mouse when interacting with the vertical track area
 
 			var commonEvts = {
 				mouseenter: function () {
@@ -1007,7 +1021,7 @@
 						//Hide scrollbars after 2 secconds. This will be canceled if we go the scrollable content or any other element of the scrollbars by _hideScrollbarID
 						self._hideScrollbarID = setTimeout(function () {
 							self._hideScrollBars(false);
-						}, 2000)
+						}, 2000);
 
 						//Switch to simple scrollbar (i.e. only drag bar showing with no arrows) after timeout of 2sec
 						self._toSimpleScrollbarID = setTimeout(function () {
@@ -1025,16 +1039,25 @@
 			function scrollTimeoutY(step, bSmallIncement) {
 				var bNoCancel,
 					eventArgs = {
-					owner: self,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: false
-				}
+						owner: self,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: false
+					};
 
-				//Trigger scrolling event
+				//Check if the increment is big or small and set the proper value in the eventArgs
 				if (bSmallIncement) {
 					eventArgs.smallIncrement = Math.sign(step);
 				} else {
+					/* Check of the mouse is over the vertical thumb drag. This means it has reached the position of where the mouse is currently held (on the vertical track) and scrolling should stop. */
+					var dragStartY = self._getTransform3dValueY(self._vBarDrag);
+					if (self._mTrackLastPosV > dragStartY &&
+						self._mTrackLastPosV < dragStartY + self._vDragHeight) {
+
+						return;
+					}
+
+					/* set vars */
 					eventArgs.bigIncrement = Math.sign(step);
 					self._lastBigIncDir = Math.sign(step);
 				}
@@ -1044,7 +1067,7 @@
 					var curPosY = self._getContentPositionY();
 					self._scrollTop(curPosY + step, false);
 
-					self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(step, bSmallIncement) }, 50);
+					self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(step, bSmallIncement); }, 50);
 				}
 			}
 
@@ -1067,7 +1090,7 @@
 
 							var curPosY = self._getContentPositionY();
 							self._scrollTop(curPosY - 40, false);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-40, true) }, 250);
+							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-40, true); }, 250);
 						}
 
 						return false;
@@ -1115,7 +1138,7 @@
 
 							var curPosY = self._getContentPositionY();
 							self._scrollTop(curPosY + 40, false);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(40, true) }, 250);
+							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(40, true); }, 250);
 						}
 
 						return false;
@@ -1159,16 +1182,17 @@
 						});
 					},
 
-					touchstart: commonEvts.touchstart,
+					touchstart: commonEvts.touchstart
 				});
 			}
 
 			if (this._vBarTrack) {
 				this._vBarTrack.bind({
 					mousedown: function (evt) {
-						if (evt.target.id == self._vBarDrag[ 0 ].id) {
+						if (evt.target.id === self._vBarDrag[ 0 ].id) {
 							return false;
 						}
+
 						//self._bMixedEnvironment = true;
 						self._bUseVTrack = true;
 
@@ -1176,8 +1200,8 @@
 							curPosY = self._getContentPositionY(),
 							scrollStep = self._contentHeight * self._percentInViewV,
 							bNoCancel;
-						
 
+						self._mTrackLastPosV = evt.offsetY;
 						if (evt.offsetY > dragStartY + self._vDragHeight) {
 							/* Scroll down */
 							self._lastBigIncDir = 1;
@@ -1191,11 +1215,11 @@
 
 							if (bNoCancel) {
 								self._scrollTop(curPosY + scrollStep, false);
-								self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(scrollStep, false) }, 250);
+								self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(scrollStep, false); }, 250);
 							}
 						} else if (evt.offsetY < dragStartY) {
 							/* Scroll up */
-							self._lastBigIncDir = -1
+							self._lastBigIncDir = -1;
 							bNoCancel = self._trigger("scrolling", null, {
 								owner: self,
 								smallIncrement: 0,
@@ -1206,15 +1230,21 @@
 
 							if (bNoCancel) {
 								self._scrollTop(curPosY - scrollStep, false);
-								self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-scrollStep, false) }, 250);
+								self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-scrollStep, false); }, 250);
 							}
 						}
 
 						return false;
 					},
 
+					mousemove: function (evt) {
+						//Update the last know position of the mouse that is interacting with the vertical track area
+						if (self._bUseVTrack) {
+							self._mTrackLastPosV = evt.offsetY;
+						}
+					},
 
-					mouseup: function (evt) {
+					mouseup: function () {
 						clearTimeout(self._holdTimeoutID);
 
 						if (self._bUseVTrack) {
@@ -1229,7 +1259,7 @@
 						self._bUseVTrack = false;
 					},
 
-					mouseout: function (evt) {
+					mouseout: function () {
 						clearTimeout(self._holdTimeoutID);
 
 						if (self._bUseVTrack) {
@@ -1313,7 +1343,7 @@
 
 				//If the mouse was previously hold over an element an we release it.
 				if (self._bMouseDownV && !self._mOverScrollbars && !self._mOverContainer) {
-					/** Scenario: 
+					/** Scenario:
 					*	1. Click and hold a horizontal scrollbar element
 					*	2. Move the mouse outside the scrollable container
 					*	3. Release the mouse
@@ -1322,9 +1352,9 @@
 					*/
 					self._hideScrollbarID = setTimeout(function () {
 						self._hideScrollBars(false);
-					}, 2000)
+					}, 2000);
 				} else if (self._bMouseDownV && !self._mOverScrollbars && self._mOverContainer) {
-					/** Scenario: 
+					/** Scenario:
 					*	1. Click and hold a horizontal scrollbar element
 					*	2. Move the mouse inside the scrollable container
 					*	3. Release the mouse
@@ -1351,16 +1381,27 @@
 		},
 
 		_initCustomScrollBarH: function () {
-			this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar' class='igscroll-hcontainer'></div>")
+			this._hBarContainer =
+				$("<div id='" + this.element.attr("id") + "_hBar' class='igscroll-hcontainer'></div>")
 				.css("width", this._elemWidth + "px");
 
-			this._hBarArrowLeft = $("<div id='" + this.element.attr("id") + "_hBar_arrowLeft' class='igscroll-harrow igscroll-leftarrow'></div>");
-			this._hBarTrack = $("<div id='" + this.element.attr("id") + "_hBar_track' class='igscroll-htrack'></div>")
+			this._hBarArrowLeft =
+				$("<div id='" +
+					this.element.attr("id") +
+				"_hBar_arrowLeft' class='igscroll-harrow igscroll-leftarrow'></div>");
+
+			this._hBarTrack =
+				$("<div id='" + this.element.attr("id") + "_hBar_track' class='igscroll-htrack'></div>")
 				.css("width", this._elemWidth - (3 * 15) + "px");
-			this._hBarArrowRight = $("<div id='" + this.element.attr("id") + "_hBar_arrowRight' class='igscroll-harrow igscroll-rightarrow'></div>");
+
+			this._hBarArrowRight =
+				$("<div id='" +
+					 this.element.attr("id") +
+				 "_hBar_arrowRight' class='igscroll-harrow igscroll-rightarrow'></div>");
 
 			this._hDragWidth = this._elemWidth * this._percentInViewH - 3 * 15;
-			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag' class='igscroll-hdrag'></span>")
+			this._hBarDrag =
+				$("<span id='" + this.element.attr("id") + "_hBar_drag' class='igscroll-hdrag'></span>")
 				.css("width", this._hDragWidth + "px");
 
 			if (this.options.scrollbarHParent) {
@@ -1374,7 +1415,7 @@
 					.append(this._hBarArrowLeft)
 					.append(this._hBarTrack.append(this._hBarDrag))
 					.append(this._hBarArrowRight)
-					.appendTo(this._container[0].parentElement);
+					.appendTo(this._container[ 0 ].parentElement);
 			}
 
 			this._bindCustomScrollBarH();
@@ -1388,9 +1429,10 @@
 			this._bUseArrowLeft = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseArrowRight = false; //Used to distinquis which on which element left mouse if being hold
 			this._bUseHDrag = false; //Used to distinquis which on which element left mouse if being hold
-			this._dragLastX = 0;
-			this._bUseHTrack = false;
-			this._lastBigIncDirH = 0;
+			this._dragLastX = 0; //Determines the last position of the thumb drag for the horizontal scrollbar
+			this._bUseHTrack = false; //Determines if the horizontal track area is being used
+			this._lastBigIncDirH = 0; //Used to determine the last direction of the scroll when using the horizontal track area
+			this._mTrackLastPosH = 0; //Last know position of the mouse when interacting with the horizontal track area
 
 			var commonEvts = {
 				mouseenter: function () {
@@ -1413,7 +1455,7 @@
 						//Hide scrollbars after 2 secconds. This will be canceled if we go the scrollable content or any other element of the scrollbars by _hideScrollbarID
 						self._hideScrollbarID = setTimeout(function () {
 							self._hideScrollBars(false);
-						}, 2000)
+						}, 2000);
 
 						//Switch to simple scrollbar (i.e. only drag bar showing with no arrows) after timeout of 2sec
 						self._toSimpleScrollbarID = setTimeout(function () {
@@ -1436,12 +1478,20 @@
 						bigIncrement: 0,
 						horizontal: true,
 						touch: false
-					}
+					};
 
-				//Trigger scrolling event
+				//Check if the increment is big or small and set the proper value in the eventArgs
 				if (bSmallIncement) {
 					eventArgs.smallIncrement = Math.sign(step);
 				} else {
+					var dragStartY = self._getTransform3dValueY(self._vBarDrag);
+
+					//Check if the mouse is over the horizontal thumb drag. This means it has reached the position of where the mouse is currently held (on the horizontal track) and scrolling should stop.
+					if (self._mTrackLastPosV > dragStartY &&
+						self._mTrackLastPosV < dragStartY + self._vDragHeight) {
+						return;
+					}
+
 					eventArgs.bigIncrement = Math.sign(step);
 				}
 				bNoCancel = self._trigger("scrolling", null, eventArgs);
@@ -1563,7 +1613,6 @@
 						clearTimeout(self._holdTimeoutID);
 					},
 
-
 					touchstart: commonEvts.touchstart,
 					mouseenter: commonEvts.mouseenter,
 					mouseleave: commonEvts.mouseleave
@@ -1580,7 +1629,7 @@
 
 						self._trigger("thumbDragStart", null, {
 							owner: self,
-							horizontal: true,
+							horizontal: true
 						});
 					},
 
@@ -1591,9 +1640,10 @@
 			if (this._hBarTrack) {
 				this._hBarTrack.bind({
 					mousedown: function (evt) {
-						if (evt.target.id == self._hBarDrag[ 0 ].id) {
+						if (evt.target.id === self._hBarDrag[ 0 ].id) {
 							return false;
 						}
+
 						//self._bMixedEnvironment = true;
 						self._bUseHTrack = true;
 
@@ -1602,8 +1652,9 @@
 							scrollStep = self._contentWidth * self._percentInViewH,
 							bNoCancel;
 
+						self._mTrackLastPosH = evt.offsetY;
 						if (evt.offsetX > dragStartX + self._hDragWidth) {
-							//scroll right
+							//Scroll right
 							self._lastBigIncDirH = 1;
 							bNoCancel = self._trigger("scrolling", null, {
 								owner: self,
@@ -1618,7 +1669,7 @@
 								self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(scrollStep, false); }, 250);
 							}
 						} else if (evt.offsetX < dragStartX) {
-							//scroll left
+							//Scroll left
 							self._lastBigIncDirH = -1;
 							bNoCancel = self._trigger("scrolling", null, {
 								owner: self,
@@ -1628,7 +1679,6 @@
 								touch: false
 							});
 
-
 							if (bNoCancel) {
 								self._scrollLeft(curPosX - scrollStep, false);
 								self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(-scrollStep, false); }, 250);
@@ -1636,6 +1686,13 @@
 						}
 
 						return false;
+					},
+
+					mousemove: function (evt) {
+						//Update the last know position of the mouse that is interacting with the horizontal track area
+						if (self._bUseVTrack) {
+							self._mTrackLastPosH = evt.offsetY;
+						}
 					},
 
 					mouseup: function () {
@@ -1672,7 +1729,7 @@
 
 					touchstart: commonEvts.touchstart,
 					mouseenter: commonEvts.mouseenter,
-					mouseleave: commonEvts.mouseleave,
+					mouseleave: commonEvts.mouseleave
 				});
 			}
 
@@ -1738,7 +1795,7 @@
 
 				//If the mouse was previously hold over an element an we release it.
 				if (self._bMouseDownH && !self._mOverScrollbars && !self._mOverContainer) {
-					/** Scenario: 
+					/** Scenario:
 					*	1. Click and hold a horizontal scrollbar element
 					*	2. Move the mouse outside the scrollable container
 					*	3. Release the mouse
@@ -1747,9 +1804,9 @@
 					*/
 					self._hideScrollbarID = setTimeout(function () {
 						self._hideScrollBars(false);
-					}, 2000)
+					}, 2000);
 				} else if (self._bMouseDownH && !self._mOverScrollbars && self._mOverContainer) {
-					/** Scenario: 
+					/** Scenario:
 					*	1. Click and hold a horizontal scrollbar element
 					*	2. Move the mouse inside the scrollable container
 					*	3. Release the mouse
@@ -1814,7 +1871,7 @@
 					self._setSimpleScrollBarOpacity(currentOpacity);
 				} else {
 					self._setScrollBarsOpacity(currentOpacity);
-				}				
+				}
 				currentOpacity += opacityStep ? opacityStep : 0.05;
 
 				/* continue */
@@ -1834,7 +1891,7 @@
 			}
 		},
 
-		_updateScrollBars: function (destX, destY, noTransform) {
+		_updateScrollBars: function (destX, destY) {
 			if (this.options.useNative) {
 				return;
 			}
@@ -1959,7 +2016,6 @@
 			}
 		},
 
-
 		_toSimpleScrollbar: function () {
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
 				this._vBarArrowUp.css("opacity", 0);
@@ -2018,8 +2074,8 @@
 				}
 
 				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
-				this._syncElemsX(this._container[0], false);
-				//self._syncHBar(this._container[ 0 ], false);
+				this._syncElemsX(this._container[ 0 ], false);
+				/*self._syncHBar(this._container[ 0 ], false);*/
 
 				var curY = this._getContentPositionY();
 				this._updateScrollBars(destX, curY, true);
@@ -2059,8 +2115,8 @@
 				}
 
 				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
-				this._syncElemsY(this._container[0], false);
-				//this._syncVBar(this._container[ 0 ], false);
+				this._syncElemsY(this._container[ 0 ], false);
+				/*this._syncVBar(this._container[ 0 ], false);*/
 
 				var curX = this._getContentPositionX();
 				this._updateScrollBars(curX, destY, true);
@@ -2085,7 +2141,7 @@
 			function inertiaStep() {
 				if (x > 1) {
 					cancelAnimationFrame(animationId);
-					self._numSmoothAnimation -=1;
+					self._numSmoothAnimation -= 1;
 
 					if (!self._numSmoothAnimation) {
 						self._trigger("scrolled", null, {
@@ -2115,10 +2171,10 @@
 
 		/** Switch from using 3d transformations to using scrollTop/scrollLeft */
 		_switchFromTouchToMixed: function () {
-			var matrix = this._content.css("-webkit-transform");
-			var values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-			startX = values ? Number(values[4]) : 0;
-			startY = values ? Number(values[5]) : 0;
+			var matrix = this._content.css("-webkit-transform"),
+				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined,
+				startX = values ? Number(values[ 4 ]) : 0,
+				startY = values ? Number(values[ 5 ]) : 0;
 
 			/* Switch to using scrollTop and scrollLeft attributes instead of transform3d when we have mouse + touchscreen, because they will interfere with each othe r*/
 			if (startX !== 0 || startY !== 0) {
@@ -2126,7 +2182,6 @@
 				this._scrollTouchToXY(0, 0, false);
 
 				//Go back to the scrolled position but using scrollTop and scrollLeft this time
-				//console.log(startX + " " + startY);
 				this._scrollToX(-startX, false);
 				this._scrollToY(-startY, false);
 			}
@@ -2214,7 +2269,7 @@
 			}
 
 			//Sets timeout until executing next movement iteration of the inertia
-			function inertiaStep(time) {
+			function inertiaStep() {
 				//If inertia is interupted we do not hide the bars here but on endtouch in case another inertia is initiated
 				if (self._bStopInertia) {
 					//we don't hide the scrollbars, because the inertia is interrupted by touch and we hide it on touchend then
@@ -2365,8 +2420,7 @@
 
 		//Syncs elements that are linked on X axis
 		_syncElemsX: function (baseElem, useTransform, inDestX, useDestination) {
-			var self = this,
-				destX, index;
+			var destX, index;
 
 			if (!baseElem && !useDestination) {
 				return;
