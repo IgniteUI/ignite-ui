@@ -1935,7 +1935,8 @@ if (typeof jQuery !== "function") {
 				if (e.keyCode === 13) {
 					if (event.altKey && this.options.textMode === "multiline") {
 						// This is needed, because of the grid. By default the HTML textarea didn't go to next line on ALT + ENTER, but it should, because in grid updating, this is the used as a keyboard navigation to go the next line.
-						this._editorInput.val(this._editorInput.val() + "\n");
+						// N.A. July 8th, 2016 #90: Carry over the word on new line and move the cursor there.
+						this._carryOverNewLine(this._editorInput.val());
 					} else {
 						currentInputVal = this._editorInput.val();
 						if (this._dropDownList && this._dropDownList.is(":visible")) {
@@ -2641,6 +2642,19 @@ if (typeof jQuery !== "function") {
 			} else {
 				this._editorInput.select();
 			}
+		},
+		_carryOverNewLine: function(value) {
+			var cursorPosition = this._getCursorPosition(),
+				substrings = this._splitString(value, cursorPosition);
+
+			this._editorInput.val(substrings.before + "\r\n" + substrings.after);
+			this._setCursorPosition(cursorPosition + 1);
+		},
+		_splitString: function (value, index) {
+			return {
+				before: value.substring(0, index),
+				after: value.substring(index)
+			};
 		},
 		_spinUp: function () {
 			if (this._dropDownList && this._dropDownList.is(":visible")) {
@@ -9107,6 +9121,8 @@ if (typeof jQuery !== "function") {
 					currentDate = new Date(currentDate.getUTCFullYear(),
 						currentDate.getUTCMonth(), currentDate.getUTCDate());
 				}
+				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
+				this._enterEditMode();
 				currentInputValue = this._editorInput.val();
 				$(this._editorInput).datepicker("setDate", currentDate);
 
