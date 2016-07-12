@@ -46,7 +46,7 @@ if (typeof jQuery !== "function") {
 			nullValue: null,
 			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element. */
 			inputName: null,
-			/* type="bool" Gets/Sets the readonly attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is sent into the request.*/
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is sent into the request.*/
 			readOnly: false,
 			/* type="bool" Gets/Sets the disabled attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is not sent into the request*/
 			disabled: false,
@@ -1176,7 +1176,8 @@ if (typeof jQuery !== "function") {
 			this._editorInput.addClass(this.css.editor);
 			this._editorInput.css("height", "100%");
 
-			if (this.element.is("input") && this._editorInput.attr("id") !== undefined) {
+			if ((this.element.is("input") || this.element.is("textarea")) &&
+				this._editorInput.attr("id") !== undefined) {
 				this._editorInputId = this._editorInput.attr("id");
 			} else {
 				this._editorInput.attr("id", this.id + "EditingInput");
@@ -1934,7 +1935,8 @@ if (typeof jQuery !== "function") {
 				if (e.keyCode === 13) {
 					if (event.altKey && this.options.textMode === "multiline") {
 						// This is needed, because of the grid. By default the HTML textarea didn't go to next line on ALT + ENTER, but it should, because in grid updating, this is the used as a keyboard navigation to go the next line.
-						this._editorInput.val(this._editorInput.val() + "\n");
+						// N.A. July 8th, 2016 #90: Carry over the word on new line and move the cursor there.
+						this._carryOverNewLine(this._editorInput.val());
 					} else {
 						currentInputVal = this._editorInput.val();
 						if (this._dropDownList && this._dropDownList.is(":visible")) {
@@ -2641,6 +2643,19 @@ if (typeof jQuery !== "function") {
 				this._editorInput.select();
 			}
 		},
+		_carryOverNewLine: function(value) {
+			var cursorPosition = this._getCursorPosition(),
+				substrings = this._splitString(value, cursorPosition);
+
+			this._editorInput.val(substrings.before + "\r\n" + substrings.after);
+			this._setCursorPosition(cursorPosition + 1);
+		},
+		_splitString: function (value, index) {
+			return {
+				before: value.substring(0, index),
+				after: value.substring(index)
+			};
+		},
 		_spinUp: function () {
 			if (this._dropDownList && this._dropDownList.is(":visible")) {
 				this._hoverPreviousDropDownListItem();
@@ -2957,7 +2972,8 @@ if (typeof jQuery !== "function") {
 				If number of digits in fractional part of number is less than the value of this option, then the "0" characters are used to fill missing digits.
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option supports values below or equal to 20. */
 			minDecimals: null,
 			/* type="left|right|center" Gets/Sets horizontal alignment of text in editor. If that option is not set, then 'right' is used for 'numeric', 'currency' and 'percent' editors and the 'left' is used for all other types of editor.
 				left type="string"
@@ -3900,14 +3916,12 @@ if (typeof jQuery !== "function") {
 				displayValue = this._applyGroups(value.toString(), groups, groupSeparator);
 
 			}
-			if (value < 0 &&
-				(this.options.scientificFormat === null || displayValue.indexOf("e") === -1)) {
+			if (value < 0 ) {
 				negativeSign = this.options.negativeSign;
 				displayValue = displayValue.replace("-", "");
 				displayValue = negativePattern
 					.replace("n", displayValue).replace("$", symbol).replace("-", negativeSign);
-			} else if (positivePattern &&
-				(this.options.scientificFormat === null || displayValue.indexOf("e") === -1)) {
+			} else if (positivePattern) {
 
 				// Apply Positive Pattern
 				displayValue = positivePattern.replace("n", displayValue).replace("$", symbol);
@@ -4784,12 +4798,14 @@ if (typeof jQuery !== "function") {
 			listItemHoverDuration: 0,
 			/* type="bool" @Skipped@ Sets the ability to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed*/
 			isLimitedToListValues: false,
-			/* type="auto|bottom|top" @Skipped@ Gets/Sets drop down opening orientation for the dorp down list when open button is clicked. If auto option is set the component calculates if there is enough space at the bottom, if not checks the space above the component and if in both directions there is not enough space it openes the dropdown down way.
-				'auto' type="string"
-				'bottom' type="string"
-				'top' type="string"
-			*/
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
 			dropDownOrientation: "auto",
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			dropDownAttachedToBody: false,
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			dropDownAnimationDuration: 300,
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			dropDownOnReadOnly: false,
 			/* type="text|password|multiline" @Skipped@ Sets gets text mode of editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
 				text type="string" Single line text editor based on INPUT element is created.
 				password type="string" Editor based on INPUT element with type password is created.
@@ -4801,7 +4817,10 @@ if (typeof jQuery !== "function") {
 				That option is overwritten if the number of list items is less than the value. In that case the height of the dropdown is adjusted to the number of items.
 				Note! This option can not be set runtime.
 			*/
-			visibleItemsCount: 5
+			visibleItemsCount: 5,
+			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor
+			*/
+			maxLength: null
 		},
 		events: {
 			/* igWidget events go here */
@@ -8729,6 +8748,9 @@ if (typeof jQuery !== "function") {
 			buttonType: "dropdown",
 			/* type="object" Gets/Sets options supported by the jquery.ui.datepicker. Only options related to drop-down calendar are supported. */
 			datepickerOptions: null,
+			/* type="bool" Gets ability to limit igDatePicker to be used only from the calendar. When set to true the editor input is not editable.
+				Note! This option can not be set runtime. */
+			dropDownOnReadOnly: false,
 			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			dropDownAttachedToBody: false,
 			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
@@ -8982,6 +9004,15 @@ if (typeof jQuery !== "function") {
 						};
 					}
 					this._editorInput.data("datepicker").settings = pickerOptions;
+					// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
+					if (value.minDate && (this._editorInput.data("datepicker").settings.minDate !== this.options.minValue))
+					{
+						this.options.minValue = this._editorInput.data("datepicker").settings.minDate;
+					}
+					if (value.maxDate && (this._editorInput.data("datepicker").settings.maxDate !== this.options.maxValue))
+					{
+						this.options.maxValue = this._editorInput.data("datepicker").settings.maxDate;
+					}
 				}
 					break;
 				default: {
@@ -9090,6 +9121,8 @@ if (typeof jQuery !== "function") {
 					currentDate = new Date(currentDate.getUTCFullYear(),
 						currentDate.getUTCMonth(), currentDate.getUTCDate());
 				}
+				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
+				this._enterEditMode();
 				currentInputValue = this._editorInput.val();
 				$(this._editorInput).datepicker("setDate", currentDate);
 
@@ -9179,14 +9212,14 @@ if (typeof jQuery !== "function") {
 	});
 	$.widget("ui.igCheckboxEditor", $.ui.igBaseEditor, {
 		options: {
-			/* type="number" Gets/Sets either the editor is checked or not. */
+			/* type="bool" Gets/Sets either the editor is checked or not. */
 			checked: false,
 			/* type="verysmall|small|normal|large" Gets/Sets size of the checkbox based on preset styles.
 				For different sizes, define 'width' and 'height' options instead.
-				verysmall The size of the Checkbox editor is very small.
-				small The size of the Checkbox editor is small.
-				normal The size of the Checkbox editor is normal.
-				large The size of the Checkbox editor is large.
+				verysmall type="string" The size of the Checkbox editor is very small.
+				small type="string" The size of the Checkbox editor is small.
+				normal type="string" The size of the Checkbox editor is normal.
+				large type="string" The size of the Checkbox editor is large.
 			*/
 			size: "normal",
 			/* type="string" Applies custom class on the checkbox, so that custom image can be used.
@@ -9195,10 +9228,12 @@ if (typeof jQuery !== "function") {
 			iconClass: "ui-icon-check",
 			/* type="number" Gets/Sets value in tabIndex for Checkbox Editor. */
 			tabIndex: 0,
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.*/
+			readOnly: false,
 			/*@Skipped@*/
 			allowNullValue: false,
 			/*@Skipped@*/
-			nullValue: null,
+			nullValue: null
 		},
 		css: {
 			/* Classes applied to the top element when editor is rendered in container. Default value is 'ui-state-default ui-corner-all ui-widget ui-checkbox-container ui-igcheckbox-normal' */
@@ -9669,7 +9704,7 @@ if (typeof jQuery !== "function") {
 				if (this._inputValue === undefined) {
 					/*no explicit value */
 					var result = this._tryParseBool(newValue);
-					if (result.ret) {
+					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
 						throw ($.ig.Editor.locale.cannotSetNonBoolValue);

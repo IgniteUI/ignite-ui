@@ -250,6 +250,17 @@
 				/* type="string" takes precedence over experssions, an "SQL-like" encoded expressions string  : see sort(). Example col2 > 100 ORDER BY asc */
 				exprString: ""
 			},
+			groupby: {
+				/* type="remote|local" Specifies whether groupby will be applied locally or remotely (via a remote request)
+				remote type="string"
+				local type="string"
+				*/
+				type: "local",
+				/* type="array" a list of groupby expressions , consisting of the following keys (and their respective values): fieldName, direction and compareFunc (optional). Order of groupby expression is taken into account for the result data and dataview */
+				expressions: [],
+				/* type="bool" default collapse state */
+				defaultCollapseState: false
+			},
 			/* M.H. add summaries support */
 			/* Settings related to built-in summaries functionality */
 			summaries: {
@@ -1536,7 +1547,7 @@
 			*/
 			/* think about when would this._data be different than null at all? in which scenarios ? */
 			var table, tableObj, dsObj, ds, s, p = this.settings, args,
-				resKey, noCancel = true, callDataBound = true, f;
+				resKey, noCancel = true, callDataBound = true, f, fApplied;
 			this._transactionLog = [];
 			this._accumulatedTransactionLog = [];
 
@@ -1708,21 +1719,21 @@
 				/* describe the algorithm when dataView should be the same as data and when not */
 				this._dataView = this._data;
 				this._filter = false;
-				/* apply initial sorting, if set, and if OpType is local. */
-				s = p.sorting;
-				/* if (s.type === $.ig.Constants.OpType.Local && s.defaultDirection !== $.ig.Constants.SortDirection.None && this._runtimeType !== $.ig.Constants.DataSourceType.RemoteUrl) {
-				A.T. fix for igGridSorting local sorting */
-				if (s.type === "local" && this._runtimeType !== "remoteUrl" && s.defaultFields.length > 0) {
-					this.sort(s.defaultFields, s.defaultDirection);
-					/* in case we have default set both filtering and sorting expressions we do not want to apply twice sorting */
-					s.sortingApplied = true;
-				}
 				/* M.H. 19 Jul 2013 Fix for bug #147233: cannot set default filtering expressions in
-				ig.DataSource (they aren't taken into account , similar to sorting default expressions)
-				add defaultFields to filtering similar to sorting */
+								ig.DataSource (they aren't taken into account , similar to sorting default expressions)
+								add defaultFields to filtering similar to sorting */
 				f = p.filtering;
+				s = p.sorting;
+				fApplied = false;
 				if (f.type === "local" && this._runtimeType !== "remoteUrl" && f.defaultFields.length > 0) {
 					this.filter(f.defaultFields);
+					fApplied = true;
+				}
+				/* apply initial sorting only if sorting is NOT applied by filtering*/
+				/* A.T. fix for igGridSorting local sorting */
+				if (s.type === "local" && this._runtimeType !== "remoteUrl" && s.defaultFields.length > 0 &&
+					(!fApplied || s.defaultFields !== s.expressions) ) {
+					this.sort(s.defaultFields, s.defaultDirection);
 				}
 				/* Check if paging is configured, and if so,
 				if OpType === $.ig.Constants.OpType.Local => apply local paging */
@@ -1734,9 +1745,6 @@
 				entire data source after persisting filtering with data bind */
 				if (!this._filter || !this._transformedData) {
 					this._populateTransformedData();
-				}
-				if (s.sortingApplied) {
-					s.sortingApplied = false;
 				}
 				/* invoke the callback if present: */
 				if (this._runtimeType !== "remoteUrl") {
@@ -1775,8 +1783,9 @@
 		_getFieldTypeFromSchema: function (fieldName) {
 			var field = this._fields[ fieldName ], type, ds = this.dataSource();
 
-			if (ds !== null && ds !== undefined && this.settings.responseDataKey !== null) {
-				ds = ds[ this.settings.responseDataKey ];
+			if (this.settings.type === "json" && ds !== null &&
+				ds !== undefined && this.settings.responseDataKey !== null) {
+				ds = $.ig.findPath(ds, this.settings.responseDataKey);
 			}
 			if (!field) {
 				return undefined;
@@ -2091,6 +2100,8 @@
 			}
 			if (s.type === "local" && s.defaultFields.length > 0) {
 				this.sort(s.defaultFields, s.defaultDirection);
+			} else if (this.isGroupByApplied(s.expressions)) {
+				this._generateGroupByData(this._data, s.expressions);
 			}
 			/* Check if paging is configured, and if so,
 			if OpType === $.ig.Constants.OpType.Local => apply local paging */
@@ -2738,7 +2749,7 @@
 			return this._filteredData;
 		},
 		_page: function (keepRecords) {
-			var count = 0, startIndex, endIndex, i = 0;
+			var count = 0, startIndex, endIndex, i = 0, data;
 			if (keepRecords === undefined) {
 				keepRecords = false;
 			}
@@ -2748,36 +2759,26 @@
 			} else {
 				this._dataView = [];
 			}
+			if (this.isGroupByApplied()) {
+				data = this.visibleGroupByData();
+			} else {
+				data = this._filter ? this._filteredData : this._data;
+			}
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
-			if (!this._filter) {
-				// this._dataView should contain only the number of records specified by pageSize.
-				// load the data for the current page only , in the DataView
+			/* this._dataView should contain only the number of records specified by pageSize.
+			load the data for the current page only , in the DataView */
+			startIndex = this.pageIndex() * this.pageSize();
+			/* M.H. 11 August 2015 Fix for bug 203649:
+			Total record count in pager is incorrect after update datasource */
+			if (startIndex >= data.length) {
+				this.settings.paging.pageIndex = 0;
 				startIndex = this.pageIndex() * this.pageSize();
-				/* M.H. 11 August 2015 Fix for bug 203649:
-				Total record count in pager is incorrect after update datasource */
-				if (startIndex >= this._data.length) {
-					this.settings.paging.pageIndex = 0;
-					startIndex = this.pageIndex() * this.pageSize();
-				}
-				endIndex = startIndex + this.pageSize() >= this._data.length ?
-					this._data.length : startIndex + this.pageSize();
-				for (i = startIndex; i < endIndex; i++) {
-					this._dataView[ count++ ] = this._data[ i ];
-				}
-			} else {
-				startIndex = this.pageIndex() * this.pageSize();
-				/* M.H. 21 Oct 2014 Fix for bug #181395:
-				When filtering is applied selected page is not persisted. */
-				if (this.persistedPageIndex() > 0 && startIndex >= this._filteredData.length) {
-					this.settings.paging.pageIndex = 0;
-					startIndex = this.pageIndex() * this.pageSize();
-				}
-				endIndex = startIndex + this.pageSize() >= this._filteredData.length ?
-					this._filteredData.length : startIndex + this.pageSize();
-				for (i = startIndex; i < endIndex; i++) {
-					this._dataView[ count++ ] = this._filteredData[ i ];
-				}
+			}
+			endIndex = startIndex + this.pageSize() >= data.length ?
+				data.length : startIndex + this.pageSize();
+			for (i = startIndex; i < endIndex; i++) {
+				this._dataView[ count++ ] = data[ i ];
 			}
 		},
 		_compareValues: function (x, y) {
@@ -2796,6 +2797,89 @@
 			}
 			return x > y ? 1 : x < y ? -1 : 0;
 		},
+		_sortByFieldExpression: function (data, f, direction, convertf) {
+			var arr = [], i, dataLen = data.length, reverse, sortF,
+				caseSensitive =  this.settings.sorting.caseSensitive,
+				compareValFunc = f.compareFunc, rec, val, formatter = f.formatter,
+				self = this, mapper = this._hasMapper;
+			if (f.dir !== undefined && f.dir !== null) {
+				reverse = f.dir === "desc" ? -1 : 1;
+			} else if (direction !== undefined && direction !== null && direction !== "") {
+				reverse = direction.toLowerCase().startsWith("desc");
+				reverse = reverse ? -1 : 1;
+			}
+			for (i = 0; i < dataLen; i++) {
+				rec = data[ i ];
+				val = mapper ? self.getCellValue(f.fieldName, rec) : rec[ f.fieldName ];
+				if (formatter) {
+					val = formatter(val, f.fieldName);
+				}
+				if (convertf) {
+					/* this is assumed to be a custom-defined function, that will
+					override the default data source type conversion logic */
+					val = convertf(val, f.fieldName);
+				}
+				/* A.T. 19 Jan 2011 - Fix for bug #62963 - igDataSource - case sensitivity is not applied to sorting */
+				if (caseSensitive === false &&
+						val !== undefined &&
+						val !== null && val.toLowerCase) {
+					val = val.toLowerCase();
+				}
+				arr.push({
+					val: val,
+					rec: rec
+				});
+			}
+			sortF = function () {
+				return function (obj1, obj2) {
+					var arr1, arr2,
+						a = obj1.val, b = obj2.val,
+						recordsData, recordsDataReverse;
+					recordsData = { fieldName: f.fieldName, recordX: obj1.rec, recordY: obj2.rec };
+					recordsDataReverse = { fieldName: f.fieldName, recordX: obj2.rec, recordY: obj1.rec };
+					arr1 = reverse * compareValFunc(a, b, recordsData);
+					arr2 = reverse * compareValFunc(b, a, recordsDataReverse);
+					if (arr1 < arr2) {
+						return -1;
+					}
+					if (arr1 > arr2) {
+						return 1;
+					}
+					return 0;
+				};
+			};
+			arr = arr.sort(sortF());
+			for (i = 0; i < dataLen; i++) {
+				data[ i ] = arr[ i ].rec;
+			}
+			return data;
+		},
+		_sortDataRecursive: function (data, fields, fieldIndex, defSortDir, convertFunc) {
+			var i, j, len = data.length, expr, gbExpr, gbData, gbDataLen,
+				fieldsLen = fields.length;
+			fieldIndex = fieldIndex || 0;
+			if (fieldIndex > fieldsLen - 1 || len <= 1) {
+				return data;
+			}
+			expr = fields[ fieldIndex ];
+			data = this._sortByFieldExpression(data, expr, defSortDir, convertFunc);
+			if (fieldIndex >= fieldsLen - 1) {
+				return data;
+			}
+			for (i = 0; i < len; i++) {
+				gbExpr = fields[ fieldIndex ];
+				gbData = this._groupedRecordsByExpr(data, i, expr);
+				gbDataLen = gbData.length;
+				if (gbDataLen > 1 && fieldIndex + 1 < fieldsLen) {
+					gbData = this._sortDataRecursive(gbData, fields, fieldIndex + 1, defSortDir, convertFunc);
+				}
+				for (j = 0; j < gbDataLen; j++) {
+					data[ i + j ] = gbData[ j ];
+				}
+				i += gbDataLen - 1;
+			}
+			return data;
+		},
 		/* multi-column sorting  (third column - whether sorting should be preserved or cleared )
 		field can be a schema field, or an index of the column
 		fields => an array of fields object definitions:
@@ -2813,77 +2897,17 @@
 			paramType="string" asc / desc direction
 			*/
 			/* check if there is a custom function defined */
-			var s = this.settings.sorting, schema, sortF, convertFunc,
-				p = this.settings.paging, data, resetPaging = false, settings = this.settings,
-				compareValFunc = this._compareValues, i, self = this;
+			var s = this.settings.sorting, convertFunc, isGb, gbFields, i,
+				p = this.settings.paging, data, resetPaging = false;
+			/* we allow the developer to provide a single string of sort expressions, in the following format:
+			"col1 asc, col2 desc, col3 asc" ...  */
+			if ($.type(fields) === "string") {
+				fields = this._parseSortExpressions(fields);
+			}
+			isGb = this.isGroupByApplied(fields);
 			if (fields === undefined || fields === null) {
 				throw new Error($.ig.DataSourceLocale.locale.noSortingFields);
 			}
-			/* default sort function */
-			sortF = function (fields, schema, reverse, convertf) {
-				reverse = reverse ? -1 : 1;
-				return function (obj1, obj2) {
-					var i, f, arr1 = [], arr2 = [], a, b, recordsData, recordsDataReverse;
-					for (i = 0; i < fields.length; i++) {
-						if (fields[ i ].layout &&
-							((settings.key && settings.key !== fields[ i ].layout) || !settings.key)) {
-							continue;
-						}
-						f = fields[ i ];
-						compareValFunc = f.compareFunc;
-						if (f.fieldIndex >= 0) {
-							f.fieldName = f.fieldIndex;
-						}
-						a = self.getCellValue(f.fieldName, obj1);
-						b = self.getCellValue(f.fieldName, obj2);
-						recordsData = { fieldName: f.fieldName, recordX: obj1, recordY: obj2 };
-						recordsDataReverse = { fieldName: f.fieldName, recordX: obj2, recordY: obj1 };
-						if (convertf !== undefined) {
-							/* this is assumed to be a custom-defined function, that will
-							override the default data source type conversion logic */
-							a = convertf(a, f.fieldName);
-							b = convertf(b, f.fieldName);
-						}
-						/* A.T. 19 Jan 2011 - Fix for bug #62963 - igDataSource - case sensitivity is not applied to sorting */
-						if (s.caseSensitive === false) {
-							if (a !== undefined && a !== null && a.toLowerCase) {
-								a = a.toLowerCase();
-							}
-							if (b !== undefined && b !== null && b.toLowerCase) {
-								b = b.toLowerCase();
-							}
-						}
-						/* support a different direction for every separate column */
-						if (f.dir !== undefined && f.dir !== null) {
-							reverse = f.dir.toLowerCase().startsWith("desc");
-							reverse = reverse ? -1 : 1;
-						} else if (direction !== undefined && direction !== null && direction !== "") {
-							reverse = direction.toLowerCase().startsWith("desc");
-							reverse = reverse ? -1 : 1;
-						}
-						/* differentiate between single and multi-col sorting (for performance reasons) */
-						if (fields.length === 1) {
-							arr1 = reverse * compareValFunc(a, b, recordsData);
-							arr2 = reverse * compareValFunc(b, a, recordsDataReverse);
-						} else {
-							if (reverse === -1) {
-								arr1.push(-compareValFunc(a, b, recordsData));
-								arr2.push(-compareValFunc(b, a, recordsDataReverse));
-							} else {
-								arr1.push(compareValFunc(a, b, recordsData));
-								arr2.push(compareValFunc(b, a, recordsDataReverse));
-							}
-						}
-					}
-					if (arr1 < arr2) {
-						return -1;
-					}
-					if (arr1 > arr2) {
-						return 1;
-					}
-					return 0;
-				};
-			};
 			if (s.applyToAllData && s.type === "local") {
 				/* M.H. 11 Mar 2013 Fix for bug #135542: When filtering is applied and then sort
 				any column and there is remote paging, all of the records for the current page
@@ -2902,20 +2926,8 @@
 				// call the function, passing the data to be sorted, the fields, and the direction
 				data = s.customFunc(data, fields, direction);
 			} else {
-				schema = this.settings.schema;
-				/*
-				for (i = 0; i < schema.fields.length; i++) {
-				if (schema.fields[i].name === fields[0].fieldName) {
-				type = schema.fields[i].type;
-				}
-				}
-				*/
 				if (!direction) {
 					direction = "";
-				}
-				/* check if a custom compare function is set */
-				if ($.type(s.compareFunc) === "function") {
-					sortF = s.compareFunc;
 				}
 				/* check if a custom conversion function is set */
 				if ($.isFunction(s.customConvertFunc)) {
@@ -2949,26 +2961,43 @@
 							fields[ i ].compareFunc = this._compareValues;
 						}
 					}
-					data = data.sort(sortF(fields, schema, direction.toLowerCase().startsWith("asc") ?
-						false : true, convertFunc));
 					/* M.H. 14 Oct 2013 Fix for bug #154649: Rows are grouped incorrectly when applying and removing a filter if a filter is applied by default through code
 					when ds is local and if the whole dataSource is not sorted but only dataView then on filtering data when groupby is applied grouping wouldn't be correct.
 					GroupBy takes the data(not sorted) from dataSource which is not sorted and apply filtering...*/
 					this._allDataSorted = (data === this.data());
+					if (data.length > 1) {
+						/* check if a custom compare function is set */
+						if ($.type(s.compareFunc) === "function") {
+							data.sort(s.compareFunc(fields,
+									this.settings.schema,
+									direction.toLowerCase().startsWith("asc") ? false : true,
+									convertFunc));
+						} else {
+							data = this._sortDataRecursive(data, fields, 0, direction, convertFunc);
+						}
+					}
 				}
+			}
+			if (isGb) {
+				gbFields = [];
+				for (i = 0; i < fields.length; i++) {
+					if (fields[ i ].isGroupBy) {
+						gbFields.push(fields[ i ]);
+					} else {
+						break;
+					}
+				}
+				this._generateGroupByData(data, gbFields);
 			}
 			/* now if paging is enabled, and "applyToAllData" is true, we need to re-initialize the dataView */
 			if (resetPaging && p.type === "local") {
 				/* DAY 2/15/12 101818- when filtering, need to set the filtered data, not _data */
-				if (!this._filter) {
-					this._data = data;
-				} else {
-					this._filteredData = data;
-				}
 				this._page();
 			} else {
 				/* A.T. 14 Feb 2011 - fix for bug #66214 */
-				this._dataView = data;
+				this._dataView = isGb ?
+									this.visibleGroupByData() :
+									data;
 			}
 			/* M.H. 17 April 2012 Fix for bug #109475 */
 			this._populateTransformedData(data);
@@ -3046,6 +3075,7 @@
 			var i, j, expr = null, count = 0, skipRec = false, data, t, k, schema,
 				fields, tmpbool, resetPaging, allFieldsExpr, stringVal,
 				f = this.settings.filtering, p = this.settings.paging, s = this.settings.sorting;
+			this._clearGroupByData();
 			schema = this.schema();
 			if (schema === null || schema === undefined) {
 				throw new Error($.ig.DataSourceLocale.locale.filteringNoSchema);
@@ -3205,12 +3235,8 @@
 				}
 			}
 			this._filter = true;
-			/* M.H. 11 Nov 2014 Fix for bug #178032: When filter field, then apply sorting
-			and change filtering condition filtered data is not sorted sortingApplied is set
-			to true if sorting is called from the dataBind(filter is called from the dataBind
-			if we have default filtering expressions) */
 			if (f.type === "local" && s.type === "local" &&
-				s.enabled && !s.sortingApplied && s.expressions.length > 0) {
+				s.enabled && s.expressions.length > 0) {
 				this.sort(s.expressions);
 			}
 			if (resetPaging && p.type === "local" && p.enabled === true) {
@@ -3226,7 +3252,7 @@
 				this._page();
 				/* M.H. 21 Oct 2014 Fix for bug #181395: When filtering is applied selected page is not persisted. */
 				this.persistedPageIndex(null);
-			} else {
+			} else if (!this._vgbData || !this._vgbData.length) {
 				for (i = 0; i < this._filteredData.length; i++) {
 					this._dataView[ i ] = this._filteredData[ i ];
 				}
@@ -3238,7 +3264,7 @@
 			/* This clears local filtering applied to the data view by resetting it to the original data and applying any paging */
 			var i, data, resetPaging,
 				f = this.settings.filtering, p = this.settings.paging, s = this.settings.sorting;
-
+			this._clearGroupByData();
 			if (f.applyToAllData && f.type === "local") {
 				data = this.data();
 				resetPaging = true;
@@ -3271,8 +3297,10 @@
 				if (p.enabled === false) {
 					this._filter = true;
 				}
-				for (i = 0; i < this._filteredData.length; i++) {
-					this._dataView[ i ] = this._filteredData[ i ];
+				if (!this._vgbData || !this._vgbData.length) {
+					for (i = 0; i < this._filteredData.length; i++) {
+						this._dataView[ i ] = this._filteredData[ i ];
+					}
 				}
 			}
 			this._populateTransformedData(this._filteredData);
@@ -3806,6 +3834,9 @@
 			/* returns the total number of records in the local data source
 			returnType="number" the number of records that are bound / exist locally
 			*/
+			if (this.isGroupByApplied() && this._vgbData) {
+				return this._vgbData.length;
+			}
 			if (!this._filter) {
 				return this._data.length;
 			}
@@ -3816,7 +3847,9 @@
 			returnType="number" total number fo pages
 			*/
 			var c, realCount;
-			if (!this._filter) {
+			if (this.isGroupByApplied() && this._vgbData) {
+				realCount = this._vgbData.length;
+			} else if (!this._filter) {
 				realCount = this.totalRecordsCount() > 0 ? this.totalRecordsCount() : this._data.length;
 			} else {
 				realCount = this.totalRecordsCount() > 0 ? this.totalRecordsCount() : this._filteredData.length;
@@ -3973,7 +4006,7 @@
 				throw new Error($.ig.DataSourceLocale.locale.errorParsingXmlNoSchema + e.message);
 			}
 			return doc;
-		}
+		},
 		/* this function is not currently used */
 		/*
 		_filterData: function (data) {
@@ -3988,6 +4021,177 @@
 		return data;
 		}
 		*/
+
+		/* GroupBy functionallity*/
+		groupByData: function () {
+			/* returns collection of data and non-data(grouped) records. Flat representation of hierarchical data
+			returnType="array" array of records
+			*/
+			return this._gbData;
+		},
+		visibleGroupByData: function () {
+			/* returns collection of data and non-data(grouped) records. Returns only visible records(children of collapsed grouped records are not included in the collection)
+			returnType="array" array of records
+			*/
+			return this._vgbData;
+		},
+		_groupedRecordsByExpr: function (data, startInd, gbExpr) {
+			var i, res = [], cmpRes, groupval, currval,
+				mapper = this._hasMapper,
+				cmpFunc = gbExpr.compareFunc,
+				key = gbExpr.fieldName,
+				len = data.length;
+			if (!cmpFunc) {
+				cmpFunc = function (val1, val2) {
+					return val1 === val2;
+				};
+			}
+			startInd = startInd || 0;
+			res.push(data[ startInd ]);
+			groupval = mapper ?
+							this.getCellValue(key, data [ startInd ]) : 
+							data[ startInd ][ key ];
+			startInd++;
+			for (i = startInd; i < len; i++) {
+				currval = mapper ? this.getCellValue(key, data [ i ]) : data[ i ][ key ];
+				cmpRes = cmpFunc(currval, groupval,
+									{
+										fieldName: key,
+										recordX: data[ startInd ],
+										recordY: data[ i ]
+									});
+				if (cmpRes === 0 || cmpRes === true) {
+					res.push(data[ i ]);
+				} else {
+					break;
+				}
+			}
+			return res;
+		},
+		toggleGroupByRecord: function (id, collapsed) {
+			/* Toggle grouped record with the specified id and updates collections visible groupby data and data view
+			paramType="string" id of the grouped record
+			paramType="bool" if true the record should be collapsed, otherwise expanded
+			*/
+			var ds = this._gbData, i, len = ds.length, res = [], lvl,
+				row, hidden, gbrow, p = this.settings.paging;
+			this._gbCollapsed = this._gbCollapsed || {};
+			this._gbCollapsed[ id ] = !!collapsed;
+			for (i = 0; i < len; i++) {
+				row = ds[ i ];
+				gbrow = row.__gbRecord;
+				if (row.id === id) {
+					row.collapsed = !!collapsed;
+				}
+				if (hidden) {
+					if (gbrow && row.level <= lvl) {
+						hidden = false;
+					} else {
+						continue;
+					}
+				}
+				if (gbrow && row.collapsed) {
+					hidden = true;
+					lvl = row.level;
+				} else {
+					lvl = null;
+				}
+				res.push(row);
+			}
+			/* visible groupby data and the data view should be populated */
+			this._vgbData = res;
+			this._dataView = this._vgbData;
+			if (p.enabled && p.type === "local") {
+				this._page();
+			}
+		},
+		isGroupByRecordCollapsed: function (gbRec) {
+			/* Check whether the specified gorupby record is collapsed
+			paramType="string|object" id of the grouped record OR grouped record
+			returnType="bool" if true the grouped record is collapsed 
+			 */
+			var id = typeof gbRec === "string" || !gbRec ? gbRec : gbRec.id,
+				state;
+			this._gbCollapsed = this._gbCollapsed || {};
+			state = this._gbCollapsed[ id ];
+			return (state === undefined) ?
+						this.settings.groupby.defaultCollapseState :
+						state;
+		},
+		_resetGroupByCollapseStates: function () {
+			/* reset collection that holds information aboult collapsed state. NOTE: visibleGroupByData and dataView are not updated. */
+			this._gbCollapsed = {};
+		},
+		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
+			var i, j, len = data.length, resLen, gbExpr, res, gbRec;
+			gbInd = gbInd || 0;
+			parentId = parentId || "";
+			if (!gbInd || !this._gbData) {
+				this._gbData = [];
+				this._vgbData = [];
+			}
+			for (i = 0; i < len; i++) {
+				gbExpr = gbExprs[ gbInd ];
+				gbRec = {
+					__gbRecord: true,
+					gbExpr: gbExpr,
+					level: gbInd,
+					len: 1,
+					recs: []
+				};
+				this._gbData.push(gbRec);
+				if (!parentCollapsed) {
+					this._vgbData.push(gbRec);
+				}
+				res = this._groupedRecordsByExpr(data, i, gbExpr);
+				gbRec.id = parentId + gbExpr.fieldName + ":" + res[ 0 ][ gbExpr.fieldName ] + ":" + gbInd;
+				gbRec.fieldName = gbExpr.fieldName;
+				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
+				resLen = res.length;
+				gbRec.val = resLen ? res[ 0 ][ gbRec.fieldName ] : undefined;
+				if (gbInd + 1 < gbExprs.length) {
+					this._processGroupsRecursive(res, gbExprs, gbInd + 1,
+												gbRec.collapsed || parentCollapsed, gbRec.id + ":");
+				} else {
+					for (j = 0; j < resLen; j++) {
+						this._gbData.push(res[ j ]);
+						if (!gbRec.collapsed && !parentCollapsed) {
+							this._vgbData.push(res[ j ]);
+						}
+					}
+				}
+				gbRec.recs = res;
+				gbRec.len = resLen;
+				i += resLen - 1;
+			}
+		},
+		_generateGroupByData: function (data,
+									gbExprs,
+									collapsedRows) {
+			// data should be sorted when this functions is called - otherwise grouping will not be correct
+			data = data || this._data;
+			gbExprs = gbExprs || [];
+			this._gbData = [];
+			this._vgbData = [];
+			this._gbCollapsed = collapsedRows || this._gbCollapsed;
+			if ($.type(gbExprs) !== "array" || !gbExprs.length) {
+				return data;
+			}
+			this._processGroupsRecursive(data, gbExprs, 0, false, "");
+			return this.groupByData();
+		},
+		_clearGroupByData: function () {
+			this._gbData = [];
+			this._vgbData = [];
+		},
+		isGroupByApplied: function (exprs) {
+			/* check whether grouping is applied for the specified sorting expressions.
+			paramType="array" optional="true" array of sorting expressions. If not set check expressions defined in sorting settings
+			returnType="bool" Returns true if grouping is applied */
+			exprs = exprs || this.settings.sorting.expressions;
+			return !!(exprs && exprs.length && exprs[ 0 ].isGroupBy);
+		}
+		/* //GroupBy functionallity*/
 	});
 	$.ig.TypeParser = $.ig.TypeParser || Class.extend({
 		toStr: function (obj) {

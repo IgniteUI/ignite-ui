@@ -57,6 +57,7 @@
 		}
 				$("#chkStyled").igCheckboxEditor({ iconClass: "ui-icon-close", checked: true });
 				$("#chkAttr").igCheckboxEditor();
+				$("#chkNull").igCheckboxEditor();
 			});
 		}
 		initialized = false;
@@ -273,16 +274,23 @@
 		    strictEqual($chkInput3.data("igCheckboxEditor")._valueInput[0].checked, false, "Internal input checked was modified incorrectly without explicit value!");
 		});
 
-		testId = '[ID9] Check focus using the focus API';
+		testId = '[ID10] Check focus using the focus API';
 		test(testId, 3, function () {
 		    $chk = $("#chkStyled"), $chk1 = $("#chkInput2"), css = $chk.data("igCheckboxEditor").css;
 		    $chk.igCheckboxEditor("setFocus");
 		    ok($chk.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not applied");
 		    ok($(document.activeElement).html() === $chk.igCheckboxEditor("editorContainer").html(), "Focus class not applied");
-		    console.log($(document.activeElement).html());
-		    console.log($chk.igCheckboxEditor("editorContainer").html());
 		    $chk1.igCheckboxEditor("setFocus");
 		    ok($chk1.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not removed");
+		});
+
+		testId = '[ID11] Check exception when setting null';
+		test(testId, 1, function () {
+
+			throws(
+				function () { $("#chkNull").igCheckboxEditor("value", null); },
+				$.ig.Editor.locale.cannotSetNonBoolValue,
+				$.ig.Editor.locale.cannotSetNonBoolValue);
 		});
 
 		function isChecked($input, expectedValue, expectedState) {
@@ -348,7 +356,8 @@
         <input id="chkInputche" />
         <input id="chkStyled" />
         <span id="chkAttr" name="name1" value="value1" checked='checked' readonly='readonly' disabled='disabled' aria-labelledby="aria-labelledby"></span>
-        <form></form>
+        <input id="chkNull" />
+		<form></form>
     </div>
 </body>
 </html>

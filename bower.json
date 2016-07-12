@@ -16,7 +16,7 @@
     "jquery-ui": "^1.11.4"
   },
   "devDependencies": {
-    "qunit": "1.10.0",
+    "qunit": "^1.23.0",
     "jquery-mockjax": "^2.2.0",
     "knockout": "^3.4.0",
     "knockout.mapping": "^2.0.1",

@@ -23,7 +23,7 @@
 	var ds = null, ds1 = null, dsXMLBare, dsXMLWrapped, dsJSONBare, dsJSONWrapped, dsWrong;
 
 	$(document).ready(function () {
-	
+		$.mockjaxSettings.logging = 0;  // only critical error messages
 		$.mockjax({
 			url: 'products',
 			responseText: {
