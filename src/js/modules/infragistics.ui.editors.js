@@ -1176,7 +1176,8 @@ if (typeof jQuery !== "function") {
 			this._editorInput.addClass(this.css.editor);
 			this._editorInput.css("height", "100%");
 
-			if (this.element.is("input") && this._editorInput.attr("id") !== undefined) {
+			if ((this.element.is("input") || this.element.is("textarea")) &&
+				this._editorInput.attr("id") !== undefined) {
 				this._editorInputId = this._editorInput.attr("id");
 			} else {
 				this._editorInput.attr("id", this.id + "EditingInput");
@@ -1934,7 +1935,8 @@ if (typeof jQuery !== "function") {
 				if (e.keyCode === 13) {
 					if (event.altKey && this.options.textMode === "multiline") {
 						// This is needed, because of the grid. By default the HTML textarea didn't go to next line on ALT + ENTER, but it should, because in grid updating, this is the used as a keyboard navigation to go the next line.
-						this._editorInput.val(this._editorInput.val() + "\n");
+						// N.A. July 8th, 2016 #90: Carry over the word on new line and move the cursor there.
+						this._carryOverNewLine(this._editorInput.val());
 					} else {
 						currentInputVal = this._editorInput.val();
 						if (this._dropDownList && this._dropDownList.is(":visible")) {
@@ -2640,6 +2642,19 @@ if (typeof jQuery !== "function") {
 			} else {
 				this._editorInput.select();
 			}
+		},
+		_carryOverNewLine: function(value) {
+			var cursorPosition = this._getCursorPosition(),
+				substrings = this._splitString(value, cursorPosition);
+
+			this._editorInput.val(substrings.before + "\r\n" + substrings.after);
+			this._setCursorPosition(cursorPosition + 1);
+		},
+		_splitString: function (value, index) {
+			return {
+				before: value.substring(0, index),
+				after: value.substring(index)
+			};
 		},
 		_spinUp: function () {
 			if (this._dropDownList && this._dropDownList.is(":visible")) {
@@ -3901,14 +3916,12 @@ if (typeof jQuery !== "function") {
 				displayValue = this._applyGroups(value.toString(), groups, groupSeparator);
 
 			}
-			if (value < 0 &&
-				(this.options.scientificFormat === null || displayValue.indexOf("e") === -1)) {
+			if (value < 0 ) {
 				negativeSign = this.options.negativeSign;
 				displayValue = displayValue.replace("-", "");
 				displayValue = negativePattern
 					.replace("n", displayValue).replace("$", symbol).replace("-", negativeSign);
-			} else if (positivePattern &&
-				(this.options.scientificFormat === null || displayValue.indexOf("e") === -1)) {
+			} else if (positivePattern) {
 
 				// Apply Positive Pattern
 				displayValue = positivePattern.replace("n", displayValue).replace("$", symbol);
@@ -8991,6 +9004,15 @@ if (typeof jQuery !== "function") {
 						};
 					}
 					this._editorInput.data("datepicker").settings = pickerOptions;
+					// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
+					if (value.minDate && (this._editorInput.data("datepicker").settings.minDate !== this.options.minValue))
+					{
+						this.options.minValue = this._editorInput.data("datepicker").settings.minDate;
+					}
+					if (value.maxDate && (this._editorInput.data("datepicker").settings.maxDate !== this.options.maxValue))
+					{
+						this.options.maxValue = this._editorInput.data("datepicker").settings.maxDate;
+					}
 				}
 					break;
 				default: {
@@ -9680,7 +9702,7 @@ if (typeof jQuery !== "function") {
 				if (this._inputValue === undefined) {
 					/*no explicit value */
 					var result = this._tryParseBool(newValue);
-					if (result.ret) {
+					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
 						throw ($.ig.Editor.locale.cannotSetNonBoolValue);

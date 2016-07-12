@@ -1067,13 +1067,13 @@
         },
         _groupsMarkup: function () {
             var groups, groupsLen, i,
-				dataView = this.options.dataSource.dataView(),
+				dataView,
 				dataLen = this._itemsToRenderCount(),
 				markup = "";
 
             // Sort the data source to extract all groups
             this._sortDataSource();
-
+            dataView = this.options.dataSource.dataView();
             // Cache the count of all groups in data source
             if (this.options.virtualization && !this._options.cachedGroupLength) {
                 this._options.cachedGroupLength = this._groups(dataView).length;
