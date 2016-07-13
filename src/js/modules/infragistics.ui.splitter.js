@@ -128,29 +128,29 @@ if (typeof jQuery !== "function") {
             noScroll: 'ui-igsplitter-no-scroll'
         },
         events: {
-            /* cancel="false" fired after collapsing is performed 
+            /* cancel="false" fired after collapsing is performed
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the splitter instance.
 				Use ui.index to get an index of collased panel.
 			*/
             collapsed: 'collapsed',
-            /* cancel="false" fired after expanding is performed 
+            /* cancel="false" fired after expanding is performed
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the splitter instance.
 				Use ui.index to get an index of expanded panel.
 			*/
             expanded: 'expanded',
-            /* cancel="false" fired before split bar move is performed 
+            /* cancel="false" fired before split bar move is performed
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the splitter instance.
 			*/
             resizeStarted: 'resizeStarted',
-            /* cancel="true" fired while split bar move is performed 
+            /* cancel="true" fired while split bar move is performed
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the splitter instance.
 			*/
             resizing: 'resizing',
-            /* cancel="false" fired after split bar move is performed 
+            /* cancel="false" fired after split bar move is performed
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the splitter instance.
 			*/
@@ -178,7 +178,7 @@ if (typeof jQuery !== "function") {
 			*/
             height: null,
             /* type="vertical|horizontal" Specifies the orientation of the splitter.
-				vertical type="string"                
+				vertical type="string"
 				horizontal type="string"
 				*/
             orientation: 'vertical',
@@ -406,16 +406,16 @@ if (typeof jQuery !== "function") {
                         this.options.panels[i]._max = this.options.panels[i].max;
                         this.options.panels[i].max = this.options.panels[i].max.replace("%", "") * this._getSize(this._getOrientation("size")) / 100;
                     }
-                }                    
-                
+                }
+
                 reducedSize.size += size;
             }
             return reducedSize;
         },
         _getSize: function (size) {
             //S.T. 8 May 2013 #140833 and #142820
-            //The container in JSFiddle that’s hold the splitter control has float width - 834.5px. 
-            //The splitter is initialized without width. So, it’s width 799.5px in IE9. In Chrome, the splitter has width 800px. 
+            //The container in JSFiddle that’s hold the splitter control has float width - 834.5px.
+            //The splitter is initialized without width. So, it’s width 799.5px in IE9. In Chrome, the splitter has width 800px.
             //When it gets container width in IE9 with jQuery function width(), the result is 800px, not 799.5px. And that’s cause the issue.
             //Now, it is using getComputedStyle in order to take the container width direclty from DOM (if getComputedStyle is defined)
             //getComputedStyle is not supported in IE7 and IE8
@@ -656,7 +656,7 @@ if (typeof jQuery !== "function") {
                     if (options.disabled) {
                         return;
                     }
-                
+
                     $(this).removeClass(self.css.barHover);
                 });
             }
@@ -680,7 +680,7 @@ if (typeof jQuery !== "function") {
         _kbNavigation: function (event) {
             var splitter = event.data.self,
                 noCancel = true;
-            
+
             // P.P. 26 June 2015: Bug#200732: Even when the splitter is disabled, the splitbar is still draggable
             if (splitter.options.disabled) {
                 return;
@@ -785,7 +785,7 @@ if (typeof jQuery !== "function") {
                             } else {
                                 splitter._capturedElement = splitter._clone(event.target, splitter);
                             }
-                            
+
                             //S.T. 8 May 2013
                             //In IE7 and IE8 left and right are 0 in some reason. This make them to return correct values.
                             // T.I. 29th Feb 2016 - Bug #207372 - Containers are not positioned correctly in a zoomer browser window
@@ -1063,7 +1063,7 @@ if (typeof jQuery !== "function") {
 
             // Test whether the splitter size is in percentage
             if (regExp.test(this.options[sizeKey]) || !this.options[sizeKey]) {
-                if (parameterObject && parameterObject.isWindowResize) {                   
+                if (parameterObject && parameterObject.isWindowResize) {
                     this._calculateSizeWithClone();
                 } else {
                     cloneObjPanels[0].options = {
@@ -1101,9 +1101,9 @@ if (typeof jQuery !== "function") {
             } else if (outerSize < size) { // Handles cases when panel 2 is enlarged on window resize. Splitter - fixed size.
                 this._createPanel(size, outerSize, this._panels.length - 1);
             }
-            
+
             oppositeSize = this.element[oppositeSizeKey]();
-            // T.I. 5th April 2016,  Bug #217010 Resizing of the splitter causes 
+            // T.I. 5th April 2016,  Bug #217010 Resizing of the splitter causes
             // enlarge of the opposite size to with 2px constantly
             outerOppositeSizeKey = "outer" + oppositeSizeKey.charAt(0).toUpperCase() + oppositeSizeKey.slice(1);
             if (oppositeSize === this._splitter.bar[outerOppositeSizeKey](true)) {
@@ -1114,7 +1114,7 @@ if (typeof jQuery !== "function") {
             $splitBarChildren.eq(2).find("span")[oppositeSizeKey](oppositeSize);
         },
 
-        // P.P. 22 June 2015, Bug #194300 Max/min options are not properly reapplied 
+        // P.P. 22 June 2015, Bug #194300 Max/min options are not properly reapplied
         // when using a percentage width for the splitter and resizing the browser window
 
         // This method uses clone of the splitter to calculate the size of the panels
@@ -1130,7 +1130,7 @@ if (typeof jQuery !== "function") {
                 outerSizeKey = "outer" + sizeKey.charAt(0).toUpperCase() + sizeKey.slice(1),
                 minSize = "min-" + sizeKey,
                 maxSize = "max-" + sizeKey,
-                cssObj = {},                
+                cssObj = {},
                 size = this._getSize(sizeKey),
                 barSize = this._getSplitBarSize(),
                 panel1Size = cloneObjPanels[0].options.size,
@@ -1189,34 +1189,34 @@ if (typeof jQuery !== "function") {
             cssObj[minSize] = isAnyPanelCollapsed ? 0 : cloneObjPanels[0].options.min;
             cssObj[sizeKey] = isPanel1Collapsed ? 0 : isPanel2Collapsed ? size - barSize + "px" : panel1Size;
             $panel1.css(cssObj);
-            
+
             cloneObj.element[sizeKey](this.element[sizeKey]());
             cloneObj.element.appendTo($("body"));
-            
+
             // Need to check panels and splitter sizes after they are placed in the clone object
             sizeWithoutBarSize = size - barSize;
             panel2RecalculatedSize = sizeWithoutBarSize - $panel1[sizeKey]();
 
-            // P.P. 06-July-2015 #202331: Handle undefined panels resizing 
+            // P.P. 06-July-2015 #202331: Handle undefined panels resizing
             // on window resize when splitter is defined in %s;
             // else condition: resize panel1 only if panel2 size is 0 or undefined
             if (panel2Size === undefined && panel1Size === undefined) {
                 // Handle only first panel, the second one will be handled in the panel2 recalculate code block below
                 $panel1[sizeKey](this._opt.defaultPanelSize);
             } else if ($panel1[sizeKey]() > sizeWithoutBarSize && !this._panels[1].options.size) {
-                // P.P. 06-July-2015 #202332: Handle panel1 resizing (on  window resize) 
-                // when splitter is smaller than the panel and defined in %s  
+                // P.P. 06-July-2015 #202332: Handle panel1 resizing (on  window resize)
+                // when splitter is smaller than the panel and defined in %s
                 $panel1[sizeKey](sizeWithoutBarSize);
-            }            
+            }
 
-            // P.P. 06-July-2015 #201886: the panel drops down when has fixed size 
+            // P.P. 06-July-2015 #201886: the panel drops down when has fixed size
             // and the window is resized below this size
             // P.P. 29-June-2015 #201887: when only panel1 is defined with fixed size
             if ($panel2[sizeKey]() !== panel2RecalculatedSize ||
                 panel2Size === undefined && panel1Size !== undefined) {
                 $panel2[sizeKey](panel2RecalculatedSize);
-            }                       
-            
+            }
+
             // P.P. 1 Sep 2015 #202984 - On window resize of splitter, panel drops down, if min/max limitations of the panels are conflicted
             if ($panel1[outerSizeKey]() + $panel2[outerSizeKey]() + barSize !== cloneObj.element[sizeKey]()) {
                 this._resolveSizeConflictsOfCloneObject($panel1, $panel2, cloneObj.element, sizeKey);
@@ -1256,17 +1256,17 @@ if (typeof jQuery !== "function") {
                 this._setPanelActualMax(0, max);
             } else {
                 this._panels[0].css(maxSize, "");
-            }     
+            }
 
             cloneObj.element.detach();
         },
-        
+
         // P.P. 1 Sep 2015 #202984 - On window resize of splitter, panel drops down, if min/max limitations of the panels are conflicted
         // The implemented logic should be: (highest to lowest priority)
         // (1) panel1 min/max; (2) panel2 min/max; (3) panel1 size; (4) panel2 size
         _resolveSizeConflictsOfCloneObject: function (clonePanel1, clonePanel2, cloneSplitter, sizeKey) {
             var barSize = this._getSplitBarSize(),
-                size = cloneSplitter[sizeKey](),                
+                size = cloneSplitter[sizeKey](),
                 size1 = this._getSizeInPixels(clonePanel1[sizeKey](), size),
                 size2 = this._getSizeInPixels(clonePanel2[sizeKey](), size),
                 outerSizeKey = "outer" + sizeKey.charAt(0).toUpperCase() + sizeKey.slice(1),
@@ -1295,53 +1295,53 @@ if (typeof jQuery !== "function") {
                         clonePanel2[sizeKey](clonePanel2Min);
                         clonePanel1[sizeKey](size - barSize - clonePanel2Min);
                     } else {
-                        // Both panels reached their minimums                        
+                        // Both panels reached their minimums
                         clonePanel1[sizeKey](Math.floor(clonePanel1Min));
                         clonePanel2.css("min-" + sizeKey, size - barSize - Math.floor(clonePanel1Min));
                     }
                 }
             } else if (outerSize1 !== size - barSize - outerSize2 &&
                         (size1 !== outerSize1 || size2 !== outerSize2 )) {
-                
+
                 // panel2 has a lower priority, so it goes first
                 if (size2 !== outerSize2) {
                     clonePanel2[sizeKey](size2 - (outerSize2 - size2));
                 } // no if-else here because both panels' sizes can be wrong
-                
+
                 // get actual outer size
                 outerSize2 = this._getSizeInPixels(clonePanel2[outerSizeKey](), size);
 
                 if (outerSize1 !== size - barSize - outerSize2 && size1 !== outerSize1) {
                     clonePanel1[sizeKey](size1 - (outerSize1 - size1));
                 }
-            }            
+            }
         },
-        
+
         // P.P. 1 Sep 2015 #202984 - On window resize of splitter, panel drops down, if min/max limitations of the panels are conflicted
         _resolveRoundingConflictsOfCloneObject: function (checkedPanel, checkedPanelMin, oppositePanel, sizeSplitter, sizeKey) {
             // P.P. 1 Sep 2015 #201087 - Splitter cannot be resized if size is in percentage and window is resized
             var floatSize, diff, newSize,
                 outerSizeKey = "outer" + sizeKey.charAt(0).toUpperCase() + sizeKey.slice(1),
-                barSize = this._getSplitBarSize(); // actual float size that browser uses  
+                barSize = this._getSplitBarSize(); // actual float size that browser uses
 
             floatSize = Math.floor(checkedPanel[0].getBoundingClientRect()[sizeKey] * 1000) / 1000;
             diff = Math.abs(this._getSizeInPixels(checkedPanel[outerSizeKey]()) - floatSize);
 
-            if (0 < diff && diff <= 1) {  
+            if (0 < diff && diff <= 1) {
                 if (checkedPanelMin) {
-                    checkedPanelMin = this._getSizeInPixels(checkedPanelMin, sizeSplitter);                    
+                    checkedPanelMin = this._getSizeInPixels(checkedPanelMin, sizeSplitter);
                     diff = Math.abs(Math.floor(checkedPanelMin) - checkedPanelMin);
                     if (0 < diff && diff <= 1) {
                         checkedPanel.css("min-" + sizeKey, Math.floor(checkedPanelMin) + "px");
                     }
                 }
-    
+
                 newSize = Math.floor(floatSize);
                 checkedPanel[sizeKey](newSize + "px");
                 oppositePanel[sizeKey](sizeSplitter - barSize - newSize + "px");
             }
         },
-        
+
         // P.P. 1 Sep 2015 #202984 - On window resize of splitter, panel drops down, if min/max limitations of the panels are conflicted
         // Method returns size/min/max as number represents pixels
         _getSizeInPixels: function(candidateValue, sizeOfParentInPixels) {
@@ -1357,7 +1357,7 @@ if (typeof jQuery !== "function") {
             var optionsPanel = this.options.panels[panelIndex];
             return optionsPanel && (optionsPanel._min || optionsPanel.min);
         },
-        
+
         // P.P 16-Jul-2015 #201087: If max is defined in %s, we should use it, otherwise use the fixed value in pixels
         _getPanelInitMax: function (panelIndex) {
             var optionsPanel = this.options.panels[panelIndex];
@@ -1425,21 +1425,21 @@ if (typeof jQuery !== "function") {
                 panel = this._panels[panelIndex],
                 sizeKey = this._getOrientation("size"),
                 size = this._getSize(sizeKey);
-                
+
             if (min === undefined) {
                 return;
             }
-            
+
             if (/%/.test(min)) {
                 if (this._isInitMinDefinedInPercentages(panelIndex)) {
                     panel.options._min = min;
                 }
-                
+
                 convertedMin = size * parseFloat(min, 10) / 100;
                 panel.options.min = convertedMin;
             } else {
                 min = parseInt(min, 10);
-                
+
                 if (this._isInitMinDefinedInPercentages(panelIndex)) {
                     convertedMin = (min / size) * 100;
                     panel.options._min = convertedMin + "%";
@@ -1448,7 +1448,7 @@ if (typeof jQuery !== "function") {
                 panel.options.min = min;
                 min += "px";
             }
-            
+
             if (!panel.options.collapsed) {
                 panel.css("min-" + this._getOrientation("size"), min);
             }
@@ -1502,7 +1502,7 @@ if (typeof jQuery !== "function") {
         // overrideMax (boolean) - determines whether the max value of panel should be override on re-creation. Default set to true.
         _createPanel: function (size, outerSize, index, overrideMax) {
             var panel, newSize, panelSize, maxSize;
-            
+
             if (overrideMax === undefined) {
                 overrideMax = true;
             }
@@ -1650,22 +1650,22 @@ if (typeof jQuery !== "function") {
         },
 
         // Currently not used
-        _animateResize: function (panel, size, animationDuration, callback) {
-            var properties = {}, self = this;
-            properties[this._getOrientation("size")] = size;
-            panel.animate(properties, {
-                step: function () {
-                    self._splittersLayout();
-                },
-                duration: animationDuration,
-                complete: function () {
-                    self._splittersLayout();
-                    if (callback && typeof callback === 'function') {
-                        callback();
-                    }
-                }
-            });
-        },
+        // _animateResize: function (panel, size, animationDuration, callback) {
+        //     var properties = {}, self = this;
+        //     properties[this._getOrientation("size")] = size;
+        //     panel.animate(properties, {
+        //         step: function () {
+        //             self._splittersLayout();
+        //         },
+        //         duration: animationDuration,
+        //         complete: function () {
+        //             self._splittersLayout();
+        //             if (callback && typeof callback === 'function') {
+        //                 callback();
+        //             }
+        //         }
+        //     });
+        // },
         _triggerCollapsed: function (index) {
             var args = { owner: this, index: index };
             this._trigger(this.events.collapsed, null, args);
@@ -1730,7 +1730,7 @@ if (typeof jQuery !== "function") {
         // S.T. 14 June 2013 #144685
         // Improve Splitter API with set method for panel's size
         setFirstPanelSize: function (size) {
-            /* 
+            /*
 			You can set new size of the first panel after the splitter is rendered.
 			paramType="int|string" optional="false" Specifies the new size of the first panel.
 			*/
@@ -1747,7 +1747,7 @@ if (typeof jQuery !== "function") {
         // S.T. 14 June 2013 #144685
         // Improve Splitter API with set method for panel's size
         setSecondPanelSize: function (size) {
-            /* 
+            /*
 			You can set new size of the second panel after the splitter is rendered.
 			paramType="int|string" optional="false" Specifies the new size of the second panel.
 			*/
@@ -1772,7 +1772,7 @@ if (typeof jQuery !== "function") {
                 panel1Size = panel1CalculatedSize < 0 ? 0 : panel1CalculatedSize > 100 ? 100 : panel1CalculatedSize,
                 panel2CalculatedSize = 100 - panel1Size,
                 panel2Size = panel2CalculatedSize < 0 ? 0 : panel2CalculatedSize > 100 ? 100 : panel2CalculatedSize;
-            
+
             return [panel1Size + "%", panel2Size + "%"];
         },
         destroy: function () {
