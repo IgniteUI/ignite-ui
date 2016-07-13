@@ -4048,7 +4048,7 @@
 			startInd = startInd || 0;
 			res.push(data[ startInd ]);
 			groupval = mapper ?
-							this.getCellValue(key, data [ startInd ]) : 
+							this.getCellValue(key, data [ startInd ]) :
 							data[ startInd ][ key ];
 			startInd++;
 			for (i = startInd; i < len; i++) {
@@ -4107,7 +4107,7 @@
 		isGroupByRecordCollapsed: function (gbRec) {
 			/* Check whether the specified gorupby record is collapsed
 			paramType="string|object" id of the grouped record OR grouped record
-			returnType="bool" if true the grouped record is collapsed 
+			returnType="bool" if true the grouped record is collapsed
 			 */
 			var id = typeof gbRec === "string" || !gbRec ? gbRec : gbRec.id,
 				state;
@@ -4122,7 +4122,7 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, len = data.length, resLen, gbExpr, res, gbRec;
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
@@ -4143,11 +4143,12 @@
 					this._vgbData.push(gbRec);
 				}
 				res = this._groupedRecordsByExpr(data, i, gbExpr);
-				gbRec.id = parentId + gbExpr.fieldName + ":" + res[ 0 ][ gbExpr.fieldName ] + ":" + gbInd;
 				gbRec.fieldName = gbExpr.fieldName;
-				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
 				resLen = res.length;
 				gbRec.val = resLen ? res[ 0 ][ gbRec.fieldName ] : undefined;
+				hc = gbRec.val ? String(gbRec.val).getHashCode() : "";
+				gbRec.id = parentId + gbExpr.fieldName + ":" + hc;
+				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
 				if (gbInd + 1 < gbExprs.length) {
 					this._processGroupsRecursive(res, gbExprs, gbInd + 1,
 												gbRec.collapsed || parentCollapsed, gbRec.id + ":");
