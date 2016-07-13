@@ -20,8 +20,6 @@ module.exports = function (grunt) {
 			all: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
 				jshintrc: true,
-				// reporter: "build/ReporterJSHint.js",
-				// reporterOutput: "jshint/report.html",
 				ignores: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
 			}
 		},
@@ -29,8 +27,6 @@ module.exports = function (grunt) {
 			src: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
 				config: ".jscsrc.json",
-				reporter: "build/ReporterJSCS.js",
-				reporterOutput: "jscs/report.html",
 				force: false,
 				maxErrors: null,
 				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
@@ -44,7 +40,6 @@ module.exports = function (grunt) {
 				coverage: {
 					src: grunt.file.readJSON('build/config/all/instrument.json').config,
 					instrumentedFiles: "src/instrumentedFiles",
-					htmlReport: "coverage/reportHTML",
 					lcovReport: "coverage/reportLCOV",
 					disposeCollector: true,
 					reportOnFail: true,
@@ -76,6 +71,10 @@ module.exports = function (grunt) {
 				dest: './dist/',
 				options: {
 					process: function (content, srcpath) {
+						if (srcpath.indexOf("infragistics.loader.js") >= 0){
+							// Set loader default locale:
+							content = content.replace(/_defaultLocale:\s*""/, "_defaultLocale: \"en\"");
+						}
 						return content.replace("<build_number>", buildVersion).replace("<year>", year);
 					}
 				},
@@ -95,7 +94,17 @@ module.exports = function (grunt) {
 					cwd: './build/packages/',
 					src:  ["package.json", "README.md"],
 					dest: './dist/'
-				}]
+				}],
+				options: {
+					process: function (content, srcpath) {
+						if (srcpath.indexOf("bower.json") >= 0) {
+							var config = JSON.parse(content);
+							config.version = buildVersion;
+							content = JSON.stringify(config, null, '  ') + '\n';
+						}
+						return content;
+					}
+				}
 			}
 		},
 		cssmin: {
@@ -129,33 +138,54 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
-		var config;
-
+		var config, reporter, output, report = grunt.option('report');
+		
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
+			
 		} else {
 			config = grunt.file.readJSON('build/config/all/jshint.json').config;
 		}
+
+		if (report !== undefined) {
+			reporter = "build/ReporterJSHint.js";
+			output = "jshint/report.html";
+		} else {
+			reporter = output = undefined;
+		}
+
 		grunt.task.run("clean:jshint");
 		grunt.config("jshint.all", config);
+		grunt.config("jshint.options.reporter", reporter);
+		grunt.config("jshint.options.reporterOutput", output);
 		grunt.task.run("jshint:all");
 	});
 
 	grunt.task.registerTask("cs", "Task to run JSCS", function (control) {
-		var config;
+		var config, reporter, output, report = grunt.option('report');
 
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/jshint.json').config;
 		} else {
 			config = grunt.file.readJSON('build/config/all/jshint.json').config;
 		}
+
+		if (report !== undefined) {
+			reporter = "build/ReporterJSCS.js";
+			output = "jscs/report.html";
+		} else {
+			reporter = output = undefined;
+		}
+
 		grunt.task.run("clean:jscs");
 		grunt.config("jscs.src", config);
+		grunt.config("jscs.options.reporter", reporter);
+		grunt.config("jscs.options.reporterOutput", output);
 		grunt.task.run("jscs");
 	});
 	
 	grunt.task.registerTask("test", "Task to run dev tests and generate coverage for a single control or for all of them.", function(control) {
-		var config;
+		var config, report = grunt.option('report');
 
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/tests.json').config;
@@ -164,9 +194,14 @@ module.exports = function (grunt) {
 		}
 		grunt.task.run("clean:tests");
 		grunt.config("qunit.all", config);
-		grunt.task.run("qunitReport:init");
+		grunt.config("qunit.options.coverage.htmlReport", report !== undefined ? "coverage/reportHTML" : undefined);
+		if (report !== undefined) {
+			grunt.task.run("qunitReport:init");
+		}
 		grunt.task.run("qunit:all");
-		grunt.task.run("qunitReport:finalize");
+		if (report !== undefined) {
+			grunt.task.run("qunitReport:finalize");
+		}
 	});
 
 	grunt.task.registerTask("qunitReport", "Task to write QUnit report in HTML format", function(phase) {

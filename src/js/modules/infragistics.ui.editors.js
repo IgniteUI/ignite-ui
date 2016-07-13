@@ -3901,14 +3901,12 @@ if (typeof jQuery !== "function") {
 				displayValue = this._applyGroups(value.toString(), groups, groupSeparator);
 
 			}
-			if (value < 0 &&
-				(this.options.scientificFormat === null || displayValue.indexOf("e") === -1)) {
+			if (value < 0 ) {
 				negativeSign = this.options.negativeSign;
 				displayValue = displayValue.replace("-", "");
 				displayValue = negativePattern
 					.replace("n", displayValue).replace("$", symbol).replace("-", negativeSign);
-			} else if (positivePattern &&
-				(this.options.scientificFormat === null || displayValue.indexOf("e") === -1)) {
+			} else if (positivePattern) {
 
 				// Apply Positive Pattern
 				displayValue = positivePattern.replace("n", displayValue).replace("$", symbol);
@@ -9188,14 +9186,14 @@ if (typeof jQuery !== "function") {
 	});
 	$.widget("ui.igCheckboxEditor", $.ui.igBaseEditor, {
 		options: {
-			/* type="number" Gets/Sets either the editor is checked or not. */
+			/* type="bool" Gets/Sets either the editor is checked or not. */
 			checked: false,
 			/* type="verysmall|small|normal|large" Gets/Sets size of the checkbox based on preset styles.
 				For different sizes, define 'width' and 'height' options instead.
-				verysmall The size of the Checkbox editor is very small.
-				small The size of the Checkbox editor is small.
-				normal The size of the Checkbox editor is normal.
-				large The size of the Checkbox editor is large.
+				verysmall type="string" The size of the Checkbox editor is very small.
+				small type="string" The size of the Checkbox editor is small.
+				normal type="string" The size of the Checkbox editor is normal.
+				large type="string" The size of the Checkbox editor is large.
 			*/
 			size: "normal",
 			/* type="string" Applies custom class on the checkbox, so that custom image can be used.
@@ -9680,7 +9678,7 @@ if (typeof jQuery !== "function") {
 				if (this._inputValue === undefined) {
 					/*no explicit value */
 					var result = this._tryParseBool(newValue);
-					if (result.ret) {
+					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
 						throw ($.ig.Editor.locale.cannotSetNonBoolValue);
