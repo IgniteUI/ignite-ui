@@ -142,6 +142,9 @@
         <div id='combo-getitem'></div>
     </div>
     <div class="cont">
+        <div id="combo-virtualization-grouping"></div>
+    </div>
+    <div class="cont">
         <div id='combo_numberarray'></div>
     </div>
     <div class="cont">
@@ -267,6 +270,9 @@
     <div class="cont">
         <div dir="rtl" id="ltr-testing"></div>
     </div>
+    <div class="cont">
+        <div id="combo-focus-blur"></div>
+    </div>
     <div>
         <div id="header-footer-setters"></div>
     </div>
@@ -353,6 +359,8 @@
                 testId_72 = '_setOption branching tests';
                 testId_73 = 'LTR coverage';
                 testId_74 = 'Header/Footer Getters/Setters';
+                testId_75 = 'Virtualization with grouping and LOD';
+                testId_76 = 'Combo focus blur';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -4675,6 +4683,122 @@
                 $comboWrapper.igCombo('option', 'dataSource', newdata);
                 equal($footer.text(), 'Total: 9 out of 9', 'Footer records match');
             });
+
+            // Virtualization with grouping and LOD tests
+            test(testId_75, function () {
+                var $dropDown, $listItems, data, headersState, selectedItem,
+					$comboElem = $("#combo-virtualization-grouping");
+
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead",  },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead",  },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead",  },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders",  },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders",  },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras",  } ]
+
+                $comboElem.igCombo({
+                    virtualization: true,
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    width: 200,
+                    height: 30,
+                    loadOnDemandSettings: { enabled: true, pageSize: 2 },
+                    visibleItemsCount: 4,
+                    grouping: { key: 'SupplierName' },
+                    multiSelection: {
+                        enabled: true,
+                    }
+                });
+
+                combo = $comboElem.data().igCombo;
+                $comboElem.igCombo('openDropDown');
+                $dropDown = $comboElem.igCombo("dropDown");
+                $listItems = $dropDown.find('.ui-igcombo-listitem');
+                // items list does not contain the group header
+                equal($listItems.length, 2, "2 items should be rendered.");
+
+                $headers = $dropDown.find('li').filter(".ui-igcombo-group-header");
+
+                headersState = function () {
+                    return $headers.eq(0).text() === 'Cooperativa de Quesos Las Cabras' &&
+                           $headers.eq(1).text() === 'Exotic Liquids'
+                }
+                ok(headersState(), 'Drop down correctly heads its groups');
+                $comboElem.igCombo('openDropDown');
+                combo.listScrollTop(200);
+                $listItems = $dropDown.find('.ui-igcombo-listitem');
+                equal($listItems.length, 2, "2 items should be rendered.");
+                $comboElem.igCombo('closeDropDown');
+               
+                $comboElem.igCombo("select", $($listItems[0]));
+                selectedItem =  $comboElem.igCombo("itemsFromIndex", [0]);
+                equal($listItems[0], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+                selectedItem = $comboElem.igCombo("itemsFromIndex", [1]);
+                equal($listItems[1], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+
+                $comboElem.igCombo("select", $($listItems[1]));
+                selectedItem = $comboElem.igCombo("itemsFromValue", [11]);
+                equal($listItems[0], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+
+                selectedItem = $comboElem.igCombo("itemsFromElement", $($listItems));
+                var selectedItems = $comboElem.igCombo("selectedItems");
+                equal($listItems[0], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+                equal($listItems[1], selectedItem[1].element[0], "itemsFromIndex returns the selected item li element");
+            });
+
+            // Change enableClearButton
+            test(testId_76, function () {
+                   var $clearButton, data, selectedItems,
+                       $comboElem = $("#combo-focus-blur");
+   
+                   data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                          { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                          { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                          { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                          { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                          { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                         { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                         { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                         { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                         { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                         { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+   
+                   $comboElem.igCombo({
+                       dataSource: data,
+                       valueKey: "ID",
+                       textKey: 'ProductName',
+                       enableClearButton: false,
+                       width: 200,
+                       height: 30,
+                       allowCustomValues: true,
+                       multiSelection: {
+                           enabled: true,
+                       },
+                       initialSelectedItems: [
+                           { index: 0 },
+                           { index: 1 },
+                           { index: 2 }
+                       ]
+                   });
+   
+                   selectedItems = $comboElem.igCombo("selectedItems");
+                   equal(selectedItems.length, 3, "initial selected items number is 3");
+   
+                   $comboElem.igCombo("option", "enableClearButton", true);
+                   $clearButton = $comboElem.find(".ui-igcombo-clearicon");
+                   $clearButton.trigger("click");
+   
+                   selectedItems = $comboElem.igCombo("selectedItems");
+                   equal(selectedItems, null, "selectedItems should return null");
+   
+               });
         });
     </script>
 </body>
