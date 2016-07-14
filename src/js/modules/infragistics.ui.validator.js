@@ -20,7 +20,7 @@
 *	</script>
 *	<input id="text1" type="text" />
 */
-/*global jQuery*/
+/*global jQuery, Class */
 (function ($) {
 /*
 	igValidator is a widget based on jQuery UI that provides functionality to validate value in target and show appropriate error message.
@@ -290,24 +290,18 @@ $.widget("ui.igValidator", {
 		equalToMessage: "Values don't match",
 		optionalString: "(optional)"
 	},
-	/* default email checking RegExp */
-	emailRegEx: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-	/* default email checking RegExp */
-	numberRegEx: "^-?[\\d]+({0}[\\d]+)?$",
 	/* defaults for the notifier */
 	notifierDefaults: {
 		state: "error"
 	},
+	rules: [],
+	summaryResult: false,
 	_createWidget: function () {
 		// strip dummy fields collection
 		delete this.options.fields;
 		$.Widget.prototype._createWidget.apply(this, arguments);
 	},
 	_create: function () {
-		//defaults
-		this._decimalSeparator = ".";
-		this._thousandsSeparator = ",";
-
 		// internal counter for how many fields require form handling
 		this._formHandleCounter = 0;
 		this._fieldOptions = this.options.fields ? $.extend([], this.options.fields) : null; // TODO use internal
@@ -330,6 +324,7 @@ $.widget("ui.igValidator", {
 		}
 
 		this._attachToForm(shouldHandleForm || this.options.onsubmit);
+		this._initalizeRules();
 	},
 	_setOption: function (option, value) {
 		var i;
@@ -416,6 +411,20 @@ $.widget("ui.igValidator", {
 
 		}
 		$.Widget.prototype._setOption.apply(this, arguments);
+	},
+	_initalizeRules: function () {
+		this.rules = []; //mokey patch shared rules object.. like NO, staph it
+		// order of rules must be maintained:
+		this.rules.push(new $.ig.igValidatorRequiredRule(this));
+		this.rules.push(new $.ig.igValidatorControlRule(this));
+		this.rules.push(new $.ig.igValidatorNumberRule(this));
+		this.rules.push(new $.ig.igValidatorDateRule(this));
+		this.rules.push(new $.ig.igValidatorLengthRule(this));
+		this.rules.push(new $.ig.igValidatorValueRule(this));
+		this.rules.push(new $.ig.igValidatorEqualToRule(this));
+		this.rules.push(new $.ig.igValidatorEmailRule(this));
+		this.rules.push(new $.ig.igValidatorPatternRule(this));
+		this.rules.push(new $.ig.igValidatorCustomRule(this));
 	},
 	_initializeField: function (element, options) {
 		var target = element;
@@ -731,12 +740,8 @@ $.widget("ui.igValidator", {
 
 		// Called per field with optional value to check, event and blur flag
 		value = value !== undefined ? value : this._getTargetValue(options);
-		var min, max,
-			isNumber = this._isNumber(options, value),
-			isDateParsable = !isNaN(new Date(value).getSeconds()),
-			isDate = value instanceof Date,
-			hasLength = value !== undefined && value !== null && value.length !== undefined,
-			internalValue = isNumber ? value.toString() : value; // 0 needs to be valid for required fields!
+		var valueString = value !== 0 ? value && value.toString() : value.toString(),
+			hasLength = valueString && value.length !== undefined;
 
 		// validation stop rules (threshold, triggers validation)
 		// Note: Options must be extended with globals at this point to properly validate triggers and conditions
@@ -767,205 +772,29 @@ $.widget("ui.igValidator", {
 		}
 
 		opts._currentMessage = null;
-
-		// Required
-		if (options.required && (!internalValue || value.length === 0)) {
-			switch (options._type) {
-				case "checkboxrange":
-				case "radio":
-				case "select":
-				case "selectrange":
-					opts._currentMessage = this._getRuleMessage(options, "required", "select");
-					break;
-				default:
-					opts._currentMessage = this._getRuleMessage(options, "required", "required");
-			}
-			args.message = opts._currentMessage;
-			args.rule = "required";
-			this._showError(options, args, evt);
-			return false;
-		} else if (!options.required && !internalValue) {
+		
+		if (!options.required && !valueString) {
 			//no value and not required, return
 			args.message = opts._currentMessage = options.successMessage;
 			this._success(options, args, evt, isSubmitting);
 			return true;
 		}
 
-		// igControl
-		if (options._control && typeof options._control.isValid === "function") {
-			var result = options._control.isValid();
-			if (!result) {
-				opts._currentMessage = options.errorMessage ||
-					options._control._currentMessage ||
-					this._getLocalizedMessage("default");
+		for (var i = 0; i < this.rules.length; i++) {
+			if (options[ this.rules[ i ].name ] || this.rules[ i ].name === "control") {
+				// validate rules
+				var result = this.rules[ i ].isValid(options, value);
+				if (!result) {
+					opts._currentMessage = this.rules[ i ].getRuleMessage(options) ||
+						this._getLocalizedMessage(this.rules[ i ].getMessageType(options));
 
-				args.message = opts._currentMessage;
-				args.rule = "control";
-				this._showError(options, args, evt);
-				return false;
-			}
-		}
+					opts._currentMessage = this.rules[ i ].formatMessage(opts._currentMessage);
 
-		// Number
-		if (options.number && !isNumber && internalValue) {
-			opts._currentMessage = this._getRuleMessage(options, "number", "number");
-			args.message = opts._currentMessage;
-			args.rule = "number";
-			this._showError(options, args, evt);
-			return false;
-		}
-
-		// Date
-		if (options.date && !isDateParsable && internalValue) {
-			opts._currentMessage = this._getRuleMessage(options, "date", "date");
-			args.message = opts._currentMessage;
-			args.rule = "date";
-			this._showError(options, args, evt);
-			return false;
-		}
-
-		// Min/Max Length
-		if (hasLength && value.length && (options.lengthRange)) {
-			var messageType = value.push ? "Select" : "Length",
-				minLength = options.lengthRange.push ? options.lengthRange[ 0 ] : options.lengthRange.min,
-				maxLength = options.lengthRange.push ? options.lengthRange[ 1 ] : options.lengthRange.max;
-
-			min = minLength && value.length < minLength;
-			max = maxLength && value.length > maxLength;
-
-			if (minLength && maxLength && (min || max)) {
-				// range message
-				opts._currentMessage = this._getRuleMessage(options, "lengthRange", "range" + messageType);
-				opts._currentMessage = opts._currentMessage.replace("{0}", minLength)
-										.replace("{1}", maxLength);
-				args.message = opts._currentMessage;
-			} else if (min) {
-				opts._currentMessage = this._getRuleMessage(options, "lengthRange", "min" + messageType);
-				opts._currentMessage = opts._currentMessage.replace("{0}", minLength);
-				args.message = opts._currentMessage;
-			} else if (max) {
-				opts._currentMessage = this._getRuleMessage(options, "lengthRange", "max" + messageType);
-				opts._currentMessage = opts._currentMessage.replace("{0}", maxLength);
-				args.message = opts._currentMessage;
-			}
-
-			if (args.message) {
-				args.rule = "lengthRange";
-				this._showError(options, args, evt);
-				return false;
-			}
-		}
-
-		// Min/Max Value
-		if (options.valueRange && (isDateParsable || isNumber)) {
-			var minValue = options.valueRange.push ? options.valueRange[ 0 ] : options.valueRange.min,
-				maxValue = options.valueRange.push ? options.valueRange[ 1 ] : options.valueRange.max,
-
-				// must be type checked, 0 should be valid
-				hasMin = typeof minValue === "number" || minValue,
-				hasMax = typeof maxValue === "number" || maxValue;
-
-			if ((hasMin || hasMax)) {
-				if (isNumber && !options.date) { // parseFloat is quite eager to parse date strings too...
-					value = parseFloat(value);
-					min = hasMin && minValue;
-					min = value < min ? min.toString() : null;
-					max = hasMax && maxValue;
-					max = value > max ? max.toString() : null;
-				}
-				if (isDateParsable && (options.date || isDate)) {
-					value = new Date(value);
-					if (hasMin) {
-						min = minValue = new Date(minValue);
-						minValue = minValue.toLocaleString();
-					}
-					min = value < min ? min.toLocaleString() : null;
-
-					if (hasMax) {
-						max = maxValue = new Date(maxValue);
-						maxValue = maxValue.toLocaleString();
-					}
-					max = value > max ? max.toLocaleString() : null;
-				}
-
-				if (hasMin && hasMax && (min || max)) {
-					// range message
-					opts._currentMessage = this._getRuleMessage(options, "valueRange", "rangeValue");
-					opts._currentMessage = opts._currentMessage.replace("{0}", min || minValue)
-											.replace("{1}", max || maxValue);
 					args.message = opts._currentMessage;
-				} else if (min) {
-					opts._currentMessage = this._getRuleMessage(options, "valueRange", "minValue");
-					opts._currentMessage = opts._currentMessage.replace("{0}", min);
-					args.message = opts._currentMessage;
-				} else if (max) {
-					opts._currentMessage = this._getRuleMessage(options, "valueRange", "maxValue");
-					opts._currentMessage = opts._currentMessage.replace("{0}", max);
-					args.message = opts._currentMessage;
-				}
-
-				if (args.message) {
-					args.rule = "valueRange";
+					args.rule = this.rules[ i ].name;
 					this._showError(options, args, evt);
 					return false;
 				}
-			}
-		}
-
-		// Equals To:
-		if (options.equalTo) {
-			var selector = options.equalTo.selector || options.equalTo,
-				targetValue = this._getTargetValue({
-					_control: this._getEditor($(selector)),
-					selector: selector
-				});
-			if ($.ig.util.compare(value, targetValue)) {
-				opts._currentMessage = this._getRuleMessage(options, "equalTo", "equalTo");
-				args.message = opts._currentMessage;
-				args.rule = "equalTo";
-				this._showError(options, args, evt);
-				return false;
-			}
-		}
-
-		// Email
-		if (options.email) {
-			if (!this.emailRegEx.test(value)) {
-				opts._currentMessage = this._getRuleMessage(options, "email", "email");
-				args.message = opts._currentMessage;
-				args.rule = "email";
-				this._showError(options, args, evt);
-				return false;
-			}
-		}
-
-		// Pattern
-		if (options.pattern) {
-			// D.P. 22th Dec 2015 Bug 211530: Misspelled "expression" in pattern option, keeping both versions per customer request
-			var regEx = options.pattern.expresion || options.pattern.expression || options.pattern;
-			regEx = regEx.test ? regEx : new RegExp(regEx.toString());
-
-			if (!regEx.test(value)) {
-				opts._currentMessage = this._getRuleMessage(options, "pattern", "pattern");
-				args.message = opts._currentMessage;
-				args.rule = "pattern";
-				this._showError(options, args, evt);
-				return false;
-			}
-		}
-
-		// Custom
-		if (options.custom) {
-			var func = options.custom.method || options.custom;
-			if (typeof func === "string") {
-				func = window[ func ];
-			}
-			if (typeof func === "function" && !func.apply(this, [ value, args.fieldOptions ])) {
-				opts._currentMessage = this._getRuleMessage(options, "custom", "default");
-				args.message = opts._currentMessage;
-				args.rule = "custom";
-				this._showError(options, args, evt);
-				return false;
 			}
 		}
 
@@ -983,36 +812,6 @@ $.widget("ui.igValidator", {
 		}
 
 		this._showSuccess(options, args, evt);
-	},
-	_isNumber: function (options, value) {
-		if (typeof value === "number") {
-			return true;
-		} else if (typeof value === "string") {
-			var decimalSeparator = options.number && options.number.decimalSeparator,
-				thousandsSeparator = options.number && options.number.thousandsSeparator,
-				thousandsRegEx, regEx;
-
-			decimalSeparator = decimalSeparator || this._decimalSeparator;
-			thousandsSeparator = thousandsSeparator || this._thousandsSeparator;
-			thousandsRegEx = new RegExp("\\" + thousandsSeparator, "g");
-			regEx = new RegExp(this.numberRegEx.replace("{0}", "\\" + decimalSeparator));
-
-			value = value.replace(thousandsRegEx, "");
-			if (regEx.test(value) && this._parseNumber(value, decimalSeparator) !== null) {
-				return true;
-			}
-		}
-		return false;
-	},
-	_parseNumber: function (value, decimalSeparator) {
-		/* returns the parsed number or null */
-		var result = value.replace(decimalSeparator, this._decimalSeparator);
-
-		result = parseFloat(result);
-		if (isNaN(result)) {
-			return null;
-		}
-		return result;
 	},
 	_showError: function (options, args, evt) {
 		args.valid = false;
@@ -1184,14 +983,6 @@ $.widget("ui.igValidator", {
 
 		// D.P. 15th Dec 2015 Bug 211119: default in case there's no _type evaluated from equalTo target
 		return $target.val && $target.val();
-	},
-	_getRuleMessage: function (options, rule, messageName) {
-		if (options[ rule ].errorMessage) {
-			return options[ rule ].errorMessage;
-		} else if (options.errorMessage) {
-			return options.errorMessage;
-		}
-		return this._getLocalizedMessage(messageName);
 	},
 	_getLocalizedMessage: function (key, postfix) {
 		key += postfix || "Message";
@@ -1538,12 +1329,299 @@ $.widget("ui.igValidator", {
 	}
 });
 $.extend($.ui.igValidator, { version: "<build_number>" });
+
 /* Global defaults used by igValidator. If appication change them, then all igValidators created after that will pickup new defaults. */
 $.ui.igValidator.defaults = {
 	/* type="bool" Gets or sets ability to show all errors on submit.
 		Value false will show error message only for the first failed target.
 		Default value is true. */
 	showAllErrorsOnSubmit: true
+
+	// TODO move here rule-specific defaults like: decimalSeparator, number and email regEx, etc?
 };
+
+$.ig.igValidatorBaseRule = $.ig.igValidatorBaseRule || Class.extend({
+	name: "base",
+	formatItems: [],
+	/*jshint unused: false*/
+	getMessageType: function (options) {
+		return this.name;
+	},
+	/*jshint unused: true*/
+	getRuleMessage: function (options) {
+		/* returns an error message for the rule from options */
+		if (options[ this.name ].errorMessage) {
+			return options[ this.name ].errorMessage;
+		} else if (options.errorMessage) {
+			return options.errorMessage;
+		}
+		return "";
+	},
+	formatMessage: function (message) {
+		for (var i = 0; i < this.formatItems.length; i++) {
+			message = message.replace("{" + i + "}", this.formatItems[i]);
+			
+		}
+		return message;
+	},
+	/*jshint unused: false*/
+	isValid: function(options, value) {
+		return true;
+	},
+	/*jshint unused: true*/
+	init: function (validator) {
+		this.validator = validator; // TODO ??
+	}
+});
+
+$.ig.igValidatorRequiredRule = $.ig.igValidatorRequiredRule || $.ig.igValidatorBaseRule.extend({
+	name: "required",
+	groupTypes: ["checkboxrange", "radio", "select", "selectrange"],
+	groupMessageName: "select",
+	getMessageType: function (options) {
+		if ($.inArray(options._type, this.groupTypes) > -1) {
+			return this.groupMessageName;
+		} else {
+			return this.name;
+		}
+	},
+	isValid: function(options, value) {
+		// 0 needs to be valid for required fields, but not false for checkbox/select
+		var internalValue = !isNaN(parseFloat(value)) ? value.toString() : value;
+		if (!internalValue || value.length === 0) {
+			return false;
+		}
+		return true;
+	}
+});
+
+$.ig.igValidatorControlRule = $.ig.igValidatorControlRule || $.ig.igValidatorBaseRule.extend({
+	name: "control",
+	getMessageType: function (/* options */) {
+		return "default";
+	},
+	getRuleMessage: function (options) {
+		/* returns an error message for the rule from options */
+		return options.errorMessage ||
+			options._control._currentMessage || "";
+	},
+	isValid: function(options /*, value*/) {
+		if (options._control && typeof options._control.isValid === "function") {
+			return options._control.isValid();
+		}
+		return true;
+	}
+});
+
+$.ig.igValidatorNumberRule = $.ig.igValidatorNumberRule || $.ig.igValidatorBaseRule.extend({
+	name: "number",
+	/* type="string" Default decimal separator (".") to use when no explicit number option property is defined */
+	decimalSeparator: ".",
+	/* type="string" Default decimal thousands (",") to use when no explicit number option property is defined */
+	thousandsSeparator: ",",
+	_isNumber: function (options, value) {
+		if (typeof value === "number") {
+			return true;
+		} else if (typeof value === "string") {
+			return this._parseNumber(value, options) !== null;
+		}
+		return false;
+	},
+	_parseNumber: function (value, options) {
+		/* returns the parsed number or null */
+		if (typeof value === "number") {
+			return value;
+		}
+		var decimalSeparator = options.number && options.number.decimalSeparator,
+			thousandsSeparator = options.number && options.number.thousandsSeparator,
+			thousandsRegEx, result;
+
+		decimalSeparator = decimalSeparator || this.decimalSeparator;
+		thousandsSeparator = thousandsSeparator || this.thousandsSeparator;
+		thousandsRegEx = new RegExp("\\" + thousandsSeparator, "g");
+
+		// split decimals so thousandsSeparator can be removed only from the integer part
+		// this ensures strings like "2,445.1,454" are not valid
+		value = value.split(decimalSeparator);
+		
+		// strip thousands separator(s)
+		value[ 0 ] = value[ 0 ].replace(thousandsRegEx, "");
+
+		result = value.join(".");
+
+		if (result.length && !isNaN(result)) { // isNaN will accept "" as 0
+			return parseFloat(result);
+		}
+		return null;
+	},
+	isValid: function(options, value) {
+		var internalValue = "" + value; // implicit toString() for 0s
+		if (internalValue) {
+			return this._isNumber(options, value);
+		}
+		return true;
+	}
+});
+
+$.ig.igValidatorDateRule = $.ig.igValidatorDateRule || $.ig.igValidatorBaseRule.extend({
+	name: "date",
+	isValid: function(options, value) {
+		return value instanceof Date || !isNaN(new Date(value).getSeconds());
+	}
+});
+
+$.ig.igValidatorLengthRule = $.ig.igValidatorLengthRule || $.ig.igValidatorBaseRule.extend({
+	name: "lengthRange",
+	_lastMessageType: "rangeLength",
+	getMessageType: function (/* options */) {
+		return this._lastMessageType;
+	},
+	isValid: function(options, value) {
+		// Min/Max Length
+		if (value && value.length) {
+			var  min, max, 
+				messageSuffix = value.push ? "Select" : "Length",
+				minLength = options.lengthRange.push ? options.lengthRange[ 0 ] : options.lengthRange.min,
+				maxLength = options.lengthRange.push ? options.lengthRange[ 1 ] : options.lengthRange.max;
+
+			min = minLength && value.length < minLength;
+			max = maxLength && value.length > maxLength;
+
+			if (minLength && maxLength && (min || max)) {
+				// range message
+				this._lastMessageType =  "range" + messageSuffix;
+				this.formatItems = [ minLength, maxLength ];
+			} else if (min) {
+				this._lastMessageType = "min" + messageSuffix;
+				this.formatItems = [ minLength ];
+			} else if (max) {
+				this._lastMessageType = "max" + messageSuffix;
+				this.formatItems = [ maxLength ];
+			}
+
+			if (min || max) {
+				return false;
+			}
+		}
+		return true;
+	}
+});
+
+$.ig.igValidatorValueRule = $.ig.igValidatorValueRule || $.ig.igValidatorNumberRule.extend({
+	name: "valueRange",
+	_lastMessageType: "rangeValue",
+	getMessageType: function (/* options */) {
+		return this._lastMessageType;
+	},
+	isValid: function(options, value) {
+		var min, max,
+			isNumber = this._isNumber(options, value),
+			isDateParsable = !isNaN(new Date(value).getSeconds());
+		// Min/Max Value
+		if (isDateParsable || isNumber) {
+			var minValue = options.valueRange.push ? options.valueRange[ 0 ] : options.valueRange.min,
+				maxValue = options.valueRange.push ? options.valueRange[ 1 ] : options.valueRange.max,
+
+				// must be type checked, 0 should be valid
+				hasMin = typeof minValue === "number" || minValue,
+				hasMax = typeof maxValue === "number" || maxValue;
+
+			if ((hasMin || hasMax)) {
+				if (isNumber && !options.date) { // parseFloat is quite eager to parse date strings too... TODO remove
+					value = options.number ? this._parseNumber(value, options) : parseFloat(value); // TODO: Always use _parseNumber if decimals go to validator defaults!
+					min = hasMin && minValue;
+					min = value < min ? min.toString() : null;
+					max = hasMax && maxValue;
+					max = value > max ? max.toString() : null;
+				}
+				if (isDateParsable && (options.date || value instanceof Date)) { //TODO remove
+					value = new Date(value);
+					if (hasMin) {
+						min = minValue = new Date(minValue);
+						minValue = minValue.toLocaleString();
+					}
+					min = value < min ? min.toLocaleString() : null;
+
+					if (hasMax) {
+						max = maxValue = new Date(maxValue);
+						maxValue = maxValue.toLocaleString();
+					}
+					max = value > max ? max.toLocaleString() : null;
+				}
+
+				if (hasMin && hasMax && (min || max)) {
+					// range message
+					this._lastMessageType = "rangeValue";
+					this.formatItems = [ min || minValue, max || maxValue ];
+				} else if (min) {
+					this._lastMessageType = "minValue";
+					this.formatItems = [ min ];
+				} else if (max) {
+					this._lastMessageType = "maxValue";
+					this.formatItems = [ max ];
+				}
+
+				if (min || max) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+});
+
+$.ig.igValidatorEqualToRule = $.ig.igValidatorEqualToRule || $.ig.igValidatorBaseRule.extend({
+	name: "equalTo",
+	isValid: function(options, value) {
+		var selector = options.equalTo.selector || options.equalTo,
+			targetValue = this.validator._getTargetValue({
+				_control: this.validator._getEditor($(selector)),
+				selector: selector
+			});
+		if ($.ig.util.compare(value, targetValue)) {
+			return false;
+		}
+		return true;
+	}
+});
+
+$.ig.igValidatorEmailRule = $.ig.igValidatorEmailRule || $.ig.igValidatorBaseRule.extend({
+	name: "email",
+	/* default email checking RegExp */
+	emailRegEx: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+	isValid: function(options, value) {
+		return this.emailRegEx.test(value);
+	}
+});
+
+$.ig.igValidatorPatternRule = $.ig.igValidatorPatternRule || $.ig.igValidatorBaseRule.extend({
+	name: "pattern",
+	isValid: function(options, value) {
+		// D.P. 22th Dec 2015 Bug 211530: Misspelled "expression" in pattern option, keeping both versions per customer request
+		var regEx = options.pattern.expresion || options.pattern.expression || options.pattern;
+		regEx = regEx.test ? regEx : new RegExp(regEx.toString());
+
+		return regEx.test(value);
+	}
+});
+
+$.ig.igValidatorCustomRule = $.ig.igValidatorCustomRule || $.ig.igValidatorBaseRule.extend({
+	name: "custom",
+	getMessageType: function (/* options */) {
+		return "default";
+	},
+	isValid: function(options, value) {
+		var fieldOptions = options === this.validator.options ? null : options,
+			func = options.custom.method || options.custom;
+
+		if (typeof func === "string" && typeof window[ func ] === "function") {
+			func = window[ func ];
+		}
+		if (typeof func === "function" && !func.apply(this.validator, [ value, fieldOptions ])) {
+			return false;
+		}
+		return true;
+	}
+});
 
 }(jQuery));
