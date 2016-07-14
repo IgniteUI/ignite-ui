@@ -1,0 +1,217 @@
+/*//////////////////////////////////////////////// igScroll CSS ////////////////////////////////////////////////*/
+
+.igscroll-scrollable {
+	position: relative;
+	overflow: hidden;
+}
+
+.igscroll-container {
+	overflow: scroll;
+	position: absolute;
+	right: -17px;
+	bottom: -17px;
+	padding-right: 17px;
+	padding-bottom: 17px;
+}
+
+.igscroll-content {
+	overflow: hidden;
+	position: absolute;
+	-webkit-transform: translatez(0);
+	-moz-transform: translatez(0);
+	-ms-transform: translatez(0);
+	-o-transform: translatez(0);
+	transform: translatez(0);
+}
+
+/***********************
+*  Vertical Scrollbar  *
+************************/
+.igscroll-vcontainer {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+.igscroll-htrack {
+
+}
+
+/* Vertical arrow - general */
+.igscroll-varrow {
+	width: 15px;
+	height: 15px;
+}
+
+.igscroll-varrow:hover {
+	background: #999999;
+}
+
+.igscroll-varrow:active { 
+	background: #757575;
+}
+
+.igscroll-varrow:before {
+	width: 15px;
+	height: 15px;		
+	position: absolute;
+	content: '';
+	background-image: url('../images/igScroll/up.png');
+	background-size: 9px 9px;
+	background-repeat: no-repeat;
+	background-position: center;
+	pointer-events: none;
+}		
+
+/* Arrow Up */
+.igscroll-uparrow:before {
+	-webkit-transform: rotate(0);
+	-moz-transform: rotate(0);
+	-ms-transform: rotate(0);
+	-o-transform: rotate(0);
+	transform: rotate(0);
+}		
+
+.igscroll-uparrow-active:before {
+	background-image: url('../images/igScroll/up_active.png');
+	-webkit-transform: rotate(0);
+	-moz-transform: rotate(0);
+	-ms-transform: rotate(0);
+	-o-transform: rotate(0);
+	transform: rotate(0);
+}
+
+/* Arrow Down */
+.igscroll-downarrow:before {
+	-webkit-transform: rotate(-180deg);
+	-moz-transform: rotate(-180deg);
+	-ms-transform: rotate(-180deg);
+	-o-transform: rotate(-180deg);
+	transform: rotate(-180deg);
+}		
+
+.igscroll-downarrow-active:before {
+	background-image: url('../images/igScroll/up_active.png');
+	-webkit-transform: rotate(-180deg);
+	-moz-transform: rotate(-180deg);
+	-ms-transform: rotate(-180deg);
+	-o-transform: rotate(-180deg);
+	transform: rotate(-180deg);
+}
+
+/* Thumb Drag */
+.igscroll-vdrag {
+	left: 3px;
+	width: 9px;
+	display: block; 
+	position: relative; 
+	z-index: 1;
+	overflow: hidden;
+	background: #999999;
+	border-radius: 3px;
+}
+
+.igscroll-vdrag:hover { 
+	background: #737373;
+}
+
+.igscroll-vdrag:active { 
+	background: #575757;
+}
+
+/***********************
+* Horizontal Scrollbar *
+************************/
+.igscroll-hcontainer {
+	height: 15px;
+	position: absolute;
+	bottom: 0px;
+}
+
+.igscroll-htrack {
+	height: 15px;
+	float: left;
+}
+
+/* Horizontal arrow - general */
+.igscroll-harrow {
+	width: 15px;
+	height: 15px;
+	float: left;
+}
+
+.igscroll-harrow:hover {
+	background: #999999;
+}
+
+.igscroll-harrow:active { 
+	background: #757575;
+}
+
+.igscroll-harrow:before {
+	width: 15px;
+	height: 15px;		
+	position: absolute;
+	content: '';
+	background-image: url('../images/igScroll/up.png');
+	background-size: 9px 9px;
+	background-repeat: no-repeat;
+	background-position: center;
+	pointer-events: none;
+}		
+
+/* Arrow Left */
+.igscroll-leftarrow:before {
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}	
+
+.igscroll-leftarrow-active:before {
+	background-image: url('../images/igScroll/up_active.png');
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+
+/* Arrow Right */
+.igscroll-rightarrow:before {
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	transform: rotate(90deg);
+}		
+
+.igscroll-rightarrow-active:before {
+	background-image: url('../images/igScroll/up_active.png');
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+/* Thumb Drag */
+.igscroll-hdrag { 
+	top: 3px;
+	height: 9px;
+	position: relative;
+	display: block;
+	background: #999999;
+	border-radius: 3px;
+	z-index: 1;
+	overflow: hidden;
+}
+
+.igscroll-hdrag:hover { 
+	background: #737373;
+}
+
+.igscroll-hdrag:active { 
+	background: #575757;
+}

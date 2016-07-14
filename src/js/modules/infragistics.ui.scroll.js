@@ -201,7 +201,6 @@
 
 		_create: function () {
 			var key,
-				self = this,
 				defaultOptions,
 				scrollOptions = this.options,
 				elem = this.element;
@@ -256,7 +255,7 @@
 					scrollOptions[ key ] = defaultOptions[ key ];
 				}
 			}
-			self._initOptions(scrollOptions);
+			this._initOptions(scrollOptions);
 
 			this._contentHeight = this._content[ 0 ].scrollHeight;
 			this._contentWidth = this._content[ 0 ].scrollWidth;
@@ -269,283 +268,33 @@
 			this._isScrollableV = this._percentInViewV < 1;
 			this._isScrollableH = this._percentInViewH < 1;
 
-			//Events specific variables
-			var startX, startY,
-					touchStartX,
-					touchStartY,
-					moving = false;
+			//Container Events specific variables
+			this._startX;
+			this._startY;
+			this._touchStartX;
+			this._touchStartY;
+			this._moving = false;
 
-			self.evts = {
-				scroll: function () {
-					if (!self._bMixedEnvironment) {
-						self._bMixedEnvironment = true;
+			this.evts = {
+				scroll: $.proxy(this._onScrollContainer, this),
+				wheel: $.proxy(this._onWheelContainer, this),
+				DOMMouseScroll: $.proxy(this._onWheelContainer, this),
 
-						/* Make sure we are not scrolled using 3d transformation */
-						self._switchFromTouchToMixed();
-					}
+				pointerdown: $.proxy(this._onPointerDownContainer, this),
+				pointerup: $.proxy(this._onPointerUpContainer, this),
+				MSPointerDown: $.proxy(this._onPointerDownContainer, this),
+				MSGestureStart: $.proxy(this._onMSGestureStartContainer, this),
+				MSGestureChange: $.proxy(this._onMSGestureChangeContainer, this),
+				MSGestureEnd: $.proxy(this._onMSGestureEndContainer, this),
 
-					if (!self.options.scrollOnlyVBar && !self._scrollFromSyncContentV) {
-						self._syncVBar(self._container[ 0 ], false);
-						self._syncElemsY(self._container[ 0 ], false);
-					} else {
-						self._scrollFromSyncContentV = false;
-					}
+				touchstart: $.proxy(this._onTouchStartContainer, this),
+				touchmove: $.proxy(this._onTouchMoveContainer, this),
+				touchend: $.proxy(this._onTouchEndContainer, this),
 
-					if (!self.options.scrollOnlyHBar && !self._scrollFromSyncContentH) {
-						self._syncHBar(self._container[ 0 ], false);
-						self._syncElemsX(self._container[ 0 ], false);
-					} else {
-						self._scrollFromSyncContentH = false;
-					}
-
-					self._updateScrollBars(self._container.scrollLeft(), self._container.scrollTop());
-
-					return false;
-				},
-
-				wheel: function (e) {
-					var evt = e.originalEvent;
-					self._bStopInertia = true;
-
-					if (!self._bMixedEnvironment) {
-						self._bMixedEnvironment = true;
-
-						/* Make sure we are not scrolled using 3d transformation */
-						self._switchFromTouchToMixed();
-					}
-
-					if (self.options.smoothing) {
-						//Scroll with small inertia
-						self._smoothWheelScrollY(evt.deltaY);
-					} else {
-						//Normal scroll
-						if (self.options.scrollOnlyVBar) {
-							startY = self._getScrollbarVPoisition();
-						} else {
-							startY = self._getContentPositionY();
-						}
-
-						var scrollStep = self.options.wheelStep;
-						self._scrollToY(startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep);
-
-						//Trigger scrolled event
-						self._trigger("scrolled", null, {
-							owner: self,
-							smallIncrement: 0,
-							bigIncrement: 0,
-							horizontal: false,
-							touch: false
-						});
-					}
-
-					return false;
-				},
-
-				pointerdown: function (e) {
-					var evt = e.originalEvent;
-					if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch")) {
-						return;
-					}
-
-					//setPointerCaptureFName is the name of the function that is supported
-					e.target[ setPointerCaptureFName ](self._pointer = evt.pointerId);
-
-					//create gestureObject only one time to prevent overlapping during intertia
-					if (!this._gestureObject) {
-						this._gestureObject = new MSGesture();
-						this._gestureObject.target = self._container[ 0 ];
-					}
-					this._gestureObject.addPointer(self._pointer);
-				},
-
-				pointerup: function (e) {
-					if (!self._pointer) {
-						return;
-					}
-					/* releasePointerCaptureFName is the name of the function that is supported */
-					e.target[ releasePointerCaptureFName ](self._pointer);
-
-					delete self._pointer;
-				},
-
-				MSGestureStart: function (e) {
-					if (self.options.scrollOnlyVBar) {
-						startX = self._getScrollbarHPoisition();
-						startY = self._getScrollbarVPoisition();
-					} else {
-						startX = self._getContentPositionX();
-						startY = self._getContentPositionY();
-					}
-
-					touchStartX = e.originalEvent.screenX;
-					touchStartY = e.originalEvent.screenY;
-					moving = true;
-				},
-
-				MSGestureChange: function (e) {
-					if (!moving) {
-						return;
-					}
-
-					var touchPos = e.originalEvent;
-					self._scrollToX(startX + touchStartX - touchPos.screenX, true);
-					self._scrollToY(startY + touchStartY - touchPos.screenY);
-				},
-
-				MSGestureEnd: function () {
-					moving = false;
-				},
-
-				touchstart: function (e) {
-					var touch = e.originalEvent.touches[ 0 ];
-
-					if (self.options.scrollOnlyHBar) {
-						startX = self._getScrollbarHPoisition();
-					} else {
-						startX = self._getContentPositionX();
-					}
-					if (self.options.scrollOnlyVBar) {
-						startY = self._getScrollbarVPoisition();
-					} else {
-						startY = self._getContentPositionY();
-					}
-
-					touchStartX = touch.pageX;
-					touchStartY = touch.pageY;
-					moving = true;
-
-					self._bStopInertia = true; //stops any current ongoing inertia
-					self._speedDecreasing = false;
-
-					self._lastTouchEnd = new Date().getTime();
-					self._lastTouchX = touch.pageX;
-					self._lastTouchY = touch.pageY;
-					self._savedSpeedsX = [];
-					self._savedSpeedsY = [];
-
-					self._showScrollBars(false, true);
-				},
-
-				touchmove: function (e) {
-					var touch = e.originalEvent.touches[ 0 ];
-					var destX = startX + touchStartX - touch.pageX;
-					var destY = startY + touchStartY - touch.pageY;
-
-					/*Handle complex touchmoves when swipe stops but the toch doesn't end and then a swipe is initiated again */
-					/***********************************************************/
-					var speedSlopeX = self._getSpeedSlope(self._savedSpeedsX);
-					var speedSlopeY = self._getSpeedSlope(self._savedSpeedsY);
-
-					if (speedSlopeY > -0.1 || speedSlopeX > -0.1) {
-						self._speedDecreasing = true;
-					} else {
-						self._speedDecreasing = false;
-					}
-
-					var timeFromLastTouch = (new Date().getTime()) - self._lastTouchEnd;
-					if (timeFromLastTouch < 100) {
-						var speedX = (self._lastTouchX - touch.pageX) / timeFromLastTouch;
-						var speedY = (self._lastTouchY - touch.pageY) / timeFromLastTouch;
-
-						//Save the last 5 speeds between two touchmoves on X axis
-						if (self._savedSpeedsX.length < 5) {
-							self._savedSpeedsX.push(speedX);
-						} else {
-							self._savedSpeedsX.shift();
-							self._savedSpeedsX.push(speedX);
-						}
-
-						//Save the last 5 speeds between two touchmoves on Y axis
-						if (self._savedSpeedsY.length < 5) {
-							self._savedSpeedsY.push(speedY);
-						} else {
-							self._savedSpeedsY.shift();
-							self._savedSpeedsY.push(speedY);
-						}
-					}
-					self._lastTouchEnd = new Date().getTime();
-					self._lastMovedX = self._lastTouchX - touch.pageX;
-					self._lastMovedY = self._lastTouchY - touch.pageY;
-					self._lastTouchX = touch.pageX;
-					self._lastTouchY = touch.pageY;
-					/***********************************************************/
-
-					//Check if browser is Firefox
-					if (navigator.userAgent.indexOf("Firefox") > -1 || self._bMixedEnvironment) {
-						//Better performance on Firefox for Android
-						self._scrollToX(destX, true);
-						self._scrollToY(destY);
-					} else {
-						self._scrollTouchToXY(destX, destY);
-					}
-
-					// return true if there was no movement so rest of the screen can scroll
-					return startX === destX && startY === destY;
-				},
-
-				touchend: function () {
-					var speedX = 0;
-					var speedY = 0;
-
-					//savedSpeedsX and savedSpeedsY have same length
-					for (var i = self._savedSpeedsX.length - 1; i >= 0; i--) {
-						speedX += self._savedSpeedsX[ i ];
-						speedY += self._savedSpeedsY[ i ];
-					}
-					speedX = speedX / self._savedSpeedsX.length;
-					speedY = speedY / self._savedSpeedsY.length;
-
-					//Use the lastMovedX and lastMovedY to determine if the swipe stops without lifting the finger so we don't start inertia
-					if ((Math.abs(speedX) > 0.1 || Math.abs(speedY) > 0.1) &&
-							(Math.abs(self._lastMovedX) > 2 || Math.abs(self._lastMovedY) > 2)) {
-						self._bStopInertia = false;
-						self._showScrollBars(false, true);
-						self._inertiaInit(speedX, speedY, self._bMixedEnvironment);
-						moving = true;
-					} else {
-						self._hideScrollBars(true, true);
-
-						//Trigger scrolled event
-						self._trigger("scrolled", null, {
-							owner: self,
-							smallIncrement: 0,
-							bigIncrement: 0,
-							horizontal: true,
-							touch: true
-						});
-					}
-
-					moving = false;
-				},
-
-				mouseenter: function () {
-					self._mOverContainer = true;
-
-					clearTimeout(self._hideScrollbarID);
-					if (!self._toSimpleScrollbarID && !self._bMouseDownH && !self._bMouseDownV) {
-						//We move the mouse inside the container but we weren't previously hovering the scrollbars (that's why we don't have _toSimpleScrollbarID for a timeout to switch to simple scrollbars).
-						//So we instantly show simple scrollbars.
-						self._showScrollBars(false, true);
-					}
-				},
-
-				mouseleave: function () {
-					self._mOverContainer = false;
-
-					if (!self._bMouseDownH && !self._bMouseDownV) {
-						//Hide scrollbars after 2 secs. We cencel the timeout if we enter scrollbars area.
-						self._hideScrollbarID = setTimeout(function () {
-							self._hideScrollBars(false);
-						}, 2000);
-					}
-				}
+				mouseenter: $.proxy(this._onMouseEnterContainer, this),
+				mouseleave: $.proxy(this._onMouseLeaveContainer, this)
 			};
-			(this._container).bind(self.evts);
-
-			(this._container).bind({
-				DOMMouseScroll: self.evts.wheel,
-				MSPointerDown: self.evts.pointerdown
-			});
+			this._container.on(this.evts);
 
 			this._createScrollBars();
 			this._hideScrollBars(false);
@@ -835,7 +584,7 @@
 				var elemObject = $(inElement);
 
 				if (elemObject.length) {
-					elemObject.bind({
+					elemObject.on({
 						scroll: function (e) {
 							var ignoreSync = self._ignoreHScrollBarEvents;
 							self._ignoreHScrollBarEvents = false;
@@ -859,7 +608,7 @@
 
 					if (this._linkedHBar) {
 						//make sure if there ware prviously linked another scrollbar to not scroll
-						this._linkedHBar.unbind();
+						this._linkedHBar.off();
 					}
 					this._linkedHBar = elemObject;
 				} else {
@@ -877,7 +626,7 @@
 				var elemObject = $(inElement);
 
 				if (elemObject.length) {
-					elemObject.bind({
+					elemObject.on({
 						scroll: function (e) {
 							var ignoreSync = self._ignoreVScrollBarEvents;
 							self._ignoreVScrollBarEvents = false;
@@ -903,7 +652,7 @@
 
 					if (this._linkedVBar) {
 						//make sure if there ware prviously linked another scrollbar to not scroll
-						this._linkedVBar.unbind();
+						this._linkedVBar.off();
 					}
 					this._linkedVBar = elemObject;
 				} else {
@@ -1024,385 +773,377 @@
 			this._lastBigIncDirV = 0; //Used to determine the last direction of the scroll when using the scrollbar track area
 			this._mTrackLastPosV = 0; //Last know position of the mouse when interacting with the vertical track area
 
-			var commonEvts = {
-				mouseenter: function () {
-					self._mOverScrollbars = true;
-
-					//Cancels the hide scrollbars timeout
-					clearTimeout(self._hideScrollbarID);
-
-					//Cancel any timeout set to switch to simple scrollbar. Makes sure we don't switch to simple while we still hover over the scrollbars.
-					clearTimeout(self._toSimpleScrollbarID);
-					self._toSimpleScrollbarID = 0;
-
-					self._showScrollBars(false);
-				},
-
-				mouseleave: function () {
-					self._mOverScrollbars = false;
-
-					if (!self._bMouseDownV) {
-						//Hide scrollbars after 2 secconds. This will be canceled if we go the scrollable content or any other element of the scrollbars by _hideScrollbarID
-						self._hideScrollbarID = setTimeout(function () {
-							self._hideScrollBars(false);
-						}, 2000);
-
-						//Switch to simple scrollbar (i.e. only drag bar showing with no arrows) after timeout of 2sec
-						self._toSimpleScrollbarID = setTimeout(function () {
-							self._toSimpleScrollbar();
-							self._toSimpleScrollbarID = 0;
-						}, 2000);
-					}
-				},
-
-				touchstart: function () {
-					return false;
-				}
-			};
-
-			function scrollTimeoutY(step, bSmallIncement) {
-				var bNoCancel,
-					eventArgs = {
-						owner: self,
-						smallIncrement: 0,
-						bigIncrement: 0,
-						horizontal: false
-					};
-
-				//Check if the increment is big or small and set the proper value in the eventArgs
-				if (bSmallIncement) {
-					/* set event vars */
-					eventArgs.smallIncrement = Math.sign(step);
-				} else {
-					/* Check of the mouse is over the vertical thumb drag. This means it has reached the position of where the mouse is currently held (on the vertical track) and scrolling should stop. */
-					var dragStartY = self._getTransform3dValueY(self._vBarDrag);
-					if (self._mTrackLastPosV > dragStartY &&
-						self._mTrackLastPosV < dragStartY + self._vDragHeight) {
-
-						return;
-					}
-
-					/* set event vars */
-					eventArgs.bigIncrement = Math.sign(step);
-					self._lastBigIncDir = Math.sign(step);
-				}
-				bNoCancel = self._trigger("scrolling", null, eventArgs);
-
-				if (bNoCancel) {
-					var curPosY = self._getContentPositionY();
-					self._scrollTop(curPosY + step, false);
-
-					self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(step, bSmallIncement); }, 50);
-				}
-			}
-
 			if (this._vBarArrowUp)  {
-				this._vBarArrowUp.bind({
-					mousedown: function () {
-						var bNoCancel = self._trigger("scrolling", null, {
-							owner: self,
-							smallIncrement: -1,
-							bigIncrement: 0,
-							horizontal: false,
-							touch: false
-						});
+				this._vBarArrowUp.on({
+					mousedown: $.proxy(this._onMouseDownArrowUp, this),
+					mouseup: $.proxy(this._onMouseUpArrowUp, this),
+					mouseover: $.proxy(this._onMouseOverArrowUp, this),
 
-						if (bNoCancel) {
-							self._bMouseDownV = true;
-							self._bUseArrowUp = true;
-							self._vBarArrowUp.switchClass(css.verticalScrollArrowUp, css.verticalScrollArrowUpActive);
-
-							var curPosY = self._getContentPositionY();
-							self._scrollTop(curPosY - 40, false);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-40, true); }, 250);
-						}
-
-						return false;
-					},
-
-					mouseup: function () {
-						self._bMouseDownV = false;
-						self._bUseArrowUp = false;
-						self._vBarArrowUp.switchClass(css.verticalScrollArrowUpActive, css.verticalScrollArrowUp);
-						clearTimeout(self._holdTimeoutID);
-					},
-
-					mouseover: function () {
-						if (self._bMouseDownV && self._bUseArrowUp) {
-							scrollTimeoutY(-40, true);
-						}
-					},
-
-					mouseout: function () {
-						clearTimeout(self._holdTimeoutID);
-					},
-
-					touchstart: commonEvts.touchstart,
-					mouseenter: commonEvts.mouseenter,
-					mouseleave: commonEvts.mouseleave
+					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
+					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
+					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
+					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._vBarArrowDown) {
-				this._vBarArrowDown.bind({
-					mousedown: function () {
-						var bNoCancel = self._trigger("scrolling", null, {
-							owner: self,
-							smallIncrement: 1,
-							bigIncrement: 0,
-							horizontal: false,
-							touch: false
-						});
+				this._vBarArrowDown.on({
+					mousedown: $.proxy(this._onMouseDownArrowDown, this),
+					mouseup: $.proxy(this._onMouseUpArrowDown, this),
+					mouseover: $.proxy(this._onMouseOverArrowDown, this),
 
-						if (bNoCancel) {
-							self._bMouseDownV = true;
-							self._bUseArrowDown = true;
-							self._vBarArrowDown
-								.switchClass(css.verticalScrollArrowDown, css.verticalScrollArrowDownActive);
-
-							var curPosY = self._getContentPositionY();
-							self._scrollTop(curPosY + 40, false);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(40, true); }, 250);
-						}
-
-						return false;
-					},
-
-					mouseup: function () {
-						self._bMouseDownV = false;
-						self._bUseArrowDown = true;
-						self._vBarArrowDown
-							.switchClass(css.verticalScrollArrowDownActive, css.verticalScrollArrowDown);
-						clearTimeout(self._holdTimeoutID);
-					},
-
-					mouseover: function () {
-						if (self._bMouseDownV && self._bUseArrowDown) {
-							scrollTimeoutY(40, true);
-						}
-					},
-
-					mouseout: function () {
-						clearTimeout(self._holdTimeoutID);
-					},
-
-					touchstart: commonEvts.touchstart,
-					mouseenter: commonEvts.mouseenter,
-					mouseleave: commonEvts.mouseleave
+					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
+					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
+					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
+					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._vBarDrag) {
-				this._vBarDrag.bind({
-					mousedown: function (evt) {
-						self._bMouseDownV = true;
-						self._dragLastY = evt.pageY;
-						self._bUseVDrag = true;
-						self._bUseHDrag = false;
+				this._vBarDrag.on({
+					mousedown: $.proxy(this._onMouseDownVDrag, this),
 
-						self._trigger("thumbDragStart", null, {
-							owner: self,
-							horizontal: false
-						});
-					},
-
-					touchstart: commonEvts.touchstart
+					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._vBarTrack) {
-				this._vBarTrack.bind({
-					mousedown: function (evt) {
-						if (evt.target.id === self._vBarDrag[ 0 ].id) {
-							return false;
-						}
+				this._vBarTrack.on({
+					mousedown: $.proxy(this._onMouseDownVTrack, this),
+					mousemove: $.proxy(this._onMouseMoveVTrack, this),
+					mouseup: $.proxy(this._onMouseUpVTrack, this),
+					mouseout: $.proxy(this._onMouseOutVTrack, this),
 
-						self._bUseVTrack = true;
-
-						var dragStartY = self._getTransform3dValueY(self._vBarDrag),
-							curPosY = self._getContentPositionY(),
-							scrollStep = self._contentHeight * self._percentInViewV,
-							bNoCancel;
-
-						self._mTrackLastPosV = evt.offsetY;
-						if (evt.offsetY > dragStartY + self._vDragHeight) {
-							/* Scroll down */
-							self._lastBigIncDir = 1;
-							bNoCancel = self._trigger("scrolling", null, {
-								owner: self,
-								smallIncrement: 0,
-								bigIncrement: 1,
-								horizontal: false,
-								touch: false
-							});
-
-							if (bNoCancel) {
-								self._scrollTop(curPosY + scrollStep, false);
-								self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(scrollStep, false); }, 250);
-							}
-						} else if (evt.offsetY < dragStartY) {
-							/* Scroll up */
-							self._lastBigIncDir = -1;
-							bNoCancel = self._trigger("scrolling", null, {
-								owner: self,
-								smallIncrement: 0,
-								bigIncrement: -1,
-								horizontal: false,
-								touch: false
-							});
-
-							if (bNoCancel) {
-								self._scrollTop(curPosY - scrollStep, false);
-								self._holdTimeoutID = setTimeout(function () { scrollTimeoutY(-scrollStep, false); }, 250);
-							}
-						}
-
-						return false;
-					},
-
-					mousemove: function (evt) {
-						//Update the last know position of the mouse that is interacting with the vertical track area
-						if (self._bUseVTrack) {
-							self._mTrackLastPosV = evt.offsetY;
-						}
-					},
-
-					mouseup: function () {
-						clearTimeout(self._holdTimeoutID);
-
-						if (self._bUseVTrack) {
-							self._trigger("scrolled", null, {
-								owner: self,
-								smallIncrement: 0,
-								bigIncrement: self._lastBigIncDir,
-								horizontal: false,
-								touch: false
-							});
-						}
-						self._bUseVTrack = false;
-					},
-
-					mouseout: function () {
-						clearTimeout(self._holdTimeoutID);
-
-						if (self._bUseVTrack) {
-							self._trigger("scrolled", null, {
-								owner: self,
-								smallIncrement: 0,
-								bigIncrement: self._lastBigIncDir,
-								horizontal: false,
-								touch: false
-							});
-						}
-						self._bUseVTrack = false;
-					},
-
-					touchstart: commonEvts.touchstart,
-					mouseenter: commonEvts.mouseenter,
-					mouseleave: commonEvts.mouseleave
+					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
+					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
+					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._vBarContainer) {
-				this._vBarContainer.bind({
-					wheel: self.evts.wheel
+				this._vBarContainer.on({
+					wheel: $.proxy(this._onWheelContainer, this)
 				});
 			}
 
-			$("body").on("mousemove", function (evt) {
-				/* Ensures if we move the mouse of the bounds of the vertical scroll bar and we are still holding left mouse button that when we move the mouse up/down we will continue to scroll */
-				if (!self._bMouseDownV || !self._bUseVDrag) {
+			$("body").on("mousemove", $.proxy(this._onMouseMoveVDrag, this));
+			$(window).on("mouseup", $.proxy(this._onMouseUpVScrollbar, this));
+		},
+
+		_scrollTimeoutY: function (step, bSmallIncement) {
+			var	bNoCancel,
+				eventArgs = {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: false
+				};
+
+			//Check if the increment is big or small and set the proper value in the eventArgs
+			if (bSmallIncement) {
+				/* set event vars */
+				eventArgs.smallIncrement = Math.sign(step);
+			} else {
+				/* Check of the mouse is over the vertical thumb drag. This means it has reached the position of where the mouse is currently held (on the vertical track) and scrolling should stop. */
+				var dragStartY = this._getTransform3dValueY(this._vBarDrag);
+				if (this._mTrackLastPosV > dragStartY &&
+					this._mTrackLastPosV < dragStartY + this._vDragHeight) {
+
 					return;
 				}
-				var offset;
 
-				if (self._bUseVDrag) {
-					var bNoCancel = self._trigger("thumbDragMove", null, {
-						owner: self,
-						horizontal: false
-					});
+				/* set event vars */
+				eventArgs.bigIncrement = Math.sign(step);
+				this._lastBigIncDirV = Math.sign(step);
+			}
+			bNoCancel = this._trigger("scrolling", null, eventArgs);
 
-					if (bNoCancel) {
-						//Move custom vertical scrollbar thumb drag
-						var curPosY = self._getContentPositionY();
-						offset = evt.pageY - self._dragLastY;
-						var nextPosY = curPosY + (offset * (self._contentHeight / (self._elemHeight - 3 * 17)));
+			if (bNoCancel) {
+				var curPosY = this._getContentPositionY();
+				this._scrollTop(curPosY + step, false);
 
-						self._scrollTop(nextPosY, false);
-						self._dragLastY = evt.pageY;
-					}
-				}
+				var self = this;
+				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(step, bSmallIncement); }, 50);
+			}
+		},
 
-				return false;
+		_onMouseDownArrowUp: function() {
+			var	bNoCancel = this._trigger("scrolling", null, {
+				owner: this,
+				smallIncrement: -1,
+				bigIncrement: 0,
+				horizontal: false,
+				touch: false
 			});
 
-			$(window).mouseup(function () {
-				/* Ensures when the left mouse button is realeas that all properties are back to their default state */
-				/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
-				if (self._bUseArrowUp) {
-					self._bUseArrowUp = false;
-					self._vBarArrowUp
-						.switchClass(css.verticalScrollArrowUpActive, css.verticalScrollArrowUp);
+			if (bNoCancel) {
+				this._bMouseDownV = true;
+				this._bUseArrowUp = true;
+				this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUp, this.css.verticalScrollArrowUpActive);
 
-					self._trigger("scrolled", null, {
-						owner: self,
-						smallIncrement: -1,
-						bigIncrement: 0,
-						horizontal: false,
-						touch: false
-					});
-				}
-				if (self._bUseArrowDown) {
-					self._bUseArrowDown = false;
-					self._vBarArrowDown
-						.switchClass(css.verticalScrollArrowDownActive, css.verticalScrollArrowDown);
+				var curPosY = this._getContentPositionY();
+				this._scrollTop(curPosY - 40, false);
 
-					self._trigger("scrolled", null, {
-						owner: self,
-						smallIncrement: 1,
-						bigIncrement: 0,
-						horizontal: false,
-						touch: false
-					});
-				}
+				var self = this;
+				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(-40, true); }, 250);
+			}
 
-				//If the mouse was previously hold over an element an we release it.
-				if (self._bMouseDownV && !self._mOverScrollbars && !self._mOverContainer) {
-					/** Scenario:
-					*	1. Click and hold a horizontal scrollbar element
-					*	2. Move the mouse outside the scrollable container
-					*	3. Release the mouse
-					*
-					*	We hide the scrollbar after 2 secs since the mouse is outside the scrollable content
-					*/
-					self._hideScrollbarID = setTimeout(function () {
-						self._hideScrollBars(false);
-					}, 2000);
-				} else if (self._bMouseDownV && !self._mOverScrollbars && self._mOverContainer) {
-					/** Scenario:
-					*	1. Click and hold a horizontal scrollbar element
-					*	2. Move the mouse inside the scrollable container
-					*	3. Release the mouse
-					*
-					*	We don't hide the scrollbar this time but switch to simple after 2 secs
-					*/
-					self._toSimpleScrollbarID = setTimeout(function () {
-						self._toSimpleScrollbar();
-						self._toSimpleScrollbarID = 0;
-					}, 2000);
-				}
-				self._bMouseDownV = false;
+			return false;
+		},
 
-				if (self._bUseVDrag) {
-					self._trigger("thumbDragEnd", null, {
-						owner: self,
-						horizontal: false
-					});
-				}
-				self._bUseVDrag = false;
+		_onMouseUpArrowUp: function() {
+			this._bMouseDownV = false;
+			this._bUseArrowUp = true; //We later set it to false with mouseup event of window
+			this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUpActive, this.css.verticalScrollArrowUp);
+			clearTimeout(this._holdTimeoutID);
+		},
 
-				return false;
+		_onMouseOverArrowUp: function() {
+			if (this._bMouseDownV && this._bUseArrowUp) {
+				this._scrollTimeoutY(-40, true);
+			}
+		},
+
+		_onMouseOutScrollbarArrow: function () {
+			clearTimeout(this._holdTimeoutID);
+		},
+
+		_onMouseDownArrowDown: function () {
+			var bNoCancel = this._trigger("scrolling", null, {
+				owner: this,
+				smallIncrement: 1,
+				bigIncrement: 0,
+				horizontal: false,
+				touch: false
 			});
+
+			if (bNoCancel) {
+				this._bMouseDownV = true;
+				this._bUseArrowDown = true;
+				this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDown, this.css.verticalScrollArrowDownActive);
+
+				var curPosY = this._getContentPositionY();
+				this._scrollTop(curPosY + 40, false);
+
+				var self = this;
+				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(40, true); }, 250);
+			}
+
+			return false;
+		},
+
+		_onMouseUpArrowDown: function() {
+			this._bMouseDownV = false;
+			this._bUseArrowDown = true; //We later set it to false with mouseup event of window
+			this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDownActive, this.css.verticalScrollArrowDown);
+			clearTimeout(this._holdTimeoutID);
+		},
+
+		_onMouseOverArrowDown: function() {
+			if (this._bMouseDownV && this._bUseArrowDown) {
+				this._scrollTimeoutY(40, true);
+			}
+		},
+
+		_onMouseDownVDrag: function (event) {
+			this._bMouseDownV = true;
+			this._dragLastY = event.pageY;
+			this._bUseVDrag = true;
+			this._bUseHDrag = false;
+
+			this._trigger("thumbDragStart", null, {
+				owner: this,
+				horizontal: false
+			});
+		},
+
+		_onMouseDownVTrack: function (event) {
+			if (event.target.id === this._vBarDrag[0].id) {
+				return false;
+			}
+
+			this._bUseVTrack = true;
+
+			var	self = this,
+				dragStartY = this._getTransform3dValueY(this._vBarDrag),
+				curPosY = this._getContentPositionY(),
+				scrollStep = this._contentHeight * this._percentInViewV,
+				bNoCancel;
+
+			this._mTrackLastPosV = event.offsetY;
+			if (event.offsetY > dragStartY + this._vDragHeight) {
+				/* Scroll down */
+				this._lastBigIncDirV = 1;
+				bNoCancel = this._trigger("scrolling", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 1,
+					horizontal: false,
+					touch: false
+				});
+
+				if (bNoCancel) {
+					this._scrollTop(curPosY + scrollStep, false);
+					this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(scrollStep, false); }, 250);
+				}
+			} else if (event.offsetY < dragStartY) {
+				/* Scroll up */
+				this._lastBigIncDirV = -1;
+				bNoCancel = this._trigger("scrolling", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: -1,
+					horizontal: false,
+					touch: false
+				});
+
+				if (bNoCancel) {
+					this._scrollTop(curPosY - scrollStep, false);
+					this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(-scrollStep, false); }, 250);
+				}
+			}
+
+			return false;
+		},
+
+		_onMouseMoveVTrack: function(event) {
+			//Update the last know position of the mouse that is interacting with the vertical track area
+			if (this._bUseVTrack) {
+				this._mTrackLastPosV = event.offsetY;
+			}
+		},
+
+		_onMouseUpVTrack: function() {
+			clearTimeout(this._holdTimeoutID);
+
+			if (this._bUseVTrack) {
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: this._lastBigIncDirV,
+					horizontal: false,
+					touch: false
+				});
+			}
+			this._bUseVTrack = false;
+		},
+
+		_onMouseOutVTrack: function() {
+			clearTimeout(this._holdTimeoutID);
+
+			if (this._bUseVTrack) {
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: this._lastBigIncDirV,
+					horizontal: false,
+					touch: false
+				});
+			}
+			this._bUseVTrack = false;
+		},
+
+		_onMouseMoveVDrag: function (event) {
+			/* Ensures if we move the mouse of the bounds of the vertical scroll bar and we are still holding left mouse button that when we move the mouse up/down we will continue to scroll */
+			if (!this._bMouseDownV || !this._bUseVDrag) {
+				return;
+			}
+			var offset;
+
+			if (this._bUseVDrag) {
+				var bNoCancel = this._trigger("thumbDragMove", null, {
+					owner: this,
+					horizontal: false
+				});
+
+				if (bNoCancel) {
+					//Move custom vertical scrollbar thumb drag
+					var curPosY = this._getContentPositionY();
+					offset = event.pageY - this._dragLastY;
+					var nextPosY = curPosY + (offset * (this._contentHeight / (this._elemHeight - 3 * 17)));
+
+					this._scrollTop(nextPosY, false);
+					this._dragLastY = event.pageY;
+				}
+			}
+
+			return false;
+		},
+
+		_onMouseUpVScrollbar: function () {
+			var self = this;
+
+			/* Ensures when the left mouse button is realeas that all properties are back to their default state */
+			/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
+			if (this._bUseArrowUp) {
+				this._bUseArrowUp = false;
+				this._vBarArrowUp
+					.switchClass(this.css.verticalScrollArrowUpActive, this.css.verticalScrollArrowUp);
+
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: -1,
+					bigIncrement: 0,
+					horizontal: false,
+					touch: false
+				});
+			}
+			if (this._bUseArrowDown) {
+				this._bUseArrowDown = false;
+				this._vBarArrowDown
+					.switchClass(this.css.verticalScrollArrowDownActive, this.css.verticalScrollArrowDown);
+
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 1,
+					bigIncrement: 0,
+					horizontal: false,
+					touch: false
+				});
+			}
+
+			//If the mouse was previously hold over an element an we release it.
+			if (this._bMouseDownV && !this._mOverScrollbars && !this._mOverContainer) {
+				/** Scenario:
+				*	1. Click and hold a horizontal scrollbar element
+				*	2. Move the mouse outside the scrollable container
+				*	3. Release the mouse
+				*
+				*	We hide the scrollbar after 2 secs since the mouse is outside the scrollable content
+				*/
+				this._hideScrollbarID = setTimeout(function () {
+					self._hideScrollBars(false);
+				}, 2000);
+			} else if (this._bMouseDownV && !this._mOverScrollbars && this._mOverContainer) {
+				/** Scenario:
+				*	1. Click and hold a horizontal scrollbar element
+				*	2. Move the mouse inside the scrollable container
+				*	3. Release the mouse
+				*
+				*	We don't hide the scrollbar this time but switch to simple after 2 secs
+				*/
+				this._toSimpleScrollbarID = setTimeout(function () {
+					self._toSimpleScrollbar();
+					self._toSimpleScrollbarID = 0;
+				}, 2000);
+			}
+			this._bMouseDownV = false;
+
+			if (this._bUseVDrag) {
+				this._trigger("thumbDragEnd", null, {
+					owner: this,
+					horizontal: false
+				});
+			}
+			this._bUseVDrag = false;
+
+			return false;
+		},
+
+		_removeScrollbarV: function () {
+			if (this._vBarContainer) {
+				this._vBarContainer.remove();
+			}
 		},
 
 		_initCustomScrollBarH: function () {
@@ -1460,411 +1201,412 @@
 			this._lastBigIncDirH = 0; //Used to determine the last direction of the scroll when using the horizontal track area
 			this._mTrackLastPosH = 0; //Last know position of the mouse when interacting with the horizontal track area
 
-			var commonEvts = {
-				mouseenter: function () {
-					self._mOverScrollbars = true;
-
-					//Cancels the hide scrollbars timeout
-					clearTimeout(self._hideScrollbarID);
-
-					//Cancel any timeout set to switch to simple scrollbar. Makes sure we don't switch to simple while we still hover over the scrollbars.
-					clearTimeout(self._toSimpleScrollbarID);
-					self._toSimpleScrollbarID = 0;
-
-					self._showScrollBars(false);
-				},
-
-				mouseleave: function () {
-					self._mOverScrollbars = false;
-
-					if (!self._bMouseDownH) {
-						//Hide scrollbars after 2 secconds. This will be canceled if we go the scrollable content or any other element of the scrollbars by _hideScrollbarID
-						self._hideScrollbarID = setTimeout(function () {
-							self._hideScrollBars(false);
-						}, 2000);
-
-						//Switch to simple scrollbar (i.e. only drag bar showing with no arrows) after timeout of 2sec
-						self._toSimpleScrollbarID = setTimeout(function () {
-							self._toSimpleScrollbar();
-							self._toSimpleScrollbarID = 0;
-						}, 2000);
-					}
-				},
-
-				touchstart: function () {
-					return false;
-				}
-			};
-
-			function scrollTimeoutX(step, bSmallIncement) {
-				var bNoCancel,
-					eventArgs = {
-						owner: self,
-						smallIncrement: 0,
-						bigIncrement: 0,
-						horizontal: true,
-						touch: false
-					};
-
-				//Check if the increment is big or small and set the proper value in the eventArgs
-				if (bSmallIncement) {
-					eventArgs.smallIncrement = Math.sign(step);
-				} else {
-					var dragStartY = self._getTransform3dValueY(self._vBarDrag);
-
-					//Check if the mouse is over the horizontal thumb drag. This means it has reached the position of where the mouse is currently held (on the horizontal track) and scrolling should stop.
-					if (self._mTrackLastPosV > dragStartY &&
-						self._mTrackLastPosV < dragStartY + self._vDragHeight) {
-						return;
-					}
-
-					eventArgs.bigIncrement = Math.sign(step);
-				}
-				bNoCancel = self._trigger("scrolling", null, eventArgs);
-
-				if (bNoCancel) {
-					//Scroll content
-					var curPosY = self._getContentPositionX();
-					self._scrollLeft(curPosY + step, false);
-
-					self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(step, bSmallIncement); }, 50);
-				}
-			}
-
 			if (this._hBarArrowLeft) {
-				this._hBarArrowLeft.bind({
-					mousedown: function () {
-						var bNoCancel = self._trigger("scrolling", null, {
-							owner: self,
-							smallIncrement: -1,
-							bigIncrement: 0,
-							horizontal: true,
-							touch: false
-						});
+				this._hBarArrowLeft.on({
+					mousedown: $.proxy(this._onMouseDownArrowLeft, this),
+					mouseup: $.proxy(this._onMouseUpArrowLeft, this),
+					mouseover: $.proxy(this._onMouseOverArrowLeft, this),
 
-						if (bNoCancel) {
-							self._bMouseDownH = true;
-							self._bUseArrowLeft = true;
-							self._hBarArrowLeft
-								.switchClass(css.horizontalScrollArrowLeft, css.horizontalScrollArrowLeftActive);
-
-							var curPosX = self._getContentPositionX();
-							self._scrollLeft(curPosX - 40, false);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(-40, true); }, 250);
-						}
-
-						return false;
-					},
-
-					mouseup: function () {
-						self._bMouseDownH = false;
-						self._bUseArrowLeft = false;
-						self._hBarArrowLeft
-							.switchClass(css.horizontalScrollArrowLeftActive, css.horizontalScrollArrowLeft);
-
-						clearTimeout(self._holdTimeoutID);
-
-						self._trigger("scrolled", null, {
-							owner: self,
-							smallIncrement: -1,
-							bigIncrement: 0,
-							horizontal: true,
-							touch: false
-						});
-					},
-
-					mouseover: function () {
-						if (self._bMouseDownH && self._bUseArrowLeft) {
-							scrollTimeoutX(-40, true);
-						}
-					},
-
-					mouseout: function () {
-						clearTimeout(self._holdTimeoutID);
-					},
-
-					touchstart: commonEvts.touchstart,
-					mouseenter: commonEvts.mouseenter,
-					mouseleave: commonEvts.mouseleave
+					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
+					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
+					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
+					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._hBarArrowRight) {
-				this._hBarArrowRight.bind({
-					mousedown: function () {
-						var bNoCancel = self._trigger("scrolling", null, {
-							owner: self,
-							smallIncrement: 1,
-							bigIncrement: 0,
-							horizontal: true,
-							touch: false
-						});
+				this._hBarArrowRight.on({
+					mousedown: $.proxy(this._onMouseDownArrowRight, this),
+					mouseup: $.proxy(this._onMouseUpArrowRight, this),
+					mouseover: $.proxy(this._onMouseOverArrowRight, this),
 
-						if (bNoCancel) {
-							self._bMouseDownH = true;
-							self._bUseArrowRight = true;
-							self._hBarArrowRight
-								.switchClass(css.horizontalScrollArrowRight, css.horizontalScrollArrowRightActive);
-
-							var curPosX = self._getContentPositionX();
-							self._scrollLeft(curPosX + 40, false);
-							self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(40, true); }, 250);
-						}
-
-						return false;
-					},
-
-					mouseup: function () {
-						self._bMouseDownH = false;
-						self._bUseArrowRight = false;
-						self._hBarArrowRight
-							.switchClass(css.horizontalScrollArrowRightActive, css.horizontalScrollArrowRight);
-
-						clearTimeout(self._holdTimeoutID);
-
-						self._trigger("scrolled", null, {
-							owner: self,
-							smallIncrement: 1,
-							bigIncrement: 0,
-							horizontal: true,
-							touch: false
-						});
-					},
-
-					mouseover: function () {
-						if (self._bMouseDownH && self._bUseArrowRight) {
-							scrollTimeoutX(40, true);
-						}
-					},
-
-					mouseout: function () {
-						clearTimeout(self._holdTimeoutID);
-					},
-
-					touchstart: commonEvts.touchstart,
-					mouseenter: commonEvts.mouseenter,
-					mouseleave: commonEvts.mouseleave
+					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
+					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
+					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
+					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._hBarDrag) {
-				this._hBarDrag.bind({
-					mousedown: function (evt) {
-						self._bMouseDownH = true;
-						self._dragLastX = evt.pageX;
-						self._bUseVDrag = false;
-						self._bUseHDrag = true;
+				this._hBarDrag.on({
+					mousedown: $.proxy(this._onMouseDownHDrag, this),
 
-						self._trigger("thumbDragStart", null, {
-							owner: self,
-							horizontal: true
-						});
-					},
-
-					touchstart: commonEvts.touchstart
+					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._hBarTrack) {
-				this._hBarTrack.bind({
-					mousedown: function (evt) {
-						if (evt.target.id === self._hBarDrag[ 0 ].id) {
-							return false;
-						}
+				this._hBarTrack.on({
+					mousedown: $.proxy(this._onMouseDownHTrack, this),
+					mousemove: $.proxy(this._onMouseMoveHTrack, this),
+					mouseup: $.proxy(this._onMouseUpHTrack, this),
+					mouseout: $.proxy(this._onMouseOutHTrack, this),
 
-						self._bUseHTrack = true;
-
-						var dragStartX = self._getTransform3dValueX(self._hBarDrag),
-							curPosX = self._getContentPositionX(),
-							scrollStep = self._contentWidth * self._percentInViewH,
-							bNoCancel;
-
-						self._mTrackLastPosH = evt.offsetY;
-						if (evt.offsetX > dragStartX + self._hDragWidth) {
-							//Scroll right
-							self._lastBigIncDirH = 1;
-							bNoCancel = self._trigger("scrolling", null, {
-								owner: self,
-								smallIncrement: 0,
-								bigIncrement: 1,
-								horizontal: true,
-								touch: false
-							});
-
-							if (bNoCancel) {
-								self._scrollLeft(curPosX + scrollStep, false);
-								self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(scrollStep, false); }, 250);
-							}
-						} else if (evt.offsetX < dragStartX) {
-							//Scroll left
-							self._lastBigIncDirH = -1;
-							bNoCancel = self._trigger("scrolling", null, {
-								owner: self,
-								smallIncrement: 0,
-								bigIncrement: -1,
-								horizontal: true,
-								touch: false
-							});
-
-							if (bNoCancel) {
-								self._scrollLeft(curPosX - scrollStep, false);
-								self._holdTimeoutID = setTimeout(function () { scrollTimeoutX(-scrollStep, false); }, 250);
-							}
-						}
-
-						return false;
-					},
-
-					mousemove: function (evt) {
-						//Update the last know position of the mouse that is interacting with the horizontal track area
-						if (self._bUseVTrack) {
-							self._mTrackLastPosH = evt.offsetY;
-						}
-					},
-
-					mouseup: function () {
-						clearTimeout(self._holdTimeoutID);
-
-						//to do increment sign
-						if (self._bUseHTrack) {
-							self._trigger("scrolled", null, {
-								owner: self,
-								smallIncrement: 0,
-								bigIncrement: 1,
-								horizontal: true,
-								touch: false
-							});
-						}
-						self._bUseHTrack = false;
-					},
-
-					mouseout: function () {
-						clearTimeout(self._holdTimeoutID);
-
-						//to do increment sign
-						if (self._bUseHTrack) {
-							self._trigger("scrolled", null, {
-								owner: self,
-								smallIncrement: 0,
-								bigIncrement: 1,
-								horizontal: true,
-								touch: false
-							});
-						}
-						self._bUseHTrack = false;
-					},
-
-					touchstart: commonEvts.touchstart,
-					mouseenter: commonEvts.mouseenter,
-					mouseleave: commonEvts.mouseleave
+					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
+					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
+					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._hBarContainer) {
-				this._hBarContainer.bind({
-					wheel: self.evts.wheel
+				this._hBarContainer.on({
+					wheel: $.proxy(this._onWheelContainer, this)
 				});
 			}
 
-			$("body").on("mousemove", function (evt) {
-				/* Ensures if we move the mouse of the bounds of the horizontal scroll bar and we are still holding left mouse button that when we move the mouse left/right we will continue to scroll */
-				if (!self._bMouseDownH || !self._bUseHDrag) {
+			$("body").on("mousemove", $.proxy(this._onMouseMoveHDrag, this));
+			$(window).on("mouseup", $.proxy(this._onMouseUpHScrollbar, this));
+		},
+
+		_scrollTimeoutX: function (step, bSmallIncement) {
+			var	self = this,
+				bNoCancel,
+				eventArgs = {
+					owner: self,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: true,
+					touch: false
+				};
+
+			//Check if the increment is big or small and set the proper value in the eventArgs
+			if (bSmallIncement) {
+				eventArgs.smallIncrement = Math.sign(step);
+			} else {
+				var dragStartX = this._getTransform3dValueX(this._hBarDrag);
+
+				//Check if the mouse is over the horizontal thumb drag. This means it has reached the position of where the mouse is currently held (on the horizontal track) and scrolling should stop.
+				if (this._mTrackLastPosH > dragStartX &&
+					this._mTrackLastPosH < dragStartX + this._hDragWidth) {
 					return;
 				}
-				var offset;
 
-				if (self._bUseHDrag) {
-					var bNoCancel = self._trigger("thumbDragMove", null, {
-						owner: self,
-						horizontal: true
-					});
+				eventArgs.bigIncrement = Math.sign(step);
+				this._lastBigIncDirH = Math.sign(step);
+			}
+			bNoCancel = this._trigger("scrolling", null, eventArgs);
 
-					if (bNoCancel) {
-						//Move custom horizondal scrollbar thumb drag
-						var curPosX = self._getContentPositionX();
-						offset = evt.pageX - self._dragLastX;
+			if (bNoCancel) {
+				//Scroll content
+				var curPosY = this._getContentPositionX();
+				this._scrollLeft(curPosY + step, false);
 
-						self._scrollLeft(curPosX + (offset * (self._contentWidth / self._elemWidth)), false);
-						self._dragLastX = evt.pageX;
-					}
-				}
+				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(step, bSmallIncement); }, 50);
+			}
+		},
 
-				return false;
+		_onMouseDownArrowLeft: function () {
+			var bNoCancel = this._trigger("scrolling", null, {
+				owner: this,
+				smallIncrement: -1,
+				bigIncrement: 0,
+				horizontal: true,
+				touch: false
 			});
 
-			$(window).mouseup(function () {
-				/* Ensures when the left mouse button is realeas that all properties are back to their default state */
-				/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
-				if (self._bUseArrowLeft) {
-					self._bUseArrowLeft = false;
-					self._hBarArrowLeft
-						.switchClass(css.horizontalScrollArrowLeftActive, css.horizontalScrollArrowLeft);
+			if (bNoCancel) {
+				this._bMouseDownH = true;
+				this._bUseArrowLeft = true;
+				this._hBarArrowLeft
+					.switchClass(this.css.horizontalScrollArrowLeft, this.css.horizontalScrollArrowLeftActive);
 
-					self._trigger("scrolled", null, {
-						owner: self,
-						smallIncrement: -1,
-						bigIncrement: 0,
-						horizontal: true,
-						touch: false
-					});
-				}
-				if (self._bUseArrowRight) {
-					self._bUseArrowRight = false;
-					self._hBarArrowRight
-						.switchClass(css.horizontalScrollArrowRightActive, css.horizontalScrollArrowRight);
+				var curPosX = this._getContentPositionX();
+				this._scrollLeft(curPosX - 40, false);
 
-					self._trigger("scrolled", null, {
-						owner: self,
-						smallIncrement: 1,
-						bigIncrement: 0,
-						horizontal: true,
-						touch: false
-					});
-				}
+				var self = this;
+				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(-40, true); }, 250);
+			}
 
-				//If the mouse was previously hold over an element an we release it.
-				if (self._bMouseDownH && !self._mOverScrollbars && !self._mOverContainer) {
-					/** Scenario:
-					*	1. Click and hold a horizontal scrollbar element
-					*	2. Move the mouse outside the scrollable container
-					*	3. Release the mouse
-					*
-					*	We hide the scrollbar after 2 secs since the mouse is outside the scrollable content
-					*/
-					self._hideScrollbarID = setTimeout(function () {
-						self._hideScrollBars(false);
-					}, 2000);
-				} else if (self._bMouseDownH && !self._mOverScrollbars && self._mOverContainer) {
-					/** Scenario:
-					*	1. Click and hold a horizontal scrollbar element
-					*	2. Move the mouse inside the scrollable container
-					*	3. Release the mouse
-					*
-					*	We don't hide the scrollbar this time but switch to simple after 2 secs
-					*/
-					self._toSimpleScrollbarID = setTimeout(function () {
-						self._toSimpleScrollbar();
-						self._toSimpleScrollbarID = 0;
-					}, 2000);
-				}
-				self._bMouseDownH = false;
+			return false;
+		},
 
-				if (self._bUseHDrag) {
-					self._trigger("thumbDragEnd", null, {
-						owner: self,
-						horizontal: true
-					});
-				}
-				self._bUseHDrag = false;
+		_onMouseUpArrowLeft: function () {
+			this._bMouseDownH = false;
+			this._bUseArrowLeft = false;
+			this._hBarArrowLeft
+				.switchClass(this.css.horizontalScrollArrowLeftActive, this.css.horizontalScrollArrowLeft);
 
-				return false;
+			clearTimeout(this._holdTimeoutID);
+
+			this._trigger("scrolled", null, {
+				owner: this,
+				smallIncrement: -1,
+				bigIncrement: 0,
+				horizontal: true,
+				touch: false
 			});
 		},
 
-		_removeScrollbarV: function () {
-			if (this._vBarContainer) {
-				this._vBarContainer.remove();
+		_onMouseOverArrowLeft: function () {
+			if (this._bMouseDownH && this._bUseArrowLeft) {
+				this._scrollTimeoutX(-40, true);
 			}
+		},
+
+		_onMouseDownArrowRight: function () {
+			var bNoCancel = this._trigger("scrolling", null, {
+				owner: this,
+				smallIncrement: 1,
+				bigIncrement: 0,
+				horizontal: true,
+				touch: false
+			});
+
+			if (bNoCancel) {
+				this._bMouseDownH = true;
+				this._bUseArrowRight = true;
+				this._hBarArrowRight
+					.switchClass(this.css.horizontalScrollArrowRight, this.css.horizontalScrollArrowRightActive);
+
+				var curPosX = this._getContentPositionX();
+				this._scrollLeft(curPosX + 40, false);
+
+				var self = this;
+				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(40, true); }, 250);
+			}
+
+			return false;
+		},
+
+		_onMouseDownArrowRight: function () {
+			var bNoCancel = this._trigger("scrolling", null, {
+				owner: this,
+				smallIncrement: 1,
+				bigIncrement: 0,
+				horizontal: true,
+				touch: false
+			});
+
+			if (bNoCancel) {
+				this._bMouseDownH = true;
+				this._bUseArrowRight = true;
+				this._hBarArrowRight
+					.switchClass(this.css.horizontalScrollArrowRight, this.css.horizontalScrollArrowRightActive);
+
+				var curPosX = this._getContentPositionX();
+				this._scrollLeft(curPosX + 40, false);
+
+				var self = this;
+				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(40, true); }, 250);
+			}
+
+			return false;
+		},
+
+		_onMouseUpArrowRight: function () {
+			this._bMouseDownH = false;
+			this._bUseArrowRight = false;
+			this._hBarArrowRight
+				.switchClass(this.css.horizontalScrollArrowRightActive, this.css.horizontalScrollArrowRight);
+
+			clearTimeout(this._holdTimeoutID);
+
+			this._trigger("scrolled", null, {
+				owner: this,
+				smallIncrement: 1,
+				bigIncrement: 0,
+				horizontal: true,
+				touch: false
+			});
+		},
+
+		_onMouseOverArrowRight: function () {
+			if (this._bMouseDownH && this._bUseArrowRight) {
+				this._scrollTimeoutX(40, true);
+			}
+		},
+
+		_onMouseDownHDrag: function (event) {
+			this._bMouseDownH = true;
+			this._dragLastX = event.pageX;
+			this._bUseVDrag = false;
+			this._bUseHDrag = true;
+
+			this._trigger("thumbDragStart", null, {
+				owner: this,
+				horizontal: true
+			});
+		},
+
+		_onMouseDownHTrack: function (event) {
+			if (event.target.id === this._hBarDrag[0].id) {
+				return false;
+			}
+
+			this._bUseHTrack = true;
+
+			var	self = this,
+				dragStartX = this._getTransform3dValueX(this._hBarDrag),
+				curPosX = this._getContentPositionX(),
+				scrollStep = this._contentWidth * this._percentInViewH,
+				bNoCancel;
+
+			this._mTrackLastPosH = event.offsetX;
+			if (event.offsetX > dragStartX + this._hDragWidth) {
+				//Scroll right
+				this._lastBigIncDirH = 1;
+				bNoCancel = this._trigger("scrolling", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 1,
+					horizontal: true,
+					touch: false
+				});
+
+				if (bNoCancel) {
+					this._scrollLeft(curPosX + scrollStep, false);
+					this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(scrollStep, false); }, 250);
+				}
+			} else if (event.offsetX < dragStartX) {
+				//Scroll left
+				this._lastBigIncDirH = -1;
+				bNoCancel = this._trigger("scrolling", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: -1,
+					horizontal: true,
+					touch: false
+				});
+
+				if (bNoCancel) {
+					this._scrollLeft(curPosX - scrollStep, false);
+					this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(-scrollStep, false); }, 250);
+				}
+			}
+
+			return false;
+		},
+
+		_onMouseMoveHTrack: function (event) {
+			//Update the last know position of the mouse that is interacting with the horizontal track area
+			if (this._bUseVTrack) {
+				this._mTrackLastPosH = event.offsetX;
+			}
+		},
+
+		_onMouseUpHTrack: function () {
+			clearTimeout(this._holdTimeoutID);
+
+			if (this._bUseHTrack) {
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: this._lastBigIncDirH,
+					horizontal: true,
+					touch: false
+				});
+			}
+			this._bUseHTrack = false;
+		},
+
+		_onMouseOutHTrack: function () {
+			clearTimeout(this._holdTimeoutID);
+
+			if (this._bUseHTrack) {
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: this._lastBigIncDirH,
+					horizontal: true,
+					touch: false
+				});
+			}
+			this._bUseHTrack = false;
+		},
+
+		_onMouseMoveHDrag: function (evt) {
+			/* Ensures if we move the mouse of the bounds of the horizontal scroll bar and we are still holding left mouse button that when we move the mouse left/right we will continue to scroll */
+			if (!this._bMouseDownH || !this._bUseHDrag) {
+				return;
+			}
+
+			if (this._bUseHDrag) {
+				var bNoCancel = this._trigger("thumbDragMove", null, {
+					owner: this,
+					horizontal: true
+				});
+
+				if (bNoCancel) {
+					//Move custom horizondal scrollbar thumb drag
+					var curPosX = this._getContentPositionX();
+					var offset = evt.pageX - this._dragLastX;
+
+					this._scrollLeft(curPosX + (offset * (this._contentWidth / this._elemWidth)), false);
+					this._dragLastX = evt.pageX;
+				}
+			}
+
+			return false;
+		},
+
+		_onMouseUpHScrollbar: function () {
+			var self = this;
+
+			/* Ensures when the left mouse button is realeas that all properties are back to their default state */
+			/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
+			if (this._bUseArrowLeft) {
+				this._bUseArrowLeft = false;
+				this._hBarArrowLeft
+					.switchClass(this.css.horizontalScrollArrowLeftActive, this.css.horizontalScrollArrowLeft);
+
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: -1,
+					bigIncrement: 0,
+					horizontal: true,
+					touch: false
+				});
+			}
+			if (this._bUseArrowRight) {
+				this._bUseArrowRight = false;
+				this._hBarArrowRight
+					.switchClass(this.css.horizontalScrollArrowRightActive, this.css.horizontalScrollArrowRight);
+
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 1,
+					bigIncrement: 0,
+					horizontal: true,
+					touch: false
+				});
+			}
+
+			//If the mouse was previously hold over an element an we release it.
+			if (this._bMouseDownH && !this._mOverScrollbars && !this._mOverContainer) {
+				/** Scenario:
+				*	1. Click and hold a horizontal scrollbar element
+				*	2. Move the mouse outside the scrollable container
+				*	3. Release the mouse
+				*
+				*	We hide the scrollbar after 2 secs since the mouse is outside the scrollable content
+				*/
+				this._hideScrollbarID = setTimeout(function () {
+					self._hideScrollBars(false);
+				}, 2000);
+			} else if (this._bMouseDownH && !this._mOverScrollbars && this._mOverContainer) {
+				/** Scenario:
+				*	1. Click and hold a horizontal scrollbar element
+				*	2. Move the mouse inside the scrollable container
+				*	3. Release the mouse
+				*
+				*	We don't hide the scrollbar this time but switch to simple after 2 secs
+				*/
+				this._toSimpleScrollbarID = setTimeout(function () {
+					self._toSimpleScrollbar();
+					self._toSimpleScrollbarID = 0;
+				}, 2000);
+			}
+			this._bMouseDownH = false;
+
+			if (this._bUseHDrag) {
+				this._trigger("thumbDragEnd", null, {
+					owner: this,
+					horizontal: true
+				});
+			}
+			this._bUseHDrag = false;
+
+			return false;
 		},
 
 		_removeScrollbarH: function () {
@@ -2114,11 +1856,12 @@
 		/** Scrolls content to on the Y axis using default scrollTop.
 		*	Should be used when sure it's desktop/hybrid environment.
 		*	If not sure how to use, use the internal _scrollTop. */
-		_scrollToY: function (destY) {
+		_scrollToY: function (destY, triggerEvents) {
 			if (!this._isScrollableV && !this.options.scrollOnlyVBar) {
 				return;
 			}
 
+			//To Do triggerEvents option for ScrollToY and when both using to scroll X and Y with these
 			//Trigger scrolling event
 			var bNoCancel,
 				self = this;
@@ -2341,7 +2084,7 @@
 					self._scrollToX(self._nextX, true);
 					self._scrollToY(self._nextY);
 				} else {
-					self._scrollTouchToXY(self._nextX, self._nextY);
+					self._scrollTouchToXY(self._nextX, self._nextY, true);
 				}
 
 				animationID = requestAnimationFrame(inertiaStep);
@@ -2578,9 +2321,309 @@
 			}
 		},
 
+		_onScrollContainer: function() {
+			if (!this._bMixedEnvironment) {
+				this._bMixedEnvironment = true;
+
+				/* Make sure we are not scrolled using 3d transformation */
+				this._switchFromTouchToMixed();
+			}
+
+			if (!this.options.scrollOnlyVBar && !this._scrollFromSyncContentV) {
+				this._syncVBar(this._container[0], false);
+				this._syncElemsY(this._container[0], false);
+			} else {
+				this._scrollFromSyncContentV = false;
+			}
+
+			if (!this.options.scrollOnlyHBar && !this._scrollFromSyncContentH) {
+				this._syncHBar(this._container[0], false);
+				this._syncElemsX(this._container[0], false);
+			} else {
+				this._scrollFromSyncContentH = false;
+			}
+
+			this._updateScrollBars(this._container.scrollLeft(), this._container.scrollTop());
+
+			return false;
+		},
+
+		_onWheelContainer: function (event) {
+			var evt = event.originalEvent;
+			this._bStopInertia = true;
+
+			if (!this._bMixedEnvironment) {
+				this._bMixedEnvironment = true;
+
+				/* Make sure we are not scrolled using 3d transformation */
+				this._switchFromTouchToMixed();
+			}
+
+			if (this.options.smoothing) {
+				//Scroll with small inertia
+				this._smoothWheelScrollY(evt.deltaY);
+			} else {
+				//Normal scroll
+				if (this.options.scrollOnlyVBar) {
+					startY = this._getScrollbarVPoisition();
+				} else {
+					startY = this._getContentPositionY();
+				}
+
+				var scrollStep = this.options.wheelStep;
+				this._scrollToY(startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep);
+
+				//Trigger scrolled event
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: false,
+					touch: false
+				});
+			}
+
+			return false;
+		},
+
+		_onPointerDownContainer: function (event) {
+			var evt = event.originalEvent;
+			if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch")) {
+				return;
+			}
+
+			//setPointerCaptureFName is the name of the function that is supported
+			event.target[setPointerCaptureFName](this._pointer = evt.pointerId);
+
+			//create gestureObject only one time to prevent overlapping during intertia
+			if (!this._gestureObject) {
+				this._gestureObject = new MSGesture();
+				this._gestureObject.target = this._container[0];
+			}
+			this._gestureObject.addPointer(this._pointer);
+		},
+
+		_onPointerUpContainer: function(event) {
+			if (!this._pointer) {
+				return;
+			}
+			/* releasePointerCaptureFName is the name of the function that is supported */
+			event.target[releasePointerCaptureFName](this._pointer);
+
+			delete this._pointer;
+		},
+
+		_onMSGestureStartContainer: function(event) {
+			if (this.options.scrollOnlyVBar) {
+				this._startX = this._getScrollbarHPoisition();
+				this._startY = this._getScrollbarVPoisition();
+			} else {
+				this._startX = this._getContentPositionX();
+				this._startY = this._getContentPositionY();
+			}
+
+			this._touchStartX = event.originalEvent.screenX;
+			this._touchStartY = event.originalEvent.screenY;
+			this._moving = true;
+		},
+
+		_onMSGestureChangeContainer: function(event) {
+			if (!this._moving) {
+				return;
+			}
+
+			var touchPos = event.originalEvent;
+			this._scrollToX(this._startX + this._touchStartX - touchPos.screenX, true);
+			this._scrollToY(this._startY + this._touchStartY - touchPos.screenY);
+		},
+
+		_onMSGestureEndContainer: function() {
+			this._moving = false;
+		},
+
+		_onTouchStartContainer: function (event) {
+			var touch = event.originalEvent.touches[0];
+
+			if (this.options.scrollOnlyHBar) {
+				this._startX = this._getScrollbarHPoisition();
+			} else {
+				this._startX = this._getContentPositionX();
+			}
+			if (this.options.scrollOnlyVBar) {
+				this._startY = this._getScrollbarVPoisition();
+			} else {
+				this._startY = this._getContentPositionY();
+			}
+
+			this._touchStartX = touch.pageX;
+			this._touchStartY = touch.pageY;
+			this._moving = true;
+
+			this._bStopInertia = true; //stops any current ongoing inertia
+			this._speedDecreasing = false;
+
+			this._lastTouchEnd = new Date().getTime();
+			this._lastTouchX = touch.pageX;
+			this._lastTouchY = touch.pageY;
+			this._savedSpeedsX = [];
+			this._savedSpeedsY = [];
+
+			this._showScrollBars(false, true);
+		},
+
+		_onTouchMoveContainer: function (event) {
+			var touch = event.originalEvent.touches[0];
+			var destX = this._startX + this._touchStartX - touch.pageX;
+			var destY = this._startY + this._touchStartY - touch.pageY;
+
+			/*Handle complex touchmoves when swipe stops but the toch doesn't end and then a swipe is initiated again */
+			/***********************************************************/
+			var speedSlopeX = this._getSpeedSlope(this._savedSpeedsX);
+			var speedSlopeY = this._getSpeedSlope(this._savedSpeedsY);
+
+			if (speedSlopeY > -0.1 || speedSlopeX > -0.1) {
+				this._speedDecreasing = true;
+			} else {
+				this._speedDecreasing = false;
+			}
+
+			var timeFromLastTouch = (new Date().getTime()) - this._lastTouchEnd;
+			if (timeFromLastTouch < 100) {
+				var speedX = (this._lastTouchX - touch.pageX) / timeFromLastTouch;
+				var speedY = (this._lastTouchY - touch.pageY) / timeFromLastTouch;
+
+				//Save the last 5 speeds between two touchmoves on X axis
+				if (this._savedSpeedsX.length < 5) {
+					this._savedSpeedsX.push(speedX);
+				} else {
+					this._savedSpeedsX.shift();
+					this._savedSpeedsX.push(speedX);
+				}
+
+				//Save the last 5 speeds between two touchmoves on Y axis
+				if (this._savedSpeedsY.length < 5) {
+					this._savedSpeedsY.push(speedY);
+				} else {
+					this._savedSpeedsY.shift();
+					this._savedSpeedsY.push(speedY);
+				}
+			}
+			this._lastTouchEnd = new Date().getTime();
+			this._lastMovedX = this._lastTouchX - touch.pageX;
+			this._lastMovedY = this._lastTouchY - touch.pageY;
+			this._lastTouchX = touch.pageX;
+			this._lastTouchY = touch.pageY;
+			/***********************************************************/
+
+			//Check if browser is Firefox
+			if (navigator.userAgent.indexOf("Firefox") > -1 || this._bMixedEnvironment) {
+				//Better performance on Firefox for Android
+				this._scrollToX(destX, true);
+				this._scrollToY(destY);
+			} else {
+				this._scrollTouchToXY(destX, destY, true);
+			}
+
+			// return true if there was no movement so rest of the screen can scroll
+			return this._startX === destX && this._startY === destY;
+		},
+
+		_onTouchEndContainer: function() {
+			var speedX = 0;
+			var speedY = 0;
+
+			//savedSpeedsX and savedSpeedsY have same length
+			for (var i = this._savedSpeedsX.length - 1; i >= 0; i--) {
+				speedX += this._savedSpeedsX[i];
+				speedY += this._savedSpeedsY[i];
+			}
+			speedX = speedX / this._savedSpeedsX.length;
+			speedY = speedY / this._savedSpeedsY.length;
+
+			//Use the lastMovedX and lastMovedY to determine if the swipe stops without lifting the finger so we don't start inertia
+			if ((Math.abs(speedX) > 0.1 || Math.abs(speedY) > 0.1) &&
+					(Math.abs(this._lastMovedX) > 2 || Math.abs(this._lastMovedY) > 2)) {
+				this._bStopInertia = false;
+				this._showScrollBars(false, true);
+				this._inertiaInit(speedX, speedY, this._bMixedEnvironment);
+				this._moving = true;
+			} else {
+				this._hideScrollBars(true, true);
+
+				//Trigger scrolled event
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: true,
+					touch: true
+				});
+			}
+
+			this._moving = false;
+		},
+
+		_onMouseEnterContainer: function() {
+			this._mOverContainer = true;
+
+			clearTimeout(this._hideScrollbarID);
+			if (!this._toSimpleScrollbarID && !this._bMouseDownH && !this._bMouseDownV) {
+				//We move the mouse inside the container but we weren't previously hovering the scrollbars (that's why we don't have _toSimpleScrollbarID for a timeout to switch to simple scrollbars).
+				//So we instantly show simple scrollbars.
+				this._showScrollBars(false, true);
+			}
+		},
+
+		_onMouseLeaveContainer: function () {
+			var self = this;
+
+			this._mOverContainer = false;
+			if (!this._bMouseDownV && !this._bMouseDownH) {
+				//Hide scrollbars after 2 secs. We cencel the timeout if we enter scrollbars area.
+				this._hideScrollbarID = setTimeout(function () {
+					self._hideScrollBars(false);
+				}, 2000);
+			}
+		},
+
+		_onMouseEnterScrollbarElem: function() {
+			this._mOverScrollbars = true;
+
+			//Cancels the hide scrollbars timeout
+			clearTimeout(this._hideScrollbarID);
+
+			//Cancel any timeout set to switch to simple scrollbar. Makes sure we don't switch to simple while we still hover over the scrollbars.
+			clearTimeout(this._toSimpleScrollbarID);
+			this._toSimpleScrollbarID = 0;
+
+			this._showScrollBars(false);
+		},
+
+		_onMouseLeaveScrollbarElem: function () {
+			var self = this;
+
+			this._mOverScrollbars = false;
+			if (!this._bMouseDownV && !this._bMouseDownH) {
+				//Hide scrollbars after 2 secconds. This will be canceled if we go the scrollable content or any other element of the scrollbars by _hideScrollbarID
+				this._hideScrollbarID = setTimeout(function () {
+					self._hideScrollBars(false);
+				}, 2000);
+
+				//Switch to simple scrollbar (i.e. only drag bar showing with no arrows) after timeout of 2sec
+				this._toSimpleScrollbarID = setTimeout(function () {
+					self._toSimpleScrollbar();
+					self._toSimpleScrollbarID = 0;
+				}, 2000);
+			}
+		},
+
+		_onTouchStartScrollbarElem: function() {
+			return false;
+		},
+
 		destroy: function () {
 			if (this.evts) {
-				this.element.unbind(this.evts);
+				this.element.off(this.evts);
 				delete this.evts;
 
 				if (this._hBarDrag) {
@@ -2629,7 +2672,7 @@
 		$(":jqmData(role='page')").live("pageshow", _find);
 	} catch (ex) {
 		_find(true);
-		$(document).bind("igcontrolcreated", function (event, args) {
+		$(document).on("igcontrolcreated", function (event, args) {
 			/* M.H. 5 Feb 2014 Fix for bug #161906: Scrolling is not possible with virtualization and the grid rendered on button click on an iPad */
 			var container = args.owner.scrollContainer();
 			if (container.length === 0 && args.owner.container) {
