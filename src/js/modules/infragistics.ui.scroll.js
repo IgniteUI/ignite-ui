@@ -15,54 +15,18 @@
 /*global jQuery,setTimeout,window,document,MSGesture*/
 (function ($) {
 	var _attr = "data-scroll",
-	_aNull = function (val) {
-		return val === null || val === undefined || (typeof val === "number" && isNaN(val));
-	}, _valid = function (elem) {
-		return (elem && elem[ 0 ].parentNode) ? elem : null;
-	}, _remove = function (elem) {
-		if (_valid(elem)) {
-			elem.remove();
-		}
-	}, _find = function (notMobile) {
-		setTimeout(function () {
-			if (!$.ig.util.isModernizrAvailable || $.ig.util.isTouch) {
-				$("body").find("[" + _attr + "]").each(function () {
-					var elem = $(this), scroll = elem.data("igScroll");
-					if ((!scroll || !scroll.evts) && !elem.data("igScroll") && !elem.data("scrollview")) {
-						elem.igScroll({ _find: true });
-					}
-				});
-			}
-		}, notMobile === true ? 1000 : 100);
-	},
-	lastTime = 0,
-	prefixes = [ "ms", "moz", "webkit", "o" ];
-
-	/** Start requestAnimationFrame and cancelAnimationFrame polyfill **/
-	for (var x = 0; x < prefixes.length &&
-			(!window.requestAnimationFrame || !window.cancelAnimationFrame) ; ++x) {
-		window.requestAnimationFrame = window[ prefixes[ x ] + "RequestAnimationFrame" ];
-		window.cancelAnimationFrame = window[ prefixes[ x ] + "CancelAnimationFrame" ] ||
-										window[ prefixes[ x ] + "CancelRequestAnimationFrame" ];
-	}
-
-	if (!window.requestAnimationFrame) {
-		window.requestAnimationFrame = function (callback) {
-			var currTime = Date.now();
-			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-			var id = window.setTimeout(function () { callback(currTime + timeToCall); },
-				timeToCall);
-			lastTime = currTime + timeToCall;
-			return id;
-		};
-	}
-
-	if (!window.cancelAnimationFrame) {
-		window.cancelAnimationFrame = function (id) {
-			clearTimeout(id);
-		};
-	}
-	/** End polyfill **/
+	 _find = function (notMobile) {
+	 	setTimeout(function () {
+	 		if (!$.ig.util.isModernizrAvailable || $.ig.util.isTouch) {
+	 			$("body").find("[" + _attr + "]").each(function () {
+	 				var elem = $(this), scroll = elem.data("igScroll");
+	 				if ((!scroll || !scroll.evts) && !elem.data("igScroll") && !elem.data("scrollview")) {
+	 					elem.igScroll({ _find: true });
+	 				}
+	 			});
+	 		}
+	 	}, notMobile === true ? 1000 : 100);
+	 };
 
 	/* S.K. Fix for bug 212350: For IE11 and up msSetPointerCapture and msReleasePointerCapture are depricated. setPointerCapture and releasePointerCapture are supported from IE10 and up. */
 	var setPointerCaptureFName = typeof Element.prototype.msSetPointerCapture === "function" ?
@@ -76,6 +40,8 @@
 		options: {
 			/* type="bool" Sets or gets if the scrollbars should be always visible (on all environments). Otherwise it will be the default behavior. */
 			alwaysVisibleBars: null,
+			/* type="bool" Sets or gets if the scrollbars should be always hidden (on all environments). Otherwise it will be the default behavior. This removes the scrollbars from the DOM. Make sure to set it to false first before setting alwaysVisibleBars*/
+			alwaysHiddenBars: null,
 			/* type="bool" Sets or gets if the scrollbars should be hidden (on all environments). Otherwise it will be the default behavior. */
 			useNative: null,
 			/* type="bool" Sets or gets if igScroll can modify the DOM when it is initialized on certain element so that the content can be scrollable. */
@@ -115,40 +81,104 @@
 		},
 		events: {
 			/* cancel="false" Event which is raised after the scroller has been rendered fully
+				Function takes arguments evt and args.
+				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
+				Use args.owner to obtain reference to igScroll.
 			*/
 			rendered: null,
-			/* cancel="true" Event which is raised before scrolling.
+			/* cancel="true" Event which is raised before scrolling or before each step when having inertia.
 				Return false in order to cancel action.
-				Function takes arguments evt and ui.
-				Note: while inertia, the evt parameter is not available.
+				Function takes arguments evt and args.
 				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igScroll.
-				Use ui.deltaX to obtain increment/decrement of horizontal scroller. That member can be modified and igScoll will use that new custom value.
-				Use ui.deltaY to obtain increment/decrement of vertical scroller. That member can be modified and igScoll will use that new custom value.
+				Use args.owner to obtain reference to igScroll.
+				Use args.smallIncrement to obtain if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
+				Use args.bigIncrement to obtain if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
+				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
+				Use args.touch to obtain if the content is scrolled by touch interactions(false) or by use of scrollbars/mouse wheel(true).
 			*/
 			scrolling: null,
-			/* cancel="false" Event which is raised after scrolling.
-				Function takes arguments evt and ui.
-				Note: while inertia, the evt parameter is not available.
+			/* cancel="false" Event which is raised after scrolling has stopped.
+				Function takes arguments evt and args.
 				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igScroll.
-				Use ui.deltaX to obtain increment/decrement of horizontal scroller.
-				Use ui.deltaY to obtain increment/decrement of vertical scroller.
+				Use args.owner to obtain reference to igScroll.
+				Use args.smallIncrement to obtain if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
+				Use args.bigIncrement to obtain if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
+				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
+				Use args.touch to obtain if the content is scrolled by touch interactions(false) or by use of scrollbars/mouse wheel(true).
 			*/
 			scrolled: null,
 			/* cancel="false" Event which is raised when there is mouse click on the scrollbar's thumb drag.
-
+				Function takes arguments evt and args.
+				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
+				Use args.owner to obtain reference to igScroll.
+				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
 			*/
 			thumbDragStart: null,
 			/* cancel="true" Event which is raised when the thumb drag is being moved.
-
+				Return false in order to cancel action.
+				Function takes arguments evt and args.
+				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
+				Use args.owner to obtain reference to igScroll.
+				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
 			*/
 			thumbDragMove: null,
 			/* cancel="false" Event which is raised on mouse up from the scrollbar's thumb drag.
-
+				Function takes arguments evt and args.
+				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
+				Use args.owner to obtain reference to igScroll.
+				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
 			*/
 			thumbDragEnd: null
 		},
+		css: {
+			/* Classes applied to the element the igScroll is instantiated on */
+			scrollableElem: "igscroll-scrollable",
+			/* Classes applied to the scroll content wrapper */
+			scrollContent: "igscroll-content",
+			/* Classes applied to the scroll container */
+			scrollContainer: "igscroll-container",
+			/* Classes applied to the outer element of the native vertical scrollbar */
+			nativeVScrollOuter: "igscroll-vnative-outer",
+			/* Classes applied to the inner element of the native vertical scrollbar */
+			nativeVScrollInner: "igscroll-vnative-inner",
+			/* Classes applied to the outer element of the native horizontal scrollbar */
+			nativeHScrollOuter: "igscroll-hnative-outer",
+			/* Classes applied to the inner element of the native horizontal scrollbar */
+			nativeHScrollInner: "igscroll-hnative-inner",
+			/* Classes applied to the container of the custom vertical scrollbar */
+			verticalScrollContainer: "igscroll-vcontainer",
+			/* Classes applied to the track of the custom vertical scrollbar */
+			verticalScrollTrack: "igscroll-vtrack",
+			/* Classes applied to the arrows of the custom vertical scrollbar */
+			verticalScrollArrow: "igscroll-varrow",
+			/* Classes applied to the Arrow Up of the custom vertical scrollbar */
+			verticalScrollArrowUp: "igscroll-uparrow",
+			/* Classes applied to the Arrow Up of the custom vertical scrollbar when it is active */
+			verticalScrollArrowUpActive: "igscroll-uparrow-active",
+			/* Classes applied to the Arrow Down of the custom vertical scrollbar */
+			verticalScrollArrowDown: "igscroll-downarrow",
+			/* Classes applied to the Arrow Down of the custom vertical scrollbar when it is active */
+			verticalScrollArrowDownActive: "igscroll-downarrow-active",
+			/* Classes applied to the thumb drag of the custom vertical scrollbar */
+			verticalScrollThumbDrag: "igscroll-vdrag",
+			/* Classes applied to the container of the custom horizontal scrollbar */
+			horizontalScrollContainer: "igscroll-hcontainer",
+			/* Classes applied to the track of the custom horizontal scrollbar  */
+			horizontalScrollTrack: "igscroll-htrack",
+			/* Classes applied to the arrows of the custom horizontal scrollbar */
+			horizontalScrollArrow: "igscroll-harrow",
+			/* Classes applied to the Arrow Left of the custom horizontal scrollbar */
+			horizontalScrollArrowLeft: "igscroll-leftarrow",
+			/* Classes applied to the Arrow Left of the custom horizontal scrollbar when it is active */
+			horizontalScrollArrowLeftActive: "igscroll-leftarrow-active",
+			/* Classes applied  to the Arrow Right of the custom horizontal scrollbar */
+			horizontalScrollArrowRight: "igscroll-rightarrow",
+			/* Classes applied to the Arrow Right of the custom horizontal scrollbar when it is active */
+			horizontalScrollArrowRightActive: "igscroll-rightarrow-active",
+			/* Classes applied to the thumb drag of the custom horizontal scrollbar */
+			horizontalScrollThumbDrag: "igscroll-hdrag"
+		},
+
 		refresh: function() {
 			//width specific
 			this._elemWidth = this._container.width();
@@ -200,12 +230,14 @@
 			this._numSmoothAnimation = 0;
 
 			if (this.options.modifyDOM) {
-				elem.addClass("igscroll-scrollable");
-				this._content = $("<div id='content' class='igscroll-content'/>")
+				elem.addClass(this.css.scrollableElem);
+				this._content = $("<div id='content'/>")
+					.addClass(this.css.scrollContent)
 					.appendTo(elem)
 					.append(elem.children());
 
-				this._container = $("<div id='container' class='igscroll-container' />")
+				this._container = $("<div id='container'/>")
+					.addClass(this.css.scrollContainer)
 					.css({
 						"width": this._elemWidth + "px",
 						"height": this._elemHeight + "px"
@@ -354,7 +386,7 @@
 					if (!moving) {
 						return;
 					}
-					console.log("MSGestureChange");
+
 					var touchPos = e.originalEvent;
 					self._scrollToX(startX + touchStartX - touchPos.screenX, true);
 					self._scrollToY(startY + touchStartY - touchPos.screenY);
@@ -515,14 +547,9 @@
 				MSPointerDown: self.evts.pointerdown
 			});
 
-			if ($("#grid1_scroll").length) {
-				this.options.scrollbarHParent = $("#grid1_scroll");
-				this.options.scrollbarVParent = $("#grid1_scroll");
-			}
-
 			this._createScrollBars();
 			this._hideScrollBars(false);
-			/*this._showScrollBars(true, true, 0.01);*/
+			this._showScrollBars(true, true, true, 0.02);
 
 			this._trigger("rendered", null, {
 				owner: this
@@ -543,20 +570,6 @@
 				if (typeof scrollOptions.scrollbarV !== "undefined") {
 					this._bindVScrollbar(scrollOptions.scrollbarV);
 				}
-				if (scrollOptions.scrollbarHParent) {
-					var parentObjectH = $(scrollOptions.scrollbarHParent);
-
-					if (parentObjectH.length) {
-						this._HBarParent = parentObjectH;
-					}
-				}
-				if (scrollOptions.scrollbarVParent) {
-					var parentObjectV = $(scrollOptions.scrollbarVParent);
-
-					if (parentObjectV.length) {
-						this._VBarParent = parentObjectV;
-					}
-				}
 				/* Lastly change position to be sure that all elements are linked */
 				if (typeof scrollOptions.scrollTop !== "undefined") {
 					this._scrollTop(scrollOptions.scrollTop, false);
@@ -567,20 +580,20 @@
 			}
 		},
 
-		_setOptions: function (options) {
-			var self = this;
-
-			$.each(options, function (key, value) {
-				self._setOption(key, value);
-			});
-		},
-
 		_setOption: function (key, value) {
 			this._super(key, value);
 
 			if (key === "alwaysVisibleBars") {
 				if (value === true) {
 					this._showScrollBars();
+				}
+			}
+			if (key === "alwaysHiddenBars") {
+				if (value === true) {
+					this._removeScrollbarH();
+					this._removeScrollbarV();
+				} else {
+					this._createScrollBars();
 				}
 			}
 			if (key === "useNative") {
@@ -697,7 +710,7 @@
 				paramType="number" optional="true" new value for scrollLeft.
 				returnType="number|object" Returns scrollLeft or reference to igScroll.
 			*/
-			if (_aNull(val)) {
+			if (!val) {
 				return this._getContentPositionX();
 			}
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
@@ -727,7 +740,7 @@
 				paramType="number" optional="true" new value for scrollTop.
 				returnType="number|object" Returns scrollTop or reference to igScroll.
 			*/
-			if (_aNull(val)) {
+			if (!val) {
 				return this._getContentPositionY();
 			}
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
@@ -790,7 +803,7 @@
 					if (elemObject.length) {
 						this._linkedHElems.push(elemObject);
 					} else {
-						console.log("Element does not exists");
+						console.log("Error: Element does not exists");
 					}
 				}
 			}
@@ -902,8 +915,12 @@
 		},
 
 		_createScrollBars: function () {
+			if (this.options.alwaysHiddenBars) {
+				return;
+			}
+
 			if (this.options.useNative) {
-				this._createNativeScrollbars();
+				this._initNativeScrollbars();
 			} else {
 				if (this._isScrollableV) {
 					this._initCustomScrollBarV();
@@ -915,59 +932,65 @@
 			}
 		},
 
-		_createNativeScrollbars: function() {
-			//this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar' class='igscroll-vnative-outer'></div>")
+		_initNativeScrollbars: function () {
+			//var css = this.css;
+
+			//this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
+			//	.addClass(css.nativeVScrollOuter)
 			//	.css("height", this._elemHeight - 15 + "px");
 
 			//this._vDragHeight = this._contentHeight;
-			//this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner' class='igscroll-vnative-inner'></div>")
+			//this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
+			//	.addClass(css.nativeVScrollInner)
 			//	.css("height", this._vDragHeight + "px");
 
 			//if (this.options.scrollbarVParent) {
 			//	this._vBarContainer.append(this._vBarDrag).appendTo(this.options.scrollbarVParent);
 			//} else {
-			//	this._vBarContainer.append(this._vBarDrag).appendTo(this._container[0].parentElement);
+			//	this._vBarContainer.append(this._vBarDrag).appendTo(this._container[ 0 ].parentElement);
 			//}
 
-			//this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar' class='igscroll-hnative-outer'></div>")
+			//this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
+			//	.addClass(css.nativeHScrollOuter)
 			//	.css("width", this._elemWidth - 15 + "px");
 
 			//this._hDragWidth = this._contentWidth;
-			//this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner' class='igscroll-hnative-inner'></div>")
+			//this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
+			//	.addClass(css.nativeHScrollInner)
 			//	.css("width", this._hDragWidth + "px");
 
 			//if (this.options.scrollbarVParent) {
 			//	this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarVParent);
 			//} else {
-			//	this._hBarContainer.append(this._hBarDrag).appendTo(this._container[0].parentElement);
+			//	this._hBarContainer.append(this._hBarDrag).appendTo(this._container[ 0 ].parentElement);
 			//}
 
 			//this._setOption("scrollbarV", this._vBarContainer);
 			//this._setOption("scrollbarH", this._hBarContainer);
 		},
 
-		_initCustomScrollBarV: function() {
-			this._vBarContainer =
-				$("<div id='" + this.element.attr("id") + "_vBar' class='igscroll-vcontainer'></div>")
+		_initCustomScrollBarV: function () {
+			var css = this.css;
+
+			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
+				.addClass(css.verticalScrollContainer)
 				.css("height", this._elemHeight - 15 + "px");
 
-			this._vBarArrowUp =
-				$("<div id='" +
-					this.element.attr("id") +
-				"_vBar_arrowUp' class='igscroll-varrow igscroll-uparrow'></div>");
+			this._vBarArrowUp =	$("<div id='" +	this.element.attr("id") + "_vBar_arrowUp'></div>")
+				.addClass(css.verticalScrollArrow)
+				.addClass(css.verticalScrollArrowUp);
 
-			this._vBarTrack =
-				$("<div id='" + this.element.attr("id") + "_vBar_track' class='igscroll-vtrack'></div>")
+			this._vBarTrack = $("<div id='" + this.element.attr("id") + "_vBar_track'></div>")
+				.addClass(css.verticalScrollTrack)
 				.css("height", this._elemHeight - (3 * 15) + "px");
 
-			this._vBarArrowDown =
-				$("<div id='" +
-					this.element.attr("id") +
-				"_vBar_arrowDown' class='igscroll-varrow igscroll-downarrow'></div>");
+			this._vBarArrowDown = $("<div id='" + this.element.attr("id") +	"_vBar_arrowDown'></div>")
+				.addClass(css.verticalScrollArrow)
+				.addClass(css.verticalScrollArrowDown);
 
 			this._vDragHeight = this._elemHeight * ((this._elemHeight - 2 * 15) / this._contentHeight);
-			this._vBarDrag =
-				$("<span id='" + this.element.attr("id") + "_vBar_drag' class='igscroll-vdrag'></span>")
+			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
+				.addClass(css.verticalScrollThumbDrag)
 				.css("height", this._vDragHeight + "px");
 
 			if (this.options.scrollbarVParent) {
@@ -988,7 +1011,8 @@
 		},
 
 		_bindCustomScrollBarV: function() {
-			var self = this;
+			var self = this,
+				css = this.css;
 
 			this._holdTimeoutID = 0;
 			this._bMouseDownV = false; //Used to track if mouse is holded on any of the vertical scrollbar elements
@@ -1047,6 +1071,7 @@
 
 				//Check if the increment is big or small and set the proper value in the eventArgs
 				if (bSmallIncement) {
+					/* set event vars */
 					eventArgs.smallIncrement = Math.sign(step);
 				} else {
 					/* Check of the mouse is over the vertical thumb drag. This means it has reached the position of where the mouse is currently held (on the vertical track) and scrolling should stop. */
@@ -1057,7 +1082,7 @@
 						return;
 					}
 
-					/* set vars */
+					/* set event vars */
 					eventArgs.bigIncrement = Math.sign(step);
 					self._lastBigIncDir = Math.sign(step);
 				}
@@ -1083,10 +1108,9 @@
 						});
 
 						if (bNoCancel) {
-							//self._bMixedEnvironment = true;
 							self._bMouseDownV = true;
 							self._bUseArrowUp = true;
-							self._vBarArrowUp.switchClass("igscroll-uparrow", "igscroll-uparrow-active");
+							self._vBarArrowUp.switchClass(css.verticalScrollArrowUp, css.verticalScrollArrowUpActive);
 
 							var curPosY = self._getContentPositionY();
 							self._scrollTop(curPosY - 40, false);
@@ -1099,7 +1123,7 @@
 					mouseup: function () {
 						self._bMouseDownV = false;
 						self._bUseArrowUp = false;
-						self._vBarArrowUp.switchClass("igscroll-uparrow-active", "igscroll-uparrow");
+						self._vBarArrowUp.switchClass(css.verticalScrollArrowUpActive, css.verticalScrollArrowUp);
 						clearTimeout(self._holdTimeoutID);
 					},
 
@@ -1131,10 +1155,10 @@
 						});
 
 						if (bNoCancel) {
-							//self._bMixedEnvironment = true;
 							self._bMouseDownV = true;
 							self._bUseArrowDown = true;
-							self._vBarArrowDown.switchClass("igscroll-downarrow", "igscroll-downarrow-active");
+							self._vBarArrowDown
+								.switchClass(css.verticalScrollArrowDown, css.verticalScrollArrowDownActive);
 
 							var curPosY = self._getContentPositionY();
 							self._scrollTop(curPosY + 40, false);
@@ -1147,7 +1171,8 @@
 					mouseup: function () {
 						self._bMouseDownV = false;
 						self._bUseArrowDown = true;
-						self._vBarArrowDown.switchClass("igscroll-downarrow-active", "igscroll-downarrow");
+						self._vBarArrowDown
+							.switchClass(css.verticalScrollArrowDownActive, css.verticalScrollArrowDown);
 						clearTimeout(self._holdTimeoutID);
 					},
 
@@ -1170,7 +1195,6 @@
 			if (this._vBarDrag) {
 				this._vBarDrag.bind({
 					mousedown: function (evt) {
-						//self._bMixedEnvironment = true;
 						self._bMouseDownV = true;
 						self._dragLastY = evt.pageY;
 						self._bUseVDrag = true;
@@ -1193,7 +1217,6 @@
 							return false;
 						}
 
-						//self._bMixedEnvironment = true;
 						self._bUseVTrack = true;
 
 						var dragStartY = self._getTransform3dValueY(self._vBarDrag),
@@ -1318,7 +1341,8 @@
 				/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
 				if (self._bUseArrowUp) {
 					self._bUseArrowUp = false;
-					self._vBarArrowUp.switchClass("igscroll-uparrow-active", "igscroll-uparrow");
+					self._vBarArrowUp
+						.switchClass(css.verticalScrollArrowUpActive, css.verticalScrollArrowUp);
 
 					self._trigger("scrolled", null, {
 						owner: self,
@@ -1330,7 +1354,8 @@
 				}
 				if (self._bUseArrowDown) {
 					self._bUseArrowDown = false;
-					self._vBarArrowDown.switchClass("igscroll-downarrow-active", "igscroll-downarrow");
+					self._vBarArrowDown
+						.switchClass(css.verticalScrollArrowDownActive, css.verticalScrollArrowDown);
 
 					self._trigger("scrolled", null, {
 						owner: self,
@@ -1381,27 +1406,27 @@
 		},
 
 		_initCustomScrollBarH: function () {
-			this._hBarContainer =
-				$("<div id='" + this.element.attr("id") + "_hBar' class='igscroll-hcontainer'></div>")
+			var css = this.css;
+
+			this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
+				.addClass(css.horizontalScrollContainer)
 				.css("width", this._elemWidth + "px");
 
-			this._hBarArrowLeft =
-				$("<div id='" +
-					this.element.attr("id") +
-				"_hBar_arrowLeft' class='igscroll-harrow igscroll-leftarrow'></div>");
+			this._hBarArrowLeft = $("<div id='" + this.element.attr("id") + "_hBar_arrowLeft'></div>")
+				.addClass(css.horizontalScrollArrow)
+				.addClass(css.horizontalScrollArrowLeft);
 
-			this._hBarTrack =
-				$("<div id='" + this.element.attr("id") + "_hBar_track' class='igscroll-htrack'></div>")
+			this._hBarTrack = $("<div id='" + this.element.attr("id") + "_hBar_track'></div>")
+				.addClass(css.horizontalScrollTrack)
 				.css("width", this._elemWidth - (3 * 15) + "px");
 
-			this._hBarArrowRight =
-				$("<div id='" +
-					 this.element.attr("id") +
-				 "_hBar_arrowRight' class='igscroll-harrow igscroll-rightarrow'></div>");
+			this._hBarArrowRight = $("<div id='" + this.element.attr("id") + "_hBar_arrowRight'></div>")
+				.addClass(css.horizontalScrollArrow)
+				.addClass(css.horizontalScrollArrowRight);
 
 			this._hDragWidth = this._elemWidth * this._percentInViewH - 3 * 15;
-			this._hBarDrag =
-				$("<span id='" + this.element.attr("id") + "_hBar_drag' class='igscroll-hdrag'></span>")
+			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
+				.addClass(css.horizontalScrollThumbDrag)
 				.css("width", this._hDragWidth + "px");
 
 			if (this.options.scrollbarHParent) {
@@ -1422,7 +1447,8 @@
 		},
 
 		_bindCustomScrollBarH: function () {
-			var self = this;
+			var self = this,
+				css = this.css;
 
 			this._holdTimeoutID = 0;
 			this._bMouseDownH = false;
@@ -1517,10 +1543,10 @@
 						});
 
 						if (bNoCancel) {
-							//self._bMixedEnvironment = true;
 							self._bMouseDownH = true;
 							self._bUseArrowLeft = true;
-							self._hBarArrowLeft.switchClass("igscroll-leftarrow", "igscroll-leftarrow-active");
+							self._hBarArrowLeft
+								.switchClass(css.horizontalScrollArrowLeft, css.horizontalScrollArrowLeftActive);
 
 							var curPosX = self._getContentPositionX();
 							self._scrollLeft(curPosX - 40, false);
@@ -1533,7 +1559,8 @@
 					mouseup: function () {
 						self._bMouseDownH = false;
 						self._bUseArrowLeft = false;
-						self._hBarArrowLeft.switchClass("igscroll-leftarrow-active", "igscroll-leftarrow");
+						self._hBarArrowLeft
+							.switchClass(css.horizontalScrollArrowLeftActive, css.horizontalScrollArrowLeft);
 
 						clearTimeout(self._holdTimeoutID);
 
@@ -1574,10 +1601,10 @@
 						});
 
 						if (bNoCancel) {
-							//self._bMixedEnvironment = true;
 							self._bMouseDownH = true;
 							self._bUseArrowRight = true;
-							self._hBarArrowRight.switchClass("igscroll-rightarrow", "igscroll-rightarrow-active");
+							self._hBarArrowRight
+								.switchClass(css.horizontalScrollArrowRight, css.horizontalScrollArrowRightActive);
 
 							var curPosX = self._getContentPositionX();
 							self._scrollLeft(curPosX + 40, false);
@@ -1590,7 +1617,8 @@
 					mouseup: function () {
 						self._bMouseDownH = false;
 						self._bUseArrowRight = false;
-						self._hBarArrowRight.switchClass("igscroll-rightarrow-active", "igscroll-rightarrow");
+						self._hBarArrowRight
+							.switchClass(css.horizontalScrollArrowRightActive, css.horizontalScrollArrowRight);
 
 						clearTimeout(self._holdTimeoutID);
 
@@ -1644,7 +1672,6 @@
 							return false;
 						}
 
-						//self._bMixedEnvironment = true;
 						self._bUseHTrack = true;
 
 						var dragStartX = self._getTransform3dValueX(self._hBarDrag),
@@ -1770,7 +1797,8 @@
 				/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
 				if (self._bUseArrowLeft) {
 					self._bUseArrowLeft = false;
-					self._hBarArrowLeft.switchClass("igscroll-leftarrow-active", "igscroll-leftarrow");
+					self._hBarArrowLeft
+						.switchClass(css.horizontalScrollArrowLeftActive, css.horizontalScrollArrowLeft);
 
 					self._trigger("scrolled", null, {
 						owner: self,
@@ -1782,7 +1810,8 @@
 				}
 				if (self._bUseArrowRight) {
 					self._bUseArrowRight = false;
-					self._hBarArrowRight.switchClass("igscroll-rightarrow-active", "igscroll-rightarrow");
+					self._hBarArrowRight
+						.switchClass(css.horizontalScrollArrowRightActive, css.horizontalScrollArrowRight);
 
 					self._trigger("scrolled", null, {
 						owner: self,
@@ -1833,11 +1862,15 @@
 		},
 
 		_removeScrollbarV: function () {
-			_remove(this._vBarContainer);
+			if (this._vBarContainer) {
+				this._vBarContainer.remove();
+			}
 		},
 
-		_removeScrollbarH: function() {
-			_remove(this._hBarContainer);
+		_removeScrollbarH: function () {
+			if (this._hBarContainer) {
+				this._hBarContainer.remove();
+			}
 		},
 
 		/** Shows the mobile/touch scrollbars when they are hidden.
@@ -1846,7 +1879,7 @@
 		*	bDragOnly - show only the drag button. Used when using simple scrollbars
 		*/
 		_showScrollBars: function (animate, bDragOnly, hideAfterShown, opacityStep) {
-			if (this.options.useNative) {
+			if (this.options.useNative || this.options.alwaysHiddenBars) {
 				return;
 			}
 
@@ -1892,7 +1925,7 @@
 		},
 
 		_updateScrollBars: function (destX, destY) {
-			if (this.options.useNative) {
+			if (this.options.useNative || this.options.alwaysHiddenBars) {
 				return;
 			}
 
@@ -1927,7 +1960,7 @@
 		*	bDragOnly - hide only the drag button. Used when using simple scrollbars
 		*/
 		_hideScrollBars: function (animate, bDragOnly, opacityStep) {
-			if (this.options.useNative) {
+			if (this.options.useNative || this.options.alwaysHiddenBars || this.options.alwaysVisibleBars || currentOpacity <= 0) {
 				return;
 			}
 
@@ -1935,10 +1968,6 @@
 				targetOpacty = 0,
 				currentOpacity = this._vBarDrag ? this._vBarDrag.css("opacity") : 0,
 				animationId;
-
-			if (this.options.alwaysVisibleBars || currentOpacity <= 0) {
-				return;
-			}
 
 			function fadeStep() {
 				if (currentOpacity < targetOpacty) {
@@ -2549,21 +2578,24 @@
 			}
 		},
 
-		// clear timers
-		_clear: function () {
-			if (this.timer) {
-				clearTimeout(this.timer);
-				delete this.timer;
-			}
-		},
 		destroy: function () {
 			if (this.evts) {
 				this.element.unbind(this.evts);
 				delete this.evts;
-				_remove(this._hBarDrag);
-				_remove(this._hBarContainer);
-				_remove(this._vBarDrag);
-				_remove(this._vBarContainer);
+
+				if (this._hBarDrag) {
+					this._hBarDrag.remove();
+				}
+				if (this._hBarContainer) {
+					this._hBarContainer.remove();
+				}
+				if (this._vBarDrag) {
+
+					this._vBarDrag.remove();
+				}
+				if (this._vBarContainer) {
+					this._vBarContainer.remove();
+				}
 				$.Widget.prototype.destroy.apply(this, arguments);
 			}
 			return this;
@@ -2573,6 +2605,7 @@
 	/* options which can be customized globally for all instances of igScroll. */
 	$.ui.igScroll.defaults = {
 		alwaysVisibleBars: false,
+		alwaysHiddenBars: false,
 		useNative: false,
 		modifyDOM: false,
 		scrollHeight: 0,
