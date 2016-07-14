@@ -9,7 +9,7 @@
 
 
     <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-     
+
 	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
@@ -51,19 +51,38 @@
 	        this.actualToolbarButton._setOption("isSelected", true);
 	        ok(this.actualToolbarButton.options.isSelected, "isSelected is true");
 	    });
+
+		test('events', function() {
+			this.actualToolbarButton.options.disabled = true;
+			this.actualToolbarButton.element.click();
+			ok(!this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonActiveClasses), 'Should not be active');
+
+			this.actualToolbarButton.options.disabled = false;
+			this.actualToolbarButton.element.click();
+			ok(this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonActiveClasses), 'Should be active');
+
+			this.actualToolbarButton.options.allowToggling = false;
+
+			this.actualToolbarButton.element.mousedown();
+			ok(this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonActiveClasses), 'mousedown event');
+
+			this.actualToolbarButton.element.mouseup();
+			ok(!this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonHoverClasses), 'mouseup event');
+			ok(!this.actualToolbarButton.element.hasClass(this.actualToolbarButton.options.css.buttonActiveClasses), 'mouseup event');
+		});
 	</script>
 </head>
 <body>
 	<!--div id="qunit"></div>
     <div id="qunit-fixture"></div>-->
-	
-	
+
+
 	<div style="float:right;width:400px;overflow:auto;">
 		<h1 id="qunit-header">Test results</h1>
 		<h2 id="qunit-banner"></h2>
 		<h2 id="qunit-userAgent"></h2>
 		<ol id="qunit-tests"></ol>
 	</div>
-	
+
 </body>
 </html>
