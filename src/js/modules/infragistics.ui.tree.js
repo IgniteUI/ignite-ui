@@ -699,6 +699,8 @@ if (typeof jQuery !== "function") {
 				opt.bindings.childDataProperty = "Nodes";
 				schema.target = { name: "Target", type: "string" };
 				opt.bindings.targetKey = "Target";
+				schema.expanded = { name: "Expanded", type: "boolean"};
+				opt.bindings.expandedKey = "Expanded";
 				bindings = opt.bindings;
 			} else if (opt.dataSourceType === "xml") {
 				if (bindings.searchFieldXPath) {
@@ -1293,12 +1295,10 @@ if (typeof jQuery !== "function") {
 			if (this.options.hotTracking) {
 				this.element.delegate("a", {
 					"mouseover": function (event) {
-						target = $(event.target).closest("a");
-						target.addClass(css.nodeHovered);
+						$(event.target).addClass(css.nodeHovered);
 					},
 					"mouseout": function (event) {
-						target = $(event.target).closest("a");
-						target.removeClass(css.nodeHovered);
+						$(event.target).removeClass(css.nodeHovered);
 					}
 				});
 			}
@@ -1449,8 +1449,6 @@ if (typeof jQuery !== "function") {
 			if (binding.hasOwnProperty("navigateUrlKey") && data[ binding.navigateUrlKey ]) {
 				if (typeof data[ binding.navigateUrlKey ] === "function") {
 					href = data[ binding.navigateUrlKey ]();
-				} else if (data[ binding.navigateUrlKey ].length <= 0) {
-					href = "#";
 				} else {
 					href = data[ binding.navigateUrlKey ];
 				}
@@ -1481,8 +1479,6 @@ if (typeof jQuery !== "function") {
 			if (binding.hasOwnProperty("navigateUrlKey") && data[ binding.navigateUrlKey ]) {
 				if (typeof data[ binding.navigateUrlKey ] === "function") {
 					href = data[ binding.navigateUrlKey ]();
-				} else if (data[ binding.navigateUrlKey ].length <= 0) {
-					href = "#";
 				} else {
 					href = data[ binding.navigateUrlKey ];
 				}
