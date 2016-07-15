@@ -473,6 +473,8 @@
 	</div>
 	<div id="tree1" data-bind="igTree: {
 		dataSource: data,
+		parentNodeImageClass: 'class1',
+		leafNodeImageClass: 'class2',
 		bindings: {
 			textKey: 'name',
 			valueKey: 'id',
@@ -483,6 +485,8 @@
 	}"></div>
 	<div id="tree2" data-bind="igTree: {
 		dataSource: data,
+		parentNodeImageUrl: 'url1',
+		leafNodeImageUrl: 'url2',
 		bindings: {
 			textKey: 'name',
 			imageUrlKey: 'image',
