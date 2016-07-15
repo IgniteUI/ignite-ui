@@ -663,6 +663,801 @@
 			return this._linkedVBar;
 		},
 
+		/** Scrolls content to on the X and Y axis using default scrollLeft and scrollTop.
+		*	Should be used when sure it's desktop/hybrid environment.
+		*	If not sure how to use, use the internal _scrollLeft. */
+		_scrollToXY: function(destX, destY, triggerEvents) {
+			if (destX === undefined || destX < 0) {
+				destX = 0;
+			} else if (destX > this._contentWidth - this._dragMaxX) {
+				destX = this._contentWidth - this._dragMaxX;
+			}
+
+			if (destY === undefined || destY < 0) {
+				destY = 0;
+			} else if (destY > this._contentHeight - this._dragMaxY) {
+				destY = this._contentHeight - this._dragMaxY;
+			}
+
+			if (triggerEvents) {
+				//Trigger scrolling event
+				var bNoCancel = this._trigger("scrolling", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: null,
+					touch: false
+				});
+				if (!bNoCancel) {
+					return;
+				}
+			}
+
+			this._scrollToX(destX, false);
+			this._scrollToY(destY, false);
+		},
+
+		/** Scrolls content to on the X axis using default scrollLeft.
+		*	Should be used when sure it's desktop/hybrid environment.
+		*	If not sure how to use, use the internal _scrollLeft. */
+		_scrollToX: function (destX, triggerEvents) {
+			if (!this._isScrollableH && !this.options.scrollOnlyHBar) {
+				return;
+			}
+
+			//We have another trigger for scrolling in case we want to scroll only on the X axis(horizontal) and not interrupt the Y(vertical) scroll position.
+			if (triggerEvents) {
+				//Trigger scrolling event
+				var	bNoCancel = this._trigger("scrolling", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: true,
+					touch: false
+				});
+				if (!bNoCancel) {
+					return;
+				}
+			}
+
+			if (this.options.scrollOnlyHBar) {
+				this._moveHBarX(destX);
+			} else {
+				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
+				this._syncElemsX(this._container[0], false);
+				/*self._syncHBar(this._container[ 0 ], false);*/
+
+				var curY = this._getContentPositionY();
+				this._updateScrollBarsPos(destX, curY, true);
+			}
+		},
+
+		/** Scrolls content to on the Y axis using default scrollTop.
+		*	Should be used when sure it's desktop/hybrid environment.
+		*	If not sure how to use, use the internal _scrollTop. */
+		_scrollToY: function (destY, triggerEvents) {
+			if (!this._isScrollableV && !this.options.scrollOnlyVBar) {
+				return;
+			}
+
+			//We have another trigger for scrolling in case we want to scroll only on the Y axis(vertical) and not interrupt the X(horizontal) scroll position.
+			if (triggerEvents) {
+				//Trigger scrolling event
+				var	bNoCancel = this._trigger("scrolling", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: false,
+					touch: false
+				});
+				if (!bNoCancel) {
+					return;
+				}
+			}
+
+			if (this.options.scrollOnlyVBar) {
+				this._moveVBarY(destY);
+			} else {
+				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
+				this._syncElemsY(this._container[0], false);
+				/*this._syncVBar(this._container[ 0 ], false);*/
+
+				var curX = this._getContentPositionX();
+				this._updateScrollBarsPos(curX, destY, true);
+			}
+		},
+
+		/** Scroll with predefined inertia that start slowly, speeds up and then slows down again */
+		_smoothWheelScrollY: function (deltaY) {
+			var self = this,
+				smoothingStep = this.options.smoothingStep,
+				smoothingDuration = this.options.smoothingDuration,
+				animationId;
+
+			//We use the formula for parabola y = -3*x*x + 3 to simulate smooth inertia that slows down
+			var x = -1;
+			if (this.options.scrollOnlyVBar) {
+				self._nextY = this._getScrollbarVPoisition();
+			} else {
+				self._nextY = this._getContentPositionY();
+			}
+
+			function inertiaStep() {
+				if (x > 1) {
+					cancelAnimationFrame(animationId);
+					self._numSmoothAnimation -= 1;
+
+					if (!self._numSmoothAnimation) {
+						self._trigger("scrolled", null, {
+							owner: self,
+							smallIncrement: 0,
+							bigIncrement: 0,
+							horizontal: false,
+							touch: false
+						});
+					}
+
+					return;
+				}
+
+				self._nextY += ((-3 * x * x + 3) * (deltaY > 0 ? 1 : -1) * 2) * smoothingStep;
+				self._scrollToY(self._nextY, true);
+
+				//continue the intertia
+				x += 0.08 * (1 / smoothingDuration);
+				animationId = requestAnimationFrame(inertiaStep);
+			}
+
+			//Start the inertia and continue it recursively
+			self._numSmoothAnimation += 1;
+			animationId = requestAnimationFrame(inertiaStep);
+		},
+
+		/** Switch from using 3d transformations to using scrollTop/scrollLeft */
+		_switchFromTouchToMixed: function () {
+			var matrix = this._content.css("-webkit-transform"),
+				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined,
+				startX = values ? Number(values[4]) : 0,
+				startY = values ? Number(values[5]) : 0;
+
+			/* Switch to using scrollTop and scrollLeft attributes instead of transform3d when we have mouse + touchscreen, because they will interfere with each othe r*/
+			if (startX !== 0 || startY !== 0) {
+				//Reset the transform3d position to 0.
+				this._scrollTouchToXY(0, 0, false);
+
+				//Go back to the scrolled position but using scrollTop and scrollLeft this time
+				this._scrollToXY(-startX, -startY, false);
+			}
+		},
+
+		/** Scroll content on the X and Y axis using 3d accelerated transformation. This makes scrolling on touch devices faster
+		*	Should be used when sure it's mobile environment.
+		*	If not sure how to use, use the internal _scrollTop and _scrollLeft. */
+		_scrollTouchToXY: function (destX, destY, triggerEvents) {
+			var bNoCancel,
+				self = this;
+
+			if (triggerEvents) {
+				bNoCancel = this._trigger("scrolling", null, {
+					owner: self,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: null,
+					touch: true
+				});
+				if (!bNoCancel) {
+					return;
+				}
+			}
+
+			if (destX === undefined || destX < 0) {
+				destX = 0;
+			} else if (destX > this._contentWidth - this._dragMaxX) {
+				destX = this._contentWidth - this._dragMaxX;
+			}
+
+			//Only use vertical scroll specific
+			if (this.options.scrollOnlyVBar) {
+				this._content.css({
+					"-webkit-transform": "translate3d(" + (-destX) + "px, 0px, 0px)" /* Chrome, Safari, Opera */
+				});
+				self._scrollToY(destY, false);
+
+				/* Sync other elements */
+				destY = this._getScrollbarVPoisition();
+				self._updateScrollBarsPos(destX, destY);
+				self._syncElemsX(this._content, true, -destX, true);
+				/* self._syncHBar(this._content, true); */
+				return;
+			}
+
+			if (destY === undefined || destY < 0) {
+				destY = 0;
+			} else if (destY > this._contentHeight - this._dragMaxY) {
+				destY = this._contentHeight - this._dragMaxY;
+			}
+
+			var distanceLeftX = -destX;
+			var distanceTopY = -destY;
+
+			if (!this.options.scrollOnlyVBar) {
+				this._content.css({
+					"-webkit-transform": "translate3d(" + distanceLeftX + "px," + distanceTopY + "px, 0px)" /* Chrome, Safari, Opera */
+				});
+			}
+
+			/* Sync other elements */
+			self._syncElemsX(this._content, true);
+			self._syncElemsY(this._content, true);
+			self._updateScrollBarsPos(destX, destY);
+
+			//No need to sync these bars since they don't show on safari and we use custom ones.
+			self._syncHBar(this._content, true);
+			self._syncVBar(this._content, true);
+		},
+
+		/** Initialize main inertia based on the X and Y speeds. Used on touch devices. */
+		_inertiaInit: function (speedX, speedY, bDefaultScroll) {
+			var self = this,
+				x = 0,
+				stepModifer = this.options.smoothingStep,
+				inertiaDuration = this.options.smoothingDuration,
+				animationID;
+
+			self._nextX = self._getContentPositionX();
+			if (this.options.scrollOnlyVBar) {
+				self._nextY = self._getScrollbarVPoisition();
+			} else {
+				self._nextY = self._getContentPositionY();
+			}
+
+			//Sets timeout until executing next movement iteration of the inertia
+			function inertiaStep() {
+				//If inertia is interupted we do not hide the bars here but on endtouch in case another inertia is initiated
+				if (self._bStopInertia) {
+					//we don't hide the scrollbars, because the inertia is interrupted by touch and we hide it on touchend then
+					cancelAnimationFrame(animationID);
+					return;
+				}
+
+				if (x > 6) {
+					self._hideScrollBars(true, true); //hide scrollbars when inertia ends naturally
+					cancelAnimationFrame(animationID);
+
+					self._trigger("scrolled", null, {
+						owner: self,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: null,
+						touch: true
+					});
+					return;
+				}
+
+				if (Math.abs(speedX) > Math.abs(speedY)) {
+					x += 0.05 / (1 * inertiaDuration);
+				} else {
+					x += 0.05 / (1 * inertiaDuration);
+				}
+
+				if (x <= 1) {
+					//We use constant quation to determine the offset without speed falloff befor x reaches 1
+					self._nextX += 1 * speedX * 15 * stepModifer;
+					self._nextY += 1 * speedY * 15 * stepModifer;
+				} else {
+					//We use the quation "y = 2 / (x + 0.55) - 0.3" to determine the offset
+					self._nextX += Math.abs(2 / (x + 0.55) - 0.3) * speedX * 15 * stepModifer;
+					self._nextY += Math.abs(2 / (x + 0.55) - 0.3) * speedY * 15 * stepModifer;
+				}
+
+				//If we have mixed environment we use the default behaviour. i.e. touchscreen + mouse
+				if (bDefaultScroll) {
+					this._scrollToXY(self._nextX, self._nextY, true);
+				} else {
+					self._scrollTouchToXY(self._nextX, self._nextY, true);
+				}
+
+				animationID = requestAnimationFrame(inertiaStep);
+			}
+
+			//Start inertia and continue it recursively
+			animationID = requestAnimationFrame(inertiaStep);
+		},
+
+		/** Get the speed slope angle for the last 5 recorded speeds.
+		*	This is used to determine if speed is decreasing(slope angle < 0) or increasing(slope angle > 0) based on those last speeds
+		*	The technique used here is the same used in calculating trendlines.
+		*/
+		_getSpeedSlope: function (inLastFiveSpeeds) {
+			/** slope < 0 means that there is increase in speed and can start inertia */
+			if (inLastFiveSpeeds.length === 0) {
+				/*no movement*/
+				return 1;
+			}
+			if (inLastFiveSpeeds.length < 5) {
+				/* too quick movement */
+				return -1;
+			}
+
+			/** We try to represent the 5 recorded speeds as points on a coordinate system and then calculate the slope similar to a trendline
+			*	Since we only have one value per record, we will represent the values for (x,y) like: (1, speed1), (2, speed2) ,(3, speed3), (4, speed4), (5, speed5)
+			*
+			*	Vars:
+			*	sumXY - sum of the
+			*	sumX - sum of all X coordinates
+			*	sumY - sum of all Y coordinates
+			*	sumXX - numPoints * (pointX[0]^2 + pointX[1]^2 + pointX[2]^2 + pointX[3]^2 + pointX[4]^2 + pointX[5]^2)
+			*/
+			var numPoints = inLastFiveSpeeds.length,
+				sumXY = 0, sumX = 0, sumY = 0, sumXX = 0;
+
+			for (var pointIndex = 0; pointIndex < numPoints ; pointIndex++) {
+				/* pointX - The x coordinate for the [pointIndex] speed */
+				/* pointY - The y coordinate for the [pointIndex] speed */
+				var pointX = pointIndex,
+					pointY = Math.abs(inLastFiveSpeeds[pointIndex]);
+
+				sumXY += pointX * pointY;
+				sumX += pointX;
+				sumY += pointY;
+				sumXX += pointX * pointX;
+			}
+
+			var slopeAngle = (numPoints * sumXY - sumX * sumY) / (numPoints * sumXX - sumX * sumX);
+
+			return slopeAngle;
+		},
+
+		/** Syncs the main content element horizontally */
+		_syncContentX: function (baseElem, useTransform) {
+			var self = this,
+				destX, destY;
+
+			if (!baseElem) {
+				return;
+			}
+
+			if (useTransform) {
+				destX = self._getContentPositionX();
+				destY = self._getContentPositionY();
+
+				this._content.css({
+					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
+				});
+
+			} else {
+				destX = baseElem.scrollLeft;
+
+				//this is to not affect the scrolling when clicking on track area of a linked scrollbarH
+				self._scrollFromSyncContentH = true;
+				this._container.scrollLeft(destX);
+			}
+		},
+
+		/** Syncs the main content element vertically */
+		_syncContentY: function (baseElem, useTransform) {
+			var self = this,
+				destX, destY;
+
+			if (!baseElem) {
+				return;
+			}
+
+			if (useTransform) {
+				destX = self._getContentPositionX();
+				destY = self._getContentPositionY();
+
+				this._content.css({
+					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
+				});
+
+			} else {
+				destY = baseElem.scrollTop;
+
+				//this is to not affect the scrolling when clicking on track area of a linked scrollbarV
+				self._scrollFromSyncContentV = true;
+				this._container.scrollTop(destY);
+			}
+		},
+
+		//Syncs elements that are linked on X axis
+		_syncElemsX: function (baseElem, useTransform, inDestX, useDestination) {
+			var destX, index;
+
+			if (!baseElem && !useDestination) {
+				return;
+			}
+
+			if (useTransform) {
+				if (!useDestination) {
+					var matrix = this._content.css("-webkit-transform");
+					var values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
+					destX = values ? Number(values[4]) : -this._getContentPositionX();
+				} else {
+					destX = inDestX;
+				}
+
+				if (this._linkedHElems.length > 0) {
+					for (index in this._linkedHElems) {
+						this._linkedHElems[index].css({
+							"-webkit-transform": "translate3d(" + destX + "px,0px, 0px)"
+						});
+					}
+				}
+			} else {
+				destX = baseElem.scrollLeft;
+
+				if (this._linkedHElems.length > 0) {
+					for (index in this._linkedHElems) {
+						if (this._linkedHElems[index][0]) {
+							this._linkedHElems[index][0].parentElement.scrollLeft = destX;
+						}
+
+					}
+				}
+			}
+		},
+
+		//Syncs elements that are linked on Y axis
+		_syncElemsY: function (baseElem, useTransform, inDestY, useDestination) {
+			var destY, index;
+
+			if (!baseElem && !useDestination) {
+				return;
+			}
+
+			if (useTransform) {
+				if (!useDestination) {
+					var matrix = this._content.css("-webkit-transform");
+					var values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
+					destY = values ? Number(values[5]) : -this._getContentPositionY();
+				} else {
+					destY = inDestY;
+				}
+
+				if (this._linkedVElems.length > 0) {
+					for (index in this._linkedVElems) {
+						//get the current X position
+						var matrixElem = this._linkedVElems[index].css("-webkit-transform");
+						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
+						var destX = valuesElem ? Number(valuesElem[4]) : -this._getContentPositionX();
+
+						this._linkedVElems[index].css({
+							"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
+						});
+					}
+				}
+			} else {
+				destY = baseElem.scrollTop;
+
+				if (this._linkedVElems.length > 0) {
+					for (index in this._linkedVElems) {
+						if (this._linkedVElems[index][0]) {
+							this._linkedVElems[index][0].parentElement.scrollTop = destY;
+						}
+
+					}
+				}
+			}
+		},
+
+		//Syncs horizontal bars that are linked on the X axis
+		_syncHBar: function (baseElem, useTransform) {
+			if (!baseElem) {
+				return;
+			}
+
+			var destX;
+			if (useTransform) {
+				destX = this._getContentPositionX();
+			} else {
+				destX = baseElem.scrollLeft;
+			}
+
+			if (this._linkedHBar) {
+				this._ignoreHScrollBarEvents = true;
+				this._linkedHBar.scrollLeft(destX);
+			}
+		},
+
+		//Syncs vertical bars that are linked on the Y axis
+		_syncVBar: function (baseElem, useTransform) {
+			if (!baseElem) {
+				return;
+			}
+
+			var destY;
+			if (useTransform) {
+				destY = this._getContentPositionY();
+			} else {
+				destY = baseElem.scrollTop;
+			}
+
+			if (this._linkedVBar) {
+				this._ignoreVScrollBarEvents = true;
+				this._linkedVBar.scrollTop(destY);
+			}
+		},
+
+		_moveHBarX: function (destX) {
+			if (this._linkedHBar) {
+				this._linkedHBar.scrollLeft(destX);
+			}
+		},
+
+		_moveVBarY: function (destY) {
+			if (this._linkedVBar) {
+				this._linkedVBar.scrollTop(destY);
+			}
+		},
+
+
+		_onScrollContainer: function () {
+			if (!this._bMixedEnvironment) {
+				this._bMixedEnvironment = true;
+
+				/* Make sure we are not scrolled using 3d transformation */
+				this._switchFromTouchToMixed();
+			}
+
+			if (!this.options.scrollOnlyVBar && !this._scrollFromSyncContentV) {
+				this._syncVBar(this._container[0], false);
+				this._syncElemsY(this._container[0], false);
+			} else {
+				this._scrollFromSyncContentV = false;
+			}
+
+			if (!this.options.scrollOnlyHBar && !this._scrollFromSyncContentH) {
+				this._syncHBar(this._container[0], false);
+				this._syncElemsX(this._container[0], false);
+			} else {
+				this._scrollFromSyncContentH = false;
+			}
+
+			this._updateScrollBarsPos(this._container.scrollLeft(), this._container.scrollTop());
+
+			return false;
+		},
+
+		_onWheelContainer: function (event) {
+			var evt = event.originalEvent;
+			this._bStopInertia = true;
+
+			if (!this._bMixedEnvironment) {
+				this._bMixedEnvironment = true;
+
+				/* Make sure we are not scrolled using 3d transformation */
+				this._switchFromTouchToMixed();
+			}
+
+			if (this.options.smoothing) {
+				//Scroll with small inertia
+				this._smoothWheelScrollY(evt.deltaY);
+			} else {
+				//Normal scroll
+				if (this.options.scrollOnlyVBar) {
+					startY = this._getScrollbarVPoisition();
+				} else {
+					startY = this._getContentPositionY();
+				}
+
+				var scrollStep = this.options.wheelStep;
+				this._scrollToY(startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep, true);
+
+				//Trigger scrolled event
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: false,
+					touch: false
+				});
+			}
+
+			return false;
+		},
+
+		_onPointerDownContainer: function (event) {
+			var evt = event.originalEvent;
+			if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch")) {
+				return;
+			}
+
+			//setPointerCaptureFName is the name of the function that is supported
+			event.target[setPointerCaptureFName](this._pointer = evt.pointerId);
+
+			//create gestureObject only one time to prevent overlapping during intertia
+			if (!this._gestureObject) {
+				this._gestureObject = new MSGesture();
+				this._gestureObject.target = this._container[0];
+			}
+			this._gestureObject.addPointer(this._pointer);
+		},
+
+		_onPointerUpContainer: function (event) {
+			if (!this._pointer) {
+				return;
+			}
+			/* releasePointerCaptureFName is the name of the function that is supported */
+			event.target[releasePointerCaptureFName](this._pointer);
+
+			delete this._pointer;
+		},
+
+		_onMSGestureStartContainer: function (event) {
+			if (this.options.scrollOnlyVBar) {
+				this._startX = this._getScrollbarHPoisition();
+				this._startY = this._getScrollbarVPoisition();
+			} else {
+				this._startX = this._getContentPositionX();
+				this._startY = this._getContentPositionY();
+			}
+
+			this._touchStartX = event.originalEvent.screenX;
+			this._touchStartY = event.originalEvent.screenY;
+			this._moving = true;
+		},
+
+		_onMSGestureChangeContainer: function (event) {
+			if (!this._moving) {
+				return;
+			}
+
+			var touchPos = event.originalEvent,
+				destX = this._startX + this._touchStartX - touchPos.screenX,
+				destY = this._startY + this._touchStartY - touchPos.screenY;
+
+			this._scrollToXY(destX, destY, true);
+		},
+
+		_onMSGestureEndContainer: function () {
+			this._moving = false;
+		},
+
+		_onTouchStartContainer: function (event) {
+			var touch = event.originalEvent.touches[0];
+
+			if (this.options.scrollOnlyHBar) {
+				this._startX = this._getScrollbarHPoisition();
+			} else {
+				this._startX = this._getContentPositionX();
+			}
+			if (this.options.scrollOnlyVBar) {
+				this._startY = this._getScrollbarVPoisition();
+			} else {
+				this._startY = this._getContentPositionY();
+			}
+
+			this._touchStartX = touch.pageX;
+			this._touchStartY = touch.pageY;
+			this._moving = true;
+
+			this._bStopInertia = true; //stops any current ongoing inertia
+			this._speedDecreasing = false;
+
+			this._lastTouchEnd = new Date().getTime();
+			this._lastTouchX = touch.pageX;
+			this._lastTouchY = touch.pageY;
+			this._savedSpeedsX = [];
+			this._savedSpeedsY = [];
+
+			this._showScrollBars(false, true);
+		},
+
+		_onTouchMoveContainer: function (event) {
+			var touch = event.originalEvent.touches[0];
+			var destX = this._startX + this._touchStartX - touch.pageX;
+			var destY = this._startY + this._touchStartY - touch.pageY;
+
+			/*Handle complex touchmoves when swipe stops but the toch doesn't end and then a swipe is initiated again */
+			/***********************************************************/
+			var speedSlopeX = this._getSpeedSlope(this._savedSpeedsX);
+			var speedSlopeY = this._getSpeedSlope(this._savedSpeedsY);
+
+			if (speedSlopeY > -0.1 || speedSlopeX > -0.1) {
+				this._speedDecreasing = true;
+			} else {
+				this._speedDecreasing = false;
+			}
+
+			var timeFromLastTouch = (new Date().getTime()) - this._lastTouchEnd;
+			if (timeFromLastTouch < 100) {
+				var speedX = (this._lastTouchX - touch.pageX) / timeFromLastTouch;
+				var speedY = (this._lastTouchY - touch.pageY) / timeFromLastTouch;
+
+				//Save the last 5 speeds between two touchmoves on X axis
+				if (this._savedSpeedsX.length < 5) {
+					this._savedSpeedsX.push(speedX);
+				} else {
+					this._savedSpeedsX.shift();
+					this._savedSpeedsX.push(speedX);
+				}
+
+				//Save the last 5 speeds between two touchmoves on Y axis
+				if (this._savedSpeedsY.length < 5) {
+					this._savedSpeedsY.push(speedY);
+				} else {
+					this._savedSpeedsY.shift();
+					this._savedSpeedsY.push(speedY);
+				}
+			}
+			this._lastTouchEnd = new Date().getTime();
+			this._lastMovedX = this._lastTouchX - touch.pageX;
+			this._lastMovedY = this._lastTouchY - touch.pageY;
+			this._lastTouchX = touch.pageX;
+			this._lastTouchY = touch.pageY;
+			/***********************************************************/
+
+			//Check if browser is Firefox
+			if (navigator.userAgent.indexOf("Firefox") > -1 || this._bMixedEnvironment) {
+				//Better performance on Firefox for Android
+				this._scrollToXY(destX, destY, true);
+			} else {
+				this._scrollTouchToXY(destX, destY, true);
+			}
+
+			// return true if there was no movement so rest of the screen can scroll
+			return this._startX === destX && this._startY === destY;
+		},
+
+		_onTouchEndContainer: function () {
+			var speedX = 0;
+			var speedY = 0;
+
+			//savedSpeedsX and savedSpeedsY have same length
+			for (var i = this._savedSpeedsX.length - 1; i >= 0; i--) {
+				speedX += this._savedSpeedsX[i];
+				speedY += this._savedSpeedsY[i];
+			}
+			speedX = speedX / this._savedSpeedsX.length;
+			speedY = speedY / this._savedSpeedsY.length;
+
+			//Use the lastMovedX and lastMovedY to determine if the swipe stops without lifting the finger so we don't start inertia
+			if ((Math.abs(speedX) > 0.1 || Math.abs(speedY) > 0.1) &&
+					(Math.abs(this._lastMovedX) > 2 || Math.abs(this._lastMovedY) > 2)) {
+				this._bStopInertia = false;
+				this._showScrollBars(false, true);
+				this._inertiaInit(speedX, speedY, this._bMixedEnvironment);
+				this._moving = true;
+			} else {
+				this._hideScrollBars(true, true);
+
+				//Trigger scrolled event
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: true,
+					touch: true
+				});
+			}
+
+			this._moving = false;
+		},
+
+		_onMouseEnterContainer: function () {
+			this._mOverContainer = true;
+
+			clearTimeout(this._hideScrollbarID);
+			if (!this._toSimpleScrollbarID && !this._bMouseDownH && !this._bMouseDownV) {
+				//We move the mouse inside the container but we weren't previously hovering the scrollbars (that's why we don't have _toSimpleScrollbarID for a timeout to switch to simple scrollbars).
+				//So we instantly show simple scrollbars.
+				this._showScrollBars(false, true);
+			}
+		},
+
+		_onMouseLeaveContainer: function () {
+			var self = this;
+
+			this._mOverContainer = false;
+			if (!this._bMouseDownV && !this._bMouseDownH) {
+				//Hide scrollbars after 2 secs. We cencel the timeout if we enter scrollbars area.
+				this._hideScrollbarID = setTimeout(function () {
+					self._hideScrollBars(false);
+				}, 2000);
+			}
+		},
+
 		_createScrollBars: function () {
 			if (this.options.alwaysHiddenBars) {
 				return;
@@ -826,10 +1621,13 @@
 				});
 			}
 
+			/* We bind it to the body to be able to detect while holding the Thumb Drag and moving out of the scrollbar area. It should still scroll while still holding and moving inside the window */
 			$("body").on("mousemove", $.proxy(this._onMouseMoveVDrag, this));
+			/* We bind it to the wondow to be able to determine while the user releases the mouse even when it is out of the browser window */
 			$(window).on("mouseup", $.proxy(this._onMouseUpVScrollbar, this));
 		},
 
+		/** Used when one of the Arrow Up/Down or Vertical Track is being used by holding mouse button on them to constantly scroll on the Y axis */
 		_scrollTimeoutY: function (step, bSmallIncement) {
 			var	bNoCancel,
 				eventArgs = {
@@ -1254,10 +2052,13 @@
 				});
 			}
 
+			/* We bind it to the body to be able to detect while holding the Thumb Drag and moving out of the scrollbar area. It should still scroll while still holding and moving inside the window */
 			$("body").on("mousemove", $.proxy(this._onMouseMoveHDrag, this));
+			/* We bind it to the wondow to be able to determine while the user releases the mouse even when it is out of the browser window */
 			$(window).on("mouseup", $.proxy(this._onMouseUpHScrollbar, this));
 		},
 
+		/** Used when one of the Arrow Left/Right or Horizontal Track is being used by holding mouse button on them to constantly scroll on the X axis */
 		_scrollTimeoutX: function (step, bSmallIncement) {
 			var	self = this,
 				bNoCancel,
@@ -1666,7 +2467,7 @@
 			}
 		},
 
-		_updateScrollBars: function (destX, destY) {
+		_updateScrollBarsPos: function (destX, destY) {
 			if (this.options.useNative || this.options.alwaysHiddenBars) {
 				return;
 			}
@@ -1810,782 +2611,6 @@
 			}
 		},
 
-		/** Scrolls content to on the X axis using default scrollLeft.
-		*	Should be used when sure it's desktop/hybrid environment.
-		*	If not sure how to use, use the internal _scrollLeft. */
-		_scrollToX: function (destX, triggerEvents) {
-			if (!this._isScrollableH && !this.options.scrollOnlyHBar) {
-				return;
-			}
-
-			if (triggerEvents) {
-				//Trigger scrolling event
-				var bNoCancel,
-					self = this;
-
-				bNoCancel = this._trigger("scrolling", null, {
-					owner: self,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: true,
-					touch: false
-				});
-				if (!bNoCancel) {
-					return;
-				}
-			}
-
-			if (this.options.scrollOnlyHBar) {
-				this._moveHBarX(destX);
-			} else {
-				if (destX === undefined || destX < 0) {
-					destX = 0;
-				} else if (destX > this._contentWidth - this._dragMaxX) {
-					destX = this._contentWidth - this._dragMaxX;
-				}
-
-				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
-				this._syncElemsX(this._container[ 0 ], false);
-				/*self._syncHBar(this._container[ 0 ], false);*/
-
-				var curY = this._getContentPositionY();
-				this._updateScrollBars(destX, curY, true);
-			}
-		},
-
-		/** Scrolls content to on the Y axis using default scrollTop.
-		*	Should be used when sure it's desktop/hybrid environment.
-		*	If not sure how to use, use the internal _scrollTop. */
-		_scrollToY: function (destY, triggerEvents) {
-			if (!this._isScrollableV && !this.options.scrollOnlyVBar) {
-				return;
-			}
-
-			//To Do triggerEvents option for ScrollToY and when both using to scroll X and Y with these
-			//Trigger scrolling event
-			var bNoCancel,
-				self = this;
-
-			bNoCancel = this._trigger("scrolling", null, {
-				owner: self,
-				smallIncrement: 0,
-				bigIncrement: 0,
-				horizontal: false,
-				touch: false
-			});
-			if (!bNoCancel) {
-				return;
-			}
-
-			if (this.options.scrollOnlyVBar) {
-				this._moveVBarY(destY);
-			} else {
-				if (destY === undefined || destY < 0) {
-					destY = 0;
-				} else if (destY > this._contentHeight - this._dragMaxY) {
-					destY = this._contentHeight - this._dragMaxY;
-				}
-
-				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
-				this._syncElemsY(this._container[ 0 ], false);
-				/*this._syncVBar(this._container[ 0 ], false);*/
-
-				var curX = this._getContentPositionX();
-				this._updateScrollBars(curX, destY, true);
-			}
-		},
-
-		/** Scroll with predefined inertia that start slowly, speeds up and then slows down again */
-		_smoothWheelScrollY: function (deltaY) {
-			var self = this,
-				smoothingStep = this.options.smoothingStep,
-				smoothingDuration = this.options.smoothingDuration,
-				animationId;
-
-			//We use the formula for parabola y = -3*x*x + 3 to simulate smooth inertia that slows down
-			var x = -1;
-			if (this.options.scrollOnlyVBar) {
-				self._nextY = this._getScrollbarVPoisition();
-			} else {
-				self._nextY = this._getContentPositionY();
-			}
-
-			function inertiaStep() {
-				if (x > 1) {
-					cancelAnimationFrame(animationId);
-					self._numSmoothAnimation -= 1;
-
-					if (!self._numSmoothAnimation) {
-						self._trigger("scrolled", null, {
-							owner: self,
-							smallIncrement: 0,
-							bigIncrement: 0,
-							horizontal: false,
-							touch: false
-						});
-					}
-
-					return;
-				}
-
-				self._nextY += ((-3 * x * x + 3) * (deltaY > 0 ? 1 : -1) * 2) * smoothingStep;
-				self._scrollToY(self._nextY);
-
-				//continue the intertia
-				x += 0.08 * (1 / smoothingDuration);
-				animationId = requestAnimationFrame(inertiaStep);
-			}
-
-			//Start the inertia and continue it recursively
-			self._numSmoothAnimation += 1;
-			animationId = requestAnimationFrame(inertiaStep);
-		},
-
-		/** Switch from using 3d transformations to using scrollTop/scrollLeft */
-		_switchFromTouchToMixed: function () {
-			var matrix = this._content.css("-webkit-transform"),
-				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined,
-				startX = values ? Number(values[ 4 ]) : 0,
-				startY = values ? Number(values[ 5 ]) : 0;
-
-			/* Switch to using scrollTop and scrollLeft attributes instead of transform3d when we have mouse + touchscreen, because they will interfere with each othe r*/
-			if (startX !== 0 || startY !== 0) {
-				//Reset the transform3d position to 0.
-				this._scrollTouchToXY(0, 0, false);
-
-				//Go back to the scrolled position but using scrollTop and scrollLeft this time
-				this._scrollToX(-startX, false);
-				this._scrollToY(-startY, false);
-			}
-		},
-
-		/** Scroll content on the X and Y axis using 3d accelerated transformation. This makes scrolling on touch devices faster
-		*	Should be used when sure it's mobile environment.
-		*	If not sure how to use, use the internal _scrollTop and _scrollLeft. */
-		_scrollTouchToXY: function (destX, destY, triggerEvents) {
-			var bNoCancel,
-				self = this;
-
-			if (triggerEvents) {
-				bNoCancel = this._trigger("scrolling", null, {
-					owner: self,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: false,
-					touch: true
-				});
-				if (!bNoCancel) {
-					return;
-				}
-			}
-
-			if (destX === undefined || destX < 0) {
-				destX = 0;
-			} else if (destX > this._contentWidth - this._dragMaxX) {
-				destX = this._contentWidth - this._dragMaxX;
-			}
-
-			//Only use vertical scroll specific
-			if (this.options.scrollOnlyVBar) {
-				this._content.css({
-					"-webkit-transform": "translate3d(" + (-destX) + "px, 0px, 0px)" /* Chrome, Safari, Opera */
-				});
-				self._scrollToY(destY);
-
-				/* Sync other elements */
-				destY = this._getScrollbarVPoisition();
-				self._updateScrollBars(destX, destY);
-				self._syncElemsX(this._content, true, -destX, true);
-				/* self._syncHBar(this._content, true); */
-				return;
-			}
-
-			if (destY === undefined || destY < 0) {
-				destY = 0;
-			} else if (destY > this._contentHeight - this._dragMaxY) {
-				destY = this._contentHeight - this._dragMaxY;
-			}
-
-			var distanceLeftX = -destX;
-			var distanceTopY = -destY;
-
-			if (!this.options.scrollOnlyVBar) {
-				this._content.css({
-					"-webkit-transform": "translate3d(" + distanceLeftX + "px," + distanceTopY + "px, 0px)" /* Chrome, Safari, Opera */
-				});
-			}
-
-			/* Sync other elements */
-			self._syncElemsX(this._content, true);
-			self._syncElemsY(this._content, true);
-			self._updateScrollBars(destX, destY);
-
-			//No need to sync these bars since they don't show on safari and we use custom ones.
-			self._syncHBar(this._content, true);
-			self._syncVBar(this._content, true);
-		},
-
-		/** Initialize main inertia based on the X and Y speeds. Used on touch devices. */
-		_inertiaInit: function (speedX, speedY, bDefaultScroll) {
-			var self = this,
-				x = 0,
-				stepModifer = this.options.smoothingStep,
-				inertiaDuration = this.options.smoothingDuration,
-				animationID;
-
-			self._nextX = self._getContentPositionX();
-			if (this.options.scrollOnlyVBar) {
-				self._nextY = self._getScrollbarVPoisition();
-			} else {
-				self._nextY = self._getContentPositionY();
-			}
-
-			//Sets timeout until executing next movement iteration of the inertia
-			function inertiaStep() {
-				//If inertia is interupted we do not hide the bars here but on endtouch in case another inertia is initiated
-				if (self._bStopInertia) {
-					//we don't hide the scrollbars, because the inertia is interrupted by touch and we hide it on touchend then
-					cancelAnimationFrame(animationID);
-					return;
-				}
-
-				if (x > 6) {
-					self._hideScrollBars(true, true); //hide scrollbars when inertia ends naturally
-					cancelAnimationFrame(animationID);
-
-					self._trigger("scrolled", null, {
-						owner: self,
-						smallIncrement: 0,
-						bigIncrement: 0,
-						horizontal: true,
-						touch: true
-					});
-					return;
-				}
-
-				if (Math.abs(speedX) > Math.abs(speedY)) {
-					x += 0.05 / (1 * inertiaDuration);
-				} else {
-					x += 0.05 / (1 * inertiaDuration);
-				}
-
-				if (x <= 1) {
-					//We use constant quation to determine the offset without speed falloff befor x reaches 1
-					self._nextX += 1 * speedX * 15 * stepModifer;
-					self._nextY += 1 * speedY * 15 * stepModifer;
-				} else {
-					//We use the quation "y = 2 / (x + 0.55) - 0.3" to determine the offset
-					self._nextX += Math.abs(2 / (x + 0.55) - 0.3) * speedX * 15 * stepModifer;
-					self._nextY += Math.abs(2 / (x + 0.55) - 0.3) * speedY * 15 * stepModifer;
-				}
-
-				//If we have mixed environment we use the default behaviour. i.e. touchscreen + mouse
-				if (bDefaultScroll) {
-					self._scrollToX(self._nextX, true);
-					self._scrollToY(self._nextY);
-				} else {
-					self._scrollTouchToXY(self._nextX, self._nextY, true);
-				}
-
-				animationID = requestAnimationFrame(inertiaStep);
-			}
-
-			//Start inertia and continue it recursively
-			animationID = requestAnimationFrame(inertiaStep);
-		},
-
-		/** Get the speed slope angle for the last 5 recorded speeds.
-		*	This is used to determine if speed is decreasing(slope angle < 0) or increasing(slope angle > 0) based on those last speeds
-		*	The technique used here is the same used in calculating trendlines.
-		*/
-		_getSpeedSlope: function (inLastFiveSpeeds) {
-			/** slope < 0 means that there is increase in speed and can start inertia */
-			if (inLastFiveSpeeds.length === 0) {
-				/*no movement*/
-				return 1;
-			}
-			if (inLastFiveSpeeds.length < 5) {
-				/* too quick movement */
-				return -1;
-			}
-
-			/** We try to represent the 5 recorded speeds as points on a coordinate system and then calculate the slope similar to a trendline
-			*	Since we only have one value per record, we will represent the values for (x,y) like: (1, speed1), (2, speed2) ,(3, speed3), (4, speed4), (5, speed5)
-			*
-			*	Vars:
-			*	sumXY - sum of the
-			*	sumX - sum of all X coordinates
-			*	sumY - sum of all Y coordinates
-			*	sumXX - numPoints * (pointX[0]^2 + pointX[1]^2 + pointX[2]^2 + pointX[3]^2 + pointX[4]^2 + pointX[5]^2)
-			*/
-			var numPoints = inLastFiveSpeeds.length,
-				sumXY = 0, sumX = 0, sumY = 0, sumXX = 0;
-
-			for (var pointIndex = 0; pointIndex < numPoints ; pointIndex++) {
-				/* pointX - The x coordinate for the [pointIndex] speed */
-				/* pointY - The y coordinate for the [pointIndex] speed */
-				var pointX = pointIndex,
-					pointY = Math.abs(inLastFiveSpeeds[ pointIndex ]);
-
-				sumXY += pointX * pointY;
-				sumX += pointX;
-				sumY += pointY;
-				sumXX += pointX * pointX;
-			}
-
-			var slopeAngle = (numPoints * sumXY - sumX * sumY) / (numPoints * sumXX - sumX * sumX);
-
-			return slopeAngle;
-		},
-
-		/** Syncs the main content element horizontally */
-		_syncContentX: function (baseElem, useTransform) {
-			var self = this,
-				destX, destY;
-
-			if (!baseElem) {
-				return;
-			}
-
-			if (useTransform) {
-				destX = self._getContentPositionX();
-				destY = self._getContentPositionY();
-
-				this._content.css({
-					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
-				});
-
-			} else {
-				destX = baseElem.scrollLeft;
-
-				//this is to not affect the scrolling when clicking on track area of a linked scrollbarH
-				self._scrollFromSyncContentH = true;
-				this._container.scrollLeft(destX);
-			}
-		},
-
-		/** Syncs the main content element vertically */
-		_syncContentY: function (baseElem, useTransform) {
-			var self = this,
-				destX, destY;
-
-			if (!baseElem) {
-				return;
-			}
-
-			if (useTransform) {
-				destX = self._getContentPositionX();
-				destY = self._getContentPositionY();
-
-				this._content.css({
-					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
-				});
-
-			} else {
-				destY = baseElem.scrollTop;
-
-				//this is to not affect the scrolling when clicking on track area of a linked scrollbarV
-				self._scrollFromSyncContentV = true;
-				this._container.scrollTop(destY);
-			}
-		},
-
-		//Syncs elements that are linked on X axis
-		_syncElemsX: function (baseElem, useTransform, inDestX, useDestination) {
-			var destX, index;
-
-			if (!baseElem && !useDestination) {
-				return;
-			}
-
-			if (useTransform) {
-				if (!useDestination) {
-					var matrix = this._content.css("-webkit-transform");
-					var values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-					destX = values ? Number(values[ 4 ]) : -this._getContentPositionX();
-				} else {
-					destX = inDestX;
-				}
-
-				if (this._linkedHElems.length > 0) {
-					for (index in this._linkedHElems) {
-						this._linkedHElems[ index ].css({
-							"-webkit-transform": "translate3d(" + destX + "px,0px, 0px)"
-						});
-					}
-				}
-			} else {
-				destX = baseElem.scrollLeft;
-
-				if (this._linkedHElems.length > 0) {
-					for (index in this._linkedHElems) {
-						if (this._linkedHElems[ index ][ 0 ]) {
-							this._linkedHElems[ index ][ 0 ].parentElement.scrollLeft = destX;
-						}
-
-					}
-				}
-			}
-		},
-
-		//Syncs elements that are linked on Y axis
-		_syncElemsY: function (baseElem, useTransform, inDestY, useDestination) {
-			var destY, index;
-
-			if (!baseElem && !useDestination) {
-				return;
-			}
-
-			if (useTransform) {
-				if (!useDestination) {
-					var matrix = this._content.css("-webkit-transform");
-					var values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-					destY = values ? Number(values[ 5 ]) : -this._getContentPositionY();
-				} else {
-					destY = inDestY;
-				}
-
-				if (this._linkedVElems.length > 0) {
-					for (index in this._linkedVElems) {
-						//get the current X position
-						var matrixElem = this._linkedVElems[ index ].css("-webkit-transform");
-						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
-						var destX = valuesElem ? Number(valuesElem[ 4 ]) : -this._getContentPositionX();
-
-						this._linkedVElems[ index ].css({
-							"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
-						});
-					}
-				}
-			} else {
-				destY = baseElem.scrollTop;
-
-				if (this._linkedVElems.length > 0) {
-					for (index in this._linkedVElems) {
-						if (this._linkedVElems[ index ][ 0 ]) {
-							this._linkedVElems[ index ][ 0 ].parentElement.scrollTop = destY;
-						}
-
-					}
-				}
-			}
-		},
-
-		//Syncs horizontal bars that are linked on the X axis
-		_syncHBar: function (baseElem, useTransform) {
-			if (!baseElem) {
-				return;
-			}
-
-			var destX;
-			if (useTransform) {
-				destX = this._getContentPositionX();
-			} else {
-				destX = baseElem.scrollLeft;
-			}
-
-			if (this._linkedHBar) {
-				this._ignoreHScrollBarEvents = true;
-				this._linkedHBar.scrollLeft(destX);
-			}
-		},
-
-		//Syncs vertical bars that are linked on the Y axis
-		_syncVBar: function (baseElem, useTransform) {
-			if (!baseElem) {
-				return;
-			}
-
-			var destY;
-			if (useTransform) {
-				destY = this._getContentPositionY();
-			} else {
-				destY = baseElem.scrollTop;
-			}
-
-			if (this._linkedVBar) {
-				this._ignoreVScrollBarEvents = true;
-				this._linkedVBar.scrollTop(destY);
-			}
-		},
-
-		_moveHBarX: function (destX) {
-			if (this._linkedHBar) {
-				this._linkedHBar.scrollLeft(destX);
-			}
-		},
-
-		_moveVBarY: function (destY) {
-			if (this._linkedVBar) {
-				this._linkedVBar.scrollTop(destY);
-			}
-		},
-
-		_onScrollContainer: function() {
-			if (!this._bMixedEnvironment) {
-				this._bMixedEnvironment = true;
-
-				/* Make sure we are not scrolled using 3d transformation */
-				this._switchFromTouchToMixed();
-			}
-
-			if (!this.options.scrollOnlyVBar && !this._scrollFromSyncContentV) {
-				this._syncVBar(this._container[0], false);
-				this._syncElemsY(this._container[0], false);
-			} else {
-				this._scrollFromSyncContentV = false;
-			}
-
-			if (!this.options.scrollOnlyHBar && !this._scrollFromSyncContentH) {
-				this._syncHBar(this._container[0], false);
-				this._syncElemsX(this._container[0], false);
-			} else {
-				this._scrollFromSyncContentH = false;
-			}
-
-			this._updateScrollBars(this._container.scrollLeft(), this._container.scrollTop());
-
-			return false;
-		},
-
-		_onWheelContainer: function (event) {
-			var evt = event.originalEvent;
-			this._bStopInertia = true;
-
-			if (!this._bMixedEnvironment) {
-				this._bMixedEnvironment = true;
-
-				/* Make sure we are not scrolled using 3d transformation */
-				this._switchFromTouchToMixed();
-			}
-
-			if (this.options.smoothing) {
-				//Scroll with small inertia
-				this._smoothWheelScrollY(evt.deltaY);
-			} else {
-				//Normal scroll
-				if (this.options.scrollOnlyVBar) {
-					startY = this._getScrollbarVPoisition();
-				} else {
-					startY = this._getContentPositionY();
-				}
-
-				var scrollStep = this.options.wheelStep;
-				this._scrollToY(startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep);
-
-				//Trigger scrolled event
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: false,
-					touch: false
-				});
-			}
-
-			return false;
-		},
-
-		_onPointerDownContainer: function (event) {
-			var evt = event.originalEvent;
-			if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch")) {
-				return;
-			}
-
-			//setPointerCaptureFName is the name of the function that is supported
-			event.target[setPointerCaptureFName](this._pointer = evt.pointerId);
-
-			//create gestureObject only one time to prevent overlapping during intertia
-			if (!this._gestureObject) {
-				this._gestureObject = new MSGesture();
-				this._gestureObject.target = this._container[0];
-			}
-			this._gestureObject.addPointer(this._pointer);
-		},
-
-		_onPointerUpContainer: function(event) {
-			if (!this._pointer) {
-				return;
-			}
-			/* releasePointerCaptureFName is the name of the function that is supported */
-			event.target[releasePointerCaptureFName](this._pointer);
-
-			delete this._pointer;
-		},
-
-		_onMSGestureStartContainer: function(event) {
-			if (this.options.scrollOnlyVBar) {
-				this._startX = this._getScrollbarHPoisition();
-				this._startY = this._getScrollbarVPoisition();
-			} else {
-				this._startX = this._getContentPositionX();
-				this._startY = this._getContentPositionY();
-			}
-
-			this._touchStartX = event.originalEvent.screenX;
-			this._touchStartY = event.originalEvent.screenY;
-			this._moving = true;
-		},
-
-		_onMSGestureChangeContainer: function(event) {
-			if (!this._moving) {
-				return;
-			}
-
-			var touchPos = event.originalEvent;
-			this._scrollToX(this._startX + this._touchStartX - touchPos.screenX, true);
-			this._scrollToY(this._startY + this._touchStartY - touchPos.screenY);
-		},
-
-		_onMSGestureEndContainer: function() {
-			this._moving = false;
-		},
-
-		_onTouchStartContainer: function (event) {
-			var touch = event.originalEvent.touches[0];
-
-			if (this.options.scrollOnlyHBar) {
-				this._startX = this._getScrollbarHPoisition();
-			} else {
-				this._startX = this._getContentPositionX();
-			}
-			if (this.options.scrollOnlyVBar) {
-				this._startY = this._getScrollbarVPoisition();
-			} else {
-				this._startY = this._getContentPositionY();
-			}
-
-			this._touchStartX = touch.pageX;
-			this._touchStartY = touch.pageY;
-			this._moving = true;
-
-			this._bStopInertia = true; //stops any current ongoing inertia
-			this._speedDecreasing = false;
-
-			this._lastTouchEnd = new Date().getTime();
-			this._lastTouchX = touch.pageX;
-			this._lastTouchY = touch.pageY;
-			this._savedSpeedsX = [];
-			this._savedSpeedsY = [];
-
-			this._showScrollBars(false, true);
-		},
-
-		_onTouchMoveContainer: function (event) {
-			var touch = event.originalEvent.touches[0];
-			var destX = this._startX + this._touchStartX - touch.pageX;
-			var destY = this._startY + this._touchStartY - touch.pageY;
-
-			/*Handle complex touchmoves when swipe stops but the toch doesn't end and then a swipe is initiated again */
-			/***********************************************************/
-			var speedSlopeX = this._getSpeedSlope(this._savedSpeedsX);
-			var speedSlopeY = this._getSpeedSlope(this._savedSpeedsY);
-
-			if (speedSlopeY > -0.1 || speedSlopeX > -0.1) {
-				this._speedDecreasing = true;
-			} else {
-				this._speedDecreasing = false;
-			}
-
-			var timeFromLastTouch = (new Date().getTime()) - this._lastTouchEnd;
-			if (timeFromLastTouch < 100) {
-				var speedX = (this._lastTouchX - touch.pageX) / timeFromLastTouch;
-				var speedY = (this._lastTouchY - touch.pageY) / timeFromLastTouch;
-
-				//Save the last 5 speeds between two touchmoves on X axis
-				if (this._savedSpeedsX.length < 5) {
-					this._savedSpeedsX.push(speedX);
-				} else {
-					this._savedSpeedsX.shift();
-					this._savedSpeedsX.push(speedX);
-				}
-
-				//Save the last 5 speeds between two touchmoves on Y axis
-				if (this._savedSpeedsY.length < 5) {
-					this._savedSpeedsY.push(speedY);
-				} else {
-					this._savedSpeedsY.shift();
-					this._savedSpeedsY.push(speedY);
-				}
-			}
-			this._lastTouchEnd = new Date().getTime();
-			this._lastMovedX = this._lastTouchX - touch.pageX;
-			this._lastMovedY = this._lastTouchY - touch.pageY;
-			this._lastTouchX = touch.pageX;
-			this._lastTouchY = touch.pageY;
-			/***********************************************************/
-
-			//Check if browser is Firefox
-			if (navigator.userAgent.indexOf("Firefox") > -1 || this._bMixedEnvironment) {
-				//Better performance on Firefox for Android
-				this._scrollToX(destX, true);
-				this._scrollToY(destY);
-			} else {
-				this._scrollTouchToXY(destX, destY, true);
-			}
-
-			// return true if there was no movement so rest of the screen can scroll
-			return this._startX === destX && this._startY === destY;
-		},
-
-		_onTouchEndContainer: function() {
-			var speedX = 0;
-			var speedY = 0;
-
-			//savedSpeedsX and savedSpeedsY have same length
-			for (var i = this._savedSpeedsX.length - 1; i >= 0; i--) {
-				speedX += this._savedSpeedsX[i];
-				speedY += this._savedSpeedsY[i];
-			}
-			speedX = speedX / this._savedSpeedsX.length;
-			speedY = speedY / this._savedSpeedsY.length;
-
-			//Use the lastMovedX and lastMovedY to determine if the swipe stops without lifting the finger so we don't start inertia
-			if ((Math.abs(speedX) > 0.1 || Math.abs(speedY) > 0.1) &&
-					(Math.abs(this._lastMovedX) > 2 || Math.abs(this._lastMovedY) > 2)) {
-				this._bStopInertia = false;
-				this._showScrollBars(false, true);
-				this._inertiaInit(speedX, speedY, this._bMixedEnvironment);
-				this._moving = true;
-			} else {
-				this._hideScrollBars(true, true);
-
-				//Trigger scrolled event
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: true,
-					touch: true
-				});
-			}
-
-			this._moving = false;
-		},
-
-		_onMouseEnterContainer: function() {
-			this._mOverContainer = true;
-
-			clearTimeout(this._hideScrollbarID);
-			if (!this._toSimpleScrollbarID && !this._bMouseDownH && !this._bMouseDownV) {
-				//We move the mouse inside the container but we weren't previously hovering the scrollbars (that's why we don't have _toSimpleScrollbarID for a timeout to switch to simple scrollbars).
-				//So we instantly show simple scrollbars.
-				this._showScrollBars(false, true);
-			}
-		},
-
-		_onMouseLeaveContainer: function () {
-			var self = this;
-
-			this._mOverContainer = false;
-			if (!this._bMouseDownV && !this._bMouseDownH) {
-				//Hide scrollbars after 2 secs. We cencel the timeout if we enter scrollbars area.
-				this._hideScrollbarID = setTimeout(function () {
-					self._hideScrollBars(false);
-				}, 2000);
-			}
-		},
-
 		_onMouseEnterScrollbarElem: function() {
 			this._mOverScrollbars = true;
 
@@ -2617,6 +2642,7 @@
 			}
 		},
 
+		/** Doesn't allow interacting with the scrollbars with touch actions */
 		_onTouchStartScrollbarElem: function() {
 			return false;
 		},
