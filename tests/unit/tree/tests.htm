@@ -255,14 +255,14 @@
 								imageUrlKey: 'ImageUrl1',
 								navigateUrlKey: 'URL1',
 								childDataProperty: 'Children1',
-								nodeContentTemplate: '<font color="red">${Text1}: </font>${Value1}',
+								nodeContentTemplate: '<a href="http://somehref" target="haha"><font color="red">${Text1}: </font>${Value1}</a>',
 								bindings: {
 									textKey: 'Text2',
 									valueKey: 'Value2',
 									imageUrlKey: 'ImageUrl2',
 									navigateUrlKey: 'URL2',
 									childDataProperty: 'Children2',
-									nodeContentTemplate: '<font color="red">${Text2}: </font><font color="blue">${Value2}</font>',
+									nodeContentTemplate: '<a><font color="red">${Text2}: </font><font color="blue">${Value2}</font></a>',
 									bindings: {
 										textKey: 'Text3',
 										valueKey: 'Value3'
@@ -520,9 +520,9 @@
 				$('#tree14').igTree('option', 'checkboxMode', 'triState');
 				equal(checkbox.attr('data-chk'), 'off', 'The checkstate of the checkbox is rendered as on');
 				var selector = $('#tree14').igTree('checkedNodes');
-				equal(selector.length, 0, 'The checkboxes did not cascade ot the API method returned wrong');
+				equal(selector.length, 0, 'The checkboxes did not cascade or the API method returned wrong');
 				selector = $('#tree14').igTree('partiallyCheckedNodes');
-				equal(selector.length, 0, 'The checkboxes did not cascade ot the API method returned wrong');
+				equal(selector.length, 0, 'The checkboxes did not cascade or the API method returned wrong');
 				$('#tree14').igTree('toggleCheckstate', node);
 				$.ig.TestUtil.checkClass(checkbox, 'ui-state-default');
 				$.ig.TestUtil.checkClass(checkbox, 'ui-corner-all');
@@ -563,10 +563,30 @@
 				equal(selector.length, 1, 'The checkboxes did not cascade ot the API method returned wrong');
 				selector = $('#tree14').igTree('partiallyCheckedNodes');
 				equal(selector.length, 2, 'The checkboxes did not cascade ot the API method returned wrong');
+				node = $('#tree14').igTree('nodeByPath', '0_0_1');
+				$('#tree14').igTree('toggleCheckstate', node);
+				equal(selector.length, 2, 'The checkboxes did not cascade ot the API method returned wrong');
+				selector = $('#tree14').igTree('uncheckedNodes');
+				equal(selector.length, 3, 'The checkboxes did not cascade ot the API method returned wrong');
+				selector = $('#tree14').igTree('partiallyCheckedNodes');
+				equal(selector.length, 1, 'The checkboxes did not cascade ot the API method returned wrong');
+				$('#tree14').igTree('toggleCheckstate', node);
+				selector = $('#tree14').igTree('checkedNodes');
+				equal(selector.length, 3, 'The checkboxes did not cascade ot the API method returned wrong');
+				selector = $('#tree14').igTree('uncheckedNodes');
+				equal(selector.length, 1, 'The checkboxes did not cascade ot the API method returned wrong');
+				selector = $('#tree14').igTree('partiallyCheckedNodes');
+				equal(selector.length, 2, 'The checkboxes did not cascade ot the API method returned wrong');
+				node = $('#tree14').igTree('nodeByPath', '0_0_0');
+				$('#tree14').igTree('toggleCheckstate', node);
+				selector = $('#tree14').igTree('checkedNodes');
+				equal(selector.length, 6, 'The checkboxes did not cascade ot the API method returned wrong');
 			});
 			test(testId_8, function () {
 				var nodePath = '0', node = $('#tree12').igTree('nodeByPath', nodePath), anchor = node.children('a');
 				ok(anchor.length > 0, 'Anchor is not properly returned.');
+				ok(!$('#tree12').igTree('isSelected', node), 'isSelected returned wrong value');
+				$('#tree12').igTree('deselect', node);
 				ok(!$('#tree12').igTree('isSelected', node), 'isSelected returned wrong value');
 				$('#tree12').igTree('select', node);
 				var selected = $('#tree12').igTree('selectedNode');
@@ -810,9 +830,13 @@
 				equal(selector.length, 2, 'The checkboxes did not cascade ot the API method returned wrong');
 			});
 			test(testId_15, function () {
-				var nodePath = '0', node = $('#tree12').igTree('nodeByPath', nodePath), anchor = node.children('a');
+				var nodePath = '0', node = $('#tree12').igTree('nodeByPath', nodePath), anchor = node.children('a'), selectedNode = $('#tree12').igTree('selectedNode');
 				ok(anchor.length > 0, 'Anchor is not properly returned.');
 				ok(!$('#tree12').igTree('isSelected', node), 'isSelected returned wrong value');
+				equal(selectedNode.path, null, "selectedNode returned wrong");
+				equal(selectedNode.element, null, "selectedNode returned wrong");
+				equal(selectedNode.data, null, "selectedNode returned wrong");
+				equal(selectedNode.binding, null, "selectedNode returned wrong");
 				anchor.click();
 				var selected = $('#tree12').igTree('selectedNode');
 				ok($('#tree12').igTree('isSelected', selected.element), 'isSelected returned wrong value');
@@ -977,6 +1001,20 @@
 				ok($('#tree12').igTree('isSelected', node), 'First node deselected when hitting the UP key');
 				ev = jQuery.Event("keydown");
 				ev.keyCode = $.ui.keyCode.DOWN;
+				ev.ctrlKey = true;
+				$(node).children('a').trigger(ev);
+				node = $('#tree12').igTree('nodeByPath', '0_0');
+				$.ig.TestUtil.checkClass(node.children('a'), 'ui-state-focus', 'Node did not get focused holding the ctrl key');
+				ok(!$('#tree12').igTree('isSelected', node), 'Node got selected in addition to activating with the ctrl key held');
+				ev = jQuery.Event("keydown");
+				ev.keyCode = $.ui.keyCode.LEFT;
+				ev.ctrlKey = true;
+				$(node).children('a').trigger(ev);
+				node = $('#tree12').igTree('nodeByPath', '0');
+				$.ig.TestUtil.checkClass(node.children('a'), 'ui-state-focus', 'Node did not get focused holding the ctrl key');
+				ok($('#tree12').igTree('isSelected', node), 'Node got deselected.');
+				ev = jQuery.Event("keydown");
+				ev.keyCode = $.ui.keyCode.RIGHT;
 				ev.ctrlKey = true;
 				$(node).children('a').trigger(ev);
 				node = $('#tree12').igTree('nodeByPath', '0_0');
@@ -1240,6 +1278,19 @@
 			test(testId_4, function () {
 				var nodeCount = $('#tree4').find('li[data-role=node]').length;
 				equal(nodeCount, 5, 'A different than the expected number of nodes rendered initially');
+				raises(function () {$('#tree4').igTree('toggleCheckstate');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling toggleCheckstate without a parameter');
+				raises(function () {$('#tree4').igTree('toggle');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling toggle without a parameter');
+				raises(function () {$('#tree4').igTree('expand');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling expand without a parameter');
+				raises(function () {$('#tree4').igTree('collapse');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling collapse without a parameter');
+				raises(function () {$('#tree4').igTree('parentNode');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling parentNode without a parameter');
+				raises(function () {$('#tree4').igTree('select');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling select without a parameter');
+				raises(function () {$('#tree4').igTree('deselect');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling deselect without a parameter');
+				raises(function () {$('#tree4').igTree('children');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling children without a parameter');
+				raises(function () {$('#tree4').igTree('childrenByPath');}, function (err) { return err.message === $.ig.Tree.locale.incorrectPath + undefined; }, 'An error was not correctly thrown when calling childrenByPath without a parameter');
+				raises(function () {$('#tree4').igTree('isSelected');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling isSelected without a parameter');
+				raises(function () {$('#tree4').igTree('isExpanded');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling isExpanded without a parameter');
+				raises(function () {$('#tree4').igTree('isChecked');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling isChecked without a parameter');
+				raises(function () {$('#tree4').igTree('checkState');}, function (err) { return err.message === $.ig.Tree.locale.incorrectNodeObject; }, 'An error was not correctly thrown when calling checkState without a parameter');
 				var node = $('#tree4').igTree('nodeByPath', '0');
 				ok(!$('#tree4').igTree('isChecked', node), 'API returned checked');
 				ok(!$('#tree4').igTree('isExpanded', node), 'API returned expanded');
@@ -1321,6 +1372,8 @@
 			});
 			test(testId_5, function () {
 				var node = $('#tree5').igTree('nodeByPath', '0'), anchor = node.children('a');
+				equal(anchor.attr("href"), "http://google.com", "The template href was not rendered.");
+				equal(anchor.attr("target"), "_blank", "The template href was not rendered.");
 				ok(anchor.has('span'), 'First level template did not render');
 				equal(anchor.children('span').html(), 'Unit testing: ');
 				equal(anchor.attr("target"), "_blank", 'The target attribute was not rendered.');
@@ -1330,6 +1383,8 @@
 				equal(anchor.children('span').html(), 'Changed: ');
 				node = $('#tree5').igTree('nodeByPath', '0_0');
 				anchor = node.children('a');
+				equal(anchor.attr("href"), "http://somehref", "The template href was not rendered.");
+				equal(anchor.attr("target"), "haha", "The template target was not rendered.");
 				ok(anchor.has('font'), 'Second level template did not render');
 				equal(anchor.children('font').html(), 'Unit testing1: ');
 				$("#tree5").igTree("applyChangesToNode", node, {Text1: "Changed1"});
@@ -1338,6 +1393,8 @@
 				equal(anchor.children('font').html(), 'Changed1: ');
 				node = $('#tree5').igTree('nodeByPath', '0_0_0');
 				anchor = node.children('a');
+				equal(anchor.attr("href"), "#", "The template href was not rendered.");
+				equal(anchor.attr("target"), "_self", "The template href was not rendered.");
 				equal(anchor.children('font').length, 2, 'Third level template did not render');
 				equal(anchor.children('font').first().html(), 'Unit testing2: ');
 				equal(anchor.children('font').last().html(), '2');
@@ -1416,6 +1473,15 @@
 				node = $('#tree3').igTree('nodeByIndex', 3, $('#tree3').igTree('nodeByPath', '0'));
 				equal(node.length, 0, 'Incorrect number of nodes retrieved by findImmediateNodesByText');
 				node = $('#tree3').igTree('nodeByIndex', 1);
+				equal(node.length, 1, 'Incorrect number of nodes retrieved by nodeByIndex');
+				equal(node.attr('data-path'), '1', 'Node by index did not return correct');
+				
+				node = $('#tree2').igTree('nodeByIndex', 0, $('#tree2').igTree('nodeByPath', '0'));
+				equal(node.length, 1, 'Incorrect number of nodes retrieved by nodeByIndex');
+				equal(node.attr('data-path'), '0_0', 'Node by index did not return correct');
+				node = $('#tree2').igTree('nodeByIndex', 5, $('#tree2').igTree('nodeByPath', '0'));
+				equal(node.length, 0, 'Incorrect number of nodes retrieved by findImmediateNodesByText');
+				node = $('#tree2').igTree('nodeByIndex', 1);
 				equal(node.length, 1, 'Incorrect number of nodes retrieved by nodeByIndex');
 				equal(node.attr('data-path'), '1', 'Node by index did not return correct');
 				// nodeFromElement method
@@ -2145,6 +2211,7 @@
 				tree.igTree({
 					dataSource: data,
 					loadOnDemand: true,
+					dragAndDrop: true,
 					checkboxMode: "triState",
 					bindings: {
 						textKey: 'Text',
