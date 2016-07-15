@@ -7,6 +7,8 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	
+	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	
@@ -274,6 +276,7 @@
 		var testId_13 = "IgDataSource Sorting - sort - custom sorting function (ALL functionality)";
 		var testId_14 = "IgDataSource Sorting - sort - mapper function";
 		var testId_15 = "IgTreeHierarchicalDataSource Sorting - sort - mapper function";
+		var testId_16 = "IgDataSource Sorting - remote sorting";
 		
 		// IgDataSource Sorting - sort with schema
 		test(testId_1, function() {
@@ -457,6 +460,47 @@
 		test(testId_13, function() {
 			ok(true);
 		});
+		
+		// IgDataSource Sorting - remote
+			test(testId_16, function() {
+				stop();
+				var ds = null;
+				var data = [
+								{ ProductID: 'product-001' },
+								{ ProductID: 'product-002' },
+								{ ProductID: 'product-003' },
+								{ ProductID: 'product-004' }
+				];
+				$.mockjax({
+					url: 'products',
+					responseText: {
+						status: 'success',
+						data: {
+							results: data
+						}
+					}
+				});
+
+				ds = new $.ig.RemoteDataSource({
+					callback: function (success, error) {
+						start();
+						equal(ds.dataView().length, 4, "Response should contain 4 records");
+						for (var i = 0; i < ds.dataView().length; i++) {
+							equal(ds.dataView()[i].ProductID, data[i].ProductID, "Data should be sorted.");
+							var params = $.param(ds._encodeUrl());
+							equal(params, "%24orderby=ProductID+asc", "Request should be properly encoded.");
+						}
+					},
+					responseDataType: "json",
+					sorting: {
+						expressions: [{
+							fieldName: "ProductID",
+							dir: "asc"
+						}]
+					},
+					dataSource: "products", schema: { searchField: "data.results", fields: [{ name: "ProductID" }] }
+				}).dataBind();
+			});
 		
 		test(testId_14, function () {mapperDs
 			mapperDs.sort([{ fieldName: "Category" }], "desc");
