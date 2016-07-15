@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON Binding Sample - JSON Binding with Tree Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body>
+
+
+    <ul id="tree"></ul>
+
+    <script>
+
+        $(function () {
+
+            var data = [
+                {
+                    "ID": 1, "RegionName": "North America", "Countries":
+                    [
+                        { "ID": 1, "CountryName": "United States" },
+                        { "ID": 2, "CountryName": "Canada" },
+                        { "ID": 3, "CountryName": "Mexico" }
+                    ]
+                },
+                {
+                    "ID": 2, "RegionName": "South America", "Countries":
+                    [
+                        { "ID": 4, "CountryName": "Brazil" },
+                        { "ID": 5, "CountryName": "Uruguay" }
+                    ]
+                },
+                {
+                    "ID": 3, "RegionName": "Europe", "Countries":
+                    [
+                        { "ID": 6, "CountryName": "United Kingdom" },
+                        { "ID": 7, "CountryName": "Germany" },
+                        { "ID": 8, "CountryName": "Bulgaria" }
+                    ]
+                }
+            ];
+
+            $("#tree").igTree({
+                dataSource: data, //JSON Array defined above
+                bindings: {
+                    textKey: "RegionName",
+                    valueKey: "ID",
+                    childDataProperty: "Countries",
+                    bindings: {
+                        textKey: "CountryName",
+                        valueKey: "ID"
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

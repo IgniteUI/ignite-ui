@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XML Binding Sample - XML Binding with Data Source Control - Ignite UI™</title>
+    <style type="text/css">
+        .standard-grid { width:100%; border-top:1px solid #b1b1b1; border-right:1px solid #b1b1b1; border-spacing: 0;}
+        .standard-grid th, .standard-grid td { text-align:left; border-bottom:1px solid #b1b1b1; border-left:1px solid #b1b1b1; padding:4px;}
+    </style>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body>
+
+
+    <table id="table" class="standard-grid">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Age
+                </th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+
+        $(function () {
+            //Sample XML Data
+            var xmlDoc = '<People>' +
+                '<Person Name="Gustavo Achong">' +
+                    '<Details Age="42" Email="gachong@adventureworks.com" />' +
+                '</Person>' +
+                '<Person Name="Catherine Abel">' +
+                    '<Details Age="27" Email="cabel@adventureworks.com" />' +
+                '</Person>' +
+                '<Person Name="Kim Abercrombie">' +
+                    '<Details Age="33" Email="kabercrombie@adventureworks.com" />' +
+                '</Person>' +
+            '</People>';
+
+            // Renders the table
+            var renderTable = function (success, error) {
+                var template = "<tr><td>${Name}</td><td>${Email}</td><td>${Age}</td></tr>";
+                if (success) {
+                    $("#table tbody").empty();
+                    $($.ig.tmpl(template, ds.dataView())).appendTo("#table tbody");
+                } else {
+                    alert(error);
+                }
+            }
+
+            //Binding to XML requires a schema to define data fields
+            var xmlSchema = new $.ig.DataSchema("xml",
+                {
+                    //searchField serves as the base node(s) for the XPaths
+                    searchField: "//Person",
+                    fields: [
+                        { name: "Name", xpath: "./@Name" },
+                        { name: "Email", xpath: "Details/@Email" },
+                        { name: "Age", xpath: "Details/@Age" }
+                    ]
+                }
+            );
+
+            //This creates an Infragistics datasource from the XML 
+            //and the Schema which can be consumed by the grid.
+            var ds = new $.ig.DataSource({
+                type: "xml",
+                dataSource: xmlDoc,
+                schema: xmlSchema,
+                callback: renderTable
+            });
+
+            // Binds to the underlying data
+            ds.dataBind();
+        });
+    </script>
+
+</body>
+</html>

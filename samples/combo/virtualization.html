@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtualization Sample - Virtualization with Combo Box Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body>
+
+
+    <div id="comboIG"></div>
+
+    <script>
+
+        $(function () {
+
+            $("#comboIG").igCombo({
+                virtualization: true,
+                filteringType: "remote",
+                renderMatchItems: "contains",
+                responseDataKey: "d.results",
+                valueKey: "OrderID",
+                textKey: "ShipName",
+                itemTemplate: "${ShipName} (ID: ${OrderID})",
+                width: "370px",
+                dataSourceUrl: 'http://igniteui.com/api/orders?&$top=1500&callback=?',
+                responseDataType: "json"
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

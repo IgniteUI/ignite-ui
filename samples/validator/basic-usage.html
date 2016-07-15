@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Usage Sample - Basic Usage with Validator Control - Ignite UI™</title>    
+	<!--Ignite UI Required Combined CSS Files-->
+	<link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+	<link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+    <style>
+        .group-fields {
+            margin-bottom:20px;
+        }
+        .group-fields .odd {
+            float:left;
+            width:262px;
+        }
+        .group-fields .even{
+            float:left;
+            margin-left:20px;
+        }
+        .group-fields label {
+            display: block;
+            line-height: 20px;
+            font-family: 'Open Sans',Arial,sans-serif;
+            font-size: 13px;
+        }
+        .group-fields .ui-igedit-container {
+            box-sizing: content-box;
+        }
+        .group-fields input.group {
+            width:258px;
+            height:32px;
+        }
+        .group-fields .ui-igedit-container,.group-fields .ui-igcombo-wrapper {
+            width:260px;
+            height:34px;
+        }
+        .group-fields .ui-igpopover {
+            width:260px;
+        }
+        .group-fields input.group {
+            border-style: solid;
+            border-width: 1px;
+            border-color:#bcbcbc;
+        }
+        .group-fields input.group:hover {
+            border-color:#444;
+        }
+        .group-fields .ui-widget.ui-ignotify.ui-ignotify-inline {
+            margin-bottom:0;
+        }
+        .group-fields input.group.ui-ignotify-error {
+            border-color:#f33;
+        }
+        #igCheckboxAccept, #igCheckboxSubscribe {
+            float:left;
+            margin-right: 5px;
+        }
+        .group-fields .inline {
+            display:inline;
+        }
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        @media screen and (max-width:610px) {
+            .group-fields .odd {
+                float:left;
+                width:202px;
+            }
+            .group-fields input.group {
+                width:200px;
+            }
+            .group-fields .ui-igedit-container,.group-fields .ui-igcombo-wrapper {
+                width:202px;
+            }
+            .group-fields .ui-igpopover {
+                width:202px;
+            }
+        }
+        @media screen and (max-width:478px) {
+            .group-fields {
+                margin-bottom:0;
+            }
+            .group-fields .odd, .group-fields .even {
+                margin-bottom: 5px;
+            }
+            .group-fields .odd {
+                float:none;
+                width:262px;
+            }
+            .group-fields .even {
+                margin-left:0;
+            }
+            .group-fields input.group {
+                width:258px;
+                height:32px;
+            }
+            .group-fields .ui-igedit-container,.group-fields .ui-igcombo-wrapper {
+                width:260px;
+                height:34px;
+            }
+            .group-fields .ui-igpopover {
+             width:260px;
+             }
+        }
+    </style>
+	<script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+	<script src="../../bower_components/jquery/dist/jquery.js"></script>
+	<script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<!--Ignite UI Required Combined JavaScript Files-->
+	<script src="../../dist/js/infragistics.core-lite.js"></script>
+	<script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+    <script type="text/javascript">   
+        $(document).ready(function () {
+            var data = [
+                { ID: "ID101", Name: "Business", Code: 101 },
+                { ID: "ID102", Name: "Cooking", Code: 102 },
+                { ID: "ID103", Name: "Fashion", Code: 103 },
+                { ID: "ID104", Name: "Lifestyle", Code: 104 },
+                { ID: "ID105", Name: "Photography", Code: 105 },
+                { ID: "ID106", Name: "Sports", Code: 106 }];
+
+            $('#gender').igTextEditor({
+                inputName: "gender",
+                listItems: ["Male", "Female"]
+            });
+
+            $("#phone").igMaskEditor({
+                inputMask: "(\\0\\01) 000-0000"
+            });
+
+            $('#igComboInterests').igCombo({
+                inputName: "products",
+                dataSource: data,
+                allowCustomValue: true,
+                textKey: 'Name',
+                valueKey: "ID",
+                multiSelection: {
+                    enabled: true
+                }
+            });
+
+            $("#rating").igRating({
+                precision: "half",
+                valueAsPercent: false
+            });
+
+            $("#dateOfBirth").igDatePicker({
+                datepickerOptions: { minDate: new Date(1920, 0, 1), maxDate: new Date(2015, 0, 1) }
+            });
+
+            $("#igCheckboxAccept").igCheckboxEditor();
+
+            $("#igCheckboxSubscribe").igCheckboxEditor();
+
+            $('#validationForm').igValidator({                
+                onsubmit: true,
+                successMessage: "Valid",
+                fields: [{
+                    required: true,
+                    selector: "#firstName",
+                    valueRange: [2],
+                    onblur: true,
+                    custom: function (value, fieldOptions) {
+                        var myRegEx = /^[a-zA-Z]+$/;
+                        var isValid = myRegEx.test(value);
+                        return isValid;
+                    }
+                },
+                {
+                    required: true,
+                    selector: "#lastName",
+                    valueRange: [2],
+                    onblur: true,
+                    custom: function (value, fieldOptions) {
+                        var myRegEx = /^[a-zA-Z]+$/;
+                        var isValid = myRegEx.test(value);
+                        return isValid;
+                    }
+                },
+				{
+				    required: true,
+				    selector: "#dateOfBirth",
+				    date: true,				   
+				    onblur: true
+				},
+                {
+                    required: true,
+                    selector: "#gender",
+                    gender: true,
+                    onblur: true
+                },
+				{
+				    required: true,
+				    selector: "#email",
+				    email: true,				   
+				    onblur: true
+				},
+                {
+                    required: true,
+                    selector: "#createPassword",
+                    onblur: true,
+                    errorMessage: "Should contain at least 8 characters, 1 number, 1 lowercase character (a-z), 1 uppercase character",
+                    custom: function(value, fieldOptions){
+                        var myRegEx  = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$/;
+                        var isValid = myRegEx.test(value);						
+                        return isValid;
+                    }
+                },
+                {
+                    required: true,
+                    selector: "#confirmPassword",                    
+                    equalTo: "#createPassword",
+                    onblur: true,
+                },
+                {
+				    selector: "#rating",
+				    successMessage: "Valid",
+				    onchange: true,
+				    valueRange: {
+				        min: 1.5,
+				        errorMessage: "At least {0} star required (custom message)"
+				    },
+				    notificationOptions: {
+				        mode: "popover"
+				    }
+				},
+				{
+				    required: true,
+				    selector: "#igComboInterests",
+				    onchange: true,
+				    lengthRange: [2]
+				},
+				{
+				    required: true,
+				    selector: "#igCheckboxAccept",
+				    onchange: true
+				},
+				{
+				    selector: "#igCheckboxSubscribe",
+				    onchange: true
+				}
+                ]
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <form id="validationForm" action="" method="post">
+        <div class="group-fields clearfix">
+            <div class="odd">
+                <label>First name*</label>
+                <input class="group" type="text" id="firstName">
+            </div>
+            <div class="even">
+                <label>Last name*</label>
+                <input class="group" type="text" id="lastName">
+            </div>
+        </div>
+        <div class="group-fields clearfix">
+            <div class="odd">
+                <label>Email*</label>
+                <input class="group" type="text" id="email">
+            </div>
+            <div class="even">
+                <label>Mobile phone</label>
+                <input class="group" type="text" id="phone">
+            </div>
+        </div>
+        <div class="group-fields clearfix">
+            <div class="odd">
+                <label>Create password*</label>
+                <input class="group" type="password" id="createPassword">
+            </div>
+            <div class="even">
+                <label>Confirm password*</label>
+                <input class="group" type="password" id="confirmPassword">
+            </div>
+        </div>
+        <div class="group-fields clearfix">
+            <div class="odd">
+                <label>Date of birth*</label>
+                <input class="group" id="dateOfBirth">
+            </div>
+            <div class="even">
+                <label>Gender*</label>
+                <input id='gender'>
+            </div>
+        </div>
+        <div class="group-fields clearfix">
+            <div class="odd">
+                <label>Your interests (Select at least 2)*</label>
+                <div id='igComboInterests'></div>
+            </div>
+            <div class="even">
+                <label>How do you rate our articles</label>
+                <div id="rating"></div>
+            </div>
+        </div>
+        <div class="group-fields clearfix">
+            <div class="odd">
+                <label class="inline">I accept the Terms and Conditions *</label>
+                <div id="igCheckboxAccept"></div>
+            </div>
+            <div class="even">
+                <label class="inline">Subscribe for our daily mail digest</label>
+                <div id="igCheckboxSubscribe"></div>
+            </div>
+        </div>
+        <input type="submit" value="Sign Up">
+    </form>
+</body>
+</html>

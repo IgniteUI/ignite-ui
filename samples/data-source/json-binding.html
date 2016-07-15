@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON Binding Sample - JSON Binding with Data Source Control - Ignite UI™</title>
+    <style type="text/css">
+        .standard-grid { width:100%; border-top:1px solid #b1b1b1; border-right:1px solid #b1b1b1; border-spacing: 0;}
+        .standard-grid th, .standard-grid td { text-align:left; border-bottom:1px solid #b1b1b1; border-left:1px solid #b1b1b1; padding:4px;}
+    </style>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body>
+
+
+    <table id="table" class="standard-grid">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Age
+                </th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+
+        $(function () {
+            var data = [
+                { "Name": "John Smith", "Age": 45 },
+                { "Name": "Mary Johnson", "Age": 32 },
+                { "Name": "Bob Ferguson", "Age": 27 }
+            ];
+
+            // Renders the table
+            var renderTable = function (success, error) {
+                var template = "<tr><td>${Name}</td><td>${Age}</td></tr>";
+                if (success) {
+                    $("#table tbody").empty();
+                    $($.ig.tmpl(template, ds.dataView())).appendTo("#table tbody");
+                } else {
+                    alert(error);
+                }
+            }
+
+            //This code creates an $.ig.DataSource from JSON data
+            var ds = new $.ig.DataSource({
+                type: "json",
+                dataSource: data,
+                callback: renderTable
+            });
+
+            // Binds to the underlying data
+            ds.dataBind();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+    <style>
+        #payment {
+            width: 50%;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        #salary {
+            float: left;
+        }
+
+        #salary > p {
+            margin-bottom: 20px;
+        }
+
+        .sample-page h2 {
+            margin-top: 0;
+        }
+
+        #deduction {
+            float: right;
+        }
+
+        #deduction label {
+            display: block;
+        }
+
+        .ui-igedit-container {
+            margin-bottom: 15px;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        @media screen and (max-width:785px) {
+            #payment {
+                width: 60%;
+            }
+        }
+
+        @media screen and (max-width:685px) {
+            #payment {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width:420px) {
+            #salary, #deduction {
+                float: none;
+            }
+        }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body>
+
+    <div id="payment" class="clearfix">
+        <div id="salary">
+            <h2>Gross Income</h2>
+            <p id="gross">$ 6,000.00</p>
+            <h2>Net Income</h2>
+            <p id="nett">$ 6,276.32</p>
+        </div>
+        <div id="deduction">
+            <label for="federalTax">Federal Tax %</label>
+            <input id="federalTax">
+            <label for="stateTax">State Tax %</label>
+            <input id="stateTax">
+            <label for="socialSecurity">Social Security %</label>
+            <input id="socialSecurity">
+            <label for="medicare">Medicare %</label>
+            <input id="medicare">
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var listValues = [10, 15, 25, 28, 33, 35];
+
+            function nettChange() {
+
+                var gross = 6000.00, nett, grossMadicare, grossSecurity, grossFederalTax, grossStateTax;
+                var federalTax = $("#federalTax").igNumericEditor("value");
+                var stateTax = $("#stateTax").igNumericEditor("value");
+                var socialSecurity = $("#socialSecurity").igNumericEditor("value");
+                var medicare = $("#medicare").igNumericEditor("value");
+
+                grossSecurity = calculatePercent(gross, socialSecurity);
+                grossMadicare = calculatePercent(gross, medicare);
+                gross = gross - (grossSecurity + grossMadicare);
+
+
+                grossFederalTax = calculatePercent(gross, federalTax);
+                grossStateTax = calculatePercent(gross, stateTax);
+
+                nett = gross - (grossFederalTax + grossStateTax);
+
+                return parseFloat(nett.toFixed(2));
+
+            }
+
+            function calculatePercent(value, percent) {
+                value = value * percent / 100;
+
+                return value;
+            }
+
+            function changingValues() {
+                var newNettIncome = nettChange().toLocaleString();
+                $("#nett").text("$ " + newNettIncome);
+            }
+
+            $("#federalTax").igNumericEditor({
+                listItems: listValues,
+                value: 10,
+                valueChanged: changingValues
+            });
+            $("#stateTax").igNumericEditor({
+                buttonType: "spin",
+                spinDelta: 0.01,
+                value: -5.00,
+                minValue: -5.53,
+                maxValue: 5.53,
+                valueChanged: changingValues
+            });
+            $("#socialSecurity").igNumericEditor({
+                value: -10.0,
+                minValue: -12.4,
+                maxValue: 12.4,
+                valueChanged: changingValues
+            });
+            $("#medicare").igNumericEditor({
+                value: 2.9,
+                valueChanged: changingValues
+            });
+
+        });
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Ignite UI Layout Manager - border layout - initialize from JavaScript</title>
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="http://cdn-na.infragistics.com/igniteui/2016.2/latest/css/structure/modules/infragistics.ui.layout.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <!-- Modernizr/jQuery/jQuery UI -->
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // attach to events so that we can add the items content
+            $('#layout').on("iglayoutmanageritemrendered", function (event, args) {
+                if (args.region === "left") {
+                    args.element.text("LEFT AREA");
+                    args.element.css("background-color", "#FFA72D");
+                    args.element.css("color", "#FFF");
+                } else if (args.region === "right") {
+                    args.element.text("RIGHT AREA");
+                    args.element.css("background-color", "#555");
+                    args.element.css("color", "#EEE");
+                } else if (args.region === "center") {
+                    args.element.text("center text");
+                    args.element.css("background-color", "#EEE");
+                    args.element.css("color", "#555");
+                } else if (args.region === "header") {
+                    args.element.text("HEADER - some text here");
+                    args.element.css("background-color", "#2CBDF9");
+                    args.element.css("color", "#FFF");
+                } else if (args.region === "footer") {
+                    args.element.text("FOOTER - some text here ");
+                    args.element.css("background-color", "#2CBDF9");
+                    args.element.css("color", "#FFF");
+                }
+            });
+            $('#layout').igLayoutManager({
+                layoutMode: "border",
+                borderLayout: {
+                    leftWidth: "10%",
+                    rightWidth: "20%"
+                }
+            });
+        });
+    </script>
+    <style>
+        #sampleContainer {
+            height: 370px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="layout" style="width:100%; height: 300px; display:block;">
+	</div>
+</body>
+</html>

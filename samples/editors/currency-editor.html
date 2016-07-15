@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Currency Editor Sample - Currency Editor with Editors Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+    <style>
+        #payment {
+            width: 50%;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        #salary {
+            float: left;
+        }
+
+        #salary > p {
+            margin-bottom: 20px;
+        }
+        
+        .sample-page h2 {
+            margin-top: 0;
+        }
+
+        #deduction {
+            float: right;
+        }
+
+        #deduction label {
+            display: block;
+        }
+        
+        .ui-igedit-container {
+            margin-bottom: 15px;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        @media screen and (max-width:785px) {
+            #payment {
+                width: 60%;
+            }
+        }
+
+        @media screen and (max-width:685px) {
+            #payment {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width:420px) {
+            #salary, #deduction {
+                float: none;
+            }
+        }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+    
+</head>
+<body>
+
+    <div id="payment" class="clearfix">
+        <div id="salary">
+            <h2>Gross Income</h2>
+            <p id="gross">$ 6,000.00</p>
+            <h2>Net Income</h2>
+            <p id="nett">$ 6,276.32</p>
+        </div>
+        <div id="deduction">
+            <label for="federalTax">Federal Tax</label>
+            <input id="federalTax">
+            <label for="stateTax">State Tax</label>
+            <input id="stateTax">
+            <label for="socialSecurity">Social Security</label>
+            <input id="socialSecurity">
+            <label for="medicare">Medicare</label>
+            <input id="medicare">
+        </div>
+    </div>
+    <script>
+    $(document).ready(function () {
+        var listValues = [600, 900, 1500, 1680, 1980, 2100];
+
+        function nettChange() {
+
+            var gross = 6000.00, nett;
+            var federalTax = $("#federalTax").igCurrencyEditor("value");
+            var stateTax = $("#stateTax").igCurrencyEditor("value");
+            var socialSecurity = $("#socialSecurity").igCurrencyEditor("value");
+            var medicare = $("#medicare").igCurrencyEditor("value");
+
+            nett = gross - federalTax - stateTax - socialSecurity - medicare;
+
+            return parseFloat(nett.toFixed(2));
+
+        }
+
+
+        $("#federalTax").igCurrencyEditor({
+            listItems: listValues,
+            value: 600,
+            valueChanged: function (evt, ui) {
+                var newNettIncome = nettChange().toLocaleString();
+                $("#nett").text("$ " + newNettIncome);
+            }
+        });
+        $("#stateTax").igCurrencyEditor({
+            buttonType: "spin",
+            spinDelta: 0.01,
+            value: -300.00,
+            maxDecimals:2,
+            minValue: -331.80,
+            maxValue: 331.80,
+            valueChanged: function (evt, ui) {
+                var newNettIncome = nettChange().toLocaleString();
+                $("#nett").text("$ " + newNettIncome);
+            }
+        });
+        $("#socialSecurity").igCurrencyEditor({
+            value: -700,
+            minValue: -744,
+            maxValue: 744,
+            valueChanged: function (evt, ui) {
+                var newNettIncome = nettChange().toLocaleString();
+                $("#nett").text("$ " + newNettIncome);
+            }
+        });
+        $("#medicare").igCurrencyEditor({
+            value: 174,
+            positivePattern: "$(n)",
+            valueChanged: function (evt, ui) {
+                var newNettIncome = nettChange().toLocaleString();
+                $("#nett").text("$ " + newNettIncome);
+            }
+        });
+
+    });
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Date Editor Sample - Date Editor with Editors Control - Ignite UI™</title>
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+    <style>
+        h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .group-fields {
+            margin-bottom: 10px;
+        }
+
+        .group-fields label {
+            display: block;
+            line-height: 18px;
+        }
+
+        .group-fields .inline {
+            display: inline;
+        }
+
+        .group-fields .ui-igcheckbox-normal {
+            margin-right: 5px;
+            float: left;
+        }
+
+        .group-fields .ui-igedit-container {
+            width: 230px;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .group-fields.clearfix > div {
+            float: left;
+            margin-right: 10px;
+        }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+</head>
+<body>
+
+    <h3>Book your flight</h3>
+    <div class="group-fields">
+        <label for="currentTime">Right now it is</label>
+        <input id="currentTime">
+    </div>
+    <div class="group-fields clearfix">
+        <div>
+            <label for="departure">Departure</label>
+            <input id="departure">
+        </div>
+        <div>
+            <label for="departureTime">Around</label>
+            <input id="departureTime">
+        </div>
+    </div>
+    <div class="group-fields clearfix">
+        <div>
+            <label for="return">Return</label>
+            <input id="return">
+        </div>
+        <div>
+            <label for="returnTime">Around</label>
+            <input id="returnTime">
+        </div>
+    </div>
+    <div class="group-fields">
+        <input id="oneWayTicket">
+        <label for="oneWayTicket" class="inline">One way ticket</label><br>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var today = new Date(),
+            tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
+            $("#currentTime").igDateEditor({
+                dateInputFormat: "dateTime",
+                value: new Date(),
+                dataMode: "date",
+                readOnly: true
+            });
+
+            $("#departure").igDateEditor({
+                dateInputFormat: "ddd, MMM d, yyyy",
+                value: today,
+                dataMode: "date",
+                valueChanged: function (evt, ui) {
+                    if (ui.newValue instanceof Date) {
+                        var nextDay = new Date(ui.newValue.getTime() + 24 * 60 * 60 * 1000);
+                        $("#return").igDateEditor("option", "value", nextDay);
+                    }
+                }
+            });
+
+            $("#departureTime").igDateEditor({
+                dateInputFormat: "hh:mm",
+                value: new Date(),
+                dataMode: "date",
+                buttonType: "spin",
+                width: 100
+            });
+            $("#return").igDateEditor({
+                value: tomorrow,
+                dateInputFormat: "ddd, MMM d, yyyy",
+                dataMode: "date"
+            });
+
+            $("#returnTime").igDateEditor({
+                dateInputFormat: "hh:mm",
+                value: new Date(),
+                dataMode: "date",
+                buttonType: "spin",
+                width: 100
+            });
+
+            $("#oneWayTicket").igCheckboxEditor({
+                checked: false,
+                valueChanged: function(evt, ui) {
+                    if (ui.newState == true) {
+                        $("#return").igDateEditor("option", "disabled", true);
+                        $("#returnTime").igDateEditor("option", "disabled", true);
+
+                    }
+                    else {
+                        $("#return").igDateEditor("option", "disabled", false);
+                        $("#returnTime").igDateEditor("option", "disabled", false);
+
+                    }
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>

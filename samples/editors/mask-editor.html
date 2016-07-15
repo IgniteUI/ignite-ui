@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mask Editor Sample - Mask Editor with Editors Control - Ignite UI™</title>
+    <meta charset="utf-8">
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+    <style>
+        #container {
+            width: 70%;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        .p {
+            margin-top: 5px;
+        }
+
+        #igMaskEditorsContainer {
+            float: left;
+        }
+
+        .group-fields {
+            margin-bottom: 10px;
+        }
+
+        .group-fields label {
+            display: block;
+            line-height: 18px;
+        }
+
+        .group-fields .ui-igedit-container {
+            width: 250px;
+        }
+
+        #ValuesContainer {
+            float: right;
+            width: 50%;
+        }
+
+        #ValuesContainer.p {
+            font-size: 16px;
+        }
+
+        #container h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        @media screen and (max-width:960px) {
+            #container {
+                width: 80%;
+            }
+        }
+
+        @media screen and (max-width:840px) {
+            #container {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width:690px) {
+            #igMaskEditorsContainer, #ValuesContainer {
+                float: none;
+            }
+            #ValuesContainer {
+                margin-top: 20px;
+                width: auto;
+            }
+        }
+        @media screen and (max-width:365px) {
+            .group-fields .ui-igedit-container {
+                 width: 200px;
+            }
+        }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+</head>
+<body>
+
+    <div id="container" class="clearfix">
+        <div id="igMaskEditorsContainer">
+            <form id="form" action="javascript:console.log('Submit');">
+                <div class="group-fields">
+                    <label>Raw text:</label>
+                    <div id="msk1"></div>
+                </div>
+                <div class="group-fields">
+                    <label>Raw text with required prompts:</label>
+                    <div id="msk2"></div>
+                </div>
+                <div class="group-fields">
+                    <label>Raw text with all prompts:</label>
+                    <div id="msk3"></div>
+                </div>
+                <div class="group-fields">
+                    <label>Raw text with literals:</label>
+                    <div id="msk4"></div>
+                </div>
+                <div class="group-fields">
+                    <label>Raw text with required prompts and literals:</label>
+                    <div id="msk5"></div>
+                </div>
+                <div class="group-fields">
+                    <label>All text (default value):</label>
+                    <div id="msk6"></div>
+                </div>
+                <input type="submit" id="submitBtn" value="Submit">
+            </form>
+        </div>
+
+        <div id="ValuesContainer">
+            <h4>Submitted Values:</h4>
+            <div class="divHeight">
+                <p class="pStyle" id="results">
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var listData = ["Oregon", "Nevada", "California", "Colorado", "Grorgia", "Virginia", "Arizona", "Texas"];
+
+        $('#msk1').igMaskEditor({
+            inputMask: 'AaaL/aa',
+            dataMode: 'rawText'
+        });
+
+        $('#msk2').igMaskEditor({
+            inputMask: 'AaaL/aa',
+            dataMode: 'rawTextWithRequiredPrompts'
+        });
+
+        $('#msk3').igMaskEditor({
+            inputMask: 'AaaL/aa',
+            dataMode: 'rawTextWithAllPrompts'
+        });
+
+        $('#msk4').igMaskEditor({
+            inputMask: 'AaaL/aa',
+            dataMode: 'rawTextWithLiterals'
+        });
+
+        $('#msk5').igMaskEditor({
+            inputMask: 'AaaL/aa',
+            dataMode: 'rawTextWithRequiredPromptsAndLiterals'
+        });
+
+        $('#msk6').igMaskEditor({
+            inputMask: 'AaaL/aa',
+            dataMode: 'allText'
+        });
+
+
+
+        $("#form").submit(function (event) {
+
+            $('.p').remove();
+
+            var submittedValues = [];
+            submittedValues.push($("#msk1").igMaskEditor("value"));
+            submittedValues.push($("#msk2").igMaskEditor("value"));
+            submittedValues.push($("#msk3").igMaskEditor("value"));
+            submittedValues.push($("#msk4").igMaskEditor("value"));
+            submittedValues.push($("#msk5").igMaskEditor("value"));
+            submittedValues.push($("#msk6").igMaskEditor("value"));
+            var headers = $('.group-fields label');
+
+            for (var i = 0 ; i < submittedValues.length; i++) {
+
+                $("#results").append("<p class='p'><span class='header'>" + headers[i].textContent + "</span>  <b>" + submittedValues[i] + "</b></p>");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

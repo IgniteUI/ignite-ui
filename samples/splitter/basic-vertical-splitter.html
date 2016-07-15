@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Vertical Splitter Sample - Basic Vertical Splitter with Splitter Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+    <style>
+        #tree {
+            overflow: hidden;
+        }
+        @media all and (max-width: 480px) {
+            #splitter {
+                font-size: 16px;
+            }
+        }
+    </style>
+
+    <script src="../data-files/continents-with-countries-and-cities.js" type="text/javascript"></script>
+</head>
+<body>
+
+    
+    <div id="splitter">
+        <div style="overflow: auto">
+            <ul id="tree"></ul>
+        </div>
+        <div><p>Select a destination from tree.</p></div>
+    </div>
+    <style>
+        p { padding: 10px; }
+    </style>
+    
+    <script>
+
+        $(function () {
+            $("#splitter").igSplitter({ height: "300px", panels: [{ size: 160, min: 100, max: 250 }] });
+            $("#tree").igTree({
+                dataSource: continentsWithCountries,
+                dataSourceType: "json",
+                bindings: {
+                    textKey: "Text",
+                    valueKey: "Text",
+                    childDataProperty: "Countries"
+                }
+            });
+            $("#tree").on("igtreeselectionchanged", function (sender, eventArgs) {
+                var node = eventArgs.selectedNodes[0];
+                if (node.data.Description) {
+                    $("#splitter").igSplitter("secondPanel").html($("<p></p>").text(node.data.Description));
+                } else {
+                    $("#splitter").igSplitter("secondPanel").html($("<p></p>").text("No information found."));
+                }
+            });
+        });
+
+        
+    </script>
+</body>
+</html>

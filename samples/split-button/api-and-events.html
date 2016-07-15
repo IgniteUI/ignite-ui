@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Api and Events Sample - Api and Events with Split Button Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <!-- Used to style the API Viewer and Explorer UI -->
+    <link href="../../css/apiviewer.css" rel="stylesheet" type="text/css">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+    <!-- Used to add markup and provide logging 
+        functionality for the API Explorer and API Viewer UI -->
+    <script src="../../js/apiviewer.js"></script>
+    
+    <style>
+        @media print {
+            .noprint {
+                display: none;
+            }
+        }
+
+        .arrorRight {
+        }
+
+        .arrorLeft {
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="api-explorer noprint">
+        <button id="split-expand">Expand</button>
+        <button id="split-collapse">Collapse</button>
+    </div>
+    <br>
+    <div id="split-button"></div>
+    <div class="api-viewer noprint"></div>
+
+    <script>
+        $(function () {
+            // Used to show output in the API Viewer at runtime, 
+            // defined in external script 'apiviewer.js'    
+            var apiViewer = new $.ig.apiViewer();
+
+            $("#split-button").igSplitButton({
+                items: [{
+                    name: "arrowLeft",
+                    label: "arrowLeft",
+                    icon: "ui-igbutton ui-igbutton-undo"
+                }, {
+                    name: "arrorRight",
+                    label: "arrorRight",
+                    icon: "ui-igbutton ui-igbutton-redo"
+                }],
+                defaultItemName: "arrowLeft"
+            });
+
+            $("#split-button").on("igsplitbuttonclick", function () {
+                var message = "igsplitbuttonclick";
+                apiViewer.log(message);
+            });
+
+            $("#split-button").on("igsplitbuttonexpanded", function () {
+                var message = "igsplitbuttonexpanded";
+                apiViewer.log(message);
+            });
+
+            $("#split-button").on("igsplitbuttonexpanding", function () {
+                var message = "igsplitbuttonexpanding";
+                apiViewer.log(message);
+            });
+
+            $("#split-button").on("igsplitbuttoncollapsed", function () {
+                var message = "igsplitbuttoncollapsed";
+                apiViewer.log(message);
+            });
+
+            $("#split-button").on("igsplitbuttoncollapsing", function () {
+                var message = "igsplitbuttoncollapsing";
+                apiViewer.log(message);
+            });
+
+            $("#split-expand").on("click", function () {
+                $("#split-button").igSplitButton("expand");
+            });
+
+
+            $("#split-collapse").on("click", function () {
+                $("#split-button").igSplitButton("collapse");
+            });
+        });
+
+
+    </script>
+</body>
+</html>

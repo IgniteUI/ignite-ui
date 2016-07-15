@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TypeScript Sample - TypeScript with Tile Manager Control - Ignite UI™</title>
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+    <style type="text/css">
+        body {
+            font-family: 'Segoe UI', 'Arial', 'Helvetica', 'sans-serif';
+        }
+
+        ul {
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        
+        .ui-igtile-maximized .ui-igtile-inner-container {overflow: hidden;}
+
+
+        #car-tabs {
+            margin: auto;
+        }
+
+        .dashboard {
+            font-size: 0.85em!important;
+            position: relative;
+            height: 660px;
+        }
+
+            .dashboard img {
+                width: 100%;
+            }
+
+            .dashboard figure {
+                margin:0;
+            }
+
+            .dashboard figcaption {
+                font-size: 1.1em;
+                background-color: #454545;
+                color: #fff;
+                padding: 10px 0 10px 10px;
+            }
+
+            .dashboard .ui-igtile-maximized  figcaption {
+                background-color: #2cbdf9;
+                -webkit-transition:0.5s;
+            }
+
+                .dashboard div ul {
+                    border: 1px solid #ececec;
+                    padding: 5px 5px 10px 5px;
+                    -webkit-transition:0.5s;
+                }
+
+                    .dashboard div ul li:nth-child(n+2):before {
+                        content: "• ";
+                        color: #2cbdf9; 
+                    }
+
+                    .dashboard div ul li:first-child {
+                        color: #2cbdf9;
+                    }
+        
+        #car-tabs.ui-tabs .ui-tabs-panel, #car-tabs.ui-tabs-nav, #car-tabs.ui-tabs .ui-tabs-nav li.ui-state-default {
+            border: none;
+            padding: 0;
+        }
+
+        #car-tabs.ui-tabs .ui-tabs-nav li.ui-state-active a {
+            background-color: #2cbdf9!important;
+
+        }
+
+        #car-tabs.ui-tabs .ui-tabs-nav li.ui-state-default a {
+            background-color: #95defc;
+        }
+
+        #car-tabs.ui-tabs .ui-tabs-nav li.ui-state-hover a {
+            background-color: #6bd1fb;
+        }
+
+        #car-tabs.ui-tabs-anchor {
+            text-shadow: none;
+            color: #fff!important;
+        }
+
+        #car-tabs.ui-tabs-anchor:hover {
+            text-decoration: underline;
+        }
+
+        #car-tabs.ui-tabs {
+            border-radius: 0;
+        }
+
+        h1.hOne {
+            margin: 0;
+            clear: none;
+            float: none;
+            font-size: 2em;
+        }
+    </style>
+
+</head>
+<body>
+
+    <h1 class="hOne">Infragistics Car Dealership</h1>
+    <h3>Choose a car brand to browse</h3>
+    <div id="car-tabs">
+        <ul>
+            <li><a href="#magarcedesDashboard">Magarcedes</a></li>
+            <li><a href="#hoidaDashboard">Hoida</a></li>
+            <li><a href="#pausheDashboard">Paushe</a></li>
+        </ul>
+
+        <div id="magarcedesDashboard" class="dashboard"></div>
+        <div id="hoidaDashboard" class="dashboard"></div>
+        <div id="pausheDashboard" class="dashboard"></div>
+    </div>
+
+    <script src="../../TypeScriptSamples/tile-manager/typescript.js"></script>
+</body>
+</html>

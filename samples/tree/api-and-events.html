@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API and Events Sample - API and Events with Tree Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+    
+    <!-- Used to style the API Viewer and Explorer UI -->
+    <link href="../../css/apiviewer.css" rel="stylesheet" type="text/css">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+            
+    <!-- Used to add markup and provide logging 
+        functionality for the API Explorer and API Viewer UI -->
+    <script src="../../js/apiviewer.js"></script>   
+</head>
+<body>
+
+
+    <div id="tree"></div>
+
+    <!-- Begin: API UI -->
+    <div class="api-explorer">
+        <button id="btnRemoveNode">Remove Selected Node</button><span>var node = $("#tree").igTree("selectedNode");<br>$("#tree").igTree("removeAt", node.path);</span><br>
+        <button id="btnSelectNode">Select Tech Node</button><span>var nodes = $("#tree").igTree("findNodesByText", "Tech"); <br>$("#tree").igTree("select", nodes[0].element);</span><br>
+        <button id="btnAddNode">Add Node</button><span>$("#tree").igTree("addNode", { Text: "New Node" });</span>
+    </div>
+
+    <div class="api-viewer" tabindex="0"></div>
+    <!-- End: API UI -->
+    
+    <script src="../data-files/hierarchical-products.js"></script>
+
+    <script>        
+
+        $(function () {
+
+            // Used to show output in the API Viewer at runtime, 
+            // defined in external script 'apiviewer.js'           
+            var apiViewer = new $.ig.apiViewer(); 
+
+            
+            /*----------------- Method & Option Examples -------------------------*/
+
+            // Remove Selected Node button click handler
+            $("#btnRemoveNode").click(function (e) {
+                var node = $("#tree").igTree("selectedNode");
+
+                if (node.path != null) {
+
+                    if (node.data.Text === "Tech") {
+                        apiViewer.log("Tech node cannot be removed");
+                    }
+                    else {
+                        // Remove selected node using path
+                        $("#tree").igTree("removeAt", node.path);
+
+                        apiViewer.log("Node Removed: " + node.data.Text);
+
+                        $("#tree").igTree("clearSelection");
+                    }
+                } else {
+                    apiViewer.log("Please select a node and try again.");
+                }
+            });
+
+            // Select "Tech" Node button click handler
+            $("#btnSelectNode").click(function (e) {
+
+                var nodes = $("#tree").igTree("findNodesByText", "Tech");
+
+                if (nodes.length > 0) {
+                    $("#tree").igTree("select", nodes[0].element);
+                }
+            });
+            
+            // {Button Label} button click handler
+            $("#btnAddNode").click(function (e) {
+                var parentNode = $("#tree").igTree("selectedNode").element;                
+
+                if (parentNode == null) {
+                    $("#tree").igTree("addNode", { Text: "New Node" });
+                }
+                else {
+                    $("#tree").igTree("addNode", { Text: "New Node" }, parentNode);
+                    $("#tree").igTree("expand", parentNode);
+                }
+
+            });
+
+            /*----------------- Event Examples -------------------------*/
+
+            $("#tree").on("igtreeselectionchanged", function (e, ui) {
+            	apiViewer.log("igtreeselectionchanged: [ " + "Selection Changed: " + ui.newNodes[0].data.Text + "]"); focusOnMobile();
+            });
+
+            $("#tree").on("igtreenodeclick", function (evt, ui) {
+            	apiViewer.log("igtreenodeclick: [ " + "Node Clicked: " + ui.node.data.Text + "]"); focusOnMobile();
+            });
+
+            $("#tree").on("igtreedragstart", function (evt, ui) {
+            	apiViewer.log("igtreedragstart: [ " + "Node Drag Start: " + ui.data.Text + "]"); focusOnMobile();
+            });
+
+            $("#tree").on("igtreedragstop", function (evt, ui) {
+            	apiViewer.log("igtreedragstop"); focusOnMobile();
+            });
+
+            $("#tree").on("igtreenodedropped", function (evt, ui) {
+            	apiViewer.log("igtreenodedropped"); focusOnMobile();
+            });
+
+            /*----------------- Instantiation -------------------------*/
+
+            $("#tree").igTree({
+                singleBranchExpand: true,
+                dataSourceType: "json",
+                dataSource: products, //defined in external script
+                dragAndDrop: true,
+                bindings: {
+                    textKey: "Text",
+                    valueKey: "Text",
+                    childDataProperty: "Nodes"
+                }
+            });
+
+            function focusOnMobile() {
+            	setTimeout(function () {
+            		if ($(window).width() < 600) {
+            			$(".api-viewer").focus();
+            		}
+            	}, 0);
+            }
+
+        });
+
+    </script>  
+</body>
+</html>

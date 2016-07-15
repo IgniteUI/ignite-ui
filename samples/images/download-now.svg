@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg id="" viewBox="0 0 44 53" style="background-color:#ffffff00" version="1.1"
+	xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+	x="0px" y="0px" width="44px" height="53px"
+>
+	<defs>
+		<filter id="filter1" x="-100%" y="-100%" width="300%" height="300%">
+			<!-- Drop Shadow -->
+			<feOffset result="out" in="SourceGraphic" dx="4.9497" dy="4.9497"/>
+			<feColorMatrix result="out" in="out" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.302 0"/>
+			<feGaussianBlur result="out" in="out" stdDeviation="4"/>
+			<feBlend in="SourceGraphic" in2="out" mode="normal" result="Drop_Shadow1"/>
+		</filter>
+		<linearGradient id="gradient1" x1="16.970458984375" y1="-9.875" x2="16.970458984375" y2="31.125" gradientUnits="userSpaceOnUse">
+			<stop stop-color="#e36a2c" stop-opacity="1" offset="0%"/>
+			<stop stop-color="#ef9229" stop-opacity="1" offset="95.5556%"/>
+			<stop stop-color="#ef9329" stop-opacity="1" offset="98.8889%"/>
+		</linearGradient>
+		<filter id="filter2" x="-100%" y="-100%" width="300%" height="300%">
+			<!-- Drop Shadow -->
+			<feOffset result="out" in="SourceGraphic" dx="4.9497" dy="4.9497"/>
+			<feColorMatrix result="out" in="out" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.302 0"/>
+			<feGaussianBlur result="out" in="out" stdDeviation="4"/>
+			<feBlend in="SourceGraphic" in2="out" mode="normal" result="Drop_Shadow2"/>
+		</filter>
+	</defs>
+	<path d="M 39 7 L 39 5 C 39 3 37.1234 0.375 34.5 0.375 C 31.8766 0.375 30 3 30 5 L 30 7 L 39 7 Z" fill="#8a1e1e"/>
+	<path filter="url(#filter1)" d="M 6 0 C 1 1 0 6 0 6 L 0 16 L 14.75 27.125 L 30 16 L 30 6 C 30 6 30 1 36 0 L 6 0 Z" fill="url(#gradient1)"/>
+	<path filter="url(#filter2)" d="M 0 24 L 0 34 L 15 45 L 30 34 L 30 24 L 14.75 35.125 L 0 24 Z" fill="#fdebd0"/>
+</svg>

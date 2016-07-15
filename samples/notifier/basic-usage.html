@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Usage Sample - Basic Usage with Notifier Control - Ignite UI™</title>    
+    <!--Ignite UI Required Combined CSS Files-->
+	<link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+	<link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+     <!--Ignite UI Required Combined JavaScript Files--> 
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+    <script type="text/javascript">
+   
+        $(document).ready(function () {
+            
+           $("#successEditor1").igNotifier({
+                direction: "right",
+                messages: {
+                    info: "Information message.",
+                    success: "Success message.",
+                    warning: "Warning message.",
+                    error: "Error message."
+                }
+            }).igNotifier("notify", "success");
+
+            $("#state").on("change", function myfunction() {
+                var state = $(this).find("option:selected").val();
+
+                $("#successEditor1").igNotifier("option", "state", state);
+            });
+
+            $("#mode").on("change", function myfunction() {
+                var mode = $(this).find("option:selected").val();
+
+                $("#successEditor1").igNotifier("option", "mode", mode);
+            });
+
+            $("#direction").on("change", function myfunction() {
+                var direction = $(this).find("option:selected").val();
+
+                $("#successEditor1").igNotifier("option", "direction", direction);
+            });
+
+            $("#show").on("click", function myfunction() {
+                $("#successEditor1").igNotifier("show");
+            });
+            $("#hide").on("click", function myfunction() {
+                $("#successEditor1").igNotifier("hide");
+            });          
+        });
+
+    </script>
+</head>
+<body>
+
+    <style>
+        div.float {
+            float: left;
+            margin-right: 10px;
+        }
+            div.float label {
+                display: block;
+                line-height: 20px;
+                font-family: 'Open Sans',Arial,sans-serif;
+                font-size: 13px;
+            }
+        select {
+            width: 150px;
+            height: 28px;
+            opacity: 1;
+        }        
+        button {
+            width: 70px;
+            height: 29px;
+            opacity: 1;           
+            float:left;           
+            margin-right:20px;
+            background-color: rgb(226, 226, 226);
+        }
+        div.buttons{
+            clear:both;
+        }
+        #successEditor1 {
+            margin-top: 20px;
+            margin-bottom: 0px;
+        }
+        @media screen and (max-width: 500px) {
+            div.float { clear: both; }
+        }
+    </style>
+    <h3>Check out my messages</h3>    
+    <input id="successEditor1">
+    <br>
+    <br>
+    <br>
+    <div>
+        <div class="float">
+            <label>Message state:</label>
+            <select id="state">
+                <option value="success" selected="">success
+                <option value="info">info
+                <option value="warning">warning
+                <option value="error">error
+            </select>
+        </div>
+        <div class="float">
+            <label>Message mode:</label>
+            <select id="mode">
+                <option value="auto" selected="">auto
+                <option value="popover">popover
+                <option value="inline">inline
+            </select>
+        </div>
+        <div class="float">
+            <label>Popover direction:</label>
+            <select id="direction">
+                <option value="top" selected="">top
+                <option value="left">left
+                <option value="right">right
+                <option value="bottom">bottom
+            </select>
+        </div> 
+        <div class="buttons">
+            <br>
+            <br>
+            <button id="show"> show</button>
+            <button id="hide"> hide</button>
+        </div>
+    </div>
+</body>
+</html>

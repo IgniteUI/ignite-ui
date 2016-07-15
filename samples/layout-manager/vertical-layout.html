@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Ignite UI Layout Manager - Responsive Vertical layout</title>
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="http://cdn-na.infragistics.com/igniteui/2016.2/latest/css/structure/modules/infragistics.ui.layout.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <!-- Modernizr/jQuery/jQuery UI -->
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#layout').on("iglayoutmanageritemrendered", function (e, args) {
+                args.item.text(args.index);
+                args.item.css("background-color", "#2CBDF9");
+                args.item.css("color", "#FFF");
+                args.item.css("font-size", "20px");
+                args.item.css("padding", "5px 0 0 5px");
+            });
+            $('#layout').igLayoutManager({
+                layoutMode: "vertical",
+                itemCount: 10
+            });
+            $('#layout-variable').on("iglayoutmanageritemrendered", function (e, args) {
+                args.item.text(args.index);
+                args.item.css("background-color", "#2CBDF9");
+                args.item.css("color", "#FFF");
+                args.item.css("font-size", "20px");
+                args.item.css("padding", "5px 0 0 5px");
+            });
+            $('#layout-variable').igLayoutManager({
+                layoutMode: "vertical",
+                items: [
+					{
+					    width: "10%",
+					    height: "150px"
+					},
+					{
+					    width: "40%",
+					    height: "250px"
+					},
+					{
+					    width: "40%",
+					    height: "150px"
+					},
+					{
+					    width: "20%",
+					    height: "150px"
+					},
+					{
+					    width: "50%",
+					    height: "150px"
+					}
+                ]
+            });
+        });
+    </script>
+</head>
+<body>
+
+<h3>Equal Items</h3>
+    <div style="height: 1100px;"> 
+	    <div id="layout"></div>
+    </div>
+<h3>Variable width/height items</h3>
+    <div style=" height: 1000px;"> 
+	    <div id="layout-variable"></div>
+    </div>
+</body>
+</html>
