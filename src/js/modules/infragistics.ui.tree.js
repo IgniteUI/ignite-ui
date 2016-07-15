@@ -1207,7 +1207,7 @@ if (typeof jQuery !== "function") {
 			this.element.undelegate("a", "mousedown");
 		},
 		_constructFromData: function () {
-			var ul, data = this.options.dataSource._rootds.data(), self = this;
+			var ul, data = this.options.dataSource.root().data(), self = this;
 			this._triggerDataBound(data);
 			this._triggerRendering(data);
 
@@ -2067,26 +2067,26 @@ if (typeof jQuery !== "function") {
 				i;
 			if (!binding.hasOwnProperty("primaryKey")) {
 				if (!originalData) {
-				    if (this.options.dataSource._rootds._data.length <= this.element.
+				    if (this.options.dataSource.root()._data.length <= this.element.
                         find(".ui-igtree-noderoot").length ||
                         this.element.find(".ui-igtree-noderoot").length <= 0) {
 						if (dataIndex === 0) {
 							if ($.type(data) === "array") {
-								this.options.dataSource._rootds._data = data.concat(this.options.dataSource._rootds._data);
+								this.options.dataSource.root()._data = data.concat(this.options.dataSource.root()._data);
 							} else {
-							    this.options.dataSource._rootds._data = [ data ]
-                                    .concat(this.options.dataSource._rootds._data);
+							    this.options.dataSource.root()._data = [ data ]
+                                    .concat(this.options.dataSource.root()._data);
 							}
 						} else if (!dataIndex) {
 							if ($.type(data) === "array") {
 								for (i = 0; i < data.length; i++) {
-									this.options.dataSource._rootds._data.push(data[ i ]);
+									this.options.dataSource.root()._data.push(data[ i ]);
 								}
 							} else {
-								this.options.dataSource._rootds._data.push(data);
+								this.options.dataSource.root()._data.push(data);
 							}
 						} else {
-							this.options.dataSource._rootds._data.splice(dataIndex, 0, data);
+							this.options.dataSource.root()._data.splice(dataIndex, 0, data);
 						}
 					}
 				} else {
@@ -2136,15 +2136,15 @@ if (typeof jQuery !== "function") {
 				}
 			} else {
 				if (!originalData) {
-				    if (this.options.dataSource._rootds._data.length <=
+				    if (this.options.dataSource.root()._data.length <=
                         this.element.find(".ui-igtree-noderoot").length ||
                         this.element.find(".ui-igtree-noderoot").length <= 0) {
 						if ($.type(data) === "array") {
 							for (i = 0; i < data.length; i++) {
-								this.options.dataSource._rootds._data.push(data[ i ]);
+								this.options.dataSource.root()._data.push(data[ i ]);
 							}
 						} else {
-							this.options.dataSource._rootds._data.push(data);
+							this.options.dataSource.root()._data.push(data);
 						}
 					}
 				} else {
@@ -2170,7 +2170,7 @@ if (typeof jQuery !== "function") {
 		},
 		_removeData: function (path) {
 		    var splitPath = path.split(this.options.pathSeparator),
-                data = this.options.dataSource._rootds.data(), i, j,
+                data = this.options.dataSource.root().data(), i, j,
                 binding = this.options.bindings, key;
 
 			if (splitPath.length === 1) {
@@ -3299,7 +3299,7 @@ if (typeof jQuery !== "function") {
 			}
 
 			var splitPath = path.split(this.options.pathSeparator), data = this.options.
-                dataSource._rootds.data(), i, j, binding = this.options.bindings, temp;
+                dataSource.root().data(), i, j, binding = this.options.bindings, temp;
 
 			for (i = 0; i < splitPath.length - 1; i++) {
 				if (!binding.hasOwnProperty("primaryKey")) {
