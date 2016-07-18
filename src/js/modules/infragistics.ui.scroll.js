@@ -38,12 +38,13 @@
 
 	$.widget("ui.igScroll", {
 		options: {
-			/* type="bool" Sets or gets if the scrollbars should be always visible (on all environments). Otherwise it will be the default behavior. */
-			alwaysVisibleBars: null,
-			/* type="bool" Sets or gets if the scrollbars should be always hidden (on all environments). Otherwise it will be the default behavior. This removes the scrollbars from the DOM. Make sure to set it to false first before setting alwaysVisibleBars*/
-			alwaysHiddenBars: null,
-			/* type="bool" Sets or gets if the scrollbars should be hidden (on all environments). Otherwise it will be the default behavior. */
-			useNative: null,
+			/* type="bool" Sets or gets if the scrollbars should be always visible (on all environments). Otherwise it will be the default behavior. Note: this option is only for the custom scrollbars set through the scrollbarType option. */
+			alwaysVisible: null,
+			/* type="custom|native|none" Sets or gets what type of scrollbars should be using the igScroll (on all environments).
+				custom type="string" Custom scrollbars with custom ui and events.
+				native type="string" Native scrollbars
+				none type="string" No scrollbars should be visible */
+			scrollbarType: null,
 			/* type="bool" Sets or gets if igScroll can modify the DOM when it is initialized on certain element so that the content can be scrollable. */
 			modifyDOM: null,
 			/* type="number" Sets custom value for how high is actually the content. Useful when wanting to scroll and update the shown content manually. */
@@ -332,25 +333,17 @@
 		_setOption: function (key, value) {
 			this._super(key, value);
 
-			if (key === "alwaysVisibleBars") {
+			if (key === "alwaysVisible") {
 				if (value === true) {
 					this._showScrollBars();
 				}
 			}
-			if (key === "alwaysHiddenBars") {
-				if (value === true) {
-					this._removeScrollbarH();
-					this._removeScrollbarV();
-				} else {
+			if (key === "scrollbarType") {
+				this._removeScrollbars();
+
+				if (value !== "none") {
 					this._createScrollBars();
-				}
-			}
-			if (key === "useNative") {
-				if (value === true) {
-					this._removeScrollbarH();
-					this._removeScrollbarV();
-				} else if (value === false) {
-					this._createScrollBars();
+					this._scrollToXY(0, 0, true);
 				}
 			}
 			if (key === "scrollTop") {
@@ -534,7 +527,7 @@
 		},
 
 		_refreshScrollbarsDrag: function () {
-			if (!this.options.useNative && this._vBarDrag && this._hBarDrag) {
+			if (this.options.scrollbarType === "custom" && this._vBarDrag && this._hBarDrag) {
 				var vDragHeight = this._elemHeight * this._percentInViewV;
 				this._vBarDrag.css("height", vDragHeight + "px");
 
@@ -1200,16 +1193,22 @@
 				this._switchFromTouchToMixed();
 			}
 
-			if (!this.options.scrollOnlyVBar && !this._scrollFromSyncContentV) {
-				this._syncVBar(this._container[0], false);
+			if (!this._scrollFromSyncContentV) {
 				this._syncElemsY(this._container[0], false);
+
+				if (!this.options.scrollOnlyVBar) {
+					this._syncVBar(this._container[0], false);
+				}
 			} else {
 				this._scrollFromSyncContentV = false;
 			}
 
-			if (!this.options.scrollOnlyHBar && !this._scrollFromSyncContentH) {
-				this._syncHBar(this._container[0], false);
+			if (!this._scrollFromSyncContentH) {
 				this._syncElemsX(this._container[0], false);
+
+				if (!this.options.scrollOnlyHBar) {
+					this._syncHBar(this._container[0], false);
+				}
 			} else {
 				this._scrollFromSyncContentH = false;
 			}
@@ -1459,13 +1458,13 @@
 		},
 
 		_createScrollBars: function () {
-			if (this.options.alwaysHiddenBars) {
+			if (this.options.scrollbarType === "none") {
 				return;
 			}
 
-			if (this.options.useNative) {
+			if (this.options.scrollbarType === "native") {
 				this._initNativeScrollbars();
-			} else {
+			} else if (this.options.scrollbarType === "custom") {
 				if (this._isScrollableV) {
 					this._initCustomScrollBarV();
 				}
@@ -1477,40 +1476,81 @@
 		},
 
 		_initNativeScrollbars: function () {
-			//var css = this.css;
+			var css = this.css,
+				bNativeDesktop = false;
 
-			//this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
-			//	.addClass(css.nativeVScrollOuter)
-			//	.css("height", this._elemHeight - 15 + "px");
+			if (this._isScrollableV) {
+				this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
+					.addClass(css.nativeVScrollOuter)
+					.css("height", this._elemHeight - 15 + "px");
 
-			//this._vDragHeight = this._contentHeight;
-			//this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
-			//	.addClass(css.nativeVScrollInner)
-			//	.css("height", this._vDragHeight + "px");
+				this._vDragHeight = this._contentHeight;
+				this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
+					.addClass(css.nativeVScrollInner)
+					.css("height", this._vDragHeight + "px");
 
-			//if (this.options.scrollbarVParent) {
-			//	this._vBarContainer.append(this._vBarDrag).appendTo(this.options.scrollbarVParent);
-			//} else {
-			//	this._vBarContainer.append(this._vBarDrag).appendTo(this._container[ 0 ].parentElement);
-			//}
+				if (this.options.scrollbarVParent) {
+					this._vBarContainer.append(this._vBarDrag).appendTo(this.options.scrollbarVParent);
+				} else {
+					this._vBarContainer.append(this._vBarDrag).appendTo(this._container[0].parentElement);
+				}
 
-			//this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
-			//	.addClass(css.nativeHScrollOuter)
-			//	.css("width", this._elemWidth - 15 + "px");
+				if ($.ig.util.getScrollHeight() > 0) {
+					this._content
+						.css("padding-bottom", $.ig.util.getScrollHeight() + "px");
+					bNativeDesktop = true;
+				}
+				this._setOption("scrollbarV", this._vBarContainer);
+			}
 
-			//this._hDragWidth = this._contentWidth;
-			//this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
-			//	.addClass(css.nativeHScrollInner)
-			//	.css("width", this._hDragWidth + "px");
+			if (this._isScrollableH) {
+				this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
+					.addClass(css.nativeHScrollOuter)
+					.css("width", this._elemWidth - 15 + "px");
 
-			//if (this.options.scrollbarVParent) {
-			//	this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarVParent);
-			//} else {
-			//	this._hBarContainer.append(this._hBarDrag).appendTo(this._container[ 0 ].parentElement);
-			//}
+				this._hDragWidth = this._contentWidth;
+				this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
+					.addClass(css.nativeHScrollInner)
+					.css("width", this._hDragWidth + "px");
 
-			//this._setOption("scrollbarV", this._vBarContainer);
-			//this._setOption("scrollbarH", this._hBarContainer);
+				if (this.options.scrollbarVParent) {
+					this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarVParent);
+				} else {
+					this._hBarContainer.append(this._hBarDrag).appendTo(this._container[0].parentElement);
+				}
+
+				if ($.ig.util.getScrollWidth() > 0) {
+					bNativeDesktop = true;
+					this._content
+						.css("padding-right", $.ig.util.getScrollWidth() + "px");
+				}
+				this._setOption("scrollbarH", this._hBarContainer);
+			}
+
+			//Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
+			if (bNativeDesktop) {
+				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
+					.addClass("igscroll-filler");
+				this._desktopFiller.appendTo(this._container[0].parentElement);
+			}
+		},
+
+		_removeScrollbars: function() {
+			if (this._vBarContainer) {
+				this._vBarContainer.remove();
+			}
+
+			if (this._hBarContainer) {
+				this._hBarContainer.remove();
+			}
+
+			//In case we have native scrollbars and we have added padding. Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
+			if (this._desktopFiller) {
+				this._desktopFiller.remove();
+				this._content
+					.css("padding-right", "0px")
+					.css("padding-bottom", "0px");
+			}
 		},
 
 		_initCustomScrollBarV: function () {
@@ -1936,12 +1976,6 @@
 			this._bUseVDrag = false;
 
 			return false;
-		},
-
-		_removeScrollbarV: function () {
-			if (this._vBarContainer) {
-				this._vBarContainer.remove();
-			}
 		},
 
 		_initCustomScrollBarH: function () {
@@ -2410,19 +2444,13 @@
 			return false;
 		},
 
-		_removeScrollbarH: function () {
-			if (this._hBarContainer) {
-				this._hBarContainer.remove();
-			}
-		},
-
 		/** Shows the mobile/touch scrollbars when they are hidden.
 		*
 		*	animate - true/false if hide the scrollbar slowly with animation and not momentarily
 		*	bDragOnly - show only the drag button. Used when using simple scrollbars
 		*/
 		_showScrollBars: function (animate, bDragOnly, hideAfterShown, opacityStep) {
-			if (this.options.useNative || this.options.alwaysHiddenBars) {
+			if (this.options.scrollbarType !== "custom") {
 				return;
 			}
 
@@ -2468,7 +2496,7 @@
 		},
 
 		_updateScrollBarsPos: function (destX, destY) {
-			if (this.options.useNative || this.options.alwaysHiddenBars) {
+			if (this.options.scrollbarType !== "custom") {
 				return;
 			}
 
@@ -2503,7 +2531,7 @@
 		*	bDragOnly - hide only the drag button. Used when using simple scrollbars
 		*/
 		_hideScrollBars: function (animate, bDragOnly, opacityStep) {
-			if (this.options.useNative || this.options.alwaysHiddenBars || this.options.alwaysVisibleBars || currentOpacity <= 0) {
+			if (this.options.scrollbarType !== "custom" || this.options.alwaysVisible || currentOpacity <= 0) {
 				return;
 			}
 
@@ -2673,9 +2701,8 @@
 	$.extend($.ui.igScroll, { version: "<build_number>" });
 	/* options which can be customized globally for all instances of igScroll. */
 	$.ui.igScroll.defaults = {
-		alwaysVisibleBars: false,
-		alwaysHiddenBars: false,
-		useNative: false,
+		alwaysVisible: false,
+		scrollbarType: "custom",
 		modifyDOM: false,
 		scrollHeight: 0,
 		scrollWidth: 0,

@@ -215,3 +215,31 @@
 .igscroll-hdrag:active { 
 	background: #575757;
 }
+
+/**********************
+*  Native Scrollbars  *
+***********************/
+.igscroll-vnative-outer {
+	position: relative;
+	float: right;
+	width: 17px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	right: 0px;
+}
+
+.igscroll-vnative-inner {
+	width: 17px;
+}
+
+.igscroll-hnative-outer {
+	position: relative;
+	height: 17px;
+	bottom: 2px;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.igscroll-hnative-inner {
+	height: 17px;
+}
