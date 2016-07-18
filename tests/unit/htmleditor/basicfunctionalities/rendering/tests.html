@@ -546,10 +546,12 @@
                     p = self.editorBody.find("p:first");
                     self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
                     combo.igCombo("openDropDown", null, true, true);
+                    start();
                 }, 200);
 
                 $("#" + this.htmlEditorId + "_toolbars_" + toolbarName).bind("igtoolbartoolbarcomboselected", function (e) {
                     var condition = false;
+                    stop();
                     setTimeout(function () {
                         if ($.isFunction(conditionCallBack)) {
                             condition = conditionCallBack.call(p, self.editorBody);
@@ -574,6 +576,7 @@
                     dialog = $("#" + self.htmlEditorId + "_linkDialog_popover");
                     dialog.find("#html1_linkDialog_linkHref").val(anchorAddress).end()
                         .find("#html1_linkDialog_btnApply").click();
+                    start();
                 }, 200);
 
 
@@ -585,7 +588,6 @@
 
                     ok(a.html() === anchorAddress, "The anchor element display text.");
                     ok(a.attr("href") === anchorAddress, "The anchor element display text.");
-                    start();
                 });
 
                 // Reopen and close the window
@@ -617,6 +619,9 @@
                     dialog.find("#html1_imageDialog_imgSrc").val(imageURL).end()
                         .find("#html1_imageDialog_imgAlt").val(imageAlt).end()
                         .find("#html1_imageDialog_btnApply").click();
+
+
+                    start();
                 }, 200);
 
                 $("body").on("igimagepropertiesdialoghide", function () {
@@ -625,7 +630,6 @@
                     ok(img.length === 1, "The image element is inserted properly.");
                     ok(img.attr("src") === imageURL, "The image url.");
                     ok(img.attr("alt") === imageAlt, "The image alt text.");
-                    start();
                 })
             },
             _openTableDialog: function () {
@@ -644,6 +648,8 @@
 
                     // Reopen the image dialog
                     button.trigger("click");
+
+                    start();
                 }, 200);
 
 
@@ -653,8 +659,6 @@
 
                     ok(trCount === 2, "Table is inserted crrectly with 2 rows");
                     ok(tdCount === 4, "Table is inserted crrectly with 4 cells.");
-
-                    start();
                 });
             }
         };
