@@ -4052,6 +4052,18 @@ $.ig.Array.prototype.clear = function () {
 		return s;
 	};
 
+
+	String.prototype.reverse = function () {
+		/* Inverts the order of the characters in a string. 
+			returnType="string" Returns a new inverted string.
+		*/
+		var s = '';
+		for (var i = this.length - 1; i >= 0; i--) {
+			s += this[i];
+		}
+		return s;
+	};
+	
 	String.prototype.padRight = function (len, c) {
 		var s = this;
 		c = c || ' ';

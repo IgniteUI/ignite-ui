@@ -76,6 +76,12 @@ $.widget("ui.igValidator", {
 			object type="object" A configuration object with optional error message. Message strings can contain format items for min and max respecitively (e.g. lengthRange: { min: 6, max: 20, errorMessage: "Value must be between {0} and {1}." } )
 			*/
 		valueRange: null,
+		/* type="bool|object" Gets or sets option to validate if value is a Credit Card number.
+			Note: This rule will only validate the checksum of the number using Luhn algorithm irregardless of type.
+			bool type="bool" A boolean value indicating if the field should be an Credit Card number.
+			object type="object" A configuration object with optional error message (e.g. creditCard: { errorMessage: "Enter a valid carn number"} )
+		*/
+		creditCard: false,
 		/* type="string|object" Gets or sets regular expression which is used to validate value in text editor.
 			string type="string" A string containing regular expression
 			object type="RegExp" A RegExp object or an object with expression and errorMessage properties.
@@ -423,6 +429,7 @@ $.widget("ui.igValidator", {
 		this.rules.push(new $.ig.igValidatorValueRule(this));
 		this.rules.push(new $.ig.igValidatorEqualToRule(this));
 		this.rules.push(new $.ig.igValidatorEmailRule(this));
+		this.rules.push(new $.ig.igValidatorCreditCardRule(this));
 		this.rules.push(new $.ig.igValidatorPatternRule(this));
 		this.rules.push(new $.ig.igValidatorCustomRule(this));
 	},
@@ -772,7 +779,7 @@ $.widget("ui.igValidator", {
 		}
 
 		opts._currentMessage = null;
-		
+
 		if (!options.required && !valueString) {
 			//no value and not required, return
 			args.message = opts._currentMessage = options.successMessage;
@@ -1359,8 +1366,7 @@ $.ig.igValidatorBaseRule = $.ig.igValidatorBaseRule || Class.extend({
 	},
 	formatMessage: function (message) {
 		for (var i = 0; i < this.formatItems.length; i++) {
-			message = message.replace("{" + i + "}", this.formatItems[i]);
-			
+			message = message.replace("{" + i + "}", this.formatItems[ i ]);
 		}
 		return message;
 	},
@@ -1376,7 +1382,7 @@ $.ig.igValidatorBaseRule = $.ig.igValidatorBaseRule || Class.extend({
 
 $.ig.igValidatorRequiredRule = $.ig.igValidatorRequiredRule || $.ig.igValidatorBaseRule.extend({
 	name: "required",
-	groupTypes: ["checkboxrange", "radio", "select", "selectrange"],
+	groupTypes: [ "checkboxrange", "radio", "select", "selectrange" ],
 	groupMessageName: "select",
 	getMessageType: function (options) {
 		if ($.inArray(options._type, this.groupTypes) > -1) {
@@ -1443,7 +1449,7 @@ $.ig.igValidatorNumberRule = $.ig.igValidatorNumberRule || $.ig.igValidatorBaseR
 		// split decimals so thousandsSeparator can be removed only from the integer part
 		// this ensures strings like "2,445.1,454" are not valid
 		value = value.split(decimalSeparator);
-		
+
 		// strip thousands separator(s)
 		value[ 0 ] = value[ 0 ].replace(thousandsRegEx, "");
 
@@ -1479,7 +1485,7 @@ $.ig.igValidatorLengthRule = $.ig.igValidatorLengthRule || $.ig.igValidatorBaseR
 	isValid: function(options, value) {
 		// Min/Max Length
 		if (value && value.length) {
-			var  min, max, 
+			var min, max,
 				messageSuffix = value.push ? "Select" : "Length",
 				minLength = options.lengthRange.push ? options.lengthRange[ 0 ] : options.lengthRange.min,
 				maxLength = options.lengthRange.push ? options.lengthRange[ 1 ] : options.lengthRange.max;
@@ -1517,7 +1523,7 @@ $.ig.igValidatorValueRule = $.ig.igValidatorValueRule || $.ig.igValidatorNumberR
 		var min, max,
 			isNumber = this._isNumber(options, value),
 			isDateParsable = !isNaN(new Date(value).getSeconds());
-		// Min/Max Value
+
 		if (isDateParsable || isNumber) {
 			var minValue = options.valueRange.push ? options.valueRange[ 0 ] : options.valueRange.min,
 				maxValue = options.valueRange.push ? options.valueRange[ 1 ] : options.valueRange.max,
@@ -1619,6 +1625,45 @@ $.ig.igValidatorCustomRule = $.ig.igValidatorCustomRule || $.ig.igValidatorBaseR
 		}
 		if (typeof func === "function" && !func.apply(this.validator, [ value, fieldOptions ])) {
 			return false;
+		}
+		return true;
+	}
+});
+
+$.ig.igValidatorCreditCardRule = $.ig.igValidatorCreditCardRule || $.ig.igValidatorBaseRule.extend({
+	name: "creditCard",
+	getMessageType: function (/* options */) {
+		return "default";
+	},
+	isValid: function(options, value) {
+		/* Based on ASP.NET CreditCardAttribute check, using Luhn algorithm https://en.wikipedia.org/wiki/Luhn_algorithm */
+		var val = value && "" + value,
+			evenDigit = false,
+			checksum = 0;
+
+		if (val) {
+			val = val.replace(/-/g, "");
+            val = val.replace(/ /g, "");
+			val =  val.reverse();
+
+			for (var i = 0; i < val.length; i++) {
+                if (!$.ig.String.prototype.isDigit(val[ i ])) {
+                    return false;
+                }
+
+                var digitValue = (val[ i ] - "0") * (evenDigit ? 2 : 1);
+                evenDigit = !evenDigit;
+
+				// perform sum where double digit numbers are added as digits (i.e. doubled 8 would add: + 1 + 6 )
+                while (digitValue > 0) {
+                    checksum += digitValue % 10;
+
+					// only int leftovers:
+                    digitValue = Math.floor( digitValue / 10 );
+                }
+            }
+
+			return (checksum % 10) === 0;
 		}
 		return true;
 	}
