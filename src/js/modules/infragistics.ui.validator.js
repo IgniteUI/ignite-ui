@@ -79,7 +79,7 @@ $.widget("ui.igValidator", {
 		/* type="bool|object" Gets or sets option to validate if value is a Credit Card number.
 			Note: This rule will only validate the checksum of the number using Luhn algorithm irregardless of type.
 			bool type="bool" A boolean value indicating if the field should be an Credit Card number.
-			object type="object" A configuration object with optional error message (e.g. creditCard: { errorMessage: "Enter a valid carn number"} )
+			object type="object" A configuration object with optional error message (e.g. creditCard: { errorMessage: "Enter a valid card number"} )
 		*/
 		creditCard: false,
 		/* type="string|object" Gets or sets regular expression which is used to validate value in text editor.
@@ -292,6 +292,8 @@ $.widget("ui.igValidator", {
 		maxValueMessage: "Please enter a value less than or equal to {0}",
 		/* Message for invalid email input */
 		emailMessage: "Please enter a valid email address",
+		/* Message for invalid credit card number */
+		creditCardMessage: 'A valid credit card number should be entered',
 		/* Message for invalid email input */
 		equalToMessage: "Values don't match",
 		optionalString: "(optional)"
@@ -1376,7 +1378,7 @@ $.ig.igValidatorBaseRule = $.ig.igValidatorBaseRule || Class.extend({
 	},
 	/*jshint unused: true*/
 	init: function (validator) {
-		this.validator = validator; // TODO ??
+		this.validator = validator;
 	}
 });
 
@@ -1533,7 +1535,7 @@ $.ig.igValidatorValueRule = $.ig.igValidatorValueRule || $.ig.igValidatorNumberR
 				hasMax = typeof maxValue === "number" || maxValue;
 
 			if ((hasMin || hasMax)) {
-				if (isNumber && !options.date) { // parseFloat is quite eager to parse date strings too... TODO remove
+				if (isNumber && !options.date) {
 					value = options.number ? this._parseNumber(value, options) : parseFloat(value); // TODO: Always use _parseNumber if decimals go to validator defaults!
 					min = hasMin && minValue;
 					min = value < min ? min.toString() : null;
@@ -1632,11 +1634,10 @@ $.ig.igValidatorCustomRule = $.ig.igValidatorCustomRule || $.ig.igValidatorBaseR
 
 $.ig.igValidatorCreditCardRule = $.ig.igValidatorCreditCardRule || $.ig.igValidatorBaseRule.extend({
 	name: "creditCard",
-	getMessageType: function (/* options */) {
-		return "default";
-	},
 	isValid: function(options, value) {
-		/* Based on ASP.NET CreditCardAttribute check, using Luhn algorithm https://en.wikipedia.org/wiki/Luhn_algorithm */
+		/* Based on ASP.NET CreditCardAttribute check, 
+			https://github.com/Microsoft/referencesource/blob/master/System.ComponentModel.DataAnnotations/DataAnnotations/CreditCardAttribute.cs
+		   using Luhn algorithm https://en.wikipedia.org/wiki/Luhn_algorithm */
 		var val = value && "" + value,
 			evenDigit = false,
 			checksum = 0;
@@ -1651,7 +1652,7 @@ $.ig.igValidatorCreditCardRule = $.ig.igValidatorCreditCardRule || $.ig.igValida
                     return false;
                 }
 
-                var digitValue = (val[ i ] - "0") * (evenDigit ? 2 : 1);
+                var digitValue = (+val[ i ]) * (evenDigit ? 2 : 1);
                 evenDigit = !evenDigit;
 
 				// perform sum where double digit numbers are added as digits (i.e. doubled 8 would add: + 1 + 6 )
