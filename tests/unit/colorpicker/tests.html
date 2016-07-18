@@ -48,44 +48,49 @@
 
 	    test("_changeSelectedColor", function () {
 	        this.actualColorPicker._changeSelectedColor(this.firstColor);
-	        ok(this.firstColor.hasClass("selected-color"), "first color selected");
+	        ok(this.firstColor.hasClass("selected-color"), "first color wasn't selected");
 	    });
 
 	    test("_changeColorOptions", function() {
-	    	this.actualColorPicker.element.igColorPicker("option", "colors", []);
-	    	equal(this.actualColorPicker.options.colors.length , 0, "array of colors set to empty");
+	    	this.actualColorPicker._setOption("colors", []);
+	    	equal(this.actualColorPicker.options.colors.length , 0, "colors options is set to empty through _setOption method");
 	    })
+	    
 	    test("_changeStandardColorsOption", function () {
 	    	var colors = ["#f0ff0f", "#000a00", "#FEECE1"];
 	    	
-	    	notEqual(this.actualColorPicker.element.igColorPicker("option", "standardColors"), colors, "arry of given colors isn't equal to standard colors");
+	    	notEqual(this.actualColorPicker.options.standardColors, colors, "arry of given colors isn't equal to  standardColors option");
 	    	
-	    	this.actualColorPicker.element.igColorPicker("option", "standardColors", colors);
-	    	equal(this.actualColorPicker.options.standardColors, colors, "arry of given colors is equal to standard colors");
+	    	this.actualColorPicker._setOption("standardColors", colors)
+	    	equal(this.actualColorPicker.options.standardColors, colors, "array of standardColors option was changed through _setOption method");
 	    })
+	    
 	    test("selectColor", function () {
 	    	var colorFromPicker = this.actualColorPicker.selectColor("#000000")
-	    	ok(this.secondColor.hasClass("selected-color"), "Select current color");
+	    	ok(this.secondColor.hasClass("selected-color"), "Select given color");
 	    })
+	    
 	    test("_getColorByElement", function () {
 	    	var expectedResult = this.secondColor.css("background-color");
 	    	var getColor = this.actualColorPicker._getColor(this.secondColor);
-	    	equal(getColor, expectedResult, "Get current color by element");   	
+	    	equal(getColor, expectedResult, "Get given color by element through _getColor method");   	
 	    })
+	    
 	    test("_clickCurrentColor", function () {
 	    	var clickFirstCustomColor = this.actualColorPicker.element.find(".igColorPicker-table").find(".igColorPicker-customColors").find(".igColorPicker-row").first().find(".igColorPicker-color").first().trigger("click");
-	    	ok(clickFirstCustomColor.hasClass("selected-color"), "first color was clicked");
+	    	ok(clickFirstCustomColor.hasClass("selected-color"), "Trigger colorpicker click event");
 	    })
-	    test("_setOptionValue", function () {
+	    
+	    test("_setTheSameOptionValue", function () {
 	    	var color = "#C00000";
 	    	
-	    	notEqual(color, this.actualColorPicker.element.igColorPicker("option", "standardColors"), "given color value isn't equal with standardColor value"); 
+	    	notEqual(color, this.actualColorPicker.options.standardColors, "color value isn't equal with standardColor value"); 
 	    	
-	    	this.actualColorPicker.element.igColorPicker("option", "standardColors", color)
-	    	equal(color, this.actualColorPicker.element.igColorPicker("option", "standardColors"), "given color value is equal with standardColor value");
+	    	this.actualColorPicker._setOption("standardColors", color)
+	    	equal(this.actualColorPicker.options.standardColors, color, "set color value to standardColors through _setOption method");
 	    	
-	    	this.actualColorPicker.element.igColorPicker("option", "standardColors", color)
-	    	equal(color, this.actualColorPicker.element.igColorPicker("option", "standardColors"), "given color value is equal with standardColor value");
+	    	this.actualColorPicker._setOption("standardColors", color)
+	    	equal(color, this.actualColorPicker.options.standardColors, "set the same color value to standardColors option");
 	    })
 
 	</script>
