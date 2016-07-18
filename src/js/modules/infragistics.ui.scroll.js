@@ -16,16 +16,16 @@
 (function ($) {
 	var _attr = "data-scroll",
 	 _find = function (notMobile) {
-	 	setTimeout(function () {
-	 		if (!$.ig.util.isModernizrAvailable || $.ig.util.isTouch) {
-	 			$("body").find("[" + _attr + "]").each(function () {
-	 				var elem = $(this), scroll = elem.data("igScroll");
-	 				if ((!scroll || !scroll.evts) && !elem.data("igScroll") && !elem.data("scrollview")) {
-	 					elem.igScroll({ _find: true });
-	 				}
-	 			});
-	 		}
-	 	}, notMobile === true ? 1000 : 100);
+		setTimeout(function () {
+			if (!$.ig.util.isModernizrAvailable || $.ig.util.isTouch) {
+				$("body").find("[" + _attr + "]").each(function () {
+					var elem = $(this), scroll = elem.data("igScroll");
+					if ((!scroll || !scroll.evts) && !elem.data("igScroll") && !elem.data("scrollview")) {
+						elem.igScroll({ _find: true });
+					}
+				});
+			}
+		}, notMobile === true ? 1000 : 100);
 	 };
 
 	/* S.K. Fix for bug 212350: For IE11 and up msSetPointerCapture and msReleasePointerCapture are depricated. setPointerCapture and releasePointerCapture are supported from IE10 and up. */
@@ -270,10 +270,10 @@
 			this._isScrollableH = this._percentInViewH < 1;
 
 			//Container Events specific variables
-			this._startX;
-			this._startY;
-			this._touchStartX;
-			this._touchStartY;
+			this._startX = 0;
+			this._startY = 0;
+			this._touchStartX = 0;
+			this._touchStartY = 0;
 			this._moving = false;
 
 			this.evts = {
@@ -717,7 +717,7 @@
 				this._moveHBarX(destX);
 			} else {
 				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
-				this._syncElemsX(this._container[0], false);
+				this._syncElemsX(this._container[ 0 ], false);
 				/*self._syncHBar(this._container[ 0 ], false);*/
 
 				var curY = this._getContentPositionY();
@@ -752,7 +752,7 @@
 				this._moveVBarY(destY);
 			} else {
 				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
-				this._syncElemsY(this._container[0], false);
+				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
 
 				var curX = this._getContentPositionX();
@@ -810,8 +810,8 @@
 		_switchFromTouchToMixed: function () {
 			var matrix = this._content.css("-webkit-transform"),
 				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined,
-				startX = values ? Number(values[4]) : 0,
-				startY = values ? Number(values[5]) : 0;
+				startX = values ? Number(values[ 4 ]) : 0,
+				startY = values ? Number(values[ 5 ]) : 0;
 
 			/* Switch to using scrollTop and scrollLeft attributes instead of transform3d when we have mouse + touchscreen, because they will interfere with each othe r*/
 			if (startX !== 0 || startY !== 0) {
@@ -988,7 +988,7 @@
 				/* pointX - The x coordinate for the [pointIndex] speed */
 				/* pointY - The y coordinate for the [pointIndex] speed */
 				var pointX = pointIndex,
-					pointY = Math.abs(inLastFiveSpeeds[pointIndex]);
+					pointY = Math.abs(inLastFiveSpeeds[ pointIndex ]);
 
 				sumXY += pointX * pointY;
 				sumX += pointX;
@@ -1065,14 +1065,14 @@
 				if (!useDestination) {
 					var matrix = this._content.css("-webkit-transform");
 					var values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-					destX = values ? Number(values[4]) : -this._getContentPositionX();
+					destX = values ? Number(values[ 4 ]) : -this._getContentPositionX();
 				} else {
 					destX = inDestX;
 				}
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
-						this._linkedHElems[index].css({
+						this._linkedHElems[ index ].css({
 							"-webkit-transform": "translate3d(" + destX + "px,0px, 0px)"
 						});
 					}
@@ -1082,8 +1082,8 @@
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
-						if (this._linkedHElems[index][0]) {
-							this._linkedHElems[index][0].parentElement.scrollLeft = destX;
+						if (this._linkedHElems[ index ][ 0 ]) {
+							this._linkedHElems[ index ][ 0 ].parentElement.scrollLeft = destX;
 						}
 
 					}
@@ -1103,7 +1103,7 @@
 				if (!useDestination) {
 					var matrix = this._content.css("-webkit-transform");
 					var values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined;
-					destY = values ? Number(values[5]) : -this._getContentPositionY();
+					destY = values ? Number(values[ 5 ]) : -this._getContentPositionY();
 				} else {
 					destY = inDestY;
 				}
@@ -1111,11 +1111,11 @@
 				if (this._linkedVElems.length > 0) {
 					for (index in this._linkedVElems) {
 						//get the current X position
-						var matrixElem = this._linkedVElems[index].css("-webkit-transform");
+						var matrixElem = this._linkedVElems[ index ].css("-webkit-transform");
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
-						var destX = valuesElem ? Number(valuesElem[4]) : -this._getContentPositionX();
+						var destX = valuesElem ? Number(valuesElem[ 4 ]) : -this._getContentPositionX();
 
-						this._linkedVElems[index].css({
+						this._linkedVElems[ index ].css({
 							"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 						});
 					}
@@ -1125,8 +1125,8 @@
 
 				if (this._linkedVElems.length > 0) {
 					for (index in this._linkedVElems) {
-						if (this._linkedVElems[index][0]) {
-							this._linkedVElems[index][0].parentElement.scrollTop = destY;
+						if (this._linkedVElems[ index ][ 0 ]) {
+							this._linkedVElems[ index ][ 0 ].parentElement.scrollTop = destY;
 						}
 
 					}
@@ -1184,7 +1184,6 @@
 			}
 		},
 
-
 		_onScrollContainer: function () {
 			if (!this._bMixedEnvironment) {
 				this._bMixedEnvironment = true;
@@ -1194,20 +1193,20 @@
 			}
 
 			if (!this._scrollFromSyncContentV) {
-				this._syncElemsY(this._container[0], false);
+				this._syncElemsY(this._container[ 0 ], false);
 
 				if (!this.options.scrollOnlyVBar) {
-					this._syncVBar(this._container[0], false);
+					this._syncVBar(this._container[ 0 ], false);
 				}
 			} else {
 				this._scrollFromSyncContentV = false;
 			}
 
 			if (!this._scrollFromSyncContentH) {
-				this._syncElemsX(this._container[0], false);
+				this._syncElemsX(this._container[ 0 ], false);
 
 				if (!this.options.scrollOnlyHBar) {
-					this._syncHBar(this._container[0], false);
+					this._syncHBar(this._container[ 0 ], false);
 				}
 			} else {
 				this._scrollFromSyncContentH = false;
@@ -1235,13 +1234,13 @@
 			} else {
 				//Normal scroll
 				if (this.options.scrollOnlyVBar) {
-					startY = this._getScrollbarVPoisition();
+					this._startY = this._getScrollbarVPoisition();
 				} else {
-					startY = this._getContentPositionY();
+					this._startY = this._getContentPositionY();
 				}
 
 				var scrollStep = this.options.wheelStep;
-				this._scrollToY(startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep, true);
+				this._scrollToY(this._startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep, true);
 
 				//Trigger scrolled event
 				this._trigger("scrolled", null, {
@@ -1263,12 +1262,12 @@
 			}
 
 			//setPointerCaptureFName is the name of the function that is supported
-			event.target[setPointerCaptureFName](this._pointer = evt.pointerId);
+			event.target[ setPointerCaptureFName ](this._pointer = evt.pointerId);
 
 			//create gestureObject only one time to prevent overlapping during intertia
 			if (!this._gestureObject) {
 				this._gestureObject = new MSGesture();
-				this._gestureObject.target = this._container[0];
+				this._gestureObject.target = this._container[ 0 ];
 			}
 			this._gestureObject.addPointer(this._pointer);
 		},
@@ -1278,7 +1277,7 @@
 				return;
 			}
 			/* releasePointerCaptureFName is the name of the function that is supported */
-			event.target[releasePointerCaptureFName](this._pointer);
+			event.target[ releasePointerCaptureFName ](this._pointer);
 
 			delete this._pointer;
 		},
@@ -1314,7 +1313,7 @@
 		},
 
 		_onTouchStartContainer: function (event) {
-			var touch = event.originalEvent.touches[0];
+			var touch = event.originalEvent.touches[ 0 ];
 
 			if (this.options.scrollOnlyHBar) {
 				this._startX = this._getScrollbarHPoisition();
@@ -1344,7 +1343,7 @@
 		},
 
 		_onTouchMoveContainer: function (event) {
-			var touch = event.originalEvent.touches[0];
+			var touch = event.originalEvent.touches[ 0 ];
 			var destX = this._startX + this._touchStartX - touch.pageX;
 			var destY = this._startY + this._touchStartY - touch.pageY;
 
@@ -1405,8 +1404,8 @@
 
 			//savedSpeedsX and savedSpeedsY have same length
 			for (var i = this._savedSpeedsX.length - 1; i >= 0; i--) {
-				speedX += this._savedSpeedsX[i];
-				speedY += this._savedSpeedsY[i];
+				speedX += this._savedSpeedsX[ i ];
+				speedY += this._savedSpeedsY[ i ];
 			}
 			speedX = speedX / this._savedSpeedsX.length;
 			speedY = speedY / this._savedSpeedsY.length;
@@ -1492,7 +1491,7 @@
 				if (this.options.scrollbarVParent) {
 					this._vBarContainer.append(this._vBarDrag).appendTo(this.options.scrollbarVParent);
 				} else {
-					this._vBarContainer.append(this._vBarDrag).appendTo(this._container[0].parentElement);
+					this._vBarContainer.append(this._vBarDrag).appendTo(this._container[ 0 ].parentElement);
 				}
 
 				if ($.ig.util.getScrollHeight() > 0) {
@@ -1516,7 +1515,7 @@
 				if (this.options.scrollbarVParent) {
 					this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarVParent);
 				} else {
-					this._hBarContainer.append(this._hBarDrag).appendTo(this._container[0].parentElement);
+					this._hBarContainer.append(this._hBarDrag).appendTo(this._container[ 0 ].parentElement);
 				}
 
 				if ($.ig.util.getScrollWidth() > 0) {
@@ -1531,7 +1530,7 @@
 			if (bNativeDesktop) {
 				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
 					.addClass("igscroll-filler");
-				this._desktopFiller.appendTo(this._container[0].parentElement);
+				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
 			}
 		},
 
@@ -1595,9 +1594,6 @@
 		},
 
 		_bindCustomScrollBarV: function() {
-			var self = this,
-				css = this.css;
-
 			this._holdTimeoutID = 0;
 			this._bMouseDownV = false; //Used to track if mouse is holded on any of the vertical scrollbar elements
 			this._bUseArrowUp = false; //Used to distinquis which on which element left mouse if being hold
@@ -1701,7 +1697,9 @@
 				this._scrollTop(curPosY + step, false);
 
 				var self = this;
-				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(step, bSmallIncement); }, 50);
+				this._holdTimeoutID = setTimeout(function () {
+					self._scrollTimeoutY(step, bSmallIncement);
+				}, 50);
 			}
 		},
 
@@ -1717,13 +1715,16 @@
 			if (bNoCancel) {
 				this._bMouseDownV = true;
 				this._bUseArrowUp = true;
-				this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUp, this.css.verticalScrollArrowUpActive);
+				this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUp,
+												this.css.verticalScrollArrowUpActive);
 
 				var curPosY = this._getContentPositionY();
 				this._scrollTop(curPosY - 40, false);
 
 				var self = this;
-				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(-40, true); }, 250);
+				this._holdTimeoutID = setTimeout(function () {
+					self._scrollTimeoutY(-40, true);
+				}, 250);
 			}
 
 			return false;
@@ -1732,7 +1733,8 @@
 		_onMouseUpArrowUp: function() {
 			this._bMouseDownV = false;
 			this._bUseArrowUp = true; //We later set it to false with mouseup event of window
-			this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUpActive, this.css.verticalScrollArrowUp);
+			this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUpActive,
+											this.css.verticalScrollArrowUp);
 			clearTimeout(this._holdTimeoutID);
 		},
 
@@ -1758,13 +1760,16 @@
 			if (bNoCancel) {
 				this._bMouseDownV = true;
 				this._bUseArrowDown = true;
-				this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDown, this.css.verticalScrollArrowDownActive);
+				this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDown,
+												this.css.verticalScrollArrowDownActive);
 
 				var curPosY = this._getContentPositionY();
 				this._scrollTop(curPosY + 40, false);
 
 				var self = this;
-				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(40, true); }, 250);
+				this._holdTimeoutID = setTimeout(function () {
+					self._scrollTimeoutY(40, true);
+				}, 250);
 			}
 
 			return false;
@@ -1773,7 +1778,8 @@
 		_onMouseUpArrowDown: function() {
 			this._bMouseDownV = false;
 			this._bUseArrowDown = true; //We later set it to false with mouseup event of window
-			this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDownActive, this.css.verticalScrollArrowDown);
+			this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDownActive,
+											this.css.verticalScrollArrowDown);
 			clearTimeout(this._holdTimeoutID);
 		},
 
@@ -1796,7 +1802,7 @@
 		},
 
 		_onMouseDownVTrack: function (event) {
-			if (event.target.id === this._vBarDrag[0].id) {
+			if (event.target.id === this._vBarDrag[ 0 ].id) {
 				return false;
 			}
 
@@ -1822,7 +1828,9 @@
 
 				if (bNoCancel) {
 					this._scrollTop(curPosY + scrollStep, false);
-					this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(scrollStep, false); }, 250);
+					this._holdTimeoutID = setTimeout(function () {
+						self._scrollTimeoutY(scrollStep, false);
+					}, 250);
 				}
 			} else if (event.offsetY < dragStartY) {
 				/* Scroll up */
@@ -1837,7 +1845,9 @@
 
 				if (bNoCancel) {
 					this._scrollTop(curPosY - scrollStep, false);
-					this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutY(-scrollStep, false); }, 250);
+					this._holdTimeoutID = setTimeout(function () {
+						self._scrollTimeoutY(-scrollStep, false);
+					}, 250);
 				}
 			}
 
@@ -2020,9 +2030,6 @@
 		},
 
 		_bindCustomScrollBarH: function () {
-			var self = this,
-				css = this.css;
-
 			this._holdTimeoutID = 0;
 			this._bMouseDownH = false;
 			this._bUseArrowLeft = false; //Used to distinquis which on which element left mouse if being hold
@@ -2126,7 +2133,9 @@
 				var curPosY = this._getContentPositionX();
 				this._scrollLeft(curPosY + step, false);
 
-				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(step, bSmallIncement); }, 50);
+				this._holdTimeoutID = setTimeout(function () {
+					self._scrollTimeoutX(step, bSmallIncement);
+				}, 50);
 			}
 		},
 
@@ -2149,7 +2158,9 @@
 				this._scrollLeft(curPosX - 40, false);
 
 				var self = this;
-				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(-40, true); }, 250);
+				this._holdTimeoutID = setTimeout(function () {
+					self._scrollTimeoutX(-40, true);
+				}, 250);
 			}
 
 			return false;
@@ -2176,31 +2187,6 @@
 			if (this._bMouseDownH && this._bUseArrowLeft) {
 				this._scrollTimeoutX(-40, true);
 			}
-		},
-
-		_onMouseDownArrowRight: function () {
-			var bNoCancel = this._trigger("scrolling", null, {
-				owner: this,
-				smallIncrement: 1,
-				bigIncrement: 0,
-				horizontal: true,
-				touch: false
-			});
-
-			if (bNoCancel) {
-				this._bMouseDownH = true;
-				this._bUseArrowRight = true;
-				this._hBarArrowRight
-					.switchClass(this.css.horizontalScrollArrowRight, this.css.horizontalScrollArrowRightActive);
-
-				var curPosX = this._getContentPositionX();
-				this._scrollLeft(curPosX + 40, false);
-
-				var self = this;
-				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(40, true); }, 250);
-			}
-
-			return false;
 		},
 
 		_onMouseDownArrowRight: function () {
@@ -2264,7 +2250,7 @@
 		},
 
 		_onMouseDownHTrack: function (event) {
-			if (event.target.id === this._hBarDrag[0].id) {
+			if (event.target.id === this._hBarDrag[ 0 ].id) {
 				return false;
 			}
 
@@ -2290,7 +2276,9 @@
 
 				if (bNoCancel) {
 					this._scrollLeft(curPosX + scrollStep, false);
-					this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(scrollStep, false); }, 250);
+					this._holdTimeoutID = setTimeout(function () {
+						self._scrollTimeoutX(scrollStep, false);
+					}, 250);
 				}
 			} else if (event.offsetX < dragStartX) {
 				//Scroll left
@@ -2305,7 +2293,9 @@
 
 				if (bNoCancel) {
 					this._scrollLeft(curPosX - scrollStep, false);
-					this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(-scrollStep, false); }, 250);
+					this._holdTimeoutID = setTimeout(function () {
+						self._scrollTimeoutX(-scrollStep, false);
+					}, 250);
 				}
 			}
 
@@ -2531,14 +2521,15 @@
 		*	bDragOnly - hide only the drag button. Used when using simple scrollbars
 		*/
 		_hideScrollBars: function (animate, bDragOnly, opacityStep) {
-			if (this.options.scrollbarType !== "custom" || this.options.alwaysVisible || currentOpacity <= 0) {
-				return;
-			}
-
 			var self = this,
 				targetOpacty = 0,
 				currentOpacity = this._vBarDrag ? this._vBarDrag.css("opacity") : 0,
 				animationId;
+
+			if (this.options.scrollbarType !== "custom" ||
+					this.options.alwaysVisible || currentOpacity <= 0) {
+				return;
+			}
 
 			function fadeStep() {
 				if (currentOpacity < targetOpacty) {
