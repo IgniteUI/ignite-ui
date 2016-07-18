@@ -8,7 +8,7 @@
     <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
 
     <!-- Used to style the API Viewer and Explorer UI -->
-    <link href="../../css/apiviewer.css" rel="stylesheet" type="text/css">
+    <link href="../apiviewer/apiviewer.css" rel="stylesheet" type="text/css">
 
     <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
     <script src="../../bower_components/jquery/dist/jquery.js"></script>
@@ -20,10 +20,9 @@
             
     <!-- Used to add markup and provide logging 
         functionality for the API Explorer and API Viewer UI -->
-    <script src="../../js/apiviewer.js"></script>   
+    <script src="../apiviewer/apiviewer.js"></script>   
 </head>
-<body>
-
+<body><p>This sample illustrates the client events that are available for the jQuery Upload control. The events 'fileSelecting' and 'fileSelected' are fired when selecting a file from the dialog window. While files are uploading, the handlers of 'fileUploading' and 'fileUploaded' are called. The 'onError' is called, for example, when you try to upload file larger than 1 MB. The 'fileUploadAborted' event is fired when you stop one uploading file, and the 'cancelAllClicked' event is fired when you stop all of them using the 'Cancel' button.      Note: You can upload files with a size smaller than 1 MB.</p>
 
     <div id="igUpload1"></div>
 

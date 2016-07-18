@@ -1,7 +1,7 @@
 ﻿var recipes = [
     {
         name: "Penne Arrabiata",
-        picture: "../../images/samples/tile-manager/Penne_Arrabiata.jpg",
+        picture: "../images/samples/tile-manager/Penne_Arrabiata.jpg",
         ingredients: [
             { description: "400g penne pasta" },
             { description: "1/3 cup extra-virgin olive oil" },
@@ -15,7 +15,7 @@
     },    
     {
         name: "Lamb Chops",
-        picture: "../../images/samples/tile-manager/Lamb_Chops.jpg",
+        picture: "../images/samples/tile-manager/Lamb_Chops.jpg",
         ingredients: [
             { description: "8 lamb chops" },
             { description: "2 large crushed garlic cloves" },
@@ -28,7 +28,7 @@
     },
     {
         name: "Tomato Soup",
-        picture: "../../images/samples/tile-manager/Tomato_Soup.jpg",
+        picture: "../images/samples/tile-manager/Tomato_Soup.jpg",
         ingredients: [
             { description: "1 kilogram plum tomatoes" },
             { description: "1 tablespoon tomato paste" },
@@ -41,7 +41,7 @@
     },
     {
         name: "Caesar Salad",
-        picture: "../../images/samples/tile-manager/Caesar_Salad.jpg",
+        picture: "../images/samples/tile-manager/Caesar_Salad.jpg",
         ingredients: [
             { description: "1 large lettuce" },
             { description: "2 skinless, boneless chicken breasts" },
@@ -55,7 +55,7 @@
     },    
     {
         name: "Strawberry Sorbet",
-        picture: "../../images/samples/tile-manager/Strawberry_Sorbet.jpg",
+        picture: "../images/samples/tile-manager/Strawberry_Sorbet.jpg",
         ingredients: [
             { description: "2 kilograms quartered, hulled strawberries " },
             { description: "2 cups water" },
@@ -67,7 +67,7 @@
     },
     {
         name: "Tiramisu",
-        picture: "../../images/samples/tile-manager/Tiramisu.jpg",
+        picture: "../images/samples/tile-manager/Tiramisu.jpg",
         ingredients: [
             { description: "6 egg yolks" },
             { description: "4 tablespoons sugar" },

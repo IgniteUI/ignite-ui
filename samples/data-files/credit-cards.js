@@ -5,28 +5,28 @@
 ];
 
 var creditCardTypes = [
-    { Text: "Visa", Image: "../../images/samples/credit-cards/visa_logo_large.gif" },
-    { Text: "MasterCard", Image: "../../images/samples/credit-cards/mastercard_logo_large.gif" },
-    { Text: "American Express", Image: "../../images/samples/credit-cards/american_express_logo_large.gif" }
+    { Text: "Visa", Image: "../images/samples/credit-cards/visa_logo_large.gif" },
+    { Text: "MasterCard", Image: "../images/samples/credit-cards/mastercard_logo_large.gif" },
+    { Text: "American Express", Image: "../images/samples/credit-cards/american_express_logo_large.gif" }
 ];
 
 var creditCards = {
     "Visa": [
-        { CardNumber: "1234-5678-9012-3456", DisplayNumber: "****-****-****-3456", Image: "../../images/samples/credit-cards/visa_logo_small.gif" },
-        { CardNumber: "0987-6543-2109-8765", DisplayNumber: "****-****-****-8765", Image: "../../images/samples/credit-cards/visa_logo_small.gif" }
+        { CardNumber: "1234-5678-9012-3456", DisplayNumber: "****-****-****-3456", Image: "../images/samples/credit-cards/visa_logo_small.gif" },
+        { CardNumber: "0987-6543-2109-8765", DisplayNumber: "****-****-****-8765", Image: "../images/samples/credit-cards/visa_logo_small.gif" }
     ],
     "MasterCard": [
-        { CardNumber: "2345-6789-0123-4567", DisplayNumber: "****-****-****-4567", Image: "../../images/samples/credit-cards/mastercard_logo_small.gif" }
+        { CardNumber: "2345-6789-0123-4567", DisplayNumber: "****-****-****-4567", Image: "../images/samples/credit-cards/mastercard_logo_small.gif" }
     ],
     "American Express": [
-        { CardNumber: "456-7890-1234-5678", DisplayNumber: "***-****-****-5678", Image: "../../images/samples/credit-cards/american_express_logo_small.gif" }
+        { CardNumber: "456-7890-1234-5678", DisplayNumber: "***-****-****-5678", Image: "../images/samples/credit-cards/american_express_logo_small.gif" }
     ]
 };
 
 var creditCardLogos = {
-    "Visa": "../../images/samples/credit-cards/visa_logo_small.gif",
-    "MasterCard": "../../images/samples/credit-cards/mastercard_logo_small.gif",
-    "American Express": "../../images/samples/credit-cards/american_express_logo_small.gif"
+    "Visa": "../images/samples/credit-cards/visa_logo_small.gif",
+    "MasterCard": "../images/samples/credit-cards/mastercard_logo_small.gif",
+    "American Express": "../images/samples/credit-cards/american_express_logo_small.gif"
 };
 
 var months = [
