@@ -13,7 +13,7 @@
  *   infragistics.util.js
  *   infragistics.ui.shared.js
  *   infragistics.ui.toolbarbutton.js
- *   infragistics.ui.toolbar.js   
+ *   infragistics.ui.toolbar.js
  *   infragistics.ui.popover.js
  *   infragistics.ui.splitbutton.js
  *   infragistics.ui.colorpicker.js
@@ -731,7 +731,7 @@ if (typeof jQuery !== "function") {
             $(html).appendTo(this.element);
 
             // D.A. Bug #144045 September 17th, 2013 Hide the _source element upon initialization.
-            // The css of the textarea is changed to display:block to override the browsers 
+            // The css of the textarea is changed to display:block to override the browsers
             // default display:inline-block of the textarea. Needed for the jQuery's show/hide
             // methods to toggle between display:block and display:none.
             $('#' + this._id('_source')).hide();
@@ -942,7 +942,7 @@ if (typeof jQuery !== "function") {
         },
         // Merges _allToolbars settings and options.toolbarSettings in _allToolbars
         // This method matches the settings by name and assumes that options.toolbarSettings will be given at single level
-        // E.g. options.toolbarSettings: { name: "fontFamily", selectedFontFamily: "Arial" } 
+        // E.g. options.toolbarSettings: { name: "fontFamily", selectedFontFamily: "Arial" }
         // is merged into _allToolbars as : { name: "fontFamily", props: [ selectedFontFamily { value: "Arial" } ] }
         _mergeToolbarSettings: function () {
             var customSettings = this.options.toolbarSettings,
@@ -1653,7 +1653,7 @@ if (typeof jQuery !== "function") {
             }
         },
         setContent: function (content, format) {
-            /* 
+            /*
                 Sets the content of the html editor.
                 paramType="string" optional="false" The content which will be set.
                 paramType="string" The content type: "text" or "html".
@@ -1900,7 +1900,7 @@ if (typeof jQuery !== "function") {
 
     // End HTML Editor Core
 
-    /************************************ 
+    /************************************
         HTML Editor Subcomponents
     ************************************/
 
@@ -2143,7 +2143,7 @@ if (typeof jQuery !== "function") {
         }
     });
 
-    /************************************ 
+    /************************************
         igImagePropertiesDialog
     ************************************/
     $.widget("ui.igImagePropertiesDialog", $.ui.igHtmlEditorPopover, {
@@ -2209,11 +2209,11 @@ if (typeof jQuery !== "function") {
 
     // End Dialogs
 
-    /************************************ 
+    /************************************
         End HTML Editor subcomponents
     ************************************/
 
-    /************************************ 
+    /************************************
         HTML Editor Utilities
     ************************************/
     //tableManipulator plugin
@@ -2276,7 +2276,7 @@ if (typeof jQuery !== "function") {
             addRow: function (position) {
                 var newRow = $("<tr></tr>", settings.document),
                     j;
-                // S.T. Dec 17th 2015, Bug #210940: The check if(position) with 0 is false this the reason for adding at last on first selected row/col
+                // S.T. Dec 17th 2015, Bug #210940: The check if (position) with 0 is false this the reason for adding at last on first selected row/col
                 if (position !== undefined) {
                     newRow.insertAfter(methods.getTableRows().eq(position));
                 } else {
@@ -2291,7 +2291,7 @@ if (typeof jQuery !== "function") {
             removeRow: function (position) {
                 var rows = methods.getTableRows(),
                     removedRow;
-                // S.T. Dec 17th 2015, Bug #210940: The check if(position) with 0 is false this the reason for adding at last on first selected row/col.
+                // S.T. Dec 17th 2015, Bug #210940: The check if (position) with 0 is false this the reason for adding at last on first selected row/col.
                 if (position !== undefined) {
                     removedRow = rows.eq(position).remove();
                 } else {
@@ -2306,7 +2306,7 @@ if (typeof jQuery !== "function") {
                     var row = $(el),
                         columns = row.children('td'),
                         newColumn = $('<td>' + spacingChar + '</td>', settings.document);
-                    // S.T. Dec 17th 2015, Bug #210940: The check if(position) with 0 is false this the reason for adding at last on first selected row/col.
+                    // S.T. Dec 17th 2015, Bug #210940: The check if (position) with 0 is false this the reason for adding at last on first selected row/col.
                     if (position !== undefined && columns.length) {
                         columnCellsArr.push(newColumn.insertAfter(columns.eq(position))[0]);
                         return true;
@@ -2320,7 +2320,7 @@ if (typeof jQuery !== "function") {
 
                 methods.getTableRows().each(function (idx, el) {
                     var row = $(el);
-                    // S.T. Dec 17th 2015, Bug #210940: The check if(position) with 0 is false this the reason for adding at last on first selected row/col.
+                    // S.T. Dec 17th 2015, Bug #210940: The check if (position) with 0 is false this the reason for adding at last on first selected row/col.
                     if (position !== undefined) {
                         removedRowsArr.push(row.children("td").eq(position).remove());
                         return true;
@@ -2584,7 +2584,7 @@ if (typeof jQuery !== "function") {
                 this._document.execCommand(name, false, args);
             } else {
                 // TODO: Refactor the following code block
-                // After the focus is restored to the editor most 
+                // After the focus is restored to the editor most
                 // of these cases might work well out of the box
                 if (this._selection.isCollapsed && range.collapsed) {
                     if ($(range.startContainer).is("body")) {
@@ -2734,7 +2734,7 @@ if (typeof jQuery !== "function") {
                 selItem = this.getSelectedItem();
 
             // D.G., 19th February 2016, Bug #214449 - In IE and FireFox Insert Link dialog is not closed when click on Apply
-            // if newNode is the same as refence as selItem then in IE and FF 
+            // if newNode is the same as refence as selItem then in IE and FF
             // HierarchyRequestError(https://msdn.microsoft.com/en-us/library/ff975445(v=vs.85).aspx) is thrown
             // when insertNode is called. Also there is no point replacing the same node with its self
             if (selItem.is(newNode)) {
@@ -2816,8 +2816,8 @@ if (typeof jQuery !== "function") {
 
                     // Combo takes the focus from the editor in IE
                     // Return the focus and selection as it was
-                    // This causes lost of the last chosen command when 
-                    // selecting multiple commands at once without clicking 
+                    // This causes lost of the last chosen command when
+                    // selecting multiple commands at once without clicking
                     // or typing something to trigger onSelectionChange
                     this._updateSelection(this._range);
                 } else {
@@ -3065,8 +3065,8 @@ if (typeof jQuery !== "function") {
             return fontName;
         },
         _getFontFamily: function () {
-            // D.U. 21th of July 2014 #174295 Checking inside the query 
-            // for font name value no in selection wrapper saved values 
+            // D.U. 21th of July 2014 #174295 Checking inside the query
+            // for font name value no in selection wrapper saved values
             var fontName = this._d.queryCommandValue("FontName");
 
             // Use computed styles font name when the query command does not return the value
