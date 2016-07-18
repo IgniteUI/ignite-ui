@@ -4049,7 +4049,7 @@
 			startInd = startInd || 0;
 			res.push(data[ startInd ]);
 			groupval = mapper ?
-							this.getCellValue(key, data [ startInd ]) : 
+							this.getCellValue(key, data [ startInd ]) :
 							data[ startInd ][ key ];
 			startInd++;
 			for (i = startInd; i < len; i++) {
@@ -4108,7 +4108,7 @@
 		isGroupByRecordCollapsed: function (gbRec) {
 			/* Check whether the specified gorupby record is collapsed
 			paramType="string|object" id of the grouped record OR grouped record
-			returnType="bool" if true the grouped record is collapsed 
+			returnType="bool" if true the grouped record is collapsed
 			 */
 			var id = typeof gbRec === "string" || !gbRec ? gbRec : gbRec.id,
 				state;
