@@ -16,7 +16,7 @@
 * Example to use:
 *   <script type="text/javascript">
 *   $(function () {
-*       $('#combo').igCombo();
+*       $("#combo").igCombo();
 *   });
 *   </script>
 *   <input id="combo" />
@@ -29,7 +29,7 @@
 		Drop-down list supports multiple selection, filtering, templating, rendering matching items, active item, etc.
 		Editing of field supports auto-complete, editing multiple items, synchronization with selection in drop-down list, clear button, etc.
 	*/
-    $.widget('ui.igCombo', {
+    $.widget("ui.igCombo", {
         options: {
             /* type="number|string" Gets sets width of combo. The numeric and string values (valid html units for size) are supported. It includes %, px, em and other units.
                 string The default width can be set in pixels (px), %, em and other units.
@@ -141,7 +141,7 @@
 				readonlylist type="string" Allows to open list, but does not allow any changes in field or selection in drop-down list. If selection is not set, then first item in dataSource is automatically selected.
 				readonly type="string" Does not allow to open list or change value in field. If selection is not set, then first item in dataSource is automatically selected.
 			*/
-            mode: 'editable',
+            mode: "editable",
             /* type="bool" Gets sets ability to use virtual rendering for drop-down list. Enable to boost performance when combo has lots of records.
 				If that option is enabled, then only visible items are created and top edge of first visible item in list is aligned to the top edge of list.  */
             virtualization: false,
@@ -154,14 +154,14 @@
                 /* type="bool" Set showCheckboxes to true to render check boxes in front of each drop down item.  */
                 showCheckboxes: false,
                 /* type="string" Use itemSeparator to set what string to be rendered between items in field. */
-                itemSeparator: ', '
+                itemSeparator: ", "
             },
             /* type="object" Gets sets object specifying grouping feature options. The option has key and dir properties */
             grouping: {
                 /* type="string" Gets sets name of column by which the records to be grouped. Setting this option enables the grouping. */
                 key: null,
                 /* type="asc|desc" Specifies the sort order - ascending or descending */
-                dir: 'asc'
+                dir: "asc"
             },
             /* type="object" Gets or sets object which contains options supported by igValidator.
 				Notes: in order for validator to work, application should ensure that igValidator is loaded (ig.ui.validator.js/css files).
@@ -174,7 +174,7 @@
 				full type="string" only fully matched items are rendered
 				null type="object" matches are not rendered
 			*/
-            highlightMatchesMode: 'multi',
+            highlightMatchesMode: "multi",
             /* type="bool" Gets sets whether filtering and auto selection should be case sensitive */
             caseSensitive: false,
             /* type="bool" Gets sets whether the first matching item should be auto selected when typing in input. When multi selection is enabled this option will instead put the active item on the matching element. */
@@ -203,12 +203,12 @@
             /* type="array" Gets sets list of items to be selected when combo is initialized. It should contain array of objects with index or value property, then on initialization matching items will be selected. When mode is drop down with single selection, readonly, readonlylist or combo is initialized on select element the first item will be selected if this option is not set.
 				Note: Only items loaded on initialization can be selected. When load-on-demand attempt to select not loaded item will fail.
 			*/
-            initialSelectedItems: [{
+            initialSelectedItems: [ {
                 /* type="number" optional="true" Index of item in list. Value should be larger than -1 and less than number of items in list (rows in  dataSource)  */
                 index: -1,
                 /* type="object" optional="true" Value matching the valueKey property of the item */
                 value: null
-            }],
+            } ],
             /* type="bool" Gets sets ability to prevent form submitting on enter key press */
             preventSubmitOnEnter: true,
             /* type="string" Gets or sets the format string that is used to format the text display values in the combo.
@@ -240,71 +240,71 @@
 				Use ui.owner to get a reference to the combo performing rendering.
 				Use ui.element to get a reference to the main/top combo element.
 			*/
-            rendered: 'rendered',
+            rendered: "rendered",
             /* cancel="true" Event which is raised before data binding is performed.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to igCombo performing the databinding.
 				Use ui.dataSource to get a reference to the $.ig.DataSource combo is to be databound to. */
-            dataBinding: 'dataBinding',
+            dataBinding: "dataBinding",
             /* cancel="false" Event which is raised after data binding is complete.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igCombo performing the data binding.
 				Use ui.dataSource to get a reference to the $.ig.DataSource combo is databound to.
 				Use ui.success to see if the databinding was performed correctly.
 				Use ui.errorMessage to get the error message if the databinding failed. */
-            dataBound: 'dataBound',
+            dataBound: "dataBound",
             /* cancel="true" Event which is raised before data filtering.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igCombo.
 				Use ui.expression to obtain reference to array which contains expressions supported by $.ig.DataSource.
 				Each expression-item contains following members: fieldName (textKey), cond (filteringCondition), expr (value/string to filter). */
-            filtering: 'filtering',
+            filtering: "filtering",
             /* cancel="false" Event which is raised after filtering.
 				Function takes arguments evt and ui.
 				Use evt.originalEvent to obtain reference to event of browser. That can be null.
 				Use ui.owner to obtain reference to igCombo.
 				Use ui.elements to obtain a jquery reference to the rendered filtered elements.
 			*/
-            filtered: 'filtered',
+            filtered: "filtered",
             /* cancel="true" Event which is raised before rendering of the combo items is performed.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the combo performing rendering.
 				Use ui.dataSource to get a reference to the $.ig.DataSource combo is databound to.
 			*/
-            itemsRendering: 'itemsRendering',
+            itemsRendering: "itemsRendering",
             /* cancel="false" Event which is raised after rendering of the combo items completes.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the combo performing rendering.
 				Use ui.dataSource to get a reference to the $.ig.DataSource combo is databound to.
 			*/
-            itemsRendered: 'itemsRendered',
+            itemsRendered: "itemsRendered",
             /* cancel="true" Event which is raised before drop-down list is opened.
 				Return false in order to cancel drop-down action.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igCombo.
 				Use ui.list to obtain reference to jquery DOM element which represents drop down list container.
 			*/
-            dropDownOpening: 'dropDownOpening',
+            dropDownOpening: "dropDownOpening",
             /* cancel="false" Event which is raised after drop-down list was opened.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igCombo.
 				Use ui.list to obtain reference to jquery DOM element which represents drop down list container.
 			*/
-            dropDownOpened: 'dropDownOpened',
+            dropDownOpened: "dropDownOpened",
             /* cancel="true" Event which is raised before drop-down list is closed.
 				Return false in order to cancel hide action.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igCombo.
 				Use ui.list to obtain reference to jquery DOM element which represents drop down list container.
 			*/
-            dropDownClosing: 'dropDownClosing',
+            dropDownClosing: "dropDownClosing",
             /* cancel="false" Event which is raised after drop-down list was closed.
 				Function takes arguments evt and ui.
 				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igCombo.
 				Use ui.list to obtain reference to jquery DOM element which represents drop down list container.
 			*/
-            dropDownClosed: 'dropDownClosed',
+            dropDownClosed: "dropDownClosed",
             /* cancel="true" Event which is raised before selection change.
 				Return false in order to cancel change.
 				Function takes arguments evt and ui.
@@ -312,127 +312,127 @@
 				Use ui.currentItems to obtain reference to array of the selected items before the new selection has happened. That can be null.
 				Use ui.items to obtain reference to array of all items that will be selected after the selection finish. That can be null.
 			*/
-            selectionChanging: 'selectionChanging',
+            selectionChanging: "selectionChanging",
             /* cancel="false" Event which is raised after selection change.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igCombo.
 				Use ui.items to obtain reference to array of new selected items. That can be null.
 				Use ui.oldItems to obtain reference to array of old selected items. That can be null.
 			*/
-            selectionChanged: 'selectionChanged'
+            selectionChanged: "selectionChanged"
         },
         css: {
             /* Class applied to the wrapper element. */
-            comboWrapper: 'ui-igcombo-wrapper',
+            comboWrapper: "ui-igcombo-wrapper",
             /* Class applied to the combo element. */
-            combo: 'ui-igcombo ui-widget ui-state-default ui-corner-all ui-unselectable',
+            combo: "ui-igcombo ui-widget ui-state-default ui-corner-all ui-unselectable",
             /* Class applied to the combo in drop down mode. */
-            dropDownMode: 'ui-igcombo-mode-dropdown',
+            dropDownMode: "ui-igcombo-mode-dropdown",
             /* Class applied to the combo in read only mode. */
-            readOnlyMode: 'ui-igcombo-mode-readonly',
+            readOnlyMode: "ui-igcombo-mode-readonly",
             /* Class applied to the combo in read only list mode. */
-            readOnlyListMode: 'ui-igcombo-mode-readonlylist',
+            readOnlyListMode: "ui-igcombo-mode-readonlylist",
             /* Class applied to the text box container */
-            textBox: 'ui-igcombo-textbox ui-state-default ui-corner-all',
+            textBox: "ui-igcombo-textbox ui-state-default ui-corner-all",
             /* Class applied to the editing element. */
-            field: 'ui-igcombo-field ui-corner-all',
+            field: "ui-igcombo-field ui-corner-all",
             /* Class applied to the holder of editing element. */
-            fieldHolder: 'ui-igcombo-fieldholder',
+            fieldHolder: "ui-igcombo-fieldholder",
             /* Class applied to the holder of editing element when direction is left to right. */
-            fieldHolderLTR: 'ui-igcombo-fieldholder-ltr ui-corner-left',
+            fieldHolderLTR: "ui-igcombo-fieldholder-ltr ui-corner-left",
             /* Class applied to the holder of editing element when direction is right to left. */
-            fieldHolderRTL: 'ui-igcombo-fieldholder-rtl ui-corner-right',
+            fieldHolderRTL: "ui-igcombo-fieldholder-rtl ui-corner-right",
             /* Class applied to the drop down list when direction is right to left*/
-            dropDownListRTL: 'ig-rtl',
+            dropDownListRTL: "ig-rtl",
             /* Class applied to the DIV element which represents the drop down button. */
-            button: 'ui-igcombo-button ui-state-default ui-unselectable',
+            button: "ui-igcombo-button ui-state-default ui-unselectable",
             /* Classes applied to the DIV element which represents image on drop down button. */
-            buttonIcon: 'ui-igcombo-buttonicon ui-icon-triangle-1-s ui-icon',
+            buttonIcon: "ui-igcombo-buttonicon ui-icon-triangle-1-s ui-icon",
             /* Class applied to the DIV element which represents drop down button when direction is left to right. */
-            buttonLTR: 'ui-igcombo-button-ltr ui-corner-right',
+            buttonLTR: "ui-igcombo-button-ltr ui-corner-right",
             /* Class applied to the DIV element which represents drop down button when direction is right to left. */
-            buttonRTL: 'ui-igcombo-button-rtl ui-corner-left',
+            buttonRTL: "ui-igcombo-button-rtl ui-corner-left",
             /* Class applied to the DIV element which represents clear button. */
-            clear: 'ui-igcombo-clear ui-unselectable',
+            clear: "ui-igcombo-clear ui-unselectable",
             /* Class applied to the DIV element which represents clear button with right to left direction */
-            clearRTL: 'ui-igcombo-clear-rtl ui-unselectable',
+            clearRTL: "ui-igcombo-clear-rtl ui-unselectable",
             /* Classes applied to the SPAN element of clear button in mouse-over state. */
-            clearHover: 'ui-igcombo-clear-hover ui-state-hover',
+            clearHover: "ui-igcombo-clear-hover ui-state-hover",
             /* Class applied to the DIV element which represents image on clear button. */
-            clearIcon: 'ui-igcombo-clearicon ui-icon-circle-close ui-icon',
+            clearIcon: "ui-igcombo-clearicon ui-icon-circle-close ui-icon",
             /* Class applied to the DIV element which represents the combo drop down. It contains the list, the header and the footer containers. */
-            dropDown: 'ui-igcombo-dropdown ui-widget ui-widget-content ui-corner-all',
+            dropDown: "ui-igcombo-dropdown ui-widget ui-widget-content ui-corner-all",
             /* Class applied to the DIV element which is used as container for drop down list. */
-            list: 'ui-igcombo-list',
+            list: "ui-igcombo-list",
             /* Class applied to the drop down container element when virtualization is enabled. */
-            listOverflow: 'ui-igcombo-list-overflow',
+            listOverflow: "ui-igcombo-list-overflow",
             /* Class applied to the UL element which is used as container for list items. */
-            listItemHolder: 'ui-igcombo-listitemholder',
+            listItemHolder: "ui-igcombo-listitemholder",
             /* Classes applied to the LI element which represents item in drop down list. */
-            listItem: 'ui-igcombo-listitem ui-state-default ui-unselectable',
+            listItem: "ui-igcombo-listitem ui-state-default ui-unselectable",
             /* Classes applied to the DIV element which represents header in combo drop down. */
-            header: 'ui-igcombo-header',
+            header: "ui-igcombo-header",
             /* Classes applied to the DIV element which represents footer in combo drop down. */
-            footer: 'ui-igcombo-footer',
+            footer: "ui-igcombo-footer",
             /* Classes applied to the element which holds group of list items in drop down list. */
-            group: 'ui-igcombo-group',
+            group: "ui-igcombo-group",
             /* Classes applied to the header element of each group */
-            groupHeader: 'ui-igcombo-group-header ui-state-default ui-unselectable',
+            groupHeader: "ui-igcombo-group-header ui-state-default ui-unselectable",
             /* Class applied to the list item elements hover with mouse or navigated to by keyboard */
-            itemInFocus: 'ui-igcombo-item-in-focus',
+            itemInFocus: "ui-igcombo-item-in-focus",
             /* Class applied to the text in LI element which represents highlighted text in dropdown list. */
-            listItemHighlighted: 'ui-igcombo-highlight',
+            listItemHighlighted: "ui-igcombo-highlight",
             /* Class applied to LI element that is shown when no matches are found while filtering */
-            noMatchFound: 'ui-igcombo-nomatchfound',
+            noMatchFound: "ui-igcombo-nomatchfound",
             /* Class applied to the SPAN element which represents text of item in dropdown list when checkboxes are enabled. */
-            listItemTextWithCheckbox: 'ui-igcombo-listitemtextwithcheckbox',
+            listItemTextWithCheckbox: "ui-igcombo-listitemtextwithcheckbox",
             /* Class applied to the SPAN element which represents checkbox in list item. */
-            checkbox: 'ui-igcombo-checkbox ui-state-default ui-corner-all ui-igcheckbox-small',
+            checkbox: "ui-igcombo-checkbox ui-state-default ui-corner-all ui-igcheckbox-small",
             /* Class applied to the SPAN element which represents icon in unchecked checkbox. */
-            checkboxOff: 'ui-icon ui-igcombo-checkbox-off ui-igcheckbox-small-off',
+            checkboxOff: "ui-icon ui-igcombo-checkbox-off ui-igcheckbox-small-off",
             /* Class applied to the SPAN element which represents icon in unchecked checkbox. */
-            checkboxOn: 'ui-icon ui-icon-check ui-igcombo-checkbox-on ui-igcheckbox-small-on',
+            checkboxOn: "ui-icon ui-icon-check ui-igcombo-checkbox-on ui-igcheckbox-small-on",
             /* Class applied to the hidden input field */
-            hiddenField: 'ui-igcombo-hidden-field',
+            hiddenField: "ui-igcombo-hidden-field",
             /* Class applied to elements when hovered. */
-            hover: 'ui-state-hover',
+            hover: "ui-state-hover",
             /* Class applied to elements in active state. */
-            active: 'ui-state-active',
+            active: "ui-state-active",
             /* Class applied to unselectable elements */
-            unselectable: 'ui-unselectable',
+            unselectable: "ui-unselectable",
             /* Class applied to drop down element when it is closed. */
-            noBorder: 'ui-igcombo-no-border',
+            noBorder: "ui-igcombo-no-border",
             /* Class applied to the scroll holder element when virtualization is enabled. */
-            scrollHolder: 'ui-igcombo-scrollholder ui-unselectable',
+            scrollHolder: "ui-igcombo-scrollholder ui-unselectable",
             /* Class applied to the scroll element when virtualization is enabled. */
-            scroll: 'ui-igcombo-scroll ui-unselectable',
+            scroll: "ui-igcombo-scroll ui-unselectable",
             /* Class applied to the span element in the footer that represents the number of records in data source view */
-            recordsView: 'ui-igcombo-records-view',
+            recordsView: "ui-igcombo-records-view",
             /* Class applied to the span element in the footer that represents the number of records in the data source */
-            recordsData: 'ui-igcombo-records-data',
+            recordsData: "ui-igcombo-records-data",
             /* Class applied to the span element in the footer that represents the number of filtered records on the server */
-            recordsServer: 'ui-igcombo-records-server',
+            recordsServer: "ui-igcombo-records-server",
             /* Class applied to the span element in the footer that represents the number of total records on the server */
-            recordsServerTotal: 'ui-igcombo-records-server-total',
+            recordsServerTotal: "ui-igcombo-records-server-total",
             /* Class applied to the DIV which represents overlay over drop down list while data is retrieving. */
-            loading: 'ui-igcombo-loading',
+            loading: "ui-igcombo-loading",
             /* Class applied to filtered list items to hide them */
-            hidden: 'ui-helper-hidden',
+            hidden: "ui-helper-hidden",
             /* Class applied to combo top element when in readonly mode */
-            disabled: 'ui-state-disabled',
+            disabled: "ui-state-disabled",
             /* Class applied to combo drop down element when top orientation is used */
-            orientationTop: 'ui-igcombo-orientation-top',
+            orientationTop: "ui-igcombo-orientation-top",
             /* Class applied to combo drop down element when bottom orientation is used */
-            orientationBottom: 'ui-igcombo-orientation-bottom'
+            orientationBottom: "ui-igcombo-orientation-bottom"
         },
         /* Number of records in igCombo (view of dataSource) */
-        RECORDS_VIEW: '{0}',
+        RECORDS_VIEW: "{0}",
         /* Number of records in dataSource */
-        RECORDS_DATA: '{1}',
+        RECORDS_DATA: "{1}",
         /* Number of (filtered) records on server */
-        RECORDS_SERVER: '{2}',
+        RECORDS_SERVER: "{2}",
         /* Number of all records on server */
-        RECORDS_SERVER_TOTAL: '{3}',
+        RECORDS_SERVER_TOTAL: "{3}",
         _createWidget: function (options) {
             var mode;
 
@@ -459,7 +459,7 @@
                 $noMatchFound: null,
                 $itemsToSelectOnShiftUpDown: $(),
                 $itemsToSelectOnShiftClick: $(),
-                selectedData: [],
+                selectedData: [ ],
                 keyNavItemData: null,
                 autoSelectedItemData: null,
                 autoCompleteItemData: null,
@@ -472,23 +472,29 @@
                 shiftKeyCode: 16,
                 validator: null,
                 shiftDown: false,
+
                 // If the initial element is input or select, cache the name, remove it, set it to the hidden input for submit and upon destroy return it
                 nameAttribute: "",
+
                 // Subscribe to fire callbacks when selection is changed from api
                 internalSelChangeSubs: null,
                 initialDataBinding: true,
                 remoteFilteringTriggerEvt: null,
                 preventInputBlur: false,
+
                 // Track whether mouse down started from any list item to highlight elements on mouse hover
                 mouseDownStartedFromListItem: false,
+
                 // We need to cache the records in order to have correct input values for remote filtering
-                cachedData: [],
+                cachedData: [ ],
                 strDataSource: null,
                 updateInputValuesOnRemoteFilter: false,
                 hasFooterVariables: false,
+
                 // Tracks whether the input field had text selection when a key was pressed down,
                 // to handle correctly backspace when auto complete is enabled
                 hadInputSelectionOnKeydown: false,
+
                 // The filtering expression
                 expression: null,
                 preventItemSeparatorOnFocus: false,
@@ -498,16 +504,22 @@
                 disableScroll: false,
                 cachedGroupLength: null,
                 initialGroupHeaders: 1,
-                // The string that will be used to match item's text when user types in drop down mode
-                dropDownModeSearchBy: '',
+
+                // The string that will be used to match item"s text when user types in drop down mode
+                dropDownModeSearchBy: "",
                 dropDownModeSearchByResetTimeout: null,
                 dropDownModeSearchByResetDelay: 1000,
                 originalOptions: options,
+
                 // S.T. 6th July, 2015 #201924: Use template for checkbox markup
-                checkboxItemTemplate: "<span class='{css.checkbox}'><span class='{css.checkboxOff}''></span></span><div class='{css.listItemTextWithCheckbox}'>{innerMarkup}</div>",
+                checkboxItemTemplate: "<span class='{css.checkbox}'>" +
+                    "<span class='{css.checkboxOff}''></span></span>" +
+                    "<div class='{css.listItemTextWithCheckbox}'>{innerMarkup}</div>",
                 scrollCallback: null,
+
                 // T.I. 29-Oct-2015 #202222: When filtering is loading and click outside the combo the input value is not cleared
                 closingDropDownOnBlur: false,
+
                 // Handles data for composition events
                 // P.P 26-Feb-2016 #212236: Incorrect input of Japanese symbols using IME
                 composition: null
@@ -523,8 +535,8 @@
                 }
 
                 // Default enableClearButton to false when mode readonly, readonlylist or drop down with single selection
-                if ((mode === 'readonly' || mode === 'readonlylist') ||
-					(mode === 'dropdown' && !(options.multiSelection && options.multiSelection.enabled)) &&
+                if ((mode === "readonly" || mode === "readonlylist") ||
+					(mode === "dropdown" && !(options.multiSelection && options.multiSelection.enabled)) &&
 					options.enableClearButton === undefined) {
                     options.enableClearButton = false;
                 }
@@ -533,6 +545,7 @@
             $.Widget.prototype._createWidget.apply(this, arguments);
         },
         _create: function () {
+
             // Event handlers
             this._handlers = {
                 windowResize: $.proxy(this._windowResize, this),
@@ -545,8 +558,10 @@
                 inputKeyUp: $.proxy(this._inputKeyUp, this),
                 inputKeyPress: $.proxy(this._inputKeyPress, this),
                 inputMouseDown: $.proxy(this._inputMouseDown, this),
+
                 // P.P 02-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
                 inputCompositionUpdate: $.proxy(this._inputCompositionUpdate, this),
+
                 // P.P 26-Feb-2016 #212236: Incorrect input of Japanese symbols using IME
                 inputCompositionEnd: $.proxy(this._inputCompositionEnd, this),
                 inputInput: $.proxy(this._inputInputHandler, this)
@@ -558,6 +573,7 @@
             this.validator();
             this._attachEvents();
             this.dataBind();
+
             // P.P 07-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
             this._initCompositionObject();
         },
@@ -569,20 +585,21 @@
 
             if (this.options.dataSource) {
                 if ($.isArray(this.options.dataSource)) {
-                    firstDataItem = this.options.dataSource[0];
+                    firstDataItem = this.options.dataSource[ 0 ];
                 } else if (this.options.dataSource &&
 					typeof this.options.dataSource._xmlToArray === "function" &&
 					typeof this.options.dataSource._encodePkParams === "function") {
+
                     // if isIgDataSource
                     //isInstanceOfDs = ds && typeof ds._xmlToArray === "function" && typeof ds._encodePkParams === "function";
-                    firstDataItem = this.options.dataSource.data()[0];
+                    firstDataItem = this.options.dataSource.data()[ 0 ];
                 }
             }
 
             // Mode
-            if (options.mode !== 'editable' && options.mode !== 'dropdown' &&
-				options.mode !== 'readonly' && options.mode !== 'readonlylist') {
-                options.mode = 'editable';
+            if (options.mode !== "editable" && options.mode !== "dropdown" &&
+				options.mode !== "readonly" && options.mode !== "readonlylist") {
+                options.mode = "editable";
             }
 
             // Page size
@@ -596,7 +613,8 @@
             if (!options.textKey) {
                 if (options.valueKey) {
                     options.textKey = options.valueKey;
-                } else if (firstDataItem && $.type(firstDataItem) === 'object') {
+                } else if (firstDataItem && $.type(firstDataItem) === "object") {
+
                     // Use first data source column
                     for (key in firstDataItem) {
                         if (firstDataItem.hasOwnProperty(key)) {
@@ -619,8 +637,9 @@
             }
 
             // Filtering type
-            if (options.filteringType !== 'local' && options.filteringType !== 'remote' && options.filteringType !== 'none') {
-                options.filteringType = 'none';
+            if (options.filteringType !== "local" &&
+                options.filteringType !== "remote" && options.filteringType !== "none") {
+                options.filteringType = "none";
             }
 
             // Input name
@@ -631,32 +650,32 @@
             // No match found text
             this.options.noMatchFoundText = this.options.noMatchFoundText ||
 				$.ig.Combo && $.ig.Combo.locale && $.ig.Combo.locale.noMatchFoundText ||
-				'No Results';
+				"No Results";
 
             // Place holder text
             // Z.K. September 16, 2015 Bug fix #206656 - When empty string is set as placeHolder, the default string "select..." is used
-            if (this.options.placeHolder === '') {
-                this.options.placeHolder = '';
+            if (this.options.placeHolder === "") {
+                this.options.placeHolder = "";
             } else {
                 this.options.placeHolder = this.options.placeHolder ||
                     $.ig.Combo && $.ig.Combo.locale && $.ig.Combo.locale.placeHolder ||
-                    'select...';
+                    "select...";
             }
 
             // Clear button title
             this.options.clearButtonTitle = this.options.clearButtonTitle ||
 				$.ig.Combo && $.ig.Combo.locale && $.ig.Combo.locale.clearButtonTitle ||
-				'Clear value';
+				"Clear value";
 
             // Drop down button title
             this.options.dropDownButtonTitle = this.options.dropDownButtonTitle ||
 				$.ig.Combo && $.ig.Combo.locale && $.ig.Combo.locale.dropDownButtonTitle ||
-				'Show drop-down';
+				"Show drop-down";
 
             // Multiple attribute
             // JD 6/25/15 - Bug 201623 - The attribute should only apply if multiSelection.enabled was not
             // set by the developer.
-            if ($combo.attr('multiple') === 'multiple' &&
+            if ($combo.attr("multiple") === "multiple" &&
 				(this._options.originalOptions.multiSelection === undefined ||
 				this._options.originalOptions.multiSelection.enabled === undefined)) {
                 this.options.multiSelection.enabled = true;
@@ -664,11 +683,12 @@
 
             // Right-to-left implementation
             // Z.K 25/08/15 Bug #189210 - When combo is initialized form input with dir="rtl", list is not aligned correct
-            if ($combo.attr('dir') === 'rtl') {
+            if ($combo.attr("dir") === "rtl") {
                 this._options.ltr = false;
             }
 
-            if (this.options.grouping.key && firstDataItem && firstDataItem[this.options.grouping.key] === undefined) {
+            if (this.options.grouping.key && firstDataItem &&
+                firstDataItem[ this.options.grouping.key ] === undefined) {
                 throw new Error($.ig.Combo.locale.errorIncorrectGroupingKey);
             }
         },
@@ -676,15 +696,17 @@
             var element = this.element,
 				_options = this._options;
 
-            if (element.is('div') || element.is('span')) {
+            if (element.is("div") || element.is("span")) {
+
                 // Use the provided div/span as wrapper container
                 _options.$comboWrapper = element;
-            } else if (element.is('input')) {
-                // Use the provided input field for combo's input
+            } else if (element.is("input")) {
+
+                // Use the provided input field for combo"s input
                 _options.$input = element;
                 _options.nameAttribute = element.attr("name");
                 element.removeAttr("name");
-            } else if (element.is('select')) {
+            } else if (element.is("select")) {
                 element.hide();
                 _options.nameAttribute = element.attr("name");
                 element.removeAttr("name");
@@ -693,15 +715,15 @@
         _setupInput: function () {
             var _options = this._options;
 
-            // Add input's place holder
-            _options.$input.attr('placeholder', this.options.placeHolder);
+            // Add input"s place holder
+            _options.$input.attr("placeholder", this.options.placeHolder);
 
-            if (this.options.mode !== 'editable') {
+            if (this.options.mode !== "editable") {
                 // Disable editing and selection for non-editable modes
                 _options.$input
 					.attr({
-					    'readonly': true,
-					    'unselectable': 'on'
+					    "readonly": true,
+					    "unselectable": "on"
 					})
 					.addClass(this.css.unselectable);
             }
@@ -709,17 +731,17 @@
         _renderHeaderTemplate: function(css, options, parent) {
             var $header, headerClass, $existingHeader;
 
-            headerClass = '.' + css.header;
+            headerClass = "." + css.header;
             $existingHeader = parent.find(headerClass);
 
             // Remove old template
             if ($existingHeader.length) {
-                if (typeof options.headerTemplate === 'string') {
+                if (typeof options.headerTemplate === "string") {
                     $existingHeader.remove();
                 }
             }
 
-            $header = $('<div>')
+            $header = $("<div>")
                 .addClass(css.header)
                 .html(options.headerTemplate);
 
@@ -731,25 +753,29 @@
         _renderFooterTemplate: function(css, options, parent, combo) {
             var $footer, footerMarkup, footerClass, $existingFooter;
 
-            footerClass = '.' + css.footer;
+            footerClass = "." + css.footer;
             $existingFooter = parent.find(footerClass);
 
             // Remove old template
             if ($existingFooter.length) {
-                if (typeof options.footerTemplate === 'string') {
+                if (typeof options.footerTemplate === "string") {
                     $existingFooter.remove();
                 }
             }
 
             footerMarkup = options.footerTemplate
-					.replace(combo.RECORDS_VIEW, '<span class=' + css.recordsView + '></span>')
-					.replace(combo.RECORDS_DATA, '<span class=' + css.recordsData + '></span>')
-					.replace(combo.RECORDS_SERVER, '<span class=' + css.recordsServer + '></span>')
-					.replace(combo.RECORDS_SERVER_TOTAL, '<span class=' + css.recordsServerTotal + '></span>');
+					.replace(combo.RECORDS_VIEW,
+                        "<span class=" + css.recordsView + "></span>")
+					.replace(combo.RECORDS_DATA,
+                        "<span class=" + css.recordsData + "></span>")
+					.replace(combo.RECORDS_SERVER,
+                        "<span class=" + css.recordsServer + "></span>")
+					.replace(combo.RECORDS_SERVER_TOTAL,
+                        "<span class=" + css.recordsServerTotal + "></span>");
 
             combo._options.hasFooterVariables = footerMarkup !== options.footerTemplate;
             if (combo._options.hasFooterVariables) {
-                $footer = $('<div>')
+                $footer = $("<div>")
                     .addClass(css.footer)
                     .html(footerMarkup);
 
@@ -758,7 +784,7 @@
                 return;
             }
 
-            $footer = $('<div>')
+            $footer = $("<div>")
                 .addClass(css.footer)
                 .html(footerMarkup);
 
@@ -771,31 +797,37 @@
             var css = this.css,
 				options = this.options,
 				_options = this._options,
-				$comboWrapper = (_options.$comboWrapper || $('<div>')).addClass(css.comboWrapper),
-				$combo = $('<div>').addClass(css.combo).attr('unselectable', 'on'),
-				$input = (_options.$input || $('<input type="text">')).addClass(css.field).attr({ tabIndex: options.tabIndex, autocomplete: 'off' }),
-				$hiddenInput = $('<input type="hidden">').addClass(css.hiddenField),
-				$fieldCont = $('<div>').addClass(css.fieldHolder),
-				$clearCont = $('<div>').addClass(css.clear).attr({ unselectable: 'on', title: options.clearButtonTitle }),
-				$clearIcon = $('<div>').addClass(css.clearIcon),
-				$dropDownBtnCont = $('<div>').addClass(css.button).attr({ unselectable: 'on', title: options.dropDownButtonTitle }),
-				$dropDownBtnIcon = $('<div>').addClass(css.buttonIcon),
-				$dropDownCont = $('<div>').addClass(css.dropDown).width(options.dropDownWidth),
-				$dropDownListCont = $('<div>').addClass(css.list),
-				$dropDownList = $('<ul>').addClass(css.listItemHolder),
-				$dropDownScrollCont = $('<div>').addClass(css.scrollHolder).attr('unselectable', 'on'),
-				$dropDownScroll = $('<div>').addClass(css.scroll).attr('unselectable', 'on'),
-				$loading = $('<div>').addClass(css.loading);
+				$comboWrapper = (_options.$comboWrapper ||
+                    $("<div>")).addClass(css.comboWrapper),
+				$combo = $("<div>").addClass(css.combo).attr("unselectable", "on"),
+				$input = (_options.$input ||
+                    $("<input type=text'>")).addClass(css.field)
+                    .attr({ tabIndex: options.tabIndex, autocomplete: "off" }),
+				$hiddenInput = $("<input type='hidden'>").addClass(css.hiddenField),
+				$fieldCont = $("<div>").addClass(css.fieldHolder),
+				$clearCont = $("<div>").addClass(css.clear).
+                    attr({ unselectable: "on", title: options.clearButtonTitle }),
+				$clearIcon = $("<div>").addClass(css.clearIcon),
+				$dropDownBtnCont = $("<div>").addClass(css.button).
+                    attr({ unselectable: "on", title: options.dropDownButtonTitle }),
+				$dropDownBtnIcon = $("<div>").addClass(css.buttonIcon),
+				$dropDownCont = $("<div>").addClass(css.dropDown).width(options.dropDownWidth),
+				$dropDownListCont = $("<div>").addClass(css.list),
+				$dropDownList = $("<ul>").addClass(css.listItemHolder),
+				$dropDownScrollCont = $("<div>").addClass(css.scrollHolder)
+                    .attr("unselectable", "on"),
+				$dropDownScroll = $("<div>").addClass(css.scroll).attr("unselectable", "on"),
+				$loading = $("<div>").addClass(css.loading);
 
             // Set combo mode class
             switch (options.mode) {
-                case 'dropdown':
+                case "dropdown":
                     $combo.addClass(css.dropDownMode);
                     break;
-                case 'readonlylist':
+                case "readonlylist":
                     $combo.addClass(css.readOnlyListMode);
                     break;
-                case 'readonly':
+                case "readonly":
                     $combo.addClass(css.readOnlyMode);
                     $comboWrapper.addClass(css.disabled);
                     break;
@@ -803,6 +835,7 @@
 
             // TO DO: Check where this class is used and remove it
             $fieldCont.addClass(css.fieldHolderLTR);
+
             // Add ltr/rtl classes
             if (!_options.ltr) {
                 // Z.K 25/08/15 Bug #189210 - When combo is initialized form input with dir="rtl", list is not aligned correct
@@ -824,12 +857,12 @@
             $dropDownListCont.appendTo($dropDownCont);
 
             // Header template
-            if (typeof options.headerTemplate === 'string') {
+            if (typeof options.headerTemplate === "string") {
                 this._renderHeaderTemplate(css, options, $dropDownCont);
             }
 
             // Footer template
-            if (typeof options.footerTemplate === 'string') {
+            if (typeof options.footerTemplate === "string") {
                 this._renderFooterTemplate(this.css, this.options, $dropDownCont, this);
             }
 
@@ -839,7 +872,8 @@
                 $dropDownScroll.appendTo($dropDownScrollCont);
             }
 
-            if (this.element.is('input')) {
+            if (this.element.is("input")) {
+
                 // When rendering on input element we reuse it and wrap all the content around it
 
                 // Wrap the input. Then update the wrapper element's reference
@@ -858,6 +892,7 @@
                 $clearCont.prependTo($combo);
                 $dropDownBtnCont.prependTo($combo);
             } else {
+
                 // Combine input and its container
                 $input.appendTo($fieldCont);
 
@@ -870,10 +905,9 @@
 
             $clearCont.hide();
 
-
             // Add the hidden input
             $hiddenInput
-				.attr('name', options.inputName)
+				.attr("name", options.inputName)
 				.appendTo($combo);
 
             // Close drop down initially and move it out of the screen to avoid wierd bug where 1 px height is still rendered in FFox
@@ -882,17 +916,17 @@
 				    height: 0,
 				    top: -99999,
 				    left: -99999,
-				    overflow: 'hidden'
+				    overflow: "hidden"
 				})
 				.addClass(css.noBorder);
 
             if (options.dropDownAttachedToBody) {
-                $dropDownCont.appendTo($('body'));
+                $dropDownCont.appendTo($("body"));
             } else {
                 $dropDownCont.appendTo($comboWrapper);
             }
 
-            if (this.element.is('select')) {
+            if (this.element.is("select")) {
                 // Ensure adding the main combo element to the dom when initializing on select
                 $comboWrapper.insertBefore(this.element);
             }
@@ -939,7 +973,7 @@
 
             // If the data or the data item are observables, we need to unwrap them.
             unwrappedData = this._unwrapData(data);
-            dataItem = unwrappedData[this.options.textKey];
+            dataItem = unwrappedData[ this.options.textKey ];
             unwrappedDataItem = this._unwrapData(dataItem);
             unwrappedDataItem = this._formatItem(unwrappedDataItem);
 
@@ -948,7 +982,8 @@
         },
         _formatItem: function (item) {
             if ($.ig && $.ig.formatter) {
-                if (this.options.format === "auto" && ($.type(item) === "date" || $.type(item) === "number")) {
+                if (this.options.format === "auto" &&
+                    ($.type(item) === "date" || $.type(item) === "number")) {
                     item = $.ig.formatter(item, null, null);
                 } else if (this._formatEnabled()) {
                     item = $.ig.formatter(item, null, this.options.format);
@@ -963,50 +998,53 @@
 				this.options.format === "none");
         },
         _itemsToRenderCount: function () {
-            return this._isPossibleToVirtualize() ? this.options.visibleItemsCount : this.options.dataSource.dataView().length;
+            return this._isPossibleToVirtualize() ?
+                this.options.visibleItemsCount :
+                    this.options.dataSource.dataView().length;
         },
         _sortDataSource: function () {
             var options = this.options;
 
-            options.dataSource.sort([{
+            options.dataSource.sort([ {
                 fieldName: options.grouping.key
-            }], options.grouping.dir);
+            } ], options.grouping.dir);
         },
+
         // Returns records grouped in following structure:
-        // [{
+        // [ {
         //      name: 'group name'
-        //      members: [data source items]
+        //      members: [ data source items ]
         // },
         // {
         //      name: 'group name 2'
-        //      members: [data source items]
-        // }]
+        //      members: [ data source items ]
+        // } ]
         _groups: function (data) {
             var prevGroup, curGroup, curData, len, i,
 				options = this.options,
 				groupKey = options.grouping.key,
-				groups = [];
+				groups = [ ];
 
             data = data || options.dataSource.dataView();
 
             for (i = 0, len = data.length; i < len; i++) {
-                curData = data[i];
+                curData = data[ i ];
 
                 // S.T. 7th September 2015, #205951: Add check for LOD in group method in case the key is not correct.
-                if (curData[groupKey] === undefined) {
+                if (curData[ groupKey ] === undefined) {
                     throw new Error($.ig.Combo.locale.errorIncorrectGroupingKey);
                 }
 
-                curGroup = curData[groupKey];
+                curGroup = curData[ groupKey ];
 
                 if (prevGroup === curGroup) {
-                    groups[groups.length - 1].members.push(curData);
+                    groups[ groups.length - 1 ].members.push(curData);
                 } else {
                     prevGroup = curGroup;
 
-                    groups[groups.length] = {
+                    groups[ groups.length ] = {
                         name: curGroup,
-                        members: [curData]
+                        members: [ curData ]
                     };
                 }
             }
@@ -1015,26 +1053,27 @@
         },
         _itemMarkup: function (data) {
             var css = this.css,
-				value = this._unwrapData(this._unwrapData(data)[this.options.valueKey]),
+				value = this._unwrapData(this._unwrapData(data)[ this.options.valueKey ]),
 				innerMarkup = this._itemInnerMarkup(data),
 				markup, escapedValue;
 
             // Z.K. 27/08/2015 Bug #205313 - Not possible to select item because of illegal special characters encoding
             escapedValue = $.ig.encode(value);
-            markup = '<li class="' + css.listItem + '" data-value="' + escapedValue + '" unselectable="on">';
+            markup = '<li class="' + css.listItem + '" data-value="' +
+                escapedValue + '" unselectable="on">';
 
             if (this._checkBoxesEnabled()) {
                 // S.T. 6th July, 2015 #201924: Construct checkboxes template with the css classes.
                 markup += this._options.checkboxItemTemplate
-                    .replace('{css.checkbox}', css.checkbox)
-                    .replace('{css.checkboxOff}', css.checkboxOff)
-                    .replace('{css.listItemTextWithCheckbox}', css.listItemTextWithCheckbox)
-                    .replace('{innerMarkup}', innerMarkup);
+                    .replace("{css.checkbox}", css.checkbox)
+                    .replace("{css.checkboxOff}", css.checkboxOff)
+                    .replace("{css.listItemTextWithCheckbox}", css.listItemTextWithCheckbox)
+                    .replace("{innerMarkup}", innerMarkup);
             } else {
                 markup += innerMarkup;
             }
 
-            markup += '</li>';
+            markup += "</li>";
 
             return markup;
         },
@@ -1046,21 +1085,21 @@
 
             // Generate <li>'s markup
             for (i = 0; i < dataLen; i++) {
-                markup += this._itemMarkup(dataView[i]);
+                markup += this._itemMarkup(dataView[ i ]);
             }
 
             return markup;
         },
         _groupHeaderMarkup: function (groupName) {
-            return '<li class="' + this.css.groupHeader + '">' + groupName + '</li>';
+            return '<li class="' + this.css.groupHeader + '">' + groupName + "</li>";
         },
         _groupMarkup: function (group) {
             var len, i,
 				members = group.members,
-				itemsMarkup = '';
+				itemsMarkup = "";
 
             for (i = 0, len = members.length; i < len; i++) {
-                itemsMarkup += this._itemMarkup(members[i]);
+                itemsMarkup += this._itemMarkup(members[ i ]);
             }
 
             return this._groupHeaderMarkup(group.name) + itemsMarkup;
@@ -1074,6 +1113,7 @@
             // Sort the data source to extract all groups
             this._sortDataSource();
             dataView = this.options.dataSource.dataView();
+
             // Cache the count of all groups in data source
             if (this.options.virtualization && !this._options.cachedGroupLength) {
                 this._options.cachedGroupLength = this._groups(dataView).length;
@@ -1096,13 +1136,14 @@
             }
 
             for (i = 0, groupsLen = groups.length; i < groupsLen; i++) {
-                markup += this._groupMarkup(groups[i]);
+                markup += this._groupMarkup(groups[ i ]);
             }
 
             return markup;
         },
         _noMatchMarkup: function () {
-            return '<li unselectable="on" class="' + this.css.noMatchFound + ' ' + this.css.unselectable + '">' + this.options.noMatchFoundText + '</li>';
+            return '<li unselectable="on" class="' + this.css.noMatchFound + " " +
+                this.css.unselectable + '">' + this.options.noMatchFoundText + "</li>";
         },
         _renderItems: function (success, msg, data) {
             var markup, dropDownScrollHeight, schema, noCancel,
@@ -1120,7 +1161,8 @@
 
             // Set schema when loading remote url because filtering cannot work withouth it
             if (!options.dataSource.settings.schema && options.dataSource && dataView.length > 0) {
-                schema = this._initSchema(this._unwrapData(dataView)[0]);
+                schema = this._initSchema(this._unwrapData(dataView)[ 0 ]);
+
                 // M.K. February 01, 2015 Fixing Bug #213282 - igDataSource throws unhandled exception when trying to filter
                 options.dataSource.settings.schema = schema;
                 options.dataSource._initSchema();
@@ -1183,10 +1225,11 @@
 
             // Reapply selection
             selectedData = _options.selectedData;
-            _options.selectedData = [];
+            _options.selectedData = [ ];
 
             this._selectData(selectedData, {
                 focusCombo: true,
+
                 // Keep filtering to avoid triggering infinite filtering recursion
                 keepFiltering: true,
                 keepInputText: true,
@@ -1209,6 +1252,7 @@
             // D.A., 9th March 2015, Bug #189997 When remote filtering is enabled, input values are not updated when closing the drop down
             if (_options.updateInputValuesOnRemoteFilter) {
                 this._updateInputValues();
+
                 // D.A. 12th May 2015, Bug #193546 When filtering is remote and close list and open it again items are still highlighted
                 this._updateHighlighting();
                 _options.updateInputValuesOnRemoteFilter = false;
@@ -1244,10 +1288,11 @@
 
             // Reapply selection
             selectedData = _options.selectedData;
-            _options.selectedData = [];
+            _options.selectedData = [ ];
 
             this._selectData(selectedData, {
                 focusCombo: true,
+
                 // Keep filtering to avoid triggering infinite filtering recursion
                 keepFiltering: true,
                 keepInputText: true
@@ -1268,10 +1313,11 @@
 
             // Reapply selection
             selectedData = _options.selectedData;
-            _options.selectedData = [];
+            _options.selectedData = [ ];
 
             this._selectData(selectedData, {
                 focusCombo: true,
+
                 // Keep filtering to avoid triggering infinite filtering recursion
                 keepFiltering: true,
                 keepInputText: true,
@@ -1292,13 +1338,15 @@
 
             // D.A. 9th March 2015, Bug #190032 Filtering should not be reapplied if it was previously cleared
             // When filtering is remote the newly loaded items are loaded filtred
-            if (this.options.filteringType !== 'remote' && _options.expression) {
+            if (this.options.filteringType !== "remote" && _options.expression) {
+
                 // Reapply filtering
                 this._updateFiltering();
             }
 
             this._updateFooterVariables();
         },
+
         // Updates group header item according to new data
         _updateGroupHeader: function ($item, data) {
             if (this.options.grouping.key && this._isItem($item)) {
@@ -1306,9 +1354,10 @@
             }
 
             this._updateMarkupForGroupHeader($item, data);
-            $item.attr('data-value', null);
+            $item.attr("data-value", null);
             return this;
         },
+
         // Updates item according to new data
         _updateItem: function ($item, data) {
             var unwrappedDataItem, unwrappedDataValue,
@@ -1320,10 +1369,11 @@
                 // S.T. 6th July, 2015 #201924: If we the item was a group, we need to restore checkbox markup.
                 if (this._checkBoxesEnabled()) {
                     $item.html(this._options.checkboxItemTemplate
-                        .replace('{css.checkbox}', this.css.checkbox)
-                        .replace('{css.checkboxOff}', this.css.checkboxOff)
-                        .replace('{css.listItemTextWithCheckbox}', this.css.listItemTextWithCheckbox)
-                        .replace('{innerMarkup}', "")
+                        .replace("{css.checkbox}", this.css.checkbox)
+                        .replace("{css.checkboxOff}", this.css.checkboxOff)
+                        .replace("{css.listItemTextWithCheckbox}",
+                            this.css.listItemTextWithCheckbox)
+                        .replace("{innerMarkup}", "")
                     );
                 }
             }
@@ -1332,28 +1382,30 @@
 
             // Update data value
             unwrappedDataItem = this._unwrapData(data);
-            unwrappedDataValue = this._unwrapData(unwrappedDataItem[this.options.valueKey]);
-            $item.attr('data-value', unwrappedDataValue);
+            unwrappedDataValue = this._unwrapData(unwrappedDataItem[ this.options.valueKey ]);
+            $item.attr("data-value", unwrappedDataValue);
 
             return this;
         },
+
         // Z.K. 9th July 2015 Bug #202450 - "&nbsp;" displayed instead of blank value
         _removePlaceholderOnEmptyTextVal: function () {
             var _options = this._options,
 				placeholderAttr = _options.$input.attr("placeholder");
 
-            if (_options.inputVal === '' && _options.selectedData.length > 0 &&
+            if (_options.inputVal === "" && _options.selectedData.length > 0 &&
                 (typeof placeholderAttr !== typeof undefined || placeholderAttr !== false)) {
                 _options.$input.removeAttr("placeholder");
             }
 
         },
+
         // Z.K. 9th July 2015 Bug #202450 - "&nbsp;" displayed instead of blank value
         _addPlaceholderWhenEmptyTextVal: function () {
             var _options = this._options,
                 placeholderAttr = _options.$input.attr("placeholder");
 
-            if (_options.inputVal === '' && _options.selectedData.length === 0 &&
+            if (_options.inputVal === "" && _options.selectedData.length === 0 &&
                 (typeof placeholderAttr === typeof undefined || placeholderAttr === false)) {
                 _options.$input.attr("placeholder", this.options.placeHolder);
             }
@@ -1361,19 +1413,21 @@
         _convertToArrayOfObjects: function (options) {
             var curData, len, i, ds;
 
-            if ($.type(options.dataSource) === "object" && (options.dataSource._data !== null && options.dataSource._data !== undefined)) {
+            if ($.type(options.dataSource) === "object" && (options.dataSource._data !== null &&
+                options.dataSource._data !== undefined)) {
                 ds = options.dataSource._data;
             } else {
                 ds = options.dataSource;
             }
 
-            if ($.type(ds) === 'array' && ($.type(ds[0]) === 'number' || $.type(ds[0]) === 'string' || $.type(ds[0]) === 'date')) {
+            if ($.type(ds) === "array" && ($.type(ds[ 0 ]) === "number" ||
+                $.type(ds[ 0 ]) === "string" || $.type(ds[ 0 ]) === "date")) {
                 for (i = 0, len = ds.length; i < len; i++) {
-                    curData = ds[i];
+                    curData = ds[ i ];
 
-                    ds[i] = {};
-                    ds[i][options.textKey] = curData;
-                    ds[i][options.valueKey] = curData;
+                    ds[ i ] = {};
+                    ds[ i ][ options.textKey ] = curData;
+                    ds[ i ][ options.valueKey ] = curData;
                 }
             }
         },
@@ -1392,12 +1446,14 @@
             $item.addClass(this.css.listItem);
         },
         _updateMarkupForGroupHeader: function ($item, data) {
+
             // S.T. 1th July 2015, Bug #201839: Check for undefined values.
-            if (this.options.grouping.key && data[this.options.grouping.key] !== undefined) {
-                $item.html(data[this.options.grouping.key]);
+            if (this.options.grouping.key && data[ this.options.grouping.key ] !== undefined) {
+                $item.html(data[ this.options.grouping.key ]);
             }
         },
         _updateMarkupForItem: function ($item, innerMarkup) {
+
             // Update markup for item
             if (this._checkBoxesEnabled()) {
                 $item.find("." + this.css.listItemTextWithCheckbox).html(innerMarkup);
@@ -1406,46 +1462,49 @@
             }
         },
         _$items: function (includeGroupHeaders) {
-            var selector = '.' + this.css.listItem.split(" ", 1)[0];
+            var selector = "." + this.css.listItem.split(" ", 1)[ 0 ];
 
             if (this.options.grouping.key && includeGroupHeaders) {
-                selector += ',.' + this.css.groupHeader.split(" ", 1)[0];
+                selector += ",." + this.css.groupHeader.split(" ", 1)[ 0 ];
             }
 
             return this._options.$dropDownList.children(selector);
         },
+
         // D.G. 24th November 2015 #Bug 209232: Returns no match item by selector
         _$noMatchFoundItem: function () {
-            var selector = '.' + this.css.noMatchFound;
+            var selector = "." + this.css.noMatchFound;
 
             return this._options.$dropDownList.children(selector);
         },
         _$filteredItems: function () {
-            return this._$items().not('.' + this.css.hidden);
+            return this._$items().not("." + this.css.hidden);
         },
+
         // Returns jquery object with item/items by data or array of data
         _$elementFromData: function (data, $items) {
             var curData, i, len,
                 valueKey = this.options.valueKey,
-                values = [];
+                values = [ ];
 
             $items = $items || this._$items();
 
             // Handle data as array
-            if ($.type(data) !== 'array') {
-                data = [data];
+            if ($.type(data) !== "array") {
+                data = [ data ];
             }
 
             for (i = 0, len = data.length; i < len; i++) {
-                curData = data[i];
+                curData = data[ i ];
 
                 if (curData !== null && curData !== undefined) {
-                    values.push(curData[valueKey]);
+                    values.push(curData[ valueKey ]);
                 }
             }
 
             return this._$elementFromValue(values, $items);
         },
+
         // Returns jquery object with item/items by value or array of values
         _$elementFromValue: function (value, $items) {
             var i, currentValue,
@@ -1454,38 +1513,41 @@
             $items = $items || this._$items();
 
             // Handle value as array
-            if ($.type(value) !== 'array') {
-                value = [value];
+            if ($.type(value) !== "array") {
+                value = [ value ];
             }
 
             for (i = 0; i < value.length; i++) {
-                // Z.K. December 30, 2015 Fixing Bug #205313 - Not possible to select item because of illegal special characters encoding in jQuery version 1.11.1
-                currentValue = value[i];
 
-                if (value[i]) {
-                    currentValue = $.ig.util.escapeStr(value[i].toString());
+                // Z.K. December 30, 2015 Fixing Bug #205313 - Not possible to select item because of illegal special characters encoding in jQuery version 1.11.1
+                currentValue = value[ i ];
+
+                if (value[ i ]) {
+                    currentValue = $.ig.util.escapeStr(value[ i ].toString());
                 }
 
-                result = result.add($items.filter("[data-value='" + currentValue + "']"));
+                result = result.add($items.filter("[ data-value='" + currentValue + "' ]"));
             }
 
             return result;
         },
+
         // Returns jquery object with all elements from item or array with items { element, data }
         _$elementsFromItems: function (items) {
             var i,
                 result = $();
 
-            if ($.type(items) !== 'array') {
-                items = [items];
+            if ($.type(items) !== "array") {
+                items = [ items ];
             }
 
             for (i = 0; i < items.length; i++) {
-                result = result.add(items[i].element);
+                result = result.add(items[ i ].element);
             }
 
             return result;
         },
+
         // Returns jQuery object with the rendered selected items
         _$selectedItems: function () {
             var i,
@@ -1494,7 +1556,7 @@
                 len = selItems.length;
 
             for (i = 0; i < len; i++) {
-                $selItems = $selItems.add(selItems[i].element);
+                $selItems = $selItems.add(selItems[ i ].element);
             }
 
             return $selItems;
@@ -1503,8 +1565,8 @@
             var data1Value, data2Value;
 
             if (data1 !== null && data1 !== undefined && data2 !== null && data2 !== undefined) {
-                data1Value = this._unwrapData(this._unwrapData(data1)[this.options.valueKey]);
-                data2Value = this._unwrapData(this._unwrapData(data2)[this.options.valueKey]);
+                data1Value = this._unwrapData(this._unwrapData(data1)[ this.options.valueKey ]);
+                data2Value = this._unwrapData(this._unwrapData(data2)[ this.options.valueKey ]);
 
                 return data1Value === data2Value;
             }
@@ -1512,18 +1574,18 @@
             return false;
         },
         _isDataSelected: function (data) {
-            return this.isValueSelected(data[this.options.valueKey]);
+            return this.isValueSelected(data[ this.options.valueKey ]);
         },
         _filterData: function (data1, data2) {
             var data2Len,
                 self = this;
 
-            if ($.type(data1) !== 'array') {
-                data1 = [data1];
+            if ($.type(data1) !== "array") {
+                data1 = [ data1 ];
             }
 
-            if ($.type(data2) !== 'array') {
-                data2 = [data2];
+            if ($.type(data2) !== "array") {
+                data2 = [ data2 ];
             }
 
             data2Len = data2.length;
@@ -1532,7 +1594,7 @@
                 var i;
 
                 for (i = 0; i < data2Len; i++) {
-                    if (self._isDataEqual(data, data2[i])) {
+                    if (self._isDataEqual(data, data2[ i ])) {
                         return false;
                     }
                 }
@@ -1540,6 +1602,7 @@
                 return true;
             });
         },
+
         // Filters items2 from items1
         _filterItems: function (items1, items2) {
             var result,
@@ -1547,15 +1610,17 @@
                 self = this;
 
             result = items1.filter(function (item) {
-                var i, unwrappedDataItem, unwrappedDataValue, unwrappedDataItemToCompare, unwrappedDataValueToCompare,
+                var i, unwrappedDataItem, unwrappedDataValue,
+                    unwrappedDataItemToCompare, unwrappedDataValueToCompare,
                     matchFound = false;
 
                 unwrappedDataItem = self._unwrapData(item.data);
-                unwrappedDataValue = self._unwrapData(unwrappedDataItem[valKey]);
+                unwrappedDataValue = self._unwrapData(unwrappedDataItem[ valKey ]);
 
                 for (i = 0; i < items2.length && !matchFound; i++) {
-                    unwrappedDataItemToCompare = self._unwrapData(items2[i].data);
-                    unwrappedDataValueToCompare = self._unwrapData(unwrappedDataItemToCompare[valKey]);
+                    unwrappedDataItemToCompare = self._unwrapData(items2[ i ].data);
+                    unwrappedDataValueToCompare =
+                        self._unwrapData(unwrappedDataItemToCompare[ valKey ]);
 
                     if (unwrappedDataValue === unwrappedDataValueToCompare) {
                         matchFound = true;
@@ -1567,37 +1632,40 @@
 
             return result;
         },
+
         // Returns array with values for the given data object
         _valuesFromData: function (data) {
             var unwrappedDataItem, unwrappedDataValue, i,
                 len = data.length,
                 valKey = this.options.valueKey,
-                values = [];
+                values = [ ];
 
             for (i = 0; i < len; i++) {
-                unwrappedDataItem = this._unwrapData(data[i]);
-                unwrappedDataValue = this._unwrapData(unwrappedDataItem[valKey]);
+                unwrappedDataItem = this._unwrapData(data[ i ]);
+                unwrappedDataValue = this._unwrapData(unwrappedDataItem[ valKey ]);
 
                 values.push(unwrappedDataValue);
             }
 
             return values;
         },
+
         // Returns array of values for the specified jquery object with list items
         _valuesFromElements: function ($items) {
             var i,
-                values = [];
+                values = [ ];
 
             for (i = 0; i < $items.length; i++) {
-                values.push($items.eq(i).attr('data-value'));
+                values.push($items.eq(i).attr("data-value"));
             }
 
             return values;
         },
+
         // Returns array of values from item or array of items { element, data }
         _valuesFromItems: function (item) {
             var i, unwrappedDataItem, unwrappedDataValue,
-                values = [],
+                values = [ ],
                 valueKey = this.options.valueKey;
 
             if (!item) {
@@ -1605,25 +1673,26 @@
             }
 
             // Handle item as array
-            if ($.type(item) !== 'array') {
-                item = [item];
+            if ($.type(item) !== "array") {
+                item = [ item ];
             }
 
             for (i = 0; i < item.length; i++) {
-                unwrappedDataItem = this._unwrapData(item[i].data);
-                unwrappedDataValue = this._unwrapData(unwrappedDataItem[valueKey]);
+                unwrappedDataItem = this._unwrapData(item[ i ].data);
+                unwrappedDataValue = this._unwrapData(unwrappedDataItem[ valueKey ]);
                 values.push(unwrappedDataValue);
             }
 
             return values;
         },
+
         // Returns array with data from the given items { element, data }
         _dataFromItems: function (items) {
             var len, i,
-                data = [];
+                data = [ ];
 
             for (i = 0, len = items.length; i < len; i++) {
-                data.push(items[i].data);
+                data.push(items[ i ].data);
             }
 
             return data;
@@ -1631,18 +1700,18 @@
         _dataFromIndex: function (index) {
             var data = this.options.dataSource.data();
 
-            return data.length > index ? data[index] : null;
+            return data.length > index ? data[ index ] : null;
         },
         _dataForValues: function (value) {
             var data, i, len,
-                result = [];
+                result = [ ];
 
-            if ($.type(value) !== 'array') {
-                value = [value];
+            if ($.type(value) !== "array") {
+                value = [ value ];
             }
 
             for (i = 0, len = value.length; i < len; i++) {
-                data = this.dataForValue(value[i]);
+                data = this.dataForValue(value[ i ]);
 
                 if (data !== null) {
                     result.push(data);
@@ -1651,17 +1720,20 @@
 
             return result;
         },
+
         // Finds index of data in data source by value
         _dataIndexByValue: function (value, searchDataViewOnly) {
             var unwrappedDataItem, unwrappedDataValue, i,
                 result = -1,
-                data = searchDataViewOnly ? this.options.dataSource.dataView() : this.options.dataSource.data(),
+                data = searchDataViewOnly ?
+                    this.options.dataSource.dataView() :
+                        this.options.dataSource.data(),
                 len = data.length,
                 valKey = this.options.valueKey;
 
             for (i = 0; i < len; i++) {
-                unwrappedDataItem = this._unwrapData(data[i]);
-                unwrappedDataValue = this._unwrapData(unwrappedDataItem[valKey]);
+                unwrappedDataItem = this._unwrapData(data[ i ]);
+                unwrappedDataValue = this._unwrapData(unwrappedDataItem[ valKey ]);
 
                 if (this._areValuesEqual(unwrappedDataValue, value)) {
                     result = i;
@@ -1671,21 +1743,22 @@
 
             return result;
         },
+
         // Keeping the function private to ensure always calling it with correct
         // parameters and faster execution time for large amount of data
         // Param "data" can be single data or array of data
         _itemsFromData: function (data) {
             var curData, len, i,
                 $items = this._$items(),
-                result = [];
+                result = [ ];
 
             // Handle data as array
-            if ($.type(data) !== 'array') {
-                data = [data];
+            if ($.type(data) !== "array") {
+                data = [ data ];
             }
 
             for (i = 0, len = data.length; i < len; i++) {
-                curData = data[i];
+                curData = data[ i ];
 
                 if (curData !== null && curData !== undefined) {
                     result.push({
@@ -1708,41 +1781,43 @@
                 recordsView = ds.dataView().length;
                 recordsData = ds.data().length;
                 recordsServer = Math.max(ds.totalRecordsCount(), recordsData);
-                recordsServerTotal = Math.max(recordsServer, parseInt(this._options.totalAll || 0, 10));
+                recordsServerTotal = Math.max(recordsServer,
+                    parseInt(this._options.totalAll || 0, 10));
 
                 this._options.$footer
-                    .find('.' + this.css.recordsView)
+                    .find("." + this.css.recordsView)
                     .html(recordsView);
 
                 this._options.$footer
-                    .find('.' + this.css.recordsData)
+                    .find("." + this.css.recordsData)
                     .html(recordsData);
 
                 this._options.$footer
-                    .find('.' + this.css.recordsServer)
+                    .find("." + this.css.recordsServer)
                     .html(recordsServer);
 
                 this._options.$footer
-                    .find('.' + this.css.recordsServerTotal)
+                    .find("." + this.css.recordsServerTotal)
                     .html(recordsServerTotal);
             }
         },
+
         // Focus combo and set carret to text input's end
         _moveCaretToInputEnd: function (preventItemSeparatorOnFocus) {
             var range,
-                input = this._options.$input[0],
-                readonly = this._options.$input.attr('readonly');
+                input = this._options.$input[ 0 ],
+                readonly = this._options.$input.attr("readonly");
 
-        	// H.A. 30/05/2016 Bug #219635 - Caret moves to combo input end if deleting a symbol that is not the last
-            if (document.activeElement === input) {
-            	return;
+	        // H.A. 30/05/2016 Bug #219635 - Caret moves to combo input end if deleting a symbol that is not the last
+	        if (document.activeElement === input) {
+	            return;
             }
 
             // J.D. July 8, 2015 - Bug #193837 IME input does not function properly when filtering in Chrome.
             // D.A. 6th March 2015, Bug #190025 In IE typing in the input closes the list
             // Note: IE executes the blur handler after the method has finished and preventInputBlur is false
             // Blur is required for chrome to move the carret
-            //if ($.ig.util.isWebKit && this._options.$input.is(':focus')) {
+            //if ($.ig.util.isWebKit && this._options.$input.is(":focus")) {
             //    this._options.preventInputBlur = true;
             //    input.blur();
             //}
@@ -1750,7 +1825,7 @@
             // D.A. 20th March 2015, Bug #190591 In Chrome when mode is dropdown and selecting an item, the carret is not moved and the selected element is not visible
             // Remove readonly during the focus
             if (readonly) {
-                this._options.$input.removeAttr('readonly');
+                this._options.$input.removeAttr("readonly");
             }
 
             // Setting the range without focus won't work in most browsers
@@ -1759,14 +1834,18 @@
             // T.I. Feb 3 2016, Bug #210949 - When clicking on format list and font size dropdowns it loses text selection on Edge
             if (typeof input.selectionStart === "number" && !$.ig.util.isIE && !$.ig.util.isEdge) {
                 if (!this._options.ltr && this._options.selectedData.length > 0) {
-                    input.selectionStart = input.selectionEnd = this._options.selectedData[this._options.selectedData.length - 1][this.options.textKey].length;
-                }else{
+                    input.selectionStart = input.selectionEnd =
+                        this._options.selectedData[ this._options.selectedData.length - 1 ][
+                            this.options.textKey ].length;
+                } else {
                     input.selectionStart = input.selectionEnd = input.value.length;
                 }
             }
-                // JD Sept 1, 2015, TFS 205346 IE throws an unhandled exception whenever attempting to modify range when the input is not visible
-                // JD Sept 2, 2015, TFS 201580 IE treats an input with a range specified as editable even if readonly is applied
-            else if (typeof input.createTextRange !== "undefined" && $(input).is(':visible') && !readonly) {
+
+            // JD Sept 1, 2015, TFS 205346 IE throws an unhandled exception whenever attempting to modify range when the input is not visible
+            // JD Sept 2, 2015, TFS 201580 IE treats an input with a range specified as editable even if readonly is applied
+            else if (typeof input.createTextRange !== "undefined" &&
+                $(input).is(":visible") && !readonly) {
                 range = input.createTextRange();
                 range.collapse(false);
                 range.select();
@@ -1774,7 +1853,7 @@
 
             // Reapply readonly attribute
             if (readonly) {
-                this._options.$input.attr('readonly', readonly);
+                this._options.$input.attr("readonly", readonly);
             }
         },
         _refreshVisualStylesForItem: function ($item, data) {
@@ -1788,6 +1867,7 @@
             }
 
             if (this.options.multiSelection.enabled) {
+
                 // Update active style
                 if (this._isDataEqual(this._options.keyNavItemData, data) && !isSelected) {
                     $item.addClass(this.css.itemInFocus);
@@ -1800,17 +1880,17 @@
             var curSelItem, selectOptions, selectedOptions, curIndex, i, curDataItem,
                 selItems = this.options.initialSelectedItems,
                 data = this.options.dataSource.data(),
-                dataToSel = [],
+                dataToSel = [ ],
                 mode = this.options.mode;
 
             // Handle selectedItems option
-            if ($.type(selItems) === 'array') {
+            if ($.type(selItems) === "array") {
                 for (i = 0; i < selItems.length; i++) {
-                    curSelItem = selItems[i];
+                    curSelItem = selItems[ i ];
                     curIndex = curSelItem.index;
 
                     if (curIndex >= 0 && data.length >= curIndex) {
-                        curDataItem = data[curIndex];
+                        curDataItem = data[ curIndex ];
                     } else if (curSelItem.value !== undefined && curSelItem.value !== null) {
                         curDataItem = this.dataForValue(curSelItem.value);
                     }
@@ -1823,14 +1903,14 @@
             }
 
             // Handle select element with <option selected>
-            if (this.element.is('select')) {
-                selectOptions = this.element.find('option');
+            if (this.element.is("select")) {
+                selectOptions = this.element.find("option");
 
                 // In select element the first value is selected by default. So this will always select value
-                selectedOptions = selectOptions.filter(':selected');
+                selectedOptions = selectOptions.filter(":selected");
 
                 for (i = 0; i < selectedOptions.length; i++) {
-                    dataToSel.push(data[selectOptions.index(selectedOptions.eq(i))]);
+                    dataToSel.push(data[ selectOptions.index(selectedOptions.eq(i)) ]);
                 }
             }
 
@@ -1838,14 +1918,16 @@
             this._selectFirstItemInNonEditableModes(mode, dataToSel, data);
         },
         _selectFirstItemInNonEditableModes: function (mode, dataToSel, data) {
+
             // Select first item when no items are selected in non editable modes
             // D.A. 17th March 2015, Bug #190579 Initial item should be always selected when mode is drop down and selection is single
-            if (((mode === 'dropdown' && !this.options.multiSelection.enabled) ||
-                mode === 'readonly' || mode === 'readonlylist') &&
+            if (((mode === "dropdown" && !this.options.multiSelection.enabled) ||
+                mode === "readonly" || mode === "readonlylist") &&
                 dataToSel.length === 0) {
+
                 // D.A. 17th March 2015, Bug #190600 Binding to null data source throws exception
-                if (data[0] !== null && data[0] !== undefined) {
-                    dataToSel.push(data[0]);
+                if (data[ 0 ] !== null && data[ 0 ] !== undefined) {
+                    dataToSel.push(data[ 0 ]);
                 }
             }
 
@@ -1857,13 +1939,16 @@
             }
         },
         _checkBoxesEnabled: function () {
-            return this.options.multiSelection.enabled && this.options.multiSelection.showCheckboxes;
+            return this.options.multiSelection.enabled &&
+                this.options.multiSelection.showCheckboxes;
         },
         _isPossibleToVirtualize: function () {
-            return this.options.virtualization && this.options.dataSource.dataView().length > this.options.visibleItemsCount;
+            return this.options.virtualization &&
+                this.options.dataSource.dataView().length > this.options.visibleItemsCount;
         },
         _areItemsLowerInVir: function () {
-            return this.options.virtualization && this.options.dataSource.dataView().length <= this.options.visibleItemsCount;
+            return this.options.virtualization &&
+                this.options.dataSource.dataView().length <= this.options.visibleItemsCount;
         },
         _dropDownHeight: function (itemHeight, allItemsCount) {
             return itemHeight * allItemsCount;
@@ -1875,6 +1960,7 @@
             return this.options.filteringType !== "none";
         },
         _updateItems: function (offset) {
+
             // elementIndex handles the index of the DOM element
             // itemIndex handles the index of the data value
             var elementIndex, lengthOfElements, itemIndex, $this, curData,
@@ -1889,19 +1975,22 @@
 
             // For grouping we have group headers elements that are part of item elements
             // and we should be aware of that when items are iterating.
-            for (elementIndex = 0, itemIndex = 0, lengthOfElements = $items.length; elementIndex < lengthOfElements; elementIndex++) {
+            for (elementIndex = 0, itemIndex = 0, lengthOfElements = $items.length;
+                elementIndex < lengthOfElements; elementIndex++) {
+
                 // Get element from list items
                 $this = $items.eq(elementIndex);
                 realOffset = itemIndex + offset;
-                curData = dataView[realOffset];
+                curData = dataView[ realOffset ];
 
                 // We have to update the item to group header if it's between two groups.
                 // First element in the list should be always a group header
                 if (curData && this.options.grouping.key &&
-					(self._isBoundaryOfGroups(dataView, realOffset) || self._isFirstItem(dataView, realOffset))) {
+					(self._isBoundaryOfGroups(dataView, realOffset) ||
+                        self._isFirstItem(dataView, realOffset))) {
                     this
 						._updateGroupHeader($this, curData)
-						._refreshVisualStylesForItem($this, curData[options.grouping.key]);
+						._refreshVisualStylesForItem($this, curData[ options.grouping.key ]);
                     elementIndex++;
 
                     // Get next DOM element from the list in order to update the item with data
@@ -1920,15 +2009,16 @@
             this._updateHighlighting();
         },
         _isFirstItem: function (data, itemIndex) {
-            if (!data[itemIndex - 1]) {
+            if (!data[ itemIndex - 1 ]) {
                 return true;
             }
 
             return false;
         },
         _isBoundaryOfGroups: function (data, itemIndex) {
-            if (this.options.grouping.key && data[itemIndex - 1] &&
-				(data[itemIndex - 1][this.options.grouping.key] !== data[itemIndex][this.options.grouping.key])) {
+            if (this.options.grouping.key && data[ itemIndex - 1 ] &&
+				(data[ itemIndex - 1 ][ this.options.grouping.key ] !==
+                    data[ itemIndex ][ this.options.grouping.key ])) {
                 return true;
             }
 
@@ -1938,6 +2028,7 @@
             if (this._options.dropDownOpened) {
                 this.closeDropDown(null, event);
             } else {
+
                 // Z.K. Fixing Bug #212934 - Keyboard shouldnt be shown when using 'dropdown' mode on touch device
                 this.openDropDown(null, this._focusInInputWhenUsingTouchDevice(), event);
             }
@@ -1946,8 +2037,9 @@
             return this._options.inputVal.split(this.options.multiSelection.itemSeparator).pop();
         },
         _startsWith: function (text, fragment) {
-            return fragment !== '' && text.indexOf(fragment) === 0;
+            return fragment !== "" && text.indexOf(fragment) === 0;
         },
+
         // Returns number representing how many chars in the end of text match the item separator
         _endsPartialyWithItemSep: function (text) {
             var separator = this.options.multiSelection.itemSeparator,
@@ -1962,33 +2054,37 @@
 
             return matchFound;
         },
+
         // Filters text ending with part of the item separator
         // E.g. item separator is ', '. Given text 'Jon,' returns 'Jon'
         _filterItemSeparator: function (text) {
             return text.slice(0, text.length - this._endsPartialyWithItemSep(text));
         },
+
         // Returns array with values filtered from item separator
         _separatedInputTexts: function () {
             var result = this._options.inputVal.split(this.options.multiSelection.itemSeparator);
 
             // Filter last item in case it ends partially with the item separator
-            result[result.length - 1] = this._filterItemSeparator(result[result.length - 1]);
+            result[ result.length - 1 ] = this._filterItemSeparator(result[ result.length - 1 ]);
 
             return result;
         },
         _updateSelection: function (event) {
-            var textsLen, dataLen, curText, curData, curDataValue, curDataText, setAsKeyNav, matchFound, isLastText, unwrappedData, i, j,
+            var textsLen, dataLen, curText, curData, curDataValue, curDataText,
+                setAsKeyNav, matchFound, isLastText, unwrappedData, i, j,
                 options = this.options,
                 _options = this._options,
                 texts = _options.inputVal,
                 data = options.dataSource.data(),
                 textKey = options.textKey,
                 valueKey = options.valueKey,
-                justSelectedData = [],
+                justSelectedData = [ ],
                 multiSelect = options.multiSelection.enabled;
 
             // When filtering is remote also look in the cached data
-            if (options.filteringType === 'remote') {
+            if (options.filteringType === "remote") {
+
                 // D.A. June 15th, 2015 Bug #201117 Records that are duplicated both in cachedData and data, should be filtered
                 data = this._filterData(_options.cachedData, data).concat(data);
             }
@@ -1998,10 +2094,11 @@
             if (multiSelect) {
                 texts = this._separatedInputTexts(texts);
             } else {
-                texts = [texts];
+                texts = [ texts ];
             }
 
             if (options.autoSelectFirstMatch) {
+
                 // Reset autoSelectedItem upon new auto selection
                 _options.autoSelectedItemData = null;
             }
@@ -2010,7 +2107,7 @@
 
             // Loop through all input texts
             for (i = 0, textsLen = texts.length; i < textsLen; i++) {
-                curText = texts[i];
+                curText = texts[ i ];
                 matchFound = false;
                 isLastText = i === textsLen - 1;
 
@@ -2020,9 +2117,9 @@
 
                 // Loop through all items
                 for (j = 0; j < dataLen && !matchFound; j++) {
-                    curData = this._unwrapData(unwrappedData[j]);
-                    curDataText = this._unwrapData(curData[textKey]).toString();
-                    curDataValue = this._unwrapData(curData[valueKey]);
+                    curData = this._unwrapData(unwrappedData[ j ]);
+                    curDataText = this._unwrapData(curData[ textKey ]).toString();
+                    curDataValue = this._unwrapData(curData[ valueKey ]);
                     setAsKeyNav = isLastText && !this.isValueSelected(curDataValue);
 
                     if (!options.caseSensitive) {
@@ -2032,9 +2129,11 @@
                     if (options.autoSelectFirstMatch) {
                         if (this._startsWith(curDataText, curText)) {
                             if (multiSelect) {
+
                                 // Select unselected matching item with multi selection enabled
                                 if (this._filterData(curData, justSelectedData).length === 1) {
                                     if (setAsKeyNav) {
+
                                         // Navigate to the last matching item when
                                         // multi selection is enabled instead of selecting it
                                         this._setKeyNavigationItem({
@@ -2044,6 +2143,7 @@
                                             scrollToItem: true
                                         });
                                     } else {
+
                                         // Select the item, keep input text unchanged
                                         this._selectData(curData, {
                                             additive: true,
@@ -2072,6 +2172,7 @@
                                     justSelectedData.push(curData);
                                 }
                             } else {
+
                                 // Select the item, keep input text unchanged
                                 this._selectData(curData, {
                                     focusCombo: true,
@@ -2091,9 +2192,11 @@
                         }
                     } else if (curDataText === curText) {
                         if (multiSelect) {
+
                             // Select unselected matching item with multi selection enabled
                             if (this._filterData(curData, justSelectedData).length === 1) {
                                 if (setAsKeyNav) {
+
                                     // Navigate to the last matching item when
                                     // multi selection is enabled instead of selecting it
                                     this._setKeyNavigationItem({
@@ -2135,9 +2238,9 @@
                 }
             }
 
-            // Deselect all remaining items
-            this._deselectData(this._filterData(_options.selectedData, justSelectedData), {
-            	focusCombo: true,
+	        // Deselect all remaining items
+	        this._deselectData(this._filterData(_options.selectedData, justSelectedData), {
+	            focusCombo: true,
                 keepInputText: true
             }, event);
 
@@ -2148,6 +2251,7 @@
 
             this._updateHighlighting();
         },
+
         // Updates the auto complete according to the value in the text input
         _updateAutoComplete: function () {
             var text, curData, curDataText, unwrappedData, i,
@@ -2162,13 +2266,13 @@
             if (multiSelect) {
                 texts = this._options.inputVal.split(options.multiSelection.itemSeparator);
             } else {
-                texts = [texts];
+                texts = [ texts ];
             }
 
             // Avoid auto completing a selected element
             if (texts.length > this._fullySelectedItemsLen()) {
                 // Auto complete by the last text value
-                text = texts[texts.length - 1];
+                text = texts[ texts.length - 1 ];
 
                 // D.A. 29th May, 2015 Bug #194604 When multiSelection is enabled and type "," after the text, autocomplete is not correct
                 if (multiSelect && this._endsPartialyWithItemSep(text)) {
@@ -2180,35 +2284,41 @@
                 }
 
                 if (_options.autoSelectedItemData) {
+
                     // Auto selected item matches the item that should be auto completed
                     _options.autoCompleteItemData = _options.autoSelectedItemData;
-                    this._autoComplete(_options.autoCompleteItemData[textKey].toString().slice(text.length));
+                    this._autoComplete(_options.autoCompleteItemData[ textKey ]
+                        .toString().slice(text.length));
                 } else {
+
                     // Handle autoSelectFirstMatch: false
                     // Auto complete should be handled separately when auto select first match is disabled, to avoid cases where we don't want
                     // to auto complete item with the first match when there is full match later on in the data source, that would be selected instead
                     for (i = 0; i < dataLen; i++) {
                         unwrappedData = this._unwrapData(data);
-                        curData = this._unwrapData(unwrappedData[i]);
-                        curDataText = this._unwrapData(curData[textKey]).toString();
+                        curData = this._unwrapData(unwrappedData[ i ]);
+                        curDataText = this._unwrapData(curData[ textKey ]).toString();
 
                         if (!options.caseSensitive) {
                             curDataText = curDataText.toLowerCase();
                         }
 
-                        if (!(curData !== _options.autoSelectedItemData && this._isDataSelected(curData)) &&
+                        if (!(curData !== _options.autoSelectedItemData &&
+                            this._isDataSelected(curData)) &&
                             this._startsWith(curDataText, text)) {
                             _options.autoCompleteItemData = curData;
 
                             // Auto complete with non modified / non lower cased value
                             this._autoComplete(
-                                this._unwrapData(curData[textKey]).toString().slice(text.length));
+                                this._unwrapData(curData[ textKey ])
+                                    .toString().slice(text.length));
                             break;
                         }
                     }
                 }
             }
         },
+
         // Auto completes the input value with given text
         _autoComplete: function (autoCompleteText) {
             var oldInputVal, newInputVal;
@@ -2229,32 +2339,33 @@
                 this._setInputSelection(oldInputVal.length, newInputVal.length);
             }
         },
+
         // Set selection to input text field
         _setInputSelection: function (start, end) {
             var selRange,
-                field = this._options.$input[0];
+                field = this._options.$input[ 0 ];
 
             if (field.createTextRange) {
                 selRange = field.createTextRange();
                 selRange.collapse(true);
-                selRange.moveStart('character', start);
-                selRange.moveEnd('character', end);
+                selRange.moveStart("character", start);
+                selRange.moveEnd("character", end);
                 selRange.select();
                 field.focus();
             } else if (field.setSelectionRange) {
                 field.focus();
                 field.setSelectionRange(start, end);
-            } else if (typeof field.selectionStart !== 'undefined') {
+            } else if (typeof field.selectionStart !== "undefined") {
                 field.selectionStart = start;
                 field.selectionEnd = end;
                 field.focus();
             }
         },
         _hasInputSelection: function () {
-            var field = this._options.$input[0],
+            var field = this._options.$input[ 0 ],
                 result = false;
 
-            if (typeof field.selectionStart !== 'undefined') {
+            if (typeof field.selectionStart !== "undefined") {
                 result = field.selectionStart !== field.selectionEnd;
             }
 
@@ -2275,12 +2386,15 @@
                     // Change scroll top only when the item is not in the visible area
                     if (!(itemTop > listContTop &&
                         itemTop + itemHeight < listContHeight + listContTop)) {
-                        this.listScrollTop(itemTop + listContScrollTop + itemHeight - listContTop - listContHeight);
+                        this.listScrollTop(itemTop + listContScrollTop + itemHeight -
+                            listContTop - listContHeight);
                     }
                 } else if (this.options.virtualization) {
-                    itemIndex = this._dataIndexByValue(data[this.options.valueKey]);
+                    itemIndex = this._dataIndexByValue(data[ this.options.valueKey ]);
+
                     // S.T. 1th Sept 2015, Bug 202891: Adjust position when scroll to item in virtualization.
-                    this.listScrollTop((itemIndex - this.options.visibleItemsCount + 2) * this._itemHeight());
+                    this.listScrollTop((itemIndex - this.options.visibleItemsCount + 2) *
+                        this._itemHeight());
                 }
             }
         },
@@ -2288,9 +2402,11 @@
             if (this._options.keyNavItemData !== null) {
                 this._scrollToItem(this._options.keyNavItemData);
             } else if (this._options.selectedData.length > 0) {
-                this._scrollToItem(this._options.selectedData[this._options.selectedData.length - 1]);
+                this._scrollToItem(this._options
+                    .selectedData[ this._options.selectedData.length - 1 ]);
             }
         },
+
         // Positions an item in the visible area when navigating with keyboard
         _positionItemInVisibleArea: function ($item) {
             var $listCont = this._options.$dropDownListCont,
@@ -2303,14 +2419,16 @@
             // Item is hidden and is above visible area
             if (listContTop > itemTop) {
                 this.listScrollTop(
-                    this._$items().filter(':visible').index($item) * itemHeight);
+                    this._$items().filter(":visible").index($item) * itemHeight);
             }
 
             // Item is hidden and is below visible area
             if (itemTop + itemHeight > listContHeight + listContTop) {
-                this.listScrollTop(itemTop + itemHeight + listContScrollTop - listContHeight - listContTop);
+                this.listScrollTop(itemTop + itemHeight + listContScrollTop -
+                    listContHeight - listContTop);
             }
         },
+
         // Param "options":
         //  data - the data of the element or jQuery reference to the element
         //  addStyles - boolean Specifies whether key navigation style should be applied
@@ -2328,7 +2446,7 @@
             // Handle data as jQuery object
             if (data instanceof $) {
                 $item = data;
-                data = this.dataForValue($item.attr('data-value'));
+                data = this.dataForValue($item.attr("data-value"));
             } else {
                 $item = this._$elementFromData(data);
             }
@@ -2379,25 +2497,30 @@
 
             this._positionItemInVisibleArea($item);
         },
+
         // Gets previous visible list item, while skipping grouping headers
         _prevVisibleItem: function ($item) {
             do {
                 $item = $item.prev();
-            } while ($item.length > 0 && (!$item.is('.' + this.css.listItem.split(" ", 1)[0]) || !$item.is(':visible')));
+            } while ($item.length > 0 && (!$item.is("." +
+                this.css.listItem.split(" ", 1)[ 0 ]) || !$item.is(":visible")));
 
             return $item;
         },
+
         // Gets next visible list item, while skipping grouping headers
         _nextVisibleItem: function ($item) {
             do {
                 $item = $item.next();
-            } while ($item.length > 0 && (!$item.is('.' + this.css.listItem.split(" ", 1)[0]) || !$item.is(':visible')));
+            } while ($item.length > 0 && (!$item.is("." +
+                this.css.listItem.split(" ", 1)[ 0 ]) || !$item.is(":visible")));
 
             return $item;
         },
+
         // Returns an item that is not filtered
         _visibleItemByIndex: function (index) {
-            return this._$items().filter(':visible').eq(index);
+            return this._$items().filter(":visible").eq(index);
         },
         _handleInputChange: function (openDropDown, event) {
             var options = this.options,
@@ -2405,10 +2528,12 @@
                 curVal = _options.$input.val();
 
             if (options.autoComplete &&
+
                 // S.T. 18th Dec, 2015 Bug #211315: Add check for event parm.
                 event &&
                 event.which === 8 && // backspace
                 _options.hadInputSelectionOnKeydown) {
+
                 // Remove the character before the selection instead of removing the selection
                 // when backspace is pressed and there was selection done by the auto complete
                 curVal = curVal.slice(0, curVal.length - 1);
@@ -2423,15 +2548,17 @@
                 return;
             }
 
-            // Ignore keyups that don't change the value
+            // Ignore keyups that don"t change the value
             if (curVal !== _options.inputVal) {
+
                 // Update input val
                 this._setInputVal(curVal);
 
-                if (options.filteringType === 'remote') {
+                if (options.filteringType === "remote") {
                     this._updateFiltering(event);
                 } else {
-                    if (options.filteringType === 'local') {
+                    if (options.filteringType === "local") {
+
                         // Disable scroll when typing and load on demand is enabled
                         // to prevent loading more items when items are filtered
                         _options.disableScroll = true;
@@ -2459,6 +2586,7 @@
                 }
 
                 if (openDropDown) {
+
                     // D.A. 10th March 2015, Bug #189913 Entering IME in the combo does not work correctly the first time. Input should not be focused on open.
                     this.openDropDown(null, false, event);
                 }
@@ -2469,12 +2597,15 @@
                 $keyNavItem = this._$keyNavItem();
 
             if ($itemToNavigate.is(_options.$itemsToSelectOnShiftUpDown)) {
+
                 // The user is navigating backwards and we should restore the state of the previous item
                 $keyNavItem.removeClass(this.css.itemInFocus);
-                _options.$itemsToSelectOnShiftUpDown = _options.$itemsToSelectOnShiftUpDown.not($keyNavItem);
+                _options.$itemsToSelectOnShiftUpDown =
+                    _options.$itemsToSelectOnShiftUpDown.not($keyNavItem);
             } else {
                 $itemToNavigate.addClass(this.css.itemInFocus);
-                _options.$itemsToSelectOnShiftUpDown = _options.$itemsToSelectOnShiftUpDown.add($itemToNavigate);
+                _options.$itemsToSelectOnShiftUpDown =
+                    _options.$itemsToSelectOnShiftUpDown.add($itemToNavigate);
             }
 
             this._navigateToItem($itemToNavigate, false, false, event);
@@ -2521,20 +2652,21 @@
             _options.$itemsToSelectOnShiftClick = $();
         },
         _groupHeaderClass: function () {
-            return '.' + this.css.groupHeader.split(" ", 1)[0];
+            return "." + this.css.groupHeader.split(" ", 1)[ 0 ];
         },
         _$groupHeaders: function () {
             return this._$items(true).filter(this._groupHeaderClass());
         },
         _handleKeyNavigation: function (event) {
             // if reorderingFunctionInvocationTimeout = 0, from time to time the order of invocation get broken
-            var $item, index, multiSelect, closeDropDown, isAutoSelectedActive, $lastSelectedItem, visibleItemsCount,
+            var $item, index, multiSelect, closeDropDown, isAutoSelectedActive,
+                $lastSelectedItem, visibleItemsCount,
                 self = this,
 				options = this.options,
 				_options = this._options,
 				multiSelection = options.multiSelection.enabled,
 				$keyNavItem = this._$keyNavItem(),
-				$visibleItems = this._$items().filter(':visible'),
+				$visibleItems = this._$items().filter(":visible"),
 				currentScrollTop = this.listScrollTop(),
 				activeIndex = this.activeIndex(),
 				itemHeight = this._itemHeight(),
@@ -2580,7 +2712,9 @@
                 if (event.altKey || !_options.dropDownOpened) {
                     this.openDropDown(null, true, event);
                 } else {
-                    $item = $keyNavItem.length > 0 ? this._nextVisibleItem($keyNavItem) : $visibleItems.eq(0);
+                    $item = $keyNavItem.length > 0 ?
+                        this._nextVisibleItem($keyNavItem) :
+                            $visibleItems.eq(0);
 
                     if (event.shiftKey && multiSelection && _options.dropDownOpened) {
                         this._handleShiftNavigation($item, event);
@@ -2608,10 +2742,13 @@
             // Handle arrow up
             if (event.keyCode === $.ui.keyCode.UP) {
                 if (_options.dropDownOpened) {
+
                     // Close drop down on alt + up or on up when the top most item was the active one
                     if (event.altKey || $keyNavItem.length === 0 ||
+
                         // S.T. June 6th, 2015 Bug #201028: Use function to compare values.
-                        this._isDataEqual(_options.keyNavItemData, options.dataSource.dataView()[0])) {
+                        this._isDataEqual(_options.keyNavItemData,
+                            options.dataSource.dataView()[ 0 ])) {
                         this.closeDropDown(null, event);
                     } else {
                         $item = this._prevVisibleItem($keyNavItem);
@@ -2634,21 +2771,29 @@
             }
 
             // Select the item on enter
-            if (event.keyCode === $.ui.keyCode.ENTER || (options.selectItemBySpaceKey && event.keyCode === $.ui.keyCode.SPACE)) {
+            if (event.keyCode === $.ui.keyCode.ENTER ||
+                (options.selectItemBySpaceKey && event.keyCode === $.ui.keyCode.SPACE)) {
+
                 // Select all items from last selectied item to the navigation item on shift + enter
                 if (event.shiftKey && _options.$itemsToSelectOnShiftUpDown.length === 1) {
-                    $lastSelectedItem = this._$elementFromData(_options.selectedData[_options.selectedData.length - 1]);
-                    this.select(this._itemsBetweenTwoItems($keyNavItem, $lastSelectedItem), { additive: true });
+                    $lastSelectedItem = this._$elementFromData(_options
+                        .selectedData[ _options.selectedData.length - 1 ]);
+                    this.select(this._itemsBetweenTwoItems($keyNavItem, $lastSelectedItem),
+                        { additive: true });
                 } else {
                     isAutoSelectedActive = $keyNavItem.is(_options.$autoSelectedItem);
-                    multiSelect = multiSelection && (!options.multiSelection.addWithKeyModifier || event.ctrlKey || isAutoSelectedActive);
+                    multiSelect = multiSelection &&
+                        (!options.multiSelection.addWithKeyModifier || event.ctrlKey ||
+                            isAutoSelectedActive);
 
                     if (multiSelect && this.isSelected($keyNavItem) && !isAutoSelectedActive) {
                         this._deselectData(_options.keyNavItemData, { focusCombo: true }, event);
                     } else {
                         closeDropDown = multiSelect ? false : options.closeDropDownOnSelect;
 
-                        if (options.autoComplete && $keyNavItem.length === 0 && _options.autoCompleteItemData) {
+                        if (options.autoComplete && $keyNavItem.length === 0 &&
+                            _options.autoCompleteItemData) {
+
                             // Select auto completed item if there is no navigation item on enter press
                             this._selectData(_options.autoCompleteItemData, {
                                 additive: multiSelect,
@@ -2666,7 +2811,8 @@
                 }
 
                 // Prevent default form submit on enter. Prevent space being inserted
-                if ((event.keyCode === $.ui.keyCode.ENTER && options.preventSubmitOnEnter) || event.keyCode === $.ui.keyCode.SPACE) {
+                if ((event.keyCode === $.ui.keyCode.ENTER && options.preventSubmitOnEnter) ||
+                    event.keyCode === $.ui.keyCode.SPACE) {
                     event.preventDefault();
                 }
             }
@@ -2695,7 +2841,8 @@
             if (event.keyCode === $.ui.keyCode.END && event.ctrlKey && _options.dropDownOpened) {
                 // S.T. 08-Sept-2015 #205955: Dropdown list does not scroll by Ctrl + End, if virtualization is enabled.
                 if (options.virtualization) {
-                    this.listScrollTop(this.options.dataSource.totalLocalRecordsCount() * itemHeight);
+                    this.listScrollTop(this.options.dataSource.totalLocalRecordsCount() *
+                        itemHeight);
                     addScrollCallback = true;
                 }
 
@@ -2787,7 +2934,8 @@
         },
         _dropDownContHeight: function () {
             var _options = this._options,
-                dropDownContainerHeight = parseInt(_options.$dropDownListCont.outerHeight(true), 10);
+                dropDownContainerHeight =
+                    parseInt(_options.$dropDownListCont.outerHeight(true), 10);
 
             // If header and footer templates are used
             if (_options.$header !== undefined) {
@@ -2800,6 +2948,7 @@
 
             return dropDownContainerHeight;
         },
+
         // Return jQuery object containing both items plus all items between them
         _itemsBetweenTwoItems: function ($item1, $item2) {
             var firstIndex, sndIndex, temp,
@@ -2822,10 +2971,11 @@
 
             return $result;
         },
+
         // Focus the text input without changing combo state
         _safeFocusInput: function (preventItemSeparatorOnFocus) {
             var $input = this._options.$input,
-                input = $input[0];
+                input = $input[ 0 ];
 
             // These flags should be reset in focusInput handler, because focus in IE is executed after this whole method has finished execution
             this._options.preventDropDownOnFocus = true;
@@ -2833,9 +2983,10 @@
             // Prevent input value from changing on select/deselect while analyzing selection in _updateSelection method
             this._options.preventItemSeparatorOnFocus = preventItemSeparatorOnFocus;
 
-            if (!$input.is(':focus')) {
+            if (!$input.is(":focus")) {
                 input.focus();
             } else {
+
                 // Trigger focus handler to reset the flags
                 // $().focus() is not recommended when input is not focused, because it triggers focus handler twice in IE
                 $input.focus();
@@ -2860,11 +3011,11 @@
                 return;
             }
 
-            if (mode === 'editable' || mode === 'dropdown') {
+            if (mode === "editable" || mode === "dropdown") {
                 this._options.$combo.addClass(this.css.active);
             }
 
-            if (mode === 'editable') {
+            if (mode === "editable") {
                 if (this._options.preventItemSeparatorOnFocus) {
                     this._options.preventItemSeparatorOnFocus = false;
                 } else {
@@ -2872,7 +3023,7 @@
                 }
             }
 
-            if (mode === 'editable' && this.options.dropDownOnFocus) {
+            if (mode === "editable" && this.options.dropDownOnFocus) {
                 if (this._options.preventDropDownOnFocus) {
                     this._options.preventDropDownOnFocus = false;
                 } else {
@@ -2888,10 +3039,10 @@
                 return;
             }
 
-            // In IE clicking on the drop down scrollbar triggers input's blur
+            // In IE clicking on the drop down scrollbar triggers input"s blur
             // Prevent the blur and focus the input
             // D.A. 16th March 2015, Bug #190542 Blur should be prevented also when clicking icon elements, because in IE8
-            // clicking them triggers input blur, even when the element's mouse down event was called preventDefault()
+            // clicking them triggers input blur, even when the element"s mouse down event was called preventDefault()
             if ($activeEl.is(_options.$dropDownListCont) ||
                 $activeEl.is(_options.$dropDownBtnIcon) ||
                 $activeEl.is(_options.$clearIcon)) {
@@ -2900,11 +3051,11 @@
             }
 
             if (!_options.preventInputBlur) {
-                if (this.options.mode === 'editable' || this.options.mode === 'dropdown') {
+                if (this.options.mode === "editable" || this.options.mode === "dropdown") {
                     _options.$combo.removeClass(this.css.active);
                 }
 
-                if (this.options.mode === 'editable') {
+                if (this.options.mode === "editable") {
                     this._removeItemSeparatorFromEnd();
                 }
 
@@ -2926,7 +3077,7 @@
                 return;
             }
 
-            if (this.options.mode === 'dropdown' || this.options.mode === 'readonlylist') {
+            if (this.options.mode === "dropdown" || this.options.mode === "readonlylist") {
                 this._toggleDropDownState(event);
             }
         },
@@ -2935,7 +3086,7 @@
                 return;
             }
 
-            if (this.options.mode === 'editable' || this.options.mode === 'dropdown') {
+            if (this.options.mode === "editable" || this.options.mode === "dropdown") {
                 this._handleKeyNavigation(event);
 
                 if (this.options.autoComplete) {
@@ -2950,7 +3101,8 @@
                 return;
             }
 
-            if (this.options.mode === 'editable') {
+            if (this.options.mode === "editable") {
+
                 // On paste input value is not updated
                 // We should wait after paste for input value to be populated
                 setTimeout(function () {
@@ -2981,25 +3133,28 @@
             if (options.multiSelection.enabled) {
                 startValue = _options.keyNavItemData;
             } else {
-                startValue = _options.selectedData[_options.selectedData.length - 1][options.valueKey];
+                startValue = _options
+                    .selectedData[ _options.selectedData.length - 1 ][ options.valueKey ];
             }
 
             startIndex = this._dataIndexByValue(startValue, true);
 
             if (_options.dropDownModeSearchBy.length === 1) {
+
                 // Start from next item when the search string is only single character long
                 startIndex += 1;
             }
 
             // Search through all data for matching item, strating from the last selected item
             for (i = 0; i < len; i++) {
-                curData = this._unwrapData(data[(i + startIndex) % len]);
+                curData = this._unwrapData(data[ (i + startIndex) % len ]);
                 if (curData) {
-                    curText = this._unwrapData(curData[textKey]);
+                    curText = this._unwrapData(curData[ textKey ]);
 
                     if (!options.caseSensitive) {
                         curText = curText.toLowerCase();
-                        _options.dropDownModeSearchBy = _options.dropDownModeSearchBy.toLowerCase();
+                        _options.dropDownModeSearchBy =
+                            _options.dropDownModeSearchBy.toLowerCase();
                     }
 
                     if (curText.startsWith(_options.dropDownModeSearchBy)) {
@@ -3029,7 +3184,7 @@
 
             // Reset search string if the user doesn't type anything next 1000 ms
             _options.dropDownModeSearchByResetTimeout = setTimeout(function () {
-                _options.dropDownModeSearchBy = '';
+                _options.dropDownModeSearchBy = "";
             }, _options.dropDownModeSearchByResetDelay);
         },
         _inputKeyPress: function (event) {
@@ -3037,7 +3192,7 @@
                 return;
             }
 
-            if (this.options.mode === 'dropdown') {
+            if (this.options.mode === "dropdown") {
                 this._handleDropDownModeKeypress(event);
             }
         },
@@ -3048,7 +3203,8 @@
                 return;
             }
 
-            if (this.options.mode === 'editable') {
+            if (this.options.mode === "editable") {
+
                 // Clear the timeout if previous timeout is still not executed
                 clearTimeout(this._options.keyUpTimeout);
                 this._options.autoCompleteItemData = null;
@@ -3058,8 +3214,9 @@
                 }, this.options.delayInputChangeProcessing);
             }
 
-            if (this.options.mode === 'editable' || this.options.mode === 'dropdown') {
-                if (event.keyCode === this._options.shiftKeyCode && this.options.multiSelection.enabled) {
+            if (this.options.mode === "editable" || this.options.mode === "dropdown") {
+                if (event.keyCode === this._options.shiftKeyCode &&
+                    this.options.multiSelection.enabled) {
                     this._handleShiftUp(event);
                 }
             }
@@ -3069,7 +3226,8 @@
                 return;
             }
 
-            if (!this._options.$input.is(':focus')) {
+            if (!this._options.$input.is(":focus")) {
+
                 // Chrome does not move the carret if input wasn't focused initially
                 // This happens when while the focus was in the input we have clicked somewhere inside the input to move the carret ourself
                 this._options.$input.focus();
@@ -3079,11 +3237,13 @@
                 event.preventDefault();
             }
         },
+
         // P.P 02-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
         _inputCompositionUpdate: function () {
             this._options.composition.isConfirmationNeeded = true;
         },
         _inputCompositionEnd: function () {
+
             // In FF it works fine - fix is not needed
             if ($.ig.util.isFF) {
                 return;
@@ -3103,9 +3263,11 @@
             }
         },
         _inputInputHandler: function () {
+
             // P.P 07-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
             this._options.composition.handleInput();
         },
+
         // P.P 07-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
         _initCompositionObject: function () {
             var comboContext = this;
@@ -3115,6 +3277,7 @@
                 isConfirmationNeeded: false,
                 autocompleteText: "",
                 isAutocompleteNeeded: function () {
+
                     // In FF it works fine - fix is not needed
                     return $.ig.util.isFF || !this.isConfirmationNeeded;
                 },
@@ -3151,7 +3314,8 @@
                         // so reordering of the functions with setTimeout is used
                         if ($.ig.util.isSafari) {
                             setTimeout(function () {
-                                compositionContext.autocompleteAfterComposition(newInputVal, oldInputVal);
+                                compositionContext.
+                                    autocompleteAfterComposition(newInputVal, oldInputVal);
                             }, 0);
                         } else {
                             this.autocompleteAfterComposition(newInputVal, oldInputVal);
@@ -3186,7 +3350,7 @@
                         return;
                     }
 
-                    if (options.mode !== 'readonly') {
+                    if (options.mode !== "readonly") {
                         _options.$combo.addClass(css.hover);
                     }
                 },
@@ -3198,7 +3362,8 @@
                     _options.$combo.removeClass(css.hover);
 
                     // Removes active class added when mousing down on the drop down button and leaving combo while holding mouse down
-                    if (!((options.mode === 'editable' || options.mode === 'dropdown') && _options.$input.is(':focus'))) {
+                    if (!((options.mode === "editable" || options.mode === "dropdown") &&
+                        _options.$input.is(":focus"))) {
                         _options.$combo.removeClass(css.active);
                     }
                 },
@@ -3207,7 +3372,7 @@
                         return;
                     }
 
-                    if (options.mode !== 'readonly') {
+                    if (options.mode !== "readonly") {
                         _options.$combo.addClass(css.active);
                     }
                 },
@@ -3216,7 +3381,7 @@
                         return;
                     }
 
-                    if (options.mode === 'readonlylist') {
+                    if (options.mode === "readonlylist") {
                         _options.$combo.removeClass(css.active);
                     }
                 }
@@ -3229,7 +3394,7 @@
                         return;
                     }
 
-                    if (options.mode !== 'readonly') {
+                    if (options.mode !== "readonly") {
                         _options.$dropDownBtnCont.addClass(css.hover);
                     }
                 },
@@ -3238,7 +3403,7 @@
                         return;
                     }
 
-                    if (options.mode !== 'readonly') {
+                    if (options.mode !== "readonly") {
                         _options.$dropDownBtnCont.removeClass(css.hover);
                     }
                 },
@@ -3253,11 +3418,12 @@
                 click: function (event) {
                     // Wait until items are added to the DOM
                     if (options.disabled ||
-                        !(self._$items().length > 0 || _options.$dropDownListCont.find('.' + css.noMatchFound).length > 0)) {
+                        !(self._$items().length > 0 ||
+                            _options.$dropDownListCont.find("." + css.noMatchFound).length > 0)) {
                         return;
                     }
 
-                    if (options.mode !== 'readonly') {
+                    if (options.mode !== "readonly") {
                         if (_options.dropDownOpened) {
                             self.closeDropDown(null, event);
 
@@ -3266,7 +3432,8 @@
                                 self._moveCaretToInputEnd(true);
                             }
                         } else {
-                            self.openDropDown(null, self._focusInInputWhenUsingTouchDevice(), event);
+                            self.openDropDown(null,
+                                self._focusInInputWhenUsingTouchDevice(), event);
                         }
                     }
 
@@ -3283,7 +3450,7 @@
                         return;
                     }
 
-                    if (options.mode !== 'readonly') {
+                    if (options.mode !== "readonly") {
                         _options.$clearCont.addClass(css.clearHover);
                     }
                 },
@@ -3292,7 +3459,7 @@
                         return;
                     }
 
-                    if (options.mode !== 'readonly') {
+                    if (options.mode !== "readonly") {
                         _options.$clearCont.removeClass(css.clearHover);
                     }
                 },
@@ -3309,11 +3476,11 @@
                         return;
                     }
 
-                    if (options.mode === 'editable' || options.mode === 'dropdown') {
-                    	self._hideClearButton();
+                    if (options.mode === "editable" || options.mode === "dropdown") {
+	                    self._hideClearButton();
 
-                    	// H.A. 23 February 2016, #212566: igCombo gets focus when data source is changed and value is set.
-                    	self.clearInput({ focusCombo: true }, event);
+                        // H.A. 23 February 2016, #212566: igCombo gets focus when data source is changed and value is set.
+	                    self.clearInput({ focusCombo: true }, event);
                         if (self._focusInInputWhenUsingTouchDevice()) {
                             self._moveCaretToInputEnd(true);
                         }
@@ -3331,8 +3498,10 @@
                 keyup: _handlers.inputKeyUp,
                 keypress: _handlers.inputKeyPress,
                 mousedown: _handlers.inputMouseDown,
+
                 // P.P 02-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
                 compositionupdate: _handlers.inputCompositionUpdate,
+
                 // P.P 26-Feb-2016 #212236: Incorrect input of Japanese symbols using IME
                 compositionend: _handlers.inputCompositionEnd,
                 input: _handlers.inputInput
@@ -3347,7 +3516,7 @@
                         return;
                     }
 
-                    if (options.mode === 'editable' || options.mode === 'dropdown') {
+                    if (options.mode === "editable" || options.mode === "dropdown") {
                         $this = $(this);
 
                         // Update shift + click selection when mouse is moved while shift is being held
@@ -3355,7 +3524,8 @@
                             $prevItems = _options.$itemsToSelectOnShiftClick;
 
                             // Get the new items to select
-                            _options.$itemsToSelectOnShiftClick = self._itemsBetweenTwoItems(self._$keyNavItem(), $this);
+                            _options.$itemsToSelectOnShiftClick =
+                                self._itemsBetweenTwoItems(self._$keyNavItem(), $this);
 
                             // Remove styling from items in previous selection range, that are not in the new one
                             $prevItems
@@ -3368,6 +3538,7 @@
                             $this.addClass(css.hover);
 
                             if (_options.mouseDownStartedFromListItem) {
+
                                 // Add mouse down class on the item when user is holding
                                 // the mouse button down while hovering over the item
                                 $this.addClass(css.itemInFocus);
@@ -3382,14 +3553,15 @@
                         return;
                     }
 
-                    if (options.mode === 'editable' || options.mode === 'dropdown') {
+                    if (options.mode === "editable" || options.mode === "dropdown") {
                         $this = $(this);
 
                         // Clear hover
                         $this.removeClass(css.hover);
 
                         // Clear item in focus applied on mouse down
-                        if (!($this.is(self._$keyNavItem()) || $this.is(_options.$itemsToSelectOnShiftUpDown))) {
+                        if (!($this.is(self._$keyNavItem()) ||
+                            $this.is(_options.$itemsToSelectOnShiftUpDown))) {
                             $this.removeClass(css.itemInFocus);
                         }
 
@@ -3406,7 +3578,8 @@
                         return;
                     }
 
-                    if (options.mode === 'editable' || options.mode === 'dropdown') {
+                    if (options.mode === "editable" || options.mode === "dropdown") {
+
                         // Handle only left mouse button
                         if (event.which === 1) {
                             $this = $(this);
@@ -3414,7 +3587,7 @@
 
                             if (event.shiftKey && options.multiSelection.enabled) {
                                 if ($keyNavItem.length === 0) {
-                                    $keyNavItem = self._$items().filter(':visible').eq(0);
+                                    $keyNavItem = self._$items().filter(":visible").eq(0);
 
                                     self._setKeyNavigationItem({
                                         data: $keyNavItem,
@@ -3422,7 +3595,8 @@
                                     });
                                 }
 
-                                _options.$itemsToSelectOnShiftClick = self._itemsBetweenTwoItems($this, $keyNavItem);
+                                _options.$itemsToSelectOnShiftClick =
+                                    self._itemsBetweenTwoItems($this, $keyNavItem);
 
                                 // Add styling to all items between current navigation item and the shift clicked item
                                 _options.$itemsToSelectOnShiftClick.addClass(css.itemInFocus);
@@ -3441,18 +3615,23 @@
                         return;
                     }
 
-                    if (options.mode === 'editable' || options.mode === 'dropdown') {
+                    if (options.mode === "editable" || options.mode === "dropdown") {
+
                         // Handle only on left mouse button
                         if (_options.mouseDownStartedFromListItem && event.which === 1) {
                             $this = $(this);
 
                             if (event.shiftKey && options.multiSelection.enabled) {
+
                                 // Select all items between the navigation item
                                 // and the selected item upon shift + click
                                 self._handleShiftClick(event);
                             } else {
-                                multiSelect = options.multiSelection.enabled && (!options.multiSelection.addWithKeyModifier || event.ctrlKey);
-                                closeDropDown = multiSelect ? false : options.closeDropDownOnSelect;
+                                multiSelect = options.multiSelection.enabled &&
+                                    (!options.multiSelection.addWithKeyModifier || event.ctrlKey);
+                                closeDropDown = multiSelect ?
+                                    false :
+                                    options.closeDropDownOnSelect;
 
                                 if (multiSelect && self.isSelected($this) &&
                                     !self._$keyNavItem().is(_options.$autoSelectedItem)) {
@@ -3471,7 +3650,7 @@
                         }
                     }
                 }
-            }, '.' + css.listItem.split(" ", 1)[0]);
+            }, "." + css.listItem.split(" ", 1)[ 0 ]);
 
             // Drop down list container events
             _options.$dropDownListCont.on({
@@ -3501,14 +3680,15 @@
             // Header and footer
             _options.$dropDownCont.on({
                 mousedown: function (event) {
+
                     // Prevent mouse down from triggering blur on the combo input
                     event.preventDefault();
                 }
-            }, '.' + css.header + ', .' + css.footer);
+            }, "." + css.header + ", ." + css.footer);
 
             if (_options.$dropDownScrollCont) {
                 _options.$dropDownScrollCont
-                    .on('scroll', function () {
+                    .on("scroll", function () {
                         if (options.disabled) {
                             return;
                         }
@@ -3521,7 +3701,7 @@
                         }
                     });
 
-                _options.$dropDownListCont.on('mousewheel DOMMouseScroll', function (event) {
+                _options.$dropDownListCont.on("mousewheel DOMMouseScroll", function (event) {
                     var currentScrollTop = self.listScrollTop(),
                         itemHeight = self._itemHeight();
 
@@ -3542,8 +3722,8 @@
                 });
 
                 // S.T. Feb 17th, 2016 Bug 212901: Move the container on touchmove
-                _options.$dropDownListCont.on('touchmove', function (event) {
-                    var currentY = event.originalEvent.touches[0].clientY,
+                _options.$dropDownListCont.on("touchmove", function (event) {
+                    var currentY = event.originalEvent.touches[ 0 ].clientY,
                         currentScrollTop = self.listScrollTop(),
                         itemHeight = self._itemHeight();
 
@@ -3601,8 +3781,10 @@
         _offsetItems: function (dataView, itemHeight) {
             var offset, containerRatio, itemRatio;
 
-            containerRatio = this.listScrollTop() / this._options.$dropDownScrollCont.prop("scrollHeight");
+            containerRatio = this.listScrollTop() /
+                this._options.$dropDownScrollCont.prop("scrollHeight");
             itemRatio = itemHeight / this._dropDownHeight(itemHeight, dataView.length);
+
             // S.T. 27th November 2015 Bug #208075: Use ceil instead parse int because sometimes dividing is float number.
             offset = this._calculateOffset(containerRatio, itemRatio);
 
@@ -3628,11 +3810,13 @@
         _callNextChunk: function ($element, itemHeight) {
             var delta = this._options.deltaItemsForLoadOnDemand * itemHeight;
 
-            if (this.listScrollTop() + $element.innerHeight() + delta >= $element.prop('scrollHeight')) {
+            if (this.listScrollTop() + $element.innerHeight() +
+                delta >= $element.prop("scrollHeight")) {
                 this._nextChunk();
             }
         },
         _disableCombo: function (value) {
+
             // Applying jQuery UI default disable logic to the wrapper element
             this._options.$comboWrapper
                 .toggleClass(this.widgetFullName + "-disabled ui-state-disabled", !!value)
@@ -3642,50 +3826,51 @@
             this.focusable.removeClass("ui-state-focus");
 
             if (value) {
-                this._options.$input.attr('readonly', true);
-                this._options.$hiddenInput.attr('disabled', true);
+                this._options.$input.attr("readonly", true);
+                this._options.$hiddenInput.attr("disabled", true);
             } else {
-                // S.T. 27th November 2015 Bug #210080: When disable the combo and enable it after that, in 'mode' dropdown the input should be readonly.
+
+                // S.T. 27th November 2015 Bug #210080: When disable the combo and enable it after that, in "mode" dropdown the input should be readonly.
                 if (this.options.mode !== "dropdown") {
-                    this._options.$input.removeAttr('readonly');
+                    this._options.$input.removeAttr("readonly");
                 }
-                this._options.$hiddenInput.removeAttr('disabled');
+                this._options.$hiddenInput.removeAttr("disabled");
             }
         },
         _setOption: function (option, value) {
             var options = this.options,
                 _options = this._options;
 
-            if (options[option] === value) {
+            if (options[ option ] === value) {
                 return;
             }
 
             // Z.K. Bug #201980 - When try to set 'mode' option, the option is changed and 'Operation not supported' exception is thrown
-            if (option === 'dropDownAttachedToBody' || option === 'virtualization' ||
-                    option === 'mode' || option === 'format') {
+            if (option === "dropDownAttachedToBody" || option === "virtualization" ||
+                    option === "mode" || option === "format") {
                 throw new Error($.ig.Combo.locale.notSuported);
             }
 
             // D.A. 10th March 2015, Bug #190028 Enabling multi selection through set option causes item separator to be undefined
-            if (option === 'multiSelection') {
+            if (option === "multiSelection") {
                 value = $.extend(true, {}, options.multiSelection, value);
             }
 
-            if (option === 'loadOnDemandSettings') {
+            if (option === "loadOnDemandSettings") {
                 value = $.extend(true, {}, options.loadOnDemandSettings, value);
             }
 
-            if (option === 'disabled') {
+            if (option === "disabled") {
                 this._disableCombo(value);
             }
 
             // S.T. 1th July 2015, Bug #201925: Adding set option for grouping
-            if (option === 'grouping') {
+            if (option === "grouping") {
                 value = $.extend(true, {}, options.grouping, value);
             }
 
             // S.T. 3th Sept 2015, Bug #203257: Add support for changing option enableClearButton
-            if (option === 'enableClearButton') {
+            if (option === "enableClearButton") {
                 if (_options.inputVal) {
                     if (value === true) {
                         this._showClearButton(true);
@@ -3700,77 +3885,84 @@
             this._analyzeOptions();
 
             switch (option) {
-                case 'width':
+                case "width":
                     _options.$comboWrapper.outerWidth(value);
                     this.positionDropDown();
                     break;
-                case 'height':
+                case "height":
                     _options.$comboWrapper.outerHeight(value);
                     this.positionDropDown();
                     break;
-                case 'headerTemplate':
+                case "headerTemplate":
                     this._renderHeaderTemplate(this.css, this.options, _options.$dropDownCont);
                     break;
-                case 'footerTemplate':
-                    this._renderFooterTemplate(this.css, this.options, _options.$dropDownCont, this);
+                case "footerTemplate":
+                    this._renderFooterTemplate(this.css, this.options,
+                        _options.$dropDownCont, this);
+
                     // Update footer vars if set in the new template
                     this._updateFooterVariables();
                     break;
-                case 'dropDownWidth':
+                case "dropDownWidth":
                     this.positionDropDown();
                     break;
-                case 'itemTemplate':
+                case "itemTemplate":
+
                     // S.T. March 11th, 2015 Bug #189915: Render items after change.
                     this._renderItems(null, null, this.options.dataSource);
                     break;
-                case 'inputName':
-                    _options.$hiddenInput.attr('name', value);
+                case "inputName":
+                    _options.$hiddenInput.attr("name", value);
                     break;
-                case 'visibleItemsCount':
+                case "visibleItemsCount":
                     this._setListContMaxHeight();
                     break;
-                case 'placeHolder':
-                    _options.$input.attr('placeholder', value);
+                case "placeHolder":
+                    _options.$input.attr("placeholder", value);
                     break;
-                case 'multiSelection':
+                case "multiSelection":
+
                     // Update selection to the first selected item when switching from multi selection to single
-                    this._selectData(this._options.selectedData[0]);
+                    this._selectData(this._options.selectedData[ 0 ]);
+
                     // S.T. March 11th, 2015 Bug #190156: Render items after change.
                     this._renderItems(null, null, this.options.dataSource);
+
                     // S.T. March 17th, 2015 Bug #190263: Clear input after rendering.
                     this.clearInput();
                     break;
-                case 'tabIndex':
-                    this._options.$input.attr('tabIndex', value);
+                case "tabIndex":
+                    this._options.$input.attr("tabIndex", value);
                     break;
-                case 'validatorOptions':
+                case "validatorOptions":
                     this.validator();
                     break;
-                case 'dropDownButtonTitle':
-                    _options.$dropDownBtnCont.attr('title', value);
+                case "dropDownButtonTitle":
+                    _options.$dropDownBtnCont.attr("title", value);
                     break;
-                case 'clearButtonTitle':
-                    _options.$clearCont.attr('title', value);
+                case "clearButtonTitle":
+                    _options.$clearCont.attr("title", value);
                     break;
-                case 'dataSource':
-                case 'dataSourceType':
-                case 'dataSourceUrl':
-                case 'responseTotalRecCountKey':
-                case 'responseDataKey':
-                case 'responseDataType':
-                case 'responseContentType':
-                case 'requestType':
-                case 'filteringType':
-                case 'filterExprUrlKey':
-                case 'filteringCondition':
-                case 'filteringLogic':
-                case 'loadOnDemandSettings':
-                case 'grouping':
+                case "dataSource":
+                case "dataSourceType":
+                case "dataSourceUrl":
+                case "responseTotalRecCountKey":
+                case "responseDataKey":
+                case "responseDataType":
+                case "responseContentType":
+                case "requestType":
+                case "filteringType":
+                case "filterExprUrlKey":
+                case "filteringCondition":
+                case "filteringLogic":
+                case "loadOnDemandSettings":
+                case "grouping":
                     this.dataBind();
                     break;
+
                     // S.T. April 24th , Bug #192958: Changing the textKey and valueKey should only update values.
-                case 'valueKey':
-                case 'textKey':
+                case "valueKey":
+                case "textKey":
                     this._updateItems();
                     break;
             }
@@ -3785,8 +3977,9 @@
 
             // Set the data source that should be used
             if (!options.dataSource && this.element.is("select")) {
-                options.dataSource = this.element[0];
+                options.dataSource = this.element[ 0 ];
                 schema = this._initSelectSchema();
+
                 // K.D. March 2nd, 2015 Bug #189514 Handling the case of dataSource not set and dataSourceUrl is provided as initial data source
             } else if (!options.dataSource && url) {
                 options.dataSource = url;
@@ -3799,15 +3992,18 @@
             }
 
             if (!(options.dataSource && this._isInstanceOfDataSource(options.dataSource))) {
+
                 // When dataSource is array of primitives convert it to array of objects
                 // S.T. March 11th, 2015 Bug #190266: Add date.
                 // Z.K. December 3, 15 - Extracting repeated code into separate function
                 this._convertToArrayOfObjects(options);
 
                 // Analyze the schema only when the data source is array or function
-                if (!schema && options.dataSource && ($.isArray(options.dataSource) || $.isFunction(options.dataSource))) {
+                if (!schema && options.dataSource && ($.isArray(options.dataSource) ||
+                    $.isFunction(options.dataSource))) {
+
                     // N.A. 5/18/2015 Bug #193129: Unwrap before extracting the schema from the first field element.
-                    schema = this._initSchema(this._unwrapData(options.dataSource)[0]);
+                    schema = this._initSchema(this._unwrapData(options.dataSource)[ 0 ]);
                 }
 
                 dataSourceOptions = {
@@ -3843,6 +4039,7 @@
                         appendPage: true,
                         pageSize: lod.pageSize,
                         pageIndex: 0,
+
                         // S.T. Feb 27th, 2015 Bug #189554: Handle when lod is from MVC wrapper.
                         pageSizeUrlKey: lod.pageSizeUrlKey || null,
                         pageIndexUrlKey: lod.pageIndexUrlKey || null
@@ -3857,6 +4054,7 @@
                 if ($.type(options.dataSource) === "string" &&
                     !options.dataSourceType &&
                     $.ig.util.isJsonpUrl(options.dataSource)) {
+
                     // S.T. Feb 24th, 2015 Bug #189704: Save string data source url
                     this._options.strDataSource = options.dataSource;
                     options.dataSource = new $.ig.JSONPDataSource(dataSourceOptions);
@@ -3867,10 +4065,12 @@
                 // S.T. Feb 24th, 2015 Bug #189447: Handle when data source url is set fo remote filtering with MVC wrapper.
                 if (url) {
                     options.dataSource.settings.dataSource = url;
-                    options.dataSource.settings.type = 'remoteUrl';
+                    options.dataSource.settings.type = "remoteUrl";
                     options.dataSource._runtimeType = options.dataSource.analyzeDataSource();
-                    options.dataSource.settings.urlParamsEncoded = $.proxy(function (data, params) {
+                    options.dataSource.settings.urlParamsEncoded =
+                        $.proxy(function (data, params) {
                         params = params ? params.filteringParams : null;
+
                         // set flag used by Mvc remote filtering
                         if (params) {
                             params.textKey = options.textKey || options.valueKey;
@@ -3889,20 +4089,24 @@
 
                 // S.T. Feb 27th, 2015 Bug #189554: Support for loadOnDemand coming from Mvc
                 var _aNull = function (v, nan) {
-                    return v === null || v === undefined || (nan && typeof v === 'number' && isNaN(v));
+                    return v === null || v === undefined ||
+                        (nan && typeof v === "number" && isNaN(v));
                 };
 
                 options.dataSource._responseData = function (data) {
                     var len = data ? data.length : 0,
-                        count = (len > 0) ? data[len - 1][':totals:'] : null;
+                        count = (len > 0) ? data[ len - 1 ][ ":totals:" ] : null;
 
                     if (count) {
                         data.pop();
-                        count = count.split(':');
-                        options.dataSource.totalRecordsCount(_aNull(len = parseInt(count[0], 10), true) ? 0 : len);
-                        len = _aNull(len = parseInt(count[1], 10), true) ? 0 : len;
+                        count = count.split(":");
+                        options.dataSource
+                            .totalRecordsCount(_aNull(len = parseInt(count[ 0 ], 10), true) ?
+                                0 : len);
+                        len = _aNull(len = parseInt(count[ 1 ], 10), true) ? 0 : len;
 
                         if (len) {
+
                             // The number of all total records on the server
                             self._options.totalAll = len;
                         }
@@ -3936,27 +4140,27 @@
             schema.fields = [
                 {
                     name: this.options.valueKey,
-                    type: 'string'
+                    type: "string"
                 },
                 {
                     name: this.options.textKey,
-                    type: 'string'
+                    type: "string"
                 }
-            ];
+             ];
 
             return schema;
         },
         _initSchema: function (firstDsRow) {
             var field,
                 schema = {
-                    fields: []
+                    fields: [ ]
                 };
 
             for (field in firstDsRow) {
                 if (firstDsRow.hasOwnProperty(field)) {
                     schema.fields.push({
                         name: field,
-                        type: $.type(firstDsRow[field])
+                        type: $.type(firstDsRow[ field ])
                     });
                 }
             }
@@ -3967,11 +4171,13 @@
             return this.options.autoComplete ? "startsWith" : this.options.filteringCondition;
         },
         _generateExpressions: function (texts) {
-            var i, expressions = [];
+            var i, expressions = [ ];
 
             if ($.type(texts) === "string") {
+
                 // K.D. March 3rd, 2015 Bug #189365 When clearing the filter leave the array empty.
-                if (texts.length > 0 || (this._options.expression && this._options.expression.length > 0)) {
+                if (texts.length > 0 || (this._options.expression &&
+                    this._options.expression.length > 0)) {
                     expressions.push({
                         fieldName: this.options.textKey,
                         expr: texts,
@@ -3980,10 +4186,10 @@
                 }
             } else if ($.type(texts) === "array") {
                 for (i = 0; i < texts.length; i++) {
-                    if ($.type(texts[i]) === "string") {
+                    if ($.type(texts[ i ]) === "string") {
                         expressions.push({
                             fieldName: this.options.textKey,
-                            expr: texts[i],
+                            expr: texts[ i ],
                             cond: this._filteringCondition(),
                             logic: this.options.filteringLogic
                         });
@@ -4015,7 +4221,7 @@
                 };
 
             if ($.type(texts) === "string") {
-                texts = [texts];
+                texts = [ texts ];
             }
 
             // Filter empty strings
@@ -4024,12 +4230,12 @@
             });
 
             texts = $.map(texts, function (text) {
-                return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+                return text.replace(/[ -[\]{}()*+?.,\\^$|#\s ]/g, "\\$&");
             });
 
             if (texts.length > 0) {
-                if ($.type(types[this.options.highlightMatchesMode]) === "function") {
-                    pattern = types[this.options.highlightMatchesMode](texts);
+                if ($.type(types[ this.options.highlightMatchesMode ]) === "function") {
+                    pattern = types[ this.options.highlightMatchesMode ](texts);
                 } else {
                     throw new Error($.ig.igCombo.locale.errorUnrecognizedHighlightMatchesMode);
                 }
@@ -4038,7 +4244,8 @@
             return pattern;
         },
         _highlight: function (texts) {
-            var pattern, regex, $curContents, $matchingTextNodes, filterMatches, highlighMatches, len, i,
+            var pattern, regex, $curContents, $matchingTextNodes,
+                filterMatches, highlighMatches, len, i,
                 $items = this._$items(),
                 highlightElement = this._options.highlightElement,
                 highlightCssClass = this.css.listItemHighlighted,
@@ -4066,13 +4273,15 @@
                 highlighMatches = function () {
                     return (this.nodeValue || "")
                         .replace(regex, function (match) {
-                            return "<" + highlightElement + " class=\"" + highlightCssClass + "\">" + match + "</" + highlightElement + ">";
+                            return "<" + highlightElement + " class=\"" + highlightCssClass +
+                                "\">" + match + "</" + highlightElement + ">";
                         });
                 };
 
                 for (i = 0, len = $items.length; i < len; i++) {
                     if (this._checkBoxesEnabled()) {
-                        $curContents = $items.eq(i).children('.' + this.css.listItemTextWithCheckbox).contents();
+                        $curContents = $items.eq(i).children("." +
+                            this.css.listItemTextWithCheckbox).contents();
                     } else {
                         $curContents = $items.eq(i).contents();
                     }
@@ -4100,7 +4309,7 @@
             }
 
             for (i = 0, len = $highlightedItems.length; i < len; i++) {
-                curItem = $highlightedItems.eq(i)[0];
+                curItem = $highlightedItems.eq(i)[ 0 ];
                 curParent = curItem.parentNode;
 
                 // Replace the highlighted element with the text it wraps
@@ -4108,6 +4317,7 @@
                 curParent.normalize();
             }
         },
+
         // Updates filtering to reflect current input text
         _updateFiltering: function (event) {
             var val = this._options.inputVal;
@@ -4115,7 +4325,7 @@
             // Use text after last item separator with multiple selection enabled
             if (this.options.multiSelection.enabled) {
                 if (this._endsPartialyWithItemSep(val)) {
-                    val = '';
+                    val = "";
                 } else {
                     val = this._lastValAfterItemSep();
                 }
@@ -4123,6 +4333,7 @@
 
             this.filter(val, event);
         },
+
         // Updates highlighting to reflect current input text
         _updateHighlighting: function () {
             var val = this._options.inputVal,
@@ -4130,15 +4341,18 @@
                 skipHighlight = false;
 
             if (!this.options.multiSelection.enabled) {
+
                 // D.A. 20th March 2015, Bug #190151 When virtualization is enabled the selected item is highlighted on scroll
                 if (selItemsLen === 1) {
                     skipHighlight = true;
                 }
             } else {
+
                 // D.A. 20th March 2015, Bug #190151 When virtualization is enabled the selected item is highlighted on scroll
                 if (this._separatedInputTexts(val).length === selItemsLen) {
                     skipHighlight = true;
                 } else {
+
                     // Use text after last item separator with multiple selection
                     val = this._lastValAfterItemSep(val);
                 }
@@ -4149,6 +4363,7 @@
                 this._highlight(val);
             }
         },
+
         // Updates input values to reflect the current selection
         _updateInputValues: function (keepInputText, selectedItems) {
             var curText, curData, len, i,
@@ -4168,10 +4383,11 @@
             }
 
             for (i = 0; i < len; i++) {
-                curData = this._unwrapData(selectedItems[i].data);
-                curText = this._unwrapData(curData[options.textKey]);
+                curData = this._unwrapData(selectedItems[ i ].data);
+                curText = this._unwrapData(curData[ options.textKey ]);
 
                 if (i !== 0) {
+
                     // Z.K. September 11, 2015 Bug #205954 - When dir=rtl and multiSelection is enabled intyp text is not correct when type in the input
                     if (!_options.ltr) {
                         inputVal = itemSeparator + inputVal;
@@ -4183,26 +4399,29 @@
                 }
 
                 if (!_options.ltr) {
-                    if (curText !== '') {
+                    if (curText !== "") {
                         inputVal = this._formatItem(curText) + inputVal;
                     }
 
-                    hiddenInputVal = this._unwrapData(curData[options.valueKey]) + hiddenInputVal;
+                    hiddenInputVal =
+                        this._unwrapData(curData[ options.valueKey ]) + hiddenInputVal;
                 } else {
+
                     // Z.K. 9th July 2015 Bug #202450 - "&nbsp;" displayed instead of blank value
-                    if (curText !== '') {
+                    if (curText !== "") {
                         inputVal += this._formatItem(curText);
                     }
 
-                    hiddenInputVal += this._unwrapData(curData[options.valueKey]);
+                    hiddenInputVal += this._unwrapData(curData[ options.valueKey ]);
                 }
             }
 
             if (!keepInputText) {
+
                 // Append item separator when multi selection is enabled
                 // When input is not focused we souldn't append it, this is to keep input value without item separator when combo is not focused
                 if (options.multiSelection.enabled && len > 0 &&
-                    options.mode === 'editable' && _options.$input.is(':focus')) {
+                    options.mode === "editable" && _options.$input.is(":focus")) {
                     inputVal += itemSeparator;
                 }
 
@@ -4217,6 +4436,7 @@
 
             _options.$hiddenInput.val(hiddenInputVal);
         },
+
         // This can be used to initially select item that was not loaded in handleInitialSelection
         //_requestDataByValue: function (value) {
         //	var ds,
@@ -4230,11 +4450,11 @@
         //			filtering: {
         //				type: "remote",
         //				filterExprUrlKey: options.filterExprUrlKey,
-        //				expressions: [{
+        //				expressions: [ {
         //					fieldName: this.options.valueKey,
         //					cond: "equals",
         //					expr: value
-        //				}]
+        //				} ]
         //			}
         //		};
 
@@ -4247,16 +4467,18 @@
         //},
         _handleLocalFilteringWithGrouping: function () {
             var groupsLen, i, $group,
-                visibleItems = [],
+                visibleItems = [ ],
                 self = this,
                 $groupHeaders = this._$groupHeaders(),
                 filterVisible = function (index, item) {
+
                     // JD Sept 3, 2015, TFS 205303 - Need to add a check to prevent noMatchFound giving a false positive
-                    return !$(item).hasClass(self.css.hidden) && !$(item).hasClass(self.css.noMatchFound);
+                    return !$(item).hasClass(self.css.hidden) &&
+                        !$(item).hasClass(self.css.noMatchFound);
                 };
 
             for (i = 0, groupsLen = $groupHeaders.length; i < groupsLen; i++) {
-                $group = $($groupHeaders[i]);
+                $group = $($groupHeaders[ i ]);
 
                 visibleItems = $group
                     .nextUntil(self._groupHeaderClass())
@@ -4270,7 +4492,8 @@
             }
         },
         _handleLocalFiltering: function (dataSource) {
-            var $curItem, curKey, filterItem, dataLen, i, j, unwrappedDataViewItem, unwrappedDataViewValue, $noMatchFoundItem,
+            var $curItem, curKey, filterItem, dataLen, i, j,
+                unwrappedDataViewItem, unwrappedDataViewValue, $noMatchFoundItem,
                 _options = this._options,
                 valKey = this.options.valueKey,
                 dataView = dataSource.dataView().slice(),
@@ -4283,12 +4506,12 @@
             // Filter items
             for (i = 0; i < len; i++) {
                 $curItem = $items.eq(i);
-                curKey = $curItem.attr('data-value');
+                curKey = $curItem.attr("data-value");
                 filterItem = true;
 
                 for (j = 0, dataLen = dataView.length; j < dataLen && filterItem; j++) {
-                    unwrappedDataViewItem = this._unwrapData(dataView[j]);
-                    unwrappedDataViewValue = this._unwrapData(unwrappedDataViewItem[valKey]);
+                    unwrappedDataViewItem = this._unwrapData(dataView[ j ]);
+                    unwrappedDataViewValue = this._unwrapData(unwrappedDataViewItem[ valKey ]);
 
                     if (this._areValuesEqual(curKey, unwrappedDataViewValue)) {
                         filterItem = false;
@@ -4311,6 +4534,7 @@
             }
 
             if ($keyNavItem.length > 0 && $keyNavItem.hasClass(cssHidden)) {
+
                 // Reset key navigation item when it is filtered
                 this._setKeyNavigationItem({
                     data: $(),
@@ -4320,6 +4544,7 @@
 
             // Add/remove no match found
             if (initialDataLen === 0) {
+
                 // D.G. 24th November 2015 #Bug 209232: Check the dom for already existing no match found element
                 if (!_options.$noMatchFound) {
                     $noMatchFoundItem = this._$noMatchFoundItem();
@@ -4338,12 +4563,14 @@
                 _options.$noMatchFound.detach();
             }
         },
+
         // Use this method as centralized place to change cached input value
         _setInputVal: function (val) {
             this._options.inputVal = val;
         },
         _setListContMaxHeight: function () {
-            this._options.$dropDownListCont.css('maxHeight', this.options.visibleItemsCount * this._itemHeight());
+            this._options.$dropDownListCont.css("maxHeight",
+                this.options.visibleItemsCount * this._itemHeight());
         },
         _updateVirtualScrollVisibility: function () {
             if (this._isPossibleToVirtualize()) {
@@ -4367,7 +4594,7 @@
 
                 if (this._checkBoxesEnabled()) {
                     $curItem
-                        .find('.ui-igcombo-checkbox .ui-icon')
+                        .find(".ui-igcombo-checkbox .ui-icon")
                             .removeClass(this.css.checkboxOff)
                             .addClass(this.css.checkboxOn);
                 }
@@ -4382,7 +4609,7 @@
 
                 if (this._checkBoxesEnabled()) {
                     $curItem
-                        .find('.ui-igcombo-checkbox .ui-icon')
+                        .find(".ui-igcombo-checkbox .ui-icon")
                             .removeClass(this.css.checkboxOn)
                             .addClass(this.css.checkboxOff);
                 }
@@ -4415,16 +4642,17 @@
                 this._setInputVal(newVal);
             }
         },
+
         // Fire callbacks when selection is changed from api
         _callInternalSelChangeSubs: function (event) {
             var curCallback, i,
                 callbacks = this._options.internalSelChangeSubs;
 
-            if ($.type(callbacks) === 'array') {
+            if ($.type(callbacks) === "array") {
                 for (i = 0; i < callbacks.length; i++) {
-                    curCallback = callbacks[i];
+                    curCallback = callbacks[ i ];
 
-                    if (typeof curCallback === 'function') {
+                    if (typeof curCallback === "function") {
                         curCallback();
                     }
                 }
@@ -4455,12 +4683,14 @@
                 comboOuterHeight = parseInt($combo.outerHeight(), 10),
                 dropDownContainerHeight = this._dropDownContHeight(),
                 windowHeight = _options.$window.height(),
+
                 // T.I. 29th Feb 2016 - Bug #207372 - Containers are not positioned correctly in a zoomer browser window
                 windowScrollTop = comboOffset.documentScrollTop ?
                     comboOffset.documentScrollTop :
                     _options.$window.scrollTop();
 
-            dropDownAndComboHeight = parseInt((comboTopOffset + comboOuterHeight + dropDownContainerHeight), 10);
+            dropDownAndComboHeight = parseInt((comboTopOffset + comboOuterHeight +
+                dropDownContainerHeight), 10);
 
             // Determine drop down direction
             if (direction === "auto") {
@@ -4500,12 +4730,15 @@
         _clearRepositionInterval: function () {
             clearInterval(this._options.repositionInterval);
         },
+
         // Used to compare data-attribute value, which is always a string, to data source value, which may not be string
         _areValuesEqual: function (val1, val2) {
+
             // Z.K. 27/08/2015 Bug #205313 - Not possible to select item because of illegal special characters encoding
             return (val1 !== null && val1 !== undefined && val2 !== null && val2 !== undefined) ?
                 $.ig.encode(val1.toString()) === $.ig.encode(val2.toString()) : false;
         },
+
         // Check wheather certain array of values is equal to another array
         _areArraysEqual: function (array1, array2) {
             if (!array1 || !array2) { return false; }
@@ -4513,11 +4746,12 @@
             if (array1.length !== array2.length) { return false; }
 
             for (var i = 0; i < array1.length; i++) {
-                if (array1.indexOf(array2[i]) === -1) { return false; }
+                if (array1.indexOf(array2[ i ]) === -1) { return false; }
             }
 
             return true;
         },
+
         // Checks whether certain value is contained in array of values while converting the values to string, because of data-attributes always being a string
         // This should be unsed instead of $.inArray/indexOf to find if value is contained in an array
         _isValueInArray: function (val, vals) {
@@ -4527,16 +4761,17 @@
             val = val && val.toString();
 
             for (; i < len; i++) {
-                if (this._areValuesEqual(val, vals[i])) {
+                if (this._areValuesEqual(val, vals[ i ])) {
                     return i;
                 }
             }
 
             return -1;
         },
+
         // Checks whether touch device is used with mode different than editable in order not to focus in the input element
         _focusInInputWhenUsingTouchDevice: function () {
-            return !($.ig.util.isTouchDevice() && this.options.mode !== 'editable');
+            return !($.ig.util.isTouchDevice() && this.options.mode !== "editable");
         },
         _triggerItemsRendering: function () {
             var args = {
@@ -4591,6 +4826,7 @@
         _triggerFiltered: function (event) {
             var args = {
                 owner: this,
+
                 // D.A. May 12, 2015 Bug #193415 Bad performance when loading many items
                 // Changing the method to return jquery reference to the filtered items instead of item: { data, element },
                 // because the "data" to "element" match is very slow for over 10 000 elements
@@ -4656,7 +4892,7 @@
             var noCancel;
 
             this._initDataSource();
-            this._options.cachedData = [];
+            this._options.cachedData = [ ];
             noCancel = this._triggerDataBinding();
 
             if (noCancel) {
@@ -4664,7 +4900,7 @@
                     this.clearInput();
 
                     // Reset selectedData, because deselect() will not deselect non existent in data source values
-                    this._options.selectedData = [];
+                    this._options.selectedData = [ ];
                 }
 
                 this.options.dataSource.dataBind(this._renderItems, this);
@@ -4698,11 +4934,11 @@
             data = this.options.dataSource.data();
 
             for (i = 0, len = data.length; i < len && !matchFound; i++) {
-                unwrappedDataItem = this._unwrapData(data[i]);
-                unwrappedDataValue = this._unwrapData(unwrappedDataItem[valKey]);
+                unwrappedDataItem = this._unwrapData(data[ i ]);
+                unwrappedDataValue = this._unwrapData(unwrappedDataItem[ valKey ]);
 
                 if (this._areValuesEqual(unwrappedDataValue, value)) {
-                    result = data[i];
+                    result = data[ i ];
                     matchFound = true;
                 }
             }
@@ -4710,11 +4946,11 @@
             // Search in the cached records when filtering is remote and record wasn't found in the data
             if (!matchFound && this.options.filteringType === "remote") {
                 for (i = 0, len = cachedData.length; i < len && !matchFound; i++) {
-                    unwrappedDataItem = this._unwrapData(cachedData[i]);
-                    unwrappedDataValue = this._unwrapData(unwrappedDataItem[valKey]);
+                    unwrappedDataItem = this._unwrapData(cachedData[ i ]);
+                    unwrappedDataValue = this._unwrapData(unwrappedDataItem[ valKey ]);
 
                     if (this._areValuesEqual(unwrappedDataValue, value)) {
-                        result = cachedData[i];
+                        result = cachedData[ i ];
                         matchFound = true;
                     }
                 }
@@ -4731,7 +4967,7 @@
                 return null;
             }
 
-            return this.dataForValue($element.attr('data-value'));
+            return this.dataForValue($element.attr("data-value"));
         },
         itemsFromElement: function ($element) {
             /* Gets object represening li element in the combo by element
@@ -4750,7 +4986,7 @@
                     data: this.dataForElement($element)
                 };
             } else {
-                result = [];
+                result = [ ];
 
                 for (i = 0; i < $element.length; i++) {
                     $curElement = $element.eq(i);
@@ -4774,23 +5010,23 @@
                 $items = this._$items(),
                 result = null;
 
-            if ($.type(value) === 'array') {
+            if ($.type(value) === "array") {
                 // Filter duplicate values
                 value = $.grep(value, function (val, index) {
                     return self._isValueInArray(val, value) === index;
                 });
 
                 for (i = 0, len = value.length; i < len; i++) {
-                    data = this.dataForValue(value[i]);
+                    data = this.dataForValue(value[ i ]);
 
                     if (data) {
                         // Keep result null when no data is found
                         if (!result) {
-                            result = [];
+                            result = [ ];
                         }
 
                         result.push({
-                            element: this._$elementFromValue(value[i], $items),
+                            element: this._$elementFromValue(value[ i ], $items),
                             data: data
                         });
                     }
@@ -4818,16 +5054,17 @@
                 dataLen = data.length,
                 valKey = this.options.valueKey;
 
-            if ($.type(index) === 'array') {
-                value = [];
+            if ($.type(index) === "array") {
+                value = [ ];
 
                 for (i = 0; i < index.length; i++) {
-                    if (typeof index[i] === 'number' && index[i] >= 0 && index[i] < dataLen) {
-                        value.push(data[index[i]][valKey]);
+                    if (typeof index[ i ] === "number" && index[ i ] >= 0 &&
+                        index[ i ] < dataLen) {
+                        value.push(data[ index[ i ] ][ valKey ]);
                     }
                 }
-            } else if (typeof index === 'number' && index >= 0 && index < dataLen) {
-                value = this._unwrapData(this._unwrapData(data[index])[valKey]);
+            } else if (typeof index === "number" && index >= 0 && index < dataLen) {
+                value = this._unwrapData(this._unwrapData(data[ index ])[ valKey ]);
             }
 
             return this.itemsFromValue(value);
@@ -4848,7 +5085,8 @@
             /* Gets array with objects representing selected li elements in combo box
                 returnType="array" The null or array with objects containing following members: data - the associated data, element - the jquery element of the li
             */
-            return this._options.selectedData.length > 0 ? this._itemsFromData(this._options.selectedData) : null;
+            return this._options.selectedData.length > 0 ?
+                this._itemsFromData(this._options.selectedData) : null;
         },
         filter: function (texts, event) {
             /* Trigger filtering.
@@ -4872,11 +5110,12 @@
             noCancel = event ? this._triggerFiltering(event) : true;
             if (noCancel) {
                 filtering.type = type;
-                filtering.expressions = this._options.expression = this._generateExpressions(texts);
+                filtering.expressions = this._options.expression =
+                    this._generateExpressions(texts);
                 filtering.caseSensitive = this.options.caseSensitive;
 
                 // Handle local filtering
-                if (type === 'local') {
+                if (type === "local") {
                     if (clearFiltering) {
                         this._options.expression = null;
                         ds.clearLocalFilter();
@@ -4892,7 +5131,7 @@
                 }
 
                 // Handle remote filtering
-                if (type === 'remote') {
+                if (type === "remote") {
                     if (paging) {
                         paging.pageIndex = 0;
                         paging.appendPage = false;
@@ -4928,12 +5167,13 @@
             // K.D. March 3rd, 2015 Bug #189365 Filter should be cleared only if its applied.
             // D.A. May 12th, 2015 Bug #193431 Filtering should be skipped when empty ("") filter is applied
             if (!ds || !expression || expression.length <= 0 ||
-                (expression.length === 1 && expression[0].expr === "")) {
+                (expression.length === 1 && expression[ 0 ].expr === "")) {
 
                 // S.T. June 18th 2015, Bug #200569: When filtering is remote closing the dropdown with value having partial item separator do not clear the input.
                 // We should update the input here when we having remote filter and not applied filter because the clearFiltering function exit here and
                 // no further update is executed.
-                if (this._options.updateInputValuesOnRemoteFilter && this._endsPartialyWithItemSep(this._options.inputVal)) {
+                if (this._options.updateInputValuesOnRemoteFilter &&
+                    this._endsPartialyWithItemSep(this._options.inputVal)) {
                     this._updateInputValues();
                     this._hideClearButton();
                 }
@@ -4944,6 +5184,7 @@
             }
 
             this.filter("", event);
+
             // Z.K. July 1st 2015, Bug #201932 - When filtering is local and filter with no values after clear filtering the drop down is open in wrong location for a second
             this.positionDropDown();
             return this;
@@ -4952,12 +5193,13 @@
             /* Opens the drop down
                 paramType="function" optional="true" Specifies callback function to be executed when open animation is completed.
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger drop down opened event.
-                paramType="bool" optional="true" Set to false to not focus combo's text input after the drop down is opened. By default the combo's input is focused.
+                paramType="bool" optional="true" Set to false to not focus combo"s text input after the drop down is opened. By default the combo's input is focused.
                 returnType="object" Returns reference to this igCombo.
             */
             var offset, itemHeight, noCancel, newAnimationStyle,
                 _options = this._options,
-                borderWidth = parseInt(_options.$combo.css('borderTopWidth'), 10),
+                borderWidth = parseInt(_options.$combo.css("borderTopWidth"), 10),
+
                 // T.I. 29th Feb 2016 - Bug #207372 - Containers are not positioned correctly in a zoomer browser window
                 topPosition = $.ig.util.offset(_options.$combo).top - borderWidth,
                 self = this,
@@ -5016,22 +5258,24 @@
                         .animate(newAnimationStyle, {
                             duration: this.options.animationShowDuration,
                             queue: false,
-                            easing: 'swing',
+                            easing: "swing",
                             complete: function () {
+
                                 // Remove inline styles
                                 $ddCont
-                                    .height('')
-                                    .css('overflow', '');
+                                    .height("")
+                                    .css("overflow", "");
 
                                 // S.T. April 27th, 2015 Bug #192899: The offset has to be calculated after animation is completed. Otherwise it's zero.
                                 // If virtualization is enabled and scroll is moved, we need to go to scrolled items
                                 if (self.options.virtualization) {
                                     itemHeight = self._itemHeight();
-                                    offset = self._offsetItems(self.options.dataSource.dataView(), itemHeight);
+                                    offset = self._offsetItems(self.options
+                                        .dataSource.dataView(), itemHeight);
                                     self._updateItems(offset);
                                 }
 
-                                if ($.type(callback) === 'function') {
+                                if ($.type(callback) === "function") {
                                     callback();
                                 }
 
@@ -5058,10 +5302,11 @@
             var noCancel, newAnimationStyle,
                 _options = this._options,
                 self = this,
-                borderWidth = parseInt(_options.$combo.css('borderTopWidth'), 10),
+                borderWidth = parseInt(_options.$combo.css("borderTopWidth"), 10),
                 orientation = this._dropDownOrientation();
 
-            if (_options.dropDownOpened && (!_options.dataBinding || _options.closingDropDownOnBlur)) {
+            if (_options.dropDownOpened && (!_options.dataBinding ||
+                _options.closingDropDownOnBlur)) {
                 noCancel = event ? this._triggerDropDownClosing(event) : true;
 
                 if (noCancel) {
@@ -5071,6 +5316,7 @@
                         if (this.options.dropDownAttachedToBody) {
                             newAnimationStyle = {
                                 height: 0,
+
                                 // T.I. 29th Feb 2016 - Bug #207372 - Containers are not positioned correctly in a zoomer browser window
                                 top: $.ig.util.offset(_options.$combo).top - borderWidth,
                                 left: $.ig.util.offset(_options.$dropDownCont).left
@@ -5089,11 +5335,11 @@
 
                     _options.$dropDownCont
                         .stop()
-                        .css('overflow', 'hidden')
+                        .css("overflow", "hidden")
                         .animate(newAnimationStyle, {
                             duration: this.options.animationHideDuration,
                             queue: false,
-                            easing: 'swing',
+                            easing: "swing",
                             complete: function () {
                                 self._clearRepositionInterval();
 
@@ -5106,34 +5352,40 @@
                                         left: -99999
                                     });
 
-                                if (self.options.filteringType !== 'remote') {
+                                if (self.options.filteringType !== "remote") {
                                     self._updateInputValues();
                                     self._unhighlight();
                                     self.clearFiltering(event);
 
                                     if (self.options.multiSelection.enabled) {
+
                                         // Reset key navigation item
                                         self._setKeyNavigationItem({
                                             data: $(),
                                             clearPrevItem: true
                                         });
                                     }
+
                                     // K.D. August 25, 2015 Bug #205056 When allowCustomValue is true and type not existing text clear button is not visible
-                                    if ((!self.options.allowCustomValue && _options.selectedData.length === 0) || (self.options.allowCustomValue && _options.$input.val() === "")) {
+                                    if ((!self.options.allowCustomValue &&
+                                        _options.selectedData.length === 0) ||
+                                            (self.options.allowCustomValue &&
+                                                _options.$input.val() === "")) {
                                         self._hideClearButton();
                                     }
 
                                     self._removePlaceholderOnEmptyTextVal();
 
                                     if (_options.validator) {
-                                        _options.validator._validateInternal(self.element, event, true);
+                                        _options.validator
+                                            ._validateInternal(self.element, event, true);
                                     }
                                 } else {
                                     _options.updateInputValuesOnRemoteFilter = true;
                                     self.clearFiltering(event);
                                 }
 
-                                if ($.type(callback) === 'function') {
+                                if ($.type(callback) === "function") {
                                     callback();
                                 }
 
@@ -5153,21 +5405,22 @@
             return this;
         },
 
-    	// H.A. 23 February 2016, #212566: igCombo gets focus when data source is changed and value is set.
+	    // H.A. 23 February 2016, #212566: igCombo gets focus when data source is changed and value is set.
         clearInput: function (options, event) {
-        	/* Clears the input text, resets highlighting, filtering and selection.
+	        /* Clears the input text, resets highlighting, filtering and selection.
 				paramType="object" optional="true" Object with set of options controling the behavior of this api method.
 					focusCombo (boolean): Set to true to focus combo after clearing the input.
                 returnType="object" Returns reference to this igCombo.
             */
-        	// H.A. 23 February 2016, #212566: igCombo gets focus when data source is changed and value is set.
-        	options = options || {};
 
-            this._options.$input.val('');
-            this._options.$hiddenInput.val('');
-            this._setInputVal('');
+	        // H.A. 23 February 2016, #212566: igCombo gets focus when data source is changed and value is set.
+	        options = options || {};
 
-        	// H.A. 23 February 2016, #212566: igCombo gets focus when data source is changed and value is set.
+            this._options.$input.val("");
+            this._options.$hiddenInput.val("");
+            this._setInputVal("");
+
+	        // H.A. 23 February 2016, #212566: igCombo gets focus when data source is changed and value is set.
             this.deselectAll(options, event);
             this.clearFiltering(event);
             this._unhighlight();
@@ -5200,22 +5453,25 @@
                 paramType="object" optional="false" jQuery object with item to verify whether it is selected.
                 returnType="bool" Returns boolean representing whether the item is selected
             */
-            return $item instanceof $ ? this.isValueSelected($item.attr('data-value')) : false;
+            return $item instanceof $ ? this.isValueSelected($item.attr("data-value")) : false;
         },
         isValueSelected: function (value) {
             /* Verifies whether the li with specified value is selected
                 paramType="number|string" optional="false" Value matching the valueKey property of item to be tested if it is selected
                 returnType="bool" Returns boolean representing whether the item is selected
             */
-            return this._isValueInArray(value, this._valuesFromData(this._options.selectedData)) !== -1;
+            return this._isValueInArray(value,
+                this._valuesFromData(this._options.selectedData)) !== -1;
         },
         isIndexSelected: function (index) {
             /* Verifies whether the li representing the data source's record at the specified index is selected
                 paramType="object" optional="false" Index of data source record
                 returnType="bool" Returns boolean representing whether the item is selected
             */
-            return this.isValueSelected(this.options.dataSource.data()[index][this.options.valueKey]);
+            return this.isValueSelected(this.options
+                .dataSource.data()[ index ][ this.options.valueKey ]);
         },
+
         // Keeping the function private to ensure always calling it with correct
         // parameters and faster execution time for large amount of data
         _selectData: function (data, options, event) {
@@ -5233,19 +5489,21 @@
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger selection changed event.
                 returnType="object" Returns reference to this igCombo.
             */
-            var items, itemsLen, selectedValues, newSelItems, selAutoSelectedItem, selChanged, additive, prevSelValues, newSelData, skipEventTrigger, noCancel, i,
+            var items, itemsLen, selectedValues, newSelItems, selAutoSelectedItem,
+                selChanged, additive, prevSelValues, newSelData, skipEventTrigger, noCancel, i,
                 comboOptions = this.options,
                 _options = this._options,
                 multiSelEnabled = comboOptions.multiSelection.enabled,
                 prevSelItems = this.selectedItems();
 
             // Use first data when multi selection is not enabled
-            data = ($.type(data) === 'array' && !multiSelEnabled) ? data[0] : data;
+            data = ($.type(data) === "array" && !multiSelEnabled) ? data[ 0 ] : data;
             items = this._itemsFromData(data);
 
             options = options || {};
 
             if (items === null) {
+
                 // Z.K. 30/06/2015 Bug #201518 - Selection is not initialized after clear viewmodel's collection when using knockoutjs
                 if (!options.additive) {
                     this.deselectAll(options, event);
@@ -5254,8 +5512,8 @@
                 return this;
             }
 
-            if ($.type(items) !== 'array') {
-                items = [items];
+            if ($.type(items) !== "array") {
+                items = [ items ];
             }
 
             additive = options.additive && multiSelEnabled;
@@ -5263,13 +5521,15 @@
             selectedValues = this._valuesFromItems(items);
 
             if (additive) {
+
                 // When selection is additive, selection will change only when any of the new items is not selected
                 for (i = 0; i < itemsLen && !selChanged; i++) {
-                    if (!this.isValueSelected(items[i].data[comboOptions.valueKey])) {
+                    if (!this.isValueSelected(items[ i ].data[ comboOptions.valueKey ])) {
                         selChanged = true;
                     }
                 }
             } else {
+
                 // When selection is not additive, selection will change only when new selection is not the same as the old selection
                 prevSelValues = this._valuesFromItems(prevSelItems);
 
@@ -5278,6 +5538,7 @@
                 if (!this._areArraysEqual(selectedValues, prevSelValues)) {
                     selChanged = true;
                 }
+
                 // if (!($(selectedValues).not(prevSelValues).length === 0 &&
                 //     $(prevSelValues).not(selectedValues).length === 0)) {
                 //     selChanged = true;
@@ -5286,15 +5547,19 @@
 
             // Reset auto selected item
             if (this._isValueInArray(_options.autoSelectedItemData &&
-                _options.autoSelectedItemData[comboOptions.valueKey], selectedValues) !== -1) {
+                _options.autoSelectedItemData[ comboOptions.valueKey ], selectedValues) !== -1) {
                 selAutoSelectedItem = true;
 
                 // When only auto selected item is being selected we shouldn't trigger events,
                 // because there is no real selection changing, the item was selected beforehand.
                 // H.A. 29/01/2015 Bug #212663 - igCombo selectionChanged not fired when accepting auto-completed value
                 if (this._options.selectedData.length > 0) {
-                    if (itemsLen === 1 && this._options.autoSelectedItemData[comboOptions.valueKey] === this._options.selectedData[0][comboOptions.valueKey]) {
-                        skipEventTrigger = (itemsLen === 1 && this._options.autoSelectedItemData[comboOptions.valueKey] === this._options.selectedData[0][comboOptions.valueKey]);
+                    if (itemsLen === 1 &&
+                        this._options.autoSelectedItemData[ comboOptions.valueKey ] ===
+                            this._options.selectedData[ 0 ][ comboOptions.valueKey ]) {
+                        skipEventTrigger = (itemsLen === 1 &&
+                            this._options.autoSelectedItemData[ comboOptions.valueKey ] ===
+                                this._options.selectedData[ 0 ][ comboOptions.valueKey ]);
                     }
                 }
             }
@@ -5309,6 +5574,7 @@
                 }
 
                 if (event && !skipEventTrigger) {
+
                     // Z.K March 14, 2016 - Fixing Bug #215857 originalEvent and keyCode are missing from event parameter on selectionChanging event
                     noCancel = this._triggerSelectionChanging(newSelItems, prevSelItems, event);
                 } else {
@@ -5316,12 +5582,14 @@
                 }
 
                 if (noCancel) {
+
                     // Update selected data
                     _options.selectedData = newSelData;
 
                     // Remove styling from previously selected items
                     if (prevSelItems && prevSelItems.length > 0 && !additive) {
-                        this._removeItemSelectionStyles(this._$elementsFromItems(this._filterItems(prevSelItems, items)));
+                        this._removeItemSelectionStyles(this
+                            ._$elementsFromItems(this._filterItems(prevSelItems, items)));
                     }
 
                     // Add styling to the new selected items
@@ -5335,34 +5603,40 @@
                     this._showClearButton();
 
                     if (options.focusCombo) {
+
                         // D.A. May 28th, 2015 Bug #194600 Avoid moving the carret when there is auto completed text, because this would lose the selection
                         if (!(options.autoComplete && this._hasInputSelection())) {
+
                             // Focus input and to set carret to end of the text input
                             this._moveCaretToInputEnd(true);
                         }
                     }
 
                     if (!options.keepNavItem) {
+
                         // Set new key nav to the last selected item or reset it if the last selected is null when virtialization or remote filtering is enabled
                         this._setKeyNavigationItem({
+
                             // S.T. 2th Sept 2015: #202979: The data should be provided instead of element.
-                            data: items[itemsLen - 1].data ? items[itemsLen - 1].data : $(),
+                            data: items[ itemsLen - 1 ].data ? items[ itemsLen - 1 ].data : $(),
                             clearPrevItem: true
                         });
                     }
 
                     // Cache selected items when filtering is remote
-                    if (comboOptions.filteringType === 'remote') {
+                    if (comboOptions.filteringType === "remote") {
                         this._options.cachedData = this._dataFromItems(newSelItems);
                     }
 
                     // D.A. 11th March 2015, Bug #190158 Close drop down should be called before clear filtering, because when filtering is remote the drop down does not close
                     if (options.closeDropDown) {
+
                         // Z.K. 25/08/2015 Bug #205191 - combo dropDownClosing event fired twice
                         // Close drop down. Trigger closing only when event is provided.
                         //noCancel = event ? this._triggerDropDownClosing(event) : true;
                         //if (noCancel) {
                         this.closeDropDown(null, event);
+
                         //}
                     }
 
@@ -5386,6 +5660,7 @@
                     }
                 }
             } else if (options.closeDropDown) {
+
                 // D.A. 12th March 2015, Bug #190262 When selecting already selected item, the drop down is not closed
                 noCancel = event ? this._triggerDropDownClosing(event) : true;
                 if (noCancel) {
@@ -5414,19 +5689,20 @@
 
             // Return value of the value input when called without params
             if (value === undefined) {
-                selectedValues = [];
+                selectedValues = [ ];
                 selectedItems = this.selectedItems();
 
                 if (selectedItems) {
                     for (i = 0; i < selectedItems.length; i++) {
-                        selectedValues.push(selectedItems[i].data[this.options.valueKey]);
+                        selectedValues.push(selectedItems[ i ].data[ this.options.valueKey ]);
                     }
-                } else if (this.options.allowCustomValue && this._options.$hiddenInput.val() !== "") {
+                } else if (this.options.allowCustomValue &&
+                    this._options.$hiddenInput.val() !== "") {
                     selectedValues.push(this._options.$hiddenInput.val());
                 }
 
                 if (!this.options.multiSelection.enabled && selectedItems) {
-                    selectedValues = selectedValues.length > 0 ? selectedValues[0] : null;
+                    selectedValues = selectedValues.length > 0 ? selectedValues[ 0 ] : null;
                 }
 
                 return selectedValues;
@@ -5436,6 +5712,7 @@
             if (this.options.allowCustomValue && !this.selectedItems()) {
                 this._options.$input.val(value);
                 this._updateInputValues();
+
                 // K.D. September 8th, 2015 Bug #205881 Clear button is not shown after setting custom value through API.
                 this._showClearButton();
             }
@@ -5477,22 +5754,24 @@
                 returnType="object" Returns reference to this igCombo, or array of indices if the index parameter is provided.
             */
             var selectedItems, indexes, unwrappedDataItem, unwrappedDataValue, i, len,
-                dataToSel = [];
+                dataToSel = [ ];
 
             // Return the selected index or array with selected indexes if more than one items are selected
             if (index === undefined) {
                 selectedItems = this.selectedItems();
 
                 if (selectedItems.length === 1) {
-                    unwrappedDataItem = this._unwrapData(selectedItems[0].data);
-                    unwrappedDataValue = this._unwrapData(unwrappedDataItem[this.options.valueKey]);
+                    unwrappedDataItem = this._unwrapData(selectedItems[ 0 ].data);
+                    unwrappedDataValue =
+                        this._unwrapData(unwrappedDataItem[ this.options.valueKey ]);
                     indexes = this._dataIndexByValue(unwrappedDataValue);
                 } else {
-                    indexes = [];
+                    indexes = [ ];
 
                     for (i = 0; i < selectedItems.length; i++) {
-                        unwrappedDataItem = this._unwrapData(selectedItems[i].data);
-                        unwrappedDataValue = this._unwrapData(unwrappedDataItem[this.options.valueKey]);
+                        unwrappedDataItem = this._unwrapData(selectedItems[ i ].data);
+                        unwrappedDataValue =
+                            this._unwrapData(unwrappedDataItem[ this.options.valueKey ]);
                         indexes.push(this._dataIndexByValue(unwrappedDataValue));
                     }
                 }
@@ -5500,12 +5779,12 @@
                 return indexes;
             }
 
-            if ($.type(index) !== 'array') {
-                index = [index];
+            if ($.type(index) !== "array") {
+                index = [ index ];
             }
 
             for (i = 0, len = index.length; i < len; i++) {
-                dataToSel.push(this._dataFromIndex(index[i]));
+                dataToSel.push(this._dataFromIndex(index[ i ]));
             }
 
             this._selectData(dataToSel, options, event);
@@ -5550,23 +5829,27 @@
                 return this;
             }
 
-            if ($.type(items) !== 'array') {
-                items = [items];
+            if ($.type(items) !== "array") {
+                items = [ items ];
             }
 
             // Selection will change when at least one of the given items was previously selected
             for (i = 0, len = items.length; i < len && !selChanged; i++) {
-                if (this.isValueSelected(items[i].data[this.options.valueKey])) {
+                if (this.isValueSelected(items[ i ].data[ this.options.valueKey ])) {
                     selChanged = true;
                 }
             }
 
             if (selChanged) {
                 newSelItems = this._filterItems(prevSelItems, items);
+
                 // Z.K March 14, 2016 - Fixing Bug #215857 originalEvent and keyCode are missing from event parameter on selectionChanging event
-                noCancel = event ? this._triggerSelectionChanging(newSelItems, prevSelItems, event) : true;
+                noCancel = event ?
+                    this._triggerSelectionChanging(newSelItems, prevSelItems, event) :
+                    true;
 
                 if (noCancel) {
+
                     // Update selected data
                     _options.selectedData = this._dataFromItems(newSelItems);
 
@@ -5582,19 +5865,20 @@
                         });
                     }
 
-                    if (_options.inputVal === '') {
+                    if (_options.inputVal === "") {
                         this._hideClearButton();
                     }
 
                     if (options.focusCombo) {
                         if (this._focusInInputWhenUsingTouchDevice()) {
-                            // Focus combo and set carret to text input's end
+
+                            // Focus combo and set carret to text input"s end
                             this._moveCaretToInputEnd(true);
                         }
                     }
 
                     // Cache selected items when filtering is remote
-                    if (this.options.filteringType === 'remote') {
+                    if (this.options.filteringType === "remote") {
                         this._options.cachedData = this._dataFromItems(newSelItems);
                     }
 
@@ -5624,7 +5908,7 @@
 
             // Deselect when there is single selected item and no value provided
             if (value === undefined && this._options.selectedData.length === 1) {
-                value = this._options.selectedData[0][this.options.valueKey];
+                value = this._options.selectedData[ 0 ][ this.options.valueKey ];
             }
 
             this._deselectData(this._dataForValues(value), options, event);
@@ -5660,14 +5944,14 @@
                 returnType="object" Returns reference to this igCombo.
             */
             var i, len,
-                dataToDeselect = [];
+                dataToDeselect = [ ];
 
-            if ($.type(index) !== 'array') {
-                index = [index];
+            if ($.type(index) !== "array") {
+                index = [ index ];
             }
 
             for (i = 0, len = index.length; i < len; i++) {
-                dataToDeselect.push(this._dataFromIndex(index[i]));
+                dataToDeselect.push(this._dataFromIndex(index[ i ]));
             }
 
             this._deselectData(dataToDeselect, options, event);
@@ -5684,7 +5968,8 @@
             this._deselectData(this._options.selectedData, options, event);
 
             // S.T. 24th Sept 2015, Bug #207020: After deselection, should be check whether the mode is non editable and select first item.
-            this._selectFirstItemInNonEditableModes(this.options.mode, [], this.options.dataSource.dataView());
+            this._selectFirstItemInNonEditableModes(this.options.mode, [ ],
+                this.options.dataSource.dataView());
 
             return this;
         },
@@ -5734,11 +6019,11 @@
             $listCont = _options.$dropDownScrollCont || _options.$dropDownListCont;
 
             if (value === undefined) {
-                return $listCont ? $listCont.prop('scrollTop') : 0;
+                return $listCont ? $listCont.prop("scrollTop") : 0;
             }
 
             if ($listCont) {
-                $listCont.prop('scrollTop', value || 0);
+                $listCont.prop("scrollTop", value || 0);
             }
 
             return this;
@@ -5790,12 +6075,17 @@
             if (validator && (destroy || !validatorOptions) && validator.owner === this) {
                 validator.destroy();
                 this._options.validator = validator = null;
-            } else if (!validator && !destroy && validatorOptions && this.element.igValidator) {
-                this._options.validator = validator = this.element.igValidator(validatorOptions).data('igValidator');
+            } else if (!validator && !destroy && validatorOptions &&
+                this.element.igValidator) {
+                this._options.validator = validator =
+                    this.element.igValidator(validatorOptions).data("igValidator");
                 this._options.validator.owner = this;
+
                 // A.M. May 12th, 2015 Bug #193960 "The validatorOptions are not reflected when set at runtime"
-            } else if (validator && !destroy && validatorOptions && this.element.igValidator) {
-                this._options.validator = validator = this.element.igValidator(validatorOptions).data('igValidator');
+            } else if (validator && !destroy &&
+                validatorOptions && this.element.igValidator) {
+                this._options.validator = validator =
+                    this.element.igValidator(validatorOptions).data("igValidator");
             }
 
             return validator;
@@ -5876,7 +6166,7 @@
                 .removeAttr("tabIndex")
                 .attr("name", this._options.nameAttribute);
 
-            if (this.options.mode !== 'editable') {
+            if (this.options.mode !== "editable") {
                 // Disable editing and selection for non-editable modes
                 this.element
                     .removeAttr("readonly")
@@ -5893,8 +6183,10 @@
                 keyup: _handlers.inputKeyUp,
                 keypress: _handlers.inputKeyPress,
                 mousedown: _handlers.inputMouseDown,
+
                 // P.P 07-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
                 compositionupdate: _handlers.inputCompositionUpdate,
+
                 // P.P 26-Feb-2016 #212236: Incorrect input of Japanese symbols using IME
                 compositionend: _handlers.inputCompositionEnd,
                 input: _handlers.inputInput
@@ -5934,5 +6226,5 @@
         }
     });
 
-    $.extend($.ui.igCombo, { version: '<build_number>' });
+    $.extend($.ui.igCombo, { version: "<build_number>" });
 }(jQuery));
