@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+    <style>
+        h3 {
+            font-size:20px;
+            margin-bottom:20px;
+        }
+        .group-fields {
+            margin-bottom: 10px;
+        }
+        .group-fields label {
+            display: block;
+            line-height:18px;
+        }
+        .group-fields .inline {
+            display:inline;
+        }
+        .group-fields .ui-igcheckbox-normal {
+            margin-right: 5px;
+            float: left;
+        }
+        .group-fields .ui-igedit-container {
+            width: 250px;
+        }
+        @media screen and (min-width:360px) {
+            .group-fields .ui-igedit-container {
+                width: 300px;
+            }
+        }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+     </head>
+<body><p>This sample shows basic options of the igTextEditor.</p>
+    <h3>Register your ultimate</h3>
+    <form>
+        <div class="group-fields">
+            <label for="firstName">First Name</label>
+            <input id="firstName">
+        </div>
+		<div class="group-fields">
+			<label for="lastName">Last Name</label>
+			<input id="lastName">
+		</div>
+		<div class="group-fields">
+			<label for="email">Email</label>
+			<input id="email">
+		</div>
+        <div class="group-fields">
+            <label for="password">Password</label>
+            <input id="password">
+        </div>
+        <div class="group-fields">
+            <label for="note">Note (Optional)</label>
+            <div id="note"></div>
+        </div>
+        <div class="group-fields">
+            <input id="readonly">
+            <label for="readonly" id="lock" class="inline">Lock for editing</label>
+        </div>
+        <input id="btn" type="button" value="Clear">
+    </form>
+
+    <script>
+        $(document).ready(function () {
+        	$("#firstName").igTextEditor({
+        		placeHolder: "John",
+        	});
+        	$("#lastName").igTextEditor({
+        		placeHolder: "Anderson",
+        	});
+
+            $("#email").igTextEditor({
+            	placeHolder: "john@email.com",
+            	validatorOptions: {
+            		email: true
+            	}
+            });
+
+            $("#password").igTextEditor({
+            	textMode: "password",
+            	placeHolder: "********"
+            });
+
+            $("#note").igTextEditor({
+                textMode: "multiline",
+                height: 100,
+                visibleItemsCount: 5
+            });
+
+            $('#readonly').igCheckboxEditor({
+                valueChanged: function (evt, ui) {
+                    if (ui.newState == true) {
+                        $("#note").igTextEditor("option", "readOnly", true);
+                    }
+                    else {
+                        $("#note").igTextEditor("option", "readOnly", false);
+                    }
+
+                }
+            });
+            $('#lock').igNotifier({
+                direction: "top",
+                showOn: "mouseenter",
+                state: "info",
+                showIcon: true,
+                messages: {
+                    info: "Checking this will make the comment area readonly."
+                }
+            });
+
+            $("#btn").click(function () {
+                $("#firstName").igTextEditor("option", "value", "");
+                $("#lastName").igTextEditor("option", "value", "");
+                $("#email").igTextEditor("option", "value", "");
+                $("#password").igTextEditor("option", "value", "");
+                $("#note").igTextEditor("option", "value", "");
+                $("#readonly").igCheckboxEditor("option", "checked", false);
+
+                $("#note").igTextEditor("option", "disabled", false);
+                $("#note").igTextEditor("option", "readOnly", false);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
