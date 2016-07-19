@@ -1011,7 +1011,7 @@ $.widget("ui.igValidator", {
 			return options;
 		}
 
-		// cherry-pick options to merge // TODO!
+		// cherry-pick options to merge
 		var properties = [ "required", "threshold", "lengthRange", "number", "date",
 							"valueRange", "email", "creditCard", "onblur", "onchange",
 							"onsubmit", "successMessage", "errorMessage",
@@ -1518,7 +1518,7 @@ $.ig.igValidatorValueRule = $.ig.igValidatorValueRule || $.ig.igValidatorNumberR
 					max = hasMax && maxValue;
 					max = value > max ? max.toString() : null;
 				}
-				if (isDateParsable && (options.date || value instanceof Date)) { //TODO remove
+				else if (isDateParsable && !options.number) {
 					value = new Date(value);
 					if (hasMin) {
 						min = minValue = new Date(minValue);
