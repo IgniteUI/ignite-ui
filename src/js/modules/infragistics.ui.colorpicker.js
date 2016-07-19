@@ -174,6 +174,13 @@ if (typeof jQuery !== "function") {
 			*/
 			return this._customColors;
 		},
+        standardColorsTable: function () {
+            /* Gets the div element with the standard color table.
+                returnType="object" Returns the div element with the standard colors.
+            */
+            
+            return this._defaultColors;
+        },
         colorFromElement: function ($element) {
 			/* Gets the color for an element from the color picker.
 				paramType="object" optional="false" The element in the color picker from which the color will be retrieved.
