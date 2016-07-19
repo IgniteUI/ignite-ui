@@ -231,12 +231,12 @@
 
 			if (this.options.modifyDOM) {
 				elem.addClass(this.css.scrollableElem);
-				this._content = $("<div id='content'/>")
+				this._content = $("<div id='" + this.element.attr("id") + "_content'/>")
 					.addClass(this.css.scrollContent)
 					.appendTo(elem)
 					.append(elem.children());
 
-				this._container = $("<div id='container'/>")
+				this._container = $("<div id='" + this.element.attr("id") + "_container'/>")
 					.addClass(this.css.scrollContainer)
 					.css({
 						"width": this._elemWidth + "px",
@@ -499,7 +499,7 @@
 					owner: self,
 					smallIncrement: 0,
 					bigIncrement: 0,
-					horizontal: true
+					horizontal: false
 				});
 			}
 
@@ -545,7 +545,7 @@
 					if (elemObject.length) {
 						this._linkedHElems.push(elemObject);
 					} else {
-						console.log("Error: Element does not exists");
+						throw "syncedElemsH: Element does not exists!";
 					}
 				}
 			}
@@ -562,7 +562,7 @@
 					if (elemObject.length) {
 						this._linkedVElems.push(elemObject);
 					} else {
-						console.log("Error: Element does not exists");
+						throw "syncedElemsV: Element does not exists!";
 					}
 				}
 			}
@@ -605,7 +605,7 @@
 					}
 					this._linkedHBar = elemObject;
 				} else {
-					console.log("Error: Element does not exists");
+					throw "scrollbarH: Element does not exists!";
 				}
 			}
 
@@ -649,28 +649,31 @@
 					}
 					this._linkedVBar = elemObject;
 				} else {
-					console.log("Error: Element does not exists");
+					throw "scrollbarV: Element does not exists!";
 				}
 			}
 
 			return this._linkedVBar;
 		},
 
+		_clampAxisCoords: function(target, min, max) {
+			if (target === undefined || target < min) {
+				target = min;
+			} else if (target > max) {
+				target = max;
+			}
+
+			return target;
+		},
+
 		/** Scrolls content to on the X and Y axis using default scrollLeft and scrollTop.
 		*	Should be used when sure it's desktop/hybrid environment.
 		*	If not sure how to use, use the internal _scrollLeft. */
 		_scrollToXY: function(destX, destY, triggerEvents) {
-			if (destX === undefined || destX < 0) {
-				destX = 0;
-			} else if (destX > this._contentWidth - this._dragMaxX) {
-				destX = this._contentWidth - this._dragMaxX;
-			}
-
-			if (destY === undefined || destY < 0) {
-				destY = 0;
-			} else if (destY > this._contentHeight - this._dragMaxY) {
-				destY = this._contentHeight - this._dragMaxY;
-			}
+			var curPosX = this._getContentPositionX(),
+				curPosY = this._getContentPositionY();
+			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
+			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
 
 			if (triggerEvents) {
 				//Trigger scrolling event
@@ -679,7 +682,8 @@
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: null,
-					touch: false
+					stepX: destX - curPosX,
+					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
 					return;
@@ -698,6 +702,9 @@
 				return;
 			}
 
+			var curPosX = this._getContentPositionX();
+			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
+
 			//We have another trigger for scrolling in case we want to scroll only on the X axis(horizontal) and not interrupt the Y(vertical) scroll position.
 			if (triggerEvents) {
 				//Trigger scrolling event
@@ -706,7 +713,8 @@
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: true,
-					touch: false
+					stepX: destX - curPosX,
+					stepY: 0
 				});
 				if (!bNoCancel) {
 					return;
@@ -733,6 +741,9 @@
 				return;
 			}
 
+			var curPosY = this._getContentPositionY();
+			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
+
 			//We have another trigger for scrolling in case we want to scroll only on the Y axis(vertical) and not interrupt the X(horizontal) scroll position.
 			if (triggerEvents) {
 				//Trigger scrolling event
@@ -741,7 +752,8 @@
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: false,
-					touch: false
+					stepX: 0,
+					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
 					return;
@@ -785,8 +797,7 @@
 							owner: self,
 							smallIncrement: 0,
 							bigIncrement: 0,
-							horizontal: false,
-							touch: false
+							horizontal: false
 						});
 					}
 
@@ -828,7 +839,12 @@
 		*	If not sure how to use, use the internal _scrollTop and _scrollLeft. */
 		_scrollTouchToXY: function (destX, destY, triggerEvents) {
 			var bNoCancel,
-				self = this;
+				self = this,
+				curPosX = this._getContentPositionX(),
+				curPosY = this._getContentPositionY();
+
+			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
+			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
 
 			if (triggerEvents) {
 				bNoCancel = this._trigger("scrolling", null, {
@@ -836,17 +852,12 @@
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: null,
-					touch: true
+					stepX: destX - curPosX,
+					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
 					return;
 				}
-			}
-
-			if (destX === undefined || destX < 0) {
-				destX = 0;
-			} else if (destX > this._contentWidth - this._dragMaxX) {
-				destX = this._contentWidth - this._dragMaxX;
 			}
 
 			//Only use vertical scroll specific
@@ -862,12 +873,6 @@
 				self._syncElemsX(this._content, true, -destX, true);
 				/* self._syncHBar(this._content, true); */
 				return;
-			}
-
-			if (destY === undefined || destY < 0) {
-				destY = 0;
-			} else if (destY > this._contentHeight - this._dragMaxY) {
-				destY = this._contentHeight - this._dragMaxY;
 			}
 
 			var distanceLeftX = -destX;
@@ -921,8 +926,7 @@
 						owner: self,
 						smallIncrement: 0,
 						bigIncrement: 0,
-						horizontal: null,
-						touch: true
+						horizontal: null
 					});
 					return;
 				}
@@ -945,7 +949,7 @@
 
 				//If we have mixed environment we use the default behaviour. i.e. touchscreen + mouse
 				if (bDefaultScroll) {
-					this._scrollToXY(self._nextX, self._nextY, true);
+					self._scrollToXY(self._nextX, self._nextY, true);
 				} else {
 					self._scrollTouchToXY(self._nextX, self._nextY, true);
 				}
@@ -1247,8 +1251,7 @@
 					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
-					horizontal: false,
-					touch: false
+					horizontal: false
 				});
 			}
 
@@ -1258,7 +1261,7 @@
 		_onPointerDownContainer: function (event) {
 			var evt = event.originalEvent;
 			if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch")) {
-				return;
+				return true;
 			}
 
 			//setPointerCaptureFName is the name of the function that is supported
@@ -1274,7 +1277,7 @@
 
 		_onPointerUpContainer: function (event) {
 			if (!this._pointer) {
-				return;
+				return true;
 			}
 			/* releasePointerCaptureFName is the name of the function that is supported */
 			event.target[ releasePointerCaptureFName ](this._pointer);
@@ -1298,7 +1301,7 @@
 
 		_onMSGestureChangeContainer: function (event) {
 			if (!this._moving) {
-				return;
+				return true;
 			}
 
 			var touchPos = event.originalEvent,
@@ -1425,8 +1428,7 @@
 					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
-					horizontal: true,
-					touch: true
+					horizontal: null
 				});
 			}
 
@@ -1665,12 +1667,19 @@
 
 		/** Used when one of the Arrow Up/Down or Vertical Track is being used by holding mouse button on them to constantly scroll on the Y axis */
 		_scrollTimeoutY: function (step, bSmallIncement) {
+			var	curPosY = this._getContentPositionY();
+			if ((curPosY === 0 && step <= 0) || (curPosY === this._contentHeight - this._dragMaxY && step >= 0)) {
+				return;
+			}
+
 			var	bNoCancel,
 				eventArgs = {
 					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
-					horizontal: false
+					horizontal: false,
+					stepX: 0,
+					stepY: step
 				};
 
 			//Check if the increment is big or small and set the proper value in the eventArgs
@@ -1703,13 +1712,20 @@
 			}
 		},
 
-		_onMouseDownArrowUp: function() {
+		_onMouseDownArrowUp: function () {
+			var scrollStep = -40,
+				curPosY = this._getContentPositionY();
+			if (curPosY === 0) {
+				scrollStep = 0;
+			}
+
 			var	bNoCancel = this._trigger("scrolling", null, {
 				owner: this,
 				smallIncrement: -1,
 				bigIncrement: 0,
 				horizontal: false,
-				touch: false
+				stepX: 0,
+				stepY: scrollStep
 			});
 
 			if (bNoCancel) {
@@ -1718,12 +1734,11 @@
 				this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUp,
 												this.css.verticalScrollArrowUpActive);
 
-				var curPosY = this._getContentPositionY();
-				this._scrollTop(curPosY - 40, false);
+				this._scrollTop(curPosY + scrollStep, false);
 
 				var self = this;
 				this._holdTimeoutID = setTimeout(function () {
-					self._scrollTimeoutY(-40, true);
+					self._scrollTimeoutY(scrollStep, true);
 				}, 250);
 			}
 
@@ -1749,12 +1764,19 @@
 		},
 
 		_onMouseDownArrowDown: function () {
+			var scrollStep = 40,
+				curPosY = this._getContentPositionY();
+			if (curPosY === this._contentHeight - this._dragMaxY) {
+				scrollStep = 0;
+			}
+
 			var bNoCancel = this._trigger("scrolling", null, {
 				owner: this,
 				smallIncrement: 1,
 				bigIncrement: 0,
 				horizontal: false,
-				touch: false
+				stepX: 0,
+				stepY: scrollStep
 			});
 
 			if (bNoCancel) {
@@ -1764,11 +1786,11 @@
 												this.css.verticalScrollArrowDownActive);
 
 				var curPosY = this._getContentPositionY();
-				this._scrollTop(curPosY + 40, false);
+				this._scrollTop(curPosY + scrollStep, false);
 
 				var self = this;
 				this._holdTimeoutID = setTimeout(function () {
-					self._scrollTimeoutY(40, true);
+					self._scrollTimeoutY(scrollStep, true);
 				}, 250);
 			}
 
@@ -1823,7 +1845,8 @@
 					smallIncrement: 0,
 					bigIncrement: 1,
 					horizontal: false,
-					touch: false
+					stepX: 0,
+					stepY: scrollStep
 				});
 
 				if (bNoCancel) {
@@ -1840,7 +1863,8 @@
 					smallIncrement: 0,
 					bigIncrement: -1,
 					horizontal: false,
-					touch: false
+					stepX: 0,
+					stepY: -scrollStep
 				});
 
 				if (bNoCancel) {
@@ -1869,8 +1893,7 @@
 					owner: this,
 					smallIncrement: 0,
 					bigIncrement: this._lastBigIncDirV,
-					horizontal: false,
-					touch: false
+					horizontal: false
 				});
 			}
 			this._bUseVTrack = false;
@@ -1884,8 +1907,7 @@
 					owner: this,
 					smallIncrement: 0,
 					bigIncrement: this._lastBigIncDirV,
-					horizontal: false,
-					touch: false
+					horizontal: false
 				});
 			}
 			this._bUseVTrack = false;
@@ -1894,28 +1916,27 @@
 		_onMouseMoveVDrag: function (event) {
 			/* Ensures if we move the mouse of the bounds of the vertical scroll bar and we are still holding left mouse button that when we move the mouse up/down we will continue to scroll */
 			if (!this._bMouseDownV || !this._bUseVDrag) {
-				return;
+				return true;
 			}
-			var offset;
 
 			if (this._bUseVDrag) {
+				var curPosY = this._getContentPositionY(),		
+					offset = event.pageY - this._dragLastY;
+					nextPosY = curPosY + (offset * (this._contentHeight / (this._elemHeight - 3 * 17)));
+
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
-					horizontal: false
+					horizontal: false,
+					stepX: 0,
+					stepY: nextPosY - curPosY,
 				});
 
 				if (bNoCancel) {
 					//Move custom vertical scrollbar thumb drag
-					var curPosY = this._getContentPositionY();
-					offset = event.pageY - this._dragLastY;
-					var nextPosY = curPosY + (offset * (this._contentHeight / (this._elemHeight - 3 * 17)));
-
 					this._scrollTop(nextPosY, false);
 					this._dragLastY = event.pageY;
 				}
 			}
-
-			return false;
 		},
 
 		_onMouseUpVScrollbar: function () {
@@ -1932,8 +1953,7 @@
 					owner: this,
 					smallIncrement: -1,
 					bigIncrement: 0,
-					horizontal: false,
-					touch: false
+					horizontal: false
 				});
 			}
 			if (this._bUseArrowDown) {
@@ -1945,8 +1965,7 @@
 					owner: this,
 					smallIncrement: 1,
 					bigIncrement: 0,
-					horizontal: false,
-					touch: false
+					horizontal: false
 				});
 			}
 
@@ -1984,8 +2003,6 @@
 				});
 			}
 			this._bUseVDrag = false;
-
-			return false;
 		},
 
 		_initCustomScrollBarH: function () {
@@ -2101,6 +2118,11 @@
 
 		/** Used when one of the Arrow Left/Right or Horizontal Track is being used by holding mouse button on them to constantly scroll on the X axis */
 		_scrollTimeoutX: function (step, bSmallIncement) {
+			var curPosX = this._getContentPositionX();
+			if ((curPosX === 0 && step <= 0) || (curPosX === this._contentWidth - this._dragMaxX && step >= 0)) {
+				return;
+			}
+
 			var	self = this,
 				bNoCancel,
 				eventArgs = {
@@ -2108,7 +2130,8 @@
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: true,
-					touch: false
+					stepX: step,
+					stepY: 0
 				};
 
 			//Check if the increment is big or small and set the proper value in the eventArgs
@@ -2140,12 +2163,21 @@
 		},
 
 		_onMouseDownArrowLeft: function () {
+			var scrollStep = -40,
+				curPosX = this._getContentPositionX();
+
+			if (curPosX === 0) {
+				//We are at the top. Step should be 0
+				scrollStep = 0;
+			}
+
 			var bNoCancel = this._trigger("scrolling", null, {
 				owner: this,
 				smallIncrement: -1,
 				bigIncrement: 0,
 				horizontal: true,
-				touch: false
+				stepX: scrollStep,
+				stepY: 0
 			});
 
 			if (bNoCancel) {
@@ -2155,11 +2187,11 @@
 					.switchClass(this.css.horizontalScrollArrowLeft, this.css.horizontalScrollArrowLeftActive);
 
 				var curPosX = this._getContentPositionX();
-				this._scrollLeft(curPosX - 40, false);
+				this._scrollLeft(curPosX + scrollStep, false);
 
 				var self = this;
 				this._holdTimeoutID = setTimeout(function () {
-					self._scrollTimeoutX(-40, true);
+					self._scrollTimeoutX(scrollStep, true);
 				}, 250);
 			}
 
@@ -2178,8 +2210,7 @@
 				owner: this,
 				smallIncrement: -1,
 				bigIncrement: 0,
-				horizontal: true,
-				touch: false
+				horizontal: true
 			});
 		},
 
@@ -2190,12 +2221,21 @@
 		},
 
 		_onMouseDownArrowRight: function () {
+			var scrollStep = 40,
+				curPosX = this._getContentPositionX();
+
+			if (curPosX === this._contentWidth - this._dragMaxX) {
+				//We are at the bottom
+				scrollStep = 0;
+			}
+
 			var bNoCancel = this._trigger("scrolling", null, {
 				owner: this,
 				smallIncrement: 1,
 				bigIncrement: 0,
 				horizontal: true,
-				touch: false
+				stepX: scrollStep,
+				stepY: 0
 			});
 
 			if (bNoCancel) {
@@ -2205,10 +2245,10 @@
 					.switchClass(this.css.horizontalScrollArrowRight, this.css.horizontalScrollArrowRightActive);
 
 				var curPosX = this._getContentPositionX();
-				this._scrollLeft(curPosX + 40, false);
+				this._scrollLeft(curPosX + scrollStep, false);
 
 				var self = this;
-				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(40, true); }, 250);
+				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(scrollStep, true); }, 250);
 			}
 
 			return false;
@@ -2226,8 +2266,7 @@
 				owner: this,
 				smallIncrement: 1,
 				bigIncrement: 0,
-				horizontal: true,
-				touch: false
+				horizontal: true
 			});
 		},
 
@@ -2271,7 +2310,8 @@
 					smallIncrement: 0,
 					bigIncrement: 1,
 					horizontal: true,
-					touch: false
+					stepX: scrollStep,
+					stepY: 0
 				});
 
 				if (bNoCancel) {
@@ -2288,7 +2328,8 @@
 					smallIncrement: 0,
 					bigIncrement: -1,
 					horizontal: true,
-					touch: false
+					stepX: -scrollStep,
+					stepY: 0
 				});
 
 				if (bNoCancel) {
@@ -2317,8 +2358,7 @@
 					owner: this,
 					smallIncrement: 0,
 					bigIncrement: this._lastBigIncDirH,
-					horizontal: true,
-					touch: false
+					horizontal: true
 				});
 			}
 			this._bUseHTrack = false;
@@ -2332,8 +2372,7 @@
 					owner: this,
 					smallIncrement: 0,
 					bigIncrement: this._lastBigIncDirH,
-					horizontal: true,
-					touch: false
+					horizontal: true
 				});
 			}
 			this._bUseHTrack = false;
@@ -2342,26 +2381,29 @@
 		_onMouseMoveHDrag: function (evt) {
 			/* Ensures if we move the mouse of the bounds of the horizontal scroll bar and we are still holding left mouse button that when we move the mouse left/right we will continue to scroll */
 			if (!this._bMouseDownH || !this._bUseHDrag) {
-				return;
+				return true;
 			}
 
 			if (this._bUseHDrag) {
+				var curPosX = this._getContentPositionX(),
+					offset = evt.pageX - this._dragLastX,
+					nextPostX = curPosX + (offset * (this._contentWidth / this._elemWidth));
+
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
-					horizontal: true
+					horizontal: true,
+					stepX: nextPostX - curPosX,
+					stepY: 0
 				});
 
 				if (bNoCancel) {
 					//Move custom horizondal scrollbar thumb drag
-					var curPosX = this._getContentPositionX();
-					var offset = evt.pageX - this._dragLastX;
 
-					this._scrollLeft(curPosX + (offset * (this._contentWidth / this._elemWidth)), false);
+
+					this._scrollLeft(nextPostX, false);
 					this._dragLastX = evt.pageX;
 				}
 			}
-
-			return false;
 		},
 
 		_onMouseUpHScrollbar: function () {
@@ -2378,8 +2420,7 @@
 					owner: this,
 					smallIncrement: -1,
 					bigIncrement: 0,
-					horizontal: true,
-					touch: false
+					horizontal: true
 				});
 			}
 			if (this._bUseArrowRight) {
@@ -2391,8 +2432,7 @@
 					owner: this,
 					smallIncrement: 1,
 					bigIncrement: 0,
-					horizontal: true,
-					touch: false
+					horizontal: true
 				});
 			}
 
@@ -2430,8 +2470,6 @@
 				});
 			}
 			this._bUseHDrag = false;
-
-			return false;
 		},
 
 		/** Shows the mobile/touch scrollbars when they are hidden.
