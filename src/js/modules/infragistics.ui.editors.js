@@ -3243,6 +3243,7 @@ if (typeof jQuery !== "function") {
 			if (value !== "" && !isNaN(value)) {
 				if (this.options.maxValue && value > this.options.maxValue) {
 					value = this.options.maxValue;
+
 					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
 					this._valueInput.val(value);
 					this._enterEditMode();
@@ -9007,14 +9008,21 @@ if (typeof jQuery !== "function") {
 						};
 					}
 					this._editorInput.data("datepicker").settings = pickerOptions;
+
 					// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
-					if (value.minDate && (this._editorInput.data("datepicker").settings.minDate !== this.options.minValue))
+					if (value.minDate &&
+						(this._editorInput.data("datepicker").settings.minDate !==
+							this.options.minValue))
 					{
-						this.options.minValue = this._editorInput.data("datepicker").settings.minDate;
+						this.options.minValue =
+							this._editorInput.data("datepicker").settings.minDate;
 					}
-					if (value.maxDate && (this._editorInput.data("datepicker").settings.maxDate !== this.options.maxValue))
+					if (value.maxDate &&
+						(this._editorInput.data("datepicker").settings.maxDate !==
+							this.options.maxValue))
 					{
-						this.options.maxValue = this._editorInput.data("datepicker").settings.maxDate;
+						this.options.maxValue =
+							this._editorInput.data("datepicker").settings.maxDate;
 					}
 				}
 					break;
@@ -9073,7 +9081,7 @@ if (typeof jQuery !== "function") {
 			//T.P. 15th March 2016. When there are two editors and the drpdown is opened - when we click the dropwodn button
 			//of the other editor - click event is triggered prior to blur of the previous editor
 			//M.S. 26th June 2016. Closing the dropdown with dropdown button if "readOnly: true, dropDownOnReadOnly : true"
-			//Adding internal flag for calendar visibility. 
+			//Adding internal flag for calendar visibility.
 			if (this._dropDownList.is(":visible") &&
 				(!!this._focused || this.options.readOnly) &&
 				!!this._dropDownOpened) {
@@ -9124,6 +9132,7 @@ if (typeof jQuery !== "function") {
 					currentDate = new Date(currentDate.getUTCFullYear(),
 						currentDate.getUTCMonth(), currentDate.getUTCDate());
 				}
+
 				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
 				this._enterEditMode();
 				currentInputValue = this._editorInput.val();

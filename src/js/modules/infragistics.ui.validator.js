@@ -1517,8 +1517,7 @@ $.ig.igValidatorValueRule = $.ig.igValidatorValueRule || $.ig.igValidatorNumberR
 					min = value < min ? min.toString() : null;
 					max = hasMax && maxValue;
 					max = value > max ? max.toString() : null;
-				}
-				else if (isDateParsable && !options.number) {
+				} else if (isDateParsable && !options.number) {
 					value = new Date(value);
 					if (hasMin) {
 						min = minValue = new Date(minValue);

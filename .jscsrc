@@ -3,7 +3,7 @@
     "requireSpacesInsideParentheses": false,
     "disallowSpacesInFunctionExpression": false,
     "disallowSpacesInAnonymousFunctionExpression": false,
-    "validateLineBreaks": "CRLF",
+    "validateLineBreaks": null,
     "requireSpacesInsideBrackets": {
         "allExcept": [ "[", "]", "{", "}" ]
     },
