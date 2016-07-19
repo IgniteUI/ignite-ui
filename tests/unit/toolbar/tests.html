@@ -107,11 +107,21 @@
 	    });
 
 		test("setOptions items, isExpanded, CRUD items", function() {
+
+			// Re-create the toolbar
+			$(this.igToolbarSelector).igToolbar('destroy');
+			$(this.igToolbarSelector).igToolbar({
+				isExpanded: false
+			});
+
 			var newItems = [
+				// Button
 				{
 					name: 'Button',
 					type: 'button',
 					scope: this,
+					title: 'Simple button',
+					callbackRenderer: function() { console.log('callbackRenderer called'); },
 					handler: function(ui) {
 						console.log('Activated');
 					},
@@ -121,50 +131,70 @@
 							},
                             isImage: {
                                 value: false,
-                                action: '_isSelectedAction'
+                                action: function() { console.log('Action'); }
                             },
                             imageButtonTooltip: {
                                 value: "Insert e-mail signature",
-                                action: '_tooltipAction'
+                                action: function() { console.log('Action'); }
                             },
                             imageButtonIcon: {
                                 value: "ui-icon-insert-email",
-                                action: '_buttonIconAction'
+                                action: function() { console.log('Action'); }
                             }
                         }
 				},
+				// Combo
 				{
 					type: 'combo',
 					name: 'fontSize',
 					scope: null,
-					handler: '_comboHandler',
+					dataSource: [
+						{'ID': 1, 'Value': 'One'},
+						{'ID': 2, 'Value': 'Two'},
+						{'ID': 3, 'Value': 'Three'}
+					],
+					valueKey: 'ID',
+					textKey: 'Value',
+					initialSelectedItems: [{'ID': 1}],
+					width: '123px',
+					height: '33px',
 					props: {
-						fontSizeComboWith: {
-							value: 75,
-							action: '_comboWidthAction'
-						},
-						fontSizeComboHeight: {
-							value: "",
-							action: "_comboHeightAction"
-						},
-						fontSizes: {
-							value: [10, 12, 14, 16],
-							action: "_comboDataSourceAction"
-						},
-						selectedFontSize: {
-							value: "3",
-							action: "_comboSelectedItem"
-						},
-						fontSizeItemsListWidth: {
-							value: 100,
-							action: "_comboDropDownListWidth"
+						fontSizeChangeWidth: {
+							value: 'Change width',
+							action: function() { console.log('Width changed'); }
 						}
 					}
+				},
+				{
+					name: "Bold",
+                    type: "button",
+                    scope: null,
+                    props: {
+                        "allowToggling": {
+                            "value": true
+                        },
+                        "isBold": {
+                            "value": false,
+                            "action": "_isSelectedAction"
+                        },
+                        "boldButtonTooltip": {
+                            "value": "Bold",
+                            "action": "_tooltipAction"
+                        },
+                        "boldButtonIcon": {
+                            "value": "ui-igbutton-bold",
+                            "action": "_buttonIconAction"
+                        }
+                    }
+				},
+				{
+					name: 'emptyItem',
+					scope: null,
 				}
 			];
 
 			$(this.igToolbarSelector).igToolbar('option', 'items', newItems);
-			equal($(this.igToolbarSelector).igToolbar('option', 'items').length, newItems.length, 'Setting items');
+			equal($(this.igToolbarSelector).igToolbar('option', 'items').length, newItems.length, 'Setting items matches');
 
 			$(this.igToolbarSelector).igToolbar('option', 'isExpanded', true);
 			equal($(this.igToolbarSelector).igToolbar('option', 'isExpanded'), true, 'Should be expanded');
@@ -203,10 +233,34 @@
 			$(this.igToolbarSelector).igToolbar('activateItem', 0, true);
 			equal($(this.igToolbarSelector).igToolbar('getItem', 0).igToolbarButton('option', 'isSelected'), true, 'Toolbar item activated');
 
+			// Hiding buttons
+			$(this.igToolbarSelector).data().igToolbar._hideButtonFromToolbar();
+			equal($(this.igToolbarSelector).data().igToolbar._hiddenButtons.length, 1, '1 button should be hidden');
+			$(this.igToolbarSelector).data().igToolbar._hideButtonFromToolbar();
+			equal($(this.igToolbarSelector).data().igToolbar._hiddenButtons.length, 2, '2 buttons should be hidden');
+			$(this.igToolbarSelector).data().igToolbar._showHiddenButtonFromToolbar();
+			$(this.igToolbarSelector).data().igToolbar._showHiddenButtonFromToolbar();
+			equal($(this.igToolbarSelector).data().igToolbar._hiddenButtons.length, 0, 'No button should be hidden');
+
+
+			// Custom collapse/expand button css classes
+			var $iconEl = $($(this.igToolbarSelector + "_collapseButton").find('span')[0]);
+
+			$(this.igToolbarSelector).igToolbar('option', 'collapseButtonIcon', 'testColapseIcon');
+			equal($(this.igToolbarSelector).igToolbar('option', 'collapseButtonIcon'), 'testColapseIcon', 'collapseButtonIcon is set');
+			$(this.igToolbarSelector).igToolbar('option', 'isExpanded', true);
+			equal($iconEl.hasClass('testColapseIcon'), true, 'span icon element has the new class set (collapsing)');
+
+			$(this.igToolbarSelector).igToolbar('option', 'expandButtonIcon', 'testExpandIcon');
+			equal($(this.igToolbarSelector).igToolbar('option', 'expandButtonIcon'), 'testExpandIcon', 'expandButtonIcon is set');
+			$(this.igToolbarSelector).igToolbar('option', 'isExpanded', false);
+			equal($iconEl.hasClass('testExpandIcon'), true, 'span icon element has the new class set (expanding)');
+
+
 			// Test button descriptors
 			newItems[0].updateProperty('isImage', true);
 			equal(newItems[0].getProperty('isImage').value, true, 'updating properties should work');
-			equal(newItems[0].getUpdatedProperties()[0].value, true, 'getUpdatedProperties()');
+			equal(newItems[0].getUpdatedProperties()[0].value, true, 'getUpdatedProperties() should work');
 
 			$(this.igToolbarSelector).igToolbar('removeItem', 0);
 			equal($(this.igToolbarSelector).igToolbar('option', 'items').length, newItems.length, 'Should have 2 items');
