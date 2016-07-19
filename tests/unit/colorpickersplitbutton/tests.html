@@ -42,7 +42,17 @@
 	                    icon: "ui-igbutton-forecolor"
 	                }],
 	                defaultItemName: "textColor",
-	                selectedTextColor: "red"
+	                hasDefaultIcon: false,
+	                selectedTextColor: "red",
+	                expanded: function (evt, ui) {
+	                	$('<input>').attr('type','hidden').val('expanded').appendTo(evt.target);
+	                },
+	                 click: function (evt, ui) {
+	                	$('<input>').attr('type','hidden').val('clicked').appendTo(evt.target);
+	                },
+	                collapsed: function (evt, ui) {
+	                	$('<input>').attr('type','hidden').val('collapsed').appendTo(evt.target);
+	                }
 	            });
 	            this.actualColorPickerSplitButton = $(this.id(this.colorPickerSplitButtonSelector)).data("ui-igColorPickerSplitButton");
 	        },
@@ -57,11 +67,108 @@
 
 	    module("igColorPickerSplitButton unit tests", unitTestsSetup);
 
+
+	   
+
 	    test("_onColorSelect", function () {
 	        var ui = { color: "#f1f1f1" };
 	        this.actualColorPickerSplitButton._onColorSelect({}, ui);
-	        deepEqual(this.actualColorPickerSplitButton.options.defaultColor, ui.color, "changed default color");
+	        
+	        deepEqual(this.actualColorPickerSplitButton.options.defaultColor, ui.color, "default color was not changed");
 	    });
+
+	    test("expand", function () {
+	        this.actualColorPickerSplitButton.expand(true);
+	        this.actualColorPickerSplitButton._triggerExpanded();
+	        var isExpanded = this.actualColorPickerSplitButton.element.find("input").val();
+	        
+	        equal(isExpanded, "expanded", "expand event was not triggered");
+	    });
+
+	    test("setColor", function () {
+	    	var getDefaultValue = this.actualColorPickerSplitButton.options.defaultColor;
+	    	equal(getDefaultValue, "#000", "defaultColor value isn't euqal with given color value");
+
+	    	var  color = "#f0f0f0";
+	        this.actualColorPickerSplitButton.setColor(color)
+	        var getDefaultChangedColor = this.actualColorPickerSplitButton.options.defaultColor;
+	        
+	        equal(getDefaultChangedColor, color, "defaultColor value was not changed");
+	    });
+
+	    test("_setOption", function () {
+	    	var color = "#afafaf";
+	    	this.actualColorPickerSplitButton.options.defaultColor = color;
+	    	var getDefaultColor = this.actualColorPickerSplitButton.options.defaultColor;
+
+	    	equal(getDefaultColor, color, "defaultColor value was not changed");
+	    })
+
+	    test("_setButtonColorIndicator", function () {
+	    	var color = "#ffffff";
+	    	this.actualColorPickerSplitButton._setButtonColorIndicator(color);
+
+	    	var getRgbColor = hexToRgb(color);
+
+	    	var getBtnColorIndicatorColor = this.actualColorPickerSplitButton.element.children(":first").children(":first").css("background-color");
+
+	    	this.actualColorPickerSplitButton._onItemClick();
+
+	    	equal(getBtnColorIndicatorColor, getRgbColor, "button color indicator was not set");
+	    })
+
+	    test("_onItemClick", function () {
+	    	equal(this.actualColorPickerSplitButton._onItemClick(), false, "when invoke _onItemClick isn't return false");
+	    })
+
+	    test("_onDefaultButtonClick", function () {
+	    	// Check before click if input element exist
+	    	var clickInputValue = this.actualColorPickerSplitButton.element.find("input").val();
+	    	var getDefaultButton = this.actualColorPickerSplitButton.element.children(":first").children(":first");
+	    	
+	    	equal(clickInputValue, undefined, "default button was clicked");
+	    	
+	    	getDefaultButton.trigger("click");
+	    	// Check after click the input element value
+	    	clickInputValue = this.actualColorPickerSplitButton.element.find("input").val();
+
+	    	equal(clickInputValue, "clicked", "default button was not clicked");
+	    })
+
+	    test("_preventCollapsing", function () {
+	    	var isPreventCollapsing = this.actualColorPickerSplitButton._preventCollapsing();
+	    	equal(isPreventCollapsing, false, "when invoke _preventCollapsing method isn't return false");
+	    })
+
+	    test("_setOptinWithEqualKeyValues", function () {
+	    	var color = "#afafaf";
+
+	    	notEqual(color, this.actualColorPickerSplitButton.options.defaultColor, "defaultColor option hasn't different value from given color value");
+
+	    	this.actualColorPickerSplitButton._setOption("defaultColor", color);
+	    	equal(color, this.actualColorPickerSplitButton.options.defaultColor, "defaultColor value was not changed");
+	    	
+	    	this.actualColorPickerSplitButton._setOption("defaultColor", color);
+	    	equal(color, this.actualColorPickerSplitButton.options.defaultColor, "defaultColor value was change with given color value");
+	    
+	    })
+	    
+	    test("collapse", function () {
+			this.actualColorPickerSplitButton.collapse(true);
+			var isCollapsed = this.actualColorPickerSplitButton.element.find("input").val();
+			ok(isCollapsed, "collapse event was not trigger");
+	    })	
+
+
+	    function hexToRgb(hex) {
+	    	var valueWithoutSymbol = hex.slice(1, hex.length);
+	    	var bigint = parseInt(valueWithoutSymbol, 16);
+		    var r = (bigint >> 16) & 255;
+		    var g = (bigint >> 8) & 255;
+		    var b = bigint & 255;
+
+	    	return hexToRgb = "rgb(" + r + ", " + g + ", " + b + ")";
+	    }
 	</script>
 </head>
 <body>
