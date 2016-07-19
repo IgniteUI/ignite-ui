@@ -475,7 +475,7 @@
                 // If the initial element is input or select, cache the name, remove it, set it to the hidden input for submit and upon destroy return it
                 nameAttribute: "",
                 // Subscribe to fire callbacks when selection is changed from api
-                internalSelChangeSubs: null,
+                internalSelChangeSubs: [],
                 initialDataBinding: true,
                 remoteFilteringTriggerEvt: null,
                 preventInputBlur: false,
