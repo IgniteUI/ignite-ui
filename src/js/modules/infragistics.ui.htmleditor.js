@@ -1139,16 +1139,17 @@ if (typeof jQuery !== "function") {
                 }
             }
         },
-        _isToolbarActive: function (tbName) {
-            var key;
-            for (key in this._toolbarsActiveState) {
-                if (this._toolbarsActiveState.hasOwnProperty(key)) {
-                    if (this._toolbarsActiveState[key].name === tbName) {
-                        return this._toolbarsActiveState[key].value;
-                    }
-                }
-            }
-        },
+        // Z.K. July 15, 2016 - Remove unused code
+        //_isToolbarActive: function (tbName) {
+        //    var key;
+        //    for (key in this._toolbarsActiveState) {
+        //        if (this._toolbarsActiveState.hasOwnProperty(key)) {
+        //            if (this._toolbarsActiveState[key].name === tbName) {
+        //                return this._toolbarsActiveState[key].value;
+        //            }
+        //        }
+        //    }
+        //},
         _execCommand: function (name, args, skipIETimeout) {
             var self = this;
 
