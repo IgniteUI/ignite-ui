@@ -53,44 +53,44 @@
 
 	    test("_changeColorOptions", function() {
 	    	this.actualColorPicker._setOption("colors", []);
-	    	equal(this.actualColorPicker.options.colors.length , 0, "colors options is set to empty through _setOption method");
+	    	equal(this.actualColorPicker.options.colors.length , 0, "colors options was not set to empty through _setOption method");
 	    })
 	    
 	    test("_changeStandardColorsOption", function () {
 	    	var colors = ["#f0ff0f", "#000a00", "#FEECE1"];
 	    	
-	    	notEqual(this.actualColorPicker.options.standardColors, colors, "arry of given colors isn't equal to  standardColors option");
+	    	notEqual(this.actualColorPicker.options.standardColors, colors, "standardColors options is equal with givan colors");
 	    	
 	    	this.actualColorPicker._setOption("standardColors", colors)
-	    	equal(this.actualColorPicker.options.standardColors, colors, "array of standardColors option was changed through _setOption method");
+	    	equal(this.actualColorPicker.options.standardColors, colors, "array of standardColors option was not changed through _setOption method");
 	    })
 	    
 	    test("selectColor", function () {
 	    	var colorFromPicker = this.actualColorPicker.selectColor("#000000")
-	    	ok(this.secondColor.hasClass("selected-color"), "Select given color");
+	    	ok(this.secondColor.hasClass("selected-color"), "color was not selected");
 	    })
 	    
 	    test("_getColorByElement", function () {
 	    	var expectedResult = this.secondColor.css("background-color");
 	    	var getColor = this.actualColorPicker._getColor(this.secondColor);
-	    	equal(getColor, expectedResult, "Get given color by element through _getColor method");   	
+	    	equal(getColor, expectedResult, "color was not got by element through _getColor method");   	
 	    })
 	    
 	    test("_clickCurrentColor", function () {
 	    	var clickFirstCustomColor = this.actualColorPicker.element.find(".igColorPicker-table").find(".igColorPicker-customColors").find(".igColorPicker-row").first().find(".igColorPicker-color").first().trigger("click");
-	    	ok(clickFirstCustomColor.hasClass("selected-color"), "Trigger colorpicker click event");
+	    	ok(clickFirstCustomColor.hasClass("selected-color"), "click event was not triggered");
 	    })
 	    
 	    test("_setTheSameOptionValue", function () {
 	    	var color = "#C00000";
 	    	
-	    	notEqual(color, this.actualColorPicker.options.standardColors, "color value isn't equal with standardColor value"); 
+	    	notEqual(color, this.actualColorPicker.options.standardColors, "color value is equal with standardColor value"); 
 	    	
 	    	this.actualColorPicker._setOption("standardColors", color)
-	    	equal(this.actualColorPicker.options.standardColors, color, "set color value to standardColors through _setOption method");
+	    	equal(this.actualColorPicker.options.standardColors, color, "given color was not set to standardColors through _setOption method");
 	    	
 	    	this.actualColorPicker._setOption("standardColors", color)
-	    	equal(color, this.actualColorPicker.options.standardColors, "set the same color value to standardColors option");
+	    	equal(color, this.actualColorPicker.options.standardColors, "standardColors option value has different value from given color value");
 	    })
 
 	</script>
