@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Precision Sample - Precision with Rating Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <style type="text/css">
+        .rating-options {
+            width: 350px;
+            margin-top: 20px;
+        }
+
+            .rating-options label {
+                width: 200px;
+            }
+
+            .rating-options label, .rating-options select {
+                float: left;
+            }
+
+        #selectPrecision, #decimalPlaces, #currValue {
+            width: 130px;
+        }
+
+        .rating-options > div {
+            margin: 7px 0;
+        }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/2016.2/latest/js/infragistics.dv.js"></script>
+    <!-- REMOVE: Remove any product script references that aren't
+        required for this sample and remove this comment -->
+
+</head>
+<body><p>This sample illustrates how to dynamically change options responsible for the size of the step of the selected items. The first option configured is for precision. Possible precision values include: Exact, Half and Whole. When the control is configured to use the Exact mode you have precise control over the portion of the rating item selected. Configuring the roundedDecimalPlaces property sets the accuracy of the value.</p>
+
+    <p>Select precision and decimal places</p>
+    <div id="igRating1"></div>
+
+    <div class="rating-options ui-helper-clearfix">
+
+        <label>Current value: </label>
+        <input id="currValue" type="text" value="" disabled="">
+        <br>
+        <br>
+        <label>Value as percent </label>
+        <input id="chkPercent" type="checkbox" checked="">
+        <br>
+        <br>
+
+        <label>Precision</label>
+        <select id="selectPrecision">
+            <option value="exact">Exact
+            <option value="half">Half
+            <option selected="selected" value="whole">Whole (default)
+        </select>
+        <br>
+        <br>
+
+        <div id="dynamicDiv">
+            <label>Select decimal places</label>
+            <select id="decimalPlaces">
+                <option value="1">.0
+                <option value="2">.00
+                <option selected="selected" value="3">.000 (default)
+            </select>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        $(function () {
+
+            $("#igRating1").igRating({
+                voteCount: 10,
+                valueAsPercent: true,
+                value: 0.4,
+                valueChange: function (evt, ui) {
+                    $("#currValue").val(ui.value);
+                }
+            });
+
+            $("#currValue").val($("#igRating1").igRating("value"));
+            OnSelectPrecision($("#selectPrecision").val());
+
+            $("#selectPrecision").change(function () {
+                var value = $(this).val();
+                OnSelectPrecision(value);
+            });
+
+            function OnSelectPrecision(value) {
+                $("#igRating1").igRating("option", "precision", value);
+                $("#dynamicDiv").css("visibility", (value === "exact") ? "visible" : "hidden");
+                $("#currValue").val($("#igRating1").igRating("value"));
+            }
+
+            $("#decimalPlaces").change(function () {
+                $("#igRating1").igRating("option", "roundedDecimalPlaces", parseInt($(this).val(), 10));
+            });
+
+            $("#chkPercent").change(function () {
+                $("#igRating1").igRating("option", "valueAsPercent", $(this).is(":checked"));
+                $("#currValue").val($("#igRating1").igRating("value"));
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

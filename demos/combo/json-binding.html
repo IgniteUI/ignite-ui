@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON Binding Sample - JSON Binding with Combo Box Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body><p>The combo easily binds to a JavaScript array or JSON data. This sample contains a basic example of client-side binding.</p>
+
+    <div id="combo"></div>
+
+    <script>
+        $(function () {
+
+            var data = [
+                      { "ID":1, "Name": "John Smith", "Age": 45 },
+                      { "ID":2, "Name": "Mary Johnson", "Age": 32 },
+                      { "ID":3, "Name": "Bob Ferguson", "Age": 27 }
+                ];
+            
+            $("#combo").igCombo({
+                dataSource: data, //JSON Array defined above         
+                valueKey: "ID",
+                textKey: "Name"
+            });
+        });
+    </script>
+
+</body>
+</html>

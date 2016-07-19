@@ -3243,6 +3243,9 @@ if (typeof jQuery !== "function") {
 			if (value !== "" && !isNaN(value)) {
 				if (this.options.maxValue && value > this.options.maxValue) {
 					value = this.options.maxValue;
+					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
+					this._valueInput.val(value);
+					this._enterEditMode();
 
 					//Raise warning
 					this._sendNotification("warning",

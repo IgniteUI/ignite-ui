@@ -1,832 +1,967 @@
 <!DOCTYPE html>
 <head>
     <title>Html Editor Tests</title>
-
-	<link type="text/css" rel="stylesheet" href="../../../../../src/css/themes/infragistics/infragistics.theme.css" />
-    
+    <link type="text/css" rel="stylesheet" href="../../../../../src/css/themes/infragistics/infragistics.theme.css" />
     <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.shared.css" />
-	<link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.popover.css" />
+    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.popover.css" />
     <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.toolbarbutton.css" />
     <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.splitbutton.css" />
     <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.colorpicker.css" />
-	<link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.combo.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.combo.css" media="screen" />
     <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.editors.css" media="screen" />
     <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.htmleditor.css" media="screen" />
     <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.toolbar.css" media="screen" />
-	
-	<link type="text/css" href="../../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-	 
+    <link type="text/css" href="../../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
     <script type="text/javascript" src="../../../../../bower_components/jquery/dist/jquery.js"></script>
-	<script type="text/javascript" src="../../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
-	<script type="text/javascript" src="../../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+    <script type="text/javascript" src="../../../../../bower_components/jquery-ui/jquery-ui.js"></script>
     <script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>
-
-	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
-	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.shared.js"></script>
-	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.templating.js"></script>
-	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.popover.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.toolbarbutton.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.toolbar.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.splitbutton.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.colorpicker.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.colorpickersplitbutton.js"></script>
-	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.datasource.js"></script>
-
-	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.combo.js"></script>
+    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.combo.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.toolbar-en.js"></script>
-	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.htmleditor-en.js"></script>
-	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.htmleditor.js"></script>
+    <script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.htmleditor-en.js"></script>
+    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.htmleditor.js"></script>
     <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.editors.js"></script>
-	<script type="text/javascript" src="../../../common/test-util.js"></script>
+    <script type="text/javascript" src="../../../common/test-util.js"></script>
+    <script type="text/javascript">
+        var equalWithEpsilon = function (a, b, epsilon) {
+            return Math.abs(a - b) < epsilon;
+        }
 
-	<script type="text/javascript">
-        
-	    var equalWithEpsilon = function(a,b,epsilon){
-	        return Math.abs(a - b) < epsilon;
-	    }
-
-	    var htmlEditorTestBeds = {
-	        htmlEditorId: "html1",
-	        setup: function () {
-	            $('<div id="' + this.htmlEditorId + '"></div>')
+        var htmlEditorTestBeds = {
+            htmlEditorId: "html1",
+            secondHtmlEditorId: "htmlEditorSetInitOptions",
+            keyboardHtmlEditorId: "keyboardInteractionEditor",
+            setup: function () {
+                $('<div id="' + this.htmlEditorId + '"></div>')
                     .appendTo(document.body)
                     .igHtmlEditor();
-	        },
-	        teardown: function () {
-	            $("#" + this.htmlEditorId).igHtmlEditor('destroy').remove();
-	        },
-	        areDefaultToolbarsRendered: function () {
-	            var toolbarsContainer = this.htmlEditorId + "_toolbars";
-	            var toolbars = $('#' + toolbarsContainer).children();
 
-	            equal(toolbars.length, 4, 'All default toolbars are rendered.');
-	            toolbars.each(function (i, e) {
-	                ok($(e).hasClass("ui-widget ui-widget-content ui-igtoolbar ui-corner-all"), "The element (" + e.id + ") have all expected classes.");
-	            });
+                $('<div id="' + this.secondHtmlEditorId + '"></div>')
+                    .appendTo(document.body)
+                    .igHtmlEditor({
+                        showCopyPasteToolbar: false,
+                        toolbarSettings: [
+                        {
+                            name: "textToolbar",
+                            isExpanded: false,
+                            isBold: true,
+                        }]
+                    });
 
-	        },
-	        areTextToolbarItemsRendered: function () {
-	            var textToolbarItemsID = this.htmlEditorId + "_toolbars_textToolbar_toolbar_buttons";
-	            var toolbarItems = $("#" + textToolbarItemsID).children();
-	            var css = "ui-button-icon-only ui-button ui-igbutton ui-widget ui-widget-content ui-corner-all ui-state-default";
+                $('<div id="' + this.keyboardHtmlEditorId + '"></div>')
+                    .appendTo(document.body)
+                    .igHtmlEditor({
+                        value: "<table border='1'><tr><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr></table>"
+                    });
+            },
+            teardown: function () {
+                $("#" + this.htmlEditorId).igHtmlEditor('destroy').remove();
+            },
+            areDefaultToolbarsRendered: function () {
+                var toolbarsContainer = this.htmlEditorId + "_toolbars";
+                var toolbars = $('#' + toolbarsContainer).children();
 
-	            equal(toolbarItems.length, 7, 'All Text toolbar items are rendered.');
-	            toolbarItems.each(function (i, e) {
-	                if ($(e).is(":ui-igCombo")) {
-	                    css = "ui-igcombo-wrapper";
-	                    if ($(e).hasClass("ui-combo-fontfamily")) {
-	                        css += " ui-combo-fontfamily";
-	                    }
-	                }
-	                ok($(e).hasClass(css), "The element (" + e.id + ") have all expected classes.");
-	            });
+                equal(toolbars.length, 4, 'All default toolbars are rendered.');
+                toolbars.each(function (i, e) {
+                    ok($(e).hasClass("ui-widget ui-widget-content ui-igtoolbar ui-corner-all"), "The element (" + e.id + ") have all expected classes.");
+                });
 
-	        },
-	        areFormattingToolbarItemsRendered: function () {
-	            var formattingToolbarItemsID = this.htmlEditorId + "_toolbars_formattingToolbar_toolbar_buttons";
-	            var toolbarItems = $("#" + formattingToolbarItemsID).children();
-	            var css = "ui-button-icon-only ui-button ui-igbutton ui-widget ui-widget-content ui-corner-all ui-state-default";
+            },
+            areTextToolbarItemsRendered: function () {
+                var textToolbarItemsID = this.htmlEditorId + "_toolbars_textToolbar_toolbar_buttons";
+                var toolbarItems = $("#" + textToolbarItemsID).children();
+                var css = "ui-button-icon-only ui-button ui-igbutton ui-widget ui-widget-content ui-corner-all ui-state-default";
 
-	            equal(toolbarItems.length, 10, 'All Formatting toolbar items are rendered.');
-	            toolbarItems.each(function (i, e) {
-	                if ($(e).is(":ui-igSplitButton") || $(e).is(":ui-igColorPickerSplitButton")) {
-	                    css = "ui-splitbutton ui-widget";
-	                }
-	                //console.log(e.id, $(e).is(":ui-igSplitButton") || $(e).is(":ui-igColorPickerSplitButton"), css);
-	                ok($(e).hasClass(css), "The element (" + e.id + ") have all expected classes.");
-	            });
-	        },
-	        areInsertObjectToolbarItemsRendered: function () {
-	            var insertObjectToolbarItemsID = this.htmlEditorId + "_toolbars_insertObjectToolbar_toolbar_buttons";
-	            var toolbarItems = $("#" + insertObjectToolbarItemsID).children();
-	            var css = "ui-button-icon-only ui-button ui-igbutton ui-widget ui-widget-content ui-corner-all ui-state-default";
+                equal(toolbarItems.length, 7, 'All Text toolbar items are rendered.');
+                toolbarItems.each(function (i, e) {
+                    if ($(e).is(":ui-igCombo")) {
+                        css = "ui-igcombo-wrapper";
+                        if ($(e).hasClass("ui-combo-fontfamily")) {
+                            css += " ui-combo-fontfamily";
+                        }
+                    }
+                    ok($(e).hasClass(css), "The element (" + e.id + ") have all expected classes.");
+                });
 
-	            equal(toolbarItems.length, 7, 'All Insert Object toolbar items are rendered.');
-	            toolbarItems.each(function (i, e) {
-	                ok($(e).hasClass(css), "The element (" + e.id + ") have all expected classes.");
-	            });
-	        },
-	        areCopyPasteToolbarItemsRendered: function () {
-	            var copyPasteToolbarItemsID = this.htmlEditorId + "_toolbars_copyPasteToolbar_toolbar_buttons";
-	            var toolbarItems = $("#" + copyPasteToolbarItemsID).children();
-	            var css = "ui-button-icon-only ui-button ui-igbutton ui-widget ui-widget-content ui-corner-all ui-state-default";
+            },
+            areFormattingToolbarItemsRendered: function () {
+                var formattingToolbarItemsID = this.htmlEditorId + "_toolbars_formattingToolbar_toolbar_buttons";
+                var toolbarItems = $("#" + formattingToolbarItemsID).children();
+                var css = "ui-button-icon-only ui-button ui-igbutton ui-widget ui-widget-content ui-corner-all ui-state-default";
 
-	            equal(toolbarItems.length, 5, 'All "Copy/paste" toolbar items are rendered.');
-	            toolbarItems.each(function (i, e) {
-	                ok($(e).hasClass(css), "The element (" + e.id + ") have all expected classes.");
-	            });
-	        },
-	        isToolabrExpandable: function (toolbarId) {
-	            var toolabrCollapseButton = this.htmlEditorId + "_toolbars_" + toolbarId + "_collapseButton";
-	            var toolbar = $("#" + this.htmlEditorId + "_toolbars_" + toolbarId);
-	            var toolbarWidth = toolbar.width();
-	            var epsilon = 3;//px
+                equal(toolbarItems.length, 10, 'All Formatting toolbar items are rendered.');
+                toolbarItems.each(function (i, e) {
+                    if ($(e).is(":ui-igSplitButton") || $(e).is(":ui-igColorPickerSplitButton")) {
+                        css = "ui-splitbutton ui-widget";
+                    }
+                    //console.log(e.id, $(e).is(":ui-igSplitButton") || $(e).is(":ui-igColorPickerSplitButton"), css);
+                    ok($(e).hasClass(css), "The element (" + e.id + ") have all expected classes.");
+                });
+            },
+            areInsertObjectToolbarItemsRendered: function () {
+                var insertObjectToolbarItemsID = this.htmlEditorId + "_toolbars_insertObjectToolbar_toolbar_buttons";
+                var toolbarItems = $("#" + insertObjectToolbarItemsID).children();
+                var css = "ui-button-icon-only ui-button ui-igbutton ui-widget ui-widget-content ui-corner-all ui-state-default";
 
-	            $("#" + toolabrCollapseButton).click();
+                equal(toolbarItems.length, 7, 'All Insert Object toolbar items are rendered.');
+                toolbarItems.each(function (i, e) {
+                    ok($(e).hasClass(css), "The element (" + e.id + ") have all expected classes.");
+                });
+            },
+            areCopyPasteToolbarItemsRendered: function () {
+                var copyPasteToolbarItemsID = this.htmlEditorId + "_toolbars_copyPasteToolbar_toolbar_buttons";
+                var toolbarItems = $("#" + copyPasteToolbarItemsID).children();
+                var css = "ui-button-icon-only ui-button ui-igbutton ui-widget ui-widget-content ui-corner-all ui-state-default";
 
-	            stop();
-	            setTimeout(function () { start(); }, 100);
+                equal(toolbarItems.length, 5, 'All "Copy/paste" toolbar items are rendered.');
+                toolbarItems.each(function (i, e) {
+                    ok($(e).hasClass(css), "The element (" + e.id + ") have all expected classes.");
+                });
+            },
+            isToolabrExpandable: function (toolbarId) {
+                var toolabrCollapseButton = this.htmlEditorId + "_toolbars_" + toolbarId + "_collapseButton";
+                var toolbar = $("#" + this.htmlEditorId + "_toolbars_" + toolbarId);
+                var toolbarWidth = toolbar.width();
+                var epsilon = 3; //px
 
-	            toolbar.bind("igtoolbarexpanded", function () {
-	                ok(equalWithEpsilon(toolbar.width(), toolbarWidth, epsilon), "The " + toolbarId + " toolbar is expanded.");
-	                start();
-	            });
-	            stop();
-	            $("#" + toolabrCollapseButton).click();
-	        },
-	        isToolbarCollapsible: function (toolbarId) {
-	            var toolabrCollapseButton = this.htmlEditorId + "_toolbars_" + toolbarId + "_collapseButton";
-	            var toolbar = $("#" + this.htmlEditorId + "_toolbars_" + toolbarId);
-	            var toolbarWidth = toolbar.width();
-	            var epsilon = 3;//px
+                $("#" + toolabrCollapseButton).click();
 
-	            stop();
-	            setTimeout(function () { start(); }, 100);
+                stop();
+                setTimeout(function () {
+                    start();
+                }, 100);
 
-	            toolbar.bind("igtoolbarcollapsed", function () {
-	                ok(equalWithEpsilon(toolbar.width(), toolbar.height(), epsilon), "The " + toolbarId + " toolbar is collapsed.");
-	                start();
-	            });
-	            stop();
-	            $("#" + toolabrCollapseButton).click();
-	        },
-	        isContentAreaRenderedProperly: function () {
-	            var iframe = $("#" + this.htmlEditorId + "_editor"),
+                toolbar.bind("igtoolbarexpanded", function () {
+                    ok(equalWithEpsilon(toolbar.width(), toolbarWidth, epsilon), "The " + toolbarId + " toolbar is expanded.");
+                    start();
+                });
+                stop();
+                $("#" + toolabrCollapseButton).click();
+            },
+            isToolbarCollapsible: function (toolbarId) {
+                var toolabrCollapseButton = this.htmlEditorId + "_toolbars_" + toolbarId + "_collapseButton";
+                var toolbar = $("#" + this.htmlEditorId + "_toolbars_" + toolbarId);
+                var toolbarWidth = toolbar.width();
+                var epsilon = 3; //px
+
+                stop();
+                setTimeout(function () {
+                    start();
+                }, 100);
+
+                toolbar.bind("igtoolbarcollapsed", function () {
+                    ok(equalWithEpsilon(toolbar.width(), toolbar.height(), epsilon), "The " + toolbarId + " toolbar is collapsed.");
+                    start();
+                });
+                stop();
+                $("#" + toolabrCollapseButton).click();
+            },
+            isContentAreaRenderedProperly: function () {
+                var iframe = $("#" + this.htmlEditorId + "_editor"),
                     textArea = $("#" + this.htmlEditorId + "_source"),
                     htmlEditor = $('#' + this.htmlEditorId);
-	            htmlEditorWidth = htmlEditor.igHtmlEditor("option", "width"),
-				htmlEditorHeight = htmlEditor.igHtmlEditor("option", "height");
-	            ok(iframe.height() < htmlEditorHeight && (iframe.width() > 0 && iframe.width() <= htmlEditorWidth), "HTML editor design view is rendered.");
-	            ok(textArea.length && textArea.width() && textArea.height(), "HTML editor source view is rendered.");
-	        },
-	        initialContentRendering: function () {
-	            var id = 'htmlEditorId1', content = '<p>Some text</p><ul><li>list 1</li><li>list 2</li></ul><div>Something in a div</div>';
-	            $('<div id="' + id + '" />').append(content).appendTo('body');
-	            $('#' + id).igHtmlEditor();
-	            equal($('#' + id).igHtmlEditor('getContent', 'html'), content, 'The initial content was not rendered in the HTML Editor.');
-	            var newContent = '<div><span>text 1</span><span>text 2</span><table><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table></div>';
-	            $('#' + id).igHtmlEditor('setContent', newContent, 'html');
-	            equal($('#' + id).igHtmlEditor('getContent', 'html'), newContent, 'The set content method did not function properly.');
-	        }
-	    };
+                htmlEditorWidth = htmlEditor.igHtmlEditor("option", "width"),
+                    htmlEditorHeight = htmlEditor.igHtmlEditor("option", "height");
+                ok(iframe.height() < htmlEditorHeight && (iframe.width() > 0 && iframe.width() <= htmlEditorWidth), "HTML editor design view is rendered.");
+                ok(textArea.length && textArea.width() && textArea.height(), "HTML editor source view is rendered.");
+            },
+            initialContentRendering: function () {
+                var id = 'htmlEditorId1',
+                    content = '<p>Some text</p><ul><li>list 1</li><li>list 2</li></ul><div>Something in a div</div>';
+                $('<div id="' + id + '" />').append(content).appendTo('body');
+                $('#' + id).igHtmlEditor();
+                equal($('#' + id).igHtmlEditor('getContent', 'html'), content, 'The initial content was not rendered in the HTML Editor.');
+                var newContent = '<div><span>text 1</span><span>text 2</span><table><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table></div>';
+                $('#' + id).igHtmlEditor('setContent', newContent, 'html');
+                equal($('#' + id).igHtmlEditor('getContent', 'html'), newContent, 'The set content method did not function properly.');
+            },
+            modifyInitiallySetOptions: function () {
+                var htmlEditor = $('#' + this.secondHtmlEditorId);
 
-	    var htmlEditorInteractionTests = {
-	        p: null,
-	        htmlEditorId: "html1",
-	        htmlEditor: null,
-	        editorBody: null,
-	        setup: function () {
-	            var editorDocument,
+                // Check toolbarSettings initial existance
+                equal(htmlEditor.igHtmlEditor("option", "toolbarSettings").length, 1, "toolbarSettings are not set.");
+
+                htmlEditor.igHtmlEditor("option", "value", "Set and modify toolbar settings");
+                htmlEditor.igHtmlEditor("option", "height", 400);
+                htmlEditor.igHtmlEditor("option", "width", 700);
+                htmlEditor.igHtmlEditor("option", "showFormattingToolbar", true);
+                htmlEditor.igHtmlEditor("option", "showCopyPasteToolbar", false);
+                htmlEditor.igHtmlEditor("option", "toolbarSettings", [
+                    {
+                        name: "textToolbar",
+                        isExpanded: true
+                    },
+                    {
+                        name: "copyPasteToolbar",
+                        isExpanded: false
+                    }]);
+
+                htmlEditor.igHtmlEditor("option", "value", undefined);
+
+                // Check some options that werent set initially (_setOption function)
+                equal(htmlEditor.igHtmlEditor("option", "value"), "Set and modify toolbar settings", "Value options is correctly set");
+                equal(htmlEditor.igHtmlEditor("option", "toolbarSettings").length, 2, "toolbarSettings changed successfully");
+                equal(htmlEditor.igHtmlEditor("option", "height"), 400, "height changed sucessfully");
+                equal(htmlEditor.igHtmlEditor("option", "width"), 700, "height changed sucessfully");
+                equal(htmlEditor.igHtmlEditor("option", "showFormattingToolbar"), true, "showFormattingToolbar is set to true");
+                equal(htmlEditor.igHtmlEditor("option", "showCopyPasteToolbar"), false, "showCopyPasteToolbar is set to false");
+
+                // Check text toolbar custom settings
+                equal($('#htmlEditorSetInitOptions').data().igHtmlEditor._allToolbars[0].items[0].settings.props.isBold.value, true, "isBold Text Toolbar item is set to true");
+            },
+            keyboardInteractions: function () {
+                var htmlEditor = $('#' + this.keyboardHtmlEditorId),
+                    iframe = $("#keyboardInteractionEditor").find("#keyboardInteractionEditor_editor"),
+                    viewStateBtn = htmlEditor.find(".ui-igbutton-viewsource");
+
+                viewStateBtn.click();
+
+                stop();
+                setTimeout(function () {
+                    start();
+                }, 100);
+
+                // Check if the edit source is hidden and view source is shown
+                equal(iframe.is(":visible"), false, "View source mode on");
+
+                viewStateBtn.click();
+
+                stop();
+                setTimeout(function () {
+                    start();
+                }, 100);
+
+
+                // Check if the edit source is shown and view source is hidden
+                equal(iframe.is(":visible"), true, "View source mode off");
+            }
+        };
+
+        var htmlEditorInteractionTests = {
+            p: null,
+            htmlEditorId: "html1",
+            htmlEditor: null,
+            editorBody: null,
+            setup: function () {
+                var editorDocument,
                     self = this;
 
-	            this.htmlEditor = $('<div id="' + this.htmlEditorId + '"></div>');
+                this.htmlEditor = $('<div id="' + this.htmlEditorId + '"></div>');
 
-	            this.htmlEditor.appendTo(document.body)
+                this.htmlEditor.appendTo(document.body)
                     .igHtmlEditor({
                         rendered: function () {
                             editorDocument = self.htmlEditor.find("iframe").contents(),
-                            self.editorBody = editorDocument.find("body");
+                                self.editorBody = editorDocument.find("body");
                             self.editorBody.empty().append($("<p>test</p>", editorDocument[0]));
                         }
                     });
-	        },
-	        teardown: function () {
-	            $("#" + this.htmlEditorId).igHtmlEditor('destroy').remove();
-	        },
-	        bold: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return ((this.css("fontWeight") === "bold"
-                        || this.css("fontWeight") === "700")
-                        || (this.find("strong:only-child").length) //IE
-                        || (this.children().first().css("fontWeight") === "bold")
-                        );
-	            };
-
-	            if (useExecAction) {
-	                this._testExecuteAction("Bold", callback);
-	            } else {
-	                this._testToolbarButtonClick("Bold", "", "textToolbar", callback);
-	            }
-	        },
-	        italic: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return ((this.css("fontStyle") === "italic")
-                        || ((this.find("em:only-child")))
-                        || (this.children().first().css("fontStyle") === "italic")
-                        );
-	            };
-
-	            if (useExecAction) {
-	                this._testExecuteAction("Italic", callback);
-	            } else {
-	                this._testToolbarButtonClick("Italic", "", "textToolbar", callback);
-	            }
-	        },
-	        undelined: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return ((this.css("textDecoration") === "underline")
-                        || (this.children().first().css("textDecoration") === "underline")
-                        || ((this.find("u:only-child")))
+            },
+            teardown: function () {
+                $("#" + this.htmlEditorId).igHtmlEditor('destroy').remove();
+            },
+            bold: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return ((this.css("fontWeight") === "bold" ||
+                            this.css("fontWeight") === "700") ||
+                        (this.find("strong:only-child").length) //IE
+                        ||
+                        (this.children().first().css("fontWeight") === "bold")
                     );
-	            };
+                };
 
-	            if (useExecAction) {
-	                this._testExecuteAction("Underline", callback);
-	            } else {
-	                this._testToolbarButtonClick("Underline", "", "textToolbar", callback);
-	            }
-	        },
-	        strikethroughed: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return ((this.css("textDecoration").indexOf("line-through") !== -1)
-                        || (this.children().first().css("textDecoration").indexOf("line-through") !== -1)
-                        || ((this.find("strike:only-child")))
+                if (useExecAction) {
+                    this._testExecuteAction("Bold", callback);
+                } else {
+                    this._testToolbarButtonClick("Bold", "", "textToolbar", callback);
+                }
+            },
+            italic: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return ((this.css("fontStyle") === "italic") ||
+                        ((this.find("em:only-child"))) ||
+                        (this.children().first().css("fontStyle") === "italic")
                     );
-	            };
+                };
 
-	            if (useExecAction) {
-	                this._testExecuteAction("Strikethrough", callback);
-	            } else {
-	                this._testToolbarButtonClick("Strikethrough", "", "textToolbar", callback);
-	            }
-	        },
-	        justifyLeft: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                //Chrome default textAlign value is start.
-	                return this.css("textAlign") === "left" || this.css("textAlign") === "start";
-	            };
-
-	            if (useExecAction) {
-	                this._testExecuteAction("justifyleft", callback);
-	            } else {
-	                this._testToolbarButtonClick("justifyleft", "", "formattingToolbar", callback);
-	            }
-	        },
-	        justifyCenter: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return this.css("textAlign") === "center";
-	            };
-
-	            if (useExecAction) {
-	                this._testExecuteAction("justifycenter", callback);
-	            } else {
-	                this._testToolbarButtonClick("justifycenter", "", "formattingToolbar", callback);
-	            }
-	        },
-	        justifyRight: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return this.css("textAlign") === "right";
-	            };
-
-	            if (useExecAction) {
-	                this._testExecuteAction("justifyright", callback);
-	            } else {
-	                this._testToolbarButtonClick("justifyright", "", "formattingToolbar", callback);
-	            }
-	        },
-	        justifyFull: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return this.css("textAlign") === "justify";
-	            };
-
-	            if (useExecAction) {
-	                this._testExecuteAction("justifyfull", callback);
-	            } else {
-	                this._testToolbarButtonClick("justifyfull", "", "formattingToolbar", callback);
-	            }
-	        },
-	        insertUnorderedList: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return (this.parents().length === 0 && iframeBody.find("ul").length === 1 //Mozilla
-                        || this.children(":first").is("ul") // chrome
-                        );
-	            };
-
-	            if (useExecAction) {
-	                this._testExecuteAction("InsertUnorderedList", callback);
-	            } else {
-	                this._testToolbarButtonClick("InsertUnorderedList", "", "formattingToolbar", callback);
-	            }
-	        },
-	        insertOrderedList: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return (this.parents().length === 0 && iframeBody.find("ol").length === 1
-                        || this.children(":first").is("ol") // chrome
+                if (useExecAction) {
+                    this._testExecuteAction("Italic", callback);
+                } else {
+                    this._testToolbarButtonClick("Italic", "", "textToolbar", callback);
+                }
+            },
+            undelined: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return ((this.css("textDecoration") === "underline") ||
+                        (this.children().first().css("textDecoration") === "underline") ||
+                        ((this.find("u:only-child")))
                     );
-	            };
+                };
 
-	            if (useExecAction) {
-	                this._testExecuteAction("InsertOrderedList", callback)
-	            } else {
-	                this._testToolbarButtonClick("InsertOrderedList", "", "formattingToolbar", callback);
-	            }
-	        },
-	        indentText: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return this.css("margin-left") === "40px" || (iframeBody.find("blockquote > p").length === 1 && iframeBody.find("blockquote").css("margin-left") === "40px");
-	            };
+                if (useExecAction) {
+                    this._testExecuteAction("Underline", callback);
+                } else {
+                    this._testToolbarButtonClick("Underline", "", "textToolbar", callback);
+                }
+            },
+            strikethroughed: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return ((this.css("textDecoration").indexOf("line-through") !== -1) ||
+                        (this.children().first().css("textDecoration").indexOf("line-through") !== -1) ||
+                        ((this.find("strike:only-child")))
+                    );
+                };
 
-	            if (useExecAction) {
-	                this._testExecuteAction("indent", callback);
-	            } else {
-	                this._testToolbarButtonClick("indent", "", "formattingToolbar", callback);
-	            }
-	        },
-	        outdentText: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return this.css("margin-left") === "0px" || (iframeBody.find("blockquote > p").length === 1 && iframeBody.find("blockquote").css("margin-left") === "0px");
-	            };
+                if (useExecAction) {
+                    this._testExecuteAction("Strikethrough", callback);
+                } else {
+                    this._testToolbarButtonClick("Strikethrough", "", "textToolbar", callback);
+                }
+            },
+            justifyLeft: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    //Chrome default textAlign value is start.
+                    return this.css("textAlign") === "left" || this.css("textAlign") === "start";
+                };
 
-	            this.indentText();
-	            if (useExecAction) {
-	                this._testExecuteAction("outdent", callback);
-	            } else {
-	                this._testToolbarButtonClick("outdent", "", "formattingToolbar", callback);
-	            }
-	        },
-	        colorText: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return (this.css("color") === "rgb(255, 0, 0)" //Mozilla FF
-                        || this.children(":first").css("color") === "rgb(255, 0, 0)"); //IE, Chtome
-	            };
+                if (useExecAction) {
+                    this._testExecuteAction("justifyleft", callback);
+                } else {
+                    this._testToolbarButtonClick("justifyleft", "", "formattingToolbar", callback);
+                }
+            },
+            justifyCenter: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return this.css("textAlign") === "center";
+                };
 
-	            if (useExecAction) {
-	                this._testExecuteAction("forecolor", callback, 'red');
-	            } else {
-	                this._testToolbarButtonClick("textColor", "textColor", "formattingToolbar", callback);
-	            }
-	        },
-	        buttonCombinationsTest: function () {
-	            var i, buttonsNames = arguments;
-	            for (i = 0; i < buttonsNames.length; i++) {
-	                if ($.isFunction(this[buttonsNames[i]])) {
-	                    this[buttonsNames[i]]();
-	                }
-	            }
-	        },
-	        removeIndentFromText: function () { },
-	        changeFontName: function (useExecAction) {
-	            var callback = function () {
-	                return this.children(":first").css("fontFamily") === "Helvetica";
-	            };
+                if (useExecAction) {
+                    this._testExecuteAction("justifycenter", callback);
+                } else {
+                    this._testToolbarButtonClick("justifycenter", "", "formattingToolbar", callback);
+                }
+            },
+            justifyRight: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return this.css("textAlign") === "right";
+                };
 
-	            if (useExecAction) {
-	                this._testExecuteAction("fontname", callback, 'Helvetica');
-	            } else {
-	                this._testIgCombo("fontFamily", "textToolbar", 3, callback);
-	            }
-	        },
-	        changeFontSize: function (useExecAction) {
-	            var callback = function () {
-	                return (this.children(":first").css("fontSize") === "18px" //Chrome, FF
-                            || this.children(":first").css("fontSize") === "18.06px") //IE
-	            };
+                if (useExecAction) {
+                    this._testExecuteAction("justifyright", callback);
+                } else {
+                    this._testToolbarButtonClick("justifyright", "", "formattingToolbar", callback);
+                }
+            },
+            justifyFull: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return this.css("textAlign") === "justify";
+                };
 
-	            if (useExecAction) {
-	                // the param 4 === font-size: large === 18px
-	                this._testExecuteAction("fontSize", callback, 4);
-	            } else {
-	                this._testIgCombo("fontSize", "textToolbar", 3, callback);
-	            }
-	        },
-	        changeHeadingFormat: function (useExecAction) {
-	            var callback = function (iframeBody) {
-	                return !!iframeBody.find("h3").length;
-	            };
+                if (useExecAction) {
+                    this._testExecuteAction("justifyfull", callback);
+                } else {
+                    this._testToolbarButtonClick("justifyfull", "", "formattingToolbar", callback);
+                }
+            },
+            insertUnorderedList: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return (this.parents().length === 0 && iframeBody.find("ul").length === 1 //Mozilla
+                        ||
+                        this.children(":first").is("ul") // chrome
+                    );
+                };
 
-	            if (useExecAction) {
-	                this._testExecuteAction("formatBlock", callback, 'h3');
-	            } else {
-	                this._testIgCombo("formatsList", "textToolbar", 2, callback);
-	            }
-	        },
+                if (useExecAction) {
+                    this._testExecuteAction("InsertUnorderedList", callback);
+                } else {
+                    this._testToolbarButtonClick("InsertUnorderedList", "", "formattingToolbar", callback);
+                }
+            },
+            insertOrderedList: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return (this.parents().length === 0 && iframeBody.find("ol").length === 1 ||
+                        this.children(":first").is("ol") // chrome
+                    );
+                };
 
-	        _testToolbarButtonClick: function (buttonName, splitButtonName, toolbarName, conditionCallBack) {
-	            /* 
+                if (useExecAction) {
+                    this._testExecuteAction("InsertOrderedList", callback)
+                } else {
+                    this._testToolbarButtonClick("InsertOrderedList", "", "formattingToolbar", callback);
+                }
+            },
+            indentText: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return this.css("margin-left") === "40px" || (iframeBody.find("blockquote > p").length === 1 && iframeBody.find("blockquote").css("margin-left") === "40px");
+                };
+
+                if (useExecAction) {
+                    this._testExecuteAction("indent", callback);
+                } else {
+                    this._testToolbarButtonClick("indent", "", "formattingToolbar", callback);
+                }
+            },
+            outdentText: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return this.css("margin-left") === "0px" || (iframeBody.find("blockquote > p").length === 1 && iframeBody.find("blockquote").css("margin-left") === "0px");
+                };
+
+                this.indentText();
+                if (useExecAction) {
+                    this._testExecuteAction("outdent", callback);
+                } else {
+                    this._testToolbarButtonClick("outdent", "", "formattingToolbar", callback);
+                }
+            },
+            colorText: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return (this.css("color") === "rgb(255, 0, 0)" //Mozilla FF
+                        ||
+                        this.children(":first").css("color") === "rgb(255, 0, 0)"); //IE, Chtome
+                };
+
+                if (useExecAction) {
+                    this._testExecuteAction("forecolor", callback, 'red');
+                } else {
+                    this._testToolbarButtonClick("textColor", "textColor", "formattingToolbar", callback);
+                }
+            },
+            buttonCombinationsTest: function () {
+                var i, buttonsNames = arguments;
+                for (i = 0; i < buttonsNames.length; i++) {
+                    if ($.isFunction(this[buttonsNames[i]])) {
+                        this[buttonsNames[i]]();
+                    }
+                }
+            },
+            removeIndentFromText: function () { },
+            changeFontName: function (useExecAction) {
+                var callback = function () {
+                    return this.children(":first").css("fontFamily") === "Helvetica";
+                };
+
+                if (useExecAction) {
+                    this._testExecuteAction("fontname", callback, 'Helvetica');
+                } else {
+                    this._testIgCombo("fontFamily", "textToolbar", 3, callback);
+                }
+            },
+            changeFontSize: function (useExecAction) {
+                var callback = function () {
+                    return (this.children(":first").css("fontSize") === "18px" //Chrome, FF
+                            ||
+                            this.children(":first").css("fontSize") === "18.06px") //IE
+                };
+
+                if (useExecAction) {
+                    // the param 4 === font-size: large === 18px
+                    this._testExecuteAction("fontSize", callback, 4);
+                } else {
+                    this._testIgCombo("fontSize", "textToolbar", 3, callback);
+                }
+            },
+            changeHeadingFormat: function (useExecAction) {
+                var callback = function (iframeBody) {
+                    return !!iframeBody.find("h3").length;
+                };
+
+                if (useExecAction) {
+                    this._testExecuteAction("formatBlock", callback, 'h3');
+                } else {
+                    this._testIgCombo("formatsList", "textToolbar", 2, callback);
+                }
+            },
+            _testToolbarButtonClick: function (buttonName, splitButtonName, toolbarName, conditionCallBack) {
+                /*
                     Test the result of html toolbar buttons click.
                     paramType="string" The name of the button as it is defined in the html editor options.
                     paramType="function" return="bool". A callback function which scope is the paragraph jq element which is used for the test.
                     paramType="bool"
                 */
-	            var self = this,
+                var self = this,
                     splitButtonName = splitButtonName || "",
                     button = $("#" + this.htmlEditorId + "_toolbars_" + toolbarName + "_item_" + ((splitButtonName === "") ? buttonName : splitButtonName + "_" + buttonName));
-	            stop();
-	            
-	            setTimeout(function () {
-	                var p = self.editorBody.find("p:first");
-	                self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
-	                button.trigger("click");
-	                var condition = false;
-	                if ($.isFunction(conditionCallBack)) {
-	                    condition = conditionCallBack.call(p, self.editorBody);
-	                }
+                stop();
 
-	                ok(condition, buttonName + " combo.");
-	                start();
-	            }, 200);
-	        },
-	        _testExecuteAction: function (actionName, conditionCallBack, param) {
-	            /* 
+                setTimeout(function () {
+                    var p = self.editorBody.find("p:first");
+                    self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
+                    button.trigger("click");
+                    var condition = false;
+                    if ($.isFunction(conditionCallBack)) {
+                        condition = conditionCallBack.call(p, self.editorBody);
+                    }
+
+                    ok(condition, buttonName + " combo.");
+                    start();
+                }, 200);
+            },
+            _testExecuteAction: function (actionName, conditionCallBack, param) {
+                /*
                     Test the result of html toolbar buttons click.
                     paramType="string" The name of the button as it is defined in the html editor options.
                     paramType="function" return="bool". A callback function which scope is the paragraph jq element which is used for the test.
                     paramType="bool"
                 */
-	            var self = this;
-	            stop();
-	            setTimeout(function () {
-	                var p = self.editorBody.find("p:first");
-	                self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
-	                self.htmlEditor.igHtmlEditor('executeAction', actionName, param);
-	                var condition = false;
-	                if ($.isFunction(conditionCallBack)) {
-	                    condition = conditionCallBack.call(p, self.editorBody);
-	                }
-	                ok(condition, 'Execute action ' + actionName + " combo.");
-	                start();
-	            }, 200);
-	        },
-	        _testIgCombo: function (name, toolbarName, index, conditionCallBack) {
-	            var self = this,
+                var self = this;
+                stop();
+                setTimeout(function () {
+                    var p = self.editorBody.find("p:first");
+                    self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
+                    self.htmlEditor.igHtmlEditor('executeAction', actionName, param);
+                    var condition = false;
+                    if ($.isFunction(conditionCallBack)) {
+                        condition = conditionCallBack.call(p, self.editorBody);
+                    }
+                    ok(condition, 'Execute action ' + actionName + " combo.");
+                    start();
+                }, 200);
+            },
+            _testIgCombo: function (name, toolbarName, index, conditionCallBack) {
+                var self = this,
                     combo = $("#" + this.htmlEditorId + "_toolbars_" + toolbarName + "_item_" + name)
-                        .igCombo("option", { animationShowDuration: 0, animationHideDuration: 0 });
-	            var p = null;
+                    .igCombo("option", {
+                        animationShowDuration: 0,
+                        animationHideDuration: 0
+                    });
+                var p = null;
 
-	            combo.bind("igcombodropdownopened", function () {
-	                //combo.find("ul > li:eq(" + index + ")").trigger("click");
-	                combo.igCombo('index', index, null, true);
-	            });
+                combo.bind("igcombodropdownopened", function () {
+                    //combo.find("ul > li:eq(" + index + ")").trigger("click");
+                    combo.igCombo('index', index, null, true);
+                });
 
-	            stop();
-	            setTimeout(function () {
-	                p = self.editorBody.find("p:first");
-	                self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
-	                combo.igCombo("openDropDown", null, true, true);
-	            }, 200);
+                stop();
+                setTimeout(function () {
+                    p = self.editorBody.find("p:first");
+                    self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
+                    combo.igCombo("openDropDown", null, true, true);
+                    start();
+                }, 200);
 
-	            $("#" + this.htmlEditorId + "_toolbars_" + toolbarName).bind("igtoolbartoolbarcomboselected", function (e) {
-	                var condition = false;
-	                setTimeout(function () {
-	                    if ($.isFunction(conditionCallBack)) {
-	                        condition = conditionCallBack.call(p, self.editorBody);
-	                    }
-	                    combo.igCombo("closeDropDown");
-	                    ok(condition, name + " combo.");
-                     	start();
-	                }, 200);
-	            });
-	        },
-	        _openLinkDialog: function () {
-	            var button = $("#" + this.htmlEditorId + "_toolbars_insertObjectToolbar_item_link"),
+                $("#" + this.htmlEditorId + "_toolbars_" + toolbarName).bind("igtoolbartoolbarcomboselected", function (e) {
+                    var condition = false;
+                    stop();
+                    setTimeout(function () {
+                        if ($.isFunction(conditionCallBack)) {
+                            condition = conditionCallBack.call(p, self.editorBody);
+                        }
+                        combo.igCombo("closeDropDown");
+                        ok(condition, name + " combo.");
+                        start();
+                    }, 200);
+                });
+            },
+            _openLinkDialog: function () {
+                var button = $("#" + this.htmlEditorId + "_toolbars_insertObjectToolbar_item_link"),
                     dialog,
                     anchorAddress = "http://google.com",
                     self = this;
 
-	            stop();
-	            
-	            setTimeout(function () {
-	                button.trigger("click");
+                stop();
 
-	                dialog = $("#" + self.htmlEditorId + "_linkDialog_popover");
-	                dialog.find("#html1_linkDialog_linkHref").val(anchorAddress).end()
+                setTimeout(function () {
+                    button.trigger("click");
+
+                    dialog = $("#" + self.htmlEditorId + "_linkDialog_popover");
+                    dialog.find("#html1_linkDialog_linkHref").val(anchorAddress).end()
                         .find("#html1_linkDialog_btnApply").click();
-	            }, 200);
+                    start();
+                }, 200);
 
-	           
 
-	            $("body").on("iglinkpropertiesdialoghide", function () {
-	                var p = self.editorBody.find("p:first"),
+
+                $("body").on("iglinkpropertiesdialoghide", function () {
+                    var p = self.editorBody.find("p:first"),
                         a = p.find("a");
-	                ok(a.length === 1, "The anchor element is inserted properly.");
+                    ok(a.length === 1, "The anchor element is inserted properly.");
 
-	                ok(a.html() === anchorAddress, "The anchor element display text.");
-	                ok(a.attr("href") === anchorAddress, "The anchor element display text.");
-	                start();
-	            });
+                    ok(a.html() === anchorAddress, "The anchor element display text.");
+                    ok(a.attr("href") === anchorAddress, "The anchor element display text.");
+                });
 
-	            
-	        },
-	        _openImageDialog: function () {
-	            var button = $("#" + this.htmlEditorId + "_toolbars_insertObjectToolbar_item_image"),
+                // Reopen and close the window
+                setTimeout(function () {
+                    button.trigger("click");
+                }, 200);
+            },
+            _openImageDialog: function () {
+                var button = $("#" + this.htmlEditorId + "_toolbars_insertObjectToolbar_item_image"),
                     dialog,
                     imageURL = "http://www.hausmeisterservice-peukert.de/pictures/baum8.jpg",
                     imageAlt = "image test",
                     self = this;
-	            stop();
-	            
-	            setTimeout(function () {
+                stop();
 
-	                button.trigger("click");
+                setTimeout(function () {
 
-	                dialog = $("#" + self.htmlEditorId + "_imageDialog_popover");
+                    button.trigger("click");
 
-	                dialog.find("#html1_imageDialog_imgSrc").val(imageURL).end()
+                    dialog = $("#" + self.htmlEditorId + "_imageDialog_popover");
+
+                    dialog.find("#html1_imageDialog_imgSrc").val(imageURL).end()
                         .find("#html1_imageDialog_imgAlt").val(imageAlt).end()
                         .find("#html1_imageDialog_btnApply").click();
-	            }, 200);
 
-	            $("body").on("igimagepropertiesdialoghide", function () {
-	                var p = self.editorBody.find("p:first"),
+
+                    // Reopen the image dialog
+                    button.trigger("click");
+                    dialog.find("#html1_imageDialog_imgSrc").val(imageURL).end()
+                        .find("#html1_imageDialog_imgAlt").val(imageAlt).end()
+                        .find("#html1_imageDialog_btnApply").click();
+
+
+                    start();
+                }, 200);
+
+                $("body").on("igimagepropertiesdialoghide", function () {
+                    var p = self.editorBody.find("p:first"),
                         img = p.find("img");
-	                ok(img.length === 1, "The image element is inserted properly.");
-	                ok(img.attr("src") === imageURL, "The image url.");
-	                ok(img.attr("alt") === imageAlt, "The image alt text.");
-	                start();
-	            })
-	        }
-	    };
+                    ok(img.length === 1, "The image element is inserted properly.");
+                    ok(img.attr("src") === imageURL, "The image url.");
+                    ok(img.attr("alt") === imageAlt, "The image alt text.");
+                })
+            },
+            _openTableDialog: function () {
+                var button = $("#" + this.htmlEditorId + "_toolbars_insertObjectToolbar_item_table"),
+                    dialog, iframeDocument = $($("#" + this.htmlEditorId).data().igHtmlEditor.workspace).contents(),
+                    self = this;
 
-	    module("HtmlEditor Interaction Tests", htmlEditorInteractionTests);
-	    test("Bold.", function () {
-	        this.bold();
-	    });
-	    test("Execute Action Bold.", function () {
-	        this.bold(true);
-	    });
-	    test("Italic.", function () {
-	        this.italic();
-	    });
-	    test("Execute Action Italic.", function () {
-	        this.italic(true);
-	    });
-	    test("Underline.", function () {
-	        this.undelined();
-	    });
-	    test("Execute Action Underline.", function () {
-	        this.undelined(true);
-	    });
-	    test("Strikethrough.", function () {
-	        this.strikethroughed();
-	    });
-	    test("Execute Action Strikethrough.", function () {
-	        this.strikethroughed(true);
-	    });
-	    test("Bold, Italic, Underline, Strikethrough", function () {
-	        this.buttonCombinationsTest("bold", "italic", "undelined", "strikethroughed");
-	    });
-	    test("Align text right.", function () {
-	        this.justifyRight();
-	    });
-	    test("Execute Action Align text right.", function () {
-	        this.justifyRight(true);
-	    });
-	    test("Align text left.", function () {
-	        this.justifyLeft();
-	    });
-	    test("Execute Action Align text left.", function () {
-	        this.justifyLeft(true);
-	    });
-	    test("Align text center.", function () {
-	        this.justifyCenter();
-	    });
-	    test("Execute Action Align text center.", function () {
-	        this.justifyCenter(true);
-	    });
-	    test("Justify text.", function () {
-	        this.justifyFull();
-	    });
-	    test("Execute Action Justify text.", function () {
-	        this.justifyFull(true);
-	    });
-	    test("Insert Unordered List.", function () {
-	        this.insertUnorderedList();
-	    });
-	    test("Execute Action Insert Unordered List.", function () {
-	        this.insertUnorderedList(true);
-	    });
-	    test("Insert Ordered List.", function () {
-	        this.insertOrderedList();
-	    });
-	    test("Execute Action Insert Ordered List.", function () {
-	        this.insertOrderedList(true);
-	    });
-	    test("Indent text.", function () {
-	        this.indentText();
-	    });
-	    test("Execute Action Indent text.", function () {
-	        this.indentText(true);
-	    });
-	    test("Outdent text.", function () {
-	        this.outdentText();
-	    });
-	    test("Execute Action Outdent text.", function () {
-	        this.outdentText(true);
-	    });
-	    test("Color text.", function () {
-	        this.colorText();
-	    });
-	    test("Execute Action Color text.", function () {
-	        this.colorText(true);
-	    });
-	    test("Font name.", function () {
-	        this.changeFontName();
-	    });
-	    test("Execute Action Font name.", function () {
-	        this.changeFontName(true);
-	    });
-	    test("Font size.", function () {
-	        this.changeFontSize();
-	    });
-	    test("Execute Action Font size.", function () {
-	        this.changeFontSize(true);
-	    });
-	    test("Heading", function () {
-	        this.changeHeadingFormat();
-	    });
-	    test("Execute Action Heading", function () {
-	        this.changeHeadingFormat(true);
-	    });
-	    test("Link dialog", function () {
-	        this._openLinkDialog();
-	    });
-	    test("Image dialog", function () {
-	        this._openImageDialog();
-	    });
-	    module("HtmlEditor Rendering Tests", htmlEditorTestBeds);
-	    test("Default toolbars rendering.", function () {
-	        this.areDefaultToolbarsRendered();
-	    });
-	    test("Are Text toolbar items rendered?", function () {
-	        this.areTextToolbarItemsRendered();
-	    });
-	    test("Are Formatting toolbar items rendered?", function () {
-	        this.areFormattingToolbarItemsRendered();
-	    });
-	    test("Are Insert Object toolbar items rendered?", function () {
-	        this.areInsertObjectToolbarItemsRendered();
-	    });
-	    test("Are Copy/Paste toolbar items rendered?", function () {
-	        this.areCopyPasteToolbarItemsRendered();
-	    });
-	    test("Text toolbar collapsed.", function () {
-	        this.isToolbarCollapsible("textToolbar");
-	    });
-	    test("Text toolbar expanded.", function () {
-	        this.isToolabrExpandable("textToolbar");
-	    });
-	    test("Formattubg toolbar collapsed.", function () {
-	        this.isToolbarCollapsible("formattingToolbar");
-	    });
-	    test("Formattubg toolbar expanded.", function () {
-	        this.isToolabrExpandable("formattingToolbar");
-	    });
-	    test("Insert Object toolbar collapsed.", function () {
-	        this.isToolbarCollapsible("insertObjectToolbar");
-	    });
-	    test("Insert Object toolbar expanded.", function () {
-	        this.isToolabrExpandable("insertObjectToolbar");
-	    });
-	    test("Copy/Paste toolbar collapsed.", function () {
-	        this.isToolbarCollapsible("copyPasteToolbar");
-	    });
-	    test("Copy/Paste toolbar expanded.", function () {
-	        this.isToolabrExpandable("copyPasteToolbar");
-	    });
-	    test("Workspace area rendered.", function () {
-	        this.isContentAreaRenderedProperly();
-	    });
-	    test("Initial content rendering", function () {
-	        this.initialContentRendering();
-	    });
+                stop();
 
-	    var igHtmlEditorPopoverUnitTestsSetup = {
-	        targetId: 'targetId',
-	        targetSelector: "#targetId",
-	        popOverId: 'popOverId',
-	        popOverSelector : "#popOverId",
-	        setup: function () {
-	            $('body').append('<div id=' + this.targetId + '></div><div id=' + this.popOverId + '></div>');
-	            $(this.popOverSelector).igHtmlEditorPopover({
-	                target: $(this.targetSelector)
-	            });
+                setTimeout(function () {
+                    button.trigger("click");
 
-	            this.actualPopOver = $(this.popOverSelector).data().igHtmlEditorPopover;
+                    dialog = $("#" + self.htmlEditorId + "_tableDialog_popover");
+
+                    dialog.find(".ui-igtablepropertiesdialog-sample-table tr:nth-child(2) td:nth-child(2)").click();
+
+                    // Reopen the image dialog
+                    button.trigger("click");
+
+                    start();
+                }, 200);
 
 
-	        },
-	        teardown: function () {
-	            $(this.popOverSelector).remove();
-	            $(this.targetSelector).remove();
-	        }
-	    }
+                $("body").on("igtablepropertiesdialoghide", function () {
+                    var trCount = iframeDocument.find("table tr").length,
+                        tdCount = iframeDocument.find("table td").length;
 
-	    module("igHtmlEditorPopover unit tests", igHtmlEditorPopoverUnitTestsSetup);
+                    ok(trCount === 2, "Table is inserted crrectly with 2 rows");
+                    ok(tdCount === 4, "Table is inserted crrectly with 4 cells.");
+                });
+            }
+        };
 
-	    test("test _setOptions method with name isHidden", function () {
-	        $(this.popOverSelector).igHtmlEditorPopover('option', 'isHidden', true);
+        module("HtmlEditor Interaction Tests", htmlEditorInteractionTests);
+        test("Bold.", function () {
+            this.bold();
+        });
+        test("Execute Action Bold.", function () {
+            this.bold(true);
+        });
+        test("Italic.", function () {
+            this.italic();
+        });
+        test("Execute Action Italic.", function () {
+            this.italic(true);
+        });
+        test("Underline.", function () {
+            this.undelined();
+        });
+        test("Execute Action Underline.", function () {
+            this.undelined(true);
+        });
+        test("Strikethrough.", function () {
+            this.strikethroughed();
+        });
+        test("Execute Action Strikethrough.", function () {
+            this.strikethroughed(true);
+        });
+        test("Bold, Italic, Underline, Strikethrough", function () {
+            this.buttonCombinationsTest("bold", "italic", "undelined", "strikethroughed");
+        });
+        test("Align text right.", function () {
+            this.justifyRight();
+        });
+        test("Execute Action Align text right.", function () {
+            this.justifyRight(true);
+        });
+        test("Align text left.", function () {
+            this.justifyLeft();
+        });
+        test("Execute Action Align text left.", function () {
+            this.justifyLeft(true);
+        });
+        test("Align text center.", function () {
+            this.justifyCenter();
+        });
+        test("Execute Action Align text center.", function () {
+            this.justifyCenter(true);
+        });
+        test("Justify text.", function () {
+            this.justifyFull();
+        });
+        test("Execute Action Justify text.", function () {
+            this.justifyFull(true);
+        });
+        test("Insert Unordered List.", function () {
+            this.insertUnorderedList();
+        });
+        test("Execute Action Insert Unordered List.", function () {
+            this.insertUnorderedList(true);
+        });
+        test("Insert Ordered List.", function () {
+            this.insertOrderedList();
+        });
+        test("Execute Action Insert Ordered List.", function () {
+            this.insertOrderedList(true);
+        });
+        test("Indent text.", function () {
+            this.indentText();
+        });
+        test("Execute Action Indent text.", function () {
+            this.indentText(true);
+        });
+        test("Outdent text.", function () {
+            this.outdentText();
+        });
+        test("Execute Action Outdent text.", function () {
+            this.outdentText(true);
+        });
+        test("Color text.", function () {
+            this.colorText();
+        });
+        test("Execute Action Color text.", function () {
+            this.colorText(true);
+        });
+        test("Font name.", function () {
+            this.changeFontName();
+        });
+        test("Execute Action Font name.", function () {
+            this.changeFontName(true);
+        });
+        test("Font size.", function () {
+            this.changeFontSize();
+        });
+        test("Execute Action Font size.", function () {
+            this.changeFontSize(true);
+        });
+        test("Heading", function () {
+            this.changeHeadingFormat();
+        });
+        test("Execute Action Heading", function () {
+            this.changeHeadingFormat(true);
+        });
+        test("Link dialog", function () {
+            this._openLinkDialog();
+        });
+        test("Image dialog", function () {
+            this._openImageDialog();
+        });
+        test("Table dialog", function () {
+            this._openTableDialog();
+        });
+        module("HtmlEditor Rendering Tests", htmlEditorTestBeds);
+        test("Default toolbars rendering.", function () {
+            this.areDefaultToolbarsRendered();
+        });
+        test("Are Text toolbar items rendered?", function () {
+            this.areTextToolbarItemsRendered();
+        });
+        test("Are Formatting toolbar items rendered?", function () {
+            this.areFormattingToolbarItemsRendered();
+        });
+        test("Are Insert Object toolbar items rendered?", function () {
+            this.areInsertObjectToolbarItemsRendered();
+        });
+        test("Are Copy/Paste toolbar items rendered?", function () {
+            this.areCopyPasteToolbarItemsRendered();
+        });
+        test("Text toolbar collapsed.", function () {
+            this.isToolbarCollapsible("textToolbar");
+        });
+        test("Text toolbar expanded.", function () {
+            this.isToolabrExpandable("textToolbar");
+        });
+        test("Formattubg toolbar collapsed.", function () {
+            this.isToolbarCollapsible("formattingToolbar");
+        });
+        test("Formattubg toolbar expanded.", function () {
+            this.isToolabrExpandable("formattingToolbar");
+        });
+        test("Insert Object toolbar collapsed.", function () {
+            this.isToolbarCollapsible("insertObjectToolbar");
+        });
+        test("Insert Object toolbar expanded.", function () {
+            this.isToolabrExpandable("insertObjectToolbar");
+        });
+        test("Copy/Paste toolbar collapsed.", function () {
+            this.isToolbarCollapsible("copyPasteToolbar");
+        });
+        test("Copy/Paste toolbar expanded.", function () {
+            this.isToolabrExpandable("copyPasteToolbar");
+        });
+        test("Workspace area rendered.", function () {
+            this.isContentAreaRenderedProperly();
+        });
+        test("Initial content rendering", function () {
+            this.initialContentRendering();
+        });
+        test("Modify initially set options", function () {
+            this.modifyInitiallySetOptions();
+        });
+        test("Test some different keyboard interactions", function () {
+            this.keyboardInteractions();
+        });
 
-	        var actualResult = $(this.popOverSelector).igHtmlEditorPopover('option', 'isHidden');
-	        var expectedResult = true;
+        var igHtmlEditorPopoverUnitTestsSetup = {
+            targetId: 'targetId',
+            targetSelector: "#targetId",
+            popOverId: 'popOverId',
+            popOverSelector: "#popOverId",
+            setup: function () {
+                $('body').append('<div id=' + this.targetId + '></div><div id=' + this.popOverId + '></div>');
+                $(this.popOverSelector).igHtmlEditorPopover({
+                    target: $(this.targetSelector)
+                });
 
-	        equal(actualResult, expectedResult, "should be set to true");
-	    });
+                this.actualPopOver = $(this.popOverSelector).data().igHtmlEditorPopover;
 
-	    var igHtmlEditorTestSetup = {
-	        htmlEditorId: "htmlEditor2",
-	        htmlEditorSelector: "#htmlEditor2",
-	        setup: function () {
-	            $('body').append("<div id=" + this.htmlEditorId + "></div>");
-	            $(this.htmlEditorSelector).igHtmlEditor();
-	        },
-	        teardown: function () {
-	            $(this.htmlEditorSelector).igHtmlEditor("destroy").remove();
-	        }
-	    };
 
-	    module("igHtmlEditor unit tests", igHtmlEditorTestSetup);
+            },
+            teardown: function () {
+                $(this.popOverSelector).remove();
+                $(this.targetSelector).remove();
+            }
+        }
 
-	    test("getOption testing for width", function () {
-	        var actualWidth = $(this.htmlEditorSelector).igHtmlEditor("option", "width");
+        module("igHtmlEditorPopover unit tests", igHtmlEditorPopoverUnitTestsSetup);
 
-	        equal(actualWidth, 725, "This should be default");
-	    });
+        test("test _setOptions method with name isHidden", function () {
+            $(this.popOverSelector).igHtmlEditorPopover('option', 'isHidden', true);
 
-	    test("setOption testing for width", function () {
-	        var actualWidth,
+            var actualResult = $(this.popOverSelector).igHtmlEditorPopover('option', 'isHidden');
+            var expectedResult = true;
+
+            equal(actualResult, expectedResult, "should be set to true");
+        });
+
+        var igHtmlEditorTestSetup = {
+            htmlEditorId: "htmlEditor2",
+            htmlEditorSelector: "#htmlEditor2",
+            setup: function () {
+                $('body').append("<div id=" + this.htmlEditorId + "></div>");
+                $(this.htmlEditorSelector).igHtmlEditor();
+            },
+            teardown: function () {
+                $(this.htmlEditorSelector).igHtmlEditor("destroy").remove();
+            }
+        };
+
+        module("igHtmlEditor unit tests", igHtmlEditorTestSetup);
+
+        test("getOption testing for width", function () {
+            var actualWidth = $(this.htmlEditorSelector).igHtmlEditor("option", "width");
+
+            equal(actualWidth, 725, "This should be default");
+        });
+
+        test("setOption testing for width", function () {
+            var actualWidth,
                 expectedWidth = 725;
-                $(this.htmlEditorSelector).igHtmlEditor("option", "width", expectedWidth);
-                actualWidth= $(this.htmlEditorSelector).igHtmlEditor("option", "width");
+            $(this.htmlEditorSelector).igHtmlEditor("option", "width", expectedWidth);
+            actualWidth = $(this.htmlEditorSelector).igHtmlEditor("option", "width");
 
-                equal(actualWidth, expectedWidth, "This should be default");
-	    });
+            equal(actualWidth, expectedWidth, "This should be default");
+        });
 
 
-	    var igLinkPropertiesDialogTestSetup = {
-	        linkTargerId: "linkTarket",
-	        linkTargerSelector: "#linkTarket",
-	        setup: function () {
-	            $('body').append("<div id=" + this.linkTargerId + "></div>");
-	            $(this.linkTargerSelector).igLinkPropertiesDialog({
-	                item: $(this.linkTargerSelector),
-	                target: $(this.linkTargerSelector),
-	            });
-	        },
-	        teardown: function () {
-	            $(this.linkTargerSelector).igLinkPropertiesDialog("destroy").remove();
-	        }
-	    };
+        var igLinkPropertiesDialogTestSetup = {
+            linkTargerId: "linkTarket",
+            linkTargerSelector: "#linkTarket",
+            setup: function () {
+                $('body').append("<div id=" + this.linkTargerId + "></div>");
+                $(this.linkTargerSelector).igLinkPropertiesDialog({
+                    item: $(this.linkTargerSelector),
+                    target: $(this.linkTargerSelector),
+                });
+            },
+            teardown: function () {
+                $(this.linkTargerSelector).igLinkPropertiesDialog("destroy").remove();
+            }
+        };
 
-	    module("igLinkPropertiesDialogTestSetup unit tests", igLinkPropertiesDialogTestSetup);
+        module("igLinkPropertiesDialogTestSetup unit tests", igLinkPropertiesDialogTestSetup);
 
-	    test("igLinkPropertiesDialog initializing", function () {
-	        var initialized = $(this.linkTargerSelector).length > 0;
-	        equal(initialized, true, "Should be true");
-	    });
+        test("igLinkPropertiesDialog initializing", function () {
+            var initialized = $(this.linkTargerSelector).length > 0;
+            equal(initialized, true, "Should be true");
+        });
 
-	    var igTablePropertiesDialogTestSetup = {
-	        igTableId: "table",
-	        igTableSelector: "#table",
-	        setup: function () {
-	            $('body').append("<table id=" + this.igTableId + "></table>");
-	            $(this.igTableSelector).igTablePropertiesDialog({
-	                item: $(this.igTableSelector),
-	                target: $(this.igTableSelector)
-	            });
-	        },
-	        teardown: function () {
-	            $(this.igTableSelector).igTablePropertiesDialog("destroy").remove();
-	        }
-	    };
+        var igTablePropertiesDialogTestSetup = {
+            igTableId: "table",
+            igTableSelector: "#table",
+            setup: function () {
+                $('body').append("<table id=" + this.igTableId + "></table>");
+                $(this.igTableSelector).igTablePropertiesDialog({
+                    item: $(this.igTableSelector),
+                    target: $(this.igTableSelector)
+                });
+            },
+            teardown: function () {
+                $(this.igTableSelector).igTablePropertiesDialog("destroy").remove();
+            }
+        };
 
-	    module("igTablePropertiesDialog unit tests", igTablePropertiesDialogTestSetup);
+        module("igTablePropertiesDialog unit tests", igTablePropertiesDialogTestSetup);
 
-	    test("igTablePropertiesDialog initializing", function () {
-	        var initialized = $(this.igTableSelector + "_popover").length > 0;
-	        equal(initialized, true, "Should be true");
-	    });
+        test("igTablePropertiesDialog initializing", function () {
+            var initialized = $(this.igTableSelector + "_popover").length > 0;
+            equal(initialized, true, "Should be true");
+        });
 
-	    var igImagePropertiesDialogTestSetup = {
-	        igImageId: "image",
-	        igImageSelector: "#image",
-	        setup: function () {
-	            $('body').append("<div id=" + this.igImageId + "></div>");
-	            $(this.igImageSelector).igImagePropertiesDialog({
-	                item: $(this.igImageSelector),
-	                target: $(this.igImageSelector)
-	            });
-	        },
-	        teardown: function () {
-	            $(this.igImageSelector).igImagePropertiesDialog("destroy").remove();
-	        }
-	    };
+        var igImagePropertiesDialogTestSetup = {
+            igImageId: "image",
+            igImageSelector: "#image",
+            setup: function () {
+                $('body').append("<div id=" + this.igImageId + "></div>");
+                $(this.igImageSelector).igImagePropertiesDialog({
+                    item: $(this.igImageSelector),
+                    target: $(this.igImageSelector)
+                });
+            },
+            teardown: function () {
+                $(this.igImageSelector).igImagePropertiesDialog("destroy").remove();
+            }
+        };
 
-	    module("igImagePropertiesDialog unit tests", igImagePropertiesDialogTestSetup);
+        module("igImagePropertiesDialog unit tests", igImagePropertiesDialogTestSetup);
 
-	    test("igImagePropertiesDialog initializing", function () {
-	        var initialized = $(this.igImageSelector + "_popover").length > 0;
-	        equal(initialized, true, "Should be true");
-	    });
-	</script>
+        test("igImagePropertiesDialog initializing", function () {
+            var initialized = $(this.igImageSelector + "_popover").length > 0;
+            equal(initialized, true, "Should be true");
+        });
+    </script>
 </head>
 <body>
-<!--    <div id="qunit"></div>
+    <!--    <div id="qunit"></div>
     <div id="qunit-fixture"></div>-->
     <div style="float:right;width:400px;overflow:auto;">
-		<h1 id="qunit-header">Test results</h1>
-		<h2 id="qunit-banner"></h2>
-		<h2 id="qunit-userAgent"></h2>
-		<ol id="qunit-tests"></ol>
-	</div>
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
 </body>
 </html>
