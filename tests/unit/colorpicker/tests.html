@@ -114,6 +114,15 @@
 	    	equal(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, color.length, "standard color length isn't equal with given color length.");
 	    });
 
+	    test("selectedColor", function () {
+	    	var getSelectedColor = this.actualColorPicker.igColorPicker("selectedColor");
+	    	equal(getSelectedColor, null, "selected color exist.");
+
+	    	this.actualColorPicker.igColorPicker("selectColor", this.firstColor);
+	    	getSelectedColor = this.actualColorPicker.igColorPicker("selectedColor");
+	    	equal(getSelectedColor, this.firstColor, "color was not selected.");
+	    })
+
 	    function hexToRgb (hex) {
 	    	
 	    	if(hex == undefined){
