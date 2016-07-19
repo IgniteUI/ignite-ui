@@ -253,51 +253,6 @@ $.widget("ui.igValidator", {
 			Use ui.target to get reference of the event target form. */
 		formSuccess: "formSuccess"
 	},
-	locale: {
-		/* Message used when validator is not able to identify specific reason for failure */
-		defaultMessage: "Please fix this field",
-		/* Message used when user should select a value (in drop-down list, radio buttons or similar) */
-		selectMessage: "Please select a value",
-		/* Message for range selection */
-		rangeSelectMessage: "Please select no more than {1} and not less than {0} items",
-		/* Message for minimum number of selected items */
-		minSelectMessage: "Please select at least {0} items",
-		/* Message for maximum number of selected items */
-		maxSelectMessage: "Please select no more than {0} items",
-		/* Message for range of text length */
-		rangeLengthMessage: "Please enter a value between {0} and {1} characters long",
-		/* Message for minimum length of text */
-		minLengthMessage: "Please enter at least {0} characters",
-		/* Message for maximum length of text */
-		maxLengthMessage: "Please enter no more than {0} characters",
-		/* Message for required entry */
-		requiredMessage: "This field is required",
-		/* Message regular expression (pattern option) */
-		patternMessage: "Please fix pattern of this field",
-		/* Message for igMaskEditor when required positions are missing */
-		maskMessage: "Please fill all required positions",
-		/* Message for igDateEditor when date fields are missing */
-		dateFieldsMessage: "Please enter values in date fields",
-		/* Message for igDateEditor when day of month is invalid */
-		invalidDayMessage: "Invalid day of month. Please enter correct day",
-		/* Message for igDateEditor when date is invalid (zero day, month or similar) */
-		dateMessage: "Please enter a valid date",
-		/* Message for igNumericEditor when string can not be converted to a number (no digits) */
-		numberMessage: "Please enter a valid number",
-		/* Message for igDateEditor and igNumericEditor when range validation of editor failed */
-		rangeValueMessage: "Please enter a value between {0} and {1}",
-		/* Message for igDateEditor and igNumericEditor when minValue of editor is set and editor has larger value */
-		minValueMessage: "Please enter a value greater than or equal to {0}",
-		/* Message for igDateEditor and igNumericEditor when maxValue of editor is set and editor has smaller value */
-		maxValueMessage: "Please enter a value less than or equal to {0}",
-		/* Message for invalid email input */
-		emailMessage: "Please enter a valid email address",
-		/* Message for invalid credit card number */
-		creditCardMessage: 'A valid credit card number should be entered',
-		/* Message for invalid email input */
-		equalToMessage: "Values don't match",
-		optionalString: "(optional)"
-	},
 	/* defaults for the notifier */
 	notifierDefaults: {
 		state: "error"
@@ -999,7 +954,7 @@ $.widget("ui.igValidator", {
 		if (!message && $.ig && $.ig.Validator && $.ig.Validator.locale) {
 			message = $.ig.Validator.locale[ key ];
 		}
-		return message || this.locale[ key ];
+		return message || "";
 	},
 	_targetFromOptions: function (options, outer) {
 		if (outer && options._control) {
@@ -1056,9 +1011,9 @@ $.widget("ui.igValidator", {
 			return options;
 		}
 
-		// cherry-pick options to merge
+		// cherry-pick options to merge // TODO!
 		var properties = [ "required", "threshold", "lengthRange", "number", "date",
-							"valueRange", "email", "triggers", "onblur", "onchange",
+							"valueRange", "email", "creditCard", "onblur", "onchange",
 							"onsubmit", "successMessage", "errorMessage",
 							"requiredIndication", "optionalIndication" ],
 			extendedOptions = $.extend({}, options);
@@ -1344,21 +1299,34 @@ $.ui.igValidator.defaults = {
 	/* type="bool" Gets or sets ability to show all errors on submit.
 		Value false will show error message only for the first failed target.
 		Default value is true. */
-	showAllErrorsOnSubmit: true
-
-	// TODO move here rule-specific defaults like: decimalSeparator, number and email regEx, etc?
+	showAllErrorsOnSubmit: true,
+	/* type="string" Default decimal separator (".") to use when no explicit number option property is defined */
+	decimalSeparator: ".",
+	/* type="string" Default decimal thousands (",") to use when no explicit number option property is defined */
+	thousandsSeparator: ",",
+	/* type="object" Default email checking RegExp object */
+	emailRegEx: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 };
 
+/* Base class used by all validator rules */
 $.ig.igValidatorBaseRule = $.ig.igValidatorBaseRule || Class.extend({
+	/* type="string" The name of the rule matching respective option name */
 	name: "base",
+	/* type="array" Items produced and stored during validation, to be used for message formatting before next validation call */
 	formatItems: [],
 	/*jshint unused: false*/
 	getMessageType: function (options) {
+		/* Gets the error message type to get from locale settings (matching as "<type>Message>). Returns the rule name by default.
+			Only used when there's no errorMessage option available through getRuleMessage.
+			returnType="string" Returns the locale message type to show on error.
+		*/
 		return this.name;
 	},
 	/*jshint unused: true*/
 	getRuleMessage: function (options) {
-		/* returns an error message for the rule from options */
+		/* Gets an errorMessage from either the rule or field/global options.
+			returnType="string" Returns an error message from options or empty string.
+		*/
 		if (options[ this.name ].errorMessage) {
 			return options[ this.name ].errorMessage;
 		} else if (options.errorMessage) {
@@ -1367,17 +1335,30 @@ $.ig.igValidatorBaseRule = $.ig.igValidatorBaseRule || Class.extend({
 		return "";
 	},
 	formatMessage: function (message) {
+		/* Formats an error message using rule-specific values (usually from formatItems).
+			paramType="string" optional="false" The unformatted error message the validator intends to display.
+			returnType="string" Formatted error message ready to be shown.
+		*/
 		for (var i = 0; i < this.formatItems.length; i++) {
 			message = message.replace("{" + i + "}", this.formatItems[ i ]);
 		}
 		return message;
 	},
 	/*jshint unused: false*/
+	/* istanbul ignore next */
 	isValid: function(options, value) {
+		/* Validates a value against this rule and returns the result.
+			paramType="object" optional="false" Options for the validator, if fields are used this parameter is already populated with inherited ones.
+			paramType="object" optional="false" The value to check.
+			returnType="bool" Bool value determining if the value is valid for this rule.
+		*/
 		return true;
 	},
 	/*jshint unused: true*/
 	init: function (validator) {
+		/* Initializes a new instance of the validator rule. Used once per igValidator.
+			paramType="object" optional="false" Rule receives a reference to the owner igValidator widget.
+		*/
 		this.validator = validator;
 	}
 });
@@ -1423,10 +1404,6 @@ $.ig.igValidatorControlRule = $.ig.igValidatorControlRule || $.ig.igValidatorBas
 
 $.ig.igValidatorNumberRule = $.ig.igValidatorNumberRule || $.ig.igValidatorBaseRule.extend({
 	name: "number",
-	/* type="string" Default decimal separator (".") to use when no explicit number option property is defined */
-	decimalSeparator: ".",
-	/* type="string" Default decimal thousands (",") to use when no explicit number option property is defined */
-	thousandsSeparator: ",",
 	_isNumber: function (options, value) {
 		if (typeof value === "number") {
 			return true;
@@ -1444,8 +1421,8 @@ $.ig.igValidatorNumberRule = $.ig.igValidatorNumberRule || $.ig.igValidatorBaseR
 			thousandsSeparator = options.number && options.number.thousandsSeparator,
 			thousandsRegEx, result;
 
-		decimalSeparator = decimalSeparator || this.decimalSeparator;
-		thousandsSeparator = thousandsSeparator || this.thousandsSeparator;
+		decimalSeparator = decimalSeparator || $.ui.igValidator.defaults.decimalSeparator;
+		thousandsSeparator = thousandsSeparator || $.ui.igValidator.defaults.thousandsSeparator;
 		thousandsRegEx = new RegExp("\\" + thousandsSeparator, "g");
 
 		// split decimals so thousandsSeparator can be removed only from the integer part
@@ -1485,7 +1462,6 @@ $.ig.igValidatorLengthRule = $.ig.igValidatorLengthRule || $.ig.igValidatorBaseR
 		return this._lastMessageType;
 	},
 	isValid: function(options, value) {
-		// Min/Max Length
 		if (value && value.length) {
 			var min, max,
 				messageSuffix = value.push ? "Select" : "Length",
@@ -1536,7 +1512,7 @@ $.ig.igValidatorValueRule = $.ig.igValidatorValueRule || $.ig.igValidatorNumberR
 
 			if ((hasMin || hasMax)) {
 				if (isNumber && !options.date) {
-					value = options.number ? this._parseNumber(value, options) : parseFloat(value); // TODO: Always use _parseNumber if decimals go to validator defaults!
+					value = this._parseNumber(value, options);
 					min = hasMin && minValue;
 					min = value < min ? min.toString() : null;
 					max = hasMax && maxValue;
@@ -1595,10 +1571,8 @@ $.ig.igValidatorEqualToRule = $.ig.igValidatorEqualToRule || $.ig.igValidatorBas
 
 $.ig.igValidatorEmailRule = $.ig.igValidatorEmailRule || $.ig.igValidatorBaseRule.extend({
 	name: "email",
-	/* default email checking RegExp */
-	emailRegEx: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
 	isValid: function(options, value) {
-		return this.emailRegEx.test(value);
+		return $.ui.igValidator.defaults.emailRegEx.test(value);
 	}
 });
 
@@ -1635,7 +1609,7 @@ $.ig.igValidatorCustomRule = $.ig.igValidatorCustomRule || $.ig.igValidatorBaseR
 $.ig.igValidatorCreditCardRule = $.ig.igValidatorCreditCardRule || $.ig.igValidatorBaseRule.extend({
 	name: "creditCard",
 	isValid: function(options, value) {
-		/* Based on ASP.NET CreditCardAttribute check, 
+		/* Based on ASP.NET CreditCardAttribute check,
 			https://github.com/Microsoft/referencesource/blob/master/System.ComponentModel.DataAnnotations/DataAnnotations/CreditCardAttribute.cs
 		   using Luhn algorithm https://en.wikipedia.org/wiki/Luhn_algorithm */
 		var val = value && "" + value,
