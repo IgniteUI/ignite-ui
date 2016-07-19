@@ -142,13 +142,17 @@ if (typeof jQuery !== "function") {
 			case 'standardColors':
 				this._addOrChangeStandardColors(); 
 				break;
-			case 'colors' :
+			case 'colors':
 				this._addOrChangeColors();
 				break;
             }
         },
-        _rgbToHex: function (color) {
-            var r, g, b, colHex;
+        rgbToHex: function (color) {
+            /* Convert color from RGB to HEX format.
+                paramType="string" optional="false" Color in RGB format.
+                returnType="string" Returns converted color from RGB to HEX format.
+            */
+            var r, g, b, colHex = null;
 
             if (color.charAt(0)==='r') {
                 color = color.replace('rgb(','').replace(')','').split(',');
@@ -159,8 +163,8 @@ if (typeof jQuery !== "function") {
 				g = g.length === 1 ? '0' + g : g;
 				b = b.length === 1 ? '0' + b : b;
                 colHex = '#' + r + g + b;
-                return colHex;
             }
+            return colHex;
         },
 		colorTable: function () {
 			/* Gets the div element with the color table.
@@ -182,11 +186,22 @@ if (typeof jQuery !== "function") {
             return this._defaultColors;
         },
         colorFromElement: function ($element) {
-			/* Gets the color for an element from the color picker.
+			/* Gets the color for an element from the color picker in RGB format.
 				paramType="object" optional="false" The element in the color picker from which the color will be retrieved.
-				returnType="string" Returns the color for the provided color element.
+				returnType="string" Returns the color for the provided color element in RGB format.
 			*/
             return $element.css("background-color");
+        },
+        selectedColor: function () {
+            /* Select a given color to the widget. 
+                paramType="string" optional="false" The #RGB value of the color to be selected.
+                returnType="object" Returns the selected color if available. Else return null.
+            */
+            var selected = this._colorTable.find("div.selected-color");
+            if (selected.length) {
+                return this.rgbToHex(selected.css("background-color"));
+            }
+            return null;
         },
         selectColor: function (color) {
             /* Select a given color to the widget. 
@@ -194,7 +209,7 @@ if (typeof jQuery !== "function") {
 			*/
             var self = this,
 				matching = this._colorTable.find("div").filter(function(index, item){
-					var hexColor = self._rgbToHex(item.style.backgroundColor);
+					var hexColor = self.rgbToHex(item.style.backgroundColor);
 					return hexColor && hexColor === color.toLowerCase();
 				});
 			this._changeSelectedColor(matching);
