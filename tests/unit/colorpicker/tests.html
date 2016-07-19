@@ -61,12 +61,18 @@
 	    test("_changeStandardColorsOption", function () {
 	    	var colors = ["#f0ff0f", "#000a00", "#FEECE1"];
 	    	
-	    	notEqual(this.actualColorPicker.igColorPicker("option", "standardColors"), colors, "standardColors options is equal with givan colors.");
+	    	notEqual(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, colors.length, "standardColors length is equal with given colors length.");
 	    	
 	    	this.actualColorPicker.igColorPicker("option", "standardColors", colors)
-	    	deepEqual(this.actualColorPicker.igColorPicker("option", "standardColors"), colors, "array of standardColors option was not changed."); // deepEqual
+	    	
+	    	this.actualColorPicker.igColorPicker("standardColorsTable").children().each(function(ind, val){ 
+	    		var standardColorToRgb = $(val).css("background-color");
+	    		var givenColorToRgb = hexToRgb(colors[ind]);
 
-	    	equal(this.actualColorPicker.igColorPicker("option", "standardColors").length, colors.length, "standard colors length isn't equal with given colors length.");
+	    		equal(standardColorToRgb, givenColorToRgb, "standard color value isn't equal with given color value.")
+	    	})
+
+	    	equal(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, colors.length, "standard colors length isn't equal with given colors length.");
 	    })
 	    
 	    test("selectColor", function () {
@@ -91,16 +97,34 @@
 	    })
 	    
 	    test("_setTheSameOptionValue", function () {
-	    	var color = "#C00000";
+	    	var color = ["#C00000"];
 	    	
-	    	notEqual(this.actualColorPicker.igColorPicker("option", "standardColors"), color, "color value is equal with standardColor value."); 
-	    	
-	    	this.actualColorPicker.igColorPicker("option", "standardColors", color)
-	    	equal(this.actualColorPicker.igColorPicker("option", "standardColors"), color, "given color was not set to standardColors.");
+	    	notEqual(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, color.length, "color value is equal with standardColor value."); 
 	    	
 	    	this.actualColorPicker.igColorPicker("option", "standardColors", color)
-	    	equal(color, this.actualColorPicker.igColorPicker("option", "standardColors"), "standard color value isn't equal with given color value.");
+	    	var convertGivenColorToRgb = hexToRgb(color[0])
+	    	equal($(this.actualColorPicker.igColorPicker("standardColorsTable").children()).css("background-color"), convertGivenColorToRgb, "given color was not set to standard colors.");
+	    	
+	    	this.actualColorPicker.igColorPicker("option", "standardColors", color)
+	    	equal($(this.actualColorPicker.igColorPicker("standardColorsTable").children()).css("background-color"), convertGivenColorToRgb, "standard color value isn't equal with given color value.");
+
+	    	equal(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, color.length, "standard color length isn't equal with given color length.");
 	    })
+
+	    function hexToRgb (hex) {
+	    	
+	    	if(hex == undefined){
+	    		return "";
+	    	}
+
+	    	var valueWithoutSymbol = hex.slice(1, hex.length);
+	    	var bigint = parseInt(valueWithoutSymbol, 16);
+		    var r = (bigint >> 16) & 255;
+		    var g = (bigint >> 8) & 255;
+		    var b = bigint & 255;
+
+	    	return "rgb(" + r + ", " + g + ", " + b + ")";
+	    }
 
 	</script>
 </head>
