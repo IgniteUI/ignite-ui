@@ -4230,7 +4230,7 @@
             });
 
             texts = $.map(texts, function (text) {
-                return text.replace(/[ -[\]{}()*+?.,\\^$|#\s ]/g, "\\$&");
+                return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
             });
 
             if (texts.length > 0) {
