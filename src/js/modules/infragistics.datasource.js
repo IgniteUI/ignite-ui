@@ -2101,7 +2101,9 @@
 			if (s.type === "local" && s.defaultFields.length > 0) {
 				this.sort(s.defaultFields, s.defaultDirection);
 			} else if (this.isGroupByApplied(s.expressions)) {
-				this._generateGroupByData(this._data, s.expressions);
+				this._generateGroupByData(this._filter ? this._filteredData : this._data,
+										s.expressions);
+				this._dataView = this.visibleGroupByData();
 			}
 			/* Check if paging is configured, and if so,
 			if OpType === $.ig.Constants.OpType.Local => apply local paging */
@@ -2897,7 +2899,7 @@
 			paramType="string" asc / desc direction
 			*/
 			/* check if there is a custom function defined */
-			var s = this.settings.sorting, convertFunc, isGb, gbFields, i,
+			var i, s = this.settings.sorting, convertFunc, isGb,
 				p = this.settings.paging, data, resetPaging = false;
 			/* we allow the developer to provide a single string of sort expressions, in the following format:
 			"col1 asc, col2 desc, col3 asc" ...  */
@@ -2979,15 +2981,7 @@
 				}
 			}
 			if (isGb) {
-				gbFields = [];
-				for (i = 0; i < fields.length; i++) {
-					if (fields[ i ].isGroupBy) {
-						gbFields.push(fields[ i ]);
-					} else {
-						break;
-					}
-				}
-				this._generateGroupByData(data, gbFields);
+				this._generateGroupByData(data, fields);
 			}
 			/* now if paging is enabled, and "applyToAllData" is true, we need to re-initialize the dataView */
 			if (resetPaging && p.type === "local") {
@@ -3253,8 +3247,13 @@
 				/* M.H. 21 Oct 2014 Fix for bug #181395: When filtering is applied selected page is not persisted. */
 				this.persistedPageIndex(null);
 			} else if (!this._vgbData || !this._vgbData.length) {
-				for (i = 0; i < this._filteredData.length; i++) {
-					this._dataView[ i ] = this._filteredData[ i ];
+				if (this.isGroupByApplied()) {
+					this._generateGroupByData(this._filteredData, s.expressions);
+					this._dataView = this.visibleGroupByData();
+				} else {
+					for (i = 0; i < this._filteredData.length; i++) {
+						this._dataView[ i ] = this._filteredData[ i ];
+					}
 				}
 			}
 			this._populateTransformedData(this._filteredData);
@@ -3262,7 +3261,7 @@
 		},
 		clearLocalFilter: function () {
 			/* This clears local filtering applied to the data view by resetting it to the original data and applying any paging */
-			var i, data, resetPaging,
+			var i, data, resetPaging, sa = false,
 				f = this.settings.filtering, p = this.settings.paging, s = this.settings.sorting;
 			this._clearGroupByData();
 			if (f.applyToAllData && f.type === "local") {
@@ -3286,6 +3285,7 @@
 			sorting and change filtering condition filtered data is not sorted */
 			if (s.type === "local" && s.enabled && s.expressions.length > 0) {
 				this.sort(s.expressions);
+				sa = true;
 			}
 			if (resetPaging && p.type === "local" && p.enabled === true) {
 				this._filter = true;
@@ -3297,9 +3297,14 @@
 				if (p.enabled === false) {
 					this._filter = true;
 				}
-				if (!this._vgbData || !this._vgbData.length) {
-					for (i = 0; i < this._filteredData.length; i++) {
-						this._dataView[ i ] = this._filteredData[ i ];
+				if (!sa) {
+					if (this.isGroupByApplied()) {
+						this._generateGroupByData(this._filteredData, s.expressions);
+						this._dataView = this.visibleGroupByData();
+					} else {
+						for (i = 0; i < this._filteredData.length; i++) {
+							this._dataView[ i ] = this._filteredData[ i ];
+						}
 					}
 				}
 			}
@@ -4123,7 +4128,7 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, len = data.length, resLen, gbExpr, res, gbRec;
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
@@ -4144,11 +4149,12 @@
 					this._vgbData.push(gbRec);
 				}
 				res = this._groupedRecordsByExpr(data, i, gbExpr);
-				gbRec.id = parentId + gbExpr.fieldName + ":" + res[ 0 ][ gbExpr.fieldName ] + ":" + gbInd;
 				gbRec.fieldName = gbExpr.fieldName;
-				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
 				resLen = res.length;
 				gbRec.val = resLen ? res[ 0 ][ gbRec.fieldName ] : undefined;
+				hc = gbRec.val ? String(gbRec.val).getHashCode() : "";
+				gbRec.id = parentId + gbExpr.fieldName + ":" + hc;
+				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
 				if (gbInd + 1 < gbExprs.length) {
 					this._processGroupsRecursive(res, gbExprs, gbInd + 1,
 												gbRec.collapsed || parentCollapsed, gbRec.id + ":");
@@ -4168,13 +4174,23 @@
 		_generateGroupByData: function (data,
 									gbExprs,
 									collapsedRows) {
-			// data should be sorted when this functions is called - otherwise grouping will not be correct
+			// data should be sorted(by gbExprs) when this functions is called - otherwise grouping will not be correct
+			var i, newgb = [];
 			data = data || this._data;
 			gbExprs = gbExprs || [];
 			this._gbData = [];
 			this._vgbData = [];
 			this._gbCollapsed = collapsedRows || this._gbCollapsed;
 			if ($.type(gbExprs) !== "array" || !gbExprs.length) {
+				return data;
+			}
+			for (i = 0; i < gbExprs.length; i++) {
+				if (gbExprs[ i ].isGroupBy) {
+					newgb.push(gbExprs[ i ]);
+				}
+			}
+			gbExprs = newgb;
+			if (!gbExprs.length) {
 				return data;
 			}
 			this._processGroupsRecursive(data, gbExprs, 0, false, "");
