@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API and Events Sample - API and Events with File Upload Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <!-- Used to style the API Viewer and Explorer UI -->
+    <link href="../apiviewer/apiviewer.css" rel="stylesheet" type="text/css">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+            
+    <!-- Used to add markup and provide logging 
+        functionality for the API Explorer and API Viewer UI -->
+    <script src="../apiviewer/apiviewer.js"></script>   
+</head>
+<body><p>This sample illustrates the client events that are available for the jQuery Upload control. The events 'fileSelecting' and 'fileSelected' are fired when selecting a file from the dialog window. While files are uploading, the handlers of 'fileUploading' and 'fileUploaded' are called. The 'onError' is called, for example, when you try to upload file larger than 1 MB. The 'fileUploadAborted' event is fired when you stop one uploading file, and the 'cancelAllClicked' event is fired when you stop all of them using the 'Cancel' button.      Note: You can upload files with a size smaller than 1 MB.</p>
+
+    <div id="igUpload1"></div>
+
+    <!-- Begin: API UI -->
+    <div class="api-viewer"></div>
+    <!-- End: API UI -->
+    
+    <script>
+
+        $(function () {
+
+            // Used to show output in the API Viewer at runtime, 
+            // defined in external script 'apiviewer.js'           
+            var apiViewer = new $.ig.apiViewer();
+
+            /*----------------- Event Examples -------------------------*/
+
+            $("#igUpload1").on("iguploadfileselecting", function (e, ui) {                
+                apiViewer.log("iguploadfileselecting");
+            });
+
+            $("#igUpload1").on("iguploadfileselected", function (e, ui) {
+                apiViewer.log("iguploadfileselected: [ " + "File Path: " + ui.filePath + "]");
+            });
+
+            $("#igUpload1").on("iguploadfileuploading", function (e, ui) {
+                apiViewer.log("iguploadfileuploading: [ " + "File Path: " + ui.filePath + "]");
+            });
+
+            $("#igUpload1").on("iguploadfileuploaded", function (e, ui) {
+                apiViewer.log("iguploadfileuploaded: [ " + "File Size: " + ui.totalSize + "]");
+            });
+
+            $("#igUpload1").on("iguploadfileuploadaborted", function (e, ui) {
+                apiViewer.log("iguploadfileuploadaborted: [ " + "Upload Aborted: " + ui.filePath + "]");
+            });
+
+            $("#igUpload1").on("iguploadcancelallclicked", function (e, ui) {
+                apiViewer.log("iguploadcancelallclicked");
+            });
+
+            $("#igUpload1").on("iguploadonerror", function (e, ui) {
+                apiViewer.log("iguploadonerror: [ " + "Error Message: " + ui.errorMessage + "]");
+            });
+
+            /*----------------- Instantiation -------------------------*/
+
+            $("#igUpload1").igUpload({
+                mode: 'multiple',
+                progressUrl: "../../IGUploadStatusHandler.ashx",
+                controlId: "serverID1"
+            });
+
+
+        });
+
+    </script>  
+</body>
+</html>
