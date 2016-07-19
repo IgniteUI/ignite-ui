@@ -56,7 +56,7 @@
 	    test("_changeColorOptions", function() {
 	    	this.actualColorPicker.igColorPicker("option", "colors", []);
 	    	equal(this.actualColorPicker.igColorPicker("customColorTable").children().length, 0, "colors were not removed as elements.")
-	    })
+	    });
 	    
 	    test("_changeStandardColorsOption", function () {
 	    	var colors = ["#f0ff0f", "#000a00", "#FEECE1"];
@@ -73,28 +73,31 @@
 	    	})
 
 	    	equal(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, colors.length, "standard colors length isn't equal with given colors length.");
-	    })
+
+	    	var clickFirstCustomColor = this.actualColorPicker.find(".igColorPicker-table").find(".igColorPicker-customColors").find(".igColorPicker-row").first().find(".igColorPicker-color").first().click();
+	    	ok(clickFirstCustomColor.hasClass("selected-color"), "click event was not triggered.");
+	    });
 	    
 	    test("selectColor", function () {
 	    	this.actualColorPicker.igColorPicker("selectColor", "#000000");
 	    	ok(this.secondColorElement.hasClass("selected-color"), "color was not selected.");
-	    })
+	    });
 	    
 	    test("_getColorByElement", function () {
 	    	var expectedResult = this.secondColorElement.css("background-color");
 	    	var getColor = this.actualColorPicker.igColorPicker("colorFromElement", this.secondColorElement);
 	    	equal(getColor, expectedResult, "color was not get by element.");   	
-	    })
+	    });
 	    
 	    test("_clickFirstCustomColor", function () {
 	    	var clickFirstCustomColor = this.actualColorPicker.find(".igColorPicker-table").find(".igColorPicker-customColors").find(".igColorPicker-row").first().find(".igColorPicker-color").first().click();
 	    	ok(clickFirstCustomColor.hasClass("selected-color"), "click event was not triggered.");
-	    })
+	    });
 
 	    test("_clickFirstStandardColor", function () {
 	    	var firstStandardColor = this.actualColorPicker.find(".igColorPicker-table").find(".ui-colorpicker-standardcolors").children().first().click();
 	    	ok(firstStandardColor.hasClass("selected-color"), "click event was not triggered.");
-	    })
+	    });
 	    
 	    test("_setTheSameOptionValue", function () {
 	    	var color = ["#C00000"];
@@ -109,7 +112,7 @@
 	    	equal($(this.actualColorPicker.igColorPicker("standardColorsTable").children()).css("background-color"), convertGivenColorToRgb, "standard color value isn't equal with given color value.");
 
 	    	equal(this.actualColorPicker.igColorPicker("standardColorsTable").children().length, color.length, "standard color length isn't equal with given color length.");
-	    })
+	    });
 
 	    function hexToRgb (hex) {
 	    	
