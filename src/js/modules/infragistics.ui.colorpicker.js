@@ -71,12 +71,13 @@ if (typeof jQuery !== "function") {
             this._colorTable.addClass(this.css.colorTable);
             this._colorTable.appendTo(this.element);
 
-            this._addOrChangeColors(this.options.colors);
-            this._addOrChangeStandardColors(this.options.standardColors);
+            this._addOrChangeColors();
+            this._addOrChangeStandardColors();
 
         },
-        _addOrChangeColors: function(colors) {
+        _addOrChangeColors: function () {
             var colsLength, row, col,
+				colors = this.options.colors,
                 rowsLength = colors.length,
                 customColorsHtml = "";
 
@@ -93,16 +94,16 @@ if (typeof jQuery !== "function") {
 
                 for (col = 0; col < colsLength; col++) {
                     customColorsHtml += "<div class=" + this.css.colorpickerColor +
-                        " style='background-color: " + colors[ row ][ col ] + ";'></div>";
+                        ' style="background-color: ' + colors[ row ][ col ] + ';"></div>';
                 }
                 customColorsHtml += "</div>";
             }
 
             this._customColors.html(customColorsHtml);
-
         },
-        _addOrChangeStandardColors: function(colors) {
+        _addOrChangeStandardColors: function () {
             var item,
+				colors = this.options.standardColors,
                 defaultColorsHtml = "";
 
             if (this._defaultColors && this._defaultColors.length > 0) {
@@ -114,13 +115,10 @@ if (typeof jQuery !== "function") {
 
             for (item = 0; item < colors.length; item++) {
                 defaultColorsHtml += "<div class=" + this.css.colorpickerColor +
-                     " style='background-color: " + colors[ item ] + ";'></div>";
+                     ' style="background-color: ' + colors[ item ] + ';"></div>';
             }
 
             this._defaultColors.html(defaultColorsHtml);
-        },
-        _getColor: function ($element) {
-            return $element.css("background-color");
         },
         _init: function () {
             this.element.addClass(this.css.baseClass);
@@ -133,63 +131,76 @@ if (typeof jQuery !== "function") {
                 e.preventDefault();
 
                 self._changeSelectedColor(target);
-                self._trigger(self.events.colorSelected, e, { color: self._getColor(target) });
+                self._trigger(self.events.colorSelected, e,
+                    { color: self.colorFromElement(target) });
             });
         },
         _changeSelectedColor: function (target) {
             this._colorTable.find("div.selected-color").removeClass("selected-color");
-
             target.addClass("selected-color");
         },
-
-        _setOption: function( key, value ) {
-            var options = this.options;
-
-            if (options[ key ] === value) {
+        _setOption: function ( key, value ) {
+            if (this.options[ key ] === value) {
                 return;
             }
 
             $.Widget.prototype._setOption.apply(this, arguments);
 
             switch (key) {
-                case "standardColors":
-                    this._addOrChangeStandardColors(value);
-                    break;
-                case "colors" :
-                    this._addOrChangeColors(value);
-                    break;
+			case "standardColors":
+				this._addOrChangeStandardColors();
+				break;
+			case "colors":
+				this._addOrChangeColors();
+				break;
             }
         },
-        _rgbToHex: function(color) {
-            var r, g, b, colHex;
+		colorTable: function () {
+			/* Gets the div element with the color table.
+				returnType="object" Returns the div element with the colors.
+			*/
+			return this._colorTable;
+		},
+		customColorTable: function () {
+			/* Gets the div element with the custom color table.
+				returnType="object" Returns the div element with the custom colors.
+			*/
+			return this._customColors;
+		},
+        standardColorsTable: function () {
+            /* Gets the div element with the standard color table.
+                returnType="object" Returns the div element with the standard colors.
+            */
 
-            if (color.charAt(0) === "r")
-            {
-                color = color.replace("rgb(", "").replace(")", "").split(",");
-                r = parseInt(color[ 0 ], 10).toString(16);
-                g = parseInt(color[ 1 ], 10).toString(16);
-                b = parseInt(color[ 2 ], 10).toString(16);
-                r = r.length === 1 ? "0" + r : r;
-                g = g.length === 1 ? "0" + g : g;
-                b = b.length === 1 ? "0" + b : b;
-                colHex = "#" + r + g + b;
-                return colHex;
-            }
+            return this._defaultColors;
         },
-
-        selectColor: function(color) {
-            /* select a given color to the widget. */
-            var self = this;
-            this._colorTable.find("div.selected-color").removeClass("selected-color");
-
-            var matching = this._colorTable.find("div").filter(function(index, item) {
-                var hexColor = self._rgbToHex(item.style.backgroundColor);
-                return hexColor && hexColor === color.toLowerCase();
-            });
-
-            if (matching.length > 0) {
-                matching.addClass("selected-color");
+        colorFromElement: function ($element) {
+			/* Gets the color for an element from the color picker in RGB format.
+				paramType="object" optional="false" The element in the color picker from which the color will be retrieved.
+				returnType="string" Returns the color for the provided color element in RGB format.
+			*/
+            return $element.css("background-color");
+        },
+        selectedColor: function () {
+            /* Returns the currently selected color in the color picker. Returns null if no color is selected.
+                paramType="string" optional="false" The #RGB value of the color to be selected.
+                returnType="string|null" Returns the selected color if available. Null if no color is selected.
+            */
+            var selected = this._colorTable.find("div.selected-color");
+            if (selected.length) {
+                return $.ig.util.rgbToHex(selected.css("background-color"));
             }
+            return null;
+        },
+        selectColor: function (color) {
+            /* Select a given color to the widget.
+				paramType="string" optional="false" The #RGB value of the color to be selected.
+			*/
+            var matching = this._colorTable.find("div").filter(function (index, item) {
+					var hexColor = $.ig.util.rgbToHex(item.style.backgroundColor);
+					return hexColor && hexColor === color.toLowerCase();
+				});
+			this._changeSelectedColor(matching);
         }
     });
 

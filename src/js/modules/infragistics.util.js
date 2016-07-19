@@ -3235,6 +3235,26 @@ $.ig.Array.prototype.clear = function () {
 		return ret;
 	};
 
+	$.ig.util.rgbToHex = function (color) {
+		/* Convert color from RGB to HEX format. null if non-rgb color is provided.
+			paramType="string" optional="false" Color in RGB format.
+			returnType="string|null" Returns converted color from RGB to HEX format. null if non-rgb color is provided.
+		*/
+		var r, g, b, colHex = null;
+
+		if (color.charAt(0) === "r") {
+			color = color.replace("rgb(", "").replace(")", "").split(",");
+			r = parseInt(color[ 0 ], 10).toString(16);
+			g = parseInt(color[ 1 ], 10).toString(16);
+			b = parseInt(color[ 2 ], 10).toString(16);
+			r = r.length === 1 ? "0" + r : r;
+			g = g.length === 1 ? "0" + g : g;
+			b = b.length === 1 ? "0" + b : b;
+			colHex = "#" + r + g + b;
+		}
+		return colHex;
+	};
+
 	$.ig.util.isResponseTypeSupported = function (responseType) {
 		var xhr = null;
 		try {
@@ -4194,6 +4214,17 @@ $.ig.Array.prototype.clear = function () {
 		c = c || " ";
 		while (s.length < len) {
 			s = c + s;
+		}
+		return s;
+	};
+
+	String.prototype.reverse = function () {
+		/* Inverts the order of the characters in a string.
+			returnType="string" Returns a new inverted string.
+		*/
+		var s = "";
+		for (var i = this.length - 1; i >= 0; i--) {
+			s += this[ i ];
 		}
 		return s;
 	};
