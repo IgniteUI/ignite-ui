@@ -74,7 +74,7 @@
 	        var ui = { color: "#f1f1f1" };
 	        this.actualColorPickerSplitButton._onColorSelect({}, ui);
 	        
-	        deepEqual(this.actualColorPickerSplitButton.options.defaultColor, ui.color, "changed default color");
+	        deepEqual(this.actualColorPickerSplitButton.options.defaultColor, ui.color, "default color was not changed");
 	    });
 
 	    test("expand", function () {
@@ -82,18 +82,18 @@
 	        this.actualColorPickerSplitButton._triggerExpanded();
 	        var isExpanded = this.actualColorPickerSplitButton.element.find("input").val();
 	        
-	        equal(isExpanded, "expanded", "Trigger expand event");
+	        equal(isExpanded, "expanded", "expand event was not triggered");
 	    });
 
 	    test("setColor", function () {
 	    	var getDefaultValue = this.actualColorPickerSplitButton.options.defaultColor;
-	    	equal(getDefaultValue, "#000", "check value from defaultColor option");
+	    	equal(getDefaultValue, "#000", "defaultColor value isn't euqal with given color value");
 
 	    	var  color = "#f0f0f0";
 	        this.actualColorPickerSplitButton.setColor(color)
 	        var getDefaultChangedColor = this.actualColorPickerSplitButton.options.defaultColor;
 	        
-	        equal(getDefaultChangedColor, color, "check if defaultColor value was changed");
+	        equal(getDefaultChangedColor, color, "defaultColor value was not changed");
 	    });
 
 	    test("_setOption", function () {
@@ -101,7 +101,7 @@
 	    	this.actualColorPickerSplitButton.options.defaultColor = color;
 	    	var getDefaultColor = this.actualColorPickerSplitButton.options.defaultColor;
 
-	    	equal(getDefaultColor, color, "change defaultColor value through _setOption method");
+	    	equal(getDefaultColor, color, "defaultColor value was not changed");
 	    })
 
 	    test("_setButtonColorIndicator", function () {
@@ -114,11 +114,11 @@
 
 	    	this.actualColorPickerSplitButton._onItemClick();
 
-	    	equal(getBtnColorIndicatorColor, getRgbColor, "Set button color indicator when doesn't have default icon");
+	    	equal(getBtnColorIndicatorColor, getRgbColor, "button color indicator was not set");
 	    })
 
 	    test("_onItemClick", function () {
-	    	equal(this.actualColorPickerSplitButton._onItemClick(), false, "return false when invoke _onItemClick");
+	    	equal(this.actualColorPickerSplitButton._onItemClick(), false, "when invoke _onItemClick isn't return false");
 	    })
 
 	    test("_onDefaultButtonClick", function () {
@@ -126,37 +126,37 @@
 	    	var clickInputValue = this.actualColorPickerSplitButton.element.find("input").val();
 	    	var getDefaultButton = this.actualColorPickerSplitButton.element.children(":first").children(":first");
 	    	
-	    	equal(clickInputValue, undefined, "default button isn't click yet");
+	    	equal(clickInputValue, undefined, "default button was clicked");
 	    	
 	    	getDefaultButton.trigger("click");
 	    	// Check after click the input element value
 	    	clickInputValue = this.actualColorPickerSplitButton.element.find("input").val();
 
-	    	equal(clickInputValue, "clicked", "default button was clicked");
+	    	equal(clickInputValue, "clicked", "default button was not clicked");
 	    })
 
 	    test("_preventCollapsing", function () {
 	    	var isPreventCollapsing = this.actualColorPickerSplitButton._preventCollapsing();
-	    	equal(isPreventCollapsing, false, "return false when invoke _preventCollapsing method");
+	    	equal(isPreventCollapsing, false, "when invoke _preventCollapsing method isn't return false");
 	    })
 
 	    test("_setOptinWithEqualKeyValues", function () {
 	    	var color = "#afafaf";
 
-	    	notEqual(color, this.actualColorPickerSplitButton.options.defaultColor, "defaultColor option has different value from given color value");
+	    	notEqual(color, this.actualColorPickerSplitButton.options.defaultColor, "defaultColor option hasn't different value from given color value");
 
 	    	this.actualColorPickerSplitButton._setOption("defaultColor", color);
-	    	equal(color, this.actualColorPickerSplitButton.options.defaultColor, "defaultColor value was changed");
+	    	equal(color, this.actualColorPickerSplitButton.options.defaultColor, "defaultColor value was not changed");
 	    	
 	    	this.actualColorPickerSplitButton._setOption("defaultColor", color);
-	    	equal(color, this.actualColorPickerSplitButton.options.defaultColor, "set the same color value to defaultColor option");
+	    	equal(color, this.actualColorPickerSplitButton.options.defaultColor, "defaultColor value was change with given color value");
 	    
 	    })
 	    
 	    test("collapse", function () {
 			this.actualColorPickerSplitButton.collapse(true);
 			var isCollapsed = this.actualColorPickerSplitButton.element.find("input").val();
-			ok(isCollapsed, "trigger collapse event with parameter");
+			ok(isCollapsed, "collapse event was not trigger");
 	    })	
 
 
