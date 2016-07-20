@@ -257,6 +257,10 @@
 						inputMask: "###"
 						
 					});
+					$("#revertEditor1").igMaskEditor({
+						inputMask : "9900",
+						revertIfNotValid: true
+					});
 				});
 			}
 			initialized = false;
@@ -475,46 +479,46 @@
 				field = $("#toUppertoLowerMaskEditor").igMaskEditor("field");
 				
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._enterEditMode();
-				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("nnAAMMfRu");
-				equal(field.val(), "CNNAAmm?FrU_", "Text is not CNNAAmm?FrU_");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("nnAAMMfRuu");
+				equal(field.val(), "CNNAAmm?FrUU", "Text is not CNNAAmm?FrUU");
 
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._processValueChanging(field.val());
 
-				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "CNNAAmm?FrU ", "Value is not CNNAAmm?FrU ");
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "CNNAAmm?FrUU", "Value is not CNNAAmm?FrU ");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
-				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CNNAAmm?FrU ", "displayValue is not CNNAAmm?FrU ");
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CNNAAmm?FrUU", "displayValue is not CNNAAmm?FrUU");
 
 				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "dataMode", "rawTextWithRequiredPrompts");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._enterEditMode();
-				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("fnAAMMfRu");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("fnAAMMfRuu");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._processValueChanging(field.val());
 
-				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "FNAAmmFrU ", "Value is not FNAAmmFrU ");
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "FNAAmmFrUU", "Value is not FNAAmmFrUU");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
-				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CFNAAmm?FrU ", "displayValue is not CFNAAmm?FrU");
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CFNAAmm?FrUU", "displayValue is not CFNAAmm?FrUU");
 
 
 				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "dataMode", "rawTextWithRequiredPromptsAndLiterals");
 				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "padChar", "*");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._enterEditMode();
-				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("hnAAMMfRu");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("hnAAMMfRuu");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._processValueChanging(field.val());
 
-				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "CHNAAmm?FrU ", "Value is not HNAAmmFrU ");
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "CHNAAmm?FrUU", "Value is not HNAAmmFrU ");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
-				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CHNAAmm?FrU*", "displayValue is not CHNAAmm?FrU*");
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CHNAAmm?FrUU", "displayValue is not CHNAAmm?FrUU");
 
 				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "padChar", " ");
 				$('#toUppertoLowerMaskEditor').igMaskEditor("option", "dataMode", "nonExisting");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._enterEditMode();
-				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("nnAAMMfRu");
-				equal(field.val(), "CNNAAmm?FrU_", "Text is not CNNAAmm?FrU_");
+				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._insert("nnAAMMfRuu");
+				equal(field.val(), "CNNAAmm?FrUU", "Text is not CNNAAmm?FrUU");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._processValueChanging(field.val());
 
-				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "CNNAAmm?FrU ", "Value is not CNNAAmm?FrU ");
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("value"), "CNNAAmm?FrUU", "Value is not CNNAAmm?FrUU");
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
-				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CNNAAmm?FrU ", "displayValue is not CNNAAmm?FrU ");
-
+				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CNNAAmm?FrUU", "displayValue is not CNNAAmm?FrUU");
+				
 			});
 			testId = 'mask editor _update -> Null Value';
 			test(testId, 9, function () {
@@ -706,6 +710,27 @@
 				$("#unfilledCharsPromptEditor2").igMaskEditor("value", "053-400-03");
 				equal(editorInput.val(), "053-400-03", "The value should be 053-400-03");
 				equal(editorInput.igMaskEditor("value"), "053-400-03", "The value should be 053-400-03");
+			});
+			testId = "Revert invalid value";
+			test(testId, 6, function () {
+				var editor = $("#revertEditor1");
+				field = editor.igMaskEditor("field");
+
+				editor.data("igMaskEditor")._enterEditMode();
+				editor.data("igMaskEditor")._insert("1234");
+				equal(field.val(), "1234", "Text is not 1234");
+				editor.data("igMaskEditor")._processValueChanging(field.val());
+				equal(editor.igMaskEditor("value"), "1234", "Value is not 1234");
+				editor.data("igMaskEditor")._exitEditMode();
+				equal(editor.igMaskEditor("displayValue"), "1234", "Value is not NNAA");
+
+				editor.data("igMaskEditor")._enterEditMode();
+				editor.data("igMaskEditor")._insert("123_");
+				equal(field.val(), "123_", "Text is not 123_");
+				editor.data("igMaskEditor")._processValueChanging(field.val());
+				equal(editor.igMaskEditor("value"), "1234", "Value is not 1234");
+				editor.data("igMaskEditor")._exitEditMode();
+				equal(editor.igMaskEditor("displayValue"), "1234", "Value is not NNAA");
 			});
 		});
 
@@ -904,6 +929,7 @@
 			<input type="text" id="keydownEditor3" />
 			<input type="text" id="unfilledCharsPromptEditor1" />
 			<input type="text" id="unfilledCharsPromptEditor2" />
+			<input type="text" id="revertEditor1" />
 		<input type='submit' value="Submit" />
 		</form>
 	</div>
