@@ -13,7 +13,7 @@
  *   infragistics.util.js
  *   infragistics.ui.shared.js
  *   infragistics.ui.toolbarbutton.js
- *   infragistics.ui.toolbar.js   
+ *   infragistics.ui.toolbar.js
  *   infragistics.ui.popover.js
  *   infragistics.ui.splitbutton.js
  *   infragistics.ui.colorpicker.js
@@ -96,7 +96,7 @@ if (typeof jQuery !== "function") {
         },
         css: {
             /* The widget base class css. */
-            htmlEditor: "ui-widget ui-widget-content ui-corner-all ui-ightmleditor ui-helper-clearfix",
+            htmlEditor: "ui-widget ui-widget-content ui-corner-all ui-ightmleditor ui-helper-clearfix", //jscs:ignore maximumLineLength
             /* The html editor content styles. */
             htmlEditorContent: "ui-ightmleditor-content",
             /* The html editor toolbars style. */
@@ -110,6 +110,7 @@ if (typeof jQuery !== "function") {
             name: "textToolbar",
             displayName: $.ig.HtmlEditor.locale.defaultToolbars.textToolbar,
             isExpanded: true,
+
             // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
             allowCollapsing: true,
             collapseButtonIcon: "ui-igbutton-collapse",
@@ -124,15 +125,15 @@ if (typeof jQuery !== "function") {
                     },
                     isBold: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     boldButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.boldButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     boldButtonIcon: {
                         value: "ui-igbutton-bold",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -141,15 +142,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isItalic: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     italicButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.italicButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     italicButtonIcon: {
                         value: "ui-igbutton-italic",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -158,15 +159,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isUnderline: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     underlineButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.underlineButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     underlineButtonIcon: {
                         value: "ui-igbutton-underline",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -175,15 +176,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isStrikethrough: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     strikethroughButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.strikethroughButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     strikethroughButtonIcon: {
                         value: "ui-igbutton-strikethrough",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -201,7 +202,7 @@ if (typeof jQuery !== "function") {
                         action: "_comboHeightAction"
                     },
                     fontFamilies: {
-                        value: $.ig.HtmlEditor.locale.fontNames[/^win/gi.test(navigator.platform) ? 'win' : 'mac'],
+                        value: $.ig.HtmlEditor.locale.fontNames[/^win/gi.test(navigator.platform) ? "win" : "mac"],
                         action: "_comboDataSourceAction"
                     },
                     selectedFontFamily: {
@@ -264,6 +265,7 @@ if (typeof jQuery !== "function") {
             name: "formattingToolbar",
             displayName: $.ig.HtmlEditor.locale.defaultToolbars.formattingToolbar,
             isExpanded: true,
+
             // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
             allowCollapsing: true,
             collapseButtonIcon: "ui-igbutton-collapse",
@@ -274,15 +276,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isJustifyLeft: {
                         value: true,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     justifyLeftButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.alignTextLeftButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     justifyLeftButtonIcon: {
                         value: "ui-igbutton-justifyleft",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -291,15 +293,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isJustifyCenter: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     justifyCenterButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.alignTextCenterButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     justifyCenterButtonIcon: {
                         value: "ui-igbutton-justifycenter",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -308,15 +310,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isJustifyRight: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     justifyRightButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.alignTextRightButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     justifyRightButtonIcon: {
                         value: "ui-igbutton-justifyright",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -325,15 +327,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isJustifyFull: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     justifyFullButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.justifyButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     justifyFullButtonIcon: {
                         value: "ui-igbutton-justifyfull",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -342,15 +344,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isUnorderedList: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     insertUnorderedListTooltip: {
                         value: $.ig.HtmlEditor.locale.bulletsButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     insertUnorderedListButtonIcon: {
                         value: "ui-igbutton-unorderedlist",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -359,16 +361,16 @@ if (typeof jQuery !== "function") {
                 props: {
                     isOrderedList: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     insertOrderedListTooltip: {
                         // JD May 19, 2015 Bug #194260 Fixing the locale property name for the order list tooltip
                         value: $.ig.HtmlEditor.locale.numberingButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     insertOrderedListButtonIcon: {
                         value: "ui-igbutton-orderedlist",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -377,11 +379,11 @@ if (typeof jQuery !== "function") {
                 props: {
                     outdentButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.decreaseIndentButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     outdentButtonIcon: {
                         value: "ui-igbutton-removeindent",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -390,11 +392,11 @@ if (typeof jQuery !== "function") {
                 props: {
                     indentTooltip: {
                         value: $.ig.HtmlEditor.locale.increaseIndentButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     indentButtonIcon: {
                         value: "ui-igbutton-indent",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -446,6 +448,7 @@ if (typeof jQuery !== "function") {
             name: "insertObjectToolbar",
             displayName: $.ig.HtmlEditor.locale.defaultToolbars.insertObjectToolbar,
             isExpanded: true,
+
             // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
             allowCollapsing: true,
             collapseButtonIcon: "ui-igbutton-collapse",
@@ -457,15 +460,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isImage: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     imageButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.insertPictureButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     imageButtonIcon: {
                         value: "ui-igbutton-addimage",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -475,15 +478,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isLink: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     linkButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.insertLinkButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     linkButtonIcon: {
                         value: "ui-igbutton-addlink",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -493,15 +496,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isTable: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     tableButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.insertTableButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     tableButtonIcon: {
                         value: "ui-igbutton-table",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -514,15 +517,15 @@ if (typeof jQuery !== "function") {
                     },
                     isAddRow: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     addRowButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.addRowButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     addRowButtonIcon: {
                         value: "ui-igbutton-addrow",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -535,15 +538,15 @@ if (typeof jQuery !== "function") {
                     },
                     isAddColumn: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     addColumnButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.addColumnButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     addColumnButtonIcon: {
                         value: "ui-igbutton-addcolumn",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -556,15 +559,15 @@ if (typeof jQuery !== "function") {
                     },
                     isRemoveRow: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     removeRowButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.removeRowButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     removeRowButtonIcon: {
                         value: "ui-igbutton-removerow",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -577,15 +580,15 @@ if (typeof jQuery !== "function") {
                     },
                     isRemoveColumn: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     removeColumnButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.removeColumnButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     removeColumnButtonIcon: {
                         value: "ui-igbutton-removecolumn",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }]
@@ -593,6 +596,7 @@ if (typeof jQuery !== "function") {
             name: "copyPasteToolbar",
             displayName: $.ig.HtmlEditor.locale.defaultToolbars.copyPasteToolbar,
             isExpanded: true,
+
             // S.T. 18th of Dec, 2015 Bug #210622: Enable this option in html editor.
             allowCollapsing: true,
             collapseButtonIcon: "ui-igbutton-collapse",
@@ -604,15 +608,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isCopy: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     copyButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.copyButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     copyButtonIcon: {
                         value: "ui-igbutton-copy",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -622,15 +626,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isCut: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     cutButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.cutButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     cutButtonIcon: {
                         value: "ui-igbutton-cut",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -640,15 +644,15 @@ if (typeof jQuery !== "function") {
                 props: {
                     isPaste: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     pasteButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.pasteButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     pasteButtonIcon: {
                         value: "ui-igbutton-paste",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -661,15 +665,15 @@ if (typeof jQuery !== "function") {
                     },
                     isUndo: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     undoButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.undoButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     undoButtonIcon: {
                         value: "ui-igbutton-undo",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }, {
@@ -682,24 +686,26 @@ if (typeof jQuery !== "function") {
                     },
                     isRedo: {
                         value: false,
-                        action: '_isSelectedAction'
+                        action: "_isSelectedAction"
                     },
                     redoButtonTooltip: {
                         value: $.ig.HtmlEditor.locale.redoButtonTitle,
-                        action: '_tooltipAction'
+                        action: "_tooltipAction"
                     },
                     redoButtonIcon: {
                         value: "ui-igbutton-redo",
-                        action: '_buttonIconAction'
+                        action: "_buttonIconAction"
                     }
                 }
             }]
         }],
         NODE: new $.ig.XmlNodeType(),
-        //This is property is populated by initToolabrs method in the following format.
+
+        // This is property is populated by initToolabrs method in the following format.
         // The state of the toolbars (visible/hidden) is set by _setActiveToolbars method.
         _toolbarsActiveState: {
-            // show[ToolbarName]: {name: '[ToolbarName]', value: true},
+
+            // show[ ToolbarName ]: {name: '[ ToolbarName ]', value: true},
         },
         _isDirty: false,
         _createWidget: function () {
@@ -722,19 +728,23 @@ if (typeof jQuery !== "function") {
 
             // K.D. July 16th, 2012 Bug #101208 Removing the code that initially creates a paragraph
             this.element.addClass(this.css.htmlEditor);
-            html += '<div id="' + this._id('_toolbars') + '" class="' + this.css.toolbarsContainer + '"></div>';
-            html += '<div id="' + this._id("_content") + '" class="' + this.css.htmlEditorContent + '">';
-            html += '<iframe class="' + this.css.workspaceIframe + '" id="' + this._id("_editor") + '"></iframe>';
-            html += '<textarea name="' + inputName + '" id="' + this._id("_source") + '"></textarea>';
-            html += '</div>';
+            html += '<div id="' + this._id("_toolbars") + '" class="' +
+                this.css.toolbarsContainer + '"></div>';
+            html += '<div id="' + this._id("_content") + '" class="' +
+                this.css.htmlEditorContent + '">';
+            html += '<iframe class="' + this.css.workspaceIframe + '" id="' +
+                this._id("_editor") + '"></iframe>';
+            html += '<textarea name="' + inputName + '" id="' +
+                this._id("_source") + '"></textarea>';
+            html += "</div>";
 
             $(html).appendTo(this.element);
 
             // D.A. Bug #144045 September 17th, 2013 Hide the _source element upon initialization.
-            // The css of the textarea is changed to display:block to override the browsers 
+            // The css of the textarea is changed to display:block to override the browsers
             // default display:inline-block of the textarea. Needed for the jQuery's show/hide
             // methods to toggle between display:block and display:none.
-            $('#' + this._id('_source')).hide();
+            $("#" + this._id("_source")).hide();
 
             // K.D. July 26th, 2012 Bug #113717 The height is applied to the iframe and not to the element. Now the height is correctly
             // calculated relatively to the total height.
@@ -743,20 +753,21 @@ if (typeof jQuery !== "function") {
         },
         _createWorkspace: function (content) {
             // D.A. Feb 24th, 2014 Bug #164304 Vertical scrollbar always visible in IE10+. Changed doctype to html5.
-            var iFrameContent = '<' + '!' + 'DOCTYPE html' + '>' +
-                '<html>' +
-                '<head>' +
-                '<title>igHtmlEditor<\/title>' +
-                '<\/head>' +
+            var iFrameContent = "<" + "!" + "DOCTYPE html" + ">" +
+                "<html>" +
+                "<head>" +
+                "<title>igHtmlEditor<\/title>" +
+                "<\/head>" +
+
                 // K.D. September 12th, 2012 Bug #120892 adding spellcheck="false" to disable firefox spellchecker
-                '<body contentEditable="true" spellcheck="false" style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0);">' +
-                '<p>';
+                '<body contentEditable="true" spellcheck="false" style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0);">' + //jscs:ignore maximumLineLength
+                "<p>";
 
             if (!document.all) {
-                iFrameContent += '<br \/>';
+                iFrameContent += "<br \/>";
             }
 
-            iFrameContent += '<\/p><\/body><\/html>';
+            iFrameContent += "<\/p><\/body><\/html>";
 
             this.workspace = this.element.find("#" + this._id("_editor"))[0];
 
@@ -764,9 +775,9 @@ if (typeof jQuery !== "function") {
             this.workspace.contentWindow.document.write(iFrameContent);
             this.workspace.contentWindow.document.close();
 
-            // S.T. March 20, 2014 Bug #164898 and it's related to #113728 Extracting any initial content and rendering it as content in the iframe workspace
+            // S.T. March 20, 2014 Bug #164898 and it"s related to #113728 Extracting any initial content and rendering it as content in the iframe workspace
             if (content && content.length > 0) {
-                $(this.workspace).contents().find('body').html(content);
+                $(this.workspace).contents().find("body").html(content);
             }
 
             if ($.ig.util.isWebKit) {
@@ -775,7 +786,8 @@ if (typeof jQuery !== "function") {
             if (!document.all) {
                 var showUI = false,
                     comandValue = true;
-                this.workspace.contentWindow.document.execCommand('styleWithCSS', showUI, comandValue);
+                this.workspace.contentWindow.document.
+                    execCommand("styleWithCSS", showUI, comandValue);
             }
         },
         _getToolbar: function (index) {
@@ -783,9 +795,10 @@ if (typeof jQuery !== "function") {
                 return this._toolbars.eq(index);
             }
             if (typeof index === "string") {
-                return this._toolbars.find('#' + this._id('_toolbars_' + index));
+                return this._toolbars.find("#" + this._id("_toolbars_" + index));
             }
         },
+
         // Returns toolbar settings by given name
         _getToolbarSettings: function (name) {
             var curToolbar,
@@ -804,7 +817,7 @@ if (typeof jQuery !== "function") {
         },
         _getFirefoxVersion: function () {
             if ($.ig.util.isFF) {
-                return parseInt(window.navigator.userAgent.match(/\bFirefox\/[0-9\.]+\b/)[0].split("/").reverse()[0], 10);
+                return parseInt(window.navigator.userAgent.match(/\bFirefox\/[ 0-9\. ]+\b/)[0].split("/").reverse()[0], 10);
             }
         },
         _create: function () {
@@ -844,15 +857,18 @@ if (typeof jQuery !== "function") {
 
             this._bindToToolbarEvents();
             this._bindWorkspaceEvents();
-            this.sourceWindow = this.element.find("#" + this._id('_source'));
+            this.sourceWindow = this.element.find("#" + this._id("_source"));
+
             // TODO: the new content is not wrap in <p> on enter.
             // $(this.workspace).contents().find('body').html(this.sourceWindow.val());
             this._initFontsCombos();
             this._initFormatsListCombo();
             this._initFontSizeCombo();
+
             // TODO: the new content is not wrap in <p> on enter.
             // this.setContent(this.options.value, "html");
-            this._analyser = new $.ig.ToolbarHelper(this.workspace.contentWindow, this._toolbars.children());
+            this._analyser =
+                new $.ig.ToolbarHelper(this.workspace.contentWindow, this._toolbars.children());
 
             var self = this;
             this._onSelectionChange(function () {
@@ -865,32 +881,37 @@ if (typeof jQuery !== "function") {
                 .addClass("ui-combo-fontfamily");
 
             fontFamiliesCombo.igCombo("option", {
+
                 // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
                 // Combo bug #113720
-                itemTemplate: '<span style="font-family: ${value}" unselectable="on">${text}</span>',
+                itemTemplate:
+                    '<span style="font-family: ${value}" unselectable="on">${text}</span>',
                 height: this._comboHeight,
-                dropDownOrientation: 'bottom'
+                dropDownOrientation: "bottom"
             });
         },
         _initFormatsListCombo: function () {
-            var formatsListCombo = this._getToolbar("textToolbar").igToolbar("getItem", "formatsList");
+            var formatsListCombo = this._getToolbar("textToolbar")
+                .igToolbar("getItem", "formatsList");
+
             // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
             // Combo bug #113720
             formatsListCombo.igCombo("option", {
                 itemTemplate: '<${text} unselectable="on">${value}</${text}>',
                 height: this._comboHeight,
-                dropDownOrientation: 'bottom'
+                dropDownOrientation: "bottom"
             });
         },
         _initFontSizeCombo: function () {
             var fontSizesCombo = this._getToolbar("textToolbar").igToolbar("getItem", "fontSize");
 
             fontSizesCombo.igCombo("option", {
+
                 // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
                 // Combo bug #113720
                 itemTemplate: '<span unselectable="on">${value}</span>',
                 height: this._comboHeight,
-                dropDownOrientation: 'bottom'
+                dropDownOrientation: "bottom"
             });
         },
         _setOption: function (name, value) {
@@ -904,8 +925,10 @@ if (typeof jQuery !== "function") {
                 $.each(value, function (index, toolbar) {
                     $.each(toolbar, function (tbPropName, tbPropVal) {
                         if (tbPropName !== "name") {
+
                             // S.T. 18th of Dec, 2015 Bug #210622: Fix set method for items.
-                            self._getToolbar(self._allToolbars[index].name).igToolbar("option", tbPropName, tbPropVal);
+                            self._getToolbar(self._allToolbars[index].name)
+                                .igToolbar("option", tbPropName, tbPropVal);
                         }
                     });
                 });
@@ -914,10 +937,12 @@ if (typeof jQuery !== "function") {
             } else if (name === "width") {
                 this.element.width(value);
             } else if (name === "height") {
+
                 // Z.K. December 1, 2015 Fixing Bug #209636 - igHtmlEditor is not resized correctly when using height option
                 this.element.height(value);
                 this.resizeWorkspace();
-                // D.U. 09/05/2014 Bug 171139 [HtmlEditor] Option value cannot be changed with set value
+
+                // D.U. 09/05/2014 Bug 171139 [ HtmlEditor ] Option value cannot be changed with set value
             } else if (name === "value") {
                 this.setContent(value, "text");
             }
@@ -927,23 +952,24 @@ if (typeof jQuery !== "function") {
         },
         _showToolbar: function (name, show) {
             if (show) {
-                this._getToolbar(name).removeClass('hidden').show();
+                this._getToolbar(name).removeClass("hidden").show();
             } else {
-                this._getToolbar(name).addClass('hidden').hide();
+                this._getToolbar(name).addClass("hidden").hide();
             }
         },
         _initToolbars: function () {
             this._allToolbars = $.extend(
                 true, [], this.defaultToolbars.concat(this.options.customToolbars));
-            this._toolbars = this.element.find("#" + this._id('_toolbars'));
+            this._toolbars = this.element.find("#" + this._id("_toolbars"));
 
             this._mergeToolbarSettings();
             this._createToolbars();
         },
+
         // Merges _allToolbars settings and options.toolbarSettings in _allToolbars
         // This method matches the settings by name and assumes that options.toolbarSettings will be given at single level
-        // E.g. options.toolbarSettings: { name: "fontFamily", selectedFontFamily: "Arial" } 
-        // is merged into _allToolbars as : { name: "fontFamily", props: [ selectedFontFamily { value: "Arial" } ] }
+        // E.g. options.toolbarSettings: { name: "fontFamily", selectedFontFamily: "Arial" }
+        // is merged into _allToolbars as : { name: "fontFamily", props: [  selectedFontFamily { value: "Arial" }  ] }
         _mergeToolbarSettings: function () {
             var customSettings = this.options.toolbarSettings,
                 curSettings,
@@ -983,8 +1009,10 @@ if (typeof jQuery !== "function") {
                                         curItemProps = curItem.props;
 
                                         if (curItemProps.hasOwnProperty(property)) {
+
                                             // Update the value field of items properties
-                                            curItemProps[property].value = curCustomSettings[property];
+                                            curItemProps[property].value =
+                                                curCustomSettings[property];
                                             propFound = true;
                                         }
                                     }
@@ -1003,7 +1031,7 @@ if (typeof jQuery !== "function") {
                 showToolbar,
                 i;
 
-            this._toolbars = this.element.find("#" + this._id('_toolbars'));
+            this._toolbars = this.element.find("#" + this._id("_toolbars"));
 
             for (i = 0; i < this._allToolbars.length; i++) {
                 curSettings = this._allToolbars[i];
@@ -1012,8 +1040,8 @@ if (typeof jQuery !== "function") {
                 showToolbar = true;
 
                 // Create the toolbar
-                $('<span>')
-                    .attr('id', this._id('_toolbars') + '_' + curName)
+                $("<span>")
+                    .attr("id", this._id("_toolbars") + "_" + curName)
                     .appendTo(this._toolbars)
                     .igToolbar(curSettings);
 
@@ -1036,7 +1064,7 @@ if (typeof jQuery !== "function") {
                 // Clicking on the toolbar buttons/combos in IE cause lose of selection.
                 // The reason is that the elements are <div>-s.
                 // We should make everything unselectable to prevent this selection loss.
-                this._toolbars.find('*').attr('unselectable', 'on');
+                this._toolbars.find("*").attr("unselectable", "on");
             }
         },
         _initialWorkspaceFormatting: function () {
@@ -1097,12 +1125,12 @@ if (typeof jQuery !== "function") {
             }
         },
         _initialSelectionSetup: function () {
-            var lastNode = $(this.contentDocument()).find(':not(br)').last(),
+            var lastNode = $(this.contentDocument()).find(":not(br)").last(),
                 sel = this._selectionWrapperSaved._getSelection(),
                 range = this._selectionWrapperSaved._getRange();
 
             // Add &nbsp; to execute the initial commands on it
-            lastNode.html('&nbsp;');
+            lastNode.html("&nbsp;");
 
             if ($.ig.util.isIEOld) {
                 range.moveToElementText(lastNode[0]);
@@ -1121,7 +1149,7 @@ if (typeof jQuery !== "function") {
                 range = this._selectionWrapperSaved._getRange();
 
             // Remove the dummy text and add <br> to make the element selectable
-            lastNode.html('<br>');
+            lastNode.html("<br>");
 
             // Collapse the selection
             if (lastNode.length > 0) {
@@ -1139,6 +1167,7 @@ if (typeof jQuery !== "function") {
                 }
             }
         },
+
         // Z.K. July 15, 2016 - Remove unused code
         //_isToolbarActive: function (tbName) {
         //    var key;
@@ -1182,8 +1211,9 @@ if (typeof jQuery !== "function") {
         },
         _bindToToolbarEvents: function () {
             var self = this,
-                events = "igtoolbartoolbarbuttonclick igtoolbartoolbarcomboselected igtoolbartoolbarcustomitemclick " +
-                    "igtoolbarcollapsing igtoolbarcollapsed igtoolbarexpanding igtoolbarexpanded",
+                events = "igtoolbartoolbarbuttonclick igtoolbartoolbarcomboselected " +
+                    "igtoolbartoolbarcustomitemclick igtoolbarcollapsing " +
+                    "igtoolbarcollapsed igtoolbarexpanding igtoolbarexpanded",
                 splitBtnArrowSelector = ".ui-splitbutton-arrow",
                 toolbarEvents = {
                     igtoolbarcollapsing: this.events.toolbarCollapsing,
@@ -1206,6 +1236,7 @@ if (typeof jQuery !== "function") {
 
                     // Skip action executing when clicking on the split button arrows
                     if ($eTarget.is(splitBtnArrowSelector)) {
+
                         // IE is closing the split button when propagation is not stopped
                         e.stopImmediatePropagation();
                         return;
@@ -1217,7 +1248,8 @@ if (typeof jQuery !== "function") {
                         return;
                     }
 
-                    ui.selectedItem = self._selectionWrapperSaved && self._selectionWrapperSaved.getSelectedItem();
+                    ui.selectedItem = self._selectionWrapperSaved &&
+                        self._selectionWrapperSaved.getSelectedItem();
                     noCancel = self._trigger(self.events.actionExecuting, e, {
                         owner: self,
                         toolbar: ui.toolbarName,
@@ -1233,6 +1265,7 @@ if (typeof jQuery !== "function") {
                             handler.call(ui.scope, self.workspace.contentWindow.document, ui);
                         }
                         self._trigger(self.events.actionExecuted, e, {
+
                             // K.D. July 17th, 2012 Bug #113736 ui.owner needs to be the HTML editor itself
                             owner: self,
                             toolbar: ui.toolbarName,
@@ -1246,6 +1279,7 @@ if (typeof jQuery !== "function") {
             var self = this,
                 $workspaceDocument = $(this.contentDocument()),
                 $workspaceBody = $(this.contentEditable()),
+
                 // K.D. November 1st, 2012 Bug #104207 As we're no longer using keypress but keydown instead both codes are the same.
                 KEYS = {
                     webKitIE: {
@@ -1292,7 +1326,7 @@ if (typeof jQuery !== "function") {
                     $children = $workspaceBody.children();
                     $firstChild = $children.first();
 
-                    if ($children.length === 1 && $firstChild.html() === '<br>') {
+                    if ($children.length === 1 && $firstChild.html() === "<br>") {
                         e.preventDefault();
                     }
                 }
@@ -1305,7 +1339,8 @@ if (typeof jQuery !== "function") {
             });
 
             this.element.bind("ightmleditoractionexecuted", function (e, ui) {
-                if (ui.actionName.toLowerCase() === self.events.undo || ui.actionName.toLowerCase() === self.events.redo) {
+                if (ui.actionName.toLowerCase() === self.events.undo ||
+                    ui.actionName.toLowerCase() === self.events.redo) {
                     self._trigger(ui.actionName.toLowerCase(), e, { owner: self });
                     e.stopImmediatePropagation();
                 }
@@ -1315,7 +1350,7 @@ if (typeof jQuery !== "function") {
                 var $tarParents = $(e.target).parents();
 
                 // Hide all popovers except when clicking on one of them
-                if (!$tarParents.is('.ui-igpopover') && !$tarParents.is('.ui-igcombo-list')) {
+                if (!$tarParents.is(".ui-igpopover") && !$tarParents.is(".ui-igcombo-list")) {
                     self._hideDialogs();
                 }
             });
@@ -1325,10 +1360,11 @@ if (typeof jQuery !== "function") {
         },
         _viewSource: function () {
             var workspace = $(this.workspace),
-                workSpaceBody = workspace.contents().find('body');
+                workSpaceBody = workspace.contents().find("body");
 
-            if (workspace.is(':visible')) {
+            if (workspace.is(":visible")) {
                 workSpaceBody.attr("contentEditable", false);
+
                 // K.D. October 3rd, 2012 Bug #123366 Encoding the content before setting the value
                 // D.A. November 4th, 2013 Bug #155847 Viewsource cannot be switched when there are leading whitespaces
                 this.sourceWindow.val($.trim(workSpaceBody.html()));
@@ -1339,6 +1375,7 @@ if (typeof jQuery !== "function") {
                 workSpaceBody.html($.trim(this.sourceWindow.val()));
                 workspace.show();
                 this.sourceWindow.hide();
+
                 // D.A. March 23, 2015 Bug #189760 Special characters (; , / ? : @ & = + $) are not encoded properly. Change encodeURI to encodeURIComponent
                 this.sourceWindow.val(encodeURIComponent(this.sourceWindow.val()));
             }
@@ -1353,10 +1390,10 @@ if (typeof jQuery !== "function") {
             if (plgUI.selectedItem.is("img")) {
                 image = plgUI.selectedItem;
             }
-            this._imageDialog = $("#" + this._id('_imageDialog'));
+            this._imageDialog = $("#" + this._id("_imageDialog"));
 
             if (!this._imageDialog.length) {
-                this._imageDialog = $('<div id="' + this._id('_imageDialog') + '"></div>')
+                this._imageDialog = $('<div id="' + this._id("_imageDialog") + '"></div>')
                     .appendTo(this.element)
                     .igImagePropertiesDialog({
                         item: image,
@@ -1367,7 +1404,7 @@ if (typeof jQuery !== "function") {
                         }
                     });
             } else {
-                if (this._imageDialog.igImagePropertiesDialog("option", 'isHidden')) {
+                if (this._imageDialog.igImagePropertiesDialog("option", "isHidden")) {
                     this._imageDialog.igImagePropertiesDialog("show", image);
                 } else {
                     this._imageDialog.igImagePropertiesDialog("hide", image);
@@ -1375,6 +1412,7 @@ if (typeof jQuery !== "function") {
             }
         },
         _insertLinkPlg: function (workspace, ui) {
+
             // K.D. July 29th, 2013 Bug #146086 The subsequent Hyperlink added replaces the previous Hyperlink
             var self = this,
                 selectedItem = this._selectionWrapperSaved.getSelectedItem(),
@@ -1383,12 +1421,13 @@ if (typeof jQuery !== "function") {
 
             if (selectedItem.parent().is("a")) {
                 anchor = selectedItem.parent();
-            } else if ((selectedItemNodeType === this.NODE._Text) || (selectedItemNodeType === this.NODE._Element)) {
+            } else if ((selectedItemNodeType === this.NODE._Text) ||
+                (selectedItemNodeType === this.NODE._Element)) {
                 anchor.html(this._selectionWrapperSaved.getSelectionAsText());
             }
 
             if (!this._insertLinkDialog) {
-                this._insertLinkDialog = $('<div id="' + this._id('_linkDialog') + '"></div>')
+                this._insertLinkDialog = $('<div id="' + this._id("_linkDialog") + '"></div>')
                     .appendTo(this.element)
                     .igLinkPropertiesDialog({
                         item: anchor,
@@ -1399,7 +1438,7 @@ if (typeof jQuery !== "function") {
                         }
                     });
             } else {
-                if (this._insertLinkDialog.igLinkPropertiesDialog("option", 'isHidden')) {
+                if (this._insertLinkDialog.igLinkPropertiesDialog("option", "isHidden")) {
                     this._insertLinkDialog.igLinkPropertiesDialog("show", anchor);
                 } else {
                     this._insertLinkDialog.igLinkPropertiesDialog("hide", anchor);
@@ -1422,7 +1461,7 @@ if (typeof jQuery !== "function") {
                 table = plgUI.selectedItem;
             }
             if (!this.insertTableDialog) {
-                this.insertTableDialog = $("<div id='" + this._id('_tableDialog') + "'</div>")
+                this.insertTableDialog = $("<div id='" + this._id("_tableDialog") + "'</div>")
                     .appendTo(this.element)
                     .igTablePropertiesDialog({
                         item: table,  //$(this.workspace.contentWindow.document).find('body p'),Should be changed with that or something else
@@ -1446,7 +1485,8 @@ if (typeof jQuery !== "function") {
             if (selectedItem.is("table")) {
                 selectedItem.tableManipulator("addRow");
             } else if (selectedItem.is("td")) {
-                selectedItem.parents("table").first().tableManipulator("addRow", selectedItem.parent().index());
+                selectedItem.parents("table").first().
+                    tableManipulator("addRow", selectedItem.parent().index());
             }
         },
         _removeTableRowPlg: function () {
@@ -1454,7 +1494,8 @@ if (typeof jQuery !== "function") {
             if (selectedItem.is("table")) {
                 selectedItem.tableManipulator("removeRow");
             } else if (selectedItem.is("td")) {
-                selectedItem.parents("table").first().tableManipulator("removeRow", selectedItem.parent().index());
+                selectedItem.parents("table").first().
+                    tableManipulator("removeRow", selectedItem.parent().index());
             }
         },
         _addTableColumnPlg: function () {
@@ -1462,7 +1503,8 @@ if (typeof jQuery !== "function") {
             if (selectedItem.is("table")) {
                 selectedItem.tableManipulator("addColumn");
             } else if (selectedItem.is("td")) {
-                selectedItem.parents("table").first().tableManipulator("addColumn", selectedItem.index());
+                selectedItem.parents("table").first().
+                    tableManipulator("addColumn", selectedItem.index());
             }
         },
         _removeTableColumnPlg: function () {
@@ -1470,7 +1512,8 @@ if (typeof jQuery !== "function") {
             if (selectedItem.is("table")) {
                 selectedItem.tableManipulator("removeColumn");
             } else if (selectedItem.is("td")) {
-                selectedItem.parents("table").first().tableManipulator("removeColumn", selectedItem.index());
+                selectedItem.parents("table").first().
+                    tableManipulator("removeColumn", selectedItem.index());
             }
         },
         _fontColorPlg: function (workspace, ui) {
@@ -1495,7 +1538,7 @@ if (typeof jQuery !== "function") {
             this._viewSourceBtn = $('<div class="ui-igbutton-viewsource"></div>')
                 .appendTo(this.element)
                 .igButton({
-                    labelText: '&nbsp;',
+                    labelText: "&nbsp;",
                     title: $.ig.HtmlEditor.locale.viewSourceButtonTitle,
                     icons: {
                         primary: "ui-igbutton-viewsource-icon"
@@ -1505,6 +1548,7 @@ if (typeof jQuery !== "function") {
                         self._viewSourcePlg();
                         if (self._domPathToolbar.igPathFinder("option", "disabled")) {
                             self._domPathToolbar.igPathFinder("option", "disabled", false);
+
                             // D.A. January 31st 2014, Bug #130480 Add/remove table items become active after clicking the view source button
                             self._toolbars
                                 .find(":ui-igToolbarButton")
@@ -1514,8 +1558,10 @@ if (typeof jQuery !== "function") {
                                 .end()
                                 .find(":ui-igCombo")
                                     .igCombo("enable");
+
                             // K.D. July 17th, 2012 Bug #113713 In Chrome Cut/Copy/Paste buttons are enabled after switching between design view and source view
                             self._analyser._disableUnsupportedItems();
+
                             // D.A. March 20th, 2014 Bug #167806 Deleted DOM elements are still available in the DOM path toolbar after deleting them in the source code
                             self._onSelectionChange();
                         } else {
@@ -1529,7 +1575,7 @@ if (typeof jQuery !== "function") {
                     }
                 });
 
-            this._domPathToolbar = $('<div id="' + this._id('_domPathToolbar') + '"></div>')
+            this._domPathToolbar = $('<div id="' + this._id("_domPathToolbar") + '"></div>')
                 .appendTo(this.element)
                 .igPathFinder({
                     click: function (e, ui) {
@@ -1549,7 +1595,7 @@ if (typeof jQuery !== "function") {
                     }
                 });
         },
-        // Z.K. July 19, 2016 - Remove unused code
+        // Z.K. July 20, 2016 - removing dead code
         //_cutPlg: function () {
         //    this._execCommand("cut");
         //},
@@ -1562,16 +1608,18 @@ if (typeof jQuery !== "function") {
         _onSelectionChange: function (callback) {
             var self = this,
                 selectionWrapper,
-                workSpaceBody = $(this.workspace).contents().find('body'),
+                workSpaceBody = $(this.workspace).contents().find("body"),
                 selectionCallback = callback || function () {
                     var selectedItem = this.getSelectedItem();
 
                     // K.D. September 12th, 2012 Bug #120891 We need to return the span/font from the selection
                     // wrapper in order to correctly analyze the styles
-                    if (selectedItem && (selectedItem.is('p') || selectedItem.is(':header')) && selectedItem.children('span').length > 0) {
-                        selectedItem = selectedItem.children('span').first();
-                    } else if (selectedItem && (selectedItem.is('p') || selectedItem.is(':header')) && selectedItem.children('font').length > 0) {
-                        selectedItem = selectedItem.children('font').first();
+                    if (selectedItem && (selectedItem.is("p") ||
+                        selectedItem.is(":header")) && selectedItem.children("span").length > 0) {
+                        selectedItem = selectedItem.children("span").first();
+                    } else if (selectedItem && (selectedItem.is("p") ||
+                        selectedItem.is(":header")) && selectedItem.children("font").length > 0) {
+                        selectedItem = selectedItem.children("font").first();
                     }
 
                     if (selectedItem[0].nodeType === self.NODE._Text) {
@@ -1581,39 +1629,43 @@ if (typeof jQuery !== "function") {
                     self._analyser.analyse(selectedItem);
 
                     if (selectedItem.length) {
-                        self._domPathToolbar.igPathFinder("option", "items", $.merge(selectedItem, selectedItem.parents()));
+                        self._domPathToolbar.igPathFinder("option", "items",
+                            $.merge(selectedItem, selectedItem.parents()));
                     }
                 };
 
-            selectionWrapper = new $.ig.SelectionWrapper(this.workspace.contentWindow, function () {
-                self._selectionWrapperSaved = this;
+            selectionWrapper =
+                new $.ig.SelectionWrapper(this.workspace.contentWindow, function () {
+                    self._selectionWrapperSaved = this;
 
-                // D.A. 18th September 2013 Bug #151506 The TextArea value should
-                // be updated after the selection wrapper is initialized.
-                // K.D. October 3rd, 2012 Bug #123366 Encoding the content before setting the value
-                // D.A. March 23, 2015 Bug #189760 Special characters (; , / ? : @ & = + $) are not encoded properly. Change encodeURI to encodeURIComponent
-                self.sourceWindow.val(encodeURIComponent(workSpaceBody.html()));
-                selectionCallback.call(this);
-            });
+                    // D.A. 18th September 2013 Bug #151506 The TextArea value should
+                    // be updated after the selection wrapper is initialized.
+                    // K.D. October 3rd, 2012 Bug #123366 Encoding the content before setting the value
+                    // D.A. March 23, 2015 Bug #189760 Special characters (; , / ? : @ & = + $) are not encoded properly. Change encodeURI to encodeURIComponent
+                    self.sourceWindow.val(encodeURIComponent(workSpaceBody.html()));
+                    selectionCallback.call(this);
+                });
         },
         _destroyPopovers: function () {
             var el = this.element[0];
             $(':data("igPopover")').each(function () {
                 if ($.contains(el, this)) {
-                    $(this).igPopover('destroy');
+                    $(this).igPopover("destroy");
                 }
             });
         },
+
         // D.A. 31st July 2014, Bug #176753 Changing resizeWorkspace to public method
         resizeWorkspace: function () {
             /*
                 Resizes the height of the workspace
             */
+
             // K.D. July 26th, 2012 Bug #113717 The height is applied to the iframe and not to the element. Now the height is correctly
             // calculated relatively to the total height.
             var $clonedElement, height = this.element.height(),
-                $editor = $('#' + this._id('_editor')),
-                $toolbars = $('#' + this._id('_toolbars'));
+                $editor = $("#" + this._id("_editor")),
+                $toolbars = $("#" + this._id("_toolbars"));
 
             // Z.K. December 1, 2015 - Fixing Bug #210366 - igHtmlEditor textarea height exceed the widget actual height
             if (!$toolbars.is(":visible")) {
@@ -1634,12 +1686,13 @@ if (typeof jQuery !== "function") {
                 height -= $toolbars.outerHeight(true);
             }
 
-            height -= $('.ui-igbutton-viewsource').outerHeight(true);
+            height -= $(".ui-igbutton-viewsource").outerHeight(true);
+
             // D.A. 31st March 2014, Take into account the editor borders and paddings
             height -= $editor.outerHeight(true) - $editor.height();
 
             $editor.height(height);
-            $('#' + this._id('_source')).height(height);
+            $("#" + this._id("_source")).height(height);
         },
         getContent: function (format) {
             /*
@@ -1648,22 +1701,22 @@ if (typeof jQuery !== "function") {
                 returnType="string" The editor content.
             */
             if (format === "text") {
-                return $(this.workspace).contents().find('body').text();
+                return $(this.workspace).contents().find("body").text();
             }
             if (format === "html") {
-                return $(this.workspace).contents().find('body').html();
+                return $(this.workspace).contents().find("body").html();
             }
         },
         setContent: function (content, format) {
-            /* 
+            /*
                 Sets the content of the html editor.
                 paramType="string" optional="false" The content which will be set.
                 paramType="string" The content type: "text" or "html".
             */
             if (format === "text") {
-                $(this.workspace).contents().find('body').text(content);
+                $(this.workspace).contents().find("body").text(content);
             } else if (format === "html") {
-                $(this.workspace).contents().find('body').html(content);
+                $(this.workspace).contents().find("body").html(content);
             }
 
             // K.D. October 2nd, 2012 Bug #123366 Encoding the content before setting the value
@@ -1689,6 +1742,7 @@ if (typeof jQuery !== "function") {
                 paramType="string" optional="false" The command name.
                 paramType="object" optional="true" Additional parameter for the command.
             */
+
             // D.A. 25th November 2013, Bug #158403 ExecuteAction method ignores the current selection.
             // The select() call resets the selection.
             //this._selectionWrapperSaved.focus();
@@ -1750,14 +1804,17 @@ if (typeof jQuery !== "function") {
                 range;
 
             if ($.ig.util.isDomElement(element)) {
+
                 // Convert Dom element to jQuery object
                 element = $(element);
             }
 
             if (element instanceof $) {
+
                 // Get the html of an jQuery object
-                element = $('<div />').append(element).html();
+                element = $("<div />").append(element).html();
             } else if (typeof element !== "string") {
+
                 // Process only Dom objects, jQuery objects or strings
                 return;
             }
@@ -1782,7 +1839,8 @@ if (typeof jQuery !== "function") {
             items: null
         },
         css: {
-            button: "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-igbutton ui-widget-content",
+            button: "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only " +
+                "ui-igbutton ui-widget-content",
             buttonLabel: "ui-button-text",
             stateDefault: "ui-state-default",
             firstButton: "ui-first-button",
@@ -1792,7 +1850,7 @@ if (typeof jQuery !== "function") {
             this._addStyles();
         },
         _addStyles: function () {
-            this.element.addClass('ui-igPathFinder');
+            this.element.addClass("ui-igPathFinder");
         },
         _setOption: function (name, value) {
             $.Widget.prototype._setOption.apply(this, arguments);
@@ -1801,6 +1859,7 @@ if (typeof jQuery !== "function") {
                     this._updateToolbar();
                     break;
                 case "disabled":
+
                     // H.A. February 25th 2016 Bug #214778 ui-state-disabled class is not applied to Dom path toolbar in igHtmlEditor
                     // see https://jqueryui.com/upgrade-guide/1.11/#stop-setting-ui-state-disabled-and-aria-disabled-by-default-when-the-disabled-option-is-set
                     // K.D. July 13th, 2012 Bug #114609 The buttons in the path finder submit the page if the path finder is disabled
@@ -1830,18 +1889,20 @@ if (typeof jQuery !== "function") {
                 o = this.options,
                 path = [],
                 html = "",
-                viewSrcBtn = $('.ui-igbutton-viewsource'),
+                viewSrcBtn = $(".ui-igbutton-viewsource"),
                 overflowMarkerWidth = 20,
-                maxWidth = viewSrcBtn.parent().width() - viewSrcBtn.outerWidth(true) - overflowMarkerWidth,
+                maxWidth = viewSrcBtn.parent().width() - viewSrcBtn.outerWidth(true) -
+                    overflowMarkerWidth,
                 maxWidthReached = false;
 
             if (o.items.length) {
                 o.items.each(function (index, element) {
-                    html = '<div aria-disabled="false" style="z-index:' + index + '" class="' + self.css.button + '">' +
+                    html = '<div aria-disabled="false" style="z-index:' + index + '" class="' +
+                        self.css.button + '">' +
                                 '<span class="' + self.css.buttonLabel + '">' +
                                     element.nodeName +
-                                '</span>' +
-                            '</div>';
+                                "</span>" +
+                            "</div>";
                     path.push(html);
                 });
 
@@ -1866,8 +1927,10 @@ if (typeof jQuery !== "function") {
                     // When the maximum width is reached, remove the last added button.
                     // Then add the overflow marker.
                     if (this.element.outerWidth(true) > maxWidth) {
+
                         // Remove the overflowing button
                         btn.remove();
+
                         // Set first-button class on the previous button
                         buttonsList.eq(i + 1).addClass(this.css.firstButton);
                         this._addOverflowMarker();
@@ -1876,8 +1939,8 @@ if (typeof jQuery !== "function") {
                 }
 
                 buttonsList
-                    .attr('disabled', o.disabled)
-                    .attr('aria-disabled', o.disabled)
+                    .attr("disabled", o.disabled)
+                    .attr("aria-disabled", o.disabled)
                     .mouseover(function () {
                         if (!o.disabled) {
                             $(this).addClass("ui-state-hover");
@@ -1890,10 +1953,11 @@ if (typeof jQuery !== "function") {
                     })
                     .click(function (e) {
                         if (!o.disabled) {
-                            $(this).siblings(".ui-state-active").removeClass('ui-state-active');
+                            $(this).siblings(".ui-state-active").removeClass("ui-state-active");
                             $(this).addClass("ui-state-active");
 
-                            self._trigger("click", e, { item: parents.eq(buttonsList.index(this)) });
+                            self._trigger("click", e,
+                                { item: parents.eq(buttonsList.index(this)) });
                         }
                     });
             }
@@ -1902,7 +1966,7 @@ if (typeof jQuery !== "function") {
 
     // End HTML Editor Core
 
-    /************************************ 
+    /************************************
         HTML Editor Subcomponents
     ************************************/
 
@@ -1936,9 +2000,11 @@ if (typeof jQuery !== "function") {
                 position: "balanced",
                 direction: "bottom",
                 renderCloseButton: false,
+
                 // T.G,  28 Jan 2014 - 162527 - removing the target from the igPopover
                 //target: this.options.target,
                 showOn: null,
+
                 // D.A. 14th July 2015, Bug #194183 Increasing the width to avoid truncated strings in JP version
                 //maxWidth: 230,
                 // Z.K. September 2nd, 2015 Bug #202031 - Dropdown menus on the custom icons are not fully visible on touch device
@@ -1965,13 +2031,14 @@ if (typeof jQuery !== "function") {
             this._item = item;
             this._dataBind(item);
             this.options.isHidden = false;
+
             // T.G 16 Jan 2014 - Fix bug 161249 - Target option is not needed because the user expects it to be the element on which the popover is initialized
             this.element.igPopover("show", this.options.target);
             this._trigger(this.events.show);
         },
         hide: function () {
             this.options.isHidden = true;
-            if (this.options.target.igToolbarButton('option', 'isSelected')) {
+            if (this.options.target.igToolbarButton("option", "isSelected")) {
                 this.options.target.igToolbarButton("toggle");
             }
             this.element.igPopover("hide");
@@ -1988,30 +2055,35 @@ if (typeof jQuery !== "function") {
         _attachFormEvents: function () {
             var self = this;
 
-            this.poContent.find("#" + this._id('_cmbOpenIn')).igCombo({
+            this.poContent.find("#" + this._id("_cmbOpenIn")).igCombo({
                 initialSelectedItems: [{
                     index: 0
                 }],
                 enableClearButton: false,
+
                 // JD May 19, 2015 Bug #194183 Changing the width of the combo so it matches the other controls and displays all localized text.
                 width: "100%",
+
                 // S.T. 27th Feb 2015 Fix Bug #189075:In add link open in combo should be with mode dropdown
                 mode: "dropdown"
             });
-            this.poContent.find("#" + this._id('_btnCancel')).igButton({
+            this.poContent.find("#" + this._id("_btnCancel")).igButton({
                 click: function () {
                     self.hide();
                 }
             });
-            this.poContent.find("#" + this._id('_btnApply')).igButton({
+            this.poContent.find("#" + this._id("_btnApply")).igButton({
                 click: function (e) {
                     e.stopImmediatePropagation();
+
                     // K.D. September 13th, 2012 Bug #120906 Applying the href as text if no text is specified.
                     self._item.attr({
                         href: self._txtUrl.val(),
+
                         // S.T. April 17th, 2014 Bug #170227: Getting value with JQuery val will return null instead _blank. Use igCombo value method to get the target.
                         target: self._cbTarget.igCombo("value")
-                    }).html(self._displayText.val().length > 0 ? self._displayText.val() : self._txtUrl.val());
+                    }).html(self._displayText.val().length > 0 ?
+                        self._displayText.val() : self._txtUrl.val());
                     self._trigger(self.events.apply, e, {
                         anchor: self._item
                     });
@@ -2024,12 +2096,13 @@ if (typeof jQuery !== "function") {
                 }
             });
             this.element.bind("igpopovershown", function () {
-                self.poContent.find("#" + self._id('_linkHref')).focus();
+                self.poContent.find("#" + self._id("_linkHref")).focus();
             });
         },
         _createForm: function () {
-            var html = '';
+            var html = "";
 
+            //jscs:disable
             html += '<div>' +
                 '<ol class="layoutList">' +
                     '<li>' +
@@ -2058,12 +2131,17 @@ if (typeof jQuery !== "function") {
                 '</ol>' +
             '</div>';
 
+            //jscs:enable
+
             $(html).appendTo(this.poContent);
         },
         _dataBind: function (anchor) {
-            this._txtUrl = this.poContent.find("#" + this._id('_linkHref')).val(anchor.attr("href"));
-            this._cbTarget = this.poContent.find("#" + this._id('_cmbOpenIn')).val(anchor.attr("target"));
-            this._displayText = this.poContent.find("#" + this._id('_linkDisplayText')).val(anchor.html());
+            this._txtUrl = this.poContent.find("#" + this._id("_linkHref"))
+                .val(anchor.attr("href"));
+            this._cbTarget = this.poContent.find("#" + this._id("_cmbOpenIn"))
+                .val(anchor.attr("target"));
+            this._displayText = this.poContent.find("#" + this._id("_linkDisplayText"))
+                .val(anchor.html());
         }
     });
 
@@ -2072,12 +2150,14 @@ if (typeof jQuery !== "function") {
     ************************************/
     $.widget("ui.igTablePropertiesDialog", $.ui.igHtmlEditorPopover, {
         _init: function () {
-            this.rowsNumField = this.element.find('#' + this._id('_tableRows'));
-            this.columnsNumField = this.element.find('#' + this._id('_tableColumns'));
+            this.rowsNumField = this.element.find("#" + this._id("_tableRows"));
+            this.columnsNumField = this.element.find("#" + this._id("_tableColumns"));
 
             $.ui.igHtmlEditorPopover.prototype._init.apply(this, arguments);
         },
         _createForm: function () {
+
+            //jscs:disable
             var html = '<div>' +
                     '<ol class="layoutList">' +
                         '<li>' +
@@ -2091,9 +2171,11 @@ if (typeof jQuery !== "function") {
                     '</ol>' +
                 '</div>';
 
+            //jscs:enable
             $(html).appendTo(this.poContent);
 
-            this._sampleTable = $('<table "' + this._id('_tableModel') + '" class="ui-igtablepropertiesdialog-sample-table"></table>')
+            this._sampleTable = $('<table "' + this._id("_tableModel") +
+                '" class="ui-igtablepropertiesdialog-sample-table"></table>')
                 .tableManipulator({ rows: 8, columns: 6 })
                 .appendTo(this.poContent.find(".layoutList li:first"));
         },
@@ -2111,7 +2193,8 @@ if (typeof jQuery !== "function") {
 
                 cells.removeClass("ui-state-hover");
                 for (i = 0; i < currentRowNumber; i++) {
-                    $(rows.get(i)).find("td:lt(" + currentColumnNumber + ")").addClass("ui-state-hover");
+                    $(rows.get(i)).find("td:lt(" + currentColumnNumber + ")")
+                        .addClass("ui-state-hover");
                 }
 
                 self.rowsNumField.val(currentRowNumber);
@@ -2123,8 +2206,11 @@ if (typeof jQuery !== "function") {
                     currentRowNumber = target.parent().index() + 1,
                     currentColumnNumber = $(this).index() + 1;
 
-                self._item.tableManipulator({ rows: currentRowNumber, columns: currentColumnNumber, addSpacingChar: true });
-
+                self._item.tableManipulator({
+                    rows: currentRowNumber,
+                    columns: currentColumnNumber,
+                    addSpacingChar: true
+                });
 
                 self._trigger(self.events.apply, e, {
                     table: self._item.attr("border", 1)
@@ -2133,7 +2219,7 @@ if (typeof jQuery !== "function") {
                 self.hide();
             });
 
-            tablePreview.bind('mouseout', function () {
+            tablePreview.bind("mouseout", function () {
                 cells.removeClass("ui-state-hover");
                 self.rowsNumField.val(null);
                 self.columnsNumField.val(null);
@@ -2145,19 +2231,20 @@ if (typeof jQuery !== "function") {
         }
     });
 
-    /************************************ 
+    /************************************
         igImagePropertiesDialog
     ************************************/
     $.widget("ui.igImagePropertiesDialog", $.ui.igHtmlEditorPopover, {
         _init: function () {
-            this._imgSrcFld = this.poContent.find("#" + this._id('_imgSrc'));
-            this._imgAltFld = this.poContent.find("#" + this._id('_imgAlt'));
+            this._imgSrcFld = this.poContent.find("#" + this._id("_imgSrc"));
+            this._imgAltFld = this.poContent.find("#" + this._id("_imgAlt"));
 
             $.ui.igHtmlEditorPopover.prototype._init.apply(this, arguments);
         },
         _createForm: function () {
-            var html = '';
+            var html = "";
 
+            //jscs:disable
             html += '<div class="' + this.css.igImagePropertiesDialogContent + '">';
             html += '	<div>';
             html += '		<ol class="layoutList">';
@@ -2177,12 +2264,13 @@ if (typeof jQuery !== "function") {
             html += '	</div>';
             html += '</div>';
 
+            //jscs:enable
             this.poContent.append(html);
         },
         _attachFormEvents: function () {
             var self = this;
 
-            this.poContent.find("#" + this._id('_btnApply')).igButton({
+            this.poContent.find("#" + this._id("_btnApply")).igButton({
                 click: function (e) {
                     self._item.attr({
                         src: self._imgSrcFld.val(),
@@ -2196,7 +2284,7 @@ if (typeof jQuery !== "function") {
                     self.hide();
                 }
             }).end()
-                .find("#" + this._id('_btnCancel')).igButton({
+                .find("#" + this._id("_btnCancel")).igButton({
                     click: function (e) {
                         self._trigger(self.events.cancel, e);
                         self.hide();
@@ -2211,13 +2299,14 @@ if (typeof jQuery !== "function") {
 
     // End Dialogs
 
-    /************************************ 
+    /************************************
         End HTML Editor subcomponents
     ************************************/
 
-    /************************************ 
+    /************************************
         HTML Editor Utilities
     ************************************/
+
     //tableManipulator plugin
     var table,
         tableNumRows = 0,
@@ -2231,6 +2320,7 @@ if (typeof jQuery !== "function") {
         spacingChar = "",
         methods = {
             init: function (options) {
+
                 // var self = this;
 
                 return this.each(function () {
@@ -2278,7 +2368,8 @@ if (typeof jQuery !== "function") {
             addRow: function (position) {
                 var newRow = $("<tr></tr>", settings.document),
                     j;
-                // S.T. Dec 17th 2015, Bug #210940: The check if(position) with 0 is false this the reason for adding at last on first selected row/col
+
+                // S.T. Dec 17th 2015, Bug #210940: The check if (position) with 0 is false this the reason for adding at last on first selected row/col
                 if (position !== undefined) {
                     newRow.insertAfter(methods.getTableRows().eq(position));
                 } else {
@@ -2293,7 +2384,8 @@ if (typeof jQuery !== "function") {
             removeRow: function (position) {
                 var rows = methods.getTableRows(),
                     removedRow;
-                // S.T. Dec 17th 2015, Bug #210940: The check if(position) with 0 is false this the reason for adding at last on first selected row/col.
+
+                // S.T. Dec 17th 2015, Bug #210940: The check if (position) with 0 is false this the reason for adding at last on first selected row/col.
                 if (position !== undefined) {
                     removedRow = rows.eq(position).remove();
                 } else {
@@ -2306,9 +2398,10 @@ if (typeof jQuery !== "function") {
 
                 methods.getTableRows().each(function (idx, el) {
                     var row = $(el),
-                        columns = row.children('td'),
-                        newColumn = $('<td>' + spacingChar + '</td>', settings.document);
-                    // S.T. Dec 17th 2015, Bug #210940: The check if(position) with 0 is false this the reason for adding at last on first selected row/col.
+                        columns = row.children("td"),
+                        newColumn = $("<td>" + spacingChar + "</td>", settings.document);
+
+                    // S.T. Dec 17th 2015, Bug #210940: The check if (position) with 0 is false this the reason for adding at last on first selected row/col.
                     if (position !== undefined && columns.length) {
                         columnCellsArr.push(newColumn.insertAfter(columns.eq(position))[0]);
                         return true;
@@ -2322,7 +2415,8 @@ if (typeof jQuery !== "function") {
 
                 methods.getTableRows().each(function (idx, el) {
                     var row = $(el);
-                    // S.T. Dec 17th 2015, Bug #210940: The check if(position) with 0 is false this the reason for adding at last on first selected row/col.
+
+                    // S.T. Dec 17th 2015, Bug #210940: The check if (position) with 0 is false this the reason for adding at last on first selected row/col.
                     if (position !== undefined) {
                         removedRowsArr.push(row.children("td").eq(position).remove());
                         return true;
@@ -2337,12 +2431,13 @@ if (typeof jQuery !== "function") {
             getColumnsNum: function () {
                 return methods.getTableCols().length;
             },
+
             // D.A. October 4th 2013, Bug #155868 Nested tables not working correctly
             getTableRows: function () {
-                return table.children('tbody').children('tr');
+                return table.children("tbody").children("tr");
             },
             getTableCols: function () {
-                return table.children('tbody').children('tr').first().children('td');
+                return table.children("tbody").children("tr").first().children("td");
             }
         };
     $.fn.tableManipulator = function (method) {
@@ -2352,10 +2447,10 @@ if (typeof jQuery !== "function") {
             }
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         }
-        if (typeof method === 'object' || !method) {
+        if (typeof method === "object" || !method) {
             return methods.init.apply(this, arguments);
         }
-        $.error('Method ' + method + ' does not exist on jQuery.tableManipulator');
+        $.error("Method " + method + " does not exist on jQuery.tableManipulator");
     };
 
     // TODO: Remove IE7 support
@@ -2370,8 +2465,16 @@ if (typeof jQuery !== "function") {
         _window: null,
         _document: null,
         _commands: {
-            insertunorderedlist: { name: "_insertList", browsers: null, args: ["insertunorderedlist"] },
-            insertorderedlist: { name: "_insertList", browsers: null, args: ["insertorderedlist"] }
+            insertunorderedlist: {
+                name: "_insertList",
+                browsers: null,
+                args: ["insertunorderedlist"]
+            },
+            insertorderedlist: {
+                name: "_insertList",
+                browsers: null,
+                args: ["insertorderedlist"]
+            }
         },
         _css: {
             larger: "ui-ightmleditor-larger",
@@ -2388,6 +2491,7 @@ if (typeof jQuery !== "function") {
             }
 
             if (this._isIeOld) {
+
                 // K.D. July 18th, 2012 If we don't focus the selection with IE <= 8, then executing an action on the window
                 // will incorrectly fire on the top-most parent window.
                 this.focus();
@@ -2448,15 +2552,18 @@ if (typeof jQuery !== "function") {
 
                 $nodeContents.each(function () {
                     if (this.nodeType === 3) {
+
                         // Push to allTextNodes when the element is a text node
                         allTextNodes.push(this);
                     } else {
+
                         // Recursively search for text nodes when the element is not a text node
                         self._findTextNodes(this, allTextNodes);
                     }
                 });
             }
         },
+
         // Finds all text nodes into "node" and returns
         // them in the order that they are met in the document
         _findAllTextNodes: function (node) {
@@ -2480,22 +2587,25 @@ if (typeof jQuery !== "function") {
                 children = range.startContainer.childNodes;
 
                 if (children.length > 0) {
+
                     // D.A., 30th October 2014, Bug #180892 In IE after pasting text and
                     // clicking at the end of it, selection changes to last text node
                     // This is the node right before the caret's current position
                     closestToCaretNode = children[range.startOffset - 1];
 
                     if (closestToCaretNode.nodeType === 3) {
+
                         // When the element is a text node focus it
                         textNodeToFocus = closestToCaretNode;
                     } else {
+
                         // Focus last text node in the element
                         allTextNodes = this._findAllTextNodes($(closestToCaretNode));
                         textNodeToFocus = allTextNodes[allTextNodes.length - 1];
                     }
 
                     // D.A. 9th September 2014, Bug #180280 When the element is link it should not be focused
-                    if (textNodeToFocus && !$(textNodeToFocus).parent().is('a')) {
+                    if (textNodeToFocus && !$(textNodeToFocus).parent().is("a")) {
                         range.setStart(textNodeToFocus, textNodeToFocus.length);
                         range.collapse(true);
 
@@ -2509,7 +2619,8 @@ if (typeof jQuery !== "function") {
             if (this._isIeOld) {
                 range.pasteHTML(wrapEl.html(range.text).get(0).outerHTML);
             } else {
-                this._surroundContents($(range.commonAncestorContainer), $(range.startContainer), $(range.endContainer), wrapEl);
+                this._surroundContents($(range.commonAncestorContainer),
+                    $(range.startContainer), $(range.endContainer), wrapEl);
             }
 
             return wrapEl;
@@ -2529,10 +2640,12 @@ if (typeof jQuery !== "function") {
                     return $(range.commonAncestorContainer);
                 }
                 if (range.collapsed && (range.endContainer.nodeType === this.NODE._Element)) {
-                    return $(range.commonAncestorContainer.childNodes[range.endOffset - range.startOffset]);
+                    return $(range.commonAncestorContainer.
+                        childNodes[range.endOffset - range.startOffset]);
                 }
                 return $(range.commonAncestorContainer);
             }
+
             // K.D. July 18th, 2012 Bug #117375 Exception is thrown when trying to edit the content in Editing Content demo in IE7 or IE8
             if (range.parentElement !== undefined) {
                 return $(range.parentElement());
@@ -2585,12 +2698,14 @@ if (typeof jQuery !== "function") {
                 // by the document not the range to work with iframe
                 this._document.execCommand(name, false, args);
             } else {
+
                 // TODO: Refactor the following code block
-                // After the focus is restored to the editor most 
+                // After the focus is restored to the editor most
                 // of these cases might work well out of the box
                 if (this._selection.isCollapsed && range.collapsed) {
                     if ($(range.startContainer).is("body")) {
                         startEl = $(range.startContainer).find(":first");
+
                         // D.A. March 17th 2014, Bug #167125, Fixed the case when the body has no elements
                         if (!startEl.length) {
                             startEl = $(range.startContainer);
@@ -2598,6 +2713,7 @@ if (typeof jQuery !== "function") {
                         range.selectNodeContents(startEl[0]);
                     } else if (range.startContainer.nodeType === this.NODE._Document) {
                         startEl = $(range.startContainer.body).find(":first");
+
                         // D.A. March 17th 2014, Bug #167125, Fixed the case when the body has no elements
                         if (!startEl.length) {
                             startEl = $(range.startContainer.body);
@@ -2607,13 +2723,14 @@ if (typeof jQuery !== "function") {
                         this._document.execCommand(name, false, args);
                         return;
                     } else {
+
                         // In this case the range.startContainer.nodeType
                         // is most commonly of node type "element" (e.g. <p>)
                         startEl = $(range.startContainer);
                     }
 
                     if (startEl && startEl.is("br") && endEl && endEl.is("br")) {
-                        p = $('<p><br /></p>', this._document);
+                        p = $("<p><br /></p>", this._document);
                         startEl.replaceWith(p);
                         range.selectNodeContents(p[0]);
                         this._updateSelection(range);
@@ -2642,7 +2759,9 @@ if (typeof jQuery !== "function") {
             // queryCommandState returns true if the command is executed on the object
             // and false if the command is not executed on the object.
             if (!this._document.queryCommandState(listType)) {
-                if (this._selection.anchorNode && this._selection.anchorNode.nodeType === this.NODE._Text && $(this._selection.focusNode).is("body")) {
+                if (this._selection.anchorNode &&
+                    this._selection.anchorNode.nodeType === this.NODE._Text &&
+                    $(this._selection.focusNode).is("body")) {
                     textNodes = $(this._selection.focusNode).contents().filter(function () {
                         if ($(this).is("br")) {
                             $(this).remove();
@@ -2650,22 +2769,25 @@ if (typeof jQuery !== "function") {
                         }
                         return this.nodeType === self.NODE._Text;
                     });
+
                     // K.D. July 16th, 2012 Bug #101208 Removing the code that initially creates a paragraph
-                    // wrappedEl = textNodes.wrap(p[0]);
-                    // this._range.selectNodeContents(wrappedEl[0]);
+                    // wrappedEl = textNodes.wrap(p[ 0 ]);
+                    // this._range.selectNodeContents(wrappedEl[ 0 ]);
                     // this._updateSelection(this._range);
                 }
             }
+
             // K.D. July 16th, 2012 Bug #101208 Removing the code that initially creates a paragraph
             // if ($(this._selection.anchorNode).is("body")) { //Only in FF
-            // wrappedEl = $(this._selection.anchorNode).children().eq(this._selection.anchorOffset).wrap(p[0]).parent();
-            // this._range.selectNodeContents(wrappedEl[0]);
+            // wrappedEl = $(this._selection.anchorNode).children().eq(this._selection.anchorOffset).wrap(p[ 0 ]).parent();
+            // this._range.selectNodeContents(wrappedEl[ 0 ]);
             // this._updateSelection(this._range);
             // }
         },
         _getTextNodesOnlyCallback: function () {
             return this.nodeType === this.NODE._Text;
         },
+
         // Returns a text node.
         _wrapPartialString: function (string, start, end, wrapElName) {
             var stack = [];
@@ -2736,7 +2858,7 @@ if (typeof jQuery !== "function") {
                 selItem = this.getSelectedItem();
 
             // D.G., 19th February 2016, Bug #214449 - In IE and FireFox Insert Link dialog is not closed when click on Apply
-            // if newNode is the same as refence as selItem then in IE and FF 
+            // if newNode is the same as refence as selItem then in IE and FF
             // HierarchyRequestError(https://msdn.microsoft.com/en-us/library/ff975445(v=vs.85).aspx) is thrown
             // when insertNode is called. Also there is no point replacing the same node with its self
             if (selItem.is(newNode)) {
@@ -2755,7 +2877,7 @@ if (typeof jQuery !== "function") {
         insertTable: function (table) {
             var $body, $firstP,
                 selItem = this.getSelectedItem(),
-                br = $('<br>', this._document);
+                br = $("<br>", this._document);
 
             if (selItem[0].nodeType === this.NODE._Document) {
                 $body = selItem.find("body");
@@ -2776,6 +2898,7 @@ if (typeof jQuery !== "function") {
             } else if (selItem.is("br")) {
                 selItem.replaceWith(table);
             } else {
+
                 // K.D. July 19th, 2012 Bug #117424 Exception is thrown when inserting a table in IE7 or IE8
                 if (this._range.insertNode !== undefined) {
                     this._range.insertNode(table[0]);
@@ -2809,6 +2932,7 @@ if (typeof jQuery !== "function") {
                     this._document.body.focus();
                 }
             } else {
+
                 // This is the default case
                 // The focus is restored to its previous position
 
@@ -2818,8 +2942,8 @@ if (typeof jQuery !== "function") {
 
                     // Combo takes the focus from the editor in IE
                     // Return the focus and selection as it was
-                    // This causes lost of the last chosen command when 
-                    // selecting multiple commands at once without clicking 
+                    // This causes lost of the last chosen command when
+                    // selecting multiple commands at once without clicking
                     // or typing something to trigger onSelectionChange
                     this._updateSelection(this._range);
                 } else {
@@ -2910,7 +3034,8 @@ if (typeof jQuery !== "function") {
             toolbars.bind("igtoolbartoolbarbuttonclick", function (e, ui) {
                 if (alignButtons.hasOwnProperty(ui.name)) {
                     $.each(alignButtons, function (buttonName, button) {
-                        if (buttonName !== ui.name && button.igToolbarButton("option", "isSelected")) {
+                        if (buttonName !== ui.name &&
+                            button.igToolbarButton("option", "isSelected")) {
                             button.igToolbarButton("toggle");
                             return;
                         }
@@ -2921,24 +3046,24 @@ if (typeof jQuery !== "function") {
         _disableUnsupportedItems: function () {
             var copyPasteToolbar = this._toolbars.copyPasteToolbar;
             if (!$.ig.util.isIE) {
-                copyPasteToolbar.igToolbar('disableItem', 'cut', true);
-                copyPasteToolbar.igToolbar('disableItem', 'copy', true);
-                copyPasteToolbar.igToolbar('disableItem', 'paste', true);
+                copyPasteToolbar.igToolbar("disableItem", "cut", true);
+                copyPasteToolbar.igToolbar("disableItem", "copy", true);
+                copyPasteToolbar.igToolbar("disableItem", "paste", true);
             }
         },
         _disableTableControls: function (toDisable) {
             var insertObjectToolbar = this._toolbars.insertObjectToolbar;
             if (!toDisable && this._isTableControlsDisabled) {
-                insertObjectToolbar.igToolbar('disableItem', 'addColumn', false);
-                insertObjectToolbar.igToolbar('disableItem', 'removeColumn', false);
-                insertObjectToolbar.igToolbar('disableItem', 'addRow', false);
-                insertObjectToolbar.igToolbar('disableItem', 'removeRow', false);
+                insertObjectToolbar.igToolbar("disableItem", "addColumn", false);
+                insertObjectToolbar.igToolbar("disableItem", "removeColumn", false);
+                insertObjectToolbar.igToolbar("disableItem", "addRow", false);
+                insertObjectToolbar.igToolbar("disableItem", "removeRow", false);
                 this._isTableControlsDisabled = false;
             } else if (toDisable && !this._isTableControlsDisabled) {
-                insertObjectToolbar.igToolbar('disableItem', 'addColumn', true);
-                insertObjectToolbar.igToolbar('disableItem', 'removeColumn', true);
-                insertObjectToolbar.igToolbar('disableItem', 'addRow', true);
-                insertObjectToolbar.igToolbar('disableItem', 'removeRow', true);
+                insertObjectToolbar.igToolbar("disableItem", "addColumn", true);
+                insertObjectToolbar.igToolbar("disableItem", "removeColumn", true);
+                insertObjectToolbar.igToolbar("disableItem", "addRow", true);
+                insertObjectToolbar.igToolbar("disableItem", "removeRow", true);
                 this._isTableControlsDisabled = true;
             }
         },
@@ -2947,6 +3072,7 @@ if (typeof jQuery !== "function") {
             _isItalic: "_onItalic",
             _isUnderlined: "_onUnderlined",
             _isLineThrough: "_onLineThrough",
+
             // _isAligned: "_onAlign",
             _isJustifyCenter: "_onAlign",
             _isJustifyFull: "_onAlign",
@@ -2959,6 +3085,7 @@ if (typeof jQuery !== "function") {
             _isTable: "_onTable"
         },
         analyse: function (el) {
+
             // All toolbars button are first deactivated
             // Current selection state is retrieved from queryCommandState or from getComputedStyle
             // Then the corresponding buttons are activated to reflect the selection state
@@ -2969,31 +3096,35 @@ if (typeof jQuery !== "function") {
             this._resetToolbars();
 
             if (el[0].nodeType === 9) {
-                this._computedStyles = (this._w.getComputedStyle && this._w.getComputedStyle(this._d.body)) || this._d.body.currentStyle;
+                this._computedStyles = (this._w.getComputedStyle &&
+                    this._w.getComputedStyle(this._d.body)) || this._d.body.currentStyle;
             } else {
-                this._computedStyles = (this._w.getComputedStyle && this._w.getComputedStyle(el[0])) || el[0].currentStyle;
+                this._computedStyles = (this._w.getComputedStyle &&
+                    this._w.getComputedStyle(el[0])) || el[0].currentStyle;
             }
 
             // K.D. November 19th, 2012 Bug #127274 Heading elements never get analyzed by tag name
-            if (el.is(':header')) {
+            if (el.is(":header")) {
                 this._onHeader(el);
             }
 
             $.each(this._callbackMap, function (isTrueFunc, callback) {
                 var isTrueRes = self[isTrueFunc](el);
-                if ($.isFunction(self[isTrueFunc]) && isTrueRes && $.isFunction(self[callback])) {
+                if ($.isFunction(self[isTrueFunc]) && isTrueRes &&
+                    $.isFunction(self[callback])) {
                     self[callback](el, isTrueRes);
 
                     // Bug #184142 In IE justify left button is not active by default
-                    if (callback === '_onAlign') {
+                    if (callback === "_onAlign") {
                         justify = true;
                     }
                 }
             });
 
             if (!justify) {
+
                 // Activate justify left as default
-                this._onAlign(el, 'justifyleft');
+                this._onAlign(el, "justifyleft");
             }
 
             if (!el.is("table") && !el.is("td")) {
@@ -3001,6 +3132,7 @@ if (typeof jQuery !== "function") {
             }
         },
         _isBold: function () {
+
             // D.A. Bug #174295 Deselecting Bold, Italic, Underline and Striketrough buttons leaves them in active state
             return this._d.queryCommandState("bold");
         },
@@ -3067,8 +3199,9 @@ if (typeof jQuery !== "function") {
             return fontName;
         },
         _getFontFamily: function () {
-            // D.U. 21th of July 2014 #174295 Checking inside the query 
-            // for font name value no in selection wrapper saved values 
+
+            // D.U. 21th of July 2014 #174295 Checking inside the query
+            // for font name value no in selection wrapper saved values
             var fontName = this._d.queryCommandValue("FontName");
 
             // Use computed styles font name when the query command does not return the value
@@ -3091,21 +3224,27 @@ if (typeof jQuery !== "function") {
             this._toolbars.textToolbar.igToolbar("getItem", "Underline").igToolbarButton("toggle");
         },
         _onLineThrough: function () {
-            this._toolbars.textToolbar.igToolbar("getItem", "Strikethrough").igToolbarButton("toggle");
+            this._toolbars.textToolbar.igToolbar("getItem", "Strikethrough")
+                .igToolbarButton("toggle");
         },
         _onAlign: function (el, dir) {
-            this._toolbars.formattingToolbar.igToolbar("getItem", dir).igToolbarButton("toggle");
+            this._toolbars.formattingToolbar.igToolbar("getItem", dir)
+                .igToolbarButton("toggle");
         },
         _onList: function (el, listType) {
-            this._toolbars.formattingToolbar.igToolbar("getItem", listType).igToolbarButton("toggle");
+            this._toolbars.formattingToolbar.igToolbar("getItem", listType)
+                .igToolbarButton("toggle");
         },
         _onFontName: function (el, fontName) {
             var combo = this._toolbars.textToolbar.igToolbar("getItem", "fontFamily");
+
             // K.D. November 1st, 2012 Bug #125724 The combo values do not contain ' or " so they need to be removed before sending the value
-            fontName = fontName.replace(/'|"/g, '');
-            this._setComboValue(combo, $.ig.HtmlEditor.locale.fontNames[/^win/gi.test(navigator.platform) ? 'win' : 'mac'], fontName);
+            fontName = fontName.replace(/'|"/g, "");
+            this._setComboValue(combo, $.ig.HtmlEditor.locale
+                .fontNames[/^win/gi.test(navigator.platform) ? "win" : "mac"], fontName);
         },
         _onFontSize: function () {
+
             // Conversion table pixel to font size units
             var pxTbl = {
                 "11": 1,
@@ -3115,16 +3254,20 @@ if (typeof jQuery !== "function") {
                 "24": 5,
                 "32": 6
             },
+
             // D.A. 28th October 2014, Bug #183490 We should round the font size style in IE, because when choosing some headings it is a float number e.g. 18.73px
-            fontSizeUnits = this._d.queryCommandValue("fontsize") || pxTbl[Math.round(parseFloat(this._computedStyles.fontSize))],
+            fontSizeUnits = this._d.queryCommandValue("fontsize") ||
+                pxTbl[Math.round(parseFloat(this._computedStyles.fontSize))],
                 fontSizeUnitsStr = fontSizeUnits ? fontSizeUnits.toString() : "",
                 combo = this._toolbars.textToolbar.igToolbar("getItem", "fontSize");
             this._setComboValue(combo, $.ig.HtmlEditor.locale.fontSizes, fontSizeUnitsStr);
         },
         _onHeader: function (element) {
+
             // K.D. November 19th, 2012 Bug #127274 Heading elements never get analyzed by tag name.
             var combo = this._toolbars.textToolbar.igToolbar("getItem", "formatsList");
-            this._setComboValue(combo, $.ig.HtmlEditor.locale.formatsList, element[0].nodeName.toLowerCase());
+            this._setComboValue(combo, $.ig.HtmlEditor.locale.formatsList,
+                element[0].nodeName.toLowerCase());
         },
         _onTable: function () {
             this._disableTableControls(false);
@@ -3157,5 +3300,5 @@ if (typeof jQuery !== "function") {
         End HTML Editor Toolbars
     ************************************/
 
-    $.extend($.ui.igHtmlEditor, { version: '<build_number>' });
+    $.extend($.ui.igHtmlEditor, { version: "<build_number>" });
 }(jQuery));
