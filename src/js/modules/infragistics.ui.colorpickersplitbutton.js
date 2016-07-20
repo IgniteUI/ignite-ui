@@ -5,8 +5,8 @@
  * <Licensing info>
  *
  * http://www.infragistics.com/
- * 
- * Depends on: 
+ *
+ * Depends on:
  *   jquery-1.9.1.js
  *   jquery.ui.core.js
  *   jquery.ui.widget.js
@@ -45,6 +45,7 @@ if (typeof jQuery !== "function") {
                 popoverOptions;
             this._options.popover = $('<div id="' + this._id("_popover") + '"></div>')
                 .appendTo(this.element);
+
             // D.G. 14 December 2015 Added check for touch Mozilla Firefox Bug 211118
             if ($.ig.util.isTouchDevice() || $("html").hasClass("touch")) {
                 popoverOptions = {
@@ -70,9 +71,12 @@ if (typeof jQuery !== "function") {
         },
         _attachEvents: function () {
             $.ui.igSplitButton.prototype._attachEvents.call(this);
-            this._options.itemsList.on("igcolorpickercolorselected", $.proxy(this._onColorSelect, this));
-            this._options.defaultButton.on("igtoolbarbuttonclick", $.proxy(this._onDefaultButtonClick, this));
-            this._options.itemsList.parent().parent().on("mousedown", $.proxy(this._preventCollapsing, this));
+            this._options.itemsList.on("igcolorpickercolorselected",
+                $.proxy(this._onColorSelect, this));
+            this._options.defaultButton.on("igtoolbarbuttonclick",
+                $.proxy(this._onDefaultButtonClick, this));
+            this._options.itemsList.parent().parent().on("mousedown",
+                $.proxy(this._preventCollapsing, this));
         },
         _onItemClick: function () {
             return false;
@@ -83,13 +87,15 @@ if (typeof jQuery !== "function") {
             this._trigger("colorSelected", e, { value: ui.color, item: this.element });
             this.collapse();
         },
+        
         _onDefaultButtonClick: function (e) {
             e.stopPropagation();
-            this._trigger("colorSelected", e, { value: this.options.defaultColor, item: this.element });
+            this._trigger("colorSelected", e,
+                { value: this.options.defaultColor, item: this.element });
         },
         _setButtonColorIndicator: function (color) {
             this._options.defaultButton.children(":first").css("border-bottom-color", color);
-            if(!this.options.hasDefaultIcon){
+            if (!this.options.hasDefaultIcon) {
                 this._options.defaultButton.children(":first").css("background-color", color);
                 this._options.defaultButton.children(":first").css("background-image", "none");
             }
@@ -101,15 +107,15 @@ if (typeof jQuery !== "function") {
             var options = this.options,
                 self = this;
 
-            if (options[key] === value) {
+            if (options[ key ] === value) {
                 return;
             }
 
             $.Widget.prototype._setOption.apply(this, arguments);
 
-            switch(key) {
-                case 'defaultColor':
-                    self.setColor(value); 
+            switch (key) {
+                case "defaultColor":
+                    self.setColor(value);
                     break;
             }
         },
@@ -153,5 +159,5 @@ if (typeof jQuery !== "function") {
         }
     });
 
-    $.extend($.ui.igColorPickerSplitButton, { version: '<build_number>' });
+    $.extend($.ui.igColorPickerSplitButton, { version: "<build_number>" });
 }(jQuery));

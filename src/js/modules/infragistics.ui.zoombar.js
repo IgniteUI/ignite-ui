@@ -17,7 +17,7 @@
 (function ($) {
 	/*
 		igZoombar is a widget based on jQuery UI that provides ability to easily zoom in and out a chart or other compatible control.
-	*/ 
+	*/
 	$.widget("ui.igZoombar", {
 		options: {
 			/* type="string|object|auto" specifies a provider which interfaces with widget that is being zoomed
@@ -764,8 +764,8 @@
 				}
 				this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
 			} else if ($.type(opts.provider) === "string") {
-				if ($.ig[opts.provider]) {
-					provider = new $.ig[opts.provider]({
+				if ($.ig[ opts.provider ]) {
+					provider = new $.ig[ opts.provider ]({
 						zoomChangedCallback: this._targetWindowChangedHandler
 					});
 				}
@@ -1084,7 +1084,7 @@
 					newLeft: number,
 					newWdith: number
 				}
-			The values should represent the fractions of the total width of the zoomed component in a number ranging from 0 to 1 
+			The values should represent the fractions of the total width of the zoomed component in a number ranging from 0 to 1
 			*/
 			zoomChangedCallback: null
 		},
@@ -1157,7 +1157,7 @@
 			}
 			return this.settings.targetObject;
 		},
-	 	update: function (a, b) { /*jshint ignore:line*/
+		update: function (a, b) { /*jshint ignore:line*/
 			/* Updates the target widget with a new zoom range.
 			paramType="number" a number from 0 to 1 representing the left edge of the new zoom window to be applied to the target component
 			paramType="number" a number from 0 to 1 representing the right edge of the new zoom window to be applied to the target component
