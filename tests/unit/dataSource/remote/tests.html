@@ -306,7 +306,7 @@
 			ds.settings.paging.enabled = false;
 			// compare the "params" string with the expected one 
 			var params = $.param(ds._encodeUrl());
-			equal(params, "%24orderby=ProductID+asc%2CName+desc", "%24orderby=ProductID+asc%2CName+desc");
+			equal(params, "%24orderby=ProductID%20asc%2CName%20desc", "%24orderby=ProductID%20asc%2CName%20desc");
 		});
 		
 		test("OData filtering parameters", function() { 
@@ -336,7 +336,7 @@
 			// compare the "params" string with the expected one 
 			var params = $.param(ds._encodeUrl());
 
-			equal(params, "%24filter=startswith(tolower(ProductID)%2C'a')+eq+true+and+endswith(tolower(Name)%2C'b')+eq+true+and+indexof(tolower(Price)%2C'')+ge+0+and+indexof(tolower(ProductID)%2C'c')+eq+-1+and+tolower(Name)+eq+'1'+and+Name+eq+1+and+tolower(Name)+ne+'abc'+and+Name+gt+5+and+Name+lt+2+and+Name+ge+4+and+Name+le+7", "%24filter=startswith(tolower(ProductID)%2C'a')+eq+true+and+endswith(tolower(Name)%2C'b')+eq+true+and+indexof(tolower(Price)%2C'')+ge+0+and+indexof(tolower(ProductID)%2C'c')+eq+-1+and+tolower(Name)+eq+'1'+and+Name+eq+1+and+tolower(Name)+ne+'abc'+and+Name+gt+5+and+Name+lt+2+and+Name+ge+4+and+Name+le+7");
+			equal(params, "%24filter=startswith(tolower(ProductID)%2C'a')%20eq%20true%20and%20endswith(tolower(Name)%2C'b')%20eq%20true%20and%20indexof(tolower(Price)%2C'')%20ge%200%20and%20indexof(tolower(ProductID)%2C'c')%20eq%20-1%20and%20tolower(Name)%20eq%20'1'%20and%20Name%20eq%201%20and%20tolower(Name)%20ne%20'abc'%20and%20Name%20gt%205%20and%20Name%20lt%202%20and%20Name%20ge%204%20and%20Name%20le%207", "%24filter=startswith(tolower(ProductID)%2C'a')%20eq%20true%20and%20endswith(tolower(Name)%2C'b')%20eq%20true%20and%20indexof(tolower(Price)%2C'')%20ge%200%20and%20indexof(tolower(ProductID)%2C'c')%20eq%20-1%20and%20tolower(Name)%20eq%20'1'%20and%20Name%20eq%201%20and%20tolower(Name)%20ne%20'abc'%20and%20Name%20gt%205%20and%20Name%20lt%202%20and%20Name%20ge%204%20and%20Name%20le%207");
 			
 		});
 		

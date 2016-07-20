@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Infragistics jQuery Client Dialog </title>
-    <link type="text/css" href="../../../src/css/structure/jquery.ui.all.css" rel="stylesheet" />
-    <link type="text/css" href="../../../src/css/structure/jquery.ui.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" /> 
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.dialog.css" rel="stylesheet" />
     
@@ -21,44 +20,61 @@
 
     <script type="text/javascript">
         /*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
-        $(function () {
-            $('#dialog1').igDialog({
-                resizable: false,
-                draggable: false,
-                width: 250,
-                height: 250,
-                imageClass: 'ui-icon ui-icon-info',
-                headerText: 'Dialog1 Caption'
+    $(function () {
+        function loadTestbeds() {
+            $(function () {
+                $('#dialog1').igDialog({
+                    resizable: false,
+                    draggable: false,
+                    width: 250,
+                    height: 250,
+                    imageClass: 'ui-icon ui-icon-info',
+                    headerText: 'Dialog1 Caption'
+                });
+                $('#dialog2').igDialog({
+                    width: 250,
+                    height: 250,
+                    showMinimizeButton: true,
+                    showMaximizeButton: true,
+                    showFooter: true,
+                    imageClass: 'ui-icon ui-icon-info',
+                    headerText: 'Dialog2 Caption'
+                });
+                $('#dialog3').igDialog({
+                    width: 250,
+                    height: 250,
+                    showMinimizeButton: true,
+                    showMaximizeButton: true,
+                    showPinButton: true,
+                    showFooter: true,
+                    footerText: 'Footer',
+                    imageClass: 'ui-icon ui-icon-info',
+                    headerText: 'Dialog3 Caption'
+                });
+                $("#dialog4").igDialog({
+                    state: "closed",
+                    modal: true,
+                    enableHeaderFocus: true,
+                    trackFocus: true
+                });
             });
-            $('#dialog2').igDialog({
-                width: 250,
-                height: 250,
-                showMinimizeButton: true,
-                showMaximizeButton: true,
-                showFooter: true,
-                imageClass: 'ui-icon ui-icon-info',
-                headerText: 'Dialog2 Caption'
-            });
-            $('#dialog3').igDialog({
-                width: 250,
-                height: 250,
-                showMinimizeButton: true,
-                showMaximizeButton: true,
-                showPinButton: true,
-                showFooter: true,
-                footerText: 'Footer',
-                imageClass: 'ui-icon ui-icon-info',
-                headerText: 'Dialog3 Caption'
-            });
-            $("#dialog4").igDialog({
-                state: "closed",
-                modal: true,
-                enableHeaderFocus: true,
-                trackFocus: true
-            });
-        });
+        }
         // START TESTING
-        module('igDialog');
+        initialized = false;
+		module("igDialog", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 500);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+
         var testId = '[ID1] dialog structure and layout';
         test(testId, function () {
             var elem, main, good, i = 0;
@@ -146,6 +162,7 @@
                 //QUnit.log(good, testId + ' Dialog' + i + ' is(is not) draggable');
             }
         });
+
         testId = '[ID2] dialog actions';
         test(testId, function () {
             var val, elem, main, dialog, good, j, i = 0;
@@ -294,6 +311,7 @@
                 //QUnit.log(good, testId + ' Dialog' + i + ' was destroyed parent:' + val);
             }
         });
+
         test("igDialog API", function () {
             $("#dialog1").igDialog();
             var content = $("#dialog1").igDialog("content");
@@ -347,6 +365,7 @@
             equal($("#testFrame").contents().find('body').text(), text, "Internal frame lost its content on minimize");
             $("#dialog4").appendTo("body").igDialog("close");
         });
+    });
     </script>
 </head>
 <body id="rootBody">
