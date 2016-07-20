@@ -72,7 +72,8 @@
 			    cannotSetRuntime: "Cette option ne peut pas être définie lors de l’exécution",
 			    invalidDate: "Date non valide",
 			    maskMessage: 'Tous les postes requis doivent être remplis',
-			    dateMessage: 'Une date valide doit être saisie',
+			    maskRevertMessage: 'All required positions should be filled, that is why the value was reverted to the last valid one.',
+				dateMessage: 'Une date valide doit être saisie',
 			    centuryThresholdValidValues: "La propriété centuryThreshold doit être comprise entre 0 et 99. La valeur a été réinitialisée à son état par défaut.",
 			    noListItemsNoButton: "Aucun compteur ni bouton de liste ne s’affiche car il n’y a pas d’éléments de liste."
 		    }
