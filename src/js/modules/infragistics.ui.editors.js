@@ -5410,7 +5410,7 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_triggerInternalValueChange: function (value) { //MaskEditor
-			var oldValue;
+			var oldValue, message;
 			if (value === this._maskWithPrompts && this._promptCharsIndices.length === 0) {
 				value = "";
 			}
@@ -5427,7 +5427,12 @@ if (typeof jQuery !== "function") {
 				if (value !== "" && !this._validateRequiredPrompts(value)) {
 					// Raise warning not all required fields are entered
 					// State - message
-					this._sendNotification("warning", $.ig.Editor.locale.maskMessage);
+					if (this.options.revertIfNotValid) {
+						message = $.ig.Editor.locale.maskRevertMessage;
+					} else {
+						message = $.ig.Editor.locale.maskMessage;
+					}
+					this._sendNotification("warning", message);
 				}
 			}
 		},
