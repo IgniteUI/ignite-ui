@@ -37,7 +37,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98"];
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
@@ -359,6 +359,13 @@
 						height: "54px",
 						value: "John Smith, with long test",
 						textMode: "multiline"
+					});
+				}
+
+				window.Bug98Testbed = function () {
+					$("#98Editor1").igNumericEditor({
+						maxValue: 5,
+						minValue: 3
 					});
 				}
 
@@ -938,6 +945,21 @@
 				equal(value, "John S\nmit\nh, with long test", "Word is not carried over the new line");
 				equal($('#221300Editor1').igTextEditor("getSelectionStart"), 11, "Cursor position is wrong");
 			});
+
+			testId = 'Bug 98';
+			test(testId, 2, function () {
+				var input = $('#98Editor1');
+				input.igNumericEditor("setFocus");
+				typeInMaskedInput("26", input.igNumericEditor("field"));
+				keyInteraction(13, input);
+				var text = $("#98Editor1").igNumericEditor("field").val();
+				equal(text, 5, "Text in editor is not set to the maxValue");
+				input.igNumericEditor("setFocus");
+				typeInMaskedInput("1", input.igNumericEditor("field"));
+				keyInteraction(13, input);
+				var text = $("#98Editor1").igNumericEditor("field").val();
+				equal(text, 3, "Text in editor is not set to the minValue");
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1159,6 +1181,7 @@
 
 		<input id="220712Editor1" type="text" />
 		<input id="221118Editor1" />
+		<input id="98Editor1" />
 		<textarea id="221494Editor1"></textarea>
 		<textarea id="221300Editor1"></textarea>
 	</div></body>

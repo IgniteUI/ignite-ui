@@ -903,7 +903,7 @@
             });
 
             testId = 'Validation rules';
-            test(testId, 39, function () {
+            test(testId, 44, function () {
                 //required
                 ok($('#rulesInput').igValidator("isValid"), "Editor should be valid with initial value");
                 $("#rulesInput").igValidator("option", "required", true);
@@ -983,6 +983,21 @@
                 // invalid euqualTo selector:
                 $('#textEditor').igValidator("option", "equalTo", "#notFound");
                 ok(!$('#textEditor').igValidator("isValid"), "Editor valid with invalid euqualTo selector");
+
+                // creditCard
+                $("#rulesInput").igValidator("option", "creditCard", true);
+                ok(!$('#rulesInput').igValidator("isValid"), "Date validated as credit card");
+                // basic Luhn test
+                $("#rulesInput").val("79927398713");
+                ok($('#rulesInput').igValidator("isValid"), "Credit card digits not validated");
+                // generated with https://gist.github.com/B-Con/4988902
+                $("#rulesInput").val("4280361754636370");
+                ok($('#rulesInput').igValidator("isValid"), "Credit card (visa) not validated");
+                $("#rulesInput").val("5126 071821403 390");
+                ok($('#rulesInput').igValidator("isValid"), "Credit card (master with spaces) not validated");
+                $("#rulesInput").val("3404 - 52757150 - 877");
+                ok($('#rulesInput').igValidator("isValid"), "Credit card (AE with spaces and dashes) not validated");
+                $("#rulesInput").igValidator("option", "creditCard", false);
 
                 // pattern:
                 $("#rulesInput").igValidator("option", "pattern", /^test$/);

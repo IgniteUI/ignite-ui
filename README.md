@@ -123,5 +123,5 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 
 ##Contributing
 You can find all guidelines on how to contribute on the wiki page.  
-[How to contribute](https://github.com/IgniteUI/ignite-ui/wiki/Contributing-to-Ignite-UI)  
-[API Documentation Guidelines](https://github.com/IgniteUI/ignite-ui/wiki/API-Documentation-Guidelines)
+* [How to contribute](https://github.com/IgniteUI/ignite-ui/wiki/Contributing-to-Ignite-UI)  
+* [API documentation guidelines](https://github.com/IgniteUI/ignite-ui/wiki/API-Documentation-Guidelines)

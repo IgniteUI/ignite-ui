@@ -51,7 +51,7 @@
             deactivated: "deactivated"
         },
         _setOption: function (option, value) {
-            if (this.options[option] === value) {
+            if (this.options[ option ] === value) {
                 return;
             }
 
@@ -72,13 +72,14 @@
                 this.element.addClass(this.options.css.buttonActiveClasses);
             }
         },
+
         // Overrides igButton's _onBlur
         _onBlur: function (event) {
             var noCancel,
                 o = this.options;
 
             if (!o.disabled) {
-                noCancel = this._trigger('blur', event);
+                noCancel = this._trigger("blur", event);
                 if (noCancel) {
                     this.element.removeClass(o.css.buttonFocusClasses);
                     if (!o.allowToggling) {
@@ -87,6 +88,7 @@
                 }
             }
         },
+
         // Overrides igButton's _onMouseDown
         _onMouseDown: function (event) {
             var noCancel,
@@ -94,7 +96,7 @@
                 o = this.options;
 
             if (!o.disabled) {
-                noCancel = this._trigger('mousedown', event);
+                noCancel = this._trigger("mousedown", event);
                 if (noCancel) {
                     e.removeClass(o.css.buttonHoverClasses);
                     if (!o.allowToggling) {
@@ -103,13 +105,14 @@
                 }
             }
         },
+
         // Overrides igButton's _onMouseUp
         _onMouseUp: function (event) {
             var noCancel,
                 o = this.options;
 
             if (!o.disabled) {
-                noCancel = this._trigger('mouseup', event);
+                noCancel = this._trigger("mouseup", event);
                 if (noCancel) {
                     this.element.removeClass(o.css.buttonHoverClasses);
                     if (!o.allowToggling) {
@@ -244,5 +247,5 @@
         }
     });
 
-    $.extend($.ui.igToolbarButton, { version: '<build_number>' });
+    $.extend($.ui.igToolbarButton, { version: "<build_number>" });
 }(jQuery));

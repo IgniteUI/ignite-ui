@@ -19,7 +19,7 @@
 <body>
     <script>
         $(document).ready(function () {
-            var errors = [], jsPath = "../../../src/js/", testId_1;
+            var errors = [], jsPath = "../../../src/js/", testId_1, testId_2;
 
             /*  igLoader Common  */
             module("igLoader Common", {
@@ -27,6 +27,8 @@
 
             //bug 193265: Loaded callback is fired before the resource is actually loaded
             testId_1 = "test 1: Test load resources on demand with nested initialization ";
+			
+            testId_2 = "test 2: Test load resources with locale";
 
             test(testId_1, function () {
                 stop();
@@ -65,6 +67,37 @@
                 });
 
             });
+			
+			test(testId_2, function(){
+				stop();
+                var scripts, actualPaths = [],
+                    expectedScripts = ["infragistics.util-fr.js", "infragistics.util.js", "infragistics.templating-fr.js",
+                        "infragistics.shared-fr.js", "infragistics.ui.rating-fr.js", "infragistics.datasource-fr.js", "infragistics.templating.js",
+						"infragistics.ui.shared.js", "infragistics.ui.rating.js", "infragistics.datasource.js", "infragistics.ui.layoutmanager.js",
+						"infragistics.ui.zoombar-fr.js", "infragistics.ui.splitter-fr.js", "infragistics.ui.zoombar.js", "infragistics.ui.splitter.js",
+						"infragistics.ui.tilemanager-fr.js", "infragistics.ui.tilemanager.js"];
+					
+					$.ig.loader({
+                    scriptPath: jsPath,
+                    cssPath: "../../../Source/ClientUI/css/",
+                    resources: "igTemplating, igShared, igRating, igTileManager, igZoombar",
+					locale: 'fr',
+                    ready: function () {
+						start();
+                        //check if expected scripts are loaded
+                        scripts = $(document).find("head > script");
+                        scripts.each(function () {
+                           if (this.src.indexOf("Source/ClientUI/js/") > -10) {
+                               var array = this.src.split("/");
+                               actualPaths.push(array[array.length - 1]);
+                           }
+                        });
+                        for (var i = 0; i < expectedScripts.length; i++) {
+                           ok(actualPaths.contains(expectedScripts[i]), "The loaded scripts should contain: " + expectedScripts[i]);
+                        }
+					}
+				});
+			});
         });
 
     </script>

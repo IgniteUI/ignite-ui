@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Leading Tile Configuration Sample - Leading Tile Configuration with Tile Manager Control - Ignite UI™</title>
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <!-- Modernizr/jQuery/jQuery UI -->
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+</head>
+<body><p>This sample demonstrates instantiating the Tile Manager on existing markup in a container with a configuration that defines a leading tile. The leading tile swaps with the rest of the tiles upon expanding.</p>
+    <style type="text/css">
+
+        body {
+            font-family: 'Segoe UI', 'Arial', 'Helvetica', 'sans-serif';
+        }
+
+        ul {
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        
+        .ui-igtile-maximized .ui-igtile-inner-container {overflow: hidden;}
+
+
+        #car-tabs {
+            margin: auto;
+        }
+
+        .dashboard {
+            font-size: 0.85em!important;
+            position: relative;
+            height: 660px;
+        }
+
+            .dashboard img {
+                width: 100%;
+            }
+
+            .dashboard figure {
+                margin:0;
+            }
+
+            .dashboard figcaption {
+                font-size: 1.1em;
+                background-color: #454545;
+                color: #fff;
+                padding: 10px 0 10px 10px;
+            }
+
+            .dashboard .ui-igtile-maximized  figcaption {
+                background-color: #2cbdf9;
+                -webkit-transition:0.5s;
+            }
+
+                .dashboard div ul {
+                    border: 1px solid #ececec;
+                    padding: 5px 5px 10px 5px;
+                    -webkit-transition:0.5s;
+                }
+
+                    .dashboard div ul li:nth-child(n+2):before {
+                        content: "• ";
+                        color: #2cbdf9; 
+                    }
+
+                    .dashboard div ul li:first-child {
+                        color: #2cbdf9;
+                    }
+        
+        #car-tabs.ui-tabs .ui-tabs-panel, #car-tabs.ui-tabs-nav, #car-tabs.ui-tabs .ui-tabs-nav li.ui-state-default {
+            border: none;
+            padding: 0;
+        }
+
+        #car-tabs.ui-tabs .ui-tabs-nav li.ui-state-active a {
+            background-color: #2cbdf9!important;
+
+        }
+
+        #car-tabs.ui-tabs .ui-tabs-nav li.ui-state-default a {
+            background-color: #95defc;
+        }
+
+        #car-tabs.ui-tabs .ui-tabs-nav li.ui-state-hover a {
+            background-color: #6bd1fb;
+        }
+
+        #car-tabs.ui-tabs-anchor {
+            text-shadow: none;
+            color: #fff!important;
+        }
+
+        #car-tabs.ui-tabs-anchor:hover {
+            text-decoration: underline;
+        }
+
+        #car-tabs.ui-tabs {
+            border-radius: 0;
+        }
+
+        .sample-footer {
+            margin-top: 10px;
+            height: 80px;
+            line-height: 75px;
+            text-align: center;
+            width: 100%;
+            background-color: #44acd6;
+        }
+            .sample-footer a {
+                color: #fff;
+                vertical-align: middle;
+            }
+
+        .sample-header {
+            height: 60px;
+            line-height: 75px;
+            width: 100%;
+            background-color: #44acd6;
+        }
+
+        h1.hOne {
+            margin: 0;
+            clear: none;
+            float: none;
+            font-size: 2em;
+        }
+
+        @media all and (max-width: 430px) {
+            #car-tabs.ui-tabs-nav li {
+                font-size: 16px;
+            }
+
+            /*.sample-page #sample {
+                margin-left: 0;
+                margin-right: 0;
+            }*/
+        }
+    </style>
+    <h1 class="hOne">Infragistics Car Dealership</h1>
+    <h3>Choose a car brand to browse</h3>
+    <div id="car-tabs">
+        <ul>
+            <li><a href="#magarcedes">Magarcedes</a></li>
+            <li><a href="#hoida">Hoida</a></li>
+            <li><a href="#paushe">Paushe</a></li>
+        </ul>
+        <div id="magarcedes" class="dashboard">
+            <div>
+                <figure>
+                    <figcaption>2013 LSL AMG</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_139519967.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $199,500 &ndash; $206,000</li>
+                    <li>0-100 in 3.8 seconds</li>
+                    <li>Top speed: 317 km/h</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 363 AMG</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_38284540.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $57,130 &ndash; $61,430</li>
+                    <li>0-60 in 4.4 seconds</li>
+                    <li>Top speed: 250 km/h</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 T350</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_25369924.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $47,542 - $51,120</li>
+                    <li>4MATIC All Wheel Drive</li>
+                    <li>0-60 in 5.5 seconds</li>
+                    <li>3.5l v6 engine</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 500S</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_4417342.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $92,350 &ndash; $212,000</li>
+                    <li>Night View Assist</li>
+                    <li>Parking Distance Control</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 M350L</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_4028761.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $47,681 - $51,270</li>
+                    <li>3.0L BlueTEC turbodiesel v6 engine</li>
+                    <li>4MATIC All Wheel Drive</li>
+                    <li>Highway fuel efficiency of 28 mpg</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 CSL</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_2564520.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $74,500 - $84,556</li>
+                    <li>4.6L v8 engine</li>
+                    <li>0-60 in 5.05 seconds</li>
+                </ul>
+            </div>
+        </div>
+        <div id="hoida" class="dashboard">
+            <div>
+                <figure>
+                    <figcaption>2013 Candy</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_57034834.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $21,661 - $29,404</li>
+                    <li>Gas I4 2.5L engine</li>
+                    <li>Highway fuel efficiency of 35 mpg</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 RA4V 4WD</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_117299389.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $23,301 - $28,232</li>
+                    <li>All Wheel Drive</li>
+                    <li>Highway fuel efficiency of 29 mpg</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 Coralla</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_32589022.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $16,191 - $20,297</li>
+                    <li>Gas I4 1.8L engine</li>
+                    <li>Highway fuel efficiency of 34 mpg</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 Pruis C</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_134383163.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $19,058 - $23,163</li>
+                    <li>Gas/Electric I4 1.5L engine</li>
+                    <li>Highway fuel efficiency of 46 mpg</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 Cruiser</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_60821281.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $73,676 - $73,676</li>
+                    <li>Gas V8 5.7L engine</li>
+                    <li>All Wheel Drive</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 TLC</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_27395866.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $25,566 - $47,651</li>
+                    <li>Gas V8 5.7L engine</li>
+                    <li>Highway fuel efficiency of 17 mpg</li>
+                </ul>
+            </div>
+        </div>
+        <div id="paushe" class="dashboard">
+            <div>
+                <figure>
+                    <figcaption>2013 CST</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_38288989.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $39,095 - $59,090</li>
+                    <li>Available All Wheel Drive</li>
+                    <li>Available touch-screen glide-up navigation with voice recognition</li>
+                    <li>Leather seating surfaces</li>
+                    <li>Adaptive Remote Start</li>
+                </ul>
+                <!--<p>Every detail of the 2013 CST Sport Sedan was designed for driving enthusiasts. A direct-injection 3.0L V6 engine, fine-tuned suspension, and hand-cut-and-sewn accents deliver power, agility and luxury.</p>-->
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 CST-V</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_32949850.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $64,515 &ndash; $74,770</li>
+                    <li>0-100 in 4.0 seconds</li>
+                    <li>G-meter measures lateral acceleration</li>
+                </ul>
+                <!--<p>The 2013 Cadillac CST-V Coupe, it’s pure adrenaline on wheels. From the world’s fastest family of production cars comes a coupe that satisfies more than just driving enthusiasts, it inspires true automotive fanatics. A complete package of performance, styling and capability is achieved through the 556 HP V8 engine, the aggressive styling of its aerodynamic physique and the constant traction of revolutionary dual-mode Magnetic Ride Control, which reads the road up to 1,000 times per second.</p>-->
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 ECS</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_7391134.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $63,170 - $82,875</li>
+                    <li>Heated and cooled front seats</li>
+                    <li>Available Magnetic Ride Control suspension system</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 AST</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_23082346.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $39,095 - $59,090</li>
+                    <li>Available all-new 272 HP 2.0L turbocharged engine</li>
+                    <li>Available navigation</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 SXR Crossover</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_134383139.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $37,330 - $58,220</li>
+                    <li>Available $$(UltraView) sunroof</li>
+                    <li>Available All Wheel Drive</li>
+                </ul>
+            </div>
+            <div>
+                <figure>
+                    <figcaption>2013 CST-V Wagon</figcaption>
+                    <img src="../images/samples/tile-manager/car-dealership/shutterstock_117299326.jpg" alt="error">
+                </figure>
+                <ul>
+                    <li>Price: $64,515 - $75,345</li>
+                    <li>Power liftgate with memory height</li>
+                    <li>Rearview backup camera</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="sample-footer">
+        <a class="float-left" href="http://www.infragistics.com">&copy; Infragistics</a>
+        <span style="color: #FFF">   |    </span>
+        <a class="float-left" href="http://help.infragistics.com">Help and API docs</a>
+    </div>
+    <script type="text/javascript">
+        var activated = [false, false, false, false],
+            optionsWide = {
+                columnWidth: 210,
+                columnHeight: 210,
+                marginLeft: 10,
+                marginTop: 10,
+                items: [
+                    { rowIndex: 0, colIndex: 0, rowSpan: 2, colSpan: 2 },
+                    { rowIndex: 0, colIndex: 2, rowSpan: 1, colSpan: 1 },
+                    { rowIndex: 1, colIndex: 2, rowSpan: 1, colSpan: 1 },
+                    { rowIndex: 2, colIndex: 0, rowSpan: 1, colSpan: 1 },
+                    { rowIndex: 2, colIndex: 1, rowSpan: 1, colSpan: 1 },
+                    { rowIndex: 2, colIndex: 2, rowSpan: 1, colSpan: 1 }
+                ],
+                maximizedTileIndex: 0,
+                minimizedState: ':not(ul)'
+            },
+            optionsPhone = {
+                columnWidth: 125,
+                columnHeight: 160,
+                marginLeft: 5,
+                marginTop: 5,
+                items: [
+                    { rowIndex: 0, colIndex: 0, rowSpan: 2, colSpan: 2 },
+                    { rowIndex: 0, colIndex: 2, rowSpan: 1, colSpan: 1 },
+                    { rowIndex: 1, colIndex: 2, rowSpan: 1, colSpan: 1 },
+                    { rowIndex: 2, colIndex: 0, rowSpan: 1, colSpan: 1 },
+                    { rowIndex: 2, colIndex: 1, rowSpan: 1, colSpan: 1 },
+                    { rowIndex: 2, colIndex: 2, rowSpan: 1, colSpan: 1 }
+                ],
+                maximizedTileIndex: 0,
+                minimizedState: ':not(ul)'
+            },
+            options;
+        $(function () {
+            $('#car-tabs').tabs({
+                activate: function (event, ui) {
+                    var index = ui.newTab.index();
+                    if (!activated[index]) {
+                        ui.newPanel.igTileManager(options);
+                        activated[index] = true;
+                    } else {
+                        ui.newPanel.igTileManager('reflow');
+                    }
+                }
+            });
+            if ($(window).width() > 430) {
+                options = optionsWide;
+            } else {
+                options = optionsPhone;
+            }
+            $('#magarcedes').igTileManager(options);
+            activated[0] = true;
+        });
+    </script>
+</body>
+</html>

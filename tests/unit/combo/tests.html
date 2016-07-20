@@ -142,6 +142,9 @@
         <div id='combo-getitem'></div>
     </div>
     <div class="cont">
+        <div id="combo-virtualization-grouping"></div>
+    </div>
+    <div class="cont">
         <div id='combo_numberarray'></div>
     </div>
     <div class="cont">
@@ -173,6 +176,9 @@
     </div>
     <div class="cont">
         <div id='combo-header-footer'></div>
+    </div>
+    <div class="cont">
+        <div id="combo-open-bottom"></div>
     </div>
     <div class="cont">
         <div id='combo-inputName'></div>
@@ -267,6 +273,9 @@
     <div class="cont">
         <div dir="rtl" id="ltr-testing"></div>
     </div>
+    <div class="cont">
+        <div id="combo-focus-blur"></div>
+    </div>
     <div>
         <div id="header-footer-setters"></div>
     </div>
@@ -353,6 +362,9 @@
                 testId_72 = '_setOption branching tests';
                 testId_73 = 'LTR coverage';
                 testId_74 = 'Header/Footer Getters/Setters';
+                testId_75 = 'Virtualization with grouping and LOD';
+                testId_76 = 'Combo focus blur';
+                testId_77 = 'open dropDown via API with bottom dropDownOrientation';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -1220,7 +1232,7 @@
                     dataSource: localData,
                     dataSourceType: "json",
                     filteringType: "local",
-                    dropDownAttachedToBody: false
+                    dropDownAttachedToBody: false                 
                 });
 
                 combo = $comboElem.data().igCombo;
@@ -1269,7 +1281,7 @@
                 combo._initDataSource();
 
                 equal(combo.options.filteringType, "remote", "The filtering should be remote.");
-
+                
                 combo.filter("pavlova", {});
                 stop();
                 $comboElem.igCombo({
@@ -4674,6 +4686,213 @@
 
                 $comboWrapper.igCombo('option', 'dataSource', newdata);
                 equal($footer.text(), 'Total: 9 out of 9', 'Footer records match');
+            });
+
+            // Virtualization with grouping and LOD tests
+            test(testId_75, function () {
+                var $dropDown, $listItems, data, headersState, selectedItem,
+					$comboElem = $("#combo-virtualization-grouping");
+
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead",  },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead",  },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead",  },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders",  },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders",  },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras",  } ]
+
+                $comboElem.igCombo({
+                    virtualization: true,
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    width: 200,
+                    height: 30,
+                    loadOnDemandSettings: { enabled: true, pageSize: 2 },
+                    visibleItemsCount: 4,
+                    grouping: { key: 'SupplierName' },
+                    multiSelection: {
+                        enabled: true,
+                    }
+                });
+
+                combo = $comboElem.data().igCombo;
+                $comboElem.igCombo('openDropDown');
+                $dropDown = $comboElem.igCombo("dropDown");
+                $listItems = $dropDown.find('.ui-igcombo-listitem');
+                // items list does not contain the group header
+                equal($listItems.length, 2, "2 items should be rendered.");
+
+                $headers = $dropDown.find('li').filter(".ui-igcombo-group-header");
+
+                headersState = function () {
+                    return $headers.eq(0).text() === 'Cooperativa de Quesos Las Cabras' &&
+                           $headers.eq(1).text() === 'Exotic Liquids'
+                }
+                ok(headersState(), 'Drop down correctly heads its groups');
+                $comboElem.igCombo('openDropDown');
+                combo.listScrollTop(200);
+                $listItems = $dropDown.find('.ui-igcombo-listitem');
+                equal($listItems.length, 2, "2 items should be rendered.");
+                $comboElem.igCombo('closeDropDown');
+               
+                $comboElem.igCombo("select", $($listItems[0]));
+                selectedItem =  $comboElem.igCombo("itemsFromIndex", [0]);
+                equal($listItems[0], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+                selectedItem = $comboElem.igCombo("itemsFromIndex", [1]);
+                equal($listItems[1], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+
+                $comboElem.igCombo("select", $($listItems[1]));
+                selectedItem = $comboElem.igCombo("itemsFromValue", [11]);
+                equal($listItems[0], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+
+                selectedItem = $comboElem.igCombo("itemsFromElement", $($listItems));
+                var selectedItems = $comboElem.igCombo("selectedItems");
+                equal($listItems[0], selectedItem[0].element[0], "itemsFromIndex returns the selected item li element");
+                equal($listItems[1], selectedItem[1].element[0], "itemsFromIndex returns the selected item li element");
+            });
+
+            // Change enableClearButton
+            test(testId_76, function () {
+                   var $clearButton, data, selectedItems,
+                       $comboElem = $("#combo-focus-blur");
+   
+                   data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                          { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                          { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                          { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                          { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                          { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                         { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                         { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                         { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                         { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                         { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+   
+                   $comboElem.igCombo({
+                       dataSource: data,
+                       valueKey: "ID",
+                       textKey: 'ProductName',
+                       enableClearButton: false,
+                       width: 200,
+                       height: 30,
+                       allowCustomValues: true,
+                       multiSelection: {
+                           enabled: true,
+                       },
+                       initialSelectedItems: [
+                           { index: 0 },
+                           { index: 1 },
+                           { index: 2 }
+                       ]
+                   });
+   
+                   selectedItems = $comboElem.igCombo("selectedItems");
+                   equal(selectedItems.length, 3, "initial selected items number is 3");
+   
+                   $comboElem.igCombo("option", "enableClearButton", true);
+                   $clearButton = $comboElem.find(".ui-igcombo-clearicon");
+                   $clearButton.trigger("click");
+   
+                   selectedItems = $comboElem.igCombo("selectedItems");
+                   equal(selectedItems, null, "selectedItems should return null");
+
+                   $comboElem.igCombo("text", "Ch");
+                   filteredItems = $comboElem.igCombo("filteredItems");
+                   equal(filteredItems.length, 4, "filtered items number should be 4");
+
+                   allItems = $comboElem.igCombo("items");
+                   equal(allItems.length, data.length, "all items number should be 11");
+
+                   $comboElem.igCombo("text", "Ch");
+                   filteredItems = $comboElem.igCombo("filteredItems");
+                   equal(filteredItems.length, 4, "filtered items number should be 4");
+   
+            });
+
+            // open dropDown via API with bottom dropDownOrientation
+            test(testId_77, function () {
+                var $clearButton, data, selectedItems,
+                    $comboElem = $("#combo-open-bottom");
+
+                data = [{ "ProductID": 318, "Name": "ML Crankarm" },
+                         { "ProductID": 319, "Name": "HL Crankarm" },
+                         { "ProductID": 320, "Name": "Chainring Bolts" },
+                         { "ProductID": 321, "Name": "Chainring Nut" },
+                         { "ProductID": 322, "Name": "Chainring" },
+                         { "ProductID": 323, "Name": "Crown Race" },
+                         { "ProductID": 324, "Name": "Chain Stays" },
+                         { "ProductID": 325, "Name": "Decal 1" },
+                         { "ProductID": 326, "Name": "Decal 2" },
+                         { "ProductID": 327, "Name": "Down Tube" },
+                         { "ProductID": 328, "Name": "Mountain End Caps" },
+                         { "ProductID": 329, "Name": "Road End Caps" },
+                         { "ProductID": 331, "Name": "Fork End" },
+                         { "ProductID": 332, "Name": "Freewheel" },
+                         { "ProductID": 341, "Name": "Flat Washer 1" },
+                         { "ProductID": 342, "Name": "Flat Washer 6" },
+                         { "ProductID": 343, "Name": "Flat Washer 2" },
+                         { "ProductID": 344, "Name": "Flat Washer 9" },
+                         { "ProductID": 345, "Name": "Flat Washer 4" },
+                         { "ProductID": 346, "Name": "Flat Washer 3" },
+                         { "ProductID": 347, "Name": "Flat Washer 8" },
+                         { "ProductID": 348, "Name": "Flat Washer 5" },
+                         { "ProductID": 349, "Name": "Flat Washer 7" },
+                         { "ProductID": 350, "Name": "Fork Crown" },
+                         { "ProductID": 351, "Name": "Front Derailleur Cage" },
+                         { "ProductID": 352, "Name": "Front Derailleur Linkage" },
+                         { "ProductID": 355, "Name": "Guide Pulley" },
+                         { "ProductID": 357, "Name": "ML Grip Tape" },
+                         { "ProductID": 358, "Name": "HL Grip Tape" },
+                         { "ProductID": 359, "Name": "Thin-Jam Hex Nut 9" },
+                         { "ProductID": 360, "Name": "Thin-Jam Hex Nut 10" },
+                         { "ProductID": 361, "Name": "Thin-Jam Hex Nut 1" },
+                         { "ProductID": 362, "Name": "Thin-Jam Hex Nut 2" },
+                         { "ProductID": 363, "Name": "Thin-Jam Hex Nut 15" },
+                         { "ProductID": 364, "Name": "Thin-Jam Hex Nut 16" },
+                         { "ProductID": 365, "Name": "Thin-Jam Hex Nut 5" },
+                         { "ProductID": 367, "Name": "Thin-Jam Hex Nut 3" },
+                         { "ProductID": 369, "Name": "Thin-Jam Hex Nut 13" },
+                         { "ProductID": 370, "Name": "Thin-Jam Hex Nut 14" },
+                         { "ProductID": 371, "Name": "Thin-Jam Hex Nut 7" },
+                         { "ProductID": 372, "Name": "Thin-Jam Hex Nut 8" },
+                         { "ProductID": 373, "Name": "Thin-Jam Hex Nut 12" },
+                         { "ProductID": 374, "Name": "Thin-Jam Hex Nut 11" },
+                         { "ProductID": 376, "Name": "Hex Nut 6" },
+                         { "ProductID": 377, "Name": "Hex Nut 16" },
+                          { "ProductID": 378, "Name": "Hex Nut 17" },
+                          { "ProductID": 379, "Name": "Hex Nut 7" },
+                          { "ProductID": 380, "Name": "Hex Nut 8" },
+                          { "ProductID": 381, "Name": "Hex Nut 9" },
+                          { "ProductID": 382, "Name": "Hex Nut 22" },
+                          { "ProductID": 383, "Name": "Hex Nut 23" },
+                          { "ProductID": 384, "Name": "Hex Nut 12" },
+                          { "ProductID": 385, "Name": "Hex Nut 13" },
+                          { "ProductID": 386, "Name": "Hex Nut 1" }, ]
+
+                $comboElem.igCombo({
+                    dataSource: data,
+                    valueKey: "ProductID",
+                    textKey: 'Name',
+                    width: 200,
+                    height: 100,
+                    allowCustomValues: true,
+                    initialSelectedItems: [
+                        { index: 0 },
+                        { index: 1 },
+                        { index: 2 }
+                    ]
+                });
+
+                $comboElem.igCombo('openDropDown');
+                equal($comboElem.igCombo("dropDown").hasClass("ui-igcombo-orientation-bottom"), true, "DropDown div has class 'ui-igcombo-orientation-bottom'");
+                equal($comboElem.igCombo("dropDown").hasClass("ui-igcombo-orientation-top"), false, "DropDown div doesnt have class 'ui-igcombo-orientation-top'");
+                $comboElem.igCombo('closeDropDown');
             });
         });
     </script>

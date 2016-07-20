@@ -3,10 +3,10 @@
 <head>
     <title>Toolbar Tests</title>
 	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-    
+
     <link type="text/css" rel="stylesheet" href="../../../src/css/structure/modules/infragistics.ui.toolbar.css" media="screen" />
 	<link type="text/css" rel="stylesheet"href="../../../src/css/themes/infragistics/infragistics.theme.css" />
-     
+
 	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
@@ -14,6 +14,9 @@
 
 
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.datasource.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.combo.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.toolbarbutton.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.toolbar-en.js"></script>
@@ -21,7 +24,7 @@
 
 
 	<script type="text/javascript">
-        
+
 	    var equalWithEpsilon = function(a,b,epsilon){
 	        return Math.abs(a - b) < epsilon;
 	    }
@@ -38,7 +41,7 @@
 	    };
 
 	    module("igToolbar initializing", igToolbarTestSetup);
-		
+
 	    test("Initializing ", function () {
 	        var initialized = $(this.igToolbarSelector).length > 0;
 	        equal(initialized, true, "Should be true");
@@ -102,6 +105,166 @@
 
 	        equal(actualAllowCollapsing, false, "Should be false");
 	    });
+
+		test("setOptions items, isExpanded, CRUD items", function() {
+
+			// Re-create the toolbar
+			$(this.igToolbarSelector).igToolbar('destroy');
+			$(this.igToolbarSelector).igToolbar({
+				isExpanded: false
+			});
+
+			var newItems = [
+				// Button
+				{
+					name: 'Button',
+					type: 'button',
+					scope: this,
+					title: 'Simple button',
+					callbackRenderer: function() { console.log('callbackRenderer called'); },
+					handler: function(ui) {
+						console.log('Activated');
+					},
+					props: {
+							allowToggling: {
+								value: true
+							},
+                            isImage: {
+                                value: false,
+                                action: function() { console.log('Action'); }
+                            },
+                            imageButtonTooltip: {
+                                value: "Insert e-mail signature",
+                                action: function() { console.log('Action'); }
+                            },
+                            imageButtonIcon: {
+                                value: "ui-icon-insert-email",
+                                action: function() { console.log('Action'); }
+                            }
+                        }
+				},
+				// Combo
+				{
+					type: 'combo',
+					name: 'fontSize',
+					scope: null,
+					dataSource: [
+						{'ID': 1, 'Value': 'One'},
+						{'ID': 2, 'Value': 'Two'},
+						{'ID': 3, 'Value': 'Three'}
+					],
+					valueKey: 'ID',
+					textKey: 'Value',
+					initialSelectedItems: [{'ID': 1}],
+					width: '123px',
+					height: '33px',
+					props: {
+						fontSizeChangeWidth: {
+							value: 'Change width',
+							action: function() { console.log('Width changed'); }
+						}
+					}
+				},
+				{
+					name: "Bold",
+                    type: "button",
+                    scope: null,
+                    props: {
+                        "allowToggling": {
+                            "value": true
+                        },
+                        "isBold": {
+                            "value": false,
+                            "action": "_isSelectedAction"
+                        },
+                        "boldButtonTooltip": {
+                            "value": "Bold",
+                            "action": "_tooltipAction"
+                        },
+                        "boldButtonIcon": {
+                            "value": "ui-igbutton-bold",
+                            "action": "_buttonIconAction"
+                        }
+                    }
+				},
+				{
+					name: 'emptyItem',
+					scope: null,
+				}
+			];
+
+			$(this.igToolbarSelector).igToolbar('option', 'items', newItems);
+			equal($(this.igToolbarSelector).igToolbar('option', 'items').length, newItems.length, 'Setting items matches');
+
+			$(this.igToolbarSelector).igToolbar('option', 'isExpanded', true);
+			equal($(this.igToolbarSelector).igToolbar('option', 'isExpanded'), true, 'Should be expanded');
+
+			$(this.igToolbarSelector).igToolbar('option', 'isExpanded', false);
+			equal($(this.igToolbarSelector).igToolbar('option', 'isExpanded'), false, 'Should not be expanded');
+
+			var newButton = {
+					name: 'NewButton',
+					type: 'button',
+					scope: this,
+					handler: function(ui) {
+						console.log('Activated');
+					},
+					props: {
+                            isImage: {
+                                value: false,
+                                action: '_isSelectedAction'
+                            },
+                            imageButtonTooltip: {
+                                value: "Insert e-mail signature",
+                                action: '_tooltipAction'
+                            },
+                            imageButtonIcon: {
+                                value: "ui-icon-insert-email",
+                                action: '_buttonIconAction'
+                            }
+                        }
+				};
+
+			$(this.igToolbarSelector).igToolbar('addItem', newButton);
+			equal($(this.igToolbarSelector).igToolbar('option', 'items').length, newItems.length, 'Should have 3 items');
+
+			ok($(this.igToolbarSelector).igToolbar('getItem', 0) != undefined, 'getItem returns object');
+
+			$(this.igToolbarSelector).igToolbar('activateItem', 0, true);
+			equal($(this.igToolbarSelector).igToolbar('getItem', 0).igToolbarButton('option', 'isSelected'), true, 'Toolbar item activated');
+
+			// Hiding buttons
+			$(this.igToolbarSelector).data().igToolbar._hideButtonFromToolbar();
+			equal($(this.igToolbarSelector).data().igToolbar._hiddenButtons.length, 1, '1 button should be hidden');
+			$(this.igToolbarSelector).data().igToolbar._hideButtonFromToolbar();
+			equal($(this.igToolbarSelector).data().igToolbar._hiddenButtons.length, 2, '2 buttons should be hidden');
+			$(this.igToolbarSelector).data().igToolbar._showHiddenButtonFromToolbar();
+			$(this.igToolbarSelector).data().igToolbar._showHiddenButtonFromToolbar();
+			equal($(this.igToolbarSelector).data().igToolbar._hiddenButtons.length, 0, 'No button should be hidden');
+
+
+			// Custom collapse/expand button css classes
+			var $iconEl = $($(this.igToolbarSelector + "_collapseButton").find('span')[0]);
+
+			$(this.igToolbarSelector).igToolbar('option', 'collapseButtonIcon', 'testColapseIcon');
+			equal($(this.igToolbarSelector).igToolbar('option', 'collapseButtonIcon'), 'testColapseIcon', 'collapseButtonIcon is set');
+			$(this.igToolbarSelector).igToolbar('option', 'isExpanded', true);
+			equal($iconEl.hasClass('testColapseIcon'), true, 'span icon element has the new class set (collapsing)');
+
+			$(this.igToolbarSelector).igToolbar('option', 'expandButtonIcon', 'testExpandIcon');
+			equal($(this.igToolbarSelector).igToolbar('option', 'expandButtonIcon'), 'testExpandIcon', 'expandButtonIcon is set');
+			$(this.igToolbarSelector).igToolbar('option', 'isExpanded', false);
+			equal($iconEl.hasClass('testExpandIcon'), true, 'span icon element has the new class set (expanding)');
+
+
+			// Test button descriptors
+			newItems[0].updateProperty('isImage', true);
+			equal(newItems[0].getProperty('isImage').value, true, 'updating properties should work');
+			equal(newItems[0].getUpdatedProperties()[0].value, true, 'getUpdatedProperties() should work');
+
+			$(this.igToolbarSelector).igToolbar('removeItem', 0);
+			equal($(this.igToolbarSelector).igToolbar('option', 'items').length, newItems.length, 'Should have 2 items');
+		});
 
 	    test("destroy method", function () {
 	        $(this.igToolbarSelector).igToolbar("destroy");

@@ -72,7 +72,8 @@
 			    cannotSetRuntime: "Этот параметр не может быть задан во время выполнения программы",
 			    invalidDate: "Неверная дата",
 			    maskMessage: 'Следует заполнить все обязательные поля',
-			    dateMessage: 'Следует ввести правильную дату',
+			    maskRevertMessage: 'All required positions should be filled, that is why the value was reverted to the last valid one.',
+				dateMessage: 'Следует ввести правильную дату',
 			    centuryThresholdValidValues: "Свойство centuryThreshold должно находиться в диапазоне от 0 до 99. Возвращено значение по умолчанию.",
 			    noListItemsNoButton: "Счетчик или кнопка раскрытия списка не отображаются вследствие отсутствия элементов списка."
 		    }

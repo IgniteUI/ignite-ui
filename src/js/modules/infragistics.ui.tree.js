@@ -151,7 +151,7 @@ if (typeof jQuery !== "function") {
 			animationDuration: 200,
 			/* type="string" Gets the node data-path attribute separator character. */
 			pathSeparator: "_",
-			/* type="object" Gets/Sets the igTree data source. Accepts any valid data source accepted by $.ig.DataSource, or an instance of an $.ig.DataSource itself. 
+			/* type="object" Gets/Sets the igTree data source. Accepts any valid data source accepted by $.ig.DataSource, or an instance of an $.ig.DataSource itself.
 				Once the data source is initialized, this option becomes an instance of the $.ig.HierarchicalDataSource.
 			*/
 			dataSource: null,
@@ -233,7 +233,7 @@ if (typeof jQuery !== "function") {
 			dragAndDropSettings: {
 				/* type="boolean" Gets whether the widget will accept drag and drop from other controls. */
 				allowDrop: false,
-				/* type="default|copy|move" Gets the drag and drop mode. 
+				/* type="default|copy|move" Gets the drag and drop mode.
 					default type="string" Performs "copy" when holding the Ctrl key, otherwise "move" is performed.
 					copy type="string" Makes a copy of the dragged node at the drop location.
 					move type="string" Moves the dragged node at the drop location.
@@ -259,7 +259,7 @@ if (typeof jQuery !== "function") {
 				expandOnDragOver: true,
 				/* type="number" Gets the delay after hovering a parent node before expanding that node during drag with expandOnDragOver: true. */
 				expandDelay: 1000,
-				/* type="function|default" Gets the type of helper to be rendered for the drag operation. 
+				/* type="function|default" Gets the type of helper to be rendered for the drag operation.
 					function A function that will return a DOMElement to use while dragging.
 					default type="string" would render the default igTree helper.
 				*/
@@ -699,6 +699,8 @@ if (typeof jQuery !== "function") {
 				opt.bindings.childDataProperty = "Nodes";
 				schema.target = { name: "Target", type: "string" };
 				opt.bindings.targetKey = "Target";
+				schema.expanded = { name: "Expanded", type: "boolean" };
+				opt.bindings.expandedKey = "Expanded";
 				bindings = opt.bindings;
 			} else if (opt.dataSourceType === "xml") {
 				if (bindings.searchFieldXPath) {
@@ -1205,7 +1207,7 @@ if (typeof jQuery !== "function") {
 			this.element.undelegate("a", "mousedown");
 		},
 		_constructFromData: function () {
-			var ul, data = this.options.dataSource._rootds.data(), self = this;
+			var ul, data = this.options.dataSource.root().data(), self = this;
 			this._triggerDataBound(data);
 			this._triggerRendering(data);
 
@@ -1293,12 +1295,10 @@ if (typeof jQuery !== "function") {
 			if (this.options.hotTracking) {
 				this.element.delegate("a", {
 					"mouseover": function (event) {
-						target = $(event.target).closest("a");
-						target.addClass(css.nodeHovered);
+						$(event.target).addClass(css.nodeHovered);
 					},
 					"mouseout": function (event) {
-						target = $(event.target).closest("a");
-						target.removeClass(css.nodeHovered);
+						$(event.target).removeClass(css.nodeHovered);
 					}
 				});
 			}
@@ -1449,8 +1449,6 @@ if (typeof jQuery !== "function") {
 			if (binding.hasOwnProperty("navigateUrlKey") && data[ binding.navigateUrlKey ]) {
 				if (typeof data[ binding.navigateUrlKey ] === "function") {
 					href = data[ binding.navigateUrlKey ]();
-				} else if (data[ binding.navigateUrlKey ].length <= 0) {
-					href = "#";
 				} else {
 					href = data[ binding.navigateUrlKey ];
 				}
@@ -1481,8 +1479,6 @@ if (typeof jQuery !== "function") {
 			if (binding.hasOwnProperty("navigateUrlKey") && data[ binding.navigateUrlKey ]) {
 				if (typeof data[ binding.navigateUrlKey ] === "function") {
 					href = data[ binding.navigateUrlKey ]();
-				} else if (data[ binding.navigateUrlKey ].length <= 0) {
-					href = "#";
 				} else {
 					href = data[ binding.navigateUrlKey ];
 				}
@@ -2071,26 +2067,26 @@ if (typeof jQuery !== "function") {
 				i;
 			if (!binding.hasOwnProperty("primaryKey")) {
 				if (!originalData) {
-				    if (this.options.dataSource._rootds._data.length <= this.element.
+				    if (this.options.dataSource.root()._data.length <= this.element.
                         find(".ui-igtree-noderoot").length ||
                         this.element.find(".ui-igtree-noderoot").length <= 0) {
 						if (dataIndex === 0) {
 							if ($.type(data) === "array") {
-								this.options.dataSource._rootds._data = data.concat(this.options.dataSource._rootds._data);
+								this.options.dataSource.root()._data = data.concat(this.options.dataSource.root()._data);
 							} else {
-							    this.options.dataSource._rootds._data = [ data ]
-                                    .concat(this.options.dataSource._rootds._data);
+							    this.options.dataSource.root()._data = [ data ]
+                                    .concat(this.options.dataSource.root()._data);
 							}
 						} else if (!dataIndex) {
 							if ($.type(data) === "array") {
 								for (i = 0; i < data.length; i++) {
-									this.options.dataSource._rootds._data.push(data[ i ]);
+									this.options.dataSource.root()._data.push(data[ i ]);
 								}
 							} else {
-								this.options.dataSource._rootds._data.push(data);
+								this.options.dataSource.root()._data.push(data);
 							}
 						} else {
-							this.options.dataSource._rootds._data.splice(dataIndex, 0, data);
+							this.options.dataSource.root()._data.splice(dataIndex, 0, data);
 						}
 					}
 				} else {
@@ -2140,15 +2136,15 @@ if (typeof jQuery !== "function") {
 				}
 			} else {
 				if (!originalData) {
-				    if (this.options.dataSource._rootds._data.length <=
+				    if (this.options.dataSource.root()._data.length <=
                         this.element.find(".ui-igtree-noderoot").length ||
                         this.element.find(".ui-igtree-noderoot").length <= 0) {
 						if ($.type(data) === "array") {
 							for (i = 0; i < data.length; i++) {
-								this.options.dataSource._rootds._data.push(data[ i ]);
+								this.options.dataSource.root()._data.push(data[ i ]);
 							}
 						} else {
-							this.options.dataSource._rootds._data.push(data);
+							this.options.dataSource.root()._data.push(data);
 						}
 					}
 				} else {
@@ -2174,7 +2170,7 @@ if (typeof jQuery !== "function") {
 		},
 		_removeData: function (path) {
 		    var splitPath = path.split(this.options.pathSeparator),
-                data = this.options.dataSource._rootds.data(), i, j,
+                data = this.options.dataSource.root().data(), i, j,
                 binding = this.options.bindings, key;
 
 			if (splitPath.length === 1) {
@@ -2696,7 +2692,7 @@ if (typeof jQuery !== "function") {
 			return collection;
 		},
 		select: function (node, event) {
-			/* Selects a node. 
+			/* Selects a node.
 				paramType="object" optional="false" Specifies the node element to be selected.
 				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/
@@ -3303,7 +3299,7 @@ if (typeof jQuery !== "function") {
 			}
 
 			var splitPath = path.split(this.options.pathSeparator), data = this.options.
-                dataSource._rootds.data(), i, j, binding = this.options.bindings, temp;
+                dataSource.root().data(), i, j, binding = this.options.bindings, temp;
 
 			for (i = 0; i < splitPath.length - 1; i++) {
 				if (!binding.hasOwnProperty("primaryKey")) {
