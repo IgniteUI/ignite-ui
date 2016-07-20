@@ -87,7 +87,7 @@ if (typeof jQuery !== "function") {
             this._trigger("colorSelected", e, { value: ui.color, item: this.element });
             this.collapse();
         },
-        
+
         _onDefaultButtonClick: function (e) {
             e.stopPropagation();
             this._trigger("colorSelected", e,
@@ -123,7 +123,7 @@ if (typeof jQuery !== "function") {
             /*Sets the color of the split button
                 paramType="<string>" optional="<false>" The HEX value of the color to be setted.
             */
-            this._options.itemsList.igColorPicker('selectColor', color);
+            this._options.itemsList.igColorPicker("selectColor", color);
             this._setButtonColorIndicator(color);
             this.options.defaultColor = color;
             this.collapse();
