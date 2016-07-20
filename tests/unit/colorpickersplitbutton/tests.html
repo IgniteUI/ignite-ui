@@ -75,7 +75,7 @@
 
 	        var getDefaultColorOptionVal = this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor");
 	        var getColorFromCustColorsColorPicker = firstElemCustomColorsColorPicker.css("background-color");
-
+			
 	        deepEqual(getDefaultColorOptionVal, getColorFromCustColorsColorPicker, "default color was not changed");
 	    });
 
@@ -115,13 +115,13 @@
 	    test("_setOptinWithEqualKeyValues", function () {
 	    	var color = "#afafaf";
 
-	    	notEqual(color, this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), "defaultColor option hasn't different value from given color value");
+	    	notEqual(this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), color, "defaultColor option hasn't different value from given color value");
 
 	    	this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor", color);
-	    	equal(color, this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), "default color value was not changed");
+	    	equal(this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), color, "default color value was not changed");
 	    	
 	    	this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor", color);
-	    	equal(color, this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), "default color value was change with given color value");
+	    	equal(this.actualColorPickerSplitButton.igColorPickerSplitButton("option", "defaultColor"), color, "default color value was change with given color value");
 	    
 	    });
 	    
