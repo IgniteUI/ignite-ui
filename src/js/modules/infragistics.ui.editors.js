@@ -3255,6 +3255,10 @@ if (typeof jQuery !== "function") {
 				} else if (this.options.minValue && value < this.options.minValue) {
 					value = this.options.minValue;
 
+					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+					this._valueInput.val(value);
+					this._enterEditMode();
+
 						// Raise Warning level 2
 						this._sendNotification("warning",
 							$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
