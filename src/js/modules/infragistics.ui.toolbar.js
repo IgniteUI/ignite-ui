@@ -352,7 +352,6 @@ if (typeof jQuery !== "function") {
                     if (!options.isExpanded) {
                         self.buttonsList.hide();
                     } else {
-
                         // D.A. 29th August 2014, Bug #178021 When collapse and then expand
                         // the TextToolbar and then resize the window the toolbar is not correct
                         // After expand we should reset the width to "auto",
@@ -417,33 +416,41 @@ if (typeof jQuery !== "function") {
             var i, options = this.options;
 
             switch (name) {
-                case "allowCollapsing":
-                    this.options.allowCollapsing = value;
-                    break;
-                case "items":
-                    for (i = 0; i < value.length; i++) {
-                        if (!value[ i ].type) {
-                            value[ i ].type = "custom";
-                        }
-
-                        value[ i ] = this._getToolbarItemDescriptor(value[ i ]);
+            case "allowCollapsing":
+                this.options.allowCollapsing = value;
+                break;
+            case "items":
+                for (i = 0; i < value.length; i++) {
+                    if (!value[ i ].type) {
+                        value[ i ].type = "custom";
                     }
 
-                    this._updateItems(value);
-                    this.options.items = value;
-                    this._createItems();
-                    break;
-                case "width":
-                    this.element.width(value);
-                    break;
-                case "height":
-                    this.element.height(value);
-                    break;
-                case "isExpanded":
-                    if (options.allowCollapsing) {
-                        this._expandOrCollapse();
-                    }
-                    break;
+                    value[ i ] = this._getToolbarItemDescriptor(value[ i ]);
+                }
+
+                this._updateItems(value);
+                this.options.items = value;
+                this._createItems();
+                break;
+            case "width":
+                this.element.width(value);
+                break;
+            case "height":
+                this.element.height(value);
+                break;
+            case "isExpanded":
+                if (options.allowCollapsing) {
+                    this._expandOrCollapse();
+                }
+                break;
+            case "collapseButtonIcon":
+                this.options.collapseButtonIcon = value;
+                break;
+            case "expandButtonIcon":
+                this.options.expandButtonIcon = value;
+                break;
+            default:
+                break;
             }
         },
         _expandOrCollapse: function () {
@@ -618,14 +625,16 @@ if (typeof jQuery !== "function") {
                 }
             }
         },
-        _isWidgetSupported: function (name) {
-            var i;
-            for (i = 0; i < this.supportedWidgets.length; i++) {
-                if (this.supportedWidgets[ i ].name === name) {
-                    return true;
-                }
-            }
-        },
+
+        // R.K. 19/07/2016 Dead code
+        // _isWidgetSupported: function (name) {
+        //     var i;
+        //     for (i = 0; i < this.supportedWidgets.length; i++) {
+        //         if (this.supportedWidgets[i].name === name) {
+        //             return true;
+        //         }
+        //     }
+        // },
         _attachEvents: function () {
             var toolbarItemsEvents =
                 "igtoolbarbuttonclick igsplitbuttonclick igcolorpickersplitbuttoncolorselected";
@@ -858,13 +867,15 @@ if (typeof jQuery !== "function") {
                 .find(".ui-igbutton.ui-state-active")
                     .igToolbarButton("deactivate");
         },
-        _setCollapseExpandButtonIcon: function () {
 
-            if (this.options.collapseButtonIcon) {
-                this.collapseBtn
-                    .switchClass("ui-icon-triangle-1-w", this.options.collapseButtonIcon);
-            }
-        },
+        // R.K. 19/07/2016 Dead code
+        // _setCollapseExpandButtonIcon: function () {
+
+        //     if (this.options.collapseButtonIcon) {
+        //         this.collapseBtn
+        //             .switchClass('ui-icon-triangle-1-w', this.options.collapseButtonIcon);
+        //     }
+        // },
         destroy: function () {
             /*
                 Destroy the widget.
