@@ -38,7 +38,7 @@ if (typeof jQuery !== "function") {
                 }
             }
         },
-        _updatedProperties: [],
+        _updatedProperties: [  ],
         init: function (item) {
             this.settings = $.extend(true, {}, this.settings, item);
             this.name = item.name;
@@ -48,11 +48,11 @@ if (typeof jQuery !== "function") {
             }
         },
         updateProperty: function (name, value) {
-            this.settings.props[name].value = value;
-            this._updatedProperties.push(this.settings.props[name]);
+            this.settings.props[ name ].value = value;
+            this._updatedProperties.push(this.settings.props[ name ]);
         },
         getProperty: function (name) {
-            return this.settings.props[name];
+            return this.settings.props[ name ];
         },
         getUpdatedProperties: function () {
             return this._updatedProperties;
@@ -89,7 +89,7 @@ if (typeof jQuery !== "function") {
     $.ig.igToolbarSplitButtonDescriptor = $.ig.igToolbarItemBaseDescriptor.extend({
         settings: {
             props: {
-                items: []
+                items: [  ]
             }
         },
         init: function (item) {
@@ -101,10 +101,10 @@ if (typeof jQuery !== "function") {
         settings: {
             props: {
                 valueKey: {
-                    value: 'text'
+                    value: "text"
                 },
                 textKey: {
-                    value: 'value'
+                    value: "value"
                 },
                 dropDownOnFocus: {
                     value: true
@@ -148,11 +148,11 @@ if (typeof jQuery !== "function") {
             /* type="string" The css class that will be applied to expandButtonIcon.*/
             expandButtonIcon: "ui-igbutton-expanded",
             /* type="string" Formal name of the widget. */
-            name: '',
+            name: "",
             /* type="string" Display Name of the widget. */
-            displayName: '',
+            displayName: "",
             /* type="array" get or set Toolbar's items. */
-            items: [],
+            items: [  ],
             /* type="boolean" get or set widget's isExpanded property. */
             isExpanded: true
         },
@@ -197,7 +197,7 @@ if (typeof jQuery !== "function") {
             igToolbarButtonsHolder: "ig-toolbar-buttons-holder"
         },
         _id: function (id) {
-            return this.element[0].id + id;
+            return this.element[ 0 ].id + id;
         },
         widget: function () {
             /*
@@ -211,12 +211,12 @@ if (typeof jQuery !== "function") {
 
             for (i = 0; i < toolbar.items.length; i++) {
 
-                if (!toolbar.items[i].type) {
-                    toolbar.items[i].type = "custom";
+                if (!toolbar.items[ i ].type) {
+                    toolbar.items[ i ].type = "custom";
                 }
 
-                itemDescriptor = toolbar.items[i] =
-                    this._getToolbarItemDescriptor(toolbar.items[i]);
+                itemDescriptor = toolbar.items[ i ] =
+                    this._getToolbarItemDescriptor(toolbar.items[ i ]);
             }
 
             this._render();
@@ -226,7 +226,7 @@ if (typeof jQuery !== "function") {
             this._onResize();
         },
         _getToolbarItemDescriptor: function (item) {
-            return new this._toolbarItemsDescriptors[item.type](item);
+            return new this._toolbarItemsDescriptors[ item.type ](item);
         },
         _toolbarItemsDescriptors: {
             button: $.ig.igToolbarButtonDescriptor,
@@ -247,7 +247,8 @@ if (typeof jQuery !== "function") {
                 this.collapseBtn
                     .igToolbarButton("toggle")
                     .children(":first")
-                        .switchClass(this.options.collapseButtonIcon, this.options.expandButtonIcon);
+                        .switchClass(this.options.collapseButtonIcon,
+                            this.options.expandButtonIcon);
             }
 
             this._width = this.collapseBtn.outerWidth(true) + this.buttonsList.width();
@@ -261,20 +262,24 @@ if (typeof jQuery !== "function") {
                 .width(this.options.width)
                 .height(this.options.height);
 
-            this.collapseBtn = $('<div tabIndex="0" id="' + this._id('_collapseButton') + '"></div>')
+            this.collapseBtn = $('<div tabIndex="0" id="' +
+                this._id("_collapseButton") + '"></div>')
                 .appendTo(this.element)
                 .igToolbarButton({
                     "onlyIcons": true,
                     "labelText": "&nbsp;",
-                    "title": $.ig.Toolbar.locale.collapseButtonTitle + ' ' + this.options.displayName,
+                    "title": $.ig.Toolbar.locale.collapseButtonTitle + " " +
+                        this.options.displayName,
                     "icons": {
                         "primary": o.collapseButtonIcon
                     }
                 });
 
-            this.toolbarBody = this.element.find('#' + this._id('_toolbar'));
+            this.toolbarBody = this.element.find("#" + this._id("_toolbar"));
+
             // D.U. 30.04.2014 changing type from span to div and adding a class instead of inline css
-            this.buttonsList = $('<div id="' + this._id('_toolbar_buttons') + '" class="' + this.css.igToolbarButtonsHolder + '"></div>')
+            this.buttonsList = $('<div id="' + this._id("_toolbar_buttons") +
+                '" class="' + this.css.igToolbarButtonsHolder + '"></div>')
                 .appendTo(this.element);
         },
         _onCollapse: function (e) {
@@ -293,7 +298,7 @@ if (typeof jQuery !== "function") {
                 cancelableEvent = "collapsing";
 
                 // S.T. 8th September 2014, Bug #177511: Prevent collapsing if the event is cancelled.
-                noCancel = this._trigger(this.events[cancelableEvent], e, {
+                noCancel = this._trigger(this.events[ cancelableEvent ], e, {
                     owner: this,
                     toolbarElement: this.element,
                     toolbar: {}
@@ -305,16 +310,18 @@ if (typeof jQuery !== "function") {
                     this._oldWidth = this._width;
 
                     this.collapseBtn
-                        .attr('title', $.ig.Toolbar.locale.expandButtonTitle + ' ' + this.options.displayName)
+                        .attr("title", $.ig.Toolbar.locale.expandButtonTitle + " " +
+                            this.options.displayName)
                         .children(":first")
-                            .switchClass(this.options.collapseButtonIcon, this.options.expandButtonIcon);
+                            .switchClass(this.options.collapseButtonIcon,
+                                this.options.expandButtonIcon);
                 }
             } else {
                 event = "expanded";
                 cancelableEvent = "expanding";
 
                 // S.T. 8th September 2014, Bug #177511: Prevent expanding if the event is cancelled.
-                noCancel = this._trigger(this.events[cancelableEvent], e, {
+                noCancel = this._trigger(this.events[ cancelableEvent ], e, {
                     owner: this,
                     toolbarElement: this.element,
                     toolbar: {}
@@ -327,9 +334,11 @@ if (typeof jQuery !== "function") {
                     width = this._getAdjustedWidth();
 
                     this.collapseBtn
-                        .attr('title', $.ig.Toolbar.locale.collapseButtonTitle + ' ' + this.options.displayName)
+                        .attr("title", $.ig.Toolbar.locale.collapseButtonTitle + " " +
+                            this.options.displayName)
                         .children(":first")
-                            .switchClass(this.options.expandButtonIcon, this.options.collapseButtonIcon);
+                            .switchClass(this.options.expandButtonIcon,
+                                this.options.collapseButtonIcon);
                 }
             }
 
@@ -349,7 +358,7 @@ if (typeof jQuery !== "function") {
                         self.element.css("width", "");
                     }
 
-                    self._trigger(self.events[event], e, {
+                    self._trigger(self.events[ event ], e, {
                         owner: self,
                         toolbarElement: self.element,
                         toolbar: {}
@@ -357,6 +366,7 @@ if (typeof jQuery !== "function") {
                 });
             }
         },
+
         // D.U. 13.08.2014 Adjusting to the case while you expand after screen resizing
         _getAdjustedWidth: function () {
             var width;
@@ -374,9 +384,9 @@ if (typeof jQuery !== "function") {
             return width;
         },
         /* S.T. 18th of Dec, 2015 Bug #210622: Fix set method for items. Now you can set items such as
-        $("#testEditor").igHtmlEditor("option", "toolbarSettings", [{
+        $("#testEditor").igHtmlEditor("option", "toolbarSettings", [ {
             name: "textToolbar",
-            items: [{
+            items: [ {
                     "name": "Bold",
                     "type": "button",
                     "scope": null,
@@ -397,8 +407,8 @@ if (typeof jQuery !== "function") {
                             "action": "_buttonIconAction"
                         }
                     }
-                }]
-        }]);
+                } ]
+        } ]);
         */
         _setOption: function (name, value) {
             $.Widget.prototype._setOption.apply(this, arguments);
@@ -451,9 +461,11 @@ if (typeof jQuery !== "function") {
                 self.buttonsList.show();
                 this._oldWidth = this._width;
                 self.collapseBtn
-                    .attr('title', $.ig.Toolbar.locale.collapseButtonTitle + ' ' + self.options.displayName)
+                    .attr("title", $.ig.Toolbar.locale.collapseButtonTitle + " " +
+                        self.options.displayName)
                     .children(":first")
-                        .switchClass(self.options.expandButtonIcon, self.options.collapseButtonIcon);
+                        .switchClass(self.options.expandButtonIcon,
+                            self.options.collapseButtonIcon);
 
             } else {
 
@@ -465,9 +477,11 @@ if (typeof jQuery !== "function") {
                 this._oldWidth = this._width;
                 self.buttonsList.hide();
                 self.collapseBtn
-                    .attr('title', $.ig.Toolbar.locale.expandButtonTitle + ' ' + self.options.displayName)
+                    .attr("title", $.ig.Toolbar.locale.expandButtonTitle + " " +
+                        self.options.displayName)
                     .children(":first")
-                        .switchClass(self.options.collapseButtonIcon, self.options.expandButtonIcon);
+                        .switchClass(self.options.collapseButtonIcon,
+                            self.options.expandButtonIcon);
             }
 
             this._onResize();
@@ -490,24 +504,24 @@ if (typeof jQuery !== "function") {
                     splitButtonColor: "igColorPickerSplitButton"
                 },
                 tbItemsPropsTraversing = function (key, property) {
-                    var scope = o.items[i].scope || self;
-                    if (property.action !== undefined && $.isFunction(scope[property.action])) {
-                        scope[property.action](newItem, property, itemProps);
+                    var scope = o.items[ i ].scope || self;
+                    if (property.action !== undefined && $.isFunction(scope[ property.action ])) {
+                        scope[ property.action ](newItem, property, itemProps);
                         return;
                     }
-                    itemProps[key] = property.value;
+                    itemProps[ key ] = property.value;
                 };
 
             this.buttonsList.empty();
             for (i = 0; i < o.items.length; i++) {
                 itemProps = {};
-                newItem = (o.items[i].callbackRenderer() || $('<div tabIndex="0"></div>'))
-                    .attr("id", this._id("_item_" + o.items[i].name)).appendTo(this.buttonsList);
+                newItem = (o.items[ i ].callbackRenderer() || $('<div tabIndex="0"></div>'))
+                    .attr("id", this._id("_item_" + o.items[ i ].name)).appendTo(this.buttonsList);
 
-                $.each(o.items[i].getProperties(), tbItemsPropsTraversing);
+                $.each(o.items[ i ].getProperties(), tbItemsPropsTraversing);
 
-                if (tbItemsHash.hasOwnProperty(o.items[i].type)) {
-                    newItem[tbItemsHash[o.items[i].type]](itemProps);
+                if (tbItemsHash.hasOwnProperty(o.items[ i ].type)) {
+                    newItem[ tbItemsHash[ o.items[ i ].type ] ](itemProps);
                 }
             }
         },
@@ -516,22 +530,23 @@ if (typeof jQuery !== "function") {
                 updProps, scope, el, key, i, j;
 
             for (i = 0; i < items.length; i++) {
-                updProps = items[i];
-                el = this.getItem(items[i].name);
-                scope = options.items[i].scope || this;
+                updProps = items[ i ];
+                el = this.getItem(items[ i ].name);
+                scope = options.items[ i ].scope || this;
 
                 for (j = 0; j < updProps.length; j++) {
 
-                    if (updProps[j].action !== undefined && $.isFunction(scope[updProps[j].action])) {
-                        scope[updProps[j].action](el, updProps[j]);
+                    if (updProps[ j ].action !== undefined &&
+                        $.isFunction(scope[ updProps[ j ].action ])) {
+                        scope[ updProps[ j ].action ](el, updProps[ j ]);
                     } else {
 
-                        if (items[i] instanceof $.ig.igToolbarButtonDescriptor) {
-                            el.igToolbarButton("option", key, updProps[j]);
+                        if (items[ i ] instanceof $.ig.igToolbarButtonDescriptor) {
+                            el.igToolbarButton("option", key, updProps[ j ]);
                         }
 
-                        if (options.items[i] instanceof $.ig.igToolbarComboDescriptor) {
-                            el.igCombo("option", key, updProps[j]);
+                        if (options.items[ i ] instanceof $.ig.igToolbarComboDescriptor) {
+                            el.igCombo("option", key, updProps[ j ]);
                         }
                     }
                 }
@@ -574,10 +589,11 @@ if (typeof jQuery !== "function") {
         },
         _comboSelectedItem: function (el, props, itemOptionObj) {
             if (itemOptionObj !== undefined) {
+
                 // S.T. March 4th, 2015 Bug # #189831: Incorrect setting of value.
-                itemOptionObj.initialSelectedItems = [{
+                itemOptionObj.initialSelectedItems = [ {
                     value: props.value
-                }];
+                } ];
             } else {
                 el.igCombo("value", props.value);
             }
@@ -602,8 +618,8 @@ if (typeof jQuery !== "function") {
             if (el !== undefined) {
                 data = el.data();
                 for (i in data) {
-                    if (data.hasOwnProperty(i) && data[i].widgetName) {
-                        return data[i].widgetName;
+                    if (data.hasOwnProperty(i) && data[ i ].widgetName) {
+                        return data[ i ].widgetName;
                     }
                 }
             }
@@ -618,24 +634,28 @@ if (typeof jQuery !== "function") {
         //     }
         // },
         _attachEvents: function () {
-            var toolbarItemsEvents = "igtoolbarbuttonclick igsplitbuttonclick igcolorpickersplitbuttoncolorselected";
+            var toolbarItemsEvents =
+                "igtoolbarbuttonclick igsplitbuttonclick igcolorpickersplitbuttoncolorselected";
 
             this.element
-                .delegate(".ui-widget", toolbarItemsEvents, $.proxy(this._onToolbarItemInteraction, this));
+                .delegate(".ui-widget", toolbarItemsEvents,
+                    $.proxy(this._onToolbarItemInteraction, this));
 
             // Here we bind to igCombo items on click.
             // D.A. 3 Sep. 2013 Bug#150671 Custom combo handler is not called when clicked on the list item.
             // Bound to igcomboselectionchanged event instead of click, because
             // click was not fired when cliking on the list item's text node.
             this.element
-                .delegate(":ui-igCombo", "igcomboselectionchanged", $.proxy(this._onComboListItemClick, this))
-                .delegate(":ui-igCombo", "igcombodropdownclosed", $.proxy(this._onComboDropDownClose, this));
+                .delegate(":ui-igCombo", "igcomboselectionchanged",
+                    $.proxy(this._onComboListItemClick, this))
+                .delegate(":ui-igCombo", "igcombodropdownclosed",
+                    $.proxy(this._onComboDropDownClose, this));
 
             this.collapseBtn
                 .bind("igtoolbarbuttonclick", $.proxy(this._onCollapse, this));
 
             // D.U. 30.04.2014 Implementing resizing functionality on window resize
-            $(window).on('resize', $.proxy(this._onResize, this));
+            $(window).on("resize", $.proxy(this._onResize, this));
         },
         _onToolbarItemInteraction: function (e, ui) {
             var selectedItemValue,
@@ -651,7 +671,7 @@ if (typeof jQuery !== "function") {
 
             selectedItemIndex = this.buttonsList.children().index(targetWidget);
             switch (e.type) {
-                case 'igtoolbarbuttonclick':
+                case "igtoolbarbuttonclick":
                     triggeredEvent = this.events.toolbarButtonClick;
                     break;
                 default:
@@ -661,24 +681,26 @@ if (typeof jQuery !== "function") {
             }
 
             this._trigger(triggeredEvent, e, {
-                name: ui.name || o.items[selectedItemIndex].name,
+                name: ui.name || o.items[ selectedItemIndex ].name,
                 value: selectedItemValue,
-                handler: o.items[selectedItemIndex].handler(),
-                scope: o.items[selectedItemIndex].getProperty("scope"),
-                itemProperties: o.items[selectedItemIndex].getProperties(),
+                handler: o.items[ selectedItemIndex ].handler(),
+                scope: o.items[ selectedItemIndex ].getProperty("scope"),
+                itemProperties: o.items[ selectedItemIndex ].getProperties(),
                 toolbarItem: targetWidget,
                 toolbarName: o.name
             });
         },
+
         // D.A. March 23, 2015 Bug #189833 Delay command execution when navigating with keyboard until the drop down is closed
         _onComboDropDownClose: function (e, data) {
             // Execute delayed selection changed
             if (this._delayComboSelectionChanged) {
                 this._delayComboSelectionChanged = false;
-                data.items = $(e.currentTarget).igCombo('selectedItems');
+                data.items = $(e.currentTarget).igCombo("selectedItems");
                 this._onComboListItemClick(e, data);
             }
         },
+
         // D.A. 3 Sep. 2013 Bug#150671 Custom combo handler is not called when clicked on the list item.
         // Bound to igcomboselectionchanged event instead of click, because
         // click was not fired when cliking on the list item's text node.
@@ -695,11 +717,11 @@ if (typeof jQuery !== "function") {
             }
 
             toolbarItemIndex = this.buttonsList.children().index($(e.currentTarget));
-            toolbarItem = this.options.items[toolbarItemIndex];
+            toolbarItem = this.options.items[ toolbarItemIndex ];
 
             this._trigger(this.events.toolbarComboSelected, e, {
                 name: toolbarItem.name,
-                value: data.items[0].data ? data.items[0].data.text : data.items[0].value,
+                value: data.items[ 0 ].data ? data.items[ 0 ].data.text : data.items[ 0 ].value,
                 handler: toolbarItem.handler(),
                 scope: toolbarItem.getProperty("scope"),
                 itemProperties: toolbarItem.getProperties(),
@@ -707,6 +729,7 @@ if (typeof jQuery !== "function") {
                 toolbarName: this.options.name
             });
         },
+
         // D.U. 30.04.2014 Implement funtionality for resizing on window resize
         _onResize: function () {
             var isVisible = this.element.is(":visible"),
@@ -721,12 +744,14 @@ if (typeof jQuery !== "function") {
 
             // Showing and adjusting because of padding
             while (this._hiddenButtons && this._hiddenButtons.length > 0 &&
-                parentWidth > this.element.outerWidth() + this._hiddenButtons[this._hiddenButtons.length - 1].width()) {
+                parentWidth > this.element.outerWidth() +
+                    this._hiddenButtons[ this._hiddenButtons.length - 1 ].width()) {
                 this._showHiddenButtonFromToolbar();
             }
 
             this._trigger(this.events.windowResized);
         },
+
         // D.U. 30.04.2014 Implement funtionality for resizing on window resize
         _hideButtonFromToolbar: function () {
             var buttonToHide,
@@ -735,19 +760,20 @@ if (typeof jQuery !== "function") {
                 });
 
             if (this._hiddenButtons === undefined) {
-                this._hiddenButtons = [];
+                this._hiddenButtons = [  ];
             }
 
-            buttonToHide = $(notHiddenButtons[notHiddenButtons.length - 1]);
+            buttonToHide = $(notHiddenButtons[ notHiddenButtons.length - 1 ]);
 
             if (typeof buttonToHide.length !== "undefined") {
                 buttonToHide.hide();
                 this._hiddenButtons.push(buttonToHide);
             }
         },
+
         // D.U. 30.04.2014 Implement funtionality for resizing on window resize
         _showHiddenButtonFromToolbar: function () {
-            this._hiddenButtons[this._hiddenButtons.length - 1].show();
+            this._hiddenButtons[ this._hiddenButtons.length - 1 ].show();
             this._hiddenButtons.pop();
         },
         getItem: function (index) {
@@ -763,7 +789,7 @@ if (typeof jQuery !== "function") {
             }
 
             if (typeof index === "string") {
-                result = this.buttonsList.find('#' + this._id("_item_" + index));
+                result = this.buttonsList.find("#" + this._id("_item_" + index));
                 if (result.length) {
                     return result;
                 }
@@ -774,6 +800,7 @@ if (typeof jQuery !== "function") {
                 Add item to widget item array
                 paramType="object" optional="false". The item to be added.
             */
+
             // Z.K. September 29, 2015 Bug fix #207328 - igToolbar addItem method is not working as expected
             // Note: scope prop should be set in order the handler to work as expected
             var newItem = this._getToolbarItemDescriptor(item);
@@ -806,7 +833,7 @@ if (typeof jQuery !== "function") {
                 widgetType = this._getWidgetType(item);
 
             if (widgetType) {
-                item[this._getWidgetType(item)]("option", "disabled", disabled);
+                item[ this._getWidgetType(item) ]("option", "disabled", disabled);
                 this._trigger(this.events.itemDisable, {
                     isDisabled: disabled
                 });
@@ -822,6 +849,7 @@ if (typeof jQuery !== "function") {
                 action = activated ? item.addClass : item.removeClass;
 
             action.call(item, "ui-state-active");
+
             // D.U. 12th of August 2014 #177514 Fixing by changing misspelled word
             item.igToolbarButton("option", "isSelected", activated);
             this._trigger(this.events.itemEnabled, {
@@ -850,13 +878,13 @@ if (typeof jQuery !== "function") {
                 Destroy the widget.
             */
 
-            // D.U. #177516 12th of August [igToolbar] Method destroy remover the toolbar container
+            // D.U. #177516 12th of August [ igToolbar ] Method destroy remover the toolbar container
             this.element
                 .undelegate()
                 .unbind();
 
             this.collapseBtn
-                .igToolbarButton('destroy')
+                .igToolbarButton("destroy")
                 .remove();
             this.buttonsList.remove();
             this.element.removeClass();
@@ -864,5 +892,5 @@ if (typeof jQuery !== "function") {
         }
     });
 
-    $.extend($.ui.igToolbar, { version: '<build_number>' });
+    $.extend($.ui.igToolbar, { version: "<build_number>" });
 }(jQuery));

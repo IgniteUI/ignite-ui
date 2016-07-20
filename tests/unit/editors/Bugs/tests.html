@@ -364,7 +364,8 @@
 
 				window.Bug98Testbed = function () {
 					$("#98Editor1").igNumericEditor({
-						maxValue: 5
+						maxValue: 5,
+						minValue: 3
 					});
 				}
 
@@ -946,13 +947,18 @@
 			});
 
 			testId = 'Bug 98';
-			test(testId, 1, function () {
+			test(testId, 2, function () {
 				var input = $('#98Editor1');
 				input.igNumericEditor("setFocus");
 				typeInMaskedInput("26", input.igNumericEditor("field"));
 				keyInteraction(13, input);
 				var text = $("#98Editor1").igNumericEditor("field").val();
 				equal(text, 5, "Text in editor is not set to the maxValue");
+				input.igNumericEditor("setFocus");
+				typeInMaskedInput("1", input.igNumericEditor("field"));
+				keyInteraction(13, input);
+				var text = $("#98Editor1").igNumericEditor("field").val();
+				equal(text, 3, "Text in editor is not set to the minValue");
 			});
 		});
 

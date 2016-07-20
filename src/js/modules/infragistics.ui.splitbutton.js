@@ -6,7 +6,7 @@
  *
  * http://www.infragistics.com/
  *
- * Depends on: 
+ * Depends on:
  *   jquery-1.9.1.js
  *   jquery.ui.core.js
  *   jquery.ui.widget.js
@@ -27,14 +27,14 @@ if (typeof jQuery !== "function") {
     $.widget("ui.igSplitButton", {
         options: {
 			/* type="array" Button items. */
-            items: [{
+            items: [ {
 				/* type="string" Item name*/
                 name: "button1",
 				/* type="string" Item display label*/
                 label: "Button 1",
 				/* type="string" Css class to represent the iconClass of the item*/
                 iconClass: "ui-icon-gear"
-            }],
+            } ],
             /* type="string" Default button item. */
             defaultItemName: "button1",
             /* type="boolean" Specifies whether the default button will be switched when another button is selected. */
@@ -62,13 +62,14 @@ if (typeof jQuery !== "function") {
             focus: "ui-state-focus"
         },
         _id: function (id) {
-            return this.element[0].id + id;
+            return this.element[ 0 ].id + id;
         },
         _renderDefaultBtn: function () {
             var options = this.options,
                 defaultItem = this._getDefaultItem(options.defaultItemName);
 
-            this._options.defaultButton = $('<div id="' + this._id("_" + options.defaultItemName) + '"></div>')
+            this._options.defaultButton = $('<div id="' + this._id("_" +
+                options.defaultItemName) + '"></div>')
                 .appendTo(this.element)
                 .igToolbarButton({
                     onlyIcons: true,
@@ -84,7 +85,8 @@ if (typeof jQuery !== "function") {
                 .removeClass("ui-corner-all");
         },
         _renderExpandBtn: function () {
-            this._options.expandButton = $("<div id='" + this._id("_arrow") + "' class='" + this.css.arrow + "'></div>")
+            this._options.expandButton = $("<div id='" + this._id("_arrow") + "' class='" +
+                this.css.arrow + "'></div>")
                 .igToolbarButton({
                     onlyIcons: true,
                     labelText: "&nbsp;",
@@ -127,7 +129,8 @@ if (typeof jQuery !== "function") {
             _opt.itemsList.on("igtoolbarbuttonclick", "a", $.proxy(this._onItemClick, this));
 
             this.element.on("keypress", $.proxy(this._onEnterKeypress, this));
-            this.element.hover($.proxy(this._onMouseEnter, this), $.proxy(this._onMouseLeave, this));
+            this.element.hover($.proxy(this._onMouseEnter, this),
+                $.proxy(this._onMouseLeave, this));
         },
         _onDefaultBtnClick: function (e) {
             var self = this;
@@ -142,7 +145,7 @@ if (typeof jQuery !== "function") {
             var _options = this._options;
 
             // IE not focusing the element when clicking the inside span
-            // Also IE triggers blur when the element is 
+            // Also IE triggers blur when the element is
             // already focused and the inner span is clicked
             if (!_options.expandButton.is(":focus")) {
                 if (!_options.isExpanded) {
@@ -174,7 +177,7 @@ if (typeof jQuery !== "function") {
                 self = this;
 
             if (this._options.isExpanded) {
-                // Time for item click event to fire 
+                // Time for item click event to fire
                 // on the menu before it is hidden.
                 setTimeout(function () {
                     noCancel = self._triggerCollapsing(e);
@@ -211,28 +214,29 @@ if (typeof jQuery !== "function") {
             var options = this.options,
                 i;
             for (i = 0; i < options.items.length; i++) {
-                if (options.items[i].name === name) {
-                    return options.items[i];
+                if (options.items[ i ].name === name) {
+                    return options.items[ i ];
                 }
             }
         },
         _createItemsList: function () {
-            var list = $("<ul class='ui-splitbutton-list ui-menu ui-widget ui-widget-content ui-corner-all'></ul>"),
+            var list = $("<ul class='ui-splitbutton-list ui-menu ui-widget ui-widget-content ui-corner-all'></ul>"), //jscs:ignore maximumLineLength
                 options = this.options,
                 i,
                 item;
 
             for (i = 0; i < options.items.length; i++) {
-                if (options.items[i].name !== options.defaultItemName) {
-                    item = $('<a id="' + this._id("_" + options.items[i].name) + '" class="ui-corner-all" tabindex="-1"></a>')
+                if (options.items[ i ].name !== options.defaultItemName) {
+                    item = $('<a id="' + this._id("_" + options.items[ i ].name) +
+                        '" class="ui-corner-all" tabindex="-1"></a>')
                         .igToolbarButton({
                             onlyIcons: true,
                             labelText: "",
-                            title: options.items[i].label,
+                            title: options.items[ i ].label,
                             icons: {
-                                primary: options.items[i].iconClass
+                                primary: options.items[ i ].iconClass
                             },
-                            name: options.items[i].name,
+                            name: options.items[ i ].name,
                             allowToggling: false
                         }).addClass("ui-splitbutton-cleargaps");
 
@@ -248,7 +252,9 @@ if (typeof jQuery !== "function") {
                 paramType="string|object" optional="false". The button to which we are going to switch.
             */
             var defaultButton = this._options.defaultButton,
-                targetButton = (typeof button === "string") ? $("#" + this._id("_" + button)) : button,
+                targetButton = (typeof button === "string") ?
+                    $("#" + this._id("_" + button)) :
+                    button,
                 defBtnOpts = defaultButton.igToolbarButton("option"),
                 defBtnId = defaultButton.attr("id"),
                 targetBtnOpts = targetButton.igToolbarButton("option"),
@@ -369,16 +375,16 @@ if (typeof jQuery !== "function") {
             var options = this.options,
                 self = this;
 
-            if (options[key] === value) {
+            if (options[ key ] === value) {
                 return;
             }
 
             $.Widget.prototype._setOption.apply(this, arguments);
 
-            switch(key) {
-                case 'defaultItemName':
+            switch (key) {
+                case "defaultItemName":
                     var result = $("#" + self.element.attr("id") + "_" + value);
-                    if(result.length === 1){
+                    if (result.length === 1) {
                         self.switchToButton(result);
                     }
                     break;
@@ -386,5 +392,5 @@ if (typeof jQuery !== "function") {
         }
     });
 
-    $.extend($.ui.igSplitButton, { version: '<build_number>' });
+    $.extend($.ui.igSplitButton, { version: "<build_number>" });
 }(jQuery));
