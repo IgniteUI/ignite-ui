@@ -68,6 +68,7 @@ $.ig.dependencies = [
 		widget: "igTemplating",
 		dependency: [ { name: "igUtil" } ],
 		scripts: [ "$path$/modules/infragistics.templating.js" ],
+		locale: [ "$localePath$/infragistics.templating-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
 		css: [  ]
 	},
@@ -572,6 +573,7 @@ $.ig.dependencies = [
 		widget: "igZoombar",
 		dependency: [ { name: "igUtil" }, { name: "igShared" } ],
 		scripts: [ "$path$/modules/infragistics.ui.zoombar.js" ],
+		locale: [ "$localePath$/infragistics.ui.zoombar-$locale$.js" ],
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.zoombar.css"
@@ -913,6 +915,7 @@ $.ig.dependencies = [
 		/* as of jQuery 1.9 because browser specific checks are now in util */
 		dependency: [ { name: "igUtil" } ],
 		scripts: [ "$path$/modules/infragistics.ui.rating.js" ],
+		locale: [ "$localePath$/infragistics.ui.rating-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
@@ -943,6 +946,7 @@ $.ig.dependencies = [
 		widget: "igShared",
 		dependency: [ { name: "igUtil" } ],
 		scripts: [ "$path$/modules/infragistics.ui.shared.js" ],
+		locale: [ "$localePath$/infragistics.shared-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.shared.css" ]
 	},
@@ -1014,6 +1018,7 @@ $.ig.dependencies = [
 			{ name: "igSplitter" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.tilemanager.js" ],
+		locale: [ "$localePath$/infragistics.ui.tilemanager-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.tilemanager.css" ]
 	},

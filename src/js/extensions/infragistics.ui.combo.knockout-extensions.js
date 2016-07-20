@@ -35,7 +35,7 @@
             combo.igCombo("value", selectedValues);
         }
     }
-    
+
     ko.bindingHandlers.igCombo = {
         init: function (element, valueAccessor) {
             var combo = $(element),

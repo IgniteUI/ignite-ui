@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Date Picker Sample - Date Picker with Editors Control - Ignite UI™</title>
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+    <style>
+        #container {
+            width: 60%;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        .p {
+            margin-top: 5px;
+        }
+
+        #igDatePickersContainer {
+            float: left;
+        }
+
+        .group-fields {
+            margin-bottom: 10px;
+        }
+
+        .group-fields label {
+            display: block;
+            line-height: 18px;
+        }
+
+        #ValuesContainer {
+            float: right;
+        }
+
+        #ValuesContainer.p {
+            font-size: 16px;
+        }
+
+        #container h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        @media screen and (max-width:920px) {
+            #container {
+                width: 70%;
+            }
+        }
+
+        @media screen and (max-width:770px) {
+            #container {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width:570px) {
+            #igDatePickersContainer,#ValuesContainer {
+                float: none;
+            }
+            #ValuesContainer {
+                margin-top:20px;
+            }
+        }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="http://cdn-na.infragistics.com/igniteui/2016.2/latest/js/modules/i18n/regional/infragistics.ui.regional-ja.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+</head>
+<body><p>This sample illustrates the basic usage of the igDatePicker.</p>
+    <div id="container" class="clearfix">
+        <div id="igDatePickersContainer">
+            <form id="form" name="FormSubmit" action="javascript:console.log('Submit');">
+                <div class="group-fields">
+                    <label for="datePicker1">Start Date</label>
+                    <input id="datePicker1" type="date" name="startDayPicker">
+                </div>
+                <div class="group-fields">
+                    <label for="datePicker2">End Date</label>
+                    <input id="datePicker2" type="date" name="endDatePicker">
+                </div>
+                <div class="group-fields">
+                    <label for="dataModeCombo">Change DatePickers dataMode option</label>
+                    <input id="dataModeCombo">
+                </div>
+                <input type="submit" id="submitBtn" value="Submit">
+            </form>
+        </div>
+
+        <div id="ValuesContainer">
+            <h4>DatePickers submitted values:</h4>
+            <div class="divHeight">
+                <p class="pStyle" id="results">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var data = [
+           { "ID": 1, "dataMode": "date" },
+           { "ID": 2, "dataMode": "editModeText" },
+           { "ID": 3, "dataMode": "displayModeText" }
+        ];
+
+        $(function () {
+            $("#datePicker1").igDatePicker({
+                minValue: new Date(2015, 6, 1),
+                locale: "en",
+                regional: "en",
+                dateDisplayFormat: "yy/MM/dd dddd"
+            });
+
+            $("#datePicker2").igDatePicker({
+                maxValue: new Date(2018, 8, 8),
+                locale: "en",
+                regional: "en",
+                dateDisplayFormat: "yy/MM/dd dddd"
+            });
+
+            $("#dataModeCombo").igCombo({
+                dataSource: data,
+                valueKey: "ID",
+                textKey: "dataMode",
+                placeHolder: "change dataMode",
+                enableClearButton: false,
+                mode: "dropdown",
+                initialSelectedItems: [{ index: 0 }],
+                selectionChanged: function (evt, ui) {
+                	var selectedMode = ui.items[0].data.dataMode,
+                		value1, value2;
+					
+                	value1 = $("#datePicker1").igDatePicker("value");
+                    $("#datePicker1").igDatePicker("option", "dataMode", selectedMode);
+                    $("#datePicker1").igDatePicker("value", value1);
+                    value2 = $("#datePicker2").igDatePicker("value");
+                    $("#datePicker2").igDatePicker("option", "dataMode", selectedMode);
+                    $("#datePicker2").igDatePicker("value", value2);
+                }
+            });
+
+            var headers = $('.group-fields label');
+            $("#form").submit(function (event) {
+                var submittedValues = $("#form").serializeArray();
+                $(".p").remove();
+                for (var i = 0 ; i < submittedValues.length; i++) {
+                    $("#results").append("<p class='p'><span class='header'>" + headers[i].textContent + ": " + "</span>  <strong>" + submittedValues[i].value + "</strong></p>");
+                }
+                return false;
+            });
+        });
+    </script>
+
+</body>
+</html>

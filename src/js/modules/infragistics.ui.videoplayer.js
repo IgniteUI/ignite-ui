@@ -3050,8 +3050,8 @@ if (typeof jQuery !== "function") {
 			if (val !== null && val !== undefined) {
 			    try {
 			        // A.M. May 9, 2016 #218835 "currentTime method does not work as setter in IE"
-					if ($.ig.util.isIE) { 
-					    $('video').bind('canplay', function () { this.currentTime = val; });
+					if ($.ig.util.isIE) {
+					    $("video").bind("canplay", function () { this.currentTime = val; });
 					}
 					    videoElem.currentTime = val;
 					    $("#" + this._id("_ctrls_pb"))

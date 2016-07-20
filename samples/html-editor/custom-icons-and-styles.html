@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Custom Icons and Styles Sample - Custom Icons and Styles with HTML Editor Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body><p>Since the igHtmlEditor control doesn't support the jQuery UI CSS Framework for styling, the standard Infragistics theme and the Windows UI themes are supported by default. This sample demonstrates how to customize igHtmlEditor look and feel by using CSS styles.</p>
+    <style type="text/css">
+
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-copy,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-icon.ui-igbutton-copy
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -160px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-cut,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-cut.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 0;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-paste,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-paste.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -176px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-bold ,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-bold.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -336px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-italic ,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-italic.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -400px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-underline ,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-underline.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -464px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-strikethrough,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-strikethrough.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -448px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-table,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-table.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -192px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-addrow,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-addrow.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -224px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-addcolumn,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-addcolumn.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -256px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-removerow,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-removerow.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -208px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-removecolumn,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-removecolumn.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -240px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-addimage,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-addimage.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -96px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-addlink,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-addlink.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -128px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-unorderedlist,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-unorderedlist.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -416px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-orderedlist,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-orderedlist.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -432px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-viewsource-icon,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-viewsource-icon.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -64px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-indent,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-indent.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -368px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-removeindent,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-removeindent.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -384px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-justifyright,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-justifyright.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -320px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-justifyleft,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-justifyleft.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -304px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-justifycenter,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-justifycenter.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -272px;
+        }
+        .ui-ightmleditor .ui-igbutton.ui-state-default .ui-igbutton-justifyfull,
+        .ui-ightmleditor .ui-igbutton.ui-state-default.ui-state-hover .ui-igbutton-justifyfull.ui-icon
+        {
+            background-image: url("../../images/samples/html-editor/ig-html-editor-custom-styles-sprite.png")!important;
+            background-position: 0 -288px;
+        }
+        .ui-ightmleditor .ui-igtoolbar .ui-igbutton.ui-state-default {    
+           border-color:transparent;
+        }
+        .ui-ightmleditor {
+            background-image: none;
+        }
+        .ui-corner-all {
+            border-radius: 0px;
+            -webkit-border-radius: 0px;
+            -moz-border-radius: 0px;
+        }
+        .ui-widget-content.ui-igtoolbar {
+            border: none;
+        }
+        .ui-ightmleditor-content iframe {
+            box-shadow: none;
+        }
+		/* Override sample's browser styles */
+    	#htmlEditor h1, #htmlEditor h2, #htmlEditor h3, #htmlEditor h4, #htmlEditor h5, #htmlEditor h6 { margin: 0px; }
+    	#htmlEditor h1 { font-size: 1.9em; }
+		#sampleContainer { overflow: visible; }
+    </style>
+
+    <!--igHtmlEditor target element-->
+    <div id="htmlEditor"></div>
+
+    <script>
+        $(function () {
+
+            var height = $('html').hasClass('touch') ? 500 : 350;
+
+            $("#htmlEditor").igHtmlEditor({
+                width: "99%",
+                height: height
+            });
+
+        });
+    </script>
+
+</body>
+</html>
