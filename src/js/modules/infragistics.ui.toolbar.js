@@ -286,6 +286,7 @@ if (typeof jQuery !== "function") {
             var noCancel, event, cancelableEvent,
                 options = this.options, width,
                 self = this;
+
             // S.T. 18th of Dec, 2015 Bug #210622: Stop propagation of collapse button click because thrown exception in toolbar when allowCollapsing is set to false.
             e.stopPropagation();
 
@@ -415,16 +416,16 @@ if (typeof jQuery !== "function") {
             var i, options = this.options;
 
             switch (name) {
-            case 'allowCollapsing':
+            case "allowCollapsing":
                 this.options.allowCollapsing = value;
                 break;
-            case 'items':
+            case "items":
                 for (i = 0; i < value.length; i++) {
-                    if (!value[i].type) {
-                        value[i].type = "custom";
+                    if (!value[ i ].type) {
+                        value[ i ].type = "custom";
                     }
 
-                    value[i] = this._getToolbarItemDescriptor(value[i]);
+                    value[ i ] = this._getToolbarItemDescriptor(value[ i ]);
                 }
 
                 this._updateItems(value);
@@ -624,6 +625,7 @@ if (typeof jQuery !== "function") {
                 }
             }
         },
+
         // R.K. 19/07/2016 Dead code
         // _isWidgetSupported: function (name) {
         //     var i;
@@ -865,6 +867,7 @@ if (typeof jQuery !== "function") {
                 .find(".ui-igbutton.ui-state-active")
                     .igToolbarButton("deactivate");
         },
+
         // R.K. 19/07/2016 Dead code
         // _setCollapseExpandButtonIcon: function () {
 
