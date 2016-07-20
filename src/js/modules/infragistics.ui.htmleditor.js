@@ -1,4 +1,4 @@
-﻿/*!@license
+/*!@license
  * Infragistics.Web.ClientUI HtmlEditor <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
@@ -56,9 +56,9 @@ if (typeof jQuery !== "function") {
             */
             height: 350,
             /* type="array" The html editor toolbars list. */
-            toolbarSettings: [],
+            toolbarSettings: [ ],
             /* type="array" The html editor custom toolbars list. */
-            customToolbars: [],
+            customToolbars: [ ],
             /* type="string" The name attribute of the html editor source view. */
             inputName: "source",
             /* type="string" Used to render inside the html editor as initial content */
@@ -106,7 +106,7 @@ if (typeof jQuery !== "function") {
             /* The workspace css. */
             workspaceIframe: "ui-widget-content"
         },
-        defaultToolbars: [{
+        defaultToolbars: [ {
             name: "textToolbar",
             displayName: $.ig.HtmlEditor.locale.defaultToolbars.textToolbar,
             isExpanded: true,
@@ -115,7 +115,7 @@ if (typeof jQuery !== "function") {
             allowCollapsing: true,
             collapseButtonIcon: "ui-igbutton-collapse",
             expandButtonIcon: "ui-igbutton-expand",
-            items: [{
+            items: [ {
                 name: "Bold",
                 type: "button",
                 scope: null,
@@ -202,7 +202,7 @@ if (typeof jQuery !== "function") {
                         action: "_comboHeightAction"
                     },
                     fontFamilies: {
-                        value: $.ig.HtmlEditor.locale.fontNames[/^win/gi.test(navigator.platform) ? "win" : "mac"],
+                        value: $.ig.HtmlEditor.locale.fontNames[ /^win/gi.test(navigator.platform) ? "win" : "mac" ],
                         action: "_comboDataSourceAction"
                     },
                     selectedFontFamily: {
@@ -260,7 +260,7 @@ if (typeof jQuery !== "function") {
                         action: "_comboSelectedItem"
                     }
                 }
-            }]
+            } ]
         }, {
             name: "formattingToolbar",
             displayName: $.ig.HtmlEditor.locale.defaultToolbars.formattingToolbar,
@@ -270,7 +270,7 @@ if (typeof jQuery !== "function") {
             allowCollapsing: true,
             collapseButtonIcon: "ui-igbutton-collapse",
             expandButtonIcon: "ui-igbutton-expand",
-            items: [{
+            items: [ {
                 name: "justifyleft",
                 type: "button",
                 props: {
@@ -411,7 +411,7 @@ if (typeof jQuery !== "function") {
                                 label: $.ig.HtmlEditor.locale.fontColorButtonTitle,
                                 iconClass: "ui-igbutton-forecolor"
                             }
-                        ]
+                         ]
                     },
                     defaultItemName: {
                         value: "textColor"
@@ -433,7 +433,7 @@ if (typeof jQuery !== "function") {
                                 label: $.ig.HtmlEditor.locale.textHighlightButtonTitle,
                                 iconClass: "ui-igbutton-backcolor"
                             }
-                        ]
+                         ]
                     },
                     defaultItemName: {
                         value: "backgroundTextColor"
@@ -443,7 +443,7 @@ if (typeof jQuery !== "function") {
                         action: "_spltButtonColorAction"
                     }
                 }
-            }]
+            } ]
         }, {
             name: "insertObjectToolbar",
             displayName: $.ig.HtmlEditor.locale.defaultToolbars.insertObjectToolbar,
@@ -453,7 +453,7 @@ if (typeof jQuery !== "function") {
             allowCollapsing: true,
             collapseButtonIcon: "ui-igbutton-collapse",
             expandButtonIcon: "ui-igbutton-expand",
-            items: [{
+            items: [ {
                 name: "image",
                 type: "button",
                 handler: "_insertImageDialogPlg",
@@ -591,7 +591,7 @@ if (typeof jQuery !== "function") {
                         action: "_buttonIconAction"
                     }
                 }
-            }]
+            } ]
         }, {
             name: "copyPasteToolbar",
             displayName: $.ig.HtmlEditor.locale.defaultToolbars.copyPasteToolbar,
@@ -601,7 +601,7 @@ if (typeof jQuery !== "function") {
             allowCollapsing: true,
             collapseButtonIcon: "ui-igbutton-collapse",
             expandButtonIcon: "ui-igbutton-expand",
-            items: [{
+            items: [ {
                 name: "copy",
                 type: "button",
                 scope: null,
@@ -697,8 +697,8 @@ if (typeof jQuery !== "function") {
                         action: "_buttonIconAction"
                     }
                 }
-            }]
-        }],
+            } ]
+        } ],
         NODE: new $.ig.XmlNodeType(),
 
         // This is property is populated by initToolabrs method in the following format.
@@ -710,11 +710,11 @@ if (typeof jQuery !== "function") {
         _isDirty: false,
         _createWidget: function () {
             /* !Strip dummy objects from options, because they are defined for documentation purposes only! */
-            this._allToolbars = [];
+            this._allToolbars = [ ];
             $.Widget.prototype._createWidget.apply(this, arguments);
         },
         _id: function (id) {
-            return this.element[0].id + id;
+            return this.element[ 0 ].id + id;
         },
         widget: function () {
             /*
@@ -769,7 +769,7 @@ if (typeof jQuery !== "function") {
 
             iFrameContent += "<\/p><\/body><\/html>";
 
-            this.workspace = this.element.find("#" + this._id("_editor"))[0];
+            this.workspace = this.element.find("#" + this._id("_editor"))[ 0 ];
 
             this.workspace.contentWindow.document.open("text/html", "replace");
             this.workspace.contentWindow.document.write(iFrameContent);
@@ -806,7 +806,7 @@ if (typeof jQuery !== "function") {
                 i;
 
             for (i = 0; i < this._allToolbars.length && !result; i++) {
-                curToolbar = this._allToolbars[i];
+                curToolbar = this._allToolbars[ i ];
 
                 if (curToolbar.name === name) {
                     result = curToolbar;
@@ -817,7 +817,7 @@ if (typeof jQuery !== "function") {
         },
         _getFirefoxVersion: function () {
             if ($.ig.util.isFF) {
-                return parseInt(window.navigator.userAgent.match(/\bFirefox\/[ 0-9\. ]+\b/)[0].split("/").reverse()[0], 10);
+                return parseInt(window.navigator.userAgent.match(/\bFirefox\/[ 0-9\. ]+\b/)[ 0 ].split("/").reverse()[ 0 ], 10);
             }
         },
         _create: function () {
@@ -927,13 +927,13 @@ if (typeof jQuery !== "function") {
                         if (tbPropName !== "name") {
 
                             // S.T. 18th of Dec, 2015 Bug #210622: Fix set method for items.
-                            self._getToolbar(self._allToolbars[index].name)
+                            self._getToolbar(self._allToolbars[ index ].name)
                                 .igToolbar("option", tbPropName, tbPropVal);
                         }
                     });
                 });
-            } else if (this._toolbarsActiveState[name]) {
-                this._showToolbar(this._toolbarsActiveState[name].name, value);
+            } else if (this._toolbarsActiveState[ name ]) {
+                this._showToolbar(this._toolbarsActiveState[ name ].name, value);
             } else if (name === "width") {
                 this.element.width(value);
             } else if (name === "height") {
@@ -959,7 +959,7 @@ if (typeof jQuery !== "function") {
         },
         _initToolbars: function () {
             this._allToolbars = $.extend(
-                true, [], this.defaultToolbars.concat(this.options.customToolbars));
+                true, [ ], this.defaultToolbars.concat(this.options.customToolbars));
             this._toolbars = this.element.find("#" + this._id("_toolbars"));
 
             this._mergeToolbarSettings();
@@ -984,7 +984,7 @@ if (typeof jQuery !== "function") {
 
             // Loop through all custom settings and update the corresponding settings in _allToolbars
             for (i = 0; i < customSettings.length; i++) {
-                curCustomSettings = customSettings[i];
+                curCustomSettings = customSettings[ i ];
                 curName = curCustomSettings.name;
 
                 if (typeof curName === "string") {
@@ -999,20 +999,20 @@ if (typeof jQuery !== "function") {
 
                                 // Search for such property in curSettings properties
                                 if (curSettings.hasOwnProperty(property)) {
-                                    curSettings[property] = curCustomSettings[property];
+                                    curSettings[ property ] = curCustomSettings[ property ];
                                 } else {
                                     items = curSettings.items;
 
                                     // Search for such property in items properties
                                     for (j = 0; j < items.length && !propFound; j++) {
-                                        curItem = items[j];
+                                        curItem = items[ j ];
                                         curItemProps = curItem.props;
 
                                         if (curItemProps.hasOwnProperty(property)) {
 
                                             // Update the value field of items properties
-                                            curItemProps[property].value =
-                                                curCustomSettings[property];
+                                            curItemProps[ property ].value =
+                                                curCustomSettings[ property ];
                                             propFound = true;
                                         }
                                     }
@@ -1034,7 +1034,7 @@ if (typeof jQuery !== "function") {
             this._toolbars = this.element.find("#" + this._id("_toolbars"));
 
             for (i = 0; i < this._allToolbars.length; i++) {
-                curSettings = this._allToolbars[i];
+                curSettings = this._allToolbars[ i ];
                 curName = curSettings.name;
                 showToolbarOption = $.camelCase("show-" + curName);
                 showToolbar = true;
@@ -1046,11 +1046,11 @@ if (typeof jQuery !== "function") {
                     .igToolbar(curSettings);
 
                 // Set toolbar's active state
-                if (options[showToolbarOption] !== undefined) {
-                    showToolbar = options[showToolbarOption];
+                if (options[ showToolbarOption ] !== undefined) {
+                    showToolbar = options[ showToolbarOption ];
                 }
 
-                this._toolbarsActiveState[showToolbarOption] = {
+                this._toolbarsActiveState[ showToolbarOption ] = {
                     name: curName,
                     value: showToolbar
                 };
@@ -1092,17 +1092,17 @@ if (typeof jQuery !== "function") {
 
             for (i = 0; i < toolbarSettings.length; i++) {
 
-                curSettings = toolbarSettings[i];
+                curSettings = toolbarSettings[ i ];
 
                 for (property in curSettings) {
 
                     if (curSettings.hasOwnProperty(property)) {
 
                         if (commands.hasOwnProperty(property)) {
-                            command = commands[property];
+                            command = commands[ property ];
                         } else if (argsCommands.hasOwnProperty(property)) {
-                            command = argsCommands[property];
-                            args = curSettings[property];
+                            command = argsCommands[ property ];
+                            args = curSettings[ property ];
                         } else {
                             command = null;
                         }
@@ -1133,12 +1133,12 @@ if (typeof jQuery !== "function") {
             lastNode.html("&nbsp;");
 
             if ($.ig.util.isIEOld) {
-                range.moveToElementText(lastNode[0]);
+                range.moveToElementText(lastNode[ 0 ]);
                 range.select();
             } else {
 
                 // Set the selection to the dummy element
-                range.selectNode(lastNode[0]);
+                range.selectNode(lastNode[ 0 ]);
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
@@ -1158,8 +1158,8 @@ if (typeof jQuery !== "function") {
                     range.collapse(true);
                     range.select();
                 } else {
-                    range.setStart(lastNode[0], 0);
-                    range.setEnd(lastNode[0], 0);
+                    range.setStart(lastNode[ 0 ], 0);
+                    range.setEnd(lastNode[ 0 ], 0);
                     range.collapse(true);
 
                     sel.removeAllRanges();
@@ -1244,7 +1244,7 @@ if (typeof jQuery !== "function") {
 
                     if (toolbarEvents.hasOwnProperty(e.type)) {
                         self.resizeWorkspace();
-                        self._trigger(toolbarEvents[e.type], e, ui);
+                        self._trigger(toolbarEvents[ e.type ], e, ui);
                         return;
                     }
 
@@ -1260,7 +1260,7 @@ if (typeof jQuery !== "function") {
                         if (!handler && !scope) {
                             self._execCommand(ui.name, ui.value);
                         } else if (handler && !scope) {
-                            self[handler](self.workspace.contentWindow.document, ui);
+                            self[ handler ](self.workspace.contentWindow.document, ui);
                         } else if (handler && scope) {
                             handler.call(ui.scope, self.workspace.contentWindow.document, ui);
                         }
@@ -1416,7 +1416,7 @@ if (typeof jQuery !== "function") {
             // K.D. July 29th, 2013 Bug #146086 The subsequent Hyperlink added replaces the previous Hyperlink
             var self = this,
                 selectedItem = this._selectionWrapperSaved.getSelectedItem(),
-                selectedItemNodeType = selectedItem[0].nodeType,
+                selectedItemNodeType = selectedItem[ 0 ].nodeType,
                 anchor = $("<a></a>", this.workspace.contentWindow.document);
 
             if (selectedItem.parent().is("a")) {
@@ -1595,16 +1595,16 @@ if (typeof jQuery !== "function") {
                     }
                 });
         },
-        // Z.K. July 20, 2016 - removing dead code
-        //_cutPlg: function () {
-        //    this._execCommand("cut");
-        //},
-        //_copyPlg: function () {
-        //    this._execCommand("copy");
-        //},
-        //_pastePlg: function () {
-        //    this._execCommand("paste");
-        //},
+        // Z.K. Remocing unused code
+        // _cutPlg: function () {
+        //     this._execCommand("cut");
+        // },
+        // _copyPlg: function () {
+        //     this._execCommand("copy");
+        // },
+        // _pastePlg: function () {
+        //     this._execCommand("paste");
+        // },
         _onSelectionChange: function (callback) {
             var self = this,
                 selectionWrapper,
@@ -1622,7 +1622,7 @@ if (typeof jQuery !== "function") {
                         selectedItem = selectedItem.children("font").first();
                     }
 
-                    if (selectedItem[0].nodeType === self.NODE._Text) {
+                    if (selectedItem[ 0 ].nodeType === self.NODE._Text) {
                         selectedItem = selectedItem.parent();
                     }
 
@@ -1636,18 +1636,18 @@ if (typeof jQuery !== "function") {
 
             selectionWrapper =
                 new $.ig.SelectionWrapper(this.workspace.contentWindow, function () {
-                    self._selectionWrapperSaved = this;
+                self._selectionWrapperSaved = this;
 
-                    // D.A. 18th September 2013 Bug #151506 The TextArea value should
-                    // be updated after the selection wrapper is initialized.
-                    // K.D. October 3rd, 2012 Bug #123366 Encoding the content before setting the value
-                    // D.A. March 23, 2015 Bug #189760 Special characters (; , / ? : @ & = + $) are not encoded properly. Change encodeURI to encodeURIComponent
-                    self.sourceWindow.val(encodeURIComponent(workSpaceBody.html()));
-                    selectionCallback.call(this);
-                });
+                // D.A. 18th September 2013 Bug #151506 The TextArea value should
+                // be updated after the selection wrapper is initialized.
+                // K.D. October 3rd, 2012 Bug #123366 Encoding the content before setting the value
+                // D.A. March 23, 2015 Bug #189760 Special characters (; , / ? : @ & = + $) are not encoded properly. Change encodeURI to encodeURIComponent
+                self.sourceWindow.val(encodeURIComponent(workSpaceBody.html()));
+                selectionCallback.call(this);
+            });
         },
         _destroyPopovers: function () {
-            var el = this.element[0];
+            var el = this.element[ 0 ];
             $(':data("igPopover")').each(function () {
                 if ($.contains(el, this)) {
                     $(this).igPopover("destroy");
@@ -1820,7 +1820,7 @@ if (typeof jQuery !== "function") {
             }
 
             // Creates an element with the iframe document as owner document
-            el = $(element, this._selectionWrapperSaved._document)[0];
+            el = $(element, this._selectionWrapperSaved._document)[ 0 ];
             range = this.range();
 
             if (this._selectionWrapperSaved._isIeOld) {
@@ -1853,18 +1853,18 @@ if (typeof jQuery !== "function") {
             this.element.addClass("ui-igPathFinder");
         },
         _setOption: function (name, value) {
-            $.Widget.prototype._setOption.apply(this, arguments);
-            switch (name) {
-                case "items":
-                    this._updateToolbar();
-                    break;
-                case "disabled":
+	        $.Widget.prototype._setOption.apply(this, arguments);
+	        switch (name) {
+	            case "items":
+	                this._updateToolbar();
+	                break;
+	            case "disabled":
 
-                    // H.A. February 25th 2016 Bug #214778 ui-state-disabled class is not applied to Dom path toolbar in igHtmlEditor
-                    // see https://jqueryui.com/upgrade-guide/1.11/#stop-setting-ui-state-disabled-and-aria-disabled-by-default-when-the-disabled-option-is-set
-                    // K.D. July 13th, 2012 Bug #114609 The buttons in the path finder submit the page if the path finder is disabled
-                    //this.element.find('button').attr('disabled', value).attr('aria-disabled', value);
-                    this.element
+	                // H.A. February 25th 2016 Bug #214778 ui-state-disabled class is not applied to Dom path toolbar in igHtmlEditor
+	                // see https://jqueryui.com/upgrade-guide/1.11/#stop-setting-ui-state-disabled-and-aria-disabled-by-default-when-the-disabled-option-is-set
+	                // K.D. July 13th, 2012 Bug #114609 The buttons in the path finder submit the page if the path finder is disabled
+	                //this.element.find('button').attr('disabled', value).attr('aria-disabled', value);
+	                this.element
 						.toggleClass("ui-state-disabled", !!value)
 						.attr("aria-disabled", value);
                     break;
@@ -1887,7 +1887,7 @@ if (typeof jQuery !== "function") {
                 buttonsList,
                 self = this,
                 o = this.options,
-                path = [],
+                path = [ ],
                 html = "",
                 viewSrcBtn = $(".ui-igbutton-viewsource"),
                 overflowMarkerWidth = 20,
@@ -1992,7 +1992,7 @@ if (typeof jQuery !== "function") {
             hide: "hide"
         },
         _id: function (id) {
-            return this.element[0].id + id;
+            return this.element[ 0 ].id + id;
         },
         _create: function () {
             this.element.igPopover({
@@ -2056,9 +2056,9 @@ if (typeof jQuery !== "function") {
             var self = this;
 
             this.poContent.find("#" + this._id("_cmbOpenIn")).igCombo({
-                initialSelectedItems: [{
+                initialSelectedItems: [ {
                     index: 0
-                }],
+                } ],
                 enableClearButton: false,
 
                 // JD May 19, 2015 Bug #194183 Changing the width of the combo so it matches the other controls and displays all localized text.
@@ -2209,8 +2209,7 @@ if (typeof jQuery !== "function") {
                 self._item.tableManipulator({
                     rows: currentRowNumber,
                     columns: currentColumnNumber,
-                    addSpacingChar: true
-                });
+                    addSpacingChar: true });
 
                 self._trigger(self.events.apply, e, {
                     table: self._item.attr("border", 1)
@@ -2345,8 +2344,8 @@ if (typeof jQuery !== "function") {
                     }
                     if (settings.columns && settings.columns > 0) {
                         tableNumCols = settings.columns;
-                    } else if (tRows[0]) {
-                        tableNumCols = tRows[0].cells.length;
+                    } else if (tRows[ 0 ]) {
+                        tableNumCols = tRows[ 0 ].cells.length;
                     }
                     if (!table.children().length) {
                         methods.create();
@@ -2394,7 +2393,7 @@ if (typeof jQuery !== "function") {
                 return removedRow;
             },
             addColumn: function (position) {
-                var columnCellsArr = [];
+                var columnCellsArr = [ ];
 
                 methods.getTableRows().each(function (idx, el) {
                     var row = $(el),
@@ -2403,15 +2402,15 @@ if (typeof jQuery !== "function") {
 
                     // S.T. Dec 17th 2015, Bug #210940: The check if (position) with 0 is false this the reason for adding at last on first selected row/col.
                     if (position !== undefined && columns.length) {
-                        columnCellsArr.push(newColumn.insertAfter(columns.eq(position))[0]);
+                        columnCellsArr.push(newColumn.insertAfter(columns.eq(position))[ 0 ]);
                         return true;
                     }
-                    columnCellsArr.push(newColumn.appendTo(row)[0]);
+                    columnCellsArr.push(newColumn.appendTo(row)[ 0 ]);
                 });
-                return $([]).pushStack(columnCellsArr);
+                return $([ ]).pushStack(columnCellsArr);
             },
             removeColumn: function (position) {
-                var removedRowsArr = [];
+                var removedRowsArr = [ ];
 
                 methods.getTableRows().each(function (idx, el) {
                     var row = $(el);
@@ -2423,7 +2422,7 @@ if (typeof jQuery !== "function") {
                     }
                     removedRowsArr.push(row.children("td:last").remove());
                 });
-                return $([]).pushStack(removedRowsArr);
+                return $([ ]).pushStack(removedRowsArr);
             },
             getRowsNum: function () {
                 return methods.getTableRows().length;
@@ -2441,11 +2440,11 @@ if (typeof jQuery !== "function") {
             }
         };
     $.fn.tableManipulator = function (method) {
-        if (methods[method]) {
-            if (table === undefined || this !== table[0]) {
+        if (methods[ method ]) {
+            if (table === undefined || this !== table[ 0 ]) {
                 table = $(this);
             }
-            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            return methods[ method ].apply(this, Array.prototype.slice.call(arguments, 1));
         }
         if (typeof method === "object" || !method) {
             return methods.init.apply(this, arguments);
@@ -2468,13 +2467,11 @@ if (typeof jQuery !== "function") {
             insertunorderedlist: {
                 name: "_insertList",
                 browsers: null,
-                args: ["insertunorderedlist"]
-            },
+                args: [ "insertunorderedlist" ] },
             insertorderedlist: {
                 name: "_insertList",
                 browsers: null,
-                args: ["insertorderedlist"]
-            }
+                args: [ "insertorderedlist" ] }
         },
         _css: {
             larger: "ui-ightmleditor-larger",
@@ -2529,12 +2526,12 @@ if (typeof jQuery !== "function") {
             if (command === null || !this._commands.hasOwnProperty(command.toLowerCase())) {
                 return;
             }
-            if (this._commands[command].browsers === null) {
+            if (this._commands[ command ].browsers === null) {
                 return;
             }
-            supportedBrowsers = this._commands[command].browsers;
+            supportedBrowsers = this._commands[ command ].browsers;
             for (i = 0; i < supportedBrowsers.length; i++) {
-                if ($.browser && $.browser.hasOwnProperty(supportedBrowsers[i])) {
+                if ($.browser && $.browser.hasOwnProperty(supportedBrowsers[ i ])) {
                     return true;
                 }
                 if (!$.browser) {
@@ -2567,7 +2564,7 @@ if (typeof jQuery !== "function") {
         // Finds all text nodes into "node" and returns
         // them in the order that they are met in the document
         _findAllTextNodes: function (node) {
-            var allTextNodes = [];
+            var allTextNodes = [ ];
 
             this._findTextNodes(node, allTextNodes);
 
@@ -2591,7 +2588,7 @@ if (typeof jQuery !== "function") {
                     // D.A., 30th October 2014, Bug #180892 In IE after pasting text and
                     // clicking at the end of it, selection changes to last text node
                     // This is the node right before the caret's current position
-                    closestToCaretNode = children[range.startOffset - 1];
+                    closestToCaretNode = children[ range.startOffset - 1 ];
 
                     if (closestToCaretNode.nodeType === 3) {
 
@@ -2601,7 +2598,7 @@ if (typeof jQuery !== "function") {
 
                         // Focus last text node in the element
                         allTextNodes = this._findAllTextNodes($(closestToCaretNode));
-                        textNodeToFocus = allTextNodes[allTextNodes.length - 1];
+                        textNodeToFocus = allTextNodes[ allTextNodes.length - 1 ];
                     }
 
                     // D.A. 9th September 2014, Bug #180280 When the element is link it should not be focused
@@ -2641,7 +2638,7 @@ if (typeof jQuery !== "function") {
                 }
                 if (range.collapsed && (range.endContainer.nodeType === this.NODE._Element)) {
                     return $(range.commonAncestorContainer.
-                        childNodes[range.endOffset - range.startOffset]);
+                        childNodes[ range.endOffset - range.startOffset ]);
                 }
                 return $(range.commonAncestorContainer);
             }
@@ -2665,13 +2662,13 @@ if (typeof jQuery !== "function") {
                 newRange;
 
             if (!this._isIeOld) {
-                this._range.selectNodeContents(selectedItem[0]);
+                this._range.selectNodeContents(selectedItem[ 0 ]);
                 this._selection.removeAllRanges();
                 this._selection.addRange(this._range);
             } else {
                 newRange = this._document.body.createTextRange();
                 if (selectedItem.length === 1) {
-                    newRange.moveToElementText(selectedItem[0]);
+                    newRange.moveToElementText(selectedItem[ 0 ]);
                 }
                 newRange.select();
             }
@@ -2686,9 +2683,9 @@ if (typeof jQuery !== "function") {
         execCommand: function (name, args) {
             var startEl, endEl, p,
                 range = this._getRange(),
-                customCommand = this._commands[name] ? this[this._commands[name].name] : null,
-                customCommandArgs = this._commands[name] ? this._commands[name].args : null,
-                browser = this._commands[name] ? this._commands[name].browsers : null,
+                customCommand = this._commands[ name ] ? this[ this._commands[ name ].name ] : null,
+                customCommandArgs = this._commands[ name ] ? this._commands[ name ].args : null,
+                browser = this._commands[ name ] ? this._commands[ name ].browsers : null,
                 isCommandSupported = this._isCommandSupportedByBrowser(name);
 
             if (this._isIeOld) {
@@ -2710,7 +2707,7 @@ if (typeof jQuery !== "function") {
                         if (!startEl.length) {
                             startEl = $(range.startContainer);
                         }
-                        range.selectNodeContents(startEl[0]);
+                        range.selectNodeContents(startEl[ 0 ]);
                     } else if (range.startContainer.nodeType === this.NODE._Document) {
                         startEl = $(range.startContainer.body).find(":first");
 
@@ -2718,7 +2715,7 @@ if (typeof jQuery !== "function") {
                         if (!startEl.length) {
                             startEl = $(range.startContainer.body);
                         }
-                        range.selectNodeContents(startEl[0]);
+                        range.selectNodeContents(startEl[ 0 ]);
                     } else if (range.startContainer.nodeType === this.NODE._Text) {
                         this._document.execCommand(name, false, args);
                         return;
@@ -2732,7 +2729,7 @@ if (typeof jQuery !== "function") {
                     if (startEl && startEl.is("br") && endEl && endEl.is("br")) {
                         p = $("<p><br /></p>", this._document);
                         startEl.replaceWith(p);
-                        range.selectNodeContents(p[0]);
+                        range.selectNodeContents(p[ 0 ]);
                         this._updateSelection(range);
                     }
                 }
@@ -2790,9 +2787,9 @@ if (typeof jQuery !== "function") {
 
         // Returns a text node.
         _wrapPartialString: function (string, start, end, wrapElName) {
-            var stack = [];
+            var stack = [ ];
             stack.push(this._document.createTextNode(string.slice(0, start)));
-            stack.push(wrapElName.text(string.substring(start, end))[0]);
+            stack.push(wrapElName.text(string.substring(start, end))[ 0 ]);
             stack.push(this._document.createTextNode(string.slice(end)));
             return $(stack);
         },
@@ -2807,7 +2804,7 @@ if (typeof jQuery !== "function") {
                 range = this._getRange(),
                 startElSiblings;
 
-            if (startEl[0] === endEl[0]) {
+            if (startEl[ 0 ] === endEl[ 0 ]) {
                 range.surroundContents(wrapEl.get(0));
                 return wrapEl;
             }
@@ -2827,7 +2824,7 @@ if (typeof jQuery !== "function") {
             startElSiblings = startElPar.siblings();
 
             startElPar.siblings().each(function (i, el) {
-                if (startElPar[0] === endElPar[0]) {
+                if (startElPar[ 0 ] === endElPar[ 0 ]) {
                     return;
                 }
 
@@ -2847,7 +2844,7 @@ if (typeof jQuery !== "function") {
         },
         _getLastParentUntil: function (root, target) {
             while (root.parent().length) {
-                if (root.parent()[0] === target[0]) {
+                if (root.parent()[ 0 ] === target[ 0 ]) {
                     return root;
                 }
                 root = root.parent();
@@ -2869,9 +2866,9 @@ if (typeof jQuery !== "function") {
                 range.deleteContents();
             }
             if (range.insertNode !== undefined && !selItem.parent().is("a")) {
-                range.insertNode(newNode[0]);
+                range.insertNode(newNode[ 0 ]);
             } else if (range.pasteHTML !== undefined) {
-                range.pasteHTML(newNode[0].outerHTML);
+                range.pasteHTML(newNode[ 0 ].outerHTML);
             }
         },
         insertTable: function (table) {
@@ -2879,18 +2876,18 @@ if (typeof jQuery !== "function") {
                 selItem = this.getSelectedItem(),
                 br = $("<br>", this._document);
 
-            if (selItem[0].nodeType === this.NODE._Document) {
+            if (selItem[ 0 ].nodeType === this.NODE._Document) {
                 $body = selItem.find("body");
                 $firstP = $body.children("p").first();
 
                 // D.A. 27th April 2015, Bug #193205 Table cannot be inserted when the <p> tag was removed
                 if ($firstP.length > 0) {
-                    this._range.selectNodeContents($firstP[0]);
+                    this._range.selectNodeContents($firstP[ 0 ]);
                 } else {
-                    this._range.selectNodeContents($body[0]);
+                    this._range.selectNodeContents($body[ 0 ]);
                 }
 
-                this._range.insertNode(table[0]);
+                this._range.insertNode(table[ 0 ]);
             } else if (selItem.is("td")) {
                 table.appendTo(selItem);
             } else if (selItem.is("table")) {
@@ -2901,15 +2898,15 @@ if (typeof jQuery !== "function") {
 
                 // K.D. July 19th, 2012 Bug #117424 Exception is thrown when inserting a table in IE7 or IE8
                 if (this._range.insertNode !== undefined) {
-                    this._range.insertNode(table[0]);
+                    this._range.insertNode(table[ 0 ]);
                 } else if (this._range.pasteHTML !== undefined) {
                     // This case is IE7/IE8
                     this._range.select();
-                    this._range.pasteHTML(table[0].outerHTML);
+                    this._range.pasteHTML(table[ 0 ].outerHTML);
                 }
             }
             if (this._range.selectNodeContents !== undefined) {
-                this._range.selectNodeContents(br.insertAfter(table)[0]);
+                this._range.selectNodeContents(br.insertAfter(table)[ 0 ]);
             }
         },
         focus: function () {
@@ -2927,8 +2924,8 @@ if (typeof jQuery !== "function") {
                 focusTarget = $(this._document.body).find(":not(br):first");
 
                 if (focusTarget.length > 0) {
-                    this._range.setStart(focusTarget[0], 0);
-                    this._range.setEnd(focusTarget[0], 0);
+                    this._range.setStart(focusTarget[ 0 ], 0);
+                    this._range.setEnd(focusTarget[ 0 ], 0);
                     this._document.body.focus();
                 }
             } else {
@@ -3015,7 +3012,7 @@ if (typeof jQuery !== "function") {
 
             toolbars.each(function (idx, el) {
                 var igToolbarName = $(el).igToolbar("option", "name");
-                self._toolbars[igToolbarName] = $(el);
+                self._toolbars[ igToolbarName ] = $(el);
             });
 
             this._initAlignButtons(toolbars);
@@ -3095,12 +3092,12 @@ if (typeof jQuery !== "function") {
 
             this._resetToolbars();
 
-            if (el[0].nodeType === 9) {
+            if (el[ 0 ].nodeType === 9) {
                 this._computedStyles = (this._w.getComputedStyle &&
                     this._w.getComputedStyle(this._d.body)) || this._d.body.currentStyle;
             } else {
                 this._computedStyles = (this._w.getComputedStyle &&
-                    this._w.getComputedStyle(el[0])) || el[0].currentStyle;
+                    this._w.getComputedStyle(el[ 0 ])) || el[ 0 ].currentStyle;
             }
 
             // K.D. November 19th, 2012 Bug #127274 Heading elements never get analyzed by tag name
@@ -3109,10 +3106,10 @@ if (typeof jQuery !== "function") {
             }
 
             $.each(this._callbackMap, function (isTrueFunc, callback) {
-                var isTrueRes = self[isTrueFunc](el);
-                if ($.isFunction(self[isTrueFunc]) && isTrueRes &&
-                    $.isFunction(self[callback])) {
-                    self[callback](el, isTrueRes);
+                var isTrueRes = self[ isTrueFunc ](el);
+                if ($.isFunction(self[ isTrueFunc ]) && isTrueRes &&
+                    $.isFunction(self[ callback ])) {
+                    self[ callback ](el, isTrueRes);
 
                     // Bug #184142 In IE justify left button is not active by default
                     if (callback === "_onAlign") {
@@ -3241,7 +3238,7 @@ if (typeof jQuery !== "function") {
             // K.D. November 1st, 2012 Bug #125724 The combo values do not contain ' or " so they need to be removed before sending the value
             fontName = fontName.replace(/'|"/g, "");
             this._setComboValue(combo, $.ig.HtmlEditor.locale
-                .fontNames[/^win/gi.test(navigator.platform) ? "win" : "mac"], fontName);
+                .fontNames[ /^win/gi.test(navigator.platform) ? "win" : "mac" ], fontName);
         },
         _onFontSize: function () {
 
@@ -3257,7 +3254,7 @@ if (typeof jQuery !== "function") {
 
             // D.A. 28th October 2014, Bug #183490 We should round the font size style in IE, because when choosing some headings it is a float number e.g. 18.73px
             fontSizeUnits = this._d.queryCommandValue("fontsize") ||
-                pxTbl[Math.round(parseFloat(this._computedStyles.fontSize))],
+                pxTbl[ Math.round(parseFloat(this._computedStyles.fontSize)) ],
                 fontSizeUnitsStr = fontSizeUnits ? fontSizeUnits.toString() : "",
                 combo = this._toolbars.textToolbar.igToolbar("getItem", "fontSize");
             this._setComboValue(combo, $.ig.HtmlEditor.locale.fontSizes, fontSizeUnitsStr);
@@ -3267,7 +3264,7 @@ if (typeof jQuery !== "function") {
             // K.D. November 19th, 2012 Bug #127274 Heading elements never get analyzed by tag name.
             var combo = this._toolbars.textToolbar.igToolbar("getItem", "formatsList");
             this._setComboValue(combo, $.ig.HtmlEditor.locale.formatsList,
-                element[0].nodeName.toLowerCase());
+                element[ 0 ].nodeName.toLowerCase());
         },
         _onTable: function () {
             this._disableTableControls(false);
@@ -3275,7 +3272,7 @@ if (typeof jQuery !== "function") {
         _setComboValue: function (combo, values, newValue, valueKey) {
             var i,
                 dsValueKey = valueKey || valueKey === undefined ? "text" : valueKey,
-                currentValue = values[combo.igCombo("index")][dsValueKey],
+                currentValue = values[ combo.igCombo("index") ][ dsValueKey ],
                 dataSourceValue;
 
             if (newValue === currentValue) {
@@ -3283,7 +3280,7 @@ if (typeof jQuery !== "function") {
             }
 
             for (i = 0; i < values.length; i++) {
-                dataSourceValue = values[i][dsValueKey];
+                dataSourceValue = values[ i ][ dsValueKey ];
                 if (newValue === dataSourceValue) {
                     combo.igCombo("index", i);
                     break;
