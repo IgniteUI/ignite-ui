@@ -12,14 +12,14 @@
 *   infragistics.util.js
 */
 /*global jQuery, window */
-if (typeof jQuery !== 'function') {
+if (typeof jQuery !== "function") {
     throw new Error("jQuery is undefined");
 }
 (function ($) {
     /*
 		igLayoutManager is a widget based on jQuery UI that implements different layout modes - flow layout, vertical layout,
 		a border layout, which divides the container into left/right/footer/header/center regions, responsive and fluid column layout based on 12 columns,
-		as well as a grid layout which allows items to be positioned at arbitrary places on the screen, and have variable row and col spans. 
+		as well as a grid layout which allows items to be positioned at arbitrary places on the screen, and have variable row and col spans.
 	*/
     $.widget("ui.igLayoutManager", {
         css: {
@@ -71,18 +71,21 @@ if (typeof jQuery !== 'function') {
             layoutMode: "column",
             /* will apply styles that will use media queries in order to alter the # of columns when shown on devices with smaller form factor
 				such as mobile phones, tablets, etc. */
+
             //responsive: true, // no need of this option, this can be controlled by setting a meta tag in the page
             /* null implies auto mode, a value of "true" will use CSS3 translate transforms,
-				a value of "false" will set left/top values for positioning 
-				
-				depending on the algorithm, this may be (optional) Flexbox / HTML5 Grid, etc. 
+				a value of "false" will set left/top values for positioning
+				depending on the algorithm, this may be (optional) Flexbox / HTML5 Grid, etc.
 			*/
+
             //useCSS3: null,
-            /* allows the whole layout container to be resizable, then reorders items 
-				depending on mode algorithm settings 
+            /* allows the whole layout container to be resizable, then reorders items
+				depending on mode algorithm settings
 			*/
+
             //resizable: true,
             /* allows individual items to be resized by using splitter UI */
+
             //itemsResizable: false,
             /* type="number" number of items to render, this is only applicable to layouts: vertical and flow */
             itemCount: null,
@@ -105,7 +108,7 @@ if (typeof jQuery !== 'function') {
                 rearrangeItems: true,
                 /* type="boolean" Specifies whether the previous set options should be overriden when setting options */
                 overrideConfigOnSetOption: true,
-                /* type="number" Specifies the duration of the animations in the layout manager's grid layout */
+                /* type="number" Specifies the duration of the animations in the layout manager"s grid layout */
                 animationDuration: 500
             },
             /* type="object" options specific to a border layout */
@@ -119,14 +122,16 @@ if (typeof jQuery !== 'function') {
                 /* type="bool" option specifying whether the right region in the border layout will be hidden or shown */
                 showRight: true,
                 /* type="string" option specifying the width of the left region, either in px or percentages */
-                leftWidth: '20%',
+                leftWidth: "20%",
                 /* type="string" option specifying the width of the right region, either in px or percentages */
-                rightWidth: '10%'
+                rightWidth: "10%"
+
                 //enableSplitters: true
                 /* can be relative or "fixed" */
+
                 //positioning: "relative"
             },
-            /* type="array" an array of item descriptions 
+            /* type="array" an array of item descriptions
 				this assumes the container is empty, and every item
 				is described by rowspan,colspan, etc. - otherwise values of
 				1 are assumed
@@ -150,6 +155,7 @@ if (typeof jQuery !== 'function') {
 				    height: null
 				}
             ],
+
             //enableAnimations: true,
             /* type="string" width of the layout container */
             width: null,
@@ -160,7 +166,7 @@ if (typeof jQuery !== 'function') {
             /* cancel="false" Event fired before an item is rendered in the container
 				Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
-				Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc. 
+				Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc.
 				Use ui.index to get a reference of the item's index, if the layout is flow or vertical
                 Use ui.item to get a reference to the rendered item
 			*/
@@ -168,7 +174,7 @@ if (typeof jQuery !== 'function') {
             /* Event fired after an item has been rendered in the container
 				Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
-				Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc. 
+				Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc.
 				Use ui.index to get a reference of the item's index, if the layout is flow or vertical
                 Use ui.item to get a reference to the rendered item
 			*/
@@ -181,70 +187,78 @@ if (typeof jQuery !== 'function') {
             rendered: "rendered",
             /* cancel="true" Event fired before items are resized.
                 Use ui.owner to get a reference to the layout manager performing resizing.*/
-            internalResizing: 'internalResizing',
+            internalResizing: "internalResizing",
             /* cancel="false" Event fired after items are resized.
                 Use ui.owner to get a reference to the layout manager performing resizing.*/
-            internalResized: 'internalResized'
+            internalResized: "internalResized"
             /* Event fired before an item is going to accomodate 100% of the container's width/height
 				Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
 			*/
+
             //TODO: not implemented
             //itemMaximizing: "itemMaximizing",
             /* Event fired after an item is maximized
 				Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
 			*/
+
             //TODO: not implemented
             //itemMaximized: "itemMaximized",
             /* Event fired before an item is positioned (i.e. its size , offsets, etc - are calculated)
 				Note that this is different from the "Rendering/Rendered" events in the sense that positioning/positioned
 				are always fired, while rendering/rendered are only fired if the layout items are defined as part of the options
 				otherwise the assumption is that they will be looked up either using the provided selector, or the child elements
-				will be used 
+				will be used
 				Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
 			*/
+
             //TODO: not implemented
             //itemPositioning: "itemPositioning",
             /*
 				Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
 			*/
+
             //TODO: not implemented
             //itemPositioned: "itemPositioned",
             /* Event fired before an item's position is restored to its original position
 				Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
 			*/
+
             //TODO: not implemented
             //itemRestoring: "itemRestoring",
             /* Event fired after the item's original position in the "dashboard" has been restored
 				Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
 			*/
+
             //TODO: not implemented
             //itemRestored: "itemRestored",
             /* Event fired when the layout container resizes
-			
 			*/
+
             //TODO: not implemented
             //resize: "resize"
         },
         _opt: null,
         _createWidget: function (options) {
-            this.options.items = [];
+            this.options.items = [ ];
             this.options.gridLayout.useOffset = true;
+
             // D.A.September 18th 2013 BUG #148630 Use deep copy of the items configuration
             // to avoid issues when the same instance of items configuration is used in
             // multiple layout managers. jQuery options merging does not deep copy arrays.
             if (options && options.items) {
-                options.items = $.extend(true, [], options.items);
+                options.items = $.extend(true, [ ], options.items);
             }
             $.Widget.prototype._createWidget.apply(this, arguments);
         },
         _create: function () {
             var self = this;
+
             // D.A. 28th April 2014, Bug #170423 The _opt object should be created after the user and default options are merged.
             this._opt = {
                 eventHandlers: {},
@@ -257,14 +271,16 @@ if (typeof jQuery !== 'function') {
             };
             this.element.addClass(this.css.container);
             if (this.options.width !== null) {
-                this.element.css('width', this.options.width);
+                this.element.css("width", this.options.width);
             }
             if (this.options.height !== null) {
-                this.element.css('height', this.options.height);
+                this.element.css("height", this.options.height);
             }
-            // D.A. 15th April 2014, Bug #169721 InternalResizing / InternalResize 
+
+            // D.A. 15th April 2014, Bug #169721 InternalResizing / InternalResize
             // events should fire only for layouts that actually resize internally.
             if (this._opt.resizeLayout) {
+
                 // D.A. 5th September 2014, Bug #169732 Removing reflow on element resize
                 // track resizing
                 //this._opt.eventHandlers.elementResizeHandler = function (e) {
@@ -282,6 +298,7 @@ if (typeof jQuery !== 'function') {
                 };
                 $(window).on("resize", this._opt.eventHandlers.windowResizeHandler);
             }
+
             // also listen to device orientation changes
             //TODO ? (depending on algorithm)
             switch (this.options.layoutMode) {
@@ -295,7 +312,8 @@ if (typeof jQuery !== 'function') {
                 this._initFlowLayout();
                 break;
             case "column":
-                //D.A. March 18th, 2013 Bug #136557 The _initColumnLayout method is not implemented. 
+
+                //D.A. March 18th, 2013 Bug #136557 The _initColumnLayout method is not implemented.
                 //Instead column layout is achieved entirely through css.
                 //this._initColumnLayout();
                 break;
@@ -303,12 +321,13 @@ if (typeof jQuery !== 'function') {
                 this._initVerticalLayout();
                 break;
             default:
+
                 //this._initColumnLayout();
                 break;
             }
         },
         _setOption: function (option, value) {
-            if (this.options[option] === value) {
+            if (this.options[ option ] === value) {
                 return;
             }
 
@@ -317,8 +336,9 @@ if (typeof jQuery !== 'function') {
                 initGridLayout, gridLayout;
 
             switch (option) {
-            case 'gridLayout':
+            case "gridLayout":
                 if (opt.gridLayout.overrideConfigOnSetOption) {
+
                     // Use the default options
                     gridLayout = $.extend(true, {
                         overrideConfigOnSetOption: opt.gridLayout.overrideConfigOnSetOption,
@@ -335,8 +355,10 @@ if (typeof jQuery !== 'function') {
                     });
                     initGridLayout = true;
                 } else {
+
                     // Preserve previous set options
                     gridLayout = $.extend(true, {}, this.options.gridLayout);
+
                     // Reinit the grid layout only when any of the layout options are changed
                     initGridLayout = value.cols || value.rows || value.columnWidth ||
                         value.columnHeight || typeof value.marginLeft === "number" ||
@@ -348,60 +370,60 @@ if (typeof jQuery !== 'function') {
             }
             $.Widget.prototype._setOption.apply(this, arguments);
             switch (option) {
-            case 'width':
+            case "width":
                 this.element.width(this.options.width);
-                if (opt.layoutMode === 'grid') {
+                if (opt.layoutMode === "grid") {
                     this.reflow(true);
                 }
                 break;
-            case 'height':
+            case "height":
                 this.element.height(this.options.height);
-                if (opt.layoutMode === 'grid') {
+                if (opt.layoutMode === "grid") {
                     this.reflow(true);
                 }
                 break;
-            case 'gridLayout':
+            case "gridLayout":
                 this.options.gridLayout = $.extend(
                     true, {}, gridLayout, this.options.gridLayout);
                 if (initGridLayout) {
                     this._initGlFromItemsConfig(false);
                 } else {
-                    if (value.hasOwnProperty('rearrangeItems')) {
+                    if (value.hasOwnProperty("rearrangeItems")) {
                         this._opt.gridLayout.rearrangeItems = value.rearrangeItems;
                     }
-                    if (value.hasOwnProperty('animationDuration')) {
+                    if (value.hasOwnProperty("animationDuration")) {
                         this._opt.gridLayout.animationDuration = value.animationDuration;
                     }
                 }
                 break;
-            case 'borderLayout':
+            case "borderLayout":
                 this._destroyBorderLayout();
                 this.options.borderLayout = $.extend(
                     true, {}, borderLayout, this.options.borderLayout);
                 this._initBorderLayout();
                 break;
-            case 'items':
+            case "items":
                 switch (opt.layoutMode) {
-                case 'vertical':
+                case "vertical":
                     this._destroyVerticalLayout();
                     this._initVerticalLayout();
                     break;
-                case 'grid':
+                case "grid":
                     this._initGlFromItemsConfig(false);
                     break;
-                case 'flow':
+                case "flow":
                     this._destroyFlowLayout();
                     this._initFlowLayout();
                     break;
                 }
                 break;
-            case 'itemCount':
+            case "itemCount":
                 switch (opt.layoutMode) {
-                case 'vertical':
+                case "vertical":
                     this._destroyVerticalLayout();
                     this._initVerticalLayout();
                     break;
-                case 'flow':
+                case "flow":
                     this._destroyFlowLayout();
                     this._initFlowLayout();
                     break;
@@ -418,22 +440,26 @@ if (typeof jQuery !== 'function') {
 		*/
         reflow: function (forceReflow, animationDuration, event) {
             /* Triggers recalculation of the layout dimensions. Layouts may not need to be reflowed manually, if their sizes are in percentages (i.e. they are responsive by default)
-			   this can be particularly useful with a grid layout, when the container has percentage sizes, but items are calculated in pixels and positioned absolutely in the container. 
+			   this can be particularly useful with a grid layout, when the container has percentage sizes, but items are calculated in pixels and positioned absolutely in the container.
                paramType="boolean" optional="true" Indicates whether the reflow should be forced. Useful in cases where the items size and position was changed manually.
                paramType="number" optional="true" The animation duration to be used for this reflow only. Supported only for Grid Layout mode.
                paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
 			*/
+
             // trigger recalculation
             // since different layout algorithms may or may not need to reflow depending on whether
-            // they are responsive by nature, we are going to fire an event, and different 
+            // they are responsive by nature, we are going to fire an event, and different
             // implementations are going to subscribe to it, so that we avoid doing if/else checks here, etc.
             var parsedDur;
-            if (this.options.layoutMode === 'grid') {
+            if (this.options.layoutMode === "grid") {
                 parsedDur = parseInt(animationDuration, 10);
-                animationDuration = parsedDur >= 0 ? parsedDur : this.options.gridLayout.animationDuration;
+                animationDuration = parsedDur >= 0 ?
+                    parsedDur :
+                    this.options.gridLayout.animationDuration;
 
                 this._reflowGlConfiguration(forceReflow, animationDuration, event);
             }
+
             // D.A. 13th March 2014 Bug #164295 Update container paddings when the header/footer height changes.
             if (this.options.layoutMode === "border") {
                 this._setBorderLayoutPaddings();
@@ -441,7 +467,6 @@ if (typeof jQuery !== 'function') {
         },
         /*
 		_initColumnLayout: function () {
-		
 		},
 		*/
         _initVerticalLayout: function () {
@@ -458,13 +483,14 @@ if (typeof jQuery !== 'function') {
             } else if (items && items.length > 0) {
 				this.element.empty();
                 for (i = 0; i < items.length; i++) {
-                    this._trigger(this.events.itemRendering, null, { itemData: items[i], index: i });
+                    this._trigger(this.events.itemRendering, null,
+                        { itemData: items[ i ], index: i });
                     item = $("<div></div>").appendTo(this.element).addClass(this.css.verticalItem);
-                    if (items[i].width) {
-                        item.css("width", items[i].width);
+                    if (items[ i ].width) {
+                        item.css("width", items[ i ].width);
                     }
-                    if (items[i].height) {
-                        item.css("height", items[i].height);
+                    if (items[ i ].height) {
+                        item.css("height", items[ i ].height);
                     }
                     this._trigger(this.events.itemRendered, null, { item: item, index: i });
                 }
@@ -474,6 +500,7 @@ if (typeof jQuery !== 'function') {
                 this.element.children().addClass(this.css.verticalItem);
             }
         },
+
         // When items configuration is given get the cols and rows values from it.
         _analyzeGlItems: function () {
             var gl = this._opt.gridLayout,
@@ -483,7 +510,7 @@ if (typeof jQuery !== 'function') {
 		        item, itemCols, itemRows, i;
 
             for (i = 0; items.length > i; i++) {
-                item = items[i];
+                item = items[ i ];
                 itemCols = item.colIndex + item.colSpan;
                 itemRows = item.rowIndex + item.rowSpan;
 
@@ -512,13 +539,15 @@ if (typeof jQuery !== 'function') {
 
             // Convert the column width option to number value
             if (columnWidth) {
-                if (typeof columnWidth === 'string') {
-                    if (columnWidth.indexOf('%') !== -1) {
+                if (typeof columnWidth === "string") {
+                    if (columnWidth.indexOf("%") !== -1) {
                         units = columnWidth.substring(0, columnWidth.length - 1);
                         units = parseInt(units, 10) / 100;
                         if (!isNaN(units) && units > 0) {
+
                             // Keep the ratio to resize the tiles when the container is resized
                             gl.columnWidthRatio = units;
+
                             // When columnWidth option is set in percent
                             // consider the margin-left to be part of it for users ease
                             gl.columnWidth = Math.floor(elWidth * units - gl.marginLeft);
@@ -541,12 +570,13 @@ if (typeof jQuery !== 'function') {
 
             // Convert the column height option to number value
             if (columnHeight) {
-                if (typeof columnHeight === 'string') {
-                    if (columnHeight.indexOf('%') !== -1) {
+                if (typeof columnHeight === "string") {
+                    if (columnHeight.indexOf("%") !== -1) {
                         units = columnHeight.substring(0, columnHeight.length - 1);
                         units = parseInt(units, 10) / 100;
                         if (!isNaN(units) && units > 0) {
                             gl.columnHeightRatio = units;
+
                             // When columnHeight option is set in percent
                             // consider the margin-top to be part of it for users ease
                             gl.columnHeight = Math.floor(elHeight * units - gl.marginTop);
@@ -565,36 +595,41 @@ if (typeof jQuery !== 'function') {
                 elWidth = this.element.width(),
                 elHeight = this.element.height(),
                 itemsLength = this.options.items.length,
-		        columnWidthOption = typeof gl.columnWidth === 'number' &&
+		        columnWidthOption = typeof gl.columnWidth === "number" &&
                     gl.columnWidth > 0,
-                columnHeightOption = typeof gl.columnHeight === 'number' &&
+                columnHeightOption = typeof gl.columnHeight === "number" &&
                     gl.columnHeight > 0,
-		        colsOption = typeof gl.cols === 'number' && gl.cols > 0,
-		        rowsOption = typeof gl.rows === 'number' && gl.rows > 0;
+		        colsOption = typeof gl.cols === "number" && gl.cols > 0,
+		        rowsOption = typeof gl.rows === "number" && gl.rows > 0;
 
             // Calculate cols/rows depending on provided options
             if (!colsOption) {
                 if (rowsOption) {
+
                     // When rows are given, but cols are not. Calculate cols from the rows.
                     gl.cols = Math.ceil(itemsLength / gl.rows);
                 } else {
                     if (columnWidthOption) {
+
                         // When cols & rows options are not given, but column width option is given.
                         // Calculate cols/rows from column width.
                         gl.cols = Math.floor(elWidth / (gl.columnWidth + gl.marginLeft));
                         gl.rows = Math.ceil(itemsLength / gl.cols);
                     } else if (columnHeightOption) {
+
                         // When cols, rows and column width options are not given, but column height is given.
                         // Calculate cols/rows from column height.
                         gl.rows = Math.floor(elHeight / (gl.columnHeight + gl.marginTop));
                         gl.cols = Math.ceil(itemsLength / gl.rows);
                     } else {
+
                         // Default, when no options are given.
                         gl.cols = Math.ceil(Math.sqrt(itemsLength));
                         gl.rows = Math.ceil(itemsLength / gl.cols);
                     }
                 }
             } else if (!rowsOption) {
+
                 // When cols are given, but rows are not. Calculate rows from the cols.
                 gl.rows = Math.ceil(itemsLength / gl.cols);
             }
@@ -637,32 +672,43 @@ if (typeof jQuery !== 'function') {
 
             // Initialize internal grid layout options
             this._opt.gridLayout = gl = $.extend(true, {}, this.options.gridLayout, {
+
                 // The created items
                 elements: $(),
+
                 // The minimum column count
                 minColCount: 1,
+
                 // The column width to container width ratio
                 columnWidthRatio: null,
+
                 // The column height to container height ratio
                 columnHeightRatio: null,
+
                 // The effective width of the container, the width without the vertical scrollbar
                 // The initial value is be set to the full container's width.
                 // When vertical scroll appear or disappear the value is recalculated accordingly
                 containerWidthNoScroll: e.width(),
+
                 // The effective height of the container, the height without the horizontal scrollbar
                 // The initial value is be set to the full container's height
                 // When horizontal scroll appear or disappear the value is recalculated accordingly
                 containerHeightNoScroll: e.height(),
+
                 // Items are considered resizable when their width or height is set in percent
                 resizeItems: false,
+
                 // Whether the items are currently animated
                 animating: false,
+
                 // When the items are rearranged and the columnWidth or cols are not set
                 // The columnWidth will be automatically adjusted to fit the items in the container
                 autoAdjustColumnWidth: false,
+
                 // When the items are rearranged and the columnHeight or rows are not set
                 // The columnHeight will be automatically adjusted to fit the items in the container
                 autoAdjustColumnHeight: false,
+
                 // D.A. 12th May 2014, Bug #160622, Preserve the initial configuration when reflowing
                 initialCols: 0,
                 initialRows: 0,
@@ -670,10 +716,10 @@ if (typeof jQuery !== 'function') {
                 initialColWidthRatio: null,
                 initialColHeight: 0,
                 initialColHeightRation: null,
-                initialItems: [],
+                initialItems: [ ],
                 initialReflow: true,
-                useOffset: (e.css('position') === 'static' || e.css('position') === 'fixed')
-                    && this.options.gridLayout.useOffset ? true : false,
+                useOffset: (e.css("position") === "static" || e.css("position") === "fixed") &&
+                    this.options.gridLayout.useOffset ? true : false,
                 destroyItemsFromIndex: e.children().length
             });
 
@@ -729,20 +775,21 @@ if (typeof jQuery !== 'function') {
 
             // Create items for each item definition in this.options.items
             for (i = 0; i < items.length; i++) {
-                itemData = items[i];
+                itemData = items[ i ];
                 $currChild = $children.eq(i);
                 renderNewItem = $currChild.length === 0;
 
-                colSpan = itemData.colSpan = (typeof itemData.colSpan === 'number') ?
+                colSpan = itemData.colSpan = (typeof itemData.colSpan === "number") ?
                     itemData.colSpan : 1;
-                rowSpan = itemData.rowSpan = (typeof itemData.rowSpan === 'number') ?
+                rowSpan = itemData.rowSpan = (typeof itemData.rowSpan === "number") ?
                     itemData.rowSpan : 1;
-                row = itemData.rowIndex = (typeof itemData.rowIndex === 'number') ?
+                row = itemData.rowIndex = (typeof itemData.rowIndex === "number") ?
                     itemData.rowIndex : Math.floor(i / gl.cols);
-                col = itemData.colIndex = (typeof itemData.colIndex === 'number') ?
+                col = itemData.colIndex = (typeof itemData.colIndex === "number") ?
                     itemData.colIndex : i % gl.cols;
 
                 if (renderNewItem || initialRendering) {
+
                     // Trigger Item Rendering
                     this._trigger(this.events.itemRendering, null, {
                         itemData: itemData,
@@ -775,7 +822,7 @@ if (typeof jQuery !== 'function') {
 
                 item.addClass(this.css.item)
                     .addClass(this.css.gridItemAbs)
-                    .attr('data-index', i)
+                    .attr("data-index", i)
                     .css({
                         top: top,
                         left: left,
@@ -784,6 +831,7 @@ if (typeof jQuery !== 'function') {
                     });
 
                 if (renderNewItem || initialRendering) {
+
                     // Trigger Item Rendered
                     this._trigger(this.events.itemRendered, null, {
                         item: item,
@@ -795,11 +843,12 @@ if (typeof jQuery !== 'function') {
 
             this._glSortItemsByPositionOrder();
 
-            // Remove excess elements when setOption "items" 
+            // Remove excess elements when setOption "items"
             // is called with less item configurations
             $children.slice(items.length).remove();
 
             if (initialRendering) {
+
                 // Trigger grid layout rendered
                 this._trigger(this.events.rendered, null, {
                     items: this.options.items
@@ -807,10 +856,13 @@ if (typeof jQuery !== 'function') {
             }
         },
         _initGlFromItemsConfig: function (initialRendering) {
+
             // Initialize and analyze the internal grid layout configuration
             this._createGlConfig();
+
             // Render the grid layout based on the items configuration
             this._renderGlItemsFromItemsConfig(initialRendering);
+
             // Reflow the items in case scrollbar appeared
             this.reflow(false, 0);
         },
@@ -832,7 +884,7 @@ if (typeof jQuery !== 'function') {
                         .appendTo(this.element)
                         .addClass(this.css.item)
                         .addClass(this.css.gridItemAbs)
-                        .attr('data-index', i * gl.cols + j)
+                        .attr("data-index", i * gl.cols + j)
                         .width(iw)
                         .height(ih);
 
@@ -853,6 +905,7 @@ if (typeof jQuery !== 'function') {
             }
 
             if (initialRendering) {
+
                 // Trigger Grid Layout rendered
                 this._trigger(this.events.rendered, null, {
                     items: this.options.items
@@ -870,7 +923,7 @@ if (typeof jQuery !== 'function') {
                 $children = e.children(),
                 lenDiff = $children.length - this.options.items.length;
 
-            // D.A 3rd April 2014, Bug #168927 Grid Layout is not 
+            // D.A 3rd April 2014, Bug #168927 Grid Layout is not
             // instantiated correctly from markup when items are not provided
             if (lenDiff > 0) {
                 // Add items configuration for each child
@@ -882,11 +935,13 @@ if (typeof jQuery !== 'function') {
             if (items && items.length > 0) {
                 this._initGlFromItemsConfig(true);
             } else if ($children.length === 0) {
+
                 // When there aren't any children, and cols & rows is defined in the gridLayout settings
                 // we are going to create cols * rows number of DIVs
                 this._initGlFromColsRows(true);
             }
         },
+
         // Stores the grid layout configuration as it is upon initialization
         _setGlInitialConfig: function () {
             var gl = this._opt.gridLayout;
@@ -897,7 +952,7 @@ if (typeof jQuery !== 'function') {
             gl.initialColWidth = gl.columnWidth;
             gl.initialColWidthRatio = gl.columnWidthRatio;
             gl.initialColHeightRatio = gl.columnHeightRatio;
-            gl.initialItems = $.extend(true, [], this.options.items);
+            gl.initialItems = $.extend(true, [ ], this.options.items);
         },
         _getContainerWidthNoScroll: function () {
             var widthNoScroll;
@@ -907,7 +962,7 @@ if (typeof jQuery !== 'function') {
             // Chrome and IE don't include the scrollbarWidth in the computed value while Firefox does.
             // D.A. 20th January 2015, Bug #187424 Same as above bug in IE9
             if (($.ig.util.isWebKit || $.ig.util.isIE9) && window.getComputedStyle) {
-                widthNoScroll = parseInt(window.getComputedStyle(this.element[0]).width, 10);
+                widthNoScroll = parseInt(window.getComputedStyle(this.element[ 0 ]).width, 10);
             } else {
                 widthNoScroll = this.element.width() -
                     ($.ig.util.hasVerticalScroll(this.element) ? this._opt.scrollBarWidth : 0);
@@ -920,7 +975,7 @@ if (typeof jQuery !== 'function') {
 
             // Look _getContainerWidthNoScroll comments
             if (($.ig.util.isWebKit || $.ig.util.isIE9) && window.getComputedStyle) {
-                heightNoScroll = parseInt(window.getComputedStyle(this.element[0]).height, 10);
+                heightNoScroll = parseInt(window.getComputedStyle(this.element[ 0 ]).height, 10);
             } else {
                 heightNoScroll = this.element.height() -
                     ($.ig.util.hasHorizontalScroll(this.element) ? this._opt.scrollBarHeight : 0);
@@ -928,6 +983,7 @@ if (typeof jQuery !== 'function') {
 
             return heightNoScroll;
         },
+
         // returnType='boolean' Returns "true" when grid layout reflow is needed
         // to adjust the tiles in case scrollbars appeared or disappeared.
         _glReflowNeeded: function () {
@@ -940,8 +996,11 @@ if (typeof jQuery !== 'function') {
             // Reflow is needed also when horizontal scrollbar appeared or disappeared and
             // columnHeight is in percent.
             return (gl.containerWidthNoScroll !== newContainerWidthNoScroll &&
-                (gl.columnWidthRatio || gl.cols !== Math.floor(newContainerWidthNoScroll / (gl.columnWidth + gl.marginLeft)))) ||
-                (gl.containerHeightNoScroll !== newContainerHeightNoScroll && gl.columnHeightRatio);
+                (gl.columnWidthRatio ||
+                    gl.cols !== Math.floor(newContainerWidthNoScroll /
+                        (gl.columnWidth + gl.marginLeft)))) ||
+                (gl.containerHeightNoScroll !== newContainerHeightNoScroll &&
+                    gl.columnHeightRatio);
         },
         _reflowGlConfiguration: function (forceReflow, animationDuration, event) {
             var self = this,
@@ -958,12 +1017,14 @@ if (typeof jQuery !== 'function') {
                 colWidthChanged, colHeightChanged, positionsChanged, foundMatch,
                 currentRow, item, i, j, k, r, n,
                 rearrangeCallback = function () {
+
                     // Check if all animations have ended
-                    if (!gl.elements.is(':animated')) {
+                    if (!gl.elements.is(":animated")) {
                         gl.animating = false;
                         if (self._glReflowNeeded()) {
                             self.reflow(false, animationDuration, event);
                         } else {
+
                             // Trigger the internal resized event.
                             // The calls of the public api  method will also trigger the event.
                             self._triggerInternalResized(event);
@@ -972,6 +1033,7 @@ if (typeof jQuery !== 'function') {
                 };
 
             if (items) {
+
                 // Update columnWidth value when it is set in percent and container width changed
                 if (gl.columnWidthRatio &&
                         gl.containerWidthNoScroll !== newContainerWidthNoScroll) {
@@ -981,6 +1043,7 @@ if (typeof jQuery !== 'function') {
                 } else {
                     colWidthChanged = false;
                 }
+
                 // Update columnHeight when it is set in percent and container height changed
                 if (gl.columnHeightRatio &&
                         gl.containerHeightNoScroll !== newContainerHeightNoScroll) {
@@ -990,22 +1053,27 @@ if (typeof jQuery !== 'function') {
                 } else {
                     colHeightChanged = false;
                 }
+
                 // Recalculate the columnWidth of the items to most efficiently use the container's
                 // width when the container's height changed and the height should be autoadjusted.
-                // This might happen only when no options specifying the columnWidth were set by the user 
+                // This might happen only when no options specifying the columnWidth were set by the user
                 // (columnWidth, cols and items) and the items are rearrangeable or reflow was forced.
                 if (gl.autoAdjustColumnWidth && ((gl.containerHeightNoScroll !==
                     newContainerHeightNoScroll && gl.rearrangeItems) || forceReflow)) {
-                    gl.rows = Math.max(Math.floor(newContainerHeightNoScroll / (gl.columnHeight + mt)), 1);
+                    gl.rows = Math.max(Math.floor(newContainerHeightNoScroll /
+                        (gl.columnHeight + mt)), 1);
                     gl.columnWidthRatio = 1 / Math.ceil(items.length / gl.rows);
                     gl.columnWidth = Math.floor(
                         newContainerWidthNoScroll * gl.columnWidthRatio - ml);
                     colWidthChanged = true;
                 }
+
                 // Update the container width value
                 gl.containerWidthNoScroll = newContainerWidthNoScroll;
+
                 // Update the container height value
                 gl.containerHeightNoScroll = newContainerHeightNoScroll;
+
                 // Rearrange items
                 if (gl.rearrangeItems || forceReflow) {
                     if (gl.rearrangeItems) {
@@ -1016,43 +1084,51 @@ if (typeof jQuery !== 'function') {
                                 (gl.columnWidth + ml));
                         }
                     } else {
+
                         // When the reflow is forced
                         if (gl.autoAdjustColumnWidth) {
+
                             // Update the column value when autoAdjustment is necessary
                             newColCount = Math.ceil(items.length / gl.rows);
                         } else if (gl.autoAdjustColumnHeight) {
+
                             // Update the column value when autoAdjustment is necessary
                             newColCount = Math.floor(newContainerWidthNoScroll /
                                 (gl.columnWidth + ml));
                         } else {
+
                             // Preserve the cols value when the items are not
                             // rearrangeable, but the reflow was forced.
                             newColCount = gl.cols;
                         }
                     }
+
                     // D.A. 18. July 2013 Bug#147162 Items do not rearrange when restoring the browser
                     // and the width of the container is less than the minimum column count
                     if (gl.minColCount > newColCount) {
                         newColCount = gl.minColCount;
                     }
+
                     // Rearrange only when the new column count value is different from the old one
                     if (newColCount !== gl.cols || forceReflow) {
                         if (newColCount === gl.initialCols) {
+
                             // D.A. 12th May 2014, Bug #160622, Preserve the initial configuration when reflowing
-                            items = this.options.items = $.extend(true, [], gl.initialItems);
+                            items = this.options.items = $.extend(true, [ ], gl.initialItems);
                             gl.rows = gl.initialRows;
                             gl.cols = gl.initialCols;
                         } else {
                             gl.cols = newColCount;
-                            helperArray = [[]];
-                            helperArray[0].length = gl.cols;
+                            helperArray = [ [ ] ];
+                            helperArray[ 0 ].length = gl.cols;
 
                             // Rearrange items to best fit in the container and to keep their original order
                             for (i = 0; i < items.length; i++) {
-                                itemData = items[i];
+                                itemData = items[ i ];
                                 colSpan = itemData.colSpan;
                                 rowSpan = itemData.rowSpan;
                                 foundMatch = false;
+
                                 // Create array with 1 row and the same number of columns as the grid layout.
                                 // Search for a matching position for each item.
                                 // If such position cannot be found, add new row to the array.
@@ -1062,20 +1138,22 @@ if (typeof jQuery !== 'function') {
                                 // "j" is the rowIndex. "k" is the colIndex.
                                 // Animate the items to their new positions.
                                 for (j = 0; j < helperArray.length && !foundMatch; j++) {
-                                    for (k = 0; k < helperArray[j].length && !foundMatch; k++) {
+                                    for (k = 0; k < helperArray[ j ].length && !foundMatch; k++) {
+
                                         // Check if the position is occupied
-                                        if (!helperArray[j][k]) {
+                                        if (!helperArray[ j ][ k ]) {
                                             foundMatch = true;
                                             for (r = 0; foundMatch && r < rowSpan * colSpan; r++) {
-                                                if (colSpan > helperArray[j].length - k) {
+                                                if (colSpan > helperArray[ j ].length - k) {
                                                     foundMatch = false;
                                                 } else {
                                                     currentRow = j + Math.floor(r / colSpan);
-                                                    if (!helperArray[currentRow]) {
-                                                        helperArray[currentRow] = [];
-                                                        helperArray[currentRow].length = gl.cols;
+                                                    if (!helperArray[ currentRow ]) {
+                                                        helperArray[ currentRow ] = [ ];
+                                                        helperArray[ currentRow ].length = gl.cols;
                                                     }
-                                                    if (helperArray[currentRow][k + (r % colSpan)] === 1) {
+                                                    if (helperArray[ currentRow ][
+                                                        k + (r % colSpan) ] === 1) {
                                                         foundMatch = false;
                                                     }
                                                 }
@@ -1084,28 +1162,32 @@ if (typeof jQuery !== 'function') {
                                         if (foundMatch) {
                                             itemData.rowIndex = j;
                                             itemData.colIndex = k;
+
                                             // Mark the positions as occupied
                                             for (n = 0; n < rowSpan * colSpan; n++) {
-                                                helperArray[itemData.rowIndex + Math.floor(n / colSpan)][
-                                                    itemData.colIndex + (n % colSpan)] = 1;
+                                                helperArray[ itemData.rowIndex +
+                                                    Math.floor(n / colSpan) ][
+                                                    itemData.colIndex + (n % colSpan) ] = 1;
                                             }
                                         } else if (j === (helperArray.length - 1) &&
-                                            k === (helperArray[j].length - 1)) {
-                                            helperArray[j + 1] = [];
-                                            helperArray[j + 1].length = gl.cols;
+                                            k === (helperArray[ j ].length - 1)) {
+                                            helperArray[ j + 1 ] = [ ];
+                                            helperArray[ j + 1 ].length = gl.cols;
                                         }
                                     }
                                 }
+
                                 //TODO: If no custom items were provided we can fallback to this method
-                                //row = items[i].rowIndex;
-                                //col = items[i].colIndex;
-                                //items[i].rowIndex = Math.floor(i / newColCount);
-                                //items[i].colIndex = i % newColCount;
-                                //item = self.element.find('> [data-index=' + '"' + i + '"' + ']');
+                                //row = items[ i ].rowIndex;
+                                //col = items[ i ].colIndex;
+                                //items[ i ].rowIndex = Math.floor(i / newColCount);
+                                //items[ i ].colIndex = i % newColCount;
+                                //item = self.element.find('> [ data-index=' + '"' + i + '"' + ' ]');
                             }
+
                             // Recalculate the columnHeight of the items to most efficiently use the container's
                             // height when the rows count changed and the height should be auto adjusted.
-                            // This may happen only when no options specifying the columnHeight were set by the user 
+                            // This may happen only when no options specifying the columnHeight were set by the user
                             // (columnHeight, rows and items) and items are rearrangeable or reflow was forced.
                             if (gl.autoAdjustColumnHeight && gl.rows !== helperArray.length) {
                                 gl.columnHeightRatio = 1 / helperArray.length;
@@ -1124,13 +1206,14 @@ if (typeof jQuery !== 'function') {
                 if ((colWidthChanged || colHeightChanged || positionsChanged) || forceReflow) {
                     gl.animating = (positionsChanged && animationDuration > 0) || gl.animating;
                     for (i = 0; i < items.length; i++) {
-                        itemData = items[i];
+                        itemData = items[ i ];
                         item = itemData.item;
                         row = itemData.rowIndex;
                         col = itemData.colIndex;
                         colSpan = itemData.colSpan;
                         rowSpan = itemData.rowSpan;
                         newDim = {};
+
                         // Animate to the new values when the items positions changed.
                         // When the columnWidth/Height is changed while animation is
                         // still running (e.g. from container resizing), animate to the new values.
@@ -1144,6 +1227,7 @@ if (typeof jQuery !== 'function') {
                                 newDim.height = rowSpan * gl.columnHeight + (rowSpan - 1) * mt;
                             }
                             if (animationDuration > 0) {
+
                                 // Animate the items to their new positions when animation duration is greater than 0.
                                 // Trigger the internal resized event in the callback.
                                 item.animate(newDim, {
@@ -1174,6 +1258,7 @@ if (typeof jQuery !== 'function') {
                     if (this._glReflowNeeded()) {
                         this.reflow(false, animationDuration, event);
                     } else {
+
                         // Sets the initial grid layout config after the layout is initially reflowed
                         if (gl.initialReflow) {
                             this._setGlInitialConfig();
@@ -1190,12 +1275,14 @@ if (typeof jQuery !== 'function') {
                 maxHeight, currHeight, i,
 				bl = this.options.borderLayout;
             this.element.addClass(this.css.border);
+
             // init from markup
             left = this.element.find(".left");
             header = this.element.find(".header");
             right = this.element.find(".right");
             center = this.element.find(".center");
             footer = this.element.find(".footer");
+
             // create elements if they don't exist
             if (left.length === 0 && bl.showLeft) {
                 this._trigger(this.events.itemRendering, null, { region: "left" });
@@ -1215,23 +1302,27 @@ if (typeof jQuery !== 'function') {
                 this._trigger(this.events.itemRendering, null, { region: "center" });
                 center = $("<div></div>").appendTo(this.element);
                 this._removeCenter = true;
-                this._trigger(this.events.itemRendered, null, { region: "center", element: center });
+                this._trigger(this.events.itemRendered, null,
+                    { region: "center", element: center });
             }
             center.addClass(this.css.borderItem).addClass(this.css.borderCenter);
             if (footer.length === 0 && bl.showFooter) {
                 this._trigger(this.events.itemRendering, null, { region: "footer" });
                 footer = $("<div></div>").appendTo(this.element);
                 this._removeFooter = true;
-                this._trigger(this.events.itemRendered, null, { region: "footer", element: footer });
+                this._trigger(this.events.itemRendered, null,
+                    { region: "footer", element: footer });
             }
             footer.addClass(this.css.borderItem).addClass(this.css.borderFooter);
             if (header.length === 0 && bl.showHeader) {
                 this._trigger(this.events.itemRendering, null, { region: "header" });
                 header = $("<div></div>").appendTo(this.element);
                 this._removeHeader = true;
-                this._trigger(this.events.itemRendered, null, { region: "header", element: header });
+                this._trigger(this.events.itemRendered, null,
+                    { region: "header", element: header });
             }
             header.addClass(this.css.borderItem).addClass(this.css.borderHeader);
+
             // create container element
             //wrapper1 = $("<div></div>").appendTo(this.element).addClass(this.css.borderWrapper1);
             //wrapper2 = $("<div></div>").appendTo(wrapper1).addClass(this.css.borderWrapper2);
@@ -1239,13 +1330,16 @@ if (typeof jQuery !== 'function') {
 				.append(left)
 				.append(right)
 				.append(center);
+
             // put footer at the end
             this.element.append(footer);
+
             // check sizes if we have them set via options
             // check if we have size of the left col defined in options
             if (bl.leftWidth !== null && bl.showLeft) {
                 left.css("width", bl.leftWidth);
                 /* K.D. May 28th, 2013 Bug #140104 Horizontal scrollbar is always displayed in the browser when using border layout */
+
                 //left.css("right", bl.leftWidth);
                 //container.css("padding-left", bl.leftWidth);
             } else if (bl.showLeft === false || left.length === 0) {
@@ -1254,13 +1348,17 @@ if (typeof jQuery !== 'function') {
             if (bl.rightWidth !== null && bl.showRight) {
                 right.css("width", bl.rightWidth);
                 /* K.D. May 28th, 2013 Bug #140104 Horizontal scrollbar is always displayed in the browser when using border layout */
+
                 //container.css("padding-right", bl.rightWidth);
             } else if (bl.showRight === false || right.length === 0) {
                 container.css("padding-right", 0);
             }
-            lwidth = bl.leftWidth && bl.leftWidth.indexOf && bl.leftWidth.indexOf("%") !== -1 ? 0 : parseInt(bl.leftWidth, 10);
-            rwidth = bl.rightWidth && bl.rightWidth.indexOf && bl.rightWidth.indexOf("%") !== -1 ? 0 : parseInt(bl.rightWidth, 10);
-            this.element.css('min-width', lwidth + rwidth);
+            lwidth = bl.leftWidth && bl.leftWidth.indexOf &&
+                bl.leftWidth.indexOf("%") !== -1 ? 0 : parseInt(bl.leftWidth, 10);
+            rwidth = bl.rightWidth && bl.rightWidth.indexOf &&
+                bl.rightWidth.indexOf("%") !== -1 ? 0 : parseInt(bl.rightWidth, 10);
+            this.element.css("min-width", lwidth + rwidth);
+
             // D.A. 13th March 2014 Bug #164295 Layout Manager in border layout mode doesn't set height correctly
             this._opt.borderLayout = {
                 header: header,
@@ -1269,6 +1367,7 @@ if (typeof jQuery !== 'function') {
                 paddingBottom: null
             };
             this._setBorderLayoutPaddings();
+
             // D.A. 29th April 2014, Bug #169730 Set default height equal to the maximum height of the sections
             if (this.options.height === null) {
                 sections = left.add(right).add(center);
@@ -1300,6 +1399,7 @@ if (typeof jQuery !== 'function') {
                 }
             }
         },
+
         // reflowBorder: function (event) {
         // var center = this.element.find('.ig-layout-border-center'),
         // bl = this.options.borderLayout,
@@ -1322,13 +1422,14 @@ if (typeof jQuery !== 'function') {
             } else if (items && items.length > 0) {
 				this.element.empty();
                 for (i = 0; i < items.length; i++) {
-                    this._trigger(this.events.itemRendering, null, { itemData: items[i], index: i });
+                    this._trigger(this.events.itemRendering, null,
+                        { itemData: items[ i ], index: i });
                     item = $("<li></li>").appendTo(this.element).addClass(this.css.flowItem);
-                    if (items[i].width) {
-                        item.css("width", items[i].width);
+                    if (items[ i ].width) {
+                        item.css("width", items[ i ].width);
                     }
-                    if (items[i].height) {
-                        item.css("height", items[i].height);
+                    if (items[ i ].height) {
+                        item.css("height", items[ i ].height);
                     }
                     this._trigger(this.events.itemRendered, null, { item: item, index: i });
                 }
@@ -1353,7 +1454,6 @@ if (typeof jQuery !== 'function') {
         /* recalculates the layout, if it can be done all via CSS, this is not necessary */
         /*
 		_doGridLayout: function () {
-		
 		},
 		_doBorderLayout: function () {
 			throw new Error("Not Implemented");
@@ -1364,21 +1464,21 @@ if (typeof jQuery !== 'function') {
 		*/
         _destroyBorderLayout: function () {
             this.element.removeClass(this.css.border);
-            this.element.find('.' + this.css.borderLeft).unwrap();
+            this.element.find("." + this.css.borderLeft).unwrap();
             if (this._removeLeft) {
-                this.element.children('.' + this.css.borderLeft).remove();
+                this.element.children("." + this.css.borderLeft).remove();
             }
             if (this._removeRight) {
-                this.element.children('.' + this.css.borderRight).remove();
+                this.element.children("." + this.css.borderRight).remove();
             }
             if (this._removeCenter) {
-                this.element.children('.' + this.css.borderCenter).remove();
+                this.element.children("." + this.css.borderCenter).remove();
             }
             if (this._removeHeader) {
-                this.element.children('.' + this.css.borderHeader).remove();
+                this.element.children("." + this.css.borderHeader).remove();
             }
             if (this._removeFooter) {
-                this.element.children('.' + this.css.borderFooter).remove();
+                this.element.children("." + this.css.borderFooter).remove();
             }
             this.element.children().removeClass(this.css.borderItem)
                 .removeClass(this.css.borderLeft)
@@ -1399,7 +1499,7 @@ if (typeof jQuery !== 'function') {
                 .removeClass(this.css.item)
                 .removeClass(this.css.gridItemAbs)
                 .removeClass(this.css.gridItemRel)
-                .removeAttr('data-index');
+                .removeAttr("data-index");
         },
         _destroyFlowLayout: function () {
             this.element.removeClass(this.css.flow);
@@ -1426,29 +1526,30 @@ if (typeof jQuery !== 'function') {
             $.Widget.prototype.destroy.apply(this, arguments);
             this.element.removeClass(this.css.container);
             switch (this.options.layoutMode) {
-            case 'grid':
+            case "grid":
                 this._destroyGridLayout();
                 break;
-            case 'border':
+            case "border":
                 this._destroyBorderLayout();
                 break;
-            case 'flow':
+            case "flow":
                 this._destroyFlowLayout();
                 break;
-            case 'vertical':
+            case "vertical":
                 this._destroyVerticalLayout();
                 break;
             default:
                 break;
             }
             if (this._opt.resizeLayout) {
+
                 // D.A. 24th October 2013 Remove the attached window events upon destroy
                 // D.A. 5th September 2014, Bug #169732 Removing reflow on element resize
                 //this.element.off('resize', this._opt.eventHandlers.elementResizeHandler);
-                $(window).off('resize', this._opt.eventHandlers.windowResizeHandler);
+                $(window).off("resize", this._opt.eventHandlers.windowResizeHandler);
             }
             return this;
         }
     });
-    $.extend($.ui.igLayoutManager, { version: '<build_number>' });
+    $.extend($.ui.igLayoutManager, { version: "<build_number>" });
 }(jQuery));
