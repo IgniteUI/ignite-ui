@@ -308,16 +308,16 @@
 
 		_initOptions: function (scrollOptions) {
 			if (scrollOptions) {
-				if (typeof scrollOptions.syncedElemsH !== "undefined") {
+				if (typeof scrollOptions.syncedElemsH[ 0 ] !== "undefined") {
 					this._linkElementsH(scrollOptions.syncedElemsH);
 				}
-				if (typeof scrollOptions.syncedElemsV !== "undefined") {
+				if (typeof scrollOptions.syncedElemsV[ 0 ] !== "undefined") {
 					this._linkElementsV(scrollOptions.syncedElemsV);
 				}
-				if (typeof scrollOptions.scrollbarH !== "undefined") {
+				if (scrollOptions.scrollbarH !== null) {
 					this._bindHScrollbar(scrollOptions.scrollbarH);
 				}
-				if (typeof scrollOptions.scrollbarV !== "undefined") {
+				if (scrollOptions.scrollbarV !== null) {
 					this._bindVScrollbar(scrollOptions.scrollbarV);
 				}
 				/* Lastly change position to be sure that all elements are linked */
@@ -527,12 +527,13 @@
 		},
 
 		_refreshScrollbarsDrag: function () {
-			if (this.options.scrollbarType === "custom" && this._vBarDrag && this._hBarDrag) {
-				var vDragHeight = this._elemHeight * this._percentInViewV;
-				this._vBarDrag.css("height", vDragHeight + "px");
-
-				var hDragWidth = this._container.width() * this._container.width() / this._content.width();
-				this._hBarDrag.css("width", hDragWidth + "px");
+			if (this.options.scrollbarType === "custom" && this._vBarDrag) {
+				this._vDragHeight = this._elemHeight * ((this._elemHeight - 2 * 15) / this._contentHeight);
+				this._vBarDrag.css("height", this._vDragHeight + "px");
+			}
+			if (this.options.scrollbarType === "custom" && this._hBarDrag) {
+				this._hDragWidth = this._elemWidth * this._percentInViewH - 3 * 15;
+				this._hBarDrag.css("width", this._hDragWidth + "px");
 			}
 		},
 
@@ -1668,7 +1669,8 @@
 		/** Used when one of the Arrow Up/Down or Vertical Track is being used by holding mouse button on them to constantly scroll on the Y axis */
 		_scrollTimeoutY: function (step, bSmallIncement) {
 			var	curPosY = this._getContentPositionY();
-			if ((curPosY === 0 && step <= 0) || (curPosY === this._contentHeight - this._dragMaxY && step >= 0)) {
+			if ((curPosY === 0 && step <= 0) ||
+				(curPosY === this._contentHeight - this._dragMaxY && step >= 0)) {
 				return;
 			}
 
@@ -1702,7 +1704,6 @@
 			bNoCancel = this._trigger("scrolling", null, eventArgs);
 
 			if (bNoCancel) {
-				var curPosY = this._getContentPositionY();
 				this._scrollTop(curPosY + step, false);
 
 				var self = this;
@@ -1785,7 +1786,6 @@
 				this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDown,
 												this.css.verticalScrollArrowDownActive);
 
-				var curPosY = this._getContentPositionY();
 				this._scrollTop(curPosY + scrollStep, false);
 
 				var self = this;
@@ -1920,15 +1920,15 @@
 			}
 
 			if (this._bUseVDrag) {
-				var curPosY = this._getContentPositionY(),		
-					offset = event.pageY - this._dragLastY;
+				var curPosY = this._getContentPositionY(),
+					offset = event.pageY - this._dragLastY,
 					nextPosY = curPosY + (offset * (this._contentHeight / (this._elemHeight - 3 * 17)));
 
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
 					horizontal: false,
 					stepX: 0,
-					stepY: nextPosY - curPosY,
+					stepY: nextPosY - curPosY
 				});
 
 				if (bNoCancel) {
@@ -2119,7 +2119,8 @@
 		/** Used when one of the Arrow Left/Right or Horizontal Track is being used by holding mouse button on them to constantly scroll on the X axis */
 		_scrollTimeoutX: function (step, bSmallIncement) {
 			var curPosX = this._getContentPositionX();
-			if ((curPosX === 0 && step <= 0) || (curPosX === this._contentWidth - this._dragMaxX && step >= 0)) {
+			if ((curPosX === 0 && step <= 0) ||
+				(curPosX === this._contentWidth - this._dragMaxX && step >= 0)) {
 				return;
 			}
 
@@ -2186,7 +2187,6 @@
 				this._hBarArrowLeft
 					.switchClass(this.css.horizontalScrollArrowLeft, this.css.horizontalScrollArrowLeftActive);
 
-				var curPosX = this._getContentPositionX();
 				this._scrollLeft(curPosX + scrollStep, false);
 
 				var self = this;
@@ -2244,7 +2244,6 @@
 				this._hBarArrowRight
 					.switchClass(this.css.horizontalScrollArrowRight, this.css.horizontalScrollArrowRightActive);
 
-				var curPosX = this._getContentPositionX();
 				this._scrollLeft(curPosX + scrollStep, false);
 
 				var self = this;
@@ -2398,8 +2397,6 @@
 
 				if (bNoCancel) {
 					//Move custom horizondal scrollbar thumb drag
-
-
 					this._scrollLeft(nextPostX, false);
 					this._dragLastX = evt.pageX;
 				}
@@ -2559,13 +2556,17 @@
 		*	bDragOnly - hide only the drag button. Used when using simple scrollbars
 		*/
 		_hideScrollBars: function (animate, bDragOnly, opacityStep) {
+			if (this.options.scrollbarType !== "custom" ||
+					this.options.alwaysVisible || (!this._vBarDrag && !this._hBarDrag)) {
+				return;
+			}
+
 			var self = this,
 				targetOpacty = 0,
-				currentOpacity = this._vBarDrag ? this._vBarDrag.css("opacity") : 0,
+				currentOpacity = this._vBarDrag ? this._vBarDrag.css("opacity") : this._hBarDrag.css("opacity"),
 				animationId;
 
-			if (this.options.scrollbarType !== "custom" ||
-					this.options.alwaysVisible || currentOpacity <= 0) {
+			if (currentOpacity === 0) {
 				return;
 			}
 
