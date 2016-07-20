@@ -1595,7 +1595,8 @@ if (typeof jQuery !== "function") {
                     }
                 });
         },
-        // Z.K. Remocing unused code
+        
+        // Z.K. Removing unused code
         // _cutPlg: function () {
         //     this._execCommand("cut");
         // },
