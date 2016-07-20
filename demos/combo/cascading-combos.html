@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cascading Combos Sample - Cascading Combos with Combo Box Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body><p>This sample demonstrates the use of three cascading combo controls. Imagine that you want to find the office of a multicultural company. By selecting the value in any previous combo the next control's values are automatically filtered by the selected value in the previous combo box. This sample shows how to bind each instance of the igCombo control with separate data source.</p>
+
+    <style type="text/css">
+        .label-container {
+            margin: 5px 0;
+        }
+
+        span[id^="combo"] {
+            margin-right: 15px;
+        }
+
+        #state, #stateCascading {
+            display: none;
+        }
+
+        .group-container {
+            padding: 10px;
+            margin-bottom: 10px;
+            clear: both;
+        }
+
+        .group-title {
+            font-weight: bold;
+        }
+
+        .comboGroup {
+            float: left;
+        }
+
+        .overHidden {
+            overflow: hidden;
+        }
+    </style>
+
+    <div class="group-container overHidden">
+        <div class="overHidden">
+            <div class="comboGroup">
+                <div>Country</div>
+                <span id="comboCountry"></span>
+            </div>
+            <div class="comboGroup">
+                <div id="state">State</div>
+                <div id="district">District</div>
+                <span id="comboDistrict"></span>
+            </div>
+            <div class="comboGroup">
+                <div>Town</div>
+                <span id="comboTown"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var dsCountry, dsCascTowns, dsCountryCascading,
+            dsCountryCascading, dsStatesUSCascading, dsDistrictBGCascading;
+
+        dsCountry = [
+			{ txtCountry: "United States", valCountry: "US" },
+			{ txtCountry: "Bulgaria", valCountry: "BG" }
+        ];
+
+        dsCascDistrict = [
+			{ keyCountry: "US", txtDistrict: "New Jersey", valDistrict: "NJ" },
+			{ keyCountry: "US", txtDistrict: "California", valDistrict: "CA" },
+			{ keyCountry: "US", txtDistrict: "Illinois", valDistrict: "IL" },
+			{ keyCountry: "US", txtDistrict: "New York", valDistrict: "NY" },
+			{ keyCountry: "US", txtDistrict: "Florida", valDistrict: "FL" },
+			{ keyCountry: "BG", txtDistrict: "Sofia", valDistrict: "SA" },
+			{ keyCountry: "BG", txtDistrict: "Plovdiv", valDistrict: "PV" },
+			{ keyCountry: "BG", txtDistrict: "Varna", valDistrict: "V" },
+			{ keyCountry: "BG", txtDistrict: "Yambol", valDistrict: "Y" }
+        ];
+
+        dsCascTowns = [
+			{ keyDistrict: "NJ", textTown: "Atlantic City", valTown: "AtlanticCity" },
+			{ keyDistrict: "NJ", textTown: "Dover", valTown: "Dover" },
+			{ keyDistrict: "CA", textTown: "Los Angeles", valTown: "LosAngeles" },
+			{ keyDistrict: "CA", textTown: "San Francisco", valTown: "San Francisco" },
+			{ keyDistrict: "CA", textTown: "San Diego", valTown: "SanDiego" },
+			{ keyDistrict: "IL", textTown: "Chicago", valTown: "Chicago" },
+            { keyDistrict: "NY", textTown: "New York", valTown: "NewYork" },
+			{ keyDistrict: "NY", textTown: "Buffalo", valTown: "Buffalo" },
+			{ keyDistrict: "FL", textTown: "Miami", valTown: " Miami" },
+			{ keyDistrict: "FL", textTown: "Orlando", valTown: "Orlando" },
+			{ keyDistrict: "SA", textTown: "Sofia", valTown: "Sofia" },
+			{ keyDistrict: "SA", textTown: "Pernik", valTown: "Pernik" },
+			{ keyDistrict: "PV", textTown: "Plovdiv", valTown: "Plovdiv" },
+			{ keyDistrict: "PV", textTown: "Asenovgrad", valTown: "Asenovgrad" },
+			{ keyDistrict: "V", textTown: "Varna", valTown: "Varna" },
+			{ keyDistrict: "V", textTown: "Kavarna", valTown: "Kavarna" },
+			{ keyDistrict: "V", textTown: "Dobrich", valTown: "Dobrich" },
+			{ keyDistrict: "V", textTown: "Balchik", valTown: "Balchik" },
+			{ keyDistrict: "Y", textTown: "Yambol", valTown: "Yambol" },
+			{ keyDistrict: "Y", textTown: "Kermen", valTown: "Kermen" },
+			{ keyDistrict: "Y", textTown: "Elhovo", valTown: "Elhovo" },
+			{ keyDistrict: "Y", textTown: "Bolyarovo", valTown: "Bolqrovo" },
+        ];
+
+        $(function () {
+
+            $("#comboCountry").igCombo({
+                textKey: "txtCountry",
+                valueKey: "valCountry",
+                dataSource: dsCountry,
+                selectionChanged: function (evt, ui) {
+                    var filteredCascDistrict = [];
+                    if (ui.items && ui.items[0]) {
+                        var itemData = ui.items[0].data;
+                        if (itemData.valCountry == "US") {
+                            $("#state").css("display", "block");
+                            $("#district").css("display", "none");
+                        }
+                        else {
+                            $("#state").css("display", "none");
+                            $("#district").css("display", "block");
+                        }
+
+                        filteredCascDistrict = dsCascDistrict.filter(function (district) {
+                            return district.keyCountry == itemData.valCountry;
+                        });
+                    }
+
+                    var $comboDistrict = $("#comboDistrict");
+                    $comboDistrict.igCombo("deselectAll", {}, true);
+                    $comboDistrict.igCombo("option", "dataSource", filteredCascDistrict);
+                    $comboDistrict.igCombo("dataBind");
+
+                    var disableChildCombo = filteredCascDistrict.length == 0;
+                    $comboDistrict.igCombo("option", "disabled", disableChildCombo);
+                },
+                itemsRendered: function (evt, ui) {
+                    ui.owner.deselectAll();
+                }
+            });
+
+            $("#comboDistrict").igCombo({
+                valueKey: "valDistrict",
+                textKey: "txtDistrict",
+                dataSource: [],
+                disabled: true,
+                selectionChanged: function (evt, ui) {
+                    var filteredCascTown = [];
+
+                    if (ui.items && ui.items[0]) {
+                        var itemData = ui.items[0].data;
+
+                        var filteredCascTown = dsCascTowns.filter(function (town) {
+                            return town.keyDistrict == itemData.valDistrict;
+                        });
+                    }
+
+                    var $comboTown = $("#comboTown");
+                    $comboTown.igCombo("deselectAll");
+                    $comboTown.igCombo("option", "dataSource", filteredCascTown);
+                    $comboTown.igCombo("dataBind");
+
+                    var disableChildCombo = filteredCascTown.length == 0;
+                    $comboTown.igCombo("option", "disabled", disableChildCombo);
+                }
+            });
+
+            $("#comboTown").igCombo({
+                valueKey: "valTown",
+                textKey: "textTown",
+                disabled: true
+            });
+        });
+
+    </script>
+
+</body>
+</html>
