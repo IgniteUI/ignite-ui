@@ -477,7 +477,7 @@
                 nameAttribute: "",
 
                 // Subscribe to fire callbacks when selection is changed from api
-                internalSelChangeSubs: null,
+                internalSelChangeSubs: [],
                 initialDataBinding: true,
                 remoteFilteringTriggerEvt: null,
                 preventInputBlur: false,
