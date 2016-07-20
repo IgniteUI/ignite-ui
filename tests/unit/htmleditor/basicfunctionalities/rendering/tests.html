@@ -527,7 +527,7 @@
                 stop();
                 setTimeout(function () {
                     start();
-                }, 100);
+                }, 200);
 
                 viewStateBtn.click();
 
@@ -537,7 +537,7 @@
                     $(domPathToolbar.find("span")).click();
                     ok($("#html1").data().igHtmlEditor._selectionWrapperSaved._document !== undefined, "Document was selected by using domPathToolbar");
                     start();
-                }, 200);
+                }, 400);
             },
             changeHeadingFormat: function (useExecAction) {
                 var callback = function (iframeBody) {
