@@ -1549,15 +1549,16 @@ if (typeof jQuery !== "function") {
                     }
                 });
         },
-        _cutPlg: function () {
-            this._execCommand("cut");
-        },
-        _copyPlg: function () {
-            this._execCommand("copy");
-        },
-        _pastePlg: function () {
-            this._execCommand("paste");
-        },
+        // Z.K. July 19, 2016 - Remove unused code
+        //_cutPlg: function () {
+        //    this._execCommand("cut");
+        //},
+        //_copyPlg: function () {
+        //    this._execCommand("copy");
+        //},
+        //_pastePlg: function () {
+        //    this._execCommand("paste");
+        //},
         _onSelectionChange: function (callback) {
             var self = this,
                 selectionWrapper,
@@ -2346,7 +2347,7 @@ if (typeof jQuery !== "function") {
         };
     $.fn.tableManipulator = function (method) {
         if (methods[method]) {
-            if (this !== table[0]) {
+            if (table === undefined || this !== table[0]) {
                 table = $(this);
             }
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));

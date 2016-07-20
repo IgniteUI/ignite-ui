@@ -470,6 +470,75 @@
                     this._testIgCombo("fontSize", "textToolbar", 3, callback);
                 }
             },
+            changeBackgroundColor: function () {
+                var callback = function () {
+                    return (this.children(":first").css("background-color") === "rgb(255, 0, 0)")
+                };
+
+                this._testExecuteAction("backcolor", callback, "red");
+            },
+            changeBackgroundColorWithInteraction: function () {
+                // Test with click button interaction
+                var self = this, p = this.editorBody.find("p:first"), button = $("#" + this.htmlEditorId + "_toolbars_formattingToolbar_item_backgroundTextColor_arrow");
+
+                stop();
+                setTimeout(function () {
+                    self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
+                    start();
+                }, 100);
+
+                stop();
+                setTimeout(function () {
+                    button.trigger("click");
+                    start();
+                }, 100);
+
+                stop();
+                setTimeout(function () {
+                    // Click on red color, Red  === 'rgb(255, 0, 0)'
+                    $($($(".ui-colorpicker-standardcolors")[1]).find(".igColorPicker-color")[1]).click();
+                    start();
+                }, 100);
+
+                stop();
+                setTimeout(function () {
+                    button.trigger("click");
+                    start();
+                }, 100);
+
+                stop();
+                setTimeout(function () {
+                    $("#" + this.htmlEditorId + "_toolbars_formattingToolbar_item_backgroundTextColor_backgroundTextColor").click();
+
+                    ok(p.children().css("background-color") === "rgb(255, 0, 0)", "Selected text background color is changed to red, rgb(255, 0, 0)");
+                    start();
+                }, 300);
+            },
+            manipulateDomPathToolbarButton: function () {
+                // Test with click button interaction
+                var self = this, button = $("#" + this.htmlEditorId + "_toolbars_formattingToolbar_item_backgroundTextColor_arrow"), td, domPathToolbar,
+                viewStateBtn = this.htmlEditor.find(".ui-igbutton-viewsource");
+
+                this.htmlEditor.igHtmlEditor("setContent", "<table border='1'><tbody><tr><td>asd</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><br><br>", "html");
+                td = $(self.htmlEditor.igHtmlEditor("contentEditable")).find("table tr:nth-child(1) td:nth-child(1)");
+
+                viewStateBtn.click();
+
+                stop();
+                setTimeout(function () {
+                    start();
+                }, 100);
+
+                viewStateBtn.click();
+
+                stop();
+                setTimeout(function () {
+                    domPathToolbar = $("#" + self.htmlEditorId + "_domPathToolbar");
+                    $(domPathToolbar.find("span")).click();
+                    ok($("#html1").data().igHtmlEditor._selectionWrapperSaved._document !== undefined, "Document was selected by using domPathToolbar");
+                    start();
+                }, 200);
+            },
             changeHeadingFormat: function (useExecAction) {
                 var callback = function (iframeBody) {
                     return !!iframeBody.find("h3").length;
@@ -660,6 +729,109 @@
                     ok(trCount === 2, "Table is inserted crrectly with 2 rows");
                     ok(tdCount === 4, "Table is inserted crrectly with 4 cells.");
                 });
+            },
+            _addRemoveRowsColumns: function () {
+                var htmlEditor = $("#" + this.htmlEditorId),
+                    addRowButton = $("#" + this.htmlEditorId + "_toolbars_insertObjectToolbar_item_addRow"),
+                    addColumnButton = $("#" + this.htmlEditorId + "_toolbars_insertObjectToolbar_item_addColumn"),
+                    dialog, iframeDocument = $($("#" + this.htmlEditorId).data().igHtmlEditor.workspace).contents(),
+                    viewStateBtn = htmlEditor.find(".ui-igbutton-viewsource"),
+                    self = this;
+
+                htmlEditor.igHtmlEditor("setContent", "<table border='1'><tbody><tr><td>asd</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><br><br>", "html");
+
+                stop();
+                setTimeout(function () {
+                    var trCount, tdCount, td;
+
+                    // When <table> element is selected
+                    // Add table row
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select($(htmlEditor.igHtmlEditor("contentEditable")).find("table"));
+                    htmlEditor.data().igHtmlEditor._addTableRowPlg();
+
+                    trCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr").length;
+                    tdCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table td").length;
+
+                    ok(trCount === 3, "Table is inserted crrectly with 3 rows, trCount " + trCount);
+                    ok(tdCount === 6, "Table is inserted crrectly with 6 cells, tdCount " + tdCount);
+
+                    // Add table column for table selector
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select($(htmlEditor.igHtmlEditor("contentEditable")).find("table"));
+                    htmlEditor.data().igHtmlEditor._addTableColumnPlg();
+
+                    trCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr").length;
+                    tdCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table td").length;
+
+                    ok(trCount === 3, "Table is modified crrectly with 3 rows, trCount " + trCount);
+                    ok(tdCount === 9, "Table is modified crrectly with 9 cells, tdCount " + tdCount);
+
+                    // Remove table row for table selector
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select($(htmlEditor.igHtmlEditor("contentEditable")).find("table"));
+                    htmlEditor.data().igHtmlEditor._removeTableRowPlg();
+
+                    trCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr").length;
+                    tdCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table td").length;
+
+                    ok(trCount === 2, "Table is modified crrectly with 3 rows, trCount " + trCount);
+                    ok(tdCount === 6, "Table is modified crrectly with 6 cells, tdCount " + tdCount);
+
+                    // Remove table column for table selector
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select($(htmlEditor.igHtmlEditor("contentEditable")).find("table"));
+                    htmlEditor.data().igHtmlEditor._removeTableColumnPlg();
+
+                    trCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr").length;
+                    tdCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table td").length;
+
+                    ok(trCount === 2, "Table is modified crrectly with 1 rows, trCount " + trCount);
+                    ok(tdCount === 4, "Table is modified crrectly with 3 cells, tdCount " + tdCount);
+
+                    // When <td> element is selected
+                    // Add table row
+                    td = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr:nth-child(1) td:nth-child(1)")
+
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(td);
+                    htmlEditor.data().igHtmlEditor._addTableRowPlg();
+
+                    trCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr").length;
+                    tdCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table td").length;
+
+                    ok(trCount === 3, "Table is modified crrectly with 2 rows, trCount " + trCount);
+                    ok(tdCount === 6, "Table is modified crrectly with 6 cells, tdCount " + tdCount);
+
+                    // Add table column for td selector
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(td);
+                    htmlEditor.data().igHtmlEditor._addTableColumnPlg();
+
+                    trCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr").length;
+                    tdCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table td").length;
+
+                    ok(trCount === 3, "Table is modified crrectly with 2 rows, trCount " + trCount);
+                    ok(tdCount === 9, "Table is modified crrectly with 8 cells, tdCount " + tdCount);
+
+                    // Remove table row for td selector
+                    td = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr:nth-child(1) td:nth-child(1)");
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(td);
+                    htmlEditor.data().igHtmlEditor._removeTableRowPlg();
+
+                    trCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr").length;
+                    tdCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table td").length;
+
+                    ok(trCount === 2, "Table is modified crrectly with 3 rows, trCount " + trCount);
+                    ok(tdCount === 6, "Table is modified crrectly with 6 cells, tdCount " + tdCount);
+
+                    // Remove table column for td selector
+                    td = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr:nth-child(1) td:nth-child(1)");
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(td);
+                    htmlEditor.data().igHtmlEditor._removeTableColumnPlg();
+
+                    trCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table tr").length;
+                    tdCount = $(htmlEditor.igHtmlEditor("contentEditable")).find("table td").length;
+
+                    ok(trCount === 2, "Table is modified crrectly with 1 rows, trCount " + trCount);
+                    ok(tdCount === 4, "Table is modified crrectly with 3 cells, tdCount " + tdCount);
+
+                    start();
+                }, 100);
             }
         };
 
@@ -757,6 +929,15 @@
         test("Execute Action Font size.", function () {
             this.changeFontSize(true);
         });
+        test("Execute Action background color.", function () {
+            this.changeBackgroundColor();
+        });
+        test("Execute Action background color with interaction.", function () {
+            this.changeBackgroundColorWithInteraction();
+        });
+        test("Test domPathToolbar buttons", function () {
+            this.manipulateDomPathToolbarButton();
+        });
         test("Heading", function () {
             this.changeHeadingFormat();
         });
@@ -771,6 +952,9 @@
         });
         test("Table dialog", function () {
             this._openTableDialog();
+        });
+        test("Add/Remove rows/columns", function () {
+            this._addRemoveRowsColumns();
         });
         module("HtmlEditor Rendering Tests", htmlEditorTestBeds);
         test("Default toolbars rendering.", function () {
