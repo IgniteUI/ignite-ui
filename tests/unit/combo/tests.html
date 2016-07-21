@@ -4922,31 +4922,21 @@
                 $combo.igCombo({
                     dataSource: ds,
 				    textKey:"ProductName",
-				    valueKey:"ID",
+				    valueKey: "ID",
+				    allowCustomValues: true,
 				    filteringType:"local",
-				    initialSelectedItems:[{value: 28}],
-				    grouping: {
-					    key: 'SupplierID',
-					    dir: 'desc'
-				    },
 				    virtualization: true,
-				    multiSelection:{enabled: true, showCheckboxes: true}
-                });         
-                equal(1, 1, "Selected item are 1");
-
+                });
+                
+                //Add your wait
                 setTimeout(function () {
                     //Make assertion
                     start();
-                    selectedItems = $combo.igCombo("selectedItems");
-                    $combo.igCombo("openDropDown");
                     $combo.igCombo("filter", "Sauerkraut");
-                    selectedItems = $combo.igCombo("selectedItems");
                     filteredItems = $combo.igCombo("filteredItems");
-                    equal(selectedItems.length, 1, "Selected item are 1");
                     equal(filteredItems.length, 1, "Filtered items are 1");
-                    $combo.igCombo("closeDropDown");
-                }, 1000);
-                stop();
+                }, 2000);
+                stop(); // Pause the test
             });
 
         });
