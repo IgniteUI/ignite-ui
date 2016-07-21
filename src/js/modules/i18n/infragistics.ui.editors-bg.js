@@ -72,7 +72,7 @@
 			    cannotSetRuntime: "Тази опцията не може да бъде настроена по време на изпълнение.",
 			    invalidDate: "Невалидна дата",
 			    maskMessage: 'Всички задължителни позиции трябва да бъдат попълнени.',
-			    maskRevertMessage: 'All required positions should be filled, that is why the value was reverted to the last valid one.',
+			    maskRevertMessage: 'Всички задължителни позиции трябва да бъдат попълнени, заради което и стойността на едитора беше върната към началната си стойност. ',
 				dateMessage: 'Трябва да бъде въведена валидна дата.',
 			    centuryThresholdValidValues: "Свойството centuryThreshold трябва да е между 0 и 99. Стойността беше върната към началната си стойност. ",
 			    noListItemsNoButton: "Брояча или падащия бутон са рендирани понеже няма listitems."
