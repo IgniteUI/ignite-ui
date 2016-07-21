@@ -20,7 +20,7 @@
 	
 	<script type="text/javascript"> 
 	
-	var ds = null, ds1 = null, dsXMLBare, dsXMLWrapped, dsJSONBare, dsJSONWrapped, dsWrong;
+	var ds = null, ds1 = null, dsXMLBare, dsXMLWrapped, dsJSONBare, dsJSONWrapped, dsWrong, dsWithMapper;
 
 	$(document).ready(function () {
 		$.mockjaxSettings.logging = 0;  // only critical error messages
@@ -49,6 +49,65 @@
 				status: 'error'
 			}
 		});
+		
+		$.mockjax({
+				url: 'categories',
+				contentType: 'text/json',
+				responseText: {
+					status: 'success',
+					data: {
+						"d": [
+								{
+									"ID": 1,
+									"CategoryName": "Beverages",
+									"Description": "Soft drinks, coffees, teas, beers, and ales",
+									"ImageUrl": "http://www.igniteui.com/images/samples/nw/categories/1.png",
+									"Products": [
+									  {
+									  	"ID": 1,
+									  	"ProductName": "Chai",
+									  	"SupplierID": 1,
+									  	"CategoryID": 1,
+									  	"QuantityPerUnit": "10 boxes x 20 bags",
+									  	"UnitPrice": 18.0000,
+									  	"UnitsInStock": 39,
+									  	"UnitsOnOrder": 0,
+									  	"ReorderLevel": 10,
+									  	"SupplierName": "Exotic Liquids",
+									  	"CategoryName": "Beverages",
+									  	"Rating": 1,
+									  	"Discontinued": false,
+									  	"CategoryImageUrl": "http://www.igniteui.com/images/samples/nw/categories/1.png"
+									  }
+									]
+								},
+								  {
+								  	"ID": 2,
+								  	"CategoryName": "Condiments",
+								  	"Description": "Sweet and savory sauces, relishes, spreads, and seasonings",
+								  	"ImageUrl": "http://www.igniteui.com/images/samples/nw/categories/2.png",
+								  	"Products": [
+									  {
+									  	"ID": 3,
+									  	"ProductName": "Aniseed Syrup",
+									  	"SupplierID": 1,
+									  	"CategoryID": 2,
+									  	"QuantityPerUnit": "12 - 550 ml bottles",
+									  	"UnitPrice": 10.0000,
+									  	"UnitsInStock": 13,
+									  	"UnitsOnOrder": 70,
+									  	"ReorderLevel": 25,
+									  	"SupplierName": "Exotic Liquids",
+									  	"CategoryName": "Condiments",
+									  	"Rating": 1,
+									  	"Discontinued": false,
+									  	"CategoryImageUrl": "http://www.igniteui.com/images/samples/nw/categories/2.png"
+									  }]
+								  }
+						]
+					}
+				}
+			});
 
 		$.mockjax({
 			url: 'http://services.odata.org/OData/OData.svc/Products?$format=json',
@@ -255,6 +314,19 @@
 				dsXMLWrapped = new $.ig.RemoteDataSource( {callback:dsXMLWrappedRender, dataSource: "WCFXMLWrapped",
 					schema: {fields:[ {name : "ProductID", xpath: "ProductID"}, {name : "ProductName", xpath : "ProductName"} ], searchField:"Product"}
 					}).dataBind();
+				
+				dsWithMapper = new $.ig.RemoteDataSource({
+					responseDataType: "json",
+					dataSource: "categories",
+					schema: {
+						searchField: "data.d",
+						fields: [
+							{ name: "ID", type: "number" },
+							{ name: "CategoryName", type: "string" },
+							{ name: "Products", type: "object", mapper: function (rec) { return rec.Products[0].ProductName; } }
+						]
+					}
+				}).dataBind();
 				setTimeout(function () { QUnit.start(); }, 500);
 			},
 			teardown: function() {
@@ -435,6 +507,9 @@
 		
 		});
 
+		test("Testing if _getFieldTypeFromSchema returns correct dataType for mapped field for remote data source", function () {
+			equal(dsWithMapper._getFieldTypeFromSchema("Products"), "string", "_getFieldTypeFromSchema should return the mapped value's dataType");
+		});
 	});
 	
 	</script>
