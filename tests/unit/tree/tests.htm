@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
 	<script type="text/javascript" src="../common/test-util.js"></script>
+	<script type="text/javascript" src="scripts/dragsimulator.js"></script>
 	
 	<style>
 		body {
@@ -26,101 +27,109 @@
 	</style>
 	
 	<script type="text/javascript">
+		function loadXMLDoc(dname) {                      
+			var xhttp = new XMLHttpRequest();                      
+			xhttp.open("GET", dname, false);
+			xhttp.setRequestHeader('Content-Type', 'text/xml');
+			xhttp.send('');            
+			return xhttp.responseXML;        
+		}
+		
 		var results = [{
-                        Text: 'Food', Expanded: true, Target: "_blank", Nodes: [
-                            { Text: 'Sandwiches', Nodes: [
-								{ Text: 'Ham & Cheese' }
-							]},
-                            { Text: 'Fish' },
-                            { Text: 'Hamburgers' },
-                            { Text: 'Sishi' },
-                            { Text: 'Steaks' }
-						]},
-                        {
-							Text: 'Beverages', Nodes: [
-                            { Text: 'Coke' },
-                            { Text: 'Pepsi' },
-                            { Text: 'Mountain Dew' },
-                            { Text: 'Wine' },
-                            { Text: 'Beer' },
-                            { Text: 'Lemonade' }
-                        ]},
-                        {
-							Text: 'Tech', Nodes: [
-                            { Text: 'Laptops' },
-                            { Text: 'Desktops' },
-                            { Text: 'Tablets' },
-                            { Text: 'Smartphones' },
-                            { Text: 'Mainframes' }
-						]},
-						{
-							Text: 'Literature', Nodes: [
-                            { Text: 'Dostoevsky' },
-                            { Text: 'Vazov' },
-                            { Text: 'Tolstoy' },
-                            { Text: 'Goethe' },
-                            { Text: 'Stainbeck' }
-						]},
-						{
-							Text: 'Accessories', Nodes: [
-                            { Text: 'Mouse' },
-                            { Text: 'Keyboard' },
-                            { Text: 'Microphone' },
-                            { Text: 'Camera' },
-                            { Text: 'Mousepad' }
-						]}
-                    ];
-		var results2 = [{ Text: 'Unit testing', Value: 0, ImageUrl: 'images/book.png', URL: 'http://google.com', Target: "_blank", Children: [
-							{ Text1: 'Unit testing1', Value1: 1, ImageUrl1: 'images/book_add.png', URL1: 'http://infragistics.com', Children1: [
-								{ Text2: 'Unit testing2', Value2: 2, ImageUrl2: 'images/coins.png', URL2: '', Children2: [{Text3: 'Unit testing3', Value3: 3}] },
-								{ Text2: 'Unit testing2' }
-							]},
-							{ Text1: 'Unit testing1', Children1: [
-								{ Text2: 'Unit testing2' },
-								{ Text2: 'Unit testing2' }
-							]}
-						]},
-						{ Text: 'Unit testing', Children: [
-							{ Text1: 'Unit testing1', Children1: [
-								{ Text2: 'Unit testing2' },
-								{ Text2: 'Unit testing2' }
-							]},
-							{ Text1: 'Unit testing', Children1: [
-								{ Text2: 'Unit testing' },
-								{ Text2: 'Unit testing' }
-							]}
-						]},
-						{ Text: 'Unit testing', Children: [
-							{ Text1: 'Unit testing', Children1: [
-								{ Text2: 'Unit testing' },
-								{ Text2: 'Unit testing' }
-							]},
-							{ Text1: 'Unit testing', Children1: [
-								{ Text2: 'Unit testing' },
-								{ Text2: 'Unit testing' }
-							]}
-						]},
-						{ Text: 'Unit testing', Children: [
-							{ Text1: 'Unit testing', Children1: [
-								{ Text2: 'Unit testing' },
-								{ Text2: 'Unit testing' }
-							]},
-							{ Text1: 'Unit testing', Children1: [
-								{ Text2: 'Unit testing' },
-								{ Text2: 'Unit testing' }
-							]}
-						]},
-						{ Text: 'Unit testing', Children: [
-							{ Text1: 'Unit testing', Value1: 1, Children1: [
-								{ Text2: 'Unit testing' },
-								{ Text2: 'Unit testing' }
-							]},
-							{ Text1: 'Unit testing', Children1: [
-								{ Text2: 'Unit testing' },
-								{ Text2: 'Unit testing' }
-							]}
-						]}];
-			var notWorkingResponse1 = {
+				Text: 'Food', Expanded: true, Target: "_blank", Nodes: [
+					{ Text: 'Sandwiches', Nodes: [
+						{ Text: 'Ham & Cheese' }
+					]},
+					{ Text: 'Fish' },
+					{ Text: 'Hamburgers' },
+					{ Text: 'Sishi' },
+					{ Text: 'Steaks' }
+				]},
+				{
+					Text: 'Beverages', Nodes: [
+					{ Text: 'Coke' },
+					{ Text: 'Pepsi' },
+					{ Text: 'Mountain Dew' },
+					{ Text: 'Wine' },
+					{ Text: 'Beer' },
+					{ Text: 'Lemonade' }
+				]},
+				{
+					Text: 'Tech', Nodes: [
+					{ Text: 'Laptops' },
+					{ Text: 'Desktops' },
+					{ Text: 'Tablets' },
+					{ Text: 'Smartphones' },
+					{ Text: 'Mainframes' }
+				]},
+				{
+					Text: 'Literature', Nodes: [
+					{ Text: 'Dostoevsky' },
+					{ Text: 'Vazov' },
+					{ Text: 'Tolstoy' },
+					{ Text: 'Goethe' },
+					{ Text: 'Stainbeck' }
+				]},
+				{
+					Text: 'Accessories', Nodes: [
+					{ Text: 'Mouse' },
+					{ Text: 'Keyboard' },
+					{ Text: 'Microphone' },
+					{ Text: 'Camera' },
+					{ Text: 'Mousepad' }
+				]}
+			],
+			results2 = [{ Text: 'Unit testing', Value: 0, ImageUrl: 'images/book.png', URL: 'http://google.com', Target: "_blank", Children: [
+						{ Text1: 'Unit testing1', Value1: 1, ImageUrl1: 'images/book_add.png', URL1: 'http://infragistics.com', Children1: [
+						{ Text2: 'Unit testing2', Value2: 2, ImageUrl2: 'images/coins.png', URL2: '', Children2: [{Text3: 'Unit testing3', Value3: 3}] },
+						{ Text2: 'Unit testing2' }
+					]},
+					{ Text1: 'Unit testing1', Children1: [
+						{ Text2: 'Unit testing2' },
+						{ Text2: 'Unit testing2' }
+					]}
+				]},
+				{ Text: 'Unit testing', Children: [
+					{ Text1: 'Unit testing1', Children1: [
+						{ Text2: 'Unit testing2' },
+						{ Text2: 'Unit testing2' }
+					]},
+					{ Text1: 'Unit testing', Children1: [
+						{ Text2: 'Unit testing' },
+						{ Text2: 'Unit testing' }
+					]}
+				]},
+				{ Text: 'Unit testing', Children: [
+					{ Text1: 'Unit testing', Children1: [
+						{ Text2: 'Unit testing' },
+						{ Text2: 'Unit testing' }
+					]},
+					{ Text1: 'Unit testing', Children1: [
+						{ Text2: 'Unit testing' },
+						{ Text2: 'Unit testing' }
+					]}
+				]},
+				{ Text: 'Unit testing', Children: [
+					{ Text1: 'Unit testing', Children1: [
+						{ Text2: 'Unit testing' },
+						{ Text2: 'Unit testing' }
+					]},
+					{ Text1: 'Unit testing', Children1: [
+						{ Text2: 'Unit testing' },
+						{ Text2: 'Unit testing' }
+					]}
+				]},
+				{ Text: 'Unit testing', Children: [
+					{ Text1: 'Unit testing', Value1: 1, Children1: [
+						{ Text2: 'Unit testing' },
+						{ Text2: 'Unit testing' }
+					]},
+					{ Text1: 'Unit testing', Children1: [
+						{ Text2: 'Unit testing' },
+						{ Text2: 'Unit testing' }
+					]}
+				]}],
+			notWorkingResponse1 = {
 				"Items": [{
 					"Id": "1",
 					"Name": "PARENT",
@@ -132,10 +141,8 @@
 					},
 					"Children": []
 				}]
-			};
-
-			var notWorkingResponse2 = {
-
+			},
+			notWorkingResponse2 = {
 				"Items": [{
 					"Id": "1",
 					"Name": "Child1",
@@ -1165,6 +1172,7 @@
 			testId_6 = "igTree node retrieval API methods";
 			testId_7 = "igTree bug #203489 applyChangesToNode does not pesist node state for selection and focus.";
 			testId_8 = "igTree hierarchical JSON remote load on demand (Bug 217440 : Child populate with responseDataKey)";
+			testId_9 = "igTree binding to XML";
 			
 			test(testId_1, function () {
 				var nodeCount = $('#tree2').find('li[data-role=node]').length;
@@ -1182,6 +1190,35 @@
 				var node = $("#tree2").igTree("nodeByPath", "0");
 				equal($("#tree2").igTree("isExpanded", node), true, "The node is not originally expanded");
 				equal(node.children("a").attr("target"), "_blank", "The node is not with the correct target attribute.");
+			});
+			test(testId_9, function () {
+				var tree = $("<div></div>").appendTo(document.body).igTree({
+					checkboxMode: 'triState',
+					singleBranchExpand: true,
+					dataSource: loadXMLDoc('data/TreeSampleData.xml'),
+					dataSourceType: 'xml',
+					initialExpandDepth: 1,
+					pathSeparator: '.',
+					bindings: {
+						textKey: 'Text',
+						textXPath: '@Text',
+						valueKey: 'Value',
+						valueXPath: '@Value',
+						imageUrlKey: 'ImageUrl',
+						imageUrlXPath: '@ImageUrl',
+						childDataProperty: 'Folder',
+						childDataXPath: 'Folder',
+						searchFieldXPath: 'Folders'
+					}
+				});
+				equal(tree.find('li[data-role=node]').length, 38, 'Tree did not render as many nodes as there are items in the data source');
+				var node = tree.igTree("nodeByPath", "0");
+				equal(tree.igTree("isExpanded", node), true, "The node is not originally expanded");
+				var binding = tree.igTree('option', 'bindings');
+				ok(binding.hasOwnProperty('childDataXPath'), 'Binding does not contain a childDataXPath');
+				ok(binding.hasOwnProperty('searchFieldXPath'), 'Binding does not contain a searchFieldXPath');
+				tree.igTree("destroy");
+				tree.remove();
 			});
 			test(testId_2, function () {
 				var nodeCount = $('#tree3').find('li[data-role=node]').length;
@@ -2092,9 +2129,70 @@
 				notEqual(node.data('draggable'), undefined, 'The draggable was not initialized correctly on the added node.');
 			});
 			
-			//test(testId_8, function () {
-				// Figure out how to simulate drag and drop.
-			//});
+			test(testId_8, function () {
+				var tree = $("<div></div>").appendTo(document.body).igTree({
+						dataSource: results2,
+						dragAndDrop: true,
+						dragAndDropSettings: {
+							revertDuration: 0
+						},
+						bindings: {
+							textKey: 'Text',
+							valueKey: 'Value',
+							imageUrlKey: 'ImageUrl',
+							navigateUrlKey: 'URL',
+							childDataProperty: 'Children',
+							nodeContentTemplate: '<span>${Text}: </span>${Value}',
+							bindings: {
+								textKey: 'Text1',
+								valueKey: 'Value1',
+								imageUrlKey: 'ImageUrl1',
+								navigateUrlKey: 'URL1',
+								childDataProperty: 'Children1',
+								nodeContentTemplate: '<font color="red">${Text1}: </font>${Value1}',
+								bindings: {
+									textKey: 'Text2',
+									valueKey: 'Value2',
+									imageUrlKey: 'ImageUrl2',
+									navigateUrlKey: 'URL2',
+									childDataProperty: 'Children2',
+									nodeContentTemplate: '<font color="red">${Text2}: </font><font color="blue">${Value2}</font>',
+									bindings: {
+										textKey: 'Text3',
+										valueKey: 'Value3'
+									}
+								}
+							}
+						},
+						dragStart: function (event, ui) {
+							equal(ui.element[0], tree.find("li[data-role=node]:first")[0], "The element event argument for drag start was incorrect.");
+						},
+						drag: function (event, ui) {
+							equal(ui.element[0], tree.find("li[data-role=node]:first")[0], "The element event argument for drag was incorrect.");
+						}
+					}),
+					treeobj = tree.data("igTree");
+				var node = tree.find("li[data-role=node]:first");
+				$.ig.TestUtil.simulateDragStart(node);
+				equal(treeobj._sourceNode.data.Value, results2[0].Value, "Data Value was not correctly populated.");
+				equal(treeobj._sourceNode.data.Text, results2[0].Text, "Data Text was not correctly populated.");
+				equal(treeobj._sourceNode.owner, treeobj, "Owner was not correctly populated.");
+				equal(treeobj._sourceNode.element[0], node[0], "Element was not correctly populated.");
+				notEqual(treeobj._originalHelper.html, null, "The original helper was not instantiated.");
+				$.ig.TestUtil.simulateDrag(node, tree.find("ul:first > li[data-role=node]:eq(1)"));
+				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+				equal(treeobj._validationObject.target, null, "The validation object target was incorrect.");
+				$.ig.TestUtil.simulateDrag(node, tree.find("ul:first > li[data-role=node]:eq(1) > a"));
+				equal(treeobj._validationObject.valid, false, "The validation object validity was incorrect.");
+				equal(treeobj._validationObject.target[0], tree.find("ul:first > li[data-role=node]:eq(1)")[0], "The validation object target was incorrect.");
+				$.ig.TestUtil.simulateDragStop(node);
+				equal(treeobj._sourceNode.data, null, "Data was not correctly populated.");
+				equal(treeobj._sourceNode.owner, null, "Owner was not correctly populated.");
+				equal(treeobj._sourceNode.element, null, "Element was not correctly populated.");
+				equal(treeobj._helperDirty, false, "helper dirty was not correctly populated.");
+				equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
+				equal(treeobj._validationObject.target, null, "target was not correctly populated.");
+			});
 			
 			test(testId_9, function () {
 				// _setOption unit tests
