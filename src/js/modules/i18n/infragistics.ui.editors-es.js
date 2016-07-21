@@ -72,7 +72,8 @@
 			    cannotSetRuntime: "Esta opción no puede establecer un tiempo de ejecución",
 			    invalidDate: "Fecha no válida",
 			    maskMessage: 'Deben rellenarse todas las posiciones requeridas.',
-			    dateMessage: 'Debe introducirse una fecha válida',
+			    maskRevertMessage: 'All required positions should be filled, that is why the value was reverted to the last valid one.',
+				dateMessage: 'Debe introducirse una fecha válida',
 			    centuryThresholdValidValues: "La propiedad centuryThreshold debería estar entre 0 y 99. Se ha devuelto este valor a su ajuste predeterminado.",
 			    noListItemsNoButton: "No se representa ningún botón desplegable o de control de número porque no hay elementos de lista."
 		    }

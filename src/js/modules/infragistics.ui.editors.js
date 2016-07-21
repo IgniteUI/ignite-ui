@@ -3255,6 +3255,10 @@ if (typeof jQuery !== "function") {
 				} else if (this.options.minValue && value < this.options.minValue) {
 					value = this.options.minValue;
 
+					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+					this._valueInput.val(value);
+					this._enterEditMode();
+
 						// Raise Warning level 2
 						this._sendNotification("warning",
 							$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
@@ -5414,22 +5418,29 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_triggerInternalValueChange: function (value) { //MaskEditor
+			var oldValue, message;
 			if (value === this._maskWithPrompts && this._promptCharsIndices.length === 0) {
 				value = "";
 			}
 			var noCancel = this._triggerValueChanging(value);
 			if (noCancel) {
+				oldValue = value;
 				this._processInternalValueChanging(value);
-
-				// We pass the new value in order to have the original value into the arguments
-				this._triggerValueChanged(value);
+				if (value !== oldValue) {
+					// We pass the new value in order to have the original value into the arguments
+					this._triggerValueChanged(value);
+				}
 
 				// Check if maskedValue contains promptChars
 				if (value !== "" && !this._validateRequiredPrompts(value)) {
-
 					// Raise warning not all required fields are entered
 					// State - message
-					this._sendNotification("warning", $.ig.Editor.locale.maskMessage);
+					if (this.options.revertIfNotValid) {
+						message = $.ig.Editor.locale.maskRevertMessage;
+					} else {
+						message = $.ig.Editor.locale.maskMessage;
+					}
+					this._sendNotification("warning", message);
 				}
 			}
 		},
@@ -5452,7 +5463,7 @@ if (typeof jQuery !== "function") {
 			return true;
 		},
 		_processInternalValueChanging: function (value) { //MaskEditor
-			if (this._validateValue(value)) {
+			if (this._validateValue(value) && this._validateRequiredPrompts(value)) {
 				this._updateValue(value);
 			} else {
 
@@ -5460,6 +5471,7 @@ if (typeof jQuery !== "function") {
 				if (this.options.revertIfNotValid) {
 					value = this._valueInput.val();
 					this._updateValue(value);
+					this._editorInput.val(value);
 				} else {
 					this._clearValue();
 					value = this._valueInput.val();

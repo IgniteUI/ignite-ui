@@ -78,31 +78,6 @@ if (typeof jQuery !== "function") {
             this._options.itemsList.parent().parent().on("mousedown",
                 $.proxy(this._preventCollapsing, this));
         },
-        collapse: function (e) {
-            /* Collapse the widget. */
-            var _opt = this._options;
-
-            _opt.popover.igPopover("hide");
-            this.element.removeClass(this.css.active);
-            _opt.expandButton.removeClass(this.css.focus);
-            _opt.isExpanded = false;
-
-            if (e) {
-                this._triggerCollapsed(e);
-            }
-        },
-        expand: function (e) {
-            /* Expands the widget. */
-            var _opt = this._options;
-
-            _opt.popover.igPopover("show", this.element);
-            this.element.addClass(this.css.active);
-            _opt.isExpanded = true;
-
-            if (e) {
-                this._triggerExpanded(e);
-            }
-        },
         _onItemClick: function () {
             return false;
         },
@@ -112,13 +87,7 @@ if (typeof jQuery !== "function") {
             this._trigger("colorSelected", e, { value: ui.color, item: this.element });
             this.collapse();
         },
-        setColor: function (color) {
-            /*Sets the color of the split button*/
-            this._options.itemsList.igColorPicker("selectColor", color);
-            this._setButtonColorIndicator(color);
-            this.options.defaultColor = color;
-            this.collapse();
-        },
+
         _onDefaultButtonClick: function (e) {
             e.stopPropagation();
             this._trigger("colorSelected", e,
@@ -148,6 +117,40 @@ if (typeof jQuery !== "function") {
                 case "defaultColor":
                     self.setColor(value);
                     break;
+            }
+        },
+        setColor: function (color) {
+            /*Sets the color of the split button
+                paramType="<string>" optional="<false>" The HEX value of the color to be setted.
+            */
+            this._options.itemsList.igColorPicker("selectColor", color);
+            this._setButtonColorIndicator(color);
+            this.options.defaultColor = color;
+            this.collapse();
+        },
+        collapse: function (e) {
+            /* Collapse the widget. */
+            var _opt = this._options;
+
+            _opt.popover.igPopover("hide");
+            this.element.removeClass(this.css.active);
+            _opt.expandButton.removeClass(this.css.focus);
+            _opt.isExpanded = false;
+
+            if (e) {
+                this._triggerCollapsed(e);
+            }
+        },
+        expand: function (e) {
+            /* Expands the widget. */
+            var _opt = this._options;
+
+            _opt.popover.igPopover("show", this.element);
+            this.element.addClass(this.css.active);
+            _opt.isExpanded = true;
+
+            if (e) {
+                this._triggerExpanded(e);
             }
         },
         destroy: function () {

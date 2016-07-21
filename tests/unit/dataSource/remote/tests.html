@@ -20,7 +20,7 @@
 	
 	<script type="text/javascript"> 
 	
-	var ds = null, ds1 = null, dsXMLBare, dsXMLWrapped, dsJSONBare, dsJSONWrapped, dsWrong;
+	var ds = null, ds1 = null, dsXMLBare, dsXMLWrapped, dsJSONBare, dsJSONWrapped, dsWrong, dsWithMapper;
 
 	$(document).ready(function () {
 		$.mockjaxSettings.logging = 0;  // only critical error messages
@@ -49,6 +49,65 @@
 				status: 'error'
 			}
 		});
+		
+		$.mockjax({
+				url: 'categories',
+				contentType: 'text/json',
+				responseText: {
+					status: 'success',
+					data: {
+						"d": [
+								{
+									"ID": 1,
+									"CategoryName": "Beverages",
+									"Description": "Soft drinks, coffees, teas, beers, and ales",
+									"ImageUrl": "http://www.igniteui.com/images/samples/nw/categories/1.png",
+									"Products": [
+									  {
+									  	"ID": 1,
+									  	"ProductName": "Chai",
+									  	"SupplierID": 1,
+									  	"CategoryID": 1,
+									  	"QuantityPerUnit": "10 boxes x 20 bags",
+									  	"UnitPrice": 18.0000,
+									  	"UnitsInStock": 39,
+									  	"UnitsOnOrder": 0,
+									  	"ReorderLevel": 10,
+									  	"SupplierName": "Exotic Liquids",
+									  	"CategoryName": "Beverages",
+									  	"Rating": 1,
+									  	"Discontinued": false,
+									  	"CategoryImageUrl": "http://www.igniteui.com/images/samples/nw/categories/1.png"
+									  }
+									]
+								},
+								  {
+								  	"ID": 2,
+								  	"CategoryName": "Condiments",
+								  	"Description": "Sweet and savory sauces, relishes, spreads, and seasonings",
+								  	"ImageUrl": "http://www.igniteui.com/images/samples/nw/categories/2.png",
+								  	"Products": [
+									  {
+									  	"ID": 3,
+									  	"ProductName": "Aniseed Syrup",
+									  	"SupplierID": 1,
+									  	"CategoryID": 2,
+									  	"QuantityPerUnit": "12 - 550 ml bottles",
+									  	"UnitPrice": 10.0000,
+									  	"UnitsInStock": 13,
+									  	"UnitsOnOrder": 70,
+									  	"ReorderLevel": 25,
+									  	"SupplierName": "Exotic Liquids",
+									  	"CategoryName": "Condiments",
+									  	"Rating": 1,
+									  	"Discontinued": false,
+									  	"CategoryImageUrl": "http://www.igniteui.com/images/samples/nw/categories/2.png"
+									  }]
+								  }
+						]
+					}
+				}
+			});
 
 		$.mockjax({
 			url: 'http://services.odata.org/OData/OData.svc/Products?$format=json',
@@ -255,6 +314,19 @@
 				dsXMLWrapped = new $.ig.RemoteDataSource( {callback:dsXMLWrappedRender, dataSource: "WCFXMLWrapped",
 					schema: {fields:[ {name : "ProductID", xpath: "ProductID"}, {name : "ProductName", xpath : "ProductName"} ], searchField:"Product"}
 					}).dataBind();
+				
+				dsWithMapper = new $.ig.RemoteDataSource({
+					responseDataType: "json",
+					dataSource: "categories",
+					schema: {
+						searchField: "data.d",
+						fields: [
+							{ name: "ID", type: "number" },
+							{ name: "CategoryName", type: "string" },
+							{ name: "Products", type: "object", mapper: function (rec) { return rec.Products[0].ProductName; } }
+						]
+					}
+				}).dataBind();
 				setTimeout(function () { QUnit.start(); }, 500);
 			},
 			teardown: function() {
@@ -306,7 +378,7 @@
 			ds.settings.paging.enabled = false;
 			// compare the "params" string with the expected one 
 			var params = $.param(ds._encodeUrl());
-			equal(params, "%24orderby=ProductID+asc%2CName+desc", "%24orderby=ProductID+asc%2CName+desc");
+			equal(params, "%24orderby=ProductID%20asc%2CName%20desc", "%24orderby=ProductID%20asc%2CName%20desc");
 		});
 		
 		test("OData filtering parameters", function() { 
@@ -336,7 +408,7 @@
 			// compare the "params" string with the expected one 
 			var params = $.param(ds._encodeUrl());
 
-			equal(params, "%24filter=startswith(tolower(ProductID)%2C'a')+eq+true+and+endswith(tolower(Name)%2C'b')+eq+true+and+indexof(tolower(Price)%2C'')+ge+0+and+indexof(tolower(ProductID)%2C'c')+eq+-1+and+tolower(Name)+eq+'1'+and+Name+eq+1+and+tolower(Name)+ne+'abc'+and+Name+gt+5+and+Name+lt+2+and+Name+ge+4+and+Name+le+7", "%24filter=startswith(tolower(ProductID)%2C'a')+eq+true+and+endswith(tolower(Name)%2C'b')+eq+true+and+indexof(tolower(Price)%2C'')+ge+0+and+indexof(tolower(ProductID)%2C'c')+eq+-1+and+tolower(Name)+eq+'1'+and+Name+eq+1+and+tolower(Name)+ne+'abc'+and+Name+gt+5+and+Name+lt+2+and+Name+ge+4+and+Name+le+7");
+			equal(params, "%24filter=startswith(tolower(ProductID)%2C'a')%20eq%20true%20and%20endswith(tolower(Name)%2C'b')%20eq%20true%20and%20indexof(tolower(Price)%2C'')%20ge%200%20and%20indexof(tolower(ProductID)%2C'c')%20eq%20-1%20and%20tolower(Name)%20eq%20'1'%20and%20Name%20eq%201%20and%20tolower(Name)%20ne%20'abc'%20and%20Name%20gt%205%20and%20Name%20lt%202%20and%20Name%20ge%204%20and%20Name%20le%207", "%24filter=startswith(tolower(ProductID)%2C'a')%20eq%20true%20and%20endswith(tolower(Name)%2C'b')%20eq%20true%20and%20indexof(tolower(Price)%2C'')%20ge%200%20and%20indexof(tolower(ProductID)%2C'c')%20eq%20-1%20and%20tolower(Name)%20eq%20'1'%20and%20Name%20eq%201%20and%20tolower(Name)%20ne%20'abc'%20and%20Name%20gt%205%20and%20Name%20lt%202%20and%20Name%20ge%204%20and%20Name%20le%207");
 			
 		});
 		
@@ -435,6 +507,9 @@
 		
 		});
 
+		test("Testing if _getFieldTypeFromSchema returns correct dataType for mapped field for remote data source", function () {
+			equal(dsWithMapper._getFieldTypeFromSchema("Products"), "string", "_getFieldTypeFromSchema should return the mapped value's dataType");
+		});
 	});
 	
 	</script>
