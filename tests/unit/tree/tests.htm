@@ -80,7 +80,7 @@
 				]}
 			],
 			results2 = [{ Text: 'Unit testing', Value: 0, ImageUrl: 'images/book.png', URL: 'http://google.com', Target: "_blank", Children: [
-						{ Text1: 'Unit testing1', Value1: 1, ImageUrl1: 'images/book_add.png', URL1: 'http://infragistics.com', Children1: [
+					{ Text1: 'Unit testing1', Value1: 1, ImageUrl1: 'images/book_add.png', URL1: 'http://infragistics.com', Children1: [
 						{ Text2: 'Unit testing2', Value2: 2, ImageUrl2: 'images/coins.png', URL2: '', Children2: [{Text3: 'Unit testing3', Value3: 3}] },
 						{ Text2: 'Unit testing2' }
 					]},
@@ -2130,40 +2130,41 @@
 			});
 			
 			test(testId_8, function () {
-				var tree = $("<div></div>").appendTo(document.body).igTree({
+				var bindings = {
+						textKey: 'Text',
+						valueKey: 'Value',
+						imageUrlKey: 'ImageUrl',
+						navigateUrlKey: 'URL',
+						childDataProperty: 'Children',
+						nodeContentTemplate: '<span>${Text}: </span>${Value}',
+						bindings: {
+							textKey: 'Text1',
+							valueKey: 'Value1',
+							imageUrlKey: 'ImageUrl1',
+							navigateUrlKey: 'URL1',
+							childDataProperty: 'Children1',
+							nodeContentTemplate: '<font color="red">${Text1}: </font>${Value1}',
+							bindings: {
+								textKey: 'Text2',
+								valueKey: 'Value2',
+								imageUrlKey: 'ImageUrl2',
+								navigateUrlKey: 'URL2',
+								childDataProperty: 'Children2',
+								nodeContentTemplate: '<font color="red">${Text2}: </font><font color="blue">${Value2}</font>',
+								bindings: {
+									textKey: 'Text3',
+									valueKey: 'Value3'
+								}
+							}
+						}
+					},
+					tree = $("<div></div>").appendTo(document.body).igTree({
 						dataSource: results2,
 						dragAndDrop: true,
 						dragAndDropSettings: {
 							revertDuration: 0
 						},
-						bindings: {
-							textKey: 'Text',
-							valueKey: 'Value',
-							imageUrlKey: 'ImageUrl',
-							navigateUrlKey: 'URL',
-							childDataProperty: 'Children',
-							nodeContentTemplate: '<span>${Text}: </span>${Value}',
-							bindings: {
-								textKey: 'Text1',
-								valueKey: 'Value1',
-								imageUrlKey: 'ImageUrl1',
-								navigateUrlKey: 'URL1',
-								childDataProperty: 'Children1',
-								nodeContentTemplate: '<font color="red">${Text1}: </font>${Value1}',
-								bindings: {
-									textKey: 'Text2',
-									valueKey: 'Value2',
-									imageUrlKey: 'ImageUrl2',
-									navigateUrlKey: 'URL2',
-									childDataProperty: 'Children2',
-									nodeContentTemplate: '<font color="red">${Text2}: </font><font color="blue">${Value2}</font>',
-									bindings: {
-										textKey: 'Text3',
-										valueKey: 'Value3'
-									}
-								}
-							}
-						},
+						bindings: bindings,
 						dragStart: function (event, ui) {
 							equal(ui.element[0], tree.find("li[data-role=node]:first")[0], "The element event argument for drag start was incorrect.");
 						},
@@ -2205,6 +2206,48 @@
 				equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
 				equal(treeobj._validationObject.target, null, "target was not correctly populated.");
 				tree.igTree("destroy").remove();
+				
+				tree = $("<div></div>").appendTo(document.body).igTree({
+					dataSource: results2,
+					dragAndDrop: true,
+					dragAndDropSettings: {
+						revertDuration: 0,
+						dragAndDropMode: "copy"
+					},
+					bindings: bindings
+				});
+				treeobj = tree.data("igTree");
+				node = tree.find("li[data-path=0_0]");
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, tree.find("li[data-path=1] > a"));
+				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+				equal(treeobj._validationObject.target[0], tree.find("li[data-path=1]")[0], "The validation object target was incorrect.");
+				$.ig.TestUtil.simulateDrop(tree, tree.find("li[data-path=1]"));
+				equal(tree.igTree("children", tree.find("li[data-path=0]")).length, 3, "Source node didn't update correctly.");
+				equal(tree.igTree("children", tree.find("li[data-path=1]")).length, 2, "Target node didn't update correctly.");
+				
+				var tree2 = $("<div></div>").appendTo(document.body).igTree({
+					dataSource: $.extend(true, [], results2),
+					dragAndDrop: true,
+					dragAndDropSettings: {
+						revertDuration: 0,
+						dragAndDropMode: "move",
+						allowDrop: true
+					},
+					bindings: bindings
+				});
+				
+				node = tree.find("li[data-path=0_0]");
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, tree2.find("li[data-path=1] > a"));
+				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+				equal(treeobj._validationObject.target[0], tree2.find("li[data-path=1]")[0], "The validation object target was incorrect.");
+				$.ig.TestUtil.simulateDrop(tree2, tree2.find("li[data-path=1]"));
+				equal(tree.igTree("children", tree.find("li[data-path=0]")).length, 2, "Source node didn't update correctly.");
+				equal(tree2.igTree("children", tree2.find("li[data-path=1]")).length, 2, "Target node didn't update correctly.");
+				
+				tree.igTree("destroy").remove();
+				tree2.igTree("destroy").remove();
 			});
 			
 			test(testId_9, function () {
