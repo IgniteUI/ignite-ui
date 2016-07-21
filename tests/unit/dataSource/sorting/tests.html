@@ -488,7 +488,7 @@
 						for (var i = 0; i < ds.dataView().length; i++) {
 							equal(ds.dataView()[i].ProductID, data[i].ProductID, "Data should be sorted.");
 							var params = $.param(ds._encodeUrl());
-							equal(params, "%24orderby=ProductID+asc", "Request should be properly encoded.");
+							equal(params, "%24orderby=ProductID%20asc", "Request should be properly encoded.");
 						}
 					},
 					responseDataType: "json",
