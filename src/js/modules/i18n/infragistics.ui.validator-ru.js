@@ -33,6 +33,7 @@
 		        minValueMessage: 'Пожалуйста, введите значение больше или равно {0}',
 		        maxValueMessage: 'Пожалуйста, введите значение меньше или равно {0}',
 		        emailMessage: 'Следует ввести правильный адрес электронной почты',
+				creditCardMessage: 'A valid payment card number should be entered',
 		        equalToMessage: 'Эти два значения не совпадают',
 		        optionalString: '(необязательно)'
 		    }
