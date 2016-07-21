@@ -154,7 +154,7 @@
 
 }(jQuery));
 
-/* 	requestAnimationFrame and cancelAnimationFrame polyfill 
+/* 	requestAnimationFrame and cancelAnimationFrame polyfill
 * 	By Erik Möller. Fixes from Paul Irish and Tino Zijdel.
 * 	MIT license
 */

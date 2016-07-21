@@ -180,24 +180,31 @@
 			horizontalScrollThumbDrag: "igscroll-hdrag"
 		},
 
-		refresh: function() {
+		refresh: function () {
 			//width specific
-			this._elemWidth = this._container.width();
+			this._elemWidth = this.element.width();
 			this._contentWidth = this._content.width();
 			this._percentInViewH = this._elemWidth / this._contentWidth;
 			this._dragMaxX = this._elemWidth;
 			this._isScrollableH = this._percentInViewH < 1;
 
 			//height specific
-			this._elemHeight = this._container.innerHeight();
+			this._elemHeight = this.element.height();
 			this._contentHeight = this._content.height();
 			this._percentInViewV = this._elemHeight / this._contentHeight;
 			this._dragMaxY = this._elemHeight;
 			this._isScrollableV = this._percentInViewV < 1;
 
+			if (this.options.modifyDOM) {
+				this._container.css({
+					"width": this._elemWidth + "px",
+					"height": this._elemHeight + "px"
+				});
+			}
+
 			this._refreshScrollbarsDrag();
 
-			return this._container;
+			return this.element;
 		},
 
 		_create: function () {
@@ -249,14 +256,6 @@
 				this._container = elem;
 				this._content = $(elem.children()[ 0 ]);
 			}
-			/* Set initial options */
-			defaultOptions = $.ui.igScroll.defaults;
-			for (key in defaultOptions) {
-				if (defaultOptions.hasOwnProperty(key) && scrollOptions[ key ] === null) {
-					scrollOptions[ key ] = defaultOptions[ key ];
-				}
-			}
-			this._initOptions(scrollOptions);
 
 			this._contentHeight = this._content[ 0 ].scrollHeight;
 			this._contentWidth = this._content[ 0 ].scrollWidth;
@@ -268,6 +267,15 @@
 			//1 equals 100%
 			this._isScrollableV = this._percentInViewV < 1;
 			this._isScrollableH = this._percentInViewH < 1;
+
+			/* Set initial options */
+			defaultOptions = $.ui.igScroll.defaults;
+			for (key in defaultOptions) {
+				if (defaultOptions.hasOwnProperty(key) && scrollOptions[ key ] === null) {
+					scrollOptions[ key ] = defaultOptions[ key ];
+				}
+			}
+			this._initOptions(scrollOptions);
 
 			//Container Events specific variables
 			this._startX = 0;
@@ -527,13 +535,15 @@
 		},
 
 		_refreshScrollbarsDrag: function () {
-			if (this.options.scrollbarType === "custom" && this._vBarDrag) {
+			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
 				this._vDragHeight = this._elemHeight * ((this._elemHeight - 2 * 15) / this._contentHeight);
 				this._vBarDrag.css("height", this._vDragHeight + "px");
+				this._vBarTrack.css("height", this._elemHeight - (3 * 15) + "px");
 			}
-			if (this.options.scrollbarType === "custom" && this._hBarDrag) {
+			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
 				this._hDragWidth = this._elemWidth * this._percentInViewH - 3 * 15;
 				this._hBarDrag.css("width", this._hDragWidth + "px");
+				this._hBarTrack.css("width", this._elemWidth - (3 * 15) + "px");
 			}
 		},
 
@@ -820,10 +830,8 @@
 
 		/** Switch from using 3d transformations to using scrollTop/scrollLeft */
 		_switchFromTouchToMixed: function () {
-			var matrix = this._content.css("-webkit-transform"),
-				values = matrix ? matrix.match(/-?[\d\.]+/g) : undefined,
-				startX = values ? Number(values[ 4 ]) : 0,
-				startY = values ? Number(values[ 5 ]) : 0;
+			var startX = this._getTransform3dValueX(this._content),
+				startY = this._getTransform3dValueY(this._content);
 
 			/* Switch to using scrollTop and scrollLeft attributes instead of transform3d when we have mouse + touchscreen, because they will interfere with each othe r*/
 			if (startX !== 0 || startY !== 0) {

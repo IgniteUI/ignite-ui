@@ -6,12 +6,8 @@
 }
 
 .igscroll-container {
-	overflow: scroll;
+	overflow: hidden;
 	position: absolute;
-	right: -17px;
-	bottom: -17px;
-	padding-right: 17px;
-	padding-bottom: 17px;
 }
 
 .igscroll-content {
