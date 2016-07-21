@@ -2232,10 +2232,17 @@
 					dragAndDropSettings: {
 						revertDuration: 0,
 						dragAndDropMode: "move",
-						allowDrop: true
+						allowDrop: true,
+						customDropValidation: "validateCustom"
 					},
 					bindings: bindings
 				});
+				
+				function validateCustom (target) { 
+					equal(this, tree.find("li[data-path=0_0]")[0], "Context of the custom validation is wrong");
+					equal(target, tree2.find("li[data-path=1]")[0], "Target of the custom validation is wrong");
+					return true; 
+				};
 				
 				node = tree.find("li[data-path=0_0]");
 				$.ig.TestUtil.simulateDragStart(node);
