@@ -2169,6 +2169,13 @@
 						},
 						drag: function (event, ui) {
 							equal(ui.element[0], tree.find("li[data-role=node]:first")[0], "The element event argument for drag was incorrect.");
+						},
+						nodeDropping: function (event, ui) {
+							equal(ui.originalIndex, 0, "Original index was wrong.");
+							equal(ui.targetIndex, 0, "Target index was wrong.");
+						},
+						nodeDropped: function (event, ui) {
+							equal(ui.element[0], tree.find("ul:first > li[data-role=node]:eq(1)")[0], "The element event argument for drag was incorrect.");
 						}
 					}),
 					treeobj = tree.data("igTree");
@@ -2182,6 +2189,11 @@
 				$.ig.TestUtil.simulateDrag(node, tree.find("ul:first > li[data-role=node]:eq(1)"));
 				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 				equal(treeobj._validationObject.target, null, "The validation object target was incorrect.");
+				
+				$.ig.TestUtil.simulateDrop(tree, tree.find("ul:first > li[data-role=node]:eq(1)"));
+				
+				node = tree.find("li[data-role=node]:first");
+				$.ig.TestUtil.simulateDragStart(node);
 				$.ig.TestUtil.simulateDrag(node, tree.find("ul:first > li[data-role=node]:eq(1) > a"));
 				equal(treeobj._validationObject.valid, false, "The validation object validity was incorrect.");
 				equal(treeobj._validationObject.target[0], tree.find("ul:first > li[data-role=node]:eq(1)")[0], "The validation object target was incorrect.");
@@ -2192,6 +2204,7 @@
 				equal(treeobj._helperDirty, false, "helper dirty was not correctly populated.");
 				equal(treeobj._validationObject.expandTimeout, null, "expandTimeout was not correctly populated.");
 				equal(treeobj._validationObject.target, null, "target was not correctly populated.");
+				tree.igTree("destroy").remove();
 			});
 			
 			test(testId_9, function () {

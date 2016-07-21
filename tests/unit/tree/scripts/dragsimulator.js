@@ -13,8 +13,10 @@
 		node.data("draggable")._mouseDrag(e);
 	};
 	
-	$.ig.TestUtil.simulateDrop = function (node, target) {
-		
+	$.ig.TestUtil.simulateDrop = function (tree, target) {
+		var e = $.Event("mouseup");
+		e.target = target[0];
+		tree.data("droppable")._drop(e);
 	};
 	
 	$.ig.TestUtil.simulateDragStop = function (node) {
