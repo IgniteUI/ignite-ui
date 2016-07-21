@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Custom Styles Sample - Custom Styles with Rating Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <style type="text/css">
+        .theme1 .ui-igrating {
+        }
+
+        .theme1 .ui-igrating-active {
+        }
+
+        .theme1 .ui-igrating-hover {
+        }
+
+        .theme1 .ui-igrating-vote {
+            width: 20px;
+            height: 20px;
+            background-image: url("../images/samples/rating/ig-rating-red.png")!important;
+            background-position: -75px 0;
+        }
+
+        .theme1 .ui-igrating-voteselected {
+            background-position: 0 0;
+        }
+
+        .theme1 .ui-igrating-votehover {
+            background-position: -25px 0;
+            filter: alpha(opacity=40);
+            opacity: 0.4;
+        }
+
+        .theme1 .ui-igrating-votedisabled {
+            background-position: -100px 0;
+        }
+
+        .theme1 .ui-igrating-votedisabledselected {
+            background-position: -50px 0;
+        }
+
+        .theme2 .ui-igrating {
+        }
+
+        .theme2 .ui-igrating-active {
+        }
+
+        .theme2 .ui-igrating-hover {
+        }
+
+        .theme2 .ui-igrating-vote {
+            width: 20px;
+            height: 20px;
+            background-image: url("../images/samples/rating/ig-rating-red.png") !important;
+            background-position: -75px 0;
+        }
+
+        .theme2 .ui-igrating-voteselected {
+            background-position: 0 0;
+        }
+
+        .theme2 .ui-igrating-votehover {
+            background-position: -25px 0;
+            filter: alpha(opacity=0);
+            opacity: 0.0;
+        }
+
+        .theme2 .ui-igrating-votedisabled {
+            background-position: -100px 0;
+        }
+
+        .theme2 .ui-igrating-votedisabledselected {
+            background-position: -50px 0;
+        }
+
+        .theme3 .ui-igrating {
+        }
+
+        .theme3 .ui-igrating-active {
+        }
+
+        .theme3 .ui-igrating-hover {
+        }
+
+        .theme3 .ui-igrating-vote {
+            width: 20px;
+            height: 20px;
+            background-image: url("../images/samples/rating/ig-rating-red.png") !important;
+            background-position: -75px 0;
+        }
+
+        .theme3 .ui-igrating-voteselected {
+            background-position: 0 0;
+        }
+
+        .theme3 .ui-igrating-votehover {
+            background-position: 0 0;
+            filter: alpha(opacity=100);
+            opacity: 1.0;
+        }
+
+        .theme3 .ui-igrating-votedisabled {
+            background-position: -100px 0;
+        }
+
+        .theme3 .ui-igrating-votedisabledselected {
+            background-position: -50px 0;
+        }
+
+        .theme4 .ui-igrating {
+        }
+
+        .theme4 .ui-igrating-active {
+        }
+
+        .theme4 .ui-igrating-hover {
+        }
+
+        .theme4 .ui-igrating-vote {
+            width: 20px;
+            height: 20px;
+            background-image: url("../images/samples/rating/ig-rating-red.png") !important;
+            background-position: -125px 0;
+        }
+
+        .theme4 .ui-igrating-voteselected {
+            background-position: 0 0;
+        }
+
+        .theme4 .ui-igrating-votehover {
+            background-position: -25px 0;
+            filter: alpha(opacity=40);
+            opacity: 0.4;
+        }
+
+        .theme4 .ui-igrating-votedisabled {
+            background-position: -100px 0;
+        }
+
+        .theme4 .ui-igrating-votedisabledselected {
+            background-position: -50px 0;
+        }
+
+        .theme5 .ui-igrating {
+            border: 1px solid #000000;
+            background-color: #2CBDF9;
+        }
+
+        .theme5 .ui-igrating-active {
+            border: 1px solid #000000;
+            background-color: #ffffff;
+        }
+
+        .theme5 .ui-igrating-hover {
+        }
+
+        .theme5 .ui-igrating-vote {
+            width: 20px;
+            height: 20px;
+            background-image: url("../images/samples/rating/ig-rating-red.png") !important;
+            background-position: -75px 0;
+        }
+
+        .theme5 .ui-igrating-voteselected {
+            background-position: 0 0;
+        }
+
+        .theme5 .ui-igrating-votehover {
+            background-position: -25px 0;
+            filter: alpha(opacity=40);
+            opacity: 0.4;
+        }
+
+        .theme5 .ui-igrating-votedisabled {
+            background-position: -100px 0;
+        }
+
+        .theme5 .ui-igrating-votedisabledselected {
+            background-position: -50px 0;
+        }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body><p>This sample illustrates how to apply a custom theme to our jQuery Rating control. Different effects and visualizations can be achieved by manipulating the CSS.</p>
+
+    <p>Customized igRating control with default behavior</p>
+    <div id="igRating1"></div>
+    <br>
+    <p>Customized igRating control, which doesn't have hover effect</p>
+    <div id="igRating2"></div>
+    <br>
+    <p>Customized igRating control, which has continuous hover effect</p>
+    <div id="igRating3"></div>
+    <br>
+    <p>The igRating control that shows only the selected and hovered values</p>
+    <div id="igRating4"></div>
+    <br>
+    <p>The igRating control with customized background</p>
+    <div id="igRating5"></div>
+
+    <script>
+
+        $(function () {
+
+            $("#igRating1").igRating({
+                voteCount: 10,
+                value: 0.5,
+                theme: "theme1"
+            });
+
+            $("#igRating2").igRating(
+            {
+                voteCount: 10,
+                value: 0.3,
+                theme: "theme2"
+            });
+
+            $("#igRating3").igRating({
+                voteCount: 10,
+                value: 0.1,
+                theme: "theme3"
+            });
+            $("#igRating4").igRating({
+                voteCount: 10,
+                value: 0.2,
+                theme: "theme4"
+            });
+            $("#igRating5").igRating({
+                voteCount: 10,
+                value: 0.5,
+                theme: "theme5"
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

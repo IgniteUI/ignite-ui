@@ -26,7 +26,7 @@ module.exports = function (grunt) {
 		jscs: {
 			src: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
-				config: ".jscsrc.json",
+				config: ".jscsrc",
 				force: false,
 				maxErrors: null,
 				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config

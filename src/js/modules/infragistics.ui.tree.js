@@ -151,7 +151,7 @@ if (typeof jQuery !== "function") {
 			animationDuration: 200,
 			/* type="string" Gets the node data-path attribute separator character. */
 			pathSeparator: "_",
-			/* type="object" Gets/Sets the igTree data source. Accepts any valid data source accepted by $.ig.DataSource, or an instance of an $.ig.DataSource itself. 
+			/* type="object" Gets/Sets the igTree data source. Accepts any valid data source accepted by $.ig.DataSource, or an instance of an $.ig.DataSource itself.
 				Once the data source is initialized, this option becomes an instance of the $.ig.HierarchicalDataSource.
 			*/
 			dataSource: null,
@@ -233,7 +233,7 @@ if (typeof jQuery !== "function") {
 			dragAndDropSettings: {
 				/* type="boolean" Gets whether the widget will accept drag and drop from other controls. */
 				allowDrop: false,
-				/* type="default|copy|move" Gets the drag and drop mode. 
+				/* type="default|copy|move" Gets the drag and drop mode.
 					default type="string" Performs "copy" when holding the Ctrl key, otherwise "move" is performed.
 					copy type="string" Makes a copy of the dragged node at the drop location.
 					move type="string" Moves the dragged node at the drop location.
@@ -259,7 +259,7 @@ if (typeof jQuery !== "function") {
 				expandOnDragOver: true,
 				/* type="number" Gets the delay after hovering a parent node before expanding that node during drag with expandOnDragOver: true. */
 				expandDelay: 1000,
-				/* type="function|default" Gets the type of helper to be rendered for the drag operation. 
+				/* type="function|default" Gets the type of helper to be rendered for the drag operation.
 					function A function that will return a DOMElement to use while dragging.
 					default type="string" would render the default igTree helper.
 				*/
@@ -699,7 +699,7 @@ if (typeof jQuery !== "function") {
 				opt.bindings.childDataProperty = "Nodes";
 				schema.target = { name: "Target", type: "string" };
 				opt.bindings.targetKey = "Target";
-				schema.expanded = { name: "Expanded", type: "boolean"};
+				schema.expanded = { name: "Expanded", type: "boolean" };
 				opt.bindings.expandedKey = "Expanded";
 				bindings = opt.bindings;
 			} else if (opt.dataSourceType === "xml") {
@@ -2692,7 +2692,7 @@ if (typeof jQuery !== "function") {
 			return collection;
 		},
 		select: function (node, event) {
-			/* Selects a node. 
+			/* Selects a node.
 				paramType="object" optional="false" Specifies the node element to be selected.
 				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/

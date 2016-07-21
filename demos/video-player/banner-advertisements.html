@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banner Advertisements Sample - Banner Advertisements with Video Player Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+</head>
+<body><p>The jQuery Video Player control supports displaying banners during the video playback. There are plenty of options that can be adjusted to get the desired behavior from this functionality. The following sample demonstrates how to adjust the banner dimensions using properties, how to handle the bannerVisible event to alternate the position of the displayed banner and how to handle the bannerClick events to pause the video when the end-user clicks on a banner following its link on a new tab.</p>
+
+    <div id="player1"></div>
+
+    <script>
+        var alternate = true;
+        $(function () {
+            $("#player1").igVideoPlayer({
+                sources: [
+                    'http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.h264.mp4',
+                    'http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.webmvp8.webm',
+                    'http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/Infragistics_Presentation_lowRes_1.theora.ogv'
+                ],
+                width: "100%",
+                posterUrl: '../../images/samples/video-player/ig-pres.png',
+                fullscreen: false,
+                browserControls: false,
+                autohide: true,
+                autoplay: false,
+                autohideDelay: 2000,
+                title: 'Infragistics Presentation',
+                banners: [{
+                    imageUrl: '../../images/samples/video-player/banner.png',
+                    link: 'http://www.infragistics.com/',
+                    times: [5, 20, 60],
+                    visible: false,
+                    closeBanner: true,
+                    animate: true,
+                    autohide: true,
+                    hidedelay: 10000,
+                    width: "270px",
+                    height: "67px"
+                }],
+                bannerVisible: function (sender, eventArgs) {
+                    if (alternate === true) {
+                        eventArgs.bannerElement.css('top', 130);
+                    }
+                    else {
+                        eventArgs.bannerElement.css('top', 0);
+                    }
+
+                    alternate = !alternate;
+                },
+                bannerClick: function (sender, eventArgs) {
+                    $("#player1").igVideoPlayer('pause');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

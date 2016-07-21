@@ -107,13 +107,15 @@
 		});
 		
 		testID = "Update model -> editor (input)" ;
-		test(testID, 6, function () {
+		test(testID, 0, function () {
 			$('#inputEditor1').on("igmaskeditorvaluechanged", function (evt, ui) {
+				expect(6);
 				checkAllValues("5g7s", "Values are as expected");
 			});
 			$('#inputEditor1').igMaskEditor("setFocus");
 			$('#inputEditor1').focus().val("5g7s");
 			$("#outerInput").focus();
+			
 
 
 		});
@@ -133,13 +135,14 @@
 		
 
 		testID = "Update model -> editor (div)";
-		test(testID, 6, function () {
+		test(testID, 0, function () {
 			stop();
 			setTimeout(function () {
 				//Update div Editor and check
 				start();
 				
 				$('#divEditor1').bind('igmaskeditorvaluechanged', function (evt, ui) {
+					expect(6);
 					checkAllValues("5s6d", "Values are as expected");
 				});
 				
@@ -151,13 +154,14 @@
 		});
 		
 		testID = "Update model -> editor (td)";
-		test(testID, 6, function () {
+		test(testID, 0, function () {
 			stop();
 			setTimeout(function () {
 				//Update td Editor and check
 				start();
 				
 				$('#tdEditor1').bind('igmaskeditorvaluechanged', function (evt, ui) {
+					expect(6);
 					checkAllValues("6a7b", "Values are as expected");
 				});
 				
@@ -249,10 +253,6 @@
 				$("#GoshoEditor1").focus().val("9f2s").change();
 				checkAllValues("9f2s", "Values are as expected");
 			});
-
-
-
-		
 		
 		});//document ready
 

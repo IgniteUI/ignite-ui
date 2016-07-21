@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifier with igEditors Sample - Notifier with igEditors with Editors Control - Ignite UI™</title>
+    <!--Ignite UI Required Combined CSS Files-->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!--Ignite UI Required Combined JavaScript Files-->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var colors = ["blue", "red", "brown"];
+
+            $("#shoeSize").igNumericEditor({
+                minValue: 37,
+                maxValue: 46
+            });
+
+            $("#shoeColor").igTextEditor({
+                listItems: colors,
+                isLimitedToListValues: true
+            });
+
+            $("#quantity").igNumericEditor({
+                dataMode: 'int',
+                buttonType: "spin",
+                minValue: 1,
+                maxValue: 3,
+                spinDelta: 1,
+                spinWrapAround: true
+            });
+
+            $("#promoCode").igTextEditor({
+                maxLength: 6
+            });
+
+            $(".info").hide();
+
+            $("#tip1").click(function () { $("#info1").toggle(); });
+            $("#tip2").click(function () { $("#info2").toggle(); });
+            $("#tip3").click(function () { $("#info3").toggle(); });
+            $("#tip4").click(function () { $("#info4").toggle(); });
+
+        });
+
+    </script>
+    <style>
+        #main
+        {
+            border: solid 1px black;
+            height: 270px;
+        }
+
+        #main > img
+        {
+            height: 250px;
+            float: left;
+        }
+
+        #shoeInfo
+        {
+            margin-left: 190px;
+        }
+
+        #brand
+        {
+            color: #ccc;
+        }
+
+        #shoeInfo p
+        {
+            margin-top: 20px;
+        }
+
+        #cost
+        {
+            border: solid 1px black;
+            border-top: 0px;
+            height: 100px;
+            padding-top: 20px;
+        }
+
+        #promo
+        {
+            float: left;
+            margin-left: 20px;
+        }
+
+        #promo > p
+        {
+            margin-bottom: 5px;
+        }
+
+        #cost > p
+        {
+            float: right;
+            margin-right: 20px;
+            font-size: 16px;
+        }
+
+        .info
+        {
+           
+            color: #808080;
+            vertical-align: top;
+        }
+        .tip
+        {
+            height:16px;
+            width:16px;                
+            vertical-align: top;
+            margin:0 2px 0 5px;
+        }
+
+        @media only screen and (max-width:480px)
+        {
+            #main
+            {
+                height: 30%;
+            }
+            #shoeSize, #shoeColor, #quantity, #promoCode
+            {
+                width: 150px;
+
+            }
+            #cost
+            {
+                    height: 120px;
+            }
+            #cost > p
+            {
+                font-size: 14px;
+                margin-top:20px;
+            }
+        }
+    </style>
+</head>
+<body><p>This is a basic sample showing the Notifier with igEditors. Enter an invalid field above to see the auto generated warning messages which serve to inform the user what changes the editor has automatically done on the user's entry.</p>
+    <h2>Order details</h2>
+    <div id="main">
+        <img src="../images/shoe.jpg">
+        <div id="shoeInfo">
+            <h3>Product: <span id="brand">CHEAP HIGH QUALITY MEN'S SHOES BRAND 2015</span></h3>
+            <div>
+                <p>Shoe size (37-46)</p>
+                <div id="shoeSize"></div>
+                <img class="tip" id="tip1" src="../images/helpnav/help.png">
+                <span class="info" id="info1">To get the warning message, enter larger size than 46 or smaller then 37.</span>
+
+            </div>
+            <div>
+                <p>Shoe Color</p>
+                <div id="shoeColor"></div>
+                <img class="tip" id="tip2" src="../images/helpnav/help.png">
+                <span class="info" id="info2">To get the warning message, enter a value that is not present in the dropdown list.</span>
+
+            </div>
+            <div>
+                <p>Quantity</p>
+                <div id="quantity"></div>
+                <img class="tip" id="tip3" src="../images/helpnav/help.png">
+                <span class="info" id="info3">To get the warning message, click the spin arrows until you reach the limit.</span>
+
+            </div>
+    </div>
+    </div>
+    <div id="cost">
+        <div id="promo">
+            <p>Enter promo code (up to 6 symbols)</p>
+            <div id="promoCode"></div>
+            <img class="tip" id="tip4" src="../images/helpnav/help.png">
+            <span class="info" id="info4">To get the warning message paste a text longer than 6 symbols.</span>
+        </div>
+        <p>Price before shipping: $53.</p>
+    </div>
+</body>
+</html>
