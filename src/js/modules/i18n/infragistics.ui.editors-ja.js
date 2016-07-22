@@ -72,7 +72,7 @@
 			    cannotSetRuntime: "このオプションはランタイムに設定できません。",
 			    invalidDate: "無効な日付",
 			    maskMessage: 'すべての必須文字を入力してください',
-			    maskRevertMessage: 'All required positions should be filled, that is why the value was reverted to the last valid one.',
+			    maskRevertMessage: '値が以前の有効な値に戻されました。すべての必須文字を入力してください。',
 				dateMessage: '有効な日付を入力してください',
 			    centuryThresholdValidValues: "centuryThreshold プロパティは 0 ~ 99 である必要があります。値はデフォルトに戻されました。",
 			    noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。"
