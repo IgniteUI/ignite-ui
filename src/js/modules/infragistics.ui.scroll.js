@@ -51,11 +51,11 @@
 			scrollHeight: null,
 			/* type="number" Sets custom value for what width is actually the content. Useful when wanting to scroll and update the shown content manually. */
 			scrollWidth: null,
-			/* type="number" Sets gets current vertical position of the conten. */
+			/* type="number" Sets gets current vertical position of the content. */
 			scrollTop: null,
 			/* type="number" Sets gets current horizontal position of the content. */
 			scrollLeft: null,
-			/* type="number" Sets gets the step of the default scrolling behavtiour when using mouse wheel */
+			/* type="number" Sets gets the step of the default scrolling behavior  when using mouse wheel */
 			wheelStep: null,
 			/* type="bool" Sets gets if smoother scrolling with small intertia should be used when using mouse wheel */
 			smoothing: null,
@@ -71,9 +71,9 @@
 			scrollbarH: null,
 			/* type="string" Sets gets html or jQuery element which is used for vertical scrolling. */
 			scrollbarV: null,
-			/* type="bool" Sets gets if only the linked horizontal scrollbar should be used for horizontal scrolling. Note: The behaviour when the linked scrollbar is scrolled in this case should be handled manually. */
+			/* type="bool" Sets gets if only the linked horizontal scrollbar should be used for horizontal scrolling. Note: The behavior when the linked scrollbar is scrolled in this case should be handled manually. */
 			scrollOnlyHBar: null,
-			/* type="bool" Sets gets if only the linked vertical scrollbar should be used for vertical scrolling. Note: The behaviour when the linked scrollbar is scrolled in this case should be handled manually. */
+			/* type="bool" Sets gets if only the linked vertical scrollbar should be used for vertical scrolling. Note: The behavior when the linked scrollbar is scrolled in this case should be handled manually. */
 			scrollOnlyVBar: null,
 			/* type="string" Sets gets html or jQuery element to which the horizontal scrollbar will be appended to. */
 			scrollbarHParent: null,
