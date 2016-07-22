@@ -1315,8 +1315,8 @@ if (typeof jQuery !== "function") {
                 // Handle only first panel,
                 //the second one will be handled in the panel2 recalculate code block below
                 $panel1[ sizeKey ](this._opt.defaultPanelSize);
-            } else if ($panel1[sizeKey]() > sizeWithoutBarSize &&
-                        !this._panels[1].options.size) {
+            } else if ($panel1[ sizeKey ]() > sizeWithoutBarSize &&
+                        !this._panels[ 1 ].options.size) {
                 // P.P. 06-July-2015 #202332: Handle panel1 resizing (on  window resize)
                 // when splitter is smaller than the panel and defined in %s
                 $panel1[ sizeKey ](sizeWithoutBarSize);
