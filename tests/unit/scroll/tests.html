@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.scroll.js"></script>	
 	<script type="text/javascript" src="jquery.simulate.js"></script>
+	<script type="text/javascript" src="simInteractions.js"></script>
 	
 	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -217,13 +218,37 @@
 		var testId_24 = 'igScroll using mouse wheel to scroll down with smoothing on test.';
 		var testId_25 = 'igScroll using mouse wheel to scroll up with smoothing on and initially set scrollTop test.';
 		
-		//Custom scrollbars interaction
+		/*//////////////////////Custom scrollbars interaction scenarios tests///////////////////////////*/
 	    var testId_30 = 'igScroll initially only the thin scrollbars are visible test.';
 	    var testId_31 = 'igScroll thin scrollbars hide after leaving the container area test.';
 	    var testId_32 = 'igScroll thin scrollbars hide after leaving and show after entering the container area test.';
 	    var testId_33 = 'igScroll thin scrollbars turn into big when mouse enters the vertical scrollbar area from inside the container test.';
-	    var testId_34 = 'igScroll big scrollbars show when entereing the vertical scrollbar area from outside the container test.';
+	    var testId_34 = 'igScroll big scrollbars turn into thin scrollbars when moving out of the scrollbars are to the container test.';
+	    var testId_35 = 'igScroll big scrollbars show when entereing the vertical scrollbar area from outside the container test.';
 		
+		//Arrow Down
+		var testId_36 = 'igScroll clicking on arrow down once scrolls the content test.';
+		var testId_37 = 'igScroll clicking on arrow up once to scroll when the content is at the bottom does not scroll test.';
+	    var testId_38 = 'igScroll clicking on arrow down and holding scrolls the container more than just clicking once test.';
+		
+		//Arrow Up
+	    var testId_39 = 'igScroll clicking on arrow up once scrolls the content test.';
+		var testId_40 = 'igScroll clicking on arrow up once to scroll the content to the top test.';
+		var testId_41 = 'igScroll clicking on arrow up once to scroll when the content is at the top does not scroll test.';
+	    var testId_42 = 'igScroll clicking on arrow up and holding scroll the container more than just clicking once test.';
+		
+		//Arrow Left
+	    var testId_43 = 'igScroll clicking on arrow left once scrolls the content test.';
+	    var testId_44 = 'igScroll clicking on arrow left once to scroll the content to the most left position test.';
+		var testId_45 = 'igScroll clicking on arrow left once to scroll when the content is at the most left does not scroll test.';
+	    var testId_46 = 'igScroll clicking on arrow left and holding scroll the container more than just clicking once test.';
+		
+		//Arrow Right
+	    var testId_47 = 'igScroll clicking on arrow right once scrolls the content test.';
+		var testId_48 = 'igScroll clicking on arrow up once to scroll when the content is at the most right does not scroll test.';
+	    var testId_49 = 'igScroll clicking on arrow right and holding scroll the container more than just clicking once test.';
+		
+		/*//////////////////////Custom scrollbars events tests///////////////////////////*/
 	    
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -629,10 +654,6 @@
 			},2000);
 	    });
 
-		//$("#elemNoScroll_vBar_arrowDown").mouseenter();
-		//$("#elemNoScroll_vBar_arrowDown").mousedown();
-		//$("#elemNoScroll_vBar_arrowDown").mouseup();
-
 		test(testId_30, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({
@@ -703,7 +724,7 @@
 				$("#elemVH").remove();
 				start();
 			},2100);
-	    });	
+	    });
 		
 		test(testId_33, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -738,9 +759,51 @@
 			equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
 			equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
 			$("#elemVH").remove();
-	    });	
-		
+	    });
+
 		test(testId_34, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vDrag = $("#elemVH_vBar_drag"),
+				arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				arrowRight = $("#elemVH_hBar_arrowRight"),
+				hDrag = $("#elemVH_hBar_drag"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+
+			elemContainer.mouseenter();
+			equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+			equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+			equal(arrowLeft.css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+			equal(arrowRight.css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+			ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+			ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+			
+			vScrollbarContainer.mouseenter();
+			vScrollbarContainer.mouseleave();
+			elemContainer.mouseenter();
+			
+			stop();
+			setTimeout(function () {
+				equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+				equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+				equal(arrowLeft.css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+				equal(arrowRight.css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+				equal(vDrag.css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
+				equal(hDrag.css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
+				$("#elemVH").remove();
+				start();
+			}, 2100);
+	    });
+		
+		test(testId_35, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({
 				modifyDOM: true
@@ -771,11 +834,307 @@
 				equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
 				equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
 				$("#elemVH").remove();
-				$("#elemVH").remove();
 				start();
 			},2100);
 	    });
 		
+		test(testId_36, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowDown = $("#elemVH_vBar_arrowDown"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+				
+			vScrollbarContainer.mouseenter();
+			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowDown);
+			equal(elemContainer.scrollTop(), 40, "igScroll did not scroll properly");
+			$("#elemVH").remove();
+	    });
+		
+		test(testId_37, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowDown = $("#elemVH_vBar_arrowDown"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container")
+				elemContent = $("#elemVH_content");
+			
+			$('#elemVH').igScroll("option", "scrollTop", elemContent.height() - elemContainer.height());
+			vScrollbarContainer.mouseenter();
+			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowDown);
+			equal(elemContainer.scrollTop(), elemContent.height() - elemContainer.height(), "igScroll did not scroll properly");
+			$("#elemVH").remove();
+	    });
+		
+		test(testId_38, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowDown = $("#elemVH_vBar_arrowDown"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+				
+			vScrollbarContainer.mouseenter();
+			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateClickAndHold(arrowDown, 325);
+
+			stop();
+			setTimeout(function () {
+				equal(elemContainer.scrollTop(), 120, "igScroll did not scroll properly");
+				$("#elemVH").remove();
+				start();
+			}, 400);
+	    });
+		
+		test(testId_39, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+				
+			vScrollbarContainer.mouseenter();
+			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowDown);
+			$.ig.TestUtil.simulateSingleClick(arrowDown);
+			equal(elemContainer.scrollTop(), 80, "igScroll did not scroll properly");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowUp);
+			equal(elemContainer.scrollTop(), 40, "igScroll did not scroll properly");
+			$("#elemVH").remove();
+
+	    });
+		
+		test(testId_40, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+				
+			vScrollbarContainer.mouseenter();
+			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowDown);
+			equal(elemContainer.scrollTop(), 40, "igScroll did not scroll properly");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowUp);
+			equal(elemContainer.scrollTop(), 0, "igScroll did not scroll properly");
+			$("#elemVH").remove();
+
+	    });	
+		
+		test(testId_41, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+				
+			vScrollbarContainer.mouseenter();
+			ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowUp);
+			equal(elemContainer.scrollTop(), 0, "igScroll did not scroll properly");
+			$("#elemVH").remove();
+	    });
+		
+		test(testId_42, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollTop: 500
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+				
+			vScrollbarContainer.mouseenter();
+			ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+
+			$.ig.TestUtil.simulateClickAndHold(arrowUp, 325);
+
+			stop();
+			setTimeout(function () {
+				//500 minus 120
+				equal(elemContainer.scrollTop(), 380, "igScroll did not scroll properly");
+				$("#elemVH").remove();
+				start();
+			}, 400);
+	    });
+		
+		test(testId_43, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollLeft: 100
+			});
+			
+	        var arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				hScrollbarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container");
+				
+			hScrollbarContainer.mouseenter();
+			ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowLeft);
+			equal(elemContainer.scrollLeft(), 60, "igScroll did not scroll properly");
+			$("#elemVH").remove();
+	    });	
+		
+		test(testId_44, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollLeft: 40
+			});
+			
+	        var arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				hScrollbarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container");
+				
+			hScrollbarContainer.mouseenter();
+			ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowLeft);
+			equal(elemContainer.scrollLeft(), 0, "igScroll did not scroll properly");
+			$("#elemVH").remove();
+	    });
+		
+		test(testId_45, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+			});
+			
+	        var arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				hScrollbarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container");
+				
+			hScrollbarContainer.mouseenter();
+			ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowLeft);
+			equal(elemContainer.scrollLeft(), 0, "igScroll did not scroll properly");
+			$("#elemVH").remove();
+	    });
+		
+		test(testId_46, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollLeft: 180
+			});
+			
+	        var arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				hScrollbarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container");
+				
+			hScrollbarContainer.mouseenter();
+			ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateClickAndHold(arrowLeft, 325);
+
+			stop();
+			setTimeout(function () {
+				equal(elemContainer.scrollLeft(), 60, "igScroll did not scroll properly");
+				$("#elemVH").remove();
+				start();
+			}, 400);
+	    });
+				
+				
+		test(testId_47, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowRight = $("#elemVH_hBar_arrowRight"),
+				hScrollbarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container");
+				
+			hScrollbarContainer.mouseenter();
+			ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowRight);
+			equal(elemContainer.scrollLeft(), 40, "igScroll did not scroll properly");
+			$("#elemVH").remove();
+	    });
+		
+				
+		test(testId_48, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowRight = $("#elemVH_hBar_arrowRight"),
+				hScrollbarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container")
+				elemContent = $("#elemVH_content");
+			
+			$('#elemVH').igScroll("option", "scrollLeft", elemContent.width() - elemContainer.width());
+			hScrollbarContainer.mouseenter();
+			ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateSingleClick(arrowRight);
+			equal(elemContainer.scrollLeft(), elemContent.width() - elemContainer.width(), "igScroll did not scroll properly");
+			$("#elemVH").remove();
+	    });
+		
+		test(testId_49, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowRight = $("#elemVH_hBar_arrowRight"),
+				hScrollbarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container");
+				
+			hScrollbarContainer.mouseenter();
+			ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			
+			$.ig.TestUtil.simulateClickAndHold(arrowRight, 325);
+
+			stop();
+			setTimeout(function () {
+				equal(elemContainer.scrollLeft(), 120, "igScroll did not scroll properly");
+				$("#elemVH").remove();
+				start();
+			}, 400);
+	    });
+
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>
 </head>
