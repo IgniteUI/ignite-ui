@@ -307,7 +307,7 @@
 
 			this._createScrollBars();
 			this._hideScrollBars(false);
-			this._showScrollBars(true, true, true, 0.02);
+			this._showScrollBars(false, true);
 
 			this._trigger("rendered", null, {
 				owner: this
@@ -334,6 +334,12 @@
 				}
 				if (typeof scrollOptions.scrollLeft !== "undefined") {
 					this._scrollLeft(scrollOptions.scrollLeft, false);
+				}
+				if (scrollOptions.scrollHeight !== 0) {
+					this._setScrollHeight(scrollOptions.scrollHeight);
+				}
+				if (scrollOptions.scrollWidth !== 0) {
+					this._setScrollWidth(scrollOptions.scrollWidth);
 				}
 			}
 		},
@@ -362,9 +368,15 @@
 			}
 			if (key === "scrollHeight") {
 				this._setScrollHeight(value);
+				this._removeScrollbars();
+				this._createScrollBars();
+				this._scrollToXY(0, 0, true);
 			}
 			if (key === "scrollWidth") {
 				this._setScrollWidth(value);
+				this._removeScrollbars();
+				this._createScrollBars();
+				this._scrollToXY(0, 0, true);
 			}
 			if (key === "syncedElemsH") {
 				this._linkElementsH(value);
@@ -521,6 +533,10 @@
 			this._percentInViewH = this._elemWidth / this._contentWidth;
 			this._isScrollableH = this._percentInViewH < 1;
 
+			if (this.options.modifyDOM) {
+				this._content.css("width", inWidth + "px");
+			}
+
 			return this.element;
 		},
 
@@ -530,6 +546,10 @@
 			this._contentHeight = inHeight;
 			this._percentInViewV = this._elemHeight / this._contentHeight;
 			this._isScrollableV = this._percentInViewV < 1;
+
+			if (this.options.modifyDOM) {
+				this._content.css("height", inHeight + "px");
+			}
 
 			return this.element;
 		},
@@ -1622,8 +1642,6 @@
 					mouseover: $.proxy(this._onMouseOverArrowUp, this),
 
 					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
-					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
-					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
 					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
@@ -1635,8 +1653,6 @@
 					mouseover: $.proxy(this._onMouseOverArrowDown, this),
 
 					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
-					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
-					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
 					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
@@ -1656,15 +1672,15 @@
 					mouseup: $.proxy(this._onMouseUpVTrack, this),
 					mouseout: $.proxy(this._onMouseOutVTrack, this),
 
-					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
-					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
 					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._vBarContainer) {
 				this._vBarContainer.on({
-					wheel: $.proxy(this._onWheelContainer, this)
+					wheel: $.proxy(this._onWheelContainer, this),
+					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
+					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this)
 				});
 			}
 
@@ -2072,8 +2088,6 @@
 					mouseover: $.proxy(this._onMouseOverArrowLeft, this),
 
 					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
-					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
-					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
 					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
@@ -2085,8 +2099,6 @@
 					mouseover: $.proxy(this._onMouseOverArrowRight, this),
 
 					mouseout: $.proxy(this._onMouseOutScrollbarArrow, this),
-					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
-					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
 					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
@@ -2106,15 +2118,15 @@
 					mouseup: $.proxy(this._onMouseUpHTrack, this),
 					mouseout: $.proxy(this._onMouseOutHTrack, this),
 
-					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
-					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this),
 					touchstart: $.proxy(this._onTouchStartScrollbarElem, this)
 				});
 			}
 
 			if (this._hBarContainer) {
 				this._hBarContainer.on({
-					wheel: $.proxy(this._onWheelContainer, this)
+					wheel: $.proxy(this._onWheelContainer, this),
+					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
+					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this)
 				});
 			}
 
@@ -2613,7 +2625,9 @@
 
 		_setSimpleScrollBarOpacity: function (newOpacity) {
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
-				this._vBarDrag.css("opacity", newOpacity);
+				this._vBarDrag
+					.css("opacity", newOpacity)
+					.css("width", 5 + "px");
 			} else if (this._vBarDrag && this._percentInViewV >= 1) {
 				this._vBarDrag.css("opacity", 0);
 			}
@@ -2631,7 +2645,9 @@
 		/** Sets the mobile scrollbars opacity. */
 		_setScrollBarsOpacity: function (newOpacity) {
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
-				this._vBarDrag.css("opacity", newOpacity);
+				this._vBarDrag
+					.css("width", 9 + "px")
+					.css("opacity", newOpacity);
 				this._vBarArrowUp.css("opacity", newOpacity);
 				this._vBarArrowDown.css("opacity", newOpacity);
 			} else if (this._vBarDrag && this._percentInViewV >= 1) {
@@ -2656,6 +2672,8 @@
 
 		_toSimpleScrollbar: function () {
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
+				this._vBarDrag
+					.css("width", 5 + "px");
 				this._vBarArrowUp.css("opacity", 0);
 				this._vBarArrowDown.css("opacity", 0);
 			} else if (this._vBarDrag && this._percentInViewV >= 1) {
