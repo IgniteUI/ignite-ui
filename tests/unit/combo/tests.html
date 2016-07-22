@@ -17,10 +17,6 @@
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.datasource.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.combo.js"></script>
-    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.editors.js"></script>
-    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.grid.framework.js"></script>
-    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.grid.shared.js"></script>
-    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.grid.updating.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>
@@ -287,7 +283,10 @@
         <div id="local-filtering-virt"></div>
     </div>
     <div>
-        <table id="grid-combo-editor"></table>
+        <div id="keyboard-interactions"></div>
+    </div>
+    <div>
+        <div id="mouse-interactions"></div>
     </div>
     <script type="text/javascript">
         $(function () {
@@ -376,7 +375,8 @@
                 testId_76 = 'Combo focus blur';
                 testId_77 = 'Open dropDown via API with bottom dropDownOrientation';
                 testId_78 = 'Local filtering with virtualization';
-                testId_79 = 'igGrid with combo editor - selection changed callbacks';
+                testId_79 = 'Keyboard interacting';
+                testId_80 = 'Mouse interacting';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -676,6 +676,15 @@
 
                 element.trigger(keyDown);
                 element.trigger(keyUp);
+            }
+
+            function emulateNonSpecialKeyPress(keyCode, element) {
+                var keyPress = jQuery.Event("keypress");
+
+                keyPress.ctrlKey = false;
+                keyPress.which = keyCode;
+                keyPress.keyCode = keyCode;
+                $(element).trigger(keyPress);
             }
 
             function typeInInput(key, element) {
@@ -4829,7 +4838,7 @@
 
             // open dropDown via API with bottom dropDownOrientation
             test(testId_77, function () {
-                var $clearButton, data, selectedItems,
+                var data,
                     $combo = $("#combo-open-bottom");
 
                 data = [{ "ProductID": 318, "Name": "ML Crankarm" },
@@ -4910,7 +4919,7 @@
 
             // Local filtering with virtualization
             test(testId_78, function () {
-                var $dropDown, $listItems, data, filteredItems, allItems,
+                var ds, filteredItems,
 					$combo = $("#local-filtering-virt");
 
                 ds = new $.ig.DataSource({
@@ -4947,63 +4956,90 @@
                 stop(); // Pause the test
             });
 
-            // igGrid with combo editor - selection changed callbacks
+            // Keyboard interacting
             test(testId_79, function () {
-                var $dropDown, $listItems, data, filteredItems, allItems, $combo,
-                    $grid = $("#grid-combo-editor");
+                var data, selectedItem, $input,
+                $combo = $("#keyboard-interactions");
 
-                var sourceData = {
-                    "Products": [
-                        { "ProductID": 1, "UnitsInStock": 989, "ProductDescription": 1, "UnitPrice": 661, "DateAdded": "2006-12-25T17:29:46.108" },
-                        { "ProductID": 2, "UnitsInStock": 853, "ProductDescription": 3, "UnitPrice": 351, "DateAdded": "1997-06-18T07:28:54.737" }
-                    ],
-                    "TotalRecordsCount": 250,
-                    "Metadata": {}
-                };
-                var comboData = [
-                    { Product: 1, Name: "1" },
-                    { Product: 2, Name: "23saf" },
-                    { Product: 3, Name: "11000" }
-                ]
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
 
-                $grid.igGrid({
-                    autoGenerateColumns: false,
-                    primaryKey: "ProductID",
-                    autoCommit: true,
-                    width: "700px",
-                    columns: [
-                        { headerText: "Product ID", key: "ProductID", dataType: "number" },
-                        { headerText: "Stock", key: "UnitsInStock", dataType: "number" },
-                        { headerText: "Description", key: "ProductDescription", dataType: "number" },
-                    ],
-                    dataSource: sourceData,
-                    responseDataKey: "Products",
-                    features: [
-                        {
-                            name: "Updating",
-                            columnSettings: [
-                                {
-                                    columnKey: "ProductDescription",
-                                    editorType: "combo",
-                                    editorOptions: {
-                                        dataSource: comboData,
-                                        valueKey: "Product",
-                                        textKey: "Name",
-                                    },
-                                }
-                            ]
-                        }
-                    ]
+                $combo.igCombo({
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    mode: "dropdown",
+                    width: 200,
+                    height: 30,
+                    allowCustomValues: true,
+                    autoSelectFirstMatch: true,
+                    multiSelection: {
+                        enabled: false,
+                    },
                 });
-                
-                $grid.igGridUpdating("startEdit", 1, "ProductDescription");
-                $combo = $grid.igGridUpdating("editorForKey", "ProductDescription");
-                equal($combo.igCombo("value"), 1, "combo value is 1");
-                equal($("#" + $grid.igGrid("id") + "_updating_done").hasClass("ui-state-disabled"), true, "Done button is disabled");
-                $combo.igCombo("value", 3);
-                $grid.igGridUpdating("endEdit", true);
-                equal($combo.igCombo("value"), 3, "combo value is 3");
-                equal($("#" + $grid.igGrid("id") + "_updating_done").hasClass("ui-state-disabled"), false, "Done button is enabled");
+
+                $input = $combo.igCombo("textInput");
+                emulateNonSpecialKeyPress(77, $input);
+                selectedItem = $combo.igCombo("selectedItems")[0];
+                equal(selectedItem.data[$combo.igCombo("option", "textKey")], "Mishi Kobe Niku", "Correct item is selected");
+
+                $combo.igCombo("option", "multiSelection", { enabled: true });
+
+                setTimeout(function () {
+                    start();
+                    emulateNonSpecialKeyPress(67, $input);
+                    equal($($combo.igCombo('dropDown').find("li")[0]).hasClass("ui-igcombo-item-in-focus"), true, "The auto completed item is highlighted with css class 'ui-igcombo-item-in-focus'");
+                }, 1100);
+                stop();
+
+            });
+
+            // Mouse interacting
+            test(testId_80, function () {
+                var data, $input,
+                $combo = $("#mouse-interactions");
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+
+                $combo.igCombo({
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    mode: "editable",
+                    width: 200,
+                    height: 30,
+                    allowCustomValues: true,
+                    autoSelectFirstMatch: true,
+                    initialSelectedItems: [ { index: 0 } ]
+                });
+
+                $input = $combo.igCombo("textInput");
+                notEqual(document.activeElement, $input[0], "Input is not focused");
+                clickElement($input, false, false);
+                equal(document.activeElement, $input[0], "Input is focused");
+                $input.blur();
+                $combo.igCombo("option", "disabled", true);
+                clickElement($input, false, false);
+                notEqual(document.activeElement, $input[0], "Input is not focused");
             });
         });
     </script>
