@@ -199,13 +199,35 @@
 	    var testId_6 = 'igScroll no scrollbars rendered when scrollbarType is none test.';
 	    var testId_7 = 'igScroll native vertical and horizontal scrollbars rendered when scrollbarType is native test.';
 	    var testId_8 = 'igScroll initially setting scrollTop and scrollLeft test.';
-	    var testId_9 = 'igScroll initially setting scrollTop and scrollLeft on touch test.';		
-	    var testId_10 = 'igScroll initially setting scrollTop and scrollLeft with native scrollbars test.';		
+	    var testId_9 = 'igScroll initially setting scrollTop and scrollLeft with content not high and wide enough to scroll test.';
+	    var testId_10 = 'igScroll initially setting scrollTop and scrollLeft with content not high and wide enough to scroll on touch test.';
+	    var testId_11 = 'igScroll initially setting scrollTop and scrollLeft on touch test.';
+	    var testId_12 = 'igScroll initially setting scrollTop and scrollLeft with native scrollbars test.';
+	    var testId_13 = 'igScroll dynamically setting scrollTop and scrollLeft test.';
+	    var testId_14 = 'igScroll dynamically setting scrollTop and scrollLeft with the same options set initially test.';
+	    var testId_15 = 'igScroll initially setting high scrollHeight on a small content renders vertical scrollbar test.';
+	    var testId_16 = 'igScroll can scroll vertically after initially setting high scrollHeight on a small content test.';
+	    var testId_17 = 'igScroll dinamically setting high scrollHeight on a small content renders vertical scrollbar test.';
+	    var testId_18 = 'igScroll initially setting high scrollWidth on a small content renders vertical scrollbar test.';
+	    var testId_19 = 'igScroll can scroll horizontally after initially setting high scrollWidth on a small content test.';
+	    var testId_20 = 'igScroll dinamically setting high scrollWidth on a small content renders vertical scrollbar test.';    
+		var testId_21 = 'igScroll initially setting high scrollWidth and scrollWidth on a small content renders both scrollbars test.';
+		var testId_22 = 'igScroll using mouse wheel to scroll down without smoothing test.';
+		var testId_23 = 'igScroll using mouse wheel to scroll down and then up without smoothing test.';
+		var testId_24 = 'igScroll using mouse wheel to scroll down with smoothing on test.';
+		var testId_25 = 'igScroll using mouse wheel to scroll up with smoothing on and initially set scrollTop test.';
+		
+		//Custom scrollbars interaction
+	    var testId_30 = 'igScroll initially only the thin scrollbars are visible test.';
+	    var testId_31 = 'igScroll thin scrollbars hide after leaving the container area test.';
+	    var testId_32 = 'igScroll thin scrollbars hide after leaving and show after entering the container area test.';
+	    var testId_33 = 'igScroll thin scrollbars turn into big when mouse enters the vertical scrollbar area from inside the container test.';
+	    var testId_34 = 'igScroll big scrollbars show when entereing the vertical scrollbar area from outside the container test.';
+		
 	    
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({ modifyDOM: true });
-			
 			
 	        ok(typeof $("#elemVH").igScroll === 'function', "igScroll script did not load");
 	        ok(typeof $("#elemVH").data("igScroll") === "object", "igScroll did not initialize");
@@ -314,9 +336,39 @@
 			equal($("#elemVH").data("igScroll")._getContentPositionX(), 100, "igScroll is not scrolled horizontally initially");
 			equal($("#elemVH").data("igScroll")._getContentPositionY(), 200, "igScroll is not scrolled vertically initially");
 	        $("#elemVH").remove();
+	    });	
+
+		test(testId_9, function () {		
+			$("#testBed").append($('<div id="elemNo" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentNoScroll));
+			$('#elemNo').igScroll({
+				modifyDOM: true,
+				scrollTop: 200,
+				scrollLeft: 100
+			});
+
+			ok(typeof $("#elemNo").data("igScroll") === "object", "igScroll did not initialize");
+			equal($("#elemNo").data("igScroll")._getContentPositionX(), 0, "igScroll is scrolled horizontally initially");
+			equal($("#elemNo").data("igScroll")._getContentPositionY(), 0, "igScroll is scrolled vertically initially");
+	        $("#elemNo").remove();
+	    });	
+
+		test(testId_10, function () {	
+			$.ig.util.isTouch = true;
+			$("#testBed").append($('<div id="elemNo" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentNoScroll));
+			$('#elemNo').igScroll({
+				modifyDOM: true,
+				scrollTop: 200,
+				scrollLeft: 100
+			});
+
+			ok(typeof $("#elemNo").data("igScroll") === "object", "igScroll did not initialize");
+			equal($("#elemNo").data("igScroll")._getContentPositionX(), 0, "igScroll is scrolled horizontally initially");
+			equal($("#elemNo").data("igScroll")._getContentPositionY(), 0, "igScroll is scrolled vertically initially");
+	        $("#elemNo").remove();
+			$.ig.util.isTouch = false;
 	    });		
 		
-		test(testId_9, function () {
+		test(testId_11, function () {
 			$.ig.util.isTouch = true;		
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 			$('#elemVH').igScroll({
@@ -332,7 +384,7 @@
 			$.ig.util.isTouch = false;
 	    });		
 		
-		test(testId_10, function () {	
+		test(testId_12, function () {	
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 			$('#elemVH').igScroll({
 				modifyDOM: true,
@@ -346,15 +398,386 @@
 			equal($("#elemVH").data("igScroll")._getContentPositionY(), 200, "igScroll is not scrolled vertically initially");
 			$("#elemVH").remove();
 	    });
+		
+		test(testId_13, function () {	
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$('#elemVH').igScroll({
+				modifyDOM: true
+			});
 
+			ok(typeof $("#elemVH").data("igScroll") === "object", "igScroll did not initialize");
+			$('#elemVH').igScroll("option", "scrollTop", 500);
+			equal($("#elemVH").data("igScroll")._getContentPositionY(), 500, "igScroll is not scrolled vertically initially");			
+			$('#elemVH').igScroll("option", "scrollLeft", 100);
+			equal($("#elemVH").data("igScroll")._getContentPositionX(), 100, "igScroll is not scrolled horizontally initially");
+			$("#elemVH").remove();
+	    });		
+		
+		test(testId_14, function () {	
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollTop: 200,
+				scrollLeft: 100
+			});
+
+			ok(typeof $("#elemVH").data("igScroll") === "object", "igScroll did not initialize");
+			equal($("#elemVH").data("igScroll")._getContentPositionX(), 100, "igScroll is not scrolled horizontally initially");
+			equal($("#elemVH").data("igScroll")._getContentPositionY(), 200, "igScroll is not scrolled vertically initially");			
+			
+			$('#elemVH').igScroll("option", "scrollTop", 500);
+			equal($("#elemVH").data("igScroll")._getContentPositionY(), 500, "igScroll is not scrolled vertically initially");
+			
+			$('#elemVH').igScroll("option", "scrollLeft", 200);
+			equal($("#elemVH").data("igScroll")._getContentPositionX(), 200, "igScroll is not scrolled horizontally initially");
+			$("#elemVH").remove();
+	    });
+		
+		test(testId_15, function () {
+	        $("#testBed").append($('<div id="elemNoScroll" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentNoScroll));
+	        $('#elemNoScroll').igScroll({
+				modifyDOM: true,
+				scrollHeight: 1000
+			});
+	        var verticalScrollbar = $("#elemNoScroll_vBar"),
+                horizontalScrollbar = $("#elemNoScroll_hBar");
+
+	        ok(typeof $("#elemNoScroll").data("igScroll") === "object", "igScroll did not initialize");
+	        ok(verticalScrollbar.length > 0, "igScrollbar rendered vertical scrollbar");
+	        ok(horizontalScrollbar.length === 0, "igScrollbar did not render horizontal scrollbar");
+	        $("#elemNoScroll").remove();
+	    });
+		
+		test(testId_16, function () {
+	        $("#testBed").append($('<div id="elemNoScroll" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentNoScroll));
+	        $('#elemNoScroll').igScroll({
+				modifyDOM: true,
+				scrollHeight: 1000
+			});
+	        var verticalScrollbar = $("#elemNoScroll_vBar"),
+                horizontalScrollbar = $("#elemNoScroll_hBar");
+
+	        ok(typeof $("#elemNoScroll").data("igScroll") === "object", "igScroll did not initialize");
+	        ok(verticalScrollbar.length > 0, "igScrollbar rendered vertical scrollbar");
+	        ok(horizontalScrollbar.length === 0, "igScrollbar did not render horizontal scrollbar");
+			
+			$('#elemNoScroll').igScroll("option", "scrollTop", 500);
+			equal($("#elemNoScroll").data("igScroll")._getContentPositionY(), 500, "igScroll did not scroll vertically");
+
+	        $("#elemNoScroll").remove();
+	    });
+		
+		test(testId_17, function () {
+	        $("#testBed").append($('<div id="elemNoScroll" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentNoScroll));
+	        $('#elemNoScroll').igScroll({
+				modifyDOM: true
+			});
+	        ok(typeof $("#elemNoScroll").data("igScroll") === "object", "igScroll did not initialize");
+			$('#elemNoScroll').igScroll("option", "scrollHeight", 1000);
+			
+	        var verticalScrollbar = $("#elemNoScroll_vBar"),
+                horizontalScrollbar = $("#elemNoScroll_hBar");
+	        ok(verticalScrollbar.length > 0, "igScrollbar rendered vertical scrollbar");
+	        ok(horizontalScrollbar.length === 0, "igScrollbar did not render horizontal scrollbar");
+	        $("#elemNoScroll").remove();
+	    });		
+		
+		test(testId_18, function () {
+	        $("#testBed").append($('<div id="elemNoScroll" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentNoScroll));
+	        $('#elemNoScroll').igScroll({
+				modifyDOM: true,
+				scrollWidth: 1000
+			});
+	        var verticalScrollbar = $("#elemNoScroll_vBar"),
+                horizontalScrollbar = $("#elemNoScroll_hBar");
+
+	        ok(typeof $("#elemNoScroll").data("igScroll") === "object", "igScroll did not initialize");
+	        ok(verticalScrollbar.length === 0, "igScrollbar rendered vertical scrollbar");
+	        ok(horizontalScrollbar.length > 0, "igScrollbar did not render horizontal scrollbar");
+	        $("#elemNoScroll").remove();
+	    });
+		
+		test(testId_19, function () {
+	        $("#testBed").append($('<div id="elemNoScroll" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentNoScroll));
+	        $('#elemNoScroll').igScroll({
+				modifyDOM: true,
+				scrollWidth: 1000
+			});
+	        var verticalScrollbar = $("#elemNoScroll_vBar"),
+                horizontalScrollbar = $("#elemNoScroll_hBar");
+
+	        ok(typeof $("#elemNoScroll").data("igScroll") === "object", "igScroll did not initialize");
+	        ok(verticalScrollbar.length === 0, "igScrollbar rendered vertical scrollbar");
+	        ok(horizontalScrollbar.length > 0, "igScrollbar did not render horizontal scrollbar");
+			
+			$('#elemNoScroll').igScroll("option", "scrollLeft", 200);
+			equal($("#elemNoScroll").data("igScroll")._getContentPositionX(), 200, "igScroll is not scrolled horizontally initially");
+	        $("#elemNoScroll").remove();
+	    });
+		
+		test(testId_20, function () {
+	        $("#testBed").append($('<div id="elemNoScroll" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentNoScroll));
+	        $('#elemNoScroll').igScroll({
+				modifyDOM: true
+			});
+	        ok(typeof $("#elemNoScroll").data("igScroll") === "object", "igScroll did not initialize");
+			$('#elemNoScroll').igScroll("option", "scrollWidth", 1000);
+			
+			var verticalScrollbar = $("#elemNoScroll_vBar"),
+                horizontalScrollbar = $("#elemNoScroll_hBar");
+	        ok(verticalScrollbar.length === 0, "igScrollbar rendered vertical scrollbar");
+	        ok(horizontalScrollbar.length > 0, "igScrollbar did not render horizontal scrollbar");
+	        $("#elemNoScroll").remove();
+	    });
+		
+		test(testId_21, function () {
+	        $("#testBed").append($('<div id="elemNoScroll" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentNoScroll));
+	        $('#elemNoScroll').igScroll({
+				modifyDOM: true,
+				scrollHeight: 1000,
+				scrollWidth: 1000
+			});
+	        var verticalScrollbar = $("#elemNoScroll_vBar"),
+                horizontalScrollbar = $("#elemNoScroll_hBar");
+
+	        ok(typeof $("#elemNoScroll").data("igScroll") === "object", "igScroll did not initialize");
+	        ok(verticalScrollbar.length > 0, "igScrollbar rendered vertical scrollbar");
+	        ok(horizontalScrollbar.length > 0, "igScrollbar did not render horizontal scrollbar");
+	        $("#elemNoScroll").remove();
+	    });
+		
+		test(testId_22, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				smoothing: false
+			});
+			
+			var elemContainer = $("#elemVH_container");
+			
+			var wheelEvt = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function() {}, stopPropagation : function() {} });
+			elemContainer.trigger(wheelEvt);
+			
+			//50 because the default scroll step is 50
+			equal(elemContainer.scrollTop(), 50, "");
+			$("#elemVH").remove();
+	    });		
+		
+		test(testId_23, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				smoothing: false
+			});
+			
+			var elemContainer = $("#elemVH_container");
+			
+			var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function() {}, stopPropagation : function() {} }),
+				wheelEvtUp = jQuery.Event("wheel", { originalEvent: { deltaY: -100 }, preventDefault: function() {}, stopPropagation : function() {} });
+			
+			elemContainer.trigger(wheelEvtDown);
+			elemContainer.trigger(wheelEvtDown);
+			elemContainer.trigger(wheelEvtDown);
+			elemContainer.trigger(wheelEvtDown);
+			elemContainer.trigger(wheelEvtUp);
+			
+			//Default scroll step is 50
+			equal(elemContainer.scrollTop(), 150, "");
+			$("#elemVH").remove();
+	    });		
+		
+		test(testId_24, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				smoothing: true
+			});
+			
+			var elemContainer = $("#elemVH_container");			
+			var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function() {}, stopPropagation : function() {} });			
+			
+			elemContainer.trigger(wheelEvtDown);		
+			stop();
+			setTimeout(function () {
+				//Using the mouse wheel once is approximately 99 pixels by default
+				//On non touch environment scrollTop can be used to determine the scroll position
+				ok(elemContainer.scrollTop() > 80, "igScroll did not scroll properly with smoothing on");
+				$("#elemVH").remove();
+				start();
+			},2000);
+	    });	
+		
+		test(testId_25, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				smoothing: true,
+				scrollTop: 80
+			});
+			
+			var elemContainer = $("#elemVH_container");		
+			var wheelEvtUp = jQuery.Event("wheel", { originalEvent: { deltaY: -100 }, preventDefault: function() {}, stopPropagation : function() {} });			
+			
+			//On non touch environment scrollTop can be used to determine the scroll position
+			equal(elemContainer.scrollTop(), 80, "igScroll did not scroll properly with smoothing on");
+			elemContainer.trigger(wheelEvtUp);
+			stop();
+			setTimeout(function () {
+				equal(elemContainer.scrollTop(), 0, "igScroll did not scroll properly with smoothing on");
+				$("#elemVH").remove();
+				start();
+			},2000);
+	    });
+
+		//$("#elemNoScroll_vBar_arrowDown").mouseenter();
+		//$("#elemNoScroll_vBar_arrowDown").mousedown();
+		//$("#elemNoScroll_vBar_arrowDown").mouseup();
+
+		test(testId_30, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vDrag = $("#elemVH_vBar_drag"),
+				arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				arrowRight = $("#elemVH_hBar_arrowRight"),
+				hDrag = $("#elemVH_hBar_drag");
+
+			equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+			equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+			equal(arrowLeft.css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+			equal(arrowRight.css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+			ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+			ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+			equal(vDrag.css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
+			equal(hDrag.css("height"), "5px", "igScroll horizontal scrollbar thumb drag is big");
+			$("#elemVH").remove();
+	    });
+		
+		test(testId_31, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vDrag = $("#elemVH_vBar_drag"),
+				arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				arrowRight = $("#elemVH_hBar_arrowRight"),
+				hDrag = $("#elemVH_hBar_drag"),
+				elemContainer = $("#elemVH_container");
+
+			elemContainer.mouseleave();
+			stop();
+			setTimeout(function () {
+				equal(vDrag.css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
+				equal(hDrag.css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
+				$("#elemVH").remove();
+				start();
+			},2100);
+	    });
+		
+		test(testId_32, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var vDrag = $("#elemVH_vBar_drag"),
+				hDrag = $("#elemVH_hBar_drag"),
+				elemContainer = $("#elemVH_container");
+
+			elemContainer.mouseleave();
+			stop();
+			setTimeout(function () {
+				equal(vDrag.css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
+				equal(hDrag.css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
+				
+				elemContainer.mouseenter();
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+				$("#elemVH").remove();
+				start();
+			},2100);
+	    });	
+		
+		test(testId_33, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vDrag = $("#elemVH_vBar_drag"),
+				arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				arrowRight = $("#elemVH_hBar_arrowRight"),
+				hDrag = $("#elemVH_hBar_drag"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+
+			elemContainer.mouseenter();
+			equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+			equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+			equal(arrowLeft.css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+			equal(arrowRight.css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+			ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
+			ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+			
+			vScrollbarContainer.mouseenter();
+			ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+			ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+			ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+			ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+			equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+			equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+			$("#elemVH").remove();
+	    });	
+		
+		test(testId_34, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vDrag = $("#elemVH_vBar_drag"),
+				arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				arrowRight = $("#elemVH_hBar_arrowRight"),
+				hDrag = $("#elemVH_hBar_drag"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+
+			elemContainer.mouseleave();
+			stop();
+			setTimeout(function () {
+				equal(vDrag.css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
+				equal(hDrag.css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
+				
+				vScrollbarContainer.mouseenter();
+				ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+				ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+				ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+				ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+				equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+				equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+				$("#elemVH").remove();
+				$("#elemVH").remove();
+				start();
+			},2100);
+	    });
+		
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>
-	<style>
-		th {
-			background-color: #888888;
-			color: #ffffff;
-		}
-	</style>
 </head>
 <body>
 <div style="float:right;width:400px;overflow:auto">
