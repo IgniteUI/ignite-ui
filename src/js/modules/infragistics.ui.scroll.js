@@ -472,7 +472,7 @@
 				paramType="number" optional="true" new value for scrollLeft.
 				returnType="number|object" Returns scrollLeft or reference to igScroll.
 			*/
-			if (!val) {
+			if (val === "undefined" || val === null) {
 				return this._getContentPositionX();
 			}
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
@@ -502,7 +502,7 @@
 				paramType="number" optional="true" new value for scrollTop.
 				returnType="number|object" Returns scrollTop or reference to igScroll.
 			*/
-			if (!val) {
+			if (val === "undefined" || val === null) {
 				return this._getContentPositionY();
 			}
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
