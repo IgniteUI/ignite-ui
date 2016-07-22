@@ -813,7 +813,7 @@ if (typeof jQuery !== "function") {
 							// K.D. October 17th, 2013 Bug #155067 A shallow copy should be created instead of a deep one
 							self._sourceNode.data = $.extend(false, {}, node.data);
 							self._sourceNode.owner = self;
-							self._sourceNode.element = $(this);
+							self._sourceNode.element = node.element;
 						} else {
 							return false;
 						}
