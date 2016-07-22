@@ -1312,16 +1312,17 @@ if (typeof jQuery !== "function") {
             // on window resize when splitter is defined in %s;
             // else condition: resize panel1 only if panel2 size is 0 or undefined
             if (panel2Size === undefined && panel1Size === undefined) {
-                // Handle only first panel, 
+                // Handle only first panel,
                 //the second one will be handled in the panel2 recalculate code block below
                 $panel1[ sizeKey ](this._opt.defaultPanelSize);
-            } else if ($panel1[ sizeKey ]() > sizeWithoutBarSize && !this._panels[ 1 ].options.size) {
+            } else if ($panel1[sizeKey]() > sizeWithoutBarSize &&
+                        !this._panels[1].options.size) {
                 // P.P. 06-July-2015 #202332: Handle panel1 resizing (on  window resize)
                 // when splitter is smaller than the panel and defined in %s
                 $panel1[ sizeKey ](sizeWithoutBarSize);
             }
 
-            // P.P. 06-July-2015 #201886: the panel drops down when has fixed size 
+            // P.P. 06-July-2015 #201886: the panel drops down when has fixed size
             // and the window is resized below this size
             // P.P. 29-June-2015 #201887: when only panel1 is defined with fixed size
             if ($panel2[ sizeKey ]() !== panel2RecalculatedSize ||
@@ -1329,7 +1330,7 @@ if (typeof jQuery !== "function") {
 
                 // When first panel and splitter size are undefined and only second panel is defined
                 if (panel1Size === undefined && panel2Size > 0 && !this.options[ sizeKey ]) {
-                    // P.P. 21-July-2016 #222056: igSplitter makes the second panel 
+                    // P.P. 21-July-2016 #222056: igSplitter makes the second panel
                     //take the whole width if width for the first panel is not set
 
                     if (sizeWithoutBarSize < panel2Size) { // when resize window under panel 2 size
