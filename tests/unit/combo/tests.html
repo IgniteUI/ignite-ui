@@ -282,6 +282,12 @@
     <div>
         <div id="local-filtering-virt"></div>
     </div>
+    <div>
+        <div id="keyboard-interactions"></div>
+    </div>
+    <div>
+        <div id="mouse-interactions"></div>
+    </div>
     <script type="text/javascript">
         $(function () {
             var testId_1 = 'igCombo existence',
@@ -369,6 +375,8 @@
                 testId_76 = 'Combo focus blur';
                 testId_77 = 'Open dropDown via API with bottom dropDownOrientation';
                 testId_78 = 'Local filtering with virtualization';
+                testId_79 = 'Keyboard interacting';
+                testId_80 = 'Mouse interacting';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -668,6 +676,15 @@
 
                 element.trigger(keyDown);
                 element.trigger(keyUp);
+            }
+
+            function emulateNonSpecialKeyPress(keyCode, element) {
+                var keyPress = jQuery.Event("keypress");
+
+                keyPress.ctrlKey = false;
+                keyPress.which = keyCode;
+                keyPress.keyCode = keyCode;
+                $(element).trigger(keyPress);
             }
 
             function typeInInput(key, element) {
@@ -4821,7 +4838,7 @@
 
             // open dropDown via API with bottom dropDownOrientation
             test(testId_77, function () {
-                var $clearButton, data, selectedItems,
+                var data,
                     $combo = $("#combo-open-bottom");
 
                 data = [{ "ProductID": 318, "Name": "ML Crankarm" },
@@ -4902,7 +4919,7 @@
 
             // Local filtering with virtualization
             test(testId_78, function () {
-                var $dropDown, $listItems, data, filteredItems, allItems,
+                var ds, filteredItems,
 					$combo = $("#local-filtering-virt");
 
                 ds = new $.ig.DataSource({
@@ -4939,6 +4956,91 @@
                 stop(); // Pause the test
             });
 
+            // Keyboard interacting
+            test(testId_79, function () {
+                var data, selectedItem, $input,
+                $combo = $("#keyboard-interactions");
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+
+                $combo.igCombo({
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    mode: "dropdown",
+                    width: 200,
+                    height: 30,
+                    allowCustomValues: true,
+                    autoSelectFirstMatch: true,
+                    multiSelection: {
+                        enabled: false,
+                    },
+                });
+
+                $input = $combo.igCombo("textInput");
+                emulateNonSpecialKeyPress(77, $input);
+                selectedItem = $combo.igCombo("selectedItems")[0];
+                equal(selectedItem.data[$combo.igCombo("option", "textKey")], "Mishi Kobe Niku", "Correct item is selected");
+
+                $combo.igCombo("option", "multiSelection", { enabled: true });
+
+                setTimeout(function () {
+                    start();
+                    emulateNonSpecialKeyPress(67, $input);
+                    equal($($combo.igCombo('dropDown').find("li")[0]).hasClass("ui-igcombo-item-in-focus"), true, "The auto completed item is highlighted with css class 'ui-igcombo-item-in-focus'");
+                }, 1100);
+                stop();
+
+            });
+
+            // Mouse interacting
+            test(testId_80, function () {
+                var data, $input,
+                $combo = $("#mouse-interactions");
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+
+                $combo.igCombo({
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    mode: "editable",
+                    width: 200,
+                    height: 30,
+                    allowCustomValues: true,
+                    autoSelectFirstMatch: true,
+                    initialSelectedItems: [ { index: 1 } ]
+                });
+
+                $input = $combo.igCombo("textInput");
+                notEqual(document.activeElement, $input[0], "Input is not focused");
+                clickElement($input, false, false);
+                equal(document.activeElement, $input[0], "Input is focused");
+                $input.blur();
+                $combo.igCombo("option", "disabled", true);
+                clickElement($input, false, false);
+                notEqual(document.activeElement, $input[0], "Input is not focused");
+            });
         });
     </script>
 </body>
