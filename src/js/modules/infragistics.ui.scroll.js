@@ -39,30 +39,34 @@
 	$.widget("ui.igScroll", {
 		options: {
 			/* type="bool" Sets or gets if the scrollbars should be always visible (on all environments). Otherwise it will be the default behavior. Note: this option is only for the custom scrollbars set through the scrollbarType option. */
-			alwaysVisible: null,
+			alwaysVisible: false,
 			/* type="custom|native|none" Sets or gets what type of scrollbars should be using the igScroll (on all environments).
 				custom type="string" Custom scrollbars with custom ui and events.
 				native type="string" Native scrollbars
 				none type="string" No scrollbars should be visible */
-			scrollbarType: null,
+			scrollbarType: "custom",
 			/* type="bool" Sets or gets if igScroll can modify the DOM when it is initialized on certain element so that the content can be scrollable. */
-			modifyDOM: null,
+			modifyDOM: true,
 			/* type="number" Sets custom value for how high is actually the content. Useful when wanting to scroll and update the shown content manually. */
 			scrollHeight: null,
 			/* type="number" Sets custom value for what width is actually the content. Useful when wanting to scroll and update the shown content manually. */
 			scrollWidth: null,
 			/* type="number" Sets gets current vertical position of the content. */
-			scrollTop: null,
+			scrollTop: 0,
 			/* type="number" Sets gets current horizontal position of the content. */
-			scrollLeft: null,
-			/* type="number" Sets gets the step of the default scrolling behavior  when using mouse wheel */
-			wheelStep: null,
+			scrollLeft: 0,
+			/* type="number" Sets gets the step of the default scrolling behavior when using mouse wheel */
+			wheelStep: 50,
+			/* type="number" Sets gets the step of the default scrolling behavior when using any of the custom scrollbar arrows */
+			smallIncrementStep: 40,
+			/* type="number" Sets gets the step of the default scrolling behavior when using any of the custom scrollbar track areas. */
+			bigIncrementStep: null,
 			/* type="bool" Sets gets if smoother scrolling with small intertia should be used when using mouse wheel */
-			smoothing: null,
+			smoothing: false,
 			/* type="number" Sets gets the modifier for how much the inertia scrolls on mobile devices*/
-			smoothingStep: null,
+			smoothingStep: 1,
 			/* type="number" Sets gets the modifier for how long the inertia last on mobile devices*/
-			smoothingDuration: null,
+			smoothingDuration: 1,
 			/* type="array" Sets gets elements that are linked to the main content horizontally. When the content is scrolled on X axis the linked elements scroll accordingly. */
 			syncedElemsH: [],
 			/* type="array" Sets gets elements that are linked to the main content vertically. When the content is scrolled on Y axis the linked elements scroll accordingly. */
@@ -72,9 +76,9 @@
 			/* type="string" Sets gets html or jQuery element which is used for vertical scrolling. */
 			scrollbarV: null,
 			/* type="bool" Sets gets if only the linked horizontal scrollbar should be used for horizontal scrolling. Note: The behavior when the linked scrollbar is scrolled in this case should be handled manually. */
-			scrollOnlyHBar: null,
+			scrollOnlyHBar: false,
 			/* type="bool" Sets gets if only the linked vertical scrollbar should be used for vertical scrolling. Note: The behavior when the linked scrollbar is scrolled in this case should be handled manually. */
-			scrollOnlyVBar: null,
+			scrollOnlyVBar: false,
 			/* type="string" Sets gets html or jQuery element to which the horizontal scrollbar will be appended to. */
 			scrollbarHParent: null,
 			/* type="string" Sets gets html or jQuery element to which the vertical scrollbar will be appended to. */
@@ -95,7 +99,8 @@
 				Use args.smallIncrement to obtain if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
 				Use args.bigIncrement to obtain if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
 				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
-				Use args.touch to obtain if the content is scrolled by touch interactions(false) or by use of scrollbars/mouse wheel(true).
+				Use args.stepX to obtain how much the content will be scrolled horizontally
+				Use args.stepY to obtain how much the content will be scrolled vertically
 			*/
 			scrolling: null,
 			/* cancel="false" Event which is raised after scrolling has stopped.
@@ -105,7 +110,6 @@
 				Use args.smallIncrement to obtain if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
 				Use args.bigIncrement to obtain if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
 				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
-				Use args.touch to obtain if the content is scrolled by touch interactions(false) or by use of scrollbars/mouse wheel(true).
 			*/
 			scrolled: null,
 			/* cancel="false" Event which is raised when there is mouse click on the scrollbar's thumb drag.
@@ -121,6 +125,8 @@
 				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
 				Use args.owner to obtain reference to igScroll.
 				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
+				Use args.stepX to obtain how much the content will be scrolled horizontally
+				Use args.stepY to obtain how much the content will be scrolled vertically
 			*/
 			thumbDragMove: null,
 			/* cancel="false" Event which is raised on mouse up from the scrollbar's thumb drag.
@@ -208,10 +214,7 @@
 		},
 
 		_create: function () {
-			var key,
-				defaultOptions,
-				scrollOptions = this.options,
-				elem = this.element;
+			var elem = this.element;
 
 			this._bMixedEnvironment = false;
 			this._linkedHElems = [];
@@ -269,13 +272,7 @@
 			this._isScrollableH = this._percentInViewH < 1;
 
 			/* Set initial options */
-			defaultOptions = $.ui.igScroll.defaults;
-			for (key in defaultOptions) {
-				if (defaultOptions.hasOwnProperty(key) && scrollOptions[ key ] === null) {
-					scrollOptions[ key ] = defaultOptions[ key ];
-				}
-			}
-			this._initOptions(scrollOptions);
+			this._initOptions(this.options);
 
 			//Container Events specific variables
 			this._startX = 0;
@@ -328,18 +325,18 @@
 				if (scrollOptions.scrollbarV !== null) {
 					this._bindVScrollbar(scrollOptions.scrollbarV);
 				}
-				/* Lastly change position to be sure that all elements are linked */
-				if (typeof scrollOptions.scrollTop !== "undefined") {
-					this._scrollTop(scrollOptions.scrollTop, false);
-				}
-				if (typeof scrollOptions.scrollLeft !== "undefined") {
-					this._scrollLeft(scrollOptions.scrollLeft, false);
-				}
-				if (scrollOptions.scrollHeight !== 0) {
+				if (scrollOptions.scrollHeight !== null) {
 					this._setScrollHeight(scrollOptions.scrollHeight);
 				}
-				if (scrollOptions.scrollWidth !== 0) {
+				if (scrollOptions.scrollWidth !== null) {
 					this._setScrollWidth(scrollOptions.scrollWidth);
+				}
+				/* Lastly change position to be sure that all elements are linked */
+				if (scrollOptions.scrollTop !== 0) {
+					this._scrollTop(scrollOptions.scrollTop, false);
+				}
+				if (scrollOptions.scrollLeft !== 0) {
+					this._scrollLeft(scrollOptions.scrollLeft, false);
 				}
 			}
 		},
@@ -1738,7 +1735,7 @@
 		},
 
 		_onMouseDownArrowUp: function () {
-			var scrollStep = -40,
+			var scrollStep = -this.options.smallIncrementStep,
 				curPosY = this._getContentPositionY();
 			if (curPosY === 0) {
 				scrollStep = 0;
@@ -1789,7 +1786,7 @@
 		},
 
 		_onMouseDownArrowDown: function () {
-			var scrollStep = 40,
+			var scrollStep = this.options.smallIncrementStep,
 				curPosY = this._getContentPositionY();
 			if (curPosY === this._contentHeight - this._dragMaxY) {
 				scrollStep = 0;
@@ -1857,7 +1854,9 @@
 			var	self = this,
 				dragStartY = this._getTransform3dValueY(this._vBarDrag),
 				curPosY = this._getContentPositionY(),
-				scrollStep = this._contentHeight * this._percentInViewV,
+				scrollStep = this.options.bigIncrementStep === null ?
+								this._elemHeight :
+								this.options.bigIncrementStep,
 				bNoCancel;
 
 			this._mTrackLastPosV = event.offsetY;
@@ -1957,7 +1956,7 @@
 
 				if (bNoCancel) {
 					//Move custom vertical scrollbar thumb drag
-					this._scrollTop(nextPosY, false);
+					this._scrollToY(nextPosY, true);
 					this._dragLastY = event.pageY;
 				}
 			}
@@ -2024,6 +2023,13 @@
 				this._trigger("thumbDragEnd", null, {
 					owner: this,
 					horizontal: false
+				});
+
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
+					horizontal: true
 				});
 			}
 			this._bUseVDrag = false;
@@ -2184,7 +2190,7 @@
 		},
 
 		_onMouseDownArrowLeft: function () {
-			var scrollStep = -40,
+			var scrollStep = -this.options.smallIncrementStep,
 				curPosX = this._getContentPositionX();
 
 			if (curPosX === 0) {
@@ -2241,7 +2247,7 @@
 		},
 
 		_onMouseDownArrowRight: function () {
-			var scrollStep = 40,
+			var scrollStep = this.options.smallIncrementStep,
 				curPosX = this._getContentPositionX();
 
 			if (curPosX === this._contentWidth - this._dragMaxX) {
@@ -2317,7 +2323,9 @@
 			var	self = this,
 				dragStartX = this._getTransform3dValueX(this._hBarDrag),
 				curPosX = this._getContentPositionX(),
-				scrollStep = this._contentWidth * this._percentInViewH,
+				scrollStep = this.options.bigIncrementStep === null ?
+								this._elemWidth :
+								this.options.bigIncrementStep,
 				bNoCancel;
 
 			this._mTrackLastPosH = event.offsetX;
@@ -2417,7 +2425,7 @@
 
 				if (bNoCancel) {
 					//Move custom horizondal scrollbar thumb drag
-					this._scrollLeft(nextPostX, false);
+					this._scrollToX(nextPostX, true);
 					this._dragLastX = evt.pageX;
 				}
 			}
@@ -2483,6 +2491,13 @@
 			if (this._bUseHDrag) {
 				this._trigger("thumbDragEnd", null, {
 					owner: this,
+					horizontal: true
+				});
+
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 0,
+					bigIncrement: 0,
 					horizontal: true
 				});
 			}
@@ -2755,28 +2770,6 @@
 		}
 	});
 	$.extend($.ui.igScroll, { version: "<build_number>" });
-	/* options which can be customized globally for all instances of igScroll. */
-	$.ui.igScroll.defaults = {
-		alwaysVisible: false,
-		scrollbarType: "custom",
-		modifyDOM: false,
-		scrollHeight: 0,
-		scrollWidth: 0,
-		scrollTop: 0,
-		scrollLeft: 0,
-		wheelStep: 50,
-		smoothing: false,
-		smoothingStep: 1,
-		smoothingDuration: 1,
-		syncedElemsH: [],
-		syncedElemsV: [],
-		scrollbarH: null,
-		scrollbarV: null,
-		scrollOnlyVBar: false,
-		scrollOnlyHBar: false,
-		scrollbarHParent: null,
-		scrollbarVParent: null
-	};
 	try {
 		$(":jqmData(role='page')").live("pageshow", _find);
 	} catch (ex) {
@@ -2787,7 +2780,7 @@
 			if (container.length === 0 && args.owner.container) {
 				container = args.owner.container().find("[data-scroll]").eq(0);
 			}
-			container.igScroll({ });
+			container.igScroll({ modifyDOM: false });
 		});
 	}
 }(jQuery));
