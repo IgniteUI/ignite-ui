@@ -63,10 +63,14 @@
 			bigIncrementStep: null,
 			/* type="bool" Sets gets if smoother scrolling with small intertia should be used when using mouse wheel */
 			smoothing: false,
-			/* type="number" Sets gets the modifier for how much the inertia scrolls on mobile devices*/
+			/* type="number" Sets or gets the modifier for how many pixels will be scrolled when using the mouse wheel once. This is used only for the smooth scrolling behavior. */
 			smoothingStep: 1,
-			/* type="number" Sets gets the modifier for how long the inertia last on mobile devices*/
+			/* type="number" Sets or gets the modifier for how long the scroll ‘animation’ lasts when using the mouse wheel once. This is used only for the smooth scrolling behavior. */
 			smoothingDuration: 1,
+			/* type="number" Sets gets the modifier for how much the inertia scrolls on mobile devices*/
+			inertiaStep: 1,
+			/* type="number" Sets gets the modifier for how long the inertia last on mobile devices*/
+			inertiaDuration: 1,
 			/* type="array" Sets gets elements that are linked to the main content horizontally. When the content is scrolled on X axis the linked elements scroll accordingly. */
 			syncedElemsH: [],
 			/* type="array" Sets gets elements that are linked to the main content vertically. When the content is scrolled on Y axis the linked elements scroll accordingly. */
@@ -924,8 +928,8 @@
 		_inertiaInit: function (speedX, speedY, bDefaultScroll) {
 			var self = this,
 				x = 0,
-				stepModifer = this.options.smoothingStep,
-				inertiaDuration = this.options.smoothingDuration,
+				stepModifer = this.options.inertiaStep,
+				inertiaDuration = this.options.inertiaDuration,
 				animationID;
 
 			self._nextX = self._getContentPositionX();
