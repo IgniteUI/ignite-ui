@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Folders Text="Computer" ImageUrl="images/computer.png" Value="Folder">
+	<Folder Text="Music" ImageUrl="images/book.png" Value="Folder">
+		<Folder Text="Y.Malmsteen" ImageUrl="images/book.png" Value="Folder">
+		  <Folder Text="Y.Malmsteen - Making Love" ImageUrl="images/music.png" Value="File"></Folder>
+		  <Folder Text="Y.Malmsteen - Rising Force" ImageUrl="images/music.png" Value="File"></Folder>
+		  <Folder Text="Y.Malmsteen - Fire and Ice" ImageUrl="images/music.png" Value="File"></Folder>
+		</Folder>
+		<Folder Text="WhiteSnake" ImageUrl="images/book.png" Value="Folder">
+		  <Folder Text="WhiteSnake - Trouble" ImageUrl="images/music.png" Value="File"></Folder>
+		  <Folder Text="WhiteSnake - Bad Boys" ImageUrl="images/music.png" Value="File"></Folder>
+		  <Folder Text="WhiteSnake - Is This Love" ImageUrl="images/music.png" Value="File"></Folder>
+		</Folder>
+		<Folder Text="AC/DC" ImageUrl="images/book.png" Value="Folder">
+		  <Folder Text="AC/DC - ThunderStruck" ImageUrl="images/music.png" Value="File"></Folder>
+		  <Folder Text="AC/DC - T.N.T." ImageUrl="images/music.png" Value="File"></Folder>
+		  <Folder Text="AC/DC - The Jack" ImageUrl="images/music.png" Value="File"></Folder>
+		</Folder>
+		<Folder Text="Rock" ImageUrl="images/book.png" Value="Folder">
+		  <Folder Text="Bon Jovi - It's My Life" ImageUrl="images/music.png" Value="File"></Folder>
+		</Folder>
+	</Folder>
+	<Folder Text="My Documents" ImageUrl="images/DocumentsFolder.png" Value="Folder">
+		<Folder Text="2009" ImageUrl="images/DocumentsFolder.png" Value="Folder">
+			<Folder Text="Month Report" ImageUrl="images/Documents.png" Value="File"></Folder>
+			<Folder Text="Year Report" ImageUrl="images/Documents.png" Value="File"></Folder>
+		</Folder>
+		<Folder Text="2010" ImageUrl="images/DocumentsFolder.png" Value="Folder">
+			<Folder Text="Month Report" ImageUrl="images/Documents.png" Value="File"></Folder>
+			<Folder Text="Year Report" ImageUrl="images/Documents.png" Value="File"></Folder>
+		</Folder>
+	</Folder>
+	<Folder Text="Pictures" ImageUrl="images/coins.png" Value="Folder">
+	  <Folder Text="BirthDay2009" ImageUrl="images/coins.png" Value="Folder">
+		<Folder Text="Picture1" ImageUrl="images/coins_add.png" Value="File"></Folder>
+		<Folder Text="Picture2" ImageUrl="images/coins_add.png" Value="File"></Folder>
+		<Folder Text="Picture3" ImageUrl="images/coins_add.png" Value="File"></Folder>
+		<Folder Text="Picture4" ImageUrl="images/coins_add.png" Value="File"></Folder>
+	  </Folder>
+	  <Folder Text="BirthDay2010" ImageUrl="images/coins.png" Value="Folder">
+		<Folder Text="Picture1" ImageUrl="images/coins_add.png" Value="File"></Folder>
+		<Folder Text="Picture2" ImageUrl="images/coins_add.png" Value="File"></Folder>
+		<Folder Text="Picture3" ImageUrl="images/coins_add.png" Value="File"></Folder>
+	  </Folder>
+	  </Folder>
+	<Folder Text="Network" ImageUrl="images/door.png" Value="Folder">     
+		  <Folder Text="Archive" ImageUrl="images/door_in.png" Value="Folder"></Folder>
+		  <Folder Text="BackUp" ImageUrl="images/door_in.png" Value="Folder"></Folder>
+		  <Folder Text="FTP" ImageUrl="images/door_in.png" Value="Folder"></Folder>
+	</Folder>
+	<Folder Text="Deleted" ImageUrl="images/bin_empty.png" Value="Folder"></Folder>
+</Folders>

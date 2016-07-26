@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link type="text/css" href="../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
@@ -279,6 +279,15 @@
     <div>
         <div id="header-footer-setters"></div>
     </div>
+    <div>
+        <div id="local-filtering-virt"></div>
+    </div>
+    <div>
+        <div id="keyboard-interactions"></div>
+    </div>
+    <div>
+        <div id="mouse-interactions"></div>
+    </div>
     <script type="text/javascript">
         $(function () {
             var testId_1 = 'igCombo existence',
@@ -364,7 +373,10 @@
                 testId_74 = 'Header/Footer Getters/Setters';
                 testId_75 = 'Virtualization with grouping and LOD';
                 testId_76 = 'Combo focus blur';
-                testId_77 = 'open dropDown via API with bottom dropDownOrientation';
+                testId_77 = 'Open dropDown via API with bottom dropDownOrientation';
+                testId_78 = 'Local filtering with virtualization';
+                testId_79 = 'Keyboard interacting';
+                testId_80 = 'Mouse interacting';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -664,6 +676,15 @@
 
                 element.trigger(keyDown);
                 element.trigger(keyUp);
+            }
+
+            function emulateNonSpecialKeyPress(keyCode, element) {
+                var keyPress = jQuery.Event("keypress");
+
+                keyPress.ctrlKey = false;
+                keyPress.which = keyCode;
+                keyPress.keyCode = keyCode;
+                $(element).trigger(keyPress);
             }
 
             function typeInInput(key, element) {
@@ -4759,8 +4780,8 @@
 
             // Change enableClearButton
             test(testId_76, function () {
-                   var $clearButton, data, selectedItems,
-                       $comboElem = $("#combo-focus-blur");
+                   var $clearButton, data, selectedItems, allItems, filteredItems,
+                       $combo = $("#combo-focus-blur");
    
                    data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
                           { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
@@ -4774,7 +4795,7 @@
                          { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
                          { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
    
-                   $comboElem.igCombo({
+                   $combo.igCombo({
                        dataSource: data,
                        valueKey: "ID",
                        textKey: 'ProductName',
@@ -4792,33 +4813,33 @@
                        ]
                    });
    
-                   selectedItems = $comboElem.igCombo("selectedItems");
+                   selectedItems = $combo.igCombo("selectedItems");
                    equal(selectedItems.length, 3, "initial selected items number is 3");
    
-                   $comboElem.igCombo("option", "enableClearButton", true);
-                   $clearButton = $comboElem.find(".ui-igcombo-clearicon");
+                   $combo.igCombo("option", "enableClearButton", true);
+                   $clearButton = $combo.find(".ui-igcombo-clearicon");
                    $clearButton.trigger("click");
    
-                   selectedItems = $comboElem.igCombo("selectedItems");
+                   selectedItems = $combo.igCombo("selectedItems");
                    equal(selectedItems, null, "selectedItems should return null");
 
-                   $comboElem.igCombo("text", "Ch");
-                   filteredItems = $comboElem.igCombo("filteredItems");
+                   $combo.igCombo("text", "Ch");
+                   filteredItems = $combo.igCombo("filteredItems");
                    equal(filteredItems.length, 4, "filtered items number should be 4");
 
-                   allItems = $comboElem.igCombo("items");
+                   allItems = $combo.igCombo("items");
                    equal(allItems.length, data.length, "all items number should be 11");
 
-                   $comboElem.igCombo("text", "Ch");
-                   filteredItems = $comboElem.igCombo("filteredItems");
+                   $combo.igCombo("text", "Ch");
+                   filteredItems = $combo.igCombo("filteredItems");
                    equal(filteredItems.length, 4, "filtered items number should be 4");
-   
+
             });
 
             // open dropDown via API with bottom dropDownOrientation
             test(testId_77, function () {
-                var $clearButton, data, selectedItems,
-                    $comboElem = $("#combo-open-bottom");
+                var data,
+                    $combo = $("#combo-open-bottom");
 
                 data = [{ "ProductID": 318, "Name": "ML Crankarm" },
                          { "ProductID": 319, "Name": "HL Crankarm" },
@@ -4875,8 +4896,9 @@
                           { "ProductID": 385, "Name": "Hex Nut 13" },
                           { "ProductID": 386, "Name": "Hex Nut 1" }, ]
 
-                $comboElem.igCombo({
+                $combo.igCombo({
                     dataSource: data,
+                    virtualization: true,
                     valueKey: "ProductID",
                     textKey: 'Name',
                     width: 200,
@@ -4889,10 +4911,135 @@
                     ]
                 });
 
-                $comboElem.igCombo('openDropDown');
-                equal($comboElem.igCombo("dropDown").hasClass("ui-igcombo-orientation-bottom"), true, "DropDown div has class 'ui-igcombo-orientation-bottom'");
-                equal($comboElem.igCombo("dropDown").hasClass("ui-igcombo-orientation-top"), false, "DropDown div doesnt have class 'ui-igcombo-orientation-top'");
-                $comboElem.igCombo('closeDropDown');
+                $combo.igCombo('openDropDown');
+                equal($combo.igCombo("dropDown").hasClass("ui-igcombo-orientation-bottom"), true, "DropDown div has class 'ui-igcombo-orientation-bottom'");
+                equal($combo.igCombo("dropDown").hasClass("ui-igcombo-orientation-top"), false, "DropDown div doesnt have class 'ui-igcombo-orientation-top'");
+                $combo.igCombo('closeDropDown');
+            });
+
+            // Local filtering with virtualization
+            test(testId_78, function () {
+                var ds, filteredItems,
+					$combo = $("#local-filtering-virt");
+
+                ds = new $.ig.DataSource({
+                    dataSource: "http://igniteui.com/api/products?callback=?",
+                    schema: {
+                        fields: [
+                            { name: "ID", type: "number" },
+                            { name: "ProductName", type: "string" },
+                            { name: "SupplierID", type: "string" }],
+                        searchField: "d.results"
+                    },
+                    responseDataKey: "d.results",
+                    responseDataType: "jsonp"
+                });
+
+                ds.dataBind();
+                $combo.igCombo({
+                    dataSource: ds,
+				    textKey:"ProductName",
+				    valueKey: "ID",
+				    allowCustomValues: true,
+				    filteringType:"local",
+				    virtualization: true,
+                });
+                
+                //Add your wait
+                setTimeout(function () {
+                    //Make assertion
+                    start();
+                    $combo.igCombo("filter", "Sauerkraut");
+                    filteredItems = $combo.igCombo("filteredItems");
+                    equal(filteredItems.length, 1, "Filtered items are 1");
+                }, 2000);
+                stop(); // Pause the test
+            });
+
+            // Keyboard interacting
+            test(testId_79, function () {
+                var data, selectedItem, $input,
+                $combo = $("#keyboard-interactions");
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+
+                $combo.igCombo({
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    mode: "dropdown",
+                    width: 200,
+                    height: 30,
+                    allowCustomValues: true,
+                    autoSelectFirstMatch: true,
+                    multiSelection: {
+                        enabled: false,
+                    },
+                });
+
+                $input = $combo.igCombo("textInput");
+                emulateNonSpecialKeyPress(77, $input);
+                selectedItem = $combo.igCombo("selectedItems")[0];
+                equal(selectedItem.data[$combo.igCombo("option", "textKey")], "Mishi Kobe Niku", "Correct item is selected");
+
+                $combo.igCombo("option", "multiSelection", { enabled: true });
+
+                setTimeout(function () {
+                    start();
+                    emulateNonSpecialKeyPress(67, $input);
+                    equal($($combo.igCombo('dropDown').find("li")[0]).hasClass("ui-igcombo-item-in-focus"), true, "The auto completed item is highlighted with css class 'ui-igcombo-item-in-focus'");
+                }, 1100);
+                stop();
+
+            });
+
+            // Mouse interacting
+            test(testId_80, function () {
+                var data, $input,
+                $combo = $("#mouse-interactions");
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+
+                $combo.igCombo({
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    mode: "editable",
+                    width: 200,
+                    height: 30,
+                    allowCustomValues: true,
+                    autoSelectFirstMatch: true,
+                    initialSelectedItems: [ { index: 1 } ]
+                });
+
+                $input = $combo.igCombo("textInput");
+                notEqual(document.activeElement, $input[0], "Input is not focused");
+                clickElement($input, false, false);
+                equal(document.activeElement, $input[0], "Input is focused");
+                $input.blur();
+                $combo.igCombo("option", "disabled", true);
+                clickElement($input, false, false);
+                notEqual(document.activeElement, $input[0], "Input is not focused");
             });
         });
     </script>
