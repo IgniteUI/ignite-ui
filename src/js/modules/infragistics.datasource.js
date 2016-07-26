@@ -2100,7 +2100,7 @@
 			if (s.type === "local" && s.defaultFields.length > 0) {
 				this.sort(s.defaultFields, s.defaultDirection);
 			} else if (this.isGroupByApplied(s.expressions)) {
-				this._generateGroupByData(this._filter ? this._filteredData : this._data, 
+				this._generateGroupByData(this._filter ? this._filteredData : this._data,
 										s.expressions);
 				this._dataView = this.visibleGroupByData();
 			}
@@ -2825,6 +2825,8 @@
 						val !== undefined &&
 						val !== null && val.toLowerCase) {
 					val = val.toLowerCase();
+				} else if (val && val.getTime) {
+					val = val.getTime();
 				}
 				arr.push({
 					val: val,
@@ -4127,7 +4129,7 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec;
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
@@ -4151,6 +4153,10 @@
 				gbRec.fieldName = gbExpr.fieldName;
 				resLen = res.length;
 				gbRec.val = resLen ? res[ 0 ][ gbRec.fieldName ] : undefined;
+				if (dt === undefined) {
+					dt = !!(gbRec.val && gbRec.val.getTime);
+				}
+				gbRec.val = dt ? gbRec.val.getTime() : gbRec.val;
 				hc = gbRec.val ? String(gbRec.val).getHashCode() : "";
 				gbRec.id = parentId + gbExpr.fieldName + ":" + hc;
 				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
