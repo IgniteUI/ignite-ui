@@ -660,7 +660,7 @@
 				setTimeout(function () {
 					zoom.igZoombar("destroy");
 					zoom.igZoombar({
-						provider: "ZoombarProviderDataChart",
+						provider: $.ig.ZoombarProviderDataChart,
 						providerCreated: function (evt, ui) {
 							ui.provider.targetObject($(".testclass").data("igDataChart"));
 						},
