@@ -229,6 +229,7 @@
 			this._elemHeight = elem.height();
 
 			//IDs of the timeouts used for waiting until hiding or switching to simple scrollbars
+			this._showScrollbarsAnimId = 0;
 			this._hideScrollbarID = 0;
 			this._toSimpleScrollbarID = 0;
 
@@ -308,7 +309,7 @@
 
 			this._createScrollBars();
 			this._hideScrollBars(false);
-			this._showScrollBars(false, true);
+			this._showScrollBars(true, true, true, 0.02);
 
 			this._trigger("rendered", null, {
 				owner: this
@@ -1468,6 +1469,7 @@
 		_onMouseEnterContainer: function () {
 			this._mOverContainer = true;
 
+			cancelAnimationFrame(this._showScrollbarsAnimId);
 			clearTimeout(this._hideScrollbarID);
 			if (!this._toSimpleScrollbarID && !this._bMouseDownH && !this._bMouseDownV) {
 				//We move the mouse inside the container but we weren't previously hovering the scrollbars (that's why we don't have _toSimpleScrollbarID for a timeout to switch to simple scrollbars).
@@ -2520,8 +2522,7 @@
 
 			var self = this,
 				targetOpacty = 0.9,
-				currentOpacity = 0,
-				animationId;
+				currentOpacity = 0;
 
 			function showStep() {
 				if (currentOpacity > targetOpacty) {
@@ -2531,7 +2532,8 @@
 					}
 
 					self._touchBarsShown = true;
-					cancelAnimationFrame(animationId);
+					cancelAnimationFrame(self._showScrollbarsAnimId);
+					self._showScrollbarsAnimId = 0;
 					return;
 				}
 
@@ -2543,7 +2545,7 @@
 				currentOpacity += opacityStep ? opacityStep : 0.05;
 
 				/* continue */
-				animationId = requestAnimationFrame(showStep);
+				self._showScrollbarsAnimId = requestAnimationFrame(showStep);
 			}
 
 			if (!animate) {
@@ -2555,7 +2557,7 @@
 
 				self._touchBarsShown = true;
 			} else {
-				animationId = requestAnimationFrame(showStep);
+				this._showScrollbarsAnimId = requestAnimationFrame(showStep);
 			}
 		},
 
@@ -2751,6 +2753,10 @@
 		},
 
 		destroy: function () {
+			cancelAnimationFrame(this._showScrollbarsAnimId);
+			clearTimeout(this._hideScrollbarID);
+			clearTimeout(this._toSimpleScrollbarID);
+
 			if (this.evts) {
 				this.element.off(this.evts);
 				delete this.evts;
