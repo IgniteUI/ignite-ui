@@ -753,8 +753,8 @@
 					});
 				} catch (e) {
 					throw new Error($.ig.Zoombar.locale.zoombarProviderNotRecognized + " " + e);
-				}	
-			} 
+				}
+			}
 			this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
 			return provider;
 		},
