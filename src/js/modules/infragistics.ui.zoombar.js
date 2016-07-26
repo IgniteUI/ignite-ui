@@ -183,6 +183,9 @@
 		},
 		_create: function () {
 			var opts = this.options;
+			if (!opts.provider) {
+				opts.provider = $.ig.ZoombarProviderDataChart;
+			}
 			/* keyboard acceleration param */
 			this._acc = 0;
 			/* create event handlers */
