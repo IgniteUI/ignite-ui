@@ -5,7 +5,7 @@
 		"<%= config.modulesDir%>/infragistics.templating.js",
 		"<%= config.modulesDir%>/infragistics.ui.validator.js",
 		"<%= config.modulesDir%>/infragistics.ui.shared.js",
-		"<%= config.modulesDir%>/infragistics.util.js",
+		"<%= config.modulesDir%>/infragistics.util.js",	
 		"<%= config.extensionsDir%>/infragistics.ui.combo.knockout-extensions.js"
 	]
 }
