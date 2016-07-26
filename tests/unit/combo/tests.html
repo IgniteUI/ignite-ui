@@ -4923,12 +4923,12 @@
 					$combo = $("#local-filtering-virt");
 
                 ds = new $.ig.DataSource({
-                    dataSource: "http://igniteui.com/api/products?callback=?",
+                    dataSource: "http://localhost/api/invoices?callback=?",
                     schema: {
                         fields: [
-                            { name: "ID", type: "number" },
+                            { name: "ProductID", type: "number" },
                             { name: "ProductName", type: "string" },
-                            { name: "SupplierID", type: "string" }],
+                            { name: "CustomerID", type: "string" }],
                         searchField: "d.results"
                     },
                     responseDataKey: "d.results",
@@ -4939,7 +4939,7 @@
                 $combo.igCombo({
                     dataSource: ds,
 				    textKey:"ProductName",
-				    valueKey: "ID",
+				    valueKey: "ProductID",
 				    allowCustomValues: true,
 				    filteringType:"local",
 				    virtualization: true,
@@ -4951,7 +4951,7 @@
                     start();
                     $combo.igCombo("filter", "Sauerkraut");
                     filteredItems = $combo.igCombo("filteredItems");
-                    equal(filteredItems.length, 1, "Filtered items are 1");
+                    equal(filteredItems.length, 33, "Filtered items are 33");
                 }, 2000);
                 stop(); // Pause the test
             });
