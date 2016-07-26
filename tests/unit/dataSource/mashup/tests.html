@@ -203,7 +203,42 @@
 				equal(undefined, view[4]["NutritionRank"], "Merged NutritionRank: undefined");
 			});
 
-			asyncTest("Test Mashup scenario 2: combining local & remote data sources", function () {
+			test("Test Mashup scenario 2: combining local data sources without PKs", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					dataSource:  [
+						{
+							dataSource: data1
+						},
+						{
+							dataSource: data2,
+							schema: {
+								fields: [
+									{ name: "Price" }, { name: "Name" }, { name: "ID" }
+								]
+							}
+						}
+					]
+				});
+				ds.dataBind();
+				view = ds.dataView();
+				equal(5, view.length, "Length should be 5.");
+				// check first record that should be merged
+				equal(0, view[0]["ID"], "PK ID: 0");
+				equal(0, view[0]["ProductID"], "Merged PK ProductID: 0");
+				equal(1, view[0]["Price"], "Merged Price 1");
+				equal("Angel", view[0]["Name"], "Merged Name: Angel");
+				equal("Angel", view[0]["OrderedBy"], "Merged OrderedBy: Angel");
+				equal("1", view[0]["NutritionRank"], "Merged NutritionRank: '1'");
+				// check last record that should contain only second data source props
+				equal(4, view[4]["ID"], "PK ID: 4");
+				equal(undefined, view[4]["ProductID"], "Merged PK ProductID: undefined");
+				equal(10.123, view[4]["Price"], "Merged Price 10.123");
+				equal("Taz", view[4]["Name"], "Merged Name: Taz");
+				equal(undefined, view[4]["OrderedBy"], "Merged OrderedBy: undefined");
+				equal(undefined, view[4]["NutritionRank"], "Merged NutritionRank: undefined");
+			});
+
+			asyncTest("Test Mashup scenario 3: combining local & remote data sources", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource:  [
 						{
@@ -231,7 +266,7 @@
 				ds.dataBind();
 			});
 
-			asyncTest("Test Mashup scenario 3: ignorePartialRecords = true.", function () {
+			asyncTest("Test Mashup scenario 4: ignorePartialRecords = true.", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource: [
 						{
