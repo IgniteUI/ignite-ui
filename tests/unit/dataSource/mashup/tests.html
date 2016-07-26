@@ -238,7 +238,48 @@
 				equal(undefined, view[4]["NutritionRank"], "Merged NutritionRank: undefined");
 			});
 
-			asyncTest("Test Mashup scenario 3: combining local & remote data sources", function () {
+			test("Test Mashup scenario 3: combining local data sources through PK - FK relationship", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					dataSource:  [
+						{
+							dataSource: [
+								{ ProductID: 3, OrderedBy: "Jason", NutritionRank: "1" },
+								{ ProductID: 4, OrderedBy: "John", NutritionRank: "10" },
+								{ ProductID: 5, OrderedBy: "Angel", NutritionRank: "5" }
+							],
+							primaryKey: "OrderedBy"
+						},
+						{
+							dataSource: data2,
+							primaryKey: "Name",
+							foreignKey: "OrderedBy",
+							schema: {
+								fields: [
+									{ name: "Price" }, { name: "Name" }, { name: "ID" }
+								]
+							}
+						}
+					]
+				});
+				ds.dataBind();
+				view = ds.dataView();
+				equal(3, view.length, "Length should be 3.");
+				// check first record that should be merged
+				equal(2, view[0]["ID"], "PK ID: 2");
+				equal(3, view[0]["ProductID"], "Merged PK ProductID: 3");
+				equal(5, view[0]["Price"], "Merged Price 5");
+				equal("Jason", view[0]["Name"], "Merged Name: Jason");
+				equal("Jason", view[0]["OrderedBy"], "Merged OrderedBy: Jason");
+				equal("1", view[0]["NutritionRank"], "Merged NutritionRank: '1'");
+				equal(0, view[2]["ID"], "PK ID: 0");
+				equal(5, view[2]["ProductID"], "Merged PK ProductID: 5");
+				equal(1, view[2]["Price"], "Merged Price 1");
+				equal("Angel", view[2]["Name"], "Merged Name: Angel");
+				equal("Angel", view[2]["OrderedBy"], "Merged OrderedBy: Angel");
+				equal("5", view[2]["NutritionRank"], "Merged NutritionRank: '5'");
+			});
+
+			asyncTest("Test Mashup scenario 4: combining local & remote data sources", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource:  [
 						{
@@ -266,7 +307,7 @@
 				ds.dataBind();
 			});
 
-			asyncTest("Test Mashup scenario 4: ignorePartialRecords = true.", function () {
+			asyncTest("Test Mashup scenario 5: ignorePartialRecords = true", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource: [
 						{
