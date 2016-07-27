@@ -228,10 +228,11 @@
 			this._elemWidth = elem.width();
 			this._elemHeight = elem.height();
 
-			//IDs of the timeouts used for waiting until hiding or switching to simple scrollbars
+			//IDs of the timeouts used for waiting until hiding, switching to simple scrollbars, touch inertia
 			this._showScrollbarsAnimId = 0;
 			this._hideScrollbarID = 0;
 			this._toSimpleScrollbarID = 0;
+			this._touchInertiaAnimID = 0;
 
 			//Track if the mouse is inside the scroll container
 			this._mOverContainer = false;
@@ -952,13 +953,13 @@
 				//If inertia is interupted we do not hide the bars here but on endtouch in case another inertia is initiated
 				if (self._bStopInertia) {
 					//we don't hide the scrollbars, because the inertia is interrupted by touch and we hide it on touchend then
-					cancelAnimationFrame(animationID);
+					cancelAnimationFrame(self._touchInertiaAnimID);
 					return;
 				}
 
 				if (x > 6) {
 					self._hideScrollBars(true, true); //hide scrollbars when inertia ends naturally
-					cancelAnimationFrame(animationID);
+					cancelAnimationFrame(self._touchInertiaAnimID);
 
 					self._trigger("scrolled", null, {
 						owner: self,
@@ -992,11 +993,11 @@
 					self._scrollTouchToXY(self._nextX, self._nextY, true);
 				}
 
-				animationID = requestAnimationFrame(inertiaStep);
+				self._touchInertiaAnimID = requestAnimationFrame(inertiaStep);
 			}
 
 			//Start inertia and continue it recursively
-			animationID = requestAnimationFrame(inertiaStep);
+			this._touchInertiaAnimID = requestAnimationFrame(inertiaStep);
 		},
 
 		/** Get the speed slope angle for the last 5 recorded speeds.
@@ -2760,6 +2761,7 @@
 		},
 
 		destroy: function () {
+			cancelAnimationFrame(this._touchInertiaAnimID);
 			cancelAnimationFrame(this._showScrollbarsAnimId);
 			clearTimeout(this._hideScrollbarID);
 			clearTimeout(this._toSimpleScrollbarID);
