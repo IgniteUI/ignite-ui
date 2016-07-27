@@ -37,7 +37,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98"];
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
@@ -347,6 +347,28 @@
 					});
 				}
 
+				window.Bug221494Testbed = function () {
+					$("#221494Editor1").igTextEditor({
+						textMode: "multiline"
+					});
+				}
+
+				window.Bug221300Testbed = function () {
+					$("#221300Editor1").igTextEditor({
+						width: "145px",
+						height: "54px",
+						value: "John Smith, with long test",
+						textMode: "multiline"
+					});
+				}
+
+				window.Bug98Testbed = function () {
+					$("#98Editor1").igNumericEditor({
+						maxValue: 5,
+						minValue: 3
+					});
+				}
+
 				initialized = false;
 				module("Editors Bugs Unit Tests ", {
 					setup: function () {
@@ -631,64 +653,61 @@
 
 
 			testId = 'Bug 211062';
-			test(testId, 3, function () {
-				stop();
-				setTimeout(function () {
-					start();
-					var calendar, getDDmmYYYYHHSS;
-					getDDmmYYYYHHSS = function (date) {
-						var result = "", day, month, minutes, hours;
-						if (typeof date.getTime !== "function") {
-							return;
-						}
-						day = date.getDate();
-						if (day < 10) {
-							day = "0" + day.toString();
-						} else {
-							day = day.toString();
-						}
-						month = date.getMonth() + 1;
-						if (month < 10) {
-							month = "0" + month.toString();
-						} else {
-							month = month.toString();
-						}
-						hours = date.getHours();
-						if (hours < 10) {
-							hours = "0" + hours;
-						} else {
-							hours = hours.toString();
-						}
-						minutes = date.getMinutes();
-						if (minutes < 10) {
-							minutes = "0" + minutes;
-						} else {
-							minutes = minutes.toString();
-						}
-						result += day;
-						result += "/";
-						result += month;
-						result += "/";
-						result += date.getFullYear();
-						result += " ";
-						result += hours;
-						result += ":";
-						result += minutes;
-
-						return result;
+			test(testId, 2, function () {
+				var calendar, getDDmmYYYYHHSS, targetDate;
+				getDDmmYYYYHHSS = function (date) {
+					var result = "", day, month, minutes, hours;
+					if (typeof date.getTime !== "function") {
+						return;
 					}
-					$("#211062Editor1").one("igdatepickervaluechanged", function (evt, ui) {
-						equal(getDDmmYYYYHHSS(ui.newValue), getDDmmYYYYHHSS(new Date()), "Date should be " + getDDmmYYYYHHSS(new Date()));
-					});
+					day = date.getDate();
+					if (day < 10) {
+						day = "0" + day.toString();
+					} else {
+						day = day.toString();
+					}
+					month = date.getMonth() + 1;
+					if (month < 10) {
+						month = "0" + month.toString();
+					} else {
+						month = month.toString();
+					}
+					hours = date.getHours();
+					if (hours < 10) {
+						hours = "0" + hours;
+					} else {
+						hours = hours.toString();
+					}
+					minutes = date.getMinutes();
+					if (minutes < 10) {
+						minutes = "0" + minutes;
+					} else {
+						minutes = minutes.toString();
+					}
+					result += day;
+					result += "/";
+					result += month;
+					result += "/";
+					result += date.getFullYear();
+					result += " ";
+					result += hours;
+					result += ":";
+					result += minutes;
 
-					$("#211062Editor1").igDatePicker("dropDownButton").click();
-					calendar = $("#211062Editor1").igDatePicker("getCalendar");
-					$(calendar).find(".ui-datepicker-today").find("a").click();
-					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(new Date()), "The value is changed to" + getDDmmYYYYHHSS(new Date()));
-					$("#211062Editor1").igDatePicker("field").blur();
-					equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(new Date()), "The value is changed to" + getDDmmYYYYHHSS(new Date()));
-				}, 1000); //This timeout is need because the test requires calendar which needs focus
+					return result;
+				}
+				
+				$("#211062Editor1").one("igdatepickervaluechanged", function (evt, ui) {
+					equal(getDDmmYYYYHHSS(ui.newValue), getDDmmYYYYHHSS(targetDate), "Date should be " + getDDmmYYYYHHSS(targetDate));
+				});
+
+				$("#211062Editor1").igDatePicker("dropDownButton").click();
+				calendar = $("#211062Editor1").igDatePicker("getCalendar");
+				targetDate = new Date(); // keep date as close to the click time
+				$(calendar).find(".ui-datepicker-today").find("a").click();
+				equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The text should've changed to " + getDDmmYYYYHHSS(targetDate));
 			});
+			
 			
 			testId = 'Bug 210990';
 			test(testId, 3, function () {
@@ -901,6 +920,45 @@
 				equal(editor.igNumericEditor("value"), 2, "The value should stay unchanged");
 				keyInteraction(13, input);
 				equal(editor.igNumericEditor("value"), 1, "The value 1 should be selected");
+			});
+
+			testId = 'Bug 221494';
+			test(testId, 1, function () {
+				equal($('#221494Editor1').igTextEditor("field").attr("id"), "221494Editor1", "The input id should be the defined one");
+			});
+			testId = 'Bug 221300';
+			test(testId, 4, function () {
+				var input = $('#221300Editor1').igTextEditor("field");
+				input[0].setSelectionRange(6, 6);
+				$("#221300Editor1").igTextEditor("field").click().focus();
+				emulateKeyBoard(13, false, false, true, input);
+				$("#221300Editor1").igTextEditor("field").blur();
+				var value = $('#221300Editor1').igTextEditor("value");
+				equal(value, "John S\nmith, with long test", "Word is not carried over the new line");
+				equal($('#221300Editor1').igTextEditor("getSelectionStart"), 7, "Cursor position is wrong");
+
+				input[0].setSelectionRange(10, 10);
+				$("#221300Editor1").igTextEditor("field").click().focus();
+				emulateKeyBoard(13, false, false, true, input);
+				$("#221300Editor1").igTextEditor("field").blur();
+				var value = $('#221300Editor1').igTextEditor("value");
+				equal(value, "John S\nmit\nh, with long test", "Word is not carried over the new line");
+				equal($('#221300Editor1').igTextEditor("getSelectionStart"), 11, "Cursor position is wrong");
+			});
+
+			testId = 'Bug 98';
+			test(testId, 2, function () {
+				var input = $('#98Editor1');
+				input.igNumericEditor("setFocus");
+				typeInMaskedInput("26", input.igNumericEditor("field"));
+				keyInteraction(13, input);
+				var text = $("#98Editor1").igNumericEditor("field").val();
+				equal(text, 5, "Text in editor is not set to the maxValue");
+				input.igNumericEditor("setFocus");
+				typeInMaskedInput("1", input.igNumericEditor("field"));
+				keyInteraction(13, input);
+				var text = $("#98Editor1").igNumericEditor("field").val();
+				equal(text, 3, "Text in editor is not set to the minValue");
 			});
 		});
 
@@ -1123,6 +1181,9 @@
 
 		<input id="220712Editor1" type="text" />
 		<input id="221118Editor1" />
+		<input id="98Editor1" />
+		<textarea id="221494Editor1"></textarea>
+		<textarea id="221300Editor1"></textarea>
 	</div></body>
 </html>
 

@@ -2,8 +2,7 @@
 	reporter: function (errors, files) {
 		var reportHtml = "",
 			errorHtml = "",
-			reportJSON = "",
-			jsonObj, testRunDetails, iFile, iError, file, fileName,
+			testRunDetails, iFile, iError, file, fileName,
 			error, errorLine, errorCode, errorReason, fs, CodeAnalysisRunDetail,
 			date = new Date();
 		
@@ -14,13 +13,7 @@
 		// http://jshint.com/docs/#options
 			reportHtml += "<table border=1 cellpadding=5 cellspacing=0 style='font-family:Verdana; font-size:11pt; border-width:1px; border: 1px solid black;width:600px;'>";
 
-		// JSON report
-		jsonObj = new Object();
-		jsonObj["RunOn"] = date;
-		jsonObj["CodeAnalysisRunDetail"] = [];
-
 		for (iFile = 0; iFile < files.length; iFile++) {
-
 
 			file = files[iFile];
 			fileName = file.file.replace("src/js/", "");
@@ -62,21 +55,16 @@
 				CodeAnalysisRunDetail["ErrorCount"] = file.errors.length;
 			}
 			CodeAnalysisRunDetail["FunctionalArea"] = fileNameJSON;
-			jsonObj["CodeAnalysisRunDetail"].push(CodeAnalysisRunDetail);
 		}
 		reportHtml += "</table>";
 		reportHtml += errorHtml;
 		reportHtml += "</body></body>";
-
-		reportJSON = JSON.stringify(jsonObj);
 
 		fs = require('fs');
 		if (!fs.existsSync("./jshint/")) {
 			fs.mkdir("./jshint");
 		}
 
-		// Wirite the JSON report
-		fs.writeFile("./jshint/report.json", reportJSON);
 
 		// Write the HTML report
 		process.stdout.write(reportHtml);

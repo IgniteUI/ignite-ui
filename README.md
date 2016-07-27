@@ -4,6 +4,10 @@
 [![Issue Stats](http://issuestats.com/github/IgniteUI/ignite-ui/badge/pr?style=flat)](http://issuestats.com/github/IgniteUI/ignite-ui)
 [![Issue Stats](http://issuestats.com/github/IgniteUI/ignite-ui/badge/issue?style=flat)](http://issuestats.com/github/IgniteUI/ignite-ui)
 
+[![npm](https://img.shields.io/npm/v/ignite-ui.svg?maxAge=2592000)](https://www.npmjs.com/package/ignite-ui)
+![Bower](https://img.shields.io/bower/v/ignite-ui.svg?maxAge=2592000)
+
+
 Ignite UI™ helps you build powerful, high-performance web-based applications. Inside Ignite UI you'll find user experience controls and components for creating engaging line-of-business web applications which target the browsers for both mobile & desktop environments.
 
 ## About  Ignite UI
@@ -119,4 +123,5 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 
 ##Contributing
 You can find all guidelines on how to contribute on the wiki page.  
-[How to contribute](https://github.com/IgniteUI/ignite-ui/wiki/Contributing-to-Ignite-UI)
+* [How to contribute](https://github.com/IgniteUI/ignite-ui/wiki/Contributing-to-Ignite-UI)  
+* [API documentation guidelines](https://github.com/IgniteUI/ignite-ui/wiki/API-Documentation-Guidelines)

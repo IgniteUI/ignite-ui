@@ -1783,11 +1783,15 @@
 		_getFieldTypeFromSchema: function (fieldName) {
 			var field = this._fields[ fieldName ], type, ds = this.dataSource();
 
-			if (ds !== null && ds !== undefined && this.settings.responseDataKey !== null) {
-				ds = ds[ this.settings.responseDataKey ];
-			}
 			if (!field) {
 				return undefined;
+			}
+
+			if (this.type() === "remoteUrl") {
+				ds = this.data();
+			} else if (this.type() === "json" && ds !== null &&
+				ds !== undefined && this.settings.responseDataKey !== null) {
+				ds = $.ig.findPath(ds, this.settings.responseDataKey);
 			}
 			if (typeof (field.mapper) === "function" && ds.length > 0) {
 				type = $.type(field.mapper(ds[ 0 ]));

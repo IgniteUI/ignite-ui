@@ -13,9 +13,8 @@
  *	jquery.ui.draggable.js
  *	jquery.ui.droppable.js
  *	infragistics.templating.js
- *	infragistics.dataSource.js
- *  infragistics.ui.shared.js
  *	infragistics.util.js
+ *	infragistics.dataSource.js
  *	infragistics.ui.tree-en.js
  */
 
@@ -96,393 +95,389 @@ if (typeof jQuery !== "function") {
 			insertLine: "ui-state-default ui-igtree-insertline"
 		},
         options: {
-			/* type="string|number|null Gets sets how the width of the control can be set."
+			/* type="string|number|null" Gets/Sets the width of the control container.
                 string The widget width can be set in pixels (px) and percentage (%).
                 number The widget width can be set as a number in pixels.
-                null type="object" will stretch to fit data, if no other widths are defined.
+                null type="object" No width will be applied to the container and it will be rendered by default for the browser rendering engine.
             */
 			width: null,
-			/* type="string|number|null Gets sets how the height of the control can be set."
-                string The height width can be set in pixels (px) and percentage (%).
-                number The height width can be set as a number in pixels.
-                null type="object" will fit the tree inside its parent container, if no other widths are defined.
+			/* type="string|number|null" Gets/Sets how the height of of the control container.
+                string The widget height can be set in pixels (px) and percentage (%).
+                number The widget height can be set as a number in pixels.
+                null type="object" No height will be applied to the container and it will be rendered default for the browser rendering engine.
             */
 			height: null,
-			/* type="off|biState|triState" Gets the type of checkboxes rendered before the tree nodes. Can be set only at initialization.
-				off type="string" Checkboxes are turned off and not rendered for the tree.
+			/* type="off|biState|triState" Gets the behavior and type of the checkboxes rendered for the tree nodes. Can be set only at initialization.
+				off type="string" Checkboxes are turned off and are not rendered for the tree.
 				biState type="string" Checkboxes are rendered and support two states (checked and unchecked). Checkboxes do not cascade down or up in this mode.
 				triState type="string" Checkboxes are rendered and support three states (checked, partial and unchecked). Checkboxes cascade up and down in this mode.
             */
 			checkboxMode: "off",
-			/* type="bool" If set to true then only one branch at each level of the tree can be expanded at a time. Otherwise multiple branches can be expanded at a time. */
+			/* type="bool" Gets/Sets one or more branches to be expanded at a time. If set to true then only one branch at each level of the tree can be expanded at a time. Otherwise multiple branches can be expanded at a time. */
 			singleBranchExpand: false,
-			/* type="bool" Setting this option to false would make the tree to not apply hover styles on the nodes when they are hovered */
+			/* type="bool" Gets/Sets whether nodes are hoverable. Setting this option to false would make the tree to not apply hover styles on the nodes when they are hovered. */
 			hotTracking: true,
-			/* type="string"
-				string Image with the specified URL will be rendered for each node that has children (If you define both image URL and class the URL would be rendered).
+			/* type="string|null" Gets/Set the image url applied to all parent nodes.
+				string Image with the specified URL will be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
 				null Option is ignored
             */
 			parentNodeImageUrl: null,
-			/* type="string"
-				string Specified class with a CSS sprite would be rendered for each node that has children (If you define both image URL and class the URL would be rendered).
+			/* type="string|null" Gets/Sets the CSS class applied to all parent nodes.
+				string Specified class with a CSS sprite that would be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
 				null Option is ignored
             */
 			parentNodeImageClass: null,
-			/* type="string"
+			/* type="string|null" Gets/Sets the tooltip applied to all parent node images.
 				string Specified a tooltip that would be rendered for each node that has children.
 				null Option is ignored
             */
 			parentNodeImageTooltip: null,
-			/* type="string"
-				string Image with the specified URL will be rendered for each node that has no children (If you define both image URL and class the URL would be rendered).
+			/* type="string|null" Gets/Sets the image url applied to all leaf nodes.
+				string Image with the specified URL will be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
 				null Option is ignored
             */
 			leafNodeImageUrl: null,
-			/* type="string"
-				string Specified class with a CSS sprite would be rendered for each node that has no children (If you define both image URL and class the URL would be rendered).
+			/* type="string|null" Gets/Sets the CSS class applied to all leaf nodes.
+				string Specified class with a CSS sprite that would be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
 				null Option is ignored
             */
 			leafNodeImageClass: null,
-			/* type="string"
+			/* type="string|null" Gets/Sets the tooltip applied to all leaf node images.
 				string Specified a tooltip that would be rendered for each node that has no children.
 				null Option is ignored
             */
 			leafNodeImageTooltip: null,
-			/* type="number" Specifies the duration of each animation such as the expand/collapse. */
+			/* type="number" Gets/Sets the duration of each animation such as the expand/collapse. */
 			animationDuration: 200,
-			/* type="string" Specifies the node data-path separator character. */
+			/* type="string" Gets the node data-path attribute separator character. */
 			pathSeparator: "_",
-			/* type="object" Specifies any valid data source accepted by $.ig.DataSource, or an instance of an $.ig.DataSource itself. */
+			/* type="object" Gets/Sets the igTree data source. Accepts any valid data source accepted by $.ig.DataSource, or an instance of an $.ig.DataSource itself.
+				Once the data source is initialized, this option becomes an instance of the $.ig.HierarchicalDataSource.
+			*/
 			dataSource: null,
-			/* type="string" Specifies a remote URL accepted by $.ig.DataSource in order to request data from it */
+			/* type="string|null" Gets/Sets a remote URL accepted by $.ig.DataSource in order to request data from it. */
 			dataSourceUrl: null,
-			/* type="string" Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource and its type property. */
+			/* type="string|null" Gets the type of the data source. Delegates the value to $.ig.DataSource.settings.type. Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource.settings.type. */
 			dataSourceType: null,
-			/* type="string" see $.ig.DataSource.
+			/* type="string|null" Gets the JSON key at which a remote data source will write the data. Delegates the value to $.ig.DataSource.settings.responseDataKey. Please refer to the documentation of $.ig.DataSource.settings.responseDataKey.
 				string Specifies the name of the property in which data records are held if the response is wrapped.
 				null Option is ignored.
 			*/
 			responseDataKey: null,
-			/* type="string"
-				string Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource and its type property.
+			/* type="string|null" Gets the data type of the remote data source response. Delegates the value to $.ig.DataSource.settings.responseDataType. Please refer to the documentation of $.ig.DataSource.settings.responseDataType.
+				string Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType .
 				null Option is ignored.
 			*/
 			responseDataType: null,
-			/* type="string" specifies the HTTP verb to be used to issue the request */
+			/* type="string" Gets the HTTP verb used for remote requests. Specifies the HTTP verb to be used to issue the requests to the dataSourceUrl. */
 			requestType: "GET",
-			/* type="string" content type of the response. See http://api.jquery.com/jQuery.ajax/ => contentType */
+			/* type="string" Gets the type of the content in a remote data source response. Content type of the response from the dataSourceUrl. See http://api.jquery.com/jQuery.ajax/ => contentType */
 			responseContentType: null,
-			/* type="number" Specifies the depth down to which the tree would be expanded upon initial render. */
+			/* type="number" Gets the initial depth the igTree is going to be expanded to upon initial render. */
 			initialExpandDepth: -1,
-			/* type="bool" Specifies all the data would be bound initially or each child collection would be bound upon demand. */
+			/* type="bool" Gets whether all the data would be bound initially or each child collection would be bound upon expand. */
 			loadOnDemand: false,
-			/* type="object" Specifies the data binding properties and keys. */
+			/* type="object" Gets the data binding properties and keys. The igTree uses these to extract the corresponding data from the dataSource. */
 			bindings: {
-				/* type="string" Specifies the name of the data source property the value of which would be the node text. */
+				/* type="string" Gets the name of the data source property the value of which would be the node text. */
 				textKey: "Text",
-				/* type="string" Specifies the XPath to the text attribute/node. Used in client-only binding directly to XML. */
+				/* type="string" Gets the XPath to the text attribute/node. Used in client-only binding directly to XML. */
 				textXPath: "@Text",
-				/* type="string" Specifies the name of the data source property the value of which would be the node value. */
+				/* type="string" Gets the name of the data source property the value of which would be the node value. */
 				valueKey: "Value",
-				/* type="string" Specifies the XPath to the value attribute/node. Used in client-only binding directly to XML. */
+				/* type="string" Gets the XPath to the value attribute/node. Used in client-only binding directly to XML. */
 				valueXPath: "@Value",
-				/* type="string" Specifies the name of the data source property the value of which would be used as a URL
-								for the node image.
-				*/
+				/* type="string" Gets the name of the data source property the value of which would be used as a URL for the node image. */
 				imageUrlKey: "ImageUrl",
-				/* type="string" Specifies the XPath to the image URL attribute/node. Used in client-only binding directly to XML. */
+				/* type="string" Gets the XPath to the image URL attribute/node. Used in client-only binding directly to XML. */
 				imageUrlXPath: "@ImageUrl",
-				/* type="string" Specifies the name of the data source property the value of which would be used as an href
-								attribute for the node anchor.
-				*/
+				/* type="string" Gets the name of the data source property the value of which would be used as an href attribute for the node anchor. */
 				navigateUrlKey: "NavigateUrl",
-				/* type="string" Specifies the XPath to the navigate URL attribute/node. Used in client-only binding directly to XML. */
+				/* type="string" Gets the XPath to the navigate URL attribute/node. Used in client-only binding directly to XML. */
 				navigateUrlXPath: "@NavigateUrl",
-				/* type="string" Specifies the name of the data source property the value of which would be used as a target
+				/* type="string" Gets the name of the data source property the value of which would be used as a target
 								attribute for the node anchor.
 				*/
 				targetKey: "Target",
-				/* type="string" Specifies the name of the data source property the value of which would indicate that the
+				/* type="string" Gets the name of the data source property the value of which would indicate that the
 								node is expanded on initial load.
 				*/
 				expandedKey: "Expanded",
-				/* type="string" Specifies the name of the data source property the value of which is the primary key attribute
+				/* type="string" Gets the name of the data source property the value of which is the primary key attribute
 								for the data. This property is used when load on demand is enabled and if specified the node paths
 								would be generated using primary keys instead of indices.
 				*/
 				primaryKey: null,
-				/* type="string" Specifies the node content template for the current layer of bindings. The igTree utilizes igTemplating
+				/* type="string" Gets the node content template for the current layer of bindings. The igTree utilizes igTemplating
 								for generating node content templates. A good example of how to setup templating can be found here http://www.infragistics.com/community/blogs/marina_stoyanova/archive/2014/06/17/how-to-use-templates-to-style-the-different-nodes-of-the-ignite-ui-tree-control.aspx
 				*/
 				nodeContentTemplate: null,
-				/* type="string" Specifies the name of the data source property that holds the child data of the current layer node. */
+				/* type="string" Gets the name of the data source property that holds the child data of the current layer node. */
 				childDataProperty: "Nodes",
-				/* type="string" Specifies the XPath to the child data node. Used in client-only binding directly to XML. */
+				/* type="string" Gets the XPath to the child data node. Used in client-only binding directly to XML. */
 				childDataXPath: "Children",
-				/* type="string" Specifies the XPath to the root data node. Used in client-only binding directly to XML. */
+				/* type="string" Gets the XPath to the root data node. Used in client-only binding directly to XML. */
 				searchFieldXPath: "Nodes",
-				/* type="object" Specifies the next layer of bindings in a recursive fashion. */
+				/* type="object" Gets the next layer of bindings in a recursive fashion. */
 				bindings: {
 					/* Recursively defines next layer fo bindings */
 				}
 			},
-			/* type="string" Specifies the default target of the node anchor. */
+			/* type="string" Gets the default target attribute value for the node anchors. */
 			defaultNodeTarget: "_self",
-			/* type="boolean" If set to true it would enable drag and drop functionality. */
+			/* type="boolean" Gets/Sets whether drag and drop functionality is enabled. */
 			dragAndDrop: false,
-			/* type="string" URL to which updating requests will be made. */
+			/* type="string" Gets the URL to which updating requests will be made. */
 			updateUrl: null,
-			/* type="object" Specific settings for the drag and drop functionality. */
+			/* type="object" Gets/Sets specific settings for the drag and drop functionality. */
 			dragAndDropSettings: {
-				/* type="boolean" Specifies whether the widget will accept D&D from other controls. boolean. Default value is false. */
+				/* type="boolean" Gets whether the widget will accept drag and drop from other controls. */
 				allowDrop: false,
-				/* type="default|copy|move" Specifies the D&D mode. Accepted values "default", "copy", "move". Where "default" is "copy"
-											when Ctrl key is hold, else it means "move". Just like in Windows explorer.
-											None means the tree does not accept this node.
+				/* type="default|copy|move" Gets the drag and drop mode.
+					default type="string" Performs "copy" when holding the Ctrl key, otherwise "move" is performed.
+					copy type="string" Makes a copy of the dragged node at the drop location.
+					move type="string" Moves the dragged node at the drop location.
 				*/
 				dragAndDropMode: "default",
-				/* type="number" Specifies the opacity of the drag helper: 0 is fully transparent while 1 is fully opaque.
+				/* type="number" Gets the opacity of the drag helper: 0 is fully transparent while 1 is fully opaque.
 				*/
 				dragOpacity: 0.75,
-				/* type="boolean" Specifies whether the helper would revert to its original position upon an invalid drop.
+				/* type="boolean" Gets whether the helper would revert to its original position upon an invalid drop.
 				*/
 				revert: true,
-				/* type="number" Specifies the duration of the revert animation.
+				/* type="number" Gets the duration of the revert animation.
 				*/
 				revertDuration: 500,
-				/* type="number" Specifies z-index that would be set for the drag helper.
+				/* type="number" Gets the z-index that would be set for the drag helper.
 				*/
 				zIndex: 10,
-				/* type="number" Specifies the delay between mousedown and the start of the actual drag. Smaller values make the nodes
-									more sensitive to drag.
+				/* type="number" Gets the delay between mousedown and the start of the actual drag. Smaller values make the nodes
+									more sensitive to drag and may interfere with selection.
 				*/
 				dragStartDelay: 200,
-				/* type="boolean" Specifies whether when dragging over a collapsed node with children the node will expand after
-									the timeout specified in the expandDelay option.
-				*/
+				/* type="boolean" Gets whether when dragging over a collapsed node with children will trigger the node to expand. */
 				expandOnDragOver: true,
-				/* type="number" Specifies the delay after hovering a parent node before it expands to show its children during drag.
-				*/
+				/* type="number" Gets the delay after hovering a parent node before expanding that node during drag with expandOnDragOver: true. */
 				expandDelay: 1000,
-				/* type="string|function" Specifies the helper for the drag operation. 'default' would render the internal helper,
-											while a function returning a jQuery element can build entirely custom helper.
+				/* type="function|default" Gets the type of helper to be rendered for the drag operation.
+					function A function that will return a DOMElement to use while dragging.
+					default type="string" would render the default igTree helper.
 				*/
 				helper: "default",
-				/* type="function" Returning true from this function would render the drop point valid, while false would make it invalid.
-									The function has one parameter which is the current drop point and the context of the function is the
-									drag element.
+				/* type="function|null" Gets the method for custom drop point validation. Returning true from this function would render the drop point valid, while false would make it invalid.
+					The function has one parameter which is the current drop point and the context (this) of the function is the drag element.
 				*/
 				customDropValidation: null,
-				/* type="boolean|selector|element|string|array" Specifies the containment for the drag helper. The area inside of which the
-									helper is contained would be scrollable while dragging.
+				/* type="boolean|selector|element|string|array" Gets the containment for the drag helper. The area inside of which the
+					helper is contained would be scrollable while dragging.
+					selector The draggable element will be contained to the bounding box of the first element found by the selector. If no element is found, no containment will be set.
+					element The draggable element will be contained to the bounding box of this element.
+					string Possible values: "parent", "document", "window".
+					array An array defining a bounding box in the form [ x1, y1, x2, y2 ].
 				*/
 				containment: false,
-				/* type="string" Specifies the HTML markup for the invalid helper.
+				/* type="string" Gets the HTML markup for the invalid helper.
 				*/
 				invalidMoveToMarkup: "<div><p><span></span><strong>{0}</strong></p></div>",
-				/* type="string" Specifies the HTML markup for the "move to" helper.
+				/* type="string" Gets the HTML markup for the "move to" helper.
 				*/
 				moveToMarkup: "<div><p><span></span><strong>Move to</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "move between" helper.
+				/* type="string" Gets the HTML markup for the "move between" helper.
 				*/
 				moveBetweenMarkup: "<div><p><span></span><strong>Move between</strong> {0} and {1}</p></div>",
-				/* type="string" Specifies the HTML markup for the "move after" helper.
+				/* type="string" Gets the HTML markup for the "move after" helper.
 				*/
 				moveAfterMarkup: "<div><p><span></span><strong>Move after</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "move before" helper.
+				/* type="string" Gets the HTML markup for the "move before" helper.
 				*/
 				moveBeforeMarkup: "<div><p><span></span><strong>Move before</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "copy to" helper.
+				/* type="string" Gets the HTML markup for the "copy to" helper.
 				*/
 				copyToMarkup: "<div><p><span></span><strong>Copy to</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "copy between" helper.
+				/* type="string" Gets the HTML markup for the "copy between" helper.
 				*/
 				copyBetweenMarkup: "<div><p><span></span><strong>Copy between</strong> {0} and {1}</p></div>",
-				/* type="string" Specifies the HTML markup for the "copy after" helper.
+				/* type="string" Gets the HTML markup for the "copy after" helper.
 				*/
 				copyAfterMarkup: "<div><p><span></span><strong>Copy after</strong> {0}</p></div>",
-				/* type="string" Specifies the HTML markup for the "copy before" helper.
+				/* type="string" Gets the HTML markup for the "copy before" helper.
 				*/
 				copyBeforeMarkup: "<div><p><span></span><strong>Copy before</strong> {0}</p></div>"
 			}
         },
 		events: {
-			/* cancel="false" fired before databinding is performed
+			/* cancel="false" Fired before databinding is performed.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tree performing databinding.
 			*/
 			dataBinding: "dataBinding",
-			/* fired after databinding is finished
+			/* cancel="false" Fired after databinding is finished.
 				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tree performing databinding.
+				Use ui.owner to get a reference to the tree performing the databinding.
 				Use ui.dataView to get a reference to the data the tree has been databound to.
 			*/
 			dataBound: "dataBound",
-			/* cancel="false" fired before rendering of the tree begins
+			/* cancel="false" Fired before rendering of the tree begins.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tree performing rendering.
 				Use ui.dataView to get a reference to the data the tree is going to render.
 			*/
 			rendering: "rendering",
-			/* fired after rendering of the tree has finished
+			/* cancel="false" Fired after rendering of the tree has finished.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tree.
 			*/
 			rendered: "rendered",
-			/* cancel="true" fired before a new node is selected
+			/* cancel="true" Fired before a new node is selected.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tree.
 				Use ui.selectedNodes to get a reference to currently selected nodes.
 				Use ui.newNodes to get a reference to the new nodes getting selected.
 			*/
 			selectionChanging: "selectionChanging",
-			/* fired after a new node is selected
+			/* cancel="false" Fired after a new node is selected.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tree.
 				Use ui.selectedNodes to get a reference to the selected nodes.
 				Use ui.newNodes to get a reference to the newly added nodes to the selection.
 			*/
 			selectionChanged: "selectionChanged",
-			/* cancel="true" fired before the checkstate of a node is changed
+			/* cancel="true" Fired before the checkbox state of a node is changed.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tree.
 				Use ui.node to get a reference to the node object the checkbox of which is being interacted with.
 				Use ui.currentState to get the current state of the checkbox.
-				Use ui.newState to get the new future state of the checkbox.
+				Use ui.newState to get the new state that is going to be applied to the checkbox.
 				Use ui.currentCheckedNodes to get the collection of all checked nodes before the new state is applied.
 			*/
 			nodeCheckstateChanging: "nodeCheckstateChanging",
-			/* fired after the checkstate of a node is changed
+			/* cancel="false" Fired after the checkstate of a node is changed.
 				Use ui.owner to get a reference to the tree.
 				Use ui.node to get a reference to the node object the checkbox of which is being interacted with.
-				Use ui.newState to get the new current state of the checkbox.
+				Use ui.newState to get the new state that is already applied to the checkbox.
 				Use ui.newCheckedNodes to get the collection of all checked nodes.
 				Use ui.newPartiallyCheckedNodes to get the collection of all partially checked nodes.
 			*/
 			nodeCheckstateChanged: "nodeCheckstateChanged",
-			/* cancel="true" fired before the children of a node are populated in the case of load on demand
-				Use ui.path to get a reference to the path of the node being populated.
+			/* cancel="true" Fired before the children of a node are populated in the case of load on demand.
+				Use ui.path to get the data-path attribute of the node being populated.
 				Use ui.element to get a reference to the jQuery element of the node being populated.
 				Use ui.data to get the node data.
 				Use ui.binding to get a reference to the bindings object for the level at which the populating node is located.
 			*/
 			nodePopulating: "nodePopulating",
-			/* fired after the children of a node are populated in the case of load on demand
-				Use ui.path to get a reference to the path of the populated node.
+			/* cancel="false" Fired after the children of a node are populated in the case of load on demand.
+				Use ui.path to get the data-path atrribute of the populated node.
 				Use ui.element to get a reference to the jQuery element of the populated node.
 				Use ui.data to get the node data.
 				Use ui.binding to get a reference to the bindings object for the level at which the populated node is located.
 			*/
 			nodePopulated: "nodePopulated",
-			/* cancel="true" fired before a node is collapsed
+			/* cancel="true" Fired before a node is collapsed.
 				Use ui.owner to get a reference to the tree.
 				Use ui.node to get a reference to the node object about to collapse.
 			*/
 			nodeCollapsing: "nodeCollapsing",
-			/* fired after a node is collapsed
+			/* cancel="false" Fired after a node is collapsed.
 				Use ui.owner to get a reference to the tree.
 				Use ui.node to get a reference to the collapsed node object.
 			*/
 			nodeCollapsed: "nodeCollapsed",
-			/* cancel="true" fired before a node is expanded
+			/* cancel="true" Fired before a node is expanded.
 				Use ui.owner to get a reference to the tree.
 				Use ui.node to get a reference to the node object about to expand.
 			*/
 			nodeExpanding: "nodeExpanding",
-			/* fired after a node is expanded
+			/* cancel="false" Fired after a node is expanded.
 				Use ui.owner to get a reference to the tree.
 				Use ui.node to get a reference to the expanded node object.
 			*/
 			nodeExpanded: "nodeExpanded",
-			/* fired on node click
+			/* cancel="false" Fired on node click.
 				Use ui.owner to get a reference to the tree.
 				Use ui.node to get a reference to the node object being clicked.
 			*/
 			nodeClick: "nodeClick",
-			/* fired on node double click
-				Use ui.path to get a reference to the path of the double clicked node.
+			/* cancel="false" Fired on node double click.
+				Use ui.path to get the data-path attribute of the double clicked node.
 				Use ui.element to get a reference to the jQuery element of the double clicked node.
 				Use ui.data to get the node data.
 				Use ui.binding to get a reference to the bindings object for the level at which the double clicked node is located.
 			*/
 			nodeDoubleClick: "nodeDoubleClick",
-			/* cancel="true" fired on node drag start
-				Use ui.binding to gets a reference to the binding.
-				Use ui.data	to get a reference to the data.
-				Use ui.element to get a reference to the element.
+			/* cancel="true" Fired on node drag start.
+				Use ui.binding to gets a reference to the bindings object for the level at which the dragged node is located.
+				Use ui.data	to get a reference to the node data.
+				Use ui.element to get a reference to the node element.
 				Use ui.helper to get a reference to the helper.
 				Use ui.offset to get a reference to the offset.
 				Use ui.orginalPosition to get a reference to the original position of the draggable element (the node).
-				Use ui.path	to get a reference to the node path.
+				Use ui.path	to get the node data-path attrubte.
 				Use ui.position to get a reference to the current position of the draggable element.
 			*/
 			dragStart: "dragStart",
-			/* cancel="true" fired on node drag
-				Use ui.binding to gets a reference to the binding.
-				Use ui.data	to get a reference to the data.
-				Use ui.element to get a reference to the element.
+			/* cancel="true" Fired on node drag.
+				Use ui.binding to gets a reference to the binding object for the level at which the dragged node is located.
+				Use ui.data	to get a reference to the node data.
+				Use ui.element to get a reference to the node element.
 				Use ui.helper to get a reference to the helper.
 				Use ui.offset to get a reference to the offset.
 				Use ui.orginalPosition to get a reference to the original position of the draggable element (the node).
-				Use ui.path	to get a reference to the node path.
+				Use ui.path	to get the node data-path attribute.
 				Use ui.position to get a reference to the current position of the draggable element.
 			*/
 			drag: "drag",
-			/* fired after a drag operation has completed
+			/* cancel="false" Fired after a drag operation has completed.
 				Use ui.helper to get a reference to the helper.
 				Use ui.offset to get a reference to the offset.
 				Use ui.orginalPosition to get a reference to the original position of the draggable element (the node).
 				Use ui.position to get a reference to the current position of the draggable element.
 			*/
 			dragStop: "dragStop",
-			/* cancel="true" fired before a node drop
-				Use ui.binding to gets a reference to the binding.
-				Use ui.data	to get a reference to the data.
+			/* cancel="true" Fired before a node is dropped.
+				Use ui.binding to gets a reference to the binding object for the level at which the target node is located.
+				Use ui.data	to get a reference to the target node data.
 				Use ui.draggable to get a reference to the draggable element (the node).
-				Use ui.element to get a reference to the element.
+				Use ui.element to get a reference to the node element.
 				Use ui.helper to get a reference to the helper.
 				Use ui.offset to get a reference to the offset.
-				Use ui.path	to get a reference to the node path.
+				Use ui.path	to get the target node data-path attribute.
 				Use ui.position to get a reference to the current position of the draggable element.
 			*/
 			nodeDropping: "nodeDropping",
-			/* fired after a node drop
-				Use ui.binding to gets a reference to the binding.
-				Use ui.data	to get a reference to the data.
+			/* cancel="false" Fired after a node is dropped.
+				Use ui.binding to gets a reference to the binding object for the level at which the target node is located.
+				Use ui.data	to get a reference to the target node data.
 				Use ui.draggable to get a reference to the draggable element (the node).
 				Use ui.element to get a reference to the element.
 				Use ui.helper to get a reference to the helper.
 				Use ui.offset to get a reference to the offset.
-				Use ui.path	to get a reference to the node path.
+				Use ui.path	to get the target node data-path attribute.
 				Use ui.position to get a reference to the current position of the draggable element.
 			*/
 			nodeDropped: "nodeDropped"
 		},
-		widget: function () {
-            /* Returns the element that represents this widget.
-				returnType="object" Returns the element that represents this widget.
-			*/
-			return this.element;
-		},
-		_createWidget: function () {
+		_createWidget: function (options) {
 			/* !Strip dummy objects from options, because they are defined for documentation purposes only! */
 			this.options.bindings = null;
-			this.options.dragAndDropSettings.moveToMarkup =
-                "<div><p><span></span>" + $.ig.Tree.locale.moveTo + "</p></div>";
-			this.options.dragAndDropSettings.moveBetweenMarkup =
-                "<div><p><span></span>" + $.ig.Tree.locale.moveBetween + "</p></div>";
-			this.options.dragAndDropSettings.moveAfterMarkup =
-                "<div><p><span></span>" + $.ig.Tree.locale.moveAfter + "</p></div>";
-			this.options.dragAndDropSettings.moveBeforeMarkup =
-                "<div><p><span></span>" + $.ig.Tree.locale.moveBefore + "</p></div>";
-			this.options.dragAndDropSettings.copyToMarkup =
-                "<div><p><span></span>" + $.ig.Tree.locale.copyTo + "</p></div>";
-			this.options.dragAndDropSettings.copyBetweenMarkup =
-                "<div><p><span></span>" + $.ig.Tree.locale.copyBetween + "</p></div>";
-			this.options.dragAndDropSettings.copyAfterMarkup =
-                "<div><p><span></span>" + $.ig.Tree.locale.copyAfter + "</p></div>";
-			this.options.dragAndDropSettings.copyBeforeMarkup =
-                "<div><p><span></span>" + $.ig.Tree.locale.copyBefore + "</p></div>";
+			if (options && options.dragAndDrop) {
+				this.options.dragAndDropSettings.moveToMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.moveTo + "</p></div>";
+				this.options.dragAndDropSettings.moveBetweenMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.moveBetween + "</p></div>";
+				this.options.dragAndDropSettings.moveAfterMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.moveAfter + "</p></div>";
+				this.options.dragAndDropSettings.moveBeforeMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.moveBefore + "</p></div>";
+				this.options.dragAndDropSettings.copyToMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.copyTo + "</p></div>";
+				this.options.dragAndDropSettings.copyBetweenMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.copyBetween + "</p></div>";
+				this.options.dragAndDropSettings.copyAfterMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.copyAfter + "</p></div>";
+				this.options.dragAndDropSettings.copyBeforeMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.copyBefore + "</p></div>";
+			}
 			$.Widget.prototype._createWidget.apply(this, arguments);
 		},
         _create: function () {
@@ -493,12 +488,6 @@ if (typeof jQuery !== "function") {
 			// K.D. February 17th, 2014 Bug #164398 Attaching events only on create as delegate is used instead of bind now.
 			this._attachEvents();
 
-			// K.D. October 18th, 2011 Tree goes outside of it's container under IE7 when height is applied and the container
-			// is with position static.
-			if ($.ig.util.isIE && $.ig.util.browserVersion === 7 &&
-                this.element.css("position") === "static") {
-				this.element.css("position", "relative");
-			}
 			if (opt.width) {
 				this.element.css("width", opt.width);
 			}
@@ -710,6 +699,8 @@ if (typeof jQuery !== "function") {
 				opt.bindings.childDataProperty = "Nodes";
 				schema.target = { name: "Target", type: "string" };
 				opt.bindings.targetKey = "Target";
+				schema.expanded = { name: "Expanded", type: "boolean" };
+				opt.bindings.expandedKey = "Expanded";
 				bindings = opt.bindings;
 			} else if (opt.dataSourceType === "xml") {
 				if (bindings.searchFieldXPath) {
@@ -822,7 +813,7 @@ if (typeof jQuery !== "function") {
 							// K.D. October 17th, 2013 Bug #155067 A shallow copy should be created instead of a deep one
 							self._sourceNode.data = $.extend(false, {}, node.data);
 							self._sourceNode.owner = self;
-							self._sourceNode.element = $(this);
+							self._sourceNode.element = node.element;
 						} else {
 							return false;
 						}
@@ -1216,7 +1207,7 @@ if (typeof jQuery !== "function") {
 			this.element.undelegate("a", "mousedown");
 		},
 		_constructFromData: function () {
-			var ul, data = this.options.dataSource._rootds.data(), self = this;
+			var ul, data = this.options.dataSource.root().data(), self = this;
 			this._triggerDataBound(data);
 			this._triggerRendering(data);
 
@@ -1271,72 +1262,43 @@ if (typeof jQuery !== "function") {
 			});
 
 			// Bind anchor
+			// K.D. August 16th, 2013 Bug #149438 Switching to delegated events
+			this.element.delegate("a", {
+				"click": function (event) {
+					target = $(event.target).closest("a");
+					noCancel = self._triggerNodeClick(event, target.parent());
+
+					if (noCancel) {
+						self.select(target.parent(), event);
+						if ($.ig.util.isWebKit) {
+							target.focus();
+						}
+					} else {
+						event.preventDefault();
+					}
+				},
+				"dblclick": function (event) {
+					event.preventDefault();
+					self._triggerNodeDoubleClick(event, $(event.target.parentNode));
+				},
+				"keydown": function (event) {
+					self._kbNavigation(event);
+				},
+				"focus": function (event) {
+					self._focusNode(event);
+				},
+				"blur": function (event) {
+					self._blurNode(event);
+				}
+			});
+
 			if (this.options.hotTracking) {
 				this.element.delegate("a", {
-					"click": function (event) {
-						target = $(event.target).closest("a");
-						noCancel = self._triggerNodeClick(event, target.parent());
-
-						if (noCancel) {
-							self.select(target.parent(), event);
-							if ($.ig.util.isWebKit) {
-								target.focus();
-							}
-						} else {
-							event.preventDefault();
-						}
-					},
-					"dblclick": function (event) {
-						event.preventDefault();
-						self._triggerNodeDoubleClick(event, $(event.target.parentNode));
-					},
-					"keydown": function (event) {
-						self._kbNavigation(event);
-					},
-					"focus": function (event) {
-						self._focusNode(event);
-					},
-					"blur": function (event) {
-						self._blurNode(event);
-					},
 					"mouseover": function (event) {
-						target = $(event.target).closest("a");
-						target.addClass(css.nodeHovered);
+						$(event.target).addClass(css.nodeHovered);
 					},
 					"mouseout": function (event) {
-						target = $(event.target).closest("a");
-						target.removeClass(css.nodeHovered);
-					}
-				});
-			} else {
-
-			    // K.D. August 16th, 2013 Bug #149438 Switching to delegated events
-				this.element.delegate("a", {
-					"click": function (event) {
-						target = $(event.target).closest("a");
-						noCancel = self._triggerNodeClick(event, target.parent());
-
-						if (noCancel) {
-							self.select(target.parent(), event);
-							if ($.ig.util.isWebKit) {
-								target.focus();
-							}
-						} else {
-							event.preventDefault();
-						}
-					},
-					"dblclick": function (event) {
-						event.preventDefault();
-						self._triggerNodeDoubleClick(event, $(event.target.parentNode));
-					},
-					"keydown": function (event) {
-						self._kbNavigation(event);
-					},
-					"focus": function (event) {
-						self._focusNode(event);
-					},
-					"blur": function (event) {
-						self._blurNode(event);
+						$(event.target).removeClass(css.nodeHovered);
 					}
 				});
 			}
@@ -1487,8 +1449,6 @@ if (typeof jQuery !== "function") {
 			if (binding.hasOwnProperty("navigateUrlKey") && data[ binding.navigateUrlKey ]) {
 				if (typeof data[ binding.navigateUrlKey ] === "function") {
 					href = data[ binding.navigateUrlKey ]();
-				} else if (data[ binding.navigateUrlKey ].length <= 0) {
-					href = "#";
 				} else {
 					href = data[ binding.navigateUrlKey ];
 				}
@@ -1519,8 +1479,6 @@ if (typeof jQuery !== "function") {
 			if (binding.hasOwnProperty("navigateUrlKey") && data[ binding.navigateUrlKey ]) {
 				if (typeof data[ binding.navigateUrlKey ] === "function") {
 					href = data[ binding.navigateUrlKey ]();
-				} else if (data[ binding.navigateUrlKey ].length <= 0) {
-					href = "#";
 				} else {
 					href = data[ binding.navigateUrlKey ];
 				}
@@ -2064,32 +2022,40 @@ if (typeof jQuery !== "function") {
 				if (opt.leafNodeImageUrl) {
 					img = parent.children("img[data-role=parent-node-image]");
 					if (img.length > 0) {
-						img.attr("title", (opt.leafNodeImageTooltip !== null ? opt.leafNodeImageTooltip : ""));
-						img.attr("src", opt.leafNodeImageUrl);
-						img.attr("data-role", "leaf-node-image");
+						img.attr({
+							"title": opt.leafNodeImageTooltip !== null ? opt.leafNodeImageTooltip : "",
+							"src": opt.leafNodeImageUrl,
+							"data-role": "leaf-node-image"
+						});
 					}
 				} else if (opt.leafNodeImageClass) {
 					img = parent.children("span[data-role=parent-node-image]");
 					if (img.length > 0) {
-						img.attr("title", (opt.leafNodeImageTooltip !== null ? opt.leafNodeImageTooltip : ""));
+						img.attr({
+							"title": opt.leafNodeImageTooltip !== null ? opt.leafNodeImageTooltip : "",
+							"data-role": "leaf-node-image"
+						});
 						img.removeClass(opt.parentNodeImageClass).addClass(opt.leafNodeImageClass);
-						img.attr("data-role", "leaf-node-image");
 					}
 				}
 			} else {
 				if (opt.parentNodeImageUrl) {
 					img = parent.children("img[data-role=leaf-node-image]");
 					if (img.length > 0) {
-						img.attr("title", (opt.parentNodeImageTooltip !== null ? opt.parentNodeImageTooltip : ""));
-						img.attr("src", opt.parentNodeImageUrl);
-						img.attr("data-role", "parent-node-image");
+						img.attr({
+							"title": opt.parentNodeImageTooltip !== null ? opt.parentNodeImageTooltip : "",
+							"src": opt.parentNodeImageUrl,
+							"data-role": "parent-node-image"
+						});
 					}
 				} else if (opt.parentNodeImageClass) {
 					img = parent.children("span[data-role=leaf-node-image]");
 					if (img.length > 0) {
-						img.attr("title", (opt.parentNodeImageTooltip !== null ? opt.parentNodeImageTooltip : ""));
+						img.attr({
+							"title": opt.parentNodeImageTooltip !== null ? opt.parentNodeImageTooltip : "",
+							"data-role": "parent-node-image"
+						});
 						img.removeClass(opt.leafNodeImageClass).addClass(opt.parentNodeImageClass);
-						img.attr("data-role", "parent-node-image");
 					}
 				}
 			}
@@ -2101,26 +2067,26 @@ if (typeof jQuery !== "function") {
 				i;
 			if (!binding.hasOwnProperty("primaryKey")) {
 				if (!originalData) {
-				    if (this.options.dataSource._rootds._data.length <= this.element.
+				    if (this.options.dataSource.root()._data.length <= this.element.
                         find(".ui-igtree-noderoot").length ||
                         this.element.find(".ui-igtree-noderoot").length <= 0) {
 						if (dataIndex === 0) {
 							if ($.type(data) === "array") {
-								this.options.dataSource._rootds._data = data.concat(this.options.dataSource._rootds._data);
+								this.options.dataSource.root()._data = data.concat(this.options.dataSource.root()._data);
 							} else {
-							    this.options.dataSource._rootds._data = [ data ]
-                                    .concat(this.options.dataSource._rootds._data);
+							    this.options.dataSource.root()._data = [ data ]
+                                    .concat(this.options.dataSource.root()._data);
 							}
 						} else if (!dataIndex) {
 							if ($.type(data) === "array") {
 								for (i = 0; i < data.length; i++) {
-									this.options.dataSource._rootds._data.push(data[ i ]);
+									this.options.dataSource.root()._data.push(data[ i ]);
 								}
 							} else {
-								this.options.dataSource._rootds._data.push(data);
+								this.options.dataSource.root()._data.push(data);
 							}
 						} else {
-							this.options.dataSource._rootds._data.splice(dataIndex, 0, data);
+							this.options.dataSource.root()._data.splice(dataIndex, 0, data);
 						}
 					}
 				} else {
@@ -2170,15 +2136,15 @@ if (typeof jQuery !== "function") {
 				}
 			} else {
 				if (!originalData) {
-				    if (this.options.dataSource._rootds._data.length <=
+				    if (this.options.dataSource.root()._data.length <=
                         this.element.find(".ui-igtree-noderoot").length ||
                         this.element.find(".ui-igtree-noderoot").length <= 0) {
 						if ($.type(data) === "array") {
 							for (i = 0; i < data.length; i++) {
-								this.options.dataSource._rootds._data.push(data[ i ]);
+								this.options.dataSource.root()._data.push(data[ i ]);
 							}
 						} else {
-							this.options.dataSource._rootds._data.push(data);
+							this.options.dataSource.root()._data.push(data);
 						}
 					}
 				} else {
@@ -2204,7 +2170,7 @@ if (typeof jQuery !== "function") {
 		},
 		_removeData: function (path) {
 		    var splitPath = path.split(this.options.pathSeparator),
-                data = this.options.dataSource._rootds.data(), i, j,
+                data = this.options.dataSource.root().data(), i, j,
                 binding = this.options.bindings, key;
 
 			if (splitPath.length === 1) {
@@ -2406,7 +2372,7 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		dataBind: function () {
-		    /* Performs databinding on the tree. */
+		    /* Performs databinding on the igTree. */
 
 			// K.D. December 9th, 2014 Bug #186240 Moving the databinding event before the data options are created.
 			this._triggerDataBinding();
@@ -2416,8 +2382,8 @@ if (typeof jQuery !== "function") {
 		},
 		toggleCheckstate: function (node, event) {
 			/* Toggles the checkstate of a node if checkboxMode is not set to off, otherwise does nothing.
-				paramType="object" optional="false" Specifies the jQuery object of the node element the checkbox of which would be toggled.
-				paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
+				paramType="object" optional="false" Specifies the node element the checkbox of which would be toggled.
+				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/
 		    var self = this, opt = self.options, css = self.css, childCheckboxes, childCheckIcons,
                 checkbox, checkIcon, parentLi, noCancel;
@@ -2511,9 +2477,9 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		toggle: function (node, event) {
-			/* Toggles the collapse/expand for the specified node.
-				paramType="object" optional="false" Specifies the jQuery object of the node element the checkbox of which would be toggled.
-				paramType="object" optional="true" Indicates the browser even which triggered this action if this is not an API call.
+			/* Toggles the collapse/expand state for the specified node.
+				paramType="object" optional="false" Specifies the node element the checkbox of which would be toggled.
+				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/
 		    var self = this, opt = self.options, css = self.css, noCancel, sibling,
                 siblingExpander, i = 0, expander;
@@ -2577,8 +2543,8 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		expandToNode: function (node, toSelect) {
-			/* Expands the tree down to the specified node.
-				paramType="object" optional="false" Specifies the jQuery object of the node element down to which the tree would be expanded.
+			/* Expands the tree down to the specified node and selects the node if specified.
+				paramType="object" optional="false" Specifies the node element down to which the tree would be expanded.
 				paramType="bool" optional="true" Specifies the whether to select the node after expanding to it.
 			*/
 		    var parentNode, cachedanimationDuration;
@@ -2609,7 +2575,7 @@ if (typeof jQuery !== "function") {
 		},
 		expand: function (node) {
 			/* Expands the specified node.
-				paramType="object" optional="false" Specifies the jQuery object of the node element to expand.
+				paramType="object" optional="false" Specifies the node element to expand.
 			*/
 			var self = this, opt = self.options, css = self.css, sibling, siblingExpander, i = 0, expander;
 
@@ -2649,7 +2615,7 @@ if (typeof jQuery !== "function") {
 		},
 		collapse: function (node) {
 			/* Collapses the specified node.
-				paramType="object" optional="false" Specifies the jQuery object of the node element to collapse.
+				paramType="object" optional="false" Specifies the node element to collapse.
 			*/
 		    var self = this, opt = self.options, css = self.css, expander;
 
@@ -2665,9 +2631,9 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		parentNode: function (node) {
-			/* Retrieves the parent node of the specified node.
+			/* Retrieves the parent node element of the specified node element.
 				paramType="object" optional="false" Specifies the jQuery selected node element to collapse.
-				returnType="object" Returns the jQuery object of the parent node element, null if the node is a root level node.
+				returnType="object" Returns the parent node element, null if the node provided as parameter is a root level node.
 			*/
 			if (!node) {
 				throw new Error($.ig.Tree.locale.incorrectNodeObject);
@@ -2690,8 +2656,8 @@ if (typeof jQuery !== "function") {
 			return this.element.find('li[data-value="' + value + '"]');
 		},
 		checkedNodes: function () {
-			/* Retrieves all the node objects that have their checkboxes checked.
-				returnType="array" Returns the jQuery array of all the checked nodes.
+			/* Retrieves all the node objects for the nodes that have their checkboxes checked.
+				returnType="array" Returns an array of node objects for all the checked nodes.
 			*/
 			var elements = this.element.find("span[data-chk=on]").parent(), i = 0, collection = [];
 			if (elements.length > 0) {
@@ -2702,8 +2668,8 @@ if (typeof jQuery !== "function") {
 			return collection;
 		},
 		uncheckedNodes: function () {
-			/* Retrieves all the node objects that have their checkboxes unchecked.
-				returnType="array" Returns the jQuery array of all the unchecked nodes.
+			/* Retrieves all the node objects for the nodes that have their checkboxes unchecked.
+				returnType="array" Returns an array of node objects for all the unchecked nodes.
 			*/
 			var elements = this.element.find("span[data-chk=off]").parent(), i = 0, collection = [];
 			if (elements.length > 0) {
@@ -2714,8 +2680,8 @@ if (typeof jQuery !== "function") {
 			return collection;
 		},
 		partiallyCheckedNodes: function () {
-			/* Retrieves all the node objects that have their checkboxes partially checked.
-				returnType="array" Returns the jQuery array of all the partially checked nodes.
+			/* Retrieves all the node objects for the nodes that have their checkboxes partially checked.
+				returnType="array" Returns an array of node objects of all the partially checked nodes.
 			*/
 			var elements = this.element.find("span[data-chk=partial]").parent(), i = 0, collection = [];
 			if (elements.length > 0) {
@@ -2727,8 +2693,8 @@ if (typeof jQuery !== "function") {
 		},
 		select: function (node, event) {
 			/* Selects a node.
-				paramType="object" optional="false" Specifies the jQuery object of the node element to be toggled.
-				paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
+				paramType="object" optional="false" Specifies the node element to be selected.
+				paramType="object" optional="true" Indicates the browser event which triggered this action, if this is not an API call.
 			*/
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
@@ -2778,7 +2744,7 @@ if (typeof jQuery !== "function") {
 		},
 		deselect: function (node) {
 			/* Deselects the specified node.
-				paramType="object" optional="false" Specifies the jQuery object of the node element to be deselected.
+				paramType="object" optional="false" Specifies the node element to be deselected.
 			*/
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
@@ -2819,8 +2785,8 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		selectedNode: function () {
-			/* Retrieves the selected node.
-				returnType="object" Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
+			/* Retrieves the node object for the selected node.
+				returnType="object" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			if (!this._selectedNode) {
 				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
@@ -2829,9 +2795,9 @@ if (typeof jQuery !== "function") {
 		},
 		findNodesByText: function (text, parent) {
 			/* Retrieves all node objects with the specified text (case sensitive).
-				paramType="string" optional="false" The text to search by.
-				paramType="object" optional="true" The jQuery selected node element. If not specified then search would start from the root of the tree.
-				returnType="object" Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
+				paramType="string" optional="false" The text to search for.
+				paramType="object" optional="true" The node element to start the search from. If not specified then search would start from the root of the tree.
+				returnType="array" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			var collection = [], nodes, self = this;
 			nodes = parent ? parent.find('li > a:contains("' + text + '")') :
@@ -2840,54 +2806,13 @@ if (typeof jQuery !== "function") {
 				collection.push(self.nodeFromElement($(this).closest("li[data-role=node]")));
 			});
 
-			// if (parent && parent.length > 0) {
-				// data = this.nodeDataFor(parent.attr('data-path'));
-				// binding = this._retrieveCurrentDepthBinding(parent.parent().attr('data-depth'));
-				// if (binding.hasOwnProperty('childDataProperty') && data.hasOwnProperty(binding.childDataProperty)) {
-					// data = data[binding.childDataProperty];
-					// tempPath = parent.attr('data-path') + this.options.pathSeparator;
-					// if (binding.hasOwnProperty('bindings')) {
-						// binding = binding.bindings;
-					// }
-				// } else {
-					// return collection;
-				// }
-			// } else {
-				// data = this.options.dataSource.root().data();
-				// binding = this.options.bindings;
-				// tempPath = '';
-			// }
-
-			// if (data) {
-				// for (i = 0; i < data.length; i++) {
-					// if (data[i][binding.textKey].toString() === text) {
-						// if (binding.hasOwnProperty('primaryKey') && data[i].hasOwnProperty(binding.primaryKey)) {
-							// tempNode = this.nodeByPath(tempPath + data[i][binding.primaryKey]);
-							// collection.push(this.nodeFromElement(tempNode));
-							// collection = collection.concat(this.findNodesByText(text, tempNode));
-						// } else {
-							// tempNode = this.nodeByPath(tempPath + i);
-							// collection.push(this.nodeFromElement(tempNode));
-							// collection = collection.concat(this.findNodesByText(text, tempNode));
-						// }
-					// } else {
-						// if (binding.hasOwnProperty('primaryKey') && data[i].hasOwnProperty(binding.primaryKey)) {
-							// tempNode = this.nodeByPath(tempPath + data[i][binding.primaryKey]);
-							// collection = collection.concat(this.findNodesByText(text, tempNode));
-						// } else {
-							// tempNode = this.nodeByPath(tempPath + i);
-							// collection = collection.concat(this.findNodesByText(text, tempNode));
-						// }
-					// }
-				// }
-			// }
 			return collection;
 		},
 		findImmediateNodesByText: function (text, parent) {
-			/* Retrieves all immediate children of the specified parent with the specified text (case sensitive).
-				paramType="string" optional="false" The text to search by.
-				paramType="object" optional="true" The jQuery selected node element the children of which would be retrieved.
-				returnType="object" Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
+			/* Retrieves all node objects for the immediate children of the specified parent with the specified text (case sensitive).
+				paramType="string" optional="false" The text to search for.
+				paramType="object" optional="true" The node element the children of which would be searched.
+				returnType="array" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			var collection = [], nodes, self = this;
 			nodes = parent ? parent.children("ul").children("li").children('a:contains("' + text + '")') :
@@ -2897,51 +2822,13 @@ if (typeof jQuery !== "function") {
 				collection.push(self.nodeFromElement($(this).closest("li[data-role=node]")));
 			});
 
-			// if (parent && parent.length > 0) {
-				// binding = this._retrieveCurrentDepthBinding(parent.parent().attr('data-depth'));
-				// data = this.nodeDataFor(parent.attr('data-path'));
-				// if (binding.hasOwnProperty('childDataProperty') && data.hasOwnProperty(binding.childDataProperty)) {
-					// data = data[binding.childDataProperty];
-					// tempPath = parent.attr('data-path');
-					// if (binding.hasOwnProperty('bindings')) {
-						// binding = binding.bindings;
-					// }
-				// } else {
-					// return collection;
-				// }
-				// for (i = 0; i < data.length; i++) {
-					// if (data[i][binding.textKey].toString() === text) {
-						// if (binding.hasOwnProperty('primaryKey') && data[i].hasOwnProperty(binding.primaryKey)) {
-							// tempNode = this.nodeByPath(tempPath + this.options.pathSeparator + data[i][binding.primaryKey]);
-							// collection.push(this.nodeFromElement(tempNode));
-						// } else {
-							// tempNode = this.nodeByPath(tempPath + this.options.pathSeparator + i);
-							// collection.push(this.nodeFromElement(tempNode));
-						// }
-					// }
-				// }
-			// } else {
-				// binding = this.options.bindings;
-				// data = this.options.dataSource.root().data();
-				// for (i = 0; i < data.length; i++) {
-					// if (data[i][binding.textKey].toString() === text) {
-						// if (binding.hasOwnProperty('primaryKey') && data[i].hasOwnProperty(binding.primaryKey)) {
-							// tempNode = this.nodeByPath(data[i][binding.primaryKey]);
-							// collection.push(this.nodeFromElement(tempNode));
-						// } else {
-							// tempNode = this.nodeByPath(i);
-							// collection.push(this.nodeFromElement(tempNode));
-						// }
-					// }
-				// }
-			// }
 			return collection;
 		},
 		nodeByIndex: function (index, parent) {
 			/* Retrieves the n-th jQuery node element child of the specified parent.
-				paramType="number" optional="false" Specifies the index to be retrieved.
-				paremType="object" optional="true" The jQuery object of the parent node element.
-				returnType="object" The jQuery object of the node element.
+				paramType="number" optional="false" Specifies the index the node at which to be retrieved.
+				paremType="object" optional="true" The parent node element to start the search from.
+				returnType="object" The node element at the specified index.
 			*/
 			var node;
 			if (!parent) {
@@ -2956,9 +2843,9 @@ if (typeof jQuery !== "function") {
 			return node;
 		},
 		nodeFromElement: function (element) {
-			/* Retrieves a node object from provided jQuery node element.
-				paramType="object" optional="false" Specifies the jQuery object of the node element.
-				returnType="object" Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
+			/* Retrieves a node object for the specified node element.
+				paramType="object" optional="false" Specifies the node element.
+				returnType="object" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			if (element.length > 0) {
 				var nodeElement = {
@@ -2971,9 +2858,9 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		children: function (parent) {
-			/* Retrieves a node object collection of the immediate children of the provided node.
-				paramType="object" optional="false" Specifies the jQuery object of the node element.
-				returnType="object" Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
+			/* Retrieves a node object collection of the immediate children of the provided node element.
+				paramType="object" optional="false" Specifies the node element.
+				returnType="array" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			var children = [], self = this, child, ul;
 			if (parent && parent.length > 0) {
@@ -2990,8 +2877,8 @@ if (typeof jQuery !== "function") {
 		},
 		childrenByPath: function (path) {
 			/* Retrieves a node object collection of the immediate children of the node with the provided path.
-				paramType="string" optional="false" Specifies the path of the node the children of which are being retrieved.
-				returnType="object" Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
+				paramType="string" optional="false" Specifies the path of the node the children of which are to be retrieved.
+				returnType="array" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			var node = this.nodeByPath(path), children = [], self = this, child, ul;
 			if (node.length > 0) {
@@ -3007,9 +2894,9 @@ if (typeof jQuery !== "function") {
 			throw new Error($.ig.Tree.locale.incorrectPath + path);
 		},
 		isSelected: function (node) {
-			/* Returns true if the provided node is selected and false otherwise.
-				paramType="object" optional="false" Specifies the jQuery object of the node element.
-				returnType="bool"
+			/* Returns true if the provided node element is selected and false otherwise.
+				paramType="object" optional="false" Specifies the node element.
+				returnType="bool" True if the node is selected, false otherwise.
 			*/
 			if (!this._selectedNode) {
 				this._selectedNode = [{ path: null, element: null, data: null, binding: null }];
@@ -3020,9 +2907,9 @@ if (typeof jQuery !== "function") {
 			throw new Error($.ig.Tree.locale.incorrectNodeObject);
 		},
 		isExpanded: function (node) {
-			/* Returns true if the provided node is expanded and false otherwise.
-				paramType="object" optional="false" Specifies the jQuery object of the node element.
-				returnType="bool"
+			/* Returns true if the provided node element is expanded and false otherwise.
+				paramType="object" optional="false" Specifies the node element.
+				returnType="bool" True if the node is selected, false otherwise.
 			*/
 			if (node && node.length > 0) {
 				var expander = node.children("span[data-role=expander]");
@@ -3034,9 +2921,9 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		isChecked: function (node) {
-			/* Returns true if the provided node has its checkstate checked and false otherwise.
-				paramType="object" optional="false" Specifies the jQuery object of the node element.
-				returnType="bool"
+			/* Returns true if the provided node element has its checkbox checkstate checked and false otherwise.
+				paramType="object" optional="false" Specifies the node element.
+				returnType="bool" True if the node is checked, false otherwise.
 			*/
 			if (node && node.length > 0) {
 				var checkbox = node.children("span[data-role=checkbox]");
@@ -3048,9 +2935,9 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		checkState: function (node) {
-			/* Returns true if the provided node has its checkstate checked and false otherwise.
-				paramType="object" optional="false" Specifies the jQuery object of the node element.
-				returnType="string" The checkbox state of the node.
+			/* Returns the specified node checkstate.
+				paramType="object" optional="false" Specifies the node element.
+				returnType="string" The checkbox state of the node. "on" if checked, "partial" if partially checked, "off" if unchecked.
 			*/
 			if (node && node.length > 0) {
 				var checkbox = node.children("span[data-role=checkbox]");
@@ -3062,10 +2949,10 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		addNode: function (node, parent, nodeIndex) {
-			/* Adds a new array of nodes to the tree. New nodes are appended to the root or to a specified parent node.
-				paramType="object" optional="false" Specifies the data used to create the new node.
-				paramType="object" optional="true" Specifies the jQuery object of the parent node the nodes are to be appended to.
-				paramType="number" optional="true" Specifies the index at which the node to be inserted.
+			/* Adds a new array of nodes to the tree. New nodes are appended to the root or to a specified parent node, at a specified index.
+				paramType="object|array" optional="false" Specifies the data used to create the new nodeс.
+				paramType="object" optional="true" Specifies the element of the parent node the nodes are to be appended to.
+				paramType="number" optional="true" Specifies the index at which the nodes to be inserted.
 			*/
 
 			// No data is being passed in
@@ -3221,7 +3108,7 @@ if (typeof jQuery !== "function") {
 			});
 		},
 		applyChangesToNode: function (element, data) {
-		    /* Performs a UI update on the provided node element with the new provided data member.
+		    /* Performs a UI update on the provided node element with the provided data.
 				paramType="object" optional="false" Specifies the node to be updated.
                 paramType="object" optional="false" Specifies the new data item the node would update according to.
 			*/
@@ -3234,7 +3121,7 @@ if (typeof jQuery !== "function") {
 		},
 		transactionLog: function () {
 			/* Returns the transaction log stack.
-				returnType="object" The transaction log stack.
+				returnType="array" The transaction log stack.
 			*/
 			return this.options.dataSource.root()._transactionLog;
 		},
@@ -3412,7 +3299,7 @@ if (typeof jQuery !== "function") {
 			}
 
 			var splitPath = path.split(this.options.pathSeparator), data = this.options.
-                dataSource._rootds.data(), i, j, binding = this.options.bindings, temp;
+                dataSource.root().data(), i, j, binding = this.options.bindings, temp;
 
 			for (i = 0; i < splitPath.length - 1; i++) {
 				if (!binding.hasOwnProperty("primaryKey")) {
@@ -3465,7 +3352,7 @@ if (typeof jQuery !== "function") {
 			return data;
 		},
         destroy: function () {
-            /* Destructor */
+            /* Destructor for the igTree widget */
             $.Widget.prototype.destroy.apply(this, arguments);
 
 			// K.D. February 17th, 2014 Bug #164398 Attaching events only on create as delegate is used instead of bind now.

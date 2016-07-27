@@ -12,122 +12,121 @@
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	
 	<script type="text/javascript"> 
-	 
-	 var dataBindingFired = false;
-	 var dataBoundFired = false;
-	 
-	 $(document).ready(function () {
-	
-		// define a simple data source control
-		var ds1 = new $.ig.DataSource();
-		ds1.settings.dataBinding = function () { dataBindingFired = true; };
-		ds1.settings.dataBound = function () { dataBoundFired = true; };
-		ds1.dataBind();
-		
-		startTesting();
-			
-		function startTesting()
-		{
-
-			QUnit.init();
-			QUnit.start();
-
-			module("igDataSource");
-			
-			test("igDataSource events test: DataBinding", function() {
-				
-				equal(true, dataBindingFired, true);
-			});
-			
-			test("igDataSource events test: DataBound", function() {
-
-				equal(true, dataBoundFired, true);
-			});
-			
-			test("igDataSource properties test: fields property", function () {
-			
-				var fields = ds1.fields([{name: "test1"}, {name: "test2"}]).fields();
-				equal(2, fields.length, 2);
-				
-			});
-			
-			test("igDataSource properties test: Schema property", function () {
-			
-				var schema = ds1.schema({type:"unknown"}).schema();
-				equal("unknown", schema._type, "unknown");
-			});
-			
-			test("igDataSource properties test: paging settings property", function () {
-				
-				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
-				equal(5, ps.pageSize, 5);
-				
-			});
-			
-			test("igDataSource properties test: filtering settings property", function () {
-			
-				var fs = ds1.filterSettings({filterExprUrlKey: "f"}).filterSettings();
-				equal("f", fs.filterExprUrlKey, "f");
-			});
-			
-			test("igDataSource properties test: sort settings property", function () {
-			
-				var ss = ds1.sortSettings({exprString: "col1 ASC"}).sortSettings();
-				equal("col1 ASC", ss.exprString, "col1 ASC");
-			});
-			
-			
-			test("igDataSource properties test: dataSource property test", function () {
-			
-				var ds = ds1.dataSource("http://www.infragistics.com").dataSource();
-				equal("http://www.infragistics.com", ds, "http://www.infragistics.com");
-			});
-		
-			test("igDataSource properties test: type property test", function () {
-			
-				var t = ds1.type("unknown").type();
-				if ((t === "unknown" || t === "empty") && t !== undefined && t != null) {
-					ok (true, "type is ok", true);
-				} else {
-					ok(false, "type is not ok", false);
-				}
-				equal("unknown", ds1.settings.type, "unknown");
-			});
-			
-			// page index
-			test("igDataSource properties test: page index property", function () {
-				
-				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
-				equal(0, ds1.pageIndex(), 0);
-				
-			});
-			
-			// page count
-			test("igDataSource properties test: page count property", function () {
-				
-				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
-				equal(1, ds1.pageCount(), 1);
-				
-			});
-
-			// test stringToJSONObject
-			test("Test stringToJSONObject", function () {
-				var obj = ds1.stringToJSONObject('{"p": 5}');
-				ok(obj.p === 5, "Test stringToJSONObject");
-				throws(
-					function () {
-						ds1.stringToJSONObject('{"p": 5');
-					},
-					function (err) {
-						return err.message.indexOf($.ig.DataSourceLocale.locale.errorParsingJsonNoSchema) > -1;
-					},
-					$.ig.DataSourceLocale.locale.errorParsingJsonNoSchema + " should be thrown"
-				);
-			});
+	 $(function () {
+		var dataBindingFired = false, dataBoundFired = false, ds1;
+		function loadTestbeds() {
+			// define a simple data source control
+			ds1 = new $.ig.DataSource();
+			ds1.settings.dataBinding = function () { dataBindingFired = true; };
+			ds1.settings.dataBound = function () { dataBoundFired = true; };
+			ds1.dataBind();
 		}
+		
+		initialized = false;
+		module("igDataSource Properties", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 500);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+			
+		test("igDataSource events test: DataBinding", function() {
+			
+			equal(true, dataBindingFired, true);
+		});
+		
+		test("igDataSource events test: DataBound", function() {
+
+			equal(true, dataBoundFired, true);
+		});
+		
+		test("igDataSource properties test: fields property", function () {
+		
+			var fields = ds1.fields([{name: "test1"}, {name: "test2"}]).fields();
+			equal(2, fields.length, 2);
+			
+		});
+		
+		test("igDataSource properties test: Schema property", function () {
+		
+			var schema = ds1.schema({type:"unknown"}).schema();
+			equal("unknown", schema._type, "unknown");
+		});
+		
+		test("igDataSource properties test: paging settings property", function () {
+			
+			var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
+			equal(5, ps.pageSize, 5);
+			
+		});
+		
+		test("igDataSource properties test: filtering settings property", function () {
+		
+			var fs = ds1.filterSettings({filterExprUrlKey: "f"}).filterSettings();
+			equal("f", fs.filterExprUrlKey, "f");
+		});
+		
+		test("igDataSource properties test: sort settings property", function () {
+		
+			var ss = ds1.sortSettings({exprString: "col1 ASC"}).sortSettings();
+			equal("col1 ASC", ss.exprString, "col1 ASC");
+		});
+		
+		
+		test("igDataSource properties test: dataSource property test", function () {
+		
+			var ds = ds1.dataSource("http://www.infragistics.com").dataSource();
+			equal("http://www.infragistics.com", ds, "http://www.infragistics.com");
+		});
+	
+		test("igDataSource properties test: type property test", function () {
+		
+			var t = ds1.type("unknown").type();
+			if ((t === "unknown" || t === "empty") && t !== undefined && t != null) {
+				ok (true, "type is ok", true);
+			} else {
+				ok(false, "type is not ok", false);
+			}
+			equal("unknown", ds1.settings.type, "unknown");
+		});
+		
+		// page index
+		test("igDataSource properties test: page index property", function () {
+			
+			var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
+			equal(0, ds1.pageIndex(), 0);
+			
+		});
+		
+		// page count
+		test("igDataSource properties test: page count property", function () {
+			
+			var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
+			equal(1, ds1.pageCount(), 1);
+		});	
+
+		// test stringToJSONObject
+		test("Test stringToJSONObject", function () {
+			var obj = ds1.stringToJSONObject('{"p": 5}');
+			ok(obj.p === 5, "Test stringToJSONObject");
+			throws(
+				function () {
+					ds1.stringToJSONObject('{"p": 5');
+				},
+				function (err) {
+					return err.message.indexOf($.ig.DataSourceLocale.locale.errorParsingJsonNoSchema) > -1;
+				},
+				$.ig.DataSourceLocale.locale.errorParsingJsonNoSchema + " should be thrown"
+			);
+		});
 	});
-	
-	
 	</script>
 	
 </head>

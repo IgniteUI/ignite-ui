@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Highlight code in igHtmlEditor</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+    <style type="text/css">
+        #sampleContainer {
+            overflow: visible;
+        }
+        div.ui-igdialog {
+            width: 70% !important;
+        }
+        .comboGroup {
+            float: left;
+        }
+        .buttonGroup > button {
+            float: left;
+            margin: 5px;
+        }
+        .buttonGroup {
+            display: inline-block;
+        }
+        .ui-igbutton-code::before {
+            content: "{;}";
+            top: 30%;
+            font-weight: bold;
+        }
+        div.ui-widget-overlay {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            margin-top: 0px !important;
+        }
+        .ui-igdialog-content > div {
+            position: absolute;
+        }
+        #okCancelButtons {
+            bottom: 10px;
+            height:auto;
+        }
+
+        #dialogTextArea {
+            top:70px;
+            height:auto;
+            bottom: 70px;
+        }
+    </style>
+</head>
+<body><p>This sample demonstrates how the igHtmlEditor can highlight any code benefiting from the Prism.js library. This implementation features a custom toolbar button for inserting a code snippet.</p>
+    <!--igHtmlEditor target element-->
+    <div id="htmlEditor"></div>
+    <!--igDialog target element-->
+    <div id="dialog">
+        <div class="comboGroup" style="margin:5px">
+            <div><span>Language</span></div>
+            <select id="langsList">
+                <option value="language-html">HTML/XML
+                <option value="language-javascript">Javascript
+                <option value="language-css">CSS
+                <option value="language-csharp">C#
+                <option value="language-c">C
+                <option value="language-cpp">C++
+            </select>
+        </div>
+
+        <div id="dialogTextArea" style="margin:5px"></div>
+        <div id="okCancelButtons" class="buttonGroup">
+            <button id="okButton"></button>
+            <button id="cancelButton"></button>
+        </div>
+    </div>
+
+    <script>
+
+        $(function () {
+            var height = $('html').hasClass('touch') ? 500 : 350;
+            $("#htmlEditor").igHtmlEditor({
+                width: "99%",
+                height: height,
+                value: "Use the Insert code snippet button {;} to paste your code.",
+                customToolbars: [
+                    {
+                        name: "CodeSnippets",
+                        collapseButtonIcon: "ui-igbutton-collapse",
+                        expandButtonIcon: "ui-igbutton-expand",
+                        items: [{
+                            //Definition for insert code button
+                            name: "appendCodeSnippet",
+                            type: "button",
+                            handler: openDialog,
+                            scope: this,
+                            props: {
+                                isImage: {
+                                    value: false,
+                                    action: '_isSelectedAction'
+                                },
+                                imageButtonTooltip: {
+                                    value: "Insert Code Snippet",
+                                    action: '_tooltipAction'
+                                },
+                                imageButtonIcon: {
+                                    value: "ui-igbutton-code",
+                                    action: '_buttonIconAction'
+                                }
+                            }
+                        }],
+                    }],
+                rendered: configIFrame
+            });
+
+            $("#dialog").igDialog({
+                state: "closed",
+                modal: true,
+                draggable: true,
+                resizable: false,
+                height: "50%",
+                headerText: "Place code here:",
+                container: $("#htmlEditor_content"),
+                headerText: "Place code here",
+                showCloseButton: false,
+            });
+
+            $("#dialogTextArea").igTextEditor({
+                textMode: "multiline",
+                width: "95%"
+            });
+
+            $("#langsList").igCombo({
+                mode: "dropdown",
+                width: "200px"
+            });
+
+            $("#okButton").igButton({ labelText: "OK" });
+            $("#cancelButton").igButton({ labelText: "Cancel" });
+
+            $('#okButton').on({
+                click: function () {
+                    handleContent();
+                    $("#htmlEditor").igHtmlEditor("contentWindow").highlightCode();
+                    $("#dialog").igDialog("close");
+                }
+            });
+
+            $('#cancelButton').on({
+                click: function () {
+                    $("#dialog").igDialog("close");
+                }
+            });
+        });
+
+        function openDialog(e, args) {
+            var itemToSelect,
+            closestCodeTag = $($("#htmlEditor").igHtmlEditor("range").commonAncestorContainer).closest('code');
+            if (closestCodeTag.length !== 0) {
+                $("#dialogTextArea").igTextEditor("option", "value", closestCodeTag.text());
+                $("#langsList").igCombo("value", closestCodeTag[0].className.trim());
+            }
+            else {
+                $("#dialogTextArea").igTextEditor("option", "value", "");
+            }
+            $("#dialog").igDialog("open");
+        };
+
+        function configIFrame() {
+            // we insert the Prism.js resources in the iFrame that contains the htmlEditor text area
+            var iFrameHead = $("#htmlEditor").igHtmlEditor("contentDocument").head;
+
+            var prismcss = document.createElement('link');
+            prismcss.rel = 'stylesheet';
+            prismcss.href = '../css/prism.css';
+            iFrameHead.appendChild(prismcss);
+
+            var prismjs = document.createElement('script');
+            prismjs.type = 'text/javascript';
+            prismjs.src = '../js/external/prism.js';
+            iFrameHead.appendChild(prismjs);
+
+            var prismUtils = document.createElement('script');
+            prismUtils.type = 'text/javascript';
+            prismUtils.src = '../js/prismUtils.js';
+            iFrameHead.appendChild(prismUtils);
+        }
+
+        function handleContent() {
+            var $currCodeElement,
+                iFrameBody = $("#htmlEditor").igHtmlEditor("contentWindow").document.body,
+                codeElements = $(iFrameBody).find("code"),
+                codeString = $("#dialogTextArea").igTextEditor("option", "value"),
+                divTag = document.createElement("div"),
+                preTag = document.createElement("pre"),
+                lang = $("#langsList").igCombo("value"),
+                codeTag = document.createElement("code");
+
+            // building a <code> element that will contain the code snippet
+            // the recommended way to define a code language is a language-xxxx class, which is what Prism uses
+            codeTag.className = lang;
+            codeTag.setAttribute("data-container-index", codeElements.length);
+            preTag.appendChild(codeTag);
+            divTag.appendChild(preTag);
+            divTag.innerHTML = divTag.innerHTML + "<br />";
+
+            // insert the <code> element into the html editor field
+            var closesCodeTag = $($("#htmlEditor").igHtmlEditor("range").commonAncestorContainer).closest('code');
+            if (closesCodeTag.length !== 0) {
+                closesCodeTag.text(codeString);
+                closesCodeTag[0].className = lang;
+            }
+            else {
+                insertContent(divTag);
+            }
+
+            if (codeElements.length === 0) {
+                $currCodeElement = $(iFrameBody).find("code");
+                $currCodeElement.text(codeString);
+            } else {
+                $currCodeElement = $(iFrameBody).find("code[data-container-index=" + codeElements.length + "]")
+                $currCodeElement.text(codeString);
+            }
+        }
+
+        function insertContent(divTag) {
+            var caretPosition = $("#htmlEditor").igHtmlEditor("range").startOffset;
+            if ($("#htmlEditor").igHtmlEditor("range").commonAncestorContainer.tagName === undefined && caretPosition === 0) {
+                $("#htmlEditor").igHtmlEditor("setContent", divTag, "html");
+            } else {
+                $("#htmlEditor").igHtmlEditor("insertAtCaret", divTag);
+            }
+        }
+    </script>
+</body>
+</html>
