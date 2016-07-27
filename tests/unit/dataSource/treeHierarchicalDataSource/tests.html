@@ -1,0 +1,662 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title> Infragistics jQuery Data Source - Tests for general properties, API methods different than filtering, sorting or paging </title> 
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+	
+	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	
+	<script type="text/javascript"> 
+	var dataBindingFired = false, dataBoundFired = false, ds1, ds2;
+	 $(function () {
+		 var flatDS = [
+                { "employeeID": 0, "PID": -1, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-" },
+                { "employeeID": 1, "PID": -1, "firstName": "Jonathan", "lastName": "Smith", "reportsTo": "-" },
+                { "employeeID": 2, "PID": -1, "firstName": "Nancy", "lastName": "Davolio", "reportsTo": "-" },
+                { "employeeID": 3, "PID": -1, "firstName": "Steven", "lastName": "Buchanan", "reportsTo": "-" },
+                // sub of ID 1
+                { "employeeID": 4, "PID": 0, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0" },
+                { "employeeID": 5, "PID": 0, "firstName": "Laura", "lastName": "Callahan", "reportsTo": "0" },
+                { "employeeID": 6, "PID": 0, "firstName": "Margaret", "lastName": "Peacock", "reportsTo": "0" },
+                { "employeeID": 7, "PID": 0, "firstName": "Michael", "lastName": "Suyama", "reportsTo": "0" },
+                // sub of ID 4
+                { "employeeID": 8, "PID": 4, "firstName": "Anne", "lastName": "Dodsworth", "reportsTo": "4" },
+                { "employeeID": 9, "PID": 4, "firstName": "Danielle", "lastName": "Davis", "reportsTo": "4" },
+                { "employeeID": 10, "PID": 4, "firstName": "Robert", "lastName": "King", "reportsTo": "4" },
+                // sub of ID 2
+                { "employeeID": 11, "PID": 2, "firstName": "Peter", "lastName": "Lewis", "reportsTo": "2" },
+                { "employeeID": 12, "PID": 2, "firstName": "Ryder", "lastName": "Zenaida", "reportsTo": "2" },
+                { "employeeID": 13, "PID": 2, "firstName": "Wang", "lastName": "Mercedes", "reportsTo": "2" },
+                // sub of ID 3
+                { "employeeID": 14, "PID": 3, "firstName": "Theodore", "lastName": "Zia", "reportsTo": "3" },
+                { "employeeID": 15, "PID": 3, "firstName": "Lacota", "lastName": "Mufutau", "reportsTo": "3" },
+                // sub of ID 16
+                { "employeeID": 16, "PID": 15, "firstName": "Jin", "lastName": "Elliott", "reportsTo": "16" },
+                { "employeeID": 17, "PID": 15, "firstName": "Armand", "lastName": "Ross", "reportsTo": "16" },
+                { "employeeID": 18, "PID": 15, "firstName": "Dane", "lastName": "Rodriquez", "reportsTo": "16" },
+                // sub of ID 19
+                { "employeeID": 19, "PID": 18, "firstName": "Declan", "lastName": "Lester", "reportsTo": "19" },
+                { "employeeID": 20, "PID": 18, "firstName": "Bernard", "lastName": "Jarvis", "reportsTo": "19" },
+                // sub of ID 20
+                { "employeeID": 21, "PID": 20, "firstName": "Jeremy", "lastName": "Donaldson", "reportsTo": "20" }
+            ];
+			
+			 var products  = [
+            { "ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [
+                {"ID": 15, "Name": "Sandwich", "Price": "-", "Products": [
+                    { "ID": 16, "Name": "Club sandwich", "Price": "3.5" }
+                ] }
+            ]},
+            { "ID": 17, "Name": "Accessories", "Price": "-", "Category": { "ID": 1, "Name": "Name1", "isActive": false } },
+            {
+                "ID": 19, "Name": "Toys", "Price": "-", "Category": { "ID": 2, "Name": "Name2", "isActive": false }, "Products": [
+                    { "ID": 20, "Name": "Action Figures", "Price": "3.5" }
+                ]
+            }
+       ];
+		function loadTestbeds() {
+			// define a treehierarchical data source control
+			ds1 = new $.ig.TreeHierarchicalDataSource({
+                dataSource: flatDS,   
+				primaryKey: "employeeID",
+					treeDS: {
+                     key: "employeeID",
+                     foreignKey: "PID",
+					 primaryKey: "employeeID",
+					 initialExpandDepth: 3,
+					 foreignKeyRootValue: -1,
+					 childDataKey: "childData",
+					 propertyDataLevel: "dataLevel",
+					 propertyExpanded: "expanded"
+                }
+            });
+			ds1.dataBind();
+			
+			ds2 = new $.ig.TreeHierarchicalDataSource({
+				dataSource: products,
+				primaryKey: "ID",
+                treeDS: {
+                	primaryKey: "ID",
+                	key: "ID",
+                    childDataKey: "Products",
+                    initialExpandDepth: 3,
+                	propertyDataLevel: "dataLevel",
+                	propertyExpanded: "expanded"
+                }
+            });
+			ds2.dataBind();
+
+			dsHierarchicalWithInitialFlatDataView = new $.ig.TreeHierarchicalDataSource({
+				dataSource: products,
+				primaryKey: "ID",
+				treeDS: {
+					initialFlatDataView:true,
+					primaryKey: "ID",
+					key: "ID",
+					childDataKey: "Products",
+					initialExpandDepth: 3,
+					propertyDataLevel: "dataLevel",
+					propertyExpanded: "expanded"
+				}
+			});
+			dsHierarchicalWithInitialFlatDataView.dataBind();
+
+			dsPaging = new $.ig.TreeHierarchicalDataSource({
+				dataSource: flatDS,
+				primaryKey: "employeeID",
+				treeDS: {
+					key: "employeeID",
+					foreignKey: "PID",
+					primaryKey: "employeeID",
+					initialExpandDepth: 3,
+					foreignKeyRootValue: -1,
+					childDataKey: "childData",
+					propertyDataLevel: "dataLevel",
+					propertyExpanded: "expanded",
+					paging: { mode: "allLevels"}
+				},
+				paging: {
+					enabled: true,
+					pageSize: 3,
+					type: "local"
+				}
+			
+			});
+			dsPaging.dataBind();
+
+		
+			dsRemoteFiltering = new $.ig.TreeHierarchicalDataSource({
+				dataSource: "myemployeeData",
+				primaryKey: "employeeID",
+				//type: "json",
+				schema: {
+					fields: [
+						{	name: "employeeID",	type: "number"	},
+						{ name: "PID", type: "number" },
+						{ name: "firstName", type: "string" },
+						{ name: "lastName", type: "string" },
+						{ name: "reportsTo", type: "string" }
+					],
+					searchField: "data.results"
+				},
+				treeDS: {
+					key: "employeeID",
+					foreignKey: "PID",
+					primaryKey: "employeeID",
+					initialExpandDepth: 3,
+					foreignKeyRootValue: -1,
+					childDataKey: "childData",
+					propertyDataLevel: "dataLevel",
+					propertyExpanded: "expanded",
+					filtering: { type: "remote", expressions: [{ fieldName: "firstName", expr: "Laura", cond: "equals" }] }
+				},
+				filtering: {
+					type: "remote", expressions: [{ fieldName: "firstName", expr: "Laura", cond: "equals" }]
+				}
+			});
+			
+			dsLocalFiltering = new $.ig.TreeHierarchicalDataSource({
+				dataSource: flatDS,
+				primaryKey: "employeeID",
+				//type: "json",
+				schema: {
+					fields: [
+						{ name: "employeeID", type: "number" },
+						{ name: "PID", type: "number" },
+						{ name: "firstName", type: "string" },
+						{ name: "lastName", type: "string" },
+						{ name: "reportsTo", type: "string" }
+					],
+					searchField: "data.results"
+				},
+				treeDS: {
+					key: "employeeID",
+					foreignKey: "PID",
+					primaryKey: "employeeID",
+					initialExpandDepth: 3,
+					foreignKeyRootValue: -1,
+					childDataKey: "childData",
+					propertyDataLevel: "dataLevel",
+					propertyExpanded: "expanded",
+					filtering: { type: "local"}
+				},
+				filtering: {
+					type: "local"
+				}
+			});
+			dsLocalFiltering.dataBind();
+
+		}
+		
+		initialized = false;
+		module("igTreeHierarchicalDataSource API methods", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 500);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+			
+		test("Test getParentRowsForRow API method" ,function(){
+			var result = ds2.getParentRowsForRow({ "ID": 16, "Name": "Club sandwich", "Price": "3.5" },products );
+
+			ds1._dataBoundDepth = null;
+			var result2 = ds1.getParentRowsForRow({ "employeeID": 21, "PID": 20, "firstName": "Jeremy", "lastName": "Donaldson", "reportsTo": "20" });
+
+			var expectedResultIDs = [0 ,15, 16];
+			for (var i = 0; i < result.length; i++) {
+				equal(result[i].row.ID, expectedResultIDs[i], "getParentRowsForRow should return correct list");
+			}
+			
+			var expectedResultIDs = [3, 15, 18, 20, 21];
+			for (var i = 0; i < result2.length; i++) {
+				equal(result2[i].row.employeeID, expectedResultIDs[i], "getParentRowsForRow should return correct list");
+			}
+		});
+
+		test("Test getDataBoundDepth API method", function () {
+				var result1 = ds1.getDataBoundDepth();
+				var result2= ds2.getDataBoundDepth();
+
+				equal(result1, 4, "DataBound depth should be 4. ");
+				equal(result2, 2, "DataBound depth should be 2. ");
+			
+
+		});
+
+		test("Test getFlatDataForRecord API method", function () {
+			//test with wrong param
+			var result1 = ds1.getFlatDataForRecord(null);
+
+			equal(result1, undefined, "If null is passed no result should be returned.");
+			//test with correct 
+			var result2 = ds2.getFlatDataForRecord(products[0]);
+
+			equal(result2.recordsCount, 2, "There should be two records in the flat view.");
+
+			equal(result2.flatData[0].ID, 15, "First record should have ID = 15");
+			equal(result2.flatData[1].ID, 16, "First record should have ID = 16");
+		});
+
+		test("Test getFlatDataForRecord API method", function () {
+
+			ds2._flatData = null;
+			var result = ds2.getFlatData();
+			equal(result.length, 6, "DataSource should contain 6 records when flattened.");
+			var expectedRecIds= [0, 15, 16, 17, 19, 20];
+
+			for (var i = 0; i < result.length; i++) {
+				equal(result[i].ID, expectedRecIds[i], "All data records should be inside the flattened data object.");
+			}
+		});
+
+		test("Test getFlatDataCount API method", function () {
+			equal(ds2.getFlatDataCount(), 6, "DataSource should contain 6 records when flattened.");
+		});
+
+		test("Test setExpandedStateByRowIndex API method", function () {
+			ds2.setExpandedStateByRowIndex(0, false);
+			ok(!ds2.getFlatData()[0].expanded, "First record should be collapsed.");
+		});
+
+		test("Test setExpandedStateByPrimaryKey API method", function () {
+			ok(ds2.findRecordByKey(19).expanded, "First record should be expanded initially.");
+			ds2.setExpandedStateByPrimaryKey(19, false);
+			ok(!ds2.findRecordByKey(19).expanded, "First record should be collapsed.");
+		});
+
+		test("Test getExpandStateById API method", function () {
+			ok(!ds2.getExpandStateById(19), "getExpandStateById should return false since the record is collapsed.");
+		});
+
+		test("Test toggleRow API method", function () {
+			ok(ds1.findRecordByKey(0).expanded, "Initially first record should be expanded.");
+			ds1.toggleRow(0);
+			ok(!ds1.getFlatData()[0].expanded, "After toggleRow is called the first record should be collapsed.");
+
+		});
+
+		test("Test totalLocalRecordsCount API method", function () {
+			equal(dsPaging.totalLocalRecordsCount(), 22, "Total record count should be 22");
+		});
+
+		test("Test getPathBy API method", function () {
+			equal(ds1.getPathBy(null),null, "If no valid is passed null should be returned.");
+		
+			equal(ds1.getPathBy(21), "3/15/18/20/21","The path to the passed PK should be returned.");
+			equal(ds1.getPathBy({ "employeeID": 21, "PID": 20, "firstName": "Jeremy", "lastName": "Donaldson", "reportsTo": "20" }), "3/15/18/20/21", "The path to the passed record should be returned.");
+		});
+
+		test("Test removeRecordByKey API method", function () {
+			ds1.removeRecordByKey(20);
+
+			var rec = ds1.findRecordByKey(20);
+			var childRec = ds1.findRecordByKey(21);
+			equal(rec, null, "Once the record is deleted it should not exist in the data source");
+			equal(childRec, null, "Its chilren records should also be removed.");
+		});
+
+		test("Test deleteRow API method", function () {
+			ds2.deleteRow(15);
+
+			var rec = ds2.findRecordByKey(15, true);
+			var childRec = ds2.findRecordByKey(16, true);
+			equal(rec, null, "Once the record is deleted it should not exist in the data source");
+			equal(childRec, null, "Its chilren records should also be removed.");
+		});
+
+		test("Test getChildrenByKey API method", function () {
+			var childRecs = ds1.getChildrenByKey(0);
+			var expectedRecIds = [4, 5, 6, 7];
+			for (var i = 0; i < childRecs.length; i++) {
+				equal(childRecs[i].employeeID, expectedRecIds[i], "getChildrenByKey should return the immediate children of the record.");
+			}
+		});
+
+		test("Test insertRow API method", function () { 
+		
+			//insert parent row
+			ds1.insertRow(100,   { "employeeID": 100, "PID": -1, "firstName": "Test", "lastName": "Test", "reportsTo": "-" }, 0, true );
+
+			//insert child row
+			ds1.insertRow(101, { "employeeID": 101, "PID": 100, "firstName": "Test", "lastName": "Test", "reportsTo": "-" }, 0, true, 100);
+
+			//check if rows are properly inserted.
+
+			equal(ds1.dataView()[0].employeeID, 100, "Record with id 100 should be added at index 0 in the root level.");
+			equal(ds1.dataView()[0].childData.length, 1, "Record with id 100 should have a single child data record.");
+			equal(ds1.dataView()[0].childData[0].employeeID, 101, "Record with id 100 should have a single child data record with a id 101.");
+
+		});
+
+		test("Test getFilteringMatchRecordsCount API method", function () {
+			var data = dsRemoteFiltering._filterDataRecursive(dsRemoteFiltering.dataView(), 0, [{ fieldName: "firstName", expr: "Laura", cond: "equals" }]);
+			$.mockjax({
+				url: 'myemployeeData',
+				responseText: {
+					status: 'success',
+					data: {
+						results: flatDS
+					},
+					Metadata: { "filtering.countRecords": 1 }
+				}
+			});
+			
+			dsRemoteFiltering.dataBind();
+			stop();
+			setTimeout(function () {
+				start();
+				var res = dsRemoteFiltering.getFilteringMatchRecordsCount();
+				equal(res,1, "There should be one record matching the filter condition.");
+			}, 1200);
+		});
+
+		test("Test getFilteredRecordsCountFromDataView API method", function () {
+
+			dsLocalFiltering.filter([{ fieldName: "firstName", expr: "Laura", cond: "equals" }]);
+
+			var res = dsLocalFiltering.getFilteredRecordsCountFromDataView();
+			equal(res, 1, "There should be one record matching the filter condition.");
+		});
+
+		test("Test clearLocalFilter API method", function () {
+			dsLocalFiltering.clearLocalFilter();
+			equal(dsLocalFiltering.flatDataView().length, 22, "After filtering is cleared the data view should contain all records.");
+		});
+
+		test("Test clearMatchFiltering API method", function () {
+			dsLocalFiltering.filter([{ fieldName: "firstName", expr: "Laura", cond: "equals" }]);
+			ok(dsLocalFiltering.flatDataView()[1].__matchFiltering, "After filtering the record matching the filter condition should have __matchFiltering field with value of true.");
+
+			dsLocalFiltering.clearMatchFiltering();
+			ok(dsLocalFiltering.flatDataView()[1].__matchFiltering === undefined, "After clearMatchFiltering is called the record should not have a __matchFiltering field.");
+		});
+
+		test("Test generateFlatDataView API method when initialFlatDataView option is true", function () {
+			dsHierarchicalWithInitialFlatDataView.generateFlatDataView();
+			var res = dsHierarchicalWithInitialFlatDataView.flatDataView();
+			equal(res.length, 3, "Data should not be flattened if the initialFlatDataView option is explicitly set to true.");
+		});
+
+		test("Test getVisibleFlatData API method", function () {
+			var res = dsPaging.getVisibleFlatData();
+			equal(res.length, 22, "All of the records are expanded so the getVisibleFlatData method should return all records.");
+		});
+		var dsRemotePaging, dsRemoteSorting, dsRemoteFiltering;
+		function loadRemoteTestbeds() {
+
+
+			$.mockjax({
+				url: 'employeeRemoteData',
+				responseText: {
+					status: 'success',
+					data: {
+						results: flatDS.slice(0,3)
+					},
+					totalRecCount: 22
+				}
+			});
+
+			$.mockjax({
+				url: 'hierarchicalData',
+				responseText: {
+					status: 'success',
+					data: {
+						results: [{ "ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": []}]
+					},
+					totalRecCount: 6
+				}
+			});
+
+
+			dsRemote = new $.ig.TreeHierarchicalDataSource({
+				dataSource: "employeeRemoteData",
+				primaryKey: "employeeID",
+				responseTotalRecCountKey: "totalRecCount",
+				reponseDataKey: "data.results",
+				schema: {
+					fields: [
+						{ name: "employeeID", type: "number" },
+						{ name: "PID", type: "number" },
+						{ name: "firstName", type: "string" },
+						{ name: "lastName", type: "string" },
+						{ name: "reportsTo", type: "string" }
+					],
+					searchField: "data.results"
+				},
+				treeDS: {
+					key: "employeeID",
+					persistExpansionStates: true,
+					foreignKey: "PID",
+					primaryKey: "employeeID",
+					initialExpandDepth: 0,
+					foreignKeyRootValue: -1,
+					childDataKey: "childData",
+					propertyDataLevel: "dataLevel",
+					propertyExpanded: "expanded"
+				}
+			});
+			dsRemote.dataBind();
+
+			dsRemoteLoadOnDemand = new $.ig.TreeHierarchicalDataSource({
+				dataSource: "hierarchicalData",
+				dataSourceUrl: "hierarchicalData",
+				primaryKey: "ID",
+				responseTotalRecCountKey: "totalRecCount",
+				reponseDataKey: "data.results",
+				schema: {
+					fields: [
+						{ name: "ID", type: "number" },
+						{ name: "Name", type: "string" }
+					],
+					searchField: "data.results"
+				},
+				treeDS: {
+					dataSourceUrl: "hierarchicalData",
+					key: "ID",
+					primaryKey: "ID",
+					initialExpandDepth: 0,
+					foreignKeyRootValue: -1,
+					childDataKey: "Products",
+					propertyDataLevel: "dataLevel",
+					propertyExpanded: "expanded",
+					enableRemoteLoadOnDemand: true
+				}
+			});
+			dsRemoteLoadOnDemand.dataBind();
+
+			//remote paging
+			dsRemotePaging = new $.ig.TreeHierarchicalDataSource({
+				dataSource: "employeeRemoteData",
+				primaryKey: "employeeID",
+				responseTotalRecCountKey: "totalRecCount",
+				reponseDataKey: "data.results",
+				schema: {
+					fields: [
+						{ name: "employeeID", type: "number" },
+						{ name: "PID", type: "number" },
+						{ name: "firstName", type: "string" },
+						{ name: "lastName", type: "string" },
+						{ name: "reportsTo", type: "string" }
+					],
+					searchField: "data.results"
+				},
+				treeDS: {
+					key: "employeeID",
+					foreignKey: "PID",
+					primaryKey: "employeeID",
+					initialExpandDepth: 3,
+					foreignKeyRootValue: -1,
+					childDataKey: "childData",
+					propertyDataLevel: "dataLevel",
+					propertyExpanded: "expanded",
+					paging: { mode: "allLevels" }
+				},
+				paging: {
+					enabled: true,
+					pageSize: 3,
+					type: "remote"
+				}
+
+			});
+			dsRemotePaging.dataBind();
+
+
+			//remote sorting
+			dsRemoteSorting = new $.ig.TreeHierarchicalDataSource({
+				dataSource: "employeeRemoteData",
+				primaryKey: "employeeID",
+				responseTotalRecCountKey: "totalRecCount",
+				reponseDataKey: "data.results",
+				schema: {
+					fields: [
+						{ name: "employeeID", type: "number" },
+						{ name: "PID", type: "number" },
+						{ name: "firstName", type: "string" },
+						{ name: "lastName", type: "string" },
+						{ name: "reportsTo", type: "string" }
+					],
+					searchField: "data.results"
+				},
+				treeDS: {
+					key: "employeeID",
+					foreignKey: "PID",
+					primaryKey: "employeeID",
+					initialExpandDepth: 3,
+					foreignKeyRootValue: -1,
+					childDataKey: "childData",
+					propertyDataLevel: "dataLevel",
+					propertyExpanded: "expanded"
+				},
+				sorting: {
+					enabled: true,
+					type: "remote",
+					defaultFields: [{ fieldName: "employeeID", dir: "asc" }]
+				}
+
+			});
+			dsRemoteSorting.dataBind();
+
+			dsRemoteFiltering = new $.ig.TreeHierarchicalDataSource({
+				dataSource: "employeeRemoteData",
+				primaryKey: "employeeID",
+				responseTotalRecCountKey: "totalRecCount",
+				reponseDataKey: "data.results",
+				schema: {
+					fields: [
+						{ name: "employeeID", type: "number" },
+						{ name: "PID", type: "number" },
+						{ name: "firstName", type: "string" },
+						{ name: "lastName", type: "string" },
+						{ name: "reportsTo", type: "string" }
+					],
+					searchField: "data.results"
+				},
+				treeDS: {
+					key: "employeeID",
+					foreignKey: "PID",
+					primaryKey: "employeeID",
+					initialExpandDepth: 3,
+					foreignKeyRootValue: -1,
+					childDataKey: "childData",
+					propertyDataLevel: "dataLevel",
+					propertyExpanded: "expanded"
+				},
+				filtering: {
+					enabled: true,
+					type: "remote",
+					defaultFields: [{ fieldName: "firstName", expr: "Laura", cond: "equals" }]
+				}
+
+			});
+			dsRemoteFiltering.dataBind();
+
+
+		}
+
+		var isInit = false;
+		module("igTreeHierarchicalDataSource Remote scenarios", {
+			setup: function () {
+				//pause testing until tree is initialized
+				if (!isInit) {
+					stop();
+					loadRemoteTestbeds();
+					setTimeout(function () { start(); }, 500);
+					isInit = true;
+				}
+			},
+			teardown: function () {
+			}
+		});
+
+		test("Test Remote Paging params", function () {
+			var params = $.param(dsRemotePaging._encodeUrl());
+			equal(params, "%24skip=0&%24top=3&%24inlinecount=allpages&paging.mode=allLevels&paging.contextRowMode=none&pk=employeeID&fk=PID&fkRootValue=-1&propertyDataLevel=dataLevel&propertyExpanded=expanded&childDataKey=childData&initialExpandDepth=3", 
+				"Verify sent parameters are correct.");
+		});
+
+		test("Test Remote Sorting params", function () {
+			var params = $.param(dsRemoteSorting._encodeUrl());
+			equal(params, "sorting.fromLevel=0&sorting.toLevel=-1&pk=employeeID&fk=PID&fkRootValue=-1&propertyDataLevel=dataLevel&propertyExpanded=expanded&childDataKey=childData&initialExpandDepth=3",
+				"Verify sent parameters are correct.");
+		});
+
+		test("Test Remote Filtering params", function () {
+			var params = $.param(dsRemoteFiltering._encodeUrl());
+			equal(params, "filtering.fromLevel=0&filtering.toLevel=-1&__matchFiltering=__matchFiltering&filtering.displayMode=showWithAncestors&pk=employeeID&fk=PID&fkRootValue=-1&propertyDataLevel=dataLevel&propertyExpanded=expanded&childDataKey=childData&initialExpandDepth=3",
+				"Verify sent parameters are correct.");
+		});
+
+		test("Test Remote Expand/Collapse params", function () {
+			dsRemote.toggleRow(0);
+			var params = $.param(dsRemote._encodeUrl());
+			equal(params, "pk=employeeID&listExpansionStates%5B0%5D=false&fk=PID&fkRootValue=-1&propertyDataLevel=dataLevel&propertyExpanded=expanded&childDataKey=childData&initialExpandDepth=0",
+				"Verify sent parameters are correct.");
+		});
+
+		test("Test Load on demand", function () {
+			$.mockjax({
+				url: "customLoadOnDemand?path=0&depth=0",
+				responseText: {
+					status: 'success',
+					data: {
+						results: [{ "ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }]
+					},
+					totalRecCount: 6
+				}, onAfterSuccess: function () {
+					start();
+					ok(true, "Path and Depth are correct.");
+				}
+			});
+			stop();
+			dsRemoteLoadOnDemand.settings.treeDS.dataSourceUrl = "customLoadOnDemand";
+			dsRemoteLoadOnDemand.toggleRow(0);
+		});
+	});
+
+
+	</script>
+	
+</head>
+<body>
+<div id="div1"></div>
+<div style="float:right;width:400px;overflow:auto"">
+    <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+
+</body>
+</html>
