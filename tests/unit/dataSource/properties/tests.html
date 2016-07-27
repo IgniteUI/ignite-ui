@@ -5,6 +5,7 @@
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
@@ -107,6 +108,21 @@
 				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
 				equal(1, ds1.pageCount(), 1);
 				
+			});
+
+			// test stringToJSONObject
+			test("Test stringToJSONObject", function () {
+				var obj = ds1.stringToJSONObject('{"p": 5}');
+				ok(obj.p === 5, "Test stringToJSONObject");
+				throws(
+					function () {
+						ds1.stringToJSONObject('{"p": 5');
+					},
+					function (err) {
+						return err.message.indexOf($.ig.DataSourceLocale.locale.errorParsingJsonNoSchema) > -1;
+					},
+					$.ig.DataSourceLocale.locale.errorParsingJsonNoSchema + " should be thrown"
+				);
 			});
 		}
 	});

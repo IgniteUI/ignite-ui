@@ -3068,7 +3068,7 @@
 			paramType="bool" if keepFilterState is set to true, it will not discard previous filtering expressions
 			*/
 			var i, j, expr = null, count = 0, skipRec = false, data, t, k, schema,
-				fields, tmpbool, resetPaging, allFieldsExpr, stringVal,
+				fields, field, tmpbool, resetPaging, allFieldsExpr, stringVal,
 				f = this.settings.filtering, p = this.settings.paging, s = this.settings.sorting;
 			this._clearGroupByData();
 			schema = this.schema();
@@ -3131,15 +3131,16 @@
 						/* if there is no match, break, we aren't going to add the record to the resulting data view.
 						the default boolean logic is to "AND" the fields */
 						fields = schema.fields();
-						if (fieldExpressions[ j ].fieldIndex) {
-							if (fieldExpressions[ j ].fieldIndex < fields.length) {
-								t = fields[ fieldExpressions[ j ].fieldIndex ].type;
-							}
-							skipRec = !this._findMatch(data[ i ][ fieldExpressions[ j ].fieldIndex ],
-														fieldExpressions[ j ].expr,
-														t, !f.caseSensitive, fieldExpressions[ j ].cond,
-														fieldExpressions[ j ].preciseDateFormat,
-														fieldExpressions[ j ].fieldName, data[ i ]);
+						if (fieldExpressions[ j ].fieldIndex !== undefined  &&
+							fieldExpressions[j].fieldIndex < fields.length) {
+							field = fields[fieldExpressions[j].fieldIndex];
+							t = field.type;
+							skipRec = !this._findMatch(data[i][field.name],
+														fieldExpressions[j].expr,
+														t, !f.caseSensitive, fieldExpressions[j].cond,
+														fieldExpressions[j].preciseDateFormat,
+														field.name, data[i]);
+							
 						} else {
 							/* M.H. 10 Sep 2012 Fix for bug #120759 */
 							if (fieldExpressions[ j ].dataType !== undefined &&
@@ -7563,7 +7564,7 @@
 						// if there is no match, break, we aren't going to add the record to the resulting data view.
 						// the default boolean logic is to "AND" the fields
 						fields = schema.fields();
-						if (fieldExpressions[ j ].fieldIndex) {
+						if (fieldExpressions[ j ].fieldIndex !== undefined) {
 							if (fieldExpressions[ j ].fieldIndex < fields.length) {
 								t = this._getFieldTypeFromSchema(fields[ fieldExpressions[ j ].fieldIndex ].name);
 							}
