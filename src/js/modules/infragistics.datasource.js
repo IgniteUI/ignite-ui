@@ -3136,14 +3136,14 @@
 						the default boolean logic is to "AND" the fields */
 						fields = schema.fields();
 						if (fieldExpressions[ j ].fieldIndex !== undefined  &&
-							fieldExpressions[j].fieldIndex < fields.length) {
-							field = fields[fieldExpressions[j].fieldIndex];
+							fieldExpressions[ j ].fieldIndex < fields.length) {
+							field = fields[fieldExpressions[ j ].fieldIndex];
 							t = field.type;
-							skipRec = !this._findMatch(data[i][field.name],
-														fieldExpressions[j].expr,
-														t, !f.caseSensitive, fieldExpressions[j].cond,
-														fieldExpressions[j].preciseDateFormat,
-														field.name, data[i]);
+							skipRec = !this._findMatch(data[ i ][ field.name ],
+														fieldExpressions[ j ].expr,
+														t, !f.caseSensitive, fieldExpressions[ j ].cond,
+														fieldExpressions[ j ].preciseDateFormat,
+														field.name, data[ i ]);
 							
 						} else {
 							/* M.H. 10 Sep 2012 Fix for bug #120759 */
