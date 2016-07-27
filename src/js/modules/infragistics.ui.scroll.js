@@ -558,14 +558,21 @@
 
 		_refreshScrollbarsDrag: function () {
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
+				this._vBarContainer.css("height", (this._elemHeight - 15) + "px");
 				this._vDragHeight = this._elemHeight * ((this._elemHeight - 2 * 15) / this._contentHeight);
 				this._vBarDrag.css("height", this._vDragHeight + "px");
 				this._vBarTrack.css("height", this._elemHeight - (3 * 15) + "px");
+			} else if (this.options.scrollbarType === "native" && this._vBarContainer) {
+				this._vBarContainer.css("height", (this._elemHeight - 15) + "px");
 			}
+
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
+				this._hBarContainer.css("width", (this._elemWidth - 15) + "px");
 				this._hDragWidth = this._elemWidth * this._percentInViewH - 3 * 15;
 				this._hBarDrag.css("width", this._hDragWidth + "px");
 				this._hBarTrack.css("width", this._elemWidth - (3 * 15) + "px");
+			} else if (this.options.scrollbarType === "native" && this._hBarContainer) {
+				this._hBarContainer.css("width", (this._elemWidth - 15) + "px");
 			}
 		},
 
