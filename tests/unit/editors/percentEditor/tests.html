@@ -71,7 +71,8 @@
 						buttonType:"spin",
 						spinWrapAround: true,
 						maxValue: 3,
-						minValue:-1
+						minValue: 0,
+						displayFactor : 1
 					});
 
 					$("#pEditor11").igPercentEditor({
@@ -278,25 +279,29 @@
 
 
 			var testId = 'Percent Spin up.';
-			test(testId, 2, function () {
+			test(testId, 6, function () {
 				$("#pEditor10").focus();
 				$("#pEditor10").igPercentEditor("spinUp");
 				$("#pEditor10").blur();
-				equal($('#pEditor10').igPercentEditor("displayValue"), "1.00%", "Display value after spin up is not correct");
+				equal($('#pEditor10').igPercentEditor("displayValue"), "0.01%", "Display value after spin up is not correct");
 
 				$("#pEditor10").igPercentEditor("spinDown");
 				equal($('#pEditor10').igPercentEditor("displayValue"), "0.00%", "Display value after spin up is not correct");
 
-			
-				$("#pEditor10").igPercentEditor("option", "value",300);
-				// throws(function () {
-				// 	$("#pEditor10").igPercentEditor("spinUp");
-				// }, "Entry exceeded the maximum value of 3 and was set to the maximum allowed one");
-				
-				// throws(function () {
-				// 	$("#pEditor10").igPercentEditor("spinUp", 3);
-				// }, "Entry exceeded the maximum value of 3 and was set to the maximum allowed one");
+				$("#pEditor10").igPercentEditor("value", 3);
+				$("#pEditor10").igPercentEditor("spinUp", 3);				
+				equal($('#pEditor10').igPercentEditor("displayValue"), "0.00%", "spinWrapAround does not return minValue");
 
+				$("#pEditor10").igPercentEditor("spinUp", 3);				
+				equal($('#pEditor10').igPercentEditor("displayValue"), "3.00%", "SpinUp method does not take into account delta parameter.");
+
+				$("#pEditor10").igPercentEditor("spinDown", 3);				
+				equal($('#pEditor10').igPercentEditor("displayValue"), "0.00%", "SpinDown method does not take into account delta parameter.");
+
+				$("#pEditor10").igPercentEditor("spinDown", 3);				
+				equal($('#pEditor10').igPercentEditor("displayValue"), "3.00%", "spinWrapAround does not return maxValue");
+
+			
 			});
 
 			var testId = 'Percent insert.';
@@ -305,8 +310,6 @@
 				$("#pEditor11").igPercentEditor( "insert", "1" );	
 				
 				equal($("#pEditor11").parent().parent().hasClass("ui-ignotify-warn"), true, "The notifier didn't show a warning.");
-
-
 			});
 		});
 	</script>
