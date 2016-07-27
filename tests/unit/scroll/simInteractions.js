@@ -8,19 +8,19 @@
 			evtMouseUp = $.Event("mouseup")
 			evtClick = $.Event("click");
 		
-		evtMouseOver.target = node[0];
-		evtMouseDown.target = node[0];
-		evtMouseUp.target = node[0];
-		evtClick.target = node[0];
+		evtMouseOver.target = node[ 0 ];
+		evtMouseDown.target = node[ 0 ];
+		evtMouseUp.target = node[ 0 ];
+		evtClick.target = node[ 0 ];
 		
-		for( var key in options ) {
-			if(!options.hasOwnProperty(key)) continue;
+		for(var key in options) {
+			if (!options.hasOwnProperty(key)) continue;
 			
 			var item = options[key];
-			evtMouseOver[key] = item;
-			evtMouseDown[key] = item;
-			evtMouseUp[key] = item;
-			evtClick[key] = item;	
+			evtMouseOver[ key ] = item;
+			evtMouseDown[ key ] = item;
+			evtMouseUp[ key ] = item;
+			evtClick[ key ] = item;	
 		}
 
 		node.trigger(evtMouseOver);
@@ -35,19 +35,19 @@
 			evtMouseUp = $.Event("mouseup")
 			evtClick = $.Event("click");
 		
-		evtMouseOver.target = node[0];
-		evtMouseDown.target = node[0];
-		evtMouseUp.target = node[0];
-		evtClick.target = node[0];
+		evtMouseOver.target = node[ 0 ];
+		evtMouseDown.target = node[ 0 ];
+		evtMouseUp.target = node[ 0 ];
+		evtClick.target = node[ 0 ];
 		
-		for( var key in options ) {
+		for (var key in options) {
 			if(!options.hasOwnProperty(key)) continue;
 			
 			var item = options[key];
-			evtMouseOver[key] = item;
-			evtMouseDown[key] = item;
-			evtMouseUp[key] = item;
-			evtClick[key] = item;	
+			evtMouseOver[ key ] = item;
+			evtMouseDown[ key ] = item;
+			evtMouseUp[ key ] = item;
+			evtClick[ key ] = item;	
 		}
 		
 		node.trigger(evtMouseOver);
@@ -71,10 +71,10 @@
 			animationID = 0;
 		
 
-		evtMouseOver.target = node[0];		
-		evtMouseMove.target = node[0];
-		evtMouseDown.target = node[0];
-		evtMouseUp.target = node[0];	
+		evtMouseOver.target = node[ 0 ];		
+		evtMouseMove.target = node[ 0 ];
+		evtMouseDown.target = node[ 0 ];
+		evtMouseUp.target = node[ 0 ];	
 
 		evtMouseDown.pageX = nodeCenter.x;
 		evtMouseDown.pageY = nodeCenter.y;
@@ -82,7 +82,7 @@
 		node.trigger(evtMouseOver);
 		node.trigger(evtMouseDown);
 		
-		if(offsetX > offsetY) {
+		if (offsetX > offsetY) {
 			stepTime = timeDrag / offsetX;
 		} else {
 			stepTime = timeDrag / offsetY;
@@ -101,7 +101,7 @@
 			evtMouseMove.pageY = curOffsetY;
 			node.trigger(evtMouseMove);
 			
-			if(curOffsetX < offsetX + 1 || curOffsetY < offsetY + 1) {
+			if (curOffsetX < offsetX + 1 || curOffsetY < offsetY + 1) {
 				animationID = requestAnimationFrame(moveStep);
 			} else {
 				cancelAnimationFrame(animationID);
@@ -113,14 +113,109 @@
 		animationID = requestAnimationFrame(moveStep);
 	};
 	
+	/* 	Simulates touch tap
+	*	
+	*	node - element on which that the tap is being initiated
+	*	offsetX - the offset of the center of the element that the tap will be positioned
+	*	offsetY - the offset of the center of the element that the tap will be positioned
+	*/
+	$.ig.TestUtil.simulateTouchTap = function (node, offsetX, offsetY) {
+		var evtTouchStart = $.Event("touchstart"),			
+			evtTouchEnd = $.Event("touchend"),
+			nodeCenterPos = getCenter(node),
+			curStep = 0,
+			animationID = 0,
+			touchObject = {
+				clientX: nodeCenterPos.x + offsetX,
+				clientY: nodeCenterPos.y + offsetY,
+				force: 1,
+				identifier: 0,
+				pageX: nodeCenterPos.x + offsetX,
+				pageY: nodeCenterPos.y + offsetY,
+				radiusX: 11.5,
+				radiusY: 11.5,
+				rotationAngle: 0,
+				screenX: nodeCenterPos.x + offsetX,
+				screenY: nodeCenterPos.y + offsetY,
+				target: node
+			};
+
+		evtTouchStart.originalEvent = {};
+		evtTouchStart.originalEvent.touches = [];
+		evtTouchStart.originalEvent.touches[ 0 ] = touchObject;
+		evtTouchStart.target = node[ 0 ];		
+		evtTouchEnd.target = node[ 0 ];	
+
+		node.trigger(evtTouchStart);
+		node.trigger(evtTouchEnd);
+	};
+	
+	/* 	Simulates touch swipe 
+	*	
+	*	node - element on which that the swipe is being initiated
+	*	stepsMove - array that describes how much moves with each step of the swipe. Structure: [{x: number, y: number}, ...]
+	*	timePerStep - number that specifies how much delay there is between steps
+	*/
+	$.ig.TestUtil.simulateTouchSwipeFromCenter = function (node, stepsMove, timePerStep) {
+		var evtTouchStart = $.Event("touchstart"),
+			evtTouchMove = $.Event("touchmove"),			
+			evtTouchEnd = $.Event("touchend"),
+			nodeCenterPos = getCenter(node),
+			curStep = 0,
+			animationID = 0,
+			touchObject = {
+				clientX: nodeCenterPos.x,
+				clientY: nodeCenterPos.y,
+				force: 1,
+				identifier: 0,
+				pageX: nodeCenterPos.x,
+				pageY: nodeCenterPos.y,
+				radiusX: 11.5,
+				radiusY: 11.5,
+				rotationAngle: 0,
+				screenX: nodeCenterPos.x,
+				screenY: nodeCenterPos.y,
+				target: node
+			};
+
+		evtTouchStart.originalEvent = {};
+		evtTouchStart.originalEvent.touches = [];
+		evtTouchStart.target = node[ 0 ];	
+		evtTouchMove.originalEvent = {};
+		evtTouchMove.originalEvent.touches = [];		
+		evtTouchMove.preventDefault  = function () {};		
+		evtTouchMove.stopPropagation   = function () {};		
+		evtTouchEnd.target = node[ 0 ];	
+		
+		function moveStep () {	
+			touchObject.clientX -= stepsMove[ curStep ].x;
+			touchObject.clientY -= stepsMove[ curStep ].y;
+			touchObject.pageX -= stepsMove[ curStep ].x;
+			touchObject.pageY -= stepsMove[ curStep ].y;		
+			evtTouchMove.originalEvent.touches[ 0 ] = touchObject;
+			
+			node.trigger(evtTouchMove);
+			if (curStep < stepsMove.length - 1) {
+				curStep++;
+				animationID = setTimeout(moveStep, timePerStep);
+			} else {
+				node.trigger(evtTouchEnd);
+				clearTimeout(animationID);
+				return;
+			}
+		};
+
+		evtTouchStart.originalEvent.touches[ 0 ] = touchObject;
+		node.trigger(evtTouchStart);
+		animationID = setTimeout(moveStep, timePerStep);
+	};
+	
 	function getCenter(node) {		
 		node = $(node);
-		
-		var doc = $(node.ownerDocument),
-			offset = node.offset(),
-			centerX = offset.left + node.outerWidth() / 2 - doc.scrollLeft();
-			centerY = offset.top + node.outerHeight() / 2 - doc.scrollTop();
-		
+		var offset = node.offset(),
+			centerX = offset.left + node.outerWidth() / 2;
+			centerY = offset.top + node.outerHeight() / 2;
+
 		return { x: centerX, y: centerY }
 	}
 })(jQuery);

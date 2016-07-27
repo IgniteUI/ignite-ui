@@ -938,8 +938,7 @@
 			var self = this,
 				x = 0,
 				stepModifer = this.options.inertiaStep,
-				inertiaDuration = this.options.inertiaDuration,
-				animationID;
+				inertiaDuration = this.options.inertiaDuration;
 
 			self._nextX = self._getContentPositionX();
 			if (this.options.scrollOnlyVBar) {
