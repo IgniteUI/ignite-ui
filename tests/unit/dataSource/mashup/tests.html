@@ -27,6 +27,18 @@
 			{ ID: 3, Name: "Alex", Price: 6.5 },
 			{ ID: 4, Name: "Taz", Price: 10.123 }
 		];
+		var data4 = [
+			[ 0, "Angel", "1" ],
+			[ 1, "John", "10" ],
+			[ 2, "Jason", "5" ]
+		];
+		var data5 = [
+			[ 0, "Angel", 1 ],
+			[ 1, "John", 10 ],
+			[ 2, "Jason", 5 ],
+			[ 3, "Alex", 6.5 ],
+			[ 4, "Taz", 10.123 ]
+		];
 		var data3 = {
 			"d": [
 				{
@@ -238,7 +250,37 @@
 				equal(undefined, view[4]["NutritionRank"], "Merged NutritionRank: undefined");
 			});
 
-			test("Test Mashup scenario 3: combining local data sources through PK - FK relationship", function () {
+			test("Test Mashup scenario 3: combining local array data sources", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					dataSource:  [
+						{
+							dataSource: data4
+						},
+						{
+							dataSource: data5
+						}
+					]
+				});
+				ds.dataBind();
+				view = ds.dataView();
+				equal(5, view.length, "Length should be 5.");
+				// check first record that should be merged
+				equal(0, view[0][0], "Merged 0: 0");
+				equal("Angel", view[0][1], "Merged 1: Angel");
+				equal("1", view[0][2], "Merged 2: '1'");
+				equal(0, view[0][3], "Merged 3: 0");
+				equal("Angel", view[0][4], "Merged 4: Angel");
+				equal(1, view[0][5], "Merged 5: 1");
+				// check last record that should contain only second data source props
+				equal("", view[4][0], "Merged 0: empty string since no type is defined");
+				equal("", view[4][1], "Merged 1: empty string since no type is defined");
+				equal("", view[4][2], "Merged 2: empty string since no type is defined");
+				equal(4, view[4][3], "Merged 3: 4");
+				equal("Taz", view[4][4], "Merged 4: Taz");
+				equal(10.123, view[4][5], "Merged 5: 10.123");
+			});
+
+			test("Test Mashup scenario 4: combining local data sources through PK - FK relationship", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource:  [
 						{
@@ -279,7 +321,7 @@
 				equal("5", view[2]["NutritionRank"], "Merged NutritionRank: '5'");
 			});
 
-			asyncTest("Test Mashup scenario 4: combining local & remote data sources", function () {
+			asyncTest("Test Mashup scenario 5: combining local & remote data sources", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource:  [
 						{
@@ -307,7 +349,7 @@
 				ds.dataBind();
 			});
 
-			asyncTest("Test Mashup scenario 5: ignorePartialRecords = true", function () {
+			asyncTest("Test Mashup scenario 6: ignorePartialRecords = true", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource: [
 						{
