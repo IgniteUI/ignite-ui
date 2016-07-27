@@ -4008,15 +4008,19 @@ if (typeof jQuery !== "function") {
 				this._editorInput.removeClass(this.css.negative);
 			}
 		},
-		_getSpinValue: function (spinType, currentValue, decimalSeparator) {
+		_getSpinValue: function (spinType, currentValue, decimalSeparator, delta) {
 			var fractional, scientificPrecision, spinPrecision,
-				valuePrecision, spinDelta, toFixedVal, precision;
+				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
+			if (delta) {
+				spinDelta = Number(delta);
+				this.options.spinDelta = Number(delta);
+			}
 			if (currentValue.toString().toLowerCase().indexOf("e") !== -1) {
 
 				// Number is in scientific format
 				currentValue = Number(currentValue);
 				if (this.options.spinDelta.toString().toLowerCase().indexOf("e") === -1) {
-				spinDelta = Number(this.options.spinDelta.toExponential());
+					spinDelta = Number(this.options.spinDelta.toExponential());
 				} else {
 					spinDelta = this.options.spinDelta;
 				}
@@ -4130,9 +4134,10 @@ if (typeof jQuery !== "function") {
 					}
 				}
 			}
+			this.options.spinDelta = spinDeltaValue;
 			return currentValue;
 		},
-		_spinUp: function () { //NumericEditor
+		_spinUp: function (delta) { //NumericEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
 				currVal = this._editorInput.val();
@@ -4145,7 +4150,7 @@ if (typeof jQuery !== "function") {
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator);
+			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
 			if ((!this._validateValue(currVal) && currVal > this.options.maxValue &&
 				this.options.spinWrapAround) || currVal < this.options.minValue) {
 				currVal = this.options.minValue;
@@ -4179,7 +4184,7 @@ if (typeof jQuery !== "function") {
 			}
 			this._setSpinButtonsState(currVal);
 		},
-		_spinDown: function () { //NumericEditor
+		_spinDown: function (delta) { //NumericEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
 				currVal = this._editorInput.val();
@@ -4192,7 +4197,7 @@ if (typeof jQuery !== "function") {
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator);
+			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
 			if ((!this._validateValue(currVal) && currVal < this.options.minValue &&
 				this.options.spinWrapAround) || currVal > this.options.maxValue) {
 				currVal = this.options.maxValue;
@@ -4635,7 +4640,7 @@ if (typeof jQuery !== "function") {
 			var val = this._parseNumericValueByMode(text, this._numericType, this.options.dataMode);
 			return this._divideWithPrecision(val, this.options.displayFactor);
 		},
-		_spinUp: function () { //igPercentEditor
+		_spinUp: function (delta) { //igPercentEditor
 			// TODO: refactor numemic spin functions
 			var currVal, displayValue, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
@@ -4650,7 +4655,7 @@ if (typeof jQuery !== "function") {
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator);
+			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
 
 			if ((!this._validateValue(currVal) && currVal > this.options.maxValue &&
 				this.options.spinWrapAround) || currVal < this.options.minValue) {
@@ -4685,7 +4690,7 @@ if (typeof jQuery !== "function") {
 			}
 			this._setSpinButtonsState(currVal);
 		},
-		_spinDown: function () { //igPercentEditor
+		_spinDown: function (delta) { //igPercentEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
 				currVal = this._divideWithPrecision(this._editorInput.val(),
@@ -4699,7 +4704,7 @@ if (typeof jQuery !== "function") {
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator);
+			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
 			if ((!this._validateValue(currVal) && currVal < this.options.minValue &&
 				this.options.spinWrapAround) || currVal > this.options.maxValue) {
 				currVal = this.options.maxValue;
