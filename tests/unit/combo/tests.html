@@ -4949,9 +4949,8 @@
                 setTimeout(function () {
                     //Make assertion
                     start();
-                    $combo.igCombo("filter", "Sauerkraut");
-                    filteredItems = $combo.igCombo("filteredItems");
-                    equal(filteredItems.length, 33, "Filtered items are 33");
+                    allItems = $combo.igCombo("items");
+                    equal(allItems.length, 2155, "Items are 2155");
                 }, 2000);
                 stop(); // Pause the test
             });
