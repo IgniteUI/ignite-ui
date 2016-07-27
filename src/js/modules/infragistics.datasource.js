@@ -1793,7 +1793,8 @@
 				ds !== undefined && this.settings.responseDataKey !== null) {
 				ds = $.ig.findPath(ds, this.settings.responseDataKey);
 			}
-			if (typeof (field.mapper) === "function" && ds.length > 0) {
+			if (typeof (field.mapper) === "function" &&
+				$.type(ds) === "array" && ds.length > 0) {
 				type = $.type(field.mapper(ds[ 0 ]));
 			} else {
 				type = field.type;
