@@ -4657,7 +4657,7 @@ if (typeof jQuery !== "function") {
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
 
-			if ((!this._validateValue(currVal) && currVal > this.options.maxValue &&
+			if ((currVal > this.options.maxValue &&
 				this.options.spinWrapAround) || currVal < this.options.minValue) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
@@ -4705,7 +4705,7 @@ if (typeof jQuery !== "function") {
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
-			if ((!this._validateValue(currVal) && currVal < this.options.minValue &&
+			if ((currVal < this.options.minValue &&
 				this.options.spinWrapAround) || currVal > this.options.maxValue) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
