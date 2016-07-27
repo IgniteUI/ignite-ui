@@ -4012,17 +4012,16 @@ if (typeof jQuery !== "function") {
 			var fractional, scientificPrecision, spinPrecision,
 				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
 			if (delta) {
-				spinDelta = Number(delta);
-				this.options.spinDelta = Number(delta);
+				spinDeltaValue = Number(delta);
 			}
 			if (currentValue.toString().toLowerCase().indexOf("e") !== -1) {
 
 				// Number is in scientific format
 				currentValue = Number(currentValue);
-				if (this.options.spinDelta.toString().toLowerCase().indexOf("e") === -1) {
-					spinDelta = Number(this.options.spinDelta.toExponential());
+				if (spinDeltaValue.toString().toLowerCase().indexOf("e") === -1) {
+					spinDelta = Number(spinDeltaValue.toExponential());
 				} else {
-					spinDelta = this.options.spinDelta;
+					spinDelta = spinDeltaValue;
 				}
 
 				if (spinType === "spinUp") {
@@ -4044,15 +4043,15 @@ if (typeof jQuery !== "function") {
 				currentValue = currentValue / 1;
 
 				// D.P. value is already float, always use precision
-				if (this.options.spinDelta.toString().toLowerCase().indexOf("e") !== -1) {
+				if (spinDeltaValue.toString().toLowerCase().indexOf("e") !== -1) {
 					currentValue = Number(currentValue.toExponential());
-					scientificPrecision = this.options.spinDelta.toString().toLowerCase()
-						.substring(this.options.spinDelta.toString()
+					scientificPrecision = spinDeltaValue.toString().toLowerCase()
+						.substring(spinDeltaValue.toString()
 							.toLowerCase().indexOf("e") + 1);
 					spinPrecision = Math.abs(scientificPrecision);
 				} else {
-					spinPrecision = this.options.spinDelta.toString().toLowerCase()
-						.substring(this.options.spinDelta.toString()
+					spinPrecision = spinDeltaValue.toString().toLowerCase()
+						.substring(spinDeltaValue.toString()
 							.toLowerCase().indexOf(".") + 1).length;
 					valuePrecision = currentValue.toString()
 						.substring(currentValue.toString().indexOf(".") + 1).length;
@@ -4065,19 +4064,19 @@ if (typeof jQuery !== "function") {
 					if (currentValue === 0 && scientificPrecision) {
 
 						// We guarantee we have spin delta in scientific format
-						currentValue = this.options.spinDelta.toFixed(spinPrecision);
+						currentValue = spinDeltaValue.toFixed(spinPrecision);
 					} else {
 						currentValue = (Math.round(currentValue * precision) +
-							Math.round(this.options.spinDelta * precision)) / precision;
+							Math.round(spinDeltaValue * precision)) / precision;
 					}
 				} else {
 					if (currentValue === 0 && scientificPrecision) {
 
 						// We guarantee we have spin delta in scientific format
-						currentValue = (-this.options.spinDelta).toFixed(spinPrecision);
+						currentValue = (-spinDeltaValue).toFixed(spinPrecision);
 					} else {
 						currentValue = (Math.round(currentValue * precision) -
-							Math.round(this.options.spinDelta * precision)) / precision;
+							Math.round(spinDeltaValue * precision)) / precision;
 					}
 				}
 
@@ -4093,23 +4092,23 @@ if (typeof jQuery !== "function") {
 				}
 			} else {
 				currentValue = currentValue / 1;
-				if (this.options.spinDelta % 1 === 0) {
+				if (spinDeltaValue % 1 === 0) {
 
 					// Integer value
 					if (spinType === "spinUp") {
-						currentValue += this.options.spinDelta;
+						currentValue += spinDeltaValue;
 					} else {
-						currentValue -= this.options.spinDelta;
+						currentValue -= spinDeltaValue;
 					}
 				} else {
-					if (this.options.spinDelta.toString().toLowerCase().indexOf("e") !== -1) {
-						scientificPrecision = this.options.spinDelta.toString().toLowerCase()
-							.substring(this.options.spinDelta.toString()
+					if (spinDeltaValue.toString().toLowerCase().indexOf("e") !== -1) {
+						scientificPrecision = spinDeltaValue.toString().toLowerCase()
+							.substring(spinDeltaValue.toString()
 								.toLowerCase().indexOf("e") + 1);
 						spinPrecision = Math.abs(scientificPrecision);
 					} else {
-						spinPrecision = this.options.spinDelta.toString().toLowerCase()
-							.substring(this.options.spinDelta.toString()
+						spinPrecision = spinDeltaValue.toString().toLowerCase()
+							.substring(spinDeltaValue.toString()
 								.toLowerCase().indexOf(".") + 1).length;
 					}
 					precision = Math.pow(10, spinPrecision);
@@ -4117,24 +4116,23 @@ if (typeof jQuery !== "function") {
 						if (currentValue === 0) {
 
 							// We guarantee we have spin delta in scientific format
-							currentValue = this.options.spinDelta.toFixed(spinPrecision);
+							currentValue = spinDeltaValue.toFixed(spinPrecision);
 						} else {
 							currentValue = (Math.round(currentValue * precision) +
-								Math.round(this.options.spinDelta * precision)) / precision;
+								Math.round(spinDeltaValue * precision)) / precision;
 						}
 					} else {
 						if (currentValue === 0) {
 
 							// We guarantee we have spin delta in scientific format
-							currentValue = (-this.options.spinDelta).toFixed(spinPrecision);
+							currentValue = (-spinDeltaValue).toFixed(spinPrecision);
 						} else {
 							currentValue = (Math.round(currentValue * precision) -
-								Math.round(this.options.spinDelta * precision)) / precision;
+								Math.round(spinDeltaValue * precision)) / precision;
 						}
 					}
 				}
 			}
-			this.options.spinDelta = spinDeltaValue;
 			return currentValue;
 		},
 		_spinUp: function (delta) { //NumericEditor
@@ -4151,7 +4149,7 @@ if (typeof jQuery !== "function") {
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
-			if ((!this._validateValue(currVal) && currVal > this.options.maxValue &&
+			if ((currVal > this.options.maxValue &&
 				this.options.spinWrapAround) || currVal < this.options.minValue) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
@@ -4198,7 +4196,7 @@ if (typeof jQuery !== "function") {
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
-			if ((!this._validateValue(currVal) && currVal < this.options.minValue &&
+			if ((currVal < this.options.minValue &&
 				this.options.spinWrapAround) || currVal > this.options.maxValue) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
