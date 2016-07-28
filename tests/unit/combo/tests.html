@@ -5015,9 +5015,10 @@
                     responseDataKey: "d.results",
                     allowCustomValues: true,
                     filteringType: "local",
-                    virtualization: true,
+                    virtualization: true
                 });
 
+                stop(); // Pause the test
                 //Add your wait
                 setTimeout(function () {
                     //Make assertion
@@ -5028,7 +5029,7 @@
                     allItems = $combo.igCombo("items");
                     equal(allItems.length, 2155, "Items are 2155");
                 }, 2000);
-                stop(); // Pause the test
+               
             });
         });
     </script>
