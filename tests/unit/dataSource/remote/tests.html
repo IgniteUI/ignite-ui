@@ -382,7 +382,7 @@
 		});
 		
 		test("OData filtering parameters", function() { 
-		
+			var str, currDate, year, month, params, lastMonth, nextMonth;
 			ds.settings.localSchemaTransform = true;
 			ds.settings.filtering.exprString = "";
 			ds.settings.filtering.type = "remote";
@@ -406,10 +406,58 @@
 			//ds.settings.filtering.exprString = "";
 			ds.settings.paging.enabled = false;
 			// compare the "params" string with the expected one 
-			var params = $.param(ds._encodeUrl());
+			params = $.param(ds._encodeUrl());
 
 			equal(params, "%24filter=startswith(tolower(ProductID)%2C'a')%20eq%20true%20and%20endswith(tolower(Name)%2C'b')%20eq%20true%20and%20indexof(tolower(Price)%2C'')%20ge%200%20and%20indexof(tolower(ProductID)%2C'c')%20eq%20-1%20and%20tolower(Name)%20eq%20'1'%20and%20Name%20eq%201%20and%20tolower(Name)%20ne%20'abc'%20and%20Name%20gt%205%20and%20Name%20lt%202%20and%20Name%20ge%204%20and%20Name%20le%207", "%24filter=startswith(tolower(ProductID)%2C'a')%20eq%20true%20and%20endswith(tolower(Name)%2C'b')%20eq%20true%20and%20indexof(tolower(Price)%2C'')%20ge%200%20and%20indexof(tolower(ProductID)%2C'c')%20eq%20-1%20and%20tolower(Name)%20eq%20'1'%20and%20Name%20eq%201%20and%20tolower(Name)%20ne%20'abc'%20and%20Name%20gt%205%20and%20Name%20lt%202%20and%20Name%20ge%204%20and%20Name%20le%207");
 			
+			ds.settings.filtering.expressions = [
+				{fieldName: "ProductID", cond: "null", logic: "or"}, 
+				{fieldName: "Name", cond: "notNull", logic: "or"},
+				{fieldName: "Price", cond: "empty", logic: "or"}, 
+				{fieldName: "ProductID", cond: "notEmpty", logic: "or"},
+				{fieldName: "ReleaseDate", cond: "on", expr:  new Date(0), logic: "or"},
+				{fieldName: "ReleaseDate", cond: "notOn", expr:  new Date(0), logic: "or"},
+				{fieldName: "ReleaseDate", cond: "after", expr:  new Date(0), logic: "or"},
+				{fieldName: "ReleaseDate", cond: "before", expr:  new Date(0), logic: "or"},
+				{fieldName: "ReleaseDate", cond: "today", expr:  new Date(0), logic: "or"},
+				{fieldName: "ReleaseDate", cond: "yesterday", expr:  new Date(0)}
+			];
+			//ds.settings.filtering.exprString = "";
+			ds.settings.paging.enabled = false;
+			// compare the "params" string with the expected one 
+			params = $.param(ds._encodeUrl());
+			equal(params, "%24filter=ProductID%20eq%20null%20or%20Name%20ne%20null%20or%20length(Price)%20eq%200%20or%20length(ProductID)%20gt%200%20or%20day(ReleaseDate)%20eq%201%20and%20month(ReleaseDate)%20eq%201%20and%20year(ReleaseDate)%20eq%201970%20or%20day(ReleaseDate)%20ne%201%20or%20month(ReleaseDate)%20ne%201%20or%20year(ReleaseDate)%20ne%201970%20or%20ReleaseDate%20gt%20DateTime'1970-01-01T23%3A59%3A59'%20or%20ReleaseDate%20lt%20DateTime'1970-01-01'%20or%20day(ReleaseDate)%20eq%201%20and%20month(ReleaseDate)%20eq%201%20and%20year(ReleaseDate)%20eq%201970%20or%20day(ReleaseDate)%20eq%201%20and%20month(ReleaseDate)%20eq%201%20and%20year(ReleaseDate)%20eq%201970&filterLogic=or");;
+			
+			ds.settings.filtering.expressions = [
+				{fieldName: "ThisMonth", cond: "thisMonth", expr:  new Date(0), logic: "or"},
+				{fieldName: "LastMonth", cond: "lastMonth", expr:  new Date(0), logic: "or"},
+				{fieldName: "NextMonth", cond: "nextMonth", expr:  new Date(0), logic: "or"},
+				{fieldName: "ThisYear", cond: "thisYear", expr:  new Date(0), logic: "or"},
+				{fieldName: "LastYear", cond: "lastYear", expr:  new Date(0), logic: "or"},
+				{fieldName: "NextYear", cond: "nextYear", expr:  new Date(0), logic: "or"}
+			];
+			//ds.settings.filtering.exprString = "";
+			ds.settings.paging.enabled = false;
+			// compare the "params" string with the expected one 
+			params = $.param(ds._encodeUrl());
+			currDate = new Date();
+			month = currDate.getMonth();
+			year = currDate.getFullYear();
+			lastMonth = { 
+				month: month - 1 === 0 ? 12 : month - 1, 
+				year: month - 1 === 0 ? year - 1 : year
+			};
+			nextMonth = {
+				month: month + 1 === 13 ? 1 : month + 1, 
+				year: month + 1 === 13 ? year + 1 : year
+			};
+			str = "%24filter=month(ThisMonth)%20eq%20" + month + "%20and%20year(ThisMonth)%20eq%20" + year +
+				"%20or%20month(LastMonth)%20eq%20" + lastMonth.month +"%20and%20year(LastMonth)%20eq%20" + lastMonth.year +
+				"%20or%20month(NextMonth)%20eq%20" + nextMonth.month + "%20and%20year(NextMonth)%20eq%20" + nextMonth.year +
+				"%20or%20year(ThisYear)%20eq%20" + year +
+				"%20or%20year(LastYear)%20eq%20" + (year - 1) +
+				"%20or%20year(NextYear)%20eq%20" + (year + 1) +
+				"&filterLogic=or";
 		});
 		
 		test("Custom sorting parameters", function() {
