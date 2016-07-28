@@ -65,6 +65,22 @@
 					$("#pEditor8").igPercentEditor({
 						scientificFormat : "e"
 					});
+					$("#pEditor9").igPercentEditor();
+
+					$("#pEditor10").igPercentEditor({
+						buttonType:"spin",
+						spinWrapAround: true,
+						maxValue: 3,
+						minValue: 0,
+						displayFactor : 1
+					});
+
+					$("#pEditor11").igPercentEditor({
+						buttonType:"spin",
+						value: 3,
+						maxValue: 3,
+						spinWrapAround: true
+					});
 				});
 			}
 			initialized = false;
@@ -246,6 +262,55 @@
 				field.blur();
 				equal($("#pEditor8").igPercentEditor("displayValue"), "1e+1%", "Displayed value is not correct!");
 			});
+
+			var testId = 'Percent Editor Set options.';
+			test(testId, 2, function () {
+				$("#pEditor9").igPercentEditor("option", "displayFactor", 1);
+				throws(function () {
+					$("#pEditor9").igPercentEditor("option", "displayFactor", "1");
+				}, "displayFactor requires a different value. Its value should be set to 1 or 100 as a number.");
+
+				throws(function () {
+					$("#pEditor9").igPercentEditor("option", "displayFactor", 10);
+				}, "displayFactor requires a different value. Its value should be set to 1 or 100 as a number.");
+
+			});
+
+
+
+			var testId = 'Percent Spin up.';
+			test(testId, 6, function () {
+				$("#pEditor10").focus();
+				$("#pEditor10").igPercentEditor("spinUp");
+				$("#pEditor10").blur();
+				equal($('#pEditor10').igPercentEditor("displayValue"), "0.01%", "Display value after spin up is not correct");
+
+				$("#pEditor10").igPercentEditor("spinDown");
+				equal($('#pEditor10').igPercentEditor("displayValue"), "0.00%", "Display value after spin up is not correct");
+
+				$("#pEditor10").igPercentEditor("value", 3);
+				$("#pEditor10").igPercentEditor("spinUp", 3);				
+				equal($('#pEditor10').igPercentEditor("displayValue"), "0.00%", "spinWrapAround does not return minValue");
+
+				$("#pEditor10").igPercentEditor("spinUp", 3);				
+				equal($('#pEditor10').igPercentEditor("displayValue"), "3.00%", "SpinUp method does not take into account delta parameter.");
+
+				$("#pEditor10").igPercentEditor("spinDown", 3);				
+				equal($('#pEditor10').igPercentEditor("displayValue"), "0.00%", "SpinDown method does not take into account delta parameter.");
+
+				$("#pEditor10").igPercentEditor("spinDown", 3);				
+				equal($('#pEditor10').igPercentEditor("displayValue"), "3.00%", "spinWrapAround does not return maxValue");
+
+			
+			});
+
+			var testId = 'Percent insert.';
+			test(testId, 1, function () {
+				$("#pEditor11").igPercentEditor("field").focus();
+				$("#pEditor11").igPercentEditor( "insert", "1" );	
+				
+				equal($("#pEditor11").parent().parent().hasClass("ui-ignotify-warn"), true, "The notifier didn't show a warning.");
+			});
 		});
 	</script>
 </head>
@@ -267,6 +332,9 @@
 	<input id="emptyEditor" />
 	<input id="percentEditorList" />
 	<input id="pEditor8" />
+	<input id="pEditor9" />	
+	<input id="pEditor10" />
+	<input id="pEditor11" />
 </div>
 </body>
 </html>
