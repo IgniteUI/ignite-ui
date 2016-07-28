@@ -7615,7 +7615,10 @@
 								stringVal = data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ] ?
 									data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ].toString() : "";
 								skipRec = !this._findMatch(stringVal, fieldExpressionsOnStrings[ j ].expr,
-									"string", !f.caseSensitive, fieldExpressionsOnStrings[ j ].cond, data[ i ]);
+									"string", !f.caseSensitive, fieldExpressionsOnStrings[ j ].cond,
+									fieldExpressionsOnStrings[ j ].preciseDateFormat,
+									fieldExpressionsOnStrings[ j ].fieldName,
+									data[ i ]);
 							} else {
 								for (k = 0; k < fields.length; k++) {
 									if (fields[ k ].name === fieldExpressionsOnStrings[ j ].fieldName) {
@@ -7627,7 +7630,10 @@
 									data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ] !== undefined ?
 									data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ].toString() : "";
 								skipRec = !this._findMatch(stringVal, fieldExpressionsOnStrings[ j ].expr,
-									"string", !f.caseSensitive, fieldExpressionsOnStrings[ j ].cond, data[ i ]);
+									"string", !f.caseSensitive, fieldExpressionsOnStrings[ j ].cond,
+									fieldExpressionsOnStrings[ j ].preciseDateFormat,
+									fieldExpressionsOnStrings[ j ].fieldName,
+									data[ i ]);
 							}
 							tmpbool = (fieldExpressionsOnStrings[ j ].logic !== null &&
 								fieldExpressionsOnStrings[ j ].logic !== undefined &&
