@@ -3066,7 +3066,7 @@
 			paramType="bool" if keepFilterState is set to true, it will not discard previous filtering expressions
 			*/
 			var i, j, expr = null, count = 0, skipRec = false, data, t, k, schema,
-				fields, field, tmpbool, resetPaging, allFieldsExpr, stringVal,
+				fields, field, tmpbool, resetPaging, allFieldsExpr,
 				f = this.settings.filtering, p = this.settings.paging, s = this.settings.sorting;
 			this._clearGroupByData();
 			schema = this.schema();
