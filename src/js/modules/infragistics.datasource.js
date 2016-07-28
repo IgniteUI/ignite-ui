@@ -1793,7 +1793,8 @@
 				ds !== undefined && this.settings.responseDataKey !== null) {
 				ds = $.ig.findPath(ds, this.settings.responseDataKey);
 			}
-			if (typeof (field.mapper) === "function" && ds.length > 0) {
+			if (typeof (field.mapper) === "function" &&
+				$.type(ds) === "array" && ds.length > 0) {
 				type = $.type(field.mapper(ds[ 0 ]));
 			} else {
 				type = field.type;
@@ -2829,6 +2830,8 @@
 						val !== undefined &&
 						val !== null && val.toLowerCase) {
 					val = val.toLowerCase();
+				} else if (val && val.getTime) {
+					val = val.getTime();
 				}
 				arr.push({
 					val: val,
@@ -3070,7 +3073,7 @@
 			paramType="bool" if keepFilterState is set to true, it will not discard previous filtering expressions
 			*/
 			var i, j, expr = null, count = 0, skipRec = false, data, t, k, schema,
-				fields, tmpbool, resetPaging, allFieldsExpr, stringVal,
+				fields, field, tmpbool, resetPaging, allFieldsExpr, stringVal,
 				f = this.settings.filtering, p = this.settings.paging, s = this.settings.sorting;
 			this._clearGroupByData();
 			schema = this.schema();
@@ -3133,15 +3136,15 @@
 						/* if there is no match, break, we aren't going to add the record to the resulting data view.
 						the default boolean logic is to "AND" the fields */
 						fields = schema.fields();
-						if (fieldExpressions[ j ].fieldIndex) {
-							if (fieldExpressions[ j ].fieldIndex < fields.length) {
-								t = fields[ fieldExpressions[ j ].fieldIndex ].type;
-							}
-							skipRec = !this._findMatch(data[ i ][ fieldExpressions[ j ].fieldIndex ],
+						if (fieldExpressions[ j ].fieldIndex !== undefined  &&
+							fieldExpressions[ j ].fieldIndex < fields.length) {
+							field = fields[ fieldExpressions[ j ].fieldIndex ];
+							t = field.type;
+							skipRec = !this._findMatch(data[ i ][ field.name ],
 														fieldExpressions[ j ].expr,
 														t, !f.caseSensitive, fieldExpressions[ j ].cond,
 														fieldExpressions[ j ].preciseDateFormat,
-														fieldExpressions[ j ].fieldName, data[ i ]);
+														field.name, data[ i ]);
 						} else {
 							/* M.H. 10 Sep 2012 Fix for bug #120759 */
 							if (fieldExpressions[ j ].dataType !== undefined &&
@@ -4131,7 +4134,7 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec;
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
@@ -4155,6 +4158,10 @@
 				gbRec.fieldName = gbExpr.fieldName;
 				resLen = res.length;
 				gbRec.val = resLen ? res[ 0 ][ gbRec.fieldName ] : undefined;
+				if (dt === undefined) {
+					dt = !!(gbRec.val && gbRec.val.getTime);
+				}
+				gbRec.val = dt ? gbRec.val.getTime() : gbRec.val;
 				hc = gbRec.val ? String(gbRec.val).getHashCode() : "";
 				gbRec.id = parentId + gbExpr.fieldName + ":" + hc;
 				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
@@ -7561,7 +7568,7 @@
 						// if there is no match, break, we aren't going to add the record to the resulting data view.
 						// the default boolean logic is to "AND" the fields
 						fields = schema.fields();
-						if (fieldExpressions[ j ].fieldIndex) {
+						if (fieldExpressions[ j ].fieldIndex !== undefined) {
 							if (fieldExpressions[ j ].fieldIndex < fields.length) {
 								t = this._getFieldTypeFromSchema(fields[ fieldExpressions[ j ].fieldIndex ].name);
 							}

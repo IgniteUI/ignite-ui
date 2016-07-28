@@ -7,7 +7,8 @@
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
-	
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	
@@ -136,7 +137,7 @@
 		var northwindProductsJSON = [
 			   { "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseDate": "\/Date(694224000000)\/", "DiscontinuedDate": null, "Rating": 4, "Price": "2.5", "Category": { "ID": 0, "Name": "Food" } },
 			   { "ID": 1, "Name": "Milk", "Description": "Low fat milk", "ReleaseDate": "\/Date(812505600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "3.5", "Category": { "ID": 1, "Name": "Beverages" } },
-			   { "ID": 2, "Name": "Vint Soda", "Description": "Americana Variety - Mix of 6 flavors", "ReleaseDate": "\/Date(970358400000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "20.9", "Category": { "ID": 1, "Name": "Beverages" } },
+			   { "ID": 2, "Name": "Vint Soda", "Description": null, "ReleaseDate": "\/Date(970358400000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "20.9", "Category": { "ID": 1, "Name": "Beverages" } },
 			   { "ID": 3, "Name": "Havina Cola", "Description": "The Original Key Lime Cola", "ReleaseDate": "\/Date(1128124800000)\/", "DiscontinuedDate": "\/Date(1159660800000)\/", "Rating": 3, "Price": "19.9", "Category": { "ID": 1, "Name": "Beverages" } },
 			   { "ID": 4, "Name": "Fruit Punch", "Description": "Mango flavor, 8.3 Ounce Cans (Pack of 24)", "ReleaseDate": "\/Date(1041724800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.99", "Category": { "ID": 1, "Name": "Beverages" } },
 			   { "ID": 5, "Name": "Cranberry Juice", "Description": "16-Ounce Plastic Bottles (Pack of 12)", "ReleaseDate": "\/Date(1154649600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.8", "Category": { "ID": 1, "Name": "Beverages" }, },
@@ -321,8 +322,6 @@
 					teardown: function() {
 					}
 				});
-				
-				
 				var testId_1 = "IgDataSource filtering test 1: Filtering with schema - StartsWith";
 				var testId_2 = "IgDataSource filtering test 2: Filtering with schema - EndsWith";
 				var testId_3 = "IgDataSource filtering test 3: Filtering with schema - Contains";
@@ -671,7 +670,6 @@
 
 				// IgDataSource filtering test 19: Filtering with schema - ThisYear
 				test(testId_19, function () {
-
 					//dates 
 					tableDs.filter([{ fieldName: "col5", expr: "", cond: "thisYear"}], true);
 					equal(tableDs.dataView().length, yearsCount['thisYear'], yearsCount['thisYear']);
@@ -815,9 +813,155 @@
 					});
 				});
 
+				var __ds;
+				module("Test filtering", {
+					setup: function () {
+						__ds = new $.ig.DataSource({ 
+							filtering: { enabled: true }, 
+							summaries: { type: "local" },
+							dataSource: northwindProductsJSON,
+							schema: { fields: [{
+											name: "ID", type: "number"
+										}, {
+											name: "Name", type: "string"
+										}, {
+											name: "Description", type: "string"
+										}, {
+											name: "ReleaseDate", type: "date"
+										}]
+							},
+							//paging: { enabled: true, type: "local", pageSize: 3 }
+						}).dataBind();
+					}
+				});
+				test("Test fieldIndex in fieldExpression", function () {
+					var fd, s = __ds.schema();
+					__ds._schema = null;
+					throws(
+						function () {
+							__ds.filter([{ fieldName: "ID", expr: 100, cond: "greaterThan" }]);
+						},
+						function (err) {
+							return err.message.indexOf($.ig.DataSourceLocale.locale.filteringNoSchema) > -1;
+						},
+						$.ig.DataSourceLocale.locale.filteringNoSchema + " should be thrown"
+					);
+					__ds.schema(s);
+					__ds.filter([{ fieldIndex: 0, expr: 100, cond: "greaterThanOrEqualTo"}]);
+					fd = __ds.filteredData();
+					ok(fd.length === 0 && __ds.dataView().length === 0, 
+						"Test count of filtered records");
+				});
+				test("Test conditions null, notNull, empty, notEmpty for string", function () {
+					var fd;
+					// test conditions for string
+					__ds.filter([
+									{ fieldIndex: 1, expr: "a", cond: "null", logic: "OR" }
+								]);
+					fd = __ds.filteredData();
+					ok(fd.length === 0 && __ds.dataView().length === 0, 
+						"Test condition null");
+					__ds.filter([
+									{ fieldIndex: 1, expr: "a", cond: "notNull", logic: "OR" }
+								]);
+					fd = __ds.filteredData();
+					ok(fd.length === 9 && __ds.dataView().length === 9, 
+						"Test condition notNull");
+					__ds.filter([
+								{ fieldIndex: 1, expr: "a", cond: "empty", logic: "OR" }
+							]);
+					fd = __ds.filteredData();
+					ok(fd.length === 0 && __ds.dataView().length === 0, 
+						"Test condition empty");
+					
+					__ds.filter([
+								{ fieldName: "Description", expr: "", cond: "notEmpty", logic: "OR" }
+							]);
+					fd = __ds.filteredData();
+					ok(fd.length === 8 && __ds.dataView().length === 8, 
+						"Test condition notEmpty");
+				});
+				test("Test conditions on, notOn, null, notNull, empty, notEmpty", function () {
+					var fd;
+					__ds.filter([
+						{ fieldName: "ReleaseDate", expr: new Date(694224000000), cond: "on", logic: "OR" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 1 && __ds.dataView().length === 1, 
+						"Condition on");
+					__ds.filter([
+						{ fieldName: "ReleaseDate", expr: new Date(694224000000), cond: "notOn", logic: "OR" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 8 &&
+						__ds.dataView().length === 8 &&
+						__ds.totalLocalRecordsCount() === 8 &&
+						__ds.pageCount() === 2, 
+						"Condition notOn");
+
+					__ds.filter([
+						{ fieldName: "ReleaseDate", cond: "null" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 0 &&
+						__ds.dataView().length === 0, 
+						"Condition null");
+					__ds.filter([
+						{ fieldName: "ReleaseDate", cond: "notNull" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 9 &&
+						__ds.dataView().length === 9, 
+						"Condition notNull");
+
+					__ds.filter([
+						{ fieldName: "ReleaseDate", cond: "empty" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 0 &&
+						__ds.dataView().length === 0, 
+						"Condition empty");
+					__ds.filter([
+						{ fieldName: "ReleaseDate", cond: "notEmpty" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 9 &&
+						__ds.dataView().length === 9, 
+						"Condition notEmpty");
+				});
+
+				test("Test conditions null, notNull, empty, notEmpty for numeric", function () {
+					__ds.filter([
+						{ fieldName: "ID", expr: "", cond: "null", logic: "OR" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 0 && __ds.dataView().length === 0, 
+						"Condition null");
+
+					__ds.filter([
+						{ fieldName: "ID", expr: "", cond: "notNull", logic: "OR" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 9 && __ds.dataView().length === 9, 
+						"Condition null");
+					
+					__ds.filter([
+						{ fieldName: "ID", expr: "", cond: "empty", logic: "OR" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 0 && __ds.dataView().length === 0, 
+						"Condition null");
+
+					__ds.filter([
+						{ fieldName: "ID", expr: "", cond: "notEmpty", logic: "OR" }
+					]);
+					fd = __ds.filteredData();
+					ok(fd.length === 9 && __ds.dataView().length === 9, 
+						"Condition null");
+					
+				});
 			});
 	</script>
-	<!--  -->
 </head>
 <body>
 <div id="div1"></div>
