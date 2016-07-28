@@ -473,8 +473,8 @@
 
 				var multiSortData = dsLocalSortingFilteringPaging.sortData(flatDS, [{ fieldName: "firstName" },{ fieldName: "PID" }], "desc");
 				
-				equal(JSON.stringify(multiSortData[0]), '{"employeeID":13,"PID":2,"firstName":"Wang","lastName":"Mercedes","reportsTo":"2","Date":"2011-01-13T22:00:00.000Z","expanded":true,"dataLevel":0}', "Check if data is properly sorted by both firstName and PID.");
-				equal(JSON.stringify(multiSortData[21]), '{"employeeID":0,"PID":-1,"firstName":"Andrew","lastName":"Fuller","reportsTo":"-","Date":"2010-12-31T22:00:00.000Z","expanded":true,"dataLevel":0}', "Check if data is properly sorted by both firstName and PID.");
+				equal(multiSortData[0].employeeID, 13, "Check if data is properly sorted by both firstName and PID.");
+				equal(multiSortData[21].employeeID, 0, "Check if data is properly sorted by both firstName and PID."); 
 			});
 
 			var dsRemotePaging, dsRemoteSorting, dsRemoteFiltering;
