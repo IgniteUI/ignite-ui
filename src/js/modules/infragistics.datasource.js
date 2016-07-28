@@ -251,13 +251,6 @@
 				exprString: ""
 			},
 			groupby: {
-				/* type="remote|local" Specifies whether groupby will be applied locally or remotely (via a remote request)
-				remote type="string"
-				local type="string"
-				*/
-				type: "local",
-				/* type="array" a list of groupby expressions , consisting of the following keys (and their respective values): fieldName, direction and compareFunc (optional). Order of groupby expression is taken into account for the result data and dataview */
-				expressions: [],
 				/* type="bool" default collapse state */
 				defaultCollapseState: false
 			},
@@ -3180,18 +3173,17 @@
 							// if there is no match, break, we aren't going to add the record to the resulting data view.
 							// the default boolean logic is to "AND" the fields
 							fields = schema.fields();
+							t = undefined;
 							if (fieldExpressionsOnStrings[ j ].fieldIndex) {
 								if (fieldExpressionsOnStrings[ j ].fieldIndex < fields.length) {
 									t = fields[ fieldExpressionsOnStrings[ j ].fieldIndex ].type;
 								}
-								stringVal = data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ] ?
-									data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ].toString() : "";
-								skipRec = !this._findMatch(stringVal,
+								skipRec = !this._findMatch(data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ],
 															fieldExpressionsOnStrings[ j ].expr,
-															"string",
+															t,
 															!f.caseSensitive,
 															fieldExpressionsOnStrings[ j ].cond,
-															undefined,
+															fieldExpressionsOnStrings[ j ].preciseDateFormat,
 															fieldExpressionsOnStrings[ j ].fieldName, data[ i ]);
 							} else {
 								for (k = 0; k < fields.length; k++) {
@@ -3200,15 +3192,12 @@
 										break;
 									}
 								}
-								stringVal = data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ] !== null &&
-									data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ] !== undefined ?
-									data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ].toString() : "";
-								skipRec = !this._findMatch(stringVal,
+								skipRec = !this._findMatch(data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ],
 														fieldExpressionsOnStrings[ j ].expr,
-														"string",
+														t,
 														!f.caseSensitive,
 														fieldExpressionsOnStrings[ j ].cond,
-														undefined,
+														fieldExpressionsOnStrings[ j ].preciseDateFormat,
 														fieldExpressionsOnStrings[ j ].fieldName, data[ i ]);
 							}
 							tmpbool = (fieldExpressionsOnStrings[ j ].logic !== null &&
