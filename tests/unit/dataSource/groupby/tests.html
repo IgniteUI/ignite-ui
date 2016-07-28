@@ -40,7 +40,7 @@
 				for (i = 0; i < data.length; i++) {
 					r = data[i];
 					if (r.__gbRecord) {
-						html += "<tr><td colspan='5'>GroupBy record with val: " + r.val + "</td></tr>"
+						html += "<tr><td colspan='6'>GroupBy record with val: " + r.val + "</td></tr>"
 					} else {
 						html += "<tr>" +
 							"<td>" + r.Id + "</td>" +
@@ -48,6 +48,7 @@
 							"<td>" + r.ProductDescription + "</td>" +
 							"<td>" + r.Price + "</td>" +
 							"<td>" + r.Promotion + "</td>" +
+							"<td>" + (r.Date || "") + "</td>" +
 						"</tr>";
 					}
 				}
@@ -61,7 +62,8 @@
 						ProductName: "product name " + i,
 						ProductDescription: "description " + (i % 2),
 						Price: 1,
-						Promotion: !!(i % 2)
+						Promotion: !!(i % 2),
+						Date: new Date(i)
 					});
 				}
 				// sort data if argument "key" is set
@@ -92,7 +94,8 @@
 							{ name: "ProductName", type: "string" },
 							{ name: "ProductDescription" },
 							{ name: "Price" }, 
-							{ name: "Promotion", type: "bool" }]
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "datetime" }]
 					},
 					filtering: { type: "local" }, 
 					sorting: { type: "local" }, 
@@ -274,6 +277,27 @@
 				dataView = ds.dataView();
 				ok(dataView.length === 1 && dataView[0].Id === 3, "Test dataView after changing pageIndex to 1");
 			});
+
+			test("Test groupby date column", function () {
+				var se = [], i, ds = createDataSource(), data, dataView, gbData;
+				se = [{
+					fieldName: "Date",
+					isGroupBy: true,
+					dir: "asc"
+				}];
+				// set sorting expressions
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.enabled = true;
+				ds.dataBind();
+				dataView = ds.dataView();
+				renderData(dataView);
+				ok(dataView[0].__gbRecord &&
+					dataView[1].Id === 0 &&
+					dataView[7].Id === 3,
+					"Test dataView records");
+				equal(ds.groupByData().length, 8, "Test count of records in groupByData");
+			});
 			/* Test GroupBy with type: "local"*/
 
 			/* Test GroupBy with type: "remote"*/
@@ -419,7 +443,7 @@
 
 	<table id="t1" cellpadding=5 cellspacing=0>
 	<thead>
-		<tr> <th>Id</th> <th>ProductName</th> <th>ProductDescription</th>  <th>Price</th> <th>Promotion</th> </tr>
+		<tr> <th>Id</th> <th>ProductName</th> <th>ProductDescription</th>  <th>Price</th> <th>Promotion</th> <th>Date</th></tr>
 	</thead>
 	<tbody>
 	
