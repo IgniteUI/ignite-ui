@@ -277,10 +277,10 @@
         <div id="combo-focus-blur"></div>
     </div>
     <div>
-        <div id="header-footer-setters"></div>
+      <div id="local-filtering-virt"></div>
     </div>
     <div>
-        <div id="local-filtering-virt"></div>
+        <div id="header-footer-setters"></div>
     </div>
     <div>
         <div id="keyboard-interactions"></div>
@@ -374,9 +374,9 @@
                 testId_75 = 'Virtualization with grouping and LOD';
                 testId_76 = 'Combo focus blur';
                 testId_77 = 'Open dropDown via API with bottom dropDownOrientation';
-                testId_78 = 'Local filtering with virtualization';
-                testId_79 = 'Keyboard interacting';
-                testId_80 = 'Mouse interacting';
+                testId_78 = 'Keyboard interacting';
+                testId_79 = 'Mouse interacting';
+                testId_80 = 'Local filtering with virtualization';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -4917,47 +4917,8 @@
                 $combo.igCombo('closeDropDown');
             });
 
-            // Local filtering with virtualization
-            test(testId_78, function () {
-                var ds, filteredItems,
-					$combo = $("#local-filtering-virt");
-
-                ds = new $.ig.DataSource({
-                    dataSource: "http://localhost/api/invoices?callback=?",
-                    schema: {
-                        fields: [
-                            { name: "ProductID", type: "number" },
-                            { name: "ProductName", type: "string" },
-                            { name: "CustomerID", type: "string" }],
-                        searchField: "d.results"
-                    },
-                    responseDataKey: "d.results",
-                    responseDataType: "jsonp"
-                });
-
-                ds.dataBind();
-                $combo.igCombo({
-                    dataSource: ds,
-				    textKey:"ProductName",
-				    valueKey: "ProductID",
-				    allowCustomValues: true,
-				    filteringType:"local",
-				    virtualization: true,
-                });
-                
-                //Add your wait
-                setTimeout(function () {
-                    //Make assertion
-                    start();
-                    $combo.igCombo("filter", "Sauerkraut");
-                    filteredItems = $combo.igCombo("filteredItems");
-                    equal(filteredItems.length, 33, "Filtered items are 33");
-                }, 2000);
-                stop(); // Pause the test
-            });
-
             // Keyboard interacting
-            test(testId_79, function () {
+            test(testId_78, function () {
                 var data, selectedItem, $input,
                 $combo = $("#keyboard-interactions");
 
@@ -5004,7 +4965,7 @@
             });
 
             // Mouse interacting
-            test(testId_80, function () {
+            test(testId_79, function () {
                 var data, $input,
                 $combo = $("#mouse-interactions");
 
@@ -5042,6 +5003,34 @@
                 notEqual(document.activeElement, $input[0], "Input is not focused");
             });
 
+            // Local filtering with virtualization
+            test(testId_80, function () {
+                var filteredItems, allItems,
+                   $combo = $("#local-filtering-virt");
+
+                $combo.igCombo({
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    textKey: "ProductName",
+                    valueKey: "ProductID",
+                    responseDataKey: "d.results",
+                    allowCustomValues: true,
+                    filteringType: "local",
+                    virtualization: true
+                });
+
+                stop(); // Pause the test
+                //Add your wait
+                setTimeout(function () {
+                    //Make assertion
+                    start();
+                    $combo.igCombo("filter", "Sauerkraut");
+                    filteredItems = $combo.igCombo("filteredItems");
+                    equal(filteredItems.length, 33, "Filtered items are 33");
+                    allItems = $combo.igCombo("items");
+                    equal(allItems.length, 2155, "Items are 2155");
+                }, 2000);
+               
+            });
         });
     </script>
 </body>
