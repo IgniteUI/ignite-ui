@@ -5463,14 +5463,19 @@ if (typeof jQuery !== "function") {
 			return true;
 		},
 		_processInternalValueChanging: function (value) { //MaskEditor
-			if (this._validateValue(value) && this._validateRequiredPrompts(value)) {
+			if (this._validateValue(value) &&
+				(this.options.revertIfNotValid && this._validateRequiredPrompts(value) ||
+				!this.options.revertIfNotValid)) {
 				this._updateValue(value);
 			} else {
 
 				// If the value is not valid, we clear the editor
 				if (this.options.revertIfNotValid) {
-					value = this._valueInput.val();
+					value = this._valueInput.val().trim();
 					this._updateValue(value);
+
+					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
+					value = this._parseValueByMask(value.trim());
 					this._editorInput.val(value);
 				} else {
 					this._clearValue();
