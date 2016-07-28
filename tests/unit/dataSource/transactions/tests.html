@@ -5,6 +5,7 @@
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
@@ -13,7 +14,7 @@
 	<script type="text/javascript"> 
 	 
 	 $(function () {
-		var ds1, ds2;
+		var ds1, ds2, ds3;
 		function loadTestbeds() {
 			// define a simple data source control
 			ds1 = new $.ig.DataSource({dataSource: adventureWorks, aggregateTransactions: false, primaryKey: "ProductID"});
@@ -86,6 +87,79 @@
 			ds2.updateRow(1, {Name: "Adjustable Race", ProductNumber : "AR-5381"});
 			equal(ds2.pendingTransactions().length, 0);
 			ds2.rollback();
+		});
+
+		module("igDataSource transactions (autoCommit - ", {
+			setup: function() {
+				ds3 = new $.ig.DataSource({
+					dataSource: adventureWorks.slice(0, 4), 
+					primaryKey: "ProductID",
+					schema: {
+						fields: [
+							{ name: "ProductID", type: "number" },
+							{ name: "Name", type: "string" },
+							{ name: "ModifiedDate", type: "date" },
+							{ name: "MakeFlag", type: "bool" },
+							
+						] 
+					}
+				});
+				ds3.dataBind();
+			},
+			teardown: function() {
+			}
+		});
+		// test removeRecordByKey
+		test("Test removeRecordByKey, removeRecordByIndex, updateRow, addRow, insertRow", function () {
+			var l = ds3.data().length, d, row;
+			ds3.filter([
+				{ fieldName: "ProductID", expr: 1, cond: "greaterThan" }
+			]);
+			//removeRecordByKey
+			ds3.removeRecordByKey(4);
+			d = ds3.data();
+			ok(l === 4 &&
+				ds3.filteredData().length === 2 &&
+				d.length === 3 &&
+				d[2].ProductID === 3,
+				"Test removeRecordByKey - remove row with ProductID 4");
+			// removeRecordByIndex
+			ds3.removeRecordByIndex(0);
+			d = ds3.data();
+			ok(ds3.filteredData().length === 2 &&
+				d.length === 2 &&
+				d[0].ProductID === 2,
+				"Test removeRecordByIndex - remove row with index 0");
+			// updateRow
+			row = d[0];
+			row.Name = "Test";
+			ds3.updateRow(row.ProductID, row, true);
+			d = ds3.data();
+			ok(d[0].Name === "Test" &&
+				d.length === 2, "Test updateRow");
+			// addRow
+			row = { 
+					ProductID: 5,
+					Name: "Test2",
+					ModifiedDate: new Date(),
+					MakeFlag: true
+			};
+			ds3.addRow(row.ProductID, row, true);
+			d = ds3.data();
+			ok(d.length === 3 &&
+				d[2].Name === "Test2", "Test addRow");
+			// insertRow
+			row = { 
+					ProductID: 6,
+					Name: "Test3",
+					ModifiedDate: new Date(),
+					MakeFlag: true
+			};
+			ds3.insertRow(row.ProductID, row, d.length - 1, true);
+			d = ds3.data();
+			ok(d.length === 4 &&
+				d[2].Name === "Test3" &&
+				d[3].Name === "Test2", "Test insertRow");
 		});
 	});
 	</script>
