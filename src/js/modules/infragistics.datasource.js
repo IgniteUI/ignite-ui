@@ -5618,14 +5618,7 @@
 							d = this._sources[ j ];
 							if (d.dataView()[ 0 ].length) {
 								for (k = 0; k < d.dataView()[ 0 ].length; k++) {
-									// check if there is schema defined or not
-									if (d.schema() && d.schema().fields().length > 0) {
-										data[ i ][ d.schema().fields()[ k ] ] = i >= d.dataView().length ?
-											"" : d.dataView()[ i ][ d.schema().fields()[ k ] ];
-									} else {
-										data[ i ][ rindex ] = i >= d.dataView().length ? "" : d.dataView()[ i ][ k ];
-									}
-									rindex++;
+									data[ i ][ rindex++ ] = i >= d.dataView().length ? "" : d.dataView()[ i ][ k ];
 								}
 							} else {
 								for (prop in d.dataView()[ i ]) {

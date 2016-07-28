@@ -198,21 +198,21 @@
 				});
 				ds.dataBind();
 				view = ds.dataView();
-				equal(5, view.length, "Length should be 5.");
+				equal(view.length, 5, "Length should be 5.");
 				// check first record that should be merged
-				equal(0, view[0]["ID"], "PK ID: 0");
-				equal(0, view[0]["ProductID"], "Merged PK ProductID: 0");
-				equal(1, view[0]["Price"], "Merged Price 1");
-				equal("Angel", view[0]["Name"], "Merged Name: Angel");
-				equal("Angel", view[0]["OrderedBy"], "Merged OrderedBy: Angel");
-				equal("1", view[0]["NutritionRank"], "Merged NutritionRank: '1'");
+				equal(view[0]["ID"], 0, "PK ID: 0");
+				equal(view[0]["ProductID"], 0, "Merged PK ProductID: 0");
+				equal(view[0]["Price"], 1, "Merged Price 1");
+				equal(view[0]["Name"], "Angel", "Merged Name: Angel");
+				equal(view[0]["OrderedBy"], "Angel", "Merged OrderedBy: Angel");
+				equal(view[0]["NutritionRank"], "1", "Merged NutritionRank: '1'");
 				// check last record that should contain only second data source props
-				equal(4, view[4]["ID"], "PK ID: 4");
-				equal(undefined, view[4]["ProductID"], "Merged PK ProductID: undefined");
-				equal(10.123, view[4]["Price"], "Merged Price 10.123");
-				equal("Taz", view[4]["Name"], "Merged Name: Taz");
-				equal(undefined, view[4]["OrderedBy"], "Merged OrderedBy: undefined");
-				equal(undefined, view[4]["NutritionRank"], "Merged NutritionRank: undefined");
+				equal(view[4]["ID"], 4, "PK ID: 4");
+				equal(view[4]["ProductID"], undefined, "Merged PK ProductID: undefined");
+				equal(view[4]["Price"], 10.123, "Merged Price 10.123");
+				equal(view[4]["Name"], "Taz", "Merged Name: Taz");
+				equal(view[4]["OrderedBy"], undefined, "Merged OrderedBy: undefined");
+				equal(view[4]["NutritionRank"], undefined, "Merged NutritionRank: undefined");
 			});
 
 			test("Test Mashup scenario 2: combining local data sources without PKs", function () {
@@ -233,21 +233,21 @@
 				});
 				ds.dataBind();
 				view = ds.dataView();
-				equal(5, view.length, "Length should be 5.");
+				equal(view.length, 5, "Length should be 5.");
 				// check first record that should be merged
-				equal(0, view[0]["ID"], "PK ID: 0");
-				equal(0, view[0]["ProductID"], "Merged PK ProductID: 0");
-				equal(1, view[0]["Price"], "Merged Price 1");
-				equal("Angel", view[0]["Name"], "Merged Name: Angel");
-				equal("Angel", view[0]["OrderedBy"], "Merged OrderedBy: Angel");
-				equal("1", view[0]["NutritionRank"], "Merged NutritionRank: '1'");
+				equal(view[0]["ID"], 0, "PK ID: 0");
+				equal(view[0]["ProductID"], 0, "Merged PK ProductID: 0");
+				equal(view[0]["Price"], 1, "Merged Price 1");
+				equal(view[0]["Name"], "Angel", "Merged Name: Angel");
+				equal(view[0]["OrderedBy"], "Angel", "Merged OrderedBy: Angel");
+				equal(view[0]["NutritionRank"], "1", "Merged NutritionRank: '1'");
 				// check last record that should contain only second data source props
-				equal(4, view[4]["ID"], "PK ID: 4");
-				equal(undefined, view[4]["ProductID"], "Merged PK ProductID: undefined");
-				equal(10.123, view[4]["Price"], "Merged Price 10.123");
-				equal("Taz", view[4]["Name"], "Merged Name: Taz");
-				equal(undefined, view[4]["OrderedBy"], "Merged OrderedBy: undefined");
-				equal(undefined, view[4]["NutritionRank"], "Merged NutritionRank: undefined");
+				equal(view[4]["ID"], 4, "PK ID: 4");
+				equal(view[4]["ProductID"], undefined, "Merged PK ProductID: undefined");
+				equal(view[4]["Price"], 10.123, "Merged Price 10.123");
+				equal(view[4]["Name"], "Taz", "Merged Name: Taz");
+				equal(view[4]["OrderedBy"], undefined, "Merged OrderedBy: undefined");
+				equal(view[4]["NutritionRank"], undefined, "Merged NutritionRank: undefined");
 			});
 
 			test("Test Mashup scenario 3: combining local array data sources", function () {
@@ -263,24 +263,60 @@
 				});
 				ds.dataBind();
 				view = ds.dataView();
-				equal(5, view.length, "Length should be 5.");
+				equal(view.length, 5, "Length should be 5.");
 				// check first record that should be merged
-				equal(0, view[0][0], "Merged 0: 0");
-				equal("Angel", view[0][1], "Merged 1: Angel");
-				equal("1", view[0][2], "Merged 2: '1'");
-				equal(0, view[0][3], "Merged 3: 0");
-				equal("Angel", view[0][4], "Merged 4: Angel");
-				equal(1, view[0][5], "Merged 5: 1");
+				equal(view[0][0], 0, "Merged 0: 0");
+				equal(view[0][1], "Angel", "Merged 1: Angel");
+				equal(view[0][2], "1", "Merged 2: '1'");
+				equal(view[0][3], 0, "Merged 3: 0");
+				equal(view[0][4], "Angel", "Merged 4: Angel");
+				equal(view[0][5], 1, "Merged 5: 1");
 				// check last record that should contain only second data source props
-				equal("", view[4][0], "Merged 0: empty string since no type is defined");
-				equal("", view[4][1], "Merged 1: empty string since no type is defined");
-				equal("", view[4][2], "Merged 2: empty string since no type is defined");
-				equal(4, view[4][3], "Merged 3: 4");
-				equal("Taz", view[4][4], "Merged 4: Taz");
-				equal(10.123, view[4][5], "Merged 5: 10.123");
+				equal(view[4][0], "", "Merged 0: empty string since no type is defined");
+				equal(view[4][1], "", "Merged 1: empty string since no type is defined");
+				equal(view[4][2], "", "Merged 2: empty string since no type is defined");
+				equal(view[4][3], 4, "Merged 3: 4");
+				equal(view[4][4], "Taz", "Merged 4: Taz");
+				equal(view[4][5], 10.123, "Merged 5: 10.123");
 			});
 
-			test("Test Mashup scenario 4: combining local data sources through PK - FK relationship", function () {
+			test("Test Mashup scenario 4: combining local array data sources with schemas", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					// array data sources with schemas become object data sources
+					dataSource:  [
+						{
+							dataSource: data4,
+							schema: {
+								fields: [
+									{ name: 0, type: "number" },
+									{ name: 1, type: "string" }
+								]
+							}
+						},
+						{
+							dataSource: data5,
+							schema: {
+								fields: [
+									{ name: 2, type: "number" }
+								]
+							}
+						}
+					]
+				});
+				ds.dataBind();
+				view = ds.dataView();
+				equal(view.length, 5, "Length should be 5.");
+				// check first record that should be merged
+				equal(view[0][0], 0, "Merged 0: 0");
+				equal(view[0][1], "Angel", "Merged 1: Angel");
+				equal(view[0][2], 0, "Merged 2: 0");
+				// check last record that should contain only second data source props
+				equal(view[4][0], undefined, "Merged 0: empty string since no type is defined");
+				equal(view[4][1], undefined, "Merged 1: empty string since no type is defined");
+				equal(view[4][2], 4, "Merged 2: 4");
+			});
+
+			test("Test Mashup scenario 5: combining local data sources through PK - FK relationship", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource:  [
 						{
@@ -300,28 +336,41 @@
 									{ name: "Price" }, { name: "Name" }, { name: "ID" }
 								]
 							}
+						},
+						{
+							// adding the same datasource essentially doesn't change the result but
+							// adds an additional reference in the fkeyhash which increases the coverage
+							// and could prevent some regressions when we are merging more than 2 data sources
+							dataSource: data2,
+							primaryKey: "Name",
+							foreignKey: "OrderedBy",
+							schema: {
+								fields: [
+									{ name: "Price" }, { name: "Name" }, { name: "ID" }
+								]
+							}
 						}
 					]
 				});
 				ds.dataBind();
 				view = ds.dataView();
-				equal(3, view.length, "Length should be 3.");
+				equal(view.length, 3, "Length should be 3.");
 				// check first record that should be merged
-				equal(2, view[0]["ID"], "PK ID: 2");
-				equal(3, view[0]["ProductID"], "Merged PK ProductID: 3");
-				equal(5, view[0]["Price"], "Merged Price 5");
-				equal("Jason", view[0]["Name"], "Merged Name: Jason");
-				equal("Jason", view[0]["OrderedBy"], "Merged OrderedBy: Jason");
-				equal("1", view[0]["NutritionRank"], "Merged NutritionRank: '1'");
-				equal(0, view[2]["ID"], "PK ID: 0");
-				equal(5, view[2]["ProductID"], "Merged PK ProductID: 5");
-				equal(1, view[2]["Price"], "Merged Price 1");
-				equal("Angel", view[2]["Name"], "Merged Name: Angel");
-				equal("Angel", view[2]["OrderedBy"], "Merged OrderedBy: Angel");
-				equal("5", view[2]["NutritionRank"], "Merged NutritionRank: '5'");
+				equal(view[0]["ID"], 2, "PK ID: 2");
+				equal(view[0]["ProductID"], 3, "Merged PK ProductID: 3");
+				equal(view[0]["Price"], 5, "Merged Price 5");
+				equal(view[0]["Name"], "Jason", "Merged Name: Jason");
+				equal(view[0]["OrderedBy"], "Jason", "Merged OrderedBy: Jason");
+				equal(view[0]["NutritionRank"], "1", "Merged NutritionRank: '1'");
+				equal(view[2]["ID"], 0, "PK ID: 0");
+				equal(view[2]["ProductID"], 5, "Merged PK ProductID: 5");
+				equal(view[2]["Price"], 1, "Merged Price 1");
+				equal(view[2]["Name"], "Angel", "Merged Name: Angel");
+				equal(view[2]["OrderedBy"], "Angel", "Merged OrderedBy: Angel");
+				equal(view[2]["NutritionRank"], "5", "Merged NutritionRank: '5'");
 			});
 
-			asyncTest("Test Mashup scenario 5: combining local & remote data sources", function () {
+			asyncTest("Test Mashup scenario 6: combining local & remote data sources", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource:  [
 						{
@@ -341,15 +390,15 @@
 					callback: function () {
 						start();
 						view = arguments[2].dataView();
-						equal(9, view.length, 9);
-						equal("Angel", view[0]["OrderedBy"], "Angel");
-						equal("Bread", view[0]["Name"], "Bread");
+						equal(view.length, 9, 9);
+						equal(view[0]["OrderedBy"], "Angel", "Angel");
+						equal(view[0]["Name"], "Bread", "Bread");
 					}
 				});
 				ds.dataBind();
 			});
 
-			asyncTest("Test Mashup scenario 6: ignorePartialRecords = true", function () {
+			asyncTest("Test Mashup scenario 7: ignorePartialRecords = true", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource: [
 						{
@@ -372,9 +421,9 @@
 					callback: function () {
 						start();
 						view = arguments[2].dataView();
-						equal(3, view.length, 3);
-						equal("Angel", view[0]["OrderedBy"], "Angel");
-						equal("Bread", view[0]["Name"], "Bread");
+						equal(view.length, 3, 3);
+						equal(view[0]["OrderedBy"], "Angel", "Angel");
+						equal(view[0]["Name"], "Bread", "Bread");
 					}
 				});
 				ds.dataBind();
