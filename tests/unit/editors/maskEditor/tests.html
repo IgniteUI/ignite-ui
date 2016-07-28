@@ -261,6 +261,9 @@
 						inputMask : "9900",
 						revertIfNotValid: true
 					});
+					$("#revertEditor2").igMaskEditor({
+						inputMask : "CCC000"
+					});
 				});
 			}
 			initialized = false;
@@ -429,8 +432,6 @@
 						editor.igMaskEditor("insert", "abc");
 						editor.igMaskEditor("select", 0, 3);
 						text = editor.igMaskEditor("getSelectedText");
-						// TODO: The problem is in the test timeout, not the control. Fix later!!!
-						//equal(text, "abc", "Selected text is not correct");
 						start = editor.igMaskEditor("getSelectionStart");
 						end = editor.igMaskEditor("getSelectionEnd");
 						equal(start, 0, "Selection start is correct");
@@ -712,7 +713,7 @@
 				equal(editorInput.igMaskEditor("value"), "053-400-03", "The value should be 053-400-03");
 			});
 			testId = "Revert invalid value";
-			test(testId, 6, function () {
+			test(testId, 8, function () {
 				var editor = $("#revertEditor1");
 				field = editor.igMaskEditor("field");
 
@@ -722,7 +723,7 @@
 				editor.data("igMaskEditor")._processValueChanging(field.val());
 				equal(editor.igMaskEditor("value"), "1234", "Value is not 1234");
 				editor.data("igMaskEditor")._exitEditMode();
-				equal(editor.igMaskEditor("displayValue"), "1234", "Value is not NNAA");
+				equal(editor.igMaskEditor("displayValue"), "1234", "Value is not set");
 
 				editor.data("igMaskEditor")._enterEditMode();
 				editor.data("igMaskEditor")._insert("123_");
@@ -730,7 +731,17 @@
 				editor.data("igMaskEditor")._processValueChanging(field.val());
 				equal(editor.igMaskEditor("value"), "1234", "Value is not 1234");
 				editor.data("igMaskEditor")._exitEditMode();
-				equal(editor.igMaskEditor("displayValue"), "1234", "Value is not NNAA");
+				equal(editor.igMaskEditor("displayValue"), "1234", "Value is not set");
+
+				editor = $("#revertEditor2");
+				field = editor.igMaskEditor("field");
+
+				editor.data("igMaskEditor")._enterEditMode();
+				editor.data("igMaskEditor")._insert("123___");
+				editor.data("igMaskEditor")._processValueChanging(field.val());
+				equal(field.val(), "______", "Value is not cleared");
+				editor.data("igMaskEditor")._exitEditMode();
+				equal(editor.igMaskEditor("displayValue"), "", "Value is not empty");
 			});
 		});
 
@@ -930,6 +941,7 @@
 			<input type="text" id="unfilledCharsPromptEditor1" />
 			<input type="text" id="unfilledCharsPromptEditor2" />
 			<input type="text" id="revertEditor1" />
+			<input type="text" id="revertEditor2" />
 		<input type='submit' value="Submit" />
 		</form>
 	</div>
