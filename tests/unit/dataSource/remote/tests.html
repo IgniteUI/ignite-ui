@@ -436,12 +436,10 @@
 				{fieldName: "LastYear", cond: "lastYear", expr:  new Date(0), logic: "or"},
 				{fieldName: "NextYear", cond: "nextYear", expr:  new Date(0), logic: "or"}
 			];
-			//ds.settings.filtering.exprString = "";
 			ds.settings.paging.enabled = false;
-			// compare the "params" string with the expected one 
 			params = $.param(ds._encodeUrl());
 			currDate = new Date();
-			month = currDate.getMonth();
+			month = currDate.getMonth() + 1;
 			year = currDate.getFullYear();
 			lastMonth = { 
 				month: month - 1 === 0 ? 12 : month - 1, 
@@ -458,6 +456,7 @@
 				"%20or%20year(LastYear)%20eq%20" + (year - 1) +
 				"%20or%20year(NextYear)%20eq%20" + (year + 1) +
 				"&filterLogic=or";
+			equal(params, str);
 		});
 		
 		test("Custom sorting parameters", function() {
