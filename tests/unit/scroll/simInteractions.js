@@ -208,6 +208,67 @@
 		evtTouchStart.originalEvent.touches[ 0 ] = touchObject;
 		node.trigger(evtTouchStart);
 		animationID = setTimeout(moveStep, timePerStep);
+	};	
+	
+	/* 	Simulates touch swipe with IE gesture events
+	*	
+	*	node - element on which that the swipe is being initiated
+	*	stepsMove - array that describes how much moves with each step of the swipe. Structure: [{x: number, y: number}, ...]
+	*	timePerStep - number that specifies how much delay there is between steps
+	*/
+	$.ig.TestUtil.simulateTouchSwipeFromCenterIE = function (node, stepsMove, timePerStep) {
+		var evtTouchStart = $.Event("MSGestureStart"),
+			evtTouchMove = $.Event("MSGestureChange"),			
+			evtTouchEnd = $.Event("MSGestureEnd"),
+			nodeCenterPos = getCenter(node),
+			curStep = 0,
+			animationID = 0,
+			touchObject = {
+				clientX: nodeCenterPos.x,
+				clientY: nodeCenterPos.y,
+				force: 1,
+				identifier: 0,
+				pageX: nodeCenterPos.x,
+				pageY: nodeCenterPos.y,
+				radiusX: 11.5,
+				radiusY: 11.5,
+				rotationAngle: 0,
+				screenX: nodeCenterPos.x,
+				screenY: nodeCenterPos.y,
+				target: node
+			};
+		
+		evtTouchStart.originalEvent = {};
+		evtTouchStart.originalEvent.touches = [];
+		evtTouchStart.target = node[ 0 ];
+		
+		evtTouchMove.originalEvent = {};
+		evtTouchMove.originalEvent.screenX = nodeCenterPos.x;
+		evtTouchMove.originalEvent.screenY = nodeCenterPos.y;
+		evtTouchMove.preventDefault  = function () {};	
+		evtTouchMove.stopPropagation   = function () {};
+		
+		evtTouchEnd.target = node[ 0 ];	
+		
+		function moveStep () {	
+			evtTouchMove.originalEvent.screenX -= stepsMove[ curStep ].x;
+			evtTouchMove.originalEvent.screenY -= stepsMove[ curStep ].y;
+			
+			node.trigger(evtTouchMove);
+			if (curStep < stepsMove.length - 1) {
+				curStep++;
+				animationID = setTimeout(moveStep, timePerStep);
+			} else {
+				node.trigger(evtTouchEnd);
+				clearTimeout(animationID);
+				return;
+			}
+		};
+
+		evtTouchStart.originalEvent.screenX = nodeCenterPos.x;
+		evtTouchStart.originalEvent.screenY = nodeCenterPos.y;
+		node.trigger(evtTouchStart);
+		animationID = setTimeout(moveStep, timePerStep);
 	};
 	
 	function getCenter(node) {		
