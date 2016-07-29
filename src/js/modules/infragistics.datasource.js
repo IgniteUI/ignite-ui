@@ -5590,7 +5590,8 @@
 
 					mergedData = $.extend(true, {}, data, this._hashedDataViews[ 0 ]);
 					for (i = 0; i < this._hashedDataViews.length; i++) {
-						if (!this._sources[ i ].settings.foreignKey) {
+						if (this._sources[ i ].settings.foreignKey === null ||
+						this._sources[ i ].settings.foreignKey === undefined) {
 							//nothing to merge by
 							continue;
 						}

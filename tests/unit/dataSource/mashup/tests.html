@@ -398,6 +398,45 @@
 				ds.dataBind();
 			});
 
+			test("Test Mashup scenario 7: combining igDataSource instances", function () {
+				var view, ds1 = new $.ig.DataSource({
+					dataSource: data1,
+					primaryKey: "ProductID"
+				}), dsm = new $.ig.MashupDataSource({
+					dataSource:  [
+						ds1,
+						{
+							dataSource: new $.ig.DataSource({
+								dataSource: data2,
+								primaryKey: "ID",
+								schema: {
+									fields: [
+										{ name: "Price" }, { name: "Name" }, { name: "ID" }
+									]
+								}
+							})
+						}
+					]
+				});
+				dsm.dataBind();
+				view = dsm.dataView();
+				equal(view.length, 5, "Length should be 5.");
+				// check first record that should be merged
+				equal(view[0]["ID"], 0, "PK ID: 0");
+				equal(view[0]["ProductID"], 0, "Merged PK ProductID: 0");
+				equal(view[0]["Price"], 1, "Merged Price 1");
+				equal(view[0]["Name"], "Angel", "Merged Name: Angel");
+				equal(view[0]["OrderedBy"], "Angel", "Merged OrderedBy: Angel");
+				equal(view[0]["NutritionRank"], "1", "Merged NutritionRank: '1'");
+				// check last record that should contain only second data source props
+				equal(view[4]["ID"], 4, "PK ID: 4");
+				equal(view[4]["ProductID"], undefined, "Merged PK ProductID: undefined");
+				equal(view[4]["Price"], 10.123, "Merged Price 10.123");
+				equal(view[4]["Name"], "Taz", "Merged Name: Taz");
+				equal(view[4]["OrderedBy"], undefined, "Merged OrderedBy: undefined");
+				equal(view[4]["NutritionRank"], undefined, "Merged NutritionRank: undefined");
+			});
+
 			asyncTest("Test Mashup scenario 7: ignorePartialRecords = true", function () {
 				var view, ds = new $.ig.MashupDataSource({
 					dataSource: [
@@ -432,7 +471,7 @@
 	</script>
 </head>
 <body>
-	<div style="float:right;width:400px;overflow:auto" =">
+	<div style="float:right;width:400px;overflow:auto">
 		<h1 id="qunit-header">Test results</h1>
 		<h2 id="qunit-banner"></h2>
 		<h2 id="qunit-userAgent"></h2>
