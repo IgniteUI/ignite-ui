@@ -526,6 +526,31 @@
 			equal(treeDs.dataView()[0].childData[1].Category.ID, 1, "Records are sorted correctly by the mapped value");
 			equal(treeDs.dataView()[0].childData[2].Category.ID, 0, "Records are sorted correctly by the mapped value");
 		});
+		test("Test clearLocalSorting", function () {
+			var dv, ds;
+			ds = new $.ig.DataSource({
+				sorting: { type: "local", defaultDirection: "asc" }, 
+				dataSource: northwindProductsJSON,
+				schema: {
+					fields: [{
+						name: "ID", type: "number"
+					}, {
+						name: "Name", type: "string"
+					}]
+				}
+			}).dataBind();
+			ds
+				.filter([
+							{ fieldName: "ID", expr: "", cond: "notEmpty" }
+						])
+				.sort([{ fieldName: "Name" }], "desc");
+			dv = ds.dataView();
+			ok(dv[0].Name === "Vint Soda" && dv[8].Name === "Bread")
+			ds.clearLocalFilter();
+			ds.clearLocalSorting();
+			dv = ds.dataView();
+			ok(dv[0].ID === 0 && dv[8].ID === 8, "Test after applying clearLocalSorting");
+		});
 	});
 	</script>
 	

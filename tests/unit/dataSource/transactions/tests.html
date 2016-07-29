@@ -111,7 +111,7 @@
 		});
 		// test removeRecordByKey
 		test("Test removeRecordByKey, removeRecordByIndex, updateRow, addRow, insertRow", function () {
-			var l = ds3.data().length, d, row;
+			var l = ds3.data().length, d, row, t, res;
 			ds3.filter([
 				{ fieldName: "ProductID", expr: 1, cond: "greaterThan" }
 			]);
@@ -155,7 +155,9 @@
 					ModifiedDate: new Date(),
 					MakeFlag: true
 			};
-			ds3.insertRow(row.ProductID, row, d.length - 1, true);
+			t = ds3.insertRow(row.ProductID, row, d.length - 1, true);
+			res = ds3.getDetachedRecord(t);
+			equal(res.ProductID, t.row.ProductID, "Test getDetachedRecord");
 			d = ds3.data();
 			ok(d.length === 4 &&
 				d[2].Name === "Test3" &&
