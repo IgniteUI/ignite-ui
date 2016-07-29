@@ -61,7 +61,6 @@ $.widget("ui.igValidator", {
 		*/
 		date: false,
 		/* type="bool|object" Gets or sets option to validate if value is an email.
-			Note: Dependat on JavaScript Date parsing which will accept a wide range of values.
 			bool type="bool" A boolean value indicating if the field should be an email.
 			object type="object" A configuration object with optional error message (e.g. email: { errorMessage: "Enter a valid email"} )
 		*/
@@ -84,7 +83,7 @@ $.widget("ui.igValidator", {
 		creditCard: false,
 		/* type="string|object" Gets or sets regular expression which is used to validate value in text editor.
 			string type="string" A string containing regular expression
-			object type="RegExp" A RegExp object or an object with expression and errorMessage properties.
+			object type="object" A RegExp object or an object with expression and errorMessage properties.
 		*/
 		pattern: null,
 		/* type="dom" Gets or sets custom jQuery element, which innerHTML will be used to show validation messages. That can be SPAN, LABEL or DIV. */
@@ -101,7 +100,7 @@ $.widget("ui.igValidator", {
 			object type="object" A reference to the jQuery object for the target or an object with selector property and custom errorMessage.
 		*/
 		equalTo: null,
-		/* type="function|string|object" Gets or sets a custom function to perform validation. Use 'this' to reference the calling validator and the value and optional field settings arguement to determine and return the state of the field.
+		/* type="function|string|object" Gets or sets a custom function to perform validation. Use 'this' to reference the calling validator and the value and optional field settings argument to determine and return the state of the field.
 			function type="function" The function to call
 			string type="string" Function name, must be in global namespace (window["name"])
 			object type="object" A configuration object with method property being the function and optional error message.
@@ -376,8 +375,10 @@ $.widget("ui.igValidator", {
 		$.Widget.prototype._setOption.apply(this, arguments);
 	},
 	_initalizeRules: function () {
-		this.rules = []; //mokey patch shared rules object.. like NO, staph it
-		// order of rules must be maintained:
+		// prevent using the prototype array
+		this.rules = [];
+
+		// order of rules is important:
 		this.rules.push(new $.ig.igValidatorRequiredRule(this));
 		this.rules.push(new $.ig.igValidatorControlRule(this));
 		this.rules.push(new $.ig.igValidatorNumberRule(this));
@@ -1012,8 +1013,8 @@ $.widget("ui.igValidator", {
 		}
 
 		// cherry-pick options to merge
-		var properties = [ "required", "threshold", "lengthRange", "number", "date",
-							"valueRange", "email", "creditCard", "onblur", "onchange",
+		var properties = [ "required", "threshold", "number", "date", "lengthRange",
+							"valueRange", "email", "creditCard", "custom", "onblur", "onchange",
 							"onsubmit", "successMessage", "errorMessage",
 							"requiredIndication", "optionalIndication" ],
 			extendedOptions = $.extend({}, options);
