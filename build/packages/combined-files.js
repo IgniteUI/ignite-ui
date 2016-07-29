@@ -1,28 +1,39 @@
-var locales = ["bg", "de", "en", "es", "fr", "ja", "ru"], newFiles = {}, i;
+/**
+ * Prepare bundles for each localization
+ */
+function buildLocaleBundles () {
+    var locales = ["bg", "de", "en", "es", "fr", "ja", "ru"],
+    newFiles = {}, i;
 
+    for (var i = 0; i < locales.length; i++) {
+        newFiles["./dist/js/i18n/infragistics-" + locales[i] + ".js"] = "./dist/js/modules/i18n/*-" + locales[i] + ".js"; 
+    }
+    return newFiles;
+}
 /**
  * Get all locale files per locale and return merge pairs like:
- * { "modules/*.js": "i18n/*-en.js", "modules/*.js" }
+ * { "modules/*.js": ["i18n/*-en.js", "modules/*.js"] }
  */
 function buildLocaleMergePairs (locale) {
-    var pairs = {},
+    var pairs = {}, i,
         modulePath = "./dist/js/modules/",
         i18nPath = modulePath + "i18n/",
+        srcPath = "./src/js/modules/i18n/",
         fileName = "",
         grunt = require('grunt'),
-        localeFiles = grunt.file.expand(i18nPath + "*-" + locale + ".js");
+        localeFiles = grunt.file.expand(srcPath + "*-" + locale + ".js");
 
     for (i = 0; i < localeFiles.length; i++) {
         fileName = localeFiles[i].split("/").pop();
         if (fileName === "infragistics.shared-" + locale + ".js") {
              // shared resource file doesn't have "ui" in it.
             pairs[modulePath + "infragistics.ui.shared.js"] = [
-                localeFiles[i],
+                i18nPath + fileName,
                 modulePath + "infragistics.ui.shared.js"
             ]
         } else {
             pairs[modulePath + fileName.replace("-" + locale, "")] = [
-                localeFiles[i],
+                i18nPath + fileName,
                 modulePath + fileName.replace("-" + locale, "")
             ]
         }
@@ -31,50 +42,52 @@ function buildLocaleMergePairs (locale) {
 }
 
 module.exports = {
-    "uglify": {
-        options: {
+    uglify: {
+        source: {
+            cwd: 'dist/',
             expand: true,
-            cwd: 'dist/'
-        },
-        uglifyfiles: {
-            src: ['**/src/js/**/*.js', '!js/modules/i18n/**/*.js', '!**/*-lite.js'],
+            src: ['js/**/*.js', '!js/modules/i18n/**/*.js'],
             dest: 'dist/',
-            expand: true,
             options: {
-                // use the general "keep some" regexp  
-                "preserveComments": /(?:^!|@(?:license|preserve|cc_on))/,
-                "compress": false,
-                "mangle": false,
-                "ASCIIOnly": true
+                preserveComments: /(?:^!|@(?:license|preserve|cc_on))/,
+                compress: false,
+                mangle: false,
+                ASCIIOnly: true
             }
         },
-        uglifylocale: {
+        locale: {
+            cwd: 'dist/js/modules/',
+            expand: true,
+            src: ['i18n/**/*.js'],
+            dest: 'dist/js/modules/',
             options: {
-                src: ['js/modules/i18n/**/*.js'],
-                dest: 'dist/js/modules/i18n/',
-
-                // use the general "keep some" regexp  
                 preserveComments: /(?:^!|@(?:license|preserve|cc_on))/,
                 compress: false,
                 mangle: false
-            },
-            //files: buildLocaleMergePairs("en")
+            }
         }
     },
     concat: {
-        dist: {
-            src: ['src/intro.js', 'src/project.js', 'src/outro.js'],
-            dest: 'dist/built.js',
-            files: {
-                "./dist/js/infragistics.core-lite.js": [
+        locale: {
+            files: buildLocaleBundles("en")
+        },
+        controls: {
+            files: buildLocaleMergePairs("en")
+        },
+        core: {
+            dest: "./dist/js/infragistics.core-lite.js",
+            src: [
                     "./dist/js/i18n/infragistics-en.js",
                     "./dist/js/modules/infragistics.util.js",
                     "./dist/js/modules/infragistics.dataSource.js",
                     "./dist/js/modules/infragistics.templating.js",
                     "./dist/js/modules/infragistics.ui.shared.js",
                     "./dist/js/modules/infragistics.ui.scroll.js"
-                ],
-                "./dist/js/infragistics.lob-lite.js": [
+                ]
+        }, 
+        lob: {
+            dest: "./dist/js/infragistics.lob-lite.js",
+            src: [
                     "./dist/js/modules/infragistics.ui.combo.js",
                     "./dist/js/modules/infragistics.ui.dialog.js",
                     "./dist/js/modules/infragistics.ui.popover.js",
@@ -96,19 +109,7 @@ module.exports = {
                     "./dist/js/modules/infragistics.ui.videoplayer.js",
                     "./dist/js/modules/infragistics.ui.zoombar.js"
                 ]
-            }
         }
     }
 };
 
-/**
- * Prepare bundles for each localization
- */
-/*for (var i = 0; i < locales.length; i++) {
-    newFiles["./dist/js/i18n/infragistics-" + locales[i] + ".js"] = "./dist/js/modules/i18n/*-" + locales[i] + ".js"; 
-}
-// keep order
-for (var key in module.exports.combine.files) {
-     newFiles[key] = module.exports.combine.files[key];
-}
-module.exports.combine.files = newFiles; */

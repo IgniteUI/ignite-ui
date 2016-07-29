@@ -57,7 +57,7 @@ module.exports = function (grunt) {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
 			tests: ["qunit", "coverage", "instrumentedFiles"],
-			build: ["dist/js/**/*", "dist/css/**/*", "dist/bower.json"]
+			build: ["dist"]
 		},
 		coveralls: {
 			// LCOV coverage file (can be string, glob or array)
@@ -125,8 +125,8 @@ module.exports = function (grunt) {
 				}]
 			}
 		},
-		uglify: require('./build/packages/combined-files.js').uglify//,
-		//concat: require('./build/packages/combined-files.js').concat
+		uglify: require('./build/packages/combined-files.js').uglify,
+		concat: require('./build/packages/combined-files.js').concat
     });
 
 	grunt.loadNpmTasks("grunt-contrib-clean");
@@ -253,6 +253,6 @@ module.exports = function (grunt) {
 		grunt.task.run("copy");
 	    grunt.task.run("uglify");
 		grunt.task.run("concat");
-	    grunt.task.run("cssmin");			
+		grunt.task.run("cssmin");
 	});
 };
