@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+
+	<script type="text/javascript">
+		var data1 = {
+			"Products": [
+				{
+					"ProductID": 1,
+					"UnitsInStock": 762,
+					"ProductDescription": "mvoaivcjcww",
+					"UnitPrice": 292.20739439698281,
+					"DateAdded": "1998-12-29T16:08:19.897",
+					"Suppliers": [
+						{ "SupplierID": 1, "ProductID": 1, "Capacity": 942 }
+					]
+				},
+				{
+					"ProductID": 2,
+					"UnitsInStock": 844,
+					"ProductDescription": "usbylhl",
+					"UnitPrice": 65.586992104345455,
+					"DateAdded": "2003-02-18T22:01:51.506",
+					"Suppliers": [
+						{ "SupplierID": 1, "ProductID": 2, "Capacity": 464 }
+					]
+				},
+				{
+					"ProductID": 3,
+					"UnitsInStock": 950,
+					"ProductDescription": "nrb ",
+					"UnitPrice": 833.54804889929858,
+					"DateAdded": "2009-10-28T07:24:56.14",
+					"Suppliers": [
+						{ "SupplierID": 1, "ProductID": 3, "Capacity": 464 }
+					]
+				}
+			],
+			"TotalRecordsCount": 3,
+			"Metadata": {}
+		}; 
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			module("Hierarchical DataSource");
+
+			// test init
+			test("HierarchicalDataSource 1.1: basic init", function () {
+				var view, res, ds = new $.ig.HierarchicalDataSource({
+					dataSource: data1,
+					primaryKey: "ProductID",
+					responseDataKey: "Products",
+					schema: {
+						fields: [
+							{ name: "ProductID", type: "number" },
+							{ name: "UnitsInStock", type: "number" },
+							{ name: "ProductDescription", type: "string" },
+							{ name: "UnitPrice", type: "number" },
+							{ name: "DateAdded", type: "date" },
+							{ name: "Suppliers" }
+						],
+						layouts: [
+							{
+								childrenDataProperty: "Suppliers",
+								foreignKey: "ProductID",
+								primaryKey: "SupplierID",
+								schema: {
+									fields: [
+										{ name: "ProductID", type: "number" },
+										{ name: "SupplierID", type: "number" },
+										{ name: "Capacity", type: "number" }
+									]
+								}
+							}
+						],
+						searchField: "Products"
+					}
+				});
+				ds.dataBind();
+				// Hierarchical Grid doesn't really have really specific markers that show that it was properly bound entirely because
+				// it does it on demand - we need to test if there is a rootDS and if dataAt works 
+				res = ds.dataAt("ProductID:2", "Suppliers");
+				ok(ds.root() instanceof $.ig.DataSource, "Root DS was init correctly.");
+				equal(res[0].SupplierID, 1, "DataAt returned the correct rec");
+				equal(res[0].ProductID, 2, "DataAt returned the correct rec");
+				equal(res[0].Capacity, 464, "DataAt returned the correct rec");
+			});
+		});
+	</script>
+</head>
+</body>
+	<div style="float:right;width:400px;overflow:auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+	<div id="logger" style="font-style: Verdana;">
+		<div id="verb"></div>
+		<div id="url"></div>
+		<div id="data"></div>
+	</div>
+</body>
+</html>
