@@ -239,3 +239,12 @@
 .igscroll-hnative-inner {
 	height: 17px;
 }
+
+.igscroll-filler {
+	position: absolute;
+	width: 17px;
+	height: 17px;
+	right: 0px;
+	bottom: 0px;
+	background-color: white;
+}
