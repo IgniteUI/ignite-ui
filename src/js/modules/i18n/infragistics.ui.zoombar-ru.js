@@ -16,10 +16,10 @@ if (!$.ig.Zoombar) {
 
 	$.extend($.ig.Zoombar, {
 
-	    locale: {
-	        zoombarTargetNotSpecified: "Виджету igZoombar необходим целевой объект для отображения!",
+		locale: {
+			zoombarTargetNotSpecified: "Виджету igZoombar необходим целевой объект для отображения!",
 			zoombarTypeNotSupported: "Целевой виджет, к которому Zoombar пытается присоединиться, не поддерживается!",
-			zoombarProviderNotRecognized: "igZoombar could not recognize the provider specified. If you are using a custom one, please ensure that you are passing the name of an existing Class in the $.ig namespace or an instance of one.",
+			zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
 			optionChangeNotSupported: "Изменение этой опции после создания igZoombar не поддерживается:"
 		}
 	});

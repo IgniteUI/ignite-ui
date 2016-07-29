@@ -16,11 +16,11 @@ if (!$.ig.Zoombar) {
 
 	$.extend($.ig.Zoombar, {
 
-	    locale: {
-	        zoombarTargetNotSpecified: "igZoombar necesita un destino válido al que adjuntarse.",
-	        zoombarTypeNotSupported: "El tipo de widget al que la barra de zoom intenta adjuntarse no se admite.",
-			zoombarProviderNotRecognized: "igZoombar could not recognize the provider specified. If you are using a custom one, please ensure that you are passing the name of an existing Class in the $.ig namespace or an instance of one.",
-	        optionChangeNotSupported: "No se admite cambiar la opción siguiente después de que igZoombar se haya creado:"
+		locale: {
+			zoombarTargetNotSpecified: "igZoombar necesita un destino válido al que adjuntarse.",
+			zoombarTypeNotSupported: "El tipo de widget al que la barra de zoom intenta adjuntarse no se admite.",
+			zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
+			optionChangeNotSupported: "No se admite cambiar la opción siguiente después de que igZoombar se haya creado:"
 		}
 	});
 

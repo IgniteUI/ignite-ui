@@ -278,6 +278,13 @@
 				$("#decimalSeparatorEditor").igNumericEditor({
 					decimalSeparator: ","
 				});
+
+				$("#spinUp").igNumericEditor({
+					value: 2,
+					maxValue: 6,
+					minValue: 0,
+					spinWrapAround: true
+				});
 			});
 		}
 		initialized = false;
@@ -943,6 +950,21 @@
 				ok($editor2.attr("class") === undefined, "Some classes are still not removed");
 			}, 100);
 		});
+
+		testId = 'SpinUp method';
+		test(testId, 4, function () {
+			$("#spinUp").igNumericEditor("spinUp",3);
+			equal($("#spinUp").igNumericEditor("value"), 5, 'Spin up method do not take into account the delta parameter.');
+
+			$("#spinUp").igNumericEditor("spinUp",3);
+			equal($("#spinUp").igNumericEditor("value"), 0, 'spinWrapAround does not work.');
+
+			$("#spinUp").igNumericEditor("spinUp",5);
+			$("#spinUp").igNumericEditor("spinDown",3);
+			equal($("#spinUp").igNumericEditor("value"), 2, 'Spin down method do not take into account the delta parameter.');
+			$("#spinUp").igNumericEditor("spinDown",3);
+			equal($("#spinUp").igNumericEditor("value"), 6, 'spinWrapAround does not work.');
+		});
 	});
 	function paste(input, newVal) {
 		// create a mouse click event
@@ -1186,6 +1208,8 @@
 		<div id="negativeEditor1"></div>
 		<br />
 		<div id="spinScientific"></div>
+		<br />
+		<div id="spinUp"></div>
 	</div>
 </body>
 </html>
