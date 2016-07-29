@@ -14,20 +14,6 @@
 
 /*global jQuery,setTimeout,window,document,MSGesture*/
 (function ($) {
-	var _attr = "data-scroll",
-	 _find = function (notMobile) {
-		setTimeout(function () {
-			if (!$.ig.util.isModernizrAvailable || $.ig.util.isTouch) {
-				$("body").find("[" + _attr + "]").each(function () {
-					var elem = $(this), scroll = elem.data("igScroll");
-					if ((!scroll || !scroll.evts) && !elem.data("igScroll") && !elem.data("scrollview")) {
-						elem.igScroll({ _find: true });
-					}
-				});
-			}
-		}, notMobile === true ? 1000 : 100);
-	 };
-
 	/* S.K. Fix for bug 212350: For IE11 and up msSetPointerCapture and msReleasePointerCapture are depricated. setPointerCapture and releasePointerCapture are supported from IE10 and up. */
 	var setPointerCaptureFName = typeof Element.prototype.msSetPointerCapture === "function" ?
 								"msSetPointerCapture" :
@@ -393,6 +379,17 @@
 			if (key === "scrollbarV") {
 				this._bindVScrollbar(value);
 			}
+		},
+
+		option: function (optionName, value) {
+			if (optionName === "scrollTop" && value === undefined) {
+				return this._scrollTop(null, true);
+			}
+			if (optionName === "scrollLeft" && value === undefined) {
+				return this._scrollLeft(null, true);
+			}
+
+			this._super(optionName, value);
 		},
 
 		_getContentPositionX: function () {
@@ -1044,55 +1041,57 @@
 		},
 
 		/** Syncs the main content element horizontally */
-		_syncContentX: function (baseElem, useTransform) {
+		_syncContentX: function (baseElem /*, useTransform */) {
 			var self = this,
-				destX, destY;
+				destX;
 
 			if (!baseElem) {
 				return;
 			}
 
-			if (useTransform) {
-				destX = self._getContentPositionX();
-				destY = self._getContentPositionY();
+			//if (useTransform) {
+			//	destX = self._getContentPositionX();
+			//	var destY = self._getContentPositionY();
 
-				this._content.css({
-					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
-				});
+			//	this._content.css({
+			//		"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
+			//	});
 
-			} else {
-				destX = baseElem.scrollLeft;
+			//} else {
+			destX = baseElem.scrollLeft;
 
-				//this is to not affect the scrolling when clicking on track area of a linked scrollbarH
-				self._scrollFromSyncContentH = true;
-				this._container.scrollLeft(destX);
-			}
+			//this is to not affect the scrolling when clicking on track area of a linked scrollbarH
+			self._scrollFromSyncContentH = true;
+			this._container.scrollLeft(destX);
+
+			//}
 		},
 
 		/** Syncs the main content element vertically */
-		_syncContentY: function (baseElem, useTransform) {
+		_syncContentY: function (baseElem /*, useTransform*/) {
 			var self = this,
-				destX, destY;
+				destY;
 
 			if (!baseElem) {
 				return;
 			}
 
-			if (useTransform) {
-				destX = self._getContentPositionX();
-				destY = self._getContentPositionY();
+			//if (useTransform) {
+			//	var destX = self._getContentPositionX();
+			//	destY = self._getContentPositionY();
 
-				this._content.css({
-					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
-				});
+			//	this._content.css({
+			//		"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
+			//	});
 
-			} else {
-				destY = baseElem.scrollTop;
+			//} else {
+			destY = baseElem.scrollTop;
 
-				//this is to not affect the scrolling when clicking on track area of a linked scrollbarV
-				self._scrollFromSyncContentV = true;
-				this._container.scrollTop(destY);
-			}
+			//this is to not affect the scrolling when clicking on track area of a linked scrollbarV
+			self._scrollFromSyncContentV = true;
+			this._container.scrollTop(destY);
+
+			//}
 		},
 
 		//Syncs elements that are linked on X axis
@@ -1338,15 +1337,12 @@
 		},
 
 		_onMSGestureChangeContainer: function (event) {
-			if (!this._moving) {
-				return true;
-			}
-
 			var touchPos = event.originalEvent,
 				destX = this._startX + this._touchStartX - touchPos.screenX,
 				destY = this._startY + this._touchStartY - touchPos.screenY;
 
 			this._scrollToXY(destX, destY, true);
+			this._moving = true;
 		},
 
 		_onMSGestureEndContainer: function () {
@@ -1369,7 +1365,6 @@
 
 			this._touchStartX = touch.pageX;
 			this._touchStartY = touch.pageY;
-			this._moving = true;
 
 			this._bStopInertia = true; //stops any current ongoing inertia
 			this._speedDecreasing = false;
@@ -1457,7 +1452,6 @@
 				this._bStopInertia = false;
 				this._showScrollBars(false, true);
 				this._inertiaInit(speedX, speedY, this._bMixedEnvironment);
-				this._moving = true;
 			} else {
 				this._hideScrollBars(true, true);
 
@@ -1469,8 +1463,6 @@
 					horizontal: null
 				});
 			}
-
-			this._moving = false;
 		},
 
 		_onMouseEnterContainer: function () {
@@ -1612,7 +1604,7 @@
 				.addClass(css.verticalScrollArrow)
 				.addClass(css.verticalScrollArrowDown);
 
-			this._vDragHeight = this._elemHeight * ((this._elemHeight - 2 * 15) / this._contentHeight);
+			this._vDragHeight = (this._elemHeight - 3 * 15) * this._percentInViewV;
 			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
 				.addClass(css.verticalScrollThumbDrag)
 				.css("height", this._vDragHeight + "px");
@@ -2067,7 +2059,7 @@
 				.addClass(css.horizontalScrollArrow)
 				.addClass(css.horizontalScrollArrowRight);
 
-			this._hDragWidth = this._elemWidth * this._percentInViewH - 3 * 15;
+			this._hDragWidth = (this._elemWidth - 3 * 15) * this._percentInViewH;
 			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
 				.addClass(css.horizontalScrollThumbDrag)
 				.css("width", this._hDragWidth + "px");
@@ -2574,17 +2566,20 @@
 			}
 
 			var self = this,
-				animationID;
+				animationID,
+				calculatedDest;
 
 			function updateCSS() {
 				if (self._hBarDrag) {
+					calculatedDest = destX * (self._elemWidth - 3 * 15) / self._contentWidth;
+
 					self._hBarDrag
-						.css("-webkit-transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)") /* Safari */
-						.css("-moz-transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)") /* Firefox */
-						.css("-ms-transform", "translate3d(" + destX * self._percentInViewH + "px, 0px, 0px)"); /* IE */
+						.css("-webkit-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Safari */
+						.css("-moz-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Firefox */
+						.css("-ms-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)"); /* IE */
 				}
 				if (self._vBarDrag) {
-					var calculatedDest = destY * (self._elemHeight - 3 * 15) / self._contentHeight;
+					calculatedDest = destY * (self._elemHeight - 3 * 15) / self._contentHeight;
 
 					self._vBarDrag
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
@@ -2656,8 +2651,6 @@
 				this._vBarDrag
 					.css("opacity", newOpacity)
 					.css("width", 5 + "px");
-			} else if (this._vBarDrag && this._percentInViewV >= 1) {
-				this._vBarDrag.css("opacity", 0);
 			}
 
 			if (this._hBarDrag && this._percentInViewH < 1) {
@@ -2665,12 +2658,10 @@
 					.css("height", 5 + "px")
 					.css("top", 5 + "px")
 					.css("opacity", newOpacity);
-			} else if (this._hBarDrag && this._percentInViewH >= 1) {
-				this._hBarDrag.css("opacity", 0);
 			}
 		},
 
-		/** Sets the mobile scrollbars opacity. */
+		/** Sets the desktop scrollbars opacity. */
 		_setScrollBarsOpacity: function (newOpacity) {
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
 				this._vBarDrag
@@ -2678,10 +2669,6 @@
 					.css("opacity", newOpacity);
 				this._vBarArrowUp.css("opacity", newOpacity);
 				this._vBarArrowDown.css("opacity", newOpacity);
-			} else if (this._vBarDrag && this._percentInViewV >= 1) {
-				this._vBarDrag.css("opacity", 0);
-				this._vBarArrowUp.css("opacity", 0);
-				this._vBarArrowDown.css("opacity", 0);
 			}
 
 			if (this._hBarDrag && this._percentInViewH < 1) {
@@ -2691,10 +2678,6 @@
 					.css("opacity", newOpacity);
 				this._hBarArrowLeft.css("opacity", newOpacity);
 				this._hBarArrowRight.css("opacity", newOpacity);
-			} else if (this._hBarDrag && this._percentInViewH >= 1) {
-				this._hBarDrag.css("opacity", 0);
-				this._hBarArrowLeft.css("opacity", 0);
-				this._hBarArrowRight.css("opacity", 0);
 			}
 		},
 
@@ -2702,10 +2685,6 @@
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
 				this._vBarDrag
 					.css("width", 5 + "px");
-				this._vBarArrowUp.css("opacity", 0);
-				this._vBarArrowDown.css("opacity", 0);
-			} else if (this._vBarDrag && this._percentInViewV >= 1) {
-				this._vBarDrag.css("opacity", 0);
 				this._vBarArrowUp.css("opacity", 0);
 				this._vBarArrowDown.css("opacity", 0);
 			}
@@ -2716,10 +2695,6 @@
 					.css("top", 5 + "px");
 				this._hBarArrowLeft.css("opacity", 0);
 				this._hBarArrowRight.css("opacity", 0);
-			} else if (this._hBarDrag && this._percentInViewH >= 1) {
-				this._hBarDrag.css("opacity", 0);
-				this._vBarArrowUp.css("opacity", 0);
-				this._vBarArrowDown.css("opacity", 0);
 			}
 		},
 
@@ -2788,17 +2763,12 @@
 		}
 	});
 	$.extend($.ui.igScroll, { version: "<build_number>" });
-	try {
-		$(":jqmData(role='page')").live("pageshow", _find);
-	} catch (ex) {
-		_find(true);
-		$(document).on("igcontrolcreated", function (event, args) {
-			/* M.H. 5 Feb 2014 Fix for bug #161906: Scrolling is not possible with virtualization and the grid rendered on button click on an iPad */
-			var container = args.owner.scrollContainer();
-			if (container.length === 0 && args.owner.container) {
-				container = args.owner.container().find("[data-scroll]").eq(0);
-			}
-			container.igScroll({ modifyDOM: false });
-		});
-	}
+	$(document).on("igcontrolcreated", function (event, args) {
+		/* M.H. 5 Feb 2014 Fix for bug #161906: Scrolling is not possible with virtualization and the grid rendered on button click on an iPad */
+		var container = args.owner.scrollContainer();
+		if (container.length === 0 && args.owner.container) {
+			container = args.owner.container().find("[data-scroll]").eq(0);
+		}
+		container.igScroll({ modifyDOM: false });
+	});
 }(jQuery));
