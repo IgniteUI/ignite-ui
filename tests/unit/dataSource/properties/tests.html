@@ -126,6 +126,62 @@
 				$.ig.DataSourceLocale.locale.errorParsingJsonNoSchema + " should be thrown"
 			);
 		});
+		
+		test("Test creating JSONDataSource", function () {
+			 var adventureWorks = {
+                "Records": [{
+                    "ProductID": 1,
+                    "Name": "Adjustable Race",
+                    "ProductNumber": "AR-5381"
+                }, {
+                    "ProductID": 2,
+                    "Name": "Bearing Ball",
+                    "ProductNumber": "BA-8327"
+                }
+            ]};
+			 var jsonpDs = new $.ig.JSONDataSource({
+                        dataSource: adventureWorks,
+                        responseDataKey: "Records"
+                    });
+ 
+            jsonpDs.dataBind();
+			equal(jsonpDs.type(), "json", "Check if dataSource type is correct.");
+			equal(jsonpDs.dataView().length, 2, "DataView should contain 2 records.");			
+			
+			jsonpDs = new $.ig.JSONDataSource();
+
+			equal(jsonpDs.type(), "json", "Check if dataSource type is correct.");			
+		});
+		
+		test("Test creating HtmlTableDataSource ", function () {
+			var htmltableDs = new $.ig.HtmlTableDataSource ();
+			equal(htmltableDs.type(), "htmlTableDom", "Check if dataSource type is correct.");			
+		});
+		
+		test("Test creating ArrayDataSource  ", function () {
+			var arrayDs = new $.ig.ArrayDataSource();
+			equal(arrayDs.type(), "array", "Check if dataSource type is correct.");			
+		});
+		
+		test("Test creating RemoteDataSource   ", function () {
+			var arrayDs = new $.ig.RemoteDataSource ();
+			equal(arrayDs.type(), "remoteUrl", "Check if dataSource type is correct.");			
+		});
+		
+		test("Test creating JSONPDataSource", function () {
+			var JSONPDataSource = new $.ig.JSONPDataSource  ();
+			equal(JSONPDataSource.settings.responseDataType , "jsonp", "Check if responseDataType is correct.");			
+		});
+		
+		test("Test creating XmlDataSource ", function () {
+			var xmlds  = new $.ig.XmlDataSource();
+			equal(xmlds.type(), "xml", "Check if dataSource type is correct.");				
+		});
+		
+		test("Test creating FunctionDataSource", function () {
+			var funcDs  = new $.ig.FunctionDataSource ();
+			equal(funcDs.type(), "function", "Check if dataSource type is correct.");				
+		});
 	});
 	</script>
 	
