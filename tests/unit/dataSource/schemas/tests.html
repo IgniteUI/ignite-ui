@@ -3,6 +3,8 @@
 <head>
 	<title> Infragistics jQuery Data Source - applying schemas and search fields </title> 
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
@@ -365,7 +367,136 @@
 		test(testId_19, function () {
 			var ds = new $.ig.DataSource({dataSource: $("#t1")[0]}).dataBind();
 			equal(11, ds.dataView().length, 11);
-		});			
+		});
+
+		test("Test isObjEmpty API method", function () { 
+			ok(!arrayOfObjectsSchema.isObjEmpty({ CustomProp: "Test"}), "If object has custom prop should return false.");
+			ok(arrayOfObjectsSchema.isObjEmpty({}), "If object has no custom prop should return true.");
+		});
+
+		test("Test transformning data with a htmlListDom schema", function () {
+			var htmlListDomSchema = new $.ig.DataSchema("htmlListDom", 
+				{ 
+					primaryKey: { name: "pk" },
+					imageUrl: { name: "imgUrl" },
+					target: {name : "target"},
+					navigateUrl: { name: "navigateUrl" },
+					header: { name: "HeaderText" },
+					text: { name: "CustomText" },
+					count: { name: "countKey" },
+					value: { name: "value" },
+					description: { name: "customDescription" },
+					isDivider: { name: "Devider" },
+					outputResultsName: "res_data",
+					fields: [{ name: "model", type: "string" }] });
+
+			var res = htmlListDomSchema.transform("<ul><li id='item1'><img src='/myImgUrl'></img><img src='/myImgUrl2'></img><a href='myUrl' target='myTarget'>Model1</a><h1>Heading1</h1><p>Description1</p> <span class='ui-li-count'>100</span></li><li><a href='#'>Model2<span class='ui-li-count'>1</span><img src='imgUrl2'></img><h2>Heading2</h2><p>Description2</p></a> </li><ul>");
+		
+			equal(JSON.stringify(res[0]), '{"pk":0,"Devider":false,"imgUrl":"/myImgUrl","navigateUrl":"myUrl","target":"myTarget","HeaderText":"Heading1","customDescription":"Description1","countKey":100,"CustomText":"Model1","value":"item1"}', "Check if transformed data for the first record is correct.");
+			equal(JSON.stringify(res[1]), '{"pk":1,"Devider":false,"navigateUrl":"#","imgUrl":"imgUrl2","HeaderText":"Heading2","customDescription":"Description2","countKey":1,"CustomText":"Model2"}', "Check if transformed data for the second record is correct.");
+
+		});
+
+		test("Test transformning data with date fields with a json schema", function () {
+			var jsonData = {
+				Records: [{
+					"ProductID": 1,
+					"Name": "Adjustable Race",
+					"ProductNumber": "AR-5381",
+					"Date": new Date("01/01/2011")
+				}],
+				TotalRecordsCount:0,
+				Metadata: {
+					"timezoneOffset": -14400000,
+					"timezoneOffsets": {
+						"1": {
+							"Date": -14400000
+						},
+						"2": {
+							"Date": -14400000
+						}
+					}
+				}
+			};
+			var jsonSchema = new $.ig.DataSchema("json", { fields: [{ name: "ProductID", type: "number" }, { name: "Name", type: "string" }, { name: "ProductNumber", type: "number" }, { name:"Date", type:"date"}], searchField: "Records" });
+			jsonSchema._pk = "ProductID";
+			var result = jsonSchema.transform(jsonData);
+			equal(result[0].Date.toDateString(), new Date("01/01/2011").toDateString(), "Verify date field data is properly transformed");
+		});
+
+		test("Test transformning data with a singleRow schema", function () {
+			var data = {
+				"ID": 1,
+				"Name": "Adjustable Race",
+				"2": "",
+				"EmptyValue":""
+			};
+			
+			var singleRowSchema = new $.ig.DataSchema("singleRow", { fields: [{ name: "ID", type: "number" }, { name: "Name" }, { type: "string" }, {}] });
+			singleRowSchema._pk = "ID";
+			var result = singleRowSchema.transform(data);
+			equal(result.ID, 1, "Ensure that the data is properly transformed event in cases when the schema information is not complte.");
+			equal(result.Name, "Adjustable Race", "Ensure that the data is properly transformed event in cases when the schema information is not complte.");
+			equal(result["2"], "", "Ensure that the data is properly transformed event in cases when the schema information is not complte.");
+			equal(result["3"], undefined, "Ensure that the data is properly transformed event in cases when the schema information is not complte.");
+		});
+
+		test("Test transforming incorrect data with htmlTableDom schema", function () {
+			var invalidData1= "<div><div>";
+			var errorCount= 0;
+			var htmlTableDomSchema = new $.ig.DataSchema("htmlTableDom", { fields: [{ name: "ProductID", type: "number" }, { name: "Name", type: "string" }, { name: "ProductNumber", type: "number" }, { name: "Date", type: "date" }], searchField: "Records" });
+			try {
+				htmlTableDomSchema.transform(invalidData1);
+			} catch (e) {
+				errorCount++;
+				equal(e.message, "There was an error extracting the data from the HTML Table and applying the schema : Expected a tbody or a table as a parameter.",
+					"If invalid table element is passed an error should be thrown and the error message should be correct.");
+			}
+
+			var invalidData2 = "<div><table><tbody><tr><td></td></tr></tbody></table><div>";
+			try {
+				htmlTableDomSchema.transform(invalidData2);
+			} catch (e) {
+				errorCount++;
+				ok(e.message.startsWith("There was an error extracting the data from the HTML Table and applying the schema"),
+					"If invalid row elements are passed and error should be thrown and the error message should be correct.")
+			}
+			equal(errorCount, 2, "Two errors should have been thrown.");
+		});
+
+		test("Test transforming invalid json with jsonSchema", function () {
+			var errorCount = 0;
+
+			//PK value is undefined
+			var jsonData = {
+				Records: [{
+					"ProductID": undefined,
+					"Name": "Adjustable Race",
+					"ProductNumber": "AR-5381"
+				}]
+			};
+
+			try {
+				var jsonSchema = new $.ig.DataSchema("json", { fields: [{ name: "ProductID", type: "number" }, { name: "Name", type: "string" }, { name: "ProductNumber", type: "number" }], searchField: "Records" });
+				jsonSchema._pk = "ProductID";
+				var result = jsonSchema.transform(jsonData);
+			} catch (e) {
+				errorCount++;
+				equal(e.message, "There was an error parsing the JSON data and applying the defined data schema: The input data doesn't match the schema, the following field couldn't be mapped: ProductID",
+					"Verrify that if the pk value is undefined an error is thrown with the correct error message.");
+			}
+
+			try {
+				var jsonSchema2 = new $.ig.DataSchema("json", { fields:null, searchField: "Records" });
+				var result = jsonSchema2.transform(jsonData);
+			} catch (e) {
+				errorCount++;
+				ok(e.message.startsWith("There was an error parsing the JSON data and applying the defined data schema"), "If no fields are define an error should be thrown.");
+			}
+			equal(errorCount, 2, "Two errors should have been thrown.");
+		});
+
+
 	});
 	
 	
