@@ -109,7 +109,8 @@
 				window.Bug89Testbed = function () {
 					$("#89Editor1").igDatePicker({
 						datepickerOptions: {
-							minDate : new Date(2016, 06, 12)
+							minDate : new Date(2016, 06, 12),
+							maxDate: new Date(2016, 06, 31)
 						}
 					});
 				}
@@ -270,7 +271,7 @@
 			
 			testId = 'Issue 89';
 			test(testId, 4, function () {
-			    var calendar, calendarVisibility, notifierVisibility, field;
+			    var calendar, calendarVisibility, notifierVisibility, field
 				field = $("#89Editor1").igDatePicker("field");
 			    $("#89Editor1").igDatePicker("dropDownButton").click();
 				stop();
