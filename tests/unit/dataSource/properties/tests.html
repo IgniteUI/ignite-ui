@@ -3,7 +3,8 @@
 <head>
 	<title> Infragistics jQuery Data Source - Tests for general properties, API methods different than filtering, sorting or paging </title> 
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
-	
+	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
@@ -146,49 +147,419 @@
  
             jsonpDs.dataBind();
 			equal(jsonpDs.type(), "json", "Check if dataSource type is correct.");
-			equal(jsonpDs.dataView().length, 2, "DataView should contain 2 records.");			
+			equal(jsonpDs.dataView().length, 2, "DataView should contain 2 records.");
 			
 			jsonpDs = new $.ig.JSONDataSource();
 
-			equal(jsonpDs.type(), "json", "Check if dataSource type is correct.");			
+			equal(jsonpDs.type(), "json", "Check if dataSource type is correct.");
 		});
 		
 		test("Test creating HtmlTableDataSource ", function () {
 			var htmltableDs = new $.ig.HtmlTableDataSource ();
-			equal(htmltableDs.type(), "htmlTableDom", "Check if dataSource type is correct.");			
+			equal(htmltableDs.type(), "htmlTableDom", "Check if dataSource type is correct.");
 		});
 		
 		test("Test creating ArrayDataSource  ", function () {
 			var arrayDs = new $.ig.ArrayDataSource();
-			equal(arrayDs.type(), "array", "Check if dataSource type is correct.");			
+			equal(arrayDs.type(), "array", "Check if dataSource type is correct.");
 		});
 		
 		test("Test creating RemoteDataSource   ", function () {
 			var arrayDs = new $.ig.RemoteDataSource ();
-			equal(arrayDs.type(), "remoteUrl", "Check if dataSource type is correct.");			
+			equal(arrayDs.type(), "remoteUrl", "Check if dataSource type is correct.");
 		});
 		
 		test("Test creating JSONPDataSource", function () {
 			var JSONPDataSource = new $.ig.JSONPDataSource  ();
-			equal(JSONPDataSource.settings.responseDataType , "jsonp", "Check if responseDataType is correct.");			
+			equal(JSONPDataSource.settings.responseDataType , "jsonp", "Check if responseDataType is correct.");
 		});
 		
 		test("Test creating XmlDataSource ", function () {
 			var xmlds  = new $.ig.XmlDataSource();
-			equal(xmlds.type(), "xml", "Check if dataSource type is correct.");				
+			equal(xmlds.type(), "xml", "Check if dataSource type is correct.");
 		});
 		
 		test("Test creating FunctionDataSource", function () {
 			var funcDs  = new $.ig.FunctionDataSource ();
-			equal(funcDs.type(), "function", "Check if dataSource type is correct.");				
+			equal(funcDs.type(), "function", "Check if dataSource type is correct.");
 		});
+
+		var dsSummaries, dsLocal, hierarchicalDS;
+		function loadAPITestbeds() {
+			var data = [
+				{ "ID": 0, "Name": "Bread", "Price": 2.5 },
+				{ "ID": 1, "Name": "Milk", "Price": 3.5 },
+				{ "ID": 2, "Name": "Vint soda", "Price": 20.9 }
+			];
+
+			var jsonData = [{
+				"ID": 0,
+				"Name": "Food",
+				"Category": { "d": [{ "ID": 0, "Name": "Food", "Active": true, "Date": "\/Date(1059660800000)\/" }] },
+				"Products": [
+                    { "ID": 0, "Name": "Bread", "Price": "2.5" }
+				]
+			},
+		{
+			"ID": 1,
+			"Name": "Beverages",
+			"Category": { "d": [{ "ID": 2, "Name": "Beverages", "Active": true, "Date": "\/Date(1159660800000)\/" }] },
+			"Products": [
+				{ "ID": 1, "Name": "Milk", "Price": "3.5" },
+				{ "ID": 2, "Name": "Vint soda", "Price": "20.9" }
+			]
+		},
+		{
+			"ID": 2,
+			"Name": "Electronics",
+			"Category": { "d": [{ "ID": 5, "Name": "Electronics", "Active": false, "Date": "\/Date(1859660800000)\/" }] },
+			"Products": [
+				{ "ID": 7, "Name": "DVD Player", "Price": "35.88" },
+				{ "ID": 8, "Name": "LCD HDTV", "Price": "1088.8" }
+			]
+		}];
+
+			dsSummaries = new $.ig.DataSource({
+				dataSource: data,
+				schema: {
+					fields: [{
+						name: "Name"
+					}, {
+						name: "Price"
+					}, {
+						name: "Rating"
+					}]
+				},
+				summaries: {
+					type: "local",
+					columnSettings: [{
+						columnKey: "Price",
+						allowSummaries: true,
+						summaryOperands: [{
+							type: "count",
+							active: true,
+							order: 0
+						}]
+					}]
+				}, 
+				paging: {type: "local", pageSize:1}
+			});
+			
+			dsSummaries.dataBind();
+
+			dsLocal = new $.ig.DataSource({
+				dataSource: data,
+				primaryKey: "ID",
+				schema: {
+					fields: [
+					{
+						name: "ID"
+					},
+					{
+						name: "Name"
+					}, {
+						name: "Price"
+					}, {
+						name: "Rating"
+					}]
+				},
+				summaries: {
+					type: "local"
+				}, 
+				paging: {type: "local"},
+				filtering: {type: "local", defaultFields:[]}
+			});
+			
+			dsLocal.dataBind();
+
+			hierarchicalDS = new $.ig.DataSource({
+				dataSource: jsonData,
+				primaryKey: "ID",
+				defaultChildrenDataProperty: "Products",
+				schema: {
+					fields: [
+					{
+						name: "ID"
+					},
+					{
+						name: "Name"
+					}
+					],
+					layouts: {
+						"/Products": {
+							key: "Products",
+							fields: [
+							{
+								name: "ID"
+							},
+							{
+								name: "Name"
+							}
+							]
+						},
+						"/Category": {
+							responseDataKey: "d",
+							key: "Category",
+							fields: [
+							{
+								name: "ID"
+							},
+							{
+								name: "Name"
+							}
+							]
+						}
+					}
+				}
+			});
+
+			hierarchicalDS.dataBind();
+		}
+
+		isInitialized = false;
+		module("igDataSource API Methods", {
+			setup: function () {
+				//pause testing until data source is initialized
+				if (!isInitialized) {
+					stop();
+					loadAPITestbeds();
+					setTimeout(function () { start(); }, 500);
+					isInitialized = true;
+				}
+			},
+			teardown: function () {
+			}
+		});
+
+		test("Test dataSummaries API method", function () {
+			var summariesData = dsSummaries.dataSummaries();
+			equal(summariesData, dsSummaries.dataView(), "When local summaries are enabled the data.")
+		});
+
+		test("Test summariesSettings API method", function () {
+			var summariesSettings = dsSummaries.summariesSettings();
+			equal(summariesSettings, dsSummaries.settings.summaries, "summariesSettings API method should return the current summary settings.");
+			var newSettings = { type: "local" };
+			dsSummaries.summariesSettings(newSettings);
+			equal(dsSummaries.settings.summaries, newSettings, "Verify that settings have been applied.");
+
+		});
+
+		test("Test addRow when rowAdded option is defined", function () {
+			var rowAddedFuncCalled = false;
+			dsLocal.settings.callee = function () {
+			};
+
+			dsLocal.settings.rowAdded = function(){
+				rowAddedFuncCalled= true;
+			};
+			dsLocal.addRow(100, { "ID": 100, "Name": "Bread", "Price": 2.5 }, true);
+
+			stop();
+
+			setTimeout(function(){
+				//check when there is a callback func
+				ok(rowAddedFuncCalled, "The rowAdded function should be called.");
+
+				dsLocal.settings.callee = null;
+				rowAddedFuncCalled = false;
+				dsLocal.addRow(101, { "ID": 100, "Name": "Bread", "Price": 2.5 }, true);
+
+				setTimeout(function(){
+					start();
+					//check when there is no callback func
+					ok(rowAddedFuncCalled, "The rowAdded function should be called.");
+				},100);
+
+			}, 100);
+
+
+		});
+
+		test("Test deleteRow when rowDeleted option is defined", function () {
+			rowDeletedFuncCalled = false;
+			dsLocal.settings.aggregateTransactions = false;
+
+			dsLocal.settings.callee = function () {
+			};
+			dsLocal.settings.rowDeleted = function () {
+				rowDeletedFuncCalled = true;
+			};
+
+			dsLocal.deleteRow(101, true);
+			stop();
+			setTimeout(function () {
+				ok(rowDeletedFuncCalled, "rowDeleted function should be called.");
+				rowDeletedFuncCalled = false;
+				dsLocal.settings.callee = null;
+				dsLocal.deleteRow(100, true);
+				setTimeout(function () {
+					start();
+					ok(rowDeletedFuncCalled, "rowDeleted function should be called.")
+				}, 100);
+			}, 100);
+
+		});
+
+		test("Test insertRow when rowInserted option is defined", function () {
+			rowInsertedFuncCalled = false;
+
+			dsLocal.settings.callee = function () {
+			};
+			dsLocal.settings.rowInserted = function () {
+				rowInsertedFuncCalled = true;
+			};
+
+			dsLocal.insertRow(1001, { "ID": 1001, "Name": "Bread", "Price": 2.5 }, 2, false);
+			stop();
+			setTimeout(function () {
+				ok(rowDeletedFuncCalled, "rowInserted function should be called.");
+				rowInsertedFuncCalled = false;
+				dsLocal.settings.callee = null;
+				dsLocal.insertRow(1001, { "ID": 1001, "Name": "Bread", "Price": 2.5 }, 2, false);
+				setTimeout(function () {
+					start();
+					ok(rowInsertedFuncCalled, "rowInserted function should be called.")
+				}, 100);
+			}, 100);
+		});
+
+		test("Test commit API method - commit all", function () {
+			equal(dsLocal.pendingTransactions().length, 2, "Pending transactions should be 2.");
+			dsLocal.commit();
+			equal(dsLocal.pendingTransactions().length, 0, "Pending transactions should be empty.");
+
+		});
+
+		test("Test adding row for child layout - schema.layouts", function () {
+			stop();
+			setTimeout(function () {
+				hierarchicalDS.addRow(200, { "ID": 200, "Name": "Food200" }, true);
+				start();
+				var newRec = hierarchicalDS.data()[hierarchicalDS.data().length - 1];
+				ok(newRec.ID === 200 &&  Array.isArray(newRec.Category.d) && Array.isArray(newRec.Products), "Verify that the child layout collections are created in the new record.");
+			}, 100);
+		
+		});
+
+		test("Test rollback API method - rollback transaction by id", function () {
+
+			var transaction = dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, false);
+
+			equal(dsLocal.pendingTransactions().length, 1, "There should be a single pending transaction.");
+
+			dsLocal.rollback(transaction.rowId);
+
+			equal(dsLocal.pendingTransactions().length, 0, "There should be a no pending transaction after the transaction has been rolled back.");
+		});
+
+
+
+		test("Test saveChanges API method - success", function () {
+			var callBackCalled = false;
+			var customCallBackCalled = false;
+			$.mockjax({
+				url: 'updateSuccess',
+				responseText: {
+					Success: true
+				}
+			});
+			dsLocal.allTransactions().clear();
+			dsLocal.settings.updateUrl = "updateSuccess";
+
+
+			function successCallbackFunc() { 
+				callBackCalled = true;
+			}
+			dsLocal._addChangesSuccessHandler(successCallbackFunc);
+
+			dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, true);
+
+			equal(dsLocal.allTransactions().length, 1, "There should be a single unsaved transaction.");
+
+			dsLocal.saveChanges(function () { customCallBackCalled = true; });
+			stop();
+
+			setTimeout(function () {
+				start();
+				equal(dsLocal.allTransactions().length, 0, "There should be no unsaved transactions after saveChanges is called and the request is successful.");
+				ok(callBackCalled, "Success callback should be called.");
+				ok(customCallBackCalled, "Custom Success callback should be called.")
+			}, 500);
+		});
+
+
+
+		test("Test saveChanges API method - error", function () { 
+			var callBackCalled = false;
+			var customCallBackCalled = false;
+
+			function errorCallbackFunc() {
+				callBackCalled = true;
+			}
+			dsLocal._addChangesErrorHandler(errorCallbackFunc);
+
+			$.mockjax({
+				url: 'updateFail',
+				responseText: {
+					Success: false
+				}
+			});
+			dsLocal.allTransactions().clear();
+			dsLocal.settings.updateUrl = "updateFail";
+
+			dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, true);
+
+			equal(dsLocal.allTransactions().length, 1, "There should be a single unsaved transaction.");
+
+			dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
+			stop();
+
+			setTimeout(function () {
+				equal(dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
+				ok(callBackCalled, "Error callback should be called.");
+				ok(customCallBackCalled, "Custom Error callback should be called.");
+
+				dsLocal.settings.updateUrl = "updateFail2";
+				callBackCalled = false;
+				customCallBackCalled = false;
+				dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
+				setTimeout(function () {
+					start();
+					equal(dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
+					ok(callBackCalled, "Error callback should be called.");
+					ok(customCallBackCalled, "Custom Error callback should be called.");
+				},100);
+
+			}, 500);
+		
+		});
+
+		test("Test getDetachedRecord API method", function () {
+			dsLocal.settings.primaryKey = null;
+			var t = dsLocal.setCellValue(0, "Name", "NewVal", true);
+			var rec = dsLocal.getDetachedRecord(t);
+
+			equal(rec.Name, "NewVal", "Detached value should be updated.");
+		});
+
+		//test("Test remote summaries - encoded summaries params", function () {
+		//});
+
+		//test("Test summariesResponse API method", function () { });
+
+
+		//test("Remote filter xml data", function () { });
+
+		//test("Test stringToXmlObject API method", function () { });
+
 	});
 	</script>
 	
 </head>
 <body>
 <div id="div1"></div>
-<div style="float:right;width:400px;overflow:auto"">
+<div style="float:right;width:400px;overflow:auto">
     <h1 id="qunit-header">Test results</h1>
      <h2 id="qunit-banner"></h2>
      <h2 id="qunit-userAgent"></h2>
