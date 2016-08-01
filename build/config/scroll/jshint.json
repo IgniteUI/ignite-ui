@@ -1,0 +1,6 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.ui.scroll.js",
+		"<%= config.modulesDir%>/infragistics.util.js"
+	]
+}
