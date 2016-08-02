@@ -93,7 +93,22 @@
 		});
 		
 		var testId = 'Editors initialization.';
-		test(testId, 6,function () {
+		test(testId, 8,function () {
+			
+			throws(function() {
+					$('#inputEditor1').igBaseEditor();
+				}, 
+				$.ig.Editor.locale.renderErrMsg,
+				"igBaseEditor should not be initialized"
+			);
+			
+			throws(function() {
+					$("#textareaEditorFake").igTextEditor();
+				},
+				$.ig.Editor.locale.multilineErrMsg,
+				"You should have the type of the editor as multiline"
+			);
+
 			ok(typeof($("#inputEditor1").igTextEditor)  === 'function', "Editors Script is not loaded");
 			ok($('#inputEditor1').data("igTextEditor") !== undefined, 'Error creating igTextEditor in an input');
 			ok($('#divEditor1').data("igTextEditor") !== undefined, 'Error creating igTextEditor in a div');
@@ -448,6 +463,7 @@
 	<div id="igMaskEditorNotification"></div>
 	<div id="igDateEditorNotification"></div>
 	<input type="text" id="texteditorSetOptions" />
+	<textarea id="textareaEditorFake"></textarea>
 	<p id="notifierTarget"></p>
 </div>
 </body>
