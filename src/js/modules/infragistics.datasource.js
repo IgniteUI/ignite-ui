@@ -6043,24 +6043,10 @@
 				then the key is assumed to be composite and will be split based on "," */
 				if (paths[ i ] !== "") {
 					for (j = 0; data && j < data.length; j++) {
-						if (ckey && ckey.indexOf(",") !== -1) {
-							ckeys = ckey.split(",");
-							ckeyvals = ckeyval.split(",");
-							for (k = 0; k < ckeys.length; k++) {
-								if (!data[ j ][ ckeys[ k ] ].charAt && ckeyvals[ k ].charAt) {
-									ckeyvals[ k ] = parseInt(ckeyvals[ k ], 10);
-								}
-								match = (data[ j ][ ckeys[ k ] ] === ckeyvals[ k ]);
-								if (!match) {
-									break;
-								}
-							}
-						} else {
-							if (data[ j ][ ckey ] !== undefined && !data[ j ][ ckey ].charAt && ckeyval.charAt) {
-								ckeyval = parseInt(ckeyval, 10);
-							}
-							match = (data[ j ][ ckey ] === ckeyval);
+						if (data[ j ][ ckey ] !== undefined && !data[ j ][ ckey ].charAt && ckeyval.charAt) {
+							ckeyval = parseInt(ckeyval, 10);
 						}
+						match = (data[ j ][ ckey ] === ckeyval);
 						/* special case when we have responseDataKey / search
 						fields defined for every children data instance */
 						if (match) {
