@@ -75,12 +75,35 @@ $.ig.dependencies = [
 
 /*/ igDataChart /// */
 	{
+		widget: "igExtCore",
+		priority: true,
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.ext_core.js",
+			"$path$/modules/infragistics.ext_collections.js",
+			"$path$/modules/infragistics.ext_ui.js" ]
+	},
+	{
 		widget: "igDVCore",
 		priority: true,
-		scripts: [ "$path$/modules/infragistics.dv.core.js",
+		dependency: [ { name: "igExtCore" } ],
+		scripts: [ "$path$/modules/infragistics.dv_core.js",
+			"$path$/modules/infragistics.dv_geometry.js",
 			"$path$/modules/infragistics.dvcommonwidget.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		locale: [ "$localePath$/infragistics.dvcommonwidget-$locale$.js" ]
+	},	
+	{
+		widget: "igChartCore",
+		dependency: [ { name: "igUtil" }, { name: "igDataSource" },
+			{ name: "igDVCore" }, { name: "igTemplating" } ],
+		scripts: [ "$path$/modules/infragistics.legend.js", 
+				"$path$/modules/infragistics.ui.chart.js" ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		css: [
+			"$path$/structure/modules/infragistics.ui.shared.css",
+			"$path$/structure/modules/infragistics.ui.chart.css",
+			"$path$/structure/modules/infragistics.ui.html5.css"
+			]
 	},
 	{
 		widget: "igDVMapCore",
@@ -193,9 +216,11 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igPieChart",
-		dependency: [ { name: "igDataChart" } ],
+		dependency: [ { name: "igChartCore" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.chart_piechart.js" ]
+		scripts: [
+			"$path$/modules/infragistics.piechart.js"
+			]
 	},
 	{
 		widget: "igDoughnutChart",
@@ -207,7 +232,7 @@ $.ig.dependencies = [
 			{ name: "igChartLegend" } ],
 		scripts: [
 			"$path$/modules/infragistics.ui.basechart.js",
-			"$path$/modules/infragistics.chart_piechart.js",
+			"$path$/modules/infragistics.piechart.js",
 			"$path$/modules/infragistics.ui.doughnutchart.js"
 			],
 		locale: [ "$localePath$/infragistics.ui.doughnutchart-$locale$.js" ],
