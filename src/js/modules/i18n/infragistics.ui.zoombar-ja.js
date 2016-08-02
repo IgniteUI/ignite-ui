@@ -19,7 +19,7 @@ if (!$.ig.Zoombar) {
 		locale: {
 			zoombarTargetNotSpecified: "igZoombar を有効なターゲットにアタッチする必要があります。",
 			zoombarTypeNotSupported: "ズームバーにアタッチするウィジェット タイプはサポートされません。",
-			zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
+			zoombarProviderNotRecognized: "igZoombar が指定したクラスからプロバイダーを初期化できなかったか、渡された値がクラスではありません。",
 			optionChangeNotSupported: "igZoombar が作成された後のこのオプションの変更はサポートされません:"
 		}
 	});
