@@ -897,7 +897,7 @@
 				originalRec = this.findRecordByKey(t.rowId);
 			}
 			/* o = $.extend(true, {}, originalRec); */
-			if (this._data[ 0 ] !== "array") {
+			if ($.type(this._data[ 0 ]) !== "array") {
 				for (i in originalRec) {
 					if (originalRec.hasOwnProperty(i)) {
 						o[ i ] = originalRec[ i ];
@@ -914,7 +914,7 @@
 			}
 			/* merge objects or arrays
 			return $.extend(true, {}, o, t.row); */
-			if (o !== "array") {
+			if ($.type(o) !== "array") {
 				for (i in t.row) {
 					if (t.row.hasOwnProperty(i)) {
 						o[ i ] = t.row[ i ];
