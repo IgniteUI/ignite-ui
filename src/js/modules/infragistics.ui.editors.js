@@ -8858,6 +8858,15 @@ if (typeof jQuery !== "function") {
 				this._detachButtonsEvents(this._spinDownButton);
 			}
 		},
+		_setBlur: function (event) { // igDatePicker
+			if (this._pickerOpen) {
+				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker and return focus
+				this._editorInput.focus();
+				return;
+			} else {
+				this._super(event);
+			}
+		},
 		_pickerDefaults: function () {
 			var self = this, pickerDefaults;
 			pickerDefaults = {
@@ -8895,7 +8904,15 @@ if (typeof jQuery !== "function") {
 						self._editorInput.focus();
 					}
 				},
-				onClose: $.proxy(self._triggerDropDownClosed, self)
+				beforeShow: function(/*input*/) {
+					// fires before input focus
+					self._pickerOpen = true;
+				},
+				onClose: function (/*dateText, inst*/) {
+					// fires before input blur
+					delete self._pickerOpen;
+					self._triggerDropDownClosed();
+				}
 			};
 			return pickerDefaults;
 		},
@@ -8903,7 +8920,7 @@ if (typeof jQuery !== "function") {
 			var self = this, options, regional;
 
 			//#207222 S.D. Change options to have priority instead of regional settings
-			regional = $.extend(self._dpRegion(), self.options.datepickerOptions) || {};
+			regional = $.extend({}, self._dpRegion(), self.options.datepickerOptions) || {};
 
 			options = $.extend(regional, this._pickerDefaults());
 			if (regional.onSelect) {
@@ -8922,6 +8939,15 @@ if (typeof jQuery !== "function") {
 					igOnClose.call(this);
 					if (self.options.datepickerOptions && self.options.datepickerOptions.onClose) {
 						self.options.datepickerOptions.onClose.call(this, dateText, inst);
+					}
+				};
+			}
+			if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
+				var isbeforeShow = regional.beforeShow;
+				options.beforeShow = function (input) {
+					isbeforeShow.call(this);
+					if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
+						self.options.datepickerOptions.beforeShow.call(this, input);
 					}
 				};
 			}
@@ -9708,7 +9734,7 @@ if (typeof jQuery !== "function") {
 				this._setFocus();
 			}
 		},
-		_setBlur: function (event) {
+		_setBlur: function (event) { // Checkbox
 			this._editorContainer.removeClass(this.css.focus);
 			this._triggerBlur(event);
 			if (this._validator) { // TODO VERIFY
