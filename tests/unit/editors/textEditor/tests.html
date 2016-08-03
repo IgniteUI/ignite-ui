@@ -29,11 +29,6 @@
 		// Create a editors
 		function loadTestbeds() {
 			$(function () {
-				try {
-					$('#inputEditor1').igBaseEditor();
-				} catch (e) {
-					console.log(e);
-				}
 				$("#inputEditor1").igTextEditor({
 					includeKeys: "abc",
 					maxLength: 10,
@@ -118,11 +113,7 @@
 				$("#multilineEditor").igTextEditor({
 					textMode: "multiline"
 				});
-				try {
-					$("#textareaEditorFake").igTextEditor();
-				} catch (e) {
-					console.log("You should have the type of the editor as multiline")
-				}
+
 				$("#textareaEditor").igTextEditor({
 					textMode: "multiline"
 				});
@@ -812,7 +803,7 @@
 			}, 100);
 		});
 		testId = "SetOption";
-		test(testId, 20, function () {
+		test(testId, 23, function () {
 			var readEditorInput = $("#readonlyEditor").igTextEditor("field"),
 				readEditorContainer = $("#readonlyEditor").igTextEditor("editorContainer"),
 				readEditorValueInput = readEditorContainer.find("input:hidden"),
@@ -845,26 +836,33 @@
 			$("#readonlyEditor").igTextEditor("option", "value", "");
 			//equal($("#readonlyEditor").igTextEditor("option", "value"), "read it only!", "Value should not be changed");
 			equal($("#readonlyEditor").igTextEditor("option", "value"), "", "Value should be empty string");
-			try {
-				$("#readonlyEditor").igTextEditor("option", "visibleItemsCount", 3);
-			} catch (e) {
-				console.log("Cannot set dynamically those options");
-			}
-			try {
-				$("#readonlyEditor").igTextEditor("option", "buttonType", "spin");
-			} catch (e) {
-				console.log("Cannot set dynamically those options");
-			}
-			try {
-				$("#readonlyEditor").igTextEditor("option", "dropDownMaxHeight", 200);
-			} catch (e) {
-				console.log("Cannot set dynamically those options");
-			}
-			try {
-				$("#readonlyEditor").igTextEditor("option", "dropDownAttachedToBody", true);
-			} catch (e) {
-				console.log("Cannot set dynamically those options");
-			}
+
+			throws( function() {
+					$("#readonlyEditor").igTextEditor("option", "visibleItemsCount", 3);
+				},
+				function(err) {
+					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+				},
+				"Should not set dynamically visibleItemsCount"
+			);
+
+			throws( function() {
+					$("#readonlyEditor").igTextEditor("option", "buttonType", "spin");
+				},
+				function(err) {
+					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+				},
+				"Should not set dynamically buttonType"
+			);
+			
+			throws( function() {
+					$("#readonlyEditor").igTextEditor("option", "dropDownAttachedToBody", true);
+				},
+				function(err) {
+					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+				},
+				"Should not set dynamically dropDownAttachedToBody"
+			);
 
 			// Enable a editor that is not readonly
 			$("#disabledEditor").igTextEditor("option", "disabled", false);
@@ -1096,7 +1094,6 @@
 	<span>clear Value</span>
 	<input id="clearEditor" />
 	<span id="multilineEditor"></span>
-	<textarea id="textareaEditorFake"></textarea>
 	<textarea id="textareaEditor"></textarea>
 	<input id="passEditor" name="password" />
 	<div id="passDiv" ></div>

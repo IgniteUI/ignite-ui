@@ -897,7 +897,7 @@
 				originalRec = this.findRecordByKey(t.rowId);
 			}
 			/* o = $.extend(true, {}, originalRec); */
-			if (this._data[ 0 ] !== "array") {
+			if ($.type(this._data[ 0 ]) !== "array") {
 				for (i in originalRec) {
 					if (originalRec.hasOwnProperty(i)) {
 						o[ i ] = originalRec[ i ];
@@ -914,7 +914,7 @@
 			}
 			/* merge objects or arrays
 			return $.extend(true, {}, o, t.row); */
-			if (o !== "array") {
+			if ($.type(o) !== "array") {
 				for (i in t.row) {
 					if (t.row.hasOwnProperty(i)) {
 						o[ i ] = t.row[ i ];
@@ -1801,50 +1801,57 @@
 			}
 		},
 		summariesResponse: function (key, dsObj) {
-			/* Get summaries calculation data from remote response */
+			/* Applicable only when the data source is bound to remote data.
+			Gets or sets summaries data.
+			If key or dsObj are not set then returns summaries data.
+			Takes summary data from passed argument dsObj(using argument key)
+			paramType="string" optional="true" response key to take summary data(for example "Metadata.Summaries")
+			paramType="object" optional="true" data source object - usually contains information about data records and metadata(holds info about summaries)
+			returnType="object" object of data summaries - e.g.: if datasource has 2 columns - ID and Name then expected format for data summaries is {ID : {max: 1, min: 0, count: 2}, Name: {count: 1}}
+			*/
+			if (!dsObj || !key) {
+				this._dataSummaries = this._dataSummaries || [];
+				return this.dataSummaries();
+			}
 			var rec, resPath, i, schema, func, offsets, offset, obj;
-
-			if (key !== null && key !== "") {
+			if (key.length > 0) {
 				rec = dsObj;
 				resPath = key.split(".");
-				if (key.length > 0) {
-					for (i = 0; i < resPath.length; i++) {
-						/* M.H. 18 Feb 2013 Fix for bug #133286: When the HGrid is bound to remote data,
-						remote summaries are enabled and loadOnDemand is FALSE the summaries for child layouts are not rendered. */
-						if (rec === null || rec === undefined) {
-							break;
-						}
-						rec = rec[ resPath[ i ] ];
+
+				for (i = 0; i < resPath.length; i++) {
+					/* M.H. 18 Feb 2013 Fix for bug #133286: When the HGrid is bound to remote data,
+					remote summaries are enabled and loadOnDemand is FALSE the summaries for child layouts are not rendered. */
+					if (rec === null || rec === undefined) {
+						break;
 					}
-					this._dataSummaries = rec;
-				} else {
-					this._dataSummaries = dsObj;
+					rec = rec[ resPath[ i ] ];
 				}
-				if (this._dataSummaries === undefined || this._dataSummaries === null) {
-					this._dataSummaries = [];
-				}
-				/* M.H. 10 Jan 2014 Fix for bug #160204: Remote Summaries display
-				dates which differ from the ones displayed in the grid */
-				if (this.settings.localSchemaTransform === true && this.schema() &&
-					dsObj && dsObj.Metadata && dsObj.Metadata.timezoneOffsetsSummaries) {
-					offsets = dsObj.Metadata.timezoneOffsetsSummaries;
-					this._dataSummaries._serverOffsetsSummaries = offsets;
-					/* transform dates */
-					schema = this.schema().schema;
-					if (schema && schema.fields) {
-						for (i = 0; i < schema.fields.length; i++) {
-							/* transform date */
-							if (schema.fields[ i ].type === "date" &&
-								offsets[ schema.fields[ i ].name ] !== undefined) {
-								key = schema.fields[ i ].name;
-								for (func in offsets[ key ]) {
-									if (offsets[ key ].hasOwnProperty(key)) {
-										offset = offsets[ key ][ func ];
-										obj = this._dataSummaries[ key ][ func ];
-										if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
-											this._dataSummaries[ key ][ func ] = new Date(
-												parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
-										}
+				this._dataSummaries = rec;
+			} else {
+				this._dataSummaries = dsObj;
+			}
+			this._dataSummaries = this._dataSummaries || [];
+			/* M.H. 10 Jan 2014 Fix for bug #160204: Remote Summaries display
+			dates which differ from the ones displayed in the grid */
+			if (this.settings.localSchemaTransform === true && this.schema() &&
+				dsObj && dsObj.Metadata && dsObj.Metadata.timezoneOffsetsSummaries) {
+				offsets = dsObj.Metadata.timezoneOffsetsSummaries;
+				this._dataSummaries._serverOffsetsSummaries = offsets;
+				/* transform dates */
+				schema = this.schema().schema;
+				if (schema && schema.fields) {
+					for (i = 0; i < schema.fields.length; i++) {
+						/* transform date */
+						if (schema.fields[ i ].type === "date" &&
+							offsets[ schema.fields[ i ].name ] !== undefined) {
+							key = schema.fields[ i ].name;
+							for (func in offsets[ key ]) {
+								if (offsets[ key ].hasOwnProperty(func)) {
+									offset = offsets[ key ][ func ];
+									obj = this._dataSummaries[ key ][ func ];
+									if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
+										this._dataSummaries[ key ][ func ] = new Date(
+											parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
 									}
 								}
 							}
@@ -1852,6 +1859,7 @@
 					}
 				}
 			}
+			return this._dataSummaries;
 		},
 		_populateTransformedData: function (data) {
 			// M.H. populate summaries data
@@ -5467,7 +5475,7 @@
 		_checkDataBindingComplete: function (status, msg, ownerDs) {
 			/* once this is done, set it as dataSource of the actual mashup data source, and call super's dataBind() */
 			var i, j, k, hasPrimaryKeys = true, hasForeignKeys = false, totalLength = 0, data = [],
-				merged = [], d, rindex, keyVal, prop, keyIndexHash, fkeyIndexHash, mergedData;
+				merged = [], d, rindex = 0, keyVal, prop, keyIndexHash, fkeyIndexHash, mergedData;
 
 			this._dataBindingComplete = true;
 
@@ -5582,15 +5590,16 @@
 										}
 										fkeyIndexHash[ i ][ keyVal ] =
 											this._hashedDataViews[ 0 ][ keyVal ][ this._sources[ i + 1 ].settings.foreignKey ];
-						}
-					}
+									}
+								}
 							}
 						}
 					}
 
 					mergedData = $.extend(true, {}, data, this._hashedDataViews[ 0 ]);
 					for (i = 0; i < this._hashedDataViews.length; i++) {
-						if (!this._sources[ i ].settings.foreignKey) {
+						if (this._sources[ i ].settings.foreignKey === null ||
+						this._sources[ i ].settings.foreignKey === undefined) {
 							//nothing to merge by
 							continue;
 						}
@@ -5609,18 +5618,12 @@
 					// the easiest - no primary keys, process sequentially record by record
 					for (i = 0; i < totalLength; i++) {
 						data[ i ] = {};
+						rindex = 0;
 						for (j = 0; j < this._sources.length; j++) {
 							d = this._sources[ j ];
 							if (d.dataView()[ 0 ].length) {
 								for (k = 0; k < d.dataView()[ 0 ].length; k++) {
-									// check if there is schema defined or not
-									rindex += k;
-									if (d.schema() && d.schema().fields().length > 0) {
-										data[ i ][ d.schema().fields()[ k ] ] = i >= d.dataView().length ?
-											"" : d.dataView()[ i ][ d.schema().fields()[ k ] ];
-									} else {
-										data[ i ][ rindex ] = i >= d.dataView().length ? "" : d.dataView()[ i ][ k ];
-									}
+									data[ i ][ rindex++ ] = i >= d.dataView().length ? "" : d.dataView()[ i ][ k ];
 								}
 							} else {
 								for (prop in d.dataView()[ i ]) {
@@ -5633,7 +5636,6 @@
 								}
 							}
 						}
-						rindex = 0;
 					}
 				}
 				this.settings.dataSource = data;
@@ -5698,7 +5700,7 @@
 							}
 						}
 						rowObject = $.extend(true, {}, rowObject, newObject);
-					} else if (this.settings.foreignKey !== colId) {
+					} else if (this.settings.foreignKey === colId) {
 						rowObject = $.extend(true, {}, rowObject, this.dataSource()[ val ]);
 					}
 					/* update internal record */
@@ -5855,8 +5857,7 @@
 							}
 						}
 						rowObject = $.extend(true, {}, rowObject, newObject);
-					} else if (rowObject[ this.settings.foreignKey ] !==
-						oldRow[ this.settings.foreignKey ]) {
+					} else {
 						rowObject = $.extend(true, {}, rowObject,
 							this.dataSource()[ rowObject[ this.settings.foreignKey ] ]);
 					}
@@ -6049,24 +6050,10 @@
 				then the key is assumed to be composite and will be split based on "," */
 				if (paths[ i ] !== "") {
 					for (j = 0; data && j < data.length; j++) {
-						if (ckey && ckey.indexOf(",") !== -1) {
-							ckeys = ckey.split(",");
-							ckeyvals = ckeyval.split(",");
-							for (k = 0; k < ckeys.length; k++) {
-								if (!data[ j ][ ckeys[ k ] ].charAt && ckeyvals[ k ].charAt) {
-									ckeyvals[ k ] = parseInt(ckeyvals[ k ], 10);
-								}
-								match = (data[ j ][ ckeys[ k ] ] === ckeyvals[ k ]);
-								if (!match) {
-									break;
-								}
-							}
-						} else {
-							if (data[ j ][ ckey ] !== undefined && !data[ j ][ ckey ].charAt && ckeyval.charAt) {
-								ckeyval = parseInt(ckeyval, 10);
-							}
-							match = (data[ j ][ ckey ] === ckeyval);
+						if (data[ j ][ ckey ] !== undefined && !data[ j ][ ckey ].charAt && ckeyval.charAt) {
+							ckeyval = parseInt(ckeyval, 10);
 						}
+						match = (data[ j ][ ckey ] === ckeyval);
 						/* special case when we have responseDataKey / search
 						fields defined for every children data instance */
 						if (match) {
