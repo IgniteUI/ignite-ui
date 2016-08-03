@@ -1,293 +1,481 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title> Infragistics jQuery Data Source - tests for Remote operations & mocked AJAX requests to REST services </title> 
+	<title>Infragistics Mashup Data Source Tests</title>
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
-	
+
 	<script type="text/javascript" src="../../../../bower_components/JSON-js/json2.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
-	
-	<script id="template1" type="text/x-jquery-tmpl">
-		<li> ${ProductID} </li>
-	</script>
-	
-	<script type="text/javascript"> 
-	
-	var ds1 = null, ds2 = null, ds3 = null;
-		
-	$(document).ready(function () {
-	
-		var namedData = new Array();
-		var namedData2 = new Array();
 
-		namedData[0] = { "ProductID": "0", "OrderedBy": "Angel", "NutritionRank": "1" };
-		namedData[1] = { "ProductID": "1", "OrderedBy": "John", "NutritionRank": "10" };
-		namedData[2] = { "ProductID": "2", "OrderedBy": "Jason", "NutritionRank": "5" };
-		namedData[3] = { "ProductID": "3", "OrderedBy": "Alex", "NutritionRank": "6.5"};
-		namedData[4] = { "ProductID": "4", "OrderedBy": "Taz", "NutritionRank": "10.123"};
-		namedData[5] = { "ProductID": "5", "OrderedBy": "David", "NutritionRank": "0"};
-		namedData[6] = { "ProductID": "6", "OrderedBy": "Dean", "NutritionRank": "3"};
-		namedData[7] = { "ProductID": "7", "OrderedBy": "Someone", "NutritionRank": "2"};
-		namedData[8] = { "ProductID": "8", "NutritionRank": "8"};
-		namedData[9] = { "ProductID": "9", "OrderedBy": "no match", "NutritionRank": "9"};
-		
-		namedData2[0] = { "ID": "0", "Name": "Angel", "Price": "1" };
-		namedData2[1] = { "ID": "1", "Name": "John", "Price": "10" };
-		namedData2[2] = { "ID": "2", "Name": "Jason", "Price": "5" };
-		namedData2[3] = { "ID": "3", "Name": "Alex", "Price": "6.5"};
-		namedData2[4] = { "ID": "4", "Name": "Taz", "Price": "10.123"};
-		namedData2[5] = { "ID": "5", "Name": "David", "Price": "0"};
-		namedData2[6] = { "ID": "6", "Name": "Dean", "Price": "3"};
-		namedData2[7] = { "ID": "7", "Name": "Someone", "Price": "2"};
-		namedData2[8] = { "ID": "8", "Name": "Djonka", "Price": "8"};
-		namedData2[9] = { "ID": "9", "Name": "no match", "Price": "9"};
-		
-		$.mockjaxSettings.logging = 0;  // only critical error messages
-		$.mockjax({
-			url: 'http://services.odata.org/OData/OData.svc/Products?$format=json',
-			contentType: 'text/json',
-			responseText: {
-				status: 'success',
-				data: {
-						"d" : [
-							{
-							"__metadata": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(0)", "type": "ODataDemo.Product"
-							}, "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseDate": "\/Date(694224000000)\/", "DiscontinuedDate": null, "Rating": 4, "Price": "2.5", "Category": {
-							"__deferred": {
+	<script type="text/javascript">
+		var data1 = [
+			{ ProductID: 0, OrderedBy: "Angel", NutritionRank: "1" },
+			{ ProductID: 1, OrderedBy: "John", NutritionRank: "10" },
+			{ ProductID: 2, OrderedBy: "Jason", NutritionRank: "5" }
+		];
+		var data2 = [
+			{ ID: 0, Name: "Angel", Price: 1 },
+			{ ID: 1, Name: "John", Price: 10 },
+			{ ID: 2, Name: "Jason", Price: 5 },
+			{ ID: 3, Name: "Alex", Price: 6.5 },
+			{ ID: 4, Name: "Taz", Price: 10.123 }
+		];
+		var data4 = [
+			[ 0, "Angel", "1" ],
+			[ 1, "John", "10" ],
+			[ 2, "Jason", "5" ]
+		];
+		var data5 = [
+			[ 0, "Angel", 1 ],
+			[ 1, "John", 10 ],
+			[ 2, "Jason", 5 ],
+			[ 3, "Alex", 6.5 ],
+			[ 4, "Taz", 10.123 ]
+		];
+		var data3 = {
+			"d": [
+				{
+					"__metadata": {
+						"uri": "http://services.odata.org/OData/OData.svc/Products(0)", "type": "ODataDemo.Product"
+					}, "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseDate": "\/Date(694224000000)\/", "DiscontinuedDate": null, "Rating": 4, "Price": "2.5", "Category": {
+						"__deferred": {
 							"uri": "http://services.odata.org/OData/OData.svc/Products(0)/Category"
-							}
-							}, "Supplier": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(0)/Supplier"
-							}
-							}
-							}, {
-							"__metadata": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(1)", "type": "ODataDemo.Product"
-							}, "ID": 1, "Name": "Milk", "Description": "Low fat milk", "ReleaseDate": "\/Date(812505600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "3.5", "Category": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(1)/Category"
-							}
-							}, "Supplier": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(1)/Supplier"
-							}
-							}
-							}, {
-							"__metadata": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(2)", "type": "ODataDemo.Product"
-							}, "ID": 2, "Name": "Vint soda", "Description": "Americana Variety - Mix of 6 flavors", "ReleaseDate": "\/Date(970358400000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "20.9", "Category": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(2)/Category"
-							}
-							}, "Supplier": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(2)/Supplier"
-							}
-							}
-							}, {
-							"__metadata": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(3)", "type": "ODataDemo.Product"
-							}, "ID": 3, "Name": "Havina Cola", "Description": "The Original Key Lime Cola", "ReleaseDate": "\/Date(1128124800000)\/", "DiscontinuedDate": "\/Date(1159660800000)\/", "Rating": 3, "Price": "19.9", "Category": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(3)/Category"
-							}
-							}, "Supplier": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(3)/Supplier"
-							}
-							}
-							}, {
-							"__metadata": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(4)", "type": "ODataDemo.Product"
-							}, "ID": 4, "Name": "Fruit Punch", "Description": "Mango flavor, 8.3 Ounce Cans (Pack of 24)", "ReleaseDate": "\/Date(1041724800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.99", "Category": {
-
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(4)/Category"
-							}
-							}, "Supplier": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(4)/Supplier"
-							}
-							}
-							}, {
-							"__metadata": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(5)", "type": "ODataDemo.Product"
-							}, "ID": 5, "Name": "Cranberry Juice", "Description": "16-Ounce Plastic Bottles (Pack of 12)", "ReleaseDate": "\/Date(1154649600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.8", "Category": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(5)/Category"
-							}
-							}, "Supplier": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(5)/Supplier"
-							}
-							}
-							}, {
-							"__metadata": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(6)", "type": "ODataDemo.Product"
-							}, "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseDate": "\/Date(1162684800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "18.8", "Category": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(6)/Category"
-							}
-							}, "Supplier": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(6)/Supplier"
-							}
-							}
-							}, {
-							"__metadata": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(7)", "type": "ODataDemo.Product"
-							}, "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseDate": "\/Date(1163548800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(7)/Category"
-							}
-							}, "Supplier": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(7)/Supplier"
-							}
-							}
-							}, {
-							"__metadata": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(8)", "type": "ODataDemo.Product"
-							}, "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseDate": "\/Date(1210204800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(8)/Category"
-							}
-							}, "Supplier": {
-							"__deferred": {
-							"uri": "http://services.odata.org/OData/OData.svc/Products(8)/Supplier"
-							}
-							}
-							}
-						]
 						}
+					}, "Supplier": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(0)/Supplier"
+						}
+					}
+				},
+				{
+					"__metadata": {
+						"uri": "http://services.odata.org/OData/OData.svc/Products(1)", "type": "ODataDemo.Product"
+					}, "ID": 1, "Name": "Milk", "Description": "Low fat milk", "ReleaseDate": "\/Date(812505600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "3.5", "Category": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(1)/Category"
+						}
+					}, "Supplier": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(1)/Supplier"
+						}
+					}
+				},
+				{
+					"__metadata": {
+						"uri": "http://services.odata.org/OData/OData.svc/Products(2)", "type": "ODataDemo.Product"
+					}, "ID": 2, "Name": "Vint soda", "Description": "Americana Variety - Mix of 6 flavors", "ReleaseDate": "\/Date(970358400000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "20.9", "Category": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(2)/Category"
+						}
+					}, "Supplier": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(2)/Supplier"
+						}
+					}
+				},
+				{
+					"__metadata": {
+						"uri": "http://services.odata.org/OData/OData.svc/Products(3)", "type": "ODataDemo.Product"
+					}, "ID": 3, "Name": "Havina Cola", "Description": "The Original Key Lime Cola", "ReleaseDate": "\/Date(1128124800000)\/", "DiscontinuedDate": "\/Date(1159660800000)\/", "Rating": 3, "Price": "19.9", "Category": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(3)/Category"
+						}
+					}, "Supplier": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(3)/Supplier"
+						}
+					}
+				},
+				{
+					"__metadata": {
+						"uri": "http://services.odata.org/OData/OData.svc/Products(4)", "type": "ODataDemo.Product"
+					}, "ID": 4, "Name": "Fruit Punch", "Description": "Mango flavor, 8.3 Ounce Cans (Pack of 24)", "ReleaseDate": "\/Date(1041724800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.99", "Category": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(4)/Category"
+						}
+					}, "Supplier": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(4)/Supplier"
+						}
+					}
+				},
+				{
+					"__metadata": {
+						"uri": "http://services.odata.org/OData/OData.svc/Products(5)", "type": "ODataDemo.Product"
+					}, "ID": 5, "Name": "Cranberry Juice", "Description": "16-Ounce Plastic Bottles (Pack of 12)", "ReleaseDate": "\/Date(1154649600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.8", "Category": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(5)/Category"
+						}
+					}, "Supplier": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(5)/Supplier"
+						}
+					}
+				},
+				{
+					"__metadata": {
+						"uri": "http://services.odata.org/OData/OData.svc/Products(6)", "type": "ODataDemo.Product"
+					}, "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseDate": "\/Date(1162684800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "18.8", "Category": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(6)/Category"
+						}
+					}, "Supplier": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(6)/Supplier"
+						}
+					}
+				},
+				{
+					"__metadata": {
+						"uri": "http://services.odata.org/OData/OData.svc/Products(7)", "type": "ODataDemo.Product"
+					}, "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseDate": "\/Date(1163548800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(7)/Category"
+						}
+					}, "Supplier": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(7)/Supplier"
+						}
+					}
+				},
+				{
+					"__metadata": {
+						"uri": "http://services.odata.org/OData/OData.svc/Products(8)", "type": "ODataDemo.Product"
+					}, "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseDate": "\/Date(1210204800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(8)/Category"
+						}
+					}, "Supplier": {
+						"__deferred": {
+							"uri": "http://services.odata.org/OData/OData.svc/Products(8)/Supplier"
+						}
+					}
 				}
-		});
-
-		var render1 = function (success, error) {
-			if (success) {
-
-				startTesting2();
-				
-			} else {
-				alert(error);
-			}
+			]
 		};
-		
-		var render2 = function (success, error) {
-			if (success) {
-
-				startTesting3();
-				
-			} else {
-				alert(error);
-			}
-		};
-		
-		var render3 = function (success, error) {
-			if (success) {
-
-				startTesting1();
-				
-			} else {
-				alert(error);
-			}
-		};
-		
-		// no primary keys defined for this data source 
-		var sources1 = [
-			{dataSource: namedData}, 
-			{dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json",
-			responseDataType: "json",
-			schema: {fields: [{name : "Price"}, {name : "Name"}, {name: "ID"}], searchField: "data.d"}
-			}
-		];
-		
-		var sources2 = [
-			{dataSource: namedData, primaryKey: "ProductID"}, 
-			{dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json",
-			responseDataType: "json",
-			schema: {fields: [{name : "Price"}, {name : "Name"}, {name: "ID"}], searchField: "data.d"},
-			primaryKey: "ID"}
-		];
-		
-		var sources3 = [
-			{dataSource: namedData, primaryKey: "ProductID"}, 
-			{dataSource: namedData2, primaryKey: "ID",
-			schema: {fields: [{name : "Price"}, {name : "Name"}, {name: "ID"}]}
-			} 
-		];
-		
-		QUnit.init();
-		
-		ds1 = new $.ig.MashupDataSource({dataSource: sources1, callback:render1});
-		ds1.dataBind();
-		
-		ds2 = new $.ig.MashupDataSource({dataSource: sources2, ignorePartialRecords: true, callback:render2});
-		ds2.dataBind();
-		
-		ds3 = new $.ig.MashupDataSource({dataSource: sources3, callback:render3});
-		ds3.dataBind();
-					
-	});
-	
-	function startTesting1()
-	{
-		test("Mashup scenario 1: combining local data sources", function() {
-			// check 1: number of columns:
-			var view = ds3.dataView();
-			equal(10, view.length , 10);
-			equal("Angel", view[0]["OrderedBy"], "Angel");
-			equal("Angel", view[0]["Name"], "Angel");
-			
-		});
-	}
-	
-	function startTesting2()
-	{
-		QUnit.start();
-		module("igDataSource");
-		
-		test("Mashup scenario 2: combining local & remote data sources", function() {
-			// check 1: number of columns:
-			var view = ds1.dataView();
-			equal(10, view.length , 10);
-			equal("Angel", view[0]["OrderedBy"], "Angel");
-			equal("Bread", view[0]["Name"], "Bread");
-		});
-	}
-	
-	function startTesting3() 
-	{
-		QUnit.start();
-		module("igDataSource");
-		
-		test("Mashup scenario 3: ignorePartialRecords = true. ", function() {
-			var view = ds2.dataView();
-			equal(9, view.length , 9);
-			equal("Angel", view[0]["OrderedBy"], "Angel");
-			equal("Bread", view[0]["Name"], "Bread");
-		});
-	}
 	</script>
-	
+
+	<script type="text/javascript">
+		var ds1 = null, ds2 = null, ds3 = null;
+
+		$(document).ready(function () {
+			$.mockjaxSettings.logging = 0;  // only critical error messages
+			$.mockjax({
+				url: 'http://services.odata.org/OData/OData.svc/Products?$format=json',
+				contentType: 'text/json',
+				responseText: {
+					status: 'success',
+					data: data3
+				}
+			});
+
+			module("Mashup DataSource");
+
+			test("Test Mashup scenario 1: combining local data sources with PKs", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					dataSource:  [
+						{
+							dataSource: data1,
+							primaryKey: "ProductID"
+						},
+						{
+							dataSource: data2,
+							primaryKey: "ID",
+							schema: {
+								fields: [
+									{ name: "Price" }, { name: "Name" }, { name: "ID" }
+								]
+							}
+						}
+					]
+				});
+				ds.dataBind();
+				view = ds.dataView();
+				equal(view.length, 5, "Length should be 5.");
+				// check first record that should be merged
+				equal(view[0]["ID"], 0, "PK ID: 0");
+				equal(view[0]["ProductID"], 0, "Merged PK ProductID: 0");
+				equal(view[0]["Price"], 1, "Merged Price 1");
+				equal(view[0]["Name"], "Angel", "Merged Name: Angel");
+				equal(view[0]["OrderedBy"], "Angel", "Merged OrderedBy: Angel");
+				equal(view[0]["NutritionRank"], "1", "Merged NutritionRank: '1'");
+				// check last record that should contain only second data source props
+				equal(view[4]["ID"], 4, "PK ID: 4");
+				equal(view[4]["ProductID"], undefined, "Merged PK ProductID: undefined");
+				equal(view[4]["Price"], 10.123, "Merged Price 10.123");
+				equal(view[4]["Name"], "Taz", "Merged Name: Taz");
+				equal(view[4]["OrderedBy"], undefined, "Merged OrderedBy: undefined");
+				equal(view[4]["NutritionRank"], undefined, "Merged NutritionRank: undefined");
+			});
+
+			test("Test Mashup scenario 2: combining local data sources without PKs", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					dataSource:  [
+						{
+							dataSource: data1
+						},
+						{
+							dataSource: data2,
+							schema: {
+								fields: [
+									{ name: "Price" }, { name: "Name" }, { name: "ID" }
+								]
+							}
+						}
+					]
+				});
+				ds.dataBind();
+				view = ds.dataView();
+				equal(view.length, 5, "Length should be 5.");
+				// check first record that should be merged
+				equal(view[0]["ID"], 0, "PK ID: 0");
+				equal(view[0]["ProductID"], 0, "Merged PK ProductID: 0");
+				equal(view[0]["Price"], 1, "Merged Price 1");
+				equal(view[0]["Name"], "Angel", "Merged Name: Angel");
+				equal(view[0]["OrderedBy"], "Angel", "Merged OrderedBy: Angel");
+				equal(view[0]["NutritionRank"], "1", "Merged NutritionRank: '1'");
+				// check last record that should contain only second data source props
+				equal(view[4]["ID"], 4, "PK ID: 4");
+				equal(view[4]["ProductID"], undefined, "Merged PK ProductID: undefined");
+				equal(view[4]["Price"], 10.123, "Merged Price 10.123");
+				equal(view[4]["Name"], "Taz", "Merged Name: Taz");
+				equal(view[4]["OrderedBy"], undefined, "Merged OrderedBy: undefined");
+				equal(view[4]["NutritionRank"], undefined, "Merged NutritionRank: undefined");
+			});
+
+			test("Test Mashup scenario 3: combining local array data sources", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					dataSource:  [
+						{
+							dataSource: data4
+						},
+						{
+							dataSource: data5
+						}
+					]
+				});
+				ds.dataBind();
+				view = ds.dataView();
+				equal(view.length, 5, "Length should be 5.");
+				// check first record that should be merged
+				equal(view[0][0], 0, "Merged 0: 0");
+				equal(view[0][1], "Angel", "Merged 1: Angel");
+				equal(view[0][2], "1", "Merged 2: '1'");
+				equal(view[0][3], 0, "Merged 3: 0");
+				equal(view[0][4], "Angel", "Merged 4: Angel");
+				equal(view[0][5], 1, "Merged 5: 1");
+				// check last record that should contain only second data source props
+				equal(view[4][0], "", "Merged 0: empty string since no type is defined");
+				equal(view[4][1], "", "Merged 1: empty string since no type is defined");
+				equal(view[4][2], "", "Merged 2: empty string since no type is defined");
+				equal(view[4][3], 4, "Merged 3: 4");
+				equal(view[4][4], "Taz", "Merged 4: Taz");
+				equal(view[4][5], 10.123, "Merged 5: 10.123");
+			});
+
+			test("Test Mashup scenario 4: combining local array data sources with schemas", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					// array data sources with schemas become object data sources
+					dataSource:  [
+						{
+							dataSource: data4,
+							schema: {
+								fields: [
+									{ name: 0, type: "number" },
+									{ name: 1, type: "string" }
+								]
+							}
+						},
+						{
+							dataSource: data5,
+							schema: {
+								fields: [
+									{ name: 2, type: "number" }
+								]
+							}
+						}
+					]
+				});
+				ds.dataBind();
+				view = ds.dataView();
+				equal(view.length, 5, "Length should be 5.");
+				// check first record that should be merged
+				equal(view[0][0], 0, "Merged 0: 0");
+				equal(view[0][1], "Angel", "Merged 1: Angel");
+				equal(view[0][2], 0, "Merged 2: 0");
+				// check last record that should contain only second data source props
+				equal(view[4][0], undefined, "Merged 0: empty string since no type is defined");
+				equal(view[4][1], undefined, "Merged 1: empty string since no type is defined");
+				equal(view[4][2], 4, "Merged 2: 4");
+			});
+
+			test("Test Mashup scenario 5: combining local data sources through PK - FK relationship", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					dataSource:  [
+						{
+							dataSource: [
+								{ ProductID: 3, OrderedBy: "Jason", NutritionRank: "1" },
+								{ ProductID: 4, OrderedBy: "John", NutritionRank: "10" },
+								{ ProductID: 5, OrderedBy: "Angel", NutritionRank: "5" }
+							],
+							primaryKey: "OrderedBy"
+						},
+						{
+							dataSource: data2,
+							primaryKey: "Name",
+							foreignKey: "OrderedBy",
+							schema: {
+								fields: [
+									{ name: "Price" }, { name: "Name" }, { name: "ID" }
+								]
+							}
+						},
+						{
+							// adding the same datasource essentially doesn't change the result but
+							// adds an additional reference in the fkeyhash which increases the coverage
+							// and could prevent some regressions when we are merging more than 2 data sources
+							dataSource: data2,
+							primaryKey: "Name",
+							foreignKey: "OrderedBy",
+							schema: {
+								fields: [
+									{ name: "Price" }, { name: "Name" }, { name: "ID" }
+								]
+							}
+						}
+					]
+				});
+				ds.dataBind();
+				view = ds.dataView();
+				equal(view.length, 3, "Length should be 3.");
+				// check first record that should be merged
+				equal(view[0]["ID"], 2, "PK ID: 2");
+				equal(view[0]["ProductID"], 3, "Merged PK ProductID: 3");
+				equal(view[0]["Price"], 5, "Merged Price 5");
+				equal(view[0]["Name"], "Jason", "Merged Name: Jason");
+				equal(view[0]["OrderedBy"], "Jason", "Merged OrderedBy: Jason");
+				equal(view[0]["NutritionRank"], "1", "Merged NutritionRank: '1'");
+				equal(view[2]["ID"], 0, "PK ID: 0");
+				equal(view[2]["ProductID"], 5, "Merged PK ProductID: 5");
+				equal(view[2]["Price"], 1, "Merged Price 1");
+				equal(view[2]["Name"], "Angel", "Merged Name: Angel");
+				equal(view[2]["OrderedBy"], "Angel", "Merged OrderedBy: Angel");
+				equal(view[2]["NutritionRank"], "5", "Merged NutritionRank: '5'");
+			});
+
+			asyncTest("Test Mashup scenario 6: combining local & remote data sources", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					dataSource:  [
+						{
+							dataSource: data1
+						},
+						{
+							dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json",
+							responseDataType: "json",
+							schema: {
+								fields: [
+									{ name: "Price" }, { name: "Name" }, { name: "ID" }
+								],
+								searchField: "data.d"
+							}
+						}
+					],
+					callback: function () {
+						start();
+						view = arguments[2].dataView();
+						equal(view.length, 9, 9);
+						equal(view[0]["OrderedBy"], "Angel", "Angel");
+						equal(view[0]["Name"], "Bread", "Bread");
+					}
+				});
+				ds.dataBind();
+			});
+
+			test("Test Mashup scenario 7: combining igDataSource instances", function () {
+				var view, ds1 = new $.ig.DataSource({
+					dataSource: data1,
+					primaryKey: "ProductID"
+				}), dsm = new $.ig.MashupDataSource({
+					dataSource:  [
+						ds1,
+						{
+							dataSource: new $.ig.DataSource({
+								dataSource: data2,
+								primaryKey: "ID",
+								schema: {
+									fields: [
+										{ name: "Price" }, { name: "Name" }, { name: "ID" }
+									]
+								}
+							})
+						}
+					]
+				});
+				dsm.dataBind();
+				view = dsm.dataView();
+				equal(view.length, 5, "Length should be 5.");
+				// check first record that should be merged
+				equal(view[0]["ID"], 0, "PK ID: 0");
+				equal(view[0]["ProductID"], 0, "Merged PK ProductID: 0");
+				equal(view[0]["Price"], 1, "Merged Price 1");
+				equal(view[0]["Name"], "Angel", "Merged Name: Angel");
+				equal(view[0]["OrderedBy"], "Angel", "Merged OrderedBy: Angel");
+				equal(view[0]["NutritionRank"], "1", "Merged NutritionRank: '1'");
+				// check last record that should contain only second data source props
+				equal(view[4]["ID"], 4, "PK ID: 4");
+				equal(view[4]["ProductID"], undefined, "Merged PK ProductID: undefined");
+				equal(view[4]["Price"], 10.123, "Merged Price 10.123");
+				equal(view[4]["Name"], "Taz", "Merged Name: Taz");
+				equal(view[4]["OrderedBy"], undefined, "Merged OrderedBy: undefined");
+				equal(view[4]["NutritionRank"], undefined, "Merged NutritionRank: undefined");
+			});
+
+			asyncTest("Test Mashup scenario 7: ignorePartialRecords = true", function () {
+				var view, ds = new $.ig.MashupDataSource({
+					dataSource: [
+						{
+							dataSource: data1,
+							primaryKey: "ProductID"
+						},
+						{
+							dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json",
+							responseDataType: "json",
+							schema: {
+								fields: [
+									{ name: "Price" }, { name: "Name" }, { name: "ID" }
+								],
+								searchField: "data.d"
+							},
+							primaryKey: "ID"
+						}
+					],
+					ignorePartialRecords: true,
+					callback: function () {
+						start();
+						view = arguments[2].dataView();
+						equal(view.length, 3, 3);
+						equal(view[0]["OrderedBy"], "Angel", "Angel");
+						equal(view[0]["Name"], "Bread", "Bread");
+					}
+				});
+				ds.dataBind();
+			});
+		});
+	</script>
 </head>
 <body>
-
-<div style="float:right;width:400px;overflow:auto"">
-    <h1 id="qunit-header">Test results</h1>
-     <h2 id="qunit-banner"></h2>
-     <h2 id="qunit-userAgent"></h2>
-     <ol id="qunit-tests"></ol>
-</div>
-<ul id="list"></ul>
+	<div style="float:right;width:400px;overflow:auto">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
 </body>
 </html>
