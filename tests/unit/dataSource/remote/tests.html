@@ -557,6 +557,59 @@
 		test("Testing if _getFieldTypeFromSchema returns correct dataType for mapped field for remote data source", function () {
 			equal(dsWithMapper._getFieldTypeFromSchema("Products"), "string", "_getFieldTypeFromSchema should return the mapped value's dataType");
 		});
+
+		test("Test summariesResponse", function () {
+			var ds, sr,
+				d = {
+					"d" : [
+							{
+								"ID": 0,
+								"Name": "Bread",
+								"Description": "Whole grain bread",
+								"ReleaseDate": "\/Date(694224000000)\/",
+								"DiscontinuedDate": null, "Rating": 4, "Price": "2.5"
+							}
+					],
+					Metadata: {
+						Summaries: {
+							ID: {
+								count: 1,
+								min: 0,
+								max: 0
+							},
+							ReleaseDate: {
+								count: 1,
+								max: "\/Date(694224000000)\/",
+								min: "\/Date(694224000000)\/"
+							}
+						},
+						timezoneOffset: 0,
+						timezoneOffsetsSummaries: {
+							ReleaseDate: {
+								max: 0,
+								min: 0
+							}
+						}
+						
+					}
+				},
+				maxDate = new Date(694224000000);
+			ds = new $.ig.RemoteDataSource({
+				responseDataType: "json",
+				responseTotalRecCountKey: "data.paging.total",
+				paging: { enabled: true },
+				dataSource: "products", schema: { searchField: "data.results", fields: [{ name: "ProductID" }, { name: "ReleaseDate", type: "date"}] }
+			}).dataBind();
+			sr = ds.summariesResponse(),
+
+			equal(sr.length, 0, "Test summariesResponse with no arguments");
+			sr = ds.summariesResponse("Metadata.Summaries", d);
+			ok(sr.ID.max === 0 &&
+				sr.ID.count === 1 &&
+				sr.ID.min === 0 &&
+				sr.ReleaseDate.max.getTime() === maxDate.getTime(),
+				"Test summaries response");
+		});
 	});
 	
 	</script>

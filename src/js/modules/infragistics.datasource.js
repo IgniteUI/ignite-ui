@@ -1801,50 +1801,57 @@
 			}
 		},
 		summariesResponse: function (key, dsObj) {
-			/* Get summaries calculation data from remote response */
+			/* Applicable only when the data source is bound to remote data.
+			Gets or sets summaries data.
+			If key or dsObj are not set then returns summaries data.
+			Takes summary data from passed argument dsObj(using argument key)
+			paramType="string" optional="true" response key to take summary data(for example "Metadata.Summaries")
+			paramType="object" optional="true" data source object - usually contains information about data records and metadata(holds info about summaries)
+			returnType="object" object of data summaries - e.g.: if datasource has 2 columns - ID and Name then expected format for data summaries is {ID : {max: 1, min: 0, count: 2}, Name: {count: 1}}
+			*/
+			if (!dsObj || !key) {
+				this._dataSummaries = this._dataSummaries || [];
+				return this.dataSummaries();
+			}
 			var rec, resPath, i, schema, func, offsets, offset, obj;
-
-			if (key !== null && key !== "") {
+			if (key.length > 0) {
 				rec = dsObj;
 				resPath = key.split(".");
-				if (key.length > 0) {
-					for (i = 0; i < resPath.length; i++) {
-						/* M.H. 18 Feb 2013 Fix for bug #133286: When the HGrid is bound to remote data,
-						remote summaries are enabled and loadOnDemand is FALSE the summaries for child layouts are not rendered. */
-						if (rec === null || rec === undefined) {
-							break;
-						}
-						rec = rec[ resPath[ i ] ];
+
+				for (i = 0; i < resPath.length; i++) {
+					/* M.H. 18 Feb 2013 Fix for bug #133286: When the HGrid is bound to remote data,
+					remote summaries are enabled and loadOnDemand is FALSE the summaries for child layouts are not rendered. */
+					if (rec === null || rec === undefined) {
+						break;
 					}
-					this._dataSummaries = rec;
-				} else {
-					this._dataSummaries = dsObj;
+					rec = rec[ resPath[ i ] ];
 				}
-				if (this._dataSummaries === undefined || this._dataSummaries === null) {
-					this._dataSummaries = [];
-				}
-				/* M.H. 10 Jan 2014 Fix for bug #160204: Remote Summaries display
-				dates which differ from the ones displayed in the grid */
-				if (this.settings.localSchemaTransform === true && this.schema() &&
-					dsObj && dsObj.Metadata && dsObj.Metadata.timezoneOffsetsSummaries) {
-					offsets = dsObj.Metadata.timezoneOffsetsSummaries;
-					this._dataSummaries._serverOffsetsSummaries = offsets;
-					/* transform dates */
-					schema = this.schema().schema;
-					if (schema && schema.fields) {
-						for (i = 0; i < schema.fields.length; i++) {
-							/* transform date */
-							if (schema.fields[ i ].type === "date" &&
-								offsets[ schema.fields[ i ].name ] !== undefined) {
-								key = schema.fields[ i ].name;
-								for (func in offsets[ key ]) {
-									if (offsets[ key ].hasOwnProperty(key)) {
-										offset = offsets[ key ][ func ];
-										obj = this._dataSummaries[ key ][ func ];
-										if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
-											this._dataSummaries[ key ][ func ] = new Date(
-												parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
-										}
+				this._dataSummaries = rec;
+			} else {
+				this._dataSummaries = dsObj;
+			}
+			this._dataSummaries = this._dataSummaries || [];
+			/* M.H. 10 Jan 2014 Fix for bug #160204: Remote Summaries display
+			dates which differ from the ones displayed in the grid */
+			if (this.settings.localSchemaTransform === true && this.schema() &&
+				dsObj && dsObj.Metadata && dsObj.Metadata.timezoneOffsetsSummaries) {
+				offsets = dsObj.Metadata.timezoneOffsetsSummaries;
+				this._dataSummaries._serverOffsetsSummaries = offsets;
+				/* transform dates */
+				schema = this.schema().schema;
+				if (schema && schema.fields) {
+					for (i = 0; i < schema.fields.length; i++) {
+						/* transform date */
+						if (schema.fields[ i ].type === "date" &&
+							offsets[ schema.fields[ i ].name ] !== undefined) {
+							key = schema.fields[ i ].name;
+							for (func in offsets[ key ]) {
+								if (offsets[ key ].hasOwnProperty(func)) {
+									offset = offsets[ key ][ func ];
+									obj = this._dataSummaries[ key ][ func ];
+									if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
+										this._dataSummaries[ key ][ func ] = new Date(
+											parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
 									}
 								}
 							}
@@ -1852,6 +1859,7 @@
 					}
 				}
 			}
+			return this._dataSummaries;
 		},
 		_populateTransformedData: function (data) {
 			// M.H. populate summaries data
