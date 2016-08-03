@@ -26,6 +26,7 @@
 		}
 	</style>
 	<script type="text/javascript">
+		$.mockjaxSettings.logging = 0;  // only critical error messages
 	    $(function () {
 	        var _serverBytesUploaded = 0,
                 _serverStatus = 0, //$.infragistics.Constants.Upload.Status.NotStarted,

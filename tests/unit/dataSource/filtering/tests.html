@@ -259,7 +259,7 @@
 
 				after1 = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1, 0, 0, 0, 0);
 				after2 = new Date(date.getFullYear(), date.getMonth() + 1, date.getDate(), 0, 0, 0, 0);
-				after3 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + 1, 0, 0, 0);
+				after3 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + 1, 1, 0, 0);
 				after4 = new Date(date.getFullYear() + 1, date.getMonth(), date.getDate(), 0, 0, 0, 0);
 
 				after5 = new Date(date.getFullYear() + 2, date.getMonth(), date.getDate(), 0, 0, 0, 0);
@@ -813,11 +813,11 @@
 					});
 				});
 
-				var __ds;
+				var ds;
 				module("Test filtering", {
 					setup: function () {
-						__ds = new $.ig.DataSource({ 
-							filtering: { enabled: true }, 
+						ds = new $.ig.DataSource({ 
+							filtering: { type: "local", enabled: true }, 
 							summaries: { type: "local" },
 							dataSource: northwindProductsJSON,
 							schema: { fields: [{
@@ -829,136 +829,162 @@
 										}, {
 											name: "ReleaseDate", type: "date"
 										}]
-							},
-							//paging: { enabled: true, type: "local", pageSize: 3 }
+							}
 						}).dataBind();
 					}
 				});
 				test("Test fieldIndex in fieldExpression", function () {
-					var fd, s = __ds.schema();
-					__ds._schema = null;
+					var fd, s = ds.schema();
+					ds._schema = null;
 					throws(
 						function () {
-							__ds.filter([{ fieldName: "ID", expr: 100, cond: "greaterThan" }]);
+							ds.filter([{ fieldName: "ID", expr: 100, cond: "greaterThan" }]);
 						},
 						function (err) {
 							return err.message.indexOf($.ig.DataSourceLocale.locale.filteringNoSchema) > -1;
 						},
 						$.ig.DataSourceLocale.locale.filteringNoSchema + " should be thrown"
 					);
-					__ds.schema(s);
-					__ds.filter([{ fieldIndex: 0, expr: 100, cond: "greaterThanOrEqualTo"}]);
-					fd = __ds.filteredData();
-					ok(fd.length === 0 && __ds.dataView().length === 0, 
+					ds.schema(s);
+					ds.filter([{ fieldIndex: 0, expr: 100, cond: "greaterThanOrEqualTo"}]);
+					fd = ds.filteredData();
+					ok(fd.length === 0 && ds.dataView().length === 0, 
 						"Test count of filtered records");
 				});
 				test("Test conditions null, notNull, empty, notEmpty for string", function () {
 					var fd;
 					// test conditions for string
-					__ds.filter([
+					ds.filter([
 									{ fieldIndex: 1, expr: "a", cond: "null", logic: "OR" }
 								]);
-					fd = __ds.filteredData();
-					ok(fd.length === 0 && __ds.dataView().length === 0, 
+					fd = ds.filteredData();
+					ok(fd.length === 0 && ds.dataView().length === 0, 
 						"Test condition null");
-					__ds.filter([
+					ds.filter([
 									{ fieldIndex: 1, expr: "a", cond: "notNull", logic: "OR" }
 								]);
-					fd = __ds.filteredData();
-					ok(fd.length === 9 && __ds.dataView().length === 9, 
+					fd = ds.filteredData();
+					ok(fd.length === 9 && ds.dataView().length === 9, 
 						"Test condition notNull");
-					__ds.filter([
+					ds.filter([
 								{ fieldIndex: 1, expr: "a", cond: "empty", logic: "OR" }
 							]);
-					fd = __ds.filteredData();
-					ok(fd.length === 0 && __ds.dataView().length === 0, 
+					fd = ds.filteredData();
+					ok(fd.length === 0 && ds.dataView().length === 0, 
 						"Test condition empty");
 					
-					__ds.filter([
+					ds.filter([
 								{ fieldName: "Description", expr: "", cond: "notEmpty", logic: "OR" }
 							]);
-					fd = __ds.filteredData();
-					ok(fd.length === 8 && __ds.dataView().length === 8, 
+					fd = ds.filteredData();
+					ok(fd.length === 8 && ds.dataView().length === 8, 
 						"Test condition notEmpty");
 				});
 				test("Test conditions on, notOn, null, notNull, empty, notEmpty", function () {
 					var fd;
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ReleaseDate", expr: new Date(694224000000), cond: "on", logic: "OR" }
 					]);
-					fd = __ds.filteredData();
-					ok(fd.length === 1 && __ds.dataView().length === 1, 
+					fd = ds.filteredData();
+					ok(fd.length === 1 && ds.dataView().length === 1, 
 						"Condition on");
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ReleaseDate", expr: new Date(694224000000), cond: "notOn", logic: "OR" }
 					]);
-					fd = __ds.filteredData();
+					fd = ds.filteredData();
 					ok(fd.length === 8 &&
-						__ds.dataView().length === 8 &&
-						__ds.totalLocalRecordsCount() === 8 &&
-						__ds.pageCount() === 2, 
+						ds.dataView().length === 8 &&
+						ds.totalLocalRecordsCount() === 8 &&
+						ds.pageCount() === 2, 
 						"Condition notOn");
 
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ReleaseDate", cond: "null" }
 					]);
-					fd = __ds.filteredData();
+					fd = ds.filteredData();
 					ok(fd.length === 0 &&
-						__ds.dataView().length === 0, 
+						ds.dataView().length === 0, 
 						"Condition null");
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ReleaseDate", cond: "notNull" }
 					]);
-					fd = __ds.filteredData();
+					fd = ds.filteredData();
 					ok(fd.length === 9 &&
-						__ds.dataView().length === 9, 
+						ds.dataView().length === 9, 
 						"Condition notNull");
 
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ReleaseDate", cond: "empty" }
 					]);
-					fd = __ds.filteredData();
+					fd = ds.filteredData();
 					ok(fd.length === 0 &&
-						__ds.dataView().length === 0, 
+						ds.dataView().length === 0, 
 						"Condition empty");
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ReleaseDate", cond: "notEmpty" }
 					]);
-					fd = __ds.filteredData();
+					fd = ds.filteredData();
 					ok(fd.length === 9 &&
-						__ds.dataView().length === 9, 
+						ds.dataView().length === 9, 
 						"Condition notEmpty");
 				});
 
 				test("Test conditions null, notNull, empty, notEmpty for numeric", function () {
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ID", expr: "", cond: "null", logic: "OR" }
 					]);
-					fd = __ds.filteredData();
-					ok(fd.length === 0 && __ds.dataView().length === 0, 
+					fd = ds.filteredData();
+					ok(fd.length === 0 && ds.dataView().length === 0, 
 						"Condition null");
 
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ID", expr: "", cond: "notNull", logic: "OR" }
 					]);
-					fd = __ds.filteredData();
-					ok(fd.length === 9 && __ds.dataView().length === 9, 
+					fd = ds.filteredData();
+					ok(fd.length === 9 && ds.dataView().length === 9, 
 						"Condition null");
 					
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ID", expr: "", cond: "empty", logic: "OR" }
 					]);
-					fd = __ds.filteredData();
-					ok(fd.length === 0 && __ds.dataView().length === 0, 
+					fd = ds.filteredData();
+					ok(fd.length === 0 && ds.dataView().length === 0, 
 						"Condition null");
 
-					__ds.filter([
+					ds.filter([
 						{ fieldName: "ID", expr: "", cond: "notEmpty", logic: "OR" }
 					]);
-					fd = __ds.filteredData();
-					ok(fd.length === 9 && __ds.dataView().length === 9, 
+					fd = ds.filteredData();
+					ok(fd.length === 9 && ds.dataView().length === 9, 
 						"Condition null");
-					
+					ds.filter([
+						{ fieldName: "ID", expr: "", cond: "notEmpty", logic: "OR" }
+					]);
+				});
+				test("Test transformedData with filtering + paging ", function () {
+					var p = ds.settings.paging;
+					ds.settings.paging.enabled = true;
+					ds.settings.paging.type = "local";
+					ds.settings.paging.pageSize = 5;
+					ds.filter([
+						{ fieldName: "ID", expr: 0, cond: "greaterThan" }
+					]);
+					ok(
+						ds.transformedData("priortofilteringandpaging").length === 9 &&
+						ds.transformedData("afterfilteringbeforepaging").length === 8 &&
+						ds.transformedData("afterfilteringandpaging").length === 5 &&
+						ds.transformedData("").length === 5,
+						"Test transformedData"
+					);
+				});
+				test("Test function filter with argument fieldExpressionsOnStrings", function () {
+					var fd;
+					ds.filter([], null, null, "ID >= 1 AND ID < 3");
+					fd = ds.filteredData();
+					ok(fd.length === 2 &&
+						fd[0].ID === 1 &&
+						fd[1].ID === 2,
+						"Test filter");
 				});
 			});
 	</script>

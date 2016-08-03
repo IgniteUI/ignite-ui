@@ -17,12 +17,13 @@
   "license": "Apache-2.0",
   "scripts": {
     "preinstall": "npm install -g bower",
-    "postinstall" : "npm install -g grunt-cli && bower install"
+    "postinstall": "npm install -g grunt-cli && bower install"
   },
   "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^1.0.1",
     "grunt-contrib-jshint": "^1.0.0",
