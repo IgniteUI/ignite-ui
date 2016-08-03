@@ -897,7 +897,7 @@
 				originalRec = this.findRecordByKey(t.rowId);
 			}
 			/* o = $.extend(true, {}, originalRec); */
-			if (this._data[ 0 ] !== "array") {
+			if ($.type(this._data[ 0 ]) !== "array") {
 				for (i in originalRec) {
 					if (originalRec.hasOwnProperty(i)) {
 						o[ i ] = originalRec[ i ];
@@ -914,7 +914,7 @@
 			}
 			/* merge objects or arrays
 			return $.extend(true, {}, o, t.row); */
-			if (o !== "array") {
+			if ($.type(o) !== "array") {
 				for (i in t.row) {
 					if (t.row.hasOwnProperty(i)) {
 						o[ i ] = t.row[ i ];
@@ -5475,7 +5475,7 @@
 		_checkDataBindingComplete: function (status, msg, ownerDs) {
 			/* once this is done, set it as dataSource of the actual mashup data source, and call super's dataBind() */
 			var i, j, k, hasPrimaryKeys = true, hasForeignKeys = false, totalLength = 0, data = [],
-				merged = [], d, rindex, keyVal, prop, keyIndexHash, fkeyIndexHash, mergedData;
+				merged = [], d, rindex = 0, keyVal, prop, keyIndexHash, fkeyIndexHash, mergedData;
 
 			this._dataBindingComplete = true;
 
@@ -5590,15 +5590,16 @@
 										}
 										fkeyIndexHash[ i ][ keyVal ] =
 											this._hashedDataViews[ 0 ][ keyVal ][ this._sources[ i + 1 ].settings.foreignKey ];
-						}
-					}
+									}
+								}
 							}
 						}
 					}
 
 					mergedData = $.extend(true, {}, data, this._hashedDataViews[ 0 ]);
 					for (i = 0; i < this._hashedDataViews.length; i++) {
-						if (!this._sources[ i ].settings.foreignKey) {
+						if (this._sources[ i ].settings.foreignKey === null ||
+						this._sources[ i ].settings.foreignKey === undefined) {
 							//nothing to merge by
 							continue;
 						}
@@ -5617,18 +5618,12 @@
 					// the easiest - no primary keys, process sequentially record by record
 					for (i = 0; i < totalLength; i++) {
 						data[ i ] = {};
+						rindex = 0;
 						for (j = 0; j < this._sources.length; j++) {
 							d = this._sources[ j ];
 							if (d.dataView()[ 0 ].length) {
 								for (k = 0; k < d.dataView()[ 0 ].length; k++) {
-									// check if there is schema defined or not
-									rindex += k;
-									if (d.schema() && d.schema().fields().length > 0) {
-										data[ i ][ d.schema().fields()[ k ] ] = i >= d.dataView().length ?
-											"" : d.dataView()[ i ][ d.schema().fields()[ k ] ];
-									} else {
-										data[ i ][ rindex ] = i >= d.dataView().length ? "" : d.dataView()[ i ][ k ];
-									}
+									data[ i ][ rindex++ ] = i >= d.dataView().length ? "" : d.dataView()[ i ][ k ];
 								}
 							} else {
 								for (prop in d.dataView()[ i ]) {
@@ -5641,7 +5636,6 @@
 								}
 							}
 						}
-						rindex = 0;
 					}
 				}
 				this.settings.dataSource = data;
@@ -5706,7 +5700,7 @@
 							}
 						}
 						rowObject = $.extend(true, {}, rowObject, newObject);
-					} else if (this.settings.foreignKey !== colId) {
+					} else if (this.settings.foreignKey === colId) {
 						rowObject = $.extend(true, {}, rowObject, this.dataSource()[ val ]);
 					}
 					/* update internal record */
@@ -5863,8 +5857,7 @@
 							}
 						}
 						rowObject = $.extend(true, {}, rowObject, newObject);
-					} else if (rowObject[ this.settings.foreignKey ] !==
-						oldRow[ this.settings.foreignKey ]) {
+					} else {
 						rowObject = $.extend(true, {}, rowObject,
 							this.dataSource()[ rowObject[ this.settings.foreignKey ] ]);
 					}
@@ -6057,24 +6050,10 @@
 				then the key is assumed to be composite and will be split based on "," */
 				if (paths[ i ] !== "") {
 					for (j = 0; data && j < data.length; j++) {
-						if (ckey && ckey.indexOf(",") !== -1) {
-							ckeys = ckey.split(",");
-							ckeyvals = ckeyval.split(",");
-							for (k = 0; k < ckeys.length; k++) {
-								if (!data[ j ][ ckeys[ k ] ].charAt && ckeyvals[ k ].charAt) {
-									ckeyvals[ k ] = parseInt(ckeyvals[ k ], 10);
-								}
-								match = (data[ j ][ ckeys[ k ] ] === ckeyvals[ k ]);
-								if (!match) {
-									break;
-								}
-							}
-						} else {
-							if (data[ j ][ ckey ] !== undefined && !data[ j ][ ckey ].charAt && ckeyval.charAt) {
-								ckeyval = parseInt(ckeyval, 10);
-							}
-							match = (data[ j ][ ckey ] === ckeyval);
+						if (data[ j ][ ckey ] !== undefined && !data[ j ][ ckey ].charAt && ckeyval.charAt) {
+							ckeyval = parseInt(ckeyval, 10);
 						}
+						match = (data[ j ][ ckey ] === ckeyval);
 						/* special case when we have responseDataKey / search
 						fields defined for every children data instance */
 						if (match) {
