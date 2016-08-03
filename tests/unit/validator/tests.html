@@ -594,7 +594,7 @@
 
                 $('#input1').val("").igValidator("option", "successMessage", successText).blur();
                 equal($('#input1').igValidator("notifier").container().text(), successText, "Success message not set");
-                console.log($('#input1').val());
+
                 // TODO: Should handle more message set variants? change while visible without extra validation?
 
                 $('#input1').on("igvalidatorvalidated.change", function (e) {
@@ -1092,8 +1092,6 @@
                 keyInteraction(51, $("#spinEditor").igNumericEditor("field"), null, true); // enter 3
               
                 $("#spinEditor").one("igvalidatorvalidated", function (evt, ui) {
-
-                    //console.log(JSON.stringify({ "value,": ui.value, "ui.rule": ui.rule, "ui.valid": ui.valid }));
                     ok(!ui.value, "Wrong numeric value on change validation");
                     ok(!ui.valid && ui.rule === "required", "Validation did not fail for required numeric editor.");
                 });

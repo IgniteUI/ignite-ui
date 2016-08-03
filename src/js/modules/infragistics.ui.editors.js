@@ -5421,15 +5421,15 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_triggerInternalValueChange: function (value) { //MaskEditor
-			var oldValue, message;
+			var oldValue = this.options.value, message;
 			if (value === this._maskWithPrompts && this._promptCharsIndices.length === 0) {
 				value = "";
 			}
 			var noCancel = this._triggerValueChanging(value);
 			if (noCancel) {
-				oldValue = value;
 				this._processInternalValueChanging(value);
-				if (value !== oldValue) {
+				if (this.options.value !== oldValue) {
+
 					// We pass the new value in order to have the original value into the arguments
 					this._triggerValueChanged(value);
 				}
@@ -5480,6 +5480,7 @@ if (typeof jQuery !== "function") {
 					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
 					value = this._parseValueByMask(value.trim());
 					this._editorInput.val(value);
+
 				} else {
 					this._clearValue();
 					value = this._valueInput.val();
