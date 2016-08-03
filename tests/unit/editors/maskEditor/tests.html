@@ -264,6 +264,14 @@
 					$("#revertEditor2").igMaskEditor({
 						inputMask : "CCC000"
 					});
+					$("#revertEditor3").igMaskEditor({
+		              inputMask : "9900",
+		              revertIfNotValid: true,
+		              valueChanged: function (evt, ui) {
+		                    $("#test").append("<span></span>");
+		                }
+					});
+
 				});
 			}
 			initialized = false;
@@ -743,6 +751,23 @@
 				editor.data("igMaskEditor")._exitEditMode();
 				equal(editor.igMaskEditor("displayValue"), "", "Value is not empty");
 			});
+
+
+			testId = "Revert value when revertIfNotValid is set to true";
+			test(testId, 3, function () {
+				var editor = $("#revertEditor3"),
+				field = editor.igMaskEditor("field");
+
+				editor.data("igMaskEditor")._insert("1234");
+				editor.blur();
+				equal(field.val(), "1234", "Text is not 1234");
+				ok($("#test").children(), "The valueChanged event was triggered.");
+				$("#test span").remove();
+
+				editor.data("igMaskEditor")._insert("123_");
+				editor.blur();
+				equal(field.val(), "1234", "Text is not 1234");
+			});
 		});
 
 		function checkMaskState(editor, keyCode, editValue, displayValue, value) {
@@ -942,6 +967,8 @@
 			<input type="text" id="unfilledCharsPromptEditor2" />
 			<input type="text" id="revertEditor1" />
 			<input type="text" id="revertEditor2" />
+			<input type="text" id="revertEditor3" />
+			<div id="test"></div>
 		<input type='submit' value="Submit" />
 		</form>
 	</div>
