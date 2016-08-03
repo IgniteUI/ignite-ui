@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title> Infragistics jQuery Data Source - applying schemas and search fields </title> 
+	<title> IgniteUI Data Source - applying schemas and search fields </title> 
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
@@ -418,7 +418,7 @@
 					}
 				}
 			};
-			var jsonSchema = new $.ig.DataSchema("json", { fields: [{ name: "ProductID", type: "number" }, { name: "Name", type: "string" }, { name: "ProductNumber", type: "number" }, { name:"Date", type:"date"}], searchField: "Records" });
+			var jsonSchema = new $.ig.DataSchema("json", { fields: [{ name: "ProductID", type: "number" }, { name: "Name", type: "string" }, { name: "ProductNumber", type: "string" }, { name:"Date", type:"date"}], searchField: "Records" });
 			jsonSchema._pk = "ProductID";
 			var result = jsonSchema.transform(jsonData);
 			equal(result[0].Date.toDateString(), new Date("01/01/2011").toDateString(), "Verify date field data is properly transformed");
