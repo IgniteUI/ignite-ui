@@ -8862,7 +8862,6 @@ if (typeof jQuery !== "function") {
 			if (this._pickerOpen) {
 				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker and return focus
 				this._editorInput.focus();
-				return;
 			} else {
 				this._super(event);
 			}
