@@ -533,10 +533,15 @@
 		});
 
 		test("Test _removeTransactionsByRecordId API", function () {
-			var transaction = dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, false);
+			dsLocal.addRow(998, { "ID": 998, "Name": "Bread", "Price": 2.5 }, false);
+			dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, false);
+			
 			dsLocal._removeTransactionsByRecordId(999);
-			equal(dsLocal.pendingTransactions().length, 0, "There should be a no pending transaction after the transaction has been rolled back.");
-
+			equal(dsLocal.pendingTransactions().length, 1, "There should be 1 pending transaction after one transaction has been removed.");
+			equal(dsLocal.pendingTransactions()[0].row.ID, 998, "There should be 1 transaction remaining for row with ID 998.");
+			
+			dsLocal._removeTransactionsByRecordId(998);
+			equal(dsLocal.pendingTransactions().length, 0, "There should no pending transaction the transaction has been removed.");
 		});
 
 		test("Test transactionsAsString API", function () {
@@ -644,7 +649,8 @@
 				start();
 				var t = dsLocal.setCellValue(0, "Name", "NewVal", true);
 				var rec = dsLocal.getDetachedRecord(t);
-
+				dsLocal.setCellValue(0, "Name", "NewVal123", true);
+				
 				equal(rec.Name, "NewVal", "Detached value should be updated.");
 
 				dsLocal.settings.primaryKey = "ID";
