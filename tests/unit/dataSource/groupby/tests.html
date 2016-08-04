@@ -139,7 +139,8 @@
 				}
 			});
 			test("Test sorting dataSource for grouped columns", function () {
-				var se = [], i, ds = createDataSource(), data, dataView;
+				var se = [], i, ds = createDataSource(), data, 
+					dataView, gbDataView;
 				// group by column Id - using defaultFields of sorting
 				se.push({
 					fieldName: "Id",
@@ -151,12 +152,13 @@
 				ds.dataBind();
 				data = ds.data();
 				dataView = ds.dataView();
-				ok(dataView[0].__gbRecord && dataView[0].id === "Id:51" && dataView[0].len === 1 &&
-					dataView[1].Id === 3 &&
-					dataView[7].Id === 0,
+				gbDataView = ds.groupByDataView();
+				ok(gbDataView[0].__gbRecord && gbDataView[0].id === "Id:51" && gbDataView[0].len === 1 &&
+					gbDataView[1].Id === 3 &&
+					gbDataView[7].Id === 0,
 					"Test content of data view");
 				equal(data.length, 4, "Group by Id desc(initial sorting) - Test count of data records");
-				equal(dataView.length, data.length * 2, "Group by Id desc(initial sorting) - Test count of dataView records");
+				equal(gbDataView.length, data.length * 2, "Group by Id desc(initial sorting) - Test count of dataView records");
 				ok(data[0].Id === 3 && data[3].Id === 0, "Group by Id desc(initial sorting) - Test whether properly is sorted data");
 				ok(ds.isGroupByApplied(), "Test 'isGroupByApplied'");
 				renderData(data);
@@ -169,9 +171,10 @@
 				ds.sort(se);
 				data = ds.data();
 				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
 				equal(data.length, 4, "Group by Id desc, ProductName desc - Test count of data records");
-				equal(ds.dataView().length, data.length * 3, "Group by Id desc, ProductName desc - test count of dataView records");
-				ok(dataView[dataView.length - 1].Id === 0 && dataView[0].__gbRecord,
+				equal(gbDataView.length, data.length * 3, "Group by Id desc, ProductName desc - test count of dataView records");
+				ok(gbDataView[gbDataView.length - 1].Id === 0 && gbDataView[0].__gbRecord,
 							"Group by Id desc, ProductName desc - test last and first records of dataView");
 				ok(data[0].Id === 3 && data[3].Id === 0, "Group by Id desc, ProductName desc - test whether properly is sorted data")
 				renderData(data);
@@ -188,17 +191,18 @@
 				ds.sort(se);
 				data = ds.data();
 				dataView = ds.dataView();
-				
+				gbDataView = ds.groupByDataView();
 				equal(data.length, 4, "Group by column Price and sort by column Id - Test count of data records");
-				equal(dataView.length, 5, "Group by column Price and sort by column Id - test count of dataView records");
+				equal(gbDataView.length, 5, "Group by column Price and sort by column Id - test count of dataView records");
 				ok(data[0].Id === 0 && data[3].Id === 3, 
 					"Group by column Price and sort by column Id - test sorting of data records");
-				ok(dataView[1].Id === 0 && dataView[0].__gbRecord,
+				ok(gbDataView[1].Id === 0 && gbDataView[0].__gbRecord,
 					"Group by Price - test dataView records");
 				renderData(data);
 			});
 			test("Test public functions: 'visibleGroupByData', 'groupByData', 'toggleGroupByRecord'", function () {
-				var se = [], i, ds = createDataSource(), data, dataView, gbData;
+				var se = [], i, ds = createDataSource(), data,
+				 	dataView, gbData, gbDataView;
 				se = [{
 					fieldName: "Price",
 					isGroupBy: true,
@@ -208,27 +212,37 @@
 				ds.sort(se);
 				data = ds.data();
 				dataView = ds.dataView();
-				equal(dataView.length, 5, "Group by Price - test count of dataView records");
+				gbDataView = ds.groupByDataView();
+				ok(
+					gbDataView.length === 5 && 
+					dataView.length === 4, 
+					"Group by Price - test count of dataView records");
 				// collapse first row
-				ds.toggleGroupByRecord(dataView[0].id, true);
+				ds.toggleGroupByRecord(gbDataView[0].id, true);
 				dataView = ds.dataView();
-				ok(ds.isGroupByRecordCollapsed(dataView[0].id) === true, "Test whether first group by record is collapsed");
-				equal(dataView.length, 1, "Group by Price - test count of dataView records when first group by record is collapsed");
-				ok(dataView[0].__gbRecord && dataView[0].collapsed, "First record in data view should be non-data, group-by record, and propery collapsed should be true");
+				gbDataView = ds.groupByDataView();
+				ok(ds.isGroupByRecordCollapsed(gbDataView[0].id) === true &&
+					dataView[3].Id === 3 &&
+					dataView.length === 4, 
+					"Test whether first group by record is collapsed");
+				equal(gbDataView.length, 1, "Group by Price - test count of dataView records when first group by record is collapsed");
+				ok(gbDataView[0].__gbRecord && gbDataView[0].collapsed, "First record in data view should be non-data, group-by record, and propery collapsed should be true");
 				ok(ds.visibleGroupByData().length, 1, "Test visibleGroupByData");
 				gbData = ds.groupByData();
 				equal(gbData.length, 5, "Test groupByData length");
 				ok(gbData[0].__gbRecord && gbData[4].Id === 3, 
 					"Test groupBy data");
 				// expand first row
-				ds.toggleGroupByRecord(dataView[0].id, false);
+				ds.toggleGroupByRecord(gbDataView[0].id, false);
 				dataView = ds.dataView();
-				equal(dataView.length, 5, "Group by Price - test count of dataView records when first group by record is collapsed");
-				ok(dataView[0].__gbRecord && !dataView[0].collapsed, "First record in data view should be non-data, group-by record, and propery collapsed should be true");
-				ok(ds.isGroupByRecordCollapsed(dataView[0].id) === false, "Test whether first group by record is expanded");
+				gbDataView = ds.groupByDataView();
+				equal(gbDataView.length, 5, "Group by Price - test count of dataView records when first group by record is collapsed");
+				ok(gbDataView[0].__gbRecord && !gbDataView[0].collapsed, "First record in data view should be non-data, group-by record, and propery collapsed should be true");
+				ok(ds.isGroupByRecordCollapsed(gbDataView[0].id) === false, "Test whether first group by record is expanded");
 			});
 			test("Test groupby + filtering", function () {
-				var se = [], i, ds = createDataSource(), data, dataView, gbData;
+				var se = [], i, ds = createDataSource(), 
+					data, dataView, gbData, gbDataView;
 				se = [{
 					fieldName: "Price",
 					isGroupBy: true,
@@ -244,12 +258,16 @@
 				}];
 				ds.dataBind();
 				dataView = ds.dataView();
-				ok(dataView[0].__gbRecord && dataView[3].Id === 3, "Test dataView records");
-				equal(dataView.length, 4, "Test count of dataView records");
-				renderData(dataView);
+				gbDataView = ds.groupByDataView();
+				ok(dataView.length === 3 &&
+					gbDataView[0].__gbRecord &&
+					gbDataView[3].Id === 3 &&
+					gbDataView.length === 4,
+					"Test groupByDataView records");
+				renderData(gbDataView);
 			});
 			test("Test groupby + paging + filtering", function () {
-				var se = [], i, ds = createDataSource(), data, dataView, gbData;
+				var se = [], i, ds = createDataSource(), data, gbDataView, dataView, gbData;
 				se = [{
 					fieldName: "Id",
 					isGroupBy: true,
@@ -270,8 +288,11 @@
 				}];
 				ds.dataBind();
 				dataView = ds.dataView();
-				ok(dataView[0].__gbRecord && dataView[1].Id === 1, "Test dataView records");
-				equal(dataView.length, 5, "Test count of records in the dataView");
+				gbDataView = ds.groupByDataView();
+				ok(dataView.length === 2 &&
+					gbDataView.length === 5 &&
+					gbDataView[0].__gbRecord && 
+					gbDataView[1].Id === 1, "Test dataView records");
 				equal(ds.groupByData().length, 6, "Test count of records in groupByData");
 				equal(ds.pageCount(), 2, "Test pageCount");
 				ds.pageIndex(1);
@@ -280,7 +301,7 @@
 			});
 
 			test("Test groupby date column", function () {
-				var se = [], i, ds = createDataSource(), data, dataView, gbData;
+				var se = [], i, ds = createDataSource(), data, dataView, gbDataView, gbData;
 				se = [{
 					fieldName: "Date",
 					isGroupBy: true,
@@ -292,10 +313,11 @@
 				ds.settings.sorting.enabled = true;
 				ds.dataBind();
 				dataView = ds.dataView();
-				renderData(dataView);
-				ok(dataView[0].__gbRecord &&
-					dataView[1].Id === 0 &&
-					dataView[7].Id === 3,
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				ok(gbDataView[0].__gbRecord &&
+					gbDataView[1].Id === 0 &&
+					gbDataView[7].Id === 3,
 					"Test dataView records");
 				equal(ds.groupByData().length, 8, "Test count of records in groupByData");
 			});
@@ -358,10 +380,11 @@
 			});
 			test("Basic tests", function () {
 				var se, dv = __ds.dataView(),
+					gdv = __ds.groupByDataView(),
 					data = __ds.data();
-				ok(dv.length === 5 && data.length === 10, "Test count of records of dataview and data");
-				ok(dv[0].__gbRecord === true && dv[0].len === 1 &&
-					dv[1].Id === 9 && dv[4].__gbRecord === true,
+				ok(gdv.length === 5 && data.length === 10, "Test count of records of dataview and data");
+				ok(gdv[0].__gbRecord === true && gdv[0].len === 1 &&
+					gdv[1].Id === 9 && gdv[4].__gbRecord === true,
 					"Test dataview records");
 				ok(data[0].Id === 9 && data[9].Id === 0,
 					"Test data records");
@@ -380,10 +403,11 @@
 				stop();
 				setTimeout(function () {
 					dv = __ds.dataView();
+					gdv = __ds.groupByDataView();
 					data = __ds.data();
-					ok(dv.length === 5 && data.length === 10, "Test count of records of dataview and data");
-					ok(dv[0].__gbRecord === true && dv[0].len === 1 &&
-						dv[1].Id === 0 && dv[4].__gbRecord === true,
+					ok(gdv.length === 5 && data.length === 10, "Test count of records of dataview and data");
+					ok(gdv[0].__gbRecord === true && gdv[0].len === 1 &&
+						gdv[1].Id === 0 && gdv[4].__gbRecord === true,
 						"Test dataview records");
 					ok(data[0].Id === 0 && data[9].Id === 9,
 						"Test data records");
@@ -392,7 +416,7 @@
 				}, 1000);
 			});
 			test("GroupBy + Local Filtering + Paging", function () {
-				var dv, data,
+				var gdv, dv, data,
 					fe = [{
 					fieldName: "Id",
 					cond: "greaterThan",
@@ -407,22 +431,23 @@
 				stop();
 				setTimeout(function () {
 					dv = __ds.dataView();
+					gdv = __ds.groupByDataView();
 					data = __ds.data();
-					ok(dv.length === 5 && data.length === 10, "Test count of records of dataview and data");
-					ok(dv[0].__gbRecord === true && dv[0].len === 1 &&
-						dv[1].Id === 9 && dv[4].__gbRecord === true,
+					ok(gdv.length === 5 && data.length === 10, "Test count of records of dataview and data");
+					ok(gdv[0].__gbRecord === true && gdv[0].len === 1 &&
+						gdv[1].Id === 9 && gdv[4].__gbRecord === true,
 						"Test dataview records");
 					ok(data[0].Id === 9 && data[9].Id === 0,
 						"Test data records");
-					renderData(dv);
+					renderData(gdv);
 					equal(__ds.pageCount(), 4, "Test page count");
 					__ds.pageIndex(3);
-					dv = __ds.dataView();
+					gdv = __ds.groupByDataView();
 					data = __ds.data();
-					equal(dv.length, 3, "Test count of records of dataview and data");
-					ok(dv[0].Id === 2 &&
-						dv[1].__gbRecord === true && dv[1].val === 1 &&
-						dv[2].Id === 1,
+					equal(gdv.length, 3, "Test count of records of dataview and data");
+					ok(gdv[0].Id === 2 &&
+						gdv[1].__gbRecord === true && gdv[1].val === 1 &&
+						gdv[2].Id === 1,
 						"Test dataview records");
 					renderData(dv);
 					start();
@@ -431,7 +456,6 @@
 			/* //Test GroupBy with type: "remote"*/
 		});
 	</script>
-	<!-- <script type="text/javascript" src="../../testswarm/inject.js"></script> -->
 </head>
 <body>
 <div id="div1"></div>
