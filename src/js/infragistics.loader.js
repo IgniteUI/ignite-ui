@@ -76,6 +76,7 @@ $.ig.dependencies = [
 /* /// Data Visualization /// */
 	{
 		widget: "_ig_ext_core",
+		dependency: [ { name: "igUtil" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [ "$path$/modules/infragistics.ext_core.js" ]
 	},
@@ -124,7 +125,7 @@ $.ig.dependencies = [
 	{
 		widget: "_ig_dv_core",
 		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_ext_collections" } ],
+		dependency: [ { name: "_ig_ext_ui" } ],
 		scripts: [ "$path$/modules/infragistics.dv_core.js" ]
 	},
 	{
@@ -168,7 +169,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "_ig_dv_commonwidget",
-		dependency: [ { name: "_ig_dv_core" } ],
+		dependency: [ { name: "_ig_datachart_core" } ],
 		scripts: [ "$path$/modules/infragistics.dvcommonwidget.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		locale: [ "$localePath$/infragistics.dvcommonwidget-$locale$.js" ]
@@ -202,7 +203,7 @@ $.ig.dependencies = [
 	{
 		widget: "igDataChart",
 		dependency: [ { name: "_ig_datachart_core" }, { name: "_ig_dv_commonwidget" },
-					{ name: "igUtil" },	{ name: "igTemplating" },{ name: "igDataSource" } ],
+					{ name: "igTemplating" },{ name: "igDataSource" } ],
 		scripts: [ "$path$/modules/infragistics.ui.chart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		css: [
@@ -306,7 +307,7 @@ $.ig.dependencies = [
 	{
 		widget: "igDoughnutChart",
 		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_commonwidget" },
-					{ name: "igUtil" }, { name: "igTemplating" },{ name: "igDataSource" } ],
+					{ name: "igTemplating" },{ name: "igDataSource" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
 			"$path$/modules/infragistics.piechart.js",
@@ -320,7 +321,7 @@ $.ig.dependencies = [
 	{
 		widget: "igFunnelChart",
 		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_commonwidget" },
-					{ name: "igUtil" },	{ name: "igTemplating" },{ name: "igDataSource" } ],
+					{ name: "igTemplating" },{ name: "igDataSource" } ],
 		scripts: [
 			"$path$/modules/infragistics.funnelchart.js",
 			"$path$/modules/infragistics.ui.funnelchart.js"
@@ -351,7 +352,7 @@ $.ig.dependencies = [
 		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_simple_core" },
 					{ name: "_ig_simple_datachart_core" } ],
 		scripts: [
-			"$path$/modules/infragistics.sparkline.js",
+			"$path$/modules/infragistics.chart_sparkline.js",
 			"$path$/modules/infragistics.ui.sparkline.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
@@ -360,7 +361,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igRadialGauge",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "igUtil" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.radialgauge.js",
 			"$path$/modules/infragistics.ui.radialgauge.js"
@@ -371,7 +372,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igBulletGraph",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "igUtil" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.bulletgraph.js",
 			"$path$/modules/infragistics.ui.bulletgraph.js"
@@ -382,7 +383,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igLinearGauge",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "igUtil" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.lineargauge.js",
 			"$path$/modules/infragistics.ui.lineargauge.js"
@@ -393,7 +394,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igRadialGauge",
-		dependency: [ { name: "igUtil" }, { name: "_ig_dv_geometry" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.ui.radialgauge.js",
 			"$path$/modules/infragistics.gauge_radialgauge.js"
@@ -404,7 +405,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igBulletGraph",
-		dependency: [ { name: "igUtil" }, { name: "_ig_dv_geometry" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.ui.bulletgraph.js",
 			"$path$/modules/infragistics.gauge_bulletgraph.js"
@@ -416,7 +417,6 @@ $.ig.dependencies = [
 	{
 		widget: "igLinearGauge",
 		dependency: [
-			{ name: "igUtil" },
 			{ name: "_ig_dv_geometry" }
 			],
 		scripts: [
