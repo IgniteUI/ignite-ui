@@ -508,7 +508,7 @@
 		},
 		dataView: function () {
 			/* returns the current normalized/transformed and paged/filtered/sorted data, i.e. the dataView
-			returnType="object"
+			returnType="array" array of data records
 			*/
 			return this._dataView;
 		},
@@ -2108,7 +2108,6 @@
 			} else if (this.isGroupByApplied(s.expressions)) {
 				this._generateGroupByData(this._filter ? this._filteredData : this._data,
 										s.expressions);
-				this._dataView = this.visibleGroupByData();
 			}
 			/* Check if paging is configured, and if so,
 			if OpType === $.ig.Constants.OpType.Local => apply local paging */
@@ -2756,7 +2755,7 @@
 			return this._filteredData;
 		},
 		_page: function (keepRecords) {
-			var count = 0, startIndex, endIndex, i = 0, data;
+			var count = 0, data;
 			if (keepRecords === undefined) {
 				keepRecords = false;
 			}
@@ -2766,26 +2765,38 @@
 			} else {
 				this._dataView = [];
 			}
-			if (this.isGroupByApplied()) {
-				data = this.visibleGroupByData();
-			} else {
-				data = this._filter ? this._filteredData : this._data;
-			}
+			data = this._filter ? this._filteredData : this._data;
+			this._generatePageData(this.isGroupByApplied() ?
+										this.visibleGroupByData() :
+										data,
+									count);
+		},
+		_generatePageData: function (data, count) {
+			var i, startIndex, endIndex;
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
 			load the data for the current page only , in the DataView */
 			startIndex = this.pageIndex() * this.pageSize();
-			/* M.H. 11 August 2015 Fix for bug 203649:
-			Total record count in pager is incorrect after update datasource */
 			if (startIndex >= data.length) {
 				this.settings.paging.pageIndex = 0;
 				startIndex = this.pageIndex() * this.pageSize();
 			}
 			endIndex = startIndex + this.pageSize() >= data.length ?
 				data.length : startIndex + this.pageSize();
-			for (i = startIndex; i < endIndex; i++) {
-				this._dataView[ count++ ] = data[ i ];
+			if (this.isGroupByApplied()) {
+				this._dataView = [];
+				this._gbDataView = [];
+				for (i = startIndex; i < endIndex; i++) {
+					this._gbDataView.push(data[ i ]);
+					if (!data[ i ].__gbRecord) {
+						this._dataView.push(data[ i ]);
+					}
+				}
+			} else {
+				for (i = startIndex; i < endIndex; i++) {
+					this._dataView[ count++ ] = data[ i ];
+				}
 			}
 		},
 		_compareValues: function (x, y) {
@@ -2996,9 +3007,7 @@
 				this._page();
 			} else {
 				/* A.T. 14 Feb 2011 - fix for bug #66214 */
-				this._dataView = isGb ?
-									this.visibleGroupByData() :
-									data;
+				this._dataView = data;
 			}
 			/* M.H. 17 April 2012 Fix for bug #109475 */
 			this._populateTransformedData(data);
@@ -3035,7 +3044,6 @@
 		},
 		/* expected format is "col1 ASC, col2 DESC, col3 ASC" ... and so on */
 		_parseSortExpressions: function (s) {
-
 			var fields = [], tmp, tmp2, i;
 			tmp = s.split(",");
 
@@ -3226,7 +3234,6 @@
 						}
 					}
 					if (!skipRec) {
-						//this._dataView[count++] = data[i];
 						this._filteredData[ count++ ] = data[ i ];
 					}
 				}
@@ -3252,11 +3259,9 @@
 			} else if (!this._vgbData || !this._vgbData.length) {
 				if (this.isGroupByApplied()) {
 					this._generateGroupByData(this._filteredData, s.expressions);
-					this._dataView = this.visibleGroupByData();
-				} else {
-					for (i = 0; i < this._filteredData.length; i++) {
-						this._dataView[ i ] = this._filteredData[ i ];
-					}
+				}
+				for (i = 0; i < this._filteredData.length; i++) {
+					this._dataView[ i ] = this._filteredData[ i ];
 				}
 			}
 			this._populateTransformedData(this._filteredData);
@@ -3303,11 +3308,9 @@
 				if (!sa) {
 					if (this.isGroupByApplied()) {
 						this._generateGroupByData(this._filteredData, s.expressions);
-						this._dataView = this.visibleGroupByData();
-					} else {
-						for (i = 0; i < this._filteredData.length; i++) {
-							this._dataView[ i ] = this._filteredData[ i ];
-						}
+					}
+					for (i = 0; i < this._filteredData.length; i++) {
+						this._dataView[ i ] = this._filteredData[ i ];
 					}
 				}
 			}
@@ -4043,6 +4046,12 @@
 			*/
 			return this._vgbData;
 		},
+		groupByDataView: function () {
+			/* returns the current normalized/transformed and paged/filtered/sorted group-by data
+			returnType="array" array of data and non-data(grouped) records
+			*/
+			return this._gbDataView;
+		},
 		_groupedRecordsByExpr: function (data, startInd, gbExpr) {
 			var i, res = [], cmpRes, groupval, currval,
 				mapper = this._hasMapper,
@@ -4108,7 +4117,7 @@
 			}
 			/* visible groupby data and the data view should be populated */
 			this._vgbData = res;
-			this._dataView = this._vgbData;
+			this._gbDataView = this._vgbData;
 			if (p.enabled && p.type === "local") {
 				this._page();
 			}
@@ -4187,6 +4196,7 @@
 			gbExprs = gbExprs || [];
 			this._gbData = [];
 			this._vgbData = [];
+			this._gbDataView = [];
 			this._gbCollapsed = collapsedRows || this._gbCollapsed;
 			if ($.type(gbExprs) !== "array" || !gbExprs.length) {
 				return data;
@@ -4201,11 +4211,13 @@
 				return data;
 			}
 			this._processGroupsRecursive(data, gbExprs, 0, false, "");
+			this._gbDataView = this._vgbData;
 			return this.groupByData();
 		},
 		_clearGroupByData: function () {
 			this._gbData = [];
 			this._vgbData = [];
+			this._gbDataView = [];
 		},
 		isGroupByApplied: function (exprs) {
 			/* check whether grouping is applied for the specified sorting expressions.
@@ -6345,6 +6357,11 @@
 			this._super(callback, callee);
 		},
 		getParentRowsForRow: function (dataRow, ds) {
+			/*Gets the passed record's parent records
+			paramType="object" optional="false" the child record.
+			paramType="object" optional="true" the data source in which to search for the related parent records.
+			returnType="object" the array of parent records of the specified child record.
+			*/
 			var key, data = ds || this._data, search, propL, i, res,
 				objPath = {}, rec, prows;
 			if (dataRow === undefined || dataRow === null) {

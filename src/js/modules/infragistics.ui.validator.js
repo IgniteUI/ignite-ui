@@ -619,6 +619,7 @@ $.widget("ui.igValidator", {
 					e.preventDefault();
 					e.stopPropagation();
 				}
+				delete this._igErrorShown;
 			});
 		}
 		this._form._igValidators.push(this);
@@ -666,10 +667,7 @@ $.widget("ui.igValidator", {
 
 		// overall "form" event
 		if (this._trigger(this.events.formValidating, evt, args)) {
-			if (!$.ui.igValidator.defaults.showAllErrorsOnSubmit &&
-					this._form && this._form._igErrorShown) {
-				this._skipMessages = true;
-			}
+
 			args.valid = valid = this._validate(null, evt, true);
 
 			// overall "form" event
@@ -677,6 +675,19 @@ $.widget("ui.igValidator", {
 			this._trigger(valid ? this.events.formSuccess : this.events.formError, evt, args);
 		}
 		return valid;
+	},
+	_errorOnSubmitAllowed: function () {
+		if (!$.ui.igValidator.defaults.showAllErrorsOnSubmit &&
+				this._form && this._form._igErrorShown !== undefined) {
+			return !this._form._igErrorShown;
+		}
+		return true;
+	},
+	_addErrorOnSubmit: function () {
+		if (!$.ui.igValidator.defaults.showAllErrorsOnSubmit &&
+				this._form && this._form._igErrorShown !== undefined) {
+			this._form._igErrorShown = true;
+		}
 	},
 	_validateInternal: function (element, evt, blur, value) {
 		// Called from events && internally used by other controls
@@ -785,7 +796,7 @@ $.widget("ui.igValidator", {
 			this._trigger(this.events.error, evt, args);
 		}
 
-		if (this._skipMessages) {
+		if (this._skipMessages || !this._errorOnSubmitAllowed()) {
 			return;
 		}
 
@@ -812,13 +823,11 @@ $.widget("ui.igValidator", {
 			options.notifyTarget.data("igNotifier")._setTargetState();
 		} else {
 			options.notifyTarget.igNotifier("notify", "error", args.message);
-			if (this._form) {
-				this._form._igErrorShown = true;
-			}
 		}
 		if (evt) {
 			this._trigger(this.events.errorShown, evt, args);
 		}
+		this._addErrorOnSubmit();
 	},
 	_hideError: function (options, evt) {
 		var notifier = options._$messageTarget || options.notifyTarget.data("igNotifier"),
