@@ -311,18 +311,10 @@ if (typeof jQuery !== "function") {
             case "flow":
                 this._initFlowLayout();
                 break;
-            case "column":
-
-                //D.A. March 18th, 2013 Bug #136557 The _initColumnLayout method is not implemented.
-                //Instead column layout is achieved entirely through css.
-                //this._initColumnLayout();
-                break;
             case "vertical":
                 this._initVerticalLayout();
                 break;
             default:
-
-                //this._initColumnLayout();
                 break;
             }
         },
@@ -1464,7 +1456,11 @@ if (typeof jQuery !== "function") {
 		*/
         _destroyBorderLayout: function () {
             this.element.removeClass(this.css.border);
-            this.element.find("." + this.css.borderLeft).unwrap();
+			if (this.element.find("." + this.css.borderLeft).length) {
+				this.element.find("." + this.css.borderLeft).unwrap();
+			} else {
+				this.element.find("." + this.css.borderRight).unwrap();
+			}
             if (this._removeLeft) {
                 this.element.children("." + this.css.borderLeft).remove();
             }
