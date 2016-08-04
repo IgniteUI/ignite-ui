@@ -751,15 +751,23 @@
 			
 			testId = 'Bug 207546';
 			test(testId, 2, function () {
-				var flag = true;
-				$("#207546Editor1").on("igdatepickervaluechanged", function (evt, ui) {
-					flag = false;
-				})
-				$("#207546Editor1").igDatePicker("dropDownButton").click();
-				$("#207546button").click();
-				ok($("#207546Editor1").igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
-				ok(flag, "Value changed should not be fired.")
+				var flag = true,
+					$editor = $("#207546Editor1").on("igdatepickervaluechanged", function (evt, ui) {
+						flag = false;
+					});
+				$editor.igDatePicker("dropDownButton").click();
 
+				// datepicker handles mousedown for external click detection:
+				$("#207546button").mousedown().mouseup().click();
+				// wait for animation (show + hide...) :
+				stop();
+				setTimeout(function () {
+						start();
+						ok(!$editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
+						ok(flag, "Value changed should not be fired.");
+					}, 
+					2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 400 /*normal*/)
+				);
 			});
 			
 			testId = 'Bug 207321';
