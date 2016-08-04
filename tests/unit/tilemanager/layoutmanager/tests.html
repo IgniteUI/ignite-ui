@@ -90,6 +90,7 @@
 				var testId_2 = 'igLayoutManager border layout.';
 				var testId_3 = 'igLayoutManager flow layout.';
 				var testId_4 = 'igLayoutManager vertical layout.';
+				var testId_5 = 'igLayoutManager grid layout.';
 				
 				test(testId_1, function () {
 					ok(typeof $('#layoutmanager').igLayoutManager === 'function', 'igLayoutManager is not defined.');
@@ -260,7 +261,6 @@
 					equal(totalHeight, 100, 'The height of the children does not match');
 					$('#layoutmanager').igLayoutManager('destroy');
 					equal($('#layoutmanager').children().length, 0, 'The containers were not removed after a destroy.');
-					console.log($('#layoutmanager').children().first());
 				});
 				
 				test(testId_3, function () {
@@ -407,6 +407,68 @@
 					$('#vertical').igLayoutManager('destroy');
 					equal($('#vertical').children().length, 0, 'The flow layout container did not clear its children before rendering items.');
 				});
+				
+				test(testId_5, function () {
+					$('#grid').igLayoutManager({
+					    layoutMode: 'grid',
+                        height: 600,
+						width: 1000,
+						gridLayout: {
+							rows: 3
+						},
+						items: [
+							{ rowSpan: 1, colSpan: 1 },
+							{ rowSpan: 1, colSpan: 1 },
+							{ rowSpan: 1, colSpan: 1 },
+							{ rowSpan: 1, colSpan: 1 },
+							{ rowSpan: 1, colSpan: 1 }
+						]
+					});
+					var options = $('#grid').data("igLayoutManager")._opt;
+					equal(options.gridLayout.cols, 2, "The columns weren't correctly set");
+					equal($('#grid').children().length, 5, "The items weren't correctly rendered");
+					equal($('#grid').children().first().width(), 490, "The items width wasn't correctly rendered");
+					equal($('#grid').children().first().height(), 190, "The items width wasn't correctly rendered");
+					$('#grid').igLayoutManager("option", "width", 800);
+					equal($('#grid').children().eq(2).css("top"), "200px", "The items weren't reflowed");
+					$('#grid').igLayoutManager("option", "height", 800);
+					equal($('#grid').children().eq(2).css("top"), "200px", "The items were incorrectly reflowed");
+
+					$('#grid').igLayoutManager("option", "gridLayout", {
+						columnHeight: 250
+					});
+					
+					options = $('#grid').data("igLayoutManager")._opt;
+					equal(options.gridLayout.cols, 2, "The columns weren't correctly set");
+					equal(options.gridLayout.rows, 3, "The columns weren't correctly set");
+					equal($('#grid').children().length, 5, "The items weren't correctly rendered");
+					equal($('#grid').children().first().width(), 390, "The items width wasn't correctly rendered");
+					equal($('#grid').children().first().height(), 240, "The items width wasn't correctly rendered");
+					$('#grid').igLayoutManager("option", "width", 800);
+					equal($('#grid').children().eq(2).css("top"), "250px", "The items weren't reflowed");
+					$('#grid').igLayoutManager("option", "height", 800);
+					equal($('#grid').children().eq(2).css("top"), "250px", "The items were incorrectly reflowed");
+					
+					$('#grid').igLayoutManager("destroy");
+					equal($('#grid').children().length, 0, 'The grid layout container did not clear its children before rendering items.');
+					
+					$('#grid').igLayoutManager({
+					    layoutMode: 'grid',
+                        height: 600,
+						width: 900,
+						gridLayout: {
+							rows: 3,
+							cols: 3
+						}
+					});
+					
+					equal($('#grid').children().length, 9, "The items weren't correctly rendered");
+					equal($('#grid').children().first().width(), 300, "The items width wasn't correctly rendered");
+					equal($('#grid').children().first().height(), 200, "The items width wasn't correctly rendered");
+					
+					$('#grid').igLayoutManager("destroy");
+					equal($('#grid').children().length, 0, 'The grid layout container did not clear its children before rendering items.');
+				});
 			});
 		</script>
 		<style>
@@ -424,6 +486,10 @@
 				top: 400px;
 				width: 50%;
 			}
+			#grid {
+				position: absolute;
+				width: 600px;
+			}
 		</style>
 	</head>
 	<body>
@@ -436,5 +502,6 @@
 		<div id="layoutmanager"></div>
 		<div id="flow"></div>
 		<div id="vertical"></div>
+		<div id="grid"></div>
 	</body>
 </html>

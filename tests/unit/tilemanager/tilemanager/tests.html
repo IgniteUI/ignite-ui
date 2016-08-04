@@ -120,8 +120,10 @@
                     useApiMethods = false, fromMarkup = true,
                     splitterInitiallyCollapsed = false;
 
-                $('#tilemanager1').width(1000).height(1000).igTileManager({
-                    animationDuration: 0
+                $('#tilemanager1').igTileManager({
+                    animationDuration: 0,
+					width: 1000,
+					height: 1000
                 });
 
                 testTileManager(container, containerWidth, containerHeight, cols, rows,
@@ -707,8 +709,8 @@
                 $('#tilemanager2').width(500).height(500).igTileManager({
                     columnWidth: 100,
                     columnHeight: '10%',
-                    cols: 100,
-                    rows: 100,
+                    cols: "100",
+                    rows: "100",
                     rearrangeItems: false,
                     items: items,
                     showRightPanelScroll: false,

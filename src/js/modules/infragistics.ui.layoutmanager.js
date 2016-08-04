@@ -378,6 +378,7 @@ if (typeof jQuery !== "function") {
                 this.options.gridLayout = $.extend(
                     true, {}, gridLayout, this.options.gridLayout);
                 if (initGridLayout) {
+					this._destroyGridLayout();
                     this._initGlFromItemsConfig(false);
                 } else {
                     if (value.hasOwnProperty("rearrangeItems")) {
