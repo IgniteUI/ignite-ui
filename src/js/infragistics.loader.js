@@ -203,7 +203,7 @@ $.ig.dependencies = [
 	{
 		widget: "igDataChart",
 		dependency: [ { name: "_ig_datachart_core" }, { name: "_ig_dv_commonwidget" },
-					{ name: "igTemplating" },{ name: "igDataSource" } ],
+					{ name: "igTemplating" }, { name: "igDataSource" } ],
 		scripts: [ "$path$/modules/infragistics.ui.chart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		css: [
@@ -319,7 +319,7 @@ $.ig.dependencies = [
 	{
 		widget: "igFunnelChart",
 		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_commonwidget" },
-					{ name: "igTemplating" },{ name: "igDataSource" } ],
+					{ name: "igTemplating" }, { name: "igDataSource" } ],
 		scripts: [
 			"$path$/modules/infragistics.funnelchart.js",
 			"$path$/modules/infragistics.ui.basechart.js",
@@ -337,15 +337,13 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "_ig_simple_datachart_core",
-		dependency: [ { name: "igUtil" }, { name: "igTemplating" },{ name: "igDataSource" } ],
+		dependency: [ { name: "igUtil" }, { name: "igTemplating" }, { name: "igDataSource" } ],
 		scripts: [ "$path$/modules/infragistics.ui.basechart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		css: [
-			"$path$/structure/modules/infragistics.ui.shared.css",
-			"$path$/structure/modules/infragistics.ui.html5.css"
-			]
+		css: [ "$path$/structure/modules/infragistics.ui.shared.css",
+			"$path$/structure/modules/infragistics.ui.html5.css" ]
 	},
-	
+
 	{
 		widget: "igSparkline",
 		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_simple_core" },
@@ -1003,7 +1001,7 @@ $.ig.dependencies = [
 			{ name: "_ig_ext_collections" },
 			{ name: "_ig_ext_web" },
 			{ name: "_ig_dv_geo" },
-			{ name: "Scatter" },
+			{ name: "Scatter" }
 			],
 		scripts: [ "$path$/modules/infragistics.geographicmap_core.js",
 					"$path$/modules/infragistics.ui.map.js" ],
