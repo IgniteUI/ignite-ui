@@ -306,16 +306,14 @@ $.ig.dependencies = [
 
 	{
 		widget: "igDoughnutChart",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_commonwidget" },
-					{ name: "igTemplating" },{ name: "igDataSource" } ],
+		dependency: [ { name: "igPieChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/infragistics.piechart.js",
+			"$path$/modules/infragistics.doughnutchart.js",
 			"$path$/modules/infragistics.ui.basechart.js",
 			"$path$/modules/infragistics.ui.doughnutchart.js"
 			],
-		locale: [ "$localePath$/infragistics.ui.doughnutchart-$locale$.js" ],
-		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
+		locale: [ "$localePath$/infragistics.ui.doughnutchart-$locale$.js" ]
 	},
 
 	{
@@ -324,6 +322,7 @@ $.ig.dependencies = [
 					{ name: "igTemplating" },{ name: "igDataSource" } ],
 		scripts: [
 			"$path$/modules/infragistics.funnelchart.js",
+			"$path$/modules/infragistics.ui.basechart.js",
 			"$path$/modules/infragistics.ui.funnelchart.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
@@ -435,8 +434,8 @@ $.ig.dependencies = [
 			{ name: "_ig_dv_simple_core" }
 			],
 		scripts: [
-			"$path$/modules/infragistics.ui.radialmenu.js",
-			"$path$/modules/infragistics.radialmenu_core.js"
+			"$path$/modules/infragistics.radialmenu_core.js",
+			"$path$/modules/infragistics.ui.radialmenu.js"
 			],
 		group: $.ig.loaderClass.locale.interactionsGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.radialmenu.css" ]
@@ -1001,8 +1000,9 @@ $.ig.dependencies = [
 	{
 		widget: "igMap",
 		dependency: [
+			{ name: "_ig_ext_collections" },
 			{ name: "_ig_ext_web" },
-			{ name: "_ig_ext_geo" },
+			{ name: "_ig_dv_geo" },
 			{ name: "Scatter" },
 			],
 		scripts: [ "$path$/modules/infragistics.geographicmap_core.js",
