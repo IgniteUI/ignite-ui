@@ -1410,16 +1410,6 @@ $.ig.dependencies = [
 
 $.ig.theme = "infragistics";
 
-$.ig.isDocumentReady = false;
-
-$(function () {
-	$.ig.isDocumentReady = true;
-
-	if ($.ig._loader) {
-		$.ig.loader()._notifyLoaded();
-	}
-});
-
 $.extend($.ig, {
 	/* pluginName="loader" */
 	loader: function (param1, param2, param3) {
@@ -1580,6 +1570,9 @@ $.extend($.ig.loaderClass, {
 			this._waitBatches(this._proxy(this, this._notifyLoaded, [  ]));
 		} else {
 
+			//~ Make jQuery to hold firing ready event until all of our resources are loaded
+			$.holdReady(true);
+
 			if (!this._themeLoaded && this.settings.theme) {
 				this._themeLoaded = true;
 				resources = "theme" + (resources ? "," + resources : "");
@@ -1591,7 +1584,6 @@ $.extend($.ig.loaderClass, {
 				i;
 
 			loadBatch.callback = this._proxy(loadBatch, this._callback, [  ]);
-			loadBatch.waitFireCallback = this._proxy(loadBatch, this._waitFireCallback, [  ]);
 			loadBatch._noWdgtLoaded = res.length;
 			loadBatch.loader = this;
 			loadBatch.ready = this._proxy(this, this._notifyLoaded, [  ]);
@@ -1777,25 +1769,15 @@ $.extend($.ig.loaderClass, {
 	_callback: function () {
 		this._noWdgtLoaded--;
 		if (this._noWdgtLoaded <= 0) {
+			this.loader._loadBatches.pop(this);
 			if (this.ready) {
-				this.waitFireCallback();
-			} else {
-				this.loader._loadBatches.pop(this);
+				this.ready();
 			}
 		}
 	},
 
-	_waitFireCallback: function () {
-		if ($.ig.isDocumentReady) {
-			this.loader._loadBatches.pop(this);
-			this.ready();
-		} else {
-			window.setTimeout(this.loader._proxy(this, this.waitFireCallback, [  ]), 25);
-		}
-	},
-
 	_waitBatches: function (callback) {
-		if (this._loadBatches.length === 0 && $.ig.isDocumentReady) {
+		if (this._loadBatches.length === 0) {
 			callback();
 		} else {
 			window.setTimeout(this._proxy(this, this._waitBatches, [ callback ]), 25);
@@ -1829,6 +1811,9 @@ $.extend($.ig.loaderClass, {
 		while (call.length > 0) {
 			call.shift()();
 		}
+
+		//~ Allow firing jQuery ready event
+		$.holdReady(false);
 	},
 
 	_findWidgetScriptData: function (widgetName, parentWidget) {
