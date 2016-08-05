@@ -13,14 +13,40 @@
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	
 	<script type="text/javascript"> 
+	function filerFunc2(val) {
+		return val < 2 ? true : false;
+	};
 	 $(function () {
-		var dataBindingFired = false, dataBoundFired = false, ds1;
+		var dataBindingFired = false, dataBoundFired = false, ds1, ds2, date;
 		function loadTestbeds() {
 			// define a simple data source control
 			ds1 = new $.ig.DataSource();
 			ds1.settings.dataBinding = function () { dataBindingFired = true; };
 			ds1.settings.dataBound = function () { dataBoundFired = true; };
 			ds1.dataBind();
+
+			date = new Date();
+			var data = [
+				{ ID: 1, "Date": date},
+				{ ID: 2, "Date": new Date(date.getDate() + 1), isActive: true },
+				{ ID: 3, "Date": new Date(date.getDate() + 2), isActive: false }
+				]
+			ds2 = new $.ig.DataSource({
+				dataSource: data,
+				enableUTCDates: true,
+				localSchemaTransform: false,
+				schema: {
+					fields: [{
+						name: "ID", type: "number"
+					}, {
+						name: "Date", type: "date"
+					},
+					{ name: "isActive", type: "boolean" }
+					]
+				},
+			});
+
+			ds2.dataBind();
 		}
 		
 		initialized = false;
@@ -184,6 +210,86 @@
 			equal(funcDs.type(), "function", "Check if dataSource type is correct.");
 		});
 
+		test("Test if date filtering is correct when enableUTCDates option is enabled", function () {
+			ds2.filter([{ fieldName: "Date", expr: date, cond: "on", preciseDateFormat: "dd/MM/yyyy hh:mm:ss:ff" }], "AND", true);
+			equal(ds2.dataView().length, 1, "DataView should contain a single record.");
+			ds2.clearLocalFilter();
+		});
+
+		test("Test if date filtering is correct for bool values", function () {
+
+			ds2.filter([{ fieldName: "isActive", cond: "null" }], "AND", true);
+			equal(ds2.dataView().length, 0, "DataView should contain a 0 records.");
+
+			ds2.clearLocalFilter();
+
+			ds2.filter([{ fieldName: "isActive", cond: "empty" }], "AND", true);
+			equal(ds2.dataView().length, 1, "DataView should contain 1 record.");
+
+			ds2.filter([{ fieldName: "isActive", cond: "notEmpty" }], "AND", true);
+			equal(ds2.dataView().length, 2, "DataView should contain a 2 records.");
+
+			ds2.filter([{ fieldName: "isActive", cond: "notNull" }], "AND", true);
+			equal(ds2.dataView().length, 3, "DataView should contain a 2 records.");
+
+			var errorCont = 0;
+			try {
+				ds2.filter([{ fieldName: "isActive", cond: "nonExistentCondition" }], "AND", true);
+			} catch (e) {
+				errorCont++;
+				equal(e.message, " The filter condition that was passed was not recognized: nonExistentCondition", "If invalid condition is passed an error should be thrown with the correct error message.");
+			}
+			equal(errorCont, 1, "If invalid condition is passed an error should be thrown.");
+			ds2.clearLocalFilter();
+		});
+
+		test("Test filtering for customConditions", function () {
+			ds2.clearLocalFilter();
+
+			function filerFunc(val) {
+				return val > 1 ? true : false;
+			};
+		
+			ds2.settings.filtering.customConditions = {
+				"Over": {
+					labelText: "Over 1",
+					expressionText: "Over 1",
+					requireExpr: false,
+					filterFunc: filerFunc
+				},
+				"Under": {
+					labelText: "Under 2",
+					expressionText: "Under 2",
+					requireExpr: false,
+					filterFunc: "filerFunc2"
+				},
+				"Error": {
+					labelText: "Error",
+					expressionText: "Error",
+					requireExpr: false,
+					filterFunc: "filerFunc3"
+				}
+			};
+
+			ds2.filter([{ fieldName: "ID", cond: "Over" }], "AND", true);
+			equal(ds2.dataView().length, 2, "There should be two items corresponding to the custom filtering condition");
+
+			ds2.clearLocalFilter();
+			ds2.filter([{ fieldName: "ID", cond: "Under" }], "AND", true);
+			equal(ds2.dataView().length, 1, "There should be 1 item corresponding to the custom filtering condition");
+
+			ds2.clearLocalFilter();
+			var errorCount = 0;
+			try {
+				ds2.filter([{ fieldName: "ID", cond: "Error" }], "AND", true);
+			} catch (e) {
+				errorCount++;
+				equal(e.message, "An unexpected value was provided for a custom filtering function. A function or string is expected.", "If filterFunc does not exist an error should be thrown and the error message should be correct.");
+			}
+			equal(errorCount, 1, "If filterFunc does not exist an error should be thrown")
+		});
+
+	
 		var dsSummaries, dsLocal, hierarchicalDS;
 		function loadAPITestbeds() {
 			var data = [
@@ -521,6 +627,31 @@
 		
 		});
 
+		test("Test sorting on child layout.", function () {
+			hierarchicalDS.settings.dataSource = "remoteUrl?layout=Product";
+			hierarchicalDS.settings.sorting = {
+				enabled: true,
+				type: "remote",
+				sortUrlAscValueKey: "asc",
+				sortUrlDescValueKey: "desc",
+				sortUrlKey: "sort",
+				expressions : [
+				{
+					fieldName: "ID",
+					dir: "desc",
+					layout: "Products"
+				}
+				]
+			};
+			
+			var params = $.param(hierarchicalDS._encodeUrl());
+			equal(params, "sort(ID)=desc&layout=Products&pk=ID", "Verify that sorting request for child layout is properly encoded.");
+
+			hierarchicalDS.settings.dataSource = "remoteUrl";
+			var params = $.param(hierarchicalDS._encodeUrl());
+			equal(params, "sort(ID)=desc&layout=Products&pk=ID", "Verify that sorting request for child layout is properly encoded.");
+		});
+
 		test("Test rollback API method - rollback transaction by id", function () {
 
 			var transaction = dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, false);
@@ -552,7 +683,82 @@
 
 		});
 
+		test("Test removeRecordByIndex API method", function () { 
+			var data = [
+				{ "ID": 0, "Name": "Bread", "Price": 2.5 },
+				{ "ID": 1, "Name": "Milk", "Price": 3.5 },
+				{ "ID": 2, "Name": "Vint soda", "Price": 20.9 }
+			];
+			dsLocal.removeRecordByIndex(1, data);
+			equal(data.length, 2, "One item should be removed from the data.");
+			equal(data[data.length - 1].ID, 2, "The last item should be with ID = 2.");
+			
+			//verify that collection does not change if invalid index is passed
+			dsLocal.removeRecordByIndex(2, data);
+			equal(data.length, 2, "One item should be removed from the data.");
+			equal(data[data.length - 1].ID, 2, "The last item should be with ID = 2.");
+			var errors = 0;
+			try {
+				//verify that if no data is passed no error is thrown
+				dsLocal.removeRecordByIndex(2);
+			} catch (e) {
+				errors++;
+			}
+			equal(errors, 0, "No errors should be thrown.");
+
+		});
+
+		test("Test saveChanges API method - error", function () {
+			var callBackCalled = false;
+			var customCallBackCalled = false;
+			dsLocal.allTransactions().clear();
+			function errorCallbackFunc() {
+				callBackCalled = true;
+			}
+			dsLocal._addChangesErrorHandler(errorCallbackFunc);
+
+			$.mockjax({
+				url: 'updateFail',
+				responseText: {
+					Success: false
+				}
+			});
+			dsLocal.allTransactions().clear();
+			dsLocal.settings.updateUrl = "updateFail";
+
+			dsLocal.addRow(9999, { "ID": 9999, "Name": "Bread", "Price": 2.5 }, true);
+
+			equal(dsLocal.allTransactions().length, 1, "There should be a single unsaved transaction.");
+
+			dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
+			stop();
+
+			setTimeout(function () {
+				equal(dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
+				ok(callBackCalled, "Error callback should be called.");
+				ok(customCallBackCalled, "Custom Error callback should be called.");
+
+				dsLocal.settings.updateUrl = "updateFail2";
+				callBackCalled = false;
+				customCallBackCalled = false;
+				dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
+				setTimeout(function () {
+					equal(dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
+					ok(callBackCalled, "Error callback should be called.");
+					ok(customCallBackCalled, "Custom Error callback should be called.");
+					callBackCalled = false;
+					dsLocal._removeChangesErrorHandler(errorCallbackFunc);
+					setTimeout(function () {
+						start();
+						ok(!callBackCalled, "Error callback should note be called since handler was removed.");
+					}, 100);
+				}, 100);
+
+			}, 500);
+		});
+
 		test("Test saveChanges API method - success", function () {
+			dsLocal.allTransactions().clear();
 			var callBackCalled = false;
 			var customCallBackCalled = false;
 			$.mockjax({
@@ -578,59 +784,22 @@
 			stop();
 
 			setTimeout(function () {
-				start();
 				equal(dsLocal.allTransactions().length, 0, "There should be no unsaved transactions after saveChanges is called and the request is successful.");
 				ok(callBackCalled, "Success callback should be called.");
-				ok(customCallBackCalled, "Custom Success callback should be called.")
-			}, 500);
-		});
+				ok(customCallBackCalled, "Custom Success callback should be called.");
 
-
-
-		test("Test saveChanges API method - error", function () { 
-			var callBackCalled = false;
-			var customCallBackCalled = false;
-
-			function errorCallbackFunc() {
-				callBackCalled = true;
-			}
-			dsLocal._addChangesErrorHandler(errorCallbackFunc);
-
-			$.mockjax({
-				url: 'updateFail',
-				responseText: {
-					Success: false
-				}
-			});
-			dsLocal.allTransactions().clear();
-			dsLocal.settings.updateUrl = "updateFail";
-
-			dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, true);
-
-			equal(dsLocal.allTransactions().length, 1, "There should be a single unsaved transaction.");
-
-			dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
-			stop();
-
-			setTimeout(function () {
-				equal(dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
-				ok(callBackCalled, "Error callback should be called.");
-				ok(customCallBackCalled, "Custom Error callback should be called.");
-
-				dsLocal.settings.updateUrl = "updateFail2";
+				dsLocal._removeChangesSuccessHandler(successCallbackFunc);
 				callBackCalled = false;
-				customCallBackCalled = false;
-				dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
+				dsLocal.saveChanges();
+
 				setTimeout(function () {
 					start();
-					equal(dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
-					ok(callBackCalled, "Error callback should be called.");
-					ok(customCallBackCalled, "Custom Error callback should be called.");
-				},100);
+					ok(!callBackCalled, "Callback should not be called since handler was removed.");
+				}, 100);
 
 			}, 500);
-		
 		});
+
 
 		test("Test getDetachedRecord API method", function () {
 			var arrayData = [
@@ -683,6 +852,43 @@
 				var params = $.param(dsSummaries._encodeUrl());
 				equal(params, "summaries(Price)=count");
 			}, 200);
+		});
+
+	 	test("Test remote filtering - encoded filtering params", function () {
+	 		var date = new Date();
+	 		var dsFilter = new $.ig.DataSource({
+				dataSource: "filteringUrl",
+				
+				filtering: {
+					type: "remote",
+					filterExprUrlKey: "filterKey",
+					expressions: [
+					{ fieldName: "Date", expr: date, cond: "on" },
+					{ fieldName: "Date2", cond: "lastMonth" },
+					{ fieldName: "Date3", cond: "nextMonth" },
+					{ fieldName: "Boolean", cond: "true" },
+					{ fieldName: "Boolean2", cond: "false" },
+					{ fieldName: "String", expr: "A", cond: "doesNotEqual" },
+					{ fieldName: "Boolean3", expr: true, cond: "doesNotEqual" }
+					],
+					enabled: true }
+	 		});
+	 		var ticks = Date.UTC(
+							   date.getFullYear(),
+							   date.getMonth(),
+							   date.getDate(),
+							   date.getHours(),
+							   date.getMinutes()
+						   );
+	 		var params = $.param(dsFilter._encodeUrl());
+	 		equal(params, "filterKey(Date)=on(" + ticks + ")&filterKey(Date2)=lastMonth()&filterKey(Date3)=nextMonth()&filterKey(Boolean)=true()&filterKey(Boolean2)=false()&filterKey(String)=doesNotEqual(A)&filterKey(Boolean3)=doesNotEqual(true)",
+				"Verify that all parameters were properly encoded.");
+	 		
+	 		dsFilter.settings.filtering.filterExprUrlKey = null;
+
+			var params = $.param(dsFilter._encodeUrl());
+			equal(params, "%24filter=day(Date)%20eq%205%20and%20month(Date)%20eq%208%20and%20year(Date)%20eq%202016%20and%20month(Date2)%20eq%207%20and%20year(Date2)%20eq%202016%20and%20month(Date3)%20eq%209%20and%20year(Date3)%20eq%202016%20and%20Boolean%20eq%20true%20and%20Boolean2%20eq%20false%20and%20tolower(String)%20ne%20'a'%20and%20Boolean3%20ne%20true");
+
 		});
 		
 		test("Test binding to remote xml data when no schema is defined.", function () { 
