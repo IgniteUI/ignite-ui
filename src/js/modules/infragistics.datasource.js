@@ -7907,7 +7907,7 @@
 				}
 			}
 		},
-		_removeRecordInFlatDs(data, key, fk) {
+		_removeRecordInFlatDs: function (data, key, fk) {
 			if (!data || !$.isArray(data) || !data.length ||
 				(key === undefined && fk === undefined)) {
 				return;
