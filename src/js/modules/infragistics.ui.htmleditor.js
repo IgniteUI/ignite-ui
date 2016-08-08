@@ -2735,10 +2735,13 @@ if (typeof jQuery !== "function") {
                     }
                 }
 
+                // A.K August 8th, 2016 Bug #219768 Toolbar button does not work properly for a selected content range if a 
+                // text is initially selected by double-tapping, and the selection is changed by mouse dragging.
+                // Fixed the bug with putting the code below in comment.
                 // K.D. October 9th, 2012 Bug #115567 The browser version should be checked against >= 9 not === 9
-                if (($.ig.util.isIE && $.ig.util.browserVersion >= 9) || $.ig.util.isOpera) {
-                    this._updateSelection(range);
-                }
+                // if (($.ig.util.isIE && $.ig.util.browserVersion >= 9) || $.ig.util.isOpera) {
+                //     this._updateSelection(range);
+                // }
 
                 if ($.isFunction(customCommand) && browser === null) {
                     customCommand.call(this, name, args);
