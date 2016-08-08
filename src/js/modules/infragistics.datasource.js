@@ -6357,6 +6357,11 @@
 			this._super(callback, callee);
 		},
 		getParentRowsForRow: function (dataRow, ds) {
+			/*Gets the passed record's parent records
+			paramType="object" optional="false" the child record.
+			paramType="object" optional="true" the data source in which to search for the related parent records.
+			returnType="object" the array of parent records of the specified child record.
+			*/
 			var key, data = ds || this._data, search, propL, i, res,
 				objPath = {}, rec, prows;
 			if (dataRow === undefined || dataRow === null) {

@@ -512,7 +512,7 @@
 
                     // P.P. 3 Sep 2015 #202506 - Disabled TileManager is fully functional
                 case "disabled":
-                    this._toggleDisbaled(value);
+                    this._toggleDisabled(value);
                     break;
                 default:
                     break;
@@ -1859,7 +1859,7 @@
         },
 
         // P.P. 3 Sep 2015 #202506 - Disabled TileManager is fully functional
-        _toggleDisbaled: function (value) {
+        _toggleDisabled: function (value) {
             var splitter = this.splitter(),
                 layoutManager = this._options.$layoutManagerElement.data().igLayoutManager;
 
