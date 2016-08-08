@@ -7886,7 +7886,13 @@
 			paramType="string|number" primary key of the record
 			*/
 			var data, count = 0,
-				all = [ this._data, this._dataView, this._filteredData, origDs ];
+				all = [ this._data, this._dataView, this._filteredData ];
+			/* M.H. 5 Aug 2016 Fix for bug 220126: Child data persists in the datasource after deleting the corresponding parent record in treegrid */
+			if (!this._isHierarchicalDataSource) {
+				this._removeRecordInFlatDs(origDs, key);
+			} else {
+				all.push(origDs);
+			}
 			while (count < all.length) {
 				data = all[ count++ ];
 				this._removeRecordByKeyForData(key, data);
@@ -7896,7 +7902,33 @@
 				}
 			}
 		},
+		_removeRecordInFlatDs(data, key, fk) {
+			if (!data || !$.isArray(data) || !data.length ||
+				(key === undefined && fk === undefined)) {
+				return;
+			}
+			var i, prime = this.settings.primaryKey, tmp,
+				pkSearch = $.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,
+				fkSearch = this.settings.treeDS.foreignKey;
+			for (i = 0; i < data.length; i++) {
+				if (data[ i ]) {
+					if (key !== undefined && data[ i ][ pkSearch ] === key) {
+						$.ig.removeFromArray(data, i);
+						this._removeRecordInFlatDs(data, undefined, key);
+						break;
+					} else if (fk !== undefined && data[ i ][ fkSearch ] === fk) {
+						tmp = data[ i ][ pkSearch ];
+						$.ig.removeFromArray(data, i);
+						this._removeRecordInFlatDs(data, undefined, tmp);
+						i = 0;
+					}
+				}
+			}
+		},
 		_removeRecordByKeyForData: function (key, data) {
+			if (!data) {
+				return false;
+			}
 			var i, prime = this.settings.primaryKey,
 				len = data ? data.length : 0,
 				search = len > 0 && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,
