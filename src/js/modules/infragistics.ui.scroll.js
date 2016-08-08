@@ -1768,8 +1768,6 @@
 					self._scrollTimeoutY(scrollStep, true);
 				}, 250);
 			}
-
-			return false;
 		},
 
 		_onMouseUpArrowUp: function() {
@@ -1819,8 +1817,6 @@
 					self._scrollTimeoutY(scrollStep, true);
 				}, 250);
 			}
-
-			return false;
 		},
 
 		_onMouseUpArrowDown: function() {
@@ -1851,7 +1847,7 @@
 
 		_onMouseDownVTrack: function (event) {
 			if (event.target.id === this._vBarDrag[ 0 ].id) {
-				return false;
+				return true;
 			}
 
 			this._bUseVTrack = true;
@@ -1902,8 +1898,6 @@
 					}, 250);
 				}
 			}
-
-			return false;
 		},
 
 		_onMouseMoveVTrack: function(event) {
@@ -2225,8 +2219,6 @@
 					self._scrollTimeoutX(scrollStep, true);
 				}, 250);
 			}
-
-			return false;
 		},
 
 		_onMouseUpArrowLeft: function () {
@@ -2280,8 +2272,6 @@
 				var self = this;
 				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(scrollStep, true); }, 250);
 			}
-
-			return false;
 		},
 
 		_onMouseUpArrowRight: function () {
@@ -2320,7 +2310,7 @@
 
 		_onMouseDownHTrack: function (event) {
 			if (event.target.id === this._hBarDrag[ 0 ].id) {
-				return false;
+				return true;
 			}
 
 			this._bUseHTrack = true;
@@ -2371,8 +2361,6 @@
 					}, 250);
 				}
 			}
-
-			return false;
 		},
 
 		_onMouseMoveHTrack: function (event) {
