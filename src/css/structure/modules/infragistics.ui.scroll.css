@@ -3,6 +3,7 @@
 .igscroll-scrollable {
 	position: relative;
 	overflow: hidden;
+	touch-action: none;
 }
 
 .igscroll-container {

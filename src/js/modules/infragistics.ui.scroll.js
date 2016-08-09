@@ -258,6 +258,8 @@
 			this._percentInViewV = this._elemHeight / this._contentHeight;
 			this._dragMaxY = this._elemHeight;
 			this._dragMaxX = this._elemWidth;
+			this._customBarArrowsSize = 15;
+			this._customBarEmptySpaceSize = 15;
 
 			//1 equals 100%
 			this._isScrollableV = this._percentInViewV < 1;
@@ -273,7 +275,7 @@
 			this._touchStartY = 0;
 			this._moving = false;
 
-			this.evts = {
+			this._evts = {
 				scroll: $.proxy(this._onScrollContainer, this),
 				wheel: $.proxy(this._onWheelContainer, this),
 				DOMMouseScroll: $.proxy(this._onWheelContainer, this),
@@ -292,11 +294,19 @@
 				mouseenter: $.proxy(this._onMouseEnterContainer, this),
 				mouseleave: $.proxy(this._onMouseLeaveContainer, this)
 			};
-			this._container.on(this.evts);
+			this._container.on(this._evts);
 
 			this._createScrollBars();
 			this._hideScrollBars(false);
-			this._showScrollBars(true, true, true, 0.02);
+			if (this.options.alwaysVisible) {
+				if ($.ig.util.isTouch) {
+					this._showScrollBars(false, true, false);
+				} else {
+					this._showScrollBars(false, false, false);
+				}
+			} else {
+				this._showScrollBars(true, true, true, 0.02);
+			}
 
 			this._trigger("rendered", null, {
 				owner: this
@@ -338,7 +348,11 @@
 
 			if (key === "alwaysVisible") {
 				if (value === true) {
-					this._showScrollBars();
+					if ($.ig.util.isTouch) {
+						this._showScrollBars(false, true, false);
+					} else {
+						this._showScrollBars(false, false, false);
+					}
 				}
 			}
 			if (key === "scrollbarType") {
@@ -359,13 +373,13 @@
 				this._setScrollHeight(value);
 				this._removeScrollbars();
 				this._createScrollBars();
-				this._scrollToXY(0, 0, true);
+				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "scrollWidth") {
 				this._setScrollWidth(value);
 				this._removeScrollbars();
 				this._createScrollBars();
-				this._scrollToXY(0, 0, true);
+				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "syncedElemsH") {
 				this._linkElementsH(value);
@@ -556,21 +570,21 @@
 
 		_refreshScrollbarsDrag: function () {
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
-				this._vBarContainer.css("height", (this._elemHeight - 15) + "px");
-				this._vDragHeight = this._elemHeight * ((this._elemHeight - 2 * 15) / this._contentHeight);
+				this._vBarContainer.css("height", (this._elemHeight - this._customBarArrowsSize) + "px");
+				this._vDragHeight = (this._elemHeight - 3 * this._customBarArrowsSize) * this._percentInViewV;
 				this._vBarDrag.css("height", this._vDragHeight + "px");
-				this._vBarTrack.css("height", this._elemHeight - (3 * 15) + "px");
+				this._vBarTrack.css("height", this._elemHeight - (3 * this._customBarArrowsSize) + "px");
 			} else if (this.options.scrollbarType === "native" && this._vBarContainer) {
-				this._vBarContainer.css("height", (this._elemHeight - 15) + "px");
+				this._vBarContainer.css("height", (this._elemHeight - this._customBarArrowsSize) + "px");
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
-				this._hBarContainer.css("width", (this._elemWidth - 15) + "px");
-				this._hDragWidth = this._elemWidth * this._percentInViewH - 3 * 15;
+				this._hBarContainer.css("width", (this._elemWidth - this._customBarArrowsSize) + "px");
+				this._hDragWidth = (this._elemWidth - 3 * this._customBarArrowsSize) * this._percentInViewH;
 				this._hBarDrag.css("width", this._hDragWidth + "px");
-				this._hBarTrack.css("width", this._elemWidth - (3 * 15) + "px");
+				this._hBarTrack.css("width", this._elemWidth - (3 * this._customBarArrowsSize) + "px");
 			} else if (this.options.scrollbarType === "native" && this._hBarContainer) {
-				this._hBarContainer.css("width", (this._elemWidth - 15) + "px");
+				this._hBarContainer.css("width", (this._elemWidth - this._customBarArrowsSize) + "px");
 			}
 		},
 
@@ -583,7 +597,7 @@
 					if (elemObject.length) {
 						this._linkedHElems.push(elemObject);
 					} else {
-						throw "syncedElemsH: Element does not exists!";
+						throw new Error($.ig.Scroll.locale.errorNoElementLink);
 					}
 				}
 			}
@@ -600,7 +614,7 @@
 					if (elemObject.length) {
 						this._linkedVElems.push(elemObject);
 					} else {
-						throw "syncedElemsV: Element does not exists!";
+						throw new Error($.ig.Scroll.locale.errorNoElementLink);
 					}
 				}
 			}
@@ -643,7 +657,7 @@
 					}
 					this._linkedHBar = elemObject;
 				} else {
-					throw "scrollbarH: Element does not exists!";
+					throw new Error($.ig.Scroll.locale.errorNoScrollbarLink);
 				}
 			}
 
@@ -687,7 +701,7 @@
 					}
 					this._linkedVBar = elemObject;
 				} else {
-					throw "scrollbarV: Element does not exists!";
+					throw new Error($.ig.Scroll.locale.errorNoScrollbarLink);
 				}
 			}
 
@@ -1045,10 +1059,6 @@
 			var self = this,
 				destX;
 
-			if (!baseElem) {
-				return;
-			}
-
 			//if (useTransform) {
 			//	destX = self._getContentPositionX();
 			//	var destY = self._getContentPositionY();
@@ -1071,10 +1081,6 @@
 		_syncContentY: function (baseElem /*, useTransform*/) {
 			var self = this,
 				destY;
-
-			if (!baseElem) {
-				return;
-			}
 
 			//if (useTransform) {
 			//	var destX = self._getContentPositionX();
@@ -1177,10 +1183,6 @@
 
 		//Syncs horizontal bars that are linked on the X axis
 		_syncHBar: function (baseElem, useTransform) {
-			if (!baseElem) {
-				return;
-			}
-
 			var destX;
 			if (useTransform) {
 				destX = this._getContentPositionX();
@@ -1196,10 +1198,6 @@
 
 		//Syncs vertical bars that are linked on the Y axis
 		_syncVBar: function (baseElem, useTransform) {
-			if (!baseElem) {
-				return;
-			}
-
 			var destY;
 			if (useTransform) {
 				destY = this._getContentPositionY();
@@ -1504,6 +1502,10 @@
 				if (this._isScrollableH) {
 					this._initCustomScrollBarH();
 				}
+
+				if ($.ig.util.isTouch) {
+					this._toSimpleScrollbar();
+				}
 			}
 		},
 
@@ -1514,7 +1516,7 @@
 			if (this._isScrollableV) {
 				this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
 					.addClass(css.nativeVScrollOuter)
-					.css("height", this._elemHeight - 15 + "px");
+					.css("height", this._elemHeight - this._customBarEmptySpaceSize + "px");
 
 				this._vDragHeight = this._contentHeight;
 				this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
@@ -1538,7 +1540,7 @@
 			if (this._isScrollableH) {
 				this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
 					.addClass(css.nativeHScrollOuter)
-					.css("width", this._elemWidth - 15 + "px");
+					.css("width", this._elemWidth - this._customBarEmptySpaceSize + "px");
 
 				this._hDragWidth = this._contentWidth;
 				this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
@@ -1590,7 +1592,7 @@
 
 			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
 				.addClass(css.verticalScrollContainer)
-				.css("height", this._elemHeight - 15 + "px");
+				.css("height", this._elemHeight - this._customBarEmptySpaceSize + "px");
 
 			this._vBarArrowUp =	$("<div id='" +	this.element.attr("id") + "_vBar_arrowUp'></div>")
 				.addClass(css.verticalScrollArrow)
@@ -1598,13 +1600,13 @@
 
 			this._vBarTrack = $("<div id='" + this.element.attr("id") + "_vBar_track'></div>")
 				.addClass(css.verticalScrollTrack)
-				.css("height", this._elemHeight - (3 * 15) + "px");
+				.css("height", this._elemHeight - (3 * this._customBarArrowsSize) + "px");
 
 			this._vBarArrowDown = $("<div id='" + this.element.attr("id") +	"_vBar_arrowDown'></div>")
 				.addClass(css.verticalScrollArrow)
 				.addClass(css.verticalScrollArrowDown);
 
-			this._vDragHeight = (this._elemHeight - 3 * 15) * this._percentInViewV;
+			this._vDragHeight = (this._elemHeight - 3 * this._customBarArrowsSize) * this._percentInViewV;
 			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
 				.addClass(css.verticalScrollThumbDrag)
 				.css("height", this._vDragHeight + "px");
@@ -1768,8 +1770,6 @@
 					self._scrollTimeoutY(scrollStep, true);
 				}, 250);
 			}
-
-			return false;
 		},
 
 		_onMouseUpArrowUp: function() {
@@ -1819,8 +1819,6 @@
 					self._scrollTimeoutY(scrollStep, true);
 				}, 250);
 			}
-
-			return false;
 		},
 
 		_onMouseUpArrowDown: function() {
@@ -1851,7 +1849,7 @@
 
 		_onMouseDownVTrack: function (event) {
 			if (event.target.id === this._vBarDrag[ 0 ].id) {
-				return false;
+				return true;
 			}
 
 			this._bUseVTrack = true;
@@ -1902,8 +1900,6 @@
 					}, 250);
 				}
 			}
-
-			return false;
 		},
 
 		_onMouseMoveVTrack: function(event) {
@@ -2053,13 +2049,13 @@
 
 			this._hBarTrack = $("<div id='" + this.element.attr("id") + "_hBar_track'></div>")
 				.addClass(css.horizontalScrollTrack)
-				.css("width", this._elemWidth - (3 * 15) + "px");
+				.css("width", this._elemWidth - (3 * this._customBarArrowsSize) + "px");
 
 			this._hBarArrowRight = $("<div id='" + this.element.attr("id") + "_hBar_arrowRight'></div>")
 				.addClass(css.horizontalScrollArrow)
 				.addClass(css.horizontalScrollArrowRight);
 
-			this._hDragWidth = (this._elemWidth - 3 * 15) * this._percentInViewH;
+			this._hDragWidth = (this._elemWidth - 3 * this._customBarArrowsSize) * this._percentInViewH;
 			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
 				.addClass(css.horizontalScrollThumbDrag)
 				.css("width", this._hDragWidth + "px");
@@ -2225,8 +2221,6 @@
 					self._scrollTimeoutX(scrollStep, true);
 				}, 250);
 			}
-
-			return false;
 		},
 
 		_onMouseUpArrowLeft: function () {
@@ -2280,8 +2274,6 @@
 				var self = this;
 				this._holdTimeoutID = setTimeout(function () { self._scrollTimeoutX(scrollStep, true); }, 250);
 			}
-
-			return false;
 		},
 
 		_onMouseUpArrowRight: function () {
@@ -2320,7 +2312,7 @@
 
 		_onMouseDownHTrack: function (event) {
 			if (event.target.id === this._hBarDrag[ 0 ].id) {
-				return false;
+				return true;
 			}
 
 			this._bUseHTrack = true;
@@ -2371,8 +2363,6 @@
 					}, 250);
 				}
 			}
-
-			return false;
 		},
 
 		_onMouseMoveHTrack: function (event) {
@@ -2571,7 +2561,8 @@
 
 			function updateCSS() {
 				if (self._hBarDrag) {
-					calculatedDest = destX * (self._elemWidth - 3 * 15) / self._contentWidth;
+					calculatedDest =
+						destX * (self._elemWidth - 3 * self._customBarArrowsSize) / self._contentWidth;
 
 					self._hBarDrag
 						.css("-webkit-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Safari */
@@ -2579,7 +2570,8 @@
 						.css("-ms-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)"); /* IE */
 				}
 				if (self._vBarDrag) {
-					calculatedDest = destY * (self._elemHeight - 3 * 15) / self._contentHeight;
+					calculatedDest =
+						destY * (self._elemHeight - 3 * self._customBarArrowsSize) / self._contentHeight;
 
 					self._vBarDrag
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
@@ -2740,9 +2732,9 @@
 			clearTimeout(this._hideScrollbarID);
 			clearTimeout(this._toSimpleScrollbarID);
 
-			if (this.evts) {
-				this.element.off(this.evts);
-				delete this.evts;
+			if (this._evts) {
+				this.element.off(this._evts);
+				delete this._evts;
 
 				if (this._hBarDrag) {
 					this._hBarDrag.remove();
