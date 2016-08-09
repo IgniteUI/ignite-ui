@@ -42,6 +42,14 @@ $.ig.dependencies = [
 		regional: [ "$localePath$/regional/infragistics.ui.regional-$regional$.js" ]
 	},
 	{
+		widget: "igUtil",
+		priority: true,
+		scripts: [ "$path$/modules/infragistics.util.js" ],
+		locale: [ "$localePath$/infragistics.util-$locale$.js" ],
+		group: $.ig.loaderClass.locale.miscGroup,
+		css: [  ]
+	},
+	{
 		widget: "igDataSource",
 		dependency: [ { name: "igUtil" } ],
 		priority: true,
@@ -78,72 +86,84 @@ $.ig.dependencies = [
 		widget: "_ig_ext_core",
 		dependency: [ { name: "igUtil" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_core.js" ]
 	},
 	{
 		widget: "_ig_ext_collections",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_core" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_collections.js" ]
 	},
 	{
 		widget: "_ig_ext_collections_extended",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_collections" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_collectionsextended.js" ]
 	},
 	{
 		widget: "_ig_ext_text",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_core" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_text.js" ]
 	},
 	{
 		widget: "_ig_ext_io",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_text" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_io.js" ]
 	},
 	{
 		widget: "_ig_ext_threading",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_core" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_threading.js" ]
 	},
 	{
 		widget: "_ig_ext_ui",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_collections" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_ui.js" ]
 	},
 	{
 		widget: "_ig_ext_web",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_io" }, { name: "_ig_ext_threading" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.ext_web.js" ]
 	},
 	{
 		widget: "_ig_dv_core",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_ui" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.dv_core.js" ]
 	},
 	{
 		widget: "_ig_dv_geo",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_io" }, { name: "_ig_ext_ui" }, { name: "_ig_dv_core" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.dv_geo.js" ]
 	},
 	{
 		widget: "_ig_dv_geometry",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_dv_core" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.dv_geometry.js" ]
 	},
 	{
 		widget: "_ig_dv_opd",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_dv_core" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.dv_opd.js" ]
 	},
 	{
@@ -151,6 +171,7 @@ $.ig.dependencies = [
 		priority: true,
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_ui" }, { name: "_ig_dv_core" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.legend.js" ]
 	},
 	{
@@ -158,6 +179,7 @@ $.ig.dependencies = [
 		priority: true,
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_dv_geometry" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.datachart_core.js" ]
 	},
 	{
@@ -165,6 +187,7 @@ $.ig.dependencies = [
 		priority: true,
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_datachart_core" } ],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.datachart_categorycore.js" ]
 	},
 	{
@@ -172,12 +195,14 @@ $.ig.dependencies = [
 		dependency: [ { name: "_ig_datachart_core" } ],
 		scripts: [ "$path$/modules/infragistics.dvcommonwidget.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
+		internal: true,
 		locale: [ "$localePath$/infragistics.dvcommonwidget-$locale$.js" ]
 	},
 	{
 		widget: "_ig_dv_extendedaxes",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_datachart_categorycore" }],
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.datachart_extendedaxes.js" ]
 	},
 
@@ -194,7 +219,7 @@ $.ig.dependencies = [
 		scripts: []
 	},
 	{
-		widget: "igOPDPane",
+		widget: "igOverviewPlusDetailPane",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_dv_core" } ],
 		scripts: [ "$path$/modules/infragistics.dv_opd.js" ]
@@ -288,6 +313,7 @@ $.ig.dependencies = [
 					{ name: "RangeCategory" },
 					{ name: "VerticalCategory" },
 					{ name: "Financial" },
+					{ name: "ExtendedFinancial" },
 					{ name: "Polar" },
 					{ name: "Radial" },
 					{ name: "Scatter" },
@@ -333,6 +359,7 @@ $.ig.dependencies = [
 		widget: "_ig_dv_simple_core",
 		priority: true,
 		group: $.ig.loaderClass.locale.dvGroup,
+		internal: true,
 		scripts: [ "$path$/modules/infragistics.dv.simple.core.js" ]
 	},
 	{
@@ -340,6 +367,7 @@ $.ig.dependencies = [
 		dependency: [ { name: "igUtil" }, { name: "igTemplating" }, { name: "igDataSource" } ],
 		scripts: [ "$path$/modules/infragistics.ui.basechart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
+		internal: true,
 		css: [ "$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.html5.css" ]
 	},
@@ -1183,14 +1211,6 @@ $.ig.dependencies = [
 		locale: [ "$localePath$/infragistics.ui.upload-$locale$.js" ],
 		group: $.ig.loaderClass.locale.interactionsGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.upload.css" ]
-	},
-	{
-		widget: "igUtil",
-		priority: true,
-		scripts: [ "$path$/modules/infragistics.util.js" ],
-		locale: [ "$localePath$/infragistics.util-$locale$.js" ],
-		group: $.ig.loaderClass.locale.miscGroup,
-		css: [  ]
 	},
 	{
 		widget: "igValidator",
