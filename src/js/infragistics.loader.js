@@ -95,7 +95,6 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.miscGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.shared.css" ]
 	},
-	
 /* /// Data Visualization /// */
 	{
 		widget: "_ig_ext_core",
