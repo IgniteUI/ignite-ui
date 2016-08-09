@@ -4052,12 +4052,13 @@
 			*/
 			return this._gbDataView;
 		},
-		_groupedRecordsByExpr: function (data, startInd, gbExpr) {
+		_groupedRecordsByExpr: function (data, startInd, gbExpr, gbRes) {
 			var i, res = [], cmpRes, groupval, currval,
 				mapper = this._hasMapper,
 				cmpFunc = gbExpr.compareFunc,
 				key = gbExpr.fieldName,
 				len = data.length;
+			gbRes = gbRes || {};
 			if (!cmpFunc) {
 				cmpFunc = function (val1, val2) {
 					return val1 === val2;
@@ -4068,6 +4069,7 @@
 			groupval = mapper ?
 							this.getCellValue(key, data [ startInd ]) :
 							data[ startInd ][ key ];
+			gbRes.val = groupval;
 			startInd++;
 			for (i = startInd; i < len; i++) {
 				currval = mapper ? this.getCellValue(key, data [ i ]) : data[ i ][ key ];
@@ -4154,16 +4156,16 @@
 					gbExpr: gbExpr,
 					level: gbInd,
 					len: 1,
-					recs: []
+					recs: [],
+					val: undefined
 				};
 				this._gbData.push(gbRec);
 				if (!parentCollapsed) {
 					this._vgbData.push(gbRec);
 				}
-				res = this._groupedRecordsByExpr(data, i, gbExpr);
+				res = this._groupedRecordsByExpr(data, i, gbExpr, gbRec);
 				gbRec.fieldName = gbExpr.fieldName;
 				resLen = res.length;
-				gbRec.val = resLen ? res[ 0 ][ gbRec.fieldName ] : undefined;
 				if (dt === undefined) {
 					dt = !!(gbRec.val && gbRec.val.getTime);
 				}
