@@ -493,6 +493,44 @@
 			}, 500);
 		});
 
+		test("Test clearLocalFilter when sorting and paging are enabled", function () {
+		
+			var dsLocalOperations = new $.ig.DataSource({
+				dataSource: [
+				{ "ID": 0, "Name": "Bread", "Price": 2.5 },
+				{ "ID": 1, "Name": "Milk", "Price": 3.5 },
+				{ "ID": 2, "Name": "Vint soda", "Price": 20.9 }
+				],
+				primaryKey: "ID",
+				schema: {
+					fields: [
+					{
+						name: "ID"
+					},
+					{
+						name: "Name"
+					}, {
+						name: "Price"
+					}, {
+						name: "Rating"
+					}]
+				},
+				summaries: {
+					type: "local"
+				},
+				paging: { type: "local", enabled: true, pageSize:1, pageIndex:2 },
+				filtering: { type: "local", defaultFields: [], enabled: true, applyToAllData:true},
+				sorting: { type: "local", defaultFields: [], applyToAllData: true, enabled: true, expressions: [{ fieldName: "ID", dir: "desc" }] }
+			});
+			dsLocalOperations.dataBind();
+			dsLocalOperations.clearLocalFilter();
+
+			//check if paging and sorting are reset
+			equal(dsLocalOperations.pageIndex(),0, "paging is reset");
+			ok(dsLocalOperations.dataView()[0].ID === 2, "Sorting is applied.");
+		});
+
+
 		test("Test dataSummaries API method", function () {
 			var summariesData = dsSummaries.dataSummaries();
 			equal(summariesData, dsSummaries.dataView(), "When local summaries are enabled the data.")
@@ -511,6 +549,30 @@
 			var ds = new $.ig.DataSource();
 			ds.hasTotalRecordsCount(true);
 			ok(ds.hasTotalRecordsCount(),"Verify value is applied correctly.");
+		});
+
+		test("Test schema API method", function () {
+			var ds = new $.ig.DataSource();
+			var schema = {
+				fields: [{
+					name: "ID", type: "number"
+				}, {
+					name: "Name", type: "string"
+				}
+				]
+			};
+			//set
+			ds.schema(schema, "json");
+			equal(JSON.stringify(ds._schema.fields()), JSON.stringify(schema.fields), "Verify schema is applied correctly.");
+		});
+
+		test("Test analyzeDataSource API method", function () {
+			var ds = new $.ig.DataSource();
+			ds.settings.dataSource = function () { };
+			equal(ds.analyzeDataSource(), "function", "Verify analyzeDataSource returns correct results.");
+			ds.settings.dataSource = "[invalid]";
+			
+			equal(ds.analyzeDataSource(), "unknown", "Verify analyzeDataSource returns correct results.");
 		});
 
 		test("Test addRow when rowAdded option is defined", function () {
@@ -982,6 +1044,28 @@
 			}, 500);
 		});
 
+		test("Test _dataFilter method for xml data", function () {
+			var xmlres = '<Response><Session>542235629</Session><Tracks start="1" count="10" total="98" errorCount="0" defaultSort="popularity+" description="Top 100 Tracks" name="Top 100 Tracks"><Track id="59672468" rating="-1" title="I Kissed A Girl"> <Artist id="30326214" rating="-1">Katy Perry</Artist>  </Tracks></Response>';
+			
+			var dsXML = new $.ig.DataSource({
+				filtering: { type: "remote", expressions: [], defaultFields: [{ fieldName: "song", expr: "I Kissed A Girl", cond: "equals" }] },
+				responseDataKey: "Response",				
+				schema: { fields: [{ name: "artist", xpath: "Artist" }], searchField: "//Track" }
+			});
+			dsXML.context = dsXML;
+			var xmlObject = dsXML.stringToXmlObject(xmlres);
+			
+			var data = dsXML._dataFilter(xmlObject);
+
+			stop();
+			setTimeout(function(){
+				start();
+				equal(data.length, 1, "Verify data is processed correctly.");
+				//equal(data[0].artist, "Katy Perry", "Verify data is processed correctly.");
+			},500);
+		});
+
+	
 		test("Test binding to remote - error", function () {
 			var errorMessage = "";
 			var dsRemote = new $.ig.DataSource({
