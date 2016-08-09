@@ -11,6 +11,8 @@
 	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
 
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.scroll-en.js"></script>
+	
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.scroll.js"></script>
 	<script type="text/javascript" src="jquery.simulate.js"></script>
@@ -346,6 +348,11 @@
 		var testId_93 = 'dynamically linking element horizontally updates when scrolling with scrollTop option test.';
 		var testId_94 = 'linked element vertically updates when scrolling with scrollTop option on touch test.';
 		var testId_95 = 'linked element horizontally updates when scrolling with scrollTop option on touch test.';
+		var testId_96 = 'setting initially alwaysVisible for custom scrollbars keeps the big scrollbars visible test.';
+		var testId_97 = 'setting initially alwaysVisible for custom scrollbars keeps the small scrollbars visible on touch test.';
+		var testId_98 = 'setting dynamically alwaysVisible for custom scrollbars keeps the big scrollbars visible test.';
+		var testId_99 = 'linking invalid elements throws error test.';
+		var testId_100 = 'linking invalid scrollbars test.';
 	
 		
 	    test(testId_1, function () {
@@ -772,8 +779,8 @@
 			$('#elemVH').css("width", "500px");
 			$('#elemVH').igScroll("refresh");
 			
-			var vDragHeight = Math.floor($('#elemVH').height() * (($('#elemVH').height() - 2 * 15) / elemContent.height()));
-			var hDragWidth = Math.floor($('#elemVH').width()* ($('#elemVH').width() / elemContent.width()) - 3 * 15);
+			var vDragHeight = Math.floor(($('#elemVH').height() - 3 * 15) * (($('#elemVH').height() / elemContent.height())));
+			var hDragWidth = Math.floor(($('#elemVH').width() - 3 * 15) * ($('#elemVH').width() / elemContent.width()));
 			equal(elemContainer.css("height"), "300px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "500px", "igScroll container did not update it's width");
 			equal(vBarContainer.height(), 300 - 15, "igScroll did not update vertical scrollbar container height");
@@ -788,8 +795,8 @@
 			$('#elemVH').css("width", "700px");
 			$('#elemVH').igScroll("refresh");
 			
-			vDragHeight = Math.floor($('#elemVH').height() * (($('#elemVH').height() - 2 * 15) / elemContent.height()));
-			hDragWidth = Math.floor($('#elemVH').width()* ($('#elemVH').width() / elemContent.width()) - 3 * 15);
+			vDragHeight = Math.floor(($('#elemVH').height() - 3 * 15) * (($('#elemVH').height() / elemContent.height())));
+			hDragWidth = Math.floor(($('#elemVH').width() - 3 * 15) * ($('#elemVH').width() / elemContent.width()));
 			equal(elemContainer.css("height"), "500px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "700px", "igScroll container did not update it's width");
 			equal(vBarContainer.height(), 500 - 15, "igScroll did not update vertical scrollbar container height");
@@ -2480,7 +2487,175 @@
 				$.ig.util.isTouch = false;
 				start();
 			}, 2500);
-	    });	
+	    });
+		
+		test(testId_96, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				alwaysVisible: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vDrag = $("#elemVH_vBar_drag"),
+				arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				arrowRight = $("#elemVH_hBar_arrowRight"),
+				hDrag = $("#elemVH_hBar_drag"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+
+			stop();
+			setTimeout(function () {
+				ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+				ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+				ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+				ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+				equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+				equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+				
+				$("#elemVH").remove();
+				start();				
+			},1500);
+	    });			
+		
+		test(testId_97, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				alwaysVisible: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vDrag = $("#elemVH_vBar_drag"),
+				arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				arrowRight = $("#elemVH_hBar_arrowRight"),
+				hDrag = $("#elemVH_hBar_drag"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+
+			stop();
+			setTimeout(function () {
+				equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is not visible");
+				equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is not visible");
+				equal(arrowLeft.css("opacity"), 0, "igScroll scrollbar Arrow Left is not visible");
+				equal(arrowRight.css("opacity"), 0, "igScroll scrollbar Arrow Right is not visible");
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+				equal(vDrag.css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
+				equal(hDrag.css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
+				
+				$("#elemVH").remove();
+				$.ig.util.isTouch = false;
+				start();				
+			},1500);
+	    });		
+		
+		test(testId_98, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vDrag = $("#elemVH_vBar_drag"),
+				arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				arrowRight = $("#elemVH_hBar_arrowRight"),
+				hDrag = $("#elemVH_hBar_drag"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+
+			elemContainer.mouseleave();
+			stop();
+			setTimeout(function () {
+				$('#elemVH').igScroll("option", "alwaysVisible", true);
+			
+				ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+				ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+				ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+				ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+				equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+				equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+				
+				setTimeout(function () {
+					ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
+					ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+					ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+					ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+					ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
+					ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
+					equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
+					equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+					
+					$("#elemVH").remove();
+					start();
+				}, 200);				
+			},1500);
+	    });		
+		
+		test(testId_99, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+			//Horizontal elements
+			var err = "";
+			try {
+				$('#elemVH').igScroll("option", "syncedElemsH", [ $("#noElem") ]);
+			}
+			catch(e) {
+				err = e.message;
+			}
+			equal(err, "Element that is being linked does not exists.", "No error is thrown");
+			
+			//Vertical elements
+			err = "";
+			try {
+				$('#elemVH').igScroll("option", "syncedElemsV", [ $("#noElem") ]);
+			}
+			catch(e) {
+				err = e.message;
+			}
+			equal(err, "Element that is being linked does not exists.", "No error is thrown");
+			
+			$("#elemVH").remove();
+	    });
+		
+		test(testId_100, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			//Horizontal scrollbar
+			var err = "";
+			try {
+				$('#elemVH').igScroll("option", "scrollbarH", $("#noElem"));
+			}
+			catch(e) {
+				err = e.message;
+			}
+			equal(err, "Scrollbar element that is being linked does not exists.", "No error is thrown");
+			
+			//Vertical scrollbar
+			err = "";
+			try {
+				$('#elemVH').igScroll("option", "scrollbarV", $("#noElem"));
+			}
+			catch(e) {
+				err = e.message;
+			}
+			
+			equal(err, "Scrollbar element that is being linked does not exists.", "No error is thrown");
+			$("#elemVH").remove();
+	    });
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>
 </head>
