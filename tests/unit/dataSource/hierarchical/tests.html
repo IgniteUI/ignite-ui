@@ -516,6 +516,42 @@
 				equal(res.d[0].Capacity, 464, "DataAt returned the correct rec");
 			});
 
+			test("Test root API method", function(){
+				var ds = new $.ig.HierarchicalDataSource({
+					dataSource: data2,
+					primaryKey: "ProductID",
+					responseDataKey: "Products",
+					schema: {
+						fields: [
+							{ name: "ProductID", type: "number" },
+							{ name: "UnitsInStock", type: "number" },
+							{ name: "ProductDescription", type: "string" },
+							{ name: "UnitPrice", type: "number" },
+							{ name: "DateAdded", type: "date" },
+							{ name: "Suppliers" }
+						],
+						layouts: [
+							{
+								childrenDataProperty: "Suppliers",
+								foreignKey: "ProductID",
+								primaryKey: "SupplierID",
+								schema: {
+									fields: [
+										{ name: "ProductID", type: "number" },
+										{ name: "SupplierID", type: "number" },
+										{ name: "Capacity", type: "number" }
+									],
+									searchField: "d"
+								}
+							}
+						],
+						searchField: "Products"
+					}
+				});
+				this._rootds = null;
+				var root = ds.root();
+				ok(root instanceof $.ig.DataSource, "The root data source should always be an instance of ig.DataSource.");
+			});
 			asyncTest("HierarchicalDataSource 1.7: basic init test with odata", 1, function () {
 				var view, res, ds = new $.ig.HierarchicalDataSource({
 					responseDataType: "json",

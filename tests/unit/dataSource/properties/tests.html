@@ -628,7 +628,7 @@
 		});
 
 		test("Test sorting on child layout.", function () {
-			hierarchicalDS.settings.dataSource = "remoteUrl?layout=Product";
+			hierarchicalDS.settings.dataSource = "remoteUrl?layout=Products";
 			hierarchicalDS.settings.sorting = {
 				enabled: true,
 				type: "remote",
@@ -645,7 +645,7 @@
 			};
 			
 			var params = $.param(hierarchicalDS._encodeUrl());
-			equal(params, "sort(ID)=desc&layout=Products&pk=ID", "Verify that sorting request for child layout is properly encoded.");
+			equal(params, "sort(ID)=desc&pk=ID", "Verify that sorting request for child layout is properly encoded.");
 
 			hierarchicalDS.settings.dataSource = "remoteUrl";
 			var params = $.param(hierarchicalDS._encodeUrl());
@@ -858,7 +858,6 @@
 	 		var date = new Date();
 	 		var dsFilter = new $.ig.DataSource({
 				dataSource: "filteringUrl",
-				
 				filtering: {
 					type: "remote",
 					filterExprUrlKey: "filterKey",
@@ -885,9 +884,14 @@
 				"Verify that all parameters were properly encoded.");
 	 		
 	 		dsFilter.settings.filtering.filterExprUrlKey = null;
+	 		var currMonth = date.getMonth() + 1;
 
-			var params = $.param(dsFilter._encodeUrl());
-			equal(params, "%24filter=day(Date)%20eq%205%20and%20month(Date)%20eq%208%20and%20year(Date)%20eq%202016%20and%20month(Date2)%20eq%207%20and%20year(Date2)%20eq%202016%20and%20month(Date3)%20eq%209%20and%20year(Date3)%20eq%202016%20and%20Boolean%20eq%20true%20and%20Boolean2%20eq%20false%20and%20tolower(String)%20ne%20'a'%20and%20Boolean3%20ne%20true");
+	 		var params = unescape($.param(dsFilter._encodeUrl()));
+	 		equal(params,
+				"$filter=day(Date) eq " + date.getDate().toString() + " and month(Date) eq " + currMonth.toString() + " and year(Date) eq " + date.getFullYear().toString() +
+				" and month(Date2) eq " + (currMonth - 1).toString() + " and year(Date2) eq " + date.getFullYear().toString() + " and month(Date3) eq " +
+				(currMonth + 1).toString() + " and year(Date3) eq " + date.getFullYear().toString() +
+				" and Boolean eq true and Boolean2 eq false and tolower(String) ne 'a' and Boolean3 ne true");
 
 		});
 		
