@@ -22,13 +22,13 @@ if (typeof jQuery !== "function") {
 	/* The igBaseEditor is a widget based on jQuery UI. */
 	$.widget("ui.igBaseEditor", {
 		options: {
-			/* type="string|number|null Gets/Sets how the width of the control can be set."
+			/* type="string|number|null" Gets/Sets how the width of the control can be set.
 				string The widget width can be set in pixels (px) and percentage (%).
 				number The widget width can be set as a number in pixels.
 				null type="object" will stretch to fit data, if no other widths are defined.
 			*/
 			width: null,
-			/* type="string|number|null Gets/Sets how the height of the control can be set."
+			/* type="string|number|null" Gets/Sets how the height of the control can be set.
 				string The height can be set in pixels (px) and percentage (%).
 				number The height can be set as a number in pixels.
 				null type="object" will fit the editor inside its parent container, if no other heights are defined.
