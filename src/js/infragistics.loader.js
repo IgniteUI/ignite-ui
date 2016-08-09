@@ -80,7 +80,22 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.miscGroup,
 		css: [  ]
 	},
-
+	{
+		widget: "igScroll",
+		dependency: [ { name: "igUtil" } ],
+		scripts: [ "$path$/modules/infragistics.ui.scroll.js" ],
+		group: $.ig.loaderClass.locale.miscGroup,
+		css: [  ]
+	},
+	{
+		widget: "igShared",
+		dependency: [ { name: "igUtil" } ],
+		scripts: [ "$path$/modules/infragistics.ui.shared.js" ],
+		locale: [ "$localePath$/infragistics.shared-$locale$.js" ],
+		group: $.ig.loaderClass.locale.miscGroup,
+		css: [ "$path$/structure/modules/infragistics.ui.shared.css" ]
+	},
+	
 /* /// Data Visualization /// */
 	{
 		widget: "_ig_ext_core",
@@ -1114,21 +1129,6 @@ $.ig.dependencies = [
 		css: [ "$path$/structure/modules/infragistics.ui.reportviewer.css" ]
 	},
 
-	{
-		widget: "igScroll",
-		dependency: [ { name: "igUtil" } ],
-		scripts: [ "$path$/modules/infragistics.ui.scroll.js" ],
-		group: $.ig.loaderClass.locale.miscGroup,
-		css: [  ]
-	},
-	{
-		widget: "igShared",
-		dependency: [ { name: "igUtil" } ],
-		scripts: [ "$path$/modules/infragistics.ui.shared.js" ],
-		locale: [ "$localePath$/infragistics.shared-$locale$.js" ],
-		group: $.ig.loaderClass.locale.miscGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.shared.css" ]
-	},
 	{
 		widget: "igTree",
 		dependency: [
