@@ -2734,7 +2734,6 @@ if (typeof jQuery !== "function") {
                         this._updateSelection(range);
                     }
                 }
-                
                 // K.D. October 9th, 2012 Bug #115567 The browser version should be checked against >= 9 not === 9
                 if (($.ig.util.isIE && $.ig.util.browserVersion >= 9) || $.ig.util.isOpera) {
                     // A.K August 8th, 2016 Bug #219768 Toolbar button does not work properly for a selected content range if a
