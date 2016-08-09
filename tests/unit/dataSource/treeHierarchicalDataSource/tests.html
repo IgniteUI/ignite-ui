@@ -720,6 +720,16 @@
 
 			});
 
+			test("Test _hasRecordParent Api method", function () {
+				ds1.settings.treeDS.foreignKeyRootValue = false;
+				var res = ds1._hasRecordParent({ "employeeID": 4, "PID": 0, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") }, flatDS);
+				ok(res, "Record should have parent.");
+				res = ds1._hasRecordParent({ "employeeID": 4, "PID": null, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") }, flatDS);
+				ok(!res, "If record has no FK value the result should be false.");
+				res = ds1._hasRecordParent({ "employeeID": 123, "PID": 123, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") }, flatDS);
+				ok(!res, "If record does not exist the in the data source the result should be false.");
+			});
+
 			var dsRemotePaging, dsRemoteSorting, dsRemoteFiltering;
 			function loadRemoteTestbeds() {
 

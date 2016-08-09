@@ -507,6 +507,12 @@
 
 		});
 
+		test("Test hasTotalRecordsCount API method", function () { 
+			var ds = new $.ig.DataSource();
+			ds.hasTotalRecordsCount(true);
+			ok(ds.hasTotalRecordsCount(),"Verify value is applied correctly.");
+		});
+
 		test("Test addRow when rowAdded option is defined", function () {
 			var rowAddedFuncCalled = false;
 			dsLocal.settings.callee = function () {
@@ -614,6 +620,51 @@
 			dsLocal.commit();
 			equal(dsLocal.pendingTransactions().length, 0, "Pending transactions should be empty.");
 
+		});
+
+		test("Test adding a record and then updating it.", function () {
+			dsLocal.settings.aggregateTransactions = true;
+			dsLocal.addRow(123, { "ID": 1001, "Name": "New", "Price": 2.5 }, false);
+
+			dsLocal.updateRow(123, { "ID": 123, "Name": "New + Update", "Price": 2.5 }, false);
+
+			dsLocal.setCellValue(123, "Name",  "New + Update 2", false);
+
+			equal(dsLocal.pendingTransactions()[0].row.Name, "New + Update 2",
+				"Verify new row transaction was updated correctly.");
+
+			dsLocal.pendingTransactions().clear();
+		});
+
+		test("Test updating record in array data source", function () { 
+			var data = [
+					[1, "Name1"],
+					[2, "Name2"]
+				];
+			var ds = new $.ig.DataSource({
+				localSchemaTransform: false,
+				dataSource: data,
+				schema: {
+					fields: [{
+						name: "ID", type: "number"
+					}, {
+						name: "Name", type: "string"
+					}
+					]
+				},
+			});
+
+			ds.dataBind();
+
+			stop();
+
+			setTimeout(function () {
+				start();
+				ds.updateRow(1, [1, "Updated name"], false);
+			
+				ds.commit();
+				equal(ds.dataView()[1][1], "Updated name", "Verify value is properly updated.");
+			}, 200);
 		});
 
 		test("Test adding row for child layout - schema.layouts", function () {
@@ -930,6 +981,7 @@
 				equal(currData[0].Name, "Item1", "Check if value is correctly parsed.");
 			}, 500);
 		});
+
 		test("Test binding to remote - error", function () {
 			var errorMessage = "";
 			var dsRemote = new $.ig.DataSource({
