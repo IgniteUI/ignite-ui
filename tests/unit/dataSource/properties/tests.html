@@ -289,6 +289,23 @@
 			equal(errorCount, 1, "If filterFunc does not exist an error should be thrown")
 		});
 
+	 	test("Test filtering for customConditions with requireExpr: true:", function () {
+	 		ds2.clearLocalFilter();
+
+	 		ds2.settings.filtering.customConditions = {
+	 			"ValueGreaterThan": {
+	 				labelText: "ValueGreaterThan",
+	 				expressionText: "ValueGreaterThan",
+	 				requireExpr: true,
+	 				filterFunc: function (val, expr) { 
+						return val > expr ? true : false;
+					}
+	 			}
+	 		};
+	 		ds2.filter([{ fieldName: "ID", cond: "ValueGreaterThan", expr: 2 }], "AND", true);
+	 		equal(ds2.dataView().length, 1, "There should be 1 record matching the filter condition.");
+	 		equal(ds2.dataView()[0].ID, 3, "There record ID value should match the filter condition.");
+		})
 	
 		var dsSummaries, dsLocal, hierarchicalDS;
 		function loadAPITestbeds() {
@@ -525,8 +542,9 @@
 			dsLocalOperations.dataBind();
 			dsLocalOperations.clearLocalFilter();
 
-			//check if paging and sorting are reset
+			//check if paging is reset
 			equal(dsLocalOperations.pageIndex(),0, "paging is reset");
+			//check if sorting is still applied
 			ok(dsLocalOperations.dataView()[0].ID === 2, "Sorting is applied.");
 		});
 
