@@ -406,10 +406,16 @@
 			});
 
 			test("Test removeRecordByKey API method", function () {
-				ds1.removeRecordByKey(20);
+				var rec, childRec, 
+					flatDSCopy = $.extend(true, [], flatDS);
 
-				var rec = ds1.findRecordByKey(20);
-				var childRec = ds1.findRecordByKey(21);
+				ds1.removeRecordByKey(20, flatDSCopy);
+				/*Test Child data persists in the datasource after deleting the corresponding parent record in treegrid */
+				ok(flatDSCopy.length === 20 &&
+					flatDSCopy[19].employeeID === 19, 
+					"Test whether records are removed in flat data source");
+				rec = ds1.findRecordByKey(20);
+				childRec = ds1.findRecordByKey(21);
 				equal(rec, null, "Once the record is deleted it should not exist in the data source");
 				equal(childRec, null, "Its chilren records should also be removed.");
 			});
