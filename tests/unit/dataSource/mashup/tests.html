@@ -626,6 +626,132 @@
 				equal(t.row.CategoryName[0], "Electronics", "CategoryName should be populated in the transactions as well.");
 
 			});
+
+			test("Test addRow when rowAdded option is defined", function () {
+				var ds = new $.ig.MashupDataSource({
+					primaryKey: "ID",
+					dataSource: [
+						{
+							dataSource: productsMany,
+							primaryKey: "ID"
+						},
+						{
+							dataSource: categories,
+							primaryKey: "CatID",
+							foreignKey: "CategoryID"
+						}
+					]
+				});
+				ds.dataBind();
+
+				var rowAddedFuncCalled = false;
+				ds.settings.callee = function () {
+				};
+
+				ds.settings.rowAdded = function () {
+					rowAddedFuncCalled = true;
+				};
+				ds.addRow(100, { "ID": 100, "Name": "Bread", "Price": 2.5, CategoryID:1 }, true);
+
+				stop();
+
+				setTimeout(function () {
+					//check when there is a callback func
+					ok(rowAddedFuncCalled, "The rowAdded function should be called.");
+
+					ds.settings.callee = null;
+					rowAddedFuncCalled = false;
+					ds.addRow(101, { "ID": 100, "Name": "Bread", "Price": 2.5, CategoryID: 1 }, true);
+
+					setTimeout(function () {
+						start();
+						//check when there is no callback func
+						ok(rowAddedFuncCalled, "The rowAdded function should be called.");
+					}, 100);
+
+				}, 100);
+
+
+			});
+
+
+			test("Test insertRow when rowInserted option is defined", function () {
+				var ds = new $.ig.MashupDataSource({
+					primaryKey: "ID",
+					dataSource: [
+						{
+							dataSource: productsMany,
+							primaryKey: "ID"
+						},
+						{
+							dataSource: categories,
+							primaryKey: "CatID",
+							foreignKey: "CategoryID"
+						}
+					]
+				});
+				ds.dataBind();
+
+				var rowInsertedFuncCalled = false;
+
+				ds.settings.callee = function () {
+				};
+				ds.settings.rowInserted = function () {
+					rowInsertedFuncCalled = true;
+				};
+
+				ds.insertRow(1001, { "ID": 1001, "Name": "Bread", "Price": 2.5, CategoryID: 1 }, 2, false);
+				stop();
+				setTimeout(function () {
+					ok(rowInsertedFuncCalled, "rowInserted function should be called.");
+					rowInsertedFuncCalled = false;
+					ds.settings.callee = null;
+					ds.insertRow(1001, { "ID": 1001, "Name": "Bread", "Price": 2.5, CategoryID: 1 }, 2, false);
+					setTimeout(function () {
+						start();
+						ok(rowInsertedFuncCalled, "rowInserted function should be called.")
+					}, 100);
+				}, 100);
+			});
+
+			test("Test updateRow when rowUpdated option is defined", function () {
+				var ds = new $.ig.MashupDataSource({
+					primaryKey: "ID",
+					dataSource: [
+						{
+							dataSource: products,
+							primaryKey: "ID"
+						},
+						{
+							dataSource: categories,
+							primaryKey: "CatID",
+							foreignKey: "CategoryID"
+						}
+					]
+				});
+				ds.dataBind();
+
+				var rowUpdatedFuncCalled = false;
+
+				ds.settings.callee = function () {
+				};
+				ds.settings.rowUpdated = function () {
+					rowUpdatedFuncCalled = true;
+				};
+
+				ds.updateRow(0, { "ID": 0, "Name": "Update", "Price": 2.5, "CategoryID": 1 }, false);
+				stop();
+				setTimeout(function () {
+					ok(rowUpdatedFuncCalled, "rowInserted function should be called.");
+					rowUpdatedFuncCalled = false;
+					ds.settings.callee = null;
+					ds.updateRow(0, { "ID": 0, "Name": "Updated2", "Price": 2.5, "CategoryID" : 1 }, false);
+					setTimeout(function () {
+						start();
+						ok(rowUpdatedFuncCalled, "rowInserted function should be called.")
+					}, 100);
+				}, 100);
+			});
 		});
 	</script>
 </head>
