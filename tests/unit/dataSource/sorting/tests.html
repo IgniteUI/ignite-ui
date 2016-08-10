@@ -449,17 +449,51 @@
 		
 		// IgDataSource Sorting - sort - custom sorting comparer
 		test(testId_11, function() {
-			ok(true);
+			jsonDs.clearLocalSorting();
+			jsonDs.sort([{ fieldName: "firstName", compareFunc: "customCompare" }], "asc");
+			var data = jsonDs.dataView();
+			
+			equal(data[0].lastName, "Abdeali", "Verify order.");
+			equal(data[data.length - 1].lastName, "Kartavov", "Verify order.");
+
+			jsonDs.clearLocalSorting();
 		});
 		
 		// IgDataSource Sorting - sort - custom sorting conversion function
 		test(testId_12, function() {
-			ok(true);
+			
+			jsonDs.settings.sorting.customConvertFunc = function (val) {
+				//letters after the first letter will be disregaded for sorting
+				return val.slice(0,1);
+			};
+			jsonDs.clearLocalSorting();
+			jsonDs.sort([{ fieldName: "firstName" }], "asc");
+
+			equal(jsonDs.dataView()[0].firstName, "Angel", "Verify order.");
+			equal(jsonDs.dataView()[1].firstName, "Alex", "Verify order.");
+
+			jsonDs.settings.sorting.customConvertFunc = null;
+			jsonDs.clearLocalSorting();
 		});
 		
 		// IgDataSource Sorting - sort - custom sorting function (ALL functionality)
 		test(testId_13, function() {
-			ok(true);
+			var res = [{
+				firstName: "Dave",
+				lastName: "Reed",
+				url: "http://dave.org/",
+				cities: [
+					"Seattle, WA",
+					"Los Angeles, CA",
+					"New York, NY"
+				]
+			}];
+			jsonDs.settings.sorting.customFunc = function (data, fields, direction) {
+				return res;
+			};
+			jsonDs.sort([{ fieldName: "firstName" }], "asc");
+			equal(res, jsonDs.dataView(), "DataView should contain the result from the customFunc sorting. ");
+
 		});
 		
 		// IgDataSource Sorting - remote
@@ -553,6 +587,10 @@
 			ok(dv[0].ID === 0 && dv[8].ID === 8, "Test after applying clearLocalSorting");
 		});
 	});
+
+		 function customCompare(va1, val2, rec) {
+		 	rec.recordX.lastName > rec.recordY.lastName ? 1 : -1;
+		 }
 	</script>
 	
 </head>
