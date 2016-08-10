@@ -42,6 +42,14 @@ $.ig.dependencies = [
 		regional: [ "$localePath$/regional/infragistics.ui.regional-$regional$.js" ]
 	},
 	{
+		widget: "igUtil",
+		priority: true,
+		scripts: [ "$path$/modules/infragistics.util.js" ],
+		locale: [ "$localePath$/infragistics.util-$locale$.js" ],
+		group: $.ig.loaderClass.locale.miscGroup,
+		css: [  ]
+	},
+	{
 		widget: "igDataSource",
 		dependency: [ { name: "igUtil" } ],
 		priority: true,
@@ -73,36 +81,154 @@ $.ig.dependencies = [
 		css: [  ]
 	},
 
-/*/ igDataChart /// */
+/* /// Data Visualization /// */
 	{
-		widget: "igDVCore",
-		priority: true,
-		scripts: [ "$path$/modules/infragistics.dv.core.js",
-			"$path$/modules/infragistics.dvcommonwidget.js" ],
+		widget: "_ig_ext_core",
+		dependency: [ { name: "igUtil" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_core.js" ]
+	},
+	{
+		widget: "_ig_ext_collections",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_core" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_collections.js" ]
+	},
+	{
+		widget: "_ig_ext_collections_extended",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_collections" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_collectionsextended.js" ]
+	},
+	{
+		widget: "_ig_ext_text",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_core" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_text.js" ]
+	},
+	{
+		widget: "_ig_ext_io",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_text" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_io.js" ]
+	},
+	{
+		widget: "_ig_ext_threading",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_core" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_threading.js" ]
+	},
+	{
+		widget: "_ig_ext_ui",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_collections" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_ui.js" ]
+	},
+	{
+		widget: "_ig_ext_web",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_io" }, { name: "_ig_ext_threading" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.ext_web.js" ]
+	},
+	{
+		widget: "_ig_dv_core",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_ui" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv_core.js" ]
+	},
+	{
+		widget: "_ig_dv_geo",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_io" }, { name: "_ig_ext_ui" }, { name: "_ig_dv_core" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv_geo.js" ]
+	},
+	{
+		widget: "_ig_dv_geometry",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_core" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv_geometry.js" ]
+	},
+	{
+		widget: "_ig_dv_opd",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_core" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv_opd.js" ]
+	},
+	{
+		widget: "_ig_legend",
+		priority: true,
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_ext_ui" }, { name: "_ig_dv_core" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.legend.js" ]
+	},
+	{
+		widget: "_ig_datachart_core",
+		priority: true,
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_geometry" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.datachart_core.js" ]
+	},
+	{
+		widget: "_ig_datachart_categorycore",
+		priority: true,
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_datachart_core" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.datachart_categorycore.js" ]
+	},
+	{
+		widget: "_ig_dv_commonwidget",
+		dependency: [ { name: "_ig_datachart_core" } ],
+		scripts: [ "$path$/modules/infragistics.dvcommonwidget.js" ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		internal: true,
 		locale: [ "$localePath$/infragistics.dvcommonwidget-$locale$.js" ]
 	},
 	{
-		widget: "igDVMapCore",
-		priority: true,
+		widget: "_ig_dv_extendedaxes",
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.geographicmap_core.js" ]
+		dependency: [ { name: "_ig_datachart_categorycore" }],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.datachart_extendedaxes.js" ]
 	},
-	{
-		widget: "igDVSimpleCore",
-		priority: true,
-		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.dv.simple.core.js" ]
-	},
+
 	{
 		widget: "igChartLegend",
 		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_legend" }, { name: "_ig_dv_commonwidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.chartlegend.js" ]
 	},
 	{
+		widget: "igDateTimeAxis",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_extendedaxes" } ],
+		scripts: []
+	},
+	{
+		widget: "igOverviewPlusDetailPane",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_core" } ],
+		scripts: [ "$path$/modules/infragistics.dv_opd.js" ]
+	},
+
+	{
 		widget: "igDataChart",
-		dependency: [ { name: "igUtil" }, { name: "igDataSource" },
-			{ name: "igDVCore" }, { name: "igTemplating" }, { name: "igChartLegend" } ],
+		dependency: [ { name: "_ig_datachart_core" }, { name: "_ig_dv_commonwidget" },
+					{ name: "igTemplating" }, { name: "igDataSource" } ],
 		scripts: [ "$path$/modules/infragistics.ui.chart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		css: [
@@ -112,133 +238,188 @@ $.ig.dependencies = [
 			]
 	},
 	{
-		widget: "igSimpleDataChart",
-		dependency: [ { name: "igUtil" }, { name: "igDataSource" },
-			{ name: "igDVSimpleCore" }, { name: "igTemplating" } ],
-		scripts: [ "$path$/modules/infragistics.ui.basechart.js" ],
-		group: $.ig.loaderClass.locale.dvGroup,
-		css: [
-			"$path$/structure/modules/infragistics.ui.shared.css",
-			"$path$/structure/modules/infragistics.ui.html5.css"
-			]
-	},
-	{
 		widget: "Category",
 		parentWidget: "igDataChart",
-		dependency: [ { name: "igDataChart" } ],
+		dependency: [ { name: "_ig_datachart_categorycore" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.chart_categorychart.js" ]
-	},
-	{
-		widget: "Financial",
-		parentWidget: "igDataChart",
-		dependency: [ { name: "igDataChart" } ],
-		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.chart_financialchart.js" ]
-	},
-	{
-		widget: "Polar",
-		parentWidget: "igDataChart",
-		dependency: [ { name: "igDataChart" } ],
-		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.chart_polarchart.js" ]
-	},
-	{
-		widget: "Radial",
-		parentWidget: "igDataChart",
-		dependency: [ { name: "igDataChart" } ],
-		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.chart_radialchart.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_category.js" ]
 	},
 	{
 		widget: "RangeCategory",
 		parentWidget: "igDataChart",
-		dependency: [ { name: "igDataChart" } ],
+		dependency: [ { name: "_ig_datachart_categorycore" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.chart_rangecategorychart.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_rangecategory.js" ]
+	},
+	{
+		widget: "VerticalCategory",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_datachart_categorycore" }, { name: "igDataChart" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_verticalcategory.js" ]
+	},
+	{
+		widget: "Financial",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_datachart_categorycore" }, { name: "igDataChart" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_financial.js" ]
+	},
+	{
+		widget: "ExtendedFinancial",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "Financial" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_extendedfinancial.js" ]
+	},
+	{
+		widget: "Polar",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_polar.js" ]
+	},
+	{
+		widget: "Radial",
+		parentWidget: "igDataChart",
+		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		scripts: [ "$path$/modules/infragistics.datachart_radial.js" ]
 	},
 	{
 		widget: "Scatter",
 		parentWidget: "igDataChart",
 		dependency: [ { name: "igDataChart" } ],
-		scripts: [ "$path$/modules/infragistics.chart_scatterchart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
+		scripts: [ "$path$/modules/infragistics.datachart_scatter.js" ]
 	},
 	{
 		widget: "Stacked",
 		parentWidget: "igDataChart",
-		dependency: [ { name: "igDataChart" } ],
+		dependency: [ { name: "Category" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.chart_stackedchart.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_stacked.js" ]
 	},
 	{
 		widget: "Annotation",
 		parentWidget: "igDataChart",
 		dependency: [ { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.chart_annotationchart.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_annotation.js" ]
 	},
 	{
 		widget: "igDataChart.*",
 		dependency: [ { name: "Category" },
+					{ name: "RangeCategory" },
+					{ name: "VerticalCategory" },
 					{ name: "Financial" },
+					{ name: "ExtendedFinancial" },
 					{ name: "Polar" },
 					{ name: "Radial" },
-					{ name: "RangeCategory" },
 					{ name: "Scatter" },
 					{ name: "Stacked" },
-					{ name: "Annotation" },
-					{ name: "igPieChart" } ]
+					{ name: "Annotation" } ]
 	},
+
 	{
 		widget: "igPieChart",
 		dependency: [ { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.chart_piechart.js" ]
+		scripts: [
+			"$path$/modules/infragistics.piechart.js"
+			]
 	},
+
 	{
 		widget: "igDoughnutChart",
-		dependency: [
-			{ name: "igUtil" },
-			{ name: "igDataSource" },
-			{ name: "igDVCore" },
-			{ name: "igTemplating" },
-			{ name: "igChartLegend" } ],
+		dependency: [ { name: "igPieChart" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
+			"$path$/modules/infragistics.doughnutchart.js",
 			"$path$/modules/infragistics.ui.basechart.js",
-			"$path$/modules/infragistics.chart_piechart.js",
 			"$path$/modules/infragistics.ui.doughnutchart.js"
 			],
-		locale: [ "$localePath$/infragistics.ui.doughnutchart-$locale$.js" ],
-		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
+		locale: [ "$localePath$/infragistics.ui.doughnutchart-$locale$.js" ]
 	},
+
 	{
 		widget: "igFunnelChart",
-		dependency: [ { name: "igSimpleDataChart" }, { name: "igChartLegend" } ],
+		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_commonwidget" },
+					{ name: "igTemplating" }, { name: "igDataSource" } ],
 		scripts: [
-			"$path$/modules/infragistics.chart_funnelchart.js",
+			"$path$/modules/infragistics.funnelchart.js",
+			"$path$/modules/infragistics.ui.basechart.js",
 			"$path$/modules/infragistics.ui.funnelchart.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
 	},
+
+	{
+		widget: "_ig_dv_simple_core",
+		priority: true,
+		group: $.ig.loaderClass.locale.dvGroup,
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv.simple.core.js" ]
+	},
+	{
+		widget: "_ig_simple_datachart_core",
+		dependency: [ { name: "igUtil" }, { name: "igTemplating" }, { name: "igDataSource" } ],
+		scripts: [ "$path$/modules/infragistics.ui.basechart.js" ],
+		group: $.ig.loaderClass.locale.dvGroup,
+		internal: true,
+		css: [ "$path$/structure/modules/infragistics.ui.shared.css",
+			"$path$/structure/modules/infragistics.ui.html5.css" ]
+	},
+
 	{
 		widget: "igSparkline",
-		dependency: [ { name: "igSimpleDataChart" } ],
+		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_simple_core" },
+					{ name: "_ig_simple_datachart_core" } ],
 		scripts: [
-			"$path$/modules/infragistics.ui.sparkline.js",
-			"$path$/modules/infragistics.chart_sparkline.js"
+			"$path$/modules/infragistics.chart_sparkline.js",
+			"$path$/modules/infragistics.ui.sparkline.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.sparkline.css" ]
 	},
-/*/ end igDataChart /// */
 
 	{
 		widget: "igRadialGauge",
-		dependency: [ { name: "igUtil" }, { name: "igTemplating" }, { name: "igDVSimpleCore" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
+		scripts: [
+			"$path$/modules/infragistics.radialgauge.js",
+			"$path$/modules/infragistics.ui.radialgauge.js"
+			],
+		group: $.ig.loaderClass.locale.dvGroup,
+		css: [ "$path$/structure/modules/infragistics.ui.radialgauge.css" ]
+	},
+
+	{
+		widget: "igBulletGraph",
+		dependency: [ { name: "_ig_dv_geometry" } ],
+		scripts: [
+			"$path$/modules/infragistics.bulletgraph.js",
+			"$path$/modules/infragistics.ui.bulletgraph.js"
+			],
+		group: $.ig.loaderClass.locale.dvGroup,
+		css: [ "$path$/structure/modules/infragistics.ui.bulletgraph.css" ]
+	},
+
+	{
+		widget: "igLinearGauge",
+		dependency: [ { name: "_ig_dv_geometry" } ],
+		scripts: [
+			"$path$/modules/infragistics.lineargauge.js",
+			"$path$/modules/infragistics.ui.lineargauge.js"
+			],
+		group: $.ig.loaderClass.locale.dvGroup
+		/*css: [ "$path$/structure/modules/infragistics.ui.lineargauge.css" ] */
+	},
+
+	{
+		widget: "igRadialGauge",
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.ui.radialgauge.js",
 			"$path$/modules/infragistics.gauge_radialgauge.js"
@@ -249,7 +430,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igBulletGraph",
-		dependency: [ { name: "igUtil" }, { name: "igTemplating" }, { name: "igDVSimpleCore" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.ui.bulletgraph.js",
 			"$path$/modules/infragistics.gauge_bulletgraph.js"
@@ -261,9 +442,7 @@ $.ig.dependencies = [
 	{
 		widget: "igLinearGauge",
 		dependency: [
-			{ name: "igUtil" },
-			{ name: "igTemplating" },
-			{ name: "igDVSimpleCore" }
+			{ name: "_ig_dv_geometry" }
 			],
 		scripts: [
 			"$path$/modules/infragistics.ui.lineargauge.js",
@@ -272,17 +451,17 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.dvGroup
 		/*css: [ "$path$/structure/modules/infragistics.ui.lineargauge.css" ] */
 	},
+/* /// End Data Visualization /// */
 
 	{
 		widget: "igRadialMenu",
 		dependency: [
 			{ name: "igUtil" },
-			{ name: "igTemplating" },
-			{ name: "igDVSimpleCore" }
+			{ name: "_ig_dv_simple_core" }
 			],
 		scripts: [
-			"$path$/modules/infragistics.ui.radialmenu.js",
-			"$path$/modules/infragistics.radialmenu_core.js"
+			"$path$/modules/infragistics.radialmenu_core.js",
+			"$path$/modules/infragistics.ui.radialmenu.js"
 			],
 		group: $.ig.loaderClass.locale.interactionsGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.radialmenu.css" ]
@@ -292,7 +471,7 @@ $.ig.dependencies = [
 		widget: "igQRCodeBarcode",
 		dependency: [
 			{ name: "igUtil" },
-			{ name: "igDVSimpleCore" }
+			{ name: "_ig_dv_simple_core" }
 			],
 		scripts: [
 			"$path$/modules/infragistics.barcode_qrcodebarcode.js",
@@ -847,13 +1026,13 @@ $.ig.dependencies = [
 	{
 		widget: "igMap",
 		dependency: [
-			{ name: "igUtil" },
-			{ name: "igTemplating" },
-			{ name: "igDataSource" },
-			{ name: "igDVCore" },
-			{ name: "igDVMapCore" }
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_web" },
+			{ name: "_ig_dv_geo" },
+			{ name: "Scatter" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.map.js" ],
+		scripts: [ "$path$/modules/infragistics.geographicmap_core.js",
+					"$path$/modules/infragistics.ui.map.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
@@ -1032,14 +1211,6 @@ $.ig.dependencies = [
 		locale: [ "$localePath$/infragistics.ui.upload-$locale$.js" ],
 		group: $.ig.loaderClass.locale.interactionsGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.upload.css" ]
-	},
-	{
-		widget: "igUtil",
-		priority: true,
-		scripts: [ "$path$/modules/infragistics.util.js" ],
-		locale: [ "$localePath$/infragistics.util-$locale$.js" ],
-		group: $.ig.loaderClass.locale.miscGroup,
-		css: [  ]
 	},
 	{
 		widget: "igValidator",
@@ -1257,16 +1428,6 @@ $.ig.dependencies = [
 
 $.ig.theme = "infragistics";
 
-$.ig.isDocumentReady = false;
-
-$(function () {
-	$.ig.isDocumentReady = true;
-
-	if ($.ig._loader) {
-		$.ig.loader()._notifyLoaded();
-	}
-});
-
 $.extend($.ig, {
 	/* pluginName="loader" */
 	loader: function (param1, param2, param3) {
@@ -1427,6 +1588,9 @@ $.extend($.ig.loaderClass, {
 			this._waitBatches(this._proxy(this, this._notifyLoaded, [  ]));
 		} else {
 
+			//~ Make jQuery to hold firing ready event until all of our resources are loaded
+			$.holdReady(true);
+
 			if (!this._themeLoaded && this.settings.theme) {
 				this._themeLoaded = true;
 				resources = "theme" + (resources ? "," + resources : "");
@@ -1438,7 +1602,6 @@ $.extend($.ig.loaderClass, {
 				i;
 
 			loadBatch.callback = this._proxy(loadBatch, this._callback, [  ]);
-			loadBatch.waitFireCallback = this._proxy(loadBatch, this._waitFireCallback, [  ]);
 			loadBatch._noWdgtLoaded = res.length;
 			loadBatch.loader = this;
 			loadBatch.ready = this._proxy(this, this._notifyLoaded, [  ]);
@@ -1624,25 +1787,15 @@ $.extend($.ig.loaderClass, {
 	_callback: function () {
 		this._noWdgtLoaded--;
 		if (this._noWdgtLoaded <= 0) {
+			this.loader._loadBatches.pop(this);
 			if (this.ready) {
-				this.waitFireCallback();
-			} else {
-				this.loader._loadBatches.pop(this);
+				this.ready();
 			}
 		}
 	},
 
-	_waitFireCallback: function () {
-		if ($.ig.isDocumentReady) {
-			this.loader._loadBatches.pop(this);
-			this.ready();
-		} else {
-			window.setTimeout(this.loader._proxy(this, this.waitFireCallback, [  ]), 25);
-		}
-	},
-
 	_waitBatches: function (callback) {
-		if (this._loadBatches.length === 0 && $.ig.isDocumentReady) {
+		if (this._loadBatches.length === 0) {
 			callback();
 		} else {
 			window.setTimeout(this._proxy(this, this._waitBatches, [ callback ]), 25);
@@ -1676,6 +1829,9 @@ $.extend($.ig.loaderClass, {
 		while (call.length > 0) {
 			call.shift()();
 		}
+
+		//~ Allow firing jQuery ready event
+		$.holdReady(false);
 	},
 
 	_findWidgetScriptData: function (widgetName, parentWidget) {

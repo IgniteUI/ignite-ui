@@ -189,6 +189,12 @@ module.exports = function (grunt) {
 	grunt.task.registerTask("test", "Task to run dev tests and generate coverage for a single control or for all of them.", function(control) {
 		var config, report = grunt.option('report');
 
+		if (!control) {
+			control = grunt.option('control');
+		}
+
+		console.log("CONTROL: '" + control + "'");
+
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/tests.json').config;
 		} else {
