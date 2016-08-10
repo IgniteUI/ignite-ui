@@ -6,9 +6,8 @@
 * http://www.infragistics.com/
 *
 * Depends on:
-* jquery-1.4.4.js
-* jquery.ui.core.js
-* jquery.ui.widget.js
+* jquery-1.9.1.js
+* jquery.ui-1.9.0.js
 * infragistics.util.js
 */
 
@@ -570,21 +569,27 @@
 
 		_refreshScrollbarsDrag: function () {
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
-				this._vBarContainer.css("height", (this._elemHeight - this._customBarArrowsSize) + "px");
-				this._vDragHeight = (this._elemHeight - 3 * this._customBarArrowsSize) * this._percentInViewV;
+				// jscs:disable
+				this._vDragHeight = (this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewV;
+				// jscs:enable
+				this._vBarContainer.css("height", (this._elemHeight - this._customBarEmptySpaceSize) + "px");
 				this._vBarDrag.css("height", this._vDragHeight + "px");
-				this._vBarTrack.css("height", this._elemHeight - (3 * this._customBarArrowsSize) + "px");
+				this._vBarTrack.css("height",
+									this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
 			} else if (this.options.scrollbarType === "native" && this._vBarContainer) {
-				this._vBarContainer.css("height", (this._elemHeight - this._customBarArrowsSize) + "px");
+				this._vBarContainer.css("height", (this._elemHeight - this._customBarEmptySpaceSize) + "px");
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
-				this._hBarContainer.css("width", (this._elemWidth - this._customBarArrowsSize) + "px");
-				this._hDragWidth = (this._elemWidth - 3 * this._customBarArrowsSize) * this._percentInViewH;
+				// jscs:disable
+				this._hDragWidth = (this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewH;
+				// jscs:enable
+				this._hBarContainer.css("width", (this._elemWidth - this._customBarEmptySpaceSize) + "px");
 				this._hBarDrag.css("width", this._hDragWidth + "px");
-				this._hBarTrack.css("width", this._elemWidth - (3 * this._customBarArrowsSize) + "px");
+				this._hBarTrack.css("width",
+									this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
 			} else if (this.options.scrollbarType === "native" && this._hBarContainer) {
-				this._hBarContainer.css("width", (this._elemWidth - this._customBarArrowsSize) + "px");
+				this._hBarContainer.css("width", (this._elemWidth - this._customBarEmptySpaceSize) + "px");
 			}
 		},
 
@@ -960,13 +965,6 @@
 
 			//Sets timeout until executing next movement iteration of the inertia
 			function inertiaStep() {
-				//If inertia is interupted we do not hide the bars here but on endtouch in case another inertia is initiated
-				if (self._bStopInertia) {
-					//we don't hide the scrollbars, because the inertia is interrupted by touch and we hide it on touchend then
-					cancelAnimationFrame(self._touchInertiaAnimID);
-					return;
-				}
-
 				if (x > 6) {
 					self._hideScrollBars(true, true); //hide scrollbars when inertia ends naturally
 					cancelAnimationFrame(self._touchInertiaAnimID);
@@ -1258,7 +1256,7 @@
 
 		_onWheelContainer: function (event) {
 			var evt = event.originalEvent;
-			this._bStopInertia = true;
+			cancelAnimationFrame(this._touchInertiaAnimID);
 
 			if (!this._bMixedEnvironment) {
 				this._bMixedEnvironment = true;
@@ -1348,6 +1346,9 @@
 		},
 
 		_onTouchStartContainer: function (event) {
+			//stop any current ongoing inertia
+			cancelAnimationFrame(this._touchInertiaAnimID);
+
 			var touch = event.originalEvent.touches[ 0 ];
 
 			if (this.options.scrollOnlyHBar) {
@@ -1364,7 +1365,6 @@
 			this._touchStartX = touch.pageX;
 			this._touchStartY = touch.pageY;
 
-			this._bStopInertia = true; //stops any current ongoing inertia
 			this._speedDecreasing = false;
 
 			this._lastTouchEnd = new Date().getTime();
@@ -1447,7 +1447,6 @@
 			//Use the lastMovedX and lastMovedY to determine if the swipe stops without lifting the finger so we don't start inertia
 			if ((Math.abs(speedX) > 0.1 || Math.abs(speedY) > 0.1) &&
 					(Math.abs(this._lastMovedX) > 2 || Math.abs(this._lastMovedY) > 2)) {
-				this._bStopInertia = false;
 				this._showScrollBars(false, true);
 				this._inertiaInit(speedX, speedY, this._bMixedEnvironment);
 			} else {
@@ -1600,13 +1599,16 @@
 
 			this._vBarTrack = $("<div id='" + this.element.attr("id") + "_vBar_track'></div>")
 				.addClass(css.verticalScrollTrack)
-				.css("height", this._elemHeight - (3 * this._customBarArrowsSize) + "px");
+				.css("height",
+					this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
 
 			this._vBarArrowDown = $("<div id='" + this.element.attr("id") +	"_vBar_arrowDown'></div>")
 				.addClass(css.verticalScrollArrow)
 				.addClass(css.verticalScrollArrowDown);
 
-			this._vDragHeight = (this._elemHeight - 3 * this._customBarArrowsSize) * this._percentInViewV;
+			// jscs:disable
+			this._vDragHeight = (this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewV;
+			// jscs:enable
 			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
 				.addClass(css.verticalScrollThumbDrag)
 				.css("height", this._vDragHeight + "px");
@@ -2049,13 +2051,16 @@
 
 			this._hBarTrack = $("<div id='" + this.element.attr("id") + "_hBar_track'></div>")
 				.addClass(css.horizontalScrollTrack)
-				.css("width", this._elemWidth - (3 * this._customBarArrowsSize) + "px");
+				.css("width",
+					this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
 
 			this._hBarArrowRight = $("<div id='" + this.element.attr("id") + "_hBar_arrowRight'></div>")
 				.addClass(css.horizontalScrollArrow)
 				.addClass(css.horizontalScrollArrowRight);
 
-			this._hDragWidth = (this._elemWidth - 3 * this._customBarArrowsSize) * this._percentInViewH;
+			// jscs:disable
+			this._hDragWidth = (this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewH;
+			// jscs:enable
 			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
 				.addClass(css.horizontalScrollThumbDrag)
 				.css("width", this._hDragWidth + "px");
@@ -2561,18 +2566,18 @@
 
 			function updateCSS() {
 				if (self._hBarDrag) {
-					calculatedDest =
-						destX * (self._elemWidth - 3 * self._customBarArrowsSize) / self._contentWidth;
-
+					// jscs:disable
+					calculatedDest = destX * (self._elemWidth - 2 * self._customBarArrowsSize - self._customBarEmptySpaceSize) / self._contentWidth;
+					// jscs:enable
 					self._hBarDrag
 						.css("-webkit-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Safari */
 						.css("-moz-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Firefox */
 						.css("-ms-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)"); /* IE */
 				}
 				if (self._vBarDrag) {
-					calculatedDest =
-						destY * (self._elemHeight - 3 * self._customBarArrowsSize) / self._contentHeight;
-
+					// jscs:disable
+					calculatedDest = destY * (self._elemHeight - 2 * self._customBarArrowsSize - self._customBarEmptySpaceSize) / self._contentHeight;
+					// jscs:enable
 					self._vBarDrag
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
 						.css("-moz-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
