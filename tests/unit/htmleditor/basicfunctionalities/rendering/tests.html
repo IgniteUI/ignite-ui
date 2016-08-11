@@ -322,9 +322,6 @@
                     deepEqual(getSelectionType, self.selectionType, "Selection type was not changed after command execution.")
                     start();
                 }, 100);
-
-                // TODO: Verify the test
-                equal(true, true, 'Iframe was focused and isDirty is set to true');
             },
             keyboardInteractions: function () {
                 var self = this, htmlEditor = $('#' + this.keyboardHtmlEditorId),
