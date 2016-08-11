@@ -66,7 +66,7 @@
                     });
 
                 $('<br />')
-                    .appendTo(document.body)
+                    .appendTo(document.body);
 
                 $('<div id="' + this.adjustSourceButtonsEditorId + '"></div>')
                     .appendTo(document.body)
@@ -238,6 +238,94 @@
                 // Check text toolbar custom settings
                 equal($('#htmlEditorSetInitOptions').data().igHtmlEditor._allToolbars[0].items[0].settings.props.isBold.value, true, "isBold Text Toolbar item is set to true");
             },
+            focuseIframeIEBrowserNodeTypeCheck: function () {
+                // Set browser to be IE
+                $.ig.util.isIE = true;
+                
+                var htmlEditor = $('#' + this.htmlEditorId),
+                    htmlElement = $(htmlEditor.igHtmlEditor("contentEditable")).parent();
+
+                stop();
+                setTimeout(function(){
+                    start();
+                }, 100);
+
+                // Workspace document click and mouseup
+                // Simulate iframe to be focused
+                htmlElement.trigger("click");
+                htmlElement.trigger("mouseup");
+                
+                equal($('#' + this.htmlEditorId).igHtmlEditor("isDirty"), true, "Iframe was not focused and isDirty isn't set to true");
+            },
+            executeCommandIeBrowserNodeTypeTextCheck: function() {
+                // Set browser to be IE version - 10
+                $.ig.util.isIE = true;
+                $.ig.util.browserVersion = 10;
+                
+                this.callback = function (iframeBody) {
+                    return ((this.css("fontWeight") === "bold" ||
+                            this.css("fontWeight") === "700") ||
+                        (this.find("strong:only-child").length) //IE
+                        ||
+                        (this.children().first().css("fontWeight") === "bold")
+                    );
+                };
+
+                this.htmlEditor = $('#' + this.htmlEditorId);
+                this.editorDocument = this.htmlEditor.find("iframe").contents();
+                
+                // Append samo content to the iframe
+                var content = '<p>Some text</p><ul><li>list 1</li><li>list 2</li></ul><div>Something in a div</div>';
+                $(this.htmlEditor.igHtmlEditor("contentEditable")).append(content);
+                
+                // Get the second p tag that the nodeType is text
+                var p = $(this.htmlEditor.igHtmlEditor("contentEditable")).find("p:nth-child(2)");
+
+                var self = this;
+                stop();
+                setTimeout(function(){
+                    // Select given p element
+                    self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
+                    // Bold the selected element
+                    self.htmlEditor.igHtmlEditor("executeAction", "Bold");
+                    // Check if selected element has the correct style
+                    var condition = self.callback.call(p, self.editorDocument.find("body"));
+
+                    equal(condition, true, "Selected element was not affected after execution of the command!")
+                    start();
+                }, 100);
+            },
+            executeCommandIeBrowserNodeTypeNotTextCheck: function () {
+                // Set browser to be IE version - 10
+                $.ig.util.isIE = true;
+                $.ig.util.browserVersion = 10;
+                
+                // Selection type after updateSelection operation.
+                this.selectionType = "Caret";
+
+                this.htmlEditor = $('#' + this.htmlEditorId);
+                this.editorDocument = this.htmlEditor.find("iframe").contents();
+
+                // Get first p tag that the nodeType is element.
+                var p = $(this.htmlEditor.igHtmlEditor("contentEditable")).find("p:first");
+
+                var self = this;
+                stop();
+                setTimeout(function(){
+                    // Select given p element
+                    self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(p.contents());
+                    // Bold the selected element
+                    self.htmlEditor.igHtmlEditor("executeAction", "Underline");
+                    // Get selection type
+                    var getSelectionType = self.htmlEditor.data("igHtmlEditor")._selectionWrapperSaved._selection.type;
+
+                    deepEqual(getSelectionType, self.selectionType, "Selection type was not changed after command execution.")
+                    start();
+                }, 100);
+
+                // TODO: Verify the test
+                equal(true, true, 'Iframe was focused and isDirty is set to true');
+            },
             keyboardInteractions: function () {
                 var self = this, htmlEditor = $('#' + this.keyboardHtmlEditorId),
                     iframe = $("#" + this.keyboardHtmlEditorId).find("#" + this.keyboardHtmlEditorId + "_editor"),
@@ -379,6 +467,7 @@
             htmlEditorId: "html1",
             htmlEditor: null,
             editorBody: null,
+            secondHtmlEditorId: "htmlEditorSetInitOptions",
             setup: function () {
                 var editorDocument,
                     self = this;
@@ -1145,6 +1234,15 @@
         });
         test("Modify initially set options", function () {
             this.modifyInitiallySetOptions();
+        });
+        test("Focus node type checker simulating IE Browser", function (){
+            this.focuseIframeIEBrowserNodeTypeCheck();
+        });
+        test("Execute command node type set to text checker simulating IE Browser", function () {
+            this.executeCommandIeBrowserNodeTypeTextCheck();
+        });
+        test("Execute command node type not set text checker simulating IE Browser", function () {
+            this.executeCommandIeBrowserNodeTypeNotTextCheck();
         });
         test("Test some different keyboard interactions", function () {
             this.keyboardInteractions();
