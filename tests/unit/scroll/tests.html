@@ -354,7 +354,8 @@
 		var testId_99 = 'setting dynamically alwaysVisible for custom scrollbars keeps the big scrollbars visible on touch test.';
 		var testId_100 = 'linking invalid elements throws error test.';
 		var testId_101 = 'linking invalid scrollbars test.';
-	
+		var testId_102 = 'clicking on arrow left, moving the mouse out of the scroll container stops scrolling and moving back into the arrow starts scrolling again test.';
+		var testId_103 = 'clicking on arrow right, moving the mouse out of the scroll container stops scrolling and moving back into the arrow starts scrolling again test.';
 		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -1410,7 +1411,7 @@
 				elemContainer = $("#elemVH_container");
 				
 			vScrollbarContainer.mouseenter();
-			ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
 
 			$.ig.TestUtil.simulateClickAndHold(arrowUp, 500);
 
@@ -2703,6 +2704,77 @@
 			
 			equal(err, "Scrollbar element that is being linked does not exists.", "No error is thrown");
 			$("#elemVH").remove();
+	    });
+		
+		test(testId_102, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollWidth: 5000,
+				scrollLeft: 500,
+			});
+			
+	        var arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				hScrollbarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container");
+				
+			hScrollbarContainer.mouseenter();
+			ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
+
+			$.ig.TestUtil.simulateClickAndHold(arrowLeft, 500);
+
+			stop();
+			setTimeout(function () {
+				//500 minus 120
+				equal(elemContainer.scrollLeft(), 380, "igScroll did not scroll properly");
+				
+				arrowLeft.mouseout();				
+				setTimeout(function () {
+					//500 minus 160
+					equal(elemContainer.scrollLeft(), 380, "igScroll did not scroll properly");
+					
+					arrowLeft.mouseover();
+					setTimeout(function () {
+						//500 minus 160
+						equal(elemContainer.scrollLeft(), 300, "igScroll did not scroll properly");
+						$("#elemVH").remove();
+						start();
+					}, 100);
+				}, 100);
+			}, 325);
+	    });
+		
+		test(testId_103, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowRight = $("#elemVH_hBar_arrowRight"),
+				hScrollbarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container");
+				
+			hScrollbarContainer.mouseenter();
+			ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
+			
+			$.ig.TestUtil.simulateClickAndHold(arrowRight, 500);
+
+			stop();
+			setTimeout(function () {
+				equal(elemContainer.scrollLeft(), 120, "igScroll did not scroll properly");
+				
+				arrowRight.mouseout();
+				setTimeout(function () {
+					equal(elemContainer.scrollLeft(), 120, "igScroll did not scroll properly");
+					
+					arrowRight.mouseover();
+					setTimeout(function () {
+						equal(elemContainer.scrollLeft(), 200, "igScroll did not scroll properly");
+						$("#elemVH").remove();
+						start();
+					}, 100);
+				}, 100);
+			}, 325);
 	    });
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>
