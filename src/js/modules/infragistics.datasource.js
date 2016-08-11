@@ -6520,7 +6520,7 @@
 			return nData;
 		},
 		_getDataLayouts: function (parents, children) {
-			var i, pLen = parents.length, key = this.settings.treeDS.key,
+			var i, pLen = parents.length, key = this.settings.primaryKey,
 				layoutKey = this.settings.treeDS.childDataKey, res = [], parent, cp;
 			for (i = 0; i < pLen; i++) {
 				parent = parents[ i ];
@@ -6552,7 +6552,7 @@
 				s = this.settings.treeDS,
 				rlv = s.foreignKeyRootValue,
 				foreignKey = s.foreignKey,
-				key = s.key;
+				key = this.settings.primaryKey;
 			/* if option foreignKeyRootValue is false then we should go through the whole DS and
 			check whether the record has parent key equal to key - if there isn't this means the value hasn't parent */
 			dataRecordPKey = dataRecord[ foreignKey ];
