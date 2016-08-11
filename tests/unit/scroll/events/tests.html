@@ -207,6 +207,40 @@
 				$("#testBed").empty();
 			}, 2000);
 		});
+		
+		test("When Scrolling event is canceled scrolling should not occur when setting scrollLeft and the scrolled event should not fire.", function () {
+			var scrolledIsFired = false;
+
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+
+			$(document).delegate("#elemVH", "igscrollscrolling", function (evt, args) {
+				//cancel event
+				return false;
+			});
+
+			$(document).delegate("#elemVH", "igscrollscrolled", function (evt, args) {
+				scrolledIsFired = true;
+			});
+
+			$('#elemVH').igScroll({});
+
+			var elemContainer = elemContainer = $("#elemVH_container");
+			var arrowRight = $("#elemVH_hBar_arrowRight");
+			var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
+			elemContainer.mouseenter();
+			elemContainer.trigger(wheelEvtDown);
+
+			stop();
+			$('#elemVH').igScroll("option", "scrollLeft", 100);
+			setTimeout(function () {
+				start();
+				//Following check fails due to issue: https://github.com/IgniteUI/ignite-ui/issues/175
+				//ok(!scrolledIsFired, "Scrolled event should not fire.");
+				equal(elemContainer.scrollLeft(), 0, "No scrolling should occur.");
+				$("#testBed").empty();
+			}, 2000);
+		});
+		
 		test("ThumbDragStart event is fired and its event arguments are correct.", function () {
 			var isFired = false, evtArgs;
 

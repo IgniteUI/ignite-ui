@@ -729,8 +729,8 @@
 		_scrollToXY: function(destX, destY, triggerEvents) {
 			var curPosX = this._getContentPositionX(),
 				curPosY = this._getContentPositionY();
-			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
-			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
+			destX = this._clampAxisCoords(destX, 0, Math.max(this._contentWidth - this._dragMaxX, 0));
+			destY = this._clampAxisCoords(destY, 0, Math.max(this._contentHeight - this._dragMaxY, 0));
 
 			if (triggerEvents) {
 				//Trigger scrolling event
@@ -788,6 +788,8 @@
 				var curY = this._getContentPositionY();
 				this._updateScrollBarsPos(destX, curY, true);
 			}
+
+			return destX - curPosX;
 		},
 
 		/** Scrolls content to on the Y axis using default scrollTop.
@@ -827,6 +829,8 @@
 				var curX = this._getContentPositionX();
 				this._updateScrollBarsPos(curX, destY, true);
 			}
+
+			return destY - curPosY;
 		},
 
 		/** Scroll with predefined inertia that start slowly, speeds up and then slows down again */
@@ -898,8 +902,8 @@
 				curPosX = this._getContentPositionX(),
 				curPosY = this._getContentPositionY();
 
-			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
-			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
+			destX = this._clampAxisCoords(destX, 0, Math.max(this._contentWidth - this._dragMaxX, 0));
+			destY = this._clampAxisCoords(destY, 0, Math.max(this._contentHeight - this._dragMaxY, 0));
 
 			if (triggerEvents) {
 				bNoCancel = this._trigger("scrolling", null, {
@@ -917,23 +921,28 @@
 
 			//Only use vertical scroll specific
 			if (this.options.scrollOnlyVBar) {
-				this._content.css({
-					"-webkit-transform": "translate3d(" + (-destX) + "px, 0px, 0px)" /* Chrome, Safari, Opera */
-				});
 				self._scrollToY(destY, false);
+
+				if (this.options.scrollOnlyHBar) {
+					self._scrollToX(destX);
+				} else {
+					this._content.css({
+						"-webkit-transform": "translate3d(" + (-destX) + "px, 0px, 0px)" /* Chrome, Safari, Opera */
+					});
+
+					self._syncElemsX(this._content, true, -destX, true);
+				}
 
 				/* Sync other elements */
 				destY = this._getScrollbarVPoisition();
 				self._updateScrollBarsPos(destX, destY);
-				self._syncElemsX(this._content, true, -destX, true);
-				/* self._syncHBar(this._content, true); */
 				return;
 			}
 
 			var distanceLeftX = -destX;
 			var distanceTopY = -destY;
 
-			if (!this.options.scrollOnlyVBar) {
+			if (!this.options.scrollOnlyVBar && !this.options.scrollOnlyHBar) {
 				this._content.css({
 					"-webkit-transform": "translate3d(" + distanceLeftX + "px," + distanceTopY + "px, 0px)" /* Chrome, Safari, Opera */
 				});
@@ -956,11 +965,15 @@
 				stepModifer = this.options.inertiaStep,
 				inertiaDuration = this.options.inertiaDuration;
 
-			self._nextX = self._getContentPositionX();
 			if (this.options.scrollOnlyVBar) {
 				self._nextY = self._getScrollbarVPoisition();
 			} else {
 				self._nextY = self._getContentPositionY();
+			}
+			if (this.options.scrollOnlyHBar) {
+				self._nextX = self._getScrollbarHPoisition();
+			} else {
+				self._nextX = self._getContentPositionX();
 			}
 
 			//Sets timeout until executing next movement iteration of the inertia
@@ -1277,7 +1290,7 @@
 				}
 
 				var scrollStep = this.options.wheelStep;
-				this._scrollToY(this._startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep, true);
+				var scrolledY = this._scrollToY(this._startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep, true);
 
 				//Trigger scrolled event
 				this._trigger("scrolled", null, {
@@ -1286,6 +1299,8 @@
 					bigIncrement: 0,
 					horizontal: false
 				});
+
+				return !scrolledY;
 			}
 
 			return false;
@@ -2736,6 +2751,7 @@
 			cancelAnimationFrame(this._showScrollbarsAnimId);
 			clearTimeout(this._hideScrollbarID);
 			clearTimeout(this._toSimpleScrollbarID);
+			clearTimeout(this._holdTimeoutID);
 
 			if (this._evts) {
 				this.element.off(this._evts);
