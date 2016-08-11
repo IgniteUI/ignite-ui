@@ -729,8 +729,8 @@
 		_scrollToXY: function(destX, destY, triggerEvents) {
 			var curPosX = this._getContentPositionX(),
 				curPosY = this._getContentPositionY();
-			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
-			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
+			destX = this._clampAxisCoords(destX, 0, Math.max(this._contentWidth - this._dragMaxX, 0));
+			destY = this._clampAxisCoords(destY, 0, Math.max(this._contentHeight - this._dragMaxY, 0));
 
 			if (triggerEvents) {
 				//Trigger scrolling event
@@ -902,8 +902,8 @@
 				curPosX = this._getContentPositionX(),
 				curPosY = this._getContentPositionY();
 
-			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
-			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
+			destX = this._clampAxisCoords(destX, 0, Math.max(this._contentWidth - this._dragMaxX, 0));
+			destY = this._clampAxisCoords(destY, 0, Math.max(this._contentHeight - this._dragMaxY, 0));
 
 			if (triggerEvents) {
 				bNoCancel = this._trigger("scrolling", null, {
