@@ -84,8 +84,9 @@ $.ig.dependencies = [
 		widget: "igScroll",
 		dependency: [ { name: "igUtil" } ],
 		scripts: [ "$path$/modules/infragistics.ui.scroll.js" ],
+		locale: [ "$localePath$/infragistics.ui.scroll-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
-		css: [  ]
+		css: [ "$path$/structure/modules/infragistics.ui.scroll.css" ]
 	},
 	{
 		widget: "igShared",
