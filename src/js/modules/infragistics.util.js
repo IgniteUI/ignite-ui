@@ -5403,6 +5403,7 @@ $.ig.Array.prototype.clear = function () {
 	$.ig.util.escapeStr = function (str) {
 		return str.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, "\\$1");
 	};
+	
 	// Escape all html tags in given html element content
 	$.ig.util.escapeHtmlTags = function (htmlElemContent) {
 		return htmlElemContent
