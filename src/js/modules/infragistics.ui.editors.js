@@ -1769,7 +1769,7 @@ if (typeof jQuery !== "function") {
 				},
 				"paste.editor": function (event) {
 					self._currentInputTextValue = self._editorInput.val();
-					self._pasteHandler(event);
+					self._pasteHandler(event, true);
 				},
 				"keydown.editor": function (event) {
 
@@ -2324,13 +2324,13 @@ if (typeof jQuery !== "function") {
 				newItem.attr("data-active", true);
 			}
 		},
-		_pasteHandler: function (event) {
+		_pasteHandler: function (event, isPasteEvent) {
 			// TextEditor Handler
 			var self = this, previousValue = $(event.target).val(), newValue;
 			this._currentInputTextValue = this._editorInput.val();
 			this._timeouts.push(setTimeout(function () {
 				newValue = $(event.target).val();
-				self._insert(newValue, previousValue);
+				self._insert(newValue, previousValue, isPasteEvent);
 			}, 10));
 		},
 		_insertHandler: function (string) {
@@ -2346,7 +2346,7 @@ if (typeof jQuery !== "function") {
 			return previousValue.substring(0, selection.start) + string +
 				previousValue.substring(selection.end, previousValue.length);
 		},
-		_insert: function (newValue, previousValue) { // TextEditor
+		_insert: function (newValue, previousValue, isPasteEvent) { // TextEditor
 			var selection, i, ch;
 			if (this.options.maxLength) {
 				if (newValue && newValue.toString().length > this.options.maxLength) {
@@ -2392,7 +2392,7 @@ if (typeof jQuery !== "function") {
 				this._processTextChanged();
 
 				// Move the caret
-				this._setCursorPosition(selection.start + newValue.length);
+				this._setCursorPosition(selection.start + (isPasteEvent ? 0 : newValue.length));
 			} else {
 				this._editorInput.val(previousValue);
 			}
