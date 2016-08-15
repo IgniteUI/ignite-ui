@@ -125,6 +125,27 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 |MVC Extensions																|:x:	            |:white_check_mark: 						|:white_check_mark:														|[help](http://www.igniteui.com/help/asp.net-mvc-landingpage) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/05_ASP-NET-MVC)|
 |Developer Support 24/5														|:x:				|:white_check_mark: 						|:white_check_mark:														||
 
+## Install
+The package for this development repository is available on both [`npm`](https://www.npmjs.com/package/ignite-ui) and [`bower`](https://libraries.io/bower/ignite-ui).
+To get started follow the respective package manager installation:
+
+### npm
+```shell
+npm install ignite-ui
+```
+
+### bower
+```shell
+bower install ignite-ui
+```
+
+Package contains similar files and structure to what you'd find in the [full version of Ignite UI](http://www.igniteui.com) with complete styles and lite versions of the combined script files:
+```html
+<script src="<node_modules|bower_components>/ignite-ui/js/infragistics.core-lite.js" type="text/javascript"></script>
+<script src="<node_modules|bower_components>/ignite-ui/js/infragistics.lob-lite.js" type="text/javascript"></script>
+```
+The full built content for both packages can be browsed at the [Ignite UI Bower Shim repository](https://github.com/IgniteUI/ignite-ui-bower).
+
 
 ##Getting Help
 
