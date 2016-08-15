@@ -351,8 +351,9 @@
 		var testId_96 = 'setting initially alwaysVisible for custom scrollbars keeps the big scrollbars visible test.';
 		var testId_97 = 'setting initially alwaysVisible for custom scrollbars keeps the small scrollbars visible on touch test.';
 		var testId_98 = 'setting dynamically alwaysVisible for custom scrollbars keeps the big scrollbars visible test.';
-		var testId_99 = 'linking invalid elements throws error test.';
-		var testId_100 = 'linking invalid scrollbars test.';
+		var testId_99 = 'setting dynamically alwaysVisible for custom scrollbars keeps the big scrollbars visible on touch test.';
+		var testId_100 = 'linking invalid elements throws error test.';
+		var testId_101 = 'linking invalid scrollbars test.';
 	
 		
 	    test(testId_1, function () {
@@ -2598,9 +2599,56 @@
 					start();
 				}, 200);				
 			},1500);
-	    });		
+	    });
 		
 		test(testId_99, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+			
+	        var arrowUp = $("#elemVH_vBar_arrowUp"),
+				arrowDown = $("#elemVH_vBar_arrowDown"),
+				vDrag = $("#elemVH_vBar_drag"),
+				arrowLeft = $("#elemVH_hBar_arrowLeft"),
+				arrowRight = $("#elemVH_hBar_arrowRight"),
+				hDrag = $("#elemVH_hBar_drag"),
+				vScrollbarContainer = $("#elemVH_vBar"),
+				elemContainer = $("#elemVH_container");
+
+			elemContainer.mouseleave();
+			stop();
+			setTimeout(function () {
+				$('#elemVH').igScroll("option", "alwaysVisible", true);
+			
+				equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+				equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+				equal(arrowLeft.css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+				equal(arrowRight.css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not visible");
+				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not visible");
+				equal(vDrag.css("width"), "5px", "igScroll vertical scrollbar thumb drag is not big");
+				equal(hDrag.css("height"), "5px", "igScroll horizontal scrollbar thumb drag is not big");
+				
+				setTimeout(function () {
+					equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
+					equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
+					equal(arrowLeft.css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
+					equal(arrowRight.css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
+					ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not visible");
+					ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not visible");
+					equal(vDrag.css("width"), "5px", "igScroll vertical scrollbar thumb drag is big");
+					equal(hDrag.css("height"), "5px", "igScroll horizontal scrollbar thumb drag is  big");
+					
+					$("#elemVH").remove();
+					$.ig.util.isTouch = false;
+					start();
+				}, 200);				
+			},1500);
+	    });		
+		
+		test(testId_100, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({
 				modifyDOM: true
@@ -2629,7 +2677,7 @@
 			$("#elemVH").remove();
 	    });
 		
-		test(testId_100, function () {
+		test(testId_101, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({
 				modifyDOM: true

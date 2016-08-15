@@ -4052,12 +4052,13 @@
 			*/
 			return this._gbDataView;
 		},
-		_groupedRecordsByExpr: function (data, startInd, gbExpr) {
+		_groupedRecordsByExpr: function (data, startInd, gbExpr, gbRes) {
 			var i, res = [], cmpRes, groupval, currval,
 				mapper = this._hasMapper,
 				cmpFunc = gbExpr.compareFunc,
 				key = gbExpr.fieldName,
 				len = data.length;
+			gbRes = gbRes || {};
 			if (!cmpFunc) {
 				cmpFunc = function (val1, val2) {
 					return val1 === val2;
@@ -4068,6 +4069,7 @@
 			groupval = mapper ?
 							this.getCellValue(key, data [ startInd ]) :
 							data[ startInd ][ key ];
+			gbRes.val = groupval;
 			startInd++;
 			for (i = startInd; i < len; i++) {
 				currval = mapper ? this.getCellValue(key, data [ i ]) : data[ i ][ key ];
@@ -4154,16 +4156,16 @@
 					gbExpr: gbExpr,
 					level: gbInd,
 					len: 1,
-					recs: []
+					recs: [],
+					val: undefined
 				};
 				this._gbData.push(gbRec);
 				if (!parentCollapsed) {
 					this._vgbData.push(gbRec);
 				}
-				res = this._groupedRecordsByExpr(data, i, gbExpr);
+				res = this._groupedRecordsByExpr(data, i, gbExpr, gbRec);
 				gbRec.fieldName = gbExpr.fieldName;
 				resLen = res.length;
-				gbRec.val = resLen ? res[ 0 ][ gbRec.fieldName ] : undefined;
 				if (dt === undefined) {
 					dt = !!(gbRec.val && gbRec.val.getTime);
 				}
@@ -7891,7 +7893,13 @@
 			paramType="string|number" primary key of the record
 			*/
 			var data, count = 0,
-				all = [ this._data, this._dataView, this._filteredData, origDs ];
+				all = [ this._data, this._dataView, this._filteredData ];
+			/* M.H. 5 Aug 2016 Fix for bug 220126: Child data persists in the datasource after deleting the corresponding parent record in treegrid */
+			if (!this._isHierarchicalDataSource) {
+				this._removeRecordInFlatDs(origDs, key);
+			} else {
+				all.push(origDs);
+			}
 			while (count < all.length) {
 				data = all[ count++ ];
 				this._removeRecordByKeyForData(key, data);
@@ -7901,7 +7909,33 @@
 				}
 			}
 		},
+		_removeRecordInFlatDs: function (data, key, fk) {
+			if (!data || !$.isArray(data) || !data.length ||
+				(key === undefined && fk === undefined)) {
+				return;
+			}
+			var i, prime = this.settings.primaryKey, tmp,
+				pkSearch = $.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,
+				fkSearch = this.settings.treeDS.foreignKey;
+			for (i = 0; i < data.length; i++) {
+				if (data[ i ]) {
+					if (key !== undefined && data[ i ][ pkSearch ] === key) {
+						$.ig.removeFromArray(data, i);
+						this._removeRecordInFlatDs(data, undefined, key);
+						break;
+					} else if (fk !== undefined && data[ i ][ fkSearch ] === fk) {
+						tmp = data[ i ][ pkSearch ];
+						$.ig.removeFromArray(data, i);
+						this._removeRecordInFlatDs(data, undefined, tmp);
+						i = 0;
+					}
+				}
+			}
+		},
 		_removeRecordByKeyForData: function (key, data) {
+			if (!data) {
+				return false;
+			}
 			var i, prime = this.settings.primaryKey,
 				len = data ? data.length : 0,
 				search = len > 0 && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,
