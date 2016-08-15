@@ -95,6 +95,7 @@
                 testId_18 = 'igTileManager splitter collapsible option.',
                 testId_19 = 'igTileManager splitter collapsed option.'
                 testId_20 = 'igTileManager splitter setting collapsible and collapsed options.';
+				testId_21 = 'igTileManager disabled.';
 
             test(testId_1, function () {
                 ok(typeof $('#tilemanager1').igTileManager === 'function', 'igTileManager is not defined.');
@@ -360,8 +361,7 @@
                     rightPanelCols: 1,
                     rightPanelTilesWidth: 100,
                     rightPanelTilesHeight: 100,
-                    minimizedState: ".maximized",
-                    animationDuration: 0
+                    minimizedState: ".maximized"
                 });
 
                 // Expected values
@@ -393,22 +393,23 @@
 
                 // Set new options
                 $('#tilemanager1')
-                   .width(1000)
-                   .height(1000)
-                   .igTileManager('option', 'rearrangeItems', true)
-                   .igTileManager('option', 'items', items)
-                   .igTileManager('option', 'columnWidth', '50%')
-                   .igTileManager('option', 'columnHeight', '150px')
-                   .igTileManager('option', 'marginLeft', 20)
-                   .igTileManager('option', 'marginTop', 0)
-                   .igTileManager('option', 'animationDuration', 0)
-                   .igTileManager('option', 'minimizedState', '.minimized')
-                   .igTileManager('option', 'maximizedState', '.maximized')
-                   .igTileManager('option', 'rightPanelCols', 2)
-                   .igTileManager('option', 'rightPanelTilesWidth', 125)
-                   .igTileManager('option', 'rightPanelTilesHeight', 75)
-                   .igTileManager('option', 'showRightPanelScroll', true)
-                   .igTileManager('option', 'splitterOptions', { enabled: splitterEnabled });
+					.igTileManager('option', 'width', 1000)
+					.igTileManager('option', 'height', 1000)
+					.igTileManager('option', 'rearrangeItems', true)
+					.igTileManager('option', 'items', items)
+					.igTileManager('option', 'columnWidth', '50%')
+					.igTileManager('option', 'columnHeight', '150px')
+					.igTileManager('option', 'marginLeft', 20)
+					.igTileManager('option', 'marginTop', 0)
+					.igTileManager('option', 'animationDuration', 0)
+					.igTileManager('option', 'minimizedState', '.minimized')
+					.igTileManager('option', 'maximizedState', '.maximized')
+					.igTileManager('option', 'rightPanelCols', 2)
+					.igTileManager('option', 'rightPanelTilesWidth', 125)
+					.igTileManager('option', 'animationDuration', 0)
+					.igTileManager('option', 'rightPanelTilesHeight', 75)
+					.igTileManager('option', 'showRightPanelScroll', true)
+					.igTileManager('option', 'splitterOptions', { enabled: splitterEnabled });
 
                 // In this configuration the items are rearranged by the Layout Manager.
                 // For the test we provide the items configuration as it should be after the rearranging.
@@ -1150,6 +1151,47 @@
                 
                 container.igTileManager('destroy');
             });
+			
+			// Test igTileManager disabled
+            test(testId_21, function () {
+                // Expected values
+                var container = $('#tilemanager2'),
+                    containerWidth = 700,
+                    containerHeight = 700,
+                    cols = 4, rows = 4,
+                    marginLeft = 0, marginTop = 0,
+                    colWidth = Math.floor(containerWidth / cols),
+                    colHeight = Math.floor(containerHeight / rows),
+                    tilesCount = 13, rightPanelCols = 1,
+                    rightPanelTilesWidth = null,
+                    rightPanelTilesHeight = null,
+                    rightPanelHasScroll = true,
+                    tileToMaximize = 0, tileToSwap = 1,
+                    minimizedState = null, maximizedState = null,
+                    items = null, showRightPanelScroll = true,
+                    splitterEnabled = true, useApiMethods = false,
+                    fromMarkup = false, splitterInitiallyCollapsed = true, disabled = true;
+
+
+                $('#tilemanager2').width(containerWidth).height(containerHeight).igTileManager({
+                    dataSource: dataSource,
+                    minimizedState: '<h3>Minimized ${header}</h3>',
+                    maximizedState: '<h3>Maximized ${header}</h3><p>${text}</p>',
+                    animationDuration: 0,
+					disabled: disabled,
+                    splitterOptions: {
+                        enabled: splitterEnabled,
+                        collapsed: true,
+                        collapsible: true
+                    }
+                });
+
+                testTileManager(container, containerWidth, containerHeight, cols, rows,
+                    colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
+                    rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll,
+                    tileToMaximize, tileToSwap, items, minimizedState, maximizedState,
+                    showRightPanelScroll, splitterEnabled, useApiMethods, fromMarkup, splitterInitiallyCollapsed, disabled);
+            });
 
             // Tests given container's initialization from markup and tiles interactions
             // Give the expected values as the arguments containerWidth/Height, cols/rows, colWidth/Height, marginTop/Left, tilesCount, items, minimizedState, maximizedState, useApiMethods
@@ -1158,7 +1200,7 @@
                 colWidth, colHeight, marginLeft, marginTop, tilesCount, rightPanelCols,
                 rightPanelTilesWidth, rightPanelTilesHeight, rightPanelHasScroll, tileToMaximize,
                 tileToSwap, items, minimizedState, maximizedState, showRightPanelScroll,
-                enableSplitter, useApiMethods, fromMarkup, splitterInitiallyCollapsed) {
+                enableSplitter, useApiMethods, fromMarkup, splitterInitiallyCollapsed, disabled) {
 
                 var tiles = container.find('.ui-igtilemanager-left').children(),
                     leftPanel = container.find('.ui-igtilemanager-left'),
@@ -1228,6 +1270,9 @@
 
                 ok(container.hasClass('ui-widget') && container.hasClass('ui-igtilemanager') && container.hasClass('ui-widget-content'), 'Tile manager container classes did not apply to the container.');
                 ok(container.hasClass('ui-igsplitter'), 'Splitter classes did not apply to the container.');
+				if (disabled) {
+					ok(container.hasClass('ui-igTileManager-disabled'), 'The container was not disabled.');
+				}
 
                 // Tiles initial positioning and rendering
                 tiles.each(function (index, element) {
@@ -1261,7 +1306,11 @@
                     equal(tile.attr('data-index'), index + '', 'The index property of the ' + index + ' tile did not match.');
 
                     tile.mouseover();
-                    ok(tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile did not apply.');
+					if (disabled) {
+						ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile did not apply.');
+					} else {
+						ok(tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile did not apply.');
+					}
                     tile.mouseout();
                     ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile was not removed.');
 
@@ -1319,45 +1368,65 @@
                 minimizeIcon = minimizeBtn.find('.ig-tile-minimize-icon');
 
                 // Left/right panels and the splitter
-                equal(leftPanel.width(), leftPanelMaximizedWidth, 'The left panel width did not match.');
+				if (disabled) {
+					equal(leftPanel.width(), leftPanelWidth, 'The left panel width did not match.');
+				} else {
+					equal(leftPanel.width(), leftPanelMaximizedWidth, 'The left panel width did not match.');
+				}
                 equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
                 equal(leftPanel.css('margin-right'), marginLeft + 'px', 'The right margin of the left panel did not match.');
                 equal(leftPanel.css('margin-left'), marginLeft + 'px', 'The left margin of the left panel did not match.');
-                equal(leftPanel.children().length, 1, 'The leftPanel number of children did not match.');
+				if (disabled) {
+					equal(leftPanel.children().length, tilesCount, 'The leftPanel number of children did not match.');
+				} else {
+					equal(leftPanel.children().length, 1, 'The leftPanel number of children did not match.');
+				}
 
-                ok(!rightPanel.hasClass('ui-helper-hidden'), 'The right panel is not shown.');
-                equal(rightPanel.width(), rightPanelWidth, 'The width of the right panel did not match.');
-                equal(rightPanel.height(), rightPanelHeight, 'The height of the right panel did not match.');
-                equal(rightPanel.children().length, tilesCount - 1, 'The right panel number of children did not match.');
+				if (disabled) {
+					ok(rightPanel.hasClass('ui-helper-hidden'), 'The right panel is shown in a disabled tile manager.');
+					equal(rightPanel.children().length, 0, 'The right panel number of children did not match.');
+				} else {
+					equal(rightPanel.children().length, tilesCount - 1, 'The right panel number of children did not match.');
+					ok(!rightPanel.hasClass('ui-helper-hidden'), 'The right panel is not shown.');
+					equal(rightPanel.width(), rightPanelWidth, 'The width of the right panel did not match.');
+					equal(rightPanel.height(), rightPanelHeight, 'The height of the right panel did not match.');
+				}
 
                 if (!showRightPanelScroll) {
                     ok(rightPanel.hasClass('ui-helper-overflow-hidden'), 'The right panel overflow hidden class is not set.');
                 }
-
-                ok(!splitter.hasClass('ui-helper-hidden'), 'The splitter is not shown.');
+				
+				if (disabled) {
+					ok(splitter.hasClass('ui-helper-hidden'), 'The splitter is shown when disabled.');
+				} else {
+					ok(!splitter.hasClass('ui-helper-hidden'), 'The splitter is not shown.');
+				}
 
                 if (!enableSplitter) {
                     ok(splitter.hasClass('ui-helper-visibility-hidden'), 'The splitter did not hide.');
                 }
 
                 // Check the maximized tile
-                ok(tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
-                equal(tile.css('left'), '0px', 'The left property of the maximized tile did not match.');
-                equal(tile.css('top'), marginTop + 'px', 'The top property of the maximized tile did not match.');
-                equal(tile.outerWidth(), maximizedTileWidth, 'The width of the maximized tile did not match.');
-                equal(tile.outerHeight(), maximizedTileHeight, 'The height of the maximized tile did not match.');
-                equal(tile.attr('data-index'), tileToMaximize + '', 'The index property of the maximized tile did not match.');
+				if (disabled) {
+					ok(!tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
+				} else {
+					ok(tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
+					equal(tile.css('left'), '0px', 'The left property of the maximized tile did not match.');
+					equal(tile.css('top'), marginTop + 'px', 'The top property of the maximized tile did not match.');
+					equal(tile.outerWidth(), maximizedTileWidth, 'The width of the maximized tile did not match.');
+					equal(tile.outerHeight(), maximizedTileHeight, 'The height of the maximized tile did not match.');
+					equal(tile.attr('data-index'), tileToMaximize + '', 'The index property of the maximized tile did not match.');
+					equal(innerContainer.outerWidth(), innerContainerMaximizedWidth, 'The inner container width of the maximized tile did not match.');
+					equal(innerContainer.outerHeight(), innerContainerMaximizedHeight, 'The inner container height of the maximized tile did not match.');
 
-                equal(innerContainer.outerWidth(), innerContainerMaximizedWidth, 'The inner container width of the maximized tile did not match.');
-                equal(innerContainer.outerHeight(), innerContainerMaximizedHeight, 'The inner container height of the maximized tile did not match.');
+					ok(minimizeBtn.css('display'), 'block', 'The minimize button of the maximized tile is not shown.');
+					// Check the button hover effect
+					minimizeBtn.mouseover();
+					ok(minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile did not apply.');
+					minimizeBtn.mouseout();
+					ok(!minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile was not removed.');
+				}
 
-                ok(minimizeBtn.css('display'), 'block', 'The minimize button of the maximized tile is not shown.');
-
-                // Check the button hover effect
-                minimizeBtn.mouseover();
-                ok(minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile did not apply.');
-                minimizeBtn.mouseout();
-                ok(!minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile was not removed.');
 
                 if (fromMarkup) {
                     // Check the markup shown
@@ -1373,49 +1442,55 @@
                         equal(innerContainer.html(), tm1MarkupPlusTheBtn[tileToMaximize], 'The maximized state markup did not match.');
                     }
                 } else {
-                    equal(innerContainer.html(), maximizedTemplatesHTML[tileToMaximize], 'The maximized template of the maximized tile did not match');
+					if (!disabled) {
+						equal(innerContainer.html(), maximizedTemplatesHTML[tileToMaximize], 'The maximized template of the maximized tile did not match');
+					} else {
+						equal(innerContainer.html(), minimizedTemplatesHTML[tileToMaximize], 'The maximized template of the maximized tile did not match');
+					}
                 }
 
                 // The minimized tiles positioning
-                tiles.not(tile).each(function (index, element) {
-                    var tile = $(this),
-                        innerContainer = tile.find('.ui-igtile-inner-container'),
-                        expectedIndex = (index < tileToMaximize ? index : index + 1),
-                        minimizeBtn, minimizeIcon;
+				if (!disabled) {
+					tiles.not(tile).each(function (index, element) {
+						var tile = $(this),
+							innerContainer = tile.find('.ui-igtile-inner-container'),
+							expectedIndex = (index < tileToMaximize ? index : index + 1),
+							minimizeBtn, minimizeIcon;
 
-                    equal(tile.css('top'), (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
-                    equal(tile.css('left'), ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
+						equal(tile.css('top'), (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+						equal(tile.css('left'), ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
 
-                    equal(tile.outerWidth(), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
-                    equal(tile.outerHeight(), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
-                    ok(tile.hasClass('ui-igtile-minimized'), 'The minimized class of the ' + index + ' tile did not apply.');
-                    equal(tile.attr('data-index'), expectedIndex + '', 'The data index of the ' + index + ' tile did not match.');
+						equal(tile.outerWidth(), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
+						equal(tile.outerHeight(), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
+						ok(tile.hasClass('ui-igtile-minimized'), 'The minimized class of the ' + index + ' tile did not apply.');
+						equal(tile.attr('data-index'), expectedIndex + '', 'The data index of the ' + index + ' tile did not match.');
 
-                    equal(innerContainer.outerWidth(), innerContainerMinimizedWidth, 'The inner container width of the ' + index + ' tile did not match.');
-                    equal(innerContainer.outerHeight(), innerContainerMinimizedHeight, 'The inner container height of the ' + index + ' tile did not match.');
+						equal(innerContainer.outerWidth(), innerContainerMinimizedWidth, 'The inner container width of the ' + index + ' tile did not match.');
+						equal(innerContainer.outerHeight(), innerContainerMinimizedHeight, 'The inner container height of the ' + index + ' tile did not match.');
 
-                    // Minimize button in minimized tiles is rendered only from markup
-                    if (fromMarkup) {
-                        minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+						// Minimize button in minimized tiles is rendered only from markup
+						if (fromMarkup) {
+							minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
 
-                        equal(minimizeBtn.css('display'), 'none', 'The minimize button of the ' + index + ' is not hidden.');
+							equal(minimizeBtn.css('display'), 'none', 'The minimize button of the ' + index + ' is not hidden.');
 
-                        // Check the markup shown
-                        if (minimizedState) {
-                            // Check if all the children except the minimized markup of the tile are hidden.
-                            ok(Array.prototype.every.call(innerContainer.children().not(minimizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+							// Check the markup shown
+							if (minimizedState) {
+								// Check if all the children except the minimized markup of the tile are hidden.
+								ok(Array.prototype.every.call(innerContainer.children().not(minimizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
 
-                            ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + index + " tile is not shown.");
-                            equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
-                        } else {
-                            // If not minimized state is provided all the markup should be shown as minimized state.
-                            ok(Array.prototype.every.call(innerContainer.children().not(minimizeBtn), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
-                            equal(innerContainer.html(), tm1MarkupPlusTheBtn[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
-                        }
-                    } else {
-                        equal(innerContainer.html(), minimizedTemplatesHTML[expectedIndex], 'The minimized template of the ' + index + ' tile did not match');
-                    }
-                });
+								ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + index + " tile is not shown.");
+								equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
+							} else {
+								// If not minimized state is provided all the markup should be shown as minimized state.
+								ok(Array.prototype.every.call(innerContainer.children().not(minimizeBtn), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+								equal(innerContainer.html(), tm1MarkupPlusTheBtn[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
+							}
+						} else {
+							equal(innerContainer.html(), minimizedTemplatesHTML[expectedIndex], 'The minimized template of the ' + index + ' tile did not match');
+						}
+					});
+				}
 
                 // MAXIMIZED TILE SWAP
                 tile = tiles.eq(tileToSwap);
@@ -1431,45 +1506,64 @@
                 minimizeIcon = minimizeBtn.find('.ig-tile-minimize-icon');
 
                 // Left/right panels and the splitter
-                equal(leftPanel.width(), leftPanelMaximizedWidth, 'The left panel width did not match.');
+                if (disabled) {
+					equal(leftPanel.width(), leftPanelWidth, 'The left panel width did not match.');
+				} else {
+					equal(leftPanel.width(), leftPanelMaximizedWidth, 'The left panel width did not match.');
+				}
                 equal(leftPanel.height(), leftPanelHeight, 'The left panel height did not match.');
                 equal(leftPanel.css('margin-right'), marginLeft + 'px', 'The right margin of the left panel did not match.');
                 equal(leftPanel.css('margin-left'), marginLeft + 'px', 'The left margin of the left panel did not match.');
-                equal(leftPanel.children().length, 1, 'The leftPanel number of children did not match.');
-
-                ok(!rightPanel.hasClass('ui-helper-hidden'), 'The right panel is not shown.');
-                equal(rightPanel.width(), rightPanelWidth, 'The width of the right panel did not match.');
-                equal(rightPanel.height(), rightPanelHeight, 'The height of the right panel did not match.');
-                equal(rightPanel.children().length, tilesCount - 1, 'The right panel number of children did not match.');
+                if (disabled) {
+					equal(leftPanel.children().length, tilesCount, 'The leftPanel number of children did not match.');
+				} else {
+					equal(leftPanel.children().length, 1, 'The leftPanel number of children did not match.');
+				}
+				
+				if (disabled) {
+					ok(rightPanel.hasClass('ui-helper-hidden'), 'The right panel is shown in a disabled tile manager.');
+					equal(rightPanel.children().length, 0, 'The right panel number of children did not match.');
+				} else {
+					equal(rightPanel.children().length, tilesCount - 1, 'The right panel number of children did not match.');
+					ok(!rightPanel.hasClass('ui-helper-hidden'), 'The right panel is not shown.');
+					equal(rightPanel.width(), rightPanelWidth, 'The width of the right panel did not match.');
+					equal(rightPanel.height(), rightPanelHeight, 'The height of the right panel did not match.');
+				}
 
                 if (!showRightPanelScroll) {
                     ok(rightPanel.hasClass('ui-helper-overflow-hidden'), 'The right panel overflow hidden class is not set.');
                 }
-
-                ok(!splitter.hasClass('ui-helper-hidden'), 'The splitter is not shown.');
+				
+				if (disabled) {
+					ok(splitter.hasClass('ui-helper-hidden'), 'The splitter is shown when disabled.');
+				} else {
+					ok(!splitter.hasClass('ui-helper-hidden'), 'The splitter is not shown.');
+				}
 
                 if (!enableSplitter) {
                     ok(splitter.hasClass('ui-helper-visibility-hidden'), 'The splitter did not hide.');
                 }
 
                 // Check the maximized tile
-                ok(tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
-                equal(tile.css('left'), '0px', 'The left property of the maximized tile did not match.');
-                equal(tile.css('top'), marginTop + 'px', 'The top property of the maximized tile did not match.');
-                equal(tile.outerWidth(), maximizedTileWidth, 'The width of the maximized tile did not match.');
-                equal(tile.outerHeight(), maximizedTileHeight, 'The height of the maximized tile did not match.');
-                equal(tile.attr('data-index'), tileToSwap + '', 'The index property of the maximized tile did not match.');
+				if (disabled) {
+					ok(!tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
+				} else {
+					ok(tile.hasClass('ui-igtile-maximized'), 'The maximized class did not apply to the maximized tile.');
+					equal(tile.css('left'), '0px', 'The left property of the maximized tile did not match.');
+					equal(tile.css('top'), marginTop + 'px', 'The top property of the maximized tile did not match.');
+					equal(tile.outerWidth(), maximizedTileWidth, 'The width of the maximized tile did not match.');
+					equal(tile.outerHeight(), maximizedTileHeight, 'The height of the maximized tile did not match.');
+					equal(tile.attr('data-index'), tileToSwap + '', 'The index property of the maximized tile did not match.');
+					equal(innerContainer.outerWidth(), innerContainerMaximizedWidth, 'The inner container width of the maximized tile did not match.');
+					equal(innerContainer.outerHeight(), innerContainerMaximizedHeight, 'The inner container height of the maximized tile did not match.');
 
-                equal(innerContainer.outerWidth(), innerContainerMaximizedWidth, 'The inner container width of the maximized tile did not match.');
-                equal(innerContainer.outerHeight(), innerContainerMaximizedHeight, 'The inner container height of the maximized tile did not match.');
-
-                ok(minimizeBtn.css('display'), 'block', 'The minimize button of the maximized tile is not shown.');
-
-                // Check the button hover effect
-                minimizeBtn.mouseover();
-                ok(minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile did not apply.');
-                minimizeBtn.mouseout();
-                ok(!minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile was not removed.');
+					ok(minimizeBtn.css('display'), 'block', 'The minimize button of the maximized tile is not shown.');
+					// Check the button hover effect
+					minimizeBtn.mouseover();
+					ok(minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile did not apply.');
+					minimizeBtn.mouseout();
+					ok(!minimizeIcon.hasClass('ui-state-hover'), 'The hover class on the minimize icon of the maximized tile was not removed.');
+				}
 
                 if (fromMarkup) {
                     // Check the markup shown
@@ -1485,49 +1579,55 @@
                         equal(innerContainer.html(), tm1MarkupPlusTheBtn[tileToSwap], 'The maximized state markup did not match.');
                     }
                 } else {
-                    equal(innerContainer.html(), maximizedTemplatesHTML[tileToSwap], 'The maximized template of the maximized tile did not match');
+                    if (!disabled) {
+						equal(innerContainer.html(), maximizedTemplatesHTML[tileToSwap], 'The maximized template of the maximized tile did not match');
+					} else {
+						equal(innerContainer.html(), minimizedTemplatesHTML[tileToSwap], 'The maximized template of the maximized tile did not match');
+					}
                 }
 
                 // The minimized tiles positioning
-                tiles.not(tile).each(function (index, element) {
-                    var tile = $(this),
-                        innerContainer = tile.find('.ui-igtile-inner-container'),
-                        expectedIndex = (index < tileToSwap ? index : index + 1),
-                        minimizeBtn, minimizeIcon;
+				if (!disabled) {
+					tiles.not(tile).each(function (index, element) {
+						var tile = $(this),
+							innerContainer = tile.find('.ui-igtile-inner-container'),
+							expectedIndex = (index < tileToSwap ? index : index + 1),
+							minimizeBtn, minimizeIcon;
 
-                    equal(tile.css('top'), (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
-                    equal(tile.css('left'), ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
+						equal(tile.css('top'), (Math.floor(index / rightPanelCols) * (rightPanelTilesHeight + marginTop) + marginTop) + 'px', 'The top property of the ' + index + ' tile did not match.');
+						equal(tile.css('left'), ((index % rightPanelCols) * (rightPanelTilesWidth + marginLeft) + marginLeft / 2) + 'px', 'The left property of the ' + index + ' tile did not match.');
 
-                    equal(tile.outerWidth(), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
-                    equal(tile.outerHeight(), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
-                    ok(tile.hasClass('ui-igtile-minimized'), 'The minimized class of the ' + index + ' tile did not apply.');
-                    equal(tile.attr('data-index'), expectedIndex + '', 'The data index of the ' + index + ' tile did not match.');
+						equal(tile.outerWidth(), rightPanelTilesWidth, 'The width of the ' + index + ' tile did not match');
+						equal(tile.outerHeight(), rightPanelTilesHeight, 'The height of the ' + index + ' tile did not match');
+						ok(tile.hasClass('ui-igtile-minimized'), 'The minimized class of the ' + index + ' tile did not apply.');
+						equal(tile.attr('data-index'), expectedIndex + '', 'The data index of the ' + index + ' tile did not match.');
 
-                    equal(innerContainer.outerWidth(), innerContainerMinimizedWidth, 'The inner container width of the ' + index + ' tile did not match.');
-                    equal(innerContainer.outerHeight(), innerContainerMinimizedHeight, 'The inner container height of the ' + index + ' tile did not match.');
+						equal(innerContainer.outerWidth(), innerContainerMinimizedWidth, 'The inner container width of the ' + index + ' tile did not match.');
+						equal(innerContainer.outerHeight(), innerContainerMinimizedHeight, 'The inner container height of the ' + index + ' tile did not match.');
 
-                    // Minimize button in minimized tiles is rendered only from markup
-                    if (fromMarkup) {
-                        minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
+						// Minimize button in minimized tiles is rendered only from markup
+						if (fromMarkup) {
+							minimizeBtn = innerContainer.find('.ig-tile-minimize-button');
 
-                        equal(minimizeBtn.css('display'), 'none', 'The minimize button of the ' + index + ' is not hidden.');
+							equal(minimizeBtn.css('display'), 'none', 'The minimize button of the ' + index + ' is not hidden.');
 
-                        // Check the markup shown
-                        if (minimizedState) {
-                            // Check if all the children except the minimized markup of the tile are hidden.
-                            ok(Array.prototype.every.call(innerContainer.children().not(minimizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+							// Check the markup shown
+							if (minimizedState) {
+								// Check if all the children except the minimized markup of the tile are hidden.
+								ok(Array.prototype.every.call(innerContainer.children().not(minimizedState).not(minimizeBtn), function (child) { return $(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
 
-                            ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + index + " tile is not shown.");
-                            equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
-                        } else {
-                            // If not minimized state is provided all the markup should be shown as minimized state.
-                            ok(Array.prototype.every.call(innerContainer.children().not(minimizeBtn), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
-                            equal(innerContainer.html(), tm1MarkupPlusTheBtn[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
-                        }
-                    } else {
-                        equal(innerContainer.html(), minimizedTemplatesHTML[expectedIndex], 'The minimized template of the ' + index + ' tile did not match');
-                    }
-                });
+								ok(!innerContainer.find(minimizedState).hasClass('ui-helper-hidden'), "The minimized content of the " + index + " tile is not shown.");
+								equal(innerContainer.find(minimizedState).html(), tm1MinimizedMarkup[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
+							} else {
+								// If not minimized state is provided all the markup should be shown as minimized state.
+								ok(Array.prototype.every.call(innerContainer.children().not(minimizeBtn), function (child) { return !$(child).hasClass('ui-helper-hidden'); }), 'Minimized state markup of the ' + index + ' did not match.');
+								equal(innerContainer.html(), tm1MarkupPlusTheBtn[expectedIndex], 'The minimized markup of the ' + index + ' tile did not match.');
+							}
+						} else {
+							equal(innerContainer.html(), minimizedTemplatesHTML[expectedIndex], 'The minimized template of the ' + index + ' tile did not match');
+						}
+					});
+				}
 
                 // MINIMIZING
                 if (!useApiMethods) {
@@ -1582,7 +1682,11 @@
                     equal(tile.attr('data-index'), index + '', 'The index property of the ' + index + ' tile did not match.');
 
                     tile.mouseover();
-                    ok(tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile did not apply.');
+					if (disabled) {
+						ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile did not apply.');
+					} else {
+						ok(tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile did not apply.');
+					}
                     tile.mouseout();
                     ok(!tile.hasClass('ui-state-hover'), 'The hover class of the ' + index + ' tile was not removed.');
 
