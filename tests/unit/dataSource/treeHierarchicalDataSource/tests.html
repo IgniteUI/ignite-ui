@@ -51,9 +51,9 @@
 			{
 				"ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [
 				{
-				"ID": 15, "Name": "Sandwich", "Price": "-", "Products": [
-					{ "ID": 16, "Name": "Club sandwich", "Price": "3.5" }
-				]
+					"ID": 15, "Name": "Sandwich", "Price": "-", "Products": [
+						{ "ID": 16, "Name": "Club sandwich", "Price": "3.5" }
+					]
 				}
 				]
 			},
@@ -114,6 +114,15 @@
 				dsPaging = new $.ig.TreeHierarchicalDataSource({
 					dataSource: flatDS,
 					primaryKey: "employeeID",
+					schema: {
+						fields: [
+							{ name: "employeeID", type: "number" },
+							{ name: "PID", type: "number" },
+							{ name: "firstName", type: "string" },
+							{ name: "lastName", type: "string" },
+							{ name: "reportsTo", type: "string" }
+						]
+					},
 					treeDS: {
 						key: "employeeID",
 						foreignKey: "PID",
@@ -263,6 +272,64 @@
 				for (var i = 0; i < result2.length; i++) {
 					equal(result2[i].row.employeeID, expectedResultIDs[i], "getParentRowsForRow should return correct list");
 				}
+
+				var result3 = ds2.getParentRowsForRow(null, products);
+				equal(result3.length, 0, "If no row is passed and empty array should be returned.");
+
+				var ds3 = new $.ig.TreeHierarchicalDataSource();
+
+				var result5 = ds3.getParentRowsForRow({ "employeeID": 21, "PID": 20, "firstName": "Jeremy", "lastName": "Donaldson", "reportsTo": "20" });
+				equal(result5.length, 0, "If no row is passed and empty array should be returned.");
+
+
+				var result6 = ds3.getParentRowsForRow([]);
+				equal(result6.length, 0, "If no row is passed and empty array should be returned.");
+
+				$.mockjax({
+					url: 'remoteData',
+					responseText: {
+						status: 'success',
+						data: {
+							results: [{ "employeeID": 4, "PID": 0, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") }]
+						},
+						Metadata: { "ancestors": [{ "employeeID": 0, "PID": -1, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-", "Date": new Date("01/01/2011") }] }
+					}
+				});
+				var dsRemote = new $.ig.TreeHierarchicalDataSource({
+					dataSource: 'remoteData',
+					primaryKey: "employeeID",
+					schema: {
+						fields: [{
+							name: "employeeID"
+						}, {
+							name: "PID"
+						}, {
+							name: "firstName"
+						}],
+						searchField: "data.results"
+					},
+					treeDS: {
+						key: "employeeID",
+						foreignKey: "PID",
+						primaryKey: "employeeID",
+						initialExpandDepth: 3,
+						foreignKeyRootValue: -1,
+						childDataKey: "childData",
+						propertyDataLevel: "dataLevel",
+						propertyExpanded: "expanded"
+					}
+				});
+				dsRemote.dataBind();
+
+				stop();
+
+				setTimeout(function () {
+					start();
+					var result4 = dsRemote.getParentRowsForRow({ "employeeID": 4, "PID": 0, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") });
+					equal(result4.length, 1, "Parent row should be retrived from the metadata.");
+					equal(result4[0].row.employeeID, 0, "Parent row should be retrived from the metadata.");
+				}, 500);
+
 			});
 
 			test("Test getDataBoundDepth API method", function () {
@@ -339,10 +406,16 @@
 			});
 
 			test("Test removeRecordByKey API method", function () {
-				ds1.removeRecordByKey(20);
+				var rec, childRec, 
+					flatDSCopy = $.extend(true, [], flatDS);
 
-				var rec = ds1.findRecordByKey(20);
-				var childRec = ds1.findRecordByKey(21);
+				ds1.removeRecordByKey(20, flatDSCopy);
+				/*Test Child data persists in the datasource after deleting the corresponding parent record in treegrid */
+				ok(flatDSCopy.length === 20 &&
+					flatDSCopy[19].employeeID === 19, 
+					"Test whether records are removed in flat data source");
+				rec = ds1.findRecordByKey(20);
+				childRec = ds1.findRecordByKey(21);
 				equal(rec, null, "Once the record is deleted it should not exist in the data source");
 				equal(childRec, null, "Its chilren records should also be removed.");
 			});
@@ -362,6 +435,8 @@
 				for (var i = 0; i < childRecs.length; i++) {
 					equal(childRecs[i].employeeID, expectedRecIds[i], "getChildrenByKey should return the immediate children of the record.");
 				}
+				childRecs = ds1.getChildrenByKey(10000);
+				equal(childRecs, null, "If invalid key is passed null should be returned.");
 			});
 
 			test("Test insertRow API method", function () {
@@ -378,6 +453,29 @@
 				equal(ds1.dataView()[0].childData.length, 1, "Record with id 100 should have a single child data record.");
 				equal(ds1.dataView()[0].childData[0].employeeID, 101, "Record with id 100 should have a single child data record with a id 101.");
 
+			});
+
+			test("Test insertRow when rowInserted option is defined", function () {
+				var rowInsertedFuncCalled = false;
+
+				ds1.settings.callee = function () {
+				};
+				ds1.settings.rowInserted = function () {
+					rowInsertedFuncCalled = true;
+				};
+
+				ds1.insertRow(1001, { "ID": 1001, "Name": "Bread", "Price": 2.5 }, 2, false, 0);
+				stop();
+				setTimeout(function () {
+					ok(rowInsertedFuncCalled, "rowInserted function should be called.");
+					rowInsertedFuncCalled = false;
+					ds1.settings.callee = null;
+					ds1.insertRow(1001, { "ID": 1001, "Name": "Bread", "Price": 2.5 }, 2, false, 0);
+					setTimeout(function () {
+						start();
+						ok(rowInsertedFuncCalled, "rowInserted function should be called.")
+					}, 100);
+				}, 100);
 			});
 
 			test("Test getFilteringMatchRecordsCount API method", function () {
@@ -410,7 +508,18 @@
 				equal(res, 1, "There should be one record matching the filter condition.");
 			});
 
+			test("Test getFilteredRecordsCount API method", function () {
+				var res = dsLocalFiltering.getFilteredRecordsCount();
+				equal(res, 1, "There should be one record matching the filter condition.");
+
+				dsLocalFiltering.clearLocalFilter();
+
+				var res2 = dsLocalFiltering.getFilteredRecordsCount();
+				equal(res2, 0, "Function should return 0 if filtering is not applied.");
+			});
+
 			test("Test clearLocalFilter API method", function () {
+				dsLocalFiltering.filter([{ fieldName: "firstName", expr: "Laura", cond: "equals" }]);
 				dsLocalFiltering.clearLocalFilter();
 				equal(dsLocalFiltering.flatDataView().length, 22, "After filtering is cleared the data view should contain all records.");
 			});
@@ -435,7 +544,7 @@
 			});
 
 			test("Test local sorting, paging, filtering", function () {
-				
+
 				equal(dsLocalSortingFilteringPaging.dataView()[0].childData[0].Date.toDateString(), "Wed Jan 05 2011");
 
 				dsLocalSortingFilteringPaging.sort([{ fieldName: "Date" }], "desc", false);
@@ -448,7 +557,7 @@
 
 				equal(dsLocalSortingFilteringPaging.flatDataView().length, 5, "FlatDataView should contain only the filtered records.");
 
-		
+
 				dsLocalSortingFilteringPaging.clearLocalFilter();
 
 				dsLocalSortingFilteringPaging.filter([{ fieldName: "firstName", expr: "Janet", cond: "equals" }], "OR", true, "employeeID = 4");
@@ -466,16 +575,165 @@
 
 
 			test("Test sortData API method", function () {
-				var data = dsLocalSortingFilteringPaging.sortData(flatDS, [{ fieldName: "employeeID"}], "desc");
+				var data = dsLocalSortingFilteringPaging.sortData(flatDS, [{ fieldName: "employeeID" }], "desc");
 				equal(data[0].employeeID, 100, "Ensure data is sorted in descending order.");
 				equal(data[1].employeeID, 21, "Ensure data is sorted in descending order.");
 				equal(data[2].employeeID, 19, "Ensure data is sorted in descending order.");
 
 
-				var multiSortData = dsLocalSortingFilteringPaging.sortData(flatDS, [{ fieldName: "firstName" },{ fieldName: "PID" }], "desc");
-				
+				var multiSortData = dsLocalSortingFilteringPaging.sortData(flatDS, [{ fieldName: "firstName" }, { fieldName: "PID" }], "desc");
+
 				equal(multiSortData[0].employeeID, 13, "Check if data is properly sorted by both firstName and PID.");
-				equal(multiSortData[21].employeeID, 0, "Check if data is properly sorted by both firstName and PID."); 
+				equal(multiSortData[21].employeeID, 0, "Check if data is properly sorted by both firstName and PID.");
+			});
+
+			test("Test sortData API method with custom convert function", function () {
+				dsLocalSortingFilteringPaging.settings.sorting.customConvertFunc = function (value, key) {
+					var res = Math.round(value);
+					return res;
+				};
+
+				var data = [
+				{ "employeeID": 0, "NumValue": 1.1 },
+				{ "employeeID": 1, "NumValue": 1.5 },
+				{ "employeeID": 2, "NumValue": 1.7 },
+				{ "employeeID": 3, "NumValue": 1.4 }
+				];
+				var expectedOrder = [1, 2, 0, 3];
+				var sortedData = dsLocalSortingFilteringPaging.sortData(data, [{ fieldName: "NumValue" }], "desc");
+				for (var i = 0; i < data.length; i++) {
+					equal(sortedData[i].employeeID, expectedOrder[i], "Verify order.");
+				}
+			});
+
+			test("Test sortData API method with null/undefined values", function () {
+				dsLocalSortingFilteringPaging.settings.sorting.customConvertFunc = null;
+				var data = [
+				{ "employeeID": 0, "NumValue": 1 },
+				{ "employeeID": 1, "NumValue": undefined },
+				{ "employeeID": 2, "NumValue": 2 },
+				{ "employeeID": 3, "NumValue": null }
+				];
+				var expectedOrder = [1, 3, 0, 2];
+				var sortedData = dsLocalSortingFilteringPaging.sortData(data, [{ fieldName: "NumValue" }], "asc");
+				for (var i = 0; i < data.length; i++) {
+					equal(sortedData[i].employeeID, expectedOrder[i], "Verify order.");
+				}
+			});
+
+			test("Test flat data with initialFlatDataView set to true.", function () {
+
+				var dsFlat = new $.ig.TreeHierarchicalDataSource({
+					dataSource: [{ "employeeID": 0, "PID": -1, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-", "Date": new Date("01/01/2011") }],
+					primaryKey: "employeeID",
+					schema: {
+						fields: [{
+							name: "employeeID"
+						}, {
+							name: "PID"
+						}, {
+							name: "firstName"
+						}]
+					},
+					treeDS: {
+						key: "employeeID",
+						initialFlatDataView: true,
+						foreignKey: "PID",
+						primaryKey: "employeeID",
+						initialExpandDepth: 3,
+						foreignKeyRootValue: -1,
+						childDataKey: "childData",
+						propertyDataLevel: "dataLevel",
+						propertyExpanded: "expanded"
+					}
+				});
+
+				dsFlat.dataBind();
+
+				stop();
+
+				setTimeout(function () {
+					start();
+					//check if schema is correct
+					var data = dsFlat.data();
+					equal(JSON.stringify(data[0]), '{"employeeID":0,"PID":-1,"firstName":"Andrew","expanded":false,"dataLevel":null}', "Schema should be properly applied.");
+				}, 200);
+			});
+
+			// When we're adding new child row and the data source is flat and there is already a single child row...
+			test("Test insertRow API method.", function () {
+				var ds = new $.ig.TreeHierarchicalDataSource({
+					dataSource: [
+						{ "employeeID": 0, "PID": -1, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-", "Date": new Date("01/01/2011") },
+						{ "employeeID": 1, "PID": 0, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-", "Date": new Date("01/01/2011") }
+					],
+					primaryKey: "employeeID",
+					foreignKey: "PID",
+					localSchemaTransform: true,
+					schema: {
+						fields: [
+							{ name: "employeeID", type: "number" },
+							{ name: "PID", type: "number" },
+							{ name: "firstName", type: "string" },
+							{ name: "lastName", type: "string" },
+							{ name: "reportsTo", type: "string" }
+						]
+					},
+					treeDS: {
+						key: "employeeID",
+						foreignKey: "PID",
+						primaryKey: "employeeID",
+						initialExpandDepth: 3,
+						foreignKeyRootValue: -1,
+						childDataKey: "childData",
+						propertyDataLevel: "dataLevel",
+						propertyExpanded: "expanded"
+					}
+				});
+
+				ds.dataBind();
+				stop();
+				setTimeout(function () {
+					start();
+					ds.insertRow(10000, { "employeeID": 10000, "PID": -1, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-", "Date": new Date("01/01/2011") }, 0, true, 0);
+					equal(ds.data()[0].childData.length, 2, "Row should have 2 children.");
+					equal(ds.data()[0].childData[0].employeeID, 10000, "First child should be the newly added row.");
+				}, 200);
+			});
+			test("Test updating a record when filtering is applied.", function () {
+
+				dsLocalFiltering.clearLocalFilter();
+				dsLocalFiltering.filter([{ fieldName: "employeeID", expr: 0, cond: "equals" }]);
+
+				dsLocalFiltering.setCellValue(0, "firstName", "UpdatedValue", true);
+
+				var dv = dsLocalFiltering.dataView();
+				equal(dv[0].firstName, "UpdatedValue", "DataView should be updated.");
+			});
+
+			test("Test applying filtering when paging is enabled", function () {
+				dsPaging.settings.filtering.type = "local";
+
+				dsPaging.pageIndex(1);
+
+				equal(dsPaging.pageIndex(), 1, "Verify page index is properly set.");
+
+				dsPaging.filter([{ fieldName: "employeeID", expr: 2, cond: "equals" }]);
+
+				equal(dsPaging.pageIndex(), 0, "Verify page index is reset.");
+
+				equal(dsPaging.flatDataView().length, 1, "There should be 1 record in the data view.");
+
+			});
+
+			test("Test _hasRecordParent Api method", function () {
+				ds1.settings.treeDS.foreignKeyRootValue = false;
+				var res = ds1._hasRecordParent({ "employeeID": 4, "PID": 0, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") }, flatDS);
+				ok(res, "Record should have parent.");
+				res = ds1._hasRecordParent({ "employeeID": 4, "PID": null, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") }, flatDS);
+				ok(!res, "If record has no FK value the result should be false.");
+				res = ds1._hasRecordParent({ "employeeID": 123, "PID": 123, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") }, flatDS);
+				ok(!res, "If record does not exist the in the data source the result should be false.");
 			});
 
 			var dsRemotePaging, dsRemoteSorting, dsRemoteFiltering;
@@ -710,6 +968,16 @@
 					"Verify sent parameters are correct.");
 			});
 
+			test("Test Load on demand - persistExpansionStates", function () {
+				dsRemoteLoadOnDemand.dataBind();
+				dsRemoteLoadOnDemand.settings.treeDS.persistExpansionStates = true;
+
+				dsRemoteLoadOnDemand.toggleRow(0);
+				var params = dsRemoteLoadOnDemand._encodeUrl();
+				ok(params.listExpansionStates["0"], "Expansion state should be saved and its value should be true.");
+
+			});
+
 			test("Test Load on demand", function () {
 				$.mockjax({
 					url: "customLoadOnDemand?path=0&depth=0",
@@ -728,17 +996,92 @@
 				dsRemoteLoadOnDemand.settings.treeDS.dataSourceUrl = "customLoadOnDemand";
 				dsRemoteLoadOnDemand.toggleRow(0);
 			});
+
+			test("Test if params are properly encoded when customEncodeUrlFunc is defined.", function () {
+				stop();
+				var successTimesCalled = 0;
+				$.mockjax({
+					url: 'hierarchicalData2',
+					responseText: {
+						status: 'success',
+						data: {
+							results: [{ "ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }, { "ID": 1, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }]
+						},
+						totalRecCount: 6
+					}
+				});
+				var dsRemoteLoadOnDemand1 = new $.ig.TreeHierarchicalDataSource({
+					dataSource: "hierarchicalData2",
+					dataSourceUrl: "hierarchicalData2",
+					primaryKey: "ID",
+					responseTotalRecCountKey: "totalRecCount",
+					reponseDataKey: "data.results",
+					schema: {
+						fields: [
+							{ name: "ID", type: "number" },
+							{ name: "Name", type: "string" }
+						],
+						searchField: "data.results"
+					},
+					treeDS: {
+						dataSourceUrl: "hierarchicalData",
+						key: "ID",
+						primaryKey: "ID",
+						initialExpandDepth: 0,
+						foreignKeyRootValue: -1,
+						childDataKey: "Products",
+						propertyDataLevel: "dataLevel",
+						propertyExpanded: "expanded",
+						enableRemoteLoadOnDemand: true
+					}
+				});
+
+				dsRemoteLoadOnDemand1.settings.treeDS.customEncodeUrlFunc = function (rec, expand) {
+					return "customUrl";
+				};
+
+
+				dsRemoteLoadOnDemand1.dataBind();
+				setTimeout(function () {
+					$.mockjax({
+						url: "customUrl",
+						responseText: {
+							status: 'success',
+							data: {
+								results: [{ "ID": 0, "Name": "Food", "Price": "-", "Category": { "ID": 0, "Name": "Name", "isActive": false }, "Products": [] }]
+							},
+							totalRecCount: 6
+						},
+						onAfterSuccess: function () {
+							successTimesCalled++;
+							ok(true, "customEncodeUrlFunc has successfully taken affect.");
+						}
+					});
+					dsRemoteLoadOnDemand1.toggleRow(0);
+
+					dsRemoteLoadOnDemand1.settings.treeDS.customEncodeUrlFunc = "customEncoding";
+
+					dsRemoteLoadOnDemand1.toggleRow(1);
+					setTimeout(function () {
+						start();
+						equal(successTimesCalled, 2, "Success should be called 2 times for the custom url specified.");
+					}, 800);
+				}, 500);
+			});
 		});
 
-
+		function customEncoding() {
+			return "customUrl";
+		}
 	</script>
 
 </head>
 <body>
 	<div id="div1"></div>
 	<div style="float:right;width:400px;overflow:auto">
-	<h1 id="qunit-header">
-		Test results</h1>
+		<h1 id="qunit-header">
+			Test results
+		</h1>
 		<h2 id="qunit-banner"></h2>
 		<h2 id="qunit-userAgent"></h2>
 		<ol id="qunit-tests"></ol>

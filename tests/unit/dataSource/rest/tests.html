@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8" />
@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 
@@ -603,6 +604,46 @@
 				cdom = $("#fictiveSerializer");
 				ok($("#fictiveSerializer").length === 1, "Content Serializer called.");
 				cdom.remove();
+			});
+
+			test("Test remote rest data source - success, error", function () {
+				var errorHandlerCalled = false, successHandlerCalled = false;
+				var params = {
+					update: {
+						url: tUrl2
+					}
+				};
+
+				var ds1 = getDataSourceWithParams(params);
+				ds1.dataBind();
+
+				ds1.setCellValue(1,"Name", "Test", true);
+
+			
+				ds1.saveChanges(function () { successHandlerCalled = true; }, function () { errorHandlerCalled = true; });
+				stop();
+				setTimeout(function () {
+					ok(errorHandlerCalled, "Error handler should be called.");
+					ok(!successHandlerCalled, "Success handler should not be called.");
+					equal(ds1.allTransactions().length, 1, "There should be 1 unsaved transaction.");
+					errorHandlerCalled = false, successHandlerCalled = false;
+					
+
+					$.mockjax({
+						url: "/api/update/products/1",
+						responseText: {
+						},
+						status: 200
+					});
+					ds1.saveChanges(function () { successHandlerCalled = true; }, function () { errorHandlerCalled = true; });
+
+					setTimeout(function () {
+						start();
+						ok(!errorHandlerCalled, "Error handler should not be called.");
+						ok(successHandlerCalled, "Success handler should be called.");
+						equal(ds1.allTransactions().length, 0, "There should be no unsaved transactions.");
+					}, 500);
+				}, 200);
 			});
 		});
 	</script>

@@ -3,6 +3,8 @@
 .igscroll-scrollable {
 	position: relative;
 	overflow: hidden;
+	-ms-touch-action: none;
+	-ms-content-zooming: none;
 }
 
 .igscroll-container {
@@ -218,7 +220,7 @@
 .igscroll-vnative-outer {
 	position: relative;
 	float: right;
-	width: 17px;
+	width: 18px;
 	overflow-x: hidden;
 	overflow-y: auto;
 	right: 0px;
@@ -230,7 +232,7 @@
 
 .igscroll-hnative-outer {
 	position: relative;
-	height: 17px;
+	height: 18px;
 	bottom: 2px;
 	overflow-x: auto;
 	overflow-y: hidden;

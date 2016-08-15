@@ -294,9 +294,10 @@
 
                 $('#tilemanager1').width(1000).height(1000)
                     .igTileManager({
-                        maximizedTileIndex: 2,
-                        animationDuration: 0
-                    });
+                        animationDuration: 0,
+						maximizedTileIndex: 1
+                    })
+					.igTileManager("option", "maximizedTileIndex", 2);
 
                 testTileManagerWithMaximizedTileIndex(maximizedTileIndex, container,
                     containerWidth, containerHeight, cols, rows, colWidth, colHeight,
@@ -335,12 +336,12 @@
                     .igTileManager({
                         marginLeft: 15,
                         marginTop: 15,
-                        items: items,
                         maximizedTileIndex: 5,
                         minimizedState: ".minimized",
                         maximizedState: ".maximized",
                         animationDuration: 0
-                    });
+                    })
+					.igTileManager("option", "items", items);
 
                 testTileManagerWithMaximizedTileIndex(maximizedTileIndex, container,
                     containerWidth, containerHeight, cols, rows, colWidth, colHeight,
