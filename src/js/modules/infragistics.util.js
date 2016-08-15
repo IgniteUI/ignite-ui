@@ -5402,8 +5402,7 @@ $.ig.Array.prototype.clear = function () {
 	// To escape jQuery selectors. It escapes basically everything questionable
 	$.ig.util.escapeStr = function (str) {
 		return str.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, "\\$1");
-	};
-	
+	};		
 	// Escape all html tags in given html element content
 	$.ig.util.escapeHtmlTags = function (htmlElemContent) {
 		return htmlElemContent
