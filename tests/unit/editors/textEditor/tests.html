@@ -146,7 +146,9 @@
 					dropDownAttachedToBody: true,
 					value: "item1"
 				});
-				
+				$("#pasteEditor").igTextEditor({
+					value: "ade"
+				});				
 			});
 		}
 		initialized = false;
@@ -961,6 +963,24 @@
 				start();
 			}, 100);		    		   		   
 		});
+		testId = "Paste";
+		test(testId, 2, function () {
+			var editor = $("#pasteEditor"), input = editor.igTextEditor("field")[0];
+			
+			editor.igTextEditor("setFocus");
+			stop();
+			setTimeout(function(){
+				start();
+				input.setSelectionRange(1, 1);
+				paste(input, "bc"); // There is timeout
+				stop();
+				setTimeout(function() {
+					start();
+					equal(editor.igTextEditor("value"), "abcde", "value is wrong");
+					equal(editor.igTextEditor("getSelectionStart"), 3, "cursor position wrong");
+				}, 200);
+			}, 200);
+		});
 		testId = 'Check destroy';
 		asyncTest(testId, 7, function () {
 			var $editor1 = $('#clearEditor'), $editor2 = $("#disabledEditor");
@@ -989,13 +1009,20 @@
 	}
 	function paste(input, newVal) {
 		// create a mouse click event
-		var event = document.createEvent('Event');
+		var event = document.createEvent('Event'),
+			cursor = input.selectionStart;
 		event.initEvent('paste', true, true);
 		event.target = input;
 		event.srcElement = input;
-		$(input).val(newVal);
+		oldVal = $(input).val();
+		prefix = oldVal.substring(0, cursor);
+		sufix = oldVal.substring(cursor, oldVal.length);
+		$(input).val(prefix + newVal + sufix);
 		// send click to element
 		input.dispatchEvent(event);
+
+		input.setSelectionRange(cursor + newVal.length, cursor + newVal.length);
+
 	}
 	function keyInteraction(key, target, special) {
 		keyDownChar(key, target, special);
@@ -1102,6 +1129,7 @@
 	<input id="toUpperEditor" type="text" />
 	<input id="toLowerEditor" type="text" />
 	<input id="testEditor" type="text" />
+	<input id="pasteEditor"/>
 </div>
 
 	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>

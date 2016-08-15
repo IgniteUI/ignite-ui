@@ -656,7 +656,7 @@
 						}
 					});
 
-					if (this._linkedHBar) {
+					if (this._linkedHBar && this._linkedHBar[ 0 ] !== elemObject[ 0 ]) {
 						//make sure if there ware prviously linked another scrollbar to not scroll
 						this._linkedHBar.off();
 					}
@@ -700,7 +700,7 @@
 
 					});
 
-					if (this._linkedVBar) {
+					if (this._linkedVBar && this._linkedVBar[ 0 ] !== elemObject[ 0 ]) {
 						//make sure if there ware prviously linked another scrollbar to not scroll
 						this._linkedVBar.off();
 					}
