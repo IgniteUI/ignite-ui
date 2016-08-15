@@ -2737,7 +2737,11 @@ if (typeof jQuery !== "function") {
 
                 // K.D. October 9th, 2012 Bug #115567 The browser version should be checked against >= 9 not === 9
                 if (($.ig.util.isIE && $.ig.util.browserVersion >= 9) || $.ig.util.isOpera) {
-                    this._updateSelection(range);
+                    // A.K August 8th, 2016 Bug #219768 Toolbar button does not work properly for a selected content range if a
+                    // text is initially selected by double-tapping, and the selection is changed by mouse dragging.
+                    if (this._selection.focusNode.nodeType !== 3) {
+                        this._updateSelection(range);
+                    }
                 }
 
                 if ($.isFunction(customCommand) && browser === null) {
@@ -2943,7 +2947,11 @@ if (typeof jQuery !== "function") {
                     // This causes lost of the last chosen command when
                     // selecting multiple commands at once without clicking
                     // or typing something to trigger onSelectionChange
-                    this._updateSelection(this._range);
+                    // A.K August 8th, 2016 Bug #219768 Toolbar button does not work properly for a selected content range if a
+                    // text is initially selected by double-tapping, and the selection is changed by mouse dragging.
+                    if (this._selection.focusNode.nodeType !== 3) {
+                        this._updateSelection(this._range);
+                    }
                 } else {
 
                     // Return the focus to the body

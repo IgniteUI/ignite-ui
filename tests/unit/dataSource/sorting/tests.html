@@ -216,8 +216,8 @@
 
 				treeDs = new $.ig.TreeHierarchicalDataSource({
 					dataSource: treeFlatData,
+					primaryKey: "employeeId", 
 					treeDS: {
-						key: "employeeId",
 						foreignKey: "supervisorId",
 						foreignKeyRootValue: -1,
 						initialExpandDepth: 2,
