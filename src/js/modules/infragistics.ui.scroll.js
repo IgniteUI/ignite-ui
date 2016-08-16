@@ -463,7 +463,7 @@
 			return posY;
 		},
 
-		_getScrollbarVPoisition: function() {
+		_getScrollbarVPosition: function () {
 			if (this._linkedVBar) {
 				return this._linkedVBar.scrollTop();
 			} else {
@@ -471,7 +471,7 @@
 			}
 		},
 
-		_getScrollbarHPoisition: function () {
+		_getScrollbarHPosition: function () {
 			if (this._linkedHBar) {
 				return this._linkedHBar.scrollLeft();
 			} else {
@@ -743,12 +743,15 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
-					return;
+					return { x: 0, y: 0 };
 				}
 			}
 
-			this._scrollToX(destX, false);
-			this._scrollToY(destY, false);
+			var scrolledX, scrolledY;
+			scrolledX = this._scrollToX(destX, false);
+			scrolledY = this._scrollToY(destY, false);
+
+			return { x: scrolledX, y: scrolledY };
 		},
 
 		/** Scrolls content to on the X axis using default scrollLeft.
@@ -759,7 +762,13 @@
 				return;
 			}
 
-			var curPosX = this._getContentPositionX();
+			var curPosX;
+			if (this.options.scrollOnlyHBar) {
+				curPosX = this._getScrollbarHPosition();
+			} else {
+				curPosX = this._getContentPositionX();
+			}
+
 			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
 
 			//We have another trigger for scrolling in case we want to scroll only on the X axis(horizontal) and not interrupt the Y(vertical) scroll position.
@@ -774,7 +783,7 @@
 					stepY: 0
 				});
 				if (!bNoCancel) {
-					return;
+					return 0;
 				}
 			}
 
@@ -800,7 +809,13 @@
 				return;
 			}
 
-			var curPosY = this._getContentPositionY();
+			var curPosY;
+			if (this.options.scrollOnlyVBar) {
+				curPosY = this._getScrollbarVPosition();
+			} else {
+				curPosY = this._getContentPositionY();
+			}
+
 			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
 
 			//We have another trigger for scrolling in case we want to scroll only on the Y axis(vertical) and not interrupt the X(horizontal) scroll position.
@@ -815,7 +830,7 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
-					return;
+					return 0;
 				}
 			}
 
@@ -843,7 +858,7 @@
 			//We use the formula for parabola y = -3*x*x + 3 to simulate smooth inertia that slows down
 			var x = -1;
 			if (this.options.scrollOnlyVBar) {
-				self._nextY = this._getScrollbarVPoisition();
+				self._nextY = this._getScrollbarVPosition();
 			} else {
 				self._nextY = this._getContentPositionY();
 			}
@@ -915,7 +930,7 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
-					return;
+					return { x: 0, y: 0 };
 				}
 			}
 
@@ -934,9 +949,10 @@
 				}
 
 				/* Sync other elements */
-				destY = this._getScrollbarVPoisition();
+				destY = this._getScrollbarVPosition();
 				self._updateScrollBarsPos(destX, destY);
-				return;
+
+				return { x: destX - curPosX, y: destY - curPosY };
 			}
 
 			var distanceLeftX = -destX;
@@ -956,6 +972,8 @@
 			//No need to sync these bars since they don't show on safari and we use custom ones.
 			self._syncHBar(this._content, true);
 			self._syncVBar(this._content, true);
+
+			return { x: destX - curPosX, y: destY - curPosY };
 		},
 
 		/** Initialize main inertia based on the X and Y speeds. Used on touch devices. */
@@ -966,12 +984,12 @@
 				inertiaDuration = this.options.inertiaDuration;
 
 			if (this.options.scrollOnlyVBar) {
-				self._nextY = self._getScrollbarVPoisition();
+				self._nextY = self._getScrollbarVPosition();
 			} else {
 				self._nextY = self._getContentPositionY();
 			}
 			if (this.options.scrollOnlyHBar) {
-				self._nextX = self._getScrollbarHPoisition();
+				self._nextX = self._getScrollbarHPosition();
 			} else {
 				self._nextX = self._getContentPositionX();
 			}
@@ -1284,7 +1302,7 @@
 			} else {
 				//Normal scroll
 				if (this.options.scrollOnlyVBar) {
-					this._startY = this._getScrollbarVPoisition();
+					this._startY = this._getScrollbarVPosition();
 				} else {
 					this._startY = this._getContentPositionY();
 				}
@@ -1335,8 +1353,8 @@
 
 		_onMSGestureStartContainer: function (event) {
 			if (this.options.scrollOnlyVBar) {
-				this._startX = this._getScrollbarHPoisition();
-				this._startY = this._getScrollbarVPoisition();
+				this._startX = this._getScrollbarHPosition();
+				this._startY = this._getScrollbarVPosition();
 			} else {
 				this._startX = this._getContentPositionX();
 				this._startY = this._getContentPositionY();
@@ -1367,12 +1385,12 @@
 			var touch = event.originalEvent.touches[ 0 ];
 
 			if (this.options.scrollOnlyHBar) {
-				this._startX = this._getScrollbarHPoisition();
+				this._startX = this._getScrollbarHPosition();
 			} else {
 				this._startX = this._getContentPositionX();
 			}
 			if (this.options.scrollOnlyVBar) {
-				this._startY = this._getScrollbarVPoisition();
+				this._startY = this._getScrollbarVPosition();
 			} else {
 				this._startY = this._getContentPositionY();
 			}
@@ -1393,8 +1411,10 @@
 
 		_onTouchMoveContainer: function (event) {
 			var touch = event.originalEvent.touches[ 0 ];
-			var destX = this._startX + this._touchStartX - touch.pageX;
-			var destY = this._startY + this._touchStartY - touch.pageY;
+			var destX =
+				this._startX + (this._touchStartX - touch.pageX) * Math.sign(this.options.inertiaStep);
+			var destY =
+				this._startY + (this._touchStartY - touch.pageY) * Math.sign(this.options.inertiaStep);
 
 			/*Handle complex touchmoves when swipe stops but the toch doesn't end and then a swipe is initiated again */
 			/***********************************************************/
@@ -1408,7 +1428,7 @@
 			}
 
 			var timeFromLastTouch = (new Date().getTime()) - this._lastTouchEnd;
-			if (timeFromLastTouch < 100) {
+			if (timeFromLastTouch !== 0 && timeFromLastTouch < 100) {
 				var speedX = (this._lastTouchX - touch.pageX) / timeFromLastTouch;
 				var speedY = (this._lastTouchY - touch.pageY) / timeFromLastTouch;
 
@@ -1435,16 +1455,16 @@
 			this._lastTouchY = touch.pageY;
 			/***********************************************************/
 
-			//Check if browser is Firefox
+			var scrolledXY; // Object: {x, y}
 			if (navigator.userAgent.indexOf("Firefox") > -1 || this._bMixedEnvironment) {
 				//Better performance on Firefox for Android
-				this._scrollToXY(destX, destY, true);
+				scrolledXY = this._scrollToXY(destX, destY, true);
 			} else {
-				this._scrollTouchToXY(destX, destY, true);
+				scrolledXY = this._scrollTouchToXY(destX, destY, true);
 			}
 
 			// return true if there was no movement so rest of the screen can scroll
-			return this._startX === destX && this._startY === destY;
+			return scrolledXY.x === 0 && scrolledXY.y === 0;
 		},
 
 		_onTouchEndContainer: function () {
@@ -1452,12 +1472,12 @@
 			var speedY = 0;
 
 			//savedSpeedsX and savedSpeedsY have same length
-			for (var i = this._savedSpeedsX.length - 1; i >= 0; i--) {
+			for (var i = 0; i < this._savedSpeedsX.length; i++) {
 				speedX += this._savedSpeedsX[ i ];
 				speedY += this._savedSpeedsY[ i ];
 			}
-			speedX = speedX / this._savedSpeedsX.length;
-			speedY = speedY / this._savedSpeedsY.length;
+			speedX = this._savedSpeedsX.length ? speedX / this._savedSpeedsX.length : 0;
+			speedY = this._savedSpeedsX.length ? speedY / this._savedSpeedsY.length : 0;
 
 			//Use the lastMovedX and lastMovedY to determine if the swipe stops without lifting the finger so we don't start inertia
 			if ((Math.abs(speedX) > 0.1 || Math.abs(speedY) > 0.1) &&
