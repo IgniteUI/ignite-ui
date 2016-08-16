@@ -195,7 +195,7 @@
                 var newContent = '<div><span>text 1</span><span>text 2</span><table><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table></div>';
                 $('#' + id).igHtmlEditor('setContent', newContent, 'html');
                 equal($('#' + id).igHtmlEditor('getContent', 'html'), newContent, 'The set content method did not function properly.');
-                
+
                 // Check if the editor contents were modified or not
                 equal($('#' + id).igHtmlEditor('isDirty'), false, 'The editor contents werent modified');
 
@@ -241,7 +241,7 @@
             focuseIframeIEBrowserNodeTypeCheck: function () {
                 // Set browser to be IE
                 $.ig.util.isIE = true;
-                
+
                 var htmlEditor = $('#' + this.htmlEditorId),
                     htmlElement = $(htmlEditor.igHtmlEditor("contentEditable")).parent();
 
@@ -254,14 +254,14 @@
                 // Simulate iframe to be focused
                 htmlElement.trigger("click");
                 htmlElement.trigger("mouseup");
-                
+
                 equal($('#' + this.htmlEditorId).igHtmlEditor("isDirty"), true, "Iframe was not focused and isDirty isn't set to true");
             },
             executeCommandIeBrowserNodeTypeTextCheck: function() {
                 // Set browser to be IE version - 10
                 $.ig.util.isIE = true;
                 $.ig.util.browserVersion = 10;
-                
+
                 this.callback = function (iframeBody) {
                     return ((this.css("fontWeight") === "bold" ||
                             this.css("fontWeight") === "700") ||
@@ -273,11 +273,11 @@
 
                 this.htmlEditor = $('#' + this.htmlEditorId);
                 this.editorDocument = this.htmlEditor.find("iframe").contents();
-                
+
                 // Append samo content to the iframe
                 var content = '<p>Some text</p><ul><li>list 1</li><li>list 2</li></ul><div>Something in a div</div>';
                 $(this.htmlEditor.igHtmlEditor("contentEditable")).append(content);
-                
+
                 // Get the second p tag that the nodeType is text
                 var p = $(this.htmlEditor.igHtmlEditor("contentEditable")).find("p:nth-child(2)");
 
@@ -299,7 +299,7 @@
                 // Set browser to be IE version - 10
                 $.ig.util.isIE = true;
                 $.ig.util.browserVersion = 10;
-                
+
                 // Selection type after updateSelection operation.
                 this.selectionType = "Caret";
 
@@ -356,7 +356,7 @@
                 // Simulate iframe to be focused
                 htmlElement.trigger("click");
                 htmlElement.trigger("mouseup");
-                
+
                 equal($('#' + this.secondHtmlEditorId).igHtmlEditor('isDirty'), true, 'Iframe was focused and isDirty is set to true');
 
                 // Simulate keydown of backspace event
@@ -364,10 +364,10 @@
 
                 // Simulate keydown of backspace event
                 var ctrlAndZClickEvent = jQuery.Event("keydown", { ctrlKey: true, which: 90 });
-                
+
                 htmlElement.trigger(backspaceClickEvent);
                 htmlElement.trigger(ctrlAndZClickEvent);
-                
+
                 equal($("#" + this.htmlEditorId).igHtmlEditor("getContent", "html"), '<p><br></p>', 'Prevent deletion by clicking backspace or delete btn when the p has only <br> in it');
             },
             insertAtCaretPosition: function(){
@@ -395,14 +395,14 @@
                     htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(contentToSelect.contents());
                     start();
                 }, 600);
-                
+
                 stop();
                 setTimeout(function(){
                     htmlEditor.igHtmlEditor("insertAtCaret", jQuery('<div/>', {
                                                 id: 'divElement',
                                                 text: 'Add new text!'
                                             }));
-                                            
+
                     // Process only Dom objects, jQuery objects or strings
                     htmlEditor.igHtmlEditor("insertAtCaret", 4 );
                     equal(htmlEditor.igHtmlEditor("getContent", "text"), "Add new text!Some text.", "Correctly inserted at caret position");
@@ -421,7 +421,7 @@
                 combo.bind("igcombodropdownopened", function () {
                     combo.igCombo('index', 3, null, true);
                 });
-                
+
                 htmlEditor1.igHtmlEditor("setContent", "<div><div><div><div><div><div><div><div><div><span style='font-weight: bold;'>Lorem ipsum&nbsp;</span><br></div>dolor sit amet, choro quaestio no pro, assum bonorum et sit. Esse pertinax platonem pri ea, suas probo deserunt est ad, te eam consul docendi. Nec omnes vituperata no. Ex sint nullam integre<div><div><div><div><div><div> <b>vis, ex duis aliquip euripidis est. <div><div><div><div><div><div> <i>Case facer et eos. Affert omittantur</i></div><div></div></div></div></div></div></div> pro in.</b></div><div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>" , 'html');
                 htmlEditor1.igHtmlEditor("option", "width", 670);
 
@@ -448,7 +448,7 @@
 
                         start();
                     }, 100);
-                    
+
                     stop();
                     setTimeout(function () {
                         $("#adjustSourceButtonsEditor_domPathToolbar").find("div:nth-child(2)").trigger("mouseover");
@@ -755,7 +755,7 @@
             editorResizeWorkspace: function () {
                 var newDiv = $('<div />').appendTo('body');
                 $(this.htmlEditor).appendTo(newDiv);
-                
+
                 $(newDiv).css("display", "none");
                 $(this.htmlEditor).data().igHtmlEditor.resizeWorkspace();
                 equal($(this.htmlEditor.data().igHtmlEditor._toolbars).is(":visible"), false, "Toobars are hidden and resized correctly");
@@ -869,6 +869,17 @@
                     dialog = $("#" + self.htmlEditorId + "_linkDialog_popover");
                     dialog.find("#html1_linkDialog_linkHref").val(anchorAddress).end()
                         .find("#html1_linkDialog_btnApply").click();
+
+                    // Reopen the dialog
+                    button.trigger("click");
+                    dialog.find("#html1_linkDialog_btnCancel").click();
+
+                    // Close it with esc Also
+                    button.trigger("click");
+                    // Simulate keydown of backspace event
+                    var escClickEvent = jQuery.Event("keypress", { keyCode: 27 });
+                    dialog.find("div[id*='_contentInner']").trigger(escClickEvent);
+
                     start();
                 }, 200);
 
@@ -911,7 +922,7 @@
                     button.trigger("click");
                     dialog.find("#html1_imageDialog_imgSrc").val(imageURL).end()
                         .find("#html1_imageDialog_imgAlt").val(imageAlt).end()
-                        .find("#html1_imageDialog_btnApply").click();
+                        .find("#html1_imageDialog_btnCancel").click();
 
 
                     start();
@@ -928,30 +939,90 @@
             _openTableDialog: function () {
                 var button = $("#" + this.htmlEditorId + "_toolbars_insertObjectToolbar_item_table"),
                     dialog, iframeDocument = $($("#" + this.htmlEditorId).data().igHtmlEditor.workspace).contents(),
-                    self = this;
+                    self = this, cell, trCount, tdCount;
 
                 stop();
-
                 setTimeout(function () {
                     button.trigger("click");
-
                     dialog = $("#" + self.htmlEditorId + "_tableDialog_popover");
+                    cell = dialog.find(".ui-igtablepropertiesdialog-sample-table tr:nth-child(2) td:nth-child(2)")
 
-                    dialog.find(".ui-igtablepropertiesdialog-sample-table tr:nth-child(2) td:nth-child(2)").click();
-
+                    cell.trigger("mouseover");
+                    cell.trigger("mouseout");
+                    cell.trigger("mouseover");
+                    cell.click();
                     // Reopen the image dialog
                     button.trigger("click");
 
+                    trStaticCount = 2;
+                    tdStaticCount = 4;
                     start();
                 }, 200);
 
+                stop();
+                setTimeout(function(){
+                    $("#html1").data().igHtmlEditor._selectionWrapperSaved.select(iframeDocument.find("table tr:nth-child(1) td:nth-child(1)"));
+
+                    var newTable = document.createElement("TABLE"),
+                        newRow = newTable.insertRow(0),
+                        cell1 = newRow.insertCell(0);
+
+
+                    $("#html1").data().igHtmlEditor._selectionWrapperSaved.insertTable($(newTable));
+
+                    trCount = iframeDocument.find("table tr").length;
+                    tdCount = iframeDocument.find("table td").length;
+
+                    equal(trCount, 3, "Table is inserted crrectly with 3 rows");
+                    equal(tdCount, 5, "Table is inserted crrectly with 5 cells.");
+                    start();
+                }, 300);
+
+                stop();
+                setTimeout(function(){
+                    $("#html1").data().igHtmlEditor._selectionWrapperSaved.select(iframeDocument.find("table"));
+
+                    var newTable = document.createElement("TABLE"),
+                        newRow = newTable.insertRow(0),
+                        cell1 = newRow.insertCell(0);
+
+
+                    $("#html1").data().igHtmlEditor._selectionWrapperSaved.insertTable($(newTable));
+
+                    trCount = iframeDocument.find("table tr").length;
+                    tdCount = iframeDocument.find("table td").length;
+
+                    equal(trCount, 1, "Table is cleared");
+                    equal(tdCount, 1, "Table is cleared");
+                    start();
+                }, 400);
+
+                stop();
+                setTimeout(function(){
+                    $("#html1").igHtmlEditor('setContent', '<br />', 'html');
+                    $("#html1").data().igHtmlEditor._selectionWrapperSaved.select(iframeDocument.find("br"));
+
+                    var newTable = document.createElement("TABLE"),
+                        newRow = newTable.insertRow(0),
+                        cell1 = newRow.insertCell(0);
+
+
+                    $("#html1").data().igHtmlEditor._selectionWrapperSaved.insertTable($(newTable));
+
+                    trCount = iframeDocument.find("table tr").length;
+                    tdCount = iframeDocument.find("table td").length;
+
+                    equal(trCount, 1, "Table is cleared");
+                    equal(tdCount, 1, "Table is cleared");
+                    start();
+                }, 500);
 
                 $("body").on("igtablepropertiesdialoghide", function () {
-                    var trCount = iframeDocument.find("table tr").length,
-                        tdCount = iframeDocument.find("table td").length;
+                    trCount = iframeDocument.find("table tr").length;
+                    tdCount = iframeDocument.find("table td").length;
 
-                    ok(trCount === 2, "Table is inserted crrectly with 2 rows");
-                    ok(tdCount === 4, "Table is inserted crrectly with 4 cells.");
+                    equal(trCount, 2, "Table is inserted crrectly with 2 rows");
+                    equal(tdCount, 4, "Table is inserted crrectly with 4 cells.");
                 });
             },
             _addRemoveRowsColumns: function () {
@@ -1056,7 +1127,82 @@
 
                     start();
                 }, 100);
-            }
+            },
+            _testSelectionFunctionality: function () {
+                var htmlEditor = $("#" + this.htmlEditorId),
+                    iframeDocument = $($("#" + this.htmlEditorId).data().igHtmlEditor.workspace).contents(),
+                    self = this;
+                $.ig.util.isIE = true;
+
+
+                htmlEditor.igHtmlEditor("setContent", "<i>Some content</i>", "html");
+
+                stop();
+                setTimeout(function () {
+                    contentToSelect = $(htmlEditor.igHtmlEditor("contentEditable")).parent().find("body i");
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved._getTextNodesOnlyCallback();
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(contentToSelect.contents());
+
+                    $.browser = { "IE": "IE"};
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved._commands.insertunorderedlist.browsers = ["IE", "Chrome"];
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("insertunorderedlist", null);
+                    equal(htmlEditor.igHtmlEditor("getContent", "html"), '<ul><li><i>Some content</i><br></li></ul>', "Content changed to have unordered list");
+
+                    $.browser = undefined;
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("insertunorderedlist", null);
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.execCommand("bold", null);
+
+                    equal(htmlEditor.igHtmlEditor("getContent", "html"), '<i style=\"font-weight: bold;\">Some content</i><br>', "Content remains the same");
+                    start();
+                }, 200);
+
+                stop();
+                setTimeout(function (){
+                    htmlEditor.igHtmlEditor("setContent", "<div id='div1'>Some content1<div>Some content2<div>Some content3<div><div><div>", "html");
+                    contentToSelect = $(htmlEditor.igHtmlEditor("contentEditable")).parent().find("body #div1");
+                    htmlEditor.data("igHtmlEditor")._selectionWrapperSaved.select(contentToSelect.contents());
+                    var nodes = htmlEditor.data("igHtmlEditor")._selectionWrapperSaved._findAllTextNodes(contentToSelect);
+                    equal(nodes.length, 3, "Three nodes are returned");
+
+                    start();
+                }, 300);
+
+                stop();
+                setTimeout(function (){
+                    htmlEditor.igHtmlEditor("setContent", "<div id='div1'>Some new content<div>", "html");
+                    contentToWrap = $(htmlEditor.igHtmlEditor("contentEditable")).parent().find("body #div1");
+
+                    var textNode = htmlEditor.data("igHtmlEditor")._selectionWrapperSaved._wrapPartialString("Some", 2, 6, contentToWrap);
+                    equal($($(textNode)[0]).text() + $($(textNode)[1]).text(), "Some", "Text node returned");
+
+                    start();
+                }, 300);
+
+            },
+            _testInsertElement: function () {
+                var htmlEditor = $("#" + this.htmlEditorId),
+                    iframeDocument = $($("#" + this.htmlEditorId).data().igHtmlEditor.workspace).contents(),
+                    self = this;
+                $.ig.util.isIE = true;
+
+                htmlEditor.igHtmlEditor("setContent", "<div id='div1'>Some content1<div><p id='div2'>Some content2<p>", "html");
+                contentToSelect = $(htmlEditor.igHtmlEditor("contentEditable")).parent().find("body #div1");
+
+                stop();
+                setTimeout(function (){
+                    $("#" + self.htmlEditorId).data().igHtmlEditor._analyser._disableTableControls(false);
+                    var surroundContentsDiv = $($("#" + self.htmlEditorId).igHtmlEditor("contentEditable")).parent().find("body #div2");
+                    $("#" + self.htmlEditorId).data("igHtmlEditor")._selectionWrapperSaved.select(contentToSelect.contents());
+
+                    $("#" + self.htmlEditorId).data("igHtmlEditor")._selectionWrapperSaved.insertElement(surroundContentsDiv);
+                    $("#" + self.htmlEditorId).data("igHtmlEditor")._selectionWrapperSaved._isIeOld = true;
+                    $("#" + self.htmlEditorId).data("igHtmlEditor")._selectionWrapperSaved.getSelectedItem();
+
+                    equal($("#" + self.htmlEditorId).igHtmlEditor("getContent","html"), '<div id=\"div1\"><p id=\"div2\">Some content2</p>Some content1<div><p></p></div></div>', "Node inserted");
+
+                    start();
+                }, 200);
+            },
         };
 
         module("HtmlEditor Interaction Tests", htmlEditorInteractionTests);
@@ -1182,6 +1328,12 @@
         });
         test("Add/Remove rows/columns", function () {
             this._addRemoveRowsColumns();
+        });
+        test("Test selection functionality", function () {
+            this._testSelectionFunctionality();
+        });
+        test("Test surround contents", function () {
+            this._testInsertElement();
         });
         module("HtmlEditor Rendering Tests", htmlEditorTestBeds);
         test("Default toolbars rendering.", function () {
