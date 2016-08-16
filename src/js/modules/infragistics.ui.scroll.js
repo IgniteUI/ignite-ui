@@ -1408,7 +1408,7 @@
 			}
 
 			var timeFromLastTouch = (new Date().getTime()) - this._lastTouchEnd;
-			if (timeFromLastTouch < 100) {
+			if (timeFromLastTouch !== 0 && timeFromLastTouch < 100) {
 				var speedX = (this._lastTouchX - touch.pageX) / timeFromLastTouch;
 				var speedY = (this._lastTouchY - touch.pageY) / timeFromLastTouch;
 
@@ -1452,12 +1452,12 @@
 			var speedY = 0;
 
 			//savedSpeedsX and savedSpeedsY have same length
-			for (var i = this._savedSpeedsX.length - 1; i >= 0; i--) {
+			for (var i = 0; i < this._savedSpeedsX.length; i++) {
 				speedX += this._savedSpeedsX[ i ];
 				speedY += this._savedSpeedsY[ i ];
 			}
-			speedX = speedX / this._savedSpeedsX.length;
-			speedY = speedY / this._savedSpeedsY.length;
+			speedX = this._savedSpeedsX.length ? speedX / this._savedSpeedsX.length : 0;
+			speedY = this._savedSpeedsX.length ? speedY / this._savedSpeedsY.length : 0;
 
 			//Use the lastMovedX and lastMovedY to determine if the swipe stops without lifting the finger so we don't start inertia
 			if ((Math.abs(speedX) > 0.1 || Math.abs(speedY) > 0.1) &&
