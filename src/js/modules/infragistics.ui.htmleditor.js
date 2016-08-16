@@ -2612,17 +2612,19 @@ if (typeof jQuery !== "function") {
                 }
             }
         },
-        surroundContents: function (wrapEl) {
-            var range = this._getRange();
-            if (this._isIeOld) {
-                range.pasteHTML(wrapEl.html(range.text).get(0).outerHTML);
-            } else {
-                this._surroundContents($(range.commonAncestorContainer),
-                    $(range.startContainer), $(range.endContainer), wrapEl);
-            }
 
-            return wrapEl;
-        },
+        // Z.K. Remove unused code
+        // surroundContents: function (wrapEl) {
+        //     var range = this._getRange();
+        //     if (this._isIeOld) {
+        //         range.pasteHTML(wrapEl.html(range.text).get(0).outerHTML);
+        //     } else {
+        //         this._surroundContents($(range.commonAncestorContainer),
+        //             $(range.startContainer), $(range.endContainer), wrapEl);
+        //     }
+
+        //     return wrapEl;
+        // },
         getSelectedItem: function () {
             var range = this._getRange(),
                 rangeParent = $(range.commonAncestorContainer);
@@ -2802,59 +2804,61 @@ if (typeof jQuery !== "function") {
             this._selection.removeAllRanges();
             this._selection.addRange(range);
         },
-        _surroundContents: function (commonParrent, startEl, endEl, wrapEl) {
-            var self = this, startOffset, endOffset,
-                rangeStart, rangeEnd, startElPar, endElPar,
-                selection = this._getSelection(),
-                range = this._getRange(),
-                startElSiblings;
 
-            if (startEl[ 0 ] === endEl[ 0 ]) {
-                range.surroundContents(wrapEl.get(0));
-                return wrapEl;
-            }
+        // Remove unused code
+        // _surroundContents: function (commonParrent, startEl, endEl, wrapEl) {
+        //     var self = this, startOffset, endOffset,
+        //         rangeStart, rangeEnd, startElPar, endElPar,
+        //         selection = this._getSelection(),
+        //         range = this._getRange(),
+        //         startElSiblings;
 
-            startOffset = range.startOffset;
-            endOffset = range.endOffset;
-            rangeStart = this._document.createRange();
+        //     if (startEl[ 0 ] === endEl[ 0 ]) {
+        //         range.surroundContents(wrapEl.get(0));
+        //         return wrapEl;
+        //     }
 
-            rangeStart.setStart(startEl.get(0), startOffset);
-            rangeStart.setEnd(startEl.get(0), startEl.text().length);
-            rangeStart.surroundContents(wrapEl.clone().get(0));
-            selection.addRange(rangeStart);
+        //     startOffset = range.startOffset;
+        //     endOffset = range.endOffset;
+        //     rangeStart = this._document.createRange();
 
-            startElPar = this._getLastParentUntil(startEl, commonParrent);
-            endElPar = this._getLastParentUntil(endEl, commonParrent);
+        //     rangeStart.setStart(startEl.get(0), startOffset);
+        //     rangeStart.setEnd(startEl.get(0), startEl.text().length);
+        //     rangeStart.surroundContents(wrapEl.clone().get(0));
+        //     selection.addRange(rangeStart);
 
-            startElSiblings = startElPar.siblings();
+        //     startElPar = this._getLastParentUntil(startEl, commonParrent);
+        //     endElPar = this._getLastParentUntil(endEl, commonParrent);
 
-            startElPar.siblings().each(function (i, el) {
-                if (startElPar[ 0 ] === endElPar[ 0 ]) {
-                    return;
-                }
+        //     startElSiblings = startElPar.siblings();
 
-                var rangeClone = self._document.createRange();
-                rangeClone.setStartBefore(el);
-                rangeClone.setEndAfter(el);
-                rangeClone.surroundContents(wrapEl.clone().get(0));
-                selection.addRange(rangeClone);
-            });
+        //     startElPar.siblings().each(function (i, el) {
+        //         if (startElPar[ 0 ] === endElPar[ 0 ]) {
+        //             return;
+        //         }
 
-            rangeEnd = this._document.createRange();
-            rangeEnd.setStart(endEl.get(0), 0);
-            rangeEnd.setEnd(endEl.get(0), endOffset);
-            rangeEnd.surroundContents(wrapEl.clone().get(0));
-            selection.addRange(rangeEnd);
+        //         var rangeClone = self._document.createRange();
+        //         rangeClone.setStartBefore(el);
+        //         rangeClone.setEndAfter(el);
+        //         rangeClone.surroundContents(wrapEl.clone().get(0));
+        //         selection.addRange(rangeClone);
+        //     });
 
-        },
-        _getLastParentUntil: function (root, target) {
-            while (root.parent().length) {
-                if (root.parent()[ 0 ] === target[ 0 ]) {
-                    return root;
-                }
-                root = root.parent();
-            }
-        },
+        //     rangeEnd = this._document.createRange();
+        //     rangeEnd.setStart(endEl.get(0), 0);
+        //     rangeEnd.setEnd(endEl.get(0), endOffset);
+        //     rangeEnd.surroundContents(wrapEl.clone().get(0));
+        //     selection.addRange(rangeEnd);
+
+        // },
+        // _getLastParentUntil: function (root, target) {
+        //     while (root.parent().length) {
+        //         if (root.parent()[ 0 ] === target[ 0 ]) {
+        //             return root;
+        //         }
+        //         root = root.parent();
+        //     }
+        // },
         replaceNode: function (newNode) {
             var range = this._getRange(),
                 selItem = this.getSelectedItem();
@@ -3186,17 +3190,19 @@ if (typeof jQuery !== "function") {
                 return true;
             }
         },
-        _checkParents: function (el, wanted) {
-            while (el.parent()) {
-                if (el.parent().is(wanted)) {
-                    return true;
-                }
-                if (el.is("body")) {
-                    return;
-                }
-                el = el.parent();
-            }
-        },
+
+        // Z.K. Remove unused code
+        // _checkParents: function (el, wanted) {
+        //     while (el.parent()) {
+        //         if (el.parent().is(wanted)) {
+        //             return true;
+        //         }
+        //         if (el.is("body")) {
+        //             return;
+        //         }
+        //         el = el.parent();
+        //     }
+        // },
         _hasFontName: function () {
             var fontName = this._getFontFamily();
             if (fontName === "serif") {
