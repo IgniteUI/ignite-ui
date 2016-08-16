@@ -463,7 +463,7 @@
 			return posY;
 		},
 
-		_getScrollbarVPoisition: function() {
+		_getScrollbarVPosition: function () {
 			if (this._linkedVBar) {
 				return this._linkedVBar.scrollTop();
 			} else {
@@ -471,7 +471,7 @@
 			}
 		},
 
-		_getScrollbarHPoisition: function () {
+		_getScrollbarHPosition: function () {
 			if (this._linkedHBar) {
 				return this._linkedHBar.scrollLeft();
 			} else {
@@ -764,7 +764,7 @@
 
 			var curPosX;
 			if (this.options.scrollOnlyHBar) {
-				curPosX = this._getScrollbarHPoisition();
+				curPosX = this._getScrollbarHPosition();
 			} else {
 				curPosX = this._getContentPositionX();
 			}
@@ -811,7 +811,7 @@
 
 			var curPosY;
 			if (this.options.scrollOnlyVBar) {
-				curPosY = this._getScrollbarVPoisition();
+				curPosY = this._getScrollbarVPosition();
 			} else {
 				curPosY = this._getContentPositionY();
 			}
@@ -858,7 +858,7 @@
 			//We use the formula for parabola y = -3*x*x + 3 to simulate smooth inertia that slows down
 			var x = -1;
 			if (this.options.scrollOnlyVBar) {
-				self._nextY = this._getScrollbarVPoisition();
+				self._nextY = this._getScrollbarVPosition();
 			} else {
 				self._nextY = this._getContentPositionY();
 			}
@@ -949,7 +949,7 @@
 				}
 
 				/* Sync other elements */
-				destY = this._getScrollbarVPoisition();
+				destY = this._getScrollbarVPosition();
 				self._updateScrollBarsPos(destX, destY);
 
 				return { x: destX - curPosX, y: destY - curPosY };
@@ -984,12 +984,12 @@
 				inertiaDuration = this.options.inertiaDuration;
 
 			if (this.options.scrollOnlyVBar) {
-				self._nextY = self._getScrollbarVPoisition();
+				self._nextY = self._getScrollbarVPosition();
 			} else {
 				self._nextY = self._getContentPositionY();
 			}
 			if (this.options.scrollOnlyHBar) {
-				self._nextX = self._getScrollbarHPoisition();
+				self._nextX = self._getScrollbarHPosition();
 			} else {
 				self._nextX = self._getContentPositionX();
 			}
@@ -1302,7 +1302,7 @@
 			} else {
 				//Normal scroll
 				if (this.options.scrollOnlyVBar) {
-					this._startY = this._getScrollbarVPoisition();
+					this._startY = this._getScrollbarVPosition();
 				} else {
 					this._startY = this._getContentPositionY();
 				}
@@ -1353,8 +1353,8 @@
 
 		_onMSGestureStartContainer: function (event) {
 			if (this.options.scrollOnlyVBar) {
-				this._startX = this._getScrollbarHPoisition();
-				this._startY = this._getScrollbarVPoisition();
+				this._startX = this._getScrollbarHPosition();
+				this._startY = this._getScrollbarVPosition();
 			} else {
 				this._startX = this._getContentPositionX();
 				this._startY = this._getContentPositionY();
@@ -1385,12 +1385,12 @@
 			var touch = event.originalEvent.touches[ 0 ];
 
 			if (this.options.scrollOnlyHBar) {
-				this._startX = this._getScrollbarHPoisition();
+				this._startX = this._getScrollbarHPosition();
 			} else {
 				this._startX = this._getContentPositionX();
 			}
 			if (this.options.scrollOnlyVBar) {
-				this._startY = this._getScrollbarVPoisition();
+				this._startY = this._getScrollbarVPosition();
 			} else {
 				this._startY = this._getContentPositionY();
 			}
@@ -1411,8 +1411,10 @@
 
 		_onTouchMoveContainer: function (event) {
 			var touch = event.originalEvent.touches[ 0 ];
-			var destX = this._startX + this._touchStartX - touch.pageX;
-			var destY = this._startY + this._touchStartY - touch.pageY;
+			var destX =
+				this._startX + (this._touchStartX - touch.pageX) * Math.sign(this.options.inertiaStep);
+			var destY =
+				this._startY + (this._touchStartY - touch.pageY) * Math.sign(this.options.inertiaStep);
 
 			/*Handle complex touchmoves when swipe stops but the toch doesn't end and then a swipe is initiated again */
 			/***********************************************************/
