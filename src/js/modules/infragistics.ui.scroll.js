@@ -743,12 +743,15 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
-					return;
+					return { x: 0, y: 0 };
 				}
 			}
 
-			this._scrollToX(destX, false);
-			this._scrollToY(destY, false);
+			var scrolledX, scrolledY;
+			scrolledX = this._scrollToX(destX, false);
+			scrolledY = this._scrollToY(destY, false);
+
+			return { x: scrolledX, y: scrolledY };
 		},
 
 		/** Scrolls content to on the X axis using default scrollLeft.
@@ -759,7 +762,13 @@
 				return;
 			}
 
-			var curPosX = this._getContentPositionX();
+			var curPosX;
+			if (this.options.scrollOnlyHBar) {
+				curPosX = this._getScrollbarHPoisition();
+			} else {
+				curPosX = this._getContentPositionX();
+			}
+
 			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
 
 			//We have another trigger for scrolling in case we want to scroll only on the X axis(horizontal) and not interrupt the Y(vertical) scroll position.
@@ -774,7 +783,7 @@
 					stepY: 0
 				});
 				if (!bNoCancel) {
-					return;
+					return 0;
 				}
 			}
 
@@ -800,7 +809,13 @@
 				return;
 			}
 
-			var curPosY = this._getContentPositionY();
+			var curPosY;
+			if (this.options.scrollOnlyVBar) {
+				curPosY = this._getScrollbarVPoisition();
+			} else {
+				curPosY = this._getContentPositionY();
+			}
+
 			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
 
 			//We have another trigger for scrolling in case we want to scroll only on the Y axis(vertical) and not interrupt the X(horizontal) scroll position.
@@ -815,7 +830,7 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
-					return;
+					return 0;
 				}
 			}
 
@@ -915,7 +930,7 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
-					return;
+					return { x: 0, y: 0 };
 				}
 			}
 
@@ -936,7 +951,8 @@
 				/* Sync other elements */
 				destY = this._getScrollbarVPoisition();
 				self._updateScrollBarsPos(destX, destY);
-				return;
+
+				return { x: destX - curPosX, y: destY - curPosY };
 			}
 
 			var distanceLeftX = -destX;
@@ -956,6 +972,8 @@
 			//No need to sync these bars since they don't show on safari and we use custom ones.
 			self._syncHBar(this._content, true);
 			self._syncVBar(this._content, true);
+
+			return { x: destX - curPosX, y: destY - curPosY };
 		},
 
 		/** Initialize main inertia based on the X and Y speeds. Used on touch devices. */
@@ -1435,16 +1453,16 @@
 			this._lastTouchY = touch.pageY;
 			/***********************************************************/
 
-			//Check if browser is Firefox
+			var scrolledXY; // Object: {x, y}
 			if (navigator.userAgent.indexOf("Firefox") > -1 || this._bMixedEnvironment) {
 				//Better performance on Firefox for Android
-				this._scrollToXY(destX, destY, true);
+				scrolledXY = this._scrollToXY(destX, destY, true);
 			} else {
-				this._scrollTouchToXY(destX, destY, true);
+				scrolledXY = this._scrollTouchToXY(destX, destY, true);
 			}
 
 			// return true if there was no movement so rest of the screen can scroll
-			return this._startX === destX && this._startY === destY;
+			return scrolledXY.x === 0 && scrolledXY.y === 0;
 		},
 
 		_onTouchEndContainer: function () {
