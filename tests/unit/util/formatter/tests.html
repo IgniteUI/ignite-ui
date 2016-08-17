@@ -66,8 +66,8 @@
 				equal("55,00", stringValue);
 				stringValue = $.ig.formatter(.55, "number", "percent");
 				equal("55,00 %", stringValue);
-			});
-			
+			});	
+
 			test("testdatetype", function() {
 				// d - day 1 digit
 				// dd - day 2 digits
@@ -173,9 +173,23 @@
 			});
 		}
 		
+		function runEscapeTests() {
+			test("testescape", function() {
+				// change the regional default
+				$.ig.setRegionalDefault("en-US");
+				var stringValue = $.ig.util.escapeHtmlTags("<script>alert()<\/script>");
+
+				equal("&lt;script&gt;alert()&lt;/script&gt;", stringValue);
+			});
+		}
+		
 		module("Formatter Tests");
         // run tests
 		runFormatterTests();
+
+		module("Escape Tests")
+		// run tests
+		runEscapeTests();
 	</script>
 </head>
 <body>

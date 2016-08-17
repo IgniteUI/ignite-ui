@@ -5404,6 +5404,16 @@ $.ig.Array.prototype.clear = function () {
 		return str.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, "\\$1");
 	};
 
+	// Escape all html tags in given html element content
+	$.ig.util.escapeHtmlTags = function (htmlElemContent) {
+		return htmlElemContent
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;")
+			.replace(/'/g, "&#039;");
+	};
+
 	$.ig.util.replace = function (str, oldValue, newValue) {
 		return str.replace(new RegExp($.ig.util.escapeRegExp(oldValue), "g"), newValue);
 	};
