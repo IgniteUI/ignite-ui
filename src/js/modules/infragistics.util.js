@@ -785,7 +785,7 @@
 		if (t === "undefined") {
 			return "string";
 		} else if (o && o.getTime && !isNaN(o.getTime()) &&
-			Object.prototype.toString.call(o) === "[ object Date ]") {
+			Object.prototype.toString.call(o) === "[object Date]") {
 			return "date";
 		} else if (t === "boolean") {
 			return "bool";
