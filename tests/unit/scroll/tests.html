@@ -2215,7 +2215,8 @@
 			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 15 , y: 0}, {x: 15, y: 0}, {x: 6, y: 0}, {x: 5, y: 0}, {x: 1, y: 0}]
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
-				equal($("#elemVH").data("igScroll")._getContentPositionX(), 52, "igScroll scrolled horizontally by the swipe");
+				//22 because there is compensation for horizontal scroll of 30 pixels by default
+				equal($("#elemVH").data("igScroll")._getContentPositionX(), 22, "igScroll scrolled horizontally by the swipe");
 				equal($("#elemVH").data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");
 				$.ig.util.isTouch = false;
 				$("#elemVH").remove();
