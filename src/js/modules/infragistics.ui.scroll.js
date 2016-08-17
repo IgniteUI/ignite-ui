@@ -1175,7 +1175,7 @@
 					for (index in this._linkedHElems) {
 						if (this._linkedHElems[ index ].length) {
 							if (this._linkedHElems[ index ].data("igScroll") &&
-									this._linkedHElems[ index ].igScroll("option", "modifyDOM")) {
+									this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
 								this._linkedHElems[ index ].children().eq(0).scrollLeft(destX);
 							} else {
@@ -1223,7 +1223,7 @@
 					for (index in this._linkedVElems) {
 						if (this._linkedVElems[ index ].length) {
 							if (this._linkedVElems[ index ].data("igScroll") &&
-									this._linkedVElems[ index ].igScroll("option", "modifyDOM")) {
+									this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
 								this._linkedVElems[ index ].children().eq(0).scrollTop(destY);
 							} else {
