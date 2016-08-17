@@ -340,6 +340,7 @@
 		var testId_85 = 'tapping during horizontal touch swipe inertia stops scrolling test.';
 		var testId_86 = 'touch swipe vertically with IE events without inertia scrolls the content test.';
 		var testId_87 = 'touch swipe horizontally with IE events without inertia scrolls the content test.';
+		var testId_88 = 'touch swipe vertically without inertia and then scrolling with mouse wheel scroll properly test.';
 		/*//////////////////////End Touch interactions tests///////////////////////////*/
 		
 		var testId_90 = 'linked element vertically updates when scrolling with scrollTop option test.';
@@ -2370,6 +2371,39 @@
 			}, 1500);
 	    });
 		
+		test(testId_88, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+
+			var vBarContainer = $("#elemVH_vBar"),
+				hBarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container"),
+				elemContent = $("#elemVH_content");
+	
+			stop();
+			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}]
+			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
+			setTimeout(function () {
+				equal($("#elemVH").data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
+				equal($("#elemVH").data("igScroll")._getContentPositionY(), 52, "igScroll did not scroll properly vertically");
+				
+				var elemContainer = $("#elemVH_container");
+				
+				var wheelEvt = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function() {}, stopPropagation : function() {} });
+				elemContainer.trigger(wheelEvt);
+				
+				equal($("#elemVH").data("igScroll")._getContentPositionY(), 102, "igScroll did not scroll properly vertically");
+				$.ig.util.isTouch = false;
+				$("#elemVH").remove();
+				start();
+			}, 2500);
+	    });
+		
+		var testId_88 = 'touch swipe vertically without inertia and then scrolling with mouse wheel scroll properly test.';
+				
 		test(testId_90, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));

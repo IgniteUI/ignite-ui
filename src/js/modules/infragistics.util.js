@@ -785,7 +785,7 @@
 		if (t === "undefined") {
 			return "string";
 		} else if (o && o.getTime && !isNaN(o.getTime()) &&
-			Object.prototype.toString.call(o) === "[ object Date ]") {
+			Object.prototype.toString.call(o) === "[object Date]") {
 			return "date";
 		} else if (t === "boolean") {
 			return "bool";
@@ -5402,6 +5402,16 @@ $.ig.Array.prototype.clear = function () {
 	// To escape jQuery selectors. It escapes basically everything questionable
 	$.ig.util.escapeStr = function (str) {
 		return str.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, "\\$1");
+	};
+
+	// Escape all html tags in given html element content
+	$.ig.util.escapeHtmlTags = function (htmlElemContent) {
+		return htmlElemContent
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;")
+			.replace(/'/g, "&#039;");
 	};
 
 	$.ig.util.replace = function (str, oldValue, newValue) {

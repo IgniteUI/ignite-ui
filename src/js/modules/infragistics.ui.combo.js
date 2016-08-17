@@ -1070,7 +1070,8 @@
                     .replace("{css.listItemTextWithCheckbox}", css.listItemTextWithCheckbox)
                     .replace("{innerMarkup}", innerMarkup);
             } else {
-                markup += innerMarkup;
+                // A.k August 15, 2016 Fixing Bug #223071 - [igCombo] Text from list items is not escaped
+                markup += $.ig.util.escapeHtmlTags(innerMarkup);
             }
 
             markup += "</li>";

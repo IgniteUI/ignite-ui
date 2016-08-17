@@ -366,6 +366,72 @@
 					"Test dataView records");
 				equal(ds.groupByData().length, 8, "Test count of records in groupByData");
 			});
+			// test updating + groupby
+			test("Test updating when there is 1 grouped column", function () {
+				var se = [], i, ds = createDataSource(), data, dataView, gbDataView, gbData;
+				se = [{
+					fieldName: "Date",
+					isGroupBy: true,
+					dir: "asc"
+				}];
+				// set sorting expressions
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.enabled = true;
+				ds.settings.primaryKey = "Id";
+				ds.dataBind();
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				// test add row
+				i = 100;
+				ds.addRow(i, {
+						Id: i,
+						ProductName: "product name " + i,
+						ProductDescription: "description " + (i % 2),
+						Price: 1,
+						Promotion: !!(i % 2),
+						Date: new Date(i),
+						Category: {
+							Id: i % 3,
+							Name: "Category " + (i % 3)
+						}
+					});
+				ds.commit();
+				gbDataView = ds.groupByDataView();
+				dataView = ds.dataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 10 &&
+					gbDataView[8].__gbRecord === true &&
+					gbDataView[9].Id === i &&
+					dataView.length === 5,
+				 	"Test groupByDataView and dataView after new row is added");
+				// test delete row
+				ds.deleteRow(0);
+				ds.commit();
+				gbDataView = ds.groupByDataView();
+				dataView = ds.dataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 8 &&
+					gbDataView[6].__gbRecord === true &&
+					gbDataView[7].Id === i &&
+					dataView.length === 4,
+				 	"Test groupByDataView and dataView after row with id 0 is deleted");
+				// test update row
+				ds.updateRow(i, {
+						Id: i,
+						ProductName: "product name 1"
+				});
+				ds.commit();
+				gbDataView = ds.groupByDataView();
+				dataView = ds.dataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 8 &&
+					gbDataView[6].__gbRecord === true &&
+					gbDataView[7].Id === i &&
+					gbDataView[7].ProductName === "product name 1" &&
+					dataView.length === 4,
+				 	"Test groupByDataView and dataView after row with id 100 is updated");
+			});
 			/* Test GroupBy with type: "local"*/
 
 			/* Test GroupBy with type: "remote"*/

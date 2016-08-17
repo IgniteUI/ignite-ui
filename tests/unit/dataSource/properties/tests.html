@@ -13,6 +13,8 @@
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	
 	<script type="text/javascript"> 
+	$.mockjaxSettings.logging = 0;  // only critical error messages
+	
 	function filerFunc2(val) {
 		return val < 2 ? true : false;
 	};
