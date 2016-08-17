@@ -57,7 +57,7 @@ module.exports = function (grunt) {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
 			tests: ["qunit", "coverage", "instrumentedFiles"],
-			build: ["dist"]
+			build: ["dist/**/*", "!dist/.git/**/*"]
 		},
 		coveralls: {
 			// LCOV coverage file (can be string, glob or array)
