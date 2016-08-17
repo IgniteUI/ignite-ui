@@ -408,7 +408,7 @@
 				return this._scrollLeft(null, true);
 			}
 
-			this._super(optionName, value);
+			return this._super(optionName, value);
 		},
 
 		_getContentPositionX: function () {
@@ -1163,7 +1163,7 @@
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
-						this._linkedHElems[ index ].css({
+						this._linkedHElems[ index ].children().eq(0).css({
 							"-webkit-transform": "translate3d(" + destX + "px,0px, 0px)"
 						});
 					}
@@ -1173,10 +1173,15 @@
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
-						if (this._linkedHElems[ index ][ 0 ]) {
-							this._linkedHElems[ index ][ 0 ].parentElement.scrollLeft = destX;
+						if (this._linkedHElems[ index ].length) {
+							if (this._linkedHElems[ index ].data("igScroll") &&
+									this._linkedHElems[ index ].igScroll("option", "modifyDOM")) {
+								//We do not set igScroll option because there will be infinite recursion of syncing
+								this._linkedHElems[ index ].children().eq(0).scrollLeft(destX);
+							} else {
+								this._linkedHElems[ index ].scrollLeft(destX);
+							}
 						}
-
 					}
 				}
 			}
@@ -1206,7 +1211,7 @@
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
 						var destX = valuesElem ? Number(valuesElem[ 4 ]) : -this._getContentPositionX();
 
-						this._linkedVElems[ index ].css({
+						this._linkedVElems[ index ].children().eq(0).css({
 							"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 						});
 					}
@@ -1216,8 +1221,14 @@
 
 				if (this._linkedVElems.length > 0) {
 					for (index in this._linkedVElems) {
-						if (this._linkedVElems[ index ][ 0 ]) {
-							this._linkedVElems[ index ][ 0 ].parentElement.scrollTop = destY;
+						if (this._linkedVElems[ index ].length) {
+							if (this._linkedVElems[ index ].data("igScroll") &&
+									this._linkedVElems[ index ].igScroll("option", "modifyDOM")) {
+								//We do not set igScroll option because there will be infinite recursion of syncing
+								this._linkedVElems[ index ].children().eq(0).scrollTop(destY);
+							} else {
+								this._linkedVElems[ index ].scrollTop(destY);
+							}
 						}
 
 					}
