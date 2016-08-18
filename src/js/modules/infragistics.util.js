@@ -634,7 +634,7 @@
 			if (format.indexOf(s = "{0}") >= 0) {
 				return format.replace(s, val);
 			}
-			if (format.indexOf(s = "[ 0 ]") >= 0) {
+			if (format.indexOf(s = "[0]") >= 0) {
 				return format.replace(s, val);
 			}
 		}
@@ -1093,7 +1093,7 @@
 			if (!this.typeArguments || !this.typeArguments.length) {
 				return this.identifier.toString();
 			} else {
-				var ret = this.identifier.toString() + "[ ";
+				var ret = this.identifier.toString() + "[";
 				var first = true;
 				for (var i = 0; i < this.typeArguments.length; i++) {
 					if (this.typeArguments[ i ] == undefined) {
@@ -1106,7 +1106,7 @@
 						ret += this.typeArguments[ i ].identifier.toString();
 					}
 				}
-				ret += " ]";
+				ret += "]";
 				return ret;
 			}
 		},
@@ -6481,12 +6481,12 @@ $.ig.Array.prototype.clear = function () {
 					jsPattern = jsPattern.concat("\\/");
 					break;
 
-				case "[ ":
+				case "[":
 					isInClass = true;
 					jsPattern = jsPattern.concat("[");
 					break;
 
-				case " ]":
+				case "]":
 					isInClass = false;
 					jsPattern = jsPattern.concat("]");
 					break;
