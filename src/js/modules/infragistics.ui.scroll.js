@@ -52,10 +52,16 @@
 			smoothingStep: 1,
 			/* type="number" Sets or gets the modifier for how long the scroll ‘animation’ lasts when using the mouse wheel once. This is used only for the smooth scrolling behavior. */
 			smoothingDuration: 1,
-			/* type="number" Sets gets the modifier for how much the inertia scrolls on mobile devices*/
+			/* type="number" Sets gets the modifier for how much the inertia scrolls on mobile devices */
 			inertiaStep: 1,
-			/* type="number" Sets gets the modifier for how long the inertia last on mobile devices*/
+			/* type="number" Sets gets the modifier for how long the inertia last on mobile devices */
 			inertiaDuration: 1,
+			/* type="number" Sets gets how much pixels of toleration there will be when initially swiping horizontall. This is to improve swiping up/down without scrolling left/right when not intended due to small diviation left/right */
+			swipeToleranceX: 30,
+			/* type="number" Sets gets at least how many times the horizontal speed should be bigger so the inertia proceeds only horizontally without scrolling vertically. This is to improve interactions due to not perfectly swiping left/right with some diviation down/up */
+			inertiaDeltaX: 1.25,
+			/* type="number" Sets gets at least how many times the vertical speed should be bigger so the inertia proceeds only vertically without scrolling horizontally. This is to improve interactions due to not perfectly swiping down/up with some diviation left/right */
+			inertiaDeltaY: 2,
 			/* type="array" Sets gets elements that are linked to the main content horizontally. When the content is scrolled on X axis the linked elements scroll accordingly. */
 			syncedElemsH: [],
 			/* type="array" Sets gets elements that are linked to the main content vertically. When the content is scrolled on Y axis the linked elements scroll accordingly. */
@@ -402,7 +408,7 @@
 				return this._scrollLeft(null, true);
 			}
 
-			this._super(optionName, value);
+			return this._super(optionName, value);
 		},
 
 		_getContentPositionX: function () {
@@ -1017,12 +1023,21 @@
 
 				if (x <= 1) {
 					//We use constant quation to determine the offset without speed falloff befor x reaches 1
-					self._nextX += 1 * speedX * 15 * stepModifer;
-					self._nextY += 1 * speedY * 15 * stepModifer;
+					if (Math.abs(speedY) <= Math.abs(speedX) * self.options.inertiaDeltaY) {
+						self._nextX += 1 * speedX * 15 * stepModifer;
+					}
+					if (Math.abs(speedY) >= Math.abs(speedX) * self.options.inertiaDeltaX) {
+						self._nextY += 1 * speedY * 15 * stepModifer;
+					}
 				} else {
 					//We use the quation "y = 2 / (x + 0.55) - 0.3" to determine the offset
-					self._nextX += Math.abs(2 / (x + 0.55) - 0.3) * speedX * 15 * stepModifer;
-					self._nextY += Math.abs(2 / (x + 0.55) - 0.3) * speedY * 15 * stepModifer;
+					if (Math.abs(speedY) <= Math.abs(speedX) * self.options.inertiaDeltaY) {
+						self._nextX += Math.abs(2 / (x + 0.55) - 0.3) * speedX * 15 * stepModifer;
+					}
+					if (Math.abs(speedY) >= Math.abs(speedX) * self.options.inertiaDeltaX) {
+						self._nextY += Math.abs(2 / (x + 0.55) - 0.3) * speedY * 15 * stepModifer;
+					}
+
 				}
 
 				//If we have mixed environment we use the default behaviour. i.e. touchscreen + mouse
@@ -1148,7 +1163,7 @@
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
-						this._linkedHElems[ index ].css({
+						this._linkedHElems[ index ].children().eq(0).css({
 							"-webkit-transform": "translate3d(" + destX + "px,0px, 0px)"
 						});
 					}
@@ -1158,10 +1173,15 @@
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
-						if (this._linkedHElems[ index ][ 0 ]) {
-							this._linkedHElems[ index ][ 0 ].parentElement.scrollLeft = destX;
+						if (this._linkedHElems[ index ].length) {
+							if (this._linkedHElems[ index ].data("igScroll") &&
+									this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
+								//We do not set igScroll option because there will be infinite recursion of syncing
+								this._linkedHElems[ index ].children().eq(0).scrollLeft(destX);
+							} else {
+								this._linkedHElems[ index ].scrollLeft(destX);
+							}
 						}
-
 					}
 				}
 			}
@@ -1191,7 +1211,7 @@
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
 						var destX = valuesElem ? Number(valuesElem[ 4 ]) : -this._getContentPositionX();
 
-						this._linkedVElems[ index ].css({
+						this._linkedVElems[ index ].children().eq(0).css({
 							"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 						});
 					}
@@ -1201,8 +1221,14 @@
 
 				if (this._linkedVElems.length > 0) {
 					for (index in this._linkedVElems) {
-						if (this._linkedVElems[ index ][ 0 ]) {
-							this._linkedVElems[ index ][ 0 ].parentElement.scrollTop = destY;
+						if (this._linkedVElems[ index ].length) {
+							if (this._linkedVElems[ index ].data("igScroll") &&
+									this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
+								//We do not set igScroll option because there will be infinite recursion of syncing
+								this._linkedVElems[ index ].children().eq(0).scrollTop(destY);
+							} else {
+								this._linkedVElems[ index ].scrollTop(destY);
+							}
 						}
 
 					}
@@ -1406,6 +1432,11 @@
 			this._savedSpeedsX = [];
 			this._savedSpeedsY = [];
 
+			//Vars regarding swipe offset
+			this._totalMovedX = 0;
+			this._offsetRecorded = false;
+			this._offsetDirection = 0;
+
 			this._showScrollBars(false, true);
 		},
 
@@ -1455,12 +1486,37 @@
 			this._lastTouchY = touch.pageY;
 			/***********************************************************/
 
+			this._totalMovedX += this._lastMovedX;
+
 			var scrolledXY; // Object: {x, y}
-			if (navigator.userAgent.indexOf("Firefox") > -1 || this._bMixedEnvironment) {
-				//Better performance on Firefox for Android
-				scrolledXY = this._scrollToXY(destX, destY, true);
+			/*	Do not scroll using touch untill out of the swipeToleranceX bounds */
+			if (Math.abs(this._totalMovedX) < this.options.swipeToleranceX && !this._offsetRecorded) {
+				if (navigator.userAgent.indexOf("Firefox") > -1 || this._bMixedEnvironment) {
+					//Better performance on Firefox for Android
+					scrolledXY = this._scrollToXY(this._startX, destY, true);
+				} else {
+					scrolledXY = this._scrollTouchToXY(this._startX, destY, true);
+				}
 			} else {
-				scrolledXY = this._scrollTouchToXY(destX, destY, true);
+				/*	Record the direction the first time we are out of the swipeToleranceX bounds.
+				*	That way we know which direction we apply the offset so it doesn't hickup when moving out of the swipeToleranceX bounds */
+				if (!this._offsetRecorded) {
+					this._offsetDirection = Math.sign(destX - this._startX);
+					this._offsetRecorded = true;
+				}
+
+				/*	Scroll with offset ammout of swipeToleranceX in the direction we have exited the bounds and don't change it after that ever until touchend and again touchstart */
+				if (navigator.userAgent.indexOf("Firefox") > -1 || this._bMixedEnvironment) {
+					//Better performance on Firefox for Android
+					scrolledXY = this._scrollToXY(destX - this._offsetDirection * this.options.swipeToleranceX,
+												destY,
+												true);
+				} else {
+					scrolledXY =
+						this._scrollTouchToXY(destX - this._offsetDirection * this.options.swipeToleranceX,
+											destY,
+											true);
+				}
 			}
 
 			// return true if there was no movement so rest of the screen can scroll
