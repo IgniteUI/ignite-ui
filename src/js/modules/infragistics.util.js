@@ -416,7 +416,7 @@
 			s = "<span class='ui-igcheckbox-container' style='display:" +
 				display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
 				val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
-			s += "<span class='" + $.ig.checkboxMarkupClasses + "' style=,display:inline-block'>";
+			s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
 			s += "<span style='display:block' class='" + (val ? "" : "ui-igcheckbox-small-off ");
 			return s + "ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>";
 		}
