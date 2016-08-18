@@ -3228,11 +3228,18 @@ if (typeof jQuery !== "function") {
 				value = this._parseNumericValueByMode(value,
 					this._numericType,
 					this.options.dataMode);
-				if (this._numericType === "percent" && this.options.displayFactor) {
 
-					// TODO - any logic related to "percent" should not be in numeric editor.
-					value = this._divideWithPrecision(value, this.options.displayFactor);
+				// I.G. 18th Aug 2016 Bug 223245:igPercentEditor does not persist empty string value when allowNullValue: true
+				if (value === "" && !this.options.allowNullValue) {
+					value = 0;
 				}
+				if (this._numericType === "percent" && this.options.displayFactor) {
+					if (value !== "" && !isNaN(value)) {
+
+						// TODO - any logic related to "percent" should not be in numeric editor.
+						value = this._divideWithPrecision(value, this.options.displayFactor);
+					}		
+				}	
 			}
 			this._super(value);
 		},
@@ -3984,7 +3991,7 @@ if (typeof jQuery !== "function") {
 
 			}
 
-			if (this._numericType === "percent" && this.options.displayFactor) {
+			if (this._numericType === "percent" && this.options.displayFactor && val !== "" && !isNaN(val)) {
 				val = this._parseNumericValueByMode(val, this._numericType, this.options.dataMode);
 				val = this._multiplyWithPrecision(val, this.options.displayFactor);
 			}
