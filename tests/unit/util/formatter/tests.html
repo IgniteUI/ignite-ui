@@ -172,6 +172,19 @@
 				equal("dMartes y MMM m s t f h H", stringValue);
 			});
 		}
+
+		test("test checkbox format", function () {
+			var stringValue = $.ig.formatter(true, "checkbox", "checkbox", true, false, "block", "labelText", 1);
+			equal(stringValue,
+				"<span class='ui-igcheckbox-container' style='display:block;' role='checkbox' aria-disabled='true' aria-checked='true' aria-label='labelText' tabindex='1'><span class='' style='display:inline-block'><span style='display:block' class='ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>",
+				"Verify the checkbox format is properly applied.");
+
+			stringValue = $.ig.formatter(false, "checkbox", "checkbox", true, false, "block", "labelText", 1);
+
+			equal(stringValue,
+				"<span class='ui-igcheckbox-container' style='display:block;' role='checkbox' aria-disabled='true' aria-checked='false' aria-label='labelText' tabindex='1'><span class='' style='display:inline-block'><span style='display:block' class='ui-igcheckbox-small-off ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>",
+				"Verify the checkbox format is properly applied.");
+		});
 		
 		function runEscapeTests() {
 			test("testescape", function() {
