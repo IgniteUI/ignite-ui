@@ -319,26 +319,31 @@
 				equal($("#pEditor11").parent().parent().hasClass("ui-ignotify-warn"), true, "The notifier didn't show a warning.");
 
 				editorInput.trigger("focus");
-				$.ig.TestUtil.paste(editorInput[0], "33");
 				stop();
 				setTimeout(function () {
-					start();
-					equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste");
-					equal(editorInput.val(), "33", "The text after paste is not correct");	
-					
-					// paste "+0024" in front, ultimately only adding 24:
-					editorInput[0].setSelectionRange(0);	
-					$.ig.TestUtil.paste(editorInput[0], "+0024");
-					stop();
+					$.ig.TestUtil.paste(editorInput[0], "33");					
 					setTimeout(function () {
 						start();
-						equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste. Should be like [24|33]");
-						equal(editorInput.val(), "2433", "The text after positioned paste is not correct");
+						equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste");
+						equal(editorInput.val(), "33", "The text after paste is not correct");	
 						
-						editorInput.trigger("blur");	
-						strictEqual($editor.igPercentEditor("value"), 24.33, "The value after paste is not correct");
+						// paste "+0024" in front, ultimately only adding 24:
+						editorInput[0].setSelectionRange(0);
+						var parseInt = window.parseInt;
+						window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
+						$.ig.TestUtil.paste(editorInput[0], "+0024");
+						stop();
+						setTimeout(function () {
+							window.parseInt = parseInt;
+							start();
+							equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste. Should be like [24|33]");
+							equal(editorInput.val(), "2433", "The text after positioned paste is not correct");
+							
+							editorInput.trigger("blur");	
+							strictEqual($editor.igPercentEditor("value"), 24.33, "The value after paste is not correct");
+						}, 20);
 					}, 20);
-				}, 20);
+				}, 100);
 			});
 		});
 	</script>

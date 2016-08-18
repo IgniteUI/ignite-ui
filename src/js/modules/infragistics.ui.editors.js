@@ -3743,6 +3743,7 @@ if (typeof jQuery !== "function") {
 			return result;
 		},
 		_insert: function (newValue, previousValue, cursorPos) { //NumericEditor
+			var newLenght = newValue.length;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
@@ -3773,8 +3774,8 @@ if (typeof jQuery !== "function") {
 			if (this._editMode) {
 				this._editorInput.val(newValue);
 				if (cursorPos !== undefined) {
-					// Move the caret
-					this._setCursorPosition(cursorPos);
+					// Move the caret, account for cuts from number parsing:
+					this._setCursorPosition(cursorPos - (newLenght - newValue.toString().length));
 				}
 			} else {
 				this._processInternalValueChanging(newValue);
@@ -4536,6 +4537,7 @@ if (typeof jQuery !== "function") {
 			this._numericType = "percent";
 		},
 		_insert: function (newValue, previousValue, cursorPos) { // Percent Editor
+			var newLenght = newValue.length;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
 				if (this.options.maxValue &&
@@ -4568,8 +4570,8 @@ if (typeof jQuery !== "function") {
 			if (this._editMode) {
 				this._editorInput.val(newValue);
 				if (cursorPos !== undefined) {
-					// Move the caret
-					this._setCursorPosition(cursorPos);
+					// Move the caret, account for cuts from number parsing:
+					this._setCursorPosition(cursorPos - (newLenght - newValue.toString().length));
 				}
 			} else {
 				newValue = this._divideWithPrecision(newValue, this.options.displayFactor);
