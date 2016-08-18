@@ -1163,9 +1163,17 @@
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
-						this._linkedHElems[ index ].children().eq(0).css({
-							"-webkit-transform": "translate3d(" + destX + "px,0px, 0px)"
-						});
+						if (this._linkedHElems[ index ].data("igScroll") &&
+								this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
+							//We do not set igScroll option because there will be infinite recursion of syncing
+							this._linkedHElems[ index ].children().eq(0).children().eq(0).css({
+								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
+							});
+						} else {
+							this._linkedHElems[ index ].children().eq(0).css({
+								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
+							});
+						}
 					}
 				}
 			} else {
@@ -1211,9 +1219,18 @@
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
 						var destX = valuesElem ? Number(valuesElem[ 4 ]) : -this._getContentPositionX();
 
-						this._linkedVElems[ index ].children().eq(0).css({
-							"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
-						});
+						if (this._linkedVElems[ index ].data("igScroll") &&
+								this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
+							//We do not set igScroll option because there will be infinite recursion of syncing
+							this._linkedVElems[ index ].children().eq(0).children().eq(0).css({
+								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
+							});
+						} else {
+							this._linkedVElems[ index ].children().eq(0).css({
+								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
+							});
+						}
+
 					}
 				}
 			} else {
