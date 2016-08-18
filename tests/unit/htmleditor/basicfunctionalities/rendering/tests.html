@@ -444,17 +444,21 @@
                     stop();
                     setTimeout(function () {
                         combo.igCombo("closeDropDown");
-                        ok($(".ui-igpathfinder-overflowMarker").length !== 0, "When the maximum width is reached, remove the last added button, and add the overflow marker.");
-
                         start();
-                    }, 100);
+                    }, 400);
+
+                    stop();
+                    setTimeout(function () {
+                        ok($(".ui-igpathfinder-overflowMarker").length !== 0, "When the maximum width is reached, remove the last added button, and add the overflow marker.");
+                        start();
+                    }, 600);
 
                     stop();
                     setTimeout(function () {
                         $("#adjustSourceButtonsEditor_domPathToolbar").find("div:nth-child(2)").trigger("mouseover");
                         $("#adjustSourceButtonsEditor_domPathToolbar").find("div:nth-child(2)").trigger("mouseleave");
                         start();
-                    }, 200);
+                    }, 700);
                 });
             }
         };
