@@ -22,6 +22,7 @@
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -81,6 +82,9 @@
 						maxValue: 3,
 						spinWrapAround: true
 					});
+
+					
+					$("#pasteEditor").igPercentEditor();	
 				});
 			}
 			initialized = false;
@@ -304,12 +308,37 @@
 			
 			});
 
-			var testId = 'Percent insert.';
-			test(testId, 1, function () {
+			var testId = 'Paste and insert';
+			test(testId, 6, function () {
+				var $editor = $("#pasteEditor"),
+					editorInput = $editor.igPercentEditor("field");
+
 				$("#pEditor11").igPercentEditor("field").focus();
 				$("#pEditor11").igPercentEditor( "insert", "1" );	
 				
 				equal($("#pEditor11").parent().parent().hasClass("ui-ignotify-warn"), true, "The notifier didn't show a warning.");
+
+				editorInput.trigger("focus");
+				$.ig.TestUtil.paste(editorInput[0], "33");
+				stop();
+				setTimeout(function () {
+					start();
+					equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste");
+					equal(editorInput.val(), "33", "The text after paste is not correct");	
+					
+					// paste "+0024" in front, ultimately only adding 24:
+					editorInput[0].setSelectionRange(0);	
+					$.ig.TestUtil.paste(editorInput[0], "+0024");
+					stop();
+					setTimeout(function () {
+						start();
+						equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste. Should be like [24|33]");
+						equal(editorInput.val(), "2433", "The text after positioned paste is not correct");
+						
+						editorInput.trigger("blur");	
+						strictEqual($editor.igPercentEditor("value"), 24.33, "The value after paste is not correct");
+					}, 20);
+				}, 20);
 			});
 		});
 	</script>
@@ -335,6 +364,7 @@
 	<input id="pEditor9" />	
 	<input id="pEditor10" />
 	<input id="pEditor11" />
+	<div id="pasteEditor"></div>
 </div>
 </body>
 </html>

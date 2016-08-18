@@ -32,8 +32,35 @@
 		// Use: $.ig.TestUtil.boolParse(param) : returns false with empty parameter
 		boolParse: function(result) {
 			return !!result && result !== 'false';
-		}
+		},
+
+		/// Input interactions
 		
+		/**
+		 * Performs a paste on an input
+		 * @param input The HTMLInput element to paste into
+		 * @param newVal The text to paste in (at cursor position or over selection if focused)
+		 */
+		paste: 	function (input, newVal) {
+			// create a mouse click event
+			var event = document.createEvent('Event'),
+				start = input.selectionStart,
+				end = input.selectionEnd;
+			event.initEvent('paste', true, true);
+			event.target = input;
+			event.srcElement = input;
+
+			// NB! paste event is fired *before* any changes are applied to the DOM
+			input.dispatchEvent(event);
+
+			// set value and cursor
+			oldVal = $(input).val();
+			prefix = oldVal.substring(0, start);
+			sufix = oldVal.substring(end, oldVal.length);
+			$(input).val(prefix + newVal + sufix);
+
+			input.setSelectionRange(end + newVal.length, end + newVal.length);
+		}
 	});
 	
 }(jQuery));

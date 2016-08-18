@@ -22,6 +22,7 @@
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -285,6 +286,11 @@
 					minValue: 0,
 					spinWrapAround: true
 				});
+
+				
+				$("#pasteEditor").igNumericEditor({
+					dataMode: "double"
+				});	
 			});
 		}
 		initialized = false;
@@ -785,8 +791,8 @@
 				setTimeout(function () {
 					start();
 					ok(closed, "dropDownListClosed event not fired");
-					paste(editorInput[0], "1");
-					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");
+					$.ig.TestUtil.paste(editorInput[0], "1");
+					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");				
 				}, 100);
 			}, 100);
 		});		
@@ -974,17 +980,36 @@
 			$("#spinUp").igNumericEditor("spinDown",3);
 			equal($("#spinUp").igNumericEditor("value"), 6, 'spinWrapAround does not work.');
 		});
+
+		testId = 'Paste and insert';
+		test(testId, 5, function () {
+			var $editor = $("#pasteEditor"),
+				editorInput = $editor.igNumericEditor("field");
+			
+			editorInput.trigger("focus");
+			$.ig.TestUtil.paste(editorInput[0], "33");
+			stop();
+			setTimeout(function () {
+				start();
+				equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste");
+				equal(editorInput.val(), "33", "The text after paste is not correct");	
+				
+				// paste "+0024" in front, ultimately only adding 24:
+				editorInput[0].setSelectionRange(0);	
+				$.ig.TestUtil.paste(editorInput[0], "+0024");
+				stop();
+				setTimeout(function () {
+					start();
+					equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste. Should be like [24|33]");
+					equal(editorInput.val(), "2433", "The text after positioned paste is not correct");
+					
+					editorInput.trigger("blur");	
+					strictEqual($editor.igNumericEditor("value"), 2433, "The value after paste is not correct");
+				}, 20);
+			}, 20);
+		});
 	});
-	function paste(input, newVal) {
-		// create a mouse click event
-		var event = document.createEvent('Event');
-		event.initEvent('paste', true, true);
-		event.target = input;
-		event.srcElement = input;
-		$(input).val(newVal);
-		// send click to element
-		input.dispatchEvent(event);
-	}
+
 	function testSelection(input, start, end) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
 		equal(input[0].selectionEnd, end, "The selection doesn't end from index " + end);
