@@ -1769,7 +1769,7 @@ if (typeof jQuery !== "function") {
 				},
 				"paste.editor": function (event) {
 					self._currentInputTextValue = self._editorInput.val();
-					self._pasteHandler(event, true);
+					self._pasteHandler(event);
 				},
 				"keydown.editor": function (event) {
 
@@ -2324,13 +2324,14 @@ if (typeof jQuery !== "function") {
 				newItem.attr("data-active", true);
 			}
 		},
-		_pasteHandler: function (event, isPasteEvent) {
-			// TextEditor Handler
-			var self = this, previousValue = $(event.target).val(), newValue;
+		_pasteHandler: function (event) { // TextEditor Handler
+			var self = this, previousValue = $(event.target).val(), newValue, selection;
+
+			selection = this._getSelection(event.target);
 			this._currentInputTextValue = this._editorInput.val();
 			this._timeouts.push(setTimeout(function () {
 				newValue = $(event.target).val();
-				self._insert(newValue, previousValue, isPasteEvent);
+				self._insert(newValue, previousValue, selection.end + (newValue.length - previousValue.length));
 			}, 10));
 		},
 		_insertHandler: function (string) {
@@ -2346,8 +2347,8 @@ if (typeof jQuery !== "function") {
 			return previousValue.substring(0, selection.start) + string +
 				previousValue.substring(selection.end, previousValue.length);
 		},
-		_insert: function (newValue, previousValue, isPasteEvent) { // TextEditor
-			var selection, i, ch;
+		_insert: function (newValue, previousValue, cursorPos) { // TextEditor
+			var i, ch;
 			if (this.options.maxLength) {
 				if (newValue && newValue.toString().length > this.options.maxLength) {
 					newValue = newValue.toString().substring(0, this.options.maxLength);
@@ -2359,7 +2360,6 @@ if (typeof jQuery !== "function") {
 					}
 				}
 			if (this._validateValue(newValue)) {
-				selection = this._getSelection(this._editorInput[ 0 ]);
 				if (this.options.toUpper) {
 					if (newValue) { newValue = newValue.toLocaleUpperCase(); }
 				} else if (this.options.toLower) {
@@ -2387,12 +2387,13 @@ if (typeof jQuery !== "function") {
 				}
 				if (this._focused) {
 					this._editorInput.val(newValue);
+					if (cursorPos !== undefined) {
+						// Move the caret
+						this._setCursorPosition(cursorPos);
+					}
 				}
 				this._processValueChanging(newValue);
 				this._processTextChanged();
-
-				// Move the caret
-				this._setCursorPosition(selection.start + (isPasteEvent ? 0 : newValue.length));
 			} else {
 				this._editorInput.val(previousValue);
 			}
@@ -3741,7 +3742,7 @@ if (typeof jQuery !== "function") {
 			}
 			return result;
 		},
-		_insert: function (newValue, previousValue) { //NumericEditor
+		_insert: function (newValue, previousValue, cursorPos) { //NumericEditor
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
@@ -3771,6 +3772,10 @@ if (typeof jQuery !== "function") {
 			}
 			if (this._editMode) {
 				this._editorInput.val(newValue);
+				if (cursorPos !== undefined) {
+					// Move the caret
+					this._setCursorPosition(cursorPos);
+				}
 			} else {
 				this._processInternalValueChanging(newValue);
 				this._exitEditMode();
@@ -4530,7 +4535,7 @@ if (typeof jQuery !== "function") {
 		_setNumericType: function () {
 			this._numericType = "percent";
 		},
-		_insert: function (newValue, previousValue) { // Percent Editor
+		_insert: function (newValue, previousValue, cursorPos) { // Percent Editor
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
 				if (this.options.maxValue &&
@@ -4562,6 +4567,10 @@ if (typeof jQuery !== "function") {
 			}
 			if (this._editMode) {
 				this._editorInput.val(newValue);
+				if (cursorPos !== undefined) {
+					// Move the caret
+					this._setCursorPosition(cursorPos);
+				}
 			} else {
 				newValue = this._divideWithPrecision(newValue, this.options.displayFactor);
 				this._processInternalValueChanging(newValue);
@@ -4919,8 +4928,7 @@ if (typeof jQuery !== "function") {
 			this._positionCursor(selection.start, selection.end);
 			this._processTextChanged();
 		},
-		_insert: function (newValue) { // MaskEditor
-			var selection = this._getSelection(this._editorInput[ 0 ]);
+		_insert: function (newValue, previousValue, cursorPos) { // MaskEditor
 				if (this.options.toUpper) {
 					if (newValue) { newValue = newValue.toLocaleUpperCase(); }
 				} else if (this.options.toLower) {
@@ -4931,18 +4939,21 @@ if (typeof jQuery !== "function") {
 				this._editorInput.val(newValue);
 				this._processTextChanged();
 
-				// Move the caret
-				this._setCursorPosition(selection.start + newValue.length);
+				if (cursorPos !== undefined) {
+					// Move the caret
+					this._setCursorPosition(cursorPos);
+				}
 
 		},
-		_pasteHandler: function (event) {
-			// MaskEditor Handler
-			var self = this, previousValue = $(event.target).val(), newValue;
+		_pasteHandler: function (event) { // MaskEditor Handler
+			var self = this, previousValue = $(event.target).val(), newValue, selection;
+
 			this._currentInputTextValue = this._editorInput.val();
 			this._timeouts.push(setTimeout(function () {
 				newValue = $(event.target).val();
 				if (self._validateValueAgainstMask(newValue)) {
-					self._insert(newValue, previousValue);
+					selection = self._getSelection(event.target);
+					self._insert(newValue, previousValue, selection.end);
 				} else {
 					if (self.options.revertIfNotValid) {
 						newValue = self._valueInput.val();

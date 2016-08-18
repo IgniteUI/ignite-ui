@@ -1014,15 +1014,16 @@
 		event.initEvent('paste', true, true);
 		event.target = input;
 		event.srcElement = input;
+
+		// NB! paste event is fired *before* any changes are applied to the DOM
+		input.dispatchEvent(event);
+
 		oldVal = $(input).val();
 		prefix = oldVal.substring(0, cursor);
 		sufix = oldVal.substring(cursor, oldVal.length);
 		$(input).val(prefix + newVal + sufix);
-		// send click to element
-		input.dispatchEvent(event);
 
 		input.setSelectionRange(cursor + newVal.length, cursor + newVal.length);
-
 	}
 	function keyInteraction(key, target, special) {
 		keyDownChar(key, target, special);
