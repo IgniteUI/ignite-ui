@@ -3238,8 +3238,8 @@ if (typeof jQuery !== "function") {
 
 						// TODO - any logic related to "percent" should not be in numeric editor.
 						value = this._divideWithPrecision(value, this.options.displayFactor);
-					}		
-				}	
+					}
+				}
 			}
 			this._super(value);
 		},
