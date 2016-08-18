@@ -4931,21 +4931,24 @@ if (typeof jQuery !== "function") {
 			this._processTextChanged();
 		},
 		_insert: function (newValue, previousValue, cursorPos) { // MaskEditor
-				if (this.options.toUpper) {
-					if (newValue) { newValue = newValue.toLocaleUpperCase(); }
-				} else if (this.options.toLower) {
-					if (newValue) { newValue = newValue.toLocaleLowerCase(); }
-				}
-				this._promptCharsIndices = [];
-				newValue = this._parseValueByMask(newValue);
-				this._editorInput.val(newValue);
-				this._processTextChanged();
+			var newLenght = newValue.length;
 
-				if (cursorPos !== undefined) {
-					// Move the caret
-					this._setCursorPosition(cursorPos);
-				}
+			if (this.options.toUpper) {
+				if (newValue) { newValue = newValue.toLocaleUpperCase(); }
+			} else if (this.options.toLower) {
+				if (newValue) { newValue = newValue.toLocaleLowerCase(); }
+			}
+			this._promptCharsIndices = [];
+			newValue = this._parseValueByMask(newValue);
+			this._editorInput.val(newValue);
+			this._processTextChanged();
 
+			if (cursorPos !== undefined) {
+				// Move the caret, move to closest unfilled is possible:
+				newLenght = newValue.slice(cursorPos).split(this.options.unfilledCharsPrompt)[0].length;
+				cursorPos += newLenght;
+				this._setCursorPosition(cursorPos);
+			}
 		},
 		_pasteHandler: function (event) { // MaskEditor Handler
 			var self = this, previousValue = $(event.target).val(), newValue, selection;
