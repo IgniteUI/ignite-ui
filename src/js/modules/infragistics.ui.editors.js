@@ -4944,8 +4944,8 @@ if (typeof jQuery !== "function") {
 			this._processTextChanged();
 
 			if (cursorPos !== undefined) {
-				// Move the caret, move to closest unfilled is possible:
-				newLenght = newValue.slice(cursorPos).split(this.options.unfilledCharsPrompt)[0].length;
+				// Move the caret, move to closest unfilled if possible:
+				newLenght = newValue.slice(cursorPos).split(this.options.unfilledCharsPrompt)[ 0 ].length;
 				cursorPos += newLenght;
 				this._setCursorPosition(cursorPos);
 			}

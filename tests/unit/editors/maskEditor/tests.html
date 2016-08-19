@@ -245,6 +245,10 @@
 					$("#pasteHandlerInput1").igMaskEditor({
 						inputMask: "CCR00"
 					});
+
+					$("#pasteEditor").igMaskEditor({
+						inputMask: "00-0L/>aa(test)"
+					});	
 					
 					$("#keydownEditor1").igMaskEditor({
 						inputMask: ">?CC",
@@ -776,6 +780,65 @@
 				editor.blur();
 				equal(field.val(), "1234", "Text is not 1234");
 			});
+
+			testId = 'Paste and insert';
+			test(testId, 16, function () {
+				var $editor = $("#pasteEditor"),
+					editorInput = $editor.igMaskEditor("field"),
+					testPastePosition = function (val, expectedPos) {
+						var defer = $.Deferred();
+						$.ig.TestUtil.paste(editorInput[0], val);
+						stop();
+						setTimeout(function () {
+							start();
+							equal(editorInput[0].selectionStart, expectedPos, "Cusrsor position not correct after paste");
+							defer.resolve();
+						}, 20);
+						return defer;
+					};
+				
+				editorInput.trigger("focus");
+				stop();
+				setTimeout(function () {
+					start();	
+					testPastePosition("57", 3).then(function( value ) {
+						//57-|__/__(test)
+						equal(editorInput.val(), "57-__/__(test)", "The text after paste is not correct");
+						return testPastePosition("2ab", 7);
+					}).then(function( value ) {
+						//57-2a/B|_(test)
+						equal(editorInput.val(), "57-2a/B_(test)", "The text after paste is not correct");
+						return testPastePosition("c", 14);
+					}).then(function( value ) {
+						//57-2a/BC(test)|
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						//verify paste doesn't go beyond the mask
+						return testPastePosition("random", 14);
+					}).then(function( value ) {
+						editorInput[0].select();
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						return testPastePosition("57-2a", 6);
+					}).then(function( value ) {
+						//57-2a/|__(test)
+						editorInput[0].select();
+						equal(editorInput.val(), "57-2a/__(test)", "The text after paste is not correct");
+						return testPastePosition("572a/bc", 14);
+					}).then(function( value ) {
+						//57-2a/BC(test)|
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						editorInput[0].select();
+						return testPastePosition("572abc(test)", 14);
+					}).then(function( value ) {
+						//57-2a/BC(test)|
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						editorInput[0].select();
+						return testPastePosition("572abc(more random string value test)", 14);
+					}).then(function( value ) {
+						//57-2a/BC(test)|
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+					});
+				}, 100);
+			});
 		});
 
 		function checkMaskState(editor, keyCode, editValue, displayValue, value) {
@@ -958,6 +1021,7 @@
 			<input type="text" id="validInEditModeEditor" />
 			<input type="text" id="pasteHandlerInput"/>
 			<input type="text" id="pasteHandlerInput1" />
+			<input type="text" id="pasteEditor" />
 			<input type="text" id="keydownEditor1" />
 			<input type="text" id="keydownEditor2" />
 			<input type="text" id="keydownEditor3" />
