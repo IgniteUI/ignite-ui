@@ -359,6 +359,8 @@
 		var testId_103 = 'clicking on arrow right, moving the mouse out of the scroll container stops scrolling and moving back into the arrow starts scrolling again test.';
 		var testId_104 = 'linked two elements with igScroll instanced vertically updates when scrolling with scrollTop option test.';
 		var testId_105 = 'linked two elements with igScroll instanced horizontally updates when scrolling with scrollLeft option test.';
+		var testId_106 = 'linked two elements with igScroll instanced vertically updates when scrolling with scrollTop option on touch test.';
+		var testId_107 = 'linked two elements with igScroll instanced horizontally updates when scrolling with scrollLeft option on touch test.';
 		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -2812,7 +2814,6 @@
 			}, 325);
 	    });
 		
-			
 		test(testId_104, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));
@@ -2849,6 +2850,48 @@
 			
 			$("#elemVH").remove();
 			$("#elemHSync").remove();
+	    });	
+		
+		test(testId_106, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));
+
+			$('#elemVH').igScroll({
+				syncedElemsV: [$('#elemVSync')]
+			});
+			
+			$('#elemVSync').igScroll({
+				syncedElemsV: [$('#elemVH')]
+			});
+
+			$("#elemVH").igScroll("option", "scrollTop", 100);
+			equal($("#elemVSync").igScroll("option", "scrollTop"), 100, "igScroll did not scroll properly vertically");
+			
+			$("#elemVH").remove();
+			$("#elemVSync").remove();
+			$.ig.util.isTouch = false;
+	    });	
+		
+		test(testId_107, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $("#testBed").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));
+
+			$('#elemVH').igScroll({
+				syncedElemsH: [$('#elemHSync')]
+			});
+
+			$('#elemHSync').igScroll({
+				syncedElemsH: [$('#elemVH')]
+			});
+			
+			$("#elemVH").igScroll("option", "scrollLeft", 100);
+			equal($("#elemHSync").igScroll("option", "scrollLeft"), 100, "igScroll did not scroll properly vertically");
+			
+			$("#elemVH").remove();
+			$("#elemHSync").remove();
+			$.ig.util.isTouch = false;
 	    });	
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>
