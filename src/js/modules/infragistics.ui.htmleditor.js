@@ -1848,7 +1848,41 @@ if (typeof jQuery !== "function") {
             overflowMarker: "ui-igpathfinder-overflowMarker"
         },
         _create: function () {
+            var self = this, o = this.options;
             this._addStyles();
+
+            // R.K. 18/08/2016 #222936 Performance issues in IE 11 when typing really fast into the igHtmlEditor
+
+            // Previously the code re-attached the event handlers in the buttonList on every call to _updateToolbar
+            // which when profiling contributed to big performance hit especially in IE11
+            // Now we delegate them through the parent element only on the first call to the function
+            // We need to hold references to both the parents and buttonList variables so that the delegated
+            // handlers can get the current state of the toolbar
+            this.element
+                .attr("disabled", o.disabled)
+                .attr("aria-disabled", o.disabled)
+                .on("mouseover", "div", function () {
+                    if (!o.disabled) {
+                        $(this).addClass("ui-state-hover");
+                    }
+                })
+                .on("mouseleave", "div", function () {
+                    if (!o.disabled) {
+                        $(this).removeClass("ui-state-hover");
+                    }
+                })
+                .on("click", "div", function (e) {
+                    if (!o.disabled) {
+                        $(this).siblings(".ui-state-active").removeClass("ui-state-active");
+                        $(this).addClass("ui-state-active");
+
+                        self._trigger("click", e,
+                            {
+                                item: self.options.__currentParents.eq(
+                                    self.options.__currentButtonList.index(this))
+                            });
+                    }
+                });
         },
         _addStyles: function () {
             this.element.addClass("ui-igPathFinder");
@@ -1939,28 +1973,8 @@ if (typeof jQuery !== "function") {
                     }
                 }
 
-                buttonsList
-                    .attr("disabled", o.disabled)
-                    .attr("aria-disabled", o.disabled)
-                    .mouseover(function () {
-                        if (!o.disabled) {
-                            $(this).addClass("ui-state-hover");
-                        }
-                    })
-                    .mouseleave(function () {
-                        if (!o.disabled) {
-                            $(this).removeClass("ui-state-hover");
-                        }
-                    })
-                    .click(function (e) {
-                        if (!o.disabled) {
-                            $(this).siblings(".ui-state-active").removeClass("ui-state-active");
-                            $(this).addClass("ui-state-active");
-
-                            self._trigger("click", e,
-                                { item: parents.eq(buttonsList.index(this)) });
-                        }
-                    });
+                this.options.__currentButtonList = buttonsList;
+                this.options.__currentParents = parents;
             }
         }
     });
