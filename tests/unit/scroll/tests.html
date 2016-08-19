@@ -2474,7 +2474,7 @@
 		test(testId_94, function () {
 			$.ig.util.isTouch = true;
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));
+	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
 			$('#elemVH').igScroll({
 				modifyDOM: true,
@@ -2491,7 +2491,7 @@
 				notEqual($("#elemVH").data("igScroll")._getContentPositionY(), 13, "igScroll did not scroll properly vertically");
 				
 				setTimeout(function () {
-					equal($("#elemVH").data("igScroll")._getContentPositionY(), -getTransform3dValueY($('#syncContent')), "igScroll content and linked element did not sync vertically on touch");
+					equal($("#elemVH").data("igScroll")._getContentPositionY(), -getTransform3dValueY($('#elemVSync_content')), "igScroll content and linked element did not sync vertically on touch");
 					
 					$("#elemVH").remove();
 					$("#elemVSync").remove();
@@ -2504,7 +2504,7 @@
 		test(testId_95, function () {
 			$.ig.util.isTouch = true;
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-	        $("#testBed").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));
+	        $("#testBed").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
 			$('#elemVH').igScroll({
 				modifyDOM: true,
@@ -2519,7 +2519,7 @@
 			setTimeout(function () {
 				notEqual($("#elemVH").data("igScroll")._getContentPositionX(), 27, "igScroll scrolled horizontally by the swipe");
 				equal($("#elemVH").data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");				
-				equal($("#elemVH").data("igScroll")._getContentPositionX(), -getTransform3dValueX($('#syncContent')), "igScroll content and linked element did not sync horizontally on touch");
+				equal($("#elemVH").data("igScroll")._getContentPositionX(), -getTransform3dValueX($('#elemHSync_content')), "igScroll content and linked element did not sync horizontally on touch");
 
 				$("#elemVH").remove();
 				$("#elemHSync").remove();
@@ -2816,7 +2816,7 @@
 		
 		test(testId_104, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));
+	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
 			$('#elemVH').igScroll({
 				syncedElemsV: [$('#elemVSync')]
@@ -2827,6 +2827,7 @@
 			});
 
 			$("#elemVH").igScroll("option", "scrollTop", 100);
+			equal($("#elemVH").igScroll("option", "scrollTop"), 100, "igScroll did not scroll properly vertically");
 			equal($("#elemVSync").igScroll("option", "scrollTop"), 100, "igScroll did not scroll properly vertically");
 			
 			$("#elemVH").remove();
@@ -2835,7 +2836,7 @@
 		
 		test(testId_105, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-	        $("#testBed").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));
+	        $("#testBed").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
 			$('#elemVH').igScroll({
 				syncedElemsH: [$('#elemHSync')]
@@ -2846,6 +2847,7 @@
 			});
 			
 			$("#elemVH").igScroll("option", "scrollLeft", 100);
+			equal($("#elemVH").igScroll("option", "scrollLeft"), 100, "igScroll did not scroll properly vertically");
 			equal($("#elemHSync").igScroll("option", "scrollLeft"), 100, "igScroll did not scroll properly vertically");
 			
 			$("#elemVH").remove();
@@ -2855,7 +2857,7 @@
 		test(testId_106, function () {
 			$.ig.util.isTouch = true;
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));
+	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
 			$('#elemVH').igScroll({
 				syncedElemsV: [$('#elemVSync')]
@@ -2866,6 +2868,7 @@
 			});
 
 			$("#elemVH").igScroll("option", "scrollTop", 100);
+			equal($("#elemVH").igScroll("option", "scrollTop"), 100, "igScroll did not scroll properly vertically");
 			equal($("#elemVSync").igScroll("option", "scrollTop"), 100, "igScroll did not scroll properly vertically");
 			
 			$("#elemVH").remove();
@@ -2876,7 +2879,7 @@
 		test(testId_107, function () {
 			$.ig.util.isTouch = true;
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-	        $("#testBed").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append($('<div id="syncContent"></div>').append(contentScrollVH)));
+	        $("#testBed").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
 			$('#elemVH').igScroll({
 				syncedElemsH: [$('#elemHSync')]
@@ -2887,6 +2890,7 @@
 			});
 			
 			$("#elemVH").igScroll("option", "scrollLeft", 100);
+			equal($("#elemVH").igScroll("option", "scrollLeft"), 100, "igScroll did not scroll properly vertically");
 			equal($("#elemHSync").igScroll("option", "scrollLeft"), 100, "igScroll did not scroll properly vertically");
 			
 			$("#elemVH").remove();

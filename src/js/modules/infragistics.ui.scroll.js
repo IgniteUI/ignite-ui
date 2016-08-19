@@ -211,6 +211,7 @@
 		_create: function () {
 			var elem = this.element;
 
+			this._bKeyboardNavigation = true;
 			this._bMixedEnvironment = false;
 			this._linkedHElems = [];
 			this._linkedVElems = [];
@@ -238,12 +239,13 @@
 
 			if (this.options.modifyDOM) {
 				elem.addClass(this.css.scrollableElem);
-				this._content = $("<div id='" + this.element.attr("id") + "_content'/>")
+
+				this._content = $("<div id='" + elem.attr("id") + "_content'/>")
 					.addClass(this.css.scrollContent)
 					.appendTo(elem)
-					.append(elem.children());
+					.append(elem.contents());
 
-				this._container = $("<div id='" + this.element.attr("id") + "_container'/>")
+				this._container = $("<div id='" + elem.attr("id") + "_container'/>")
 					.addClass(this.css.scrollContainer)
 					.css({
 						"width": this._elemWidth + "px",
@@ -252,6 +254,9 @@
 					.insertBefore(this._content)
 					.append(this._content);
 				this._container.data("containerName", "scrollContainer");
+				if (this.element.attr("tabindex")) {
+					this._container.attr("tabindex", this.element.attr("tabindex"));
+				}
 			} else {
 				this._container = elem;
 				this._content = $(elem.children()[ 0 ]);
@@ -297,7 +302,9 @@
 				touchend: $.proxy(this._onTouchEndContainer, this),
 
 				mouseenter: $.proxy(this._onMouseEnterContainer, this),
-				mouseleave: $.proxy(this._onMouseLeaveContainer, this)
+				mouseleave: $.proxy(this._onMouseLeaveContainer, this),
+
+				keydown: $.proxy(this._onKeyDown, this)
 			};
 			this._container.on(this._evts);
 
@@ -606,6 +613,11 @@
 					var elemObject = $(inElements[ index ]);
 
 					if (elemObject.length) {
+						if (this.options.modifyDOM && elemObject.data("igScroll") === undefined) {
+							$("<div id='" + elemObject.attr("id") + "_content'/>")
+								.appendTo(elemObject)
+								.append(elemObject.contents());
+						}
 						this._linkedHElems.push(elemObject);
 					} else {
 						throw new Error($.ig.Scroll.locale.errorNoElementLink);
@@ -623,6 +635,11 @@
 					var elemObject = $(inElements[ index ]);
 
 					if (elemObject.length) {
+						if (this.options.modifyDOM && elemObject.data("igScroll") === undefined) {
+							$("<div id='" + elemObject.attr("id") + "_content'/>")
+								.appendTo(elemObject)
+								.append(elemObject.contents());
+						}
 						this._linkedVElems.push(elemObject);
 					} else {
 						throw new Error($.ig.Scroll.locale.errorNoElementLink);
@@ -1292,6 +1309,96 @@
 		_moveVBarY: function (destY) {
 			if (this._linkedVBar) {
 				this._linkedVBar.scrollTop(destY);
+			}
+		},
+
+		_onKeyDown: function (event) {
+			if (this._bKeyboardNavigation) {
+				var keyCode = event.keyCode,
+					curPosX,
+					curPosY,
+					scrollStep = 0,
+					horizontal = false,
+					evtArgs = {
+						owner: this,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: false,
+						stepX: 0,
+						stepY: 0
+					};
+
+				if (this.options.scrollOnlyHBar) {
+					curPosX = this._getScrollbarHPosition();
+				} else {
+					curPosX = this._getContentPositionX();
+				}
+
+				if (this.options.scrollOnlyVBar) {
+					curPosY = this._getScrollbarVPosition();
+				} else {
+					curPosY = this._getContentPositionY();
+				}
+
+				if (keyCode === $.ui.keyCode.DOWN) {
+					scrollStep = this.options.smallIncrementStep;
+					evtArgs.stepY = scrollStep;
+					evtArgs.smallIncrement = 1;
+				} else if (keyCode === $.ui.keyCode.UP) {
+					scrollStep = -this.options.smallIncrementStep;
+					evtArgs.stepY = scrollStep;
+					evtArgs.smallIncrement = -1;
+				} else if (keyCode === $.ui.keyCode.RIGHT) {
+					horizontal = true;
+					scrollStep = this.options.smallIncrementStep;
+					evtArgs.stepX = scrollStep;
+					evtArgs.smallIncrement = 1;
+				} else if (keyCode === $.ui.keyCode.LEFT) {
+					horizontal = true;
+					scrollStep = -this.options.smallIncrementStep;
+					evtArgs.stepX = scrollStep;
+					evtArgs.smallIncrement = -1;
+				} else if (keyCode === $.ui.keyCode.PAGE_UP) {
+					scrollStep = this.options.bigIncrementStep === null ?
+								-this._elemHeight :
+								-this.options.bigIncrementStep;
+					evtArgs.stepY = scrollStep;
+					evtArgs.bigIncrement = -1;
+				} else if (keyCode === $.ui.keyCode.PAGE_DOWN) {
+					scrollStep = this.options.bigIncrementStep === null ?
+								this._elemHeight :
+								this.options.bigIncrementStep;
+					evtArgs.stepY = scrollStep;
+					evtArgs.bigIncrement = 1;
+				} else if (keyCode === $.ui.keyCode.SPACE && !event.shiftKey) {
+					scrollStep = this.options.bigIncrementStep === null ?
+								this._elemHeight :
+								this.options.bigIncrementStep;
+					evtArgs.stepY = scrollStep;
+					evtArgs.bigIncrement = 1;
+				} else if (keyCode === $.ui.keyCode.SPACE && event.shiftKey) {
+					scrollStep = this.options.bigIncrementStep === null ?
+								-this._elemHeight :
+								-this.options.bigIncrementStep;
+					evtArgs.stepY = scrollStep;
+					evtArgs.bigIncrement = -1;
+				}
+
+				var bNoCancel = this._trigger("scrolling", null, evtArgs);
+				if (bNoCancel) {
+					if (horizontal) {
+						this._scrollLeft(curPosX + scrollStep, false);
+					} else {
+						this._scrollTop(curPosY + scrollStep, false);
+					}
+
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: evtArgs.smallIncrement,
+						bigIncrement: evtArgs.bigIncrement,
+						horizontal: horizontal
+					});
+				}
 			}
 		},
 
@@ -2876,5 +2983,6 @@
 			container = args.owner.container().find("[data-scroll]").eq(0);
 		}
 		container.igScroll({ modifyDOM: false });
+		container.data("igScroll")._bKeyboardNavigation = false;
 	});
 }(jQuery));
