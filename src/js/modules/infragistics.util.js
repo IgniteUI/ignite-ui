@@ -416,7 +416,7 @@
 			s = "<span class='ui-igcheckbox-container' style='display:" +
 				display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
 				val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
-			s += "<span class='" + $.ig.checkboxMarkupClasses + "' style=,display:inline-block'>";
+			s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
 			s += "<span style='display:block' class='" + (val ? "" : "ui-igcheckbox-small-off ");
 			return s + "ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>";
 		}
@@ -634,7 +634,7 @@
 			if (format.indexOf(s = "{0}") >= 0) {
 				return format.replace(s, val);
 			}
-			if (format.indexOf(s = "[ 0 ]") >= 0) {
+			if (format.indexOf(s = "[0]") >= 0) {
 				return format.replace(s, val);
 			}
 		}
@@ -785,7 +785,7 @@
 		if (t === "undefined") {
 			return "string";
 		} else if (o && o.getTime && !isNaN(o.getTime()) &&
-			Object.prototype.toString.call(o) === "[ object Date ]") {
+			Object.prototype.toString.call(o) === "[object Date]") {
 			return "date";
 		} else if (t === "boolean") {
 			return "bool";
@@ -1093,7 +1093,7 @@
 			if (!this.typeArguments || !this.typeArguments.length) {
 				return this.identifier.toString();
 			} else {
-				var ret = this.identifier.toString() + "[ ";
+				var ret = this.identifier.toString() + "[";
 				var first = true;
 				for (var i = 0; i < this.typeArguments.length; i++) {
 					if (this.typeArguments[ i ] == undefined) {
@@ -1106,7 +1106,7 @@
 						ret += this.typeArguments[ i ].identifier.toString();
 					}
 				}
-				ret += " ]";
+				ret += "]";
 				return ret;
 			}
 		},
@@ -6481,12 +6481,12 @@ $.ig.Array.prototype.clear = function () {
 					jsPattern = jsPattern.concat("\\/");
 					break;
 
-				case "[ ":
+				case "[":
 					isInClass = true;
 					jsPattern = jsPattern.concat("[");
 					break;
 
-				case " ]":
+				case "]":
 					isInClass = false;
 					jsPattern = jsPattern.concat("]");
 					break;
