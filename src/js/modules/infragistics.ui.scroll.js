@@ -414,8 +414,30 @@
 			if (optionName === "scrollLeft" && value === undefined) {
 				return this._scrollLeft(null, true);
 			}
+			if (optionName === "scrollHeight" && value === undefined) {
+				return this._getContentHeight();
+			}
+			if (optionName === "scrollWidth" && value === undefined) {
+				return this._getContentWidth();
+			}
 
 			return this._super(optionName, value);
+		},
+
+		_getContentHeight: function () {
+			if (this.options.scrollHeight !== null) {
+				return this.options.scrollHeight;
+			} else {
+				return this._content.height();
+			}
+		},
+
+		_getContentWidth: function () {
+			if (this.options.scrollWidth !== null) {
+				return this.options.scrollWidth;
+			} else {
+				return this._content.width();
+			}
 		},
 
 		_getContentPositionX: function () {
@@ -752,8 +774,8 @@
 		_scrollToXY: function(destX, destY, triggerEvents) {
 			var curPosX = this._getContentPositionX(),
 				curPosY = this._getContentPositionY();
-			destX = this._clampAxisCoords(destX, 0, Math.max(this._contentWidth - this._dragMaxX, 0));
-			destY = this._clampAxisCoords(destY, 0, Math.max(this._contentHeight - this._dragMaxY, 0));
+			destX = this._clampAxisCoords(destX, 0, Math.max(this._getContentWidth() - this._dragMaxX, 0));
+			destY = this._clampAxisCoords(destY, 0, Math.max(this._getContentHeight() - this._dragMaxY, 0));
 
 			if (triggerEvents) {
 				//Trigger scrolling event
@@ -792,7 +814,7 @@
 				curPosX = this._getContentPositionX();
 			}
 
-			destX = this._clampAxisCoords(destX, 0, this._contentWidth - this._dragMaxX);
+			destX = this._clampAxisCoords(destX, 0, this._getContentWidth() - this._dragMaxX);
 
 			//We have another trigger for scrolling in case we want to scroll only on the X axis(horizontal) and not interrupt the Y(vertical) scroll position.
 			if (triggerEvents) {
@@ -839,7 +861,7 @@
 				curPosY = this._getContentPositionY();
 			}
 
-			destY = this._clampAxisCoords(destY, 0, this._contentHeight - this._dragMaxY);
+			destY = this._clampAxisCoords(destY, 0, this._getContentHeight() - this._dragMaxY);
 
 			//We have another trigger for scrolling in case we want to scroll only on the Y axis(vertical) and not interrupt the X(horizontal) scroll position.
 			if (triggerEvents) {
@@ -940,8 +962,8 @@
 				curPosX = this._getContentPositionX(),
 				curPosY = this._getContentPositionY();
 
-			destX = this._clampAxisCoords(destX, 0, Math.max(this._contentWidth - this._dragMaxX, 0));
-			destY = this._clampAxisCoords(destY, 0, Math.max(this._contentHeight - this._dragMaxY, 0));
+			destX = this._clampAxisCoords(destX, 0, Math.max(this._getContentWidth() - this._dragMaxX, 0));
+			destY = this._clampAxisCoords(destY, 0, Math.max(this._getContentHeight() - this._dragMaxY, 0));
 
 			if (triggerEvents) {
 				bNoCancel = this._trigger("scrolling", null, {
@@ -1732,7 +1754,7 @@
 					.addClass(css.nativeVScrollOuter)
 					.css("height", this._elemHeight - this._customBarEmptySpaceSize + "px");
 
-				this._vDragHeight = this._contentHeight;
+				this._vDragHeight = this._getContentHeight();
 				this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
 					.addClass(css.nativeVScrollInner)
 					.css("height", this._vDragHeight + "px");
@@ -1756,7 +1778,7 @@
 					.addClass(css.nativeHScrollOuter)
 					.css("width", this._elemWidth - this._customBarEmptySpaceSize + "px");
 
-				this._hDragWidth = this._contentWidth;
+				this._hDragWidth = this._getContentWidth();
 				this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
 					.addClass(css.nativeHScrollInner)
 					.css("width", this._hDragWidth + "px");
@@ -1915,7 +1937,7 @@
 		_scrollTimeoutY: function (step, bSmallIncement) {
 			var	curPosY = this._getContentPositionY();
 			if ((curPosY === 0 && step <= 0) ||
-				(curPosY === this._contentHeight - this._dragMaxY && step >= 0)) {
+				(curPosY === this._getContentHeight() - this._dragMaxY && step >= 0)) {
 				return;
 			}
 
@@ -2010,7 +2032,7 @@
 		_onMouseDownArrowDown: function () {
 			var scrollStep = this.options.smallIncrementStep,
 				curPosY = this._getContentPositionY();
-			if (curPosY === this._contentHeight - this._dragMaxY) {
+			if (curPosY === this._getContentHeight() - this._dragMaxY) {
 				scrollStep = 0;
 			}
 
@@ -2163,7 +2185,7 @@
 			if (this._bUseVDrag) {
 				var curPosY = this._getContentPositionY(),
 					offset = event.pageY - this._dragLastY,
-					nextPosY = curPosY + (offset * (this._contentHeight / (this._elemHeight - 3 * 17)));
+					nextPosY = curPosY + (offset * (this._getContentHeight() / (this._elemHeight - 3 * 17)));
 
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
@@ -2367,7 +2389,7 @@
 		_scrollTimeoutX: function (step, bSmallIncement) {
 			var curPosX = this._getContentPositionX();
 			if ((curPosX === 0 && step <= 0) ||
-				(curPosX === this._contentWidth - this._dragMaxX && step >= 0)) {
+				(curPosX === this._getContentWidth() - this._dragMaxX && step >= 0)) {
 				return;
 			}
 
@@ -2469,7 +2491,7 @@
 			var scrollStep = this.options.smallIncrementStep,
 				curPosX = this._getContentPositionX();
 
-			if (curPosX === this._contentWidth - this._dragMaxX) {
+			if (curPosX === this._getContentWidth() - this._dragMaxX) {
 				//We are at the bottom
 				scrollStep = 0;
 			}
@@ -2629,7 +2651,7 @@
 			if (this._bUseHDrag) {
 				var curPosX = this._getContentPositionX(),
 					offset = evt.pageX - this._dragLastX,
-					nextPostX = curPosX + (offset * (this._contentWidth / this._elemWidth));
+					nextPostX = curPosX + (offset * (this._getContentWidth() / this._elemWidth));
 
 				var bNoCancel = this._trigger("thumbDragMove", null, {
 					owner: this,
@@ -2782,7 +2804,7 @@
 			function updateCSS() {
 				if (self._hBarDrag) {
 					// jscs:disable
-					calculatedDest = destX * (self._elemWidth - 2 * self._customBarArrowsSize - self._customBarEmptySpaceSize) / self._contentWidth;
+					calculatedDest = destX * (self._elemWidth - 2 * self._customBarArrowsSize - self._customBarEmptySpaceSize) / self._getContentWidth();
 					// jscs:enable
 					self._hBarDrag
 						.css("-webkit-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Safari */
@@ -2791,7 +2813,7 @@
 				}
 				if (self._vBarDrag) {
 					// jscs:disable
-					calculatedDest = destY * (self._elemHeight - 2 * self._customBarArrowsSize - self._customBarEmptySpaceSize) / self._contentHeight;
+					calculatedDest = destY * (self._elemHeight - 2 * self._customBarArrowsSize - self._customBarEmptySpaceSize) / self._getContentHeight();
 					// jscs:enable
 					self._vBarDrag
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
