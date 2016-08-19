@@ -498,16 +498,7 @@ if (typeof jQuery !== "function") {
             //D.A. 31st October 2013 JSLint validation. Removing unused variable span.
             $("<span></span>")[ this._getOrientation("size") ](this._splitter
                 .bar[ this._getOrientation("size") ]).attr("title", "").appendTo(div);
-
-            if ($.ig.util.isIEOld) {
-                setTimeout(function () {
-                    topMarginButtonLeftCollapsed =
-                        $(".ui-igsplitter-collapse-button-vertical-left.ui-state-default")
-                        .css("margin-top");
-                    $(".ui-igsplitter-collapse-button-vertical-left.ui-state-default")
-                    .css("margin-top", topMarginButtonLeftCollapsed);
-                }, 1);
-            }
+            
         },
         _removeClasses: function () {
             var buttonLeft, buttonRight, resizeHandler, i;
@@ -974,10 +965,6 @@ if (typeof jQuery !== "function") {
             var page = self._isTouch(ev) ?
                 ev.originalEvent.touches[ 0 ][ self._getOrientation("page") ] :
                 ev[ self._getOrientation("page") ], bar;
-            if (ev.which === 0 && $.ig.util.isIE && $.ig.util.isIEOld) {
-                self._stopDrag(self);
-                return false;
-            }
             if (self._capturedElement) {
                 if (ev.type === "keydown") {
                     bar = self[ self._getOrientation("start") ] + self._kbMove;
@@ -1123,16 +1110,6 @@ if (typeof jQuery !== "function") {
 			    $splitBarChildren = this._splitter.bar.children(),
 			    regExp = new RegExp("%"),
                 cloneObjPanels = this._opt.calculateSizeCloneObject.panels, outerOppositeSizeKey;
-
-            // D.A. 11th September 2014, Bug #170518 Adjust the size in IE8, when it is in percentage,
-            // because jquery rounds the size up while the browser rounds it down
-            if ($.ig.util.isIEOld) {
-
-                // Test whether the size is in percentage
-                if (regExp.test(this.element[ 0 ].style[ sizeKey ])) {
-                    size -= 1;
-                }
-            }
 
             for (i = 0; i < this._panels.length; i++) {
                 if (!this._panels[ i ].options.collapsed) {
@@ -1661,7 +1638,7 @@ if (typeof jQuery !== "function") {
             panelSize = panel[ this._getOrientation("size") ]();
             maxSize = newSize + panelSize;
 
-            if (index <= this._panels.length) {
+            // if (index <= this._panels.length) {
                 if (panel.options.collapsed) {
                     this._panelHelper(outerSize, size);
                 } else {
@@ -1676,18 +1653,20 @@ if (typeof jQuery !== "function") {
                     }
                     panel.options.size = maxSize;
                 }
-            } else {
-                maxSize = Math.min(maxSize, panel.options.max);
-                if (!panel.options.collapsed) {
-                    panel[ this._getOrientation("size") ](maxSize);
-                    panel.options.size = maxSize;
-                } else {
-                    maxSize = panelSize = 0;
-                }
-                if (maxSize + (outerSize - panelSize) < size || panel.options.collapsed) {
-                    this._createPanel(size, (outerSize - panelSize) + maxSize, index - 1);
-                }
-            }
+            // } 
+            // Dead code the index always is smaller than length of panels.
+            // else {
+            //     maxSize = Math.min(maxSize, panel.options.max);
+            //     if (!panel.options.collapsed) {
+            //         panel[ this._getOrientation("size") ](maxSize);
+            //         panel.options.size = maxSize;
+            //     } else {
+            //         maxSize = panelSize = 0;
+            //     }
+            //     if (maxSize + (outerSize - panelSize) < size || panel.options.collapsed) {
+            //         this._createPanel(size, (outerSize - panelSize) + maxSize, index - 1);
+            //     }
+            // }
         },
         _panelHelper: function (outerSize, size) {
             var panel, flag = false, i;
