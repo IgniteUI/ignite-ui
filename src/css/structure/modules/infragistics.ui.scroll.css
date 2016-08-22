@@ -3,12 +3,14 @@
 .igscroll-scrollable {
 	position: relative;
 	overflow: hidden;
+	outline:none;
 	-ms-touch-action: none;
 	-ms-content-zooming: none;
 }
 
 .igscroll-container {
 	overflow: hidden;
+	outline:none;
 	position: absolute;
 }
 

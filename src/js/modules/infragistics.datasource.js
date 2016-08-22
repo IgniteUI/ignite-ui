@@ -20,7 +20,7 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- *	jquery-1.4.4.js
+ *	jquery-1.9.1.js
  *	infragistics.util.js
  *
  */
