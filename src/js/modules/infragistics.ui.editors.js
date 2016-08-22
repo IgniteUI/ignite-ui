@@ -1771,6 +1771,9 @@ if (typeof jQuery !== "function") {
 					self._currentInputTextValue = self._editorInput.val();
 					self._pasteHandler(event);
 				},
+				"drop.editor": function (event) {
+					self._pasteHandler(event, true);
+				},
 				"keydown.editor": function (event) {
 
 					//T.P. In case of backspace and delete we need to trigger textchanged eved directly
@@ -2324,15 +2327,38 @@ if (typeof jQuery !== "function") {
 				newItem.attr("data-active", true);
 			}
 		},
-		_pasteHandler: function (event) { // TextEditor Handler
-			var self = this, previousValue = $(event.target).val(), newValue, selection;
+		_pasteHandler: function (e, drop) { // TextEditor Handler
+			var self = this, previousValue = $(e.target).val(), newValue, data, selection,
+				dtObj = drop ? e.originalEvent.dataTransfer :
+					(e.originalEvent && e.originalEvent.clipboardData) ||
+					window.clipboardData;
 
-			selection = this._getSelection(event.target);
+			// Don't use "text/plain" - IEs error out. Per spec the DataTransfer getData will:
+			// Convert to lower case and change "text" to "text/plain", making "Text" universal
+			data = dtObj && dtObj.getData("Text");
 			this._currentInputTextValue = this._editorInput.val();
-			this._timeouts.push(setTimeout(function () {
-				newValue = $(event.target).val();
-				self._insert(newValue, previousValue, selection.end + (newValue.length - previousValue.length));
-			}, 10));
+			selection = this._getSelection(this._editorInput[ 0 ]);
+
+			if (data && !drop) {
+				newValue = this._replaceDisplayValue(selection, previousValue, data);
+				self._insert(newValue, previousValue, selection.start + data.length);
+				e.preventDefault();
+				e.stopPropagation();
+			} else {
+				this._timeouts.push(setTimeout(function () {
+					newValue = $(e.target).val();
+					if (self._valueFromText(newValue) === self.value() && data) {
+						// WebKits drops text (only from other inputs) before focus, causing it to wipe on entering mode:
+						selection = self._getSelection(self._editorInput[ 0 ]);
+						newValue = self._replaceDisplayValue(selection, newValue, data);
+						selection.start += data.length;
+					} else {
+						// on drop the editor gets focus as well with default selectionOnFocus, adjust original selection
+						selection.start = self._getSelection(e.target).start;
+					}
+					self._insert(newValue, previousValue, selection.start);
+				}, 10));
+			}
 		},
 		_insertHandler: function (string) {
 			var selection = this._getSelection(this.field()[ 0 ]),
@@ -4950,15 +4976,24 @@ if (typeof jQuery !== "function") {
 				this._setCursorPosition(cursorPos);
 			}
 		},
-		_pasteHandler: function (event) { // MaskEditor Handler
-			var self = this, previousValue = $(event.target).val(), newValue, selection;
+		_pasteHandler: function (e, drop) { // MaskEditor Handler
+			var self = this, previousValue = $(e.target).val(), newValue, data, selection,
+				dtObj = drop ? e.originalEvent.dataTransfer :
+					(e.originalEvent && e.originalEvent.clipboardData) ||
+					window.clipboardData;
+
+			// Don't use "text/plain" - IEs error out. Per spec the DataTransfer getData will:
+			// Convert to lower case and change "text" to "text/plain", making "Text" universal
+			data = dtObj && dtObj.getData("Text");
+
+			selection = this._getSelection(e.target);
+			newValue = this._replaceDisplayValue(selection, previousValue, data);
+			selection.start += data.length;
 
 			this._currentInputTextValue = this._editorInput.val();
 			this._timeouts.push(setTimeout(function () {
-				newValue = $(event.target).val();
 				if (self._validateValueAgainstMask(newValue)) {
-					selection = self._getSelection(event.target);
-					self._insert(newValue, previousValue, selection.end);
+					self._insert(newValue, previousValue, selection.start);
 				} else {
 					if (self.options.revertIfNotValid) {
 						newValue = self._valueInput.val();
@@ -4981,10 +5016,6 @@ if (typeof jQuery !== "function") {
 				},
 				"cut.editor": function () {
 					self._handleDeleteKey(true);
-				},
-				"drop.editor": function (event) {
-					event.preventDefault();
-					self._pasteHandler(event);
 				}
 			});
 		},

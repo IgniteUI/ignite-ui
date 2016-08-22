@@ -50,16 +50,32 @@
 			event.target = input;
 			event.srcElement = input;
 
+			// since ClipboardEvent constructor is not supported yet http://caniuse.com/#feat=clipboardData
+			// Also can't modify the event object in phantom, use IE's version
+			window.clipboardData = { 
+				getData: function (param) {
+					param = param.toLowerCase();
+					if (param === 'text/plain' || param === 'text') {
+						return newVal;
+					}
+				}
+			};
+
 			// NB! paste event is fired *before* any changes are applied to the DOM
 			input.dispatchEvent(event);
+			
+			if(!event.defaultPrevented) {
+				// set value and cursor
+				oldVal = $(input).val();
+				prefix = oldVal.substring(0, start);
+				sufix = oldVal.substring(end, oldVal.length);
+				$(input).val(prefix + newVal + sufix);
 
-			// set value and cursor
-			oldVal = $(input).val();
-			prefix = oldVal.substring(0, start);
-			sufix = oldVal.substring(end, oldVal.length);
-			$(input).val(prefix + newVal + sufix);
+				input.setSelectionRange(end + newVal.length, end + newVal.length);
+			}
 
-			input.setSelectionRange(end + newVal.length, end + newVal.length);
+			// cleanup
+			delete window.clipboardData;
 		}
 	});
 	

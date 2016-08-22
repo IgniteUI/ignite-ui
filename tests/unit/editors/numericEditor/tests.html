@@ -791,6 +791,7 @@
 				setTimeout(function () {
 					start();
 					ok(closed, "dropDownListClosed event not fired");
+					editorInput.trigger("focus");
 					$.ig.TestUtil.paste(editorInput[0], "1");
 					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");				
 				}, 100);
