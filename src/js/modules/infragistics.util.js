@@ -10,7 +10,7 @@
  *
  * Depends on:
  *  jquery-1.9.1.js
- * modernizr.js (Optional)
+ *  modernizr.js (Optional)
  *
  */
 
@@ -25,8 +25,9 @@
 
 	var initializing = false, fnTest = /xyz/.test(function () { xyz(); }) ? /\b_super\b/ : /.*/;
 
-	// The base Class implementation (does nothing)
-	this.Class = function () { };
+	// The base Class implementation (does nothing) or expects Class to already be defined as a function
+	// K.D. August 18, 2016 Bug #242 global scope Class object is overridden by Ignite UI Class object
+	this.Class = this.Class || function () { };
 
 	// Create a new Class that inherits from this class
 	Class.extend = function (prop, doAugment) {
