@@ -647,6 +647,10 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_setFocus: function (event) {
+			// D.P. 22nd Aug 2016 #226 Can't right-click paste in Edge, double focus event on menu closing
+			if (this._focused) {
+				return;
+			}
 
 			//getValue and set it to the input
 			this._focused = true;
@@ -8947,6 +8951,7 @@ if (typeof jQuery !== "function") {
 					if (self.options.readOnly === true || self.options.disabled === true) {
 						self._exitEditMode();
 					} else {
+						self._focused = false;
 						self._editorInput.focus();
 					}
 				},
