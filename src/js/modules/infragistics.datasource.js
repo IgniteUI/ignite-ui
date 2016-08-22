@@ -4070,7 +4070,7 @@
 		},
 		toggleGroupByRecord: function (id, collapsed) {
 			/* Toggle grouped record with the specified id and updates collections visible groupby data and data view
-			paramType="string" id of the grouped record
+			paramType="string" data-id attribute of the respective group row
 			paramType="bool" if true the record should be collapsed, otherwise expanded
 			*/
 			var ds = this._gbData, i, len = ds.length, res = [], lvl,
