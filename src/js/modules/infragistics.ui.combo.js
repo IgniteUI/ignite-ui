@@ -3732,9 +3732,10 @@
                         return;
                     }
 
-                    if (currentY > lastY) {
+                    // R.K. 22/08/2016 #253: igCombo scrolling not working properly on ipad when virtualization is on
+                    if (currentY < lastY) {
                         self.listScrollTop(currentScrollTop + itemHeight);
-                    } else if (currentY < lastY) {
+                    } else if (currentY > lastY) {
                         self.listScrollTop(currentScrollTop - itemHeight);
                     }
 
