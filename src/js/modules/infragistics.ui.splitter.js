@@ -1653,7 +1653,7 @@ if (typeof jQuery !== "function") {
 
                 panel.options.size = maxSize;
             }
-            
+
             // Dead code the index always is smaller than length of panels.
             // else {
             //     maxSize = Math.min(maxSize, panel.options.max);
