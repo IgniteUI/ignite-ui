@@ -1638,21 +1638,22 @@ if (typeof jQuery !== "function") {
             maxSize = newSize + panelSize;
 
             // if (index <= this._panels.length) {
-                if (panel.options.collapsed) {
-                    this._panelHelper(outerSize, size);
-                } else {
-                    if (maxSize > panel.options.max && overrideMax) {
-                        panel.options.max = maxSize;
-                    }
-                    if (this._isPercentLayout) {
-                        panel[ this._getOrientation("size") ]((maxSize /
-                            this._getSize(this._getOrientation("size"))) * 100 + "%");
-                    } else {
-                        panel[ this._getOrientation("size") ](maxSize);
-                    }
-                    panel.options.size = maxSize;
+            if (panel.options.collapsed) {
+                this._panelHelper(outerSize, size);
+            } else {
+                if (maxSize > panel.options.max && overrideMax) {
+                    panel.options.max = maxSize;
                 }
-                
+                if (this._isPercentLayout) {
+                    panel[ this._getOrientation("size") ]((maxSize /
+                        this._getSize(this._getOrientation("size"))) * 100 + "%");
+                } else {
+                    panel[ this._getOrientation("size") ](maxSize);
+                }
+
+                panel.options.size = maxSize;
+            }
+
             // } 
             // Dead code the index always is smaller than length of panels.
             // else {
