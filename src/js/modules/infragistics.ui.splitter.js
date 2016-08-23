@@ -498,7 +498,6 @@ if (typeof jQuery !== "function") {
             //D.A. 31st October 2013 JSLint validation. Removing unused variable span.
             $("<span></span>")[ this._getOrientation("size") ](this._splitter
                 .bar[ this._getOrientation("size") ]).attr("title", "").appendTo(div);
-            
         },
         _removeClasses: function () {
             var buttonLeft, buttonRight, resizeHandler, i;
@@ -1653,6 +1652,7 @@ if (typeof jQuery !== "function") {
                     }
                     panel.options.size = maxSize;
                 }
+                
             // } 
             // Dead code the index always is smaller than length of panels.
             // else {
