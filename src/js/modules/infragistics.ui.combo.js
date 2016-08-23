@@ -6,7 +6,7 @@
 * http://www.infragistics.com/
 *
 * Depends on:
-* jquery-1.8.3.js
+* jquery-1.9.1.js
 * jquery.ui.core.js
 * jquery.ui.widget.js
 * infragistics.templating.js
@@ -3732,9 +3732,10 @@
                         return;
                     }
 
-                    if (currentY > lastY) {
+                    // R.K. 22/08/2016 #253: igCombo scrolling not working properly on ipad when virtualization is on
+                    if (currentY < lastY) {
                         self.listScrollTop(currentScrollTop + itemHeight);
-                    } else if (currentY < lastY) {
+                    } else if (currentY > lastY) {
                         self.listScrollTop(currentScrollTop - itemHeight);
                     }
 
