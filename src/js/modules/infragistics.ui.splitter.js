@@ -485,7 +485,7 @@ if (typeof jQuery !== "function") {
         _createSplitter: function () {
             var collapseButtons = $("<div><span></span></div><div><span></span></div>"),
                 bar = $("<div></div>").attr("tabindex", 0),
-				div, topMarginButtonLeftCollapsed;
+				div;
             this._splitter = {
                 left: this._panels[ 0 ],
                 right: this._panels[ 1 ]
