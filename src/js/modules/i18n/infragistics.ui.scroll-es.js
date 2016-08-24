@@ -16,8 +16,8 @@
 
 	    $.extend($.ig.Scroll, {
 		    locale: {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'El elemento que se está vinculando no existe.',
+		        errorNoScrollbarLink: 'El elemento de la barra de desplazamiento que se está vinculando no existe.'
 		    }
 	    });
 
