@@ -32,12 +32,13 @@
 		$(document).ready(function () {
 			// Create a editors
 
-				function loadTestbeds() {
-					var testbedIDs = ["208808", "209067", "209174", "209912", "209641", "209696",
+				function loadTestbeds(testbedID) {
+					var testbedIDs = testbedID || ["208808", "209067", "209174", "209912", "209641", "209696",
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
 					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264"];
+					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
@@ -422,14 +423,16 @@
 
 				initialized = false;
 				module("Editors Bugs Unit Tests ", {
-					setup: function () {
-						//pause testing until editors are initialized
-						if (!initialized) {
-							stop();
-							loadTestbeds();
-							setTimeout(function () { start(); }, 100);
-							initialized = true;
-						}
+					setup: function (assert) {
+						var testID = /^Bug (\d+)/.exec(assert.test.testName).pop();
+						loadTestbeds([testID]);
+						
+						// if (!initialized) {
+						// 	stop();
+						// 	loadTestbeds([assert.test.testName]);
+						// 	setTimeout(function () { start(); }, 100);
+						// 	initialized = true;
+						// }
 					},
 					teardown: function () {
 					}
