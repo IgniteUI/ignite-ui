@@ -37,7 +37,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264"];
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
@@ -408,6 +408,15 @@
 						allowNullValue: true, //expected to set to minValue if input if less than 30
 						nullValue: "",
 						minValue: 0.3
+					});
+				}
+
+				window.Bug264Testbed = function () {
+					$("#264Editor1").igMaskEditor({
+						inputMask: "00-0L/>aa(test)"
+					});
+					$("#264Editor2").igMaskEditor({
+						inputMask: 'Aaa\\>L/>aa'
 					});
 				}
 
@@ -1004,7 +1013,7 @@
 				keyInteraction(13, input);
 				var text = $("#98Editor1").igNumericEditor("field").val();
 				equal(text, 5, "Text in editor is not set to the maxValue");
-				input.igNumericEditor("setFocus");
+				input.select();
 				typeInMaskedInput("1", input.igNumericEditor("field"));
 				keyInteraction(13, input);
 				var text = $("#98Editor1").igNumericEditor("field").val();
@@ -1029,7 +1038,7 @@
 
 				var input = $('#223245PercentEditor3');
 				input.igPercentEditor("setFocus");
-				typeInMaskedInput("20", input.igPercentEditor("field"));
+				typeInInput("20", input.igPercentEditor("field"));
 				keyInteraction(13, input);
 				var value = $("#223245PercentEditor3").igPercentEditor("value");
 				equal(value, 0.3, "igPercentEditor is not set to minValue");
@@ -1055,6 +1064,33 @@
 				var value = $("#223245NumericEditor3").igNumericEditor("value");
 				equal(value, 5, "igNumericEditor is not set to minValue");
 			});
+
+			testId = 'Bug 264';
+			test(testId, 2, function () {
+				var edit1 = $('#264Editor1'),
+					edit2 = $('#264Editor2');
+
+				edit1.trigger("focus");
+				stop();
+				setTimeout(function () {
+					start();
+					typeInMaskedInput("555a", edit1.igMaskEditor("field"));
+					edit1.blur();
+					var text = edit1.igMaskEditor("field").val();
+					equal(text, "55-5a/(test)", "MaskEditor did not accept value with required positions filled");
+					edit2.trigger("focus");
+					stop();
+					setTimeout(function () {
+						start();
+						typeInMaskedInput("123d", edit2.igMaskEditor("field"));
+						edit2.blur();
+						var text = edit2.igMaskEditor("field").val();
+						equal(text, "123>d/", "MaskEditor did not accept value with required positions filled");
+					
+					}, 100);
+				}, 100);
+			});
+
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1103,8 +1139,11 @@
 				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
 				element.trigger(keyDown);
 				element.trigger(keyPress);
+				// refresh selection EACH time, mask editor moves over literals:
+				selectionStart = element[0].selectionStart;
 				value = value.replaceAt(selectionStart++, ch);
 				element.val(value);
+				element[0].selectionStart = selectionStart;
 				element.trigger(keyUp);
 			});
 		}
@@ -1287,6 +1326,9 @@
 		<input id="223245NumericEditor1" type="text" />
 		<input id="223245NumericEditor2" type="text" />
 		<input id="223245NumericEditor3" type="text" />
+
+		<input id="264Editor1" />
+		<input id="264Editor2" />
 
 	</div></body>
 </html>

@@ -1847,6 +1847,11 @@ display:block;
     background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -16px 0;
 }
 
+div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer,
+div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
+	float: left;
+}
+
 /*******************
 *  Column Fixing   *
 *******************/
