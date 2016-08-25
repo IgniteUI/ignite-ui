@@ -5420,7 +5420,7 @@ if (typeof jQuery !== "function") {
 		_setInitialValue: function (value) { //igMaskEditor
 			this._maskWithPrompts = this._parseValueByMask("");
 			this._getMaskLiteralsAndRequiredPositions();
-			if (value === null || value === "" || typeof value === undefined) {
+			if (value === null || value === "" || typeof value === "undefined") {
 				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
