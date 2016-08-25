@@ -5387,19 +5387,13 @@ if (typeof jQuery !== "function") {
 				for (j = 0, i = 0; i < mask.length && j < value.length; i++, j++) {
 					ch = value.charAt(j);
 
+					// D.P. 24th Aug 2016 #264 Position tweaks before unfilledCharsPrompt skip, literals match unescapedMask
 					// In case passed value contains both literals and filled prompts we try to parse the value.
 					// In case of mask 00/00 we should accept both 1234 and 12/34 as input and parse it with the correct result.
 					if ($.inArray(i, this._literalIndeces) !== -1) {
 						if (mask.charAt(i) !== ch) {
 							j--;
 						}
-						continue;
-					}
-
-					// D.P. 24th Aug 2016 #264 Position tweaks should be done before unfilledCharsPrompt skip
-					if ("><".indexOf(mask.charAt(i)) > -1) {
-						// Move to next char on the mask
-						j--;
 						continue;
 					}
 
