@@ -5421,7 +5421,7 @@ $.ig.Array.prototype.clear = function () {
 
 	// Escape all html tags in given html element content
 	$.ig.util.escapeHtmlTags = function (htmlElemContent) {
-		if(typeof(htmlElemContent) === "string") {
+		if (typeof(htmlElemContent) === "string") {
 			return htmlElemContent
 				.replace(/&/g, "&amp;")
 				.replace(/</g, "&lt;")
