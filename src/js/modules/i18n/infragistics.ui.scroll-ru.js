@@ -22,8 +22,8 @@
 
 	    $.extend($.ig.Scroll, {
 		    locale: {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: 'Связанный элемент не найден.',
+		        errorNoScrollbarLink: 'Связанный элемент "полоса прокрутки" не найден.'
 		    }
 	    });
 

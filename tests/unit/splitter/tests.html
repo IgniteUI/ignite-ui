@@ -45,7 +45,7 @@
 	        $('#sKbNav').igSplitter({ width: 200, height: 400, panels: [{ collapsible: true }, { collapsible: true }] });
 
 			$('#splitterWithOneElem').igSplitter({ width: 600, height: 480, panels: [{ size: 400 }, { size: 100, collapsible: true }],
-				layoutRefreshed: function(evt, ui) { 
+				layoutRefreshed: function(evt, ui) {
 					$(evt.target).attr('isResized', true);
 				}});
 			$('#emptySplitter').igSplitter({ width: 600, height: 480, disabled: true, panels: [{ size: 400 }, { size: 100, collapsible: true }] });
@@ -110,6 +110,9 @@
 		var testId_44 = 'igSplitter move bar to left out of range.';
 		var testId_45 = 'igSplitter is ebale to drag delta with iframe inside panel.';
 		var testId_46 = 'igSplitter when disabled and try to fire mousedown, mouseleave and mouseenter events should stop.';
+		var testId_47 = 'igSplitter exception on initialize';
+		var testId_48 = 'igSplitter exception on _setOption';
+		var testId_49 = 'igSplitter box-sizing: border-box';
 
 		test(testId_1, function () {
 	        var container = $("#sVer");
@@ -1016,12 +1019,12 @@
 			// $("#splitterDragBarOutOfRange").igSplitter("destroy");
 			$('#splitterDragBarOutOfRange').igSplitter({ width: 200, height: 400, panels: [{ collapsible: true }, { collapsible: true }] });
 
-			var container = $('#splitterDragBarOutOfRange'), 
-				bar = $($(container.children())[1]), 
+			var container = $('#splitterDragBarOutOfRange'),
+				bar = $($(container.children())[1]),
 				panel1 = $(container.igSplitter('firstPanel')),
 	        	panel2 = $(container.igSplitter('secondPanel'));
 
-			
+
 			ok(panel1.width() === 100, 'igSplitter panel1 has wrong width.');
 	        ok(panel2.width() === 94, 'igSplitter panel2 has wrong width.');
 
@@ -1042,8 +1045,8 @@
 			$("#splitterDragBarOutOfRange").igSplitter("destroy");
 			$('#splitterDragBarOutOfRange').igSplitter({ width: 200, height: 400, panels: [{ collapsible: true }, { collapsible: true }] });
 
-			var container = $('#splitterDragBarOutOfRange'), 
-				bar = $($(container.children())[1]), 
+			var container = $('#splitterDragBarOutOfRange'),
+				bar = $($(container.children())[1]),
 				panel1 = $(container.igSplitter('firstPanel')),
 	        	panel2 = $(container.igSplitter('secondPanel'));
 
@@ -1101,6 +1104,73 @@
 			buttonRight.mouseleave();
 			bar.mouseleave();
 			ok(!$(bar).attr('class').contains(buttonHoverClass), 'mouseleave was fired when the splitter is disabled.');
+		});
+
+		test(testId_47, function() {
+			throws(
+				function() {
+					$("#splitterExceptions")
+						.igSplitter({ panels: [{ collapsible: true}, {collapsible: false}, {collapsible: true}]});
+				},
+				new Error($.ig.Splitter.locale.errorPanels),
+				"Initializing more than 2 panels throws an errors"
+			);
+		});
+
+		test(testId_48, function() {
+			$("#splitterExceptions2").igSplitter({
+				orientation: "horizontal",
+				panels: [
+					{size: "50%", min: "40%", max: "55%", collapsed: true, collapsible: true},
+        			{collapsible: true}
+				]
+			});
+
+			throws(
+				function() {
+					$("#splitterExceptions2").data().igSplitter._setOption("orientation", "vertical");
+				},
+				new Error($.ig.Splitter.locale.errorSettingOption),
+				"Trying to set orinentation after initializing throws error"
+			);
+
+			throws(
+				function() {
+					$("#splitterExceptions2").data().igSplitter._setOption("panels", []);
+				},
+				new Error($.ig.Splitter.locale.errorSettingOption),
+				"Trying to set panels after initializing throws error"
+			);
+		});
+
+		test(testId_49, function() {
+			$("#splitterBorderBox").igSplitter({
+				orientation: "vertical",
+				panels: [
+					{size: "300px", max: "300px", collapsed: false, collapsible: false},
+        			{collapsible: false, size: "300px", max: "300px"}
+				]
+			});
+
+			var borderWidth = 2, parentWidth = parseInt($('#splitterBorderBox').css('width'), 10),
+				actualWidth = $("#splitterBorderBox").data().igSplitter._getSize("width"),
+				parentHeight;
+
+			equal(actualWidth, parentWidth - (2 * borderWidth), "Actual width with border box matches");
+
+			$("#splitterBorderBox").igSplitter("destroy");
+
+			$("#splitterBorderBox").igSplitter({
+				orientation: "horizontal",
+				panels: [
+					{size: "300px", max: "300px", collapsed: false, collapsible: false},
+        			{collapsible: false, size: "300px", max: "300px"}
+				]
+			});
+
+			actualWidth = $("#splitterBorderBox").data().igSplitter._getSize("height");
+			parentHeight = parseInt($('#splitterBorderBox').css('height'), 10);
+			equal(actualWidth, parentHeight - (2 * borderWidth), "Actual height with border box matches");
 		});
 
 
@@ -1365,6 +1435,30 @@
 		</div>
     </div>
 	<div id="disabledSplitter">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="splitterExceptions">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="splitterExceptions2">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="splitterBorderBox" style="width: 600px; height: 100px; border: solid 2px #ccc; box-sizing: border-box">
 		<div>
 			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>

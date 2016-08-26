@@ -22,8 +22,8 @@
 
 	    $.extend($.ig.Scroll, {
 		    locale: {
-		        errorNoElementLink: 'Element that is being linked does not exists.',
-		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
+		        errorNoElementLink: "L'élément en cours de liaison n'existe pas.",
+		        errorNoScrollbarLink: "L'élément de la barre de défilement en cours de liaison n'existe pas."
 		    }
 	    });
 

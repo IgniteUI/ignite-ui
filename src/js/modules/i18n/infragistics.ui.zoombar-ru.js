@@ -25,7 +25,7 @@ if (!$.ig.Zoombar) {
 		locale: {
 			zoombarTargetNotSpecified: "Виджету igZoombar необходим целевой объект для отображения!",
 			zoombarTypeNotSupported: "Целевой виджет, к которому Zoombar пытается присоединиться, не поддерживается!",
-			zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
+			zoombarProviderNotRecognized: "igZoombar не удалось инициализировать поставщика из указанного класса — возможно, переданное значение не является классом.",
 			optionChangeNotSupported: "Изменение этой опции после создания igZoombar не поддерживается:"
 		}
 	});

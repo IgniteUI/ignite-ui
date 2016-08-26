@@ -25,7 +25,7 @@ if (!$.ig.Zoombar) {
 		locale: {
 			zoombarTargetNotSpecified: "igZoombar erfordert ein gültiges Ziel zum Anfügen.",
 			zoombarTypeNotSupported: "Der Widget-Typ, an den sich die Zoomleiste anzufügen versucht, wird nicht unterstützt.",
-			zoombarProviderNotRecognized: "igZoombar could not initialize a provider from the class specified or the value passed is not a class.",
+			zoombarProviderNotRecognized: "igZoombar konnte einen Anbieter der angegebenen Klasse nicht initialisieren oder der angegebene Wert ist keine Klasse.",
 			optionChangeNotSupported: "Die Änderung der folgenden Option nach der Erstellung der igZoombar wird nicht unterstützt:"
 		}
 	});
