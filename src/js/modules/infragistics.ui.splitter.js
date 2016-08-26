@@ -448,13 +448,43 @@ if (typeof jQuery !== "function") {
 
                 // S.T. 22 May 2013 #142262
                 // If the cointaner is with border box and the browser is Chrome, in the computed style of the element is not include border width
-                if ($.ig.util.isChrome && boxSizing === "border-box") {
 
-                    // P.P 29 May 2016 #215742 Edge present border width as empty string
-                    borderWidth = this.element.css("border-width") === "" ?
-                        0 : this.element.css("border-width");
+                // R.K. August 26th, 2016 #278 The splitter can't calculate width correctly on Firefox and Microsoft Edge with "box-sizing: border-box"
+                // Helper function to return the max border size based on the orientation of the splitter
+                var _getBorderWidth = function(element, orientation) {
+                    var computedStyle = window.getComputedStyle(element[ 0 ]);
 
-                    value -= parseInt(borderWidth, 10) * 2;
+                    if (orientation === "horizontal") {
+                        var leftBorder = isNaN(parseInt(computedStyle.borderLeftWidth, 10)) ?
+                            0 : parseInt(computedStyle.borderLeftWidth, 10);
+                        var rightBorder = isNaN(parseInt(computedStyle.borderRightWidth, 10)) ?
+                            0 : parseInt(computedStyle.borderRightWidth, 10);
+
+                        return Math.max(leftBorder, rightBorder);
+                    } else {
+
+                        var topBorder = isNaN(parseInt(computedStyle.borderTopWidth, 10)) ?
+                            0 : parseInt(computedStyle.borderTopWidth, 10);
+                        var bottomBorder = isNaN(parseInt(computedStyle.borderBottomWidth, 10)) ?
+                            0 : parseInt(computedStyle.borderBottomWidth, 10);
+
+                        return Math.max(topBorder, bottomBorder);
+                    }
+                };
+
+                if (boxSizing === "border-box") {
+                    // R.K. August 26th, 2016 #278 The splitter can't calculate width correctly on Firefox and Microsoft Edge with "box-sizing: border-box"
+                    // Microsoft Edge returns true at '$.ig.util.isChrome' but does not have a webstore property in the returned object
+                    // so we're testing for "real" Chrome as both Firefox and Edge do not have "border-width" property
+                    if ($.ig.util.isChrome && $.ig.util.isChrome.webstore) {
+                        borderWidth = this.element.css("border-width") === "" ?
+                            0 : this.element.css("border-width");
+                        borderWidth = parseInt(borderWidth, 10);
+                    } else {
+                        borderWidth = _getBorderWidth(this.element, this.options.orientation);
+                    }
+                    value -= borderWidth * 2;
+                    return value;
                 }
                 return value;
             }
