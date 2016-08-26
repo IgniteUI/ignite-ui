@@ -366,6 +366,7 @@ if (typeof jQuery !== "function") {
 		},
 		_triggerBlur: function (event) {
 			this._editorContainer.removeClass(this.css.focus);
+			this._editorContainer.removeClass(this.css.active);
 			this._clearEditorNotifier();
 			var args = {
 				owner: this,
@@ -1768,6 +1769,19 @@ if (typeof jQuery !== "function") {
 				"focus.editor": function (event) {
 					self._setFocus(event);
 				},
+				"dragenter.editor": function () {
+					if (!self._focused) {
+						//Controlled edit mode without selection to allow default drop handling
+						self._preventSelection = true;
+						self._enterEditMode();
+
+						//handle leave once:
+						self._editorInput.one("dragleave.editor", function () {
+							self._exitEditMode();
+							delete self._preventSelection;
+						});
+					}
+				},
 				"blur.editor": function (event) {
 					self._setBlur(event);
 				},
@@ -1776,6 +1790,8 @@ if (typeof jQuery !== "function") {
 					self._pasteHandler(event);
 				},
 				"drop.editor": function (event) {
+					self._focused = true;
+					self._editorInput.off("dragleave.editor");
 					self._pasteHandler(event, true);
 				},
 				"keydown.editor": function (event) {
@@ -2332,37 +2348,21 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_pasteHandler: function (e, drop) { // TextEditor Handler
-			var self = this, previousValue = $(e.target).val(), newValue, data, selection,
-				dtObj = drop ? e.originalEvent.dataTransfer :
-					(e.originalEvent && e.originalEvent.clipboardData) ||
-					window.clipboardData;
+			var self = this, previousValue = $(e.target).val(), newValue, selection;
 
-			// Don't use "text/plain" - IEs error out. Per spec the DataTransfer getData will:
-			// Convert to lower case and change "text" to "text/plain", making "Text" universal
-			data = dtObj && dtObj.getData("Text");
 			this._currentInputTextValue = this._editorInput.val();
-			selection = this._getSelection(this._editorInput[ 0 ]);
 
-			if (data && !drop) {
-				newValue = this._replaceDisplayValue(selection, previousValue, data);
-				self._insert(newValue, previousValue, selection.start + data.length);
-				e.preventDefault();
-				e.stopPropagation();
-			} else {
-				this._timeouts.push(setTimeout(function () {
-					newValue = $(e.target).val();
-					if (self._valueFromText(newValue) === self.value() && data) {
-						// WebKits drops text (only from other inputs) before focus, causing it to wipe on entering mode:
-						selection = self._getSelection(self._editorInput[ 0 ]);
-						newValue = self._replaceDisplayValue(selection, newValue, data);
-						selection.start += data.length;
-					} else {
-						// on drop the editor gets focus as well with default selectionOnFocus, adjust original selection
-						selection.start = self._getSelection(e.target).start;
-					}
-					self._insert(newValue, previousValue, selection.start);
-				}, 10));
-			}
+			this._timeouts.push(setTimeout(function () {
+				newValue = self._editorInput.val();
+				selection = self._getSelection(self._editorInput[ 0 ]);
+				if (drop) {
+					// fire focus and insert without
+					self._triggerFocus(e);
+					self._insert(newValue, previousValue, selection);
+				} else {
+					self._insert(newValue, previousValue, selection);
+				}
+			}, 10));
 		},
 		_insertHandler: function (string) {
 			var selection = this._getSelection(this.field()[ 0 ]),
@@ -2377,7 +2377,7 @@ if (typeof jQuery !== "function") {
 			return previousValue.substring(0, selection.start) + string +
 				previousValue.substring(selection.end, previousValue.length);
 		},
-		_insert: function (newValue, previousValue, cursorPos) { // TextEditor
+		_insert: function (newValue, previousValue, selection) { // TextEditor
 			var i, ch;
 			if (this.options.maxLength) {
 				if (newValue && newValue.toString().length > this.options.maxLength) {
@@ -2417,9 +2417,9 @@ if (typeof jQuery !== "function") {
 				}
 				if (this._focused) {
 					this._editorInput.val(newValue);
-					if (cursorPos !== undefined) {
+					if (selection !== undefined) {
 						// Move the caret
-						this._setCursorPosition(cursorPos);
+						this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 					}
 				}
 				this._processValueChanging(newValue);
@@ -2594,6 +2594,9 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_positionCursor: function (startPostion, endPosition) {
+			if (this._preventSelection) {
+				return;
+			}
 			var currentValue = this._editorInput.val(), self = this;
 
 			if (currentValue && currentValue.length > 0) {
@@ -3772,8 +3775,8 @@ if (typeof jQuery !== "function") {
 			}
 			return result;
 		},
-		_insert: function (newValue, previousValue, cursorPos) { //NumericEditor
-			var newLenght = newValue.length;
+		_insert: function (newValue, previousValue, selection) { //NumericEditor
+			var newLenght = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
@@ -3803,9 +3806,12 @@ if (typeof jQuery !== "function") {
 			}
 			if (this._editMode) {
 				this._editorInput.val(newValue);
-				if (cursorPos !== undefined) {
+				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
-					this._setCursorPosition(cursorPos - (newLenght - newValue.toString().length));
+					diff = newLenght - newValue.toString().length;
+					selection.start -= diff;
+					selection.end -= diff;
+					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 				}
 			} else {
 				this._processInternalValueChanging(newValue);
@@ -4566,8 +4572,8 @@ if (typeof jQuery !== "function") {
 		_setNumericType: function () {
 			this._numericType = "percent";
 		},
-		_insert: function (newValue, previousValue, cursorPos) { // Percent Editor
-			var newLenght = newValue.length;
+		_insert: function (newValue, previousValue, selection) { // Percent Editor
+			var newLenght = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
 				if (this.options.maxValue &&
@@ -4599,9 +4605,12 @@ if (typeof jQuery !== "function") {
 			}
 			if (this._editMode) {
 				this._editorInput.val(newValue);
-				if (cursorPos !== undefined) {
+				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
-					this._setCursorPosition(cursorPos - (newLenght - newValue.toString().length));
+					diff = newLenght - newValue.toString().length;
+					selection.start -= diff;
+					selection.end -= diff;
+					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 				}
 			} else {
 				newValue = this._divideWithPrecision(newValue, this.options.displayFactor);
@@ -4960,8 +4969,8 @@ if (typeof jQuery !== "function") {
 			this._positionCursor(selection.start, selection.end);
 			this._processTextChanged();
 		},
-		_insert: function (newValue, previousValue, cursorPos) { // MaskEditor
-			var newLenght = newValue.length;
+		_insert: function (newValue, previousValue, selection) { // MaskEditor
+			var newLenght = newValue.length, cursor;
 
 			if (this.options.toUpper) {
 				if (newValue) { newValue = newValue.toLocaleUpperCase(); }
@@ -4973,11 +4982,15 @@ if (typeof jQuery !== "function") {
 			this._editorInput.val(newValue);
 			this._processTextChanged();
 
-			if (cursorPos !== undefined) {
+			if (selection !== undefined) {
 				// Move the caret, move to closest unfilled if possible:
-				newLenght = newValue.slice(cursorPos).split(this.options.unfilledCharsPrompt)[ 0 ].length;
-				cursorPos += newLenght;
-				this._setCursorPosition(cursorPos);
+				newLenght = newValue.slice(selection.end).split(this.options.unfilledCharsPrompt)[ 0 ].length;
+				cursor = selection.start === selection.end;
+				selection.end += newLenght;
+				if (cursor) {
+					selection.start = selection.end;
+				}
+				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 			}
 		},
 		_pasteHandler: function (e, drop) { // MaskEditor Handler
@@ -4989,15 +5002,20 @@ if (typeof jQuery !== "function") {
 			// Don't use "text/plain" - IEs error out. Per spec the DataTransfer getData will:
 			// Convert to lower case and change "text" to "text/plain", making "Text" universal
 			data = dtObj && dtObj.getData("Text");
-
-			selection = this._getSelection(e.target);
-			newValue = this._replaceDisplayValue(selection, previousValue, data);
-			selection.start += data.length;
-
 			this._currentInputTextValue = this._editorInput.val();
+
 			this._timeouts.push(setTimeout(function () {
+				selection = self._getSelection(e.target);
+				if (!drop) {
+					selection.start -= data.length;
+					newValue = self._replaceDisplayValue(selection, previousValue, data);
+					selection.start += data.length;
+				} else {
+					newValue = self._replaceDisplayValue(selection, previousValue, data);
+				}
+
 				if (self._validateValueAgainstMask(newValue)) {
-					self._insert(newValue, previousValue, selection.start);
+					self._insert(newValue, previousValue, selection);
 				} else {
 					if (self.options.revertIfNotValid) {
 						newValue = self._valueInput.val();
@@ -5010,6 +5028,24 @@ if (typeof jQuery !== "function") {
 					}
 				}
 			}, 10));
+		},
+		_replaceDisplayValue: function (selection, previousValue, newValue) { // MaskEditor
+			var value = previousValue, i = selection.start, j = 0,
+				currentChar, newChar;
+			newValue = newValue.toString();
+			for (; i < previousValue.length && j < newValue.length; i++, j++) {
+				currentChar = previousValue.charAt(i);
+				newChar = newValue.charAt(j);
+				if ($.inArray(i, this._literalIndeces) !== -1) {
+					if (currentChar !== newChar) {
+						j--;
+					}
+				} else {
+					value = value.substring(0, i) + newChar +
+						value.substring(i + 1, previousValue.length);
+				}
+			}
+			return value;
 		},
 		_attachEvents: function () { //MaskEditor
 			var self = this;
@@ -5464,7 +5500,7 @@ if (typeof jQuery !== "function") {
 		_setInitialValue: function (value) { //igMaskEditor
 			this._maskWithPrompts = this._parseValueByMask("");
 			this._getMaskLiteralsAndRequiredPositions();
-			if (value === null || value === "" || typeof value === undefined) {
+			if (value === null || value === "" || typeof value === "undefined") {
 				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
@@ -6248,23 +6284,6 @@ if (typeof jQuery !== "function") {
 		},
 		_handleSpinDownEvent: function () { // DateEditor
 			this.spinDown(1);
-		},
-		_replaceDisplayValue: function (selection, previousValue, newValue) {
-			var value = previousValue, currentIndex = selection.start, currentChar,
-				charCode, charIndex = 0, newChar;
-			newValue = newValue.toString();
-			while (currentIndex < previousValue.length && charIndex < newValue.length) {
-				currentChar = previousValue.charAt(currentIndex);
-				charCode = previousValue.charCodeAt(currentIndex);
-				newChar = newValue.charAt(charIndex);
-				if (charCode >= 48 && charCode <= 57 || currentChar === "_") {
-					value = value.substring(0, currentIndex) + newChar +
-						value.substring(currentIndex + 1, previousValue.length);
-					charIndex++;
-				}
-				currentIndex++;
-			}
-			return value;
 		},
 
 		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)

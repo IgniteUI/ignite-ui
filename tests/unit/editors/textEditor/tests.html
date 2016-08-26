@@ -595,15 +595,23 @@
 					start();
 					ok(closed, "dropDownListClosed event not fired");
 					$.ig.TestUtil.paste(editorInput[0], "newVal");
-					editorInput.trigger("blur");
-					equal($('#listEditor').igTextEditor("value"), "item1", "The value after paste is not newVal");
-					editor.igTextEditor("value", "newVal1");
-					equal($('#listEditor').igTextEditor("value"), "", "The value after paste is empty");
-					editor.igTextEditor("option", "isLimitedToListValues", false);
-					$.ig.TestUtil.paste(editorInput[0], "newValnewVal");
-					equal($('#listEditor').igTextEditor("value"), "newValnewVal", "The value after paste is empty");
-					editor.igTextEditor("value", "newVal1");
-					equal($('#listEditor').igTextEditor("value"), "newVal1", "The value after paste is not newVal");
+					stop()
+					setTimeout(function () {
+						start();
+						editorInput.trigger("blur");
+						equal($('#listEditor').igTextEditor("value"), "item1", "The value after paste is not newVal");
+						editor.igTextEditor("value", "newVal1");
+						equal($('#listEditor').igTextEditor("value"), "", "The value after paste is empty");
+						editor.igTextEditor("option", "isLimitedToListValues", false);
+						$.ig.TestUtil.paste(editorInput[0], "newValnewVal");
+						stop()
+						setTimeout(function () {
+							start();
+							equal($('#listEditor').igTextEditor("value"), "newValnewVal", "The value after paste is empty");
+							editor.igTextEditor("value", "newVal1");
+							equal($('#listEditor').igTextEditor("value"), "newVal1", "The value after paste is not newVal");
+						}, 20);
+					}, 20);
 				}, 500);
 			}, 500);
 		});
