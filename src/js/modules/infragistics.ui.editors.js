@@ -4994,13 +4994,7 @@ if (typeof jQuery !== "function") {
 			this._processTextChanged();
 
 			if (selection !== undefined) {
-				// Move the caret, move to closest unfilled if possible:
-				newLenght = newValue.slice(selection.end).split(this.options.unfilledCharsPrompt)[ 0 ].length;
-				cursor = selection.start === selection.end;
-				selection.end += newLenght;
-				if (cursor) {
-					selection.start = selection.end;
-				}
+				// Move the caret
 				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 			}
 		},
@@ -5020,7 +5014,7 @@ if (typeof jQuery !== "function") {
 				if (selection.start === selection.end) {
 					selection.start -= data.length;
 					newValue = self._replaceDisplayValue(selection, previousValue, data);
-					selection.start += data.length;
+					selection.start = selection.end;
 				} else {
 					newValue = self._replaceDisplayValue(selection, previousValue, data);
 				}
@@ -5060,6 +5054,8 @@ if (typeof jQuery !== "function") {
 				newChar = newValue.charAt(j);
 				if ($.inArray(i, this._literalIndeces) !== -1) {
 					if (currentChar !== newChar) {
+						//skip over literal and extend selection
+						selection.end++;
 						j--;
 					}
 				} else {
