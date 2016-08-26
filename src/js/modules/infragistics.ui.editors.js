@@ -1769,7 +1769,7 @@ if (typeof jQuery !== "function") {
 				"focus.editor": function (event) {
 					self._setFocus(event);
 				},
-				"dragenter.editor": function (e) {
+				"dragenter.editor": function () {
 					if (!self._focused && !self._editMode) {
 						//Controlled edit mode without selection to allow default drop handling
 						self._dragging = true;
@@ -1783,7 +1783,6 @@ if (typeof jQuery !== "function") {
 						return;
 					}
 					if (self._dragging && self._editMode) {
-						console.log("dragexit/dragleave _exitEditMode", e);
 						self._exitEditMode();
 						delete self._dragging;
 					}
@@ -2364,7 +2363,7 @@ if (typeof jQuery !== "function") {
 				selection = self._getSelection(self._editorInput[ 0 ]);
 				self._insert(newValue, previousValue, selection);
 				if (drop) {
-					if(self._editorInput.is(":focus")) {
+					if (self._editorInput.is(":focus")) {
 						// fire focus if it was ignored initally
 						self._triggerFocus(e);
 					} else {
@@ -4989,8 +4988,6 @@ if (typeof jQuery !== "function") {
 			this._processTextChanged();
 		},
 		_insert: function (newValue, previousValue, selection) { // MaskEditor
-			var newLenght = newValue.length, cursor;
-
 			if (this.options.toUpper) {
 				if (newValue) { newValue = newValue.toLocaleUpperCase(); }
 			} else if (this.options.toLower) {
@@ -5040,9 +5037,9 @@ if (typeof jQuery !== "function") {
 						self._enterEditMode();
 					}
 				}
-				
+
 				if (drop) {
-					if(self._editorInput.is(":focus")) {
+					if (self._editorInput.is(":focus")) {
 						// fire focus if it was ignored initally
 						self._triggerFocus(e);
 					} else {

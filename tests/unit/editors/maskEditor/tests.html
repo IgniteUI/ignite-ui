@@ -801,30 +801,31 @@
 				stop();
 				setTimeout(function () {
 					start();	
-					testPastePosition("57", 3).then(function( value ) {
-						//57-|__/__(test)
+					testPastePosition("57", 2).then(function( value ) {
+						//57|-__/__(test)
 						equal(editorInput.val(), "57-__/__(test)", "The text after paste is not correct");
 						return testPastePosition("2ab", 7);
 					}).then(function( value ) {
 						//57-2a/B|_(test)
 						equal(editorInput.val(), "57-2a/B_(test)", "The text after paste is not correct");
-						return testPastePosition("c", 14);
+						return testPastePosition("c", 8);
 					}).then(function( value ) {
 						//57-2a/BC(test)|
 						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
 						//verify paste doesn't go beyond the mask
 						return testPastePosition("random", 14);
 					}).then(function( value ) {
-						editorInput[0].select();
 						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
-						return testPastePosition("57-2a", 6);
+						editorInput[0].select();
+						keyInteraction(8, editorInput);
+						return testPastePosition("57-2a", 5);
 					}).then(function( value ) {
-						//57-2a/|__(test)
+						//57-2a|/__(test)
 						editorInput[0].select();
 						equal(editorInput.val(), "57-2a/__(test)", "The text after paste is not correct");
-						return testPastePosition("572a/bc", 14);
+						return testPastePosition("572a/bc", 8);
 					}).then(function( value ) {
-						//57-2a/BC(test)|
+						//57-2a/BC|(test)
 						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
 						editorInput[0].select();
 						return testPastePosition("572abc(test)", 14);
@@ -837,7 +838,58 @@
 						//57-2a/BC(test)|
 						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
 					});
-				}, 100);
+				}, 200);
+			});
+
+			testId = 'Drag and drop';
+			test(testId, 13, function () {
+				var $editor = $("#pasteEditor"),
+					editorInput = $editor.igMaskEditor("field"),
+					testDropPosition = function (val, expectedPos) {
+						var defer = $.Deferred();
+						editorInput[0].selectionStart = expectedPos[0];
+						$.ig.TestUtil.drop(editorInput[0], val);
+						stop();
+						setTimeout(function () {
+							start();
+							equal(editorInput[0].selectionStart, expectedPos[0], "Selection start not correct after drop");
+							equal(editorInput[0].selectionEnd, expectedPos[1], "Selection end not correct after drop");
+							defer.resolve();
+						}, 20);
+						return defer;
+					};
+				editorInput.blur();
+				$editor.igMaskEditor("value", "");
+
+				// drag enter/leave events:
+				editorInput.trigger("dragenter");
+				equal(editorInput.val(), "__-__/__(test)", "Editor didn't enter edit mode on dragenter");
+				// fake FF interaction:
+				$.ig.util.isFF = true;
+				var ev = jQuery.Event( "dragleave" );
+				ev.relatedTarget = editorInput[0];
+				editorInput.trigger(ev);
+				equal(editorInput.val(), "__-__/__(test)", "Editor exited edit mode on inner dragleave");
+				$.ig.util.isFF = false;
+
+				editorInput.trigger("dragleave");
+				equal(editorInput.val(), "", "Editor didn't exit edit mode on dragenter");
+
+				// drop text with focus
+				editorInput.trigger("dragenter");
+				equal(editorInput.val(), "__-__/__(test)", "Editor didn't enter edit mode on dragenter");
+				testDropPosition("57", [0,2]).then(function( value ) {
+					//|57|-__/__(test)
+					equal(editorInput.val(), "57-__/__(test)", "The text after drop is not correct");
+					return testDropPosition("2ab", [2, 7]);
+				}).then(function( value ) {
+					//57-|2a/B|_(test)
+					equal(editorInput.val(), "57-2a/B_(test)", "The text after drop is not correct");
+					return testDropPosition("cc", [7, 14]);
+				}).then(function( value ) {
+					//57-2a/B|C(test)|
+					equal(editorInput.val(), "57-2a/BC(test)", "The text after drop is not correct");
+				});
 			});
 		});
 

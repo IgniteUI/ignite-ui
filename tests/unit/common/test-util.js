@@ -76,7 +76,41 @@
 
 			// cleanup
 			delete window.clipboardData;
+		},
+
+		drop: function (input, newVal, focus) {
+			var ev = jQuery.Event( "drop" ), $input = $(input),
+				startPos = $input[0].selectionStart,
+				focus = focus !== undefined ? focus : true;
+			ev.originalEvent = {
+				dataTransfer: { 
+					getData: function (param) {
+						param = param.toLowerCase();
+						if (param === 'text/plain' || param === 'text') {
+							return newVal;
+						}
+					}
+				}
+			};
+			$input.trigger(ev);
+
+			if (!ev.isDefaultPrevented()) {
+				var newValue = $input.val();
+				newValue = newValue.slice(0, startPos) + newVal + newValue.slice(startPos);
+				if (focus) {
+					$input.focus();
+				}
+				$input.val(newValue);
+				$input[0].selectionStart = startPos;
+				$input[0].selectionEnd = startPos + newVal.length;
+			}
 		}
 	});
-	
+
+	// patch ":focus" pseudo for PhantomJS 
+	$.expr[':'].focus = function( elem ) {
+		return elem === document.activeElement;
+	};
+	//must be called once:
+	 $(document).is(":focus");
 }(jQuery));

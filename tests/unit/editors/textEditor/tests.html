@@ -603,11 +603,12 @@
 						editor.igTextEditor("value", "newVal1");
 						equal($('#listEditor').igTextEditor("value"), "", "The value after paste is empty");
 						editor.igTextEditor("option", "isLimitedToListValues", false);
+						editor.igTextEditor("option", "maxLength", 10);
 						$.ig.TestUtil.paste(editorInput[0], "newValnewVal");
 						stop()
 						setTimeout(function () {
 							start();
-							equal($('#listEditor').igTextEditor("value"), "newValnewVal", "The value after paste is empty");
+							equal($('#listEditor').igTextEditor("value"), "newValnewV", "The value after paste is not trimmed/accepted");
 							editor.igTextEditor("value", "newVal1");
 							equal($('#listEditor').igTextEditor("value"), "newVal1", "The value after paste is not newVal");
 						}, 20);

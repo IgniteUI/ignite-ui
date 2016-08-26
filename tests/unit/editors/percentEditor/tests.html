@@ -345,6 +345,58 @@
 					}, 20);
 				}, 100);
 			});
+
+			var testId = 'Drag and Drop';
+			test(testId, 13, function () {
+				var $editor = $("#pasteEditor"),
+					editorInput = $editor.igPercentEditor("field");
+
+				$editor.blur().igPercentEditor("value", 0);
+				
+				// drag enter/leave events:
+				editorInput.trigger("dragenter");
+				equal(editorInput.val(), "0", "Editor didn't enter edit mode on dragenter");
+				editorInput.trigger("dragleave");
+				equal(editorInput.val(), "0.00%", "Editor exited edit mode on inner dragleave");
+				editorInput.trigger("dragenter");
+				equal(editorInput.val(), "0", "Editor didn't enter edit mode on dragenter");
+
+				stop();
+				editorInput[0].selectionStart = 0;
+				$.ig.TestUtil.drop(editorInput[0], "33");					
+				setTimeout(function () {
+					start();
+					equal(editorInput[0].selectionStart, 0, "Cusrsor position not correct after drop");
+					equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop");
+					equal(editorInput.val(), "330", "The text after drop is not correct");	
+					editorInput[0].selectionStart = 1;
+					$.ig.TestUtil.drop(editorInput[0], "5");
+					stop();
+					setTimeout(function () {
+						start();
+						equal(editorInput[0].selectionStart, 1, "Cusrsor position not correct after drop. Should be like [|24|330]");
+						equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop. Should be like [|24|330]");
+						equal(editorInput.val(), "3530", "The text after positioned drop is not correct");
+						
+						// drop "+0024" in front, ultimately only adding 24:						
+						editorInput[0].selectionStart = 0;
+						var parseInt = window.parseInt;
+						window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
+						$.ig.TestUtil.drop(editorInput[0], "+0024");
+						stop();
+						setTimeout(function () {
+							window.parseInt = parseInt;
+							start();
+							equal(editorInput[0].selectionStart, 0, "Cusrsor position not correct after drop. Should be like [|24|3530]");
+							equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop. Should be like [|24|3530]");
+							equal(editorInput.val(), "243530", "The text after positioned drop is not correct");
+							
+							editorInput.trigger("blur");	
+							strictEqual($editor.igPercentEditor("value"), 2435.3, "The value after drop is not correct");
+						}, 20);
+					}, 20);					
+				}, 20);
+			});
 		});
 	</script>
 </head>

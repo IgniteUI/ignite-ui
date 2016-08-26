@@ -289,7 +289,8 @@
 
 				
 				$("#pasteEditor").igNumericEditor({
-					dataMode: "double"
+					dataMode: "double",
+					maxValue: 80000
 				});	
 			});
 		}
@@ -983,7 +984,7 @@
 		});
 
 		testId = 'Paste and insert';
-		test(testId, 5, function () {
+		test(testId, 8, function () {
 			var $editor = $("#pasteEditor"),
 				editorInput = $editor.igNumericEditor("field");
 			
@@ -1007,8 +1008,22 @@
 					equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste. Should be like [24|33]");
 					equal(editorInput.val(), "2433", "The text after positioned paste is not correct");
 					
-					editorInput.trigger("blur");	
-					strictEqual($editor.igNumericEditor("value"), 2433, "The value after paste is not correct");
+					editorInput[0].setSelectionRange(2,2);
+					$.ig.TestUtil.paste(editorInput[0], "5");
+					stop();
+					setTimeout(function () {
+						start();
+						equal(editorInput[0].selectionStart, 3, "Cusrsor position not correct after paste. Should be like [2412345678|]");
+						equal(editorInput.val(), "24533", "The text after positioned paste is not correct");
+						$.ig.TestUtil.paste(editorInput[0], "6789");
+						stop();
+						setTimeout(function () {
+							start();
+							equal(editorInput.val(), "80000", "The text after positioned paste is not correct");
+							editorInput.trigger("blur");
+							strictEqual($editor.igNumericEditor("value"), 80000, "The value did not revert from paste");
+						}, 20);
+					}, 20);
 				}, 20);
 			}, 20);
 		});
