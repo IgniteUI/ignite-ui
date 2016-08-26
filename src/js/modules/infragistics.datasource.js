@@ -20,7 +20,7 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- *	jquery-1.4.4.js
+ *	jquery-1.9.1.js
  *	infragistics.util.js
  *
  */
@@ -2826,7 +2826,8 @@
 				compareValFunc = f.compareFunc, rec, val, formatter = f.formatter,
 				self = this, mapper = this._hasMapper;
 			if (f.dir !== undefined && f.dir !== null) {
-				reverse = f.dir === "desc" ? -1 : 1;
+				reverse = f.dir.toLowerCase().startsWith("desc");
+				reverse = reverse ? -1 : 1;
 			} else if (direction !== undefined && direction !== null && direction !== "") {
 				reverse = direction.toLowerCase().startsWith("desc");
 				reverse = reverse ? -1 : 1;
@@ -3085,6 +3086,7 @@
 			paramType="object" a list of field expression definitions
 			paramType="AND|OR" boolean logic. Accepted values are AND and OR.
 			paramType="bool" if keepFilterState is set to true, it will not discard previous filtering expressions
+			paramType="object" a list of field expression definitions (or a string with the conditions separated by AND/OR operator, example: "ID = 1 OR ID = 2"), which when applied will threat the related field as if it's string and can only apply conditions valid for string types.
 			*/
 			var i, j, expr = null, count = 0, skipRec = false, data, t, k, schema,
 				fields, field, tmpbool, resetPaging, allFieldsExpr,
@@ -3201,7 +3203,7 @@
 								}
 								skipRec = !this._findMatch(data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ],
 															fieldExpressionsOnStrings[ j ].expr,
-															t,
+															"string",
 															!f.caseSensitive,
 															fieldExpressionsOnStrings[ j ].cond,
 															fieldExpressionsOnStrings[ j ].preciseDateFormat,
@@ -3215,7 +3217,7 @@
 								}
 								skipRec = !this._findMatch(data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ],
 														fieldExpressionsOnStrings[ j ].expr,
-														t,
+														"string",
 														!f.caseSensitive,
 														fieldExpressionsOnStrings[ j ].cond,
 														fieldExpressionsOnStrings[ j ].preciseDateFormat,
@@ -4094,7 +4096,7 @@
 		},
 		toggleGroupByRecord: function (id, collapsed) {
 			/* Toggle grouped record with the specified id and updates collections visible groupby data and data view
-			paramType="string" id of the grouped record
+			paramType="string" data-id attribute of the respective group row in the DOM
 			paramType="bool" if true the record should be collapsed, otherwise expanded
 			*/
 			var ds = this._gbData, i, len = ds.length, res = [], lvl,

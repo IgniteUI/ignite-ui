@@ -9,8 +9,8 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- *  jquery-1.4.4.js
- * modernizr.js (Optional)
+ *  jquery-1.9.1.js
+ *  modernizr.js (Optional)
  *
  */
 
@@ -25,8 +25,9 @@
 
 	var initializing = false, fnTest = /xyz/.test(function () { xyz(); }) ? /\b_super\b/ : /.*/;
 
-	// The base Class implementation (does nothing)
-	this.Class = function () { };
+	// The base Class implementation (does nothing) or expects Class to already be defined as a function
+	// K.D. August 18, 2016 Bug #242 global scope Class object is overridden by Ignite UI Class object
+	this.Class = this.Class || function () { };
 
 	// Create a new Class that inherits from this class
 	Class.extend = function (prop, doAugment) {
@@ -416,7 +417,7 @@
 			s = "<span class='ui-igcheckbox-container' style='display:" +
 				display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
 				val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
-			s += "<span class='" + $.ig.checkboxMarkupClasses + "' style=,display:inline-block'>";
+			s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
 			s += "<span style='display:block' class='" + (val ? "" : "ui-igcheckbox-small-off ");
 			return s + "ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>";
 		}
@@ -634,7 +635,7 @@
 			if (format.indexOf(s = "{0}") >= 0) {
 				return format.replace(s, val);
 			}
-			if (format.indexOf(s = "[ 0 ]") >= 0) {
+			if (format.indexOf(s = "[0]") >= 0) {
 				return format.replace(s, val);
 			}
 		}
@@ -785,7 +786,7 @@
 		if (t === "undefined") {
 			return "string";
 		} else if (o && o.getTime && !isNaN(o.getTime()) &&
-			Object.prototype.toString.call(o) === "[ object Date ]") {
+			Object.prototype.toString.call(o) === "[object Date]") {
 			return "date";
 		} else if (t === "boolean") {
 			return "bool";
@@ -1093,7 +1094,7 @@
 			if (!this.typeArguments || !this.typeArguments.length) {
 				return this.identifier.toString();
 			} else {
-				var ret = this.identifier.toString() + "[ ";
+				var ret = this.identifier.toString() + "[";
 				var first = true;
 				for (var i = 0; i < this.typeArguments.length; i++) {
 					if (this.typeArguments[ i ] == undefined) {
@@ -1106,7 +1107,7 @@
 						ret += this.typeArguments[ i ].identifier.toString();
 					}
 				}
-				ret += " ]";
+				ret += "]";
 				return ret;
 			}
 		},
@@ -5146,10 +5147,12 @@ $.ig.Array.prototype.clear = function () {
 		if (!timer && !elem[ 0 ].offsetWidth) {
 			timer = obj.wait = "width";
 		}
+
+		obj.elem = elem;
+		obj.chart = chart;
+		obj.notify = notifyResized;
+
 		if (timer) {
-			obj.elem = elem;
-			obj.chart = chart;
-			obj.notify = notifyResized;
 
 			// stop: stop timer: coming from destroy
 			obj.onTick = obj.onTick || function (stop) {
@@ -5204,6 +5207,18 @@ $.ig.Array.prototype.clear = function () {
 				}
 			};
 			obj.onTick();
+		}
+
+		if (obj.chart && obj.notify && !obj.__resizeProxy) {
+			obj.oldDevicePixelRatio = window.devicePixelRatio || 1.0;
+			obj.__resizeProxy = function () {
+				var devicePixelRatio = window.devicePixelRatio || 1.0;
+				if (devicePixelRatio !== obj.oldDevicePixelRatio) {
+					obj.oldDevicePixelRatio = window.devicePixelRatio || 1.0;
+					obj.chart[ obj.notify ]();
+				}
+			};
+			window.addEventListener("resize", obj.__resizeProxy, false);
 		}
 	};
 
@@ -6481,12 +6496,12 @@ $.ig.Array.prototype.clear = function () {
 					jsPattern = jsPattern.concat("\\/");
 					break;
 
-				case "[ ":
+				case "[":
 					isInClass = true;
 					jsPattern = jsPattern.concat("[");
 					break;
 
-				case " ]":
+				case "]":
 					isInClass = false;
 					jsPattern = jsPattern.concat("]");
 					break;

@@ -6,7 +6,7 @@
 * http://www.infragistics.com/
 *
 * Depends on:
-* jquery-1.8.3.js
+* jquery-1.9.1.js
 * jquery.ui.core.js
 * jquery.ui.widget.js
 * infragistics.templating.js
@@ -3732,9 +3732,10 @@
                         return;
                     }
 
-                    if (currentY > lastY) {
+                    // R.K. 22/08/2016 #253: igCombo scrolling not working properly on ipad when virtualization is on
+                    if (currentY < lastY) {
                         self.listScrollTop(currentScrollTop + itemHeight);
-                    } else if (currentY < lastY) {
+                    } else if (currentY > lastY) {
                         self.listScrollTop(currentScrollTop - itemHeight);
                     }
 
@@ -4179,6 +4180,11 @@
                 // K.D. March 3rd, 2015 Bug #189365 When clearing the filter leave the array empty.
                 if (texts.length > 0 || (this._options.expression &&
                     this._options.expression.length > 0)) {
+                    // R.K. August 23th 2016 Bug #260 Only lowercase items returned by igCombo filtering when filtering by turkish symbol ı
+                    if (texts.indexOf("ı") > -1 && !this.options.caseSensitive) {
+                        texts = texts.replace("ı", "ı|I");
+                        texts = new RegExp(texts);
+                    }
                     expressions.push({
                         fieldName: this.options.textKey,
                         expr: texts,
@@ -4266,6 +4272,12 @@
 
             if (pattern) {
                 regex = new RegExp(pattern, regExpFlag);
+
+                // R.K. August 23th 2016 Bug #260 Only lowercase items returned by igCombo filtering when filtering by turkish symbol ı
+                if (pattern.indexOf("ı") > -1 && !this.options.caseSensitive) {
+                    pattern = pattern.replace("ı", "ı|I");
+                    regex = new RegExp(pattern, regExpFlag);
+                }
 
                 filterMatches = function () {
                     return this.nodeType === 3 && regex.test(this.nodeValue);

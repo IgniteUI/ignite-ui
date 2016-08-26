@@ -32,12 +32,13 @@
 		$(document).ready(function () {
 			// Create a editors
 
-				function loadTestbeds() {
-					var testbedIDs = ["208808", "209067", "209174", "209912", "209641", "209696",
+				function loadTestbeds(testbedID) {
+					var testbedIDs = testbedID || ["208808", "209067", "209174", "209912", "209641", "209696",
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264"];
+					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
@@ -369,16 +370,69 @@
 					});
 				}
 
+				window.Bug223245Testbed = function () {
+					$("#223245NumericEditor1").igNumericEditor({
+						dataMode: "int",
+						value: 60,
+						allowNullValue: true,
+						nullValue: ""
+					});
+
+					$('#223245NumericEditor2').igNumericEditor({
+						dataMode: "int",
+						value: 10,
+						allowNullValue: false, //expected to set to minValue
+						minValue: 5
+					});
+
+					$("#223245NumericEditor3").igNumericEditor({
+						dataMode: "int",
+						value: 70,
+						allowNullValue: true, //expected to set to minValue if input between 1-4
+						minValue: 5
+					});
+
+					$('#223245PercentEditor1').igPercentEditor({
+						value: 0.60,
+						allowNullValue: true,
+						nullValue: ""
+					});
+
+					$('#223245PercentEditor2').igPercentEditor({
+						value: 0.10,
+						allowNullValue: false, //expected to set to 
+						nullValue: ""
+					});
+
+					$('#223245PercentEditor3').igPercentEditor({
+						value: 0.70,
+						allowNullValue: true, //expected to set to minValue if input if less than 30
+						nullValue: "",
+						minValue: 0.3
+					});
+				}
+
+				window.Bug264Testbed = function () {
+					$("#264Editor1").igMaskEditor({
+						inputMask: "00-0L/>aa(test)"
+					});
+					$("#264Editor2").igMaskEditor({
+						inputMask: 'Aaa\\>L/>aa'
+					});
+				}
+
 				initialized = false;
 				module("Editors Bugs Unit Tests ", {
-					setup: function () {
-						//pause testing until editors are initialized
-						if (!initialized) {
-							stop();
-							loadTestbeds();
-							setTimeout(function () { start(); }, 100);
-							initialized = true;
-						}
+					setup: function (assert) {
+						var testID = /^Bug (\d+)/.exec(assert.test.testName).pop();
+						loadTestbeds([testID]);
+						
+						// if (!initialized) {
+						// 	stop();
+						// 	loadTestbeds([assert.test.testName]);
+						// 	setTimeout(function () { start(); }, 100);
+						// 	initialized = true;
+						// }
 					},
 					teardown: function () {
 					}
@@ -962,12 +1016,84 @@
 				keyInteraction(13, input);
 				var text = $("#98Editor1").igNumericEditor("field").val();
 				equal(text, 5, "Text in editor is not set to the maxValue");
-				input.igNumericEditor("setFocus");
+				input.select();
 				typeInMaskedInput("1", input.igNumericEditor("field"));
 				keyInteraction(13, input);
 				var text = $("#98Editor1").igNumericEditor("field").val();
 				equal(text, 3, "Text in editor is not set to the minValue");
 			});
+
+			testId = 'Bug 223245';
+			test(testId, 6, function () {
+				var input = $('#223245PercentEditor1');
+				input.igPercentEditor("setFocus");
+				$("#223245PercentEditor1").data("igPercentEditor")._insert("");
+				keyInteraction(13, input);
+				var value = $("#223245PercentEditor1").igPercentEditor("value");
+				equal(value, "", "igPercentEditor is not set to empty string value when allwNullValue : true");
+
+				var input = $('#223245PercentEditor2');
+				input.igPercentEditor("setFocus");
+				$("#223245PercentEditor2").data("igPercentEditor")._insert("");
+				keyInteraction(13, input);
+				var value = $("#223245PercentEditor2").igPercentEditor("value");
+				equal(value, 0, "igPercentEditor is not set to 0 value when allwNullValue : false");
+
+				var input = $('#223245PercentEditor3');
+				input.igPercentEditor("setFocus");
+				typeInInput("20", input.igPercentEditor("field"));
+				keyInteraction(13, input);
+				var value = $("#223245PercentEditor3").igPercentEditor("value");
+				equal(value, 0.3, "igPercentEditor is not set to minValue");
+
+				var input = $('#223245NumericEditor1');
+				input.igNumericEditor("setFocus");
+				$("#223245NumericEditor1").igNumericEditor("value", "");
+				keyInteraction(13, input);
+				var value = $("#223245NumericEditor1").igNumericEditor("value");
+				equal(value, "", "igNumericEditor is not set to empty string value when allwNullValue : true");
+
+				var input = $('#223245NumericEditor2');
+				input.igNumericEditor("setFocus");
+				$("#223245NumericEditor2").data("igNumericEditor")._insert("");
+				keyInteraction(13, input);
+				var value = $("#223245NumericEditor2").igNumericEditor("value");
+				equal(value, 5, "igNumericEditor is not set to minValue when allwNullValue : false");
+
+				var input = $('#223245NumericEditor3');
+				input.igNumericEditor("setFocus");
+				$("#223245NumericEditor3").data("igNumericEditor")._insert(3);
+				keyInteraction(13, input);
+				var value = $("#223245NumericEditor3").igNumericEditor("value");
+				equal(value, 5, "igNumericEditor is not set to minValue");
+			});
+
+			testId = 'Bug 264';
+			test(testId, 2, function () {
+				var edit1 = $('#264Editor1'),
+					edit2 = $('#264Editor2');
+
+				edit1.trigger("focus");
+				stop();
+				setTimeout(function () {
+					start();
+					typeInMaskedInput("555a", edit1.igMaskEditor("field"));
+					edit1.blur();
+					var text = edit1.igMaskEditor("field").val();
+					equal(text, "55-5a/(test)", "MaskEditor did not accept value with required positions filled");
+					edit2.trigger("focus");
+					stop();
+					setTimeout(function () {
+						start();
+						typeInMaskedInput("123d", edit2.igMaskEditor("field"));
+						edit2.blur();
+						var text = edit2.igMaskEditor("field").val();
+						equal(text, "123>d/", "MaskEditor did not accept value with required positions filled");
+					
+					}, 100);
+				}, 100);
+			});
+
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1016,8 +1142,11 @@
 				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
 				element.trigger(keyDown);
 				element.trigger(keyPress);
+				// refresh selection EACH time, mask editor moves over literals:
+				selectionStart = element[0].selectionStart;
 				value = value.replaceAt(selectionStart++, ch);
 				element.val(value);
+				element[0].selectionStart = selectionStart;
 				element.trigger(keyUp);
 			});
 		}
@@ -1192,6 +1321,18 @@
 		<input id="98Editor1" />
 		<textarea id="221494Editor1"></textarea>
 		<textarea id="221300Editor1"></textarea>
+
+		<br />
+		<input id="223245PercentEditor1" type="text" />
+		<input id="223245PercentEditor2" type="text" />
+		<input id="223245PercentEditor3" type="text" />
+		<input id="223245NumericEditor1" type="text" />
+		<input id="223245NumericEditor2" type="text" />
+		<input id="223245NumericEditor3" type="text" />
+
+		<input id="264Editor1" />
+		<input id="264Editor2" />
+
 	</div></body>
 </html>
 
