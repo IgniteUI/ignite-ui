@@ -4906,6 +4906,7 @@ if (typeof jQuery !== "function") {
 			this._promptCharsIndices = [];
 		},
 		_applyOptions: function () { //igMaskEditor
+			this._getMaskLiteralsAndRequiredPositions();
 
 			// In case value is not set we need to use the setInitialValue method to store mask, required field indeces, prompt indeces etc.
 			this._super();
@@ -5381,34 +5382,23 @@ if (typeof jQuery !== "function") {
 			return this._getValueByDataMode(text);
 		},
 		_validateValueAgainstMask: function (value) {
-			var i, j, length = value.length, result = true, ch, mask = this.options.inputMask;
+			var i, j, length = value.length, result = true, ch, mask = this._unescapedMask;
 			if (length && length > 0) {
 				for (j = 0, i = 0; i < mask.length && j < value.length; i++, j++) {
 					ch = value.charAt(j);
-					if (this._focused && ch === this.options.unfilledCharsPrompt) {
+
+					// D.P. 24th Aug 2016 #264 Position tweaks before unfilledCharsPrompt skip, literals match unescapedMask
+					// In case passed value contains both literals and filled prompts we try to parse the value.
+					// In case of mask 00/00 we should accept both 1234 and 12/34 as input and parse it with the correct result.
+					if ($.inArray(i, this._literalIndeces) !== -1) {
+						if (mask.charAt(i) !== ch) {
+							j--;
+						}
 						continue;
 					}
-					if (this._validateCharOnPostion(ch, i) === null) {
 
-						// If we have left postions on the map and _validateCharOnPostion returns null this means we have literal and we need to move
-						// Move to next char on the mask
-						// We need to detect Escaped chars
-						if (mask.charAt(i) === "\\") {
-							i++;
-							j--;
-						} else if (mask.charAt(i) === "<" || mask.charAt(i) === ">") {
-							j--;
-						}
-
-						// In case passed value contains both literals and filled prompts we try to parse the value.
-						// In case of mask 00/00 we should accept both 1234 and 12/34 as input and parse it with the correct result.
-						else if ($.inArray(i, this._literalIndeces) !== -1) {
-							if (mask.charAt(i) !== ch) {
-								j--;
-							}
-						}
-
-					} else if (this._validateCharOnPostion(ch, i) === false) {
+					if (!(this._focused && ch === this.options.unfilledCharsPrompt) &&
+						this._validateCharOnPostion(ch, i) === false) {
 						return false;
 					}
 				}
@@ -5420,7 +5410,7 @@ if (typeof jQuery !== "function") {
 		_setInitialValue: function (value) { //igMaskEditor
 			this._maskWithPrompts = this._parseValueByMask("");
 			this._getMaskLiteralsAndRequiredPositions();
-			if (value === null || value === "" || typeof value === undefined) {
+			if (value === null || value === "" || typeof value === "undefined") {
 				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
@@ -6140,7 +6130,6 @@ if (typeof jQuery !== "function") {
 		},
 		_setInitialValue: function (value) { //igDateEditor
 			this._maskWithPrompts = this._parseValueByMask("");
-			this._getMaskLiteralsAndRequiredPositions();
 			if (value === null || value === "" || typeof value === "undefined") {
 				this._maskedValue = "";
 			} else {
