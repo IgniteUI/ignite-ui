@@ -2362,11 +2362,17 @@ if (typeof jQuery !== "function") {
 			this._timeouts.push(setTimeout(function () {
 				newValue = self._editorInput.val();
 				selection = self._getSelection(self._editorInput[ 0 ]);
-				if (drop) {
-					// fire focus if it was ignored initally
-					self._triggerFocus(e);
-				}
 				self._insert(newValue, previousValue, selection);
+				if (drop) {
+					if(self._editorInput.is(":focus")) {
+						// fire focus if it was ignored initally
+						self._triggerFocus(e);
+					} else {
+						self._processValueChanging(newValue);
+						self._focused = false;
+						self._exitEditMode();
+					}
+				}
 			}, 10));
 		},
 		_insertHandler: function (string) {
@@ -5030,6 +5036,17 @@ if (typeof jQuery !== "function") {
 					}
 					if (self._focused) {
 						self._enterEditMode();
+					}
+				}
+				
+				if (drop) {
+					if(self._editorInput.is(":focus")) {
+						// fire focus if it was ignored initally
+						self._triggerFocus(e);
+					} else {
+						self._processValueChanging(newValue);
+						self._focused = false;
+						self._exitEditMode();
 					}
 				}
 			}, 10));
