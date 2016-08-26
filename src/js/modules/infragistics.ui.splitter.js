@@ -13,11 +13,23 @@
  *	infragistics.ui.splitter-en.js
  */
 
-/*global jQuery, document, window */
-if (typeof jQuery !== "function") {
-    throw new Error("jQuery is undefined");
-}
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
 
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.splitter-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
+/*global jQuery, document, window */
 (function ($) {
     /*
 		igSplitter is a widget based on jQuery UI that manages layout into two panels with split bar and providers the end user with a rich interaction functionality including the ability to expand/collapse panel, and resize panels via split bar.
@@ -1965,4 +1977,5 @@ if (typeof jQuery !== "function") {
         }
     });
     $.extend($.ui.igSplitter, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igSplitter;
+}));

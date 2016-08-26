@@ -19,6 +19,23 @@
 *	</script>
 *	<div id="rating1"></div>
 */
+
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./i18n/infragistics.ui.rating-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 /*global jQuery, document, setTimeout */
 (function ($) {
 	var _aNull = function (v) {
@@ -844,4 +861,5 @@
 		}
 	});
 	$.extend($.ui.igRating, { version: "<build_number>" });
-}(jQuery));
+	return $.ui.igRating;
+}));

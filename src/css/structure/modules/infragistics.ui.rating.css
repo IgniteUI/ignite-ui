@@ -1,4 +1,6 @@
-﻿.ui-igrating {
+﻿@import url("infragistics.ui.shared.css");
+
+.ui-igrating {
 }
 
 .ui-igrating .ui-icon{ 

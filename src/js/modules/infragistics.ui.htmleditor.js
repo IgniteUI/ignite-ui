@@ -11,25 +11,42 @@
  *   jquery.ui.core.js
  *   jquery.ui.widget.js
  *   infragistics.util.js
- *   infragistics.ui.shared.js
  *   infragistics.ui.toolbarbutton.js
  *   infragistics.ui.toolbar.js
  *   infragistics.ui.popover.js
  *   infragistics.ui.splitbutton.js
  *   infragistics.ui.colorpicker.js
  *   infragistics.ui.colorpickersplitbutton.js
- *   infragistics.dataSource.js
  *   infragistics.ui.combo.js
- *   infragistics.ui.dialog.js
  *   infragistics.ui.htmleditor-en.js
  *   infragistics.ui.toolbar-en.js
  */
 
-/*global jQuery, window, document, Class*/
-if (typeof jQuery !== "function") {
-    throw new Error("jQuery is undefined");
-}
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
 
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.popover",
+			"./infragistics.ui.splitbutton",
+			"./infragistics.ui.colorpicker",
+			"./infragistics.ui.colorpickersplitbutton",
+			"./infragistics.ui.combo",
+			"./infragistics.ui.editors",
+			"./infragistics.ui.toolbarbutton",
+			"./infragistics.ui.toolbar",
+			"./i18n/infragistics.ui.htmleditor-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
+/*global jQuery, window, document, Class*/
 (function ($) {
 
     /*
@@ -3327,4 +3344,5 @@ if (typeof jQuery !== "function") {
     ************************************/
 
     $.extend($.ui.igHtmlEditor, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igHtmlEditor;
+}));

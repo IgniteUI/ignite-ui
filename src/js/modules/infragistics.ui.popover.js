@@ -11,10 +11,23 @@
  *  jquery.ui.widget.js
  *  infragistics.util.js
  */
-/*global jQuery, HTMLElement */
-if (typeof jQuery !== "function") {
-	throw new Error("jQuery is undefined");
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./i18n/infragistics.ui.popover-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
 }
+/*global jQuery, HTMLElement */
 (function ($) {
 	$.widget("ui.igPopover", {
 		css: {
@@ -1021,4 +1034,5 @@ if (typeof jQuery !== "function") {
 	$.extend($.ui.igPopover, {
 		version: "<build_number>"
 	});
-}(jQuery));
+	return $.ui.igPopover;
+}));

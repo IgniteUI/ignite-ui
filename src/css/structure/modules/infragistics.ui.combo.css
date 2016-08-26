@@ -1,4 +1,6 @@
-﻿.ui-igcombo-wrapper {
+﻿@import url("infragistics.ui.shared.css");
+
+.ui-igcombo-wrapper {
     position: relative;
     display: inline-block;
     overflow: visible;

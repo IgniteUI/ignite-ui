@@ -22,6 +22,26 @@
 *   <input id="combo" />
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.templating",
+			"./infragistics.datasource",
+			"./infragistics.scroll",
+			"./infragistics.validator",
+			"./i18n/infragistics.ui.combo-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 /*global jQuery*/
 (function ($) {
     /*
@@ -6240,4 +6260,5 @@
     });
 
     $.extend($.ui.igCombo, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igCombo;
+}));

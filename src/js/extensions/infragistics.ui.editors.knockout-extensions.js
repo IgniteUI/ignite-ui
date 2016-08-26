@@ -12,7 +12,19 @@
 */
 
 /*global ko, jQuery*/
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+            "jquery",
+            "jquery-ui",
+            "knockout",
+            "../modules/infragistics.util",
+            "../modules/infragistics.ui.editors"
+            ], factory );
+	} else {
+		factory(jQuery);
+	}
+}(function ($) {
 	function updatePropertyValue(element, bindingType, viewModel, newValue) {
 		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*value\\s*:\\s*)?([^{},\\s]+)"),
 			key,
@@ -451,4 +463,4 @@
 			}
 		}
 	};
-}(jQuery));
+}));

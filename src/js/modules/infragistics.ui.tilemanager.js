@@ -17,6 +17,26 @@
  *	infragistics.ui.tilemanager-en.js
  */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.datasource",
+			"./infragistics.templating",
+			"./infragistics.ui.layoutmanager",
+			"./infragistics.ui.splitter",
+			"./infragistics.ui.tilemanager-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 /*global jQuery, window*/
 (function ($) {
     /*
@@ -1881,4 +1901,5 @@
         }
     });
     $.extend($.ui.igTileManager, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igTileManager;
+}));

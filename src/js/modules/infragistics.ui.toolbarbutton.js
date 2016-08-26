@@ -13,6 +13,22 @@
  *	infragistics.ui.shared.js
  */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.shared"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 /*global jQuery */
 (function ($) {
     /*
@@ -248,4 +264,5 @@
     });
 
     $.extend($.ui.igToolbarButton, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igToolbarButton;
+}));

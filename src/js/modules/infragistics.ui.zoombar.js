@@ -13,6 +13,23 @@
  * infragistics.ui.shared.js
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.shared",
+			"./infragistics.ui.zoombar-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 /*global jQuery, Class */
 (function ($) {
 	/*
@@ -1340,4 +1357,6 @@
 			return props > 0 ? ref : null;
 		}
 	});
-}(jQuery));
+
+	return $.ui.igZoombar;
+}));

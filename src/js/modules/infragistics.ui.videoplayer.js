@@ -13,11 +13,24 @@
  *  infragistics.ui.shared.js
  */
 
-/*global jQuery, window */
-if (typeof jQuery !== "function") {
-	throw new Error("jQuery is undefined");
-}
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
 
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.shared",
+			"./infragistics.ui.videoplayer-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
+/*global jQuery, window */
 (function ($) {
 
 	$.widget("ui.igVideoPlayer", {
@@ -3277,4 +3290,5 @@ if (typeof jQuery !== "function") {
 		}
 	});
 	$.extend($.ui.igVideoPlayer, { version: "<build_number>" });
-}(jQuery));
+	return $.ui.igVideoPlayer;
+}));

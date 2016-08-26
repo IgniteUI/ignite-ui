@@ -1,7 +1,13 @@
 ﻿/* English, US */
 
 /*global jQuery */
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( ["jquery"], factory );
+	} else {
+		factory(jQuery);
+	}
+}(function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
     $.ig.regional['en-US'] = {
@@ -44,4 +50,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('en-US');
     }
-})(jQuery);
+}));

@@ -20,6 +20,24 @@
 *	</script>
 *	<input id="text1" type="text" />
 */
+
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.notifier",
+			"./infragistics.ui.validator-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 /*global jQuery, Class */
 (function ($) {
 /*
@@ -1653,4 +1671,4 @@ $.ig.igValidatorCreditCardRule = $.ig.igValidatorCreditCardRule || $.ig.igValida
 	}
 });
 
-}(jQuery));
+}));
