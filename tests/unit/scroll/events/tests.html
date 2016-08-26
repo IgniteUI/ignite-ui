@@ -1,0 +1,442 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>IgniteUI scroll - events</title>
+	<link type="text/css" href="../../../../src/css/structure/jquery.ui.all.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.scroll.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.scroll.js"></script>
+	<script type="text/javascript" src="../jquery.simulate.js"></script>
+	<script type="text/javascript" src="../simInteractions.js"></script>
+
+	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
+
+	<script type="text/javascript">
+		//Content for igScroll that is big enough so vertical and horizontal scrollbars need to be rendered
+		var contentScrollVH = '<table width="800" style="border: 1px solid #777777;">' +
+			"<thead>" +
+				"<th>Product ID</th>" +
+				"<th>Name</th>" +
+				"<th>Product Number</th>" +
+				"<th>Make</th>" +
+				"<th>Finished Goods</th>" +
+				"<th>Color</th>" +
+				"<th>Safety Stock Level</th>" +
+				"<th>Reorder Point</th>" +
+				"<th>Standard Const</th>" +
+				"<th>List Price</th>" +
+				"<th>Days to Manufacture</th>" +
+				"<th>Modified Date</th>" +
+			"</thead>" +
+			"<tbody>" +
+				"<tr><td>1</td><td>Adjustable Race</td><td>AR-5381</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td >0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>2</td><td>Bearing Ball</td><td>BA-8327</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>3</td><td>BB Ball Bearing</td><td>BE-2349</td><td>true</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>1</td><td>3/11/2004</td></tr>" +
+				"<tr><td>4</td><td>Headset Ball Bearings</td><td>BE-2908</td><td>false</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>316</td><td>Blade</td><td>BL-2036</td><td>true</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>1</td><td>3/11/2004</td></tr>" +
+				"<tr><td>317</td><td>LL Crankarm</td><td>CA-5965</td><td>false</td><td>false</td><td>Black</td><td>500</td><td>375</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>318</td><td>ML Crankarm</td><td>CA-6738</td><td>false</td><td>false</td><td>Black</td><td>500</td><td>375</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>319</td><td>HL Crankarm</td><td>CA-7457</td><td>false</td><td>false</td><td>Black</td><td>500</td><td>375</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>320</td><td>Chainring Bolts</td><td>CB-2903</td><td>false</td><td>false</td><td>Silver</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>321</td><td>Chainring Nut</td><td>CN-6137</td><td>false</td><td>false</td><td>Silver</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>322</td><td>Chainring</td><td>CR-7833</td><td>false</td><td>false</td><td>Black</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>323</td><td>Crown Race</td><td>CR-9981</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>324</td><td>Chain Stays</td><td>CS-2812</td><td>true</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>1</td><td>3/11/2004</td></tr>" +
+				"<tr><td>325</td><td>Decal 1</td><td>DC-8732</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>326</td><td>Decal 2</td><td>DC-9824</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>327</td><td>Down Tube</td><td>DT-2377</td><td>true</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>1</td><td>3/11/2004</td></tr>" +
+				"<tr><td>328</td><td>Mountain End Caps</td><td>EC-M092</td><td>true</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>1</td><td>3/11/2004</td></tr>" +
+				"<tr><td>329</td><td>Road End Caps</td><td>EC-R098</td><td>true</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>1</td><td>3/11/2004</td></tr>" +
+				"<tr><td>330</td><td>Touring End Caps</td><td>EC-T209</td><td>true</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>1</td><td>3/11/2004</td></tr>" +
+				"<tr><td>331</td><td>Fork End</td><td>FE-3760</td><td>true</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>1</td><td>3/11/2004</td></tr>" +
+				"<tr><td>332</td><td>Freewheel</td><td>FH-2981</td><td>false</td><td>false</td><td>Silver</td><td>500</td><td>375</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>341</td><td>Flat Washer 1</td><td>FW-1000</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>342</td><td>Flat Washer 6</td><td>FW-1200</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>343</td><td>Flat Washer 2</td><td>FW-1400</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>344</td><td>Flat Washer 9</td><td>FW-3400</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>345</td><td>Flat Washer 4</td><td>FW-3800</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>346</td><td>Flat Washer 3</td><td>FW-5160</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>347</td><td>Flat Washer 8</td><td>FW-5800</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>348</td><td>Flat Washer 5</td><td>FW-7160</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>349</td><td>Flat Washer 7</td><td>FW-9160</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>350</td><td>Fork Crown</td><td>FC-3654</td><td>true</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>1</td><td>3/11/2004</td></tr>" +
+				"<tr><td>351</td><td>Front Derailleur Cage</td><td>FC-3982</td><td>false</td><td>false</td><td>Silver</td><td>800</td><td>600</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>352</td><td>Front Derailleur Linkage</td><td>FL-2301</td><td>false</td><td>false</td><td>Silver</td><td>800</td><td>600</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>355</td><td>Guide Pulley</td><td>GP-0982</td><td>false</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>356</td><td>LL Grip Tape</td><td>GT-0820</td><td>false</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>357</td><td>ML Grip Tape</td><td>GT-1209</td><td>false</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>358</td><td>HL Grip Tape</td><td>GT-2908</td><td>false</td><td>false</td><td>&nbsp;</td><td>800</td><td>600</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>359</td><td>Thin-Jam Hex Nut 9</td><td>HJ-1213</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>360</td><td>Thin-Jam Hex Nut 10</td><td>HJ-1220</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>361</td><td>Thin-Jam Hex Nut 1</td><td>HJ-1420</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>362</td><td>Thin-Jam Hex Nut 2</td><td>HJ-1428</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>363</td><td>Thin-Jam Hex Nut 15</td><td>HJ-3410</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>364</td><td>Thin-Jam Hex Nut 16</td><td>HJ-3416</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>365</td><td>Thin-Jam Hex Nut 5</td><td>HJ-3816</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>366</td><td>Thin-Jam Hex Nut 6</td><td>HJ-3824</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>367</td><td>Thin-Jam Hex Nut 3</td><td>HJ-5161</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>368</td><td>Thin-Jam Hex Nut 4</td><td>HJ-5162</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>369</td><td>Thin-Jam Hex Nut 13</td><td>HJ-5811</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>370</td><td>Thin-Jam Hex Nut 14</td><td>HJ-5818</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>371</td><td>Thin-Jam Hex Nut 7</td><td>HJ-7161</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>372</td><td>Thin-Jam Hex Nut 8</td><td>HJ-7162</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>373</td><td>Thin-Jam Hex Nut 12</td><td>HJ-9080</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+				"<tr><td>374</td><td>Thin-Jam Hex Nut 11</td><td>HJ-9161</td><td>false</td><td>false</td><td>&nbsp;</td><td>1000</td><td>750</td><td>0</td><td>0</td><td>0</td><td>3/11/2004</td></tr>" +
+			"</tbody>" +
+		"</table>" +
+		"<div>Text text</div>";
+
+
+		module('igScroll - Events');
+
+		test("Rendered event is fired and its event arguments are correct.", function () {
+			var evtArgs, isFired = false;
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$(document).delegate("#elemVH", "igscrollrendered", function (evt, args) {
+				isFired = true;
+				evtArgs = args;
+			});
+			stop();
+			$('#elemVH').igScroll({});
+
+			setTimeout(function () {
+				start();
+				ok(isFired, "Rendered event should fire.");
+				equal(evtArgs.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
+				//remove elem
+				$("#testBed").empty();
+			}, 200);
+		});
+		test("Scrolling event is fired and its event arguments are correct.", function () {
+			var evtArgs, isFired = false;
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+
+			$(document).delegate("#elemVH", "igscrollscrolling", function (evt, args) {
+				isFired = true;
+				evtArgs = args;
+			});
+
+			$('#elemVH').igScroll({});
+
+			var elemContainer = elemContainer = $("#elemVH_container");
+			var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
+			elemContainer.mouseenter();
+			elemContainer.trigger(wheelEvtDown);
+
+			stop();
+			setTimeout(function () {
+				start();
+				ok(isFired, "Scrolling event should fire.");
+				equal(evtArgs.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
+				equal(evtArgs.smallIncrement, 0, "'smallIncrement' event argument should be 0.");
+				equal(evtArgs.bigIncrement, 0, "'bigIncrement' event argument should be 0.");
+				equal(evtArgs.horizontal, false, "'horizontal' event argument should be false.");
+				equal(evtArgs.stepX, 0, "'stepX' event argument should be 0.");
+				equal(evtArgs.stepY, 50, "'stepY' event argument should be 0.");
+				$("#testBed").empty();
+			}, 2000);
+		});
+
+		test("Scrolled event is fired and its event arguments are correct.", function () {
+			var evtArgs, isFired = false;
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+
+			$(document).delegate("#elemVH", "igscrollscrolled", function (evt, args) {
+				isFired = true;
+				evtArgs = args;
+			});
+
+			$('#elemVH').igScroll({});
+
+			var arrowRight = $("#elemVH_hBar_arrowRight"),
+			hScrollbarContainer = $("#elemVH_hBar");;
+
+			hScrollbarContainer.mouseenter();
+			$.ig.TestUtil.simulateSingleClick(arrowRight);
+
+			stop();
+
+			setTimeout(function () {
+				start();
+				ok(isFired, "Scrolled event should fire.");
+				equal(evtArgs.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
+				equal(evtArgs.smallIncrement, 1, "'smallIncrement' event argument should be 1.");
+				equal(evtArgs.bigIncrement, 0, "'bigIncrement' event argument should be 0.");
+				equal(evtArgs.horizontal, true, "'horizontal' event argument should be true.");
+				$("#testBed").empty();
+			}, 50);
+		});
+
+		test("When Scrolling event is canceled scrolling should not occur and the scrolled event should not fire.", function () {
+			var scrolledIsFired = false;
+
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+
+			$(document).delegate("#elemVH", "igscrollscrolling", function (evt, args) {
+				//cancel event
+				return false;
+			});
+
+			$(document).delegate("#elemVH", "igscrollscrolled", function (evt, args) {
+				scrolledIsFired = true;
+			});
+
+			$('#elemVH').igScroll({});
+
+			var elemContainer = elemContainer = $("#elemVH_container");
+			var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
+			elemContainer.mouseenter();
+			elemContainer.trigger(wheelEvtDown);
+
+			stop();
+
+			setTimeout(function () {
+				start();
+				//Following check fails due to issue: https://github.com/IgniteUI/ignite-ui/issues/175
+				//ok(!scrolledIsFired, "Scrolled event should not fire.");
+				equal(elemContainer.scrollTop(), 0, "No scrolling should occur.");
+				$("#testBed").empty();
+			}, 2000);
+		});
+		
+		test("When Scrolling event is canceled scrolling should not occur when setting scrollLeft and the scrolled event should not fire.", function () {
+			var scrolledIsFired = false;
+
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+
+			$(document).delegate("#elemVH", "igscrollscrolling", function (evt, args) {
+				//cancel event
+				return false;
+			});
+
+			$(document).delegate("#elemVH", "igscrollscrolled", function (evt, args) {
+				scrolledIsFired = true;
+			});
+
+			$('#elemVH').igScroll({});
+
+			var elemContainer = elemContainer = $("#elemVH_container");
+			var arrowRight = $("#elemVH_hBar_arrowRight");
+			var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
+			elemContainer.mouseenter();
+			elemContainer.trigger(wheelEvtDown);
+
+			stop();
+			$('#elemVH').igScroll("option", "scrollLeft", 100);
+			setTimeout(function () {
+				start();
+				//Following check fails due to issue: https://github.com/IgniteUI/ignite-ui/issues/175
+				//ok(!scrolledIsFired, "Scrolled event should not fire.");
+				equal(elemContainer.scrollLeft(), 0, "No scrolling should occur.");
+				$("#testBed").empty();
+			}, 2000);
+		});
+		
+		test("ThumbDragStart event is fired and its event arguments are correct.", function () {
+			var isFired = false, evtArgs;
+
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollHeight: 5000
+			});
+
+			var vDrag = $("#elemVH_vBar_drag");
+
+			$(document).delegate("#elemVH", "igscrollthumbdragstart", function (evt, args) {
+				isFired = true;
+				evtArgs = args;
+			});
+
+			stop();
+			var elemContainer = elemContainer = $("#elemVH_container"),
+				vScrollbarContainer = $("#elemVH_vBar");
+			elemContainer.mouseenter();
+			vScrollbarContainer.mouseenter();
+			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
+
+			setTimeout(function () {
+				start();
+				ok(isFired, "ThumbDragStart should fire.");
+				equal(evtArgs.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
+				equal(evtArgs.horizontal, false, "'horizontal' event argument should be the false.");
+				$("#testBed").empty();
+			}, 2500);
+		});
+
+		test("ThumbDragMove event is fired and its event arguments are correct.", function () {
+			var isFired = false, evtArgs, totalScrollY = 0;
+
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollHeight: 5000
+			});
+
+			var vDrag = $("#elemVH_vBar_drag");
+
+			$(document).delegate("#elemVH", "igscrollthumbdragmove", function (evt, args) {
+				isFired = true;
+				evtArgs = args;
+				totalScrollY += evtArgs.stepY;
+			});
+
+			stop();
+			var elemContainer = elemContainer = $("#elemVH_container"),
+				vScrollbarContainer = $("#elemVH_vBar");
+			elemContainer.mouseenter();
+			vScrollbarContainer.mouseenter();
+			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
+
+			setTimeout(function () {
+				start();
+				ok(isFired, "ThumbDragMove should fire.");
+				equal(evtArgs.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
+				equal(evtArgs.horizontal, false, "'horizontal' event argument should be the false.");
+				equal(evtArgs.stepX, 0, "'stepX' event argument should be 0.");
+				ok(totalScrollY >= 190, "'stepY' event argument should more than 190.");
+				$("#testBed").empty();
+			}, 2500);
+		});
+		test("ThumbDragEnd event is fired and its event arguments are correct.", function () {
+			var isFired = false, evtArgs;
+
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollHeight: 5000
+			});
+
+			var vDrag = $("#elemVH_vBar_drag");
+
+			$(document).delegate("#elemVH", "igscrollthumbdragend", function (evt, args) {
+				isFired = true;
+				evtArgs = args;
+			});
+
+			stop();
+			var elemContainer = elemContainer = $("#elemVH_container"),
+				vScrollbarContainer = $("#elemVH_vBar");
+			elemContainer.mouseenter();
+			vScrollbarContainer.mouseenter();
+			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
+
+			setTimeout(function () {
+				start();
+				ok(isFired, "ThumbDragEnd should fire.");
+				equal(evtArgs.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
+				equal(evtArgs.horizontal, false, "'horizontal' event argument should be the false.");
+				$("#testBed").empty();
+			}, 2500);
+		});
+
+		test("Events order", function () {
+			var eventsOrder = [];
+			var expectedOrder = ["thumbDragStart", "thumbDragMove", "scrolling", "thumbDragEnd", "scrolled"];
+			$("#testBed").empty();
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+
+
+			$(document).delegate("#elemVH", "igscrollthumbdragstart", function (evt, args) {
+				eventsOrder.push("thumbDragStart");
+			});
+
+			$(document).delegate("#elemVH", "igscrollscrolling", function (evt, args) {
+				eventsOrder.push("scrolling");
+			});
+
+			$(document).delegate("#elemVH", "igscrollthumbdragmove", function (evt, args) {
+				eventsOrder.push("thumbDragMove");
+			});
+
+			$(document).delegate("#elemVH", "igscrollthumbdragend", function (evt, args) {
+				eventsOrder.push("thumbDragEnd");
+			});
+
+			$(document).delegate("#elemVH", "igscrollscrolled", function (evt, args) {
+				eventsOrder.push("scrolled");
+			});
+
+			$('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollHeight: 5000
+			});
+
+			var vDrag = $("#elemVH_vBar_drag");
+
+			stop();
+			var elemContainer = elemContainer = $("#elemVH_container"),
+				vScrollbarContainer = $("#elemVH_vBar");
+			elemContainer.mouseenter();
+			vScrollbarContainer.mouseenter();
+			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
+
+			setTimeout(function () {
+				start();
+				equal(eventsOrder[0], expectedOrder[0], "Events order should be correct.");
+				equal(eventsOrder[1], expectedOrder[1], "Events order should be correct.");
+				equal(eventsOrder[2], expectedOrder[2], "Events order should be correct.");
+
+				equal(eventsOrder[eventsOrder.length - 2], expectedOrder[3], "Events order should be correct.");
+				equal(eventsOrder[eventsOrder.length - 1], expectedOrder[4], "Events order should be correct.");
+			}, 2500);
+		});
+
+		test("When ThumbDragMove event is canceled scrolling should not occur and the ThumbDragEnd event should not fire..", function () {
+			var isFired = false, evtArgs;
+
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$('#elemVH').igScroll({
+				modifyDOM: true,
+				scrollHeight: 5000
+			});
+
+			var vDrag = $("#elemVH_vBar_drag");
+
+			$(document).delegate("#elemVH", "igscrollthumbdragmove", function (evt, args) {
+				//cancel event
+				return false;
+			});
+
+			$(document).delegate("#elemVH", "igscrollthumbdragend", function (evt, args) {
+				isFired = true;
+			});
+
+			stop();
+			var elemContainer = elemContainer = $("#elemVH_container"),
+				vScrollbarContainer = $("#elemVH_vBar");
+			elemContainer.mouseenter();
+			vScrollbarContainer.mouseenter();
+			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
+
+			setTimeout(function () {
+				start();
+				//Following check fails due to issue: https://github.com/IgniteUI/ignite-ui/issues/175
+				//ok(!isFired, "ThumbDragEnd should not fire.");
+				equal(elemContainer.scrollTop(), 0, "No scrolling should occur.");
+				$("#testBed").empty();
+			}, 2500);
+		});
+	</script>
+	<script type="text/javascript" src="../../testswarm/inject.js"></script>
+</head>
+<body>
+	<div style="float:right;width:400px;overflow:auto">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+	<div id="testBed">
+	</div>
+</body>
+</html>

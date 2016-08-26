@@ -6,7 +6,7 @@
 * http://www.infragistics.com/
 *
 * Depends on:
-* jquery-1.6.1.js
+* jquery-1.9.1.js
 * jqueryui/1.8.11/jquery-ui.js
 * jquery.ui.core.js
 * jquery.ui.widget.js

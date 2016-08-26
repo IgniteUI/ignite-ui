@@ -1817,11 +1817,35 @@ display:block;
 *  Multi-column Headers   *
 **************************/
 
-.ui-iggrid th.ui-iggrid-multiheader-cell 
-{
+.ui-iggrid th.ui-iggrid-multiheader-cell {
     text-align:center;
 }
 
+.ui-iggrid-multiheader-expanded {
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-family: "Segoe UI",Arial,sans-serif;
+    font-size: 10px;
+    height: 16px;
+    line-height: 20px;
+    text-align: center;
+    width: 16px;
+    background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat 0 0;
+}
+
+.ui-iggrid-multiheader-collapsed {
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-family: "Segoe UI",Arial,sans-serif;
+    font-size: 10px;
+    height: 16px;
+    line-height: 20px;
+    text-align: center;
+    width: 16px;
+    background: url(../images/igGrid/filter-icons-FFFFFF.png) no-repeat -16px 0;
+}
 
 /*******************
 *  Column Fixing   *

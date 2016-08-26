@@ -20,7 +20,7 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- *	jquery-1.4.4.js
+ *	jquery-1.9.1.js
  *	infragistics.util.js
  *
  */
@@ -251,13 +251,6 @@
 				exprString: ""
 			},
 			groupby: {
-				/* type="remote|local" Specifies whether groupby will be applied locally or remotely (via a remote request)
-				remote type="string"
-				local type="string"
-				*/
-				type: "local",
-				/* type="array" a list of groupby expressions , consisting of the following keys (and their respective values): fieldName, direction and compareFunc (optional). Order of groupby expression is taken into account for the result data and dataview */
-				expressions: [],
 				/* type="bool" default collapse state */
 				defaultCollapseState: false
 			},
@@ -515,7 +508,7 @@
 		},
 		dataView: function () {
 			/* returns the current normalized/transformed and paged/filtered/sorted data, i.e. the dataView
-			returnType="object"
+			returnType="array" array of data records
 			*/
 			return this._dataView;
 		},
@@ -904,7 +897,7 @@
 				originalRec = this.findRecordByKey(t.rowId);
 			}
 			/* o = $.extend(true, {}, originalRec); */
-			if (this._data[ 0 ] !== "array") {
+			if ($.type(this._data[ 0 ]) !== "array") {
 				for (i in originalRec) {
 					if (originalRec.hasOwnProperty(i)) {
 						o[ i ] = originalRec[ i ];
@@ -921,7 +914,7 @@
 			}
 			/* merge objects or arrays
 			return $.extend(true, {}, o, t.row); */
-			if (o !== "array") {
+			if ($.type(o) !== "array") {
 				for (i in t.row) {
 					if (t.row.hasOwnProperty(i)) {
 						o[ i ] = t.row[ i ];
@@ -952,6 +945,11 @@
 				while (this._transactionLog.length > 0) {
 					this._commitTransaction(this._transactionLog.pop());
 				}
+			}
+			if (this.isGroupByApplied(this.settings.sorting.expressions)) {
+				this._generateGroupByData(this._filter ? this._filteredData :
+															this._data,
+										this.settings.sorting.expressions);
 			}
 		},
 		rollback: function (id) {
@@ -1783,14 +1781,18 @@
 		_getFieldTypeFromSchema: function (fieldName) {
 			var field = this._fields[ fieldName ], type, ds = this.dataSource();
 
-			if (this.settings.type === "json" && ds !== null &&
-				ds !== undefined && this.settings.responseDataKey !== null) {
-				ds = $.ig.findPath(ds, this.settings.responseDataKey);
-			}
 			if (!field) {
 				return undefined;
 			}
-			if (typeof (field.mapper) === "function" && ds.length > 0) {
+
+			if (this.type() === "remoteUrl") {
+				ds = this.data();
+			} else if (this.type() === "json" && ds !== null &&
+				ds !== undefined && this.settings.responseDataKey !== null) {
+				ds = $.ig.findPath(ds, this.settings.responseDataKey);
+			}
+			if (typeof (field.mapper) === "function" &&
+				$.type(ds) === "array" && ds.length > 0) {
 				type = $.type(field.mapper(ds[ 0 ]));
 			} else {
 				type = field.type;
@@ -1804,50 +1806,57 @@
 			}
 		},
 		summariesResponse: function (key, dsObj) {
-			/* Get summaries calculation data from remote response */
+			/* Applicable only when the data source is bound to remote data.
+			Gets or sets summaries data.
+			If key or dsObj are not set then returns summaries data.
+			Takes summary data from passed argument dsObj(using argument key)
+			paramType="string" optional="true" response key to take summary data(for example "Metadata.Summaries")
+			paramType="object" optional="true" data source object - usually contains information about data records and metadata(holds info about summaries)
+			returnType="object" object of data summaries - e.g.: if datasource has 2 columns - ID and Name then expected format for data summaries is {ID : {max: 1, min: 0, count: 2}, Name: {count: 1}}
+			*/
+			if (!dsObj || !key) {
+				this._dataSummaries = this._dataSummaries || [];
+				return this.dataSummaries();
+			}
 			var rec, resPath, i, schema, func, offsets, offset, obj;
-
-			if (key !== null && key !== "") {
+			if (key.length > 0) {
 				rec = dsObj;
 				resPath = key.split(".");
-				if (key.length > 0) {
-					for (i = 0; i < resPath.length; i++) {
-						/* M.H. 18 Feb 2013 Fix for bug #133286: When the HGrid is bound to remote data,
-						remote summaries are enabled and loadOnDemand is FALSE the summaries for child layouts are not rendered. */
-						if (rec === null || rec === undefined) {
-							break;
-						}
-						rec = rec[ resPath[ i ] ];
+
+				for (i = 0; i < resPath.length; i++) {
+					/* M.H. 18 Feb 2013 Fix for bug #133286: When the HGrid is bound to remote data,
+					remote summaries are enabled and loadOnDemand is FALSE the summaries for child layouts are not rendered. */
+					if (rec === null || rec === undefined) {
+						break;
 					}
-					this._dataSummaries = rec;
-				} else {
-					this._dataSummaries = dsObj;
+					rec = rec[ resPath[ i ] ];
 				}
-				if (this._dataSummaries === undefined || this._dataSummaries === null) {
-					this._dataSummaries = [];
-				}
-				/* M.H. 10 Jan 2014 Fix for bug #160204: Remote Summaries display
-				dates which differ from the ones displayed in the grid */
-				if (this.settings.localSchemaTransform === true && this.schema() &&
-					dsObj && dsObj.Metadata && dsObj.Metadata.timezoneOffsetsSummaries) {
-					offsets = dsObj.Metadata.timezoneOffsetsSummaries;
-					this._dataSummaries._serverOffsetsSummaries = offsets;
-					/* transform dates */
-					schema = this.schema().schema;
-					if (schema && schema.fields) {
-						for (i = 0; i < schema.fields.length; i++) {
-							/* transform date */
-							if (schema.fields[ i ].type === "date" &&
-								offsets[ schema.fields[ i ].name ] !== undefined) {
-								key = schema.fields[ i ].name;
-								for (func in offsets[ key ]) {
-									if (offsets[ key ].hasOwnProperty(key)) {
-										offset = offsets[ key ][ func ];
-										obj = this._dataSummaries[ key ][ func ];
-										if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
-											this._dataSummaries[ key ][ func ] = new Date(
-												parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
-										}
+				this._dataSummaries = rec;
+			} else {
+				this._dataSummaries = dsObj;
+			}
+			this._dataSummaries = this._dataSummaries || [];
+			/* M.H. 10 Jan 2014 Fix for bug #160204: Remote Summaries display
+			dates which differ from the ones displayed in the grid */
+			if (this.settings.localSchemaTransform === true && this.schema() &&
+				dsObj && dsObj.Metadata && dsObj.Metadata.timezoneOffsetsSummaries) {
+				offsets = dsObj.Metadata.timezoneOffsetsSummaries;
+				this._dataSummaries._serverOffsetsSummaries = offsets;
+				/* transform dates */
+				schema = this.schema().schema;
+				if (schema && schema.fields) {
+					for (i = 0; i < schema.fields.length; i++) {
+						/* transform date */
+						if (schema.fields[ i ].type === "date" &&
+							offsets[ schema.fields[ i ].name ] !== undefined) {
+							key = schema.fields[ i ].name;
+							for (func in offsets[ key ]) {
+								if (offsets[ key ].hasOwnProperty(func)) {
+									offset = offsets[ key ][ func ];
+									obj = this._dataSummaries[ key ][ func ];
+									if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
+										this._dataSummaries[ key ][ func ] = new Date(
+											parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
 									}
 								}
 							}
@@ -1855,6 +1864,7 @@
 					}
 				}
 			}
+			return this._dataSummaries;
 		},
 		_populateTransformedData: function (data) {
 			// M.H. populate summaries data
@@ -2101,7 +2111,8 @@
 			if (s.type === "local" && s.defaultFields.length > 0) {
 				this.sort(s.defaultFields, s.defaultDirection);
 			} else if (this.isGroupByApplied(s.expressions)) {
-				this._generateGroupByData(this._data, s.expressions);
+				this._generateGroupByData(this._filter ? this._filteredData : this._data,
+										s.expressions);
 			}
 			/* Check if paging is configured, and if so,
 			if OpType === $.ig.Constants.OpType.Local => apply local paging */
@@ -2749,7 +2760,7 @@
 			return this._filteredData;
 		},
 		_page: function (keepRecords) {
-			var count = 0, startIndex, endIndex, i = 0, data;
+			var count = 0, data;
 			if (keepRecords === undefined) {
 				keepRecords = false;
 			}
@@ -2759,26 +2770,38 @@
 			} else {
 				this._dataView = [];
 			}
-			if (this.isGroupByApplied()) {
-				data = this.visibleGroupByData();
-			} else {
-				data = this._filter ? this._filteredData : this._data;
-			}
+			data = this._filter ? this._filteredData : this._data;
+			this._generatePageData(this.isGroupByApplied() ?
+										this.visibleGroupByData() :
+										data,
+									count);
+		},
+		_generatePageData: function (data, count) {
+			var i, startIndex, endIndex;
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
 			load the data for the current page only , in the DataView */
 			startIndex = this.pageIndex() * this.pageSize();
-			/* M.H. 11 August 2015 Fix for bug 203649:
-			Total record count in pager is incorrect after update datasource */
 			if (startIndex >= data.length) {
 				this.settings.paging.pageIndex = 0;
 				startIndex = this.pageIndex() * this.pageSize();
 			}
 			endIndex = startIndex + this.pageSize() >= data.length ?
 				data.length : startIndex + this.pageSize();
-			for (i = startIndex; i < endIndex; i++) {
-				this._dataView[ count++ ] = data[ i ];
+			if (this.isGroupByApplied()) {
+				this._dataView = [];
+				this._gbDataView = [];
+				for (i = startIndex; i < endIndex; i++) {
+					this._gbDataView.push(data[ i ]);
+					if (!data[ i ].__gbRecord) {
+						this._dataView.push(data[ i ]);
+					}
+				}
+			} else {
+				for (i = startIndex; i < endIndex; i++) {
+					this._dataView[ count++ ] = data[ i ];
+				}
 			}
 		},
 		_compareValues: function (x, y) {
@@ -2824,6 +2847,8 @@
 						val !== undefined &&
 						val !== null && val.toLowerCase) {
 					val = val.toLowerCase();
+				} else if (val && val.getTime) {
+					val = val.getTime();
 				}
 				arr.push({
 					val: val,
@@ -2897,7 +2922,7 @@
 			paramType="string" asc / desc direction
 			*/
 			/* check if there is a custom function defined */
-			var s = this.settings.sorting, convertFunc, isGb, gbFields, i,
+			var i, s = this.settings.sorting, convertFunc, isGb,
 				p = this.settings.paging, data, resetPaging = false;
 			/* we allow the developer to provide a single string of sort expressions, in the following format:
 			"col1 asc, col2 desc, col3 asc" ...  */
@@ -2979,15 +3004,7 @@
 				}
 			}
 			if (isGb) {
-				gbFields = [];
-				for (i = 0; i < fields.length; i++) {
-					if (fields[ i ].isGroupBy) {
-						gbFields.push(fields[ i ]);
-					} else {
-						break;
-					}
-				}
-				this._generateGroupByData(data, gbFields);
+				this._generateGroupByData(data, fields);
 			}
 			/* now if paging is enabled, and "applyToAllData" is true, we need to re-initialize the dataView */
 			if (resetPaging && p.type === "local") {
@@ -2995,9 +3012,7 @@
 				this._page();
 			} else {
 				/* A.T. 14 Feb 2011 - fix for bug #66214 */
-				this._dataView = isGb ?
-									this.visibleGroupByData() :
-									data;
+				this._dataView = data;
 			}
 			/* M.H. 17 April 2012 Fix for bug #109475 */
 			this._populateTransformedData(data);
@@ -3034,7 +3049,6 @@
 		},
 		/* expected format is "col1 ASC, col2 DESC, col3 ASC" ... and so on */
 		_parseSortExpressions: function (s) {
-
 			var fields = [], tmp, tmp2, i;
 			tmp = s.split(",");
 
@@ -3073,7 +3087,7 @@
 			paramType="bool" if keepFilterState is set to true, it will not discard previous filtering expressions
 			*/
 			var i, j, expr = null, count = 0, skipRec = false, data, t, k, schema,
-				fields, tmpbool, resetPaging, allFieldsExpr, stringVal,
+				fields, field, tmpbool, resetPaging, allFieldsExpr,
 				f = this.settings.filtering, p = this.settings.paging, s = this.settings.sorting;
 			this._clearGroupByData();
 			schema = this.schema();
@@ -3136,15 +3150,15 @@
 						/* if there is no match, break, we aren't going to add the record to the resulting data view.
 						the default boolean logic is to "AND" the fields */
 						fields = schema.fields();
-						if (fieldExpressions[ j ].fieldIndex) {
-							if (fieldExpressions[ j ].fieldIndex < fields.length) {
-								t = fields[ fieldExpressions[ j ].fieldIndex ].type;
-							}
-							skipRec = !this._findMatch(data[ i ][ fieldExpressions[ j ].fieldIndex ],
+						if (fieldExpressions[ j ].fieldIndex !== undefined  &&
+							fieldExpressions[ j ].fieldIndex < fields.length) {
+							field = fields[ fieldExpressions[ j ].fieldIndex ];
+							t = field.type;
+							skipRec = !this._findMatch(data[ i ][ field.name ],
 														fieldExpressions[ j ].expr,
 														t, !f.caseSensitive, fieldExpressions[ j ].cond,
 														fieldExpressions[ j ].preciseDateFormat,
-														fieldExpressions[ j ].fieldName, data[ i ]);
+														field.name, data[ i ]);
 						} else {
 							/* M.H. 10 Sep 2012 Fix for bug #120759 */
 							if (fieldExpressions[ j ].dataType !== undefined &&
@@ -3180,18 +3194,17 @@
 							// if there is no match, break, we aren't going to add the record to the resulting data view.
 							// the default boolean logic is to "AND" the fields
 							fields = schema.fields();
+							t = undefined;
 							if (fieldExpressionsOnStrings[ j ].fieldIndex) {
 								if (fieldExpressionsOnStrings[ j ].fieldIndex < fields.length) {
 									t = fields[ fieldExpressionsOnStrings[ j ].fieldIndex ].type;
 								}
-								stringVal = data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ] ?
-									data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ].toString() : "";
-								skipRec = !this._findMatch(stringVal,
+								skipRec = !this._findMatch(data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ],
 															fieldExpressionsOnStrings[ j ].expr,
-															"string",
+															t,
 															!f.caseSensitive,
 															fieldExpressionsOnStrings[ j ].cond,
-															undefined,
+															fieldExpressionsOnStrings[ j ].preciseDateFormat,
 															fieldExpressionsOnStrings[ j ].fieldName, data[ i ]);
 							} else {
 								for (k = 0; k < fields.length; k++) {
@@ -3200,15 +3213,12 @@
 										break;
 									}
 								}
-								stringVal = data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ] !== null &&
-									data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ] !== undefined ?
-									data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ].toString() : "";
-								skipRec = !this._findMatch(stringVal,
+								skipRec = !this._findMatch(data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ],
 														fieldExpressionsOnStrings[ j ].expr,
-														"string",
+														t,
 														!f.caseSensitive,
 														fieldExpressionsOnStrings[ j ].cond,
-														undefined,
+														fieldExpressionsOnStrings[ j ].preciseDateFormat,
 														fieldExpressionsOnStrings[ j ].fieldName, data[ i ]);
 							}
 							tmpbool = (fieldExpressionsOnStrings[ j ].logic !== null &&
@@ -3229,7 +3239,6 @@
 						}
 					}
 					if (!skipRec) {
-						//this._dataView[count++] = data[i];
 						this._filteredData[ count++ ] = data[ i ];
 					}
 				}
@@ -3253,6 +3262,9 @@
 				/* M.H. 21 Oct 2014 Fix for bug #181395: When filtering is applied selected page is not persisted. */
 				this.persistedPageIndex(null);
 			} else if (!this._vgbData || !this._vgbData.length) {
+				if (this.isGroupByApplied()) {
+					this._generateGroupByData(this._filteredData, s.expressions);
+				}
 				for (i = 0; i < this._filteredData.length; i++) {
 					this._dataView[ i ] = this._filteredData[ i ];
 				}
@@ -3262,7 +3274,7 @@
 		},
 		clearLocalFilter: function () {
 			/* This clears local filtering applied to the data view by resetting it to the original data and applying any paging */
-			var i, data, resetPaging,
+			var i, data, resetPaging, sa = false,
 				f = this.settings.filtering, p = this.settings.paging, s = this.settings.sorting;
 			this._clearGroupByData();
 			if (f.applyToAllData && f.type === "local") {
@@ -3286,6 +3298,7 @@
 			sorting and change filtering condition filtered data is not sorted */
 			if (s.type === "local" && s.enabled && s.expressions.length > 0) {
 				this.sort(s.expressions);
+				sa = true;
 			}
 			if (resetPaging && p.type === "local" && p.enabled === true) {
 				this._filter = true;
@@ -3297,7 +3310,10 @@
 				if (p.enabled === false) {
 					this._filter = true;
 				}
-				if (!this._vgbData || !this._vgbData.length) {
+				if (!sa) {
+					if (this.isGroupByApplied()) {
+						this._generateGroupByData(this._filteredData, s.expressions);
+					}
 					for (i = 0; i < this._filteredData.length; i++) {
 						this._dataView[ i ] = this._filteredData[ i ];
 					}
@@ -4035,12 +4051,19 @@
 			*/
 			return this._vgbData;
 		},
-		_groupedRecordsByExpr: function (data, startInd, gbExpr) {
+		groupByDataView: function () {
+			/* returns the current normalized/transformed and paged/filtered/sorted group-by data
+			returnType="array" array of data and non-data(grouped) records
+			*/
+			return this._gbDataView;
+		},
+		_groupedRecordsByExpr: function (data, startInd, gbExpr, gbRes) {
 			var i, res = [], cmpRes, groupval, currval,
 				mapper = this._hasMapper,
 				cmpFunc = gbExpr.compareFunc,
 				key = gbExpr.fieldName,
 				len = data.length;
+			gbRes = gbRes || {};
 			if (!cmpFunc) {
 				cmpFunc = function (val1, val2) {
 					return val1 === val2;
@@ -4049,8 +4072,9 @@
 			startInd = startInd || 0;
 			res.push(data[ startInd ]);
 			groupval = mapper ?
-							this.getCellValue(key, data [ startInd ]) : 
+							this.getCellValue(key, data [ startInd ]) :
 							data[ startInd ][ key ];
+			gbRes.val = groupval;
 			startInd++;
 			for (i = startInd; i < len; i++) {
 				currval = mapper ? this.getCellValue(key, data [ i ]) : data[ i ][ key ];
@@ -4100,7 +4124,7 @@
 			}
 			/* visible groupby data and the data view should be populated */
 			this._vgbData = res;
-			this._dataView = this._vgbData;
+			this._gbDataView = this._vgbData;
 			if (p.enabled && p.type === "local") {
 				this._page();
 			}
@@ -4108,7 +4132,7 @@
 		isGroupByRecordCollapsed: function (gbRec) {
 			/* Check whether the specified gorupby record is collapsed
 			paramType="string|object" id of the grouped record OR grouped record
-			returnType="bool" if true the grouped record is collapsed 
+			returnType="bool" if true the grouped record is collapsed
 			 */
 			var id = typeof gbRec === "string" || !gbRec ? gbRec : gbRec.id,
 				state;
@@ -4123,7 +4147,7 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, len = data.length, resLen, gbExpr, res, gbRec;
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
@@ -4137,18 +4161,23 @@
 					gbExpr: gbExpr,
 					level: gbInd,
 					len: 1,
-					recs: []
+					recs: [],
+					val: undefined
 				};
 				this._gbData.push(gbRec);
 				if (!parentCollapsed) {
 					this._vgbData.push(gbRec);
 				}
-				res = this._groupedRecordsByExpr(data, i, gbExpr);
-				gbRec.id = parentId + gbExpr.fieldName + ":" + res[ 0 ][ gbExpr.fieldName ] + ":" + gbInd;
+				res = this._groupedRecordsByExpr(data, i, gbExpr, gbRec);
 				gbRec.fieldName = gbExpr.fieldName;
-				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
 				resLen = res.length;
-				gbRec.val = resLen ? res[ 0 ][ gbRec.fieldName ] : undefined;
+				if (dt === undefined) {
+					dt = !!(gbRec.val && gbRec.val.getTime);
+				}
+				gbRec.val = dt ? gbRec.val.getTime() : gbRec.val;
+				hc = gbRec.val ? String(gbRec.val).getHashCode() : "";
+				gbRec.id = parentId + gbExpr.fieldName + ":" + hc;
+				gbRec.collapsed = this.isGroupByRecordCollapsed(gbRec);
 				if (gbInd + 1 < gbExprs.length) {
 					this._processGroupsRecursive(res, gbExprs, gbInd + 1,
 												gbRec.collapsed || parentCollapsed, gbRec.id + ":");
@@ -4168,21 +4197,34 @@
 		_generateGroupByData: function (data,
 									gbExprs,
 									collapsedRows) {
-			// data should be sorted when this functions is called - otherwise grouping will not be correct
+			// data should be sorted(by gbExprs) when this functions is called - otherwise grouping will not be correct
+			var i, newgb = [];
 			data = data || this._data;
 			gbExprs = gbExprs || [];
 			this._gbData = [];
 			this._vgbData = [];
+			this._gbDataView = [];
 			this._gbCollapsed = collapsedRows || this._gbCollapsed;
 			if ($.type(gbExprs) !== "array" || !gbExprs.length) {
 				return data;
 			}
+			for (i = 0; i < gbExprs.length; i++) {
+				if (gbExprs[ i ].isGroupBy) {
+					newgb.push(gbExprs[ i ]);
+				}
+			}
+			gbExprs = newgb;
+			if (!gbExprs.length) {
+				return data;
+			}
 			this._processGroupsRecursive(data, gbExprs, 0, false, "");
+			this._gbDataView = this._vgbData;
 			return this.groupByData();
 		},
 		_clearGroupByData: function () {
 			this._gbData = [];
 			this._vgbData = [];
+			this._gbDataView = [];
 		},
 		isGroupByApplied: function (exprs) {
 			/* check whether grouping is applied for the specified sorting expressions.
@@ -5452,7 +5494,7 @@
 		_checkDataBindingComplete: function (status, msg, ownerDs) {
 			/* once this is done, set it as dataSource of the actual mashup data source, and call super's dataBind() */
 			var i, j, k, hasPrimaryKeys = true, hasForeignKeys = false, totalLength = 0, data = [],
-				merged = [], d, rindex, keyVal, prop, keyIndexHash, fkeyIndexHash, mergedData;
+				merged = [], d, rindex = 0, keyVal, prop, keyIndexHash, fkeyIndexHash, mergedData;
 
 			this._dataBindingComplete = true;
 
@@ -5567,15 +5609,16 @@
 										}
 										fkeyIndexHash[ i ][ keyVal ] =
 											this._hashedDataViews[ 0 ][ keyVal ][ this._sources[ i + 1 ].settings.foreignKey ];
-						}
-					}
+									}
+								}
 							}
 						}
 					}
 
 					mergedData = $.extend(true, {}, data, this._hashedDataViews[ 0 ]);
 					for (i = 0; i < this._hashedDataViews.length; i++) {
-						if (!this._sources[ i ].settings.foreignKey) {
+						if (this._sources[ i ].settings.foreignKey === null ||
+						this._sources[ i ].settings.foreignKey === undefined) {
 							//nothing to merge by
 							continue;
 						}
@@ -5594,18 +5637,12 @@
 					// the easiest - no primary keys, process sequentially record by record
 					for (i = 0; i < totalLength; i++) {
 						data[ i ] = {};
+						rindex = 0;
 						for (j = 0; j < this._sources.length; j++) {
 							d = this._sources[ j ];
 							if (d.dataView()[ 0 ].length) {
 								for (k = 0; k < d.dataView()[ 0 ].length; k++) {
-									// check if there is schema defined or not
-									rindex += k;
-									if (d.schema() && d.schema().fields().length > 0) {
-										data[ i ][ d.schema().fields()[ k ] ] = i >= d.dataView().length ?
-											"" : d.dataView()[ i ][ d.schema().fields()[ k ] ];
-									} else {
-										data[ i ][ rindex ] = i >= d.dataView().length ? "" : d.dataView()[ i ][ k ];
-									}
+									data[ i ][ rindex++ ] = i >= d.dataView().length ? "" : d.dataView()[ i ][ k ];
 								}
 							} else {
 								for (prop in d.dataView()[ i ]) {
@@ -5618,7 +5655,6 @@
 								}
 							}
 						}
-						rindex = 0;
 					}
 				}
 				this.settings.dataSource = data;
@@ -5683,7 +5719,7 @@
 							}
 						}
 						rowObject = $.extend(true, {}, rowObject, newObject);
-					} else if (this.settings.foreignKey !== colId) {
+					} else if (this.settings.foreignKey === colId) {
 						rowObject = $.extend(true, {}, rowObject, this.dataSource()[ val ]);
 					}
 					/* update internal record */
@@ -5840,8 +5876,7 @@
 							}
 						}
 						rowObject = $.extend(true, {}, rowObject, newObject);
-					} else if (rowObject[ this.settings.foreignKey ] !==
-						oldRow[ this.settings.foreignKey ]) {
+					} else {
 						rowObject = $.extend(true, {}, rowObject,
 							this.dataSource()[ rowObject[ this.settings.foreignKey ] ]);
 					}
@@ -6034,24 +6069,10 @@
 				then the key is assumed to be composite and will be split based on "," */
 				if (paths[ i ] !== "") {
 					for (j = 0; data && j < data.length; j++) {
-						if (ckey && ckey.indexOf(",") !== -1) {
-							ckeys = ckey.split(",");
-							ckeyvals = ckeyval.split(",");
-							for (k = 0; k < ckeys.length; k++) {
-								if (!data[ j ][ ckeys[ k ] ].charAt && ckeyvals[ k ].charAt) {
-									ckeyvals[ k ] = parseInt(ckeyvals[ k ], 10);
-								}
-								match = (data[ j ][ ckeys[ k ] ] === ckeyvals[ k ]);
-								if (!match) {
-									break;
-								}
-							}
-						} else {
-							if (data[ j ][ ckey ] !== undefined && !data[ j ][ ckey ].charAt && ckeyval.charAt) {
-								ckeyval = parseInt(ckeyval, 10);
-							}
-							match = (data[ j ][ ckey ] === ckeyval);
+						if (data[ j ][ ckey ] !== undefined && !data[ j ][ ckey ].charAt && ckeyval.charAt) {
+							ckeyval = parseInt(ckeyval, 10);
 						}
+						match = (data[ j ][ ckey ] === ckeyval);
 						/* special case when we have responseDataKey / search
 						fields defined for every children data instance */
 						if (match) {
@@ -6343,6 +6364,11 @@
 			this._super(callback, callee);
 		},
 		getParentRowsForRow: function (dataRow, ds) {
+			/*Gets the passed record's parent records
+			paramType="object" optional="false" the child record.
+			paramType="object" optional="true" the data source in which to search for the related parent records.
+			returnType="object" the array of parent records of the specified child record.
+			*/
 			var key, data = ds || this._data, search, propL, i, res,
 				objPath = {}, rec, prows;
 			if (dataRow === undefined || dataRow === null) {
@@ -6499,7 +6525,7 @@
 			return nData;
 		},
 		_getDataLayouts: function (parents, children) {
-			var i, pLen = parents.length, key = this.settings.treeDS.key,
+			var i, pLen = parents.length, key = this.settings.primaryKey,
 				layoutKey = this.settings.treeDS.childDataKey, res = [], parent, cp;
 			for (i = 0; i < pLen; i++) {
 				parent = parents[ i ];
@@ -6531,7 +6557,7 @@
 				s = this.settings.treeDS,
 				rlv = s.foreignKeyRootValue,
 				foreignKey = s.foreignKey,
-				key = s.key;
+				key = this.settings.primaryKey;
 			/* if option foreignKeyRootValue is false then we should go through the whole DS and
 			check whether the record has parent key equal to key - if there isn't this means the value hasn't parent */
 			dataRecordPKey = dataRecord[ foreignKey ];
@@ -7542,7 +7568,7 @@
 						// if there is no match, break, we aren't going to add the record to the resulting data view.
 						// the default boolean logic is to "AND" the fields
 						fields = schema.fields();
-						if (fieldExpressions[ j ].fieldIndex) {
+						if (fieldExpressions[ j ].fieldIndex !== undefined) {
 							if (fieldExpressions[ j ].fieldIndex < fields.length) {
 								t = this._getFieldTypeFromSchema(fields[ fieldExpressions[ j ].fieldIndex ].name);
 							}
@@ -7600,7 +7626,10 @@
 								stringVal = data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ] ?
 									data[ i ][ fieldExpressionsOnStrings[ j ].fieldIndex ].toString() : "";
 								skipRec = !this._findMatch(stringVal, fieldExpressionsOnStrings[ j ].expr,
-									"string", !f.caseSensitive, fieldExpressionsOnStrings[ j ].cond, data[ i ]);
+									"string", !f.caseSensitive, fieldExpressionsOnStrings[ j ].cond,
+									fieldExpressionsOnStrings[ j ].preciseDateFormat,
+									fieldExpressionsOnStrings[ j ].fieldName,
+									data[ i ]);
 							} else {
 								for (k = 0; k < fields.length; k++) {
 									if (fields[ k ].name === fieldExpressionsOnStrings[ j ].fieldName) {
@@ -7612,7 +7641,10 @@
 									data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ] !== undefined ?
 									data[ i ][ fieldExpressionsOnStrings[ j ].fieldName ].toString() : "";
 								skipRec = !this._findMatch(stringVal, fieldExpressionsOnStrings[ j ].expr,
-									"string", !f.caseSensitive, fieldExpressionsOnStrings[ j ].cond, data[ i ]);
+									"string", !f.caseSensitive, fieldExpressionsOnStrings[ j ].cond,
+									fieldExpressionsOnStrings[ j ].preciseDateFormat,
+									fieldExpressionsOnStrings[ j ].fieldName,
+									data[ i ]);
 							}
 							tmpbool = (fieldExpressionsOnStrings[ j ].logic !== null &&
 								fieldExpressionsOnStrings[ j ].logic !== undefined &&
@@ -7866,7 +7898,13 @@
 			paramType="string|number" primary key of the record
 			*/
 			var data, count = 0,
-				all = [ this._data, this._dataView, this._filteredData, origDs ];
+				all = [ this._data, this._dataView, this._filteredData ];
+			/* M.H. 5 Aug 2016 Fix for bug 220126: Child data persists in the datasource after deleting the corresponding parent record in treegrid */
+			if (!this._isHierarchicalDataSource) {
+				this._removeRecordInFlatDs(origDs, key);
+			} else {
+				all.push(origDs);
+			}
 			while (count < all.length) {
 				data = all[ count++ ];
 				this._removeRecordByKeyForData(key, data);
@@ -7876,7 +7914,33 @@
 				}
 			}
 		},
+		_removeRecordInFlatDs: function (data, key, fk) {
+			if (!data || !$.isArray(data) || !data.length ||
+				(key === undefined && fk === undefined)) {
+				return;
+			}
+			var i, prime = this.settings.primaryKey, tmp,
+				pkSearch = $.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,
+				fkSearch = this.settings.treeDS.foreignKey;
+			for (i = 0; i < data.length; i++) {
+				if (data[ i ]) {
+					if (key !== undefined && data[ i ][ pkSearch ] === key) {
+						$.ig.removeFromArray(data, i);
+						this._removeRecordInFlatDs(data, undefined, key);
+						break;
+					} else if (fk !== undefined && data[ i ][ fkSearch ] === fk) {
+						tmp = data[ i ][ pkSearch ];
+						$.ig.removeFromArray(data, i);
+						this._removeRecordInFlatDs(data, undefined, tmp);
+						i = 0;
+					}
+				}
+			}
+		},
 		_removeRecordByKeyForData: function (key, data) {
+			if (!data) {
+				return false;
+			}
 			var i, prime = this.settings.primaryKey,
 				len = data ? data.length : 0,
 				search = len > 0 && $.isArray(data[ 0 ]) ? this._lookupPkIndex() : prime,

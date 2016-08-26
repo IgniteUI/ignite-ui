@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title> Infragistics jQuery Data Source - filtering QUnit tests </title> 
+	<title> Infragistics jQuery Data Source - GroupBy QUnit tests </title> 
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 
@@ -10,7 +10,7 @@
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
-	
+	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
 	<style type="text/css">
 		body {
 			font-family: Verdana;
@@ -29,18 +29,33 @@
 		}
 	</style>
 	
-	<script id="tableTemplate" type="text/x-jquery-tmpl">
-		<tr> <td> ${Id} </td> <td> ${ProductName} </td> <td> ${ProductDescription} </td>  <td> ${Price} </td> <td> ${Promotion} </td> </tr>
-	</script>
-	
 	<script type="text/javascript"> 
+		$.mockjaxSettings.logging = 0;  // only critical error messages
 		$(document).ready(function () {
+			var remoteDs = null, 
+				__init = false;
+			/* Helper functions */
 			function renderData(data) {
-				var $tbody = $("#t1>tbody");
+				var $tbody = $("#t1>tbody"), i, html = '', r;
 				$tbody.empty();
-				$("#tableTemplate").tmpl(data).appendTo($tbody);
+				for (i = 0; i < data.length; i++) {
+					r = data[i];
+					if (r.__gbRecord) {
+						html += "<tr><td colspan='6'>GroupBy record with val: " + r.val + "</td></tr>"
+					} else {
+						html += "<tr>" +
+							"<td>" + r.Id + "</td>" +
+							"<td>" + r.ProductName + "</td>" +
+							"<td>" + r.ProductDescription + "</td>" +
+							"<td>" + r.Price + "</td>" +
+							"<td>" + r.Promotion + "</td>" +
+							"<td>" + (r.Date || "") + "</td>" +
+						"</tr>";
+					}
+				}
+				$tbody.html(html)
 			}
-			function generateData(count) {
+			function generateData(count, key, dir) {
 				var i, count = count || 4, data = [];
 				for (i = 0; i < count; i++) {
 					data.push({
@@ -48,8 +63,31 @@
 						ProductName: "product name " + i,
 						ProductDescription: "description " + (i % 2),
 						Price: 1,
-						Promotion: !!(i % 2)
+						Promotion: !!(i % 2),
+						Date: new Date(i),
+						Category: {
+							Id: i % 3,
+							Name: "Category " + (i % 3)
+						}
 					});
+				}
+				// sort data if argument "key" is set
+				if (key) {
+					sortF = function (key, dir) {
+						return function (obj1, obj2) {
+							var v1 = obj1[key],
+								v2 = obj2[key],
+								rev = dir === "asc" ? 1 : -1;
+							if (v1 < v2) {
+								return -1 * rev;
+							}
+							if (v1 > v2) {
+								return 1 * rev;
+							}
+							return 0;
+						};
+					};
+					data = data.sort(sortF(key, dir));
 				}
 				return data;
 			}
@@ -61,7 +99,8 @@
 							{ name: "ProductName", type: "string" },
 							{ name: "ProductDescription" },
 							{ name: "Price" }, 
-							{ name: "Promotion", type: "bool" }]
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "datetime" }]
 					},
 					filtering: { type: "local" }, 
 					sorting: { type: "local" }, 
@@ -69,45 +108,82 @@
 				};
 				return new $.ig.DataSource(dsOpts);
 			}
-			module("igDataSource groupby basic tests", {
+			/* //Helper functions */
+			
+			// configure mockjax for tests of remote groupby 
+			$.mockjax({
+				url: '*',
+				contentType: "application/json",
+				isTimeout: false,
+				//dataType: 'json',
+				response: function (settings) {
+					var ob = settings.data.$orderby, args,
+						key, dir, se;
+					// process url params
+					ob = settings.data.$orderby;
+					if (ob) {
+						args = ob.split(",")[0];
+						if (args) {
+							se = args.split(" ");
+							if (se && se.length > 1) {
+								key = se[0];
+								dir = se[1];
+							}
+						}
+					}
+					this.responseText = {
+						records: generateData(10, key, dir)
+					};
+				}
+			});
+
+			/* Test GroupBy with type: "local"*/
+			module("igDataSource groupby with type: local", {
 				setup: function () {
 				}
 			});
 			test("Test sorting dataSource for grouped columns", function () {
-				var sexprs = [], i, ds = createDataSource(), data, dataView;
+				var se = [], i, ds = createDataSource(), data, 
+					dataView, gbDataView;
 				// group by column Id - using defaultFields of sorting
-				sexprs.push({
+				se.push({
 					fieldName: "Id",
 					isGroupBy: true,
 					dir: "desc"
 				});
-				ds.settings.sorting.expressions = sexprs;
-				ds.settings.sorting.defaultFields = sexprs;
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.defaultFields = se;
 				ds.dataBind();
 				data = ds.data();
 				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
+				ok(gbDataView[0].__gbRecord && gbDataView[0].id === "Id:51" && gbDataView[0].len === 1 &&
+					gbDataView[1].Id === 3 &&
+					gbDataView[7].Id === 0,
+					"Test content of data view");
 				equal(data.length, 4, "Group by Id desc(initial sorting) - Test count of data records");
-				equal(dataView.length, data.length * 2, "Group by Id desc(initial sorting) - Test count of dataView records");
+				equal(gbDataView.length, data.length * 2, "Group by Id desc(initial sorting) - Test count of dataView records");
 				ok(data[0].Id === 3 && data[3].Id === 0, "Group by Id desc(initial sorting) - Test whether properly is sorted data");
 				ok(ds.isGroupByApplied(), "Test 'isGroupByApplied'");
 				renderData(data);
 				// group by for columns Id, ProductName - using sort function
-				sexprs.push({
+				se.push({
 					fieldName: "ProductName",
 					isGroupBy: true,
 					dir: "desc"
 				});
-				ds.sort(sexprs);
+				ds.sort(se);
 				data = ds.data();
 				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
 				equal(data.length, 4, "Group by Id desc, ProductName desc - Test count of data records");
-				equal(ds.dataView().length, data.length * 3, "Group by Id desc, ProductName desc - test count of dataView records");
-				ok(dataView[dataView.length - 1].Id === 0 && dataView[0].__gbRecord,
+				equal(gbDataView.length, data.length * 3, "Group by Id desc, ProductName desc - test count of dataView records");
+				ok(gbDataView[gbDataView.length - 1].Id === 0 && gbDataView[0].__gbRecord,
 							"Group by Id desc, ProductName desc - test last and first records of dataView");
 				ok(data[0].Id === 3 && data[3].Id === 0, "Group by Id desc, ProductName desc - test whether properly is sorted data")
 				renderData(data);
 				// group by only for column Price
-				sexprs = [{
+				se = [{
 					fieldName: "Price",
 					isGroupBy: true,
 					dir: "asc"
@@ -116,57 +192,109 @@
 					fieldName: "Id",
 					dir: "asc"
 				}];
-				ds.sort(sexprs);
+				ds.sort(se);
 				data = ds.data();
 				dataView = ds.dataView();
-				
+				gbDataView = ds.groupByDataView();
 				equal(data.length, 4, "Group by column Price and sort by column Id - Test count of data records");
-				equal(dataView.length, 5, "Group by column Price and sort by column Id - test count of dataView records");
+				equal(gbDataView.length, 5, "Group by column Price and sort by column Id - test count of dataView records");
 				ok(data[0].Id === 0 && data[3].Id === 3, 
 					"Group by column Price and sort by column Id - test sorting of data records");
-				ok(dataView[1].Id === 0 && dataView[0].__gbRecord,
+				ok(gbDataView[1].Id === 0 && gbDataView[0].__gbRecord,
 					"Group by Price - test dataView records");
 				renderData(data);
 			});
 			test("Test public functions: 'visibleGroupByData', 'groupByData', 'toggleGroupByRecord'", function () {
-				var sexprs = [], i, ds = createDataSource(), data, dataView, gbData;
-				sexprs = [{
+				var se = [], i, ds = createDataSource(), data,
+				 	dataView, gbData, gbDataView;
+				se = [{
 					fieldName: "Price",
 					isGroupBy: true,
 					dir: "asc"
 				}];
 				ds.dataBind();
-				ds.sort(sexprs);
+				ds.sort(se);
 				data = ds.data();
 				dataView = ds.dataView();
-				equal(dataView.length, 5, "Group by Price - test count of dataView records");
+				gbDataView = ds.groupByDataView();
+				ok(
+					gbDataView.length === 5 && 
+					dataView.length === 4, 
+					"Group by Price - test count of dataView records");
 				// collapse first row
-				ds.toggleGroupByRecord(dataView[0].id, true);
+				ds.toggleGroupByRecord(gbDataView[0].id, true);
 				dataView = ds.dataView();
-				ok(ds.isGroupByRecordCollapsed(dataView[0].id) === true, "Test whether first group by record is collapsed");
-				equal(dataView.length, 1, "Group by Price - test count of dataView records when first group by record is collapsed");
-				ok(dataView[0].__gbRecord && dataView[0].collapsed, "First record in data view should be non-data, group-by record, and propery collapsed should be true");
+				gbDataView = ds.groupByDataView();
+				ok(ds.isGroupByRecordCollapsed(gbDataView[0].id) === true &&
+					dataView[3].Id === 3 &&
+					dataView.length === 4, 
+					"Test whether first group by record is collapsed");
+				equal(gbDataView.length, 1, "Group by Price - test count of dataView records when first group by record is collapsed");
+				ok(gbDataView[0].__gbRecord && gbDataView[0].collapsed, "First record in data view should be non-data, group-by record, and propery collapsed should be true");
 				ok(ds.visibleGroupByData().length, 1, "Test visibleGroupByData");
 				gbData = ds.groupByData();
 				equal(gbData.length, 5, "Test groupByData length");
 				ok(gbData[0].__gbRecord && gbData[4].Id === 3, 
 					"Test groupBy data");
 				// expand first row
-				ds.toggleGroupByRecord(dataView[0].id, false);
+				ds.toggleGroupByRecord(gbDataView[0].id, false);
 				dataView = ds.dataView();
-				equal(dataView.length, 5, "Group by Price - test count of dataView records when first group by record is collapsed");
-				ok(dataView[0].__gbRecord && !dataView[0].collapsed, "First record in data view should be non-data, group-by record, and propery collapsed should be true");
-				ok(ds.isGroupByRecordCollapsed(dataView[0].id) === false, "Test whether first group by record is expanded");
+				gbDataView = ds.groupByDataView();
+				equal(gbDataView.length, 5, "Group by Price - test count of dataView records when first group by record is collapsed");
+				ok(gbDataView[0].__gbRecord && !gbDataView[0].collapsed, "First record in data view should be non-data, group-by record, and propery collapsed should be true");
+				ok(ds.isGroupByRecordCollapsed(gbDataView[0].id) === false, "Test whether first group by record is expanded");
+			});
+			test("Test groupby of column with type object('mapper' is set)", function () {
+				var se = [], gbData, data,
+					ds = createDataSource({
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName", type: "string" },
+							{ name: "Category", type: "object", 
+								mapper: function (obj) {
+									return obj.Category.Name;
+								} },
+							{ name: "Price" }, 
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "datetime" }]
+					},
+					sorting: { type: "local" }, 
+					dataSource: generateData(4)
+				});
+				// group by column Category desc
+				se.push({
+					fieldName: "Category",
+					isGroupBy: true,
+					dir: "desc"
+				});
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.defaultFields = se;
+				ds.dataBind();
+				gbData = ds.groupByData();
+				ok(gbData.length === 7 &&
+					gbData[0].__gbRecord === true && 
+					gbData[0].val === "Category 2" &&
+					gbData[5].Category.Name === "Category 0" &&
+					gbData[6].Category.Name === "Category 0",
+					"Test groupByData() after groupping by column Category");
+				data = ds.data();
+				// test whether data is properly sorted
+				ok(data.length === 4 &&
+					data[0].Category.Name === "Category 2" &&
+					data[3].Category.Name === "Category 0",
+					"Test data() after grouping by column Category");
 			});
 			test("Test groupby + filtering", function () {
-				var sexprs = [], i, ds = createDataSource(), data, dataView, gbData;
-				sexprs = [{
+				var se = [], i, ds = createDataSource(), 
+					data, dataView, gbData, gbDataView;
+				se = [{
 					fieldName: "Price",
 					isGroupBy: true,
 					dir: "asc"
 				}];
-				ds.settings.sorting.defaultFields = sexprs;
-				ds.settings.sorting.expressions = sexprs;
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
 				ds.settings.sorting.enabled = true;
 				ds.settings.filtering.defaultFields = [{
 					fieldName: "Id",
@@ -175,13 +303,17 @@
 				}];
 				ds.dataBind();
 				dataView = ds.dataView();
-				ok(dataView[0].__gbRecord && dataView[3].Id === 3, "Test dataView records");
-				equal(dataView.length, 4, "Test count of dataView records");
-				renderData(dataView);
+				gbDataView = ds.groupByDataView();
+				ok(dataView.length === 3 &&
+					gbDataView[0].__gbRecord &&
+					gbDataView[3].Id === 3 &&
+					gbDataView.length === 4,
+					"Test groupByDataView records");
+				renderData(gbDataView);
 			});
 			test("Test groupby + paging + filtering", function () {
-				var sexprs = [], i, ds = createDataSource(), data, dataView, gbData;
-				sexprs = [{
+				var se = [], i, ds = createDataSource(), data, gbDataView, dataView, gbData;
+				se = [{
 					fieldName: "Id",
 					isGroupBy: true,
 					dir: "asc"
@@ -191,8 +323,8 @@
 				ds.settings.paging.pageSize = 5;
 				ds.settings.paging.type = "local";
 				// set sorting expressions
-				ds.settings.sorting.defaultFields = sexprs;
-				ds.settings.sorting.expressions = sexprs;
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
 				ds.settings.sorting.enabled = true;
 				ds.settings.filtering.defaultFields = [{
 					fieldName: "Id",
@@ -201,30 +333,253 @@
 				}];
 				ds.dataBind();
 				dataView = ds.dataView();
-				ok(dataView[0].__gbRecord && dataView[1].Id === 1, "Test dataView records");
-				equal(dataView.length, 5, "Test count of records in the dataView");
+				gbDataView = ds.groupByDataView();
+				ok(dataView.length === 2 &&
+					gbDataView.length === 5 &&
+					gbDataView[0].__gbRecord && 
+					gbDataView[1].Id === 1, "Test dataView records");
 				equal(ds.groupByData().length, 6, "Test count of records in groupByData");
 				equal(ds.pageCount(), 2, "Test pageCount");
 				ds.pageIndex(1);
 				dataView = ds.dataView();
 				ok(dataView.length === 1 && dataView[0].Id === 3, "Test dataView after changing pageIndex to 1");
 			});
+
+			test("Test groupby date column", function () {
+				var se = [], i, ds = createDataSource(), data, dataView, gbDataView, gbData;
+				se = [{
+					fieldName: "Date",
+					isGroupBy: true,
+					dir: "asc"
+				}];
+				// set sorting expressions
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.enabled = true;
+				ds.dataBind();
+				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				ok(gbDataView[0].__gbRecord &&
+					gbDataView[1].Id === 0 &&
+					gbDataView[7].Id === 3,
+					"Test dataView records");
+				equal(ds.groupByData().length, 8, "Test count of records in groupByData");
+			});
+			// test updating + groupby
+			test("Test updating when there is 1 grouped column", function () {
+				var se = [], i, ds = createDataSource(), data, dataView, gbDataView, gbData;
+				se = [{
+					fieldName: "Date",
+					isGroupBy: true,
+					dir: "asc"
+				}];
+				// set sorting expressions
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.enabled = true;
+				ds.settings.primaryKey = "Id";
+				ds.dataBind();
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				// test add row
+				i = 100;
+				ds.addRow(i, {
+						Id: i,
+						ProductName: "product name " + i,
+						ProductDescription: "description " + (i % 2),
+						Price: 1,
+						Promotion: !!(i % 2),
+						Date: new Date(i),
+						Category: {
+							Id: i % 3,
+							Name: "Category " + (i % 3)
+						}
+					});
+				ds.commit();
+				gbDataView = ds.groupByDataView();
+				dataView = ds.dataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 10 &&
+					gbDataView[8].__gbRecord === true &&
+					gbDataView[9].Id === i &&
+					dataView.length === 5,
+				 	"Test groupByDataView and dataView after new row is added");
+				// test delete row
+				ds.deleteRow(0);
+				ds.commit();
+				gbDataView = ds.groupByDataView();
+				dataView = ds.dataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 8 &&
+					gbDataView[6].__gbRecord === true &&
+					gbDataView[7].Id === i &&
+					dataView.length === 4,
+				 	"Test groupByDataView and dataView after row with id 0 is deleted");
+				// test update row
+				ds.updateRow(i, {
+						Id: i,
+						ProductName: "product name 1"
+				});
+				ds.commit();
+				gbDataView = ds.groupByDataView();
+				dataView = ds.dataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 8 &&
+					gbDataView[6].__gbRecord === true &&
+					gbDataView[7].Id === i &&
+					gbDataView[7].ProductName === "product name 1" &&
+					dataView.length === 4,
+				 	"Test groupByDataView and dataView after row with id 100 is updated");
+			});
+			/* Test GroupBy with type: "local"*/
+
+			/* Test GroupBy with type: "remote"*/
+			module("Remote GroupBy", {
+				setup: function () {
+					stop();
+					__init = false;
+					var exprs = [
+						{
+							fieldName: "Id",
+							isGroupBy: true,
+							dir: "desc"
+						}
+					],
+					dsOpts = {
+						schema: {
+							fields: [
+								{ name: "Id", type: "number" },
+								{ name: "ProductName", type: "string" },
+								{ name: "ProductDescription" },
+								{ name: "Price" },
+								{ name: "Promotion", type: "bool" }],
+							searchField: "records"
+						},
+						filtering: {
+							enabled: true,
+							type: "local"
+						},
+						paging: {
+							enabled: true,
+							type: "local",
+							pageSize: 5
+						},
+						sorting: {
+							enabled: true,
+							type: "remote",
+							expressions: exprs,
+							defaultFields: exprs
+						},
+						dataSource: "/",
+						dataSourceUrl: "/",
+						responseDataKey: "records",
+						callback: function () {
+							if (!__init) {
+								start();
+								__init = true;
+							}
+						}
+					};
+					remoteDs = createDataSource(dsOpts);
+					remoteDs.dataBind();
+					
+				},
+				teardown: function () {
+					remoteDs = null;
+				}
+			});
+			test("Basic tests", function () {
+				var se, dv = remoteDs.dataView(),
+					gdv = remoteDs.groupByDataView(),
+					data = remoteDs.data();
+				ok(gdv.length === 5 && data.length === 10, "Test count of records of dataview and data");
+				ok(gdv[0].__gbRecord === true && gdv[0].len === 1 &&
+					gdv[1].Id === 9 && gdv[4].__gbRecord === true,
+					"Test dataview records");
+				ok(data[0].Id === 9 && data[9].Id === 0,
+					"Test data records");
+				renderData(dv);
+
+				// change sorting direction
+				se = [{
+					fieldName: "Id",
+					isGroupBy: true,
+					dir: "asc"
+				}];
+				// set sorting expressions
+				remoteDs.settings.sorting.defaultFields = se;
+				remoteDs.settings.sorting.expressions = se;
+				remoteDs.dataBind();
+				stop();
+				setTimeout(function () {
+					dv = remoteDs.dataView();
+					gdv = remoteDs.groupByDataView();
+					data = remoteDs.data();
+					ok(gdv.length === 5 && data.length === 10, "Test count of records of dataview and data");
+					ok(gdv[0].__gbRecord === true && gdv[0].len === 1 &&
+						gdv[1].Id === 0 && gdv[4].__gbRecord === true,
+						"Test dataview records");
+					ok(data[0].Id === 0 && data[9].Id === 9,
+						"Test data records");
+					renderData(dv);
+					start();
+				}, 1000);
+			});
+			test("GroupBy + Local Filtering + Paging", function () {
+				var gdv, dv, data,
+					fe = [{
+					fieldName: "Id",
+					cond: "greaterThan",
+					expr: 0
+				}];
+				remoteDs.settings.filtering.defaultFields = [{
+					fieldName: "Id",
+					cond: "greaterThan",
+					expr: 0
+				}];
+				remoteDs.dataBind();
+				stop();
+				setTimeout(function () {
+					dv = remoteDs.dataView();
+					gdv = remoteDs.groupByDataView();
+					data = remoteDs.data();
+					ok(gdv.length === 5 && data.length === 10, "Test count of records of dataview and data");
+					ok(gdv[0].__gbRecord === true && gdv[0].len === 1 &&
+						gdv[1].Id === 9 && gdv[4].__gbRecord === true,
+						"Test dataview records");
+					ok(data[0].Id === 9 && data[9].Id === 0,
+						"Test data records");
+					renderData(gdv);
+					equal(remoteDs.pageCount(), 4, "Test page count");
+					remoteDs.pageIndex(3);
+					gdv = remoteDs.groupByDataView();
+					data = remoteDs.data();
+					equal(gdv.length, 3, "Test count of records of dataview and data");
+					ok(gdv[0].Id === 2 &&
+						gdv[1].__gbRecord === true && gdv[1].val === 1 &&
+						gdv[2].Id === 1,
+						"Test dataview records");
+					renderData(dv);
+					start();
+				}, 1000);
+			});
+			/* //Test GroupBy with type: "remote"*/
 		});
 	</script>
-	<!-- <script type="text/javascript" src="../../testswarm/inject.js"></script> -->
 </head>
 <body>
 <div id="div1"></div>
 <div style="float:right;width:400px;overflow:auto"">
-    <h1 id="qunit-header">Test results</h1>
-     <h2 id="qunit-banner"></h2>
-     <h2 id="qunit-userAgent"></h2>
-     <ol id="qunit-tests"></ol>
+	<h1 id="qunit-header">Test results</h1>
+	 <h2 id="qunit-banner"></h2>
+	 <h2 id="qunit-userAgent"></h2>
+	 <ol id="qunit-tests"></ol>
 </div>
 
 	<table id="t1" cellpadding=5 cellspacing=0>
 	<thead>
-		<tr> <th>Id</th> <th>ProductName</th> <th>ProductDescription</th>  <th>Price</th> <th>Promotion</th> </tr>
+		<tr> <th>Id</th> <th>ProductName</th> <th>ProductDescription</th>  <th>Price</th> <th>Promotion</th> <th>Date</th></tr>
 	</thead>
 	<tbody>
 	

@@ -6,7 +6,7 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- * jquery-1.4.4.js
+ * jquery-1.9.1.js
  * jquery.ui.core.js
  * jquery.ui.widget.js
  * infragistics.util.js
@@ -17,60 +17,58 @@
 (function ($) {
 	/*
 		igZoombar is a widget based on jQuery UI that provides ability to easily zoom in and out a chart or other compatible control.
-	*/ 
+	*/
 	$.widget("ui.igZoombar", {
 		options: {
-			/* type="string|object|auto" specifies a provider which interfaces with widget that is being zoomed
-				auto type="string" the Zoombar will try to match one of its built-in providers with the widgets initialized on the target element
-				string the name of a Class in the $.ig namespace to initialize a provider from. The provider should implement all methods in the $.ig.ZoombarProviderDefault class and is suggested to be extended from it.
-				object an instance of a provider to use. The provider should implement all methods in the $.ig.ZoombarProviderDefault class and is suggested to be extended from it.
+			/* type="object" Specifies a provider class which interfaces the widget that is being zoomed.
+				object Provider class to use. The provider should implement all methods in the $.ig.ZoombarProviderDefault class and is suggested to be extended from it.
 			*/
-			provider: "auto",
-			/* type="string|object" specifies the element on which the widget the Zoombar is attached to is initialized
-				string A valid jQuery selector that the Zoombar can use to find the element
-				object A valid jQuery object, the first element of which is that element
+			provider: $.ig.ZoombarProviderDataChart,
+			/* type="string|object" Specifies the element on which the widget the Zoombar is attached to is initialized.
+				string A valid jQuery selector that the Zoombar can use to find the element.
+				object A valid jQuery object, the first element of which is that element.
 			*/
 			target: null,
-			/* type="auto|object|none" specifies how the target widget's clone is rendered inside the Zoombar
-				auto type="string" options for initializing the clone will be inferred from the target widget. Certain properties will be altered to make the clone more suitable for using inside the Zoombar
-				none type="string" no clone of the target widget will be initialized inside the Zoombar
-				object A valid set of properties to initialize the clone with
+			/* type="auto|object|none" Specifies how the target widget's clone is rendered inside the Zoombar.
+				auto type="string" Options for initializing the clone will be inferred from the target widget. Certain properties will be altered to make the clone more suitable for using inside the Zoombar.
+				none type="string" No clone of the target widget will be initialized inside the Zoombar.
+				object A valid set of properties to initialize the clone with.
 			*/
 			clone: "auto",
-			/* type="auto|number|string|null" specifies the width of the Zoombar
-				auto type="string" the width of the Zoombar will be the same as the widget it is attached to
-				number The widget width in pixels (px)
-				string The widget width can be set in pixels (px) and percentage (%)
-				null type="object" The Zoombar will stretch horizontally to fit its container if it has width set, otherwise assumes auto
+			/* type="auto|number|string|null" Specifies the width of the Zoombar.
+				auto type="string" The width of the Zoombar will be the same as the widget it is attached to.
+				number The widget width in pixels (px).
+				string The widget width can be set in pixels (px) and percentage (%).
+				null type="object" The Zoombar will stretch horizontally to fit its container if it has width set, otherwise assumes auto.
 			*/
 			width: "auto",
-			/* type="string|number|null" specifies the height of the Zoombar
-				number The widget height in pixels (px)
-				string The widget height can be set in pixels (px) and percentage (%)
-				null type="object" The Zoombar will stretch vertically to fit its container if it has height set, otherwise assumes 70px
+			/* type="string|number|null" Specifies the height of the Zoombar.
+				number The widget height in pixels (px).
+				string The widget height can be set in pixels (px) and percentage (%).
+				null type="object" The Zoombar will stretch vertically to fit its container if it has height set, otherwise assumes 70px.
 			*/
 			height: "70px",
-			/* type="immediate|deferred" specifies when the zoom effect is applied
-				immediate type="string" the zoom action is applied as the end-user interacts with the zoom window
-				deferred type="string" the zoom action is applied after the interaction with the zoom window completes
+			/* type="immediate|deferred" Specifies when the zoom effect is applied.
+				immediate type="string" The zoom action is applied as the end-user interacts with the zoom window.
+				deferred type="string" The zoom action is applied after the interaction with the zoom window completes.
 			*/
 			zoomAction: "immediate",
-			/* type="number" specifies the distance (in percents) the zoom window moves when the left or right scroll bar buttons are clicked */
+			/* type="number" Specifies the distance (in percents) the zoom window moves when the left or right scroll bar buttons are clicked. */
 			zoomWindowMoveDistance: 10,
-			/* type="object" specifies the default zoom in percentages */
+			/* type="object" Specifies the default zoom in percentages. */
 			defaultZoomWindow: {
-				/* type="number" the left component of the zoom window in percentages */
+				/* type="number" The left component of the zoom window in percentages. */
 				left: 35,
-				/* type="string" the width of the zoom window in percentages */
+				/* type="string" The width of the zoom window in percentages. */
 				width: 30
 			},
-			/* type="number" the minimal width the zoom window can have in percentages */
+			/* type="number" The minimal width the zoom window can have in percentages. */
 			zoomWindowMinWidth: 5,
-			/* type="number" specifies the animation duration (in milliseconds) when hover style is applied or removed from elements */
+			/* type="number" Specifies the animation duration (in milliseconds) when hover style is applied or removed from elements. */
 			hoverStyleAnimationDuration: 500,
-			/* type="number" specifies the pan duration (in milliseconds) when the window changes position. Set to 0 for snap. */
+			/* type="number" Specifies the pan duration (in milliseconds) when the window changes position. Set to 0 for snap. */
 			windowPanDuration: 500,
-			/* type="number" initial tabIndex for the Zoombar container elements */
+			/* type="number" Initial tabIndex for the Zoombar container elements. */
 			tabIndex: 0
 		},
 		events: {
@@ -83,7 +81,7 @@
 			Use ui.owner to get reference to igZoombar.
 			*/
 			zoomChanging: "zoomChanging",
-			/* Event fired after a zoom action is applied
+			/* Event fired after a zoom action is applied.
 			Function takes arguments evt and ui.
 			Use ui.previousZoom.left to get the previous zoom window left position as a fraction of the absolute width of the target
 			Use ui.previousZoom.width to get the previous zoom window width as a fraction of the absolute width of the target
@@ -99,49 +97,49 @@
 			Use ui.owner to get reference to igZoombar
 			*/
 			providerCreated: "providerCreated",
-			/* cancel="true" Event fired when the user attempts to drag the zoom window
+			/* cancel="true" Event fired when the user attempts to drag the zoom window.
 			Function takes arguments evt and ui.
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
 			*/
 			windowDragStarting: "windowDragStarting",
-			/* Event fired when the user starts dragging the zoom window
+			/* Event fired when the user starts dragging the zoom window.
 			Function takes arguments evt and ui.
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
 			*/
 			windowDragStarted: "windowDragStarted",
-			/* cancel="true" Event fired when the user drags the zoom window
+			/* cancel="true" Event fired when the user drags the zoom window.
 			Function takes arguments evt and ui.
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
 			*/
 			windowDragging: "windowDragging",
-			/* cancel="true" Event fired when the user attemtps to stop dragging the zoom window
+			/* cancel="true" Event fired when the user attemtps to stop dragging the zoom window.
 			Function takes arguments evt and ui.
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
 			*/
 			windowDragEnding: "windowDragEnding",
-			/* Event fired when the user stops dragging the zoom window
+			/* Event fired when the user stops dragging the zoom window.
 			Function takes arguments evt and ui.
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
 			*/
 			windowDragEnded: "windowDragEnded",
-			/* cancel="true" Event fired when the user resizes the zoom window with the window"s handles
+			/* cancel="true" Event fired when the user resizes the zoom window with the window"s handles.
 			Function takes arguments evt and ui.
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
 			*/
 			windowResizing: "windowResizing",
-			/* Event fired after the user resizes the zoom window with the window"s handles
+			/* Event fired after the user resizes the zoom window with the window"s handles.
 			Function takes arguments evt and ui.
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
@@ -185,12 +183,13 @@
 		},
 		_create: function () {
 			var opts = this.options;
+			if (!opts.provider) {
+				opts.provider = $.ig.ZoombarProviderDataChart;
+			}
 			/* keyboard acceleration param */
 			this._acc = 0;
 			/* create event handlers */
 			this._createHandlers();
-			/* set supported widgets */
-			this._supportedWidgets = [ "igDataChart" ];
 			/* init the provider that will be used to communicate with the target */
 			this._provider = this._initProvider(opts);
 			this._cw = {
@@ -726,7 +725,7 @@
 			return noCancel;
 		},
 		_initProvider: function (opts) {
-			var provider = null, widgetName = null, key, co, rc;
+			var provider = null;
 			if (opts.target) {
 				// target is specified we"ll get the element from there
 				if (typeof opts.target === "string") {
@@ -737,47 +736,26 @@
 			} else {
 				throw new Error($.ig.Zoombar.locale.zoombarTargetNotSpecified);
 			}
-			rc = this.options.clone !== "none";
-			co = typeof this.options.clone === "object" ? this.options.clone : null;
-			if (opts.provider === "auto") {
-				// we"ll find the first supported widget on the target
-				for (key in this._target.data()) {
-					if (this._target.data().hasOwnProperty(key)) {
-						if ($.inArray(key, this._supportedWidgets) > -1) {
-							widgetName = key;
-							break;
-						}
-					}
-				}
-				if (!widgetName || typeof widgetName !== "string") {
-					throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
-				}
-				/* find specific widget */
-				switch (widgetName.toLowerCase()) {
-					case "igdatachart":
-						provider = new $.ig.ZoombarProviderDataChart({
-							targetObject: this._target.data("igDataChart"),
-							zoomChangedCallback: this._targetWindowChangedHandler
-						});
-						break;
-					default: throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
-				}
-				this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
-			} else if ($.type(opts.provider) === "string") {
-				if ($.ig[opts.provider]) {
-					provider = new $.ig[opts.provider]({
+			if (opts.provider === $.ig.ZoombarProviderDataChart) {
+				// the target widget should have an igDataChart initialized on it
+				if (this._target.data && this._target.data("igDataChart")) {
+					provider = new opts.provider({
+						targetObject: this._target.data("igDataChart"),
 						zoomChangedCallback: this._targetWindowChangedHandler
 					});
-				}
-				this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
-			} else if ($.type(opts.provider) === "object") {
-				provider = opts.provider;
-				if (provider.settings) {
-					provider.settings.zoomChangedCallback = this._targetWindowChangedHandler;
+				} else {
+					throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
 				}
 			} else {
-				throw new Error($.ig.Zoombar.locale.zoombarProviderNotRecognized);
+				try {
+					provider = new opts.provider({
+						zoomChangedCallback: this._targetWindowChangedHandler
+					});
+				} catch (e) {
+					throw new Error($.ig.Zoombar.locale.zoombarProviderNotRecognized + " " + e);
+				}
 			}
+			this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
 			return provider;
 		},
 		_isSizedDynamically: function () {
@@ -1084,7 +1062,7 @@
 					newLeft: number,
 					newWdith: number
 				}
-			The values should represent the fractions of the total width of the zoomed component in a number ranging from 0 to 1 
+			The values should represent the fractions of the total width of the zoomed component in a number ranging from 0 to 1
 			*/
 			zoomChangedCallback: null
 		},
@@ -1157,7 +1135,7 @@
 			}
 			return this.settings.targetObject;
 		},
-	 	update: function (a, b) { /*jshint ignore:line*/
+		update: function (a, b) { /*jshint ignore:line*/
 			/* Updates the target widget with a new zoom range.
 			paramType="number" a number from 0 to 1 representing the left edge of the new zoom window to be applied to the target component
 			paramType="number" a number from 0 to 1 representing the right edge of the new zoom window to be applied to the target component

@@ -6,7 +6,7 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- *  jquery-1.4.2.js
+ *  jquery-1.9.1.js
  *	jquery.ui.core.js
  *	jquery.ui.widget.js
  *  infragistics.util.js
@@ -3050,8 +3050,8 @@ if (typeof jQuery !== "function") {
 			if (val !== null && val !== undefined) {
 			    try {
 			        // A.M. May 9, 2016 #218835 "currentTime method does not work as setter in IE"
-					if ($.ig.util.isIE) { 
-					    $('video').bind('canplay', function () { this.currentTime = val; });
+					if ($.ig.util.isIE) {
+					    $("video").bind("canplay", function () { this.currentTime = val; });
 					}
 					    videoElem.currentTime = val;
 					    $("#" + this._id("_ctrls_pb"))

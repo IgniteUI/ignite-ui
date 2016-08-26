@@ -72,7 +72,8 @@
 			    cannotSetRuntime: "Diese Option kann nicht zur Laufzeit festgelegt werden",
                 invalidDate: "Ungültiges Datum",
                 maskMessage: 'Alle erforderlichen Positionen sollten ausgefüllt werden',
-                dateMessage: 'Ein gültiges Datum sollte eingegeben werden',
+                maskRevertMessage: 'All required positions should be filled, that is why the value was reverted to the last valid one.',
+				dateMessage: 'Ein gültiges Datum sollte eingegeben werden',
                 centuryThresholdValidValues: "centuryThreshold-Eigenschaft muss zwischen 0 und 99 liegen. Der Wert wurde auf Standardwerte zurückgesetzt.",
                 noListItemsNoButton: "Es wird keine Spin- oder Dropdown-Schaltfläche gerendert, da keine Listenelemente vorliegen."
 		    }

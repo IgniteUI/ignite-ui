@@ -22,13 +22,13 @@ if (typeof jQuery !== "function") {
 	/* The igBaseEditor is a widget based on jQuery UI. */
 	$.widget("ui.igBaseEditor", {
 		options: {
-			/* type="string|number|null Gets/Sets how the width of the control can be set."
+			/* type="string|number|null" Gets/Sets how the width of the control can be set.
 				string The widget width can be set in pixels (px) and percentage (%).
 				number The widget width can be set as a number in pixels.
 				null type="object" will stretch to fit data, if no other widths are defined.
 			*/
 			width: null,
-			/* type="string|number|null Gets/Sets how the height of the control can be set."
+			/* type="string|number|null" Gets/Sets how the height of the control can be set.
 				string The height can be set in pixels (px) and percentage (%).
 				number The height can be set as a number in pixels.
 				null type="object" will fit the editor inside its parent container, if no other heights are defined.
@@ -1769,7 +1769,7 @@ if (typeof jQuery !== "function") {
 				},
 				"paste.editor": function (event) {
 					self._currentInputTextValue = self._editorInput.val();
-					self._pasteHandler(event);
+					self._pasteHandler(event, true);
 				},
 				"keydown.editor": function (event) {
 
@@ -2324,13 +2324,13 @@ if (typeof jQuery !== "function") {
 				newItem.attr("data-active", true);
 			}
 		},
-		_pasteHandler: function (event) {
+		_pasteHandler: function (event, isPasteEvent) {
 			// TextEditor Handler
 			var self = this, previousValue = $(event.target).val(), newValue;
 			this._currentInputTextValue = this._editorInput.val();
 			this._timeouts.push(setTimeout(function () {
 				newValue = $(event.target).val();
-				self._insert(newValue, previousValue);
+				self._insert(newValue, previousValue, isPasteEvent);
 			}, 10));
 		},
 		_insertHandler: function (string) {
@@ -2346,7 +2346,7 @@ if (typeof jQuery !== "function") {
 			return previousValue.substring(0, selection.start) + string +
 				previousValue.substring(selection.end, previousValue.length);
 		},
-		_insert: function (newValue, previousValue) { // TextEditor
+		_insert: function (newValue, previousValue, isPasteEvent) { // TextEditor
 			var selection, i, ch;
 			if (this.options.maxLength) {
 				if (newValue && newValue.toString().length > this.options.maxLength) {
@@ -2392,7 +2392,7 @@ if (typeof jQuery !== "function") {
 				this._processTextChanged();
 
 				// Move the caret
-				this._setCursorPosition(selection.start + newValue.length);
+				this._setCursorPosition(selection.start + (isPasteEvent ? 0 : newValue.length));
 			} else {
 				this._editorInput.val(previousValue);
 			}
@@ -3017,17 +3017,17 @@ if (typeof jQuery !== "function") {
 			scientificFormat: null,
 			/* type="bool" Sets gets ability to automatically set value in editor to opposite limit, when spin action reached minimum or maximum limit. */
 			spinWrapAround: false,
-			/* @Skipped@ Removed from numeric editor options*/
+			/* @Ignored@ Removed from numeric editor options*/
 			maxLength: null,
-			/* @Skipped@ Removed from numeric editor options*/
+			/* @Ignored@ Removed from numeric editor options*/
 			excludeKeys: null,
-			/* @Skipped@ Removed from numeric editor options*/
+			/* @Ignored@ Removed from numeric editor options*/
 			includeKeys: null,
-			/* @Skipped@ Removed from numeric editor options*/
+			/* @Ignored@ Removed from numeric editor options*/
 			toLower: null,
-			/* @Skipped@ Removed from numeric editor options*/
+			/* @Ignored@ Removed from numeric editor options*/
 			toUpper: null,
-			/* type="text|password|multiline" @Skipped@ Sets gets text mode of editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
+			/* type="text|password|multiline" @Ignored@ Sets gets text mode of editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
 				text type="string" Single line text editor based on INPUT element is created.
 				password type="string" Editor based on INPUT element with type password is created.
 				multiline type="string" multiline editor based on TEXTAREA element is created.
@@ -3228,10 +3228,17 @@ if (typeof jQuery !== "function") {
 				value = this._parseNumericValueByMode(value,
 					this._numericType,
 					this.options.dataMode);
-				if (this._numericType === "percent" && this.options.displayFactor) {
 
-					// TODO - any logic related to "percent" should not be in numeric editor.
-					value = this._divideWithPrecision(value, this.options.displayFactor);
+				// I.G. 18th Aug 2016 Bug 223245:igPercentEditor does not persist empty string value when allowNullValue: true
+				if (value === "" && !this.options.allowNullValue) {
+					value = 0;
+				}
+				if (this._numericType === "percent" && this.options.displayFactor) {
+					if (value !== "" && !isNaN(value)) {
+
+						// TODO - any logic related to "percent" should not be in numeric editor.
+						value = this._divideWithPrecision(value, this.options.displayFactor);
+					}
 				}
 			}
 			this._super(value);
@@ -3244,12 +3251,20 @@ if (typeof jQuery !== "function") {
 				if (this.options.maxValue && value > this.options.maxValue) {
 					value = this.options.maxValue;
 
+					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
+					this._valueInput.val(value);
+					this._enterEditMode();
+
 					//Raise warning
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
 				} else if (this.options.minValue && value < this.options.minValue) {
 					value = this.options.minValue;
+
+					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+					this._valueInput.val(value);
+					this._enterEditMode();
 
 						// Raise Warning level 2
 						this._sendNotification("warning",
@@ -3976,7 +3991,7 @@ if (typeof jQuery !== "function") {
 
 			}
 
-			if (this._numericType === "percent" && this.options.displayFactor) {
+			if (this._numericType === "percent" && this.options.displayFactor && val !== "" && !isNaN(val)) {
 				val = this._parseNumericValueByMode(val, this._numericType, this.options.dataMode);
 				val = this._multiplyWithPrecision(val, this.options.displayFactor);
 			}
@@ -4000,17 +4015,20 @@ if (typeof jQuery !== "function") {
 				this._editorInput.removeClass(this.css.negative);
 			}
 		},
-		_getSpinValue: function (spinType, currentValue, decimalSeparator) {
+		_getSpinValue: function (spinType, currentValue, decimalSeparator, delta) {
 			var fractional, scientificPrecision, spinPrecision,
-				valuePrecision, spinDelta, toFixedVal, precision;
+				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
+			if (delta) {
+				spinDeltaValue = Number(delta);
+			}
 			if (currentValue.toString().toLowerCase().indexOf("e") !== -1) {
 
 				// Number is in scientific format
 				currentValue = Number(currentValue);
-				if (this.options.spinDelta.toString().toLowerCase().indexOf("e") === -1) {
-				spinDelta = Number(this.options.spinDelta.toExponential());
+				if (spinDeltaValue.toString().toLowerCase().indexOf("e") === -1) {
+					spinDelta = Number(spinDeltaValue.toExponential());
 				} else {
-					spinDelta = this.options.spinDelta;
+					spinDelta = spinDeltaValue;
 				}
 
 				if (spinType === "spinUp") {
@@ -4032,15 +4050,15 @@ if (typeof jQuery !== "function") {
 				currentValue = currentValue / 1;
 
 				// D.P. value is already float, always use precision
-				if (this.options.spinDelta.toString().toLowerCase().indexOf("e") !== -1) {
+				if (spinDeltaValue.toString().toLowerCase().indexOf("e") !== -1) {
 					currentValue = Number(currentValue.toExponential());
-					scientificPrecision = this.options.spinDelta.toString().toLowerCase()
-						.substring(this.options.spinDelta.toString()
+					scientificPrecision = spinDeltaValue.toString().toLowerCase()
+						.substring(spinDeltaValue.toString()
 							.toLowerCase().indexOf("e") + 1);
 					spinPrecision = Math.abs(scientificPrecision);
 				} else {
-					spinPrecision = this.options.spinDelta.toString().toLowerCase()
-						.substring(this.options.spinDelta.toString()
+					spinPrecision = spinDeltaValue.toString().toLowerCase()
+						.substring(spinDeltaValue.toString()
 							.toLowerCase().indexOf(".") + 1).length;
 					valuePrecision = currentValue.toString()
 						.substring(currentValue.toString().indexOf(".") + 1).length;
@@ -4053,19 +4071,19 @@ if (typeof jQuery !== "function") {
 					if (currentValue === 0 && scientificPrecision) {
 
 						// We guarantee we have spin delta in scientific format
-						currentValue = this.options.spinDelta.toFixed(spinPrecision);
+						currentValue = spinDeltaValue.toFixed(spinPrecision);
 					} else {
 						currentValue = (Math.round(currentValue * precision) +
-							Math.round(this.options.spinDelta * precision)) / precision;
+							Math.round(spinDeltaValue * precision)) / precision;
 					}
 				} else {
 					if (currentValue === 0 && scientificPrecision) {
 
 						// We guarantee we have spin delta in scientific format
-						currentValue = (-this.options.spinDelta).toFixed(spinPrecision);
+						currentValue = (-spinDeltaValue).toFixed(spinPrecision);
 					} else {
 						currentValue = (Math.round(currentValue * precision) -
-							Math.round(this.options.spinDelta * precision)) / precision;
+							Math.round(spinDeltaValue * precision)) / precision;
 					}
 				}
 
@@ -4081,23 +4099,23 @@ if (typeof jQuery !== "function") {
 				}
 			} else {
 				currentValue = currentValue / 1;
-				if (this.options.spinDelta % 1 === 0) {
+				if (spinDeltaValue % 1 === 0) {
 
 					// Integer value
 					if (spinType === "spinUp") {
-						currentValue += this.options.spinDelta;
+						currentValue += spinDeltaValue;
 					} else {
-						currentValue -= this.options.spinDelta;
+						currentValue -= spinDeltaValue;
 					}
 				} else {
-					if (this.options.spinDelta.toString().toLowerCase().indexOf("e") !== -1) {
-						scientificPrecision = this.options.spinDelta.toString().toLowerCase()
-							.substring(this.options.spinDelta.toString()
+					if (spinDeltaValue.toString().toLowerCase().indexOf("e") !== -1) {
+						scientificPrecision = spinDeltaValue.toString().toLowerCase()
+							.substring(spinDeltaValue.toString()
 								.toLowerCase().indexOf("e") + 1);
 						spinPrecision = Math.abs(scientificPrecision);
 					} else {
-						spinPrecision = this.options.spinDelta.toString().toLowerCase()
-							.substring(this.options.spinDelta.toString()
+						spinPrecision = spinDeltaValue.toString().toLowerCase()
+							.substring(spinDeltaValue.toString()
 								.toLowerCase().indexOf(".") + 1).length;
 					}
 					precision = Math.pow(10, spinPrecision);
@@ -4105,26 +4123,26 @@ if (typeof jQuery !== "function") {
 						if (currentValue === 0) {
 
 							// We guarantee we have spin delta in scientific format
-							currentValue = this.options.spinDelta.toFixed(spinPrecision);
+							currentValue = spinDeltaValue.toFixed(spinPrecision);
 						} else {
 							currentValue = (Math.round(currentValue * precision) +
-								Math.round(this.options.spinDelta * precision)) / precision;
+								Math.round(spinDeltaValue * precision)) / precision;
 						}
 					} else {
 						if (currentValue === 0) {
 
 							// We guarantee we have spin delta in scientific format
-							currentValue = (-this.options.spinDelta).toFixed(spinPrecision);
+							currentValue = (-spinDeltaValue).toFixed(spinPrecision);
 						} else {
 							currentValue = (Math.round(currentValue * precision) -
-								Math.round(this.options.spinDelta * precision)) / precision;
+								Math.round(spinDeltaValue * precision)) / precision;
 						}
 					}
 				}
 			}
 			return currentValue;
 		},
-		_spinUp: function () { //NumericEditor
+		_spinUp: function (delta) { //NumericEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
 				currVal = this._editorInput.val();
@@ -4137,8 +4155,8 @@ if (typeof jQuery !== "function") {
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator);
-			if ((!this._validateValue(currVal) && currVal > this.options.maxValue &&
+			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
+			if ((currVal > this.options.maxValue &&
 				this.options.spinWrapAround) || currVal < this.options.minValue) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
@@ -4171,7 +4189,7 @@ if (typeof jQuery !== "function") {
 			}
 			this._setSpinButtonsState(currVal);
 		},
-		_spinDown: function () { //NumericEditor
+		_spinDown: function (delta) { //NumericEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
 				currVal = this._editorInput.val();
@@ -4184,8 +4202,8 @@ if (typeof jQuery !== "function") {
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator);
-			if ((!this._validateValue(currVal) && currVal < this.options.minValue &&
+			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
+			if ((currVal < this.options.minValue &&
 				this.options.spinWrapAround) || currVal > this.options.maxValue) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
@@ -4392,15 +4410,15 @@ if (typeof jQuery !== "function") {
 			return -1;
 		},
 		getSelectedText: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		getSelectionStart: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		getSelectionEnd: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		spinUp: function (delta) {
@@ -4627,7 +4645,7 @@ if (typeof jQuery !== "function") {
 			var val = this._parseNumericValueByMode(text, this._numericType, this.options.dataMode);
 			return this._divideWithPrecision(val, this.options.displayFactor);
 		},
-		_spinUp: function () { //igPercentEditor
+		_spinUp: function (delta) { //igPercentEditor
 			// TODO: refactor numemic spin functions
 			var currVal, displayValue, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
@@ -4642,9 +4660,9 @@ if (typeof jQuery !== "function") {
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator);
+			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
 
-			if ((!this._validateValue(currVal) && currVal > this.options.maxValue &&
+			if ((currVal > this.options.maxValue &&
 				this.options.spinWrapAround) || currVal < this.options.minValue) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
@@ -4677,7 +4695,7 @@ if (typeof jQuery !== "function") {
 			}
 			this._setSpinButtonsState(currVal);
 		},
-		_spinDown: function () { //igPercentEditor
+		_spinDown: function (delta) { //igPercentEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
 				currVal = this._divideWithPrecision(this._editorInput.val(),
@@ -4691,8 +4709,8 @@ if (typeof jQuery !== "function") {
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator);
-			if ((!this._validateValue(currVal) && currVal < this.options.minValue &&
+			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
+			if ((currVal < this.options.minValue &&
 				this.options.spinWrapAround) || currVal > this.options.maxValue) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
@@ -4788,75 +4806,75 @@ if (typeof jQuery !== "function") {
 				If a character is specified in "includeKeys" option also, then "excludeKeys" has priority.
 				Note! This option can not be se runtime. */
 			excludeKeys: null,
-			/* type="array" @Skipped@ Sets gets list of items which are used for drop-down list.
+			/* type="array" @Ignored@ Sets gets list of items which are used for drop-down list.
 				Items in list can be strings, numbers or objects. The items are directly rendered without casting, or manipulating them.
 			 */
 			listItems: null,
-			/* type="number" @Skipped@ Sets gets custom width of drop-down list in pixels. If value is equal to 0 or negative, then the width of editor is used. */
+			/* type="number" @Ignored@ Sets gets custom width of drop-down list in pixels. If value is equal to 0 or negative, then the width of editor is used. */
 			listWidth: 0,
-			/* type="number" @Skipped@ Sets the hover/unhover animation duration. */
+			/* type="number" @Ignored@ Sets the hover/unhover animation duration. */
 			listItemHoverDuration: 0,
-			/* type="bool" @Skipped@ Sets the ability to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed*/
+			/* type="bool" @Ignored@ Sets the ability to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed*/
 			isLimitedToListValues: false,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
 			dropDownOrientation: "auto",
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
 			dropDownAttachedToBody: false,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
 			dropDownAnimationDuration: 300,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
 			dropDownOnReadOnly: false,
-			/* type="text|password|multiline" @Skipped@ Sets gets text mode of editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
+			/* type="text|password|multiline" @Ignored@ Sets gets text mode of editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
 				text type="string" Single line text editor based on INPUT element is created.
 				password type="string" Editor based on INPUT element with type password is created.
 				multiline type="string" multiline editor based on TEXTAREA element is created.
 			*/
 			textMode: "text",
-			/* type="number" @Skipped@ Gets/Sets how many items should be shown at once.
+			/* type="number" @Ignored@ Gets/Sets how many items should be shown at once.
 				Notes:
 				That option is overwritten if the number of list items is less than the value. In that case the height of the dropdown is adjusted to the number of items.
 				Note! This option can not be set runtime.
 			*/
 			visibleItemsCount: 5,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igMaskEditor
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igMaskEditor
 			*/
 			maxLength: null
 		},
 		events: {
 			/* igWidget events go here */
 
-			/* cancel="true" @Skipped@ Event which is raised when the drop down is opening.
+			/* cancel="true" @Ignored@ Event which is raised when the drop down is opening.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
 				Use ui.list to obtain reference to the list contaier. */
 			dropDownListOpening: "dropDownListOpening",
-			/*@Skipped@ Event which is raised when the drop down is already opened.
+			/*@Ignored@ Event which is raised when the drop down is already opened.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
 				Use ui.list to obtain reference to the list contaier. */
 			dropDownListOpened: "dropDownListOpened",
-			/* cancel="true" @Skipped@ Event which is raised when the drop down is closing.
+			/* cancel="true" @Ignored@ Event which is raised when the drop down is closing.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
 				Use ui.list to obtain reference to the list contaier. */
 			dropDownListClosing: "dropDownListClosing",
-			/*@Skipped@ Event which is raised when the drop down is already closed.
+			/*@Ignored@ Event which is raised when the drop down is already closed.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
 				Use ui.list to obtain reference to the list contaier. */
 			dropDownListClosed: "dropDownListClosed",
-			/* cancel="true" @Skipped@ Event which is raised when the drop down list item is selecting.
+			/* cancel="true" @Ignored@ Event which is raised when the drop down list item is selecting.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
 				Use ui.list to obtain reference to the list contaier.
 				Use ui.item to obtain reference to the list item which is about to be selected. */
 			dropDownItemSelecting: "dropDownItemSelecting",
-			/* cancel="true" @Skipped@ Event which is raised when the drop down list item is selected.
+			/* cancel="true" @Ignored@ Event which is raised when the drop down list item is selected.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
@@ -5410,22 +5428,29 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_triggerInternalValueChange: function (value) { //MaskEditor
+			var oldValue = this.options.value, message;
 			if (value === this._maskWithPrompts && this._promptCharsIndices.length === 0) {
 				value = "";
 			}
 			var noCancel = this._triggerValueChanging(value);
 			if (noCancel) {
 				this._processInternalValueChanging(value);
+				if (this.options.value !== oldValue) {
 
-				// We pass the new value in order to have the original value into the arguments
-				this._triggerValueChanged(value);
+					// We pass the new value in order to have the original value into the arguments
+					this._triggerValueChanged(value);
+				}
 
 				// Check if maskedValue contains promptChars
 				if (value !== "" && !this._validateRequiredPrompts(value)) {
-
 					// Raise warning not all required fields are entered
 					// State - message
-					this._sendNotification("warning", $.ig.Editor.locale.maskMessage);
+					if (this.options.revertIfNotValid) {
+						message = $.ig.Editor.locale.maskRevertMessage;
+					} else {
+						message = $.ig.Editor.locale.maskMessage;
+					}
+					this._sendNotification("warning", message);
 				}
 			}
 		},
@@ -5448,14 +5473,21 @@ if (typeof jQuery !== "function") {
 			return true;
 		},
 		_processInternalValueChanging: function (value) { //MaskEditor
-			if (this._validateValue(value)) {
+			if (this._validateValue(value) &&
+				(this.options.revertIfNotValid && this._validateRequiredPrompts(value) ||
+				!this.options.revertIfNotValid)) {
 				this._updateValue(value);
 			} else {
 
 				// If the value is not valid, we clear the editor
 				if (this.options.revertIfNotValid) {
-					value = this._valueInput.val();
+					value = this._valueInput.val().trim();
 					this._updateValue(value);
+
+					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
+					value = this._parseValueByMask(value.trim());
+					this._editorInput.val(value);
+
 				} else {
 					this._clearValue();
 					value = this._valueInput.val();
@@ -5788,51 +5820,51 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		dropDownContainer: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		showDropDown: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		hideDropDown: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		dropDownButton: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		spinUpButton: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		spinDownButton: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		dropDownVisible: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		findListItemIndex: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		selectedListIndex: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		getSelectedListItem: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		spinUp: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		spinDown: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		isValid: function () { //igMaskEditor
@@ -5988,45 +6020,45 @@ if (typeof jQuery !== "function") {
 			centuryThreshold: 29,
 			/* type="number" Gets/Sets difference between year in Gregorian calendar and displayed year. */
 			yearShift: 0,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			isLimitedToListValues: false,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			listItemHoverDuration: 0,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			listItems: null,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			listWidth: 0,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			dropDownAnimationDuration: 0,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			dropDownAttachedToBody: false,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			dropDownOnReadOnly: false,
-			/*@Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor*/
+			/*@Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor*/
 			inputMask: "CCCCCCCCCC",
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			unfilledCharsPrompt: "_",
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			padChar: " ",
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			emptyChar: " ",
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			toUpper: false,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			toLower: false
 		},
 		events: {
-			/* @Skipped@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
+			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
 			dropDownListOpening: "dropDownListOpening",
-			/* @Skipped@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
+			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
 			dropDownListOpened: "dropDownListOpened",
-			/* @Skipped@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
+			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
 			dropDownListClosing: "dropDownListClosing",
-			/* @Skipped@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
+			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
 			dropDownListClosed: "dropDownListClosed",
-			/* @Skipped@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
+			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
 			dropDownItemSelecting: "dropDownItemSelecting",
-			/* @Skipped@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
+			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
 			dropDownItemSelected: "dropDownItemSelected"
 		},
 		_create: function () { // igDateEditor
@@ -8707,32 +8739,32 @@ if (typeof jQuery !== "function") {
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownButton: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownContainer: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownVisible: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		findListItemIndex: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		getSelectedListItem: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		selectedListIndex: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		}
 	});
@@ -8751,15 +8783,15 @@ if (typeof jQuery !== "function") {
 			/* type="bool" Gets ability to limit igDatePicker to be used only from the calendar. When set to true the editor input is not editable.
 				Note! This option can not be set runtime. */
 			dropDownOnReadOnly: false,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			dropDownAttachedToBody: false,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			isLimitedToListValues: false,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listItemHoverDuration: 0,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listItems: null,
-			/* @Skipped@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
+			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listWidth: 0
 		},
 		events: {
@@ -8775,9 +8807,9 @@ if (typeof jQuery !== "function") {
 				Use ui.editorInput to obtain reference to the editable input
 				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker. */
 			dropDownListOpened: "dropDownListOpened",
-			/* @Skipped@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
+			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
 			dropDownListClosing: "dropDownListClosing",
-			/* @Skipped@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
+			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
 			dropDownItemSelecting: "dropDownItemSelecting",
 			/* Event which is raised when the drop down (calendar) is already closed.
 				Function takes arguments evt and ui.
@@ -8785,7 +8817,7 @@ if (typeof jQuery !== "function") {
 				Use ui.editorInput to obtain reference to the editable input
 				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.*/
 			dropDownListClosed: "dropDownListClosed",
-			/* @Skipped@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
+			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
 			dropDownItemSelected: "dropDownItemSelected",
 			/* cancel="false" Event which is raised after the date selection in the calendar.
 				Function takes argument ui.
@@ -8833,6 +8865,14 @@ if (typeof jQuery !== "function") {
 				this._detachButtonsEvents(this._spinDownButton);
 			}
 		},
+		_setBlur: function (event) { // igDatePicker
+			if (this._pickerOpen) {
+				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker and return focus
+				this._editorInput.focus();
+			} else {
+				this._super(event);
+			}
+		},
 		_pickerDefaults: function () {
 			var self = this, pickerDefaults;
 			pickerDefaults = {
@@ -8870,7 +8910,15 @@ if (typeof jQuery !== "function") {
 						self._editorInput.focus();
 					}
 				},
-				onClose: $.proxy(self._triggerDropDownClosed, self)
+				beforeShow: function(/*input*/) {
+					// fires before input focus
+					self._pickerOpen = true;
+				},
+				onClose: function (/*dateText, inst*/) {
+					// fires before input blur
+					delete self._pickerOpen;
+					self._triggerDropDownClosed();
+				}
 			};
 			return pickerDefaults;
 		},
@@ -8878,7 +8926,7 @@ if (typeof jQuery !== "function") {
 			var self = this, options, regional;
 
 			//#207222 S.D. Change options to have priority instead of regional settings
-			regional = $.extend(self._dpRegion(), self.options.datepickerOptions) || {};
+			regional = $.extend({}, self._dpRegion(), self.options.datepickerOptions) || {};
 
 			options = $.extend(regional, this._pickerDefaults());
 			if (regional.onSelect) {
@@ -8897,6 +8945,15 @@ if (typeof jQuery !== "function") {
 					igOnClose.call(this);
 					if (self.options.datepickerOptions && self.options.datepickerOptions.onClose) {
 						self.options.datepickerOptions.onClose.call(this, dateText, inst);
+					}
+				};
+			}
+			if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
+				var isbeforeShow = regional.beforeShow;
+				options.beforeShow = function (input) {
+					isbeforeShow.call(this);
+					if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
+						self.options.datepickerOptions.beforeShow.call(this, input);
 					}
 				};
 			}
@@ -9004,14 +9061,21 @@ if (typeof jQuery !== "function") {
 						};
 					}
 					this._editorInput.data("datepicker").settings = pickerOptions;
+
 					// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
-					if (value.minDate && (this._editorInput.data("datepicker").settings.minDate !== this.options.minValue))
+					if (value.minDate &&
+						(this._editorInput.data("datepicker").settings.minDate !==
+							this.options.minValue))
 					{
-						this.options.minValue = this._editorInput.data("datepicker").settings.minDate;
+						this.options.minValue =
+							this._editorInput.data("datepicker").settings.minDate;
 					}
-					if (value.maxDate && (this._editorInput.data("datepicker").settings.maxDate !== this.options.maxValue))
+					if (value.maxDate &&
+						(this._editorInput.data("datepicker").settings.maxDate !==
+							this.options.maxValue))
 					{
-						this.options.maxValue = this._editorInput.data("datepicker").settings.maxDate;
+						this.options.maxValue =
+							this._editorInput.data("datepicker").settings.maxDate;
 					}
 				}
 					break;
@@ -9070,7 +9134,7 @@ if (typeof jQuery !== "function") {
 			//T.P. 15th March 2016. When there are two editors and the drpdown is opened - when we click the dropwodn button
 			//of the other editor - click event is triggered prior to blur of the previous editor
 			//M.S. 26th June 2016. Closing the dropdown with dropdown button if "readOnly: true, dropDownOnReadOnly : true"
-			//Adding internal flag for calendar visibility. 
+			//Adding internal flag for calendar visibility.
 			if (this._dropDownList.is(":visible") &&
 				(!!this._focused || this.options.readOnly) &&
 				!!this._dropDownOpened) {
@@ -9121,6 +9185,7 @@ if (typeof jQuery !== "function") {
 					currentDate = new Date(currentDate.getUTCFullYear(),
 						currentDate.getUTCMonth(), currentDate.getUTCDate());
 				}
+
 				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
 				this._enterEditMode();
 				currentInputValue = this._editorInput.val();
@@ -9167,22 +9232,22 @@ if (typeof jQuery !== "function") {
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		dropDownContainer: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		findListItemIndex: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		getSelectedListItem: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		selectedListIndex: function () {
-			/*@Skipped@*/
+			/*@Ignored@*/
 			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		showDropDown: function () {
@@ -9230,9 +9295,9 @@ if (typeof jQuery !== "function") {
 			tabIndex: 0,
 			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.*/
 			readOnly: false,
-			/*@Skipped@*/
+			/*@Ignored@*/
 			allowNullValue: false,
-			/*@Skipped@*/
+			/*@Ignored@*/
 			nullValue: null
 		},
 		css: {
@@ -9675,7 +9740,7 @@ if (typeof jQuery !== "function") {
 				this._setFocus();
 			}
 		},
-		_setBlur: function (event) {
+		_setBlur: function (event) { // Checkbox
 			this._editorContainer.removeClass(this.css.focus);
 			this._triggerBlur(event);
 			if (this._validator) { // TODO VERIFY

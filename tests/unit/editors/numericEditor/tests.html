@@ -278,6 +278,13 @@
 				$("#decimalSeparatorEditor").igNumericEditor({
 					decimalSeparator: ","
 				});
+
+				$("#spinUp").igNumericEditor({
+					value: 2,
+					maxValue: 6,
+					minValue: 0,
+					spinWrapAround: true
+				});
 			});
 		}
 		initialized = false;
@@ -602,7 +609,7 @@
 		}); 
 		
 		testId = "Scientific format";
-		test(testId, 3, function () {
+		test(testId, 4, function () {
 			var mainContainer = $('#scientificFormat'),
 				editorInput = $('#scientificFormat').igNumericEditor("field"), container = $('#clearEditor');
 			editorInput.click();
@@ -621,11 +628,12 @@
 
 			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "s");
 			editorInput.click();
-			try {
-				$("#scientificFormat").igNumericEditor("option", "value", "3");
-			} catch (e) {
-				console.log();
-			}
+			throws(function() {
+					$("#scientificFormat").igNumericEditor("option", "value", "3");
+				},
+				$.ig.Editor.locale.scientificFormatErrMsg,
+				"Acepted value with wrong scientificFormat."
+			);
 			container.click();
 			equal(editorInput.val(), "2.2E+1", "Value is not correct");
 		});
@@ -785,7 +793,7 @@
 		
 		
 		testId = "SetOption";
-		test(testId, 20, function () {
+		test(testId, 23, function () {
 			var readEditorInput = $("#readonlyEditor").igNumericEditor("field"),
 				readEditorContainer = $("#readonlyEditor").igNumericEditor("editorContainer"),
 				readEditorValueInput = readEditorContainer.find("input:hidden"),
@@ -817,26 +825,34 @@
 			equal($("#readonlyEditor").igNumericEditor("option", "value"), 19, "Value not changed");
 			$("#readonlyEditor").igNumericEditor("option", "value", "abcde");
 			equal($("#readonlyEditor").igNumericEditor("option", "value"), "abcde", "Value should be empty string");
-			try {
-				$("#readonlyEditor").igNumericEditor("option", "visibleItemsCount", 3);
-			} catch (e) {
-				console.log("Cannot set dynamically those options");
-			}
-			try {
-				$("#readonlyEditor").igNumericEditor("option", "buttonType", "spin");
-			} catch (e) {
-				console.log("Cannot set dynamically those options");
-			}
-			try {
-				$("#readonlyEditor").igNumericEditor("option", "dropDownMaxHeight", 200);
-			} catch (e) {
-				console.log("Cannot set dynamically those options");
-			}
-			try {
-				$("#readonlyEditor").igNumericEditor("option", "dropDownAttachedToBody", true);
-			} catch (e) {
-				console.log("Cannot set dynamically those options");
-			}
+
+			throws( function() {
+					$("#readonlyEditor").igNumericEditor("option", "visibleItemsCount", 3);
+				},
+				function(err) {
+					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+				},
+				"Should not set dynamically visibleItemsCount"
+			);
+
+			throws( function() {
+					$("#readonlyEditor").igNumericEditor("option", "buttonType", "clear");
+				},
+				function(err) {
+					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+				},
+				"Should not set dynamically buttonType"
+			);
+			
+			throws( function() {
+					$("#readonlyEditor").igNumericEditor("option", "dropDownAttachedToBody", true);
+				},
+				function(err) {
+					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+				},
+				"Should not set dynamically dropDownAttachedToBody"
+			);
+			
 			// Enable a editor that is not readonly
 			$("#disabledEditor").igNumericEditor("option", "disabled", false);
 			equal(disabledEditorInput.prop("disabled"), false, "The disabled attribute exists");
@@ -942,6 +958,21 @@
 				ok($editor1.attr("class") === undefined, "Some classes are still not removed");
 				ok($editor2.attr("class") === undefined, "Some classes are still not removed");
 			}, 100);
+		});
+
+		testId = 'SpinUp method';
+		test(testId, 4, function () {
+			$("#spinUp").igNumericEditor("spinUp",3);
+			equal($("#spinUp").igNumericEditor("value"), 5, 'Spin up method do not take into account the delta parameter.');
+
+			$("#spinUp").igNumericEditor("spinUp",3);
+			equal($("#spinUp").igNumericEditor("value"), 0, 'spinWrapAround does not work.');
+
+			$("#spinUp").igNumericEditor("spinUp",5);
+			$("#spinUp").igNumericEditor("spinDown",3);
+			equal($("#spinUp").igNumericEditor("value"), 2, 'Spin down method do not take into account the delta parameter.');
+			$("#spinUp").igNumericEditor("spinDown",3);
+			equal($("#spinUp").igNumericEditor("value"), 6, 'spinWrapAround does not work.');
 		});
 	});
 	function paste(input, newVal) {
@@ -1186,6 +1217,8 @@
 		<div id="negativeEditor1"></div>
 		<br />
 		<div id="spinScientific"></div>
+		<br />
+		<div id="spinUp"></div>
 	</div>
 </body>
 </html>

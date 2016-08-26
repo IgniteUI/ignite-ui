@@ -26,7 +26,7 @@ module.exports = function (grunt) {
 		jscs: {
 			src: grunt.file.readJSON('build/config/all/jshint.json').config,
 			options: {
-				config: ".jscsrc.json",
+				config: ".jscsrc",
 				force: false,
 				maxErrors: null,
 				excludeFiles: grunt.file.readJSON('build/config/all/jshintIgnore.json').config
@@ -57,7 +57,7 @@ module.exports = function (grunt) {
 			jshint: ["jshint"],
 			jscs: ["jscs"],
 			tests: ["qunit", "coverage", "instrumentedFiles"],
-			build: ["dist/js/**/*", "dist/css/**/*", "dist/bower.json"]
+			build: ["dist/**/*", "!dist/.git/**/*"]
 		},
 		coveralls: {
 			// LCOV coverage file (can be string, glob or array)
@@ -125,7 +125,8 @@ module.exports = function (grunt) {
 				}]
 			}
 		},
-		uglify: require('./build/packages/combined-files.js')
+		uglify: require('./build/packages/combined-files.js').uglify,
+		concat: require('./build/packages/combined-files.js').concat
     });
 
 	grunt.loadNpmTasks("grunt-contrib-clean");
@@ -136,6 +137,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 
 	grunt.task.registerTask("hint", "A sample task to run JSHINT", function(control) {
 		var config, reporter, output, report = grunt.option('report');
@@ -186,6 +188,12 @@ module.exports = function (grunt) {
 	
 	grunt.task.registerTask("test", "Task to run dev tests and generate coverage for a single control or for all of them.", function(control) {
 		var config, report = grunt.option('report');
+
+		if (!control) {
+			control = grunt.option('control');
+		}
+
+		console.log("CONTROL: '" + control + "'");
 
 		if (!!control) {
 			config = grunt.file.readJSON('build/config/' + control + '/tests.json').config;
@@ -250,6 +258,7 @@ module.exports = function (grunt) {
 		grunt.task.run("clean:build");
 		grunt.task.run("copy");
 	    grunt.task.run("uglify");
-	    grunt.task.run("cssmin");			
+		grunt.task.run("concat");
+		grunt.task.run("cssmin");
 	});
 };

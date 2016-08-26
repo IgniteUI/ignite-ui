@@ -5,7 +5,7 @@
 [![Issue Stats](http://issuestats.com/github/IgniteUI/ignite-ui/badge/issue?style=flat)](http://issuestats.com/github/IgniteUI/ignite-ui)
 
 [![npm](https://img.shields.io/npm/v/ignite-ui.svg?maxAge=2592000)](https://www.npmjs.com/package/ignite-ui)
-![Bower](https://img.shields.io/bower/v/ignite-ui.svg?maxAge=2592000)
+[![Bower](https://img.shields.io/bower/v/ignite-ui.svg?maxAge=2592000)](https://github.com/IgniteUI/ignite-ui-bower)
 
 
 Ignite UI™ helps you build powerful, high-performance web-based applications. Inside Ignite UI you'll find user experience controls and components for creating engaging line-of-business web applications which target the browsers for both mobile & desktop environments.
@@ -111,8 +111,40 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 |[Grid](http://www.igniteui.com/grid/bind-grid-with-ko)						|:x:				|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/iggrid-configuring-knockout-support) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igGrid/03_Features/11_igGrid_Configuring_Knockout_Support.md) |
 |[Chart](http://www.igniteui.com/data-chart/bind-data-chart-with-ko)		|:x:				|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/igdatachart-knockoutjs-support) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igDataChart/04_Configuring/05_igDataChart_KnockoutJS_Support.md) |
 |																			|					|											|																		|					|
-|MVC Extensions																|:x:	      |:white_check_mark: 						|:white_check_mark:														|[help](http://www.igniteui.com/help/asp.net-mvc-landingpage) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/05_ASP-NET-MVC)|
+|**Theming**													            |					|											|																		|					|
+|[Metro](http://www.igniteui.com/themes/metro)					            |:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/deployment-guide-styling-and-theming) **\\** [topics source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/01_General-and-Getting-Started/07_Styling-and-Theming/~Deployment_Guide_Styling_and_Theming.md) |
+|[iOS](http://www.igniteui.com/themes/ios)					                |:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/deployment-guide-styling-and-theming) **\\** [topics source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/01_General-and-Getting-Started/07_Styling-and-Theming/~Deployment_Guide_Styling_and_Theming.md) |
+|[Bootstrap Default](http://www.igniteui.com/themes/bootstrap-default)		|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/deployment-guide-styling-and-theming) **\\** [topics source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/01_General-and-Getting-Started/07_Styling-and-Theming/~Deployment_Guide_Styling_and_Theming.md) |
+|[Bootstrap 4 Default](http://www.igniteui.com/themes/bootstrap4-default)	|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/deployment-guide-styling-and-theming) **\\** [topics source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/01_General-and-Getting-Started/07_Styling-and-Theming/~Deployment_Guide_Styling_and_Theming.md) |
+|[Bootstrap Superhero](http://www.igniteui.com/themes/bootstrap-superhero)	|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/deployment-guide-styling-and-theming) **\\** [topics source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/01_General-and-Getting-Started/07_Styling-and-Theming/~Deployment_Guide_Styling_and_Theming.md) |
+|[Bootstrap Flatly](http://www.igniteui.com/themes/bootstrap-flatly)		|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/deployment-guide-styling-and-theming) **\\** [topics source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/01_General-and-Getting-Started/07_Styling-and-Theming/~Deployment_Guide_Styling_and_Theming.md) |
+|[Bootstrap Yeti](http://www.igniteui.com/themes/bootstrap-yeti)			|:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/deployment-guide-styling-and-theming) **\\** [topics source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/01_General-and-Getting-Started/07_Styling-and-Theming/~Deployment_Guide_Styling_and_Theming.md) |
+|Infragistics       			                                            |:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/deployment-guide-styling-and-theming) **\\** [topics source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/01_General-and-Getting-Started/07_Styling-and-Theming/~Deployment_Guide_Styling_and_Theming.md) |
+|Infragistics2012				                                            |:white_check_mark:	|:white_check_mark:							|:white_check_mark:														|[help](http://www.igniteui.com/help/deployment-guide-styling-and-theming) **\\** [topics source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/01_General-and-Getting-Started/07_Styling-and-Theming/~Deployment_Guide_Styling_and_Theming.md) |
+|																			|					|											|																		|					|
+|MVC Extensions																|:x:	            |:white_check_mark: 						|:white_check_mark:														|[help](http://www.igniteui.com/help/asp.net-mvc-landingpage) **\\** [topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/05_ASP-NET-MVC)|
 |Developer Support 24/5														|:x:				|:white_check_mark: 						|:white_check_mark:														||
+
+## Install
+The package for this development repository is available on both [`npm`](https://www.npmjs.com/package/ignite-ui) and [`bower`](https://github.com/IgniteUI/ignite-ui-bower).
+To get started follow the respective package manager installation:
+
+### npm
+```shell
+npm install ignite-ui
+```
+
+### bower
+```shell
+bower install ignite-ui
+```
+
+Package contains similar files and structure to what you'd find in the [full version of Ignite UI](http://www.igniteui.com) with complete styles and lite versions of the combined script files:
+```html
+<script src="<node_modules|bower_components>/ignite-ui/js/infragistics.core-lite.js" type="text/javascript"></script>
+<script src="<node_modules|bower_components>/ignite-ui/js/infragistics.lob-lite.js" type="text/javascript"></script>
+```
+The full built content for both packages can be browsed at the [Ignite UI Bower Shim repository](https://github.com/IgniteUI/ignite-ui-bower).
 
 
 ##Getting Help
@@ -123,5 +155,5 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 
 ##Contributing
 You can find all guidelines on how to contribute on the wiki page.  
-[How to contribute](https://github.com/IgniteUI/ignite-ui/wiki/Contributing-to-Ignite-UI)  
-[API Documentation Guidelines](https://github.com/IgniteUI/ignite-ui/wiki/API-Documentation-Guidelines)
+* [How to contribute](https://github.com/IgniteUI/ignite-ui/wiki/Contributing-to-Ignite-UI)  
+* [API documentation guidelines](https://github.com/IgniteUI/ignite-ui/wiki/API-Documentation-Guidelines)

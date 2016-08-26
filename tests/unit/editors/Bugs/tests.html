@@ -37,7 +37,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245"];
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
@@ -359,6 +359,55 @@
 						height: "54px",
 						value: "John Smith, with long test",
 						textMode: "multiline"
+					});
+				}
+
+				window.Bug98Testbed = function () {
+					$("#98Editor1").igNumericEditor({
+						maxValue: 5,
+						minValue: 3
+					});
+				}
+
+				window.Bug223245Testbed = function () {
+					$("#223245NumericEditor1").igNumericEditor({
+						dataMode: "int",
+						value: 60,
+						allowNullValue: true,
+						nullValue: ""
+					});
+
+					$('#223245NumericEditor2').igNumericEditor({
+						dataMode: "int",
+						value: 10,
+						allowNullValue: false, //expected to set to minValue
+						minValue: 5
+					});
+
+					$("#223245NumericEditor3").igNumericEditor({
+						dataMode: "int",
+						value: 70,
+						allowNullValue: true, //expected to set to minValue if input between 1-4
+						minValue: 5
+					});
+
+					$('#223245PercentEditor1').igPercentEditor({
+						value: 0.60,
+						allowNullValue: true,
+						nullValue: ""
+					});
+
+					$('#223245PercentEditor2').igPercentEditor({
+						value: 0.10,
+						allowNullValue: false, //expected to set to 
+						nullValue: ""
+					});
+
+					$('#223245PercentEditor3').igPercentEditor({
+						value: 0.70,
+						allowNullValue: true, //expected to set to minValue if input if less than 30
+						nullValue: "",
+						minValue: 0.3
 					});
 				}
 
@@ -744,15 +793,23 @@
 			
 			testId = 'Bug 207546';
 			test(testId, 2, function () {
-				var flag = true;
-				$("#207546Editor1").on("igdatepickervaluechanged", function (evt, ui) {
-					flag = false;
-				})
-				$("#207546Editor1").igDatePicker("dropDownButton").click();
-				$("#207546button").click();
-				ok($("#207546Editor1").igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
-				ok(flag, "Value changed should not be fired.")
+				var flag = true,
+					$editor = $("#207546Editor1").on("igdatepickervaluechanged", function (evt, ui) {
+						flag = false;
+					});
+				$editor.igDatePicker("dropDownButton").click();
 
+				// datepicker handles mousedown for external click detection:
+				$("#207546button").mousedown().mouseup().click();
+				// wait for animation (show + hide...) :
+				stop();
+				setTimeout(function () {
+						start();
+						ok(!$editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
+						ok(flag, "Value changed should not be fired.");
+					}, 
+					2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 400 /*normal*/)
+				);
 			});
 			
 			testId = 'Bug 207321';
@@ -937,6 +994,66 @@
 				var value = $('#221300Editor1').igTextEditor("value");
 				equal(value, "John S\nmit\nh, with long test", "Word is not carried over the new line");
 				equal($('#221300Editor1').igTextEditor("getSelectionStart"), 11, "Cursor position is wrong");
+			});
+
+			testId = 'Bug 98';
+			test(testId, 2, function () {
+				var input = $('#98Editor1');
+				input.igNumericEditor("setFocus");
+				typeInMaskedInput("26", input.igNumericEditor("field"));
+				keyInteraction(13, input);
+				var text = $("#98Editor1").igNumericEditor("field").val();
+				equal(text, 5, "Text in editor is not set to the maxValue");
+				input.igNumericEditor("setFocus");
+				typeInMaskedInput("1", input.igNumericEditor("field"));
+				keyInteraction(13, input);
+				var text = $("#98Editor1").igNumericEditor("field").val();
+				equal(text, 3, "Text in editor is not set to the minValue");
+			});
+
+			testId = 'Bug 223245';
+			test(testId, 6, function () {
+				var input = $('#223245PercentEditor1');
+				input.igPercentEditor("setFocus");
+				$("#223245PercentEditor1").data("igPercentEditor")._insert("");
+				keyInteraction(13, input);
+				var value = $("#223245PercentEditor1").igPercentEditor("value");
+				equal(value, "", "igPercentEditor is not set to empty string value when allwNullValue : true");
+
+				var input = $('#223245PercentEditor2');
+				input.igPercentEditor("setFocus");
+				$("#223245PercentEditor2").data("igPercentEditor")._insert("");
+				keyInteraction(13, input);
+				var value = $("#223245PercentEditor2").igPercentEditor("value");
+				equal(value, 0, "igPercentEditor is not set to 0 value when allwNullValue : false");
+
+				var input = $('#223245PercentEditor3');
+				input.igPercentEditor("setFocus");
+				typeInMaskedInput("20", input.igPercentEditor("field"));
+				keyInteraction(13, input);
+				var value = $("#223245PercentEditor3").igPercentEditor("value");
+				equal(value, 0.3, "igPercentEditor is not set to minValue");
+
+				var input = $('#223245NumericEditor1');
+				input.igNumericEditor("setFocus");
+				$("#223245NumericEditor1").igNumericEditor("value", "");
+				keyInteraction(13, input);
+				var value = $("#223245NumericEditor1").igNumericEditor("value");
+				equal(value, "", "igNumericEditor is not set to empty string value when allwNullValue : true");
+
+				var input = $('#223245NumericEditor2');
+				input.igNumericEditor("setFocus");
+				$("#223245NumericEditor2").data("igNumericEditor")._insert("");
+				keyInteraction(13, input);
+				var value = $("#223245NumericEditor2").igNumericEditor("value");
+				equal(value, 5, "igNumericEditor is not set to minValue when allwNullValue : false");
+
+				var input = $('#223245NumericEditor3');
+				input.igNumericEditor("setFocus");
+				$("#223245NumericEditor3").data("igNumericEditor")._insert(3);
+				keyInteraction(13, input);
+				var value = $("#223245NumericEditor3").igNumericEditor("value");
+				equal(value, 5, "igNumericEditor is not set to minValue");
 			});
 		});
 
@@ -1159,8 +1276,18 @@
 
 		<input id="220712Editor1" type="text" />
 		<input id="221118Editor1" />
+		<input id="98Editor1" />
 		<textarea id="221494Editor1"></textarea>
 		<textarea id="221300Editor1"></textarea>
+
+		<br />
+		<input id="223245PercentEditor1" type="text" />
+		<input id="223245PercentEditor2" type="text" />
+		<input id="223245PercentEditor3" type="text" />
+		<input id="223245NumericEditor1" type="text" />
+		<input id="223245NumericEditor2" type="text" />
+		<input id="223245NumericEditor3" type="text" />
+
 	</div></body>
 </html>
 

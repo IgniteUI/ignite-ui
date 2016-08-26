@@ -91,7 +91,8 @@
 			testId16 = "igTemplating sequential {{each}}";
 			testId17 = "igTemplating properties with spaces";
 			testId18 = "igTemplating resolving methods";
-			testId19 = "igTemplating handling objects with 'length' property"
+			testId19 = "igTemplating handling objects with 'length' property";
+			testId20 = "igTemplating properties with dashes";
 			
 			test(testId1, function () {
 				ok($.ig, '$.ig is undefined');
@@ -376,6 +377,20 @@
 					],
 					result = $.ig.tmpl(tmpl, data);
 				equal(result, '<div>1</div><div>1</div><div>1</div>', 'The properties with spaces were not correctly read');
+			});
+			
+			test(testId20, function () {
+				var tmpl = '<div><span>${Prop-1}</span><span>{{html Prop-2}}</span><span>${Prop-3.Prop-4}</span><span>{{html Prop-3.prop-5}}</span></div>',
+					data = {
+						"Prop-1": 'test',
+						"Prop-2": '<p>test</p>',
+						"Prop-3": {
+							"Prop-4": "test",
+							"prop-5": '<p>test</p>'
+						}
+					},
+					result = $.ig.tmpl(tmpl, data);
+				equal(result, '<div><span>test</span><span><p>test</p></span><span>test</span><span><p>test</p></span></div>', 'The properties with spaces were not correctly read');
 			});
 		});
 	</script>

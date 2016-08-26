@@ -255,7 +255,7 @@
 			ko.cleanNode(document.getElementById("inputEditor1"));
 			elementParent = $("#inputEditor1").parent()
 			elementParent.empty();
-			elementParent.append("<input id=\"inputEditor1\" data-bind='igNumericEditor: { value: number , width: 160, updateMode:\"immediate\" }'></input>");
+			elementParent.append("<input id=\"inputEditor1\" data-bind='igNumericEditor: { value: number , width: 160, updateMode:\"immediate\", allowNullValue : true }'></input>");
 			ko.applyBindings(model, document.getElementById("inputEditor1"));
 			$('#inputEditor1').igNumericEditor("setFocus");
 			$('#inputEditor1').igNumericEditor("value", "");
@@ -263,7 +263,7 @@
 			$('#inputEditor1').on("ignumericeditorkeypress", function (evt, ui) {
 				var char = String.fromCharCode(evt.charCode);
 				ui.editorInput.val(ui.editorInput.val() + char);
-				console.log(ui.editorInput.val() + char);
+				//console.log(ui.editorInput.val() + char);
 			});
 			testImmediate("input");
 		});

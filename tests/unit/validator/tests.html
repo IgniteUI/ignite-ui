@@ -42,9 +42,6 @@
 		//test = function () { }
 
         // TODO: 
-        // handle form event after validator, assert cancellation in handler
-        // test: global form showAllErrorsOnSubmit flag
-        // test: change handlers should ignore alts/shift/caps keys
         // test: click X on message, make sure it closes with event
 
         /*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -80,9 +77,8 @@
                 ];
             
 
-            $('form').on('submit', function () {
+            $('form').on('submit.test', function () {
                 // prevent forms from ever submitting
-                // TODO: handle form event after validator, assert isDefaultPrevented
                 return false;
             });
 
@@ -291,6 +287,18 @@
                         }, {
                             selector: "#areaInput"
                         }]
+                    });
+
+                    //showAllErrorsOnSubmit
+                    $('#firstName').igValidator({ required: true });
+                    $('#email').igValidator({ required: true });
+                    $('#showAllErrorsOnForm').igValidator({                
+                        onsubmit: true,
+                        required: true,
+                        fields: [
+                            { selector: "#target1" },
+                            { selector: "#target2" }
+                        ]
                     });
                 });
             }
@@ -578,8 +586,56 @@
                 $('#input2').off(".notify");
             });
 
+            var testId = 'showAllErrorsOnSubmit';
+            test(testId, 15, function () {
+                var shouldSubmit = true,
+                    $firstName = $('#firstName'),
+                    $email = $('#email')
+                    $form = $('#showAllErrorsOnForm'),
+                    $submitBtn = $form.find("input[type=submit]");
+
+                $form.off('submit.test').on('submit', function (e) {
+                    equal(e.isDefaultPrevented(), !shouldSubmit, "Form submit handled");
+                    return false;
+                });
+
+                $.ui.igValidator.defaults.showAllErrorsOnSubmit = false;
+
+                shouldSubmit = false;
+                $submitBtn.click();
+                // only one message:
+                ok($firstName.igValidator("isMessageDisplayed"), "No error visible on first field");
+                ok(!$email.igValidator("isMessageDisplayed"), "Error visible on second field");
+                ok(!$form.igValidator("isMessageDisplayed"), "Error visible on form fields");
+
+                $firstName.val("a");
+                $submitBtn.click();
+                ok(!$firstName.igValidator("isMessageDisplayed"), "Error visible on first field");
+                ok($email.igValidator("isMessageDisplayed"), "No error visible on second field");
+                ok(!$form.igValidator("isMessageDisplayed"), "Error visible on form fields");
+
+                // onblur should be unaffected
+                $("#target1").trigger("blur");
+                ok($form.igValidator("isMessageDisplayed"), "Error not shown on first form field");
+                $form.igValidator("hide");
+
+                $email.val("a");
+                $submitBtn.click();
+                ok(!$email.igValidator("isMessageDisplayed"), "Error visible on second field");
+                ok($form.igValidator("isMessageDisplayed"), "Error not shown on first form field");
+                
+                $("#target1").val("a");
+                $submitBtn.click();
+                equal($form.igValidator("getErrorMessages").length, 1, "One error expected on form fields");
+                
+                $("#target2").val("a");
+                shouldSubmit = true;
+                $submitBtn.click();
+                $.ui.igValidator.defaults.showAllErrorsOnSubmit = true;
+            });
+
             testId = 'API';
-            test(testId, 65, function () {
+            test(testId, 68, function () {
                 var $indication = $("#textEditor").next(".ui-igvalidator-required-indication"),
                     successText = "Success",
                     flag = false,
@@ -594,7 +650,7 @@
 
                 $('#input1').val("").igValidator("option", "successMessage", successText).blur();
                 equal($('#input1').igValidator("notifier").container().text(), successText, "Success message not set");
-                console.log($('#input1').val());
+
                 // TODO: Should handle more message set variants? change while visible without extra validation?
 
                 $('#input1').on("igvalidatorvalidated.change", function (e) {
@@ -608,8 +664,20 @@
                 event.keyCode = 73;
                 $('#input1').trigger(event);
                 ok(flag, "Validation not fired when onchange is true");
-                $('#input1').off(".change");
 
+                // ignored alt, ctrl, shift:
+                flag = false;
+                event.keyCode = 16; //shift
+                $('#input1').trigger(event);
+                ok(!flag, "Validation fired onchange for shift");
+                event.keyCode = 17; //ctrl
+                $('#input1').trigger(event);
+                ok(!flag, "Validation fired onchange for ctrl");
+                event.keyCode = 18; //atl
+                $('#input1').trigger(event);
+                ok(!flag, "Validation fired onchange for alt");
+                $('#input1').off(".change");
+                
                 // one field is invalid, should be ignored without exceptions:
                 ok($("#validationContainer").igValidator("isValid"), "Validation failed on valid + non-existing fields");
 
@@ -903,7 +971,7 @@
             });
 
             testId = 'Validation rules';
-            test(testId, 39, function () {
+            test(testId, 44, function () {
                 //required
                 ok($('#rulesInput').igValidator("isValid"), "Editor should be valid with initial value");
                 $("#rulesInput").igValidator("option", "required", true);
@@ -983,6 +1051,21 @@
                 // invalid euqualTo selector:
                 $('#textEditor').igValidator("option", "equalTo", "#notFound");
                 ok(!$('#textEditor').igValidator("isValid"), "Editor valid with invalid euqualTo selector");
+
+                // creditCard
+                $("#rulesInput").igValidator("option", "creditCard", true);
+                ok(!$('#rulesInput').igValidator("isValid"), "Date validated as credit card");
+                // basic Luhn test
+                $("#rulesInput").val("79927398713");
+                ok($('#rulesInput').igValidator("isValid"), "Credit card digits not validated");
+                // generated with https://gist.github.com/B-Con/4988902
+                $("#rulesInput").val("4280361754636370");
+                ok($('#rulesInput').igValidator("isValid"), "Credit card (visa) not validated");
+                $("#rulesInput").val("5126 071821403 390");
+                ok($('#rulesInput').igValidator("isValid"), "Credit card (master with spaces) not validated");
+                $("#rulesInput").val("3404 - 52757150 - 877");
+                ok($('#rulesInput').igValidator("isValid"), "Credit card (AE with spaces and dashes) not validated");
+                $("#rulesInput").igValidator("option", "creditCard", false);
 
                 // pattern:
                 $("#rulesInput").igValidator("option", "pattern", /^test$/);
@@ -1077,8 +1160,6 @@
                 keyInteraction(51, $("#spinEditor").igNumericEditor("field"), null, true); // enter 3
               
                 $("#spinEditor").one("igvalidatorvalidated", function (evt, ui) {
-
-                    //console.log(JSON.stringify({ "value,": ui.value, "ui.rule": ui.rule, "ui.valid": ui.valid }));
                     ok(!ui.value, "Wrong numeric value on change validation");
                     ok(!ui.valid && ui.rule === "required", "Validation did not fail for required numeric editor.");
                 });
@@ -1201,6 +1282,20 @@
         <div id="emptyTarget"></div>
         <form id="emptyFormTarget"></form>
         <input type="text" id="reloadedField" />
+
+        <form id="showAllErrorsOnForm" action="" method="post">
+            <label>First name*</label>
+            <input class="group" type="text" id="firstName" />
+            <br>
+            <label>Email*</label>
+            <input class="group" type="text" id="email" />
+            <br>
+            <input class="group" type="text" id="target1" />
+            <br>
+            <input class="group" type="text" id="target2" />
+            <br>
+            <input type="submit" value="Sign Up" />
+        </form>
 
         <p>Validation form</p>
         <form id="validationForm" action="">

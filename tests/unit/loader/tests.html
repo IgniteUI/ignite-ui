@@ -19,54 +19,125 @@
 <body>
     <script>
         $(document).ready(function () {
-            var errors = [], jsPath = "../../../src/js/", testId_1;
+            var errors = [],
+                jsPath = "../../../src/js/",
+                cssPath = "../../../src/css/";
 
             /*  igLoader Common  */
             module("igLoader Common", {
             });
 
             //bug 193265: Loaded callback is fired before the resource is actually loaded
-            testId_1 = "test 1: Test load resources on demand with nested initialization ";
-
-            test(testId_1, function () {
+            test("test 1: Test load resources on demand with nested initialization ", function () {
                 stop();
 
-                var scripts, actualPaths = [],
-                    expectedScripts = ["infragistics.util-en.js", "infragistics.util.js", "infragistics.ui.scroll.js",
-                        "infragistics.ui.validator-en.js", "infragistics.ui.validator.js", "infragistics.ui.editors-en.js",
-                    "infragistics.ui.editors.js", "infragistics.ui.editors.knockout-extensions.js"];
+                var expectedRes = [
+                        "infragistics.loader.js",
+                        "infragistics.util-en.js",
+                        "infragistics.util.js",
+                        "infragistics.ui.scroll.js",
+                        "infragistics.ui.popover-en.js",
+                        "infragistics.ui.popover.js",
+                        "infragistics.ui.notifier-en.js",
+                        "infragistics.ui.notifier.js",
+                        "infragistics.ui.validator-en.js",
+                        "infragistics.ui.validator.js",
+                        "infragistics.ui.editors-en.js",
+                        "infragistics.ui.editors.js",
+                        "infragistics.ui.editors.knockout-extensions.js",                                                 
+                        "infragistics.theme.css",
+                        "infragistics.ui.popover.css",
+                        "infragistics.ui.notifier.css",
+                        "infragistics.ui.shared.css",
+                        "infragistics.ui.validator.css",
+                        "infragistics.ui.editors.css"
+                        ];
 
                 $.ig.loader({
                     scriptPath: jsPath,
-                    cssPath: "../../../Source/ClientUI/css/",
+                    cssPath: cssPath,
                     resources: "igEditors",
                     ready: function () {
                         $.ig.loader({
                             scriptPath: jsPath,
-                            cssPath: "../../../Source/ClientUI/css/",
+                            cssPath: cssPath,
                             resources: "extensions/infragistics.ui.editors.knockout-extensions.js",
                             ready: function () {
                                 start();
-                                //check if expected scripts are loaded
-                                scripts = $(document).find("head > script");
-                                scripts.each(function () {
-                                    if (this.src.indexOf("Source/ClientUI/js/") > -10) {
-                                        var array = this.src.split("/");
-                                        actualPaths.push(array[array.length - 1]);
-                                    }
-                                });
-                                for (var i = 0; i < expectedScripts.length; i++) {
-                                    ok(actualPaths.contains(expectedScripts[i]), "The loaded scripts should contain: " + expectedScripts[i]);
-                                }
-
+                                resourcesLoaded(expectedRes);
                             }
                         });
                     }
                 });
 
             });
+			
+			test("test 2: Test load resources with locale", function(){
+				stop();
+                var scripts, actualPaths = [],
+                    expectedScripts = [
+                        "infragistics.util-fr.js",
+                        "infragistics.templating-fr.js",
+                        "infragistics.shared-fr.js",
+                        "infragistics.ui.rating-fr.js",
+                        "infragistics.datasource-fr.js",
+                        "infragistics.templating.js",
+                        "infragistics.ui.shared.js",
+                        "infragistics.ui.rating.js",
+                        "infragistics.datasource.js",
+                        "infragistics.ui.layoutmanager.js",
+                        "infragistics.ui.zoombar-fr.js",
+                        "infragistics.ui.splitter-fr.js",
+                        "infragistics.ui.zoombar.js",
+                        "infragistics.ui.splitter.js",
+                        "infragistics.ui.tilemanager-fr.js",
+                        "infragistics.ui.tilemanager.js",
+                        "infragistics.theme.css",
+                        "infragistics.ui.shared.css",
+                        "infragistics.ui.rating.css",
+                        "infragistics.ui.layout.css",
+                        "infragistics.ui.splitter.css",
+                        "infragistics.ui.tilemanager.css",
+                        "infragistics.ui.zoombar.css"];
+					
+					$.ig.loader({
+                    scriptPath: jsPath,
+                    cssPath: cssPath,
+                    resources: "igTemplating, igShared, igRating, igTileManager, igZoombar",
+					locale: 'fr',
+                    ready: function () {
+						start();
+                        resourcesLoaded(expectedScripts);
+					}
+				});
+			});
         });
 
+        function resourcesLoaded(expectedResources){
+            //check if expected resources are loaded
+            var scripts = $(document).find("head > script"), actualPaths = [];
+            scripts.each(function () {
+                //console.log("script.src: " + this.src)
+                if (this.src.indexOf("ignite-ui/src/js/") > 0) {
+                    var array = this.src.split("/");
+                    actualPaths.push(array[array.length - 1]);
+                }
+            });
+
+            links = $(document).find("head > link");
+            links.each(function () {
+                //console.log("link.href: " + this.href)
+                if (this.href.indexOf("ignite-ui/src/css/") > 0) {
+                    var array = this.href.split("/");
+                    actualPaths.push(array[array.length - 1]);
+                }
+            });
+
+            for (var i = 0; i < expectedResources.length; i++) {
+                ok(actualPaths.contains(expectedResources[i]), "The loaded resources should contain: " + expectedResources[i]);
+            }
+
+        }
     </script>
     <div style="float: right; width: 400px; overflow: auto; vertical-align: top;">
         <h1 id="qunit-header">Test results</h1>

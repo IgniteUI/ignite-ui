@@ -6,7 +6,7 @@
 * http://www.infragistics.com/
 *
 * Depends on:
-*  jquery-1.4.2.js
+*  jquery-1.9.1.js
 *  jquery.ui.core.js
 *  jquery.ui.widget.js
 *  infragistics.util.js
@@ -108,7 +108,7 @@ if (typeof jQuery !== "function") {
 			animationDuration: 250,
 			/* Gets or sets the distance in pixels a notification popover slides outwards as it's shown. */
 			animationSlideDistance: 5,
-			/* type="string" @Skipped@ Selectors indicating which items should show popovers. */
+			/* type="string" @Ignored@ Selectors indicating which items should show popovers. */
 			selectors: null
 		},
 		/* States that appear as inline in auto mode */

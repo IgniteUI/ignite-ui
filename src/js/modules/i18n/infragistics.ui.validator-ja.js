@@ -33,6 +33,7 @@
 			    minValueMessage: "{0} 以上の値を入力してください",
 			    maxValueMessage: "{0} 以下の値を入力してください",
 			    emailMessage: '有効なメール アドレスを入力してください',
+				creditCardMessage: '有効なクレジット カード番号を入力してください。',
 			    equalToMessage: '2 つの値は一致しません',
 			    optionalString: '(オプション)'
 		    }
