@@ -1769,17 +1769,23 @@ if (typeof jQuery !== "function") {
 				"focus.editor": function (event) {
 					self._setFocus(event);
 				},
-				"dragenter.editor": function () {
-					if (!self._focused) {
+				"dragenter.editor": function (e) {
+					if (!self._focused && !self._editMode) {
 						//Controlled edit mode without selection to allow default drop handling
-						self._preventSelection = true;
+						self._dragging = true;
 						self._enterEditMode();
-
-						//handle leave once:
-						self._editorInput.one("dragleave.editor", function () {
-							self._exitEditMode();
-							delete self._preventSelection;
-						});
+					}
+				},
+				"dragleave.editor": function (e) {
+					if ($.ig.util.isFF && e.relatedTarget === this) {
+						// FF spams drag events over child text nodes.. https://bugzilla.mozilla.org/show_bug.cgi?id=812807
+						// and also for changing text node from entering edit mode
+						return;
+					}
+					if (self._dragging && self._editMode) {
+						console.log("dragexit/dragleave _exitEditMode", e);
+						self._exitEditMode();
+						delete self._dragging;
 					}
 				},
 				"blur.editor": function (event) {
@@ -1791,7 +1797,7 @@ if (typeof jQuery !== "function") {
 				},
 				"drop.editor": function (event) {
 					self._focused = true;
-					self._editorInput.off("dragleave.editor");
+					delete self._dragging;
 					self._pasteHandler(event, true);
 				},
 				"keydown.editor": function (event) {
@@ -1906,6 +1912,7 @@ if (typeof jQuery !== "function") {
 		_detachEvents: function () {
 			this._super();
 			this._editorInput.off("focus.editor blur.editor paste.editor");
+			this._editorInput.off("dragenter.editor dragleave.editor drop.editor");
 			this._editorInput.off("keydown.editor keyup.editor keypress.editor");
 			this._editorInput.off("compositionstart.editor compositionend.editor compositionupdate.editor");
 		},
@@ -2356,12 +2363,10 @@ if (typeof jQuery !== "function") {
 				newValue = self._editorInput.val();
 				selection = self._getSelection(self._editorInput[ 0 ]);
 				if (drop) {
-					// fire focus and insert without
+					// fire focus if it was ignored initally
 					self._triggerFocus(e);
-					self._insert(newValue, previousValue, selection);
-				} else {
-					self._insert(newValue, previousValue, selection);
 				}
+				self._insert(newValue, previousValue, selection);
 			}, 10));
 		},
 		_insertHandler: function (string) {
@@ -2594,7 +2599,7 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_positionCursor: function (startPostion, endPosition) {
-			if (this._preventSelection) {
+			if (this._dragging) {
 				return;
 			}
 			var currentValue = this._editorInput.val(), self = this;
@@ -5006,7 +5011,7 @@ if (typeof jQuery !== "function") {
 
 			this._timeouts.push(setTimeout(function () {
 				selection = self._getSelection(e.target);
-				if (!drop) {
+				if (selection.start === selection.end) {
 					selection.start -= data.length;
 					newValue = self._replaceDisplayValue(selection, previousValue, data);
 					selection.start += data.length;
