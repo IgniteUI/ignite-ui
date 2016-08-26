@@ -788,9 +788,7 @@
 					testPastePosition = function (val, expectedPos) {
 						var defer = $.Deferred();
 						$.ig.TestUtil.paste(editorInput[0], val);
-						stop();
 						setTimeout(function () {
-							start();
 							equal(editorInput[0].selectionStart, expectedPos, "Cusrsor position not correct after paste");
 							defer.resolve();
 						}, 20);
@@ -799,8 +797,7 @@
 				
 				editorInput.trigger("focus");
 				stop();
-				setTimeout(function () {
-					start();	
+				setTimeout(function () {	
 					testPastePosition("57", 2).then(function( value ) {
 						//57|-__/__(test)
 						equal(editorInput.val(), "57-__/__(test)", "The text after paste is not correct");
@@ -837,6 +834,7 @@
 					}).then(function( value ) {
 						//57-2a/BC(test)|
 						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						start();
 					});
 				}, 200);
 			});
@@ -847,11 +845,10 @@
 					editorInput = $editor.igMaskEditor("field"),
 					testDropPosition = function (val, expectedPos) {
 						var defer = $.Deferred();
+						
 						editorInput[0].selectionStart = expectedPos[0];
 						$.ig.TestUtil.drop(editorInput[0], val);
-						stop();
 						setTimeout(function () {
-							start();
 							equal(editorInput[0].selectionStart, expectedPos[0], "Selection start not correct after drop");
 							equal(editorInput[0].selectionEnd, expectedPos[1], "Selection end not correct after drop");
 							defer.resolve();
@@ -878,7 +875,9 @@
 				// drop text with focus
 				editorInput.trigger("dragenter");
 				equal(editorInput.val(), "__-__/__(test)", "Editor didn't enter edit mode on dragenter");
-				testDropPosition("57", [0,2]).then(function( value ) {
+				stop();
+				testDropPosition("57", [0,2])
+				.then(function( value ) {
 					//|57|-__/__(test)
 					equal(editorInput.val(), "57-__/__(test)", "The text after drop is not correct");
 					return testDropPosition("2ab", [2, 7]);
@@ -889,6 +888,7 @@
 				}).then(function( value ) {
 					//57-2a/B|C(test)|
 					equal(editorInput.val(), "57-2a/BC(test)", "The text after drop is not correct");
+					start();
 				});
 			});
 		});
