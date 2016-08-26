@@ -977,7 +977,7 @@
             unwrappedDataItem = this._unwrapData(dataItem);
 
 			// A.k August 15, 2016 Fixing Bug #223071 - [igCombo] Text from list items is not escaped.
-            unwrappedDataItem = $.ig.util.escapeHtmlTags(dataItem);
+            unwrappedDataItem = $.ig.util.escapeHtmlTags(unwrappedDataItem);
             unwrappedDataItem = this._formatItem(unwrappedDataItem);
 
             return this.options.itemTemplate ?
