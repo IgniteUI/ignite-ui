@@ -291,6 +291,9 @@
     <div>
         <div id="turkish-case-insensitive"></div>
     </div>
+    <div>
+        <div id="suppressKeyboard"></div>
+    </div>
     <script type="text/javascript">
         $(function () {
             var testId_1 = 'igCombo existence',
@@ -380,7 +383,8 @@
                 testId_78 = 'Keyboard interacting';
                 testId_79 = 'Mouse interacting';
                 testId_80 = 'Local filtering with virtualization';
-                testId_81 = 'Only lowercase items returned by igCombo filtering when filtering by turkish symbol ı'
+                testId_81 = 'Only lowercase items returned by igCombo filtering when filtering by turkish symbol ı';
+                testId_82 = 'suppressKeyboard interaction';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -5065,6 +5069,54 @@
                     $items = $listItemsDiv.find("li").not(".ui-helper-hidden");
                     equal($items.length, 2, "Should return 2 matches");
                 }, 300);
+            });
+
+            test(testId_82, function() {
+
+                var $combo = $("#suppressKeyboard"),
+                    $input, $dropDownButton;
+
+                // Emulate touch environment
+                var _oldIsTouch = $.ig.util.isTouchDevice;
+                $.ig.util.isTouchDevice = function() { return true; };
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    width: "270px",
+                    dataSource: [
+                        {'ID': 1},
+                        {'ID': 2},
+                        {'ID': 3}
+                    ],
+                    suppressKeyboard: false,
+                    virtualization: true
+                });
+
+                $input = $combo.data().igCombo._options.$input;
+                $dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
+
+                $dropDownButton.click();
+                equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                notEqual(document.activeElement, $input[0], "Combo input should not be focused [suppressKeyboard = false]");
+
+                $dropDownButton.click();
+                equal($combo.igCombo("dropDownOpened"), false, "Combo drop down should be hidden");
+                notEqual(document.activeElement, $input[0], "Combo input still should not be focused [suppressKeyboard = false]");
+
+                $combo.igCombo("option", "suppressKeyboard", true);
+                equal($combo.igCombo("option", "suppressKeyboard"), true, "suppressKeyboard successfully changed");
+
+                $dropDownButton.click();
+                equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                equal(document.activeElement, $input[0], "Combo input should be focused [suppressKeyboard = true]");
+
+                $dropDownButton.click();
+                equal($combo.igCombo("dropDownOpened"), false, "Combo drop down should be hidden");
+                equal(document.activeElement, $input[0], "Combo input still should be focused [suppressKeyboard = true]");
+
+
+                $.ig.util.isTouchDevice = _oldIsTouch;
             });
         });
     </script>
