@@ -11,6 +11,7 @@
 * infragistics.util.js
 */
 
+/*global define,jQuery,setTimeout,window,document,MSGesture*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -27,7 +28,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery,setTimeout,window,document,MSGesture*/
 (function ($) {
 	/* S.K. Fix for bug 212350: For IE11 and up msSetPointerCapture and msReleasePointerCapture are depricated. setPointerCapture and releasePointerCapture are supported from IE10 and up. */
 	var setPointerCaptureFName = typeof Element.prototype.msSetPointerCapture === "function" ?

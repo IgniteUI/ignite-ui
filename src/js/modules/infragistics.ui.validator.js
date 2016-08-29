@@ -21,6 +21,7 @@
 *	<input id="text1" type="text" />
 */
 
+/*global define, jQuery, Class */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -38,7 +39,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery, Class */
 (function ($) {
 /*
 	igValidator is a widget based on jQuery UI that provides functionality to validate value in target and show appropriate error message.

@@ -13,6 +13,7 @@
  *	infragistics.ui.validator.js
  */
 
+/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -32,7 +33,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery */
 (function ($) {
 	/* The igBaseEditor is a widget based on jQuery UI. */
 	$.widget("ui.igBaseEditor", {

@@ -18,6 +18,7 @@
  *	infragistics.ui.tree-en.js
  */
 
+/*global define, jQuery, MSApp */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -37,7 +38,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery, MSApp */
 (function ($) {
 	$.ui.keyCode.NUMPAD_ADD = $.ui.keyCode.NUMPAD_ADD || 107;
 	$.ui.keyCode.NUMPAD_SUBTRACT = $.ui.keyCode.NUMPAD_SUBTRACT || 109;

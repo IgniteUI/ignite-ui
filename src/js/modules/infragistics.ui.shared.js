@@ -12,6 +12,7 @@
  *	infragistics.util.js
  */
 
+/*global window, jQuery, define */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -28,9 +29,6 @@
 		factory(jQuery);
 	}
 }
-/*global window */
-/*global jQuery */
-/*global define */
 (function ($) {
 
 	// Loading indicator widget

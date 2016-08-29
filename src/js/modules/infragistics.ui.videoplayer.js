@@ -13,6 +13,7 @@
  *  infragistics.ui.shared.js
  */
 
+/*global define, jQuery, window */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -30,7 +31,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery, window */
 (function ($) {
 
 	$.widget("ui.igVideoPlayer", {

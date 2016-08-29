@@ -1,6 +1,6 @@
 ﻿﻿/* Switzerland, French +*/
 
-/*global jQuery */
+/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 		define( ["jquery"], factory );

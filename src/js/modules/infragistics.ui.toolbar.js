@@ -20,6 +20,7 @@
  *   infragistics.ui.combo.js
  */
 
+/*global define, jQuery, window, Class */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -37,7 +38,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery, window, Class */
 (function ($) {
     $.ig = $.ig || {};
 

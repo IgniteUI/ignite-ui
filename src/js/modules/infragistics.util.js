@@ -19,6 +19,8 @@
 * MIT Licensed.
 */
 
+// Inspired by base2 and Prototype
+/*global define, xyz, Class, define, jQuery, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -34,9 +36,6 @@
 		factory(jQuery);
 	}
 }
-
-// Inspired by base2 and Prototype
-/*global xyz, Class, define, jQuery, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
 (function ($) {
 
 	var initializing = false, fnTest = /xyz/.test(function () { xyz(); }) ? /\b_super\b/ : /.*/;

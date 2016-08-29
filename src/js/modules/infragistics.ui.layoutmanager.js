@@ -11,6 +11,8 @@
 *	jquery.ui.widget.js
 *   infragistics.util.js
 */
+
+/*global define, jQuery, window */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -26,7 +28,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery, window */
 (function ($) {
     /*
 		igLayoutManager is a widget based on jQuery UI that implements different layout modes - flow layout, vertical layout,

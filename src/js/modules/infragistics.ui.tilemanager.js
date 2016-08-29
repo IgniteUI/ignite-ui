@@ -17,6 +17,7 @@
  *	infragistics.ui.tilemanager-en.js
  */
 
+/*global define, jQuery, window*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -37,7 +38,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery, window*/
 (function ($) {
     /*
 		igTileManager is a widget based on jQuery UI that instantiates itself on existing markup or on any $.ig.DataSource supported data source

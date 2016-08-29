@@ -15,6 +15,7 @@
  *   infragistics.ui.toolbarbutton.js
  */
 
+/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -31,7 +32,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery */
 (function ($) {
     /*
 		The igSplitButton is a jQuery based widget.

@@ -18,6 +18,7 @@
  *   infragistics.ui.colorpicker.js
  */
 
+/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -36,7 +37,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery */
 (function ($) {
     /*
        The igColorPickerSplitButton is a jQuery based widget.

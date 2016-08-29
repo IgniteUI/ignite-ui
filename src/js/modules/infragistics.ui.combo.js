@@ -22,6 +22,7 @@
 *   <input id="combo" />
 */
 
+/*global define, jQuery*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -42,7 +43,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery*/
 (function ($) {
     /*
 		igCombo is a widget based on jQuery UI that provides ability to edit text and show drop-down list.

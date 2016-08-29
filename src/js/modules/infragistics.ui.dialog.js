@@ -22,6 +22,7 @@
 *	<div id="dialog1"></div>
 */
 
+/*global define, jQuery, setTimeout, document, window*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -38,7 +39,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery, setTimeout, document, window*/
 (function ($) {
 	var _lastTop, _iframe,
 		_visCount = 0,

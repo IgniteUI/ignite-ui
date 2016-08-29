@@ -19,7 +19,7 @@
  *	infragistics.ui.tree.js
  */
 
-/*global ko, $*/
+/*global define, ko, jQuery*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 		define( [

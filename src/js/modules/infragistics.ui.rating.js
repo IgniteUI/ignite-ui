@@ -20,6 +20,7 @@
 *	<div id="rating1"></div>
 */
 
+/*global define, jQuery, document, setTimeout */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -36,7 +37,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery, document, setTimeout */
 (function ($) {
 	var _aNull = function (v) {
 		return v === null || v === undefined || (typeof v === "number" && isNaN(v));

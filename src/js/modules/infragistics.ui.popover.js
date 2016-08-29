@@ -11,6 +11,8 @@
  *  jquery.ui.widget.js
  *  infragistics.util.js
  */
+
+/*global define, jQuery, HTMLElement */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -27,7 +29,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery, HTMLElement */
 (function ($) {
 	$.widget("ui.igPopover", {
 		css: {

@@ -13,6 +13,7 @@
  *	infragistics.ui.shared.js
  */
 
+/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -29,7 +30,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery */
 (function ($) {
     /*
 		The igToolbarButton is a jQuery based widget which allow you to create a toolbar button.

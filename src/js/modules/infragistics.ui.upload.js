@@ -13,6 +13,7 @@
  *  infragistics.ui.shared.js
  */
 
+/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -30,7 +31,6 @@
 		factory(jQuery);
 	}
 }
-/*global jQuery */
 (function ($) {
 	$.widget("ui.igBrowseButton", $.ui.igButton, {
 		/* this class should be general for igBrowseButton - to work properly widget do not change it */
