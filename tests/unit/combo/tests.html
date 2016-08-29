@@ -5089,7 +5089,7 @@
                         {'ID': 2},
                         {'ID': 3}
                     ],
-                    suppressKeyboard: false,
+                    suppressKeyboard: true,
                     virtualization: true
                 });
 
@@ -5104,8 +5104,8 @@
                 equal($combo.igCombo("dropDownOpened"), false, "Combo drop down should be hidden");
                 notEqual(document.activeElement, $input[0], "Combo input still should not be focused [suppressKeyboard = false]");
 
-                $combo.igCombo("option", "suppressKeyboard", true);
-                equal($combo.igCombo("option", "suppressKeyboard"), true, "suppressKeyboard successfully changed");
+                $combo.igCombo("option", "suppressKeyboard", false);
+                equal($combo.igCombo("option", "suppressKeyboard"), false, "suppressKeyboard successfully changed");
 
                 $dropDownButton.click();
                 equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
