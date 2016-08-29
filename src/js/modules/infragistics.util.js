@@ -5344,12 +5344,16 @@
 
 	// Escape all html tags in given html element content
 	$.ig.util.escapeHtmlTags = function (htmlElemContent) {
-		return htmlElemContent
-			.replace(/&/g, "&amp;")
-			.replace(/</g, "&lt;")
-			.replace(/>/g, "&gt;")
-			.replace(/"/g, "&quot;")
-			.replace(/'/g, "&#039;");
+		if (typeof(htmlElemContent) === "string") {
+			return htmlElemContent
+				.replace(/&/g, "&amp;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;")
+				.replace(/"/g, "&quot;")
+				.replace(/'/g, "&#039;");
+		} else {
+			return htmlElemContent;
+		}
 	};
 
 	$.ig.util.replace = function (str, oldValue, newValue) {

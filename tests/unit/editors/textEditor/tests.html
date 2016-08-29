@@ -22,6 +22,7 @@
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -418,6 +419,7 @@
 					$('#inputEditor1').igTextEditor("value", "");
 					$('#inputEditor1').igTextEditor("insert", "ab");
 					equal($('#inputEditor1').igTextEditor("value"), "ab", "The value should be ab");
+					$('#inputEditor1').igTextEditor("field").blur();
 					$('#inputEditor1').igTextEditor("setFocus");
 					stop();
 					setTimeout(function () {
@@ -592,16 +594,25 @@
 				setTimeout(function () {
 					start();
 					ok(closed, "dropDownListClosed event not fired");
-					paste(editorInput[0], "newVal");
-					editorInput.trigger("blur");
-					equal($('#listEditor').igTextEditor("value"), "", "The value after paste is not newVal");
-					editor.igTextEditor("value", "newVal1");
-					equal($('#listEditor').igTextEditor("value"), "", "The value after paste is empty");
-					editor.igTextEditor("option", "isLimitedToListValues", false);
-					paste(editorInput[0], "newValnewVal");
-					equal($('#listEditor').igTextEditor("value"), "", "The value after paste is empty");
-					editor.igTextEditor("value", "newVal1");
-					equal($('#listEditor').igTextEditor("value"), "newVal1", "The value after paste is not newVal");
+					$.ig.TestUtil.paste(editorInput[0], "newVal");
+					stop()
+					setTimeout(function () {
+						start();
+						editorInput.trigger("blur");
+						equal($('#listEditor').igTextEditor("value"), "item1", "The value after paste is not newVal");
+						editor.igTextEditor("value", "newVal1");
+						equal($('#listEditor').igTextEditor("value"), "", "The value after paste is empty");
+						editor.igTextEditor("option", "isLimitedToListValues", false);
+						editor.igTextEditor("option", "maxLength", 10);
+						$.ig.TestUtil.paste(editorInput[0], "newValnewVal");
+						stop()
+						setTimeout(function () {
+							start();
+							equal($('#listEditor').igTextEditor("value"), "newValnewV", "The value after paste is not trimmed/accepted");
+							editor.igTextEditor("value", "newVal1");
+							equal($('#listEditor').igTextEditor("value"), "newVal1", "The value after paste is not newVal");
+						}, 20);
+					}, 20);
 				}, 500);
 			}, 500);
 		});
@@ -942,26 +953,29 @@
 			equal(String.fromCharCode(keyCode), "я", "toLower is not working");
 			equal($("#toLowerEditor")[0].value, "я", "character is not set to lower");
 			// toUpper paste
-			//paste(toUpperEditorInput[0], "newVal1");
-			$("#toUpperEditor").igTextEditor("value", "newVal1");
+			toUpperEditorInput.trigger("focus");
+			$.ig.TestUtil.paste(toUpperEditorInput[0], "newVal1");
+			// $("#toUpperEditor").igTextEditor("value", "newVal1");
 
 			stop();
 			setTimeout(function () {
+				start();
 				equal($("#toUpperEditor")[0].value, "NEWVAL1", "(Bug #209012)(Bug #209067) Value is not made upper");
 				equal($("#toUpperEditor").igTextEditor("value"), "NEWVAL1", "Value is not made upper");
-				start();
-			},100);		   
-		   
-			// toLower paste
-			//paste(toLowerEditorInput[0], "NewVaL1");
-			$("#toLowerEditor").igTextEditor("value", "NewVal1");
-		  
-			stop();
-			setTimeout(function () {
-				equal($("#toLowerEditor")[0].value, "newval1", "(Bug #209012)(Bug #209067) Value is not made lower");
-				equal($("#toLowerEditor").igTextEditor("value"), "newval1", "Value is not made lower");
-				start();
-			}, 100);		    		   		   
+				
+				// toLower paste
+				toLowerEditorInput.trigger("focus");
+				$.ig.TestUtil.paste(toLowerEditorInput[0], "NewVaL1");
+				//$("#toLowerEditor").igTextEditor("value", "NewVal1");
+			
+				stop();
+				setTimeout(function () {
+					start();
+					equal($("#toLowerEditor")[0].value, "newval1", "(Bug #209012)(Bug #209067) Value is not made lower");
+					equal($("#toLowerEditor").igTextEditor("value"), "newval1", "Value is not made lower");
+				}, 20);
+			},20);		   
+		   		    		   		   
 		});
 		testId = "Paste";
 		test(testId, 2, function () {
@@ -972,7 +986,7 @@
 			setTimeout(function(){
 				start();
 				input.setSelectionRange(1, 1);
-				paste(input, "bc"); // There is timeout
+				$.ig.TestUtil.paste(input, "bc"); // There is timeout
 				stop();
 				setTimeout(function() {
 					start();
@@ -1006,23 +1020,6 @@
 	function testSelection(input, start, end ) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index" + start);
 		equal(input[0].selectionEnd, end, "The selection doesn't end at index " + end);
-	}
-	function paste(input, newVal) {
-		// create a mouse click event
-		var event = document.createEvent('Event'),
-			cursor = input.selectionStart;
-		event.initEvent('paste', true, true);
-		event.target = input;
-		event.srcElement = input;
-		oldVal = $(input).val();
-		prefix = oldVal.substring(0, cursor);
-		sufix = oldVal.substring(cursor, oldVal.length);
-		$(input).val(prefix + newVal + sufix);
-		// send click to element
-		input.dispatchEvent(event);
-
-		input.setSelectionRange(cursor + newVal.length, cursor + newVal.length);
-
 	}
 	function keyInteraction(key, target, special) {
 		keyDownChar(key, target, special);
