@@ -22,7 +22,27 @@
 *   <input id="combo" />
 */
 
-/*global jQuery*/
+/*global define, jQuery*/
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.templating",
+			"./infragistics.datasource",
+			"./infragistics.scroll",
+			"./infragistics.validator",
+			"./i18n/infragistics.ui.combo-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
     /*
 		igCombo is a widget based on jQuery UI that provides ability to edit text and show drop-down list.
@@ -6256,4 +6276,5 @@
     });
 
     $.extend($.ui.igCombo, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igCombo;
+}));

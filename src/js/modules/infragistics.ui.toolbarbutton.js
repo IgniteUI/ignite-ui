@@ -13,7 +13,23 @@
  *	infragistics.ui.shared.js
  */
 
-/*global jQuery */
+/*global define, jQuery */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.shared"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
     /*
 		The igToolbarButton is a jQuery based widget which allow you to create a toolbar button.
@@ -248,4 +264,5 @@
     });
 
     $.extend($.ui.igToolbarButton, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igToolbarButton;
+}));

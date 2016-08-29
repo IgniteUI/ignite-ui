@@ -13,7 +13,24 @@
  * infragistics.ui.shared.js
 */
 
-/*global jQuery, Class */
+/*global define, jQuery, Class */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.shared",
+			"./infragistics.ui.zoombar-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 	/*
 		igZoombar is a widget based on jQuery UI that provides ability to easily zoom in and out a chart or other compatible control.
@@ -1340,4 +1357,6 @@
 			return props > 0 ? ref : null;
 		}
 	});
-}(jQuery));
+
+	return $.ui.igZoombar;
+}));

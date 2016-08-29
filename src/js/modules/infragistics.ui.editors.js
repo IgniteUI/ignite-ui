@@ -9,15 +9,30 @@
  * jquery-1.9.1.js
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
- *	infragistics.ui.popover.js
- *	infragistics.ui.notifier.js
+ *	infragistics.ui.scroll.js
+ *	infragistics.ui.validator.js
  */
 
-/*global jQuery */
-if (typeof jQuery !== "function") {
-	throw new Error("jQuery is undefined");
-}
+/*global define, jQuery */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
 
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.scroll",
+			"./infragistics.validator",
+			"./i18n/infragistics.ui.regional-en",
+			"./i18n/infragistics.ui.editors-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 	/* The igBaseEditor is a widget based on jQuery UI. */
 	$.widget("ui.igBaseEditor", {
@@ -9872,4 +9887,4 @@ if (typeof jQuery !== "function") {
 		}
 	});
 
-}(jQuery));
+}));

@@ -19,7 +19,24 @@
 *	</script>
 *	<div id="rating1"></div>
 */
-/*global jQuery, document, setTimeout */
+
+/*global define, jQuery, document, setTimeout */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./i18n/infragistics.ui.rating-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 	var _aNull = function (v) {
 		return v === null || v === undefined || (typeof v === "number" && isNaN(v));
@@ -844,4 +861,5 @@
 		}
 	});
 	$.extend($.ui.igRating, { version: "<build_number>" });
-}(jQuery));
+	return $.ui.igRating;
+}));

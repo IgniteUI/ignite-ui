@@ -1027,7 +1027,8 @@ $.ig.dependencies = [
 			{ name: "igSplitButton" },
 			{ name: "igColorPicker" },
 			{ name: "igColorPickerSplitButton" },
-			{ name: "igCombo" }, { name: "igEditors" },
+			{ name: "igCombo" },
+			{ name: "igEditors" },
 			{ name: "igToolbarButton" },
 			{ name: "igToolbar" }
 			],
