@@ -221,6 +221,10 @@
 				Custom format strings should match the data type in "textKey" column.
 			*/
             format: "auto",
+            /* type="boolean" Gets sets whether the onscreen keyboard should be shown when the dropdown button is clicked (touch devices only)
+                Note: The keyboard will still show when the combo input is focused in editable mode.
+            */
+            suppressKeyboard: false,
             /* type="boolean" Specifies whether the clear button should be rendered. When mode is drop down with single selection, readonly or readonlylist this option will default to false. It can still be enabled when it is specifically set to true. */
             enableClearButton: true,
             /* type="string" Gets sets title for html element which represend drop-down button. That is an override for the $.ig.Combo.locale.dropDownButtonTitle. */
@@ -3429,12 +3433,18 @@
                     if (options.mode !== "readonly") {
                         if (_options.dropDownOpened) {
                             self.closeDropDown(null, event);
-
-                            //// Z.K. Fixing Bug #212934 - Keyboard shouldnt be shown when using 'dropdown' mode on touch device
-                            if (self._focusInInputWhenUsingTouchDevice()) {
-                                self._moveCaretToInputEnd(true);
-                            }
                         } else {
+
+                            if (self.options.suppressKeyboard && $.ig.util.isTouchDevice()) {
+                                event.stopPropagation();
+                                if (self._options.$input.is(":focus")) {
+                                    self._options.$input.blur();
+                                }
+
+                                self.openDropDown(null, false, event);
+                                return;
+                            }
+
                             self.openDropDown(null,
                                 self._focusInInputWhenUsingTouchDevice(), event);
                         }
@@ -5224,6 +5234,10 @@
 
             if (focusCombo === undefined) {
                 focusCombo = true;
+            }
+
+            if (self.options.suppressKeyboard && $.ig.util.isTouchDevice()) {
+                focusCombo = false;
             }
 
             if (!_options.dropDownOpened) {
