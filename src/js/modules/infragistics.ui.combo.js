@@ -979,6 +979,9 @@
             unwrappedData = this._unwrapData(data);
             dataItem = unwrappedData[ this.options.textKey ];
             unwrappedDataItem = this._unwrapData(dataItem);
+
+			// A.k August 15, 2016 Fixing Bug #223071 - [igCombo] Text from list items is not escaped.
+            unwrappedDataItem = $.ig.util.escapeHtmlTags(unwrappedDataItem);
             unwrappedDataItem = this._formatItem(unwrappedDataItem);
 
             return this.options.itemTemplate ?
@@ -1074,8 +1077,7 @@
                     .replace("{css.listItemTextWithCheckbox}", css.listItemTextWithCheckbox)
                     .replace("{innerMarkup}", innerMarkup);
             } else {
-                // A.k August 15, 2016 Fixing Bug #223071 - [igCombo] Text from list items is not escaped
-                markup += $.ig.util.escapeHtmlTags(innerMarkup);
+                markup += innerMarkup;
             }
 
             markup += "</li>";

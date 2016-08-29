@@ -135,16 +135,7 @@
 		    equal($("#currencyEditor5").igCurrencyEditor("displayValue"), "$1264,8900000000", "The decimal value is not correct");
 		});
 	});
-	function paste(input, newVal) {
-		// create a mouse click event
-		var event = document.createEvent('Event');
-		event.initEvent('paste', true, true);
-		event.target = input;
-		event.srcElement = input;
-		$(input).val(newVal);
-		// send click to element
-		input.dispatchEvent(event);
-	}
+
 	function testSelection(input, start, end ) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index 0 ");
 		equal(input[0].selectionEnd, end, "The selection doesn't start from index 0 ");
