@@ -2393,8 +2393,14 @@
 			var selection = this._getSelection(this.field()[ 0 ]),
 				previousValue, newValue;
 			if (string) {
-				previousValue = this._editMode ? this._editorInput.val() : this.displayValue();
-				newValue = this._replaceDisplayValue(selection, previousValue, string);
+				if (this._editMode) {
+					previousValue = this._editorInput.val();
+					newValue = this._replaceDisplayValue(selection, previousValue, string);
+				} else {
+					// D.P. 30th Aug 2016 #287 Insert to replace value when not in edit mode
+					previousValue = this.value();
+					newValue = string;
+				}
 				this._insert(newValue, previousValue);
 			}
 		},
@@ -5019,7 +5025,7 @@
 					// Move the caret
 					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 				}
-			} else if (newValue !== this.value()) {
+			} else if (newValue !== previousValue) {
 				newValue = this._parseValueByMask(newValue);
 				this._processInternalValueChanging(newValue);
 				this._exitEditMode();
