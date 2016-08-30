@@ -11,7 +11,23 @@
 * infragistics.util.js
 */
 
-/*global jQuery,setTimeout,window,document,MSGesture*/
+/*global define,jQuery,setTimeout,window,document,MSGesture*/
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./i18n/infragistics.ui.scroll-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 	/* S.K. Fix for bug 212350: For IE11 and up msSetPointerCapture and msReleasePointerCapture are depricated. setPointerCapture and releasePointerCapture are supported from IE10 and up. */
 	var setPointerCaptureFName = typeof Element.prototype.msSetPointerCapture === "function" ?
@@ -3464,4 +3480,5 @@
 		container.igScroll({ modifyDOM: false });
 		container.data("igScroll")._bKeyboardNavigation = false;
 	});
-}(jQuery));
+	return $.ui.igScroll;
+}));

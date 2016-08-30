@@ -11,8 +11,21 @@
 *	ig.dataSource.js
 */
 
-/*global ko, jQuery*/
-(function ($) {
+/*global define, ko, jQuery*/
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+            "jquery",
+            "jquery-ui",
+            "knockout",
+            "../modules/infragistics.util",
+            "../modules/infragistics.datasource",
+            "../modules/infragistics.ui.combo"
+            ], factory );
+	} else {
+		factory(jQuery);
+	}
+}(function ($) {
     function selectItems(combo, selectedItems) {
         var valueKey = combo.igCombo("option", "valueKey"),
 			selectedValues = [],
@@ -208,4 +221,4 @@
             combo.css("display", visible() ? "inline-block" : "none");
         }
     };
-}(jQuery));
+}));

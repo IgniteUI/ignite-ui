@@ -13,11 +13,24 @@
  *  infragistics.ui.shared.js
  */
 
-/*global jQuery */
-if (typeof jQuery !== "function") {
-	throw new Error("jQuery is undefined");
-}
+/*global define, jQuery */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
 
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.shared",
+			"./infragistics.ui.upload-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 	$.widget("ui.igBrowseButton", $.ui.igButton, {
 		/* this class should be general for igBrowseButton - to work properly widget do not change it */
@@ -3059,4 +3072,5 @@ if (typeof jQuery !== "function") {
 		/*************** HELPER FUNCTION ********************/
 	});
 	$.extend($.ui.igUpload, { version: "<build_number>" });
-}(jQuery));
+	return $.ui.igUpload;
+}));
