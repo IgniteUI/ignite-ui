@@ -2389,7 +2389,7 @@
 				}
 			}, 10));
 		},
-		_insertHandler: function (string) {
+		_insertHandler: function (string) {  // TextEditor
 			var selection = this._getSelection(this.field()[ 0 ]),
 				previousValue, newValue;
 			if (string) {
@@ -2440,14 +2440,16 @@
 						}
 					}
 				}
-				if (this._focused) {
+				if (this._editMode) {
 					this._editorInput.val(newValue);
 					if (selection !== undefined) {
 						// Move the caret
 						this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 					}
+				} else {
+					this._processInternalValueChanging(newValue);
+					this._exitEditMode();
 				}
-				this._processValueChanging(newValue);
 				this._processTextChanged();
 			} else {
 				this._editorInput.val(previousValue);
@@ -5009,14 +5011,20 @@
 				if (newValue) { newValue = newValue.toLocaleLowerCase(); }
 			}
 			this._promptCharsIndices = [];
-			newValue = this._parseValueByMask(newValue);
-			this._editorInput.val(newValue);
-			this._processTextChanged();
 
-			if (selection !== undefined) {
-				// Move the caret
-				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+			if (this._editMode) {
+				newValue = this._parseValueByMask(newValue);
+				this._editorInput.val(newValue);
+				if (selection !== undefined) {
+					// Move the caret
+					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+				}
+			} else if (newValue !== this.value()) {
+				newValue = this._parseValueByMask(newValue);
+				this._processInternalValueChanging(newValue);
+				this._exitEditMode();
 			}
+			this._processTextChanged();
 		},
 		_pasteHandler: function (e, drop) { // MaskEditor Handler
 			var self = this, previousValue = $(e.target).val(), newValue, data, selection,

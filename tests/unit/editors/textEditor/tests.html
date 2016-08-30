@@ -353,7 +353,7 @@
 			flag = false;		
 		});
 		testId = "Options/Method tests";
-		test(testId, 35, function () {
+		test(testId, 36, function () {
 			var container = $('#inputEditor5').igTextEditor("editorContainer"),
 				editor = $('#inputEditor5').igTextEditor("field"),
 				list = $('#inputEditor5').igTextEditor("dropDownContainer"),
@@ -415,16 +415,18 @@
 					endSel = $("#inputEditor1").igTextEditor("getSelectionEnd");
 					equal(startSel, 0, "start is wrong");
 					equal(endSel, 2, "end is wrong");
-
+					
+					$('#inputEditor1').igTextEditor("field").blur();
 					$('#inputEditor1').igTextEditor("value", "");
 					$('#inputEditor1').igTextEditor("insert", "ab");
 					equal($('#inputEditor1').igTextEditor("value"), "ab", "The value should be ab");
+					equal($('#inputEditor1').igTextEditor("field").val(), "ab", "The text should be ab");
 					$('#inputEditor1').igTextEditor("field").blur();
 					$('#inputEditor1').igTextEditor("setFocus");
 					stop();
 					setTimeout(function () {
 						start();
-						$('#inputEditor1').igTextEditor("insert", "ba");
+						$('#inputEditor1').igTextEditor("insert", "ba").blur();
 						equal($('#inputEditor1').igTextEditor("value"), "baab", "The value should be valid");
 						stop();
 						setTimeout(function () {
@@ -961,6 +963,7 @@
 			setTimeout(function () {
 				start();
 				equal($("#toUpperEditor")[0].value, "NEWVAL1", "(Bug #209012)(Bug #209067) Value is not made upper");
+				keyInteraction(13, $("#toUpperEditor"));
 				equal($("#toUpperEditor").igTextEditor("value"), "NEWVAL1", "Value is not made upper");
 				
 				// toLower paste
@@ -972,6 +975,7 @@
 				setTimeout(function () {
 					start();
 					equal($("#toLowerEditor")[0].value, "newval1", "(Bug #209012)(Bug #209067) Value is not made lower");
+					keyInteraction(13, $("#toLowerEditor"));
 					equal($("#toLowerEditor").igTextEditor("value"), "newval1", "Value is not made lower");
 				}, 20);
 			},20);		   
@@ -990,7 +994,7 @@
 				stop();
 				setTimeout(function() {
 					start();
-					equal(editor.igTextEditor("value"), "abcde", "value is wrong");
+					equal(editor.igTextEditor("field").val(), "abcde", "value is wrong");
 					equal(editor.igTextEditor("getSelectionStart"), 3, "cursor position wrong");
 				}, 200);
 			}, 200);
