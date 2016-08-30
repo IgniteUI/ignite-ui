@@ -702,6 +702,10 @@
 			this._scrollFromSyncContentH = false;
 			this._scrollFromSyncContentV = false;
 
+			//Track if events should not be triggered
+			this._cancelScrolling = false;
+			this._cancelThumbDrag = false;
+
 			//Counter for how many animation for smooth wheel scrolling are present. When 0 we are no longer scrolling with wheel
 			this._numSmoothAnimation = 0;
 
