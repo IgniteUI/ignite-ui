@@ -11,9 +11,22 @@
 *	jquery.ui.widget.js
 *   infragistics.util.js
 */
-/*global jQuery, window */
-if (typeof jQuery !== "function") {
-    throw new Error("jQuery is undefined");
+
+/*global define, jQuery, window */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
 }
 (function ($) {
     /*
@@ -1549,4 +1562,5 @@ if (typeof jQuery !== "function") {
         }
     });
     $.extend($.ui.igLayoutManager, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igLayoutManager;
+}));

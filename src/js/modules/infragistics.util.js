@@ -20,7 +20,22 @@
 */
 
 // Inspired by base2 and Prototype
-/*global xyz, Class, define, jQuery, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
+/*global define, xyz, Class, define, jQuery, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./i18n/infragistics.util-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 
 	var initializing = false, fnTest = /xyz/.test(function () { xyz(); }) ? /\b_super\b/ : /.*/;
@@ -131,35 +146,16 @@
 		return Class;
 	};
 
-	// Expose util as an AMD module, but only for AMD loaders that
-	// understand the issues with loading multiple versions of jQuery
-	// in a page that all might call define(). The loader will indicate
-	// they have special allowances for multiple jQuery versions by
-	// specifying define.amd.jQuery = true. Register as a named module,
-	// since jQuery can be concatenated with other files that may use define,
-	// but not use a proper concatenation script that understands anonymous
-	// AMD modules. A named AMD is safest and most robust way to register.
-	// Lowercase ig.util is used because AMD module names are derived from
-	// file names, and jQuery is normally delivered in a lowercase file name.
-	// Do this after creating the global so that if an AMD module wants to call
-	// noConflict to hide this version of jQuery, it will work.
-	if (typeof define === "function" && define.amd && define.amd.jQuery) {
-		define("ig.util", [ ], function () { return Class; });
-	}
-
 	// N.A. 12/8/2015 Bug #210921 In IE8 'console' is 'undefined' and to remove exceptions when console.log is used just create empty function.
 	// For the moment editors and notifier are using console.log() function.
 	if (!window.console) {
 		window.console = { log: function () { } };
 	}
 
-}(jQuery));
-
-/* 	requestAnimationFrame and cancelAnimationFrame polyfill
-* 	By Erik Möller. Fixes from Paul Irish and Tino Zijdel.
-* 	MIT license
-*/
-(function ($) {
+	/* 	requestAnimationFrame and cancelAnimationFrame polyfill
+	* 	By Erik Möller. Fixes from Paul Irish and Tino Zijdel.
+	* 	MIT license
+	*/
 	var lastTime = 0;
 	var prefixes = [ "ms", "moz", "webkit", "o" ];
 
@@ -186,9 +182,7 @@
 			clearTimeout(id);
 		};
 	}
-}(jQuery));
 
-(function ($) {
 	$.fn.startsWith = function (str) {
 		return this[ 0 ].innerHTML.indexOf(str) === 0;
 	};
@@ -1481,26 +1475,6 @@
 
 	$.ig.Array = Array;
 
-	/*
-	$.ig.Array.prototype.add = function (item) {
-		this[ this.length ] = item;
-	};
-
-	$.ig.Array.prototype.indexOf = function (item) {
-		for (var i=0; i<this.length; i++)
-		{
-			if (this[ i ] == item)
-				return i;
-		}
-		return -1;
-	};
-
-$.ig.Array.prototype.copy = function (source, sourceIndex, dest, destIndex, count) {
-	for (i = 0; i < count; i++) {
-		dest[ destIndex + i ] = source[ sourceIndex + i ];
-	}
-};
-	*/
 	$.ig.extendNativePrototype(Array.prototype, "add", function (item) {
 		this[ this.length ] = item;
 	});
@@ -1558,59 +1532,7 @@ $.ig.Array.prototype.copy = function (source, sourceIndex, dest, destIndex, coun
 		arr.length = from < 0 ? arr.length + from : from;
 		return arr.push.apply(arr, rest);
 	};
-	/*
-	$.ig.Array.prototype.contains =  function (item) {
-		var index = this.indexOf(item);
-		return (index >= 0);
-	};
 
-	$.ig.Array.prototype.insert = function (index, item) {
-		this.splice(index, 0, item);
-	};
-
-	$.ig.Array.prototype.removeAt = function (i) {
-		this.splice(i, 1);
-	};
-
-	$.ig.Array.prototype.removeItem = function (item) {
-		var index = this.indexOf(item);
-		if (index >= 0) {
-			this.splice(index, 1);
-			return true;
-		}
-		return false;
-	};
-
-	$.ig.Array.prototype.getEnumerator = function () {
-		 return new $.ig.ArrayEnumerator(this);
-	};
-
-	$.ig.Array.prototype.count = function () {
-		return this.length;
-	};
-
-	$.ig.Array.prototype.item = function (index, value) {
-		if (arguments.length === 2) {
-			this[ index ] = value;
-			return value;
-		} else {
-			return this[ index ];
-		}
-	};
-
-	$.ig.Array.prototype.getLength = function (dimension) {
-		if (dimension === 0) {
-			return this.length;
-		}
-		else {
-			return this.dimensionLength[ dimension - 1 ];
-		}
-};
-
-$.ig.Array.prototype.clear = function () {
-	this.length = 0;
-};
-	*/
 	$.ig.extendNativePrototype(Array.prototype, "contains", function (item) {
 		var index = this.indexOf(item);
 		return (index >= 0);
@@ -5421,12 +5343,16 @@ $.ig.Array.prototype.clear = function () {
 
 	// Escape all html tags in given html element content
 	$.ig.util.escapeHtmlTags = function (htmlElemContent) {
-		return htmlElemContent
-			.replace(/&/g, "&amp;")
-			.replace(/</g, "&lt;")
-			.replace(/>/g, "&gt;")
-			.replace(/"/g, "&quot;")
-			.replace(/'/g, "&#039;");
+		if (typeof(htmlElemContent) === "string") {
+			return htmlElemContent
+				.replace(/&/g, "&amp;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;")
+				.replace(/"/g, "&quot;")
+				.replace(/'/g, "&#039;");
+		} else {
+			return htmlElemContent;
+		}
 	};
 
 	$.ig.util.replace = function (str, oldValue, newValue) {
@@ -7187,4 +7113,4 @@ $.ig.Array.prototype.clear = function () {
 		};
 	})();
 
-})(jQuery);
+}));

@@ -1,4 +1,6 @@
-﻿.ui-chart-palette-1
+﻿@import url("infragistics.ui.shared.css");
+
+.ui-chart-palette-1
 {
     border-color: #226CC8;
     background-color: #448ADF; 

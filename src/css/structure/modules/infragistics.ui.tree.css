@@ -1,3 +1,5 @@
+@import url("infragistics.ui.shared.css");
+
 .ui-igtree {
 	list-style: none;
 	overflow: auto;

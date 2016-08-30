@@ -20,11 +20,24 @@
  *   infragistics.ui.combo.js
  */
 
-/*global jQuery, window, Class */
-if (typeof jQuery !== "function") {
-    throw new Error("jQuery is undefined");
-}
+/*global define, jQuery, window, Class */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
 
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.toolbarbutton",
+			"./i18n/infragistics.ui.toolbar-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -896,4 +909,5 @@ if (typeof jQuery !== "function") {
     });
 
     $.extend($.ui.igToolbar, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igToolbar;
+}));

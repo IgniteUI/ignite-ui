@@ -37,7 +37,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226"];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -419,6 +419,10 @@
 					$("#264Editor2").igMaskEditor({
 						inputMask: 'Aaa\\>L/>aa'
 					});
+				}
+
+				window.Bug226Testbed = function () {
+					$("#226Editor").igTextEditor();
 				}
 
 				initialized = false;
@@ -1094,6 +1098,27 @@
 				}, 100);
 			});
 
+			testId = 'Bug 226';
+			test(testId, 2, function () {
+				var edit = $('#226Editor'), field = edit.igTextEditor("field");
+
+				edit.trigger("focus");
+				stop();
+				setTimeout(function () {
+					start();
+					field.val("some text")
+					edit.trigger("focus");
+					stop();
+					setTimeout(function () {
+						start();
+						edit.trigger("focus");
+						// verify focus won't reset the text or update value without a blur
+						equal(field.val(), "some text", "Text field did not retain text with consecutive focus events");
+						equal(edit.igTextEditor("value"), null, "Text editor updated its value without exiting edit mode!");
+					}, 100);
+				}, 100);
+			});
+
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1332,6 +1357,7 @@
 
 		<input id="264Editor1" />
 		<input id="264Editor2" />
+		<input id="226Editor" />
 
 	</div></body>
 </html>
