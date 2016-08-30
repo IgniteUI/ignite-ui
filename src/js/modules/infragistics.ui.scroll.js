@@ -1256,7 +1256,7 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
-					//should scrolled be triggered
+					//should scrolled event be triggered
 					this._cancelScrolling = true;
 					return { x: 0, y: 0 };
 				}
@@ -1299,7 +1299,7 @@
 					stepY: 0
 				});
 				if (!bNoCancel) {
-					//should scrolled be triggered
+					//should scrolled event be triggered
 					this._cancelScrolling = true;
 					return 0;
 				}
@@ -1348,7 +1348,7 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
-					//should scrolled be triggered
+					//should scrolled event be triggered
 					this._cancelScrolling = !bNoCancel;
 					return 0;
 				}
@@ -1451,7 +1451,7 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
-					//should scrolled be triggered
+					//should scrolled event be triggered
 					this._cancelScrolling = true;
 					return { x: 0, y: 0 };
 				}
@@ -2454,7 +2454,8 @@
 				this._lastBigIncDirV = Math.sign(step);
 			}
 			bNoCancel = this._trigger("scrolling", null, eventArgs);
-			//should scrolled be triggered
+
+			//should scrolled event be triggered
 			this._cancelScrolling = !bNoCancel;
 			if (bNoCancel) {
 				this._scrollTop(curPosY + step, false);
@@ -2482,7 +2483,7 @@
 				stepY: scrollStep
 			});
 
-			//should scrolled be triggered
+			//should scrolled event be triggered
 			this._cancelScrolling = !bNoCancel;
 
 			if (bNoCancel) {
@@ -2533,9 +2534,10 @@
 				stepX: 0,
 				stepY: scrollStep
 			});
-			//should scrolled be triggered
+
+			//should scrolled event be triggered
 			this._cancelScrolling = !bNoCancel;
-			
+
 			if (bNoCancel) {
 				this._bMouseDownV = true;
 				this._bUseArrowDown = true;
@@ -2604,7 +2606,8 @@
 					stepX: 0,
 					stepY: scrollStep
 				});
-				//should scrolled be triggered
+
+				//should scrolled event be triggered
 				this._cancelScrolling = !bNoCancel;
 
 				if (bNoCancel) {
@@ -2686,6 +2689,7 @@
 					stepX: 0,
 					stepY: nextPosY - curPosY
 				});
+
 				//should thumbDragEnd be triggered
 				this._cancelThumbDrag = !bNoCancel;
 
@@ -2759,7 +2763,8 @@
 			this._bMouseDownV = false;
 
 			if (this._bUseVDrag) {
-				if(!this._cancelThumbDrag) {
+				if (!this._cancelThumbDrag) {
+
 					this._trigger("thumbDragEnd", null, {
 						owner: this,
 						horizontal: false
@@ -2923,7 +2928,8 @@
 				this._lastBigIncDirH = Math.sign(step);
 			}
 			bNoCancel = this._trigger("scrolling", null, eventArgs);
-			//should scrolled be triggered
+
+			//should scrolled event be triggered
 			this._cancelScrolling = !bNoCancel;
 
 			if (bNoCancel) {
@@ -2954,7 +2960,8 @@
 				stepX: scrollStep,
 				stepY: 0
 			});
-			//should scrolled be triggered
+
+			//should scrolled event be triggered
 			this._cancelScrolling = !bNoCancel;
 
 			if (bNoCancel) {
@@ -3013,7 +3020,8 @@
 				stepX: scrollStep,
 				stepY: 0
 			});
-			//should scrolled be triggered
+
+			//should scrolled event be triggered
 			this._cancelScrolling = !bNoCancel;
 
 			if (bNoCancel) {
@@ -3118,7 +3126,8 @@
 					}, 250);
 				}
 			}
-			//should scrolled be triggered
+
+			//should scrolled event be triggered
 			this._cancelScrolling = !bNoCancel;
 		},
 
@@ -3193,7 +3202,7 @@
 				this._hBarArrowLeft
 					.switchClass(this.css.horizontalScrollArrowLeftActive, this.css.horizontalScrollArrowLeft);
 
-				if(!this._cancelScrolling) {
+				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {
 						owner: this,
 						smallIncrement: -1,
@@ -3207,7 +3216,7 @@
 				this._hBarArrowRight
 					.switchClass(this.css.horizontalScrollArrowRightActive, this.css.horizontalScrollArrowRight);
 
-				if(!this._cancelScrolling) {
+				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {
 						owner: this,
 						smallIncrement: 1,
@@ -3245,7 +3254,7 @@
 			this._bMouseDownH = false;
 
 			if (this._bUseHDrag) {
-				if(!this._cancelThumbDrag) {
+				if (!this._cancelThumbDrag) {
 					this._trigger("thumbDragEnd", null, {
 						owner: this,
 						horizontal: true
