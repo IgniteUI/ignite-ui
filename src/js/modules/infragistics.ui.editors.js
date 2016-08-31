@@ -2973,12 +2973,12 @@
 		insert: function (string) {
 			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value if the editor is not focused.
 				Note: method raises the "textChanged" event.
-				paramType="string" optional="false" The string to be inserted. 
+				paramType="string" optional="false" The string to be inserted.
 				```
 				$('.selector').%%WidgetName%%({
 					blur: function (evt, ui) {
 						// insert 0 as the user leaves the field
-						ui.owner.insert("0"); 
+						ui.owner.insert("0");
 					}
 				});
 				```
@@ -4838,12 +4838,12 @@
 		insert: function (string) {
 			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value (modified by the displayFactor) if the editor is not focused.
 				Note: method raises the "textChanged" event.
-				paramType="string" optional="false" The string to be inserted. 
+				paramType="string" optional="false" The string to be inserted.
 				```
 				$('.selector').igPercentEditor({
 					blur: function (evt, ui) {
 						// insert 0 as the user leaves the field
-						ui.owner.insert("0"); 
+						ui.owner.insert("0");
 					}
 				});
 				```
