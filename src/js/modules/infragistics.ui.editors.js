@@ -2971,8 +2971,18 @@
 			return this._getSelection(this._editorInput[ 0 ]).end;
 		},
 		insert: function (string) {
-			/* Paste text at location of caret. Note: method raises the "valueChanged" event.
-				paramType="string" optional="false" The string to be inserted. */
+			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value if the editor is not focused.
+				Note: method raises the "textChanged" event.
+				paramType="string" optional="false" The string to be inserted. 
+				```
+				$('.selector').%%WidgetName%%({
+					blur: function (evt, ui) {
+						// insert 0 as the user leaves the field
+						ui.owner.insert("0"); 
+					}
+				});
+				```
+			*/
 			this._insertHandler(string);
 		},
 		select: function (start, end) {
@@ -4825,6 +4835,21 @@
 		},
 
 		// igPercentEditor public methods
+		insert: function (string) {
+			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value (modified by the displayFactor) if the editor is not focused.
+				Note: method raises the "textChanged" event.
+				paramType="string" optional="false" The string to be inserted. 
+				```
+				$('.selector').igPercentEditor({
+					blur: function (evt, ui) {
+						// insert 0 as the user leaves the field
+						ui.owner.insert("0"); 
+					}
+				});
+				```
+			*/
+			this._insertHandler(string);
+		},
 		percentSymbol: function (symbol) {
 			/* Gets/sets a string that is used as the percent symbol shown with the number in the input. The value provided as a param is propagated to the percentSymbol option and thus has the same priority as the option.
 				paramType="sting" optional="true" New percent symbol.
