@@ -1517,6 +1517,10 @@ if (typeof jQuery !== "function") {
             }
         },
         _fontColorPlg: function (workspace, ui) {
+            // R.K August 25th, 2016 #268: Copy/pasting colored text from IE11 into Chrome/FF does not preserve the formatting
+            if (/^rgb/.test(ui.value)) {
+                ui.value = $.ig.util.rgbToHex(ui.value);
+            }
             this._execCommand("forecolor", ui.value);
         },
         _fontBackgroundColorPlg: function (workspace, ui) {

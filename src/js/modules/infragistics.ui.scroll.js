@@ -23,60 +23,408 @@
 
 	$.widget("ui.igScroll", {
 		options: {
-			/* type="bool" Sets or gets if the scrollbars should be always visible (on all environments). Otherwise it will be the default behavior. Note: this option is only for the custom scrollbars set through the scrollbarType option. */
+			/* type="bool" Sets or gets if the scrollbars should be always visible (on all environments). Otherwise it will be the default behavior. Note: this option is only for the custom scrollbars set through the scrollbarType option.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					alwaysVisible: true
+				});
+
+				//Get
+					var alwaysVisible = $(".selector").igScroll("option", "alwaysVisible");
+
+				//Set
+				$(".selector").igScroll("option", "alwaysVisible", true);
+			```
+			*/
 			alwaysVisible: false,
 			/* type="custom|native|none" Sets or gets what type of scrollbars should be using the igScroll (on all environments).
+			```
+				//Initialize
+				$(".selector").igScroll({
+					scrollbarType: "native"
+				});
+
+				//Get
+					var scrollbarType = $(".selector").igScroll("option", "scrollbarType");
+
+				//Set
+				$(".selector").igScroll("option", "scrollbarType", "native");
+			```
 				custom type="string" Custom scrollbars with custom ui and events.
 				native type="string" Native scrollbars
 				none type="string" No scrollbars should be visible */
 			scrollbarType: "custom",
-			/* type="bool" Sets or gets if igScroll can modify the DOM when it is initialized on certain element so that the content can be scrollable. */
+			/* type="bool" Sets or gets if igScroll can modify the DOM when it is initialized on certain element so that the content can be scrollable.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					modifyDOM: false
+				});
+
+				//Get
+				var modifyDOM = $(".selector").igScroll("option", "modifyDOM");
+			```
+			*/
 			modifyDOM: true,
-			/* type="number" Sets custom value for how high is actually the content. Useful when wanting to scroll and update the shown content manually. */
+			/* type="number" Sets custom value for how high is actually the content. Useful when wanting to scroll and update the shown content manually.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					scrollHeight: 1000
+				});
+
+				//Get
+				var scrollHeight = $(".selector").igScroll("option", "scrollHeight");
+
+				//Set
+				$(".selector").igScroll("option", "scrollHeight", 1000);
+			```
+			*/
 			scrollHeight: null,
-			/* type="number" Sets custom value for what width is actually the content. Useful when wanting to scroll and update the shown content manually. */
+			/* type="number" Sets custom value for what width is actually the content. Useful when wanting to scroll and update the shown content manually.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					scrollWidth: 1200
+				});
+
+				//Get
+				var scrollWidth = $(".selector").igScroll("option", "scrollWidth");
+
+				//Set
+				$(".selector").igScroll("option", "scrollWidth", 1200);
+			```
+			*/
 			scrollWidth: null,
-			/* type="number" Sets gets current vertical position of the content. */
+			/* type="number" Sets gets current vertical position of the content.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					scrollTop: 200
+				});
+
+				//Get
+				var scrollTop = $(".selector").igScroll("option", "scrollTop");
+
+				//Set
+				$(".selector").igScroll("option", "scrollTop", 200);
+			```
+			*/
 			scrollTop: 0,
-			/* type="number" Sets gets current horizontal position of the content. */
+			/* type="number" Sets gets current horizontal position of the content.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					scrollLeft: 200
+				});
+
+				//Get
+				var scrollLeft = $(".selector").igScroll("option", "scrollLeft");
+
+				//Set
+				$(".selector").igScroll("option", "scrollLeft", 200);
+			```
+			*/
 			scrollLeft: 0,
-			/* type="number" Sets gets the step of the default scrolling behavior when using mouse wheel */
+			/* type="number" Sets gets the step of the default scrolling behavior when using mouse wheel
+			```
+				//Initialize
+				$(".selector").igScroll({
+					wheelStep: 200
+				});
+
+				//Get
+				var wheelStep = $(".selector").igScroll("option", "wheelStep");
+
+				//Set
+				$(".selector").igScroll("option", "wheelStep", 200);
+			```
+			*/
 			wheelStep: 50,
-			/* type="number" Sets gets the step of the default scrolling behavior when using any of the custom scrollbar arrows */
+			/* type="number" Sets gets the step of the default scrolling behavior when using any of the custom scrollbar arrows
+			```
+				//Initialize
+				$(".selector").igScroll({
+					smallIncrementStep: 25
+				});
+
+				//Get
+				var smallIncrementStep = $(".selector").igScroll("option", "smallIncrementStep");
+
+				//Set
+				$(".selector").igScroll("option", "smallIncrementStep", 25);
+			```
+			*/
 			smallIncrementStep: 40,
-			/* type="number" Sets gets the step of the default scrolling behavior when using any of the custom scrollbar track areas. */
+			/* type="number" Sets gets the step of the default scrolling behavior when using any of the custom scrollbar track areas.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					bigIncrementStep: 200
+				});
+
+				//Get
+				var bigIncrementStep = $(".selector").igScroll("option", "bigIncrementStep");
+
+				//Set
+				$(".selector").igScroll("option", "bigIncrementStep", 200);
+			```
+			*/
 			bigIncrementStep: null,
-			/* type="bool" Sets gets if smoother scrolling with small intertia should be used when using mouse wheel */
+			/* type="bool" Sets gets if smoother scrolling with small intertia should be used when using mouse wheel
+			```
+				//Initialize
+				$(".selector").igScroll({
+					smoothing: true
+				});
+
+				//Get
+				var smoothing = $(".selector").igScroll("option", "smoothing");
+
+				//Set
+				$(".selector").igScroll("option", "smoothing", true);
+			```
+			*/
 			smoothing: false,
-			/* type="number" Sets or gets the modifier for how many pixels will be scrolled when using the mouse wheel once. This is used only for the smooth scrolling behavior. */
+			/* type="number" Sets or gets the modifier for how many pixels will be scrolled when using the mouse wheel once. This is used only for the smooth scrolling behavior.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					smoothingStep: 2
+				});
+
+				//Get
+				var smoothingStep = $(".selector").igScroll("option", "smoothingStep");
+
+				//Set
+				$(".selector").igScroll("option", "smoothingStep", 2);
+			```
+			*/
 			smoothingStep: 1,
-			/* type="number" Sets or gets the modifier for how long the scroll ‘animation’ lasts when using the mouse wheel once. This is used only for the smooth scrolling behavior. */
+			/* type="number" Sets or gets the modifier for how long the scroll ‘animation’ lasts when using the mouse wheel once. This is used only for the smooth scrolling behavior.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					smoothingDuration: 2
+				});
+
+				//Get
+				var smoothingDuration = $(".selector").igScroll("option", "smoothingDuration");
+
+				//Set
+				$(".selector").igScroll("option", "smoothingDuration", 2);
+			```
+			*/
 			smoothingDuration: 1,
-			/* type="number" Sets gets the modifier for how much the inertia scrolls on mobile devices */
+			/* type="number" Sets gets the modifier for how much the inertia scrolls on mobile devices
+			```
+				//Initialize
+				$(".selector").igScroll({
+					inertiaStep: 2
+				});
+
+				//Get
+				var inertiaDuration = $(".selector").igScroll("option", "inertiaStep");
+
+				//Set
+				$(".selector").igScroll("option", "inertiaStep", 2);
+			```
+			*/
 			inertiaStep: 1,
-			/* type="number" Sets gets the modifier for how long the inertia last on mobile devices */
+			/* type="number" Sets gets the modifier for how long the inertia last on mobile devices
+			```
+				//Initialize
+				$(".selector").igScroll({
+					inertiaDuration: 2
+				});
+
+				//Get
+				var inertiaDuration = $(".selector").igScroll("option", "inertiaDuration");
+
+				//Set
+				$(".selector").igScroll("option", "inertiaDuration", 2);
+			```
+			*/
 			inertiaDuration: 1,
-			/* type="number" Sets gets how much pixels of toleration there will be when initially swiping horizontall. This is to improve swiping up/down without scrolling left/right when not intended due to small diviation left/right */
+			/* type="number" Sets gets how much pixels of toleration there will be when initially swiping horizontall. This is to improve swiping up/down without scrolling left/right when not intended due to small diviation left/right
+			```
+				//Initialize
+				$(".selector").igScroll({
+					swipeToleranceX: 20
+				});
+
+				//Get
+				var swipeToleranceX = $(".selector").igScroll("option", "swipeToleranceX");
+
+				//Set
+				$(".selector").igScroll("option", "swipeToleranceX", 20);
+			```
+			*/
 			swipeToleranceX: 30,
-			/* type="number" Sets gets at least how many times the horizontal speed should be bigger so the inertia proceeds only horizontally without scrolling vertically. This is to improve interactions due to not perfectly swiping left/right with some diviation down/up */
+			/* type="number" Sets gets at least how many times the horizontal speed should be bigger so the inertia proceeds only horizontally without scrolling vertically. This is to improve interactions due to not perfectly swiping left/right with some diviation down/up
+			```
+				//Initialize
+				$(".selector").igScroll({
+					inertiaDeltaX: 1.5
+				});
+
+				//Get
+				var inertiaDeltaX = $(".selector").igScroll("option", "inertiaDeltaX");
+
+				//Set
+				$(".selector").igScroll("option", "inertiaDeltaX", 1.5);
+			```
+			*/
 			inertiaDeltaX: 1.25,
-			/* type="number" Sets gets at least how many times the vertical speed should be bigger so the inertia proceeds only vertically without scrolling horizontally. This is to improve interactions due to not perfectly swiping down/up with some diviation left/right */
+			/* type="number" Sets gets at least how many times the vertical speed should be bigger so the inertia proceeds only vertically without scrolling horizontally. This is to improve interactions due to not perfectly swiping down/up with some diviation left/right
+			```
+				//Initialize
+				$(".selector").igScroll({
+					inertiaDeltaY: 3
+				});
+
+				//Get
+				var inertiaDeltaY = $(".selector").igScroll("option", "inertiaDeltaY");
+
+				//Set
+				$(".selector").igScroll("option", "inertiaDeltaY", 3);
+			```
+			*/
 			inertiaDeltaY: 2,
-			/* type="array" Sets gets elements that are linked to the main content horizontally. When the content is scrolled on X axis the linked elements scroll accordingly. */
+			/* type="array" Sets gets elements that are linked to the main content horizontally. When the content is scrolled on X axis the linked elements scroll accordingly.
+			```
+				<div id='scrContainerLeft' style="width:200px; height:200px; overflow: hidden;">
+					<div style="width:900px; height: 400px;">
+					</div>
+				<div>
+
+				//Initialize
+				$(".selector").igScroll({
+					syncedElemsH: [$("#scrContainerLeft")]
+				});
+
+				//Get
+				var syncedElemsH = $(".selector").igScroll("option", "syncedElemsH");
+
+				//Set
+				$(".selector").igScroll("option", "syncedElemsH", $("#scrContainerLeft"));
+			```
+			*/
 			syncedElemsH: [],
-			/* type="array" Sets gets elements that are linked to the main content vertically. When the content is scrolled on Y axis the linked elements scroll accordingly. */
+			/* type="array" Sets gets elements that are linked to the main content vertically. When the content is scrolled on Y axis the linked elements scroll accordingly.
+			```
+				<div id='scrContainerLeft' style="width:200px; height:200px; overflow: hidden;">
+					<div style="width:900px; height: 400px;">
+					</div>
+				<div>
+
+				//Initialize
+				$(".selector").igScroll({
+					syncedElemsV: [$("#scrContainerLeft")]
+				});
+
+				//Get
+				var syncedElemsV = $(".selector").igScroll("option", "syncedElemsV");
+
+				//Set
+				$(".selector").igScroll("option", "syncedElemsV", $("#scrContainerLeft"));
+			```
+			*/
 			syncedElemsV: [],
-			/* type="string" Sets gets html or jQuery element which is used for horizontal scrolling. */
+			/* type="string" Sets gets html or jQuery element which is used for horizontal scrolling.
+			```
+				<div id='customHScroll' style='width:200px; overflow-x:auto;'>
+					<div style='width:500px; height:1px;'></div>
+				</div>
+
+				//Initialize
+				$(".selector").igScroll({
+					scrollbarType: "none",
+					scrollbarH: $("#customHScroll")
+				});
+
+				//Get
+				var scrollbarH = $(".selector").igScroll("option", "scrollbarH");
+			```
+			*/
 			scrollbarH: null,
-			/* type="string" Sets gets html or jQuery element which is used for vertical scrolling. */
+			/* type="string" Sets gets html or jQuery element which is used for vertical scrolling.
+			```
+				<div id='customVScroll' style='height:200px; overflow-y:auto; float:left; position:relative;'>
+					<div style='width:20px; height:500px;'></div>
+				</div>
+
+				//Initialize
+				$(".selector").igScroll({
+					scrollbarType: "none",
+					scrollbarV:  $("#customVScroll")
+				});
+
+				//Get
+				var scrollbarV = $(".selector").igScroll("option", "scrollbarV");
+			```
+			*/
 			scrollbarV: null,
-			/* type="bool" Sets gets if only the linked horizontal scrollbar should be used for horizontal scrolling. Note: The behavior when the linked scrollbar is scrolled in this case should be handled manually. */
+			/* type="bool" Sets gets if only the linked horizontal scrollbar should be used for horizontal scrolling. Note: The behavior when the linked scrollbar is scrolled in this case should be handled manually.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					scrollOnlyHBar: true
+				});
+
+				//Get
+				var scrollOnlyHBar = $(".selector").igScroll("option", "scrollOnlyHBar");
+
+				//Set
+				$(".selector").igScroll("option", "scrollOnlyHBar", true);
+			```
+			*/
 			scrollOnlyHBar: false,
-			/* type="bool" Sets gets if only the linked vertical scrollbar should be used for vertical scrolling. Note: The behavior when the linked scrollbar is scrolled in this case should be handled manually. */
+			/* type="bool" Sets gets if only the linked vertical scrollbar should be used for vertical scrolling. Note: The behavior when the linked scrollbar is scrolled in this case should be handled manually.
+			```
+				//Initialize
+				$(".selector").igScroll({
+					scrollOnlyVBar: true
+				});
+
+				//Get
+				var scrollOnlyVBar = $(".selector").igScroll("option", "scrollOnlyVBar");
+
+				//Set
+				$(".selector").igScroll("option", "scrollOnlyVBar", true);
+			```
+			*/
 			scrollOnlyVBar: false,
-			/* type="string" Sets gets html or jQuery element to which the horizontal scrollbar will be appended to. */
+			/* type="string" Sets gets html or jQuery element to which the horizontal scrollbar will be appended to.
+			```
+				<div id='parentH'>
+				</div>
+
+				//Initialize
+				$(".selector").igScroll({
+					scrollbarHParent: $("#parentH")
+				});
+
+				//Get
+				var scrollbarHParent = $(".selector").igScroll("option", "scrollbarHParent");
+			```
+			*/
 			scrollbarHParent: null,
-			/* type="string" Sets gets html or jQuery element to which the vertical scrollbar will be appended to. */
+			/* type="string" Sets gets html or jQuery element to which the vertical scrollbar will be appended to.
+			```
+				<div id='parentV'>
+				</div>
+
+				//Initialize
+				$(".selector").igScroll({
+					scrollbarVParent: $("#parentV")
+				});
+
+				//Get
+				var scrollbarVParent = $(".selector").igScroll("option", "scrollbarVParent");
+			```
+			*/
 			scrollbarVParent: null
 		},
 		events: {
@@ -84,6 +432,18 @@
 				Function takes arguments evt and args.
 				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
 				Use args.owner to obtain reference to igScroll.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igscrollrendered", function (evt, args) {
+					//return reference to igScroll
+					args.owner;
+				});
+
+				//Initialize
+				$(".selector").igScroll({
+					rendered: function(evt, args) {...}
+				});
+			```
 			*/
 			rendered: null,
 			/* cancel="true" Event which is raised before scrolling or before each step when having inertia.
@@ -96,6 +456,28 @@
 				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
 				Use args.stepX to obtain how much the content will be scrolled horizontally
 				Use args.stepY to obtain how much the content will be scrolled vertically
+			```
+				//Delegate
+				$(document).delegate(".selector", "igscrollscrolling", function (evt, args) {
+					//return reference to igScroll
+					args.owner;
+					//returns if the content is scrolled by the arrow : 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
+					args.smallIncrement
+					//returns if the content is scrolled by the scrollbar track areas: 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
+					args.bigIncrement
+					//returns which axis is being used to scroll - horizontal(true) or vertical(false).
+					args.horizontal
+					//returns how much the content will be scrolled horizontally
+					args.stepX
+					//returns how much the content will be scrolled vertically
+					args.stepY
+				});
+
+				//Initialize
+				$(".selector").igScroll({
+					scrolling: function(evt, args) {...}
+				});
+			```
 			*/
 			scrolling: null,
 			/* cancel="false" Event which is raised after scrolling has stopped.
@@ -105,6 +487,24 @@
 				Use args.smallIncrement to obtain if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
 				Use args.bigIncrement to obtain if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
 				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
+			```
+				//Delegate
+				$(document).delegate(".selector", "igscrollscrolled", function (evt, args) {
+					//return reference to igScroll
+					args.owner;
+					//returns if the content is scrolled by the arrow : 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
+					args.smallIncrement
+					//returns if the content is scrolled by the scrollbar track areas: 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
+					args.bigIncrement
+					//returns which axis is being used to scroll - horizontal(true) or vertical(false).
+					args.horizontal
+				});
+
+				//Initialize
+				$(".selector").igScroll({
+					scrolled: function(evt, args) {...}
+				});
+			```
 			*/
 			scrolled: null,
 			/* cancel="false" Event which is raised when there is mouse click on the scrollbar's thumb drag.
@@ -112,6 +512,20 @@
 				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
 				Use args.owner to obtain reference to igScroll.
 				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
+			```
+				//Delegate
+				$(document).delegate(".selector", "igscrollthumbdragstart", function (evt, args) {
+					//return reference to igScroll
+					args.owner;
+					//returns which axis is being used to scroll - horizontal(true) or vertical(false).
+					args.horizontal
+				});
+
+				//Initialize
+				$(".selector").igScroll({
+					thumbDragStart: function(evt, args) {...}
+				});
+			```
 			*/
 			thumbDragStart: null,
 			/* cancel="true" Event which is raised when the thumb drag is being moved.
@@ -122,6 +536,24 @@
 				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
 				Use args.stepX to obtain how much the content will be scrolled horizontally
 				Use args.stepY to obtain how much the content will be scrolled vertically
+			```
+				//Delegate
+				$(document).delegate(".selector", "igscrollthumbdragmove", function (evt, args) {
+					//return reference to igScroll
+					args.owner;
+					//returns which axis is being used to scroll - horizontal(true) or vertical(false).
+					args.horizontal
+					//returns how much the content will be scrolled horizontally
+					args.stepX
+					//returns how much the content will be scrolled vertically
+					args.stepY
+				});
+
+				//Initialize
+				$(".selector").igScroll({
+					thumbDragMove: function(evt, args) {...}
+				});
+			```
 			*/
 			thumbDragMove: null,
 			/* cancel="false" Event which is raised on mouse up from the scrollbar's thumb drag.
@@ -129,6 +561,20 @@
 				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
 				Use args.owner to obtain reference to igScroll.
 				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
+			```
+				//Delegate
+				$(document).delegate(".selector", "igscrollthumbdragend", function (evt, args) {
+					//return reference to igScroll
+					args.owner;
+					//returns which axis is being used to scroll - horizontal(true) or vertical(false).
+					args.horizontal
+				});
+
+				//Initialize
+				$(".selector").igScroll({
+					thumbDragEnd: function(evt, args) {...}
+				});
+			```
 			*/
 			thumbDragEnd: null
 		},
@@ -182,6 +628,12 @@
 		},
 
 		refresh: function () {
+			/*
+			```
+				$(".selector").igScroll("refresh");
+			```
+			*/
+
 			//width specific
 			this._elemWidth = this.element.width();
 			this._contentWidth = this._content.width();
@@ -2969,6 +3421,11 @@
 		},
 
 		destroy: function () {
+			/*
+			```
+				$(".selector").igScroll("destroy");
+			```
+			*/
 			cancelAnimationFrame(this._touchInertiaAnimID);
 			cancelAnimationFrame(this._showScrollbarsAnimId);
 			clearTimeout(this._hideScrollbarID);

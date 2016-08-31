@@ -979,11 +979,11 @@
 				});
 				test("Test function filter with argument fieldExpressionsOnStrings", function () {
 					var fd;
-					ds.filter([], null, null, "ID >= 1 AND ID < 3");
+					ds.filter([], null, null, "ID LIKE %1% OR ID LIKE %3%");
 					fd = ds.filteredData();
 					ok(fd.length === 2 &&
 						fd[0].ID === 1 &&
-						fd[1].ID === 2,
+						fd[1].ID === 3,
 						"Test filter");
 				});
 			});

@@ -152,6 +152,7 @@ The full built content for both packages can be browsed at the [Ignite UI Bower 
 * [Ignite UI help API](http://www.igniteui.com/help/api/2016.1/)
 * [Ignite UI help topics](http://www.igniteui.com/help/)
 * [Ignite UI online samples](http://www.igniteui.com/)
+* [Ignite UI questions on StackOverflow](http://stackoverflow.com/questions/tagged/ignite-ui)
 
 ##Contributing
 You can find all guidelines on how to contribute on the wiki page.  

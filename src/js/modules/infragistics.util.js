@@ -5147,10 +5147,12 @@ $.ig.Array.prototype.clear = function () {
 		if (!timer && !elem[ 0 ].offsetWidth) {
 			timer = obj.wait = "width";
 		}
+
+		obj.elem = elem;
+		obj.chart = chart;
+		obj.notify = notifyResized;
+
 		if (timer) {
-			obj.elem = elem;
-			obj.chart = chart;
-			obj.notify = notifyResized;
 
 			// stop: stop timer: coming from destroy
 			obj.onTick = obj.onTick || function (stop) {
@@ -5205,6 +5207,18 @@ $.ig.Array.prototype.clear = function () {
 				}
 			};
 			obj.onTick();
+		}
+
+		if (obj.chart && obj.notify && !obj.__resizeProxy) {
+			obj.oldDevicePixelRatio = window.devicePixelRatio || 1.0;
+			obj.__resizeProxy = function () {
+				var devicePixelRatio = window.devicePixelRatio || 1.0;
+				if (devicePixelRatio !== obj.oldDevicePixelRatio) {
+					obj.oldDevicePixelRatio = window.devicePixelRatio || 1.0;
+					obj.chart[ obj.notify ]();
+				}
+			};
+			window.addEventListener("resize", obj.__resizeProxy, false);
 		}
 	};
 

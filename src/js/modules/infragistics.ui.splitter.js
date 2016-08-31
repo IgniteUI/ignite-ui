@@ -448,13 +448,43 @@ if (typeof jQuery !== "function") {
 
                 // S.T. 22 May 2013 #142262
                 // If the cointaner is with border box and the browser is Chrome, in the computed style of the element is not include border width
-                if ($.ig.util.isChrome && boxSizing === "border-box") {
 
-                    // P.P 29 May 2016 #215742 Edge present border width as empty string
-                    borderWidth = this.element.css("border-width") === "" ?
-                        0 : this.element.css("border-width");
+                // R.K. August 26th, 2016 #278 The splitter can't calculate width correctly on Firefox and Microsoft Edge with "box-sizing: border-box"
+                // Helper function to return the max border size based on the orientation of the splitter
+                var _getBorderWidth = function(element, orientation) {
+                    var computedStyle = window.getComputedStyle(element[ 0 ]);
 
-                    value -= parseInt(borderWidth, 10) * 2;
+                    if (orientation === "horizontal") {
+                        var leftBorder = isNaN(parseInt(computedStyle.borderLeftWidth, 10)) ?
+                            0 : parseInt(computedStyle.borderLeftWidth, 10);
+                        var rightBorder = isNaN(parseInt(computedStyle.borderRightWidth, 10)) ?
+                            0 : parseInt(computedStyle.borderRightWidth, 10);
+
+                        return Math.max(leftBorder, rightBorder);
+                    } else {
+
+                        var topBorder = isNaN(parseInt(computedStyle.borderTopWidth, 10)) ?
+                            0 : parseInt(computedStyle.borderTopWidth, 10);
+                        var bottomBorder = isNaN(parseInt(computedStyle.borderBottomWidth, 10)) ?
+                            0 : parseInt(computedStyle.borderBottomWidth, 10);
+
+                        return Math.max(topBorder, bottomBorder);
+                    }
+                };
+
+                if (boxSizing === "border-box") {
+                    // R.K. August 26th, 2016 #278 The splitter can't calculate width correctly on Firefox and Microsoft Edge with "box-sizing: border-box"
+                    // Microsoft Edge returns true at '$.ig.util.isChrome' but does not have a webstore property in the returned object
+                    // so we're testing for "real" Chrome as both Firefox and Edge do not have "border-width" property
+                    if ($.ig.util.isChrome && $.ig.util.isChrome.webstore) {
+                        borderWidth = this.element.css("border-width") === "" ?
+                            0 : this.element.css("border-width");
+                        borderWidth = parseInt(borderWidth, 10);
+                    } else {
+                        borderWidth = _getBorderWidth(this.element, this.options.orientation);
+                    }
+                    value -= borderWidth * 2;
+                    return value;
                 }
                 return value;
             }
@@ -485,7 +515,7 @@ if (typeof jQuery !== "function") {
         _createSplitter: function () {
             var collapseButtons = $("<div><span></span></div><div><span></span></div>"),
                 bar = $("<div></div>").attr("tabindex", 0),
-				div, topMarginButtonLeftCollapsed;
+				div;
             this._splitter = {
                 left: this._panels[ 0 ],
                 right: this._panels[ 1 ]
@@ -498,16 +528,6 @@ if (typeof jQuery !== "function") {
             //D.A. 31st October 2013 JSLint validation. Removing unused variable span.
             $("<span></span>")[ this._getOrientation("size") ](this._splitter
                 .bar[ this._getOrientation("size") ]).attr("title", "").appendTo(div);
-
-            if ($.ig.util.isIEOld) {
-                setTimeout(function () {
-                    topMarginButtonLeftCollapsed =
-                        $(".ui-igsplitter-collapse-button-vertical-left.ui-state-default")
-                        .css("margin-top");
-                    $(".ui-igsplitter-collapse-button-vertical-left.ui-state-default")
-                    .css("margin-top", topMarginButtonLeftCollapsed);
-                }, 1);
-            }
         },
         _removeClasses: function () {
             var buttonLeft, buttonRight, resizeHandler, i;
@@ -974,10 +994,6 @@ if (typeof jQuery !== "function") {
             var page = self._isTouch(ev) ?
                 ev.originalEvent.touches[ 0 ][ self._getOrientation("page") ] :
                 ev[ self._getOrientation("page") ], bar;
-            if (ev.which === 0 && $.ig.util.isIE && $.ig.util.isIEOld) {
-                self._stopDrag(self);
-                return false;
-            }
             if (self._capturedElement) {
                 if (ev.type === "keydown") {
                     bar = self[ self._getOrientation("start") ] + self._kbMove;
@@ -1123,16 +1139,6 @@ if (typeof jQuery !== "function") {
 			    $splitBarChildren = this._splitter.bar.children(),
 			    regExp = new RegExp("%"),
                 cloneObjPanels = this._opt.calculateSizeCloneObject.panels, outerOppositeSizeKey;
-
-            // D.A. 11th September 2014, Bug #170518 Adjust the size in IE8, when it is in percentage,
-            // because jquery rounds the size up while the browser rounds it down
-            if ($.ig.util.isIEOld) {
-
-                // Test whether the size is in percentage
-                if (regExp.test(this.element[ 0 ].style[ sizeKey ])) {
-                    size -= 1;
-                }
-            }
 
             for (i = 0; i < this._panels.length; i++) {
                 if (!this._panels[ i ].options.collapsed) {
@@ -1661,33 +1667,36 @@ if (typeof jQuery !== "function") {
             panelSize = panel[ this._getOrientation("size") ]();
             maxSize = newSize + panelSize;
 
-            if (index <= this._panels.length) {
-                if (panel.options.collapsed) {
-                    this._panelHelper(outerSize, size);
-                } else {
-                    if (maxSize > panel.options.max && overrideMax) {
-                        panel.options.max = maxSize;
-                    }
-                    if (this._isPercentLayout) {
-                        panel[ this._getOrientation("size") ]((maxSize /
-                            this._getSize(this._getOrientation("size"))) * 100 + "%");
-                    } else {
-                        panel[ this._getOrientation("size") ](maxSize);
-                    }
-                    panel.options.size = maxSize;
-                }
+            // if (index <= this._panels.length) {
+            if (panel.options.collapsed) {
+                this._panelHelper(outerSize, size);
             } else {
-                maxSize = Math.min(maxSize, panel.options.max);
-                if (!panel.options.collapsed) {
-                    panel[ this._getOrientation("size") ](maxSize);
-                    panel.options.size = maxSize;
+                if (maxSize > panel.options.max && overrideMax) {
+                    panel.options.max = maxSize;
+                }
+                if (this._isPercentLayout) {
+                    panel[ this._getOrientation("size") ]((maxSize /
+                        this._getSize(this._getOrientation("size"))) * 100 + "%");
                 } else {
-                    maxSize = panelSize = 0;
+                    panel[ this._getOrientation("size") ](maxSize);
                 }
-                if (maxSize + (outerSize - panelSize) < size || panel.options.collapsed) {
-                    this._createPanel(size, (outerSize - panelSize) + maxSize, index - 1);
-                }
+
+                panel.options.size = maxSize;
             }
+
+            // Dead code the index always is smaller than length of panels.
+            // else {
+            //     maxSize = Math.min(maxSize, panel.options.max);
+            //     if (!panel.options.collapsed) {
+            //         panel[ this._getOrientation("size") ](maxSize);
+            //         panel.options.size = maxSize;
+            //     } else {
+            //         maxSize = panelSize = 0;
+            //     }
+            //     if (maxSize + (outerSize - panelSize) < size || panel.options.collapsed) {
+            //         this._createPanel(size, (outerSize - panelSize) + maxSize, index - 1);
+            //     }
+            // }
         },
         _panelHelper: function (outerSize, size) {
             var panel, flag = false, i;
