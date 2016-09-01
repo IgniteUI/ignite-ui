@@ -96,12 +96,17 @@
 		"<div>Text text</div>";
 
 
-		module('igScroll - Events');
+		module('igScroll - Events', {
+			afterEach: function() {
+				$(document).undelegate("#elemVH", ".scrollevents");
+				$("#elemVH").remove();
+			}
+		});
 
 		test("Rendered event is fired and its event arguments are correct.", function () {
 			var evtArgs, isFired = false;
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-			$(document).delegate("#elemVH", "igscrollrendered", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollrendered.scrollevents", function (evt, args) {
 				isFired = true;
 				evtArgs = args;
 			});
@@ -120,7 +125,7 @@
 			var evtArgs, isFired = false;
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
-			$(document).delegate("#elemVH", "igscrollscrolling", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollscrolling.scrollevents", function (evt, args) {
 				isFired = true;
 				evtArgs = args;
 			});
@@ -150,7 +155,7 @@
 			var evtArgs, isFired = false;
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
-			$(document).delegate("#elemVH", "igscrollscrolled", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollscrolled.scrollevents", function (evt, args) {
 				isFired = true;
 				evtArgs = args;
 			});
@@ -181,12 +186,12 @@
 
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
-			$(document).delegate("#elemVH", "igscrollscrolling", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollscrolling.scrollevents", function (evt, args) {
 				//cancel event
 				return false;
 			});
 
-			$(document).delegate("#elemVH", "igscrollscrolled", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollscrolled.scrollevents", function (evt, args) {
 				scrolledIsFired = true;
 			});
 
@@ -213,12 +218,12 @@
 
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
-			$(document).delegate("#elemVH", "igscrollscrolling", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollscrolling.scrollevents", function (evt, args) {
 				//cancel event
 				return false;
 			});
 
-			$(document).delegate("#elemVH", "igscrollscrolled", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollscrolled.scrollevents", function (evt, args) {
 				scrolledIsFired = true;
 			});
 
@@ -252,7 +257,7 @@
 
 			var vDrag = $("#elemVH_vBar_drag");
 
-			$(document).delegate("#elemVH", "igscrollthumbdragstart", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollthumbdragstart.scrollevents", function (evt, args) {
 				isFired = true;
 				evtArgs = args;
 			});
@@ -284,7 +289,7 @@
 
 			var vDrag = $("#elemVH_vBar_drag");
 
-			$(document).delegate("#elemVH", "igscrollthumbdragmove", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollthumbdragmove.scrollevents", function (evt, args) {
 				isFired = true;
 				evtArgs = args;
 				totalScrollY += evtArgs.stepY;
@@ -318,7 +323,7 @@
 
 			var vDrag = $("#elemVH_vBar_drag");
 
-			$(document).delegate("#elemVH", "igscrollthumbdragend", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollthumbdragend.scrollevents", function (evt, args) {
 				isFired = true;
 				evtArgs = args;
 			});
@@ -346,23 +351,23 @@
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
 
-			$(document).delegate("#elemVH", "igscrollthumbdragstart", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollthumbdragstart.scrollevents", function (evt, args) {
 				eventsOrder.push("thumbDragStart");
 			});
 
-			$(document).delegate("#elemVH", "igscrollscrolling", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollscrolling.scrollevents", function (evt, args) {
 				eventsOrder.push("scrolling");
 			});
 
-			$(document).delegate("#elemVH", "igscrollthumbdragmove", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollthumbdragmove.scrollevents", function (evt, args) {
 				eventsOrder.push("thumbDragMove");
 			});
 
-			$(document).delegate("#elemVH", "igscrollthumbdragend", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollthumbdragend.scrollevents", function (evt, args) {
 				eventsOrder.push("thumbDragEnd");
 			});
 
-			$(document).delegate("#elemVH", "igscrollscrolled", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollscrolled.scrollevents", function (evt, args) {
 				eventsOrder.push("scrolled");
 			});
 
@@ -402,17 +407,17 @@
 
 			var vDrag = $("#elemVH_vBar_drag");
 
-			$(document).delegate("#elemVH", "igscrollthumbdragmove", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollthumbdragmove.scrollevents", function (evt, args) {
 				//cancel event
 				return false;
 			});
 
-			$(document).delegate("#elemVH", "igscrollthumbdragend", function (evt, args) {
+			$(document).delegate("#elemVH", "igscrollthumbdragend.scrollevents", function (evt, args) {
 				isFired = true;
 			});
 
 			stop();
-			var elemContainer = elemContainer = $("#elemVH_container"),
+			var elemContainer = $("#elemVH_container"),
 				vScrollbarContainer = $("#elemVH_vBar");
 			elemContainer.mouseenter();
 			vScrollbarContainer.mouseenter();
@@ -420,8 +425,7 @@
 
 			setTimeout(function () {
 				start();
-				//Following check fails due to issue: https://github.com/IgniteUI/ignite-ui/issues/175
-				//ok(!isFired, "ThumbDragEnd should not fire.");
+				ok(!isFired, "ThumbDragEnd should not fire.");
 				equal(elemContainer.scrollTop(), 0, "No scrolling should occur.");
 				$("#testBed").empty();
 			}, 2500);

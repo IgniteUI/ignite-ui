@@ -1,4 +1,8 @@
-﻿.ui-igedit,
+﻿@import url("infragistics.ui.shared.css");
+@import url("infragistics.ui.scroll.css");
+@import url("infragistics.ui.validator.css");
+
+.ui-igedit,
 .ui-widget .ui-igedit
 {
     background: #ffffff;

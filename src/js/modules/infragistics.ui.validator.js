@@ -20,7 +20,25 @@
 *	</script>
 *	<input id="text1" type="text" />
 */
-/*global jQuery, Class */
+
+/*global define, jQuery, Class */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.notifier",
+			"./infragistics.ui.validator-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 /*
 	igValidator is a widget based on jQuery UI that provides functionality to validate value in target and show appropriate error message.
@@ -1653,4 +1671,4 @@ $.ig.igValidatorCreditCardRule = $.ig.igValidatorCreditCardRule || $.ig.igValida
 	}
 });
 
-}(jQuery));
+}));

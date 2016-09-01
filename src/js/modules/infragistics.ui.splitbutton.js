@@ -15,11 +15,23 @@
  *   infragistics.ui.toolbarbutton.js
  */
 
-/*global jQuery */
-if (typeof jQuery !== "function") {
-    throw new Error("jQuery is undefined");
-}
+/*global define, jQuery */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
 
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.ui.toolbarbutton"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
     /*
 		The igSplitButton is a jQuery based widget.
@@ -393,4 +405,5 @@ if (typeof jQuery !== "function") {
     });
 
     $.extend($.ui.igSplitButton, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igSplitButton;
+}));

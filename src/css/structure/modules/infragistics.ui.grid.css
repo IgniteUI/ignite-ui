@@ -1,3 +1,10 @@
+@import url("infragistics.ui.shared.css");
+@import url("infragistics.ui.scroll.css");
+@import url("infragistics.ui.tree.css");
+@import url("infragistics.ui.editors.css");
+@import url("infragistics.ui.popover.css");
+@import url("infragistics.ui.validator.css");
+
 /* css for grid widget */
 
 .ui-iggrid { 
@@ -208,7 +215,7 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
     width: -moz-calc(100% - 34px)!important; /** FF 4-15  **/
     width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/ 
 }
-/*Bug 208811, 08.03.2016 S.D., Group header’s height is twice as normal header height. */
+/*Bug 208811, 08.03.2016 S.D., Group headerï¿½s height is twice as normal header height. */
 .ui-iggrid-multiheader-cell.ui-iggrid-headercell-featureenabled .ui-iggrid-headertext{
     width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/
     width: -moz-calc(100% - 34px)!important; /** FF 4-15  **/
@@ -383,7 +390,22 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .ui-iggrid-filtercell .ui-igeditor-input-container+.ui-iggrid-indicatorcontainer
 {
     float:right; 
+	margin-top:0;
 } 
+.ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container
+{
+    float:left;
+	width:calc(100% - 10px);
+} 
+.ui-iggrid-filtercell  .ui-igedit-button-common~.ui-igeditor-input-container
+{
+    float:left;
+	width:calc(100% - 35px);
+} 
+.ui-iggrid-filtercell .ui-iggrid-indicatorcontainer+.ui-igeditor-input-container
+{
+    width:auto;
+}
 .ui-iggrid-rtl .ui-iggrid-filtercell .ui-iggrid-indicatorcontainer a, 
 .ui-iggrid-filtercell .ui-igeditor-input-container+.ui-iggrid-indicatorcontainer a
 {    
@@ -1266,7 +1288,7 @@ right: 3px;
 	margin-top:-1px;
 }
 /* not supported in IE7 and IE6
-.ui-iggrid-hiding-indicator:after { content:"«"; }
+.ui-iggrid-hiding-indicator:after { content:"ï¿½"; }
 */
 
 

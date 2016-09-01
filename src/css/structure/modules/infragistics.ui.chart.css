@@ -1,4 +1,6 @@
-﻿.ui-chart-container {
+﻿@import url("infragistics.ui.shared.css");
+
+.ui-chart-container {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
     border-width: 0px;
