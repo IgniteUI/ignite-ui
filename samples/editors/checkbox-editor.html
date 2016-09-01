@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+    <style>
+        h3 {
+            font-size:20px;
+            margin-bottom:20px;
+        }
+        .group-fields {
+            margin-bottom: 10px;
+        }
+        .group-fields .inline {
+            display:inline;
+        }
+        .group-fields .ui-igcheckbox-normal {
+            margin-right: 5px;
+            float: left;
+        }
+		form {
+			float: left;
+			width: 500px;
+			min-width: 500px;
+		}
+		.submit-container
+        {
+            top: 0px;
+            right: 0px;
+            min-width: 400px;
+            float: right;
+            font-size: 18px;
+        }
+
+			.submit-container h3 {
+				display: none;
+			}
+
+            .submit-container p
+            {
+                font-size: 16px;
+            }
+				.submit-container p.result {
+					margin-top: 10px;
+					margin-bottom: 10px;
+				}
+				.submit-container span.result-name {
+					font-weight: bold;
+					text-transform: capitalize;
+				}
+
+		.clear {
+			clear: both;
+		}
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+    
+</head>
+<body><p>The sample shows a basic use of igCheckboxEditor control.</p>
+	<form id="form1">
+		<div id="editors">
+			<h3>Configure your Infragistics Professional</h3>
+			<div class="group-fields">
+				<div id="suite"></div>
+				<label for="suite" class="inline">UI component suite</label>
+			</div>
+			<div class="group-fields">
+				<div id="icon"></div>
+				<label for="icon" class="inline">Icon pack</label>
+			</div>
+			<div class="group-fields">
+				<div id="indigo"></div>
+				<label for="indigo" class="inline">Indigo Studio</label>
+			</div>
+			<input type="submit" id="order" value="Order now">
+		</div>
+	</form>
+	<div class="submit-container">
+		<h3>Submitted Values</h3>
+		<div class="submit-container">
+			<p id="results">
+		</div>
+	</div>
+	<div class="clear"></div>
+
+    <script>
+        $(document).ready(function () {
+        	$("#suite").igCheckboxEditor({
+        		inputName: "suite",
+                checked: true,
+                readOnly: true,
+				value: "suite"
+            });
+        	$("#icon").igCheckboxEditor({
+        		inputName: "icon",
+                checked: false,
+            });
+        	$("#indigo").igCheckboxEditor({
+        		inputName: "indigo",
+        		checked: true,
+                disabled: true
+        	});
+
+        	$("#form1").submit(function (event) {
+        		var submittedValues = $("#form1").serializeArray();
+
+        		$("#results").empty();
+
+        		$(".submit-container h3").show();
+        		for (var i = 0 ; i < submittedValues.length; i++) {
+        			$("#results").append("<p class='result'><span class='result-name'>" + submittedValues[i].name.replace(/([A-Z])/g, ' $1') + ":</span>  " + submittedValues[i].value + "</p>");
+        		}
+
+        		return false;
+        	});
+        });
+    </script>
+</body>
+</html>

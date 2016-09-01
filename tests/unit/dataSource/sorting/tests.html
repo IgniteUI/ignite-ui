@@ -7,6 +7,8 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	
+	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	
@@ -39,7 +41,8 @@
 	</script>
 	
 	<script type="text/javascript"> 
-
+		$.mockjaxSettings.logging = 0;  // only critical error messages
+		
 		var tableDs = null;
 		var jsonDs = null;
 		var mapperDs = null;
@@ -185,305 +188,409 @@
             { "employeeId": 21, "supervisorId": 20, "firstName": "Jeremy", "lastName": "Donaldson", "Category": { "ID": 2,  "Name": "Name2"}  }
 		];
 		
-		$(document).ready(function () {
-		
-			// create the data sources
-			tableDs = new $.ig.DataSource({ schema: { fields:[ {name : "col1"}, {name : "col2", type: "number"}, {name : "col3"}, {name : "col4"}, {name : "col5", type : "date"}, {name : "col6", type : "boolean"}  ]}, 
-				sorting: { type: "local"}, dataSource: $("#t1")[0] 
-			}).dataBind();
-			
-			// here we are specifying a default sort direction, which will be applied immediately after the source is bound 
-			jsonDs = new $.ig.DataSource({ sorting: { type: "local", defaultDirection: "asc" }, dataSource: arrayOfDataObjects }).dataBind();
+		 $(function () {
+			function loadTestbeds() {
+				// create the data sources
+				tableDs = new $.ig.DataSource({ schema: { fields:[ {name : "col1"}, {name : "col2", type: "number"}, {name : "col3"}, {name : "col4"}, {name : "col5", type : "date"}, {name : "col6", type : "boolean"}  ]}, 
+					sorting: { type: "local"}, dataSource: $("#t1")[0] 
+				}).dataBind();
+				
+				// here we are specifying a default sort direction, which will be applied immediately after the source is bound 
+				jsonDs = new $.ig.DataSource({ sorting: { type: "local", defaultDirection: "asc" }, dataSource: arrayOfDataObjects }).dataBind();
 
-			//data source with mapper
-			mapperDs = new $.ig.DataSource({
-				sorting: { type: "local", defaultDirection: "asc" }, dataSource: northwindProductsJSON,
+				//data source with mapper
+				mapperDs = new $.ig.DataSource({
+					sorting: { type: "local", defaultDirection: "asc" }, dataSource: northwindProductsJSON,
+					schema: {
+						fields: [{
+							name: "ID", type: "number"
+						}, {
+							name: "Name", type: "string"
+						}, {
+							name: "Category", type: "object", mapper: function (record) {
+								return record.Category.Name;
+							}
+						}]
+					}
+				}).dataBind();
+
+				treeDs = new $.ig.TreeHierarchicalDataSource({
+					dataSource: treeFlatData,
+					primaryKey: "employeeId", 
+					treeDS: {
+						foreignKey: "supervisorId",
+						foreignKeyRootValue: -1,
+						initialExpandDepth: 2,
+						childDataKey: "childData"
+					},
+					schema: {
+						fields: [{
+							name: "employeeId", type: "number"
+						}, {
+							name: "supervisorId", type: "number"
+						}, {
+							name: "firstName", type: "string"
+						},
+						{
+						name: "lastName", type: "string"
+						},
+						{
+							name: "Category", type: "object", mapper: function (record) {
+								return record.Category.ID;
+							}
+						}]
+					}
+				});
+				treeDs.dataBind();
+				
+				// use jQuery templating to render the processed/transformed data source 
+				$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
+		}
+		
+		initialized = false;
+		module("igDataSource Sorting", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 500);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+			
+		var testId_1 = "IgDataSource Sorting - sort with schema";
+		var testId_2 = "IgDataSource Sorting - sort without schema";
+		var testId_3 = "IgDataSource Sorting - sort single numeric";
+		var testId_4 = "IgDataSource Sorting - sort single string";
+		var testId_5 = "IgDataSource Sorting - sort single string case sensitive";
+		var testId_6 = "IgDataSource Sorting - sort single dates";
+		var testId_7 = "IgDataSource Sorting - sort single boolean";
+		var testId_8 = "IgDataSource Sorting - sort multiple 1";
+		var testId_9 = "IgDataSource Sorting - sort multiple 2";
+		var testId_10 = "IgDataSource Sorting - sort multiple 3 (string expressions)";
+		var testId_11 = "IgDataSource Sorting - sort - custom sorting comparer";
+		var testId_12 = "IgDataSource Sorting - sort - custom sorting conversion function";
+		var testId_13 = "IgDataSource Sorting - sort - custom sorting function (ALL functionality)";
+		var testId_14 = "IgDataSource Sorting - sort - mapper function";
+		var testId_15 = "IgTreeHierarchicalDataSource Sorting - sort - mapper function";
+		var testId_16 = "IgDataSource Sorting - remote sorting";
+		
+		// IgDataSource Sorting - sort with schema
+		test(testId_1, function() {
+			
+			tableDs.sort([{fieldName : "col3"}], "asc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+			
+			// check the first record in col 3
+			equal("Beer", tableDs.dataView()[0].col3 , "Beer" );
+			
+			tableDs.sort([{fieldName : "col3"}], "desc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
+
+			// check the first record in col 3
+			// BMW 323 CI
+			
+			equal("trainers", tableDs.dataView()[0].col3 , "trainers" );
+		
+		});
+		
+		// IgDataSource Sorting - sort without schema
+		test(testId_2, function() {
+			
+			jsonDs.sort([{fieldName : "firstName"}], "asc", true);
+			$("#list1").empty();
+			$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
+			
+			// check the first record in col 3
+			equal("Alex", jsonDs.dataView()[0].firstName , "Alex" );
+			
+			jsonDs.sort([{fieldName : "firstName"}], "desc", true);
+			$("#list1").empty();
+			$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
+			
+			equal("Murtaza", jsonDs.dataView()[0].firstName , "Murtaza" );
+			
+		});
+		
+		// IgDataSource Sorting - sort single numeric
+		test(testId_3, function() {
+		
+			tableDs.sort([{fieldName : "col2"}], "asc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+			
+			// check the first record in col 2
+			equal(15, tableDs.dataView()[0].col2 , 15);
+			
+			tableDs.sort([{fieldName : "col2"}], "desc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
+
+			// check the first record in col 3
+			// BMW 323 CI
+			
+			equal(434343, tableDs.dataView()[0].col2 , 434343);
+		});
+		
+		// IgDataSource Sorting - sort single string
+		test(testId_4, function() {
+			tableDs.sort([{fieldName : "col3"}], "asc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+			
+			// check the first record in col 3
+			equal("Beer", tableDs.dataView()[0].col3 , "Beer" );
+			
+			tableDs.sort([{fieldName : "col3"}], "desc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
+
+			// check the first record in col 3
+			// BMW 323 CI
+			
+			equal("trainers", tableDs.dataView()[0].col3 , "trainers" );
+		});
+		
+		// IgDataSource Sorting - sort single string case sensitive
+		test(testId_5, function() {
+			ok(true);
+		});
+		
+		// IgDataSource Sorting - sort single dates
+		test(testId_6, function() {
+			
+			tableDs.sort([{fieldName : "col5"}], "asc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+			
+			// check the first record in col 5
+			equal(new Date("Thu Jul 23 00:00:00 2009").toString(), tableDs.dataView()[0].col5.toString(), new Date("Thu Jul 23 00:00:00 2009").toString());
+			
+			tableDs.sort([{fieldName : "col5"}], "desc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
+
+			// check the first record in col 5
+			// Thu Jul 23 00:00:00 UTC+0300 2009
+			// Sat Jul 23 00:00:00 UTC+0300 2011
+			equal(new Date("Sat Jul 23 00:00:00 2011").toString(), tableDs.dataView()[0].col5.toString() , new Date("Sat Jul 23 00:00:00 2011").toString());
+		});
+		
+		// IgDataSource Sorting - sort single boolean
+		test(testId_7, function() {
+			tableDs.sort([{fieldName : "col6"}], "asc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+			
+			// check the first record in col 3
+			equal(false , tableDs.dataView()[0].col6 , false  );
+			
+			tableDs.sort([{fieldName : "col6"}], "desc", true);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
+
+			// check the first record in col 3
+			// BMW 323 CI
+			
+			equal(true, tableDs.dataView()[0].col6 , true );
+		});
+		
+		// IgDataSource Sorting - sort multiple 1
+		test(testId_8, function() {
+
+			tableDs.sort([{fieldName : "col2", dir: "asc"}, {fieldName : "col3", dir: "desc"}], false);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+			
+			// check 1
+			equal(15, tableDs.dataView()[0].col2 , 15 );
+			equal("Hamburger", tableDs.dataView()[0].col3 , "Hamburger");
+			
+			tableDs.sort([{fieldName : "col2", dir: "desc"}, {fieldName : "col3", dir: "asc"}], false);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+			
+			// check 2
+			equal(434343, tableDs.dataView()[0].col2 , 434343);
+			equal("mouse", tableDs.dataView()[0].col3 , "mouse");
+		});
+		
+		// IgDataSource Sorting - sort multiple 2
+		/*
+		test(testId_9, function() {
+			ok(true);
+		});
+		*/
+		
+		// IgDataSource Sorting - sort multiple 3 (string expressions)
+		test(testId_10, function() {
+							tableDs.sort("col2 asc, col3 desc", false);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+			
+			// check 1
+			equal(15, tableDs.dataView()[0].col2 , 15 );
+			equal("Hamburger", tableDs.dataView()[0].col3 , "Hamburger");
+			
+			tableDs.sort("col2 desc, col3 asc", false);
+			$("#t1 tbody").empty();
+			$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
+			
+			// check 2
+			equal(434343, tableDs.dataView()[0].col2 , 434343);
+			equal("mouse", tableDs.dataView()[0].col3 , "mouse");
+		});
+		
+		// IgDataSource Sorting - sort - custom sorting comparer
+		test(testId_11, function() {
+			jsonDs.clearLocalSorting();
+			jsonDs.sort([{ fieldName: "firstName", compareFunc: "customCompare" }], "asc");
+			var data = jsonDs.dataView();
+			
+			equal(data[0].lastName, "Abdeali", "Verify order.");
+			equal(data[data.length - 1].lastName, "Kartavov", "Verify order.");
+
+			jsonDs.clearLocalSorting();
+		});
+		
+		// IgDataSource Sorting - sort - custom sorting conversion function
+		test(testId_12, function() {
+			
+			jsonDs.settings.sorting.customConvertFunc = function (val) {
+				//letters after the first letter will be disregaded for sorting
+				return val.slice(0,1);
+			};
+			jsonDs.clearLocalSorting();
+			jsonDs.sort([{ fieldName: "firstName" }], "asc");
+
+			equal(jsonDs.dataView()[0].firstName, "Angel", "Verify order.");
+			equal(jsonDs.dataView()[1].firstName, "Alex", "Verify order.");
+
+			jsonDs.settings.sorting.customConvertFunc = null;
+			jsonDs.clearLocalSorting();
+		});
+		
+		// IgDataSource Sorting - sort - custom sorting function (ALL functionality)
+		test(testId_13, function() {
+			var res = [{
+				firstName: "Dave",
+				lastName: "Reed",
+				url: "http://dave.org/",
+				cities: [
+					"Seattle, WA",
+					"Los Angeles, CA",
+					"New York, NY"
+				]
+			}];
+			jsonDs.settings.sorting.customFunc = function (data, fields, direction) {
+				return res;
+			};
+			jsonDs.sort([{ fieldName: "firstName" }], "asc");
+			equal(res, jsonDs.dataView(), "DataView should contain the result from the customFunc sorting. ");
+
+		});
+		
+		// IgDataSource Sorting - remote
+			test(testId_16, function() {
+				stop();
+				var ds = null;
+				var data = [
+								{ ProductID: 'product-001' },
+								{ ProductID: 'product-002' },
+								{ ProductID: 'product-003' },
+								{ ProductID: 'product-004' }
+				];
+				$.mockjax({
+					url: 'products',
+					responseText: {
+						status: 'success',
+						data: {
+							results: data
+						}
+					}
+				});
+
+				ds = new $.ig.RemoteDataSource({
+					callback: function (success, error) {
+						start();
+						equal(ds.dataView().length, 4, "Response should contain 4 records");
+						for (var i = 0; i < ds.dataView().length; i++) {
+							equal(ds.dataView()[i].ProductID, data[i].ProductID, "Data should be sorted.");
+							var params = $.param(ds._encodeUrl());
+							equal(params, "%24orderby=ProductID%20asc", "Request should be properly encoded.");
+						}
+					},
+					responseDataType: "json",
+					sorting: {
+						expressions: [{
+							fieldName: "ProductID",
+							dir: "asc"
+						}]
+					},
+					dataSource: "products", schema: { searchField: "data.results", fields: [{ name: "ProductID" }] }
+				}).dataBind();
+			});
+		
+		test(testId_14, function () {mapperDs
+			mapperDs.sort([{ fieldName: "Category" }], "desc");
+			equal(mapperDs.dataView()[0].Category.Name, "Food", "Records are sorted correctly by the mapped value");
+			equal(mapperDs.dataView()[1].Category.Name, "Electronics", "Records are sorted correctly by the mapped value");
+			equal(mapperDs.dataView()[2].Category.Name, "Electronics", "Records are sorted correctly by the mapped value");
+			equal(mapperDs.dataView()[3].Category.Name, "Beverages", "Records are sorted correctly by the mapped value");
+			equal(mapperDs.dataView()[4].Category.Name, "Beverages", "Records are sorted correctly by the mapped value");
+		});
+
+		test(testId_15, function () {
+			treeDs.sort([{ fieldName: "Category" }], "desc");
+			
+			//check if root records are sorted correctly
+			equal(treeDs.dataView()[0].Category.ID, 2, "Records are sorted correctly by the mapped value");
+			equal(treeDs.dataView()[1].Category.ID, 1, "Records are sorted correctly by the mapped value");
+			equal(treeDs.dataView()[2].Category.ID, 0, "Records are sorted correctly by the mapped value");
+			equal(treeDs.dataView()[3].Category.ID, 0, "Records are sorted correctly by the mapped value");
+
+			//check if child records are sorted correctly
+
+			equal(treeDs.dataView()[0].childData[0].Category.ID, 1, "Records are sorted correctly by the mapped value");
+			equal(treeDs.dataView()[0].childData[1].Category.ID, 1, "Records are sorted correctly by the mapped value");
+			equal(treeDs.dataView()[0].childData[2].Category.ID, 0, "Records are sorted correctly by the mapped value");
+		});
+		test("Test clearLocalSorting", function () {
+			var dv, ds;
+			ds = new $.ig.DataSource({
+				sorting: { type: "local", defaultDirection: "asc" }, 
+				dataSource: northwindProductsJSON,
 				schema: {
 					fields: [{
 						name: "ID", type: "number"
 					}, {
 						name: "Name", type: "string"
-					}, {
-						name: "Category", type: "object", mapper: function (record) {
-							return record.Category.Name;
-						}
 					}]
 				}
 			}).dataBind();
-
-			treeDs = new $.ig.TreeHierarchicalDataSource({
-				dataSource: treeFlatData,
-				treeDS: {
-					key: "employeeId",
-					foreignKey: "supervisorId",
-					foreignKeyRootValue: -1,
-					initialExpandDepth: 2,
-					childDataKey: "childData"
-				},
-				schema: {
-					fields: [{
-						name: "employeeId", type: "number"
-					}, {
-						name: "supervisorId", type: "number"
-					}, {
-						name: "firstName", type: "string"
-					},
-					{
-					name: "lastName", type: "string"
-					},
-					{
-						name: "Category", type: "object", mapper: function (record) {
-							return record.Category.ID;
-						}
-					}]
-				}
-			});
-			treeDs.dataBind();
-			
-			// use jQuery templating to render the processed/transformed data source 
-			$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
-			
+			ds
+				.filter([
+							{ fieldName: "ID", expr: "", cond: "notEmpty" }
+						])
+				.sort([{ fieldName: "Name" }], "desc");
+			dv = ds.dataView();
+			ok(dv[0].Name === "Vint Soda" && dv[8].Name === "Bread")
+			ds.clearLocalFilter();
+			ds.clearLocalSorting();
+			dv = ds.dataView();
+			ok(dv[0].ID === 0 && dv[8].ID === 8, "Test after applying clearLocalSorting");
 		});
-		
-	startTesting();
-		
-	function startTesting()
-	{
+	});
 
-		$(function () {
-
-			QUnit.init();
-			QUnit.start();
-
-			module("igDataSource");
-			
-			var testId_1 = "IgDataSource Sorting - sort with schema";
-			var testId_2 = "IgDataSource Sorting - sort without schema";
-			var testId_3 = "IgDataSource Sorting - sort single numeric";
-			var testId_4 = "IgDataSource Sorting - sort single string";
-			var testId_5 = "IgDataSource Sorting - sort single string case sensitive";
-			var testId_6 = "IgDataSource Sorting - sort single dates";
-			var testId_7 = "IgDataSource Sorting - sort single boolean";
-			var testId_8 = "IgDataSource Sorting - sort multiple 1";
-			var testId_9 = "IgDataSource Sorting - sort multiple 2";
-			var testId_10 = "IgDataSource Sorting - sort multiple 3 (string expressions)";
-			var testId_11 = "IgDataSource Sorting - sort - custom sorting comparer";
-			var testId_12 = "IgDataSource Sorting - sort - custom sorting conversion function";
-			var testId_13 = "IgDataSource Sorting - sort - custom sorting function (ALL functionality)";
-			var testId_14 = "IgDataSource Sorting - sort - mapper function";
-			var testId_15 = "IgTreeHierarchicalDataSource Sorting - sort - mapper function";
-			
-			// IgDataSource Sorting - sort with schema
-			test(testId_1, function() {
-				
-				tableDs.sort([{fieldName : "col3"}], "asc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-				
-				// check the first record in col 3
-				equal("Beer", tableDs.dataView()[0].col3 , "Beer" );
-				
-				tableDs.sort([{fieldName : "col3"}], "desc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
-
-				// check the first record in col 3
-				// BMW 323 CI
-				
-				equal("trainers", tableDs.dataView()[0].col3 , "trainers" );
-			
-			});
-			
-			// IgDataSource Sorting - sort without schema
-			test(testId_2, function() {
-				
-				jsonDs.sort([{fieldName : "firstName"}], "asc", true);
-				$("#list1").empty();
-				$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
-				
-				// check the first record in col 3
-				equal("Alex", jsonDs.dataView()[0].firstName , "Alex" );
-				
-				jsonDs.sort([{fieldName : "firstName"}], "desc", true);
-				$("#list1").empty();
-				$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
-				
-				equal("Murtaza", jsonDs.dataView()[0].firstName , "Murtaza" );
-				
-			});
-			
-			// IgDataSource Sorting - sort single numeric
-			test(testId_3, function() {
-			
-				tableDs.sort([{fieldName : "col2"}], "asc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-				
-				// check the first record in col 2
-				equal(15, tableDs.dataView()[0].col2 , 15);
-				
-				tableDs.sort([{fieldName : "col2"}], "desc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
-
-				// check the first record in col 3
-				// BMW 323 CI
-				
-				equal(434343, tableDs.dataView()[0].col2 , 434343);
-			});
-			
-			// IgDataSource Sorting - sort single string
-			test(testId_4, function() {
-				tableDs.sort([{fieldName : "col3"}], "asc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-				
-				// check the first record in col 3
-				equal("Beer", tableDs.dataView()[0].col3 , "Beer" );
-				
-				tableDs.sort([{fieldName : "col3"}], "desc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
-
-				// check the first record in col 3
-				// BMW 323 CI
-				
-				equal("trainers", tableDs.dataView()[0].col3 , "trainers" );
-			});
-			
-			// IgDataSource Sorting - sort single string case sensitive
-			test(testId_5, function() {
-				ok(true);
-			});
-			
-			// IgDataSource Sorting - sort single dates
-			test(testId_6, function() {
-				
-				tableDs.sort([{fieldName : "col5"}], "asc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-				
-				// check the first record in col 5
-				equal(new Date("Thu Jul 23 00:00:00 2009").toString(), tableDs.dataView()[0].col5.toString(), new Date("Thu Jul 23 00:00:00 2009").toString());
-				
-				tableDs.sort([{fieldName : "col5"}], "desc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
-
-				// check the first record in col 5
-				// Thu Jul 23 00:00:00 UTC+0300 2009
-				// Sat Jul 23 00:00:00 UTC+0300 2011
-				equal(new Date("Sat Jul 23 00:00:00 2011").toString(), tableDs.dataView()[0].col5.toString() , new Date("Sat Jul 23 00:00:00 2011").toString());
-			});
-			
-			// IgDataSource Sorting - sort single boolean
-			test(testId_7, function() {
-				tableDs.sort([{fieldName : "col6"}], "asc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-				
-				// check the first record in col 3
-				equal(false , tableDs.dataView()[0].col6 , false  );
-				
-				tableDs.sort([{fieldName : "col6"}], "desc", true);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");	
-
-				// check the first record in col 3
-				// BMW 323 CI
-				
-				equal(true, tableDs.dataView()[0].col6 , true );
-			});
-			
-			// IgDataSource Sorting - sort multiple 1
-			test(testId_8, function() {
-	
-				tableDs.sort([{fieldName : "col2", dir: "asc"}, {fieldName : "col3", dir: "desc"}], false);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-				
-				// check 1
-				equal(15, tableDs.dataView()[0].col2 , 15 );
-				equal("Hamburger", tableDs.dataView()[0].col3 , "Hamburger");
-				
-				tableDs.sort([{fieldName : "col2", dir: "desc"}, {fieldName : "col3", dir: "asc"}], false);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-				
-				// check 2
-				equal(434343, tableDs.dataView()[0].col2 , 434343);
-				equal("mouse", tableDs.dataView()[0].col3 , "mouse");
-			});
-			
-			// IgDataSource Sorting - sort multiple 2
-			/*
-			test(testId_9, function() {
-				ok(true);
-			});
-			*/
-			
-			// IgDataSource Sorting - sort multiple 3 (string expressions)
-			test(testId_10, function() {
-								tableDs.sort("col2 asc, col3 desc", false);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-				
-				// check 1
-				equal(15, tableDs.dataView()[0].col2 , 15 );
-				equal("Hamburger", tableDs.dataView()[0].col3 , "Hamburger");
-				
-				tableDs.sort("col2 desc, col3 asc", false);
-				$("#t1 tbody").empty();
-				$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
-				
-				// check 2
-				equal(434343, tableDs.dataView()[0].col2 , 434343);
-				equal("mouse", tableDs.dataView()[0].col3 , "mouse");
-			});
-			
-			// IgDataSource Sorting - sort - custom sorting comparer
-			test(testId_11, function() {
-				ok(true);
-			});
-			
-			// IgDataSource Sorting - sort - custom sorting conversion function
-			test(testId_12, function() {
-				ok(true);
-			});
-			
-			// IgDataSource Sorting - sort - custom sorting function (ALL functionality)
-			test(testId_13, function() {
-				ok(true);
-			});
-			
-			test(testId_14, function () {mapperDs
-				mapperDs.sort([{ fieldName: "Category" }], "desc");
-				equal(mapperDs.dataView()[0].Category.Name, "Food", "Records are sorted correctly by the mapped value");
-				equal(mapperDs.dataView()[1].Category.Name, "Electronics", "Records are sorted correctly by the mapped value");
-				equal(mapperDs.dataView()[2].Category.Name, "Electronics", "Records are sorted correctly by the mapped value");
-				equal(mapperDs.dataView()[3].Category.Name, "Beverages", "Records are sorted correctly by the mapped value");
-				equal(mapperDs.dataView()[4].Category.Name, "Beverages", "Records are sorted correctly by the mapped value");
-			});
-
-			test(testId_15, function () {
-				treeDs.sort([{ fieldName: "Category" }], "desc");
-				
-				//check if root records are sorted correctly
-				equal(treeDs.dataView()[0].Category.ID, 2, "Records are sorted correctly by the mapped value");
-				equal(treeDs.dataView()[1].Category.ID, 1, "Records are sorted correctly by the mapped value");
-				equal(treeDs.dataView()[2].Category.ID, 0, "Records are sorted correctly by the mapped value");
-				equal(treeDs.dataView()[3].Category.ID, 0, "Records are sorted correctly by the mapped value");
-
-				//check if child records are sorted correctly
-
-				equal(treeDs.dataView()[0].childData[0].Category.ID, 1, "Records are sorted correctly by the mapped value");
-				equal(treeDs.dataView()[0].childData[1].Category.ID, 1, "Records are sorted correctly by the mapped value");
-				equal(treeDs.dataView()[0].childData[2].Category.ID, 0, "Records are sorted correctly by the mapped value");
-			});
-
-		});
-
-	}
+		 function customCompare(va1, val2, rec) {
+		 	rec.recordX.lastName > rec.recordY.lastName ? 1 : -1;
+		 }
 	</script>
 	
 </head>

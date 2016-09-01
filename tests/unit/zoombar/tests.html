@@ -209,6 +209,7 @@
 			var testId_117 = "igZoombar test 1.17: init tests for financial candlestick chart";
 			var testId_21 = "igZoombar test 2.1: properties tests";
 			var testId_22 = "igZoombar test 2.2: public api tests";
+			var testId_23 = "igZoombar test 2.3: custom provider tests";
 			
 			test(testId_11, 13, function () {
 				var cloneOpts;
@@ -660,9 +661,9 @@
 				setTimeout(function () {
 					zoom.igZoombar("destroy");
 					zoom.igZoombar({
-						provider: "ZoombarProviderDataChart",
+						provider: $.ig.ZoombarProviderDataChart,
 						providerCreated: function (evt, ui) {
-							ui.provider.settings.targetObject = $(".testclass").data("igDataChart");
+							ui.provider.targetObject($(".testclass").data("igDataChart"));
 						},
 						target: ".testclass",
 						clone: "none",
@@ -726,6 +727,32 @@
 				strictEqual(zoom.data("igZoombar")._cw.width.toFixed(2), "1.00", "zoom method assings proper width for window assert");
 				strictEqual(chart.data("igDataChart")._chart.windowRect().s.toFixed(2), "0.00", "zoom method assings proper left to chart assert");
 				strictEqual(chart.data("igDataChart")._chart.windowRect().r.toFixed(2), "1.00", "zoom method assings proper width to chart assert");
+			});
+			test(testId_23, 6, function () {
+				stop();
+				ZoombarProviderDataChartCustom = $.ig.ZoombarProviderDataChart.extend({
+
+				});
+				setTimeout(function () {
+					zoom.igZoombar("destroy");
+					zoom.igZoombar({
+						provider: ZoombarProviderDataChartCustom,
+						providerCreated: function (evt, ui) {
+							ui.provider.targetObject($(".testclass").data("igDataChart"));
+						},
+						target: ".testclass",
+						clone: "none",
+						width: "600px",
+						height: "300px"
+					});
+					start();
+					notEqual(typeof chart.data("igDataChart"), "undefined", "chart initialization assert");
+					notEqual(typeof zoom.data("igZoombar"), "undefined", "zoombar initialization assert");
+					strictEqual(typeof zoom.igZoombar("clone").data("igDataChart"), "undefined", "clone none should not create a clone assert");
+					strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
+					strictEqual(zoom.outerWidth(), 600, "zoombar assings proper width assert");
+					strictEqual(zoom.outerHeight(), 300, "zoombar assings proper height assert");
+				}, 500);
 			});
 		});
 	</script>

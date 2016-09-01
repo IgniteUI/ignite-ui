@@ -15,6 +15,7 @@
 
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
@@ -33,7 +34,7 @@
 			// Create a editors
 
 				function loadTestbeds() {
-					var testbedIDs = ["206040", "211360", "213900", "215046", "215992", "220775","221368"];
+					var testbedIDs = ["206040", "211360", "213900", "215046", "215992", "220775","221368", "221414", "84", "89", "174"];
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i].trim() + "Testbed";
 						if (window[testBed]) {
@@ -92,6 +93,59 @@
 					});
 
 					$('#221368Editor2').igDatePicker();
+				}
+
+				window.Bug221414Testbed = function () {
+				    $("#221414Editor1").igDatePicker();
+				}
+				
+				window.Bug84Testbed = function () {
+					$("#84Editor1").igDatePicker({
+						datepickerOptions: {
+							minDate : new Date(2016, 06, 15)
+						}
+					});
+				}
+				
+				window.Bug89Testbed = function () {
+					$("#89Editor1").igDatePicker({
+						datepickerOptions: {
+							minDate : new Date(2016, 06, 12),
+							maxDate: new Date(2016, 06, 31)
+						}
+					});
+				}
+
+				window.Bug174Testbed = function () {
+					$("#174Editor1").igDatePicker({
+						dateDisplayFormat: "dd/MM/yyyy",
+						dateInputFormat: "dateTime",
+						validatorOptions: {
+							onblur: true,
+							onchange: false,
+							required: true,
+							notificationOptions: {
+								direction: "right",
+								showIcon: "true",
+								mode: "popover"
+							}
+						}
+					});
+					$("#174Editor2").igDatePicker({
+						datepickerOptions: {
+							changeYear: true,
+							beforeShow: function (input, inst) {
+								$(input).data("beforeShow", "triggered");
+							}
+						},
+						validatorOptions: {
+							onchange: false,
+							required: true,
+							notificationOptions: {
+								mode: "popover"
+							}
+						}
+					});
 				}
 				
 				initialized = false;
@@ -217,6 +271,114 @@
 				$("#220775Editor1").igDatePicker("dropDownButton").click();
 
 				equal($("#220775Editor1").igDatePicker("field").val(), "__/__/____", "Opening dropdown caused the entered text to be __/__/____");
+			});
+
+			testId = 'Bug 221414';
+			test(testId, 1, function () {
+			    var calendar, calendarVisibility;
+			    $("#221414Editor1").igDatePicker({ datepickerOptions: { minDate: new Date(2016, 06, 05) } });
+			    $("#221414Editor1").igDatePicker("dropDownButton").click();
+			    calendar = $("#221414Editor1").igDatePicker("getCalendar");
+			    $(calendar).find("a:last").click();
+			    stop();
+			    setTimeout(function () {
+			        start();
+			        calendarVisibility = $("#221414Editor1").igDatePicker("dropDownVisible");
+			        ok(!calendarVisibility, "The dropdown container is visible, but it shouldn't be.");
+			    }, 1500);
+			});
+			
+			testId = 'Issue 84';
+			test(testId, 1, function () {
+			    var calendarVisibility;
+			    $("#84Editor1").igDatePicker({ datepickerOptions: { minDate: new Date(2016, 06, 01) } });
+			    $("#84Editor1").igDatePicker("dropDownButton").click();
+			    $(".ui-datepicker-calendar").find("a:first").click();
+			    stop();
+			    setTimeout(function () {
+			        start();
+			        calendarVisibility = $("#84Editor1").igDatePicker("dropDownVisible");
+			        ok(!calendarVisibility, "The dropdown container is visible, but it shouldn't be.");
+			    }, 1500);
+			});
+			
+			testId = 'Issue 89';
+			test(testId, 4, function () {
+			    var calendar, calendarVisibility, notifierVisibility, field;
+				field = $("#89Editor1").igDatePicker("field");
+			    $("#89Editor1").igDatePicker("dropDownButton").click();
+				stop();
+				setTimeout(function () {
+					start();
+					$("a:contains('26')").hover().click();
+					stop();
+					setTimeout(function () {
+						start();
+						calendarVisibility = $("#89Editor1").igDatePicker("dropDownVisible");
+						ok(!calendarVisibility, "The dropdown container is visible, but it shouldn't be.");
+						$("#89Editor1").igDatePicker("field").blur();
+						stop();
+						setTimeout(function () {
+							start();
+							$("#89Editor1").igDatePicker("dropDownButton").click();
+							stop();
+							setTimeout(function () {
+								start();
+								equal($("#89Editor1").igDatePicker("field").val(), "07/26/2016", "The day should contain preceeding 0");
+								$("a:contains('25')").hover().click();
+								stop();
+								setTimeout(function () {
+									start();
+									calendarVisibility = $("#89Editor1").igDatePicker("dropDownVisible");
+									ok(!calendarVisibility, "The dropdown container is visible, but it shouldn't be.");
+									notifierVisibility = typeof $("#89Editor1").igDatePicker("editorContainer").data("igNotifier") == "undefined";
+									ok(notifierVisibility, "The notifier is visible, but it shouldn't be.");
+								}, 500);
+							}, 500);
+						}, 500);
+					}, 500);
+				}, 500);
+			});
+
+			testId = 'Issue 174';
+			test(testId, 9, function () {
+			    var $editor1 = $("#174Editor1"),
+			    	$editor2 = $("#174Editor2"),
+					$calendar = $editor1.igDatePicker("getCalendar"),
+					$nextMonth, $yearSelect;
+					
+				$editor1.igDatePicker("dropDownButton").click();
+				stop();
+				setTimeout(function () {
+					start();
+					ok($calendar.is(":visible"), "The calendar did not open");
+					ok(!$editor1.igDatePicker("validator").isMessageDisplayed(), "There should be no initial error message.");
+					
+					$nextMonth = $calendar.find( "[data-handler='next']");
+					ok($nextMonth.length > 0, "There should be next month link.");
+
+					$nextMonth.click();
+					ok(!$editor1.igDatePicker("validator").isMessageDisplayed(), "There should be no error message after month change.");
+					
+					$editor2.igDatePicker("dropDownButton").click();
+					stop();
+					setTimeout(function () {
+						start();
+						// verify message is shown now that the first editor lost focus:
+						equal($editor1.igDatePicker("validator").getErrorMessages()[0], $.ig.Validator.locale.requiredMessage, "There should be error message after blur.");
+						
+						ok($calendar.is(":visible"), "The calendar should be visible again");
+						equal($editor2.data("beforeShow"), "triggered",  "external beforeShow option got called");
+						ok(!$editor2.igDatePicker("validator").isMessageDisplayed(), "There should be no initial error message.");
+
+						$yearSelect = $calendar.find( "[data-handler='selectYear']");
+						$yearSelect.val("2015");
+						$yearSelect.trigger($yearSelect.attr( "data-handler" ));
+
+						$editor1.igDatePicker("dropDownButton").click();
+						equal($editor2.igDatePicker("validator").getErrorMessages()[0], $.ig.Validator.locale.requiredMessage, "There should be error message after blur.");
+					}, 400);
+				}, 400);
 			});
 		});
 
@@ -410,6 +572,11 @@
 		<input id="215992Editor1" type="text" />
 		<input id="215992Editor2" type="text" />
 		<input id="220775Editor1" type="text" />
+		<div id="221414Editor1"></div>
+		<input id="84Editor1" />
+		<input id="89Editor1" />
+		<input id="174Editor1" />
+		<input id="174Editor2" />
 		
 	</div></body>
 </html>

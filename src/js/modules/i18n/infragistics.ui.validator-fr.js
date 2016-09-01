@@ -33,6 +33,7 @@
 		        minValueMessage: 'Veuillez entrer une valeur supérieure ou égale à {0}',
 		        maxValueMessage: 'Veuillez entrer une valeur inférieure ou égale à {0}',
 		        emailMessage: 'Une adresse e-mail valide doit être saisie',
+				creditCardMessage: 'Un numéro de carte de paiement valide doit être saisi',
 		        equalToMessage: 'Les deux valeurs ne correspondent pas',
 		        optionalString: '(facultatif)'
 		    }

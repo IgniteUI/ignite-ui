@@ -72,6 +72,7 @@
 				cannotSetRuntime: "This option can not be set runtime",
 				invalidDate: "Invalid date",
 				maskMessage: 'All required positions should be filled',
+				maskRevertMessage: 'All required positions should be filled, that is why the value was reverted to the last valid one.',
 				dateMessage: 'A valid date should be entered',
 				centuryThresholdValidValues: "centuryThreshold property shoud be between 0 and 99. The value has been reverted to defaults.",
 				noListItemsNoButton: "No spin or dropdown button is rendered because there are no listitems."

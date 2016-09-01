@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
@@ -29,6 +30,9 @@
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	var logBuffer = [], logOld, 
+		logger = function (msg) { logBuffer.push(msg); };
+
 		$(document).ready(function () {
 			// Create a editors
 			function loadTestbeds() {
@@ -56,12 +60,15 @@
 						dateDisplayFormat: "dateTime"
 					});
 
+					logOld = console.log;
+					console.log = logger;
 					$("#inputEditor4").igDateEditor({
 						value: '01/09/50',
 						dateInputFormat: "dd/MM/yyyy",
 						dateDisplayFormat: "dd/MM/yyyy",
 						centuryThreshold: 101
 					});
+					console.log = logOld;
 
 					$("#inputEditor7").igDateEditor({
 						value: '1/9/90',
@@ -320,8 +327,8 @@
 			});
 
 			var testId = 'Initialize minVal and maxVal with wrong values';
-			test(testId, 3, function () {			  
-
+			test(testId, 4, function () {			  
+				equal(logBuffer.pop(), $.ig.Editor.locale.centuryThresholdValidValues, 'centuryThreshold message not logged');
 				equal($('#inputEditor4').igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is bigger than 99');
 
 				// init MinVal

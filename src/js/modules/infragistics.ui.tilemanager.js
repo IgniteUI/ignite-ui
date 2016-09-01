@@ -6,7 +6,7 @@
  * http://www.infragistics.com/
  *
  * Depends on:
- *  jquery-1.8.0.js
+ *  jquery-1.9.1.js
  *	jquery.ui.core.js
  *	jquery.ui.widget.js
  *	infragistics.templating.js
@@ -27,37 +27,37 @@
     $.widget("ui.igTileManager", {
         css: {
             /* classes applied to the top container element */
-            container: 'ui-widget ui-igtilemanager ui-widget-content',
+            container: "ui-widget ui-igtilemanager ui-widget-content",
             /* classes applied to the left panel */
-            leftPanel: 'ui-igtilemanager-left',
+            leftPanel: "ui-igtilemanager-left",
             /* classes applied to the right panel */
-            rightPanel: 'ui-igtilemanager-right',
+            rightPanel: "ui-igtilemanager-right",
             /* classes applied to the tile header element */
-            header: 'ui-widget-header ui-igtile-header',
+            header: "ui-widget-header ui-igtile-header",
             /* classes applied to the tile content element */
-            content: 'ui-widget-content ui-igtile',
+            content: "ui-widget-content ui-igtile",
             /* classes applied to the tile content inner container element */
-            innerContainer: 'ui-igtile-inner-container',
+            innerContainer: "ui-igtile-inner-container",
             /* classes applied to the tiles in minimized state */
-            minimized: 'ui-igtile-minimized',
+            minimized: "ui-igtile-minimized",
             /* classes applied to the tiles in maximized state */
-            maximized: 'ui-igtile-maximized',
+            maximized: "ui-igtile-maximized",
             /* classes applied to the minimize button when a tile is in maximized state */
-            minimizeButton: 'ig-button ig-tile-minimize-button',
+            minimizeButton: "ig-button ig-tile-minimize-button",
             /* classes applied to the tile minimize button icon element in the header */
-            minimizeIcon: 'ig-tile-minimize-icon',
+            minimizeIcon: "ig-tile-minimize-icon",
             /* class applied to the tile button elements when hovered */
-            hoverClass: 'ui-state-hover',
+            hoverClass: "ui-state-hover",
             /* class applied to hide elements */
-            hidden: 'ui-helper-hidden',
+            hidden: "ui-helper-hidden",
             /* class applied to hide scrollbars */
-            overflowHidden: 'ui-helper-overflow-hidden',
+            overflowHidden: "ui-helper-overflow-hidden",
             /* class applied to show overflowing elements */
-            overflowVisible: 'ui-helper-overflow-visible',
+            overflowVisible: "ui-helper-overflow-visible",
             /* class applied set element visibility to hidden */
-            visibilityHidden: 'ui-helper-visibility-hidden',
+            visibilityHidden: "ui-helper-visibility-hidden",
             /* class applied to right panel disabling the scroll while width is zero */
-            splitterNoScroll: 'ui-igsplitter-no-scroll'
+            splitterNoScroll: "ui-igsplitter-no-scroll"
         },
         options: {
             /* type="string|number|null Gets sets the width of the container."
@@ -126,8 +126,10 @@
                 null Option is ignored.
             */
             maximizedTileIndex: null,
+
             // TODO: Implement custom tile selector
             /* type="string" Selector that specifies which elements to be considered as tiles when initializing from html markup. */
+
             //tileSelector: null,
             /* type="number|null" Gets sets how many columns to be displayed in the right panel when the tiles are minimized.
                 number Set the number of right panel columns as a number. The minimum value is 1.
@@ -169,13 +171,13 @@
                 }
             },
             /* type="string" Gets sets JQuery selector that specifies which elements will not trigger maximizing when clicked on. */
-            preventMaximizingSelector: 'a, input',
+            preventMaximizingSelector: "a, input",
             /* type="number" Gets sets the duration of the animations in the tile manager. */
             animationDuration: 500,
             /* type="string" Specifies a remote URL accepted by $.ig.DataSource in order to request data from it. */
             dataSourceUrl: null,
             /* type="string|null" see $.ig.DataSource.
-				string Specifies the name of the property in which data records are held if the response is wrapped. 
+				string Specifies the name of the property in which data records are held if the response is wrapped.
 				null Option is ignored.
 			*/
             responseDataKey: null,
@@ -192,32 +194,32 @@
             responseContentType: null
         },
         events: {
-            /* cancel="true" fired before databinding is performed 
+            /* cancel="true" fired before databinding is performed
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tile manager performing databinding.
 				Use ui.dataSource to get a reference to the $.ig.DataSource the tile manager is to be databound to.
 			*/
-            dataBinding: 'dataBinding',
-            /* cancel="false" fired after databinding is complete 
+            dataBinding: "dataBinding",
+            /* cancel="false" fired after databinding is complete
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tile manager performing databinding.
 				Use ui.dataView to get a reference to the data the tile manager is databound to.
 				Use ui.success to get see if the databinding was performed correctly.
 				Use ui.errorMessage to get the error message if the databinding failed.
 			*/
-            dataBound: 'dataBound',
+            dataBound: "dataBound",
             /* cancel="true" fired before rendering of the tile manager begins.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tile manager performing rendering.
 				Use ui.tiles to get a reference to the tiles the tile manager is going to render. If using data source this referes to the data provided.
 				Use ui.items to get a reference to the item configurations the tile manager has.
 			*/
-            rendering: 'rendering',
-            /* cancel="false" fired after rendering of the tile manager completes. 
+            rendering: "rendering",
+            /* cancel="false" fired after rendering of the tile manager completes.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tile manager performing rendering.
 			*/
-            rendered: 'rendered',
+            rendered: "rendered",
             /* cancel="true" Event fired before a tile is rendered in the container
                 Function takes arguments evt and ui.
                 Use ui.owner to get a reference to the tile manager performing rendering.
@@ -236,37 +238,38 @@
 				Use ui.tile to get the jQuery element of the tile being maximized
                 Use ui.minimizingTile to get reference to the tile that is minimizing simultaneously or null if no tile is minimizing.
 			*/
-            tileMaximizing: 'tileMaximizing',
-            /* cancel="false" fired after a tile in the tile manager is maximized. 
+            tileMaximizing: "tileMaximizing",
+            /* cancel="false" fired after a tile in the tile manager is maximized.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tile manager the maximized tile belongs to.
 				Use ui.tile to get the jQuery element of the maximized tile
 			*/
-            tileMaximized: 'tileMaximized',
+            tileMaximized: "tileMaximized",
             /* cancel="true" fired before a tile in the tile manager is minimized.
                 Function takes arguments evt and ui.
                 Use ui.owner to get a reference to the tile manager performing the minimizing the tile belongs to.
                 Use ui.tile to get the jQuery element of the tile being minimized
                 Use ui.maximizingTile to get reference to the tile that is maximizing simultaneously or null if no tile is maximizing.
             */
-            tileMinimizing: 'tileMinimizing',
+            tileMinimizing: "tileMinimizing",
             /* cancel="false" fired after a tile in the tile manager is minimized.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the tile manager the minimized tile belongs to.
 				Use ui.tile to get the jQuery element of the minimized tile
 			*/
-            tileMinimized: 'tileMinimized'
+            tileMinimized: "tileMinimized"
         },
+
         // Selectors
         _selectors: {
-            tileSelector: '.ui-igtile',
-            minimizedTileSelector: '.ui-igtile-minimized',
-            minimizeBtnSelector: '.ig-tile-minimize-button',
-            minimizeIconSelector: '.ig-tile-minimize-icon',
-            leftPanelSelector: '.ui-igtilemanager-left',
-            rightPanelSelector: '.ui-igtilemanager-right',
-            splitbarSelector: '.ui-igsplitter-splitbar-vertical',
-            innerContainerSelector: '.ui-igtile-inner-container'
+            tileSelector: ".ui-igtile",
+            minimizedTileSelector: ".ui-igtile-minimized",
+            minimizeBtnSelector: ".ig-tile-minimize-button",
+            minimizeIconSelector: ".ig-tile-minimize-icon",
+            leftPanelSelector: ".ui-igtilemanager-left",
+            rightPanelSelector: ".ui-igtilemanager-right",
+            splitbarSelector: ".ui-igsplitter-splitbar-vertical",
+            innerContainerSelector: ".ui-igtile-inner-container"
         },
         _createWidget: function () {
             $.Widget.prototype._createWidget.apply(this, arguments);
@@ -284,7 +287,7 @@
                 animating: false,
                 useMaximizedTileIndex: false,
                 rightPanelWidth: 0,
-                gridLayout: null, // Reference to the internal layout manger's gridLayout options
+                gridLayout: null, // Reference to the internal layout manger"s gridLayout options
                 elementHandlers: {},
                 windowHandlers: {},
                 splitterFirstExpandEventFired: false
@@ -293,11 +296,11 @@
             this.element.addClass(this.css.container);
 
             if (opt.width) {
-                this.element.css('width', opt.width);
+                this.element.css("width", opt.width);
             }
 
             if (opt.height) {
-                this.element.css('height', opt.height);
+                this.element.css("height", opt.height);
             }
 
             // Set the default tile selector if such was not given
@@ -321,7 +324,7 @@
             this._attachEvents();
         },
         _setOption: function (option, value) {
-            if (this.options[option] === value) {
+            if (this.options[ option ] === value) {
                 return;
             }
 
@@ -331,49 +334,51 @@
 
             $.Widget.prototype._setOption.apply(this, arguments);
             switch (option) {
-                case 'dataSource':
+                case "dataSource":
                     this.dataBind();
                     break;
-                case 'dataSourceUrl':
+                case "dataSourceUrl":
                     this.dataBind();
                     break;
-                case 'width':
+                case "width":
                     if (!_opt.useMaximizedTileIndex) {
                         this.minimize(0);
                     }
                     this.element.width(this.options.width);
                     this.reflow(true, 0);
                     break;
-                case 'height':
+                case "height":
                     if (!_opt.useMaximizedTileIndex) {
                         this.minimize(0);
                     }
                     this.element.height(this.options.height);
                     this.reflow(true, 0);
                     break;
-                case 'columnWidth':
-                case 'columnHeight':
-                case 'cols':
-                case 'rows':
-                case 'marginLeft':
-                case 'marginTop':
-                case 'rearrangeItems':
-                    // D.A. 9th July 2014, Bug #174952 Setting the 'cols' 
+                case "columnWidth":
+                case "columnHeight":
+                case "cols":
+                case "rows":
+                case "marginLeft":
+                case "marginTop":
+                case "rearrangeItems":
+
+                    // D.A. 9th July 2014, Bug #174952 Setting the 'cols'
                     // option while a tile is maximized breaks the control.
                     if (!_opt.useMaximizedTileIndex) {
                         this.minimize(0);
                     }
 
                     glOption = {};
-                    glOption[option] = value;
+                    glOption[ option ] = value;
 
                     _opt.$layoutManagerElement.igLayoutManager(
-                        'option', 'gridLayout', glOption);
+                        "option", "gridLayout", glOption);
 
                     // Update the reference to the Layout Manager's internal gridLayout options
                     _opt.gridLayout = this.layoutManager()._opt.gridLayout;
                     break;
-                case 'items':
+                case "items":
+
                     // TODO: Implement setting items number different than the number of tiles
                     if (value.length !== _opt.$tiles.length) {
                         throw new Error($.ig.TileManager.locale.setOptionItemsLengthError);
@@ -391,22 +396,23 @@
 
                         // Merge old items and new items
                         itemsMerged = $.extend(true, [], this._options
-                            .$layoutManagerElement.igLayoutManager('option', 'items'), value);
+                            .$layoutManagerElement.igLayoutManager("option", "items"), value);
                     } else {
                         this.minimize(0);
                     }
 
-                    _opt.$layoutManagerElement.igLayoutManager('option', 'items', value);
+                    _opt.$layoutManagerElement.igLayoutManager("option", "items", value);
                     _opt.gridLayout = this.layoutManager()._opt.gridLayout;
 
                     if (_opt.useMaximizedTileIndex) {
-                        items = this._options.$layoutManagerElement.igLayoutManager('option', 'items');
+                        items =
+                            this._options.$layoutManagerElement.igLayoutManager("option", "items");
                         len = items.length;
 
                         // D.A. 19th September 2014, Bug #180981 Items setOption with maximizedTileIndex works incorrectly
                         // Override layout manager's items with the old items to preserve the items order and the current maximized tile
                         for (i = 0; i < len; i++) {
-                            $.extend(true, items[i], itemsMerged[i]);
+                            $.extend(true, items[ i ], itemsMerged[ i ]);
                         }
 
                         // Sort the items
@@ -414,49 +420,49 @@
 
                         // Update initialItems
                         _opt.gridLayout.initialItems = $.extend(true, [], this._options
-                            .$layoutManagerElement.igLayoutManager('option', 'items'));
+                            .$layoutManagerElement.igLayoutManager("option", "items"));
                     }
 
                     this.reflow(true, 0);
                     break;
-                case 'minimizedState':
+                case "minimizedState":
                     _opt.$tiles.not(_opt.$maximizedTile).each(function () {
                         self._toMinimizedState($(this));
                     });
                     break;
-                case 'maximizedState':
+                case "maximizedState":
                     if (_opt.$maximizedTile) {
                         this._toMaximizedState(_opt.$maximizedTile);
                     }
                     break;
-                case 'maximizedTileIndex':
+                case "maximizedTileIndex":
                     this._toMinimizedState(_opt.$maximizedTile);
                     _opt.$maximizedTile = _opt.$tiles.filter(
-                        '[data-index=' + this.options.maximizedTileIndex + ']');
+                        "[data-index=" + this.options.maximizedTileIndex + "]");
                     this._toMaximizedState(_opt.$maximizedTile);
                     break;
-                case 'rightPanelCols':
+                case "rightPanelCols":
                     if (_opt.$maximizedTile && !_opt.useMaximizedTileIndex) {
                         this._setRightPanelSize();
                         this._positionRightPanelTiles(_opt.$tiles.not(_opt.$maximizedTile),
-                            parseInt(_opt.$maximizedTile.attr('data-index'), 10), false, false);
+                            parseInt(_opt.$maximizedTile.attr("data-index"), 10), false, false);
                     }
                     break;
-                case 'rightPanelTilesWidth':
+                case "rightPanelTilesWidth":
                     if (_opt.$maximizedTile && !_opt.useMaximizedTileIndex) {
                         this._setRightPanelSize();
                         this._positionRightPanelTiles(_opt.$tiles.not(_opt.$maximizedTile),
-                            parseInt(_opt.$maximizedTile.attr('data-index'), 10), false, true);
+                            parseInt(_opt.$maximizedTile.attr("data-index"), 10), false, true);
                     }
                     break;
-                case 'rightPanelTilesHeight':
+                case "rightPanelTilesHeight":
                     if (_opt.$maximizedTile && !_opt.useMaximizedTileIndex) {
                         this._setRightPanelSize();
                         this._positionRightPanelTiles(_opt.$tiles.not(_opt.$maximizedTile),
-                            parseInt(_opt.$maximizedTile.attr('data-index'), 10), false, true);
+                            parseInt(_opt.$maximizedTile.attr("data-index"), 10), false, true);
                     }
                     break;
-                case 'showRightPanelScroll':
+                case "showRightPanelScroll":
                     if (!_opt.useMaximizedTileIndex) {
                         if (value) {
                             _opt.$rightPanel.removeClass(this.css.overflowHidden);
@@ -498,13 +504,15 @@
 
                     value = $.extend(true, {}, this.layoutManager().options.splitterOptions, value);
                     break;
-                case 'animationDuration':
+                case "animationDuration":
+
                     // Update the animation duration in the layout manager
                     this.layoutManager().options.gridLayout.animationDuration = value;
                     break;
+
                     // P.P. 3 Sep 2015 #202506 - Disabled TileManager is fully functional
-                case 'disabled':
-                    this._toggleDisbaled(value);
+                case "disabled":
+                    this._toggleDisabled(value);
                     break;
                 default:
                     break;
@@ -541,9 +549,9 @@
 
                 // Destroy layout manager and splitter in case of rebinding
                 if (_opt.$layoutManagerElement) {
-                    _opt.$layoutManagerElement.igLayoutManager('destroy');
+                    _opt.$layoutManagerElement.igLayoutManager("destroy");
                     if (!_opt.useMaximizedTileIndex) {
-                        this.element.igSplitter('destroy');
+                        this.element.igSplitter("destroy");
                     }
                     this._resetInternalOptions();
                 }
@@ -630,7 +638,7 @@
             } else {
 
                 // Render the inner container when from data source
-                $innerContainer = $('<div/>').appendTo($tile);
+                $innerContainer = $("<div/>").appendTo($tile);
 
                 if (renderMaximizedState) {
                     $innerContainer
@@ -671,14 +679,14 @@
                 }
             } else {
 
-                // When the tiles are less than the tile configurations 
+                // When the tiles are less than the tile configurations
                 // remove the not used configurations
                 items.splice($tiles.length);
             }
 
             noCancel = this._triggerRendering($tiles, items);
             if (noCancel) {
-                if (!(typeof opt.maximizedTileIndex === 'number' &&
+                if (!(typeof opt.maximizedTileIndex === "number" &&
                         $tiles.length >= opt.maximizedTileIndex)) {
 
                     // Add panels and render the splitter
@@ -695,7 +703,7 @@
 
                     // Initialize the layoutManager on the leftPanel
                     _opt.$leftPanel.igLayoutManager($.extend(true, {}, {
-                        layoutMode: 'grid',
+                        layoutMode: "grid",
                         items: items,
                         gridLayout: {
                             columnWidth: opt.columnWidth,
@@ -725,7 +733,7 @@
                             _opt.$leftPanel.removeClass(self.css.overflowHidden);
 
                             // Store the rendered by the layout manager tiles in _opt.$tiles
-                            _opt.$tiles = $(this).data('igLayoutManager')._opt.gridLayout.elements;
+                            _opt.$tiles = $(this).data("igLayoutManager")._opt.gridLayout.elements;
                             self._triggerRendered();
                         },
                         internalResizing: function () {
@@ -763,7 +771,7 @@
 
                     // Initialize the layoutManager on the element
                     this.element.igLayoutManager($.extend(true, {}, {
-                        layoutMode: 'grid',
+                        layoutMode: "grid",
                         items: items,
                         gridLayout: {
                             columnWidth: opt.columnWidth,
@@ -793,18 +801,18 @@
                             self.element.removeClass(self.css.overflowHidden);
 
                             // Store the rendered by the layout manager tiles in _opt.$tiles
-                            _opt.$tiles = $(this).data('igLayoutManager')._opt.gridLayout.elements;
+                            _opt.$tiles = $(this).data("igLayoutManager")._opt.gridLayout.elements;
                             self._triggerRendered();
                         },
                         internalResized: function () {
 
-                            // D.A. 10th September 2014, Bug #178636 The 'items' option should return the current array of items
+                            // D.A. 10th September 2014, Bug #178636 The "items' option should return the current array of items
                             self.options.items = self.layoutManager().options.items;
                         }
                     }));
 
                     _opt.$maximizedTile = _opt.$tiles.filter(
-                        '[data-index=' + opt.maximizedTileIndex + ']');
+                        "[data-index=" + opt.maximizedTileIndex + "]");
                 }
 
                 // D.A. 10th September 2014, Bug #178636 The 'items' option should return the current array of items
@@ -823,8 +831,9 @@
 
                 // Render the maximized template if from data source
                 $innerContainer
-                    .html((this._options.useMaximizedTileIndex ? "" : this._renderMinimizeButton()) +
-                        this._renderMaximizedState($tile.attr('data-index')));
+                    .html((this._options.useMaximizedTileIndex ?
+                        "" : this._renderMinimizeButton()) +
+                        this._renderMaximizedState($tile.attr("data-index")));
             } else {
                 $innerContChildren = $innerContainer.children();
 
@@ -838,7 +847,7 @@
                     // Show only maximized state markup and the minimize button
                     $innerContChildren
                         .filter(this.options.maximizedState +
-                            ', ' + this._selectors.minimizeBtnSelector)
+                            ", " + this._selectors.minimizeBtnSelector)
                             .removeClass(this.css.hidden);
                 } else {
 
@@ -860,7 +869,7 @@
 
                 // Render the minimized template if from data source
                 $innerContainer
-                    .html(this._renderMinimizedState($tile.attr('data-index')));
+                    .html(this._renderMinimizedState($tile.attr("data-index")));
             } else {
                 $children = $innerContainer.children();
 
@@ -883,12 +892,12 @@
         },
         _renderMaximizedState: function (index) {
             return this.options.maximizedState ?
-                $.ig.tmpl(this.options.maximizedState, this.options.dataSource.data()[index]) :
+                $.ig.tmpl(this.options.maximizedState, this.options.dataSource.data()[ index ]) :
                 this._renderMinimizedState(index);
         },
         _renderMinimizedState: function (index) {
             return this.options.minimizedState ?
-                $.ig.tmpl(this.options.minimizedState, this.options.dataSource.data()[index]) :
+                $.ig.tmpl(this.options.minimizedState, this.options.dataSource.data()[ index ]) :
                 "";
         },
         _renderMinimizeButton: function () {
@@ -898,9 +907,9 @@
         _addPanels: function () {
             var _opt = this._options,
                 markup = this.element.children(),
-                $leftPanel = $('<div/>').addClass(this.css.leftPanel),
-                $rightPanel = $('<div/>').addClass(
-                    this.css.rightPanel + ' ' + this.css.hidden);
+                $leftPanel = $("<div/>").addClass(this.css.leftPanel),
+                $rightPanel = $("<div/>").addClass(
+                    this.css.rightPanel + " " + this.css.hidden);
 
             $leftPanel.appendTo(this.element);
             $rightPanel.appendTo(this.element);
@@ -915,6 +924,7 @@
             // Move the markup to the left panel
             markup.appendTo(_opt.$leftPanel);
         },
+
         // Removes the panels
         // Appends the initial markup back to the main container
         _removePanels: function () {
@@ -924,7 +934,7 @@
                         .appendTo(this.element);
 
             this.element
-                .children(this._selectors.leftPanelSelector + ', ' +
+                .children(this._selectors.leftPanelSelector + ", " +
                     this._selectors.rightPanelSelector)
                     .remove();
 
@@ -941,6 +951,7 @@
                         collapsible: opt.splitterOptions.collapsible,
                         collapsed: opt.splitterOptions.collapsed
                 }],
+
                 // D.A. 29th April 2014, Bug #164471 Maximizing a tile causes all tile manager's on the same page to resize their containers.
                 resizeOtherSplitters: false,
                 layoutRefreshing: function () {
@@ -1003,13 +1014,14 @@
                     // Resize only if the new size wasn't changed by _setRightPanelSize
                     if (oldRightPanelCols !== self.options.rightPanelCols) {
                         self._positionRightPanelTiles($tiles, parseInt(
-                            _opt.$maximizedTile.attr('data-index'), 10), false, false);
+                            _opt.$maximizedTile.attr("data-index"), 10), false, false);
                     }
 
                     _opt.rightPanelWidth = rightPanelWidth;
                 },
                 collapsed: opt.splitterOptions.events.collapsed,
                 expanded: function (evt, ui) {
+
                     // It is needed because if the right panel is initially collapsed and we expand it
                     // the splitter is positioned in the middle.
                     if (!_opt.splitterFirstExpandEventFired) {
@@ -1159,12 +1171,12 @@
 
             // Attach events to the tiles in minimized state
             this.element
-                .on('click', minimizedTileSelector, elHandlers.minimizedTileClick)
-                .on('mouseover', minimizedTileSelector, elHandlers.miminimizedTileMouseOver)
-                .on('mouseout', minimizedTileSelector, elHandlers.minimizedTileMouseOut)
-                .on('click', minimizeBtnSelector, elHandlers.minimizeBtnClick)
-                .on('mouseover', minimizeBtnSelector, elHandlers.minimizeBtnMouseOver)
-                .on('mouseout', minimizeBtnSelector, elHandlers.minimizeBtnMouseOut);
+                .on("click", minimizedTileSelector, elHandlers.minimizedTileClick)
+                .on("mouseover", minimizedTileSelector, elHandlers.miminimizedTileMouseOver)
+                .on("mouseout", minimizedTileSelector, elHandlers.minimizedTileMouseOut)
+                .on("click", minimizeBtnSelector, elHandlers.minimizeBtnClick)
+                .on("mouseover", minimizeBtnSelector, elHandlers.minimizeBtnMouseOver)
+                .on("mouseout", minimizeBtnSelector, elHandlers.minimizeBtnMouseOut);
 
             // Resize the leftPanel, not the right when the container is resized with maximizedTile.
             // TODO: This functionality should be added in the splitter as an option to resize
@@ -1175,8 +1187,9 @@
                 }
             };
 
-            $(window).on('resize', _opt.windowHandlers.resize);
+            $(window).on("resize", _opt.windowHandlers.resize);
         },
+
         // Stops the event propagation. In case of nested tile managers the event
         // will be caught only once by the innermost tile manager.
         _stopEventPropagation: function (event) {
@@ -1203,12 +1216,14 @@
                 opt = this.options,
                 _opt = this._options,
                 gl = _opt.gridLayout,
+
                 // The minimum width that the maximized tile should have
                 minMaximizedTileWidth = gl.columnWidth + 2 * gl.marginLeft,
                 rightTilesTotalWidth = this._getRightPanelTilesWidth() + gl.marginLeft,
                 rightTilesTotalHeight = this._getRightPanelTilesHeight() + gl.marginTop,
                 rightPanelHeight = _opt.$rightPanel.height(),
-                splitterWidth = this.element.children(this._selectors.splitbarSelector).outerWidth(true),
+                splitterWidth = this.element.
+                    children(this._selectors.splitbarSelector).outerWidth(true),
                 scrollWidth = $.ig.util.getScrollWidth(),
                 maxCols, minWidth, rightPanelWidth, leftPanelWidth,
                 rightPanelHasScroll = function () {
@@ -1226,7 +1241,8 @@
             }
 
             // Calculate the maximum number of columns that can be shown in the right panel.
-            maxCols = Math.max(Math.floor((this.element.width() - minMaximizedTileWidth - splitterWidth -
+            maxCols = Math.max(Math.floor((this.element.width() -
+                minMaximizedTileWidth - splitterWidth -
                 (rightPanelHasScroll() ? scrollWidth : 0)) / rightTilesTotalWidth), 1);
 
             if (opt.rightPanelCols > maxCols) {
@@ -1239,14 +1255,16 @@
             // D.A. 14th October 2013 Bug #151452 Added min width to the container when a tile is maximized.
             // This should prevent issues when the container is too small to show the maximized tile and the right column.
             minWidth = rightPanelWidth + minMaximizedTileWidth + splitterWidth;
-            this.element.css('min-width', minWidth);
-            leftPanelWidth = this.element.width() - rightPanelWidth - 2 * gl.marginLeft - splitterWidth;
+            this.element.css("min-width", minWidth);
+            leftPanelWidth = this.element.width() - rightPanelWidth -
+                2 * gl.marginLeft - splitterWidth;
 
             // Call the splitter set size method.
-            this.element.igSplitter('setFirstPanelSize', leftPanelWidth);
+            this.element.igSplitter("setFirstPanelSize", leftPanelWidth);
         },
+
         // tiles - the tiles to be positioned
-        // maximizingTileIndex - the index of the tile that is simultaneously maximizing 
+        // maximizingTileIndex - the index of the tile that is simultaneously maximizing
         // In case of setOption, this is the index of the tile that is already maximized
         // containerSwap - if the tiles should swap containers
         // animateSize - if the tiles width/height to be animated too
@@ -1265,12 +1283,12 @@
                     _opt.$rightPanel.scrollTop() : 0,
                 rightPanelCols = opt.rightPanelCols;
 
-            animDuration = typeof animDuration === 'number' ?
+            animDuration = typeof animDuration === "number" ?
                 animDuration : this.options.animationDuration;
 
             $tiles.each(function () {
                 var $tile = $(this),
-                    tileIndex = parseInt($tile.attr('data-index'), 10),
+                    tileIndex = parseInt($tile.attr("data-index"), 10),
                     tileLeft, tileTop, newDim;
 
                 // The maximizing tile position should not be empty.
@@ -1325,7 +1343,7 @@
                 .addClass(this.css.hidden)
                 .addClass(this.css.splitterNoScroll);
             $splitBar.addClass(this.css.hidden);
-            _opt.$leftPanel.width('100%');
+            _opt.$leftPanel.width("100%");
 
             if (!this.options.splitterOptions.enabled) {
 
@@ -1336,10 +1354,10 @@
         },
         _showSplitterElements: function () {
             this._options.$rightPanel.removeClass(this.css.hidden);
-            
+
             // When the splitter is initially collapsed and we switch to maximazed view, we should not
             // remove the splitterNoScroll class.
-            if (!this.splitter()._panels[1].options.collapsed) {
+            if (!this.splitter()._panels[ 1 ].options.collapsed) {
                 this._options.$rightPanel.removeClass(this.css.splitterNoScroll);
             }
 
@@ -1353,7 +1371,7 @@
 
             // Adjust tiles left position
             _opt.$tiles.css({
-                left: '-=' + marginLeft
+                left: "-=" + marginLeft
             });
 
             // Set margins on the left panel
@@ -1370,7 +1388,7 @@
 
             // Move and animate tiles to the right panel
             this._positionRightPanelTiles(_opt.$tiles.not($tileToMaximize),
-                parseInt($tileToMaximize.attr('data-index'), 10), true, true, animDuration);
+                parseInt($tileToMaximize.attr("data-index"), 10), true, true, animDuration);
 
             // Animate the maximizing tile
             this._maximizeTile($tileToMaximize, animDuration, event);
@@ -1381,8 +1399,8 @@
                 gl = _opt.gridLayout,
                 minimizedTiles = _opt.$tiles.not(_opt.$maximizedTile),
                 $tileToMinimize = _opt.$maximizedTile,
-                tileToMinimizeIndex = parseInt($tileToMinimize.attr('data-index'), 10),
-                tileToMaximizeIndex = parseInt($tileToMaximize.attr('data-index'), 10),
+                tileToMinimizeIndex = parseInt($tileToMinimize.attr("data-index"), 10),
+                tileToMaximizeIndex = parseInt($tileToMaximize.attr("data-index"), 10),
                 rightPanelOffset = _opt.$rightPanel.position().left - gl.marginLeft;
 
             this._toMinimizedState($tileToMinimize);
@@ -1397,7 +1415,7 @@
                         prevIndex -= 1;
                     }
 
-                    prevTile = _opt.$tiles.filter('[data-index=' + prevIndex + ']');
+                    prevTile = _opt.$tiles.filter("[data-index=" + prevIndex + "]");
 
                     if (prevTile.length > 0) {
 
@@ -1422,8 +1440,8 @@
             // Adjust its left/top so that the panel change does not affect the position on the screen
             $tileToMaximize
                 .css({
-                    left: '+=' + rightPanelOffset,
-                    top: '-=' + _opt.$rightPanel.scrollTop()
+                    left: "+=" + rightPanelOffset,
+                    top: "-=" + _opt.$rightPanel.scrollTop()
                 })
                 .appendTo(_opt.$leftPanel);
 
@@ -1437,7 +1455,7 @@
                 innerContainer = $tileToMaximize
                     .children(this._selectors.innerContainerSelector);
 
-            animDuration = typeof animDuration === 'number' ?
+            animDuration = typeof animDuration === "number" ?
                 animDuration : this.options.animationDuration;
 
             // Switch to maximized content
@@ -1447,7 +1465,7 @@
             innerContainer.addClass(this.css.overflowHidden);
 
             $tileToMaximize.animate({
-                width: '100%',
+                width: "100%",
                 height: this.element.height() - 2 * mt,
                 top: mt,
                 left: 0
@@ -1468,6 +1486,7 @@
                 }
             });
         },
+
         // Maximizes tile when maximizedTileIndex option is given
         _maximizeTileWithCustomIndex: function ($tileToMaximize, animDuration, event) {
             var itemData, i,
@@ -1477,20 +1496,20 @@
                 tileToMinimizeNewDim = {
                     width: $tileToMaximize.outerWidth(),
                     height: $tileToMaximize.outerHeight(),
-                    top: $tileToMaximize.css('top'),
-                    left: $tileToMaximize.css('left')
+                    top: $tileToMaximize.css("top"),
+                    left: $tileToMaximize.css("left")
                 },
                 tileToMaximizeNewDim = {
                     width: $tileToMinimize.outerWidth(),
                     height: $tileToMinimize.outerHeight(),
-                    top: $tileToMinimize.css('top'),
-                    left: $tileToMinimize.css('left')
+                    top: $tileToMinimize.css("top"),
+                    left: $tileToMinimize.css("left")
                 },
                 swapTilesInConfig = function (itemsConfig) {
 
                     // Swap the tiles in the grid layout items configuration array
                     for (i = 0; i < itemsConfig.length; i++) {
-                        itemData = itemsConfig[i];
+                        itemData = itemsConfig[ i ];
                         if (itemData.item.is($tileToMinimize)) {
                             itemData.item = $tileToMaximize;
                         } else if (itemData.item.is($tileToMaximize)) {
@@ -1514,7 +1533,7 @@
 
                 // Swap tiles in grid layout items
                 swapTilesInConfig(self._options.
-                    $layoutManagerElement.igLayoutManager('option', 'items'));
+                    $layoutManagerElement.igLayoutManager("option", "items"));
 
                 // Swap tiles in initial config
                 swapTilesInConfig(_opt.gridLayout.initialItems);
@@ -1536,7 +1555,7 @@
             */
             var _opt = this._options;
 
-            animDuration = typeof animDuration === 'number' ?
+            animDuration = typeof animDuration === "number" ?
                 animDuration : this.options.animationDuration;
 
             if (!$tileToMaximize) {
@@ -1545,8 +1564,8 @@
                 return;
             }
 
-            if (_opt.$maximizedTile && _opt.$maximizedTile.attr('data-index') ===
-                    $tileToMaximize.attr('data-index')) {
+            if (_opt.$maximizedTile && _opt.$maximizedTile.attr("data-index") ===
+                    $tileToMaximize.attr("data-index")) {
 
                 // The tile is already maximized
                 return;
@@ -1590,8 +1609,8 @@
             }
 
             // D.A. 14th October 2013 Bug #151452 Remove the min-width when minimizing a tile.
-            this.element.css('min-width', 0);
-            tileToMinimizeIndex = parseInt($tileToMinimize.attr('data-index'), 10);
+            this.element.css("min-width", 0);
+            tileToMinimizeIndex = parseInt($tileToMinimize.attr("data-index"), 10);
 
             // Revert the left panel to no margins. Keep its current widhth and height.
             _opt.$leftPanel
@@ -1619,12 +1638,12 @@
                         var $tile = $(this);
 
                         $tile.css({
-                            left: '+=' + rightTilesOffset,
-                            top: '-=' + _opt.$rightPanel.scrollTop()
+                            left: "+=" + rightTilesOffset,
+                            top: "-=" + _opt.$rightPanel.scrollTop()
                         });
 
                         // Move the tile to the left panel
-                        if (parseInt($tile.attr('data-index'), 10) > tileToMinimizeIndex) {
+                        if (parseInt($tile.attr("data-index"), 10) > tileToMinimizeIndex) {
                             $tile.appendTo(_opt.$leftPanel);
                         } else {
                             $tile.insertBefore($tileToMinimize);
@@ -1656,13 +1675,13 @@
                returnType="object|null" Returns the splitter associated with this tile manager or
                null if the tile manager was instantiated with maximizedTileIndex.
             */
-            return this._options.useMaximizedTileIndex ? null : this.element.data('igSplitter');
+            return this._options.useMaximizedTileIndex ? null : this.element.data("igSplitter");
         },
         layoutManager: function () {
             /* Returns the layout manager associated with this tile manager.
                returnType="object" Returns the layout manager associated with this tile manager.
             */
-            return this._options.$layoutManagerElement.data('igLayoutManager');
+            return this._options.$layoutManagerElement.data("igLayoutManager");
         },
         reflow: function (forceReflow, animationDuration, event) {
             /* Reflow the tile manager. Rearranging the tiles to fit in the container
@@ -1769,6 +1788,7 @@
                 this.options.dataSource.dataBind(this._renderData, this);
             }
         },
+
         // Returns the markup (if such) to its initial state. Destroys the layout manager and splitter widgets.
         // Destroys the rendered ui-igtiles. Removes the classes from the tiles.
         _destroyTiles: function () {
@@ -1776,10 +1796,10 @@
                 _opt = this._options;
 
             // Destroy the other widgets
-            _opt.$layoutManagerElement.igLayoutManager('destroy');
+            _opt.$layoutManagerElement.igLayoutManager("destroy");
 
             if (!_opt.useMaximizedTileIndex) {
-                this.element.igSplitter('destroy');
+                this.element.igSplitter("destroy");
             }
 
             // Remove the rendered content
@@ -1794,7 +1814,7 @@
                             .children()
                                 .removeClass(self.css.innerContainer)
                                 .appendTo(self.element)
-                                .children('.' + self.css.hidden)
+                                .children("." + self.css.hidden)
                                     .removeClass(self.css.hidden);
 
                         $tile.remove();
@@ -1819,6 +1839,7 @@
                 this.element.empty();
             }
         },
+
         // Remove the attached event handlers
         _removeEventHandlers: function () {
             var _opt = this._options,
@@ -1827,18 +1848,18 @@
                 minimizedTileSelector = this._selectors.minimizedTileSelector;
 
             this.element
-                .off('click', minimizedTileSelector, elHandlers.minimizedTileClick)
-                .off('mouseover', minimizedTileSelector, elHandlers.miminimizedTileMouseOver)
-                .off('mouseout', minimizedTileSelector, elHandlers.minimizedTileMouseOut)
-                .off('click', minimizeBtnSelector, elHandlers.minimizeBtnClick)
-                .off('mouseover', minimizeBtnSelector, elHandlers.minimizeBtnMouseOver)
-                .off('mouseout', minimizeBtnSelector, elHandlers.minimizeBtnMouseOut);
+                .off("click", minimizedTileSelector, elHandlers.minimizedTileClick)
+                .off("mouseover", minimizedTileSelector, elHandlers.miminimizedTileMouseOver)
+                .off("mouseout", minimizedTileSelector, elHandlers.minimizedTileMouseOut)
+                .off("click", minimizeBtnSelector, elHandlers.minimizeBtnClick)
+                .off("mouseover", minimizeBtnSelector, elHandlers.minimizeBtnMouseOver)
+                .off("mouseout", minimizeBtnSelector, elHandlers.minimizeBtnMouseOut);
 
-            $(window).off('resize', _opt.windowHandlers.resize);
+            $(window).off("resize", _opt.windowHandlers.resize);
         },
 
         // P.P. 3 Sep 2015 #202506 - Disabled TileManager is fully functional
-        _toggleDisbaled: function (value) {
+        _toggleDisabled: function (value) {
             var splitter = this.splitter(),
                 layoutManager = this._options.$layoutManagerElement.data().igLayoutManager;
 
@@ -1859,5 +1880,5 @@
             return this;
         }
     });
-    $.extend($.ui.igTileManager, { version: '<build_number>' });
+    $.extend($.ui.igTileManager, { version: "<build_number>" });
 }(jQuery));

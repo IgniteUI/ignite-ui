@@ -3,121 +3,1118 @@
 <head>
 	<title> Infragistics jQuery Data Source - Tests for general properties, API methods different than filtering, sorting or paging </title> 
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
-	
+	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
 	
 	<script type="text/javascript"> 
-	 
-	 var dataBindingFired = false;
-	 var dataBoundFired = false;
-	 
-	 $(document).ready(function () {
+	$.mockjaxSettings.logging = 0;  // only critical error messages
 	
-		// define a simple data source control
-		var ds1 = new $.ig.DataSource();
-		ds1.settings.dataBinding = function () { dataBindingFired = true; };
-		ds1.settings.dataBound = function () { dataBoundFired = true; };
-		ds1.dataBind();
-		
-		startTesting();
-			
-		function startTesting()
-		{
+	function filerFunc2(val) {
+		return val < 2 ? true : false;
+	};
+	 $(function () {
+		var dataBindingFired = false, dataBoundFired = false, ds1, ds2, date;
+		function loadTestbeds() {
+			// define a simple data source control
+			ds1 = new $.ig.DataSource();
+			ds1.settings.dataBinding = function () { dataBindingFired = true; };
+			ds1.settings.dataBound = function () { dataBoundFired = true; };
+			ds1.dataBind();
 
-			QUnit.init();
-			QUnit.start();
+			date = new Date();
+			var data = [
+				{ ID: 1, "Date": date},
+				{ ID: 2, "Date": new Date(date.getDate() + 1), isActive: true },
+				{ ID: 3, "Date": new Date(date.getDate() + 2), isActive: false }
+				]
+			ds2 = new $.ig.DataSource({
+				dataSource: data,
+				enableUTCDates: true,
+				localSchemaTransform: false,
+				schema: {
+					fields: [{
+						name: "ID", type: "number"
+					}, {
+						name: "Date", type: "date"
+					},
+					{ name: "isActive", type: "boolean" }
+					]
+				},
+			});
 
-			module("igDataSource");
-			
-			test("igDataSource events test: DataBinding", function() {
-				
-				equal(true, dataBindingFired, true);
-			});
-			
-			test("igDataSource events test: DataBound", function() {
-
-				equal(true, dataBoundFired, true);
-			});
-			
-			test("igDataSource properties test: fields property", function () {
-			
-				var fields = ds1.fields([{name: "test1"}, {name: "test2"}]).fields();
-				equal(2, fields.length, 2);
-				
-			});
-			
-			test("igDataSource properties test: Schema property", function () {
-			
-				var schema = ds1.schema({type:"unknown"}).schema();
-				equal("unknown", schema._type, "unknown");
-			});
-			
-			test("igDataSource properties test: paging settings property", function () {
-				
-				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
-				equal(5, ps.pageSize, 5);
-				
-			});
-			
-			test("igDataSource properties test: filtering settings property", function () {
-			
-				var fs = ds1.filterSettings({filterExprUrlKey: "f"}).filterSettings();
-				equal("f", fs.filterExprUrlKey, "f");
-			});
-			
-			test("igDataSource properties test: sort settings property", function () {
-			
-				var ss = ds1.sortSettings({exprString: "col1 ASC"}).sortSettings();
-				equal("col1 ASC", ss.exprString, "col1 ASC");
-			});
-			
-			
-			test("igDataSource properties test: dataSource property test", function () {
-			
-				var ds = ds1.dataSource("http://www.infragistics.com").dataSource();
-				equal("http://www.infragistics.com", ds, "http://www.infragistics.com");
-			});
-		
-			test("igDataSource properties test: type property test", function () {
-			
-				var t = ds1.type("unknown").type();
-				if ((t === "unknown" || t === "empty") && t !== undefined && t != null) {
-					ok (true, "type is ok", true);
-				} else {
-					ok(false, "type is not ok", false);
-				}
-				equal("unknown", ds1.settings.type, "unknown");
-			});
-			
-			// page index
-			test("igDataSource properties test: page index property", function () {
-				
-				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
-				equal(0, ds1.pageIndex(), 0);
-				
-			});
-			
-			// page count
-			test("igDataSource properties test: page count property", function () {
-				
-				var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
-				equal(1, ds1.pageCount(), 1);
-				
-			});
+			ds2.dataBind();
 		}
+		
+		initialized = false;
+		module("igDataSource Properties", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 500);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+			
+		test("igDataSource events test: DataBinding", function() {
+			
+			equal(true, dataBindingFired, true);
+		});
+		
+		test("igDataSource events test: DataBound", function() {
+
+			equal(true, dataBoundFired, true);
+		});
+		
+		test("igDataSource properties test: fields property", function () {
+		
+			var fields = ds1.fields([{name: "test1"}, {name: "test2"}]).fields();
+			equal(2, fields.length, 2);
+			
+		});
+		
+		test("igDataSource properties test: Schema property", function () {
+		
+			var schema = ds1.schema({type:"unknown"}).schema();
+			equal("unknown", schema._type, "unknown");
+		});
+		
+		test("igDataSource properties test: paging settings property", function () {
+			
+			var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
+			equal(5, ps.pageSize, 5);
+			
+		});
+		
+		test("igDataSource properties test: filtering settings property", function () {
+		
+			var fs = ds1.filterSettings({filterExprUrlKey: "f"}).filterSettings();
+			equal("f", fs.filterExprUrlKey, "f");
+		});
+		
+		test("igDataSource properties test: sort settings property", function () {
+		
+			var ss = ds1.sortSettings({exprString: "col1 ASC"}).sortSettings();
+			equal("col1 ASC", ss.exprString, "col1 ASC");
+		});
+		
+		
+		test("igDataSource properties test: dataSource property test", function () {
+		
+			var ds = ds1.dataSource("http://www.infragistics.com").dataSource();
+			equal("http://www.infragistics.com", ds, "http://www.infragistics.com");
+		});
+	
+		test("igDataSource properties test: type property test", function () {
+		
+			var t = ds1.type("unknown").type();
+			if ((t === "unknown" || t === "empty") && t !== undefined && t != null) {
+				ok (true, "type is ok", true);
+			} else {
+				ok(false, "type is not ok", false);
+			}
+			equal("unknown", ds1.settings.type, "unknown");
+		});
+		
+		// page index
+		test("igDataSource properties test: page index property", function () {
+			
+			var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
+			equal(0, ds1.pageIndex(), 0);
+			
+		});
+		
+		// page count
+		test("igDataSource properties test: page count property", function () {
+			
+			var ps = ds1.pagingSettings({pageSize: 5}).pagingSettings();
+			equal(1, ds1.pageCount(), 1);
+		});	
+
+		// test stringToJSONObject
+		test("Test stringToJSONObject", function () {
+			var obj = ds1.stringToJSONObject('{"p": 5}');
+			ok(obj.p === 5, "Test stringToJSONObject");
+			throws(
+				function () {
+					ds1.stringToJSONObject('{"p": 5');
+				},
+				function (err) {
+					return err.message.indexOf($.ig.DataSourceLocale.locale.errorParsingJsonNoSchema) > -1;
+				},
+				$.ig.DataSourceLocale.locale.errorParsingJsonNoSchema + " should be thrown"
+			);
+		});
+		
+		test("Test creating JSONDataSource", function () {
+			 var adventureWorks = {
+                "Records": [{
+                    "ProductID": 1,
+                    "Name": "Adjustable Race",
+                    "ProductNumber": "AR-5381"
+                }, {
+                    "ProductID": 2,
+                    "Name": "Bearing Ball",
+                    "ProductNumber": "BA-8327"
+                }
+            ]};
+			 var jsonpDs = new $.ig.JSONDataSource({
+                        dataSource: adventureWorks,
+                        responseDataKey: "Records"
+                    });
+ 
+            jsonpDs.dataBind();
+			equal(jsonpDs.type(), "json", "Check if dataSource type is correct.");
+			equal(jsonpDs.dataView().length, 2, "DataView should contain 2 records.");
+			
+			jsonpDs = new $.ig.JSONDataSource();
+
+			equal(jsonpDs.type(), "json", "Check if dataSource type is correct.");
+		});
+		
+		test("Test creating HtmlTableDataSource ", function () {
+			var htmltableDs = new $.ig.HtmlTableDataSource ();
+			equal(htmltableDs.type(), "htmlTableDom", "Check if dataSource type is correct.");
+		});
+		
+		test("Test creating ArrayDataSource  ", function () {
+			var arrayDs = new $.ig.ArrayDataSource();
+			equal(arrayDs.type(), "array", "Check if dataSource type is correct.");
+		});
+		
+		test("Test creating RemoteDataSource   ", function () {
+			var arrayDs = new $.ig.RemoteDataSource ();
+			equal(arrayDs.type(), "remoteUrl", "Check if dataSource type is correct.");
+		});
+		
+		test("Test creating JSONPDataSource", function () {
+			var JSONPDataSource = new $.ig.JSONPDataSource  ();
+			equal(JSONPDataSource.settings.responseDataType , "jsonp", "Check if responseDataType is correct.");
+		});
+		
+		test("Test creating XmlDataSource ", function () {
+			var xmlds  = new $.ig.XmlDataSource();
+			equal(xmlds.type(), "xml", "Check if dataSource type is correct.");
+		});
+		
+		test("Test creating FunctionDataSource", function () {
+			var funcDs  = new $.ig.FunctionDataSource ();
+			equal(funcDs.type(), "function", "Check if dataSource type is correct.");
+		});
+
+		test("Test if date filtering is correct when enableUTCDates option is enabled", function () {
+			ds2.filter([{ fieldName: "Date", expr: date, cond: "on", preciseDateFormat: "dd/MM/yyyy hh:mm:ss:ff" }], "AND", true);
+			equal(ds2.dataView().length, 1, "DataView should contain a single record.");
+			ds2.clearLocalFilter();
+		});
+
+		test("Test if date filtering is correct for bool values", function () {
+
+			ds2.filter([{ fieldName: "isActive", cond: "null" }], "AND", true);
+			equal(ds2.dataView().length, 0, "DataView should contain a 0 records.");
+
+			ds2.clearLocalFilter();
+
+			ds2.filter([{ fieldName: "isActive", cond: "empty" }], "AND", true);
+			equal(ds2.dataView().length, 1, "DataView should contain 1 record.");
+
+			ds2.filter([{ fieldName: "isActive", cond: "notEmpty" }], "AND", true);
+			equal(ds2.dataView().length, 2, "DataView should contain a 2 records.");
+
+			ds2.filter([{ fieldName: "isActive", cond: "notNull" }], "AND", true);
+			equal(ds2.dataView().length, 3, "DataView should contain a 2 records.");
+
+			var errorCont = 0;
+			try {
+				ds2.filter([{ fieldName: "isActive", cond: "nonExistentCondition" }], "AND", true);
+			} catch (e) {
+				errorCont++;
+				equal(e.message, " The filter condition that was passed was not recognized: nonExistentCondition", "If invalid condition is passed an error should be thrown with the correct error message.");
+			}
+			equal(errorCont, 1, "If invalid condition is passed an error should be thrown.");
+			ds2.clearLocalFilter();
+		});
+
+		test("Test filtering for customConditions", function () {
+			ds2.clearLocalFilter();
+
+			function filerFunc(val) {
+				return val > 1 ? true : false;
+			};
+		
+			ds2.settings.filtering.customConditions = {
+				"Over": {
+					labelText: "Over 1",
+					expressionText: "Over 1",
+					requireExpr: false,
+					filterFunc: filerFunc
+				},
+				"Under": {
+					labelText: "Under 2",
+					expressionText: "Under 2",
+					requireExpr: false,
+					filterFunc: "filerFunc2"
+				},
+				"Error": {
+					labelText: "Error",
+					expressionText: "Error",
+					requireExpr: false,
+					filterFunc: "filerFunc3"
+				}
+			};
+
+			ds2.filter([{ fieldName: "ID", cond: "Over" }], "AND", true);
+			equal(ds2.dataView().length, 2, "There should be two items corresponding to the custom filtering condition");
+
+			ds2.clearLocalFilter();
+			ds2.filter([{ fieldName: "ID", cond: "Under" }], "AND", true);
+			equal(ds2.dataView().length, 1, "There should be 1 item corresponding to the custom filtering condition");
+
+			ds2.clearLocalFilter();
+			var errorCount = 0;
+			try {
+				ds2.filter([{ fieldName: "ID", cond: "Error" }], "AND", true);
+			} catch (e) {
+				errorCount++;
+				equal(e.message, "An unexpected value was provided for a custom filtering function. A function or string is expected.", "If filterFunc does not exist an error should be thrown and the error message should be correct.");
+			}
+			equal(errorCount, 1, "If filterFunc does not exist an error should be thrown")
+		});
+
+	 	test("Test filtering for customConditions with requireExpr: true:", function () {
+	 		ds2.clearLocalFilter();
+
+	 		ds2.settings.filtering.customConditions = {
+	 			"ValueGreaterThan": {
+	 				labelText: "ValueGreaterThan",
+	 				expressionText: "ValueGreaterThan",
+	 				requireExpr: true,
+	 				filterFunc: function (val, expr) { 
+						return val > expr ? true : false;
+					}
+	 			}
+	 		};
+	 		ds2.filter([{ fieldName: "ID", cond: "ValueGreaterThan", expr: 2 }], "AND", true);
+	 		equal(ds2.dataView().length, 1, "There should be 1 record matching the filter condition.");
+	 		equal(ds2.dataView()[0].ID, 3, "There record ID value should match the filter condition.");
+		})
+	
+		var dsSummaries, dsLocal, hierarchicalDS;
+		function loadAPITestbeds() {
+			var data = [
+				{ "ID": 0, "Name": "Bread", "Price": 2.5 },
+				{ "ID": 1, "Name": "Milk", "Price": 3.5 },
+				{ "ID": 2, "Name": "Vint soda", "Price": 20.9 }
+			];
+
+			var jsonData = [{
+				"ID": 0,
+				"Name": "Food",
+				"Category": { "d": [{ "ID": 0, "Name": "Food", "Active": true, "Date": "\/Date(1059660800000)\/" }] },
+				"Products": [
+                    { "ID": 0, "Name": "Bread", "Price": "2.5" }
+				]
+			},
+		{
+			"ID": 1,
+			"Name": "Beverages",
+			"Category": { "d": [{ "ID": 2, "Name": "Beverages", "Active": true, "Date": "\/Date(1159660800000)\/" }] },
+			"Products": [
+				{ "ID": 1, "Name": "Milk", "Price": "3.5" },
+				{ "ID": 2, "Name": "Vint soda", "Price": "20.9" }
+			]
+		},
+		{
+			"ID": 2,
+			"Name": "Electronics",
+			"Category": { "d": [{ "ID": 5, "Name": "Electronics", "Active": false, "Date": "\/Date(1859660800000)\/" }] },
+			"Products": [
+				{ "ID": 7, "Name": "DVD Player", "Price": "35.88" },
+				{ "ID": 8, "Name": "LCD HDTV", "Price": "1088.8" }
+			]
+		}];
+
+			dsSummaries = new $.ig.DataSource({
+				dataSource: data,
+				schema: {
+					fields: [{
+						name: "Name"
+					}, {
+						name: "Price"
+					}, {
+						name: "Rating"
+					}]
+				},
+				summaries: {
+					type: "local",
+					columnSettings: [{
+						columnKey: "Price",
+						allowSummaries: true,
+						summaryOperands: [{
+							type: "count",
+							active: true,
+							order: 0
+						}]
+					}]
+				}, 
+				paging: {type: "local", pageSize:1}
+			});
+			
+			dsSummaries.dataBind();
+
+			dsLocal = new $.ig.DataSource({
+				dataSource: data,
+				primaryKey: "ID",
+				schema: {
+					fields: [
+					{
+						name: "ID"
+					},
+					{
+						name: "Name"
+					}, {
+						name: "Price"
+					}, {
+						name: "Rating"
+					}]
+				},
+				summaries: {
+					type: "local"
+				}, 
+				paging: {type: "local", enabled:true},
+				filtering: { type: "local", defaultFields: [], enabled: true },
+				sorting: { type: "local", defaultFields: [], applyToAllData: true, enabled: true, expressions:[] }
+			});
+			
+			dsLocal.dataBind();
+
+			hierarchicalDS = new $.ig.DataSource({
+				dataSource: jsonData,
+				primaryKey: "ID",
+				defaultChildrenDataProperty: "Products",
+				schema: {
+					fields: [
+					{
+						name: "ID"
+					},
+					{
+						name: "Name"
+					}
+					],
+					layouts: {
+						"/Products": {
+							key: "Products",
+							fields: [
+							{
+								name: "ID"
+							},
+							{
+								name: "Name"
+							}
+							]
+						},
+						"/Category": {
+							responseDataKey: "d",
+							key: "Category",
+							fields: [
+							{
+								name: "ID"
+							},
+							{
+								name: "Name"
+							}
+							]
+						}
+					}
+				}
+			});
+
+			hierarchicalDS.dataBind();
+		}
+
+		isInitialized = false;
+		module("igDataSource API Methods", {
+			setup: function () {
+				//pause testing until data source is initialized
+				if (!isInitialized) {
+					stop();
+					loadAPITestbeds();
+					setTimeout(function () { start(); }, 500);
+					isInitialized = true;
+				}
+			},
+			teardown: function () {
+			}
+		});
+
+		test("Test clearLocalSorting/clearLocalFilter API methods", function () {
+			var dsLocalOperations = new $.ig.DataSource({
+				dataSource: [
+				{ "ID": 0, "Name": "Bread", "Price": 2.5 },
+				{ "ID": 1, "Name": "Milk", "Price": 3.5 },
+				{ "ID": 2, "Name": "Vint soda", "Price": 20.9 }
+				],
+				primaryKey: "ID",
+				schema: {
+					fields: [
+					{
+						name: "ID"
+					},
+					{
+						name: "Name"
+					}, {
+						name: "Price"
+					}, {
+						name: "Rating"
+					}]
+				},
+				summaries: {
+					type: "local"
+				},
+				paging: { type: "local", enabled: true },
+				filtering: { type: "local", defaultFields: [], enabled: true },
+				sorting: { type: "local", defaultFields: [], applyToAllData: true, enabled: true, expressions: [] }
+			});
+
+			dsLocalOperations.dataBind();
+			stop();
+			setTimeout(function () {
+				start();
+				dsLocalOperations.sort([{ fieldName: "ID" }], "desc", false);
+				dsLocalOperations.filter([{ fieldName: "ID", expr: 2, cond: "lessThan" }], "AND", true);
+
+				dsLocalOperations.pageSize(1);
+				dsLocalOperations.pageIndex(2);
+
+				equal(dsLocalOperations.dataView().length, 1, "There should be 1 record in the dataView.");
+				equal(dsLocalOperations.dataView()[0].ID, 1, "Data should be sorted in descending order - top record should be with ID:1");
+				equal(dsLocalOperations.filteredData().length, 2, "Filtered data should contain 2 records.");
+
+				dsLocalOperations.clearLocalFilter();
+
+				equal(dsLocalOperations.filteredData().length, 1, "Filtered data should contain 1 record.");
+				
+				dsLocalOperations.filter([{ fieldName: "ID", expr: 2, cond: "lessThan" }], "AND", true);
+
+				dsLocalOperations.clearLocalSorting();
+
+				equal(dsLocalOperations.settings.sorting.expressions.length, 0, "There should be no expressions for sorting after clearLocalSorting is called.");
+			}, 500);
+		});
+
+		test("Test clearLocalFilter when sorting and paging are enabled", function () {
+		
+			var dsLocalOperations = new $.ig.DataSource({
+				dataSource: [
+				{ "ID": 0, "Name": "Bread", "Price": 2.5 },
+				{ "ID": 1, "Name": "Milk", "Price": 3.5 },
+				{ "ID": 2, "Name": "Vint soda", "Price": 20.9 }
+				],
+				primaryKey: "ID",
+				schema: {
+					fields: [
+					{
+						name: "ID"
+					},
+					{
+						name: "Name"
+					}, {
+						name: "Price"
+					}, {
+						name: "Rating"
+					}]
+				},
+				summaries: {
+					type: "local"
+				},
+				paging: { type: "local", enabled: true, pageSize:1, pageIndex:2 },
+				filtering: { type: "local", defaultFields: [], enabled: true, applyToAllData:true},
+				sorting: { type: "local", defaultFields: [], applyToAllData: true, enabled: true, expressions: [{ fieldName: "ID", dir: "desc" }] }
+			});
+			dsLocalOperations.dataBind();
+			dsLocalOperations.clearLocalFilter();
+
+			//check if paging is reset
+			equal(dsLocalOperations.pageIndex(),0, "paging is reset");
+			//check if sorting is still applied
+			ok(dsLocalOperations.dataView()[0].ID === 2, "Sorting is applied.");
+		});
+
+
+		test("Test dataSummaries API method", function () {
+			var summariesData = dsSummaries.dataSummaries();
+			equal(summariesData, dsSummaries.dataView(), "When local summaries are enabled the data.")
+		});
+
+		test("Test summariesSettings API method", function () {
+			var summariesSettings = dsSummaries.summariesSettings();
+			equal(summariesSettings, dsSummaries.settings.summaries, "summariesSettings API method should return the current summary settings.");
+			var newSettings = { type: "local" };
+			dsSummaries.summariesSettings(newSettings);
+			equal(dsSummaries.settings.summaries, newSettings, "Verify that settings have been applied.");
+
+		});
+
+		test("Test hasTotalRecordsCount API method", function () { 
+			var ds = new $.ig.DataSource();
+			ds.hasTotalRecordsCount(true);
+			ok(ds.hasTotalRecordsCount(),"Verify value is applied correctly.");
+		});
+
+		test("Test schema API method", function () {
+			var ds = new $.ig.DataSource();
+			var schema = {
+				fields: [{
+					name: "ID", type: "number"
+				}, {
+					name: "Name", type: "string"
+				}
+				]
+			};
+			//set
+			ds.schema(schema, "json");
+			equal(JSON.stringify(ds._schema.fields()), JSON.stringify(schema.fields), "Verify schema is applied correctly.");
+		});
+
+		test("Test analyzeDataSource API method", function () {
+			var ds = new $.ig.DataSource();
+			ds.settings.dataSource = function () { };
+			equal(ds.analyzeDataSource(), "function", "Verify analyzeDataSource returns correct results.");
+			ds.settings.dataSource = "[invalid]";
+			
+			equal(ds.analyzeDataSource(), "unknown", "Verify analyzeDataSource returns correct results.");
+		});
+
+		test("Test addRow when rowAdded option is defined", function () {
+			var rowAddedFuncCalled = false;
+			dsLocal.settings.callee = function () {
+			};
+
+			dsLocal.settings.rowAdded = function(){
+				rowAddedFuncCalled= true;
+			};
+			dsLocal.addRow(100, { "ID": 100, "Name": "Bread", "Price": 2.5 }, true);
+
+			stop();
+
+			setTimeout(function(){
+				//check when there is a callback func
+				ok(rowAddedFuncCalled, "The rowAdded function should be called.");
+
+				dsLocal.settings.callee = null;
+				rowAddedFuncCalled = false;
+				dsLocal.addRow(101, { "ID": 100, "Name": "Bread", "Price": 2.5 }, true);
+
+				setTimeout(function(){
+					start();
+					//check when there is no callback func
+					ok(rowAddedFuncCalled, "The rowAdded function should be called.");
+				},100);
+
+			}, 100);
+
+
+		});
+
+		test("Test deleteRow when rowDeleted option is defined", function () {
+			rowDeletedFuncCalled = false;
+			dsLocal.settings.aggregateTransactions = false;
+
+			dsLocal.settings.callee = function () {
+			};
+			dsLocal.settings.rowDeleted = function () {
+				rowDeletedFuncCalled = true;
+			};
+
+			dsLocal.deleteRow(101, true);
+			stop();
+			setTimeout(function () {
+				ok(rowDeletedFuncCalled, "rowDeleted function should be called.");
+				rowDeletedFuncCalled = false;
+				dsLocal.settings.callee = null;
+				dsLocal.deleteRow(100, true);
+				setTimeout(function () {
+					start();
+					ok(rowDeletedFuncCalled, "rowDeleted function should be called.")
+				}, 100);
+			}, 100);
+
+		});
+
+		test("Test insertRow when rowInserted option is defined", function () {
+			rowInsertedFuncCalled = false;
+
+			dsLocal.settings.callee = function () {
+			};
+			dsLocal.settings.rowInserted = function () {
+				rowInsertedFuncCalled = true;
+			};
+
+			dsLocal.insertRow(1001, { "ID": 1001, "Name": "Bread", "Price": 2.5 }, 2, false);
+			stop();
+			setTimeout(function () {
+				ok(rowDeletedFuncCalled, "rowInserted function should be called.");
+				rowInsertedFuncCalled = false;
+				dsLocal.settings.callee = null;
+				dsLocal.insertRow(1001, { "ID": 1001, "Name": "Bread", "Price": 2.5 }, 2, false);
+				setTimeout(function () {
+					start();
+					ok(rowInsertedFuncCalled, "rowInserted function should be called.")
+				}, 100);
+			}, 100);
+		});
+
+		test("Test updateRow when rowUpdated option is defined", function () {
+			rowUpdatedFuncCalled = false;
+
+			dsLocal.settings.callee = function () {
+			};
+			dsLocal.settings.rowUpdated = function () {
+				rowUpdatedFuncCalled = true;
+			};
+
+			dsLocal.updateRow(1001, { "ID": 1001, "Name": "Update", "Price": 2.5 }, false);
+			stop();
+			setTimeout(function () {
+				ok(rowDeletedFuncCalled, "rowInserted function should be called.");
+				rowUpdatedFuncCalled = false;
+				dsLocal.settings.callee = null;
+				dsLocal.updateRow(1001, { "ID": 1001, "Name": "Updated2", "Price": 2.5 }, false);
+				setTimeout(function () {
+					start();
+					ok(rowUpdatedFuncCalled, "rowInserted function should be called.")
+				}, 100);
+			}, 100);
+		});
+
+		test("Test commit API method - commit all", function () {
+			equal(dsLocal.pendingTransactions().length, 2, "Pending transactions should be 2.");
+			dsLocal.commit();
+			equal(dsLocal.pendingTransactions().length, 0, "Pending transactions should be empty.");
+
+		});
+
+		test("Test adding a record and then updating it.", function () {
+			dsLocal.settings.aggregateTransactions = true;
+			dsLocal.addRow(123, { "ID": 1001, "Name": "New", "Price": 2.5 }, false);
+
+			dsLocal.updateRow(123, { "ID": 123, "Name": "New + Update", "Price": 2.5 }, false);
+
+			dsLocal.setCellValue(123, "Name",  "New + Update 2", false);
+
+			equal(dsLocal.pendingTransactions()[0].row.Name, "New + Update 2",
+				"Verify new row transaction was updated correctly.");
+
+			dsLocal.pendingTransactions().clear();
+		});
+
+		test("Test updating record in array data source", function () { 
+			var data = [
+					[1, "Name1"],
+					[2, "Name2"]
+				];
+			var ds = new $.ig.DataSource({
+				localSchemaTransform: false,
+				dataSource: data,
+				schema: {
+					fields: [{
+						name: "ID", type: "number"
+					}, {
+						name: "Name", type: "string"
+					}
+					]
+				},
+			});
+
+			ds.dataBind();
+
+			stop();
+
+			setTimeout(function () {
+				start();
+				ds.updateRow(1, [1, "Updated name"], false);
+			
+				ds.commit();
+				equal(ds.dataView()[1][1], "Updated name", "Verify value is properly updated.");
+			}, 200);
+		});
+
+		test("Test adding row for child layout - schema.layouts", function () {
+			stop();
+			setTimeout(function () {
+				hierarchicalDS.addRow(200, { "ID": 200, "Name": "Food200" }, true);
+				start();
+				var newRec = hierarchicalDS.data()[hierarchicalDS.data().length - 1];
+				ok(newRec.ID === 200 &&  Array.isArray(newRec.Category.d) && Array.isArray(newRec.Products), "Verify that the child layout collections are created in the new record.");
+			}, 100);
+		
+		});
+
+		test("Test sorting on child layout.", function () {
+			hierarchicalDS.settings.dataSource = "remoteUrl?layout=Products";
+			hierarchicalDS.settings.sorting = {
+				enabled: true,
+				type: "remote",
+				sortUrlAscValueKey: "asc",
+				sortUrlDescValueKey: "desc",
+				sortUrlKey: "sort",
+				expressions : [
+				{
+					fieldName: "ID",
+					dir: "desc",
+					layout: "Products"
+				}
+				]
+			};
+			
+			var params = $.param(hierarchicalDS._encodeUrl());
+			equal(params, "sort(ID)=desc&pk=ID", "Verify that sorting request for child layout is properly encoded.");
+
+			hierarchicalDS.settings.dataSource = "remoteUrl";
+			var params = $.param(hierarchicalDS._encodeUrl());
+			equal(params, "sort(ID)=desc&layout=Products&pk=ID", "Verify that sorting request for child layout is properly encoded.");
+		});
+
+		test("Test rollback API method - rollback transaction by id", function () {
+
+			var transaction = dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, false);
+
+			equal(dsLocal.pendingTransactions().length, 1, "There should be a single pending transaction.");
+
+			dsLocal.rollback(transaction.rowId);
+
+			equal(dsLocal.pendingTransactions().length, 0, "There should be a no pending transaction after the transaction has been rolled back.");
+		});
+
+		test("Test _removeTransactionsByRecordId API", function () {
+			dsLocal.addRow(998, { "ID": 998, "Name": "Bread", "Price": 2.5 }, false);
+			dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, false);
+			
+			dsLocal._removeTransactionsByRecordId(999);
+			equal(dsLocal.pendingTransactions().length, 1, "There should be 1 pending transaction after one transaction has been removed.");
+			equal(dsLocal.pendingTransactions()[0].row.ID, 998, "There should be 1 transaction remaining for row with ID 998.");
+			
+			dsLocal._removeTransactionsByRecordId(998);
+			equal(dsLocal.pendingTransactions().length, 0, "There should no pending transaction the transaction has been removed.");
+		});
+
+		test("Test transactionsAsString API", function () {
+			dsLocal.allTransactions().clear();
+			var t = dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, false);
+			var transactions = dsLocal.transactionsAsString();
+			equal(transactions, '[{"type":"newrow","tid":"' + t.tid + '","row":{"ID":999,"Name":"Bread","Price":2.5},"rowId":999}]', "transactionsAsString should return all transactions parsed to string.");
+
+		});
+
+		test("Test removeRecordByIndex API method", function () { 
+			var data = [
+				{ "ID": 0, "Name": "Bread", "Price": 2.5 },
+				{ "ID": 1, "Name": "Milk", "Price": 3.5 },
+				{ "ID": 2, "Name": "Vint soda", "Price": 20.9 }
+			];
+			dsLocal.removeRecordByIndex(1, data);
+			equal(data.length, 2, "One item should be removed from the data.");
+			equal(data[data.length - 1].ID, 2, "The last item should be with ID = 2.");
+			
+			//verify that collection does not change if invalid index is passed
+			dsLocal.removeRecordByIndex(2, data);
+			equal(data.length, 2, "One item should be removed from the data.");
+			equal(data[data.length - 1].ID, 2, "The last item should be with ID = 2.");
+			var errors = 0;
+			try {
+				//verify that if no data is passed no error is thrown
+				dsLocal.removeRecordByIndex(2);
+			} catch (e) {
+				errors++;
+			}
+			equal(errors, 0, "No errors should be thrown.");
+
+		});
+
+		test("Test saveChanges API method - error", function () {
+			var callBackCalled = false;
+			var customCallBackCalled = false;
+			dsLocal.allTransactions().clear();
+			function errorCallbackFunc() {
+				callBackCalled = true;
+			}
+			dsLocal._addChangesErrorHandler(errorCallbackFunc);
+
+			$.mockjax({
+				url: 'updateFail',
+				responseText: {
+					Success: false
+				}
+			});
+			dsLocal.allTransactions().clear();
+			dsLocal.settings.updateUrl = "updateFail";
+
+			dsLocal.addRow(9999, { "ID": 9999, "Name": "Bread", "Price": 2.5 }, true);
+
+			equal(dsLocal.allTransactions().length, 1, "There should be a single unsaved transaction.");
+
+			dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
+			stop();
+
+			setTimeout(function () {
+				equal(dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
+				ok(callBackCalled, "Error callback should be called.");
+				ok(customCallBackCalled, "Custom Error callback should be called.");
+
+				dsLocal.settings.updateUrl = "updateFail2";
+				callBackCalled = false;
+				customCallBackCalled = false;
+				dsLocal.saveChanges(function () { }, function () { customCallBackCalled = true; });
+				setTimeout(function () {
+					equal(dsLocal.allTransactions().length, 1, "There should still be a single unsaved transactions.");
+					ok(callBackCalled, "Error callback should be called.");
+					ok(customCallBackCalled, "Custom Error callback should be called.");
+					callBackCalled = false;
+					dsLocal._removeChangesErrorHandler(errorCallbackFunc);
+					setTimeout(function () {
+						start();
+						ok(!callBackCalled, "Error callback should note be called since handler was removed.");
+					}, 100);
+				}, 100);
+
+			}, 500);
+		});
+
+		test("Test saveChanges API method - success", function () {
+			dsLocal.allTransactions().clear();
+			var callBackCalled = false;
+			var customCallBackCalled = false;
+			$.mockjax({
+				url: 'updateSuccess',
+				responseText: {
+					Success: true
+				}
+			});
+			dsLocal.allTransactions().clear();
+			dsLocal.settings.updateUrl = "updateSuccess";
+
+
+			function successCallbackFunc() { 
+				callBackCalled = true;
+			}
+			dsLocal._addChangesSuccessHandler(successCallbackFunc);
+
+			dsLocal.addRow(999, { "ID": 999, "Name": "Bread", "Price": 2.5 }, true);
+
+			equal(dsLocal.allTransactions().length, 1, "There should be a single unsaved transaction.");
+
+			dsLocal.saveChanges(function () { customCallBackCalled = true; });
+			stop();
+
+			setTimeout(function () {
+				equal(dsLocal.allTransactions().length, 0, "There should be no unsaved transactions after saveChanges is called and the request is successful.");
+				ok(callBackCalled, "Success callback should be called.");
+				ok(customCallBackCalled, "Custom Success callback should be called.");
+
+				dsLocal._removeChangesSuccessHandler(successCallbackFunc);
+				callBackCalled = false;
+				dsLocal.saveChanges();
+
+				setTimeout(function () {
+					start();
+					ok(!callBackCalled, "Callback should not be called since handler was removed.");
+				}, 100);
+
+			}, 500);
+		});
+
+
+		test("Test getDetachedRecord API method", function () {
+			var arrayData = [
+				[0, "Bread", 2.5],
+				[1, "Milk", 3.5],
+				[2, "Vint soda", 20.9]
+			];
+			dsLocal.settings.localSchemaTransform = false;
+			dsLocal.settings.dataSource = arrayData;
+			dsLocal.settings.primaryKey = null;
+
+			dsLocal.dataBind();
+			stop();
+
+			setTimeout(function () {
+				start();
+				var t = dsLocal.setCellValue(0, "Name", "NewVal", true);
+				var rec = dsLocal.getDetachedRecord(t);
+				dsLocal.setCellValue(0, "Name", "NewVal123", true);
+				
+				equal(rec.Name, "NewVal", "Detached value should be updated.");
+
+				dsLocal.settings.primaryKey = "ID";
+
+				var t2 = dsLocal.addRow(3, [3, "New Rec", 20.9], true);
+				var rec2 = dsLocal.getDetachedRecord(t2);
+				equal(rec2[1], "New Rec", "Detached value should be updated.");
+
+			}, 200);
+		});
+
+		test("Test remote summaries - encoded summaries params", function () {
+			dsSummaries.settings.dataSourceUrl = "getRemoteSummaries";
+			dsSummaries.settings.summaries = {
+				type: "remote",
+				summaryExprUrlKey: "summaries",
+				columnSettings: [{
+					columnKey: "Price",
+					allowSummaries: true,
+					summaryOperands: [{
+						type: "count",
+						active: true,
+						order: 0
+					}]
+				}]
+			};
+			stop();
+			setTimeout(function () {
+				start();
+				var params = $.param(dsSummaries._encodeUrl());
+				equal(params, "summaries(Price)=count");
+			}, 200);
+		});
+
+	 	test("Test remote filtering - encoded filtering params", function () {
+	 		var date = new Date();
+	 		var dsFilter = new $.ig.DataSource({
+				dataSource: "filteringUrl",
+				filtering: {
+					type: "remote",
+					filterExprUrlKey: "filterKey",
+					expressions: [
+					{ fieldName: "Date", expr: date, cond: "on" },
+					{ fieldName: "Date2", cond: "lastMonth" },
+					{ fieldName: "Date3", cond: "nextMonth" },
+					{ fieldName: "Boolean", cond: "true" },
+					{ fieldName: "Boolean2", cond: "false" },
+					{ fieldName: "String", expr: "A", cond: "doesNotEqual" },
+					{ fieldName: "Boolean3", expr: true, cond: "doesNotEqual" }
+					],
+					enabled: true }
+	 		});
+	 		var ticks = Date.UTC(
+							   date.getFullYear(),
+							   date.getMonth(),
+							   date.getDate(),
+							   date.getHours(),
+							   date.getMinutes()
+						   );
+	 		var params = $.param(dsFilter._encodeUrl());
+	 		equal(params, "filterKey(Date)=on(" + ticks + ")&filterKey(Date2)=lastMonth()&filterKey(Date3)=nextMonth()&filterKey(Boolean)=true()&filterKey(Boolean2)=false()&filterKey(String)=doesNotEqual(A)&filterKey(Boolean3)=doesNotEqual(true)",
+				"Verify that all parameters were properly encoded.");
+	 		
+	 		dsFilter.settings.filtering.filterExprUrlKey = null;
+	 		var currMonth = date.getMonth() + 1;
+
+	 		var params = unescape($.param(dsFilter._encodeUrl()));
+	 		equal(params,
+				"$filter=day(Date) eq " + date.getDate().toString() + " and month(Date) eq " + currMonth.toString() + " and year(Date) eq " + date.getFullYear().toString() +
+				" and month(Date2) eq " + (currMonth - 1).toString() + " and year(Date2) eq " + date.getFullYear().toString() + " and month(Date3) eq " +
+				(currMonth + 1).toString() + " and year(Date3) eq " + date.getFullYear().toString() +
+				" and Boolean eq true and Boolean2 eq false and tolower(String) ne 'a' and Boolean3 ne true");
+
+		});
+		
+		test("Test binding to remote xml data when no schema is defined.", function () { 
+			var xmlString = '<Response><Item><Name>Item1</Name></Item><Item><Name>Item2</Name></Item><Item><Name>Item3</Name></Item></Response>';
+
+			$.mockjax({
+				url: 'getXMLDataSummaries',
+				responseText: xmlString
+			});
+
+			var dsSummariesRemote = new $.ig.DataSource({
+				//responseDataKey: "data",
+				dataSource: "getXMLDataSummaries",
+				summaries: {
+					type: "remote",
+					columnSettings: [{
+						columnKey: "song",
+						allowSummaries: true,
+						summaryOperands: [{
+							type: "count",
+							active: true,
+							order: 0
+						}]
+					}]
+				}, 
+				paging: { type: "remote", enabled:true, appendPage:true}
+			});
+
+			dsSummariesRemote.dataBind();
+			stop();
+			setTimeout(function () {
+				start();
+				var currData = dsSummariesRemote.data();
+				equal(currData.length, 3, "Check if data length is correct. There should be 3 records.");
+				equal(currData[0].Name, "Item1", "Check if value is correctly parsed.");
+			}, 500);
+		});
+
+		test("Test _dataFilter method for xml data", function () {
+			var xmlres = '<Response><Session>542235629</Session><Tracks start="1" count="10" total="98" errorCount="0" defaultSort="popularity+" description="Top 100 Tracks" name="Top 100 Tracks"><Track id="59672468" rating="-1" title="I Kissed A Girl"> <Artist id="30326214" rating="-1">Katy Perry</Artist>  </Tracks></Response>';
+			
+			var dsXML = new $.ig.DataSource({
+				filtering: { type: "remote", expressions: [], defaultFields: [{ fieldName: "song", expr: "I Kissed A Girl", cond: "equals" }] },
+				responseDataKey: "Response",				
+				schema: { fields: [{ name: "artist", xpath: "Artist" }], searchField: "//Track" }
+			});
+			dsXML.context = dsXML;
+			var xmlObject = dsXML.stringToXmlObject(xmlres);
+			
+			var data = dsXML._dataFilter(xmlObject);
+
+			stop();
+			setTimeout(function(){
+				start();
+				equal(data.length, 1, "Verify data is processed correctly.");
+				//equal(data[0].artist, "Katy Perry", "Verify data is processed correctly.");
+			},500);
+		});
+
+	
+		test("Test binding to remote - error", function () {
+			var errorMessage = "";
+			var dsRemote = new $.ig.DataSource({
+				dataSource: "invalidUrl",
+				callback: function (success, error) {
+					if (!success) { 
+						errorMessage = error;
+					}
+				},
+				schema: {
+					fields: [{ name: "song", xpath: "@title" }, { name: "artist", xpath: "Artist" }]
+				}
+			});
+			dsRemote.dataBind();
+
+			stop();
+			setTimeout(function () { 
+				start();
+				equal(errorMessage, "The remote request to fetch data has failed:  ( error ) ", "An error message with the correct text should be returned.");
+			}, 500);
+		});
+
 	});
-	
-	
 	</script>
 	
 </head>
 <body>
 <div id="div1"></div>
-<div style="float:right;width:400px;overflow:auto"">
+<div style="float:right;width:400px;overflow:auto">
     <h1 id="qunit-header">Test results</h1>
      <h2 id="qunit-banner"></h2>
      <h2 id="qunit-userAgent"></h2>

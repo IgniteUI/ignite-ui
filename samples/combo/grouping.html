@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grouping Sample - Grouping with Combo Box Control - Ignite UI™</title>
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+    <link type="text/css" href="../../dist/css/themes/metro/infragistics.theme.css" rel="stylesheet">
+    <link type="text/css" href="../../dist/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet">
+    <link type="text/css" href="../../dist/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet">
+    <link type="text/css" href="../../dist/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+    <!-- Ignite UI Required Combined JavaScript Files -->
+    <script src="../../dist/js/infragistics.core-lite.js"></script>
+    <script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="../../css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Optional theme -->
+    <link href="../../css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Bootstrap tooltips require Tether -->
+    <script src="../../js/external/tether.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="../../js/external/bootstrap.min.js"></script>
+
+    <script src="../data-files/Customers.js"></script>
+
+    <style>
+        #test
+        {
+            position: absolute;
+            margin-left: 100px;
+            margin-top: 50px;
+            top: 33px;
+            left: 135px;
+        }
+        body {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body><p>Grouping functionality will provide a way certain items to be grouped and distinguished according to categories they belong, like an employee and the department that he belongs to.</p>
+    <div id='combo'></div>
+    <br>
+    <script type="text/javascript">
+        $(function () {
+            ApplyStyle()
+        });
+
+        $('#combo').igCombo({
+            dataSource: data,
+            closeDropDownOnBlur: false,
+            width: "250px",
+            textKey: 'name',
+            valueKey: 'id',
+            grouping: {
+                key: 'state',
+                dir: 'desc'
+            },
+            headerTemplate: "<div style='text-align:center;'><table style='width: 100%; background-color: #c0c0c0'>" +
+                                "<tr>" +
+                                    "<td colspan='2' style='text-align:center'>&nbsp;</td>" +
+                                "</tr>" +
+                                "<tr>" +
+                                "<td colspan='2'>" +
+                                    "<div class='btn-group' role='group' aria-label='...'>" +
+                                        "<div class='btn-group' role='group'>" +
+                                            "<button type='button' class='btn btn-secondary dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>" +
+                                                "Group by" +
+                                                "<span class='caret'></span>" +
+                                            "</button>" +
+                                            "<ul class='dropdown-menu' role='menu'>" +
+                                            "<li><a class='dropdown-item' href='#' onclick='GroupBy(\"state\")'>State</a></li>" +
+                                                "<li><a class='dropdown-item' href='#' onclick='GroupBy(\"division\")'>Division</a></li>" +
+                                        "</ul>" +
+                                            "</div>" +
+                                        "<button type='button' class='btn btn-secondary' onclick='ChangeDirection()'>Change direction</button>" +
+                                    "</div>" +
+                                "</div>" +
+                                "</td>" +
+                                "</tr>" +
+                                "<tr><td colspan='2'>&nbsp;</tr>" +
+                            "</table></div>",
+            footerTemplate: "<div style='text-align:center; background-color: #c0c0c0'>Customers [{0}]</div>"
+        });
+
+        function GroupBy(key) {
+            $("#combo").igCombo("option", "grouping", { key: key, dir: "asc" });
+            $("#combo").igCombo("dataBind");
+            ApplyStyle();
+        }
+
+        function ChangeDirection() {
+            var gr = $("#combo").igCombo("option", "grouping");
+
+            if (gr.dir === "desc") {
+                gr.dir = "asc";
+            } else {
+                gr.dir = "desc";
+            }
+
+            $("#combo").igCombo("option", "grouping", gr);
+            $("#combo").igCombo("dataBind");
+            ApplyStyle();
+        }
+
+        function ApplyStyle() {
+            $('li.ui-igcombo-group-header').css({
+                'color' : '#00AADE',
+                'font-weight' : 'bold'
+            });
+        }
+    </script>
+</body>
+</html>

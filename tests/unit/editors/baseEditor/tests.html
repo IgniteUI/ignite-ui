@@ -32,6 +32,9 @@
 		error: "Oh snap! Change a few things up and try submitting again."
 	};
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	var logBuffer = [], logOld, 
+		logger = function (msg) { logBuffer.push(msg); };
+
 	$(document).ready(function () {
 		// Create a editors
 		function loadTestbeds() {
@@ -93,7 +96,22 @@
 		});
 		
 		var testId = 'Editors initialization.';
-		test(testId, 6,function () {
+		test(testId, 8,function () {
+			
+			throws(function() {
+					$('#inputEditor1').igBaseEditor();
+				}, 
+				$.ig.Editor.locale.renderErrMsg,
+				"igBaseEditor should not be initialized"
+			);
+			
+			throws(function() {
+					$("#textareaEditorFake").igTextEditor();
+				},
+				$.ig.Editor.locale.multilineErrMsg,
+				"You should have the type of the editor as multiline"
+			);
+
 			ok(typeof($("#inputEditor1").igTextEditor)  === 'function', "Editors Script is not loaded");
 			ok($('#inputEditor1').data("igTextEditor") !== undefined, 'Error creating igTextEditor in an input');
 			ok($('#divEditor1').data("igTextEditor") !== undefined, 'Error creating igTextEditor in a div');
@@ -139,7 +157,6 @@
 				flag = true;
 			});
 			$('#eventEditor').on("igtexteditortextchanged", function (evt, ui) {
-				console.log("igtexteditortextchanged", flag);
 				flag = ui.oldText === "" && ui.text === newText;
 			});
 			$('#eventEditor').on("igtexteditorblur", function () {
@@ -204,7 +221,7 @@
 			$("#textEditorMethods").igTextEditor("value", null);
 			equal($("#textEditorMethods").igTextEditor("value"), "", 'The value is not correctly set to an Empty string');
 			$("#textEditorMethods").igTextEditor("option", "allowNullValue", false);
-			//console.log($("#textEditorMethods").igTextEditor("value"));
+			
 			$("#textEditorMethods").igTextEditor("value", "MyVal");
 			equal($("#textEditorMethods").igTextEditor("value"), "MyVal", 'The value is not correctly set to MyVal string');
 		});
@@ -227,7 +244,7 @@
 			ok($("#igEditorLocale .ui-igedit-button-common[title='Clear value']").length == 1, "Clear button doesn't have a title");
 		});
 		testId = 'Test Notifier basics';
-		test(testId, 32, function () {
+		test(testId, 34, function () {
 			/* show success */
 			var editor = $("#divEditor1");
 			editor.igNotifier("notify", "success");
@@ -263,8 +280,13 @@
 			editor.igNotifier("option", "contentTemplate", $.ui.igNotifier.prototype.options.contentTemplate);
 
 			/* set states */
+			logOld = console.log;
+			console.log = logger;
 			editor.igNotifier("option", "state", "random" );
+			console.log = logOld;
+			equal(logBuffer.pop(), "Supported states: success, info, warning, error", 'Supported states message not logged');
 			ok(editor.igNotifier("option", "state") === "success", "Wrong notification state accepted");
+
 			editor.igNotifier("option", "state", "error");
 			ok(editor.igNotifier("isVisible"), "Notification not visible");
 			ok(editor.igNotifier("option", "state") === "error", "Error notification state not set");
@@ -302,8 +324,13 @@
 
 			editor.igNotifier({ notifyLevel: "warning" }).igNotifier("show");
 			/* inline */
+			logOld = console.log;
+			console.log = logger;
 			editor.igNotifier("option", "mode", "random");
+			console.log = logOld;
+			equal(logBuffer.pop(), "Supported modes: auto, popover, inline", 'Supported modes message not logged');
 			ok(editor.igNotifier("option", "mode") === "auto", "Wrong notification mode accepted");
+			
 			editor.igNotifier("option", "mode", "inline");
 			ok(editor.igNotifier("isVisible"), "Inline changed visible state");
 			ok(editor.igNotifier("option", "mode") === "inline"
@@ -325,7 +352,6 @@
 								- popoverBottom;
 				equal(distanceToEditor, editor.igNotifier("option", "animationSlideDistance"), "Notifier not positioned correctly above editor");
 				
-				console.log(distanceToEditor, editor.igNotifier("getCoordinates"));
 			}, editor.igNotifier("option", "animationDuration"));
 			//immediately fire another show with smalller message
 			$(editor).igNotifier("setContent", "<p>Entry reached the maximum value of 99999 for this field</p>").igNotifier("show");
@@ -450,6 +476,7 @@
 	<div id="igMaskEditorNotification"></div>
 	<div id="igDateEditorNotification"></div>
 	<input type="text" id="texteditorSetOptions" />
+	<textarea id="textareaEditorFake"></textarea>
 	<p id="notifierTarget"></p>
 </div>
 </body>

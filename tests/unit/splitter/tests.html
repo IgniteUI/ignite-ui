@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8" />
@@ -8,14 +8,14 @@
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.splitter.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
 
-	
+
 	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
 
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.splitter-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitter.js"></script>	
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitter.js"></script>
 	<script type="text/javascript" src="jquery.simulate.js"></script>
 	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -43,9 +43,15 @@
 	        $('#sCollapsed').igSplitter({ width: 200, height: 400, panels: [{ size: 100, collapsed: true, collapsible: true }, { size: 100, collapsible: true}] });
 	        $('#sResizable').igSplitter({ width: 200, height: 400, panels: [{ size: 100, resizable: false }, { size: 100, collapsible: true}] });
 	        $('#sKbNav').igSplitter({ width: 200, height: 400, panels: [{ collapsible: true }, { collapsible: true }] });
-			
+
+			$('#splitterWithOneElem').igSplitter({ width: 600, height: 480, panels: [{ size: 400 }, { size: 100, collapsible: true }],
+				layoutRefreshed: function(evt, ui) {
+					$(evt.target).attr('isResized', true);
+				}});
+			$('#emptySplitter').igSplitter({ width: 600, height: 480, disabled: true, panels: [{ size: 400 }, { size: 100, collapsible: true }] });
+			$("#disabledSplitter").igSplitter({ height: "300px", width: "100px", disabled: true });
 	    });
-		
+
 	    // START TESTING
 	    module('igSplitter');
 
@@ -64,7 +70,7 @@
 	    var testId_13 = 'igSplitter widget events.';
 	    var testId_14 = 'igSplitter widget keyboard navigation.';
 		var testId_15 = 'igSplitter widget set panel sizes with percentages.';
-		
+
 		//Module2
 		var testId_16 = 'igSplitter widget set new smaller width to horizontal.';
 		var testId_17 = 'igSplitter widget set new bigger width to horizontal.';
@@ -74,21 +80,40 @@
 		var testId_21 = 'igSplitter widget set new bigger width to vertical.';
 		var testId_22 = 'igSplitter widget set new smaller height to vertical.';
 		var testId_23 = 'igSplitter widget set new bigger height to vertical.';
-		
+
 
 		var testId_24 = 'igSplitter widget set new bigger height then set new bigger width to horizontal.';
 		var testId_25 = 'igSplitter widget set new bigger height then set new bigger width to vertical.';
 		var testId_26 = 'igSplitter widget set new smaller height then set new smaller width to horizontal.';
 		var testId_27 = 'igSplitter widget set new smaller height then set new smaller width to vertical.';
-		
+
 		var testId_28 = 'igSplitter widget set new bigger height then set new smaller width to horizontal.';
 		var testId_29 = 'igSplitter widget set new bigger height then set new smaller width to vertical.';
 		var testId_30 = 'igSplitter widget set new smaller height then set new bigger width to horizontal.';
 		var testId_31 = 'igSplitter widget set new smaller height then set new bigger width to vertical.';
-		
+
 		var testId_32 = 'igSplitter widget set new smaller  width then set new bigger width to horizontal.';
 		var testId_33 = 'igSplitter widget set new smaller  height then set new bigger height to vertical.';
-	    
+
+		var testId_34 = 'igSplitter widget set min and max panels boundries.';
+		var testId_35 = 'igSplitter widget set clone min panels boundries.';
+		var testId_36 = 'igSplitter widget set clone max panels boundries.';
+
+		var testId_37 = 'igSplitter widget horizontal calculation test when first panel is not defined';
+		var testId_38 = 'igSplitter widget vertical calculation test when first panel is not defined';
+
+		var testId_39 = 'igSplitter when we have one element, create method should add another element in splitter container.';
+		var testId_40 = 'igSplitter when we have an empty splitter, create method should add two elements in splitter container.';
+		var testId_41 = 'igSPlitter set disabled to be true.';
+		var testId_42 = 'igSplitter bind resize event.';
+		var testId_43 = 'igSplitter move bar to right out of range.';
+		var testId_44 = 'igSplitter move bar to left out of range.';
+		var testId_45 = 'igSplitter is ebale to drag delta with iframe inside panel.';
+		var testId_46 = 'igSplitter when disabled and try to fire mousedown, mouseleave and mouseenter events should stop.';
+		var testId_47 = 'igSplitter exception on initialize';
+		var testId_48 = 'igSplitter exception on _setOption';
+		var testId_49 = 'igSplitter box-sizing: border-box';
+
 		test(testId_1, function () {
 	        var container = $("#sVer");
 	        ok(typeof container.igSplitter === 'function', "igSplitter script is not loaded");
@@ -168,7 +193,7 @@
 	            panel = $(children[i]);
 	            if (i % 2 === 1) {
 	                $.ig.TestUtil.checkClass(panel, 'ui-igsplitter-splitbar-horizontal ui-igsplitter-splitbar-default');
-					
+
 	                ok(equalSplitter(panel.height(), heights[i]), 'igSplitter bar has wrong height.');
 	                ok(panel.css("float") === "none", 'igSplitter bar has wrong float.');
 	                ok(equalSplitter(panel.width(), 598), 'igSplitter bar has wrong width.');
@@ -270,7 +295,7 @@
 
 	                        var buttonLeft = $(vPanel.children()[0]);
 	                        var buttonRight = $(vPanel.children()[1]);
-							
+
 	                        $.ig.TestUtil.checkClass(buttonLeft, 'ui-igsplitter-collapse-button-vertical-left');
 	                        $.ig.TestUtil.checkClass($(buttonLeft.children()), 'ui-icon ui-icon-triangle-1-w');
 	                        $.ig.TestUtil.checkClass(buttonRight, 'ui-igsplitter-collapse-button-vertical-right');
@@ -302,7 +327,7 @@
 			panel2 = $(container.children()[2]);
 
 	        $.ig.TestUtil.checkClass(bar, 'ui-igsplitter-splitbar-vertical ui-igsplitter-splitbar-default');
-			
+
 	        $.ig.TestUtil.checkClass(buttonRight, 'ui-igsplitter-collapse-button-vertical-right');
 	        $.ig.TestUtil.checkClass($(buttonRight.children()), 'ui-icon ui-icon-triangle-1-e');
 
@@ -311,7 +336,7 @@
 	        $.ig.TestUtil.checkClass(buttonRight, 'ui-igsplitter-collapse-button-vertical-right');
 	        $.ig.TestUtil.checkClass($(buttonRight.children()), 'ui-icon ui-icon-triangle-1-e');
 	        $.ig.TestUtil.checkClass(buttonRight, 'ui-igsplitter-collapse-single-button ui-state-default ui-igsplitter-collapse-button-hover ui-state-hover');
-			
+
 
 	        buttonRight.mousedown();
 			ok(equalSplitter(panel1.width(), 594), 'igSplitter panel1 has wrong width.');
@@ -325,12 +350,12 @@
 
 	        $.ig.TestUtil.checkClass(buttonRight, 'ui-state-default ui-igsplitter-collapse-button-pressed ui-igsplitter-collapse-button-vertical-right');
 	        $.ig.TestUtil.checkClass($(buttonRight.children()), 'ui-icon-triangle-1-w ui-icon');
-	        
+
 			panel1 = $(container.children()[0]);
 	        bar = $(container.children()[1]);
 			buttonRight = $(bar.children()[1]);
 			panel2 = $(container.children()[2]);
-			
+
 			$.ig.TestUtil.checkClass(bar, 'ui-igsplitter-splitbar-vertical ui-igsplitter-splitbar-default');
 	        $.ig.TestUtil.checkClass(buttonRight, 'ui-state-default ui-igsplitter-collapse-button-pressed ui-igsplitter-collapse-button-vertical-right');
 	        $.ig.TestUtil.checkClass($(buttonRight.children()), 'ui-icon-triangle-1-w ui-icon');
@@ -340,12 +365,12 @@
 
 	        buttonRight.mousedown();
 			$.ig.TestUtil.checkClass(bar, 'ui-igsplitter-splitbar-vertical ui-igsplitter-splitbar-default');
-			
+
 	        buttonRight.mouseleave();
 	        bar.mouseleave();
 	        $.ig.TestUtil.checkClass(buttonRight, 'ui-state-default ui-igsplitter-collapse-button-vertical-right');
 	        $.ig.TestUtil.checkClass($(buttonRight.children()), 'ui-icon ui-icon-triangle-1-e');
-			
+
 	        ok(panel1.width() === 400, 'igSplitter panel1 has wrong width.');
 	        ok(panel2.width() === 194, 'igSplitter panel2 has wrong width.');
 
@@ -464,7 +489,7 @@
 	                ok(sliptbars.length === 0, 'igSplitter splitbar is not missing.');
 	            }
 	        });
-			
+
 			panel1 = $($(container.children())[0]);
 			panel2 = $($(container.children())[2]);
 
@@ -505,13 +530,13 @@
 	                ok(sliptbars.length === 0, 'igSplitter splitbar is not missing.');
 	            }
 	        });
-			
+
 			panel1 = $($(container.children())[0]);
 			panel2 = $($(container.children())[2]);
 
 			ok(panel1.width() === 90, 'igSplitter panel1 has wrong width.');
 			ok(panel2.width() === 104, 'igSplitter panel2 has wrong width.');
-			
+
 	        bar.simulate("drag", {
 	            dx: -100,
 	            checkAfterMouseDown: function (target) {
@@ -531,7 +556,7 @@
 	                ok(sliptbars.length === 0, 'igSplitter splitbar is not missing.');
 	            }
 	        });
-			
+
 			panel1 = $($(container.children())[0]);
 			panel2 = $($(container.children())[2]);
 
@@ -584,10 +609,10 @@
 			ok(panel1.width() === 100, 'igSplitter panel1 has wrong width.');
 			ok(panel2.width() === 94, 'igSplitter panel2 has wrong width.');
 	    });
-		
+
 		test(testId_13, function () {
 			$('#sEvents').igSplitter({
-				width: 200, 
+				width: 200,
 				height: 400,
 				collapsed: function (event, args) {
 					ok(args.owner === $('#sEvents').data('igSplitter'), 'Owner argument does not match');
@@ -609,7 +634,7 @@
 			});
 			$('#sEvents').igSplitter("collapseAt", 0);
 			$('#sEvents').igSplitter("expandAt", 0);
-			
+
 			var container = $('#sEvents'), bar = null;
 	        bar = $($(container.children())[1]);
 
@@ -617,21 +642,21 @@
 	            dx: 10
 	        });
 		});
-		
+
 		test(testId_14, function () {
 	        $('div[tabindex="0"]')[0].focus();
 			var container = $('#sKbNav'), bar = $($(container.children())[1]), sliptbars = panel1 = panel2 = null;
 			panel1 = $($(container.children())[0]);
 	        panel2 = $($(container.children())[2]);
-			
+
 			bar.simulate("keydown", {keyCode: $.ui.keyCode.LEFT, ctrlKey: true});
 			ok(panel1.width() === 0, 'igSplitter panel1 has wrong width.');
 	        ok(panel2.width() === 194, 'igSplitter panel2 has wrong width.');
-			
+
 			bar.simulate("keydown", {keyCode: $.ui.keyCode.RIGHT, ctrlKey: true});
 			ok(panel1.width() === 100, 'igSplitter panel1 has wrong width.');
 	        ok(panel2.width() === 94, 'igSplitter panel2 has wrong width.');
-			
+
 			bar.simulate("keydown", {keyCode: $.ui.keyCode.LEFT});
 			bar.simulate("keydown", {keyCode: $.ui.keyCode.LEFT});
 			bar.simulate("keydown", {keyCode: $.ui.keyCode.LEFT});
@@ -642,18 +667,18 @@
 			bar.simulate("keydown", {keyCode: $.ui.keyCode.RIGHT});
 			bar.simulate("keydown", {keyCode: $.ui.keyCode.RIGHT});
 			bar.simulate("keydown", {keyCode: $.ui.keyCode.ENTER});
-			
+
 			ok(equalSplitter(panel1.width(), 30), 'igSplitter panel1 has wrong width.');
 			ok(equalSplitter(panel2.width(), 164), 'igSplitter panel2 has wrong width.');
 		});
-		
+
 		test(testId_15, function () {
 	        var container = $('#sFluid'), children = null, panel = null, widths = [];
 			container.igSplitter({ width: "40%", height: 400, panels: [{ size: "30%" }, { size: "70%" }] });
 	        widths[0] = 30; // in percentages
 	        widths[1] = 4;  // in pixels
 	        widths[2] = 70; // in percentages
-			
+
 	        ok(equalSplitter((container.width() / $(document).width() ) * 100, 40), 'igSplitter container has wrong width. Expected: 40 Actual: ' + (container.width() / $(document).width()) * 100); // in percentages
 	        ok(equalSplitter(container.height(), 400), 'igSplitter container has wrong height. Expected: 400 Actual: ' + container.height());
 
@@ -669,16 +694,16 @@
 	                ok(equalSplitter(panel.height(), 400), 'igSplitter panel has wrong height. Expected: 400 Actual: ' + panel.height());
 	            }
 	        }
-			
+
 			container.igSplitter("setFirstPanelSize", "10%");
-			
+
 			widths[0] = 10; // in percentages
 	        widths[1] = 4;  // in pixels
 	        widths[2] = 90; // in percentages
-			
+
 			ok(equalSplitter((container.width() / $(document).width() ) * 100, 40), 'igSplitter container has wrong width. Expected: 40 Actual: ' + (container.width() / $(document).width() ) * 100); // in percentages
 	        ok(equalSplitter(container.height(), 400), 'igSplitter container has wrong height. Expected: 400 Actual: ' + container.height());
-			
+
 			for (var i = 0; i < children.length; i += 1) {
 	            panel = $(children[i]);
 	            if (i % 2 === 1) {
@@ -689,16 +714,16 @@
 	                ok(equalSplitter(panel.height(), 400), 'igSplitter panel has wrong height. Expected: 400 Actual: ' + panel.height());
 	            }
 	        }
-			
+
 			container.igSplitter("setSecondPanelSize", "20%");
-			
+
 			widths[0] = 80; // in percentages
 	        widths[1] = 4;  // in pixels
 	        widths[2] = 20; // in percentages
-			
+
 			ok(equalSplitter((container.width() / $(document).width() ) * 100, 40), 'igSplitter container has wrong width. Expected: 40 Actual: ' + (container.width() / $(document).width() ) * 100); // in percentages
 	        ok(equalSplitter(container.height(), 400), 'igSplitter container has wrong height. Expected: 400 Actual: ' + container.height());
-			
+
 			for (var i = 0; i < children.length; i += 1) {
 	            panel = $(children[i]);
 	            if (i % 2 === 1) {
@@ -709,9 +734,9 @@
 	                ok(equalSplitter(panel.height(), 400), 'igSplitter panel has wrong height. Expected: 400 Actual: ' + panel.height());
 	            }
 	        }
-			
+
 	    });
-		
+
 		module("igSplitter set method", {
 			setup: function() {
 				if ($('#sVertical').data().igSplitter) {
@@ -731,27 +756,27 @@
 				$('#sHorizontal').igSplitter({ width: 500, height: 500, orientation: 'horizontal', panels: [{ size: 400}, { size: 100}] });
 				$('#sHorizontal2').igSplitter({ width: 500, height: 500, orientation: 'horizontal', panels: [{ size: 400}, { size: 100}] });
 			},
-			
+
 			teardown: function() {
 			}
-		
+
 		});
 
-		test(testId_16, function() {		
+		test(testId_16, function() {
 			$('#sHorizontal').igSplitter('option', 'width', 300);
 			setterWidthAsserts('#sHorizontal', 300, 300, 300);
 		});
-		
-		test(testId_17, function() {			
+
+		test(testId_17, function() {
 			$('#sHorizontal').igSplitter('option', 'width', 800);
 			setterWidthAsserts('#sHorizontal', 800, 800, 800);
 		});
-		test(testId_18, function() {			
+		test(testId_18, function() {
 			$('#sHorizontal').igSplitter('option', 'height', 300);
 			setterHeightAsserts('#sHorizontal', 300, 243, 51);
 		});
-		
-		test(testId_19, function() {			
+
+		test(testId_19, function() {
 			$('#sHorizontal2').igSplitter('option', 'height', 800);
 			setterHeightAsserts('#sHorizontal2', 800, 649, 145);
 		});
@@ -759,22 +784,22 @@
 			$('#sVertical').igSplitter('option', 'width', 300);
 			setterWidthAsserts('#sVertical', 300, 243, 51);
 		});
-		
+
 		test(testId_21, function() {
 			$('#sVertical2').igSplitter('option', 'width', 800);
 			setterWidthAsserts('#sVertical2', 800, 649, 145);
 		});
-		
+
 		test(testId_22, function() {
 			$('#sVertical').igSplitter('option', 'height', 300);
 			setterHeightAsserts('#sVertical', 300, 300, 300);
 		});
-		
+
 		test(testId_23, function() {
 			$('#sVertical2').igSplitter('option', 'height', 800);
 			setterHeightAsserts('#sVertical2', 800, 800, 800);
 		});
-		
+
 
 		test(testId_24, function() {
 				$('#sHorizontal').igSplitter('option', 'width', 800);
@@ -788,12 +813,12 @@
 		test(testId_25, function() {
 				$('#sVertical2').igSplitter('option', 'width', 800);
 				setterWidthAsserts('#sVertical2', 800, 649, 145);
-			
+
 				$('#sVertical2').igSplitter('option', 'height', 800);
 				setterHeightAsserts('#sVertical2', 800, 800, 800);
 
 		});
-		
+
 		test(testId_26, function() {
 				$('#sHorizontal').igSplitter('option', 'width', 300);
 				setterWidthAsserts('#sHorizontal', 300, 300, 300);
@@ -802,7 +827,7 @@
 				setterHeightAsserts('#sHorizontal', 300, 243, 51);
 
 		});
-		
+
 		test(testId_27, function() {
 				$('#sVertical').igSplitter('option', 'width', 300);
 				setterWidthAsserts('#sVertical', 300, 243, 51);
@@ -811,7 +836,7 @@
 				setterHeightAsserts('#sVertical', 300, 300, 300);
 
 		});
-		
+
 		test(testId_28, function() {
 				$('#sHorizontal').igSplitter('option', 'height', 800);
 				setterHeightAsserts('#sHorizontal', 800, 649, 145);
@@ -820,7 +845,7 @@
 				setterWidthAsserts('#sHorizontal', 300, 300, 300);
 
 		});
-		
+
 		test(testId_29, function() {
 				$('#sVertical2').igSplitter('option', 'height', 800);
 				setterHeightAsserts('#sVertical2', 800, 800, 800);
@@ -829,7 +854,7 @@
 				setterWidthAsserts('#sVertical2', 300, 243, 51);
 
 		});
-		
+
 		test(testId_30, function() {
 				$('#sHorizontal').igSplitter('option', 'height', 300);
 				setterHeightAsserts('#sHorizontal', 300, 243, 51);
@@ -838,7 +863,7 @@
 				setterWidthAsserts('#sHorizontal', 800, 800, 800);
 
 		});
-		
+
 		test(testId_31, function() {
 				$('#sVertical').igSplitter('option', 'height', 300);
 				setterHeightAsserts('#sVertical', 300, 300, 300);
@@ -847,17 +872,17 @@
 				setterWidthAsserts('#sVertical', 800, 649, 145);
 
 		});
-		
+
 		test(testId_32, function() {
 				$('#sHorizontal').igSplitter('option', 'width', 300);
 				setterWidthAsserts('#sHorizontal', 300, 300, 300);
 
 				$('#sHorizontal').igSplitter('option', 'width', 800);
 				setterWidthAsserts('#sHorizontal', 800, 800, 800);
-				
+
 
 		});
-		
+
 		test(testId_33, function() {
 				$('#sVertical').igSplitter('option', 'height', 300);
 				setterHeightAsserts('#sVertical', 300, 300, 300);
@@ -866,26 +891,308 @@
 				setterHeightAsserts('#sVertical', 800, 800, 800);
 
 		});
-		
+
+		test(testId_34, function() {
+			var container = $("#splitter_34"),
+						maxWidthPanel1,
+						minWidthPanel2,
+						maxWidthPanel2;
+
+			container.igSplitter({
+					height: "300px",
+					width: "100%",
+					panels: [{
+							size: "550px",
+							min: "200px",
+							max: "75%"
+					}, {
+							max: "30%",
+							min: "40%"
+					}]
+			});
+
+			ok(equalSplitter((container.width() / $(document).width() ) * 100, 100), 'igSplitter container has wrong width. Expected: 100 Actual: ' + (container.width() / $(document).width()) * 100); // in percentages
+			ok(equalSplitter(container.height(), 300), 'igSplitter container has wrong height. Expected: 400 Actual: ' + container.height());
+
+			maxWidthPanel1 = (container.data().igSplitter.options.panels[0].max / container.width()) * 100;
+			minWidthPanel2 = (container.data().igSplitter.options.panels[1].min / container.width()) * 100;
+			maxWidthPanel2 = (container.data().igSplitter.options.panels[1].max / container.width()) * 100;
+
+			ok(equalSplitter(maxWidthPanel1, 75), 'igSplitter first panel max value is wrong. Expected: 75 Actual:' + maxWidthPanel1);
+			ok(equalSplitter(minWidthPanel2, 40), 'igSplitter second panel min value is wrong. Expected: 40 Actual:' + minWidthPanel2);
+			ok(equalSplitter(maxWidthPanel2, 30), 'igSplitter second panel min value is wrong. Expected: 30 Actual:' + maxWidthPanel2);
+		});
+
+		test(testId_35, function() {
+			var container = $("#splitter_35"),
+						maxWidthPanel1,
+						minWidthPanel2,
+						maxWidthPanel2;
+
+			container.igSplitter({
+					height: "300px",
+					width: "100%",
+					panels: [{
+							size: "2000px",
+							min: "80%",
+							//max: "75%"
+					}, {
+							//max: "30%",
+							min: "30%"
+					}]
+			});
+
+			minWidthPanel1 = (container.data().igSplitter.options.panels[0].min / container.width()) * 100;
+			minWidthPanel2 = (container.data().igSplitter.options.panels[1].min / container.width()) * 100;
+
+			ok(equalSplitter(minWidthPanel1, 80), 'igSplitter first panel min value is wrong. Expected: 80 Actual:' + minWidthPanel1);
+			ok(equalSplitter(minWidthPanel2, 30), 'igSplitter second panel min value is wrong. Expected: 30 Actual:' + minWidthPanel2);
+		});
+
+		test(testId_36, function() {
+			var container = $("#splitter_36"),
+						maxWidthPanel1,
+						maxWidthPanel2;
+
+			container.igSplitter({
+					height: "300px",
+					width: "100%",
+					panels: [{
+							size: "60%",
+							min: "200px",
+							max: "75%"
+					}, {
+							max: 60,
+							min: "20%"
+					}]
+			});
+
+			maxWidthPanel1 = (container.data().igSplitter.options.panels[0].max / container.width()) * 100;
+			maxWidthPanel2 = container.data().igSplitter.options.panels[1].max;
+
+			ok(equalSplitter(maxWidthPanel1, 75), 'igSplitter first panel max value is wrong. Expected: 75 Actual:' + maxWidthPanel1);
+			ok(equalSplitter(maxWidthPanel2, 60), 'igSplitter second panel max value is wrong. Expected: 60 Actual:' + maxWidthPanel2);
+		});
+
+		test(testId_37, function () {
+		    $('#sHorizontalUndefinedFirstPanel').igSplitter({ width: 200, height: 400, orientation: 'horizontal', panels: [{}, { size: 200 }] });
+		    setterHeightAsserts('#sHorizontalUndefinedFirstPanel', 400, 200, 194);
+		});
+
+		test(testId_38, function () {
+		    $('#sVerticalUndefinedFirstPanel').igSplitter({ width: 400, height: 200, panels: [{}, { size: 200 }] });
+		    setterWidthAsserts('#sVerticalUndefinedFirstPanel', 400, 200, 194);
+		});
+
+		test(testId_39, function () {
+			var container = $("#splitterWithOneElem");
+			var getLenOFElementsContent = container.children('div[class*="content"]').length;
+
+	        ok(typeof container.igSplitter === 'function', "igSplitter script is not loaded");
+	        ok(getLenOFElementsContent === 2, 'igSplitter did not create second content element.');
+		});
+
+		test(testId_40, function () {
+			var container = $("#emptySplitter");
+			var getLenOFElementsContent = container.children('div[class*="content"]').length;
+
+	        ok(typeof container.igSplitter === 'function', 'igSplitter script is not loaded');
+	        ok(getLenOFElementsContent === 2, 'igSplitter did not create two content elements.');
+		});
+
+		test(testId_41, function () {
+			var container = $("#emptySplitter");
+
+			var isDisabled = $("#emptySplitter").igSplitter('option', 'disabled');
+			ok(isDisabled, 'igSplitter wasn\'t set to be disabled.')
+		});
+
+		test(testId_42, function () {
+			var container = $("#splitterWithOneElem");
+
+			container.trigger('resize', function (evt, args) { });
+
+			ok(container.attr('isresized'), 'igSplitter was not resized.')
+		});
+
+		test(testId_43, function () {
+			// $("#splitterDragBarOutOfRange").igSplitter("destroy");
+			$('#splitterDragBarOutOfRange').igSplitter({ width: 200, height: 400, panels: [{ collapsible: true }, { collapsible: true }] });
+
+			var container = $('#splitterDragBarOutOfRange'),
+				bar = $($(container.children())[1]),
+				panel1 = $(container.igSplitter('firstPanel')),
+	        	panel2 = $(container.igSplitter('secondPanel'));
+
+
+			ok(panel1.width() === 100, 'igSplitter panel1 has wrong width.');
+	        ok(panel2.width() === 94, 'igSplitter panel2 has wrong width.');
+
+
+			// Drag bar to rigth out of range.
+			bar.simulate("drag", {
+				dx: 200,
+			});
+
+			bar.simulate("keydown", {keyCode: $.ui.keyCode.RIGHT});
+
+			ok(panel1.width() === 194, 'igSplitter panel1 has wrong width.');
+	        ok(panel2.width() === 0, 'igSplitter panel2 has wrong width.');
+		});
+
+		test(testId_44, function () {
+			// Recrate igSplitter
+			$("#splitterDragBarOutOfRange").igSplitter("destroy");
+			$('#splitterDragBarOutOfRange').igSplitter({ width: 200, height: 400, panels: [{ collapsible: true }, { collapsible: true }] });
+
+			var container = $('#splitterDragBarOutOfRange'),
+				bar = $($(container.children())[1]),
+				panel1 = $(container.igSplitter('firstPanel')),
+	        	panel2 = $(container.igSplitter('secondPanel'));
+
+			ok(panel1.width() === 100, 'igSplitter panel1 has wrong width.');
+	        ok(panel2.width() === 94, 'igSplitter panel2 has wrong width.');
+
+			// Drag bar to left out of range.
+			bar.simulate("drag", {
+				dx: -400,
+			});
+
+			bar.simulate("keydown", {keyCode: $.ui.keyCode.LEFT});
+
+			ok(panel1.width() === 0, 'igSplitter panel1 has wrong width.');
+	        ok(panel2.width() === 194, 'igSplitter panel2 has wrong width.');
+		});
+
+		test(testId_45, function () {
+
+			var container = $('#splitterWithIframe').igSplitter({ width: 200, height: 400, panels: [{ collapsible: true }, { collapsible: true }] }),
+				bar = $($(container.children())[1]),
+				panel1 = $(container.igSplitter('firstPanel')),
+	        	panel2 = $(container.igSplitter('secondPanel'));
+
+			ok(panel1.width() === 100, 'igSplitter panel1 has wrong width.');
+	        ok(panel2.width() === 94, 'igSplitter panel2 has wrong width.');
+
+			bar.simulate("drag", {
+				dx: 20,
+			});
+
+			bar.simulate("keydown", {keyCode: $.ui.keyCode.RIGTH});
+
+			ok(panel1.width() === 120, 'igSplitter panel1 has wrong width.');
+	        ok(panel2.width() === 74, 'igSplitter panel2 has wrong width.');
+		});
+
+		test(testId_46, function () {
+			 /* classes defining the hover state style of the split bar */
+            var buttonHoverClass = "ui-state-hover",
+			    barCollapsedClass = "ui-igsplitter-splitbar-collapsed";
+
+			var container = $("#disabledSplitter"),
+				bar = $($(container.children())[1]),
+				panel1 = $(container.igSplitter('firstPanel')),
+				buttonRight = $(bar.children()[1]),
+				panel2 = $(container.igSplitter('secondPanel'));
+
+	        buttonRight.mousedown();
+			ok(!$(bar).attr('class').contains(barCollapsedClass), 'mousedown was fired when the splitter is disabled.');
+
+			buttonRight.mouseenter();
+			ok(!$(buttonRight).attr('class').contains(buttonHoverClass), 'mouseenter was fired when the splitter is disabled.');
+
+			buttonRight.mouseleave();
+			bar.mouseleave();
+			ok(!$(bar).attr('class').contains(buttonHoverClass), 'mouseleave was fired when the splitter is disabled.');
+		});
+
+		test(testId_47, function() {
+			throws(
+				function() {
+					$("#splitterExceptions")
+						.igSplitter({ panels: [{ collapsible: true}, {collapsible: false}, {collapsible: true}]});
+				},
+				new Error($.ig.Splitter.locale.errorPanels),
+				"Initializing more than 2 panels throws an errors"
+			);
+		});
+
+		test(testId_48, function() {
+			$("#splitterExceptions2").igSplitter({
+				orientation: "horizontal",
+				panels: [
+					{size: "50%", min: "40%", max: "55%", collapsed: true, collapsible: true},
+        			{collapsible: true}
+				]
+			});
+
+			throws(
+				function() {
+					$("#splitterExceptions2").data().igSplitter._setOption("orientation", "vertical");
+				},
+				new Error($.ig.Splitter.locale.errorSettingOption),
+				"Trying to set orinentation after initializing throws error"
+			);
+
+			throws(
+				function() {
+					$("#splitterExceptions2").data().igSplitter._setOption("panels", []);
+				},
+				new Error($.ig.Splitter.locale.errorSettingOption),
+				"Trying to set panels after initializing throws error"
+			);
+		});
+
+		test(testId_49, function() {
+			$("#splitterBorderBox").igSplitter({
+				orientation: "vertical",
+				panels: [
+					{size: "300px", max: "300px", collapsed: false, collapsible: false},
+        			{collapsible: false, size: "300px", max: "300px"}
+				]
+			});
+
+			var borderWidth = 2, parentWidth = parseInt($('#splitterBorderBox').css('width'), 10),
+				actualWidth = $("#splitterBorderBox").data().igSplitter._getSize("width"),
+				parentHeight;
+
+			equal(actualWidth, parentWidth - (2 * borderWidth), "Actual width with border box matches");
+
+			$("#splitterBorderBox").igSplitter("destroy");
+
+			$("#splitterBorderBox").igSplitter({
+				orientation: "horizontal",
+				panels: [
+					{size: "300px", max: "300px", collapsed: false, collapsible: false},
+        			{collapsible: false, size: "300px", max: "300px"}
+				]
+			});
+
+			actualWidth = $("#splitterBorderBox").data().igSplitter._getSize("height");
+			parentHeight = parseInt($('#splitterBorderBox').css('height'), 10);
+			equal(actualWidth, parentHeight - (2 * borderWidth), "Actual height with border box matches");
+		});
+
+
 		function setterWidthAsserts(selector, expectedWidth, expectedFirstWidth, expectedSecondWidth) {
 			var actualFirstWidth, actualSecondWidth, actualWidth;
-			
+
 			actualFirstWidth = $(selector).igSplitter('firstPanel').width();
 			actualSecondWidth = $(selector).igSplitter('secondPanel').width();
 			actualWidth = $(selector).igSplitter('option', 'width');
-			
+
 			ok(equalSplitter(actualWidth, expectedWidth),  "Splitter width  \nActual: " + actualWidth+ "\nExpected: " + expectedWidth);
 			ok(equalSplitter(actualFirstWidth, expectedFirstWidth), "First panel width  \nActual: " + actualFirstWidth + "\nExtepcted: "+ expectedFirstWidth);
 			ok(equalSplitter(actualSecondWidth, expectedSecondWidth), "Second panel width  \nActual: " + actualSecondWidth + "\nExtepcted: "+ expectedSecondWidth);
 		}
-		
+
 		function setterHeightAsserts(selector, expectedHeight, expectedFirstHeight, expectedSecondHeight) {
 			var actualFirstHeight, actualSecondHeight, actualHeight;
-			
+
 			actualHeight = $(selector).igSplitter('option', 'height');
 			actualFirstHeight = $(selector).igSplitter('firstPanel').height();
 			actualSecondHeight = $(selector).igSplitter('secondPanel').height();
-			
+
 			ok(equalSplitter(actualHeight, expectedHeight),  "Splitter height  \nActual: "+ actualHeight +"\nExpected: " + expectedHeight);
 			ok(equalSplitter(actualFirstHeight, expectedFirstHeight), "First panel height  \nActual: " + actualFirstHeight + "\nExpected: " + expectedFirstHeight);
 			ok(equalSplitter(actualSecondHeight, expectedSecondHeight), "Second panel height  \nActual: " + actualSecondHeight + "\nExpected: " + expectedSecondHeight);
@@ -912,7 +1219,7 @@
 	<br />
 	<div id="sVer">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
 			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -921,7 +1228,7 @@
 	<br />
 	<div id="sVerDrag">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
 			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -930,28 +1237,28 @@
 	<br />
 	<div id="sHor">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 	<br />
 	<div id="sHorDrag">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 	<br />
 	<div id="sDestroyed">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 	<br />
@@ -979,48 +1286,48 @@
 			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 	<br />
 	<div id="sCollapsed">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 	<br />
 	<div id="sResizable">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 	<br />
 	<div id="sEvents">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 	<div id="sFluid">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 	</br>
 	<div id="sVertical">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
 			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -1029,7 +1336,7 @@
 	<br/>
 	<div id="sVertical2">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
 			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -1038,19 +1345,125 @@
 	</br>
 	<div id="sHorizontal">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 	<br/>
 	<div id="sHorizontal2">
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 		<div>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="wrapper_34">
+		<div id="splitter_34">
+				<div style="overflow: auto">
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+				</div>
+				<div>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+				</div>
+		</div>
+	</div>
+	<div id="splitter_35">
+			<div style="overflow: auto">
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+			</div>
+			<div>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit </p>
+			</div>
+	</div>
+
+	<div id="splitter_36">
+			<div style="overflow: auto">
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+			</div>
+			<div>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit </p>
+			</div>
+	</div>
+    <div id="sHorizontalUndefinedFirstPanel">
+        <div>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        </div>
+        <div>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        </div>
+    </div>
+    <div id="sVerticalUndefinedFirstPanel">
+        <div>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        </div>
+        <div>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        </div>
+    </div>
+	<div id="splitterWithOneElem">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="emptySplitter">
+	</div>
+	<div id="splitterWithoutPlanels">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="splitterDragBarOutOfRange">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="splitterWithIframe">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+		</div>
+		<div>
+			<iframe></iframe>
+		</div>
+    </div>
+	<div id="disabledSplitter">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="splitterExceptions">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="splitterExceptions2">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+	</div>
+	<div id="splitterBorderBox" style="width: 600px; height: 100px; border: solid 2px #ccc; box-sizing: border-box">
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+		</div>
+		<div>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 		</div>
 	</div>
 </div>

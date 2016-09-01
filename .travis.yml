@@ -1,6 +1,50 @@
 language: node_js
 node_js:
-  - "4"
+- '4'
 script:
-  - grunt verify
-  - grunt coveralls
+- grunt verify
+- grunt coveralls
+
+before_deploy:
+# clone bower repo
+- git config --global user.email "igniteui@infragistics.com"
+- git config --global user.name "igniteui-deploy"
+- git clone https://github.com/IgniteUI/ignite-ui-bower.git dist
+
+# build
+- echo Building ${TRAVIS_TAG}
+- npm version "${TRAVIS_TAG}" --save
+- grunt build
+
+# move to dist, set git credentials
+- cd dist
+- git config credential.helper "store --file=.git/credentials"
+- echo "https://${GH_TOKEN}:@github.com" > .git/credentials
+
+# update package versions
+- npm version "${TRAVIS_TAG}" --no-git-tag-version --save
+# can't skip git commit on bower version call, bower/bower#2019
+# - bower version "${TRAVIS_TAG}" --save
+
+# commit bower
+- git add .
+- if [ -n "$(git status --porcelain)" ]; then git commit -m "Release ${TRAVIS_TAG}"; fi
+- if [ "${TRAVIS_TAG}" != "" ]; then git tag "${TRAVIS_TAG}"; fi
+- git push -fq origin master --tags
+
+# restore readme
+- cp ../README.md README.md
+
+deploy:
+  provider: npm
+  skip_cleanup: true
+  email: igniteui@infragistics.com
+  api_key:
+    secure: JeRvlOs2mLvzJHqtpVLvEtTVrZZqB4kufmz7+4RNk9XgzcSwXVbp5ZCpdYkZy/2HypJTjyryN98FuqCQo4cnmnkVS2phiejA9b9YVl3uFtCeFxGJJ4st/98UT3f7OrDgqFIh4v+MtzIS76+Erv2YmV8RBtEgoOpfCpuO5aBpi3oJR49iw8TN2dZwfyvUtb2ytMfzyR1q7xsl+Q0qYzwhX00BxVxGY6UkKF1VaRjsfGYrfC4FkpAT4u5mD+KtUMwRHGpMyQm1LYusS99+ugwOloq4gFArham/J/06tLwCXXjW/xhVH4HyQRiMZE649rl7TI/j88vZrGUKw16SQT+K/0+3sw4/BtwwlEjNiD1UIr97lRL7oFTZp/NYBs1PgNHd+xYGLnWA34NuUWlo9pviUz5U/mVaRVPZ5u1oLKHjPYX2VElE/GgqjQuj08il8rtRr7UHP0O5y0MPJ+t1WgWnivc0ISs+AHe+edLPoGAMHiK7vEcsM10y8z7Lfx7BbuWLFfv2eoWeruO1B0kEP+jeuognOBcyjSD/zKMfmosW/L+muhHCCPI1yDSmtutq24HVzktq0ggF9i5g4jTpH9kORBGKOirXuMP1Hf412IvzeQ71LK4A9W9z+mKje+9ygqrPDrbyYaclDiCrwOrAi3IGrpoi5F5ACdY13ObZpKG71RA=
+  on:
+    tags: true
+    repo: IgniteUI/ignite-ui
+env:
+  global:
+    # GH_TOKEN=
+    secure: b2JS/L3fvj3XUBgiuEpk0bmSpKRkxZDQ51uqEjrT98zGjxTKEJ3QrH9/dRJmxmDsYPrGdGKIM/MEJcUxIN632yS7khWRT6GS8jjiLBl7qGXLRv/cQvH4zS3lpxgTbcQSCLz+zuEOTOPMiCXOf0IahVky+8Q0jFMyZP+zxGiBzxgsCNsx/Zam8u1qGaHk7vhG3cb1fZm+Y3FjWLYoZSKttp5H4pq5taNzwO7msJioTVsXRw627lIiWUateLNnNl4pDhPgo2vEzSqi27zcq5mHpEHrVQTRFPW3R3+7YstiBU9WArPFIJg4h6hmFHXuG5zgSAPj5LNA7YH6EsQpEXhFUJwmBN8Txl4wO1ho29aG2Oc2q4OJUzFWlVDxt/pU+Syz5pm/SGVHs7rZvobo6PVzCc1OX6Caq2tHXfRyoOWndiYSqumhkqVHe429wjsEHjbJXC1Im9BIfYMFcNfd+mi/PPsh1P+sxXbSSHcAS+cyNKBzDbfBVAZu0/OL++AK6p3JdlXSgU+SrryBxjcxYLjY55G1LF+Z6gqJtAkpeJpZwqS5KGX6suzLjcDwQcmlxBsHy97HHFTmypB1WpAHGdPRMcFkSbAsPLLE7KnyEujOVFEUWRxxCgYsCBkUv+hGaFsGAWOJMtKfe/ZUvZDl0lhiZAQESb46cnTn9wpIsxHMeXA=

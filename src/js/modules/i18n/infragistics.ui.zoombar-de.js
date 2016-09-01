@@ -16,10 +16,11 @@ if (!$.ig.Zoombar) {
 
 	$.extend($.ig.Zoombar, {
 
-	    locale: {
-	        zoombarTargetNotSpecified: "igZoombar erfordert ein gültiges Ziel zum Anfügen.",
-	        zoombarTypeNotSupported: "Der Widget-Typ, an den sich die Zoomleiste anzufügen versucht, wird nicht unterstützt.",
-	        optionChangeNotSupported: "Die Änderung der folgenden Option nach der Erstellung der igZoombar wird nicht unterstützt:"
+		locale: {
+			zoombarTargetNotSpecified: "igZoombar erfordert ein gültiges Ziel zum Anfügen.",
+			zoombarTypeNotSupported: "Der Widget-Typ, an den sich die Zoomleiste anzufügen versucht, wird nicht unterstützt.",
+			zoombarProviderNotRecognized: "igZoombar konnte einen Anbieter der angegebenen Klasse nicht initialisieren oder der angegebene Wert ist keine Klasse.",
+			optionChangeNotSupported: "Die Änderung der folgenden Option nach der Erstellung der igZoombar wird nicht unterstützt:"
 		}
 	});
 

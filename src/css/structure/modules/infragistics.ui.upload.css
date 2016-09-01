@@ -402,7 +402,7 @@
 }
 
 /* Fix bug #75947 M.H. 27 May 2011 */
-.ui-ie7 .ui-iguploadmultiple, .ui-ie7 .ui-igupload-basemaincontainer,
+.ui-ie7 .ui-iguploadmultiple, .ui-ie7 .ui-igupload-basemaincontainer
 {
     position: relative;
 }

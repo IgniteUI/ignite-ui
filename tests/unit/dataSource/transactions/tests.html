@@ -5,6 +5,7 @@
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
@@ -12,81 +13,158 @@
 	<script type="text/javascript" src="../../common/data/AdventureWorks.js"></script>
 	<script type="text/javascript"> 
 	 
-	 $(document).ready(function () {
-		
-		// load data
-		
-		
-		// define a simple data source control
-		var ds1 = new $.ig.DataSource({dataSource: adventureWorks, aggregateTransactions: false, primaryKey: "ProductID"});
-		ds1.dataBind();
-		
-		var ds2 = new $.ig.DataSource({dataSource: adventureWorks, aggregateTransactions: true, primaryKey: "ProductID"});
-		ds2.dataBind();
-		
-		startTesting();
+	 $(function () {
+		var ds1, ds2, ds3;
+		function loadTestbeds() {
+			// define a simple data source control
+			ds1 = new $.ig.DataSource({dataSource: adventureWorks, aggregateTransactions: false, primaryKey: "ProductID"});
+			ds1.dataBind();
 			
-		function startTesting()
-		{
-			QUnit.init();
-			QUnit.start();
+			ds2 = new $.ig.DataSource({dataSource: adventureWorks, aggregateTransactions: true, primaryKey: "ProductID"});
+			ds2.dataBind();
+		}
+		
+		initialized = false;
+		module("igDataSource transactions (autoCommit - ", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 500);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
 
-			module("igDataSource transactions (autoCommit - ");
 			
-			test("check addRow => deleteRow (same row) generates two transactions when aggregateTransactions is false", function() {
-				ds1.addRow(11101, {ProductID: 11101, Name: "Raz dva tri", MakeFlag: true}, false);
-				// delete the row
-				ds1.deleteRow(11101);
-				equal(ds1.pendingTransactions().length > 0, true);
-				ds1.rollback();
-			});
-			
-			test("check that addRow => deleteRow (same row) generates no transactions when aggregateTransactions is true", function() {
-				ds2.addRow(11101, {ProductID: 11101, Name: "Raz dva tri", MakeFlag: true}, false);
-				// delete the row
-				ds2.deleteRow(11101);
-				equal(ds2.pendingTransactions().length, 0);
-			});
-			
-			test("check when a cell is edited, then edited again to its original value, there are two transactions when aggregateTransactions is false", function() {
-				ds1.setCellValue(1, "Name", "new value");
-				ds1.setCellValue(1, "Name", "Adjustable Race");
+		test("check addRow => deleteRow (same row) generates two transactions when aggregateTransactions is false", function() {
+			ds1.addRow(11101, {ProductID: 11101, Name: "Raz dva tri", MakeFlag: true}, false);
+			// delete the row
+			ds1.deleteRow(11101);
+			equal(ds1.pendingTransactions().length > 0, true);
+			ds1.rollback();
+		});
+		
+		test("check that addRow => deleteRow (same row) generates no transactions when aggregateTransactions is true", function() {
+			ds2.addRow(11101, {ProductID: 11101, Name: "Raz dva tri", MakeFlag: true}, false);
+			// delete the row
+			ds2.deleteRow(11101);
+			equal(ds2.pendingTransactions().length, 0);
+		});
+		
+		test("check when a cell is edited, then edited again to its original value, there are two transactions when aggregateTransactions is false", function() {
+			ds1.setCellValue(1, "Name", "new value");
+			ds1.setCellValue(1, "Name", "Adjustable Race");
 //				Datasource.js: An optimization was made to lower down the transaction log count, so the case is to have only 1 transaction
 //				_addTransaction: function (t) {
 //							var exists = false, i = 0, prop, globalt, j, dirty = true, k;
 //							if (t.type === "cell") {
 //								// check if we don't have an existing transaction and if we do, overwrite it
 //								for (i = 0; i < this._transactionLog.length; i++) {
-				equal(ds1.pendingTransactions().length, 1);
-				ds1.rollback();
-			});
-			
-			test("check when a cell is edited, then edited again to its original value, there are no transactions when aggregateTransactions is true", function() {
-				ds2.setCellValue(1, "Name", "new value");
-				ds2.setCellValue(1, "Name", "Adjustable Race");
-				equal(ds2.pendingTransactions().length, 0);
-				ds2.rollback();
-			});
-			
-			test("check when cells in a row is edited, then edited again to its original value, there are two transactions when aggregateTransactions is false", function() {
-				ds1.updateRow(1, {Name: "new value", ProductNumber : "AR-111111"});
-				ds1.updateRow(1, {Name: "Adjustable Race", ProductNumber : "AR-5381"});
-				equal(ds1.pendingTransactions().length, 1);
-				ds1.rollback();
-			});
-			
-			test("check when cells in a row is edited, then edited again to its original value, there are no transactions when aggregateTransactions is true", function() {
-				ds2.updateRow(1, {Name: "new value", ProductNumber : "AR-111111"});
-				ds2.updateRow(1, {Name: "Adjustable Race", ProductNumber : "AR-5381"});
-				equal(ds2.pendingTransactions().length, 0);
-				ds2.rollback();
-			});
-		}
+			equal(ds1.pendingTransactions().length, 1);
+			ds1.rollback();
+		});
+		
+		test("check when a cell is edited, then edited again to its original value, there are no transactions when aggregateTransactions is true", function() {
+			ds2.setCellValue(1, "Name", "new value");
+			ds2.setCellValue(1, "Name", "Adjustable Race");
+			equal(ds2.pendingTransactions().length, 0);
+			ds2.rollback();
+		});
+		
+		test("check when cells in a row is edited, then edited again to its original value, there are two transactions when aggregateTransactions is false", function() {
+			ds1.updateRow(1, {Name: "new value", ProductNumber : "AR-111111"});
+			ds1.updateRow(1, {Name: "Adjustable Race", ProductNumber : "AR-5381"});
+			equal(ds1.pendingTransactions().length, 1);
+			ds1.rollback();
+		});
+		
+		test("check when cells in a row is edited, then edited again to its original value, there are no transactions when aggregateTransactions is true", function() {
+			ds2.updateRow(1, {Name: "new value", ProductNumber : "AR-111111"});
+			ds2.updateRow(1, {Name: "Adjustable Race", ProductNumber : "AR-5381"});
+			equal(ds2.pendingTransactions().length, 0);
+			ds2.rollback();
+		});
+
+		module("igDataSource transactions (autoCommit - ", {
+			setup: function() {
+				ds3 = new $.ig.DataSource({
+					dataSource: adventureWorks.slice(0, 4), 
+					primaryKey: "ProductID",
+					schema: {
+						fields: [
+							{ name: "ProductID", type: "number" },
+							{ name: "Name", type: "string" },
+							{ name: "ModifiedDate", type: "date" },
+							{ name: "MakeFlag", type: "bool" },
+							
+						] 
+					}
+				});
+				ds3.dataBind();
+			},
+			teardown: function() {
+			}
+		});
+		// test removeRecordByKey
+		test("Test removeRecordByKey, removeRecordByIndex, updateRow, addRow, insertRow", function () {
+			var l = ds3.data().length, d, row, t, res;
+			ds3.filter([
+				{ fieldName: "ProductID", expr: 1, cond: "greaterThan" }
+			]);
+			//removeRecordByKey
+			ds3.removeRecordByKey(4);
+			d = ds3.data();
+			ok(l === 4 &&
+				ds3.filteredData().length === 2 &&
+				d.length === 3 &&
+				d[2].ProductID === 3,
+				"Test removeRecordByKey - remove row with ProductID 4");
+			// removeRecordByIndex
+			ds3.removeRecordByIndex(0);
+			d = ds3.data();
+			ok(ds3.filteredData().length === 2 &&
+				d.length === 2 &&
+				d[0].ProductID === 2,
+				"Test removeRecordByIndex - remove row with index 0");
+			// updateRow
+			row = d[0];
+			row.Name = "Test";
+			ds3.updateRow(row.ProductID, row, true);
+			d = ds3.data();
+			ok(d[0].Name === "Test" &&
+				d.length === 2, "Test updateRow");
+			// addRow
+			row = { 
+					ProductID: 5,
+					Name: "Test2",
+					ModifiedDate: new Date(),
+					MakeFlag: true
+			};
+			ds3.addRow(row.ProductID, row, true);
+			d = ds3.data();
+			ok(d.length === 3 &&
+				d[2].Name === "Test2", "Test addRow");
+			// insertRow
+			row = { 
+					ProductID: 6,
+					Name: "Test3",
+					ModifiedDate: new Date(),
+					MakeFlag: true
+			};
+			t = ds3.insertRow(row.ProductID, row, d.length - 1, true);
+			res = ds3.getDetachedRecord(t);
+			equal(res.ProductID, t.row.ProductID, "Test getDetachedRecord");
+			d = ds3.data();
+			ok(d.length === 4 &&
+				d[2].Name === "Test3" &&
+				d[3].Name === "Test2", "Test insertRow");
+		});
 	});
-	
-	
 	</script>
-	
 </head>
 <body>
 <div id="div1"></div>

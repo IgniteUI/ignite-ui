@@ -33,6 +33,7 @@
 		        minValueMessage: 'A value of at least {0} should be entered',
 		        maxValueMessage: 'A value no more than {0} should be entered',
 		        emailMessage: 'A valid email address should be entered',
+		        creditCardMessage: 'A valid payment card number should be entered',
 		        equalToMessage: 'The two values do not match',
 		        optionalString: '(optional)'
 		    }

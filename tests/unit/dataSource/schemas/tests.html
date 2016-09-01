@@ -1,8 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title> Infragistics jQuery Data Source - applying schemas and search fields </title> 
+	<title> IgniteUI Data Source - applying schemas and search fields </title> 
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
 	
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
@@ -12,9 +14,9 @@
 	
 	<script type="text/javascript"> 
 
-			var result1, result2, result3, result4, result5;
+	var result1, result2, result3, result4, result5;
 		
-	 $(document).ready(function () {
+	 $(function () {
 	
 		var arrayOfObjects = [
 			{make:"Chevrolet",model:"Bel Air",year:1957},
@@ -80,9 +82,9 @@
 		var xml = '<Response><Session>542235629</Session><Tracks  start="1" count="10" total="98" errorCount="0"  defaultSort="popularity+"  description="Top 100 Tracks"  name="Top 100 Tracks"  ><Track id="59672468" rating="-1" title="I Kissed A Girl"><Artist id="30326214" rating="-1">Katy Perry</Artist><ItemInfo><ChartPosition last="26" this="1"/></ItemInfo></Track><Track id="47973564" rating="-1" title="Shake It"><Artist id="45575683" rating="-1">Metro Station</Artist><ItemInfo><ChartPosition last="27" this="2"/></ItemInfo></Track><Track id="52207363" rating="-1" title="Bleeding Love"><Artist id="37956508" rating="-1">Leona Lewis</Artist><ItemInfo><ChartPosition last="28" this="3"/></ItemInfo></Track></Tracks></Response>';
 		//var xml = "";
 		
-			var corruptXml = '<Response><Session>542235629</Session><Tracks  start="1" count="10" total="98" errorCount="0"  defaultSort="popularity+"  description="Top 100 Tracks"  name="Top 100 Tracks"  ><Track id="59672468" rating="-1" title="I Kissed A Girl"><Artist id="30326214" rating="-1">Katy Perry</Artist><ItemInfo><ChartPosition last="26" this="1"/></ItemInfo></Track><Track id="47973564" rating="-1" title="Shake It"><Artist id="45575683" rating="-1">Metro Station</Artist><ItemInfo><ChartPosition last="27" this="2"/></ItemInfo></Track><Track id="52207363" rating="-1" title="Bleeding Love"><Artist id="37956508" rating="-1">Leona Lewis</Artist><ItemInfo><ChartPosition last="28" this="3"/></ItemInfo>/Track></Tracks></Response>';
-			
-			var table_string = "<table id='table1'> <tbody><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr><tr> <td>2</td> <td>15</td> <td>Hamburger</td>  <td>$ 33 </td> </tr><tr> <td>3</td> <td>2000</td> <td>mobile phone</td>  <td>$ 5454 </td> </tr><tr> <td>4</td> <td>45</td> <td>Beer</td>  <td>$ 2323232 </td> </tr><tr> <td>5</td> <td>78</td> <td>trainers</td>  <td>$ 545454 </td> </tr><tr> <td>6</td> <td>32</td> <td>coffee cup</td>  <td>$ 22 </td> </tr><tr> <td>7</td> <td>987</td> <td>BMW 323 CI</td>  <td>$ 1000000 </td> </tr><tr> <td>8</td> <td>434343</td> <td>mouse</td>  <td>$ 545454 </td> </tr><tr> <td>9</td> <td>2356</td> <td>keyboard</td>  <td>$ 34 </td> </tr><tr> <td>10</td> <td>33</td> <td>fish</td>  <td>$ 22 </td> </tr><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr></tbody></table>";
+		var corruptXml = '<Response><Session>542235629</Session><Tracks  start="1" count="10" total="98" errorCount="0"  defaultSort="popularity+"  description="Top 100 Tracks"  name="Top 100 Tracks"  ><Track id="59672468" rating="-1" title="I Kissed A Girl"><Artist id="30326214" rating="-1">Katy Perry</Artist><ItemInfo><ChartPosition last="26" this="1"/></ItemInfo></Track><Track id="47973564" rating="-1" title="Shake It"><Artist id="45575683" rating="-1">Metro Station</Artist><ItemInfo><ChartPosition last="27" this="2"/></ItemInfo></Track><Track id="52207363" rating="-1" title="Bleeding Love"><Artist id="37956508" rating="-1">Leona Lewis</Artist><ItemInfo><ChartPosition last="28" this="3"/></ItemInfo>/Track></Tracks></Response>';
+		
+		var table_string = "<table id='table1'> <tbody><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr><tr> <td>2</td> <td>15</td> <td>Hamburger</td>  <td>$ 33 </td> </tr><tr> <td>3</td> <td>2000</td> <td>mobile phone</td>  <td>$ 5454 </td> </tr><tr> <td>4</td> <td>45</td> <td>Beer</td>  <td>$ 2323232 </td> </tr><tr> <td>5</td> <td>78</td> <td>trainers</td>  <td>$ 545454 </td> </tr><tr> <td>6</td> <td>32</td> <td>coffee cup</td>  <td>$ 22 </td> </tr><tr> <td>7</td> <td>987</td> <td>BMW 323 CI</td>  <td>$ 1000000 </td> </tr><tr> <td>8</td> <td>434343</td> <td>mouse</td>  <td>$ 545454 </td> </tr><tr> <td>9</td> <td>2356</td> <td>keyboard</td>  <td>$ 34 </td> </tr><tr> <td>10</td> <td>33</td> <td>fish</td>  <td>$ 22 </td> </tr><tr> <td>1</td> <td>100</td> <td>Laptop</td>  <td>$ 1000 </td> </tr></tbody></table>";
 		
 		// utility function
 		 function StringtoXML (text) {
@@ -96,50 +98,61 @@
 			}
 			return doc;
 		}
-		
-		// outputResultsName is optional, by default it is "results"
-		// type is optional 
-		var arrayOfObjectsSchema = new $.ig.DataSchema("array", { outputResultsName: "res_data", fields:[ {name: "make", type: "string"}, {name: "model", type: "string"}, {name: "year", type: "number"} ]} ); 
+		var arrayOfObjectsSchema, arrayOfArraysSchema, jsonSchema,
+			xmlSchema, tableSchema, tableSchema, unknownSchema,
+			ds1, ds2, ds3, ds4, ds5;
 
-		// since here we do not have name-value pairs, they will be annotated in the resulting object automatically 
-		var arrayOfArraysSchema = new $.ig.DataSchema("array", { fields:[ {name: "make"}, {name: "model"}, {name: "year"} ]}); 
-		// search field denotes the location of the data
-		var jsonSchema = new $.ig.DataSchema("json", {fields:[ {name : "day"}, {name : "activity"} ], searchField:"program[0]['weekly schedule']"}); 
+		function loadTestbeds() {
+			// outputResultsName is optional, by default it is "results"
+			// type is optional 
+			arrayOfObjectsSchema = new $.ig.DataSchema("array", { outputResultsName: "res_data", fields:[ {name: "make", type: "string"}, {name: "model", type: "string"}, {name: "year", type: "number"} ]} ); 
 
-		// searchField here is the Xpath for the location of the input data
-		var xmlSchema = new $.ig.DataSchema("xml", {fields:[ {name : "song", xpath: "@title"}, {name : "artist", xpath : "Artist"} ], searchField:"//Track"}); 
-		
-		// set explicit string type, in order to cover this part of the conversion functionality 
-		var tableSchema = new $.ig.DataSchema("htmlTableDom", { fields:[ {name: "make", type: "string"}, {name: "model"}, {name: "year"} ]}); 
-		
-		// define an invalid schema that we will test later 
-		var unknownSchema = new $.ig.DataSchema(-1, {fields: []});
-		
-		// doesn't need to be wrapped in an IgSchema object 
-		var ds1 = new $.ig.DataSource({dataSource: arrayOfObjects, schema: arrayOfObjectsSchema}).dataBind(); 
-		var ds2 = new $.ig.DataSource({dataSource: arrayOfArrays, schema: arrayOfArraysSchema}).dataBind(); 
-		var ds3 = new $.ig.DataSource({type: "json", dataSource: json, schema: jsonSchema}).dataBind(); 
-		var ds4 = new $.ig.DataSource({type: "xml", dataSource:xml, schema: xmlSchema}).dataBind(); 
-		var ds5 = new $.ig.DataSource({paging: { enabled:true }, dataSource: $("#t1")[0], schema: tableSchema}).dataBind(); 
+			// since here we do not have name-value pairs, they will be annotated in the resulting object automatically 
+			arrayOfArraysSchema = new $.ig.DataSchema("array", { fields:[ {name: "make"}, {name: "model"}, {name: "year"} ]}); 
+			// search field denotes the location of the data
+			jsonSchema = new $.ig.DataSchema("json", {fields:[ {name : "day"}, {name : "activity"} ], searchField:"program[0]['weekly schedule']"}); 
 
-		// we can just get the normalized data by using IgDataSchema only
-		result1 = arrayOfObjectsSchema.transform(arrayOfObjects);
-		result2 = arrayOfArraysSchema.transform(arrayOfArrays);
-		result3 = jsonSchema.transform(json);
-		result4 = xmlSchema.transform(StringtoXML(xml));
-		result5 = tableSchema.transform($("#t1")[0]);
-		
-	
-	startTesting();
-		
-	function startTesting()
-	{
+			// searchField here is the Xpath for the location of the input data
+			xmlSchema = new $.ig.DataSchema("xml", {fields:[ {name : "song", xpath: "@title"}, {name : "artist", xpath : "Artist"} ], searchField:"//Track"}); 
+			
+			// set explicit string type, in order to cover this part of the conversion functionality 
+			tableSchema = new $.ig.DataSchema("htmlTableDom", { fields:[ {name: "make", type: "string"}, {name: "model"}, {name: "year"} ]}); 
+			
+			// define an invalid schema that we will test later 
+			unknownSchema = new $.ig.DataSchema(-1, {fields: []});
+			
+			// doesn't need to be wrapped in an IgSchema object 
+			ds1 = new $.ig.DataSource({dataSource: arrayOfObjects, schema: arrayOfObjectsSchema}).dataBind(); 
+			ds2 = new $.ig.DataSource({dataSource: arrayOfArrays, schema: arrayOfArraysSchema}).dataBind(); 
+			ds3 = new $.ig.DataSource({type: "json", dataSource: json, schema: jsonSchema}).dataBind(); 
+			ds4 = new $.ig.DataSource({type: "xml", dataSource:xml, schema: xmlSchema}).dataBind(); 
+			ds5 = new $.ig.DataSource({paging: { enabled:true }, dataSource: $("#t1")[0], schema: tableSchema}).dataBind(); 
 
-		QUnit.init();
-		QUnit.start();
-
-		module("igDataSource");
+			// we can just get the normalized data by using IgDataSchema only
+			result1 = arrayOfObjectsSchema.transform(arrayOfObjects);
+			result2 = arrayOfArraysSchema.transform(arrayOfArrays);
+			result3 = jsonSchema.transform(json);
+			result4 = xmlSchema.transform(StringtoXML(xml));
+			result5 = tableSchema.transform($("#t1")[0]);
+		}
 		
+		initialized = false;
+		module("igDataSource Schemas", {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					loadTestbeds();
+					setTimeout(function () { start(); }, 500);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+		
+
+
 		var testId_1 = "DataSchema test 1: Loading Array of objects with schema / data types";
 		//var testId_2 = "DataSchema test 2: Loading array of objects without schema";
 		var testId_2 = "DataSchema test 2: Loading array of arrays with schema / data types";
@@ -354,8 +367,136 @@
 		test(testId_19, function () {
 			var ds = new $.ig.DataSource({dataSource: $("#t1")[0]}).dataBind();
 			equal(11, ds.dataView().length, 11);
-		});			
-	}
+		});
+
+		test("Test isObjEmpty API method", function () { 
+			ok(!arrayOfObjectsSchema.isObjEmpty({ CustomProp: "Test"}), "If object has custom prop should return false.");
+			ok(arrayOfObjectsSchema.isObjEmpty({}), "If object has no custom prop should return true.");
+		});
+
+		test("Test transformning data with a htmlListDom schema", function () {
+			var htmlListDomSchema = new $.ig.DataSchema("htmlListDom", 
+				{ 
+					primaryKey: { name: "pk" },
+					imageUrl: { name: "imgUrl" },
+					target: {name : "target"},
+					navigateUrl: { name: "navigateUrl" },
+					header: { name: "HeaderText" },
+					text: { name: "CustomText" },
+					count: { name: "countKey" },
+					value: { name: "value" },
+					description: { name: "customDescription" },
+					isDivider: { name: "Devider" },
+					outputResultsName: "res_data",
+					fields: [{ name: "model", type: "string" }] });
+
+			var res = htmlListDomSchema.transform("<ul><li id='item1'><img src='/myImgUrl'></img><img src='/myImgUrl2'></img><a href='myUrl' target='myTarget'>Model1</a><h1>Heading1</h1><p>Description1</p> <span class='ui-li-count'>100</span></li><li><a href='#'>Model2<span class='ui-li-count'>1</span><img src='imgUrl2'></img><h2>Heading2</h2><p>Description2</p></a> </li><ul>");
+		
+			equal(JSON.stringify(res[0]), '{"pk":0,"Devider":false,"imgUrl":"/myImgUrl","navigateUrl":"myUrl","target":"myTarget","HeaderText":"Heading1","customDescription":"Description1","countKey":100,"CustomText":"Model1","value":"item1"}', "Check if transformed data for the first record is correct.");
+			equal(JSON.stringify(res[1]), '{"pk":1,"Devider":false,"navigateUrl":"#","imgUrl":"imgUrl2","HeaderText":"Heading2","customDescription":"Description2","countKey":1,"CustomText":"Model2"}', "Check if transformed data for the second record is correct.");
+
+		});
+
+		test("Test transformning data with date fields with a json schema", function () {
+			var jsonData = {
+				Records: [{
+					"ProductID": 1,
+					"Name": "Adjustable Race",
+					"ProductNumber": "AR-5381",
+					"Date": new Date("01/01/2011")
+				}],
+				TotalRecordsCount:0,
+				Metadata: {
+					"timezoneOffset": -14400000,
+					"timezoneOffsets": {
+						"1": {
+							"Date": -14400000
+						},
+						"2": {
+							"Date": -14400000
+						}
+					}
+				}
+			};
+			var jsonSchema = new $.ig.DataSchema("json", { fields: [{ name: "ProductID", type: "number" }, { name: "Name", type: "string" }, { name: "ProductNumber", type: "string" }, { name:"Date", type:"date"}], searchField: "Records" });
+			jsonSchema._pk = "ProductID";
+			var result = jsonSchema.transform(jsonData);
+			equal(result[0].Date.toDateString(), new Date("01/01/2011").toDateString(), "Verify date field data is properly transformed");
+		});
+
+		test("Test transformning data with a singleRow schema", function () {
+			var data = {
+				"ID": 1,
+				"Name": "Adjustable Race",
+				"2": "",
+				"EmptyValue":""
+			};
+			
+			var singleRowSchema = new $.ig.DataSchema("singleRow", { fields: [{ name: "ID", type: "number" }, { name: "Name" }, { type: "string" }, {}] });
+			singleRowSchema._pk = "ID";
+			var result = singleRowSchema.transform(data);
+			equal(result.ID, 1, "Ensure that the data is properly transformed event in cases when the schema information is not complte.");
+			equal(result.Name, "Adjustable Race", "Ensure that the data is properly transformed event in cases when the schema information is not complte.");
+			equal(result["2"], "", "Ensure that the data is properly transformed event in cases when the schema information is not complte.");
+			equal(result["3"], undefined, "Ensure that the data is properly transformed event in cases when the schema information is not complte.");
+		});
+
+		test("Test transforming incorrect data with htmlTableDom schema", function () {
+			var invalidData1= "<div><div>";
+			var errorCount= 0;
+			var htmlTableDomSchema = new $.ig.DataSchema("htmlTableDom", { fields: [{ name: "ProductID", type: "number" }, { name: "Name", type: "string" }, { name: "ProductNumber", type: "number" }, { name: "Date", type: "date" }], searchField: "Records" });
+			try {
+				htmlTableDomSchema.transform(invalidData1);
+			} catch (e) {
+				errorCount++;
+				equal(e.message, "There was an error extracting the data from the HTML Table and applying the schema : Expected a tbody or a table as a parameter.",
+					"If invalid table element is passed an error should be thrown and the error message should be correct.");
+			}
+
+			var invalidData2 = "<div><table><tbody><tr><td></td></tr></tbody></table><div>";
+			try {
+				htmlTableDomSchema.transform(invalidData2);
+			} catch (e) {
+				errorCount++;
+				ok(e.message.startsWith("There was an error extracting the data from the HTML Table and applying the schema"),
+					"If invalid row elements are passed and error should be thrown and the error message should be correct.")
+			}
+			equal(errorCount, 2, "Two errors should have been thrown.");
+		});
+
+		test("Test transforming invalid json with jsonSchema", function () {
+			var errorCount = 0;
+
+			//PK value is undefined
+			var jsonData = {
+				Records: [{
+					"ProductID": undefined,
+					"Name": "Adjustable Race",
+					"ProductNumber": "AR-5381"
+				}]
+			};
+
+			try {
+				var jsonSchema = new $.ig.DataSchema("json", { fields: [{ name: "ProductID", type: "number" }, { name: "Name", type: "string" }, { name: "ProductNumber", type: "number" }], searchField: "Records" });
+				jsonSchema._pk = "ProductID";
+				var result = jsonSchema.transform(jsonData);
+			} catch (e) {
+				errorCount++;
+				equal(e.message, "There was an error parsing the JSON data and applying the defined data schema: The input data doesn't match the schema, the following field couldn't be mapped: ProductID",
+					"Verrify that if the pk value is undefined an error is thrown with the correct error message.");
+			}
+
+			try {
+				var jsonSchema2 = new $.ig.DataSchema("json", { fields:null, searchField: "Records" });
+				var result = jsonSchema2.transform(jsonData);
+			} catch (e) {
+				errorCount++;
+				ok(e.message.startsWith("There was an error parsing the JSON data and applying the defined data schema"), "If no fields are define an error should be thrown.");
+			}
+			equal(errorCount, 2, "Two errors should have been thrown.");
+		});
+
+
 	});
 	
 	

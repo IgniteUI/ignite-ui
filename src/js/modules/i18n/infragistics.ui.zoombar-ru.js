@@ -16,9 +16,10 @@ if (!$.ig.Zoombar) {
 
 	$.extend($.ig.Zoombar, {
 
-	    locale: {
-	        zoombarTargetNotSpecified: "Виджету igZoombar необходим целевой объект для отображения!",
+		locale: {
+			zoombarTargetNotSpecified: "Виджету igZoombar необходим целевой объект для отображения!",
 			zoombarTypeNotSupported: "Целевой виджет, к которому Zoombar пытается присоединиться, не поддерживается!",
+			zoombarProviderNotRecognized: "igZoombar не удалось инициализировать поставщика из указанного класса — возможно, переданное значение не является классом.",
 			optionChangeNotSupported: "Изменение этой опции после создания igZoombar не поддерживается:"
 		}
 	});

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+    <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+	
+
+ 
+	<!--JS Debug-->
+	<script type="text/javascript" src="../../../src/js/modules/i18n/regional/infragistics.ui.regional-bg.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/regional/infragistics.ui.regional-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/regional/infragistics.ui.regional-es.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+
+	<script type="text/javascript">		
+		module("Basic Tests");
+        // run tests
+		
+		test("Test getColType function",function(){
+			var result = $.ig.getColType(new Date());
+			equal(result, "date", "Check if result is correct for the object type.");
+			
+			result = $.ig.getColType(1);
+			equal(result, "number", "Check if result is correct for the object type.");
+			
+			result = $.ig.getColType("1");
+			equal(result, "string", "Check if result is correct for the object type.");
+			
+			result = $.ig.getColType(true);
+			equal(result, "bool", "Check if result is correct for the object type.");
+			
+			result = $.ig.getColType([1, 2, 3]);
+			equal(result, "object", "Check if result is correct for the object type.");
+			
+			result = $.ig.getColType(undefined);
+			equal(result, "string", "Check if result is correct for the object type.");			
+		});
+
+	</script>
+</head>
+<body>
+	<div style="float:right;width:400px;overflow:auto;">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+</body>
+</html>

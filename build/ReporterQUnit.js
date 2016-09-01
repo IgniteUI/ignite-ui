@@ -106,7 +106,7 @@ module.exports.endTest = function(failed, passed, total, runtime) {
 
 module.exports.onError = function (message, source, result, actual, expected) {
 	var fs, name, 
-		isReferenceErr = message && message.indexOf("ReferenceError") >= 0,
+		isReferenceErr = message && message.indexOf && message.indexOf("ReferenceError") >= 0,
 		preModule = "";
 
 	if (isReferenceErr) {
