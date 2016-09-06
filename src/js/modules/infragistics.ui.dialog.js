@@ -2023,5 +2023,5 @@
 		}
 	});
 	$.extend($.ui.igDialog, { version: "<build_number>" });
-	return $.ui.igDialog;
-}));
+	return $.ui.igDialog;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

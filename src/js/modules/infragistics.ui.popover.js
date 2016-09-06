@@ -1035,5 +1035,5 @@
 	$.extend($.ui.igPopover, {
 		version: "<build_number>"
 	});
-	return $.ui.igPopover;
-}));
+	return $.ui.igPopover;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

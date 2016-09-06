@@ -424,5 +424,5 @@
 		}
 	});
 	$.extend($.ui.igNotifier, { version: "<build_number>" });
-	return $.ui.igNotifier;
-}));
+	return $.ui.igNotifier;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

@@ -25,7 +25,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
     function selectItems(combo, selectedItems) {
         var valueKey = combo.igCombo("option", "valueKey"),
 			selectedValues = [],
@@ -221,4 +222,4 @@
             combo.css("display", visible() ? "inline-block" : "none");
         }
     };
-}));
+}));// REMOVE_FROM_COMBINED_FILES

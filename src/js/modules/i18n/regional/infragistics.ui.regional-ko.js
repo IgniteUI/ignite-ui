@@ -7,7 +7,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
 	if ($.datepicker && $.datepicker.regional) {
@@ -55,4 +56,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('ko');
     }
-}));
+}));// REMOVE_FROM_COMBINED_FILES

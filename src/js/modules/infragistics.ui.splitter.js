@@ -2007,5 +2007,5 @@
         }
     });
     $.extend($.ui.igSplitter, { version: "<build_number>" });
-    return $.ui.igSplitter;
-}));
+    return $.ui.igSplitter;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES
