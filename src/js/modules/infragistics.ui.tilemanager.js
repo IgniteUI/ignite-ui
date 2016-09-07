@@ -17,7 +17,27 @@
  *	infragistics.ui.tilemanager-en.js
  */
 
-/*global jQuery, window*/
+/*global define, jQuery, window*/
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.datasource",
+			"./infragistics.templating",
+			"./infragistics.ui.layoutmanager",
+			"./infragistics.ui.splitter",
+			"./infragistics.ui.tilemanager-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
     /*
 		igTileManager is a widget based on jQuery UI that instantiates itself on existing markup or on any $.ig.DataSource supported data source
@@ -1881,4 +1901,5 @@
         }
     });
     $.extend($.ui.igTileManager, { version: "<build_number>" });
-}(jQuery));
+    return $.ui.igTileManager;
+}));

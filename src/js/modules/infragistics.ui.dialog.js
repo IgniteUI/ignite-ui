@@ -22,7 +22,23 @@
 *	<div id="dialog1"></div>
 */
 
-/*global jQuery, setTimeout, document, window*/
+/*global define, jQuery, setTimeout, document, window*/
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./i18n/infragistics.ui.dialog-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 	var _lastTop, _iframe,
 		_visCount = 0,
@@ -2007,4 +2023,5 @@
 		}
 	});
 	$.extend($.ui.igDialog, { version: "<build_number>" });
-}(jQuery));
+	return $.ui.igDialog;
+}));

@@ -12,9 +12,23 @@
  *	infragistics.util.js
  */
 
-/*global window */
-/*global jQuery */
-/*global define */
+/*global window, jQuery, define */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+            "jquery-ui",
+			"./infragistics.util",
+			"./i18n/infragistics.ui.shared-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 
 	// Loading indicator widget
@@ -1837,22 +1851,4 @@
 		}
 	});
 	$.extend($.ui.igResponsiveContainer, { version: "<build_number>" });
-
-	// Expose ig.ui.shared as an AMD module, but only for AMD loaders that
-	// understand the issues with loading multiple versions of jQuery
-	// in a page that all might call define(). The loader will indicate
-	// they have special allowances for multiple jQuery versions by
-	// specifying define.amd.jQuery = true. Register as a named module,
-	// since jQuery can be concatenated with other files that may use define,
-	// but not use a proper concatenation script that understands anonymous
-	// AMD modules. A named AMD is safest and most robust way to register.
-	// Lowercase ig.ui.shared is used because AMD module names are derived from
-	// file names, and jQuery is normally delivered in a lowercase file name.
-	// Do this after creating the global so that if an AMD module wants to call
-	// noConflict to hide this version of jQuery, it will work.
-	if (typeof define === "function" && define.amd && define.amd.jQuery) {
-		define("ig.ui.shared", [ "ig.util", "jquery.ui.core", "jquery.ui.widget" ],
-            function () { return $.ui.igLoading; });
-	}
-
-}(jQuery));
+}));

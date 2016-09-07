@@ -1,3 +1,6 @@
+@import url("infragistics.ui.layout.css");
+@import url("infragistics.ui.splitter.css");
+
 .ui-igtilemanager {
 	position: relative;
     overflow: auto;

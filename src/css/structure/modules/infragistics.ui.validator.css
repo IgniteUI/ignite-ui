@@ -1,4 +1,6 @@
-﻿/*.ui-igvalidator-target, .ui-dialog .ui-igvalidator-target{ border-color:#d05050; }*/
+﻿@import url("infragistics.ui.notifier.css");
+
+/*.ui-igvalidator-target, .ui-dialog .ui-igvalidator-target{ border-color:#d05050; }*/
 .ui-igvalidator-required-indication {
     vertical-align:top; 
     padding: 0 0.2em; 
