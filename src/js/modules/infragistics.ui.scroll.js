@@ -702,6 +702,10 @@
 			this._scrollFromSyncContentH = false;
 			this._scrollFromSyncContentV = false;
 
+			//Track if events should not be triggered
+			this._cancelScrolling = false;
+			this._cancelThumbDrag = false;
+
 			//Counter for how many animation for smooth wheel scrolling are present. When 0 we are no longer scrolling with wheel
 			this._numSmoothAnimation = 0;
 
@@ -1028,7 +1032,7 @@
 				this._scrollToY(val, triggerEvents);
 			}
 
-			if (triggerEvents) {
+			if (triggerEvents && !this._cancelScrolling) {
 				//Trigger scrolled event
 				var self = this;
 				this._trigger("scrolled", null, {
@@ -1256,8 +1260,11 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
+					//should scrolled event be triggered
+					this._cancelScrolling = true;
 					return { x: 0, y: 0 };
 				}
+
 			}
 
 			var scrolledX, scrolledY;
@@ -1296,6 +1303,8 @@
 					stepY: 0
 				});
 				if (!bNoCancel) {
+					//should scrolled event be triggered
+					this._cancelScrolling = true;
 					return 0;
 				}
 			}
@@ -1343,8 +1352,11 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
+					//should scrolled event be triggered
+					this._cancelScrolling = !bNoCancel;
 					return 0;
 				}
+
 			}
 
 			if (this.options.scrollOnlyVBar) {
@@ -1381,7 +1393,7 @@
 					cancelAnimationFrame(animationId);
 					self._numSmoothAnimation -= 1;
 
-					if (!self._numSmoothAnimation) {
+					if (!self._numSmoothAnimation && !self._cancelScrolling) {
 						self._trigger("scrolled", null, {
 							owner: self,
 							smallIncrement: 0,
@@ -1443,8 +1455,11 @@
 					stepY: destY - curPosY
 				});
 				if (!bNoCancel) {
+					//should scrolled event be triggered
+					this._cancelScrolling = true;
 					return { x: 0, y: 0 };
 				}
+
 			}
 
 			//Only use vertical scroll specific
@@ -1512,13 +1527,14 @@
 				if (x > 6) {
 					self._hideScrollBars(true, true); //hide scrollbars when inertia ends naturally
 					cancelAnimationFrame(self._touchInertiaAnimID);
-
-					self._trigger("scrolled", null, {
-						owner: self,
-						smallIncrement: 0,
-						bigIncrement: 0,
-						horizontal: null
-					});
+					if (!self._cancelScrolling) {
+						self._trigger("scrolled", null, {
+							owner: self,
+							smallIncrement: 0,
+							bigIncrement: 0,
+							horizontal: null
+						});
+					}
 					return;
 				}
 
@@ -1889,6 +1905,7 @@
 						horizontal: horizontal
 					});
 				}
+
 			}
 		},
 
@@ -1950,13 +1967,15 @@
 				var scrollStep = this.options.wheelStep;
 				var scrolledY = this._scrollToY(this._startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep, true);
 
-				//Trigger scrolled event
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: false
-				});
+				if (!this._cancelScrolling) {
+					//Trigger scrolled event
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: false
+					});
+				}
 
 				return !scrolledY;
 			}
@@ -2157,13 +2176,15 @@
 			} else {
 				this._hideScrollBars(true, true);
 
-				//Trigger scrolled event
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: null
-				});
+				if (!this._cancelScrolling) {
+					//Trigger scrolled event
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: null
+					});
+				}
 			}
 		},
 
@@ -2438,6 +2459,8 @@
 			}
 			bNoCancel = this._trigger("scrolling", null, eventArgs);
 
+			//should scrolled event be triggered
+			this._cancelScrolling = !bNoCancel;
 			if (bNoCancel) {
 				this._scrollTop(curPosY + step, false);
 
@@ -2463,6 +2486,9 @@
 				stepX: 0,
 				stepY: scrollStep
 			});
+
+			//should scrolled event be triggered
+			this._cancelScrolling = !bNoCancel;
 
 			if (bNoCancel) {
 				this._bMouseDownV = true;
@@ -2512,6 +2538,9 @@
 				stepX: 0,
 				stepY: scrollStep
 			});
+
+			//should scrolled event be triggered
+			this._cancelScrolling = !bNoCancel;
 
 			if (bNoCancel) {
 				this._bMouseDownV = true;
@@ -2582,6 +2611,9 @@
 					stepY: scrollStep
 				});
 
+				//should scrolled event be triggered
+				this._cancelScrolling = !bNoCancel;
+
 				if (bNoCancel) {
 					this._scrollTop(curPosY + scrollStep, false);
 					this._holdTimeoutID = setTimeout(function () {
@@ -2619,7 +2651,7 @@
 		_onMouseUpVTrack: function() {
 			clearTimeout(this._holdTimeoutID);
 
-			if (this._bUseVTrack) {
+			if (this._bUseVTrack && !this._cancelScrolling) {
 				this._trigger("scrolled", null, {
 					owner: this,
 					smallIncrement: 0,
@@ -2633,7 +2665,7 @@
 		_onMouseOutVTrack: function() {
 			clearTimeout(this._holdTimeoutID);
 
-			if (this._bUseVTrack) {
+			if (this._bUseVTrack && !this._cancelScrolling) {
 				this._trigger("scrolled", null, {
 					owner: this,
 					smallIncrement: 0,
@@ -2662,6 +2694,9 @@
 					stepY: nextPosY - curPosY
 				});
 
+				//should thumbDragEnd be triggered
+				this._cancelThumbDrag = !bNoCancel;
+
 				if (bNoCancel) {
 					//Move custom vertical scrollbar thumb drag
 					this._scrollToY(nextPosY, true);
@@ -2680,24 +2715,28 @@
 				this._vBarArrowUp
 					.switchClass(this.css.verticalScrollArrowUpActive, this.css.verticalScrollArrowUp);
 
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: -1,
-					bigIncrement: 0,
-					horizontal: false
-				});
+				if (!this._cancelScrolling) {
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: -1,
+						bigIncrement: 0,
+						horizontal: false
+					});
+				}
 			}
 			if (this._bUseArrowDown) {
 				this._bUseArrowDown = false;
 				this._vBarArrowDown
 					.switchClass(this.css.verticalScrollArrowDownActive, this.css.verticalScrollArrowDown);
 
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: 1,
-					bigIncrement: 0,
-					horizontal: false
-				});
+				if (!this._cancelScrolling) {
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: 1,
+						bigIncrement: 0,
+						horizontal: false
+					});
+				}
 			}
 
 			//If the mouse was previously hold over an element an we release it.
@@ -2728,17 +2767,22 @@
 			this._bMouseDownV = false;
 
 			if (this._bUseVDrag) {
-				this._trigger("thumbDragEnd", null, {
-					owner: this,
-					horizontal: false
-				});
+				if (!this._cancelThumbDrag) {
 
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: true
-				});
+					this._trigger("thumbDragEnd", null, {
+						owner: this,
+						horizontal: false
+					});
+				}
+
+				if (!this._cancelScrolling) {
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: true
+					});
+				}
 			}
 			this._bUseVDrag = false;
 		},
@@ -2889,6 +2933,9 @@
 			}
 			bNoCancel = this._trigger("scrolling", null, eventArgs);
 
+			//should scrolled event be triggered
+			this._cancelScrolling = !bNoCancel;
+
 			if (bNoCancel) {
 				//Scroll content
 				var curPosY = this._getContentPositionX();
@@ -2918,6 +2965,9 @@
 				stepY: 0
 			});
 
+			//should scrolled event be triggered
+			this._cancelScrolling = !bNoCancel;
+
 			if (bNoCancel) {
 				this._bMouseDownH = true;
 				this._bUseArrowLeft = true;
@@ -2941,12 +2991,14 @@
 
 			clearTimeout(this._holdTimeoutID);
 
-			this._trigger("scrolled", null, {
-				owner: this,
-				smallIncrement: -1,
-				bigIncrement: 0,
-				horizontal: true
-			});
+			if (!this._cancelScrolling) {
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: -1,
+					bigIncrement: 0,
+					horizontal: true
+				});
+			}
 		},
 
 		_onMouseOverArrowLeft: function () {
@@ -2973,6 +3025,9 @@
 				stepY: 0
 			});
 
+			//should scrolled event be triggered
+			this._cancelScrolling = !bNoCancel;
+
 			if (bNoCancel) {
 				this._bMouseDownH = true;
 				this._bUseArrowRight = true;
@@ -2994,12 +3049,14 @@
 
 			clearTimeout(this._holdTimeoutID);
 
-			this._trigger("scrolled", null, {
-				owner: this,
-				smallIncrement: 1,
-				bigIncrement: 0,
-				horizontal: true
-			});
+			if (!this._cancelScrolling) {
+				this._trigger("scrolled", null, {
+					owner: this,
+					smallIncrement: 1,
+					bigIncrement: 0,
+					horizontal: true
+				});
+			}
 		},
 
 		_onMouseOverArrowRight: function () {
@@ -3073,6 +3130,9 @@
 					}, 250);
 				}
 			}
+
+			//should scrolled event be triggered
+			this._cancelScrolling = !bNoCancel;
 		},
 
 		_onMouseMoveHTrack: function (event) {
@@ -3085,7 +3145,7 @@
 		_onMouseUpHTrack: function () {
 			clearTimeout(this._holdTimeoutID);
 
-			if (this._bUseHTrack) {
+			if (this._bUseHTrack && !this._cancelScrolling) {
 				this._trigger("scrolled", null, {
 					owner: this,
 					smallIncrement: 0,
@@ -3099,7 +3159,7 @@
 		_onMouseOutHTrack: function () {
 			clearTimeout(this._holdTimeoutID);
 
-			if (this._bUseHTrack) {
+			if (this._bUseHTrack && !this._cancelScrolling) {
 				this._trigger("scrolled", null, {
 					owner: this,
 					smallIncrement: 0,
@@ -3146,24 +3206,28 @@
 				this._hBarArrowLeft
 					.switchClass(this.css.horizontalScrollArrowLeftActive, this.css.horizontalScrollArrowLeft);
 
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: -1,
-					bigIncrement: 0,
-					horizontal: true
-				});
+				if (!this._cancelScrolling) {
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: -1,
+						bigIncrement: 0,
+						horizontal: true
+					});
+				}
 			}
 			if (this._bUseArrowRight) {
 				this._bUseArrowRight = false;
 				this._hBarArrowRight
 					.switchClass(this.css.horizontalScrollArrowRightActive, this.css.horizontalScrollArrowRight);
 
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: 1,
-					bigIncrement: 0,
-					horizontal: true
-				});
+				if (!this._cancelScrolling) {
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: 1,
+						bigIncrement: 0,
+						horizontal: true
+					});
+				}
 			}
 
 			//If the mouse was previously hold over an element an we release it.
@@ -3194,17 +3258,21 @@
 			this._bMouseDownH = false;
 
 			if (this._bUseHDrag) {
-				this._trigger("thumbDragEnd", null, {
-					owner: this,
-					horizontal: true
-				});
+				if (!this._cancelThumbDrag) {
+					this._trigger("thumbDragEnd", null, {
+						owner: this,
+						horizontal: true
+					});
+				}
 
-				this._trigger("scrolled", null, {
-					owner: this,
-					smallIncrement: 0,
-					bigIncrement: 0,
-					horizontal: true
-				});
+				if (!this._cancelScrolling) {
+					this._trigger("scrolled", null, {
+						owner: this,
+						smallIncrement: 0,
+						bigIncrement: 0,
+						horizontal: true
+					});
+				}
 			}
 			this._bUseHDrag = false;
 		},
@@ -3480,5 +3548,5 @@
 		container.igScroll({ modifyDOM: false });
 		container.data("igScroll")._bKeyboardNavigation = false;
 	});
-	return $.ui.igScroll;
-}));
+	return $.ui.igScroll;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

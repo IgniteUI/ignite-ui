@@ -14,7 +14,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
 $.ig = $.ig || {};
 
 if (!$.ig.SharedLocale) {
@@ -28,4 +29,4 @@ if (!$.ig.SharedLocale) {
 	});
 
 }
-}));
+}));// REMOVE_FROM_COMBINED_FILES

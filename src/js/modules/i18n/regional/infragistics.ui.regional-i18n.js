@@ -7,7 +7,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
 $.ig = $.ig || {};
 $.ig.regional = $.ig.regional || {};
 $.ig.regional['en-US'] = {
@@ -1209,4 +1210,4 @@ $.ig.regional['zh-TW'] = {
 	currencyNegativePattern: '-$n',
 	currencySymbol: 'NT$'
 };
-}));
+}));// REMOVE_FROM_COMBINED_FILES

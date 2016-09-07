@@ -14,7 +14,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
     $.ig = $.ig || {};
 
     if (!$.ig.VideoPlayer) {
@@ -61,4 +62,4 @@
 	    });
 
     }
-}));
+}));// REMOVE_FROM_COMBINED_FILES

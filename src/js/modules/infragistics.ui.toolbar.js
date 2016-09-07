@@ -909,5 +909,5 @@
     });
 
     $.extend($.ui.igToolbar, { version: "<build_number>" });
-    return $.ui.igToolbar;
-}));
+    return $.ui.igToolbar;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

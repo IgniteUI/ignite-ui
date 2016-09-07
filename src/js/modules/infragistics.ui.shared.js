@@ -1851,4 +1851,4 @@
 		}
 	});
 	$.extend($.ui.igResponsiveContainer, { version: "<build_number>" });
-}));
+}));// REMOVE_FROM_COMBINED_FILES
