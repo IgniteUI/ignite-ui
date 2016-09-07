@@ -52,6 +52,8 @@
 					minDecimals: 10,
 					maxDecimals: 6
 				});
+
+				$("#insertInput").igCurrencyEditor();
 			});
 		}
 		initialized = false;
@@ -133,6 +135,22 @@
 		    $("#currencyEditor5").igCurrencyEditor("option", "groupSeparator", "");
 		    $("#currencyEditor5").igCurrencyEditor("option", "value", 1264.89);
 		    equal($("#currencyEditor5").igCurrencyEditor("displayValue"), "$1264,8900000000", "The decimal value is not correct");
+		});
+
+		
+		var testId = 'Insert in/outside edit mode';
+		test(testId, 4, function () {
+			var editor = $("#insertInput"),
+				editorInput = editor.igCurrencyEditor("field");
+
+			// #287: Percent/Currency insert method not working with existing value outside edit mode
+			editor.igCurrencyEditor("insert", "55");
+			equal(editor.igCurrencyEditor("value"), 55, "Value not correct after intial insert");
+			equal(editorInput.val(), "$55.00", "Insert value not converted to display text");
+
+			editor.igCurrencyEditor("insert", "1.05");
+			equal(editor.igCurrencyEditor("value"), 1.05, "Value not correct after second insert");
+			equal(editorInput.val(), "$1.05", "Insert value not converted to display text");
 		});
 	});
 
@@ -233,6 +251,7 @@
         <div id="currencyEditor4"></div>
 		<br />
         <div id="currencyEditor5"></div>
+        <div id="insertInput"></div>
     </div>
 </body>
 </html>

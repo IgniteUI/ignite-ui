@@ -2389,12 +2389,18 @@
 				}
 			}, 10));
 		},
-		_insertHandler: function (string) {
+		_insertHandler: function (string) {  // TextEditor
 			var selection = this._getSelection(this.field()[ 0 ]),
 				previousValue, newValue;
 			if (string) {
-				previousValue = this._editMode ? this._editorInput.val() : this.displayValue();
-				newValue = this._replaceDisplayValue(selection, previousValue, string);
+				if (this._editMode) {
+					previousValue = this._editorInput.val();
+					newValue = this._replaceDisplayValue(selection, previousValue, string);
+				} else {
+					// D.P. 30th Aug 2016 #287 Insert to replace value when not in edit mode
+					previousValue = this.value();
+					newValue = string;
+				}
 				this._insert(newValue, previousValue);
 			}
 		},
@@ -2440,14 +2446,16 @@
 						}
 					}
 				}
-				if (this._focused) {
+				if (this._editMode) {
 					this._editorInput.val(newValue);
 					if (selection !== undefined) {
 						// Move the caret
 						this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 					}
+				} else {
+					this._processInternalValueChanging(newValue);
+					this._exitEditMode();
 				}
-				this._processValueChanging(newValue);
 				this._processTextChanged();
 			} else {
 				this._editorInput.val(previousValue);
@@ -2963,8 +2971,18 @@
 			return this._getSelection(this._editorInput[ 0 ]).end;
 		},
 		insert: function (string) {
-			/* Paste text at location of caret. Note: method raises the "valueChanged" event.
-				paramType="string" optional="false" The string to be inserted. */
+			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value if the editor is not focused.
+				Note: method raises the "textChanged" event.
+				paramType="string" optional="false" The string to be inserted.
+				```
+				$('.selector').%%WidgetName%%({
+					blur: function (evt, ui) {
+						// insert 0 as the user leaves the field
+						ui.owner.insert("0");
+					}
+				});
+				```
+			*/
 			this._insertHandler(string);
 		},
 		select: function (start, end) {
@@ -4817,6 +4835,21 @@
 		},
 
 		// igPercentEditor public methods
+		insert: function (string) {
+			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value (modified by the displayFactor) if the editor is not focused.
+				Note: method raises the "textChanged" event.
+				paramType="string" optional="false" The string to be inserted.
+				```
+				$('.selector').igPercentEditor({
+					blur: function (evt, ui) {
+						// insert 0 as the user leaves the field
+						ui.owner.insert("0");
+					}
+				});
+				```
+			*/
+			this._insertHandler(string);
+		},
 		percentSymbol: function (symbol) {
 			/* Gets/sets a string that is used as the percent symbol shown with the number in the input. The value provided as a param is propagated to the percentSymbol option and thus has the same priority as the option.
 				paramType="sting" optional="true" New percent symbol.
@@ -5009,14 +5042,20 @@
 				if (newValue) { newValue = newValue.toLocaleLowerCase(); }
 			}
 			this._promptCharsIndices = [];
-			newValue = this._parseValueByMask(newValue);
-			this._editorInput.val(newValue);
-			this._processTextChanged();
 
-			if (selection !== undefined) {
-				// Move the caret
-				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+			if (this._editMode) {
+				newValue = this._parseValueByMask(newValue);
+				this._editorInput.val(newValue);
+				if (selection !== undefined) {
+					// Move the caret
+					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+				}
+			} else if (newValue !== previousValue) {
+				newValue = this._parseValueByMask(newValue);
+				this._processInternalValueChanging(newValue);
+				this._exitEditMode();
 			}
+			this._processTextChanged();
 		},
 		_pasteHandler: function (e, drop) { // MaskEditor Handler
 			var self = this, previousValue = $(e.target).val(), newValue, data, selection,
