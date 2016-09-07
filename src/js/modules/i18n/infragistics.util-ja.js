@@ -14,7 +14,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
     $.ig = $.ig || {};
 
     if (!$.ig.util) {
@@ -39,4 +40,4 @@
 	    });
 
     }
-}));
+}));// REMOVE_FROM_COMBINED_FILES

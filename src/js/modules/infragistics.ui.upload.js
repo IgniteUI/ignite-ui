@@ -3072,5 +3072,5 @@
 		/*************** HELPER FUNCTION ********************/
 	});
 	$.extend($.ui.igUpload, { version: "<build_number>" });
-	return $.ui.igUpload;
-}));
+	return $.ui.igUpload;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

@@ -3548,5 +3548,5 @@
 		container.igScroll({ modifyDOM: false });
 		container.data("igScroll")._bKeyboardNavigation = false;
 	});
-	return $.ui.igScroll;
-}));
+	return $.ui.igScroll;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

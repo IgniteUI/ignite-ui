@@ -861,5 +861,5 @@
 		}
 	});
 	$.extend($.ui.igRating, { version: "<build_number>" });
-	return $.ui.igRating;
-}));
+	return $.ui.igRating;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

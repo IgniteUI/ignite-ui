@@ -1358,5 +1358,5 @@
 		}
 	});
 
-	return $.ui.igZoombar;
-}));
+	return $.ui.igZoombar;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES
