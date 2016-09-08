@@ -151,7 +151,9 @@
 				type: "local"
             }
             });
+
             ds.dataBind();
+            });
 		```
 		*/
 		settings: {
@@ -210,7 +212,14 @@
 				}
 
 				$(window).load(function () {
+					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
+					type: "remoteUrl",
+					callback: render,
+					dataSource: url,
+					schema: oDataSchema,
+					responseDataKey : "d.results",
+					responseDataType: "jsonp",
 					});
 					ds.dataBind();
 				});
@@ -262,9 +271,12 @@
 			data: [],
 			/* type="object" this is the source of data - non normalized. Can be an array, can be reference to some JSON object, can be a DOM element for a HTML TABLE, or a function
 			```
+				var jsonSchema = new $.ig.DataSchema("json", {fields:[
 					{name: "ProductID", type: "number"},
 					{name: "Name", type: "string"},
 					{name: "ProductNumber", type: "string"},
+					{name: "Color", type: "string"},
+					{name: "StandardCost", type: "string"}],
 					searchField:"Records" });
 
 				ds = new $.ig.DataSource({type: "json", dataSource: jsonData, schema: jsonSchema});
@@ -337,7 +349,11 @@
 				$(window).load(function () {
 					ds = new $.ig.DataSource({
 						primaryKey: "CustomerID",
+						requestType: "get",
+						dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?",
+						responseDataKey: "Records",
 					});
+
 					ds.dataBind();
 				});
 			```
@@ -346,7 +362,14 @@
 			/* type="json|xml|unknown|array|function|htmlTableString|htmlTableId|htmlTableDom|htmlListDom|htmlSelectDom|invalid|remoteUrl|empty" Type of the data source
 			```
 				$(window).load(function () {
+					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
+						type: "remoteUrl",
+						callback: render,
+						dataSource: url,
+						schema: oDataSchema,
+						responseDataKey : "d.results",
+						responseDataType: "jsonp",
 					});
 					ds.dataBind();
 				});
@@ -368,9 +391,12 @@
 			type: "unknown",
 			/* type="object" a schema object that defines which fields from the data to bind to
 			```
+				var jsonSchema = new $.ig.DataSchema("json", {fields:[
 					{name: "ProductID", type: "number"},
 					{name: "Name", type: "string"},
 					{name: "ProductNumber", type: "string"},
+					{name: "Color", type: "string"},
+					{name: "StandardCost", type: "string"}],
 					searchField:"Records" });
 
 				ds = new $.ig.DataSource({
@@ -387,7 +413,11 @@
 				$(window).load(function () {
 					ds = new $.ig.DataSource({
 						primaryKey: "CustomerID",
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
 					});
+
 					ds.dataBind();
 				});
 			```
@@ -425,8 +455,16 @@
 							alert(error);
 						}
 				}
+
 				$(window).load(function () {
+					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
+						type: "remoteUrl",
+						callback: render,
+						dataSource: url,
+						schema: oDataSchema,
+						responseDataKey: "d.results",
+						responseDataType: "jsonp",
 					});
 					ds.dataBind();
 				});
@@ -454,8 +492,13 @@
 			```
 				var url = "/demos/server/proxy.php?url=http://services.odata.org/OData/OData.svc/Products?$format=json";
 				ds = new $.ig.DataSource({
+					callback:render,
+					dataSource: url,
+					localSchemaTransform: false,
 					responseDataKey: "d",
 					schema: {fields: [
+						{name : "Price"},
+						{name : "Name"},
 						{name: "Rating"}
 					]}
 				});
@@ -550,9 +593,16 @@
 			```
 				$(window).load(function () {
 					ds = new $.ig.DataSource({
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
 						paging: {
+							enabled : true,
+							pageSize:10,
+							type: "local"
 						}
 					});
+
 					ds.dataBind();
 				});
 			```
@@ -561,7 +611,13 @@
 				/* type="bool" Paging is not enabled by default
 				```
 					ds = new $.ig.DataSource({
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
 						paging: {
+							enabled : true,
+							pageSize:10,
+							type: "local"
 						}
 					});
 				```
@@ -570,9 +626,11 @@
 				/* type="remote|local" Type for the paging operation
 				```
 					jsonDs = new $.ig.DataSource( {
+						filtering: {
 							type: "local",
 							caseSensitive: true,
 							applyToAllData: true
+						},
 						dataSource: jsonData
 					}).dataBind();
 				```
@@ -583,7 +641,13 @@
 				/* type="number" number of records on each page
 				```
 					ds = new $.ig.DataSource({
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
 						paging: {
+							enabled : true,
+							pageSize:10,
+							type: "local"
 						}
 					});
 				```
@@ -625,8 +689,14 @@
 				/* type="number" current page index
 				```
 					ds = new $.ig.DataSource({
+						type: "json",
+						dataSource: adventureWorks,
 						responseDataKey: "Records",
+						schema: jsonSchema,
+						paging:
 						{
+							enabled : true,
+							pageSize:10,
 							type: "local",
 							pageIndex: 2
 						}
@@ -638,6 +708,7 @@
 				/* type="bool" Whether when a new page of data is requested we should append the new data to the existing data
 				```
 					var ds = new $.ig.DataSource({
+						dataSource: products,
 						paging: {
 							enabled: true,
 							appendPage : true
@@ -650,9 +721,11 @@
 			/* Settings related to built-in filtering functionality
 			```
 				jsonDs = new $.ig.DataSource( {
+					filtering: {
 						type: "local",
 						caseSensitive: true,
 						applyToAllData: true
+					},
 					dataSource: jsonData
 				}).dataBind();
 			```
@@ -666,9 +739,11 @@
 				/* type="bool" enables or disables case sensitive filtering on the data. Works only for local filtering
 				```
 					jsonDs = new $.ig.DataSource( {
+						filtering: {
 							type: "local",
 							caseSensitive: true,
 							applyToAllData: true
+						},
 						dataSource: jsonData
 					}).dataBind();
 				```
@@ -677,10 +752,13 @@
 				/* type="bool" if the type of paging/sorting/filtering is local and applyToAllData is true, filtering will be performed on the whole data source that's present locally, otherwise only on the current dataView. if type is remote, this setting doesn't have any effect.
 				```
 					jsonDs = new $.ig.DataSource( {
+						filtering: {
 							type: "local",
 							caseSensitive: true,
 							applyToAllData: true
+						},
 						dataSource: jsonData
+					}).dataBind();
 				```
 				*/
 				applyToAllData: true,
@@ -801,6 +879,7 @@
 					}
 
 					var ds;
+
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 						ds = new $.ig.DataSource({
@@ -857,6 +936,8 @@
 								type: "remote",
 								defaultFields: [
 									{
+										fieldName: "Price",
+										cond:"GreaterThan",
 										expr: 20
 									}
 								]
@@ -871,20 +952,29 @@
 				```
 					var url = "/demos/server/proxy.php?url=http://services.odata.org/OData/OData.svc/Products?$format=json";
 					ds = new $.ig.DataSource({
+					callback:render,
+					dataSource: url,
+					localSchemaTransform: false,
 					responseDataKey: "d",
 					filtering: {
 						expressions:[
 							{
+								fieldName: "Price",
+								cond:"GreaterThan",
 								expr: 20
 							}
 						]
 					},
 					schema: {
 						fields: [
+							{name : "Price"},
+							{name : "Name"},
 							{name: "Rating"}
+						],
 						searchField: "d"
 					}
 					});
+
 					ds.dataBind();
 				```
 				*/
@@ -900,7 +990,9 @@
 							alert(error);
 						}
 					}
+
 					var ds;
+
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 						ds = new $.ig.DataSource({
@@ -935,10 +1027,14 @@
 			```
 				$(window).load(function () {
 					ds = new $.ig.DataSource({
+						type: "json",
+						dataSource: adventureWorks,
 						sorting: {
 							type: "local",
 							caseSensitive: true
+						}
 					});
+
 					ds.dataBind();
 				});
 			```
@@ -990,7 +1086,11 @@
 				/* type="bool" If the sorting type is local and applyToAllData is true, sorting will be performed on the whole data source that's present locally, otherwise only on the current dataView. If sorting type is remote, this setting doesn't have any effect.
 				```
 					jsonDs = new $.ig.DataSource({
+						sorting: {
+							type: "local",
 							applyToAllData: true
+						},
+						dataSource: jsonData
 					}).dataBind();
 				```
 				*/
@@ -1012,6 +1112,7 @@
 							if (direction == "desc") {
 								return obj2[fields[0].fieldName] - obj1[fields[0].fieldName];
 							}
+
 							return obj1[fields[0].fieldName] - obj2[fields[0].fieldName];
 						}
 						var result = data.sort(myCompareFunc);
@@ -1067,9 +1168,11 @@
 							if (val1.Price > val2.Price) {
 								return 1;
 							}
+
 							if (val1.Price < val2.Price) {
 								return -1;
 							}
+
 							return 0;
 						}
                     }
@@ -1125,6 +1228,7 @@
 							if (a > b) {
 								return 1;
 							}
+
 							if (a < b) {
 								return -1;
 							}
@@ -1173,10 +1277,14 @@
 				```
 					$(window).load(function () {
 						ds = new $.ig.DataSource({
+							type: "json",
+							dataSource: adventureWorks,
 							sorting: {
 								type: "local",
 								caseSensitive: true
+							}
 						});
+
 						ds.dataBind();
 					});
 				```
@@ -1188,10 +1296,14 @@
 				```
 					$(window).load(function () {
 						ds = new $.ig.DataSource({
+							type: "json",
+							dataSource: adventureWorks,
 							sorting: {
 								type: "local",
 								caseSensitive: true
+							}
 						});
+
 						ds.dataBind();
 					});
 				```
@@ -1201,16 +1313,22 @@
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					var ds = new $.ig.DataSource({
+						callback: render,
 						dataSource: url,
 						schema: {
 							fields: [
+								{name: "Name"},
+								{name: "Price"},
 								{name: "Rating"}
+							],
 							searchField: "d"
 						},
+						responseDataKey: "d",
 						responseDataType: "jsonp",
 						sorting: {
 							type: "local",
 							sortUrlKey: "mySortUrlKey"
+						}
 					});
 				```
 				*/
@@ -1245,12 +1363,17 @@
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					var ds = new $.ig.DataSource({
+						callback: render,
 						dataSource: url,
 						schema: {
 							fields: [
+								{name: "Name"},
+								{name: "Price"},
 								{name: "Rating"}
+							],
 							searchField: "d"
 						},
+						responseDataKey: "d",
 						responseDataType: "jsonp",
 						sorting: {
 							type: "local",
@@ -1263,11 +1386,16 @@
 				/* type="array" a list of sorting expressions , consisting of the following keys (and their respective values): fieldName, direction and compareFunc (optional)
 				```
 					ds = new $.ig.DataSource({
+						callback: render,
+						dataSource: url,
+						localSchemaTransform: false,
 						responseDataKey: "d",
 						sorting: {
 							expressions:[
 								{
+									fieldName:"Rating",
 									dir:"asc"
+								},
 								{
 									fieldName:"Price", dir:"asc"
 								}
@@ -1526,6 +1654,7 @@
 							type: "string"
 						}]
 					});
+
 					ds.dataBind();
                 });
 			```
@@ -1590,6 +1719,7 @@
 			Use dataSource to obtain reference to $.ig.DataSource.
 			```
 				$.ig.DataSource({
+					rowAdded: function (item, dataSource) {…}
 				});
 			```
 			*/
@@ -1602,6 +1732,7 @@
 			Use dataSource to obtain reference to $.ig.DataSource.
 			```
 				$.ig.DataSource({
+					rowUpdated: function (item, dataSource) {…}
 				});
 			```
 			*/
@@ -1614,6 +1745,7 @@
 			Use dataSource to obtain reference to $.ig.DataSource.
 			```
 				$.ig.DataSource({
+					rowInserted: function (item, dataSource) {…}
 				});
 			```
 			*/
@@ -1625,6 +1757,7 @@
 			Use dataSource to obtain reference to $.ig.DataSource.
 			```
 				$.ig.DataSource({
+					rowDeleted: function (item, dataSource) {…}
 				});
 			```
 			*/
@@ -1736,6 +1869,7 @@
 			/* Sets a list of fields to the data source. If no parameter is specified, just returns the already existing list of fields
 			```
 				var ds;
+
 				var render = function (success, error) {
 					if (success) {
 						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
@@ -1776,6 +1910,7 @@
 					});
 					ds.dataBind();
 					var fields = ds.fields();
+				});
 			```
 			paramType="object" optional="true" a field has the following format: {key: 'fieldKey', dataType: 'string/number/date' }
 			returnType="object" if no parameters are specified, returns the existing list of fields
@@ -1925,6 +2060,7 @@
 					responseDataKey: "d",
 					responseDataType: "jsonp"
 				});
+
 				var data = ds.data();
 			```
 			returnType="object"
@@ -1936,6 +2072,28 @@
 			1. Before paging and filtering
 			2. After filtering before paging
 			3. After filtering and paging
+
+			```
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				var ds = new $.ig.DataSource({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+				});
+
+				ds.transformedData("priortofilteringandpaging");
+			```
 
 			returnType="object"
 			*/
@@ -1983,6 +2141,8 @@
 					responseDataKey: "d",
 					responseDataType: "jsonp"
 				});
+
+				var dataSummaries = ds.dataSummaries();
 			```
 			 * returnType="object"
 			*/
@@ -2054,6 +2214,7 @@
 						type: "local"
 					}
 				});
+
 				var myPagingSettings = {
 					enabled: true,
 					pageSize: 10,
@@ -2061,8 +2222,10 @@
 					pageIndexUrlKey: "myPageIndexUrlKey",
 					type: "local"
 				};
+
 				// Set
 				ds.pagingSettings(myPagingSettings);
+
 				// Get
 				var pagingSettings = ds.pagingSettings();
 			```
@@ -2079,12 +2242,17 @@
 			```
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 				var ds = new $.ig.DataSource({
+					callback: render,
 					dataSource: url,
 					schema: {
 						fields: [
+							{name : "Name"},
+							{name : "Price"},
 							{name: "Rating"}
+						],
 						searchField: "d"
 					},
+					responseDataKey: "d",
 					responseDataType: "jsonp"
 				});
 
@@ -2092,6 +2260,8 @@
 					type: "remote",
 					expressions: [
 					{
+						fieldName: "Name",
+						cond:"Contains",
 						expr: "Cr",
 						logic: "OR"
 					}
@@ -2099,6 +2269,7 @@
 				};
 
 				// Set
+				ds.filterSettings(myFilterSettings);
 
 				// Get
 				var filterSettings= ds.filterSettings();
@@ -2177,8 +2348,10 @@
 					responseDataKey: "d",
 					responseDataType: "jsonp"
 				});
+
 				// Set
 				ds.dataSource(url);
+
 				// Get
 				var dataSource = ds.dataSource();
 			```
@@ -2306,6 +2479,7 @@
 					Price: "40",
 					Rating: "4"
 				}, true);
+
 				ds.removeRecordByKey("CD Player2");
 			```
 			paramType="string|number" primary key of the record
@@ -2365,6 +2539,7 @@
 					Price: "40",
 					Rating: "4"
 				}, true);
+
 				ds.removeRecordByIndex(0);
 			```
 			paramType="number" index of record
@@ -2414,6 +2589,7 @@
 					},
 					updateUrl: "http://example.com/myUpdateUrl/"
 				});
+
 				ds.addRow(0, {
 					Name: "CD Player",
 					Price: "40",
@@ -2429,6 +2605,7 @@
 					Price: "40",
 					Rating: "4"
 				}, true);
+
 				ds.setCellValue(1, "Name", "DVD Player", true);
 			```
 			paramType="object" the rowId - row key (string) or index (number)
@@ -2478,6 +2655,8 @@
 					Price: "40",
 					Rating: "4"
 				}, true);
+
+
 				ds.updateRow(1, {
 					Name: "DVD Player1",
 					Price: "10",
@@ -2514,6 +2693,7 @@
 			/* adds a new row to the data source. Creates a transaction that can be committed / rolled back
 			```
 				var ds;
+
 				var render = function (success, error) {
 					if (success) {
 					ds.addRow(123, {Name : "CD Player", Price : "40", Rating : "4"}, true);
@@ -2528,16 +2708,22 @@
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
+						callback: render,
 						dataSource: url,
 						schema: {
 							fields: [
+								{name: "Name"},
+								{name: "Price"},
 								{name: "Rating"}
+							],
 							searchField: "d"
 						},
+						responseDataKey: "d",
 						responseDataType: "jsonp"
 					});
 					ds.dataBind();
 
+				});
 			```
 			paramType="object" the record key - primaryKey (string) or index (number)
 			paramType="object" the new record data.
@@ -2565,6 +2751,7 @@
 			/* adds a new row to the data source. Creates a transaction that can be committed / rolled back
 			```
 				var ds;
+
 				var render = function (success, error) {
 					if (success) {
 						ds.insertRow(123, {
@@ -2575,10 +2762,12 @@
 						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
 						resultHtml = $.ig.tmpl(template, ds.dataView());
 						$("#table").html(resultHtml);
+
 					} else {
 						alert(error);
 					}
 				}
+
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
@@ -2598,6 +2787,7 @@
 					responseDataType: "jsonp"
 				});
 				ds.dataBind();
+
 				});
 			```
 			paramType="object" the record key - primaryKey (string) or index (number)
@@ -2631,10 +2821,13 @@
 
 				var render = function (success, error) {
 					if (success) {
+
 					ds.deleteRow(0, true);
+
 						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
 						resultHtml = $.ig.tmpl(template, ds.dataView());
 						$("#table").html(resultHtml);
+
 					} else {
 						alert(error);
 					}
@@ -2803,9 +2996,11 @@
 							Rating: "4"
 						});
 						ds.commit();
+
 							var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
 							resultHtml = $.ig.tmpl(template, ds.dataView());
 							$("#table").html(resultHtml);
+
 					} else {
 						alert(error);
 					}
@@ -2829,6 +3024,7 @@
 						responseDataKey: "d",
 						responseDataType: "jsonp"
 					});
+
 					ds.dataBind();
 				});
 			```
@@ -2922,6 +3118,7 @@
 					responseDataKey: "d",
 					responseDataType: "jsonp"
 					});
+
 					ds.addRow(123, {
 						Name: "CD Player",
 						Price: "40",
@@ -2937,6 +3134,7 @@
 			/* returns a list of all transaction objects that are either pending, or have been committed in the data source.
 			```
 				var ds;
+
 				var render = function (success, error) {
 					if (success) {
 						ds.addRow(123, {
@@ -2952,6 +3150,7 @@
 						alert(error);
 					}
 				}
+
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
@@ -2971,6 +3170,7 @@
 						responseDataType: "jsonp"
 					});
 					ds.dataBind();
+
 				});
 			```
 			returnType="array"
@@ -3455,6 +3655,7 @@
 					},
 					updateUrl: "http://example.com/myUpdateUrl/"
 				});
+
 				ds.addRow(0, {
 					Name: "CD Player",
 					Price: "40",
@@ -3596,6 +3797,19 @@
 			4. now normalize/transform the data, if a schema is supplied. This inplies any additional data type  conversion
 			5. next, if OpType is Local, apply paging, sorting, and/or filtering to the data, and store the result in this._dataView
 			6. fire the databound event
+
+			```
+				var jsonSchema = new $.ig.DataSchema("json", {fields:[
+					{name: "ProductID", type: "number"},
+					{name: "Name", type: "string"},
+					{name: "ProductNumber", type: "string"},
+					{name: "Color", type: "string"},
+					{name: "StandardCost", type: "string"}],
+					searchField:"Records" });
+
+				ds = new $.ig.DataSource({type: "json", dataSource: jsonData, schema: jsonSchema});
+				ds.dataBind();
+			```
 
 			paramType="string" optional="true" callback function
 			paramType="object" optional="true" callee object on which the callback will be executed. If none is specified, will assume global execution context
@@ -3895,6 +4109,7 @@
 					responseDataKey: "d",
 					responseDataType: "jsonp"
 				});
+
 				var mySummariesSettings = {
 					type: "remote",
 					columnSettings: [{
@@ -3908,9 +4123,12 @@
 					}],
 					summariesResponseKey: "d"
 				};
+
 				// Set
 				ds.summariesSettings(mySummariesSettings);
+
 				// Get
+				var summariesSettings = ds.summariesSettings();
 			```
 			paramType="string" optional="true" response key to take summary data(for example "Metadata.Summaries")
 			paramType="object" optional="true" data source object - usually contains information about data records and metadata(holds info about summaries)
@@ -4867,6 +5085,7 @@
 						applyToAllData: true
 					}
 				});
+
 				ds.dataBind();
 				//Get
 				var filteredData = ds.filteredData();
@@ -5035,6 +5254,24 @@
 			example: [{fieldName : "firstName"}, {fieldName : "lastName"}]
 			example 2: [{fieldIndex : 1} , {fieldIndex : 2}]
 
+			```
+				var ds = new $.ig.DataSource({
+					schema: {
+						fields:[
+							{ name : "col1" },
+							{
+								name : "col2",
+								type: "number"
+							}
+						]
+					},
+					sorting: { type: "local"},
+					dataSource: $("#t1")[0]
+				}).dataBind();
+
+				ds.sort([{fieldName : "col2"}], "desc", false);
+			```
+
 			paramType="object" an array of fields object definitions
 			paramType="string" asc / desc direction
 			*/
@@ -5202,6 +5439,17 @@
 			expr is the filter expression text , such as "abc", or a regular expression such as *test*
 			cond is the filtering condition such as startsWith, endsWith, contains, equals, doesNotEqual, doesNotContain
 			if expr is detected to be a regular expression, the "cond" part is skipped
+
+			```
+				ds = new $.ig.DataSource({
+					type: "json",
+					dataSource: adventureWorks,
+					schema: jsonSchema
+				});
+				ds.dataBind();
+
+				ds.filter([{fieldName : "Color", expr: "Red", cond: "Equals"}], "AND", true);
+			```
 
 			paramType="object" a list of field expression definitions
 			paramType="AND|OR" boolean logic. Accepted values are AND and OR.
@@ -5915,10 +6163,14 @@
 			match the number of records that exists on the client
 			```
 				ds = new $.ig.DataSource({
+					callback:render,
+					dataSource: "/demos/server/server.php",
 					responseDataKey: "records",
 				}).dataBind();
+
 				//Get
 				var count = ds.totalRecordsCount();
+
 				//Set
 				ds.totalRecordsCount(42);
 			```
@@ -5984,6 +6236,7 @@
 					ds.dataBind();
 					// Get
 					var hasTotalRecords = ds.hasTotalRecordsCount();
+
 					// Set
 					ds.hasTotalRecordsCount(true);
 				});
@@ -5999,6 +6252,7 @@
 			/* returns metadata object for the specified key
 			```
 				var ds;
+
 				var render = function (success, error) {
 					if (success) {
 						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
@@ -6008,6 +6262,7 @@
 						alert(error);
 					}
 				}
+
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
@@ -6028,7 +6283,9 @@
 						primaryKey: "Name"
 					});
 					ds.dataBind();
+
 					var metadata = ds.metadata();
+
 				});
 			```
 			paramType="string" Primary key of the record
@@ -6047,8 +6304,11 @@
 			/* returns the total number of records in the local data source
 			```
 				ds = new $.ig.DataSource({
+					callback:render,
+					dataSource: "/demos/server/server.php",
 					responseDataKey: "records",
 				}).dataBind();
+
 				var count = ds.totalLocalRecordsCount();
 			```
 			returnType="number" the number of records that are bound / exist locally
@@ -6065,9 +6325,15 @@
 			/* returns the total number of pages
 			```
 				ds = new $.ig.DataSource({
+                    type: "json",
+                    dataSource: adventureWorks,
                     paging: {
+                        enabled : true,
+                        pageSize:10,
+                        type: "local"
                     }
                 });
+
                 var count = ds.pageCount();
 			```
 			returnType="number" total number fo pages
@@ -6087,11 +6353,18 @@
 			/* gets /sets the current page index. If an index is passed as a parameter, the data source is re-bound.
 			```
 				ds = new $.ig.DataSource({
+                    type: "json",
+                    dataSource: adventureWorks,
                     paging: {
+                        enabled : true,
+                        pageSize:10,
+                        type: "local"
                     }
                 });
+
                 //Get
                 var currentIndex = ds.pageIndex();
+
                 //Set
                 ds.pageIndex(5);
 			```
@@ -6130,9 +6403,15 @@
 			/* sets the page index to be equal to the previous page index and rebinds the data source
 			```
 				ds = new $.ig.DataSource({
+                    type: "json",
+                    dataSource: adventureWorks,
                     paging: {
+                        enabled : true,
+                        pageSize:10,
+                        type: "local"
                     }
                 });
+
                 ds.prevPage();
 			```
 			*/
@@ -6143,9 +6422,15 @@
 			/* sets the page index to be equal to the next page index and rebinds the data source
 			```
 				ds = new $.ig.DataSource({
+					type: "json",
+					dataSource: adventureWorks,
 					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
 					}
 				});
+
 				ds.nextPage();
 			```
 			*/
@@ -6159,11 +6444,18 @@
 			/* gets /sets the page size and rebinds the data source if a parameter is specified. If no parameter is passed, returns the current page size
 			```
 				ds = new $.ig.DataSource({
+                    type: "json",
+                    dataSource: adventureWorks,
                     paging: {
+                        enabled : true,
+                        pageSize:10,
+                        type: "local"
                     }
                 });
+
                 //Get
                 var size = ds.pageSize();
+
                 //Set
                 ds.pageSize(25);
 			```
@@ -6198,6 +6490,7 @@
 						type: "local"
 					}
 				});
+
 				ds.pageSizeDirty();
 			```
 			paramType="object" excluded="true"
@@ -6219,6 +6512,7 @@
 						type: "local"
 					}
 				});
+
 				var recordsForPage = ds.recordsForPage(2);
 			```
 			paramType="number" optional="false" the page index for which records will be returned
@@ -6333,6 +6627,7 @@
 				});
 
 				ds.dataBind();
+
 				var groupedData = ds.groupByData();
 			```
 			returnType="array" array of records
@@ -6349,6 +6644,7 @@
 						defaultCollapseState: true
 					}
 				});
+
 				ds.dataBind();
 				//Get
 				var visibleGroupByData = ds.visibleGroupByData();
@@ -6570,12 +6866,14 @@
 					sorting: {
 						expressions:[
 							{
+								fieldName: "Name",
 								dir: "desc"
 							}
 					]}
 				});
 
 				ds.dataBind();
+
 				var sortingExprArray = ds.settings.sorting.expressions;
 				var isApplied = ds.isGroupByApplied(sortingExprArray);
 			```
