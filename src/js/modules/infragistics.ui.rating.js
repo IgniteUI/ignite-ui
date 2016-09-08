@@ -47,7 +47,7 @@
 	$.widget("ui.igRating", {
 		options: {
 			/* type="bool" Gets or sets vertical or horizontal orientation of votes.
-				Change of that option is not supported after igRating was created. 
+				Change of that option is not supported after igRating was created.
 				```
 				$(".selector").igRating({
 					vertical : true
@@ -55,10 +55,10 @@
 
 				//Get
 				var isVertical = $(".selector").igRating("option", "vertical");
-				```	
+				```
 			*/
 			vertical: false,
-			/* type="number" Gets or sets value (selected votes or percent).  
+			/* type="number" Gets or sets value (selected votes or percent).
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -166,13 +166,13 @@
 			valueAsPercent: true,
 			/* type="bool" Gets sets ability to get focus. Change of that option is not supported after igRating was created.
 				Value true: can get focus and process key events.
-				Value false: cannot get focus. 
+				Value false: cannot get focus.
 				```
 				//Initialize
 				$(".selector").igRating({
 					focusable : false
 				});
-				
+
 				//Get
 				var focusable = $(".selector").igRating("option", "focusable");
 				```
@@ -235,7 +235,7 @@
 			roundedDecimalPlaces: 3,
 			/* type="string" Gets or sets selector for css classes.
 				That option allows replacing all default css styles by custom values.
-				Application should provide css classes for all members defined in the css options with "theme" selector. 
+				Application should provide css classes for all members defined in the css options with "theme" selector.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -247,7 +247,7 @@
 
 				//Set
 				$(".selector").igRating("option", "theme", "redmond");
-				
+
 				//CSS theme definition
 				.redmond .ui-igrating { ... }
 				.redmond .ui-igrating-active { ... }
@@ -300,13 +300,13 @@
 
 				//Set
 				$(".selector").igRating("option", "cssVotes", customCss);
-				
+
 				customCss = [
 					["selected0", "selected1", "selected2"],
 					["normal0", "normal1", "normal2"],
 					["hovered0", "hovered1", "hovered2"]
 				];
-				
+
 				<style type="text/css">
 				.normal0 { ... }
 				.normal1 { ... }
@@ -350,13 +350,13 @@
 				$(document).delegate(".selector", "igratinghoverchange", function (evt, ui) {
 					//return the triggered event
 					evt;
-					
-					//the value before the igRating was hovered 
+
+					//the value before the igRating was hovered
 					ui.oldValue;
 					//the current hover value
 					ui.value;
-				});  
-				
+				});
+
 				//Initialize
 				$(".selector").igRating({
 					hoverChange : function(evt, ui) {...}
@@ -373,17 +373,17 @@
 				$(document).delegate(".selector", "igratingvaluechange", function (evt, ui) {
 					//return the triggered event
 					evt;
-					
+
 					//gets old value of the igRating widget
 					ui.oldValue;
 					//gets the current selected value of the igRating widget
 					ui.value;
-				});  
-				
+				});
+
 				//Initialize
 				$(".selector").igRating({
 					valueChange : function(evt, ui) {...}
-				});   
+				});
 
 				```
 				Function takes arguments evt and ui.
@@ -710,7 +710,7 @@
 				```
 				//get igValidator widget that is used by the igRating
 				var validator = $(".selector").igRating("validator");
-				
+
 				//destroy the igValidator widget that is used by the igRating
 				$(".selector").igRating("validator", "destroy");
 				```
