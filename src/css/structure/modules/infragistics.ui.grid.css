@@ -208,7 +208,7 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
     width: -moz-calc(100% - 34px)!important; /** FF 4-15  **/
     width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/ 
 }
-/*Bug 208811, 08.03.2016 S.D., Group header’s height is twice as normal header height. */
+/*Bug 208811, 08.03.2016 S.D., Group headerï¿½s height is twice as normal header height. */
 .ui-iggrid-multiheader-cell.ui-iggrid-headercell-featureenabled .ui-iggrid-headertext{
     width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/
     width: -moz-calc(100% - 34px)!important; /** FF 4-15  **/
@@ -1266,7 +1266,7 @@ right: 3px;
 	margin-top:-1px;
 }
 /* not supported in IE7 and IE6
-.ui-iggrid-hiding-indicator:after { content:"«"; }
+.ui-iggrid-hiding-indicator:after { content:"ï¿½"; }
 */
 
 
@@ -1865,18 +1865,22 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
 	/* It is used border-right/left as borderline between fixed/unfixed area. It is set box-sizing - to border-box. 
 		Borderline is from inner side of the box - in this way border-width is not included in outer width of the container. 
 		NOTE: the container(outer fixed container) should have width set */
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+
+    /*
+        Bug:22614 09.08.2016 M.Popov
+        NOTE: Fixed by removing the border-box rule
+    */
 	border-right: 2px solid #555555 !important;
 }
 .ui-iggrid-fixedcontainer-right {
 	/* It is used border-right/left as borderline between fixed/unfixed area. It is set box-sizing - to border-box. 
 		Borderline is from inner side of the box - in this way border-width is not included in outer width of the container. 
 		NOTE: the container(outer fixed container) should have width set */
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+
+    /*
+        Bug:22614 09.08.2016 M.Popov
+        NOTE: Fixed by removing the border-box rule
+    */
 	border-left: 2px solid #555555 !important;
 }
 .ui-iggrid-fixcolumn-headerbuttoncontainer 
