@@ -115,45 +115,45 @@
 				} else {
 					alert(error);
 				}
-            }
+			}
 
-            var ds;
+			var ds;
 
-            $(window).load(function () {
-            var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-            ds = new $.ig.DataSource({
-            callback: render,
-            dataSource: url,
-            schema: {
-            fields: [{
-				name: "Name"
-            }, {
-				name: "Price"
-            }, {
-				name: "Rating"
-            }],
-				searchField: "d"
-            },
-            responseDataKey: "d",
-            responseDataType: "jsonp",
-            filtering: {
-            type: "remote",
-            filterExprUrlKey: "filter",
-            expressions: [{
-				fieldName: "Name",
-				cond: "Contains",
-				expr: "Cr"
-            }]
-            },
-            paging: {
+			$(window).load(function () {
+			var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+			ds = new $.ig.DataSource({
+			callback: render,
+			dataSource: url,
+			schema: {
+				fields: [{
+					name: "Name"
+				}, {
+					name: "Price"
+				}, {
+					name: "Rating"
+				}],
+					searchField: "d"
+			},
+			responseDataKey: "d",
+			responseDataType: "jsonp",
+			filtering: {
+				type: "remote",
+				filterExprUrlKey: "filter",
+				expressions: [{
+					fieldName: "Name",
+					cond: "Contains",
+					expr: "Cr"
+				}]
+			},
+			paging: {
 				enabled: true,
 				pageSize: 3,
 				type: "local"
-            }
-            });
+			}
+			});
 
-            ds.dataBind();
-            });
+			ds.dataBind();
+			});
 		```
 		*/
 		settings: {
@@ -161,7 +161,7 @@
 			```
 				var ds = $.ig.DataSource({
 					id: "myId"
-                });
+				});
 			```
 			*/
 			id: "ds",
@@ -175,9 +175,9 @@
 					} else {
 						alert(error);
 					}
-                }
-                var ds;
-                $(window).load(function () {
+				}
+				var ds;
+				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
 						callback: render,
@@ -197,7 +197,7 @@
 						outputResultsName: "myOutputResultsName"
 					});
 					ds.dataBind();
-                });
+				});
 			```
 			*/
 			outputResultsName: null,
@@ -214,12 +214,12 @@
 				$(window).load(function () {
 					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
-					type: "remoteUrl",
-					callback: render,
-					dataSource: url,
-					schema: oDataSchema,
-					responseDataKey : "d.results",
-					responseDataType: "jsonp",
+						type: "remoteUrl",
+						callback: render,
+						dataSource: url,
+						schema: oDataSchema,
+						responseDataKey : "d.results",
+						responseDataType: "jsonp",
 					});
 					ds.dataBind();
 				});
@@ -233,23 +233,23 @@
 					greet: function () {
 						alert("Hi, I'm " + this.name);
 					}
-                };
+				};
 
-                var products = [];
-                products[0] = {
+				var products = [];
+				products[0] = {
 					"ProductID": 1,
 					"Name": "Adjustable Race",
 					"ProductNumber": "AR-5381"
-                };
-                products[1] = {
+				};
+				products[1] = {
 					"ProductID": 2,
 					"Name": "Bearing Ball",
 					"ProductNumber": "BA-8327"
-                };
+				};
 
-                var ds;
+				var ds;
 
-                $(document).ready(function () {
+				$(document).ready(function () {
 					ds = new $.ig.DataSource({
 						dataSource: products,
 						callee: Bob,
@@ -257,7 +257,7 @@
 					});
 
 					ds.dataBind();
-                });
+				});
 			```
 			*/
 			callee: null,
@@ -288,28 +288,28 @@
 			```
 				var myDataBinding = function () {
 					alert("myDataBinding");
-                }
+				}
 
-                var products = [];
-                products[0] = {
+				var products = [];
+				products[0] = {
 					"ProductID": 1,
 					"Name": "Adjustable Race",
 					"ProductNumber": "AR-5381"
-                };
-                products[1] = {
+				};
+				products[1] = {
 					"ProductID": 2,
 					"Name": "Bearing Ball",
 					"ProductNumber": "BA-8327"
-                };
+				};
 
-                var ds;
+				var ds;
 
-                $(window).ready(function () {
+				$(window).ready(function () {
 					ds = new $.ig.DataSource({
 						dataBinding: myDataBinding,
 						dataSource: products
 					});
-                });
+				});
 			```
 			*/
 			dataBinding: null,
@@ -317,30 +317,30 @@
 			```
 				var myDataBound = function () {
 					alert("myDataBound");
-                }
+				}
 
-                var products = [];
-                products[0] = {
+				var products = [];
+				products[0] = {
 					"ProductID": 1,
 					"Name": "Adjustable Race",
 					"ProductNumber": "AR-5381"
-                };
-                products[1] = {
+				};
+				products[1] = {
 					"ProductID": 2,
 					"Name": "Bearing Ball",
 					"ProductNumber": "BA-8327"
-                };
+				};
 
-                var ds;
+				var ds;
 
-                $(window).ready(function () {
+				$(window).ready(function () {
 					ds = new $.ig.DataSource({
 						dataBound: myDataBound
 					});
 
 					ds.dataBind();
 
-                });
+				});
 			```
 			*/
 			dataBound: null,
@@ -449,11 +449,11 @@
 			type="json|xml|html|script|jsonp|text" Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType
 			```
 				var render = function (success, error) {
-						if (success) {
-							alert("success");
-						} else {
-							alert(error);
-						}
+					if (success) {
+						alert("success");
+					} else {
+						alert(error);
+					}
 				}
 
 				$(window).load(function () {
@@ -484,7 +484,7 @@
 					dataSource: adventureWorks,
 					responseDataKey: "Records",
 					responseContentType: "application/x-www-form-urlencoded; charset=UTF8;"
-                 });
+				});
 			```
 			*/
 			responseContentType: null,
@@ -517,14 +517,14 @@
 					} else {
 						alert(error);
 					}
-                }
+				}
 
-                var myUrlParamsEncoding = function (item, params) {
+				var myUrlParamsEncoding = function (item, params) {
 					alert("myUrlParamsEncoding");
-                }
+				}
 
-                var ds;
-                $(window).load(function () {
+				var ds;
+				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
 						callback: render,
@@ -544,7 +544,7 @@
 						urlParamsEncoding: myUrlParamsEncoding
 					});
 					ds.dataBind();
-                });
+				});
 			```
 			*/
 			urlParamsEncoding: null,
@@ -558,14 +558,14 @@
 					} else {
 						alert(error);
 					}
-                }
+				}
 
-                var myUrlParamsEncoded = function (item, params) {
+				var myUrlParamsEncoded = function (item, params) {
 					alert("myUrlParamsEncoded");
-                }
+				}
 
-                var ds;
-                $(window).load(function () {
+				var ds;
+				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
 						callback: render,
@@ -585,7 +585,7 @@
 						urlParamsEncoded: myUrlParamsEncoded
 					});
 					ds.dataBind();
-                });
+				});
 			```
 			*/
 			urlParamsEncoded: null,
@@ -682,7 +682,7 @@
 							pageIndexUrlKey: "myPageIndexUrlKey",
 							type: "local"
 						}
-                    });
+					});
 				```
 				*/
 				pageIndexUrlKey: null,
@@ -766,10 +766,10 @@
 				```
 					var ds;
 
-                    var render = function (success, error) {
+					var render = function (success, error) {
 						if (success) {
-						var expr = "Cr";
-						cond = "startsWith";
+							var expr = "Cr";
+							cond = "startsWith";
 
 							ds.filter([{
 								fieldName: "Name",
@@ -783,16 +783,16 @@
 						} else {
 							alert(error);
 						}
-                    }
+					}
 
 
-                    var myCustomFunc = function (fieldExpression, data) {
+					var myCustomFunc = function (fieldExpression, data) {
 						var result = [];
 						result[0] = data[0];
 						return result;
-                    }
+					}
 
-                    $(window).load(function () {
+					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 						ds = new $.ig.DataSource({
 							callback: render,
@@ -816,7 +816,7 @@
 						});
 						ds.dataBind();
 
-                    });
+					});
 				```
 				*/
 				customFunc: null,
@@ -830,11 +830,11 @@
 						} else {
 							alert(error);
 						}
-                    }
+					}
 
-                    var ds;
+					var ds;
 
-                    $(window).load(function () {
+					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 						ds = new $.ig.DataSource({
 							callback: render,
@@ -862,7 +862,7 @@
 							}
 						});
 						ds.dataBind();
-                    });
+					});
 				```
 				*/
 				filterExprUrlKey: null,
@@ -934,13 +934,11 @@
 							responseDataType: "jsonp",
 							filtering: {
 								type: "remote",
-								defaultFields: [
-									{
-										fieldName: "Price",
-										cond:"GreaterThan",
-										expr: 20
-									}
-								]
+								defaultFields: [{
+									fieldName: "Price",
+									cond:"GreaterThan",
+									expr: 20
+								}]
 							}
 						});
 						ds.dataBind();
@@ -952,27 +950,27 @@
 				```
 					var url = "/demos/server/proxy.php?url=http://services.odata.org/OData/OData.svc/Products?$format=json";
 					ds = new $.ig.DataSource({
-					callback:render,
-					dataSource: url,
-					localSchemaTransform: false,
-					responseDataKey: "d",
-					filtering: {
-						expressions:[
-							{
-								fieldName: "Price",
-								cond:"GreaterThan",
-								expr: 20
-							}
-						]
-					},
-					schema: {
-						fields: [
-							{name : "Price"},
-							{name : "Name"},
-							{name: "Rating"}
-						],
-						searchField: "d"
-					}
+						callback:render,
+						dataSource: url,
+						localSchemaTransform: false,
+						responseDataKey: "d",
+						filtering: {
+							expressions:[
+								{
+									fieldName: "Price",
+									cond:"GreaterThan",
+									expr: 20
+								}
+							]
+						},
+						schema: {
+							fields: [
+								{name : "Price"},
+								{name : "Name"},
+								{name: "Rating"}
+							],
+							searchField: "d"
+						}
 					});
 
 					ds.dataBind();
@@ -1105,9 +1103,9 @@
 						} else {
 							alert(error);
 						}
-                    }
+					}
 
-                    var myCustomFunc = function (data, fields, direction) {
+					var myCustomFunc = function (data, fields, direction) {
 						function myCompareFunc(obj1, obj2) {
 							if (direction == "desc") {
 								return obj2[fields[0].fieldName] - obj1[fields[0].fieldName];
@@ -1117,10 +1115,10 @@
 						}
 						var result = data.sort(myCompareFunc);
 						return result;
-                    }
+					}
 
-                    var ds;
-                    $(window).load(function () {
+					var ds;
+					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 						ds = new $.ig.DataSource({
 							callback: render,
@@ -1147,7 +1145,7 @@
 							}
 						});
 						ds.dataBind();
-                    });
+					});
 				```
 				*/
 				customFunc: null,
@@ -1161,9 +1159,9 @@
 						} else {
 							alert(error);
 						}
-                    }
+					}
 
-                    var myCompareFunc = function (fields, schema, reverse, convertf) {
+					var myCompareFunc = function (fields, schema, reverse, convertf) {
 						return function (val1, val2) {
 							if (val1.Price > val2.Price) {
 								return 1;
@@ -1175,10 +1173,10 @@
 
 							return 0;
 						}
-                    }
+					}
 
-                    var ds;
-                    $(window).load(function () {
+					var ds;
+					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 						ds = new $.ig.DataSource({
 							callback: render,
@@ -1204,7 +1202,7 @@
 							}
 						});
 						ds.dataBind();
-                    });
+					});
 				```
 				*/
 				compareFunc: null,
@@ -1218,9 +1216,9 @@
 						} else {
 							alert(error);
 						}
-                    }
+					}
 
-                    var myCompareFunc = function (fields, schema, reverse, convertf) {
+					var myCompareFunc = function (fields, schema, reverse, convertf) {
 						return function (obj1, obj2) {
 							a = convertf(obj1);
 							b = convertf(obj2);
@@ -1235,14 +1233,14 @@
 
 							return 0;
 						}
-                    }
+					}
 
-                    var myCustomConvertFunc = function (obj) {
+				var myCustomConvertFunc = function (obj) {
 						return obj.Price;
-                    }
+					}
 
-                    var ds;
-                    $(window).load(function () {
+					var ds;
+					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 						ds = new $.ig.DataSource({
 							callback: render,
@@ -1269,7 +1267,7 @@
 							}
 						});
 						ds.dataBind();
-                    });
+					});
 				```
 				*/
 				customConvertFunc: null,
@@ -1509,7 +1507,7 @@
 				/* type="string" Url key for retrieving data from response - used only when summaries are remote
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-                    var ds = new $.ig.DataSource({
+					var ds = new $.ig.DataSource({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1527,14 +1525,14 @@
 						summaries: {
 							summaryExprUrlKey: "mySummaries"
 						}
-                    });
+					});
 				```
 				*/
 				summaryExprUrlKey: "summaries",
 				/* type="string" Key for retrieving data from the summaries response - used only when summaries are remote
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-                    var ds = new $.ig.DataSource({
+					var ds = new $.ig.DataSource({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1552,14 +1550,14 @@
 						summaries: {
 							summariesResponseKey: "d"
 						}
-                    });
+					});
 				```
 				*/
 				summariesResponseKey: "summaries",
 				/* type="priortofilteringandpaging|afterfilteringbeforepaging|afterfilteringandpaging" Determines when the summary values are calculated
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-                    var ds = new $.ig.DataSource({
+					var ds = new $.ig.DataSource({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1578,7 +1576,7 @@
 							summaryExecution: "priortofilteringandpaging"
 						}
 
-                    });
+					});
 				```
 				priortofilteringandpaging type="string"
 				afterfilteringbeforepaging type="string"
@@ -1588,7 +1586,7 @@
 				/* type="array" a list of column settings that specifies custom summaries options per column basis
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-                    var ds = new $.ig.DataSource({
+					var ds = new $.ig.DataSource({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1615,11 +1613,11 @@
 							}]
 						}
 
-                    });
+					});
 				```
 				*/
 				columnSettings: [
-				/* {key: '', summaryOperands: []}*/
+					/* {key: '', summaryOperands: []}*/
 				]
 			},
 			/* type="array" *** IMPORTANT DEPRECATED ***
@@ -1627,19 +1625,19 @@
 			Field objects description: {name, [type], [xpath]}
 			```
 				var products = [];
-                products[0] = {
+				products[0] = {
 					"ProductID": 1,
 					"Name": "Adjustable Race",
 					"ProductNumber": "AR-5381"
-                };
-                products[1] = {
+				};
+				products[1] = {
 					"ProductID": 2,
 					"Name": "Bearing Ball",
 					"ProductNumber": "BA-8327"
-                };
+				};
 
-                var ds;
-                $(window).ready(function () {
+				var ds;
+				$(window).ready(function () {
 
 					ds = new $.ig.DataSource({
 						dataSource: products,
@@ -1656,7 +1654,7 @@
 					});
 
 					ds.dataBind();
-                });
+				});
 			```
 			*/
 			fields: [],
@@ -1684,7 +1682,7 @@
 			```
 				var ds = new $.ig.DataSource({
 					autoCommit: true
-                });
+				});
 			```
 			*/
 			autoCommit: false,
@@ -1883,21 +1881,21 @@
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
-					callback: render,
-					dataSource: url,
-					schema: {
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
 						fields: [{
-							name: "Name"
-						}, {
-							name: "Price"
-						}, {
-							name: "Rating"
-						}],
-						searchField: "d"
-					},
-					responseDataKey: "d",
-					responseDataType: "jsonp",
-					fields: [{
 							key: "Name",
 							dataType: "string"
 						}, {
@@ -1906,7 +1904,7 @@
 						}, {
 							key: "Rating",
 							dataType: "number"
-					}]
+						}]
 					});
 					ds.dataBind();
 					var fields = ds.fields();
@@ -2771,21 +2769,21 @@
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
 					ds = new $.ig.DataSource({
-					callback: render,
-					dataSource: url,
-					schema: {
-						fields: [{
-							name: "Name"
-						}, {
-							name: "Price"
-						}, {
-							name: "Rating"
-						}],
-						searchField: "d"
-					},
-					responseDataKey: "d",
-					responseDataType: "jsonp"
-				});
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp"
+					});
 				ds.dataBind();
 
 				});
@@ -3607,13 +3605,13 @@
 				},
 				responseDataKey: "d",
 				responseDataType: "jsonp"
-            });
-            ds.addRow(123, {
-            Name: "CD Player",
-            Price: "40",
-            Rating: "4"
-            });
-            var transactionsAsString = ds.transactionsAsString();
+			});
+			ds.addRow(123, {
+			Name: "CD Player",
+			Price: "40",
+			Rating: "4"
+			});
+			var transactionsAsString = ds.transactionsAsString();
 			```
 			returnType="string"
 			*/
@@ -6325,16 +6323,16 @@
 			/* returns the total number of pages
 			```
 				ds = new $.ig.DataSource({
-                    type: "json",
-                    dataSource: adventureWorks,
-                    paging: {
-                        enabled : true,
-                        pageSize:10,
-                        type: "local"
-                    }
-                });
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
 
-                var count = ds.pageCount();
+				var count = ds.pageCount();
 			```
 			returnType="number" total number fo pages
 			*/
@@ -6353,20 +6351,20 @@
 			/* gets /sets the current page index. If an index is passed as a parameter, the data source is re-bound.
 			```
 				ds = new $.ig.DataSource({
-                    type: "json",
-                    dataSource: adventureWorks,
-                    paging: {
-                        enabled : true,
-                        pageSize:10,
-                        type: "local"
-                    }
-                });
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
 
-                //Get
-                var currentIndex = ds.pageIndex();
+				//Get
+				var currentIndex = ds.pageIndex();
 
-                //Set
-                ds.pageIndex(5);
+				//Set
+				ds.pageIndex(5);
 			```
 			paramType="number" optional="true" the page index. If none is specified, returns the current page index.
 			returnType="number" the current page index
@@ -6403,16 +6401,16 @@
 			/* sets the page index to be equal to the previous page index and rebinds the data source
 			```
 				ds = new $.ig.DataSource({
-                    type: "json",
-                    dataSource: adventureWorks,
-                    paging: {
-                        enabled : true,
-                        pageSize:10,
-                        type: "local"
-                    }
-                });
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
 
-                ds.prevPage();
+				ds.prevPage();
 			```
 			*/
 			this.pageIndex(this.pageIndex() === 0 ? 0 : this.pageIndex() - 1);
@@ -6444,20 +6442,20 @@
 			/* gets /sets the page size and rebinds the data source if a parameter is specified. If no parameter is passed, returns the current page size
 			```
 				ds = new $.ig.DataSource({
-                    type: "json",
-                    dataSource: adventureWorks,
-                    paging: {
-                        enabled : true,
-                        pageSize:10,
-                        type: "local"
-                    }
-                });
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
 
-                //Get
-                var size = ds.pageSize();
+				//Get
+				var size = ds.pageSize();
 
-                //Set
-                ds.pageSize(25);
+				//Set
+				ds.pageSize(25);
 			```
 			paramType="number" optional="true" the page size.
 			*/
