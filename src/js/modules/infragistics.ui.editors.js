@@ -9888,11 +9888,11 @@
 		value: function (newValue) {
 			/* Gets/Sets Current checked state/Value of the igCheckboxEditor that will be submitted by the HTML form.
 				1. If the 'value' option IS NOT defined, then 'value' method will match the checked state of the editor.
-				This is a good option when the checkbox is intended to operate as a Boolean editor.
+				This is a good option when the checkbox is intended to operate as a Boolean editor. In that case the return type is bool.
 				2. If the 'value' option IS defined, then 'value' method will return the 'value' option,
 				the one that is going to be submitted by the HTML form to the server.
 				To get checked state regardless of the 'value' option, use $("checkBox").igCheckboxEditor("option", "checked");
-				returnType="boolean|string" Current checked state or the value of the igCheckboxEditor that will be submitted by the HTML form.
+				returnType="string" Current checked state(bool) or the value(string) of the igCheckboxEditor that will be submitted by the HTML form.
 			*/
 			if (newValue !== undefined) {
 				if (this._inputValue === undefined) {
