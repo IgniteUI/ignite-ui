@@ -3546,7 +3546,10 @@
 			container = args.owner.container().find("[data-scroll]").eq(0);
 		}
 		container.igScroll({ modifyDOM: false });
-		container.data("igScroll")._bKeyboardNavigation = false;
+		if (container.data("igScroll") !== null && container.data("igScroll") !== undefined) {
+			/* Set _bKeyboardNavigation only if the control has igScroll initialized */
+			container.data("igScroll")._bKeyboardNavigation = false;
+		}
 	});
 	return $.ui.igScroll;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
