@@ -58,7 +58,7 @@
 				```
 			*/
 			vertical: false,
-			/* type="number" Gets or sets value (selected votes or percent).
+			/* type="number|string" Gets or sets value (selected votes or percent). If the value is of type string, it should be suitable for parsing to number. According to [valueAsPercent](ui.igrating#options:valueAsPercent) options the value is used as number of selected votes or as a percent of the votes.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -73,7 +73,7 @@
 				```
 			*/
 			value: null,
-			/* type="number" Gets or sets value-hover (hovered votes or percent of hovered votes). Default is same as value.
+			/* type="number|string" Gets or sets value-hover (hovered votes or percent of hovered votes). The default is same as value. If the value is of type string, it should be suitable for parsing to number. According to [valueAsPercent](ui.igrating#options:valueAsPercent) options the valueHover is used as number of hovered votes or as a percent of the hovered votes.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -220,7 +220,7 @@
 				If valueAsPercent is enabled and roundedDecimalPlaces is set to 0, then 1 is used.
 				If it is larger than 15, then 15 is used.
 				```
-				 //Initialize
+				//Initialize
 				$(".selector").igRating({
 					roundedDecimalPlaces : 2
 				});
@@ -261,7 +261,7 @@
 			*/
 			theme: null,
 			/* type="object" Gets or sets object which contains options supported by igValidator.
-				Note that for onblur validation depends on the "focusable" option.
+				Note that for onblur validation depends on the [focusable](ui.igrating#options:focusable) option.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -286,7 +286,7 @@
 				Item at index [2] on second level is used for css class of vote in hover state.
 				Examples:
 				{ 1: { 0: "normalCss", 1: "selectedCss", 2: "hoverCss"} }
-				will customize only second vote with normalCss for normal state, hoverCss for hover state and selectedCss for selected state.
+				will customize only second vote with [normalCss](ui.igrating#theming:ui-igrating ui-state-default ui-widget-content) for normal state, [hoverCss](ui.igrating#theming:ui-igrating-hover ui-state-hover) for hover state and [selectedCss](ui.igrating#theming:ui-igrating-voteselected) for selected state.
 				[[null, 's1', 'h1'], [null, 's2', 'h2'], [null, 's3', 'h3']]
 				will customize selected and hover states for first 3 votes with classes h# and s#.
 				```
@@ -706,7 +706,7 @@
 		},
 		validator: function (destroy) {
 
-			/* Gets reference to igValidator used by igRating.
+			/* Gets reference to [igValidator](ui.igvalidator) used by igRating.
 				```
 				//get igValidator widget that is used by the igRating
 				var validator = $(".selector").igRating("validator");
