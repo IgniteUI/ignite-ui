@@ -49,130 +49,1526 @@
 		},
 
 		options: {
-			/* type="array" Get or set a list of video sources to choose from. Best coded/format is automatically detected by the control. Supported types are depending on the browser and could be one of the following mov, mp4, webm, ogg. */
+			/* type="array" Get or set a list of video sources to choose from. Best coded/format is automatically detected by the control. Supported types are depending on the browser and could be one of the following mov, mp4, webm, ogg.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					sources: [
+						"videos/QuinceIntro_1.h264.mp4",
+						"videos/QuinceIntro_1.webmvp8.webm",
+						"videos/QuinceIntro_1.theora.ogv"
+					]
+				});
+
+				//Get
+				var sources = $(".selector").igVideoPlayer("option", "sources");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "sources", ["videos/QuinceIntro_1.h264.mp4",
+					"videos/QuinceIntro_1.webmvp8.webm", "videos/QuinceIntro_1.theora.ogv" ]);
+			```
+			*/
 			sources: [],
-			/* type="number" Get or set the width of the control. By default null will stretch the control to fit data, if no other widths are defined. */
+			/* type="number" Get or set the width of the control. By default null will stretch the control to fit data, if no other widths are defined.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					width: 600,
+					height: 400
+				});
+
+				//Get
+				var width = $(".selector").igVideoPlayer("option", "width");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "width", 600);
+			```
+			*/
 			width: null,
-			/* type="number" Get or set the height of the control. By default null will stretch the control to fit data, if no other heights are defined. */
+			/* type="number" Get or set the height of the control. By default null will stretch the control to fit data, if no other heights are defined.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						width: 600,
+						height: 400
+					});
+
+					//Get
+					var height = $(".selector").igVideoPlayer("option", "height");
+
+					//Set
+					$(".selector").igVideoPlayer("option", "height", 450);
+				```
+			*/
 			height: null,
-			/* type="string" Get or set a URL to an image to show, when no video data is available. */
+			/* type="string" Get or set a URL to an image to show, when no video data is available.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					posterUrl: "../images/videoImage.png"
+				});
+
+				//Get
+				var url = $(".selector").igVideoPlayer("option", "posterUrl");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "posterUrl", "../images/videoImage.png");
+			```
+			*/
 			posterUrl: "",
-			/* type="bool" Get or set whether to preload load initial data for duration of video. If true it may start buffering the video, but this highly depends on the specific browser implementation. */
+			/* type="bool" Get or set whether to preload load initial data for duration of video. If true it may start buffering the video, but this highly depends on the specific browser implementation.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					preload: true
+				});
+
+				//Get
+				var preload = $(".selector").igVideoPlayer("option", "preload");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "preload", true);
+			```
+			*/
 			preload: false,
-			/* type="bool" Get or set whether the video should start playing immediately after the control is loaded. */
+			/* type="bool" Get or set whether the video should start playing immediately after the control is loaded.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					autoplay:true
+				});
+
+				//Get
+				var autoPlay = $(".selector").igVideoPlayer("option", "autoplay");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "autoplay", true);
+			```
+			*/
 			autoplay: false,
-			/* type="bool" Get or set whether player controls will auto hide when video is not hovered. This is applicable only when Infragistics playback controls are used. */
+			/* type="bool" Get or set whether player controls will auto hide when video is not hovered. This is applicable only when Infragistics playback controls are used.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						autohide:true
+						});
+
+					//Get
+					var hide = $(".selector").igVideoPlayer("option", "autohide");
+
+					//Set
+					$(".selector").igVideoPlayer("option", "autohide", true);
+				```
+			*/
 			autohide: true,
-			/* type="number" Get or set volume slider auto hide delay. This is applicable only when Infragistics playback controls are used. */
+			/* type="number" Get or set volume slider auto hide delay. This is applicable only when Infragistics playback controls are used.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+						volumeAutohideDelay: 1500
+				});
+
+				//Get
+				var delay = $(".selector").igVideoPlayer("option", "volumeAutohideDelay");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "volumeAutohideDelay", 1500);
+			```
+			*/
 			volumeAutohideDelay: 1000,
-			/* type="number" Get or set the center big button hide delay. */
+			/* type="number" Get or set the center big button hide delay.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						centerButtonHideDelay:2400
+					});
+
+					//Get
+					var delay = $(".selector").igVideoPlayer("option", "centerButtonHideDelay");
+
+					//Set
+					$(".selector").igVideoPlayer("option", "centerButtonHideDelay", 2400);
+				```
+			*/
 			centerButtonHideDelay: 1200,
-			/* type="bool" Get or set whether the video to start again after it has ended. */
+			/* type="bool" Get or set whether the video to start again after it has ended.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					loop: true
+				});
+
+				//Get
+				var loop = $(".selector").igVideoPlayer("option", "loop");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "loop", true);
+			```
+			*/
 			loop: false,
-			/* type="bool" Get or set whether if you want to use the built in browser controls. By default player uses Infragistics playback controls. Note that you may have different look and feel across different browsers if you use the built in browser controls. */
+			/* type="bool" Get or set whether if you want to use the built in browser controls. By default player uses Infragistics playback controls. Note that you may have different look and feel across different browsers if you use the built in browser controls.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					browserControls: true
+				});
+
+				//Get
+				var controls = $(".selector").igVideoPlayer("option", "browserControls");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "browserControls", true);
+			```
+			*/
 			browserControls: false,
-			/* type="bool" Get or set whether the video player to be in full screen or not. This is not a pure full screen, because browsers do not allow that. It just sets 100% width and height to the control. */
+			/* type="bool" Get or set whether the video player to be in full screen or not. This is not a pure full screen, because browsers do not allow that. It just sets 100% width and height to the control.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					fullscreen:true
+				});
+
+				//Get
+				var fullScreen = $(".selector").igVideoPlayer("option", "fullscreen");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "fullscreen", true);
+			```
+			*/
 			fullscreen: false,
-			/* type="number" Get or set the video volume. It can be between 0.0 and 1.0. */
+			/* type="number" Get or set the video volume. It can be between 0.0 and 1.0.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+						volume: 0.3
+				});
+
+				//Get
+				var volLevel = $(".selector").igVideoPlayer("option", "volume");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "volume", 0.3);
+			```
+			*/
 			volume: 0.5,
-			/* type="bool" Get or set whether the video volume is muted. */
+			/* type="bool" Get or set whether the video volume is muted.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					muted: true
+				});
+
+				//Get
+				var muted = $(".selector").igVideoPlayer("option", "muted");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "muted", true);
+			```
+			*/
 			muted: false,
-			/* type="string" Get or set video title. */
+			/* type="string" Get or set video title.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+						title: "Ignite UI"
+				});
+
+				//Get
+				var title = $(".selector").igVideoPlayer("option", "title");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "title", "Ignite UI");
+			```
+			*/
 			title: "",
-			/* type="bool" Get or set whether the control seek tool tip will be shown when hovering the video progress bar. */
+			/* type="bool" Get or set whether the control seek tool tip will be shown when hovering the video progress bar.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					showSeekTime: false
+				});
+
+				//Get
+				var showTime = $(".selector").igVideoPlayer("option", "showSeekTime");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "showSeekTime", false);
+			```
+			*/
 			showSeekTime: true,
-			/* type="string" Get or set the format of the video progress label. You should use ${currentTime} to represent current playback position and ${duration} to represent video duration. */
+			/* type="string" Get or set the format of the video progress label. You should use ${currentTime} to represent current playback position and ${duration} to represent video duration.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					progressLabelFormat:"Time=${currentTime} / Total=${duration}"
+				});
+
+				//Get
+				var labelFormat = $(".selector").igVideoPlayer("option", "progressLabelFormat");
+
+				//Set
+				$(".selector").igVideoPlayer("option", "progressLabelFormat", "Time=${currentTime} / Total=${duration}");
+			```
+			*/
 			progressLabelFormat: "${currentTime} / ${duration}",
-			/* type="array" Get or set an array of bookmarks that will be displayed in the video player control. */
+			/* type="array" Get or set an array of bookmarks that will be displayed in the video player control.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+					bookmarks: [
+							{
+								title: "Design",
+								time: 14
+							},
+							{
+								title: "Develop",
+								time: 46
+							},
+							{
+								title: "Experience",
+								time: 74
+							}
+						]
+					});
+
+					//Get
+					var bookmarks = $(".selector").igVideoPlayer("option", "bookmarks");
+
+					//Set
+					$(".selector").igVideoPlayer("option", "bookmarks", [{title: "Experience", time: 74 }]);
+				```
+			*/
 			bookmarks: [{
-				/* type="number" Get or set where the bookmark will be positioned. Should be between 0 and movie duration in seconds. */
+				/* type="number" Get or set where the bookmark will be positioned. Should be between 0 and movie duration in seconds.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						bookmarks: [
+							{
+								title: "Experience",
+								time: 74
+							}
+						]
+					});
+
+					//Get
+					var bookmarks = $(".selector").igVideoPlayer("option", "bookmarks");
+					var time = bookmarks[0].time;
+
+					//Set
+					var bookmarks = $(".selector").igVideoPlayer("option", "bookmarks");
+					bookmarks[0].time = 12;
+				```
+				*/
 				time: 0,
-				/* type="string" Get or set bookmark title. It is shown as tooltip on hover. */
+				/* type="string" Get or set bookmark title. It is shown as tooltip on hover.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						bookmarks: [
+							{
+								title: "Experience",
+								time: 74
+							}
+						]
+					});
+
+					//Get
+					var bookmarks = $(".selector").igVideoPlayer("option", "bookmarks");
+					var title = bookmarks[0].title;
+
+					//Set
+					var bookmarks = $(".selector").igVideoPlayer("option", "bookmarks");
+					bookmarks[0].title = "Infragistics Experience";
+				```
+				*/
 				title: "",
-				/* type="bool" Get or set whether the bookmark is disabled or not. */
+				/* type="bool" Get or set whether the bookmark is disabled or not.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+					bookmarks: [
+						{
+							title: "Experience",
+							time: 74,
+							disabled: true
+							}
+						]
+					});
+
+					//Get
+					var bookmarks = $(".selector").igVideoPlayer("option", "bookmarks");
+					var disabled = bookmarks[0].disabled;
+
+					//Set
+					var bookmarks = $(".selector").igVideoPlayer("option", "bookmarks");
+					bookmarks[0].disabled = false;
+				```
+				*/
 				disabled: false
 			}],
-			/* type="array" Get or set an array of related videos that will be displayed when video playback has ended. */
+			/* type="array" Get or set an array of related videos that will be displayed when video playback has ended.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					relatedVideos: [
+						{
+							imageUrl: "http://www.soundbg.com/uploads/articles/d2b3270a_th.jpg",
+							title: "Some cool skype video.",
+							width: "80px",
+							height: "80px",
+							sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+							"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+							"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+							"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+							]
+						},
+						{
+							imageUrl: "http://tweetmeme.s3.amazonaws.com/thumbs/375968078.jpg",
+							title: "Bick buck bunny.",
+							width: "80px",
+							height: "80px",
+							sources: ["http://snapshot.opera.com/resources/BigBuckBunny.ogv",
+							"http://snapshot.opera.com/resources/BigBuckBunny.mp4",
+							"http://snapshot.opera.com/resources/BigBuckBunny.webm"
+							]
+						}
+					]
+				});
+
+				//Get
+				var relatedVids = $(".selector").igVideoPlayer("option", "relatedVideos");
+
+				//Set
+				var relatedVids = [
+					{
+							imageUrl: "http://www.soundbg.com/uploads/articles/d2b3270a_th.jpg",
+							title: "Some cool skype video.",
+							width: "80px",
+							height: "80px",
+							sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+							"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+							"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+							"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+							]
+					}
+				];
+
+				$(".selector").igVideoPlayer("option", "relatedVideos", relatedVids);
+			```
+			*/
 			relatedVideos: [{
-				/* type="string" Get or set the URL of the related video image. */
+				/* type="string" Get or set the URL of the related video image.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						relatedVideos: [
+							{
+								imageUrl: "http://www.soundbg.com/uploads/articles/d2b3270a_th.jpg",
+								title: "Some cool skype video.",
+								width: "80px",
+								height: "80px",
+								sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+								"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+								"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+								"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+								]
+							}
+						]
+					});
+				```
+				*/
 				imageUrl: "",
-				/* type="string" Get or set the title of the video. */
+				/* type="string" Get or set the title of the video.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						relatedVideos: [
+							{
+								imageUrl: "http://www.soundbg.com/uploads/articles/d2b3270a_th.jpg",
+								title: "Some cool skype video.",
+								width: "80px",
+								height: "80px",
+								sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+								"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+								"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+								"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+								]
+							}
+						]
+					});
+				```
+				*/
 				title: "",
-				/* type="number" Get or set the width of the related video image. */
+				/* type="number" Get or set the width of the related video image.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						relatedVideos: [
+							{
+								imageUrl: "http://www.soundbg.com/uploads/articles/d2b3270a_th.jpg",
+								title: "Some cool skype video.",
+								width: "80px",
+								height: "80px",
+								sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+								"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+								"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+								"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+								]
+							}
+						]
+					});
+				```
+				*/
 				width: null,
-				/* type="number" Get or set the height of the related video image. */
+				/* type="number" Get or set the height of the related video image.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						relatedVideos: [
+							{
+								imageUrl: "http://www.soundbg.com/uploads/articles/d2b3270a_th.jpg",
+								title: "Some cool skype video.",
+								width: "80px",
+								height: "80px",
+								sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+								"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+								"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+								"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+								]
+							}
+						]
+					});
+				```
+				*/
 				height: null,
-				/* type="string" Get or set a link to a page that will play the related video. It will be opened in a new window. If there are sources also, the link property has a priority. */
+				/* type="string" Get or set a link to a page that will play the related video. It will be opened in a new window. If there are sources also, the link property has a priority.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						relatedVideos: [
+							{
+								imageUrl: "http://www.soundbg.com/uploads/articles/d2b3270a_th.jpg",
+								title: "Some cool skype video.",
+								width: "80px",
+								height: "80px",
+								link: "http://medias.jilion.com/sublimevideo/dartmoor.mp4"
+							}
+						]
+					});
+				```
+				*/
 				link: "",
-				/* type="array" Get or set the sources of the related video. */
+				/* type="array" Get or set the sources of the related video.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						relatedVideos: [
+							{
+								imageUrl: "http://www.soundbg.com/uploads/articles/d2b3270a_th.jpg",
+								title: "Some cool skype video.",
+								width: "80px",
+								height: "80px",
+								sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+								"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+								"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+								"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+								]
+							}
+						]
+					});
+				```
+				*/
 				sources: [],
-				/* type="string" Get or set custom CSS class to be applied on the related video element. */
+				/* type="string" Get or set custom CSS class to be applied on the related video element.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						relatedVideos: [
+							{
+								imageUrl: "http://www.soundbg.com/uploads/articles/d2b3270a_th.jpg",
+								title: "Some cool skype video.",
+								width: "80px",
+								height: "80px",
+								css: "relatedVideosCss",
+								sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov",
+								"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+								"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+								"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+								]
+							}
+						]
+					});
+				```
+				*/
 				css: null
 			}],
-			/* type="array" Get or set an array of banner objects that will show the banners when the video clip is played. */
+			/* type="array" Get or set an array of banner objects that will show the banners when the video clip is played.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+						banners: [{
+							imageUrl: "../Content/images/Banner1.png",
+							link: "http://quince.infragistics.com/",
+							times: [5, 20, 60],
+							visible: false,
+							closeBanner: true,
+							animate: true,
+							autohide: true,
+							hidedelay: 10000,
+							width: "200px",
+							height: "67px"
+						}]
+					});
+
+				//Get
+				var banners = $(".selector").igVideoPlayer("option", "banners");
+
+				//Set
+				var banners = [{
+						imageUrl: '../Content/images/Banner1.png',
+						link: 'http://quince.infragistics.com/',
+						times: [5, 20, 60],
+						visible: false,
+						closeBanner: true,
+						animate: true,
+						autohide: true,
+						hidedelay: 10000,
+						width: "200px",
+						height: "67px"
+					}];
+				$(".selector").igVideoPlayer("option", "banners", banners);
+			```
+			*/
 			banners: [{
-				/* type="string" Get or set the banner image url. */
+				/* type="string" Get or set the banner image url.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						banners: [{
+							imageUrl: "../Content/images/Banner1.png",
+							link: "http://quince.infragistics.com/",
+							times: [5, 20, 60],
+							visible: false,
+							closeBanner: true,
+							animate: true,
+							autohide: true,
+							hidedelay: 10000,
+							width: "200px",
+							height: "67px"
+						}]
+					});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var imageUrl = banners[0].imageUrl;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].imageUrl = "../Content/images/Banner1.png";
+				```
+				*/
 				imageUrl: "",
-				/* type="array" Get or set an array of numbers. Each number specifies on which second in the movie the banner will pop. */
+				/* type="array" Get or set an array of numbers. Each number specifies on which second in the movie the banner will pop.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var times = banners[0].times;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].times = [5, 20, 60];
+				```
+				*/
 				times: [],
-				/* type="bool" Get or set whether the user will be able to close the banner or not. */
+				/* type="bool" Get or set whether the user will be able to close the banner or not.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var closeBanner = banners[0].closeBanner;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].closeBanner = true;
+				```
+				*/
 				closeBanner: true,
-				/* type="bool" Get or set whether to apply animation effects when showing or hiding the banner. If set to true, the animation is played for banner.duration in milliseconds. */
+				/* type="bool" Get or set whether to apply animation effects when showing or hiding the banner. If set to true, the animation is played for banner.duration in milliseconds.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var animate = banners[0].animate;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].animate = true;
+				```
+				*/
 				animate: true,
-				/* type="bool" Get or set whether the banner is visible or not. */
+				/* type="bool" Get or set whether the banner is visible or not.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var visible = banners[0].visible;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].visible = false;
+				```
+				*/
 				visible: true,
-				/* type="number" Get or set the banner animation duration. */
+				/* type="number" Get or set the banner animation duration.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								duration: 2000,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var duration = banners[0].duration;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].duration = 2000;
+				```
+				*/
 				duration: 1000,
-				/* type="bool" Get or set whether to automatically hide the banner. If set to true, the banner is hidden after banner.hidedelay in milliseconds. */
+				/* type="bool" Get or set whether to automatically hide the banner. If set to true, the banner is hidden after banner.hidedelay in milliseconds.
+				```
+				//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var autohide = banners[0].autohide;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].autohide = true;
+				```
+				*/
 				autohide: false,
-				/* type="number" Get or set the banner autohide delay in milliseconds. It is taken into account only if the banner.autohide option is set to true. */
+				/* type="number" Get or set the banner autohide delay in milliseconds. It is taken into account only if the banner.autohide option is set to true.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var hidedelay = banners[0].hidedelay;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].hidedelay = 10000;
+				```
+				*/
 				hidedelay: 10000,
-				/* type="string" Get or set the banner link that will open in new window. */
+				/* type="string" Get or set the banner link that will open in new window.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var link = banners[0].link;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].link = "http://quince.infragistics.com/";
+				```
+				*/
 				link: null,
-				/* type="number" Get or set the banner width */
+				/* type="number" Get or set the banner width
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var width = banners[0].width;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].width = "200px";
+				```
+				*/
 				width: null,
-				/* type="number" Get or set the banner height */
+				/* type="number" Get or set the banner height
+				```
+				//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var height = banners[0].height;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].height = "67px";
+				```
+				*/
 				height: null,
-				/* type="string" Get or set the banner specific css class, that will be applied on the banner grid. */
+				/* type="string" Get or set the banner specific css class, that will be applied on the banner grid.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+							banners: [{
+								imageUrl: "../Content/images/Banner1.png",
+								link: "http://quince.infragistics.com/",
+								times: [5, 20, 60],
+								visible: false,
+								closeBanner: true,
+								animate: true,
+								autohide: true,
+								hidedelay: 10000,
+								width: "200px",
+								height: "67px",
+								css: "bannerCss"
+							}]
+						});
+
+					//Get
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					var css = banners[0].css;
+
+					//Set
+					var banners = $(".selector").igVideoPlayer("option", "banners");
+					banners[0].css = "bannerCss";
+				```
+				*/
 				css: null
 			}],
-			/* type="object" Get or set an array of commercials objects that will be displayed when the video is playing. */
+			/* type="object" Get or set an array of commercials objects that will be displayed when the video is playing.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					commercials: {
+						linkedCommercials: [
+						{
+							sources: [  "videos/QuinceIntro_1.h264.mp4",
+										"videos/QuinceIntro_1.webmvp8.webm",
+										"videos/QuinceIntro_1.theora.ogv" ],
+							startTime: 20,
+							title: "Quince Presentation p1",
+							link: "http://quince.infragistics.com/"
+						},
+						{
+							sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
+										"videos/QuinceIntro_Part3_1.webmvp8.webm",
+										"videos/QuinceIntro_Part3_1.theora.ogv" ],
+							startTime: 100,
+							title: "Quince Presentation p3",
+							link: "http://quince.infragistics.com/"
+						}]
+					}
+				});
+
+				//Get
+				var commercials = $(".selector").igVideoPlayer("option", "commercials");
+
+				//Set
+				var commercials = {
+					linkedCommercials: [
+					{
+						sources: [  "http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_1.theora.ogv" ],
+						startTime: 20,
+						title: 'Quince<br/>Presentation<br/>p1',
+						link: 'http://quince.infragistics.com/'
+					}],
+					adMessage: {
+						hideDelay: 3000
+					}
+				};
+				$(".selector").igVideoPlayer("option", "commercials", commercials);
+			```
+			*/
 			commercials: {
-				/* type="array" Get or set an array of linked commercial objects. A linked commercial is a separate video file that will be played in the specified position of the original movie clip by the startTime property. This feature is useful if you have frequently changing outside commercial sources. */
+				/* type="array" Get or set an array of linked commercial objects. A linked commercial is a separate video file that will be played in the specified position of the original movie clip by the startTime property. This feature is useful if you have frequently changing outside commercial sources.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						commercials: {
+							linkedCommercials: [
+							{
+								sources: [  "videos/QuinceIntro_1.h264.mp4",
+											"videos/QuinceIntro_1.webmvp8.webm",
+											"videos/QuinceIntro_1.theora.ogv" ],
+								startTime: 20,
+								title: "Quince Presentation p1",
+								link: "http://quince.infragistics.com/"
+							},
+							{
+								sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
+											"videos/QuinceIntro_Part3_1.webmvp8.webm",
+											"videos/QuinceIntro_Part3_1.theora.ogv" ],
+								startTime: 100,
+								title: "Quince Presentation p3",
+								link: "http://quince.infragistics.com/"
+							}]
+						}
+					});
+
+					//Get
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					var linkedCommercials = commercials.linkedCommercials;
+
+					//Set
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					var linkedCommercials = [
+							{
+								sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
+											"videos/QuinceIntro_Part3_1.webmvp8.webm",
+											"videos/QuinceIntro_Part3_1.theora.ogv" ],
+								startTime: 100,
+								title: "Quince Presentation p3",
+								link: "http://quince.infragistics.com/"
+							}
+					];
+					commercials.linkedCommercials = linkedCommercials;
+				```
+				*/
 				linkedCommercials: [{
-					/* type="array" Get or set the sources of the linked commercial video. */
+					/* type="array" Get or set the sources of the linked commercial video.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								linkedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								}]
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var sources = commercials.linkedCommercials[0].sources;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.linkedCommercials[0].sources = ["http://quince.infragistics.com/"];
+					```
+					*/
 					sources: [],
-					/* type="number" Get or set the second in the video at which the linked commercial should play. */
+					/* type="number" Get or set the second in the video at which the linked commercial should play.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								linkedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								}]
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var startTime = commercials.linkedCommercials[0].startTime;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.linkedCommercials[0].startTime = 20;
+					```
+					*/
 					startTime: 10,
-					/* type="string" Get or set the link to open on linked commercial click. */
+					/* type="string" Get or set the link to open on linked commercial click.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								linkedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								}]
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var link = commercials.linkedCommercials[0].link;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.linkedCommercials[0].link = "http://quince.infragistics.com/";
+					```
+					*/
 					link: "",
-					/* type="string" Get or set the tooltip for the linked commercial bookmark. */
+					/* type="string" Get or set the tooltip for the linked commercial bookmark.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								linkedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								}]
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var title = commercials.linkedCommercials[0].title;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.linkedCommercials[0].title = "Quince Presentation p1";
+					```
+					*/
 					title: ""
 				}],
-				/* type="array" Get or set an array of embedded commercials objects. An embedded commercial is an ad that is contained in the original video file. It is suitable when you want to mark some sections of the video as commercials. */
+				/* type="array" Get or set an array of embedded commercials objects. An embedded commercial is an ad that is contained in the original video file. It is suitable when you want to mark some sections of the video as commercials.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						commercials: {
+							embeddedCommercials: [
+							{
+								sources: [  "videos/QuinceIntro_1.h264.mp4",
+											"videos/QuinceIntro_1.webmvp8.webm",
+											"videos/QuinceIntro_1.theora.ogv" ],
+								startTime: 20,
+								endTime: 30,
+								title: "Quince Presentation p1",
+								link: "http://quince.infragistics.com/"
+							}]
+						}
+					});
+
+					//Get
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					var embeddedCommercials = commercials.embeddedCommercials;
+
+					//Set
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					var embeddedCommercials = [
+							{
+								sources: [  "videos/QuinceIntro_1.h264.mp4",
+											"videos/QuinceIntro_1.webmvp8.webm",
+											"videos/QuinceIntro_1.theora.ogv" ],
+								startTime: 20,
+								endTime: 30,
+								title: "Quince Presentation p1",
+								link: "http://quince.infragistics.com/"
+							}
+					];
+					commercials.embeddedCommercials = embeddedCommercials;
+				```
+				*/
 				embeddedCommercials: [{
-					/* type="number" Get or set the start second of the embedded commercial. */
+					/* type="number" Get or set the start second of the embedded commercial.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								embeddedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								}]
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var startTime = commercials.embeddedCommercials[0].startTime;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.embeddedCommercials[0].startTime = 20;
+					```
+					*/
 					startTime: 20,
-					/* type="number" Get or set the end second of the embedded commercial. */
+					/* type="number" Get or set the end second of the embedded commercial.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								embeddedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									endTime: 30,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								}]
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var endTime = commercials.embeddedCommercials[0].endTime;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.embeddedCommercials[0].endTime = 30;
+					```
+					*/
 					endTime: 30,
-					/* type="string" Get or set the sponsored link of the embedded commercial. */
+					/* type="string" Get or set the sponsored link of the embedded commercial.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								embeddedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								}]
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var link = commercials.embeddedCommercials[0].link;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.embeddedCommercials[0].link = "http://quince.infragistics.com/";
+					```
+					*/
 					link: "",
-					/* type="string" Get or set the tooltip for the bookmark of the embedded commercial. */
+					/* type="string" Get or set the tooltip for the bookmark of the embedded commercial.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								embeddedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								}]
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var title = commercials.embeddedCommercials[0].title;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.embeddedCommercials[0].title = "Quince Presentation p1";
+					```
+					*/
 					title: ""
 				}],
-				/* type="bool" Get or set whether the commercials will play againg during the repetitive video plays. */
+				/* type="bool" Get or set whether the commercials will play againg during the repetitive video plays.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						commercials: {
+							alwaysPlayCommercials: true
+						}
+					});
+
+					//Get
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					var alwaysPlayCommercials = commercials.alwaysPlayCommercials;
+
+					//Set
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					commercials.alwaysPlayCommercials = true;
+				```
+				*/
 				alwaysPlayCommercials: false,
-				/* type="bool" Get or set whether to show commercial locations or not. */
+				/* type="bool" Get or set whether to show commercial locations or not.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						commercials: {
+							showBookmarks: false
+						}
+					});
+
+					//Get
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					var showBookmarks = commercials.linkedCommercials.showBookmarks;
+
+					//Set
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					commercials.linkedCommercials.showBookmarks = false;
+				```
+				*/
 				showBookmarks: true,
-				/* type="object" Customizes the ad message settings of the commercial. Ad message shows the duration of the commercial and pops up when the commercial starts playing.  */
+				/* type="object" Customizes the ad message settings of the commercial. Ad message shows the duration of the commercial and pops up when the commercial starts playing.
+				```
+					//Initialize
+					$(".selector").igVideoPlayer({
+						commercials: {
+							linkedCommercials: [
+							{
+								sources: [  "videos/QuinceIntro_1.h264.mp4",
+											"videos/QuinceIntro_1.webmvp8.webm",
+											"videos/QuinceIntro_1.theora.ogv" ],
+								startTime: 20,
+								title: "Quince Presentation p1",
+								link: "http://quince.infragistics.com/"
+							},
+							{
+								sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
+											"videos/QuinceIntro_Part3_1.webmvp8.webm",
+											"videos/QuinceIntro_Part3_1.theora.ogv" ],
+								startTime: 100,
+								title: "Quince Presentation p3",
+								link: "http://quince.infragistics.com/"
+							}],
+							adMessage: {
+								animate: true,
+								animationDuration: 1000,
+								autoHide: true,
+								hideDelay: 5000
+							}
+						}
+					});
+
+					//Get
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					var adMessage = commercials.adMessage;
+
+					//Set
+					var commercials = $(".selector").igVideoPlayer("option", "commercials");
+					var adMessage = {
+								animate: true,
+								animationDuration: 1000,
+								autoHide: true,
+								hideDelay: 5000
+							};
+					commercials.adMessage = adMessage;
+				```
+				*/
 				adMessage: {
-					/* type="bool" Get or set whether to apply an animation effect when showing or hiding the ad message. If set to true, the animation is played for commercial.adMessage.animationDuration in milliseconds. */
+					/* type="bool" Get or set whether to apply an animation effect when showing or hiding the ad message. If set to true, the animation is played for commercial.adMessage.animationDuration in milliseconds.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								linkedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								},
+								{
+									sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
+												"videos/QuinceIntro_Part3_1.webmvp8.webm",
+												"videos/QuinceIntro_Part3_1.theora.ogv" ],
+									startTime: 100,
+									title: "Quince Presentation p3",
+									link: "http://quince.infragistics.com/"
+								}],
+								adMessage: {
+									animate: true,
+									animationDuration: 1000,
+									autoHide: true,
+									hideDelay: 5000
+								}
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var animate = commercials.adMessage.animate;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.adMessage.animate = false;
+					```
+					*/
 					animate: true,
-					/* type="bool" Get or set the ad message auto hide of the commercial. */
+					/* type="bool" Get or set the ad message auto hide of the commercial.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								linkedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								},
+								{
+									sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
+												"videos/QuinceIntro_Part3_1.webmvp8.webm",
+												"videos/QuinceIntro_Part3_1.theora.ogv" ],
+									startTime: 100,
+									title: "Quince Presentation p3",
+									link: "http://quince.infragistics.com/"
+								}],
+								adMessage: {
+									autoHide: false
+								}
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var autoHide = commercials.adMessage.autoHide;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.adMessage.autoHide = true;
+					```
+					*/
 					autoHide: true,
-					/* type="number" Get or set the ad message hide delay. */
+					/* type="number" Get or set the ad message hide delay.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								linkedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								},
+								{
+									sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
+												"videos/QuinceIntro_Part3_1.webmvp8.webm",
+												"videos/QuinceIntro_Part3_1.theora.ogv" ],
+									startTime: 100,
+									title: "Quince Presentation p3",
+									link: "http://quince.infragistics.com/"
+								}],
+								adMessage: {
+									hideDelay: 5000
+								}
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var hideDelay = commercials.adMessage.hideDelay;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.adMessage.hideDelay = 4000;
+					```
+					*/
 					hideDelay: 20000,
-					/* type="number" Get or set the ad message animation duration of the commercial. */
+					/* type="number" Get or set the ad message animation duration of the commercial.
+					```
+						//Initialize
+						$(".selector").igVideoPlayer({
+							commercials: {
+								linkedCommercials: [
+								{
+									sources: [  "videos/QuinceIntro_1.h264.mp4",
+												"videos/QuinceIntro_1.webmvp8.webm",
+												"videos/QuinceIntro_1.theora.ogv" ],
+									startTime: 20,
+									title: "Quince Presentation p1",
+									link: "http://quince.infragistics.com/"
+								},
+								{
+									sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
+												"videos/QuinceIntro_Part3_1.webmvp8.webm",
+												"videos/QuinceIntro_Part3_1.theora.ogv" ],
+									startTime: 100,
+									title: "Quince Presentation p3",
+									link: "http://quince.infragistics.com/"
+								}],
+								adMessage: {
+									animationDuration: 2000
+								}
+							}
+						});
+
+						//Get
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						var animationDuration = commercials.adMessage.animationDuration;
+
+						//Set
+						var commercials = $(".selector").igVideoPlayer("option", "commercials");
+						commercials.adMessage.animationDuration = 1000;
+					```
+					*/
 					animationDuration: 1000
 				}
 			}
@@ -180,30 +1576,102 @@
 
 		events: {
 			/* Occurs when video has ended.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerended", function (evt, ui) {
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
+					//return the duration of the video in seconds
+					ui.duration;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					ended: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.source to get the url of the playing video.
 			Use ui.duration to get the video duration in seconds.
 			*/
 			ended: "ended",
 			/* cancel="false" Occurs when video gets playing.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerplaying", function (evt, ui) {
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
+					//return the duration of the video
+					ui.duration;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					playing: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.source to get the url of the playing video.
 			Use ui.duration to get the video duration in seconds.
 			*/
 			playing: "playing",
 			/* Occurs when video is paused.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerpaused", function (evt, ui) {
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
+					//return the duration of the video
+					ui.duration;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					paused: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.source to get the url of the playing video.
 			Use ui.duration to get the video duration in seconds.
 			*/
 			paused: "paused",
 			/* cancel="false" Occurs when a chunk of data is buffered.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerbuffering", function (evt, ui) {
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
+					//return the buffering precentage
+					ui.buffered;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					buffering: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.source to get the url of the playing video.
 			Use ui.buffered to get buffered percentage.
 			*/
 			buffering: "buffering",
 			/* Occurs when video has advanced the playback position.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerprogress", function (evt, ui) {
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
+					//return the current time(current position) in the video at which the event was fired
+					ui.currentTime;
+					//return the duration of the video
+					ui.duration;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					progress: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.source to get the url of the playing video.
 			Use ui.currentTime to get current position in the video at which the event was fired.
@@ -211,6 +1679,22 @@
 			*/
 			progress: "progress",
 			/* cancel="false" Occurs when igVideoPlayer is waiting for data from the server.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerwaiting", function (evt, ui) {
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
+					//return the current time(current position) in the video at which the event was fired
+					ui.currentTime;
+					//return the duration of the video
+					ui.duration;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					waiting: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.source to get the url of the playing video.
 			Use ui.currentTime to get current position in the video at which the event was fired.
@@ -218,6 +1702,22 @@
 			*/
 			waiting: "waiting",
 			/* Occurs when the bookmark is hit.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerbookmarkhit", function (evt, ui) {
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
+					//return the bookmark object from the bookmarks array
+					ui.bookmark;
+					//return bookmark html element in the DOM
+					ui.bookmarkElement;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					bookmarkHit: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.source to get the url of the playing video.
 			Use ui.bookmark to get the bookmark object from the bookmarks array.
@@ -225,28 +1725,96 @@
 			*/
 			bookmarkHit: "bookmarkHit",
 			/* Occurs when the bookmark is clicked.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerbookmarkclick", function (evt, ui) {
+					//return the bookmark object from the bookmarks array
+					ui.bookmark;
+					//return bookmark html element in the DOM
+					ui.bookmarkElement;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					bookmarkClick: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.bookmark to get the bookmark object from the bookmarks array.
 			Use ui.bookmarkElement to get the html element in the DOM.
 			*/
 			bookmarkClick: "bookmarkClick",
 			/* cancel="true" Occurs when igVideoPlayer enters full screen mode.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerenterfullscreen", function (evt, ui) {
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					enterFullScreen: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.source to get the url of the playing video.
 			*/
 			enterFullScreen: "enterFullScreen",
 			/* cancel="true" Occurs when igVideoPlayer exits full screen mode.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerexitfullscreen", function (evt, ui) {
+					//return the url of the playing video (the one that is used from the sources array)
+					ui.source;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					exitFullScreen: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.source to get the url of the playing video.
 			*/
 			exitFullScreen: "exitFullScreen",
 			/* cancel="true" Occurs when related video is clicked.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerrelatedvideoclick", function (evt, ui) {
+					//return the relatedVideo object from the relatedVideos array
+					ui.relatedVideo;
+					//return relatedVideo html element in the DOM
+					ui.relatedVideoElement;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					relatedVideoClick: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.relatedVideo to get the relatedVideo object from the relatedVideos array.
 			Use ui.relatedVideoElement to get the relatedVideo html element in the DOM.
 			*/
 			relatedVideoClick: "relatedVideoClick",
 			/* Defines the name of the player banner visible event. Fired when the banner has been displayed.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerbannervisible", function (evt, ui) {
+					//return the banner index in the banners array
+					ui.index;
+					//return the banner object from the banners array
+					ui.banner;
+					//return the banner html element in the DOM
+					ui.bannerElement;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					bannerVisible: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.index to get the banner index in the banners array.
 			Use ui.banner to get the banner object from the banners array.
@@ -254,6 +1822,22 @@
 			*/
 			bannerVisible: "bannerVisible",
 			/* Occurs when the banner is hidden.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerbannerhidden", function (evt, ui) {
+					//return the banner index in the banners array
+					ui.index;
+					//return the banner object from the banners array
+					ui.banner;
+					//return the banner html element in the DOM
+					ui.bannerElement;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					bannerHidden: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.index to get the banner index in the banners array.
 			Use ui.banner to get the banner object from the banners array.
@@ -261,11 +1845,30 @@
 			*/
 			bannerHidden: "bannerHidden",
 			/* Occurs when the banner is clicked.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igvideoplayerbannerclick", function (evt, ui) {
+					//return the clicked banner element
+					ui.bannerElement;
+				});
+
+				//Initialize
+				$(".selector").igVideoPlayer({
+					bannerClick: function (evt, ui) {...}
+				});
+			```
 			Function takes arguments evt and ui.
 			Use ui.bannerElement to get the banner html element in the DOM.
 			*/
 			bannerClick: "bannerClick",
-			/* Occurs when browser does not support HTML 5 video. */
+			/* Occurs when browser does not support HTML 5 video.
+			```
+				//Initialize
+				$(".selector").igVideoPlayer({
+					browserNotSupported: function (evt, ui) {...}
+				});
+			```
+			*/
 			browserNotSupported: "browserNotSupported"
 		},
 
@@ -382,6 +1985,9 @@
 		widget: function () {
 			/*
 			Returns the element on which the widget was instantiated
+			```
+			var videoPlayer = $(".selector").igVideoPlayer("widget");
+			```
 			*/
 			return this.element;
 		},
@@ -1098,7 +2704,11 @@
 		},
 
 		hideAdMessage: function () {
-			/* Hide the add message if shown. */
+			/* Hide the add message if shown.
+			```
+			$(".selector").igVideoPlayer("hideAdMessage");
+			```
+			*/
 			clearTimeout(this._adHideTimeout);
 			var msg = $("#" + this._id("_ad_msg_c")),
 				msgOpt = this.options.commercials.adMessage;
@@ -1126,7 +2736,19 @@
 
 		playCommercial: function (commercial) {
 			/* Play a linked commercial for this video.
-			   paramType="object" Specify the linked commercial to play.
+			```
+				var commercial = {
+					sources: [  "videos/QuinceIntro_1.h264.mp4",
+				        "videos/QuinceIntro_1.webmvp8.webm",
+				        "videos/QuinceIntro_1.theora.ogv" ],
+					startTime: 20,
+					title: "Quince Presentation p1",
+					link: "http://quince.infragistics.com/"
+				};
+
+				$(".selector").igVideoPlayer("playCommercial", commercial);
+			```
+				paramType="object" Specify the linked commercial to play.
 			*/
 			if (!commercial || !commercial.sources) {
 				return;
@@ -1278,6 +2900,9 @@
 
 		showBanner: function (index) {
 			/* Shows the ad banner, if there is such.
+			```
+			$(".selector").igVideoPlayer("showBanner", 1);
+			```
 			   paramType="number" Specify the index of the banner from the banners array.
 			*/
 			if (this.options.banners && index >= 0 && index < this.options.banners.length) {
@@ -1306,6 +2931,9 @@
 
 		hideBanner: function (index) {
 			/* Hide the ad banner, if there is such.
+			```
+			$(".selector").igVideoPlayer("hideBanner", 1);
+			```
 			   paramType="number" Specify the index of the banner from the banners array.
 			*/
 			if (this.options.banners && index >= 0 && index < this.options.banners.length) {
@@ -1780,7 +3408,11 @@
 		},
 
 		resetCommercialsShow: function () {
-			/* Resets the commercials, to be shown again. */
+			/* Resets the commercials, to be shown again.
+			```
+			$(".selector").igVideoPlayer("resetCommercialsShow");
+			```
+			*/
 			this._buildCommercialsShow();
 			this._embeddedCommercialsShow = $.extend(true, [], this.options.commercials.embeddedCommercials);
 			this._embeddedCommercialIndex = 0;
@@ -2001,7 +3633,7 @@
 			var controlsDiv = this._getActiveControls(),
 				o = this.options;
 			if (controlsDiv && !o.browserControls && o.autohide &&
-				 !$("#" + this._id("_rvcc")).is(":visible")) {
+				!$("#" + this._id("_rvcc")).is(":visible")) {
 				controlsDiv.show().removeClass(this.css.controlsHideClass);
 			}
 		},
@@ -3001,7 +4633,11 @@
 		},
 
 		togglePlay: function () {
-			/* Toggle control play state. If video is playing it will pause, if video is paused it will play. */
+			/* Toggle control play state. If video is playing it will pause, if video is paused it will play.
+			```
+			$(".selector").igVideoPlayer("togglePlay");
+			```
+			*/
 			var videoElem = this.currentVideo[ 0 ];
 
 			this._prepareForPlay();
@@ -3025,7 +4661,11 @@
 		},
 
 		play: function () {
-			/* Start playing current loaded video if any. */
+			/* Start playing current loaded video if any.
+			```
+			$(".selector").igVideoPlayer("play");
+			```
+			*/
 			var videoElem = this.currentVideo[ 0 ];
 			if (videoElem.paused || videoElem.ended) {
 				this._prepareForPlay();
@@ -3040,7 +4680,11 @@
 		},
 
 		pause: function () {
-			/* Pause the currently playing video if any. */
+			/* Pause the currently playing video if any.
+			```
+			$(".selector").igVideoPlayer("pause");
+			```
+			*/
 			var videoElem = this.currentVideo[ 0 ];
 			if (!videoElem.paused) {
 				this._toggleCenterPlayButton();
@@ -3055,8 +4699,15 @@
 
 		currentTime: function (val) {
 			/* Get or set the current time of the playing video.
-			   paramType="number" Specify the playback position in seconds to navigate to.
-			   returnType="number" Returns the current playback position.
+			```
+				//Get
+				var currentTime = $(".selector").igVideoPlayer("currentTime");
+
+				//Set
+				$(".selector").igVideoPlayer("currentTime", 60);
+			```
+				paramType="number" Specify the playback position in seconds to navigate to.
+				returnType="number" Returns the current playback position.
 			*/
 			var videoElem = this.currentVideo[ 0 ],
 				rawDuration = videoElem.duration;
@@ -3084,6 +4735,9 @@
 
 		screenshot: function (scaleFactor) {
 			/* Get a screenshot of the current video frame. It returns a canvas object that you can position and show on the page. This depends on the browser support for canvas.
+			   ```
+			   var screen = $(".selector").igVideoPlayer("screenshot");
+			   ```
 			   paramType="number" min="0.0" max="1.0" optional="true" Specify scale factor between 0 and 1.
 			   returnType="canvasType" Returns HTML5 canvas element that represents the captured screenshot. */
 			if (!scaleFactor || $.type(scaleFactor) !== "number") {
@@ -3105,12 +4759,18 @@
 
 		supportsVideo: function () {
 			/* Get whether the current browser supports video tag.
+			```
+			var isSuppored = $(".selector").igVideoPlayer("supportsVideo");
+			```
 			   returnType="bool" */
 			return !!document.createElement("video").canPlayType;
 		},
 
 		supportsH264BaselineVideo: function () {
 			/* Get whether the current browser supports H.264 codec.
+			```
+			var isSuppored = $(".selector").igVideoPlayer("supportsH264BaselineVideo");
+			```
 			   returnType="bool" */
 			if (!this.supportsVideo()) {
 				return false;
@@ -3121,6 +4781,9 @@
 
 		supportsOggTheoraVideo: function () {
 			/* Get whether the current browser supports Theora codec.
+			```
+			var isSuppored = $(".selector").igVideoPlayer("supportsOggTheoraVideo");
+			```
 			   returnType="bool" */
 			if (!this.supportsVideo()) {
 				return false;
@@ -3131,6 +4794,9 @@
 
 		supportsWebmVideo: function () {
 			/* Get whether the current browser supports WEBM codec.
+			```
+			var isSuppored = $(".selector").igVideoPlayer("supportsWebmVideo");
+			```
 			   returnType="bool" */
 			if (!this.supportsVideo()) {
 				return false;
@@ -3141,18 +4807,27 @@
 
 		paused: function () {
 			/* Get whether the current played video is paused.
+			```
+			var isPaused = $(".selector").igVideoPlayer("paused");
+			```
 			   returnType="bool" */
 			return this.currentVideo[ 0 ].paused;
 		},
 
 		ended: function () {
 			/* Get whether the current played video has ended.
+			   ```
+			   var hasEnded = $(".selector").igVideoPlayer("ended");
+			   ```
 			   returnType="bool" */
 			return this._getMainVideo()[ 0 ].ended;
 		},
 
 		duration: function () {
 			/* Get the current duration of the played video. It may be NaN if duration is still not loaded or the video is a live stream.
+			```
+			var duration = $(".selector").igVideoPlayer("duration");
+			```
 			returnType="number" */
 			this._refreshDuration();
 			return this._duration;
@@ -3186,12 +4861,19 @@
 
 		seeking: function () {
 			/* Get whether the player is seeking to find the new playback position specified.
+			```
+			var seeking = $(".selector").igVideoPlayer("seeking");
+			```
 			returnType="bool"  */
 			return this.currentVideo[ 0 ].seeking;
 		},
 
 		destroy: function () {
-			/* Destroys the widget. */
+			/* Destroys the widget.
+			```
+				$(".selector").igVideoPlayer("destroy");
+			```
+			*/
 			var css = this.css;
 			/* Clear any player specific settings from the element. */
 			clearTimeout(this._scrollingTimoutId);
