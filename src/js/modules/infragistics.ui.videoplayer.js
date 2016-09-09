@@ -54,9 +54,9 @@
 				//Initialize
 				$(".selector").igVideoPlayer({
 					sources: [
-						"videos/QuinceIntro_1.h264.mp4",
-						"videos/QuinceIntro_1.webmvp8.webm",
-						"videos/QuinceIntro_1.theora.ogv"
+						"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+						"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+						"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
 					]
 				});
 
@@ -64,12 +64,13 @@
 				var sources = $(".selector").igVideoPlayer("option", "sources");
 
 				//Set
-				$(".selector").igVideoPlayer("option", "sources", ["videos/QuinceIntro_1.h264.mp4",
-					"videos/QuinceIntro_1.webmvp8.webm", "videos/QuinceIntro_1.theora.ogv" ]);
+				$(".selector").igVideoPlayer("option", "sources", ["http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv" ]);
 			```
 			*/
 			sources: [],
-			/* type="number" Get or set the width of the control. By default null will stretch the control to fit data, if no other widths are defined.
+			/* type="string|number|null" Get or set the width of the control. By default null will stretch the control to fit data, if no other widths are defined.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -85,7 +86,7 @@
 			```
 			*/
 			width: null,
-			/* type="number" Get or set the height of the control. By default null will stretch the control to fit data, if no other heights are defined.
+			/* type="string|number|null" Get or set the height of the control. By default null will stretch the control to fit data, if no other heights are defined.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -105,14 +106,14 @@
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
-					posterUrl: "../images/videoImage.png"
+					posterUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png"
 				});
 
 				//Get
 				var url = $(".selector").igVideoPlayer("option", "posterUrl");
 
 				//Set
-				$(".selector").igVideoPlayer("option", "posterUrl", "../images/videoImage.png");
+				$(".selector").igVideoPlayer("option", "posterUrl", "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png");
 			```
 			*/
 			posterUrl: "",
@@ -608,7 +609,7 @@
 				//Initialize
 				$(".selector").igVideoPlayer({
 						banners: [{
-							imageUrl: "../Content/images/Banner1.png",
+							imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 							link: "http://quince.infragistics.com/",
 							times: [5, 20, 60],
 							visible: false,
@@ -626,7 +627,7 @@
 
 				//Set
 				var banners = [{
-						imageUrl: '../Content/images/Banner1.png',
+						imageUrl: 'http://www.igniteui.com/images/samples/video-player/quince-intro-1.png',
 						link: 'http://quince.infragistics.com/',
 						times: [5, 20, 60],
 						visible: false,
@@ -646,7 +647,7 @@
 					//Initialize
 					$(".selector").igVideoPlayer({
 						banners: [{
-							imageUrl: "../Content/images/Banner1.png",
+							imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 							link: "http://quince.infragistics.com/",
 							times: [5, 20, 60],
 							visible: false,
@@ -665,7 +666,7 @@
 
 					//Set
 					var banners = $(".selector").igVideoPlayer("option", "banners");
-					banners[0].imageUrl = "../Content/images/Banner1.png";
+					banners[0].imageUrl = "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png";
 				```
 				*/
 				imageUrl: "",
@@ -674,7 +675,7 @@
 					//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -702,7 +703,7 @@
 					//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -730,7 +731,7 @@
 					//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -758,7 +759,7 @@
 					//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -786,7 +787,7 @@
 					//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -810,12 +811,12 @@
 				```
 				*/
 				duration: 1000,
-				/* type="bool" Get or set whether to automatically hide the banner. If set to true, the banner is hidden after banner.hidedelay in milliseconds.
+				/* type="bool" Get or set whether to automatically hide the banner. If set to true, the banner is hidden after [hidedelay](ui.igvideoplayer#options:banners.hidedelay) in milliseconds.
 				```
 				//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -843,7 +844,7 @@
 					//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -871,7 +872,7 @@
 					//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -894,12 +895,12 @@
 				```
 				*/
 				link: null,
-				/* type="number" Get or set the banner width
+				/* type="number|string" Get or set the banner width
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -922,12 +923,12 @@
 				```
 				*/
 				width: null,
-				/* type="number" Get or set the banner height
+				/* type="number|string" Get or set the banner height
 				```
 				//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -955,7 +956,7 @@
 					//Initialize
 					$(".selector").igVideoPlayer({
 							banners: [{
-								imageUrl: "../Content/images/Banner1.png",
+								imageUrl: "http://www.igniteui.com/images/samples/video-player/quince-intro-1.png",
 								link: "http://quince.infragistics.com/",
 								times: [5, 20, 60],
 								visible: false,
@@ -987,17 +988,21 @@
 					commercials: {
 						linkedCommercials: [
 						{
-							sources: [  "videos/QuinceIntro_1.h264.mp4",
-										"videos/QuinceIntro_1.webmvp8.webm",
-										"videos/QuinceIntro_1.theora.ogv" ],
+							sources: [
+							"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+							"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+							"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+						],
 							startTime: 20,
 							title: "Quince Presentation p1",
 							link: "http://quince.infragistics.com/"
 						},
 						{
-							sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
-										"videos/QuinceIntro_Part3_1.webmvp8.webm",
-										"videos/QuinceIntro_Part3_1.theora.ogv" ],
+							sources: [
+							"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+							"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+							"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+						],
 							startTime: 100,
 							title: "Quince Presentation p3",
 							link: "http://quince.infragistics.com/"
@@ -1012,9 +1017,11 @@
 				var commercials = {
 					linkedCommercials: [
 					{
-						sources: [  "http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_1.h264.mp4",
-									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_1.webmvp8.webm",
-									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_1.theora.ogv" ],
+						sources: [
+						"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+						"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+						"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+					],
 						startTime: 20,
 						title: 'Quince<br/>Presentation<br/>p1',
 						link: 'http://quince.infragistics.com/'
@@ -1027,24 +1034,28 @@
 			```
 			*/
 			commercials: {
-				/* type="array" Get or set an array of linked commercial objects. A linked commercial is a separate video file that will be played in the specified position of the original movie clip by the startTime property. This feature is useful if you have frequently changing outside commercial sources.
+				/* type="array" Get or set an array of linked commercial objects. A linked commercial is a separate video file that will be played in the specified position of the original movie clip by [startTime](ui.igvideoplayer#options:commercials.linkedCommercials.startTime). This feature is useful if you have frequently changing outside commercial sources.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
 						commercials: {
 							linkedCommercials: [
 							{
-								sources: [  "videos/QuinceIntro_1.h264.mp4",
-											"videos/QuinceIntro_1.webmvp8.webm",
-											"videos/QuinceIntro_1.theora.ogv" ],
+								sources: [
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+							],
 								startTime: 20,
 								title: "Quince Presentation p1",
 								link: "http://quince.infragistics.com/"
 							},
 							{
-								sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
-											"videos/QuinceIntro_Part3_1.webmvp8.webm",
-											"videos/QuinceIntro_Part3_1.theora.ogv" ],
+								sources: [
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+							],
 								startTime: 100,
 								title: "Quince Presentation p3",
 								link: "http://quince.infragistics.com/"
@@ -1060,9 +1071,11 @@
 					var commercials = $(".selector").igVideoPlayer("option", "commercials");
 					var linkedCommercials = [
 							{
-								sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
-											"videos/QuinceIntro_Part3_1.webmvp8.webm",
-											"videos/QuinceIntro_Part3_1.theora.ogv" ],
+								sources: [
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+							],
 								startTime: 100,
 								title: "Quince Presentation p3",
 								link: "http://quince.infragistics.com/"
@@ -1079,9 +1092,11 @@
 							commercials: {
 								linkedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
@@ -1106,9 +1121,11 @@
 							commercials: {
 								linkedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+										"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+										"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+										"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+									],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
@@ -1133,9 +1150,11 @@
 							commercials: {
 								linkedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
@@ -1160,9 +1179,11 @@
 							commercials: {
 								linkedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
@@ -1188,9 +1209,11 @@
 						commercials: {
 							embeddedCommercials: [
 							{
-								sources: [  "videos/QuinceIntro_1.h264.mp4",
-											"videos/QuinceIntro_1.webmvp8.webm",
-											"videos/QuinceIntro_1.theora.ogv" ],
+								sources: [
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+							],
 								startTime: 20,
 								endTime: 30,
 								title: "Quince Presentation p1",
@@ -1207,9 +1230,11 @@
 					var commercials = $(".selector").igVideoPlayer("option", "commercials");
 					var embeddedCommercials = [
 							{
-								sources: [  "videos/QuinceIntro_1.h264.mp4",
-											"videos/QuinceIntro_1.webmvp8.webm",
-											"videos/QuinceIntro_1.theora.ogv" ],
+								sources: [
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+							],
 								startTime: 20,
 								endTime: 30,
 								title: "Quince Presentation p1",
@@ -1227,9 +1252,11 @@
 							commercials: {
 								embeddedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
@@ -1254,9 +1281,11 @@
 							commercials: {
 								embeddedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									endTime: 30,
 									title: "Quince Presentation p1",
@@ -1282,9 +1311,11 @@
 							commercials: {
 								embeddedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
@@ -1309,9 +1340,11 @@
 							commercials: {
 								embeddedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
@@ -1375,17 +1408,21 @@
 						commercials: {
 							linkedCommercials: [
 							{
-								sources: [  "videos/QuinceIntro_1.h264.mp4",
-											"videos/QuinceIntro_1.webmvp8.webm",
-											"videos/QuinceIntro_1.theora.ogv" ],
+								sources: [
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+							],
 								startTime: 20,
 								title: "Quince Presentation p1",
 								link: "http://quince.infragistics.com/"
 							},
 							{
-								sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
-											"videos/QuinceIntro_Part3_1.webmvp8.webm",
-											"videos/QuinceIntro_Part3_1.theora.ogv" ],
+								sources: [
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+								"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+							],
 								startTime: 100,
 								title: "Quince Presentation p3",
 								link: "http://quince.infragistics.com/"
@@ -1415,24 +1452,28 @@
 				```
 				*/
 				adMessage: {
-					/* type="bool" Get or set whether to apply an animation effect when showing or hiding the ad message. If set to true, the animation is played for commercial.adMessage.animationDuration in milliseconds.
+					/* type="bool" Get or set whether to apply an animation effect when showing or hiding the ad message. If set to true, the animation is played for [animationDuration](ui.igvideoplayer#options:commercials.adMessage.animationDuration) in milliseconds.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
 							commercials: {
 								linkedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
 								},
 								{
-									sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
-												"videos/QuinceIntro_Part3_1.webmvp8.webm",
-												"videos/QuinceIntro_Part3_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 100,
 									title: "Quince Presentation p3",
 									link: "http://quince.infragistics.com/"
@@ -1463,17 +1504,21 @@
 							commercials: {
 								linkedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
 								},
 								{
-									sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
-												"videos/QuinceIntro_Part3_1.webmvp8.webm",
-												"videos/QuinceIntro_Part3_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 100,
 									title: "Quince Presentation p3",
 									link: "http://quince.infragistics.com/"
@@ -1501,17 +1546,21 @@
 							commercials: {
 								linkedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
 								},
 								{
-									sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
-												"videos/QuinceIntro_Part3_1.webmvp8.webm",
-												"videos/QuinceIntro_Part3_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 100,
 									title: "Quince Presentation p3",
 									link: "http://quince.infragistics.com/"
@@ -1539,17 +1588,21 @@
 							commercials: {
 								linkedCommercials: [
 								{
-									sources: [  "videos/QuinceIntro_1.h264.mp4",
-												"videos/QuinceIntro_1.webmvp8.webm",
-												"videos/QuinceIntro_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 20,
 									title: "Quince Presentation p1",
 									link: "http://quince.infragistics.com/"
 								},
 								{
-									sources: [  "videos/QuinceIntro_Part3_1.h264.mp4",
-												"videos/QuinceIntro_Part3_1.webmvp8.webm",
-												"videos/QuinceIntro_Part3_1.theora.ogv" ],
+									sources: [
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+									"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+								],
 									startTime: 100,
 									title: "Quince Presentation p3",
 									link: "http://quince.infragistics.com/"
@@ -2738,9 +2791,11 @@
 			/* Play a linked commercial for this video.
 			```
 				var commercial = {
-					sources: [  "videos/QuinceIntro_1.h264.mp4",
-				        "videos/QuinceIntro_1.webmvp8.webm",
-				        "videos/QuinceIntro_1.theora.ogv" ],
+					sources: [
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.h264.mp4",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.webmvp8.webm",
+					"http://dl.infragistics.com/pg/2011-1/web/shared/videoplayer/videos/QuinceIntro_Part3_1.theora.ogv"
+				],
 					startTime: 20,
 					title: "Quince Presentation p1",
 					link: "http://quince.infragistics.com/"
