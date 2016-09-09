@@ -61,6 +61,18 @@
 		},
 		options: {
 			/* type="success|info|warning|error" Gets or sets the current state of the igNotifier messages. State controls what CSS classes are applied to the messages and target and has interactions with other options as well.
+				```
+				//Initialize
+				$(".selector").igNotifier({
+					state: "success"  
+				});
+		
+				// Get
+				var state = $(".selector").igNotifier("option", "state");
+
+				//Set
+				$(".selector").igNotifier("option", "state", "success");
+				```
 				success type="string" Messages and target CSS have success styles applied.
 				info type="string" Messages have info applied. Target is unaffected.
 				warning type="string" Messages and target CSS have warning styles applied.
@@ -75,6 +87,18 @@
 			*/
 			notifyLevel: "success",
 			/* type="string|object" Controls where the popover DOM should be attached to (only applies to popovers).
+				```
+				//Initialize
+				$(".selector").igNotifier({
+					notifyLevel: "error"
+				});
+
+				// Get
+				var notifyLevel = $(".selector").igNotifier("option", "notifyLevel");
+	
+				//Set
+				$(".selector").igNotifier("option", "notifyLevel", "info");
+				```
 				string type="string" A valid jQuery selector for the element
 				object type="object" A reference to the parent jQuery object
 			*/
