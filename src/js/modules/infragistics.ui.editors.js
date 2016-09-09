@@ -37,7 +37,7 @@
 	/* The igBaseEditor is a widget based on jQuery UI. */
 	$.widget("ui.igBaseEditor", {
 		options: {
-			/* type="string|number|null" Gets/Sets how the width of the control can be set.
+			/* type="string|number|null" Gets/Sets the width of the control.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -55,7 +55,7 @@
 				null type="object" will stretch to fit data, if no other widths are defined.
 			*/
 			width: null,
-			/* type="string|number|null" Gets/Sets how the height of the control can be set.
+			/* type="string|number|null" Gets/Sets the height of the control.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -89,7 +89,7 @@
 			```
 			*/
 			value: null,
-			/* type="number" Gets/Sets value in tabIndex for editor.
+			/* type="number" Gets/Sets tabIndex attribute for the editor input.
 			  ```
 			  //Initialize
 			  $('.selector').%%WidgetName%%({
@@ -104,7 +104,7 @@
 			  ```
 			*/
 			tabIndex: null,
-			/* type="bool" Gets/Sets ability to prevent null value.
+			/* type="bool" Gets/Sets whether the editor value can become null.
 				If that option is false, and editor has no value, then value is set to an empty string.
 				```
 				//Initialize
@@ -150,7 +150,7 @@
 			```
 			*/
 			inputName: null,
-			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is sent into the request.
+			/* type="bool" Gets/Sets the readonly attribute for the input. If set to true the input is readonly, and all buttons and interactions are disabled. On submitting the form the editor belongs to, the value is submitted.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -165,7 +165,7 @@
 			```
 			*/
 			readOnly: false,
-			/* type="bool" Gets/Sets the disabled attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is not sent into the request.
+			/* type="bool" Gets/Sets the disabled attribute for the input. If set to true the input is disabled, and all buttons and interactions are disabled. On submitting the form the editor belongs to, the value is not submitted.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -182,7 +182,7 @@
 			disabled: false,
 			/* type="object" Gets/Sets options supported by the [igValidator](ui.igvalidator#options) widget.
 				Note: Validation rules of [igValidator](ui.igvalidator#options), such as min and max value/length are applied separately triggering errors,
-				while similar options of the editor work to prevent wrong values from being entered.
+				while the corresponding options of the editor prevent values violating the defined rules from being entered.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -876,7 +876,7 @@
 			}
 		},
 		field: function () {
-			/* Gets the visual editor (input) element.
+			/* Gets the input element of the editor.
 			```
 			$(".selector").%%WidgetName%%("field");
 			```
@@ -884,7 +884,7 @@
 			return this._editorInput;
 		},
 		editorContainer: function () {
-			/* Gets reference to jquery object which is used as top/outer element of th editor.
+			/* Gets a reference to the jQuery element that wraps the editor.
 			```
 			$(".selector").%%WidgetName%%("editorContainer");
 			```
@@ -892,7 +892,7 @@
 			return this._editorContainer;
 		},
 		hasFocus: function () {
-			/* Checks if editor has focus.
+			/* Gets whether the editor has focus.
 			```
 				$(".selector").%%WidgetName%%("hasFocus");
 			```
@@ -908,7 +908,7 @@
 			this._setFocusDelay(delay);
 		},
 		hide: function () {
-			/* Hides editor.
+			/* Hides the editor.
 			```
 			$(".selector").%%WidgetName%%("hide");
 			```
@@ -916,7 +916,7 @@
 			this._editorContainer.hide();
 		},
 		show: function () {
-			/* Shows editor.
+			/* Shows the editor.
 			```
 			$(".selector").%%WidgetName%%(("show");
 			```
@@ -924,7 +924,7 @@
 			this._editorContainer.show();
 		},
 		validator: function () {
-			/* Gets reference to [igValidator](ui.igvalidator) used by the editor.
+			/* Gets a reference to [igValidator](ui.igvalidator) used by the editor.
 				```
 					var validator = $(".selector").%%WidgetName%%("validator");
 				```
@@ -932,7 +932,7 @@
 			return this._validator;
 		},
 		isValid: function () {
-			/* Checks if value in editor is valid. Note: This function will not trigger automatic notifications.
+			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
 				```
 				var isValid = $(".selector").%%WidgetName%%("isValid");
 				```
@@ -943,7 +943,7 @@
 			return valid;
 		},
 		validate: function () {
-			/* Triggers validation of editor and show potential warning message. If validatorOptions are set will also call validate on the [igValidator](ui.igvalidator).
+			/* Triggers validation for the editor. If validatorOptions are set will also call validate on the [igValidator](ui.igvalidator).
 				```
 				var valid = $(".selector").%%WidgetName%%("validate");
 				```
@@ -6230,7 +6230,7 @@
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		isValid: function () { //igMaskEditor
-			/* Checks if value in editor is valid. Note: This function will not trigger automatic notifications.
+			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
 			```
 				var isValid = $(".selector").%%WidgetName%%("isValid");
 			```
@@ -9088,7 +9088,7 @@
 			return $.ui.igTextEditor.prototype.spinDownButton.call(this);
 		},
 		isValid: function () { //igDateEditor
-			/* Checks if value in editor is valid. Note: This function will not trigger automatic notifications.
+			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
 			```
 				var isValid = $(".selector").%%WidgetName%%("isValid");
 			```
@@ -9670,7 +9670,7 @@
 				The following jQuery classes can be used in addition http://api.jqueryui.com/theming/icons/
 			*/
 			iconClass: "ui-icon-check",
-			/* type="number" Gets/Sets value in tabIndex for Checkbox Editor.
+			/* type="number" Gets/Sets tabIndex attribute for the editor input.
 			```
 			  //Initialize
 			  $('.selector').%%WidgetName%%({
@@ -10153,7 +10153,7 @@
 			}
 		},
 		isValid: function () { // Checkbox
-			/* Checks if value in editor is valid. Note: This function always returns true for the igCheckboxEditor.
+			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
 				```
 				var isValid = $(".selector").%%WidgetName%%("isValid");
 				```
