@@ -3545,9 +3545,8 @@
 		if (container.length === 0 && args.owner.container) {
 			container = args.owner.container().find("[data-scroll]").eq(0);
 		}
-		container.igScroll({ modifyDOM: false });
-		if (container.data("igScroll") !== null && container.data("igScroll") !== undefined) {
-			/* Set _bKeyboardNavigation only if the control has igScroll initialized */
+		if (container.length !== 0) {
+			container.igScroll({ modifyDOM: false });
 			container.data("igScroll")._bKeyboardNavigation = false;
 		}
 	});
