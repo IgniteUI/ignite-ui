@@ -589,7 +589,7 @@ if (typeof jQuery !== "function") {
 			/*jscs:enable*/
 		},
 		options: {
-			/* type="number" Get or set width of the main container of the file upload control. Main container contains all buttons, progressbar, etc.
+			/* type="number|string|null" Get or set width of the main container of the file upload control. Main container contains all buttons, progressbar, etc.
 			```
 				//Initialize
 				$(".selector").igUpload({
@@ -604,7 +604,7 @@ if (typeof jQuery !== "function") {
 			```
 			*/
 			width: "",
-			/* type="number" Get or set height of the main container of the file upload control. Main container contains all buttons, progressbar, etc.
+			/* type="number|string|null" Get or set height of the main container of the file upload control. Main container contains all buttons, progressbar, etc.
 			```
 				//Initialize
 				$(".selector").igUpload({
@@ -1184,7 +1184,7 @@ if (typeof jQuery !== "function") {
 			```
 			*/
 			controlId: "",
-			/* type="int" The number of digits after the decimal point.
+			/* type="number" The number of digits after the decimal point.
 			```
 				//Initialize
 				$(".selector").igUpload({
