@@ -9459,7 +9459,7 @@
 			};
 			this._trigger(this.events.dropDownListOpened, null, args);
 		},
-		_triggerDropDownOpeninng: function () {
+		_triggerDropDownOpening: function () {
 			var args = {
 				owner: this,
 				editorInput: this._editorInput,
