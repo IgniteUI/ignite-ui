@@ -79,7 +79,7 @@
 				error type="string" Messages and target CSS have error styles applied.
 			*/
 			state: "info",
-			/* type="success|info|warning|error" Controls the level of notifications shown by automatic and manual messages using the [notify()](ui.ignotifier#methods:notify) method. Use [show()](ui.ignotifier#methods:show) to ignore the level.
+			/* type="success|info|warning|error" Controls the level of notifications shown by automatic and manual messages using the [notify](ui.ignotifier#methods:notify) method. Use [show](ui.ignotifier#methods:show) to ignore the level.
 				```
 				//Initialize
 				$(".selector").igNotifier({
@@ -321,7 +321,7 @@
 				manual type="string" The popover is shown manually
 			*/
 			showOn: "manual",
-			/* type="bool" Controls whether the popover will close on blur or not. This option has effect only when the corresponding showOn is set (manual by default)
+			/* type="bool" Controls whether the popover will close on blur or not. This option has effect only when the corresponding [showOn](ui.ignotifier#options:showOn) is set (manual by default)
 				```
 				//Initialize
                 $('.selector').igNotifier({
@@ -524,7 +524,7 @@
 			}
 		},
 		notify: function (state, message) {
-			/* Triggers a notification with a certain state and optional message. The notifyLevel option determines if the notification will be displayed.
+			/* Triggers a notification with a certain state and optional message. The [notifyLevel](ui.ignotifier#options:notifyLevel) option determines if the notification will be displayed.
 				```
 				$( ".selector" ).igNotifier( "notify", "success", "Well Done");
 				```
