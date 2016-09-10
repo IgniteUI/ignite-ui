@@ -7,7 +7,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
 $.ig = $.ig || {};
 $.ig.regional = $.ig.regional || {};
 $.ig.regional.ar = {
@@ -36,4 +37,4 @@ $.ig.regional.ar = {
 if ($.ig.setRegionalDefault) {
 	$.ig.setRegionalDefault('ar');
 }
-}));
+}));// REMOVE_FROM_COMBINED_FILES

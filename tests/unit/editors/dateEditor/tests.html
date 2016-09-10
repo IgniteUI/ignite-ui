@@ -230,6 +230,7 @@
 					});
 					$("#inputEditor33").igDateEditor();
 					$("#inputEditor34").igDateEditor();
+					$("#insertInput").igDateEditor();
 				});
 			}
 			initialized = false;
@@ -1180,6 +1181,23 @@
 					}, 300);
 				}, 100);
 			});
+
+			// #287: Percent/Currency insert method not working with existing value outside edit mode
+			var testId = 'Insert outside edit mode';
+			test(testId, 4, function () {
+				var editor = $("#insertInput"), checkValue,
+					editorInput = editor.igDateEditor("field");
+
+				checkValue = new Date("2/2/2020");
+				editor.igDateEditor("insert", "02022020");
+				equal(editor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after intial insert");
+				equal(editorInput.val(), "2/2/2020", "Insert value not converted to display text");
+
+				checkValue = new Date("05/11/2016");
+				editor.igDateEditor("insert", "05/11/2016");
+				equal(editor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after second insert");
+				equal(editorInput.val(), "5/11/2016", "Insert value not converted to display text");
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1348,6 +1366,7 @@
 		<input id="inputEditor32" />
 		<input id="inputEditor33" />
 		<input id="inputEditor34" />
+		<input id="insertInput" />
 	</div>
 </body>
 </html>

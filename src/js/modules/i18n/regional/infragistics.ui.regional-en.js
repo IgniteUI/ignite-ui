@@ -7,7 +7,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
     $.ig.regional['en-US'] = {
@@ -50,4 +51,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('en-US');
     }
-}));
+}));// REMOVE_FROM_COMBINED_FILES

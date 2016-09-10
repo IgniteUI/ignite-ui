@@ -3391,5 +3391,5 @@
         }
     });
     $.extend($.ui.igTree, { version: "<build_number>" });
-	return $.ui.igTree;
-}));
+	return $.ui.igTree;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

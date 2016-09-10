@@ -37,37 +37,169 @@
 	/* The igBaseEditor is a widget based on jQuery UI. */
 	$.widget("ui.igBaseEditor", {
 		options: {
-			/* type="string|number|null" Gets/Sets how the width of the control can be set.
+			/* type="string|number|null" Gets/Sets the width of the control.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					width : 200
+				});
+
+				//Get
+				var width = $(".selector").%%WidgetName%%("option", "width");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "width", 200);
+				```
 				string The widget width can be set in pixels (px) and percentage (%).
 				number The widget width can be set as a number in pixels.
 				null type="object" will stretch to fit data, if no other widths are defined.
 			*/
 			width: null,
-			/* type="string|number|null" Gets/Sets how the height of the control can be set.
+			/* type="string|number|null" Gets/Sets the height of the control.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					height : 25
+				});
+
+				//Get
+				var height = $(".selector").%%WidgetName%%("option", "height");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "height", 25);
+				```
 				string The height can be set in pixels (px) and percentage (%).
 				number The height can be set as a number in pixels.
 				null type="object" will fit the editor inside its parent container, if no other heights are defined.
 			*/
 			height: null,
-			/* type="object" Gets/Sets value in editor. The effect of setting/getting that option depends on type of editor and on dataMode options for every type of editor.*/
+			/* type="object" Gets/Sets value in editor. The effect of setting/getting that option depends on type of editor and on dataMode options for every type of editor.
+			```
+			//Initialize
+			$(".selector").%%WidgetName%%({
+				value : "Some text"
+			});
+
+			//Get
+			var value = $(".selector").%%WidgetName%%("option", "value");
+
+			//Set
+			$(".selector").%%WidgetName%%("option", "value", "Some text");
+
+			```
+			*/
 			value: null,
-			/* type="number" Gets/Sets value in tabIndex for editor. */
+			/* type="number" Gets/Sets tabIndex attribute for the editor input.
+			  ```
+			  //Initialize
+			  $('.selector').%%WidgetName%%({
+				  tabIndex: 1
+			  });
+
+			  //Get
+			  var tabIndex = $(".selector").%%WidgetName%%("option", "tabIndex");
+
+			  //Set
+			  $(".selector").%%WidgetName%%("option", "tabIndex", 1);
+			  ```
+			*/
 			tabIndex: null,
-			/* type="bool" Gets/Sets ability to prevent null value.
+			/* type="bool" Gets/Sets whether the editor value can become null.
 				If that option is false, and editor has no value, then value is set to an empty string.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					allowNullValue : false
+				});
+
+				//Get
+				var allowNullValue = $(".selector").%%WidgetName%%("option", "allowNullValue");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "allowNullValue", false);
+				```
 			*/
 			allowNullValue: false,
-			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string */
+			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					nullValue : null
+				});
+
+				//Get
+				var nullValue = $(".selector").%%WidgetName%%("option", "nullValue");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "nullValue", null);
+				```
+			*/
 			nullValue: null,
-			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element. */
+			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element.
+			```
+			//Initialize
+				$(".selector").igPercentEditor({
+				  inputName : "textField"
+				});
+
+				//Get
+				var inputName = $(".selector").igPercentEditor("option", "inputName");
+
+			//Set
+			$(".selector").igPercentEditor("option", "inputName", "textField");
+			```
+			*/
 			inputName: null,
-			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is sent into the request.*/
+			/* type="bool" Gets/Sets the readonly attribute for the input. If set to true the input is readonly, and all buttons and interactions are disabled. On submitting the form the editor belongs to, the value is submitted.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					readOnly : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "readOnly");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "readOnly", true);
+			```
+			*/
 			readOnly: false,
-			/* type="bool" Gets/Sets the disabled attribute.Does not allow editing. Disables all the buttons and iteracitons applied. On submit the current value is not sent into the request*/
+			/* type="bool" Gets/Sets the disabled attribute for the input. If set to true the input is disabled, and all buttons and interactions are disabled. On submitting the form the editor belongs to, the value is not submitted.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					disabled : false
+				});
+
+				//Get
+				var disabled = $(".selector").%%WidgetName%%("option", "disabled");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "disabled", true);
+			```
+			*/
 			disabled: false,
-			/* type="object" Gets/Sets options supported by the igValidator widget.
-				Note: Validation rules of igValidator, such as min and max value/length are applied separately triggering errors,
-				while similar options of the editor work to prevent wrong values from being entered.
+			/* type="object" Gets/Sets options supported by the [igValidator](ui.igvalidator#options) widget.
+				Note: Validation rules of [igValidator](ui.igvalidator#options), such as min and max value/length are applied separately triggering errors,
+				while the corresponding options of the editor prevent values violating the defined rules from being entered.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						validatorOptions : {
+						   successMessage: "Success",
+									 required: true,
+									 onchange: true,
+						   notificationOptions: { mode: "popover" }
+						}
+					});
+
+					//Get
+					var validateOptions = $(".selector").%%WidgetName%%("option", "validatorOptions");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "validatorOptions", {onblur: true, onchange: true});
+				```
 			*/
 			validatorOptions: null
 		},
@@ -419,6 +551,9 @@
 				case "tabIndex":
 					this._setTabIndex(value);
 					break;
+				case "inputName":
+					this._valueInput.attr("name", value);
+					break;
 				default:
 					break;
 			}
@@ -705,6 +840,9 @@
 		/* igBaseEditor public methods */
 		inputName: function (newValue) {
 			/* Gets/Sets name attribute applied to the editor element.
+				```
+				$(".selector").%%WidgetName%%("inputName", "checkbox");
+				```
 				paramType="string" optional="true" The new input name.
 				returnType="string" Current input name. */
 			if (newValue) {
@@ -738,40 +876,66 @@
 			}
 		},
 		field: function () {
-			/* Gets the visual editor element.
+			/* Gets the input element of the editor.
+			```
+			$(".selector").%%WidgetName%%("field");
+			```
 			returnType="$" The visual editor element. */
 			return this._editorInput;
 		},
 		editorContainer: function () {
-			/* Gets reference to jquery object which is used as top/outer element of igEditor.
+			/* Gets a reference to the jQuery element that wraps the editor.
+			```
+			$(".selector").%%WidgetName%%("editorContainer");
+			```
 			returnType="$" The container editor element. */
 			return this._editorContainer;
 		},
 		hasFocus: function () {
-			/* Checks if editor has focus.
+			/* Gets whether the editor has focus.
+			```
+				$(".selector").%%WidgetName%%("hasFocus");
+			```
 				returnType="bool" Returns if the editor is focused or not. */
 			return this._focused;
 		},
 		setFocus: function (delay) {
-			/* Set focus to editor with delay.
+			/* Set focus to the editor with delay.
+				```
+				$(".selector").%%WidgetName%%("setFocus", 200);
+				```
 				paramType="number" optional="true" The delay before focusing the editor. */
 			this._setFocusDelay(delay);
 		},
 		hide: function () {
-			/* Hides editor. */
+			/* Hides the editor.
+			```
+			$(".selector").%%WidgetName%%("hide");
+			```
+			*/
 			this._editorContainer.hide();
 		},
 		show: function () {
-			/* Shows editor. */
+			/* Shows the editor.
+			```
+			$(".selector").%%WidgetName%%(("show");
+			```
+			*/
 			this._editorContainer.show();
 		},
 		validator: function () {
-			/* Gets reference to igValidator used by the editor.
-				returnType="object" Returns reference to igValidator or null. */
+			/* Gets a reference to [igValidator](ui.igvalidator) used by the editor.
+				```
+					var validator = $(".selector").%%WidgetName%%("validator");
+				```
+				returnType="object" Returns reference to [igValidator](ui.igvalidator) or null. */
 			return this._validator;
 		},
 		isValid: function () {
-			/* Checks if value in editor is valid. Note: This function will not trigger automatic notifications.
+			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
+				```
+				var isValid = $(".selector").%%WidgetName%%("isValid");
+				```
 				returnType="bool" Whether editor value is valid or not. */
 			this._skipMessages = true;
 			var valid = this._validateValue(this._editMode ? this.field().val() : this.value());
@@ -779,7 +943,10 @@
 			return valid;
 		},
 		validate: function () {
-			/* Triggers validation of editor and show potential warning message. If validatorOptions are set will also call validate on the igValidator.
+			/* Triggers validation for the editor. If validatorOptions are set will also call validate on the [igValidator](ui.igvalidator).
+				```
+				var valid = $(".selector").%%WidgetName%%("validate");
+				```
 				returnType="bool" Whether editor value is valid or not. */
 			if (this.options.validatorOptions) {
 				return this.validator().validate();
@@ -788,7 +955,11 @@
 			}
 		},
 		destroy: function () {
-			/* Destructor of the widget */
+			/* Destructor of the widget
+				```
+					$(".selector").%%WidgetName%%("destroy");
+				```
+			*/
 			this._destroyValidator();
 			this._detachEvents();
 			this._clearTimeouts();
@@ -2389,12 +2560,18 @@
 				}
 			}, 10));
 		},
-		_insertHandler: function (string) {
+		_insertHandler: function (string) {  // TextEditor
 			var selection = this._getSelection(this.field()[ 0 ]),
 				previousValue, newValue;
 			if (string) {
-				previousValue = this._editMode ? this._editorInput.val() : this.displayValue();
-				newValue = this._replaceDisplayValue(selection, previousValue, string);
+				if (this._editMode) {
+					previousValue = this._editorInput.val();
+					newValue = this._replaceDisplayValue(selection, previousValue, string);
+				} else {
+					// D.P. 30th Aug 2016 #287 Insert to replace value when not in edit mode
+					previousValue = this.value();
+					newValue = string;
+				}
 				this._insert(newValue, previousValue);
 			}
 		},
@@ -2440,14 +2617,16 @@
 						}
 					}
 				}
-				if (this._focused) {
+				if (this._editMode) {
 					this._editorInput.val(newValue);
 					if (selection !== undefined) {
 						// Move the caret
 						this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
 					}
+				} else {
+					this._processInternalValueChanging(newValue);
+					this._exitEditMode();
 				}
-				this._processValueChanging(newValue);
 				this._processTextChanged();
 			} else {
 				this._editorInput.val(previousValue);
@@ -2963,8 +3142,18 @@
 			return this._getSelection(this._editorInput[ 0 ]).end;
 		},
 		insert: function (string) {
-			/* Paste text at location of caret. Note: method raises the "valueChanged" event.
-				paramType="string" optional="false" The string to be inserted. */
+			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value if the editor is not focused.
+				Note: method raises the "textChanged" event.
+				paramType="string" optional="false" The string to be inserted.
+				```
+				$('.selector').%%WidgetName%%({
+					blur: function (evt, ui) {
+						// insert 0 as the user leaves the field
+						ui.owner.insert("0");
+					}
+				});
+				```
+			*/
 			this._insertHandler(string);
 		},
 		select: function (start, end) {
@@ -3059,6 +3248,18 @@
 			maxValue: null,
 			/* type="bool" Gets/Sets ability to prevent null value.
 				If that option is disabled, and editor has no value, then value is set to 0 (or minValue/maxValue).
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					allowNullValue : false
+				});
+
+				//Get
+				var allowNullValue = $(".selector").%%WidgetName%%("option", "allowNullValue");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "allowNullValue", false);
+				```
 			*/
 			allowNullValue: false,
 			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.*/
@@ -3091,7 +3292,24 @@
 				password type="string" Editor based on INPUT element with type password is created.
 				multiline type="string" multiline editor based on TEXTAREA element is created.
 			*/
-			textMode: "text"
+			textMode: "text",
+			/* type="object" Gets/Sets value in editor. The effect of setting/getting that option depends on type of editor and on dataMode options for every type of editor.
+
+			```
+			//Initialize
+			$(".selector").%%WidgetName%%({
+				value : 42
+			});
+
+			//Get
+			var value = $(".selector").%%WidgetName%%("option", "value");
+
+			//Set
+			$(".selector").%%WidgetName%%("option", "value", 42);
+
+			```
+			*/
+			value: null
 		},
 		events: {
 			/* igWidget events go here */
@@ -4817,6 +5035,21 @@
 		},
 
 		// igPercentEditor public methods
+		insert: function (string) {
+			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value (modified by the displayFactor) if the editor is not focused.
+				Note: method raises the "textChanged" event.
+				paramType="string" optional="false" The string to be inserted.
+				```
+				$('.selector').igPercentEditor({
+					blur: function (evt, ui) {
+						// insert 0 as the user leaves the field
+						ui.owner.insert("0");
+					}
+				});
+				```
+			*/
+			this._insertHandler(string);
+		},
 		percentSymbol: function (symbol) {
 			/* Gets/sets a string that is used as the percent symbol shown with the number in the input. The value provided as a param is propagated to the percentSymbol option and thus has the same priority as the option.
 				paramType="sting" optional="true" New percent symbol.
@@ -4913,7 +5146,23 @@
 			visibleItemsCount: 5,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igMaskEditor
 			*/
-			maxLength: null
+			maxLength: null,
+			/* type="object" Gets/Sets value in editor. The effect of setting/getting that option depends on type of editor and on dataMode options for every type of editor.
+			```
+			//Initialize
+			$(".selector").igMaskEditor({
+				value : "0415565685"
+			});
+
+			//Get
+			var value = $(".selector").igMaskEditor("option", "value");
+
+			//Set
+			$(".selector").igMaskEditor("option", "value", "0415565685");
+
+			```
+			*/
+			value: null
 		},
 		events: {
 			/* igWidget events go here */
@@ -5009,14 +5258,20 @@
 				if (newValue) { newValue = newValue.toLocaleLowerCase(); }
 			}
 			this._promptCharsIndices = [];
-			newValue = this._parseValueByMask(newValue);
-			this._editorInput.val(newValue);
-			this._processTextChanged();
 
-			if (selection !== undefined) {
-				// Move the caret
-				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+			if (this._editMode) {
+				newValue = this._parseValueByMask(newValue);
+				this._editorInput.val(newValue);
+				if (selection !== undefined) {
+					// Move the caret
+					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+				}
+			} else if (newValue !== previousValue) {
+				newValue = this._parseValueByMask(newValue);
+				this._processInternalValueChanging(newValue);
+				this._exitEditMode();
 			}
+			this._processTextChanged();
 		},
 		_pasteHandler: function (e, drop) { // MaskEditor Handler
 			var self = this, previousValue = $(e.target).val(), newValue, data, selection,
@@ -5975,7 +6230,10 @@
 			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
 		},
 		isValid: function () { //igMaskEditor
-		/* Checks if value in editor is valid. Note: This function will not trigger automatic notifications.
+			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
+			```
+				var isValid = $(".selector").%%WidgetName%%("isValid");
+			```
 			returnType="bool" Whether editor value is valid or not. */
 			var value, valid;
 
@@ -6001,7 +6259,20 @@
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
 			/* type="date" Gets/Sets value in editor. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it as value. MVC date format can be used too. For example Date(/"thicks"/).
-				Note! This option doesn't use the displayInputFormat to extract the date. */
+				Note! This option doesn't use the displayInputFormat to extract the date.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					value : new Date (2015, 11, 11)
+				});
+
+				//Get
+				var value = $(".selector").%%WidgetName%%("option", "value");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "value", new Date (2015, 11, 11));
+				```
+				*/
 			value: null,
 			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
 				Note! This option doesn't use the displayInputFormat to extract the date.
@@ -6127,6 +6398,21 @@
 			centuryThreshold: 29,
 			/* type="number" Gets/Sets difference between year in Gregorian calendar and displayed year. */
 			yearShift: 0,
+			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					nullValue : new Date(2015, 09, 08)
+				});
+
+				//Get
+				var nullText = $(".selector").%%WidgetName%%("option", "nullValue");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "nullValue", new Date(2015, 09, 08));
+				```
+			*/
+			nullValue: null,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			isLimitedToListValues: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
@@ -8802,7 +9088,10 @@
 			return $.ui.igTextEditor.prototype.spinDownButton.call(this);
 		},
 		isValid: function () { //igDateEditor
-			/* Checks if value in editor is valid. Note: This function will not trigger automatic notifications.
+			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
+			```
+				var isValid = $(".selector").%%WidgetName%%("isValid");
+			```
 				returnType="bool" Whether editor value is valid or not */
 			var value, valid;
 			value = this.field().val();
@@ -9381,9 +9670,35 @@
 				The following jQuery classes can be used in addition http://api.jqueryui.com/theming/icons/
 			*/
 			iconClass: "ui-icon-check",
-			/* type="number" Gets/Sets value in tabIndex for Checkbox Editor. */
+			/* type="number" Gets/Sets tabIndex attribute for the editor input.
+			```
+			  //Initialize
+			  $('.selector').%%WidgetName%%({
+				  tabIndex: 1
+			  });
+
+			  //Get
+			  var tabIndex = $(".selector").%%WidgetName%%("option", "tabIndex");
+
+			  //Set
+			  $(".selector").%%WidgetName%%("option", "tabIndex", 1);
+			```
+			*/
 			tabIndex: 0,
-			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.*/
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.
+			```
+			//Initialize
+			$('.selector').igCheckboxEditor({
+				  readOnly: true
+			  });
+
+			  //Get
+			  var readOnly = $(".selector").igCheckboxEditor("option", "readOnly");
+
+			  //Set
+			  $(".selector").igCheckboxEditor("option", "readOnly", true);
+			```
+			*/
 			readOnly: false,
 			/*@Ignored@*/
 			allowNullValue: false,
@@ -9838,7 +10153,10 @@
 			}
 		},
 		isValid: function () { // Checkbox
-			/* Checks if value in editor is valid. Note: This function always returns true for the igCheckboxEditor
+			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
+				```
+				var isValid = $(".selector").%%WidgetName%%("isValid");
+				```
 				returnType="bool" Whether editor value is valid or not */
 
 			// TODO VERIFY
@@ -9849,11 +10167,11 @@
 		value: function (newValue) {
 			/* Gets/Sets Current checked state/Value of the igCheckboxEditor that will be submitted by the HTML form.
 				1. If the 'value' option IS NOT defined, then 'value' method will match the checked state of the editor.
-				This is a good option when the checkbox is intended to operate as a Boolean editor.
+				This is a good option when the checkbox is intended to operate as a Boolean editor. In that case the return type is bool.
 				2. If the 'value' option IS defined, then 'value' method will return the 'value' option,
 				the one that is going to be submitted by the HTML form to the server.
 				To get checked state regardless of the 'value' option, use $("checkBox").igCheckboxEditor("option", "checked");
-				returnType="boolean|string" Current checked state or the value of the igCheckboxEditor that will be submitted by the HTML form.
+				returnType="string" Current checked state(bool) or the value(string) of the igCheckboxEditor that will be submitted by the HTML form.
 			*/
 			if (newValue !== undefined) {
 				if (this._inputValue === undefined) {
@@ -9887,4 +10205,4 @@
 		}
 	});
 
-}));
+}));// REMOVE_FROM_COMBINED_FILES

@@ -944,8 +944,15 @@
 				equal(valueDate.getDate(), 10, "The value in the field should be 10");
 			});
 			testId = 'Bug 220479 - 1';
-			test(testId, 3, function () {
+			test(testId, 5, function () {
 				
+					//#287: Percent/Currency insert method not working with existing value outside edit mode
+					// set initial value:
+					$('#220479Editor1').igPercentEditor("value", "1");
+					$('#220479Editor1').igPercentEditor("insert", "23");
+					equal($('#220479Editor1').igPercentEditor("field").val(), "23.00%", "The text after insert should be 23.00%");
+					strictEqual($('#220479Editor1').igPercentEditor("value"), 0.23, "The value after insert should be 0.23");
+
 					$("#220479Editor1").igPercentEditor("field").click().focus();
 					stop();
 					setTimeout(function () {
@@ -959,7 +966,7 @@
 
 						equal($('#220479Editor1').igPercentEditor("value"), "0.2", "The value in the field should be 0.2. Actual: " + $('#220479Editor1').igPercentEditor("value"));
 
-					}, 1000);
+					}, 100);
 				
 			});
 

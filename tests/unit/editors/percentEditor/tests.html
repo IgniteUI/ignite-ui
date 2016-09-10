@@ -309,7 +309,7 @@
 			});
 
 			var testId = 'Paste and insert';
-			test(testId, 6, function () {
+			test(testId, 8, function () {
 				var $editor = $("#pasteEditor"),
 					editorInput = $editor.igPercentEditor("field");
 
@@ -317,6 +317,12 @@
 				$("#pEditor11").igPercentEditor( "insert", "1" );	
 				
 				equal($("#pEditor11").parent().parent().hasClass("ui-ignotify-warn"), true, "The notifier didn't show a warning.");
+
+				//#287: Percent/Currency insert method not working with existing value outside edit mode
+				$("#pEditor11").igPercentEditor("field").blur();
+				$("#pEditor11").igPercentEditor( "insert", "2" );
+				equal($("#pEditor11").igPercentEditor("field").val(), "2.00%", "The text after insert (out of edit) is not correct");	
+				strictEqual($("#pEditor11").igPercentEditor("value"), 0.02, "The text after insert (out of edit) is not correct");	
 
 				editorInput.trigger("focus");
 				stop();

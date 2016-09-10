@@ -405,5 +405,5 @@
     });
 
     $.extend($.ui.igSplitButton, { version: "<build_number>" });
-    return $.ui.igSplitButton;
-}));
+    return $.ui.igSplitButton;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

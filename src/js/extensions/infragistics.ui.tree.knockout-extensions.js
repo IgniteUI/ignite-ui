@@ -35,7 +35,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
 	ko.bindingHandlers.igTree = {
 		init: function (element, valueAccessor) {
 			var options = $.extend(true, {}, ko.utils.unwrapObservable(valueAccessor())),
@@ -131,4 +132,4 @@
 			$(element).closest(".ui-igtree").igTree("applyChangesToNode", $(element), valueAccessor().value);
 		}
 	};
-}));
+}));// REMOVE_FROM_COMBINED_FILES
