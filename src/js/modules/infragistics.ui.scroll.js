@@ -3545,8 +3545,10 @@
 		if (container.length === 0 && args.owner.container) {
 			container = args.owner.container().find("[data-scroll]").eq(0);
 		}
-		container.igScroll({ modifyDOM: false });
-		container.data("igScroll")._bKeyboardNavigation = false;
+		if (container.length !== 0) {
+			container.igScroll({ modifyDOM: false });
+			container.data("igScroll")._bKeyboardNavigation = false;
+		}
 	});
 	return $.ui.igScroll;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
