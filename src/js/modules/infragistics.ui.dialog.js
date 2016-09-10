@@ -298,7 +298,7 @@
 				```
 			*/
 			headerText: null,
-			/* type="bool" Gets/Sets whether the dialog header should be visible. 
+			/* type="bool" Gets/Sets whether the dialog header should be visible.
 				```
 				//Initialize
 				$(".selector").igDialog({
