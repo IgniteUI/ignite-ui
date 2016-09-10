@@ -597,6 +597,8 @@
 		css: {
 			/* Classes applied to the element the igScroll is instantiated on */
 			scrollableElem: "igscroll-scrollable",
+			/* Classes applied to the element the igScroll is instantiated on, related to touch scrolling */
+			touchScrollableElem: "igscroll-touchscrollable",
 			/* Classes applied to the scroll content wrapper */
 			scrollContent: "igscroll-content",
 			/* Classes applied to the scroll container */
@@ -709,6 +711,7 @@
 			//Counter for how many animation for smooth wheel scrolling are present. When 0 we are no longer scrolling with wheel
 			this._numSmoothAnimation = 0;
 
+			elem.addClass(this.css.touchScrollableElem);
 			if (this.options.modifyDOM) {
 				elem.addClass(this.css.scrollableElem);
 
@@ -3545,8 +3548,10 @@
 		if (container.length === 0 && args.owner.container) {
 			container = args.owner.container().find("[data-scroll]").eq(0);
 		}
-		container.igScroll({ modifyDOM: false });
-		container.data("igScroll")._bKeyboardNavigation = false;
+		if (container.length !== 0) {
+			container.igScroll({ modifyDOM: false });
+			container.data("igScroll")._bKeyboardNavigation = false;
+		}
 	});
 	return $.ui.igScroll;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES

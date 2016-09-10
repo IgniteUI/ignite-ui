@@ -1,7 +1,7 @@
-﻿@import url("infragistics.ui.shared.css");
+@import url("infragistics.ui.shared.css");
 
 .ui-chart-container {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: "Segoe UI",Arial,sans-serif;
     font-size: 12px;
     border-width: 0px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -9,8 +9,8 @@
 
 .ui-chart-axis
 {
-    border-color: #D0D0D0;
-    background-color: #D0D0D0;
+    border-color: #d6d6d6;
+    background-color: #d6d6d6;
 }
 
 .ui-chart-legend-items-list
@@ -26,16 +26,32 @@
 
 .ui-chart-legend-item-badge
 {
-    vertical-align: middle;   
+    vertical-align: middle;
 }
 
 .ui-chart-tooltip {
-    -moz-box-shadow: 0 0 2px #555555;
-    -webkit-box-shadow: 0 0 2px #555555;
-    box-shadow: 0 0 2px #555555;
+    -moz-box-shadow: 0 0 2px rgba(0,0,0,0.6);
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.6);
+    box-shadow: 0 0 2px rgba(0,0,0,0.6);
     padding: 5px 8px;
     font-size: 12px;
-    font-family: Verdana, Helvetica, sans-serif;
+    font-family:"Segoe UI", Arial, sans-serif;
+	position:relative;
+	background:#fff;
+}
+.ui-chart-tooltip:after {
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(255, 255, 255, 0);;
+	border-top-color: #fff;
+	border-width: 6px;
+	margin-left: -6px;
 }
 
 .ui-chart-default-tooltip-content {
@@ -137,65 +153,65 @@
 }
 
 .ui-chart-title {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
-    color: #696969;
+    color: #444;
     margin: 5px 0px 5px 0px;
 }  
 
 .ui-chart-subtitle {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
-    color: #696969;
+    color: #666;
     margin: 0px 0px 5px 0px;
 }
 
 .ui-chart-horizontal-axis-title {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
-    color: #696969;
+    color: #444;
     margin: 0px 0px 5px 0px;
 }
 
 .ui-chart-vertical-axis-title {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
-    color: #696969;
+    color: #444;
     margin: 0px 0px 0px 5px;
 }
 
 .ui-horizontal-axis-labels {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     vertical-align: top;
     margin: 5px 0px 5px 0px;
-    color: #9B9B9B;
+    color: #777;
 }
 
 .ui-vertical-axis-labels {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     text-align: right;
     margin: 0px 5px 0px 5px;
-    color: #9B9B9B;
+    color: #777;
 }
 
 .ui-angular-axis-labels {
     margin: 5px;
-    color: #9B9B9B;
+    color: #777;
 }
 
 .ui-radial-axis-labels {
     vertical-align: top;
     margin: 5px 0px 5px 0px;
-    color: #9B9B9B;
+    color: #777;
 }
 
 
 
 .ui-chart-category-axis-tick {
     height: 5px;
-    color: #D0D0D0;
+    color: #d6d6d6;
 }
 .ui-chart-area-fill-opacity {
     opacity: 0.7;

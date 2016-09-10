@@ -565,6 +565,61 @@
 				}, 1000);
 			});
 			/* //Test GroupBy with type: "remote"*/
+
+			//test for bug 224258
+			test("Test if groupBy DataView is populated after remote request", function () {
+				stop();
+				var callBackCalled = false;
+				var groupByData = null;
+				var exprs = [
+						{
+							fieldName: "Id",
+							isGroupBy: true,
+							dir: "desc"
+						}
+				];
+				var ds = new $.ig.DataSource({
+					schema: {
+						fields: [
+							{ name: "Id", type: "number" },
+							{ name: "ProductName", type: "string" },
+							{ name: "ProductDescription" },
+							{ name: "Price" },
+							{ name: "Promotion", type: "bool" }],
+						searchField: "records"
+					},
+					filtering: {
+						enabled: true,
+						type: "local"
+					},
+					paging: {
+						enabled: true,
+						type: "local",
+						pageSize: 5
+					},
+					sorting: {
+						enabled: true,
+						type: "remote",
+						expressions: exprs,
+						defaultFields: exprs
+					},
+					dataSource:  generateData(10),
+					dataSourceUrl: "/",
+					responseDataKey: "records",
+					callback: function () {
+						callBackCalled = true;
+						groupByData = remoteDs.groupByDataView();
+					}
+				});
+
+				ds.dataBind();
+
+				setTimeout(function(){
+					start();
+					ok(callBackCalled, "Callback should be called.");
+					ok(groupByData.length > 0, "Verify that groupby data is populated.");
+				}, 500);
+			});
 		});
 	</script>
 </head>
