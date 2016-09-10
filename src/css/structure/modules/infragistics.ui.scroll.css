@@ -4,6 +4,9 @@
 	position: relative;
 	overflow: hidden;
 	outline:none;
+}
+
+.igscroll-touchscrollable {
 	-ms-touch-action: none;
 	-ms-content-zooming: none;
 }
