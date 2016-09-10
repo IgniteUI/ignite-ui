@@ -231,51 +231,68 @@
 				Use ui.element to get a reference to the editor element.
 			*/
 			rendered: "rendered",
-			/* Event which is raised on mousedown at any part of editor including drop-down list.
+			/* Event which is raised on mousedown.
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field. */
 			mousedown: "mousedown",
-			/* Event which is raised on mouseup at any part of editor including drop-down list.
+			/* Event which is raised on mouseup
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field. */
 			mouseup: "mouseup",
 			/* Event which is raised on mousemove at any part of editor including drop-down list.
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field. */
 			mousemove: "mousemove",
 			/* Event which is raised on mouseover at any part of editor including drop-down list.
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field. */
 			mouseover: "mouseover",
 			/* Event which is raised on mouseleave at any part of editor including drop-down list.
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field. */
 			mouseout: "mouseout",
 			/* Event which is raised when input field of editor loses focus.
-				Function takes argument evt.
+				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
-				Use evt.originalEvent to obtain reference to event of browser. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field. */
 			blur: "blur",
 			/* Event which is raised when input field of editor gets focus.
-				Function takes argument evt.
+				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
-				Use evt.originalEvent to obtain reference to event of browser. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field. */
 			focus: "focus",
+			/* cancel="true" Event which is raised on keydown event.
+				Return false in order to cancel key action.
+				Function takes arguments evt and ui.
+				Use evt.originalEvent to obtain reference to event of browser.
+				Use ui.owner to obtain reference to igEditor.
+				Use ui.key to obtain value of keyCode. */
+			keydown: "keydown",
+			/* cancel="true" Event which is raised on keypress event.
+				Return false in order to cancel key action.
+				Function takes arguments evt and ui.
+				Use evt.originalEvent to obtain reference to event of browser.
+				Use ui.owner to obtain reference to igEditor.
+				Use ui.key to obtain value of keyCode. */
+			keypress: "keypress",
+			/* Event which is raised on keyup event.
+				Function takes arguments evt and ui.
+				Use evt.originalEvent to obtain reference to event of browser.
+				Use ui.owner to obtain reference to igEditor.
+				Use ui.key to obtain value of keyCode. */
+			keyup: "keyup",
 			/* cancel="true" Event which is raised before value in editor was changed.
 				Return false in order to cancel change.
 				It can be raised on lost focus or on spin events.
@@ -1110,27 +1127,6 @@
 			textArea: "ui-igedit-textarea"
 		},
 		events: {
-			/* cancel="true" Event which is raised on keydown event.
-				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode. */
-			keydown: "keydown",
-			/* cancel="true" Event which is raised on keypress event.
-				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode.
-				Set ui.key to another character which will replace original entry. */
-			keypress: "keypress",
-			/* Event which is raised on keyup event.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode. */
-			keyup: "keyup",
 			/* cancel="true" Event which is raised when the drop down is opening.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
@@ -1162,7 +1158,7 @@
 				Use ui.list to obtain reference to the list contaier.
 				Use ui.item to obtain reference to the list item which is about to be selected. */
 			dropDownItemSelecting: "dropDownItemSelecting",
-			/* cancel="true" Event which is raised when the drop down list item is selected.
+			/* Event which is raised when the drop down list item is selected.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
@@ -5166,44 +5162,17 @@
 		},
 		events: {
 			/* igWidget events go here */
-
-			/* cancel="true" @Ignored@ Event which is raised when the drop down is opening.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+			/* @Ignored@ */
 			dropDownListOpening: "dropDownListOpening",
-			/*@Ignored@ Event which is raised when the drop down is already opened.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+			/* @Ignored@ */
 			dropDownListOpened: "dropDownListOpened",
-			/* cancel="true" @Ignored@ Event which is raised when the drop down is closing.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+			/* @Ignored@ */
 			dropDownListClosing: "dropDownListClosing",
-			/*@Ignored@ Event which is raised when the drop down is already closed.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+			/* @Ignored@ */
 			dropDownListClosed: "dropDownListClosed",
-			/* cancel="true" @Ignored@ Event which is raised when the drop down list item is selecting.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
-				Use ui.item to obtain reference to the list item which is about to be selected. */
+			/* @Ignored@ */
 			dropDownItemSelecting: "dropDownItemSelecting",
-			/* cancel="true" @Ignored@ Event which is raised when the drop down list item is selected.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
-				Use ui.item to obtain reference to the list item which is selected. */
+			/* @Ignored@ */
 			dropDownItemSelected: "dropDownItemSelected"
 		},
 		_create: function () { //igMaskEditor
@@ -9490,7 +9459,7 @@
 			};
 			this._trigger(this.events.dropDownListOpened, null, args);
 		},
-		_triggerDropDownOpeninng: function () {
+		_triggerDropDownOpening: function () {
 			var args = {
 				owner: this,
 				editorInput: this._editorInput,
@@ -9722,27 +9691,6 @@
 			checkboxInput: "ui-helper-hidden"
 		},
 		events: {
-			/* cancel="true" Event which is raised on keydown event.
-				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode. */
-			keydown: "keydown",
-			/* cancel="true" Event which is raised on keypress event.
-				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode.
-				Set ui.key to another character which will replace original entry. */
-			keypress: "keypress",
-			/* Event which is raised on keyup event.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode. */
-			keyup: "keyup",
 			/* cancel="true" Event which is raised before value in editor was changed.
 				Return false in order to cancel change.
 				It can be raised on lost focus or on spin events.
