@@ -26,16 +26,18 @@
 
 .ui-chart-axis
 {
-    border-color: #989EA3;
-    background-color: #989EA3;
+    border-color: #d6d6d6;
+    background-color: #d6d6d6;
 }
 
 .ui-chart-tooltip
 {
-    -moz-box-shadow: 0 0 2px #555555;
-    -webkit-box-shadow: 0 0 2px #555555;
-    box-shadow: 0 0 2px #555555;
-    padding:3px;
+    -moz-box-shadow: 0 0 2px rgba(0,0,0,0.6);
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.6);
+    box-shadow: 0 0 2px rgba(0,0,0,0.6);
+    padding: 5px 8px;
+    font-size: 12px;
+    font-family:"Segoe UI", Arial, sans-serif;
 }
 
 .ui-chart-non-html5 {

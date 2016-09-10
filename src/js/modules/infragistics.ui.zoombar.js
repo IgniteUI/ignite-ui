@@ -42,17 +42,72 @@
 			*/
 			provider: $.ig.ZoombarProviderDataChart,
 			/* type="string|object" Specifies the element on which the widget the Zoombar is attached to is initialized.
+			```
+				//Initialize
+					$(".selector").igZoombar({
+					target: "#chart"
+				});
+
+				//Get
+				var target = $(".selector").igZoombar("option", "target");
+			```
 				string A valid jQuery selector that the Zoombar can use to find the element.
 				object A valid jQuery object, the first element of which is that element.
-			*/
+		*/
 			target: null,
 			/* type="auto|object|none" Specifies how the target widget's clone is rendered inside the Zoombar.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					clone: {
+						axes: [{
+							name: "xAxis",
+							type: "categoryX",
+							dataSource: data
+						}, {
+							name: "yAxis",
+							type: "numericY"
+						}],
+						series: [{
+							name: "series",
+							dataSource: data,
+							type: "financial",
+							isTransitionInEnabled: true,
+							displayType: "ohlc",
+							xAxis: "xAxis",
+							yAxis: "yAxis",
+							openMemberPath: "Open",
+							highMemberPath: "High",
+							lowMemberPath: "Low",
+							closeMemberPath: "Close",
+							thickness: 1,
+							negativeBrush: "rgba(198, 45, 54, .8)"
+						}],
+						windowResponse: "immediate",
+						gridMode: "none"
+					}
+					});
+
+				//Get
+				var clone = $(".selector").igZoombar("option", "clone");
+			```
 				auto type="string" Options for initializing the clone will be inferred from the target widget. Certain properties will be altered to make the clone more suitable for using inside the Zoombar.
 				none type="string" No clone of the target widget will be initialized inside the Zoombar.
 				object A valid set of properties to initialize the clone with.
 			*/
 			clone: "auto",
 			/* type="auto|number|string|null" Specifies the width of the Zoombar.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					width: "500px"
+				});
+
+				//Get
+				var width = $(".selector").igZoombar("option", "width");
+			```
 				auto type="string" The width of the Zoombar will be the same as the widget it is attached to.
 				number The widget width in pixels (px).
 				string The widget width can be set in pixels (px) and percentage (%).
@@ -60,32 +115,149 @@
 			*/
 			width: "auto",
 			/* type="string|number|null" Specifies the height of the Zoombar.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					height: "100px"
+				});
+
+				//Get
+				var height = $(".selector").igZoombar("option", "height");
+			```
 				number The widget height in pixels (px).
 				string The widget height can be set in pixels (px) and percentage (%).
 				null type="object" The Zoombar will stretch vertically to fit its container if it has height set, otherwise assumes 70px.
 			*/
 			height: "70px",
 			/* type="immediate|deferred" Specifies when the zoom effect is applied.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					zoomAction: "deferred"
+				});
+
+				//Get
+				var zoomAction = $(".selector").igZoombar("option", "zoomAction");
+			```
 				immediate type="string" The zoom action is applied as the end-user interacts with the zoom window.
 				deferred type="string" The zoom action is applied after the interaction with the zoom window completes.
 			*/
 			zoomAction: "immediate",
-			/* type="number" Specifies the distance (in percents) the zoom window moves when the left or right scroll bar buttons are clicked. */
+			/* type="number" Specifies the distance (in percents) the zoom window moves when the left or right scroll bar buttons are clicked.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					zoomWindowMoveDistance: 20
+				});
+
+				//Get
+				var zoomWindowMoveDistance = $(".selector").igZoombar("option", "zoomWindowMoveDistance");
+			```
+			*/
 			zoomWindowMoveDistance: 10,
-			/* type="object" Specifies the default zoom in percentages. */
+			/* type="object" Specifies the default zoom in percentages.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					defaultZoomWindow: {
+						left: 50,
+						width: 50
+					}
+				});
+
+				//Get
+				var defaultZoomWindow = $(".selector").igZoombar("option", "defaultZoomWindow");
+			```
+			*/
 			defaultZoomWindow: {
-				/* type="number" The left component of the zoom window in percentages. */
+				/* type="number" The left component of the zoom window in percentages.
+				```
+					//Initialize
+					$(".selector").igZoombar({
+						target: "#chart",
+						defaultZoomWindow: {
+							left: 50,
+							width: 50
+						}
+					});
+
+					//Get
+					var defaultZoomWindow = $(".selector").igZoombar("option", "defaultZoomWindow");
+				```
+				*/
 				left: 35,
-				/* type="string" The width of the zoom window in percentages. */
+				/* type="string" The width of the zoom window in percentages.
+				```
+					//Initialize
+					$(".selector").igZoombar({
+						target: "#chart",
+						defaultZoomWindow: {
+							left: 50,
+							width: 50
+						}
+					});
+
+					//Get
+					var defaultZoomWindow = $(".selector").igZoombar("option", "defaultZoomWindow");
+				```
+				*/
 				width: 30
 			},
-			/* type="number" The minimal width the zoom window can have in percentages. */
+			/* type="number" The minimal width the zoom window can have in percentages.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					zoomWindowMinWidth: 10
+				});
+
+				//Get
+				var zoomWindowMinWidth = $(".selector").igZoombar("option", "zoomWindowMinWidth");
+			```
+			*/
 			zoomWindowMinWidth: 5,
-			/* type="number" Specifies the animation duration (in milliseconds) when hover style is applied or removed from elements. */
+			/* type="number" Specifies the animation duration (in milliseconds) when hover style is applied or removed from elements.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					hoverStyleAnimationDuration: 1000
+				});
+
+				//Get
+				var hoverStyleAnimationDuration = $(".selector").igZoombar("option", "hoverStyleAnimationDuration");
+			```
+			*/
 			hoverStyleAnimationDuration: 500,
-			/* type="number" Specifies the pan duration (in milliseconds) when the window changes position. Set to 0 for snap. */
+			/* type="number" Specifies the pan duration (in milliseconds) when the window changes position. Set to 0 for snap.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					windowPanDuration: 1000
+				});
+
+				//Get
+				var windowPanDuration = $(".selector").igZoombar("option", "windowPanDuration");
+			```
+			*/
 			windowPanDuration: 500,
-			/* type="number" Initial tabIndex for the Zoombar container elements. */
+			/* type="number" Initial tabIndex for the Zoombar container elements.
+			```
+				//Initialize
+				$(".selector").igZoombar({
+					target: "#chart",
+					tabIndex: 5
+				});
+
+				//Get
+				var tabIndex = $(".selector").igZoombar("option", "tabIndex");
+			```
+			*/
 			tabIndex: 0
 		},
 		events: {
@@ -96,6 +268,26 @@
 			Use ui.newZoom.left to get the new zoom window left position as a fraction of the absolute width of the target
 			Use ui.newZoom.width to get the new zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "igzoombarzoomchanging", function (evt, ui) {
+					//Get the previous zoom window left position as a fraction of the absolute width of the target
+					ui.previousZoom.left
+					//Get the previous zoom window width as a fraction of the absolute width of the target
+					ui.previousZoom.width
+					//Get the new zoom window left position as a fraction of the absolute width of the target
+					ui.newZoom.left
+					//Get the new zoom window width as a fraction of the absolute width of the target
+					ui.newZoom.width
+					//Get reference to igZoombar
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igZoombar({
+					zoomChanging: function (evt, ui) { ... }
+				});
+			```
 			*/
 			zoomChanging: "zoomChanging",
 			/* Event fired after a zoom action is applied.
@@ -105,6 +297,26 @@
 			Use ui.newZoom.left to get the new zoom window left position as a fraction of the absolute width of the target
 			Use ui.newZoom.width to get the new zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "igzoombarzoomchanged", function (evt, ui) {
+					//Get the previous zoom window left position as a fraction of the absolute width of the target
+					ui.previousZoom.left
+					//Get the previous zoom window width as a fraction of the absolute width of the target
+					ui.previousZoom.width
+					//Get the new zoom window left position as a fraction of the absolute width of the target
+					ui.newZoom.left
+					//Get the new zoom window width as a fraction of the absolute width of the target
+					ui.newZoom.width
+					//Get reference to igZoombar
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igZoombar({
+					zoomChanged: function (evt, ui) { ... }
+				});
+			```
 			*/
 			zoomChanged: "zoomChanged",
 			/* Event fired after a provider is created based on the options.provider value. If an instance is passed as a value for the option the event won't fire.
@@ -119,6 +331,22 @@
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "igzoombarwindowdragstarting", function (evt, ui) {
+					//Get the current zoom window left position as a fraction of the absolute width of the target
+					ui.zoomWindow.left
+					//Get the current zoom window width as a fraction of the absolute width of the target
+					ui.zoomWindow.width
+					//Get reference to igZoombar
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igZoombar({
+					windowDragStarting: function (evt, ui) { ... }
+				});
+			```
 			*/
 			windowDragStarting: "windowDragStarting",
 			/* Event fired when the user starts dragging the zoom window.
@@ -126,6 +354,22 @@
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "igzoombarwindowdragstarted", function (evt, ui) {
+					//Get the current zoom window left position as a fraction of the absolute width of the target
+					ui.zoomWindow.left
+					//Get the current zoom window width as a fraction of the absolute width of the target
+					ui.zoomWindow.width
+					//Get reference to igZoombar
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igZoombar({
+					windowDragStarted: function (evt, ui) { ... }
+				});
+			```
 			*/
 			windowDragStarted: "windowDragStarted",
 			/* cancel="true" Event fired when the user drags the zoom window.
@@ -133,6 +377,22 @@
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "igzoombarwindowdragging", function (evt, ui) {
+					//Get the current zoom window left position as a fraction of the absolute width of the target
+					ui.zoomWindow.left
+					//Get the current zoom window width as a fraction of the absolute width of the target
+					ui.zoomWindow.width
+					//Get reference to igZoombar
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igZoombar({
+					windowDragging: function (evt, ui) { ... }
+				});
+			```
 			*/
 			windowDragging: "windowDragging",
 			/* cancel="true" Event fired when the user attemtps to stop dragging the zoom window.
@@ -140,6 +400,22 @@
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "igzoombarwindowdragending", function (evt, ui) {
+					//Get the current zoom window left position as a fraction of the absolute width of the target
+					ui.zoomWindow.left
+					//Get the current zoom window width as a fraction of the absolute width of the target
+					ui.zoomWindow.width
+					//Get reference to igZoombar
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igZoombar({
+					windowDragEnding: function (evt, ui) { ... }
+				});
+			```
 			*/
 			windowDragEnding: "windowDragEnding",
 			/* Event fired when the user stops dragging the zoom window.
@@ -147,6 +423,22 @@
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "igzoombarwindowdragended", function (evt, ui) {
+					//Get the current zoom window left position as a fraction of the absolute width of the target
+					ui.zoomWindow.left
+					//Get the current zoom window width as a fraction of the absolute width of the target
+					ui.zoomWindow.width
+					//Get reference to igZoombar
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igZoombar({
+					windowDragEnded: function (evt, ui) { ... }
+				});
+			```
 			*/
 			windowDragEnded: "windowDragEnded",
 			/* cancel="true" Event fired when the user resizes the zoom window with the window"s handles.
@@ -154,6 +446,22 @@
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "igzoombarwindowresizing", function (evt, ui) {
+					//Get the current zoom window left position as a fraction of the absolute width of the target
+					ui.zoomWindow.left
+					//Get the current zoom window width as a fraction of the absolute width of the target
+					ui.zoomWindow.width
+					//Get reference to igZoombar
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igZoombar({
+					windowResizing: function (evt, ui) { ... }
+				});
+			```
 			*/
 			windowResizing: "windowResizing",
 			/* Event fired after the user resizes the zoom window with the window"s handles.
@@ -161,6 +469,22 @@
 			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
 			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
 			Use ui.owner to get reference to igZoombar.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "igzoombarwindowresized", function (evt, ui) {
+					//Get the current zoom window left position as a fraction of the absolute width of the target
+					ui.zoomWindow.left
+					//Get the current zoom window width as a fraction of the absolute width of the target
+					ui.zoomWindow.width
+					//Get reference to igZoombar
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igZoombar({
+					windowResized: function (evt, ui) { ... }
+				});
+			```
 			*/
 			windowResized: "windowResized"
 		},
@@ -233,7 +557,11 @@
 			$.Widget.prototype._createWidget.apply(this, arguments);
 		},
 		destroy: function () {
-			/* destroys the Zoombar widget */
+			/* destroys the Zoombar widget
+			```
+				$(".selector").igZoombar("destroy");
+			```
+			*/
 			this._unregisterEvents();
 			this._provider.clean();
 			delete this._provider;
@@ -263,29 +591,44 @@
 		},
 		/* public API */
 		widget: function () {
-			/* returns the main zoombar element */
+			/* returns the main zoombar element
+			```
+				var widget = $(".selector").igZoombar("widget");
+			```*/
 			return this.element;
 		},
 		id: function () {
 			/* returns the ID of the element the zoombar is initialized on
+			```
+				var id = $(".selector").igZoombar("id");
+			```
 				returnType="string"
 			*/
 			return this.element[ 0 ].id;
 		},
 		container: function () {
 			/* returns the DIV that is the topmost container of the zoombar widget
+			```
+				var container = $(".selector").igZoombar("container");
+			```
 				returnType="dom"
 			*/
 			return $("#" + this.element[ 0 ].id + "_zoombar_container");
 		},
 		clone: function () {
 			/* returns the element the clone widget is initialized on
+			```
+				var clone = $(".selector").igZoombar("clone");
+			```
 				returnType="dom"
 			*/
 			return $("#" + this.element[ 0 ].id + "_zoombar_clone");
 		},
 		zoom: function (left, width) {
 			/* gets or sets the current zoom window
+			```
+				$("#zoombar").igZoombar("zoom", 0, 10);
+			```
 				paramType="number" optional="true" The left parameter of the new zoom window in percentages
 				paramType="number" optional="true" The width parameter of the new zoom window in percentages
 				returnType="object"
