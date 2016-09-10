@@ -4029,6 +4029,12 @@
 				if (!this._filter || !this._transformedData) {
 					this._populateTransformedData();
 				}
+				/* M.H. 26 Aug 2016 Fix for bug 224258: Remote groupBy does not work in HierarchicalGrid */
+				if (!this._gbDataView && this.isGroupByApplied(this.settings.sorting.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData :
+																this._data,
+											this.settings.sorting.expressions);
+				}
 				/* invoke the callback if present: */
 				if (this._runtimeType !== "remoteUrl") {
 					this._invokeCallback(callee, callback);
