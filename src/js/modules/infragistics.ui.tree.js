@@ -112,15 +112,15 @@
 		options: {
 			/* type="string|number|null" Gets/Sets the width of the control container.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					width : "300px"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var width = $(".selector").igTree("option", "width");
-				
-				//Set 
+
+				//Set
 				$(".selector").igTree("option", "width", "300px");
 			...
 
@@ -131,15 +131,15 @@
 			width: null,
 			/* type="string|number|null" Gets/Sets how the height of of the control container.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					height : 400
-				});  
-				
-				//Get 
-				var height = $(".selector").igTree("option", "height");  
-				
-				//Set 
+				});
+
+				//Get
+				var height = $(".selector").igTree("option", "height");
+
+				//Set
 				$(".selector").igTree("option", "height", 400);
 			...
 				string The widget height can be set in pixels (px) and percentage (%).
@@ -153,53 +153,53 @@
 				$(".selector").igTree({
 					checkboxMode : "triState"
 				});
-				
+
 				//Get
-				var checkboxMode = $(".selector").igTree("option", "checkboxMode");  
+				var checkboxMode = $(".selector").igTree("option", "checkboxMode");
 			...
 				off type="string" Checkboxes are turned off and are not rendered for the tree.
 				biState type="string" Checkboxes are rendered and support two states (checked and unchecked). Checkboxes do not cascade down or up in this mode.
 				triState type="string" Checkboxes are rendered and support three states (checked, partial and unchecked). Checkboxes cascade up and down in this mode.
 			*/
 			checkboxMode: "off",
-			/* type="bool" Gets/Sets one or more branches to be expanded at a time. If set to true then only one branch at each level of the tree can be expanded at a time. Otherwise multiple branches can be expanded at a time. 
+			/* type="bool" Gets/Sets one or more branches to be expanded at a time. If set to true then only one branch at each level of the tree can be expanded at a time. Otherwise multiple branches can be expanded at a time.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					singleBranchExpand : true
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var singleBranchExpand = $(".selector").igTree("option", "singleBranchExpand");
-				
-				//Set 
+
+				//Set
 				$(".selector").igTree("option", "singleBranchExpand", true);
 			...
 			*/
 			singleBranchExpand: false,
-			/* type="bool" Gets/Sets whether nodes are hoverable. Setting this option to false would make the tree to not apply hover styles on the nodes when they are hovered. 
+			/* type="bool" Gets/Sets whether nodes are hoverable. Setting this option to false would make the tree to not apply hover styles on the nodes when they are hovered.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					hotTracking : false
-				});  
-				
-				//Get 
-				var tracking = $(".selector").igTree("option", "hotTracking");  
-				
-				//Set 
+				});
+
+				//Get
+				var tracking = $(".selector").igTree("option", "hotTracking");
+
+				//Set
 				$(".selector").igTree("option", "hotTracking", false);
 			...
 			*/
 			hotTracking: true,
 			/* type="string|null" Gets/Set the image url applied to all parent nodes.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					parentNodeImageUrl : "images/folder.png"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var url = $(".selector").igTree("option", "parentNodeImageUrl");
 			...
 				string Image with the specified URL will be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
@@ -208,12 +208,12 @@
 			parentNodeImageUrl: null,
 			/* type="string|null" Gets/Sets the CSS class applied to all parent nodes.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					parentNodeImageClass : "folderimage"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var class = $(".selector").igTree("option", "parentNodeImageClass");
 			...
 				string Specified class with a CSS sprite that would be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
@@ -222,12 +222,12 @@
 			parentNodeImageClass: null,
 			/* type="string|null" Gets/Sets the tooltip applied to all parent node images.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					parentNodeImageTooltip : "Folder"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var text = $(".selector").igTree("option", "parentNodeImageTooltip");
 			...
 				string Specified a tooltip that would be rendered for each node that has children.
@@ -236,12 +236,12 @@
 			parentNodeImageTooltip: null,
 			/* type="string|null" Gets/Sets the image url applied to all leaf nodes.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					leafNodeImageUrl : "images/book.png"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var url = $(".selector").igTree("option", "leafNodeImageUrl");
 			...
 				string Image with the specified URL will be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
@@ -250,12 +250,12 @@
 			leafNodeImageUrl: null,
 			/* type="string|null" Gets/Sets the CSS class applied to all leaf nodes.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					leafNodeImageClass : "leafnodeimage"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var class = $(".selector").igTree("option", "leafNodeImageClass");
 			...
 				string Specified class with a CSS sprite that would be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
@@ -264,19 +264,19 @@
 			leafNodeImageClass: null,
 			/* type="string|null" Gets/Sets the tooltip applied to all leaf node images.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					leafNodeImageTooltip : "Book"
-				});  
-				
-				//Get 
-				var text = $(".selector").igTree("option", "leafNodeImageTooltip"); 
+				});
+
+				//Get
+				var text = $(".selector").igTree("option", "leafNodeImageTooltip");
 			...
 				string Specified a tooltip that would be rendered for each node that has no children.
 				null Option is ignored
 			*/
 			leafNodeImageTooltip: null,
-			/* type="number" Gets/Sets the duration of each animation such as the expand/collapse. 
+			/* type="number" Gets/Sets the duration of each animation such as the expand/collapse.
 			...
 				//Initialize
 				$(".selector").igTree({
@@ -284,7 +284,7 @@
 				});
 
 				//Get
-				var animationDuration = $(".selector").igTree("option", "animationDuration");  
+				var animationDuration = $(".selector").igTree("option", "animationDuration");
 
 				//Set
 				$(".selector").igTree("option", "animationDuration", 25);
@@ -293,12 +293,12 @@
 			animationDuration: 200,
 			/* type="string" Gets the node data-path attribute separator character.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					pathSeparator : "."
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var pathSeparator = $(".selector").igTree("option", "pathSeparator");
 			...
 			*/
@@ -310,45 +310,45 @@
 					$(".selector").igTree({
 						dataSource : data
 					});
-					
+
 					//Get
-					var dataSource = $(".selector").igTree("option", "dataSource");  
+					var dataSource = $(".selector").igTree("option", "dataSource");
 				...
 
 			*/
 			dataSource: null,
-			/* type="string|null" Gets/Sets a remote URL accepted by $.ig.DataSource in order to request data from it. 
+			/* type="string|null" Gets/Sets a remote URL accepted by $.ig.DataSource in order to request data from it.
 			...
 				//Initialize
 				$(".selector").igTree({
 					dataSourceUrl : "data.svc"
 				});
-				
+
 				//Get
 				var url = $(".selector").igTree("option", "dataSourceUrl");
 			...
 			*/
 			dataSourceUrl: null,
-			/* type="string|null" Gets the type of the data source. Delegates the value to $.ig.DataSource.settings.type. Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource.settings.type. 
+			/* type="string|null" Gets the type of the data source. Delegates the value to $.ig.DataSource.settings.type. Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource.settings.type.
 			...
 				//Initialize
 				$(".selector").igTree({
 					dataSourceType : "xml"
 				});
-				
+
 				//Get
-				var type = $(".selector").igTree("option", "dataSourceType"); 
+				var type = $(".selector").igTree("option", "dataSourceType");
 			...
 			*/
 			dataSourceType: null,
 			/* type="string|null" Gets the JSON key at which a remote data source will write the data. Delegates the value to $.ig.DataSource.settings.responseDataKey. Please refer to the documentation of $.ig.DataSource.settings.responseDataKey.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					responseDataKey : "d.results"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var responseDataKey = $(".selector").igTree("option", "responseDataKey");
 				...
 					string Specifies the name of the property in which data records are held if the response is wrapped.
@@ -357,67 +357,67 @@
 			responseDataKey: null,
 			/* type="string|null" Gets the data type of the remote data source response. Delegates the value to $.ig.DataSource.settings.responseDataType. Please refer to the documentation of $.ig.DataSource.settings.responseDataType.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					responseDataType : "json"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var responseDataType = $(".selector").igTree("option", "responseDataType");
 			...
-				string Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType .
+				string Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType.
 				null Option is ignored.
 			*/
 			responseDataType: null,
-			/* type="string" Gets the HTTP verb used for remote requests. Specifies the HTTP verb to be used to issue the requests to the dataSourceUrl. 
+			/* type="string" Gets the HTTP verb used for remote requests. Specifies the HTTP verb to be used to issue the requests to the dataSourceUrl.
 			...
 				//Initialize
 				$(".selector").igTree({
 					requestType : "GET"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var url = $(".selector").igTree("option", "requestType");
 			...
 			*/
 			requestType: "GET",
-			/* type="string" Gets the type of the content in a remote data source response. Content type of the response from the dataSourceUrl. See http://api.jquery.com/jQuery.ajax/ => contentType 
+			/* type="string" Gets the type of the content in a remote data source response. Content type of the response from the dataSourceUrl. See http://api.jquery.com/jQuery.ajax/ => contentType
 			...
 				//Initialize
 				$(".selector").igTree({
 					responseContentType : "application/json"
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var url = $(".selector").igTree("option", "responseContentType");
 			...
 			*/
 			responseContentType: null,
-			/* type="number" Gets the initial depth the igTree is going to be expanded to upon initial render. 
+			/* type="number" Gets the initial depth the igTree is going to be expanded to upon initial render.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					initialExpandDepth : 1
-				});  
-				
-				//Get 
-				var expandDepth = $(".selector").igTree("option", "initialExpandDepth");  
+				});
+
+				//Get
+				var expandDepth = $(".selector").igTree("option", "initialExpandDepth");
 			...
 			*/
 			initialExpandDepth: -1,
-			/* type="bool" Gets whether all the data would be bound initially or each child collection would be bound upon expand. 
+			/* type="bool" Gets whether all the data would be bound initially or each child collection would be bound upon expand.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					loadOnDemand : true
-				});  
-				
-				//Get 
+				});
+
+				//Get
 				var loadOnDemand = $(".selector").igTree("option", "loadOnDemand");
 			...
 			*/
 			loadOnDemand: false,
-			/* type="object" Gets the data binding properties and keys. The igTree uses these to extract the corresponding data from the dataSource. 
+			/* type="object" Gets the data binding properties and keys. The igTree uses these to extract the corresponding data from the dataSource.
 			...
 				$(".selector").igTree({
 					bindings: {
@@ -440,7 +440,7 @@
 			...
 			*/
 			bindings: {
-				/* type="string" Gets the name of the data source property the value of which would be the node text. 
+				/* type="string" Gets the name of the data source property the value of which would be the node text.
 				...
 					$(".selector").igTree({
 						bindings: {
@@ -452,7 +452,7 @@
 				...
 				*/
 				textKey: "Text",
-				/* type="string" Gets the XPath to the text attribute/node. Used in client-only binding directly to XML. 
+				/* type="string" Gets the XPath to the text attribute/node. Used in client-only binding directly to XML.
 				...
 				//XML nodes have this structure:
 				//<Folder Text="Y.Malmsteen" ImageUrl="book.png" Value="Folder" NavigateUrl="http://www.infragistics.com">
@@ -468,7 +468,7 @@
 				...
 				*/
 				textXPath: "@Text",
-				/* type="string" Gets the name of the data source property the value of which would be the node value. 
+				/* type="string" Gets the name of the data source property the value of which would be the node value.
 				...
 					$(".selector").igTree({
 						bindings: {
@@ -480,7 +480,7 @@
 				...
 				*/
 				valueKey: "Value",
-				/* type="string" Gets the XPath to the value attribute/node. Used in client-only binding directly to XML. 
+				/* type="string" Gets the XPath to the value attribute/node. Used in client-only binding directly to XML.
 				...
 				//XML nodes have this structure:
 				//<Folder Text="Y.Malmsteen" ImageUrl="book.png" Value="Folder" NavigateUrl="http://www.infragistics.com">
@@ -496,7 +496,7 @@
 				...
 				*/
 				valueXPath: "@Value",
-				/* type="string" Gets the name of the data source property the value of which would be used as a URL for the node image. 
+				/* type="string" Gets the name of the data source property the value of which would be used as a URL for the node image.
 				...
 					$(".selector").igTree({
 						bindings: {
@@ -506,7 +506,7 @@
 				...
 				*/
 				imageUrlKey: "ImageUrl",
-				/* type="string" Gets the XPath to the image URL attribute/node. Used in client-only binding directly to XML. 
+				/* type="string" Gets the XPath to the image URL attribute/node. Used in client-only binding directly to XML.
 				...
 				//XML node has the following structure:
 				//<Folder Text="Y.Malmsteen" ImageUrl="book.png" Value="Folder" NavigateUrl="http://www.infragistics.com">
@@ -522,17 +522,17 @@
 				...
 				*/
 				imageUrlXPath: "@ImageUrl",
-				/* type="string" Gets the name of the data source property the value of which would be used as an href attribute for the node anchor. 
+				/* type="string" Gets the name of the data source property the value of which would be used as an href attribute for the node anchor.
 				...
 					$(".selector").igTree({
 						bindings: {
 							navigateUrlKey: "NavigateUrl"
 						}
-					});	
+					});
 				...
 				*/
 				navigateUrlKey: "NavigateUrl",
-				/* type="string" Gets the XPath to the navigate URL attribute/node. Used in client-only binding directly to XML. 
+				/* type="string" Gets the XPath to the navigate URL attribute/node. Used in client-only binding directly to XML.
 				...
 				//XML node has the following structure:
 				//<Folder Text="Y.Malmsteen" ImageUrl="book.png" Value="Folder" NavigateUrl="http://www.infragistics.com">
@@ -596,7 +596,7 @@
 							}
 						}
 					});
-				...				
+				...
 				*/
 				primaryKey: null,
 				/* type="string" Gets the node content template for the current layer of bindings. The igTree utilizes igTemplating
@@ -610,7 +610,7 @@
 						bindings: {
 							nodeContentTemplate: "Stay: ${Duration}"
 						}
-					}); 
+					});
 				...
 				*/
 				nodeContentTemplate: null,
@@ -637,7 +637,7 @@
 				...
 				*/
 				childDataProperty: "Nodes",
-				/* type="string" Gets the XPath to the child data node. Used in client-only binding directly to XML. 
+				/* type="string" Gets the XPath to the child data node. Used in client-only binding directly to XML.
 				...
 					$(".selector").igTree({
 						dataSource: data,
@@ -651,7 +651,7 @@
 				...
 				*/
 				childDataXPath: "Children",
-				/* type="string" Gets the XPath to the root data node. Used in client-only binding directly to XML. 
+				/* type="string" Gets the XPath to the root data node. Used in client-only binding directly to XML.
 				...
 				//XML node has the following structure:
 				//<Folder Text="Y.Malmsteen" ImageUrl="book.png" Value="Folder" NavigateUrl="http://www.infragistics.com">
@@ -663,7 +663,7 @@
 				...
 				*/
 				searchFieldXPath: "Nodes",
-				/* type="object" Gets the next layer of bindings in a recursive fashion. 
+				/* type="object" Gets the next layer of bindings in a recursive fashion.
 				...
 					$(".selector").igTree({
 						bindings: {
@@ -689,7 +689,7 @@
 					/* Recursively defines next layer fo bindings */
 				}
 			},
-			/* type="string" Gets the default target attribute value for the node anchors. 
+			/* type="string" Gets the default target attribute value for the node anchors.
 			...
 				//Initialize
 				$(".selector").igTree({
@@ -701,7 +701,7 @@
 			...
 			*/
 			defaultNodeTarget: "_self",
-			/* type="boolean" Gets/Sets whether drag and drop functionality is enabled. 
+			/* type="boolean" Gets/Sets whether drag and drop functionality is enabled.
 			...
 				//Initialize
 				$(".selector").igTree({
@@ -710,41 +710,41 @@
 
 				//Get
 				var value = $(".selector").igTree("option", "dragAndDrop");
-				
+
 				//Set
 				$(".selector").igTree("option", "dragAndDrop", false);
 			...
 			*/
 			dragAndDrop: false,
-			/* type="string" Gets the URL to which updating requests will be made. 
+			/* type="string" Gets the URL to which updating requests will be made.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					updateUrl: "http://example.com/update"
-				});  
-				
-				//Get 
-				var updateUrl = $(".selector").igTree("option", "updateUrl");  
-				
-				//Set 
+				});
+
+				//Get
+				var updateUrl = $(".selector").igTree("option", "updateUrl");
+
+				//Set
 				$(".selector").igTree("option", "updateUrl", "http://example.com/update");
 			...
 			*/
 			updateUrl: null,
-			/* type="object" Gets/Sets specific settings for the drag and drop functionality. 
+			/* type="object" Gets/Sets specific settings for the drag and drop functionality.
 			...
-				//Initialize 
-				$(".selector").igTree({     
+				//Initialize
+				$(".selector").igTree({
 					dragAndDropSettings : {
 						allowDrop: true,
 						...
 					}
-				});  
+				});
 
-				//Get 
+				//Get
 				var settings = $(".selector").igTree("option", "dragAndDropSettings");
-				
-				//Set 
+
+				//Set
 				settings.allowDrop = {
 					allowDrop: false,
 					...
@@ -753,20 +753,20 @@
 			...
 			*/
 			dragAndDropSettings: {
-				/* type="boolean" Gets whether the widget will accept drag and drop from other controls. 
+				/* type="boolean" Gets whether the widget will accept drag and drop from other controls.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							allowDrop: true
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var allowDrop = settings.allowDrop;
-					
-					//Set 
+
+					//Set
 					settings.allowDrop = false;
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -774,18 +774,18 @@
 				allowDrop: false,
 				/* type="default|copy|move" Gets the drag and drop mode.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							dragAndDropMode: "copy"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var dragAndDropMode = settings.dragAndDropMode;
-					
-					//Set 
+
+					//Set
 					settings.dragAndDropMode = "copy";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -796,18 +796,18 @@
 				dragAndDropMode: "default",
 				/* type="number" Gets the opacity of the drag helper: 0 is fully transparent while 1 is fully opaque.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							dragOpacity: 0.25
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var dragOpacity = settings.dragOpacity;
-					
-					//Set 
+
+					//Set
 					settings.dragOpacity = 0.5;
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -815,18 +815,18 @@
 				dragOpacity: 0.75,
 				/* type="boolean" Gets whether the helper would revert to its original position upon an invalid drop.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							revert: false
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var revert = settings.revert;
-					
-					//Set 
+
+					//Set
 					settings.revert = false;
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -834,18 +834,18 @@
 				revert: true,
 				/* type="number" Gets the duration of the revert animation.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							revertDuration: 1000
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var revertDuration = settings.revertDuration;
-					
-					//Set 
+
+					//Set
 					settings.revertDuration = 1000;
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -853,18 +853,18 @@
 				revertDuration: 500,
 				/* type="number" Gets the z-index that would be set for the drag helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							zIndex: 20
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var zIndex = settings.zIndex;
-					
-					//Set 
+
+					//Set
 					settings.zIndex = 20;
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -874,56 +874,56 @@
 				/* type="number" Gets the delay between mousedown and the start of the actual drag. Smaller values make the nodes
 									more sensitive to drag and may interfere with selection.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							dragStartDelay: 400
 						}
-					});  
-					
-					//Get 
+					});
+
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var dragStartDelay = settings.dragStartDelay;
-					
-					//Set 
+
+					//Set
 					settings.dragStartDelay = 500;
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
 				*/
 				dragStartDelay: 200,
-				/* type="boolean" Gets whether when dragging over a collapsed node with children will trigger the node to expand. 
+				/* type="boolean" Gets whether when dragging over a collapsed node with children will trigger the node to expand.
 					...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							expandOnDragOver: false
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var expand = settings.expandOnDragOver;
-					
-					//Set 
+
+					//Set
 					settings.expandOnDragOver = false;
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
 				*/
 				expandOnDragOver: true,
-				/* type="number" Gets the delay after hovering a parent node before expanding that node during drag with expandOnDragOver: true. 
+				/* type="number" Gets the delay after hovering a parent node before expanding that node during drag with expandOnDragOver: true.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							expandDelay: 1500
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var expandDelay = settings.expandDelay;
-					
-					//Set 
+
+					//Set
 					settings.expandDelay = 2000;
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -931,18 +931,18 @@
 				expandDelay: 1000,
 				/* type="function|default" Gets the type of helper to be rendered for the drag operation.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							helper: "myHelper"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var helper = settings.helper;
-					
-					//Set 
+
+					//Set
 					settings.helper = "myHelper";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -953,18 +953,18 @@
 				/* type="function|null" Gets the method for custom drop point validation. Returning true from this function would render the drop point valid, while false would make it invalid.
 					The function has one parameter which is the current drop point and the context (this) of the function is the drag element.
 					...
-						//Initialize 
-						$(".selector").igTree({     
+						//Initialize
+						$(".selector").igTree({
 							dragAndDropSettings : {
 								customDropValidation: function() {}
 							}
-						});  
+						});
 
-						//Get 
+						//Get
 						var settings = $(".selector").igTree("option", "dragAndDropSettings");
 						var customDropValidation = settings.customDropValidation;
-						
-						//Set 
+
+						//Set
 						settings.customDropValidation = function() {};
 						$(".selector").igTree("option", "dragAndDropSettings", settings);
 					...
@@ -973,18 +973,18 @@
 				/* type="boolean|selector|element|string|array" Gets the containment for the drag helper. The area inside of which the
 					helper is contained would be scrollable while dragging.
 					...
-						//Initialize 
-						$(".selector").igTree({     
+						//Initialize
+						$(".selector").igTree({
 							dragAndDropSettings : {
 								containment: true
 							}
-						});  
+						});
 
-						//Get 
+						//Get
 						var settings = $(".selector").igTree("option", "dragAndDropSettings");
 						var containment = settings.containment;
-						
-						//Set 
+
+						//Set
 						settings.containment = false;
 						$(".selector").igTree("option", "dragAndDropSettings", settings);
 					...
@@ -996,18 +996,18 @@
 				containment: false,
 				/* type="string" Gets the HTML markup for the invalid helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							invalidMoveToMarkup: "<div class=\"message\">Invalid</div>"
 						}
-					});  
-			
-					//Get 
+					});
+
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var invalidMoveToMarkup = settings.invalidMoveToMarkup;
-					
-					//Set 
+
+					//Set
 					settings.invalidMoveToMarkup = "<div class=\"message\">Invalid</div>";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -1015,18 +1015,18 @@
 				invalidMoveToMarkup: "<div><p><span></span><strong>{0}</strong></p></div>",
 				/* type="string" Gets the HTML markup for the "move to" helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							moveToMarkup: "<div class=\"message\"><h3>Move To</h3><p> {0}</p></div>"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var moveBetweenMarkup = settings.moveBetweenMarkup;
-					
-					//Set 
+
+					//Set
 					settings.moveBetweenMarkup = "<div class=\"message\"><h3>Move Between</h3><p> {0} and {1}</p></div>";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -1034,18 +1034,18 @@
 				moveToMarkup: "<div><p><span></span><strong>Move to</strong> {0}</p></div>",
 				/* type="string" Gets the HTML markup for the "move between" helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							moveBetweenMarkup: "<div class=\"message\"><h3>Move Between</h3><p> {0}</p></div>"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var moveBetweenMarkup = settings.moveBetweenMarkup;
-					
-					//Set 
+
+					//Set
 					settings.moveBetweenMarkup = "<div class=\"message\"><h3>Move Between</h3><p> {0} and {1}</p></div>";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -1053,18 +1053,18 @@
 				moveBetweenMarkup: "<div><p><span></span><strong>Move between</strong> {0} and {1}</p></div>",
 				/* type="string" Gets the HTML markup for the "move after" helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							moveAfterMarkup: "<div class=\"message\"><h3>Move After</h3><p> {0}</p></div>"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var moveAfterMarkup = settings.moveAfterMarkup;
-					
-					//Set 
+
+					//Set
 					settings.moveAfterMarkup = "<div class=\"message\"><h3>Move After</h3><p> {0}</p></div>";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -1072,18 +1072,18 @@
 				moveAfterMarkup: "<div><p><span></span><strong>Move after</strong> {0}</p></div>",
 				/* type="string" Gets the HTML markup for the "move before" helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							moveBeforeMarkup: "<div class=\"message\"><h3>Move After</h3><p> {0}</p></div>"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var moveBeforeMarkup = settings.moveBeforeMarkup;
-					
-					//Set 
+
+					//Set
 					settings.moveBeforeMarkup = "<div class=\"message\"><h3>Move Before</h3><p> {0}</p></div>";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -1091,18 +1091,18 @@
 				moveBeforeMarkup: "<div><p><span></span><strong>Move before</strong> {0}</p></div>",
 				/* type="string" Gets the HTML markup for the "copy to" helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							copyToMarkup: "<div class=\"message\"><h3>Copy To</h3><p> {0}</p></div>"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var copyToMarkup = settings.copyToMarkup;
-					
-					//Set 
+
+					//Set
 					settings.copyToMarkup = "<div class=\"message\"><h3>Copy To</h3><p> {0}</p></div>";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -1110,18 +1110,18 @@
 				copyToMarkup: "<div><p><span></span><strong>Copy to</strong> {0}</p></div>",
 				/* type="string" Gets the HTML markup for the "copy between" helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							copyBetweenMarkup: "<div class=\"message\"><h3>Copy Between</h3><p> {0} and {1}</p></div>"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var copyBetweenMarkup = settings.copyBetweenMarkup;
-					
-					//Set 
+
+					//Set
 					settings.copyBetweenMarkup = "<div class=\"message\"><h3>Copy Between</h3><p> {0} and {1}</p></div>";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -1129,18 +1129,18 @@
 				copyBetweenMarkup: "<div><p><span></span><strong>Copy between</strong> {0} and {1}</p></div>",
 				/* type="string" Gets the HTML markup for the "copy after" helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							copyAfterMarkup: "<div class=\"message\"><h3>Copy After</h3><p> {0}</p></div>"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var copyAfterMarkup = settings.copyAfterMarkup;
-					
-					//Set 
+
+					//Set
 					settings.copyAfterMarkup = "<div class=\"message\"><h3>Copy After</h3><p> {0}</p></div>";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -1148,18 +1148,18 @@
 				copyAfterMarkup: "<div><p><span></span><strong>Copy after</strong> {0}</p></div>",
 				/* type="string" Gets the HTML markup for the "copy before" helper.
 				...
-					//Initialize 
-					$(".selector").igTree({     
+					//Initialize
+					$(".selector").igTree({
 						dragAndDropSettings : {
 							copyBeforeMarkup: "<div class=\"message\"><h3>Copy Before</h3><p> {0}</p></div>"
 						}
-					});  
+					});
 
-					//Get 
+					//Get
 					var settings = $(".selector").igTree("option", "dragAndDropSettings");
 					var copyBeforeMarkup = settings.copyBeforeMarkup;
-					
-					//Set 
+
+					//Set
 					settings.copyBeforeMarkup = "<div class=\"message\"><h3>Copy Before</h3><p> {0}</p></div>";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				...
@@ -1175,7 +1175,7 @@
 					//return reference to igTree
 					ui.owner;
 				});
-				
+
 				//Initialize
 				$(".selector").igTree({
 					dataBinding: function(evt, ui) {...}
@@ -1194,7 +1194,7 @@
 					//return reference to the data the tree has been databound to.
 					ui.dataView;
 				});
-				
+
 				//Initialize
 				$(".selector").igTree({
 					dataBound: function(evt, ui) {...}
@@ -1295,7 +1295,7 @@
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object the checkbox of which is being interacted with.
-					ui.node; 
+					ui.node;
 					//return the current state of the checkbox.
 					ui.currentState
 					//return the new current state of the checkbox.
@@ -1324,7 +1324,7 @@
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object the checkbox of which is being interacted with.
-					ui.node; 
+					ui.node;
 					//return the new current state of the checkbox.
 					ui.newState;
 					//return the collection of all checked nodes.
@@ -1402,7 +1402,7 @@
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object about to collapse.
-					ui.node; 
+					ui.node;
 				});
 
 				//Initialize
@@ -1421,7 +1421,7 @@
 					//return reference to igTree
 					ui.owner;
 					//return reference to the collapsed node object.
-					ui.node; 
+					ui.node;
 				});
 
 				//Initialize
@@ -1440,7 +1440,7 @@
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object about to expand.
-					ui.node; 
+					ui.node;
 				});
 
 				//Initialize
@@ -1459,7 +1459,7 @@
 					//return reference to igTree
 					ui.owner;
 					//return reference to the expanded node object.
-					ui.node; 
+					ui.node;
 				});
 
 				//Initialize
@@ -1478,7 +1478,7 @@
 					//return reference to igTree
 					ui.owner;
 					//return reference to the node object being clicked.
-					ui.node; 
+					ui.node;
 				});
 
 				//Initialize
@@ -1522,7 +1522,7 @@
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
-					ui.data; 
+					ui.data;
 					//return reference to the element.
 					ui.element;
 					//return reference to the helper.
@@ -1559,7 +1559,7 @@
 					//return reference to the binding.
 					ui.binding;
 					//return reference to the data.
-					ui.data; 
+					ui.data;
 					//return reference to the element.
 					ui.element;
 					//return reference to the helper.
@@ -3606,7 +3606,7 @@
 			}
 		},
 		dataBind: function () {
-			/* Performs databinding on the igTree. 
+			/* Performs databinding on the igTree.
 			...
 				$(".selector").igTree("dataBind");
 			...
@@ -4046,7 +4046,7 @@
 			}
 		},
 		clearSelection: function () {
-			/* Deselects all the selected nodes. 
+			/* Deselects all the selected nodes.
 			...
 				$(".selector").igTree("clearSelection");
 			...
@@ -4435,7 +4435,7 @@
 		applyChangesToNode: function (element, data) {
 			/* Performs a UI update on the provided node element with the provided data.
 			...
-				 $(".selector").igTree("applyChangesToNode", node, newData); 
+				 $(".selector").igTree("applyChangesToNode", node, newData);
 			...
 				paramType="object" optional="false" Specifies the node to be updated.
 				paramType="object" optional="false" Specifies the new data item the node would update according to.
@@ -4687,7 +4687,7 @@
 			return data;
 		},
 		destroy: function () {
-			/* Destructor for the igTree widget. 
+			/* Destructor for the igTree widget.
 			...
 				$(".selector").igTree("destroy");
 			...
