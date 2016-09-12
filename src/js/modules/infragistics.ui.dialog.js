@@ -1545,7 +1545,8 @@
 					self._toPx(o.height, true),
 					o.minHeight);
 				if (resize) {
-					elem.resizable("option", "minHeight", o.minHeight);
+					// D.P 12th Sep 2016 #312 minWidth, maxWidth and maxHeight options cannot be set at runtime
+					this._doResizable();
 				}
 			}
 			if (o.width === null) {
