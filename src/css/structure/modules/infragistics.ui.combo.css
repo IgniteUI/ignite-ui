@@ -1,8 +1,4 @@
-﻿@import url("infragistics.ui.shared.css");
-@import url("infragistics.ui.scroll.css");
-@import url("infragistics.ui.validator.css");
-
-.ui-igcombo-wrapper {
+﻿.ui-igcombo-wrapper {
     position: relative;
     display: inline-block;
     overflow: visible;
