@@ -1939,6 +1939,9 @@ input.ui-igbutton {
   background-color: #e8e8e8;
   color: #444444;
 }
+.ui-igdialog-headerbutton .ui-icon:before {
+	font-size:12px;
+}
 /**********/
 /* igGrid */
 /**********/

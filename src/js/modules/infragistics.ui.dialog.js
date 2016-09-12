@@ -336,7 +336,7 @@
 			/* Classes applied to the icon of maximize button. */
 			maximizeIcon: "ui-igdialog-maximize-icon ui-icon ui-icon-extlink",
 			/* Classes applied to the icon of restore button. */
-			restoreIcon: "ui-igdialog-restore-icon ui-icon ui-icon-copy",
+			restoreIcon: "ui-igdialog-restore-icon ui-icon ui-icon-newwin",
 			/* Classes applied to the icon of pin button. */
 			pinIcon: "ui-igdialog-pin-icon ui-icon ui-icon-pin-s",
 			/* Classes applied to the icon of unpin button. */
