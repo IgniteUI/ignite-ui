@@ -596,6 +596,8 @@
 		css: {
 			/* Classes applied to the element the igScroll is instantiated on */
 			scrollableElem: "igscroll-scrollable",
+			/* Classes applied to the element the igScroll is instantiated on, related to touch scrolling */
+			touchScrollableElem: "igscroll-touchscrollable",
 			/* Classes applied to the scroll content wrapper */
 			scrollContent: "igscroll-content",
 			/* Classes applied to the scroll container */
@@ -639,7 +641,9 @@
 			/* Classes applied to the Arrow Right of the custom horizontal scrollbar when it is active */
 			horizontalScrollArrowRightActive: "igscroll-rightarrow-active",
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar */
-			horizontalScrollThumbDrag: "igscroll-hdrag"
+			horizontalScrollThumbDrag: "igscroll-hdrag",
+			/* Classes applied to an element that prevents selection when dragging */
+			disabledSelection: "igscroll-select-disabled"
 		},
 
 		refresh: function () {
@@ -708,6 +712,7 @@
 			//Counter for how many animation for smooth wheel scrolling are present. When 0 we are no longer scrolling with wheel
 			this._numSmoothAnimation = 0;
 
+			elem.addClass(this.css.touchScrollableElem);
 			if (this.options.modifyDOM) {
 				elem.addClass(this.css.scrollableElem);
 
@@ -2580,6 +2585,7 @@
 				owner: this,
 				horizontal: false
 			});
+			this._disableContentSelection();
 		},
 
 		_onMouseDownVTrack: function (event) {
@@ -2782,6 +2788,7 @@
 						horizontal: true
 					});
 				}
+				this._enableContentSelection();
 			}
 			this._bUseVDrag = false;
 		},
@@ -3074,6 +3081,7 @@
 				owner: this,
 				horizontal: true
 			});
+			this._disableContentSelection();
 		},
 
 		_onMouseDownHTrack: function (event) {
@@ -3272,6 +3280,7 @@
 						horizontal: true
 					});
 				}
+				this._enableContentSelection();
 			}
 			this._bUseHDrag = false;
 		},
@@ -3503,6 +3512,14 @@
 			return false;
 		},
 
+		_disableContentSelection: function() {
+			this._container.addClass(this.css.disabledSelection);
+		},
+
+		_enableContentSelection: function () {
+			this._container.removeClass(this.css.disabledSelection);
+		},
+
 		destroy: function () {
 			/*
 			```
@@ -3544,8 +3561,10 @@
 		if (container.length === 0 && args.owner.container) {
 			container = args.owner.container().find("[data-scroll]").eq(0);
 		}
-		container.igScroll({ modifyDOM: false });
-		container.data("igScroll")._bKeyboardNavigation = false;
+		if (container.length !== 0) {
+			container.igScroll({ modifyDOM: false });
+			container.data("igScroll")._bKeyboardNavigation = false;
+		}
 	});
 	return $.ui.igScroll;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
