@@ -3451,52 +3451,180 @@
 
 	$.widget("ui.igNumericEditor", $.ui.igTextEditor, {
 		options: {
-			/* type="object" Gets/Sets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed. */
+			/* type="object" Gets/Sets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					regional: "en-US"
+				});
+
+				//Get
+				var region = $(".selector").%%WidgetName%%("option", "regional");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "regional", "en-US");
+			```
+			*/
 			regional: null,
-			/* type="string" Gets the character, which is used as negative sign.
+			/* type="string" Gets/Sets the character, which is used as negative sign.
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						negativeSign : "-"
+					});
+
+					//Get
+					var negativeSign = $(".selector").%%WidgetName%%("option", "negativeSign");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "negativeSign", "-");
+				```
+				*/
 			negativeSign: null,
-			/* type="string" Gets the string, which is used as negative pattern. The "n" flag represents the value of number. The "-" and "()" flags are static part of pattern.
+			/* type="string" Gets/Sets the string, which is used as negative pattern. The "n" flag represents the value of number. The "-" and "()" flags are static part of pattern.
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						negativePattern : "- &nbsp n"
+					});
+
+					//Get
+					var pattern = $(".selector").%%WidgetName%%("option", "negativePattern");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "negativePattern", "- &nbsp n");
+							```
+				*/
 			negativePattern: null,
-			/* type="string" Gets the character, which is used as decimal separator.
+			/* type="string" Gets/Sets the character, which is used as decimal separator.
 				Note: this option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						decimalSeparator : ","
+					});
+
+					//Get
+					var separator = $(".selector").%%WidgetName%%("option", "decimalSeparator");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "decimalSeparator", ",");
+				```
+				*/
 			decimalSeparator: null,
 			/* type="string" Gets/Sets the character, which is used as separator for groups (like thousands).
 				That option has effect only in display mode(no focus).
 				Note: this option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						groupSeparator : "."
+					});
+
+					//Get
+					var groupSeparator = $(".selector").%%WidgetName%%("option", "groupSeparator");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "groupSeparator", ".");
+				```
+				*/
 			groupSeparator: null,
-			/* type="array" (array of number objects) Gets the number of digits in integer part of number, which are divided into groups.
+			/* type="array" (array of number objects) Gets/Sets the number of digits in the integer part of a number, which are divided into groups.
 				The "groupSeparator" is inserted between groups.
 				If the sum of all values in array is smaller than the length of integer part, then the last item in array is used for all following groups.
 				Count of groups starts from the decimal point (from right to left).
 				That option has effect only in display mode(no focus).
 				Note: this option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						groups : [1, 2, 3]
+					});
+
+					//Get
+					var groups = $(".selector").%%WidgetName%%("option", "groups");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "groups", [3, 3, 3]);
+				```
+				*/
 			groups: null,
-			/* type="number" Gets the maximum number of decimal places which are used in display mode(no focus).
+			/* type="number" Gets/Sets the maximum number of decimal places which are used in display mode(no focus).
 				Note: this option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						maxDecimals: 10
+					});
+
+					//Get
+					var maxDecimals = $(".selector").%%WidgetName%%("option", "maxDecimals");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "maxDecimals", 5);
+				```
+				*/
 			maxDecimals: null,
-			/* type="number" Gets the minimum number of decimal places which are used in display (no focus) state.
+			/* type="number" Gets/Sets the minimum number of decimal places which are used in display (no focus) state.
 				If number of digits in fractional part of number is less than the value of this option, then the "0" characters are used to fill missing digits.
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
-				Note: This option supports values below or equal to 20. */
+				Note: This option supports values below or equal to 20.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+							minDecimals: 5
+					});
+
+					//Get
+					var minDecimals = $(".selector").%%WidgetName%%("option", "minDecimals");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "minDecimals", 3);
+				```
+				*/
 			minDecimals: null,
 			/* type="left|right|center" Gets/Sets horizontal alignment of text in editor. If that option is not set, then 'right' is used for 'numeric', 'currency' and 'percent' editors and the 'left' is used for all other types of editor.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					textAlign : "center"
+				});
+
+				//Get
+				var align = $(".selector").%%WidgetName%%("option", "textAlign");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "textAlign", "center");
+			```
 				left type="string"
 				right type="string"
 				center type="string"
 			*/
 			textAlign: "right",
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dataMode : "int"
+				});
+
+				//Get
+				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dataMode", "float");
+			```
 				double type="string" the Number object is used with limits of double and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'. Note: that is used as default.
 				float type="string" the Number object is used with limits of float and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'.
 				long type="string" the Number object is used with limits of signed long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
@@ -3509,11 +3637,37 @@
 				byte type="string" the Number object is used with limits of unsigned byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
 			*/
 			dataMode: "double",
-			/* type="number" Gets/Sets the minimum value which can be entered in editor by end user. */
+			/* type="number" Gets/Sets the minimum value which can be entered in the editor by the end user.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					minValue: 5
+				});
+
+				//Get
+				var minValue = $(".selector").%%WidgetName%%("option", "minValue");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "minValue", 3);
+			```
+			*/
 			minValue: null,
-			/* type="number" Gets/Sets the maximum value which can be entered in editor by end user. */
+			/* type="number" Gets/Sets the maximum value which can be entered in the editor by the end user.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					maxValue : 100
+				});
+
+				//Get
+				var maxValue = $(".selector").%%WidgetName%%("option", "maxValue");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "maxValue", 100);
+			```
+			*/
 			maxValue: null,
-			/* type="bool" Gets/Sets ability to prevent null value.
+			/* type="bool" Gets/Sets whether the editor value can become null.
 				If that option is disabled, and editor has no value, then value is set to 0 (or minValue/maxValue).
 				```
 				//Initialize
@@ -3529,12 +3683,37 @@
 				```
 			*/
 			allowNullValue: false,
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.*/
+			/* type="number" Gets/Sets the default delta-value which is used with "spin" [buttonType](ui.igNumericEditor#options:buttonType) or [spinUp](ui.igNumericEditor#methods:spinUp) and [spinDown](ui.igNumericEditor#methods:spinDown) methods to increment or decrement value in the editor. The value can not be negative. Non integer value is supported only for dataMode double and float.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					spinDelta: 2
+				});
+
+				//Get
+				var spinDelta= $(".selector").%%WidgetName%%("option", "spinDelta");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "spinDelta", 2);
+			```
+			*/
 			spinDelta: 1,
 			/* type="null|E|e|E+|e+"
-				Gets/Sets support for E-power format in edit mode.
+				Gets/Sets support for scientific format in edit mode.
 				If that option is set, then numeric value appears as a string with possible E-power flag. In edit mode the "E" or "e" character can be entered as well.
 				Notes: The "+" character is not supported in edit mode.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						scientificFormat : "e"
+					});
+
+					//Get
+					var scientificFormat = $(".selector").%%WidgetName%%("option", "scientificFormat");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "scientificFormat", "e+");
+				```
 				null type="object" scientific format is disabled.
 				E type="string" scientific format is enabled and the "E" character is used.
 				e type="string" scientific format is enabled and the "e" character is used.
@@ -4884,6 +5063,9 @@
 		// igNumericEditor public methods
 		value: function (newValue) { // Numeric Editor
 			/* Gets/Sets editor value.
+			```
+				$(".selector").%%WidgetName%%("value", 25);
+			```
 				paramType="number" optional="true" New editor value.
 				returnType="number" Current editor value. */
 			if (newValue !== undefined) {
@@ -4949,6 +5131,9 @@
 		},
 		findListItemIndex: function (number) {
 			/* Finds index of list item by text that matches with the search parameters.
+			```
+				$(".selector").%%WidgetName%%("findListItemIndex");
+			```
 				paramType="number" optional="false" The text to search for.
 				returnType="number" Returns index of the found item. */
 			var list = this.options.listItems, i;
@@ -4975,24 +5160,41 @@
 		},
 		spinUp: function (delta) {
 			/* Increments value in editor according to the parameter.
+			```
+				$(".selector").%%WidgetName%%("spinUp");
+			```
 				paramType="number" optional="true" Increments value. */
 			this._spinUp(delta); // TODO this._spinUp() method should accept delta.
 		},
 		spinDown: function (delta) {
 			/* Decrements value in editor according to the parameter.
+			```
+				$(".selector").%%WidgetName%%("spinDown");
+			```
 				paramType="number" optional="true" Decrement value. */
 			this._spinDown(delta); // TODO this._spinUp() method should accept delta.
 		},
 		selectListIndexUp: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list. */
+			/* Moves the hovered index to the item that appears above the current one in the list.
+			```
+				$(".selector").%%WidgetName%%("selectListIndexUp", 2);
+			```
+			*/
 			$.ui.igTextEditor.prototype.spinUp.call(this);
 		},
 		selectListIndexDown: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list. */
+			/* Moves the hovered index to the item that appears above the current one in the list.
+			```
+				$(".selector").%%WidgetName%%("selectListIndexDown", 1);
+			```
+			*/
 			$.ui.igTextEditor.prototype.spinDown.call(this);
 		},
 		getRegionalOption: function () {
 			/* Get current regional.
+			```
+				$(".selector").%%WidgetName%%("getRegionalOption");
+			```
 				returnType="string" Current regional */
 			return this._getRegionalOption();
 		}
