@@ -3268,7 +3268,7 @@
 				```
 				*/
 			groupSeparator: null,
-			/* type="array" (array of number objects) Gets/Sets the number of digits in integer part of number, which are divided into groups.
+			/* type="array" (array of number objects) Gets/Sets the number of digits in the integer part of a number, which are divided into groups.
 				The "groupSeparator" is inserted between groups.
 				If the sum of all values in array is smaller than the length of integer part, then the last item in array is used for all following groups.
 				Count of groups starts from the decimal point (from right to left).
@@ -3370,7 +3370,7 @@
 				byte type="string" the Number object is used with limits of unsigned byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
 			*/
 			dataMode: "double",
-			/* type="number" Gets/Sets the minimum value which can be entered in editor by end user.
+			/* type="number" Gets/Sets the minimum value which can be entered in the editor by the end user.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -3385,7 +3385,7 @@
 			```
 			*/
 			minValue: null,
-			/* type="number" Gets/Sets the maximum value which can be entered in editor by end user.
+			/* type="number" Gets/Sets the maximum value which can be entered in the editor by the end user.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -3400,7 +3400,7 @@
 			```
 			*/
 			maxValue: null,
-			/* type="bool" Gets/Sets ability to prevent null value.
+			/* type="bool" Gets/Sets whether the editor value can become null.
 				If that option is disabled, and editor has no value, then value is set to 0 (or minValue/maxValue).
 				```
 				//Initialize
@@ -3416,7 +3416,7 @@
 				```
 			*/
 			allowNullValue: false,
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.
+			/* type="number" Gets/Sets the default delta-value which is used with "spin" [buttonType](ui.igNumericEditor#options:buttonType) or [spinUp](ui.igNumericEditor#methods:spinUp) and [spinDown](ui.igNumericEditor#methods:spinDown) methods to increment or decrement value in the editor. The value can not be negative. Non integer value is supported only for dataMode double and float.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -3432,7 +3432,7 @@
 			*/
 			spinDelta: 1,
 			/* type="null|E|e|E+|e+"
-				Gets/Sets support for E-power format in edit mode.
+				Gets/Sets support for scientific format in edit mode.
 				If that option is set, then numeric value appears as a string with possible E-power flag. In edit mode the "E" or "e" character can be entered as well.
 				Notes: The "+" character is not supported in edit mode.
 				```
