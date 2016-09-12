@@ -344,6 +344,34 @@
             }, 250);
         });
 
+        test("Resizable options", 8, function () {
+           
+            var $dialog = $("#dialog4"), i,
+                settings = ["minWidth", "maxWidth", "minHeight","maxHeight"],
+                newValues = [400, 700, 250, 300];
+            
+            // #312 'minWidth', 'maxWidth' and 'maxHeight' options cannot be set at runtime
+            $dialog.igDialog("open");
+            
+            for (i = 0; i < settings.length; i++) {
+                  $dialog.igDialog("option", settings[i], newValues[i]);
+                  // verify option propagated to the resizable widget:
+                  equal($dialog.resizable("option", settings[i]), newValues[i], "Expected " + settings[i] + " to be " + newValues[i]);
+            }
+
+            // with closed dialog all settings are applied at once on open:
+            $dialog.igDialog("close");
+            newValues = [300, 600, 150, 200];
+            for (i = 0; i < settings.length; i++) {
+                  $dialog.igDialog("option", settings[i], newValues[i]);
+            }
+            $dialog.igDialog("open");
+            for (i = 0; i < settings.length; i++) {
+                  // verify option propagated to the resizable widget:
+                  equal($dialog.resizable("option", settings[i]), newValues[i], "Expected " + settings[i] + " to be " + newValues[i]);
+            }
+        });
+
         test("Inner controls/frames", function () {
             var $frameBody = $("#testFrame").contents().find('body'),
                 text = "test text";
