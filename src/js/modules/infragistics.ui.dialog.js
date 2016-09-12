@@ -166,7 +166,7 @@
 				The pinned dialog does not support modal state, maximized state and it can not be moved.
 				Notes:
 				1. If the parent element of the original target-element is invisible, then the pinned dialog becomes invisible as well.
-				2. The pinned state is not supported for modal dialog.
+				2. Pinned state is not supported for modal dialog.
 				```
 				//Initialize
 				$(".selector").igDialog({
@@ -696,7 +696,7 @@
 				```
 			*/
 			restoreButtonTitle: null,
-			/* type="string" Gets/Sets the temporary value for src, which is used while changing the parent of the base element if it is an instance of IFRAME. That allows getting around possible javascript exceptions under IE.
+			/* type="string" Gets/Sets the temporary value for src, which is used while changing the parent of the base element if it is an instance of IFRAME. That allows getting around possible JavaScript exceptions under IE.
 				```
 				//Initialize
 				$(".selector").igDialog({
