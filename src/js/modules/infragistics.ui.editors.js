@@ -3487,9 +3487,9 @@
 					}
 					break;
 
-				case "regional": 
+				case "regional":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);					
+					throw new Error($.ig.Editor.locale.cannotSetRuntime);
 
 				case "excludeKeys":
 				case "includeKeys":
