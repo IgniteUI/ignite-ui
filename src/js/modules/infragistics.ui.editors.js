@@ -3063,7 +3063,7 @@
 		},
 		clearButton: function () {
 			/* Returns a reference to the clear button UI element of the editor.
-				returnType="$" Returns reference to jquery object. */
+				returnType="$" Returns a reference to the jquery object. */
 			return this._clearButton;
 		},
 		findListItemIndex: function (text, matchType) {
@@ -9163,7 +9163,7 @@
 			```
 			*/
 			regional: null,
-			/* type="dropdown|clear|spin" Gets the visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,clear' or 'dropdownclear' are supported too.
+			/* type="dropdown|clear|spin" Gets the visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,clear' are supported too.
 				```
 				//Initialize
 				$(".selector").igDatePicker({
@@ -9187,7 +9187,7 @@
 			$(".selector").igDatePicker({
 				datepickerOptions: {minDate : new Date(2015, 9, 17), maxDate : new Date(2015, 9, 30) }
 			});
-			
+
 			//Get
 			var datepickerOptions = $(".selector").igDatePicker("option", "datepickerOptions");
 			```
@@ -9201,7 +9201,7 @@
 				readOnly: true,
 				dropDownOnReadOnly : true
 			});
-			
+
 			//Get
 			var dropDownOnReadOnly = $(".selector").igDatePicker("option", "dropDownOnReadOnly");
 			```
@@ -9652,7 +9652,10 @@
 		// igDatePicker public methods
 		getCalendar: function () {
 			/* Returns a reference to the jQuery calendar used as a picker selector
-			returnType="$" Returns reference to jquery object. */
+			```
+			$(".selector").igDatePicker("getCalendar");
+			```
+			returnType="$" Returns a reference to the jquery object. */
 			return $.ui.igTextEditor.prototype.dropDownContainer.call(this);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
@@ -9676,25 +9679,43 @@
 			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		showDropDown: function () {
-			/* Shows the drop down list. */
+			/* Shows the drop down list.
+			```
+			$(".selector").igDatePicker("showDropDown");
+			```
+			*/
 			$.ui.igTextEditor.prototype.showDropDown.call(this);
 		},
 		hideDropDown: function () {
-			/* Hides the drop down list. */
+			/* Hides the drop down list.
+			```
+			$(".selector").igDatePicker("hideDropDown");
+			```
+			*/
 			$.ui.igTextEditor.prototype.hideDropDown.call(this);
 		},
 		dropDownButton: function () {
 			/* Returns a reference to the calendar button UI element of the editor.
+			```
+			var button = $(".selector").igDatePicker("dropDownButton");
+			```
 				returnType="$" Returns reference to jquery object. */
 			return $.ui.igTextEditor.prototype.dropDownButton.call(this);
 		},
 		dropDownVisible: function () {
 			/* Returns the visibility state of the calendar.
+			```
+			$(".selector").igDatePicker("dropDownVisible");
+			```
 				returnType="bool" The visibility state of the calendar. */
 			return $.ui.igTextEditor.prototype.dropDownVisible.call(this);
 		},
 		destroy: function () {
-			/* Destructor of the widget */
+			/* Destructor of the widget
+			```
+			$(".selector").igDatePicker("destroy");
+			```
+			*/
 			this._editorInput.datepicker("destroy");
 			this._super();
 			return this;
