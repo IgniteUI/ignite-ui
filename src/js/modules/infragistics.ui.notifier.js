@@ -22,8 +22,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
-			"./infragistics.ui.popover",
-			"./i18n/infragistics.ui.notifier-en"
+			"./infragistics.ui.popover"
 		], factory );
 	} else {
 

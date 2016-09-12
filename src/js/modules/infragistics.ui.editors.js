@@ -23,9 +23,7 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.scroll",
-			"./infragistics.validator",
-			"./i18n/infragistics.ui.regional-en",
-			"./i18n/infragistics.ui.editors-en"
+			"./infragistics.validator"
 		], factory );
 	} else {
 

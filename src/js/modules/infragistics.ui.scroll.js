@@ -19,8 +19,7 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util",
-			"./i18n/infragistics.ui.scroll-en"
+			"./infragistics.util"
 		], factory );
 	} else {
 
