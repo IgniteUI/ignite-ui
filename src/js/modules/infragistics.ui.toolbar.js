@@ -541,7 +541,7 @@
         },
         _updateItems: function (items) {
             var options = this.options,
-                updProps, scope, el, key, i, j;
+                updProps, scope, el, i;
 
             for (i = 0; i < items.length; i++) {
                 updProps = items[ i ];
