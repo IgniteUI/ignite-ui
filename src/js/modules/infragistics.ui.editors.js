@@ -6258,7 +6258,7 @@
 	});
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
-			/* type="date" Gets/Sets value in editor. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it as value. MVC date format can be used too. For example Date(/"thicks"/).
+			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
 				```
 				//Initialize
@@ -6274,7 +6274,7 @@
 				```
 				*/
 			value: null,
-			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
+			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
 				Note! This option can not be set runtime.
 				```
@@ -6288,7 +6288,7 @@
 				```
 				*/
 			minValue: null,
-			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
+			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
 				Note! This option can not be set runtime.
 				```
@@ -6506,7 +6506,7 @@
 				```
 				*/
 			centuryThreshold: 29,
-			/* type="number" Gets/Sets difference between year in Gregorian calendar and displayed year.
+			/* type="number" Gets/Set value used to increase/decrease year part of the date, in order to set difference between year in Gregorian calendar and displayed year.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
