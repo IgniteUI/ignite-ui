@@ -23,9 +23,7 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.scroll",
-			"./infragistics.validator",
-			"./i18n/infragistics.ui.regional-en",
-			"./i18n/infragistics.ui.editors-en"
+			"./infragistics.validator"
 		], factory );
 	} else {
 
@@ -223,74 +221,271 @@
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the editor performing rendering.
 				Use ui.element to get a reference to the editor element.
+				```
+				$(".selector").on("%%WidgetNameLowered%%rendering", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					rendering: function (evt, ui) {
+						...
+					}
+				});
+				```
 			*/
 			rendering: "rendering",
 			/* cancel="false" Event which is raised after rendering of the editor completes.
 				Function takes arguments evt and ui.
 				Use ui.owner to get a reference to the editor performing rendering.
 				Use ui.element to get a reference to the editor element.
+				```
+				$(".selector").on("%%WidgetNameLowered%%rendered", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					rendered: function (evt, ui) {
+						...
+					}
+				});
+				```
 			*/
 			rendered: "rendered",
-			/* Event which is raised on mousedown at any part of editor including drop-down list.
+			/* Event which is raised on mousedown event.
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field.
+				```
+				$(".selector").on("%%WidgetNameLowered%%mousedown", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					mousedown: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			mousedown: "mousedown",
-			/* Event which is raised on mouseup at any part of editor including drop-down list.
+			/* Event which is raised on mouseup event.
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field.
+				```
+				$(".selector").on("%%WidgetNameLowered%%mouseup", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					mouseup: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			mouseup: "mouseup",
 			/* Event which is raised on mousemove at any part of editor including drop-down list.
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field.
+				```
+				$(".selector").on("%%WidgetNameLowered%%mousemove", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					mousemove: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			mousemove: "mousemove",
 			/* Event which is raised on mouseover at any part of editor including drop-down list.
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field.
+				```
+				$(".selector").on("%%WidgetNameLowered%%mouseover", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					mouseover: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			mouseover: "mouseover",
 			/* Event which is raised on mouseleave at any part of editor including drop-down list.
 				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.elementType to obtain type of html element under mouse, such as field, button, spinUpper, spinLower or item#.
-				Use ui.id and ui.elementType to obtain flag which represents html element under mouse. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field.
+				```
+				$(".selector").on("%%WidgetNameLowered%%mouseout", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					mouseout: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			mouseout: "mouseout",
 			/* Event which is raised when input field of editor loses focus.
-				Function takes argument evt.
+				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
-				Use evt.originalEvent to obtain reference to event of browser. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field.
+				```
+				$(".selector").on("%%WidgetNameLowered%%blur", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					blur: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			blur: "blur",
 			/* Event which is raised when input field of editor gets focus.
-				Function takes argument evt.
+				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
-				Use evt.originalEvent to obtain reference to event of browser. */
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput to get a reference to the editor field.
+				```
+				$(".selector").on("%%WidgetNameLowered%%focus", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					focus: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			focus: "focus",
-			/* cancel="true" Event which is raised before value in editor was changed.
+			/* cancel="true" Event which is raised on keydown event.
+				Return false in order to cancel key action.
+				Function takes arguments evt and ui.
+				Use evt.originalEvent to obtain reference to event of browser.
+				Use ui.owner to obtain reference to igEditor.
+				Use ui.key to obtain value of keyCode.
+				```
+				$(".selector").on("%%WidgetNameLowered%%keydown", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					keydown: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
+			keydown: "keydown",
+			/* cancel="true" Event which is raised on keypress event.
+				Return false in order to cancel key action.
+				Function takes arguments evt and ui.
+				Use evt.originalEvent to obtain reference to event of browser.
+				Use ui.owner to obtain reference to igEditor.
+				Use ui.key to obtain value of keyCode.
+				```
+				$(".selector").on("%%WidgetNameLowered%%keypress", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					keypress: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
+			keypress: "keypress",
+			/* Event which is raised on keyup event.
+				Function takes arguments evt and ui.
+				Use evt.originalEvent to obtain reference to event of browser.
+				Use ui.owner to obtain reference to igEditor.
+				Use ui.key to obtain value of keyCode.
+				```
+				$(".selector").on("%%WidgetNameLowered%%keyup", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					keyup: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
+			keyup: "keyup",
+			/* cancel="true" Event which is raised before the editor value is changed.
 				Return false in order to cancel change.
-				It can be raised on lost focus or on spin events.
+				It can be raised after loosing focus or on spin events.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.newValue to obtain the new value.
 				Use ui.oldValue to obtain the old value.
-				Use ui.editorInput to obtain reference to the editor input.*/
+				Use ui.editorInput to obtain reference to the editor input.
+				```
+				$(".selector").on("%%WidgetNameLowered%%valuechanging", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					valueChanging: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			valueChanging: "valueChanging",
-			/* Event which is raised after value in editor was changed. It can be raised on lost focus or on spin events.
+			/* Event which is raised after the editor value is changed. It can be raised after loosing focus or on spin events.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.newValue to obtain the new value.
 				Use ui.originalValue to obtain the original value.
-				Use ui.editorInput to obtain reference to the editor input.*/
+				Use ui.editorInput to obtain reference to the editor input.
+				```
+				$(".selector").on("%%WidgetNameLowered%%valuechanged", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					valueChanged: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			valueChanged: "valueChanged"
 		},
 		_createWidget: function (options) {
@@ -1110,71 +1305,141 @@
 			textArea: "ui-igedit-textarea"
 		},
 		events: {
-			/* cancel="true" Event which is raised on keydown event.
-				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode. */
-			keydown: "keydown",
-			/* cancel="true" Event which is raised on keypress event.
-				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode.
-				Set ui.key to another character which will replace original entry. */
-			keypress: "keypress",
-			/* Event which is raised on keyup event.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode. */
-			keyup: "keyup",
 			/* cancel="true" Event which is raised when the drop down is opening.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+				Use ui.list to obtain reference to the list contaier.
+				```
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistopening", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListOpening: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			dropDownListOpening: "dropDownListOpening",
-			/* Event which is raised when the drop down is already opened.
+			/* Event which is raised after the drop down is opened.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+				Use ui.list to obtain reference to the list contaier.
+				```
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListOpened: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			dropDownListOpened: "dropDownListOpened",
 			/* cancel="true" Event which is raised when the drop down is closing.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+				Use ui.list to obtain reference to the list contaier.
+				```
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosing", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListClosing: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			dropDownListClosing: "dropDownListClosing",
-			/* Event which is raised when the drop down is already closed.
+			/* Event which is raised after the drop down is closed.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+				Use ui.list to obtain reference to the list contaier.
+				```
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosed", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListClosed: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			dropDownListClosed: "dropDownListClosed",
-			/* cancel="true" Event which is raised when the drop down list item is selecting.
+			/* cancel="true" Event which is raised when an item in the drop down list is being selected.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
 				Use ui.list to obtain reference to the list contaier.
-				Use ui.item to obtain reference to the list item which is about to be selected. */
+				Use ui.item to obtain reference to the list item which is about to be selected.
+				```
+				$(".selector").on("%%WidgetNameLowered%%dropdownitemselecting", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownItemSelecting: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			dropDownItemSelecting: "dropDownItemSelecting",
-			/* cancel="true" Event which is raised when the drop down list item is selected.
+			/* Event which is raised after an item in the drop down list is selected.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
 				Use ui.list to obtain reference to the list contaier.
-				Use ui.item to obtain reference to the list item which is selected. */
+				Use ui.item to obtain reference to the list item which is selected.
+				```
+				$(".selector").on("%%WidgetNameLowered%%dropdownitemselected", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownItemSelected: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			dropDownItemSelected: "dropDownItemSelected",
-			/* Event which is raised after text in editor was changed. It can be raised when keyUp event occurs,
-				or when the clear button is clicked or when an item from a list is selected.
+			/* Event which is raised after text in the editor was changed. It can be raised when keyUp event occurs,
+				when the clear button is clicked or when an item from a list is selected.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.text to obtain new text
-				Use ui.oldText to obtain the old text. */
+				Use ui.oldText to obtain the old text.
+				```
+				$(".selector").on("%%WidgetNameLowered%%textchanged", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					textChanged: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			textChanged: "textChanged"
 		},
 		_create: function () { //igTextEditor
@@ -3063,7 +3328,7 @@
 		},
 		clearButton: function () {
 			/* Returns a reference to the clear button UI element of the editor.
-				returnType="$" Returns reference to jquery object. */
+				returnType="$" Returns a reference to the jquery object. */
 			return this._clearButton;
 		},
 		findListItemIndex: function (text, matchType) {
@@ -3184,52 +3449,180 @@
 
 	$.widget("ui.igNumericEditor", $.ui.igTextEditor, {
 		options: {
-			/* type="object" Gets/Sets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed. */
+			/* type="object" Gets/Sets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					regional: "en-US"
+				});
+
+				//Get
+				var region = $(".selector").%%WidgetName%%("option", "regional");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "regional", "en-US");
+			```
+			*/
 			regional: null,
-			/* type="string" Gets the character, which is used as negative sign.
+			/* type="string" Gets/Sets the character, which is used as negative sign.
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						negativeSign : "-"
+					});
+
+					//Get
+					var negativeSign = $(".selector").%%WidgetName%%("option", "negativeSign");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "negativeSign", "-");
+				```
+				*/
 			negativeSign: null,
-			/* type="string" Gets the string, which is used as negative pattern. The "n" flag represents the value of number. The "-" and "()" flags are static part of pattern.
+			/* type="string" Gets/Sets the string, which is used as negative pattern. The "n" flag represents the value of number. The "-" and "()" flags are static part of pattern.
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						negativePattern : "- &nbsp n"
+					});
+
+					//Get
+					var pattern = $(".selector").%%WidgetName%%("option", "negativePattern");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "negativePattern", "- &nbsp n");
+							```
+				*/
 			negativePattern: null,
-			/* type="string" Gets the character, which is used as decimal separator.
+			/* type="string" Gets/Sets the character, which is used as decimal separator.
 				Note: this option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						decimalSeparator : ","
+					});
+
+					//Get
+					var separator = $(".selector").%%WidgetName%%("option", "decimalSeparator");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "decimalSeparator", ",");
+				```
+				*/
 			decimalSeparator: null,
 			/* type="string" Gets/Sets the character, which is used as separator for groups (like thousands).
 				That option has effect only in display mode(no focus).
 				Note: this option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						groupSeparator : "."
+					});
+
+					//Get
+					var groupSeparator = $(".selector").%%WidgetName%%("option", "groupSeparator");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "groupSeparator", ".");
+				```
+				*/
 			groupSeparator: null,
-			/* type="array" (array of number objects) Gets the number of digits in integer part of number, which are divided into groups.
+			/* type="array" (array of number objects) Gets/Sets the number of digits in the integer part of a number, which are divided into groups.
 				The "groupSeparator" is inserted between groups.
 				If the sum of all values in array is smaller than the length of integer part, then the last item in array is used for all following groups.
 				Count of groups starts from the decimal point (from right to left).
 				That option has effect only in display mode(no focus).
 				Note: this option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						groups : [1, 2, 3]
+					});
+
+					//Get
+					var groups = $(".selector").%%WidgetName%%("option", "groups");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "groups", [3, 3, 3]);
+				```
+				*/
 			groups: null,
-			/* type="number" Gets the maximum number of decimal places which are used in display mode(no focus).
+			/* type="number" Gets/Sets the maximum number of decimal places which are used in display mode(no focus).
 				Note: this option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						maxDecimals: 10
+					});
+
+					//Get
+					var maxDecimals = $(".selector").%%WidgetName%%("option", "maxDecimals");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "maxDecimals", 5);
+				```
+				*/
 			maxDecimals: null,
-			/* type="number" Gets the minimum number of decimal places which are used in display (no focus) state.
+			/* type="number" Gets/Sets the minimum number of decimal places which are used in display (no focus) state.
 				If number of digits in fractional part of number is less than the value of this option, then the "0" characters are used to fill missing digits.
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
-				Note: This option supports values below or equal to 20. */
+				Note: This option supports values below or equal to 20.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+							minDecimals: 5
+					});
+
+					//Get
+					var minDecimals = $(".selector").%%WidgetName%%("option", "minDecimals");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "minDecimals", 3);
+				```
+				*/
 			minDecimals: null,
 			/* type="left|right|center" Gets/Sets horizontal alignment of text in editor. If that option is not set, then 'right' is used for 'numeric', 'currency' and 'percent' editors and the 'left' is used for all other types of editor.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					textAlign : "center"
+				});
+
+				//Get
+				var align = $(".selector").%%WidgetName%%("option", "textAlign");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "textAlign", "center");
+			```
 				left type="string"
 				right type="string"
 				center type="string"
 			*/
 			textAlign: "right",
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dataMode : "int"
+				});
+
+				//Get
+				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dataMode", "float");
+			```
 				double type="string" the Number object is used with limits of double and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'. Note: that is used as default.
 				float type="string" the Number object is used with limits of float and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'.
 				long type="string" the Number object is used with limits of signed long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
@@ -3242,11 +3635,37 @@
 				byte type="string" the Number object is used with limits of unsigned byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
 			*/
 			dataMode: "double",
-			/* type="number" Gets/Sets the minimum value which can be entered in editor by end user. */
+			/* type="number" Gets/Sets the minimum value which can be entered in the editor by the end user.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					minValue: 5
+				});
+
+				//Get
+				var minValue = $(".selector").%%WidgetName%%("option", "minValue");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "minValue", 3);
+			```
+			*/
 			minValue: null,
-			/* type="number" Gets/Sets the maximum value which can be entered in editor by end user. */
+			/* type="number" Gets/Sets the maximum value which can be entered in the editor by the end user.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					maxValue : 100
+				});
+
+				//Get
+				var maxValue = $(".selector").%%WidgetName%%("option", "maxValue");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "maxValue", 100);
+			```
+			*/
 			maxValue: null,
-			/* type="bool" Gets/Sets ability to prevent null value.
+			/* type="bool" Gets/Sets whether the editor value can become null.
 				If that option is disabled, and editor has no value, then value is set to 0 (or minValue/maxValue).
 				```
 				//Initialize
@@ -3262,12 +3681,37 @@
 				```
 			*/
 			allowNullValue: false,
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.*/
+			/* type="number" Gets/Sets the default delta-value which is used with "spin" [buttonType](ui.igNumericEditor#options:buttonType) or [spinUp](ui.igNumericEditor#methods:spinUp) and [spinDown](ui.igNumericEditor#methods:spinDown) methods to increment or decrement value in the editor. The value can not be negative. Non integer value is supported only for dataMode double and float.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					spinDelta: 2
+				});
+
+				//Get
+				var spinDelta= $(".selector").%%WidgetName%%("option", "spinDelta");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "spinDelta", 2);
+			```
+			*/
 			spinDelta: 1,
 			/* type="null|E|e|E+|e+"
-				Gets/Sets support for E-power format in edit mode.
+				Gets/Sets support for scientific format in edit mode.
 				If that option is set, then numeric value appears as a string with possible E-power flag. In edit mode the "E" or "e" character can be entered as well.
 				Notes: The "+" character is not supported in edit mode.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						scientificFormat : "e"
+					});
+
+					//Get
+					var scientificFormat = $(".selector").%%WidgetName%%("option", "scientificFormat");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "scientificFormat", "e+");
+				```
 				null type="object" scientific format is disabled.
 				E type="string" scientific format is enabled and the "E" character is used.
 				e type="string" scientific format is enabled and the "e" character is used.
@@ -3486,6 +3930,11 @@
 						throw new Error($.ig.Editor.locale.notEditableOptionByInit);
 					}
 					break;
+
+				case "regional":
+					this.options[ option ] = prevValue;
+					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+
 				case "excludeKeys":
 				case "includeKeys":
 					this.options[ option ] = prevValue;
@@ -4617,6 +5066,9 @@
 		// igNumericEditor public methods
 		value: function (newValue) { // Numeric Editor
 			/* Gets/Sets editor value.
+			```
+				$(".selector").%%WidgetName%%("value", 25);
+			```
 				paramType="number" optional="true" New editor value.
 				returnType="number" Current editor value. */
 			if (newValue !== undefined) {
@@ -4682,6 +5134,9 @@
 		},
 		findListItemIndex: function (number) {
 			/* Finds index of list item by text that matches with the search parameters.
+			```
+				$(".selector").%%WidgetName%%("findListItemIndex");
+			```
 				paramType="number" optional="false" The text to search for.
 				returnType="number" Returns index of the found item. */
 			var list = this.options.listItems, i;
@@ -4708,24 +5163,41 @@
 		},
 		spinUp: function (delta) {
 			/* Increments value in editor according to the parameter.
+			```
+				$(".selector").%%WidgetName%%("spinUp");
+			```
 				paramType="number" optional="true" Increments value. */
 			this._spinUp(delta); // TODO this._spinUp() method should accept delta.
 		},
 		spinDown: function (delta) {
 			/* Decrements value in editor according to the parameter.
+			```
+				$(".selector").%%WidgetName%%("spinDown");
+			```
 				paramType="number" optional="true" Decrement value. */
 			this._spinDown(delta); // TODO this._spinUp() method should accept delta.
 		},
 		selectListIndexUp: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list. */
+			/* Moves the hovered index to the item that appears above the current one in the list.
+			```
+				$(".selector").%%WidgetName%%("selectListIndexUp", 2);
+			```
+			*/
 			$.ui.igTextEditor.prototype.spinUp.call(this);
 		},
 		selectListIndexDown: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list. */
+			/* Moves the hovered index to the item that appears above the current one in the list.
+			```
+				$(".selector").%%WidgetName%%("selectListIndexDown", 1);
+			```
+			*/
 			$.ui.igTextEditor.prototype.spinDown.call(this);
 		},
 		getRegionalOption: function () {
 			/* Get current regional.
+			```
+				$(".selector").%%WidgetName%%("getRegionalOption");
+			```
 				returnType="string" Current regional */
 			return this._getRegionalOption();
 		}
@@ -5064,16 +5536,35 @@
 	});
 	$.widget("ui.igMaskEditor", $.ui.igTextEditor, {
 		options: {
-			/* type="object" Sets gets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed. */
+			/* type="object" Gets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					regional: "en-US"
+				});
+
+				//Get
+				var region = $(".selector").%%WidgetName%%("option", "regional");
+				```
+			*/
 			regional: null,
 			/*type="clear|spin" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					buttonType : "clear"
+				});
+
+				//Get
+				var button = $(".selector").%%WidgetName%%("option", "buttonType");
+				```
 				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
 				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).*/
 			buttonType: "none",
 			/* type="string" Gets input mask. Mask may include filter-flags and literal characters.
 				Literal characters are part of mask which cannot be modified by end user. In order to use a filter-flag as a literal character, the escape "\\" character should be used.
 				Default is "CCCCCCCCCC"
-				Note: optional flags/entries affect the value returned by get of the "value" and "text" methods.
+				Note: optional flags/entries affect the value returned by get of the [value](ui.igmaskeditor#methods:value) methods.
 				List of filter-flags:
 				C: any keyboard character. Entry is optional.
 				&: any keyboard character. Entry is required.
@@ -5083,13 +5574,34 @@
 				L: letter character. Entry is required.
 				9: digit character. Entry is optional.
 				0: digit character. Entry is required.
-				#: digit character or "+" or "_". Entry is optional with replacement by "emptyPositionChar" or by "padChar".
+				#: digit character or "+" or "_". Entry is optional with replacement by [emptyChar](ui.igmaskeditor#options:emptyChar) or by [padChar](ui.igmaskeditor#options:padChar).
 				>: all letters to the right are converted to the upper case. In order to disable conversion, the ">" flag should be used again.
 				<: all letters to the right are converted to the lower case. In order to disable conversion, the "<" flag should be used again.
 				Note! This option can not be set runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					inputMask : "cccccccccc"
+				});
+
+				//Get
+				var inputMask = $(".selector").%%WidgetName%%("option", "inputMask");
+				```
 			*/
 			inputMask: "CCCCCCCCCC",
-			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" Gets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" Gets/Sets type of value returned by the get of [value](ui.igmaskeditor#methods:value) method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dataMode : "rawTextWithLiterals"
+				});
+
+				//Get
+				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dataMode", "rawTextWithLiterals");
+				```
 				rawText type="string" only entered text. All unfilled prompts (positions) and literals are ignored (removed).
 				rawTextWithRequiredPrompts type="string" only entered text and required prompts (positions). All optional unfilled prompts and literals are ignored (removed)
 				rawTextWithAllPrompts type="string" only entered text and prompts (positions). All literals are ignored (removed).
@@ -5098,21 +5610,77 @@
 				allText type="string" entered text, all prompts (positions) and literals. Note: that is used as default.
 			*/
 			dataMode: "allText",
-			/* type="string" Gets character which is used as prompt in edit mode for available entry position. */
+			/* type="string" Gets character which is used as prompt in edit mode for available entry position.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					unfilledCharsPrompt : "*"
+				});
+
+				//Get
+				var prompt = $(".selector").%%WidgetName%%("option", "unfilledCharsPrompt");
+				```
+			*/
 			unfilledCharsPrompt: "_",
-			/* type="string" Gets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused). */
+			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused). Note that this option is visible, only when the [revertIfNotValid](ui.igmaskeditor#options:revertIfNotValid) option is set to false.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					padChar: "*"
+				});
+
+				//Get
+				var padChar= $(".selector").%%WidgetName%%"option", "padChar");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "padChar", "*");
+				```
+			*/
 			padChar: " ",
-			/* type="string" Gets character which is used as replacement of not-filled required position in mask when application calls get for the "value" or for the "text" methods. */
+			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when application calls get for the [value](ui.igmaskeditor#methods:value) methods.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					emptyChar: "*"
+				});
+
+				//Get
+				var emptyChar= $(".selector").%%WidgetName%%("option", "emptyChar");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "emptyChar", "*");
+				```
+			*/
 			emptyChar: " ",
 			/* type="string" Gets ability to enter only specific characters in input-field from keyboard and on paste.
 				Notes:
 				If "excludeKeys" option contains same characters as this option, then "excludeKeys" has priority.
-				Note! This option can not be se runtime. */
+				Note! This option can not be se runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					includeKeys: "ABC"
+				});
+
+				//Get
+				var includedKeys= $(".selector").%%WidgetName%%("option", "includeKeys");
+				```
+				*/
 			includeKeys: null,
 			/* type="string" Gets ability to prevent entering specific characters from keyboard or on paste.
 				Notes:
 				If a character is specified in "includeKeys" option also, then "excludeKeys" has priority.
-				Note! This option can not be se runtime. */
+				Note! This option can not be se runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					excludeKeys: "ABC"
+				});
+
+				//Get
+				var excludedKeys= $(".selector").%%WidgetName%%("option", "excludeKeys");
+				```
+				*/
 			excludeKeys: null,
 			/* type="array" @Ignored@ Sets gets list of items which are used for drop-down list.
 				Items in list can be strings, numbers or objects. The items are directly rendered without casting, or manipulating them.
@@ -5150,15 +5718,15 @@
 			/* type="object" Gets/Sets value in editor. The effect of setting/getting that option depends on type of editor and on dataMode options for every type of editor.
 			```
 			//Initialize
-			$(".selector").igMaskEditor({
+			$(".selector").%%WidgetName%%({
 				value : "0415565685"
 			});
 
 			//Get
-			var value = $(".selector").igMaskEditor("option", "value");
+			var value = $(".selector").%%WidgetName%%("option", "value");
 
 			//Set
-			$(".selector").igMaskEditor("option", "value", "0415565685");
+			$(".selector").%%WidgetName%%("option", "value", "0415565685");
 
 			```
 			*/
@@ -5166,44 +5734,17 @@
 		},
 		events: {
 			/* igWidget events go here */
-
-			/* cancel="true" @Ignored@ Event which is raised when the drop down is opening.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+			/* @Ignored@ */
 			dropDownListOpening: "dropDownListOpening",
-			/*@Ignored@ Event which is raised when the drop down is already opened.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+			/* @Ignored@ */
 			dropDownListOpened: "dropDownListOpened",
-			/* cancel="true" @Ignored@ Event which is raised when the drop down is closing.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+			/* @Ignored@ */
 			dropDownListClosing: "dropDownListClosing",
-			/*@Ignored@ Event which is raised when the drop down is already closed.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier. */
+			/* @Ignored@ */
 			dropDownListClosed: "dropDownListClosed",
-			/* cancel="true" @Ignored@ Event which is raised when the drop down list item is selecting.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
-				Use ui.item to obtain reference to the list item which is about to be selected. */
+			/* @Ignored@ */
 			dropDownItemSelecting: "dropDownItemSelecting",
-			/* cancel="true" @Ignored@ Event which is raised when the drop down list item is selected.
-				Function takes arguments evt and ui.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.editorInput to obtain reference to the editable input
-				Use ui.list to obtain reference to the list contaier.
-				Use ui.item to obtain reference to the list item which is selected. */
+			/* @Ignored@ */
 			dropDownItemSelected: "dropDownItemSelected"
 		},
 		_create: function () { //igMaskEditor
@@ -6092,6 +6633,8 @@
 				}
 				case "excludeKeys":
 				case "includeKeys":
+				case "regional":
+				case "unfilledCharsPrompt":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.cannotSetRuntime);
 				default: {
@@ -6156,6 +6699,9 @@
 		// igMaskEditor public methods
 		value: function (newValue) { // Mask Editor
 			/* Gets/Sets mask editor value.
+				```
+				$(".selector").%%WidgetName%%("value", "New Text");
+				```
 				paramType="string" optional="true" New mask editor value.
 				returnType="string" Current mask editor value. */
 			if (newValue !== undefined) {
@@ -6258,7 +6804,7 @@
 	});
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
-			/* type="date" Gets/Sets value in editor. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it as value. MVC date format can be used too. For example Date(/"thicks"/).
+			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
 				```
 				//Initialize
@@ -6274,14 +6820,32 @@
 				```
 				*/
 			value: null,
-			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
+			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
 				Note! This option can not be set runtime.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						minValue: new Date(1980, 6, 1)
+					});
+
+					//Get
+					var minValue = $(".selector").%%WidgeName%%("option", "minValue");
+				```
 				*/
 			minValue: null,
-			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
+			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
 				Note! This option can not be set runtime.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						maxValue: new Date(2020, 11, 21)
+					});
+
+					//Get
+					var maxValue = $(".selector").%%WidgetName%%("option", "maxValue");
+				```
 				*/
 			maxValue: null,
 			/* type="string"
@@ -6322,6 +6886,18 @@
 				"f": milliseconds field in hundreds
 				"ff": milliseconds field in tenths
 				"fff": milliseconds field
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						dateDisplayFormat: "dateLong"
+					});
+
+					//Get
+					var dateDisplayFormat = $(".selector").%%WidgetName%%("option", "dateDisplayFormat");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "dateDisplayFormat", "dateLong");
+				```
 			*/
 			dateDisplayFormat: null,
 			/* type="string"
@@ -6362,24 +6938,79 @@
 				"ff": milliseconds field in tenths
 				"fff": milliseconds field
 				Note! This option can not be set runtime.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						dateInputFormat : "dateLong"
+					});
+
+					//Get
+					var dateInputFormat = $(".selector").%%WidgetName%%("option", "dateInputFormat");
+				```
 			*/
 			dateInputFormat: null,
 			/* type="date|editModeText|displayModeText|" Gets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dataMode: "editModeText"
+				});
+
+				//Get
+				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
+			```
 				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method.
-				Note: that is used as default.
+				Note: That is used as default.
 				displayModeText type="string" The String object is used and the "text" in display mode (no focus) format (pattern).
 				editModeText type="string" The String object is used and the "text" in edit mode (focus) format (pattern).
 			*/
 			dataMode: "date",
 			/*type="clear|spin" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					buttonType : "clear"
+				});
+
+				//Get
+				var buttonType = $(".selector").%%WidgetName%%("option", "buttonType");
+			```
 				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
 				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).*/
 			buttonType: "none",
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.*/
+			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					spinDelta: 10
+				});
+
+				//Get
+				var spinDelta= $(".selector").%%WidgetName%%("option", "spinDelta");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "spinDelta", 10);
+			```
+			*/
 			spinDelta: 1,
 			/* type="bool" Gets/Sets ability to modify only 1 date field on spin events.
 				Value false enables changes of other date fields when incremented or decremented date-field reaches its limits.
 				Value true modifies only value of one field.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						limitSpinToCurrentField : true
+					});
+
+					//Get
+					var limitSpinToCurrentField = $(".selector").%%WidgetName%%("option", "limitSpinToCurrentField");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "limitSpinToCurrentField", true);
+				```
 			*/
 			limitSpinToCurrentField: false,
 			/* type="bool" Gets/Sets formatting of the dates as UTC.
@@ -6390,13 +7021,51 @@
 				When application uses the get-value, then editor returns internal Date-value decremented by TimezoneOffset.
 				When that option is modified after initialization, then displayed text and internal Date-value are not affected.
 				It is not recommended to change that option without resetting Date-value.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						enableUTCDates : true
+					});
+
+					//Get
+					var enableUTCDates = $(".selector").%%WidgetName%%("option", "enableUTCDates");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "enableUTCDates", true);
+				```
 			*/
 			enableUTCDates: false,
 			/* type="number" Gets/Sets year for auto detection of 20th and 21st centuries.
 				That option is used to automatically fill century when the user entered only 1 or 2 digits into the year field or when the date pattern contains only 1 or 2 year positions, e.g. "yy" or "y".
-				If user entered value larger than value of this option, then 20th century is used, otherwise the 21st. */
+				If user entered value larger than value of this option, then 20th century is used, otherwise the 21st.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						centuryThreshold: 35
+					});
+
+					//Get
+					var centuryThreshold = $(".selector").%%WidgetName%%("option", "centuryThreshold");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "centuryThreshold", 35);
+				```
+				*/
 			centuryThreshold: 29,
-			/* type="number" Gets/Sets difference between year in Gregorian calendar and displayed year. */
+			/* type="number" Gets/Set value used to increase/decrease year part of the date, in order to set difference between year in Gregorian calendar and displayed year.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					yearShift : 4500
+				});
+
+				//Get
+				var yearShift = $(".selector").%%WidgetName%%("option", "yearShift");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "yearShift", 4500);
+			```
+			*/
 			yearShift: 0,
 			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
 				```
@@ -9011,6 +9680,9 @@
 		// igDateEditor public methods
 		value: function (newValue) { // Date Editor
 			/* Gets/Sets editor value.
+			```
+				$(".selector").%%WidgetName%%("value", new Date (2016, 2, 3);
+			```
 				paramType="date" optional="true" New editor value. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
 				Note! This option doesn't use the displayInputFormat to extract the date
 				returnType="date" Current editor value. */
@@ -9058,32 +9730,50 @@
 		},
 		getSelectedDate: function() {
 			/* Gets selected date.
+			```
+			$(".selector").%%WidgetName%%("getSelectedDate");
+			```
 				returnType="date" */
 			return this._dateObjectValue;
 		},
 		selectDate: function (date) {
 			/* Sets selected date.
+			```
+				$(".selector").igDateEditor("selectDate", new Date (2016, 2, 3));
+			```
 				paramType="date" optional="false" */
 			this._updateValue(date);
 			this._exitEditMode();
 		},
 		spinUp: function (delta) {
 			/* Increase date-time period, depending on the cursor position.
+			```
+				$(".selector").igDateEditor("spinUp", 2);
+			```
 				paramType="number" optional="true" The increase delta. */
 			this._spin(delta ? delta : this.options.spinDelta);
 		},
 		spinDown: function (delta) {
 			/* Decrease date-time period, depending on the cursor position.
+			```
+				$(".selector").igDateEditor("spinDown", 3);
+			```
 				paramType="number" optional="true" The decrease delta. */
 			this._spin(delta ? -delta : -this.options.spinDelta);
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
+			```
+			$(".selector").igDateEditor("spinUpButton");
+			```
 				returnType="$" The jQuery object representing the spin up UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinUpButton.call(this);
 		},
 		spinDownButton: function () {
 			/* Returns a reference to the spin down UI element of the editor.
+			```
+				$(".selector").igDateEditor("spinDownButton");
+			```
 				returnType="$" The jQuery object representing the spin down UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinDownButton.call(this);
 		},
@@ -9148,18 +9838,64 @@
 	});
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
 		options: {
-			/* type="object" Gets/Sets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed. */
+			/* type="object" Gets/Sets the custom regional settings for the editor. If it is a string, then $.ig.regional[stringValue] is assumed.
+			```
+			//Initialize
+				$(".selector").igDatePicker({
+					regional: "en-US"
+				});
+
+				//Get
+				var regional = $(".selector").igDatePicker("option", "regional");
+
+				//Set
+				$(".selector").igDatePicker("option", "regional", "en-US");
+			```
+			*/
 			regional: null,
-			/* type="dropdown|clear|spin" Gets visibility of spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,clear' or 'dropdownclear' are supported too.
-				dropdown type="string" button to open list is located on the right side of input-field (or left side if base html element has direction:rtl);
-				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
-				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).
+			/* type="dropdown|clear|spin" Gets the visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,clear' are supported too.
+				```
+				//Initialize
+				$(".selector").igDatePicker({
+					buttonType : "clear"
+				});
+
+				//Get
+				var buttonType = $(".selector").igDatePicker("option", "buttonType");
+
+				//Set
+				$(".selector").igDatePicker("option", "buttonType", "clear");
+				```
+				dropdown type="string" the button to open the list is located on the right side of the input-field (or the left side if the base html element has direction:rtl);
+				clear type="string" the button to clear value is located on the right side of the input-field (or the left side if the base html element has direction:rtl);
+				spin type="string" the spin buttons are located on the right side of the input-field (or left side if the base html element has direction:rtl).
 			*/
 			buttonType: "dropdown",
-			/* type="object" Gets/Sets options supported by the jquery.ui.datepicker. Only options related to drop-down calendar are supported. */
+			/* type="object" Gets/Sets the options supported by the jquery.ui.datepicker. Only options related to the drop-down calendar are supported.
+			```
+			//Initialize
+			$(".selector").igDatePicker({
+				datepickerOptions: {minDate : new Date(2015, 9, 17), maxDate : new Date(2015, 9, 30) }
+			});
+
+			//Get
+			var datepickerOptions = $(".selector").igDatePicker("option", "datepickerOptions");
+			```
+			*/
 			datepickerOptions: null,
-			/* type="bool" Gets ability to limit igDatePicker to be used only from the calendar. When set to true the editor input is not editable.
-				Note! This option can not be set runtime. */
+			/* type="bool" Gets the ability to limit the igDatePicker to be used only from the calendar. When set to true the editor input is not editable.
+				Note! This option can not be set runtime.
+			```
+			//Initialize
+			$(".selector").igDatePicker({
+				readOnly: true,
+				dropDownOnReadOnly : true
+			});
+
+			//Get
+			var dropDownOnReadOnly = $(".selector").igDatePicker("option", "dropDownOnReadOnly");
+			```
+			*/
 			dropDownOnReadOnly: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			dropDownAttachedToBody: false,
@@ -9177,33 +9913,84 @@
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
-				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker. */
+				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
+				```
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistopening", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListOpening: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			dropDownListOpening: "dropDownListOpening",
-			/* Event which is raised when the drop down is already opened.
+			/* Event which is raised after the drop down is opened.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
-				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker. */
+				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
+				```
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistopened", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListOpened: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			dropDownListOpened: "dropDownListOpened",
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
 			dropDownListClosing: "dropDownListClosing",
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
 			dropDownItemSelecting: "dropDownItemSelecting",
-			/* Event which is raised when the drop down (calendar) is already closed.
+			/* Event which is raised after the drop down (calendar) is closed.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.editorInput to obtain reference to the editable input
-				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.*/
+				Use ui.calendar to obtain a reference to jQuery UI date picker widget, used as a calendar from the igDatePicker.
+				```
+				$(".selector").on("%%WidgetNameLowered%%dropdownlistclosed", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownListClosed: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			dropDownListClosed: "dropDownListClosed",
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDatePicker */
 			dropDownItemSelected: "dropDownItemSelected",
-			/* cancel="false" Event which is raised after the date selection in the calendar.
-				Function takes argument ui.
+			/* cancel="false" Event which is raised after a date selection in the calendar.
+				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.dateFromPicker to obtain reference to the date object which is selected.
 				Use ui.item to obtain a referece to the selected html element from the calendar.
 				Use ui.calendar to obtain a reference to jQuery UI date picker, used as a calendar from the igDatePicker.
-				*/
+				```
+				$(".selector").on("%%WidgetNameLowered%%itemselected", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					itemSelected: function (evt, ui) {
+					...
+					}
+				});
+				```
+			*/
 			itemSelected: "itemSelected"
 		},
 		_setDropDownListWidth: function () { // igDatePicker
@@ -9490,7 +10277,7 @@
 			};
 			this._trigger(this.events.dropDownListOpened, null, args);
 		},
-		_triggerDropDownOpeninng: function () {
+		_triggerDropDownOpening: function () {
 			var args = {
 				owner: this,
 				editorInput: this._editorInput,
@@ -9606,7 +10393,10 @@
 		// igDatePicker public methods
 		getCalendar: function () {
 			/* Returns a reference to the jQuery calendar used as a picker selector
-			returnType="$" Returns reference to jquery object. */
+			```
+			$(".selector").igDatePicker("getCalendar");
+			```
+			returnType="$" Returns a reference to the jquery object. */
 			return $.ui.igTextEditor.prototype.dropDownContainer.call(this);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
@@ -9630,25 +10420,43 @@
 			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		showDropDown: function () {
-			/* Shows the drop down list. */
+			/* Shows the drop down list.
+			```
+			$(".selector").igDatePicker("showDropDown");
+			```
+			*/
 			$.ui.igTextEditor.prototype.showDropDown.call(this);
 		},
 		hideDropDown: function () {
-			/* Hides the drop down list. */
+			/* Hides the drop down list.
+			```
+			$(".selector").igDatePicker("hideDropDown");
+			```
+			*/
 			$.ui.igTextEditor.prototype.hideDropDown.call(this);
 		},
 		dropDownButton: function () {
 			/* Returns a reference to the calendar button UI element of the editor.
+			```
+			var button = $(".selector").igDatePicker("dropDownButton");
+			```
 				returnType="$" Returns reference to jquery object. */
 			return $.ui.igTextEditor.prototype.dropDownButton.call(this);
 		},
 		dropDownVisible: function () {
 			/* Returns the visibility state of the calendar.
+			```
+			$(".selector").igDatePicker("dropDownVisible");
+			```
 				returnType="bool" The visibility state of the calendar. */
 			return $.ui.igTextEditor.prototype.dropDownVisible.call(this);
 		},
 		destroy: function () {
-			/* Destructor of the widget */
+			/* Destructor of the widget
+			```
+			$(".selector").igDatePicker("destroy");
+			```
+			*/
 			this._editorInput.datepicker("destroy");
 			this._super();
 			return this;
@@ -9656,48 +10464,85 @@
 	});
 	$.widget("ui.igCheckboxEditor", $.ui.igBaseEditor, {
 		options: {
-			/* type="bool" Gets/Sets either the editor is checked or not. */
+			/* type="bool" Gets/Sets whether the checkbox is checked.
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					checked: true
+				});
+
+				//Get
+				var checked = $(".selector").%%WidgetName%%("option", "checked");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "checked", true);
+				```
+			*/
 			checked: false,
 			/* type="verysmall|small|normal|large" Gets/Sets size of the checkbox based on preset styles.
 				For different sizes, define 'width' and 'height' options instead.
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					size: "large"
+				});
+
+				//Get
+				var size = $(".selector").%%WidgetName%%("option", "size");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "size", "large");
+				```
 				verysmall type="string" The size of the Checkbox editor is very small.
 				small type="string" The size of the Checkbox editor is small.
 				normal type="string" The size of the Checkbox editor is normal.
 				large type="string" The size of the Checkbox editor is large.
 			*/
 			size: "normal",
-			/* type="string" Applies custom class on the checkbox, so that custom image can be used.
+			/* type="string" Applies custom class on the checkbox. Custom image can be used this way.
 				The following jQuery classes can be used in addition http://api.jqueryui.com/theming/icons/
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					iconClass: "ui-icon-check"
+				});
+
+				//Get
+				var iconClass = $(".selector").%%WidgetName%%("option", "iconClass");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "iconClass", "ui-icon-check");
+				```
 			*/
 			iconClass: "ui-icon-check",
 			/* type="number" Gets/Sets tabIndex attribute for the editor input.
-			```
-			  //Initialize
-			  $('.selector').%%WidgetName%%({
-				  tabIndex: 1
-			  });
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					tabIndex: 1
+				});
 
-			  //Get
-			  var tabIndex = $(".selector").%%WidgetName%%("option", "tabIndex");
+				//Get
+				var tabIndex = $(".selector").%%WidgetName%%("option", "tabIndex");
 
-			  //Set
-			  $(".selector").%%WidgetName%%("option", "tabIndex", 1);
-			```
+				//Set
+				$(".selector").%%WidgetName%%("option", "tabIndex", 1);
+				```
 			*/
 			tabIndex: 0,
-			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.
-			```
-			//Initialize
-			$('.selector').igCheckboxEditor({
-				  readOnly: true
-			  });
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state as an interaction, but it still can be changed programmatically. On submit the current value is sent into the request.
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					readOnly: true
+				});
 
-			  //Get
-			  var readOnly = $(".selector").igCheckboxEditor("option", "readOnly");
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "readOnly");
 
-			  //Set
-			  $(".selector").igCheckboxEditor("option", "readOnly", true);
-			```
+				//Set
+				$(".selector").%%WidgetName%%("option", "readOnly", true);
+				```
 			*/
 			readOnly: false,
 			/*@Ignored@*/
@@ -9722,46 +10567,50 @@
 			checkboxInput: "ui-helper-hidden"
 		},
 		events: {
-			/* cancel="true" Event which is raised on keydown event.
-				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode. */
-			keydown: "keydown",
-			/* cancel="true" Event which is raised on keypress event.
-				Return false in order to cancel key action.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode.
-				Set ui.key to another character which will replace original entry. */
-			keypress: "keypress",
-			/* Event which is raised on keyup event.
-				Function takes arguments evt and ui.
-				Use evt.originalEvent to obtain reference to event of browser.
-				Use ui.owner to obtain reference to igEditor.
-				Use ui.key to obtain value of keyCode. */
-			keyup: "keyup",
 			/* cancel="true" Event which is raised before value in editor was changed.
 				Return false in order to cancel change.
-				It can be raised on lost focus or on spin events.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.newValue to obtain the new value.
 				Use ui.newState to obtain the new state.
 				Use ui.oldValue to obtain the old value.
 				Use ui.oldState to obtain the old state.
-				Use ui.element to obtain reference to the DOM element.
-				Use ui.editorInput obtain reference to the editor input.*/
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput obtain reference to the editor element.
+				```
+				$(".selector").on("igcheckboxeditorvaluechanging", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").igCheckboxEditor({
+					valueChanging: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			valueChanging: "valueChanging",
-			/* Event which is raised after value in editor was changed. It can be raised on lost focus or on spin events.
+			/* Event which is raised after value in editor was changed.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
 				Use ui.newValue to obtain the new value.
 				Use ui.newState to obtain the new state.
-				Use ui.element to obtain reference to the DOM element.
-				Use ui.editorInput obtain reference to the editor input.*/
+				Use ui.element to obtain a reference to the event target.
+				Use ui.editorInput obtain reference to the editor element.
+				```
+				$(".selector").on("igcheckboxeditorvaluechanged", function (evt, ui) {
+					...
+				});
+
+				//Initialize
+				$(".selector").igCheckboxEditor({
+					valueChanged: function (evt, ui) {
+						...
+					}
+				});
+				```
+			*/
 			valueChanged: "valueChanged"
 		},
 		_triggerKeyUp: function (event) {
@@ -10166,11 +11015,17 @@
 		// igCheckboxEditor public methods
 		value: function (newValue) {
 			/* Gets/Sets Current checked state/Value of the igCheckboxEditor that will be submitted by the HTML form.
-				1. If the 'value' option IS NOT defined, then 'value' method will match the checked state of the editor.
-				This is a good option when the checkbox is intended to operate as a Boolean editor. In that case the return type is bool.
-				2. If the 'value' option IS defined, then 'value' method will return the 'value' option,
-				the one that is going to be submitted by the HTML form to the server.
-				To get checked state regardless of the 'value' option, use $("checkBox").igCheckboxEditor("option", "checked");
+				1. If the [value](ui.igcheckboxeditor#options:value) option IS NOT defined, then 'value' method will match the checked state of the editor.
+				This option is used when the checkbox is intended to operate as a Boolean editor. In that case the return type is bool.
+				2. If the [value](ui.igcheckboxeditor#options:value) option IS defined, then 'value' method will return the value that will be submitted when the editor is checked and the form is submitted.
+				To get checked state regardless of the 'value' option, use $(".selector").igCheckboxEditor("option", "checked");
+				```
+				//Get
+				var editorVal = $(".selector").%%WidgetName%%("value");
+
+				//Set
+				$(".selector").%%WidgetName%%("value", 42);
+				```
 				returnType="string" Current checked state(bool) or the value(string) of the igCheckboxEditor that will be submitted by the HTML form.
 			*/
 			if (newValue !== undefined) {
@@ -10196,7 +11051,11 @@
 			}
 		},
 		toggle: function () {
-			/* Toggles the state of the checkbox. */
+			/* Toggles the state of the checkbox.
+				```
+				$(".selector").%%WidgetName%%("toggle");
+				```
+			*/
 			if (this._getState()) {
 				this._updateState(false);
 			} else {

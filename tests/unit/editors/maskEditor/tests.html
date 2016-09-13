@@ -276,6 +276,9 @@
 		                    $("#test").append("<span></span>");
 		                }
 					});
+					$("#maskEditorRuntime").igMaskEditor({
+						inputMask: "CCC"
+					});
 
 				});
 			}
@@ -292,6 +295,22 @@
 				},
 				teardown: function () {
 				}
+			});
+
+			testId = 'mask editor cannot set on runtime';
+			test(testId, 2, function () {
+				throws(function () {
+					$('#maskEditorRuntime').igMaskEditor("option", "regional", "ru-Ru")
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
+				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+
+				
+				throws(function () {
+					$('#maskEditorRuntime').igMaskEditor("option", "unfilledCharsPrompt", "*")
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
+				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
 			});
 
 			var testId = 'Mask Editor initialization.';
@@ -1006,6 +1025,8 @@
 	 <ol id="qunit-tests"></ol>
 </div>
 	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+		
+		<div id="maskEditorRuntime"></div>
 		<input type="text" id="editor1" />
 		<input type="text" id="editor11" />
 		<div type="text" id="editor2"></div>
@@ -1082,7 +1103,7 @@
 			<input type="text" id="revertEditor1" />
 			<input type="text" id="revertEditor2" />
 			<input type="text" id="revertEditor3" />
-			<div id="test"></div>
+			<div id="test"></div>			
 		<input type='submit' value="Submit" />
 		</form>
 	</div>

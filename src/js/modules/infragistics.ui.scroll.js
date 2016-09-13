@@ -19,8 +19,7 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util",
-			"./i18n/infragistics.ui.scroll-en"
+			"./infragistics.util"
 		], factory );
 	} else {
 
@@ -642,7 +641,9 @@
 			/* Classes applied to the Arrow Right of the custom horizontal scrollbar when it is active */
 			horizontalScrollArrowRightActive: "igscroll-rightarrow-active",
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar */
-			horizontalScrollThumbDrag: "igscroll-hdrag"
+			horizontalScrollThumbDrag: "igscroll-hdrag",
+			/* Classes applied to an element that prevents selection when dragging */
+			disabledSelection: "igscroll-select-disabled"
 		},
 
 		refresh: function () {
@@ -2584,6 +2585,7 @@
 				owner: this,
 				horizontal: false
 			});
+			this._disableContentSelection();
 		},
 
 		_onMouseDownVTrack: function (event) {
@@ -2786,6 +2788,7 @@
 						horizontal: true
 					});
 				}
+				this._enableContentSelection();
 			}
 			this._bUseVDrag = false;
 		},
@@ -3078,6 +3081,7 @@
 				owner: this,
 				horizontal: true
 			});
+			this._disableContentSelection();
 		},
 
 		_onMouseDownHTrack: function (event) {
@@ -3276,6 +3280,7 @@
 						horizontal: true
 					});
 				}
+				this._enableContentSelection();
 			}
 			this._bUseHDrag = false;
 		},
@@ -3505,6 +3510,14 @@
 		/** Doesn't allow interacting with the scrollbars with touch actions */
 		_onTouchStartScrollbarElem: function() {
 			return false;
+		},
+
+		_disableContentSelection: function() {
+			this._container.addClass(this.css.disabledSelection);
+		},
+
+		_enableContentSelection: function () {
+			this._container.removeClass(this.css.disabledSelection);
 		},
 
 		destroy: function () {
