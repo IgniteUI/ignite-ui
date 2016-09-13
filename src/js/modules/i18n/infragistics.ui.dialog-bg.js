@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "Максимизирай",
 			    pinButtonTitle: "Закачи",
 			    unpinButtonTitle: "Откачи",
-			    restoreButtonTitle: "Възстанови"
+			    restoreButtonTitle: "Възстанови",
+				cannotSetRuntime: "This option can not be set runtime"
 		    }
 	    };
     }
