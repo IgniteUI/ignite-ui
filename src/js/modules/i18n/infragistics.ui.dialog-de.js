@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "Maximieren",
 			    pinButtonTitle: "Anheften",
 			    unpinButtonTitle: "Lösen",
-			    restoreButtonTitle: "Wiederherstellen"
+			    restoreButtonTitle: "Wiederherstellen",
+				cannotSetRuntime: "This option can not be set runtime"
 		    }
 	    };
     }

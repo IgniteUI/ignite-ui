@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "максимизировать",
 			    pinButtonTitle: "прикрепить",
 			    unpinButtonTitle: "открепить",
-			    restoreButtonTitle: "восстановить"
+			    restoreButtonTitle: "восстановить",
+				cannotSetRuntime: "This option can not be set runtime"
 		    }
 	    };
     }
