@@ -3330,7 +3330,7 @@
 		},
 		clearButton: function () {
 			/* Returns a reference to the clear button UI element of the editor.
-				returnType="$" Returns reference to jquery object. */
+				returnType="$" Returns a reference to the jquery object. */
 			return this._clearButton;
 		},
 		findListItemIndex: function (text, matchType) {
@@ -9840,18 +9840,64 @@
 	});
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
 		options: {
-			/* type="object" Gets/Sets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed. */
+			/* type="object" Gets/Sets the custom regional settings for the editor. If it is a string, then $.ig.regional[stringValue] is assumed.
+			```
+			//Initialize
+				$(".selector").igDatePicker({
+					regional: "en-US"
+				});
+
+				//Get
+				var regional = $(".selector").igDatePicker("option", "regional");
+
+				//Set
+				$(".selector").igDatePicker("option", "regional", "en-US");
+			```
+			*/
 			regional: null,
-			/* type="dropdown|clear|spin" Gets visibility of spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,clear' or 'dropdownclear' are supported too.
-				dropdown type="string" button to open list is located on the right side of input-field (or left side if base html element has direction:rtl);
-				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
-				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).
+			/* type="dropdown|clear|spin" Gets the visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,clear' are supported too.
+				```
+				//Initialize
+				$(".selector").igDatePicker({
+					buttonType : "clear"
+				});
+
+				//Get
+				var buttonType = $(".selector").igDatePicker("option", "buttonType");
+
+				//Set
+				$(".selector").igDatePicker("option", "buttonType", "clear");
+				```
+				dropdown type="string" the button to open the list is located on the right side of the input-field (or the left side if the base html element has direction:rtl);
+				clear type="string" the button to clear value is located on the right side of the input-field (or the left side if the base html element has direction:rtl);
+				spin type="string" the spin buttons are located on the right side of the input-field (or left side if the base html element has direction:rtl).
 			*/
 			buttonType: "dropdown",
-			/* type="object" Gets/Sets options supported by the jquery.ui.datepicker. Only options related to drop-down calendar are supported. */
+			/* type="object" Gets/Sets the options supported by the jquery.ui.datepicker. Only options related to the drop-down calendar are supported.
+			```
+			//Initialize
+			$(".selector").igDatePicker({
+				datepickerOptions: {minDate : new Date(2015, 9, 17), maxDate : new Date(2015, 9, 30) }
+			});
+
+			//Get
+			var datepickerOptions = $(".selector").igDatePicker("option", "datepickerOptions");
+			```
+			*/
 			datepickerOptions: null,
-			/* type="bool" Gets ability to limit igDatePicker to be used only from the calendar. When set to true the editor input is not editable.
-				Note! This option can not be set runtime. */
+			/* type="bool" Gets the ability to limit the igDatePicker to be used only from the calendar. When set to true the editor input is not editable.
+				Note! This option can not be set runtime.
+			```
+			//Initialize
+			$(".selector").igDatePicker({
+				readOnly: true,
+				dropDownOnReadOnly : true
+			});
+
+			//Get
+			var dropDownOnReadOnly = $(".selector").igDatePicker("option", "dropDownOnReadOnly");
+			```
+			*/
 			dropDownOnReadOnly: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			dropDownAttachedToBody: false,
@@ -10349,7 +10395,10 @@
 		// igDatePicker public methods
 		getCalendar: function () {
 			/* Returns a reference to the jQuery calendar used as a picker selector
-			returnType="$" Returns reference to jquery object. */
+			```
+			$(".selector").igDatePicker("getCalendar");
+			```
+			returnType="$" Returns a reference to the jquery object. */
 			return $.ui.igTextEditor.prototype.dropDownContainer.call(this);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
@@ -10373,25 +10422,43 @@
 			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		showDropDown: function () {
-			/* Shows the drop down list. */
+			/* Shows the drop down list.
+			```
+			$(".selector").igDatePicker("showDropDown");
+			```
+			*/
 			$.ui.igTextEditor.prototype.showDropDown.call(this);
 		},
 		hideDropDown: function () {
-			/* Hides the drop down list. */
+			/* Hides the drop down list.
+			```
+			$(".selector").igDatePicker("hideDropDown");
+			```
+			*/
 			$.ui.igTextEditor.prototype.hideDropDown.call(this);
 		},
 		dropDownButton: function () {
 			/* Returns a reference to the calendar button UI element of the editor.
+			```
+			var button = $(".selector").igDatePicker("dropDownButton");
+			```
 				returnType="$" Returns reference to jquery object. */
 			return $.ui.igTextEditor.prototype.dropDownButton.call(this);
 		},
 		dropDownVisible: function () {
 			/* Returns the visibility state of the calendar.
+			```
+			$(".selector").igDatePicker("dropDownVisible");
+			```
 				returnType="bool" The visibility state of the calendar. */
 			return $.ui.igTextEditor.prototype.dropDownVisible.call(this);
 		},
 		destroy: function () {
-			/* Destructor of the widget */
+			/* Destructor of the widget
+			```
+			$(".selector").igDatePicker("destroy");
+			```
+			*/
 			this._editorInput.datepicker("destroy");
 			this._super();
 			return this;
