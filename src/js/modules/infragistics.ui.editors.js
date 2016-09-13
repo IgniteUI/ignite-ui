@@ -10149,48 +10149,85 @@
 	});
 	$.widget("ui.igCheckboxEditor", $.ui.igBaseEditor, {
 		options: {
-			/* type="bool" Gets/Sets either the editor is checked or not. */
+			/* type="bool" Gets/Sets whether the checkbox is checked.
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					checked: true
+				});
+
+				//Get
+				var checked = $(".selector").%%WidgetName%%("option", "checked");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "checked", true);
+				```
+			*/
 			checked: false,
 			/* type="verysmall|small|normal|large" Gets/Sets size of the checkbox based on preset styles.
 				For different sizes, define 'width' and 'height' options instead.
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					size: "large"
+				});
+
+				//Get
+				var size = $(".selector").%%WidgetName%%("option", "size");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "size", "large");
+				```
 				verysmall type="string" The size of the Checkbox editor is very small.
 				small type="string" The size of the Checkbox editor is small.
 				normal type="string" The size of the Checkbox editor is normal.
 				large type="string" The size of the Checkbox editor is large.
 			*/
 			size: "normal",
-			/* type="string" Applies custom class on the checkbox, so that custom image can be used.
+			/* type="string" Applies custom class on the checkbox. Custom image can be used this way.
 				The following jQuery classes can be used in addition http://api.jqueryui.com/theming/icons/
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					iconClass: "ui-icon-check"
+				});
+
+				//Get
+				var iconClass = $(".selector").%%WidgetName%%("option", "iconClass");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "iconClass", "ui-icon-check");
+				```
 			*/
 			iconClass: "ui-icon-check",
 			/* type="number" Gets/Sets tabIndex attribute for the editor input.
-			```
-			  //Initialize
-			  $('.selector').%%WidgetName%%({
-				  tabIndex: 1
-			  });
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					tabIndex: 1
+				});
 
-			  //Get
-			  var tabIndex = $(".selector").%%WidgetName%%("option", "tabIndex");
+				//Get
+				var tabIndex = $(".selector").%%WidgetName%%("option", "tabIndex");
 
-			  //Set
-			  $(".selector").%%WidgetName%%("option", "tabIndex", 1);
-			```
+				//Set
+				$(".selector").%%WidgetName%%("option", "tabIndex", 1);
+				```
 			*/
 			tabIndex: 0,
-			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.
-			```
-			//Initialize
-			$('.selector').igCheckboxEditor({
-				  readOnly: true
-			  });
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state as an interaction, but it still can be changed programmatically. On submit the current value is sent into the request.
+				```
+				//Initialize
+				$('.selector').%%WidgetName%%({
+					readOnly: true
+				});
 
-			  //Get
-			  var readOnly = $(".selector").igCheckboxEditor("option", "readOnly");
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "readOnly");
 
-			  //Set
-			  $(".selector").igCheckboxEditor("option", "readOnly", true);
-			```
+				//Set
+				$(".selector").%%WidgetName%%("option", "readOnly", true);
+				```
 			*/
 			readOnly: false,
 			/*@Ignored@*/
@@ -10663,11 +10700,17 @@
 		// igCheckboxEditor public methods
 		value: function (newValue) {
 			/* Gets/Sets Current checked state/Value of the igCheckboxEditor that will be submitted by the HTML form.
-				1. If the 'value' option IS NOT defined, then 'value' method will match the checked state of the editor.
-				This is a good option when the checkbox is intended to operate as a Boolean editor. In that case the return type is bool.
-				2. If the 'value' option IS defined, then 'value' method will return the 'value' option,
-				the one that is going to be submitted by the HTML form to the server.
-				To get checked state regardless of the 'value' option, use $("checkBox").igCheckboxEditor("option", "checked");
+				1. If the [value](ui.igcheckboxeditor#options:value) option IS NOT defined, then 'value' method will match the checked state of the editor.
+				This option is used when the checkbox is intended to operate as a Boolean editor. In that case the return type is bool.
+				2. If the [value](ui.igcheckboxeditor#options:value) option IS defined, then 'value' method will return the value that will be submitted when the editor is checked and the form is submitted.
+				To get checked state regardless of the 'value' option, use $(".selector").igCheckboxEditor("option", "checked");
+				```
+				//Get
+				var editorVal = $(".selector").%%WidgetName%%("value");
+
+				//Set
+				$(".selector").%%WidgetName%%("value", 42);
+				```
 				returnType="string" Current checked state(bool) or the value(string) of the igCheckboxEditor that will be submitted by the HTML form.
 			*/
 			if (newValue !== undefined) {
@@ -10693,7 +10736,11 @@
 			}
 		},
 		toggle: function () {
-			/* Toggles the state of the checkbox. */
+			/* Toggles the state of the checkbox.
+				```
+				$(".selector").%%WidgetName%%("toggle");
+				```
+			*/
 			if (this._getState()) {
 				this._updateState(false);
 			} else {
