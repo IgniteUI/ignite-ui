@@ -9656,7 +9656,7 @@
 	});
 	$.widget("ui.igCheckboxEditor", $.ui.igBaseEditor, {
 		options: {
-			/* type="bool" Gets/Sets either the editor is checked or not.
+			/* type="bool" Gets/Sets whether the checkbox is checked.
 				```
 				//Initialize
 				$('.selector').%%WidgetName%%({
@@ -9691,7 +9691,7 @@
 				large type="string" The size of the Checkbox editor is large.
 			*/
 			size: "normal",
-			/* type="string" Applies custom class on the checkbox, so that custom image can be used.
+			/* type="string" Applies custom class on the checkbox. Custom image can be used this way.
 				The following jQuery classes can be used in addition http://api.jqueryui.com/theming/icons/
 				```
 				//Initialize
@@ -9722,7 +9722,7 @@
 				```
 			*/
 			tabIndex: 0,
-			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state. On submit the current value is sent into the request.
+			/* type="bool" Gets/Sets the readonly attribute. Does not allow editing. Disables changing the checkbox state as an interaction, but it still can be changed programmatically. On submit the current value is sent into the request.
 				```
 				//Initialize
 				$('.selector').%%WidgetName%%({
@@ -10204,9 +10204,8 @@
 		value: function (newValue) {
 			/* Gets/Sets Current checked state/Value of the igCheckboxEditor that will be submitted by the HTML form.
 				1. If the [value](ui.igcheckboxeditor#options:value) option IS NOT defined, then 'value' method will match the checked state of the editor.
-				This is a good option when the checkbox is intended to operate as a Boolean editor. In that case the return type is bool.
-				2. If the [value](ui.igcheckboxeditor#options:value) option IS defined, then 'value' method will return the [value](ui.igcheckboxeditor#options:value) option,
-				the one that is going to be submitted by the HTML form to the server.
+				This option is used when the checkbox is intended to operate as a Boolean editor. In that case the return type is bool.
+				2. If the [value](ui.igcheckboxeditor#options:value) option IS defined, then 'value' method will return the value that will be submitted when the editor is checked and the form is submitted.
 				To get checked state regardless of the 'value' option, use $(".selector").igCheckboxEditor("option", "checked");
 				```
 				//Get
