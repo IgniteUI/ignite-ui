@@ -3932,6 +3932,11 @@
 						throw new Error($.ig.Editor.locale.notEditableOptionByInit);
 					}
 					break;
+
+				case "regional":
+					this.options[ option ] = prevValue;
+					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+
 				case "excludeKeys":
 				case "includeKeys":
 					this.options[ option ] = prevValue;
@@ -5533,16 +5538,35 @@
 	});
 	$.widget("ui.igMaskEditor", $.ui.igTextEditor, {
 		options: {
-			/* type="object" Sets gets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed. */
+			/* type="object" Gets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					regional: "en-US"
+				});
+
+				//Get
+				var region = $(".selector").%%WidgetName%%("option", "regional");
+				```
+			*/
 			regional: null,
 			/*type="clear|spin" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					buttonType : "clear"
+				});
+
+				//Get
+				var button = $(".selector").%%WidgetName%%("option", "buttonType");
+				```
 				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
 				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).*/
 			buttonType: "none",
 			/* type="string" Gets input mask. Mask may include filter-flags and literal characters.
 				Literal characters are part of mask which cannot be modified by end user. In order to use a filter-flag as a literal character, the escape "\\" character should be used.
 				Default is "CCCCCCCCCC"
-				Note: optional flags/entries affect the value returned by get of the "value" and "text" methods.
+				Note: optional flags/entries affect the value returned by get of the [value](ui.igmaskeditor#methods:value) methods.
 				List of filter-flags:
 				C: any keyboard character. Entry is optional.
 				&: any keyboard character. Entry is required.
@@ -5552,13 +5576,34 @@
 				L: letter character. Entry is required.
 				9: digit character. Entry is optional.
 				0: digit character. Entry is required.
-				#: digit character or "+" or "_". Entry is optional with replacement by "emptyPositionChar" or by "padChar".
+				#: digit character or "+" or "_". Entry is optional with replacement by [emptyChar](ui.igmaskeditor#options:emptyChar) or by [padChar](ui.igmaskeditor#options:padChar).
 				>: all letters to the right are converted to the upper case. In order to disable conversion, the ">" flag should be used again.
 				<: all letters to the right are converted to the lower case. In order to disable conversion, the "<" flag should be used again.
 				Note! This option can not be set runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					inputMask : "cccccccccc"
+				});
+
+				//Get
+				var inputMask = $(".selector").%%WidgetName%%("option", "inputMask");
+				```
 			*/
 			inputMask: "CCCCCCCCCC",
-			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" Gets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" Gets/Sets type of value returned by the get of [value](ui.igmaskeditor#methods:value) method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dataMode : "rawTextWithLiterals"
+				});
+
+				//Get
+				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dataMode", "rawTextWithLiterals");
+				```
 				rawText type="string" only entered text. All unfilled prompts (positions) and literals are ignored (removed).
 				rawTextWithRequiredPrompts type="string" only entered text and required prompts (positions). All optional unfilled prompts and literals are ignored (removed)
 				rawTextWithAllPrompts type="string" only entered text and prompts (positions). All literals are ignored (removed).
@@ -5567,21 +5612,77 @@
 				allText type="string" entered text, all prompts (positions) and literals. Note: that is used as default.
 			*/
 			dataMode: "allText",
-			/* type="string" Gets character which is used as prompt in edit mode for available entry position. */
+			/* type="string" Gets character which is used as prompt in edit mode for available entry position.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					unfilledCharsPrompt : "*"
+				});
+
+				//Get
+				var prompt = $(".selector").%%WidgetName%%("option", "unfilledCharsPrompt");
+				```
+			*/
 			unfilledCharsPrompt: "_",
-			/* type="string" Gets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused). */
+			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused). Note that this option is visible, only when the [revertIfNotValid](ui.igmaskeditor#options:revertIfNotValid) option is set to false.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					padChar: "*"
+				});
+
+				//Get
+				var padChar= $(".selector").%%WidgetName%%"option", "padChar");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "padChar", "*");
+				```
+			*/
 			padChar: " ",
-			/* type="string" Gets character which is used as replacement of not-filled required position in mask when application calls get for the "value" or for the "text" methods. */
+			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when application calls get for the [value](ui.igmaskeditor#methods:value) methods.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					emptyChar: "*"
+				});
+
+				//Get
+				var emptyChar= $(".selector").%%WidgetName%%("option", "emptyChar");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "emptyChar", "*");
+				```
+			*/
 			emptyChar: " ",
 			/* type="string" Gets ability to enter only specific characters in input-field from keyboard and on paste.
 				Notes:
 				If "excludeKeys" option contains same characters as this option, then "excludeKeys" has priority.
-				Note! This option can not be se runtime. */
+				Note! This option can not be se runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					includeKeys: "ABC"
+				});
+
+				//Get
+				var includedKeys= $(".selector").%%WidgetName%%("option", "includeKeys");
+				```
+				*/
 			includeKeys: null,
 			/* type="string" Gets ability to prevent entering specific characters from keyboard or on paste.
 				Notes:
 				If a character is specified in "includeKeys" option also, then "excludeKeys" has priority.
-				Note! This option can not be se runtime. */
+				Note! This option can not be se runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					excludeKeys: "ABC"
+				});
+
+				//Get
+				var excludedKeys= $(".selector").%%WidgetName%%("option", "excludeKeys");
+				```
+				*/
 			excludeKeys: null,
 			/* type="array" @Ignored@ Sets gets list of items which are used for drop-down list.
 				Items in list can be strings, numbers or objects. The items are directly rendered without casting, or manipulating them.
@@ -5619,15 +5720,15 @@
 			/* type="object" Gets/Sets value in editor. The effect of setting/getting that option depends on type of editor and on dataMode options for every type of editor.
 			```
 			//Initialize
-			$(".selector").igMaskEditor({
+			$(".selector").%%WidgetName%%({
 				value : "0415565685"
 			});
 
 			//Get
-			var value = $(".selector").igMaskEditor("option", "value");
+			var value = $(".selector").%%WidgetName%%("option", "value");
 
 			//Set
-			$(".selector").igMaskEditor("option", "value", "0415565685");
+			$(".selector").%%WidgetName%%("option", "value", "0415565685");
 
 			```
 			*/
@@ -6534,6 +6635,8 @@
 				}
 				case "excludeKeys":
 				case "includeKeys":
+				case "regional":
+				case "unfilledCharsPrompt":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.cannotSetRuntime);
 				default: {
@@ -6598,6 +6701,9 @@
 		// igMaskEditor public methods
 		value: function (newValue) { // Mask Editor
 			/* Gets/Sets mask editor value.
+				```
+				$(".selector").%%WidgetName%%("value", "New Text");
+				```
 				paramType="string" optional="true" New mask editor value.
 				returnType="string" Current mask editor value. */
 			if (newValue !== undefined) {
