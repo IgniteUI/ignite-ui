@@ -905,7 +905,7 @@
 			if (this.options.scrollHeight !== null) {
 				return this.options.scrollHeight;
 			} else {
-				return this._content.height();
+				return this._content.outerHeight();
 			}
 		},
 
@@ -913,7 +913,7 @@
 			if (this.options.scrollWidth !== null) {
 				return this.options.scrollWidth;
 			} else {
-				return this._content.width();
+				return this._content.outerWidth();
 			}
 		},
 
@@ -1758,7 +1758,6 @@
 								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 							});
 						}
-
 					}
 				}
 			} else {
@@ -1775,7 +1774,6 @@
 								this._linkedVElems[ index ].scrollTop(destY);
 							}
 						}
-
 					}
 				}
 			}
@@ -1969,8 +1967,14 @@
 					this._startY = this._getContentPositionY();
 				}
 
-				var scrollStep = this.options.wheelStep;
-				var scrolledY = this._scrollToY(this._startY + (evt.deltaY > 0 ? 1 : -1) * scrollStep, true);
+				var scrollStep = this.options.wheelStep,
+					scrollDirection = 0;
+				if (evt.deltaY && evt.deltaY > 0) {
+					scrollDirection = 1;
+				} else if (evt.deltaY) {
+					scrollDirection = -1;
+				}
+				var scrolledY = this._scrollToY(this._startY + scrollDirection * scrollStep, true);
 
 				if (!this._cancelScrolling) {
 					//Trigger scrolled event
