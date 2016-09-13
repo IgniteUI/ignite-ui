@@ -4171,6 +4171,7 @@ input.ui-igbutton {
 }
 .ui-icon-triangle-1-n:before {
   content: '\e644';
+  font-size: 10px;
 }
 .ui-icon-triangle-1-ne:before {
   content: '\e645';
