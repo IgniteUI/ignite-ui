@@ -6700,7 +6700,7 @@
 	});
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
-			/* type="date" Gets/Sets value in editor. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it as value. MVC date format can be used too. For example Date(/"thicks"/).
+			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
 				```
 				//Initialize
@@ -6716,14 +6716,32 @@
 				```
 				*/
 			value: null,
-			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
+			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
 				Note! This option can not be set runtime.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						minValue: new Date(1980, 6, 1)
+					});
+
+					//Get
+					var minValue = $(".selector").%%WidgeName%%("option", "minValue");
+				```
 				*/
 			minValue: null,
-			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
+			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
 				Note! This option can not be set runtime.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						maxValue: new Date(2020, 11, 21)
+					});
+
+					//Get
+					var maxValue = $(".selector").%%WidgetName%%("option", "maxValue");
+				```
 				*/
 			maxValue: null,
 			/* type="string"
@@ -6764,6 +6782,18 @@
 				"f": milliseconds field in hundreds
 				"ff": milliseconds field in tenths
 				"fff": milliseconds field
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						dateDisplayFormat: "dateLong"
+					});
+
+					//Get
+					var dateDisplayFormat = $(".selector").%%WidgetName%%("option", "dateDisplayFormat");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "dateDisplayFormat", "dateLong");
+				```
 			*/
 			dateDisplayFormat: null,
 			/* type="string"
@@ -6804,24 +6834,79 @@
 				"ff": milliseconds field in tenths
 				"fff": milliseconds field
 				Note! This option can not be set runtime.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						dateInputFormat : "dateLong"
+					});
+
+					//Get
+					var dateInputFormat = $(".selector").%%WidgetName%%("option", "dateInputFormat");
+				```
 			*/
 			dateInputFormat: null,
 			/* type="date|editModeText|displayModeText|" Gets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dataMode: "editModeText"
+				});
+
+				//Get
+				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
+			```
 				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method.
-				Note: that is used as default.
+				Note: That is used as default.
 				displayModeText type="string" The String object is used and the "text" in display mode (no focus) format (pattern).
 				editModeText type="string" The String object is used and the "text" in edit mode (focus) format (pattern).
 			*/
 			dataMode: "date",
 			/*type="clear|spin" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					buttonType : "clear"
+				});
+
+				//Get
+				var buttonType = $(".selector").%%WidgetName%%("option", "buttonType");
+			```
 				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
 				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).*/
 			buttonType: "none",
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.*/
+			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					spinDelta: 10
+				});
+
+				//Get
+				var spinDelta= $(".selector").%%WidgetName%%("option", "spinDelta");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "spinDelta", 10);
+			```
+			*/
 			spinDelta: 1,
 			/* type="bool" Gets/Sets ability to modify only 1 date field on spin events.
 				Value false enables changes of other date fields when incremented or decremented date-field reaches its limits.
 				Value true modifies only value of one field.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						limitSpinToCurrentField : true
+					});
+
+					//Get
+					var limitSpinToCurrentField = $(".selector").%%WidgetName%%("option", "limitSpinToCurrentField");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "limitSpinToCurrentField", true);
+				```
 			*/
 			limitSpinToCurrentField: false,
 			/* type="bool" Gets/Sets formatting of the dates as UTC.
@@ -6832,13 +6917,51 @@
 				When application uses the get-value, then editor returns internal Date-value decremented by TimezoneOffset.
 				When that option is modified after initialization, then displayed text and internal Date-value are not affected.
 				It is not recommended to change that option without resetting Date-value.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						enableUTCDates : true
+					});
+
+					//Get
+					var enableUTCDates = $(".selector").%%WidgetName%%("option", "enableUTCDates");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "enableUTCDates", true);
+				```
 			*/
 			enableUTCDates: false,
 			/* type="number" Gets/Sets year for auto detection of 20th and 21st centuries.
 				That option is used to automatically fill century when the user entered only 1 or 2 digits into the year field or when the date pattern contains only 1 or 2 year positions, e.g. "yy" or "y".
-				If user entered value larger than value of this option, then 20th century is used, otherwise the 21st. */
+				If user entered value larger than value of this option, then 20th century is used, otherwise the 21st.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						centuryThreshold: 35
+					});
+
+					//Get
+					var centuryThreshold = $(".selector").%%WidgetName%%("option", "centuryThreshold");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "centuryThreshold", 35);
+				```
+				*/
 			centuryThreshold: 29,
-			/* type="number" Gets/Sets difference between year in Gregorian calendar and displayed year. */
+			/* type="number" Gets/Set value used to increase/decrease year part of the date, in order to set difference between year in Gregorian calendar and displayed year.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					yearShift : 4500
+				});
+
+				//Get
+				var yearShift = $(".selector").%%WidgetName%%("option", "yearShift");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "yearShift", 4500);
+			```
+			*/
 			yearShift: 0,
 			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
 				```
@@ -9453,6 +9576,9 @@
 		// igDateEditor public methods
 		value: function (newValue) { // Date Editor
 			/* Gets/Sets editor value.
+			```
+				$(".selector").%%WidgetName%%("value", new Date (2016, 2, 3);
+			```
 				paramType="date" optional="true" New editor value. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
 				Note! This option doesn't use the displayInputFormat to extract the date
 				returnType="date" Current editor value. */
@@ -9500,32 +9626,50 @@
 		},
 		getSelectedDate: function() {
 			/* Gets selected date.
+			```
+			$(".selector").%%WidgetName%%("getSelectedDate");
+			```
 				returnType="date" */
 			return this._dateObjectValue;
 		},
 		selectDate: function (date) {
 			/* Sets selected date.
+			```
+				$(".selector").igDateEditor("selectDate", new Date (2016, 2, 3));
+			```
 				paramType="date" optional="false" */
 			this._updateValue(date);
 			this._exitEditMode();
 		},
 		spinUp: function (delta) {
 			/* Increase date-time period, depending on the cursor position.
+			```
+				$(".selector").igDateEditor("spinUp", 2);
+			```
 				paramType="number" optional="true" The increase delta. */
 			this._spin(delta ? delta : this.options.spinDelta);
 		},
 		spinDown: function (delta) {
 			/* Decrease date-time period, depending on the cursor position.
+			```
+				$(".selector").igDateEditor("spinDown", 3);
+			```
 				paramType="number" optional="true" The decrease delta. */
 			this._spin(delta ? -delta : -this.options.spinDelta);
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
+			```
+			$(".selector").igDateEditor("spinUpButton");
+			```
 				returnType="$" The jQuery object representing the spin up UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinUpButton.call(this);
 		},
 		spinDownButton: function () {
 			/* Returns a reference to the spin down UI element of the editor.
+			```
+				$(".selector").igDateEditor("spinDownButton");
+			```
 				returnType="$" The jQuery object representing the spin down UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinDownButton.call(this);
 		},
