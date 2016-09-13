@@ -548,22 +548,22 @@
                 el = this.getItem(items[ i ].name);
                 scope = options.items[ i ].scope || this;
 
-                for (j = 0; j < updProps.length; j++) {
+                // for (j = 0; j < updProps.length; j++) {
 
-                    if (updProps[ j ].action !== undefined &&
-                        $.isFunction(scope[ updProps[ j ].action ])) {
-                        scope[ updProps[ j ].action ](el, updProps[ j ]);
-                    } else {
+                //     if (updProps[ j ].action !== undefined &&
+                //         $.isFunction(scope[ updProps[ j ].action ])) {
+                //         scope[ updProps[ j ].action ](el, updProps[ j ]);
+                //     } else {
 
-                        if (items[ i ] instanceof $.ig.igToolbarButtonDescriptor) {
-                            el.igToolbarButton("option", key, updProps[ j ]);
-                        }
+                //         if (items[ i ] instanceof $.ig.igToolbarButtonDescriptor) {
+                //             el.igToolbarButton("option", key, updProps[ j ]);
+                //         }
 
-                        if (options.items[ i ] instanceof $.ig.igToolbarComboDescriptor) {
-                            el.igCombo("option", key, updProps[ j ]);
-                        }
-                    }
-                }
+                //         if (options.items[ i ] instanceof $.ig.igToolbarComboDescriptor) {
+                //             el.igCombo("option", key, updProps[ j ]);
+                //         }
+                //     }
+                // }
             }
         },
         _tooltipAction: function (el, props, itemOptionObj) {
