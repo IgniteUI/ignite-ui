@@ -3601,35 +3601,55 @@
 
 		// igTextEditor public methods
 		displayValue: function () {
-			/* Gets visible text in the editor.
+			/* Gets visible text in the editor. 
+			``` $(".selector").%%WidgetName%%("displayValue"); ```
 				returnType="string" Visible text of the editor. */
 			return this._getDisplayValue();
 		},
 		dropDownContainer: function () {
-			/* Gets reference to jquery object which is used as container of drop-down.
+			/* Gets reference to jquery object which is used as container of drop-down list.
+			```
+				 $(".selector").%%WidgetName%%("dropDownContainer");
+			```
 				returnType="$" Returns reference to jquery object. */
 			return this._dropDownList ? this._dropDownList : null;
 		},
 		showDropDown: function () {
-			/* Shows the drop down list. */
+			/* Shows the drop down list.
+			```
+			$(".selector").%%WidgetName%%("showDropDown");
+			```
+			*/
 			this._showDropDownList();
 		},
 		hideDropDown: function () {
-			/* Hides the drop down list. */
+			/* Hides the drop down list.
+			```
+			$(".selector").%%WidgetName%%("hideDropDown");
+			```*/
 			this._hideDropDownList();
 		},
 		dropDownButton: function () {
-			/* Returns a reference to the clear button UI element of the editor.
+			/* Returns a reference to the drop-down button UI element of the editor.
+			```
+			var button = $(".selector").%%WidgetName%%("dropDownButton");
+			```
 				returnType="$" Returns reference to jquery object. */
 			return this._dropDownButton;
 		},
 		dropDownVisible: function () {
-			/* Returns the visibility state of the drop down listing the items.
+			/* Returns if the drop-down list is visible.
+			```
+			var visible =  $(".selector").%%WidgetName%%("dropDownVisible");
+			```
 				returnType="bool" The visibility state of the drop down. */
 			return this._dropDownList.is(":visible");
 		},
 		clearButton: function () {
 			/* Returns a reference to the clear button UI element of the editor.
+			```
+			var button =  $(".selector").%%WidgetName%%("clearButton");
+			```
 				returnType="$" Returns a reference to the jquery object. */
 			return this._clearButton;
 		},
