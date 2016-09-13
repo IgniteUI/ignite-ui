@@ -5203,9 +5203,36 @@
 		options: {
 			/* type="string" Sets gets the string, which is used as positive pattern. The "n" flag represents the value of number.
 				Note: This option has priority over possible regional settings.
-				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set. */
+				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				```
+					//Initialize
+					$(".selector").igCurrencyEditor({
+						positivePattern : "+ &nbsp n"
+					});
+
+					//Get
+					var pattern = $(".selector").igCurrencyEditor("option", "positivePattern");
+
+					//Set
+					$(".selector").igCurrencyEditor("option", "positivePattern", "+ &nbsp n");
+				```
+				*/
 			positivePattern: null,
-			currencySymbol: null // TODO it seems this option is not used at all
+			/* type="string" Gets/Sets a string that is used as the currency symbol that is shown in display mode.
+			```
+				//Initialize
+				$(".selector").igCurrencyEditor({
+					currencySymbol: "*"
+				});
+
+				//Get
+				var currencySymbol = $(".selector").igCurrencyEditor("option", "currencySymbol");
+
+				//Set
+				$(".selector").igCurrencyEditor("option", "currencySymbol", "*");
+			```
+			*/
+			currencySymbol: null
 
 		},
 		events: {
@@ -5243,6 +5270,9 @@
 		// igCurrencyEditor public methods
 		currencySymbol: function (symbol) {
 			/* Gets/sets a string that is used as the currency symbol shown with the number in the input. The value provided as a param is propagated to the currencySymbol option and thus has the same priority as the option.
+				```
+					$(".selector").igCurrencyEditor("currencySymbol", "$");
+				```
 				paramType="sting" optional="true" New currency symbol.
 				returnType="string" Current currency symbol. */
 			if (symbol) {
