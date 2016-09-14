@@ -3655,6 +3655,10 @@
 		},
 		findListItemIndex: function (text, matchType) {
 			/* Finds index of list item by text that matches with the search parameters.
+			```
+				var item =  $(".selector").igTextEditor("findListItemIndex");
+			
+			```
 				paramType="string" optional="false" The text to search for in the drop down list.
 				paramType="startsWith|endsWith|contains|exactMatch " optional="true" The rule that is applied for searching the text.
 				returnType="number" Returns index of the found item. */
@@ -3692,7 +3696,11 @@
 			return index;
 		},
 		selectedListIndex: function (index) {
-			/* Gets/Sets selected list item index.
+			/* Gets the index of the selected list item. Sets selected item by index.
+			```
+				$(".selector").%%WidgetName%%("selectedListIndex", 1);
+				var selectedIndex = $(".selector").%%WidgetName%%("selectedListIndex");
+			```
 				paramType="number" optional="true" The index of the item that needs to be selected.
 				returnType="number" Returns the selected index. */
 			if (index !== undefined) {
@@ -3702,12 +3710,18 @@
 			}
 		},
 		getSelectedListItem: function () {
-			/* Gets selected list item.
+			/* Gets the selected list item.
+			```
+			var selectedItem =  $(".selector").%%WidgetName%%("getSelectedListItem");
+			```
 				returnType="$" Selected list item.*/
 			return this._listItems().filter(".ui-igedit-listitemselected");
 		},
 		getSelectedText: function () {
-			/* Gets selected text in editor.
+			/* Gets the selected text in the editor.
+			```
+			var text =  (".selector").%%WidgetName%%("getSelectedText");
+			```
 				returnType="string" Selected text in editor.*/
 			var text = this._editMode ? this._editorInput.val() : this.displayValue(),
 				startIndex = this.getSelectionStart(),
@@ -3719,18 +3733,24 @@
 			return text.substring(startIndex, endIndex);
 		},
 		getSelectionStart: function () {
-			/* Gets start index of the selected text in editor.
-				returnType="number" Start index of the selected text in editor.*/
+			/* Gets the start index of the selected text in the editor.
+			```
+			var intex = $(".selector").%%WidgetName%%("getSelectionStart");
+			```
+				returnType="number" Start index of the selected text in the editor.*/
 			return this._getSelection(this._editorInput[ 0 ]).start;
 		},
 		getSelectionEnd: function () {
-			/* Gets end index of the selected text in editor.
-				returnType="number" End index of the selected text in editor.*/
+			/* Gets the end index of the selected text in the editor.
+			```
+			var intex = $(".selector").%%WidgetName%%("getSelectionEnd");
+			```
+				returnType="number" End index of the selected text in the editor.*/
 			return this._getSelection(this._editorInput[ 0 ]).end;
 		},
 		insert: function (string) {
-			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value if the editor is not focused.
-				Note: method raises the "textChanged" event.
+			/*  Inserts the text at the location of the caret or over the current selection. If the editor is focused the method will insert the text over the current selection. If the editor is not focused the method will set the text as value of the editor.
+				Note: The method raises "textChanged" event.
 				paramType="string" optional="false" The string to be inserted.
 				```
 				$('.selector').%%WidgetName%%({
@@ -3739,31 +3759,49 @@
 						ui.owner.insert("0");
 					}
 				});
+				$(".selector").%%WidgetName%%("insert", "20");
 				```
 			*/
 			this._insertHandler(string);
 		},
 		select: function (start, end) {
-			/* Selects text in editor. If parameters are equal, then than method sets location of caret. That method has effect only when editor has focus.
+			/*	Selects the text between start and end indices in the editor. If the parameters are equal, then the method sets location of caret. The method has effect only when the editor has focus.
+			```
+				$(".selector").%%WidgetName%%("select", 2, 4);
+			```
 				paramType="number" optional="false" Start of the selection.
 				paramType="number" optional="false" End of the selection. */
 			this._setSelectionRange(this._editorInput[ 0 ], start, end);
 		},
 		spinUp: function () {
-			/* Increments hovered index in the list. */
+			/* Hovers the previous item in the drop-down list if the list is opened.
+			```
+			 $(".selector").igTextEditor("spinUp");
+			```
+			*/
 			this._spinUp();
 		},
 		spinDown: function () {
-			/* Decrements hovered index in the list. */
+			/* Hovers the next item in the drop-down list if the list is opened.
+			```
+				$(".selector").igTextEditor("spinDown");
+			```
+			*/
 			this._spinDown();
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
+			```
+				var button = $(".selector").%%WidgetName%%("spinUpButton");
+			```
 				returnType="$" The jQuery object representing the spin up UI element of the editor. */
 			return this._spinUpButton;
 		},
 		spinDownButton: function () {
 			/* Returns a reference to the spin down UI element of the editor.
+			```
+				var button = $(".selector").%%WidgetName%%("spinDownButton");
+			```
 				returnType="$" The jQuery object representing the spin down UI element of the editor. */
 			return this._spinDownButton;
 		}
