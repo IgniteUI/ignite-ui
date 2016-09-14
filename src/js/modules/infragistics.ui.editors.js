@@ -1263,10 +1263,8 @@
 				$(".selector").%%WidgetName%%({
 				  dropDownAnimationDuration: 500
 				});
- 
 				//Get
 				var animationShowDuration= $(".selector").%%WidgetName%%("option", "dropDownAnimationDuration");
- 
 				//Set
 				$(".selector").%%WidgetName%%("option", "dropDownAnimationDuration", 500);
 			```
@@ -1274,7 +1272,7 @@
 			dropDownAnimationDuration: 300,
 			/* type="number" Gets the number of the items shown at once when the drop-down list get opened.
 				Notes:
-				This option is overwritten if the number of list items is less than the set value. In that case the drop-down list displays all the items. 
+				This option is overwritten if the number of list items is less than the set value. In that case the drop-down list displays all the items.
 				This option can not be set runtime.
 				```
 				//Initialize
@@ -1296,10 +1294,10 @@
 				$(".selector").%%WidgetName%%({
 					 includeKeys: "AaBC"
 				});
- 
+
 				//Get
 				var includedKeys= $(".selector").%%WidgetName%%("option", "includeKeys");
- 
+
 				//Set
 				$(".selector").%%WidgetName%%("option", "includeKeys", "ABC");
 				```
@@ -1314,10 +1312,10 @@
 					$(".selector").%%WidgetName%%({
 						   excludeKeys: "AaBC"
 					});
- 
+
 					//Get
 					var excludedKeys= $(".selector").%%WidgetName%%("option", "excludeKeys");
- 
+
 					//Set
 					$(".selector").%%WidgetName%%("option", "excludeKeys", "ABC");
 					```
@@ -1341,7 +1339,7 @@
 					```
 				*/
 			textAlign: "left",
-			/* type="string" Gets/Sets the text which appears in the editor when it has no focus and the "value" is null or empty string. 
+			/* type="string" Gets/Sets the text which appears in the editor when it has no focus and the "value" is null or empty string.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1366,10 +1364,10 @@
 					$(".selector").%%WidgetName%%({
 						selectionOnFocus: "atStart"
 					});
- 
+
 					//Get
 					var selectionOnFocus= $(".selector").%%WidgetName%%("option", "selectionOnFocus");
- 
+
 					//Set
 					$(".selector").%%WidgetName%%("option", "selectionOnFocus", "selectAll");
 					```
@@ -1426,10 +1424,10 @@
 				$(".selector").%%WidgetName%%({
 					preventSubmitOnEnter : false
 				});
-			 
+
 				//Get
 				var preventSubmitOnEnter = $(".selector").%%WidgetName%%("option", "preventSubmitOnEnter");
-			 
+
 				//Set
 				$(".selector").%%WidgetName%%("option", "preventSubmitOnEnter", false);
 			```
@@ -1441,16 +1439,16 @@
 				$(".selector").%%WidgetName%%({
 						preventSubmitOnEnter: true
 				});
-	 
+
 				//Get
 				var preventSubmitOnEnter = $(".selector").%%WidgetName%%("option", "preventSubmitOnEnter");
-	 
+
 				//Set
 				$(".selector").%%WidgetName%%("option", "preventSubmitOnEnter", true);
 			```
 			*/
 			preventSubmitOnEnter: false,
-			/* type="auto|bottom|top" Gets/Sets the drop-down list opening orientation when the list gets open. If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor. 
+			/* type="auto|bottom|top" Gets/Sets the drop-down list opening orientation when the list gets open. If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
 				'auto' type="string" If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
 				'bottom' type="string" The drop-down list is opened at the bottom of the editor.
 				'top' type="string" The drop-down list is opened at the top of the editor.
@@ -1488,7 +1486,7 @@
 			maxLength: null,
 			/* type="bool" Gets the ability to limit the editor to be used only as a dropdown list. When set to true the editor input is not editable.
 				Note! In case there are no list items - the editor will reamin readonly
-				Note! This option can not be set runtime. 
+				Note! This option can not be set runtime.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1500,7 +1498,7 @@
 				```
 			*/
 			dropDownOnReadOnly: false,
-			/* type="bool" Gets/Sets the ability to convert the input characters to upper case (true) or keeps the characters as they are (false). The option has effect only while keyboard entries and paste. 
+			/* type="bool" Gets/Sets the ability to convert the input characters to upper case (true) or keeps the characters as they are (false). The option has effect only while keyboard entries and paste.
 				Note! When the option is set at runtime the editor is not changing the current value.
 				```
 				//Initialize
@@ -1516,7 +1514,7 @@
 				```
 			*/
 			toUpper: false,
-			/* type="bool" Gets/Sets the ability to convert the input characters to lower case (true) or keeps the characters as they are (false). The option has effect only while keyboard entries and paste. 
+			/* type="bool" Gets/Sets the ability to convert the input characters to lower case (true) or keeps the characters as they are (false). The option has effect only while keyboard entries and paste.
 				Note! When the option is set at runtime the editor is not changing the current value.
 				```
 				//Initialize
@@ -1549,7 +1547,7 @@
 			```
 			*/
 			locale: null,
-			/* type="bool" Disables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits. 
+			/* type="bool" Disables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -3601,7 +3599,7 @@
 
 		// igTextEditor public methods
 		displayValue: function () {
-			/* Gets visible text in the editor. 
+			/* Gets visible text in the editor.
 			``` $(".selector").%%WidgetName%%("displayValue"); ```
 				returnType="string" Visible text of the editor. */
 			return this._getDisplayValue();
@@ -3657,7 +3655,7 @@
 			/* Finds index of list item by text that matches with the search parameters.
 			```
 				var item =  $(".selector").igTextEditor("findListItemIndex");
-			
+
 			```
 				paramType="string" optional="false" The text to search for in the drop down list.
 				paramType="startsWith|endsWith|contains|exactMatch " optional="true" The rule that is applied for searching the text.
@@ -3750,7 +3748,7 @@
 		},
 		insert: function (string) {
 			/*  Inserts the text at the location of the caret or over the current selection. If the editor is focused the method will insert the text over the current selection. If the editor is not focused the method will set the text as value of the editor.
-				Note: The method raises "textChanged" event.
+				Note: The method raises [textChanged](ui.igtexteditor#events:textChanged) event.
 				paramType="string" optional="false" The string to be inserted.
 				```
 				$('.selector').%%WidgetName%%({
@@ -4109,7 +4107,7 @@
 				e+ type="string" scientific format is enabled and the "e" character is used. The "e+" is used for positive values in display mode.
 			*/
 			scientificFormat: null,
-			/* type="bool" Gets/Set the ability of the editor to automatically set value in the editor to the opposite side of the limit, when the spin action reaches minimum or maximum limit. 
+			/* type="bool" Gets/Set the ability of the editor to automatically set value in the editor to the opposite side of the limit, when the spin action reaches minimum or maximum limit.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6208,7 +6206,7 @@
 			dropDownAnimationDuration: 300,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
 			dropDownOnReadOnly: false,
-			/* type="text|password|multiline" @Ignored@ 
+			/* type="text|password|multiline" @Ignored@
 			*/
 			textMode: "text",
 			/* type="number" @Ignored@ Gets/Sets how many items should be shown at once.
