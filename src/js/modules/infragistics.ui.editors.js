@@ -5287,33 +5287,97 @@
 	});
 	$.widget("ui.igPercentEditor", $.ui.igNumericEditor, {
 		options: {
-			/* type="string" Gets the pattern for positive numeric values, which is used in display (no focus) state.
-				The "$" flag represents "numericSymbol" and the "n" flag represents the value of number.
-				Note: this option has priority over possible regional settings. */
+			/* type="string" Gets/Sets the pattern for positive numeric values, which is used in display (no focus) state.
+				If you use the "en-US" culture the default value for "positivePattern" will be "n$" where the "$" flag represents the "numericSymbol" and the "n" flag represents the value of the number.
+				Note: this option has priority over possible regional settings.
+				```
+				//Initialize
+				$(".selector").igPercentEditor({
+					positivePattern : "+ n"
+				});
+
+				//Get
+				var pattern = $(".selector").igPercentEditor("option", "positivePattern");
+
+				//Set
+				$(".selector").igPercentEditor("option", "positivePattern", "+ n");
+				```
+				*/
 			positivePattern: null,
-			/* type="string" Gets symbol, which is used in display (no focus) state.
-				Note: this option has priority over possible regional settings. */
+			/* type="string" Gets/Sets the symbol, which is used in display (no focus) state.
+				Note: this option has priority over possible regional settings.
+				```
+				//Initialize
+				$(".selector").igPercentEditor({
+					percentSymbol: "pc"
+				});
+
+				//Get
+				var percentSymbol= $(".selector").igPercentEditor("option", "percentSymbol");
+
+				//Set
+				$(".selector").igPercentEditor("option", "percentSymbol", "pc");
+				```
+				*/
 			percentSymbol: null,
-			/* type="number" Gets/Sets the factor which used for the get and set of the "value" method.
-				On the get number (string) entered by user is divided by that factor and on the set the number (string) displayed in editor is multiplied by that factor.
-				For example, if factor is 100 and the "value" is set to 0.123, then editor will show string "12.3".
-				Possible values: 1, or 100.
-				Note: this option has priority over possible regional settings. */
+			/* type="number" Gets/Sets the factor which is used for the get and set of the "value" method.
+				On get the number (string) entered by the user is divided by that factor and on set the number (string) displayed in the editor is multiplied by that factor.
+				For example, if the factor is 100 and the "value" is set to 0.123, then the editor will show string "12.3".
+				Possible values: 1 or 100.
+				Note: this option has priority over possible regional settings.
+				```
+				//Initialize
+				$(".selector").igPercentEditor({
+					displayFactor : 100
+				});
+
+				//Get
+				var factor = $(".selector").igPercentEditor("option", "displayFactor");
+
+				//Set
+				$(".selector").igPercentEditor("option", "displayFactor", 100);
+				```
+				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
-				double type="string" the Number object is used with limits of double and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'. Note: that is used as default.
-				float type="string" the Number object is used with limits of float and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'.
-				long type="string" the Number object is used with limits of signed long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ulong type="string" the Number object is used with limits of unsigned long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				int type="string" the Number object is used with limits of signed int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				uint type="string" the Number object is used with limits of unsigned int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				short type="string" the Number object is used with limits of signed short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ushort type="string" the Number object is used with limits of unsigned short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				sbyte type="string" the Number object is used with limits of signed byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				byte type="string" the Number object is used with limits of unsigned byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
+				```
+				//Initialize
+				$(".selector").igPercentEditor({
+					dataMode : "double"
+				});
+
+				//Get
+				var dataMode = $(".selector").igPercentEditor("option", "dataMode");
+
+				//Set
+				$(".selector").igPercentEditor("option", "dataMode", "double");
+				```
+				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue). Note: that is used as default.
+				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
+				long type="string" the Number object is used with the limits of a signed long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
+				ulong type="string" the Number object is used with the limits of an unsigned long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
+				int type="string" the Number object is used with the limits of a signed int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
+				uint type="string" the Number object is used with the limits of an unsigned int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
+				short type="string" the Number object is used with the limits of a signed short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
+				ushort type="string" the Number object is used with the limits of an unsigned short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
+				sbyte type="string" the Number object is used with the limits of a signed byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
+				byte type="string" the Number object is used with the limits of an unsigned byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
 			*/
 			dataMode: "float", // TODO maybe it should be "double"?
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.*/
+			/* type="number" Gets/Sets the default delta-value which is used with "spin" [buttonType](ui.igpercenteditor#options:buttonType) or [spinUp](ui.igpercenteditor#methods:spinUp) and [spinDown](ui.igpercenteditor#methods:spinDown) methods to increment or decrement value in the editor. The value can not be negative. Non integer value is supported only for dataMode double and float.
+			```
+			//Initialize
+			$(".selector").igPercentEditor({
+				spinDelta: 2
+			});
+
+			//Get
+			var spinDelta= $(".selector").igPercentEditor("option", "spinDelta");
+
+			//Set
+			$(".selector").igPercentEditor("option", "spinDelta", 2);
+			```
+			*/
 			spinDelta: 0.01
 		},
 		events: {
@@ -5538,8 +5602,8 @@
 
 		// igPercentEditor public methods
 		insert: function (string) {
-			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value (modified by the displayFactor) if the editor is not focused.
-				Note: method raises the "textChanged" event.
+			/* Paste text at location of the caret or over the current selection. Best used during editing, as the method will instead set the text as value (modified by the [displayFactor](ui.igpercenteditor#options:displayFactor)) if the editor is not focused.
+				Note: the method raises the [textChanged](ui.igpercenteditor#events:textChanged) event.
 				paramType="string" optional="false" The string to be inserted.
 				```
 				$('.selector').igPercentEditor({
@@ -5553,7 +5617,10 @@
 			this._insertHandler(string);
 		},
 		percentSymbol: function (symbol) {
-			/* Gets/sets a string that is used as the percent symbol shown with the number in the input. The value provided as a param is propagated to the percentSymbol option and thus has the same priority as the option.
+			/* Gets/Sets a string that is used as the percent symbol shown with the number in the input. The value provided as a param is propagated to the [percentSymbol](ui.igpercenteditor#options:percentSymbol) option and thus has the same priority as the option.
+				```
+				$(".selector").igPercentEditor("percentSymbol", "pc");
+				```
 				paramType="sting" optional="true" New percent symbol.
 				returnType="string" Current percent symbol. */
 			if (symbol) {
