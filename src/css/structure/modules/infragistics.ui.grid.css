@@ -1882,10 +1882,14 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
 		NOTE: the container(outer fixed container) should have width set */
 
     /*
-        Bug:22614 09.08.2016 M.Popov
-        NOTE: Fixed by removing the border-box rule
-    */
+      Bug:225181  09.13.2016 M.Popov
+      NOTE: revert the changes from bug : 22614
+  */
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 	border-right: 2px solid #555555 !important;
+
 }
 .ui-iggrid-fixedcontainer-right {
 	/* It is used border-right/left as borderline between fixed/unfixed area. It is set box-sizing - to border-box. 
@@ -1893,9 +1897,12 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
 		NOTE: the container(outer fixed container) should have width set */
 
     /*
-        Bug:22614 09.08.2016 M.Popov
-        NOTE: Fixed by removing the border-box rule
-    */
+       Bug:225181  09.13.2016 M.Popov
+       NOTE: revert the changes from bug : 22614
+   */
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 	border-left: 2px solid #555555 !important;
 }
 .ui-iggrid-fixcolumn-headerbuttoncontainer 
