@@ -57,6 +57,7 @@
                     enableHeaderFocus: true,
                     trackFocus: true
                 });
+                $("#dialog5").igDialog({ });
             });
         }
         // START TESTING
@@ -365,6 +366,14 @@
             equal($("#testFrame").contents().find('body').text(), text, "Internal frame lost its content on minimize");
             $("#dialog4").appendTo("body").igDialog("close");
         });
+
+        test("Setting mainElement at runtime", function () {
+            var objContainer = $("#newContainer")
+            try {
+                $("#dialog5").igDialog("option", "mainElement", objContainer);
+            } catch (e) { }
+            equal($("#dialog5").igDialog("option", "mainElement"), null, "mainElement is set at runtime!");
+        });
     });
     </script>
 </head>
@@ -388,6 +397,8 @@
         <div id="dialog4" title="Focus tracking" style="background-color:orange;">
             <iframe id="testFrame"></iframe>
         </div>
+        <div id="dialog5"></div>
+        <div id="newContainer"></div>
     </div>
 </body>
 </html>
