@@ -34,8 +34,7 @@
 			"./infragistics.templating",
 			"./infragistics.datasource",
 			"./infragistics.scroll",
-			"./infragistics.validator",
-			"./i18n/infragistics.ui.combo-en"
+			"./infragistics.validator"
 		], factory );
 	} else {
 

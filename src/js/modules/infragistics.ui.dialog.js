@@ -30,8 +30,7 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util",
-			"./i18n/infragistics.ui.dialog-en"
+			"./infragistics.util"
 		], factory );
 	} else {
 
@@ -952,7 +951,7 @@
 			/* Classes applied to the icon of maximize button. */
 			maximizeIcon: "ui-igdialog-maximize-icon ui-icon ui-icon-extlink",
 			/* Classes applied to the icon of restore button. */
-			restoreIcon: "ui-igdialog-restore-icon ui-icon ui-icon-copy",
+			restoreIcon: "ui-igdialog-restore-icon ui-icon ui-icon-newwin",
 			/* Classes applied to the icon of pin button. */
 			pinIcon: "ui-igdialog-pin-icon ui-icon ui-icon-pin-s",
 			/* Classes applied to the icon of unpin button. */
@@ -2211,7 +2210,8 @@
 					self._toPx(o.height, true),
 					o.minHeight);
 				if (resize) {
-					elem.resizable("option", "minHeight", o.minHeight);
+					// D.P 12th Sep 2016 #312 minWidth, maxWidth and maxHeight options cannot be set at runtime
+					this._doResizable();
 				}
 			}
 			if (o.width === null) {
