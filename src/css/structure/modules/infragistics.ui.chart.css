@@ -38,7 +38,9 @@
     font-family:"Segoe UI", Arial, sans-serif;
 	position:relative;
 	background:#fff;
+	color:#666;
 }
+/*
 .ui-chart-tooltip:after {
 	top: 100%;
 	left: 50%;
@@ -52,7 +54,7 @@
 	border-top-color: #fff;
 	border-width: 6px;
 	margin-left: -6px;
-}
+}*/
 
 .ui-chart-default-tooltip-content {
     white-space: nowrap;

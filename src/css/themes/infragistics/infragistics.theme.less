@@ -33,16 +33,16 @@
 @chartGradualPalette2: #9FB328;
 @chartGradualPalette3: #F96232;
 @chartGradualPalette4: #2E9CA6;
-@chartGradualPalette5: #D63665;
+@chartGradualPalette5: #DC3F76;
 @chartGradualPalette6: #FF9800;
 @chartGradualPalette7: #3F51B5;
 @chartGradualPalette8: #439C47;
 @chartGradualPalette9: #795548;
 @chartGradualPalette10: #9A9A9A;
-@chartGradualPalette11: #F44336;
+@chartGradualPalette11: #C62828;
 //* igChart colors */
 @piechartContainer: #fff;
-@chartToolTipBgColor: rgba(255, 255, 255, 1);
+@chartToolTipBgColor: rgba(255, 255, 255, 0.95);
 // Icon sprites
 @ui-icons-darker: #222222;
 @ui-icons-dark: #888888;
@@ -117,8 +117,8 @@
 }
 
 .chartPalette5 {
-    background-color: #D63665!important;
-    border: 1px solid #D63665!important;
+    background-color: #DC3F76!important;
+    border: 1px solid #DC3F76!important;
 }
 
 .chartPalette6 {
@@ -147,8 +147,8 @@
 }
 
 .chartPalette11 {
-    background-color: #F44336!important;
-    border: 1px solid #F44336!important;
+    background-color: #C62828!important;
+    border: 1px solid #C62828!important;
 }
 
 .chartPalette12 {
@@ -165,6 +165,9 @@
 
 .boxShadow {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25)!important;
+}
+.boxShadow2 {
+	box-shadow: 0 0 2px rgba(0,0,0,0.6);
 }
 /***************************/
 /* JQuery Framework styles */
@@ -3038,7 +3041,7 @@ input.ui-igbutton {
 
 .ui-widget-content.ui-chart-tooltip {
     background-color: @chartToolTipBgColor;
-	border:none;
+	border:1px solid #888;
 }
 
 /*******************/
@@ -3053,7 +3056,7 @@ input.ui-igbutton {
 }
 
 .ui-sparkline-tooltip {
-    .boxShadow;
+    .boxShadow2;
     padding: 3px;
 }
 
@@ -3133,7 +3136,7 @@ input.ui-igbutton {
 }
 
 .ui-funnel-tooltip {
-    .boxShadow;
+    .boxShadow2;
     padding: 3px;
 }
 
