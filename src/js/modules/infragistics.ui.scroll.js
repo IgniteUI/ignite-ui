@@ -1696,8 +1696,12 @@
 							this._linkedHElems[ index ].children().eq(0).children().eq(0).css({
 								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
 							});
-						} else {
+						} else if (this.options.modifyDOM) {
 							this._linkedHElems[ index ].children().eq(0).css({
+								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
+							});
+						} else {
+							this._linkedHElems[ index ].css({
 								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
 							});
 						}
@@ -1713,8 +1717,10 @@
 									this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
 								this._linkedHElems[ index ].children().eq(0).scrollLeft(destX);
-							} else {
+							} else if (this.options.modifyDOM) {
 								this._linkedHElems[ index ].scrollLeft(destX);
+							} else {
+								this._linkedHElems[ index ][ 0 ].parentElement.scrollLeft = destX;
 							}
 						}
 					}
@@ -1752,8 +1758,12 @@
 							this._linkedVElems[ index ].children().eq(0).children().eq(0).css({
 								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 							});
-						} else {
+						} else if (this.options.modifyDOM) {
 							this._linkedVElems[ index ].children().eq(0).css({
+								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
+							});
+						} else {
+							this._linkedVElems[ index ].css({
 								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 							});
 						}
@@ -1769,8 +1779,10 @@
 									this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
 								this._linkedVElems[ index ].children().eq(0).scrollTop(destY);
-							} else {
+							} else if (this.options.modifyDOM) {
 								this._linkedVElems[ index ].scrollTop(destY);
+							} else {
+								this._linkedVElems[ index ][ 0 ].parentElement.scrollTop = destY;
 							}
 						}
 					}
