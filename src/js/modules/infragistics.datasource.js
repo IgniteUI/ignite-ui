@@ -2499,10 +2499,13 @@
 			paramType="string|number" primary key of the record
 			*/
 			var i, len, data, count = 0,
-				all = [ this._data, this._dataView, this._filteredData, origDs ],
+				all = [ this._data ],
 				prime = this.settings.primaryKey,
 				primeIdx = this._lookupPkIndex(),
 				search;
+			this._addOnlyUniqueToCollection(all, this._dataView);
+			this._addOnlyUniqueToCollection(all, this._filteredData);
+			this._addOnlyUniqueToCollection(all, origDs);
 			while (count < all.length) {
 				data = all[ count++ ];
 				len = data ? data.length : 0;
@@ -2514,10 +2517,6 @@
 						$.ig.removeFromArray(data, i);
 						break;
 					}
-				}
-				/* if next data is same, then skip it */
-				if (data === all[ count ]) {
-					count++;
 				}
 			}
 		},
@@ -3442,20 +3441,16 @@
 			var data, key, count = 0, schema = this.settings.schema,
 				layouts = schema ? schema.layouts : null, lo, pdata,
 				all = [ this._data ], newRow;
-			if (this._data !== this._dataView) {
-				all.push(this._dataView);
-			}
-			if (this._data !== origDs) {
-				all.push(origDs);
-			}
+			this._addOnlyUniqueToCollection(all, this._dataView);
+			this._addOnlyUniqueToCollection(all, origDs);
 			/* M.H. 15 Dec 2014 Fix for bug #186504: Added row is not displayed whether
-			it's filtered in or out if paging is enabled. Вhen we add row and there is
+			it's filtered in or out if paging is enabled. When we add row and there is
 			applied filtering and enabled (local)paging then we should add the new row
 			in filteredData so it could be shown in dataView because when pageIndex is
 			called the dataView is populated from _filteredData not from _data in this case */
 			if (this._filter && this._filteredData &&
 				this.settings.paging.enabled && this.settings.paging.type === "local") {
-				all.push(this._filteredData);
+				this._addOnlyUniqueToCollection(all, this._filteredData);
 			}
 			if (layouts) {
 				/* we'll try to include empty collections for the child layouts to keep the data source consistent */
@@ -3504,10 +3499,6 @@
 						this._postprocessAddRow.apply(this, Array.prototype.slice.call(arguments).concat(pdata));
 						data = pdata.cashedData;// get original layout data - used for check data === all[count]
 					}
-				}
-				/* if data same, then skip it */
-				if (data === all[ count ]) {
-					count++;
 				}
 			}
 		},
@@ -3604,6 +3595,15 @@
 				}
 			}
 			return trans;
+		},
+		_addOnlyUniqueToCollection: function (collection, item) {
+			var i;
+			for (i = 0; i < collection.length; i++) {
+				if (collection[ i ] === item) {
+					return;
+				}
+			}
+			collection.push(item);
 		},
 		transactionsAsString: function () {
 			/* returns the accumulated transaction log as a string. The purpose of this is to be passed to URLs or used conveniently
@@ -4017,6 +4017,12 @@
 				if (s.type === "local" && this._runtimeType !== "remoteUrl" && s.defaultFields.length > 0 &&
 					(!fApplied || s.defaultFields !== s.expressions) ) {
 					this.sort(s.defaultFields, s.defaultDirection);
+				}
+				/* M.H. 26 Aug 2016 Fix for bug 224258: Remote groupBy does not work in HierarchicalGrid */
+				if (!this._gbDataView && this.isGroupByApplied(this.settings.sorting.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData :
+																this._data,
+											this.settings.sorting.expressions);
 				}
 				/* Check if paging is configured, and if so,
 				if OpType === $.ig.Constants.OpType.Local => apply local paging */
@@ -10561,20 +10567,18 @@
 			paramType="string|number" primary key of the record
 			*/
 			var data, count = 0,
-				all = [ this._data, this._dataView, this._filteredData ];
+				all = [ this._data ];
+			this._addOnlyUniqueToCollection(all, this._dataView);
+			this._addOnlyUniqueToCollection(all, this._filteredData);
 			/* M.H. 5 Aug 2016 Fix for bug 220126: Child data persists in the datasource after deleting the corresponding parent record in treegrid */
 			if (!this._isHierarchicalDataSource) {
 				this._removeRecordInFlatDs(origDs, key);
 			} else {
-				all.push(origDs);
+				this._addOnlyUniqueToCollection(all, origDs);
 			}
 			while (count < all.length) {
 				data = all[ count++ ];
 				this._removeRecordByKeyForData(key, data);
-				/* if next data is same, then skip it */
-				if (data === all[ count ]) {
-					count++;
-				}
 			}
 		},
 		_removeRecordInFlatDs: function (data, key, fk) {

@@ -190,7 +190,7 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
 .ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tbody > tr:first-child td,
-.ui-iggrid > table > thead + tfoot + tbody > tr:first-child td,
+.ui-iggrid > table > thead + tfoot + tbody > tr:first-child td
 {
     /* border-top: 0 none!important;
    border-top removed for tables with virtualization, or headers */
@@ -943,23 +943,23 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 
 .ui-igupload-progressbar-icon-default,
 .ui-igupload-progressbar-icon-default {
-    background: url(images/icon_sprite.png) 0px -128px no-repeat !important;
+    background: url(images/icon_sprite.png) 0 -128px no-repeat !important;
 }
 
 .ui-igupload-progressbar-icon-exe {
-    background: url(images/icon_sprite.png) 0px -144px no-repeat !important;
+    background: url(images/icon_sprite.png) 0 -144px no-repeat !important;
 }
 
 .ui-igupload-progressbar-icon-images {
-    background: url(images/icon_sprite.png) 0px -160px no-repeat !important;
+    background: url(images/icon_sprite.png) 0 -160px no-repeat !important;
 }
 
 .ui-igupload-progressbar-icon-music {
-    background: url(images/icon_sprite.png) 0px -176px no-repeat !important;
+    background: url(images/icon_sprite.png) 0 -176px no-repeat !important;
 }
 
 .ui-igupload-progressbar-icon-video {
-    background: url(images/icon_sprite.png) 0px -192px no-repeat !important;
+    background: url(images/icon_sprite.png) 0 -192px no-repeat !important;
 }
 
 .ui-igupload-cancel-button .ui-button-icon-primary {
@@ -1049,7 +1049,6 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 .ui-igcheckbox-normal.ui-state-hover,
 .ui-igcombo-checkbox.ui-state-hover {
     border: 1px solid darken($input-border, 12%);
-    ;
 }
 
 .ui-igcheckbox-small.ui-state-focus,
@@ -1171,7 +1170,7 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 /* html editor icons*/
 
 .ui-igbutton-viewsource.ui-state-default .ui-igbutton-viewsource-icon {
-    background-position: 0px -160px;
+    background-position: 0 -160px;
 }
 
 .ui-igbutton-viewsource.ui-state-hover .ui-igbutton-viewsource-icon {
@@ -1379,8 +1378,8 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 .ui-ightmleditor-content iframe,
 .ui-ightmleditor-content textarea {
     border: 1px solid $input-border;
-    -webkit-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
-    -moz-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
+    -webkit-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
+    -moz-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
     box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
 }
 /*breadcrumb styling*/
@@ -1582,7 +1581,7 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
     font-family: $font-family-base;
     font-size: 13px;
     padding: 10px 5px 10px 5px;
-    border: 0px;
+    border: 0;
 }
 
 .ui-sparkline-tooltip {
@@ -1660,7 +1659,7 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
     font-family: $font-family-base;
     font-size: 14px;
     color: #555555;
-    border: 0px;
+    border: 0;
 }
 
 .ui-funnel-tooltip {
@@ -1686,7 +1685,7 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 /********************/
 
 .ui-doughnut {
-    border: 0px;
+    border: 0;
     font-size: 12px;
     font-family: $font-family-base;
 }

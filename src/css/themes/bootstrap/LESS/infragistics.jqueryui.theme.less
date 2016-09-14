@@ -188,8 +188,9 @@
 
 // Focus state
 .ui-state-focus > .ui-icon,
-.ui-igdialog-header.ui-state-focus .ui-igdialog-headerimage.ui-icon,
-.ui-state-focus.ui-state-default.ui-state-hover > .ui-icon {
+.ui-igdialog-header.ui-state-focus .ui-igdialog-headerimage.ui-icon
+// bug: 218458 , 17.08.2016, M.P, The checkmark disappears when the mouse is over it.
+{
     background-image: @ui-icons-light;
 }
 // EXCEPTION: Editors with focus on the field but not the button itself
