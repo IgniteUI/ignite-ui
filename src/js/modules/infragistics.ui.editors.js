@@ -5288,7 +5288,7 @@
 				*/
 			percentSymbol: null,
 			/* type="number" Gets/Sets the factor which is used for the get and set of the "value" method.
-				On the get the number (string) entered by the user is divided by that factor and on the set the number (string) displayed in the editor is multiplied by that factor.
+				On get the number (string) entered by the user is divided by that factor and on set the number (string) displayed in the editor is multiplied by that factor.
 				For example, if the factor is 100 and the "value" is set to 0.123, then the editor will show string "12.3".
 				Possible values: 1 or 100.
 				Note: this option has priority over possible regional settings.
@@ -5306,7 +5306,7 @@
 				```
 				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets the type of the value returned by the get of value() method. That also affects the functionality of the set value(val) method and the copy/paste operations of the browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
@@ -5331,7 +5331,7 @@
 				byte type="string" the Number object is used with the limits of an unsigned byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
 			*/
 			dataMode: "float", // TODO maybe it should be "double"?
-			/* type="number" Gets/Sets the delta-value which is used to increment or decrement the value in the editor on spin events. If the value is set to a negative value an exception is thrown. Non integer value is supported only for dataMode double and float.
+			/* type="number" Gets/Sets the default delta-value which is used with "spin" [buttonType](ui.igpercenteditor#options:buttonType) or [spinUp](ui.igpercenteditor#methods:spinUp) and [spinDown](ui.igpercenteditor#methods:spinDown) methods to increment or decrement value in the editor. The value can not be negative. Non integer value is supported only for dataMode double and float.
 			```
 			//Initialize
 			$(".selector").igPercentEditor({
@@ -5569,8 +5569,8 @@
 
 		// igPercentEditor public methods
 		insert: function (string) {
-			/* Paste text at location of the caret or over the current selection. Best used during editing, as the method will instead set the text as value (modified by the displayFactor) if the editor is not focused.
-				Note: the method raises the "textChanged" event.
+			/* Paste text at location of the caret or over the current selection. Best used during editing, as the method will instead set the text as value (modified by the [displayFactor](ui.igpercenteditor#options:displayFactor)) if the editor is not focused.
+				Note: the method raises the [textChanged](ui.igpercenteditor#events:textChanged) event.
 				paramType="string" optional="false" The string to be inserted.
 				```
 				$('.selector').igPercentEditor({
@@ -5584,7 +5584,7 @@
 			this._insertHandler(string);
 		},
 		percentSymbol: function (symbol) {
-			/* Gets/Sets a string that is used as the percent symbol shown with the number in the input. The value provided as a param is propagated to the percentSymbol option and thus has the same priority as the option.
+			/* Gets/Sets a string that is used as the percent symbol shown with the number in the input. The value provided as a param is propagated to the [percentSymbol](ui.igpercenteditor#options:percentSymbol) option and thus has the same priority as the option.
 				```
 				$(".selector").igPercentEditor("percentSymbol", "pc");
 				```
