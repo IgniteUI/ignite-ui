@@ -1430,9 +1430,11 @@
 
 		/** Switch from using 3d transformations to using scrollTop/scrollLeft */
 		_switchFromTouchToMixed: function () {
+			//stop any current ongoing inertia
+			cancelAnimationFrame(this._touchInertiaAnimID);
+
 			var startX = 0,
 				startY = this._getTransform3dValueY(this._content);
-
 			if (this._contentX) {
 				startX = this._getTransform3dValueX(this._contentX);
 			} else {
