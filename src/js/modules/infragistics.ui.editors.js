@@ -1170,97 +1170,397 @@
 	$.widget("ui.igTextEditor", $.ui.igBaseEditor, {
 		options: {
 
-			/* type="dropdown|clear|spin" Gets visibility of spin and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spinclear' are supported too.
-				dropdown type="string" button to open list is located on the right side of input-field (or left side if base html element has direction:rtl);
-				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
-				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).
+			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
+				dropdown type="string" A button to open/close the list is located on the right side of the editor.
+				clear type="string" A button to clear the value is located on the right side of the editor.
+				spin type="string" Spin buttons are located on the right side of the editor.
 				Note! This option can not be set runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					buttonType : "dropdown"
+				});
+
+				//Get
+				var button = $(".selector").%%WidgetName%%("option", "buttonType");
+
+				//Initialize multiple buttons
+				$(".selector").%%WidgetName%%({
+					buttonType : "dropdown,clear"
+				});
+				```
 			*/
 			buttonType: "none",
-			/* type="array" Gets/Sets list of items which are used for drop-down list.
-				Items in list can be strings, numbers or objects. The items are directly rendered without casting, or manipulating them.
+			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
+				Items in the list can be of type string, number or object. The items are directly rendered without any casting, or manipulation.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					listItems : [
+						"item 1",
+						"item 2",
+						"item 3"
+					]
+				});
+
+				//Get
+				var items = $(".selector").%%WidgetName%%("option", "listItems");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "listItems", ["item 1", "item 2", "item 3"]);
+				```
 			 */
 			listItems: null,
-			/* type="number" Gets/Sets custom width of drop-down list in pixels. If value is equal to 0 or negative, then the width of editor is used. */
+			/* type="number" Gets/Sets custom width of the drop-down list in pixels. If the value is equal to 0 or negative, then the width of editor is set as a drop-down width.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					listWidth : 200
+				});
+
+				//Get
+				var width = $(".selector").%%WidgetName%%("option", "listWidth");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "listWidth", 200);
+			```
+			*/
 			listWidth: 0,
-			/* type="number" Sets the hover/unhover animation duration. */
+			/* type="number" Gets/Sets the hover/unhover animation duration of a drop-down list item.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					listItemHoverDuration : 100
+				});
+
+				//Get
+				var hoverDuration = $(".selector").%%WidgetName%%("option", "listItemHoverDuration");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "listItemHoverDuration", 100);
+			```
+			*/
 			listItemHoverDuration: 0,
-			/* type="bool" Gets location of drop-down list.
-				Value false will create html element for list as a child of main html element.
-				Value true creates list as a child of body.
+			/* type="bool" Gets wheather the drop-down list element is attached to the body of the document, or to the editor container element.
+				If the option is set to false the editor will attach the drop-down list element to the editor container
+				If the option is set to true the editor will attach its drop-down list to as a child of the body.
 				Note! This option can not be set runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownAttachedToBody : true
+				});
+
+				//Get
+				var attachedToBody = $(".selector").%%WidgetName%%("option", "dropDownAttachedToBody");
+				```
 			*/
 			dropDownAttachedToBody: false,
 
-			/* type="number" Gets/Sets show/hide drop-down list animation duration in milliseconds. */
+			/* type="number" Gets/Sets show/hide drop-down list animation duration in milliseconds.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+				  dropDownAnimationDuration: 500
+				});
+				//Get
+				var animationShowDuration= $(".selector").%%WidgetName%%("option", "dropDownAnimationDuration");
+				//Set
+				$(".selector").%%WidgetName%%("option", "dropDownAnimationDuration", 500);
+			```
+			*/
 			dropDownAnimationDuration: 300,
-			/* type="number" Gets how many items should be shown at once.
+			/* type="number" Gets the number of the items shown at once when the drop-down list get opened.
 				Notes:
-				That option is overwritten if the number of list items is less than the value. In that case the height of the dropdown is adjusted to the number of items.
-				Note! This option can not be set runtime.
+				This option is overwritten if the number of list items is less than the set value. In that case the drop-down list displays all the items.
+				This option can not be set runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					visibleItemsCount : 5
+				});
+
+				//Get
+				var visibleItemsCount = $(".selector").%%WidgetName%%("option", "visibleItemsCount");
+				```
 			*/
 			visibleItemsCount: 5,
-			/* type="string" Gets/Sets ability to enter only specific characters in input-field from keyboard and on paste.
+			/* type="string" Gets/Sets the ability of the editor to allow entering only specific characters in the input-field from the keyboard and on paste.
 				Notes:
 				If both "excludeKeys" and "includeKeys" options are used, then "excludeKeys" has priority and includeKeys options is not respected.
-				The option is case sensitive! */
+				The option is case sensitive! If the option is set runtime it's not applied on the current value.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					 includeKeys: "AaBC"
+				});
+
+				//Get
+				var includedKeys= $(".selector").%%WidgetName%%("option", "includeKeys");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "includeKeys", "ABC");
+				```
+				*/
 			includeKeys: null,
-			/* type="string" Gets/Sets ability to prevent entering specific characters from keyboard or on paste.
+			/* type="string" Gets/Sets the ability of the editor to prevent entering specific characters from the keyboard or on paste.
 				Notes:
 				If both "excludeKeys" and "includeKeys" options are used, then "excludeKeys" has priority and includeKeys options is not respected.
-				The option is case sensitive! */
+				The option is case sensitive! If the option is set runtime it's not applied on the current value.
+					```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						   excludeKeys: "AaBC"
+					});
+
+					//Get
+					var excludedKeys= $(".selector").%%WidgetName%%("option", "excludeKeys");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "excludeKeys", "ABC");
+					```
+				*/
 			excludeKeys: null,
-			/* type="left|right|center" Gets/Sets horizontal alignment of text in editor. If that option is not set, then 'right' is used for 'numeric', 'currency' and 'percent' editors and the 'left' is used for all other types of editor.
+			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor. If that option is not set, then 'right' is used for 'numeric', 'currency' and 'percent' editors and the 'left' is used for all other types of editor.
 					left type="string"
 					right type="string"
 					center type="string"
+					```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						textAlign : "center"
+					});
+
+					//Get
+					var align = $(".selector").%%WidgetName%%("option", "textAlign");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "textAlign", "center");
+					```
 				*/
 			textAlign: "left",
-			/* type="string" Gets/Sets text which appears in editor when editor has no focus and "value" in editor is null or empty string. */
+			/* type="string" Gets/Sets the text which appears in the editor when it has no focus and the "value" is null or empty string.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					placeHolder : "Enter Value"
+				});
+
+				//Get
+				var placeHolder = $(".selector").%%WidgetName%%("option", "placeHolder");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "placeHolder", "Enter Value");
+			```
+			*/
 			placeHolder: null,
 				/* type="selectAll|atStart|atEnd|browserDefault" Set the action when the editor gets focused. The default value is selectAll.
 					selectAll type="string" Setting this option will select all the text into the editor when the edit mode gets enetered.
 					atStart type="string" Setting this option will move the cursor at the begining the text into the editor when the edit mode gets enetered.
 					atEnd type="string" Setting this option will move the cursor at the end the text into the editor when the edit mode gets enetered.
-					browserDefault type="string" Setting this option won't do any extra logic, but proceed with browser default behavior.
+					browserDefault type="string" Setting this option won't do any extra logic, but proceed with the browser default behavior.
+					```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						selectionOnFocus: "atStart"
+					});
+
+					//Get
+					var selectionOnFocus= $(".selector").%%WidgetName%%("option", "selectionOnFocus");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "selectionOnFocus", "selectAll");
+					```
 				*/
 			selectionOnFocus: "selectAll",
-			/* type="text|password|multiline" Gets text mode of editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
+			/* type="text|password|multiline" Gets the text mode of the editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
 				text type="string" Single line text editor based on INPUT element is created.
 				password type="string" Editor based on INPUT element with type password is created.
-				multiline type="string" multiline editor based on TEXTAREA element is created.
+				multiline type="string" Multiline editor based on TEXTAREA element is created.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					textMode : "password"
+				});
+
+				//Get
+				var mode = $(".selector").%%WidgetName%%("option", "textMode");
+
+				```
 			*/
 			textMode: "text",
-			/* type="bool" Gets/Sets ability to automatically change the hoverd item into the opened dropdown list to its oposide side. When last item is reached and the spin down is clicked the first item gets hovered and vice versa.
+			/* type="bool" Gets/Sets the ability of the editor to automatically change the hoverd item into the opened dropdown list to its oposide side. When the last item is reached and the spin down is clicked, the first item gets hovered and vice versa. This option has no effect there is no drop-down list.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					spinWrapAround : true
+				});
+
+				//Get
+				var spinAround = $(".selector").%%WidgetName%%("option", "spinWrapAround");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "spinWrapAround", true);
+			```
 			*/
 			spinWrapAround: false,
-			/* type="bool" Sets the ability to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed*/
+			/* type="bool" Gets the ability of the editor to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					isLimitedToListValues : true
+				});
+
+				//Get
+				var limited = $(".selector").%%WidgetName%%("option", "isLimitedToListValues");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
+			```*/
 			isLimitedToListValues: false,
-			/* type="bool" Sets the editor to revert value to previous value in case of not valid value on blur, or enter key. If set to false clear is called.*/
+			/* type="bool" Gets the editor to revert value to the previous valid value in case the value on blur, or enter key is not valid. If the opiton is set to false, editor calls clear functionality.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					preventSubmitOnEnter : false
+				});
+
+				//Get
+				var preventSubmitOnEnter = $(".selector").%%WidgetName%%("option", "preventSubmitOnEnter");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "preventSubmitOnEnter", false);
+			```
+			*/
 			revertIfNotValid: true,
-			/* type="bool" Sets the ability of the editor to prevent form submition on enter key pressed.*/
+			/* type="bool" Gets/Sets the ability of the editor to prevent form submition when enter key is pressed.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+						preventSubmitOnEnter: true
+				});
+
+				//Get
+				var preventSubmitOnEnter = $(".selector").%%WidgetName%%("option", "preventSubmitOnEnter");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "preventSubmitOnEnter", true);
+			```
+			*/
 			preventSubmitOnEnter: false,
-			/* type="auto|bottom|top" Gets/Sets drop down opening orientation for the dorp down list when open button is clicked. If auto option is set the component calculates if there is enough space at the bottom, if not checks the space above the component and if in both directions there is not enough space it openes the dropdown down way.
-				'auto' type="string"
-				'bottom' type="string"
-				'top' type="string"
+			/* type="auto|bottom|top" Gets/Sets the drop-down list opening orientation when the list gets open. If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
+				'auto' type="string" If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
+				'bottom' type="string" The drop-down list is opened at the bottom of the editor.
+				'top' type="string" The drop-down list is opened at the top of the editor.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownOrientation : "top"
+				});
+
+				//Get
+				var orientation = $(".selector").%%WidgetName%%("option", "dropDownOrientation");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dropDownOrientation", "bottom");
+
+				```
 			*/
 			dropDownOrientation: "auto",
-			/* type="number" Gets/Sets maximum length of text which can be entered by user.
-				Negative values or 0 disables that behavior.
+			/* type="number" Gets/Sets the maximum length of a text which can be entered by the user.
+				Negative values or 0 disables that behavior. If set at runtime the editor doesn't apply the option to the cuurent value.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					maxLength : 25
+				});
+
+				//Get
+				var textLength = $(".selector").%%WidgetName%%("option", "maxLength");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "maxLength", 25);
+
+				```
 			*/
 			maxLength: null,
-			/* type="bool" Gets ability to limit editor to be used only from the dropdown list. When set to true the editor input is not editable.
+			/* type="bool" Gets the ability to limit the editor to be used only as a dropdown list. When set to true the editor input is not editable.
 				Note! In case there are no list items - the editor will reamin readonly
-				Note! This option can not be set runtime. */
+				Note! This option can not be set runtime.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownOnReadOnly : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "dropDownOnReadOnly");
+				```
+			*/
 			dropDownOnReadOnly: false,
-			/* type="bool" Gets/Sets ability to convert input characters to upper case (true) or keeps characters as they are (false). That option has effect only while keyboard entries and paste. */
+			/* type="bool" Gets/Sets the ability to convert the input characters to upper case (true) or keeps the characters as they are (false). The option has effect only while keyboard entries and paste.
+				Note! When the option is set at runtime the editor is not changing the current value.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					toUpper : true
+				});
+
+				//Get
+				var toUpper = $(".selector").%%WidgetName%%("option", "toUpper");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "toUpper", true);
+				```
+			*/
 			toUpper: false,
-			/* type="bool" Gets/Sets ability to convert input characters to lower case (true) or keeps characters as they are (false). That option has effect only while keyboard entries and paste. */
+			/* type="bool" Gets/Sets the ability to convert the input characters to lower case (true) or keeps the characters as they are (false). The option has effect only while keyboard entries and paste.
+				Note! When the option is set at runtime the editor is not changing the current value.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					toLower : true
+				});
+
+				//Get
+				var toLower = $(".selector").%%WidgetName%%("option", "toLower");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "toLower", true);
+				```
+			*/
 			toLower: false,
-			/* type="object" Gets/Sets strings used for title of buttons. Value of object should contain pairs or key:value members. Note: any sub-option of locale can appear within the main option of igEditor. In this case those values within main options will have highest priority and override corresponding value in locale. */
+			/* type="object" Gets/Sets the strings used for the localization of the component. This includes button titles, error messages etc. Value of the object should contain pairs or key:value members. Note: any sub-option of locale can appear within the main option of igEditor. In this case those values within main options will have highest priority and override corresponding value in locale.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					locale: {
+							spinUpperTitle: 'SpinUp'
+					}
+				});
+
+				//Get
+				var locale = $(".selector").%%WidgetName%%("option", "locale");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "locale", {spinUpperTitle: 'SpinUp'});
+			```
+			*/
 			locale: null,
-			/* type="bool" Disables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits. */
+			/* type="bool" Disables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressNotifications : true
+				});
+
+				//Get
+				var suppressNotifications = $(".selector").%%WidgetName%%("option", "suppressNotifications");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressNotifications", true);
+			```
+			*/
 			suppressNotifications: false
 		},
 		css: {
@@ -3300,39 +3600,63 @@
 		// igTextEditor public methods
 		displayValue: function () {
 			/* Gets visible text in the editor.
+			``` $(".selector").%%WidgetName%%("displayValue"); ```
 				returnType="string" Visible text of the editor. */
 			return this._getDisplayValue();
 		},
 		dropDownContainer: function () {
-			/* Gets reference to jquery object which is used as container of drop-down.
+			/* Gets reference to jquery object which is used as container of drop-down list.
+			```
+				 $(".selector").%%WidgetName%%("dropDownContainer");
+			```
 				returnType="$" Returns reference to jquery object. */
 			return this._dropDownList ? this._dropDownList : null;
 		},
 		showDropDown: function () {
-			/* Shows the drop down list. */
+			/* Shows the drop down list.
+			```
+			$(".selector").%%WidgetName%%("showDropDown");
+			```
+			*/
 			this._showDropDownList();
 		},
 		hideDropDown: function () {
-			/* Hides the drop down list. */
+			/* Hides the drop down list.
+			```
+			$(".selector").%%WidgetName%%("hideDropDown");
+			```*/
 			this._hideDropDownList();
 		},
 		dropDownButton: function () {
-			/* Returns a reference to the clear button UI element of the editor.
+			/* Returns a reference to the drop-down button UI element of the editor.
+			```
+			var button = $(".selector").%%WidgetName%%("dropDownButton");
+			```
 				returnType="$" Returns reference to jquery object. */
 			return this._dropDownButton;
 		},
 		dropDownVisible: function () {
-			/* Returns the visibility state of the drop down listing the items.
+			/* Returns if the drop-down list is visible.
+			```
+			var visible =  $(".selector").%%WidgetName%%("dropDownVisible");
+			```
 				returnType="bool" The visibility state of the drop down. */
 			return this._dropDownList.is(":visible");
 		},
 		clearButton: function () {
 			/* Returns a reference to the clear button UI element of the editor.
+			```
+			var button =  $(".selector").%%WidgetName%%("clearButton");
+			```
 				returnType="$" Returns a reference to the jquery object. */
 			return this._clearButton;
 		},
 		findListItemIndex: function (text, matchType) {
 			/* Finds index of list item by text that matches with the search parameters.
+			```
+				var item =  $(".selector").igTextEditor("findListItemIndex");
+
+			```
 				paramType="string" optional="false" The text to search for in the drop down list.
 				paramType="startsWith|endsWith|contains|exactMatch " optional="true" The rule that is applied for searching the text.
 				returnType="number" Returns index of the found item. */
@@ -3370,7 +3694,11 @@
 			return index;
 		},
 		selectedListIndex: function (index) {
-			/* Gets/Sets selected list item index.
+			/* Gets the index of the selected list item. Sets selected item by index.
+			```
+				$(".selector").%%WidgetName%%("selectedListIndex", 1);
+				var selectedIndex = $(".selector").%%WidgetName%%("selectedListIndex");
+			```
 				paramType="number" optional="true" The index of the item that needs to be selected.
 				returnType="number" Returns the selected index. */
 			if (index !== undefined) {
@@ -3380,12 +3708,18 @@
 			}
 		},
 		getSelectedListItem: function () {
-			/* Gets selected list item.
+			/* Gets the selected list item.
+			```
+			var selectedItem =  $(".selector").%%WidgetName%%("getSelectedListItem");
+			```
 				returnType="$" Selected list item.*/
 			return this._listItems().filter(".ui-igedit-listitemselected");
 		},
 		getSelectedText: function () {
-			/* Gets selected text in editor.
+			/* Gets the selected text in the editor.
+			```
+			var text =  (".selector").%%WidgetName%%("getSelectedText");
+			```
 				returnType="string" Selected text in editor.*/
 			var text = this._editMode ? this._editorInput.val() : this.displayValue(),
 				startIndex = this.getSelectionStart(),
@@ -3397,18 +3731,24 @@
 			return text.substring(startIndex, endIndex);
 		},
 		getSelectionStart: function () {
-			/* Gets start index of the selected text in editor.
-				returnType="number" Start index of the selected text in editor.*/
+			/* Gets the start index of the selected text in the editor.
+			```
+			var intex = $(".selector").%%WidgetName%%("getSelectionStart");
+			```
+				returnType="number" Start index of the selected text in the editor.*/
 			return this._getSelection(this._editorInput[ 0 ]).start;
 		},
 		getSelectionEnd: function () {
-			/* Gets end index of the selected text in editor.
-				returnType="number" End index of the selected text in editor.*/
+			/* Gets the end index of the selected text in the editor.
+			```
+			var intex = $(".selector").%%WidgetName%%("getSelectionEnd");
+			```
+				returnType="number" End index of the selected text in the editor.*/
 			return this._getSelection(this._editorInput[ 0 ]).end;
 		},
 		insert: function (string) {
-			/* Paste text at location of caret or over the current selection. Best used during editing, as the method will instead set the text as value if the editor is not focused.
-				Note: method raises the "textChanged" event.
+			/*  Inserts the text at the location of the caret or over the current selection. If the editor is focused the method will insert the text over the current selection. If the editor is not focused the method will set the text as value of the editor.
+				Note: The method raises [textChanged](ui.igtexteditor#events:textChanged) event.
 				paramType="string" optional="false" The string to be inserted.
 				```
 				$('.selector').%%WidgetName%%({
@@ -3417,31 +3757,49 @@
 						ui.owner.insert("0");
 					}
 				});
+				$(".selector").%%WidgetName%%("insert", "20");
 				```
 			*/
 			this._insertHandler(string);
 		},
 		select: function (start, end) {
-			/* Selects text in editor. If parameters are equal, then than method sets location of caret. That method has effect only when editor has focus.
+			/*	Selects the text between start and end indices in the editor. If the parameters are equal, then the method sets location of caret. The method has effect only when the editor has focus.
+			```
+				$(".selector").%%WidgetName%%("select", 2, 4);
+			```
 				paramType="number" optional="false" Start of the selection.
 				paramType="number" optional="false" End of the selection. */
 			this._setSelectionRange(this._editorInput[ 0 ], start, end);
 		},
 		spinUp: function () {
-			/* Increments hovered index in the list. */
+			/* Hovers the previous item in the drop-down list if the list is opened.
+			```
+			 $(".selector").igTextEditor("spinUp");
+			```
+			*/
 			this._spinUp();
 		},
 		spinDown: function () {
-			/* Decrements hovered index in the list. */
+			/* Hovers the next item in the drop-down list if the list is opened.
+			```
+				$(".selector").igTextEditor("spinDown");
+			```
+			*/
 			this._spinDown();
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
+			```
+				var button = $(".selector").%%WidgetName%%("spinUpButton");
+			```
 				returnType="$" The jQuery object representing the spin up UI element of the editor. */
 			return this._spinUpButton;
 		},
 		spinDownButton: function () {
 			/* Returns a reference to the spin down UI element of the editor.
+			```
+				var button = $(".selector").%%WidgetName%%("spinDownButton");
+			```
 				returnType="$" The jQuery object representing the spin down UI element of the editor. */
 			return this._spinDownButton;
 		}
@@ -3449,6 +3807,25 @@
 
 	$.widget("ui.igNumericEditor", $.ui.igTextEditor, {
 		options: {
+			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
+				Items in the list can be of type string, number or object. The items are directly rendered without any casting, or manipulation.
+				```
+				$(".selector").%%WidgetName%%({
+					listItems : [
+						10,
+						20,
+						30
+					]
+				});
+
+				//Get
+				var items = $(".selector").%%WidgetName%%("option", "listItems");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "listItems", [10, 20, 30]);
+				```
+			 */
+			listItems: null,
 			/* type="object" Gets/Sets custom regional settings for editor. If it is string, then $.ig.regional[stringValue] is assumed.
 			```
 				//Initialize
@@ -3592,7 +3969,7 @@
 				```
 				*/
 			minDecimals: null,
-			/* type="left|right|center" Gets/Sets horizontal alignment of text in editor. If that option is not set, then 'right' is used for 'numeric', 'currency' and 'percent' editors and the 'left' is used for all other types of editor.
+			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor. If that option is not set, then default value of 'right' is used for 'numeric', 'currency' and 'percent' editors.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -3608,6 +3985,17 @@
 				left type="string"
 				right type="string"
 				center type="string"
+				```
+				$(".selector").%%WidgetName%%({
+					textAlign : "center"
+				});
+
+				//Get
+				var align = $(".selector").%%WidgetName%%("option", "textAlign");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "textAlign", "center");
+				```
 			*/
 			textAlign: "right",
 			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
@@ -3719,7 +4107,20 @@
 				e+ type="string" scientific format is enabled and the "e" character is used. The "e+" is used for positive values in display mode.
 			*/
 			scientificFormat: null,
-			/* type="bool" Sets gets ability to automatically set value in editor to opposite limit, when spin action reached minimum or maximum limit. */
+			/* type="bool" Gets/Set the ability of the editor to automatically set value in the editor to the opposite side of the limit, when the spin action reaches minimum or maximum limit.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					spinWrapAround : true
+				});
+
+				//Get
+				var spinAround = $(".selector").%%WidgetName%%("option", "spinWrapAround");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "spinWrapAround", true);
+			```
+			*/
 			spinWrapAround: false,
 			/* @Ignored@ Removed from numeric editor options*/
 			maxLength: null,
@@ -3731,10 +4132,7 @@
 			toLower: null,
 			/* @Ignored@ Removed from numeric editor options*/
 			toUpper: null,
-			/* type="text|password|multiline" @Ignored@ Sets gets text mode of editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
-				text type="string" Single line text editor based on INPUT element is created.
-				password type="string" Editor based on INPUT element with type password is created.
-				multiline type="string" multiline editor based on TEXTAREA element is created.
+			/* type="text|password|multiline" @Ignored@
 			*/
 			textMode: "text",
 			/* type="object" Gets/Sets value in editor. The effect of setting/getting that option depends on type of editor and on dataMode options for every type of editor.
@@ -5656,7 +6054,18 @@
 				var button = $(".selector").%%WidgetName%%("option", "buttonType");
 				```
 				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
-				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).*/
+				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					buttonType : "clear"
+				});
+
+				//Get
+				var button = $(".selector").%%WidgetName%%("option", "buttonType");
+
+				```
+				*/
 			buttonType: "none",
 			/* type="string" Gets input mask. Mask may include filter-flags and literal characters.
 				Literal characters are part of mask which cannot be modified by end user. In order to use a filter-flag as a literal character, the escape "\\" character should be used.
@@ -5797,10 +6206,7 @@
 			dropDownAnimationDuration: 300,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igMaskEditor */
 			dropDownOnReadOnly: false,
-			/* type="text|password|multiline" @Ignored@ Sets gets text mode of editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
-				text type="string" Single line text editor based on INPUT element is created.
-				password type="string" Editor based on INPUT element with type password is created.
-				multiline type="string" multiline editor based on TEXTAREA element is created.
+			/* type="text|password|multiline" @Ignored@
 			*/
 			textMode: "text",
 			/* type="number" @Ignored@ Gets/Sets how many items should be shown at once.
@@ -9950,22 +10356,25 @@
 			```
 			*/
 			regional: null,
-			/* type="dropdown|clear|spin" Gets the visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,clear' are supported too.
+			/* type="dropdown|clear|spin" Gets visibility of the spin and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
+				dropdown type="string" A button to open/close the list is located on the right side of the editor.
+				clear type="string" A button to clear the value is located on the right side of the editor.
+				spin type="string" Spin buttons are located on the right side of the editor.
+				Note! This option can not be set runtime.
 				```
 				//Initialize
-				$(".selector").igDatePicker({
-					buttonType : "clear"
+				$(".selector").%%WidgetName%%({
+					buttonType : "dropdown"
 				});
 
 				//Get
-				var buttonType = $(".selector").igDatePicker("option", "buttonType");
+				var button = $(".selector").%%WidgetName%%("option", "buttonType");
 
-				//Set
-				$(".selector").igDatePicker("option", "buttonType", "clear");
+				//Initialize multiple buttons
+				$(".selector").%%WidgetName%%({
+					buttonType : "dropdown,clear"
+				});
 				```
-				dropdown type="string" the button to open the list is located on the right side of the input-field (or the left side if the base html element has direction:rtl);
-				clear type="string" the button to clear value is located on the right side of the input-field (or the left side if the base html element has direction:rtl);
-				spin type="string" the spin buttons are located on the right side of the input-field (or left side if the base html element has direction:rtl).
 			*/
 			buttonType: "dropdown",
 			/* type="object" Gets/Sets the options supported by the jquery.ui.datepicker. Only options related to the drop-down calendar are supported.
@@ -9980,18 +10389,17 @@
 			```
 			*/
 			datepickerOptions: null,
-			/* type="bool" Gets the ability to limit the igDatePicker to be used only from the calendar. When set to true the editor input is not editable.
+			/* type="bool" Gets the ability to limit igDatePicker to be used only as s calendar. When set to true the editor input is not editable.
 				Note! This option can not be set runtime.
-			```
-			//Initialize
-			$(".selector").igDatePicker({
-				readOnly: true,
-				dropDownOnReadOnly : true
-			});
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					dropDownOnReadOnly : true
+				});
 
-			//Get
-			var dropDownOnReadOnly = $(".selector").igDatePicker("option", "dropDownOnReadOnly");
-			```
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "dropDownOnReadOnly");
+				```
 			*/
 			dropDownOnReadOnly: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
