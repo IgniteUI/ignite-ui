@@ -41,8 +41,8 @@
   border: 1px solid #2E9CA6!important;
 }
 .chartPalette5 {
-  background-color: #D63665!important;
-  border: 1px solid #D63665!important;
+  background-color: #DC3F76!important;
+  border: 1px solid #DC3F76!important;
 }
 .chartPalette6 {
   background-color: #FF9800!important;
@@ -65,8 +65,8 @@
   border: 1px solid #9A9A9A!important;
 }
 .chartPalette11 {
-  background-color: #F44336!important;
-  border: 1px solid #F44336!important;
+  background-color: #C62828!important;
+  border: 1px solid #C62828!important;
 }
 .chartPalette12 {
   background-color: #9f725f!important;
@@ -80,6 +80,9 @@
 /************/
 .boxShadow {
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
+}
+.boxShadow2 {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
 }
 /***************************/
 /* JQuery Framework styles */
@@ -3201,8 +3204,8 @@ input.ui-igbutton {
   border: 1px solid #2E9CA6!important;
 }
 .ui-chart-palette-5 {
-  background-color: #D63665!important;
-  border: 1px solid #D63665!important;
+  background-color: #DC3F76!important;
+  border: 1px solid #DC3F76!important;
 }
 .ui-chart-palette-6 {
   background-color: #FF9800!important;
@@ -3225,8 +3228,8 @@ input.ui-igbutton {
   border: 1px solid #9A9A9A!important;
 }
 .ui-chart-palette-11 {
-  background-color: #F44336!important;
-  border: 1px solid #F44336!important;
+  background-color: #C62828!important;
+  border: 1px solid #C62828!important;
 }
 .ui-chart-palette-12 {
   background-color: #9f725f!important;
@@ -3266,8 +3269,8 @@ input.ui-igbutton {
   text-align: center;
 }
 .ui-widget-content.ui-chart-tooltip {
-  background-color: #ffffff;
-  border: none;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #888;
 }
 /*******************/
 /* Sparkline chart */
@@ -3279,7 +3282,7 @@ input.ui-igbutton {
   border: 0px;
 }
 .ui-sparkline-tooltip {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
   padding: 3px;
 }
 .ui-sparkline-sparkpath {
@@ -3345,7 +3348,7 @@ input.ui-igbutton {
   border: 0px;
 }
 .ui-funnel-tooltip {
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
   padding: 3px;
 }
 .ui-funnel-slice {
@@ -3456,7 +3459,7 @@ input.ui-igbutton {
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-3 {
-  background-color: #f44336;
+  background-color: #c62828;
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-4 {
@@ -3509,7 +3512,7 @@ input.ui-igbutton {
   border: transparent;
 }
 .ui-bulletgraph-range-palette-3 {
-  background-color: #f44336;
+  background-color: #c62828;
   border: transparent;
 }
 .ui-bulletgraph-range-palette-4 {
