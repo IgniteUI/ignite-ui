@@ -9,15 +9,30 @@
  * jquery-1.9.1.js
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
- *	infragistics.ui.popover.js
- *	infragistics.ui.notifier.js
+ *	infragistics.ui.scroll.js
+ *	infragistics.ui.validator.js
  */
 
-/*global jQuery */
-if (typeof jQuery !== "function") {
-	throw new Error("jQuery is undefined");
-}
+/*global define, jQuery */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
 
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.scroll",
+			"./infragistics.validator",
+			"./i18n/infragistics.ui.regional-en",
+			"./i18n/infragistics.ui.editors-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 	/* The igBaseEditor is a widget based on jQuery UI. */
 	$.widget("ui.igBaseEditor", {
@@ -366,6 +381,7 @@ if (typeof jQuery !== "function") {
 		},
 		_triggerBlur: function (event) {
 			this._editorContainer.removeClass(this.css.focus);
+			this._editorContainer.removeClass(this.css.active);
 			this._clearEditorNotifier();
 			var args = {
 				owner: this,
@@ -647,6 +663,10 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_setFocus: function (event) {
+			// D.P. 22nd Aug 2016 #226 Can't right-click paste in Edge, double focus event on menu closing
+			if (this._focused) {
+				return;
+			}
 
 			//getValue and set it to the input
 			this._focused = true;
@@ -1764,11 +1784,34 @@ if (typeof jQuery !== "function") {
 				"focus.editor": function (event) {
 					self._setFocus(event);
 				},
+				"dragenter.editor": function () {
+					if (!self._focused && !self._editMode) {
+						//Controlled edit mode without selection to allow default drop handling
+						self._dragging = true;
+						self._enterEditMode();
+					}
+				},
+				"dragleave.editor": function (e) {
+					if ($.ig.util.isFF && e.relatedTarget === this) {
+						// FF spams drag events over child text nodes.. https://bugzilla.mozilla.org/show_bug.cgi?id=812807
+						// and also for changing text node from entering edit mode
+						return;
+					}
+					if (self._dragging && self._editMode) {
+						self._exitEditMode();
+						delete self._dragging;
+					}
+				},
 				"blur.editor": function (event) {
 					self._setBlur(event);
 				},
 				"paste.editor": function (event) {
 					self._currentInputTextValue = self._editorInput.val();
+					self._pasteHandler(event);
+				},
+				"drop.editor": function (event) {
+					self._focused = true;
+					delete self._dragging;
 					self._pasteHandler(event, true);
 				},
 				"keydown.editor": function (event) {
@@ -1883,6 +1926,7 @@ if (typeof jQuery !== "function") {
 		_detachEvents: function () {
 			this._super();
 			this._editorInput.off("focus.editor blur.editor paste.editor");
+			this._editorInput.off("dragenter.editor dragleave.editor drop.editor");
 			this._editorInput.off("keydown.editor keyup.editor keypress.editor");
 			this._editorInput.off("compositionstart.editor compositionend.editor compositionupdate.editor");
 		},
@@ -2324,13 +2368,25 @@ if (typeof jQuery !== "function") {
 				newItem.attr("data-active", true);
 			}
 		},
-		_pasteHandler: function (event, isPasteEvent) {
-			// TextEditor Handler
-			var self = this, previousValue = $(event.target).val(), newValue;
+		_pasteHandler: function (e, drop) { // TextEditor Handler
+			var self = this, previousValue = $(e.target).val(), newValue, selection;
+
 			this._currentInputTextValue = this._editorInput.val();
+
 			this._timeouts.push(setTimeout(function () {
-				newValue = $(event.target).val();
-				self._insert(newValue, previousValue, isPasteEvent);
+				newValue = self._editorInput.val();
+				selection = self._getSelection(self._editorInput[ 0 ]);
+				self._insert(newValue, previousValue, selection);
+				if (drop) {
+					if (self._editorInput.is(":focus")) {
+						// fire focus if it was ignored initally
+						self._triggerFocus(e);
+					} else {
+						self._processValueChanging(newValue);
+						self._focused = false;
+						self._exitEditMode();
+					}
+				}
 			}, 10));
 		},
 		_insertHandler: function (string) {
@@ -2346,8 +2402,8 @@ if (typeof jQuery !== "function") {
 			return previousValue.substring(0, selection.start) + string +
 				previousValue.substring(selection.end, previousValue.length);
 		},
-		_insert: function (newValue, previousValue, isPasteEvent) { // TextEditor
-			var selection, i, ch;
+		_insert: function (newValue, previousValue, selection) { // TextEditor
+			var i, ch;
 			if (this.options.maxLength) {
 				if (newValue && newValue.toString().length > this.options.maxLength) {
 					newValue = newValue.toString().substring(0, this.options.maxLength);
@@ -2359,7 +2415,6 @@ if (typeof jQuery !== "function") {
 					}
 				}
 			if (this._validateValue(newValue)) {
-				selection = this._getSelection(this._editorInput[ 0 ]);
 				if (this.options.toUpper) {
 					if (newValue) { newValue = newValue.toLocaleUpperCase(); }
 				} else if (this.options.toLower) {
@@ -2387,12 +2442,13 @@ if (typeof jQuery !== "function") {
 				}
 				if (this._focused) {
 					this._editorInput.val(newValue);
+					if (selection !== undefined) {
+						// Move the caret
+						this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+					}
 				}
 				this._processValueChanging(newValue);
 				this._processTextChanged();
-
-				// Move the caret
-				this._setCursorPosition(selection.start + (isPasteEvent ? 0 : newValue.length));
 			} else {
 				this._editorInput.val(previousValue);
 			}
@@ -2563,6 +2619,9 @@ if (typeof jQuery !== "function") {
 			}
 		},
 		_positionCursor: function (startPostion, endPosition) {
+			if (this._dragging) {
+				return;
+			}
 			var currentValue = this._editorInput.val(), self = this;
 
 			if (currentValue && currentValue.length > 0) {
@@ -3748,7 +3807,8 @@ if (typeof jQuery !== "function") {
 			}
 			return result;
 		},
-		_insert: function (newValue, previousValue) { //NumericEditor
+		_insert: function (newValue, previousValue, selection) { //NumericEditor
+			var newLenght = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
@@ -3778,6 +3838,13 @@ if (typeof jQuery !== "function") {
 			}
 			if (this._editMode) {
 				this._editorInput.val(newValue);
+				if (selection !== undefined) {
+					// Move the caret, account for cuts from number parsing:
+					diff = newLenght - newValue.toString().length;
+					selection.start -= diff;
+					selection.end -= diff;
+					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+				}
 			} else {
 				this._processInternalValueChanging(newValue);
 				this._exitEditMode();
@@ -4537,7 +4604,8 @@ if (typeof jQuery !== "function") {
 		_setNumericType: function () {
 			this._numericType = "percent";
 		},
-		_insert: function (newValue, previousValue) { // Percent Editor
+		_insert: function (newValue, previousValue, selection) { // Percent Editor
+			var newLenght = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
 				if (this.options.maxValue &&
@@ -4569,6 +4637,13 @@ if (typeof jQuery !== "function") {
 			}
 			if (this._editMode) {
 				this._editorInput.val(newValue);
+				if (selection !== undefined) {
+					// Move the caret, account for cuts from number parsing:
+					diff = newLenght - newValue.toString().length;
+					selection.start -= diff;
+					selection.end -= diff;
+					this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+				}
 			} else {
 				newValue = this._divideWithPrecision(newValue, this.options.displayFactor);
 				this._processInternalValueChanging(newValue);
@@ -4927,30 +5002,45 @@ if (typeof jQuery !== "function") {
 			this._positionCursor(selection.start, selection.end);
 			this._processTextChanged();
 		},
-		_insert: function (newValue) { // MaskEditor
-			var selection = this._getSelection(this._editorInput[ 0 ]);
-				if (this.options.toUpper) {
-					if (newValue) { newValue = newValue.toLocaleUpperCase(); }
-				} else if (this.options.toLower) {
-					if (newValue) { newValue = newValue.toLocaleLowerCase(); }
-				}
-				this._promptCharsIndices = [];
-				newValue = this._parseValueByMask(newValue);
-				this._editorInput.val(newValue);
-				this._processTextChanged();
+		_insert: function (newValue, previousValue, selection) { // MaskEditor
+			if (this.options.toUpper) {
+				if (newValue) { newValue = newValue.toLocaleUpperCase(); }
+			} else if (this.options.toLower) {
+				if (newValue) { newValue = newValue.toLocaleLowerCase(); }
+			}
+			this._promptCharsIndices = [];
+			newValue = this._parseValueByMask(newValue);
+			this._editorInput.val(newValue);
+			this._processTextChanged();
 
+			if (selection !== undefined) {
 				// Move the caret
-				this._setCursorPosition(selection.start + newValue.length);
-
+				this._setSelectionRange(this._editorInput[ 0 ], selection.start, selection.end);
+			}
 		},
-		_pasteHandler: function (event) {
-			// MaskEditor Handler
-			var self = this, previousValue = $(event.target).val(), newValue;
+		_pasteHandler: function (e, drop) { // MaskEditor Handler
+			var self = this, previousValue = $(e.target).val(), newValue, data, selection,
+				dtObj = drop ? e.originalEvent.dataTransfer :
+					(e.originalEvent && e.originalEvent.clipboardData) ||
+					window.clipboardData;
+
+			// Don't use "text/plain" - IEs error out. Per spec the DataTransfer getData will:
+			// Convert to lower case and change "text" to "text/plain", making "Text" universal
+			data = dtObj && dtObj.getData("Text");
 			this._currentInputTextValue = this._editorInput.val();
+
 			this._timeouts.push(setTimeout(function () {
-				newValue = $(event.target).val();
+				selection = self._getSelection(e.target);
+				if (selection.start === selection.end) {
+					selection.start -= data.length;
+					newValue = self._replaceDisplayValue(selection, previousValue, data);
+					selection.start = selection.end;
+				} else {
+					newValue = self._replaceDisplayValue(selection, previousValue, data);
+				}
+
 				if (self._validateValueAgainstMask(newValue)) {
-					self._insert(newValue, previousValue);
+					self._insert(newValue, previousValue, selection);
 				} else {
 					if (self.options.revertIfNotValid) {
 						newValue = self._valueInput.val();
@@ -4962,7 +5052,38 @@ if (typeof jQuery !== "function") {
 						self._enterEditMode();
 					}
 				}
+
+				if (drop) {
+					if (self._editorInput.is(":focus")) {
+						// fire focus if it was ignored initally
+						self._triggerFocus(e);
+					} else {
+						self._processValueChanging(newValue);
+						self._focused = false;
+						self._exitEditMode();
+					}
+				}
 			}, 10));
+		},
+		_replaceDisplayValue: function (selection, previousValue, newValue) { // MaskEditor
+			var value = previousValue, i = selection.start, j = 0,
+				currentChar, newChar;
+			newValue = newValue.toString();
+			for (; i < previousValue.length && j < newValue.length; i++, j++) {
+				currentChar = previousValue.charAt(i);
+				newChar = newValue.charAt(j);
+				if ($.inArray(i, this._literalIndeces) !== -1) {
+					if (currentChar !== newChar) {
+						//skip over literal and extend selection
+						selection.end++;
+						j--;
+					}
+				} else {
+					value = value.substring(0, i) + newChar +
+						value.substring(i + 1, previousValue.length);
+				}
+			}
+			return value;
 		},
 		_attachEvents: function () { //MaskEditor
 			var self = this;
@@ -4973,10 +5094,6 @@ if (typeof jQuery !== "function") {
 				},
 				"cut.editor": function () {
 					self._handleDeleteKey(true);
-				},
-				"drop.editor": function (event) {
-					event.preventDefault();
-					self._pasteHandler(event);
 				}
 			});
 		},
@@ -6193,23 +6310,6 @@ if (typeof jQuery !== "function") {
 		},
 		_handleSpinDownEvent: function () { // DateEditor
 			this.spinDown(1);
-		},
-		_replaceDisplayValue: function (selection, previousValue, newValue) {
-			var value = previousValue, currentIndex = selection.start, currentChar,
-				charCode, charIndex = 0, newChar;
-			newValue = newValue.toString();
-			while (currentIndex < previousValue.length && charIndex < newValue.length) {
-				currentChar = previousValue.charAt(currentIndex);
-				charCode = previousValue.charCodeAt(currentIndex);
-				newChar = newValue.charAt(charIndex);
-				if (charCode >= 48 && charCode <= 57 || currentChar === "_") {
-					value = value.substring(0, currentIndex) + newChar +
-						value.substring(currentIndex + 1, previousValue.length);
-					charIndex++;
-				}
-				currentIndex++;
-			}
-			return value;
 		},
 
 		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)
@@ -8896,6 +8996,7 @@ if (typeof jQuery !== "function") {
 					if (self.options.readOnly === true || self.options.disabled === true) {
 						self._exitEditMode();
 					} else {
+						self._focused = false;
 						self._editorInput.focus();
 					}
 				},
@@ -9786,4 +9887,4 @@ if (typeof jQuery !== "function") {
 		}
 	});
 
-}(jQuery));
+}));

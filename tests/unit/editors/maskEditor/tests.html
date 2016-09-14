@@ -22,6 +22,7 @@
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -244,6 +245,10 @@
 					$("#pasteHandlerInput1").igMaskEditor({
 						inputMask: "CCR00"
 					});
+
+					$("#pasteEditor").igMaskEditor({
+						inputMask: "00-0L/>aa(test)"
+					});	
 					
 					$("#keydownEditor1").igMaskEditor({
 						inputMask: ">?CC",
@@ -551,32 +556,39 @@
 			test(testId, 11, function () {
 				//
 				$("#pasteHandlerInput").igMaskEditor("field").focus();
-				paste($("#pasteHandlerInput").igMaskEditor("field")[0], "aaR15");
-				equal($('#pasteHandlerInput').igMaskEditor("field").val(), "aaR15", "The value is aaR15");
-				$('#pasteHandlerInput').igMaskEditor("field").blur();
-				$("#pasteHandlerInput").igMaskEditor("field").focus();
-				$('#pasteHandlerInput').igMaskEditor("option", "revertIfNotValid", true);
-				$('#pasteHandlerInput').data("igMaskEditor")._processInternalValueChanging("as;dlfkasdfl;kjasf");
-				equal($('#pasteHandlerInput').igMaskEditor("field").val(), "aaR15", "The value is aaR15");
-				$('#pasteHandlerInput').igMaskEditor("option", "revertIfNotValid", false);
-				$("#pasteHandlerInput").igMaskEditor("field").focus();
-				$('#pasteHandlerInput').data("igMaskEditor")._processInternalValueChanging("as;dlfkasdfl;kjasf");
-				equal($('#pasteHandlerInput').igMaskEditor("field").val(), "__R__", "The field should empty mask with prompts");
-				equal($('#pasteHandlerInput').igMaskEditor("value"), "", "The value should be empty");
+				stop();
+				setTimeout(function () {
+					$.ig.TestUtil.paste($("#pasteHandlerInput").igMaskEditor("field")[0], "aaR15");
+					setTimeout(function () {
+						start();
+						equal($('#pasteHandlerInput').igMaskEditor("field").val(), "aaR15", "The value is aaR15");
+						$('#pasteHandlerInput').igMaskEditor("field").blur();
+						$("#pasteHandlerInput").igMaskEditor("field").focus();
+						$('#pasteHandlerInput').igMaskEditor("option", "revertIfNotValid", true);
+						$('#pasteHandlerInput').data("igMaskEditor")._processInternalValueChanging("as;dlfkasdfl;kjasf");
+						equal($('#pasteHandlerInput').igMaskEditor("field").val(), "aaR15", "The value is aaR15");
+						$('#pasteHandlerInput').igMaskEditor("option", "revertIfNotValid", false);
+						$("#pasteHandlerInput").igMaskEditor("field").focus();
+						$('#pasteHandlerInput').data("igMaskEditor")._processInternalValueChanging("as;dlfkasdfl;kjasf");
+						equal($('#pasteHandlerInput').igMaskEditor("field").val(), "__R__", "The field should empty mask with prompts");
+						equal($('#pasteHandlerInput').igMaskEditor("value"), "", "The value should be empty");
 
-				equal($('#pasteHandlerInput').data("igMaskEditor")._valueFromText("bbR23"), "bbR23", "The value is bb23");
-				ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("zz23"), "The value zz23 is valid");
-				ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("23Rsd"), "The value 23Rsd is not valid");
-				ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask(""), "The value zz23 is valid");
-				ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("ffR23"), "The value ffdd is valid");
-				ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateRequiredPrompts(""), "The value \"\" is not valid");
-				$("#pasteHandlerInput1").igMaskEditor("field").focus();
-				$("#pasteHandlerInput1").data("igMaskEditor")._setCursorPosition(2);
-				var evt = $.Event("keydown");
-				evt.keyCode = 50;
-				evt.charCode = 50;
-				ok($('#pasteHandlerInput1').data("igMaskEditor")._validateKey(evt), "2 is allowed");
+						equal($('#pasteHandlerInput').data("igMaskEditor")._valueFromText("bbR23"), "bbR23", "The value is bb23");
+						ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("zz23"), "The value zz23 is valid");
+						ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("23Rsd"), "The value 23Rsd is not valid");
+						ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask(""), "The value zz23 is valid");
+						ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("ffR23"), "The value ffdd is valid");
+						ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateRequiredPrompts(""), "The value \"\" is not valid");
+						$("#pasteHandlerInput1").igMaskEditor("field").focus();
+						$("#pasteHandlerInput1").data("igMaskEditor")._setCursorPosition(2);
+						var evt = $.Event("keydown");
+						evt.keyCode = 50;
+						evt.charCode = 50;
+						ok($('#pasteHandlerInput1').data("igMaskEditor")._validateKey(evt), "2 is allowed");
+					}, 20);
+				}, 100); 
 			});
+
 			testId = 'mask editor triggerKeyDown';
 			test(testId, 9, function () {
 				//keydownEditor1
@@ -768,6 +780,117 @@
 				editor.blur();
 				equal(field.val(), "1234", "Text is not 1234");
 			});
+
+			testId = 'Paste and insert';
+			test(testId, 16, function () {
+				var $editor = $("#pasteEditor"),
+					editorInput = $editor.igMaskEditor("field"),
+					testPastePosition = function (val, expectedPos) {
+						var defer = $.Deferred();
+						$.ig.TestUtil.paste(editorInput[0], val);
+						setTimeout(function () {
+							equal(editorInput[0].selectionStart, expectedPos, "Cusrsor position not correct after paste");
+							defer.resolve();
+						}, 20);
+						return defer;
+					};
+				
+				editorInput.trigger("focus");
+				stop();
+				setTimeout(function () {	
+					testPastePosition("57", 2).then(function( value ) {
+						//57|-__/__(test)
+						equal(editorInput.val(), "57-__/__(test)", "The text after paste is not correct");
+						return testPastePosition("2ab", 7);
+					}).then(function( value ) {
+						//57-2a/B|_(test)
+						equal(editorInput.val(), "57-2a/B_(test)", "The text after paste is not correct");
+						return testPastePosition("c", 8);
+					}).then(function( value ) {
+						//57-2a/BC(test)|
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						//verify paste doesn't go beyond the mask
+						return testPastePosition("random", 14);
+					}).then(function( value ) {
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						editorInput[0].select();
+						keyInteraction(8, editorInput);
+						return testPastePosition("57-2a", 5);
+					}).then(function( value ) {
+						//57-2a|/__(test)
+						editorInput[0].select();
+						equal(editorInput.val(), "57-2a/__(test)", "The text after paste is not correct");
+						return testPastePosition("572a/bc", 8);
+					}).then(function( value ) {
+						//57-2a/BC|(test)
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						editorInput[0].select();
+						return testPastePosition("572abc(test)", 14);
+					}).then(function( value ) {
+						//57-2a/BC(test)|
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						editorInput[0].select();
+						return testPastePosition("572abc(more random string value test)", 14);
+					}).then(function( value ) {
+						//57-2a/BC(test)|
+						equal(editorInput.val(), "57-2a/BC(test)", "The text after paste is not correct");
+						start();
+					});
+				}, 200);
+			});
+
+			testId = 'Drag and drop';
+			test(testId, 13, function () {
+				var $editor = $("#pasteEditor"),
+					editorInput = $editor.igMaskEditor("field"),
+					testDropPosition = function (val, expectedPos) {
+						var defer = $.Deferred();
+						
+						editorInput[0].selectionStart = expectedPos[0];
+						$.ig.TestUtil.drop(editorInput[0], val);
+						setTimeout(function () {
+							equal(editorInput[0].selectionStart, expectedPos[0], "Selection start not correct after drop");
+							equal(editorInput[0].selectionEnd, expectedPos[1], "Selection end not correct after drop");
+							defer.resolve();
+						}, 20);
+						return defer;
+					};
+				editorInput.blur();
+				$editor.igMaskEditor("value", "");
+
+				// drag enter/leave events:
+				editorInput.trigger("dragenter");
+				equal(editorInput.val(), "__-__/__(test)", "Editor didn't enter edit mode on dragenter");
+				// fake FF interaction:
+				$.ig.util.isFF = true;
+				var ev = jQuery.Event( "dragleave" );
+				ev.relatedTarget = editorInput[0];
+				editorInput.trigger(ev);
+				equal(editorInput.val(), "__-__/__(test)", "Editor exited edit mode on inner dragleave");
+				$.ig.util.isFF = false;
+
+				editorInput.trigger("dragleave");
+				equal(editorInput.val(), "", "Editor didn't exit edit mode on dragenter");
+
+				// drop text with focus
+				editorInput.trigger("dragenter");
+				equal(editorInput.val(), "__-__/__(test)", "Editor didn't enter edit mode on dragenter");
+				stop();
+				testDropPosition("57", [0,2])
+				.then(function( value ) {
+					//|57|-__/__(test)
+					equal(editorInput.val(), "57-__/__(test)", "The text after drop is not correct");
+					return testDropPosition("2ab", [2, 7]);
+				}).then(function( value ) {
+					//57-|2a/B|_(test)
+					equal(editorInput.val(), "57-2a/B_(test)", "The text after drop is not correct");
+					return testDropPosition("cc", [7, 14]);
+				}).then(function( value ) {
+					//57-2a/B|C(test)|
+					equal(editorInput.val(), "57-2a/BC(test)", "The text after drop is not correct");
+					start();
+				});
+			});
 		});
 
 		function checkMaskState(editor, keyCode, editValue, displayValue, value) {
@@ -778,16 +901,6 @@
 			equal(editor.igMaskEditor("value"), value, "Value that needs to be sent to the server is incorrect");
 		}
 
-		function paste(input, newVal) {
-			// create a mouse click event
-			var event = document.createEvent('Event');
-			event.initEvent('paste', true, true);
-			event.target = input;
-			event.srcElement = input;
-			$(input).val(newVal);
-			// send click to element
-			input.dispatchEvent(event);
-		}
 		function fireKeyEvent(target, type, keyCode) {
 			var evt = document.createEvent('KeyboardEvent');
 
@@ -960,6 +1073,7 @@
 			<input type="text" id="validInEditModeEditor" />
 			<input type="text" id="pasteHandlerInput"/>
 			<input type="text" id="pasteHandlerInput1" />
+			<input type="text" id="pasteEditor" />
 			<input type="text" id="keydownEditor1" />
 			<input type="text" id="keydownEditor2" />
 			<input type="text" id="keydownEditor3" />

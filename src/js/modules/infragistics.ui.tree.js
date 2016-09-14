@@ -18,11 +18,26 @@
  *	infragistics.ui.tree-en.js
  */
 
-/*global jQuery, MSApp */
-if (typeof jQuery !== "function") {
-	throw new Error("jQuery is undefined");
-}
+/*global define, jQuery, MSApp */
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
 
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"jquery-ui",
+			"./infragistics.util",
+			"./infragistics.datasource",
+			"./infragistics.templating",
+			"./infragistics.ui.shared",
+			"./infragistics.ui.tree-en"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory(jQuery);
+	}
+}
 (function ($) {
 	$.ui.keyCode.NUMPAD_ADD = $.ui.keyCode.NUMPAD_ADD || 107;
 	$.ui.keyCode.NUMPAD_SUBTRACT = $.ui.keyCode.NUMPAD_SUBTRACT || 109;
@@ -3376,4 +3391,5 @@ if (typeof jQuery !== "function") {
         }
     });
     $.extend($.ui.igTree, { version: "<build_number>" });
-}(jQuery));
+	return $.ui.igTree;
+}));
