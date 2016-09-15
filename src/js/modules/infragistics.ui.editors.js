@@ -9645,6 +9645,7 @@
 
 						// In 12H format date, when the hour changes (wraps down) from 01 to 12, this is NOT the time that the day is decreased.
 						// It is decreased an hour later. (implemented in the top else block).
+						// N.A. September 15th, 2016 #342: Fix spinning down of the limit value.
 						if (newHour <= 0) {
 							newHour = 12 + newHour;
 						}
