@@ -41,13 +41,13 @@
 }
 (function ($) {
 /*
-	igValidator is a widget based on jQuery UI that provides functionality to validate value in target and show appropriate error message.
-	It can be attached to a INPUT, TEXTAREA, SELECT html element in order to validate its value or entire FORM (or inner container) to handle multiple fields at once.
+	The igValidator is a widget based on jQuery UI that provides functionality to validate a target's value and show an appropriate error message.
+	It can be attached to an INPUT/TEXTAREA/SELECT element in order to validate its value or a FORM (or inner container) to handle multiple fields at once.
 	It can also be attached to a igEditors, igCombo and igRating.
 	Validation can be triggered on various events like onchange, onblur, onsubmit.
-	Every igValidator may have its own rules and enable/disable specific trigger-validation events, fields collection can provide thier own rules as well as inherit from the main configuretion.
-	If target element is INPUT type=radio/checkbox, then all elements with attribute name of that target are validated.
-	If validator is enabled for igEditor, then any specific failure like not filled required positions in igMaskEditor or invalid day of month in igDateEditor, etc, will trigger validation and show corresponding message.
+	Every igValidator may have its own rules and enable/disable specific validation triggers, fields collection can provide thier own rules as well as inherit from the main configuration.
+	If the target element is an INPUT with type=radio/checkbox, then all elements with the same name attribute as the target are validated as a group.
+	If the validator is enabled on an igEditor, then any editor-specific failure like unfilled required positions in igMaskEditor can also fail the validation and show a corresponding message.
 
 	In order to customize the default submit behavior globally for all widgets, the "$.ui.igValidator.defaults" object can be used to allow showing all errors when validating a form. Default is true.
 	Example:
@@ -55,7 +55,9 @@
 */
 $.widget("ui.igValidator", {
 	options: {
-		/* type="bool" Gets or sets triggering validation when value in editor was changed.
+		/* type="bool"  Gets/Sets whether validation is triggered when the text in editor changes.
+			Note that this is more appropriate for selection controls such as checkbox, combo or rating.
+			As it can cause excessive messages with text-based fields, the initail validation can be delayed via the [threshold](ui.igvalidator#options:threshold) option.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -70,9 +72,9 @@ $.widget("ui.igValidator", {
 		```
 		*/
 		onchange: false,
-		/* type="bool" Gets or sets triggering validation when editor lost focus.
+		/* type="bool" Gets/Sets whether validation is triggered when the editor loses focus.
 		```
-			//Initialize
+		//Initialize
 		$('.selector').igValidator({
 			onblur: true
 		});
@@ -85,7 +87,8 @@ $.widget("ui.igValidator", {
 		```
 		*/
 		onblur: true,
-		/* type="bool" Gets or sets triggering validation when form gets onsubmit event.
+		/* type="bool" Gets/Sets whether validation is triggered when a form containing validation targets is submitting. If any of the validations fail, the submit action will be prevented.
+			Note that this doesn't apply to the native JavaScript submit function, but will handle the jQuery equivalent and the browser default action.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -100,7 +103,7 @@ $.widget("ui.igValidator", {
 		```
 		*/
 		onsubmit: true,
-		/* type="bool|object" Gets or sets option to validate if value was entered (not empty text, selected item, etc.)
+		/* type="bool|object" Gets/Sets option to validate if a value was entered (not empty text, selected item, etc.)
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -110,7 +113,7 @@ $.widget("ui.igValidator", {
 			//OR
 			$('.selector').igValidator({
 				required: {
-				errorMessage: "This field is required."
+					errorMessage: "This field is required."
 				}
 			});
 
@@ -124,7 +127,8 @@ $.widget("ui.igValidator", {
 			object type="object" A configuration object with optional error message (e.g. required: { errorMessage: "Error!"} )
 			*/
 		required: false,
-		/* type="bool|object" Gets or sets option to validate if value is a number. Default separators for decimals and thousands are '.' and ',' respectively.
+		/* type="bool|object" Gets/Sets number validation rule options.
+			Default separators for decimals and thousands are '.' and ',' respectively and are defined in the "$.ui.igValidator.defaults" object.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -146,11 +150,11 @@ $.widget("ui.igValidator", {
 			//Set
 			$(".selector").igValidator("option", "number", true);
 		```
-			bool type="bool" A boolean value indicating if the field should be a number.
+			bool type="bool" A boolean value indicating if the field should be a number. Default separators are used.
 			object type="object" A configuration object with errorMessage, decimalSeparator and thousandsSeparator. Those properties are all optional.
 			*/
 		number: false,
-		/* type="bool|object" Gets or sets option to validate if value is a date. This can help guide the valueRange validation.
+		/* type="bool|object" Gets/Sets date validation rule options. This can additionally help guide the [valueRange](ui.igvalidator#options:valueRange) validation.
 			Note: Dependat on JavaScript Date parsing which will accept a wide range of values.
 			```
 				//Initialize
@@ -175,7 +179,7 @@ $.widget("ui.igValidator", {
 			object type="object" A configuration object with optional error message (e.g. date: { errorMessage: "Enter a valid number"} )
 		*/
 		date: false,
-		/* type="bool|object" Gets or sets option to validate if value is an email.
+		/* type="bool|object" Gets/Sets email validation rule options. Uses a RegExp defined in the "$.ui.igValidator.defaults" object.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -199,7 +203,7 @@ $.widget("ui.igValidator", {
 			object type="object" A configuration object with optional error message (e.g. email: { errorMessage: "Enter a valid email"} )
 		*/
 		email: false,
-		/* type="array|object" Gets or sets minimum and maximum length of text or number of selected items. Null or 0 values are ignored.
+		/* type="array|object" Gets/Sets a minimum and/or maximum length of text or number of selected items. Null or 0 values are ignored.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -224,7 +228,7 @@ $.widget("ui.igValidator", {
 			object type="object" A configuration object with optional error message. Message strings can contain format items for min and max respecitively (e.g. lengthRange: { min: 6, max: 20, errorMessage: "Password must be at least {0} long and no more than {1}." } )
 			*/
 		lengthRange: null,
-		/* type="array|object" Gets or sets minimum and maximum values. Null values are ignored.
+		/* type="array|object" Gets/Sets a minimum and/or maximum value. Null values are ignored.
 		```
 			//Initialize
 				$('.selector').igValidator({
@@ -249,8 +253,8 @@ $.widget("ui.igValidator", {
 			object type="object" A configuration object with optional error message. Message strings can contain format items for min and max respecitively (e.g. lengthRange: { min: 6, max: 20, errorMessage: "Value must be between {0} and {1}." } )
 			*/
 		valueRange: null,
-		/* type="bool|object" Gets or sets option to validate if value is a Credit Card number.
-			Note: This rule will only validate the checksum of the number using Luhn algorithm irregardless of type.
+		/* type="bool|object" Gets/Sets Credit Card number validation rule options.
+			Note: This rule will only validate the checksum of the number using Luhn algorithm irregardless of card type.
 			```
 			//Initialize
 			 $('.selector').igValidator({
@@ -264,17 +268,17 @@ $.widget("ui.igValidator", {
 				}
 			});
 
-			//GET
+			//Get
 			var creditCard = $('.selector').igValidator("option", "creditCard");
 
-			//SET
+			//Set
 			$('.selector').igValidator("option", 'creditCard', true);
 			```
-			bool type="bool" A boolean value indicating if the field should be an Credit Card number.
+			bool type="bool" A boolean value indicating if the field should be a valid Credit Card number.
 			object type="object" A configuration object with optional error message (e.g. creditCard: { errorMessage: "Enter a valid card number"} )
 		*/
 		creditCard: false,
-		/* type="string|object" Gets or sets regular expression which is used to validate value in text editor.
+		/* type="string|object" Gets/Sets regular expression validation rule options.
 		```
 			//Initialize
 			$(".selector").igValidator({
@@ -295,11 +299,11 @@ $.widget("ui.igValidator", {
 			//Set
 			$(".selector").igValidator("option", "pattern", "^\\d*\\.{0,1}\\d+$");
 		```
-			string type="string" A string containing regular expression
+			string type="string" A string containing regular expression.
 			object type="object" A RegExp object or an object with expression and errorMessage properties.
 		*/
 		pattern: null,
-		/* type="dom" Gets or sets custom jQuery element, which innerHTML will be used to show validation messages. That can be SPAN, LABEL or DIV.
+		/* type="dom" Gets/Sets a custom jQuery element to be used for validation messages. That inner HTML of the target is modified, can be a SPAN, LABEL or DIV.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -314,11 +318,11 @@ $.widget("ui.igValidator", {
 		```
 		*/
 		messageTarget: null,
-		/* type="string" Gets or sets text for error-message to be used if none is set for the particular rule. Overrides default rule-specific error messages.
+		/* type="string" Gets/Sets text for an error message to be used if none is set for the particular rule. Overrides default rule-specific error messages.
 		```
 			//Initialize
 			$('.selector').igValidator({
-			errorMessage: 'This field is required!'
+				errorMessage: 'This field is required!'
 			});
 
 			//Get
@@ -329,7 +333,7 @@ $.widget("ui.igValidator", {
 		```
 		*/
 		errorMessage: null,
-		/* type="string" Gets or sets text for success message. Note there is no default, so setting this message will enable showing success indications.
+		/* type="string" Gets/Sets text for a success message. Note that since there is no default, setting this message will enable showing success indication.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -344,8 +348,8 @@ $.widget("ui.igValidator", {
 		```
 		*/
 		successMessage: null,
-		/* type="number" Gets or sets validation minimum input length. Validation won't be triggered for input before that value is reached on change and blur.
-			Note: This will have no effect on required fields on form submit.
+		/* type="number" Gets/Sets validation minimum input length. Validation won't be triggered for input before that value is reached on change and focus loss.
+			Note: This will not affect required fields on form submit.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -385,7 +389,7 @@ $.widget("ui.igValidator", {
 			object type="object" A reference to the jQuery object for the target or an object with selector property and custom errorMessage.
 		*/
 		equalTo: null,
-		/* type="function|string|object" Gets or sets a custom function to perform validation. Use 'this' to reference the calling validator and the value and optional field settings argument to determine and return the state of the field.
+		/* type="function|string|object" Gets/Sets a custom function to perform validation. Use 'this' to reference the calling validator and the value and optional field settings arguments to determine and return the state of the field.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -398,9 +402,9 @@ $.widget("ui.igValidator", {
 			$('.selector').igValidator({
 				custom: {
 					method: function(value, fieldOptions){
-					return false;
+						return false;
 					},
-				errorMessage : "Value did not match"
+					errorMessage : "Value did not match"
 				}
 			});
 
@@ -409,10 +413,10 @@ $.widget("ui.igValidator", {
 
 			//Set
 			var custom = {
-			method: function (value, fieldOptions) {
-						return false;
-					},
-					errorMessage: "This field is required."
+				method: function (value, fieldOptions) {
+					return false;
+				},
+				errorMessage: "This field is required."
 			};
 
 			$(".selector").igValidator("option", "custom", custom);
@@ -422,8 +426,8 @@ $.widget("ui.igValidator", {
 			object type="object" A configuration object with method property being the function and optional error message.
 		*/
 		custom: null,
-		/* type="array" List of field items describing each field with validation options and a required selector. Fields can contain any of the validation rules and triggers but not other fields or event handlers.
-			Accepted options are also inherited from the global control configuration if not set.
+		/* type="array" List of target field items describing each with validation options and a required selector. Fields can contain any of the validation rules and triggers but not other fields or event handlers.
+			Applicable options are also inherited from the global control configuration if not set.
 			```
 				//Initialize
 				$('.selector').igValidator({
@@ -434,12 +438,12 @@ $.widget("ui.igValidator", {
 						onblur: false
 					},
 					{
-					selector: "#input2",
-					lengthRange: {
-						min: 2,
-						max: 10
-					},
-					onchange: true
+						selector: "#input2",
+						lengthRange: {
+							min: 2,
+							max: 10
+						},
+						onchange: true
 					}]
 				});
 
@@ -448,7 +452,7 @@ $.widget("ui.igValidator", {
 			```
 		*/
 		fields: [{
-			/* type="string|object" The DOM element (input or control target) to be validated. This field setting is required.
+			/* type="string|object" The target element (input or control target) to be validated. This field setting is required.
 			```
 			//Initialize
 			$('.selector').igValidator({
@@ -465,7 +469,7 @@ $.widget("ui.igValidator", {
 			*/
 			selector: null
 		}],
-		/* type="object" Options for the igNotifier used to show error messages.
+		/* type="object" Options for the [igNotifier](ui.ignotifier#options) used to show error messages.
 		```
 			//Initialize
 				$('.selector').igValidator({
@@ -593,7 +597,7 @@ $.widget("ui.igValidator", {
 			ui.rule is populated with the name of the rule that failed validation, if any.
 			ui.fieldOptions is populated with options for the specific field in the collection or null. */
 		validated: "validated",
-		/* cancel="false" Event raised for valid field  after value was validated but before any action takes effect.
+		/* cancel="false" Event raised for valid field after value was validated but before any action takes effect.
 			Function takes arguments evt and ui.
 			```
 				$(document).delegate(".selector", "igvalidatorsuccess", function (evt, ui) {
@@ -649,7 +653,7 @@ $.widget("ui.igValidator", {
 			Use ui.value to get current value in target.
 			Use ui.valid to determine the outcome of the validation.
 			Use ui.message to get text of message.
-			ui.rule is populated with the name of the rule that failed validation, if any.
+			ui.rule is populated with the name of the rule that failed validation.
 			ui.fieldOptions is populated with options for the specific field in the collection or null.  */
 		error: "error",
 		/* cancel="true" Event which is raised before error message is displayed.
@@ -680,7 +684,7 @@ $.widget("ui.igValidator", {
 			ui.fieldOptions is populated with options for the specific field in the collection or null.  */
 		errorShowing: "errorShowing",
 		/* cancel="true" Event which is raised before error message is hidden.
-			Return false in order to keep error message displayed.
+			Return false in order to keep the error message displayed.
 			```
 				$(document).delegate(".selector", "igvalidatorerrorhiding", function (evt, ui) {
 					//get reference to the igValidator widget
@@ -886,7 +890,7 @@ $.widget("ui.igValidator", {
 			Use ui.owner to get reference to the igValidator widget.
 			Use ui.target to get reference of the event target form. */
 		formValidating: "formValidating",
-		/* cancel="false" Event triggered on Validator instance level after validation on form submit event
+		/* cancel="false" Event triggered on Validator instance level after validation on form submit event..
 		```
 			$(document).delegate(".selector", "igvalidatorformvalidated", function (evt, ui) {
 					//get reference to the igValidator widget
@@ -909,7 +913,7 @@ $.widget("ui.igValidator", {
 			Use ui.target to get reference of the event target form.
 			Use ui.valid to determine the outcome of the validation. */
 		formValidated: "formValidated",
-		/* cancel="false" Event triggered on Validator instance level after failed validation on form submit event
+		/* cancel="false" Event triggered on Validator instance level after failed validation on form submit event.
 		```
 			$(document).delegate(".selector", "igvalidatorformerror", function (evt, ui) {
 					//get reference to the igValidator widget
@@ -929,7 +933,7 @@ $.widget("ui.igValidator", {
 			Use ui.owner to get reference to the igValidator widget.
 			Use ui.target to get reference of the event target form. */
 		formError: "formError",
-		/* cancel="false" Event triggered on Validator instance level after successful validation on form submit event
+		/* cancel="false" Event triggered on Validator instance level after successful validation on form submit event.
 		```
 			$(document).delegate(".selector", "igvalidatorformsuccess", function (evt, ui) {
 					//get reference to the igValidator widget
@@ -1794,7 +1798,7 @@ $.widget("ui.igValidator", {
 		```
 			var validate = $(".selector").igValidator("validate");
 		```
-			paramType="object" optional="true" Optional field object to check. Only has effect with fields collection and skips other fields.
+			paramType="number|string|object" optional="true" Optional field object, its selector or zero-based index to check. Only has effect with fields collection and skips other fields.
 			returnType="bool" True if the field(s) passed all checks.
 		*/
 		var valid;
@@ -1812,7 +1816,7 @@ $.widget("ui.igValidator", {
 		```
 			var isValid = $(".selector").igValidator("isValid");
 		```
-			paramType="number|string|object" optional="true" Optional field object to check (skips other fields, only works with fields collection).
+			paramType="number|string|object" optional="true" Optional field object, its selector or zero-based index to check. Only has effect with fields collection and skips other fields.
 			returnType="bool" True if the field(s) passed all checks.
 		*/
 		this._skipMessages = true;
@@ -1821,12 +1825,12 @@ $.widget("ui.igValidator", {
 		return valid;
 	},
 	hide: function (field) {
-		/* Hide any possible message (either messageTarget or igNotifier).
+		/* Hide any possible message(s) (either messageTarget or igNotifier).
 			Note: When the validator has a fields colleciton, not passing a field will hide messages on all fields.
 			```
 				$(".selector").igValidator("hide");
 			```
-			paramType="number|string|object" optional="true" Optional field to hide message for.
+			paramType="number|string|object" optional="true" Optional field object, its selector or zero-based index to hide message for.
 		*/
 		var i;
 		if (this.options.fields) {
@@ -1856,7 +1860,7 @@ $.widget("ui.igValidator", {
 			```
 				var getErrorMessages = $(".selector").igValidator("getErrorMessages","#field1");
 			```
-			paramType="number|string" optional="true" Selector or zero-based index for a single field to get error message for.
+			paramType="number|string|object" optional="true" Optional field object, selector or zero-based index for a single field to get error message for.
 			returnType="array" An array of all current error messages.
 		*/
 		var result = [], i;
@@ -1882,11 +1886,11 @@ $.widget("ui.igValidator", {
 	},
 	isMessageDisplayed: function (field) {
 		/* Check for currently displayed message(s). Takes an optional field.
-			Note: When the validator has a fields colleciton, not passing a field will return a cumulative true even if just one field has visible message.
+			Note: When the validator has a fields colleciton, not passing a field will return a cumulative true even if just one field has a visible message.
 			```
 				var isMessageDisplayed = $(".selector").igValidator("isMessageDisplayed","#field1");
 			```
-			paramType="number|string" optional="true" Selector or zero-based index for a single field to get error message for.
+			paramType="number|string|object" optional="true" Optional field object, selector or zero-based index for a single field to get error message for.
 			returnType="bool" True if there is a currently visible message.
 		*/
 		var result = false, i;
@@ -1985,7 +1989,7 @@ $.widget("ui.igValidator", {
 			$(".selector").igValidator("updateField","#input1", newOptions);
 		```
 			paramType="object|number|string" optional="false" The field object to update, its zero-based index or selector.
-			paramType="object" optional="true" New options to apply to the fields.
+			paramType="object" optional="true" New options to apply to the field.
 		*/
 		if (!this.options.fields) {
 			return;
@@ -2046,8 +2050,8 @@ $.extend($.ui.igValidator, { version: "<build_number>" });
 
 /* Global defaults used by igValidator. If appication change them, then all igValidators created after that will pickup new defaults. */
 $.ui.igValidator.defaults = {
-	/* type="bool" Gets or sets ability to show all errors on submit.
-		Value false will show error message only for the first failed target.
+	/* type="bool" Gets/Sets the ability to show all errors on submit.
+		Value of false will show an error message only for the first failed target.
 		Default value is true. */
 	showAllErrorsOnSubmit: true,
 	/* type="string" Default decimal separator (".") to use when no explicit number option property is defined */
@@ -2060,13 +2064,13 @@ $.ui.igValidator.defaults = {
 
 /* Base class used by all validator rules */
 $.ig.igValidatorBaseRule = $.ig.igValidatorBaseRule || Class.extend({
-	/* type="string" The name of the rule matching respective option name */
+	/* type="string" The name of the rule matching the respective option name */
 	name: "base",
 	/* type="array" Items produced and stored during validation, to be used for message formatting before next validation call */
 	formatItems: [],
 	/*jshint unused: false*/
 	getMessageType: function (options) {
-		/* Gets the error message type to get from locale settings (matching as "<type>Message>). Returns the rule name by default.
+		/* Gets the error message type to get from locale settings (matching as "<type>Message>"). Returns the rule name by default.
 			Only used when there's no errorMessage option available through getRuleMessage.
 			returnType="string" Returns the locale message type to show on error.
 		*/

@@ -1,11 +1,3 @@
-@import url("infragistics.ui.shared.css");
-@import url("infragistics.ui.splitbutton.css");
-@import url("infragistics.ui.colorpicker.css");
-@import url("infragistics.ui.combo.css");
-@import url("infragistics.ui.editors.css");
-@import url("infragistics.ui.toolbarbutton.css");
-@import url("infragistics.ui.toolbar.css");
-
 .ui-ightmleditor,
 .ui-widget .ui-ightmleditor {
     font-size: 13px; /* to prevent the toolbars from breaking if there's no font-size set in the page */

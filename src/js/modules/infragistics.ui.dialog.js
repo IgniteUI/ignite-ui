@@ -30,8 +30,7 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util",
-			"./i18n/infragistics.ui.dialog-en"
+			"./infragistics.util"
 		], factory );
 	} else {
 

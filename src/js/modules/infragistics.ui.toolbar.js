@@ -29,8 +29,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
-			"./infragistics.ui.toolbarbutton",
-			"./i18n/infragistics.ui.toolbar-en"
+			"./infragistics.ui.toolbarbutton"
 		], factory );
 	} else {
 
