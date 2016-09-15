@@ -3084,6 +3084,12 @@
 
                 if (this.options.mode === "editable") {
                     this._removeItemSeparatorFromEnd();
+
+                    // R.K. 15th September 2016, #344: igCombo allows you to keep unlisted value
+                    if (_options.selectedData.length === 0 && !this.options.allowCustomValue) {
+                        this._setInputVal("");
+                        _options.$input.val("");
+                    }
                 }
 
                 if (this.options.closeDropDownOnBlur) {
