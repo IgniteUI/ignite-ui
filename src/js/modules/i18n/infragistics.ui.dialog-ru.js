@@ -27,7 +27,7 @@
 			    pinButtonTitle: "прикрепить",
 			    unpinButtonTitle: "открепить",
 			    restoreButtonTitle: "восстановить",
-				cannotSetRuntime: "This option can not be set runtime"
+				setOptionError: 'Динамические изменения следующей опции не поддерживаются: '
 		    }
 	    };
     }

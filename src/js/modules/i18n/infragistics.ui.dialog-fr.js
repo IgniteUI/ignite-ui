@@ -27,7 +27,7 @@
 			    pinButtonTitle: "Punaiser",
 			    unpinButtonTitle: "Dépunaiser",
 			    restoreButtonTitle: "Restaurer",
-				cannotSetRuntime: "This option can not be set runtime"
+				setOptionError: "Les modifications de temps d'exécution ne sont pas autorisées pour l'option suivante : "
 		    }
 	    };
     }

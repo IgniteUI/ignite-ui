@@ -27,7 +27,7 @@
 			    pinButtonTitle: "Anheften",
 			    unpinButtonTitle: "Lösen",
 			    restoreButtonTitle: "Wiederherstellen",
-				cannotSetRuntime: "This option can not be set runtime"
+				setOptionError: 'Laufzeit-Änderungen sind für die folgende Option nicht zugelassen: '
 		    }
 	    };
     }

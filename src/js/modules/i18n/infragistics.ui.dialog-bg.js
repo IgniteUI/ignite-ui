@@ -27,7 +27,7 @@
 			    pinButtonTitle: "Закачи",
 			    unpinButtonTitle: "Откачи",
 			    restoreButtonTitle: "Възстанови",
-				cannotSetRuntime: "This option can not be set runtime"
+				setOptionError: 'Стойността на следната опция не може да бъде променяна след инициализация: '
 		    }
 	    };
     }

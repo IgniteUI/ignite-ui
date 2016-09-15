@@ -27,7 +27,7 @@
 			    pinButtonTitle: "Anclar",
 			    unpinButtonTitle: "Desanclar",
 			    restoreButtonTitle: "Restaurar",
-				cannotSetRuntime: "This option can not be set runtime"
+				setOptionError: 'Los cambios en el tiempo de ejecución no están permitidos para la siguiente opción: '
 		    }
 	    };
     }

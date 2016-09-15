@@ -27,7 +27,7 @@
 			    pinButtonTitle: "ピン固定",
 			    unpinButtonTitle: "ピン固定の解除",
 			    restoreButtonTitle: "元に戻す",
-				cannotSetRuntime: "このオプションはランタイムで設定できません"
+				setOptionError: '次のオプションはランタイムで変更できません: '
 		    }
 	    };
     }
