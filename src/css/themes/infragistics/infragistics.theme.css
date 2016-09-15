@@ -3241,9 +3241,6 @@ input.ui-igbutton {
   font-size: 12px;
   font-family: "Segoe UI", Arial, sans-serif;
 }
-.ui-chart-piechart-container {
-  color: #ffffff;
-}
 .ui-chart-toolbar .ui-slider-handle {
   height: 18px;
   margin-left: -6px !important;
