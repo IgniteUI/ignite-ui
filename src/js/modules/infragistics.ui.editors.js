@@ -3864,14 +3864,14 @@
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
-						negativePattern : "- &nbsp n"
+						negativePattern : "-  n"
 					});
 
 					//Get
 					var pattern = $(".selector").%%WidgetName%%("option", "negativePattern");
 
 					//Set
-					$(".selector").%%WidgetName%%("option", "negativePattern", "- &nbsp n");
+					$(".selector").%%WidgetName%%("option", "negativePattern", "-  n");
 							```
 				*/
 			negativePattern: null,
@@ -5608,14 +5608,14 @@
 				```
 					//Initialize
 					$(".selector").igCurrencyEditor({
-						positivePattern : "+ &nbsp n"
+						positivePattern : "+  n"
 					});
 
 					//Get
 					var pattern = $(".selector").igCurrencyEditor("option", "positivePattern");
 
 					//Set
-					$(".selector").igCurrencyEditor("option", "positivePattern", "+ &nbsp n");
+					$(".selector").igCurrencyEditor("option", "positivePattern", "+  n");
 				```
 				*/
 			positivePattern: null,
