@@ -967,13 +967,14 @@
             // Leaving this fix for WebKit only, because of browsers inconsistencies with getComputedStyle.
             // Chrome and IE don't include the scrollbarWidth in the computed value while Firefox does.
             // D.A. 20th January 2015, Bug #187424 Same as above bug in IE9
-            if (($.ig.util.isWebKit || $.ig.util.isIE9) && window.getComputedStyle) {
-                widthNoScroll = parseInt(window.getComputedStyle(this.element[ 0 ]).width, 10);
-            } else {
-                widthNoScroll = this.element.width() -
-                    ($.ig.util.hasVerticalScroll(this.element) ? this._opt.scrollBarWidth : 0);
-            }
+            // if (($.ig.util.isWebKit || $.ig.util.isIE9) && window.getComputedStyle) {
+                // widthNoScroll = parseInt(window.getComputedStyle(this.element[ 0 ]).width, 10);
+            // } else {
+            // A.k 16th September 2016, Bug #225082 JS error is thorwn in igTileManager samples
+            widthNoScroll = this.element.width() -
+                ($.ig.util.hasVerticalScroll(this.element) ? this._opt.scrollBarWidth : 0);
 
+            // }
             return widthNoScroll;
         },
         _getContainerHeightNoScroll: function () {
