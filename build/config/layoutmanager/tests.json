@@ -1,0 +1,6 @@
+{
+	"config": [
+		"<%= config.devTestsDir %>/layoutmanager/**/*test*.htm*",
+		"<%= config.devTestsDir %>/knockout/layoutmanager/**/*test*.htm*"
+	]
+}
