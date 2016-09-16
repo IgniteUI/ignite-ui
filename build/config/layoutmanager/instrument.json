@@ -1,7 +1,0 @@
-{
-	"config": [
-		"<%= config.modulesDir%>/infragistics.ui.layoutmanager*.js",
-		"<%= config.modulesDir%>/infragistics.dataSource.js",
-		"<%= config.extensionsDir%>/infragistics.ui.layoutmanager.knockout-extensions.js"
-	]
-}
