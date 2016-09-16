@@ -53,7 +53,9 @@
 						selectionOnFocus: "browserDefault",
 						inputMask: "NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C"
 					});
-
+					$("#editor233").igMaskEditor({
+						inputMask: ">LLL00"
+					});
 					$("#editor3").igMaskEditor({
 						
 					});
@@ -485,7 +487,7 @@
 				ok($("#validInEditModeEditor").igMaskEditor("isValid"), "All required fields are filled");
 			});
 			testId = 'mask editor toLower/toUpper on paste';
-			test(testId, 16, function () {
+			test(testId, 19, function () {
 				//$("#toUpperEditor")
 				var field = $("#toUpperEditor").igMaskEditor("field");
 				$("#toUpperEditor").data("igMaskEditor")._enterEditMode();
@@ -552,6 +554,18 @@
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
 				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CNNAAmm?FrUU", "displayValue is not CNNAAmm?FrUU");
 				
+				//#editor233
+
+				field = $("#editor233").igMaskEditor("field");
+				$("#editor233").data("igMaskEditor")._enterEditMode();
+				$("#editor233").data("igMaskEditor")._insert("asd15");
+				equal(field.val(), "ASD15", "Text is not ASD15");
+				$("#editor233").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor233').igMaskEditor("value"), "ASD15", "Value is not ASD15");
+				$("#editor233").data("igMaskEditor")._exitEditMode();
+				equal($('#editor233').igMaskEditor("displayValue"), "ASD15", "Value is not ASD15");
+
 			});
 			testId = 'mask editor _update -> Null Value';
 			test(testId, 9, function () {
@@ -1103,6 +1117,7 @@
 			<input type="text" id="revertEditor1" />
 			<input type="text" id="revertEditor2" />
 			<input type="text" id="revertEditor3" />
+			<input type="text" id="editor233">
 			<div id="test"></div>			
 		<input type='submit' value="Submit" />
 		</form>
