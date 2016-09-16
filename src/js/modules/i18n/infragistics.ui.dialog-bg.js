@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "Максимизирай",
 			    pinButtonTitle: "Закачи",
 			    unpinButtonTitle: "Откачи",
-			    restoreButtonTitle: "Възстанови"
+			    restoreButtonTitle: "Възстанови",
+				setOptionError: 'Стойността на следната опция не може да бъде променяна след инициализация: '
 		    }
 	    };
     }

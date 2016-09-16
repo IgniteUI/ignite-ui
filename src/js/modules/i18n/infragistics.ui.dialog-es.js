@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "Maximizar",
 			    pinButtonTitle: "Anclar",
 			    unpinButtonTitle: "Desanclar",
-			    restoreButtonTitle: "Restaurar"
+			    restoreButtonTitle: "Restaurar",
+				setOptionError: 'Los cambios en el tiempo de ejecución no están permitidos para la siguiente opción: '
 		    }
 	    };
     }
