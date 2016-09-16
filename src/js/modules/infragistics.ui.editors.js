@@ -5378,7 +5378,7 @@
 
 					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
 						case "fractional": {
-							this._spinUp(true);//True stands for increase the value only on the fractional part of the number
+							this._spinUp();
 							this._setSelectionRange(this._editorInput[ 0 ],
 								cursorPosition, cursorPosition);
 						}
@@ -5413,7 +5413,7 @@
 				if (this._focused) {
 					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
 						case "fractional": {
-							this._spinDown(true);//True stands for increase the value only on the fractional part of the number
+							this._spinDown();
 							this._setSelectionRange(this._editorInput[ 0 ],
 								cursorPosition, cursorPosition);
 						}
