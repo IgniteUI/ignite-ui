@@ -3287,11 +3287,11 @@ input.ui-igbutton {
   border: 1px solid;
 }
 .ui-sparkline-negativesparkpath {
-  background: #F44336;
+  background: #C62828;
   border: 1px solid;
 }
 .ui-sparkline-trendline {
-  background: #E68A24;
+  background: #7f7f7f;
   border: 2px solid;
 }
 .ui-sparkline-markers {
@@ -3299,11 +3299,11 @@ input.ui-igbutton {
   border: 3px solid;
 }
 .ui-sparkline-firstmarker {
-  background: #7446B9;
+  background: #2E9CA6;
   border: 5px solid;
 }
 .ui-sparkline-lastmarker {
-  background: #F96232;
+  background: #FF9800;
   border: 5px solid;
 }
 .ui-sparkline-highmarker {
@@ -3311,11 +3311,11 @@ input.ui-igbutton {
   border: 4px solid;
 }
 .ui-sparkline-lowmarker {
-  background: #3F51B5;
+  background: #7446B9;
   border: 3px solid;
 }
 .ui-sparkline-negativemarkers {
-  background: #F44336;
+  background: #C62828;
   border: 3px solid;
 }
 .ui-sparkline-range {
@@ -3324,13 +3324,13 @@ input.ui-igbutton {
 }
 .ui-sparkline-axis-x {
   font-family: "Segoe UI", Arial, sans-serif;
-  border: 1px solid #d6d6d6;
+  border: 2px solid #d6d6d6;
   color: #777;
   text-transform: uppercase;
 }
 .ui-sparkline-axis-y {
   font-family: "Segoe UI", Arial, sans-serif;
-  border: 1px solid #d6d6d6;
+  border: 2px solid #d6d6d6;
   color: #777;
   text-align: right;
   text-transform: uppercase;
@@ -3432,7 +3432,7 @@ input.ui-igbutton {
   border: #cccccc;
 }
 .ui-radialgauge-scale {
-  background-color: #fff;
+  background-color: #9ecbd6;
   border: none;
 }
 .ui-radialgauge-tick {
