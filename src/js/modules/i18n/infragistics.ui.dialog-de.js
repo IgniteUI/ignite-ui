@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "Maximieren",
 			    pinButtonTitle: "Anheften",
 			    unpinButtonTitle: "Lösen",
-			    restoreButtonTitle: "Wiederherstellen"
+			    restoreButtonTitle: "Wiederherstellen",
+				setOptionError: 'Laufzeit-Änderungen sind für die folgende Option nicht zugelassen: '
 		    }
 	    };
     }

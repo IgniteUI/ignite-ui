@@ -292,6 +292,8 @@
 					dataMode: "double",
 					maxValue: 80000
 				});	
+				
+				$("#numericEditorRuntime").igNumericEditor();	
 			});
 		}
 		initialized = false;
@@ -983,6 +985,15 @@
 			equal($("#spinUp").igNumericEditor("value"), 6, 'spinWrapAround does not work.');
 		});
 
+		testId = 'Cannot set on runtime';
+		test(testId, 1, function () {
+			throws(function () {
+					$('#numericEditorRuntime').igNumericEditor("option", "regional", "ru-Ru")
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
+				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+		});
+
 		testId = 'Paste and insert';
 		test(testId, 8, function () {
 			var $editor = $("#pasteEditor"),
@@ -1263,6 +1274,8 @@
 		<div id="spinScientific"></div>
 		<br />
 		<div id="spinUp"></div>
+		<br />
+		<div id="numericEditorRuntime"></div>		
 	</div>
 </body>
 </html>

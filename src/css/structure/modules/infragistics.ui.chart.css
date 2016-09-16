@@ -7,8 +7,8 @@
 
 .ui-chart-axis
 {
-    border-color: #d6d6d6;
-    background-color: #d6d6d6;
+    border-color: #d0d0d0;
+    background-color: #d0d0d0;
 }
 
 .ui-chart-legend-items-list
@@ -34,22 +34,8 @@
     padding: 5px 8px;
     font-size: 12px;
     font-family:"Segoe UI", Arial, sans-serif;
-	position:relative;
 	background:#fff;
-}
-.ui-chart-tooltip:after {
-	top: 100%;
-	left: 50%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-	border-color: rgba(255, 255, 255, 0);;
-	border-top-color: #fff;
-	border-width: 6px;
-	margin-left: -6px;
+	color:#666;
 }
 
 .ui-chart-default-tooltip-content {
@@ -209,7 +195,7 @@
 
 .ui-chart-category-axis-tick {
     height: 5px;
-    color: #d6d6d6;
+    color: #d0d0d0;
 }
 .ui-chart-area-fill-opacity {
     opacity: 0.7;

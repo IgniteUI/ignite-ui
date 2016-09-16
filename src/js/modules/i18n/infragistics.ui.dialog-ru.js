@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "максимизировать",
 			    pinButtonTitle: "прикрепить",
 			    unpinButtonTitle: "открепить",
-			    restoreButtonTitle: "восстановить"
+			    restoreButtonTitle: "восстановить",
+				setOptionError: 'Динамические изменения следующей опции не поддерживаются: '
 		    }
 	    };
     }
