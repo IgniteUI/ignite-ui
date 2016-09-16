@@ -1430,9 +1430,11 @@
 
 		/** Switch from using 3d transformations to using scrollTop/scrollLeft */
 		_switchFromTouchToMixed: function () {
+			//stop any current ongoing inertia
+			cancelAnimationFrame(this._touchInertiaAnimID);
+
 			var startX = 0,
 				startY = this._getTransform3dValueY(this._content);
-
 			if (this._contentX) {
 				startX = this._getTransform3dValueX(this._contentX);
 			} else {
@@ -1713,7 +1715,7 @@
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
-						if (this._linkedHElems[ index ].data("igScroll") &&
+						if (this._linkedHElems[ index ].data("igScroll")  !== undefined &&
 								this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 							//We do not set igScroll option because there will be infinite recursion of syncing
 							this._linkedHElems[ index ].children().eq(0).children().eq(0).css({
@@ -1736,13 +1738,16 @@
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
 						if (this._linkedHElems[ index ].length) {
-							if (this._linkedHElems[ index ].data("igScroll") &&
+							if (this._linkedHElems[ index ].data("igScroll") !== undefined &&
 									this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
 								this._linkedHElems[ index ].children().eq(0).scrollLeft(destX);
 							} else if (this.options.modifyDOM) {
 								this._linkedHElems[ index ].scrollLeft(destX);
 							} else {
+								if (this._linkedHElems[ index ].parent().data("igScroll") !== undefined) {
+									this._linkedHElems[ index ].parent().data("igScroll")._scrollFromSyncContentH = true;
+								}
 								this._linkedHElems[ index ][ 0 ].parentElement.scrollLeft = destX;
 							}
 						}
@@ -1775,7 +1780,7 @@
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
 						var destX = valuesElem ? Number(valuesElem[ 4 ]) : -this._getContentPositionX();
 
-						if (this._linkedVElems[ index ].data("igScroll") &&
+						if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 								this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
 							//We do not set igScroll option because there will be infinite recursion of syncing
 							this._linkedVElems[ index ].children().eq(0).children().eq(0).css({
@@ -1798,13 +1803,16 @@
 				if (this._linkedVElems.length > 0) {
 					for (index in this._linkedVElems) {
 						if (this._linkedVElems[ index ].length) {
-							if (this._linkedVElems[ index ].data("igScroll") &&
+							if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 									this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
 								this._linkedVElems[ index ].children().eq(0).scrollTop(destY);
 							} else if (this.options.modifyDOM) {
 								this._linkedVElems[ index ].scrollTop(destY);
 							} else {
+								if (this._linkedVElems[ index ].parent().data("igScroll") !== undefined) {
+									this._linkedVElems[ index ].parent().data("igScroll")._scrollFromSyncContentV = true;
+								}
 								this._linkedVElems[ index ][ 0 ].parentElement.scrollTop = destY;
 							}
 						}

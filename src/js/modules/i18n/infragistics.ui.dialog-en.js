@@ -27,7 +27,7 @@
 			    pinButtonTitle: "Pin",
 			    unpinButtonTitle: "Unpin",
 			    restoreButtonTitle: "Restore",
-				cannotSetRuntime: "This option can not be set runtime"
+				setOptionError: 'Runtime changes are not allowed for the following option: '
 		    }
 	    };
     }

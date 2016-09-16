@@ -41,7 +41,7 @@
 @chartGradualPalette10: #9A9A9A;
 @chartGradualPalette11: #C62828;
 //* igChart colors */
-@piechartContainer: #fff;
+
 @chartToolTipBgColor: rgba(255, 255, 255, 0.95);
 // Icon sprites
 @ui-icons-darker: #222222;
@@ -3011,9 +3011,7 @@ input.ui-igbutton {
     font-size: 12px;
     font-family: @fontfamily;
 }
-.ui-chart-piechart-container {
-	color: @piechartContainer;
-}
+
 
 .ui-chart-toolbar .ui-slider-handle {
     height: 18px;
@@ -3069,12 +3067,12 @@ input.ui-igbutton {
 }
 
 .ui-sparkline-negativesparkpath {
-    background: #F44336;
+    background: #C62828;
     border: 1px solid;
 }
 
 .ui-sparkline-trendline {
-    background: #E68A24;
+    background: #7f7f7f;
     border: 2px solid;
 }
 
@@ -3084,12 +3082,12 @@ input.ui-igbutton {
 }
 
 .ui-sparkline-firstmarker {
-    background: #7446B9;
+    background: #2E9CA6;
     border: 5px solid;
 }
 
 .ui-sparkline-lastmarker {
-    background: #F96232;
+    background: #FF9800;
     border: 5px solid;
 }
 
@@ -3099,12 +3097,12 @@ input.ui-igbutton {
 }
 
 .ui-sparkline-lowmarker {
-    background: #3F51B5;
+    background: #7446B9;
     border: 3px solid;
 }
 
 .ui-sparkline-negativemarkers {
-    background: #F44336;
+    background: #C62828;
     border: 3px solid;
 }
 
@@ -3115,14 +3113,14 @@ input.ui-igbutton {
 
 .ui-sparkline-axis-x {
     font-family: @fontfamily;
-    border: 1px solid #d6d6d6;
+    border: 2px solid #d6d6d6;
     color: #777;
 	text-transform: uppercase;
 }
 
 .ui-sparkline-axis-y {
     font-family: @fontfamily;
-    border: 1px solid #d6d6d6;
+    border: 2px solid #d6d6d6;
     color: #777;
     text-align: right;
 	text-transform: uppercase;
@@ -3246,7 +3244,7 @@ input.ui-igbutton {
 }
 
 .ui-radialgauge-scale {
-    background-color: #fff;
+    background-color: @accent1;
     border: none;
 }
 

@@ -3864,14 +3864,14 @@
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
-						negativePattern : "- &nbsp n"
+						negativePattern : "-  n"
 					});
 
 					//Get
 					var pattern = $(".selector").%%WidgetName%%("option", "negativePattern");
 
 					//Set
-					$(".selector").%%WidgetName%%("option", "negativePattern", "- &nbsp n");
+					$(".selector").%%WidgetName%%("option", "negativePattern", "-  n");
 							```
 				*/
 			negativePattern: null,
@@ -5608,14 +5608,14 @@
 				```
 					//Initialize
 					$(".selector").igCurrencyEditor({
-						positivePattern : "+ &nbsp n"
+						positivePattern : "+  n"
 					});
 
 					//Get
 					var pattern = $(".selector").igCurrencyEditor("option", "positivePattern");
 
 					//Set
-					$(".selector").igCurrencyEditor("option", "positivePattern", "+ &nbsp n");
+					$(".selector").igCurrencyEditor("option", "positivePattern", "+  n");
 				```
 				*/
 			positivePattern: null,
@@ -9645,8 +9645,9 @@
 
 						// In 12H format date, when the hour changes (wraps down) from 01 to 12, this is NOT the time that the day is decreased.
 						// It is decreased an hour later. (implemented in the top else block).
-						if (newHour === 0) {
-							newHour = 12;
+						// N.A. September 15th, 2016 #342: Fix spinning down of the limit value.
+						if (newHour <= 0) {
+							newHour = 12 + newHour;
 						}
 					}
 				}
