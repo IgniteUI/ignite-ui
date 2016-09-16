@@ -1,6 +1,0 @@
-{
-	"config": [
-		"<%= config.devTestsDir %>/combo/**/*test*.htm*",
-		"<%= config.devTestsDir %>/knockout/combo/**/*test*.htm*"
-	]
-}
