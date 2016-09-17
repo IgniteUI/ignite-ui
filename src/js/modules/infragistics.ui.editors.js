@@ -6579,9 +6579,6 @@
 			}
 			switch (dataMode) {
 				case "allText": {
-					//regExpr = new RegExp($.ig.util
-					//	.escapeRegExp(this.options.unfilledCharsPrompt), "g");
-					//dataModeValue = maskedVal.replace(regExpr, this.options.emptyChar);
 					dataModeValue = "";
 					for (i = 0; i < maskedVal.length; i++) {
 						ch = maskedVal.charAt(i);
@@ -6707,10 +6704,6 @@
 				default: {
 
 					// If the option is not valid we default back to the allText
-					//regExpr = new RegExp($.ig.util
-					//	.escapeRegExp(this.options.unfilledCharsPrompt), "g");
-					//dataModeValue = maskedVal.replace(regExpr, this.options.emptyChar);
-
 					dataModeValue = "";
 					for (i = 0; i < maskedVal.length; i++) {
 						ch = maskedVal.charAt(i);
