@@ -1805,7 +1805,7 @@
 				case "buttonType":
 				case "dropDownAttachedToBody":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				default:
 
 					//In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -4325,13 +4325,13 @@
 					value = parseFloat(value);
 					if (isNaN(value)) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.notEditableOptionByInit);
+						throw new Error($.ig.Editor.locale.setOptionError + option);
 					}
 					break;
 
 				case "regional":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 
 				case "excludeKeys":
 				case "includeKeys":
@@ -7124,14 +7124,14 @@
 			switch (option) {
 				case "inputMask": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
 				case "excludeKeys":
 				case "includeKeys":
 				case "regional":
 				case "unfilledCharsPrompt":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -7662,7 +7662,7 @@
 					break;
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
 					break;
 				default: {
