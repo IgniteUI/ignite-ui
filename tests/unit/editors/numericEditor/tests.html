@@ -840,7 +840,7 @@
 					$("#readonlyEditor").igNumericEditor("option", "visibleItemsCount", 3);
 				},
 				function(err) {
-					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+					return err.message === $.ig.Editor.locale.setOptionError + "visibleItemsCount";
 				},
 				"Should not set dynamically visibleItemsCount"
 			);
@@ -849,7 +849,7 @@
 					$("#readonlyEditor").igNumericEditor("option", "buttonType", "clear");
 				},
 				function(err) {
-					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+					return err.message === $.ig.Editor.locale.setOptionError + "buttonType";
 				},
 				"Should not set dynamically buttonType"
 			);
@@ -858,7 +858,7 @@
 					$("#readonlyEditor").igNumericEditor("option", "dropDownAttachedToBody", true);
 				},
 				function(err) {
-					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+					return err.message === $.ig.Editor.locale.setOptionError + "dropDownAttachedToBody";
 				},
 				"Should not set dynamically dropDownAttachedToBody"
 			);
@@ -990,8 +990,8 @@
 			throws(function () {
 					$('#numericEditorRuntime').igNumericEditor("option", "regional", "ru-Ru")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "not shown");
 		});
 
 		testId = 'Paste and insert';

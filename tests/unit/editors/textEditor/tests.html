@@ -856,7 +856,7 @@
 					$("#readonlyEditor").igTextEditor("option", "visibleItemsCount", 3);
 				},
 				function(err) {
-					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+					return err.message === $.ig.Editor.locale.setOptionError + "visibleItemsCount";
 				},
 				"Should not set dynamically visibleItemsCount"
 			);
@@ -865,7 +865,7 @@
 					$("#readonlyEditor").igTextEditor("option", "buttonType", "spin");
 				},
 				function(err) {
-					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+					return err.message === $.ig.Editor.locale.setOptionError + "buttonType";
 				},
 				"Should not set dynamically buttonType"
 			);
@@ -874,7 +874,7 @@
 					$("#readonlyEditor").igTextEditor("option", "dropDownAttachedToBody", true);
 				},
 				function(err) {
-					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+					return err.message === $.ig.Editor.locale.setOptionError + "dropDownAttachedToBody"
 				},
 				"Should not set dynamically dropDownAttachedToBody"
 			);
