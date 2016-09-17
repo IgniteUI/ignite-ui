@@ -6405,9 +6405,10 @@
 				if ($.inArray(maskChar, maskFlagsArray) !== -1) {
 
 					// Get requred chars
-					if (isToLower) {
+					// #364 In case of digit mask char, toLower and toUpper flags should be ignored
+					if (isToLower && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
 						toLowerIndeces.push(j);
-					} else if (isToUpper) {
+					} else if (isToUpper && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
 						toUpperIndeces.push(j);
 					}
 					if (maskChar === "&" || maskChar === "A" ||
