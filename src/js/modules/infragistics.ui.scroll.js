@@ -902,7 +902,12 @@
 			if (this.options.scrollHeight !== null) {
 				return this.options.scrollHeight;
 			} else {
-				return this._content.outerHeight();
+				if ($.ig.util.isIE) {
+					/* S.K. Fix for bug 224900 - On IE reaching the bottom flickers because the height can be not a round number */
+					return Math.ceil(this._content[ 0 ].getBoundingClientRect().height);
+				} else {
+					return this._content.outerHeight();
+				}
 			}
 		},
 
@@ -910,7 +915,12 @@
 			if (this.options.scrollWidth !== null) {
 				return this.options.scrollWidth;
 			} else {
-				return this._content.outerWidth();
+				if ($.ig.util.isIE) {
+					/* S.K. Fix for bug 224900 - - On IE the width could be not a round number */
+					return Math.ceil(this._content[ 0 ].getBoundingClientRect().width);
+				} else {
+					return this._content.outerWidth();
+				}
 			}
 		},
 
