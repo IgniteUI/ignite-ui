@@ -316,15 +316,15 @@
 				throws(function () {
 					$('#maskEditorRuntime').igMaskEditor("option", "regional", "ru-Ru")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "regional");
 
 				
 				throws(function () {
 					$('#maskEditorRuntime').igMaskEditor("option", "unfilledCharsPrompt", "*")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "unfilledCharsPrompt");
 			});
 
 			var testId = 'Mask Editor initialization.';
@@ -735,13 +735,13 @@
 				throws(function () {
 					$('#keydownEditor3').igMaskEditor("option", "excludeKeys", "abe")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "excludeKeys");
 				throws(function () {
 					$('#keydownEditor3').igMaskEditor("option", "includeKeys", "abe")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "includeKeys");
 				//Unsupported Methods
 				throws(function () {
 					$('#keydownEditor3').igMaskEditor("dropDownContainer");
