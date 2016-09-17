@@ -6805,7 +6805,7 @@
 					}
 
 					if (!(this._focused && ch === this.options.unfilledCharsPrompt) &&
-						this._validateCharOnPostion(ch, i) === false) {
+						this._validateCharOnPostion(ch, i, mask) === false) {
 						return false;
 					}
 				}
