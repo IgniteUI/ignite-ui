@@ -53,7 +53,21 @@
 						selectionOnFocus: "browserDefault",
 						inputMask: "NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C"
 					});
-
+					$("#editor233").igMaskEditor({
+						inputMask: ">LLL00"
+					});
+					$("#editor364_1").igMaskEditor({
+						inputMask: ">00"
+					});
+					$("#editor364_2").igMaskEditor({
+						inputMask: "<00"
+					});
+					$("#editor364_3").igMaskEditor({
+						inputMask: "<CC00CC"
+					});
+					$("#editor364_4").igMaskEditor({
+						inputMask: ">CC00CC"
+					});
 					$("#editor3").igMaskEditor({
 						
 					});
@@ -302,15 +316,15 @@
 				throws(function () {
 					$('#maskEditorRuntime').igMaskEditor("option", "regional", "ru-Ru")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "regional");
 
 				
 				throws(function () {
 					$('#maskEditorRuntime').igMaskEditor("option", "unfilledCharsPrompt", "*")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "unfilledCharsPrompt");
 			});
 
 			var testId = 'Mask Editor initialization.';
@@ -484,8 +498,63 @@
 				$("#validInEditModeEditor").data("igMaskEditor")._exitEditMode();
 				ok($("#validInEditModeEditor").igMaskEditor("isValid"), "All required fields are filled");
 			});
-			testId = 'mask editor toLower/toUpper on paste';
+
+
+			testId = 'mask editor toLower/toUpper #364';
 			test(testId, 16, function () {
+				//editor364_1
+				var field = $("#editor364_1").igMaskEditor("field");
+				$("#editor364_1").data("igMaskEditor")._enterEditMode();
+				$("#editor364_1").data("igMaskEditor")._insert("nn");
+				equal(field.val(), "__", "Text is not __");
+				$("#editor364_1").data("igMaskEditor")._insert("12");
+				equal(field.val(), "12", "Text is not __");
+				$("#editor364_1").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor364_1').igMaskEditor("value"), "12", "Value is not 12");
+				$("#editor364_1").data("igMaskEditor")._exitEditMode();
+				equal($('#editor364_1').igMaskEditor("displayValue"), "12", "Value is not 12");
+				//editor364_2
+				field = $("#editor364_2").igMaskEditor("field");
+				$("#editor364_2").data("igMaskEditor")._enterEditMode();
+				$("#editor364_2").data("igMaskEditor")._insert("nn");
+				equal(field.val(), "__", "Text is not __");
+				$("#editor364_2").data("igMaskEditor")._insert("12");
+				equal(field.val(), "12", "Text is not __");
+				$("#editor364_2").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor364_2').igMaskEditor("value"), "12", "Value is not 12");
+				$("#editor364_2").data("igMaskEditor")._exitEditMode();
+				equal($('#editor364_2').igMaskEditor("displayValue"), "12", "Value is not 12");
+
+				//editor364_3
+				field = $("#editor364_3").igMaskEditor("field");
+				$("#editor364_3").data("igMaskEditor")._enterEditMode();
+				$("#editor364_3").data("igMaskEditor")._insert("nnnn");
+				equal(field.val(), "nn____", "Text is not nn____");
+				$("#editor364_3").data("igMaskEditor")._insert("nn12nn");
+				equal(field.val(), "nn12nn", "Text is not 12nn");
+				$("#editor364_3").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor364_3').igMaskEditor("value"), "nn12nn", "Value is not nn12nn");
+				$("#editor364_3").data("igMaskEditor")._exitEditMode();
+				equal($('#editor364_3').igMaskEditor("displayValue"), "nn12nn", "Value is not nn12nn");
+
+				//editor364_4
+				field = $("#editor364_4").igMaskEditor("field");
+				$("#editor364_4").data("igMaskEditor")._enterEditMode();
+				$("#editor364_4").data("igMaskEditor")._insert("nnnn");
+				equal(field.val(), "NN____", "Text is not NN____");
+				$("#editor364_4").data("igMaskEditor")._insert("nn12nn");
+				equal(field.val(), "NN12NN", "Text is not 12nn");
+				$("#editor364_4").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor364_4').igMaskEditor("value"), "NN12NN", "Value is not NN12NN");
+				$("#editor364_4").data("igMaskEditor")._exitEditMode();
+				equal($('#editor364_4').igMaskEditor("displayValue"), "NN12NN", "Value is not NN12NN");
+			});
+			testId = 'mask editor toLower/toUpper on paste';
+			test(testId, 19, function () {
 				//$("#toUpperEditor")
 				var field = $("#toUpperEditor").igMaskEditor("field");
 				$("#toUpperEditor").data("igMaskEditor")._enterEditMode();
@@ -552,6 +621,18 @@
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
 				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CNNAAmm?FrUU", "displayValue is not CNNAAmm?FrUU");
 				
+				//#editor233
+
+				field = $("#editor233").igMaskEditor("field");
+				$("#editor233").data("igMaskEditor")._enterEditMode();
+				$("#editor233").data("igMaskEditor")._insert("asd15");
+				equal(field.val(), "ASD15", "Text is not ASD15");
+				$("#editor233").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor233').igMaskEditor("value"), "ASD15", "Value is not ASD15");
+				$("#editor233").data("igMaskEditor")._exitEditMode();
+				equal($('#editor233').igMaskEditor("displayValue"), "ASD15", "Value is not ASD15");
+
 			});
 			testId = 'mask editor _update -> Null Value';
 			test(testId, 9, function () {
@@ -654,13 +735,13 @@
 				throws(function () {
 					$('#keydownEditor3').igMaskEditor("option", "excludeKeys", "abe")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "excludeKeys");
 				throws(function () {
 					$('#keydownEditor3').igMaskEditor("option", "includeKeys", "abe")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "includeKeys");
 				//Unsupported Methods
 				throws(function () {
 					$('#keydownEditor3').igMaskEditor("dropDownContainer");
@@ -1103,6 +1184,11 @@
 			<input type="text" id="revertEditor1" />
 			<input type="text" id="revertEditor2" />
 			<input type="text" id="revertEditor3" />
+			<input type="text" id="editor233"/>
+			<input type="text" id="editor364_1" />
+			<input type="text" id="editor364_2" />
+			<input type="text" id="editor364_3" />
+			<input type="text" id="editor364_4" />
 			<div id="test"></div>			
 		<input type='submit' value="Submit" />
 		</form>

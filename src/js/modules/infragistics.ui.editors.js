@@ -1805,7 +1805,7 @@
 				case "buttonType":
 				case "dropDownAttachedToBody":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				default:
 
 					//In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -4325,13 +4325,13 @@
 					value = parseFloat(value);
 					if (isNaN(value)) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.notEditableOptionByInit);
+						throw new Error($.ig.Editor.locale.setOptionError + option);
 					}
 					break;
 
 				case "regional":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 
 				case "excludeKeys":
 				case "includeKeys":
@@ -5378,7 +5378,7 @@
 
 					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
 						case "fractional": {
-							this._spinUp(true);//True stands for increase the value only on the fractional part of the number
+							this._spinUp();
 							this._setSelectionRange(this._editorInput[ 0 ],
 								cursorPosition, cursorPosition);
 						}
@@ -5413,7 +5413,7 @@
 				if (this._focused) {
 					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
 						case "fractional": {
-							this._spinDown(true);//True stands for increase the value only on the fractional part of the number
+							this._spinDown();
 							this._setSelectionRange(this._editorInput[ 0 ],
 								cursorPosition, cursorPosition);
 						}
@@ -6043,7 +6043,7 @@
 				```
 			*/
 			regional: null,
-			/*type="clear|spin" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
+			/*type="clear" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6054,18 +6054,7 @@
 				var button = $(".selector").%%WidgetName%%("option", "buttonType");
 				```
 				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
-				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).
-				```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					buttonType : "clear"
-				});
-
-				//Get
-				var button = $(".selector").%%WidgetName%%("option", "buttonType");
-
-				```
-				*/
+			*/
 			buttonType: "none",
 			/* type="string" Gets input mask. Mask may include filter-flags and literal characters.
 				Literal characters are part of mask which cannot be modified by end user. In order to use a filter-flag as a literal character, the escape "\\" character should be used.
@@ -6188,6 +6177,8 @@
 				```
 				*/
 			excludeKeys: null,
+			/* type="bool" @Ignored@ Gets/Sets the ability of the editor to automatically change the hoverd item into the opened dropdown list to its oposide side.*/
+			spinWrapAround: false,
 			/* type="array" @Ignored@ Sets gets list of items which are used for drop-down list.
 				Items in list can be strings, numbers or objects. The items are directly rendered without casting, or manipulating them.
 			 */
@@ -6414,9 +6405,10 @@
 				if ($.inArray(maskChar, maskFlagsArray) !== -1) {
 
 					// Get requred chars
-					if (isToLower) {
+					// #364 In case of digit mask char, toLower and toUpper flags should be ignored
+					if (isToLower && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
 						toLowerIndeces.push(j);
-					} else if (isToUpper) {
+					} else if (isToUpper && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
 						toUpperIndeces.push(j);
 					}
 					if (maskChar === "&" || maskChar === "A" ||
@@ -6814,7 +6806,7 @@
 					}
 
 					if (!(this._focused && ch === this.options.unfilledCharsPrompt) &&
-						this._validateCharOnPostion(ch, i) === false) {
+						this._validateCharOnPostion(ch, i, mask) === false) {
 						return false;
 					}
 				}
@@ -7132,14 +7124,14 @@
 			switch (option) {
 				case "inputMask": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
 				case "excludeKeys":
 				case "includeKeys":
 				case "regional":
 				case "unfilledCharsPrompt":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -7670,7 +7662,7 @@
 					break;
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
 					break;
 				default: {

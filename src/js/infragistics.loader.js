@@ -247,9 +247,9 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.chart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		css: [
+			"$path$/structure/modules/infragistics.ui.html5.css",
 			"$path$/structure/modules/infragistics.ui.shared.css",
-			"$path$/structure/modules/infragistics.ui.chart.css",
-			"$path$/structure/modules/infragistics.ui.html5.css"
+			"$path$/structure/modules/infragistics.ui.chart.css"
 			]
 	},
 	{
@@ -311,7 +311,7 @@ $.ig.dependencies = [
 	{
 		widget: "Stacked",
 		parentWidget: "igDataChart",
-		dependency: [ { name: "Category" } ],
+		dependency: [ { name: "Category" }, { name: "VerticalCategory" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [ "$path$/modules/infragistics.datachart_stacked.js" ]
 	},
@@ -383,8 +383,10 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.basechart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		internal: true,
-		css: [ "$path$/structure/modules/infragistics.ui.shared.css",
-			"$path$/structure/modules/infragistics.ui.html5.css" ]
+		css: [
+			"$path$/structure/modules/infragistics.ui.html5.css",
+			"$path$/structure/modules/infragistics.ui.shared.css"
+			]
 	},
 
 	{
@@ -1234,8 +1236,8 @@ $.ig.dependencies = [
 		locale: [ "$localePath$/infragistics.ui.videoplayer-$locale$.js" ],
 		group: $.ig.loaderClass.locale.interactionsGroup,
 		css: [
-			"$path$/structure/modules/infragistics.ui.videoplayer.css",
-			"$path$/structure/modules/infragistics.ui.html5.css"
+			"$path$/structure/modules/infragistics.ui.html5.css",
+			"$path$/structure/modules/infragistics.ui.videoplayer.css"
 			]
 	},
 	{

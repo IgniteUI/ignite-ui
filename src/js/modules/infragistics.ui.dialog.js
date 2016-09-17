@@ -2595,7 +2595,7 @@
 			var pos, size, drag, resize,
 				elem = this.element, o = this.options, container = key === "container";
 			if ((key === "mainElement") || (key === "imageClass")) {
-				throw new Error($.ig.Dialog.locale.cannotSetRuntime);
+				throw new Error($.ig.Dialog.locale.setOptionError + key);
 			}
 			if (!elem || !key || o[ key ] === val) {
 				return this;
