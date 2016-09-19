@@ -1336,8 +1336,13 @@
 				this._syncElemsX(this._container[ 0 ], false);
 				/*self._syncHBar(this._container[ 0 ], false);*/
 
-				var curY = this._getContentPositionY();
-				this._updateScrollBarsPos(destX, curY, true);
+				var curPosY;
+				if (this.options.scrollOnlyVBar) {
+					curPosY = this._getScrollbarVPosition();
+				} else {
+					curPosY = this._getContentPositionY();
+				}
+				this._updateScrollBarsPos(destX, curPosY, true);
 			}
 
 			return destX - curPosX;
@@ -1386,8 +1391,13 @@
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
 
-				var curX = this._getContentPositionX();
-				this._updateScrollBarsPos(curX, destY, true);
+				var curPosX;
+				if (this.options.scrollOnlyHBar) {
+					curPosX = this._getScrollbarHPosition();
+				} else {
+					curPosX = this._getContentPositionX();
+				}
+				this._updateScrollBarsPos(curPosX, destY, true);
 			}
 
 			return destY - curPosY;
@@ -1992,7 +2002,19 @@
 				this._scrollFromSyncContentH = false;
 			}
 
-			this._updateScrollBarsPos(this._container.scrollLeft(), this._container.scrollTop());
+			var posX, posY;
+			if (this.options.scrollOnlyHBar) {
+				posX = this._getScrollbarHPosition();
+			} else {
+				posX = this._getContentPositionX();
+			}
+			if (this.options.scrollOnlyVBar) {
+				posY = this._getScrollbarVPosition();
+			} else {
+				posY = this._getContentPositionY();
+			}
+
+			this._updateScrollBarsPos(posX, posY);
 
 			return false;
 		},

@@ -1805,7 +1805,7 @@
 				case "buttonType":
 				case "dropDownAttachedToBody":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				default:
 
 					//In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -4325,13 +4325,13 @@
 					value = parseFloat(value);
 					if (isNaN(value)) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.notEditableOptionByInit);
+						throw new Error($.ig.Editor.locale.setOptionError + option);
 					}
 					break;
 
 				case "regional":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 
 				case "excludeKeys":
 				case "includeKeys":
@@ -6405,9 +6405,10 @@
 				if ($.inArray(maskChar, maskFlagsArray) !== -1) {
 
 					// Get requred chars
-					if (isToLower) {
+					// #364 In case of digit mask char, toLower and toUpper flags should be ignored
+					if (isToLower && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
 						toLowerIndeces.push(j);
-					} else if (isToUpper) {
+					} else if (isToUpper && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
 						toUpperIndeces.push(j);
 					}
 					if (maskChar === "&" || maskChar === "A" ||
@@ -6578,9 +6579,18 @@
 			}
 			switch (dataMode) {
 				case "allText": {
-					regExpr = new RegExp($.ig.util
-						.escapeRegExp(this.options.unfilledCharsPrompt), "g");
-					dataModeValue = maskedVal.replace(regExpr, this.options.emptyChar);
+					dataModeValue = "";
+					for (i = 0; i < maskedVal.length; i++) {
+						ch = maskedVal.charAt(i);
+						if (ch === this.options.unfilledCharsPrompt) {
+							if ($.inArray(i, this._requiredIndeces) !== -1) {
+								ch = this.options.emptyChar;
+							} else {
+								ch = "";
+							}
+						}
+						dataModeValue += ch;
+					}
 					if (this._promptCharsIndices.length > 0) {
 						regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
 						dataModeValue = dataModeValue
@@ -6694,9 +6704,18 @@
 				default: {
 
 					// If the option is not valid we default back to the allText
-					regExpr = new RegExp($.ig.util
-						.escapeRegExp(this.options.unfilledCharsPrompt), "g");
-					dataModeValue = maskedVal.replace(regExpr, this.options.emptyChar);
+					dataModeValue = "";
+					for (i = 0; i < maskedVal.length; i++) {
+						ch = maskedVal.charAt(i);
+						if (ch === this.options.unfilledCharsPrompt) {
+							if ($.inArray(i, this._requiredIndeces) !== -1) {
+								ch = this.options.emptyChar;
+							} else {
+								ch = "";
+							}
+						}
+						dataModeValue += ch;
+					}
 					if (this._promptCharsIndices.length > 0) {
 						regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
 						dataModeValue = dataModeValue
@@ -6805,7 +6824,7 @@
 					}
 
 					if (!(this._focused && ch === this.options.unfilledCharsPrompt) &&
-						this._validateCharOnPostion(ch, i) === false) {
+						this._validateCharOnPostion(ch, i, mask) === false) {
 						return false;
 					}
 				}
@@ -7123,14 +7142,14 @@
 			switch (option) {
 				case "inputMask": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
 				case "excludeKeys":
 				case "includeKeys":
 				case "regional":
 				case "unfilledCharsPrompt":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -7661,7 +7680,7 @@
 					break;
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
 					break;
 				default: {
