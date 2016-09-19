@@ -737,7 +737,7 @@
 				$(".selector").igTree({
 					dragAndDropSettings : {
 						allowDrop: true,
-						```
+						...
 					}
 				});
 
