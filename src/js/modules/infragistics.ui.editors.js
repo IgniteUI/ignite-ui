@@ -133,7 +133,7 @@
 				```
 			*/
 			nullValue: null,
-			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element.
+			/* type="string" Gets/Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element.
 			```
 			//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1270,7 +1270,7 @@
 			```
 			*/
 			dropDownAnimationDuration: 300,
-			/* type="number" Gets the number of the items shown at once when the drop-down list get opened.
+			/* type="number" Gets the number of the items to be shown at once when the drop-down list get opened.
 				Notes:
 				This option is overwritten if the number of list items is less than the set value. In that case the drop-down list displays all the items.
 				This option can not be set runtime.
@@ -1354,7 +1354,7 @@
 			```
 			*/
 			placeHolder: null,
-				/* type="selectAll|atStart|atEnd|browserDefault" Set the action when the editor gets focused. The default value is selectAll.
+				/* type="selectAll|atStart|atEnd|browserDefault" Gets/Sets the action when the editor gets focused. The default value is selectAll.
 					```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -1404,7 +1404,7 @@
 			```
 			*/
 			spinWrapAround: false,
-			/* type="bool" Gets/Sets the ability of the editor to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed
+			/* type="bool" Gets/Sets if the editor should only allow values set into the list of items. This validation is done only when the editor is blured, or enter key is pressed
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1433,7 +1433,7 @@
 			```
 			*/
 			revertIfNotValid: true,
-			/* type="bool" Gets/Sets the ability of the editor to prevent form submition when enter key is pressed.
+			/* type="bool" Gets/Sets if the editor should prevent form submition when enter key is pressed.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1547,7 +1547,7 @@
 			```
 			*/
 			locale: null,
-			/* type="bool" Disables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
+			/* type="bool" Disables/Enables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -5591,7 +5591,7 @@
 	});
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
 		options: {
-			/* type="string" Sets gets the string, which is used as positive pattern. The "n" flag represents the value of number.
+			/* type="string" Gets/Sets the string, which is used as positive pattern. The "n" flag represents the value of number.
 				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
 				```
@@ -5726,7 +5726,7 @@
 				```
 				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
@@ -7451,7 +7451,7 @@
 				```
 			*/
 			dateInputFormat: null,
-			/* type="date|editModeText|displayModeText|" Gets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="date|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -10381,11 +10381,15 @@
 			```
 			//Initialize
 			$(".selector").igDatePicker({
-				datepickerOptions: {minDate : new Date(2015, 9, 17), maxDate : new Date(2015, 9, 30) }
+				datepickerOptions: {minDate : new Date(2015, 9, 17), maxDate : new Date(2015, 9, 30)}
 			});
 
 			//Get
 			var datepickerOptions = $(".selector").igDatePicker("option", "datepickerOptions");
+
+			//Set
+			$(".selector").igDatePicker("option", "datepickerOptions", {minDate : new Date(2017, 9, 11), maxDate : new Date(2017, 9, 22)});
+
 			```
 			*/
 			datepickerOptions: null,
@@ -11004,7 +11008,7 @@
 				large type="string" The size of the Checkbox editor is large.
 			*/
 			size: "normal",
-			/* type="string" Applies custom class on the checkbox. Custom image can be used this way.
+			/* type="string" Gets/Sets a custom class on the checkbox. Custom image can be used this way.
 				The following jQuery classes can be used in addition http://api.jqueryui.com/theming/icons/
 				```
 				//Initialize
