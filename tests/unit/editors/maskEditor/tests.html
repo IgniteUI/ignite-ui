@@ -30,6 +30,11 @@
 			// Create a editors
 			function loadTestbeds() {
 				$(function () {
+					 $("#maskEditorRequired").igMaskEditor({
+						inputMask: "LL00C",
+						emptyChar: "*",
+						value: "aa1"
+					});   
 					$("#editor1").igMaskEditor({
 						value: "CCC",
 						width: 400,
@@ -328,10 +333,11 @@
 			});
 
 			var testId = 'Mask Editor initialization.';
-			test(testId, 3, function () {
+			test(testId, 4, function () {
 				ok(typeof ($("#editor1").igMaskEditor) === 'function', "Editors Script is not loaded");
 				ok($('#editor1').data("igMaskEditor") !== undefined, 'Error creating igMaskEditor in an input');
-				equal($('#editor1').igMaskEditor("value"), "CCC       ", 'The initial value is not as expexted');
+				equal($('#editor1').igMaskEditor("value"), "CCC", 'The initial value is not as expexted');
+				equal($("#maskEditorRequired").igMaskEditor("value"), "aa1*", 'The initial value is not as expexted');
 
 			});
 
@@ -342,15 +348,15 @@
 
 				editor.igMaskEditor("setFocus");
 				editor.igMaskEditor("field").val("a_________");
-				checkMaskState(editor, 65, "a_________", "a", "a         ");
+				checkMaskState(editor, 65, "a_________", "a", "a");
 
 				editor.igMaskEditor("setFocus");
 				editor.igMaskEditor("field").val("ab________");
-				checkMaskState(editor, 66, "ab________", "ab", "ab        ");
+				checkMaskState(editor, 66, "ab________", "ab", "ab");
 
 				editor.igMaskEditor("setFocus");
 				editor.igMaskEditor("field").val("abc_______");
-				checkMaskState(editor, 67, "abc_______", "abc", "abc       ");
+				checkMaskState(editor, 67, "abc_______", "abc", "abc");
 			});
 
 			testId = "Events testing";
@@ -562,7 +568,7 @@
 				equal(field.val(), "NNAA______", "Text is not NNAA______");
 				$("#toUpperEditor").data("igMaskEditor")._processValueChanging(field.val());
 
-				equal($('#toUpperEditor').igMaskEditor("value"), "NNAA      ", "Value is not NNAA");
+				equal($('#toUpperEditor').igMaskEditor("value"), "NNAA", "Value is not NNAA");
 				$("#toUpperEditor").data("igMaskEditor")._exitEditMode();
 				equal($('#toUpperEditor').igMaskEditor("displayValue"), "NNAA", "Value is not NNAA");
 
@@ -572,7 +578,7 @@
 				equal(field.val(), "nnaa______", "Text is not nnaa______");
 				$("#toLowerEditor").data("igMaskEditor")._processValueChanging(field.val());
 
-				equal($('#toLowerEditor').igMaskEditor("value"), "nnaa      ", "Value is not NNAA");
+				equal($('#toLowerEditor').igMaskEditor("value"), "nnaa", "Value is not NNAA");
 				$("#toLowerEditor").data("igMaskEditor")._exitEditMode();
 				equal($('#toLowerEditor').igMaskEditor("displayValue"), "nnaa", "Value is not NNAA");
 
@@ -1189,6 +1195,7 @@
 			<input type="text" id="editor364_2" />
 			<input type="text" id="editor364_3" />
 			<input type="text" id="editor364_4" />
+			<input type="text" id="maskEditorRequired" />
 			<div id="test"></div>			
 		<input type='submit' value="Submit" />
 		</form>

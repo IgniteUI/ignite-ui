@@ -6579,9 +6579,18 @@
 			}
 			switch (dataMode) {
 				case "allText": {
-					regExpr = new RegExp($.ig.util
-						.escapeRegExp(this.options.unfilledCharsPrompt), "g");
-					dataModeValue = maskedVal.replace(regExpr, this.options.emptyChar);
+					dataModeValue = "";
+					for (i = 0; i < maskedVal.length; i++) {
+						ch = maskedVal.charAt(i);
+						if (ch === this.options.unfilledCharsPrompt) {
+							if ($.inArray(i, this._requiredIndeces) !== -1) {
+								ch = this.options.emptyChar;
+							} else {
+								ch = "";
+							}
+						}
+						dataModeValue += ch;
+					}
 					if (this._promptCharsIndices.length > 0) {
 						regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
 						dataModeValue = dataModeValue
@@ -6695,9 +6704,18 @@
 				default: {
 
 					// If the option is not valid we default back to the allText
-					regExpr = new RegExp($.ig.util
-						.escapeRegExp(this.options.unfilledCharsPrompt), "g");
-					dataModeValue = maskedVal.replace(regExpr, this.options.emptyChar);
+					dataModeValue = "";
+					for (i = 0; i < maskedVal.length; i++) {
+						ch = maskedVal.charAt(i);
+						if (ch === this.options.unfilledCharsPrompt) {
+							if ($.inArray(i, this._requiredIndeces) !== -1) {
+								ch = this.options.emptyChar;
+							} else {
+								ch = "";
+							}
+						}
+						dataModeValue += ch;
+					}
 					if (this._promptCharsIndices.length > 0) {
 						regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
 						dataModeValue = dataModeValue
