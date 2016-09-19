@@ -262,7 +262,7 @@
 			```
 			*/
 			inertiaDuration: 1,
-			/* type="number" Sets gets how much pixels of toleration there will be when initially swiping horizontall. This is to improve swiping up/down without scrolling left/right when not intended due to small diviation left/right
+			/* type="number" Sets gets how much pixels of toleration there will be when initially swiping horizontally. This is to improve swiping up/down without scrolling left/right when not intended due to small deviation left/right
 			```
 				//Initialize
 				$(".selector").igScroll({
@@ -277,7 +277,7 @@
 			```
 			*/
 			swipeToleranceX: 30,
-			/* type="number" Sets gets at least how many times the horizontal speed should be bigger so the inertia proceeds only horizontally without scrolling vertically. This is to improve interactions due to not perfectly swiping left/right with some diviation down/up
+			/* type="number" Sets gets at least how many times the horizontal speed should be bigger so the inertia proceeds only horizontally without scrolling vertically. This is to improve interactions due to not perfectly swiping left/right with some deviation down/up
 			```
 				//Initialize
 				$(".selector").igScroll({
@@ -292,7 +292,7 @@
 			```
 			*/
 			inertiaDeltaX: 1.25,
-			/* type="number" Sets gets at least how many times the vertical speed should be bigger so the inertia proceeds only vertically without scrolling horizontally. This is to improve interactions due to not perfectly swiping down/up with some diviation left/right
+			/* type="number" Sets gets at least how many times the vertical speed should be bigger so the inertia proceeds only vertically without scrolling horizontally. This is to improve interactions due to not perfectly swiping down/up with some deviation left/right
 			```
 				//Initialize
 				$(".selector").igScroll({
@@ -2157,6 +2157,9 @@
 		},
 
 		_onTouchMoveContainer: function (event) {
+			if (event.isDefaultPrevented()) {
+				return;
+			}
 			var touch = event.originalEvent.touches[ 0 ];
 			var destX =
 				this._startX + (this._touchStartX - touch.pageX) * Math.sign(this.options.inertiaStep);
@@ -2239,7 +2242,10 @@
 			return scrolledXY.x === 0 && scrolledXY.y === 0;
 		},
 
-		_onTouchEndContainer: function () {
+		_onTouchEndContainer: function (event) {
+			if (event.isDefaultPrevented()) {
+				return;
+			}
 			var speedX = 0;
 			var speedY = 0;
 
