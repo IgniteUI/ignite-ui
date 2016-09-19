@@ -2121,7 +2121,11 @@
 		},
 
 		_onTouchStartContainer: function (event) {
-			//stop any current ongoing inertia
+			if (event.isDefaultPrevented()) {
+				return;
+			}
+
+			//stops any current ongoing inertia
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
 			var touch = event.originalEvent.touches[ 0 ];
