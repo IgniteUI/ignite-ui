@@ -1404,7 +1404,7 @@
 			```
 			*/
 			spinWrapAround: false,
-			/* type="bool" Gets the ability of the editor to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed
+			/* type="bool" Gets/Sets the ability of the editor to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1418,7 +1418,7 @@
 				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
 			```*/
 			isLimitedToListValues: false,
-			/* type="bool" Gets the editor to revert value to the previous valid value in case the value on blur, or enter key is not valid. If the opiton is set to false, editor calls clear functionality.
+			/* type="bool" Gets/Sets if the editor should revert it's value to the previously valid value in case the value on blur, or enter key is not valid. If the opiton is set to false, editor calls clear functionality.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
