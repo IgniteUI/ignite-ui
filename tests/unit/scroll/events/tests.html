@@ -430,6 +430,30 @@
 				$("#testBed").empty();
 			}, 2500);
 		});
+		
+				
+				
+		test("When touchend/touchmove/touchstart are prevented igScroll does not scroll and there are no errors.", function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+
+			var elemContainer = $("#elemVH_container"),
+				elemContent = $("#elemVH_content");
+				
+			stop();
+			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}]
+			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10, true);
+			setTimeout(function () {
+				equal($("#elemVH").data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
+				equal($("#elemVH").data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");
+				$.ig.util.isTouch = false;
+				$("#testBed").empty();
+				start();
+			}, 2500);
+	    });
 	</script>
 	<script type="text/javascript" src="../../testswarm/inject.js"></script>
 </head>

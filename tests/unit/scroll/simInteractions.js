@@ -156,9 +156,9 @@
 	*	stepsMove - array that describes how much moves with each step of the swipe. Structure: [{x: number, y: number}, ...]
 	*	timePerStep - number that specifies how much delay there is between steps
 	*/
-	$.ig.TestUtil.simulateTouchSwipeFromCenter = function (node, stepsMove, timePerStep) {
-		var evtTouchStart = $.Event("touchstart"),
-			evtTouchMove = $.Event("touchmove"),			
+	$.ig.TestUtil.simulateTouchSwipeFromCenter = function (node, stepsMove, timePerStep, defaultPrevented) {
+		var evtTouchStart = $.Event("touchstart"),q
+			evtTouchMove = $.Event("touchmove"),
 			evtTouchEnd = $.Event("touchend"),
 			nodeCenterPos = getCenter(node),
 			curStep = 0,
@@ -180,12 +180,15 @@
 
 		evtTouchStart.originalEvent = {};
 		evtTouchStart.originalEvent.touches = [];
+		evtTouchStart.isDefaultPrevented = function () { return defaultPrevented };
 		evtTouchStart.target = node[ 0 ];	
 		evtTouchMove.originalEvent = {};
 		evtTouchMove.originalEvent.touches = [];		
+		evtTouchMove.isDefaultPrevented = function () { return defaultPrevented };
 		evtTouchMove.preventDefault  = function () {};		
 		evtTouchMove.stopPropagation   = function () {};		
 		evtTouchEnd.target = node[ 0 ];	
+		evtTouchEnd.isDefaultPrevented = function () { return defaultPrevented };
 		
 		function moveStep () {	
 			touchObject.clientX -= stepsMove[ curStep ].x;
