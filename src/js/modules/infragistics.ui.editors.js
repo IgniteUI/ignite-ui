@@ -1095,7 +1095,7 @@
 			return this._focused;
 		},
 		setFocus: function (delay) {
-			/* Set focus to the editor with delay.
+			/* Sets focus to the editor after the specified delay.
 				```
 				$(".selector").%%WidgetName%%("setFocus", 200);
 				```
@@ -1150,7 +1150,7 @@
 			}
 		},
 		destroy: function () {
-			/* Destructor of the widget
+			/* Destroys the widget
 				```
 					$(".selector").%%WidgetName%%("destroy");
 				```
@@ -3599,7 +3599,7 @@
 
 		// igTextEditor public methods
 		displayValue: function () {
-			/* Gets visible text in the editor.
+			/* Gets the visible text in the editor.
 			``` $(".selector").%%WidgetName%%("displayValue"); ```
 				returnType="string" Visible text of the editor. */
 			return this._getDisplayValue();
@@ -5592,7 +5592,7 @@
 			$.ui.igTextEditor.prototype.spinDown.call(this);
 		},
 		getRegionalOption: function () {
-			/* Get current regional.
+			/* Gets current regional.
 			```
 				$(".selector").%%WidgetName%%("getRegionalOption");
 			```
@@ -10260,7 +10260,7 @@
 			this._exitEditMode();
 		},
 		spinUp: function (delta) {
-			/* Increase date-time period, depending on the cursor position.
+			/* Increases the date or time period, depending on the current cursor position.
 			```
 				$(".selector").igDateEditor("spinUp", 2);
 			```
@@ -10268,7 +10268,7 @@
 			this._spin(delta ? delta : this.options.spinDelta);
 		},
 		spinDown: function (delta) {
-			/* Decrease date-time period, depending on the cursor position.
+			/* Decreases the date or time period, depending on the current cursor position.
 			```
 				$(".selector").igDateEditor("spinDown", 3);
 			```
@@ -10968,7 +10968,7 @@
 			return $.ui.igTextEditor.prototype.dropDownVisible.call(this);
 		},
 		destroy: function () {
-			/* Destructor of the widget
+			/* Destroys the widget
 			```
 			$(".selector").igDatePicker("destroy");
 			```

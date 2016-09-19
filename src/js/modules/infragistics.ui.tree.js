@@ -737,7 +737,7 @@
 				$(".selector").igTree({
 					dragAndDropSettings : {
 						allowDrop: true,
-						```
+						...
 					}
 				});
 
@@ -747,7 +747,7 @@
 				//Set
 				settings.allowDrop = {
 					allowDrop: false,
-					```
+					...
 					};
 				$(".selector").igTree("option", "dragAndDropSettings", settings);
 			```
