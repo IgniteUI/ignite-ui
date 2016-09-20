@@ -421,6 +421,7 @@
                 testId_89 = 'In LoadOnDemand and virtualization when filtering is local, data is not filtered'
                 testId_90 = 'Changing enableClearButton option at runtime does not work'
                 testId_91 = 'The last item is not displayed in the dropdown list if virtualization is enabled.'
+                testId_92 = 'Test areSetsEqual method'
 
                 function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -5504,6 +5505,77 @@
                 $combo.igCombo("option", "loadOnDemandSettings", { enabled: true, pageSize: 3 });
                 equal(data.length, $listItems.length, "All items are visible");
 
+            });
+
+            test(testId_92, function () {
+                var x = [1, 2, 3], y = [3, 2, 1], someObject = null;
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+                equal(y[0] === 3, true, "Array order is not changed y: " + y);
+
+                x = [1, 2, 3];
+                y = [1, 2, 3];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, 2, 3];
+                y = [1, 2, 3, 4];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 2, 3];
+                y = [1, 1, 1];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 2, 3];
+                y = [1, undefined, 1];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 2, undefined];
+                y = [2, undefined , 1];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, 3, undefined];
+                y = [2, undefined , 1];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, undefined];
+                y = [1, undefined];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [undefined];
+                y = [undefined];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                someObject = {firstName: 'name'};
+                x = [1, 2, someObject];
+                y = [1, someObject, 2];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, 2, {firstName: 'name'}];
+                y = [1, {firstName: 'name'}, 2];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 1, null];
+                y = [1, null, 1];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, null, 1];
+                y = [1, null, 1];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, null, 1];
+                y = [1, null, 2];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, null];
+                y = [1, null];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [null];
+                y = [null];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [null];
+                y = [undefined];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
             });
         });
     </script>

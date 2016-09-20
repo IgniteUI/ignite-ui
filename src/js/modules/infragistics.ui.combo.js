@@ -5576,7 +5576,7 @@
 
                 // This compares the prev and new selected values for equality
                 // Z.K. June 30, 2016 #17 not() behavior is changed in jQuery 3.0.0
-                if (!$.ig.util.areArraysEqual(selectedValues, prevSelValues)) {
+                if (!$.ig.util.areSetsEqual(selectedValues, prevSelValues)) {
                     selChanged = true;
                 }
             }
