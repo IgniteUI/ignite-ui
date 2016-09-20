@@ -9,6 +9,7 @@
 * jquery-1.9.1.js
 * jquery.ui-1.9.0.js
 * infragistics.util.js
+* modernizr.js
 */
 
 /*global define,jQuery,setTimeout,window,document,MSGesture*/
