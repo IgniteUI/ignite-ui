@@ -1171,24 +1171,24 @@
 		options: {
 
 			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
+				Note! This option can not be set runtime.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown"
+					});
+
+					//Get
+					var button = $(".selector").%%WidgetName%%("option", "buttonType");
+
+					//Initialize multiple buttons
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown,clear"
+					});
+				```
 				dropdown type="string" A button to open/close the list is located on the right side of the editor.
 				clear type="string" A button to clear the value is located on the right side of the editor.
 				spin type="string" Spin buttons are located on the right side of the editor.
-				Note! This option can not be set runtime.
-				```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					buttonType : "dropdown"
-				});
-
-				//Get
-				var button = $(".selector").%%WidgetName%%("option", "buttonType");
-
-				//Initialize multiple buttons
-				$(".selector").%%WidgetName%%({
-					buttonType : "dropdown,clear"
-				});
-				```
 			*/
 			buttonType: "none",
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
@@ -1321,10 +1321,10 @@
 					```
 				*/
 			excludeKeys: null,
-			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor. If that option is not set, then 'right' is used for 'numeric', 'currency' and 'percent' editors and the 'left' is used for all other types of editor.
-					left type="string"
-					right type="string"
-					center type="string"
+			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor.
+					left type="string" The text into the input gets aligned to the left.
+					right type="string" The text into the input gets aligned to the right.
+					center type="string" The text into the input gets aligned to the center.
 					```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -1355,10 +1355,6 @@
 			*/
 			placeHolder: null,
 				/* type="selectAll|atStart|atEnd|browserDefault" Set the action when the editor gets focused. The default value is selectAll.
-					selectAll type="string" Setting this option will select all the text into the editor when the edit mode gets enetered.
-					atStart type="string" Setting this option will move the cursor at the begining the text into the editor when the edit mode gets enetered.
-					atEnd type="string" Setting this option will move the cursor at the end the text into the editor when the edit mode gets enetered.
-					browserDefault type="string" Setting this option won't do any extra logic, but proceed with the browser default behavior.
 					```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -1371,12 +1367,13 @@
 					//Set
 					$(".selector").%%WidgetName%%("option", "selectionOnFocus", "selectAll");
 					```
+					selectAll type="string" Setting this option will select all the text into the editor when the edit mode gets enetered.
+					atStart type="string" Setting this option will move the cursor at the begining the text into the editor when the edit mode gets enetered.
+					atEnd type="string" Setting this option will move the cursor at the end the text into the editor when the edit mode gets enetered.
+					browserDefault type="string" Setting this option won't do any extra logic, but proceed with the browser default behavior.
 				*/
 			selectionOnFocus: "selectAll",
 			/* type="text|password|multiline" Gets the text mode of the editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
-				text type="string" Single line text editor based on INPUT element is created.
-				password type="string" Editor based on INPUT element with type password is created.
-				multiline type="string" Multiline editor based on TEXTAREA element is created.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1387,6 +1384,9 @@
 				var mode = $(".selector").%%WidgetName%%("option", "textMode");
 
 				```
+				text type="string" Single line text editor based on INPUT element is created.
+				password type="string" Editor based on INPUT element with type password is created.
+				multiline type="string" Multiline editor based on TEXTAREA element is created.
 			*/
 			textMode: "text",
 			/* type="bool" Gets/Sets the ability of the editor to automatically change the hoverd item into the opened dropdown list to its oposide side. When the last item is reached and the spin down is clicked, the first item gets hovered and vice versa. This option has no effect there is no drop-down list.
@@ -1449,9 +1449,6 @@
 			*/
 			preventSubmitOnEnter: false,
 			/* type="auto|bottom|top" Gets/Sets the drop-down list opening orientation when the list gets open. If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
-				'auto' type="string" If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
-				'bottom' type="string" The drop-down list is opened at the bottom of the editor.
-				'top' type="string" The drop-down list is opened at the top of the editor.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1465,6 +1462,9 @@
 				$(".selector").%%WidgetName%%("option", "dropDownOrientation", "bottom");
 
 				```
+				auto type="string" If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
+				bottom type="string" The drop-down list is opened at the bottom of the editor.
+				top type="string" The drop-down list is opened at the top of the editor.
 			*/
 			dropDownOrientation: "auto",
 			/* type="number" Gets/Sets the maximum length of a text which can be entered by the user.
@@ -3969,33 +3969,22 @@
 				```
 				*/
 			minDecimals: null,
-			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor. If that option is not set, then default value of 'right' is used for 'numeric', 'currency' and 'percent' editors.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					textAlign : "center"
-				});
-
-				//Get
-				var align = $(".selector").%%WidgetName%%("option", "textAlign");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "textAlign", "center");
-			```
-				left type="string"
-				right type="string"
-				center type="string"
+			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor.
 				```
-				$(".selector").%%WidgetName%%({
-					textAlign : "center"
-				});
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						textAlign : "center"
+					});
 
-				//Get
-				var align = $(".selector").%%WidgetName%%("option", "textAlign");
+					//Get
+					var align = $(".selector").%%WidgetName%%("option", "textAlign");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "textAlign", "center");
+					//Set
+					$(".selector").%%WidgetName%%("option", "textAlign", "center");
 				```
+				left type="string" The text into the input gets aligned to the left.
+				right type="string" The text into the input gets aligned to the right.
+				center type="string" The text into the input gets aligned to the center.
 			*/
 			textAlign: "right",
 			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
@@ -6043,7 +6032,7 @@
 				```
 			*/
 			regional: null,
-			/*type="clear" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
+			/*type="clear" Gets visibility of the clear button. That option can be set only on initialization.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6053,7 +6042,7 @@
 				//Get
 				var button = $(".selector").%%WidgetName%%("option", "buttonType");
 				```
-				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
+				clear type="string" A button to clear the value is located on the right side of the editor.
 			*/
 			buttonType: "none",
 			/* type="string" Gets input mask. Mask may include filter-flags and literal characters.
@@ -7481,18 +7470,19 @@
 				editModeText type="string" The String object is used and the "text" in edit mode (focus) format (pattern).
 			*/
 			dataMode: "date",
-			/*type="clear|spin" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					buttonType : "clear"
-				});
+			/*type="clear|spin" Gets visibility of the spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						buttonType : "clear"
+					});
 
-				//Get
-				var buttonType = $(".selector").%%WidgetName%%("option", "buttonType");
-			```
-				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
-				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).*/
+					//Get
+					var buttonType = $(".selector").%%WidgetName%%("option", "buttonType");
+				```
+				clear type="string" A button to clear the value is located on the right side of the editor.
+				spin type="string" Spin buttons are located on the right side of the editor
+			*/
 			buttonType: "none",
 			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.
 			```
@@ -10367,25 +10357,24 @@
 			```
 			*/
 			regional: null,
-			/* type="dropdown|clear|spin" Gets visibility of the spin and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
+			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
+```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown"
+					});
+
+					//Get
+					var button = $(".selector").%%WidgetName%%("option", "buttonType");
+
+					//Initialize multiple buttons
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown,clear"
+					});
+				```
 				dropdown type="string" A button to open/close the list is located on the right side of the editor.
 				clear type="string" A button to clear the value is located on the right side of the editor.
 				spin type="string" Spin buttons are located on the right side of the editor.
-				Note! This option can not be set runtime.
-				```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					buttonType : "dropdown"
-				});
-
-				//Get
-				var button = $(".selector").%%WidgetName%%("option", "buttonType");
-
-				//Initialize multiple buttons
-				$(".selector").%%WidgetName%%({
-					buttonType : "dropdown,clear"
-				});
-				```
 			*/
 			buttonType: "dropdown",
 			/* type="object" Gets/Sets the options supported by the jquery.ui.datepicker. Only options related to the drop-down calendar are supported.
