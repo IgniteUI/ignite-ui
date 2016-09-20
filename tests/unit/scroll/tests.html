@@ -896,6 +896,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
+			//Make sure that we are testing mobile way of scrolling despite being hybrid, because that way we use 3d transformations
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
 			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}]
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
@@ -2493,6 +2495,7 @@
 			var elemContainer = $("#elemVH_container");
 				
 			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
 			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 4}, {x: 0 , y: 3}, {x: 0, y: 3}]
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 1);
 			setTimeout(function () {
@@ -2523,6 +2526,7 @@
 			var elemContainer = $("#elemVH_container");
 			
 			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
 			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 8 , y: 0}, {x: 9, y: 0}]
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
