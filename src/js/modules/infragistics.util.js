@@ -5477,6 +5477,19 @@
 		return item1 ? 1 : -1;
 	};
 
+	// Check wheather certain array of values is equal to another array
+	$.ig.util.areArraysEqual = function (array1, array2) {
+		if (!array1 || !array2) { return false; }
+
+		if (array1.length !== array2.length) { return false; }
+
+		for (var i = 0; i < array1.length; i++) {
+			if (array1.indexOf(array2[ i ]) === -1) { return false; }
+		}
+
+		return true;
+	};
+
 	$.ig.util.sleep = function (milliseconds) {
 		var start = new Date().getTime();
 		for (var i = 0; i < 1e7; i++) {
