@@ -1100,8 +1100,10 @@
 				this._vBarDrag.css("height", this._vDragHeight + "px");
 				this._vBarTrack.css("height",
 									this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
-			} else if (this.options.scrollbarType === "native" && this._vBarContainer) {
+			} else if (this.options.scrollbarType === "native" && this._vBarContainer && this._vBarDrag) {
 				this._vBarContainer.css("height", (this._elemHeight - this._customBarEmptySpaceSize) + "px");
+				this._vDragHeight = this._getContentHeight();
+				this._vBarDrag.css("height", this._vDragHeight + "px");
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
@@ -1112,8 +1114,10 @@
 				this._hBarDrag.css("width", this._hDragWidth + "px");
 				this._hBarTrack.css("width",
 									this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
-			} else if (this.options.scrollbarType === "native" && this._hBarContainer) {
+			} else if (this.options.scrollbarType === "native" && this._hBarContainer && this._hBarDrag) {
 				this._hBarContainer.css("width", (this._elemWidth - this._customBarEmptySpaceSize) + "px");
+				this._hDragWidth = this._getContentWidth();
+				this._hBarDrag.css("width", this._hDragWidth + "px");
 			}
 		},
 
@@ -1176,14 +1180,6 @@
 							if (ignoreSync || self.options.scrollOnlyHBar) {
 								return false;
 							} else {
-								//We set mixed environment because linked scrollbar can be used only under desktop and hybrid env.
-								if (!self._bMixedEnvironment) {
-									self._bMixedEnvironment = true;
-
-									/* Make sure we are not scrolled using 3d transformation */
-									self._switchFromTouchToMixed();
-								}
-
 								self._syncContentX(e.target, false);
 								self._syncElemsX(e.target, false);
 							}
@@ -1219,14 +1215,6 @@
 							if (ignoreSync || self.options.scrollOnlyVBar) {
 								return false;
 							} else {
-								//We set mixed environment because linked scrollbar can be used only under desktop and hybrid env.
-								if (!self._bMixedEnvironment) {
-									self._bMixedEnvironment = true;
-
-									/* Make sure we are not scrolled using 3d transformation */
-									self._switchFromTouchToMixed();
-								}
-
 								self._syncContentY(e.target, false);
 								self._syncElemsY(e.target, false);
 							}
@@ -2242,7 +2230,8 @@
 				}
 			}
 
-			// return true if there was no movement so rest of the screen can scroll
+			event.preventDefault();
+			/* return true if there was no movement so rest of the screen can scroll */
 			return scrolledXY.x === 0 && scrolledXY.y === 0;
 		},
 
