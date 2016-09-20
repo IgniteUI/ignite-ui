@@ -136,15 +136,15 @@
 			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element.
 			```
 			//Initialize
-				$(".selector").igPercentEditor({
+				$(".selector").%%WidgetName%%({
 				  inputName : "textField"
 				});
 
 				//Get
-				var inputName = $(".selector").igPercentEditor("option", "inputName");
+				var inputName = $(".selector").%%WidgetName%%("option", "inputName");
 
 			//Set
-			$(".selector").igPercentEditor("option", "inputName", "textField");
+			$(".selector").%%WidgetName%%("option", "inputName", "textField");
 			```
 			*/
 			inputName: null,
