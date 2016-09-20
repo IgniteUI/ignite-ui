@@ -6,7 +6,7 @@
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
-	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
     <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 
     <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
@@ -20,10 +20,10 @@
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.popover.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.notifier.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.notifier.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -277,7 +277,7 @@
         <div id="combo-focus-blur"></div>
     </div>
     <div>
-      <div id="local-filtering-virt"></div>
+        <div id="local-filtering-virt"></div>
     </div>
     <div>
         <div id="header-footer-setters"></div>
@@ -311,6 +311,15 @@
     </div>
     <div>
         <div id="combo-add-separators"></div>
+    </div>
+    <div>
+        <div id="combo-189514"></div>
+    </div>
+    <div>
+        <div id="combo-enableClearButton"></div>
+    </div>
+    <div>
+        <div id="combo-lastItem"></div>
     </div>
     <script type="text/javascript">
         $(function () {
@@ -405,12 +414,15 @@
                 testId_82 = 'suppressKeyboard interaction';
                 testId_83 = 'Handled exceptions';
                 testId_84 = 'Key Navigation Item';
-                testId_85 = 'Bug #190262 - [New Combo] when selection is single and press enter the list should be closed'
-                testId_86 = 'Bug #200569 - When fitering is remore and multiSelection is enabled input value is not cleared after clicking outside the combo'
+                testId_85 = '[New Combo] when selection is single and press enter the list should be closed'
+                testId_86 = 'When fitering is remore and multiSelection is enabled input value is not cleared after clicking outside the combo'
                 testId_87 = 'Combo remove separators'
                 testId_88 = 'Combo add separators'
+                testId_89 = 'In LoadOnDemand and virtualization when filtering is local, data is not filtered'
+                testId_90 = 'Changing enableClearButton option at runtime does not work'
+                testId_91 = 'The last item is not displayed in the dropdown list if virtualization is enabled.'
 
-            function testDataBinding($combo, expDataView, expSchema) {
+                function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
 					dataSource = $combo.igCombo('option', 'dataSource'),
 					dataView = dataSource.dataView(),
@@ -5206,7 +5218,7 @@
 
             asyncTest(testId_84, function () {
                 var $combo = $("#combo-keyNavItem"),
-                $listItems, $selectedItems, $dropDownButton;      
+                $listItems, $selectedItems, $dropDownButton;
 
                 $combo.igCombo({
                     dataSource: "http://localhost/api/invoices?callback=?",
@@ -5242,7 +5254,7 @@
             test(testId_85, function () {
                 var data, $input, $listItems,
                     $combo = $("#combo-bug-190262");
-                
+
                 data = [{ ID: 0, Name: "John" , Age: 45, ModifiedDate:"1/1/2000" },
 		            { ID: 1, Name: "Chai", Age: 32, ModifiedDate: new Date(1309467600000) },
 		            { ID: 2, Name: "Chang", Age: 32, ModifiedDate:"/Date(1078992096827)/" },
@@ -5302,12 +5314,12 @@
                     }, 1000);
 
                 }, 2000);
-               
+
             });
 
             // remove separator
             test(testId_87, function () {
-                var data, $input, $listItems, $input,
+                var data, $input, $listItems,
                     $combo = $("#combo-remove-separators");
 
                 data = [{ ID: 0, Name: "John", Age: 45, ModifiedDate: "1/1/2000" },
@@ -5340,12 +5352,12 @@
                     $input.blur();
                     equal($combo.igCombo("text"), "John", "Text in input is correct");
                     $input.focus();
-                }, 2000);
+                }, 3000);
             });
 
             // add separator
             test(testId_88, function () {
-                var data, $input, $listItems, $input,
+                var data, $input, $listItems,
                     $combo = $("#combo-add-separators");
 
                 data = [{ ID: 0, Name: "John", Age: 45, ModifiedDate: "1/1/2000" },
@@ -5377,7 +5389,121 @@
                 setTimeout(function () {
                     start();
                     equal($combo.igCombo("text"), "John, ", "Text in input is correct");
+                }, 3000);
+            });
+
+            // In LoadOnDemand and virtualization when filtering is local, data is not filtered
+            test(testId_89, function () {
+                var items,
+                    $combo = $("#combo-189514");
+
+                $combo.igCombo({
+                    dataSourceUrl: "http://localhost/api/invoices?callback=?",
+                    responseDataKey: "d.results",
+                    textKey: "ProductName",
+                    valueKey: "OrderID",
+                    noMatchFoundText: "no data",
+                    virtualization: true,
+                });
+
+                equal($combo.igCombo("option", "dataSourceUrl"), "http://localhost/api/invoices?callback=?", "DataSource is set the dataSourceUrl");
+                notEqual($combo.igCombo("option", "dataSource"), null, "DataSource is set the dataSourceUrl");
+                equal($combo.igCombo("option", "validatorOptions"), null, "validatorOptions is not set");
+                //set validator options
+                $combo.igCombo("option", "validatorOptions", {
+                    required: true
+                });
+                equal($combo.igCombo("option", "validatorOptions").required, true, "validatorOptions is not set");
+
+                //set itemTemplate options
+                $combo.igCombo("option", "itemTemplate", "<span>Item text is ${ProductName}</span>");
+                $combo.igCombo("openDropDown");
+
+
+                stop();
+                setTimeout(function () {
+                    start();
+                    $items = $combo.igCombo("items");
+                    equal($items[0].element[0].innerHTML, "<span>Item text is Queso Cabrales</span>", "ItemTemplate is set and rendered");
                 }, 2000);
+            });
+
+            // Changing enableClearButton option at runtime does not work
+            test(testId_90, function () {
+                var $listItems,
+                    $combo = $("#combo-enableClearButton");
+
+                data = [{ ID: 0, Name: "John", Age: 45, ModifiedDate: "1/1/2000" },
+		            { ID: 1, Name: "Chai", Age: 32, ModifiedDate: new Date(1309467600000) },
+		            { ID: 2, Name: "Chang", Age: 32, ModifiedDate: "/Date(1078992096827)/" },
+		            { ID: 5, Name: "3", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 4, Name: "test dsf", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 3, Name: "Bob ", Age: 27, ModifiedDate: "\/Date(1078992096827)\/" }];
+
+                $combo.igCombo({
+                    dataSource: data,
+                    textKey: "Name",
+                    valueKey: "ID",
+                    filteringType: "remote",
+                    closeDropDownOnBlur: false,
+                    enableClearButton: false
+                });
+
+                $listItems = $combo.igCombo("items");
+                $combo.igCombo("select", $combo.igCombo("items")[0].element);
+                $combo.igCombo("option", "enableClearButton", true);
+                equal($combo.igCombo("option", "enableClearButton"), true, "enableClearButton option is set to true");
+                equal($combo.find(".ui-igcombo-clearicon").length, 1, "enableClearButton button is rendered on the page");
+                $combo.igCombo("option", "enableClearButton", false);
+                equal($combo.igCombo("option", "enableClearButton"), false, "enableClearButton option is set to true");
+                equal($combo.find(".ui-igcombo-clearicon").html(), "", "enableClearButton is not rendered on the page");
+
+                $combo.igCombo("option", "loadOnDemandSettings", { enabled: true, pageSize: 3 });
+                equal($combo.igCombo("option", "loadOnDemandSettings").enabled, true, "loadOnDemand is enabled");
+
+            });
+
+            // The last item is not displayed in the dropdown list if virtualization is enabled.
+            test(testId_91, function () {
+                var $listItems,
+                    $combo = $("#combo-lastItem");
+
+                data = [
+			        { "cd": "001", "cdName": "0000001" },
+			        { "cd": "002", "cdName": "0000002" },
+			        { "cd": "003", "cdName": "0000003" },
+			        { "cd": "004", "cdName": "0000004" },
+			        { "cd": "005", "cdName": "0000005" },
+			        { "cd": "006", "cdName": "0000006" },
+			        { "cd": "007", "cdName": "0000007" },
+			        { "cd": "008", "cdName": "0000008" },
+			        { "cd": "009", "cdName": "0000009" },
+			        { "cd": "010", "cdName": "00000010" },
+			        { "cd": "011", "cdName": "00000011" }
+                ];
+
+                $combo.igCombo({
+                    mode: 'editable',
+                    width: '80px',
+                    dropDownWidth: '280px',
+                    itemTemplate: '<div style="display: block;" title="${cdName}"><span style="width: 80px; display: inline-block;">${cd}</span><span style="width: 200px; display: inline-block;">${cdName}</span></div>',
+                    dataSource: data,
+                    enableClearButton: false,
+                    virtualization: true,
+                    delayFilteringOnKeyUp: 0,
+                    placeHolder: " ",
+                    textKey: 'cd',
+                    valueKey: 'cd',
+                    filteringType: "none",
+                    highlightMatchesMode: "startsWith",
+                    visibleItemsCount: 5,
+                });
+
+                $listItems = $combo.igCombo("items");
+
+                $combo.igCombo("option", "loadOnDemandSettings", { enabled: true, pageSize: 3 });
+                equal(data.length, $listItems.length, "All items are visible");
+
             });
         });
     </script>
