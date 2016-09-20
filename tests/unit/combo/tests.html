@@ -321,6 +321,9 @@
     <div>
         <div id="combo-lastItem"></div>
     </div>
+    <div>
+        <div id="combo-paste"></div>
+    </div>
     <script type="text/javascript">
         $(function () {
             var testId_1 = 'igCombo existence',
@@ -421,6 +424,7 @@
                 testId_89 = 'In LoadOnDemand and virtualization when filtering is local, data is not filtered'
                 testId_90 = 'Changing enableClearButton option at runtime does not work'
                 testId_91 = 'The last item is not displayed in the dropdown list if virtualization is enabled.'
+                testId_92 = 'combo input paste handling'
 
                 function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -757,6 +761,12 @@
                 mouseDown.which = mouseUp.which = 1;
                 element.trigger(mouseDown);
                 element.trigger(mouseUp);
+            }
+
+            function emulatePaste(element) {
+                var paste = jQuery.Event("paste");
+                paste.type = "paste";
+                element.trigger(paste);
             }
 
             function testComboIsDisabled($element) {
@@ -5190,11 +5200,6 @@
             test(testId_83, function () {
                 var $combo = $("#combo-exception");
 
-                window.pageErrors = [];
-                window.onerror = function (errorMessage) {
-                    window.pageErrors[window.pageErrors.length] = errorMessage;
-                }
-
                 $combo.igCombo({
                     dataSource: "http://localhost/api/invoices?callback=?",
                     valueKey: "CustomerID",
@@ -5203,15 +5208,18 @@
                     visibleItemsCount: 4,
                     responseDataKey: "d.results.Results",
                     filteringType: "remote",
-                    grouping: { key: 'ProductNamee' }
                 });
 
-                stop(); // Pause the test
-                //Add your wait
+                stop();
                 setTimeout(function () {
                     start();
-                    equal(window.pageErrors.length, 1, "There is one script error on the page");
-                    equal(window.pageErrors[0], "Error: Grouping key is not correct.", "Error message is 'Script error.'");
+                    throws(
+                        function () {
+                            $combo.igCombo("option", "grouping", { key: 'ProductNamee' });
+                        },
+                        new Error($.ig.Combo.locale.errorIncorrectGroupingKey),
+                        'Error("Grouping key is not correct.")'
+                    );
                 }, 2000);
 
             });
@@ -5504,6 +5512,44 @@
                 $combo.igCombo("option", "loadOnDemandSettings", { enabled: true, pageSize: 3 });
                 equal(data.length, $listItems.length, "All items are visible");
 
+            });
+            // combo input paste handling
+            test(testId_92, function () {
+                var $input,
+                    $combo = $("#combo-paste");
+
+                data = [
+			        { "cd": "001", "cdName": "0000001" },
+			        { "cd": "002", "cdName": "0000002" },
+			        { "cd": "003", "cdName": "0000003" },
+			        { "cd": "004", "cdName": "0000004" },
+			        { "cd": "005", "cdName": "0000005" },
+			        { "cd": "006", "cdName": "0000006" },
+			        { "cd": "007", "cdName": "0000007" },
+			        { "cd": "008", "cdName": "0000008" },
+			        { "cd": "009", "cdName": "0000009" },
+			        { "cd": "010", "cdName": "00000010" },
+			        { "cd": "011", "cdName": "00000011" }
+                ];
+
+                $combo.igCombo({
+                    mode: 'editable',
+                    dataSource: data,
+                    textKey: 'cdName',
+                    valueKey: 'cd',
+                });
+
+                $input = $combo.igCombo("textInput");
+                emulatePaste($input);
+                equal($combo.igCombo("text"), "", "Text in input is correct");
+                $combo.igCombo("option", "disabled", true);
+                emulatePaste($input);
+                equal($combo.igCombo("text"), "", "Text in input is correct");
+                emulateKeyBoard(86, false, false, false, $input);
+                equal($combo.igCombo("text"), "", "Text in input is correct");
+                clickElement($input, false, false);
+                $input.blur();
+                equal($combo.igCombo("text"), "", "Text in input is correct");
             });
         });
     </script>
