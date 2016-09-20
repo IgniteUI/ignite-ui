@@ -454,7 +454,7 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
 			"$path$/modules/infragistics.categorychart.js",
-			"$path$/modules/infragistics.ui.categorychart.js",
+			"$path$/modules/infragistics.ui.categorychart.js"
 			],
 		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
 	},
