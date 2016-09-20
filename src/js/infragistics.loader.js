@@ -220,6 +220,20 @@ $.ig.dependencies = [
 		internal: true,
 		scripts: [ "$path$/modules/infragistics.datachart_extendedaxes.js" ]
 	},
+	{
+		widget: "_ig_dv_datasource",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_core" }],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv_datasource.js" ]
+	},
+	{
+		widget: "_ig_dv_dataseriesadapter",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_datasource" }],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv_dataseriesadapter.js" ]
+	},
 
 	{
 		widget: "igChartLegend",
@@ -413,17 +427,6 @@ $.ig.dependencies = [
 	},
 
 	{
-		widget: "igBulletGraph",
-		dependency: [ { name: "_ig_dv_geometry" } ],
-		scripts: [
-			"$path$/modules/infragistics.bulletgraph.js",
-			"$path$/modules/infragistics.ui.bulletgraph.js"
-			],
-		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.bulletgraph.css" ]
-	},
-
-	{
 		widget: "igLinearGauge",
 		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
@@ -431,18 +434,6 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.lineargauge.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup
-		/*css: [ "$path$/structure/modules/infragistics.ui.lineargauge.css" ] */
-	},
-
-	{
-		widget: "igRadialGauge",
-		dependency: [ { name: "_ig_dv_geometry" } ],
-		scripts: [
-			"$path$/modules/infragistics.ui.radialgauge.js",
-			"$path$/modules/infragistics.gauge_radialgauge.js"
-			],
-		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.radialgauge.css" ]
 	},
 
 	{
@@ -457,16 +448,15 @@ $.ig.dependencies = [
 	},
 
 	{
-		widget: "igLinearGauge",
-		dependency: [
-			{ name: "_ig_dv_geometry" }
-			],
+		widget: "igCategoryChart",
+		dependency: [ { name: "_ig_dv_dataseriesadapter" }, { name: "_ig_datachart_categorycore" },
+					{ name: "_ig_dv_commonwidget" }, { name: "_ig_simple_datachart_core" } ],
+		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
-			"$path$/modules/infragistics.ui.lineargauge.js",
-			"$path$/modules/infragistics.gauge_lineargauge.js"
+			"$path$/modules/infragistics.categorychart.js",
+			"$path$/modules/infragistics.ui.categorychart.js",
 			],
-		group: $.ig.loaderClass.locale.dvGroup
-		/*css: [ "$path$/structure/modules/infragistics.ui.lineargauge.css" ] */
+		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
 	},
 /* /// End Data Visualization /// */
 
@@ -496,7 +486,6 @@ $.ig.dependencies = [
 			],
 		locale: [ "$localePath$/infragistics.ui.barcode-$locale$.js" ],
 		group: $.ig.loaderClass.locale.dvGroup
-		/*css: [ "$path$/structure/modules/infragistics.ui.barcode.css" ] */
 	},
 	{
 		widget: "igQRCodeBarcode.*",
