@@ -737,7 +737,7 @@
 				$(".selector").igTree({
 					dragAndDropSettings : {
 						allowDrop: true,
-						```
+						...
 					}
 				});
 
@@ -747,7 +747,7 @@
 				//Set
 				settings.allowDrop = {
 					allowDrop: false,
-					```
+					...
 					};
 				$(".selector").igTree("option", "dragAndDropSettings", settings);
 			```
@@ -950,8 +950,7 @@
 					default type="string" would render the default igTree helper.
 				*/
 				helper: "default",
-				/* type="function|null" Gets the method for custom drop point validation. Returning true from this function would render the drop point valid, while false would make it invalid.
-					The function has one parameter which is the current drop point and the context (this) of the function is the drag element.
+				/* type="function|null" Gets the method for custom drop point validation. Returning true from this function would render the drop point valid, while false would make it invalid. The function has one parameter which is the current drop point and the context (this) of the function is the drag element.
 					```
 						//Initialize
 						$(".selector").igTree({

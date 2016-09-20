@@ -896,6 +896,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
+			//Make sure that we are testing mobile way of scrolling despite being hybrid, because that way we use 3d transformations
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
 			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}]
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
@@ -2201,7 +2203,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
-			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
 				equal($("#elemVH").data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
@@ -2225,7 +2228,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
-			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 15 , y: 0}, {x: 15, y: 0}, {x: 6, y: 0}, {x: 5, y: 0}, {x: 1, y: 0}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 15 , y: 0}, {x: 15, y: 0}, {x: 6, y: 0}, {x: 5, y: 0}, {x: 1, y: 0}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
 				//22 because there is compensation for horizontal scroll of 30 pixels by default
@@ -2250,7 +2254,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
-			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 4}, {x: 0 , y: 3}, {x: 0, y: 3}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 4}, {x: 0 , y: 3}, {x: 0, y: 3}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 1);
 			setTimeout(function () {
 				equal($("#elemVH").data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
@@ -2281,7 +2286,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
-			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 8 , y: 0}, {x: 9, y: 0}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 8 , y: 0}, {x: 9, y: 0}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
 				notEqual($("#elemVH").data("igScroll")._getContentPositionX(), 27, "igScroll scrolled horizontally by the swipe");
@@ -2305,7 +2311,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
-			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 4}, {x: 0 , y: 3}, {x: 0, y: 3}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 4}, {x: 0 , y: 3}, {x: 0, y: 3}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 1);
 			setTimeout(function () {
 				//Check if we have scrolled more than if we didn't have inertia
@@ -2347,7 +2354,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
-			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 8 , y: 0}, {x: 9, y: 0}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 8 , y: 0}, {x: 9, y: 0}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
 				$.ig.TestUtil.simulateTouchTap(elemContainer, 50, 50);
@@ -2373,7 +2381,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
-			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenterIE(elemContainer, touchSteps, 10);
 			setTimeout(function () {
 				//igScroll does not use custom inertia in IE. It is handled inside the borwser and given as MSGestureChange by the browser
@@ -2398,7 +2407,8 @@
 				elemContent = $("#elemVH_content");
 	
 			stop();
-			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
 				equal($("#elemVH").data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
@@ -2493,7 +2503,8 @@
 			var elemContainer = $("#elemVH_container");
 				
 			stop();
-			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 4}, {x: 0 , y: 3}, {x: 0, y: 3}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 4}, {x: 0 , y: 3}, {x: 0, y: 3}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 1);
 			setTimeout(function () {
 				equal($("#elemVH").data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
@@ -2523,7 +2534,8 @@
 			var elemContainer = $("#elemVH_container");
 			
 			stop();
-			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 8 , y: 0}, {x: 9, y: 0}]
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 8 , y: 0}, {x: 9, y: 0}];
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
 			setTimeout(function () {
 				notEqual($("#elemVH").data("igScroll")._getContentPositionX(), 27, "igScroll scrolled horizontally by the swipe");
@@ -2587,6 +2599,7 @@
 				elemContainer = $("#elemVH_container");
 
 			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
 			setTimeout(function () {
 				equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is not visible");
 				equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is not visible");
@@ -2654,6 +2667,7 @@
 	        $('#elemVH').igScroll({
 				modifyDOM: true
 			});
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
 			
 	        var arrowUp = $("#elemVH_vBar_arrowUp"),
 				arrowDown = $("#elemVH_vBar_arrowDown"),
@@ -2875,6 +2889,9 @@
 			$('#elemVSync').igScroll({
 				syncedElemsV: [$('#elemVH')]
 			});
+			
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			$('#elemVSync').data('igScroll')._bMixedEnvironment = false;
 
 			$("#elemVH").igScroll("option", "scrollTop", 100);
 			equal($("#elemVH").igScroll("option", "scrollTop"), 100, "igScroll did not scroll properly vertically");
@@ -2897,6 +2914,9 @@
 			$('#elemHSync').igScroll({
 				syncedElemsH: [$('#elemVH')]
 			});
+			
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			$('#elemHSync').data('igScroll')._bMixedEnvironment = false;
 			
 			$("#elemVH").igScroll("option", "scrollLeft", 100);
 			equal($("#elemVH").igScroll("option", "scrollLeft"), 100, "igScroll did not scroll properly vertically");
@@ -3104,6 +3124,7 @@
 			elemContainer = $("#elemVH_container");
 			elemContent = $("#elemVH_content");
 
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
 			$("#elemVH_vBar_inner").css("height", elemContent.outerHeight());
 			$("#elemVH_vBar").on("scroll", function (event) {
 				var currentPos = event.target.scrollTop;
@@ -3182,6 +3203,7 @@
 			elemContainer = $("#elemVH_container");
 			elemContent = $("#elemVH_content");
 
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
 			$("#elemVH_hBar_inner").css("width", elemContent.outerWidth());
 			$("#elemVH_hBar").on("scroll", function (event) {
 				var currentPos = event.target.scrollLeft;
