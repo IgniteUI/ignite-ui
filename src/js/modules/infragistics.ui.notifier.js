@@ -59,14 +59,14 @@
 			errorIcon: "ui-icon ui-icon-circle-close"
 		},
 		options: {
-			/* type="success|info|warning|error" Gets or sets the current state of the igNotifier messages. State controls what CSS classes are applied to the messages and target and has interactions with other options as well.
+			/* type="success|info|warning|error" Gets/Sets the current state of the igNotifier messages. State controls what CSS classes are applied to the messages and target and has interactions with other options as well.
 				```
 				//Initialize
 				$(".selector").igNotifier({
 					state: "success"
 				});
 
-				// Get
+				//Get
 				var state = $(".selector").igNotifier("option", "state");
 
 				//Set
@@ -85,7 +85,7 @@
 					notifyLevel: "error"
 				});
 
-				// Get
+				//Get
 				var notifyLevel = $(".selector").igNotifier("option", "notifyLevel");
 
 				//Set
@@ -119,7 +119,7 @@
 					mode: "inline"
 				});
 
-				// Get
+				//Get
 				var mode = $(".selector").igNotifier("option", "mode");
 
 				//Set
@@ -157,7 +157,7 @@
 					}
 				});
 
-				// Get
+				//Get
 				var messages = $(".selector").igNotifier("option", "messages");
 
 				//Set
@@ -173,7 +173,7 @@
 					}
 				});
 
-				// Get
+				//Get
 				var messages = $(".selector").igNotifier("option", "messages");
 
 				//Set
@@ -188,7 +188,7 @@
 					}
 				});
 
-				// Get
+				//Get
 				var messages = $(".selector").igNotifier("option", "messages");
 
 				//Set
@@ -203,7 +203,7 @@
 					}
 				});
 
-				// Get
+				//Get
 				var messages = $(".selector").igNotifier("option", "messages");
 
 				//Set
@@ -218,7 +218,7 @@
 					}
 				});
 
-				// Get
+				//Get
 				var messages = $(".selector").igNotifier("option", "messages");
 
 				//Set
@@ -240,7 +240,7 @@
 				```
 			*/
 			showIcon: false,
-			/* type="string|function" Sets the content for the popover container. Templated with parameters by default: {0} - icon container class, {1} - the icon class and {2} - message text.
+			/* type="string|function" Gets/Sets the content for the popover container. Templated with parameters by default: {0} - icon container class, {1} - the icon class and {2} - message text.
 				```
 				//Initialize
                     // string content for the popover container
@@ -248,7 +248,7 @@
                         contentTemplate:"<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' /> {1}"
                     });
 
-                    // Get
+                    //Get
                     var contentFunction = $(".selector").igNotifier("option", "contentTemplate");
 
                     // Set
@@ -264,11 +264,11 @@
 				//Initialize
 				$(".selector").igNotifier({
 					headerTemplate {
-					closeButton: false
+						closeButton: false
 					}
 				});
 
-				// Get
+				//Get
 				var headerTemplate = $(".selector").igNotifier("option", "headerTemplate");
 				```
 			*/
@@ -278,12 +278,12 @@
 				//Initialize
 				$(".selector").igNotifier({
 					headerTemplate {
-					closeButton : false,
-					title : null
+						closeButton : false,
+						title : null
 					}
 				});
 
-				// Get
+				//Get
 				var title = $(".selector").igNotifier("option", "headerTemplate");
 				```
 			*/
@@ -293,12 +293,12 @@
 				//Initialize
 				$(".selector").igNotifier({
 					headerTemplate {
-					closeButton : false,
-					title : null
+						closeButton : false,
+						title : null
 					}
 				});
 
-				// Get
+				//Get
 				var title = $(".selector").igNotifier("option", "headerTemplate");
 				```
 			*/
@@ -311,7 +311,7 @@
 						showOn: "focus"
 				});
 
-				// Get
+				//Get
 				var showOn = $(".selector").igNotifier("option", "showOn");
 				```
 				mouseenter type="string" The popover is shown on mouse enter in the target element
@@ -335,7 +335,7 @@
 				```
 			*/
 			closeOnBlur: false,
-			/* type="number" Gets or sets the time in milliseconds the notification fades in and out when showing/hiding
+			/* type="number" Gets/Sets the time in milliseconds the notification fades in and out when showing/hiding
 				```
 				//Initialize
                 $('.selector').igNotifier({
@@ -350,7 +350,7 @@
 				```
 			*/
 			animationDuration: 250,
-			/* Gets or sets the distance in pixels a notification popover slides outwards as it's shown.
+			/* Gets/Sets the distance in pixels a notification popover slides outwards as it's shown.
 				```
 				//Initialize
 				$('.selector').igNotifier({

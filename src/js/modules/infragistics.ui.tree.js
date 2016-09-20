@@ -241,7 +241,7 @@
 
 				// Set - works only if an image was also set on initialization.
 				// Throws an error otherwise, as the element holding the image source is missing.
-				$(".selector").igTree("option", "parentNodeImageTooltip", "altFolder");
+				$(".selector").igTree("option", "parentNodeImageTooltip", "rootFolder");
 			```
 				string Specified a tooltip that would be rendered for each node that has children.
 				null Option is ignored
