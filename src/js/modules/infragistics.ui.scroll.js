@@ -9,6 +9,7 @@
 * jquery-1.9.1.js
 * jquery.ui-1.9.0.js
 * infragistics.util.js
+* modernizr.js
 */
 
 /*global define,jQuery,setTimeout,window,document,MSGesture*/
@@ -681,7 +682,7 @@
 			var elem = this.element;
 
 			this._bKeyboardNavigation = true;
-			this._bMixedEnvironment = false;
+			this._bMixedEnvironment = $.ig.util.getScrollWidth() > 0;
 			this._linkedHElems = [];
 			this._linkedVElems = [];
 			this._linkedHBar = null;
