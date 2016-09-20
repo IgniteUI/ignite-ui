@@ -238,6 +238,9 @@
 		container: function () {
 			/* returns the container for the popover contents
 				returnType="object"
+				```
+				$( ".selector" ).%%WidgetName%%( "destroy" );
+				```
 			*/
 			return this.contentInner;
 		},
