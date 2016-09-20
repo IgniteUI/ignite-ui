@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "最大化",
 			    pinButtonTitle: "ピン固定",
 			    unpinButtonTitle: "ピン固定の解除",
-			    restoreButtonTitle: "元に戻す"
+			    restoreButtonTitle: "元に戻す",
+				setOptionError: '次のオプションはランタイムで変更できません: '
 		    }
 	    };
     }

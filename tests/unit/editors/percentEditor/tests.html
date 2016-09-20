@@ -83,8 +83,14 @@
 						spinWrapAround: true
 					});
 
-					
-					$("#pasteEditor").igPercentEditor();	
+					$("#pasteEditor").igPercentEditor();
+
+					$("#percentDouble").igPercentEditor({       
+						displayFactor : 1,
+						value: 2.5,
+						spinDelta: 2,
+						dataMode: "double"
+					});
 				});
 			}
 			initialized = false;
@@ -283,7 +289,7 @@
 
 
 			var testId = 'Percent Spin up.';
-			test(testId, 6, function () {
+			test(testId, 8, function () {
 				$("#pEditor10").focus();
 				$("#pEditor10").igPercentEditor("spinUp");
 				$("#pEditor10").blur();
@@ -305,7 +311,12 @@
 				$("#pEditor10").igPercentEditor("spinDown", 3);				
 				equal($('#pEditor10').igPercentEditor("displayValue"), "3.00%", "spinWrapAround does not return maxValue");
 
-			
+				var editor = $("#percentDouble");
+				editor.igPercentEditor("setFocus");
+				editor.igPercentEditor("spinUp");
+				editor.igPercentEditor("field").blur();
+				equal(editor.igPercentEditor("value"), "4.5", "Value after spin up is not correct");
+				equal(editor.igPercentEditor("displayValue"), "4.50%", "Display value after spin up is not correct");
 			});
 
 			var testId = 'Paste and insert';
@@ -428,6 +439,9 @@
 	<input id="pEditor10" />
 	<input id="pEditor11" />
 	<div id="pasteEditor"></div>
+	<div id="percentDouble"></div>
+    
+	
 </div>
 </body>
 </html>

@@ -163,7 +163,7 @@
 				```
 			 */
 			valueAsPercent: true,
-			/* type="bool" Gets sets ability to get focus. Change of that option is not supported after igRating was created.
+			/* type="bool" Gets/Sets the ability to get focus. Changing this option is not supported after igRating was created.
 				Value true: can get focus and process key events.
 				Value false: cannot get focus.
 				```
@@ -729,7 +729,7 @@
 			return this._validator;
 		},
 		validate: function () {
-		    /* Trigger validation.
+		    /* Triggers validation.
 				```
 				$(".selector").igRating("validate");
 				```
@@ -1038,7 +1038,7 @@
 		},
 		value: function (val) {
 
-			/* Gets sets (selected) value.
+			/* Gets/Sets (selected) value.
 				```
 				//Get
 				var value = $(".selector").igRating("value");
@@ -1059,7 +1059,7 @@
 		},
 		valueHover: function (val) {
 
-			/* Gets sets hover value.
+			/* Gets/Sets hover value.
 				```
 				//Get
 				var value = $(".selector").igRating("valueHover");
@@ -1105,7 +1105,7 @@
 		},
 		destroy: function () {
 
-			/* Destroys igRating.
+			/* Destroys igRating widget.
 				```
 				$(".selector").igRating("destroy");
 				```

@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "Maximiser",
 			    pinButtonTitle: "Punaiser",
 			    unpinButtonTitle: "Dépunaiser",
-			    restoreButtonTitle: "Restaurer"
+			    restoreButtonTitle: "Restaurer",
+				setOptionError: "Les modifications de temps d'exécution ne sont pas autorisées pour l'option suivante : "
 		    }
 	    };
     }

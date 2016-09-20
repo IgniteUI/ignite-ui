@@ -182,6 +182,7 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+	-ms-user-select: none;
 }
 
 /* recalculate headertext width to allocate space for icons in header - IE9+ */
@@ -1880,22 +1881,18 @@ div.ui-iggrid-indicatorcontainer.ui-iggrid-collapsibleindicatorcontainer a {
 	/* It is used border-right/left as borderline between fixed/unfixed area. It is set box-sizing - to border-box. 
 		Borderline is from inner side of the box - in this way border-width is not included in outer width of the container. 
 		NOTE: the container(outer fixed container) should have width set */
-
-    /*
-        Bug:22614 09.08.2016 M.Popov
-        NOTE: Fixed by removing the border-box rule
-    */
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	border-right: 2px solid #555555 !important;
 }
 .ui-iggrid-fixedcontainer-right {
 	/* It is used border-right/left as borderline between fixed/unfixed area. It is set box-sizing - to border-box. 
 		Borderline is from inner side of the box - in this way border-width is not included in outer width of the container. 
 		NOTE: the container(outer fixed container) should have width set */
-
-    /*
-        Bug:22614 09.08.2016 M.Popov
-        NOTE: Fixed by removing the border-box rule
-    */
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	border-left: 2px solid #555555 !important;
 }
 .ui-iggrid-fixcolumn-headerbuttoncontainer 

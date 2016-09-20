@@ -293,7 +293,7 @@
 			return currPosition;
 		},
 		setCoordinates: function (pos) {
-			/* set the currently coordinates of the popover
+			/* Sets the popover to specific coordinates.
 				paramType="object" The popover coordinates in pixels.
 			*/
 			this.popover.css({

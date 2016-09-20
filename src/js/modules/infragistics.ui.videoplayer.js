@@ -4861,7 +4861,7 @@
 		},
 
 		paused: function () {
-			/* Get whether the current played video is paused.
+			/* Returns whether the currently played video is paused.
 			```
 			var isPaused = $(".selector").igVideoPlayer("paused");
 			```

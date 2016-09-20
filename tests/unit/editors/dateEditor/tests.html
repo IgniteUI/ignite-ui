@@ -231,6 +231,13 @@
 					$("#inputEditor33").igDateEditor();
 					$("#inputEditor34").igDateEditor();
 					$("#insertInput").igDateEditor();
+					$("#spinHourMinutes").igDateEditor({
+						dateInputFormat: "hh:mm",
+						value: new Date(),
+						dataMode: "date",
+						buttonType: "spin",
+						width: 100
+					});
 				});
 			}
 			initialized = false;
@@ -703,6 +710,18 @@
 						equal($dtEditor.igDateEditor("displayValue"), "23:05:10:002", 'The initial value is not as expexted');
 					}, 300);
 				}, 200);
+			});
+
+			var testId = '(Issue #342) Testing spin munites, hours';
+			test(testId, 1, function () {
+				var $dtEditor = $('#spinHourMinutes');
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.igDateEditor("field").val("00:00");
+				//$dtEditor.data("igDateEditor")._setCursorPosition(18);
+				var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				clickElement(spinDownButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "11:59", 'The initial value is not as expexted');
 			});
 
 			var testId = '(Bug #209538) Testing spin seconds, munites, hours, days, months, years edit mode';
@@ -1367,6 +1386,7 @@
 		<input id="inputEditor33" />
 		<input id="inputEditor34" />
 		<input id="insertInput" />
+		<input id="spinHourMinutes" />
 	</div>
 </body>
 </html>
