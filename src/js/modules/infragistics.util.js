@@ -209,7 +209,8 @@
 	$.ig.util.isFF = window.mozInnerScreenX !== undefined;
 	$.ig.util.isOpera = !!window.opera;
 	$.ig.util.isSafari =
-		(Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor") > 0) ?
+		(Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor") > 0) ||
+		window.ApplePaySession ?
 			true :
 			false;
 	$.ig.util.isWebKit = !!window.webkitURL;
