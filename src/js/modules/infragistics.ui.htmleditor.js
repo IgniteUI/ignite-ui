@@ -2625,8 +2625,7 @@
             return this._getRange().toString();
         },
         select: function (element) {
-            var selectedItem = element || this.getSelectedItem(),
-                newRange;
+            var selectedItem = element || this.getSelectedItem();
 
             this._range.selectNodeContents(selectedItem[ 0 ]);
             this._selection.removeAllRanges();
