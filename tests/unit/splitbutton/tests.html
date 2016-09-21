@@ -137,7 +137,8 @@
                     testId_11 = "Events enter pressing",
                     testId_12 = "API methods",
                     testId_13 = "API methods and user interaction",
-                    testId_14 = "Destroying.";
+                    testId_14 = "Destroying.",
+                    testId_15 = "Change defaultItemName through options";
 
                 module("igSplitButton");
 
@@ -407,6 +408,20 @@
                     equal($sButton.attr('tabindex'), undefined, 'The tabindex attribute was not removed from the split button.');
                     equal($._data($sButton[0], "events"), undefined, 'Some events were not removed from the split button.');
                 });
+
+                test(testId_15, function () {
+                    createSplitButton();
+
+                    var defaultItemNameBeforeChange = $sButton.igSplitButton("option", "defaultItemName");
+                    
+                    var defaultItemNameNewValue = "defaultItemNameWasChanged"
+                    $sButton.igSplitButton("option", "defaultItemName", defaultItemNameNewValue);
+
+                    var defaultItemNameAfterChange = $sButton.igSplitButton("option", "defaultItemName");
+                    
+                    notEqual(defaultItemNameBeforeChange, defaultItemNameAfterChange,true, "The defaultItemName was not change!");
+                    equal(defaultItemNameNewValue, defaultItemNameAfterChange,true, "The defaultItemName value is not equal to the new one value!");
+                 });
             });
 	    </script>
     </head>
