@@ -5710,6 +5710,25 @@
                 x = [null];
                 y = [undefined];
                 equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [];
+                y = [];
+                equal($.ig.util.areSetsEqual(x, y), true, "x = []; and y=[]; are equal");
+                equal($.ig.util.areSetsEqual(), false, "Not equal, when sets are missing");
+                equal($.ig.util.areSetsEqual(x), false, "Arrays x:" + x + " and missing y are not equal");
+                equal($.ig.util.areSetsEqual(undefined), false, "Arrays x:undefined and missing y are not equal");
+                equal($.ig.util.areSetsEqual(undefined, y), false, "Arrays x:undefined and y are not equal");
+                equal($.ig.util.areSetsEqual(undefined, null), false, "undefined and null are not equal");
+                equal($.ig.util.areSetsEqual(null, undefined), false, "null and undefined are not equal");
+                equal($.ig.util.areSetsEqual(null), false, "null and undefined are not equal");
+                equal($.ig.util.areSetsEqual(null, null), false, "Null and Null are not equal");
+
+                x = [1, 2, 3];
+                y = x;
+
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal (same reference)");
+                equal($.ig.util.areSetsEqual(x, x), true, "Arrays x:" + x + " and x:" + x + " are equal");
+            });
         });
     </script>
 </body>
