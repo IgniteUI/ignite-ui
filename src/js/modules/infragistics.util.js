@@ -209,7 +209,8 @@
 	$.ig.util.isFF = window.mozInnerScreenX !== undefined;
 	$.ig.util.isOpera = !!window.opera;
 	$.ig.util.isSafari =
-		(Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor") > 0) ?
+		(Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor") > 0) ||
+		window.ApplePaySession ?
 			true :
 			false;
 	$.ig.util.isWebKit = !!window.webkitURL;
@@ -5475,6 +5476,24 @@
 		}
 
 		return item1 ? 1 : -1;
+	};
+
+	// Check wheather certain array of values is equal to another array
+	$.ig.util.areSetsEqual = function (array1, array2) {
+	    var sortedArray1, sortedArray2;
+
+	    if (!array1 || !array2 || array1.length !== array2.length) { return false; }
+
+	    if (array1 === array2) { return true; }
+
+	    sortedArray1 = array1.slice().sort();
+	    sortedArray2 = array2.slice().sort();
+
+	    for (var i = 0; i < sortedArray1.length; i++) {
+	        if (sortedArray1[ i ] !== sortedArray2[ i ]) { return false; }
+	    }
+
+	    return true;
 	};
 
 	$.ig.util.sleep = function (milliseconds) {
