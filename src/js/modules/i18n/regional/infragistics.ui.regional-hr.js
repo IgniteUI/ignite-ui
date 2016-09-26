@@ -1,6 +1,6 @@
 ﻿﻿/* Croatia +*/
 
-/*global define, jQuery */
+/*global jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 		define( ["jquery"], factory );
@@ -58,4 +58,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('hr');
     }
-}));// REMOVE_FROM_COMBINED_FILES
+})(jQuery);

@@ -1,13 +1,6 @@
 ﻿﻿/* India (Tamil) +*/
 
-/*global define, jQuery */
-(function (factory) {
-	if (typeof define === "function" && define.amd) {
-		define( ["jquery"], factory );
-	} else {
-		factory(jQuery);
-	}
-}
+/*global jQuery */
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -55,4 +48,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('ta');
     }
-}));// REMOVE_FROM_COMBINED_FILES
+})(jQuery);

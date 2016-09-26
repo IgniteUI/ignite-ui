@@ -1,13 +1,6 @@
 ﻿/* Ukraine +*/
 
-/*global define, jQuery */
-(function (factory) {
-	if (typeof define === "function" && define.amd) {
-		define( ["jquery"], factory );
-	} else {
-		factory(jQuery);
-	}
-}
+/*global Query */
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -58,4 +51,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('uk');
     }
-}));// REMOVE_FROM_COMBINED_FILES
+})(jQuery);
