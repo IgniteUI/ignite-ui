@@ -7332,7 +7332,7 @@
 					});
 
 					//Get
-					var minValue = $(".selector").%%WidgeName%%("option", "minValue");
+					var minValue = $(".selector").%%WidgetName%%("option", "minValue");
 				```
 				*/
 			minValue: null,
