@@ -403,33 +403,34 @@
                 testId_66 = 'Grouping select item/header',
 				// allowCustomValue
                 testId_67 = 'Allow custom values with default configuration';
-            // Load on demand tests
-            testId_68 = 'Load on demand with local filtering type';
-            testId_69 = 'Load on demand with remote filtering type';
-            testId_70 = 'Load on demand items count when loading new items';
-            testId_71 = 'Blur while loading';
-            testId_72 = '_setOption branching tests';
-            testId_73 = 'LTR coverage';
-            testId_74 = 'Header/Footer Getters/Setters';
-            testId_75 = 'Virtualization with grouping and LOD';
-            testId_76 = 'Combo focus blur';
-            testId_77 = 'Open dropDown via API with bottom dropDownOrientation';
-            testId_78 = 'Keyboard interacting';
-            testId_79 = 'Mouse interacting';
-            testId_80 = 'Local filtering with virtualization';
-            testId_81 = 'Only lowercase items returned by igCombo filtering when filtering by turkish symbol ı';
-            testId_82 = 'suppressKeyboard interaction';
-            testId_83 = 'Handled exceptions';
-            testId_84 = 'Key Navigation Item';
-            testId_85 = '[New Combo] when selection is single and press enter the list should be closed'
-            testId_86 = 'When fitering is remore and multiSelection is enabled input value is not cleared after clicking outside the combo'
-            testId_87 = 'Combo remove separators'
-            testId_88 = 'Combo add separators'
-            testId_89 = 'In LoadOnDemand and virtualization when filtering is local, data is not filtered'
-            testId_90 = 'Changing enableClearButton option at runtime does not work'
-            testId_91 = 'The last item is not displayed in the dropdown list if virtualization is enabled.'
-            testId_92 = 'combo input paste handling'
-            testId_93 = 'Mouse events'
+                // Load on demand tests
+                testId_68 = 'Load on demand with local filtering type';
+                testId_69 = 'Load on demand with remote filtering type';
+                testId_70 = 'Load on demand items count when loading new items';
+                testId_71 = 'Blur while loading';
+                testId_72 = '_setOption branching tests';
+                testId_73 = 'LTR coverage';
+                testId_74 = 'Header/Footer Getters/Setters';
+                testId_75 = 'Virtualization with grouping and LOD';
+                testId_76 = 'Combo focus blur';
+                testId_77 = 'Open dropDown via API with bottom dropDownOrientation';
+                testId_78 = 'Keyboard interacting';
+                testId_79 = 'Mouse interacting';
+                testId_80 = 'Local filtering with virtualization';
+                testId_81 = 'Only lowercase items returned by igCombo filtering when filtering by turkish symbol ı';
+                testId_82 = 'suppressKeyboard interaction';
+                testId_83 = 'Handled exceptions';
+                testId_84 = 'Key Navigation Item';
+                testId_85 = '[New Combo] when selection is single and press enter the list should be closed';
+                testId_86 = 'When fitering is remore and multiSelection is enabled input value is not cleared after clicking outside the combo';
+                testId_87 = 'Combo remove separators';
+                testId_88 = 'Combo add separators';
+                testId_89 = 'In LoadOnDemand and virtualization when filtering is local, data is not filtered';
+                testId_90 = 'Changing enableClearButton option at runtime does not work';
+                testId_91 = 'The last item is not displayed in the dropdown list if virtualization is enabled.';
+                testId_92 = 'combo input paste handling';
+                testId_93 = 'Mouse events';
+                testId_94 = 'Test areSetsEqual method';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -5533,6 +5534,7 @@
                 equal(data.length, $listItems.length, "All items are visible");
 
             });
+
             // combo input paste handling
             test(testId_92, function () {
                 var $input,
@@ -5637,6 +5639,95 @@
                 emulateMouseActions($clearCont, "mouseup");
 
                 equal($combo.igCombo("text"), "", "Text in input is correct");
+            });
+
+            test(testId_94, function () {
+                var x = [1, 2, 3], y = [3, 2, 1], someObject = null;
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+                equal(y[0] === 3, true, "Array order is not changed y: " + y);
+
+                x = [1, 2, 3];
+                y = [1, 2, 3];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, 2, 3];
+                y = [1, 2, 3, 4];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 2, 3];
+                y = [1, 1, 1];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 2, 3];
+                y = [1, undefined, 1];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 2, undefined];
+                y = [2, undefined , 1];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, 3, undefined];
+                y = [2, undefined , 1];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, undefined];
+                y = [1, undefined];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [undefined];
+                y = [undefined];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                someObject = {firstName: 'name'};
+                x = [1, 2, someObject];
+                y = [1, someObject, 2];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, 2, {firstName: 'name'}];
+                y = [1, {firstName: 'name'}, 2];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, 1, null];
+                y = [1, null, 1];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, null, 1];
+                y = [1, null, 1];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [1, null, 1];
+                y = [1, null, 2];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [1, null];
+                y = [1, null];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [null];
+                y = [null];
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal");
+
+                x = [null];
+                y = [undefined];
+                equal($.ig.util.areSetsEqual(x, y), false, "Arrays x:" + x + " and y:" + y + " are not equal");
+
+                x = [];
+                y = [];
+                equal($.ig.util.areSetsEqual(x, y), true, "x = []; and y=[]; are equal");
+                equal($.ig.util.areSetsEqual(), false, "Not equal, when sets are missing");
+                equal($.ig.util.areSetsEqual(x), false, "Arrays x:" + x + " and missing y are not equal");
+                equal($.ig.util.areSetsEqual(undefined), false, "Arrays x:undefined and missing y are not equal");
+                equal($.ig.util.areSetsEqual(undefined, y), false, "Arrays x:undefined and y are not equal");
+                equal($.ig.util.areSetsEqual(undefined, null), false, "undefined and null are not equal");
+                equal($.ig.util.areSetsEqual(null, undefined), false, "null and undefined are not equal");
+                equal($.ig.util.areSetsEqual(null), false, "null and undefined are not equal");
+                equal($.ig.util.areSetsEqual(null, null), false, "Null and Null are not equal");
+
+                x = [1, 2, 3];
+                y = x;
+
+                equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal (same reference)");
+                equal($.ig.util.areSetsEqual(x, x), true, "Arrays x:" + x + " and x:" + x + " are equal");
             });
         });
     </script>

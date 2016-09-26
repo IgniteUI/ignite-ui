@@ -45,7 +45,7 @@
 	*/
 	$.widget("ui.igRating", {
 		options: {
-			/* type="bool" Gets or sets vertical or horizontal orientation of votes.
+			/* type="bool" Gets a vertical or horizontal orientation for the votes.
 				Change of that option is not supported after igRating was created.
 				```
 				$(".selector").igRating({
@@ -57,7 +57,7 @@
 				```
 			*/
 			vertical: false,
-			/* type="number|string" Gets or sets value (selected votes or percent). If the value is of type string, it should be suitable for parsing to number. According to [valueAsPercent](ui.igrating#options:valueAsPercent) options the value is used as number of selected votes or as a percent of the votes.
+			/* type="number|string" Gets/Sets value (selected votes or percent). If the value is of type string, it should be suitable for parsing to number. According to [valueAsPercent](ui.igrating#options:valueAsPercent) options the value is used as number of selected votes or as a percent of the votes.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -72,7 +72,7 @@
 				```
 			*/
 			value: null,
-			/* type="number|string" Gets or sets value-hover (hovered votes or percent of hovered votes). The default is same as value. If the value is of type string, it should be suitable for parsing to number. According to [valueAsPercent](ui.igrating#options:valueAsPercent) options the valueHover is used as number of hovered votes or as a percent of the hovered votes.
+			/* type="number|string" Gets/Sets value-hover (hovered votes or percent of hovered votes). The default is same as value. If the value is of type string, it should be suitable for parsing to number. According to [valueAsPercent](ui.igrating#options:valueAsPercent) options the valueHover is used as number of hovered votes or as a percent of the hovered votes.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -87,7 +87,7 @@
 				```
 			 */
 			valueHover: null,
-			/* type="number" Gets or sets number of votes.
+			/* type="number" Gets/Sets number of votes.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -102,7 +102,7 @@
 				```
 			*/
 			voteCount: 5,
-			/* type="number" Gets or sets custom width of a vote in pixels. In case of 0 the run time style value is used.
+			/* type="number" Gets/Sets custom width of a vote in pixels. In case of 0 the run time style value is used.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -117,7 +117,7 @@
 				```
 			*/
 			voteWidth: 0,
-			/* type="number" Gets or sets custom height of a vote in pixels. In case of 0 the run time style value is used.
+			/* type="number" Gets/Sets custom height of a vote in pixels. In case of 0 the run time style value is used.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -132,7 +132,7 @@
 				```
 			 */
 			voteHeight: 0,
-			/* type="bool" Gets or sets direction of selected and hovered votes. Change of that option is not supported after igRating was created.
+			/* type="bool" Gets the direction of selected and hovered votes. Change of that option is not supported after igRating was created.
 				Value true: from left to right or from top to bottom.
 				Value false: from right to left or from bottom to left.
 				```
@@ -146,7 +146,7 @@
 				```
 			*/
 			swapDirection: false,
-			/* type="bool" Gets or sets percent or vote number to measure value and value-hover.
+			/* type="bool" Gets/Sets percent or vote number to measure value and value-hover.
 				Value true: value is measured as percent (from 0 to 1).
 				Value false: value is measured in number of voted (from 0 to voteCount)
 				```
@@ -163,7 +163,7 @@
 				```
 			 */
 			valueAsPercent: true,
-			/* type="bool" Gets/Sets the ability to get focus. Changing this option is not supported after igRating was created.
+			/* type="bool" Gets if igRating can have focus. Change of that option is not supported after igRating was created.
 				Value true: can get focus and process key events.
 				Value false: cannot get focus.
 				```
@@ -177,7 +177,7 @@
 				```
 				*/
 			focusable: true,
-			/* type="exact|half|whole" Gets or sets precision. Precision of value and valueHover.
+			/* type="exact|half|whole" Gets/Sets precision. Precision of value and valueHover.
 				```
 				//Initialize
 				$(".selector").igRating({
@@ -194,7 +194,7 @@
 				half type="string" Value is rounded to the half of vote.
 				whole type="string" Value is rounded to the number of votes. */
 			precision: "whole",
-			/* type="number" Gets or sets part of vote-size, which is considered as zero value.
+			/* type="number" Gets/Sets part of vote-size, which is considered as zero value.
 				It has effect only when precision is set to "half" or "whole".
 				If user clicks between edge of the first vote and (sizeOfVote * precisionZeroVote), then value is set to 0.
 				Same is applied for mouseover as well.
@@ -212,7 +212,7 @@
 				```
 				*/
 			precisionZeroVote: 0.25,
-			/* type="number" Gets or sets number of decimal places used to round value and value-hover.
+			/* type="number" Gets/Sets number of decimal places used to round value and value-hover.
 				Negative value will disable that option and value will not be rounded.
 				Notes:
 				If precision is "whole" or "half" and roundedDecimalPlaces is set in range of 0..2, then 3 is used.
@@ -232,7 +232,7 @@
 				```
 			*/
 			roundedDecimalPlaces: 3,
-			/* type="string" Gets or sets selector for css classes.
+			/* type="string" Gets/Sets selector for css classes.
 				That option allows replacing all default css styles by custom values.
 				Application should provide css classes for all members defined in the css options with "theme" selector.
 				```
@@ -259,7 +259,7 @@
 				```
 			*/
 			theme: null,
-			/* type="object" Gets or sets object which contains options supported by igValidator.
+			/* type="object" Gets/Sets object which contains options supported by igValidator.
 				Note that for onblur validation depends on the [focusable](ui.igrating#options:focusable) option.
 				```
 				//Initialize
@@ -277,7 +277,7 @@
 				```
 			*/
 			validatorOptions: null,
-			/* type="object" Gets or sets custom css votes.
+			/* type="object" Gets/Sets custom css votes.
 				That object should be 2-dimentional array or object with indexes, where every item of first level represents settings for a vote at that index.
 				Second level of an item is settings for a vote and it should contain classes for a specific state of vote.
 				Item at index [0] on second level is used for css class of vote in normal state.

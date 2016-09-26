@@ -364,7 +364,7 @@ $.widget("ui.igValidator", {
 		```
 		*/
 		threshold: -1,
-		/* type="string|object" Requires the value in this field to be the same as another input element or editor control.
+		/* type="string|object" Gets/Sets a requirement for the value in this field to be the same as another input element or editor control.
 		```
 			//Initialize
 			$('.selector').igValidator({
@@ -426,7 +426,7 @@ $.widget("ui.igValidator", {
 			object type="object" A configuration object with method property being the function and optional error message.
 		*/
 		custom: null,
-		/* type="array" List of target field items describing each with validation options and a required selector. Fields can contain any of the validation rules and triggers but not other fields or event handlers.
+		/* type="array" Gets a list of target field items describing each with validation options and a required selector. Fields can contain any of the validation rules and triggers but not other fields or event handlers.
 			Applicable options are also inherited from the global control configuration if not set.
 			```
 				//Initialize
@@ -452,7 +452,7 @@ $.widget("ui.igValidator", {
 			```
 		*/
 		fields: [{
-			/* type="string|object" The target element (input or control target) to be validated. This field setting is required.
+			/* type="string|object" Gets the target element (input or control target) to be validated. This field setting is required.
 			```
 			//Initialize
 			$('.selector').igValidator({
@@ -469,7 +469,7 @@ $.widget("ui.igValidator", {
 			*/
 			selector: null
 		}],
-		/* type="object" Options for the [igNotifier](ui.ignotifier#options) used to show error messages.
+		/* type="object" Gets/Sets the options for the [igNotifier](ui.ignotifier#options) used to show error messages.
 		```
 			//Initialize
 				$('.selector').igValidator({
@@ -499,7 +499,7 @@ $.widget("ui.igValidator", {
 		```
 		*/
 		notificationOptions: null,
-		/* type="bool" Option to show an asterisks indication next to required fields.
+		/* type="bool" Gets/Sets the option to show an asterisks indication next to required fields.
 			Note: Indicators are not supported on grouped controls such as checkbox or radio button sets and the igRating control.
 			```
 				//Initialize
@@ -515,7 +515,7 @@ $.widget("ui.igValidator", {
 			```
 		*/
 		requiredIndication: false,
-		/* type="bool" Option to show a label indication next to optional fields.
+		/* type="bool" Gets/Sets the option to show a label indication next to optional fields.
 			Note: Indicators are not supported on grouped controls such as checkbox or radio button sets and the igRating control.
 			```
 				//Initialize
