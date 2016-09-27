@@ -26,51 +26,51 @@
 }
 .chartPalette1 {
   background-color: #7446B9!important;
-  border: 1px solid #7446B9!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette2 {
   background-color: #9FB328!important;
-  border: 1px solid #9FB328!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette3 {
   background-color: #F96232!important;
-  border: 1px solid #F96232!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette4 {
   background-color: #2E9CA6!important;
-  border: 1px solid #2E9CA6!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette5 {
   background-color: #DC3F76!important;
-  border: 1px solid #DC3F76!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette6 {
   background-color: #FF9800!important;
-  border: 1px solid #FF9800!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette7 {
   background-color: #3F51B5!important;
-  border: 1px solid #3F51B5!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette8 {
   background-color: #439C47!important;
-  border: 1px solid #439C47!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette9 {
   background-color: #795548!important;
-  border: 1px solid #795548!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette10 {
   background-color: #9A9A9A!important;
-  border: 1px solid #9A9A9A!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette11 {
   background-color: #C62828!important;
-  border: 1px solid #C62828!important;
+  border: 1px solid #fff!important;
 }
 .chartPalette12 {
   background-color: #9f725f!important;
-  border: 1px solid #745345!important;
+  border: 1px solid #fff!important;
 }
 .chartPaletteNegative {
   background-color: #c33d4a!important;
@@ -3186,51 +3186,51 @@ input.ui-igbutton {
 /***********/
 .ui-chart-palette-1 {
   background-color: #7446B9!important;
-  border: 1px solid #7446B9!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-2 {
   background-color: #9FB328!important;
-  border: 1px solid #9FB328!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-3 {
   background-color: #F96232!important;
-  border: 1px solid #F96232!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-4 {
   background-color: #2E9CA6!important;
-  border: 1px solid #2E9CA6!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-5 {
   background-color: #DC3F76!important;
-  border: 1px solid #DC3F76!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-6 {
   background-color: #FF9800!important;
-  border: 1px solid #FF9800!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-7 {
   background-color: #3F51B5!important;
-  border: 1px solid #3F51B5!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-8 {
   background-color: #439C47!important;
-  border: 1px solid #439C47!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-9 {
   background-color: #795548!important;
-  border: 1px solid #795548!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-10 {
   background-color: #9A9A9A!important;
-  border: 1px solid #9A9A9A!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-11 {
   background-color: #C62828!important;
-  border: 1px solid #C62828!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-palette-12 {
   background-color: #9f725f!important;
-  border: 1px solid #745345!important;
+  border: 1px solid #fff!important;
 }
 .ui-chart-legend,
 .ui-chart-piechart-container {
@@ -3266,6 +3266,12 @@ input.ui-igbutton {
   background-color: rgba(255, 255, 255, 0.95);
   border: 1px solid #888;
 }
+.ui-chart-innerlabels {
+  color: #fff !important;
+}
+.ui-chart-outerlabels {
+  color: #666 !important;
+}
 /*******************/
 /* Sparkline chart */
 /*******************/
@@ -3276,8 +3282,10 @@ input.ui-igbutton {
   border: 0px;
 }
 .ui-sparkline-tooltip {
+  background-color: rgba(255, 255, 255, 0.95);
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
-  padding: 3px;
+  border: 1px solid #888;
+  padding: 5px 8px;
 }
 .ui-sparkline-sparkpath {
   background: #439C47;
@@ -3342,8 +3350,10 @@ input.ui-igbutton {
   border: 0px;
 }
 .ui-funnel-tooltip {
+  background-color: rgba(255, 255, 255, 0.95);
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
-  padding: 3px;
+  border: 1px solid #888;
+  padding: 5px 8px;
 }
 .ui-funnel-slice {
   color: #FFFFFF;
@@ -3363,10 +3373,12 @@ input.ui-igbutton {
   border: 0px;
   font-size: 12px;
   font-family: "Segoe UI", Arial, sans-serif;
-  color: #fff;
 }
 .ui-doughnut-tooltip {
-  /*add styles*/
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  border: 1px solid #888;
+  padding: 5px 8px;
 }
 /**************/
 /* igSplitter */
