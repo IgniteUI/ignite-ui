@@ -5371,7 +5371,7 @@
 	$.ig.util.stringFormat2 = function (provider, format, args) {
 
 		// TODO: Use the provider somehow
-		return format.replace(/{(\d+)(?::)?([ ^} ]*)?}/g, function (match, number, format) {
+		return format.replace(/{(\d+)(?::)?([^}]*)?}/g, function (match, number, format) {
 			var arg = args[ number ];
 
 			if (arg === void 0) {
