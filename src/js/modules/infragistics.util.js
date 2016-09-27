@@ -25,7 +25,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.util",*/ [
 			"jquery",
 			"jquery-ui"
 		], factory );
@@ -6149,7 +6149,7 @@
 		}
 
 		var
-			sB64Enc = b64Data.replace(/[ ^A-Za-z0-9\+\/ ]/g, ""), nInLen = sB64Enc.length,
+			sB64Enc = b64Data.replace(/[^A-Za-z0-9\+\/]/g, ""), nInLen = sB64Enc.length,
 			nOutLen = nBlocksSize ?
 				Math.ceil((nInLen * 3 + 1 >> 2) / nBlocksSize) * nBlocksSize :
 				nInLen * 3 + 1 >> 2, taBytes;
