@@ -457,7 +457,10 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.categorychart.js",
 			"$path$/modules/infragistics.ui.categorychart.js"
 			],
-		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
+		css: [
+			"$path$/structure/modules/infragistics.ui.chart.css",
+			"$path$/structure/modules/infragistics.ui.categorychart.css"
+			]
 	},
 /* /// End Data Visualization /// */
 
