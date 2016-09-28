@@ -39,7 +39,7 @@
 	height:16px;
 }
 .ui-igtree a { 
-    text-decoration: none;
+    text-decoration: none!important;
     padding:1px 3px;
 }
 .ui-igtree a.ui-state-hover, 
