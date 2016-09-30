@@ -17,7 +17,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.popover",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util"
@@ -238,6 +238,9 @@
 		container: function () {
 			/* returns the container for the popover contents
 				returnType="object"
+				```
+				$( ".selector" ).%%WidgetName%%( "destroy" );
+				```
 			*/
 			return this.contentInner;
 		},
@@ -293,7 +296,7 @@
 			return currPosition;
 		},
 		setCoordinates: function (pos) {
-			/* set the currently coordinates of the popover
+			/* Sets the popover to specific coordinates.
 				paramType="object" The popover coordinates in pixels.
 			*/
 			this.popover.css({

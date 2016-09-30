@@ -18,7 +18,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.videoplayer",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
@@ -49,7 +49,7 @@
 		},
 
 		options: {
-			/* type="array" Get or set a list of video sources to choose from. Best coded/format is automatically detected by the control. Supported types are depending on the browser and could be one of the following mov, mp4, webm, ogg.
+			/* type="array" Gets/Sets a list of video sources to choose from. Best coded/format is automatically detected by the control. Supported types are depending on the browser and could be one of the following mov, mp4, webm, ogg.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -70,7 +70,7 @@
 			```
 			*/
 			sources: [],
-			/* type="string|number|null" Get or set the width of the control. By default null will stretch the control to fit data, if no other widths are defined.
+			/* type="string|number|null" Gets/Sets the width of the control. By default null will stretch the control to fit data, if no other widths are defined.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -86,7 +86,7 @@
 			```
 			*/
 			width: null,
-			/* type="string|number|null" Get or set the height of the control. By default null will stretch the control to fit data, if no other heights are defined.
+			/* type="string|number|null" Gets/Sets the height of the control. By default null will stretch the control to fit data, if no other heights are defined.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -102,7 +102,7 @@
 				```
 			*/
 			height: null,
-			/* type="string" Get or set a URL to an image to show, when no video data is available.
+			/* type="string" Gets/Sets a URL to an image to show, when no video data is available.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -117,7 +117,7 @@
 			```
 			*/
 			posterUrl: "",
-			/* type="bool" Get or set whether to preload load initial data for duration of video. If true it may start buffering the video, but this highly depends on the specific browser implementation.
+			/* type="bool" Gets/Sets whether to preload load initial data for duration of video. If true it may start buffering the video, but this highly depends on the specific browser implementation.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -132,7 +132,7 @@
 			```
 			*/
 			preload: false,
-			/* type="bool" Get or set whether the video should start playing immediately after the control is loaded.
+			/* type="bool" Gets/Sets whether the video should start playing immediately after the control is loaded.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -147,7 +147,7 @@
 			```
 			*/
 			autoplay: false,
-			/* type="bool" Get or set whether player controls will auto hide when video is not hovered. This is applicable only when Infragistics playback controls are used.
+			/* type="bool" Gets/Sets whether player controls will auto hide when video is not hovered. This is applicable only when Infragistics playback controls are used.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -162,7 +162,7 @@
 				```
 			*/
 			autohide: true,
-			/* type="number" Get or set volume slider auto hide delay. This is applicable only when Infragistics playback controls are used.
+			/* type="number" Gets/Sets volume slider auto hide delay. This is applicable only when Infragistics playback controls are used.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -177,7 +177,7 @@
 			```
 			*/
 			volumeAutohideDelay: 1000,
-			/* type="number" Get or set the center big button hide delay.
+			/* type="number" Gets/Sets the center big button hide delay.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -192,7 +192,7 @@
 				```
 			*/
 			centerButtonHideDelay: 1200,
-			/* type="bool" Get or set whether the video to start again after it has ended.
+			/* type="bool" Gets/Sets whether the video to start again after it has ended.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -207,7 +207,7 @@
 			```
 			*/
 			loop: false,
-			/* type="bool" Get or set whether if you want to use the built in browser controls. By default player uses Infragistics playback controls. Note that you may have different look and feel across different browsers if you use the built in browser controls.
+			/* type="bool" Gets/Sets whether if you want to use the built in browser controls. By default player uses Infragistics playback controls. Note that you may have different look and feel across different browsers if you use the built in browser controls.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -222,7 +222,7 @@
 			```
 			*/
 			browserControls: false,
-			/* type="bool" Get or set whether the video player to be in full screen or not. This is not a pure full screen, because browsers do not allow that. It just sets 100% width and height to the control.
+			/* type="bool" Gets/Sets whether the video player to be in full screen or not. This is not a pure full screen, because browsers do not allow that. It just sets 100% width and height to the control.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -237,7 +237,7 @@
 			```
 			*/
 			fullscreen: false,
-			/* type="number" Get or set the video volume. It can be between 0.0 and 1.0.
+			/* type="number" Gets/Sets the video volume. It can be between 0.0 and 1.0.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -252,7 +252,7 @@
 			```
 			*/
 			volume: 0.5,
-			/* type="bool" Get or set whether the video volume is muted.
+			/* type="bool" Gets/Sets whether the video volume is muted.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -267,7 +267,7 @@
 			```
 			*/
 			muted: false,
-			/* type="string" Get or set video title.
+			/* type="string" Gets/Sets video title.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -282,7 +282,7 @@
 			```
 			*/
 			title: "",
-			/* type="bool" Get or set whether the control seek tool tip will be shown when hovering the video progress bar.
+			/* type="bool" Gets/Sets whether the control seek tool tip will be shown when hovering the video progress bar.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -297,7 +297,7 @@
 			```
 			*/
 			showSeekTime: true,
-			/* type="string" Get or set the format of the video progress label. You should use ${currentTime} to represent current playback position and ${duration} to represent video duration.
+			/* type="string" Gets/Sets the format of the video progress label. You should use ${currentTime} to represent current playback position and ${duration} to represent video duration.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -312,7 +312,7 @@
 			```
 			*/
 			progressLabelFormat: "${currentTime} / ${duration}",
-			/* type="array" Get or set an array of bookmarks that will be displayed in the video player control.
+			/* type="array" Gets/Sets an array of bookmarks that will be displayed in the video player control.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -340,7 +340,7 @@
 				```
 			*/
 			bookmarks: [{
-				/* type="number" Get or set where the bookmark will be positioned. Should be between 0 and movie duration in seconds.
+				/* type="number" Gets/Sets where the bookmark will be positioned. Should be between 0 and movie duration in seconds.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -362,7 +362,7 @@
 				```
 				*/
 				time: 0,
-				/* type="string" Get or set bookmark title. It is shown as tooltip on hover.
+				/* type="string" Gets/Sets bookmark title. It is shown as tooltip on hover.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -384,7 +384,7 @@
 				```
 				*/
 				title: "",
-				/* type="bool" Get or set whether the bookmark is disabled or not.
+				/* type="bool" Gets/Sets whether the bookmark is disabled or not.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -408,7 +408,7 @@
 				*/
 				disabled: false
 			}],
-			/* type="array" Get or set an array of related videos that will be displayed when video playback has ended.
+			/* type="array" Gets/Sets an array of related videos that will be displayed when video playback has ended.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -459,7 +459,7 @@
 			```
 			*/
 			relatedVideos: [{
-				/* type="string" Get or set the URL of the related video image.
+				/* type="string" Gets/Sets the URL of the related video image.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -480,7 +480,7 @@
 				```
 				*/
 				imageUrl: "",
-				/* type="string" Get or set the title of the video.
+				/* type="string" Gets/Sets the title of the video.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -501,7 +501,7 @@
 				```
 				*/
 				title: "",
-				/* type="number" Get or set the width of the related video image.
+				/* type="number" Gets/Sets the width of the related video image.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -522,7 +522,7 @@
 				```
 				*/
 				width: null,
-				/* type="number" Get or set the height of the related video image.
+				/* type="number" Gets/Sets the height of the related video image.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -543,7 +543,7 @@
 				```
 				*/
 				height: null,
-				/* type="string" Get or set a link to a page that will play the related video. It will be opened in a new window. If there are sources also, the link property has a priority.
+				/* type="string" Gets/Sets a link to a page that will play the related video. It will be opened in a new window. If there are sources also, the link property has a priority.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -560,7 +560,7 @@
 				```
 				*/
 				link: "",
-				/* type="array" Get or set the sources of the related video.
+				/* type="array" Gets/Sets the sources of the related video.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -581,7 +581,7 @@
 				```
 				*/
 				sources: [],
-				/* type="string" Get or set custom CSS class to be applied on the related video element.
+				/* type="string" Gets/Sets custom CSS class to be applied on the related video element.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -604,7 +604,7 @@
 				*/
 				css: null
 			}],
-			/* type="array" Get or set an array of banner objects that will show the banners when the video clip is played.
+			/* type="array" Gets/Sets an array of banner objects that will show the banners when the video clip is played.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -642,7 +642,7 @@
 			```
 			*/
 			banners: [{
-				/* type="string" Get or set the banner image url.
+				/* type="string" Gets/Sets the banner image url.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -670,7 +670,7 @@
 				```
 				*/
 				imageUrl: "",
-				/* type="array" Get or set an array of numbers. Each number specifies on which second in the movie the banner will pop.
+				/* type="array" Gets/Sets an array of numbers. Each number specifies on which second in the movie the banner will pop.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -698,7 +698,7 @@
 				```
 				*/
 				times: [],
-				/* type="bool" Get or set whether the user will be able to close the banner or not.
+				/* type="bool" Gets/Sets whether the user will be able to close the banner or not.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -726,7 +726,7 @@
 				```
 				*/
 				closeBanner: true,
-				/* type="bool" Get or set whether to apply animation effects when showing or hiding the banner. If set to true, the animation is played for banner.duration in milliseconds.
+				/* type="bool" Gets/Sets whether to apply animation effects when showing or hiding the banner. If set to true, the animation is played for banner.duration in milliseconds.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -754,7 +754,7 @@
 				```
 				*/
 				animate: true,
-				/* type="bool" Get or set whether the banner is visible or not.
+				/* type="bool" Gets/Sets whether the banner is visible or not.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -782,7 +782,7 @@
 				```
 				*/
 				visible: true,
-				/* type="number" Get or set the banner animation duration.
+				/* type="number" Gets/Sets the banner animation duration.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -811,7 +811,7 @@
 				```
 				*/
 				duration: 1000,
-				/* type="bool" Get or set whether to automatically hide the banner. If set to true, the banner is hidden after [hidedelay](ui.igvideoplayer#options:banners.hidedelay) in milliseconds.
+				/* type="bool" Gets/Sets whether to automatically hide the banner. If set to true, the banner is hidden after [hidedelay](ui.igvideoplayer#options:banners.hidedelay) in milliseconds.
 				```
 				//Initialize
 					$(".selector").igVideoPlayer({
@@ -839,7 +839,7 @@
 				```
 				*/
 				autohide: false,
-				/* type="number" Get or set the banner autohide delay in milliseconds. It is taken into account only if the banner.autohide option is set to true.
+				/* type="number" Gets/Sets the banner autohide delay in milliseconds. It is taken into account only if the banner.autohide option is set to true.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -867,7 +867,7 @@
 				```
 				*/
 				hidedelay: 10000,
-				/* type="string" Get or set the banner link that will open in new window.
+				/* type="string" Gets/Sets the banner link that will open in new window.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -895,7 +895,7 @@
 				```
 				*/
 				link: null,
-				/* type="number|string" Get or set the banner width
+				/* type="number|string" Gets/Sets the banner width
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -923,7 +923,7 @@
 				```
 				*/
 				width: null,
-				/* type="number|string" Get or set the banner height
+				/* type="number|string" Gets/Sets the banner height
 				```
 				//Initialize
 					$(".selector").igVideoPlayer({
@@ -951,7 +951,7 @@
 				```
 				*/
 				height: null,
-				/* type="string" Get or set the banner specific css class, that will be applied on the banner grid.
+				/* type="string" Gets/Sets the banner specific css class, that will be applied on the banner grid.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -981,7 +981,7 @@
 				*/
 				css: null
 			}],
-			/* type="object" Get or set an array of commercials objects that will be displayed when the video is playing.
+			/* type="object" Gets/Sets an array of commercials objects that will be displayed when the video is playing.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -1034,7 +1034,7 @@
 			```
 			*/
 			commercials: {
-				/* type="array" Get or set an array of linked commercial objects. A linked commercial is a separate video file that will be played in the specified position of the original movie clip by [startTime](ui.igvideoplayer#options:commercials.linkedCommercials.startTime). This feature is useful if you have frequently changing outside commercial sources.
+				/* type="array" Gets/Sets an array of linked commercial objects. A linked commercial is a separate video file that will be played in the specified position of the original movie clip by [startTime](ui.igvideoplayer#options:commercials.linkedCommercials.startTime). This feature is useful if you have frequently changing outside commercial sources.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -1085,7 +1085,7 @@
 				```
 				*/
 				linkedCommercials: [{
-					/* type="array" Get or set the sources of the linked commercial video.
+					/* type="array" Gets/Sets the sources of the linked commercial video.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1114,7 +1114,7 @@
 					```
 					*/
 					sources: [],
-					/* type="number" Get or set the second in the video at which the linked commercial should play.
+					/* type="number" Gets/Sets the second in the video at which the linked commercial should play.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1143,7 +1143,7 @@
 					```
 					*/
 					startTime: 10,
-					/* type="string" Get or set the link to open on linked commercial click.
+					/* type="string" Gets/Sets the link to open on linked commercial click.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1172,7 +1172,7 @@
 					```
 					*/
 					link: "",
-					/* type="string" Get or set the tooltip for the linked commercial bookmark.
+					/* type="string" Gets/Sets the tooltip for the linked commercial bookmark.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1202,7 +1202,7 @@
 					*/
 					title: ""
 				}],
-				/* type="array" Get or set an array of embedded commercials objects. An embedded commercial is an ad that is contained in the original video file. It is suitable when you want to mark some sections of the video as commercials.
+				/* type="array" Gets/Sets an array of embedded commercials objects. An embedded commercial is an ad that is contained in the original video file. It is suitable when you want to mark some sections of the video as commercials.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -1245,7 +1245,7 @@
 				```
 				*/
 				embeddedCommercials: [{
-					/* type="number" Get or set the start second of the embedded commercial.
+					/* type="number" Gets/Sets the start second of the embedded commercial.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1274,7 +1274,7 @@
 					```
 					*/
 					startTime: 20,
-					/* type="number" Get or set the end second of the embedded commercial.
+					/* type="number" Gets/Sets the end second of the embedded commercial.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1304,7 +1304,7 @@
 					```
 					*/
 					endTime: 30,
-					/* type="string" Get or set the sponsored link of the embedded commercial.
+					/* type="string" Gets/Sets the sponsored link of the embedded commercial.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1333,7 +1333,7 @@
 					```
 					*/
 					link: "",
-					/* type="string" Get or set the tooltip for the bookmark of the embedded commercial.
+					/* type="string" Gets/Sets the tooltip for the bookmark of the embedded commercial.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1363,7 +1363,7 @@
 					*/
 					title: ""
 				}],
-				/* type="bool" Get or set whether the commercials will play againg during the repetitive video plays.
+				/* type="bool" Gets/Sets whether the commercials will play againg during the repetitive video plays.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -1382,7 +1382,7 @@
 				```
 				*/
 				alwaysPlayCommercials: false,
-				/* type="bool" Get or set whether to show commercial locations or not.
+				/* type="bool" Gets/Sets whether to show commercial locations or not.
 				```
 					//Initialize
 					$(".selector").igVideoPlayer({
@@ -1452,7 +1452,7 @@
 				```
 				*/
 				adMessage: {
-					/* type="bool" Get or set whether to apply an animation effect when showing or hiding the ad message. If set to true, the animation is played for [animationDuration](ui.igvideoplayer#options:commercials.adMessage.animationDuration) in milliseconds.
+					/* type="bool" Gets/Sets whether to apply an animation effect when showing or hiding the ad message. If set to true, the animation is played for [animationDuration](ui.igvideoplayer#options:commercials.adMessage.animationDuration) in milliseconds.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1497,7 +1497,7 @@
 					```
 					*/
 					animate: true,
-					/* type="bool" Get or set the ad message auto hide of the commercial.
+					/* type="bool" Gets/Sets the ad message auto hide of the commercial.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1539,7 +1539,7 @@
 					```
 					*/
 					autoHide: true,
-					/* type="number" Get or set the ad message hide delay.
+					/* type="number" Gets/Sets the ad message hide delay.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1581,7 +1581,7 @@
 					```
 					*/
 					hideDelay: 20000,
-					/* type="number" Get or set the ad message animation duration of the commercial.
+					/* type="number" Gets/Sets the ad message animation duration of the commercial.
 					```
 						//Initialize
 						$(".selector").igVideoPlayer({
@@ -1926,112 +1926,112 @@
 		},
 
 		css: {
-			/* Get or set the widget base CSS classes. */
+			/* Gets/Sets the widget base CSS classes. */
 			"baseClasses": "ui-widget ui-igplayer",
-			/* Get or set the player controls CSS classes. */
+			/* Gets/Sets the player controls CSS classes. */
 			"controlsClass": "ui-widget-header ui-igplayer-controls " +
 			"ui-igplayer-grid ui-igplayer-autohide ui-corner-all",
-			/* Get or set the controls hide CSS class. Applied on controls auto hide. */
+			/* Gets/Sets the controls hide CSS class. Applied on controls auto hide. */
 			"controlsHideClass": "ui-igplayer-controls-hide",
-			/* Get or set the class applied on main video element. */
+			/* Gets/Sets the class applied on main video element. */
 			"videoClass": "ui-igplayer-video",
-			/* Get or set the class applied on a span element, shown when the player is opened in a non HTML5 compatible browser. */
+			/* Gets/Sets the class applied on a span element, shown when the player is opened in a non HTML5 compatible browser. */
 			"unsupportedBrowserClass": "ui-html5-non-html5-supported-message ui-helper-clearfix",
-			/* Get or set the css class applied on the main video when the control is activated. */
+			/* Gets/Sets the css class applied on the main video when the control is activated. */
 			"activeVideoClass": "ui-igplayer-active-video",
-			/* Get or set the css class applied on the play button of the playback controls. */
+			/* Gets/Sets the css class applied on the play button of the playback controls. */
 			"playButtonClass": "ui-igplayer-playbutton",
-			/* Get or set the css class applied on the slider widget of the playback controls. */
+			/* Gets/Sets the css class applied on the slider widget of the playback controls. */
 			"progressBarClass": "ui-igplayer-progressbar ui-corner-all",
-			/* Get or set the css class applied on the full screen button of the playback controls. */
+			/* Gets/Sets the css class applied on the full screen button of the playback controls. */
 			"fullScreenClass": "ui-igplayer-fullscreen-button",
-			/* Get or set the css class applied on the full screen button icon. */
+			/* Gets/Sets the css class applied on the full screen button icon. */
 			"fullScreenIconClass": "ui-icon ui-igbutton-icon ui-icon-arrow-4-diag",
-			/* Get or set the css class applied on the volume control button of the playback controls. */
+			/* Gets/Sets the css class applied on the volume control button of the playback controls. */
 			"volumeControlClass": "ui-igplayer-volumecontrol",
-			/* Get or set the css class applied on the volume slider of the playback controls. */
+			/* Gets/Sets the css class applied on the volume slider of the playback controls. */
 			"volumeSliderClass": "ui-igplayer-volumeslider",
-			/* Get or set the css class applied on the progress label of the playback controls. */
+			/* Gets/Sets the css class applied on the progress label of the playback controls. */
 			"progressLabelClass": "ui-igplayer-progresslabel",
-			/* Get or set the css class applied on the bookmark container DIV. */
+			/* Gets/Sets the css class applied on the bookmark container DIV. */
 			"bookmarkContainerClass": "ui-widget ui-igplayer-bookmark-container",
-			/* Get or set the css class applied on the bookmark header container. */
+			/* Gets/Sets the css class applied on the bookmark header container. */
 			"bookmarkContainerHeaderClass": "ui-widget-header ui-igplayer-bookmark-header",
-			/* Get or set the css class applied on the bookmark list in the bookmark area. */
+			/* Gets/Sets the css class applied on the bookmark list in the bookmark area. */
 			"bookmarkListClass": "ui-widget-content ui-igplayer-bookmark-list",
-			/* Get or set the css class applied on the bookmark list item when the item in the bookmark area is disabled. */
+			/* Gets/Sets the css class applied on the bookmark list item when the item in the bookmark area is disabled. */
 			"bookmarkItemDisabledClass": "ui-igplayer-bookmark-item-disabled",
-			/* Get or set the css class applied on the bookmark list item showing the time in the bookmark area. */
+			/* Gets/Sets the css class applied on the bookmark list item showing the time in the bookmark area. */
 			"bookmarkItemTimeClass": "ui-igplayer-bookmark-item-time",
-			/* Get or set the css class applied on the bookmark list item showing the title in the bookmark area. */
+			/* Gets/Sets the css class applied on the bookmark list item showing the title in the bookmark area. */
 			"bookmarkItemTitleClass": "ui-igplayer-bookmark-item-title",
-			/* Get or set the css class showing the active bookmark item in the bookmark area. */
+			/* Gets/Sets the css class showing the active bookmark item in the bookmark area. */
 			"bookmarkActiveItemClass": "ui-igplayer-bookmark-active-item",
-			/* Get or set the css class applied on the related videos container class. */
+			/* Gets/Sets the css class applied on the related videos container class. */
 			"relatedVideosContainerClass": "ui-igplayer-related-video-container",
-			/* Get or set the css class applied on the related videos outer most container. */
+			/* Gets/Sets the css class applied on the related videos outer most container. */
 			"relatedVideosOuterContainerClass": "ui-igplayer-related-video-outer-container",
-			/* Get or set the css class applied on a related video element. */
+			/* Gets/Sets the css class applied on a related video element. */
 			"relatedVideoClass": "ui-igplayer-related-video",
-			/* Get or set the css class applied on the first related video element. */
+			/* Gets/Sets the css class applied on the first related video element. */
 			"relatedVideoFirstClass": "ui-igplayer-related-video-first",
-			/* Get or set the css class applied on the last related video element. */
+			/* Gets/Sets the css class applied on the last related video element. */
 			"relatedVideoLastClass": "ui-igplayer-related-video-last",
-			/* Get or set the css class applied on a related video hover. */
+			/* Gets/Sets the css class applied on a related video hover. */
 			"relatedVideoHoverClass": "ui-igplayer-related-video-hover",
-			/* Get or set the css class applied on the left scroll button. */
+			/* Gets/Sets the css class applied on the left scroll button. */
 			"relatedVideoScrollLeftClass": "ui-igplayer-related-scroller-left",
-			/* Get or set the class applied on the left scroll button icon. */
+			/* Gets/Sets the class applied on the left scroll button icon. */
 			"relatedVideoScrollLeftIconClass": "ui-icon-triangle-1-w",
-			/* Get or set the css class applied on the right scroll button of the related videos. */
+			/* Gets/Sets the css class applied on the right scroll button of the related videos. */
 			"relatedVideoScrollRightClass": "ui-igplayer-related-scroller-right",
-			/* Get or set the css class applied on the right icon of the scroll button. */
+			/* Gets/Sets the css class applied on the right icon of the scroll button. */
 			"relatedVideoScrollRightIconClass": "ui-icon-triangle-1-e",
-			/* Get or set the css class applied on the related videos list. */
+			/* Gets/Sets the css class applied on the related videos list. */
 			"relatedVideoScrollListClass": "ui-igplayer-related-list",
-			/* Get or set the css class applied on the related videos header area. */
+			/* Gets/Sets the css class applied on the related videos header area. */
 			"relatedVideosHeaderClass": "ui-igplayer-related-video-header",
-			/* Get or set the css class applied on the related videos bottom area containing the replay and fullscreen buttons. */
+			/* Gets/Sets the css class applied on the related videos bottom area containing the replay and fullscreen buttons. */
 			"relatedVideoBarClass": "ui-igplayer-related-video-bar",
-			/* Get or set the css class applied on the replay button in the related videos area. */
+			/* Gets/Sets the css class applied on the replay button in the related videos area. */
 			"relatedVideoReplayClass": "ui-igplayer-related-video-replay",
-			/* Get or set the css class applied on the replay button icon. */
+			/* Gets/Sets the css class applied on the replay button icon. */
 			"relatedVideoReplayIconClass": "ui-icon-arrowrefresh-1-s",
-			/* Get or set the css class applied on the banner container div. */
+			/* Gets/Sets the css class applied on the banner container div. */
 			"bannerContainerClass": "ui-igplayer-banner-container",
-			/* Get or set the css class applied on the banner container div. */
+			/* Gets/Sets the css class applied on the banner container div. */
 			"bannerClass": "ui-igplayer-banner ui-corner-all",
-			/* Get or set the css class applied on the banner close button. */
+			/* Gets/Sets the css class applied on the banner close button. */
 			"bannerCloseClass": "ui-igplayer-banner-close",
-			/* Get or set the css class applied on the banner close icon. */
+			/* Gets/Sets the css class applied on the banner close icon. */
 			"bannerCloseIconClass": "ui-icon-close",
-			/* Get or set the css class applied on the resume video message container. */
+			/* Gets/Sets the css class applied on the resume video message container. */
 			"adMsgContainerClass": "ui-igplayer-ad-msg-container",
-			/* Get or set the css class applied on the resume video message span. */
+			/* Gets/Sets the css class applied on the resume video message span. */
 			"adMsgClass": "ui-igplayer-ad-msg",
-			/* Get or set the css class applied on the resume video message close button. */
+			/* Gets/Sets the css class applied on the resume video message close button. */
 			"adMsgCloseClass": "ui-igplayer-ad-msg-close",
-			/* Get or set the css class applied on the resume video message close button icon. */
+			/* Gets/Sets the css class applied on the resume video message close button icon. */
 			"adMsgCloseIconClass": "ui-icon-close",
-			/* Get or set the css class applied on the linked commercial bookmark. */
+			/* Gets/Sets the css class applied on the linked commercial bookmark. */
 			"linkedBookmarkClass": "ui-igplayer-linked-bookmark",
-			/* Get or set the css class applied on an embedded commercial bookmark. */
+			/* Gets/Sets the css class applied on an embedded commercial bookmark. */
 			"adBookmarkClass": "ui-igplayer-ad-bookmark",
-			/* Get or set the css class applied on the anchor element shown when video sources are unsupported. */
+			/* Gets/Sets the css class applied on the anchor element shown when video sources are unsupported. */
 			"unsupportedVideoSourceClass": "ui-igplayer-not-supported-video-source",
-			/* Get or set the css class applied on the anchor element showing the unsupported video source icon. */
+			/* Gets/Sets the css class applied on the anchor element showing the unsupported video source icon. */
 			"unsupportedVideoSourceIconClass": "ui-igplayer-not-supported-video-source-icon",
-			/* Get or set the css class applied on the center play button. */
+			/* Gets/Sets the css class applied on the center play button. */
 			"centerPlayButtonClass": "ui-igplayer-centerplaybutton-play",
-			/* Get or set the css class applied on the center pause button. */
+			/* Gets/Sets the css class applied on the center pause button. */
 			"centerPauseButtonClass": "ui-igplayer-centerplaybutton-pause",
-			/* Get or set the css class applied on the center play button icon. */
+			/* Gets/Sets the css class applied on the center play button icon. */
 			"centerPlayButtonIconClass": "ui-igplayer-centerplaybutton-icon",
-			/* Get or set the css class applied on the buffering indicator. */
+			/* Gets/Sets the css class applied on the buffering indicator. */
 			"waitingIndicatorClass": "ui-igplayer-waiting",
-			/* Get or set the css class applied on the buffering indicator icon. */
+			/* Gets/Sets the css class applied on the buffering indicator icon. */
 			"waitingIndicatorIconClass": "ui-igplayer-waiting-icon",
-			/* Get or set the css class applied on the seek tooltip. */
+			/* Gets/Sets the css class applied on the seek tooltip. */
 			"seekTooltipClass": "ui-igplayer-seektooltip"
 		},
 
@@ -4753,7 +4753,7 @@
 		},
 
 		currentTime: function (val) {
-			/* Get or set the current time of the playing video.
+			/* Gets/Sets the current time of the playing video.
 			```
 				//Get
 				var currentTime = $(".selector").igVideoPlayer("currentTime");
@@ -4861,7 +4861,7 @@
 		},
 
 		paused: function () {
-			/* Get whether the current played video is paused.
+			/* Returns whether the currently played video is paused.
 			```
 			var isPaused = $(".selector").igVideoPlayer("paused");
 			```

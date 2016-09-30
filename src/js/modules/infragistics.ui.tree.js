@@ -23,7 +23,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.tree",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
@@ -192,7 +192,7 @@
 			```
 			*/
 			hotTracking: true,
-			/* type="string|null" Gets/Set the image url applied to all parent nodes.
+			/* type="string|null" Gets/Sets the image url applied to all parent nodes.
 			```
 				//Initialize
 				$(".selector").igTree({
@@ -201,6 +201,11 @@
 
 				//Get
 				var url = $(".selector").igTree("option", "parentNodeImageUrl");
+
+				// Set - works only if an image was also set on initialization.
+				// Throws an error otherwise, as the element holding the image source is missing.
+				$(".selector").igTree("option", "parentNodeImageUrl", "images/photo.png");
+
 			```
 				string Image with the specified URL will be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
 				null Option is ignored
@@ -215,6 +220,10 @@
 
 				//Get
 				var class = $(".selector").igTree("option", "parentNodeImageClass");
+
+				// Set - works only if an image was also set on initialization.
+				// Throws an error otherwise, as the element holding the image source is missing.
+				$(".selector").igTree("option", "parentNodeImageClass", "altfolderimage");
 			```
 				string Specified class with a CSS sprite that would be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
 				null Option is ignored
@@ -229,6 +238,10 @@
 
 				//Get
 				var text = $(".selector").igTree("option", "parentNodeImageTooltip");
+
+				// Set - works only if an image was also set on initialization.
+				// Throws an error otherwise, as the element holding the image source is missing.
+				$(".selector").igTree("option", "parentNodeImageTooltip", "rootFolder");
 			```
 				string Specified a tooltip that would be rendered for each node that has children.
 				null Option is ignored
@@ -243,6 +256,11 @@
 
 				//Get
 				var url = $(".selector").igTree("option", "leafNodeImageUrl");
+
+				// Set - works only if an image was also set on initialization.
+				// Throws an error otherwise, as the element holding the image source is missing.
+				$(".selector").igTree("option", "leafNodeImageUrl", "images/magazine.png");
+
 			```
 				string Image with the specified URL will be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
 				null Option is ignored
@@ -257,6 +275,10 @@
 
 				//Get
 				var class = $(".selector").igTree("option", "leafNodeImageClass");
+
+				// Set - works only if an image was also set on initialization.
+				// Throws an error otherwise, as the element holding the image source is missing.
+				$(".selector").igTree("option", "leafNodeImageClass", "altleafnodeimage");
 			```
 				string Specified class with a CSS sprite that would be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
 				null Option is ignored
@@ -271,6 +293,10 @@
 
 				//Get
 				var text = $(".selector").igTree("option", "leafNodeImageTooltip");
+
+				// Set - works only if an image was also set on initialization.
+				// Throws an error otherwise, as the element holding the image source is missing.
+				$(".selector").igTree("option", "leafNodeImageTooltip", "Magazine");
 			```
 				string Specified a tooltip that would be rendered for each node that has no children.
 				null Option is ignored
@@ -737,7 +763,7 @@
 				$(".selector").igTree({
 					dragAndDropSettings : {
 						allowDrop: true,
-						```
+						...
 					}
 				});
 
@@ -747,7 +773,7 @@
 				//Set
 				settings.allowDrop = {
 					allowDrop: false,
-					```
+					...
 					};
 				$(".selector").igTree("option", "dragAndDropSettings", settings);
 			```
@@ -950,8 +976,7 @@
 					default type="string" would render the default igTree helper.
 				*/
 				helper: "default",
-				/* type="function|null" Gets the method for custom drop point validation. Returning true from this function would render the drop point valid, while false would make it invalid.
-					The function has one parameter which is the current drop point and the context (this) of the function is the drag element.
+				/* type="function|null" Gets the method for custom drop point validation. Returning true from this function would render the drop point valid, while false would make it invalid. The function has one parameter which is the current drop point and the context (this) of the function is the drag element.
 					```
 						//Initialize
 						$(".selector").igTree({

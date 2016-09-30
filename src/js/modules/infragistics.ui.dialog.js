@@ -27,7 +27,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.dialog",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util"
@@ -53,7 +53,7 @@
 		RESTORE = 6,
 		_pos = {
 
-		    // default position of dialog
+			// default position of dialog
 			my: "center",
 			at: "center",
 			collision: "fit",
@@ -270,7 +270,7 @@
 				```
 			*/
 			pinOnMinimized: false,
-			/* type="string" Gets/Sets the name of the css class which is applied to the SPAN element located on the left side of the header.
+			/* type="string" Gets the name of the css class which is applied to the SPAN element located on the left side of the header.
 				```
 				//Initialize
 				$(".selector").igDialog({
@@ -342,7 +342,7 @@
 				```
 			*/
 			footerText: null,
-			/* type="string" Gets/Sets name of the css class which is applied to the main DIV element of the dialog.
+			/* type="string" Gets the name of the css class which is applied to the main DIV element of the dialog.
 				```
 				//Initialize
 				$(".selector").igDialog({
@@ -917,11 +917,11 @@
 		},
 		css: {
 			/* Classes applied to the main/top element. */
-		    dialog: "ui-igdialog ui-dialog ui-widget " +
-                "ui-widget-content ui-corner-all",
+			dialog: "ui-igdialog ui-dialog ui-widget " +
+				"ui-widget-content ui-corner-all",
 			/* Classes applied to the header. */
-		    header: "ui-igdialog-header ui-dialog-titlebar ui-widget-header " +
-                "ui-corner-top ui-helper-clearfix",
+			header: "ui-igdialog-header ui-dialog-titlebar ui-widget-header " +
+				"ui-corner-top ui-helper-clearfix",
 			/* Classes applied to the header in focused state. */
 			headerFocus: "ui-igdialog-header-focus ui-state-focus",
 			/* Classes applied to the header in minimized state. */
@@ -1372,7 +1372,7 @@
 			if (_isSrc(self._header, src) || _isSrc(self._footer, src)) {
 				name = src.nodeName;
 				if (name !== "INPUT" && name !== "BUTTON") {
-				    _stopEvt(e);
+					_stopEvt(e);
 
 					// ensure focus
 					self._setFocus();
@@ -1459,7 +1459,7 @@
 			}
 			str = "s" + (o.pinned ? "1" : "") + (this._opened ? (this._min ? 2 : (this._max ? 3 : 1)) : 0) +
 				(o.width ? ":w" + o.width : "") + (o.height ? ":h" + o.height : "") +
-                    (":z" + this.element.css("zIndex") || o.zIndex);
+					(":z" + this.element.css("zIndex") || o.zIndex);
 			pos = o.position;
 			if (pos && pos.length === 2) {
 				str += ":p" + pos[ 0 ] + "," + pos[ 1 ];
@@ -1528,20 +1528,20 @@
 			return container;
 		},
 		_fixState: function () {
-		    this.options.state = this._opened ?
-                (this._min ? "minimized" : (this._max ? "maximized" : "opened")) : "closed";
+			this.options.state = this._opened ?
+				(this._min ? "minimized" : (this._max ? "maximized" : "opened")) : "closed";
 		},
 		_minimize: function (e) {
 			return this._doState(e, { action: this._min ?
-                "restore" : "minimize" }, e ? "minimize" : null, "_onMin", true);
+				"restore" : "minimize" }, e ? "minimize" : null, "_onMin", true);
 		},
 		_maximize: function (e) {
 			return this._doState(e, { action: this._max ?
-                "restore" : "maximize" }, e ? "maximize" : null, "_onMax", true);
+				"restore" : "maximize" }, e ? "maximize" : null, "_onMax", true);
 		},
 		_pin: function (e) {
 			return this._doState(e, { action: this.options.pinned ?
-                "unpin" : "pin" }, e ? "pin" : null, "_onPin");
+				"unpin" : "pin" }, e ? "pin" : null, "_onPin");
 		},
 		_close: function (e) {
 			return this._opened ? this.close(e) : this._open(e);
@@ -1562,7 +1562,7 @@
 			}
 			delete self._minHW;
 			header = self._header = _notab($("<div />").addClass(css.header).css("display", "block")
-                .prependTo(self.element)).dblclick(function (e) {
+				.prependTo(self.element)).dblclick(function (e) {
 				var dbl = o.enableDblclick;
 				if (!dbl) {
 					return;
@@ -1575,8 +1575,8 @@
 			});
 
 			if (o.imageClass) {
-			    self._img = $("<span />").addClass(css.headerImage).addClass(o.imageClass)
-                    .html("&nbsp;").appendTo(header);
+				self._img = $("<span />").addClass(css.headerImage).addClass(o.imageClass)
+					.html("&nbsp;").appendTo(header);
 			}
 			self._headerText = $("<span />").addClass(css.headerText).html(txt || "&nbsp;").appendTo(header);
 
@@ -1632,8 +1632,8 @@
 				delete self._footer;
 			}
 			if (o.showFooter) {
-			    self._footer = _notab($("<div />").addClass(css.footer).css("display", "block")
-                    .html(txt || "&nbsp").appendTo(self.element));
+				self._footer = _notab($("<div />").addClass(css.footer).css("display", "block")
+					.html(txt || "&nbsp").appendTo(self.element));
 			}
 		},
 		_onMin: function (e, noSize, noFocus) {
@@ -1652,7 +1652,7 @@
 			}
 			but = header.find("." + css.minimize);
 			but.find("*").removeClass(min ? css.minimizeIcon : css.restoreIcon)
-                .addClass(min ? css.restoreIcon : css.minimizeIcon);
+				.addClass(min ? css.restoreIcon : css.minimizeIcon);
 			if (e && e.type && min && this._max) {
 				this._onMax(false, true, true);
 			}
@@ -1686,12 +1686,12 @@
 				return;
 			}
 			if (max) {
-			    if (this._min) {
-			        this._onMin(false, true, true);
-			    }
-			    if (o.pinned) {
-			        this._onPin(false, true, true);
-			    }
+				if (this._min) {
+					this._onMin(false, true, true);
+				}
+				if (o.pinned) {
+					this._onPin(false, true, true);
+				}
 			}
 			this._max = max;
 			if (!max) {
@@ -1699,18 +1699,18 @@
 			} else {
 
 				// K.D. July 3rd, 2014 Bug #166685 Attaching the dialog to the body before maximize and restoring its
-			    // position in the DOM on minimize.
-			    if (!this.element.parent().is(document.body)) {
+				// position in the DOM on minimize.
+				if (!this.element.parent().is(document.body)) {
 
-			        // D.P. Dec 3rd, 2015 Bug #209633 igHtmlEditor content is cleared after igDialog is maximized
-			        // Don't move dialog if it's already direct descendant of the body to avoid iframe relaods
-			        this._originalParent = this.element.parent();
-			        this.element.appendTo(document.body);
-			    }
+					// D.P. Dec 3rd, 2015 Bug #209633 igHtmlEditor content is cleared after igDialog is maximized
+					// Don't move dialog if it's already direct descendant of the body to avoid iframe relaods
+					this._originalParent = this.element.parent();
+					this.element.appendTo(document.body);
+				}
 			}
 			but = header.find("." + css.maximize);
 			but.find("*").removeClass(max ? css.maximizeIcon : css.restoreIcon)
-                .addClass(max ? css.restoreIcon : css.maximizeIcon);
+				.addClass(max ? css.restoreIcon : css.maximizeIcon);
 			this._loc(but, max ? RESTORE : MAX);
 
 			if (max) {
@@ -1742,7 +1742,7 @@
 			// fix icon on pin-button
 			but = header.find("." + css.pin);
 			but.find("*").removeClass(pin ? css.pinIcon : css.unpinIcon)
-                .addClass(pin ? css.unpinIcon : css.pinIcon);
+				.addClass(pin ? css.unpinIcon : css.pinIcon);
 			if (this._max && pin) {
 				this._onMax(false, false, true);
 			}
@@ -1770,7 +1770,7 @@
 			parent = elem.parent()[ 0 ];
 			dad = pin ? this._oldDad : this._dad;
 
-		    // D.P. Dec 3rd, 2015 Bug #209633: Fixing compare to work with the mix of DOM and jQuery objects..
+			// D.P. Dec 3rd, 2015 Bug #209633: Fixing compare to work with the mix of DOM and jQuery objects..
 			if (dad && !$(dad).is(parent)) {
 				if (pin && next && next.parentNode === dad) {
 					elem.insertBefore(next);
@@ -1904,7 +1904,7 @@
 			}
 			if (!focusEvt) {
 				focusEvt = function (e) {
-				    var elems, old = self._focBind, foc = e.type === "focus";
+					var elems, old = self._focBind, foc = e.type === "focus";
 
 					// N.A. 2/12/2015 Bug #188573
 					if (self._isDatePickerOpened()) {
@@ -1923,24 +1923,24 @@
 
 					// fire focus/blur events with delay with validation for last state
 					setTimeout(function () {
-					    var focusTo = self.getTopModal(), elem = self.element;
+						var focusTo = self.getTopModal(), elem = self.element;
 
 						// do not allow lost focus for modal dialog
-					    if (elem && focusTo && !self._hasFocus && !foc && _lastTop === self) {
+						if (elem && focusTo && !self._hasFocus && !foc && _lastTop === self) {
 
 							// modal or maximized dialog lost focus
 							if (self._max || focusTo === self) {
-							    focusTo = self._nextTabElem || elem[ 0 ];
+								focusTo = self._nextTabElem || elem[ 0 ];
 
 							// not-modal-child-dialog of modal-dialog lost focus on tab
 							} else {
-							    focusTo = (self._tabTime && (new Date()
-                                    .getTime() - self._tabTime) < 200) ? elem[ 0 ] : null;
+								focusTo = (self._tabTime && (new Date()
+									.getTime() - self._tabTime) < 200) ? elem[ 0 ] : null;
 							}
 							if (focusTo) {
 								self._setFocus(focusTo);
 							}
-					    }
+						}
 
 						// raise focus/blur events
 						self._fireFoc(self._hasFocus, e);
@@ -1960,17 +1960,17 @@
 			return $("#ui-datepicker-div")[ 0 ] && $("#ui-datepicker-div").css("display") === "block";
 		},
 		_setFocus: function (elem) {
-		    try {
+			try {
 
-		        // D.P. 2015-12-03 Bug #207631: Controls lose focus when used in an iframe
-		        // Don't move focus if it's already inside the dialog
-		        if (elem && $(document.activeElement).closest(".ui-igdialog").is(this.element)) {
-		            this._hasFocus = true;
-		            return;
-		        }
-		    } catch (ex) { }
+				// D.P. 2015-12-03 Bug #207631: Controls lose focus when used in an iframe
+				// Don't move focus if it's already inside the dialog
+				if (elem && $(document.activeElement).closest(".ui-igdialog").is(this.element)) {
+					this._hasFocus = true;
+					return;
+				}
+			} catch (ex) { }
 
-		    var self = this;
+			var self = this;
 			setTimeout(function () {
 				try {
 					if (!self._hasFocus) {
@@ -2084,11 +2084,11 @@
 				start: function () {
 
 					// Note: cancel has no effect
-				    $(this).addClass(self.css.resizing);
+					$(this).addClass(self.css.resizing);
 
-				    // restore position, left and top, which were modified by resizing
-				    // A.M. April 28th, 2015 Bug #190822 "Resizing is not working properly from the top border of the window"
-				    // Dialog now can be resized by dragging the left or the top border of the window
+					// restore position, left and top, which were modified by resizing
+					// A.M. April 28th, 2015 Bug #190822 "Resizing is not working properly from the top border of the window"
+					// Dialog now can be resized by dragging the left or the top border of the window
 					//pos = ui.originalPosition;
 					if (o.pinned && self._pinPos) {
 						elem.css(self._pinPos);
@@ -2097,12 +2097,12 @@
 				resize: function () {
 
 					// Note: cancel has no effect
-				    self._fixCaption();
+					self._fixCaption();
 
 					// K.D. December 20th, 2013 Bug #159961 Keeping the position because
-				    // resizable messes it if inside absolute or relative element.
-				    // A.M. April 28th, 2015 Bug #190822 "Resizing is not working properly from the top border of the window"
-                    // Dialog now can be resized by dragging the left or the top border of the window
+					// resizable messes it if inside absolute or relative element.
+					// A.M. April 28th, 2015 Bug #190822 "Resizing is not working properly from the top border of the window"
+					// Dialog now can be resized by dragging the left or the top border of the window
 					//elem.css(pos);
 					// restore position, left and top, which were modified by resizing
 					if (o.pinned && self._pinPos) {
@@ -2156,7 +2156,7 @@
 
 			// check for em, ex, in, cm, mm, pt units
 			if (val.indexOf("m") > 0 || val.indexOf("e") > 0 || val.indexOf("i") > 0 ||
-                val.indexOf("t") > 0)
+				val.indexOf("t") > 0)
 			{
 				elem = $("<div />").css({ visibility: "hidden", width: val }).appendTo(this._dad);
 				num = elem.width();
@@ -2197,10 +2197,10 @@
 				elem0.hide();
 				self._fixCaption(elem);
 			} else if (max) {
-			    elem0.show().css({ width: "auto", height: "auto" });
+				elem0.show().css({ width: "auto", height: "auto" });
 
 				// temporary collapse dialog: to correctly set position (any reasonable values)
-			    elem.css({ width: 100, height: 50 });
+				elem.css({ width: 100, height: 50 });
 
 			//A.T. 9 July - Fix for bug #142753
 			} else if (o.width !== null) {
@@ -2321,14 +2321,14 @@
 			if (!width) {
 				width = 3 + _getPadding(this._header);
 				while (--i >= 0) {
-				    elem = elems[ i ];
+					elem = elems[ i ];
 
 					// get around bugs in jquery-1.4.4 (exception in Opera or huge elem.outerWidth in IE)
 					try {
 						outerWidth = $(elem).outerWidth(true);
 					} catch (ex) {}
 					width += 1 + ((outerWidth && outerWidth > 2 && outerWidth < 100) ?
-					    outerWidth : elem.offsetWidth);
+						outerWidth : elem.offsetWidth);
 				}
 				this._minHW = width;
 			}
@@ -2363,11 +2363,11 @@
 				cap = header.children();
 				len = cap.length;
 				while (++i < len) {
-				    widths += cap[ i ].offsetWidth + _toPx($(cap[ i ]), "marginLeft") +
-                        _toPx($(cap[ i ]), "marginRight");
+					widths += cap[ i ].offsetWidth + _toPx($(cap[ i ]), "marginLeft") +
+						_toPx($(cap[ i ]), "marginRight");
 				}
 				while (j++ < 2) {
-				    elem.css("width", widths);
+					elem.css("width", widths);
 
 					// verify that buttons did not jump on 2nd line
 					widths += 2;
@@ -2437,7 +2437,7 @@
 
 		// returns properties of window/HTML { width, height, maxWidth, maxHeight, html }
 		_winRect: function (sizeOnly) {
-		    var size, docElem, width, height, widthOk, heightOk,
+			var size, docElem, width, height, widthOk, heightOk,
 
 				// container = this.options.container,
 				maxWidth = 0,
@@ -2491,8 +2491,8 @@
 			maxWidth = Math.max(maxWidth, widthOk);
 			maxHeight = Math.max(maxHeight, heightOk);
 			return { width: (width === big) ?
-			    widthOk : width, height: (height === big) ?
-			        heightOk : height, maxWidth: maxWidth, maxHeight: maxHeight, html: html
+				widthOk : width, height: (height === big) ?
+					heightOk : height, maxWidth: maxWidth, maxHeight: maxHeight, html: html
 			};
 		},
 
@@ -2508,14 +2508,14 @@
 					.css({ position: "absolute", filter: "alpha(opacity=50)", opacity: 0 }));
 			}
 			if (_iframe.parent()[ 0 ] !== div.parent()[ 0 ]) {
-			    _iframe.css({
-			        width: "1px", height: "1px",
-			        marginLeft: div.css("marginLeft"), marginTop: div.css("marginTop"),
+				_iframe.css({
+					width: "1px", height: "1px",
+					marginLeft: div.css("marginLeft"), marginTop: div.css("marginTop"),
 					left: div.css("left"), top: div.css("top"),
-                    zIndex: div.attr("zIndex") - 1 }).insertBefore(div);
+					zIndex: div.attr("zIndex") - 1 }).insertBefore(div);
 			}
 			_iframe.css({
-			    width: hide ? "1px" : div.css("width"), height: hide ? "1px" : div.css("height")
+				width: hide ? "1px" : div.css("width"), height: hide ? "1px" : div.css("height")
 			});
 		},
 
@@ -2563,9 +2563,9 @@
 			}
 			self._modal = on;
 			if (on) {
-			    self._modalDiv = div = _notab($("<div />").css({
-			        position: "absolute", left: 0, top: 0, zIndex: _maxZ - 1
-			    })
+				self._modalDiv = div = _notab($("<div />").css({
+					position: "absolute", left: 0, top: 0, zIndex: _maxZ - 1
+				})
 					.addClass(self.css.overlay).mousedown(function (e) {
 						self._setFocus();
 						_stopEvt(e);
@@ -2588,7 +2588,7 @@
 					"restore" : ((state === CLOSE) ? "close" : ((state === PIN) ?
 					"pin" : ((state === UNPIN) ? "unpin" : "open")))))) + "ButtonTitle";
 			var val = this.options[ state ] || ($.ig && $.ig.Dialog && $.ig.Dialog.locale ?
-                $.ig.Dialog.locale[ state ] : null) || "";
+				$.ig.Dialog.locale[ state ] : null) || "";
 			but.attr("title", val).attr("longdesc", val);
 		},
 		_setOption: function (key, val) {
@@ -2648,7 +2648,7 @@
 				this._doModal();
 			}
 			if (key.indexOf("Button") > 0 || key === "image" || key === "headerText" ||
-                key === "showHeader")
+				key === "showHeader")
 			{
 				this._doHeader();
 				size = true;
@@ -2667,7 +2667,7 @@
 				this._save();
 			}
 			if (this._vis) {
-			    pos = key === "position";
+				pos = key === "position";
 
 				// check for height, width, minHeight, minWidth, maxHeight, maxWidth
 				if (container || size || pos || key.indexOf("idth") > 0 || key.indexOf("eight") > 0) {

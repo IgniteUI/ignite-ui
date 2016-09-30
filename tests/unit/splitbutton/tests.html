@@ -137,7 +137,8 @@
                     testId_11 = "Events enter pressing",
                     testId_12 = "API methods",
                     testId_13 = "API methods and user interaction",
-                    testId_14 = "Destroying.";
+                    testId_14 = "Change defaultItemName through options";
+                    testId_15 = "Destroying.",
 
                 module("igSplitButton");
 
@@ -394,9 +395,23 @@
                         .find(arrowSelector)
                             .blur();
                 });
+				
+				test(testId_14, function () {
+                    createSplitButton();
+
+                    var defaultItemNameBeforeChange = $sButton.igSplitButton("option", "defaultItemName");
+                    
+                    var defaultItemNameNewValue = "defaultItemNameWasChanged"
+                    $sButton.igSplitButton("option", "defaultItemName", defaultItemNameNewValue);
+
+                    var defaultItemNameAfterChange = $sButton.igSplitButton("option", "defaultItemName");
+                    
+                    notEqual(defaultItemNameBeforeChange, defaultItemNameAfterChange,true, "The defaultItemName was not change!");
+                    equal(defaultItemNameNewValue, defaultItemNameAfterChange,true, "The defaultItemName value is not equal to the new one value!");
+                 });
 
                 // Destroying
-                test(testId_14, function () {
+                test(testId_15, function () {
                     destroySplitButton();
 
                     ok(!$sButton.is("igSplitButton"), "The widget was not destroyed.");

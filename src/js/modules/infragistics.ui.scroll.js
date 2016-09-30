@@ -9,6 +9,7 @@
 * jquery-1.9.1.js
 * jquery.ui-1.9.0.js
 * infragistics.util.js
+* modernizr.js
 */
 
 /*global define,jQuery,setTimeout,window,document,MSGesture*/
@@ -16,7 +17,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.scroll",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util"
@@ -262,7 +263,7 @@
 			```
 			*/
 			inertiaDuration: 1,
-			/* type="number" Sets gets how much pixels of toleration there will be when initially swiping horizontall. This is to improve swiping up/down without scrolling left/right when not intended due to small diviation left/right
+			/* type="number" Sets gets how much pixels of toleration there will be when initially swiping horizontally. This is to improve swiping up/down without scrolling left/right when not intended due to small deviation left/right
 			```
 				//Initialize
 				$(".selector").igScroll({
@@ -277,7 +278,7 @@
 			```
 			*/
 			swipeToleranceX: 30,
-			/* type="number" Sets gets at least how many times the horizontal speed should be bigger so the inertia proceeds only horizontally without scrolling vertically. This is to improve interactions due to not perfectly swiping left/right with some diviation down/up
+			/* type="number" Sets gets at least how many times the horizontal speed should be bigger so the inertia proceeds only horizontally without scrolling vertically. This is to improve interactions due to not perfectly swiping left/right with some deviation down/up
 			```
 				//Initialize
 				$(".selector").igScroll({
@@ -292,7 +293,7 @@
 			```
 			*/
 			inertiaDeltaX: 1.25,
-			/* type="number" Sets gets at least how many times the vertical speed should be bigger so the inertia proceeds only vertically without scrolling horizontally. This is to improve interactions due to not perfectly swiping down/up with some diviation left/right
+			/* type="number" Sets gets at least how many times the vertical speed should be bigger so the inertia proceeds only vertically without scrolling horizontally. This is to improve interactions due to not perfectly swiping down/up with some deviation left/right
 			```
 				//Initialize
 				$(".selector").igScroll({
@@ -681,7 +682,7 @@
 			var elem = this.element;
 
 			this._bKeyboardNavigation = true;
-			this._bMixedEnvironment = false;
+			this._bMixedEnvironment = $.ig.util.getScrollWidth() > 0;
 			this._linkedHElems = [];
 			this._linkedVElems = [];
 			this._linkedHBar = null;
@@ -902,7 +903,12 @@
 			if (this.options.scrollHeight !== null) {
 				return this.options.scrollHeight;
 			} else {
-				return this._content.outerHeight();
+				if ($.ig.util.isIE) {
+					/* S.K. Fix for bug 224900 - On IE reaching the bottom flickers because the height can be not a round number */
+					return Math.ceil(this._content[ 0 ].getBoundingClientRect().height);
+				} else {
+					return this._content.outerHeight();
+				}
 			}
 		},
 
@@ -910,7 +916,12 @@
 			if (this.options.scrollWidth !== null) {
 				return this.options.scrollWidth;
 			} else {
-				return this._content.outerWidth();
+				if ($.ig.util.isIE) {
+					/* S.K. Fix for bug 224900 - - On IE the width could be not a round number */
+					return Math.ceil(this._content[ 0 ].getBoundingClientRect().width);
+				} else {
+					return this._content.outerWidth();
+				}
 			}
 		},
 
@@ -1090,8 +1101,10 @@
 				this._vBarDrag.css("height", this._vDragHeight + "px");
 				this._vBarTrack.css("height",
 									this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
-			} else if (this.options.scrollbarType === "native" && this._vBarContainer) {
+			} else if (this.options.scrollbarType === "native" && this._vBarContainer && this._vBarDrag) {
 				this._vBarContainer.css("height", (this._elemHeight - this._customBarEmptySpaceSize) + "px");
+				this._vDragHeight = this._getContentHeight();
+				this._vBarDrag.css("height", this._vDragHeight + "px");
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
@@ -1102,8 +1115,10 @@
 				this._hBarDrag.css("width", this._hDragWidth + "px");
 				this._hBarTrack.css("width",
 									this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
-			} else if (this.options.scrollbarType === "native" && this._hBarContainer) {
+			} else if (this.options.scrollbarType === "native" && this._hBarContainer && this._hBarDrag) {
 				this._hBarContainer.css("width", (this._elemWidth - this._customBarEmptySpaceSize) + "px");
+				this._hDragWidth = this._getContentWidth();
+				this._hBarDrag.css("width", this._hDragWidth + "px");
 			}
 		},
 
@@ -1166,14 +1181,6 @@
 							if (ignoreSync || self.options.scrollOnlyHBar) {
 								return false;
 							} else {
-								//We set mixed environment because linked scrollbar can be used only under desktop and hybrid env.
-								if (!self._bMixedEnvironment) {
-									self._bMixedEnvironment = true;
-
-									/* Make sure we are not scrolled using 3d transformation */
-									self._switchFromTouchToMixed();
-								}
-
 								self._syncContentX(e.target, false);
 								self._syncElemsX(e.target, false);
 							}
@@ -1209,14 +1216,6 @@
 							if (ignoreSync || self.options.scrollOnlyVBar) {
 								return false;
 							} else {
-								//We set mixed environment because linked scrollbar can be used only under desktop and hybrid env.
-								if (!self._bMixedEnvironment) {
-									self._bMixedEnvironment = true;
-
-									/* Make sure we are not scrolled using 3d transformation */
-									self._switchFromTouchToMixed();
-								}
-
 								self._syncContentY(e.target, false);
 								self._syncElemsY(e.target, false);
 							}
@@ -1326,8 +1325,13 @@
 				this._syncElemsX(this._container[ 0 ], false);
 				/*self._syncHBar(this._container[ 0 ], false);*/
 
-				var curY = this._getContentPositionY();
-				this._updateScrollBarsPos(destX, curY, true);
+				var curPosY;
+				if (this.options.scrollOnlyVBar) {
+					curPosY = this._getScrollbarVPosition();
+				} else {
+					curPosY = this._getContentPositionY();
+				}
+				this._updateScrollBarsPos(destX, curPosY, true);
 			}
 
 			return destX - curPosX;
@@ -1376,8 +1380,13 @@
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
 
-				var curX = this._getContentPositionX();
-				this._updateScrollBarsPos(curX, destY, true);
+				var curPosX;
+				if (this.options.scrollOnlyHBar) {
+					curPosX = this._getScrollbarHPosition();
+				} else {
+					curPosX = this._getContentPositionX();
+				}
+				this._updateScrollBarsPos(curPosX, destY, true);
 			}
 
 			return destY - curPosY;
@@ -1982,7 +1991,19 @@
 				this._scrollFromSyncContentH = false;
 			}
 
-			this._updateScrollBarsPos(this._container.scrollLeft(), this._container.scrollTop());
+			var posX, posY;
+			if (this.options.scrollOnlyHBar) {
+				posX = this._getScrollbarHPosition();
+			} else {
+				posX = this._getContentPositionX();
+			}
+			if (this.options.scrollOnlyVBar) {
+				posY = this._getScrollbarVPosition();
+			} else {
+				posY = this._getContentPositionY();
+			}
+
+			this._updateScrollBarsPos(posX, posY);
 
 			return false;
 		},
@@ -2089,7 +2110,11 @@
 		},
 
 		_onTouchStartContainer: function (event) {
-			//stop any current ongoing inertia
+			if (event.isDefaultPrevented()) {
+				return;
+			}
+
+			//stops any current ongoing inertia
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
 			var touch = event.originalEvent.touches[ 0 ];
@@ -2125,6 +2150,9 @@
 		},
 
 		_onTouchMoveContainer: function (event) {
+			if (event.isDefaultPrevented()) {
+				return;
+			}
 			var touch = event.originalEvent.touches[ 0 ];
 			var destX =
 				this._startX + (this._touchStartX - touch.pageX) * Math.sign(this.options.inertiaStep);
@@ -2203,11 +2231,15 @@
 				}
 			}
 
-			// return true if there was no movement so rest of the screen can scroll
+			event.preventDefault();
+			/* return true if there was no movement so rest of the screen can scroll */
 			return scrolledXY.x === 0 && scrolledXY.y === 0;
 		},
 
-		_onTouchEndContainer: function () {
+		_onTouchEndContainer: function (event) {
+			if (event.isDefaultPrevented()) {
+				return;
+			}
 			var speedX = 0;
 			var speedY = 0;
 

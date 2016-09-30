@@ -1,5 +1,5 @@
 ﻿/*!@license
- * Infragistics.Web.ClientUI CountDown <build_number>
+ * Infragistics.Web.ClientUI Editors <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
  *
@@ -18,7 +18,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.editors",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
@@ -133,18 +133,18 @@
 				```
 			*/
 			nullValue: null,
-			/* type="string" Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element.
+			/* type="string" Gets/Sets the name attribute of the value input. This input is used to sent the value to the server. In case the target element is input and it has name attribute, but the developer has set the inputName option, so this option overwrites the value input and removes the attribute from the element.
 			```
 			//Initialize
-				$(".selector").igPercentEditor({
+				$(".selector").%%WidgetName%%({
 				  inputName : "textField"
 				});
 
 				//Get
-				var inputName = $(".selector").igPercentEditor("option", "inputName");
+				var inputName = $(".selector").%%WidgetName%%("option", "inputName");
 
 			//Set
-			$(".selector").igPercentEditor("option", "inputName", "textField");
+			$(".selector").%%WidgetName%%("option", "inputName", "textField");
 			```
 			*/
 			inputName: null,
@@ -1095,7 +1095,7 @@
 			return this._focused;
 		},
 		setFocus: function (delay) {
-			/* Set focus to the editor with delay.
+			/* Sets focus to the editor after the specified delay.
 				```
 				$(".selector").%%WidgetName%%("setFocus", 200);
 				```
@@ -1150,7 +1150,7 @@
 			}
 		},
 		destroy: function () {
-			/* Destructor of the widget
+			/* Destroys the widget
 				```
 					$(".selector").%%WidgetName%%("destroy");
 				```
@@ -1171,24 +1171,24 @@
 		options: {
 
 			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
+				Note! This option can not be set runtime.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown"
+					});
+
+					//Get
+					var button = $(".selector").%%WidgetName%%("option", "buttonType");
+
+					//Initialize multiple buttons
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown,clear"
+					});
+				```
 				dropdown type="string" A button to open/close the list is located on the right side of the editor.
 				clear type="string" A button to clear the value is located on the right side of the editor.
 				spin type="string" Spin buttons are located on the right side of the editor.
-				Note! This option can not be set runtime.
-				```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					buttonType : "dropdown"
-				});
-
-				//Get
-				var button = $(".selector").%%WidgetName%%("option", "buttonType");
-
-				//Initialize multiple buttons
-				$(".selector").%%WidgetName%%({
-					buttonType : "dropdown,clear"
-				});
-				```
 			*/
 			buttonType: "none",
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
@@ -1270,7 +1270,7 @@
 			```
 			*/
 			dropDownAnimationDuration: 300,
-			/* type="number" Gets the number of the items shown at once when the drop-down list get opened.
+			/* type="number" Gets the number of the items to be shown at once when the drop-down list get opened.
 				Notes:
 				This option is overwritten if the number of list items is less than the set value. In that case the drop-down list displays all the items.
 				This option can not be set runtime.
@@ -1321,10 +1321,10 @@
 					```
 				*/
 			excludeKeys: null,
-			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor. If that option is not set, then 'right' is used for 'numeric', 'currency' and 'percent' editors and the 'left' is used for all other types of editor.
-					left type="string"
-					right type="string"
-					center type="string"
+			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor.
+					left type="string" The text into the input gets aligned to the left.
+					right type="string" The text into the input gets aligned to the right.
+					center type="string" The text into the input gets aligned to the center.
 					```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -1354,11 +1354,7 @@
 			```
 			*/
 			placeHolder: null,
-				/* type="selectAll|atStart|atEnd|browserDefault" Set the action when the editor gets focused. The default value is selectAll.
-					selectAll type="string" Setting this option will select all the text into the editor when the edit mode gets enetered.
-					atStart type="string" Setting this option will move the cursor at the begining the text into the editor when the edit mode gets enetered.
-					atEnd type="string" Setting this option will move the cursor at the end the text into the editor when the edit mode gets enetered.
-					browserDefault type="string" Setting this option won't do any extra logic, but proceed with the browser default behavior.
+				/* type="selectAll|atStart|atEnd|browserDefault" Gets/Sets the action when the editor gets focused. The default value is selectAll.
 					```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -1371,12 +1367,13 @@
 					//Set
 					$(".selector").%%WidgetName%%("option", "selectionOnFocus", "selectAll");
 					```
+					selectAll type="string" Setting this option will select all the text into the editor when the edit mode gets enetered.
+					atStart type="string" Setting this option will move the cursor at the begining the text into the editor when the edit mode gets enetered.
+					atEnd type="string" Setting this option will move the cursor at the end the text into the editor when the edit mode gets enetered.
+					browserDefault type="string" Setting this option won't do any extra logic, but proceed with the browser default behavior.
 				*/
 			selectionOnFocus: "selectAll",
 			/* type="text|password|multiline" Gets the text mode of the editor such as: single-line text editor, password editor or multiline editor. That option has effect only on initialization. If based element (selector) is TEXTAREA, then it is used as input-field.
-				text type="string" Single line text editor based on INPUT element is created.
-				password type="string" Editor based on INPUT element with type password is created.
-				multiline type="string" Multiline editor based on TEXTAREA element is created.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1387,6 +1384,9 @@
 				var mode = $(".selector").%%WidgetName%%("option", "textMode");
 
 				```
+				text type="string" Single line text editor based on INPUT element is created.
+				password type="string" Editor based on INPUT element with type password is created.
+				multiline type="string" Multiline editor based on TEXTAREA element is created.
 			*/
 			textMode: "text",
 			/* type="bool" Gets/Sets the ability of the editor to automatically change the hoverd item into the opened dropdown list to its oposide side. When the last item is reached and the spin down is clicked, the first item gets hovered and vice versa. This option has no effect there is no drop-down list.
@@ -1404,7 +1404,7 @@
 			```
 			*/
 			spinWrapAround: false,
-			/* type="bool" Gets the ability of the editor to allow values only set into the list items. This validation is done only when the editor is blured, or enter key is pressed
+			/* type="bool" Gets/Sets if the editor should only allow values set into the list of items. This validation is done only when the editor is blured, or enter key is pressed
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1418,7 +1418,7 @@
 				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
 			```*/
 			isLimitedToListValues: false,
-			/* type="bool" Gets the editor to revert value to the previous valid value in case the value on blur, or enter key is not valid. If the opiton is set to false, editor calls clear functionality.
+			/* type="bool" Gets/Sets if the editor should revert it's value to the previously valid value in case the value on blur, or enter key is not valid. If the opiton is set to false, editor calls clear functionality.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1433,7 +1433,7 @@
 			```
 			*/
 			revertIfNotValid: true,
-			/* type="bool" Gets/Sets the ability of the editor to prevent form submition when enter key is pressed.
+			/* type="bool" Gets/Sets if the editor should prevent form submition when enter key is pressed.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1449,9 +1449,6 @@
 			*/
 			preventSubmitOnEnter: false,
 			/* type="auto|bottom|top" Gets/Sets the drop-down list opening orientation when the list gets open. If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
-				'auto' type="string" If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
-				'bottom' type="string" The drop-down list is opened at the bottom of the editor.
-				'top' type="string" The drop-down list is opened at the top of the editor.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1465,6 +1462,9 @@
 				$(".selector").%%WidgetName%%("option", "dropDownOrientation", "bottom");
 
 				```
+				auto type="string" If the option is set to auto the editor has priority to open the drop-down list bottom. If the space is not enough it tries to open the list top. If the space is not enough in both directions then the list gets opened at the bottom of the editor.
+				bottom type="string" The drop-down list is opened at the bottom of the editor.
+				top type="string" The drop-down list is opened at the top of the editor.
 			*/
 			dropDownOrientation: "auto",
 			/* type="number" Gets/Sets the maximum length of a text which can be entered by the user.
@@ -1547,7 +1547,7 @@
 			```
 			*/
 			locale: null,
-			/* type="bool" Disables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
+			/* type="bool" Disables/Enables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1805,7 +1805,7 @@
 				case "buttonType":
 				case "dropDownAttachedToBody":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				default:
 
 					//In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -3599,7 +3599,7 @@
 
 		// igTextEditor public methods
 		displayValue: function () {
-			/* Gets visible text in the editor.
+			/* Gets the visible text in the editor.
 			``` $(".selector").%%WidgetName%%("displayValue"); ```
 				returnType="string" Visible text of the editor. */
 			return this._getDisplayValue();
@@ -3969,33 +3969,22 @@
 				```
 				*/
 			minDecimals: null,
-			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor. If that option is not set, then default value of 'right' is used for 'numeric', 'currency' and 'percent' editors.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					textAlign : "center"
-				});
-
-				//Get
-				var align = $(".selector").%%WidgetName%%("option", "textAlign");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "textAlign", "center");
-			```
-				left type="string"
-				right type="string"
-				center type="string"
+			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor.
 				```
-				$(".selector").%%WidgetName%%({
-					textAlign : "center"
-				});
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						textAlign : "center"
+					});
 
-				//Get
-				var align = $(".selector").%%WidgetName%%("option", "textAlign");
+					//Get
+					var align = $(".selector").%%WidgetName%%("option", "textAlign");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "textAlign", "center");
+					//Set
+					$(".selector").%%WidgetName%%("option", "textAlign", "center");
 				```
+				left type="string" The text into the input gets aligned to the left.
+				right type="string" The text into the input gets aligned to the right.
+				center type="string" The text into the input gets aligned to the center.
 			*/
 			textAlign: "right",
 			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
@@ -4325,13 +4314,13 @@
 					value = parseFloat(value);
 					if (isNaN(value)) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.notEditableOptionByInit);
+						throw new Error($.ig.Editor.locale.setOptionError + option);
 					}
 					break;
 
 				case "regional":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 
 				case "excludeKeys":
 				case "includeKeys":
@@ -5378,7 +5367,7 @@
 
 					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
 						case "fractional": {
-							this._spinUp(true);//True stands for increase the value only on the fractional part of the number
+							this._spinUp();
 							this._setSelectionRange(this._editorInput[ 0 ],
 								cursorPosition, cursorPosition);
 						}
@@ -5413,7 +5402,7 @@
 				if (this._focused) {
 					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
 						case "fractional": {
-							this._spinDown(true);//True stands for increase the value only on the fractional part of the number
+							this._spinDown();
 							this._setSelectionRange(this._editorInput[ 0 ],
 								cursorPosition, cursorPosition);
 						}
@@ -5592,7 +5581,7 @@
 			$.ui.igTextEditor.prototype.spinDown.call(this);
 		},
 		getRegionalOption: function () {
-			/* Get current regional.
+			/* Gets current regional.
 			```
 				$(".selector").%%WidgetName%%("getRegionalOption");
 			```
@@ -5602,7 +5591,7 @@
 	});
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
 		options: {
-			/* type="string" Sets gets the string, which is used as positive pattern. The "n" flag represents the value of number.
+			/* type="string" Gets/Sets the string, which is used as positive pattern. The "n" flag represents the value of number.
 				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
 				```
@@ -5737,7 +5726,7 @@
 				```
 				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
@@ -6043,7 +6032,7 @@
 				```
 			*/
 			regional: null,
-			/*type="clear|spin" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
+			/*type="clear" Gets visibility of the clear button. That option can be set only on initialization.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6053,19 +6042,8 @@
 				//Get
 				var button = $(".selector").%%WidgetName%%("option", "buttonType");
 				```
-				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
-				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).
-				```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					buttonType : "clear"
-				});
-
-				//Get
-				var button = $(".selector").%%WidgetName%%("option", "buttonType");
-
-				```
-				*/
+				clear type="string" A button to clear the value is located on the right side of the editor.
+			*/
 			buttonType: "none",
 			/* type="string" Gets input mask. Mask may include filter-flags and literal characters.
 				Literal characters are part of mask which cannot be modified by end user. In order to use a filter-flag as a literal character, the escape "\\" character should be used.
@@ -6188,6 +6166,8 @@
 				```
 				*/
 			excludeKeys: null,
+			/* type="bool" @Ignored@ Gets/Sets the ability of the editor to automatically change the hoverd item into the opened dropdown list to its oposide side.*/
+			spinWrapAround: false,
 			/* type="array" @Ignored@ Sets gets list of items which are used for drop-down list.
 				Items in list can be strings, numbers or objects. The items are directly rendered without casting, or manipulating them.
 			 */
@@ -6414,9 +6394,10 @@
 				if ($.inArray(maskChar, maskFlagsArray) !== -1) {
 
 					// Get requred chars
-					if (isToLower) {
+					// #364 In case of digit mask char, toLower and toUpper flags should be ignored
+					if (isToLower && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
 						toLowerIndeces.push(j);
-					} else if (isToUpper) {
+					} else if (isToUpper && maskChar !== "9" && maskChar !== "0" && maskChar !== "#") {
 						toUpperIndeces.push(j);
 					}
 					if (maskChar === "&" || maskChar === "A" ||
@@ -6587,9 +6568,18 @@
 			}
 			switch (dataMode) {
 				case "allText": {
-					regExpr = new RegExp($.ig.util
-						.escapeRegExp(this.options.unfilledCharsPrompt), "g");
-					dataModeValue = maskedVal.replace(regExpr, this.options.emptyChar);
+					dataModeValue = "";
+					for (i = 0; i < maskedVal.length; i++) {
+						ch = maskedVal.charAt(i);
+						if (ch === this.options.unfilledCharsPrompt) {
+							if ($.inArray(i, this._requiredIndeces) !== -1) {
+								ch = this.options.emptyChar;
+							} else {
+								ch = "";
+							}
+						}
+						dataModeValue += ch;
+					}
 					if (this._promptCharsIndices.length > 0) {
 						regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
 						dataModeValue = dataModeValue
@@ -6703,9 +6693,18 @@
 				default: {
 
 					// If the option is not valid we default back to the allText
-					regExpr = new RegExp($.ig.util
-						.escapeRegExp(this.options.unfilledCharsPrompt), "g");
-					dataModeValue = maskedVal.replace(regExpr, this.options.emptyChar);
+					dataModeValue = "";
+					for (i = 0; i < maskedVal.length; i++) {
+						ch = maskedVal.charAt(i);
+						if (ch === this.options.unfilledCharsPrompt) {
+							if ($.inArray(i, this._requiredIndeces) !== -1) {
+								ch = this.options.emptyChar;
+							} else {
+								ch = "";
+							}
+						}
+						dataModeValue += ch;
+					}
 					if (this._promptCharsIndices.length > 0) {
 						regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
 						dataModeValue = dataModeValue
@@ -6814,7 +6813,7 @@
 					}
 
 					if (!(this._focused && ch === this.options.unfilledCharsPrompt) &&
-						this._validateCharOnPostion(ch, i) === false) {
+						this._validateCharOnPostion(ch, i, mask) === false) {
 						return false;
 					}
 				}
@@ -7132,14 +7131,14 @@
 			switch (option) {
 				case "inputMask": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
 				case "excludeKeys":
 				case "includeKeys":
 				case "regional":
 				case "unfilledCharsPrompt":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -7333,7 +7332,7 @@
 					});
 
 					//Get
-					var minValue = $(".selector").%%WidgeName%%("option", "minValue");
+					var minValue = $(".selector").%%WidgetName%%("option", "minValue");
 				```
 				*/
 			minValue: null,
@@ -7452,7 +7451,7 @@
 				```
 			*/
 			dateInputFormat: null,
-			/* type="date|editModeText|displayModeText|" Gets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="date|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7471,18 +7470,19 @@
 				editModeText type="string" The String object is used and the "text" in edit mode (focus) format (pattern).
 			*/
 			dataMode: "date",
-			/*type="clear|spin" Gets visibility of spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					buttonType : "clear"
-				});
+			/*type="clear|spin" Gets visibility of the spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						buttonType : "clear"
+					});
 
-				//Get
-				var buttonType = $(".selector").%%WidgetName%%("option", "buttonType");
-			```
-				clear type="string" button to clear value is located on the right side of input-field (or left side if base html element has direction:rtl);
-				spin type="string" spin buttons are located on the right side of input-field (or left side if base html element has direction:rtl).*/
+					//Get
+					var buttonType = $(".selector").%%WidgetName%%("option", "buttonType");
+				```
+				clear type="string" A button to clear the value is located on the right side of the editor.
+				spin type="string" Spin buttons are located on the right side of the editor
+			*/
 			buttonType: "none",
 			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.
 			```
@@ -7670,7 +7670,7 @@
 					break;
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.cannotSetRuntime);
+					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
 					break;
 				default: {
@@ -10250,7 +10250,7 @@
 			this._exitEditMode();
 		},
 		spinUp: function (delta) {
-			/* Increase date-time period, depending on the cursor position.
+			/* Increases the date or time period, depending on the current cursor position.
 			```
 				$(".selector").igDateEditor("spinUp", 2);
 			```
@@ -10258,7 +10258,7 @@
 			this._spin(delta ? delta : this.options.spinDelta);
 		},
 		spinDown: function (delta) {
-			/* Decrease date-time period, depending on the cursor position.
+			/* Decreases the date or time period, depending on the current cursor position.
 			```
 				$(".selector").igDateEditor("spinDown", 3);
 			```
@@ -10357,36 +10357,39 @@
 			```
 			*/
 			regional: null,
-			/* type="dropdown|clear|spin" Gets visibility of the spin and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
+			/* type="dropdown|clear|spin" Gets visibility of the spin, clear and drop-down button. That option can be set only on initialization. Combinations like 'dropdown,spin' or 'spin,clear' are supported too.
+```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown"
+					});
+
+					//Get
+					var button = $(".selector").%%WidgetName%%("option", "buttonType");
+
+					//Initialize multiple buttons
+					$(".selector").%%WidgetName%%({
+						buttonType : "dropdown,clear"
+					});
+				```
 				dropdown type="string" A button to open/close the list is located on the right side of the editor.
 				clear type="string" A button to clear the value is located on the right side of the editor.
 				spin type="string" Spin buttons are located on the right side of the editor.
-				Note! This option can not be set runtime.
-				```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					buttonType : "dropdown"
-				});
-
-				//Get
-				var button = $(".selector").%%WidgetName%%("option", "buttonType");
-
-				//Initialize multiple buttons
-				$(".selector").%%WidgetName%%({
-					buttonType : "dropdown,clear"
-				});
-				```
 			*/
 			buttonType: "dropdown",
 			/* type="object" Gets/Sets the options supported by the jquery.ui.datepicker. Only options related to the drop-down calendar are supported.
 			```
 			//Initialize
 			$(".selector").igDatePicker({
-				datepickerOptions: {minDate : new Date(2015, 9, 17), maxDate : new Date(2015, 9, 30) }
+				datepickerOptions: {minDate : new Date(2015, 9, 17), maxDate : new Date(2015, 9, 30)}
 			});
 
 			//Get
 			var datepickerOptions = $(".selector").igDatePicker("option", "datepickerOptions");
+
+			//Set
+			$(".selector").igDatePicker("option", "datepickerOptions", {minDate : new Date(2017, 9, 11), maxDate : new Date(2017, 9, 22)});
+
 			```
 			*/
 			datepickerOptions: null,
@@ -10958,7 +10961,7 @@
 			return $.ui.igTextEditor.prototype.dropDownVisible.call(this);
 		},
 		destroy: function () {
-			/* Destructor of the widget
+			/* Destroys the widget
 			```
 			$(".selector").igDatePicker("destroy");
 			```
@@ -11005,7 +11008,7 @@
 				large type="string" The size of the Checkbox editor is large.
 			*/
 			size: "normal",
-			/* type="string" Applies custom class on the checkbox. Custom image can be used this way.
+			/* type="string" Gets/Sets a custom class on the checkbox. Custom image can be used this way.
 				The following jQuery classes can be used in addition http://api.jqueryui.com/theming/icons/
 				```
 				//Initialize

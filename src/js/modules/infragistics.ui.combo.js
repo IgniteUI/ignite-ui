@@ -27,7 +27,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.combo",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
@@ -4789,19 +4789,6 @@
                 $.ig.encode(val1.toString()) === $.ig.encode(val2.toString()) : false;
         },
 
-        // Check wheather certain array of values is equal to another array
-        _areArraysEqual: function (array1, array2) {
-            if (!array1 || !array2) { return false; }
-
-            if (array1.length !== array2.length) { return false; }
-
-            for (var i = 0; i < array1.length; i++) {
-                if (array1.indexOf(array2[ i ]) === -1) { return false; }
-            }
-
-            return true;
-        },
-
         // Checks whether certain value is contained in array of values while converting the values to string, because of data-attributes always being a string
         // This should be unsed instead of $.inArray/indexOf to find if value is contained in an array
         _isValueInArray: function (val, vals) {
@@ -5589,14 +5576,9 @@
 
                 // This compares the prev and new selected values for equality
                 // Z.K. June 30, 2016 #17 not() behavior is changed in jQuery 3.0.0
-                if (!this._areArraysEqual(selectedValues, prevSelValues)) {
+                if (!$.ig.util.areSetsEqual(selectedValues, prevSelValues)) {
                     selChanged = true;
                 }
-
-                // if (!($(selectedValues).not(prevSelValues).length === 0 &&
-                //     $(prevSelValues).not(selectedValues).length === 0)) {
-                //     selChanged = true;
-                // }
             }
 
             // Reset auto selected item

@@ -75,7 +75,7 @@ module.exports = function (grunt) {
 							// Set loader default locale:
 							content = content.replace(/_defaultLocale:\s*""/, "_defaultLocale: \"en\"");
 						}
-						return content.replace("<build_number>", buildVersion).replace("<year>", year);
+						return content.replace(/<build_number>/g, buildVersion).replace("<year>", year);
 					}
 				},
 			},
@@ -257,8 +257,8 @@ module.exports = function (grunt) {
 	grunt.task.registerTask("build", "Combine output files and prepare output", function() {
 		grunt.task.run("clean:build");
 		grunt.task.run("copy");
-	    grunt.task.run("uglify");
 		grunt.task.run("concat");
+	    grunt.task.run("uglify");
 		grunt.task.run("cssmin");
 	});
 };

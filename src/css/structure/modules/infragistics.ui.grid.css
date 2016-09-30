@@ -182,6 +182,7 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+	-ms-user-select: none;
 }
 
 /* recalculate headertext width to allocate space for icons in header - IE9+ */
