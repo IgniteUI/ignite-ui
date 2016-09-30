@@ -38,8 +38,7 @@
 			"./infragistics.ui.combo",
 			"./infragistics.ui.editors",
 			"./infragistics.ui.toolbarbutton",
-			"./infragistics.ui.toolbar",
-			"./i18n/infragistics.ui.htmleditor-en"
+			"./infragistics.ui.toolbar"
 		], factory );
 	} else {
 

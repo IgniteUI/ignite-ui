@@ -26,7 +26,8 @@
 			    maximizeButtonTitle: "Maximize",
 			    pinButtonTitle: "Pin",
 			    unpinButtonTitle: "Unpin",
-			    restoreButtonTitle: "Restore"
+			    restoreButtonTitle: "Restore",
+				setOptionError: 'Runtime changes are not allowed for the following option: '
 		    }
 	    };
     }

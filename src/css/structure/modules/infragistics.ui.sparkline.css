@@ -1,6 +1,4 @@
-﻿@import url("infragistics.ui.shared.css");
-
-/*.ui-sparkline-10
+﻿/*.ui-sparkline-10
 {
     border-color: #562B79;
     background-color: #763AA7;     
@@ -26,8 +24,8 @@
 
 .ui-chart-axis
 {
-    border-color: #d6d6d6;
-    background-color: #d6d6d6;
+    border-color: #989ea3;
+    background-color: #989ea3;
 }
 
 .ui-chart-tooltip
