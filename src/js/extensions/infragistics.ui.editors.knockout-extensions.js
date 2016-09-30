@@ -24,7 +24,8 @@
 	} else {
 		factory(jQuery);
 	}
-}(function ($) {
+}
+(function ($) {
 	function updatePropertyValue(element, bindingType, viewModel, newValue) {
 		var reg = new RegExp(bindingType + "\\s*:\\s*(?:{.*,?\\s*value\\s*:\\s*)?([^{},\\s]+)"),
 			key,
@@ -463,4 +464,4 @@
 			}
 		}
 	};
-}));
+}));// REMOVE_FROM_COMBINED_FILES

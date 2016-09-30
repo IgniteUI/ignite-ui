@@ -1,13 +1,7 @@
 ﻿﻿/* Arabic Egypt +*/
 
-/*global define, jQuery */
-(function (factory) {
-	if (typeof define === "function" && define.amd) {
-		define( ["jquery"], factory );
-	} else {
-		factory(jQuery);
-	}
-}(function ($) {
+/*global jQuery */
+(function ($) {
 $.ig = $.ig || {};
 $.ig.regional = $.ig.regional || {};
 $.ig.regional.ar = {
@@ -36,4 +30,4 @@ $.ig.regional.ar = {
 if ($.ig.setRegionalDefault) {
 	$.ig.setRegionalDefault('ar');
 }
-}));
+})(jQuery);

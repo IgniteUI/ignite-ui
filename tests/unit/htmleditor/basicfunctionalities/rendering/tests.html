@@ -1199,7 +1199,6 @@
                     $("#" + self.htmlEditorId).data("igHtmlEditor")._selectionWrapperSaved.select(contentToSelect.contents());
 
                     $("#" + self.htmlEditorId).data("igHtmlEditor")._selectionWrapperSaved.insertElement(surroundContentsDiv);
-                    $("#" + self.htmlEditorId).data("igHtmlEditor")._selectionWrapperSaved._isIeOld = true;
                     $("#" + self.htmlEditorId).data("igHtmlEditor")._selectionWrapperSaved.getSelectedItem();
 
                     equal($("#" + self.htmlEditorId).igHtmlEditor("getContent","html"), '<div id=\"div1\"><p id=\"div2\">Some content2</p>Some content1<div><p></p></div></div>', "Node inserted");
@@ -1533,6 +1532,86 @@
         test("igImagePropertiesDialog initializing", function () {
             var initialized = $(this.igImageSelector + "_popover").length > 0;
             equal(initialized, true, "Should be true");
+        });
+
+        var igToolbarHelperTestSetup = {
+            editorId: "htmlEditor3",
+            editorSelector: "#htmlEditor3",
+            setup: function () {
+                $('body').append("<div id=" + this.editorId + "></div>");
+                $(this.editorSelector).igHtmlEditor();
+            },
+            teardown: function () {
+                $(this.editorSelector).igHtmlEditor("destroy").remove();
+            }
+        }
+
+        module("igToolbarHelper unit tests", igToolbarHelperTestSetup);
+
+        test("QueryCommandState with left, right, center and full justify", function () {
+            var self = this;
+            var content = $("<p align='left'>test</p>");
+            $(this.editorSelector).igHtmlEditor("setContent", content, "html");
+            stop();
+            setTimeout(function () {
+                var selectionWrapperSaved = $(self.editorSelector).data("igHtmlEditor")._selectionWrapperSaved;
+                var analyser = $(self.editorSelector).data("igHtmlEditor")._analyser;
+                var contentDoc = $(self.editorSelector).igHtmlEditor("contentDocument");
+                
+                // justify left
+                selectionWrapperSaved.select(content);
+                analyser.analyse(selectionWrapperSaved.getSelectedItem());
+                equal(contentDoc.queryCommandState("justifyleft"), true, "The query command state should be left justified.");
+                
+                // justify right
+                content = $("<p align='right'>test</p>");
+                $(self.editorSelector).igHtmlEditor("setContent", content, "html");
+                selectionWrapperSaved.select(content);
+                analyser.analyse(selectionWrapperSaved.getSelectedItem());
+                equal(contentDoc.queryCommandState("justifyright"), true, "The query command state should be right justified.");
+
+                // justify center
+                content = $("<p align='center'>test</p>");
+                $(self.editorSelector).igHtmlEditor("setContent", content, "html");
+                selectionWrapperSaved.select(content);
+                analyser.analyse(selectionWrapperSaved.getSelectedItem());
+                equal(contentDoc.queryCommandState("justifycenter"), true, "The query command state should be center justified.");
+                
+                // justify full
+                content = $("<p align='justify'>test</p>");
+                $(self.editorSelector).igHtmlEditor("setContent", content, "html");
+                selectionWrapperSaved.select(content);
+                analyser.analyse(selectionWrapperSaved.getSelectedItem());
+                equal(contentDoc.queryCommandState("justifyfull"), true, "The query command state should be full justified.");
+
+                start();
+            }, 100);
+        });
+
+        test("QueryCommandState with ordered and unordered lists", function () {
+            var self = this;
+            var content = $("<ol><li>first</li><li>second</li></ol>");
+            $(this.editorSelector).igHtmlEditor("setContent", content, "html");
+            stop();
+            setTimeout(function () {
+                var selectionWrapperSaved = $(self.editorSelector).data("igHtmlEditor")._selectionWrapperSaved;
+                var analyser = $(self.editorSelector).data("igHtmlEditor")._analyser;
+                var contentDoc = $(self.editorSelector).igHtmlEditor("contentDocument");
+
+                // ordered list
+                selectionWrapperSaved.select(content);
+                analyser.analyse(selectionWrapperSaved.getSelectedItem());
+                equal(contentDoc.queryCommandState("insertorderedlist"), true, "The query command state should be insert ordered list.");
+
+                // unordered list
+                content = $("<ul><li>first</li><li>second</li></ul>");
+                $(self.editorSelector).igHtmlEditor("setContent", content, "html");
+                selectionWrapperSaved.select(content);
+                analyser.analyse(selectionWrapperSaved.getSelectedItem());
+                equal(contentDoc.queryCommandState("insertunorderedlist"), true, "The query command state should be insert unordered list.");
+
+                start();
+            }, 100);
         });
     </script>
 </head>

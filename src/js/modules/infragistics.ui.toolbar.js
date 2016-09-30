@@ -25,12 +25,11 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.toolbar",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
-			"./infragistics.ui.toolbarbutton",
-			"./i18n/infragistics.ui.toolbar-en"
+			"./infragistics.ui.toolbarbutton"
 		], factory );
 	} else {
 
@@ -541,29 +540,29 @@
         },
         _updateItems: function (items) {
             var options = this.options,
-                updProps, scope, el, key, i, j;
+                updProps, scope, el, i;
 
             for (i = 0; i < items.length; i++) {
                 updProps = items[ i ];
                 el = this.getItem(items[ i ].name);
                 scope = options.items[ i ].scope || this;
 
-                for (j = 0; j < updProps.length; j++) {
+                // for (j = 0; j < updProps.length; j++) {
 
-                    if (updProps[ j ].action !== undefined &&
-                        $.isFunction(scope[ updProps[ j ].action ])) {
-                        scope[ updProps[ j ].action ](el, updProps[ j ]);
-                    } else {
+                //     if (updProps[ j ].action !== undefined &&
+                //         $.isFunction(scope[ updProps[ j ].action ])) {
+                //         scope[ updProps[ j ].action ](el, updProps[ j ]);
+                //     } else {
 
-                        if (items[ i ] instanceof $.ig.igToolbarButtonDescriptor) {
-                            el.igToolbarButton("option", key, updProps[ j ]);
-                        }
+                //         if (items[ i ] instanceof $.ig.igToolbarButtonDescriptor) {
+                //             el.igToolbarButton("option", key, updProps[ j ]);
+                //         }
 
-                        if (options.items[ i ] instanceof $.ig.igToolbarComboDescriptor) {
-                            el.igCombo("option", key, updProps[ j ]);
-                        }
-                    }
-                }
+                //         if (options.items[ i ] instanceof $.ig.igToolbarComboDescriptor) {
+                //             el.igCombo("option", key, updProps[ j ]);
+                //         }
+                //     }
+                // }
             }
         },
         _tooltipAction: function (el, props, itemOptionObj) {
@@ -909,5 +908,5 @@
     });
 
     $.extend($.ui.igToolbar, { version: "<build_number>" });
-    return $.ui.igToolbar;
-}));
+    return $.ui.igToolbar;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>igZoombar with ChartJS</title>
+	<!-- Ignite UI Required Combined CSS Files -->
+	<link href="../../dist/css/themes/infragistics/infragistics.theme.css" rel="stylesheet">
+	<link href="../../dist/css/structure/infragistics.css" rel="stylesheet">
+
+	<script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+	<script src="../../bower_components/jquery/dist/jquery.js"></script>
+	<script src="../../bower_components/jquery-ui/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+
+	<!-- Ignite UI Required Combined JavaScript Files -->
+	<script src="../../dist/js/infragistics.core-lite.js"></script>
+	<script src="../../dist/js/infragistics.lob-lite.js"></script>
+
+	<style type="text/css">
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+
+	<script type="text/javascript">
+		var timeFormat = "MM/DD/YYYY HH:mm";
+
+		function randomScalingFactor() {
+			return Math.round(Math.random() * 100 * (Math.random() > 0.5 ? -1 : 1));
+		}
+
+		function randomColorFactor() {
+			return Math.round(Math.random() * 255);
+		}
+
+		function randomColor(opacity) {
+			return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
+		}
+
+		function newDate(days) {
+			return moment().add(days, 'd').toDate();
+		}
+
+		function newDateString(days) {
+			return moment().add(days, 'd').format(timeFormat);
+		}
+
+		function newTimestamp(days) {
+			return moment().add(days, 'd').unix();
+		}
+
+		var config = {
+			type: "line",
+			data: {
+				labels: [
+					newDate(0), newDate(1), newDate(2), newDate(3), newDate(4), newDate(5), newDate(6)
+				],
+				datasets: [
+					{
+						label: "My First dataset",
+						data: [
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor()
+						],
+						fill: false,
+						borderDash: [5, 5],
+					},
+					{
+						label: "My Second dataset",
+						data: [
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor()
+						],
+					},
+					{
+						label: "Dataset with point data",
+						data: [
+							{
+								x: newDateString(0),
+								y: randomScalingFactor()
+							},
+							{
+								x: newDateString(5),
+								y: randomScalingFactor()
+							},
+							{
+								x: newDateString(7),
+								y: randomScalingFactor()
+							},
+							{
+								x: newDateString(15),
+								y: randomScalingFactor()
+							}
+						],
+						fill: false
+					}
+				]
+			},
+			options: {
+				maintainAspectRatio: false,
+				responsive: true,
+				title: {
+					display: true,
+					text: "Chart.js Time Scale"
+				},
+				legend: {
+					display: true,
+				},
+				scales: {
+					xAxes: [
+						{
+							type: "time",
+							time: {
+								format: timeFormat,
+								tooltipFormat: "ll HH:mm"
+							},
+							scaleLabel: {
+								display: true,
+								labelString: "Date"	//
+							},
+							ticks: {
+								maxRotation: 0
+							}
+						},
+					],
+					yAxes: [
+						{
+							display: false,
+							scaleLabel: {
+								display: true,
+								labelString: "value"
+							}
+						}
+					]
+				}
+			}
+		};
+
+		config.data.datasets.forEach(function (dataset) {
+			dataset.borderColor = randomColor(0.4);
+			dataset.backgroundColor = randomColor(0.5);
+			dataset.pointBorderColor = randomColor(0.7);
+			dataset.pointBackgroundColor = randomColor(0.5);
+			dataset.pointBorderWidth = 1;
+		});
+
+		window.onload = function () {
+			var ctx = document.getElementById("canvas").getContext("2d"), chartProvider;
+			window.myLine = new Chart(ctx, config);
+			chartProvider = new $.ig.ZoombarProviderChartJS({
+				targetObject: window.myLine,
+				baseOptions: $.extend(true, {}, config)
+			});
+			$("#zoombar").igZoombar({
+				provider: chartProvider,
+				target: $("#canvas"),
+				width: "75%",
+				height: "200px"
+			});
+		};
+
+		$.ig.ZoombarProviderChartJS = $.ig.ZoombarProviderChartJS || $.ig.ZoombarProviderDefault.extend({
+			getBaseOpts: function (options) {
+				return this.settings.baseOptions;
+			},
+			cleanOptsForZoom: function (options) {
+				var o = options.options, i;
+				o.legend.display = false;
+				o.title.display = false;
+				for (i = 0; i < o.scales.xAxes.length; i++) {
+					o.scales.xAxes[i].display = false;
+				}
+				return options;
+			},
+			createClone: function (container, options) {
+				var canvas;
+				this.settings.container = container;
+				this.setSize(options.width, options.height);
+				canvas = $("<canvas></canvas>").appendTo(container);
+				window.myZoomLine = new Chart(canvas[0].getContext("2d"), options);
+				return container;
+			},
+			widgetName: function () {
+				return "";
+			},
+			targetWidth: function () {
+				return "100%";
+			},
+			syncMinWidth: function (minWidth) {
+				return false;
+			},
+			targetObject: function (obj) {
+				if (obj) {
+					this.settings.targetObject = obj;
+				}
+				return this.settings.targetObject;
+			},
+			setSize: function (width, height) {
+				this.settings.container.css({
+					width: width,
+					height: height
+				});
+			},
+			update: function (a, b) {
+				var scaleName, scale,
+					chartInstance = this.settings.targetObject, options;
+				for (scaleName in chartInstance.scales) {
+					if (chartInstance.scales.hasOwnProperty(scaleName) && scaleName.startsWith("x")) {
+						scale = chartInstance.scales[scaleName];
+						options = scale.options;
+						if (!this.scale) {
+							this.scale = {
+								ft: scale.firstTick,
+								lt: scale.lastTick
+							}
+						}
+						scale.firstTick = this.scale.ft;
+						scale.lastTick = this.scale.lt;
+						options.time.min = scale.getValueForPixel((scale.getPixelForValue(this.scale.lt) - scale.getPixelForValue(this.scale.ft)) * a);
+						options.time.max = scale.getValueForPixel(scale.getPixelForValue(this.scale.lt) * b);
+						chartInstance.update(0);
+					}
+				}
+				return true;
+			},
+			event: function () {
+				return "";
+			}
+		});
+	</script>
+</head>
+
+<body>
+	<div style="width: 75%;  height: 500px;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<div id="zoombar"></div>
+</body>
+</html>

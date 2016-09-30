@@ -25,10 +25,9 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.util",*/ [
 			"jquery",
-			"jquery-ui",
-			"./i18n/infragistics.util-en"
+			"jquery-ui"
 		], factory );
 	} else {
 
@@ -210,7 +209,8 @@
 	$.ig.util.isFF = window.mozInnerScreenX !== undefined;
 	$.ig.util.isOpera = !!window.opera;
 	$.ig.util.isSafari =
-		(Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor") > 0) ?
+		(Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor") > 0) ||
+		window.ApplePaySession ?
 			true :
 			false;
 	$.ig.util.isWebKit = !!window.webkitURL;
@@ -5371,7 +5371,7 @@
 	$.ig.util.stringFormat2 = function (provider, format, args) {
 
 		// TODO: Use the provider somehow
-		return format.replace(/{(\d+)(?::)?([ ^} ]*)?}/g, function (match, number, format) {
+		return format.replace(/{(\d+)(?::)?([^}]*)?}/g, function (match, number, format) {
 			var arg = args[ number ];
 
 			if (arg === void 0) {
@@ -5476,6 +5476,24 @@
 		}
 
 		return item1 ? 1 : -1;
+	};
+
+	// Check wheather certain array of values is equal to another array
+	$.ig.util.areSetsEqual = function (array1, array2) {
+	    var sortedArray1, sortedArray2;
+
+	    if (!array1 || !array2 || array1.length !== array2.length) { return false; }
+
+	    if (array1 === array2) { return true; }
+
+	    sortedArray1 = array1.slice().sort();
+	    sortedArray2 = array2.slice().sort();
+
+	    for (var i = 0; i < sortedArray1.length; i++) {
+	        if (sortedArray1[ i ] !== sortedArray2[ i ]) { return false; }
+	    }
+
+	    return true;
 	};
 
 	$.ig.util.sleep = function (milliseconds) {
@@ -6131,7 +6149,7 @@
 		}
 
 		var
-			sB64Enc = b64Data.replace(/[ ^A-Za-z0-9\+\/ ]/g, ""), nInLen = sB64Enc.length,
+			sB64Enc = b64Data.replace(/[^A-Za-z0-9\+\/]/g, ""), nInLen = sB64Enc.length,
 			nOutLen = nBlocksSize ?
 				Math.ceil((nInLen * 3 + 1 >> 2) / nBlocksSize) * nBlocksSize :
 				nInLen * 3 + 1 >> 2, taBytes;
@@ -7113,4 +7131,4 @@
 		};
 	})();
 
-}));
+}));// REMOVE_FROM_COMBINED_FILES

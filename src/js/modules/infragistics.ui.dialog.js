@@ -27,11 +27,10 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.dialog",*/ [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util",
-			"./i18n/infragistics.ui.dialog-en"
+			"./infragistics.util"
 		], factory );
 	} else {
 
@@ -54,7 +53,7 @@
 		RESTORE = 6,
 		_pos = {
 
-		    // default position of dialog
+			// default position of dialog
 			my: "center",
 			at: "center",
 			collision: "fit",
@@ -124,189 +123,805 @@
 	*/
 	$.widget("ui.igDialog", {
 		options: {
-			/* type="dom" Sets gets jquery DIV object which is used as main container for dialog.
+			/* type="dom" Gets the jquery DIV object which is used as the main container for the dialog.
 				Notes:
 				1. That object is optional and it should not contain any children.
 				2. It should not have parent.
-				3. It should not contain attributes which might destroy laout or appearance of dialog.
+				3. It should not contain attributes which might destroy layout or appearance of the dialog.
 				4. Change of that option is not supported.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					mainElement : objContainer
+				});
+
+				//Get
+				var objContainer = $(".selector").igDialog("option", "mainElement");
+				```
 			*/
 			mainElement: null,
-			/* type="opened|closed|minimized|maximized" Sets gets state of dialog.
-				Note: when dialog is modal, then pinned and minimized states are not supported, because that will trigger misbehavior.
-				opened type="string" Dialog is opened.
-				minimized type="string" Dialog is minimized.
-				maximized type="string" Dialog is maximized.
-				closed type="string" Dialog is closed.
+			/* type="opened|closed|minimized|maximized" Gets/Sets the state of the dialog.
+				Note: when the dialog is modal, then pinned and minimized states are not supported, because that will trigger misbehavior.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					state : "maximized"
+				});
+
+				//Get
+				var state = $(".selector").igDialog("option", "state");
+
+				//Set
+				$(".selector").igDialog("option", "state", "maximized");
+				```
+				opened type="string" The dialog is opened.
+				minimized type="string" The dialog is minimized.
+				maximized type="string" The dialog is maximized.
+				closed type="string" The dialog is closed.
 			*/
 			state: "opened",
-			/* type="bool" Sets gets pinned state of dialog.
-				When dialog is pinned, then the html element of dialog is moved to the original container where target element was located and position:absolute is removed.
-				Pinned dialog does not support modal state, maximized state and it can not be moved.
+			/* type="bool" Gets/Sets whether the dialog is pinned.
+				When the dialog is pinned, then the html element of the dialog is moved to the original container where the target element was located and position:absolute is removed.
+				The pinned dialog does not support modal state, maximized state and it can not be moved.
 				Notes:
-				1. If parent element of original target-element is invisible, then pinned dialog becomes invisible as well.
+				1. If the parent element of the original target-element is invisible, then the pinned dialog becomes invisible as well.
 				2. Pinned state is not supported for modal dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					pinned : true
+				});
+
+				//Get
+				var isPinned = $(".selector").igDialog("option", "pinned");
+
+				//Set
+				$(".selector").igDialog("option", "pinned", true);
+				```
 			*/
 			pinned: false,
-			/* type="bool" Sets gets ability to close dialog on Esc key. */
+			/* type="bool" Gets/Sets whether the dialog should close when Esc key is pressed.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					closeOnEscape : false
+				});
+
+				//Get
+				var closeDialogOnEscape = $(".selector").igDialog("option", "closeOnEscape");
+
+				//Set
+				$(".selector").igDialog("option", "closeOnEscape", false);
+				```
+			*/
 			closeOnEscape: true,
-			/* type="bool" Sets gets visibility of close button in header. */
+			/* type="bool" Gets/Sets whether the close button in the dialog header should be visible.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					showCloseButton : false
+				});
+
+				//Get
+				var showDialogCloseButton = $(".selector").igDialog("option", "showCloseButton");
+
+				//Set
+				$(".selector").igDialog("option", "showCloseButton", false);
+				```
+			*/
 			showCloseButton: true,
-			/* type="bool" Sets gets visibility of maximize button in header. */
+			/* type="bool" Gets/Sets whether the maximize button in the dialog header should be visible.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					showMaximizeButton : true
+				});
+
+				//Get
+				var showDialogMaximizeButton = $(".selector").igDialog("option", "showMaximizeButton");
+
+				//Set
+				$(".selector").igDialog("option", "showMaximizeButton", true);
+				```
+			*/
 			showMaximizeButton: false,
-			/* type="bool" Sets gets visibility of minimize button in header. */
+			/* type="bool" Gets/Sets whether the minimize button in the dialog header should be visible.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					showMinimizeButton : true
+				});
+
+				//Get
+				var showDialogMinimizeButton = $(".selector").igDialog("option", "showMinimizeButton");
+
+				//Set
+				$(".selector").igDialog("option", "showMinimizeButton", true);
+				```
+			*/
 			showMinimizeButton: false,
-			/* type="bool" Sets gets visibility of pin button in header. */
+			/* type="bool" Gets/Sets whether the pin button in the dialog header should be visible.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					showPinButton : true
+				});
+
+				//Get
+				var showDialogPinButton = $(".selector").igDialog("option", "showPinButton");
+
+				//Set
+				$(".selector").igDialog("option", "showPinButton", true);
+				```
+			*/
 			showPinButton: false,
-			/* type="bool" Sets gets ability to automatically pin dialog when dialog was minimized. */
+			/* type="bool" Gets/Sets whether the dialog will be pinned on minimize.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					pinOnMinimized : true
+				});
+
+				//Get
+				var pinDialogOnMinimized = $(".selector").igDialog("option", "pinOnMinimized");
+
+				//Set
+				$(".selector").igDialog("option", "pinOnMinimized", true);
+				```
+			*/
 			pinOnMinimized: false,
-			/* type="string" Sets gets name of css class which is applied to the SPAN element located on the left side of header. */
+			/* type="string" Gets the name of the css class which is applied to the SPAN element located on the left side of the header.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					imageClass : "dialog-header-image"
+				});
+
+				//Get
+				var class = $(".selector").igDialog("option", "imageClass");
+				```
+			*/
 			imageClass: null,
-			/* type="string" Sets gets text which appears in header of dialog. */
+			/* type="string" Gets/Sets the text which appears in the header of the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					headerText : "HEADER"
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "headerText");
+
+				//Set
+				$(".selector").igDialog("option", "headerText", "HEADER");
+				```
+			*/
 			headerText: null,
-			/* type="bool" Sets gets visibility of header. */
+			/* type="bool" Gets/Sets whether the dialog header should be visible.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					showHeader : false
+				});
+
+				//Get
+				var showDialogHeader = $(".selector").igDialog("option", "showHeader");
+
+				//Set
+				$(".selector").igDialog("option", "showHeader", false);
+				```
+			*/
 			showHeader: true,
-			/* type="bool" Sets gets visibility of footer. */
+			/* type="bool" Gets/Sets whether the dialog footer should be visible.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					showFooter : true
+				});
+
+				//Get
+				var showDialogFooter = $(".selector").igDialog("option", "showFooter");
+
+				//Set
+				$(".selector").igDialog("option", "showFooter", true);
+				```
+			*/
 			showFooter: false,
-			/* type="string" Sets gets text which appears in footer of dialog. */
+			/* type="string" Gets/Sets the text which appears in the footer of the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					footerText : "FOOTER"
+				});
+
+				//Get
+				var text = $(".selector").igDialog("option", "footerText");
+
+				//Set
+				$(".selector").igDialog("option", "footerText", "FOOTER");
+				```
+			*/
 			footerText: null,
-			/* type="string" Sets gets name of css class which is applied to the main DIV element of dialog. */
+			/* type="string" Gets the name of the css class which is applied to the main DIV element of the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					dialogClass : "myClass"
+				});
+
+				//Get
+				var myClass = $(".selector").igDialog("option", "dialogClass");
+				```
+			*/
 			dialogClass: null,
-			/* type="object" Sets gets container html element for dialog.
+			/* type="object" Gets/Sets the container html element for the dialog.
 				That can be reference to html element, jquery selector or jquery object.
-				By default the parent form of original target element is used. If form is not found, then body is used.
-				Note: If the "position" of container is not set or it is "static", then position is set to "relative".
+				By default the parent form of the original target element is used. If a form is not found, then the body is used.
+				Note: If the "position" of the container is not set or it is "static", then the position is set to "relative".
+				```
+				//Initialize
+				$(".selector").igDialog({
+					container : objContainer
+				});
+
+				//Get
+				var objContainer = $(".selector").igDialog("option", "container");
+				```
 			*/
 			container: null,
-			/* type="number" Sets gets initial height of dialog in pixels for normal state.
+			/* type="number|string" Gets/Sets the initial height of the dialog in pixels for normal state.
 				Besides numeric values, following units are supported: "px", "em" and "%".
-				In case of "%", the size of browser window is used and it has effect only on open action. */
+				In case of "%", the size of browser window is used and it has effect only on open action.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					height : 500
+				});
+
+				//Get
+				var height = $(".selector").igDialog("option", "height");
+
+				//Set
+				$(".selector").igDialog("option", "height", 500);
+				```
+				*/
 			height: null,
-			/* type="number" Sets gets initial width of dialog in pixels for normal state.
+			/* type="number|string" Gets/Sets the initial width of the dialog in pixels for normal state.
 				Besides numeric values, following units are supported: "px", "em" and "%".
-				In case of "%", the size of browser window is used and it has effect only on open action. */
+				In case of "%", the size of browser window is used and it has effect only on open action.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					width : 500
+				});
+
+				//Get
+				var width = $(".selector").igDialog("option", "width");
+
+				//Set
+				$(".selector").igDialog("option", "width", 500);
+				```
+				*/
 			width: 300,
-			/* type="number" Sets gets minimal height of dialog in normal state. */
+			/* type="number" Gets/Sets the minimal height of the dialog in normal state.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					minHeight : 100
+				});
+
+				//Get
+				var minHeight = $(".selector").igDialog("option", "minHeight");
+
+				//Set
+				$(".selector").igDialog("option", "minHeight", 100);
+				```
+			*/
 			minHeight: 100,
-			/* type="number" Sets gets minimal width of dialog in normal state. */
+			/* type="number" Gets/Sets the minimal width of the dialog in normal state.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					minWidth : 100
+				});
+
+				//Get
+				var minWidth = $(".selector").igDialog("option", "minWidth");
+
+				//Set
+				$(".selector").igDialog("option", "minWidth", 100);
+				```
+			*/
 			minWidth: 150,
-			/* type="number" Sets gets maximal height of dialog in normal state. Note: that option has effect only while resizing dialog by end user. */
+			/* type="number" Gets/Sets the maximal height of the dialog in normal state. Note: that option has effect only while resizing the dialog by the end user.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					maxHeight : 1000
+				});
+
+				//Get
+				var maxHeight = $(".selector").igDialog("option", "maxHeight");
+
+				//Set
+				$(".selector").igDialog("option", "maxHeight", 1000);
+				```
+			*/
 			maxHeight: null,
-			/* type="number" Sets gets maximal width of dialog in normal state. Note: that option has effect only while resizing dialog by end user. */
+			/* type="number" Gets/Sets the maximal width of the dialog in normal state. Note: that option has effect only while resizing the dialog by the end user.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					maxWidth : 1000
+				});
+
+				//Get
+				var maxWidth = $(".selector").igDialog("option", "maxWidth");
+
+				//Set
+				$(".selector").igDialog("option", "maxWidth", 1000);
+				```
+			*/
 			maxWidth: null,
-			/* type="bool" Sets gets ability to drag dialog by end user. */
+			/* type="bool" Gets/Sets whether the dialog can be dragged by the user.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					draggable : false
+				});
+
+				//Get
+				var isDraggable = $(".selector").igDialog("option", "draggable");
+
+				//Set
+				$(".selector").igDialog("option", "draggable", false);
+				```
+			*/
 			draggable: true,
-			/* type="object" Sets gets initial position of dialog. That should be object, which contains "top" and "left" members or object
-				supported by jquery.position(param) method. Examples: { left: 100, top: 200 }, { my: "left top", at: "left top", offset: "100 200" } */
+			/* type="object" Gets/Sets the initial position of the dialog. That should be an object, which contains "top" and "left" members or an object
+				supported by jquery.position(param) method. Examples: { left: 100, top: 200 }, { my: "left top", at: "left top", offset: "100 200" }
+				```
+				//Initialize
+				$(".selector").igDialog({
+					position : { left: 100, top: 200 }
+				});
+
+				//Get
+				var position = $(".selector").igDialog("option", "position");
+
+				//Set
+				$(".selector").igDialog("option", "position", { left: 100, top: 200 });
+				```
+			*/
 			position: null,
-			/* type="bool" Sets gets ability to resize dialog by end user. */
+			/* type="bool" Gets/Sets whether the dialog can be resized by the user.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					resizable : false
+				});
+
+				//Get
+				var isResizable = $(".selector").igDialog("option", "resizable");
+
+				//Set
+				$(".selector").igDialog("option", "resizable", false);
+				```
+			*/
 			resizable: true,
-			/* type="number" Sets gets value for tabIndex attribute applied to main html element of dialog. */
+			/* type="number" Gets/Sets the value for the tabIndex attribute applied to the main html element of the dialog.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					tabIndex : 1
+				});
+
+				//Get
+				var state = $(".selector").igDialog("option", "tabIndex");
+
+				//Set
+				$(".selector").igDialog("option", "tabIndex", 1);
+				```
+			*/
 			tabIndex: 0,
-			/* type="object" Sets gets animation applied to dialog when it is opened. That can be any object supported by jquery show(param) method. */
+			/* type="object" Gets/Sets the animation applied to the dialog when it is opened. That can be any object supported by the jquery show(param) method.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					openAnimation : "explode"
+				});
+
+				//Get
+				var animation = $(".selector").igDialog("option", "openAnimation");
+
+				//Set
+				$(".selector").igDialog("option", "openAnimation", "explode");
+				```
+			*/
 			openAnimation: null,
-			/* type="object" Sets gets animation applied to dialog when it is closed. That can be any object supported by jquery hide(param) method. */
+			/* type="object" Gets/Sets the animation applied to the dialog when it is closed. That can be any object supported by the jquery hide(param) method.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					closeAnimation : "slide"
+				});
+
+				//Get
+				var animation = $(".selector").igDialog("option", "closeAnimation");
+
+				//Set
+				$(".selector").igDialog("option", "closeAnimation", "slide");
+				```
+			*/
 			closeAnimation: null,
-			/* type="number" Sets gets value of zIndex applied to the main html element of dialog. If value is not set, then 1000 is used. */
+			/* type="number" Gets/Sets the value of zIndex applied to the main html element of the dialog. If value is not set, then 1000 is used.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					zIndex : 1001
+				});
+
+				//Get
+				var zIndex = $(".selector").igDialog("option", "zIndex");
+
+				//Set
+				$(".selector").igDialog("option", "zIndex", 1001);
+				```
+			*/
 			zIndex: null,
-			/* type="bool" Sets gets modal state of dialog.
-				If there are more than 1 modal igDialog, then last opened dialog wins and becomes on the top.
-				Note: modal functionality is not supported when dialog is minimized or pinned, because that will trigger misbehavior.
+			/* type="bool" Gets/Sets the modal state of the dialog.
+				If there are more than 1 modal igDialog, then the last opened dialog wins and becomes on the top.
+				Note: the modal functionality is not supported when the dialog is minimized or pinned, because that will trigger misbehavior.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					modal : true
+				});
+
+				//Get
+				var isModal = $(".selector").igDialog("option", "modal");
+
+				//Set
+				$(".selector").igDialog("option", "modal", true);
+				```
 			*/
 			modal: false,
-			/* type="bool" Sets gets ability to process focus and blur events of child elements located in dialog in order to maintain focused state.
+			/* type="bool" Gets/Sets the ability to process focus and blur events of the child elements located in the dialog in order to maintain the focused state.
 				Notes:
-				If that option is enabled, then focus and blur event handlers are added to all child elements of dialog.
-				If dialog is modal or it can be maximized, then it is not recommended to disable that option.
-				If that option is modified after igDialog was already created, then depending on current state of dialog, it will be temporary closed-opened or opened-closed.
+				If that option is enabled, then focus and blur event handlers are added to all the child elements of the dialog.
+				If the dialog is modal or it can be maximized, then it is not recommended to disable that option.
+				If that option is modified after the igDialog was already created, then depending on current state of the dialog, it will be temporary closed-opened or opened-closed.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					trackFocus : false
+				});
+
+				//Get
+				var trackDialogFocus = $(".selector").igDialog("option", "trackFocus");
+
+				//Set
+				$(".selector").igDialog("option", "trackFocus", false);
+				```
 			*/
 			trackFocus: true,
-			/* type="string" Sets gets title/tooltip for close button in dialog. That is override for $.ig.Dialog.locale.closeButtonTitle. */
+			/* type="string" Gets/Sets the title/tooltip for the close button in the dialog. That is an override for $.ig.Dialog.locale.closeButtonTitle.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					closeButtonTitle : "X"
+				});
+
+				//Get
+				var title = $(".selector").igDialog("option", "closeButtonTitle");
+
+				//Set
+				$(".selector").igDialog("option", "closeButtonTitle", "X");
+				```
+			*/
 			closeButtonTitle: null,
-			/* type="string" Sets gets title/tooltip for minimize button in dialog. That is override for $.ig.Dialog.locale.minimizeButtonTitle. */
+			/* type="string" Gets/Sets the title/tooltip for the minimize button in the dialog. That is an override for $.ig.Dialog.locale.minimizeButtonTitle.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					minimizeButtonTitle : "MIN"
+				});
+
+				//Get
+				var title = $(".selector").igDialog("option", "minimizeButtonTitle");
+
+				//Set
+				$(".selector").igDialog("option", "minimizeButtonTitle", "MIN");
+				```
+			*/
 			minimizeButtonTitle: null,
-			/* type="string" Sets gets title/tooltip for maximize button in dialog. That is override for $.ig.Dialog.locale.maximizeButtonTitle. */
+			/* type="string" Gets/Sets the title/tooltip for the maximize button in the dialog. That is an override for $.ig.Dialog.locale.maximizeButtonTitle.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					maximizeButtonTitle : "MAX"
+				});
+
+				//Get
+				var title = $(".selector").igDialog("option", "maximizeButtonTitle");
+
+				//Set
+				$(".selector").igDialog("option", "maximizeButtonTitle", "MAX");
+				```
+			*/
 			maximizeButtonTitle: null,
-			/* type="string" Sets gets title/tooltip for pin button in dialog. That is override for $.ig.Dialog.locale.pinButtonTitle. */
+			/* type="string" Gets/Sets the title/tooltip for the pin button in the dialog. That is an override for $.ig.Dialog.locale.pinButtonTitle.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					pinButtonTitle : "PIN"
+				});
+
+				//Get
+				var tilte = $(".selector").igDialog("option", "pinButtonTitle");
+
+				//Set
+				$(".selector").igDialog("option", "pinButtonTitle", "PIN");
+				```
+			*/
 			pinButtonTitle: null,
-			/* type="string" Sets gets title/tooltip for unpin button in dialog. That is override for $.ig.Dialog.locale.unpinButtonTitle. */
+			/* type="string" Gets/Sets the title/tooltip for the unpin button in the dialog. That is an override for $.ig.Dialog.locale.unpinButtonTitle.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					unpinButtonTitle : "UNPIN"
+				});
+
+				//Get
+				var title = $(".selector").igDialog("option", "unpinButtonTitle");
+
+				//Set
+				$(".selector").igDialog("option", "unpinButtonTitle", "UNPIN");
+				```
+			*/
 			unpinButtonTitle: null,
-			/* type="string" Sets gets title/tooltip for restore button in dialog. That is override for $.ig.Dialog.locale.restoreButtonTitle. */
+			/* type="string" Gets/Sets the title/tooltip for the restore button in the dialog. That is an override for $.ig.Dialog.locale.restoreButtonTitle.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					restoreButtonTitle : "RESTORE"
+				});
+
+				//Get
+				var title = $(".selector").igDialog("option", "restoreButtonTitle");
+
+				//Set
+				$(".selector").igDialog("option", "restoreButtonTitle", "RESTORE");
+				```
+			*/
 			restoreButtonTitle: null,
-			/* type="string" Sets gets temporary value for src, which is used while changing parent of base element if it is instance of IFRAME. That is allows to get around possible javascript exceptions under IE. */
+			/* type="string" Gets/Sets the temporary value for src, which is used while changing the parent of the base element if it is an instance of IFRAME. That allows getting around possible JavaScript exceptions under IE.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					temporaryUrl : "http://infragistics.com"
+				});
+
+				//Get
+				var url = $(".selector").igDialog("option", "http://infragistics.com");
+				```
+			*/
 			temporaryUrl: null,
-			/* type="bool" Sets gets ability to adjust state of header depending on focused and not-focused states. Note: the "trackFocus" option should be enabled. */
+			/* type="bool" Gets/Sets the ability to adjust the state of the header depending on focused and not-focused states. Note: the "trackFocus" option should be enabled.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					enableHeaderFocus : false
+				});
+
+				//Get
+				var hasHeaderFocus = $(".selector").igDialog("option", "enableHeaderFocus");
+
+				//Set
+				$(".selector").igDialog("option", "enableHeaderFocus", false);
+				```
+			*/
 			enableHeaderFocus: true,
-			/* type="auto|true|false" Sets gets processing dblclick on dialog-header.
-				If option is not false and dialog was minimized, then its state will be set to normal.
-				If option is set to "auto" and showMaximizeButton is enabled or if option is set to true, then dialog will be maximized when it was in normal state,
-				and dialog-state will be set to normal if it was maximized. */
+			/* type="auto|true|false" Gets/Sets the processing of the double-click on the dialog-header.
+				If this option is not false and dialog was minimized, then its state will be set to normal.
+				If this option is set to "auto" and showMaximizeButton is enabled or if this option is set to true, then the dialog will be maximized when it was in normal state,
+				and dialog-state will be set to normal if it was maximized.
+				```
+				//Initialize
+				$(".selector").igDialog({
+					enableDblclick : false
+				});
+
+				//Get
+				var doubleClick = $(".selector").igDialog("option", "enableDblclick");
+
+				//Set
+				$(".selector").igDialog("option", "enableDblclick", false);
+				```
+			*/
 			enableDblclick: "auto"
 		},
 		events: {
-			/* cancel="true" Event which is raised before state of dialog was changed.
+			/* cancel="true" Event which is raised before the state of dialog was changed.
 				Return false in order to cancel action.
-				Function takes arguments "evt" and "ui".
-				Use evt to obtain browser event. That parameter can be null if state was modified from codes.
-				Use ui.owner to obtain reference to igDialog.
-				Use ui.button to obtain name of button, which triggered event. Note: if state was modified from codes, then "button" is undefined.
-				Use ui.oldState to obtain old state of dialog, which can be one of following: "opened", "minimized", "maximized", "closed".
-				Use ui.oldPinned to obtain boolean value of old pin state of dialog.
-				Use ui.action to obtain name of action. That can be one of the following:
-				"open" - request to open dialog
-				"close" - request to close dialog
-				"minimize" - request to minimize dialog
-				"maximize" - request to maximize dialog
-				"restore" - request to restore dialog from minimized or maximized state
-				"pin" - request to pin dialog
-				"unpin" - request to unpin dialog
+				```
+				//Bind after initialization
+				$(document).delegate(".selector", "igdialogstatechanging", function (evt, ui) {
+					//return the triggered browser event
+					evt;
+
+					// Reference to the igDialog widget.
+					ui.owner
+
+					// Obtain the name of button, which triggers the event. If the igDialog state was modified from the code, using control API, then the "button" property is undefined.
+					ui.button
+
+					// Obtain the old state of the igDialog. The possible values are: "opened", "minimized", "maximized", "closed".
+					ui.oldState
+
+					// Obtain if the old state of the igDialog was pinned.
+					ui.oldPinned
+
+					// Obtain one of the following dialog actions:
+					//  - "open"
+					//  - "close"
+					//  - "minimize"
+					//  - "maximize"
+					//  - "restpore"
+					//  - "pin"
+					//  - "unpin"
+					ui.action
+				});
+
+				//Initialize
+				$(".selector").igDialog({
+					stateChanging : function(evt, ui) {...}
+				});
+				```
+				The function takes arguments "evt" and "ui".
+				Use evt to obtain the browser event. That parameter can be null if the state was modified from the code.
+				Use ui.owner to obtain a reference to the igDialog.
+				Use ui.button to obtain the name of the button, which triggered the event. Note: if the state was modified from the code, then "button" is undefined.
+				Use ui.oldState to obtain the old state of the dialog, which can be one of the following: "opened", "minimized", "maximized", "closed".
+				Use ui.oldPinned to obtain the boolean value of the old pin state of the dialog.
+				Use ui.action to obtain the name of the action. That can be one of the following:
+				"open" - request to open the dialog
+				"close" - request to close the dialog
+				"minimize" - request to minimize the dialog
+				"maximize" - request to maximize the dialog
+				"restore" - request to restore the dialog from minimized or maximized state
+				"pin" - request to pin the dialog
+				"unpin" - request to unpin the dialog
 			*/
 			stateChanging: null,
-			/* cancel="false" Event which is raised after state of dialog was changed.
-				Function takes arguments "evt" and "ui".
-				Use evt to obtain browser event. That parameter can be null if state was modified from codes.
-				Use ui.owner to obtain reference to igDialog.
-				Use ui.button to obtain name of button, which triggered event. Note: if state was modified from codes, then "button" is undefined.
-				Use ui.oldState to obtain old state of dialog, which can be one of following: "opened", "minimized", "maximized", "closed".
-				Use ui.oldPinned to obtain boolean value of old pin state of dialog.
-				Use ui.action to obtain name of action. That can be one of the following:
-				"open" - dialog was opened. Note: event is raised before possible "openAnimation" started.
-				"close" - dialog was closed. Note: event is raised before possible "closeAnimation" started.
-				"minimize" - dialog was minimized
-				"maximize" - dialog was maximized
-				"restore" - dialog was restored from minimized or maximized state
-				"pin" - dialog was pinned
-				"unpin" - dialog was unpinned
+			/* cancel="false" Event which is raised after the state of the dialog was changed.
+				```
+				//Bind after initialization
+				$(document).delegate(".selector", "igdialogstatechanged", function (evt, ui) {
+					//return the triggered browser event
+					evt;
+
+					// Reference to the igDialog widget.
+					ui.owner
+
+					// Obtain the name of the button, which triggers the event. If the igDialog state was modified from the code, using the control API, then the "button" property is undefined.
+					ui.button
+
+					// Obtain the old state of the igDialog. The possible values are: "opened", "minimized", "maximized", "closed".
+					ui.oldState
+
+					// Obtain if the old state of the igDialog was pinned.
+					ui.oldPinned
+
+					// Obtain one of the following dialog actions:
+					//  - "open"
+					//  - "close"
+					//  - "minimize"
+					//  - "maximize"
+					//  - "restpore"
+					//  - "pin"
+					//  - "unpin"
+					ui.action
+				});
+
+				//Initialize
+				$(".selector").igDialog({
+					stateChanged : function(evt, ui) {...}
+				});
+				```
+				The function takes arguments "evt" and "ui".
+				Use evt to obtain the browser event. That parameter can be null if the state was modified from the code.
+				Use ui.owner to obtain a reference to the igDialog.
+				Use ui.button to obtain the name of the button, which triggered the event. Note: if the state was modified from the code, then "button" is undefined.
+				Use ui.oldState to obtain the old state of the dialog, which can be one of the following: "opened", "minimized", "maximized", "closed".
+				Use ui.oldPinned to obtain the boolean value of the old pin state of the dialog.
+				Use ui.action to obtain the name of the action. That can be one of the following:
+				"open" - the dialog was opened. Note: the event is raised before a possible "openAnimation" started.
+				"close" - the dialog was closed. Note: the event is raised before a possible "closeAnimation" started.
+				"minimize" - the dialog was minimized
+				"maximize" - the dialog was maximized
+				"restore" - the dialog was restored from minimized or maximized state
+				"pin" - the dialog was pinned
+				"unpin" - the dialog was unpinned
 			*/
 			stateChanged: null,
-			/* cancel="false" Event which is raised after end animation when dialod was closed or opened.
-				Function takes arguments "evt" and "ui".
-				Use ui.owner to obtain reference to igDialog.
-				Use ui.action to obtain name of action, which triggered animation.
-				"open" - dialog was opened
-				"close" - dialog was closed
+			/* cancel="false" Event which is raised after the end of the animation when the dialod was closed or opened.
+				```
+				//Bind after initialization
+				$(document).delegate(".selector", "igdialoganimationended", function (evt, ui) {
+					//return the triggered browser event
+					evt;
+
+					// Reference to the igDialog widget.
+					ui.owner
+
+					// Obtain one of the following dialog actions:
+					//  - "open"
+					//  - "close"
+					ui.action
+				});
+
+				//Initialize
+				$(".selector").igDialog({
+					animationEnded : function(evt, ui) {...}
+				});
+				```
+				The function takes arguments "evt" and "ui".
+				Use ui.owner to obtain a reference to the igDialog.
+				Use ui.action to obtain the name of the action, which triggered the animation.
+				"open" - the dialog was opened
+				"close" - the dialog was closed
 			*/
 			animationEnded: null,
-			/* cancel="false" Event which is raised when dialog or its content gets focus.
-				Function takes arguments "evt" and "ui".
-				Use evt to obtain browser event.
-				Use ui.owner to obtain reference to igDialog.
+			/* cancel="false" Event which is raised when the dialog or its content gets focus.
+				```
+				//Bind after initialization
+				$(document).delegate(".selector", "igdialogfocus", function (evt, ui) {
+					//return the triggered browser event
+					evt;
+
+					// Reference to the igDialog widget.
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igDialog({
+					focus : function(evt, ui) {...}
+				```
+				The function takes arguments "evt" and "ui".
+				Use evt to obtain the browser event.
+				Use ui.owner to obtain a reference to the igDialog.
 			*/
 			focus: null,
-			/* cancel="false" Event which is raised when dialog or its content loses focus.
-				Function takes arguments "evt" and "ui".
-				Use evt to obtain browser event.
-				Use ui.owner to obtain reference to igDialog.
+			/* cancel="false" Event which is raised when the dialog or its content loses focus.
+				```
+				//Bind after initialization
+				$(document).delegate(".selector", "igdialogblur", function (evt, ui) {
+					//return the triggered browser event
+					evt;
+
+					// Reference to the igDialog widget.
+					ui.owner
+				});
+
+				//Initialize
+				$(".selector").igDialog({
+					blur : function(evt, ui) {...}
+				});
+				```
+				The function takes arguments "evt" and "ui".
+				Use evt to obtain the browser event.
+				Use ui.owner to obtain a reference to the igDialog.
 			*/
 			blur: null
 		},
 		css: {
 			/* Classes applied to the main/top element. */
-		    dialog: "ui-igdialog ui-dialog ui-widget " +
-                "ui-widget-content ui-corner-all",
+			dialog: "ui-igdialog ui-dialog ui-widget " +
+				"ui-widget-content ui-corner-all",
 			/* Classes applied to the header. */
-		    header: "ui-igdialog-header ui-dialog-titlebar ui-widget-header " +
-                "ui-corner-top ui-helper-clearfix",
+			header: "ui-igdialog-header ui-dialog-titlebar ui-widget-header " +
+				"ui-corner-top ui-helper-clearfix",
 			/* Classes applied to the header in focused state. */
 			headerFocus: "ui-igdialog-header-focus ui-state-focus",
 			/* Classes applied to the header in minimized state. */
@@ -336,7 +951,7 @@
 			/* Classes applied to the icon of maximize button. */
 			maximizeIcon: "ui-igdialog-maximize-icon ui-icon ui-icon-extlink",
 			/* Classes applied to the icon of restore button. */
-			restoreIcon: "ui-igdialog-restore-icon ui-icon ui-icon-copy",
+			restoreIcon: "ui-igdialog-restore-icon ui-icon ui-icon-newwin",
 			/* Classes applied to the icon of pin button. */
 			pinIcon: "ui-igdialog-pin-icon ui-icon ui-icon-pin-s",
 			/* Classes applied to the icon of unpin button. */
@@ -520,8 +1135,11 @@
 			}
 		},
 		destroy: function () {
-			/* Destroys igDialog and moves target element to its original parent.
-				returnType="object" Returns reference to this igDialog.
+			/* Destroys the igDialog and moves the target element to its original parent.
+				```
+				$(".selector").igDialog("destroy");
+				```
+				returnType="object" Returns a reference to this igDialog.
 			*/
 
 			// K.D. January 14th, 2014 The dialog does not preserve attributes or properties for the top-most element
@@ -557,10 +1175,17 @@
 			return this;
 		},
 		state: function (state) {
-			/* Gets sets state of editor.
-				Note: If state of dialog changes, then stateChanging and stateChanged events are raised.
+			/* Gets/Sets the state of the editor.
+				Note: If the state of the dialog changes, then stateChanging and stateChanged events are raised.
+				```
+				// Get
+				$(".selector").igDialog("state");
+
+				// Set
+				$(".selector").igDialog("state", "minimized");
+				```
 				paramType="string" optional="true" New state.
-				returnType="string" Returns state.
+				returnType="string" Returns the state.
 			*/
 			if (!arguments.length) {
 				return this.options.state;
@@ -593,17 +1218,23 @@
 			return this;
 		},
 		mainElement: function () {
-			/* Gets reference to dynamically created DIV element which represents dialog.
-				returnType="dom" Returns reference jQuery object.
+			/* Gets reference to the dynamically created DIV element which represents the dialog.
+				```
+				$(".selector").igDialog("mainElement");
+				```
+				returnType="dom" Returns a reference to the jQuery object.
 			*/
 			return this.element;
 		},
 		close: function (e) {
-			/* Closes dialog if it is opened.
+			/* Closes the dialog if it is opened.
 				Notes:
-				1. If state of dialog changes, then stateChanging and stateChanged events are raised.
-				2. That method does not change minimized or maximized state of dialog.
-				It means that method "open" will open dialog and keep previous minimized or maximized state.
+				1. If the state of the dialog changes, then stateChanging and stateChanged events are raised.
+				2. That method does not change minimized or maximized state of the dialog.
+				It means that method "open" will open the dialog and keep previous minimized or maximized state.
+				```
+				$(".selector").igDialog("close", e);
+				```
 				paramType="object" optional="true" Browser event: internal use only.
 				returnType="object" Returns reference to this igDialog.
 			*/
@@ -613,17 +1244,23 @@
 			return this;
 		},
 		open: function () {
-			/* Opens dialog if it is closed. Notes:
-				1. If state of dialog changes, then stateChanging and stateChanged events are raised.
-				2. That method does not change minimized or maximized state of dialog. It means that if dialog was closed by "close" method, then dialog and keep previous minimized or maximized state.
-				returnType="object" Returns reference to this igDialog.
+			/* Opens the dialog if it is closed. Notes:
+				1. If the state of the dialog changes, then stateChanging and stateChanged events are raised.
+				2. That method does not change minimized or maximized state of the dialog. It means that if the dialog was in minimized or maximized stated when closed by "close" method, then the dialog will open in minimized or maximized state respectively.
+				```
+				$(".selector").igDialog("open");
+				```
+				returnType="object" Returns а reference to this igDialog.
 			*/
 			return this._open(null, 1);
 		},
 		minimize: function () {
-			/* Minimizes dialog if it is not minimized.
-				Note: If state of dialog changes, then stateChanging and stateChanged events are raised.
-				returnType="object" Returns reference to this igDialog.
+			/* Minimizes the dialog if it is not minimized.
+				Note: If the state of the dialog changes, then stateChanging and stateChanged events are raised.
+				```
+				$(".selector").igDialog("minimize");
+				```
+				returnType="object" Returns a reference to this igDialog.
 			*/
 			if (!this._min) {
 				this._minimize();
@@ -631,9 +1268,12 @@
 			return this;
 		},
 		maximize: function () {
-			/* Maximizes dialog if it is not maximized.
-				Note: If state of dialog changes, then stateChanging and stateChanged events are raised.
-				returnType="object" Returns reference to this igDialog.
+			/* Maximizes the dialog if it is not maximized.
+				Note: If the state of the dialog changes, then stateChanging and stateChanged events are raised.
+				```
+				$(".selector").igDialog("maximize");
+				```
+				returnType="object" Returns a reference to this igDialog.
 			*/
 			if (!this._max) {
 				this._maximize();
@@ -641,9 +1281,12 @@
 			return this;
 		},
 		restore: function () {
-			/* Sets normal state for dialog which was maximized or minimized.
-				Note: If state of dialog changes, then stateChanging and stateChanged events are raised.
-				returnType="object" Returns reference to this igDialog.
+			/* Sets the normal state for the dialog if it was maximized or minimized.
+				Note: If the state of the dialog changes, then stateChanging and stateChanged events are raised.
+				```
+				$(".selector").igDialog("restore");
+				```
+				returnType="object" Returns a reference to this igDialog.
 			*/
 			if (this._max) {
 				this._onMax();
@@ -654,13 +1297,16 @@
 			return this;
 		},
 		pin: function () {
-			/* Pins dialog if it is not pinned.
-				When dialog is pinned, then the html element of dialog is moved to the original container where target element was located and position:absolute is removed.
-				Pinned dialog does not support modal state, maximized state and it can not be moved.
+			/* Pins the dialog if it is not pinned.
+				When the dialog is pinned, then the html element of the dialog is moved to the original container where the target element was located and position:absolute is removed.
+				The pinned dialog does not support modal state, maximized state and it can not be moved.
 				Notes:
-				1. If parent element of original target-element is invisible, then pinned dialog becomes invisible as well.
-				2. If state of dialog changes, then stateChanging and stateChanged events are raised.
-				returnType="object" Returns reference to this igDialog.
+				1. If the parent element of the original target-element is invisible, then the pinned dialog becomes invisible as well.
+				2. If the state of the dialog changes, then stateChanging and stateChanged events are raised.
+				```
+				$(".selector").igDialog("pin");
+				```
+				returnType="object" Returns a reference to this igDialog.
 			*/
 			if (!this.options.pinned) {
 				this._pin();
@@ -668,9 +1314,12 @@
 			return this;
 		},
 		unpin: function () {
-			/* Unpins dialog if it is pinned.
-				Note: If state of dialog changes, then stateChanging and stateChanged events are raised.
-				returnType="object" Returns reference to this igDialog.
+			/* Unpins the dialog if it is pinned.
+				Note: If the state of the dialog changes, then stateChanging and stateChanged events are raised.
+				```
+				$(".selector").igDialog("unpin");
+				```
+				returnType="object" Returns a reference to this igDialog.
 			*/
 			if (this.options.pinned) {
 				this._pin();
@@ -678,21 +1327,30 @@
 			return this;
 		},
 		getTopModal: function () {
-			/* Gets reference to the top modal dialog.
+			/* Gets a reference to the top modal dialog.
+				```
+				$(".selector").igDialog("getTopModal");
+				```
 				returnType="object" reference to igDialog or null.
 			*/
 			return _modals[ _modals.length - 1 ];
 		},
 		isTopModal: function () {
-			/* Checks if dialog is modal and it is currently active.
-				returnType="bool" true: dialog is on top.
+			/* Checks if the dialog is modal and if it is currently active.
+				```
+				$(".selector").igDialog("isTopModal");
+				```
+				returnType="bool" true: the dialog is on top.
 			*/
 			return this.getTopModal() === this;
 		},
 		moveToTop: function (e) {
-			/* Moves not modal dialog to the top.
+			/* Moves a not modal dialog to the top.
+				```
+				$(".selector").igDialog("moveToTop", e);
+				```
 				paramType="object" optional="true" Original event of browser.
-				returnType="object" Returns reference to this igDialog.
+				returnType="object" Returns a reference to this igDialog.
 			*/
 			var src, name,
 				self = this,
@@ -714,7 +1372,7 @@
 			if (_isSrc(self._header, src) || _isSrc(self._footer, src)) {
 				name = src.nodeName;
 				if (name !== "INPUT" && name !== "BUTTON") {
-				    _stopEvt(e);
+					_stopEvt(e);
 
 					// ensure focus
 					self._setFocus();
@@ -771,6 +1429,13 @@
 		},
 		content: function (newContent) {
 			/* Retrieves the igDialog content container or sets its content to be the new content provided.
+				```
+				//Get
+				$(".selector").igDialog("content");
+
+				//Set
+				$(".selector").igDialog("content", "<div>New content</div>");
+				````
 				paramType="string" optional="true" The new html content provided as a string. If the parameter is provided then the method acts as a setter.
 				returnType="object" If no parameter is provided then the method returns the container carrying the igDialog content. This is the inner container of the dialog window excluding headers, resizing handlers, etc.
 			*/
@@ -794,7 +1459,7 @@
 			}
 			str = "s" + (o.pinned ? "1" : "") + (this._opened ? (this._min ? 2 : (this._max ? 3 : 1)) : 0) +
 				(o.width ? ":w" + o.width : "") + (o.height ? ":h" + o.height : "") +
-                    (":z" + this.element.css("zIndex") || o.zIndex);
+					(":z" + this.element.css("zIndex") || o.zIndex);
 			pos = o.position;
 			if (pos && pos.length === 2) {
 				str += ":p" + pos[ 0 ] + "," + pos[ 1 ];
@@ -863,20 +1528,20 @@
 			return container;
 		},
 		_fixState: function () {
-		    this.options.state = this._opened ?
-                (this._min ? "minimized" : (this._max ? "maximized" : "opened")) : "closed";
+			this.options.state = this._opened ?
+				(this._min ? "minimized" : (this._max ? "maximized" : "opened")) : "closed";
 		},
 		_minimize: function (e) {
 			return this._doState(e, { action: this._min ?
-                "restore" : "minimize" }, e ? "minimize" : null, "_onMin", true);
+				"restore" : "minimize" }, e ? "minimize" : null, "_onMin", true);
 		},
 		_maximize: function (e) {
 			return this._doState(e, { action: this._max ?
-                "restore" : "maximize" }, e ? "maximize" : null, "_onMax", true);
+				"restore" : "maximize" }, e ? "maximize" : null, "_onMax", true);
 		},
 		_pin: function (e) {
 			return this._doState(e, { action: this.options.pinned ?
-                "unpin" : "pin" }, e ? "pin" : null, "_onPin");
+				"unpin" : "pin" }, e ? "pin" : null, "_onPin");
 		},
 		_close: function (e) {
 			return this._opened ? this.close(e) : this._open(e);
@@ -897,7 +1562,7 @@
 			}
 			delete self._minHW;
 			header = self._header = _notab($("<div />").addClass(css.header).css("display", "block")
-                .prependTo(self.element)).dblclick(function (e) {
+				.prependTo(self.element)).dblclick(function (e) {
 				var dbl = o.enableDblclick;
 				if (!dbl) {
 					return;
@@ -910,8 +1575,8 @@
 			});
 
 			if (o.imageClass) {
-			    self._img = $("<span />").addClass(css.headerImage).addClass(o.imageClass)
-                    .html("&nbsp;").appendTo(header);
+				self._img = $("<span />").addClass(css.headerImage).addClass(o.imageClass)
+					.html("&nbsp;").appendTo(header);
 			}
 			self._headerText = $("<span />").addClass(css.headerText).html(txt || "&nbsp;").appendTo(header);
 
@@ -967,8 +1632,8 @@
 				delete self._footer;
 			}
 			if (o.showFooter) {
-			    self._footer = _notab($("<div />").addClass(css.footer).css("display", "block")
-                    .html(txt || "&nbsp").appendTo(self.element));
+				self._footer = _notab($("<div />").addClass(css.footer).css("display", "block")
+					.html(txt || "&nbsp").appendTo(self.element));
 			}
 		},
 		_onMin: function (e, noSize, noFocus) {
@@ -987,7 +1652,7 @@
 			}
 			but = header.find("." + css.minimize);
 			but.find("*").removeClass(min ? css.minimizeIcon : css.restoreIcon)
-                .addClass(min ? css.restoreIcon : css.minimizeIcon);
+				.addClass(min ? css.restoreIcon : css.minimizeIcon);
 			if (e && e.type && min && this._max) {
 				this._onMax(false, true, true);
 			}
@@ -1021,12 +1686,12 @@
 				return;
 			}
 			if (max) {
-			    if (this._min) {
-			        this._onMin(false, true, true);
-			    }
-			    if (o.pinned) {
-			        this._onPin(false, true, true);
-			    }
+				if (this._min) {
+					this._onMin(false, true, true);
+				}
+				if (o.pinned) {
+					this._onPin(false, true, true);
+				}
 			}
 			this._max = max;
 			if (!max) {
@@ -1034,18 +1699,18 @@
 			} else {
 
 				// K.D. July 3rd, 2014 Bug #166685 Attaching the dialog to the body before maximize and restoring its
-			    // position in the DOM on minimize.
-			    if (!this.element.parent().is(document.body)) {
+				// position in the DOM on minimize.
+				if (!this.element.parent().is(document.body)) {
 
-			        // D.P. Dec 3rd, 2015 Bug #209633 igHtmlEditor content is cleared after igDialog is maximized
-			        // Don't move dialog if it's already direct descendant of the body to avoid iframe relaods
-			        this._originalParent = this.element.parent();
-			        this.element.appendTo(document.body);
-			    }
+					// D.P. Dec 3rd, 2015 Bug #209633 igHtmlEditor content is cleared after igDialog is maximized
+					// Don't move dialog if it's already direct descendant of the body to avoid iframe relaods
+					this._originalParent = this.element.parent();
+					this.element.appendTo(document.body);
+				}
 			}
 			but = header.find("." + css.maximize);
 			but.find("*").removeClass(max ? css.maximizeIcon : css.restoreIcon)
-                .addClass(max ? css.restoreIcon : css.maximizeIcon);
+				.addClass(max ? css.restoreIcon : css.maximizeIcon);
 			this._loc(but, max ? RESTORE : MAX);
 
 			if (max) {
@@ -1077,7 +1742,7 @@
 			// fix icon on pin-button
 			but = header.find("." + css.pin);
 			but.find("*").removeClass(pin ? css.pinIcon : css.unpinIcon)
-                .addClass(pin ? css.unpinIcon : css.pinIcon);
+				.addClass(pin ? css.unpinIcon : css.pinIcon);
 			if (this._max && pin) {
 				this._onMax(false, false, true);
 			}
@@ -1105,7 +1770,7 @@
 			parent = elem.parent()[ 0 ];
 			dad = pin ? this._oldDad : this._dad;
 
-		    // D.P. Dec 3rd, 2015 Bug #209633: Fixing compare to work with the mix of DOM and jQuery objects..
+			// D.P. Dec 3rd, 2015 Bug #209633: Fixing compare to work with the mix of DOM and jQuery objects..
 			if (dad && !$(dad).is(parent)) {
 				if (pin && next && next.parentNode === dad) {
 					elem.insertBefore(next);
@@ -1239,7 +1904,7 @@
 			}
 			if (!focusEvt) {
 				focusEvt = function (e) {
-				    var elems, old = self._focBind, foc = e.type === "focus";
+					var elems, old = self._focBind, foc = e.type === "focus";
 
 					// N.A. 2/12/2015 Bug #188573
 					if (self._isDatePickerOpened()) {
@@ -1258,24 +1923,24 @@
 
 					// fire focus/blur events with delay with validation for last state
 					setTimeout(function () {
-					    var focusTo = self.getTopModal(), elem = self.element;
+						var focusTo = self.getTopModal(), elem = self.element;
 
 						// do not allow lost focus for modal dialog
-					    if (elem && focusTo && !self._hasFocus && !foc && _lastTop === self) {
+						if (elem && focusTo && !self._hasFocus && !foc && _lastTop === self) {
 
 							// modal or maximized dialog lost focus
 							if (self._max || focusTo === self) {
-							    focusTo = self._nextTabElem || elem[ 0 ];
+								focusTo = self._nextTabElem || elem[ 0 ];
 
 							// not-modal-child-dialog of modal-dialog lost focus on tab
 							} else {
-							    focusTo = (self._tabTime && (new Date()
-                                    .getTime() - self._tabTime) < 200) ? elem[ 0 ] : null;
+								focusTo = (self._tabTime && (new Date()
+									.getTime() - self._tabTime) < 200) ? elem[ 0 ] : null;
 							}
 							if (focusTo) {
 								self._setFocus(focusTo);
 							}
-					    }
+						}
 
 						// raise focus/blur events
 						self._fireFoc(self._hasFocus, e);
@@ -1295,17 +1960,17 @@
 			return $("#ui-datepicker-div")[ 0 ] && $("#ui-datepicker-div").css("display") === "block";
 		},
 		_setFocus: function (elem) {
-		    try {
+			try {
 
-		        // D.P. 2015-12-03 Bug #207631: Controls lose focus when used in an iframe
-		        // Don't move focus if it's already inside the dialog
-		        if (elem && $(document.activeElement).closest(".ui-igdialog").is(this.element)) {
-		            this._hasFocus = true;
-		            return;
-		        }
-		    } catch (ex) { }
+				// D.P. 2015-12-03 Bug #207631: Controls lose focus when used in an iframe
+				// Don't move focus if it's already inside the dialog
+				if (elem && $(document.activeElement).closest(".ui-igdialog").is(this.element)) {
+					this._hasFocus = true;
+					return;
+				}
+			} catch (ex) { }
 
-		    var self = this;
+			var self = this;
 			setTimeout(function () {
 				try {
 					if (!self._hasFocus) {
@@ -1419,11 +2084,11 @@
 				start: function () {
 
 					// Note: cancel has no effect
-				    $(this).addClass(self.css.resizing);
+					$(this).addClass(self.css.resizing);
 
-				    // restore position, left and top, which were modified by resizing
-				    // A.M. April 28th, 2015 Bug #190822 "Resizing is not working properly from the top border of the window"
-				    // Dialog now can be resized by dragging the left or the top border of the window
+					// restore position, left and top, which were modified by resizing
+					// A.M. April 28th, 2015 Bug #190822 "Resizing is not working properly from the top border of the window"
+					// Dialog now can be resized by dragging the left or the top border of the window
 					//pos = ui.originalPosition;
 					if (o.pinned && self._pinPos) {
 						elem.css(self._pinPos);
@@ -1432,12 +2097,12 @@
 				resize: function () {
 
 					// Note: cancel has no effect
-				    self._fixCaption();
+					self._fixCaption();
 
 					// K.D. December 20th, 2013 Bug #159961 Keeping the position because
-				    // resizable messes it if inside absolute or relative element.
-				    // A.M. April 28th, 2015 Bug #190822 "Resizing is not working properly from the top border of the window"
-                    // Dialog now can be resized by dragging the left or the top border of the window
+					// resizable messes it if inside absolute or relative element.
+					// A.M. April 28th, 2015 Bug #190822 "Resizing is not working properly from the top border of the window"
+					// Dialog now can be resized by dragging the left or the top border of the window
 					//elem.css(pos);
 					// restore position, left and top, which were modified by resizing
 					if (o.pinned && self._pinPos) {
@@ -1491,7 +2156,7 @@
 
 			// check for em, ex, in, cm, mm, pt units
 			if (val.indexOf("m") > 0 || val.indexOf("e") > 0 || val.indexOf("i") > 0 ||
-                val.indexOf("t") > 0)
+				val.indexOf("t") > 0)
 			{
 				elem = $("<div />").css({ visibility: "hidden", width: val }).appendTo(this._dad);
 				num = elem.width();
@@ -1532,10 +2197,10 @@
 				elem0.hide();
 				self._fixCaption(elem);
 			} else if (max) {
-			    elem0.show().css({ width: "auto", height: "auto" });
+				elem0.show().css({ width: "auto", height: "auto" });
 
 				// temporary collapse dialog: to correctly set position (any reasonable values)
-			    elem.css({ width: 100, height: 50 });
+				elem.css({ width: 100, height: 50 });
 
 			//A.T. 9 July - Fix for bug #142753
 			} else if (o.width !== null) {
@@ -1545,7 +2210,8 @@
 					self._toPx(o.height, true),
 					o.minHeight);
 				if (resize) {
-					elem.resizable("option", "minHeight", o.minHeight);
+					// D.P 12th Sep 2016 #312 minWidth, maxWidth and maxHeight options cannot be set at runtime
+					this._doResizable();
 				}
 			}
 			if (o.width === null) {
@@ -1655,14 +2321,14 @@
 			if (!width) {
 				width = 3 + _getPadding(this._header);
 				while (--i >= 0) {
-				    elem = elems[ i ];
+					elem = elems[ i ];
 
 					// get around bugs in jquery-1.4.4 (exception in Opera or huge elem.outerWidth in IE)
 					try {
 						outerWidth = $(elem).outerWidth(true);
 					} catch (ex) {}
 					width += 1 + ((outerWidth && outerWidth > 2 && outerWidth < 100) ?
-					    outerWidth : elem.offsetWidth);
+						outerWidth : elem.offsetWidth);
 				}
 				this._minHW = width;
 			}
@@ -1697,11 +2363,11 @@
 				cap = header.children();
 				len = cap.length;
 				while (++i < len) {
-				    widths += cap[ i ].offsetWidth + _toPx($(cap[ i ]), "marginLeft") +
-                        _toPx($(cap[ i ]), "marginRight");
+					widths += cap[ i ].offsetWidth + _toPx($(cap[ i ]), "marginLeft") +
+						_toPx($(cap[ i ]), "marginRight");
 				}
 				while (j++ < 2) {
-				    elem.css("width", widths);
+					elem.css("width", widths);
 
 					// verify that buttons did not jump on 2nd line
 					widths += 2;
@@ -1771,7 +2437,7 @@
 
 		// returns properties of window/HTML { width, height, maxWidth, maxHeight, html }
 		_winRect: function (sizeOnly) {
-		    var size, docElem, width, height, widthOk, heightOk,
+			var size, docElem, width, height, widthOk, heightOk,
 
 				// container = this.options.container,
 				maxWidth = 0,
@@ -1825,8 +2491,8 @@
 			maxWidth = Math.max(maxWidth, widthOk);
 			maxHeight = Math.max(maxHeight, heightOk);
 			return { width: (width === big) ?
-			    widthOk : width, height: (height === big) ?
-			        heightOk : height, maxWidth: maxWidth, maxHeight: maxHeight, html: html
+				widthOk : width, height: (height === big) ?
+					heightOk : height, maxWidth: maxWidth, maxHeight: maxHeight, html: html
 			};
 		},
 
@@ -1842,14 +2508,14 @@
 					.css({ position: "absolute", filter: "alpha(opacity=50)", opacity: 0 }));
 			}
 			if (_iframe.parent()[ 0 ] !== div.parent()[ 0 ]) {
-			    _iframe.css({
-			        width: "1px", height: "1px",
-			        marginLeft: div.css("marginLeft"), marginTop: div.css("marginTop"),
+				_iframe.css({
+					width: "1px", height: "1px",
+					marginLeft: div.css("marginLeft"), marginTop: div.css("marginTop"),
 					left: div.css("left"), top: div.css("top"),
-                    zIndex: div.attr("zIndex") - 1 }).insertBefore(div);
+					zIndex: div.attr("zIndex") - 1 }).insertBefore(div);
 			}
 			_iframe.css({
-			    width: hide ? "1px" : div.css("width"), height: hide ? "1px" : div.css("height")
+				width: hide ? "1px" : div.css("width"), height: hide ? "1px" : div.css("height")
 			});
 		},
 
@@ -1897,9 +2563,9 @@
 			}
 			self._modal = on;
 			if (on) {
-			    self._modalDiv = div = _notab($("<div />").css({
-			        position: "absolute", left: 0, top: 0, zIndex: _maxZ - 1
-			    })
+				self._modalDiv = div = _notab($("<div />").css({
+					position: "absolute", left: 0, top: 0, zIndex: _maxZ - 1
+				})
 					.addClass(self.css.overlay).mousedown(function (e) {
 						self._setFocus();
 						_stopEvt(e);
@@ -1922,13 +2588,16 @@
 					"restore" : ((state === CLOSE) ? "close" : ((state === PIN) ?
 					"pin" : ((state === UNPIN) ? "unpin" : "open")))))) + "ButtonTitle";
 			var val = this.options[ state ] || ($.ig && $.ig.Dialog && $.ig.Dialog.locale ?
-                $.ig.Dialog.locale[ state ] : null) || "";
+				$.ig.Dialog.locale[ state ] : null) || "";
 			but.attr("title", val).attr("longdesc", val);
 		},
 		_setOption: function (key, val) {
 			var pos, size, drag, resize,
 				elem = this.element, o = this.options, container = key === "container";
-			if (!elem || !key || o[ key ] === val || key === "mainElement") {
+			if ((key === "mainElement") || (key === "imageClass")) {
+				throw new Error($.ig.Dialog.locale.setOptionError + key);
+			}
+			if (!elem || !key || o[ key ] === val) {
 				return this;
 			}
 			if (key === "state") {
@@ -1979,7 +2648,7 @@
 				this._doModal();
 			}
 			if (key.indexOf("Button") > 0 || key === "image" || key === "headerText" ||
-                key === "showHeader")
+				key === "showHeader")
 			{
 				this._doHeader();
 				size = true;
@@ -1998,7 +2667,7 @@
 				this._save();
 			}
 			if (this._vis) {
-			    pos = key === "position";
+				pos = key === "position";
 
 				// check for height, width, minHeight, minWidth, maxHeight, maxWidth
 				if (container || size || pos || key.indexOf("idth") > 0 || key.indexOf("eight") > 0) {
@@ -2023,5 +2692,5 @@
 		}
 	});
 	$.extend($.ui.igDialog, { version: "<build_number>" });
-	return $.ui.igDialog;
-}));
+	return $.ui.igDialog;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

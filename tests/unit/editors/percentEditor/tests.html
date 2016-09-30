@@ -83,8 +83,14 @@
 						spinWrapAround: true
 					});
 
-					
-					$("#pasteEditor").igPercentEditor();	
+					$("#pasteEditor").igPercentEditor();
+
+					$("#percentDouble").igPercentEditor({       
+						displayFactor : 1,
+						value: 2.5,
+						spinDelta: 2,
+						dataMode: "double"
+					});
 				});
 			}
 			initialized = false;
@@ -283,7 +289,7 @@
 
 
 			var testId = 'Percent Spin up.';
-			test(testId, 6, function () {
+			test(testId, 8, function () {
 				$("#pEditor10").focus();
 				$("#pEditor10").igPercentEditor("spinUp");
 				$("#pEditor10").blur();
@@ -305,11 +311,16 @@
 				$("#pEditor10").igPercentEditor("spinDown", 3);				
 				equal($('#pEditor10').igPercentEditor("displayValue"), "3.00%", "spinWrapAround does not return maxValue");
 
-			
+				var editor = $("#percentDouble");
+				editor.igPercentEditor("setFocus");
+				editor.igPercentEditor("spinUp");
+				editor.igPercentEditor("field").blur();
+				equal(editor.igPercentEditor("value"), "4.5", "Value after spin up is not correct");
+				equal(editor.igPercentEditor("displayValue"), "4.50%", "Display value after spin up is not correct");
 			});
 
 			var testId = 'Paste and insert';
-			test(testId, 6, function () {
+			test(testId, 8, function () {
 				var $editor = $("#pasteEditor"),
 					editorInput = $editor.igPercentEditor("field");
 
@@ -317,6 +328,12 @@
 				$("#pEditor11").igPercentEditor( "insert", "1" );	
 				
 				equal($("#pEditor11").parent().parent().hasClass("ui-ignotify-warn"), true, "The notifier didn't show a warning.");
+
+				//#287: Percent/Currency insert method not working with existing value outside edit mode
+				$("#pEditor11").igPercentEditor("field").blur();
+				$("#pEditor11").igPercentEditor( "insert", "2" );
+				equal($("#pEditor11").igPercentEditor("field").val(), "2.00%", "The text after insert (out of edit) is not correct");	
+				strictEqual($("#pEditor11").igPercentEditor("value"), 0.02, "The text after insert (out of edit) is not correct");	
 
 				editorInput.trigger("focus");
 				stop();
@@ -422,6 +439,9 @@
 	<input id="pEditor10" />
 	<input id="pEditor11" />
 	<div id="pasteEditor"></div>
+	<div id="percentDouble"></div>
+    
+	
 </div>
 </body>
 </html>

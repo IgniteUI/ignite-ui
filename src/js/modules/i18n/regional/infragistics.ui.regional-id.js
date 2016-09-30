@@ -1,13 +1,7 @@
 ﻿/* Indonesia +*/
 
-/*global define, jQuery */
-(function (factory) {
-	if (typeof define === "function" && define.amd) {
-		define( ["jquery"], factory );
-	} else {
-		factory(jQuery);
-	}
-}(function ($) {
+/*global jQuery */
+(function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
 	if ($.datepicker && $.datepicker.regional) {
@@ -56,4 +50,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('id');
     }
-}));
+})(jQuery);

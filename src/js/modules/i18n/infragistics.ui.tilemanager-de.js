@@ -7,14 +7,8 @@
 *
 */
 
-/*global define, jQuery */
-(function (factory) {
-	if (typeof define === "function" && define.amd) {
-		define( ["jquery"], factory );
-	} else {
-		factory(jQuery);
-	}
-}(function ($) {
+/*global jQuery */
+(function ($) {
 $.ig = $.ig || {};
 
 if (!$.ig.TileManager) {
@@ -28,4 +22,4 @@ if (!$.ig.TileManager) {
 	});
 
 }
-}));
+})(jQuery);

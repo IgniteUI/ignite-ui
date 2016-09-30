@@ -22,7 +22,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.tilemanager",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
@@ -1901,5 +1901,5 @@
         }
     });
     $.extend($.ui.igTileManager, { version: "<build_number>" });
-    return $.ui.igTileManager;
-}));
+    return $.ui.igTileManager;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

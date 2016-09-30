@@ -7,14 +7,8 @@
 *
 */
 
-/*global define, jQuery */
-(function (factory) {
-	if (typeof define === "function" && define.amd) {
-		define( ["jquery"], factory );
-	} else {
-		factory(jQuery);
-	}
-}(function ($) {
+/*global jQuery */
+(function ($) {
     $.ig = $.ig || {};
 
     if (!$.ig.Dialog) {
@@ -25,8 +19,9 @@
 			    maximizeButtonTitle: "Maximizar",
 			    pinButtonTitle: "Anclar",
 			    unpinButtonTitle: "Desanclar",
-			    restoreButtonTitle: "Restaurar"
+			    restoreButtonTitle: "Restaurar",
+				setOptionError: 'Los cambios en el tiempo de ejecución no están permitidos para la siguiente opción: '
 		    }
 	    };
     }
-}));
+})(jQuery);

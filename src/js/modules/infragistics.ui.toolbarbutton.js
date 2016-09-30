@@ -18,7 +18,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.toolbarbutton",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
@@ -264,5 +264,5 @@
     });
 
     $.extend($.ui.igToolbarButton, { version: "<build_number>" });
-    return $.ui.igToolbarButton;
-}));
+    return $.ui.igToolbarButton;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

@@ -7,14 +7,8 @@
 *
 */
 
-/*global define, jQuery */
-(function (factory) {
-	if (typeof define === "function" && define.amd) {
-		define( ["jquery"], factory );
-	} else {
-		factory(jQuery);
-	}
-}(function ($) {
+/*global jQuery */
+(function ($) {
     $.ig = $.ig || {};
 
     if (!$.ig.Dialog) {
@@ -25,8 +19,9 @@
 			    maximizeButtonTitle: "Maximieren",
 			    pinButtonTitle: "Anheften",
 			    unpinButtonTitle: "Lösen",
-			    restoreButtonTitle: "Wiederherstellen"
+			    restoreButtonTitle: "Wiederherstellen",
+				setOptionError: 'Laufzeit-Änderungen sind für die folgende Option nicht zugelassen: '
 		    }
 	    };
     }
-}));
+})(jQuery);

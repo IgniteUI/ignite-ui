@@ -19,7 +19,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.colorpicker",*/ [
 			"jquery",
             "jquery-ui",
 			"./infragistics.util",
@@ -217,5 +217,5 @@
     });
 
     $.extend($.ui.igColorPicker, { version: "<build_number>" });
-    return $.ui.igColorPicker;
-}));
+    return $.ui.igColorPicker;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

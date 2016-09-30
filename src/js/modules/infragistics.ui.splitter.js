@@ -18,7 +18,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( [
+		define( /*"igniteui/js/modules/infragistics.ui.splitter",*/ [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
@@ -2007,5 +2007,5 @@
         }
     });
     $.extend($.ui.igSplitter, { version: "<build_number>" });
-    return $.ui.igSplitter;
-}));
+    return $.ui.igSplitter;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES
