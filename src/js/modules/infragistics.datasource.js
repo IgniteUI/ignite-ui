@@ -1431,7 +1431,7 @@
 				*/
 				exprString: ""
 			},
-			/*
+			/* Settings related to built-in group by functionality
 			```
 				ds = new $.%%WidgetName%%({
 					dataSource: products,
