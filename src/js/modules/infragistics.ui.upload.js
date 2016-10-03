@@ -18,7 +18,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( /*"igniteui/js/modules/infragistics.ui.upload",*/ [
+		define( [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
@@ -1273,15 +1273,6 @@
 			Use ui.fileStatus to get current file status
 			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
 			Use ui.owner in order to access the igUpload widget object.
-			*/
-			fileUploading: "fileUploading",
-			/* Defines the name of the uploaded event. Fired when the file is uploaded
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.filePath to get the name of the uploaded file
-			Use ui.totalSize to get the file size of the uploaded file
-			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
-			Use ui.owner in order to access the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileuploading", function (evt, ui) {
@@ -1312,6 +1303,15 @@
 					fileUploading : function(evt, ui) {...}
 				});
 			```
+			*/
+			fileUploading: "fileUploading",
+			/* Defines the name of the uploaded event. Fired when the file is uploaded
+			Function takes arguments evt and ui.
+			Use ui.fileId to get unique identifier of the file
+			Use ui.filePath to get the name of the uploaded file
+			Use ui.totalSize to get the file size of the uploaded file
+			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
+			Use ui.owner in order to access the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileuploaded", function (evt, ui) {

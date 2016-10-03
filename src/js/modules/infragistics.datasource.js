@@ -30,7 +30,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( /*"igniteui/js/modules/infragistics.datasource",*/ [
+		define( [
 			"jquery",
 			"./infragistics.util"
 		], factory );
@@ -136,7 +136,7 @@
 
 			$(window).load(function () {
 			var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-			ds = new $.ig.DataSource({
+			ds = new $.%%WidgetName%%({
 			callback: render,
 			dataSource: url,
 			schema: {
@@ -194,7 +194,7 @@
 				var ds;
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -228,7 +228,7 @@
 
 				$(window).load(function () {
 					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						type: "remoteUrl",
 						callback: render,
 						dataSource: url,
@@ -265,7 +265,7 @@
 				var ds;
 
 				$(document).ready(function () {
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						dataSource: products,
 						callee: Bob,
 						callback: Bob.greet
@@ -278,7 +278,7 @@
 			callee: null,
 			/* type="array" this is the normalized (transformed) resulting data, after it's fetched from the data source
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					data: normalizedArrayOfObjects
 				});
 			```
@@ -294,7 +294,7 @@
 					{name: "StandardCost", type: "string"}],
 					searchField:"Records" });
 
-				ds = new $.ig.DataSource({type: "json", dataSource: jsonData, schema: jsonSchema});
+				ds = new $.%%WidgetName%%({type: "json", dataSource: jsonData, schema: jsonSchema});
 				ds.dataBind();
 			```
 			*/
@@ -320,7 +320,7 @@
 				var ds;
 
 				$(window).ready(function () {
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						dataBinding: myDataBinding,
 						dataSource: products
 					});
@@ -349,7 +349,7 @@
 				var ds;
 
 				$(window).ready(function () {
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						dataBound: myDataBound
 					});
 
@@ -362,7 +362,7 @@
 			/* type="string" specifies the HTTP verb to be used to issue the request
 			```
 				$(window).load(function () {
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						primaryKey: "CustomerID",
 						requestType: "get",
 						dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?",
@@ -378,7 +378,7 @@
 			```
 				$(window).load(function () {
 					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						type: "remoteUrl",
 						callback: render,
 						dataSource: url,
@@ -414,7 +414,7 @@
 					{name: "StandardCost", type: "string"}],
 					searchField:"Records" });
 
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: jsonData,
 					schema: jsonSchema
@@ -426,7 +426,7 @@
 			/* type="string" the unique field identifier
 			```
 				$(window).load(function () {
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						primaryKey: "CustomerID",
 						type: "json",
 						dataSource: adventureWorks,
@@ -440,7 +440,7 @@
 			primaryKey: null,
 			/* type="string" property in the response which specifies the total number of records in the backend (this is needed for paging)
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					responseDataKey: "Records",
@@ -452,7 +452,7 @@
 			/* type="string" property in the response which specifies where the data records array will be held (if the response is wrapped)
 			```
 				var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
-				var jsonp = new $.ig.DataSource({
+				var jsonp = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: url,
 					responseDataKey: "d.results"
@@ -473,7 +473,7 @@
 
 				$(window).load(function () {
 					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						type: "remoteUrl",
 						callback: render,
 						dataSource: url,
@@ -494,7 +494,7 @@
 			responseDataType: null,
 			/* type="string" content type of the response. See http://api.jquery.com/jQuery.ajax/ => contentType
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					responseDataKey: "Records",
@@ -506,7 +506,7 @@
 			/* type="bool" if set to false will disable transformations on schema, even if it is defined locally in the javascript code
 			```
 				var url = "/demos/server/proxy.php?url=http://services.odata.org/OData/OData.svc/Products?$format=json";
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					callback:render,
 					dataSource: url,
 					localSchemaTransform: false,
@@ -541,7 +541,7 @@
 				var ds;
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -582,7 +582,7 @@
 				var ds;
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -607,7 +607,7 @@
 			/* Settings related to built-in paging functionality
 			```
 				$(window).load(function () {
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						type: "json",
 						dataSource: adventureWorks,
 						responseDataKey: "Records",
@@ -625,7 +625,7 @@
 			paging: {
 				/* type="bool" Paging is not enabled by default
 				```
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						type: "json",
 						dataSource: adventureWorks,
 						responseDataKey: "Records",
@@ -640,7 +640,7 @@
 				enabled: false,
 				/* type="remote|local" Type for the paging operation
 				```
-					jsonDs = new $.ig.DataSource( {
+					jsonDs = new $.%%WidgetName%%( {
 						filtering: {
 							type: "local",
 							caseSensitive: true,
@@ -655,7 +655,7 @@
 				type: "remote",
 				/* type="number" number of records on each page
 				```
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						type: "json",
 						dataSource: adventureWorks,
 						responseDataKey: "Records",
@@ -670,7 +670,7 @@
 				pageSize: 5,
 				/* type="string" denotes the name of the encoded URL parameter that will state what is the currently requested page size
 				```
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						type: "json",
 						dataSource: adventureWorks,
 						responseDataKey: "Records",
@@ -686,7 +686,7 @@
 				pageSizeUrlKey: null,
 				/* type="string" denotes the name of the encoded URL parameter that will state what is the currently requested page index
 				```
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						type: "json",
 						dataSource: adventureWorks,
 						responseDataKey: "Records",
@@ -703,7 +703,7 @@
 				pageIndexUrlKey: null,
 				/* type="number" current page index
 				```
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						type: "json",
 						dataSource: adventureWorks,
 						responseDataKey: "Records",
@@ -722,7 +722,7 @@
 				pageIndex: 0,
 				/* type="bool" Whether when a new page of data is requested we should append the new data to the existing data
 				```
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						dataSource: products,
 						paging: {
 							enabled: true,
@@ -735,7 +735,7 @@
 			},
 			/* Settings related to built-in filtering functionality
 			```
-				jsonDs = new $.ig.DataSource( {
+				jsonDs = new $.%%WidgetName%%( {
 					filtering: {
 						type: "local",
 						caseSensitive: true,
@@ -753,7 +753,7 @@
 				type: "remote",
 				/* type="bool" enables or disables case sensitive filtering on the data. Works only for local filtering
 				```
-					jsonDs = new $.ig.DataSource( {
+					jsonDs = new $.%%WidgetName%%( {
 						filtering: {
 							type: "local",
 							caseSensitive: true,
@@ -766,7 +766,7 @@
 				caseSensitive: false,
 				/* type="bool" if the type of paging/sorting/filtering is local and applyToAllData is true, filtering will be performed on the whole data source that's present locally, otherwise only on the current dataView. if type is remote, this setting doesn't have any effect.
 				```
-					jsonDs = new $.ig.DataSource( {
+					jsonDs = new $.%%WidgetName%%( {
 						filtering: {
 							type: "local",
 							caseSensitive: true,
@@ -809,7 +809,7 @@
 
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							callback: render,
 							dataSource: url,
 							schema: {
@@ -851,7 +851,7 @@
 
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							callback: render,
 							dataSource: url,
 							schema: {
@@ -897,7 +897,7 @@
 
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							callback: render,
 							dataSource: url,
 							schema: {
@@ -932,7 +932,7 @@
 				```
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							callback: render,
 							dataSource: url,
 							schema: {
@@ -964,7 +964,7 @@
 				/* type="array" a list of expression objects, containing the following key-value pairs: fieldName, expression (search string), condition , and logic (AND/OR)
 				```
 					var url = "/demos/server/proxy.php?url=http://services.odata.org/OData/OData.svc/Products?$format=json";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback:render,
 						dataSource: url,
 						localSchemaTransform: false,
@@ -1008,7 +1008,7 @@
 
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							callback: render,
 							dataSource: url,
 							schema: {
@@ -1039,7 +1039,7 @@
 			/* Settings related to built-in sorting functionality
 			```
 				$(window).load(function () {
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						type: "json",
 						dataSource: adventureWorks,
 						sorting: {
@@ -1055,7 +1055,7 @@
 			sorting: {
 				/* type="none|asc|desc" Sorting direction
 				```
-					jsonDs = new $.ig.DataSource({
+					jsonDs = new $.%%WidgetName%%({
 						sorting: {
 							type: "local",
 							defaultDirection: "asc"
@@ -1071,7 +1071,7 @@
 				/* type="array" when defaultDirection is different than "none", and defaultFields is specified, data will be initially sorted accordingly, directly after dataBind()
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1098,7 +1098,7 @@
 				defaultFields: [],
 				/* type="bool" If the sorting type is local and applyToAllData is true, sorting will be performed on the whole data source that's present locally, otherwise only on the current dataView. If sorting type is remote, this setting doesn't have any effect.
 				```
-					jsonDs = new $.ig.DataSource({
+					jsonDs = new $.%%WidgetName%%({
 						sorting: {
 							type: "local",
 							applyToAllData: true
@@ -1135,7 +1135,7 @@
 					var ds;
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							callback: render,
 							dataSource: url,
 							schema: {
@@ -1193,7 +1193,7 @@
 					var ds;
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							callback: render,
 							dataSource: url,
 							schema: {
@@ -1257,7 +1257,7 @@
 					var ds;
 					$(window).load(function () {
 						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							callback: render,
 							dataSource: url,
 							schema: {
@@ -1289,7 +1289,7 @@
 				/* type="remote|local" Specifies whether sorting will be applied locally or remotely (via a remote request)
 				```
 					$(window).load(function () {
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							type: "json",
 							dataSource: adventureWorks,
 							sorting: {
@@ -1308,7 +1308,7 @@
 				/* type="bool" Specifies if sorting will be case sensitive or not. Works only for local sorting
 				```
 					$(window).load(function () {
-						ds = new $.ig.DataSource({
+						ds = new $.%%WidgetName%%({
 							type: "json",
 							dataSource: adventureWorks,
 							sorting: {
@@ -1325,7 +1325,7 @@
 				/* type="string" URL param name which specifies how sorting expressions will be encoded in the URL. Default is null and uses OData conventions
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1349,7 +1349,7 @@
 				/* type="string" URL param value for ascending type of sorting. Default is null and uses OData conventions
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1375,7 +1375,7 @@
 				/* type="string" URL param value for descending type of sorting. Default is null and uses OData conventions
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1398,7 +1398,7 @@
 				sortUrlDescValueKey: null,
 				/* type="array" a list of sorting expressions , consisting of the following keys (and their respective values): fieldName, direction and compareFunc (optional)
 				```
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						localSchemaTransform: false,
@@ -1431,9 +1431,9 @@
 				*/
 				exprString: ""
 			},
-			/*
+			/* Settings related to built-in group by functionality
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					dataSource: products,
 					groupby: {
 						defaultCollapseState: true
@@ -1446,7 +1446,7 @@
 			groupby: {
 				/* type="bool" default collapse state
 				```
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						dataSource: products,
 						groupby: {
 							defaultCollapseState: true
@@ -1460,7 +1460,7 @@
 			/* Settings related to built-in summaries functionality
 			```
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					callback: render,
 					dataSource: url,
 					schema: {
@@ -1495,7 +1495,7 @@
 				/* type="remote|local" Specifies whether summaries will be applied locally or remotely (via a remote request)
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1522,7 +1522,7 @@
 				/* type="string" Url key for retrieving data from response - used only when summaries are remote
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1547,7 +1547,7 @@
 				/* type="string" Key for retrieving data from the summaries response - used only when summaries are remote
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1572,7 +1572,7 @@
 				/* type="priortofilteringandpaging|afterfilteringbeforepaging|afterfilteringandpaging" Determines when the summary values are calculated
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1601,7 +1601,7 @@
 				/* type="array" a list of column settings that specifies custom summaries options per column basis
 				```
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					var ds = new $.ig.DataSource({
+					var ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1654,7 +1654,7 @@
 				var ds;
 				$(window).ready(function () {
 
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						dataSource: products,
 						fields: [{
 							name: "ProductID",
@@ -1686,7 +1686,7 @@
 			if an edit is made to a row or cell, then the value is brought back to its original value, the transaction should be removed
 			Note: This option takes effect only when autoCommit is set to false.
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					aggregateTransactions: true,
 					dataSource: arrayOfObjects
 				});
@@ -1695,7 +1695,7 @@
 			aggregateTransactions: false,
 			/* type="bool" if auto commit is true, data will be automatically commited to the data source, once a value or a batch of values are updated via saveChanges()
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					autoCommit: true
 				});
 			```
@@ -1704,7 +1704,7 @@
 			/* type="string" specifies an update remote URL, to which an AJAX request will be made as soon as saveChages() is called.
 			```
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					callback: render,
 					dataSource: url,
 					schema: {
@@ -1895,7 +1895,7 @@
 
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -1952,7 +1952,7 @@
 
 				$(window).load(function () {
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					callback: render,
 					dataSource: url,
 					schema: {
@@ -2057,7 +2057,7 @@
 			```
 				var ds;
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					callback: render,
 					dataSource: url,
 					schema: {
@@ -2088,7 +2088,7 @@
 
 			```
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					callback: render,
 					dataSource: url,
 					schema: {
@@ -2138,7 +2138,7 @@
 			```
 				var ds;
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					callback: render,
 					dataSource: url,
 					schema: {
@@ -2188,7 +2188,7 @@
 					searchField: "Records"
 				});
 
-				ds = new $.ig.DataSource();
+				ds = new $.%%WidgetName%%();
 
 				// Set
 				ds.schema(jsonSchema);
@@ -2218,7 +2218,7 @@
 		pagingSettings: function (p) {
 			/* gets/sets a list of paging settings
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					paging: {
@@ -2254,7 +2254,7 @@
 			/* gets/sets a list of filtering settings
 			```
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					callback: render,
 					dataSource: url,
 					schema: {
@@ -2298,7 +2298,7 @@
 		sortSettings: function (s) {
 			/* gets/sets a list of paging settings
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					schema: {
 						fields: [{
 							name: "col1"
@@ -2346,7 +2346,7 @@
 			```
 				var ds;
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					callback: render,
 					schema: {
 						fields: [{
@@ -2381,7 +2381,7 @@
 		type: function (t) {
 			/* gets/sets the type of the dataSource. If no parameter is specified, returns settings.type
 			```
-				ds = new $.ig.DataSource();
+				ds = new $.%%WidgetName%%();
 
 				// Set
 				ds.type("json");
@@ -2419,7 +2419,7 @@
 
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -2462,7 +2462,7 @@
 		removeRecordByKey: function (key, origDs) {
 			/* removes a specific record denoted by the primaryKey of the passed key parameter from the data source
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					schema: {
 						fields: [{
 							name: "Name"
@@ -2522,7 +2522,7 @@
 		removeRecordByIndex: function (index, origDs) {
 			/* Removes a record from the data source at specific index.
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					schema: {
 						fields: [{
 							name: "Name"
@@ -2589,7 +2589,7 @@
 		setCellValue: function (rowId, colId, val, autoCommit) {
 			/*  sets a cell value for the cell denoted by rowId and colId. Creates a transaction for the update operation and returns it
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					schema: {
 						fields: [{
 							name: "Name"
@@ -2638,7 +2638,7 @@
 		updateRow: function (rowId, rowObject, autoCommit) {
 			/* updates a record in the datasource. Creates a transaction that can be committed / rolled back
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					schema: {
 						fields: [{
 							name: "Name"
@@ -2719,7 +2719,7 @@
 
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -2782,7 +2782,7 @@
 
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -2847,7 +2847,7 @@
 
 				$(window).load(function () {
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					callback: render,
 					dataSource: url,
 					schema: {
@@ -2931,7 +2931,7 @@
 				var ds;
 
 				$(window).load(function () {
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						schema: {
 						fields: [{
 							name: "Name"
@@ -3020,7 +3020,7 @@
 
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -3064,7 +3064,7 @@
 			/* clears the transaction log without updating anything in the data source
 			paramType="string|number" optional="true" Record Id to find transactions for. If no id is specified, will rollback all transactions to the data source.
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					schema: {
 						fields: [{
 							name: "Name"
@@ -3116,7 +3116,7 @@
 		pendingTransactions: function () {
 			/* returns a list of all transaction objects that are pending to be committed or rolled back to the data source
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					schema: {
 					fields: [{
 							name: "Name"
@@ -3165,7 +3165,7 @@
 
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -3607,7 +3607,7 @@
 		transactionsAsString: function () {
 			/* returns the accumulated transaction log as a string. The purpose of this is to be passed to URLs or used conveniently
 			```
-			var ds = new $.ig.DataSource({
+			var ds = new $.%%WidgetName%%({
 				schema: {
 					fields: [{
 						name: "Name"
@@ -3656,7 +3656,7 @@
 		saveChanges: function (success, error) {
 			/* posts to the settings.updateUrl using $.ajax, by serializing the changes as url params
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					schema: {
 						fields: [{
 							name: "Name"
@@ -3820,7 +3820,7 @@
 					{name: "StandardCost", type: "string"}],
 					searchField:"Records" });
 
-				ds = new $.ig.DataSource({type: "json", dataSource: jsonData, schema: jsonSchema});
+				ds = new $.%%WidgetName%%({type: "json", dataSource: jsonData, schema: jsonSchema});
 				ds.dataBind();
 			```
 
@@ -4047,7 +4047,7 @@
 		getCellValue: function (fieldName, record) {
 			/* gets a cell value from the record by the specified fieldName. If there's a mapper defined for the field, the resolved by the mapper value will be returned.
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					dataSource: products,
 					primaryKey: "ProductID"
 				});
@@ -4112,7 +4112,7 @@
 			Takes summary data from passed argument dsObj(using argument key)
 			```
 				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					callback: render,
 					dataSource: url,
 					schema: {
@@ -5095,7 +5095,7 @@
 		filteredData: function () {
 			/*returns filtered data if local filtering is applied. If filtering is not applied OR type of filtering is remote returns undefined.
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					dataSource: products,
 					primaryKey: "ProductID",
 					filtering: {
@@ -5274,7 +5274,7 @@
 			example 2: [{fieldIndex : 1} , {fieldIndex : 2}]
 
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					schema: {
 						fields:[
 							{ name : "col1" },
@@ -5460,7 +5460,7 @@
 			if expr is detected to be a regular expression, the "cond" part is skipped
 
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					schema: jsonSchema
@@ -6181,7 +6181,7 @@
 			the actual total number of records may not
 			match the number of records that exists on the client
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					callback:render,
 					dataSource: "/demos/server/server.php",
 					responseDataKey: "records",
@@ -6235,7 +6235,7 @@
 				var ds;
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -6284,7 +6284,7 @@
 
 				$(window).load(function () {
 					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
-					ds = new $.ig.DataSource({
+					ds = new $.%%WidgetName%%({
 						callback: render,
 						dataSource: url,
 						schema: {
@@ -6322,7 +6322,7 @@
 		totalLocalRecordsCount: function () {
 			/* returns the total number of records in the local data source
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					callback:render,
 					dataSource: "/demos/server/server.php",
 					responseDataKey: "records",
@@ -6343,7 +6343,7 @@
 		pageCount: function () {
 			/* returns the total number of pages
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					paging: {
@@ -6371,7 +6371,7 @@
 		pageIndex: function (index) {
 			/* gets /sets the current page index. If an index is passed as a parameter, the data source is re-bound.
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					paging: {
@@ -6421,7 +6421,7 @@
 		prevPage: function () {
 			/* sets the page index to be equal to the previous page index and rebinds the data source
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					paging: {
@@ -6440,7 +6440,7 @@
 		nextPage: function () {
 			/* sets the page index to be equal to the next page index and rebinds the data source
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					paging: {
@@ -6462,7 +6462,7 @@
 		pageSize: function (s) {
 			/* gets /sets the page size and rebinds the data source if a parameter is specified. If no parameter is passed, returns the current page size
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					paging: {
@@ -6500,7 +6500,7 @@
 		pageSizeDirty: function (dirty) {
 			/* for internal use
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					paging: {
@@ -6522,7 +6522,7 @@
 		recordsForPage: function (p) {
 			/* returns a list of records for the specified page. Implies that paging is enabled.
 			```
-				var ds = new $.ig.DataSource({
+				var ds = new $.%%WidgetName%%({
 					type: "json",
 					dataSource: adventureWorks,
 					paging: {
@@ -6548,7 +6548,7 @@
 		tableToObject: function (tableDOM) {
 			/* converts a HTML TABLE dom element to a JavaScript array of objects that contain the records data
 			```
-				ds = new $.ig.DataSource();
+				ds = new $.%%WidgetName%%();
 				var tableObj = ds.tableToObject("<table><tr><td>CD Player</td><td>10.90</td><td>3</td></tr><tr><td>CD Player 1</td><td>10.90</td><td>3</td></tr><tr><td>CD Player 2</td><td>10.90</td><td>3</td></tr></table>");
 			```
 			paramType="dom" TABLE dom element to transform
@@ -6580,7 +6580,7 @@
 		stringToJSONObject: function (s) {
 			/* parses the string and returns an evaluated JSON object
 			```
-				ds = new $.ig.DataSource();
+				ds = new $.%%WidgetName%%();
 				var jsonObj = ds.stringToJSONObject('[{"Name":"CD Player","Price":10.90,"Rating":3}]');
 			```
 			paramType="string" the JSON as string.
@@ -6598,7 +6598,7 @@
 		stringToXmlObject: function (s) {
 			/* parses a string and returns a XML Document
 			```
-				ds = new $.ig.DataSource();
+				ds = new $.%%WidgetName%%();
 				var xmlObj = ds.stringToXmlObject("<Element><Name>CD Player</Name><Price>10.90</Price><Rating>3</Rating></Element>");
 			```
 			paramType="string" the XML represented as a string
@@ -6637,7 +6637,7 @@
 		groupByData: function () {
 			/* returns collection of data and non-data(grouped) records. Flat representation of hierarchical data
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					dataSource: products,
 					primaryKey: "ProductID",
 					groupby: {
@@ -6656,7 +6656,7 @@
 		visibleGroupByData: function () {
 			/* returns collection of data and non-data(grouped) records. Returns only visible records(children of collapsed grouped records are not included in the collection)
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					dataSource: products,
 					callback: render,
 					groupby: {
@@ -6716,7 +6716,7 @@
 		toggleGroupByRecord: function (id, collapsed) {
 			/* Toggle grouped record with the specified id and updates collections visible groupby data and data view
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					dataSource: products,
 					primaryKey: "ProductID",
 					groupby: {
@@ -6767,7 +6767,7 @@
 			/* Check whether the specified gorupby record is collapsed
 			paramType="string|object" id of the grouped record OR grouped record
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					dataSource: products,
 					primaryKey: "ProductID",
 					groupby: {
@@ -6876,7 +6876,7 @@
 		isGroupByApplied: function (exprs) {
 			/* check whether grouping is applied for the specified sorting expressions.
 			```
-				ds = new $.ig.DataSource({
+				ds = new $.%%WidgetName%%({
 					dataSource: products,
 					primaryKey: "ProductID",
 					groupby: {
