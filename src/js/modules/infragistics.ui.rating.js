@@ -28,8 +28,7 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util",
-			"./i18n/infragistics.ui.rating-en"
+			"./infragistics.util"
 		], factory );
 	} else {
 
@@ -46,60 +45,239 @@
 	*/
 	$.widget("ui.igRating", {
 		options: {
-			/* type="bool" Gets or sets vertical or horizontal orientation of votes.
-				Change of that option is not supported after igRating was created. */
+			/* type="bool" Gets a vertical or horizontal orientation for the votes.
+				Change of that option is not supported after igRating was created.
+				```
+				$(".selector").igRating({
+					vertical : true
+				});
+
+				//Get
+				var isVertical = $(".selector").igRating("option", "vertical");
+				```
+			*/
 			vertical: false,
-			/* type="number" Gets or sets value (selected votes or percent).  */
+			/* type="number|string" Gets/Sets value (selected votes or percent). If the value is of type string, it should be suitable for parsing to number. According to [valueAsPercent](ui.igrating#options:valueAsPercent) options the value is used as number of selected votes or as a percent of the votes.
+				```
+				//Initialize
+				$(".selector").igRating({
+					value : 3
+				});
+
+				//Get
+				var value = $(".selector").igRating("option", "value");
+
+				//Set
+				$(".selector").igRating("option", "value", 3);
+				```
+			*/
 			value: null,
-			/* type="number" Gets or sets value-hover (hovered votes or percent of hovered votes). Default is same as value. */
+			/* type="number|string" Gets/Sets value-hover (hovered votes or percent of hovered votes). The default is same as value. If the value is of type string, it should be suitable for parsing to number. According to [valueAsPercent](ui.igrating#options:valueAsPercent) options the valueHover is used as number of hovered votes or as a percent of the hovered votes.
+				```
+				//Initialize
+				$(".selector").igRating({
+					valueHover : 2
+				});
+
+				//Get
+				var hoverVal = $(".selector").igRating("option", "valueHover");
+
+				//Set
+				$(".selector").igRating("option", "valueHover", 2);
+				```
+			 */
 			valueHover: null,
-			/* type="number" Gets or sets number of votes.*/
+			/* type="number" Gets/Sets number of votes.
+				```
+				//Initialize
+				$(".selector").igRating({
+					voteCount : 3
+				});
+
+				//Get
+				var count = $(".selector").igRating("option", "voteCount");
+
+				//Set
+				$(".selector").igRating("option", "voteCount", 3);
+				```
+			*/
 			voteCount: 5,
-			/* type="number" Gets or sets custom width of a vote in pixels. In case of 0 the run time style value is used. */
+			/* type="number" Gets/Sets custom width of a vote in pixels. In case of 0 the run time style value is used.
+				```
+				//Initialize
+				$(".selector").igRating({
+					voteWidth : 64
+				});
+
+				//Get
+				var width = $(".selector").igRating("option", "voteWidth");
+
+				//Set
+				$(".selector").igRating("option", "voteWidth", 64);
+				```
+			*/
 			voteWidth: 0,
-			/* type="number" Gets or sets custom height of a vote in pixels. In case of 0 the run time style value is used. */
+			/* type="number" Gets/Sets custom height of a vote in pixels. In case of 0 the run time style value is used.
+				```
+				//Initialize
+				$(".selector").igRating({
+					voteHeight : 38
+				});
+
+				//Get
+				var height = $(".selector").igRating("option", "voteHeight");
+
+				//Set
+				$(".selector").igRating("option", "voteHeight", 38);
+				```
+			 */
 			voteHeight: 0,
-			/* type="bool" Gets or sets direction of selected and hovered votes. Change of that option is not supported after igRating was created.
+			/* type="bool" Gets the direction of selected and hovered votes. Change of that option is not supported after igRating was created.
 				Value true: from left to right or from top to bottom.
 				Value false: from right to left or from bottom to left.
+				```
+				//Initialize
+				$(".selector").igRating({
+					swapDirection : true
+				});
+
+				//Get
+				var swap = $(".selector").igRating("option", "swapDirection");
+				```
 			*/
 			swapDirection: false,
-			/* type="bool" Gets or sets percent or vote number to measure value and value-hover.
+			/* type="bool" Gets/Sets percent or vote number to measure value and value-hover.
 				Value true: value is measured as percent (from 0 to 1).
-				Value false: value is measured in number of voted (from 0 to voteCount) */
+				Value false: value is measured in number of voted (from 0 to voteCount)
+				```
+				//Initialize
+				$(".selector").igRating({
+					valueAsPercent : false
+				});
+
+				//Get
+				var isPercent = $(".selector").igRating("option", "valueAsPercent");
+
+				//Set
+				$(".selector").igRating("option", "valueAsPercent", false);
+				```
+			 */
 			valueAsPercent: true,
-			/* type="bool" Gets sets ability to get focus. Change of that option is not supported after igRating was created.
+			/* type="bool" Gets if igRating can have focus. Change of that option is not supported after igRating was created.
 				Value true: can get focus and process key events.
-				Value false: cannot get focus. */
+				Value false: cannot get focus.
+				```
+				//Initialize
+				$(".selector").igRating({
+					focusable : false
+				});
+
+				//Get
+				var focusable = $(".selector").igRating("option", "focusable");
+				```
+				*/
 			focusable: true,
-			/* type="exact|half|whole" Gets or sets precision. Precision of value and valueHover.
+			/* type="exact|half|whole" Gets/Sets precision. Precision of value and valueHover.
+				```
+				//Initialize
+				$(".selector").igRating({
+					precision : "half"
+				});
+
+				//Get
+				var precision = $(".selector").igRating("option", "precision");
+
+				//Set
+				$(".selector").igRating("option", "precision", "half");
+				```
 				exact type="string" Value corresponds location of mouse.
 				half type="string" Value is rounded to the half of vote.
 				whole type="string" Value is rounded to the number of votes. */
 			precision: "whole",
-			/* type="number" Gets or sets part of vote-size, which is considered as zero value.
+			/* type="number" Gets/Sets part of vote-size, which is considered as zero value.
 				It has effect only when precision is set to "half" or "whole".
 				If user clicks between edge of the first vote and (sizeOfVote * precisionZeroVote), then value is set to 0.
-				Same is applied for mouseover as well.*/
+				Same is applied for mouseover as well.
+				```
+				//Initialize
+				$(".selector").igRating({
+					precisionZeroVote : 0.5
+				});
+
+				//Get
+				var precisionZero = $(".selector").igRating("option", "precisionZeroVote");
+
+				//Set
+				$(".selector").igRating("option", "precisionZeroVote", 0.5);
+				```
+				*/
 			precisionZeroVote: 0.25,
-			/* type="number" Gets or sets number of decimal places used to round value and value-hover.
+			/* type="number" Gets/Sets number of decimal places used to round value and value-hover.
 				Negative value will disable that option and value will not be rounded.
 				Notes:
 				If precision is "whole" or "half" and roundedDecimalPlaces is set in range of 0..2, then 3 is used.
 				If valueAsPercent is enabled and roundedDecimalPlaces is set to 0, then 1 is used.
 				If it is larger than 15, then 15 is used.
-				*/
+				```
+				//Initialize
+				$(".selector").igRating({
+					roundedDecimalPlaces : 2
+				});
+
+				//Get
+				var decimalPlaces = $(".selector").igRating("option", "roundedDecimalPlaces");
+
+				//Set
+				$(".selector").igRating("option", "roundedDecimalPlaces", 2);
+				```
+			*/
 			roundedDecimalPlaces: 3,
-			/* type="string" Gets or sets selector for css classes.
+			/* type="string" Gets/Sets selector for css classes.
 				That option allows replacing all default css styles by custom values.
-				Application should provide css classes for all members defined in the css options with "theme" selector. */
+				Application should provide css classes for all members defined in the css options with "theme" selector.
+				```
+				//Initialize
+				$(".selector").igRating({
+					theme : "redmond"
+				});
+
+				//Get
+				var theme = $(".selector").igRating("option", "theme");
+
+				//Set
+				$(".selector").igRating("option", "theme", "redmond");
+
+				//CSS theme definition
+				.redmond .ui-igrating { ... }
+				.redmond .ui-igrating-active { ... }
+				.redmond .ui-igrating-hover { ... }
+				.redmond .ui-igrating-vote { ... }
+				.redmond .ui-igrating-voteselected { ... }
+				.redmond .ui-igrating-votehover { ... }
+				.redmond .ui-igrating-votedisabled { ... }
+				.redmond .ui-igrating-votedisabledselected { ... }
+				```
+			*/
 			theme: null,
-			/* type="object" Gets or sets object which contains options supported by igValidator.
-				Note that for onblur validation depends on the "focusable" option.
-				Example:
-				$('#rating1').igRating({ validatorOptions: { required: true, minValue: 0.2 } }); */
+			/* type="object" Gets/Sets object which contains options supported by igValidator.
+				Note that for onblur validation depends on the [focusable](ui.igrating#options:focusable) option.
+				```
+				//Initialize
+				$(".selector").igRating({
+					validatorOptions : {
+						onblur: true
+					}
+				});
+
+				//Get
+				var validatorOptions = $(".selector").igRating("option", "validatorOptions");
+
+				//Set
+				$(".selector").igRating("option", "validatorOptions", {onblur: true});
+				```
+			*/
 			validatorOptions: null,
-			/* type="object" Gets or sets custom css votes.
+			/* type="object" Gets/Sets custom css votes.
 				That object should be 2-dimentional array or object with indexes, where every item of first level represents settings for a vote at that index.
 				Second level of an item is settings for a vote and it should contain classes for a specific state of vote.
 				Item at index [0] on second level is used for css class of vote in normal state.
@@ -107,9 +285,40 @@
 				Item at index [2] on second level is used for css class of vote in hover state.
 				Examples:
 				{ 1: { 0: "normalCss", 1: "selectedCss", 2: "hoverCss"} }
-				will customize only second vote with normalCss for normal state, hoverCss for hover state and selectedCss for selected state.
+				will customize only second vote with [normalCss](ui.igrating#theming:ui-igrating ui-state-default ui-widget-content) for normal state, [hoverCss](ui.igrating#theming:ui-igrating-hover ui-state-hover) for hover state and [selectedCss](ui.igrating#theming:ui-igrating-voteselected) for selected state.
 				[[null, 's1', 'h1'], [null, 's2', 'h2'], [null, 's3', 'h3']]
-				will customize selected and hover states for first 3 votes with classes h# and s#. */
+				will customize selected and hover states for first 3 votes with classes h# and s#.
+				```
+				 //Initialize
+				$(".selector").igRating({
+					cssVotes : customCss
+				});
+
+				//Get
+				var css = $(".selector").igRating("option", "cssVotes");
+
+				//Set
+				$(".selector").igRating("option", "cssVotes", customCss);
+
+				customCss = [
+					["selected0", "selected1", "selected2"],
+					["normal0", "normal1", "normal2"],
+					["hovered0", "hovered1", "hovered2"]
+				];
+
+				<style type="text/css">
+				.normal0 { ... }
+				.normal1 { ... }
+				.normal2 { ... }
+				.selected0 { ... }
+				.selected1 { ... }
+				.selected2 { ... }
+				.hovered0 { ... }
+				.hovered1 { ... }
+				.hovered2 { ... }
+				</style>
+				```
+				*/
 			cssVotes: null
 		},
 		css: {
@@ -135,12 +344,47 @@
 		events: {
 			/* cancel="true" Event which is raised before hover value is changed.
 				If application returns false, then action is canceled and hover value stays unchanged.
+				```
+				//Bind after initialization
+				$(document).delegate(".selector", "igratinghoverchange", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					//the value before the igRating was hovered
+					ui.oldValue;
+					//the current hover value
+					ui.value;
+				});
+
+				//Initialize
+				$(".selector").igRating({
+					hoverChange : function(evt, ui) {...}
+				});
+				```
 				Function takes arguments evt and ui.
 				Use ui.value to get new value.
 				Use ui.oldValue to get old value. */
 			hoverChange: null,
 			/* cancel="true" Event which is raised before (selected) value is changed.
 				If application returns false, then action is canceled and value stays unchanged.
+				```
+				//Bind after initialization
+				$(document).delegate(".selector", "igratingvaluechange", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					//gets old value of the igRating widget
+					ui.oldValue;
+					//gets the current selected value of the igRating widget
+					ui.value;
+				});
+
+				//Initialize
+				$(".selector").igRating({
+					valueChange : function(evt, ui) {...}
+				});
+
+				```
 				Function takes arguments evt and ui.
 				Use ui.value to get new value.
 				Use ui.oldValue to get old value. */
@@ -461,7 +705,14 @@
 		},
 		validator: function (destroy) {
 
-			/* Gets reference to igValidator used by igRating.
+			/* Gets reference to [igValidator](ui.igvalidator) used by igRating.
+				```
+				//get igValidator widget that is used by the igRating
+				var validator = $(".selector").igRating("validator");
+
+				//destroy the igValidator widget that is used by the igRating
+				$(".selector").igRating("validator", "destroy");
+				```
 				paramType="bool" optional="true" Request to destroy validator.
 				returnType="object" Returns reference to igValidator or null.
 			*/
@@ -478,7 +729,10 @@
 			return this._validator;
 		},
 		validate: function () {
-		    /* Trigger validation.
+		    /* Triggers validation.
+				```
+				$(".selector").igRating("validate");
+				```
                 returnType="bool" True if all checks have passed. Can be null in case validation is not enabled.
 			*/
 			return this._validator ? this._validator.validate() : null;
@@ -784,7 +1038,14 @@
 		},
 		value: function (val) {
 
-			/* Gets sets (selected) value.
+			/* Gets/Sets (selected) value.
+				```
+				//Get
+				var value = $(".selector").igRating("value");
+
+				//Set
+				$(".selector").igRating("value", 4);
+				```
 				paramType="number" New value which is rendered with selected css.
 				returnType="number|object" If parameter is not 'number', then exact value rendered with selected css is returned. Otherwise, reference to igRating is returned.
 			*/
@@ -798,7 +1059,14 @@
 		},
 		valueHover: function (val) {
 
-			/* Gets sets hover value.
+			/* Gets/Sets hover value.
+				```
+				//Get
+				var value = $(".selector").igRating("valueHover");
+
+				//Set
+				$(".selector").igRating("valueHover", 5);
+				```
 				paramType="number" optional="true" New value which will be rendered with hover css when rating gets mouse.
 				returnType="number|object" If parameter is not "number", then last value which was rendered with hover css is returned. Otherwise, reference to igRating is returned.
 			*/
@@ -813,6 +1081,9 @@
 		hasFocus: function () {
 
 			/* Checks if igRating has focus.
+				```
+				var focused = $(".selector").igRating("hasFocus");
+				```
 				returnType="bool" Returns true if igRating has focus.
 			*/
 			return this._fcs === 1;
@@ -820,6 +1091,9 @@
 		focus: function () {
 
 			/* Sets focus to igRating. That has effect only when options.focusable is enabled.
+				```
+				$(".selector").igRating("focus");
+				```
 				returnType="object" Returns reference to this igRating.
 			*/
 			if (this._foc) {
@@ -831,7 +1105,10 @@
 		},
 		destroy: function () {
 
-			/* Destroys igRating.
+			/* Destroys igRating widget.
+				```
+				$(".selector").igRating("destroy");
+				```
 				returnType="object" Returns reference to this igRating.
 			*/
 			var o = this.options, old = this._old, e = this.element;
@@ -861,5 +1138,5 @@
 		}
 	});
 	$.extend($.ui.igRating, { version: "<build_number>" });
-	return $.ui.igRating;
-}));
+	return $.ui.igRating;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

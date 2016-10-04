@@ -7,14 +7,8 @@
 *
 */
 
-/*global define, jQuery */
-(function (factory) {
-	if (typeof define === "function" && define.amd) {
-		define( ["jquery"], factory );
-	} else {
-		factory(jQuery);
-	}
-}(function ($) {
+/*global jQuery */
+(function ($) {
     $.ig = $.ig || {};
 
     if (!$.ig.Dialog) {
@@ -25,8 +19,9 @@
 			    maximizeButtonTitle: "Maximize",
 			    pinButtonTitle: "Pin",
 			    unpinButtonTitle: "Unpin",
-			    restoreButtonTitle: "Restore"
+			    restoreButtonTitle: "Restore",
+				setOptionError: 'Runtime changes are not allowed for the following option: '
 		    }
 	    };
     }
-}));
+})(jQuery);

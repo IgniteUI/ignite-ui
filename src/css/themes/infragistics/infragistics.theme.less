@@ -8,9 +8,7 @@
 //* VARIABLES */ 
 //*************/
 // Font 
-@fontfamily: "Segoe UI",
-Arial,
-sans-serif;
+@fontfamily: "Segoe UI",Arial,sans-serif;
 @text-color: @igGray10;
 @text-muted: fade(@text-color,
 70%);
@@ -31,16 +29,20 @@ sans-serif;
 @igGray9: #777777;
 @igGray10: #444444;
 //* Gradual palette, used mainly for bulletGraph and linearGauge */
-@chartGradualPalette1: #014151;
-@chartGradualPalette2: #105060;
-@chartGradualPalette3: #206070;
-@chartGradualPalette4: #307080;
-@chartGradualPalette5: #408090;
-@chartGradualPalette6: #5999A9;
-@chartGradualPalette7: #71B1C1;
-@chartGradualPalette8: #8ACADA;
-@chartGradualPalette9: #A2E2F2;
-@chartGradualPalette10: #CDF5FF;
+@chartGradualPalette1: #7446B9;
+@chartGradualPalette2: #9FB328;
+@chartGradualPalette3: #F96232;
+@chartGradualPalette4: #2E9CA6;
+@chartGradualPalette5: #DC3F76;
+@chartGradualPalette6: #FF9800;
+@chartGradualPalette7: #3F51B5;
+@chartGradualPalette8: #439C47;
+@chartGradualPalette9: #795548;
+@chartGradualPalette10: #9A9A9A;
+@chartGradualPalette11: #C62828;
+//* igChart colors */
+
+@chartToolTipBgColor: rgba(255, 255, 255, 0.95);
 // Icon sprites
 @ui-icons-darker: #222222;
 @ui-icons-dark: #888888;
@@ -95,63 +97,63 @@ sans-serif;
 }
 
 .chartPalette1 {
-    background-color: #77B5C5!important;
-    border: 1px solid #3d7d8d!important;
+    background-color: #7446B9!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette2 {
-    background-color: #C0C0C0!important;
-    border: 1px solid #8f8f8f!important;
+    background-color: #9FB328!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette3 {
-    background-color: #81AE7A!important;
-    border: 1px solid #608f58!important;
+    background-color: #F96232!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette4 {
-    background-color: #FAA958!important;
-    border: 1px solid #f77e11!important;
+    background-color: #2E9CA6!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette5 {
-    background-color: #A77DBF!important;
-    border: 1px solid #7d58a2!important;
+    background-color: #DC3F76!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette6 {
-    background-color: #FF7968!important;
-    border: 1px solid #de604e!important;
+    background-color: #FF9800!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette7 {
-    background-color: #a5c047!important;
-    border: 1px solid #7d9432!important;
+    background-color: #3F51B5!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette8 {
-    background-color: #729dc9!important;
-    border: 1px solid #507bab!important;
+    background-color: #439C47!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette9 {
-    background-color: #f1bd5c!important;
-    border: 1px solid #de9712!important;
+    background-color: #795548!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette10 {
-    background-color: #65ab88!important;
-    border: 1px solid #447b60!important;
+    background-color: #9A9A9A!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette11 {
-    background-color: #7e7bc1!important;
-    border: 1px solid #545794!important;
+    background-color: #C62828!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPalette12 {
     background-color: #9f725f!important;
-    border: 1px solid #745345!important;
+    border: 1px solid #fff!important;
 }
 
 .chartPaletteNegative {
@@ -163,6 +165,9 @@ sans-serif;
 
 .boxShadow {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25)!important;
+}
+.boxShadow2 {
+	box-shadow: 0 0 2px rgba(0,0,0,0.6);
 }
 /***************************/
 /* JQuery Framework styles */
@@ -1476,6 +1481,9 @@ input.ui-igbutton {
 
 .ui-igdialog-footer {
     .stateNormal;
+}
+.ui-igdialog-headerbutton .ui-icon:before {
+	font-size:12px;
 }
 /**********/
 /* igGrid */
@@ -2995,12 +3003,15 @@ input.ui-igbutton {
 .ui-chart-palette-12 {
     .chartPalette12;
 }
-
+.ui-chart-legend,.ui-chart-piechart-container {
+	border:none;
+}
 .ui-chart-piechart-container,
 .ui-chart-legend-item-text {
     font-size: 12px;
     font-family: @fontfamily;
 }
+
 
 .ui-chart-toolbar .ui-slider-handle {
     height: 18px;
@@ -3030,8 +3041,17 @@ input.ui-igbutton {
 }
 
 .ui-widget-content.ui-chart-tooltip {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: @chartToolTipBgColor;
+	border:1px solid #888;
+	
 }
+.ui-chart-innerlabels {
+    color: #fff !important;
+}
+.ui-chart-outerlabels {
+    color: #666 !important;
+}
+
 /*******************/
 /* Sparkline chart */
 /*******************/
@@ -3044,52 +3064,54 @@ input.ui-igbutton {
 }
 
 .ui-sparkline-tooltip {
-    .boxShadow;
-    padding: 3px;
+	background-color: @chartToolTipBgColor;
+    .boxShadow2;
+	border:1px solid #888;
+    padding: 5px 8px;
 }
 
 .ui-sparkline-sparkpath {
-    background: #43ABD5;
+    background: #439C47;
     border: 1px solid;
 }
 
 .ui-sparkline-negativesparkpath {
-    background: #B9242E;
+    background: #C62828;
     border: 1px solid;
 }
 
 .ui-sparkline-trendline {
-    background: #7F7F7F;
+    background: #7f7f7f;
     border: 2px solid;
 }
 
 .ui-sparkline-markers {
-    background: #43ABD5;
+    background: #2E9CA6;
     border: 3px solid;
 }
 
 .ui-sparkline-firstmarker {
-    background: #237FA7;
+    background: #2E9CA6;
     border: 5px solid;
 }
 
 .ui-sparkline-lastmarker {
-    background: #FBC139;
+    background: #FF9800;
     border: 5px solid;
 }
 
 .ui-sparkline-highmarker {
-    background: #A3B929;
+    background: #9FB328;
     border: 4px solid;
 }
 
 .ui-sparkline-lowmarker {
-    background: #AF39FF;
+    background: #7446B9;
     border: 3px solid;
 }
 
 .ui-sparkline-negativemarkers {
-    background: #E5516F;
+    background: #C62828;
     border: 3px solid;
 }
 
@@ -3100,15 +3122,17 @@ input.ui-igbutton {
 
 .ui-sparkline-axis-x {
     font-family: @fontfamily;
-    border: 2px solid #989EA3;
-    color: #406090;
+    border: 2px solid #666;
+    color: #777;
+	text-transform: uppercase;
 }
 
 .ui-sparkline-axis-y {
     font-family: @fontfamily;
-    border: 2px solid #989EA3;
-    color: #406090;
+    border: 2px solid #666;
+    color: #777;
     text-align: right;
+	text-transform: uppercase;
 }
 /****************/
 /* Funnel chart */
@@ -3116,14 +3140,16 @@ input.ui-igbutton {
 
 .ui-funnel {
     font-family: @fontfamily;
-    font-size: 14px;
-    color: #555555;
+    font-size: 12px;
+    color: #666;
     border: 0px;
 }
 
 .ui-funnel-tooltip {
-    .boxShadow;
-    padding: 3px;
+    background-color: @chartToolTipBgColor;
+    .boxShadow2;
+	border:1px solid #888;
+    padding: 5px 8px;
 }
 
 .ui-funnel-slice {
@@ -3150,7 +3176,10 @@ input.ui-igbutton {
 }
 
 .ui-doughnut-tooltip {
-    /*add styles*/
+	background-color: @chartToolTipBgColor;
+    .boxShadow2;
+	border:1px solid #888;
+	padding: 5px 8px;
 }
 /**************/
 /* igSplitter */
@@ -3214,7 +3243,7 @@ input.ui-igbutton {
 /***********************/
 
 .ui-radialgauge-needle {
-    background-color: @igGray8;
+    background-color: @chartGradualPalette10;
 }
 
 .ui-radialgauge-needleCap {
@@ -3243,22 +3272,22 @@ input.ui-igbutton {
 }
 
 .ui-radialgauge-label {
-    background-color: #333;
+    background-color: #666;
     border: none;
 }
 
 .ui-radialgauge-range-palette-1 {
-    background-color: @chartGradualPalette7;
+    background-color: @chartGradualPalette8;
     border-top-color: transparent;
 }
 
 .ui-radialgauge-range-palette-2 {
-    background-color: @chartGradualPalette5;
+    background-color: @chartGradualPalette6;
     border-top-color: transparent;
 }
 
 .ui-radialgauge-range-palette-3 {
-    background-color: @chartGradualPalette4;
+    background-color: @chartGradualPalette11;
     border-top-color: transparent;
 }
 
@@ -3279,7 +3308,7 @@ input.ui-igbutton {
 
 .ui-radialgauge {
     font-family: @fontfamily;
-    font-size: 16px;
+    font-size: 12px;
 }
 /***********************/
 /* igBulletGraph Chart */
@@ -3307,23 +3336,23 @@ input.ui-igbutton {
 }
 
 .ui-bulletgraph-label {
-    background-color: #333;
+    background-color: #666;
     border: transparent;
 }
 /* RANGE VALUES */
 
 .ui-bulletgraph-range-palette-1 {
-    background-color: @chartGradualPalette1;
+    background-color: @chartGradualPalette8;
     border: transparent;
 }
 
 .ui-bulletgraph-range-palette-2 {
-    background-color: @chartGradualPalette3;
+    background-color: @chartGradualPalette6;
     border: transparent;
 }
 
 .ui-bulletgraph-range-palette-3 {
-    background-color: @chartGradualPalette5;
+    background-color: @chartGradualPalette11;
     border: transparent;
 }
 
@@ -3862,7 +3891,7 @@ input.ui-igbutton {
 .ui-icon-carat-2-w:before{content:'\e641'}
 .ui-icon-carat-2-n-s:before{content:'\e642'}
 .ui-icon-carat-2-e-w:before{content:'\e643'}
-.ui-icon-triangle-1-n:before{content:'\e644'}
+.ui-icon-triangle-1-n:before{content:'\e644';font-size:10px}
 .ui-icon-triangle-1-ne:before{content:'\e645'}
 .ui-icon-triangle-1-e:before{content:'\e646'}
 .ui-icon-triangle-1-se:before{content:'\e647'}

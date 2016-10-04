@@ -20,8 +20,7 @@
 		define( [
 			"jquery",
             "jquery-ui",
-			"./infragistics.util",
-			"./i18n/infragistics.ui.shared-en"
+			"./infragistics.util"
 		], factory );
 	} else {
 
@@ -1851,4 +1850,4 @@
 		}
 	});
 	$.extend($.ui.igResponsiveContainer, { version: "<build_number>" });
-}));
+}));// REMOVE_FROM_COMBINED_FILES

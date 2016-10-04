@@ -32,8 +32,7 @@
 		// AMD. Register as an anonymous module.
 		define( [
 			"jquery",
-			"./infragistics.util",
-			"./i18n/infragistics.datasource-en"
+			"./infragistics.util"
 		], factory );
 	} else {
 
@@ -122,27 +121,274 @@
 	$.ig.DataSource = $.ig.DataSource || Class.extend({
 		/* The Infragistics Data Source client-side component is implemented as a class, and has support for paging, sorting, and filtering
 		it supports binding to various types of data sources including JSON, XML, HTML Table, WCF/REST services, JSONP, JSONP and OData combined, etc.
+		```
+			var render = function (success, error) {
+				if (success) {
+					var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+					resultHtml = $.ig.tmpl(template, ds.dataView());
+					$("#table").html(resultHtml);
+				} else {
+					alert(error);
+				}
+			}
+
+			var ds;
+
+			$(window).load(function () {
+			var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+			ds = new $.%%WidgetName%%({
+			callback: render,
+			dataSource: url,
+			schema: {
+				fields: [{
+					name: "Name"
+				}, {
+					name: "Price"
+				}, {
+					name: "Rating"
+				}],
+					searchField: "d"
+			},
+			responseDataKey: "d",
+			responseDataType: "jsonp",
+			filtering: {
+				type: "remote",
+				filterExprUrlKey: "filter",
+				expressions: [{
+					fieldName: "Name",
+					cond: "Contains",
+					expr: "Cr"
+				}]
+			},
+			paging: {
+				enabled: true,
+				pageSize: 3,
+				type: "local"
+			}
+			});
+
+			ds.dataBind();
+			});
+		```
 		*/
 		settings: {
-			/* type="string" setting this is only necessary when the data source is set to a table in string format. we need to create an invisible dummy data container in the body and append the table data to it */
+			/* type="string" setting this is only necessary when the data source is set to a table in string format. we need to create an invisible dummy data container in the body and append the table data to it
+			```
+				var ds = $.ig.DataSource({
+					id: "myId"
+				});
+			```
+			*/
 			id: "ds",
-			/* type="string" this is the property in the dataView where actual resulting records will be put. (So the dataView will not be array but an object if this is defined), after the potential data source transformation */
+			/* type="string" this is the property in the dataView where actual resulting records will be put. (So the dataView will not be array but an object if this is defined), after the potential data source transformation
+			```
+				var render = function (success, error) {
+					if (success) {
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+					} else {
+						alert(error);
+					}
+				}
+				var ds;
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						outputResultsName: "myOutputResultsName"
+					});
+					ds.dataBind();
+				});
+			```
+			*/
 			outputResultsName: null,
-			/* type="function" callback function to call when data binding is complete */
+			/* type="function" callback function to call when data binding is complete
+			```
+				var render = function (success, error) {
+					if (success) {
+						alert("success");
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						type: "remoteUrl",
+						callback: render,
+						dataSource: url,
+						schema: oDataSchema,
+						responseDataKey : "d.results",
+						responseDataType: "jsonp",
+					});
+					ds.dataBind();
+				});
+			```
+			*/
 			callback: null,
-			/* type="object" object on which to invoke the callback function */
+			/* type="object" object on which to invoke the callback function
+			```
+				var Bob = {
+					name: "Bob",
+					greet: function () {
+						alert("Hi, I'm " + this.name);
+					}
+				};
+
+				var products = [];
+				products[0] = {
+					"ProductID": 1,
+					"Name": "Adjustable Race",
+					"ProductNumber": "AR-5381"
+				};
+				products[1] = {
+					"ProductID": 2,
+					"Name": "Bearing Ball",
+					"ProductNumber": "BA-8327"
+				};
+
+				var ds;
+
+				$(document).ready(function () {
+					ds = new $.%%WidgetName%%({
+						dataSource: products,
+						callee: Bob,
+						callback: Bob.greet
+					});
+
+					ds.dataBind();
+				});
+			```
+			*/
 			callee: null,
-			/* type="array" this is the normalized (transformed) resulting data, after it's fetched from the data source */
+			/* type="array" this is the normalized (transformed) resulting data, after it's fetched from the data source
+			```
+				var ds = new $.%%WidgetName%%({
+					data: normalizedArrayOfObjects
+				});
+			```
+			*/
 			data: [],
-			/* type="object" this is the source of data - non normalized. Can be an array, can be reference to some JSON object, can be a DOM element for a HTML TABLE, or a function */
+			/* type="object" this is the source of data - non normalized. Can be an array, can be reference to some JSON object, can be a DOM element for a HTML TABLE, or a function
+			```
+				var jsonSchema = new $.ig.DataSchema("json", {fields:[
+					{name: "ProductID", type: "number"},
+					{name: "Name", type: "string"},
+					{name: "ProductNumber", type: "string"},
+					{name: "Color", type: "string"},
+					{name: "StandardCost", type: "string"}],
+					searchField:"Records" });
+
+				ds = new $.%%WidgetName%%({type: "json", dataSource: jsonData, schema: jsonSchema});
+				ds.dataBind();
+			```
+			*/
 			dataSource: null,
-			/* type="object" client-side dataBinding event. Can be a string pointing to a function name, or an object pointing to a function */
+			/* type="object" client-side dataBinding event. Can be a string pointing to a function name, or an object pointing to a function
+			```
+				var myDataBinding = function () {
+					alert("myDataBinding");
+				}
+
+				var products = [];
+				products[0] = {
+					"ProductID": 1,
+					"Name": "Adjustable Race",
+					"ProductNumber": "AR-5381"
+				};
+				products[1] = {
+					"ProductID": 2,
+					"Name": "Bearing Ball",
+					"ProductNumber": "BA-8327"
+				};
+
+				var ds;
+
+				$(window).ready(function () {
+					ds = new $.%%WidgetName%%({
+						dataBinding: myDataBinding,
+						dataSource: products
+					});
+				});
+			```
+			*/
 			dataBinding: null,
-			/* type="object" client-side dataBound event. Can be a string pointing to a function name, or an object pointing to a function */
+			/* type="object" client-side dataBound event. Can be a string pointing to a function name, or an object pointing to a function
+			```
+				var myDataBound = function () {
+					alert("myDataBound");
+				}
+
+				var products = [];
+				products[0] = {
+					"ProductID": 1,
+					"Name": "Adjustable Race",
+					"ProductNumber": "AR-5381"
+				};
+				products[1] = {
+					"ProductID": 2,
+					"Name": "Bearing Ball",
+					"ProductNumber": "BA-8327"
+				};
+
+				var ds;
+
+				$(window).ready(function () {
+					ds = new $.%%WidgetName%%({
+						dataBound: myDataBound
+					});
+
+					ds.dataBind();
+
+				});
+			```
+			*/
 			dataBound: null,
-			/* type="string" specifies the HTTP verb to be used to issue the request */
+			/* type="string" specifies the HTTP verb to be used to issue the request
+			```
+				$(window).load(function () {
+					ds = new $.%%WidgetName%%({
+						primaryKey: "CustomerID",
+						requestType: "get",
+						dataSource: "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?",
+						responseDataKey: "Records",
+					});
+
+					ds.dataBind();
+				});
+			```
+			*/
 			requestType: "GET",
 			/* type="json|xml|unknown|array|function|htmlTableString|htmlTableId|htmlTableDom|htmlListDom|htmlSelectDom|invalid|remoteUrl|empty" Type of the data source
+			```
+				$(window).load(function () {
+					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						type: "remoteUrl",
+						callback: render,
+						dataSource: url,
+						schema: oDataSchema,
+						responseDataKey : "d.results",
+						responseDataType: "jsonp",
+					});
+					ds.dataBind();
+				});
+			```
 			json type="string" Specifies that the data source is an already evaluated JSON (JavaScript object/array) or a string that can be evaluated to JSON
 			xml type="string" Specifies that the data source is a XML Document object or a string that can be evaluated to XML
 			unknown type="string" Specifies that the data source is of unknown type. In that case it will be analyzed and automatically detected if possible
@@ -158,16 +404,86 @@
 			empty type="string"
 			*/
 			type: "unknown",
-			/* type="object" a schema object that defines which fields from the data to bind to */
+			/* type="object" a schema object that defines which fields from the data to bind to
+			```
+				var jsonSchema = new $.ig.DataSchema("json", {fields:[
+					{name: "ProductID", type: "number"},
+					{name: "Name", type: "string"},
+					{name: "ProductNumber", type: "string"},
+					{name: "Color", type: "string"},
+					{name: "StandardCost", type: "string"}],
+					searchField:"Records" });
+
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: jsonData,
+					schema: jsonSchema
+				});
+				ds.dataBind();
+			```
+			*/
 			schema: null,
-			/* type="string" the unique field identifier */
+			/* type="string" the unique field identifier
+			```
+				$(window).load(function () {
+					ds = new $.%%WidgetName%%({
+						primaryKey: "CustomerID",
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
+					});
+
+					ds.dataBind();
+				});
+			```
+			*/
 			primaryKey: null,
-			/* type="string" property in the response which specifies the total number of records in the backend (this is needed for paging) */
+			/* type="string" property in the response which specifies the total number of records in the backend (this is needed for paging)
+			```
+				var ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					responseDataKey: "Records",
+					responseTotalRecCountKey: "1024"
+				});
+			```
+			*/
 			responseTotalRecCountKey: null,
-			/* type="string" property in the response which specifies where the data records array will be held (if the response is wrapped) */
+			/* type="string" property in the response which specifies where the data records array will be held (if the response is wrapped)
+			```
+				var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
+				var jsonp = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: url,
+					responseDataKey: "d.results"
+				});
+			```
+			*/
 			responseDataKey: null,
 			/*
 			type="json|xml|html|script|jsonp|text" Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType
+			```
+				var render = function (success, error) {
+					if (success) {
+						alert("success");
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+					var url = "http://odata.netflix.com/Catalog/Titles?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						type: "remoteUrl",
+						callback: render,
+						dataSource: url,
+						schema: oDataSchema,
+						responseDataKey: "d.results",
+						responseDataType: "jsonp",
+					});
+					ds.dataBind();
+				});
+			```
 			json type="string"
 			xml type="string"
 			html type="string"
@@ -176,165 +492,1288 @@
 			text type="string"
 			*/
 			responseDataType: null,
-			/* type="string" content type of the response. See http://api.jquery.com/jQuery.ajax/ => contentType */
+			/* type="string" content type of the response. See http://api.jquery.com/jQuery.ajax/ => contentType
+			```
+				var ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					responseDataKey: "Records",
+					responseContentType: "application/x-www-form-urlencoded; charset=UTF8;"
+				});
+			```
+			*/
 			responseContentType: null,
-			/* type="bool" if set to false will disable transformations on schema, even if it is defined locally in the javascript code */
+			/* type="bool" if set to false will disable transformations on schema, even if it is defined locally in the javascript code
+			```
+				var url = "/demos/server/proxy.php?url=http://services.odata.org/OData/OData.svc/Products?$format=json";
+				ds = new $.%%WidgetName%%({
+					callback:render,
+					dataSource: url,
+					localSchemaTransform: false,
+					responseDataKey: "d",
+					schema: {fields: [
+						{name : "Price"},
+						{name : "Name"},
+						{name: "Rating"}
+					]}
+				});
+
+				ds.dataBind();
+			```
+			*/
 			localSchemaTransform: true,
-			/* type="object" event that is fired before URL parameters are encoded. Can point to a function name or the function object itself */
+			/* type="object" event that is fired before URL parameters are encoded. Can point to a function name or the function object itself
+			```
+				var render = function (success, error) {
+					if (success) {
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+					} else {
+						alert(error);
+					}
+				}
+
+				var myUrlParamsEncoding = function (item, params) {
+					alert("myUrlParamsEncoding");
+				}
+
+				var ds;
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						urlParamsEncoding: myUrlParamsEncoding
+					});
+					ds.dataBind();
+				});
+			```
+			*/
 			urlParamsEncoding: null,
-			/* type="object" event that is fired after URL parameters are encoded (When a remote request is done). Can point to a function name or the function object itself */
+			/* type="object" event that is fired after URL parameters are encoded (When a remote request is done). Can point to a function name or the function object itself
+			```
+				var render = function (success, error) {
+					if (success) {
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+					} else {
+						alert(error);
+					}
+				}
+
+				var myUrlParamsEncoded = function (item, params) {
+					alert("myUrlParamsEncoded");
+				}
+
+				var ds;
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						urlParamsEncoded: myUrlParamsEncoded
+					});
+					ds.dataBind();
+				});
+			```
+			*/
 			urlParamsEncoded: null,
-			/* Settings related to built-in paging functionality */
+			/* Settings related to built-in paging functionality
+			```
+				$(window).load(function () {
+					ds = new $.%%WidgetName%%({
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
+						paging: {
+							enabled : true,
+							pageSize:10,
+							type: "local"
+						}
+					});
+
+					ds.dataBind();
+				});
+			```
+			*/
 			paging: {
-				/* type="bool" Paging is not enabled by default */
+				/* type="bool" Paging is not enabled by default
+				```
+					ds = new $.%%WidgetName%%({
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
+						paging: {
+							enabled : true,
+							pageSize:10,
+							type: "local"
+						}
+					});
+				```
+				*/
 				enabled: false,
 				/* type="remote|local" Type for the paging operation
+				```
+					jsonDs = new $.%%WidgetName%%( {
+						filtering: {
+							type: "local",
+							caseSensitive: true,
+							applyToAllData: true
+						},
+						dataSource: jsonData
+					}).dataBind();
+				```
 				local type="string" Data is paged client-side.
 				remote type="string" A remote request is done and URL params encoded
 				*/
 				type: "remote",
-				/* type="number" number of records on each page */
+				/* type="number" number of records on each page
+				```
+					ds = new $.%%WidgetName%%({
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
+						paging: {
+							enabled : true,
+							pageSize:10,
+							type: "local"
+						}
+					});
+				```
+				*/
 				pageSize: 5,
-				/* type="string" denotes the name of the encoded URL parameter that will state what is the currently requested page size */
+				/* type="string" denotes the name of the encoded URL parameter that will state what is the currently requested page size
+				```
+					var ds = new $.%%WidgetName%%({
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
+						paging: {
+							enabled: true,
+							pageSize: 10,
+							pageSizeUrlKey: "myPageSizeUrlKey",
+							type: "local"
+						}
+					});
+				```
+				*/
 				pageSizeUrlKey: null,
-				/* type="string" denotes the name of the encoded URL parameter that will state what is the currently requested page index */
+				/* type="string" denotes the name of the encoded URL parameter that will state what is the currently requested page index
+				```
+					var ds = new $.%%WidgetName%%({
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
+						paging: {
+							enabled: true,
+							pageSize: 10,
+							pageIndex: 2,
+							pageIndexUrlKey: "myPageIndexUrlKey",
+							type: "local"
+						}
+					});
+				```
+				*/
 				pageIndexUrlKey: null,
-				/* type="number" current page index */
+				/* type="number" current page index
+				```
+					ds = new $.%%WidgetName%%({
+						type: "json",
+						dataSource: adventureWorks,
+						responseDataKey: "Records",
+						schema: jsonSchema,
+						paging:
+						{
+							enabled : true,
+							pageSize:10,
+							type: "local",
+							pageIndex: 2
+						}
+					});
+					ds.dataBind();
+				```
+				*/
 				pageIndex: 0,
-				/* type="bool" Whether when a new page of data is requested we should append the new data to the existing data */
+				/* type="bool" Whether when a new page of data is requested we should append the new data to the existing data
+				```
+					var ds = new $.%%WidgetName%%({
+						dataSource: products,
+						paging: {
+							enabled: true,
+							appendPage : true
+						}
+					});
+				```
+				*/
 				appendPage: false
 			},
-			/* Settings related to built-in filtering functionality */
+			/* Settings related to built-in filtering functionality
+			```
+				jsonDs = new $.%%WidgetName%%( {
+					filtering: {
+						type: "local",
+						caseSensitive: true,
+						applyToAllData: true
+					},
+					dataSource: jsonData
+				}).dataBind();
+			```
+			*/
 			filtering: {
 				/* type="remote|local" Filtering type.
 				remote type="string" Parameters will be encoded and it's up to the backend to interpred them from the response.
 				local type="string" The data will be filtered automatically client-side
 				*/
 				type: "remote",
-				/* type="bool" enables or disables case sensitive filtering on the data. Works only for local filtering */
+				/* type="bool" enables or disables case sensitive filtering on the data. Works only for local filtering
+				```
+					jsonDs = new $.%%WidgetName%%( {
+						filtering: {
+							type: "local",
+							caseSensitive: true,
+							applyToAllData: true
+						},
+						dataSource: jsonData
+					}).dataBind();
+				```
+				*/
 				caseSensitive: false,
-				/* type="bool" if the type of paging/sorting/filtering is local and applyToAllData is true, filtering will be performed on the whole data source that's present locally, otherwise only on the current dataView. if type is remote, this setting doesn't have any effect. */
+				/* type="bool" if the type of paging/sorting/filtering is local and applyToAllData is true, filtering will be performed on the whole data source that's present locally, otherwise only on the current dataView. if type is remote, this setting doesn't have any effect.
+				```
+					jsonDs = new $.%%WidgetName%%( {
+						filtering: {
+							type: "local",
+							caseSensitive: true,
+							applyToAllData: true
+						},
+						dataSource: jsonData
+					}).dataBind();
+				```
+				*/
 				applyToAllData: true,
-				/* type="object" Can point to either a string or a function object. The parameters that are passed are 1) the data array to be filtered, 2) the filtering expression definitions. Should return an array of the filtered data */
+				/* type="object" Can point to either a string or a function object. The parameters that are passed are 1) the data array to be filtered, 2) the filtering expression definitions. Should return an array of the filtered data
+				```
+					var ds;
+
+					var render = function (success, error) {
+						if (success) {
+							var expr = "Cr";
+							cond = "startsWith";
+
+							ds.filter([{
+								fieldName: "Name",
+								expr: expr,
+								cond: cond
+							}], true);
+
+							var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+							resultHtml = $.ig.tmpl(template, ds.dataView());
+							$("#table").html(resultHtml);
+						} else {
+							alert(error);
+						}
+					}
+
+
+					var myCustomFunc = function (fieldExpression, data) {
+						var result = [];
+						result[0] = data[0];
+						return result;
+					}
+
+					$(window).load(function () {
+						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+						ds = new $.%%WidgetName%%({
+							callback: render,
+							dataSource: url,
+							schema: {
+								fields: [{
+									name: "Name"
+								}, {
+									name: "Price"
+								}, {
+									name: "Rating"
+								}],
+								searchField: "d"
+							},
+							responseDataKey: "d",
+							responseDataType: "jsonp",
+							filtering: {
+								type: "remote",
+								customFunc: myCustomFunc
+							}
+						});
+						ds.dataBind();
+
+					});
+				```
+				*/
 				customFunc: null,
-				/* type="string" url key that will be encoded in the request if remote filtering is performed. Default value of null implies OData-style URL encoding. Please see http://www.odata.org/developers/protocols/uri-conventions for details */
+				/* type="string" url key that will be encoded in the request if remote filtering is performed. Default value of null implies OData-style URL encoding. Please see http://www.odata.org/developers/protocols/uri-conventions for details
+				```
+					var render = function (success, error) {
+						if (success) {
+							var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+							resultHtml = $.ig.tmpl(template, ds.dataView());
+							$("#table").html(resultHtml);
+						} else {
+							alert(error);
+						}
+					}
+
+					var ds;
+
+					$(window).load(function () {
+						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+						ds = new $.%%WidgetName%%({
+							callback: render,
+							dataSource: url,
+							schema: {
+								fields: [{
+									name: "Name"
+								}, {
+									name: "Price"
+								}, {
+									name: "Rating"
+								}],
+								searchField: "d"
+							},
+							responseDataKey: "d",
+							responseDataType: "jsonp",
+							filtering: {
+								type: "remote",
+								filterExprUrlKey: "filter",
+								expressions: [{
+									fieldName: "Name",
+									cond: "Contains",
+									expr: "Cr"
+								}]
+							}
+						});
+						ds.dataBind();
+					});
+				```
+				*/
 				filterExprUrlKey: null,
-				/* type="string" url key that will be encoded in the request, specifying if the filtering logic will be AND or OR */
+				/* type="string" url key that will be encoded in the request, specifying if the filtering logic will be AND or OR
+				```
+					var render = function (success, error) {
+						if (success) {
+							var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+							resultHtml = $.ig.tmpl(template, ds.dataView());
+							$("#table").html(resultHtml);
+						} else {
+							alert(error);
+						}
+					}
+
+					var ds;
+
+					$(window).load(function () {
+						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+						ds = new $.%%WidgetName%%({
+							callback: render,
+							dataSource: url,
+							schema: {
+								fields: [{
+									name: "Name"
+								}, {
+									name: "Price"
+								}, {
+									name: "Rating"
+								}],
+								searchField: "d"
+							},
+							responseDataKey: "d",
+							responseDataType: "jsonp",
+							filtering: {
+								type: "remote",
+								filterLogicUrlKey: "testFilterLogicUrlKey",
+								expressions: [{
+									fieldName: "Name",
+									cond: "Contains",
+									expr: "Cr",
+									logic: "OR"
+								}]
+							}
+						});
+						ds.dataBind();
+					});
+				```
+				*/
 				filterLogicUrlKey: "filterLogic",
-				/* type="array" data will be initially filtered accordingly, directly after dataBind() */
+				/* type="array" data will be initially filtered accordingly, directly after dataBind()
+				```
+					$(window).load(function () {
+						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+						ds = new $.%%WidgetName%%({
+							callback: render,
+							dataSource: url,
+							schema: {
+								fields: [{
+									name: "Name"
+								}, {
+									name: "Price"
+								}, {
+									name: "Rating"
+								}],
+								searchField: "d"
+							},
+							responseDataKey: "d",
+							responseDataType: "jsonp",
+							filtering: {
+								type: "remote",
+								defaultFields: [{
+									fieldName: "Price",
+									cond:"GreaterThan",
+									expr: 20
+								}]
+							}
+						});
+						ds.dataBind();
+					});
+				```
+				*/
 				defaultFields: [],
-				/* type="array" a list of expression objects, containing the following key-value pairs: fieldName, expression (search string), condition , and logic (AND/OR) */
+				/* type="array" a list of expression objects, containing the following key-value pairs: fieldName, expression (search string), condition , and logic (AND/OR)
+				```
+					var url = "/demos/server/proxy.php?url=http://services.odata.org/OData/OData.svc/Products?$format=json";
+					ds = new $.%%WidgetName%%({
+						callback:render,
+						dataSource: url,
+						localSchemaTransform: false,
+						responseDataKey: "d",
+						filtering: {
+							expressions:[
+								{
+									fieldName: "Price",
+									cond:"GreaterThan",
+									expr: 20
+								}
+							]
+						},
+						schema: {
+							fields: [
+								{name : "Price"},
+								{name : "Name"},
+								{name: "Rating"}
+							],
+							searchField: "d"
+						}
+					});
+
+					ds.dataBind();
+				```
+				*/
 				expressions: [],
-				/* type="string" an "SQL-like' encoded expressions string. Takes precedence over "expressions". Example: col2 > 100; col2 LIKE %test% */
+				/* type="string" an "SQL-like' encoded expressions string. Takes precedence over "expressions". Example: col2 > 100; col2 LIKE %test%
+				```
+					var render = function (success, error) {
+						if (success) {
+							var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+							resultHtml = $.ig.tmpl(template, ds.dataView());
+							$("#table").html(resultHtml);
+						} else {
+							alert(error);
+						}
+					}
+
+					var ds;
+
+					$(window).load(function () {
+						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+						ds = new $.%%WidgetName%%({
+							callback: render,
+							dataSource: url,
+							schema: {
+								fields: [{
+									name: "Name"
+								}, {
+									name: "Price"
+								}, {
+									name: "Rating"
+								}],
+								searchField: "d"
+							},
+							responseDataKey: "d",
+							responseDataType: "jsonp",
+							filtering: {
+								type: "remote",
+								exprString: "Name LIKE Cr%"
+							}
+						});
+						ds.dataBind();
+					});
+				```
+				*/
 				exprString: "",
 				/* type="object" an object containing custom defined filtering conditions as objects. */
 				customConditions: null
 			},
-			/* Settings related to built-in sorting functionality */
+			/* Settings related to built-in sorting functionality
+			```
+				$(window).load(function () {
+					ds = new $.%%WidgetName%%({
+						type: "json",
+						dataSource: adventureWorks,
+						sorting: {
+							type: "local",
+							caseSensitive: true
+						}
+					});
+
+					ds.dataBind();
+				});
+			```
+			*/
 			sorting: {
 				/* type="none|asc|desc" Sorting direction
+				```
+					jsonDs = new $.%%WidgetName%%({
+						sorting: {
+							type: "local",
+							defaultDirection: "asc"
+						},
+						dataSource: jsonData
+					}).dataBind();
+				```
 				none type="string"
 				asc type="string"
 				desc type="string"
 				*/
 				defaultDirection: "none",
-				/* type="array" when defaultDirection is different than "none", and defaultFields is specified, data will be initially sorted accordingly, directly after dataBind() */
+				/* type="array" when defaultDirection is different than "none", and defaultFields is specified, data will be initially sorted accordingly, directly after dataBind()
+				```
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					var ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						sorting: {
+							type: "local",
+							defaultFields: [{
+							fieldName: "Price"
+							}]
+						}
+					});
+				```
+				*/
 				defaultFields: [],
-				/* type="bool" If the sorting type is local and applyToAllData is true, sorting will be performed on the whole data source that's present locally, otherwise only on the current dataView. If sorting type is remote, this setting doesn't have any effect. */
+				/* type="bool" If the sorting type is local and applyToAllData is true, sorting will be performed on the whole data source that's present locally, otherwise only on the current dataView. If sorting type is remote, this setting doesn't have any effect.
+				```
+					jsonDs = new $.%%WidgetName%%({
+						sorting: {
+							type: "local",
+							applyToAllData: true
+						},
+						dataSource: jsonData
+					}).dataBind();
+				```
+				*/
 				applyToAllData: true,
-				/* type="object"  Custom sorting function that can point to either a string or a function object. When the function is called, the following arguments are passed: data array, fields (array of field definitions) , direction ("asc" or "desc"). The function should return a sorted data array */
+				/* type="object"  Custom sorting function that can point to either a string or a function object. When the function is called, the following arguments are passed: data array, fields (array of field definitions) , direction ("asc" or "desc"). The function should return a sorted data array
+				```
+					var render = function (success, error) {
+						if (success) {
+							var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+							resultHtml = $.ig.tmpl(template, ds.dataView());
+							$("#table").html(resultHtml);
+						} else {
+							alert(error);
+						}
+					}
+
+					var myCustomFunc = function (data, fields, direction) {
+						function myCompareFunc(obj1, obj2) {
+							if (direction == "desc") {
+								return obj2[fields[0].fieldName] - obj1[fields[0].fieldName];
+							}
+
+							return obj1[fields[0].fieldName] - obj2[fields[0].fieldName];
+						}
+						var result = data.sort(myCompareFunc);
+						return result;
+					}
+
+					var ds;
+					$(window).load(function () {
+						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+						ds = new $.%%WidgetName%%({
+							callback: render,
+							dataSource: url,
+							schema: {
+								fields: [{
+									name: "Name"
+								}, {
+									name: "Price"
+								}, {
+									name: "Rating"
+								}],
+								searchField: "d"
+							},
+							responseDataKey: "d",
+							responseDataType: "jsonp",
+							sorting: {
+								type: "local",
+								customFunc: myCustomFunc,
+								defaultFields: [{
+									fieldName: "Price"
+								}],
+								defaultDirection: "desc"
+							}
+						});
+						ds.dataBind();
+					});
+				```
+				*/
 				customFunc: null,
-				/* type="object" Custom comparison sorting function. Accepts the following arguments: fields, schema, booleand value whether sorting is ascending , convert function(please check option for customConvertFunc) and returns a value 0 indicating that values are equal, 1 indicating that val1 > val2 and -1 indicating that val1 < val2 */
+				/* type="object" Custom comparison sorting function. Accepts the following arguments: fields, schema, booleand value whether sorting is ascending , convert function(please check option for customConvertFunc) and returns a value 0 indicating that values are equal, 1 indicating that val1 > val2 and -1 indicating that val1 < val2
+				```
+					var render = function (success, error) {
+						if (success) {
+							var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+							resultHtml = $.ig.tmpl(template, ds.dataView());
+							$("#table").html(resultHtml);
+						} else {
+							alert(error);
+						}
+					}
+
+					var myCompareFunc = function (fields, schema, reverse, convertf) {
+						return function (val1, val2) {
+							if (val1.Price > val2.Price) {
+								return 1;
+							}
+
+							if (val1.Price < val2.Price) {
+								return -1;
+							}
+
+							return 0;
+						}
+					}
+
+					var ds;
+					$(window).load(function () {
+						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+						ds = new $.%%WidgetName%%({
+							callback: render,
+							dataSource: url,
+							schema: {
+								fields: [{
+									name: "Name"
+								}, {
+									name: "Price"
+								}, {
+									name: "Rating"
+								}],
+								searchField: "d"
+							},
+							responseDataKey: "d",
+							responseDataType: "jsonp",
+							sorting: {
+								type: "local",
+								compareFunc: myCompareFunc,
+								defaultFields: [{
+									fieldName: "Price"
+								}]
+							}
+						});
+						ds.dataBind();
+					});
+				```
+				*/
 				compareFunc: null,
-				/* type="object" Custom data value conversion function(called from sorting function). Accepts a value of the data cell and column key and should return the converted value */
+				/* type="object" Custom data value conversion function(called from sorting function). Accepts a value of the data cell and column key and should return the converted value
+				```
+					var render = function (success, error) {
+						if (success) {
+							var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+							resultHtml = $.ig.tmpl(template, ds.dataView());
+							$("#table").html(resultHtml);
+						} else {
+							alert(error);
+						}
+					}
+
+					var myCompareFunc = function (fields, schema, reverse, convertf) {
+						return function (obj1, obj2) {
+							a = convertf(obj1);
+							b = convertf(obj2);
+
+							if (a > b) {
+								return 1;
+							}
+
+							if (a < b) {
+								return -1;
+							}
+
+							return 0;
+						}
+					}
+
+				var myCustomConvertFunc = function (obj) {
+						return obj.Price;
+					}
+
+					var ds;
+					$(window).load(function () {
+						var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+						ds = new $.%%WidgetName%%({
+							callback: render,
+							dataSource: url,
+							schema: {
+								fields: [{
+									name: "Name"
+								}, {
+									name: "Price"
+								}, {
+									name: "Rating"
+								}],
+								searchField: "d"
+							},
+							responseDataKey: "d",
+							responseDataType: "jsonp",
+							sorting: {
+								type: "local",
+								compareFunc: myCompareFunc,
+								customConvertFunc: myCustomConvertFunc,
+								defaultFields: [{
+									fieldName: "Price"
+								}]
+							}
+						});
+						ds.dataBind();
+					});
+				```
+				*/
 				customConvertFunc: null,
 				/* type="remote|local" Specifies whether sorting will be applied locally or remotely (via a remote request)
+				```
+					$(window).load(function () {
+						ds = new $.%%WidgetName%%({
+							type: "json",
+							dataSource: adventureWorks,
+							sorting: {
+								type: "local",
+								caseSensitive: true
+							}
+						});
+
+						ds.dataBind();
+					});
+				```
 				remote type="string"
 				local type="string"
 				*/
 				type: "remote",
-				/* type="bool" Specifies if sorting will be case sensitive or not. Works only for local sorting */
+				/* type="bool" Specifies if sorting will be case sensitive or not. Works only for local sorting
+				```
+					$(window).load(function () {
+						ds = new $.%%WidgetName%%({
+							type: "json",
+							dataSource: adventureWorks,
+							sorting: {
+								type: "local",
+								caseSensitive: true
+							}
+						});
+
+						ds.dataBind();
+					});
+				```
+				*/
 				caseSensitive: false,
-				/* type="string" URL param name which specifies how sorting expressions will be encoded in the URL. Default is null and uses OData conventions */
+				/* type="string" URL param name which specifies how sorting expressions will be encoded in the URL. Default is null and uses OData conventions
+				```
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					var ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [
+								{name: "Name"},
+								{name: "Price"},
+								{name: "Rating"}
+							],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						sorting: {
+							type: "local",
+							sortUrlKey: "mySortUrlKey"
+						}
+					});
+				```
+				*/
 				sortUrlKey: null,
-				/* type="string" URL param value for ascending type of sorting. Default is null and uses OData conventions */
+				/* type="string" URL param value for ascending type of sorting. Default is null and uses OData conventions
+				```
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					var ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						sorting: {
+							type: "local",
+							sortUrlAscValueKey: "mySortUrlAscValueKey"
+						}
+					});
+				```
+				*/
 				sortUrlAscValueKey: null,
-				/* type="string" URL param value for descending type of sorting. Default is null and uses OData conventions */
+				/* type="string" URL param value for descending type of sorting. Default is null and uses OData conventions
+				```
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					var ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [
+								{name: "Name"},
+								{name: "Price"},
+								{name: "Rating"}
+							],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						sorting: {
+							type: "local",
+							sortUrlDescValueKey: "mySortUrlDescValueKey"
+						}
+					});
+				```
+				*/
 				sortUrlDescValueKey: null,
-				/* type="array" a list of sorting expressions , consisting of the following keys (and their respective values): fieldName, direction and compareFunc (optional) */
+				/* type="array" a list of sorting expressions , consisting of the following keys (and their respective values): fieldName, direction and compareFunc (optional)
+				```
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						localSchemaTransform: false,
+						responseDataKey: "d",
+						sorting: {
+							expressions:[
+								{
+									fieldName:"Rating",
+									dir:"asc"
+								},
+								{
+									fieldName:"Price", dir:"asc"
+								}
+							]
+						}
+					});
+				```
+				*/
 				expressions: [],
-				/* type="string" takes precedence over experssions, an "SQL-like" encoded expressions string  : see sort(). Example col2 > 100 ORDER BY asc */
+				/* type="string" takes precedence over experssions, an "SQL-like" encoded expressions string  : see sort(). Example col2 > 100 ORDER BY asc
+				```
+					function sortRemote() {
+						ds.settings.sorting.type = "remote";
+
+						// remote sort
+						ds.settings.sorting.exprString = "GNP " + dir;
+						ds.dataBind();
+					}
+				```
+				*/
 				exprString: ""
 			},
+			/* Settings related to built-in group by functionality
+			```
+				ds = new $.%%WidgetName%%({
+					dataSource: products,
+					groupby: {
+						defaultCollapseState: true
+					}
+				});
+
+				ds.dataBind();
+			```
+			*/
 			groupby: {
-				/* type="bool" default collapse state */
+				/* type="bool" default collapse state
+				```
+					ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							defaultCollapseState: true
+						}
+					});
+				```
+				*/
 				defaultCollapseState: false
 			},
 			/* M.H. add summaries support */
-			/* Settings related to built-in summaries functionality */
+			/* Settings related to built-in summaries functionality
+			```
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				var ds = new $.%%WidgetName%%({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp",
+					summaries: {
+						type: "remote",
+						columnSettings: [{
+							columnKey: "Price",
+							allowSummaries: false,
+							summaryOperands: [{
+								type: "count",
+								active: true,
+								order: 0
+							}]
+						}],
+						summariesResponseKey: "d"
+					}
+				});
+			```
+			*/
 			summaries: {
 				/* type="remote|local" Specifies whether summaries will be applied locally or remotely (via a remote request)
+				```
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					var ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						summaries: {
+							type: "remote"
+						}
+					});
+				```
 				remote type="string" A remote request is done and URL params encoded
 				local type="string" Data is paged client-side.
 				*/
 				type: "remote",
-				/* type="string" Url key for retrieving data from response - used only when summaries are remote*/
+				/* type="string" Url key for retrieving data from response - used only when summaries are remote
+				```
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					var ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						summaries: {
+							summaryExprUrlKey: "mySummaries"
+						}
+					});
+				```
+				*/
 				summaryExprUrlKey: "summaries",
-				/* type="string" Key for retrieving data from the summaries response - used only when summaries are remote*/
+				/* type="string" Key for retrieving data from the summaries response - used only when summaries are remote
+				```
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					var ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						summaries: {
+							summariesResponseKey: "d"
+						}
+					});
+				```
+				*/
 				summariesResponseKey: "summaries",
 				/* type="priortofilteringandpaging|afterfilteringbeforepaging|afterfilteringandpaging" Determines when the summary values are calculated
+				```
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					var ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						summaries: {
+							summaryExecution: "priortofilteringandpaging"
+						}
+
+					});
+				```
 				priortofilteringandpaging type="string"
 				afterfilteringbeforepaging type="string"
 				afterfilteringandpaging type="string"
 				*/
 				summaryExecution: "afterfilteringandpaging",
-				/* type="array" a list of column settings that specifies custom summaries options per column basis */
+				/* type="array" a list of column settings that specifies custom summaries options per column basis
+				```
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					var ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						summaries: {
+							columnSettings: [{
+								columnKey: "Price",
+								allowSummaries: false,
+								summaryOperands: [{
+									type: "count",
+									active: true,
+									order: 0
+								}]
+							}]
+						}
+
+					});
+				```
+				*/
 				columnSettings: [
-				/* {key: '', summaryOperands: []}*/
+					/* {key: '', summaryOperands: []}*/
 				]
 			},
 			/* type="array" *** IMPORTANT DEPRECATED ***
 			A list of field definitions specifying the schema of the data source.
 			Field objects description: {name, [type], [xpath]}
+			```
+				var products = [];
+				products[0] = {
+					"ProductID": 1,
+					"Name": "Adjustable Race",
+					"ProductNumber": "AR-5381"
+				};
+				products[1] = {
+					"ProductID": 2,
+					"Name": "Bearing Ball",
+					"ProductNumber": "BA-8327"
+				};
+
+				var ds;
+				$(window).ready(function () {
+
+					ds = new $.%%WidgetName%%({
+						dataSource: products,
+						fields: [{
+							name: "ProductID",
+							type: "number"
+						}, {
+							name: "Name",
+							type: "string"
+						}, {
+							name: "ProductNumber",
+							type: "string"
+						}]
+					});
+
+					ds.dataBind();
+				});
+			```
 			*/
 			fields: [],
-			/* type="bool" if true, will serialize the transaction log of updated values - if any - whenever commit is performed via a remote request. */
+			/* type="bool" if true, will serialize the transaction log of updated values - if any - whenever commit is performed via a remote request.
+			```
+				$.ig.DataSource({
+					serializeTransactionLog: false
+				});
+			```
+			*/
 			serializeTransactionLog: true,
 			/* type="bool" if set to true, the following behavior will take place:
 			if a new row is added, and then deleted, there will be no transaction added to the log
 			if an edit is made to a row or cell, then the value is brought back to its original value, the transaction should be removed
 			Note: This option takes effect only when autoCommit is set to false.
+			```
+				var ds = new $.%%WidgetName%%({
+					aggregateTransactions: true,
+					dataSource: arrayOfObjects
+				});
+			```
 			*/
 			aggregateTransactions: false,
-			/* type="bool" if auto commit is true, data will be automatically commited to the data source, once a value or a batch of values are updated via saveChanges() */
+			/* type="bool" if auto commit is true, data will be automatically commited to the data source, once a value or a batch of values are updated via saveChanges()
+			```
+				var ds = new $.%%WidgetName%%({
+					autoCommit: true
+				});
+			```
+			*/
 			autoCommit: false,
-			/* type="string" specifies an update remote URL, to which an AJAX request will be made as soon as saveChages() is called. */
+			/* type="string" specifies an update remote URL, to which an AJAX request will be made as soon as saveChages() is called.
+			```
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				var ds = new $.%%WidgetName%%({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp",
+					updateUrl: "http://example.com/myUpdateUrl/"
+
+				});
+			```
+			*/
 			updateUrl: null,
 			/* type="function" A function to call when row is added.
 			Function takes first argument item and second argument dataSource.
 			Use item.row to obtain reference to the added row.
 			Use item.rowId to get the row ID.
-			Use dataSource to obtain reference to $.ig.DataSource. */
+			Use dataSource to obtain reference to $.ig.DataSource.
+			```
+				$.ig.DataSource({
+					rowAdded: function (item, dataSource) {…}
+				});
+			```
+			*/
 			rowAdded: null,
 			/* type="function" A function to call when row is updated (edited).
 			Function takes first argument item and second argument dataSource.
 			Use item.rowIndex to get the row index.
 			Use item.newRow to obtain reference to the updated row.
 			Use item.oldRow to obtain reference to the row that was updated.
-			Use dataSource to obtain reference to $.ig.DataSource. */
+			Use dataSource to obtain reference to $.ig.DataSource.
+			```
+				$.ig.DataSource({
+					rowUpdated: function (item, dataSource) {…}
+				});
+			```
+			*/
 			rowUpdated: null,
 			/* type="function" a function to call when row is inserted.
 			Function takes first argument item and second argument dataSource.
 			Use item.row to obtain reference to the inserted row.
 			Use item.rowId to get the row ID.
 			Use item.rowIndex to get the row index.
-			Use dataSource to obtain reference to $.ig.DataSource. */
+			Use dataSource to obtain reference to $.ig.DataSource.
+			```
+				$.ig.DataSource({
+					rowInserted: function (item, dataSource) {…}
+				});
+			```
+			*/
 			rowInserted: null,
 			/* type="function" a function to call when row is deleted.
 			Use item.row to obtain reference to the deleted row.
 			Use item.rowId to get the row ID.
 			Use item.rowIndex to get the row index.
-			Use dataSource to obtain reference to $.ig.DataSource. */
+			Use dataSource to obtain reference to $.ig.DataSource.
+			```
+				$.ig.DataSource({
+					rowDeleted: function (item, dataSource) {…}
+				});
+			```
+			*/
 			rowDeleted: null
 		},
 		init: function (options) {
@@ -441,6 +1880,51 @@
 		},
 		fields: function (fields) {
 			/* Sets a list of fields to the data source. If no parameter is specified, just returns the already existing list of fields
+			```
+				var ds;
+
+				var render = function (success, error) {
+					if (success) {
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						fields: [{
+							key: "Name",
+							dataType: "string"
+						}, {
+							key: "Price",
+							dataType: "number"
+						}, {
+							key: "Rating",
+							dataType: "number"
+						}]
+					});
+					ds.dataBind();
+					var fields = ds.fields();
+				});
+			```
 			paramType="object" optional="true" a field has the following format: {key: 'fieldKey', dataType: 'string/number/date' }
 			returnType="object" if no parameters are specified, returns the existing list of fields
 			*/
@@ -452,6 +1936,41 @@
 		},
 		analyzeDataSource: function () {
 			/* analyzes the dataSource setting to automatically determine the type of the data source. Returns the data source type. See settings.type
+			```
+				var ds;
+
+				var render = function (success, error) {
+					if (success) {
+					console.log(ds.analyzeDataSource());
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				ds = new $.%%WidgetName%%({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+					});
+					ds.dataBind();
+				});
+			```
 			returnType="string"
 			*/
 			var ds = this.dataSource(), dc, $dsObj;
@@ -524,12 +2043,39 @@
 		},
 		dataView: function () {
 			/* returns the current normalized/transformed and paged/filtered/sorted data, i.e. the dataView
+			```
+				function numberOfRows () {
+					return $("#grid1").data("igGrid").dataSource.dataView().length;
+				}
+			```
 			returnType="array" array of data records
 			*/
 			return this._dataView;
 		},
 		data: function () {
 			/* returns all of the bound data, without taking into account local paging, sorting, filtering, etc.
+			```
+				var ds;
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				ds = new $.%%WidgetName%%({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+				});
+
+				var data = ds.data();
+			```
 			returnType="object"
 			*/
 			return this._data;
@@ -539,6 +2085,28 @@
 			1. Before paging and filtering
 			2. After filtering before paging
 			3. After filtering and paging
+
+			```
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				var ds = new $.%%WidgetName%%({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+				});
+
+				ds.transformedData("priortofilteringandpaging");
+			```
 
 			returnType="object"
 			*/
@@ -567,6 +2135,28 @@
 		},
 		dataSummaries: function () {
 			/*	returns summaries data
+			```
+				var ds;
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				ds = new $.%%WidgetName%%({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+				});
+
+				var dataSummaries = ds.dataSummaries();
+			```
 			 * returnType="object"
 			*/
 			var s = this.settings.summaries, type = s.type;
@@ -577,6 +2167,35 @@
 		},
 		schema: function (s, t) {
 			/* Gets/sets the schema definition.
+			```
+				var jsonSchema = new $.ig.DataSchema("json", {
+					fields: [{
+						name: "ProductID",
+						type: "number"
+					}, {
+						name: "Name",
+						type: "string"
+					}, {
+						name: "ProductNumber",
+						type: "string"
+					}, {
+						name: "Color",
+						type: "string"
+					}, {
+						name: "StandardCost",
+						type: "string"
+					}],
+					searchField: "Records"
+				});
+
+				ds = new $.%%WidgetName%%();
+
+				// Set
+				ds.schema(jsonSchema);
+
+				// Get
+				var myJsonSchema = ds.schema();
+			```
 			paramType="object" optional="true" a schema object
 			paramType="string" optional="true" type of the data source. See settings.type
 			*/
@@ -598,6 +2217,31 @@
 		},
 		pagingSettings: function (p) {
 			/* gets/sets a list of paging settings
+			```
+				var ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled: true,
+						pageSize: 10,
+						type: "local"
+					}
+				});
+
+				var myPagingSettings = {
+					enabled: true,
+					pageSize: 10,
+					pageIndex: 2,
+					pageIndexUrlKey: "myPageIndexUrlKey",
+					type: "local"
+				};
+
+				// Set
+				ds.pagingSettings(myPagingSettings);
+
+				// Get
+				var pagingSettings = ds.pagingSettings();
+			```
 			paramType="object" optional="true" object holding all paging settings. See settings.paging
 			*/
 			if (p === undefined || p === null) {
@@ -608,6 +2252,41 @@
 		},
 		filterSettings: function (f) {
 			/* gets/sets a list of filtering settings
+			```
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				var ds = new $.%%WidgetName%%({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [
+							{name : "Name"},
+							{name : "Price"},
+							{name: "Rating"}
+						],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+				});
+
+				var myFilterSettings = {
+					type: "remote",
+					expressions: [
+					{
+						fieldName: "Name",
+						cond:"Contains",
+						expr: "Cr",
+						logic: "OR"
+					}
+				]
+				};
+
+				// Set
+				ds.filterSettings(myFilterSettings);
+
+				// Get
+				var filterSettings= ds.filterSettings();
+			```
 			paramType="object" optional="true" object holding all filtering settings. See settings.filtering
 			*/
 			if (f === undefined || f === null) {
@@ -618,6 +2297,32 @@
 		},
 		sortSettings: function (s) {
 			/* gets/sets a list of paging settings
+			```
+				var ds = new $.%%WidgetName%%({
+					schema: {
+						fields: [{
+							name: "col1"
+						}, {
+							name: "col2",
+							type: "number"
+						}]
+					}
+				}).dataBind();
+
+				var sortSettings = {
+					type: "local",
+					defaultFields: [{
+						fieldName: "col2"
+					}],
+					defaultDirection: "desc"
+				};
+
+				// Set
+				ds.sortSettings(sortSettings);
+
+				// Get
+				var mySortSettings = ds.sortSettings();
+			```
 			paramType="object" optional="true" object holding all sorting settings. See settings.sorting
 			*/
 			if (s === undefined || s === null) {
@@ -638,6 +2343,31 @@
 		},
 		dataSource: function (ds) {
 			/* gets/sets the dataSource setting. If no parameter is specified, returns settings.dataSource
+			```
+				var ds;
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				ds = new $.%%WidgetName%%({
+					callback: render,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+				});
+
+				// Set
+				ds.dataSource(url);
+
+				// Get
+				var dataSource = ds.dataSource();
+			```
 			paramType="object" optional="true"
 			returnType="object"
 			*/
@@ -650,6 +2380,15 @@
 		},
 		type: function (t) {
 			/* gets/sets the type of the dataSource. If no parameter is specified, returns settings.type
+			```
+				ds = new $.%%WidgetName%%();
+
+				// Set
+				ds.type("json");
+
+				// Get
+				var myType = ds.type();
+			```
 			paramType="json|xml|unknown|array|function|htmlTableString|htmlTableId|htmlTableDom|invalid|remoteUrl|empty" optional="true"
 			returnType="json|xml|unknown|array|function|htmlTableString|htmlTableId|htmlTableDom|invalid|remoteUrl|empty"
 			*/
@@ -664,6 +2403,42 @@
 		/* jshint unused:false */
 		findRecordByKey: function (key, ds, objPath) {
 			/* returns a record by a specified key (requires that primaryKey is set in the settings)
+			```
+				var ds;
+
+				var render = function (success, error) {
+					if (success) {
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+						var myObj = ds.findRecordByKey("Milk");
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						primaryKey: "Name"
+					});
+					ds.dataBind();
+				});
+			```
 			paramType="string" Primary key of the record
 			paramType="string" optional="true" the data source in which to search for the record. When not set it will use the current data source.
 			paramType="string" optional="true" Not used in $.ig.DataSource
@@ -686,13 +2461,50 @@
 		/* jshint unused:true */
 		removeRecordByKey: function (key, origDs) {
 			/* removes a specific record denoted by the primaryKey of the passed key parameter from the data source
+			```
+				var ds = new $.%%WidgetName%%({
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp",
+					primaryKey: "Name"
+				});
+				ds.addRow(0, {
+					Name: "CD Player",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(1, {
+					Name: "CD Player1",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(2, {
+					Name: "CD Player2",
+					Price: "40",
+					Rating: "4"
+				}, true);
+
+				ds.removeRecordByKey("CD Player2");
+			```
 			paramType="string|number" primary key of the record
 			*/
 			var i, len, data, count = 0,
-				all = [ this._data, this._dataView, this._filteredData, origDs ],
+				all = [ this._data ],
 				prime = this.settings.primaryKey,
 				primeIdx = this._lookupPkIndex(),
 				search;
+			this._addOnlyUniqueToCollection(all, this._dataView);
+			this._addOnlyUniqueToCollection(all, this._filteredData);
+			this._addOnlyUniqueToCollection(all, origDs);
 			while (count < all.length) {
 				data = all[ count++ ];
 				len = data ? data.length : 0;
@@ -705,14 +2517,43 @@
 						break;
 					}
 				}
-				/* if next data is same, then skip it */
-				if (data === all[ count ]) {
-					count++;
-				}
 			}
 		},
 		removeRecordByIndex: function (index, origDs) {
 			/* Removes a record from the data source at specific index.
+			```
+				var ds = new $.%%WidgetName%%({
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+				});
+				ds.addRow(0, {
+					Name: "CD Player",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(1, {
+					Name: "CD Player1",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(2, {
+					Name: "CD Player2",
+					Price: "40",
+					Rating: "4"
+				}, true);
+
+				ds.removeRecordByIndex(0);
+			```
 			paramType="number" index of record
 			*/
 			var i, len, record, data = this._data, view = this._dataView, filter = this._filteredData;
@@ -747,6 +2588,38 @@
 		},
 		setCellValue: function (rowId, colId, val, autoCommit) {
 			/*  sets a cell value for the cell denoted by rowId and colId. Creates a transaction for the update operation and returns it
+			```
+				var ds = new $.%%WidgetName%%({
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}]
+					},
+					updateUrl: "http://example.com/myUpdateUrl/"
+				});
+
+				ds.addRow(0, {
+					Name: "CD Player",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(1, {
+					Name: "CD Player1",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(2, {
+					Name: "CD Player2",
+					Price: "40",
+					Rating: "4"
+				}, true);
+
+				ds.setCellValue(1, "Name", "DVD Player", true);
+			```
 			paramType="object" the rowId - row key (string) or index (number)
 			paramType="object" the column id - column key (string) or index (number)
 			paramType="object" The new value
@@ -764,6 +2637,44 @@
 		},
 		updateRow: function (rowId, rowObject, autoCommit) {
 			/* updates a record in the datasource. Creates a transaction that can be committed / rolled back
+			```
+				var ds = new $.%%WidgetName%%({
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+				});
+				ds.addRow(0, {
+					Name: "CD Player",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(1, {
+					Name: "CD Player1",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(2, {
+					Name: "CD Player2",
+					Price: "40",
+					Rating: "4"
+				}, true);
+
+
+				ds.updateRow(1, {
+					Name: "DVD Player1",
+					Price: "10",
+					Rating: "5"
+				}, true);
+			```
 			paramType="object" the record key - primaryKey (string) or index (number)
 			paramType="object" the record object containing the key/value pairs we want to update. It doesn't have to include key/value pairs for all fields defined in the schema or in the data source (if no schema is defined)
 			paramType="bool" if autoCommit is true, the datasource will be updated automatically and the transaction is still stored in the accumulated transaction log
@@ -792,6 +2703,40 @@
 		},
 		addRow: function (rowId, rowObject, autoCommit) {
 			/* adds a new row to the data source. Creates a transaction that can be committed / rolled back
+			```
+				var ds;
+
+				var render = function (success, error) {
+					if (success) {
+					ds.addRow(123, {Name : "CD Player", Price : "40", Rating : "4"}, true);
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [
+								{name: "Name"},
+								{name: "Price"},
+								{name: "Rating"}
+							],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp"
+					});
+					ds.dataBind();
+
+				});
+			```
 			paramType="object" the record key - primaryKey (string) or index (number)
 			paramType="object" the new record data.
 			paramType="bool" if autoCommit is true, the datasource will be updated automatically and the transaction is still stored in the accumulated transaction log
@@ -816,6 +2761,47 @@
 		/* jshint unused:false */
 		insertRow: function (rowId, rowObject, rowIndex, autoCommit, parentRowId) {
 			/* adds a new row to the data source. Creates a transaction that can be committed / rolled back
+			```
+				var ds;
+
+				var render = function (success, error) {
+					if (success) {
+						ds.insertRow(123, {
+							Name: "CD Player",
+							Price: "40",
+							Rating: "4"
+						}, 1, true);
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp"
+					});
+				ds.dataBind();
+
+				});
+			```
 			paramType="object" the record key - primaryKey (string) or index (number)
 			paramType="object" the new record data.
 			paramType="number" row index at which to insert the new row
@@ -842,6 +2828,45 @@
 		/* jshint unused:true */
 		deleteRow: function (rowId, autoCommit) {
 			/* deletes a row from the data source.
+			```
+				var ds;
+
+				var render = function (success, error) {
+					if (success) {
+
+					ds.deleteRow(0, true);
+
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				ds = new $.%%WidgetName%%({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+					});
+					ds.dataBind();
+
+				});
+			```
 			paramType="object" the record key - primaryKey (string) or index (number)
 			paramType="bool" if autoCommit is true, the datasource will be updated automatically and the transaction is still stored in the accumulated transaction log
 			returnType="object". The transaction object that was created
@@ -902,6 +2927,30 @@
 		/* END Transactions for igTree */
 		getDetachedRecord: function (t) {
 			/* returns a standalone object (copy) that represents the commited transactions, but detached from the data source
+			```
+				var ds;
+
+				$(window).load(function () {
+					ds = new $.%%WidgetName%%({
+						schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						}
+					});
+
+					var transactionObject = ds.addRow(123, {
+						Name: "CD Player",
+						Price: "40",
+						Rating: "4"
+					}, true);
+					var detachedObject = ds.getDetachedRecord(transactionObject);
+					});
+			```
 			paramType="object" a transaction object
 			returnType="object" a copy of a record from the data source
 			*/
@@ -948,6 +2997,49 @@
 		commit: function (id) {
 			/* update the data source with every transaction from the log
 			paramType="number" optional="true" Id of the transaction to commit. If no id is specified, will commit all transactions to the data source.
+			```
+				var ds;
+
+				var render = function (success, error) {
+					if (success) {
+						ds.addRow(123, {
+							Name: "CD Player",
+							Price: "40",
+							Rating: "4"
+						});
+						ds.commit();
+
+							var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+							resultHtml = $.ig.tmpl(template, ds.dataView());
+							$("#table").html(resultHtml);
+
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp"
+					});
+
+					ds.dataBind();
+				});
+			```
 			*/
 			/* if "id" is defined, commit only the transaction with the specified id */
 			if (id !== null && id !== undefined) {
@@ -971,6 +3063,41 @@
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
 			paramType="string|number" optional="true" Record Id to find transactions for. If no id is specified, will rollback all transactions to the data source.
+			```
+				var ds = new $.%%WidgetName%%({
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp",
+					primaryKey: "Name"
+				});
+
+				ds.addRow(0, {
+					Name: "CD Player",
+					Price: "40",
+					Rating: "4"
+				});
+				ds.addRow(1, {
+					Name: "CD Player1",
+					Price: "40",
+					Rating: "4"
+				});
+				ds.addRow(2, {
+					Name: "CD Player2",
+					Price: "40",
+					Rating: "4"
+				});
+
+				ds.rollback();
+			```
 			*/
 			var i, trans;
 
@@ -988,12 +3115,76 @@
 		},
 		pendingTransactions: function () {
 			/* returns a list of all transaction objects that are pending to be committed or rolled back to the data source
+			```
+				var ds = new $.%%WidgetName%%({
+					schema: {
+					fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+					});
+
+					ds.addRow(123, {
+						Name: "CD Player",
+						Price: "40",
+						Rating: "4"
+				});
+				var pendingTransactions = ds.pendingTransactions());
+			```
 			returnType="array"
 			*/
 			return this._transactionLog;
 		},
 		allTransactions: function () {
 			/* returns a list of all transaction objects that are either pending, or have been committed in the data source.
+			```
+				var ds;
+
+				var render = function (success, error) {
+					if (success) {
+						ds.addRow(123, {
+							Name: "CD Player",
+							Price: "40",
+							Rating: "4"
+						}, true);
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						console.log(ds.allTransactions());
+						$("#table").html(resultHtml);
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp"
+					});
+					ds.dataBind();
+
+				});
+			```
 			returnType="array"
 			*/
 			return this._accumulatedTransactionLog;
@@ -1249,20 +3440,16 @@
 			var data, key, count = 0, schema = this.settings.schema,
 				layouts = schema ? schema.layouts : null, lo, pdata,
 				all = [ this._data ], newRow;
-			if (this._data !== this._dataView) {
-				all.push(this._dataView);
-			}
-			if (this._data !== origDs) {
-				all.push(origDs);
-			}
+			this._addOnlyUniqueToCollection(all, this._dataView);
+			this._addOnlyUniqueToCollection(all, origDs);
 			/* M.H. 15 Dec 2014 Fix for bug #186504: Added row is not displayed whether
-			it's filtered in or out if paging is enabled. Вhen we add row and there is
+			it's filtered in or out if paging is enabled. When we add row and there is
 			applied filtering and enabled (local)paging then we should add the new row
 			in filteredData so it could be shown in dataView because when pageIndex is
 			called the dataView is populated from _filteredData not from _data in this case */
 			if (this._filter && this._filteredData &&
 				this.settings.paging.enabled && this.settings.paging.type === "local") {
-				all.push(this._filteredData);
+				this._addOnlyUniqueToCollection(all, this._filteredData);
 			}
 			if (layouts) {
 				/* we'll try to include empty collections for the child layouts to keep the data source consistent */
@@ -1311,10 +3498,6 @@
 						this._postprocessAddRow.apply(this, Array.prototype.slice.call(arguments).concat(pdata));
 						data = pdata.cashedData;// get original layout data - used for check data === all[count]
 					}
-				}
-				/* if data same, then skip it */
-				if (data === all[ count ]) {
-					count++;
 				}
 			}
 		},
@@ -1412,8 +3595,39 @@
 			}
 			return trans;
 		},
+		_addOnlyUniqueToCollection: function (collection, item) {
+			var i;
+			for (i = 0; i < collection.length; i++) {
+				if (collection[ i ] === item) {
+					return;
+				}
+			}
+			collection.push(item);
+		},
 		transactionsAsString: function () {
 			/* returns the accumulated transaction log as a string. The purpose of this is to be passed to URLs or used conveniently
+			```
+			var ds = new $.%%WidgetName%%({
+				schema: {
+					fields: [{
+						name: "Name"
+					}, {
+						name: "Price"
+					}, {
+						name: "Rating"
+					}],
+					searchField: "d"
+				},
+				responseDataKey: "d",
+				responseDataType: "jsonp"
+			});
+			ds.addRow(123, {
+			Name: "CD Player",
+			Price: "40",
+			Rating: "4"
+			});
+			var transactionsAsString = ds.transactionsAsString();
+			```
 			returnType="string"
 			*/
 			return JSON.stringify(this._accumulatedTransactionLog);
@@ -1441,6 +3655,47 @@
 		},
 		saveChanges: function (success, error) {
 			/* posts to the settings.updateUrl using $.ajax, by serializing the changes as url params
+			```
+				var ds = new $.%%WidgetName%%({
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}]
+					},
+					updateUrl: "http://example.com/myUpdateUrl/"
+				});
+
+				ds.addRow(0, {
+					Name: "CD Player",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(1, {
+					Name: "CD Player1",
+					Price: "40",
+					Rating: "4"
+				}, true);
+				ds.addRow(2, {
+					Name: "CD Player2",
+					Price: "40",
+					Rating: "4"
+				}, true);
+
+				// Option 1: Save changes without callbacks
+				ds.saveChanges();
+
+				// Option 2: Save changes with success and error callbacks
+				ds.saveChanges(function (data) {
+					$("#message").text("Changes were saved successfully").fadeIn(3000).fadeOut(5000);
+				},
+				function(jqXHR, textStatus, errorThrown) {
+					$("#message").text("An error occurred while saving the changes. Error details: " + textStatus).fadeIn(3000).fadeOut(5000);
+				});
+			```
 			paramType="function" Specifies a custom function to be called when AJAX request to the updateUrl option succeeds(optional)
 			paramType="function" Specifies a custom function to be called when AJAX request to the updateUrl option fails(optional)
 			*/
@@ -1555,6 +3810,19 @@
 			4. now normalize/transform the data, if a schema is supplied. This inplies any additional data type  conversion
 			5. next, if OpType is Local, apply paging, sorting, and/or filtering to the data, and store the result in this._dataView
 			6. fire the databound event
+
+			```
+				var jsonSchema = new $.ig.DataSchema("json", {fields:[
+					{name: "ProductID", type: "number"},
+					{name: "Name", type: "string"},
+					{name: "ProductNumber", type: "string"},
+					{name: "Color", type: "string"},
+					{name: "StandardCost", type: "string"}],
+					searchField:"Records" });
+
+				ds = new $.%%WidgetName%%({type: "json", dataSource: jsonData, schema: jsonSchema});
+				ds.dataBind();
+			```
 
 			paramType="string" optional="true" callback function
 			paramType="object" optional="true" callee object on which the callback will be executed. If none is specified, will assume global execution context
@@ -1749,6 +4017,12 @@
 					(!fApplied || s.defaultFields !== s.expressions) ) {
 					this.sort(s.defaultFields, s.defaultDirection);
 				}
+				/* M.H. 26 Aug 2016 Fix for bug 224258: Remote groupBy does not work in HierarchicalGrid */
+				if (!this._gbDataView && this.isGroupByApplied(this.settings.sorting.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData :
+																this._data,
+											this.settings.sorting.expressions);
+				}
 				/* Check if paging is configured, and if so,
 				if OpType === $.ig.Constants.OpType.Local => apply local paging */
 				if (p.paging.enabled && p.paging.type === "local" && this._runtimeType !== "remoteUrl") {
@@ -1772,6 +4046,16 @@
 		},
 		getCellValue: function (fieldName, record) {
 			/* gets a cell value from the record by the specified fieldName. If there's a mapper defined for the field, the resolved by the mapper value will be returned.
+			```
+				ds = new $.%%WidgetName%%({
+					dataSource: products,
+					primaryKey: "ProductID"
+				});
+
+				ds.dataBind();
+				//Get
+				var value = ds.getCellValue("Name", {ProductID: 1, Name: "Adjustable Race", ProductNumber: "AR-5381"});
+			```
 			paramType="string" the fieldName - name of the field
 			paramType="object" the record from which to get it
 			returnType="object". The cell's value
@@ -1826,6 +4110,45 @@
 			Gets or sets summaries data.
 			If key or dsObj are not set then returns summaries data.
 			Takes summary data from passed argument dsObj(using argument key)
+			```
+				var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+				var ds = new $.%%WidgetName%%({
+					callback: render,
+					dataSource: url,
+					schema: {
+						fields: [{
+							name: "Name"
+						}, {
+							name: "Price"
+						}, {
+							name: "Rating"
+						}],
+						searchField: "d"
+					},
+					responseDataKey: "d",
+					responseDataType: "jsonp"
+				});
+
+				var mySummariesSettings = {
+					type: "remote",
+					columnSettings: [{
+						columnKey: "Price",
+						allowSummaries: false,
+						summaryOperands: [{
+							type: "count",
+							active: true,
+							order: 0
+						}]
+					}],
+					summariesResponseKey: "d"
+				};
+
+				// Set
+				ds.summariesSettings(mySummariesSettings);
+
+				// Get
+				var summariesSettings = ds.summariesSettings();
+			```
 			paramType="string" optional="true" response key to take summary data(for example "Metadata.Summaries")
 			paramType="object" optional="true" data source object - usually contains information about data records and metadata(holds info about summaries)
 			returnType="object" object of data summaries - e.g.: if datasource has 2 columns - ID and Name then expected format for data summaries is {ID : {max: 1, min: 0, count: 2}, Name: {count: 1}}
@@ -2771,6 +5094,21 @@
 		},
 		filteredData: function () {
 			/*returns filtered data if local filtering is applied. If filtering is not applied OR type of filtering is remote returns undefined.
+			```
+				ds = new $.%%WidgetName%%({
+					dataSource: products,
+					primaryKey: "ProductID",
+					filtering: {
+						type: "local",
+						caseSensitive: true,
+						applyToAllData: true
+					}
+				});
+
+				ds.dataBind();
+				//Get
+				var filteredData = ds.filteredData();
+			```
 			returnType="array" array of (filtered)data records
 			*/
 			return this._filteredData;
@@ -2935,6 +5273,24 @@
 			example: [{fieldName : "firstName"}, {fieldName : "lastName"}]
 			example 2: [{fieldIndex : 1} , {fieldIndex : 2}]
 
+			```
+				var ds = new $.%%WidgetName%%({
+					schema: {
+						fields:[
+							{ name : "col1" },
+							{
+								name : "col2",
+								type: "number"
+							}
+						]
+					},
+					sorting: { type: "local"},
+					dataSource: $("#t1")[0]
+				}).dataBind();
+
+				ds.sort([{fieldName : "col2"}], "desc", false);
+			```
+
 			paramType="object" an array of fields object definitions
 			paramType="string" asc / desc direction
 			*/
@@ -3036,7 +5392,11 @@
 			return this; // preserve chaining
 		},
 		clearLocalSorting: function () {
-			/* This clears local sorting applied to the data view by resetting it to the original data and applying any paging */
+			/* This clears local sorting applied to the data view by resetting it to the original data and applying any paging
+			```
+				ds.clearLocalSorting();
+			```
+			*/
 			var s = this.settings.sorting, p = this.settings.paging, data, resetPaging = false;
 
 			if (s.applyToAllData && s.type === "local") {
@@ -3098,6 +5458,17 @@
 			expr is the filter expression text , such as "abc", or a regular expression such as *test*
 			cond is the filtering condition such as startsWith, endsWith, contains, equals, doesNotEqual, doesNotContain
 			if expr is detected to be a regular expression, the "cond" part is skipped
+
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					schema: jsonSchema
+				});
+				ds.dataBind();
+
+				ds.filter([{fieldName : "Color", expr: "Red", cond: "Equals"}], "AND", true);
+			```
 
 			paramType="object" a list of field expression definitions
 			paramType="AND|OR" boolean logic. Accepted values are AND and OR.
@@ -3291,7 +5662,11 @@
 			return this; // preserve chaining
 		},
 		clearLocalFilter: function () {
-			/* This clears local filtering applied to the data view by resetting it to the original data and applying any paging */
+			/* This clears local filtering applied to the data view by resetting it to the original data and applying any paging
+			```
+				ds.clearLocalFilter();
+			```
+			*/
 			var i, data, resetPaging, sa = false,
 				f = this.settings.filtering, p = this.settings.paging, s = this.settings.sorting;
 			this._clearGroupByData();
@@ -3805,6 +6180,19 @@
 			If data binding is remote, and there's paging or filtering enabled,
 			the actual total number of records may not
 			match the number of records that exists on the client
+			```
+				ds = new $.%%WidgetName%%({
+					callback:render,
+					dataSource: "/demos/server/server.php",
+					responseDataKey: "records",
+				}).dataBind();
+
+				//Get
+				var count = ds.totalRecordsCount();
+
+				//Set
+				ds.totalRecordsCount(42);
+			```
 			paramType="number" optional="true" the total number of records
 			paramType="string" optional="true" the name of the property which hold the total records count value
 			paramType="object" optional="true"
@@ -3843,6 +6231,35 @@
 		},
 		hasTotalRecordsCount: function (hasCount) {
 			/* gets / sets if the response from the server contains a property which specifies the total number of records in the server-side backend
+			```
+				var ds;
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						primaryKey: "Name"
+					});
+					ds.dataBind();
+					// Get
+					var hasTotalRecords = ds.hasTotalRecordsCount();
+
+					// Set
+					ds.hasTotalRecordsCount(true);
+				});
+			```
 			paramType="bool" specifies if the data source contains a property that denotes the total number of records in the server-side backend
 			*/
 			if (hasCount === undefined || hasCount === null) {
@@ -3852,6 +6269,44 @@
 		},
 		metadata: function (key) {
 			/* returns metadata object for the specified key
+			```
+				var ds;
+
+				var render = function (success, error) {
+					if (success) {
+						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
+						resultHtml = $.ig.tmpl(template, ds.dataView());
+						$("#table").html(resultHtml);
+					} else {
+						alert(error);
+					}
+				}
+
+				$(window).load(function () {
+					var url = "http://services.odata.org/OData/OData.svc/Products?$format=json&$callback=?";
+					ds = new $.%%WidgetName%%({
+						callback: render,
+						dataSource: url,
+						schema: {
+							fields: [{
+								name: "Name"
+							}, {
+								name: "Price"
+							}, {
+								name: "Rating"
+							}],
+							searchField: "d"
+						},
+						responseDataKey: "d",
+						responseDataType: "jsonp",
+						primaryKey: "Name"
+					});
+					ds.dataBind();
+
+					var metadata = ds.metadata();
+
+				});
+			```
 			paramType="string" Primary key of the record
 			returnType="object" metadata object
 			*/
@@ -3866,6 +6321,15 @@
 		},
 		totalLocalRecordsCount: function () {
 			/* returns the total number of records in the local data source
+			```
+				ds = new $.%%WidgetName%%({
+					callback:render,
+					dataSource: "/demos/server/server.php",
+					responseDataKey: "records",
+				}).dataBind();
+
+				var count = ds.totalLocalRecordsCount();
+			```
 			returnType="number" the number of records that are bound / exist locally
 			*/
 			if (this.isGroupByApplied() && this._vgbData) {
@@ -3878,6 +6342,19 @@
 		},
 		pageCount: function () {
 			/* returns the total number of pages
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
+
+				var count = ds.pageCount();
+			```
 			returnType="number" total number fo pages
 			*/
 			var c, realCount;
@@ -3893,6 +6370,23 @@
 		},
 		pageIndex: function (index) {
 			/* gets /sets the current page index. If an index is passed as a parameter, the data source is re-bound.
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
+
+				//Get
+				var currentIndex = ds.pageIndex();
+
+				//Set
+				ds.pageIndex(5);
+			```
 			paramType="number" optional="true" the page index. If none is specified, returns the current page index.
 			returnType="number" the current page index
 			*/
@@ -3925,12 +6419,40 @@
 		},
 		/* utility paging functions */
 		prevPage: function () {
-			/* sets the page index to be equal to the previous page index and rebinds the data source */
+			/* sets the page index to be equal to the previous page index and rebinds the data source
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
+
+				ds.prevPage();
+			```
+			*/
 			this.pageIndex(this.pageIndex() === 0 ? 0 : this.pageIndex() - 1);
 			return this;
 		},
 		nextPage: function () {
-			/* sets the page index to be equal to the next page index and rebinds the data source */
+			/* sets the page index to be equal to the next page index and rebinds the data source
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
+
+				ds.nextPage();
+			```
+			*/
 			if (this.pageIndex() >= this.pageCount() - 1) {
 				return this;
 			}
@@ -3939,6 +6461,23 @@
 		},
 		pageSize: function (s) {
 			/* gets /sets the page size and rebinds the data source if a parameter is specified. If no parameter is passed, returns the current page size
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
+
+				//Get
+				var size = ds.pageSize();
+
+				//Set
+				ds.pageSize(25);
+			```
 			paramType="number" optional="true" the page size.
 			*/
 			if (s === undefined || s === null) {
@@ -3960,6 +6499,19 @@
 		},
 		pageSizeDirty: function (dirty) {
 			/* for internal use
+			```
+				var ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled: true,
+						pageSize: 10,
+						type: "local"
+					}
+				});
+
+				ds.pageSizeDirty();
+			```
 			paramType="object" excluded="true"
 			*/
 			if (dirty === undefined || dirty === null) {
@@ -3969,6 +6521,19 @@
 		},
 		recordsForPage: function (p) {
 			/* returns a list of records for the specified page. Implies that paging is enabled.
+			```
+				var ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled: true,
+						pageSize: 10,
+						type: "local"
+					}
+				});
+
+				var recordsForPage = ds.recordsForPage(2);
+			```
 			paramType="number" optional="false" the page index for which records will be returned
 			*/
 			var d = [], si, ps, ei, i, c = 0;
@@ -3982,6 +6547,10 @@
 		},
 		tableToObject: function (tableDOM) {
 			/* converts a HTML TABLE dom element to a JavaScript array of objects that contain the records data
+			```
+				ds = new $.%%WidgetName%%();
+				var tableObj = ds.tableToObject("<table><tr><td>CD Player</td><td>10.90</td><td>3</td></tr><tr><td>CD Player 1</td><td>10.90</td><td>3</td></tr><tr><td>CD Player 2</td><td>10.90</td><td>3</td></tr></table>");
+			```
 			paramType="dom" TABLE dom element to transform
 			returnType="object"
 			*/
@@ -4010,6 +6579,10 @@
 		},
 		stringToJSONObject: function (s) {
 			/* parses the string and returns an evaluated JSON object
+			```
+				ds = new $.%%WidgetName%%();
+				var jsonObj = ds.stringToJSONObject('[{"Name":"CD Player","Price":10.90,"Rating":3}]');
+			```
 			paramType="string" the JSON as string.
 			*/
 			var data = {};
@@ -4024,6 +6597,10 @@
 		},
 		stringToXmlObject: function (s) {
 			/* parses a string and returns a XML Document
+			```
+				ds = new $.%%WidgetName%%();
+				var xmlObj = ds.stringToXmlObject("<Element><Name>CD Player</Name><Price>10.90</Price><Rating>3</Rating></Element>");
+			```
 			paramType="string" the XML represented as a string
 			*/
 			var doc, parser;
@@ -4059,12 +6636,38 @@
 		/* GroupBy functionallity*/
 		groupByData: function () {
 			/* returns collection of data and non-data(grouped) records. Flat representation of hierarchical data
+			```
+				ds = new $.%%WidgetName%%({
+					dataSource: products,
+					primaryKey: "ProductID",
+					groupby: {
+						defaultCollapseState: true
+					}
+				});
+
+				ds.dataBind();
+
+				var groupedData = ds.groupByData();
+			```
 			returnType="array" array of records
 			*/
 			return this._gbData;
 		},
 		visibleGroupByData: function () {
 			/* returns collection of data and non-data(grouped) records. Returns only visible records(children of collapsed grouped records are not included in the collection)
+			```
+				ds = new $.%%WidgetName%%({
+					dataSource: products,
+					callback: render,
+					groupby: {
+						defaultCollapseState: true
+					}
+				});
+
+				ds.dataBind();
+				//Get
+				var visibleGroupByData = ds.visibleGroupByData();
+			```
 			returnType="array" array of records
 			*/
 			return this._vgbData;
@@ -4112,6 +6715,19 @@
 		},
 		toggleGroupByRecord: function (id, collapsed) {
 			/* Toggle grouped record with the specified id and updates collections visible groupby data and data view
+			```
+				ds = new $.%%WidgetName%%({
+					dataSource: products,
+					primaryKey: "ProductID",
+					groupby: {
+						defaultCollapseState: true
+					}
+				});
+
+				ds.dataBind();
+				//Set
+				ds.toggleGroupByRecord("ProductID:49", true);
+			```
 			paramType="string" data-id attribute of the respective group row in the DOM
 			paramType="bool" if true the record should be collapsed, otherwise expanded
 			*/
@@ -4150,6 +6766,19 @@
 		isGroupByRecordCollapsed: function (gbRec) {
 			/* Check whether the specified gorupby record is collapsed
 			paramType="string|object" id of the grouped record OR grouped record
+			```
+				ds = new $.%%WidgetName%%({
+					dataSource: products,
+					primaryKey: "ProductID",
+					groupby: {
+						defaultCollapseState: true
+					}
+				});
+
+				ds.dataBind();
+
+				var isCollapsed = ds.isGroupByRecordCollapsed({id:"ProductID:49"});
+			```
 			returnType="bool" if true the grouped record is collapsed
 			 */
 			var id = typeof gbRec === "string" || !gbRec ? gbRec : gbRec.id,
@@ -4246,6 +6875,27 @@
 		},
 		isGroupByApplied: function (exprs) {
 			/* check whether grouping is applied for the specified sorting expressions.
+			```
+				ds = new $.%%WidgetName%%({
+					dataSource: products,
+					primaryKey: "ProductID",
+					groupby: {
+						defaultCollapseState: true
+					},
+					sorting: {
+						expressions:[
+							{
+								fieldName: "Name",
+								dir: "desc"
+							}
+					]}
+				});
+
+				ds.dataBind();
+
+				var sortingExprArray = ds.settings.sorting.expressions;
+				var isApplied = ds.isGroupByApplied(sortingExprArray);
+			```
 			paramType="array" optional="true" array of sorting expressions. If not set check expressions defined in sorting settings
 			returnType="bool" Returns true if grouping is applied */
 			exprs = exprs || this.settings.sorting.expressions;
@@ -7916,20 +10566,18 @@
 			paramType="string|number" primary key of the record
 			*/
 			var data, count = 0,
-				all = [ this._data, this._dataView, this._filteredData ];
+				all = [ this._data ];
+			this._addOnlyUniqueToCollection(all, this._dataView);
+			this._addOnlyUniqueToCollection(all, this._filteredData);
 			/* M.H. 5 Aug 2016 Fix for bug 220126: Child data persists in the datasource after deleting the corresponding parent record in treegrid */
 			if (!this._isHierarchicalDataSource) {
 				this._removeRecordInFlatDs(origDs, key);
 			} else {
-				all.push(origDs);
+				this._addOnlyUniqueToCollection(all, origDs);
 			}
 			while (count < all.length) {
 				data = all[ count++ ];
 				this._removeRecordByKeyForData(key, data);
-				/* if next data is same, then skip it */
-				if (data === all[ count ]) {
-					count++;
-				}
 			}
 		},
 		_removeRecordInFlatDs: function (data, key, fk) {
@@ -8153,4 +10801,4 @@
 			return ret;
 		}
 	});
-}));
+}));// REMOVE_FROM_COMBINED_FILES

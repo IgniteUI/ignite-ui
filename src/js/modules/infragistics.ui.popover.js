@@ -20,8 +20,7 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util",
-			"./i18n/infragistics.ui.popover-en"
+			"./infragistics.util"
 		], factory );
 	} else {
 
@@ -239,6 +238,9 @@
 		container: function () {
 			/* returns the container for the popover contents
 				returnType="object"
+				```
+				$( ".selector" ).%%WidgetName%%( "destroy" );
+				```
 			*/
 			return this.contentInner;
 		},
@@ -294,7 +296,7 @@
 			return currPosition;
 		},
 		setCoordinates: function (pos) {
-			/* set the currently coordinates of the popover
+			/* Sets the popover to specific coordinates.
 				paramType="object" The popover coordinates in pixels.
 			*/
 			this.popover.css({
@@ -1035,5 +1037,5 @@
 	$.extend($.ui.igPopover, {
 		version: "<build_number>"
 	});
-	return $.ui.igPopover;
-}));
+	return $.ui.igPopover;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

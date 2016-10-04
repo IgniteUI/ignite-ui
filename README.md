@@ -1,8 +1,7 @@
 # Ignite UI  
 [![Build Status](https://travis-ci.org/IgniteUI/ignite-ui.svg?branch=master)](https://travis-ci.org/IgniteUI/ignite-ui)
 [![Coverage Status](https://coveralls.io/repos/github/IgniteUI/ignite-ui/badge.svg?branch=master)](https://coveralls.io/github/IgniteUI/ignite-ui?branch=master)
-[![Issue Stats](http://issuestats.com/github/IgniteUI/ignite-ui/badge/pr?style=flat)](http://issuestats.com/github/IgniteUI/ignite-ui)
-[![Issue Stats](http://issuestats.com/github/IgniteUI/ignite-ui/badge/issue?style=flat)](http://issuestats.com/github/IgniteUI/ignite-ui)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8707f9ff8ee94bba9e1f897ef40cd66e)](https://www.codacy.com/app/kdinev/ignite-ui?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=IgniteUI/ignite-ui&amp;utm_campaign=Badge_Grade)
 
 [![npm](https://img.shields.io/npm/v/ignite-ui.svg?maxAge=2592000)](https://www.npmjs.com/package/ignite-ui)
 [![Bower](https://img.shields.io/bower/v/ignite-ui.svg?maxAge=2592000)](https://github.com/IgniteUI/ignite-ui-bower)

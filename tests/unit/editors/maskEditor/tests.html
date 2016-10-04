@@ -30,6 +30,11 @@
 			// Create a editors
 			function loadTestbeds() {
 				$(function () {
+					 $("#maskEditorRequired").igMaskEditor({
+						inputMask: "LL00C",
+						emptyChar: "*",
+						value: "aa1"
+					});   
 					$("#editor1").igMaskEditor({
 						value: "CCC",
 						width: 400,
@@ -53,7 +58,21 @@
 						selectionOnFocus: "browserDefault",
 						inputMask: "NMK\\AOIU\\CY0FC9\\A&:C\\A\\L\\a\\9C"
 					});
-
+					$("#editor233").igMaskEditor({
+						inputMask: ">LLL00"
+					});
+					$("#editor364_1").igMaskEditor({
+						inputMask: ">00"
+					});
+					$("#editor364_2").igMaskEditor({
+						inputMask: "<00"
+					});
+					$("#editor364_3").igMaskEditor({
+						inputMask: "<CC00CC"
+					});
+					$("#editor364_4").igMaskEditor({
+						inputMask: ">CC00CC"
+					});
 					$("#editor3").igMaskEditor({
 						
 					});
@@ -276,6 +295,9 @@
 		                    $("#test").append("<span></span>");
 		                }
 					});
+					$("#maskEditorRuntime").igMaskEditor({
+						inputMask: "CCC"
+					});
 
 				});
 			}
@@ -294,11 +316,28 @@
 				}
 			});
 
+			testId = 'mask editor cannot set on runtime';
+			test(testId, 2, function () {
+				throws(function () {
+					$('#maskEditorRuntime').igMaskEditor("option", "regional", "ru-Ru")
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "regional");
+
+				
+				throws(function () {
+					$('#maskEditorRuntime').igMaskEditor("option", "unfilledCharsPrompt", "*")
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "unfilledCharsPrompt");
+			});
+
 			var testId = 'Mask Editor initialization.';
-			test(testId, 3, function () {
+			test(testId, 4, function () {
 				ok(typeof ($("#editor1").igMaskEditor) === 'function', "Editors Script is not loaded");
 				ok($('#editor1').data("igMaskEditor") !== undefined, 'Error creating igMaskEditor in an input');
-				equal($('#editor1').igMaskEditor("value"), "CCC       ", 'The initial value is not as expexted');
+				equal($('#editor1').igMaskEditor("value"), "CCC", 'The initial value is not as expexted');
+				equal($("#maskEditorRequired").igMaskEditor("value"), "aa1*", 'The initial value is not as expexted');
 
 			});
 
@@ -309,15 +348,15 @@
 
 				editor.igMaskEditor("setFocus");
 				editor.igMaskEditor("field").val("a_________");
-				checkMaskState(editor, 65, "a_________", "a", "a         ");
+				checkMaskState(editor, 65, "a_________", "a", "a");
 
 				editor.igMaskEditor("setFocus");
 				editor.igMaskEditor("field").val("ab________");
-				checkMaskState(editor, 66, "ab________", "ab", "ab        ");
+				checkMaskState(editor, 66, "ab________", "ab", "ab");
 
 				editor.igMaskEditor("setFocus");
 				editor.igMaskEditor("field").val("abc_______");
-				checkMaskState(editor, 67, "abc_______", "abc", "abc       ");
+				checkMaskState(editor, 67, "abc_______", "abc", "abc");
 			});
 
 			testId = "Events testing";
@@ -465,8 +504,63 @@
 				$("#validInEditModeEditor").data("igMaskEditor")._exitEditMode();
 				ok($("#validInEditModeEditor").igMaskEditor("isValid"), "All required fields are filled");
 			});
-			testId = 'mask editor toLower/toUpper on paste';
+
+
+			testId = 'mask editor toLower/toUpper #364';
 			test(testId, 16, function () {
+				//editor364_1
+				var field = $("#editor364_1").igMaskEditor("field");
+				$("#editor364_1").data("igMaskEditor")._enterEditMode();
+				$("#editor364_1").data("igMaskEditor")._insert("nn");
+				equal(field.val(), "__", "Text is not __");
+				$("#editor364_1").data("igMaskEditor")._insert("12");
+				equal(field.val(), "12", "Text is not __");
+				$("#editor364_1").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor364_1').igMaskEditor("value"), "12", "Value is not 12");
+				$("#editor364_1").data("igMaskEditor")._exitEditMode();
+				equal($('#editor364_1').igMaskEditor("displayValue"), "12", "Value is not 12");
+				//editor364_2
+				field = $("#editor364_2").igMaskEditor("field");
+				$("#editor364_2").data("igMaskEditor")._enterEditMode();
+				$("#editor364_2").data("igMaskEditor")._insert("nn");
+				equal(field.val(), "__", "Text is not __");
+				$("#editor364_2").data("igMaskEditor")._insert("12");
+				equal(field.val(), "12", "Text is not __");
+				$("#editor364_2").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor364_2').igMaskEditor("value"), "12", "Value is not 12");
+				$("#editor364_2").data("igMaskEditor")._exitEditMode();
+				equal($('#editor364_2').igMaskEditor("displayValue"), "12", "Value is not 12");
+
+				//editor364_3
+				field = $("#editor364_3").igMaskEditor("field");
+				$("#editor364_3").data("igMaskEditor")._enterEditMode();
+				$("#editor364_3").data("igMaskEditor")._insert("nnnn");
+				equal(field.val(), "nn____", "Text is not nn____");
+				$("#editor364_3").data("igMaskEditor")._insert("nn12nn");
+				equal(field.val(), "nn12nn", "Text is not 12nn");
+				$("#editor364_3").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor364_3').igMaskEditor("value"), "nn12nn", "Value is not nn12nn");
+				$("#editor364_3").data("igMaskEditor")._exitEditMode();
+				equal($('#editor364_3').igMaskEditor("displayValue"), "nn12nn", "Value is not nn12nn");
+
+				//editor364_4
+				field = $("#editor364_4").igMaskEditor("field");
+				$("#editor364_4").data("igMaskEditor")._enterEditMode();
+				$("#editor364_4").data("igMaskEditor")._insert("nnnn");
+				equal(field.val(), "NN____", "Text is not NN____");
+				$("#editor364_4").data("igMaskEditor")._insert("nn12nn");
+				equal(field.val(), "NN12NN", "Text is not 12nn");
+				$("#editor364_4").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor364_4').igMaskEditor("value"), "NN12NN", "Value is not NN12NN");
+				$("#editor364_4").data("igMaskEditor")._exitEditMode();
+				equal($('#editor364_4').igMaskEditor("displayValue"), "NN12NN", "Value is not NN12NN");
+			});
+			testId = 'mask editor toLower/toUpper on paste';
+			test(testId, 19, function () {
 				//$("#toUpperEditor")
 				var field = $("#toUpperEditor").igMaskEditor("field");
 				$("#toUpperEditor").data("igMaskEditor")._enterEditMode();
@@ -474,7 +568,7 @@
 				equal(field.val(), "NNAA______", "Text is not NNAA______");
 				$("#toUpperEditor").data("igMaskEditor")._processValueChanging(field.val());
 
-				equal($('#toUpperEditor').igMaskEditor("value"), "NNAA      ", "Value is not NNAA");
+				equal($('#toUpperEditor').igMaskEditor("value"), "NNAA", "Value is not NNAA");
 				$("#toUpperEditor").data("igMaskEditor")._exitEditMode();
 				equal($('#toUpperEditor').igMaskEditor("displayValue"), "NNAA", "Value is not NNAA");
 
@@ -484,7 +578,7 @@
 				equal(field.val(), "nnaa______", "Text is not nnaa______");
 				$("#toLowerEditor").data("igMaskEditor")._processValueChanging(field.val());
 
-				equal($('#toLowerEditor').igMaskEditor("value"), "nnaa      ", "Value is not NNAA");
+				equal($('#toLowerEditor').igMaskEditor("value"), "nnaa", "Value is not NNAA");
 				$("#toLowerEditor").data("igMaskEditor")._exitEditMode();
 				equal($('#toLowerEditor').igMaskEditor("displayValue"), "nnaa", "Value is not NNAA");
 
@@ -533,6 +627,18 @@
 				$("#toUppertoLowerMaskEditor").data("igMaskEditor")._exitEditMode();
 				equal($('#toUppertoLowerMaskEditor').igMaskEditor("displayValue"), "CNNAAmm?FrUU", "displayValue is not CNNAAmm?FrUU");
 				
+				//#editor233
+
+				field = $("#editor233").igMaskEditor("field");
+				$("#editor233").data("igMaskEditor")._enterEditMode();
+				$("#editor233").data("igMaskEditor")._insert("asd15");
+				equal(field.val(), "ASD15", "Text is not ASD15");
+				$("#editor233").data("igMaskEditor")._processValueChanging(field.val());
+
+				equal($('#editor233').igMaskEditor("value"), "ASD15", "Value is not ASD15");
+				$("#editor233").data("igMaskEditor")._exitEditMode();
+				equal($('#editor233').igMaskEditor("displayValue"), "ASD15", "Value is not ASD15");
+
 			});
 			testId = 'mask editor _update -> Null Value';
 			test(testId, 9, function () {
@@ -635,13 +741,13 @@
 				throws(function () {
 					$('#keydownEditor3').igMaskEditor("option", "excludeKeys", "abe")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "excludeKeys");
 				throws(function () {
 					$('#keydownEditor3').igMaskEditor("option", "includeKeys", "abe")
 				}, function (err) {
-					return err.message.indexOf($.ig.Editor.locale.cannotSetRuntime) > -1;
-				}, $.ig.Editor.locale.cannotSetRuntime + "not shown");
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "includeKeys");
 				//Unsupported Methods
 				throws(function () {
 					$('#keydownEditor3').igMaskEditor("dropDownContainer");
@@ -1006,6 +1112,8 @@
 	 <ol id="qunit-tests"></ol>
 </div>
 	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+		
+		<div id="maskEditorRuntime"></div>
 		<input type="text" id="editor1" />
 		<input type="text" id="editor11" />
 		<div type="text" id="editor2"></div>
@@ -1082,7 +1190,13 @@
 			<input type="text" id="revertEditor1" />
 			<input type="text" id="revertEditor2" />
 			<input type="text" id="revertEditor3" />
-			<div id="test"></div>
+			<input type="text" id="editor233"/>
+			<input type="text" id="editor364_1" />
+			<input type="text" id="editor364_2" />
+			<input type="text" id="editor364_3" />
+			<input type="text" id="editor364_4" />
+			<input type="text" id="maskEditorRequired" />
+			<div id="test"></div>			
 		<input type='submit' value="Submit" />
 		</form>
 	</div>

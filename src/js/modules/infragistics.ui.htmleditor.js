@@ -38,8 +38,7 @@
 			"./infragistics.ui.combo",
 			"./infragistics.ui.editors",
 			"./infragistics.ui.toolbarbutton",
-			"./infragistics.ui.toolbar",
-			"./i18n/infragistics.ui.htmleditor-en"
+			"./infragistics.ui.toolbar"
 		], factory );
 	} else {
 
@@ -1149,16 +1148,10 @@
             // Add &nbsp; to execute the initial commands on it
             lastNode.html("&nbsp;");
 
-            if ($.ig.util.isIEOld) {
-                range.moveToElementText(lastNode[ 0 ]);
-                range.select();
-            } else {
-
-                // Set the selection to the dummy element
-                range.selectNode(lastNode[ 0 ]);
-                sel.removeAllRanges();
-                sel.addRange(range);
-            }
+            // Set the selection to the dummy element
+            range.selectNode(lastNode[ 0 ]);
+            sel.removeAllRanges();
+            sel.addRange(range);
         },
         _emptyAndCollapseSelection: function () {
             var lastNode = $(this.contentDocument()).find(":not(br)").last(),
@@ -1170,18 +1163,12 @@
 
             // Collapse the selection
             if (lastNode.length > 0) {
+                range.setStart(lastNode[ 0 ], 0);
+                range.setEnd(lastNode[ 0 ], 0);
+                range.collapse(true);
 
-                if ($.ig.util.isIEOld) {
-                    range.collapse(true);
-                    range.select();
-                } else {
-                    range.setStart(lastNode[ 0 ], 0);
-                    range.setEnd(lastNode[ 0 ], 0);
-                    range.collapse(true);
-
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-                }
+                sel.removeAllRanges();
+                sel.addRange(range);
             }
         },
 
@@ -1616,17 +1603,6 @@
                     }
                 });
         },
-
-        // Z.K. Removing unused code
-        // _cutPlg: function () {
-        //     this._execCommand("cut");
-        // },
-        // _copyPlg: function () {
-        //     this._execCommand("copy");
-        // },
-        // _pastePlg: function () {
-        //     this._execCommand("paste");
-        // },
         _onSelectionChange: function (callback) {
             var self = this,
                 selectionWrapper,
@@ -1844,12 +1820,7 @@
             // Creates an element with the iframe document as owner document
             el = $(element, this._selectionWrapperSaved._document)[ 0 ];
             range = this.range();
-
-            if (this._selectionWrapperSaved._isIeOld) {
-                range.pasteHTML(element);
-            } else {
-                range.insertNode(el);
-            }
+            range.insertNode(el);
         }
     });
 
@@ -2496,7 +2467,6 @@
     $.ig.SelectionWrapper = $.ig.SelectionWrapper || Class.extend({
         _selection: null,
         _range: null,
-        _isIeOld: false,
         _window: null,
         _document: null,
         _commands: {
@@ -2518,38 +2488,19 @@
             var self = this;
             this._window = window;
             this._document = this._window.document;
+            this._selection = this._window.getSelection();
+            this._window.setTimeout(function () {
+                self._range = (self._getSelection().rangeCount === 0) ?
+                    self._document.createRange() : self._selection.getRangeAt(0);
 
-            if (!this._document.getSelection) {
-                this._isIeOld = true;
-            }
+                // D.A. 27th August 2014, Bug #179347 When you click after the text
+                // and select formatting option, the text on the whole row gets updated
+                self._selectClosestTextNode();
 
-            if (this._isIeOld) {
-
-                // K.D. July 18th, 2012 If we don't focus the selection with IE <= 8, then executing an action on the window
-                // will incorrectly fire on the top-most parent window.
-                this.focus();
-                this._selection = this._document.selection;
-                this._window.setTimeout(function () {
-                    self._range = self._selection.createRange();
-                    if ($.isFunction(callback)) {
-                        callback.call(self);
-                    }
-                }, 50);
-            } else {
-                this._selection = this._window.getSelection();
-                this._window.setTimeout(function () {
-                    self._range = (self._getSelection().rangeCount === 0) ?
-                        self._document.createRange() : self._selection.getRangeAt(0);
-
-                    // D.A. 27th August 2014, Bug #179347 When you click after the text
-                    // and select formatting option, the text on the whole row gets updated
-                    self._selectClosestTextNode();
-
-                    if ($.isFunction(callback)) {
-                        callback.call(self);
-                    }
-                }, 50);
-            }
+                if ($.isFunction(callback)) {
+                    callback.call(self);
+                }
+            }, 50);
         },
         _getSelection: function () {
             return this._selection;
@@ -2647,47 +2598,25 @@
                 }
             }
         },
-
-        // Z.K. Remove unused code
-        // surroundContents: function (wrapEl) {
-        //     var range = this._getRange();
-        //     if (this._isIeOld) {
-        //         range.pasteHTML(wrapEl.html(range.text).get(0).outerHTML);
-        //     } else {
-        //         this._surroundContents($(range.commonAncestorContainer),
-        //             $(range.startContainer), $(range.endContainer), wrapEl);
-        //     }
-
-        //     return wrapEl;
-        // },
         getSelectedItem: function () {
             var range = this._getRange(),
                 rangeParent = $(range.commonAncestorContainer);
 
-            if (!this._isIeOld) {
-                if (range.collapsed && (range.endContainer.nodeType === this.NODE._Text)) {
-                    if (rangeParent.parent().is("img") || rangeParent.parent().is("td")) {
-                        return rangeParent.parent();
-                    }
-                    return $(range.startContainer);
+            if (range.collapsed && (range.endContainer.nodeType === this.NODE._Text)) {
+                if (rangeParent.parent().is("img") || rangeParent.parent().is("td")) {
+                    return rangeParent.parent();
                 }
-                if (range.collapsed) {
-                    return $(range.commonAncestorContainer);
-                }
-                if (range.collapsed && (range.endContainer.nodeType === this.NODE._Element)) {
-                    return $(range.commonAncestorContainer.
-                        childNodes[ range.endOffset - range.startOffset ]);
-                }
+                return $(range.startContainer);
+            }
+            if (range.collapsed) {
                 return $(range.commonAncestorContainer);
             }
+            if (range.collapsed && (range.endContainer.nodeType === this.NODE._Element)) {
+                return $(range.commonAncestorContainer.
+                    childNodes[ range.endOffset - range.startOffset ]);
+            }
 
-            // K.D. July 18th, 2012 Bug #117375 Exception is thrown when trying to edit the content in Editing Content demo in IE7 or IE8
-            if (range.parentElement !== undefined) {
-                return $(range.parentElement());
-            }
-            if (range.commonParentElement !== undefined) {
-                return $(range.commonParentElement());
-            }
+            return $(range.commonAncestorContainer);
         },
         getSelectionAsText: function () {
             if (this._getRange().text !== undefined) {
@@ -2696,27 +2625,14 @@
             return this._getRange().toString();
         },
         select: function (element) {
-            var selectedItem = element || this.getSelectedItem(),
-                newRange;
+            var selectedItem = element || this.getSelectedItem();
 
-            if (!this._isIeOld) {
-                this._range.selectNodeContents(selectedItem[ 0 ]);
-                this._selection.removeAllRanges();
-                this._selection.addRange(this._range);
-            } else {
-                newRange = this._document.body.createTextRange();
-                if (selectedItem.length === 1) {
-                    newRange.moveToElementText(selectedItem[ 0 ]);
-                }
-                newRange.select();
-            }
+            this._range.selectNodeContents(selectedItem[ 0 ]);
+            this._selection.removeAllRanges();
+            this._selection.addRange(this._range);
         },
         insertElement: function (element) {
-            if (!this._isIeOld) {
-                this._getRange().insertNode(element.get(0));
-            } else {
-                this._getRange().pasteHTML(element.get(0).outerHTML);
-            }
+            this._getRange().insertNode(element.get(0));
         },
         execCommand: function (name, args) {
             var startEl, endEl, p,
@@ -2726,68 +2642,59 @@
                 browser = this._commands[ name ] ? this._commands[ name ].browsers : null,
                 isCommandSupported = this._isCommandSupportedByBrowser(name);
 
-            if (this._isIeOld) {
-                range.select();
+            // TODO: Refactor the following code block
+            // After the focus is restored to the editor most
+            // of these cases might work well out of the box
+            if (this._selection.isCollapsed && range.collapsed) {
+                if ($(range.startContainer).is("body")) {
+                    startEl = $(range.startContainer).find(":first");
 
-                // D.A. 21st August 2014, Bug #168180 The command should be executed
-                // by the document not the range to work with iframe
-                this._document.execCommand(name, false, args);
-            } else {
-
-                // TODO: Refactor the following code block
-                // After the focus is restored to the editor most
-                // of these cases might work well out of the box
-                if (this._selection.isCollapsed && range.collapsed) {
-                    if ($(range.startContainer).is("body")) {
-                        startEl = $(range.startContainer).find(":first");
-
-                        // D.A. March 17th 2014, Bug #167125, Fixed the case when the body has no elements
-                        if (!startEl.length) {
-                            startEl = $(range.startContainer);
-                        }
-                        range.selectNodeContents(startEl[ 0 ]);
-                    } else if (range.startContainer.nodeType === this.NODE._Document) {
-                        startEl = $(range.startContainer.body).find(":first");
-
-                        // D.A. March 17th 2014, Bug #167125, Fixed the case when the body has no elements
-                        if (!startEl.length) {
-                            startEl = $(range.startContainer.body);
-                        }
-                        range.selectNodeContents(startEl[ 0 ]);
-                    } else if (range.startContainer.nodeType === this.NODE._Text) {
-                        this._document.execCommand(name, false, args);
-                        return;
-                    } else {
-
-                        // In this case the range.startContainer.nodeType
-                        // is most commonly of node type "element" (e.g. <p>)
+                    // D.A. March 17th 2014, Bug #167125, Fixed the case when the body has no elements
+                    if (!startEl.length) {
                         startEl = $(range.startContainer);
                     }
+                    range.selectNodeContents(startEl[ 0 ]);
+                } else if (range.startContainer.nodeType === this.NODE._Document) {
+                    startEl = $(range.startContainer.body).find(":first");
 
-                    if (startEl && startEl.is("br") && endEl && endEl.is("br")) {
-                        p = $("<p><br /></p>", this._document);
-                        startEl.replaceWith(p);
-                        range.selectNodeContents(p[ 0 ]);
-                        this._updateSelection(range);
+                    // D.A. March 17th 2014, Bug #167125, Fixed the case when the body has no elements
+                    if (!startEl.length) {
+                        startEl = $(range.startContainer.body);
                     }
-                }
-
-                // K.D. October 9th, 2012 Bug #115567 The browser version should be checked against >= 9 not === 9
-                if (($.ig.util.isIE && $.ig.util.browserVersion >= 9) || $.ig.util.isOpera) {
-                    // A.K August 8th, 2016 Bug #219768 Toolbar button does not work properly for a selected content range if a
-                    // text is initially selected by double-tapping, and the selection is changed by mouse dragging.
-                    if (this._selection.focusNode.nodeType !== 3) {
-                        this._updateSelection(range);
-                    }
-                }
-
-                if ($.isFunction(customCommand) && browser === null) {
-                    customCommand.call(this, name, args);
-                } else if ($.isFunction(customCommand) && isCommandSupported) {
-                    customCommand.apply(this, customCommandArgs);
-                } else {
+                    range.selectNodeContents(startEl[ 0 ]);
+                } else if (range.startContainer.nodeType === this.NODE._Text) {
                     this._document.execCommand(name, false, args);
+                    return;
+                } else {
+
+                    // In this case the range.startContainer.nodeType
+                    // is most commonly of node type "element" (e.g. <p>)
+                    startEl = $(range.startContainer);
                 }
+
+                if (startEl && startEl.is("br") && endEl && endEl.is("br")) {
+                    p = $("<p><br /></p>", this._document);
+                    startEl.replaceWith(p);
+                    range.selectNodeContents(p[ 0 ]);
+                    this._updateSelection(range);
+                }
+            }
+
+            // K.D. October 9th, 2012 Bug #115567 The browser version should be checked against >= 9 not === 9
+            if (($.ig.util.isIE && $.ig.util.browserVersion >= 9) || $.ig.util.isOpera) {
+                // A.K August 8th, 2016 Bug #219768 Toolbar button does not work properly for a selected content range if a
+                // text is initially selected by double-tapping, and the selection is changed by mouse dragging.
+                if (this._selection.focusNode.nodeType !== 3) {
+                    this._updateSelection(range);
+                }
+            }
+
+            if ($.isFunction(customCommand) && browser === null) {
+                customCommand.call(this, name, args);
+            } else if ($.isFunction(customCommand) && isCommandSupported) {
+                customCommand.apply(this, customCommandArgs);
+            } else {
+                this._document.execCommand(name, false, args);
             }
         },
         _insertList: function (listType, args) {
@@ -2839,61 +2746,6 @@
             this._selection.removeAllRanges();
             this._selection.addRange(range);
         },
-
-        // Remove unused code
-        // _surroundContents: function (commonParrent, startEl, endEl, wrapEl) {
-        //     var self = this, startOffset, endOffset,
-        //         rangeStart, rangeEnd, startElPar, endElPar,
-        //         selection = this._getSelection(),
-        //         range = this._getRange(),
-        //         startElSiblings;
-
-        //     if (startEl[ 0 ] === endEl[ 0 ]) {
-        //         range.surroundContents(wrapEl.get(0));
-        //         return wrapEl;
-        //     }
-
-        //     startOffset = range.startOffset;
-        //     endOffset = range.endOffset;
-        //     rangeStart = this._document.createRange();
-
-        //     rangeStart.setStart(startEl.get(0), startOffset);
-        //     rangeStart.setEnd(startEl.get(0), startEl.text().length);
-        //     rangeStart.surroundContents(wrapEl.clone().get(0));
-        //     selection.addRange(rangeStart);
-
-        //     startElPar = this._getLastParentUntil(startEl, commonParrent);
-        //     endElPar = this._getLastParentUntil(endEl, commonParrent);
-
-        //     startElSiblings = startElPar.siblings();
-
-        //     startElPar.siblings().each(function (i, el) {
-        //         if (startElPar[ 0 ] === endElPar[ 0 ]) {
-        //             return;
-        //         }
-
-        //         var rangeClone = self._document.createRange();
-        //         rangeClone.setStartBefore(el);
-        //         rangeClone.setEndAfter(el);
-        //         rangeClone.surroundContents(wrapEl.clone().get(0));
-        //         selection.addRange(rangeClone);
-        //     });
-
-        //     rangeEnd = this._document.createRange();
-        //     rangeEnd.setStart(endEl.get(0), 0);
-        //     rangeEnd.setEnd(endEl.get(0), endOffset);
-        //     rangeEnd.surroundContents(wrapEl.clone().get(0));
-        //     selection.addRange(rangeEnd);
-
-        // },
-        // _getLastParentUntil: function (root, target) {
-        //     while (root.parent().length) {
-        //         if (root.parent()[ 0 ] === target[ 0 ]) {
-        //             return root;
-        //         }
-        //         root = root.parent();
-        //     }
-        // },
         replaceNode: function (newNode) {
             var range = this._getRange(),
                 selItem = this.getSelectedItem();
@@ -2939,15 +2791,7 @@
             } else if (selItem.is("br")) {
                 selItem.replaceWith(table);
             } else {
-
-                // K.D. July 19th, 2012 Bug #117424 Exception is thrown when inserting a table in IE7 or IE8
-                if (this._range.insertNode !== undefined) {
-                    this._range.insertNode(table[ 0 ]);
-                } else if (this._range.pasteHTML !== undefined) {
-                    // This case is IE7/IE8
-                    this._range.select();
-                    this._range.pasteHTML(table[ 0 ].outerHTML);
-                }
+                this._range.insertNode(table[ 0 ]);
             }
             if (this._range.selectNodeContents !== undefined) {
                 this._range.selectNodeContents(br.insertAfter(table)[ 0 ]);
@@ -2956,9 +2800,7 @@
         focus: function () {
             var focusTarget;
 
-            if (this._isIeOld) {
-                this._document.body.focus();
-            } else if ((this._range.startContainer.nodeType === this.NODE._Document ||
+            if ((this._range.startContainer.nodeType === this.NODE._Document ||
                  $(this._range.startContainer).is("body")) && this._range.collapsed) {
 
                 // When the start container is the document or the body we will
@@ -3348,5 +3190,5 @@
     ************************************/
 
     $.extend($.ui.igHtmlEditor, { version: "<build_number>" });
-    return $.ui.igHtmlEditor;
-}));
+    return $.ui.igHtmlEditor;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

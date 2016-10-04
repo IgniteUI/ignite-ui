@@ -174,5 +174,5 @@
     });
 
     $.extend($.ui.igColorPickerSplitButton, { version: "<build_number>" });
-    return $.ui.igColorPickerSplitButton;
-}));
+    return $.ui.igColorPickerSplitButton;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

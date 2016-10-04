@@ -320,6 +320,9 @@
 			}
 		},
 		destroy: function () {
+			/*
+				$(".selector").igUpload("destroy");
+			*/
 			this.element.unbind(this._internalEvents);
 			this.element.unbind(this.mouseMoveEvent);
 			$.Widget.prototype.destroy.apply(this, arguments);
@@ -381,13 +384,121 @@
 		defaultFileExtensionIcons: [
 			/* good practice is to set at the beginning of array default classes */
 			{
-				/* type="string" Array of string for file extensions */
+				/* type="string" Array of string for file extensions
+				```
+					//Initialize
+					$(".selector").igUpload({
+						fileExtensionIcons: [
+							{
+								ext: ["gif", "jpg", "jpeg", "png", "bmp", "yuv", "tif", "thm", "psd"],
+								css: "image-class",
+								def: true
+							},
+							{
+								ext: ["mp3", "wav", "mp4", "aac", "mid", "wma", "ra", "iff", "aif", "m3u", "mpa"],
+								css: "audio-class",
+								def: false
+							}
+						]
+					});
+
+					//Get
+					var fileExtIconsExt = $(".selector").igUpload("option", "fileExtensionIcons")[0].ext;
+
+					//Set
+					var fileExtIcons = [
+						{
+							ext: ["gif", "jpg", "jpeg", "png", "bmp", "yuv", "tif", "thm", "psd"],
+							css: "image-class",
+							def: true
+						},
+						{
+							ext: ["mp3", "wav", "mp4", "aac", "mid", "wma", "ra", "iff", "aif", "m3u", "mpa"],
+							css: "audio-class",
+							def: false
+						}
+					];
+					$(".selector").igUpload("option", "fileExtensionIcons", "fileExtIcons");
+				```
+				*/
 				ext: [],
-				/* type="string" Css classes which sets icon. */
+				/* type="string" Css classes which sets icon.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						fileExtensionIcons: [
+							{
+								ext: ["gif", "jpg", "jpeg", "png", "bmp", "yuv", "tif", "thm", "psd"],
+								css: "image-class",
+								def: true
+							},
+							{
+								ext: ["mp3", "wav", "mp4", "aac", "mid", "wma", "ra", "iff", "aif", "m3u", "mpa"],
+								css: "audio-class",
+								def: false
+							}
+						]
+					});
+
+					//Get
+					var fileExtIconsCSS = $(".selector").igUpload("option", "fileExtensionIcons")[0].css;
+
+					//Set
+					var fileExtIcons = [
+						{
+							ext: ["gif", "jpg", "jpeg", "png", "bmp", "yuv", "tif", "thm", "psd"],
+							css: "image-class",
+							def: true
+						},
+						{
+							ext: ["mp3", "wav", "mp4", "aac", "mid", "wma", "ra", "iff", "aif", "m3u", "mpa"],
+							css: "audio-class",
+							def: false
+						}
+					];
+					$(".selector").igUpload("option", "fileExtensionIcons", "fileExtIcons");
+				```
+				*/
 				css: "ui-icon ui-icon-document " +
 					 "ui-igupload-progressbar-icon " +
 					 "ui-igupload-progressbar-icon-default",
-				/* type="bool" Default icons when the file extension is not found. It is taken only the first item which have def set to true, other are ignored. */
+				/* type="bool" Default icons when the file extension is not found. It is taken only the first item which have def set to true, other are ignored.
+				```
+					//Initialize
+					$(".selector").igUpload({
+						fileExtensionIcons: [
+							{
+								ext: ["gif", "jpg", "jpeg", "png", "bmp", "yuv", "tif", "thm", "psd"],
+								css: "image-class",
+								def: true
+							},
+							{
+								ext: ["mp3", "wav", "mp4", "aac", "mid", "wma", "ra", "iff", "aif", "m3u", "mpa"],
+								css: "audio-class",
+								def: false
+							}
+						]
+					});
+
+					//Get
+					var fileExtIcons = $(".selector").igUpload("option", "fileExtensionIcons")[0].def;
+
+					//Set
+					var fileExtIconsIsDef = [
+						{
+							ext: ["gif", "jpg", "jpeg", "png", "bmp", "yuv", "tif", "thm", "psd"],
+							css: "image-class",
+							def: true
+						},
+						{
+							ext: ["mp3", "wav", "mp4", "aac", "mid", "wma", "ra", "iff", "aif", "m3u", "mpa"],
+							css: "audio-class",
+							def: false
+						}
+					];
+					$(".selector").igUpload("option", "fileExtensionIcons", "fileExtIcons");
+				```
+				*/
 				def: true
 			},
 			{
@@ -491,76 +602,508 @@
 			/*jscs:enable*/
 		},
 		options: {
-			/* type="number" Get or set width of the main container of the file upload control. Main container contains all buttons, progressbar, etc.*/
+			/* type="number|string|null" Get or set width of the main container of the file upload control. Main container contains all buttons, progressbar, etc.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					width : 500
+				});
+
+				//Get
+				var width = $(".selector").igUpload("option", "width");
+
+				//Set
+				$(".selector").igUpload("option", "width", 500);
+			```
+			*/
 			width: "",
-			/* type="number" Get or set height of the main container of the file upload control. Main container contains all buttons, progressbar, etc. */
+			/* type="number|string|null" Get or set height of the main container of the file upload control. Main container contains all buttons, progressbar, etc.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					height : 300
+				});
+
+				//Get
+				var height = $(".selector").igUpload("option", "height");
+
+				//Set
+				$(".selector").igUpload("option", "height", 300);
+			```
+			*/
 			height: "",
-			/* type="bool" Get or set whether the file start upload automatically when it is selected. Default is false. */
+			/* type="bool" Get or set whether the file start upload automatically when it is selected. Default is false.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					autostartupload : true
+				});
+
+				//Get
+				var autoStart = $(".selector").igUpload("option", "autostartupload");
+
+				//Set
+				$(".selector").igUpload("option", "autostartupload", true);
+			```
+			*/
 			autostartupload: false,
 
-			/* type="string" Get or set label for the first shown browse button. When file is selected for the first time this button is hidden. */
+			/* type="string" Get or set label for the first shown browse button. When file is selected for the first time this button is hidden.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelUploadButton : "Choose File"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelUploadButton");
+
+				//Set
+				$(".selector").igUpload("option", "labelUploadButton", "Choose File");
+			```
+			*/
 			labelUploadButton: $.ig.Upload.locale.labelUploadButton,
-			/* type="string" Get or set label for browse button in main container. */
+			/* type="string" Get or set label for browse button in main container.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelAddButton : "Choose File"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelAddButton");
+
+				//Set
+				$(".selector").igUpload("option", "labelAddButton", "Choose File");
+			```
+			*/
 			labelAddButton: $.ig.Upload.locale.labelAddButton,
-			/* type="string" Get or set label for summary Clear all button. It will be shown only in multiple upload mode. */
+			/* type="string" Get or set label for summary Clear all button. It will be shown only in multiple upload mode.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelClearAllButton : "Clear Uploads"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelClearAllButton");
+
+				//Set
+				$(".selector").igUpload("option", "labelClearAllButton", "Clear Uploads");
+			```
+			*/
 			labelClearAllButton: $.ig.Upload.locale.labelClearAllButton,
-			/* type="string" Get or set template for showing summary template. {0} is count of uploaded files. {1} is total count of file to be uploaded. */
+			/* type="string" Get or set template for showing summary template. {0} is count of uploaded files. {1} is total count of file to be uploaded.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelSummaryTemplate : "{0} uploaded from {1}"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelSummaryTemplate");
+
+				//Set
+				$(".selector").igUpload("option", "labelSummaryTemplate", "{0} uploaded from {1}");
+			```
+			*/
 			labelSummaryTemplate: $.ig.Upload.locale.labelSummaryTemplate,
 			/** M.H. 13 May 2011 - fix bug 75042 */
-			/* type="string" Get or set template for showing uploading information in summary progress bar. It will be shown only in multiple upload mode. {0} uploaded filesize. {1} - total file size. */
+			/* type="string" Get or set template for showing uploading information in summary progress bar. It will be shown only in multiple upload mode. {0} uploaded filesize. {1} - total file size.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelSummaryProgressBarTemplate : "{0} uploaded from {1}, which is {2}%"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelSummaryProgressBarTemplate");
+
+				//Set
+				$(".selector").igUpload("option", "labelSummaryProgressBarTemplate", "{0} uploaded from {1}, which is {2}%");
+			```
+			*/
 			labelSummaryProgressBarTemplate: $.ig.Upload.locale.labelSummaryProgressBarTemplate,
-			/* type="string" Get or set label for show/hide details button when main container is hidden. */
+			/* type="string" Get or set label for show/hide details button when main container is hidden.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelShowDetails : "More Details"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelShowDetails");
+
+				//Set
+				$(".selector").igUpload("option", "labelShowDetails", "More Details");
+			```
+			*/
 			labelShowDetails: $.ig.Upload.locale.labelShowDetails,
-			/* type="string" Get or set label for show/hide details button when main container is shown. */
+			/* type="string" Get or set label for show/hide details button when main container is shown.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelHideDetails : "Hide Upload Details"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelHideDetails");
+
+				//Set
+				$(".selector").igUpload("option", "labelHideDetails", "Hide Upload Details");
+			```
+			*/
 			labelHideDetails: $.ig.Upload.locale.labelHideDetails,
-			/* type="string" Get or set label for button cancelling all files. Shown only in multiple upload mode. */
+			/* type="string" Get or set label for button cancelling all files. Shown only in multiple upload mode.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelSummaryProgressButtonCancel : "Cancel All Uploads"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelSummaryProgressButtonCancel");
+
+				//Set
+				$(".selector").igUpload("option", "labelSummaryProgressButtonCancel", "Cancel All Uploads");
+			```
+			*/
 			labelSummaryProgressButtonCancel: $.ig.Upload.locale.labelSummaryProgressButtonCancel,
-			/* type="string" Get or set label for start upload batch files. Shown only in multiple upload mode and autostartupload is false. */
+			/* type="string" Get or set label for start upload batch files. Shown only in multiple upload mode and autostartupload is false.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelSummaryProgressButtonContinue : "Continue Uploading"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelSummaryProgressButtonContinue");
+
+				//Set
+				$(".selector").igUpload("option", "labelSummaryProgressButtonContinue", "Continue Uploading");
+			```
+			*/
 			labelSummaryProgressButtonContinue: $.ig.Upload.locale.labelSummaryProgressButtonContinue,
-			/* type="string" Get or set label when upload is finished. Shown only in multiple upload mode. */
+			/* type="string" Get or set label when upload is finished. Shown only in multiple upload mode.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelSummaryProgressButtonDone : "File Upload Complete!"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelSummaryProgressButtonDone");
+
+				//Set
+				$(".selector").igUpload("option", "labelSummaryProgressButtonDone", "File Upload Complete!");
+			```
+			*/
 			labelSummaryProgressButtonDone: $.ig.Upload.locale.labelSummaryProgressButtonDone,
-			/* type="string" Get or set filename when it could not be shown the whole file name and should be shorten. */
+			/* type="string" Get or set filename when it could not be shown the whole file name and should be shorten.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					labelProgressBarFileNameContinue : "Continue with upload"
+				});
+
+				//Get
+				var label = $(".selector").igUpload("option", "labelProgressBarFileNameContinue");
+
+				//Set
+				$(".selector").igUpload("option", "labelProgressBarFileNameContinue", "Continue with upload");
+			```
+			*/
 			labelProgressBarFileNameContinue:  $.ig.Upload.locale.labelProgressBarFileNameContinue,
 			/** Error Messages */
 			/** M.H. 11 May 2011 - fix bug 74621: remove unused property errorMessageMaxFileSizeExceeded */
-			/* type="string" Get or set message shown when max file size of the uploaded file exceeds the limit. */
+			/* type="string" Get or set message shown when max file size of the uploaded file exceeds the limit.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageMaxFileSizeExceeded : "File must be smaller than 50 mb."
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageMaxFileSizeExceeded");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageMaxFileSizeExceeded", "File must be smaller than 50 mb.");
+			```
+			*/
 			errorMessageMaxFileSizeExceeded: $.ig.Upload.locale.errorMessageFileSizeExceeded,
-			/* type="string" Get or set error message when ajax call to get file status throws error. */
+			/* type="string" Get or set error message when ajax call to get file status throws error.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageGetFileStatus : "Unable to determine upload progress"
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageGetFileStatus");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageGetFileStatus", "Unable to determine upload progress");
+			```
+			*/
 			errorMessageGetFileStatus: $.ig.Upload.locale.errorMessageGetFileStatus,
-			/* type="string" Get or set error message when ajax call to send cancel upload command. */
+			/* type="string" Get or set error message when ajax call to send cancel upload command.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageCancelUpload : "Upload Cancelled"
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageCancelUpload");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageCancelUpload", "Upload Cancelled");
+			```
+			*/
 			errorMessageCancelUpload: $.ig.Upload.locale.errorMessageCancelUpload,
-			/* type="string" Get or set error message when file is not found. */
+			/* type="string" Get or set error message when file is not found.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageNoSuchFile : "File not found"
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageNoSuchFile");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageNoSuchFile", "File not found");
+			```
+			*/
 			errorMessageNoSuchFile: $.ig.Upload.locale.errorMessageNoSuchFile,
-			/* type="string" Get or set error message different from the other messages. */
+			/* type="string" Get or set error message different from the other messages.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageOther : "An error has occurred"
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageOther");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageOther", "An error has occurred");
+			```
+			*/
 			errorMessageOther: $.ig.Upload.locale.errorMessageOther,
-			/* type="string" Get or set error message when file extension validation failed. */
+			/* type="string" Get or set error message when file extension validation failed.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageValidatingFileExtension : "File extension not supported"
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageValidatingFileExtension");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageValidatingFileExtension", "File extension not supported");
+			```
+			*/
 			errorMessageValidatingFileExtension: $.ig.Upload.locale.errorMessageValidatingFileExtension,
-			/* type="string" Get or set error message when AJAX Request to get file size throws error. */
+			/* type="string" Get or set error message when AJAX Request to get file size throws error.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageAJAXRequestFileSize : "File must be smaller than 50 mb."
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageAJAXRequestFileSize");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageAJAXRequestFileSize", "File must be smaller than 50 mb.");
+			```
+			*/
 			errorMessageAJAXRequestFileSize: $.ig.Upload.locale.errorMessageAJAXRequestFileSize,
-			/* type="string" Get or set error message when trying to remove non existing file. */
+			/* type="string" Get or set error message when trying to remove non existing file.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageTryToRemoveNonExistingFile : "File does not exist"
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageTryToRemoveNonExistingFile");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageTryToRemoveNonExistingFile", "File does not exist");
+			```
+			*/
 			errorMessageTryToRemoveNonExistingFile:
 				$.ig.Upload.locale.errorMessageTryToRemoveNonExistingFile,
-			/* type="string" Get or set error message when trying to start non existing file. */
+			/* type="string" Get or set error message when trying to start non existing file.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageTryToStartNonExistingFile : "File does not exist"
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageTryToStartNonExistingFile");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageTryToStartNonExistingFile", "File does not exist");
+			```
+			*/
 			errorMessageTryToStartNonExistingFile: $.ig.Upload.locale.errorMessageTryToStartNonExistingFile,
-			/* type="string" Get or set error message when maximum allowed files exceeded. */
+			/* type="string" Get or set error message when maximum allowed files exceeded.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageMaxUploadedFiles : "File upload limit reached"
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageMaxUploadedFiles");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageMaxUploadedFiles", "File upload limit reached");
+			```
+			*/
 			errorMessageMaxUploadedFiles: $.ig.Upload.locale.errorMessageMaxUploadedFiles,
-			/* type="string" Get or set error message when maximum simultaneous files is less or equal to 0. */
+			/* type="string" Get or set error message when maximum simultaneous files is less or equal to 0.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					errorMessageMaxSimultaneousFiles : "Can only upload 2 files at a time"
+				});
+
+				//Get
+				var message = $(".selector").igUpload("option", "errorMessageMaxSimultaneousFiles");
+
+				//Set
+				$(".selector").igUpload("option", "errorMessageMaxSimultaneousFiles", "Can only upload 2 files at a time");
+			```
+			*/
 			errorMessageMaxSimultaneousFiles: $.ig.Upload.locale.errorMessageMaxSimultaneousFiles,
 			/* type="string" Get or set error message when trying to drop more than 1 file and mode is single. */
 			errorMessageDropMultipleFilesWhenSingleModel:
 				$.ig.Upload.locale.errorMessageDropMultipleFilesWhenSingleModel,
-			/* type="string" Get or set URL for uploading. */
+			/* type="string" Get or set URL for uploading.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					uploadUrl: "ig_fua34sf345sdf13sdf3454erdsf2345asd3425df5235d54df345.aspx",
+				});
+
+				//Get
+				var fileExt = $(".selector").igUpload("option", "uploadUrl");
+
+				//Set
+				$(".selector").igUpload("option", "uploadUrl", "ig_fua34sf345sdf13sdf3454erdsf2345asd3425df5235d54df345.aspx");
+			```
+			*/
 			uploadUrl: "ig_fua34sf345sdf13sdf3454erdsf2345asd3425df5235d54df345.aspx",
-			/* type="string" Get or set URL of HTTPHandler to get information about file upload, current size and also to get commands */
+			/* type="string" Get or set URL of HTTPHandler to get information about file upload, current size and also to get commands
+			```
+				//Initialize
+				$(".selector").igUpload({
+					progressUrl : "IGUploadStatusHandler.ashx"
+				});
+
+				//Get
+				var progressUrl = $(".selector").igUpload("option", "progressUrl");
+
+				//Set
+				$(".selector").igUpload("option", "progressUrl", "IGUploadStatusHandler.ashx");
+			```
+			*/
 			progressUrl: "IGUploadStatusHandler.ashx",
-			/* type="array" Get or set file allowed file extensions. When this array is empty - it is not made such validation. Example ["gif", "jpg", "bmp"]. */
+			/* type="array" Get or set file allowed file extensions. When this array is empty - it is not made such validation. Example ["gif", "jpg", "bmp"].
+			```
+				//Initialize
+				$(".selector").igUpload({
+					allowedExtensions : ["xls","doc"]
+				});
+
+				//Get
+				var extensions = $(".selector").igUpload("option", "allowedExtensions");
+
+				//Set
+				$(".selector").igUpload("option", "allowedExtensions", ["xls","doc"]);
+			```
+			*/
 			allowedExtensions: [],
-			/* type="bool" Get or set whether to show File Extension icon */
+			/* type="bool" Get or set whether to show File Extension icon
+			```
+				//Initialize
+				$(".selector").igUpload({
+					showFileExtensionIcon : false
+				});
+
+				//Get
+				var showIcon = $(".selector").igUpload("option", "showFileExtensionIcon");
+
+				//Set
+				$(".selector").igUpload("option", "showFileExtensionIcon", false);
+			```
+			*/
 			showFileExtensionIcon: true,
-			/* Get or set control specific CSS options. For example you can override specific control classes with custom ones. */
+			/* Get or set control specific CSS options. For example you can override specific control classes with custom ones.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					css: {
+						"uploadProgressClass": "customClass"
+					}
+				});
+
+				//Get
+				var css = $(".selector").igUpload("option", "css");
+
+				//Set
+				$(".selector").igUpload("option", "css", { "uploadProgressClass": "customClass" });
+
+				<style type="text/css">
+					.customHiddenClass { visibility: hidden; }
+				</style>
+			```
+			*/
 			css: null,
 			/* M.H. 27 Jul 2011 - fix bug 77162 */
-			/* Set icon css classes for specified file extension */
+			/* Set icon css classes for specified file extension
+			```
+				//Initialize
+				$(".selector").igUpload({
+					fileExtensionIcons: [
+						{
+							ext: ["gif", "jpg", "jpeg", "png", "bmp", "yuv", "tif", "thm", "psd"],
+							css: "image-class",
+							def: true
+						},
+						{
+							ext: ["mp3", "wav", "mp4", "aac", "mid", "wma", "ra", "iff", "aif", "m3u", "mpa"],
+							css: "audio-class",
+							def: false
+						}
+					]
+				});
+
+				//Get
+				var fileExtIcons = $(".selector").igUpload("option", "fileExtensionIcons");
+
+				//Set
+				var fileExtIcons = [
+					{
+						ext: ["gif", "jpg", "jpeg", "png", "bmp", "yuv", "tif", "thm", "psd"],
+						css: "image-class",
+						def: true
+					},
+					{
+						ext: ["mp3", "wav", "mp4", "aac", "mid", "wma", "ra", "iff", "aif", "m3u", "mpa"],
+						css: "audio-class",
+						def: false
+					}
+				];
+				$(".selector").igUpload("option", "fileExtensionIcons", "fileExtIcons");
+			```
+			*/
 			fileExtensionIcons: [
 				/* good practice is to set at the beginning of array default classes */
 				{
@@ -572,20 +1115,102 @@
 					def: false
 				}
 			],
-			/* type="single|multiple" Get or set multiple or single file upload. In single upload it is possible to upload only one file at the same time. */
+			/* type="single|multiple" Get or set multiple or single file upload. In single upload it is possible to upload only one file at the same time.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					mode : "multiple"
+				});
+
+				//Get
+				var mode = $(".selector").igUpload("option", "mode");
+
+				//Set
+				$(".selector").igUpload("option", "mode", "multiple");
+			```
+			*/
 			mode: "single",
-			/* type="bool" Get or set a bool setting that allows user to select(for upload) more than 1 file from the browse dialog at once. HTML 5+ - it is supported by Chrome, MOzilla FF, Safar, Opera latest versions and IE10+ */
+			/* type="bool" Get or set a bool setting that allows user to select(for upload) more than 1 file from the browse dialog at once. HTML 5+ - it is supported by Chrome, MOzilla FF, Safar, Opera latest versions and IE10+
+			```
+				//Initialize
+				$(".selector").igUpload({
+					multipleFiles : true
+				});
+
+				//Get
+				var multipleFiles = $(".selector").igUpload("option", "multipleFiles");
+			```
+			*/
 			multipleFiles: false,
-			/* type="number" Get or set the maximum number of allowed files to upload. */
+			/* type="number" Get or set the maximum number of allowed files to upload.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					maxUploadedFiles : 10
+				});
+
+				//Get
+				var maxUploads = $(".selector").igUpload("option", "maxUploadedFiles");
+
+				//Set
+				$(".selector").igUpload("option", "maxUploadedFiles", 10);
+			```
+			*/
 			maxUploadedFiles: -1,
-			/* type="number" Get or set count of files that could be uploaded at the same time. */
+			/* type="number" Get or set count of files that could be uploaded at the same time.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					maxSimultaneousFilesUploads : 5
+				});
+
+				//Get
+				var maxUploads = $(".selector").igUpload("option", "maxSimultaneousFilesUploads");
+
+				//Set
+				$(".selector").igUpload("option", "maxSimultaneousFilesUploads", 5);
+			```
+			*/
 			maxSimultaneousFilesUploads: 1, // Fix bug 77030 M.H. 27 May 2011
-			/* type="bytes|kbytes|mbytes|gbytes|auto" Get or set file size metrics how to be shown files size. */
+			/* type="bytes|kbytes|mbytes|gbytes|auto" Get or set file size metrics how to be shown files size.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					fileSizeMetric : "mbytes"
+				});
+
+				//Get
+				var sizeMetric = $(".selector").igUpload("option", "fileSizeMetric");
+
+				//Set
+				$(".selector").igUpload("option", "fileSizeMetric", "mbytes");
+			```
+			*/
 			fileSizeMetric: "auto",
 			/* multiUploadView: $.ig.Constants.Upload.MultipleViewLayout.Block, */
-			/* type="string" UniqueId of the control - should not be changed by developer. Set from server-side wrapper. */
+			/* type="string" UniqueId of the control - should not be changed by developer. Set from server-side wrapper.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					controlId: "serverID1"
+				});
+			```
+			*/
 			controlId: "",
-			/* type="int" The number of digits after the decimal point. */
+			/* type="number" The number of digits after the decimal point.
+			```
+				//Initialize
+				$(".selector").igUpload({
+					fileSizeDecimalDisplay : 4
+				});
+
+				//Get
+				var decimalDisplay = $(".selector").igUpload("option", "fileSizeDecimalDisplay");
+
+				//Set
+				$(".selector").igUpload("option", "fileSizeDecimalDisplay", 4);
+			```
+			*/
 			fileSizeDecimalDisplay: 2,
 			/* type="int" Maximum size(in bytes) allowed for the file to be uploaded. If it is set to null or -1 there is no limitation otherwise if the size(of the selected file) exceeds this value it is not allowed to be uploaded. This option is used for validation only on client side and only if the browser supports HTML5 file API and share information about the file size */
 			maxFileSize: null
@@ -595,6 +1220,21 @@
 			Return false in order to cancel selecting file.
 			Function takes arguments evt and ui.
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadfileselecting", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					// the 'ui' object is empty, when 'fileSelecting' event is fired
+					ui;
+				});
+
+				//Initialize
+				$(".selector").igUpload({
+					fileSelecting : function(evt, ui) {...}
+				});
+			```
 			*/
 			fileSelecting: "fileSelecting",
 			/* Defines the name of the file upload selected event. Fired when file is selected from browse dialog.
@@ -603,6 +1243,24 @@
 			Use ui.fileId to get unique identifier of the file
 			Use ui.filePath to get the name of the uploaded file
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadfileselected", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					// A consecutive number for every file starting from 0. This useful for multiple upload scenarios, where you can use the ID to identify the different files.
+					ui.fileID;
+
+					// Name of the selected file
+					ui.filePath;
+				});
+
+				//Initialize
+				$(".selector").igUpload({
+					fileSelected : function(evt, ui) {...}
+				});
+			```
 			*/
 			fileSelected: "fileSelected",
 			/* cancel="true" Defines the name of the file uploading event. Fired every time when fileuploader get status for the upload.
@@ -615,6 +1273,36 @@
 			Use ui.fileStatus to get current file status
 			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadfileuploading", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					// A consecutive number for every file starting from 0. This useful for multiple upload scenarios, where you can use the ID to identify the different files.
+					ui.fileID;
+
+					// Name of the selected file
+					ui.filePath;
+
+					// Integer representing the status of the file. The value is determined by the server, where an enumeration that maps the integer value with the description of the status.
+					ui.fileStatus;
+
+					// Returns the file size sum of all selected files to upload. The metric is bytes.
+					ui.totalSize;
+
+					// Returns current amount of uploaded bytes when the fileUpload event is fired.
+					ui.uploadedBytes;
+
+					//Returns an object, which contains information for the file(file.name, file.size, file.type etc.) and the current status of the upload(uploadedBytes, status, serverMessage etc.).
+					ui.fileInfo
+				});
+
+				//Initialize
+				$(".selector").igUpload({
+					fileUploading : function(evt, ui) {...}
+				});
+			```
 			*/
 			fileUploading: "fileUploading",
 			/* Defines the name of the uploaded event. Fired when the file is uploaded
@@ -624,6 +1312,30 @@
 			Use ui.totalSize to get the file size of the uploaded file
 			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadfileuploaded", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					// A consecutive number for every file starting from 0. This useful for multiple upload scenarios, where you can use the ID to identify the different files.
+					ui.fileID;
+
+					// Name of the selected file
+					ui.filePath;
+
+					// Returns the file size sum of all selected files to upload. The metric is bytes.
+					ui.totalSize;
+
+					//Returns an object, which contains information for the file(file.name, file.size, file.type etc.) and the current status of the upload(uploadedBytes, status, serverMessage etc.).
+					ui.fileInfo
+				});
+
+				//Initialize
+				$(".selector").igUpload({
+					fileUploaded : function(evt, ui) {...}
+				});
+			```
 			*/
 			fileUploaded: "fileUploaded",
 			/* Defines the name of the file upload cancel event. Fired when the server responses that the file is canceled.
@@ -634,11 +1346,53 @@
 			Use ui.uploadedBytes to get uploaded bytes
 			Use ui.fileStatus to get current file status
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadfileuploadaborted", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					// A consecutive number for every file starting from 0. This useful for multiple upload scenarios, where you can use the ID to identify the different files.
+					ui.fileID;
+
+					// Name of the selected file
+					ui.filePath;
+
+					// Integer representing the status of the file. The value is determined by the server, where an enumeration that maps the integer value with the description of the status.
+					ui.fileStatus;
+
+					// Returns the file size sum of all selected files to upload. The metric is bytes.
+					ui.totalSize;
+
+					// Returns current amount of uploaded bytes when the fileUpload event is fired.
+					ui.uploadedBytes;
+				});
+
+			//Initialize
+			$(".selector").igUpload({
+				fileUploadAborted : function(evt, ui) {...}
+		});
+			```
 			*/
 			fileUploadAborted: "fileUploadAborted",
 			/* Defines the name of the cancel all button event click. Fired when cancel all button in summary is clicked. Fired only in multiple upload mode.
 			Function takes arguments evt and ui.
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadcancelallclicked", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					// the 'ui' object is empty, when 'cancelAllClicked' event is fired
+					ui;
+				});
+
+				//Initialize
+				$(".selector").igUpload({
+					cancelAllClicked : function(evt, ui) {...}
+				});
+			```
 			*/
 			cancelAllClicked: "cancelAllClicked",
 			/* Defines the name of the file upload error event. Fired when error is occurred.
@@ -649,6 +1403,30 @@
 			Use ui.errorType to get error type - it could be clientside or serverside
 			Use ui.serverMessage to get specific server message returned by server - if errorType is serverside
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadonerror", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					// Integer that represents the error code.
+					ui.errorCode;
+
+					// Detailed error information.
+					ui.errorMessage;
+
+					// Type of error - the values can be either server-side or client-side.
+					ui.errorType;
+
+					// This is property is able to be set during the server event UploadStarting. If not set it’s an empty string. (You can use it to display custom error messages.)
+					ui.serverMessage;
+				});
+
+				//Initialize
+				$(".selector").igUpload({
+					onError : function(evt, ui) {...}
+				});
+			```
 			*/
 			onError: "onError",
 			/* cancel="true" It is fired when validating file extensions
@@ -656,6 +1434,24 @@
 			Use ui.fileName to get the full file name
 			Use ui.fileExtension to get file extension
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadfileextensionsvalidating", function (evt, ui) {
+					//returns full file name
+					ui.fileName;
+
+					//returns file extension
+					ui.fileExtension;
+
+					//returns igUpload widget object
+					ui.owner;
+				});
+
+				//Initialize
+				$(".selector").igUpload({
+					fileExtensionsValidating : function(evt, ui) {...}
+				});
+			```
 			*/
 			fileExtensionsValidating: "fileExtensionsValidating",
 			/* It is fired when event onload(of XmlHttpRequest) is fired. This event will be fired only if the browser supports HTML5 file API
@@ -664,6 +1460,30 @@
 			Use ui.xhr to get reference to the original XMLHttpRequest object
 			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from the server-side), etc.
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadoonxhrload", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					//Returns the igUpload widget object.
+					ui.owner
+
+					// String that represents the unique identifier of the file.
+					ui.fileId;
+
+					// Returns an object, which contains information for the file(file.name, file.size, file.type etc.) and the current status of the upload(uploadedBytes, status, serverMessage etc.).
+					ui.fileInfo;
+
+					// Returns the original XMLHttpRequest object(if the browser supports HTML 5, otherwise this will return undefined).
+					ui.xhr;
+				});
+
+				//Initialize
+				$(".selector").igUpload({
+					onXHRLoad : function(evt, ui) {...}
+				});
+			```
 			*/
 			onXHRLoad: "onXHRLoad",
 			/* It is fired before submitting to the server the uploading file(and its additional data if any). It could be used to append additional data fields to the FormData object(if the browser supports HTML5 file API - like newest Chrome, Firefox, IE11+). If the browser does not support HTML5 file API(IE10 and older) it could be added these data fields(as hidden input fields) to the form. Use the public API function addDataFields.
@@ -673,6 +1493,33 @@
 			Use ui.xhr to get reference to the original XMLHttpRequest object(if the browser supports HTML 5 file API - if not it is undefined)
 			Use ui.formData to get reference to FormData object(if the browser supports HTML5 file API) OR reference to jQuery representation of <form>
 			Use ui.owner in order to access the igUpload widget object.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector", "iguploadonformdatasubmit", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					//Returns the igUpload widget object.
+					ui.owner
+
+					// String that represents the unique identifier of the file.
+					ui.fileId;
+
+					// Returns an object, which contains information for the file(file.name, file.size, file.type etc.) and the current status of the upload(uploadedBytes, status, serverMessage etc.).
+					ui.fileInfo;
+
+					// Returns the original XMLHttpRequest object(if the browser supports HTML 5, otherwise this will return undefined).
+					ui.xhr;
+
+					// Returns the FormData object(if the browser supports HTML5) or a reference to the jQuery representation of <form>.
+					ui.formData;
+				});
+
+				//Initialize
+				$(".selector").igUpload({
+					onFormDataSubmit : function(evt, ui) {...}
+				});
+			```
 			*/
 			onFormDataSubmit: "onFormDataSubmit"
 		},
@@ -685,6 +1532,9 @@
 			// M.H. 25 Jul 2011 - fix bug 78056: add description about this function
 			/*
 			Return jquery object of fileupload container - html DOM element
+			```
+				$(".selector").igUpload("container");
+			```
 			*/
 			/* M.H. 7 Feb 2014 Fix for bug #163735: WebIDE requires the outer element of igUpload to be with the same ID as the element(on which control is initialized) ID */
 			if (this._isDivElement) {
@@ -695,6 +1545,9 @@
 		widget: function () {
 			/*
 			Returns the current widget element
+			```
+				var upload = $(".selector").igUpload("widget");
+			```
 			*/
 			return this.element;
 		},
@@ -1119,6 +1972,9 @@
 		clearAll: function () {
 			/*
 			Hide finished files
+			```
+				$(".selector").igUpload("clearAll");
+			```
 			*/
 			var e = this.container(), arr = e.data("finishedIDs"), id, l;
 
@@ -1276,6 +2132,9 @@
 			/* Append additional data field to formData(before submitting it to the server). Usually this function is used in the handler of the event onFormDataSubmit. If the browser supports HTML5 file API formData is instance of FormData, otherwise(like IE10 and older) formData is jQuery representation of the <form> that should be submitted to the server
 			paramType="object" If the browser supports HTML5 file API formData is instance of FormData, otherwise(like IE10 and older) formData is jQuery representation of the <form> that should be submitted to the server
 			paramType="object" Data field that should be appended to the formData. The object has 2 properties - value and name. If the browser supports HTML5 the data field is appended to the formData object. Otherwise it is appended as input hidden field to the <form>
+			```
+				$(".selector").igUpload("addDataField", ui.formData, { "name": "Parameter Name", "value": "Value" });
+			```
 			*/
 			if (!field || $.type(field) !== "object") {
 				return;
@@ -1286,6 +2145,9 @@
 			/* Append additional data fields to formData(before submitting it to the server). Usually this function is used in the handler of the event onFormDataSubmit. If the browser supports HTML5 file API formData is instance of FormData, otherwise(like IE10 and older) formData is jQuery representation of the <form> that should be submitted to the server
 			paramType="object" If the browser supports HTML5 file API formData is instance of FormData, otherwise(like IE10 and older) formData is jQuery representation of the <form> that should be submitted to the server
 			paramType="array" Array of data fields that should be appended to the formData. Each data field is object with 2 properties - value and name. If the browser supports HTML5 these data fields are added to the formData. Otherwise each of these data field is appended as input hidden field to the <form>
+			```
+				$(".selector").igUpload("addDataFields", ui.formData, [{ "name": "Parameter Name 1", "value": "Value 1" }, { "name": "Parameter Name 2", "value": "Value 2" }]);
+			```
 			*/
 			if (!formData || $.type(fields) !== "array" || !fields.length) {
 				return;
@@ -1700,6 +2562,9 @@
 		startUpload: function (formNumber) {
 			/* Start uploading file as submitting form with the specified formNumber.
 			 paramType="number" id of the upload form
+			 ```
+				$(".selector").igUpload("startUpload", 1);
+			 ```
 			 */
 			var self = this, o = this.options,
 				formId = self._id("_frm", formNumber),
@@ -1921,6 +2786,9 @@
 			/* Cancel upload for the specified file id
 			 formNumber - id of the file to be canceled
 			 paramType="number" id of the form which should be cancelled
+			 ```
+				$(".selector").igUpload("cancelUpload", 1);
+			 ```
 			 */
 			var self = this, eArgs,
 				o = self.options,
@@ -2500,11 +3368,17 @@
 			/*
 			Returns the information about uploading files - all files uploaded/uploading/pending
 			returnType="object" Returns the information about uploading files
+			```
+				var fileInfo = $(".selector").igUpload("getFileInfoData");
+			```
 			*/
 			return this.fileInfoData;
 		},
 		cancelAll: function () {
 			/* Cancel all uploading and pending files
+			```
+				$(".selector").igUpload("cancelAll");
+			```
 			*/
 			var i, data = this.fileInfoData,
 				uploadingIDs = data.uploadingIDs,
@@ -2787,6 +3661,9 @@
 			/*Returns the information about the file by specified file identifier. It could be file which is uploading/uploaded or uploading is not started. If there isn"t file with the specified file id returns null
 			paramType="number" unique identifier of the file
 			returnType="object" Returns the information about uploading files. The object contains these properties, path, key - unique id used in GET requests to get status from the server side, file - file object containing main info for the uploading file, formNumber, serverMessage- message returned by the server(optional), sizeBytes - total size, status, uploadedBytes, xhr(if the browser supports HTML5 file API)
+			```
+				var fileInfo = $(".selector").igUpload("getFileInfo", 0);
+			```
 			*/
 			var fid = this.fileInfoData.filesInfo[ fileIndex ];
 			if (fid === undefined || fid === null) {
@@ -3072,5 +3949,5 @@
 		/*************** HELPER FUNCTION ********************/
 	});
 	$.extend($.ui.igUpload, { version: "<build_number>" });
-	return $.ui.igUpload;
-}));
+	return $.ui.igUpload;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

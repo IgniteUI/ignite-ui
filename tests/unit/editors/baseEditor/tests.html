@@ -57,8 +57,9 @@
 						messages: messages
 					});
 				$("#eventEditor").igTextEditor();
+	
 				$("#textEditorMethods").igTextEditor();
-				$("#textEditorSetOptions").igTextEditor({ button: 'dropdown' });
+				$("#textEditorSetOptions").igTextEditor({ button: 'dropdown', tabIndex: 2, inputName: "myInputName" });
 				$('#igEditorLocale').igNumericEditor({
 					listItems: [1, 2, 3],
 					buttonType: ' clear , dropdown ,spin' ,
@@ -74,9 +75,7 @@
 					minValue: "12/12/2016",
 					maxValue: "12/12/2014"
 				});
-				$("#texteditorSetOptions").igTextEditor({
-					tabIndex: 2
-				});
+
 
 			});
 		}
@@ -381,11 +380,17 @@
 		});
 
 		testId = 'Editor Set Options';
-		test(testId, 2, function () {
+		test(testId, 4, function () {
 
-			equal($("#texteditorSetOptions").igTextEditor("field").attr('tabindex'), "2", "The tab index should be 2");
-			$("#texteditorSetOptions").igTextEditor("option", "tabIndex", 5);
-			equal($("#texteditorSetOptions").igTextEditor("field").attr('tabindex'), "5", "The tab index should be 5");
+			equal($("#textEditorSetOptions").igTextEditor("field").attr('tabindex'), "2", "The tab index should be 2");
+			$("#textEditorSetOptions").igTextEditor("option", "tabIndex", 5);
+			equal($("#textEditorSetOptions").igTextEditor("field").attr('tabindex'), "5", "The tab index should be 5");
+			//inputName inputName: "myInputName"
+			equal($("#textEditorSetOptions").igTextEditor("editorContainer").find("input[type='hidden']").attr("name"), "myInputName", "The inputName should be myInputName");
+			$("#textEditorSetOptions").igTextEditor("option", "inputName", "myInputNameNew");
+			equal($("#textEditorSetOptions").igTextEditor("editorContainer").find("input[type='hidden']").attr("name"), "myInputNameNew", "The inputName should be myInputNameNew");
+
+
 		});
 
 		testId = 'Test Notifier contentTemplate function and title';
@@ -475,7 +480,7 @@
 	<div id="igNumericEditorNotification"></div>
 	<div id="igMaskEditorNotification"></div>
 	<div id="igDateEditorNotification"></div>
-	<input type="text" id="texteditorSetOptions" />
+	
 	<textarea id="textareaEditorFake"></textarea>
 	<p id="notifierTarget"></p>
 </div>

@@ -967,7 +967,7 @@
             // Leaving this fix for WebKit only, because of browsers inconsistencies with getComputedStyle.
             // Chrome and IE don't include the scrollbarWidth in the computed value while Firefox does.
             // D.A. 20th January 2015, Bug #187424 Same as above bug in IE9
-            if (($.ig.util.isWebKit || $.ig.util.isIE9) && window.getComputedStyle) {
+            if ($.ig.util.isWebKit && window.getComputedStyle) {
                 widthNoScroll = parseInt(window.getComputedStyle(this.element[ 0 ]).width, 10);
             } else {
                 widthNoScroll = this.element.width() -
@@ -980,7 +980,7 @@
             var heightNoScroll;
 
             // Look _getContainerWidthNoScroll comments
-            if (($.ig.util.isWebKit || $.ig.util.isIE9) && window.getComputedStyle) {
+            if ($.ig.util.isWebKit && window.getComputedStyle) {
                 heightNoScroll = parseInt(window.getComputedStyle(this.element[ 0 ]).height, 10);
             } else {
                 heightNoScroll = this.element.height() -
@@ -1126,7 +1126,7 @@
                         } else {
                             gl.cols = newColCount;
                             helperArray = [ [ ] ];
-                            helperArray[ 0 ].length = gl.cols;
+                            helperArray[ 0 ].length = gl.cols || 0;
 
                             // Rearrange items to best fit in the container and to keep their original order
                             for (i = 0; i < items.length; i++) {
@@ -1182,13 +1182,6 @@
                                         }
                                     }
                                 }
-
-                                //TODO: If no custom items were provided we can fallback to this method
-                                //row = items[ i ].rowIndex;
-                                //col = items[ i ].colIndex;
-                                //items[ i ].rowIndex = Math.floor(i / newColCount);
-                                //items[ i ].colIndex = i % newColCount;
-                                //item = self.element.find('> [ data-index=' + '"' + i + '"' + ' ]');
                             }
 
                             // Recalculate the columnHeight of the items to most efficiently use the container's
@@ -1562,5 +1555,5 @@
         }
     });
     $.extend($.ui.igLayoutManager, { version: "<build_number>" });
-    return $.ui.igLayoutManager;
-}));
+    return $.ui.igLayoutManager;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

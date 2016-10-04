@@ -1901,5 +1901,5 @@
         }
     });
     $.extend($.ui.igTileManager, { version: "<build_number>" });
-    return $.ui.igTileManager;
-}));
+    return $.ui.igTileManager;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

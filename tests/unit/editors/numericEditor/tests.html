@@ -292,6 +292,8 @@
 					dataMode: "double",
 					maxValue: 80000
 				});	
+				
+				$("#numericEditorRuntime").igNumericEditor();	
 			});
 		}
 		initialized = false;
@@ -838,7 +840,7 @@
 					$("#readonlyEditor").igNumericEditor("option", "visibleItemsCount", 3);
 				},
 				function(err) {
-					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+					return err.message === $.ig.Editor.locale.setOptionError + "visibleItemsCount";
 				},
 				"Should not set dynamically visibleItemsCount"
 			);
@@ -847,7 +849,7 @@
 					$("#readonlyEditor").igNumericEditor("option", "buttonType", "clear");
 				},
 				function(err) {
-					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+					return err.message === $.ig.Editor.locale.setOptionError + "buttonType";
 				},
 				"Should not set dynamically buttonType"
 			);
@@ -856,7 +858,7 @@
 					$("#readonlyEditor").igNumericEditor("option", "dropDownAttachedToBody", true);
 				},
 				function(err) {
-					return err.message === $.ig.Editor.locale.cannotSetRuntime;
+					return err.message === $.ig.Editor.locale.setOptionError + "dropDownAttachedToBody";
 				},
 				"Should not set dynamically dropDownAttachedToBody"
 			);
@@ -981,6 +983,15 @@
 			equal($("#spinUp").igNumericEditor("value"), 2, 'Spin down method do not take into account the delta parameter.');
 			$("#spinUp").igNumericEditor("spinDown",3);
 			equal($("#spinUp").igNumericEditor("value"), 6, 'spinWrapAround does not work.');
+		});
+
+		testId = 'Cannot set on runtime';
+		test(testId, 1, function () {
+			throws(function () {
+					$('#numericEditorRuntime').igNumericEditor("option", "regional", "ru-Ru")
+				}, function (err) {
+					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
+				}, $.ig.Editor.locale.setOptionError + "not shown");
 		});
 
 		testId = 'Paste and insert';
@@ -1263,6 +1274,8 @@
 		<div id="spinScientific"></div>
 		<br />
 		<div id="spinUp"></div>
+		<br />
+		<div id="numericEditorRuntime"></div>		
 	</div>
 </body>
 </html>

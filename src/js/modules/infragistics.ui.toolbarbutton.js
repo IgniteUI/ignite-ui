@@ -264,5 +264,5 @@
     });
 
     $.extend($.ui.igToolbarButton, { version: "<build_number>" });
-    return $.ui.igToolbarButton;
-}));
+    return $.ui.igToolbarButton;// REMOVE_FROM_COMBINED_FILES
+}));// REMOVE_FROM_COMBINED_FILES

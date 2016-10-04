@@ -7,14 +7,8 @@
 *
 */
 
-/*global define, jQuery */
-(function (factory) {
-	if (typeof define === "function" && define.amd) {
-		define( ["jquery"], factory );
-	} else {
-		factory(jQuery);
-	}
-}(function ($) {
+/*global jQuery */
+(function ($) {
     $.ig = $.ig || {};
 
     if (!$.ig.Dialog) {
@@ -25,8 +19,9 @@
 			    maximizeButtonTitle: "Максимизирай",
 			    pinButtonTitle: "Закачи",
 			    unpinButtonTitle: "Откачи",
-			    restoreButtonTitle: "Възстанови"
+			    restoreButtonTitle: "Възстанови",
+				setOptionError: 'Стойността на следната опция не може да бъде променяна след инициализация: '
 		    }
 	    };
     }
-}));
+})(jQuery);

@@ -41,6 +41,13 @@ function buildLocaleMergePairs (locale) {
     return pairs;
 }
 
+function replaceAMDWraps(src) {
+    src = src.replace(/\(function\s*\(factory\)\s*\{[\s\S]*?\(function\s*\(\$\)\s*\{/g, '(function ($) {');
+    src = src.replace(/\}\)\)\;\s*\/\/\s*REMOVE_FROM_COMBINED_FILE.*/g, '})(jQuery);');
+    src = src.replace(/.*\/\/\s*REMOVE_FROM_COMBINED_FILE.*/g, '');
+    return src;
+}
+
 module.exports = {
     uglify: {
         source: {
@@ -74,7 +81,13 @@ module.exports = {
         controls: {
             files: buildLocaleMergePairs("en")
         },
-        core: {
+        core: { 
+            options: {
+                // Replace all AMD define statements with a single one at the top
+                banner: '(function(factory){if(typeof define==="function"&&define.amd){define(["jquery","jquery-ui"],factory)}else{factory(jQuery)}})(function($){',
+                process: replaceAMDWraps,
+                footer: '});'
+            },
             dest: "./dist/js/infragistics.core-lite.js",
             src: [
                     "./dist/js/i18n/infragistics-en.js",
@@ -85,7 +98,13 @@ module.exports = {
                     "./dist/js/modules/infragistics.ui.scroll.js"
                 ]
         }, 
-        lob: {
+        lob: { 
+            options: {
+                // Replace all AMD define statements with a single one at the top
+                banner: '(function(factory){if(typeof define==="function"&&define.amd){define(["jquery","jquery-ui","./infragistics.core-lite"],factory)}else{factory(jQuery)}})(function($){',
+                process: replaceAMDWraps,
+                footer: '});'
+            },
             dest: "./dist/js/infragistics.lob-lite.js",
             src: [
                     "./dist/js/modules/infragistics.ui.combo.js",

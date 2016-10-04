@@ -106,6 +106,7 @@
 		var testId_6 = 'pressing page up key scrolls up big increment test.';
 		var testId_7 = 'pressing spacebar scrolls down big increment test.';
 		var testId_8 = 'pressing spacebar+shift scrolls up big increment test.';
+		var testId_9 = 'tabindex is added on the container as well if the main element has tabindex.';
 
 		test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -238,6 +239,18 @@
             elemContainer.trigger(spacePressEvent);			
 			equal(elemContainer.scrollTop(), elemContainer.height(), "scrolled down big increment");
 			
+	        $("#elemVH").remove();
+	    });
+		
+		test(testId_9, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;" tabindex="1"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll();
+
+			var elemContainer = $("#elemVH_container");
+			
+			notEqual(elemContainer.attr("tabindex"), undefined, "tabindex is set");
+			equal(elemContainer.attr("tabindex"), 1, "tabindex is the same as the main element");
+
 	        $("#elemVH").remove();
 	    });
 		
