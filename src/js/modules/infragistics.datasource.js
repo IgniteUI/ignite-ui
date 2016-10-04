@@ -8572,7 +8572,6 @@
 						var template = "<tr><td>${Name}</td><td>${Price}</td><td>${Rating}</td></tr>",
 						resultHtml = $.ig.tmpl(template, dsMashup.dataView());
 						$("#table").html(resultHtml);
-
 					} else {
 						alert(error);
 					}
@@ -8581,7 +8580,7 @@
 				$(window).load(function () {
 					dsMashup = new $.%%WidgetName%%({
 						callback: render,
-						dataSource: mashupSources 
+						dataSource: mashupSources
 					});
 				dsMashup.dataBind();
 
@@ -9009,8 +9008,8 @@
 					var ds = new $.%%WidgetName%%({
 								dataSource: products,
 								paging: {
-									enabled : true, 
-									pageSize:10, 
+									enabled : true,
+									pageSize:10,
 									type: "local",
 									contextRowMode: "breadcrumb"
 								},
@@ -9370,7 +9369,6 @@
 							childDataKey: "Products"
 						}
 					});
-		 
 					ds.dataBind();
 					ds.processDataPerLevel(ds.getFlatData()[1], 1, false);
 			```
@@ -9614,7 +9612,7 @@
 							childDataKey: "Products"
 						}
 					});
-		 
+
 					ds.dataBind();
 					var visibleFlatData = ds.getVisibleFlatData();
 			```
@@ -9634,8 +9632,8 @@
 						treeDS: {
 							childDataKey: "Products"
 						}
-					});
-		 
+						});
+
 					ds.dataBind();
 					var flatData = ds.getFlatData();
 			```
@@ -9657,7 +9655,6 @@
 							childDataKey: "Products"
 						}
 					});
-		 
 					ds.dataBind();
 					var flatDataCount = ds.getFlatDataCount();
 			```
@@ -10272,7 +10269,6 @@
 							childDataKey: "Products"
 						}
 					});
-		 
 					ds.dataBind();
 					ds.filter([{fieldName : "Name", expr: "M", cond: "startsWith"}], "AND", true);
 					var matchRecordsCount = ds.getFilteringMatchRecordsCount();
@@ -10563,7 +10559,6 @@
 							childDataKey: "Products"
 						}
 					});
-		 
 					ds.dataBind();
 					ds.filter([{fieldName : "Name", expr: "M", cond: "startsWith"}], "AND", true);
 					var filteredRecordsCount = ds.getFilteredRecordsCountFromDataView();
