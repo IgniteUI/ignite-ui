@@ -3795,7 +3795,7 @@
 		/* callback is the function to call when databinding is async (remote)
 		callee is the object on which to call the callback function */
 		dataBind: function (callback, callee) {
-			/* data binds to the current data source  data source
+			/* data binds to the current data source
 			databinding works using the following workflow:
 			1. fire the databinding event
 			2. based on the data source type (see analyzeDataSource()), do the following:
@@ -6674,6 +6674,19 @@
 		},
 		groupByDataView: function () {
 			/* returns the current normalized/transformed and paged/filtered/sorted group-by data
+			```
+				ds = new $.%%WidgetName%%({
+					dataSource: products,
+					primaryKey: "ProductID",
+					groupby: {
+						defaultCollapseState: true
+					}
+				});
+
+				ds.dataBind();
+
+				var groupByDataView = ds.groupByDataView();
+			```
 			returnType="array" array of data and non-data(grouped) records
 			*/
 			return this._gbDataView;
@@ -8992,7 +9005,7 @@
 			}
 		},
 		dataBind: function (callback, callee) {
-			/* data binds to the current data source  data source
+			/* data binds to the current data source
 			databinding works using the following workflow:
 			1. fire the databinding event
 			2. based on the data source type (see analyzeDataSource()), do the following:
