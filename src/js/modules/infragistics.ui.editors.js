@@ -1,5 +1,5 @@
 ﻿/*!@license
- * Infragistics.Web.ClientUI CountDown <build_number>
+ * Infragistics.Web.ClientUI Editors <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
  *
@@ -7332,7 +7332,7 @@
 					});
 
 					//Get
-					var minValue = $(".selector").%%WidgeName%%("option", "minValue");
+					var minValue = $(".selector").%%WidgetName%%("option", "minValue");
 				```
 				*/
 			minValue: null,

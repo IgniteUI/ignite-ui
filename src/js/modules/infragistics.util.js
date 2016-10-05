@@ -209,7 +209,8 @@
 	$.ig.util.isFF = window.mozInnerScreenX !== undefined;
 	$.ig.util.isOpera = !!window.opera;
 	$.ig.util.isSafari =
-		(Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor") > 0) ?
+		(Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor") > 0) ||
+		window.ApplePaySession ?
 			true :
 			false;
 	$.ig.util.isWebKit = !!window.webkitURL;
@@ -5370,7 +5371,7 @@
 	$.ig.util.stringFormat2 = function (provider, format, args) {
 
 		// TODO: Use the provider somehow
-		return format.replace(/{(\d+)(?::)?([ ^} ]*)?}/g, function (match, number, format) {
+		return format.replace(/{(\d+)(?::)?([^}]*)?}/g, function (match, number, format) {
 			var arg = args[ number ];
 
 			if (arg === void 0) {
@@ -6148,7 +6149,7 @@
 		}
 
 		var
-			sB64Enc = b64Data.replace(/[ ^A-Za-z0-9\+\/ ]/g, ""), nInLen = sB64Enc.length,
+			sB64Enc = b64Data.replace(/[^A-Za-z0-9\+\/]/g, ""), nInLen = sB64Enc.length,
 			nOutLen = nBlocksSize ?
 				Math.ceil((nInLen * 3 + 1 >> 2) / nBlocksSize) * nBlocksSize :
 				nInLen * 3 + 1 >> 2, taBytes;

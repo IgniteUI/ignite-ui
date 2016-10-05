@@ -453,10 +453,14 @@ $.ig.dependencies = [
 					{ name: "_ig_dv_commonwidget" }, { name: "_ig_simple_datachart_core" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
+			"$path$/modules/infragistics.datachart_category.js",
 			"$path$/modules/infragistics.categorychart.js",
 			"$path$/modules/infragistics.ui.categorychart.js"
 			],
-		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
+		css: [
+			"$path$/structure/modules/infragistics.ui.chart.css",
+			"$path$/structure/modules/infragistics.ui.categorychart.css"
+			]
 	},
 /* /// End Data Visualization /// */
 
