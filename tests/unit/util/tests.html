@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8">
@@ -40,6 +40,14 @@
 			equal(result, "string", "Check if result is correct for the object type.");			
 		});
 
+		test("Test getRelativeOffset function", function () {
+			$("#container").append("<div style='position: relative; float:right;width:200px'><span id='span1'> Span elem</span><div>");
+
+			//check getRelativeOffset
+			var relOffset = $.ig.util.getRelativeOffset($("#span1"));
+			ok($("#span1").offset().left === relOffset.left && $("#span1").offset().top === relOffset.top, "The element offset should be correct.");
+		});
+
 	</script>
 </head>
 <body>
@@ -49,5 +57,6 @@
 		<h2 id="qunit-userAgent"></h2>
 		<ol id="qunit-tests"></ol>
 	</div>
+	<div id="container" style="float:right;width:100%;overflow:auto;"></div>
 </body>
 </html>
