@@ -19,7 +19,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( /*"igniteui/js/modules/infragistics.ui.colorpicker",*/ [
+		define( [
 			"jquery",
             "jquery-ui",
 			"./infragistics.util",

@@ -23,7 +23,7 @@
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
-		define( /*"igniteui/js/modules/infragistics.ui.tree",*/ [
+		define( [
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
@@ -124,8 +124,8 @@
 				$(".selector").igTree("option", "width", "300px");
 			```
 
-				string The widget width can be set in pixels (px) and percentage (%).
-				number The widget width can be set as a number in pixels.
+				string type="string" The widget width can be set in pixels (px) and percentage (%).
+				number type="number" The widget width can be set as a number in pixels.
 				null type="object" No width will be applied to the container and it will be rendered by default for the browser rendering engine.
 			*/
 			width: null,
@@ -142,8 +142,8 @@
 				//Set
 				$(".selector").igTree("option", "height", 400);
 			```
-				string The widget height can be set in pixels (px) and percentage (%).
-				number The widget height can be set as a number in pixels.
+				string type="string" The widget height can be set in pixels (px) and percentage (%).
+				number type="number" The widget height can be set as a number in pixels.
 				null type="object" No height will be applied to the container and it will be rendered default for the browser rendering engine.
 			*/
 			height: null,
@@ -207,8 +207,8 @@
 				$(".selector").igTree("option", "parentNodeImageUrl", "images/photo.png");
 
 			```
-				string Image with the specified URL will be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
-				null Option is ignored
+				string type="string" Image with the specified URL will be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
+				null type="object" Option is ignored
 			*/
 			parentNodeImageUrl: null,
 			/* type="string|null" Gets/Sets the CSS class applied to all parent nodes.
@@ -225,8 +225,8 @@
 				// Throws an error otherwise, as the element holding the image source is missing.
 				$(".selector").igTree("option", "parentNodeImageClass", "altfolderimage");
 			```
-				string Specified class with a CSS sprite that would be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
-				null Option is ignored
+				string type="string" Specified class with a CSS sprite that would be rendered for each node that has children (If you define both parentNodeImageUrl and parentNodeImageClass the parentNodeImageUrl would take priority).
+				null type="object" Option is ignored
 			*/
 			parentNodeImageClass: null,
 			/* type="string|null" Gets/Sets the tooltip applied to all parent node images.
@@ -243,8 +243,8 @@
 				// Throws an error otherwise, as the element holding the image source is missing.
 				$(".selector").igTree("option", "parentNodeImageTooltip", "rootFolder");
 			```
-				string Specified a tooltip that would be rendered for each node that has children.
-				null Option is ignored
+				string type="string" Specified a tooltip that would be rendered for each node that has children.
+				null type="object" Option is ignored
 			*/
 			parentNodeImageTooltip: null,
 			/* type="string|null" Gets/Sets the image url applied to all leaf nodes.
@@ -262,8 +262,8 @@
 				$(".selector").igTree("option", "leafNodeImageUrl", "images/magazine.png");
 
 			```
-				string Image with the specified URL will be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
-				null Option is ignored
+				string type="string" Image with the specified URL will be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
+				null type="object" Option is ignored
 			*/
 			leafNodeImageUrl: null,
 			/* type="string|null" Gets/Sets the CSS class applied to all leaf nodes.
@@ -280,8 +280,8 @@
 				// Throws an error otherwise, as the element holding the image source is missing.
 				$(".selector").igTree("option", "leafNodeImageClass", "altleafnodeimage");
 			```
-				string Specified class with a CSS sprite that would be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
-				null Option is ignored
+				string type="string" Specified class with a CSS sprite that would be rendered for each node that has no children (If you define both leafNodeImageUrl and leafNodeImageClass the leafNodeImageUrl would take priority).
+				null type="object" Option is ignored
 			*/
 			leafNodeImageClass: null,
 			/* type="string|null" Gets/Sets the tooltip applied to all leaf node images.
@@ -298,8 +298,8 @@
 				// Throws an error otherwise, as the element holding the image source is missing.
 				$(".selector").igTree("option", "leafNodeImageTooltip", "Magazine");
 			```
-				string Specified a tooltip that would be rendered for each node that has no children.
-				null Option is ignored
+				string type="string" Specified a tooltip that would be rendered for each node that has no children.
+				null type="object" Option is ignored
 			*/
 			leafNodeImageTooltip: null,
 			/* type="number" Gets/Sets the duration of each animation such as the expand/collapse.
@@ -343,7 +343,7 @@
 
 			*/
 			dataSource: null,
-			/* type="string|null" Gets/Sets a remote URL accepted by $.ig.DataSource in order to request data from it.
+			/* type="string|null" Gets/Sets a remote URL accepted by [$.ig.DataSource](ig.datasource) in order to request data from it.
 			```
 				//Initialize
 				$(".selector").igTree({
@@ -353,9 +353,11 @@
 				//Get
 				var url = $(".selector").igTree("option", "dataSourceUrl");
 			```
+			string type="string" Specifies the remote url.
+			null type="object" Option is ignored.
 			*/
 			dataSourceUrl: null,
-			/* type="string|null" Gets the type of the data source. Delegates the value to $.ig.DataSource.settings.type. Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource.settings.type.
+			/* type="string|null" Gets the type of the data source. Delegates the value to [$.ig.DataSource.settings.type](ig.datasource#options:settings.type). Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource.settings.type.
 			```
 				//Initialize
 				$(".selector").igTree({
@@ -365,9 +367,11 @@
 				//Get
 				var type = $(".selector").igTree("option", "dataSourceType");
 			```
+			string type="string" Specifies the data source type implicitly.
+			null type="object" Type is inferred.
 			*/
 			dataSourceType: null,
-			/* type="string|null" Gets the JSON key at which a remote data source will write the data. Delegates the value to $.ig.DataSource.settings.responseDataKey. Please refer to the documentation of $.ig.DataSource.settings.responseDataKey.
+			/* type="string|null" Gets the JSON key at which a remote data source will write the data. Delegates the value to [$.ig.DataSource.settings.responseDataKey](ig.datasource#options:settings.responseDataKey). Please refer to the documentation of $.ig.DataSource.settings.responseDataKey.
 			```
 				//Initialize
 				$(".selector").igTree({
@@ -376,12 +380,12 @@
 
 				//Get
 				var responseDataKey = $(".selector").igTree("option", "responseDataKey");
-				```
-					string Specifies the name of the property in which data records are held if the response is wrapped.
-					null Option is ignored.
+			```
+			string type="string" Specifies the name of the property in which data records are held if the response is wrapped.
+			null type="object" Option is ignored.
 			*/
 			responseDataKey: null,
-			/* type="string|null" Gets the data type of the remote data source response. Delegates the value to $.ig.DataSource.settings.responseDataType. Please refer to the documentation of $.ig.DataSource.settings.responseDataType.
+			/* type="string|null" Gets the data type of the remote data source response. Delegates the value to [$.ig.DataSource.settings.responseDataType](ig.datasource#options:settings.responseDataType). Please refer to the documentation of $.ig.DataSource.settings.responseDataType.
 			```
 				//Initialize
 				$(".selector").igTree({
@@ -391,11 +395,11 @@
 				//Get
 				var responseDataType = $(".selector").igTree("option", "responseDataType");
 			```
-				string Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType.
-				null Option is ignored.
+			string type="string" Response type when a URL is set as the data source. See http://api.jquery.com/jQuery.ajax/ => dataType.
+			null type="object" Type is inferred.
 			*/
 			responseDataType: null,
-			/* type="string" Gets the HTTP verb used for remote requests. Specifies the HTTP verb to be used to issue the requests to the dataSourceUrl.
+			/* type="string" Gets the HTTP verb used for remote requests. Specifies the HTTP verb to be used to issue the requests to the [dataSourceUrl](ui.igtree#options:dataSourceUrl).
 			```
 				//Initialize
 				$(".selector").igTree({
@@ -407,7 +411,7 @@
 			```
 			*/
 			requestType: "GET",
-			/* type="string" Gets the type of the content in a remote data source response. Content type of the response from the dataSourceUrl. See http://api.jquery.com/jQuery.ajax/ => contentType
+			/* type="string" Gets the type of the content in a remote data source response. Content type of the response from the [dataSourceUrl](ui.igtree#options:dataSourceUrl). See http://api.jquery.com/jQuery.ajax/ => contentType
 			```
 				//Initialize
 				$(".selector").igTree({
@@ -936,7 +940,7 @@
 				```
 				*/
 				expandOnDragOver: true,
-				/* type="number" Gets the delay after hovering a parent node before expanding that node during drag with expandOnDragOver: true.
+				/* type="number" Gets the delay after hovering a parent node before expanding that node during drag when [expandOnDragOver](ui.igtree#options:dragAndDropSettings.expandOnDragOver) is set to true.
 				```
 					//Initialize
 					$(".selector").igTree({
@@ -972,7 +976,7 @@
 					settings.helper = "myHelper";
 					$(".selector").igTree("option", "dragAndDropSettings", settings);
 				```
-					function A function that will return a DOMElement to use while dragging.
+					function type="function" A function that will return a DOMElement to use while dragging.
 					default type="string" would render the default igTree helper.
 				*/
 				helper: "default",
@@ -993,9 +997,11 @@
 						settings.customDropValidation = function() {};
 						$(".selector").igTree("option", "dragAndDropSettings", settings);
 					```
+					function type="function" A function that will be used for validating drop points.
+					null type="object" Only built-in validation is applied.
 				*/
 				customDropValidation: null,
-				/* type="boolean|selector|element|string|array" Gets the containment for the drag helper. The area inside of which the
+				/* type="bool|selector|element|string|array" Gets the containment for the drag helper. The area inside of which the
 					helper is contained would be scrollable while dragging.
 					```
 						//Initialize
@@ -1013,10 +1019,11 @@
 						settings.containment = false;
 						$(".selector").igTree("option", "dragAndDropSettings", settings);
 					```
+					bool type="bool" If set to false, then the draggable elements will be contained in their window.
 					selector type="string" The draggable element will be contained to the bounding box of the first element found by the selector. If no element is found, no containment will be set.
 					element type="object" The draggable element will be contained to the bounding box of this element.
-					string Possible values: "parent", "document", "window".
-					array An array defining a bounding box in the form [ x1, y1, x2, y2 ].
+					string type="string" Possible values: "parent", "document", "window".
+					array type="array" An array defining a bounding box in the form [ x1, y1, x2, y2 ].
 				*/
 				containment: false,
 				/* type="string" Gets the HTML markup for the invalid helper.
