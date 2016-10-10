@@ -441,7 +441,7 @@ $.ig.dependencies = [
 		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.ui.bulletgraph.js",
-			"$path$/modules/infragistics.gauge_bulletgraph.js"
+			"$path$/modules/infragistics.bulletgraph.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.bulletgraph.css" ]
