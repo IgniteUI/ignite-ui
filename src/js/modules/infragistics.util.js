@@ -4952,15 +4952,33 @@
 	// Get relative offset of the passed element according to the closest parent element with relative position if any
 	// e: jquery element
 	$.ig.util.getRelativeOffset = function (e) {
-		var elem = e.parent(), o = { left: 0, top: 0 }, position;
+		var elem = e.parent(), o = { left: 0, top: 0 }, position,
+			 windowBorderWidth = 8,
+			 zoom = (window.outerWidth - (windowBorderWidth * 2)) / window.innerWidth,
+			 documentScrollLeft, documentScrollTop, doc = e ? e[ 0 ].ownerDocument : document;
 
 		while (elem[ 0 ] !== null && elem[ 0 ] !== undefined && elem[ 0 ].nodeName !== "#document") {
 			position = elem.css("position");
-
-			// because the element which is passed as argument is supposed to be with position absolute we should find whether it has parent in the DOM tree which is with position which is not static - like relative, absolute, etc
+			/* because the element which is passed as argument is supposed to be with position absolute we should find whether it has parent in the DOM tree which is with position which is not static - like relative, absolute, etc */
 			if (position !== "static" && position !== "") {
-				o.left = elem.offset().left - elem.scrollLeft();
-				o.top = elem.offset().top - elem.scrollTop();
+				if (zoom && zoom > 1 && ($.ig.util.isIE10 || $.ig.util.isIE11 || $.ig.util.isEdge)) {
+					if ($.ig.util.isIE) {
+						documentScrollLeft = doc.documentElement.scrollLeft;
+						documentScrollTop = doc.documentElement.scrollTop;
+					} else if ($.ig.util.isEdge) {
+						documentScrollLeft = doc.body.scrollLeft;
+						documentScrollTop = doc.body.scrollTop;
+					}
+
+					o.left = elem.offset().left;
+					o.top = elem.offset().top;
+
+					o.left += documentScrollLeft - window.pageXOffset;
+					o.top += documentScrollTop - window.pageYOffset;
+				} else {
+					o.left = elem.offset().left - elem.scrollLeft();
+					o.top = elem.offset().top - elem.scrollTop();
+				}
 				break;
 			}
 			elem = elem.parent();
