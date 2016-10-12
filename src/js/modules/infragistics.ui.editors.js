@@ -1850,7 +1850,9 @@
 					this._editorInput.val(this._getDisplayValue());
 
 					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
-					this._setSpinButtonsState(initialValue);
+					if ((this.options.buttonType === "spin") || (this._numericType === "numeric")) {
+						this._setSpinButtonsState(initialValue);
+					}
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
 				initialValue = this.element.val();
