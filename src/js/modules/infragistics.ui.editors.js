@@ -4318,10 +4318,10 @@
 
 				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 				case "minValue":
-					this._setSpinButtonsState(value);
+					this._setSpinButtonsState(this.value());
 					break;
 				case "maxValue":
-					this._setSpinButtonsState(value);
+					this._setSpinButtonsState(this.value());
 					break;
 				case "minDecimals",
 					 "maxDecimals":

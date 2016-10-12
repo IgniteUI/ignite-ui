@@ -308,6 +308,13 @@
 					value: 7,
 					maxValue: 7
 				})
+				
+				$("#issue226939").igNumericEditor({
+					buttonType: "spin",
+					spinDelta: 1,
+					value: 1,
+					minValue: 1
+				})
 			});
 		}
 		initialized = false;
@@ -1033,6 +1040,20 @@
 				$editor.igNumericEditor("option", "minValue", 4);
 				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");				
 		});
+		
+		testId = 'Issue 226939'
+		test(testId, 3, function () {
+			var $editor = $("#issue226939"),
+				editorInput = $editor.igNumericEditor("field"), btnSpinDown = $editor.igNumericEditor("spinDownButton"),
+				btnSpinUp = $editor.igNumericEditor("spinUpButton");
+				
+				$editor.igNumericEditor("option", "minValue", 5);
+				$("#issue226939").igNumericEditor("spinUp");
+				equal($("#issue226939").igNumericEditor("value"), 5, 'Spin up method not working.');
+				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");
+				$editor.igNumericEditor("option", "minValue", 1);
+				ok(!(btnSpinDown.hasClass("ui-state-disabled")), "The spinDown button is disabled.");
+		});
 
 		testId = 'Paste and insert';
 		test(testId, 8, function () {
@@ -1320,6 +1341,8 @@
 		<div id="numericEditor420minValue"></div>
 		<br />
 		<div id="numericEditor420maxValue"></div>
+		<br />
+		<div id="issue226939"></div>
 	</div>
 </body>
 </html>
