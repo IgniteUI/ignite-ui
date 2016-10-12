@@ -1848,6 +1848,7 @@
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
 					this._editorInput.val(this._getDisplayValue());
+
 					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 					this._setSpinButtonsState(initialValue);
 				}
@@ -4311,8 +4312,9 @@
 			}
 					break;
 				}
+
 				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
-				case "minValue": 
+				case "minValue":
 					this._setSpinButtonsState(value);
 					break;
 				case "maxValue":
