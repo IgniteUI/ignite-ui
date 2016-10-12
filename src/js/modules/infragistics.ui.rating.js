@@ -20,7 +20,6 @@
 *	<div id="rating1"></div>
 */
 
-/*global define, jQuery, document, setTimeout */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

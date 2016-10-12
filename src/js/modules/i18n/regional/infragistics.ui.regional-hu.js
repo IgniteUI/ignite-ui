@@ -1,6 +1,5 @@
 ﻿/* Hungary +*/
 
-/*global jQuery */
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};

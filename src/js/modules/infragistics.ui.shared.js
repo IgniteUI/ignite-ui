@@ -12,7 +12,6 @@
  *	infragistics.util.js
  */
 
-/*global window, jQuery, define */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

@@ -13,7 +13,6 @@
  *	infragistics.ui.validator.js
  */
 
-/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

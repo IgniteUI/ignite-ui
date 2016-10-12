@@ -12,7 +12,7 @@
 * modernizr.js
 */
 
-/*global define,jQuery,setTimeout,window,document,MSGesture*/
+/*global MSGesture*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

@@ -20,7 +20,7 @@
 */
 
 // Inspired by base2 and Prototype
-/*global define, xyz, Class, define, jQuery, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
+/*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

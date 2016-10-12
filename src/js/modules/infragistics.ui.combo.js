@@ -22,7 +22,6 @@
 *   <input id="combo" />
 */
 
-/*global define, jQuery*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

@@ -18,5 +18,5 @@
 	"jquery": true,
 	"laxbreak": true,
 	"node": true,
-	"predef": [ "jQuery", "define" ]
+	"predef": [ "jQuery", "define", "window", "document", "setTimeout" ]
 }
