@@ -4242,7 +4242,7 @@
 				this.options.minDecimals;
 		},
 		_applyOptions: function () { // NumericEditor
-			var delta, fractional;
+			var delta, fractional, initialValue;
 			this._super();
 			initialValue = this.options.value;
 
