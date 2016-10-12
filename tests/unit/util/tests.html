@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8">
@@ -15,7 +15,17 @@
 	<script type="text/javascript" src="../../../src/js/modules/i18n/regional/infragistics.ui.regional-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/regional/infragistics.ui.regional-es.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
-
+<style>
+.container {
+    position: relative;
+}
+.topright {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    font-size: 18px;
+}
+</style>
 	<script type="text/javascript">		
 		module("Basic Tests");
         // run tests
@@ -40,6 +50,26 @@
 			equal(result, "string", "Check if result is correct for the object type.");			
 		});
 
+		test("Test getRelativeOffset function", function () {
+			$("#container").append("<div class='container'><span id='span1' class='bottomleft'> Span elem</span><div>");
+			
+			$("#container").append("<div class='container'><div class='topright'><table id='table1'><tr><td>Table cell 1</td><td>Table cell 2</td></tr></table><div></div>");
+			
+			$("#container").append("<div  style='height: 500px;' class='container topright'><div class='bottomleft' style='position:static;'><span id='span2'  style='position:static;'>Span2</span></div></div>");
+
+			//check getRelativeOffset with relative positioning of the parent
+			var relOffset = $.ig.util.getRelativeOffset($("#span1"));
+			ok($("#span1").parent().offset().left - $("#span1").parent().scrollLeft() === relOffset.left && $("#span1").parent().offset().top - $("#span1").parent().scrollTop() === relOffset.top, "The element offset should be correct.");
+			
+			//check getRelativeOffset with absolute positioning of the parent
+			relOffset = $.ig.util.getRelativeOffset($("#table1"));
+			ok($("#table1").parent().offset().left - $("#table1").parent().scrollLeft() === relOffset.left && $("#table1").parent().offset().top - $("#table1").parent().scrollTop() === relOffset.top, "The element offset should be correct.");
+			
+			//check getRelativeOffset with static positioning of the parent
+			relOffset = $.ig.util.getRelativeOffset($("#span2"));
+			ok($("#span2").parent().parent().offset().left - $("#span2").parent().parent().scrollLeft() === relOffset.left && $("#span2").parent().parent().offset().top - $("#span2").parent().parent().scrollTop() === relOffset.top, "The element offset should be correct.");
+		});
+
 	</script>
 </head>
 <body>
@@ -49,5 +79,6 @@
 		<h2 id="qunit-userAgent"></h2>
 		<ol id="qunit-tests"></ol>
 	</div>
+	<div id="container" style="float:right;width:100%;overflow:auto;"></div>
 </body>
 </html>
