@@ -293,7 +293,21 @@
 					maxValue: 80000
 				});	
 				
-				$("#numericEditorRuntime").igNumericEditor();	
+				$("#numericEditorRuntime").igNumericEditor();
+
+				$("#numericEditor420minValue").igNumericEditor({
+					buttonType: "spin",
+					spinDelta: 1,
+					value: 1,
+					minValue: 1
+				})
+				
+				$("#numericEditor420maxValue").igNumericEditor({
+					buttonType: "spin",
+					spinDelta: 1,
+					value: 7,
+					maxValue: 7
+				})
 			});
 		}
 		initialized = false;
@@ -993,6 +1007,32 @@
 					return err.message.indexOf($.ig.Editor.locale.setOptionError) > -1;
 				}, $.ig.Editor.locale.setOptionError + "not shown");
 		});
+		
+		testId = 'spinDown button not disabled'
+		test(testId, 3, function () {
+			var $editor = $("#numericEditor420minValue"),
+				editorInput = $editor.igNumericEditor("field"), btnSpinDown = $editor.igNumericEditor("spinDownButton"),
+				btnSpinUp = $editor.igNumericEditor("spinUpButton");
+				
+				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");
+				$("#numericEditor420minValue").igNumericEditor("spinUp",3);
+				equal($("#numericEditor420minValue").igNumericEditor("value"), 4, 'Spin up method do not take into account the delta parameter.');
+				$editor.igNumericEditor("option", "maxValue", 4);
+				ok(btnSpinUp.hasClass("ui-state-disabled"), "The spinUp button is not disabled.");				
+		});
+		
+		testId = 'spinUp button not disabled'
+		test(testId, 3, function () {
+			var $editor = $("#numericEditor420maxValue"),
+				editorInput = $editor.igNumericEditor("field"), btnSpinDown = $editor.igNumericEditor("spinDownButton"),
+				btnSpinUp = $editor.igNumericEditor("spinUpButton");
+				
+				ok(btnSpinUp.hasClass("ui-state-disabled"), "The spinUp button is not disabled.");
+				$("#numericEditor420maxValue").igNumericEditor("spinDown",3);
+				equal($("#numericEditor420maxValue").igNumericEditor("value"), 4, 'Spin down method do not take into account the delta parameter.');
+				$editor.igNumericEditor("option", "minValue", 4);
+				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");				
+		});
 
 		testId = 'Paste and insert';
 		test(testId, 8, function () {
@@ -1275,7 +1315,11 @@
 		<br />
 		<div id="spinUp"></div>
 		<br />
-		<div id="numericEditorRuntime"></div>		
+		<div id="numericEditorRuntime"></div>
+		<br />
+		<div id="numericEditor420minValue"></div>
+		<br />
+		<div id="numericEditor420maxValue"></div>
 	</div>
 </body>
 </html>

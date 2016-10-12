@@ -1847,7 +1847,9 @@
 				}
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
-				this._editorInput.val(this._getDisplayValue());
+					this._editorInput.val(this._getDisplayValue());
+					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
+					this._setSpinButtonsState(initialValue);
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
 				initialValue = this.element.val();
@@ -4309,6 +4311,13 @@
 			}
 					break;
 				}
+				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
+				case "minValue": 
+					this._setSpinButtonsState(value);
+					break;
+				case "maxValue":
+					this._setSpinButtonsState(value);
+					break;
 				case "minDecimals",
 					 "maxDecimals":
 					value = parseFloat(value);
