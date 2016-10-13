@@ -468,7 +468,7 @@ $.ig.dependencies = [
 		widget: "igRadialMenu",
 		dependency: [
 			{ name: "igUtil" },
-			{ name: "_ig_dv_simple_core" }
+			{ name: "_ig_dv_core" }
 			],
 		scripts: [
 			"$path$/modules/infragistics.radialmenu_core.js",
