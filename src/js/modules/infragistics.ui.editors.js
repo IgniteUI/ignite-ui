@@ -1847,7 +1847,7 @@
 				}
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
-				this._editorInput.val(this._getDisplayValue());
+					this._editorInput.val(this._getDisplayValue());
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
 				initialValue = this.element.val();
@@ -4242,8 +4242,14 @@
 				this.options.minDecimals;
 		},
 		_applyOptions: function () { // NumericEditor
-			var delta, fractional;
+			var delta, fractional, initialValue;
 			this._super();
+			initialValue = this.options.value;
+
+			// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
+			if (this.options.buttonType === "spin") {
+				this._setSpinButtonsState(initialValue);
+			}
 			if (this.options.spinDelta !== 1) {
 				delta = this.options.spinDelta;
 				if (typeof delta !== "number") {
@@ -4309,6 +4315,14 @@
 			}
 					break;
 				}
+
+				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
+				case "minValue":
+					this._setSpinButtonsState(this.value());
+					break;
+				case "maxValue":
+					this._setSpinButtonsState(this.value());
+					break;
 				case "minDecimals",
 					 "maxDecimals":
 					value = parseFloat(value);

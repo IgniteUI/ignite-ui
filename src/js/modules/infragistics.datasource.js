@@ -8374,7 +8374,7 @@
 			/*  sets a cell value for the cell denoted by rowId and colId. Creates a transaction for the update operation and returns it
 			```
 				dsMashup.setCellValue(1, "Name", "CD Player", true);
-			``
+			```
 			paramType="object" the rowId - row key (string) or index (number)
 			paramType="object" the column id - column key (string) or index (number)
 			paramType="object" The new value
