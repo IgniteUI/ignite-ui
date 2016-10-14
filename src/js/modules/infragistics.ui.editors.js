@@ -8693,13 +8693,6 @@
 			}
 			return year;
 		},
-		_triggerKeyPress: function (event) { // DateEditor
-			if (event.keyCode === 13) {
-				this._processInternalValueChanging(this._editorInput.val());
-			} else {
-				this._super(event);
-			}
-		},
 		_triggerInternalValueChange: function (value) { //DateEditor
 			if (value === this._maskWithPrompts) {
 				value = "";
