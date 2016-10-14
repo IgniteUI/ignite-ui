@@ -8372,7 +8372,9 @@
 		},
 		setCellValue: function (rowId, colId, val, autoCommit) {
 			/*  sets a cell value for the cell denoted by rowId and colId. Creates a transaction for the update operation and returns it
-			dsMashup.setCellValue(1, "Name", "CD Player", true);
+			```
+				dsMashup.setCellValue(1, "Name", "CD Player", true);
+			``
 			paramType="object" the rowId - row key (string) or index (number)
 			paramType="object" the column id - column key (string) or index (number)
 			paramType="object" The new value
@@ -8426,11 +8428,13 @@
 		},
 		updateRow: function (rowId, rowObject, autoCommit) {
 			/* updates a record in the datasource. Creates a transaction that can be committed / rolled back
+			```
 			dsMashup.updateRow(1, {
 					Name: "DVD Player1",
 					Price: "10",
 					Rating: "5"
 				}, true);
+			```
 			paramType="object" the record key - primaryKey (string) or index (number)
 			paramType="object" the record object containing the key/value pairs we want to update. It doesn't have to include key/value pairs for all fields defined in the schema or in the data source (if no schema is defined)
 			paramType="bool" if autoCommit is true, the datasource will be updated automatically and the transaction is still stored in the accumulated transaction log
