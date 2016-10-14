@@ -4955,7 +4955,7 @@
 		var elem = e.parent(), o = { left: 0, top: 0 }, position,
 			 windowBorderWidth = 8,
 			 zoom = (window.outerWidth - (windowBorderWidth * 2)) / window.innerWidth,
-			 documentScrollLeft, documentScrollTop, doc = e ? e[ 0 ].ownerDocument : document;
+			 documentScrollLeft, documentScrollTop, doc = e.length > 0 ? e[ 0 ].ownerDocument : document;
 
 		while (elem[ 0 ] !== null && elem[ 0 ] !== undefined && elem[ 0 ].nodeName !== "#document") {
 			position = elem.css("position");
