@@ -7810,7 +7810,6 @@
 		},
 		saveChanges: function (success, error) {
 			/* posts to the restSettings urls using $.ajax, by serializing the changes as url params.
-			
 				```
 					var ds = new $.ig.RESTDataSource({
 					dataSource: products,
@@ -7830,7 +7829,7 @@
 							}
 						}
 					});
-             
+
 					ds.dataBind();
 					// POST
 					ds.addRow(3, {"ProductID": 3, "Name": "BB Ball Bearing", "ProductNumber": "BE-2349"}, true);
@@ -7838,12 +7837,10 @@
 					ds.deleteRow(1, true);
 					// PUT
 					ds.updateRow(2, {"Name": "Ball Bearing", "ProductNumber": "BE-8329"}, true);
-					 
 					ds.saveChanges();
-					
 				```
 			*/
-			
+
 			// use $.ajax with the HTTP verb for every type of CRUD operation on the specified URL
 			// for each entry in the transaction log create a new request
 			// if batching is enabled create seperate arrays and send together
@@ -8676,18 +8673,16 @@
 		},
 		dataBind: function () {
 		/* Data binds to the current data source.
-		
 			```
-			    var mashupSources = [
+				var mashupSources = [
 					{ dataSource: jsArray, primaryKey: "ID" },
 					{ dataSource: xmlDoc, type: "xml", primaryKey: "ID" ,schema: xmlSchema }
 				];
-					 
 				var dsMashup = new $.ig.MashupDataSource({ dataSource: mashupSources });
 				dsMashup.dataBind();
 			```
 		*/
-		
+
 			var i, ds = this.settings.dataSource;
 			if (this._dataBindingComplete || this._sources.length > 0) {
 				// we can proceed to data binding the mashup
