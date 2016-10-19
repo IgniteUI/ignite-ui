@@ -1022,9 +1022,8 @@
 
 			if (triggerEvents) {
 				//Trigger scrolled event
-				var self = this;
 				this._trigger("scrolled", null, {
-					owner: self,
+					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: true
@@ -1052,9 +1051,8 @@
 
 			if (triggerEvents && !this._cancelScrolling) {
 				//Trigger scrolled event
-				var self = this;
 				this._trigger("scrolled", null, {
-					owner: self,
+					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: false
@@ -1415,9 +1413,9 @@
 			//We use the formula for parabola y = -3*x*x + 3 to simulate smooth inertia that slows down
 			var x = -1;
 			if (this.options.scrollOnlyVBar) {
-				self._nextY = this._getScrollbarVPosition();
+				this._nextY = this._getScrollbarVPosition();
 			} else {
-				self._nextY = this._getContentPositionY();
+				this._nextY = this._getContentPositionY();
 			}
 
 			function inertiaStep() {
@@ -1446,7 +1444,7 @@
 			}
 
 			//Start the inertia and continue it recursively
-			self._numSmoothAnimation += 1;
+			this._numSmoothAnimation += 1;
 			animationId = requestAnimationFrame(inertiaStep);
 		},
 
@@ -1477,7 +1475,6 @@
 		*	If not sure how to use, use the internal _scrollTop and _scrollLeft. */
 		_scrollTouchToXY: function (destX, destY, triggerEvents) {
 			var bNoCancel,
-				self = this,
 				curPosX = this._getContentPositionX(),
 				curPosY = this._getContentPositionY();
 
@@ -1490,7 +1487,7 @@
 
 			if (triggerEvents) {
 				bNoCancel = this._trigger("scrolling", null, {
-					owner: self,
+					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: null,
@@ -1507,29 +1504,29 @@
 
 			//Only use vertical scroll specific
 			if (this.options.scrollOnlyVBar) {
-				self._scrollToY(destY, false);
+				this._scrollToY(destY, false);
 
 				if (this.options.scrollOnlyHBar) {
-					self._scrollToX(destX);
+					this._scrollToX(destX);
 				} else {
 					if (this._contentX) {
 						this._contentX.css({
 							"-webkit-transform": "translate3d(" + (-destX) + "px, 0px, 0px)" /* Chrome, Safari, Opera */
 						});
 
-						self._syncElemsX(this._contentX, true, -destX, true);
+						this._syncElemsX(this._contentX, true, -destX, true);
 					} else {
 						this._content.css({
 							"-webkit-transform": "translate3d(" + (-destX) + "px, 0px, 0px)" /* Chrome, Safari, Opera */
 						});
 
-						self._syncElemsX(this._content, true, -destX, true);
+						this._syncElemsX(this._content, true, -destX, true);
 					}
 				}
 
 				/* Sync other elements */
 				destY = this._getScrollbarVPosition();
-				self._updateScrollBarsPos(destX, destY);
+				this._updateScrollBarsPos(destX, destY);
 
 				return { x: destX - curPosX, y: destY - curPosY };
 			}
@@ -1544,13 +1541,13 @@
 			}
 
 			/* Sync other elements */
-			self._syncElemsX(this._content, true);
-			self._syncElemsY(this._content, true);
-			self._updateScrollBarsPos(destX, destY);
+			this._syncElemsX(this._content, true);
+			this._syncElemsY(this._content, true);
+			this._updateScrollBarsPos(destX, destY);
 
 			//No need to sync these bars since they don't show on safari and we use custom ones.
-			self._syncHBar(this._content, true);
-			self._syncVBar(this._content, true);
+			this._syncHBar(this._content, true);
+			this._syncVBar(this._content, true);
 
 			return { x: destX - curPosX, y: destY - curPosY };
 		},
@@ -1563,14 +1560,14 @@
 				inertiaDuration = this.options.inertiaDuration;
 
 			if (this.options.scrollOnlyVBar) {
-				self._nextY = self._getScrollbarVPosition();
+				this._nextY = this._getScrollbarVPosition();
 			} else {
-				self._nextY = self._getContentPositionY();
+				this._nextY = this._getContentPositionY();
 			}
 			if (this.options.scrollOnlyHBar) {
-				self._nextX = self._getScrollbarHPosition();
+				this._nextX = this._getScrollbarHPosition();
 			} else {
-				self._nextX = self._getContentPositionX();
+				this._nextX = this._getContentPositionX();
 			}
 
 			//Sets timeout until executing next movement iteration of the inertia
@@ -1674,12 +1671,11 @@
 
 		/** Syncs the main content element horizontally */
 		_syncContentX: function (baseElem, useTransform) {
-			var self = this,
-				destX;
+			var destX;
 
 			if (useTransform) {
 				destX = -baseElem.scrollLeft;
-				var destY = -self._getContentPositionY();
+				var destY = -this._getContentPositionY();
 
 				this._content.css({
 					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
@@ -1689,18 +1685,17 @@
 				destX = baseElem.scrollLeft;
 
 				//this is to not affect the scrolling when clicking on track area of a linked scrollbarH
-				self._scrollFromSyncContentH = true;
+				this._scrollFromSyncContentH = true;
 				this._container.scrollLeft(destX);
 			}
 		},
 
 		/** Syncs the main content element vertically */
 		_syncContentY: function (baseElem, useTransform) {
-			var self = this,
-				destY;
+			var destY;
 
 			if (useTransform) {
-				var destX = self._getContentPositionX();
+				var destX = this._getContentPositionX();
 				destY = -baseElem.scrollTop;
 
 				this._content.css({
@@ -1711,7 +1706,7 @@
 				destY = baseElem.scrollTop;
 
 				//this is to not affect the scrolling when clicking on track area of a linked scrollbarV
-				self._scrollFromSyncContentV = true;
+				this._scrollFromSyncContentV = true;
 				this._container.scrollTop(destY);
 			}
 		},
@@ -3415,12 +3410,12 @@
 
 			if (!animate) {
 				if (bDragOnly) {
-					self._setSimpleScrollBarOpacity(targetOpacty);
+					this._setSimpleScrollBarOpacity(targetOpacty);
 				} else {
-					self._setScrollBarsOpacity(targetOpacty);
+					this._setScrollBarsOpacity(targetOpacty);
 				}
 
-				self._touchBarsShown = true;
+				this._touchBarsShown = true;
 			} else {
 				this._showScrollbarsAnimId = requestAnimationFrame(showStep);
 			}
@@ -3503,12 +3498,12 @@
 
 			if (!animate) {
 				if (bDragOnly) {
-					self._setSimpleScrollBarOpacity(targetOpacty);
+					this._setSimpleScrollBarOpacity(targetOpacty);
 				} else {
-					self._setScrollBarsOpacity(targetOpacty);
+					this._setScrollBarsOpacity(targetOpacty);
 				}
 
-				self._touchBarsShown = false;
+				this._touchBarsShown = false;
 			} else {
 				animationId = requestAnimationFrame(fadeStep);
 			}
