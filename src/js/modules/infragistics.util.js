@@ -5149,7 +5149,7 @@
 			obj.onTick();
 		}
 
-		if (obj.chart && obj.notify && !obj.__resizeProxy) {
+		if (obj.chart && obj.notify && obj.chart[ obj.notify ] && !obj.__resizeProxy) {
 			obj.oldDevicePixelRatio = window.devicePixelRatio || 1.0;
 			obj.__resizeProxy = function () {
 				var devicePixelRatio = window.devicePixelRatio || 1.0;
