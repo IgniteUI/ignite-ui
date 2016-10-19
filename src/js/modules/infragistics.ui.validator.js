@@ -21,7 +21,7 @@
 *	<input id="text1" type="text" />
 */
 
-/*global define, jQuery, Class */
+/*global Class */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

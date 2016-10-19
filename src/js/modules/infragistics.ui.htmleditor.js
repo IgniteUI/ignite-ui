@@ -22,7 +22,7 @@
  *   infragistics.ui.toolbar-en.js
  */
 
-/*global define, jQuery, window, document, Class*/
+/*global Class*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

@@ -13,7 +13,6 @@
  *	infragistics.ui.splitter-en.js
  */
 
-/*global define, jQuery, document, window */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
