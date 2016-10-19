@@ -7,7 +7,6 @@
 *
 */
 
-/*global jQuery */
 (function($) {
 $.ig = $.ig || {};
 

@@ -1,6 +1,5 @@
 ﻿/* Ukraine +*/
 
-/*global Query */
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};

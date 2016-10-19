@@ -6,7 +6,6 @@
 *
 */
 
-/*global jQuery*/
 if (typeof jQuery !== "function") {
 	throw new Error("jQuery is undefined");
 }
