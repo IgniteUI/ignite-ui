@@ -7809,7 +7809,7 @@
 			return this;
 		},
 		saveChanges: function (success, error) {
-			/* posts to the restSettings urls using $.ajax, by serializing the changes as url params.
+			/* Posts to the restSettings urls using $.ajax, by serializing the changes as url params.
 				```
 					var ds = new $.ig.RESTDataSource({
 					dataSource: products,
