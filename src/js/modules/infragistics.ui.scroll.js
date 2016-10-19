@@ -1093,6 +1093,9 @@
 		},
 
 		_refreshScrollbarsDrag: function () {
+			this._elemHeight = this.element.height();
+			this._elemWidth = this.element.width();
+
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
 				// jscs:disable
 				this._vDragHeight = (this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewV;
@@ -1181,8 +1184,13 @@
 							if (ignoreSync || self.options.scrollOnlyHBar) {
 								return false;
 							} else {
-								self._syncContentX(e.target, false);
-								self._syncElemsX(e.target, false);
+								if (self._bMixedEnvironment) {
+									self._syncContentX(e.target, false);
+									self._syncElemsX(e.target, false);
+								} else {
+									self._syncContentX(e.target, true);
+									self._syncElemsX(e.target, true);
+								}
 							}
 						}
 					});
@@ -1216,8 +1224,13 @@
 							if (ignoreSync || self.options.scrollOnlyVBar) {
 								return false;
 							} else {
-								self._syncContentY(e.target, false);
-								self._syncElemsY(e.target, false);
+								if (self._bMixedEnvironment) {
+									self._syncContentY(e.target, false);
+									self._syncElemsY(e.target, false);
+								}  else {
+									self._syncContentY(e.target, true);
+									self._syncElemsY(e.target, true);
+								}
 							}
 						}
 
@@ -1660,49 +1673,47 @@
 		},
 
 		/** Syncs the main content element horizontally */
-		_syncContentX: function (baseElem /*, useTransform */) {
+		_syncContentX: function (baseElem, useTransform) {
 			var self = this,
 				destX;
 
-			//if (useTransform) {
-			//	destX = self._getContentPositionX();
-			//	var destY = self._getContentPositionY();
+			if (useTransform) {
+				destX = -baseElem.scrollLeft;
+				var destY = -self._getContentPositionY();
 
-			//	this._content.css({
-			//		"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
-			//	});
+				this._content.css({
+					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
+				});
 
-			//} else {
-			destX = baseElem.scrollLeft;
+			} else {
+				destX = baseElem.scrollLeft;
 
-			//this is to not affect the scrolling when clicking on track area of a linked scrollbarH
-			self._scrollFromSyncContentH = true;
-			this._container.scrollLeft(destX);
-
-			//}
+				//this is to not affect the scrolling when clicking on track area of a linked scrollbarH
+				self._scrollFromSyncContentH = true;
+				this._container.scrollLeft(destX);
+			}
 		},
 
 		/** Syncs the main content element vertically */
-		_syncContentY: function (baseElem /*, useTransform*/) {
+		_syncContentY: function (baseElem, useTransform) {
 			var self = this,
 				destY;
 
-			//if (useTransform) {
-			//	var destX = self._getContentPositionX();
-			//	destY = self._getContentPositionY();
+			if (useTransform) {
+				var destX = self._getContentPositionX();
+				destY = -baseElem.scrollTop;
 
-			//	this._content.css({
-			//		"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
-			//	});
+				this._content.css({
+					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
+				});
 
-			//} else {
-			destY = baseElem.scrollTop;
+			} else {
+				destY = baseElem.scrollTop;
 
-			//this is to not affect the scrolling when clicking on track area of a linked scrollbarV
-			self._scrollFromSyncContentV = true;
-			this._container.scrollTop(destY);
-
-			//}
+				//this is to not affect the scrolling when clicking on track area of a linked scrollbarV
+				self._scrollFromSyncContentV = true;
+				this._container.scrollTop(destY);
+			}
 		},
 
 		//Syncs elements that are linked on X axis
