@@ -5736,7 +5736,7 @@
 
             test(testId_95, function() {
 
-                var data, $combo;
+                var data, $combo, timesCalled = 0;
 
                 data = [
                     { "ID":1, "Name": "John Smith", "Age": 45 },
@@ -5752,12 +5752,19 @@
                     textKey: "Name",
                     filteringType: "local",
                     filtering: function(ev, ui) {
-                        equal(ui.expression[0].expr, 'mary');
+                        timesCalled++;
+                        if (timesCalled == 1) {
+                            equal(ui.expression[0].expr, 'mary', "Expression matches");
+                        } else {
+                            equal(ui.expression[0].expr, 'sue', 'Expression matches');
+                        }
+
                     }
 			    });
 
                 $combo.igCombo('filter', 'mary', true);
-
+                $combo.igCombo('filter', 'sue', true);
+                equal(timesCalled, 2, 'Handler called 2 times');
             });
         });
     </script>
