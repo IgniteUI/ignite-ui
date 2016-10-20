@@ -1225,7 +1225,7 @@
 								if (self._bMixedEnvironment) {
 									self._syncContentY(e.target, false);
 									self._syncElemsY(e.target, false);
-								}  else {
+								} else {
 									self._syncContentY(e.target, true);
 									self._syncElemsY(e.target, true);
 								}
@@ -2152,11 +2152,14 @@
 			this._offsetRecorded = false;
 			this._offsetDirection = 0;
 
+			this._igScollTouchPrevented = false;
+
 			this._showScrollBars(false, true);
 		},
 
 		_onTouchMoveContainer: function (event) {
-			if (event.isDefaultPrevented()) {
+			if (event.isDefaultPrevented() || this._igScollTouchPrevented) {
+				this._igScollTouchPrevented = false;
 				return;
 			}
 			var touch = event.originalEvent.touches[ 0 ];
@@ -2237,9 +2240,11 @@
 				}
 			}
 
+			if (scrolledXY.x === 0 && scrolledXY.y === 0) {
+			    this._igScollTouchPrevented = true;
+			}
+
 			event.preventDefault();
-			/* return true if there was no movement so rest of the screen can scroll */
-			return scrolledXY.x === 0 && scrolledXY.y === 0;
 		},
 
 		_onTouchEndContainer: function (event) {
