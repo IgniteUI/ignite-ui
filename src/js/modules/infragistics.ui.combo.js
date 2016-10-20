@@ -5143,12 +5143,14 @@
                 return this;
             }
 
+            // R.K 18th October 2016: #434 Filtering event returns wrong expression
+            filtering.type = type;
+            filtering.expressions = this._options.expression =
+                this._generateExpressions(texts);
+            filtering.caseSensitive = this.options.caseSensitive;
+
             noCancel = event ? this._triggerFiltering(event) : true;
             if (noCancel) {
-                filtering.type = type;
-                filtering.expressions = this._options.expression =
-                    this._generateExpressions(texts);
-                filtering.caseSensitive = this.options.caseSensitive;
 
                 // Handle local filtering
                 if (type === "local") {
