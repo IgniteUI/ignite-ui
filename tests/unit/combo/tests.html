@@ -5736,7 +5736,7 @@
 
             test(testId_95, function() {
 
-                var data, $combo, $input;
+                var data, $combo;
 
                 data = [
                     { "ID":1, "Name": "John Smith", "Age": 45 },
@@ -5751,18 +5751,13 @@
                     valueKey: "ID",
                     textKey: "Name",
                     filteringType: "local",
+                    filtering: function(ev, ui) {
+                        equal(ui.expression[0].expr, 'mary');
+                    }
 			    });
 
-                $input = $combo.igCombo('textInput');
-                typeInInput('mary', $input);
+                $combo.igCombo('filter', 'mary', true);
 
-                $combo = $combo.data().igCombo;
-
-                stop();
-                setTimeout(function() {
-                    start();
-                    equal($combo._options.expression[0].expr, 'mary', 'Matches');
-                }, 300);
             });
         });
     </script>
