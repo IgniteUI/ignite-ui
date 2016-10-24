@@ -22,7 +22,6 @@
 *	<div id="dialog1"></div>
 */
 
-/*global define, jQuery, setTimeout, document, window*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

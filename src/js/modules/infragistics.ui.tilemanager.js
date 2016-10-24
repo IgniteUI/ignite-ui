@@ -17,7 +17,6 @@
  *	infragistics.ui.tilemanager-en.js
  */
 
-/*global define, jQuery, window*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

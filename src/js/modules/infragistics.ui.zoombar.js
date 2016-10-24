@@ -13,7 +13,7 @@
  * infragistics.ui.shared.js
 */
 
-/*global define, jQuery, Class */
+/*global Class */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

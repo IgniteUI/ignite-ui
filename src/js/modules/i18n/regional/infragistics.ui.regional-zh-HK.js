@@ -1,6 +1,5 @@
 ﻿/* China (Hong Kong SAR, PRC) +*/
 
-/*global jQuery */
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};

@@ -371,6 +371,9 @@
 		var testId_114 = 'linking a custom horizontal scrollbar with scrollOnlyVBar enabled scrolls the content properly.';
 		var testId_115 = 'linking a custom horizontal scrollbar with scrollOnlyVBar enabled scrolls the content properly on touch.';
 		
+		var testId_116 = 'linking a custom vertical scrollbar and scrolling that scrollbar scrolls the content properly on touch.';
+		var testId_117 = 'linking a custom horizontal scrollbar  and scrolling that scrollbar scrolls the content properly on touch.';
+		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({ modifyDOM: true });
@@ -3144,13 +3147,13 @@
 	    });
 				
 		test(testId_114, function () {
-			var verticalScrollbar = '<div id="elemVH_hBar"  style="width: 585px; height: 18px; overflow-x:auto; overflow-y:hidden;">' +
+			var horizontalScrollbar = '<div id="elemVH_hBar"  style="width: 585px; height: 18px; overflow-x:auto; overflow-y:hidden;">' +
 					'<div id="elemVH_hBar_inner" style="height: 17px;"></div>' +
 				'</div>',
 				elemContainer, elemContent;
 						
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-			$("#testBed").append($(verticalScrollbar));
+			$("#testBed").append($(horizontalScrollbar));
 			
 			$('#elemVH').igScroll({
 				scrollOnlyHBar: true,
@@ -3179,10 +3182,7 @@
 		
 		test(testId_115, function () {
 			$.ig.util.isTouch = true;
-			var verticalScrollbar = '<div id="elemVH_vBar" style="overflow-x:hidden; overflow-y:autoe; float:left; width:18px; height: 385px;">' +
-					'<div id="elemVH_vBar_inner" style="width:17px;"></div>' +
-				'</div>',
-				horizontalScrollbar = '<div id="elemVH_hBar"  style="width: 585px; height: 18px; overflow-x:auto; overflow-y:hidden;">' +
+			var horizontalScrollbar = '<div id="elemVH_hBar"  style="width: 585px; height: 18px; overflow-x:auto; overflow-y:hidden;">' +
 					'<div id="elemVH_hBar_inner" style="height: 17px;"></div>' +
 				'</div>',
 				touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 15 , y: 0}, {x: 15, y: 0}, {x: 6, y: 0}, {x: 5, y: 0}, {x: 1, y: 0}],
@@ -3190,14 +3190,12 @@
 						
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 			$("#testBed").append($(horizontalScrollbar));
-			$("#testBed").append($(verticalScrollbar));
 			
 			$('#elemVH').igScroll({
 				scrollOnlyHBar: true,
 				scrollOnlyVBar: true,
 				scrollbarType: "none",
 				scrollbarH: $("#elemVH_hBar"),
-				scrollbarV: $("#elemVH_vBar")
 			});
 			
 			elemContainer = $("#elemVH_container");
@@ -3219,7 +3217,71 @@
 				$.ig.util.isTouch = false;
 				start();
 			}, 1000);
+	    });		
+		
+		test(testId_116, function () {
+			$.ig.util.isTouch = true;
+			var verticalScrollbar = '<div id="elemVH_vBar" style="overflow-x:hidden; overflow-y:autoe; float:left; width:18px; height: 385px;">' +
+					'<div id="elemVH_vBar_inner" style="width:17px;"></div>' +
+				'</div>',
+				elemContainer, elemContent;
+
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$("#testBed").append($(verticalScrollbar));
+			
+			$('#elemVH').igScroll({
+				scrollbarType: "none",
+				scrollbarV: $("#elemVH_vBar")
+			});
+			
+			elemContainer = $("#elemVH_container");
+			elemContent = $("#elemVH_content");
+
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			$("#elemVH_vBar_inner").css("height", elemContent.outerHeight());
+			
+			stop();
+			$("#elemVH_vBar").scrollTop(170);
+			setTimeout(function () {
+				equal(-getTransform3dValueY(elemContent), 170, "igScroll content did not scroll vertically using transformations");
+				$("#elemVH").remove();
+				$("#elemVH_vBar").remove();
+				$.ig.util.isTouch = false;
+				start();
+			}, 1000);
 	    });
+		
+		test(testId_117, function () {
+			var horizontalScrollbar = '<div id="elemVH_hBar"  style="width: 585px; height: 18px; overflow-x:auto; overflow-y:hidden;">' +
+					'<div id="elemVH_hBar_inner" style="height: 17px;"></div>' +
+				'</div>',
+				elemContainer, elemContent;
+						
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$("#testBed").append($(horizontalScrollbar));
+			
+			$('#elemVH').igScroll({
+				scrollbarType: "none",
+				scrollbarH: $("#elemVH_hBar")
+			});
+			
+			elemContainer = $("#elemVH_container");
+			elemContent = $("#elemVH_content");
+
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			$("#elemVH_hBar_inner").css("width", elemContent.outerWidth());
+			
+			stop();
+			$("#elemVH_hBar").scrollLeft(170);
+			setTimeout(function () {
+				equal(-getTransform3dValueX(elemContent), 170, "igScroll content did not scroll horizontally using transformations");
+				$("#elemVH").remove();
+				$("#elemVH_hBar").remove();
+				start();
+			}, 100);
+	    });
+		var testId_116 = 'linking a custom vertical scrollbar and scrolling that scrollbar scrolls the content properly on touch.';
+		var testId_117 = 'linking a custom horizontal scrollbar  and scrolling that scrollbar scrolls the content properly on touch.';
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>
 </head>

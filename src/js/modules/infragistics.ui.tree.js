@@ -18,7 +18,6 @@
  *	infragistics.ui.tree-en.js
  */
 
-/*global define, jQuery, MSApp */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -2473,7 +2472,7 @@
 			this.element.undelegate("a", "mousedown");
 		},
 		_constructFromData: function () {
-			var ul, data = this.options.dataSource.root().data(), self = this;
+			var ul, data = this.options.dataSource.root().data();
 			this._triggerDataBound(data);
 			this._triggerRendering(data);
 
@@ -2484,11 +2483,7 @@
 				this.element.empty();
 				ul = this.element;
 				ul.addClass(this.css.treeCollection).addClass(this.css.treeRoot).attr("data-depth", 0);
-
-				// K.D. June 4th, 2014 Bug #162878 WinJS compatibility for the igTree
-				MSApp.execUnsafeLocalFunction(function () {
-					ul.html(self._initChildrenRecursively("", data));
-				});
+				ul.html(this._initChildrenRecursively("", data));
 				this._triggerRendered();
 			} else {
 				this.element.empty();
@@ -2496,10 +2491,7 @@
 				ul += this._initChildrenRecursively("", data);
 				ul += "</ul>";
 
-				// K.D. June 4th, 2014 Bug #162878 WinJS compatibility for the igTree
-				MSApp.execUnsafeLocalFunction(function () {
-					$(ul).appendTo(self.element);
-				});
+				$(ul).appendTo(this.element);
 				this._triggerRendered();
 			}
 
@@ -4318,7 +4310,7 @@
 				}
 				return;
 			}
-			var ul, path, checked, isLi, li, isEmpty, r, binding, self = this;
+			var ul, path, checked, isLi, li, isEmpty, r, binding;
 
 			// Root node is to be used
 			if (!parent) {
@@ -4362,30 +4354,18 @@
 			this._triggerRendering(node);
 			isEmpty = ul.children("li").length <= 0;
 			if (nodeIndex === 0) {
-
-				// K.D. June 4th, 2014 Bug #162878 WinJS compatibility for the igTree
-				MSApp.execUnsafeLocalFunction(function () {
-					li = $(self._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
+				li = $(this._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
 						checked, ul.children("li").length)).prependTo(ul);
-				});
 				if (!binding.hasOwnProperty("primaryKey")) {
 					this._recalculatePaths(path);
 				}
 			} else if (!nodeIndex) {
-
-				// K.D. June 4th, 2014 Bug #162878 WinJS compatibility for the igTree
-				MSApp.execUnsafeLocalFunction(function () {
-					li = $(self._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
+				li = $(this._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
 						checked, ul.children("li").length)).appendTo(ul);
-				});
 			} else {
-
-				// K.D. June 4th, 2014 Bug #162878 WinJS compatibility for the igTree
-				MSApp.execUnsafeLocalFunction(function () {
-					li = $(self._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
+				li = $(this._initChildrenRecursively(path, node, parseInt(ul.attr("data-depth"), 10),
 						checked, ul.children("li").length))
 						.insertBefore(ul.children("li:eq(" + nodeIndex + ")"));
-				});
 				if (!binding.hasOwnProperty("primaryKey")) {
 					this._recalculatePaths(path);
 				}
