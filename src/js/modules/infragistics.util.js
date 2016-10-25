@@ -5170,6 +5170,10 @@
 		switch (easingValue) {
 			case "cubic":
 				return $.ig.EasingFunctions.prototype.cubicEase;
+			case "exponential":
+				return $.ig.EasingFunctions.prototype.exponentialEase;
+			case "circle":
+				return $.ig.EasingFunctions.prototype.circleEase;
 		}
 
 		return easingValue;
