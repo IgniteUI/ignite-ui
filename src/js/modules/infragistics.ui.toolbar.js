@@ -20,7 +20,7 @@
  *   infragistics.ui.combo.js
  */
 
-/*global define, jQuery, window, Class */
+/*global Class */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
