@@ -11,7 +11,7 @@
 *	ig.dataSource.js
 */
 
-/*global define, ko, jQuery*/
+/*global ko*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 		define( [
