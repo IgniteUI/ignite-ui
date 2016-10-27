@@ -85,12 +85,12 @@
                 $('.selector').igTileManager({
                     width: 300
                 });
-                
+
                 //Get
-                var width = $('.selector').igTileManager("option", "width"); 
-                
+                var width = $('.selector').igTileManager("option", "width");
+
                 //Set
-                $('.selector').igTileManager("option", "width", 300); 
+                $('.selector').igTileManager("option", "width", 300);
             ```
                 string type="string" The container width can be set in pixels (px) and percentage (%).
                 number type="number" The container width can be set as a number in pixels.
@@ -99,18 +99,17 @@
             width: null,
             /* type="string|number|null" Gets/Sets the height of the container.
             ```
-                //Initialize 
-                $(".selector").igTileManager({     
+                //Initialize
+                $(".selector").igTileManager({
                     height : 400
-                });  
-            
-                //Get 
-                var height = $(".selector").igTileManager("option", "height");  
-            
-                //Set 
+                });
+
+                //Get
+                var height = $(".selector").igTileManager("option", "height");
+
+                //Set
                 $(".selector").igTileManager("option", "height", 400);
             ```
-                
                 string type="string" The height width can be set in pixels (px) and percentage (%).
                 number type="number" The height width can be set as a number in pixels.
                 null type="object" The height width can be set as a number in pixels.
@@ -119,15 +118,15 @@
             /* type="string|number|null" Gets/Sets the width of each column in the container.
             ```
                 //Initialize
-                $('.selector').igTileManager({ 
-                    columnWidth: 150  
+                $('.selector').igTileManager({
+                    columnWidth: 150
                 });
-                
+
                 //Get
                 var columnWidth = igTileManager("option", "columnWidth");
-                
+
                 //Set
-                $igTileManager("option", "columnWidth", 150); 
+                $igTileManager("option", "columnWidth", 150);
             ```
                 string type="string" The column width can be set in pixels (px) or percentage (%).
                 number type="number" The column width can be set as a number representing value in pixels.
@@ -138,14 +137,14 @@
             ```
                 //Initialize
                 $('.selector').igTileManager({ 
-                    columnHeight: 150  
+                    columnHeight: 150
                 });
-                
+
                 //Get
                 var columnHeight = igTileManager("option", "columnHeight");
-                
+
                 //Set
-                $igTileManager("option", "columnHeight", 150); 
+                $igTileManager("option", "columnHeight", 150);
             ```
                 string type="string" The column height can be set in pixels (px) or percentage (%).
                 number type="number" The column height can be set as a number representing value in pixels.
@@ -155,15 +154,15 @@
             /* type="number|null" Gets/Sets the columns count in the container.
             ```
                 //Initialize
-                $('.selector').igTileManager({ 
-                    cols: 5  
+                $('.selector').igTileManager({
+                    cols: 5
                 });
-                
+
                 //Get
                 var cols = igTileManager("option", "cols");
-                
+
                 //Set
-                $igTileManager("option", "cols", 5);  
+                $igTileManager("option", "cols", 5);
             ```
                 null type="object" The column count will be automatically calculated.
                 number type="number" The column count can be set as a number.
@@ -175,10 +174,10 @@
                 $('.selector').igTileManager({
                     rows: 5
                 });
-                
+
                 //Get
-                var rows = $('.selector').igTileManager("option", "rows"); 
-                
+                var rows = $('.selector').igTileManager("option", "rows");
+
                 //Set
                 var rows = 5;
                 $('.selector').igTileManager("option", "rows", rows);
@@ -189,15 +188,15 @@
             rows: null,
             /* type="number" Gets/Sets the horizontal spacing between tiles.
             ```
-                //Initialize 
-                $(".selector").igTileManager({     
+                //Initialize
+                $(".selector").igTileManager({
                     marginLeft : 15
-                });  
-            
-                //Get 
-                var marginLeft = $(".selector").igTileManager("option", "marginLeft");  
-            
-                //Set 
+                });
+
+                //Get
+                var marginLeft = $(".selector").igTileManager("option", "marginLeft");
+
+                //Set
                 $(".selector").igTileManager("option", "marginLeft", 15);
             ```
                 number type="number" The horizontal spacing between tiles can be set as a number.
@@ -205,37 +204,36 @@
             marginLeft: 0,
             /* type="number" Gets/Sets the vertical spacing between tiles.
             ```
-                //Initialize 
-                $(".selector").igTileManager({     
+                //Initialize
+                $(".selector").igTileManager({
                     marginTop : 15
-                });  
-            
-                //Get 
-                var marginTop = $(".selector").igTileManager("option", "marginTop");  
-            
-                //Set 
+                });
+
+                //Get
+                var marginTop = $(".selector").igTileManager("option", "marginTop");
+
+                //Set
                 $(".selector").igTileManager("option", "marginTop", 15);
             ```
                 number type="number" The vertical spacing between tiles can be set as a number.
             */
             marginTop: 0,
-            /* type="boolean" Gets/Sets whether the items will rearrange when the container is resized. 
+            /* type="boolean" Gets/Sets whether the items will rearrange when the container is resized.
             ```
-                //Initialize 
-                $(".selector").igTileManager({     
+                //Initialize
+                $(".selector").igTileManager({
                     rearrangeItems : false
-                });  
-            
-                //Get 
-                var rearrangeItems = $(".selector").igTileManager("option", "rearrangeItems");  
-            
-                //Set 
+                });
+
+                //Get
+                var rearrangeItems = $(".selector").igTileManager("option", "rearrangeItems");
+
+                //Set
                 $(".selector").igTileManager("option", "rearrangeItems", false);
             ```
             */
             rearrangeItems: true,
             /* type="array|null" Gets/Sets the tiles configurations. Every tile is described by rowSpan, colSpan, rowIndex and colIndex.
-                
             ```
                 //Initialize
                 $('.selector').igTileManager({
@@ -244,32 +242,32 @@
                                 { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 },
                                 { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }]
                 });
-                
+
                 //Get
                 var items = igTileManager("option", "items");
-                
+
                 //Set
                 //Items configuration can be set when the new configuration matches the number of items in the old configuration
                 var items = [{ colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 0 },
                                 { colSpan: 2, rowSpan: 1, colIndex: 1, rowIndex: 0 },
                                 { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 },
                                 { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }];
-                igTileManager("option", "items", items); 
+                igTileManager("option", "items", items);
             ```
                 array type="object" An array with colSpan, rowSpan, colIndex, rowIndex configurations for each tile.
                 null type="object" Default tile configurations of rowSpan: 1 and colSpan: 1 will be used.
             */
             items: null,
-            /* type="object" Specifies any valid data source accepted by [$.ig.DataSource](ig.datasource), or an instance of an [$.ig.DataSource](ig.datasource) itself. 
+            /* type="object" Specifies any valid data source accepted by [$.ig.DataSource](ig.datasource), or an instance of an [$.ig.DataSource](ig.datasource) itself.
             ```
-                //Initialize 
-                $(".selector").igTileManager({     
+                //Initialize
+                $(".selector").igTileManager({
                     dataSource : data
-                });  
-            
-                //Get 
+                });
+
+                //Get
                 var data = $(".selector").igTileManager("option", "dataSource");
-                    
+
                 //Set
                 var dataSource = data;
                 $(".selector").igTileManager("option", "dataSource", dataSource);
@@ -279,13 +277,13 @@
             /* type="string|null" Gets/Sets the content of the tiles in minimized state.
             ```
                 //Initialize
-                $('.selector').igTileManager({     
+                $('.selector').igTileManager({
                     minimizedState : 'h1'
                 });
-                    
+
                 //Get
                 var minimizedState = $('.selector').igTileManager("option", "minimizedState");
-                
+
                 //Set
                 var minimizedState = 'h1';
                 $('.selector').igTileManager("option", "minimizedState", minimizedState);
@@ -297,13 +295,13 @@
             /* type="string|null" Gets/Sets the content of the tiles in maximized state.
              ```
                 //Initialize
-                $('.selector').igTileManager({     
+                $('.selector').igTileManager({
                     maximizedState : 'div'
                 });
-                
+
                 //Get
                 var maximizedState = $('.selector').igTileManager("option", "maximizedState");
-                
+
                 //Set
                 var maximizedState = 'div';
                 $('.selector').igTileManager("option", "maximizedState", maximizedState);
@@ -322,19 +320,18 @@
                             { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }],
                         maximizedTileIndex: 2
                 });
-                
+
                 //Get
                 var maximizedTileIndex = $('.selector').igTileManager("option", "maximizedTileIndex");
-                
+
                 //Set
                 var index = 1;
                 $('.selector').igTileManager("option", "maximizedTileIndex", index);
-            ```    
+            ```
                 number type="number" The maximizedTileindex can be set as a number.
                 null type="object" Option is ignored.
             */
             maximizedTileIndex: null,
-
             // TODO: Implement custom tile selector
             /* type="string" Selector that specifies which elements to be considered as tiles when initializing from html markup. */
 
@@ -345,10 +342,10 @@
                 $('.selector').igTileManager({
                     rightPanelCols: 2
                 });
-                
+
                 //Get
-                var cols = $('.selector').igTileManager("option", "rightPanelCols"); 
-                
+                var cols = $('.selector').igTileManager("option", "rightPanelCols");
+
                 //Set
                 var cols = 2;
                 $('.selector').igTileManager("option", "rightPanelCols", cols);
@@ -363,10 +360,10 @@
                 $('.selector').igTileManager({
                     rightPanelTilesWidth: 100
                 });
-                
+
                 //Get
-                var width = $('.selector').igTileManager("option", "rightPanelTilesWidth"); 
-                
+                var width = $('.selector').igTileManager("option", "rightPanelTilesWidth");
+
                 //Set
                 var width = 100;
                 $('.selector').igTileManager("option", "rightPanelTilesWidth", width);
@@ -381,10 +378,10 @@
                 $('.selector').igTileManager({
                     rightPanelTilesHeight: 100
                 });
-                
+
                 //Get
-                var height = $('.selector').igTileManager("option", "rightPanelTilesHeight"); 
-                
+                var height = $('.selector').igTileManager("option", "rightPanelTilesHeight");
+
                 //Set
                 var height = 100;
                 $('.selector').igTileManager("option", "rightPanelTilesHeight", height);
@@ -393,23 +390,23 @@
                 null type="object" Default value equal to the column height will be used.
             */
             rightPanelTilesHeight: null,
-            /* type="boolean" Gets/Sets whether the right panel should show scrollbar when tiles are overflowing. 
+            /* type="boolean" Gets/Sets whether the right panel should show scrollbar when tiles are overflowing.
             ```
                 //Initialize
                 $('.selector').igTileManager({
                     showRightPanelScroll: true
                 });
-                
+
                 //Get
-                var showRightScroll = $('.selector').igTileManager("option", "showRightPanelScroll"); 
-                
+                var showRightScroll = $('.selector').igTileManager("option", "showRightPanelScroll");
+
                 //Set
                 var showRightScroll = true;
                 $('.selector').igTileManager("option", "rightPanelTilesWidth", showRightScroll);
             ```
             */
             showRightPanelScroll: true,
-            /* type="object" Configure the container variable representation, which defines splitter functionality. 
+            /* type="object" Configure the container variable representation, which defines splitter functionality.
             ```
                 //Initialize
                 $('.selector').igTileManager({
@@ -419,17 +416,17 @@
                         collapsible: true
                     }
                 });
-                
+
                 //Get
                 var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
-                
+
                 //Set
                 var splitterOptions = { enabled : false };
                 $(".selector").igTileManager("option", "splitterOptions", splitterOptions);
             ```
             */
             splitterOptions: {
-                /* type="boolean" Gets/Sets whether the splitter should be enabled.  
+                /* type="boolean" Gets/Sets whether the splitter should be enabled.
                 ```
                     //Initialize
                     $('.selector').igTileManager({
@@ -437,18 +434,18 @@
                             enabled: true
                         }
                     });
-                    
+
                     //Get
                     var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
                     splitterOptions.enabled;
-                    
+
                     //Set
                     var splitterOptions = { enabled : false };
                     $(".selector").igTileManager("option", "splitterOptions", splitterOptions);
                 ```
                 */
                 enabled: true,
-                /* type="boolean" Gets whether the splitter can be collapsible.  
+                /* type="boolean" Gets whether the splitter can be collapsible.
                 ```
                     //Initialize
                     $('.selector').igTileManager({
@@ -456,14 +453,14 @@
                             collapsible: true
                         }
                     });
-                    
+
                     //Get
                     var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
                     splitterOptions.collapsible;
                 ```
                 */
                 collapsible: false,
-                /* type="boolean" Gets whether the splitter should be initially collapsed.  
+                /* type="boolean" Gets whether the splitter should be initially collapsed.
                 ```
                     //Initialize
                     $('.selector').igTileManager({
@@ -471,14 +468,14 @@
                             collapsed: true
                         }
                     });
-                    
+
                     //Get
                     var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
                     splitterOptions.collapsed;
                 ```
                 */
                 collapsed: false,
-                /* type="object" Gets/Sets splitter events. 
+                /* type="object" Gets/Sets splitter events.
                 ```
                     //Initialize
                     $('.selector').igTileManager({
@@ -496,14 +493,14 @@
                                     // return index of expanded panel
                                     ui.index;
                                 }
-                                        }
+                            }
                         }
                     });
-                    
+
                     //Get
                     var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
                     splitterOptions.events;
-                    
+
                     //Set
                     var splitterOptions = {
                         events : {
@@ -527,25 +524,25 @@
                                         // return index of collapsed panel
                                         ui.index;
                                     }
-                                            }
+                                }
                             }
                         });
-                    
+
                         //Get
                         var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
                         splitterOptions.events.collapsed;
-                    
+
                         //Set
                         var splitterOptions = {
                             events : {
                                 collapsed: function(evt, ui) {...}
-                                        }
+                            }
                         }
                         $(".selector").igTileManager("option", "splitterOptions", splitterOptions);
                     ```
                     Function takes arguments evt and ui.
                     Use ui.owner to get a reference to the splitter instance.
-                    Use ui.index to get an index of collased panel.  
+                    Use ui.index to get an index of collased panel.
                     */
                     collapsed: null,
                     /* Event fired after expanding is performed. Not cancellable.
@@ -563,11 +560,11 @@
                                 }
                             }
                         });
-                    
+
                         //Get
                         var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
                         splitterOptions.events.expanded;
-                    
+
                         //Set
                         var splitterOptions = {
                             events : {
@@ -578,7 +575,7 @@
                     ```
                     Function takes arguments evt and ui.
                     Use ui.owner to get a reference to the splitter instance.
-                    Use ui.index to get an index of expanded panel. 
+                    Use ui.index to get an index of expanded panel.
                     */
                     expanded: null
                 }
