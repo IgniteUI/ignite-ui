@@ -136,7 +136,7 @@
             /* type="string|number|null" Gets/Sets the height of each column in the container.
             ```
                 //Initialize
-                $('.selector').igTileManager({ 
+                $('.selector').igTileManager({
                     columnHeight: 150
                 });
 
@@ -332,6 +332,7 @@
                 null type="object" Option is ignored.
             */
             maximizedTileIndex: null,
+
             // TODO: Implement custom tile selector
             /* type="string" Selector that specifies which elements to be considered as tiles when initializing from html markup. */
 
@@ -580,47 +581,47 @@
                     expanded: null
                 }
             },
-            /* type="string" Gets/Sets JQuery selector that specifies which elements will not trigger maximizing when clicked on. 
+            /* type="string" Gets/Sets JQuery selector that specifies which elements will not trigger maximizing when clicked on.
             ```
                 //Initialize
                 $('.selector').igTileManager({
                     preventMaximizingSelector : 'a, input'
                 });
-                
+
                 //Get
-                var selector = $('.selector').igTileManager("option", "preventMaximizingSelector"); 
-                
+                var selector = $('.selector').igTileManager("option", "preventMaximizingSelector");
+
                 //Set
                 var selector = 'a, input';
                 $('.selector').igTileManager("option", "preventMaximizingSelector", selector);
             ```
             */
             preventMaximizingSelector: "a, input",
-            /* type="number" Gets/Sets the duration of the animations in the tile manager. 
+            /* type="number" Gets/Sets the duration of the animations in the tile manager.
             ```
-                //Initialize 
+                //Initialize
                 $(".selector").igTileManager({
                     animationDuration : 1000
-                    });  
-            
-                //Get 
-                var animationDuration = $(".selector").igTileManager("option", "animationDuration");  
-            
-                //Set 
+                    });
+
+                //Get
+                var animationDuration = $(".selector").igTileManager("option", "animationDuration");
+
+                //Set
                 $(".selector").igTileManager("option", "animationDuration", 1000);
             ```
             */
             animationDuration: 500,
-            /* type="string" Specifies a remote URL accepted by [$.ig.DataSource](ig.datasource) in order to request data from it. 
+            /* type="string" Specifies a remote URL accepted by [$.ig.DataSource](ig.datasource) in order to request data from it.
             ```
-                //Initialize 
-                $(".selector").igTileManager({     
+                //Initialize
+                $(".selector").igTileManager({
                     dataSourceUrl : "data.svc"
-                });  
-            
-                //Get 
+                });
+
+                //Get
                 var url = $(".selector").igTileManager("option", "dataSourceUrl");
-                    
+
                 //Set
                 var url = "data.svc";
                 $(".selector").igTileManager("option", "dataSourceUrl", url);
@@ -629,14 +630,14 @@
             dataSourceUrl: null,
             /* type="string|null" Property in the response which specifies where the data records array will be held (if the response is wrapped). See [$.ig.DataSource responseDataKey](ig.datasource#options:settings.responseDataKey).
             ```
-                //Initialize 
-                $('.selector').igTileManager({     
+                //Initialize
+                $('.selector').igTileManager({
                     responseDataKey : "d.results"
-                });  
-            
-                //Get 
-                var responseDataKey = $('.selector').igTileManager("option", "responseDataKey"); 
-                
+                });
+
+                //Get
+                var responseDataKey = $('.selector').igTileManager("option", "responseDataKey");
+
                 //Set
                 var responseDataKey = "d.results";
                 $('.selector').igTileManager("option", "responseDataKey", responseDataKey);
@@ -647,64 +648,64 @@
             responseDataKey: null,
             /* type="string" String Explicitly set data source type (such as "json"). Please refer to the documentation of [$.ig.DataSource type](ig.datasource#options:settings.type) and its type property.
             ```
-                //Initialize 
-                $('.selector').igTileManager({     
+                //Initialize
+                $('.selector').igTileManager({
                     responseDataType : "json"
-                });  
-            
-                //Get 
+                });
+
+                //Get
                 var responseDataType = $('.selector').igTileManager("option", "responseDataType");
-                
+
                 //Set
                 var responseDataType = "json";
                 $('.selector').igTileManager("option", "responseDataType", responseDataType);
-            ```    
+            ```
                 string type="string" Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource and its type property.
 				null type="object" Option is ignored.
 			*/
             responseDataType: null,
-            /* type="string" Explicitly set data source type (such as "json"). Please refer to the documentation of [$.ig.DataSource type](ig.datasource#options:settings.type) and its type property. 
+            /* type="string" Explicitly set data source type (such as "json"). Please refer to the documentation of [$.ig.DataSource type](ig.datasource#options:settings.type) and its type property.
             ```
-                //Initialize 
-                $(".selector").igTileManager({     
+                //Initialize
+                $(".selector").igTileManager({
                     dataSourceType : "xml"
-                });  
-                
+                });
+
                 //Get
                 var type = $(".selector").igTileManager("option", "dataSourceType");
-                    
+
                 //Set
                 var type = "xml";
                 $(".selector").igTileManager("option", "dataSourceType", type);
             ```
             */
             dataSourceType: null,
-            /* type="string" Specifies the HTTP request method. 
+            /* type="string" Specifies the HTTP request method.
             ```
-                //Initialize 
-                $(".selector").igTileManager({     
+                //Initialize
+                $(".selector").igTileManager({
                         requestType : "get"
                 });
-                
+
                 //Get
                 var requestType = $('.selector').igTileManager("option", "requestType");
-                
+
                 //Set
                 var requestType = "get";
                 $('.selector').igTileManager("option", "requestType", requestType);
             ```
             */
             requestType: "GET",
-            /* type="string" Gets/Sets the HTTP content type for the response object. See [Perform an asynchronous HTTP (Ajax) request](http://api.jquery.com/jQuery.ajax/). 
+            /* type="string" Gets/Sets the HTTP content type for the response object. See [Perform an asynchronous HTTP (Ajax) request](http://api.jquery.com/jQuery.ajax/).
             ```
                 //Initialize
                 $(".selector").igTileManager({
                     responseContentType : 'application/x-www-form-urlencoded; charset=UTF-8'
                 )};
-                
+
                 //Get
                 var respContentType = $('.selector').igTileManager("option", "responseContentType");
-                
+
                 //Set
                 var respContentType = 'application/x-www-form-urlencoded; charset=UTF-8';
                 $('.selector').igTileManager("option", "responseContentType", respContentType);
@@ -722,7 +723,7 @@
                     //reference to dataSource
                     ui.dataSource;
                 });
-            
+
                 //Initialize
                 $(".selector").igTileManager({
                     dataBinding: function(evt, ui) {...}
@@ -742,7 +743,7 @@
                     // reference to the data the tile has been databound to.
                     ui.dataView;
                 });
-            
+
                 //Initialize
                 $(".selector").igTileManager({
                     dataBound: function(evt, ui) {...}
@@ -766,7 +767,7 @@
                     //reference to items
                     ui.items;
                 });
-                
+
                 //Initialize
                 $(".selector").igTileManager({
                     rendering: function(evt, ui) {...}
@@ -785,7 +786,7 @@
                     // reference to the tile.
                     ui.owner;
                 });
-                
+
                 //Initialize
                 $(".selector").igTileManager({
                     rendered: function(evt, ui) {...}
@@ -804,7 +805,7 @@
                     //reference to the tile.
                     ui.tile;
                 });
-                
+
                 //Initialize
                 $(".selector").igTileManager({
                     tileRendering: function(evt, ui) {...}
@@ -824,7 +825,7 @@
                     //reference to the tile
                     ui.tile;
                 });
-                
+
                 //Initialize
                 $(".selector").igTileManager({
                     tileRendered: function(evt, ui) {...}
@@ -846,13 +847,13 @@
                     //reference to the tile that is going to be minimized or null if not any
                     ui.minimizingTile;
                 });
-                
+
                 //Initialize
                 $(".selector").igTileManager({
                     tileMaximizing: function(evt, ui) {...}
                 });
             ```
-            Function takes arguments evt and ui.        
+            Function takes arguments evt and ui.
             Use ui.owner to get a reference to the tile manager performing the maximizing the tile belongs to.
             Use ui.tile to get the jQuery element of the tile being maximized
             Use ui.minimizingTile to get reference to the tile that is minimizing simultaneously or null if no tile is minimizing.
@@ -867,7 +868,7 @@
                     //reference to the maximized tile
                     ui.tile;
                 });
-                
+
                 //Initialize
                 $(".selector").igTileManager({
                     tileMaximized: function(evt, ui) {...}
@@ -889,7 +890,7 @@
                     //reference to the tile that is going to be maximized or null if not any
                     ui.maximizingTile;
                 });
-                
+
                 //Initialize
                 $(".selector").igTileManager({
                     tileMinimizing: function(evt, ui) {...}
@@ -910,7 +911,7 @@
                     //reference to the tile that was minimized
                     ui.tile;
                 });
-                
+
                 //Initialize
                 $(".selector").igTileManager({
                     tileMinimized: function(evt, ui) {...}
@@ -2357,6 +2358,9 @@
         },
         layoutManager: function () {
             /* Returns the [layout manager](ui.iglayoutmanager) associated with current tile manager.
+            ```
+                $(".selector").igTileManager("layoutManager");
+            ```
                returnType="object" Returns the layout manager associated with this tile manager.
             */
             return this._options.$layoutManagerElement.data("igLayoutManager");
@@ -2462,7 +2466,7 @@
             this._trigger(this.events.tileMinimized, event, args);
         },
         dataBind: function () {
-            /* Causes the TileManager to data bind to the data source (local or remote) , and re-render all of the data as well. 
+            /* Causes the TileManager to data bind to the data source (local or remote) , and re-render all of the data as well.
             ```
                 $(".selector").igTileManager("dataBind");
             ```
