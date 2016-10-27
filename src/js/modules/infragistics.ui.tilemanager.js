@@ -79,70 +79,259 @@
             splitterNoScroll: "ui-igsplitter-no-scroll"
         },
         options: {
-            /* type="string|number|null Gets sets the width of the container."
-                string The container width can be set in pixels (px) and percentage (%).
-                number The container width can be set as a number in pixels.
-                null The default container width will be used.
+            /* type="string|number|null Gets/Sets the width of the container."
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                    width: 300
+                });
+                
+                //Get
+                var width = $('.selector').igTileManager("option", "width"); 
+                
+                //Set
+                $('.selector').igTileManager("option", "width", 300); 
+            ```
+                string type="string" The container width can be set in pixels (px) and percentage (%).
+                number type="number" The container width can be set as a number in pixels.
+                null type="object" The default container width will be used.
             */
             width: null,
-            /* type="string|number|null" Gets sets the height of the container.
-                string The height width can be set in pixels (px) and percentage (%).
-                number The height width can be set as a number in pixels.
-                null The default container height will be used.
+            /* type="string|number|null" Gets/Sets the height of the container.
+            ```
+                //Initialize 
+                $(".selector").igTileManager({     
+                    height : 400
+                });  
+            
+                //Get 
+                var height = $(".selector").igTileManager("option", "height");  
+            
+                //Set 
+                $(".selector").igTileManager("option", "height", 400);
+            ```
+                
+                string type="string" The height width can be set in pixels (px) and percentage (%).
+                number type="number" The height width can be set as a number in pixels.
+                null type="object" The height width can be set as a number in pixels.
             */
             height: null,
-            /* type="string|number|null" Gets sets the width of each column in the container.
-                string The column width can be set in pixels (px) or percentage (%).
-                number The column width can be set as a number representing value in pixels.
-                null The column width will be calculated based on the container width and the other options.
+            /* type="string|number|null" Gets/Sets the width of each column in the container.
+            ```
+                //Initialize
+                $('.selector').igTileManager({ 
+                    columnWidth: 150  
+                });
+                
+                //Get
+                var columnWidth = igTileManager("option", "columnWidth");
+                
+                //Set
+                $igTileManager("option", "columnWidth", 150); 
+            ```
+                string type="string" The column width can be set in pixels (px) or percentage (%).
+                number type="number" The column width can be set as a number representing value in pixels.
+                null type="object" The column width will be calculated based on the container width and the other options.
             */
             columnWidth: null,
-            /* type="string|number|null" The height of each column in the container.
-                string The column height can be set in pixels (px) or percentage (%).
-                number The column height can be set as a number representing value in pixels.
-                null The column height will be calculated based on the container height and the other options.
+            /* type="string|number|null" Gets/Sets the height of each column in the container.
+            ```
+                //Initialize
+                $('.selector').igTileManager({ 
+                    columnHeight: 150  
+                });
+                
+                //Get
+                var columnHeight = igTileManager("option", "columnHeight");
+                
+                //Set
+                $igTileManager("option", "columnHeight", 150); 
+            ```
+                string type="string" The column height can be set in pixels (px) or percentage (%).
+                number type="number" The column height can be set as a number representing value in pixels.
+                null type="object" The column height will be calculated based on the container height and the other options.
             */
             columnHeight: null,
-            /* type="number|null" Gets sets the columns count in the container.
-                number The column count can be set as a number.
-                null The column count will be automatically calculated.
+            /* type="number|null" Gets/Sets the columns count in the container.
+            ```
+                //Initialize
+                $('.selector').igTileManager({ 
+                    cols: 5  
+                });
+                
+                //Get
+                var cols = igTileManager("option", "cols");
+                
+                //Set
+                $igTileManager("option", "cols", 5);  
+            ```
+                null type="object" The column count will be automatically calculated.
+                number type="number" The column count can be set as a number.
             */
             cols: null,
-            /* type="number|null" Gets sets the rows count in the container.
-                number The row count can be set as a number.
-                null The row count will be automatically calculated.
+            /* type="number|null" Gets/Sets the rows count in the container.
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                    rows: 5
+                });
+                
+                //Get
+                var rows = $('.selector').igTileManager("option", "rows"); 
+                
+                //Set
+                var rows = 5;
+                $('.selector').igTileManager("option", "rows", rows);
+            ```
+                number type="number" The row count can be set as a number.
+                null type="object" The row count will be automatically calculated.
             */
             rows: null,
-            /* type="number" Gets sets the horizontal spacing between tiles.
-                number The horizontal spacing between tiles can be set as a number.
+            /* type="number" Gets/Sets the horizontal spacing between tiles.
+            ```
+                //Initialize 
+                $(".selector").igTileManager({     
+                    marginLeft : 15
+                });  
+            
+                //Get 
+                var marginLeft = $(".selector").igTileManager("option", "marginLeft");  
+            
+                //Set 
+                $(".selector").igTileManager("option", "marginLeft", 15);
+            ```
+                number type="number" The horizontal spacing between tiles can be set as a number.
             */
             marginLeft: 0,
-            /* type="number" Gets sets the vertical spacing between tiles.
-                number The vertical spacing between tiles can be set as a number.
+            /* type="number" Gets/Sets the vertical spacing between tiles.
+            ```
+                //Initialize 
+                $(".selector").igTileManager({     
+                    marginTop : 15
+                });  
+            
+                //Get 
+                var marginTop = $(".selector").igTileManager("option", "marginTop");  
+            
+                //Set 
+                $(".selector").igTileManager("option", "marginTop", 15);
+            ```
+                number type="number" The vertical spacing between tiles can be set as a number.
             */
             marginTop: 0,
-            /* type="boolean" Gets sets whether the items will rearrange when the container is resized. */
+            /* type="boolean" Gets/Sets whether the items will rearrange when the container is resized. 
+            ```
+                //Initialize 
+                $(".selector").igTileManager({     
+                    rearrangeItems : false
+                });  
+            
+                //Get 
+                var rearrangeItems = $(".selector").igTileManager("option", "rearrangeItems");  
+            
+                //Set 
+                $(".selector").igTileManager("option", "rearrangeItems", false);
+            ```
+            */
             rearrangeItems: true,
-            /* type="array|null" Gets sets the tiles configurations. Every tile is described by rowSpan, colSpan, rowIndex and colIndex.
-                array An array with colSpan, rowSpan, colIndex, rowIndex configurations for each tile.
-                null Default tile configurations of rowSpan: 1 and colSpan: 1 will be used.
+            /* type="array|null" Gets/Sets the tiles configurations. Every tile is described by rowSpan, colSpan, rowIndex and colIndex.
+                
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                        items: [{ colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                                { colSpan: 2, rowSpan: 1, colIndex: 1, rowIndex: 0 },
+                                { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 },
+                                { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }]
+                });
+                
+                //Get
+                var items = igTileManager("option", "items");
+                
+                //Set
+                //Items configuration can be set when the new configuration matches the number of items in the old configuration
+                var items = [{ colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                                { colSpan: 2, rowSpan: 1, colIndex: 1, rowIndex: 0 },
+                                { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 },
+                                { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }];
+                igTileManager("option", "items", items); 
+            ```
+                array type="object" An array with colSpan, rowSpan, colIndex, rowIndex configurations for each tile.
+                null type="object" Default tile configurations of rowSpan: 1 and colSpan: 1 will be used.
             */
             items: null,
-            /* type="object" Specifies any valid data source accepted by $.ig.DataSource, or an instance of an $.ig.DataSource itself. */
+            /* type="object" Specifies any valid data source accepted by [$.ig.DataSource](ig.datasource), or an instance of an [$.ig.DataSource](ig.datasource) itself. 
+            ```
+                //Initialize 
+                $(".selector").igTileManager({     
+                    dataSource : data
+                });  
+            
+                //Get 
+                var data = $(".selector").igTileManager("option", "dataSource");
+                    
+                //Set
+                var dataSource = data;
+                $(".selector").igTileManager("option", "dataSource", dataSource);
+            ```
+            */
             dataSource: null,
-            /* type="string|null" Gets sets the content of the tiles in minimized state.
-                string When initializing on html markup provide jQuery selector specifying what content of the tile to be shown in minimized state. When initializing on data source provide igTemplate that will be rendered for the minimized state.
-                null The whole content of the tile will be visible in minimized state.
+            /* type="string|null" Gets/Sets the content of the tiles in minimized state.
+            ```
+                //Initialize
+                $('.selector').igTileManager({     
+                    minimizedState : 'h1'
+                });
+                    
+                //Get
+                var minimizedState = $('.selector').igTileManager("option", "minimizedState");
+                
+                //Set
+                var minimizedState = 'h1';
+                $('.selector').igTileManager("option", "minimizedState", minimizedState);
+            ```
+                string type="string" When initializing on html markup provide jQuery selector specifying what content of the tile to be shown in minimized state. When initializing on data source provide igTemplate that will be rendered for the minimized state.
+                null type="object" The whole content of the tile will be visible in minimized state.
             */
             minimizedState: null,
-            /* type="string|null" Gets sets the content of the tiles in maximized state.
-                string When initializing on html markup provide jQuery selector specifying which elements of the tile to be shown in maximized state. When initializing on data source provide igTemplate that will be rendered for the maximized state.
-                null The whole content of the tile will be visible in maximized state.
+            /* type="string|null" Gets/Sets the content of the tiles in maximized state.
+             ```
+                //Initialize
+                $('.selector').igTileManager({     
+                    maximizedState : 'div'
+                });
+                
+                //Get
+                var maximizedState = $('.selector').igTileManager("option", "maximizedState");
+                
+                //Set
+                var maximizedState = 'div';
+                $('.selector').igTileManager("option", "maximizedState", maximizedState);
+            ```
+                string type="string" When initializing on html markup provide jQuery selector specifying which elements of the tile to be shown in maximized state. When initializing on data source provide igTemplate that will be rendered for the maximized state.
+                null type="object" The whole content of the tile will be visible in maximized state.
             */
             maximizedState: null,
-            /* type="number|null" Gets sets the index of which items configuration will be used for positioning and sizing of the maximized tile.
-                number The maximizedTileindex can be set as a number.
-                null Option is ignored.
+            /* type="number|null" Gets/Sets the index of which items configuration will be used for positioning and sizing of the maximized tile.
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                        items: [{ colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 0 },
+                            { colSpan: 2, rowSpan: 1, colIndex: 1, rowIndex: 0 },
+                            { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 }, \/\* items index : 2 \*\/
+                            { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }],
+                        maximizedTileIndex: 2
+                });
+                
+                //Get
+                var maximizedTileIndex = $('.selector').igTileManager("option", "maximizedTileIndex");
+                
+                //Set
+                var index = 1;
+                $('.selector').igTileManager("option", "maximizedTileIndex", index);
+            ```    
+                number type="number" The maximizedTileindex can be set as a number.
+                null type="object" Option is ignored.
             */
             maximizedTileIndex: null,
 
@@ -150,131 +339,589 @@
             /* type="string" Selector that specifies which elements to be considered as tiles when initializing from html markup. */
 
             //tileSelector: null,
-            /* type="number|null" Gets sets how many columns to be displayed in the right panel when the tiles are minimized.
-                number Set the number of right panel columns as a number. The minimum value is 1.
-                null Default of 1 column will be used.
+            /* type="number|null" Gets/Sets how many columns to be displayed in the right panel when the tiles are minimized.
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                    rightPanelCols: 2
+                });
+                
+                //Get
+                var cols = $('.selector').igTileManager("option", "rightPanelCols"); 
+                
+                //Set
+                var cols = 2;
+                $('.selector').igTileManager("option", "rightPanelCols", cols);
+            ```
+                number type="number" Set the number of right panel columns as a number. The minimum value is 1.
+                null type="object" Default of 1 column will be used.
             */
             rightPanelCols: 1,
-            /* type="number|null" Gets sets the width of the minimized tiles in the right panel.
-                number Set the width of the minimized tiles as a number.
-                null Default value equal to the column width will be used.
+            /* type="number|null" Gets/Sets the width of the minimized tiles in the right panel.
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                    rightPanelTilesWidth: 100
+                });
+                
+                //Get
+                var width = $('.selector').igTileManager("option", "rightPanelTilesWidth"); 
+                
+                //Set
+                var width = 100;
+                $('.selector').igTileManager("option", "rightPanelTilesWidth", width);
+            ```
+                number type="number" Set the width of the minimized tiles as a number.
+                null type="object" Default value equal to the column width will be used.
             */
             rightPanelTilesWidth: null,
-            /* type="number|null" Gets sets the height of the minimized tiles in the right panel.
-                number Set the height of the minimized tiles as a number.
-                null Default value equal to the column height will be used.
+            /* type="number|null" Gets/Sets the height of the minimized tiles in the right panel.
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                    rightPanelTilesHeight: 100
+                });
+                
+                //Get
+                var height = $('.selector').igTileManager("option", "rightPanelTilesHeight"); 
+                
+                //Set
+                var height = 100;
+                $('.selector').igTileManager("option", "rightPanelTilesHeight", height);
+            ```
+                number type="number" Set the height of the minimized tiles as a number.
+                null type="object" Default value equal to the column height will be used.
             */
             rightPanelTilesHeight: null,
-            /* type="boolean" Gets sets whether the right panel should show scrollbar when tiles are overflowing. */
+            /* type="boolean" Gets/Sets whether the right panel should show scrollbar when tiles are overflowing. 
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                    showRightPanelScroll: true
+                });
+                
+                //Get
+                var showRightScroll = $('.selector').igTileManager("option", "showRightPanelScroll"); 
+                
+                //Set
+                var showRightScroll = true;
+                $('.selector').igTileManager("option", "rightPanelTilesWidth", showRightScroll);
+            ```
+            */
             showRightPanelScroll: true,
-            /* type="object" Gets sets container of variables which defines splitter functionality. */
+            /* type="object" Configure the container variable representation, which defines splitter functionality. 
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                    splitterOptions: {
+                        enabled: true,
+                        collapsed: false,
+                        collapsible: true
+                    }
+                });
+                
+                //Get
+                var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
+                
+                //Set
+                var splitterOptions = { enabled : false };
+                $(".selector").igTileManager("option", "splitterOptions", splitterOptions);
+            ```
+            */
             splitterOptions: {
-                /* type="boolean" Gets sets whether the splitter should be enabled.  */
+                /* type="boolean" Gets/Sets whether the splitter should be enabled.  
+                ```
+                    //Initialize
+                    $('.selector').igTileManager({
+                        splitterOptions: {
+                            enabled: true
+                        }
+                    });
+                    
+                    //Get
+                    var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
+                    splitterOptions.enabled;
+                    
+                    //Set
+                    var splitterOptions = { enabled : false };
+                    $(".selector").igTileManager("option", "splitterOptions", splitterOptions);
+                ```
+                */
                 enabled: true,
-                /* type="boolean" Gets sets whether the splitter can be collapsed.  */
+                /* type="boolean" Gets whether the splitter can be collapsible.  
+                ```
+                    //Initialize
+                    $('.selector').igTileManager({
+                        splitterOptions: {
+                            collapsible: true
+                        }
+                    });
+                    
+                    //Get
+                    var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
+                    splitterOptions.collapsible;
+                ```
+                */
                 collapsible: false,
-                /* type="boolean" Gets sets whether the splitter should be initially collapsed.  */
+                /* type="boolean" Gets whether the splitter should be initially collapsed.  
+                ```
+                    //Initialize
+                    $('.selector').igTileManager({
+                        splitterOptions: {
+                            collapsed: true
+                        }
+                    });
+                    
+                    //Get
+                    var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
+                    splitterOptions.collapsed;
+                ```
+                */
                 collapsed: false,
-                /* type="object" Gets sets splitter events. */
+                /* type="object" Gets/Sets splitter events. 
+                ```
+                    //Initialize
+                    $('.selector').igTileManager({
+                        splitterOptions: {
+                            events: {
+                                collapsed: function(evt, ui) {
+                                    //return reference to igSplitter
+                                    ui.owner;
+                                    // return index of collapsed panel
+                                    ui.index;
+                                },
+                                expanded: function (evt, ui) {
+                                    //return reference to igSplitter
+                                    ui.owner;
+                                    // return index of expanded panel
+                                    ui.index;
+                                }
+                                        }
+                        }
+                    });
+                    
+                    //Get
+                    var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
+                    splitterOptions.events;
+                    
+                    //Set
+                    var splitterOptions = {
+                        events : {
+                            collapsed: function(evt, ui) {...},
+                            expanded: function (evt, ui) {...}
+                        }
+                    }
+                    $(".selector").igTileManager("option", "splitterOptions", splitterOptions);
+                ```
+                */
                 events: {
-                    /* type="function" Fired after collapsing is performed. Not cancellable.
-                        Function takes arguments evt and ui.
-                        Use ui.owner to get a reference to the splitter instance.
-                        Use ui.index to get an index of collased panel.  */
+                    /* Event fired after collapsing is performed. Not cancellable.
+                    ```
+                        //Initialize
+                        $('.selector').igTileManager({
+                            splitterOptions: {
+                                events: {
+                                    collapsed: function(evt, ui) {
+                                        //return reference to igSplitter
+                                        ui.owner;
+                                        // return index of collapsed panel
+                                        ui.index;
+                                    }
+                                            }
+                            }
+                        });
+                    
+                        //Get
+                        var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
+                        splitterOptions.events.collapsed;
+                    
+                        //Set
+                        var splitterOptions = {
+                            events : {
+                                collapsed: function(evt, ui) {...}
+                                        }
+                        }
+                        $(".selector").igTileManager("option", "splitterOptions", splitterOptions);
+                    ```
+                    Function takes arguments evt and ui.
+                    Use ui.owner to get a reference to the splitter instance.
+                    Use ui.index to get an index of collased panel.  
+                    */
                     collapsed: null,
-                    /* type="function" Fired after expanding is performed. Not cancellable.
-                        Function takes arguments evt and ui.
-                        Use ui.owner to get a reference to the splitter instance.
-                        Use ui.index to get an index of expanded panel. */
+                    /* Event fired after expanding is performed. Not cancellable.
+                    ```
+                        //Initialize
+                        $('.selector').igTileManager({
+                            splitterOptions: {
+                                    events: {
+                                        expanded: function (evt, ui) {
+                                        //return reference to igSplitter
+                                        ui.owner;
+                                        // return index of expanded panel
+                                        ui.index;
+                                    }
+                                }
+                            }
+                        });
+                    
+                        //Get
+                        var splitterOptions = $(".selector").igTileManager("option", "splitterOptions");
+                        splitterOptions.events.expanded;
+                    
+                        //Set
+                        var splitterOptions = {
+                            events : {
+                                expanded: function (evt, ui) {...}
+                            }
+                        }
+                        $(".selector").igTileManager("option", "splitterOptions", splitterOptions);
+                    ```
+                    Function takes arguments evt and ui.
+                    Use ui.owner to get a reference to the splitter instance.
+                    Use ui.index to get an index of expanded panel. 
+                    */
                     expanded: null
                 }
             },
-            /* type="string" Gets sets JQuery selector that specifies which elements will not trigger maximizing when clicked on. */
+            /* type="string" Gets/Sets JQuery selector that specifies which elements will not trigger maximizing when clicked on. 
+            ```
+                //Initialize
+                $('.selector').igTileManager({
+                    preventMaximizingSelector : 'a, input'
+                });
+                
+                //Get
+                var selector = $('.selector').igTileManager("option", "preventMaximizingSelector"); 
+                
+                //Set
+                var selector = 'a, input';
+                $('.selector').igTileManager("option", "preventMaximizingSelector", selector);
+            ```
+            */
             preventMaximizingSelector: "a, input",
-            /* type="number" Gets sets the duration of the animations in the tile manager. */
+            /* type="number" Gets/Sets the duration of the animations in the tile manager. 
+            ```
+                //Initialize 
+                $(".selector").igTileManager({
+                    animationDuration : 1000
+                    });  
+            
+                //Get 
+                var animationDuration = $(".selector").igTileManager("option", "animationDuration");  
+            
+                //Set 
+                $(".selector").igTileManager("option", "animationDuration", 1000);
+            ```
+            */
             animationDuration: 500,
-            /* type="string" Specifies a remote URL accepted by $.ig.DataSource in order to request data from it. */
+            /* type="string" Specifies a remote URL accepted by [$.ig.DataSource](ig.datasource) in order to request data from it. 
+            ```
+                //Initialize 
+                $(".selector").igTileManager({     
+                    dataSourceUrl : "data.svc"
+                });  
+            
+                //Get 
+                var url = $(".selector").igTileManager("option", "dataSourceUrl");
+                    
+                //Set
+                var url = "data.svc";
+                $(".selector").igTileManager("option", "dataSourceUrl", url);
+            ```
+            */
             dataSourceUrl: null,
-            /* type="string|null" see $.ig.DataSource.
-				string Specifies the name of the property in which data records are held if the response is wrapped.
-				null Option is ignored.
+            /* type="string|null" Property in the response which specifies where the data records array will be held (if the response is wrapped). See [$.ig.DataSource responseDataKey](ig.datasource#options:settings.responseDataKey).
+            ```
+                //Initialize 
+                $('.selector').igTileManager({     
+                    responseDataKey : "d.results"
+                });  
+            
+                //Get 
+                var responseDataKey = $('.selector').igTileManager("option", "responseDataKey"); 
+                
+                //Set
+                var responseDataKey = "d.results";
+                $('.selector').igTileManager("option", "responseDataKey", responseDataKey);
+            ```
+				string type="string" Specifies the name of the property in which data records are held if the response is wrapped.
+				null type="object" Option is ignored.
 			*/
             responseDataKey: null,
-            /* type="string"
-				string Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource and its type property.
-				null Option is ignored.
+            /* type="string" String Explicitly set data source type (such as "json"). Please refer to the documentation of [$.ig.DataSource type](ig.datasource#options:settings.type) and its type property.
+            ```
+                //Initialize 
+                $('.selector').igTileManager({     
+                    responseDataType : "json"
+                });  
+            
+                //Get 
+                var responseDataType = $('.selector').igTileManager("option", "responseDataType");
+                
+                //Set
+                var responseDataType = "json";
+                $('.selector').igTileManager("option", "responseDataType", responseDataType);
+            ```    
+                string type="string" Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource and its type property.
+				null type="object" Option is ignored.
 			*/
             responseDataType: null,
-            /* type="string" Explicitly set data source type (such as "json"). Please refer to the documentation of $.ig.DataSource and its type property. */
+            /* type="string" Explicitly set data source type (such as "json"). Please refer to the documentation of [$.ig.DataSource type](ig.datasource#options:settings.type) and its type property. 
+            ```
+                //Initialize 
+                $(".selector").igTileManager({     
+                    dataSourceType : "xml"
+                });  
+                
+                //Get
+                var type = $(".selector").igTileManager("option", "dataSourceType");
+                    
+                //Set
+                var type = "xml";
+                $(".selector").igTileManager("option", "dataSourceType", type);
+            ```
+            */
             dataSourceType: null,
-            /* type="string" specifies the HTTP verb to be used to issue the request. */
+            /* type="string" Specifies the HTTP request method. 
+            ```
+                //Initialize 
+                $(".selector").igTileManager({     
+                        requestType : "get"
+                });
+                
+                //Get
+                var requestType = $('.selector').igTileManager("option", "requestType");
+                
+                //Set
+                var requestType = "get";
+                $('.selector').igTileManager("option", "requestType", requestType);
+            ```
+            */
             requestType: "GET",
-            /* type="string" content type of the response. See http://api.jquery.com/jQuery.ajax/ => contentType. */
+            /* type="string" Gets/Sets the HTTP content type for the response object. See [Perform an asynchronous HTTP (Ajax) request](http://api.jquery.com/jQuery.ajax/). 
+            ```
+                //Initialize
+                $(".selector").igTileManager({
+                    responseContentType : 'application/x-www-form-urlencoded; charset=UTF-8'
+                )};
+                
+                //Get
+                var respContentType = $('.selector').igTileManager("option", "responseContentType");
+                
+                //Set
+                var respContentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+                $('.selector').igTileManager("option", "responseContentType", respContentType);
+            ```
+            */
             responseContentType: null
         },
         events: {
-            /* cancel="true" fired before databinding is performed
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tile manager performing databinding.
-				Use ui.dataSource to get a reference to the $.ig.DataSource the tile manager is to be databound to.
+            /* cancel="true" Fired before databinding is performed
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagerdatabinding", function (evt, ui) {
+                    // reference to igTileManager
+                    ui.owner;
+                    //reference to dataSource
+                    ui.dataSource;
+                });
+            
+                //Initialize
+                $(".selector").igTileManager({
+                    dataBinding: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.
+            Use ui.owner to get a reference to the tile manager performing databinding.
+            Use ui.dataSource to get a reference to the [$.ig.DataSource](ig.datasource) the tile manager is to be databound to.
 			*/
             dataBinding: "dataBinding",
-            /* cancel="false" fired after databinding is complete
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tile manager performing databinding.
-				Use ui.dataView to get a reference to the data the tile manager is databound to.
-				Use ui.success to get see if the databinding was performed correctly.
-				Use ui.errorMessage to get the error message if the databinding failed.
+            /* cancel="false" Fired after databinding is complete
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagerdatabound", function (evt, ui) {
+                    // reference to igTilemanager
+                    ui.owner;
+                    // reference to the data the tile has been databound to.
+                    ui.dataView;
+                });
+            
+                //Initialize
+                $(".selector").igTileManager({
+                    dataBound: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.
+            Use ui.owner to get a reference to the tile manager performing databinding.
+            Use ui.dataView to get a reference to the data the tile manager is databound to.
+            Use ui.success to get see if the databinding was performed correctly.
+            Use ui.errorMessage to get the error message if the databinding failed.
 			*/
             dataBound: "dataBound",
-            /* cancel="true" fired before rendering of the tile manager begins.
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tile manager performing rendering.
-				Use ui.tiles to get a reference to the tiles the tile manager is going to render. If using data source this referes to the data provided.
-				Use ui.items to get a reference to the item configurations the tile manager has.
+            /* cancel="true" Fired before rendering of the tile manager begins.
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagerrendering", function (evt, ui) {
+                    //reference to the tile.
+                    ui.owner;
+                    //reference to tiles
+                    ui.tiles;
+                    //reference to items
+                    ui.items;
+                });
+                
+                //Initialize
+                $(".selector").igTileManager({
+                    rendering: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.
+            Use ui.owner to get a reference to the tile manager performing rendering.
+            Use ui.tiles to get a reference to the tiles the tile manager is going to render. If using data source this referes to the data provided.
+            Use ui.items to get a reference to the item configurations the tile manager has.
 			*/
             rendering: "rendering",
-            /* cancel="false" fired after rendering of the tile manager completes.
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tile manager performing rendering.
+            /* cancel="false" Fired after rendering of the tile manager completes.
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagerrendered", function (evt, ui) {
+                    // reference to the tile.
+                    ui.owner;
+                });
+                
+                //Initialize
+                $(".selector").igTileManager({
+                    rendered: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.
+            Use ui.owner to get a reference to the tile manager performing rendering.
 			*/
             rendered: "rendered",
             /* cancel="true" Event fired before a tile is rendered in the container
-                Function takes arguments evt and ui.
-                Use ui.owner to get a reference to the tile manager performing rendering.
-                Use ui.tile to get a reference to the tile being rendered
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagertilerendering", function (evt, ui) {
+                    //reference to the widget
+                    ui.owner;
+                    //reference to the tile.
+                    ui.tile;
+                });
+                
+                //Initialize
+                $(".selector").igTileManager({
+                    tileRendering: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.
+            Use ui.owner to get a reference to the tile manager performing rendering.
+            Use ui.tile to get a reference to the tile being rendered
             */
             tileRendering: "tileRendering",
-            /* Event fired after a tile has been rendered in the container
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tile manager performing rendering.
-				Use ui.tile to get a reference to the rendered tile
+            /* cancel="false" Event Fired after a tile has been rendered in the container
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagertilerendered", function (evt, ui) {
+                    //reference to the widget.
+                    ui.owner;
+                    //reference to the tile
+                    ui.tile;
+                });
+                
+                //Initialize
+                $(".selector").igTileManager({
+                    tileRendered: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.
+            Use ui.owner to get a reference to the tile manager performing rendering.
+            Use ui.tile to get a reference to the rendered tile
 			*/
             tileRendered: "tileRendered",
-            /* cancel="true" fired before a tile in the tile manager is maximized.
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tile manager performing the maximizing the tile belongs to.
-				Use ui.tile to get the jQuery element of the tile being maximized
-                Use ui.minimizingTile to get reference to the tile that is minimizing simultaneously or null if no tile is minimizing.
+            /* cancel="true" Fired before a tile in the tile manager is maximized.
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagertilemaximizing", function (evt, ui) {
+                    //reference to the widget.
+                    ui.owner;
+                    //reference to the tile that is going to be maximized.
+                    ui.tile;
+                    //reference to the tile that is going to be minimized or null if not any
+                    ui.minimizingTile;
+                });
+                
+                //Initialize
+                $(".selector").igTileManager({
+                    tileMaximizing: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.        
+            Use ui.owner to get a reference to the tile manager performing the maximizing the tile belongs to.
+            Use ui.tile to get the jQuery element of the tile being maximized
+            Use ui.minimizingTile to get reference to the tile that is minimizing simultaneously or null if no tile is minimizing.
 			*/
             tileMaximizing: "tileMaximizing",
-            /* cancel="false" fired after a tile in the tile manager is maximized.
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tile manager the maximized tile belongs to.
-				Use ui.tile to get the jQuery element of the maximized tile
+            /* cancel="false" Fired after a tile in the tile manager is maximized.
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagertilemaximized", function (evt, ui) {
+                    //reference to the widget.
+                    ui.owner;
+                    //reference to the maximized tile
+                    ui.tile;
+                });
+                
+                //Initialize
+                $(".selector").igTileManager({
+                    tileMaximized: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.
+            Use ui.owner to get a reference to the tile manager the maximized tile belongs to.
+            Use ui.tile to get the jQuery element of the maximized tile
 			*/
             tileMaximized: "tileMaximized",
-            /* cancel="true" fired before a tile in the tile manager is minimized.
-                Function takes arguments evt and ui.
-                Use ui.owner to get a reference to the tile manager performing the minimizing the tile belongs to.
-                Use ui.tile to get the jQuery element of the tile being minimized
-                Use ui.maximizingTile to get reference to the tile that is maximizing simultaneously or null if no tile is maximizing.
+            /* cancel="true" Fired before a tile in the tile manager is minimized.
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagertileminimizing", function (evt, ui) {
+                    //reference to the widget.
+                    ui.owner;
+                    //reference to the tile that is going to be minimized
+                    ui.tile;
+                    //reference to the tile that is going to be maximized or null if not any
+                    ui.maximizingTile;
+                });
+                
+                //Initialize
+                $(".selector").igTileManager({
+                    tileMinimizing: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.
+            Use ui.owner to get a reference to the tile manager performing the minimizing the tile belongs to.
+            Use ui.tile to get the jQuery element of the tile being minimized
+            Use ui.maximizingTile to get reference to the tile that is maximizing simultaneously or null if no tile is maximizing.
             */
             tileMinimizing: "tileMinimizing",
-            /* cancel="false" fired after a tile in the tile manager is minimized.
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tile manager the minimized tile belongs to.
-				Use ui.tile to get the jQuery element of the minimized tile
+            /* cancel="false" Fired after a tile in the tile manager is minimized.
+            ```
+                //Bind
+                $(document).delegate(".selector", "igtilemanagertileminimized", function (evt, ui) {
+                    //reference to the widget
+                    ui.owner;
+                    //reference to the tile that was minimized
+                    ui.tile;
+                });
+                
+                //Initialize
+                $(".selector").igTileManager({
+                    tileMinimized: function(evt, ui) {...}
+                });
+            ```
+            Function takes arguments evt and ui.
+            Use ui.owner to get a reference to the tile manager the minimized tile belongs to.
+            Use ui.tile to get the jQuery element of the minimized tile
 			*/
             tileMinimized: "tileMinimized"
         },
@@ -1568,6 +2215,9 @@
         },
         maximize: function ($tileToMaximize, animDuration, event) {
             /* Maximizes a given tile.
+            ```
+                $(".selector").igTileManager("maximize", tileToMaximize, event);
+            ```
                paramType="object" optional="false" Specifies the jQuery object of the tile element to be maximized.
                paramType="number" optional="true" Specifies the animation duration for this maximizing.
                paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
@@ -1614,6 +2264,9 @@
         },
         minimize: function (animDuration, event) {
             /* Minimizes the maximized tile. Has no effect if no maximized tile is present.
+            ```
+                $(".selector").igTileManager( "minimize", event);
+            ```
                paramType="number" optional="true" Specifies the animation duration for this minimize.
                paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
             */
@@ -1677,12 +2330,18 @@
         },
         maximizedTile: function () {
             /* Returns the maximized tile or null if such is not present.
-               returnType="object|null" Returns the maximized tile or null if such is not present.
+            ```
+                $(".selector").igTileManager( "maximizedTile");
+            ```
+            returnType="object|null" Returns the maximized tile or null if such is not present.
             */
             return this._options.$maximizedTile || null;
         },
         minimizedTiles: function () {
             /* Returns an array with the tiles in minimized state or null if such are not present.
+            ```
+                $(".selector").igTileManager( "minimizedTiles");
+            ```
                returnType="object|null" Returns an array with the tiles in minimized state or null if such are not present.
             */
             var minimizedTiles = this._options.$tiles.not(this._options.$maximizedTile);
@@ -1690,20 +2349,26 @@
         },
         splitter: function () {
             /* Returns the splitter associated with this tile manager or
-               null if the tile manager was instantiated with maximizedTileIndex.
-               returnType="object|null" Returns the splitter associated with this tile manager or
-               null if the tile manager was instantiated with maximizedTileIndex.
+                null if the tile manager was instantiated with maximizedTileIndex.
+            ```
+                $('.selector').igTileManager( "splitter")
+            ```
+                returnType="object|null" Returns the splitter associated with this tile manager or
+                null if the tile manager was instantiated with maximizedTileIndex.
             */
             return this._options.useMaximizedTileIndex ? null : this.element.data("igSplitter");
         },
         layoutManager: function () {
-            /* Returns the layout manager associated with this tile manager.
+            /* Returns the [layout manager](ui.iglayoutmanager) associated with current tile manager.
                returnType="object" Returns the layout manager associated with this tile manager.
             */
             return this._options.$layoutManagerElement.data("igLayoutManager");
         },
         reflow: function (forceReflow, animationDuration, event) {
             /* Reflow the tile manager. Rearranging the tiles to fit in the container
+            ```
+                $('.selector').igTileManager( "reflow", forceReflow, event);
+            ```
                paramType="boolean" optional="true" Indicates whether the reflow should be forced. Useful in cases where the items size and position was changed manually.
                paramType="number" optional="true" The animation duration to be used for this reflow only.
                paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
@@ -1712,6 +2377,9 @@
         },
         widget: function () {
             /* Returns the element that represents this widget.
+            ```
+                $('.selector').igTileManager("widget");
+            ```
                returnType="object" Returns the element that represents this widget.
             */
             return this.element;
@@ -1797,7 +2465,11 @@
             this._trigger(this.events.tileMinimized, event, args);
         },
         dataBind: function () {
-            /* Performs databinding on the tile manager */
+            /* Causes the TileManager to data bind to the data source (local or remote) , and re-render all of the data as well. 
+            ```
+                $(".selector").igTileManager("dataBind");
+            ```
+            */
             var noCancel;
 
             this._initDataSource();
@@ -1891,7 +2563,12 @@
             }
         },
         destroy: function () {
-            /* Destructor */
+            /* Deletes the widget instance (client object). It is no longer accessible and all its event handlers stop working. Destroys all child widgets. Removes auto-generated HTML content, which is outside the widget, e.g. detached popups, dropdowns, etc.
+            ```
+                $(".selector").igTileManager("destroy");
+            ```
+                returnType="object"
+            */
             $.Widget.prototype.destroy.apply(this, arguments);
             this.element.removeClass(this.css.container);
             this._destroyTiles();
