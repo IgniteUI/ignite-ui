@@ -2263,7 +2263,7 @@
         minimize: function (animDuration, event) {
             /* Minimizes the maximized tile. Has no effect if no maximized tile is present.
             ```
-                $(".selector").igTileManager( "minimize", event);
+                $(".selector").igTileManager("minimize", event);
             ```
                paramType="number" optional="true" Specifies the animation duration for this minimize.
                paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
@@ -2329,7 +2329,7 @@
         maximizedTile: function () {
             /* Returns the maximized tile or null if such is not present.
             ```
-                $(".selector").igTileManager( "maximizedTile");
+                $(".selector").igTileManager("maximizedTile");
             ```
             returnType="object|null" Returns the maximized tile or null if such is not present.
             */
@@ -2338,7 +2338,7 @@
         minimizedTiles: function () {
             /* Returns an array with the tiles in minimized state or null if such are not present.
             ```
-                $(".selector").igTileManager( "minimizedTiles");
+                $(".selector").igTileManager("minimizedTiles");
             ```
                returnType="object|null" Returns an array with the tiles in minimized state or null if such are not present.
             */
@@ -2349,7 +2349,7 @@
             /* Returns the splitter associated with this tile manager or
                 null if the tile manager was instantiated with maximizedTileIndex.
             ```
-                $('.selector').igTileManager( "splitter")
+                $('.selector').igTileManager("splitter")
             ```
                 returnType="object|null" Returns the splitter associated with this tile manager or
                 null if the tile manager was instantiated with maximizedTileIndex.
@@ -2368,7 +2368,7 @@
         reflow: function (forceReflow, animationDuration, event) {
             /* Reflow the tile manager. Rearranging the tiles to fit in the container
             ```
-                $('.selector').igTileManager( "reflow", forceReflow, event);
+                $('.selector').igTileManager("reflow", forceReflow, event);
             ```
                paramType="boolean" optional="true" Indicates whether the reflow should be forced. Useful in cases where the items size and position was changed manually.
                paramType="number" optional="true" The animation duration to be used for this reflow only.
