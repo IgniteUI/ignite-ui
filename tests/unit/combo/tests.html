@@ -332,6 +332,9 @@
         <div id="filteringExpressions"></div>
     </div>
     <div>
+        <div id="suppressKeyboardMultiSelect"></div>
+    </div>
+    <div>
         <div id="htmlEntityDataSource"></div>
     </div>
     <script type="text/javascript">
@@ -438,6 +441,7 @@
                 testId_93 = 'Mouse events';
                 testId_94 = 'Test areSetsEqual method';
                 testId_95 = 'Filtering event arguments';
+                testId_96 = 'suppressKeyboard multiselect';
                 testId_97 = "htmlEntity dataSource";
 
             function testDataBinding($combo, expDataView, expSchema) {
@@ -5771,6 +5775,76 @@
                 equal(timesCalled, 2, 'Handler called 2 times');
             });
 
+            test(testId_96, function () {
+
+                var $combo = $("#suppressKeyboardMultiSelect"),
+                    $input, $dropDownButton, listItems;
+
+                // Emulate touch environment
+                var _oldIsTouch = $.ig.util.isTouchDevice;
+                $.ig.util.isTouchDevice = function () { return true; };
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    width: "270px",
+                    dataSource: [
+                        { "ID":1, "Name": "Captain America", "Age": 45 },
+                        { "ID":2, "Name": "Hawkeye", "Age": 32 },
+                        { "ID":3, "Name": "Quicksilver", "Age": 27 },
+                    ],
+                    valueKey: "ID",
+                    textKey: "Name",
+                    multiSelection: {
+                        enabled: true
+                    },
+                    suppressKeyboard: true,
+                    virtualization: true
+                });
+
+                $input = $combo.data().igCombo._options.$input;
+                $dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
+
+                var items = $combo.igCombo('items');
+
+                $dropDownButton.click();
+
+                equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                notEqual(document.activeElement, $input[0], "Combo input should not be focused [suppressKeyboard = true]");
+                clickElement(items[0].element);
+
+                equal($combo.igCombo('activeIndex'), 0, 'Selected item matches');
+                notEqual(document.activeElement, $input[0], 'Combo input is not focused');
+
+                clickElement(items[1].element);
+
+                equal($combo.igCombo('activeIndex'), 1, 'Selected item matches');
+                notEqual(document.activeElement, $input[0], 'Combo input is still not focused');
+
+                clickElement(items[0].element);
+                clickElement(items[1].element);
+                equal($combo.igCombo('activeIndex'), -1);
+                notEqual(document.activeElement, $input[0], 'Combo input is still not focused');
+
+                clickElement($input);
+                equal(document.activeElement, $input[0], 'Combo input is focused');
+
+                $dropDownButton.click();
+
+                $combo.igCombo('option', 'suppressKeyboard', false);
+                $combo.igCombo('clearInput');
+
+                $dropDownButton.click();
+                equal(document.activeElement, $input[0], "Combo input should be focused [suppressKeyboard = false]");
+
+                clickElement(items[0].element);
+
+                equal($combo.igCombo('activeIndex'), 0, 'Selected item matches');
+                equal(document.activeElement, $input[0], 'Combo input is focused');
+
+                $.ig.util.isTouchDevice = _oldIsTouch;
+            });
+
             test(testId_97, function() {
                 var $combo = $("#htmlEntityDataSource"),
                     $input, $dropDownButton, listItems;
@@ -5792,6 +5866,7 @@
                 var items = $combo.igCombo('items');
 
                 $dropDownButton.click();
+
                 clickElement(items[0].element);
                 equal($combo.igCombo('activeIndex'), 0, 'Yen symbol entity is selected');
                 equal(items[0].element.data('value'), items[0].element.text(), "data-value matches with text representation");
