@@ -24,27 +24,27 @@
 
 /*global Class*/
 (function (factory) {
-	if (typeof define === "function" && define.amd) {
+    if (typeof define === "function" && define.amd) {
 
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.ui.popover",
-			"./infragistics.ui.splitbutton",
-			"./infragistics.ui.colorpicker",
-			"./infragistics.ui.colorpickersplitbutton",
-			"./infragistics.ui.combo",
-			"./infragistics.ui.editors",
-			"./infragistics.ui.toolbarbutton",
-			"./infragistics.ui.toolbar"
-		], factory );
-	} else {
+        // AMD. Register as an anonymous module.
+        define( [
+            "jquery",
+            "jquery-ui",
+            "./infragistics.util",
+            "./infragistics.ui.popover",
+            "./infragistics.ui.splitbutton",
+            "./infragistics.ui.colorpicker",
+            "./infragistics.ui.colorpickersplitbutton",
+            "./infragistics.ui.combo",
+            "./infragistics.ui.editors",
+            "./infragistics.ui.toolbarbutton",
+            "./infragistics.ui.toolbar"
+        ], factory );
+    } else {
 
-		// Browser globals
-		factory(jQuery);
-	}
+        // Browser globals
+        factory(jQuery);
+    }
 }
 (function ($) {
 
@@ -53,61 +53,463 @@
     */
     $.widget("ui.igHtmlEditor", {
         options: {
-            /* type="boolean" Shows/hides the "Formatting" toolbar. */
+            /* type="boolean" Shows/hides the "Formatting" toolbar.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    showFormattingToolbar: false
+                });
+
+                //Get
+                var showFormattingToolbar = $(".selector").igHtmlEditor("option", "showFormattingToolbar");
+
+                //Set
+                $(".selector").igHtmlEditor("option", "showFormattingToolbar", true);
+            ````
+            */
             showFormattingToolbar: true,
-            /* type="boolean" Shows/hides the "Text" toolbar. */
+            /* type="boolean" Shows/hides the "Text" toolbar.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    showTextToolbar: false
+                });
+
+                //Get
+                var showTextToolbar = $(".selector").igHtmlEditor("option", "showTextToolbar");
+
+                //Set
+                $(".selector").igHtmlEditor("option", "showTextToolbar", true);
+            ````
+            */
             showTextToolbar: true,
-            /* type="boolean" Shows/hides the "Insert Object" toolbar. */
+            /* type="boolean" Shows/hides the "Insert Object" toolbar.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    showInsertObjectToolbar: false
+                });
+
+                //Get
+                var showInsertObjectToolbar = $(".selector").igHtmlEditor("option", "showInsertObjectToolbar");
+
+                //Set
+                $(".selector").igHtmlEditor("option", "showInsertObjectToolbar", true);
+            ````
+            */
             showInsertObjectToolbar: true,
-            /* type="boolean" Shows/hides the "Copy Paste" toolbar. */
+            /* type="boolean" Shows/hides the "Copy Paste" toolbar. 
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    showCopyPasteToolbar: false
+                });
+
+                //Get
+                var showCopyPasteToolbar = $(".selector").igHtmlEditor("option", "showCopyPasteToolbar");
+
+                //Set
+                $(".selector").igHtmlEditor("option", "showCopyPasteToolbar", true);
+            ````
+            */
             showCopyPasteToolbar: true,
             /* type="string|number" The width of the html editor. It can be set as a number in pixels, string (px) or percentage (%).
                 string The widget width can be set in pixels (px) and percentage (%).
                 number The widget width can be set as a number
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    width: 700
+                    //or
+                    //width: "100%"
+                });
+
+                //Get
+                var width = $(".selector").igHtmlEditor("option", "width");
+
+                // Set
+                $(".selector").igHtmlEditor("option", "width", 300);
+            ````
             */
             width: 725,
             /* type="string|number" The height of the html editor. It can be set as a number in pixels, string (px) or percentage (%).
                 string The widget height can be set in pixels (px) and percentage (%).
                 number The widget height can be set as a number
+            ````
+                // Initialize
+                $(".selector").igHtmlEditor({
+                    height: 100
+                    // or
+                    // height: "100%"
+                });
+
+                //Get
+                var height = $(".selector").igHtmlEditor("option", "height");
+
+                // Set
+                $(".selector").igHtmlEditor("option", "height", 300);
+            ````
             */
             height: 350,
-            /* type="array" The html editor toolbars list. */
+            /* type="array" The html editor toolbars list. 
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    toolbarSettings: [
+                    {
+                        name: "textToolbar",
+                        isExpanded: false
+                    }]
+                });
+
+                //Get
+                var toolbarSettings = $(".selector").igHtmlEditor("option", "toolbarSettings");
+            ````
+            */
             toolbarSettings: [ ],
-            /* type="array" The html editor custom toolbars list. */
+            /* type="array" The html editor custom toolbars list. 
+            ````
+                // Initialize
+                $(".selector").igHtmlEditor({
+                    customToolbars: [{
+                        name: "customToolbar",
+                        collapseButtonIcon: "ui-igbutton-collapse",
+                        expandButtonIcon: "ui-igbutton-expand",
+                        items: [{
+                            //Definition for custom button
+                            name: "customButton",
+                            type: "button",
+                            handler: function() {
+                                alert("Custom button clicked!");
+                            },
+                            scope: this,
+                            props: {
+                                isImage: {
+                                    value: false,
+                                    action: '_isSelectedAction'
+                                },
+                                imageButtonTooltip: {
+                                    value: "Custom button tooltip",
+                                    action: '_tooltipAction'
+                                },
+                                imageButtonIcon: {
+                                    value: "ui-igbutton-bold",
+                                    action: '_buttonIconAction'
+                                }
+                            }
+                        }, {
+                            //Definition for custom combo
+                            name: "customCombo",
+                            type: "combo",
+                            handler: function(el, obj) {
+                                alert("Selected item is: " + obj.value);
+                            },
+                            scope: this,
+                            props: {
+                                customComboWidth: {
+                                    value: 115,
+                                    action: "_comboWidthAction"
+                                },
+                                customComboHeight: {
+                                    value: "",
+                                    action: "_comboHeightAction"
+                                },
+                                customComboItemsListWidth: {
+                                    value: 115,
+                                    action: "_comboDropDownListWidth"
+                                },
+                                customComboSource: {
+                                    value: [{
+                                        text: "Item 1",
+                                        value: "Item 1"
+                                    }, {
+                                        text: "Item 2",
+                                        value: "Item 2"
+                                    }],
+                                    action: "_comboDataSourceAction"
+                                },
+                                selectedCustomComboItem: {
+                                    value: "Item 2",
+                                    action: "_comboSelectedItem"
+                                }
+                            }
+                        }]
+                    }]
+                });
+
+                //Get
+                var customToolbar = $(".selector").igHtmlEditor("option", "customToolbars");
+            ````
+            */
             customToolbars: [ ],
-            /* type="string" The name attribute of the html editor source view. */
+            /* type="string" The name attribute of the html editor source view. 
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    inputName: "blogContent"
+                });
+
+                //Get
+                var inputName = $(".selector").igHtmlEditor("option", "inputName");
+            ````
+            */
             inputName: "source",
-            /* type="string" Used to render inside the html editor as initial content */
+            /* type="string" Used to render inside the html editor as initial content
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    value: "Hello World!"
+                });
+
+                //Get
+                var value = $(".selector").igHtmlEditor("option", "value");
+
+                //Set
+                $(".selector").igHtmlEditor("option", "value", "Hello World!");
+            ````
+            */
             value: ""
         },
         events: {
-            /* cancel="false" Event fired after the whole html editor widget has been rendered. */
+            /* cancel="false" Event fired before the html editor widget has been rendered.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    rendering: function (evt, ui) {
+                        //return reference to igHtmlEditor object
+                        ui.owner
+                    }
+                });
+                
+                //Delegate
+                $(document).delegate(".selector", "ightmleditorrendering", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                });
+            ````
+            */
             rendered: "rendered",
-            /* cancel="false" Event fired before the html editor widget has been rendered. */
+            /* cancel="false" Event fired before the html editor widget has been rendered.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    rendered: function (evt, ui) {
+                        //return reference to igHtmlEditor object
+                        ui.owner
+                    }
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "ightmleditorrendered", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                });
+            ````
+            */
             rendering: "rendering",
-            /* cancel="true" Event fired before a toolbar item is clicked. */
+            /* cancel="true" Event fired before a toolbar item is clicked.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    actionExecuting: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "ightmleditoractionexecuting", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                    //return toolbar name
+                    ui.toolbar;
+                    //return action name
+                    ui.actionName;
+                });
+            ````
+            */
             actionExecuting: "actionExecuting",
-            /* cancel="false" Event fired after a toolbar item is clicked. */
+            /* cancel="false" Event fired after a toolbar item is clicked.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    actionExecuted: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "ightmleditoractionexecuted", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                    //return toolbar name
+                    ui.toolbar;
+                    //return action name
+                    ui.actionName;
+                });
+            ````
+            */
             actionExecuted: "actionExecuted",
-            /* cancel="true" Event fired before a toolbar is collapsed. */
+            /* cancel="true" Event fired before a toolbar is collapsed.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    toolbarCollapsing: function (evt, ui) {...}
+                });
+                
+                //Delegate
+                $(document).delegate(".selector", "ightmleditortoolbarcollapsing", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                    //return reference to toolbar object
+                    ui.toolbar
+                    //return reference to toolbar element object
+                    ui.toolbarElement
+                });
+            ````
+            */
             toolbarCollapsing: "toolbarCollapsing",
-            /* cancel="false" Event fired after a toolbar is collapsed. */
+            /* cancel="false" Event fired after a toolbar is collapsed. 
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    toolbarCollapsed: function (evt, ui) {...}
+                });
+                
+                //Delegate
+                $(document).delegate(".selector", "ightmleditortoolbarcollapsed", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                    //return reference to toolbar object
+                    ui.toolbar
+                    //return reference to toolbar element object
+                    ui.toolbarElement
+                });
+            ````
+            */
             toolbarCollapsed: "toolbarCollapsed",
-            /* cancel="true" Event fired before a toolbar is expanded. */
+            /* cancel="true" Event fired before a toolbar is expanded.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    toolbarExpanded: function (evt, ui) {...}
+                });
+                
+                //Delegate
+                $(document).delegate(".selector", "ightmleditortoolbarexpanded", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                    //return reference to toolbar object
+                    ui.toolbar
+                    //return reference to toolbar element object
+                    ui.toolbarElement
+                });
+            ````
+            */
             toolbarExpanding: "toolbarExpanding",
-            /* cancel="false" Event fired after a toolbar is expanded. */
+            /* cancel="false" Event fired after a toolbar is expanded.
+            ````
+                 //Initialize
+                $(".selector").igHtmlEditor({
+                    toolbarExpanding: function (evt, ui) {...}
+                });
+                
+                //Delegate
+                $(document).delegate(".selector", "ightmleditortoolbarexpanding", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                    //return reference to toolbar object
+                    ui.toolbar
+                    //return reference to toolbar element object
+                    ui.toolbarElement
+                });
+            ````
+            */
             toolbarExpanded: "toolbarExpanded",
-            /* cancel="false" Event is fired on keyboard cut action. */
+            /* cancel="false" Event is fired on keyboard cut action.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    cut: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "ightmleditorcut", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                });
+            ````
+            */
             cut: "cut",
-            /* cancel="false" Event is fired on keyboard copy action. */
+            /* cancel="false" Event is fired on keyboard copy action.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    copy: function (evt, ui) {...}
+                });
+                
+                //Delegate
+                $(document).delegate(".selector", "ightmleditorcopy", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                });
+            ````
+            */
             copy: "copy",
-            /* cancel="false" Event is fired on keyboard paste action. */
+            /* cancel="false" Event is fired on keyboard paste action.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    paste: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "ightmleditorpaste", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                });
+            ````
+            */
             paste: "paste",
-            /* cancel="false" Event is fired on keyboard undo action. */
+            /* cancel="false" Event is fired on keyboard undo action.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    undo: function (evt, ui) {...}
+                });
+                
+                //Delegate
+                $(document).delegate(".selector", "ightmleditorundo", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                });
+            ````
+            */
             undo: "undo",
-            /* cancel="false" Event is fired on keyboard redo action. */
+            /* cancel="false" Event is fired on keyboard redo action.
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    redo: function (evt, ui) {...}
+                });
+                
+                //Delegate
+                $(document).delegate(".selector", "ightmleditorredo", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                });
+            ````
+            */
             redo: "redo",
-            /* cancel = "false" Event is fired after reziing of workspace*/
+            /* cancel = "false" Event is fired after rezing of workspace
+            ````
+                //Initialize
+                $(".selector").igHtmlEditor({
+                    workspaceResized: function (evt, ui) {...}
+                });
+                
+                //Delegate
+                $(document).delegate(".selector", "ightmleditorworkspaceresized", function (evt, ui) {
+                    //return reference to igHtmlEditor object
+                    ui.owner
+                });
+            ````
+            */
             workspaceResized: "workspaceResized"
         },
         css: {
@@ -735,6 +1137,9 @@
         widget: function () {
             /*
                 Returns the element on which the widget was instantiated
+            ````
+                var widget = $(".selector").igHtmlEditor("widget");
+            ````
             */
             return this.element;
         },
@@ -1657,6 +2062,9 @@
         resizeWorkspace: function () {
             /*
                 Resizes the height of the workspace
+            ````
+                $(".selector").igHtmlEditor("resizeWorkspace");
+            ````
             */
 
             // K.D. July 26th, 2012 Bug #113717 The height is applied to the iframe and not to the element. Now the height is correctly
@@ -1697,6 +2105,10 @@
                 Gets the content of the html editor.
                 paramType="string" optional="false" Returns the content as html or plain text. Values can be "text" or "html".
                 returnType="string" The editor content.
+            ````
+                var plainContent = $(".selector").igHtmlEditor("getContent", "text");
+                var htmlContent = $(".selector").igHtmlEditor("getContent", "html");
+            ````
             */
             if (format === "text") {
                 return $(this.workspace).contents().find("body").text();
@@ -1710,6 +2122,10 @@
                 Sets the content of the html editor.
                 paramType="string" optional="false" The content which will be set.
                 paramType="string" The content type: "text" or "html".
+            ````
+                $(".selector").igHtmlEditor("setContent", "Hello World!", "text");
+                $(".selector").igHtmlEditor("setContent", "<h1>Hello World!</h1>", "html");
+            ````
             */
             if (format === "text") {
                 $(this.workspace).contents().find("body").text(content);
@@ -1722,7 +2138,11 @@
             this.sourceWindow.val(encodeURIComponent(content));
         },
         destroy: function () {
-            /* Destroys the widget. */
+            /* Destroys the widget.
+            ````
+                $(".selector").igHtmlEditor("destroy");
+            ````
+            */
             $.Widget.prototype.destroy.apply(this, arguments);
             $(this.workspace.contentWindow).undelegate();
             this._destroyPopovers();
@@ -1739,6 +2159,35 @@
                 Executes htmleditor commands.
                 paramType="string" optional="false" The command name.
                 paramType="object" optional="true" Additional parameter for the command.
+            ````
+                $(".selector").igHtmlEditor("executeAction", "increasefontsize");
+                $(".selector").igHtmlEditor("executeAction", "bold");
+                $(".selector").igHtmlEditor("executeAction", "italic");
+                $(".selector").igHtmlEditor("executeAction", "underline");
+                $(".selector").igHtmlEditor("executeAction", "strikethrough");
+                $(".selector").igHtmlEditor("executeAction", "decreasefontsize");
+                $(".selector").igHtmlEditor("executeAction", "fontname", "Lucida Console");
+                $(".selector").igHtmlEditor("executeAction", "fontname", "Verdana");
+                $(".selector").igHtmlEditor("executeAction", "fontsize", "5");
+                $(".selector").igHtmlEditor("executeAction", "formatBlock", "h6");
+                $(".selector").igHtmlEditor("executeAction", "forecolor", "blue");
+                $(".selector").igHtmlEditor("executeAction", "backcolor", "red");
+                $(".selector").igHtmlEditor("executeAction", "justifyright");
+                $(".selector").igHtmlEditor("executeAction", "justifycenter");
+                $(".selector").igHtmlEditor("executeAction", "justifyleft");
+                $(".selector").igHtmlEditor("executeAction", "justifyfull");
+                $(".selector").igHtmlEditor("executeAction", "insertunorderedlist");
+                $(".selector").igHtmlEditor("executeAction", "insertorderedlist");
+                $(".selector").igHtmlEditor("executeAction", "outdent");
+                $(".selector").igHtmlEditor("executeAction", "indent");
+                
+                //Works on Internet Explorer only
+                $(".selector").igHtmlEditor("executeAction", "cut");
+                //Works on Internet Explorer only
+                $(".selector").igHtmlEditor("executeAction", "copy");
+                //Works on Internet Explorer only
+                $(".selector").igHtmlEditor("executeAction", "paste");
+            ````
             */
 
             // D.A. 25th November 2013, Bug #158403 ExecuteAction method ignores the current selection.
@@ -1752,6 +2201,9 @@
             /*
                 Returns true/false if the editor contents were modified or not.
                 returnType="boolean" Returns true if contents were modified and false otherwise.
+            ````
+                var isDirty = $(".selector").igHtmlEditor("isDirty");
+            ````
             */
             return this._isDirty;
         },
@@ -1759,6 +2211,9 @@
             /*
                 Returns the window object associated with the Html Editor's content editable area
                 returnType="object" The window object associated with the Html Editor's content editable area
+            ````
+                var htmlEditorContentWindow = $(".selector").igHtmlEditor("contentWindow");
+            ````
             */
 
             return this.workspace.contentWindow;
@@ -1767,6 +2222,9 @@
             /*
                 Returns the document object associated with the Html Editor's content editable area
                 returnType="object" The document object associated with the Html Editor's content editable area
+            ````
+                var htmlEditorDocument = $(".selector").igHtmlEditor("contentDocument");
+            ````
             */
 
             return this.contentWindow().document;
@@ -1775,6 +2233,9 @@
             /*
                 Returns the content editable associated with this Html Editor
                 returnType="object" The content editable associated with this Html Editor
+            ````
+                var htmlEditorContentEditable = $(".selector").igHtmlEditor("contentEditable");    
+            ````
             */
 
             return this.contentDocument().body;
@@ -1783,6 +2244,9 @@
             /*
                 Returns Selection object that represent the current selection in the content editable
                 returnType="object" Returns Selection object that represent the current selection in the content editable
+            ````
+                var selection = $(".selector").igHtmlEditor("selection");
+            ````
             */
             return this._selectionWrapperSaved._getSelection();
         },
@@ -1790,12 +2254,18 @@
             /*
                 Returns Range object that represent the current range in the content editable
                 returnType="object" Returns Range object that represent the current range in the content editable
+            ````
+                var range = $(".selector").igHtmlEditor("range");
+            ````
             */
             return this._selectionWrapperSaved._getRange();
         },
         insertAtCaret: function (element) {
             /* Inserts the provided content at the position of the caret.
                paramType="string|object" optional="false" Accepts html string, DOM element or a jQuery object.
+            ````
+                $(".selector").igHtmlEditor("insertAtCaret", "<div />");
+            ````
             */
 
             var el,
@@ -1809,7 +2279,7 @@
 
             if (element instanceof $) {
 
-                // Get the html of an jQuery object
+                //Get the html of an jQuery object
                 element = $("<div />").append(element).html();
             } else if (typeof element !== "string") {
 
@@ -1880,20 +2350,20 @@
             this.element.addClass("ui-igPathFinder");
         },
         _setOption: function (name, value) {
-	        $.Widget.prototype._setOption.apply(this, arguments);
-	        switch (name) {
-	            case "items":
-	                this._updateToolbar();
-	                break;
-	            case "disabled":
+            $.Widget.prototype._setOption.apply(this, arguments);
+            switch (name) {
+                case "items":
+                    this._updateToolbar();
+                    break;
+                case "disabled":
 
-	                // H.A. February 25th 2016 Bug #214778 ui-state-disabled class is not applied to Dom path toolbar in igHtmlEditor
-	                // see https://jqueryui.com/upgrade-guide/1.11/#stop-setting-ui-state-disabled-and-aria-disabled-by-default-when-the-disabled-option-is-set
-	                // K.D. July 13th, 2012 Bug #114609 The buttons in the path finder submit the page if the path finder is disabled
-	                //this.element.find('button').attr('disabled', value).attr('aria-disabled', value);
-	                this.element
-						.toggleClass("ui-state-disabled", !!value)
-						.attr("aria-disabled", value);
+                    // H.A. February 25th 2016 Bug #214778 ui-state-disabled class is not applied to Dom path toolbar in igHtmlEditor
+                    // see https://jqueryui.com/upgrade-guide/1.11/#stop-setting-ui-state-disabled-and-aria-disabled-by-default-when-the-disabled-option-is-set
+                    // K.D. July 13th, 2012 Bug #114609 The buttons in the path finder submit the page if the path finder is disabled
+                    //this.element.find('button').attr('disabled', value).attr('aria-disabled', value);
+                    this.element
+                        .toggleClass("ui-state-disabled", !!value)
+                        .attr("aria-disabled", value);
                     break;
                 default:
                     break;
@@ -2252,22 +2722,22 @@
 
             //jscs:disable
             html += '<div class="' + this.css.igImagePropertiesDialogContent + '">';
-            html += '	<div>';
-            html += '		<ol class="layoutList">';
-            html += '			<li>';
-            html += '				<label for="' + this._id('_imgSrc') + '">' + $.ig.HtmlEditor.locale.imageUrlDialogText + '</label>';
-            html += '				<input autocomplete="off" id="' + this._id('_imgSrc') + '" name="src" type="text" value="" />';
-            html += '			</li>';
-            html += '			<li>';
-            html += '				<label for="' + this._id('_imgAlt') + '">' + $.ig.HtmlEditor.locale.imageAlternativeTextDialogText + '</label>';
-            html += '				<input autocomplete="off" id="' + this._id('_imgAlt') + '" name="altText" type="text" value="" />';
-            html += '			</li>';
-            html += '			<li style="text-align:right">';
-            html += '				<button aria-disabled="false" id="' + this._id('_btnApply') + '" name="insertLink" role="button" title="' + $.ig.HtmlEditor.locale.applyButtonTitle + '" type="button">' + $.ig.HtmlEditor.locale.applyButtonTitle + '</button>';
-            html += '				<button aria-disabled="false" id="' + this._id('_btnCancel') + '" role="button" title="' + $.ig.HtmlEditor.locale.cancelButtonTitle + '" type="button">' + $.ig.HtmlEditor.locale.cancelButtonTitle + '</button>';
-            html += '			</li>';
-            html += '		</ol>';
-            html += '	</div>';
+            html += '   <div>';
+            html += '       <ol class="layoutList">';
+            html += '           <li>';
+            html += '               <label for="' + this._id('_imgSrc') + '">' + $.ig.HtmlEditor.locale.imageUrlDialogText + '</label>';
+            html += '               <input autocomplete="off" id="' + this._id('_imgSrc') + '" name="src" type="text" value="" />';
+            html += '           </li>';
+            html += '           <li>';
+            html += '               <label for="' + this._id('_imgAlt') + '">' + $.ig.HtmlEditor.locale.imageAlternativeTextDialogText + '</label>';
+            html += '               <input autocomplete="off" id="' + this._id('_imgAlt') + '" name="altText" type="text" value="" />';
+            html += '           </li>';
+            html += '           <li style="text-align:right">';
+            html += '               <button aria-disabled="false" id="' + this._id('_btnApply') + '" name="insertLink" role="button" title="' + $.ig.HtmlEditor.locale.applyButtonTitle + '" type="button">' + $.ig.HtmlEditor.locale.applyButtonTitle + '</button>';
+            html += '               <button aria-disabled="false" id="' + this._id('_btnCancel') + '" role="button" title="' + $.ig.HtmlEditor.locale.cancelButtonTitle + '" type="button">' + $.ig.HtmlEditor.locale.cancelButtonTitle + '</button>';
+            html += '           </li>';
+            html += '       </ol>';
+            html += '   </div>';
             html += '</div>';
 
             //jscs:enable
