@@ -332,7 +332,7 @@
 				if (isTest2Started === false) {
 					isTest2Started = true;
 				}
-
+				ok(data.uploadedBytes <= data.totalSize, "Event argument uploadedBytes should be less than totalSize");
 				if (innerData.countUploadingFiles === innerData.countTotalFiles) {
 					$('#' + uploader2Id).unbind("iguploadfileuploading", fileUploaderHandler);
 					setTimeout(function () {
