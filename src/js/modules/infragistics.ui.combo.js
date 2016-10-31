@@ -51,16 +51,16 @@
         options: {
             /* type="number|string" Gets/Sets the width of combo. The numeric and string values (valid html units for size) are supported. It includes %, px, em and other units.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     width : "300px"
-                });  
+                });
 
-                //Get 
-                var width = $(".selector").igCombo("option", "width");  
+                //Get
+                var width = $(".selector").igCombo("option", "width");
 
-                //Set 
-                $(".selector").igCombo("option", "width", "300px"); 
+                //Set
+                $(".selector").igCombo("option", "width", "300px");
             ```
             string The default width can be set in pixels (px), %, em and other units.
             number The default width can be set as a number.
@@ -68,16 +68,16 @@
             width: null,
             /* type="number|string" Gets/Sets height of combo. The numeric and string values (valid html units for size) are supported. It includes %, px, em and other units.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     height : "25px"
-                });  
+                });
 
-                //Get 
-                var height = $(".selector").igCombo("option", "height");  
+                //Get
+                var height = $(".selector").igCombo("option", "height");
 
-                //Set 
-                $(".selector").igCombo("option", "height", "25px"); 
+                //Set
+                $(".selector").igCombo("option", "height", "25px");
             ```
                 string The default height can be set in pixels (px), %, em and other units.
 				number The default height can be set as a number.
@@ -85,16 +85,16 @@
             height: null,
             /* type="number|string" Gets/Sets the width of drop-down list in pixels.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     dropDownWidth : 200
                 });
 
-                //Get 
-                var width = $(".selector").igCombo("option", "dropDownWidth");  
+                //Get
+                var width = $(".selector").igCombo("option", "dropDownWidth");
 
-                //Set 
-                $(".selector").igCombo("option", "dropDownWidth", 200); 
+                //Set
+                $(".selector").igCombo("option", "dropDownWidth", 200);
             ```
                 string type="string" The default drop-down list width can be set in pixels (px).
 				number type="number" The default drop-down list width can be set as a number.
@@ -103,13 +103,13 @@
             /* type="object" Gets/Sets a valid data source accepted by [$.ig.DataSource](ig.datasource), or an instance of an [$.ig.DataSource](ig.datasource) itself.
 				Note: if it is set to string and [dataSourceType](ui.igcombo#options:dataSourceType) option is not set, then [$.ig.JSONDataSource](ig.jsondatasource) is used.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     dataSource : data
-                });  
+                });
 
-                //Get 
-                var data = $(".selector").igCombo("option", "dataSource");  
+                //Get
+                var data = $(".selector").igCombo("option", "dataSource");
 
                 //Set
                 $(".selector").igCombo("option", "dataSource", ds);
@@ -118,50 +118,50 @@
             dataSource: null,
             /* type="string" Sets data source type (such as "json", "xml", etc). Please refer to the documentation of [$.ig.DataSource](ig.datasource) and its [type](ig.datasource#options:settings.type) property.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     dataSourceType : "xml"
-                });  
+                });
 
-                //Get 
-                var dataType = $(".selector").igCombo("option", "dataSourceType");  
+                //Get
+                var dataType = $(".selector").igCombo("option", "dataSourceType");
             ```
             */
             dataSourceType: null,
-            /* type="string" Sets URL which is used for sending JSON on request for remote filtering (MVC for example). That option is required when [load on demand](ui.igcombo#options:loadOnDemandSettings) is 
-                [enabled](ui.igcombo#options:loadOnDemandSettings.enabled) and its [type](ui.igcombo#options:filteringType) is remote. 
+            /* type="string" Sets URL which is used for sending JSON on request for remote filtering (MVC for example). That option is required when [load on demand](ui.igcombo#options:loadOnDemandSettings) is
+                [enabled](ui.igcombo#options:loadOnDemandSettings.enabled) and its [type](ui.igcombo#options:filteringType) is remote.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     dataSourceUrl : "data.svc"
-                });  
+                });
 
-                //Get 
-                var dataUrl = $(".selector").igCombo("option", "dataSourceUrl");  
+                //Get
+                var dataUrl = $(".selector").igCombo("option", "dataSourceUrl");
             ```
             */
             dataSourceUrl: null,
             /* type="string" see [$.ig.DataSource](ig.datasource) property in the response specifying the total number of records on the server.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     responseTotalRecCountKey : "count"
-                });  
+                });
 
-                //Get 
+                //Get
                 var countKey = $(".selector").igCombo("option", "responseTotalRecCountKey");
             ```
             */
             responseTotalRecCountKey: null,
             /* type="string" See [$.ig.DataSource](ig.datasource) This is basically the property in the response where data records are held, if the response is wrapped.
             ```
-            //Initialize 
-            $(".selector").igCombo({     
+            //Initialize
+            $(".selector").igCombo({
                 responseDataKey : "d.results"
-            });  
+            });
 
-            //Get 
-            var dataKey = $(".selector").igCombo("option", "responseDataKey");  
+            //Get
+            var dataKey = $(".selector").igCombo("option", "responseDataKey");
             ```
             */
             responseDataKey: null,
@@ -172,7 +172,7 @@
                 $(".selector").igCombo({
                     responseDataType : "text"
                 });
-                
+
                 //Get
                 var responseDataType = $(".selector").igCombo("option", "responseDataType");
             ```
@@ -190,7 +190,7 @@
                 $(".selector").igCombo({
                     responseContentType : "application/json; charset=utf-8"
                 });
-                
+
                 //Get
                 var responseContentType = $(".selector").igCombo("option", "responseContentType");
             ```
@@ -198,63 +198,63 @@
             responseContentType: null,
             /* type="string" specifies the HTTP verb to be used to issue the request.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     requestType : "get"
                 });
 
-                //Get 
+                //Get
                 var requestType = $(".selector").igCombo("option", "requestType");
             ```
             */
             requestType: "GET",
             /* type="string" Gets/Sets name of column which contains the "value". If it is missing, then the name of first column will be used.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     valueKey : "ProductID"
-                });  
+                });
 
-                //Get 
+                //Get
                 var key = $(".selector").igCombo("option", "valueKey");
             ```
             */
             valueKey: null,
             /* type="string" Gets/Sets name of column which contains the displayed text. If it is missing, then [valueKey](ui.igcombo#options:valueKey) option will be used.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     textKey : "ProductName"
-                });  
+                });
 
-                //Get 
+                //Get
                 var key = $(".selector").igCombo("option", "textKey");
             ```*/
             textKey: null,
             /* type="string" Gets/Sets a template used to render an item in list. The igCombo utilizes igTemplating for generating node content templates.
 			    More info on the templating engine can be found here: http://www.igniteui.com/help/infragistics-templating-engine.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     itemTemplate: "<span class="movieTitle">${Name}</span><img src="${Url}" />"
-                });  
+                });
 
-                //Get 
+                //Get
                 var template = $(".selector").igCombo("option", "itemTemplate");
             ```
 			*/
             itemTemplate: null,
             /* type="string" Gets/Sets template used to render a header in the drop-down list. The template is rendered inside of a DIV html element.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     headerTemplate : "<div class='dropDownHeaderFooter'>Available Products</div>"
-                });  
+                });
 
-                //Get 
-                var headerTemplate = $(".selector").igCombo("option", "headerTemplate");  
+                //Get
+                var headerTemplate = $(".selector").igCombo("option", "headerTemplate");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "headerTemplate", "<div class='dropDownHeaderClass'>Available Products</div>");
             ```
              */
@@ -268,90 +268,90 @@
 						- {2}: Number of (filtered) records on server
 						- {3}: Number of all records on server
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     footerTemplate : "<div class='dropDownHeaderFooter'>Available Products</div>"
-                });  
+                });
 
-                //Get 
-                var footerTemplate = $(".selector").igCombo("option", "footerTemplate");  
+                //Get
+                var footerTemplate = $(".selector").igCombo("option", "footerTemplate");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "footerTemplate", "<div class='dropDownFooterClass'>Product Count: {0} / {3} {1}/ {2}</div>");
             ```
 			*/
             footerTemplate: null,
-            /* type="string" Gets/Sets the name of a hidden INPUT element, which is used when submitting data. Its value will be set to the values of the selected items valueKeys separated by ',' character on any change in igCombo. If the combo element has 'name' attribute and this option is not set, the 'name' attribute will be used for the input name. 
+            /* type="string" Gets/Sets the name of a hidden INPUT element, which is used when submitting data. Its value will be set to the values of the selected items valueKeys separated by ',' character on any change in igCombo. If the combo element has 'name' attribute and this option is not set, the 'name' attribute will be used for the input name.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     inputName : "textField"
-                });  
+                });
 
-                //Get 
-                var inputName = $(".selector").igCombo("option", "inputName");  
+                //Get
+                var inputName = $(".selector").igCombo("option", "inputName");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "inputName", "textField");
             ```
             */
             inputName: null,
-            /* type="number" Gets/Sets show drop-down list animation duration in milliseconds. 
+            /* type="number" Gets/Sets show drop-down list animation duration in milliseconds.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     animationShowDuration : 25
                 });
 
-                //Get 
-                var animationDuration = $(".selector").igCombo("option", "animationShowDuration");  
+                //Get
+                var animationDuration = $(".selector").igCombo("option", "animationShowDuration");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "animationShowDuration", 25);
             ```
             */
             animationShowDuration: 100,
-            /* type="number" Gets/Sets hide drop-down list animation duration in milliseconds. 
+            /* type="number" Gets/Sets hide drop-down list animation duration in milliseconds.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     animationHideDuration : 25
-                });  
+                });
 
-                //Get 
-                var animationDuration = $(".selector").igCombo("option", "animationHideDuration");  
+                //Get
+                var animationDuration = $(".selector").igCombo("option", "animationHideDuration");
 
-                //Set 
-                $(".selector").igCombo("option", "animationHideDuration", 25); 
+                //Set
+                $(".selector").igCombo("option", "animationHideDuration", 25);
             ```
             */
             animationHideDuration: 100,
             /* type="bool" If set to true, the container of the drop-down list is appended to the body.
                 If set to false, it is appended to the parent element of the combo.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     dropDownAttachedToBody : false
                 });
 
-                //Get 
-                var dropDownAttachedToBody = $(".selector").igCombo("option", "dropDownAttachedToBody");  
+                //Get
+                var dropDownAttachedToBody = $(".selector").igCombo("option", "dropDownAttachedToBody");
             ```
             */
             dropDownAttachedToBody: true,
             /* type="remote|local|none" Gets/Sets type of filtering.
 				Note: option is set to "remote", then the "css.waitFiltering" is applied to combo and its drop-down list.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     filteringType : "remote"
                 });
 
-                //Get 
-                var filterType = $(".selector").igCombo("option", "filteringType");  
+                //Get
+                var filterType = $(".selector").igCombo("option", "filteringType");
 
-                //Set 
-                $(".selector").igCombo("option", "filteringType", "remote"); 
+                //Set
+                $(".selector").igCombo("option", "filteringType", "remote");
             ```
 				remote type="string" filtering is performed by server
 				local type="string" filtering is performed by $.ig.DataSource
@@ -360,15 +360,15 @@
             filteringType: "local",
             /* type="string" Gets/Sets URL key name that specifies how the remote filtering expressions will be encoded for remote requests, e.g. &filter('col') = startsWith. Default is OData.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     filterExprUrlKey : "filter"
-                });  
+                });
 
-                //Get 
-                var filterKey = $(".selector").igCombo("option", "filterExprUrlKey");  
+                //Get
+                var filterKey = $(".selector").igCombo("option", "filterExprUrlKey");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "filterExprUrlKey", "filter");
             ```
              */
@@ -376,15 +376,15 @@
             /* type="contains|doesNotContain|startsWith|endsWith|greaterThan|lessThan|greaterThanOrEqualTo|lessThanOrEqualTo|equals|doesNotEqual" Gets/Sets condition used for filtering.
 				Note: When [autoComplete](ui.igcombo#options:autoComplete) is enabled, the filtering condition is always "startsWith".
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     filteringCondition : "startsWith"
-                });  
+                });
 
-                //Get 
-                var condition = $(".selector").igCombo("option", "filteringCondition");  
+                //Get
+                var condition = $(".selector").igCombo("option", "filteringCondition");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "filteringCondition", "startsWith");
             ```
                 contains type="string"
@@ -399,17 +399,17 @@
                 doesNotEqual type="string"
             */
             filteringCondition: "contains",
-            /* type="OR|AND" Gets/Sets filtering logic. 
+            /* type="OR|AND" Gets/Sets filtering logic.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     filteringLogic : "and"
                 });
 
-                //Get 
-                var filteringLogic = $(".selector").igCombo("option", "filteringLogic");  
+                //Get
+                var filteringLogic = $(".selector").igCombo("option", "filteringLogic");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "filteringLogic", "or");
             ```
             OR type="string"
@@ -418,15 +418,15 @@
             filteringLogic: "OR",
             /* type="string" Gets/Sets text of list item for condition when [filteringType](ui.igcombo#options:filteringType) option is enabled and no match was found. That is an override for the $.ig.Combo.locale.noMatchFoundText.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     noMatchFoundText : "Please try again"
-                });  
+                });
 
-                //Get 
-                var text = $(".selector").igCombo("option", "noMatchFoundText");  
+                //Get
+                var text = $(".selector").igCombo("option", "noMatchFoundText");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "noMatchFoundText", "Please try again");
             ```
             */
@@ -436,15 +436,15 @@
 				That option has effect only when data is loaded remotely using [dataSourceUrl](ui.igcombo#options:dataSourceUrl).
 				Selection is supported only for already loaded items.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     loadOnDemandSettings: {
                         enabled: true,
                         pageSize: 55
                     }
-                });  
+                });
 
-                //Get 
+                //Get
                 var loadOnDemandSettings = $(".selector").igCombo("option", "loadOnDemandSettings");
                 //Get the enabled state
                 loadOnDemandSettings.enabled;
@@ -458,37 +458,37 @@
             loadOnDemandSettings: {
                 /* type="bool" Gets/Sets option to enable load on demand.
                 ```
-                    //Initialize 
-                    $(".selector").igCombo({     
+                    //Initialize
+                    $(".selector").igCombo({
                         loadOnDemandSettings: { enabled: true }
-                    });  
+                    });
 
-                    //Get 
+                    //Get
                     var loadOnDemandSettings = $(".selector").igCombo("option", "loadOnDemandSettings");
                     //Get the enabled state
                     loadOnDemandSettings.enabled;
 
-                    //Set 
+                    //Set
                     $(".selector").igCombo("option", "loadOnDemandSettings", { enabled: true });
                 ```
                 */
                 enabled: false,
                 /* type="number" Gets/Sets number of records loaded on each request.
                 ```
-                    //Initialize 
-                    $(".selector").igCombo({     
+                    //Initialize
+                    $(".selector").igCombo({
                         loadOnDemandSettings: {
                             enabled: true,
                             pageSize: 55
                         }
-                    });  
+                    });
 
-                    //Get 
+                    //Get
                     var loadOnDemandSettings = $(".selector").igCombo("option", "loadOnDemandSettings");
                     //Get the drop down list page size
                     loadOnDemandSettings.pageSize;
 
-                    //Set 
+                    //Set
                     $(".selector").igCombo("option", "loadOnDemandSettings", { enabled: true, pageSize: 55 });
                 ```*/
                 pageSize: 16
@@ -497,29 +497,29 @@
 			   Notes:
 			   This option is used for [virtualization](ui.igcombo#options:virtualization) in order to render initial list items.
             ```
-                //Initialize 
+                //Initialize
                 $(".selector").igCombo({
                     visibleItemsCount: 22
                 });
 
-                //Get 
+                //Get
                 var count = $(".selector").igCombo("option", "visibleItemsCount");
 
-                //Set 
-                $(".selector").igCombo("option", "visibleItemsCount", 33 });      
+                //Set
+                $(".selector").igCombo("option", "visibleItemsCount", 33 });
             ```
 			*/
             visibleItemsCount: 15,
             /* type="string" Gets/Sets value that is displayed when input field is empty. That is an override for the $.ig.Combo.locale.placeHolder.
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     placeHolder : "Empty input field"
-                });  
+                });
 
-                //Get 
-                var pHolder = $(".selector").igCombo("option", "placeHolder");  
+                //Get
+                var pHolder = $(".selector").igCombo("option", "placeHolder");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "placeHolder", "Please type in some text");
             */
             placeHolder: null,
@@ -529,115 +529,115 @@
 				readonlylist type="string" Allows to open list, but does not allow any changes in field or selection in drop-down list. If selection is not set, then first item in [dataSource](ui.igcombo#options:dataSource) is automatically selected.
 				readonly type="string" Does not allow to open list or change value in field. If selection is not set, then first item in [dataSource](ui.igcombo#options:dataSource) is automatically selected.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     mode : "readonlylist"
-                });  
+                });
 
-                //Get 
-                var mode = $(".selector").igCombo("option", "mode");  
+                //Get
+                var mode = $(".selector").igCombo("option", "mode");
             ```
 			*/
             mode: "editable",
             /* type="bool" Gets/Sets ability to use virtual rendering for drop-down list. Enable to boost performance when combo has lots of records.
 				If that option is enabled, then only visible items are created and the top edge of the first visible item in list is aligned to the top edge of list.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     virtualization : true
-                });  
+                });
 
-                //Get 
-                var isVirtualizationEnabled = $(".selector").igCombo("option", "virtualization"); 
+                //Get
+                var isVirtualizationEnabled = $(".selector").igCombo("option", "virtualization");
             ```
             */
             virtualization: false,
             /* type="object" Gets/Sets object specifying multi selection feature options. Note showCheckboxes and itemSeparator has effect only if multi selection is enabled.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     multiSelection: {
                         enabled: true,
                         addWithKeyModifier: false,
                         showCheckboxes: false,
                         itemSeparator: ', '
                     }
-                });  
+                });
 
-                //Get 
-                var multiSelection = $(".selector").igCombo("option", "multiSelection");  
+                //Get
+                var multiSelection = $(".selector").igCombo("option", "multiSelection");
             ``` */
             multiSelection: {
                 /* type="bool" Set enabled to true to turn multi selection on. Set to true by default when target element for the combo is a select with the multiple attribute set.
                 ```
-                    //Initialize 
-                    $(".selector").igCombo({     
+                    //Initialize
+                    $(".selector").igCombo({
                         multiSelection: {
                             enabled: true
                         }
-                    });  
+                    });
 
-                    //Get 
+                    //Get
                     var multiSelection = $(".selector").igCombo("option", "multiSelection");
                     var enabled = multiSelection.enabled;
 
-                    //Set 
+                    //Set
                     $(".selector").igCombo("option", "multiSelection", { enabled: true });
                 ```
                 */
                 enabled: false,
                 /* type="bool" Set addWithKeyModifier to true to disable the additive selection, then additive selection can be done by ctrl + mouse click / enter.
                 ```
-                    //Initialize 
-                    $(".selector").igCombo({     
+                    //Initialize
+                    $(".selector").igCombo({
                         multiSelection: {
                             addWithKeyModifier: true
                         }
-                    });  
+                    });
 
-                    //Get 
+                    //Get
                     var multiSelection = $(".selector").igCombo("option", "multiSelection");
                     var addWithKeyModifier = multiSelection.addWithKeyModifier;
 
 
-                    //Set 
+                    //Set
                     $(".selector").igCombo("option", "multiSelection", { addWithKeyModifier: true });
                 ```
                  */
                 addWithKeyModifier: false,
                 /* type="bool" Set showCheckboxes to true to render check boxes in front of each drop down item.
                 ```
-                    //Initialize 
-                    $(".selector").igCombo({     
+                    //Initialize
+                    $(".selector").igCombo({
                         multiSelection: {
                             showCheckboxes: true
                         }
-                    });  
+                    });
 
-                    //Get 
+                    //Get
                     var multiSelection = $(".selector").igCombo("option", "multiSelection");
                     var showCheckboxes = multiSelection.showCheckboxes;
 
-                    //Set 
+                    //Set
                     $(".selector").igCombo("option", "multiSelection", { showCheckboxes: false });
                 ```
                 */
                 showCheckboxes: false,
                 /* type="string" Use itemSeparator to set what string to be rendered between items in field.
                 ```
-                //Initialize 
-                    $(".selector").igCombo({     
+                //Initialize
+                    $(".selector").igCombo({
                         multiSelection: {
                             itemSeparator: ", "
                         }
-                    });  
+                    });
 
-                    //Get 
+                    //Get
                     var multiSelection = $(".selector").igCombo("option", "multiSelection");
                     var itemSeparator = multiSelection.itemSeparator;
 
 
-                    //Set 
+                    //Set
                     $(".selector").igCombo("option", "multiSelection", { itemSeparator: ". " });
                 ```
                 */
@@ -645,15 +645,15 @@
             },
             /* type="object" Gets/Sets object specifying grouping feature options. The option has key and dir properties.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     grouping: {
                         key: "Country",
                         dir: "desc"
                     },
-                });  
+                });
 
-                //Get 
+                //Get
                 var grouping = $(".selector").igCombo("option", "grouping");
 
                 //Set
@@ -663,14 +663,14 @@
             grouping: {
                 /* type="string" Gets/Sets name of column by which the records will be grouped. Setting this option enables the grouping.
                 ```
-                    //Initialize 
-                    $(".selector").igCombo({     
+                    //Initialize
+                    $(".selector").igCombo({
                         grouping: {
                             key: "Country"
                         },
-                    });  
+                    });
 
-                    //Get 
+                    //Get
                     var grouping = $(".selector").igCombo("option", "grouping");
                     var key = grouping.key;
 
@@ -681,15 +681,15 @@
                 key: null,
                 /* type="asc|desc" Specifies the sort order - ascending or descending.
                 ```
-                    //Initialize 
-                    $(".selector").igCombo({     
+                    //Initialize
+                    $(".selector").igCombo({
                         grouping: {
                             key: "Country",
                             dir: "desc"
                         },
-                    });  
+                    });
 
-                    //Get 
+                    //Get
                     var grouping = $(".selector").igCombo("option", "grouping");
                     var dir = grouping.dir;
 
@@ -704,17 +704,17 @@
             /* type="object" Gets/Sets object which contains options supported by [igValidator](ui.igvalidator).
 				Notes: in order for validator to work, application should ensure that [igValidator](ui.igvalidator) is loaded (ig.ui.validator.js/css files).
             ```
-                //Initialize 
+                //Initialize
                 $(".selector").igCombo({
                     validatorOptions: {
                         required: true
                     }
                 });
 
-                //Get 
+                //Get
                 var validatorOptions = $(".selector").igCombo("option", "validatorOptions");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "validatorOptions", {
                     required: true
                 });
@@ -723,15 +723,15 @@
             validatorOptions: null,
             /* type="multi|contains|startsWith|full|null" Gets/Sets condition used for highlighting of matching parts in items of drop-down list.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     highlightMatchesMode : "startsWith"
-                });  
+                });
 
-                //Get 
-                var highlightMatchesMode = $(".selector").igCombo("option", "highlightMatchesMode");  
+                //Get
+                var highlightMatchesMode = $(".selector").igCombo("option", "highlightMatchesMode");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "highlightMatchesMode", "full");
             ```
 				multi type="string" multiple matches in a single item are rendered
@@ -743,28 +743,28 @@
             highlightMatchesMode: "multi",
             /* type="bool" If set to true, filtering and auto selection will be case-sensitive.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     caseSensitive : true
-                });  
+                });
 
-                //Get 
-                var caseSensitive = $(".selector").igCombo("option", "caseSensitive");  
+                //Get
+                var caseSensitive = $(".selector").igCombo("option", "caseSensitive");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "caseSensitive", true);
             ```
              */
             caseSensitive: false,
-            /* type="bool" Gets/Sets whether the first matching item should be auto selected when typing in input. When [multiSelection](ui.igcombo#options:multiSelection) is enabled this option will instead put the active item on the matching element. 
+            /* type="bool" Gets/Sets whether the first matching item should be auto selected when typing in input. When [multiSelection](ui.igcombo#options:multiSelection) is enabled this option will instead put the active item on the matching element.
             ```
                 //Initializes
-                $(".selector").igCombo({     
+                $(".selector").igCombo({
                     autoSelectFirstMatch : false
-                });  
+                });
 
                 //Get
-                var autoSelectFirstMatch = $(".selector").igCombo("option", "autoSelectFirstMatch");  
+                var autoSelectFirstMatch = $(".selector").igCombo("option", "autoSelectFirstMatch");
 
                 //Set
                 $(".selector").igCombo("option", "autoSelectFirstMatch", true);
@@ -772,17 +772,17 @@
             */
             autoSelectFirstMatch: true,
             /* type="bool" Gets/Sets ability to autocomplete field from first matching item in list.
-				Note: When autoComplete option is enabled, then "startsWith" is used for [filteringCondition](ui.igcombo#options:filteringCondition). 
+				Note: When autoComplete option is enabled, then "startsWith" is used for [filteringCondition](ui.igcombo#options:filteringCondition).
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     autoComplete : true
-                });  
+                });
 
-                //Get 
-                var autoComplete = $(".selector").igCombo("option", "autoComplete");  
+                //Get
+                var autoComplete = $(".selector").igCombo("option", "autoComplete");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "autoComplete", false);
             ```
             */
@@ -804,10 +804,10 @@
             ```
 			*/
             allowCustomValue: false,
-            /* type="bool" Gets/Sets ability to close drop-down list when control loses focus. 
+            /* type="bool" Gets/Sets ability to close drop-down list when control loses focus.
             ```
                 //Initialize
-                $(".selector").igCombo({     
+                $(".selector").igCombo({
                     closeDropDownOnBlur: false
                 });
 
@@ -819,14 +819,14 @@
             ```
             */
             closeDropDownOnBlur: true,
-            /* type="number" Specifies the delay duration before processing the changes in the input. Useful to boost performance by lowering the count of selection, filtering, auto complete and highlighting operations executed on each input change. 
+            /* type="number" Specifies the delay duration before processing the changes in the input. Useful to boost performance by lowering the count of selection, filtering, auto complete and highlighting operations executed on each input change.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     delayInputChangeProcessing : 500
-                });  
-                
-                //Get 
+                });
+
+                //Get
                 var delayInputChangeProcessing = $(".selector").igCombo("option", "delayInputChangeProcessing");
 
                 //Set
@@ -836,69 +836,69 @@
             delayInputChangeProcessing: 250,
             /* type="number" Gets/Sets tabIndex for the field of the combo.
             ```
-                //Initialize 
+                //Initialize
                 $(".selector").igCombo({
                     tabIndex : 3
                 });
 
-                //Get 
+                //Get
                 var tabIndex = $(".selector").igCombo("option", "tabIndex");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "tabIndex", 3);
             ```
             */
             tabIndex: null,
-            /* type="bool" Gets/Sets ability to show the drop-down list when the combo is in focus. This option has effect only if the combo is in editable [mode](ui.igcombo#options:mode). 
+            /* type="bool" Gets/Sets ability to show the drop-down list when the combo is in focus. This option has effect only if the combo is in editable [mode](ui.igcombo#options:mode).
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     dropDownOnFocus : true
-                });  
+                });
 
-                //Get 
-                var dropDownOnFocus = $(".selector").igCombo("option", "dropDownOnFocus");  
+                //Get
+                var dropDownOnFocus = $(".selector").igCombo("option", "dropDownOnFocus");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "dropDownOnFocus", true);
             ```
             */
             dropDownOnFocus: false,
-            /* type="bool" Gets sets ability to close drop-down list when single item in the list is selected with mouse click or enter press. The default value when [multiSelection](ui.igcombo#options:multiSelection) is enabled will be false. This option will not close the drop down when [multiSelection](ui.igcombo#options:multiSelection) is enabled and additive selection is performed. 
+            /* type="bool" Gets sets ability to close drop-down list when single item in the list is selected with mouse click or enter press. The default value when [multiSelection](ui.igcombo#options:multiSelection) is enabled will be false. This option will not close the drop down when [multiSelection](ui.igcombo#options:multiSelection) is enabled and additive selection is performed.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     closeDropDownOnSelect: false
-                });  
+                });
 
-                //Get 
+                //Get
                 var closeDropDownOnSelect = $(".selector").igCombo("option", "closeDropDownOnSelect");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "closeDropDownOnSelect", false);
-            ```            
+            ```
             */
             closeDropDownOnSelect: true,
             /* type="bool" Gets/Sets ability to select items by space button press.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     selectItemBySpaceKey : true
-                });  
+                });
 
-                //Get 
-                var selectSpace = $(".selector").igCombo("option", "selectItemBySpaceKey");  
+                //Get
+                var selectSpace = $(".selector").igCombo("option", "selectItemBySpaceKey");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "selectItemBySpaceKey", true);
                 ```
             */
             selectItemBySpaceKey: false,
             /* type="array" Gets/Sets list of items to be selected when the combo is initialized. It should contain array of objects with index or value property, then on initialization the matching items will be selected. If initialSelectedItems are not set, the combo is with single selection and it is in a dropdown, readonly or readonlylist [mode](ui.igcombo#options:mode), the first item will be automatically selected.
             Note: Only items loaded on initialization can be selected. When using [load on demand](ui.igCombo#options:loadOnDemandSettings), selecting an item which is not loaded yet will fail.
-            ```           
+            ```
                 //Initialize with index
-                $(".selector").igCombo({  
+                $(".selector").igCombo({
                     multiSelection: {
                         enabled: true
                     },
@@ -908,9 +908,9 @@
                         { index: 2 }
                     ]
                 });
-                
+
                 //Initialize with value
-                $(".selector").igCombo({  
+                $(".selector").igCombo({
                     initialSelectedItems : [
                         { value: 5 }
                     ]
@@ -923,8 +923,8 @@
             initialSelectedItems: [ {
                 /* type="number" optional="true" Index of item in the list. The index should be greater than -1 and less than the count of the [items](ui.igcombo#methods:items) in the list (rows in dataSource).
                 ```
-                    //Initialize 
-                    $(".selector").igCombo({  
+                    //Initialize
+                    $(".selector").igCombo({
                         multiSelection: {
                             enabled: true
                         },
@@ -933,17 +933,17 @@
                             { index: 3 },
                             { index: 5 }
                         ]
-                    });  
+                    });
 
-                    //Get 
-                    var initialSelectedItems = $(".selector").igCombo("option", "initialSelectedItems");  
+                    //Get
+                    var initialSelectedItems = $(".selector").igCombo("option", "initialSelectedItems");
                 ```
                  */
                 index: -1,
                 /* type="object" optional="true" Value matching the [valueKey](ui.igcombo#options:valueKey) property of the item.
                 ```
-                    //Initialize 
-                    $(".selector").igCombo({  
+                    //Initialize
+                    $(".selector").igCombo({
                         multiSelection: {
                             enabled: true
                         },
@@ -951,24 +951,24 @@
                             { value: 2 },
                             { value: 5 },
                         ]
-                    });  
+                    });
 
-                    //Get 
+                    //Get
                     var initialSelectedItems = $(".selector").igCombo("option", "initialSelectedItems");
                 ``` */
                 value: null
             } ],
             /* type="bool" Gets/Sets ability to prevent submitting form on enter key press.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     preventSubmitOnEnter : true
-                });  
+                });
 
-                //Get 
-                var preventSubmitOnEnter = $(".selector").igCombo("option", "preventSubmitOnEnter");  
+                //Get
+                var preventSubmitOnEnter = $(".selector").igCombo("option", "preventSubmitOnEnter");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "preventSubmitOnEnter", false);
             ```
             */
@@ -982,12 +982,12 @@
 
 				Custom format strings should match the data type in "textKey" column.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     format : "auto"
-                });  
+                });
 
-                //Get 
+                //Get
                 var format = $(".selector").igCombo("option", "format");
             ```
 			*/
@@ -995,28 +995,28 @@
             /* type="boolean" Gets/Sets whether the onscreen keyboard should be shown when the dropdown button is clicked (touch devices only).
                 Note: The keyboard will still show when the combo input is focused in editable mode.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     suppressKeyboard : true
-                });  
-                
-                //Get 
-                var suppressKeyboard = $(".selector").igCombo("option", "suppressKeyboard");  
-                
-                //Set 
+                });
+
+                //Get
+                var suppressKeyboard = $(".selector").igCombo("option", "suppressKeyboard");
+
+                //Set
                 $(".selector").igCombo("option", "suppressKeyboard", true);
             ```
             */
             suppressKeyboard: false,
-            /* type="boolean" Specifies whether the clear button should be rendered. 
-            When the [mode](ui.igcombo#options:mode) is single selection, readonly or readonlylist this option will default to false. It can still be enabled when it is specifically set to true. 
+            /* type="boolean" Specifies whether the clear button should be rendered.
+            When the [mode](ui.igcombo#options:mode) is single selection, readonly or readonlylist this option will default to false. It can still be enabled when it is specifically set to true.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     enableClearButton : false
-                });  
+                });
 
-                //Get 
+                //Get
                 var enableClearButton = $(".selector").igCombo("option", "enableClearButton");
 
                 //Set
@@ -1024,30 +1024,30 @@
             ```
             */
             enableClearButton: true,
-            /* type="string" Gets/Sets title for html element which represent the drop-down button. This is an override for the $.ig.Combo.locale.dropDownButtonTitle. 
+            /* type="string" Gets/Sets title for html element which represent the drop-down button. This is an override for the $.ig.Combo.locale.dropDownButtonTitle.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     dropDownButtonTitle : "Open Dropdown"
-                });  
+                });
 
-                //Get 
-                var title = $(".selector").igCombo("option", "dropDownButtonTitle");  
+                //Get
+                var title = $(".selector").igCombo("option", "dropDownButtonTitle");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "dropDownButtonTitle", "Open Dropdown");
             ```
             */
             dropDownButtonTitle: null,
-            /* type="string" Gets/Sets title for html element which represent clear button (this is an override for the $.ig.Combo.locale.clearButtonTitle). 
+            /* type="string" Gets/Sets title for html element which represent clear button (this is an override for the $.ig.Combo.locale.clearButtonTitle).
             ```
                 //Initialize
-                $(".selector").igCombo({     
+                $(".selector").igCombo({
                     clearButtonTitle : "Clear value"
-                });  
+                });
 
                 //Get
-                var title = $(".selector").igCombo("option", "clearButtonTitle");  
+                var title = $(".selector").igCombo("option", "clearButtonTitle");
 
                 //Set
                 $(".selector").igCombo("option", "clearButtonTitle", "Clear value");
@@ -1056,15 +1056,15 @@
             clearButtonTitle: null,
             /* type="auto|bottom|top" Gets/Sets drop-down list orientation when open button is clicked.
             ```
-                //Initialize 
-                $(".selector").igCombo({     
+                //Initialize
+                $(".selector").igCombo({
                     dropDownOrientation : "top"
-                });  
+                });
 
-                //Get 
-                var dropDownOrientation = $(".selector").igCombo("option", "dropDownOrientation");  
+                //Get
+                var dropDownOrientation = $(".selector").igCombo("option", "dropDownOrientation");
 
-                //Set 
+                //Set
                 $(".selector").igCombo("option", "dropDownOrientation", "top");
             ```
 			   auto type="string" if there is enough space, it positions the drop-down list below the combo input, otherwise - above the combo input
@@ -1082,7 +1082,7 @@
                     //use to get a reference to the main/top combo element.
                     ui.element;
                 });
-                
+
                 //Initialize
                 $(".selector").igCombo({
                     rendered: function(evt, ui) {...}
@@ -1095,7 +1095,7 @@
             rendered: "rendered",
             /* cancel="true" Event which is raised before data binding is performed.
             ```
-                $(document).delegate(".selector", "igcombodatabinding", function (null, ui) {           
+                $(document).delegate(".selector", "igcombodatabinding", function (null, ui) {
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to instance of $.ig.DataSource used by combo
@@ -1143,7 +1143,7 @@
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to array which contains expressions supported by $.ig.DataSource
-                    ui.expression;     
+                    ui.expression;
                 });
 
                 //Initialize
@@ -1166,7 +1166,7 @@
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to array which contains expressions supported by $.ig.DataSource
-                    ui.expression;      
+                    ui.expression;
                 });
 
                 //Initialize
@@ -1190,7 +1190,7 @@
                     //use to get a reference to the $.ig.DataSource combo is databound to.
                     ui.dataSource;
                 });
-                
+
                 //Initialize
                 $(".selector").igCombo({
                     itemsRendering: function(evt, ui) {...}
@@ -1209,7 +1209,7 @@
                     //use to get a reference to the $.ig.DataSource combo is databound to.
                     ui.dataSource;
                 });
-            
+
                 //Initialize
                 $(".selector").igCombo({
                     itemsRendered: function(evt, ui) {...}
@@ -1228,7 +1228,7 @@
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to jQuery DOM element which represents a container of list
-                    ui.element;   
+                    ui.element;
                 });
 
                 //Initialize
@@ -1252,7 +1252,7 @@
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to jQuery DOM element which represents a container of list
-                    ui.element;      
+                    ui.element;
                 });
 
                 //Initialize
@@ -1267,7 +1267,7 @@
 				Use ui.list to obtain reference to jquery DOM element which represents drop down list container.
 			*/
             dropDownOpened: "dropDownOpened",
-            /* cancel="true" Event which is raised before drop-down list is closed.            
+            /* cancel="true" Event which is raised before drop-down list is closed.
             ```
                 $(document).delegate(".selector", "igcombodropdownclosing", function (evt, ui) {
                     //use to obtain reference to the event browser
@@ -1275,7 +1275,7 @@
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to jQuery DOM element which represents a container of list
-                    ui.element;       
+                    ui.element;
                 });
 
                 //Initialize
@@ -1293,13 +1293,13 @@
             dropDownClosing: "dropDownClosing",
             /* cancel="false" Event which is raised after drop-down list was closed.
             ```
-                $(document).delegate(".selector", "igcombodropdownclosed", function (evt, ui) {           
+                $(document).delegate(".selector", "igcombodropdownclosed", function (evt, ui) {
                     //use to obtain reference to the event browser
                     evt.originalEvent;
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to jQuery DOM element which represents a container of list
-                    ui.element;                     
+                    ui.element;
                 });
 
                 //Initialize
@@ -1352,7 +1352,7 @@
                     //use to obtain reference to array of new selected items. That can be null.
                     ui.items;
                         //use to obtain reference to array of old selected items. That can be null.
-                    ui.oldItems;       
+                    ui.oldItems;
                 });
 
                 //Initialize
@@ -6084,7 +6084,7 @@
             return result;
         },
         itemsFromValue: function (value) {
-            /* Gets object/s containing data and list item in the combo by value/s. 
+            /* Gets object/s containing data and list item in the combo by value/s.
             ```
                 //get item by value
                 var item = $(".selector").igCombo("itemsFromValue", 2);
@@ -6209,7 +6209,7 @@
             ```
                 //filter by string
                 $(".selector").igCombo("filter", "Bob");
-                
+
                 //filter by array of strings
                 $(".selector").igCombo("filter", ["Smith", "Mary"], true);
 
@@ -6287,7 +6287,7 @@
         },
         clearFiltering: function (event) {
             /* Clears filtering.
-            ```                
+            ```
                 $(".selector").igCombo("clearFiltering");
 
                 // triggering filtering and filtering
@@ -6338,7 +6338,7 @@
             ```
                 paramType="function" optional="true" Specifies callback function to be executed when open animation is completed.
                 paramType="bool" optional="true" Set to false to not focus combo"s text input after the drop down is opened. By default the combo's input is focused.
-                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [dropDownOpening](ui.igcombo#events:dropDownOpening) and [dropDownOpened](ui.igcombo#events:dropDownOpened) events.     
+                paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [dropDownOpening](ui.igcombo#events:dropDownOpening) and [dropDownOpened](ui.igcombo#events:dropDownOpened) events.
                 returnType="object" Returns reference to this igCombo.
             */
             var offset, itemHeight, noCancel, newAnimationStyle,
@@ -6446,7 +6446,7 @@
             /* Closes the drop down.
             ```
                 $(".selector").igCombo("closeDropDown");
-                
+
                 // using callback and triggering events
                 var callback = function () {
                     ...
@@ -6960,7 +6960,7 @@
 
                 //get selected items indexes
                 var selectedItemsIndexesArray = $(".selector").igCombo("index");
-                
+
                 //select item by index
                 $(".selector").igCombo("index", 3);
 
@@ -7299,10 +7299,10 @@
             /* Gets/Sets text in text input field.
             ```
                 //Get
-                var text = $(".selector").igCombo("text");  
+                var text = $(".selector").igCombo("text");
 
                 //Set
-                $(".selector").igCombo("text", "Orange"); 
+                $(".selector").igCombo("text", "Orange");
             ```
                 paramType="string" optional="true" New text value for combo's input field.
                 returnType="string|object" If parameter is undefined, then current text in field is returned. Otherwise, it returns reference to this igCombo.
@@ -7320,10 +7320,10 @@
             /* Gets/Sets scrollTop attribute of html element, which scrolls drop-down list of items.
             ```
                 //Get
-                var scrollTop = $(".selector").igCombo("listScrollTop");  
+                var scrollTop = $(".selector").igCombo("listScrollTop");
 
                 //Set
-                $(".selector").igCombo("listScrollTop", 50); 
+                $(".selector").igCombo("listScrollTop", 50);
             ```
                 paramType="number" optional="true" New value for scroll top in list. Note: if list is closed and new value is provided, then openDropDown() is called automatically.
                 returnType="number|object" If parameter is undefined, then scrollTop is returned. Otherwise, it returns reference to this igCombo.
@@ -7368,7 +7368,7 @@
         dropDown: function () {
             /* Gets jQuery object of the drop down associated with this combo widget
             ```
-                var $dropDownContainer = $(".selector").igCombo("dropDown"); 
+                var $dropDownContainer = $(".selector").igCombo("dropDown");
             ```
                 returnType="object" Returns reference to the jQuery drop down object
             */
@@ -7547,7 +7547,7 @@
         destroy: function () {
             /* Destroys the igCombo widget.
             ```
-                $(".selector").igCombo("destroy"); 
+                $(".selector").igCombo("destroy");
             ```
                 returnType="object"
             */
