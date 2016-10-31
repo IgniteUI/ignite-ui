@@ -98,7 +98,7 @@
             ````
             */
             showInsertObjectToolbar: true,
-            /* type="boolean" Shows/hides the "Copy Paste" toolbar. 
+            /* type="boolean" Shows/hides the "Copy Paste" toolbar.
             ````
                 //Initialize
                 $(".selector").igHtmlEditor({
@@ -151,7 +151,7 @@
             ````
             */
             height: 350,
-            /* type="array" The html editor toolbars list. 
+            /* type="array" The html editor toolbars list.
             ````
                 //Initialize
                 $(".selector").igHtmlEditor({
@@ -167,7 +167,7 @@
             ````
             */
             toolbarSettings: [ ],
-            /* type="array" The html editor custom toolbars list. 
+            /* type="array" The html editor custom toolbars list.
             ````
                 // Initialize
                 $(".selector").igHtmlEditor({
@@ -242,7 +242,7 @@
             ````
             */
             customToolbars: [ ],
-            /* type="string" The name attribute of the html editor source view. 
+            /* type="string" The name attribute of the html editor source view.
             ````
                 //Initialize
                 $(".selector").igHtmlEditor({
@@ -280,7 +280,7 @@
                         ui.owner
                     }
                 });
-                
+
                 //Delegate
                 $(document).delegate(".selector", "ightmleditorrendering", function (evt, ui) {
                     //return reference to igHtmlEditor object
@@ -351,7 +351,7 @@
                 $(".selector").igHtmlEditor({
                     toolbarCollapsing: function (evt, ui) {...}
                 });
-                
+
                 //Delegate
                 $(document).delegate(".selector", "ightmleditortoolbarcollapsing", function (evt, ui) {
                     //return reference to igHtmlEditor object
@@ -364,13 +364,13 @@
             ````
             */
             toolbarCollapsing: "toolbarCollapsing",
-            /* cancel="false" Event fired after a toolbar is collapsed. 
+            /* cancel="false" Event fired after a toolbar is collapsed.
             ````
                 //Initialize
                 $(".selector").igHtmlEditor({
                     toolbarCollapsed: function (evt, ui) {...}
                 });
-                
+
                 //Delegate
                 $(document).delegate(".selector", "ightmleditortoolbarcollapsed", function (evt, ui) {
                     //return reference to igHtmlEditor object
@@ -389,7 +389,7 @@
                 $(".selector").igHtmlEditor({
                     toolbarExpanded: function (evt, ui) {...}
                 });
-                
+
                 //Delegate
                 $(document).delegate(".selector", "ightmleditortoolbarexpanded", function (evt, ui) {
                     //return reference to igHtmlEditor object
@@ -408,7 +408,7 @@
                 $(".selector").igHtmlEditor({
                     toolbarExpanding: function (evt, ui) {...}
                 });
-                
+
                 //Delegate
                 $(document).delegate(".selector", "ightmleditortoolbarexpanding", function (evt, ui) {
                     //return reference to igHtmlEditor object
@@ -442,7 +442,7 @@
                 $(".selector").igHtmlEditor({
                     copy: function (evt, ui) {...}
                 });
-                
+
                 //Delegate
                 $(document).delegate(".selector", "ightmleditorcopy", function (evt, ui) {
                     //return reference to igHtmlEditor object
@@ -472,7 +472,7 @@
                 $(".selector").igHtmlEditor({
                     undo: function (evt, ui) {...}
                 });
-                
+
                 //Delegate
                 $(document).delegate(".selector", "ightmleditorundo", function (evt, ui) {
                     //return reference to igHtmlEditor object
@@ -487,7 +487,7 @@
                 $(".selector").igHtmlEditor({
                     redo: function (evt, ui) {...}
                 });
-                
+
                 //Delegate
                 $(document).delegate(".selector", "ightmleditorredo", function (evt, ui) {
                     //return reference to igHtmlEditor object
@@ -502,7 +502,7 @@
                 $(".selector").igHtmlEditor({
                     workspaceResized: function (evt, ui) {...}
                 });
-                
+
                 //Delegate
                 $(document).delegate(".selector", "ightmleditorworkspaceresized", function (evt, ui) {
                     //return reference to igHtmlEditor object
@@ -2180,7 +2180,7 @@
                 $(".selector").igHtmlEditor("executeAction", "insertorderedlist");
                 $(".selector").igHtmlEditor("executeAction", "outdent");
                 $(".selector").igHtmlEditor("executeAction", "indent");
-                
+
                 //Works on Internet Explorer only
                 $(".selector").igHtmlEditor("executeAction", "cut");
                 //Works on Internet Explorer only
@@ -2234,7 +2234,7 @@
                 Returns the content editable associated with this Html Editor
                 returnType="object" The content editable associated with this Html Editor
             ````
-                var htmlEditorContentEditable = $(".selector").igHtmlEditor("contentEditable");    
+                var htmlEditorContentEditable = $(".selector").igHtmlEditor("contentEditable");
             ````
             */
 
