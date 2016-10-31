@@ -4672,7 +4672,8 @@
                     }
                 },
                 mouseup: function (event) {
-                    var $this, multiSelect, closeDropDown;
+                    var $this, multiSelect, closeDropDown,
+                        shouldSuppress = options.suppressKeyboard && $.ig.util.isTouchDevice();
 
                     if (options.disabled) {
                         return;
@@ -4698,13 +4699,15 @@
 
                                 if (multiSelect && self.isSelected($this) &&
                                     !self._$keyNavItem().is(_options.$autoSelectedItem)) {
-                                    self.deselect($this, { focusCombo: true }, event);
+                                        self.deselect($this, {
+                                            focusCombo: !shouldSuppress },
+                                            event);
                                 } else {
-                                    self.select($this, {
-                                        additive: multiSelect,
-                                        closeDropDown: closeDropDown,
-                                        focusCombo: self._focusInInputWhenUsingTouchDevice()
-                                    }, event);
+                                        self.select($this, {
+                                            additive: multiSelect,
+                                            closeDropDown: closeDropDown,
+                                            focusCombo: !shouldSuppress
+                                        }, event);
                                 }
                             }
 
