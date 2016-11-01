@@ -374,6 +374,11 @@
 		var testId_116 = 'linking a custom vertical scrollbar and scrolling that scrollbar scrolls the content properly on touch.';
 		var testId_117 = 'linking a custom horizontal scrollbar  and scrolling that scrollbar scrolls the content properly on touch.';
 		
+		var testId_118 = 'changing the main element width and refreshing igScroll should remove custom horizontal scrollbar if not needed.';
+		var testId_119 = 'changing the main element width and refreshing igScroll should remove native horizontal scrollbar if not needed and filler.';
+		var testId_120 = 'changing the main element height and refreshing igScroll should remove custom vertical scrollbar if not needed.';
+		var testId_121 = 'changing the main element height and refreshing igScroll should remove native vertical scrollbar if not needed and filler.';
+		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({ modifyDOM: true });
@@ -3280,8 +3285,68 @@
 				start();
 			}, 100);
 	    });
-		var testId_116 = 'linking a custom vertical scrollbar and scrolling that scrollbar scrolls the content properly on touch.';
-		var testId_117 = 'linking a custom horizontal scrollbar  and scrolling that scrollbar scrolls the content properly on touch.';
+		
+		test(testId_118, function () {
+	        $("#testBed").append($('<div id="elemH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollH));
+	        $('#elemH').igScroll({
+				scrollbarType: "custom"
+			});
+			
+			//Make it bigger
+			$('#elemH').css("width", "1000px");
+			$('#elemH').igScroll("refresh");
+			
+			equal($("#elemH_hBar").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
+			equal($('#elemH').data("igScroll")._hBarContainer, null, "igScroll did not update reference to scrollbar elements inside igScroll");
+			$("#elemH").remove();
+	    });
+		
+		test(testId_119, function () {
+	        $("#testBed").append($('<div id="elemH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollH));
+	        $('#elemH').igScroll({
+				scrollbarType: "native"
+			});
+			
+			//Make it bigger
+			$('#elemH').css("width", "1000px");
+			$('#elemH').igScroll("refresh");
+			
+			equal($("#elemH_hBar").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
+			equal($("#elemH_scrollbarFiller").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
+			equal($('#elemH').data("igScroll")._hBarContainer, null, "igScroll did not update reference to scrollbar elements inside igScroll");
+			$("#elemH").remove();
+	    });
+		
+		test(testId_120, function () {
+	        $("#testBed").append($('<div id="elemV" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollV));
+	        $('#elemV').igScroll({
+				scrollbarType: "custom"
+			});
+			
+			//Make it bigger
+			$('#elemV').css("height", "2000px");
+			$('#elemV').igScroll("refresh");
+			
+			equal($("#elemV_vBar").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
+			equal($('#elemV').data("igScroll")._vBarContainer, null, "igScroll did not update reference to scrollbar elements inside igScroll");
+			$("#elemV").remove();
+	    });
+		
+		test(testId_121, function () {
+	        $("#testBed").append($('<div id="elemV" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollV));
+	        $('#elemV').igScroll({
+				scrollbarType: "native"
+			});
+			
+			//Make it bigger
+			$('#elemV').css("height", "2000px");
+			$('#elemV').igScroll("refresh");
+			
+			equal($("#elemV_vBar").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
+			equal($("#elemV_scrollbarFiller").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
+			equal($('#elemV').data("igScroll")._vBarContainer, null, "igScroll did not update reference to scrollbar elements inside igScroll");
+			$("#elemV").remove();
+	    });
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>
 </head>

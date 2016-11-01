@@ -656,13 +656,13 @@
 
 			//width specific
 			this._elemWidth = this.element.width();
-			this._contentWidth = this._content.width();
+			this._contentWidth = this._getContentWidth();
 			this._percentInViewH = this._elemWidth / this._contentWidth;
 			this._isScrollableH = this._percentInViewH < 1;
 
 			//height specific
 			this._elemHeight = this.element.height();
-			this._contentHeight = this._content.height();
+			this._contentHeight = this._getContentHeight();
 			this._percentInViewV = this._elemHeight / this._contentHeight;
 			this._isScrollableV = this._percentInViewV < 1;
 
@@ -682,6 +682,8 @@
 			var elem = this.element;
 
 			this._bKeyboardNavigation = true;
+			this._renderVerticalScrollbar = true;
+			this._renderHorizontalScrollbar = true;
 			this._bMixedEnvironment = $.ig.util.getScrollWidth() > 0;
 			this._linkedHElems = [];
 			this._linkedVElems = [];
@@ -783,7 +785,7 @@
 			};
 			this._container.on(this._evts);
 
-			this._createScrollBars();
+			this._updateScrollBarsVisibility();
 			this._hideScrollBars(false);
 			if (this.options.alwaysVisible) {
 				if ($.ig.util.isTouch) {
@@ -846,7 +848,7 @@
 				this._removeScrollbars();
 
 				if (value !== "none") {
-					this._createScrollBars();
+					this._updateScrollBarsVisibility();
 					this._scrollToXY(0, 0, true);
 				}
 			}
@@ -858,14 +860,12 @@
 			}
 			if (key === "scrollHeight") {
 				this._setScrollHeight(value);
-				this._removeScrollbars();
-				this._createScrollBars();
+				this._updateScrollBarsVisibility();
 				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "scrollWidth") {
 				this._setScrollWidth(value);
-				this._removeScrollbars();
-				this._createScrollBars();
+				this._updateScrollBarsVisibility();
 				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "syncedElemsH") {
@@ -1121,6 +1121,9 @@
 				this._hDragWidth = this._getContentWidth();
 				this._hBarDrag.css("width", this._hDragWidth + "px");
 			}
+
+			this._updateScrollBarsVisibility();
+			this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 		},
 
 		_linkElementsH: function (inElements) {
@@ -1225,7 +1228,7 @@
 								if (self._bMixedEnvironment) {
 									self._syncContentY(e.target, false);
 									self._syncElemsY(e.target, false);
-								}  else {
+								} else {
 									self._syncContentY(e.target, true);
 									self._syncElemsY(e.target, true);
 								}
@@ -2152,11 +2155,14 @@
 			this._offsetRecorded = false;
 			this._offsetDirection = 0;
 
+			this._igScollTouchPrevented = false;
+
 			this._showScrollBars(false, true);
 		},
 
 		_onTouchMoveContainer: function (event) {
-			if (event.isDefaultPrevented()) {
+			if (event.isDefaultPrevented() || this._igScollTouchPrevented) {
+				this._igScollTouchPrevented = false;
 				return;
 			}
 			var touch = event.originalEvent.touches[ 0 ];
@@ -2237,9 +2243,11 @@
 				}
 			}
 
+			if (scrolledXY.x === 0 && scrolledXY.y === 0) {
+			    this._igScollTouchPrevented = true;
+			}
+
 			event.preventDefault();
-			/* return true if there was no movement so rest of the screen can scroll */
-			return scrolledXY.x === 0 && scrolledXY.y === 0;
 		},
 
 		_onTouchEndContainer: function (event) {
@@ -2301,20 +2309,41 @@
 			}
 		},
 
-		_createScrollBars: function () {
+		_updateScrollBarsVisibility: function () {
 			if (this.options.scrollbarType === "none") {
 				return;
 			}
 
 			if (this.options.scrollbarType === "native") {
-				this._initNativeScrollbars();
-			} else if (this.options.scrollbarType === "custom") {
-				if (this._isScrollableV) {
-					this._initCustomScrollBarV();
+				if (this._isScrollableV && !this._vBarContainer && this._renderVerticalScrollbar) {
+					this._initNativeScrollBarV();
+				} else if (!this._isScrollableV && this._vBarContainer) {
+					this._removeVerticalScrollbar();
+				}
+				if (this._isScrollableH && !this._hBarContainer && this._renderHorizontalScrollbar) {
+					this._initNativeScrollBarH();
+				} else if (!this._isScrollableH && this._hBarContainer) {
+					this._removeHorizontalScrollbar();
 				}
 
-				if (this._isScrollableH) {
+				//In case we no longer have any native scrollbars and we have added padding. Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
+				if (!this._vBarContainer && !this._hBarContainer && this._desktopFiller) {
+					this._desktopFiller.remove();
+					this._desktopFiller = null;
+					this._content
+						.css("padding-right", "0px")
+						.css("padding-bottom", "0px");
+				}
+			} else if (this.options.scrollbarType === "custom") {
+				if (this._isScrollableV && !this._vBarContainer && this._renderVerticalScrollbar) {
+					this._initCustomScrollBarV();
+				} else if (!this._isScrollableV && this._vBarContainer) {
+					this._removeVerticalScrollbar();
+				}
+				if (this._isScrollableH && !this._hBarContainer && this._renderHorizontalScrollbar) {
 					this._initCustomScrollBarH();
+				} else if (!this._isScrollableH && this._hBarContainer) {
+					this._removeHorizontalScrollbar();
 				}
 
 				if ($.ig.util.isTouch) {
@@ -2323,60 +2352,68 @@
 			}
 		},
 
-		_initNativeScrollbars: function () {
+		_initNativeScrollBarV: function () {
 			var css = this.css,
 				bNativeDesktop = false;
 
-			if (this._isScrollableV) {
-				this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
-					.addClass(css.nativeVScrollOuter)
-					.css("height", this._elemHeight - this._customBarEmptySpaceSize + "px");
+			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
+				.addClass(css.nativeVScrollOuter)
+				.css("height", this._elemHeight - this._customBarEmptySpaceSize + "px");
 
-				this._vDragHeight = this._getContentHeight();
-				this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
-					.addClass(css.nativeVScrollInner)
-					.css("height", this._vDragHeight + "px");
+			this._vDragHeight = this._getContentHeight();
+			this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
+				.addClass(css.nativeVScrollInner)
+				.css("height", this._vDragHeight + "px");
 
-				if (this.options.scrollbarVParent) {
-					this._vBarContainer.append(this._vBarDrag).appendTo(this.options.scrollbarVParent);
-				} else {
-					this._vBarContainer.append(this._vBarDrag).appendTo(this._container[ 0 ].parentElement);
-				}
-
-				if ($.ig.util.getScrollHeight() > 0) {
-					this._content
-						.css("padding-bottom", $.ig.util.getScrollHeight() + "px");
-					bNativeDesktop = true;
-				}
-				this._setOption("scrollbarV", this._vBarContainer);
+			if (this.options.scrollbarVParent) {
+				this._vBarContainer.append(this._vBarDrag).appendTo(this.options.scrollbarVParent);
+			} else {
+				this._vBarContainer.append(this._vBarDrag).appendTo(this._container[ 0 ].parentElement);
 			}
 
-			if (this._isScrollableH) {
-				this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
-					.addClass(css.nativeHScrollOuter)
-					.css("width", this._elemWidth - this._customBarEmptySpaceSize + "px");
+			if ($.ig.util.getScrollHeight() > 0) {
+				this._content
+					.css("padding-bottom", $.ig.util.getScrollHeight() + "px");
+				bNativeDesktop = true;
+			}
+			this._setOption("scrollbarV", this._vBarContainer);
 
-				this._hDragWidth = this._getContentWidth();
-				this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
-					.addClass(css.nativeHScrollInner)
-					.css("width", this._hDragWidth + "px");
+			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
+			if (bNativeDesktop && !this._desktopFiller) {
+				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
+					.addClass("igscroll-filler");
+				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
+			}
+		},
 
-				if (this.options.scrollbarVParent) {
-					this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarVParent);
-				} else {
-					this._hBarContainer.append(this._hBarDrag).appendTo(this._container[ 0 ].parentElement);
-				}
+		_initNativeScrollBarH: function () {
+			var css = this.css,
+				bNativeDesktop = false;
 
-				if ($.ig.util.getScrollWidth() > 0) {
-					bNativeDesktop = true;
-					this._content
-						.css("padding-right", $.ig.util.getScrollWidth() + "px");
-				}
-				this._setOption("scrollbarH", this._hBarContainer);
+			this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
+				.addClass(css.nativeHScrollOuter)
+				.css("width", this._elemWidth - this._customBarEmptySpaceSize + "px");
+
+			this._hDragWidth = this._getContentWidth();
+			this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
+				.addClass(css.nativeHScrollInner)
+				.css("width", this._hDragWidth + "px");
+
+			if (this.options.scrollbarVParent) {
+				this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarVParent);
+			} else {
+				this._hBarContainer.append(this._hBarDrag).appendTo(this._container[ 0 ].parentElement);
 			}
 
-			//Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
-			if (bNativeDesktop) {
+			if ($.ig.util.getScrollWidth() > 0) {
+				bNativeDesktop = true;
+				this._content
+					.css("padding-right", $.ig.util.getScrollWidth() + "px");
+			}
+			this._setOption("scrollbarH", this._hBarContainer);
+
+			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
+			if (bNativeDesktop && !this._desktopFiller) {
 				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
 					.addClass("igscroll-filler");
 				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
@@ -2384,20 +2421,36 @@
 		},
 
 		_removeScrollbars: function() {
-			if (this._vBarContainer) {
-				this._vBarContainer.remove();
-			}
-
-			if (this._hBarContainer) {
-				this._hBarContainer.remove();
-			}
+			this._removeVerticalScrollbar();
+			this._removeHorizontalScrollbar();
 
 			//In case we have native scrollbars and we have added padding. Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
 			if (this._desktopFiller) {
 				this._desktopFiller.remove();
+				this._desktopFiller = null;
 				this._content
 					.css("padding-right", "0px")
 					.css("padding-bottom", "0px");
+			}
+		},
+
+		_removeVerticalScrollbar: function() {
+			if (this._vBarContainer) {
+				this._vBarContainer.remove();
+				this._vBarContainer = null;
+				this._vDragHeight = null;
+				this._vBarDrag = null;
+				this._vBarTrack = null;
+			}
+		},
+
+		_removeHorizontalScrollbar: function() {
+			if (this._hBarContainer) {
+				this._hBarContainer.remove();
+				this._hBarContainer = null;
+				this._hDragHeight = null;
+				this._hBarDrag = null;
+				this._hBarTrack = null;
 			}
 		},
 
@@ -3647,7 +3700,7 @@
 			container = args.owner.container().find("[data-scroll]").eq(0);
 		}
 		if (container.length !== 0) {
-			container.igScroll({ modifyDOM: false });
+			container.igScroll({ modifyDOM: false, scrollbarType: "none" });
 			container.data("igScroll")._bKeyboardNavigation = false;
 		}
 	});

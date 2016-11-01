@@ -171,9 +171,9 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 	required to prevent a firefox bug where the vertical scrollbar from
 	the horizontal scroller div is overlayed over the vertical scrollbar of the scrolling div
 */
-.ui-iggrid-scrolldiv { z-index: 1 }
+.ui-iggrid-scrolldiv { z-index: 1; }
 
-.ui-iggrid-scrolldiv tbody {border:none!important}
+.ui-iggrid-scrolldiv tbody {border:none!important;}
 
 .ui-iggrid-sortableheader>a, span.ui-iggrid-headertext { font-size:1em; min-height: 18px;  /*float:left;*/}
 .ui-iggrid-headertext { cursor:default; }
@@ -551,7 +551,7 @@ right: 3px;
 .ui-iggrid .ui-igedit-field
 {
   /* bug 151806 fix requested by V.S. */
-  padding: 0px 0px 0px 2px !important;
+  padding: 0 0 0 2px !important;
 }
 
 
@@ -681,9 +681,9 @@ right: 3px;
     border: 1px solid #B1B1B1;
     padding: 4px;
     
-    -moz-box-shadow: 	0px 0px 10px grey;
-    -webkit-box-shadow: 0px 0px 10px grey;
-    box-shadow: 		0px 0px 10px grey;
+    -moz-box-shadow: 	0 0 10px grey;
+    -webkit-box-shadow: 0 0 10px grey;
+    box-shadow: 		0 0 10px grey;
 }
 .ui-iggrid-featurechooser-submenuicon 
 {
@@ -1333,9 +1333,9 @@ right: 3px;
 .ui-iggrid-editor  
 {
     position:absolute; 
-    padding:0px !important; 
-    margin-right:0px; 
-    margin-bottom:0px; 
+    padding:0 !important;
+    margin-right:0;
+    margin-bottom:0;
  }
 
 .ui-widget-content.ui-iggrid-buttoncontainer 
@@ -1389,13 +1389,18 @@ td.ui-iggrid-addrow
     padding:3px 12px 5px 25px;
 }
 
+/* 10.26.2016. BUG #227831 Marin Popov make the icon for "delete row" consistent */
+.ui-iggrid-deletebutton {
+	cursor:pointer;
+	box-sizing: initial!important;
+	left: 51%!important;
+}
+
 .ui-iggrid-button-icon-only,
 .ui-iggrid-deletebutton  
 {
-    cursor:pointer;
     display:inline-block;
     white-space:nowrap;
-    cursor: default;
     width:16px;
     height:16px;
     padding:3px !important;
@@ -1510,27 +1515,13 @@ td.ui-iggrid-addrow
     line-height:1.2em;
     font-size:11px;
 }
-    .ui-iggrid-featurechooser-list li.ui-state-default {
-    background-color: transparent;
-    } 
-    .ui-iggrid-featurechooser-list li.ui-state-default:hover,
-    .ui-iggrid-featurechooser-list li.ui-state-hover {
-    background-color: #EEEEEE;
-    }
 
-
-
-.touch .ui-iggrid-featurechooser-list,
-.touchevents .ui-iggrid-featurechooser-list,
-.pointerevents .ui-iggrid-featurechooser-list,
-.touch .ui-iggrid-featurechooser-list.ui-menu li,
-.touchevents .ui-iggrid-featurechooser-list.ui-menu li
-.pointerevents .ui-iggrid-featurechooser-list.ui-menu li
-{
+.ui-iggrid-featurechooser-list li.ui-state-default {
+background-color: transparent;
 }
-
-.ui-iggrid-featurechooser-listitem-hover 
-{
+.ui-iggrid-featurechooser-list li.ui-state-default:hover,
+.ui-iggrid-featurechooser-list li.ui-state-hover {
+background-color: #EEEEEE;
 }
 
 /* menu items have less opacity when not selected */
@@ -1587,8 +1578,8 @@ display:block;
 {
     line-height: 2.5em;
     list-style-type: none;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     white-space: nowrap;
     cursor: pointer;
     -khtml-user-select: none;
@@ -1613,12 +1604,12 @@ display:block;
 }
 .ui-iggrid-columnchooser-text 
 {
-    margin: 0px 0px 0px 5px;
+    margin: 0 0 0 5px;
 }
 .ui-iggrid-modaldialog-content
 {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 .ui-iggrid-dialog-text
 {
@@ -1627,8 +1618,7 @@ display:block;
 
 .ui-iggrid-groupby-dialog-groupedcolumns,
 .ui-iggrid-groupby-dialog-ungroupedcolumns,
-.ui-iggrid-moving-dialog-columns
-.ui-iggrid-dialog-sortedcolumns,
+.ui-iggrid-moving-dialog-columns .ui-iggrid-dialog-sortedcolumns,
 .ui-iggrid-dialog-unsortedcolumns,
 .ui-iggrid-dialog-unsortedcolumns ul,
 .ui-iggrid-dialog-sortedcolumns ul
@@ -1692,7 +1682,7 @@ display:block;
 .ui-iggrid-multiplesorting-dialog-slide-button-container
 {
     text-align: center;
-	padding: 0px 0px 0 0;
+	padding: 0 0 0 0;
 	margin: 0 auto;
 	display: block;
 	font: bold 120%/100% Arial, Helvetica, sans-serif;
@@ -1718,7 +1708,7 @@ display:block;
 .ui-iggrid-dialog-unsortedcolumns-list li
 {
     list-style-type:none;
-    padding: 0px 0 5px 0;
+    padding: 0 0 5px 0;
 }
 .ui-iggrid-groupby-dialog-groupedcolumns .ui-iggrid-dialog-groupedbuttons,
 .ui-iggrid-sorting-dialog-sortedcolumns .ui-iggrid-sorting-dialog-sortbybuttons
@@ -2071,11 +2061,11 @@ margin:1em 20%;
     overflow: hidden;
     font-size: 14px;
     line-height: 26px;
-    background-color: #FFFFFF;
+    background-color: #fff;
     background-image: none;
     /* Added to make a consistent look and feel among all Jquery themes */
     min-width: 60px;
-    color: #333333;
+    color: #333;
     font-weight: normal;
     border: none;
 }
@@ -2084,12 +2074,12 @@ margin:1em 20%;
 .ui-iggrid-featurechooser-list-submenu li.ui-state-hover
  {
     background: transparent none;
-    color:#333333;
+    color:#333;
     border:none;
     text-shadow:none;
     padding:5px;
 }
 
 .ui-iggrid-featurechooser-list-submenu li.ui-state-hover {
-    background:#EEEEEE;
+    background:#eee;
 }
