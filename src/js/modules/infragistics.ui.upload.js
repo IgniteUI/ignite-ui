@@ -2102,25 +2102,21 @@
 			var self = this, singleFileData, data = {};
 
 			if (e.lengthComputable || isFinish) {
-				data.bytesUploaded = e.loaded;
-				if (isNaN(data.bytesUploaded)) {
-					data.bytesUploaded = 0;
-				}
-				if (isNaN(e.total)) {
-					e.total = 0;
-				}
 				singleFileData = this.getFileInfo(formNumber);
 				/* M.H. 15 May 2014 Fix for bug #170990: If file uploading was canceled on the way at client side and using Chrome, the canceled files except for the first canceled one persist to appear on the display. */
 				if (singleFileData && singleFileData.innerStatus === self._const.status.Canceled) {
 					return;
 				}
+				/* M.H. 31 Oct 2016 Fix for bug 226965: igUpload displays not a file size but a request size. */
+				data.size = e.total || 0;
+				data.bytesUploaded = e.loaded > singleFileData.sizeBytes ?
+										singleFileData.sizeBytes : e.loaded || 0;
 				if (isFinish) {
 					data.total = data.bytesUploaded = singleFileData.sizeBytes;
 					data.status = self._const.status.Finished;
 				} else {
 					data.status = self._const.status.Started;
 				}
-				data.size = e.total;
 				self._setFileStatus(formNumber, true, data);
 			} else {
 				/*TODO throw an error*/
