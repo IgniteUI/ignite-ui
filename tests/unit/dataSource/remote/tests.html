@@ -369,6 +369,18 @@
 			equal(params, "%24skip=15&%24top=15&%24inlinecount=allpages", "%24skip=15&%24top=15&%24inlinecount=allpages");
 		});
 		
+		test("OData summaries parameters", function() {
+			ds.settings.localSchemaTransform = true;
+			ds.settings.filtering.exprString = "";
+			ds.settings.sorting.exprString = "";
+			ds.settings.sorting.expressions = [];
+			ds.settings.filtering.expressions = [];
+			ds.settings.summaries.calculateAll = true;
+			// compare the "params" string with the expected one 
+			var params = $.param(ds._encodeUrl());
+			equal(params, "%24skip=0&%24top=5&%24inlinecount=allpages&summaries(all)=*", "%24skip=0&%24top=5&%24inlinecount=allpages&summaries(all)=*");
+		});
+
 		test("OData sorting parameters", function() {
 			ds.settings.localSchemaTransform = true;
 			ds.settings.filtering.exprString = "";
