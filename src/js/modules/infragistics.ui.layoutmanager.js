@@ -73,187 +73,739 @@
 			*/
         },
         options: {
-            /* type="grid|border|flow" defines the layout type
-				grid
-				border
-				flow
-				column
-				vertical
-			*/
-            layoutMode: "column",
-            /* will apply styles that will use media queries in order to alter the # of columns when shown on devices with smaller form factor
-				such as mobile phones, tablets, etc. */
+            /* type="object" Options specific to a border layout
+            ```
+            // Initialize
+            $('.selector').igLayoutManager({
+                  layoutMode: "border",
+                  borderLayout: {
+                      leftWidth: "10%",
+                      rightWidth:"20%",
+                      showFooter: true,
+                      showHeader: true,
+                      showLeft: true,
+                      showRight: true
+                  }
+            });
 
-            //responsive: true, // no need of this option, this can be controlled by setting a meta tag in the page
-            /* null implies auto mode, a value of "true" will use CSS3 translate transforms,
-				a value of "false" will set left/top values for positioning
-				depending on the algorithm, this may be (optional) Flexbox / HTML5 Grid, etc.
-			*/
+            // Get
+            var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
 
-            //useCSS3: null,
-            /* allows the whole layout container to be resizable, then reorders items
-				depending on mode algorithm settings
-			*/
+            // Set
+            $('.selector').igLayoutManager("option", "borderLayout", { leftWidth: "20%", rightWidth:"30%", showFooter: false });
+            ```
+            */
+            borderLayout: {
+                /* type="string" Option specifying the width of the left region, either in px or percentages
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "border",
+                    borderLayout: {
+                      leftWidth: "10%"
+                    }
+                });
 
-            //resizable: true,
-            /* allows individual items to be resized by using splitter UI */
-
-            //itemsResizable: false,
-            /* type="number" number of items to render, this is only applicable to layouts: vertical and flow */
-            itemCount: null,
-            /* type="object" options specific to grid layout mode */
-            gridLayout: {
-                /* type="number" number of columns in the grid */
-                cols: null,
-                /* type="number" number of rows in the grid */
-                rows: null,
-                /* Accepts number or string with width in px or percents */
-                columnWidth: null,
-                /* Accepts number or string with height in px or percents */
-                columnHeight: null,
-                /* type="number" specifies the margin left css property for items */
-                marginLeft: 0,
-                /* type="number" specifies the margin top css property for items */
-                marginTop: 0,
-                /* type="boolean" Specified whether the items should rearrange to fit in the container when it is resized.
-                    Have effect only when fixed columnWidth option is set. */
-                rearrangeItems: true,
-                /* type="boolean" Specifies whether the previous set options should be overriden when setting options */
-                overrideConfigOnSetOption: true,
-                /* type="number" Specifies the duration of the animations in the layout manager"s grid layout */
-                animationDuration: 500
-            },
-            /* type="object" options specific to a border layout */
-            borderLayout: { // also known as 3 column layout
-                /* type="bool" option specifying whether the header region in the border layout will be hidden or shown */
-                showHeader: true,
-                /* type="bool" option specifying whether the footer region in the border layout will be hidden or shown */
-                showFooter: true,
-                /* type="bool" option specifying whether the left region in the border layout will be hidden or shown */
-                showLeft: true,
-                /* type="bool" option specifying whether the right region in the border layout will be hidden or shown */
-                showRight: true,
-                /* type="string" option specifying the width of the left region, either in px or percentages */
+                // Get
+                var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
+                var leftWidth = borderLayout.leftWidth;
+                ```
+                */
                 leftWidth: "20%",
-                /* type="string" option specifying the width of the right region, either in px or percentages */
-                rightWidth: "10%"
+                /* type="string" Option specifying the width of the right region, either in px or percentages
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "border",
+                    borderLayout: {
+                      rightWidth: "10%"
+                    }
+                });
 
-                //enableSplitters: true
-                /* can be relative or "fixed" */
+                // Get
+                var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
+                var rightWidth = borderLayout.rightWidth;
+                ```
+                */
+                rightWidth: "10%",
+                /* type="bool" Option specifying whether the footer region in the border layout will be hidden or shown
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "border",
+                    borderLayout: {
+                      showFooter: true
+                    }
+                });
 
-                //positioning: "relative"
+                // Get
+                var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
+                var showFooter = borderLayout.showFooter;
+                ```
+                */
+                showFooter: true,
+                /* type="bool" Option specifying whether the header region in the border layout will be hidden or shown
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "border",
+                    borderLayout: {
+                      showHeader: true
+                    }
+                });
+
+                // Get
+                var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
+                var showHeader = borderLayout.showHeader;
+                ```
+                */
+                showHeader: true,
+                /* type="bool" Option specifying whether the left region in the border layout will be hidden or shown
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "border",
+                    borderLayout: {
+                        showLeft: true
+                    }
+                });
+
+                // Get
+                var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
+                var showLeft = borderLayout.showLeft;
+                ```
+                */
+                showLeft: true,
+                /* type="bool" Option specifying whether the right region in the border layout will be hidden or shown
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "border",
+                    borderLayout: {
+                        showRight: true
+                    }
+                });
+
+                // Get
+                var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
+                var showRight = borderLayout.showRight;
+                ```
+                */
+                showRight: true
             },
+            /* type="object" Options specific to grid layout mode
+            ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                layoutMode: "grid",
+                width: "500px",
+                height: "500px",
+                gridLayout: {
+                    cols: 3,
+                    rows: 3,
+                    columnWidth: 200,
+                    columnHeight: 200,
+                    animationDuration : 500,
+                    marginLeft: 10,
+                    marginTop : 10,
+                    rearrangeItems: true
+                },
+                items: [
+                    {
+                        rowSpan: 2, colSpan: 2, colIndex: 0, rowIndex: 0
+                    },
+                    {
+                        rowSpan: 1, colSpan: 1, rowIndex: 0, colIndex: 1
+                    },
+                    {
+                        rowSpan: 1, colSpan: 1, rowIndex: 0, colIndex: 2
+                    }]
+                });
+
+                // Get
+                var gridLayout = $('.selector').igLayoutManager("option", "gridLayout");
+
+                // Set
+                $('.selector').igLayoutManager('option', 'gridLayout', { columnWidth: 400, columnHeight: 500 });
+            ```
+            */
+            gridLayout: {
+                /* type="number" Specifies the duration of the animations in the layout manager"s grid layout
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "grid",
+                    gridLayout: {
+                    animationDuration : 500
+                    }
+                });
+
+                // Get
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                var animationDuration = gridLayout.animationDuration;
+
+                // Set
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                gridLayout.animationDuration = 500;
+                $('.selector').igLayoutManager('option', 'gridLayout', gridLayout);
+                ```
+                */
+                animationDuration: 500,
+                /* type="number" Number of columns in the grid
+                ```
+                //Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "grid",
+                    gridLayout: {
+                        cols : 3
+                    }
+                });
+
+                //Get
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                var cols = gridLayout.cols;
+                ```
+                */
+                cols: null,
+                /* type="string|number" Accepts number or string with height in px or percents
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                layoutMode: "grid",
+                gridLayout: {
+                    columnHeight: 200
+                }
+                });
+
+                // Get
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                var columnHeight = gridLayout.columnHeight;
+
+                // Set
+                $('.selector').igLayoutManager('option', 'gridLayout', { columnWidth: 400, columnHeight: 500});
+                ```
+                string The column height can be set in pixels (px), %, em and other units.
+                number The column height can be set as a number.
+                */
+                columnHeight: null,
+                /* type="string|number" Accepts number or string with width in px or percents
+                ```
+                //Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "grid",
+                    gridLayout: {
+                    columnWidth: 200
+                    }
+                });
+
+                //Get
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                var columnWidth = gridLayout.columnWidth;
+
+                // Set
+                $('.selector').igLayoutManager('option', 'gridLayout', { columnWidth: 400, columnHeight: 500});
+                ```
+                string The column width can be set in pixels (px), %, em and other units.
+                number The column width can be set as a number.
+                */
+                columnWidth: null,
+                /* type="number" specifies the margin left css property for items
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "grid",
+                    width: "75%",
+                    height: "500px",
+                    gridLayout: {
+                        marginLeft : 10
+                    }
+                });
+
+                // Get
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                var marginLeft = gridLayout.marginLeft;
+
+                // Set
+                $('#.selector').igLayoutManager('option', 'gridLayout', { marginLeft: 15 });
+                ```*/
+                marginLeft: 0,
+                /* type="number" specifies the margin top css property for items
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "grid",
+                    gridLayout: {
+                    marginTop : 10
+                    }
+                });
+
+                // Get
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                var marginTop = gridLayout.marginTop;
+
+                // Set
+                $('#.selector').igLayoutManager('option', 'gridLayout', { marginTop: 15 });
+                ```
+                */
+                marginTop: 0,
+                /* type="boolean" Specifies whether the previous set options should be overriden when setting options
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "grid",
+                    gridLayout: {
+                        overrideConfigOnSetOption : true
+                    }
+                });
+
+                // Get
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                var overrideConfigOnSetOption = gridLayout.overrideConfigOnSetOption;
+                ```
+                */
+                overrideConfigOnSetOption: true,
+                /* type="boolean" Specified whether the items should rearrange to fit in the container when it is resized.
+                    Have effect only when fixed columnWidth option is set.
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                      layoutMode: "grid",
+                      gridLayout: {
+                          rearrangeItems: true
+                    }
+                });
+
+                // Get
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                var rearrangeItems = gridLayout.rearrangeItems;
+                ```
+                */
+                rearrangeItems: true,
+                /* type="number" Number of rows in the grid
+                ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "grid",
+                    width: "75%",
+                    height: "500px",
+                    gridLayout: {
+                      rows : 3
+                    }
+                });
+
+                // Get
+                var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                var rows = gridLayout.rows;
+                ```
+                */
+                rows: null
+            },
+            /* type="number|string" Gets/Sets height of the layout container
+            ```
+            // Initialize
+            $('.selector').igLayoutManager({
+                layoutMode: "border",
+                height : "400px"
+            });
+
+            // Get
+            var height = $('.selector').igLayoutManager("option", "height");
+
+            // Set
+            $('.selector').igLayoutManager("option", "height", "800px");
+            ```
+            string The default height can be set in pixels (px), %, em and other units.
+            number The default height can be set as a number.
+            */
+            height: null,
+            /* type="number" Number of items to render, this is only applicable to layouts: vertical and flow
+            ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    height : "300px",
+                    layoutMode: "vertical",
+                    itemCount: 10
+                });
+
+                // Get
+                var itemCount = $('.selector').igLayoutManager('option', 'itemCount');
+
+                // Set
+                $('.selector').igLayoutManager('option', 'itemCount', 2);
+            ```
+            */
+            itemCount: null,
             /* type="array" an array of item descriptions
 				this assumes the container is empty, and every item
-				is described by rowspan,colspan, etc. - otherwise values of
+				is described by rowspan, colspan, etc. - otherwise values of
 				1 are assumed
 				items can have various properties some of which may not be applicable
 				depending on the layoutMode.
 				for example rowSpan/colSpan/colIndex/rowIndex are only applicable to gridlayout
+            ```
+            // Initialize
+            $('.selector').igLayoutManager({
+                layoutMode: "vertical",
+                items: [
+                  {
+                    width: "10%",
+                    height: "150px"
+                  },
+                  {
+                    width: "40%",
+                    height: "250px"
+                  },
+                  {
+                    width: "40%",
+                    height: "150px"
+                  },
+                  {
+                    width: "20%",
+                    height: "150px"
+                  },
+                  {
+                    width: "50%",
+                    height: "150px"
+                  }
+                ]
+            });
+
+            // Get
+            var items = $('.selector').igLayoutManager('option', 'items');
+            ```
 			*/
             items: [
 				{
-				    /* type="number" rowSpan of the item */
-				    rowSpan: 1,
-				    /* type="number" colSpan of the item */
-				    colSpan: 1,
-				    /* type="number" column index of the item in the grid */
+				    /* type="number" column index of the item in the grid
+                    ```
+                    // Initialize
+                    $('.selector').igLayoutManager({
+                      layoutMode: "grid",
+                      items: [
+                        {
+                            rowSpan: 2,
+                            colSpan: 2,
+                            colIndex: 0,
+                            rowIndex: 0
+                        },
+                        {
+                            rowSpan: 1,
+                            colSpan: 1,
+                            rowIndex: 0,
+                            colIndex: 1
+                        }]
+                    });
+
+                    // Get
+                    var items = $('.selector').igLayoutManager('option', 'items');
+                    var firstItemColIndex = items[0].colIndex;
+                    ```
+                    */
 				    colIndex: 0,
-				    /* type="number" row index of the item in the grid */
+				    /* type="number" colSpan of the item
+                    ```
+                    // Initialize
+                    $('.selector').igLayoutManager({
+                      layoutMode: "grid",
+                      items: [
+                        {
+                            rowSpan: 2,
+                            colSpan: 2,
+                            colIndex: 0,
+                            rowIndex: 0
+                        },
+                        {
+                            rowSpan: 1,
+                            colSpan: 1,
+                            rowIndex: 0,
+                            colIndex: 1
+                        }]
+                    });
+
+                    // Get
+                    var items = $('.selector').igLayoutManager('option', 'items');
+                    var firstItemColSpan = items[0].colSpan;
+                    ```
+                    */
+				    colSpan: 1,
+                    /* type="string" Gets/Sets individual item height, either in px or percentage
+                    string The default height can be set in pixels (px), %, em and other units.
+                    ```
+                    // Initialize
+                    $('.selector').igLayoutManager({
+                      layoutMode: "vertical",
+                      items: [
+                          {
+                              height: "150px"
+                          },
+                          {
+                              height: "250px"
+                          },
+                          {
+                              height: "150px"
+                          },
+                          {
+                              height: "150px"
+                          },
+                          {
+                              height: "150px"
+                          }
+                      ]
+                    });
+
+                    // Get
+                    var items = $('.selector').igLayoutManager('option', 'items');
+                    var firstItemHeight = items[0].height;
+                    ```
+                    */
+                    height: null,
+				    /* type="number" row index of the item in the grid
+                    ```
+                    // Initialize
+                    $('.selector').igLayoutManager({
+                      layoutMode: "grid",
+                      items: [
+                        {
+                            rowSpan: 2,
+                            colSpan: 2,
+                            colIndex: 0,
+                            rowIndex: 0
+                        },
+                        {
+                            rowSpan: 1,
+                            colSpan: 1,
+                            rowIndex: 0,
+                            colIndex: 1
+                        }]
+                    });
+
+                    // Get
+                    var items = $('.selector').igLayoutManager('option', 'items');
+                    var firstItemRowIndex = items[0].rowIndex;
+                    ```
+                    */
 				    rowIndex: 0,
-				    /* type="string" individual item width, either in px or percentage */
-				    width: null,
-				    /* type="string" individual item height, either in px or percentage */
-				    height: null
+				    /* type="number" rowSpan of the item
+                    ```
+                    // Initialize
+                    $('.selector').igLayoutManager({
+                      layoutMode: "grid",
+                      items: [
+                        {
+                            rowSpan: 2,
+                            colSpan: 2,
+                            colIndex: 0,
+                            rowIndex: 0
+                        },
+                        {
+                            rowSpan: 1,
+                            colSpan: 1,
+                            rowIndex: 0,
+                            colIndex: 1
+                        }]
+                    });
+
+                    // Get
+                    var items = $('.selector').igLayoutManager('option', 'items');
+                    var firstItemRowSpan = items[0].rowSpan;
+                    ```
+                    */
+				    rowSpan: 1,
+                    /* type="number" Gets/Sets individual item width, either in px or percentage
+                    string The default width can be set in pixels (px), %, em and other units.
+                    ```
+                    // Initialize
+                    $('.selector').igLayoutManager({
+                      layoutMode: "vertical",
+                      items: [
+                          {
+                              width: "10%"
+                          },
+                          {
+                              width: "40%",
+                          },
+                          {
+                              width: "40%",
+                          },
+                          {
+                              width: "20%",
+                          },
+                          {
+                              width: "50%",
+                          }
+                      ]
+                    });
+
+                    // Get
+                    var items = $('.selector').igLayoutManager('option', 'items');
+                    var firstItemWidth = items[0].width;
+                    ```
+                    */
+                    width: null
 				}
             ],
+            /* type="grid|border|flow|column|vertical" Defines the layout type
+            ```
+                // Initialize
+                $('.selector').igLayoutManager({
+                    layoutMode: "vertical"
+                });
 
-            //enableAnimations: true,
-            /* type="string" width of the layout container */
-            width: null,
-            /* type="string" height of the layout container */
-            height: null
+                // Get
+                var layoutMode = $('.selector').igLayoutManager('option', 'layoutMode');
+            ```
+            grid Column type can be set with grid layout
+            border Column type can be set with border layout
+            flow Column type can be set with flow layout
+            column Column type can be set with column layout
+            vertical Column type can be set with vertical layout
+			*/
+            layoutMode: "column",
+            /* type="number|string" Gets/Sets width of the layout container
+            ```
+            // Initialize
+            $('.selector').igLayoutManager({
+                layoutMode: "border",
+                width : "800px"
+            });
+
+            // Get
+            var width = $('.selector').igLayoutManager("option", "width");
+
+            // Set
+            $('.selector').igLayoutManager("option", "width", "200px");
+            ```
+            string The default width can be set in pixels (px), %, em and other units.
+            number The default width can be set as a number.
+            */
+            width: null
         },
         events: {
-            /* cancel="false" Event fired before an item is rendered in the container
-				Function takes arguments evt and ui.
-				Use ui.owner to get reference to the igLayoutManager.
-				Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc.
-				Use ui.index to get a reference of the item's index, if the layout is flow or vertical
-                Use ui.item to get a reference to the rendered item
-			*/
-            itemRendering: "itemRendering",
+            /* cancel="false" Event fired after items are resized.
+                Use ui.owner to get a reference to the layout manager performing resizing.
+            ```
+            // Initialize
+            $(".selector").igLayoutManager({
+                internalResized: function(evt, ui) {
+                    //reference to igLayourManager
+                    ui.owner;
+                }
+            });
+
+            // Bind
+            $(document).delegate("#layout", "iglayoutmanagerinternalresized", function (evt, ui) {
+                // reference to igLayoutManager
+                ui.owner;
+            });
+            ```
+            */
+            internalResized: "internalResized",
+            /* cancel="true" Event fired before items are resized.
+                Use ui.owner to get a reference to the layout manager performing resizing.
+            ```
+            // Initialize
+            $(".selector").igLayoutManager({
+                internalResizing: function(evt, ui) {
+                    //reference to igLayourManager
+                    ui.owner;
+                }
+            });
+
+            // Bind
+            $(document).delegate("#layout", "iglayoutmanagerinternalresizing", function (evt, ui) {
+              // reference to igLayoutManager
+              ui.owner;
+            });
+            ```
+            */
+            internalResizing: "internalResizing",
             /* Event fired after an item has been rendered in the container
 				Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
 				Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc.
 				Use ui.index to get a reference of the item's index, if the layout is flow or vertical
                 Use ui.item to get a reference to the rendered item
+            ```
+            //  Initialize
+            $(".selector").igLayoutManager({
+                itemRendered: function(evt, ui) {
+                    //reference to rendered item
+                    ui.item;
+                    //reference to rendered item index
+                    ui.index
+                    //reference to item's settings, such as colspan ,rowspan, etc
+                    ui.itemData
+                    //reference to the igLayoutManager
+                    ui.owner
+                }
+            });
+
+            //  Bind
+            $(document).delegate("#layout", "iglayoutmanageritemrendered", function (evt, ui) {
+                //reference to rendered item
+                ui.item;
+                //reference to rendered item index
+                ui.index
+                //reference to item's settings, such as colspan ,rowspan, etc
+                ui.itemData
+            });
+            ```
 			*/
             itemRendered: "itemRendered",
+            /* cancel="false" Event fired before an item is rendered in the container
+				Function takes arguments evt and ui.
+				Use ui.owner to get reference to the igLayoutManager.
+				Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc.
+				Use ui.index to get a reference of the item's index, if the layout is flow or vertical
+                Use ui.item to get a reference to the rendered item
+            ```
+            // Initialize
+            $(".selector").igLayoutManager({
+                itemRendering: function(evt, ui) {
+                    //reference to rendered item
+                    ui.item;
+                    //reference to item index which is goding to be rendered
+                    ui.index
+                    //reference to item's settings, such as colspan ,rowspan, etc
+                    ui.itemData
+                    //reference to the igLayoutManager
+                    ui.owner
+                }
+            });
+
+            // Bind
+            $(document).delegate("#layout", "iglayoutmanageritemrendering", function (evt, ui) {
+                //reference to rendered item
+                ui.item;
+                //reference to item index which is goding to be rendered
+                ui.index
+                 //reference to item's settings, such as colspan ,rowspan, etc
+                ui.itemData
+            });
+            ```
+			*/
+            itemRendering: "itemRendering",
             /*
 		     Event fired after all items are rendered.
                 Function takes arguments evt and ui.
 				Use ui.owner to get reference to the igLayoutManager.
+            ```
+            // Initialize
+            $(".selector").igLayoutManager({
+                rendered: function(evt, ui) {
+                  //reference to rendered items
+                  ui.items;
+                }
+            });
+
+            // Bind
+            $(document).delegate("#layout", "iglayoutmanagerrendered", function (evt, ui) {
+                //reference to rendered items
+                ui.items;
+            });
+            ```
             */
-            rendered: "rendered",
-            /* cancel="true" Event fired before items are resized.
-                Use ui.owner to get a reference to the layout manager performing resizing.*/
-            internalResizing: "internalResizing",
-            /* cancel="false" Event fired after items are resized.
-                Use ui.owner to get a reference to the layout manager performing resizing.*/
-            internalResized: "internalResized"
-            /* Event fired before an item is going to accomodate 100% of the container's width/height
-				Function takes arguments evt and ui.
-				Use ui.owner to get reference to the igLayoutManager.
-			*/
-
-            //TODO: not implemented
-            //itemMaximizing: "itemMaximizing",
-            /* Event fired after an item is maximized
-				Function takes arguments evt and ui.
-				Use ui.owner to get reference to the igLayoutManager.
-			*/
-
-            //TODO: not implemented
-            //itemMaximized: "itemMaximized",
-            /* Event fired before an item is positioned (i.e. its size , offsets, etc - are calculated)
-				Note that this is different from the "Rendering/Rendered" events in the sense that positioning/positioned
-				are always fired, while rendering/rendered are only fired if the layout items are defined as part of the options
-				otherwise the assumption is that they will be looked up either using the provided selector, or the child elements
-				will be used
-				Function takes arguments evt and ui.
-				Use ui.owner to get reference to the igLayoutManager.
-			*/
-
-            //TODO: not implemented
-            //itemPositioning: "itemPositioning",
-            /*
-				Function takes arguments evt and ui.
-				Use ui.owner to get reference to the igLayoutManager.
-			*/
-
-            //TODO: not implemented
-            //itemPositioned: "itemPositioned",
-            /* Event fired before an item's position is restored to its original position
-				Function takes arguments evt and ui.
-				Use ui.owner to get reference to the igLayoutManager.
-			*/
-
-            //TODO: not implemented
-            //itemRestoring: "itemRestoring",
-            /* Event fired after the item's original position in the "dashboard" has been restored
-				Function takes arguments evt and ui.
-				Use ui.owner to get reference to the igLayoutManager.
-			*/
-
-            //TODO: not implemented
-            //itemRestored: "itemRestored",
-            /* Event fired when the layout container resizes
-			*/
-
-            //TODO: not implemented
-            //resize: "resize"
+            rendered: "rendered"
         },
         _opt: null,
         _createWidget: function (options) {
