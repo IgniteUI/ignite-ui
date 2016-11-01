@@ -13,7 +13,6 @@
 *  infragistics.ui.popover.js
 */
 
-/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

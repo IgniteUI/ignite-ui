@@ -25,7 +25,7 @@
  *
  */
 
-/*global define, jQuery, Class, window, ActiveXObject, DOMParser, XPathResult, XMLSerializer */
+/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

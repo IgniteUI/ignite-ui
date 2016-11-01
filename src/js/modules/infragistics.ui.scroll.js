@@ -12,7 +12,7 @@
 * modernizr.js
 */
 
-/*global define,jQuery,setTimeout,window,document,MSGesture*/
+/*global MSGesture*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -1022,9 +1022,8 @@
 
 			if (triggerEvents) {
 				//Trigger scrolled event
-				var self = this;
 				this._trigger("scrolled", null, {
-					owner: self,
+					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: true
@@ -1052,9 +1051,8 @@
 
 			if (triggerEvents && !this._cancelScrolling) {
 				//Trigger scrolled event
-				var self = this;
 				this._trigger("scrolled", null, {
-					owner: self,
+					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: false
@@ -1093,6 +1091,9 @@
 		},
 
 		_refreshScrollbarsDrag: function () {
+			this._elemHeight = this.element.height();
+			this._elemWidth = this.element.width();
+
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
 				// jscs:disable
 				this._vDragHeight = (this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewV;
@@ -1181,8 +1182,13 @@
 							if (ignoreSync || self.options.scrollOnlyHBar) {
 								return false;
 							} else {
-								self._syncContentX(e.target, false);
-								self._syncElemsX(e.target, false);
+								if (self._bMixedEnvironment) {
+									self._syncContentX(e.target, false);
+									self._syncElemsX(e.target, false);
+								} else {
+									self._syncContentX(e.target, true);
+									self._syncElemsX(e.target, true);
+								}
 							}
 						}
 					});
@@ -1216,8 +1222,13 @@
 							if (ignoreSync || self.options.scrollOnlyVBar) {
 								return false;
 							} else {
-								self._syncContentY(e.target, false);
-								self._syncElemsY(e.target, false);
+								if (self._bMixedEnvironment) {
+									self._syncContentY(e.target, false);
+									self._syncElemsY(e.target, false);
+								}  else {
+									self._syncContentY(e.target, true);
+									self._syncElemsY(e.target, true);
+								}
 							}
 						}
 
@@ -1402,9 +1413,9 @@
 			//We use the formula for parabola y = -3*x*x + 3 to simulate smooth inertia that slows down
 			var x = -1;
 			if (this.options.scrollOnlyVBar) {
-				self._nextY = this._getScrollbarVPosition();
+				this._nextY = this._getScrollbarVPosition();
 			} else {
-				self._nextY = this._getContentPositionY();
+				this._nextY = this._getContentPositionY();
 			}
 
 			function inertiaStep() {
@@ -1433,7 +1444,7 @@
 			}
 
 			//Start the inertia and continue it recursively
-			self._numSmoothAnimation += 1;
+			this._numSmoothAnimation += 1;
 			animationId = requestAnimationFrame(inertiaStep);
 		},
 
@@ -1464,7 +1475,6 @@
 		*	If not sure how to use, use the internal _scrollTop and _scrollLeft. */
 		_scrollTouchToXY: function (destX, destY, triggerEvents) {
 			var bNoCancel,
-				self = this,
 				curPosX = this._getContentPositionX(),
 				curPosY = this._getContentPositionY();
 
@@ -1477,7 +1487,7 @@
 
 			if (triggerEvents) {
 				bNoCancel = this._trigger("scrolling", null, {
-					owner: self,
+					owner: this,
 					smallIncrement: 0,
 					bigIncrement: 0,
 					horizontal: null,
@@ -1494,29 +1504,29 @@
 
 			//Only use vertical scroll specific
 			if (this.options.scrollOnlyVBar) {
-				self._scrollToY(destY, false);
+				this._scrollToY(destY, false);
 
 				if (this.options.scrollOnlyHBar) {
-					self._scrollToX(destX);
+					this._scrollToX(destX);
 				} else {
 					if (this._contentX) {
 						this._contentX.css({
 							"-webkit-transform": "translate3d(" + (-destX) + "px, 0px, 0px)" /* Chrome, Safari, Opera */
 						});
 
-						self._syncElemsX(this._contentX, true, -destX, true);
+						this._syncElemsX(this._contentX, true, -destX, true);
 					} else {
 						this._content.css({
 							"-webkit-transform": "translate3d(" + (-destX) + "px, 0px, 0px)" /* Chrome, Safari, Opera */
 						});
 
-						self._syncElemsX(this._content, true, -destX, true);
+						this._syncElemsX(this._content, true, -destX, true);
 					}
 				}
 
 				/* Sync other elements */
 				destY = this._getScrollbarVPosition();
-				self._updateScrollBarsPos(destX, destY);
+				this._updateScrollBarsPos(destX, destY);
 
 				return { x: destX - curPosX, y: destY - curPosY };
 			}
@@ -1531,13 +1541,13 @@
 			}
 
 			/* Sync other elements */
-			self._syncElemsX(this._content, true);
-			self._syncElemsY(this._content, true);
-			self._updateScrollBarsPos(destX, destY);
+			this._syncElemsX(this._content, true);
+			this._syncElemsY(this._content, true);
+			this._updateScrollBarsPos(destX, destY);
 
 			//No need to sync these bars since they don't show on safari and we use custom ones.
-			self._syncHBar(this._content, true);
-			self._syncVBar(this._content, true);
+			this._syncHBar(this._content, true);
+			this._syncVBar(this._content, true);
 
 			return { x: destX - curPosX, y: destY - curPosY };
 		},
@@ -1550,14 +1560,14 @@
 				inertiaDuration = this.options.inertiaDuration;
 
 			if (this.options.scrollOnlyVBar) {
-				self._nextY = self._getScrollbarVPosition();
+				this._nextY = this._getScrollbarVPosition();
 			} else {
-				self._nextY = self._getContentPositionY();
+				this._nextY = this._getContentPositionY();
 			}
 			if (this.options.scrollOnlyHBar) {
-				self._nextX = self._getScrollbarHPosition();
+				this._nextX = this._getScrollbarHPosition();
 			} else {
-				self._nextX = self._getContentPositionX();
+				this._nextX = this._getContentPositionX();
 			}
 
 			//Sets timeout until executing next movement iteration of the inertia
@@ -1660,49 +1670,45 @@
 		},
 
 		/** Syncs the main content element horizontally */
-		_syncContentX: function (baseElem /*, useTransform */) {
-			var self = this,
-				destX;
+		_syncContentX: function (baseElem, useTransform) {
+			var destX;
 
-			//if (useTransform) {
-			//	destX = self._getContentPositionX();
-			//	var destY = self._getContentPositionY();
+			if (useTransform) {
+				destX = -baseElem.scrollLeft;
+				var destY = -this._getContentPositionY();
 
-			//	this._content.css({
-			//		"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
-			//	});
+				this._content.css({
+					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
+				});
 
-			//} else {
-			destX = baseElem.scrollLeft;
+			} else {
+				destX = baseElem.scrollLeft;
 
-			//this is to not affect the scrolling when clicking on track area of a linked scrollbarH
-			self._scrollFromSyncContentH = true;
-			this._container.scrollLeft(destX);
-
-			//}
+				//this is to not affect the scrolling when clicking on track area of a linked scrollbarH
+				this._scrollFromSyncContentH = true;
+				this._container.scrollLeft(destX);
+			}
 		},
 
 		/** Syncs the main content element vertically */
-		_syncContentY: function (baseElem /*, useTransform*/) {
-			var self = this,
-				destY;
+		_syncContentY: function (baseElem, useTransform) {
+			var destY;
 
-			//if (useTransform) {
-			//	var destX = self._getContentPositionX();
-			//	destY = self._getContentPositionY();
+			if (useTransform) {
+				var destX = this._getContentPositionX();
+				destY = -baseElem.scrollTop;
 
-			//	this._content.css({
-			//		"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
-			//	});
+				this._content.css({
+					"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)" /* Chrome, Safari, Opera */
+				});
 
-			//} else {
-			destY = baseElem.scrollTop;
+			} else {
+				destY = baseElem.scrollTop;
 
-			//this is to not affect the scrolling when clicking on track area of a linked scrollbarV
-			self._scrollFromSyncContentV = true;
-			this._container.scrollTop(destY);
-
-			//}
+				//this is to not affect the scrolling when clicking on track area of a linked scrollbarV
+				this._scrollFromSyncContentV = true;
+				this._container.scrollTop(destY);
+			}
 		},
 
 		//Syncs elements that are linked on X axis
@@ -3404,12 +3410,12 @@
 
 			if (!animate) {
 				if (bDragOnly) {
-					self._setSimpleScrollBarOpacity(targetOpacty);
+					this._setSimpleScrollBarOpacity(targetOpacty);
 				} else {
-					self._setScrollBarsOpacity(targetOpacty);
+					this._setScrollBarsOpacity(targetOpacty);
 				}
 
-				self._touchBarsShown = true;
+				this._touchBarsShown = true;
 			} else {
 				this._showScrollbarsAnimId = requestAnimationFrame(showStep);
 			}
@@ -3492,12 +3498,12 @@
 
 			if (!animate) {
 				if (bDragOnly) {
-					self._setSimpleScrollBarOpacity(targetOpacty);
+					this._setSimpleScrollBarOpacity(targetOpacty);
 				} else {
-					self._setScrollBarsOpacity(targetOpacty);
+					this._setScrollBarsOpacity(targetOpacty);
 				}
 
-				self._touchBarsShown = false;
+				this._touchBarsShown = false;
 			} else {
 				animationId = requestAnimationFrame(fadeStep);
 			}
