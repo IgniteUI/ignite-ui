@@ -98,94 +98,73 @@
 
 		module('igScroll - Events', {
 			afterEach: function() {
-				$(document).undelegate("#elemVH", ".scrollevents");
 				$("#elemVH").remove();
 			}
 		});
 		
 		test("On destroy there are not events left bound to the body and window igScroll namespace.", function () {
-			var evtArgsMouseMove, evtArgsMouseUp, isFiredMouseMove = false, isFiredMouseUp= false;
+			var isFiredMouseMove = false, isFiredMouseUp= false;
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 			
-			stop();
 			$('#elemVH').igScroll({});
 			$("body").on("mousemove.igscroll_" + "elemVH", function (evt, args) {
 				isFiredMouseMove = true;
-				evtArgsMouseMove = args;
 			});
 			$(window).on("mouseup.igscroll_" + "elemVH", function (evt, args) {
 				isFiredMouseUp = true;
-				evtArgsMouseUp = args;
 			});
 			
 			$("#testBed").empty();
-			setTimeout(function () {
-				$("body").mousemove();
-				$(window).mouseup();
-				notOk(isFiredMouseMove, "Mousemove in igScroll namespace event shouldn't fire.");
-				notOk(isFiredMouseUp, "Mouseup in igScroll namespace event shouldn't fire.");
-				start();
-			}, 200);
+			$("body").mousemove();
+			$(window).mouseup();
+			notOk(isFiredMouseMove, "Mousemove in igScroll namespace event shouldn't fire.");
+			notOk(isFiredMouseUp, "Mouseup in igScroll namespace event shouldn't fire.");
 		});
 
-		test("Rendered event is fired and its event arguments are correct.", function () {
+		test("Rendered event is fired and its event arguments are correct.", 1, function () {
 			var evtArgs, isFired = false;
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-			$(document).delegate("#elemVH", "igscrollrendered.scrollevents", function (evt, args) {
-				isFired = true;
-				evtArgs = args;
+			$('#elemVH').igScroll({
+				rendered: function (evt, args) {
+					equal(args.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
+				}
 			});
-			stop();
-			$('#elemVH').igScroll({});
-
-			setTimeout(function () {
-				start();
-				ok(isFired, "Rendered event should fire.");
-				equal(evtArgs.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
-				//remove elem
-				$("#testBed").empty();
-			}, 200);
+			//remove elem
+			$("#testBed").empty();
 		});
-		test("Scrolling event is fired and its event arguments are correct.", function () {
-			var evtArgs, isFired = false;
+		
+		test("Scrolling event is fired and its event arguments are correct.", 6, function () {
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
-			$(document).delegate("#elemVH", "igscrollscrolling.scrollevents", function (evt, args) {
-				isFired = true;
-				evtArgs = args;
+			$('#elemVH').igScroll({
+				scrolling: function (evt, args) {
+					equal(args.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
+					equal(args.smallIncrement, 0, "'smallIncrement' event argument should be 0.");
+					equal(args.bigIncrement, 0, "'bigIncrement' event argument should be 0.");
+					equal(args.horizontal, false, "'horizontal' event argument should be false.");
+					equal(args.stepX, 0, "'stepX' event argument should be 0.");
+					equal(args.stepY, 50, "'stepY' event argument should be 0.");
+				}
 			});
-
-			$('#elemVH').igScroll({});
 
 			var elemContainer = elemContainer = $("#elemVH_container");
 			var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
 			elemContainer.mouseenter();
 			elemContainer.trigger(wheelEvtDown);
-
-			stop();
-			setTimeout(function () {
-				start();
-				ok(isFired, "Scrolling event should fire.");
-				equal(evtArgs.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
-				equal(evtArgs.smallIncrement, 0, "'smallIncrement' event argument should be 0.");
-				equal(evtArgs.bigIncrement, 0, "'bigIncrement' event argument should be 0.");
-				equal(evtArgs.horizontal, false, "'horizontal' event argument should be false.");
-				equal(evtArgs.stepX, 0, "'stepX' event argument should be 0.");
-				equal(evtArgs.stepY, 50, "'stepY' event argument should be 0.");
-				$("#testBed").empty();
-			}, 2000);
+			$("#testBed").empty();
 		});
 
-		test("Scrolled event is fired and its event arguments are correct.", function () {
-			var evtArgs, isFired = false;
+		test("Scrolled event is fired and its event arguments are correct.", 4, function () {
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-
-			$(document).delegate("#elemVH", "igscrollscrolled.scrollevents", function (evt, args) {
-				isFired = true;
-				evtArgs = args;
+			
+			$('#elemVH').igScroll({
+				scrolled: function (evt, args) {
+					equal(args.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
+					equal(args.smallIncrement, 1, "'smallIncrement' event argument should be 1.");
+					equal(args.bigIncrement, 0, "'bigIncrement' event argument should be 0.");
+					equal(args.horizontal, true, "'horizontal' event argument should be true.");
+				}
 			});
-
-			$('#elemVH').igScroll({});
 
 			var arrowRight = $("#elemVH_hBar_arrowRight"),
 			hScrollbarContainer = $("#elemVH_hBar");;
@@ -193,17 +172,7 @@
 			hScrollbarContainer.mouseenter();
 			$.ig.TestUtil.simulateSingleClick(arrowRight);
 
-			stop();
-
-			setTimeout(function () {
-				start();
-				ok(isFired, "Scrolled event should fire.");
-				equal(evtArgs.owner, $('#elemVH').data("igScroll"), "'owner' event argument should be the igScroll instance.");
-				equal(evtArgs.smallIncrement, 1, "'smallIncrement' event argument should be 1.");
-				equal(evtArgs.bigIncrement, 0, "'bigIncrement' event argument should be 0.");
-				equal(evtArgs.horizontal, true, "'horizontal' event argument should be true.");
-				$("#testBed").empty();
-			}, 50);
+			$("#testBed").empty();
 		});
 
 		test("When Scrolling event is canceled scrolling should not occur and the scrolled event should not fire.", function () {
@@ -211,48 +180,39 @@
 
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
-			$(document).delegate("#elemVH", "igscrollscrolling.scrollevents", function (evt, args) {
-				//cancel event
-				return false;
+			$('#elemVH').igScroll({
+				scrolling: function (evt, args) {
+					//cancel event
+					return false;
+				}, 				
+				scrolled: function (evt, args) {
+					scrolledIsFired = true;
+				}
 			});
-
-			$(document).delegate("#elemVH", "igscrollscrolled.scrollevents", function (evt, args) {
-				scrolledIsFired = true;
-			});
-
-			$('#elemVH').igScroll({});
 
 			var elemContainer = elemContainer = $("#elemVH_container");
 			var wheelEvtDown = jQuery.Event("wheel", { originalEvent: { deltaY: 100 }, preventDefault: function () { }, stopPropagation: function () { } });
 			elemContainer.mouseenter();
 			elemContainer.trigger(wheelEvtDown);
 
-			stop();
-
-			setTimeout(function () {
-				start();
-				//Following check fails due to issue: https://github.com/IgniteUI/ignite-ui/issues/175
-				//ok(!scrolledIsFired, "Scrolled event should not fire.");
-				equal(elemContainer.scrollTop(), 0, "No scrolling should occur.");
-				$("#testBed").empty();
-			}, 2000);
+			ok(!scrolledIsFired, "Scrolled event should not fire.");
+			equal(elemContainer.scrollTop(), 0, "No scrolling should occur.");
+			$("#testBed").empty();
 		});
 		
 		test("When Scrolling event is canceled scrolling should not occur when setting scrollLeft and the scrolled event should not fire.", function () {
 			var scrolledIsFired = false;
 
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-
-			$(document).delegate("#elemVH", "igscrollscrolling.scrollevents", function (evt, args) {
-				//cancel event
-				return false;
+			$('#elemVH').igScroll({
+				scrolling: function (evt, args) {
+					//cancel event
+					return false;
+				},				
+				scrolled: function (evt, args) {
+					scrolledIsFired = true;
+				}
 			});
-
-			$(document).delegate("#elemVH", "igscrollscrolled.scrollevents", function (evt, args) {
-				scrolledIsFired = true;
-			});
-
-			$('#elemVH').igScroll({});
 
 			var elemContainer = elemContainer = $("#elemVH_container");
 			var arrowRight = $("#elemVH_hBar_arrowRight");
@@ -260,15 +220,11 @@
 			elemContainer.mouseenter();
 			elemContainer.trigger(wheelEvtDown);
 
-			stop();
 			$('#elemVH').igScroll("option", "scrollLeft", 100);
-			setTimeout(function () {
-				start();
-				//Following check fails due to issue: https://github.com/IgniteUI/ignite-ui/issues/175
-				//ok(!scrolledIsFired, "Scrolled event should not fire.");
-				equal(elemContainer.scrollLeft(), 0, "No scrolling should occur.");
-				$("#testBed").empty();
-			}, 2000);
+			//Following check fails due to issue: https://github.com/IgniteUI/ignite-ui/issues/175
+			//ok(!scrolledIsFired, "Scrolled event should not fire.");
+			equal(elemContainer.scrollLeft(), 0, "No scrolling should occur.");
+			$("#testBed").empty();
 		});
 		
 		test("ThumbDragStart event is fired and its event arguments are correct.", function () {
@@ -277,15 +233,14 @@
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 			$('#elemVH').igScroll({
 				modifyDOM: true,
-				scrollHeight: 5000
+				scrollHeight: 5000,
+				thumbDragStart: function (evt, args) {
+					isFired = true;
+					evtArgs = args;
+				}
 			});
 
 			var vDrag = $("#elemVH_vBar_drag");
-
-			$(document).delegate("#elemVH", "igscrollthumbdragstart.scrollevents", function (evt, args) {
-				isFired = true;
-				evtArgs = args;
-			});
 
 			stop();
 			var elemContainer = elemContainer = $("#elemVH_container"),
@@ -294,6 +249,7 @@
 			vScrollbarContainer.mouseenter();
 			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
 
+			//Wait for simulation to finish
 			setTimeout(function () {
 				start();
 				ok(isFired, "ThumbDragStart should fire.");
@@ -309,16 +265,15 @@
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 			$('#elemVH').igScroll({
 				modifyDOM: true,
-				scrollHeight: 5000
+				scrollHeight: 5000,
+				thumbDragMove: function (evt, args) {
+					isFired = true;
+					evtArgs = args;
+					totalScrollY += evtArgs.stepY;
+				}
 			});
 
 			var vDrag = $("#elemVH_vBar_drag");
-
-			$(document).delegate("#elemVH", "igscrollthumbdragmove.scrollevents", function (evt, args) {
-				isFired = true;
-				evtArgs = args;
-				totalScrollY += evtArgs.stepY;
-			});
 
 			stop();
 			var elemContainer = elemContainer = $("#elemVH_container"),
@@ -327,6 +282,7 @@
 			vScrollbarContainer.mouseenter();
 			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
 
+			//Wait for simulation to finish
 			setTimeout(function () {
 				start();
 				ok(isFired, "ThumbDragMove should fire.");
@@ -343,15 +299,14 @@
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 			$('#elemVH').igScroll({
 				modifyDOM: true,
-				scrollHeight: 5000
+				scrollHeight: 5000,
+				thumbDragEnd: function (evt, args) {
+					isFired = true;
+					evtArgs = args;
+				}
 			});
 
 			var vDrag = $("#elemVH_vBar_drag");
-
-			$(document).delegate("#elemVH", "igscrollthumbdragend.scrollevents", function (evt, args) {
-				isFired = true;
-				evtArgs = args;
-			});
 
 			stop();
 			var elemContainer = elemContainer = $("#elemVH_container"),
@@ -360,6 +315,7 @@
 			vScrollbarContainer.mouseenter();
 			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
 
+			//Wait for simulation to finish
 			setTimeout(function () {
 				start();
 				ok(isFired, "ThumbDragEnd should fire.");
@@ -375,30 +331,24 @@
 			$("#testBed").empty();
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 
-
-			$(document).delegate("#elemVH", "igscrollthumbdragstart.scrollevents", function (evt, args) {
-				eventsOrder.push("thumbDragStart");
-			});
-
-			$(document).delegate("#elemVH", "igscrollscrolling.scrollevents", function (evt, args) {
-				eventsOrder.push("scrolling");
-			});
-
-			$(document).delegate("#elemVH", "igscrollthumbdragmove.scrollevents", function (evt, args) {
-				eventsOrder.push("thumbDragMove");
-			});
-
-			$(document).delegate("#elemVH", "igscrollthumbdragend.scrollevents", function (evt, args) {
-				eventsOrder.push("thumbDragEnd");
-			});
-
-			$(document).delegate("#elemVH", "igscrollscrolled.scrollevents", function (evt, args) {
-				eventsOrder.push("scrolled");
-			});
-
 			$('#elemVH').igScroll({
 				modifyDOM: true,
-				scrollHeight: 5000
+				scrollHeight: 5000,
+				thumbDragStart: function (evt, args) {
+					eventsOrder.push("thumbDragStart");
+				},
+				scrolling: function (evt, args) {
+					eventsOrder.push("scrolling");
+				},
+				thumbDragMove: function (evt, args) {
+					eventsOrder.push("thumbDragMove");
+				},
+				thumbDragEnd: function (evt, args) {
+					eventsOrder.push("thumbDragEnd");
+				},
+				scrolled: function (evt, args) {
+					eventsOrder.push("scrolled");
+				}
 			});
 
 			var vDrag = $("#elemVH_vBar_drag");
@@ -410,6 +360,7 @@
 			vScrollbarContainer.mouseenter();
 			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
 
+			//Wait for simulation to finish
 			setTimeout(function () {
 				start();
 				equal(eventsOrder[0], expectedOrder[0], "Events order should be correct.");
@@ -427,19 +378,17 @@
 			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 			$('#elemVH').igScroll({
 				modifyDOM: true,
-				scrollHeight: 5000
+				scrollHeight: 5000,
+				thumbDragMove: function (evt, args) {
+					//cancel event
+					return false;
+				},
+				thumbDragEnd: function (evt, args) {
+					isFired = true;
+				}
 			});
 
 			var vDrag = $("#elemVH_vBar_drag");
-
-			$(document).delegate("#elemVH", "igscrollthumbdragmove.scrollevents", function (evt, args) {
-				//cancel event
-				return false;
-			});
-
-			$(document).delegate("#elemVH", "igscrollthumbdragend.scrollevents", function (evt, args) {
-				isFired = true;
-			});
 
 			stop();
 			var elemContainer = $("#elemVH_container"),
@@ -448,6 +397,7 @@
 			vScrollbarContainer.mouseenter();
 			$.ig.TestUtil.simulateClickDragRelese(vDrag, 0, 50, 200);
 
+			//Wait for simulation to finish
 			setTimeout(function () {
 				start();
 				ok(!isFired, "ThumbDragEnd should not fire.");
@@ -456,6 +406,8 @@
 			}, 2500);
 		});
 		
+				
+				
 		test("When touchend/touchmove/touchstart are prevented igScroll does not scroll and there are no errors.", function () {
 			$.ig.util.isTouch = true;
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -469,6 +421,8 @@
 			stop();
 			var touchSteps = [{x: 0, y: 3}, {x: 0, y: 7}, {x: 0 , y: 15}, {x: 0, y: 15}, {x: 0, y: 6}, {x: 0, y: 5}, {x: 0, y: 1}]
 			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10, true);
+			
+			//Wait for simulation to finish
 			setTimeout(function () {
 				equal($("#elemVH").data("igScroll")._getContentPositionX(), 0, "igScroll scrolled horizontally by the swipe");
 				equal($("#elemVH").data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");
