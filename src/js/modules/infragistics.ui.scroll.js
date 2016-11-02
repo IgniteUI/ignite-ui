@@ -2391,10 +2391,30 @@
 		_removeScrollbars: function() {
 			if (this._vBarContainer) {
 				this._vBarContainer.remove();
+				this._vBarContainer = null;
+				this._vDragHeight = null;
+				this._vBarDrag = null;
+				this._vBarTrack = null;
+			}
+			if (this._onMouseMoveVDragHandler) {
+				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveVDragHandler);
+			}
+			if (this._onMouseUpVScrollbarHandler) {
+				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id, this._onMouseUpVScrollbarHandler);
 			}
 
 			if (this._hBarContainer) {
 				this._hBarContainer.remove();
+				this._hBarContainer = null;
+				this._hDragHeight = null;
+				this._hBarDrag = null;
+				this._hBarTrack = null;
+			}
+			if (this._onMouseMoveHDragHandler) {
+				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveHDragHandler);
+			}
+			if (this._onMouseUpHScrollbarHandler) {
+				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id, this._onMouseUpHScrollbarHandler);
 			}
 
 			//In case we have native scrollbars and we have added padding. Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
@@ -2510,10 +2530,12 @@
 				});
 			}
 
+			this._onMouseMoveVDragHandler = $.proxy(this._onMouseMoveVDrag, this);
+			this._onMouseUpVScrollbarHandler = $.proxy(this._onMouseUpVScrollbar, this);
 			/* We bind it to the body to be able to detect while holding the Thumb Drag and moving out of the scrollbar area. It should still scroll while still holding and moving inside the window */
-			$("body").on("mousemove", $.proxy(this._onMouseMoveVDrag, this));
+			$("body").on("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveVDragHandler);
 			/* We bind it to the wondow to be able to determine while the user releases the mouse even when it is out of the browser window */
-			$(window).on("mouseup", $.proxy(this._onMouseUpVScrollbar, this));
+			$(window).on("mouseup.igscroll_" + this.element[ 0 ].id, this._onMouseUpVScrollbarHandler);
 		},
 
 		/** Used when one of the Arrow Up/Down or Vertical Track is being used by holding mouse button on them to constantly scroll on the Y axis */
@@ -2987,10 +3009,12 @@
 				});
 			}
 
+			this._onMouseMoveHDragHandler = $.proxy(this._onMouseMoveHDrag, this);
+			this._onMouseUpHScrollbarHandler = $.proxy(this._onMouseUpHScrollbar, this);
 			/* We bind it to the body to be able to detect while holding the Thumb Drag and moving out of the scrollbar area. It should still scroll while still holding and moving inside the window */
-			$("body").on("mousemove", $.proxy(this._onMouseMoveHDrag, this));
+			$("body").on("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveHDragHandler);
 			/* We bind it to the wondow to be able to determine while the user releases the mouse even when it is out of the browser window */
-			$(window).on("mouseup", $.proxy(this._onMouseUpHScrollbar, this));
+			$(window).on("mouseup.igscroll_" + this.element[ 0 ].id, this._onMouseUpHScrollbarHandler);
 		},
 
 		/** Used when one of the Arrow Left/Right or Horizontal Track is being used by holding mouse button on them to constantly scroll on the X axis */
@@ -3639,6 +3663,8 @@
 				if (this._vBarContainer) {
 					this._vBarContainer.remove();
 				}
+				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id);
+				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id);
 				$.Widget.prototype.destroy.apply(this, arguments);
 			}
 			return this;
