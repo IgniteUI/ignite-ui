@@ -5073,6 +5073,10 @@
 				csLength = cs.length;
 
 			if (s.type === "remote") {
+				/* M.H. 1 Nov 2016 Fix for bug 227681: When autoGenerateColumns is true and summaries are remote initially the summaries are not populated. */
+				if (!csLength && s.calculateAll) {
+					params.summariesParams[ s.summaryExprUrlKey + "(all)" ] = "*";
+				}
 				for (i = 0; i < csLength; i++) {
 					methodsStr = "";
 					/* check if methods are defined */
