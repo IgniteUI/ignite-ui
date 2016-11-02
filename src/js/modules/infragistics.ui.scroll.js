@@ -9,6 +9,7 @@
 * jquery-1.9.1.js
 * jquery.ui-1.9.0.js
 * infragistics.util.js
+* infragistics.util.jquery.js
 * modernizr.js
 */
 
@@ -20,7 +21,8 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 

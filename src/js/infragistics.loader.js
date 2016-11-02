@@ -43,7 +43,9 @@ $.ig.dependencies = [
 	{
 		widget: "igUtil",
 		priority: true,
-		scripts: [ "$path$/modules/infragistics.util.js" ],
+		scripts: [ "$path$/modules/infragistics.util.js", 
+		"$path$/modules/infragistics.util.jquery.js",
+		"$path$/modules/infragistics.util.jquerydeferred.js" ],
 		locale: [ "$localePath$/infragistics.util-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
 		css: [  ]
