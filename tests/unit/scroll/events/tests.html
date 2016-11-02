@@ -102,6 +102,31 @@
 				$("#elemVH").remove();
 			}
 		});
+		
+		test("On destroy there are not events left bound to the body and window igScroll namespace.", function () {
+			var evtArgsMouseMove, evtArgsMouseUp, isFiredMouseMove = false, isFiredMouseUp= false;
+			$("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			
+			stop();
+			$('#elemVH').igScroll({});
+			$("body").on("mousemove.igscroll_" + "elemVH", function (evt, args) {
+				isFiredMouseMove = true;
+				evtArgsMouseMove = args;
+			});
+			$(window).on("mouseup.igscroll_" + "elemVH", function (evt, args) {
+				isFiredMouseUp = true;
+				evtArgsMouseUp = args;
+			});
+			
+			$("#testBed").empty();
+			setTimeout(function () {
+				$("body").mousemove();
+				$(window).mouseup();
+				notOk(isFiredMouseMove, "Mousemove in igScroll namespace event shouldn't fire.");
+				notOk(isFiredMouseUp, "Mouseup in igScroll namespace event shouldn't fire.");
+				start();
+			}, 200);
+		});
 
 		test("Rendered event is fired and its event arguments are correct.", function () {
 			var evtArgs, isFired = false;
@@ -431,8 +456,6 @@
 			}, 2500);
 		});
 		
-				
-				
 		test("When touchend/touchmove/touchstart are prevented igScroll does not scroll and there are no errors.", function () {
 			$.ig.util.isTouch = true;
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
