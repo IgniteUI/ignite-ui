@@ -441,7 +441,10 @@
             },
             widget: function () {
                 /* Returns the element that represents this widget.
-                    returnType="object" Returns the element that represents this widget.
+                ```
+                var widget = $(".selector").igSplitter("widget");
+                ```
+                returnType="object" Returns the element that represents this widget.
                 */
                 return this.element;
             },
@@ -1957,7 +1960,10 @@
                     panel[ this._getOrientation("size") ]());
             },
             expandAt: function (index) {
-                /* Expand the specified panel.
+                /* Expand the specified panel by index.
+                    ```
+                    $(".selector").igSplitter("expandAt", 1);
+                    ```
                     paramType="int" optional="false" Specifies the index of the panel to expand.
                 */
                 var neighborPanel,
@@ -2007,6 +2013,9 @@
             },
             collapseAt: function (index) {
                 /* Collapse the specified panel.
+                    ```
+                    $(".selector").igSplitter("collapseAt", 0);
+                    ```
                     paramType="int" optional="false" Specifies the index of the panel to collapse.
                 */
                 var size, neighborPanel,
@@ -2144,18 +2153,27 @@
             },
             firstPanel: function () {
                 /* Retrieves the jQuery element of the first panel.
-                    returnType="object" Returns the jQuery object of the first panel element.
+                ```
+                var panel = $(".selector").igSplitter("firstPanel");
+                ```
+                returnType="object" Returns the jQuery object of the first panel element.
                 */
                 return this._panels[ 0 ];
             },
             secondPanel: function () {
                 /* Retrieves the jQuery element of the second panel.
-                    returnType="object" Returns the jQuery object of the second panel element.
+                ```
+                var panel = $(".selector").igSplitter("secondPanel");
+                ```
+                returnType="object" Returns the jQuery object of the second panel element.
                 */
                 return this._panels[ 1 ];
             },
             refreshLayout: function () {
-                /* You can refresh layout after the splitter is rendered in order to render it correctly.
+                /* Refresh splitter layout, use this method to re-render the splitter if some changes to the layout are applied.
+                ```
+                $(".selector").igSplitter("refreshLayout");
+                ```
                 */
                 this._panelsLayout();
             },
@@ -2165,6 +2183,9 @@
             setFirstPanelSize: function (size) {
                 /*
                 You can set new size of the first panel after the splitter is rendered.
+                ```
+                $(".selector").igSplitter("setFirstPanelSize", 100);
+                ```
                 paramType="int|string" optional="false" Specifies the new size of the first panel.
                 */
                 if (/%/.test(size)) {
@@ -2184,6 +2205,9 @@
             setSecondPanelSize: function (size) {
                 /*
                 You can set new size of the second panel after the splitter is rendered.
+                ```
+                $(".selector").igSplitter("setSecondPanelSize", 100);
+                ```
                 paramType="int|string" optional="false" Specifies the new size of the second panel.
                 */
                 if (/%/.test(size)) {
@@ -2219,7 +2243,11 @@
                 return [ panel1Size + "%", panel2Size + "%" ];
             },
             destroy: function () {
-                /* Destructor */
+                /* Destroys the igSplitter widget
+                ```
+                $(".selector").igSplitter("destroy");
+                ```
+                */
                 var evtHandlers = this._opt.eventHandlers,
                     i, splitters, index;
                 this._removeEventHandlers();
