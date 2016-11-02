@@ -997,10 +997,13 @@
             */
             reflow: function (forceReflow, animationDuration, event) {
                 /* Triggers recalculation of the layout dimensions. Layouts may not need to be reflowed manually, if their sizes are in percentages (i.e. they are responsive by default)
-                   this can be particularly useful with a grid layout, when the container has percentage sizes, but items are calculated in pixels and positioned absolutely in the container.
-                   paramType="boolean" optional="true" Indicates whether the reflow should be forced. Useful in cases where the items size and position was changed manually.
-                   paramType="number" optional="true" The animation duration to be used for this reflow only. Supported only for Grid Layout mode.
-                   paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
+                    this can be particularly useful with a grid layout, when the container has percentage sizes, but items are calculated in pixels and positioned absolutely in the container.
+                    ```
+                    $(".selector").igLayoutManager("reflow", forceReflow, event);
+                    ```
+                    paramType="boolean" optional="true" Indicates whether the reflow should be forced. Useful in cases where the items size and position was changed manually.
+                    paramType="number" optional="true" The animation duration to be used for this reflow only. Supported only for Grid Layout mode.
+                    paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
                 */
 
                 // trigger recalculation
@@ -2088,6 +2091,10 @@
                     1. Remove custom CSS classes that were added.
                     2. Remove any elements that were added at widget's initialization and after that, which didn't below to the original markup
                     3. Unbind all events that were bound.
+
+                    ```
+                    $(".selector").igLayoutManager("destroy");
+                    ```
                 */
                 $.Widget.prototype.destroy.apply(this, arguments);
                 this.element.removeClass(this.css.container);
