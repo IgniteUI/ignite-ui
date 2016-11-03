@@ -149,7 +149,10 @@
 				});
 				$("#pasteEditor").igTextEditor({
 					value: "ade"
-				});				
+				});		
+				$("#issue447").igTextEditor({
+					buttonType : "clear"
+				});	
 			});
 		}
 		initialized = false;
@@ -1018,6 +1021,23 @@
 			}, 100);
 		});
 		
+		testId = "valueChanged not fired when clearing an empty input";
+		test(testId, 1, function () {
+			var editor = $('#issue447'),
+				clearBtn = editor.igTextEditor("clearButton"),
+				valChanged = false
+				
+			$('#issue447').on("igtexteditorvaluechanged", function (evt, args) {
+				valChanged = true;
+			});
+			clearBtn.click();
+			stop()
+			setTimeout(function () {
+				start();
+				ok(!valChanged, "valueChanged event is fired when input is empty");
+			}, 500);
+		});
+		
 	});
 
 	// Helper functions
@@ -1131,6 +1151,7 @@
 	<input id="toLowerEditor" type="text" />
 	<input id="testEditor" type="text" />
 	<input id="pasteEditor"/>
+	<input id="issue447"/>
 </div>
 
 	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>
