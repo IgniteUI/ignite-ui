@@ -18,6 +18,7 @@
 */
 
 // Inspired by base2 and Prototype
+
 /*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape, igRoot*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
@@ -36,6 +37,7 @@
 	if (window.jQuery !== undefined) {
 		window.igRoot = jQuery;
 	}
+
 	//window.$ = window.$ || window.igRoot;
 
 	window.igRoot.ig = window.igRoot.ig || { _isNamespace: true };
@@ -47,7 +49,7 @@
 
 	if (!Array.isArray) {
 		Array.isArray = function (arg) {
-			return Object.prototype.toString.call(arg) === '[object Array]';
+			return Object.prototype.toString.call(arg) === "[object Array]";
 		};
 	}
 
@@ -327,7 +329,6 @@
 		return ds;
 	};
 
-	
 	$.ig.nextHashCode = 0;
 	$.ig.util.ensureUniqueId = function (obj) {
 		if (!obj.getHashCode) {
@@ -3450,8 +3451,6 @@
 		$type: new $.ig.Type("Stream", $.ig.Object.prototype.$type)
 	}, true);
 
-	
-
 	/*
 	Function.prototype.invoke = function () {
 		return this.apply(null, arguments);
@@ -3723,7 +3722,7 @@
 	$.ig.util.shallowClone = function (arr) {
 		var newArr = [];
 		for (var i = 0; i < arr.length; i++) {
-			newArr[i] = arr[i];
+			newArr[ i ] = arr[ i ];
 		}
 		return newArr;
 	};
@@ -3825,11 +3824,6 @@
 	window.MSApp = window.MSApp || {};
 	window.MSApp.execUnsafeLocalFunction = window.MSApp.execUnsafeLocalFunction ||
 		function (fn) { fn.apply(); };
-
-	
-	
-
-    
 
 	// Synchronize width/height of widget with its chart/dv controller
 	// elem - jquery object which represents widget.element
@@ -4283,7 +4277,7 @@
 			return string.split("");
 		}
 	};
-	
+
 	$.ig.util.stringCompare1 = function (strA, strB, comparisonType) {
 
 		if (!strA) {

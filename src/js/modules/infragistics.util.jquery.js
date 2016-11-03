@@ -52,8 +52,8 @@
 		if (typeof document.ajaxQueue === "undefined") {
 			document.ajaxQueue = { queue: {} };
 		}
-		if (typeof document.ajaxQueue.queue[queueName] === "undefined") {
-			document.ajaxQueue.queue[queueName] = [];
+		if (typeof document.ajaxQueue.queue[ queueName ] === "undefined") {
+			document.ajaxQueue.queue[ queueName ] = [];
 		}
 
 		if (typeof options === "undefined") {
@@ -64,20 +64,20 @@
 
 		//overwrite complete
 		options.complete = function (request, status) {
-			document.ajaxQueue.queue[queueName].shift(); //remove the first element from the array
+			document.ajaxQueue.queue[ queueName ].shift(); //remove the first element from the array
 			//we should check if original callbak is defined in options
 			if (typeof callback !== "undefined") {
 				callback(request, status);
 			}
 
-			if (document.ajaxQueue.queue[queueName].length > 0) {
-				$.ajax(document.ajaxQueue.queue[queueName][0]);
+			if (document.ajaxQueue.queue[ queueName ].length > 0) {
+				$.ajax(document.ajaxQueue.queue[ queueName ][ 0 ]);
 			}
 		};
 
-		document.ajaxQueue.queue[queueName].push(options);
-		if (document.ajaxQueue.queue[queueName].length === 1) {
-			$.ajax(document.ajaxQueue.queue[queueName][0]);
+		document.ajaxQueue.queue[ queueName ].push(options);
+		if (document.ajaxQueue.queue[ queueName ].length === 1) {
+			$.ajax(document.ajaxQueue.queue[ queueName ][ 0 ]);
 		}
 	};
 
@@ -109,8 +109,8 @@
 				}
 				if (hasDontEnumBug) {
 					for (i = 0; i < dontEnumsLength; i++) {
-						if (hasOwnProperty.call(obj, dontEnums[i])) {
-							result.push(dontEnums[i]);
+						if (hasOwnProperty.call(obj, dontEnums[ i ])) {
+							result.push(dontEnums[ i ]);
 						}
 					}
 				}
@@ -149,8 +149,8 @@
 			if (!d) {
 				return val;
 			}
-			pattern = reg[(format && format !== "null" && format !== "undefined") ?
-				format + "Pattern" : "datePattern"] || format;
+			pattern = reg[ (format && format !== "null" && format !== "undefined") ?
+				format + "Pattern" : "datePattern" ] || format;
 			if (enableUTCDates) {
 				y = val.getUTCFullYear();
 				m = val.getUTCMonth() + 1;
@@ -213,9 +213,9 @@
 			pattern = pattern.replace("fff", (ms < 10) ? "00" + ms : ((ms < 100) ? "0" + ms : ms))
 				.replace("ff", ((ms = Math.round(ms / 10)) < 10) ? "0" + ms : ms)
 				.replace("f", Math.round(ms / 100));
-			pattern = pattern.replace("\x01", reg.monthNames[m - 1])
-				.replace("\x02", reg.monthNamesShort[m - 1]).replace("\x05", am);
-			pattern = pattern.replace("\x03", reg.dayNames[day]).replace("\x04", reg.dayNamesShort[day]);
+			pattern = pattern.replace("\x01", reg.monthNames[ m - 1 ])
+				.replace("\x02", reg.monthNamesShort[ m - 1 ]).replace("\x05", am);
+			pattern = pattern.replace("\x03", reg.dayNames[ day ]).replace("\x04", reg.dayNamesShort[ day ]);
 			pattern = pattern.replace(/\x06/g, "d").replace(/\x07/g, "y").replace(/\x08/g, "M")
 				.replace(/\x09/g, "m").replace(/\x0A/g, "t").replace(/\x0B/g, "s")
 				.replace(/\x0C/g, "f").replace("\x0D", "h").replace("\x0E", "H");
@@ -251,7 +251,7 @@
 				val *= 100;
 			}
 			prefix = cur ? curS : (perc ? percS : "numeric");
-			pattern = reg[prefix + ((val < 0) ? "Negative" : "Positive") + "Pattern"] || "n";
+			pattern = reg[ prefix + ((val < 0) ? "Negative" : "Positive") + "Pattern" ] || "n";
 			len = format ? format.length : 0;
 
 			// calculate maximum number of decimals
@@ -268,11 +268,11 @@
 					}
 				}
 			} else {
-				min = reg[prefix + "MinDecimals"] || 0;
+				min = reg[ prefix + "MinDecimals" ] || 0;
 				if (d) {
 					m = 999;
 				} else {
-					m = reg[prefix + "MaxDecimals"];
+					m = reg[ prefix + "MaxDecimals" ];
 					m = (m && !i) ? m : 0;
 				}
 			}
@@ -324,19 +324,19 @@
 			}
 
 			// replace decimal separator
-			s = reg[prefix + "DecimalSeparator"];
+			s = reg[ prefix + "DecimalSeparator" ];
 			if (s) {
 				val = val.replace(".", s);
 			}
 
 			// insert group separators
-			s = reg[prefix + "GroupSeparator"];
-			grps = s ? reg[prefix + "Groups"] : "";
-			gr = gr0 = (grps.length > 0) ? grps[i = 0] : 0;
+			s = reg[ prefix + "GroupSeparator" ];
+			grps = s ? reg[ prefix + "Groups" ] : "";
+			gr = gr0 = (grps.length > 0) ? grps[ i = 0 ] : 0;
 			while (gr > 0 && --len > 0) {
 				if (--gr === 0) {
 					val = val.substring(0, len) + s + val.substring(len);
-					gr = grps[++i];
+					gr = grps[ ++i ];
 					if (!gr || gr < 1) {
 						gr = gr0;
 					} else {
@@ -346,7 +346,7 @@
 			}
 
 			// replace "n" by number, "$" by symbol and "-" by negative sign
-			s = reg[prefix + "Symbol"] || "";
+			s = reg[ prefix + "Symbol" ] || "";
 			return pattern.replace("-", reg.negativeSign).replace("n", val + e).replace("$", s);
 		}
 		if (format) {
@@ -360,13 +360,13 @@
 		return (val || val === 0) ? val : "&nbsp;";
 	};
 	$.ig._regional = {
-		monthNames: ["January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December"],
-		monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-		dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday",
-			"Thursday", "Friday", "Saturday"],
-		dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+		monthNames: [ "January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December" ],
+		monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+		dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday",
+			"Thursday", "Friday", "Saturday" ],
+		dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
 		am: "AM",
 		pm: "PM",
 		datePattern: "M/d/yyyy",
@@ -378,7 +378,7 @@
 		numericNegativePattern: "-$n",
 		numericDecimalSeparator: ".",
 		numericGroupSeparator: ",",
-		numericGroups: [3],
+		numericGroups: [ 3 ],
 		numericMaxDecimals: 2,
 		numericMinDecimals: 0,
 		currencyPositivePattern: "$n",
@@ -386,7 +386,7 @@
 		currencySymbol: "$",
 		currencyDecimalSeparator: ".",
 		currencyGroupSeparator: ",",
-		currencyGroups: [3],
+		currencyGroups: [ 3 ],
 		currencyMaxDecimals: 2,
 		currencyMinDecimals: 2,
 		percentPositivePattern: "n$",
@@ -394,7 +394,7 @@
 		percentSymbol: "%",
 		percentDecimalSeparator: ".",
 		percentGroupSeparator: ",",
-		percentGroups: [3],
+		percentGroups: [ 3 ],
 		percentDisplayFactor: 100,
 		percentMaxDecimals: 2,
 		percentMinDecimals: 2
@@ -406,7 +406,7 @@
 			$.ui.igEditor.setDefaultCulture(regional);
 		} else {
 			$.ig.regional.defaults = $.extend($.ig._regional,
-				(typeof regional === "string") ? $.ig.regional[regional] : regional);
+				(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
 		}
 	};
 	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
@@ -414,7 +414,7 @@
 			var sum = 0,
 				i;
 			for (i = 0; i < data.length; i++) {
-				sum += data[i];
+				sum += data[ i ];
 			}
 			return sum;
 		};
@@ -474,7 +474,7 @@
 	$.ig.getMaxZIndex = function (id) {
 		var maxZ = 10000, thisZ;
 		$(".ui-dialog").each(function () {
-			if (!id || $(this)[0].id !== id) {
+			if (!id || $(this)[ 0 ].id !== id) {
 				thisZ = $(this).css("z-index");
 				if (!isNaN(thisZ)) {
 					maxZ = Math.max(maxZ, thisZ);
@@ -516,10 +516,10 @@
 
 		$.ig.util.profiler.recordTime = function (methodName, time) {
 			var key = "meth: " + methodName;
-			if (!methods[key]) {
-				methods[key] = [];
+			if (!methods[ key ]) {
+				methods[ key ] = [];
 			}
-			methods[key][methods[key].length] = time;
+			methods[ key ][ methods[ key ].length ] = time;
 		};
 
 		$.ig.util.profiler.reset = function () {
@@ -537,13 +537,13 @@
 					meth.name = prop.substr(5);
 
 					sum = 0;
-					for (var i = 0; i < methods[prop].length; i++) {
-						sum = sum + methods[prop][i];
+					for (var i = 0; i < methods[ prop ].length; i++) {
+						sum = sum + methods[ prop ][ i ];
 					}
-					avg = sum / methods[prop].length;
+					avg = sum / methods[ prop ].length;
 					meth.avg = avg;
-					meth.callCount = methods[prop].length;
-					meths[j] = meth;
+					meth.callCount = methods[ prop ].length;
+					meths[ j ] = meth;
 					j++;
 				}
 			}
@@ -561,22 +561,22 @@
 			});
 
 			for (var k = 0; k < Math.min(200, meths.length) ; k++) {
-				console.log(meths[k].name + " avg: " + meths[k].avg +
-					" callCount: " + meths[k].callCount);
+				console.log(meths[ k ].name + " avg: " + meths[ k ].avg +
+					" callCount: " + meths[ k ].callCount);
 			}
 		};
 	}(jQuery));
 
 	// N.A. 10/17/2013 - Bug #155039: The property "offset" is deprecated in 1.9.
 	$.ig.util.jQueryUIMainVersion = $.ui && $.ui.version &&
-		$.ui.version.length > 0 ? parseInt($.ui.version.split(".", 1)[0], 10) : null;
+		$.ui.version.length > 0 ? parseInt($.ui.version.split(".", 1)[ 0 ], 10) : null;
 	$.ig.util.jQueryUISubVersion = $.ui && $.ui.version &&
-		$.ui.version.length > 0 ? parseInt($.ui.version.split(".", 2)[1], 10) : null;
+		$.ui.version.length > 0 ? parseInt($.ui.version.split(".", 2)[ 1 ], 10) : null;
 
 	$.ig.util.jQueryMainVersion = $.fn.jquery &&
-		$.fn.jquery.length ? parseInt($.fn.jquery.split(".", 1)[0], 10) : null;
+		$.fn.jquery.length ? parseInt($.fn.jquery.split(".", 1)[ 0 ], 10) : null;
 	$.ig.util.jQuerySubVersion = $.fn.jquery &&
-		$.fn.jquery.length ? parseInt($.fn.jquery.split(".", 2)[1], 10) : null;
+		$.fn.jquery.length ? parseInt($.fn.jquery.split(".", 2)[ 1 ], 10) : null;
 
 	// Ajdusts jQuery.offset in IE10/IE11/Edge.
 	// jQuery.offset function calculates the coordinates by using element.getBoundingClientRect()
@@ -589,7 +589,7 @@
 	// e: jquery object/element
 	// xy: optional precalculated e.offset or existing position/point with members left/top
 	$.ig.util.offset = function (e, xy) {
-		var doc = e ? e[0].ownerDocument : document,
+		var doc = e ? e[ 0 ].ownerDocument : document,
             windowBorderWidth = 8,
             zoom = (window.outerWidth - (windowBorderWidth * 2)) / window.innerWidth;
 
@@ -617,9 +617,9 @@
 		var elem = e.parent(), o = { left: 0, top: 0 }, position,
 			 windowBorderWidth = 8,
 			 zoom = (window.outerWidth - (windowBorderWidth * 2)) / window.innerWidth,
-			 documentScrollLeft, documentScrollTop, doc = e.length > 0 ? e[0].ownerDocument : document;
+			 documentScrollLeft, documentScrollTop, doc = e.length > 0 ? e[ 0 ].ownerDocument : document;
 
-		while (elem[0] !== null && elem[0] !== undefined && elem[0].nodeName !== "#document") {
+		while (elem[ 0 ] !== null && elem[ 0 ] !== undefined && elem[ 0 ].nodeName !== "#document") {
 			position = elem.css("position");
 			/* because the element which is passed as argument is supposed to be with position absolute we should find whether it has parent in the DOM tree which is with position which is not static - like relative, absolute, etc */
 			if (position !== "static" && position !== "") {
@@ -678,7 +678,7 @@
 				/*jslint bitwise: true */
 				c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
 			}
-			crcTable[n] = c;
+			crcTable[ n ] = c;
 		}
 		return crcTable;
 	};
@@ -690,7 +690,7 @@
 			crc = 0 ^ (-1), i;
 		str = unescape(encodeURIComponent(str));
 		for (i = 0; i < str.length; i++) {
-			crc = (crc >>> 8) ^ crcTable[(crc ^ str.charCodeAt(i)) & 0xFF];
+			crc = (crc >>> 8) ^ crcTable[ (crc ^ str.charCodeAt(i)) & 0xFF ];
 		}
 		return (crc ^ (-1)) >>> 0;
 	};
@@ -699,8 +699,8 @@
 	$.ig.util.getCheckSumForObject = function (obj) {
 		var str = "", key;
 		for (key in obj) {
-			if (obj.hasOwnProperty(key) && typeof obj[key] !== "object"/* only stringify simple properties */) {
-				str += obj[key];
+			if (obj.hasOwnProperty(key) && typeof obj[ key ] !== "object"/* only stringify simple properties */) {
+				str += obj[ key ];
 			}
 		}
 		return $.ig.util.crc32(str);
@@ -711,8 +711,8 @@
 	$.ig.util.invokeCallback = function (callback, args) {
 		if (callback) {
 			if ($.type(callback) === "string" &&
-				window[callback] && $.type(window[callback]) === "function") {
-				callback = window[callback];
+				window[ callback ] && $.type(window[ callback ]) === "function") {
+				callback = window[ callback ];
 			}
 			if ($.type(callback) === "function") {
 				callback.apply(window, args);
@@ -746,7 +746,7 @@
 		// In jquery-ui 1.9.2+ it is used only full name - we fix this breaking change as adding also widgetName(it is used in older versions)
 		(function (createWidget) {
 			$.Widget.prototype._createWidget = function (options, element) {
-				var el = $(element || this.defaultElement || this)[0];
+				var el = $(element || this.defaultElement || this)[ 0 ];
 				if (el !== this) {
 					$.data(el, this.widgetName, this);
 				}
@@ -773,7 +773,7 @@
 	$.ig.util.hasVerticalScroll = function (elem) {
 		var overflow = $(elem).css("overflow-y");
 		return overflow === "scroll" ||
-			overflow === "auto" && elem[0].scrollHeight > elem[0].clientHeight;
+			overflow === "auto" && elem[ 0 ].scrollHeight > elem[ 0 ].clientHeight;
 	};
 
 	// Check if given element has horizontal scrollbar
@@ -781,7 +781,7 @@
 	$.ig.util.hasHorizontalScroll = function (elem) {
 		var overflow = $(elem).css("overflow-x");
 		return overflow === "scroll" ||
-			overflow === "auto" && elem[0].scrollWidth > elem[0].clientWidth;
+			overflow === "auto" && elem[ 0 ].scrollWidth > elem[ 0 ].clientWidth;
 	};
 
 	// Returns the width of the vertical scrollbar
@@ -789,7 +789,7 @@
 		var el = $('<div style="width: 100px; height: 100px; position: absolute; ' +
 			'top: -10000px; left: -10000px; overflow: scroll"></div>')
 			.appendTo($(document.body)), scrollWidth;
-		scrollWidth = el[0].offsetWidth - el[0].clientWidth;
+		scrollWidth = el[ 0 ].offsetWidth - el[ 0 ].clientWidth;
 		el.remove();
 		return scrollWidth;
 	};
@@ -799,7 +799,7 @@
 		var el = $('<div style="width: 100px; height: 100px; position: absolute; ' +
 			'top: -10000px; left: -10000px; overflow: scroll"></div>')
 			.appendTo($(document.body)), scrollHeight;
-		scrollHeight = el[0].offsetHeight - el[0].clientHeight;
+		scrollHeight = el[ 0 ].offsetHeight - el[ 0 ].clientHeight;
 		el.remove();
 		return scrollHeight;
 	};
@@ -860,7 +860,6 @@
 	$.ig.util.defType("jQueryDomRenderer", "Object", {
 		init: function () {
 		},
-		
 		$type: new $.ig.Type("jQueryDomRenderer", $.ig.Object.prototype.$type)
 	}, true);
 

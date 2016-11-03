@@ -13,7 +13,7 @@
  * modernizr.js (Optional)
  * infragistics.util.js
  * infragistics.util.jquery.js
- * 
+ *
  */
 /*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
 (function (factory) {
@@ -44,11 +44,11 @@
 
 	// Convert String-formatted flags into Object-formatted ones and store in cache
 	$.ig.util.jqueryCreateFlags = function (flags) {
-		var object = $.ig.util.jqueryFlagsCache[flags] = {},
+		var object = $.ig.util.jqueryFlagsCache[ flags ] = {},
 				i, length;
 		flags = flags.split(/\s+/);
 		for (i = 0, length = flags.length; i < length; i++) {
-			object[flags[i]] = true;
+			object[ flags[ i ] ] = true;
 		}
 		return object;
 	};
@@ -79,7 +79,7 @@
 
 		// Convert flags from String-formatted to Object-formatted
 		// (we check in cache first)
-		flags = flags ? ($.ig.util.jqueryFlagsCache[flags] ||
+		flags = flags ? ($.ig.util.jqueryFlagsCache[ flags ] ||
 			$.ig.util.jqueryCreateFlags(flags)) : {};
 
 		var // Actual Callbacks object
@@ -116,7 +116,7 @@
 					elem,
 					type;
 				for (i = 0, length = args.length; i < length; i++) {
-					elem = args[i];
+					elem = args[ i ];
 					type = jQuery.type(elem);
 					if (type === "array") {
 
@@ -135,14 +135,14 @@
 			// Fire callbacks
 			fire = function (context, args) {
 				args = args || [];
-				memory = !flags.memory || [context, args];
+				memory = !flags.memory || [ context, args ];
 				fired = true;
 				firing = true;
 				firingIndex = firingStart || 0;
 				firingStart = 0;
 				firingLength = list.length;
 				for (; list && firingIndex < firingLength; firingIndex++) {
-					if (list[firingIndex].apply(context, args) === false && flags.stopOnFalse) {
+					if (list[ firingIndex ].apply(context, args) === false && flags.stopOnFalse) {
 						memory = true; // Mark as halted
 						break;
 					}
@@ -152,7 +152,7 @@
 					if (!flags.once) {
 						if (stack && stack.length) {
 							memory = stack.shift();
-							self.fireWith(memory[0], memory[1]);
+							self.fireWith(memory[ 0 ], memory[ 1 ]);
 						}
 					} else if (memory === true) {
 						self.disable();
@@ -180,7 +180,7 @@
 						// firing was halted (stopOnFalse)
 					} else if (memory && memory !== true) {
 						firingStart = length;
-						fire(memory[0], memory[1]);
+						fire(memory[ 0 ], memory[ 1 ]);
 					}
 				}
 				return this;
@@ -194,7 +194,7 @@
 						argLength = args.length;
 					for (; argIndex < argLength ; argIndex++) {
 						for (var i = 0; i < list.length; i++) {
-							if (args[argIndex] === list[i]) {
+							if (args[ argIndex ] === list[ i ]) {
 
 								// Handle firingIndex and firingLength
 								if (firing) {
@@ -227,7 +227,7 @@
 					var i = 0,
 						length = list.length;
 					for (; i < length; i++) {
-						if (fn === list[i]) {
+						if (fn === list[ i ]) {
 							return true;
 						}
 					}
@@ -271,7 +271,7 @@
 				if (stack) {
 					if (firing) {
 						if (!flags.once) {
-							stack.push([context, args]);
+							stack.push([ context, args ]);
 						}
 					} else if (!(flags.once && memory)) {
 						fire(context, args);
@@ -330,24 +330,24 @@
 				pipe: function (fnDone, fnFail, fnProgress) {
 					return $.ig.util.jqueryDeferred(function (newDefer) {
 						jQuery.each({
-							done: [fnDone, "resolve"],
-							fail: [fnFail, "reject"],
-							progress: [fnProgress, "notify"]
+							done: [ fnDone, "resolve" ],
+							fail: [ fnFail, "reject" ],
+							progress: [ fnProgress, "notify" ]
 						}, function (handler, data) {
-							var fn = data[0],
-								action = data[1],
+							var fn = data[ 0 ],
+								action = data[ 1 ],
 								returned;
 							if (jQuery.isFunction(fn)) {
-								deferred[handler](function () {
+								deferred[ handler ](function () {
 									returned = fn.apply(this, arguments);
 									if (returned && jQuery.isFunction(returned.promise)) {
 										returned.promise().then(newDefer.resolve, newDefer.reject, newDefer.notify);
 									} else {
-										newDefer[action + "With"](this === deferred ? newDefer : this, [returned]);
+										newDefer[ action + "With" ](this === deferred ? newDefer : this, [ returned ]);
 									}
 								});
 							} else {
-								deferred[handler](newDefer[action]);
+								deferred[ handler ](newDefer[ action ]);
 							}
 						});
 					}).promise();
@@ -360,7 +360,7 @@
 						obj = promise;
 					} else {
 						for (var key in promise) {
-							obj[key] = promise[key];
+							obj[ key ] = promise[ key ];
 						}
 					}
 					return obj;
@@ -371,8 +371,8 @@
 		deferred = promise.promise({});
 
 		for (key in lists) {
-			deferred[key] = lists[key].fire;
-			deferred[key + "With"] = lists[key].fireWith;
+			deferred[ key ] = lists[ key ].fire;
+			deferred[ key + "With" ] = lists[ key ].fireWith;
 		}
 
 		// Handle state
