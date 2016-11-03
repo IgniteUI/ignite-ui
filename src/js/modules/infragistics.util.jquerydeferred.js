@@ -15,7 +15,7 @@
  * infragistics.util.jquery.js
  * 
  */
-
+/*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
