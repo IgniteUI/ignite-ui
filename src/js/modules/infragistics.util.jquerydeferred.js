@@ -114,8 +114,7 @@
 				var i,
 					length,
 					elem,
-					type,
-					actual;
+					type;
 				for (i = 0, length = args.length; i < length; i++) {
 					elem = args[i];
 					type = jQuery.type(elem);
@@ -429,7 +428,7 @@
 			if (isCrossDomain &&
 				!(("withCredentials" in xhr) ||
 				(rOptions && "withCredentials" in rOptions && rOptions.withCredentials)) &&
-					typeof XDomainRequest != "undefined") {
+					typeof XDomainRequest !== undefined) {
 
 				// handle IE8/IE9 with anonymous authentication
 				xhr = new XDomainRequest();
@@ -520,7 +519,7 @@
 			xhr: function () {
 				return xhrObj;
 			},
-			success: function (responce, textStatus, jqXHR) {
+			success: function (responce) {
 				deferred.resolve(responce);
 			},
 			error: function (jqXHR, textStatus, errorThrown) {

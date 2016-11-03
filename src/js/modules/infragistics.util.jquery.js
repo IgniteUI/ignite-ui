@@ -31,14 +31,14 @@
 	}
 }
 (function ($) {
-	$.ig = window.$ig || $.ig || { _isNamespace: true };
+	$.ig = window.$.ig || $.ig || { _isNamespace: true };
 	window.$ig = window.$ig || $.ig;
 
 	$.fn.startsWith = function (str) {
 		return this[ 0 ].innerHTML.indexOf(str) === 0;
 	};
 
-	$ig.extendNativePrototype(Array.prototype, "clone", function () {
+	$.ig.extendNativePrototype(Array.prototype, "clone", function () {
 		return $.extend(true, [], this);
 	});
 
@@ -120,13 +120,13 @@
 
 	//checkbox markup classes can be changed
 	//and setting them in a a box can be done by the predefined classes "ui-state-default ui-corner-all ui-igcheckbox-small"
-	$ig.checkboxMarkupClasses = "";
+	$.ig.checkboxMarkupClasses = "";
 
-	$ig.formatter = function (val, type, format, notTemplate, enableUTCDates,
+	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates,
 		displayStyle, labelText, tabIndex) {
 		var min, y, h, m, s, ms, am, e, day, pattern, len, n, dot, gr,
 			gr0, grps, curS, percS, cur, perc, prefix, i, d = val && val.getTime,
-			reg = $ig.regional.defaults, pow,
+			reg = $.ig.regional.defaults, pow,
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
 			display = displayStyle || "inline-block";
@@ -134,7 +134,7 @@
 			s = "<span class='ui-igcheckbox-container' style='display:" +
 				display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
 				val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
-			s += "<span class='" + $ig.checkboxMarkupClasses + "' style='display:inline-block'>";
+			s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
 			s += "<span style='display:block' class='" + (val ? "" : "ui-igcheckbox-small-off ");
 			return s + "ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>";
 		}
@@ -170,7 +170,7 @@
 				day = val.getDay();
 			}
 
-			// M.P. 25 July 2014: 176543 - $ig.formatter doesn't work with escaped characters for date formatting
+			// M.P. 25 July 2014: 176543 - $.ig.formatter doesn't work with escaped characters for date formatting
 			pattern = pattern.replace(/\\d/g, "\x06").replace(/\\y/g, "\x07").replace(/\\M/g, "\x08")
 				.replace(/\\m/g, "\x09").replace(/\\t/g, "\x0A").replace(/\\s/g, "\x0B")
 				.replace(/\\f/g, "\x0C").replace(/\\h/g, "\x0D").replace(/\\H/g, "\x0E");
@@ -285,7 +285,7 @@
 			if (m === 999) {
 				val = val.toString(10);
 			} else {
-				if ($ig.util.isIE && $ig.util.browserVersion <= 8) {
+				if ($.ig.util.isIE && $.ig.util.browserVersion <= 8) {
 					pow = Math.pow(10, m);
 					val = (Math.round(pow * val) / pow).toFixed(m);
 				} else {
@@ -358,7 +358,7 @@
 		}
 		return (val || val === 0) ? val : "&nbsp;";
 	};
-	$ig._regional = {
+	$.ig._regional = {
 		monthNames: ["January", "February", "March", "April", "May", "June",
 			"July", "August", "September", "October", "November", "December"],
 		monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -398,17 +398,17 @@
 		percentMaxDecimals: 2,
 		percentMinDecimals: 2
 	};
-	$ig.regional = $ig.regional || {};
-	$ig.regional.defaults = $ig._regional;
-	$ig.setRegionalDefault = function (regional) {
+	$.ig.regional = $.ig.regional || {};
+	$.ig.regional.defaults = $.ig._regional;
+	$.ig.setRegionalDefault = function (regional) {
 		if ($.ui && $.ui.igEditor) {
 			$.ui.igEditor.setDefaultCulture(regional);
 		} else {
-			$ig.regional.defaults = $.extend($ig._regional,
-				(typeof regional === "string") ? $ig.regional[regional] : regional);
+			$.ig.regional.defaults = $.extend($.ig._regional,
+				(typeof regional === "string") ? $.ig.regional[regional] : regional);
 		}
 	};
-	$ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
+	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
 		var sum = function (data) {
 			var sum = 0,
 				i;
@@ -470,7 +470,7 @@
 	};
 
 	// get max zIndex of ui-dialogs - method is usually called by feautures for configuring zIndex of modal dialogs(like filtering, feature chooser, hiding, etc.)
-	$ig.getMaxZIndex = function (id) {
+	$.ig.getMaxZIndex = function (id) {
 		var maxZ = 10000, thisZ;
 		$(".ui-dialog").each(function () {
 			if (!id || $(this)[0].id !== id) {
@@ -484,11 +484,11 @@
 	};
 
 	// generate unique identifiers
-	$ig.uid = function () {
+	$.ig.uid = function () {
 		return ((1 + Math.random()) * parseInt("10000", 16)).toString(16).substring(1, 5);
 	};
 
-	$ig.getColType = function (o) {
+	$.ig.getColType = function (o) {
 		var t = typeof o;
 		if (t === "undefined") {
 			return "string";
@@ -509,11 +509,11 @@
 
 	(function ($) {
 
-		$ig.util.profiler = {};
+		$.ig.util.profiler = {};
 
 		var methods = {};
 
-		$ig.util.profiler.recordTime = function (methodName, time) {
+		$.ig.util.profiler.recordTime = function (methodName, time) {
 			var key = "meth: " + methodName;
 			if (!methods[key]) {
 				methods[key] = [];
@@ -521,11 +521,11 @@
 			methods[key][methods[key].length] = time;
 		};
 
-		$ig.util.profiler.reset = function () {
+		$.ig.util.profiler.reset = function () {
 			methods = {};
 		};
 
-		$ig.util.profiler.logReport = function () {
+		$.ig.util.profiler.logReport = function () {
 			var meths = [];
 			var j = 0;
 			var sum = 0;
@@ -567,14 +567,14 @@
 	}(jQuery));
 
 	// N.A. 10/17/2013 - Bug #155039: The property "offset" is deprecated in 1.9.
-	$ig.util.jQueryUIMainVersion = $.ui && $.ui.version &&
+	$.ig.util.jQueryUIMainVersion = $.ui && $.ui.version &&
 		$.ui.version.length > 0 ? parseInt($.ui.version.split(".", 1)[0], 10) : null;
-	$ig.util.jQueryUISubVersion = $.ui && $.ui.version &&
+	$.ig.util.jQueryUISubVersion = $.ui && $.ui.version &&
 		$.ui.version.length > 0 ? parseInt($.ui.version.split(".", 2)[1], 10) : null;
 
-	$ig.util.jQueryMainVersion = $.fn.jquery &&
+	$.ig.util.jQueryMainVersion = $.fn.jquery &&
 		$.fn.jquery.length ? parseInt($.fn.jquery.split(".", 1)[0], 10) : null;
-	$ig.util.jQuerySubVersion = $.fn.jquery &&
+	$.ig.util.jQuerySubVersion = $.fn.jquery &&
 		$.fn.jquery.length ? parseInt($.fn.jquery.split(".", 2)[1], 10) : null;
 
 	// Ajdusts jQuery.offset in IE10/IE11/Edge.
@@ -587,18 +587,18 @@
 	// zooming in/out the page.
 	// e: jquery object/element
 	// xy: optional precalculated e.offset or existing position/point with members left/top
-	$ig.util.offset = function (e, xy) {
+	$.ig.util.offset = function (e, xy) {
 		var doc = e ? e[0].ownerDocument : document,
             windowBorderWidth = 8,
             zoom = (window.outerWidth - (windowBorderWidth * 2)) / window.innerWidth;
 
 		xy = xy || e.offset();
 
-		if (zoom && zoom > 1 && ($ig.util.isIE10 || $ig.util.isIE11 || $ig.util.isEdge)) {
-			if ($ig.util.isIE) {
+		if (zoom && zoom > 1 && ($.ig.util.isIE10 || $.ig.util.isIE11 || $.ig.util.isEdge)) {
+			if ($.ig.util.isIE) {
 				xy.documentScrollLeft = doc.documentElement.scrollLeft;
 				xy.documentScrollTop = doc.documentElement.scrollTop;
-			} else if ($ig.util.isEdge) {
+			} else if ($.ig.util.isEdge) {
 				xy.documentScrollLeft = doc.body.scrollLeft;
 				xy.documentScrollTop = doc.body.scrollTop;
 			}
@@ -612,7 +612,7 @@
 
 	// Get relative offset of the passed element according to the closest parent element with relative position if any
 	// e: jquery element
-	$ig.util.getRelativeOffset = function (e) {
+	$.ig.util.getRelativeOffset = function (e) {
 		var elem = e.parent(), o = { left: 0, top: 0 }, position,
 			 windowBorderWidth = 8,
 			 zoom = (window.outerWidth - (windowBorderWidth * 2)) / window.innerWidth,
@@ -622,11 +622,11 @@
 			position = elem.css("position");
 			/* because the element which is passed as argument is supposed to be with position absolute we should find whether it has parent in the DOM tree which is with position which is not static - like relative, absolute, etc */
 			if (position !== "static" && position !== "") {
-				if (zoom && zoom > 1 && ($ig.util.isIE10 || $ig.util.isIE11 || $ig.util.isEdge)) {
-					if ($ig.util.isIE) {
+				if (zoom && zoom > 1 && ($.ig.util.isIE10 || $.ig.util.isIE11 || $.ig.util.isEdge)) {
+					if ($.ig.util.isIE) {
 						documentScrollLeft = doc.documentElement.scrollLeft;
 						documentScrollTop = doc.documentElement.scrollTop;
-					} else if ($ig.util.isEdge) {
+					} else if ($.ig.util.isEdge) {
 						documentScrollLeft = doc.body.scrollLeft;
 						documentScrollTop = doc.body.scrollTop;
 					}
@@ -669,7 +669,7 @@
 	};
 
 	// creates crc32 table
-	$ig.util.makeCRCTable = function () {
+	$.ig.util.makeCRCTable = function () {
 		var c, n, k, crcTable = [];
 		for (n = 0; n < 256; n++) {
 			c = n;
@@ -683,9 +683,9 @@
 	};
 
 	// returns crc32 checksum for the input string
-	$ig.util.crc32 = function (str) {
+	$.ig.util.crc32 = function (str) {
 		/*jslint bitwise: true */
-		var crcTable = $ig.util.crcTable || ($ig.util.crcTable = $ig.util.makeCRCTable()),
+		var crcTable = $.ig.util.crcTable || ($.ig.util.crcTable = $.ig.util.makeCRCTable()),
 			crc = 0 ^ (-1), i;
 		str = unescape(encodeURIComponent(str));
 		for (i = 0; i < str.length; i++) {
@@ -695,19 +695,19 @@
 	};
 
 	// returns checksum based on the string representations of an object's property values
-	$ig.util.getCheckSumForObject = function (obj) {
+	$.ig.util.getCheckSumForObject = function (obj) {
 		var str = "", key;
 		for (key in obj) {
 			if (obj.hasOwnProperty(key) && typeof obj[key] !== "object"/* only stringify simple properties */) {
 				str += obj[key];
 			}
 		}
-		return $ig.util.crc32(str);
+		return $.ig.util.crc32(str);
 	};
 
 	/* jshint +W016*/
 
-	$ig.util.invokeCallback = function (callback, args) {
+	$.ig.util.invokeCallback = function (callback, args) {
 		if (callback) {
 			if ($.type(callback) === "string" &&
 				window[callback] && $.type(window[callback]) === "function") {
@@ -719,13 +719,13 @@
 		}
 	};
 
-	$ig.util.IMEtoENNumbersMapping = function () {
+	$.ig.util.IMEtoENNumbersMapping = function () {
 		return {
 			"１": "1", "２": "2", "３": "3", "４": "4", "５": "5",
 			"６": "6", "７": "7", "８": "8", "９": "9", "０": "0"
 		};
 	};
-	$ig.util.IMEtoNumberString = function (stringValue, mapping) {
+	$.ig.util.IMEtoNumberString = function (stringValue, mapping) {
 		if (mapping === undefined) {
 			return stringValue;
 		}
@@ -769,7 +769,7 @@
 
 	// Check if given element has vertical scrollbar
 	// elem - jQuery object
-	$ig.util.hasVerticalScroll = function (elem) {
+	$.ig.util.hasVerticalScroll = function (elem) {
 		var overflow = $(elem).css("overflow-y");
 		return overflow === "scroll" ||
 			overflow === "auto" && elem[0].scrollHeight > elem[0].clientHeight;
@@ -777,14 +777,14 @@
 
 	// Check if given element has horizontal scrollbar
 	// elem - jQuery object
-	$ig.util.hasHorizontalScroll = function (elem) {
+	$.ig.util.hasHorizontalScroll = function (elem) {
 		var overflow = $(elem).css("overflow-x");
 		return overflow === "scroll" ||
 			overflow === "auto" && elem[0].scrollWidth > elem[0].clientWidth;
 	};
 
 	// Returns the width of the vertical scrollbar
-	$ig.util.getScrollWidth = function () {
+	$.ig.util.getScrollWidth = function () {
 		var el = $('<div style="width: 100px; height: 100px; position: absolute; ' +
 			'top: -10000px; left: -10000px; overflow: scroll"></div>')
 			.appendTo($(document.body)), scrollWidth;
@@ -794,7 +794,7 @@
 	};
 
 	// Returns the height of the horizontal scrollbar
-	$ig.util.getScrollHeight = function () {
+	$.ig.util.getScrollHeight = function () {
 		var el = $('<div style="width: 100px; height: 100px; position: absolute; ' +
 			'top: -10000px; left: -10000px; overflow: scroll"></div>')
 			.appendTo($(document.body)), scrollHeight;
@@ -803,24 +803,24 @@
 		return scrollHeight;
 	};
 
-	$ig.util._renderUnsupportedBrowser = function (widget, locale) {
+	$.ig.util._renderUnsupportedBrowser = function (widget, locale) {
 		if (!widget.events || !widget.events.browserNotSupported ||
 			widget._trigger(widget.events.browserNotSupported)) {
 			var elem = widget.element, o = widget.options,
 				container = $("<div></div>").css("overflow", "auto")
 					.addClass(widget.css.unsupportedBrowserClass).appendTo(elem),
 				ul, browserUnsupported;
-			locale = locale || $ig.util.locale;
-			if ($ig.util.isIE) {
-				browserUnsupported = "Internet Explorer " + $ig.util.browserVersion;
-			} else if ($ig.util.isOpera) {
-				browserUnsupported = "Opera " + $ig.util.browserVersion;
-			} else if ($ig.util.isWebKit) {
-				browserUnsupported = "Webkit " + $ig.util.browserVersion;
-			} else if ($ig.util.isFF) {
-				browserUnsupported = "Mozilla Firefox " + $ig.util.browserVersion;
+			locale = locale || $.ig.util.locale;
+			if ($.ig.util.isIE) {
+				browserUnsupported = "Internet Explorer " + $.ig.util.browserVersion;
+			} else if ($.ig.util.isOpera) {
+				browserUnsupported = "Opera " + $.ig.util.browserVersion;
+			} else if ($.ig.util.isWebKit) {
+				browserUnsupported = "Webkit " + $.ig.util.browserVersion;
+			} else if ($.ig.util.isFF) {
+				browserUnsupported = "Mozilla Firefox " + $.ig.util.browserVersion;
 			} else {
-				browserUnsupported = $ig.util.browserVersion;
+				browserUnsupported = $.ig.util.browserVersion;
 			}
 
 			$("<div></div>").addClass("ui-html5-current-browser-label")
@@ -856,11 +856,11 @@
 		}
 	};
 
-	$ig.util.defType("jQueryDomRenderer", "Object", {
+	$.ig.util.defType("jQueryDomRenderer", "Object", {
 		init: function () {
 		},
 		
-		$type: new $ig.Type("jQueryDomRenderer", $ig.Object.prototype.$type)
+		$type: new $.ig.Type("jQueryDomRenderer", $.ig.Object.prototype.$type)
 	}, true);
 
 }));
