@@ -777,10 +777,8 @@
 						}
 					}
 				} else {
-
-					// A.S. Nov 4, 2016 Adjusted to handle case where leading char is _
+					// A.S. Nov 4, 2016 Adjusted to handle case where leading char is _.
 					var firstChar = value.charAt(0);
-					
 					if (firstChar != "_") {
 						value = firstChar.toLowerCase() + value.substr(1);
 					} else {
@@ -793,8 +791,8 @@
 
 				// A.S. Nov 4, 2016 We now track the renamed enum members
 				if (p.$renamed) {
-					var rVal = p.$renamed[ignoreCase ? value.toUpperCase() : value];
-					
+					var rVal = p.$renamed[ ignoreCase ? value.toUpperCase() : value ];
+
 					if (rVal) {
 						return p.getBox(values[ rVal ]);
 					}
@@ -2948,11 +2946,11 @@
     $.ig.util.defEnum = function(name, isFlag, isPublic, values) {
 		var _values = {};
 		var renamed = null;
-		
+
 		for (var m in values) {
 			var mParts = m.split(":");
 			_values[ values[ m ] ] = mParts[ 0 ];
-			
+
 			if (mParts.length > 1) {
 				renamed = renamed || {};
 				renamed[ mParts[ 0 ] ] = mParts[ 1 ];
