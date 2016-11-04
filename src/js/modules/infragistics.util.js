@@ -778,11 +778,25 @@
 					}
 				} else {
 
-					// TODO: Find a more permanent solution to this casing issue. Maybe the Enums should have their names stored with the values somehow
+					// A.S. Nov 4, 2016 Adjusted to handle case where leading char is _
 					var firstChar = value.charAt(0);
-					value = firstChar.toLowerCase() + value.substr(1);
+					
+					if (firstChar != "_") {
+						value = firstChar.toLowerCase() + value.substr(1);
+					} else {
+						value = "_" + value.charAt(1).toLowerCase() + value.substr(2);
+					}
 					if (values.hasOwnProperty(value)) {
 						return p.getBox(values[ value ]);
+					}
+				}
+
+				// A.S. Nov 4, 2016 We now track the renamed enum members
+				if (p.$renamed) {
+					var rVal = p.$renamed[ignoreCase ? value.toUpperCase() : value];
+					
+					if (rVal) {
+						return p.getBox(values[ rVal ]);
 					}
 				}
 			}
@@ -2933,8 +2947,17 @@
 
     $.ig.util.defEnum = function(name, isFlag, isPublic, values) {
 		var _values = {};
+		var renamed = null;
+		
 		for (var m in values) {
-			_values[ values[ m ] ] = m.split(":")[ 0 ];
+			var mParts = m.split(":");
+			_values[ values[ m ] ] = mParts[ 0 ];
+			
+			if (mParts.length > 1) {
+				renamed = renamed || {};
+				renamed[ mParts[ 0 ] ] = mParts[ 1 ];
+				renamed[ mParts[ 0 ].toUpperCase() ] = mParts[ 1 ];
+			}
 		}
 
 		var simpleName = name.split(":")[ 0 ];
@@ -2961,6 +2984,7 @@
 			$value: function () {
 				return this._v;
 			},
+			$renamed: renamed,
 			$type: new $.ig.Type(simpleName, $.ig.Enum.prototype.$type),
 			$getName: getName
 		};
