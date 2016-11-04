@@ -2940,6 +2940,15 @@
 						break;
 					case "clear": {
 						this._currentInputTextValue = this._editorInput.val();
+
+						//A.M. 3 November 2016 #447 "valueChanged event fired when pressing the close button even if the editor is empty"
+						if (this._currentInputTextValue === "")
+						{
+							if (!this.options.allowNullValue) {
+								this._clearValue();
+							}
+							return;
+						}
 						this._clearValue();
 						this._processTextChanged();
 						if (!this._editMode) {
@@ -8691,13 +8700,6 @@
 				}
 			}
 			return year;
-		},
-		_triggerKeyPress: function (event) { // DateEditor
-			if (event.keyCode === 13) {
-				this._processInternalValueChanging(this._editorInput.val());
-			} else {
-				this._super(event);
-			}
 		},
 		_triggerInternalValueChange: function (value) { //DateEditor
 			if (value === this._maskWithPrompts) {
