@@ -768,13 +768,18 @@
 			this.options.value = value;
 		}, //BaseEditor
 		//This method sets the value to null, or empty string depending on the nullable option.
-		_clearValue: function () {
+		_clearValue: function (textOnly) {
+			var newValue = "";
 
 			// TODO use null, or 0 depending on the nullable option
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
+			}
+
+			if (textOnly) {
+				this._editorInput.val(newValue);
 			} else {
-				this._updateValue("");
+				this._updateValue(newValue);
 			}
 		},
 		_detachEvents: function () {
@@ -785,7 +790,6 @@
 				this._detachListEvents();
 			}
 
-			// https://css-tricks.com/namespaced-events-jquery/
 			this._editorContainer
 				.off("mousedown.editor mouseup.editor mouseover.editor mouseout.editor");
 		},
@@ -2940,13 +2944,13 @@
 						break;
 					case "clear": {
 						this._currentInputTextValue = this._editorInput.val();
-						this._clearValue();
-						this._processTextChanged();
 						if (!this._editMode) {
+							this._clearValue();
 							this._exitEditMode();
 							this._triggerValueChanged();
 						} else {
-							this._enterEditMode();
+							this._clearValue(true);
+							this._processTextChanged();
 						}
 
 					}
@@ -3501,8 +3505,8 @@
 			}
 			this._timeouts.push(target._spinTimeOut);
 		},
-		_clearValue: function () {
-			this._super();
+		_clearValue: function (textOnly) {
+			this._super(textOnly);
 			if (this._dropDownList &&
 				this._dropDownList.children(".ui-igedit-listitemselected").length > 0) {
 				this._dropDownList.children(".ui-igedit-listitemselected")
@@ -4919,9 +4923,10 @@
 			this._setSpinButtonsState(newValue);
 			this._processTextChanged();
 		},
-		_clearValue: function () { //Numeric Editor
+		_clearValue: function (textOnly) { //Numeric Editor
+			var newValue;
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
 				if (this.options.nullValue === null) {
 					this._editorInput.val("");
 				} else {
@@ -4931,17 +4936,20 @@
 
 				// If the min value is different from zero, we clear the value with the minimum value.
 				if (this.options.minValue && this.options.minValue > 0) {
-					this._updateValue(this.options.minValue);
+					newValue = this.options.minValue;
 					this._editorInput.val(this.options.minValue);
 				} else if (this.options.maxValue && this.options.maxValue < 0) {
-					this._updateValue(this.options.maxValue);
+					newValue = this.options.maxValue;
 					this._editorInput.val(this.options.maxValue);
 				} else {
 					if (this.value()) {
-						this._updateValue(0);
+						newValue = 0;
 						this._editorInput.val(0);
 					}
 				}
+			}
+			if (!textOnly) {
+				this._updateValue(newValue);
 			}
 			if (this.dropDownContainer() &&
 				this.dropDownContainer().children(".ui-igedit-listitemselected").length > 0) {
@@ -8810,16 +8818,18 @@
 				}
 			}
 		},
-		_clearValue: function () { //DateEditor
-			// TODO
+		_clearValue: function (textOnly) { //DateEditor
+			var newValue = "";
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
 				if (this.options.nullValue === null) {
 					this._editorInput.val(this._maskWithPrompts);
 				}
 			} else {
-				this._updateValue("");
 				this._editorInput.val(this._maskWithPrompts);
+			}
+			if (!textOnly) {
+				this._updateValue(newValue);
 			}
 			if (this._editMode === false) {
 				this._exitEditMode();
