@@ -3770,7 +3770,13 @@
 				if (currentTime - this._commercialsShow[ 0 ] > this._const.COMMERCIAL_SEEK_DELTA) {
 					this.currentTime(this._commercialsShow[ 0 ]);
 				}
-				this.playCommercial(this.options.commercials.linkedCommercials[ this._commercialIndex ]);
+				//M.S. November 4th, 2016 - Browser controls doesn't support commercials issue #290
+				if(!this.options.browserControls){
+					this.playCommercial(this.options.commercials.linkedCommercials[ this._commercialIndex ]);
+				}
+				else{					
+					throw new Error($.ig.VideoPlayer.locale.noCommercials);
+				}
 			}
 		},
 

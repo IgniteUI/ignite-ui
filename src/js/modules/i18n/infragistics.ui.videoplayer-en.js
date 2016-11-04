@@ -50,7 +50,8 @@
 			    nonDivException: 'The Infragistics HTML5 Video Player can be instantiated only on a DIV tag.',
 			    relatedVideos: 'RELATED VIDEOS',
 			    replayButton: 'Replay',
-			    replayTooltip: 'Click to replay last video.'
+			    replayTooltip: 'Click to replay last video.',
+				noCommercials: 'Browser controls does not support commercials'
 		    }
 	    });
 
