@@ -9,6 +9,7 @@
  * jquery-1.9.1.js
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
+ *  infragistics.util.jquery.js
  *	infragistics.ui.scroll.js
  *	infragistics.ui.validator.js
  */
@@ -21,6 +22,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.scroll",
 			"./infragistics.validator"
 		], factory );

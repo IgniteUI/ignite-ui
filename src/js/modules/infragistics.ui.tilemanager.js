@@ -12,6 +12,7 @@
  *	infragistics.templating.js
  *	infragistics.dataSource.js
  *	infragistics.util.js
+ *  infragistics.util.jquery.js
  *  infragistics.ui.splitter.js
  *	infragistics.ui.layoutmanager.js
  *	infragistics.ui.tilemanager-en.js
@@ -25,6 +26,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.datasource",
 			"./infragistics.templating",
 			"./infragistics.ui.layoutmanager",

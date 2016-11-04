@@ -8,6 +8,8 @@
 * Depends on:
 *	jquery-1.9.1.js
 *	infragistics.util.js
+*   infragistics.util.jquery.js
+*   infragistics.util.jquerydeferred.js
 *	infragistics.ui.editors.js
 */
 
@@ -19,6 +21,8 @@
             "jquery-ui",
             "knockout",
             "../modules/infragistics.util",
+			"../modules/infragistics.util.jquery",
+			"../modules/infragistics.util.jquerydeferred",
             "../modules/infragistics.ui.editors"
             ], factory );
 	} else {
