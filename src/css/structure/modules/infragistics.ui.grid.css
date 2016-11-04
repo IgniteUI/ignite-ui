@@ -1399,7 +1399,7 @@ td.ui-iggrid-addrow
 .ui-iggrid-deletebutton {
 	cursor:pointer;
 	box-sizing: initial!important;
-	left: 51%!important;
+	left: 51%; /* 11.04.2016. // BUG #228194 // Marin Popov // igGridUpdating's delete button appears in the middle of the visible area instead of the right edge*/
 }
 
 .ui-iggrid-button-icon-only,
