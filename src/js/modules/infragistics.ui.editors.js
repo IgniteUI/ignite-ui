@@ -3032,14 +3032,14 @@
 		},
 		_checkClearButtonState: function () {
 			if (this._clearButton) {
-				if (this._editorHasEmptyValue()) {
+				if (this._editorIsCleared()) {
 					this._clearButton.hide();
 				} else {
 					this._clearButton.show();
 				}
 			}
 		},
-		_editorHasEmptyValue: function () { //TextEditor
+		_editorIsCleared: function () { //TextEditor
 			var result = false, currentVal = this._editorInput.val();
 			if (currentVal === "") {
 				result = true;
@@ -5341,7 +5341,7 @@
 			}
 			this._setSpinButtonsState(currVal);
 		},
-		_editorHasEmptyValue: function () { //NumericEditor
+		_editorIsCleared: function () { //NumericEditor
 			var result = false, currentVal = this._editorInput.val();
 			if (currentVal === "" || currentVal === "0") {
 				result = true;
@@ -6834,7 +6834,7 @@
 		_valueFromText: function (text) { //igMaskEditor
 			return this._getValueByDataMode(text);
 		},
-		_editorHasEmptyValue: function () { //igMaskEditor
+		_editorIsCleared: function () { //igMaskEditor
 			var result = false, currentVal = this._editorInput.val();
 			if (currentVal === "" || currentVal === this._maskWithPrompts) {
 				result = true;
