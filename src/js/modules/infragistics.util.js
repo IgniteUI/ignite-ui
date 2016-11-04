@@ -2932,62 +2932,62 @@
 	};
 
     $.ig.util.defEnum = function(name, isFlag, isPublic, values) {
-        var _values = {};
-        for (var member in values) {
-            _values[ values[ member ] ] = member.split(":")[ 0 ];
-        }
+		var _values = {};
+		for (var m in values) {
+			_values[ values[ m ] ] = m.split(":")[ 0 ];
+		}
 
-        var simpleName = name.split(":")[ 0 ];
-        var getNameSingle = function (v) {
-            if (_values.hasOwnProperty(v)) {
-                return _values[ v ];
-            } else {
-                return v.toString();
-            }
-        };
-        
-        var getName = getNameSingle;
-        
-        if (isFlag) {
-            getName = function (v) {
-                return this.getFlaggedName(v, getNameSingle);
-            };
-        }
-        
-        var definition = {
-            init: function (v) {
-                this._v = v;
-            },
-            $value: function () {
-                return this._v;
-            },
-            $type: new $.ig.Type(simpleName, $.ig.Enum.prototype.$type),
-            $getName: getName,
-        };
+		var simpleName = name.split(":")[ 0 ];
+		var getNameSingle = function (v) {
+			if (_values.hasOwnProperty(v)) {
+				return _values[ v ];
+			} else {
+				return v.toString();
+			}
+		};
 
-        var type = $.ig.util.defType(name, "Enum", definition, true);
-        var enumTarget = isPublic ? type : type.prototype;
+		var getName = getNameSingle;
 
-        for (var member in values) {
-            var parts = member.split(":");
-            var memberName;
+		if (isFlag) {
+			getName = function (v) {
+				return this.getFlaggedName(v, getNameSingle);
+			};
+		}
 
-            if (parts.length > 1) {
-                memberName = parts[1];
-            } else {
-                memberName = member.charAt(0) === '_'
-                    ? '_' + member.charAt(1).toLowerCase() + member.slice(2)
-                    : member.charAt(0).toLowerCase() + member.slice(1);
-            }
-            
-            enumTarget[ memberName ] = values[ member ];
-        }
-        
-        if (isPublic) {
-            enumTarget._isEnum = true;
-        }
-        
-        return type;
+		var definition = {
+			init: function (v) {
+				this._v = v;
+			},
+			$value: function () {
+				return this._v;
+			},
+			$type: new $.ig.Type(simpleName, $.ig.Enum.prototype.$type),
+			$getName: getName
+		};
+
+		var type = $.ig.util.defType(name, "Enum", definition, true);
+		var enumTarget = isPublic ? type : type.prototype;
+
+		for (var member in values) {
+			var parts = member.split(":");
+			var memberName;
+
+			if (parts.length > 1) {
+				memberName = parts[ 1 ];
+			} else if (member.charAt(0) === "_") {
+				memberName = "_" + member.charAt(1).toLowerCase() + member.slice(2);
+			} else {
+				memberName = member.charAt(0).toLowerCase() + member.slice(1);
+			}
+
+			enumTarget[ memberName ] = values[ member ];
+		}
+
+		if (isPublic) {
+			enumTarget._isEnum = true;
+		}
+
+		return type;
     };
 
 	$.ig.util.getClassCount = function (classNamePrefix, isPrefix) {
