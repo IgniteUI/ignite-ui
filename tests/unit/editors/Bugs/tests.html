@@ -427,6 +427,13 @@
 					$("#226Editor").igTextEditor();
 				}
 
+
+				window.Bug487Testbed = function () {
+					$("#487Editor").igTextEditor({
+						value: "newInputValue"
+					});
+				}
+
 				initialized = false;
 				module("Editors Bugs Unit Tests ", {
 					setup: function (assert) {
@@ -1128,6 +1135,14 @@
 				}, 100);
 			});
 
+			var testId = 'Bug 487.';
+			test(testId, 2, function () {			
+				$("#487Editor").igTextEditor("destroy");
+				//check the value prop and see if it is restored
+				equal(document.getElementById("487Editor").value, "myInputValue", 'Input value is not the same as before Editor init');
+				//check the value attribute and see if it is restored
+				equal(document.getElementById("487Editor").getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1367,6 +1382,8 @@
 		<input id="264Editor1" />
 		<input id="264Editor2" />
 		<input id="226Editor" />
+
+		<input type="text" id="487Editor" value="myInputValue"/>
 
 	</div></body>
 </html>
