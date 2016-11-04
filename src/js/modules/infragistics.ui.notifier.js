@@ -9,7 +9,8 @@
 *  jquery-1.9.1.js
 *  jquery.ui.core.js
 *  jquery.ui.widget.js
-*  infragistics.util.js
+*	infragistics.util.js
+*  infragistics.util.jquery.js
 *  infragistics.ui.popover.js
 */
 
@@ -21,6 +22,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.ui.popover"
 		], factory );
 	} else {
