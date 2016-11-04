@@ -9,6 +9,7 @@
  * jquery-1.9.1.js
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
+ *  infragistics.util.jquery.js
  *	infragistics.ui.scroll.js
  *	infragistics.ui.validator.js
  */
@@ -21,6 +22,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.scroll",
 			"./infragistics.validator"
 		], factory );
@@ -881,11 +883,18 @@
 						this.element.attr(this._initialAttributes[ i ].name,
 							this._initialAttributes[ i ].attrValue);
 
+						// I.G. 11/4/2016 Fix for #487 [igBaseEditor] input value property is not restored when destroy method is called
+						// Restore the initial value property as it was before the widget initialization, so it is aggain displayed in the input
+						if (this._initialAttributes[ i ].name === "value" &&
+							(this.element.is("input"))) {
+							$(this.element).val(this._initialAttributes[ i ].attrValue);
+						}
+
 						// 3/2/2016 Bug #213138: Don't need to recover DOM information, only attributes.
-						/* if (this._initialAttributes[ i ].propValue !== undefined) {
-							this.element.prop(this._initialAttributes[ i ].name,
-								this._initialAttributes[ i ].propValue);
-						}*/
+						// if (this._initialAttributes[ i ].propValue !== undefined) {
+						//	this.element.prop(this._initialAttributes[ i ].name,
+						//		this._initialAttributes[ i ].propValue);
+						//}
 					}
 				}
 				delete this._initialAttributes;
@@ -2940,6 +2949,15 @@
 						break;
 					case "clear": {
 						this._currentInputTextValue = this._editorInput.val();
+
+						//A.M. 3 November 2016 #447 "valueChanged event fired when pressing the close button even if the editor is empty"
+						if (this._currentInputTextValue === "")
+						{
+							if (!this.options.allowNullValue) {
+								this._clearValue();
+							}
+							return;
+						}
 						this._clearValue();
 						this._processTextChanged();
 						if (!this._editMode) {
@@ -8691,13 +8709,6 @@
 				}
 			}
 			return year;
-		},
-		_triggerKeyPress: function (event) { // DateEditor
-			if (event.keyCode === 13) {
-				this._processInternalValueChanging(this._editorInput.val());
-			} else {
-				this._super(event);
-			}
 		},
 		_triggerInternalValueChange: function (value) { //DateEditor
 			if (value === this._maskWithPrompts) {

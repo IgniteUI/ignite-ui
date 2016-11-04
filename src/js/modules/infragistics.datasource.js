@@ -22,6 +22,7 @@
  * Depends on:
  *	jquery-1.9.1.js
  *	infragistics.util.js
+ *  infragistics.util.jquery.js
  *
  */
 
@@ -32,7 +33,8 @@
 		// AMD. Register as an anonymous module.
 		define( [
 			"jquery",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 
