@@ -2127,6 +2127,10 @@
 
 				if (!o.browserControls) {
 					this._renderControls();
+				} else {
+
+					//M.S. November 4th, 2016 - Browser controls doesn't support commercials issue #290
+					console.warn($.ig.VideoPlayer.locale.noCommercials);
 				}
 				this._lastPausedState = video[ 0 ].paused;
 
@@ -3772,10 +3776,8 @@
 				}
 
 				//M.S. November 4th, 2016 - Browser controls doesn't support commercials issue #290
-				if (!this.options.browserControl) {
+				if (!this.options.browserControls) {
 					this.playCommercial(this.options.commercials.linkedCommercials[ this._commercialIndex ]);
-				} else {
-					throw new Error($.ig.VideoPlayer.locale.noCommercials);
 				}
 			}
 		},
