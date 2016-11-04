@@ -207,7 +207,7 @@
 			```
 			*/
 			loop: false,
-			/* type="bool" Gets/Sets whether if you want to use the built in browser controls. By default player uses Infragistics playback controls. Note that you may have different look and feel across different browsers if you use the built in browser controls.
+			/* type="bool" Gets/Sets whether if you want to use the built in browser controls. By default player uses Infragistics playback controls. Note that you may have different look and feel across different browsers if you use the built in browser controls. When this option is set to true, no [commercials](ui.igvideoplayer#options:commercials) will be displayed as they are not supported.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -981,7 +981,7 @@
 				*/
 				css: null
 			}],
-			/* type="object" Gets/Sets an array of commercials objects that will be displayed when the video is playing.
+			/* type="object" Gets/Sets an array of commercials objects that will be displayed when the video is playing. Note that [broswerControls](ui.igvideoplayer#options:browserControls) doesn't support commercials.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -2127,11 +2127,8 @@
 
 				if (!o.browserControls) {
 					this._renderControls();
-				} else {
-
-					//M.S. November 4th, 2016 - Browser controls doesn't support commercials issue #290
-					console.warn($.ig.VideoPlayer.locale.noCommercials);
 				}
+
 				this._lastPausedState = video[ 0 ].paused;
 
 				if (o.fullscreen) {
