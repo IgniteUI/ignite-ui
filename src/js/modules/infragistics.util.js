@@ -777,12 +777,24 @@
 						}
 					}
 				} else {
-
-					// TODO: Find a more permanent solution to this casing issue. Maybe the Enums should have their names stored with the values somehow
+					// A.S. Nov 4, 2016 Adjusted to handle case where leading char is _.
 					var firstChar = value.charAt(0);
-					value = firstChar.toLowerCase() + value.substr(1);
+					if (firstChar != "_") {
+						value = firstChar.toLowerCase() + value.substr(1);
+					} else {
+						value = "_" + value.charAt(1).toLowerCase() + value.substr(2);
+					}
 					if (values.hasOwnProperty(value)) {
 						return p.getBox(values[ value ]);
+					}
+				}
+
+				// A.S. Nov 4, 2016 We now track the renamed enum members
+				if (p.$renamed) {
+					var rVal = p.$renamed[ ignoreCase ? value.toUpperCase() : value ];
+
+					if (rVal) {
+						return p.getBox(values[ rVal ]);
 					}
 				}
 			}
@@ -2930,6 +2942,75 @@
 
 		return result;
 	};
+
+    $.ig.util.defEnum = function(name, isFlag, isPublic, values) {
+		var _values = {};
+		var renamed = null;
+
+		for (var m in values) {
+			var mParts = m.split(":");
+			_values[ values[ m ] ] = mParts[ 0 ];
+
+			if (mParts.length > 1) {
+				renamed = renamed || {};
+				renamed[ mParts[ 0 ] ] = mParts[ 1 ];
+				renamed[ mParts[ 0 ].toUpperCase() ] = mParts[ 1 ];
+			}
+		}
+
+		var simpleName = name.split(":")[ 0 ];
+		var getNameSingle = function (v) {
+			if (_values.hasOwnProperty(v)) {
+				return _values[ v ];
+			} else {
+				return v.toString();
+			}
+		};
+
+		var getName = getNameSingle;
+
+		if (isFlag) {
+			getName = function (v) {
+				return this.getFlaggedName(v, getNameSingle);
+			};
+		}
+
+		var definition = {
+			init: function (v) {
+				this._v = v;
+			},
+			$value: function () {
+				return this._v;
+			},
+			$renamed: renamed,
+			$type: new $.ig.Type(simpleName, $.ig.Enum.prototype.$type),
+			$getName: getName
+		};
+
+		var type = $.ig.util.defType(name, "Enum", definition, true);
+		var enumTarget = isPublic ? type : type.prototype;
+
+		for (var member in values) {
+			var parts = member.split(":");
+			var memberName;
+
+			if (parts.length > 1) {
+				memberName = parts[ 1 ];
+			} else if (member.charAt(0) === "_") {
+				memberName = "_" + member.charAt(1).toLowerCase() + member.slice(2);
+			} else {
+				memberName = member.charAt(0).toLowerCase() + member.slice(1);
+			}
+
+			enumTarget[ memberName ] = values[ member ];
+		}
+
+		if (isPublic) {
+			enumTarget._isEnum = true;
+		}
+
+		return type;
+    };
 
 	$.ig.util.getClassCount = function (classNamePrefix, isPrefix) {
 		var styleSheets = document.styleSheets, numFound = 0, count = 0,
@@ -5204,214 +5285,73 @@
 	}, true);
 	/*<EndType Name="System.FormatException" />*/
 
-	$.ig.util.defType("NumberStyles", "Enum", {
-		init: function (v) {
-			this._v = v;
-		},
-		$getName: (function () {
-			function getNameSingle(v) {
-				switch (v) {
-					case 0: return "None";
-					case 1: return "AllowLeadingWhite";
-					case 2: return "AllowTrailingWhite";
-					case 4: return "AllowLeadingSign";
-					case 7: return "Integer";
-					case 8: return "AllowTrailingSign";
-					case 16: return "AllowParentheses";
-					case 32: return "AllowDecimalPoint";
-					case 64: return "AllowThousands";
-					case 111: return "Number";
-					case 128: return "AllowExponent";
-					case 167: return "Float";
-					case 256: return "AllowCurrencySymbol";
-					case 383: return "Currency";
-					case 511: return "Any";
-					case 512: return "AllowHexSpecifier";
-					case 515: return "HexNumber";
-					default: return v.toString();
-				}
-			}
-			return function (v) {
-				return this.getFlaggedName(v, getNameSingle);
-			};
-		}()),
-		$value: function () {
-			return this._v;
-		},
-		$type: new $.ig.Type("NumberStyles", $.ig.Enum.prototype.$type)
-	}, true);
-	$.ig.NumberStyles.prototype.none = 0;
-	$.ig.NumberStyles.prototype.allowLeadingWhite = 1;
-	$.ig.NumberStyles.prototype.allowTrailingWhite = 2;
-	$.ig.NumberStyles.prototype.allowLeadingSign = 4;
-	$.ig.NumberStyles.prototype.integer = 7;
-	$.ig.NumberStyles.prototype.allowTrailingSign = 8;
-	$.ig.NumberStyles.prototype.allowParentheses = 16;
-	$.ig.NumberStyles.prototype.allowDecimalPoint = 32;
-	$.ig.NumberStyles.prototype.allowThousands = 64;
-	$.ig.NumberStyles.prototype.number = 111;
-	$.ig.NumberStyles.prototype.allowExponent = 128;
-	$.ig.NumberStyles.prototype.floatNumber = 167;
-	$.ig.NumberStyles.prototype.allowCurrencySymbol = 256;
-	$.ig.NumberStyles.prototype.currency = 383;
-	$.ig.NumberStyles.prototype.any = 511;
-	$.ig.NumberStyles.prototype.allowHexSpecifier = 512;
-	$.ig.NumberStyles.prototype.hexNumber = 515;
+	$.ig.util.defEnum("NumberStyles", true, false, {
+		"None": 0,
+		"AllowLeadingWhite": 1,
+		"AllowTrailingWhite": 2,
+		"AllowLeadingSign": 4,
+		"Integer": 7,
+		"AllowTrailingSign": 8,
+		"AllowParentheses": 16,
+		"AllowDecimalPoint": 32,
+		"AllowThousands": 64,
+		"Number": 111,
+		"AllowExponent": 128,
+		"Float:floatNumber": 167,
+		"AllowCurrencySymbol": 256,
+		"Currency": 383,
+		"Any": 511,
+		"AllowHexSpecifier": 512,
+		"HexNumber": 515
+	});
 
-	$.ig.util.defType("CompareOptions", "Enum", {
-		init: function (v) {
-			this._v = v;
-		},
-		$getName: (function () {
-			function getNameSingle(v) {
-				switch (v) {
-					case 0: return "None";
-					case 1: return "IgnoreCase";
-					case 2: return "IgnoreNonSpace";
-					case 4: return "IgnoreSymbols";
-					case 8: return "IgnoreKanaType";
-					case 16: return "IgnoreWidth";
-					case 268435456: return "OrdinalIgnoreCase";
-					case 536870912: return "StringSort";
-					case 1073741824: return "Ordinal";
-					default: return v.toString();
-				}
-			}
-			return function (v) {
-				return this.getFlaggedName(v, getNameSingle);
-			};
-		}()),
-		$value: function () {
-			return this._v;
-		},
-		$type: new $.ig.Type("CompareOptions", $.ig.Enum.prototype.$type)
-	}, true);
-	$.ig.CompareOptions.prototype.none = 0;
-	$.ig.CompareOptions.prototype.ignoreCase = 1;
-	$.ig.CompareOptions.prototype.ignoreNonSpace = 2;
-	$.ig.CompareOptions.prototype.ignoreSymbols = 4;
-	$.ig.CompareOptions.prototype.ignoreKanaType = 8;
-	$.ig.CompareOptions.prototype.ignoreWidth = 16;
-	$.ig.CompareOptions.prototype.ordinalIgnoreCase = 268435456;
-	$.ig.CompareOptions.prototype.stringSort = 536870912;
-	$.ig.CompareOptions.prototype.ordinal = 1073741824;
+	$.ig.util.defEnum("CompareOptions", true, false, {
+		"None": 0,
+		"IgnoreCase": 1,
+		"IgnoreNonSpace": 2,
+		"IgnoreSymbols": 4,
+		"IgnoreKanaType": 8,
+		"IgnoreWidth": 16,
+		"OrdinalIgnoreCase": 268435456,
+		"StringSort": 536870912,
+		"Ordinal": 1073741824
+	});
 
-	$.ig.util.defType("StringComparison", "Enum", {
-		init: function (v) {
-			this._v = v;
-		},
-		$getName: function (v) {
-			switch (v) {
-				case 0: return "CurrentCulture";
-				case 1: return "CurrentCultureIgnoreCase";
-				case 2: return "InvariantCulture";
-				case 3: return "InvariantCultureIgnoreCase";
-				case 4: return "Ordinal";
-				case 5: return "OrdinalIgnoreCase";
-				default: return v.toString();
-			}
-		},
-		$value: function () {
-			return this._v;
-		},
-		$type: new $.ig.Type("StringComparison", $.ig.Enum.prototype.$type)
-	}, true);
-	$.ig.StringComparison.prototype.currentCulture = 0;
-	$.ig.StringComparison.prototype.currentCultureIgnoreCase = 1;
-	$.ig.StringComparison.prototype.invariantCulture = 2;
-	$.ig.StringComparison.prototype.invariantCultureIgnoreCase = 3;
-	$.ig.StringComparison.prototype.ordinal = 4;
-	$.ig.StringComparison.prototype.ordinalIgnoreCase = 5;
+	$.ig.util.defEnum("StringComparison", false, false, {
+		"CurrentCulture": 0,
+		"CurrentCultureIgnoreCase": 1,
+		"InvariantCulture": 2,
+		"InvariantCultureIgnoreCase": 3,
+		"Ordinal": 4,
+		"OrdinalIgnoreCase": 5
+	});
 
-	$.ig.util.defType("DateTimeKind", "Enum", {
-		init: function (v) {
-			this._v = v;
-		},
-		$getName: function (v) {
-			switch (v) {
-				case 0: return "Unspecified";
-				case 1: return "Utc";
-				case 2: return "Local";
-				default: return v.toString();
-			}
-		},
-		$value: function () {
-			return this._v;
-		},
-		$type: new $.ig.Type("DateTimeKind", $.ig.Enum.prototype.$type)
-	}, true);
-	$.ig.DateTimeKind.prototype.unspecified = 0;
-	$.ig.DateTimeKind.prototype.utc = 1;
-	$.ig.DateTimeKind.prototype.local = 2;
+	$.ig.util.defEnum("DateTimeKind", false, false, {
+		"Unspecified": 0,
+		"Utc": 1,
+		"Local": 2
+	});
 
-	$.ig.util.defType("SeekOrigin", "Enum", {
-		init: function (v) {
-			this._v = v;
-		},
-		$getName: function (v) {
-			switch (v) {
-				case 0: return "Begin";
-				case 1: return "Current";
-				case 2: return "End";
-				default: return v.toString();
-			}
-		},
-		$value: function () {
-			return this._v;
-		},
-		$type: new $.ig.Type("SeekOrigin", $.ig.Enum.prototype.$type)
-	}, true);
-	$.ig.SeekOrigin.prototype.begin = 0;
-	$.ig.SeekOrigin.prototype.current = 1;
-	$.ig.SeekOrigin.prototype.end = 2;
+	$.ig.util.defEnum("SeekOrigin", false, false, {
+		"Begin": 0,
+		"Current": 1,
+		"End": 2
+	});
 
-	$.ig.util.defType("StringSplitOptions", "Enum", {
-		init: function (v) {
-			this._v = v;
-		},
-		$getName: function (v) {
-			switch (v) {
-				case 0: return "None";
-				case 1: return "RemoveEmptyEntries";
-				default: return v.toString();
-			}
-		},
-		$value: function () {
-			return this._v;
-		},
-		$type: new $.ig.Type("StringSplitOptions", $.ig.Enum.prototype.$type)
-	}, true);
-	$.ig.StringSplitOptions.prototype.none = 0;
-	$.ig.StringSplitOptions.prototype.removeEmptyEntries = 1;
+	$.ig.util.defEnum("StringSplitOptions", false, false, {
+		"None": 0,
+		"RemoveEmptyEntries": 1
+	});
 
-	$.ig.util.defType("DayOfWeek", "Enum", {
-		init: function (v) {
-			this._v = v;
-		},
-		$getName: function (v) {
-			switch (v) {
-				case 0: return "Sunday";
-				case 1: return "Monday";
-				case 2: return "Tuesday";
-				case 3: return "Wednesday";
-				case 4: return "Thursday";
-				case 5: return "Friday";
-				case 6: return "Saturday";
-				default: return v.toString();
-			}
-		},
-		$value: function () {
-			return this._v;
-		},
-		$type: new $.ig.Type("DayOfWeek", $.ig.Enum.prototype.$type)
-	}, true);
-	$.ig.DayOfWeek.prototype.sunday = 0;
-	$.ig.DayOfWeek.prototype.monday = 1;
-	$.ig.DayOfWeek.prototype.tuesday = 2;
-	$.ig.DayOfWeek.prototype.wednesday = 3;
-	$.ig.DayOfWeek.prototype.thursday = 4;
-	$.ig.DayOfWeek.prototype.friday = 5;
-	$.ig.DayOfWeek.prototype.saturday = 6;
+	$.ig.util.defEnum("DayOfWeek", false, false, {
+		"Sunday": 0,
+		"Monday": 1,
+		"Tuesday": 2,
+		"Wednesday": 3,
+		"Thursday": 4,
+		"Friday": 5,
+		"Saturday": 6
+	});
 
 	function decimalAdjust(type, value, exp) {
 
