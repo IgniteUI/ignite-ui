@@ -1421,14 +1421,14 @@
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
-					preventSubmitOnEnter : false
+					revertIfNotValid : false
 				});
 
 				//Get
-				var preventSubmitOnEnter = $(".selector").%%WidgetName%%("option", "preventSubmitOnEnter");
+				var revertIfNotValid = $(".selector").%%WidgetName%%("option", "revertIfNotValid");
 
 				//Set
-				$(".selector").%%WidgetName%%("option", "preventSubmitOnEnter", false);
+				$(".selector").%%WidgetName%%("option", "revertIfNotValid", false);
 			```
 			*/
 			revertIfNotValid: true,
