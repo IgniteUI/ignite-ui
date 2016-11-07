@@ -1,0 +1,7 @@
+{
+	"config": [
+		"<%= config.modulesDir%>/infragistics.util.js",
+		"<%= config.modulesDir%>/infragistics.util.jquery.js",
+		"<%= config.modulesDir%>/infragistics.util.jquerydeferred.js"
+	]
+}
