@@ -1784,7 +1784,11 @@
 					}
 					break;
 				case "listItems":
-					this._deleteList();
+
+					//M.S. November, 7th 2016 - Issue 481 - Cannot set listItems on run time when it is not set initially
+					if (prevValue !== null) {
+						this._deleteList();
+					}
 					this._createList();
 					this._clearValue();
 					break;
