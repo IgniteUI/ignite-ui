@@ -3,6 +3,8 @@
         "<%= config.modulesDir%>/infragistics.ui.validator.js",
         "<%= config.modulesDir%>/infragistics.ui.notifier.js",
         "<%= config.modulesDir%>/infragistics.ui.popover.js",
-		"<%= config.modulesDir%>/infragistics.util.js"
+		"<%= config.modulesDir%>/infragistics.util.js",
+        "<%= config.modulesDir%>/infragistics.util.jquery.js",
+		"<%= config.modulesDir%>/infragistics.util.jquerydeferred.js"
 	]
 }

@@ -13,6 +13,8 @@
 * jquery.ui.mouse.js
 * jquery.ui.draggable.js
 * jquery.ui.resizable.js
+* infragistics.util.js
+* infragistics.util.jquery.js
 * Example to use:
 *	<script type="text/javascript">
 *	$(function () {
@@ -29,7 +31,8 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 
