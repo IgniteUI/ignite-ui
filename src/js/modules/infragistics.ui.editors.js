@@ -1975,6 +1975,7 @@
 			this._attachEvents();
 			this._applyOptions();
 			this._applyAria();
+			this._checkClearButtonState();
 
 			this._triggerRendered();
 		},
@@ -3019,6 +3020,7 @@
 				}
 				this._currentInputTextValue = currentVal;
 			}
+			this._checkClearButtonState();
 		},
 		_triggerTextChanged: function (oldValue, newValue) {
 			var args = {
@@ -3027,6 +3029,22 @@
 				oldText: oldValue ? oldValue : ""
 			};
 			this._trigger(this.events.textChanged, null, args);
+		},
+		_checkClearButtonState: function () {
+			if (this._clearButton) {
+				if (this._editorIsCleared()) {
+					this._clearButton.hide();
+				} else {
+					this._clearButton.show();
+				}
+			}
+		},
+		_editorIsCleared: function () { //TextEditor
+			var result = false, currentVal = this._editorInput.val();
+			if (currentVal === "") {
+				result = true;
+			}
+			return result;
 		},
 		_elementPositionInViewport: function (el) {
 				var areaTop = Math.ceil(el.parent().offset().top),
@@ -5323,6 +5341,13 @@
 			}
 			this._setSpinButtonsState(currVal);
 		},
+		_editorIsCleared: function () { //NumericEditor
+			var result = false, currentVal = this._editorInput.val();
+			if (currentVal === "" || currentVal === "0") {
+				result = true;
+			}
+			return result;
+		},
 		_spinDown: function (delta) { //NumericEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
@@ -6809,6 +6834,13 @@
 		_valueFromText: function (text) { //igMaskEditor
 			return this._getValueByDataMode(text);
 		},
+		_editorIsCleared: function () { //igMaskEditor
+			var result = false, currentVal = this._editorInput.val();
+			if (currentVal === "" || currentVal === this._maskWithPrompts) {
+				result = true;
+			}
+			return result;
+		},
 		_validateValueAgainstMask: function (value) {
 			var i, j, length = value.length, result = true, ch, mask = this._unescapedMask;
 			if (length && length > 0) {
@@ -6844,6 +6876,7 @@
 				this._maskedValue = this._parseValueByMask(value);
 				this._updateValue(this._maskedValue);
 			}
+			this._checkClearButtonState();
 		},
 		_triggerInternalValueChange: function (value) { //MaskEditor
 			var oldValue = this.options.value, message;
@@ -7730,6 +7763,7 @@
 				}
 				this._editorInput.val(this._getDisplayValue());
 			}
+			this._checkClearButtonState();
 		},
 		_applyOptions: function () { // DateEditor
 			this._super();
