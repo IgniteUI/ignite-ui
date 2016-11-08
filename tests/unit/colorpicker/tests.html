@@ -95,7 +95,7 @@
 	    });
 
 	    test("_clickFirstStandardColor", function () {
-	    	var firstStandardColor = this.actualColorPicker.find(".igColorPicker-table").find(".igColorPicker-customColors").children().first().click();
+	    	var firstStandardColor = this.actualColorPicker.find(".igColorPicker-table").find(".ui-colorpicker-standardcolors").children().first().click();
 	    	ok(firstStandardColor.hasClass("selected-color"), "click event was not triggered.");
 	    });
 	    
