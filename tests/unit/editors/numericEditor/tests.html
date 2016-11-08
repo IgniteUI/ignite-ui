@@ -317,6 +317,19 @@
 					value: 1,
 					minValue: 1
 				})
+
+				$("#optionsEditor").igNumericEditor({
+					allowNullValue : true,
+					revertIfNotValid: false,
+					minValue: 1
+				})
+				
+				$("#optionsEditor1").igNumericEditor({
+					allowNullValue: false,
+					revertIfNotValid: false,
+					minValue:-5,
+					maxValue:-2
+				})
 			});
 		}
 		initialized = false;
@@ -1101,6 +1114,51 @@
 				}, 20);
 			}, 20);
 		});
+
+		testId = 'Test _processInternalValueChanging';
+		test(testId, 7, function () {
+			var $editor = $("#optionsEditor");
+			var container = $('#optionsEditor').igNumericEditor("editorContainer");
+
+			//allowNullValue : true, revertIfNotValid: false --> value is null
+			$('#optionsEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#optionsEditor').igNumericEditor("value") === null, 'not null');
+
+			//allowNullValue : false, revertIfNotValid: false --> value is minValue
+			$('#optionsEditor').igNumericEditor("option", "allowNullValue", false);
+			$('#optionsEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#optionsEditor').igNumericEditor("value") === 1, 'not set to minValue when infalid input is used even though revertIfNotValid: false');
+
+			//allowNullValue : false, revertIfNotValid: true minValue: 1 --> value is minValue
+			$('#optionsEditor').igNumericEditor("option", "revertIfNotValid", true);
+			$('#optionsEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#optionsEditor').igNumericEditor("value") === 1, 'not set to minValue');
+
+			//allowNullValue : true, revertIfNotValid: true minValue: 1 --> value is this.options.nullValue;
+			$('#optionsEditor').igNumericEditor("option", "allowNullValue", true);
+			$('#optionsEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#optionsEditor').igNumericEditor("value") === null, 'not null');
+
+			//allowNullValue : false, revertIfNotValid: true minValue: -5 maxValue: -2 --> value is ""
+			$('#optionsEditor1').igNumericEditor("option", "allowNullValue", false);
+			$('#optionsEditor1').igNumericEditor("option", "revertIfNotValid", true);
+			$('#optionsEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#optionsEditor1').igNumericEditor("value") === "", 'not set to ""');
+
+			//allowNullValue : false, revertIfNotValid: false minValue: -5 maxValue: -2 --> value is maxValue
+			$('#optionsEditor1').igNumericEditor("option", "allowNullValue", false);
+			$('#optionsEditor1').igNumericEditor("option", "revertIfNotValid", false);
+			$('#optionsEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#optionsEditor1').igNumericEditor("value") === -2, 'not set to maxValue');
+
+			//allowNullValue : false, revertIfNotValid: false minValue: -5 maxValue: 2 --> value is 0
+			$('#optionsEditor1').igNumericEditor("option", "allowNullValue", false);
+			$('#optionsEditor1').igNumericEditor("option", "revertIfNotValid", false);
+			$('#optionsEditor1').igNumericEditor("option", "minValue", -5);
+			$('#optionsEditor1').igNumericEditor("option", "maxValue", 2);
+			$('#optionsEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#optionsEditor1').igNumericEditor("value") === 0, 'not set to 0');
+		});
 	});
 
 	function testSelection(input, start, end) {
@@ -1345,6 +1403,13 @@
 		<div id="numericEditor420maxValue"></div>
 		<br />
 		<div id="issue226939"></div>
+		
+		allowNullValue/revertIfNotValid
+		<input id="optionsEditor" />
+		<br />
+		<input id="optionsEditor1"> 
+		
+
 	</div>
 </body>
 </html>
