@@ -114,7 +114,7 @@
             /* The widget custom colors class css. */
             customColors: "igColorPicker-customColors",
             /* The widget default colors class css. */
-            defaultColors: "igColorPicker-customColors",
+            defaultColors: "ui-colorpicker-standardcolors",
             /* The widget colors row class css. */
             colorsRow: "igColorPicker-row",
             /* The widget color picker class css. */
