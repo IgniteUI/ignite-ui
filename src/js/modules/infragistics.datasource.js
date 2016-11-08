@@ -22,6 +22,7 @@
  * Depends on:
  *	jquery-1.9.1.js
  *	infragistics.util.js
+ *  infragistics.util.jquery.js
  *
  */
 
@@ -32,7 +33,8 @@
 		// AMD. Register as an anonymous module.
 		define( [
 			"jquery",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 
@@ -5073,6 +5075,10 @@
 				csLength = cs.length;
 
 			if (s.type === "remote") {
+				/* M.H. 1 Nov 2016 Fix for bug 227681: When autoGenerateColumns is true and summaries are remote initially the summaries are not populated. */
+				if (!csLength && s.calculateAll) {
+					params.summariesParams[ s.summaryExprUrlKey + "(all)" ] = "*";
+				}
 				for (i = 0; i < csLength; i++) {
 					methodsStr = "";
 					/* check if methods are defined */

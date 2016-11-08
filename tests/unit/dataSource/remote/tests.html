@@ -4,6 +4,8 @@
 	<title> Infragistics jQuery Data Source - tests for Remote operations & mocked AJAX requests to REST services </title> 
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/JSON-js/json2.js"></script>
@@ -355,6 +357,18 @@
 			equal(params, "%24select=ProductID", "%24select=ProductID");
 		});
 		
+		test("OData summaries parameters", function() {
+			ds.settings.localSchemaTransform = true;
+			ds.settings.filtering.exprString = "";
+			ds.settings.sorting.exprString = "";
+			ds.settings.sorting.expressions = [];
+			ds.settings.filtering.expressions = [];
+			ds.settings.summaries.calculateAll = true;
+			// compare the "params" string with the expected one 
+			var params = $.param(ds._encodeUrl());
+			equal(params, "%24skip=0&%24top=5&%24inlinecount=allpages&summaries(all)=*", "%24skip=0&%24top=5&%24inlinecount=allpages&summaries(all)=*");
+		});
+
 		test("OData paging parameters", function() {
 			ds.settings.localSchemaTransform = true;
 			ds.settings.filtering.exprString = "";

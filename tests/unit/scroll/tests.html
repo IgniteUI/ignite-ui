@@ -14,6 +14,8 @@
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.scroll-en.js"></script>
 	
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.scroll.js"></script>
 	<script type="text/javascript" src="jquery.simulate.js"></script>
 	<script type="text/javascript" src="simInteractions.js"></script>
@@ -375,9 +377,12 @@
 		var testId_117 = 'linking a custom horizontal scrollbar  and scrolling that scrollbar scrolls the content properly on touch.';
 		
 		var testId_118 = 'changing the main element width and refreshing igScroll should remove custom horizontal scrollbar if not needed.';
-		var testId_119 = 'changing the main element width and refreshing igScroll should remove native horizontal scrollbar if not needed and filler.';
+		var testId_119 = 'changing the main element width and refreshing igScroll should remove native horizontal scrollbar if not needed, filler and reset bottom padding.';
 		var testId_120 = 'changing the main element height and refreshing igScroll should remove custom vertical scrollbar if not needed.';
-		var testId_121 = 'changing the main element height and refreshing igScroll should remove native vertical scrollbar if not needed and filler.';
+		var testId_121 = 'changing the main element height and refreshing igScroll should remove native vertical scrollbar if not needed, filler and reset right padding.';
+		
+		var testId_122 = 'when scrollbarType is native scrollbars on mobile/touch only environment do not render scrollbar filler like on desktop.';
+		var testId_123 = 'setting scrollbarType to native and defining parents for the vertical and horiontal scrollbar puts them as childs of the proper elements.';
 		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -3248,7 +3253,7 @@
 			stop();
 			$("#elemVH_vBar").scrollTop(170);
 			setTimeout(function () {
-				equal(-getTransform3dValueY(elemContent), 170, "igScroll content did not scroll vertically using transformations");
+				equal(-getTransform3dValueY(elemContent), 170, "igScroll content scrolled vertically using transformations");
 				$("#elemVH").remove();
 				$("#elemVH_vBar").remove();
 				$.ig.util.isTouch = false;
@@ -3279,7 +3284,7 @@
 			stop();
 			$("#elemVH_hBar").scrollLeft(170);
 			setTimeout(function () {
-				equal(-getTransform3dValueX(elemContent), 170, "igScroll content did not scroll horizontally using transformations");
+				equal(-getTransform3dValueX(elemContent), 170, "igScroll content scrolled horizontally using transformations");
 				$("#elemVH").remove();
 				$("#elemVH_hBar").remove();
 				start();
@@ -3296,8 +3301,8 @@
 			$('#elemH').css("width", "1000px");
 			$('#elemH').igScroll("refresh");
 			
-			equal($("#elemH_hBar").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
-			equal($('#elemH').data("igScroll")._hBarContainer, null, "igScroll did not update reference to scrollbar elements inside igScroll");
+			equal($("#elemH_hBar").length, 0, "igScroll removed horizontal scrollbar on refresh");
+			equal($('#elemH').data("igScroll")._hBarContainer, null, "igScroll updated reference to scrollbar elements inside igScroll");
 			$("#elemH").remove();
 	    });
 		
@@ -3307,13 +3312,18 @@
 				scrollbarType: "native"
 			});
 			
+			//Check if there is only horizontal scrollbar
+			equal($("#elemH_vBar").length, 0, "igScroll did not render vertical scrollbar on init");
+			equal($("#elemH_hBar").length, 1, "igScroll rendered horizontal scrollbar on init");
+			
 			//Make it bigger
 			$('#elemH').css("width", "1000px");
 			$('#elemH').igScroll("refresh");
 			
-			equal($("#elemH_hBar").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
-			equal($("#elemH_scrollbarFiller").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
-			equal($('#elemH').data("igScroll")._hBarContainer, null, "igScroll did not update reference to scrollbar elements inside igScroll");
+			equal($("#elemH_hBar").length, 0, "igScroll removed horizontal scrollbar on refresh");
+			equal($("#elemH_scrollbarFiller").length, 0, "igScroll removed scrollbar filler on refresh");
+			equal($('#elemH').data("igScroll")._hBarContainer, null, "igScroll updated reference to scrollbar elements inside igScroll");
+			equal($('#elemH_content').css("padding-bottom"), "0px", "igScroll updated reference to scrollbar elements inside igScroll");
 			$("#elemH").remove();
 	    });
 		
@@ -3327,25 +3337,64 @@
 			$('#elemV').css("height", "2000px");
 			$('#elemV').igScroll("refresh");
 			
-			equal($("#elemV_vBar").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
-			equal($('#elemV').data("igScroll")._vBarContainer, null, "igScroll did not update reference to scrollbar elements inside igScroll");
+			equal($("#elemV_vBar").length, 0, "igScroll removed vertical scrollbar on refresh");
+			equal($('#elemV').data("igScroll")._vBarContainer, null, "igScroll updated reference to scrollbar elements inside igScroll");
 			$("#elemV").remove();
 	    });
 		
 		test(testId_121, function () {
-	        $("#testBed").append($('<div id="elemV" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollV));
+	        $("#testBed").append($('<div id="elemV" style="height:400px; width: 700px; overflow: hidden;"></div>').append(contentScrollV));
 	        $('#elemV').igScroll({
 				scrollbarType: "native"
 			});
+			
+			//Check if there is only vertical scrollbar
+			equal($("#elemV_vBar").length, 1, "igScroll rendered vertical scrollbar on init");
+			equal($("#elemV_hBar").length, 0, "igScroll did not render horizontal scrollbar on init");
 			
 			//Make it bigger
 			$('#elemV').css("height", "2000px");
 			$('#elemV').igScroll("refresh");
 			
-			equal($("#elemV_vBar").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
-			equal($("#elemV_scrollbarFiller").length, 0, "igScroll did not remove horizontal scrollbar on refresh");
-			equal($('#elemV').data("igScroll")._vBarContainer, null, "igScroll did not update reference to scrollbar elements inside igScroll");
+			equal($("#elemV_vBar").length, 0, "igScroll removed vertical scrollbar on refresh");
+			equal($("#elemV_scrollbarFiller").length, 0, "igScroll removed scrollbar filler on refresh");
+			equal($('#elemV').data("igScroll")._vBarContainer, null, "igScroll updated reference to scrollbar elements inside igScroll");
+			equal($('#elemV_content').css("padding-right"), "0px", "igScroll updated reference to scrollbar elements inside igScroll");
 			$("#elemV").remove();
+	    });
+		
+		test(testId_122, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$('#elemVH').igScroll({
+				scrollbarType: "none"
+			});
+
+			//Emulate touch only environment
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			$('#elemVH').igScroll("option", "scrollbarType", "native");
+			
+			equal($("#elemVH_vBar").length, 1, "igScroll rendered vertical scrollbar");
+			equal($("#elemVH_hBar").length, 1, "igScroll rendered horizontal scrollbar");
+			equal($("#elemVH_scrollbarFiller").length, 0, "igScroll did not render scrollbar filler");
+			$("#elemVH").remove();
+			$.ig.util.isTouch = false;
+	    });
+		
+		test(testId_123, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $("#testBed").append($('<div id="hBarParent" style="float: left"></div>'));
+			$("#testBed").append($('<div id="vBarParent" style="float: left"></div>'));
+			
+			$('#elemVH').igScroll({
+				scrollbarType: "native",
+				scrollbarVParent: $("#vBarParent"),
+				scrollbarHParent: $("#hBarParent")
+			});
+			
+			equal($("#elemVH_vBar", "#vBarParent").length, 1, "igScroll rendered vertical scrollbar as a child of the proper parent");
+			equal($("#elemVH_hBar", "#hBarParent").length, 1, "igScroll rendered horizontal scrollbar as a child of the proper parent");
+			$("#elemVH").remove();
 	    });
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>

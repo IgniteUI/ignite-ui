@@ -9,6 +9,7 @@
 * jquery-1.9.1.js
 * jquery.ui-1.9.0.js
 * infragistics.util.js
+* infragistics.util.jquery.js
 * modernizr.js
 */
 
@@ -20,7 +21,8 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 
@@ -1091,6 +1093,7 @@
 		},
 
 		_refreshScrollbarsDrag: function () {
+			var containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
 			this._elemHeight = this.element.height();
 			this._elemWidth = this.element.width();
 
@@ -1103,7 +1106,7 @@
 				this._vBarTrack.css("height",
 									this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
 			} else if (this.options.scrollbarType === "native" && this._vBarContainer && this._vBarDrag) {
-				this._vBarContainer.css("height", (this._elemHeight - this._customBarEmptySpaceSize) + "px");
+				this._vBarContainer.css("height", (this._elemHeight - containerSizeOffset) + "px");
 				this._vDragHeight = this._getContentHeight();
 				this._vBarDrag.css("height", this._vDragHeight + "px");
 			}
@@ -1117,7 +1120,7 @@
 				this._hBarTrack.css("width",
 									this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
 			} else if (this.options.scrollbarType === "native" && this._hBarContainer && this._hBarDrag) {
-				this._hBarContainer.css("width", (this._elemWidth - this._customBarEmptySpaceSize) + "px");
+				this._hBarContainer.css("width", (this._elemWidth - containerSizeOffset) + "px");
 				this._hDragWidth = this._getContentWidth();
 				this._hBarDrag.css("width", this._hDragWidth + "px");
 			}
@@ -1302,7 +1305,7 @@
 		*	If not sure how to use, use the internal _scrollLeft. */
 		_scrollToX: function (destX, triggerEvents) {
 			if (!this._isScrollableH && !this.options.scrollOnlyHBar) {
-				return;
+				return 0;
 			}
 
 			var curPosX;
@@ -1356,7 +1359,7 @@
 		*	If not sure how to use, use the internal _scrollTop. */
 		_scrollToY: function (destY, triggerEvents) {
 			if (!this._isScrollableV && !this.options.scrollOnlyVBar) {
-				return;
+				return 0;
 			}
 
 			var curPosY;
@@ -2247,7 +2250,10 @@
 			    this._igScollTouchPrevented = true;
 			}
 
-			event.preventDefault();
+			//On Safari preventing the touchmove would prevent default page scroll behaviour even if there is the element doesn't have overflow
+			if (!$.ig.util.isSafari || ($.ig.util.isSafari && !this._igScollTouchPrevented)) {
+				event.preventDefault();
+			}
 		},
 
 		_onTouchEndContainer: function (event) {
@@ -2354,11 +2360,11 @@
 
 		_initNativeScrollBarV: function () {
 			var css = this.css,
-				bNativeDesktop = false;
+				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
 
 			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
 				.addClass(css.nativeVScrollOuter)
-				.css("height", this._elemHeight - this._customBarEmptySpaceSize + "px");
+				.css("height", this._elemHeight - containerSizeOffset + "px");
 
 			this._vDragHeight = this._getContentHeight();
 			this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
@@ -2371,15 +2377,13 @@
 				this._vBarContainer.append(this._vBarDrag).appendTo(this._container[ 0 ].parentElement);
 			}
 
-			if ($.ig.util.getScrollHeight() > 0) {
-				this._content
-					.css("padding-bottom", $.ig.util.getScrollHeight() + "px");
-				bNativeDesktop = true;
+			if ($.ig.util.getScrollHeight() > 0 && this.options.modifyDOM) {
+				this._content.css("padding-right", $.ig.util.getScrollHeight() + "px");
 			}
 			this._setOption("scrollbarV", this._vBarContainer);
 
 			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
-			if (bNativeDesktop && !this._desktopFiller) {
+			if (this._bMixedEnvironment && !this._desktopFiller) {
 				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
 					.addClass("igscroll-filler");
 				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
@@ -2388,32 +2392,32 @@
 
 		_initNativeScrollBarH: function () {
 			var css = this.css,
-				bNativeDesktop = false;
+				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize  : 0;
 
 			this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
 				.addClass(css.nativeHScrollOuter)
-				.css("width", this._elemWidth - this._customBarEmptySpaceSize + "px");
+				.css("width", this._elemWidth - containerSizeOffset + "px");
 
 			this._hDragWidth = this._getContentWidth();
 			this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
 				.addClass(css.nativeHScrollInner)
 				.css("width", this._hDragWidth + "px");
 
-			if (this.options.scrollbarVParent) {
-				this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarVParent);
+			if (this.options.scrollbarHParent) {
+				this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarHParent);
 			} else {
 				this._hBarContainer.append(this._hBarDrag).appendTo(this._container[ 0 ].parentElement);
 			}
 
-			if ($.ig.util.getScrollWidth() > 0) {
-				bNativeDesktop = true;
-				this._content
-					.css("padding-right", $.ig.util.getScrollWidth() + "px");
+			if ($.ig.util.getScrollWidth() > 0 && this.options.modifyDOM) {
+				this._content.css("padding-bottom", $.ig.util.getScrollWidth() + "px");
+			} else {
+				this._hBarContainer.css("bottom", "18px");
 			}
 			this._setOption("scrollbarH", this._hBarContainer);
 
 			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
-			if (bNativeDesktop && !this._desktopFiller) {
+			if (this._bMixedEnvironment && !this._desktopFiller) {
 				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
 					.addClass("igscroll-filler");
 				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
@@ -2441,6 +2445,16 @@
 				this._vDragHeight = null;
 				this._vBarDrag = null;
 				this._vBarTrack = null;
+
+				if (this.options.modifyDOM && this.options.scrollbarType === "native") {
+					this._content.css("padding-right", "");
+				}
+			}
+			if (this._onMouseMoveVDragHandler) {
+				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveVDragHandler);
+			}
+			if (this._onMouseUpVScrollbarHandler) {
+				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id, this._onMouseUpVScrollbarHandler);
 			}
 		},
 
@@ -2451,6 +2465,16 @@
 				this._hDragHeight = null;
 				this._hBarDrag = null;
 				this._hBarTrack = null;
+
+				if (this.options.modifyDOM && this.options.scrollbarType === "native") {
+					this._content.css("padding-bottom", "");
+				}
+			}
+			if (this._onMouseMoveHDragHandler) {
+				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveHDragHandler);
+			}
+			if (this._onMouseUpHScrollbarHandler) {
+				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id, this._onMouseUpHScrollbarHandler);
 			}
 		},
 
@@ -2558,10 +2582,12 @@
 				});
 			}
 
+			this._onMouseMoveVDragHandler = $.proxy(this._onMouseMoveVDrag, this);
+			this._onMouseUpVScrollbarHandler = $.proxy(this._onMouseUpVScrollbar, this);
 			/* We bind it to the body to be able to detect while holding the Thumb Drag and moving out of the scrollbar area. It should still scroll while still holding and moving inside the window */
-			$("body").on("mousemove", $.proxy(this._onMouseMoveVDrag, this));
+			$("body").on("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveVDragHandler);
 			/* We bind it to the wondow to be able to determine while the user releases the mouse even when it is out of the browser window */
-			$(window).on("mouseup", $.proxy(this._onMouseUpVScrollbar, this));
+			$(window).on("mouseup.igscroll_" + this.element[ 0 ].id, this._onMouseUpVScrollbarHandler);
 		},
 
 		/** Used when one of the Arrow Up/Down or Vertical Track is being used by holding mouse button on them to constantly scroll on the Y axis */
@@ -3035,10 +3061,12 @@
 				});
 			}
 
+			this._onMouseMoveHDragHandler = $.proxy(this._onMouseMoveHDrag, this);
+			this._onMouseUpHScrollbarHandler = $.proxy(this._onMouseUpHScrollbar, this);
 			/* We bind it to the body to be able to detect while holding the Thumb Drag and moving out of the scrollbar area. It should still scroll while still holding and moving inside the window */
-			$("body").on("mousemove", $.proxy(this._onMouseMoveHDrag, this));
+			$("body").on("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveHDragHandler);
 			/* We bind it to the wondow to be able to determine while the user releases the mouse even when it is out of the browser window */
-			$(window).on("mouseup", $.proxy(this._onMouseUpHScrollbar, this));
+			$(window).on("mouseup.igscroll_" + this.element[ 0 ].id, this._onMouseUpHScrollbarHandler);
 		},
 
 		/** Used when one of the Arrow Left/Right or Horizontal Track is being used by holding mouse button on them to constantly scroll on the X axis */
@@ -3681,12 +3709,13 @@
 					this._hBarContainer.remove();
 				}
 				if (this._vBarDrag) {
-
 					this._vBarDrag.remove();
 				}
 				if (this._vBarContainer) {
 					this._vBarContainer.remove();
 				}
+				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id);
+				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id);
 				$.Widget.prototype.destroy.apply(this, arguments);
 			}
 			return this;
