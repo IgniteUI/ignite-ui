@@ -1304,7 +1304,7 @@
 		*	If not sure how to use, use the internal _scrollLeft. */
 		_scrollToX: function (destX, triggerEvents) {
 			if (!this._isScrollableH && !this.options.scrollOnlyHBar) {
-				return;
+				return 0;
 			}
 
 			var curPosX;
@@ -1358,7 +1358,7 @@
 		*	If not sure how to use, use the internal _scrollTop. */
 		_scrollToY: function (destY, triggerEvents) {
 			if (!this._isScrollableV && !this.options.scrollOnlyVBar) {
-				return;
+				return 0;
 			}
 
 			var curPosY;
@@ -2249,7 +2249,10 @@
 			    this._igScollTouchPrevented = true;
 			}
 
-			event.preventDefault();
+			//On Safari preventing the touchmove would prevent default page scroll behaviour even if there is the element doesn't have overflow
+			if (!$.ig.util.isSafari || ($.ig.util.isSafari && !this._igScollTouchPrevented)) {
+				event.preventDefault();
+			}
 		},
 
 		_onTouchEndContainer: function (event) {
