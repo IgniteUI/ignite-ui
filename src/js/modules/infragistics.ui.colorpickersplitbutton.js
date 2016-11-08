@@ -59,7 +59,7 @@
             ```
             */
             items: [],
-            /* type="string" Gets/sets the button default color value.        
+            /* type="string" Gets/sets the button default color value.
             ```
             // Initialize
             $(".selector").igColorPickerSplitButton({

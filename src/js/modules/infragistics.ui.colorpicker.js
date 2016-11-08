@@ -45,11 +45,9 @@
                 // Every array with color strings will be rendered on a new row.
                 $(".selector").igColorPicker({
                     colors: [["#ffffff", "#000000", "#EEECE1", "#1F497D"], ["#92D050", "#00B050", "#00B0F0", "#0070C0"]]
-                });
-                
+                })
                 // Get
-                var colors = $(".selector").igColorPicker("option", "colors");
-                
+                var colors = $(".selector").igColorPicker("option", "colors")
                 // Set
                 var colors = [["#ffffff", "#000000", "#EEECE1", "#1F497D"], ["#92D050", "#00B050", "#00B0F0", "#0070C0"]]
                 $(".selector").igColorPicker("option", "colors", colors);
@@ -75,12 +73,10 @@
                 // Initialize
                 // Every array with color strings will be rendered on a new row.
                 $(".selector").igColorPicker({
-                    standardColors: ["red", "blue"]]
-                });
-                
+                    standardColors: ["red", "blue"]
+                })
                 // Get
-                var standardColors = $(".selector").igColorPicker("option", "standardColors");
-                
+                var standardColors = $(".selector").igColorPicker("option", "standardColors")
                 // Set
                 var standardColors = ["rgb(238,130,238)", "rgb(240,255,255)", "rgb(152,251,152)"]
                 $(".selector").igColorPicker("option", "standardColors", standardColors);
