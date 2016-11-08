@@ -184,9 +184,9 @@
             /* The widget arrow css */
             arrow: "ui-splitbutton-arrow",
             /* The widget left div element css. */
-            cornerLeft: "ui-corner-left",
+            conrnersLeft: "ui-corner-left",
             /* The widget right div element css. */
-            cornerRight: "ui-corner-right",
+            conrnersRight: "ui-corner-right",
             /* The widget base element hover css. */
             hover: "ui-splitbutton-hover",
             /* The widget base element active css. */
