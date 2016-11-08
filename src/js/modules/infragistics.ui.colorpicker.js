@@ -38,7 +38,7 @@
 	*/
     $.widget("ui.igColorPicker", {
         options: {
-            /* type="string" Gets/Sets the default colors. Default colors are the ones displayed in the upper table of the color picker.
+            /* type="array" Gets/Sets the default colors. Default colors are the ones displayed in the upper table of the color picker.
             The array should contain arrays that contain the color values for every next row.
             ```
                 // Initialize
@@ -67,7 +67,7 @@
 				[ "#7F7F7F", "#0C0C0C", "#1D1B10", "#0F243E", "#244061", "#632423",
                     "#4F6128", "#3F3151", "#205867", "#974806" ]
             ],
-            /* type="string" Gets/Sets the standard colors. Standard colors are the ones displayed in the color picker bottom,
+            /* type="array" Gets/Sets the standard colors. Standard colors are the ones displayed in the color picker bottom,
             visually separated from the default colors. The array should contain the color values.
             ```
                 // Initialize
