@@ -39,7 +39,7 @@
 	*/
     $.widget("ui.igSplitButton", {
         options: {
-			/* type="array" Button items. 
+			/* type="array" Button items.
             ```
             // Initialize
             $(".selector").igSplitButton({
@@ -69,7 +69,6 @@
             });
             // Get
             var defaultItemName = $(".selector").igSplitButton("option", "defaultItemName");
-                
             // Set
             $(".selector").igSplitButton("option", "defaultItemName", "SplitButton");
             ```
@@ -81,10 +80,8 @@
             $(".selector").igSplitButton({
                 swapDefaultEnabled: true
             });
-            
             // Get
             var swapDefaultEnabled = $(".selector").igSplitButton("option", "swapDefaultEnabled");
-            
             // Set
             $(".selector").igSplitButton("option", "swapDefaultEnabled", true);
             ```
@@ -98,7 +95,6 @@
             $(".selector").igSplitButton({
                 click: function (evt, ui) {...}
             });
-            
             //Delegate
             $(document).delegate(".selector", "igsplitbuttonclick", function (evt, ui) {
                 // return reference to the igSplitButton element
@@ -117,7 +113,6 @@
             $(".selector").igSplitButton({
                 expanded: function (evt, ui) {...}
             });
-            
             //Delegate
             $(document).delegate(".selector", "igsplitexpanded", function (evt, ui) {
                 // return reference to the igSplitButton
@@ -136,7 +131,6 @@
             $(".selector").igSplitButton({
                 expanding: function (evt, ui) {...}
             });
-            
             //Delegate
             $(document).delegate(".selector", "igsplitexpanding", function (evt, ui) {
                 // return reference to the igSplitButton
@@ -155,7 +149,6 @@
             $(".selector").igSplitButton({
                 collapsed: function (evt, ui) {...}
             });
-            
             //Delegate
             $(document).delegate(".selector", "igsplitcollapsed", function (evt, ui) {
                 // return reference to the igSplitButton
@@ -174,7 +167,6 @@
             $(".selector").igSplitButton({
                 collapsing: function (evt, ui) {...}
             });
-            
             //Delegate
             $(document).delegate(".selector", "igsplitcollapsing", function (evt, ui) {
                 // return reference to the igSplitButton
