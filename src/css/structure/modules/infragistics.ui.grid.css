@@ -157,7 +157,10 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .ui-iggrid-pagelist {padding: 0 6px;}
 .ui-iggrid-pagelist li {margin:0 0.1em;}
 
-.ui-iggrid-colindicator {/* padding-right: 4px;*/ }
+/* #221461 // 11.01.2016 // M.Popov // We need those two lines for MS Edge */
+.ui-iggrid-colindicator.ui-icon:empty { display : block; }
+.ui-iggrid-colindicator:empty {display : none; }
+
 
 .ui-iggrid .ui-iggrid-filterbutton {float:left;}
 .ui-iggrid th .ui-iggrid-filterbutton,
@@ -190,9 +193,9 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .ui-iggrid-colheaderasc .ui-iggrid-headertext,
 .ui-iggrid-colheaderdesc .ui-iggrid-headertext,
 .ui-iggrid-headercell-featureenabled .ui-iggrid-headertext {
-    width: -webkit-calc(100% - 18px)!important; /** Chrome / Safari 6 **/
-    width: -moz-calc(100% - 18px)!important; /**  FF 4-15  **/
-    width: calc(100% - 18px)!important; /** FF 16+, IE 9+, and future other browsers **/ 
+    width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/
+    width: -moz-calc(100% - 34px)!important; /**  FF 4-15  **/
+    width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/
     display:block;
     text-overflow:ellipsis;
     overflow: hidden;
@@ -273,6 +276,9 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .ui-iggrid-indicatorcontainer {
     margin-top/*\**/:0.25em\9; /* value hack for OldIE */
     margin-top: calc(0.8em - 8px); /* vertically centered for newer browsers */
+
+	/* #221461 // 11.01.2016 // M.Popov // Auto-sizing a column... */
+	min-width:34px;
 }
 
 
@@ -1393,7 +1399,7 @@ td.ui-iggrid-addrow
 .ui-iggrid-deletebutton {
 	cursor:pointer;
 	box-sizing: initial!important;
-	left: 51%!important;
+	left: 51%; /* 11.04.2016. // BUG #228194 // Marin Popov // igGridUpdating's delete button appears in the middle of the visible area instead of the right edge*/
 }
 
 .ui-iggrid-button-icon-only,
