@@ -318,17 +318,24 @@
 					minValue: 1
 				})
 
-				$("#optionsEditor").igNumericEditor({
+				$("#privateFuncEditor").igNumericEditor({
 					allowNullValue : true,
 					revertIfNotValid: false,
 					minValue: 1
 				})
 				
-				$("#optionsEditor1").igNumericEditor({
+				$("#privateFuncEditor1").igNumericEditor({
 					allowNullValue: false,
 					revertIfNotValid: false,
 					minValue:-5,
 					maxValue:-2
+				})
+
+				$("#privateFuncEditor2").igNumericEditor({
+					allowNullValue: false,
+					revertIfNotValid: false,
+					minValue: -5,
+					maxValue: -2
 				})
 			});
 		}
@@ -1115,49 +1122,49 @@
 			}, 20);
 		});
 
-		testId = 'Test _processInternalValueChanging';
+		testId = '_processInternalValueChanging';
 		test(testId, 7, function () {
-			var $editor = $("#optionsEditor");
-			var container = $('#optionsEditor').igNumericEditor("editorContainer");
+			var $editor = $("#privateFuncEditor");
+			var container = $('#privateFuncEditor').igNumericEditor("editorContainer");
 
 			//allowNullValue : true, revertIfNotValid: false --> value is null
-			$('#optionsEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
-			ok($('#optionsEditor').igNumericEditor("value") === null, 'not null');
+			$('#privateFuncEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#privateFuncEditor').igNumericEditor("value") === null, 'not null');
 
 			//allowNullValue : false, revertIfNotValid: false --> value is minValue
-			$('#optionsEditor').igNumericEditor("option", "allowNullValue", false);
-			$('#optionsEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
-			ok($('#optionsEditor').igNumericEditor("value") === 1, 'not set to minValue when infalid input is used even though revertIfNotValid: false');
+			$('#privateFuncEditor').igNumericEditor("option", "allowNullValue", false);
+			$('#privateFuncEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#privateFuncEditor').igNumericEditor("value") === 1, 'not set to minValue when infalid input is used even though revertIfNotValid: false');
 
 			//allowNullValue : false, revertIfNotValid: true minValue: 1 --> value is minValue
-			$('#optionsEditor').igNumericEditor("option", "revertIfNotValid", true);
-			$('#optionsEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
-			ok($('#optionsEditor').igNumericEditor("value") === 1, 'not set to minValue');
+			$('#privateFuncEditor').igNumericEditor("option", "revertIfNotValid", true);
+			$('#privateFuncEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#privateFuncEditor').igNumericEditor("value") === 1, 'not set to minValue');
 
 			//allowNullValue : true, revertIfNotValid: true minValue: 1 --> value is this.options.nullValue;
-			$('#optionsEditor').igNumericEditor("option", "allowNullValue", true);
-			$('#optionsEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
-			ok($('#optionsEditor').igNumericEditor("value") === null, 'not null');
+			$('#privateFuncEditor').igNumericEditor("option", "allowNullValue", true);
+			$('#privateFuncEditor').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#privateFuncEditor').igNumericEditor("value") === null, 'not null');
 
 			//allowNullValue : false, revertIfNotValid: true minValue: -5 maxValue: -2 --> value is ""
-			$('#optionsEditor1').igNumericEditor("option", "allowNullValue", false);
-			$('#optionsEditor1').igNumericEditor("option", "revertIfNotValid", true);
-			$('#optionsEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
-			ok($('#optionsEditor1').igNumericEditor("value") === "", 'not set to ""');
+			$('#privateFuncEditor1').igNumericEditor("option", "allowNullValue", false);
+			$('#privateFuncEditor1').igNumericEditor("option", "revertIfNotValid", true);
+			$('#privateFuncEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#privateFuncEditor1').igNumericEditor("value") === "", 'not set to ""');
 
 			//allowNullValue : false, revertIfNotValid: false minValue: -5 maxValue: -2 --> value is maxValue
-			$('#optionsEditor1').igNumericEditor("option", "allowNullValue", false);
-			$('#optionsEditor1').igNumericEditor("option", "revertIfNotValid", false);
-			$('#optionsEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
-			ok($('#optionsEditor1').igNumericEditor("value") === -2, 'not set to maxValue');
+			$('#privateFuncEditor1').igNumericEditor("option", "allowNullValue", false);
+			$('#privateFuncEditor1').igNumericEditor("option", "revertIfNotValid", false);
+			$('#privateFuncEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#privateFuncEditor1').igNumericEditor("value") === -2, 'not set to maxValue');
 
 			//allowNullValue : false, revertIfNotValid: false minValue: -5 maxValue: 2 --> value is 0
-			$('#optionsEditor1').igNumericEditor("option", "allowNullValue", false);
-			$('#optionsEditor1').igNumericEditor("option", "revertIfNotValid", false);
-			$('#optionsEditor1').igNumericEditor("option", "minValue", -5);
-			$('#optionsEditor1').igNumericEditor("option", "maxValue", 2);
-			$('#optionsEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
-			ok($('#optionsEditor1').igNumericEditor("value") === 0, 'not set to 0');
+			$('#privateFuncEditor1').igNumericEditor("option", "allowNullValue", false);
+			$('#privateFuncEditor1').igNumericEditor("option", "revertIfNotValid", false);
+			$('#privateFuncEditor1').igNumericEditor("option", "minValue", -5);
+			$('#privateFuncEditor1').igNumericEditor("option", "maxValue", 2);
+			$('#privateFuncEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($('#privateFuncEditor1').igNumericEditor("value") === 0, 'not set to 0');
 		});
 	});
 
@@ -1403,11 +1410,12 @@
 		<div id="numericEditor420maxValue"></div>
 		<br />
 		<div id="issue226939"></div>
-		
-		allowNullValue/revertIfNotValid
-		<input id="optionsEditor" />
 		<br />
-		<input id="optionsEditor1"> 
+		_processInternalValueChanging
+		<br />
+		<input id="privateFuncEditor" />
+		<br />
+		<input id="privateFuncEditor1"> 
 		
 
 	</div>
