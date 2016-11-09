@@ -613,6 +613,8 @@
 			nativeHScrollOuter: "igscroll-hnative-outer",
 			/* Classes applied to the inner element of the native horizontal scrollbar */
 			nativeHScrollInner: "igscroll-hnative-inner",
+			/* Classes applied to the fill element that cover the area between the scrollbars */
+			nativeScrollFiller: "igscroll-filler",
 			/* Classes applied to the container of the custom vertical scrollbar */
 			verticalScrollContainer: "igscroll-vcontainer",
 			/* Classes applied to the track of the custom vertical scrollbar */
@@ -646,7 +648,11 @@
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar */
 			horizontalScrollThumbDrag: "igscroll-hdrag",
 			/* Classes applied to an element that prevents selection when dragging */
-			disabledSelection: "igscroll-select-disabled"
+			disabledSelection: "igscroll-select-disabled",
+			/* Classes applied to an element that wraps the content of vertically linked element */
+			syncedElemContentV: "igscroll-vsynced-content",
+			/* Classes applied to an element that wraps the content of horizontally linked element */
+			syncedElemContentH: "igscroll-hsynced-content"
 		},
 
 		refresh: function () {
@@ -1138,6 +1144,7 @@
 					if (elemObject.length) {
 						if (this.options.modifyDOM && elemObject.data("igScroll") === undefined) {
 							$("<div id='" + elemObject.attr("id") + "_content'/>")
+								.addClass(this.css.syncedElemContentH)
 								.appendTo(elemObject)
 								.append(elemObject.contents());
 						}
@@ -1160,6 +1167,7 @@
 					if (elemObject.length) {
 						if (this.options.modifyDOM && elemObject.data("igScroll") === undefined) {
 							$("<div id='" + elemObject.attr("id") + "_content'/>")
+								.addClass(this.css.syncedElemContentV)
 								.appendTo(elemObject)
 								.append(elemObject.contents());
 						}
@@ -1745,13 +1753,13 @@
 								this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 							//We do not set igScroll option because there will be infinite recursion of syncing
 							destY = this._getTransform3dValueY(
-								this._linkedHElems[ index ].children().eq(0).children().eq(0)
+								this._linkedHElems[ index ].find(".igscroll-content")
 							);
-							this._linkedHElems[ index ].children().eq(0).children().eq(0).css({
+							this._linkedHElems[ index ].find(".igscroll-content").css({
 								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
 							});
 						} else if (this.options.modifyDOM) {
-							this._linkedHElems[ index ].children().eq(0).css({
+							this._linkedHElems[ index ].find(".igscroll-hsynced-content").css({
 								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
 							});
 						} else {
@@ -1770,7 +1778,7 @@
 							if (this._linkedHElems[ index ].data("igScroll") !== undefined &&
 									this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
-								this._linkedHElems[ index ].children().eq(0).scrollLeft(destX);
+								this._linkedHElems[ index ].find(".igscroll-container").scrollLeft(destX);
 							} else if (this.options.modifyDOM) {
 								this._linkedHElems[ index ].scrollLeft(destX);
 							} else {
@@ -1813,13 +1821,13 @@
 								this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
 							//We do not set igScroll option because there will be infinite recursion of syncing
 							destX = this._getTransform3dValueX(
-								this._linkedVElems[ index ].children().eq(0).children().eq(0)
+								this._linkedVElems[ index ].find(".igscroll-content")
 							);
-							this._linkedVElems[ index ].children().eq(0).children().eq(0).css({
+							this._linkedVElems[ index ].find(".igscroll-content").css({
 								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 							});
 						} else if (this.options.modifyDOM) {
-							this._linkedVElems[ index ].children().eq(0).css({
+							this._linkedVElems[ index ].find(".igscroll-vsynced-content").css({
 								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 							});
 						} else {
@@ -1838,7 +1846,7 @@
 							if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 									this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
-								this._linkedVElems[ index ].children().eq(0).scrollTop(destY);
+								this._linkedVElems[ index ].find(".igscroll-container").scrollTop(destY);
 							} else if (this.options.modifyDOM) {
 								this._linkedVElems[ index ].scrollTop(destY);
 							} else {
@@ -2396,7 +2404,7 @@
 			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
 			if (this._bMixedEnvironment && !this._desktopFiller) {
 				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
-					.addClass("igscroll-filler");
+					.addClass(css.nativeScrollFiller);
 				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
 			}
 		},
@@ -2430,7 +2438,7 @@
 			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
 			if (this._bMixedEnvironment && !this._desktopFiller) {
 				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
-					.addClass("igscroll-filler");
+					.addClass(css.nativeScrollFiller);
 				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
 			}
 		},
