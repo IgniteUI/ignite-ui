@@ -1736,19 +1736,27 @@
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
+						//get the current X position
+						var matrixElem = this._linkedHElems[ index ].css("-webkit-transform");
+						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
+						var destY = valuesElem ? Number(valuesElem[ 5 ]) : -this._getContentPositionY();
+
 						if (this._linkedHElems[ index ].data("igScroll")  !== undefined &&
 								this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 							//We do not set igScroll option because there will be infinite recursion of syncing
+							destY = this._getTransform3dValueY(
+								this._linkedHElems[ index ].children().eq(0).children().eq(0)
+							);
 							this._linkedHElems[ index ].children().eq(0).children().eq(0).css({
-								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
+								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
 							});
 						} else if (this.options.modifyDOM) {
 							this._linkedHElems[ index ].children().eq(0).css({
-								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
+								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
 							});
 						} else {
 							this._linkedHElems[ index ].css({
-								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
+								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
 							});
 						}
 					}
@@ -1804,6 +1812,9 @@
 						if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 								this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
 							//We do not set igScroll option because there will be infinite recursion of syncing
+							destX = this._getTransform3dValueX(
+								this._linkedVElems[ index ].children().eq(0).children().eq(0)
+							);
 							this._linkedVElems[ index ].children().eq(0).children().eq(0).css({
 								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 							});
@@ -2323,12 +2334,12 @@
 			if (this.options.scrollbarType === "native") {
 				if (this._isScrollableV && !this._vBarContainer && this._renderVerticalScrollbar) {
 					this._initNativeScrollBarV();
-				} else if (!this._isScrollableV && this._vBarContainer) {
+				} else if ((!this._isScrollableV || !this._renderVerticalScrollbar) && this._vBarContainer) {
 					this._removeVerticalScrollbar();
 				}
 				if (this._isScrollableH && !this._hBarContainer && this._renderHorizontalScrollbar) {
 					this._initNativeScrollBarH();
-				} else if (!this._isScrollableH && this._hBarContainer) {
+				} else if ((!this._isScrollableH || !this._renderHorizontalScrollbar) && this._hBarContainer) {
 					this._removeHorizontalScrollbar();
 				}
 
@@ -2343,12 +2354,12 @@
 			} else if (this.options.scrollbarType === "custom") {
 				if (this._isScrollableV && !this._vBarContainer && this._renderVerticalScrollbar) {
 					this._initCustomScrollBarV();
-				} else if (!this._isScrollableV && this._vBarContainer) {
+				} else if ((!this._isScrollableV || !this._renderVerticalScrollbar) && this._vBarContainer) {
 					this._removeVerticalScrollbar();
 				}
 				if (this._isScrollableH && !this._hBarContainer && this._renderHorizontalScrollbar) {
 					this._initCustomScrollBarH();
-				} else if (!this._isScrollableH && this._hBarContainer) {
+				} else if ((!this._isScrollableH || !this._renderHorizontalScrollbar) && this._hBarContainer) {
 					this._removeHorizontalScrollbar();
 				}
 
