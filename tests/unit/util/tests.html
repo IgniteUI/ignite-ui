@@ -72,6 +72,30 @@
 			ok($("#span2").parent().parent().offset().left - $("#span2").parent().parent().scrollLeft() === relOffset.left && $("#span2").parent().parent().offset().top - $("#span2").parent().parent().scrollTop() === relOffset.top, "The element offset should be correct.");
 		});
 
+		test("Test defEnum", function () {
+			// simple non-flagged enum
+			equal(3, $.ig.DayOfWeek.prototype.wednesday, "Simple enum member - Access value via prototype");
+			equal("Wednesday", $.ig.DayOfWeek.prototype.getBox(3).toString(), "Simple enum member - ToString.");
+			equal("Wednesday", $.ig.Enum.prototype.parse($.ig.DayOfWeek.prototype.$type, "wednesday", true).toString(), "Simple enum member - Parse");
+			
+			// flagged enum
+			equal(111, $.ig.NumberStyles.prototype.number, "Simple flagged enum member - Access value via prototype");
+			equal(167, $.ig.NumberStyles.prototype.floatNumber, "Complex flagged enum member - Access value via prototype");
+			equal("Number", $.ig.NumberStyles.prototype.getBox(111).toString(), "Simple enum member - ToString.");
+			equal("Float", $.ig.NumberStyles.prototype.getBox(167).toString(), "Complex enum member - ToString.");
+			equal("Number", $.ig.Enum.prototype.parse($.ig.NumberStyles.prototype.$type, "number", true).toString(), "Simple flagged enum member - Parse");
+			equal("Float", $.ig.Enum.prototype.parse($.ig.NumberStyles.prototype.$type, "float", true).toString(), "Complex flagged enum member - Parse");
+
+			// and some tests for public enums which differ in that the values are on the type instead of the prototype
+			$.ig.util.defEnum("TestPublicEnum", false, true, {
+				Foo: 0,
+				Bar: 1
+			});
+
+			equal(1, $.ig.TestPublicEnum.bar, "Simple public enum member - Access value via prototype");
+			equal("Bar", $.ig.TestPublicEnum.prototype.getBox(1).toString(), "Simple public enum member - ToString.");
+			equal("Bar", $.ig.Enum.prototype.parse($.ig.TestPublicEnum.prototype.$type, "bar", true).toString(), "Simple public enum member - Parse");
+		});
 	</script>
 </head>
 <body>
