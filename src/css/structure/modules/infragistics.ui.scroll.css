@@ -127,6 +127,7 @@
 
 .igscroll-vdrag:active { 
 	background: #575757;
+	cursor: default;
 }
 
 /***********************
@@ -224,6 +225,7 @@
 
 .igscroll-hdrag:active { 
 	background: #575757;
+	cursor: default;
 }
 
 /**********************

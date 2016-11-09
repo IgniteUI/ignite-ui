@@ -383,6 +383,8 @@
 		
 		var testId_122 = 'when scrollbarType is native scrollbars on mobile/touch only environment do not render scrollbar filler like on desktop.';
 		var testId_123 = 'setting scrollbarType to native and defining parents for the vertical and horiontal scrollbar puts them as childs of the proper elements.';
+		var testId_124 = 'linking two different igScroll to a third one by different orientation scrolls the proper one accordingly.';
+		var testId_125 = 'linking two different igScroll to a third one by different orientation scrolls the proper one accordingly on mobile.';
 		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -3395,6 +3397,83 @@
 			equal($("#elemVH_vBar", "#vBarParent").length, 1, "igScroll rendered vertical scrollbar as a child of the proper parent");
 			equal($("#elemVH_hBar", "#hBarParent").length, 1, "igScroll rendered horizontal scrollbar as a child of the proper parent");
 			$("#elemVH").remove();
+	    });
+		
+		test(testId_124, function () {
+	        $("#testBed").append($('<div id="syncV" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$("#testBed").append($('<div id="syncH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+
+			$("#syncV").igScroll();
+			$("#syncH").igScroll();
+			$("#elemVH").igScroll({
+				scrollbarType: "native",
+				syncedElemsV: [$("#syncV")],
+				syncedElemsH: [$("#syncH")]
+			});
+
+			var hScrollbar = $("#elemVH_hBar"),
+				vScrollbar = $("#elemVH_vBar");
+				
+			hScrollbar.scrollLeft(100);
+			vScrollbar.scrollTop(300);
+			
+			stop();
+			setTimeout(function () {
+				equal($("#elemVH_container").scrollTop(), 300, "The main contianer scrolled vertically");
+				equal($("#elemVH_container").scrollLeft(), 100, "The main contianer scrolled horizontally");
+				equal($("#syncV_container").scrollTop(), 300, "The synced vertically container scrolled vertically ");
+				equal($("#syncV_container").scrollLeft(), 0, "The synced vertically container did not scroll horizontally");
+				equal($("#syncH_container").scrollTop(), 0, "The synced vertically container did not scroll vertically");
+				equal($("#syncH_container").scrollLeft(), 100, "");
+				
+				$("#elemVH").remove();
+				$("#syncV").remove();
+				$("#syncH").remove();
+				start();
+			}, 100);
+
+	    });
+		
+		test(testId_125, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="syncV" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			$("#testBed").append($('<div id="syncH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+			
+			$("#syncV").igScroll();
+			$("#syncH").igScroll();
+			$("#elemVH").igScroll({
+				syncedElemsV: [$("#syncV")],
+				syncedElemsH: [$("#syncH")]
+			});
+			
+			//Simulate touch only environment
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			$('#syncV').data('igScroll')._bMixedEnvironment = false;
+			$('#syncH').data('igScroll')._bMixedEnvironment = false;
+
+			var elemContainer = $("#elemVH_container"),
+				elemContent = $("#elemVH_content");
+
+			stop();
+			var touchSteps = [{x: 20, y: 3}, {x: 17, y: 7}, {x: 17 , y: 15}, {x: 17, y: 15}, {x: 7, y: 6}, {x: 6, y: 5}, {x: 1, y: 1}];
+			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
+			setTimeout(function () {
+				//The scroll ammount on X axis is 55 because there is swipe tollerance of 30px
+				equal($("#elemVH").data("igScroll")._getContentPositionX(), 55, "igScroll scrolled horizontally by the swipe");
+				equal($("#elemVH").data("igScroll")._getContentPositionY(), 52, "igScroll scrolled vertically by the swipe");
+				equal($("#syncV").data("igScroll")._getContentPositionX(), 0, "Synced vertically element scrolled horizontally");
+				equal($("#syncV").data("igScroll")._getContentPositionY(), 52, "Synced vertically element did not scroll vertically");
+				equal($("#syncH").data("igScroll")._getContentPositionX(), 55, "Synced horizontally element scrolled horizontally");
+				equal($("#syncH").data("igScroll")._getContentPositionY(), 0, "Synced horizontally element did not scroll vertically");
+				
+				$("#elemVH").remove();
+				$("#syncV").remove();
+				$("#syncH").remove();
+				$.ig.util.isTouch = false;
+				start();
+			}, 2500);
 	    });
 	</script>
 	<script type="text/javascript" src="../testswarm/inject.js"></script>
