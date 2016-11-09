@@ -331,12 +331,17 @@
 					maxValue:-2
 				})
 
-				$("#privateFuncEditor2").igNumericEditor({
-					allowNullValue: false,
+				$("#listEditor2").igNumericEditor({
+					buttonType: "dropdown,spin,clear,nonvalid",
+					width: 200,
+					listWidth: 200,
+					height: 20,
+					listItems: [1, 2, 3, 4, 5],
+					dropDownAnimationDuration: 1,
 					revertIfNotValid: false,
-					minValue: -5,
-					maxValue: -2
-				})
+					isLimitedToListValues: true,
+					spinDelta: 1 
+				});
 			});
 		}
 		initialized = false;
@@ -839,7 +844,7 @@
 					ok(closed, "dropDownListClosed event not fired");
 					editorInput.trigger("focus");
 					$.ig.TestUtil.paste(editorInput[0], "1");
-					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");				
+					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");
 				}, 100);
 			}, 100);
 
@@ -1169,6 +1174,28 @@
 			$('#privateFuncEditor1').data("igNumericEditor")._processInternalValueChanging("InvalidValue");
 			ok($('#privateFuncEditor1').igNumericEditor("value") === 0, 'not set to 0');
 		});
+
+		testId = 'selectListIndexDown/Up';
+		test(testId, 4, function () {
+			var container = $('#listEditor2'), list = $('#listEditor2').igNumericEditor("dropDownContainer"),
+			ddButton = container.igNumericEditor("dropDownButton");
+			editorInput = $('#listEditor2 input');
+			ddButton.click();
+
+			item1 = list.children(".ui-igedit-listitem")[0];
+			//Check the classes
+			$(item1).click();
+			equal(container.outerWidth(), 200, "The width of the container is not set to 200px");
+			equal(container.outerHeight(), 20, "The heigth of the container is not set to 20px");
+			$("#listEditor2").igNumericEditor("selectListIndexUp");
+			editorInput.trigger("blur");
+			equal($('#listEditor2 input')[1].value, "2", "Expected index not 2");//editorInput[1].value;
+			
+			$("#listEditor2").igNumericEditor("selectListIndexDown");
+			editorInput.trigger("blur");
+			equal($('#listEditor2 input')[1].value, "1", "Expected index not 1");
+		});
+
 	});
 
 	function testSelection(input, start, end) {
@@ -1363,6 +1390,8 @@
 		<br />
 		<div id="listEditor"></div>
 		<div id="listEditor1"></div>
+		<br />
+		<div id="listEditor2"></div>
 		<div id="pasteEditor"></div>
 		<br />
 		<input id="disabledEditor" type="text" name="disabledEditor" tabindex="1" disabled=disabled readonly=readonly value="disabled" /></input>
