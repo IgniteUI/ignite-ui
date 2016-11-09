@@ -743,7 +743,7 @@
 		});
 		
 		testId = "Lists testing";
-		test(testId, 22, function () {
+		test(testId, 24, function () {
 			var container = $('#listEditor'), list = $('#listEditor').igNumericEditor("dropDownContainer"), opening = false, opened = false, closing = false, closed = false,
 				itemselecting = false, itemselected = false, valueChanging = false, valueChanged = false, textChanged = false,
 				ddButton = container.igNumericEditor("dropDownButton"), item1, editorInput = $('#listEditor input');
@@ -842,7 +842,10 @@
 					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");				
 				}, 100);
 			}, 100);
-		});		
+
+			ok($("#listEditor").igNumericEditor("findListItemIndex"), -1, "Must be -1 if no search param is passed");
+			ok($("#listEditor").igNumericEditor("findListItemIndex", 2), 1, "Expected item index is 1");
+		});
 		
 		
 		testId = "SetOption";
