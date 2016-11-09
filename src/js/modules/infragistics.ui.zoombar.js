@@ -1055,9 +1055,9 @@
 		/* private functions */
 		_zoom: function (nLeft, nWidth, isInternal, refresh, animate) {
 			var a, noCancel;
-			// issue #454 - don't proceed if the new zoom params are the same
-			// as igDataChart doesn't accept same zoom params but processing its
-			// events will still be blocked for the next change
+			/* issue #454 - don't proceed if the new zoom params are the same
+			as igDataChart doesn't accept same zoom params but processing its
+			events will still be blocked for the next change */
 			if (nLeft === this._cw.left && nWidth === this._cw.width) {
 				return;
 			}
