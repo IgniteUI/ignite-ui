@@ -757,11 +757,12 @@
 					strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
 					strictEqual(zoom.outerWidth(), 600, "zoombar assings proper width assert");
 					strictEqual(zoom.outerHeight(), 300, "zoombar assings proper height assert");
+					zoom.igZoombar("destroy");
 				}, 500);
 			});
 			// test for issue #454
 			test(bugTest_1, 1, function () {
-				var cloneOpts;
+				var cloneOpts, zi;
 				genericOpts.series[0].type = "line";
 				chart.igDataChart(genericOpts);
 				zoom.igZoombar({
@@ -773,10 +774,11 @@
 				stop();
 				setTimeout(function () {
 					start();
+					zi = zoom.data("igZoombar");
 					// first should be processed
-					zoom.data("igZoombar")._zoom(0.6, 0.2, true, true);
+					zi._zoom(0.6, 0.2, true, true);
 					// second shouldn't - only one event handling should be detected
-					zoom.data("igZoombar")._zoom(0.6, 0.2, true, true);
+					zi._zoom(zi._cw.left, zi._cw.width, true, true);
 					chart.igDataChart("destroy");
 					zoom.igZoombar("destroy");
 				}, 500);
