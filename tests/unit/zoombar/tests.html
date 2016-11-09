@@ -207,9 +207,12 @@
 			var testId_115 = "igZoombar test 1.15: init/destroy tests for bubble chart";
 			var testId_116 = "igZoombar test 1.16: init/destroy tests for financial ohlc chart";
 			var testId_117 = "igZoombar test 1.17: init tests for financial candlestick chart";
+			// API tests
 			var testId_21 = "igZoombar test 2.1: properties tests";
 			var testId_22 = "igZoombar test 2.2: public api tests";
 			var testId_23 = "igZoombar test 2.3: custom provider tests";
+			// Bug automation
+			var bugTest_1 = "igZoombar bug automation test 1: Zoom operation with the same zoom params shouldn't be processed";
 			
 			test(testId_11, 13, function () {
 				var cloneOpts;
@@ -752,6 +755,30 @@
 					strictEqual(typeof zoom.data("igZoombar")._provider.settings.targetObject, "object", "zoombar should still create a provider assert");
 					strictEqual(zoom.outerWidth(), 600, "zoombar assings proper width assert");
 					strictEqual(zoom.outerHeight(), 300, "zoombar assings proper height assert");
+					zoom.igZoombar("destroy");
+				}, 500);
+			});
+			// test for issue #454
+			test(bugTest_1, 1, function () {
+				var cloneOpts, zi;
+				genericOpts.series[0].type = "line";
+				chart.igDataChart(genericOpts);
+				zoom.igZoombar({
+					target: chart,
+					zoomChanging: function () {
+						ok(true, "zoomChanging fires due to a change in zoom")
+					}
+				});
+				stop();
+				setTimeout(function () {
+					start();
+					zi = zoom.data("igZoombar");
+					// first should be processed
+					zi._zoom(0.6, 0.2, true, true);
+					// second shouldn't - only one event handling should be detected
+					zi._zoom(zi._cw.left, zi._cw.width, true, true);
+					chart.igDataChart("destroy");
+					zoom.igZoombar("destroy");
 				}, 500);
 			});
 		});
