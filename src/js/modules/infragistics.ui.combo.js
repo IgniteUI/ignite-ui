@@ -11,6 +11,7 @@
 * jquery.ui.widget.js
 * infragistics.templating.js
 * infragistics.util.js
+* infragistics.util.jquery.js
 * infragistics.dataSource.js
 *
 * Example to use:
@@ -30,6 +31,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.templating",
 			"./infragistics.datasource",
 			"./infragistics.scroll",

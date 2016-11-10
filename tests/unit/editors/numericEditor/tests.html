@@ -16,6 +16,8 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                      
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
@@ -270,7 +272,9 @@
 					maxlength: 5,
 					value: -10
 				});
-
+				$("#clearButton_439").igNumericEditor({
+					buttonType: "clear"
+				});
 				$("#spinScientific").igNumericEditor({
 					scientificFormat: "E",
 					buttonType: "spin"
@@ -314,7 +318,8 @@
 					spinDelta: 1,
 					value: 1,
 					minValue: 1
-				})
+				});
+				
 			});
 		}
 		initialized = false;
@@ -1055,6 +1060,21 @@
 				ok(!(btnSpinDown.hasClass("ui-state-disabled")), "The spinDown button is disabled.");
 		});
 
+		testing = "Clear button dynamic show/hide";
+		test(testing, 5, function() {
+				var field = $("#clearButton_439").igNumericEditor("field"),
+				clearButton = $("#clearButton_439").igNumericEditor("clearButton");
+				ok(!clearButton.is(":visible"), "The clear button should not be visible initilly");
+				field.focus();
+				ok(!clearButton.is(":visible"), "The clear button should not be visible on focus");
+				field.val("10");
+				
+				$("#clearButton_439").data("igNumericEditor")._processTextChanged();
+				ok(clearButton.is(":visible"), "The clear button should be visible");
+				field.blur();
+				equal(field.val(), "10", "The value should be SomeVal");
+				ok(clearButton.is(":visible"), "The clear button should be visible on blur");
+			});
 		testId = 'Paste and insert';
 		test(testId, 8, function () {
 			var $editor = $("#pasteEditor"),
@@ -1341,6 +1361,7 @@
 		<div id="numericEditor420minValue"></div>
 		<br />
 		<div id="numericEditor420maxValue"></div>
+		<input id="clearButton_439"/>
 		<br />
 		<div id="issue226939"></div>
 	</div>

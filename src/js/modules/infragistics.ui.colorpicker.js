@@ -10,7 +10,8 @@
  *   jquery-1.9.1.js
  *   jquery.ui.core.js
  *   jquery.ui.widget.js
- *   infragistics.util.js
+ *	 infragistics.util.js
+ *   infragistics.util.jquery.js
  *   infragistics.ui.shared.js
  */
 
@@ -22,6 +23,7 @@
 			"jquery",
             "jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.ui.shared"
 		], factory );
 	} else {
@@ -36,7 +38,21 @@
 	*/
     $.widget("ui.igColorPicker", {
         options: {
-            /* type="array" Default colors. */
+            /* type="string" Gets/Sets the default colors. Default colors are the ones displayed in the upper table of the color picker.
+            The array should contain arrays that contain the color values for every next row.
+            ```
+                // Initialize
+                // Every array with color strings will be rendered on a new row.
+                $(".selector").igColorPicker({
+                    colors: [["#ffffff", "#000000", "#EEECE1", "#1F497D"], ["#92D050", "#00B050", "#00B0F0", "#0070C0"]]
+                })
+                // Get
+                var colors = $(".selector").igColorPicker("option", "colors")
+                // Set
+                var colors = [["#ffffff", "#000000", "#EEECE1", "#1F497D"], ["#92D050", "#00B050", "#00B0F0", "#0070C0"]]
+                $(".selector").igColorPicker("option", "colors", colors);
+            ```
+            */
             colors: [
 				[ "#ffffff", "#000000", "#EEECE1", "#1F497D", "#4F81BD", "#C0504D",
                     "#9BBB59", "#8064A2", "#4BACC6", "#F79646" ],
@@ -51,12 +67,41 @@
 				[ "#7F7F7F", "#0C0C0C", "#1D1B10", "#0F243E", "#244061", "#632423",
                     "#4F6128", "#3F3151", "#205867", "#974806" ]
             ],
-            /* type="array" Standard colors. */
+            /* type="array" Gets/Sets the standard colors. Standard colors are the ones displayed in the color picker bottom,
+            visually separated from the default colors. The array should contain the color values.
+            ```
+                // Initialize
+                // Every array with color strings will be rendered on a new row.
+                $(".selector").igColorPicker({
+                    standardColors: ["red", "blue"]
+                })
+                // Get
+                var standardColors = $(".selector").igColorPicker("option", "standardColors")
+                // Set
+                var standardColors = ["rgb(238,130,238)", "rgb(240,255,255)", "rgb(152,251,152)"]
+                $(".selector").igColorPicker("option", "standardColors", standardColors);
+            ```
+            */
             standardColors: [ "#C00000", "#FF0000", "#FFC000", "#FFFF00", "#92D050",
                 "#00B050", "#00B0F0", "#0070C0", "#002060", "#7030A0" ]
         },
         events: {
-            /* cancel="false" Event fired after the color is selected. */
+            /* cancel="false" The event is fired when a color is selected.
+            ```
+                // Initialize
+                $(".selector").igCombo({
+                    colorSelected: function(evt, ui) {...}
+                });
+
+                // Delegate
+                $(document).delegate(".selector", "igcolorpickercolorselected", function (evt, ui) {
+                    // use to get a reference to the color object.
+                    ui.color;
+                });
+            ```
+				Function takes arguments evt and ui.
+				Use ui.color to get a reference to the color object.
+			*/
             colorSelected: "colorSelected"
         },
         css: {
@@ -72,8 +117,6 @@
             defaultColors: "ui-colorpicker-standardcolors",
             /* The widget colors row class css. */
             colorsRow: "igColorPicker-row",
-            /* The widget colors col class css. */
-            colorsCol: "igColorPicker-col",
             /* The widget color picker class css. */
             colorpickerColor: "igColorPicker-color"
         },
@@ -167,19 +210,28 @@
             }
         },
 		colorTable: function () {
-			/* Gets the div element with the color table.
-				returnType="object" Returns the div element with the colors.
+			/* Gets a reference to the div element of the color table
+            ```
+                var colorTable = $(".selector").igColoricker("colorTable");
+            ```
+				returnType="object" Returns the div element with the colors table.
 			*/
 			return this._colorTable;
 		},
 		customColorTable: function () {
-			/* Gets the div element with the custom color table.
-				returnType="object" Returns the div element with the custom colors.
+			/* Gets a reference to the div element with the default or custom colors table.
+            ```
+                var customColorTable = $(".selector").igColoricker("customColorTable");
+            ```
+				returnType="object" Returns the div element with the default or custom colors table.
 			*/
 			return this._customColors;
 		},
         standardColorsTable: function () {
-            /* Gets the div element with the standard color table.
+            /* Returns the div element with the standard color table.
+            ```
+                var standardColorsTable = $(".selector").igColoricker("standardColorsTable");
+            ```
                 returnType="object" Returns the div element with the standard colors.
             */
 
@@ -187,14 +239,19 @@
         },
         colorFromElement: function ($element) {
 			/* Gets the color for an element from the color picker in RGB format.
-				paramType="object" optional="false" The element in the color picker from which the color will be retrieved.
+            ```
+            var elementColor = $(".selector").igColoricker("colorFromElement", $element);
+            ```
+				paramType="object" optional="false" A jQuery element in the color picker from which the color will be retrieved.
 				returnType="string" Returns the color for the provided color element in RGB format.
 			*/
             return $element.css("background-color");
         },
         selectedColor: function () {
-            /* Returns the currently selected color in the color picker. Returns null if no color is selected.
-                paramType="string" optional="false" The #RGB value of the color to be selected.
+            /* Returns the hexademical string of the currently selected color in the color picker. Returns null if no color is selected.
+            ```
+            var selectedColor = $(".selector").igColoricker("selectedColor");
+            ```
                 returnType="string|null" Returns the selected color if available. Null if no color is selected.
             */
             var selected = this._colorTable.find("div.selected-color");
@@ -204,8 +261,12 @@
             return null;
         },
         selectColor: function (color) {
-            /* Select a given color to the widget.
+            /* Select a color.
+            ```
+            $(".selector").igColoricker("selectColor", "#fac08f");
+            ```
 				paramType="string" optional="false" The #RGB value of the color to be selected.
+                returnType="object" Returns reference to the igColorPicker.
 			*/
             var matching = this._colorTable.find("div").filter(function (index, item) {
 					var hexColor = $.ig.util.rgbToHex(item.style.backgroundColor);
