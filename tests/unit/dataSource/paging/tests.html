@@ -267,7 +267,6 @@
 			});
 			
 			test(testId_4, function() {
-				
 				tableDs.pageSize(4);
 				tableDs.nextPage();
 				equal(1, tableDs.pageIndex(), 1);
@@ -278,7 +277,7 @@
 			});
 			// Test bug 228594: After updating a record in the igTreeGrid paging no longer works as expected.
 			test("Test totalRecordsCount in tree hierarchical data source ", function () {
-				ok(treeDs.totalRecordsCount() === 4 && treeDs.totalLocalRecordsCount() === 4, "Test totalRecordsCount");
+				ok(treeDs.pageCount() === 2 && treeDs.totalLocalRecordsCount() === 4, "Test totalRecordsCount");
 			});
 		});
 	</script>
