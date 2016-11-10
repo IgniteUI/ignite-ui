@@ -2595,7 +2595,7 @@ body .ui-tooltip {
 .ui-igtooltip-arrow-top,
 .ui-igtooltip-arrow-left,
 .ui-igtooltip-arrow-right {
-  background-image: url(images/igTooltip/igTooltipArrows.png) !important;
+  background-image: url(../../structure/images/igPopover/igPopoverArrows.png) !important;
 }
 .ui-igtooltip .ui-icon.ui-icon-close {
   background-image: url(images/ui-icons_222222_256x240.png) !important;
