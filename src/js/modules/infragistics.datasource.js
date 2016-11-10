@@ -6230,6 +6230,9 @@
 				}
 			} else if (count !== undefined && count !== null) {
 				this._recCount = count;
+			} else {
+				this._recCount = (this.settings.treeDS.paging.mode === "rootLevelOnly") ?
+									this._data.length : this._recCount;
 			}
 			return this._recCount;
 		},
