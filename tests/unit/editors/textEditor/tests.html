@@ -151,10 +151,16 @@
 				});
 				$("#pasteEditor").igTextEditor({
 					value: "ade"
-				});		
+				});
+				$("#clearButton_439").igTextEditor({
+					buttonType: "clear"
+				})				
+						
 				$("#issue447").igTextEditor({
 					buttonType : "clear"
-				});	
+				});				
+				
+				$("#issue481").igTextEditor();
 			});
 		}
 		initialized = false;
@@ -1004,6 +1010,19 @@
 				}, 200);
 			}, 200);
 		});
+		testing = "Clear button dynamic show/hide";
+		test(testing, 4, function() {
+			var field = $("#clearButton_439").igTextEditor("field"),
+			clearButton = $("#clearButton_439").igTextEditor("clearButton");
+			ok(!clearButton.is(":visible"), "The clear button should not be visible initilly");
+			field.focus();
+			ok(!clearButton.is(":visible"), "The clear button should not be visible on focus");
+			field.val("someVal");
+			$("#clearButton_439").data("igTextEditor")._processTextChanged();
+			ok(clearButton.is(":visible"), "The clear button should be visible");
+			field.blur();
+			ok(clearButton.is(":visible"), "The clear button should be visible on blur");
+		});
 		testId = 'Check destroy';
 		asyncTest(testId, 7, function () {
 			var $editor1 = $('#clearEditor'), $editor2 = $("#disabledEditor");
@@ -1038,6 +1057,18 @@
 				start();
 				ok(!valChanged, "valueChanged event is fired when input is empty");
 			}, 500);
+		});
+		
+		testId = "Setting listItems on run time";
+		test(testId, 2, function () {
+			var editor = $('#issue481'), items = ["item 1", "item 2", "item 3"],
+			currentVal = editor.igTextEditor("option", "listItems");
+
+			ok(currentVal === null, "ListItems should not be set on initialization");
+				
+			editor.igTextEditor("option", "listItems", items);
+			equal(editor.igTextEditor("option", "listItems"), items, "ListItems were not set on run time.");
+				
 		});
 		
 	});
@@ -1153,7 +1184,9 @@
 	<input id="toLowerEditor" type="text" />
 	<input id="testEditor" type="text" />
 	<input id="pasteEditor"/>
+	<input id="clearButton_439"/>
 	<input id="issue447"/>
+	<input id="issue481"/>
 </div>
 
 	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>

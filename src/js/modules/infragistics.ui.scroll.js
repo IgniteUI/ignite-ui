@@ -613,6 +613,8 @@
 			nativeHScrollOuter: "igscroll-hnative-outer",
 			/* Classes applied to the inner element of the native horizontal scrollbar */
 			nativeHScrollInner: "igscroll-hnative-inner",
+			/* Classes applied to the fill element that cover the area between the scrollbars */
+			nativeScrollFiller: "igscroll-filler",
 			/* Classes applied to the container of the custom vertical scrollbar */
 			verticalScrollContainer: "igscroll-vcontainer",
 			/* Classes applied to the track of the custom vertical scrollbar */
@@ -646,7 +648,11 @@
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar */
 			horizontalScrollThumbDrag: "igscroll-hdrag",
 			/* Classes applied to an element that prevents selection when dragging */
-			disabledSelection: "igscroll-select-disabled"
+			disabledSelection: "igscroll-select-disabled",
+			/* Classes applied to an element that wraps the content of vertically linked element */
+			syncedElemContentV: "igscroll-vsynced-content",
+			/* Classes applied to an element that wraps the content of horizontally linked element */
+			syncedElemContentH: "igscroll-hsynced-content"
 		},
 
 		refresh: function () {
@@ -1093,6 +1099,7 @@
 		},
 
 		_refreshScrollbarsDrag: function () {
+			var containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
 			this._elemHeight = this.element.height();
 			this._elemWidth = this.element.width();
 
@@ -1105,7 +1112,7 @@
 				this._vBarTrack.css("height",
 									this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
 			} else if (this.options.scrollbarType === "native" && this._vBarContainer && this._vBarDrag) {
-				this._vBarContainer.css("height", (this._elemHeight - this._customBarEmptySpaceSize) + "px");
+				this._vBarContainer.css("height", (this._elemHeight - containerSizeOffset) + "px");
 				this._vDragHeight = this._getContentHeight();
 				this._vBarDrag.css("height", this._vDragHeight + "px");
 			}
@@ -1119,7 +1126,7 @@
 				this._hBarTrack.css("width",
 									this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
 			} else if (this.options.scrollbarType === "native" && this._hBarContainer && this._hBarDrag) {
-				this._hBarContainer.css("width", (this._elemWidth - this._customBarEmptySpaceSize) + "px");
+				this._hBarContainer.css("width", (this._elemWidth - containerSizeOffset) + "px");
 				this._hDragWidth = this._getContentWidth();
 				this._hBarDrag.css("width", this._hDragWidth + "px");
 			}
@@ -1137,6 +1144,7 @@
 					if (elemObject.length) {
 						if (this.options.modifyDOM && elemObject.data("igScroll") === undefined) {
 							$("<div id='" + elemObject.attr("id") + "_content'/>")
+								.addClass(this.css.syncedElemContentH)
 								.appendTo(elemObject)
 								.append(elemObject.contents());
 						}
@@ -1159,6 +1167,7 @@
 					if (elemObject.length) {
 						if (this.options.modifyDOM && elemObject.data("igScroll") === undefined) {
 							$("<div id='" + elemObject.attr("id") + "_content'/>")
+								.addClass(this.css.syncedElemContentV)
 								.appendTo(elemObject)
 								.append(elemObject.contents());
 						}
@@ -1304,7 +1313,7 @@
 		*	If not sure how to use, use the internal _scrollLeft. */
 		_scrollToX: function (destX, triggerEvents) {
 			if (!this._isScrollableH && !this.options.scrollOnlyHBar) {
-				return;
+				return 0;
 			}
 
 			var curPosX;
@@ -1358,7 +1367,7 @@
 		*	If not sure how to use, use the internal _scrollTop. */
 		_scrollToY: function (destY, triggerEvents) {
 			if (!this._isScrollableV && !this.options.scrollOnlyVBar) {
-				return;
+				return 0;
 			}
 
 			var curPosY;
@@ -1735,19 +1744,27 @@
 
 				if (this._linkedHElems.length > 0) {
 					for (index in this._linkedHElems) {
+						//get the current X position
+						var matrixElem = this._linkedHElems[ index ].css("-webkit-transform");
+						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
+						var destY = valuesElem ? Number(valuesElem[ 5 ]) : -this._getContentPositionY();
+
 						if (this._linkedHElems[ index ].data("igScroll")  !== undefined &&
 								this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 							//We do not set igScroll option because there will be infinite recursion of syncing
-							this._linkedHElems[ index ].children().eq(0).children().eq(0).css({
-								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
+							destY = this._getTransform3dValueY(
+								this._linkedHElems[ index ].find(".igscroll-content")
+							);
+							this._linkedHElems[ index ].find(".igscroll-content").css({
+								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
 							});
 						} else if (this.options.modifyDOM) {
-							this._linkedHElems[ index ].children().eq(0).css({
-								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
+							this._linkedHElems[ index ].find(".igscroll-hsynced-content").css({
+								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
 							});
 						} else {
 							this._linkedHElems[ index ].css({
-								"-webkit-transform": "translate3d(" + destX + "px, 0px, 0px)"
+								"-webkit-transform": "translate3d(" + destX + "px, " + destY + "px, 0px)"
 							});
 						}
 					}
@@ -1761,7 +1778,7 @@
 							if (this._linkedHElems[ index ].data("igScroll") !== undefined &&
 									this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
-								this._linkedHElems[ index ].children().eq(0).scrollLeft(destX);
+								this._linkedHElems[ index ].find(".igscroll-container").scrollLeft(destX);
 							} else if (this.options.modifyDOM) {
 								this._linkedHElems[ index ].scrollLeft(destX);
 							} else {
@@ -1803,11 +1820,14 @@
 						if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 								this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
 							//We do not set igScroll option because there will be infinite recursion of syncing
-							this._linkedVElems[ index ].children().eq(0).children().eq(0).css({
+							destX = this._getTransform3dValueX(
+								this._linkedVElems[ index ].find(".igscroll-content")
+							);
+							this._linkedVElems[ index ].find(".igscroll-content").css({
 								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 							});
 						} else if (this.options.modifyDOM) {
-							this._linkedVElems[ index ].children().eq(0).css({
+							this._linkedVElems[ index ].find(".igscroll-vsynced-content").css({
 								"-webkit-transform": "translate3d(" + destX + "px," + destY + "px, 0px)"
 							});
 						} else {
@@ -1826,7 +1846,7 @@
 							if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 									this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
 								//We do not set igScroll option because there will be infinite recursion of syncing
-								this._linkedVElems[ index ].children().eq(0).scrollTop(destY);
+								this._linkedVElems[ index ].find(".igscroll-container").scrollTop(destY);
 							} else if (this.options.modifyDOM) {
 								this._linkedVElems[ index ].scrollTop(destY);
 							} else {
@@ -2249,7 +2269,10 @@
 			    this._igScollTouchPrevented = true;
 			}
 
-			event.preventDefault();
+			//On Safari preventing the touchmove would prevent default page scroll behaviour even if there is the element doesn't have overflow
+			if (!$.ig.util.isSafari || ($.ig.util.isSafari && !this._igScollTouchPrevented)) {
+				event.preventDefault();
+			}
 		},
 
 		_onTouchEndContainer: function (event) {
@@ -2319,12 +2342,12 @@
 			if (this.options.scrollbarType === "native") {
 				if (this._isScrollableV && !this._vBarContainer && this._renderVerticalScrollbar) {
 					this._initNativeScrollBarV();
-				} else if (!this._isScrollableV && this._vBarContainer) {
+				} else if ((!this._isScrollableV || !this._renderVerticalScrollbar) && this._vBarContainer) {
 					this._removeVerticalScrollbar();
 				}
 				if (this._isScrollableH && !this._hBarContainer && this._renderHorizontalScrollbar) {
 					this._initNativeScrollBarH();
-				} else if (!this._isScrollableH && this._hBarContainer) {
+				} else if ((!this._isScrollableH || !this._renderHorizontalScrollbar) && this._hBarContainer) {
 					this._removeHorizontalScrollbar();
 				}
 
@@ -2339,12 +2362,12 @@
 			} else if (this.options.scrollbarType === "custom") {
 				if (this._isScrollableV && !this._vBarContainer && this._renderVerticalScrollbar) {
 					this._initCustomScrollBarV();
-				} else if (!this._isScrollableV && this._vBarContainer) {
+				} else if ((!this._isScrollableV || !this._renderVerticalScrollbar) && this._vBarContainer) {
 					this._removeVerticalScrollbar();
 				}
 				if (this._isScrollableH && !this._hBarContainer && this._renderHorizontalScrollbar) {
 					this._initCustomScrollBarH();
-				} else if (!this._isScrollableH && this._hBarContainer) {
+				} else if ((!this._isScrollableH || !this._renderHorizontalScrollbar) && this._hBarContainer) {
 					this._removeHorizontalScrollbar();
 				}
 
@@ -2356,11 +2379,11 @@
 
 		_initNativeScrollBarV: function () {
 			var css = this.css,
-				bNativeDesktop = false;
+				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
 
 			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
 				.addClass(css.nativeVScrollOuter)
-				.css("height", this._elemHeight - this._customBarEmptySpaceSize + "px");
+				.css("height", this._elemHeight - containerSizeOffset + "px");
 
 			this._vDragHeight = this._getContentHeight();
 			this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
@@ -2373,51 +2396,49 @@
 				this._vBarContainer.append(this._vBarDrag).appendTo(this._container[ 0 ].parentElement);
 			}
 
-			if ($.ig.util.getScrollHeight() > 0) {
-				this._content
-					.css("padding-bottom", $.ig.util.getScrollHeight() + "px");
-				bNativeDesktop = true;
+			if ($.ig.util.getScrollHeight() > 0 && this.options.modifyDOM) {
+				this._content.css("padding-right", $.ig.util.getScrollHeight() + "px");
 			}
 			this._setOption("scrollbarV", this._vBarContainer);
 
 			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
-			if (bNativeDesktop && !this._desktopFiller) {
+			if (this._bMixedEnvironment && !this._desktopFiller) {
 				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
-					.addClass("igscroll-filler");
+					.addClass(css.nativeScrollFiller);
 				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
 			}
 		},
 
 		_initNativeScrollBarH: function () {
 			var css = this.css,
-				bNativeDesktop = false;
+				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize  : 0;
 
 			this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
 				.addClass(css.nativeHScrollOuter)
-				.css("width", this._elemWidth - this._customBarEmptySpaceSize + "px");
+				.css("width", this._elemWidth - containerSizeOffset + "px");
 
 			this._hDragWidth = this._getContentWidth();
 			this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
 				.addClass(css.nativeHScrollInner)
 				.css("width", this._hDragWidth + "px");
 
-			if (this.options.scrollbarVParent) {
-				this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarVParent);
+			if (this.options.scrollbarHParent) {
+				this._hBarContainer.append(this._hBarDrag).appendTo(this.options.scrollbarHParent);
 			} else {
 				this._hBarContainer.append(this._hBarDrag).appendTo(this._container[ 0 ].parentElement);
 			}
 
-			if ($.ig.util.getScrollWidth() > 0) {
-				bNativeDesktop = true;
-				this._content
-					.css("padding-right", $.ig.util.getScrollWidth() + "px");
+			if ($.ig.util.getScrollWidth() > 0 && this.options.modifyDOM) {
+				this._content.css("padding-bottom", $.ig.util.getScrollWidth() + "px");
+			} else {
+				this._hBarContainer.css("bottom", "18px");
 			}
 			this._setOption("scrollbarH", this._hBarContainer);
 
 			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
-			if (bNativeDesktop && !this._desktopFiller) {
+			if (this._bMixedEnvironment && !this._desktopFiller) {
 				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
-					.addClass("igscroll-filler");
+					.addClass(css.nativeScrollFiller);
 				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
 			}
 		},
@@ -2443,6 +2464,10 @@
 				this._vDragHeight = null;
 				this._vBarDrag = null;
 				this._vBarTrack = null;
+
+				if (this.options.modifyDOM && this.options.scrollbarType === "native") {
+					this._content.css("padding-right", "");
+				}
 			}
 			if (this._onMouseMoveVDragHandler) {
 				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveVDragHandler);
@@ -2459,6 +2484,10 @@
 				this._hDragHeight = null;
 				this._hBarDrag = null;
 				this._hBarTrack = null;
+
+				if (this.options.modifyDOM && this.options.scrollbarType === "native") {
+					this._content.css("padding-bottom", "");
+				}
 			}
 			if (this._onMouseMoveHDragHandler) {
 				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id, this._onMouseMoveHDragHandler);

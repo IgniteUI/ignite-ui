@@ -300,6 +300,10 @@
 					$("#maskEditorRuntime").igMaskEditor({
 						inputMask: "CCC"
 					});
+					$("#clearButton_439").igMaskEditor({
+						inputMask: "CCCCCCC",
+						buttonType: "clear"
+					})
 
 				});
 			}
@@ -947,6 +951,22 @@
 				}, 200);
 			});
 
+
+			testing = "Clear button dynamic show/hide";
+			test(testing, 5, function() {
+				var field = $("#clearButton_439").igMaskEditor("field"),
+				clearButton = $("#clearButton_439").igMaskEditor("clearButton");
+				ok(!clearButton.is(":visible"), "The clear button should not be visible initilly");
+				field.focus();
+				ok(!clearButton.is(":visible"), "The clear button should not be visible on focus");
+				field.val("someVal");
+				
+				$("#clearButton_439").data("igMaskEditor")._processTextChanged();
+				ok(clearButton.is(":visible"), "The clear button should be visible");
+				field.blur();
+				equal(field.val(), "someVal", "The value should be SomeVal");
+				ok(clearButton.is(":visible"), "The clear button should be visible on blur");
+			});
 			testId = 'Drag and drop';
 			test(testId, 13, function () {
 				var $editor = $("#pasteEditor"),
@@ -1198,8 +1218,10 @@
 			<input type="text" id="editor364_3" />
 			<input type="text" id="editor364_4" />
 			<input type="text" id="maskEditorRequired" />
-			<div id="test"></div>			
+			<div id="test"></div>
+				<input id="clearButton_439"/>			
 		<input type='submit' value="Submit" />
+
 		</form>
 	</div>
 </body>
