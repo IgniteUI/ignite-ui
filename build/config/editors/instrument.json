@@ -7,6 +7,8 @@
 		"<%= config.modulesDir%>/infragistics.util.js",
 		"<%= config.modulesDir%>/infragistics.ui.shared.js",
 		"<%= config.modulesDir%>/infragistics.util.js",
+		"<%= config.modulesDir%>/infragistics.util.jquery.js",
+		"<%= config.modulesDir%>/infragistics.util.jquerydeferred.js",
 		"<%= config.extensionsDir%>/infragistics.ui.editors.knockout-extensions.js"
 	]
 }

@@ -10,6 +10,7 @@
  * jquery.ui.core.js
  * jquery.ui.widget.js
  * infragistics.util.js
+ * infragistics.util.jquery.js
  * infragistics.ui.shared.js
 */
 
@@ -22,6 +23,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.ui.shared",
 			"./infragistics.ui.zoombar-en"
 		], factory );

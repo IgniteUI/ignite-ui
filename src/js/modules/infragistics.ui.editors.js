@@ -9,6 +9,7 @@
  * jquery-1.9.1.js
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
+ *  infragistics.util.jquery.js
  *	infragistics.ui.scroll.js
  *	infragistics.ui.validator.js
  */
@@ -21,6 +22,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.scroll",
 			"./infragistics.validator"
 		], factory );
@@ -881,11 +883,18 @@
 						this.element.attr(this._initialAttributes[ i ].name,
 							this._initialAttributes[ i ].attrValue);
 
+						// I.G. 11/4/2016 Fix for #487 [igBaseEditor] input value property is not restored when destroy method is called
+						// Restore the initial value property as it was before the widget initialization, so it is aggain displayed in the input
+						if (this._initialAttributes[ i ].name === "value" &&
+							(this.element.is("input"))) {
+							$(this.element).val(this._initialAttributes[ i ].attrValue);
+						}
+
 						// 3/2/2016 Bug #213138: Don't need to recover DOM information, only attributes.
-						/* if (this._initialAttributes[ i ].propValue !== undefined) {
-							this.element.prop(this._initialAttributes[ i ].name,
-								this._initialAttributes[ i ].propValue);
-						}*/
+						// if (this._initialAttributes[ i ].propValue !== undefined) {
+						//	this.element.prop(this._initialAttributes[ i ].name,
+						//		this._initialAttributes[ i ].propValue);
+						//}
 					}
 				}
 				delete this._initialAttributes;
@@ -1421,14 +1430,14 @@
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
-					preventSubmitOnEnter : false
+					revertIfNotValid : false
 				});
 
 				//Get
-				var preventSubmitOnEnter = $(".selector").%%WidgetName%%("option", "preventSubmitOnEnter");
+				var revertIfNotValid = $(".selector").%%WidgetName%%("option", "revertIfNotValid");
 
 				//Set
-				$(".selector").%%WidgetName%%("option", "preventSubmitOnEnter", false);
+				$(".selector").%%WidgetName%%("option", "revertIfNotValid", false);
 			```
 			*/
 			revertIfNotValid: true,
@@ -1975,6 +1984,7 @@
 			this._attachEvents();
 			this._applyOptions();
 			this._applyAria();
+			this._checkClearButtonState();
 
 			this._triggerRendered();
 		},
@@ -2940,6 +2950,15 @@
 						break;
 					case "clear": {
 						this._currentInputTextValue = this._editorInput.val();
+
+						//A.M. 3 November 2016 #447 "valueChanged event fired when pressing the close button even if the editor is empty"
+						if (this._currentInputTextValue === "")
+						{
+							if (!this.options.allowNullValue) {
+								this._clearValue();
+							}
+							return;
+						}
 						this._clearValue();
 						this._processTextChanged();
 						if (!this._editMode) {
@@ -3019,6 +3038,7 @@
 				}
 				this._currentInputTextValue = currentVal;
 			}
+			this._checkClearButtonState();
 		},
 		_triggerTextChanged: function (oldValue, newValue) {
 			var args = {
@@ -3027,6 +3047,22 @@
 				oldText: oldValue ? oldValue : ""
 			};
 			this._trigger(this.events.textChanged, null, args);
+		},
+		_checkClearButtonState: function () {
+			if (this._clearButton) {
+				if (this._editorIsCleared()) {
+					this._clearButton.hide();
+				} else {
+					this._clearButton.show();
+				}
+			}
+		},
+		_editorIsCleared: function () { //TextEditor
+			var result = false, currentVal = this._editorInput.val();
+			if (currentVal === "") {
+				result = true;
+			}
+			return result;
 		},
 		_elementPositionInViewport: function (el) {
 				var areaTop = Math.ceil(el.parent().offset().top),
@@ -5323,6 +5359,13 @@
 			}
 			this._setSpinButtonsState(currVal);
 		},
+		_editorIsCleared: function () { //NumericEditor
+			var result = false, currentVal = this._editorInput.val();
+			if (currentVal === "" || currentVal === "0") {
+				result = true;
+			}
+			return result;
+		},
 		_spinDown: function (delta) { //NumericEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
@@ -6809,6 +6852,13 @@
 		_valueFromText: function (text) { //igMaskEditor
 			return this._getValueByDataMode(text);
 		},
+		_editorIsCleared: function () { //igMaskEditor
+			var result = false, currentVal = this._editorInput.val();
+			if (currentVal === "" || currentVal === this._maskWithPrompts) {
+				result = true;
+			}
+			return result;
+		},
 		_validateValueAgainstMask: function (value) {
 			var i, j, length = value.length, result = true, ch, mask = this._unescapedMask;
 			if (length && length > 0) {
@@ -6844,6 +6894,7 @@
 				this._maskedValue = this._parseValueByMask(value);
 				this._updateValue(this._maskedValue);
 			}
+			this._checkClearButtonState();
 		},
 		_triggerInternalValueChange: function (value) { //MaskEditor
 			var oldValue = this.options.value, message;
@@ -7730,6 +7781,7 @@
 				}
 				this._editorInput.val(this._getDisplayValue());
 			}
+			this._checkClearButtonState();
 		},
 		_applyOptions: function () { // DateEditor
 			this._super();
