@@ -342,6 +342,46 @@
 					isLimitedToListValues: true,
 					spinDelta: 1 
 				});
+
+				$("#inputEditor2").igNumericEditor({
+					value: 10,
+					numericMaxDecimals: 4,
+					numericMinDecimals: 2,
+					selectionOnFocus: 0,
+					decimalSeparator: ",",
+					spinDelta: 1
+				});
+
+				$("#inputEditor3").igNumericEditor({
+					value: .1,
+					numericMaxDecimals: 8,
+					numericMinDecimals: 8,
+					selectionOnFocus: "atStart",
+					decimalSeparator: ".",
+					spinDelta: 0.1,
+					dataMode: "double",
+					buttonType: "spin"
+				});
+
+				$("#inputEditor4").igNumericEditor({
+					value: 10,
+					numericMaxDecimals: 4,
+					numericMinDecimals: 2,
+					selectionOnFocus: 0,
+					decimalSeparator: ",",
+					spinDelta: 1
+				});
+
+				$("#inputEditor5").igNumericEditor({
+					value: .1,
+					numericMaxDecimals: 8,
+					numericMinDecimals: 8,
+					selectionOnFocus: "atStart",
+					decimalSeparator: ".",
+					spinDelta: 0.1,
+					dataMode: "double",
+					buttonType: "spin"
+				});
 			});
 		}
 		initialized = false;
@@ -1183,19 +1223,90 @@
 			ddButton.click();
 
 			item1 = list.children(".ui-igedit-listitem")[0];
-			//Check the classes
 			$(item1).click();
 			equal(container.outerWidth(), 200, "The width of the container is not set to 200px");
 			equal(container.outerHeight(), 20, "The heigth of the container is not set to 20px");
 			$("#listEditor2").igNumericEditor("selectListIndexUp");
 			editorInput.trigger("blur");
-			equal($('#listEditor2 input')[1].value, "2", "Expected index not 2");//editorInput[1].value;
+			equal($('#listEditor2 input')[1].value, "2", "Expected index not 2");
 			
 			$("#listEditor2").igNumericEditor("selectListIndexDown");
 			editorInput.trigger("blur");
 			equal($('#listEditor2 input')[1].value, "1", "Expected index not 1");
 		});
 
+		testId = "cover _handleSpinUpEvent/_handleSpinDownEvent";
+		test(testId, 11, function () {
+			var containerInput = $('#inputEditor2').igNumericEditor("field"),
+				val = $("#inputEditor2").igNumericEditor("value");
+			spinDelta = $("#inputEditor2").igNumericEditor("option", "spinDelta");
+
+			//Cover switch cases for _handleSpinUpEvent/_handleSpinDownEvent 
+			//_handleSpinUpEvent test All case
+			$("#inputEditor2").igNumericEditor("option", "selectionOnFocus", 0);
+			containerInput.focus();
+			keyInteraction(38, containerInput); //arrow up
+			containerInput.blur();
+			equal($("#inputEditor2").igNumericEditor("value"), val + spinDelta, "value is not correct after spin");
+			equal($("#inputEditor2").igNumericEditor("displayValue"), "11,00", "displayValue is not correct after spin");
+
+			$("#inputEditor2").igNumericEditor("option", "dataMode", "int");
+			$("#inputEditor2").igNumericEditor("option", "value", 10);
+			containerInput.focus();
+			keyInteraction(38, containerInput); //arrow up
+			containerInput.blur();
+			equal($("#inputEditor2").igNumericEditor("value"), val + spinDelta, "value is not correct after spin");
+			equal($("#inputEditor2").igNumericEditor("displayValue"), "11", "displayValue is not correct after spin");
+			
+			//test integer case
+			var containerInput = $('#inputEditor3').igNumericEditor("field"),
+				decimalSeparator = $("#inputEditor3").igNumericEditor("option", "decimalSeparator"),
+				value = containerInput.val(),
+				val = $("#inputEditor3").igNumericEditor("value");
+
+			containerInput.focus();
+			$("#inputEditor3").igNumericEditor("select", 1, 2);
+			keyInteraction(38, containerInput); //arrow up
+			ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");
+
+			//_handleSpinDownEvent ---------------------------------------------------------------------------->>
+			var containerInput = $('#inputEditor4').igNumericEditor("field"),
+				val = $("#inputEditor4").igNumericEditor("value");
+				spinDelta = $("#inputEditor4").igNumericEditor("option", "spinDelta");
+
+			$("#inputEditor4").igNumericEditor("option", "selectionOnFocus", 0);
+			containerInput.focus();
+			keyInteraction(40, containerInput); //arrow down
+			containerInput.blur();
+			equal($("#inputEditor4").igNumericEditor("value"), val - spinDelta, "value is not correct after spin");
+			equal($("#inputEditor4").igNumericEditor("displayValue"), "9,00", "displayValue is not correct after spin");
+
+			$("#inputEditor4").igNumericEditor("option", "dataMode", "int");
+			$("#inputEditor4").igNumericEditor("option", "value", 10);
+			containerInput.focus();
+			keyInteraction(40, containerInput); //arrow down
+			containerInput.blur();
+			equal($("#inputEditor4").igNumericEditor("value"), val - spinDelta, "value is not correct after spin");
+			equal($("#inputEditor4").igNumericEditor("displayValue"), "9", "displayValue is not correct after spin");
+
+			//test integer case
+			var containerInput = $('#inputEditor5').igNumericEditor("field"),
+				decimalSeparator = $("#inputEditor5").igNumericEditor("option", "decimalSeparator"),
+				value = containerInput.val(),
+				val = $("#inputEditor5").igNumericEditor("value");
+
+			containerInput.focus();
+			$("#inputEditor5").igNumericEditor("select", 1, 2);
+			keyInteraction(40, containerInput); //arrow down
+			ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");
+
+			//test fractional case
+			$("#inputEditor5").igNumericEditor("option", "value", 0.123);
+			containerInput.focus();
+			$("#inputEditor5").igNumericEditor("select", 3, 4);
+			keyInteraction(40, containerInput); //arrow down
+			ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");
+		});
 	});
 
 	function testSelection(input, start, end) {
@@ -1447,9 +1558,13 @@
 		<br />
 		<input id="privateFuncEditor" />
 		<br />
-		<input id="privateFuncEditor1"> 
-		
-
+		<input id="privateFuncEditor1" />
+		<br />
+		<input id="inputEditor2">
+		<input id="inputEditor3" />
+		<br />
+		<input id="inputEditor4" />
+		<input id="inputEditor5" />
 	</div>
 </body>
 </html>
