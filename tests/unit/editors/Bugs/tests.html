@@ -18,6 +18,8 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
@@ -423,6 +425,13 @@
 
 				window.Bug226Testbed = function () {
 					$("#226Editor").igTextEditor();
+				}
+
+
+				window.Bug487Testbed = function () {
+					$("#487Editor").igTextEditor({
+						value: "newInputValue"
+					});
 				}
 
 				initialized = false;
@@ -1126,6 +1135,14 @@
 				}, 100);
 			});
 
+			var testId = 'Bug 487.';
+			test(testId, 2, function () {			
+				$("#487Editor").igTextEditor("destroy");
+				//check the value prop and see if it is restored
+				equal(document.getElementById("487Editor").value, "myInputValue", 'Input value is not the same as before Editor init');
+				//check the value attribute and see if it is restored
+				equal(document.getElementById("487Editor").getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1365,6 +1382,8 @@
 		<input id="264Editor1" />
 		<input id="264Editor2" />
 		<input id="226Editor" />
+
+		<input type="text" id="487Editor" value="myInputValue"/>
 
 	</div></body>
 </html>

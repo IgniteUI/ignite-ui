@@ -9,7 +9,8 @@
  *  jquery-1.9.1.js
  *  jquery.ui.core.js
  *  jquery.ui.widget.js
- *  infragistics.util.js
+ *	infragistics.util.js
+ *  infragistics.util.jquery.js
  */
 
 /*global HTMLElement */
@@ -20,7 +21,8 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 
