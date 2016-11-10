@@ -2951,6 +2951,7 @@
 						} else {
 							this._clearValue(true);
 							this._processTextChanged();
+							this._positionCursor();
 						}
 
 					}
@@ -4948,7 +4949,7 @@
 					}
 				}
 			}
-			if (!textOnly) {
+			if (!textOnly && newValue !== undefined) {
 				this._updateValue(newValue);
 			}
 			if (this.dropDownContainer() &&
@@ -6767,6 +6768,21 @@
 				this._valueInput.val(this.options.value);
 			}
 		},
+		_clearValue: function (textOnly) { //igMaskEditor
+			var newValue = "";
+			if (this.options.allowNullValue) {
+				newValue = this.options.nullValue;
+				this._editorInput.val(this._parseValueByMask(newValue));
+			} else {
+				this._editorInput.val(this._maskWithPrompts);
+			}
+			if (!textOnly) {
+				this._updateValue(newValue);
+			}
+			if (this._editMode === false) {
+				this._exitEditMode();
+			}
+		},
 		_getDisplayValue: function () { //igMaskEditor
 			var result, maskedVal = this._maskedValue,
 				i, j, p, maskChar, tempChar, index, regExpr,
@@ -6883,7 +6899,8 @@
 		_validateRequiredPrompts: function (value) {
 			var i;
 			if (value === "") {
-				return false;
+				// D.P. Ignore empty value
+				return true;
 			}
 			for (i = 0; i < this._requiredIndeces.length; i++) {
 				var ch = value.charAt(this._requiredIndeces[ i ]);
@@ -7591,7 +7608,7 @@
 			```
 			*/
 			yearShift: 0,
-			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
+			/* type="string|number|date|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -8819,15 +8836,14 @@
 			}
 		},
 		_clearValue: function (textOnly) { //DateEditor
-			var newValue = "";
+			var newValue = "", maskedValue = this._maskWithPrompts;
 			if (this.options.allowNullValue) {
 				newValue = this.options.nullValue;
-				if (this.options.nullValue === null) {
-					this._editorInput.val(this._maskWithPrompts);
+				if (newValue instanceof Date) {
+					maskedValue = this._updateMaskedValue(this.options.nullValue, true);
 				}
-			} else {
-				this._editorInput.val(this._maskWithPrompts);
 			}
+			this._editorInput.val(maskedValue);
 			if (!textOnly) {
 				this._updateValue(newValue);
 			}

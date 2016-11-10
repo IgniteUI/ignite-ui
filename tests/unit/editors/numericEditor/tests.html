@@ -432,7 +432,7 @@
 		});
 
 		var testId = 'Clear value';
-		test(testId, 6, function () {
+		test(testId, 7, function () {
 			var numericEditor = $('#clearEditor1'),
 				editorInput = $('#clearEditor1').igNumericEditor("field"),
 				clearButton = numericEditor.igNumericEditor("clearButton"),
@@ -444,11 +444,17 @@
 			equal($('#clearEditor1').igNumericEditor("value"), "-214", "New value is not correct");
 			ok($(editorInput).hasClass("ui-igedit-negative"), "The selected item is missing ui-igedit-negative class applied");
 			numericEditor.igNumericEditor("setFocus");
-			ok(!editorInput.hasClass("ui-igedit-negative"), "The selected item has ui-igedit-negative class applied");
-			clearButton.click();
-			equal($('#clearEditor1').igNumericEditor("value"), "7777", "Value after cleaning is not correct");
-			$("#clearEditor1").igNumericEditor("option", "width", 230);
-			equal($('#clearEditor1').igNumericEditor("option", "width"), 230, "Value after cleaning is not correct");
+			stop();
+			setTimeout(function () {
+				start();
+				ok(!editorInput.hasClass("ui-igedit-negative"), "The selected item has ui-igedit-negative class applied");
+				clearButton.click();
+				equal(editorInput.val(), "7777", "Text after cleaning is not correct");
+				editorInput.blur();
+				equal($('#clearEditor1').igNumericEditor("value"), "7777", "Value after cleaning is not correct");
+				$("#clearEditor1").igNumericEditor("option", "width", 230);
+				equal($('#clearEditor1').igNumericEditor("option", "width"), 230, "Value after cleaning is not correct");
+			}, 100);
 		});
 		
 		testId = "Clear Button";

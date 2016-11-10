@@ -684,7 +684,7 @@
 						ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("23Rsd"), "The value 23Rsd is not valid");
 						ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask(""), "The value zz23 is valid");
 						ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("ffR23"), "The value ffdd is valid");
-						ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateRequiredPrompts(""), "The value \"\" is not valid");
+						ok($('#pasteHandlerInput').data("igMaskEditor")._validateRequiredPrompts(""), "The value \"\" is not valid");
 						$("#pasteHandlerInput1").igMaskEditor("field").focus();
 						$("#pasteHandlerInput1").data("igMaskEditor")._setCursorPosition(2);
 						var evt = $.Event("keydown");
