@@ -9625,11 +9625,16 @@
 		generateFlatDataView: function () {
 			/*Generates a flat data view from the current (hierarchical)data
 			*/
+			var data, resObj;
 			if (this.settings.treeDS.initialFlatDataView) {
 				this._flatDataView = this._data;
 				return;
 			}
-			var resObj = this.generateFlatData(this.dataView());
+			data = this.dataView();
+			if (!this.shouldCallGenerateFlatDataView() && !data.length) {
+				data = !this._filter ? this.data() : this._filteredData;
+			}
+			resObj = this.generateFlatData(data);
 			this._flatDataView = resObj.flatVisibleData;
 		},
 		flatDataView: function () {
