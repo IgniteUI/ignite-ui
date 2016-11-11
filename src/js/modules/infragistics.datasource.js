@@ -9642,15 +9642,11 @@
 			return this._flatDataView;
 		},
 		_generateFlatDataAndCountProperties: function () {
-			var resObj;
-			if (!this._filter) {
-				resObj = this.generateFlatData(this.data());
-			} else {
-				resObj = this.generateFlatData(this._filteredData);
-			}
+			var data = !this._filter ? this.data() : this._filteredData,
+				resObj = this.generateFlatData(data);
 			this._flatData = resObj.flatData;
 			this._totalRecordsCount = resObj.recordsCount;
-			this._recCount = resObj.visibleRecordsCount;
+			/*this._recCount = resObj.visibleRecordsCount;*/
 			this._flatVisibleData = resObj.flatVisibleData;
 		},
 		getVisibleFlatData: function () {
@@ -10304,6 +10300,31 @@
 				return fdv.length;
 			}
 			return this._super();
+		},
+		/*override pageCount */
+		pageCount: function () {
+			/* returns the total number of pages
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
+
+				var count = ds.pageCount();
+			```
+			returnType="number" total number fo pages
+			*/
+			var p = this.settings.paging;
+			if (p.enabled && p.type === "local" &&
+				this.settings.treeDS.paging.mode === "allLevels") {
+				return Math.ceil(this.totalLocalRecordsCount() / p.pageSize) || 1;
+			}
+			return this._super.apply(this, arguments);
 		},
 		/* M.H. 19 June 2015 Fix for bug 201486: When remote filtering with
 		DisplayMode=ShowWithAncestorsAndDescendants is used the matching
