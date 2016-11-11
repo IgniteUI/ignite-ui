@@ -243,7 +243,14 @@
 				dsLocalSortingFilteringPaging.dataBind();
 
 			}
-
+			test("Test flatDataView when updating filtered data and paging is enabled with mode allLevels", function () {
+				dsLocalSortingFilteringPaging.settings.paging.enabled = true;
+				dsLocalSortingFilteringPaging.settings.treeDS.paging.mode = "allLevels";
+				dsLocalSortingFilteringPaging.dataBind();
+				dsLocalSortingFilteringPaging.filter([{ fieldName: "firstName", expr: "Janet", cond: "equals" }], "OR", true, "employeeID = 4");
+				dsLocalSortingFilteringPaging.insertRow(3001, { "ID": 1001, "Name": "Bread", "Price": 2.5 }, 2, true, 0);
+				ok(dsLocalSortingFilteringPaging.flatDataView().length === 3);
+			});
 			initialized = false;
 			module("igTreeHierarchicalDataSource API methods", {
 				setup: function () {
