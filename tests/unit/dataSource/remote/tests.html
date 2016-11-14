@@ -396,7 +396,7 @@
 		});
 		
 		test("OData filtering parameters", function() { 
-			var str, currDate, year, month, params, lastMonth, nextMonth;
+			var str, currDate, year, month, params, lastMonth, nextMonth, day, date;
 			ds.settings.localSchemaTransform = true;
 			ds.settings.filtering.exprString = "";
 			ds.settings.filtering.type = "remote";
@@ -423,32 +423,42 @@
 			params = $.param(ds._encodeUrl());
 
 			equal(params, "%24filter=startswith(tolower(ProductID)%2C'a')%20eq%20true%20and%20endswith(tolower(Name)%2C'b')%20eq%20true%20and%20indexof(tolower(Price)%2C'')%20ge%200%20and%20indexof(tolower(ProductID)%2C'c')%20eq%20-1%20and%20tolower(Name)%20eq%20'1'%20and%20Name%20eq%201%20and%20tolower(Name)%20ne%20'abc'%20and%20Name%20gt%205%20and%20Name%20lt%202%20and%20Name%20ge%204%20and%20Name%20le%207", "%24filter=startswith(tolower(ProductID)%2C'a')%20eq%20true%20and%20endswith(tolower(Name)%2C'b')%20eq%20true%20and%20indexof(tolower(Price)%2C'')%20ge%200%20and%20indexof(tolower(ProductID)%2C'c')%20eq%20-1%20and%20tolower(Name)%20eq%20'1'%20and%20Name%20eq%201%20and%20tolower(Name)%20ne%20'abc'%20and%20Name%20gt%205%20and%20Name%20lt%202%20and%20Name%20ge%204%20and%20Name%20le%207");
-			
+			date = new Date(0);
 			ds.settings.filtering.expressions = [
 				{fieldName: "ProductID", cond: "null", logic: "or"}, 
 				{fieldName: "Name", cond: "notNull", logic: "or"},
 				{fieldName: "Price", cond: "empty", logic: "or"}, 
 				{fieldName: "ProductID", cond: "notEmpty", logic: "or"},
-				{fieldName: "ReleaseDate", cond: "on", expr:  new Date(0), logic: "or"},
-				{fieldName: "ReleaseDate", cond: "notOn", expr:  new Date(0), logic: "or"},
-				{fieldName: "ReleaseDate", cond: "after", expr:  new Date(0), logic: "or"},
-				{fieldName: "ReleaseDate", cond: "before", expr:  new Date(0), logic: "or"},
-				{fieldName: "ReleaseDate", cond: "today", expr:  new Date(0), logic: "or"},
-				{fieldName: "ReleaseDate", cond: "yesterday", expr:  new Date(0)}
+				{ fieldName: "ReleaseDate", cond: "on", expr: date, logic: "or" },
+				{ fieldName: "ReleaseDate", cond: "notOn", expr: date, logic: "or" },
+				{ fieldName: "ReleaseDate", cond: "after", expr: date, logic: "or" },
+				{ fieldName: "ReleaseDate", cond: "before", expr: date, logic: "or" },
+				{ fieldName: "ReleaseDate", cond: "today", expr: date, logic: "or" },
+				{ fieldName: "ReleaseDate", cond: "yesterday", expr: date }
 			];
+
+			day = date.getDate();
+			month = date.getMonth() + 1;
+			year =date.getFullYear()
+
 			//ds.settings.filtering.exprString = "";
 			ds.settings.paging.enabled = false;
 			// compare the "params" string with the expected one 
 			params = $.param(ds._encodeUrl());
-			equal(params, "%24filter=ProductID%20eq%20null%20or%20Name%20ne%20null%20or%20length(Price)%20eq%200%20or%20length(ProductID)%20gt%200%20or%20day(ReleaseDate)%20eq%201%20and%20month(ReleaseDate)%20eq%201%20and%20year(ReleaseDate)%20eq%201970%20or%20day(ReleaseDate)%20ne%201%20or%20month(ReleaseDate)%20ne%201%20or%20year(ReleaseDate)%20ne%201970%20or%20ReleaseDate%20gt%20DateTime'1970-01-01T23%3A59%3A59'%20or%20ReleaseDate%20lt%20DateTime'1970-01-01'%20or%20day(ReleaseDate)%20eq%201%20and%20month(ReleaseDate)%20eq%201%20and%20year(ReleaseDate)%20eq%201970%20or%20day(ReleaseDate)%20eq%201%20and%20month(ReleaseDate)%20eq%201%20and%20year(ReleaseDate)%20eq%201970&filterLogic=or");;
+			result = "$filter=ProductID eq null or Name ne null or length(Price) eq 0 or length(ProductID) gt 0 or day(ReleaseDate) eq " + day + " and month(ReleaseDate) eq " + month + " and year(ReleaseDate) eq " + year +
+				" or day(ReleaseDate) ne " + day + " or month(ReleaseDate) ne " + month + " or year(ReleaseDate) ne "+ year +
+				" or ReleaseDate gt DateTime'" + $.ig.formatter(date, "date", "yyyy-MM-ddT23:59:59") + "' or ReleaseDate lt DateTime'" + $.ig.formatter(date, "date", "yyyy-MM-dd") +
+				"' or day(ReleaseDate) eq " + day + " and month(ReleaseDate) eq " + month + " and year(ReleaseDate) eq " + year + " or day(ReleaseDate) eq "+ day +
+				" and month(ReleaseDate) eq " + month + " and year(ReleaseDate) eq " + year + "&filterLogic=or";
+			equal(unescape(params), result);
 			
 			ds.settings.filtering.expressions = [
-				{fieldName: "ThisMonth", cond: "thisMonth", expr:  new Date(0), logic: "or"},
-				{fieldName: "LastMonth", cond: "lastMonth", expr:  new Date(0), logic: "or"},
-				{fieldName: "NextMonth", cond: "nextMonth", expr:  new Date(0), logic: "or"},
-				{fieldName: "ThisYear", cond: "thisYear", expr:  new Date(0), logic: "or"},
-				{fieldName: "LastYear", cond: "lastYear", expr:  new Date(0), logic: "or"},
-				{fieldName: "NextYear", cond: "nextYear", expr:  new Date(0), logic: "or"}
+				{fieldName: "ThisMonth", cond: "thisMonth", logic: "or"},
+				{fieldName: "LastMonth", cond: "lastMonth", logic: "or"},
+				{fieldName: "NextMonth", cond: "nextMonth", logic: "or"},
+				{fieldName: "ThisYear", cond: "thisYear", logic: "or"},
+				{fieldName: "LastYear", cond: "lastYear", logic: "or"},
+				{fieldName: "NextYear", cond: "nextYear", logic: "or"}
 			];
 			ds.settings.paging.enabled = false;
 			params = $.param(ds._encodeUrl());
