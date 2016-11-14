@@ -2960,7 +2960,7 @@
 						this._currentInputTextValue = this._editorInput.val();
 
 						//A.M. 3 November 2016 #447 "valueChanged event fired when pressing the close button even if the editor is empty"
-						if (this._currentInputTextValue === "")
+						if (this._editorIsCleared())
 						{
 							if (!this.options.allowNullValue) {
 								this._clearValue();
