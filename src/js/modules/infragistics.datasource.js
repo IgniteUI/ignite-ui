@@ -3437,9 +3437,9 @@
 			}
 		},
 		_addRow: function (row, index, origDs) {
-			var data, key, count = 0, schema = this.settings.schema,
+			var data, key, i, count = 0, schema = this.settings.schema,
 				layouts = schema ? schema.layouts : null, lo, pdata,
-				all = [ this._data ], newRow;
+				all = [ this._data ], newRow, collectionProcessedData = [];
 			this._addOnlyUniqueToCollection(all, this._dataView);
 			this._addOnlyUniqueToCollection(all, origDs);
 			/* M.H. 15 Dec 2014 Fix for bug #186504: Added row is not displayed whether
@@ -3478,7 +3478,20 @@
 					// e.g. in TreeHierarchicalDataSource when argument at(of function _addRow) is set then function returns child data for record with key equals to 'at'
 					pdata = this._preprocessAddRow.apply(this,
 						Array.prototype.slice.call(arguments).concat([ data ]));
-					data = pdata.layoutData;// if data should not be processed by the code return null/undefined for layoutData
+					data = (pdata || {}).layoutData;// if data should not be processed by the code return null/undefined for layoutData
+					/* M.H. 15 Nov 2016 Fix for bug 228594: After updating a record in the igTreeGrid paging no longer works as expected. */
+					/* duplicate record is added when child row is added*/
+					if (data) {
+						for (i = 0; i < collectionProcessedData.length; i++) {
+							if (collectionProcessedData[ i ] === data) {
+								data = null;//skip adding a record in data collection
+								break;
+							}
+						}
+						if (data) {
+							collectionProcessedData.push(data);
+						}
+					}
 				}
 				if (data) {
 					// M.H. 17 June 2014 Fix for bug #171306: The ig_pk property is missing from the added row object.
