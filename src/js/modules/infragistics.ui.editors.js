@@ -8983,7 +8983,7 @@
 					dateField = dateField.replace(regExpr, "");
 				}
 				if (dateField !== "") {
-					dateField = parseInt(dateField);
+					dateField = parseInt(dateField, 10);
 					if (dateField <= 0) {
 						//0 is not valid date
 						dateField = null;
@@ -9002,7 +9002,7 @@
 					monthField = monthField.replace(regExpr, "");
 				}
 				if (monthField !== "") {
-					monthField = parseInt(monthField);
+					monthField = parseInt(monthField, 10);
 					if (monthField <= 0) {
 						monthField = null;
 					} else {
@@ -9028,7 +9028,7 @@
 					yearField = yearField.replace(regExpr, "");
 				}
 				if (yearField !== "") {
-					yearField = parseInt(yearField);
+					yearField = parseInt(yearField, 10);
 					yearField = this._fillCentury(yearField);
 				} else {
 					yearField = null;
@@ -9058,7 +9058,7 @@
 					hourField = hourField.replace(regExpr, "");
 				}
 				if (hourField !== "") {
-					hourField = parseInt(hourField);
+					hourField = parseInt(hourField, 10);
 					if (this._dateIndices.hh24 === false) {
 						if (midDayField && midDayField === "p") {
 
@@ -9086,7 +9086,7 @@
 					minutesField = minutesField.replace(regExpr, "");
 				}
 				if (minutesField !== "") {
-					minutesField = parseInt(minutesField);
+					minutesField = parseInt(minutesField, 10);
 				} else {
 					minutesField = null;
 				}
@@ -9101,7 +9101,7 @@
 					secondsField = secondsField.replace(regExpr, "");
 				}
 				if (secondsField !== "") {
-					secondsField = parseInt(secondsField);
+					secondsField = parseInt(secondsField, 10);
 
 				} else {
 					secondsField = null;
@@ -9123,9 +9123,9 @@
 						ffCount = this._dateIndices.ffLength - millisecondsField.length;
 
 						// If the user has entered 1 in 3 digit field - the value is converted into 300
-						millisecondsField = parseInt(millisecondsField) * Math.pow(10, ffCount);
+						millisecondsField = parseInt(millisecondsField, 10) * Math.pow(10, ffCount);
 					}
-					millisecondsField = parseInt(millisecondsField);
+					millisecondsField = parseInt(millisecondsField, 10);
 					if (this._dateIndices.ffLength === 2) {
 						millisecondsField *= 10;
 					} else if (this._dateIndices.ffLength === 1) {
