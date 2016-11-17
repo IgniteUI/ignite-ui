@@ -7519,7 +7519,7 @@
 				```
 			*/
 			dateInputFormat: null,
-			/* type="date|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="date|localDate|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7532,12 +7532,31 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
-				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method.
+				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method, which transofrm it.
 				Note: That is used as default.
+				Note: We accept the assumption that server operated in UTC
+				localDate type="string" Enter the local date in the browser and submit the local date value in following ISO format 2016-11-03T16:08:08.504+0200
+				Note: We accept the assumption that the server and browser should be in the same timezone using same date settings
 				displayModeText type="string" The String object is used and the "text" in display mode (no focus) format (pattern).
 				editModeText type="string" The String object is used and the "text" in edit mode (focus) format (pattern).
 			*/
 			dataMode: "date",
+			/* type="int" Gets/Sets date in a regional time zone different from the browser one and submit it as UTC ISO to the server.
+			Note: The option can be used if only enableUTCDates value is negative
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					offset: 3
+				});
+
+				//Get
+				var offset = $(".selector").%%WidgetName%%("option", "offset");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "offset", "displayModeText");
+			```
+			*/
+			offset: 0,
 			/*type="clear|spin" Gets visibility of the spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
 				```
 					//Initialize
@@ -7592,6 +7611,8 @@
 				When application uses the get-value, then editor returns internal Date-value decremented by TimezoneOffset.
 				When that option is modified after initialization, then displayed text and internal Date-value are not affected.
 				It is not recommended to change that option without resetting Date-value.
+				
+				Enabling that option will mean that offset option is ignored.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7699,6 +7720,7 @@
 			$.ui.igMaskEditor.prototype._create.call(this);
 		},
 		_initialize: function () {
+			var offset = this.options.offset;
 			this._super();
 			this._applyRegionalSettings();
 			this.options.inputMask =
@@ -7707,6 +7729,12 @@
 
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
+			if (this.options.enableUTCDates && offset !== 0) {
+				throw new Error($.ig.Editor.locale.dateEditorUTCOffset);
+			}
+			if (offset > 14 || offset < -14) {
+				throw new Error($.ig.Editor.locale.dateEditorOffsetRange);
+			}
 		},
 		_setNumericType: function () {
 			this._numericType = "datetime";
@@ -7838,7 +7866,33 @@
 		_handleSpinDownEvent: function () { // DateEditor
 			this.spinDown(1);
 		},
+		_serializeDate: function () {
+			var sDate = this._dateObjectValue;
 
+			if (this.options.dataMode === "date") {
+				sDate = sDate.toISOString();
+			} else if(this.options.dataMode === "localDate") {
+				sDate = this._toLocalISOString(sDate);
+			}
+			this._valueInput.val(sDate);
+		},
+		_toLocalISOString: function() {
+			var date = this._dateObjectValue,
+				tzo = -date.getTimezoneOffset(),
+				dif = tzo >= 0 ? '+' : '-',
+				pad = function(num) {
+					var norm = Math.abs(Math.floor(num));
+					return (norm < 10 ? '0' : '') + norm;
+				};
+			return date.getFullYear() 
+				+ '-' + pad(date.getMonth()+1)
+				+ '-' + pad(date.getDate())
+				+ 'T' + pad(date.getHours())
+				+ ':' + pad(date.getMinutes())
+				+ ':' + pad(date.getSeconds())
+				+ dif + pad(tzo / 60) 
+				+ ':' + pad(tzo % 60);
+		},
 		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)
 		// date DateObject
 		_getDateField: function (flag, date) {
@@ -7964,6 +8018,11 @@
 				dateObj, year, month, day, hours, minutes, seconds, milliseconds;
 			dateObj = newDate ? newDate : this._dateObjectValue;
 
+			if (this.options.offset !== 0) {
+				// When an offset is supplied then we want to display the date with it.
+				// In a differenc with UTC, which is extracted inside the _getDateField method below
+				dateObj = this._getValueByDataMode();
+			}
 			// TODO update all the fields
 			if (dateObj) {
 				if (this._dateIndices.yy !== undefined) {
@@ -8858,12 +8917,7 @@
 				this._updateMaskedValue();
 				this.options.value = this._getValueByDataMode();
 
-				// TODO here maybe the format of the submit value of the date should be some standart format like 2015-03-25T12:00:00
-				if ($.type(this.options.value) === "date") {
-						this._valueInput.val(this.options.value.toISOString());
-				} else {
-					this._valueInput.val(this.options.value);
-				}
+				this._serializeDate();
 			}
 		},
 		_clearValue: function () { //DateEditor
@@ -8884,34 +8938,32 @@
 		_getDateObjectFromValue: function (value) { //DateEditor
 			var date;
 			if ($.type(value) === "date") {
-
-				//if (this.options.enableUTCDates) {
-				//	//T.P. 26th Oct 2015 Bug 208350 when creating UTC date we need to set hours, minutes, seconds and milliseconds
-				//	value = new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds(), value.getMilliseconds()));
-				//}
 				date = value;
 			} else if (this._mvcDateRegex.test(value)) {
 				date = new Date(parseInt(value.replace(this._mvcDateRegex, "$1"), 10));
 			} else {
 				date = new Date(value);
-				if (this.options.enableUTCDates) {
-					date = new Date(Date.UTC(date.getFullYear(),
-						date.getMonth(), date.getDate(),
-						date.getHours(), date.getMinutes(),
-						date.getSeconds(), date.getMilliseconds()));
-				}
 			}
 			return date;
 		},
 		_getValueByDataMode: function () {
 			var dataModeValue,
 				maskedVal = this._maskedValue ? this._maskedValue : this._maskWithPrompts,
-				dataMode = this.options.dataMode;
+				dataMode = this.options.dataMode, offset = this.options.offset, utc = this.options.enableUTCDates;
 
-			// TODO implement all of the modes
 			switch (dataMode) {
 				case "date": {
+					if (utc) {
+						dataModeValue = this._getDateUTC();
+					} else if (offset !== 0) {
+						dataModeValue = this._getDateOffset();
+					} else {
 						dataModeValue = this._dateObjectValue;
+					}
+				}
+					break;
+				case "localDate": {
+					dataModeValue = this._dateObjectValue;
 				}
 					break;
 				case "displayModeText": {
@@ -8929,6 +8981,36 @@
 				}
 			}
 			return dataModeValue;
+		},
+		_getDateUTC: function() {
+			return this._retrieveUTCDate(this._dateObjectValue);
+		},
+		_retrieveUTCDate: function(date) {
+			return new Date(date.getUTCFullYear(),
+						date.getUTCMonth(), date.getUTCDate(),
+						date.getUTCHours(), date.getUTCMinutes(),
+						date.getUTCSeconds(), date.getUTCMilliseconds());
+		},
+		_setDateUTC: function(date) {
+			this._dateObjectValue = this._createUTCDate(date);
+		},
+		_createUTCDate: function(date) {
+			return new Date(Date.UTC(
+						date.getFullYear(),
+						date.getMonth(), date.getDate(),
+						date.getHours(), date.getMinutes(),
+						date.getSeconds(), date.getMilliseconds()));
+		},
+		_getDateOffset: function() {
+			var date = new Date(this._dateObjectValue.getTime());
+			date.setHours(date.getHours() + date.getTimezoneOffset()/60 + this.options.offset);
+			return date;
+		},
+		_createRegionalDate: function(date) { 
+			date = this._createUTCDates(date.addHours(date.getTimezoneOffset()));
+		},
+		_setDateOffset: function(date) {
+			var offset = this.options.offset;
 		},
 		_parseDateFromMaskedValue: function (value) {
 			var dateField, monthField, yearField, hourField, minutesField, secondsField,
@@ -9193,6 +9275,11 @@
 
 			if (!dateObject) {
 				return "";
+			}
+			if (this.options.offset !== 0) {
+				// When an offset is supplied then we want to display the date with it.
+				// In a differenc with UTC, which is extracted inside the _getDateField method below
+				dateObject = this._getValueByDataMode();
 			}
 
 			maskVal = this.options.dateDisplayFormat;
