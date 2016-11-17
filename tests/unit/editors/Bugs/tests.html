@@ -435,7 +435,9 @@
 				}
 				
 				window.Bug446Testbed = function () {
-					$("#446Editor").igTextEditor({
+					$("<input/>", { id: "446Editor" })
+					.appendTo("#testBedContainer")
+					.igTextEditor({
 						buttonType: "clear", 
 						value: "has value"
 					});
@@ -454,7 +456,7 @@
 						// 	initialized = true;
 						// }
 					},
-					teardown: function () {
+					teardown: function (assert) {
 					}
 				});
 
@@ -1181,6 +1183,7 @@
 					clearButton.click();
 					equal(textChanged, 2, "textChanged not triggered on clear");
 					equal(valueChanged, 2, "valueChanged not triggered on clear");
+					$("#446Editor").remove();
 				}, 100);
 			});
 		});
@@ -1306,7 +1309,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input id="inputEditor1" />
 		<input id="inputEditor2" />
 		<input id="inputEditor3" />
@@ -1424,7 +1427,6 @@
 		<input id="226Editor" />
 
 		<input type="text" id="487Editor" value="myInputValue"/>
-		<input type="text" id="446Editor" />
 
 	</div></body>
 </html>
