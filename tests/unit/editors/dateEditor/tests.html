@@ -1219,6 +1219,37 @@
 				equal(editor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after second insert");
 				equal(editorInput.val(), "5/11/2016", "Insert value not converted to display text");
 			});
+
+			testId = 'Clear null value';
+			test(testId, 4, function () {
+				var $editor1 = $('<input id="clearEditor" />')
+					.appendTo("#testBedContainer")
+					.igDateEditor({
+						allowNullValue: true,
+						nullValue : new Date(2009, 7,8),
+						value: "2010-10-10",
+						buttonType: "clear"
+					});
+
+				var field = $editor1.igDateEditor("field"),
+					clearButton = $editor1.igDateEditor("clearButton"),
+					value = $editor1.igDateEditor("value");
+
+				$editor1.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					clearButton.click();
+					equal(field.val(), "08/08/2009", 'Text not set to null  value');
+					equal($editor1.igDateEditor("value"), value, 'Value changed on clear while editing');
+					field.blur();
+					equal(field.val(), "8/8/2009", 'Cleared nullValue not set on blur.');
+					$editor1.igDateEditor("value", new Date());
+					clearButton.click();
+					equal($editor1.igDateEditor("value"), $editor1.igDateEditor("option", "nullValue"), 'Clear null value not set without focus');
+					$("#clearEditor").remove();
+				}, 100);
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1349,7 +1380,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input id="inputEditor1" />
 		<input id="inputEditor2" />
 		<input id="inputEditor3" />
