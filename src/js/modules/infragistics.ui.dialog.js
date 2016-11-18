@@ -22,6 +22,7 @@
 *	<div id="dialog1"></div>
 */
 
+/*global define */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

@@ -11,7 +11,7 @@
 *	infragistics.ui.editors.js
 */
 
-/*global ko*/
+/*global ko, define */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 		define( [
