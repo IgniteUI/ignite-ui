@@ -7533,9 +7533,8 @@
 				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
 				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method, which transofrm it.
-				 If the editor submits a value to the server, it will be in the same ISO 8601 format, containing UTC.
+				If the editor submits a value to the server, it will be in the same ISO 8601 format, containing UTC.
 				Note: That is used as default.
-				Note: We accept the assumption that server operated in UTC
 				localDate type="string" Enter the local date in the browser and submit the local date value in following ISO format 2016-11-03T16:08:08.504+0200
 				If the editor submits a value to the server, it will be in the same ISO 8601 format, containing local date infromation.
 				Note: We accept the assumption that the server and browser should be in the same timezone using same date settings
@@ -7604,13 +7603,7 @@
 			*/
 			limitSpinToCurrentField: false,
 			/* type="bool" Enables/Disables displaying client date as UTC date instead of shifting it to the local one.
-				Note: The option can be used only when dataMode is set to "date".
-				That option affects only functionality of get/set value method and the Date-value, which was set on initialization.
-				When application uses the set-value, then internal Date-value and displayed-text is incremented by TimezoneOffset.
-				When application uses the get-value, then editor returns internal Date-value decremented by TimezoneOffset.
-				When that option is modified after initialization, then displayed text and internal Date-value are not affected.
-				It is not recommended to change that option without resetting Date-value.
-
+				The option is only applied in "date" dataMode.
 				Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
 				```
 					//Initialize
