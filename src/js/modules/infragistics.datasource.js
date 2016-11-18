@@ -26,7 +26,7 @@
  *
  */
 
-/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer */
+/*global Class, ActiveXObject, DOMParser, XPathResult, XMLSerializer, define */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
