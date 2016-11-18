@@ -7528,9 +7528,6 @@
 
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
 				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method, which transofrm it.
 				Note: That is used as default.
@@ -7551,9 +7548,6 @@
 
 				//Get
 				var offset = $(".selector").%%WidgetName%%("option", "offset");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "offset", "displayModeText");
 			```
 			*/
 			offset: 0,
@@ -7638,9 +7632,6 @@
 
 					//Get
 					var centuryThreshold = $(".selector").%%WidgetName%%("option", "centuryThreshold");
-
-					//Set
-					$(".selector").%%WidgetName%%("option", "centuryThreshold", 35);
 				```
 				*/
 			centuryThreshold: 29,
@@ -7767,7 +7758,10 @@
 					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
 				}
 					break;
-				case "dateInputFormat": {
+				case "dateInputFormat",
+					"dataMode",
+					"enableUTCDates",
+					"offset": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
