@@ -9254,7 +9254,7 @@
 					this._setDateField("milliseconds", extractedDate, millisecondsField);
 			}
 			if (this.options.offset !== 0) {
-				extractedDate = this._setDateOffset(extractedDate);
+				this._setDateOffset(extractedDate);
 			}
 			return extractedDate;
 
