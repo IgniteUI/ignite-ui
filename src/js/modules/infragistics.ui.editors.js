@@ -7557,13 +7557,13 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
-				date type="string" When that mode is set the value send to the server on submit is always a UTC value (e.g. "2016-11-03T14:08:08.504Z").
-				The value method returns a date object. The both options enableUTCDates and offset work only when this mode is used. That is used as default mode.
-				Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
-				localDate type="string" When that mode is set the value send to the server on submit is always a local date value (e.g. "2009-06-15T13:45:30.0000000+0300").
-				The value method returns a date object.
-				Note: It is recommended that this option is used with an local date value (e.g. "2009-06-15T13:45:30.0000000+0300") and both server and client operates with the same time zone value.
-				In that case the outcome is consistent.
+				date type="string" When this mode is set the value sent to the server on submit is serialized as UTC ISO 8061 string (e.g. "2016-11-03T14:08:08.504Z").
+					The value method returns a Date object. Both enableUTCDates and timeOffset options work only when this mode is used. That is used as default mode.
+					Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
+				localDate type="string" When this mode is set the value sent to the server on submit is serialized as local ISO 8061 string (e.g. "2009-06-15T13:45:30.0000000+0300").
+					The value method returns a Date object.
+					Note: This mode is useful when the server is interested in the time zone of the client or when both are expected to operate within the same time zone.
+					For the latter case, it is recommended that this option is used with an local date value (e.g. "2009-06-15T13:45:30.0000000+0300") so the outcome is consistent.
 				displayModeText type="string" The "text" in display mode (no focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 				editModeText type="string" The "text" in edit mode (focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 			*/
@@ -7574,14 +7574,14 @@
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
-					offset: 180
+					timeOffset: 180
 				});
 
 				//Get
-				var offset = $(".selector").%%WidgetName%%("option", "offset");
+				var timeOffset = $(".selector").%%WidgetName%%("option", "timeOffset");
 			```
 			*/
-			offset: 0,
+			timeOffset: 0,
 			/*type="clear|spin" Gets visibility of the spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
 				```
 					//Initialize
@@ -7735,7 +7735,7 @@
 			$.ui.igMaskEditor.prototype._create.call(this);
 		},
 		_initialize: function () {
-			var offset = this.options.offset;
+			var offset = this.options.timeOffset;
 			this._super();
 			this._applyRegionalSettings();
 			this.options.inputMask =
@@ -7784,7 +7784,7 @@
 					break;
 				case "dateInputFormat":
 				case "enableUTCDates":
-				case "offset": {
+				case "timeOffset": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
@@ -7920,7 +7920,7 @@
 		// date DateObject
 		_getDateField: function (flag, date) {
 			var utc = this.options.enableUTCDates,
-				offset = this.options.offset,
+				offset = this.options.timeOffset,
 				shift = this.options.yearShift, year;
 
 				if (!date) {
@@ -8962,7 +8962,7 @@
 				maskedVal = this._maskedValue ? this._maskedValue : this._maskWithPrompts,
 				dataMode = this.options.dataMode,
 				utc = this.options.enableUTCDates,
-				offset = this.options.offset;
+				offset = this.options.timeOffset;
 
 			switch (dataMode) {
 				case "date": {
@@ -9016,11 +9016,11 @@
 		},
 		_getDateOffset: function() {
 			var date = new Date(this._dateObjectValue.getTime());
-			date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + this.options.offset);
+			date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + this.options.timeOffset);
 			return date;
 		},
 		_setDateOffset: function(date) {
-			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.offset);
+			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.timeOffset);
 		},
 		_createRegionalDate: function(date) {
 			date = this._createUTCDates(date.addHours(date.getTimezoneOffset()));
@@ -9279,7 +9279,7 @@
 				extractedDate =
 					this._setDateField("milliseconds", extractedDate, millisecondsField);
 			}
-			if (this.options.offset !== 0) {
+			if (this.options.timeOffset !== 0) {
 				this._setDateOffset(extractedDate);
 			}
 			return extractedDate;
