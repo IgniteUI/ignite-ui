@@ -7533,20 +7533,23 @@
 				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
 				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method, which transofrm it.
+				 If the editor submits a value to the server, it will be in the same ISO 8601 format, containing UTC.
 				Note: That is used as default.
 				Note: We accept the assumption that server operated in UTC
 				localDate type="string" Enter the local date in the browser and submit the local date value in following ISO format 2016-11-03T16:08:08.504+0200
+				If the editor submits a value to the server, it will be in the same ISO 8601 format, containing local date infromation.
 				Note: We accept the assumption that the server and browser should be in the same timezone using same date settings
 				displayModeText type="string" The String object is used and the "text" in display mode (no focus) format (pattern).
 				editModeText type="string" The String object is used and the "text" in edit mode (focus) format (pattern).
 			*/
 			dataMode: "date",
-			/* type="int" Gets/Sets date in a regional time zone different from the browser one and submit it as UTC ISO to the server.
-			Note: The option can be used if only enableUTCDates value is negative
+			/* type="int" Gets/Sets time zone offset from UTC, in minutes. The client date is shifted and displayed with this offset rather than the local one.
+			The option is only applied in "date" dataMode and if enableUTCDates option is not enabled.
+			Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
-					offset: 3
+					offset: 180
 				});
 
 				//Get
@@ -7600,16 +7603,15 @@
 				```
 			*/
 			limitSpinToCurrentField: false,
-			/* type="bool" Gets/Sets formatting of the dates as UTC.
-				That option is supported only when dataMode option is 'date' and Date objects are used to get/set value of editor.
-				Notes:
+			/* type="bool" Enables/Disables displaying client date as UTC date instead of shifting it to the local one.
+				Note: The option can be used only when dataMode is set to "date".
 				That option affects only functionality of get/set value method and the Date-value, which was set on initialization.
 				When application uses the set-value, then internal Date-value and displayed-text is incremented by TimezoneOffset.
 				When application uses the get-value, then editor returns internal Date-value decremented by TimezoneOffset.
 				When that option is modified after initialization, then displayed text and internal Date-value are not affected.
 				It is not recommended to change that option without resetting Date-value.
 
-				Enabling that option will mean that offset option is ignored.
+				Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7729,7 +7731,7 @@
 			if (this.options.dataMode === "localDate" && (this.options.enableUTCDates || offset !== 0)) {
 				console.log($.ig.Editor.locale.dateEditorLocalDateUTCOffset);
 			}
-			if (offset > 14 || offset < -14) {
+			if (offset > 840 || offset < -720) {
 				console.log($.ig.Editor.locale.dateEditorOffsetRange);
 			}
 		},
@@ -8994,11 +8996,11 @@
 		},
 		_getDateOffset: function() {
 			var date = new Date(this._dateObjectValue.getTime());
-			date.setHours(date.getHours() + date.getTimezoneOffset() / 60 + this.options.offset);
+			date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + this.options.offset);
 			return date;
 		},
 		_setDateOffset: function(date) {
-			date.setHours(date.getHours() - date.getTimezoneOffset() / 60 - this.options.offset);
+			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.offset);
 		},
 		_createRegionalDate: function(date) {
 			date = this._createUTCDates(date.addHours(date.getTimezoneOffset()));

@@ -69,7 +69,7 @@
 				dateEditorMaxValue: "MaxValue option can not be set runtime.",
 				dateEditorUTCOffset: "When both options enableUTCDates and offset are used, the latter is ignored.",
 				dateEditorLocalDateUTCOffset: "When data mode of the editor is set to localDate, then both options - enableUTCDates and offset will be ignored",
-				dateEditorOffsetRange: "Offset range should be between -14 and 14",
+				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
 				setOptionError: 'Runtime changes are not allowed for the following option: ',
 				invalidDate: "Invalid date",
 				maskMessage: 'All required positions should be filled',
