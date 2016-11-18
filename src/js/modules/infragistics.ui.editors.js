@@ -7730,10 +7730,13 @@
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
 			if (this.options.enableUTCDates && offset !== 0) {
-				throw new Error($.ig.Editor.locale.dateEditorUTCOffset);
+				console.log($.ig.Editor.locale.dateEditorUTCOffset);
+			}
+			if (this.options.dataMode === "localDate" && (this.options.enableUTCDates || offset !== 0)) {
+				console.log($.ig.Editor.locale.dateEditorLocalDateUTCOffset);
 			}
 			if (offset > 14 || offset < -14) {
-				throw new Error($.ig.Editor.locale.dateEditorOffsetRange);
+				console.log($.ig.Editor.locale.dateEditorOffsetRange);
 			}
 		},
 		_setNumericType: function () {
