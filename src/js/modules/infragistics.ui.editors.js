@@ -7528,6 +7528,9 @@
 
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
 				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method, which transofrm it.
 				Note: That is used as default.
@@ -7759,7 +7762,6 @@
 				}
 					break;
 				case "dateInputFormat":
-				case "dataMode":
 				case "enableUTCDates":
 				case "offset": {
 					this.options[ option ] = prevValue;
@@ -7870,6 +7872,8 @@
 				sDate = sDate.toISOString();
 			} else if (this.options.dataMode === "localDate") {
 				sDate = this._toLocalISOString(sDate);
+			} else {
+				sDate = this.options.value;
 			}
 			this._valueInput.val(sDate);
 		},
