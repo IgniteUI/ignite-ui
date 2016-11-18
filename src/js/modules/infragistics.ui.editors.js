@@ -7758,10 +7758,10 @@
 					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
 				}
 					break;
-				case "dateInputFormat",
-					"dataMode",
-					"enableUTCDates",
-					"offset": {
+				case "dateInputFormat":
+				case "dataMode":
+				case "enableUTCDates":
+				case "offset": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
