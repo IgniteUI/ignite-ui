@@ -7532,14 +7532,15 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
-				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method, which transofrm it.
-				If the editor submits a value to the server, it will be in the same ISO 8601 format, containing UTC.
-				Note: That is used as default.
-				localDate type="string" Enter the local date in the browser and submit the local date value in following ISO format 2016-11-03T16:08:08.504+0200
-				If the editor submits a value to the server, it will be in the same ISO 8601 format, containing local date infromation.
-				Note: We accept the assumption that the server and browser should be in the same timezone using same date settings
-				displayModeText type="string" The String object is used and the "text" in display mode (no focus) format (pattern).
-				editModeText type="string" The String object is used and the "text" in edit mode (focus) format (pattern).
+				date type="string" When that mode is set the value send to the server on submit is always a UTC value (e.g. "2016-11-03T14:08:08.504Z").
+				The value method returns a date object. The both options enableUTCDates and offset work only when this mode is used. That is used as default mode.
+				Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
+				localDate type="string" When that mode is set the value send to the server on submit is always a local date value (e.g. "2009-06-15T13:45:30.0000000+0300").
+				The value method returns a date object.
+				Note: It is recommended that this option is used with an local date value (e.g. "2009-06-15T13:45:30.0000000+0300") and both server and client operates with the same time zone value.
+				In that case the outcome is consistent.
+				displayModeText type="string" The "text" in display mode (no focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
+				editModeText type="string" The "text" in edit mode (focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 			*/
 			dataMode: "date",
 			/* type="int" Gets/Sets time zone offset from UTC, in minutes. The client date is shifted and displayed with this offset rather than the local one.
