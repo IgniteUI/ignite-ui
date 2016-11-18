@@ -7896,7 +7896,7 @@
 		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)
 		// date DateObject
 		_getDateField: function (flag, date) {
-			var utc = this.options.enableUTCDates, shift = this.options.yearShift, year;
+			var utc = this.options.enableUTCDates, offset = this.options.offset, shift = this.options.yearShift, year;
 
 				if (!date) {
 					date = this._dateObjectValue;
@@ -7904,19 +7904,9 @@
 				if (!date) {
 					return null;
 				}
-
-				//// set into datepicker
-				//	if (f === -1) {
-				//		return (date && utc) ? new Date(date.getTime() + date.getTimezoneOffset() * 60000) : date;
-				//	}
-				//// now
-				//if (!date) {
-				//	date = new Date();
-				//	if (utc) {
-				//		date.setUTCMinutes(date.getUTCMinutes() - date.getTimezoneOffset());
-				//	}
-				//	return date;
-				//}
+				if (offset !== 0) {
+					date = this._getDateOffset();
+				}
 
 				if (flag === "year") {
 					year = utc ? date.getUTCFullYear() : date.getFullYear();
@@ -8018,11 +8008,6 @@
 				dateObj, year, month, day, hours, minutes, seconds, milliseconds;
 			dateObj = newDate ? newDate : this._dateObjectValue;
 
-			if (this.options.offset !== 0) {
-				// When an offset is supplied then we want to display the date with it.
-				// In a differenc with UTC, which is extracted inside the _getDateField method below
-				dateObj = this._getValueByDataMode();
-			}
 			// TODO update all the fields
 			if (dateObj) {
 				if (this._dateIndices.yy !== undefined) {
@@ -9003,14 +8988,14 @@
 		},
 		_getDateOffset: function() {
 			var date = new Date(this._dateObjectValue.getTime());
-			date.setHours(date.getHours() + date.getTimezoneOffset()/60 + this.options.offset);
+			date.setHours(date.getHours() + date.getTimezoneOffset() / 60 + this.options.offset);
 			return date;
+		},
+		_setDateOffset: function(date) {
+			date.setHours(date.getHours() - date.getTimezoneOffset() / 60 - this.options.offset);
 		},
 		_createRegionalDate: function(date) { 
 			date = this._createUTCDates(date.addHours(date.getTimezoneOffset()));
-		},
-		_setDateOffset: function(date) {
-			var offset = this.options.offset;
 		},
 		_parseDateFromMaskedValue: function (value) {
 			var dateField, monthField, yearField, hourField, minutesField, secondsField,
@@ -9266,7 +9251,9 @@
 				extractedDate =
 					this._setDateField("milliseconds", extractedDate, millisecondsField);
 			}
-
+			if (this.options.offset !== 0) {
+				dextractedDateate = this._setDateOffset(extractedDate);
+			}
 			return extractedDate;
 
 		},
@@ -9275,11 +9262,6 @@
 
 			if (!dateObject) {
 				return "";
-			}
-			if (this.options.offset !== 0) {
-				// When an offset is supplied then we want to display the date with it.
-				// In a differenc with UTC, which is extracted inside the _getDateField method below
-				dateObject = this._getValueByDataMode();
 			}
 
 			maskVal = this.options.dateDisplayFormat;
