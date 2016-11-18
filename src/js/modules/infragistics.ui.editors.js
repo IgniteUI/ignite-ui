@@ -7605,7 +7605,7 @@
 				When application uses the get-value, then editor returns internal Date-value decremented by TimezoneOffset.
 				When that option is modified after initialization, then displayed text and internal Date-value are not affected.
 				It is not recommended to change that option without resetting Date-value.
-				
+
 				Enabling that option will mean that offset option is ignored.
 				```
 					//Initialize
@@ -7868,7 +7868,7 @@
 
 			if (this.options.dataMode === "date") {
 				sDate = sDate.toISOString();
-			} else if(this.options.dataMode === "localDate") {
+			} else if (this.options.dataMode === "localDate") {
 				sDate = this._toLocalISOString(sDate);
 			}
 			this._valueInput.val(sDate);
@@ -7876,24 +7876,27 @@
 		_toLocalISOString: function() {
 			var date = this._dateObjectValue,
 				tzo = -date.getTimezoneOffset(),
-				dif = tzo >= 0 ? '+' : '-',
+				dif = tzo >= 0 ? "+" : "-",
 				pad = function(num) {
 					var norm = Math.abs(Math.floor(num));
-					return (norm < 10 ? '0' : '') + norm;
+					return (norm < 10 ? "0" : "") + norm;
 				};
-			return date.getFullYear() 
-				+ '-' + pad(date.getMonth()+1)
-				+ '-' + pad(date.getDate())
-				+ 'T' + pad(date.getHours())
-				+ ':' + pad(date.getMinutes())
-				+ ':' + pad(date.getSeconds())
-				+ dif + pad(tzo / 60) 
-				+ ':' + pad(tzo % 60);
+			return date.getFullYear() +
+				"-" + pad(date.getMonth() + 1) +
+				"-" + pad(date.getDate()) +
+				"T" + pad(date.getHours()) +
+				":" + pad(date.getMinutes()) +
+				":" + pad(date.getSeconds()) +
+				dif + pad(tzo / 60) +
+				":" + pad(tzo % 60);
 		},
+
 		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)
 		// date DateObject
 		_getDateField: function (flag, date) {
-			var utc = this.options.enableUTCDates, offset = this.options.offset, shift = this.options.yearShift, year;
+			var utc = this.options.enableUTCDates,
+				offset = this.options.offset,
+				shift = this.options.yearShift, year;
 
 				if (!date) {
 					date = this._dateObjectValue;
@@ -8931,7 +8934,9 @@
 		_getValueByDataMode: function () {
 			var dataModeValue,
 				maskedVal = this._maskedValue ? this._maskedValue : this._maskWithPrompts,
-				dataMode = this.options.dataMode, offset = this.options.offset, utc = this.options.enableUTCDates;
+				dataMode = this.options.dataMode,
+				utc = this.options.enableUTCDates,
+				offset = this.options.offset;
 
 			switch (dataMode) {
 				case "date": {
@@ -8991,7 +8996,7 @@
 		_setDateOffset: function(date) {
 			date.setHours(date.getHours() - date.getTimezoneOffset() / 60 - this.options.offset);
 		},
-		_createRegionalDate: function(date) { 
+		_createRegionalDate: function(date) {
 			date = this._createUTCDates(date.addHours(date.getTimezoneOffset()));
 		},
 		_parseDateFromMaskedValue: function (value) {
@@ -9249,7 +9254,7 @@
 					this._setDateField("milliseconds", extractedDate, millisecondsField);
 			}
 			if (this.options.offset !== 0) {
-				dextractedDateate = this._setDateOffset(extractedDate);
+				extractedDate = this._setDateOffset(extractedDate);
 			}
 			return extractedDate;
 
