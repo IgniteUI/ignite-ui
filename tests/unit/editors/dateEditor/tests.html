@@ -1199,7 +1199,7 @@
 				equal(editor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after second insert");
 				equal(editorInput.val(), "5/11/2016", "Insert value not converted to display text");
 			});
-			
+
 			testId = 'Clear null value';
 			test(testId, 4, function () {
 				var $editor1 = $('<input id="clearEditor" />')
@@ -1224,8 +1224,8 @@
 					equal($editor1.igDateEditor("value"), value, 'Value changed on clear while editing');
 					field.blur();
 					equal(field.val(), "8/8/2009", 'Cleared nullValue not set on blur.');
- 					$editor1.igDateEditor("value", new Date());
- 					clearButton.click();
+					$editor1.igDateEditor("value", new Date());
+					clearButton.click();
 					equal($editor1.igDateEditor("value"), $editor1.igDateEditor("option", "nullValue"), 'Clear null value not set without focus');
 					$("#clearEditor").remove();
 				}, 100);
