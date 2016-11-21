@@ -457,7 +457,7 @@
 			equal($editor.igTextEditor("option", "readOnly"), true, 'Editor readonly option does not match the input attribute');
 			equal($editor.igTextEditor("option", "disabled"), true, 'Editor disabled option does not match the input attribute');
 
-			$editor.igTextEditor("destroy");
+			$editor.remove();
 		});
 
 		var testId = 'Base/TextEditor Destroy method reverts input state.';
@@ -468,6 +468,7 @@
 				readOnly: false
 			});
 
+			var $editor = $("#inputWithAttr");
 			$("#inputWithAttr").igTextEditor("destroy");
 
 			ok(document.getElementById("inputWithAttr").readOnly === true, 'Input readOnly value is not the same as before Editor init');
@@ -477,6 +478,8 @@
 			equal(document.getElementById("inputWithAttr").value, "myInputValue", 'Input value is not the same as before Editor init');
 			//check the value attribute and see if it is restored
 			equal(document.getElementById("inputWithAttr").getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
+
+			$editor.remove();
 		});
 
 
