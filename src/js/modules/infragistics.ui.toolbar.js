@@ -149,51 +149,412 @@
 	*/
     $.widget("ui.igToolbar", {
         options: {
-            /* type="numeric" Set or get the widget height.*/
+            /* type="numeric" Set/Get the widget height.
+            ```
+                 //Initialize
+                $(".selector").igToolbar({
+                    height: 200
+                });
+
+                // Get
+                var height = $(".selector").igToolbar("option", "height");
+
+                // Set
+                $(".selector").igToolbar("option", "height", 150);
+            ```
+            */
             height: null,
-            /* type="numeric" Set or get the widget width.*/
+            /* type="numeric" Set/Get the widget width.
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    width: 100
+                });
+
+                // Get
+                var width = $(".selector").igToolbar("option", "width");
+
+                // Set
+                $(".selector").igToolbar("option", "width", 100);
+            ```
+            */
             width: null,
-            /* type="boolean" Set or get allowCollapsing property*/
+            /* type="boolean" Set whether the toolbar can be collapsing. Get value of allowCollapsing property.
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    allowCollapsing: true
+                });
+
+                // Get
+                var allowCollapsing = $(".selector").igToolbar("option", "allowCollapsing");
+
+                // Set
+                $(".selector").igToolbar("option", "allowCollapsing", false);
+            ```
+            */
             allowCollapsing: true,
-            /* type="string" The css class that will be applied to collapseButtonIcon.*/
+            /* type="string" The css class that will be applied to collapseButtonIcon.
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    collapseButtonIcon: "ui-igbutton-collapsed"
+                });
+
+                // Get
+                var collapseButtonIcon = $(".selector").igToolbar("option", "collapseButtonIcon");
+
+                // Set
+                $(".selector").igToolbar("option", "collapseButtonIcon", "ui-igbutton-collapsed");
+            ```
+            */
             collapseButtonIcon: "ui-igbutton-collapsed",
-            /* type="string" The css class that will be applied to expandButtonIcon.*/
+            /* type="string" The css class that will be applied to expandButtonIcon.
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    expandButtonIcon: "ui-igbutton-expanded"
+                });
+
+                // Get
+                var expandButtonIcon = $(".selector").igToolbar("option", "expandButtonIcon");
+
+                // Set
+                $(".selector").igToolbar("option", "expandButtonIcon", "ui-igbutton-expanded");
+            ```
+            */
             expandButtonIcon: "ui-igbutton-expanded",
-            /* type="string" Formal name of the widget. */
+            /* type="string" Formal name of the widget.
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    name: "textToolbar"
+                });
+
+                // Get
+                var name = $(".selector").igToolbar("option", "name");
+
+                // Set
+                $(".selector").igToolbar("option", "name", "textToolbar");
+            ```
+            */
             name: "",
-            /* type="string" Display Name of the widget. */
+            /* type="string" Display Name of the widget.
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    displayName: "toolbar"
+                });
+
+                // Get
+                var displayName = $(".selector").igToolbar("option", "displayName");
+
+                // Set
+                $(".selector").igToolbar("option", "displayName", "toolbar");
+            ```
+            */
             displayName: "",
-            /* type="array" get or set Toolbar's items. */
+            /* type="array" Get/Set Toolbar's items.
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    items: [{
+                        "name": "Italic",
+                        "type": "button",
+                        "props": {
+                            "isItalic": {
+                                "value": false,
+                                "action": "_isSelectedAction"
+                            },
+                            "italicButtonTooltip": {
+                                "value": "Italic",
+                                "action": "_tooltipAction"
+                            },
+                            "italicButtonIcon": {
+                                "value": "ui-igbutton-italic",
+                                "action": "_buttonIconAction"
+                            }
+                        },
+                        "name": "Italic",
+                        "type": "button",
+                        "props": {
+                            "isItalic": {
+                                "value": false,
+                                "action": "_isSelectedAction"
+                            },
+                            "italicButtonTooltip": {
+                                "value": "Italic",
+                                "action": "_tooltipAction"
+                            },
+                            "italicButtonIcon": {
+                                "value": "ui-igbutton-italic",
+                                "action": "_buttonIconAction"
+                            }
+                        }
+                    }]
+                });
+
+                // Get
+                var items = $(".selector").igToolbar("option", "items");
+
+                // Set
+                var items = [{
+                                "name": "Italic",
+                                "type": "button",
+                                "props": {
+                                    "isItalic": {
+                                        "value": false,
+                                        "action": "_isSelectedAction"
+                                    },
+                                    "italicButtonTooltip": {
+                                        "value": "Italic",
+                                        "action": "_tooltipAction"
+                                    },
+                                    "italicButtonIcon": {
+                                        "value": "ui-igbutton-italic",
+                                        "action": "_buttonIconAction"
+                                    }
+                                }
+                            }];
+                $(".selector").igToolbar("option", "items", items);
+            ```
+            */
             items: [  ],
-            /* type="boolean" get or set widget's isExpanded property. */
+            /* type="boolean" Get/Set widget's isExpanded property.
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    isExpanded: true
+                });
+
+                // Get
+                var isExpanded = $(".selector").igToolbar("option", "isExpanded");
+
+                // Set
+                $(".selector").igToolbar("option", "isExpanded", false);
+            ```
+            */
             isExpanded: true
         },
         events: {
-            /*cance="false" Event fired after a click on any toolbar button*/
+            /*cancel="false" Event fired after a click on any toolbar button
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    toolbarButtonClick: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbartoolbarbuttonclick", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             toolbarButtonClick: "toolbarButtonClick",
-            /*cancel="true" Event fired before fully opened toolbar combo*/
+            /*cancel="true" Event fired before fully opened toolbar combo
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    toolbarComboOpening: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbartoolbarcomboopening", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             toolbarComboOpening: "toolbarComboOpening",
-            /*cancel="false" Event fired after toolbar combo is selected*/
+            /*cancel="false" Event fired after toolbar combo is selected
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    toolbarComboSelected: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbartoolbarcomboselected", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             toolbarComboSelected: "toolbarComboSelected",
-            /*cancel="false" Event fired after a click on custom item*/
+            /*cancel="false" Event fired after a click on custom item
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    toolbarCustomItemClick: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbartoolbarcustomitemclick", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             toolbarCustomItemClick: "toolbarCustomItemClick",
-            /*cancel="false" Event fired after item is removed*/
+            /*cancel="false" Event fired after item is removed
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    itemRemoved: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbaritemremoved", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             itemRemoved: "itemRemoved",
-            /*cancel="false" Event fired after item is added*/
+            /*cancel="false" Event fired after item is added
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    itemAdded: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbaritemadded", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             itemAdded: "itemAdded",
-            /*cancel="true" Event fired before item finish collapsing*/
+            /*cancel="true" Event fired before item finish collapsing
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    collapsing: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbarcollapsing", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             collapsing: "collapsing",
-            /*cancel="false Event fired after item is collapsed"*/
+            /*cancel="false" Event fired after item is collapsed
+            ```
+                /Initialize
+                $(".selector").igToolbar({
+                    collapsed: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbarcollapsed", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             collapsed: "collapsed",
-            /*cancel="true" Event fired before item is expanded*/
+            /*cancel="true" Event fired before item is expanded
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    expanding: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbarexpanding", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             expanding: "expanding",
-            /*cancel="false" Event fired after item is expanded*/
+            /*cancel="false" Event fired after item is expanded
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    expanded: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbarexpanded", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             expanded: "expanded",
-            /*cancel="false" Fired after item is dissabled*/
+            /*cancel="false" Fired after item is dissabled
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    itemDisable: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbaritemdisable", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             itemDisable: "itemDisable",
-            /*cancel="false" Fired after item is enabled*/
+            /*cancel="false" Fired after item is enabled
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    itemEnabled: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbaritemenabled", function (evt, ui) {
+                    //return reference to igToolbar object
+                    ui.owner
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             itemEnabled: "itemEnabled",
-            /*cance="false" Fired after the window is resized*/
+            /*cancel="false" Fired after the window is resized
+            ```
+                //Initialize
+                $(".selector").igToolbar({
+                    windowResized: function (evt, ui) {...}
+                });
+
+                //Delegate
+                $(document).delegate(".selector", "igtoolbarwindowresized", function (evt, ui) {
+                    //return type of the event
+                    evt.type
+                });
+            ```
+            */
             windowResized: "windowResized"
         },
         css: {
@@ -212,8 +573,10 @@
             return this.element[ 0 ].id + id;
         },
         widget: function () {
-            /*
-                Returns the element on which the widget was instantiated
+            /* Returns the element on which the widget was instantiated
+            ```
+                $(".selector").igToolbar("widget");
+            ```
             */
             return this.element;
         },
@@ -791,9 +1154,11 @@
             this._hiddenButtons.pop();
         },
         getItem: function (index) {
-            /*
-                Gets the item with provided index.
-                paramType="string|numerical" optional="false". The index of the item.
+            /* Gets the item with provided index.
+            ```
+                $(".selector").igToolbar("getItem", 0);
+            ```
+                paramType="number|string" optional="false" The index of the item.
                 returnType="object" item with the provided index.
             */
             var result;
@@ -810,9 +1175,28 @@
             }
         },
         addItem: function (item) {
-            /*
-                Add item to widget item array
-                paramType="object" optional="false". The item to be added.
+            /* Add item to widget item array
+            ```
+                $(".selector").igToolbar("addItem", {
+					"name": "Italic",
+					"type": "button",
+					"props": {
+						"isItalic": {
+							"value": false,
+							"action": "_isSelectedAction"
+						},
+						"italicButtonTooltip": {
+							"value": "Italic",
+							"action": "_tooltipAction"
+						},
+						"italicButtonIcon": {
+							"value": "ui-igbutton-italic",
+							"action": "_buttonIconAction"
+						}
+					}
+				});
+            ```
+                paramType="object" optional="false" The item to be added.
             */
 
             // Z.K. September 29, 2015 Bug fix #207328 - igToolbar addItem method is not working as expected
@@ -823,9 +1207,11 @@
             this._trigger(this.events.itemAdded);
         },
         removeItem: function (index) {
-            /*
-                Remove the item matching provided index.
-                paramType="string|numerical" optional="false". The index of the item.
+            /* Remove the item matching provided index.
+            ```
+                $(".selector").igToolbar("removeItem", 0);
+            ```
+                paramType="number|string" optional="false" The index of the item.
                 returnType="object" item with the provided index.
             */
 
@@ -840,8 +1226,15 @@
         disableItem: function (index, disabled) {
             /*
                 Disable item matching provided index.
-                paramType="string|numerical" optional="false". The index of the item.
-                paramType="string|numerical" optional="false". The disabled property value.
+            ```
+                // Set item to be disabled
+                $('.selector').igToolbar('disableItem', 0, true);
+
+                // Set item to be not disabled
+                $('.selector').igToolbar('disableItem', 0, false);
+            ```
+                paramType="number|string" optional="false" The index of the item.
+                paramType="bool|string" optional="false" The disabled property value.
             */
             var item = this.getItem(index),
                 widgetType = this._getWidgetType(item);
@@ -854,10 +1247,16 @@
             }
         },
         activateItem: function (index, activated) {
-            /*
-                Activate item matching provided index.
-                paramType="string|numerical" optional="false". The index of the item.
-                paramType="string|numerical" optional="false". The activate property value.
+            /* Activate item matching provided index.
+            ```
+                // Set item to be active
+                $(".selector").igToolbar("activateItem", 0, true);
+
+                // Set item to be inactive
+                $(".selector").igToolbar("activateItem", 0, false);
+            ```
+                paramType="number|string" optional="false" The index of the item.
+                paramType="bool|string" optional="false" The activate property value.
             */
             var item = this.getItem(index),
                 action = activated ? item.addClass : item.removeClass;
@@ -871,8 +1270,10 @@
             });
         },
         deactivateAll: function () {
-            /*
-                Deactivate all buttons.
+            /* Deactivate all buttons.
+            ```
+                $(".selector").igToolbar("deactivateAll");
+            ```
             */
 
             this.buttonsList
@@ -889,8 +1290,10 @@
         //     }
         // },
         destroy: function () {
-            /*
-                Destroy the widget.
+            /* Destroy the widget.
+            ```
+                $(".selector").igToolbar("destroy");
+            ```
             */
 
             // D.U. #177516 12th of August [ igToolbar ] Method destroy remover the toolbar container
