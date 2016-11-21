@@ -770,13 +770,18 @@
 			this.options.value = value;
 		}, //BaseEditor
 		//This method sets the value to null, or empty string depending on the nullable option.
-		_clearValue: function () {
+		_clearValue: function (textOnly) {
+			var newValue = "";
 
 			// TODO use null, or 0 depending on the nullable option
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
+			}
+
+			if (textOnly) {
+				this._editorInput.val(newValue);
 			} else {
-				this._updateValue("");
+				this._updateValue(newValue);
 			}
 		},
 		_detachEvents: function () {
@@ -787,7 +792,6 @@
 				this._detachListEvents();
 			}
 
-			// https://css-tricks.com/namespaced-events-jquery/
 			this._editorContainer
 				.off("mousedown.editor mouseup.editor mouseover.editor mouseout.editor");
 		},
@@ -2956,20 +2960,21 @@
 						this._currentInputTextValue = this._editorInput.val();
 
 						//A.M. 3 November 2016 #447 "valueChanged event fired when pressing the close button even if the editor is empty"
-						if (this._currentInputTextValue === "")
+						if (this._editorIsCleared())
 						{
 							if (!this.options.allowNullValue) {
 								this._clearValue();
 							}
 							return;
 						}
-						this._clearValue();
-						this._processTextChanged();
 						if (!this._editMode) {
+							this._clearValue();
 							this._exitEditMode();
 							this._triggerValueChanged();
 						} else {
-							this._enterEditMode();
+							this._clearValue(true);
+							this._processTextChanged();
+							this._positionCursor();
 						}
 
 					}
@@ -3541,8 +3546,8 @@
 			}
 			this._timeouts.push(target._spinTimeOut);
 		},
-		_clearValue: function () {
-			this._super();
+		_clearValue: function (textOnly) {
+			this._super(textOnly);
 			if (this._dropDownList &&
 				this._dropDownList.children(".ui-igedit-listitemselected").length > 0) {
 				this._dropDownList.children(".ui-igedit-listitemselected")
@@ -4959,9 +4964,10 @@
 			this._setSpinButtonsState(newValue);
 			this._processTextChanged();
 		},
-		_clearValue: function () { //Numeric Editor
+		_clearValue: function (textOnly) { //Numeric Editor
+			var newValue;
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
 				if (this.options.nullValue === null) {
 					this._editorInput.val("");
 				} else {
@@ -4971,17 +4977,20 @@
 
 				// If the min value is different from zero, we clear the value with the minimum value.
 				if (this.options.minValue && this.options.minValue > 0) {
-					this._updateValue(this.options.minValue);
+					newValue = this.options.minValue;
 					this._editorInput.val(this.options.minValue);
 				} else if (this.options.maxValue && this.options.maxValue < 0) {
-					this._updateValue(this.options.maxValue);
+					newValue = this.options.maxValue;
 					this._editorInput.val(this.options.maxValue);
 				} else {
 					if (this.value()) {
-						this._updateValue(0);
+						newValue = 0;
 						this._editorInput.val(0);
 					}
 				}
+			}
+			if (!textOnly && newValue !== undefined) {
+				this._updateValue(newValue);
 			}
 			if (this.dropDownContainer() &&
 				this.dropDownContainer().children(".ui-igedit-listitemselected").length > 0) {
@@ -6806,6 +6815,21 @@
 				this._valueInput.val(this.options.value);
 			}
 		},
+		_clearValue: function (textOnly) { //igMaskEditor
+			var newValue = "";
+			if (this.options.allowNullValue) {
+				newValue = this.options.nullValue;
+				this._editorInput.val(this._parseValueByMask(newValue));
+			} else {
+				this._editorInput.val(this._maskWithPrompts);
+			}
+			if (!textOnly) {
+				this._updateValue(newValue);
+			}
+			if (this._editMode === false) {
+				this._exitEditMode();
+			}
+		},
 		_getDisplayValue: function () { //igMaskEditor
 			var result, maskedVal = this._maskedValue,
 				i, j, p, maskChar, tempChar, index, regExpr,
@@ -6930,7 +6954,8 @@
 		_validateRequiredPrompts: function (value) {
 			var i;
 			if (value === "") {
-				return false;
+				// D.P. Ignore empty value
+				return true;
 			}
 			for (i = 0; i < this._requiredIndeces.length; i++) {
 				var ch = value.charAt(this._requiredIndeces[ i ]);
@@ -7532,13 +7557,13 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
-				date type="string" When that mode is set the value send to the server on submit is always a UTC value (e.g. "2016-11-03T14:08:08.504Z").
-				The value method returns a date object. The both options enableUTCDates and offset work only when this mode is used. That is used as default mode.
-				Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
-				localDate type="string" When that mode is set the value send to the server on submit is always a local date value (e.g. "2009-06-15T13:45:30.0000000+0300").
-				The value method returns a date object.
-				Note: It is recommended that this option is used with an local date value (e.g. "2009-06-15T13:45:30.0000000+0300") and both server and client operates with the same time zone value.
-				In that case the outcome is consistent.
+				date type="string" When this mode is set the value sent to the server on submit is serialized as UTC ISO 8061 string (e.g. "2016-11-03T14:08:08.504Z").
+					The value method returns a Date object. Both enableUTCDates and timeOffset options work only when this mode is used. That is used as default mode.
+					Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
+				localDate type="string" When this mode is set the value sent to the server on submit is serialized as local ISO 8061 string (e.g. "2009-06-15T13:45:30.0000000+0300").
+					The value method returns a Date object.
+					Note: This mode is useful when the server is interested in the time zone of the client or when both are expected to operate within the same time zone.
+					For the latter case, it is recommended that this option is used with an local date value (e.g. "2009-06-15T13:45:30.0000000+0300") so the outcome is consistent.
 				displayModeText type="string" The "text" in display mode (no focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 				editModeText type="string" The "text" in edit mode (focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 			*/
@@ -7549,14 +7574,14 @@
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
-					offset: 180
+					timeOffset: 180
 				});
 
 				//Get
-				var offset = $(".selector").%%WidgetName%%("option", "offset");
+				var timeOffset = $(".selector").%%WidgetName%%("option", "timeOffset");
 			```
 			*/
-			offset: 0,
+			timeOffset: 0,
 			/*type="clear|spin" Gets visibility of the spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
 				```
 					//Initialize
@@ -7649,7 +7674,7 @@
 			```
 			*/
 			yearShift: 0,
-			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
+			/* type="string|number|date|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7710,7 +7735,7 @@
 			$.ui.igMaskEditor.prototype._create.call(this);
 		},
 		_initialize: function () {
-			var offset = this.options.offset;
+			var offset = this.options.timeOffset;
 			this._super();
 			this._applyRegionalSettings();
 			this.options.inputMask =
@@ -7759,7 +7784,7 @@
 					break;
 				case "dateInputFormat":
 				case "enableUTCDates":
-				case "offset": {
+				case "timeOffset": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
@@ -7895,7 +7920,7 @@
 		// date DateObject
 		_getDateField: function (flag, date) {
 			var utc = this.options.enableUTCDates,
-				offset = this.options.offset,
+				offset = this.options.timeOffset,
 				shift = this.options.yearShift, year;
 
 				if (!date) {
@@ -8905,16 +8930,17 @@
 				this._serializeDate();
 			}
 		},
-		_clearValue: function () { //DateEditor
-			// TODO
+		_clearValue: function (textOnly) { //DateEditor
+			var newValue = "", maskedValue = this._maskWithPrompts;
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
-				if (this.options.nullValue === null) {
-					this._editorInput.val(this._maskWithPrompts);
+				newValue = this.options.nullValue;
+				if (newValue instanceof Date) {
+					maskedValue = this._updateMaskedValue(this.options.nullValue, true);
 				}
-			} else {
-				this._updateValue("");
-				this._editorInput.val(this._maskWithPrompts);
+			}
+			this._editorInput.val(maskedValue);
+			if (!textOnly) {
+				this._updateValue(newValue);
 			}
 			if (this._editMode === false) {
 				this._exitEditMode();
@@ -8936,7 +8962,7 @@
 				maskedVal = this._maskedValue ? this._maskedValue : this._maskWithPrompts,
 				dataMode = this.options.dataMode,
 				utc = this.options.enableUTCDates,
-				offset = this.options.offset;
+				offset = this.options.timeOffset;
 
 			switch (dataMode) {
 				case "date": {
@@ -8990,11 +9016,11 @@
 		},
 		_getDateOffset: function() {
 			var date = new Date(this._dateObjectValue.getTime());
-			date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + this.options.offset);
+			date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + this.options.timeOffset);
 			return date;
 		},
 		_setDateOffset: function(date) {
-			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.offset);
+			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.timeOffset);
 		},
 		_createRegionalDate: function(date) {
 			date = this._createUTCDates(date.addHours(date.getTimezoneOffset()));
@@ -9026,7 +9052,7 @@
 					dateField = dateField.replace(regExpr, "");
 				}
 				if (dateField !== "") {
-					dateField = parseInt(dateField);
+					dateField = parseInt(dateField, 10);
 					if (dateField <= 0) {
 						//0 is not valid date
 						dateField = null;
@@ -9045,7 +9071,7 @@
 					monthField = monthField.replace(regExpr, "");
 				}
 				if (monthField !== "") {
-					monthField = parseInt(monthField);
+					monthField = parseInt(monthField, 10);
 					if (monthField <= 0) {
 						monthField = null;
 					} else {
@@ -9071,7 +9097,7 @@
 					yearField = yearField.replace(regExpr, "");
 				}
 				if (yearField !== "") {
-					yearField = parseInt(yearField);
+					yearField = parseInt(yearField, 10);
 					yearField = this._fillCentury(yearField);
 				} else {
 					yearField = null;
@@ -9101,7 +9127,7 @@
 					hourField = hourField.replace(regExpr, "");
 				}
 				if (hourField !== "") {
-					hourField = parseInt(hourField);
+					hourField = parseInt(hourField, 10);
 					if (this._dateIndices.hh24 === false) {
 						if (midDayField && midDayField === "p") {
 
@@ -9129,7 +9155,7 @@
 					minutesField = minutesField.replace(regExpr, "");
 				}
 				if (minutesField !== "") {
-					minutesField = parseInt(minutesField);
+					minutesField = parseInt(minutesField, 10);
 				} else {
 					minutesField = null;
 				}
@@ -9144,7 +9170,7 @@
 					secondsField = secondsField.replace(regExpr, "");
 				}
 				if (secondsField !== "") {
-					secondsField = parseInt(secondsField);
+					secondsField = parseInt(secondsField, 10);
 
 				} else {
 					secondsField = null;
@@ -9166,9 +9192,9 @@
 						ffCount = this._dateIndices.ffLength - millisecondsField.length;
 
 						// If the user has entered 1 in 3 digit field - the value is converted into 300
-						millisecondsField = parseInt(millisecondsField) * Math.pow(10, ffCount);
+						millisecondsField = parseInt(millisecondsField, 10) * Math.pow(10, ffCount);
 					}
-					millisecondsField = parseInt(millisecondsField);
+					millisecondsField = parseInt(millisecondsField, 10);
 					if (this._dateIndices.ffLength === 2) {
 						millisecondsField *= 10;
 					} else if (this._dateIndices.ffLength === 1) {
@@ -9253,7 +9279,7 @@
 				extractedDate =
 					this._setDateField("milliseconds", extractedDate, millisecondsField);
 			}
-			if (this.options.offset !== 0) {
+			if (this.options.timeOffset !== 0) {
 				this._setDateOffset(extractedDate);
 			}
 			return extractedDate;

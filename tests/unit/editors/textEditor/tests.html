@@ -630,7 +630,7 @@
 			}, 500);
 		});
 		testId = "Keyboard/Mouse testing";
-		test(testId, 16, function () {
+		test(testId, 17, function () {
 			var listEditor = $("#listEditor"),
 				listContainer = listEditor.igTextEditor("editorContainer"),
 				listInput = listEditor.igTextEditor("field"),
@@ -692,7 +692,10 @@
 
 			listDDBtn.click();
 			listClearBtn.click();
-			equal(listEditor.igTextEditor("value"), "", "the item 1 should be cleared");
+			
+			equal(listInput.val(), "", "the item 1 should be cleared");
+			listInput.blur();
+			equal(listEditor.igTextEditor("value"), "", "the item 1 value should be cleared");
 			listDDBtn.click(); // close dropdown
 			listInput.val("item2");
 			keyInteraction(13, listInput);

@@ -796,6 +796,7 @@
 
 				mouseenter: $.proxy(this._onMouseEnterContainer, this),
 				mouseleave: $.proxy(this._onMouseLeaveContainer, this),
+				dragstart: $.proxy(this._onDragStartElem, this),
 
 				keydown: $.proxy(this._onKeyDown, this)
 			};
@@ -2603,6 +2604,7 @@
 
 			if (this._vBarContainer) {
 				this._vBarContainer.on({
+					dragstart: $.proxy(this._onDragStartElem, this),
 					wheel: $.proxy(this._onWheelContainer, this),
 					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
 					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this)
@@ -3082,6 +3084,7 @@
 
 			if (this._hBarContainer) {
 				this._hBarContainer.on({
+					dragstart: $.proxy(this._onDragStartElem, this),
 					wheel: $.proxy(this._onWheelContainer, this),
 					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
 					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this)
@@ -3712,6 +3715,11 @@
 
 		_enableContentSelection: function () {
 			this._container.removeClass(this.css.disabledSelection);
+		},
+
+		_onDragStartElem: function (event) {
+			/* Prevent dragging of that element due to causing some unwanted behaviour */
+			event.preventDefault();
 		},
 
 		destroy: function () {
