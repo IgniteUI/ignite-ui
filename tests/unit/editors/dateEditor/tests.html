@@ -1361,10 +1361,9 @@
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					timeOffset: 420
 				});
-				checkValue = new Date(2009, 09, 30, 20, 34, 30);
-				debugger;
+				checkValue = new Date(2016, 09, 30, 20, 25, 56);
 				equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 30, 16, 25, 56).getTime(), "The internal date object is not correct");
+				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 30, 15, 25, 56).getTime(), "The internal date object is not correct");
 				equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 20:25:56", "The display value is not correct");
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
 				
