@@ -770,13 +770,18 @@
 			this.options.value = value;
 		}, //BaseEditor
 		//This method sets the value to null, or empty string depending on the nullable option.
-		_clearValue: function () {
+		_clearValue: function (textOnly) {
+			var newValue = "";
 
 			// TODO use null, or 0 depending on the nullable option
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
+			}
+
+			if (textOnly) {
+				this._editorInput.val(newValue);
 			} else {
-				this._updateValue("");
+				this._updateValue(newValue);
 			}
 		},
 		_detachEvents: function () {
@@ -787,7 +792,6 @@
 				this._detachListEvents();
 			}
 
-			// https://css-tricks.com/namespaced-events-jquery/
 			this._editorContainer
 				.off("mousedown.editor mouseup.editor mouseover.editor mouseout.editor");
 		},
@@ -2956,20 +2960,21 @@
 						this._currentInputTextValue = this._editorInput.val();
 
 						//A.M. 3 November 2016 #447 "valueChanged event fired when pressing the close button even if the editor is empty"
-						if (this._currentInputTextValue === "")
+						if (this._editorIsCleared())
 						{
 							if (!this.options.allowNullValue) {
 								this._clearValue();
 							}
 							return;
 						}
-						this._clearValue();
-						this._processTextChanged();
 						if (!this._editMode) {
+							this._clearValue();
 							this._exitEditMode();
 							this._triggerValueChanged();
 						} else {
-							this._enterEditMode();
+							this._clearValue(true);
+							this._processTextChanged();
+							this._positionCursor();
 						}
 
 					}
@@ -3541,8 +3546,8 @@
 			}
 			this._timeouts.push(target._spinTimeOut);
 		},
-		_clearValue: function () {
-			this._super();
+		_clearValue: function (textOnly) {
+			this._super(textOnly);
 			if (this._dropDownList &&
 				this._dropDownList.children(".ui-igedit-listitemselected").length > 0) {
 				this._dropDownList.children(".ui-igedit-listitemselected")
@@ -4959,9 +4964,10 @@
 			this._setSpinButtonsState(newValue);
 			this._processTextChanged();
 		},
-		_clearValue: function () { //Numeric Editor
+		_clearValue: function (textOnly) { //Numeric Editor
+			var newValue;
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
 				if (this.options.nullValue === null) {
 					this._editorInput.val("");
 				} else {
@@ -4971,17 +4977,20 @@
 
 				// If the min value is different from zero, we clear the value with the minimum value.
 				if (this.options.minValue && this.options.minValue > 0) {
-					this._updateValue(this.options.minValue);
+					newValue = this.options.minValue;
 					this._editorInput.val(this.options.minValue);
 				} else if (this.options.maxValue && this.options.maxValue < 0) {
-					this._updateValue(this.options.maxValue);
+					newValue = this.options.maxValue;
 					this._editorInput.val(this.options.maxValue);
 				} else {
 					if (this.value()) {
-						this._updateValue(0);
+						newValue = 0;
 						this._editorInput.val(0);
 					}
 				}
+			}
+			if (!textOnly && newValue !== undefined) {
+				this._updateValue(newValue);
 			}
 			if (this.dropDownContainer() &&
 				this.dropDownContainer().children(".ui-igedit-listitemselected").length > 0) {
@@ -6806,6 +6815,21 @@
 				this._valueInput.val(this.options.value);
 			}
 		},
+		_clearValue: function (textOnly) { //igMaskEditor
+			var newValue = "";
+			if (this.options.allowNullValue) {
+				newValue = this.options.nullValue;
+				this._editorInput.val(this._parseValueByMask(newValue));
+			} else {
+				this._editorInput.val(this._maskWithPrompts);
+			}
+			if (!textOnly) {
+				this._updateValue(newValue);
+			}
+			if (this._editMode === false) {
+				this._exitEditMode();
+			}
+		},
 		_getDisplayValue: function () { //igMaskEditor
 			var result, maskedVal = this._maskedValue,
 				i, j, p, maskChar, tempChar, index, regExpr,
@@ -6930,7 +6954,8 @@
 		_validateRequiredPrompts: function (value) {
 			var i;
 			if (value === "") {
-				return false;
+				// D.P. Ignore empty value
+				return true;
 			}
 			for (i = 0; i < this._requiredIndeces.length; i++) {
 				var ch = value.charAt(this._requiredIndeces[ i ]);
@@ -7638,7 +7663,7 @@
 			```
 			*/
 			yearShift: 0,
-			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
+			/* type="string|number|date|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -8866,16 +8891,17 @@
 				}
 			}
 		},
-		_clearValue: function () { //DateEditor
-			// TODO
+		_clearValue: function (textOnly) { //DateEditor
+			var newValue = "", maskedValue = this._maskWithPrompts;
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
-				if (this.options.nullValue === null) {
-					this._editorInput.val(this._maskWithPrompts);
+				newValue = this.options.nullValue;
+				if (newValue instanceof Date) {
+					maskedValue = this._updateMaskedValue(this.options.nullValue, true);
 				}
-			} else {
-				this._updateValue("");
-				this._editorInput.val(this._maskWithPrompts);
+			}
+			this._editorInput.val(maskedValue);
+			if (!textOnly) {
+				this._updateValue(newValue);
 			}
 			if (this._editMode === false) {
 				this._exitEditMode();
@@ -8957,7 +8983,7 @@
 					dateField = dateField.replace(regExpr, "");
 				}
 				if (dateField !== "") {
-					dateField = parseInt(dateField);
+					dateField = parseInt(dateField, 10);
 					if (dateField <= 0) {
 						//0 is not valid date
 						dateField = null;
@@ -8976,7 +9002,7 @@
 					monthField = monthField.replace(regExpr, "");
 				}
 				if (monthField !== "") {
-					monthField = parseInt(monthField);
+					monthField = parseInt(monthField, 10);
 					if (monthField <= 0) {
 						monthField = null;
 					} else {
@@ -9002,7 +9028,7 @@
 					yearField = yearField.replace(regExpr, "");
 				}
 				if (yearField !== "") {
-					yearField = parseInt(yearField);
+					yearField = parseInt(yearField, 10);
 					yearField = this._fillCentury(yearField);
 				} else {
 					yearField = null;
@@ -9032,7 +9058,7 @@
 					hourField = hourField.replace(regExpr, "");
 				}
 				if (hourField !== "") {
-					hourField = parseInt(hourField);
+					hourField = parseInt(hourField, 10);
 					if (this._dateIndices.hh24 === false) {
 						if (midDayField && midDayField === "p") {
 
@@ -9060,7 +9086,7 @@
 					minutesField = minutesField.replace(regExpr, "");
 				}
 				if (minutesField !== "") {
-					minutesField = parseInt(minutesField);
+					minutesField = parseInt(minutesField, 10);
 				} else {
 					minutesField = null;
 				}
@@ -9075,7 +9101,7 @@
 					secondsField = secondsField.replace(regExpr, "");
 				}
 				if (secondsField !== "") {
-					secondsField = parseInt(secondsField);
+					secondsField = parseInt(secondsField, 10);
 
 				} else {
 					secondsField = null;
@@ -9097,9 +9123,9 @@
 						ffCount = this._dateIndices.ffLength - millisecondsField.length;
 
 						// If the user has entered 1 in 3 digit field - the value is converted into 300
-						millisecondsField = parseInt(millisecondsField) * Math.pow(10, ffCount);
+						millisecondsField = parseInt(millisecondsField, 10) * Math.pow(10, ffCount);
 					}
-					millisecondsField = parseInt(millisecondsField);
+					millisecondsField = parseInt(millisecondsField, 10);
 					if (this._dateIndices.ffLength === 2) {
 						millisecondsField *= 10;
 					} else if (this._dateIndices.ffLength === 1) {
