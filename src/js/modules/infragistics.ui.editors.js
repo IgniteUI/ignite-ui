@@ -9004,16 +9004,6 @@
 						date.getUTCHours(), date.getUTCMinutes(),
 						date.getUTCSeconds(), date.getUTCMilliseconds());
 		},
-		_setDateUTC: function(date) {
-			this._dateObjectValue = this._createUTCDate(date);
-		},
-		_createUTCDate: function(date) {
-			return new Date(Date.UTC(
-						date.getFullYear(),
-						date.getMonth(), date.getDate(),
-						date.getHours(), date.getMinutes(),
-						date.getSeconds(), date.getMilliseconds()));
-		},
 		_getDateOffset: function() {
 			var date = new Date(this._dateObjectValue.getTime());
 			date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + this.options.timeOffset);
@@ -9021,9 +9011,6 @@
 		},
 		_setDateOffset: function(date) {
 			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.timeOffset);
-		},
-		_createRegionalDate: function(date) {
-			date = this._createUTCDates(date.addHours(date.getTimezoneOffset()));
 		},
 		_parseDateFromMaskedValue: function (value) {
 			var dateField, monthField, yearField, hourField, minutesField, secondsField,
