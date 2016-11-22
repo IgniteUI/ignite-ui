@@ -1400,7 +1400,7 @@
 			function formatISODateString(dateString) {
 				var timeZoneOffset = new Date(dateString).getTimezoneOffset();
 
-				if (timeZoneOffset < 0 ) {
+				if (timeZoneOffset <= 0 ) {
 					dateString = dateString + "+";
 				} else {
 					dateString = dateString + "-";
