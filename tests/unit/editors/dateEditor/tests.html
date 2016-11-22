@@ -1289,8 +1289,8 @@
 			});
 
 			var testId = 'Testing date formats with UTC enabled';
-			test(testId, 28, function () {
-				var $dtEditor;
+			test(testId, 24, function () {
+				var $dtEditor, utcDate;
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
 					enableUTCDates: true,
@@ -1299,8 +1299,9 @@
 				typeInInput("30/10/2009 10:25:56", $dtEditor.igDateEditor("field"));
 				$dtEditor.trigger("blur");
 				checkValue = new Date(2009, 09, 30, 10, 25, 56);
+				timeZoneOffset = new Date(2009, 09, 30, 10, 25, 56).getTimezoneOffset();
 				equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2009, 09, 30, 12, 25, 56).getTime(), "The internal date object is not correct");
+				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2009, 09, 30, 10 - timeZoneOffset/60, 25, 56).getTime(), "The internal date object is not correct");
 				equal($dtEditor.igDateEditor("displayValue"), "30/10/2009 10:25:56", "The display value is not correct");
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2009-10-30T10:25:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
@@ -1311,22 +1312,23 @@
 					enableUTCDates: true
 				});
 				checkValue = new Date(2016, 09, 30, 13, 25, 56);
+				timeZoneOffset = new Date(2009, 09, 30, 13, 25, 56).getTimezoneOffset();
 				equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 30, 15, 25, 56).getTime(), "The internal date object is not correct");
+				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 30, 13 - timeZoneOffset/60, 25, 56).getTime(), "The internal date object is not correct");
 				equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 13:25:56", "The display value is not correct");
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
-				$dtEditor.igDateEditor("value", new Date(Date.UTC(2016, 09, 25, 12, 0, 0)));
+				utcDate = new Date(Date.UTC(2016, 09, 25, 12, 0, 0));
+				$dtEditor.igDateEditor("value", utcDate);
 				checkValue = new Date(2016, 09, 25, 12, 0, 0);
 				equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 25, 15, 0, 0).getTime(), "The internal date object is not correct");
+				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), utcDate.getTime(), "The internal date object is not correct");
 				equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 12:00:00", "The display value is not correct");
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-25T12:00:00.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.igDateEditor("value", new Date(2016, 09, 25, 12, 0, 0));
-				checkValue = new Date(2016, 09, 25, 9, 0, 0);
+				timeZoneOffset = new Date(2016, 09, 25, 12, 0, 0).getTimezoneOffset();
+				checkValue = new Date(2016, 09, 25, 12 + timeZoneOffset/60, 0, 0);
 				equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
 				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 25, 12, 0, 0).getTime(), "The internal date object is not correct");
-				equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 09:00:00", "The display value is not correct");
-				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-25T09:00:00.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
@@ -1335,22 +1337,23 @@
 					enableUTCDates: true
 				});
 				checkValue = new Date(2016, 09, 30, 13, 25, 56);
+				timeZoneOffset = new Date(2009, 09, 30, 13, 25, 56).getTimezoneOffset();
 				equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 30, 15, 25, 56).getTime(), "The internal date object is not correct");
+				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 30, 13 - timeZoneOffset/60, 25, 56).getTime(), "The internal date object is not correct");
 				equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 13:25:56", "The display value is not correct");
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
-				$dtEditor.igDateEditor("value", new Date(Date.UTC(2016, 09, 25, 12, 0, 0)));
+				utcDate = new Date(Date.UTC(2016, 09, 25, 12, 0, 0));
+				$dtEditor.igDateEditor("value", utcDate);
 				checkValue = new Date(2016, 09, 25, 12, 0, 0);
 				equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
-				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 25, 15, 0, 0).getTime(), "The internal date object is not correct");
+				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), utcDate.getTime(), "The internal date object is not correct");
 				equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 12:00:00", "The display value is not correct");
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-25T12:00:00.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.igDateEditor("value", new Date(2016, 09, 25, 12, 0, 0));
-				checkValue = new Date(2016, 09, 25, 9, 0, 0);
+				timeZoneOffset = new Date(2016, 09, 25, 12, 0, 0).getTimezoneOffset();
+				checkValue = new Date(2016, 09, 25, 12 + timeZoneOffset/60, 0, 0);
 				equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
 				equal($dtEditor.igDateEditor("getSelectedDate").getTime(), new Date(2016, 09, 25, 12, 0, 0).getTime(), "The internal date object is not correct");
-				equal($dtEditor.igDateEditor("displayValue"), "25/10/2016 09:00:00", "The display value is not correct");
-				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-25T09:00:00.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 			});
 
