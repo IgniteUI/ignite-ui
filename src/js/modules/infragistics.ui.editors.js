@@ -7745,9 +7745,12 @@
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
 			if (this.options.enableUTCDates && offset !== 0) {
+				this.options.timeOffset = 0;
 				console.log($.ig.Editor.locale.dateEditorUTCOffset);
 			}
 			if (this.options.dataMode === "localDate" && (this.options.enableUTCDates || offset !== 0)) {
+				this.options.enableUTCDates = false;
+				this.options.timeOffset = 0;
 				console.log($.ig.Editor.locale.dateEditorLocalDateUTCOffset);
 			}
 			if (offset > 840 || offset < -720) {
