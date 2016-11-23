@@ -1232,7 +1232,9 @@
 
 		testId = "cover _handleSpinUpEvent/_handleSpinDownEvent";
 		test(testId, 11, function () {
-			$("#inputEditor2").igNumericEditor({
+			var $editor2 = $('<input id="inputEditor2" />')
+			.appendTo("#testBedContainer")
+			.igNumericEditor({
 				value: 10,
 				numericMaxDecimals: 4,
 				numericMinDecimals: 2,
@@ -1241,7 +1243,33 @@
 				spinDelta: 1
 			});
 
-			$("#inputEditor3").igNumericEditor({
+			var $editor3 = $('<input id="listEditor3" />')
+						.appendTo("#testBedContainer")
+						.igNumericEditor({
+							value: .1,
+							numericMaxDecimals: 8,
+							numericMinDecimals: 8,
+							selectionOnFocus: "atStart",
+							decimalSeparator: ".",
+							spinDelta: 0.1,
+							dataMode: "double",
+							buttonType: "spin"
+						});
+
+			var $editor4 = $('<input id="listEditor4" />')
+			.appendTo("#testBedContainer")
+			.igNumericEditor({
+				value: 10,
+				numericMaxDecimals: 4,
+				numericMinDecimals: 2,
+				selectionOnFocus: 0,
+				decimalSeparator: ",",
+				spinDelta: 1
+			});
+
+			var $editor5 = $('<input id="listEditor5" />')
+			.appendTo("#testBedContainer")
+			.igNumericEditor({
 				value: .1,
 				numericMaxDecimals: 8,
 				numericMinDecimals: 8,
@@ -1252,30 +1280,9 @@
 				buttonType: "spin"
 			});
 
-			$("#inputEditor4").igNumericEditor({
-				value: 10,
-				numericMaxDecimals: 4,
-				numericMinDecimals: 2,
-				selectionOnFocus: 0,
-				decimalSeparator: ",",
-				spinDelta: 1
-			});
-
-			$("#inputEditor5").igNumericEditor({
-				value: .1,
-				numericMaxDecimals: 8,
-				numericMinDecimals: 8,
-				selectionOnFocus: "atStart",
-				decimalSeparator: ".",
-				spinDelta: 0.1,
-				dataMode: "double",
-				buttonType: "spin"
-			});
-
-			var $editor2 = $("#inputEditor2"),
-				containerInput = $('#inputEditor2').igNumericEditor("field"),
-				val = $("#inputEditor2").igNumericEditor("value"),
-				spinDelta = $("#inputEditor2").igNumericEditor("option", "spinDelta");
+			var containerInput = $editor2.igNumericEditor("field"),
+				val = $editor2.igNumericEditor("value"),
+				spinDelta = $editor2.igNumericEditor("option", "spinDelta");
 				
 
 			//Cover switch cases for _handleSpinUpEvent/_handleSpinDownEvent 
@@ -1296,8 +1303,7 @@
 			equal($editor2.igNumericEditor("displayValue"), "11", "displayValue is not correct after spin");
 			
 			//test integer case
-			var $editor3 = $("#inputEditor3"),
-				containerInput = $editor3.igNumericEditor("field"),
+			var containerInput = $editor3.igNumericEditor("field"),
 				decimalSeparator = $editor3.igNumericEditor("option", "decimalSeparator"),
 				value = containerInput.val(),
 				val = $editor3.igNumericEditor("value");				
@@ -1308,8 +1314,7 @@
 			ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");
 
 			//_handleSpinDownEvent ---------------------------------------------------------------------------->>
-			var $editor4 = $("#inputEditor4"),
-				containerInput = $('#inputEditor4').igNumericEditor("field"),
+			var containerInput = $editor4.igNumericEditor("field"),
 				val = $editor4.igNumericEditor("value");
 				spinDelta = $editor4.igNumericEditor("option", "spinDelta");
 
@@ -1329,8 +1334,7 @@
 			equal($editor4.igNumericEditor("displayValue"), "9", "displayValue is not correct after spin");
 
 			//test integer case
-			var $editor5 = $("#inputEditor5"),
-				containerInput = $('#inputEditor5').igNumericEditor("field"),
+			var containerInput = $editor5.igNumericEditor("field"),
 				decimalSeparator = $editor5.igNumericEditor("option", "decimalSeparator"),
 				value = containerInput.val(),
 				val = $editor5.igNumericEditor("value");
@@ -1598,12 +1602,6 @@
 		<input id="clearButton_439"/>
 		<br />
 		<div id="issue226939"></div>
-		<br />
-		<input id="inputEditor2">
-		<input id="inputEditor3" />
-		<br />
-		<input id="inputEditor4" />
-		<input id="inputEditor5" />
 	</div>
 </body>
 </html>
