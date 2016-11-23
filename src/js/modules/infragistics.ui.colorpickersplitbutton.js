@@ -42,11 +42,45 @@
    */
     $.widget("ui.igColorPickerSplitButton", $.ui.igSplitButton, {
         options: {
-            /* type="array" Button items. */
+            /* type="array" Button items.
+            ```
+            // Initialize
+            $(".selector").igColorPickerSplitButton({
+                items: [{
+                    name: "textColor",
+                    label: "Font Color",
+                    iconClass: "ui-igbutton-forecolor"
+                }]
+            });
+            // Get
+            var items = $(".selector").igColorPickerSplitButton("option", "items");
+            ```
+            */
             items: [],
-            /* type="string" Default color. */
+            /* type="string" Gets/sets the button default color value.
+            ```
+            // Initialize
+            $(".selector").igColorPickerSplitButton({
+                defaultColor: "rgb(255, 255, 255)";
+            });
+            // Get
+            var defaultColor = $(".selector").igColorPickerSplitButton("option", "defaultColor");
+            // Set
+            $(".selector").igColorPickerSplitButton("option", "defaultColor", "#000");
+
+            ```
+            */
             defaultColor: "#000",
-            /* type="boolean" With or withour icon. */
+            /* type="boolean" If this option is set to true, the igColorPickerSplitButton will be rendered with an icon.
+            ```
+            // Initialize
+            $(".selector").igColorPickerSplitButton({
+                hasDefaultIcon: false;
+            });
+            // Get
+            var defaultIcon = $(".selector").igColorPickerSplitButton("option", "hasDefaultIcon");
+            ```
+            */
             hasDefaultIcon: true
         },
         _create: function () {
@@ -116,7 +150,7 @@
         _preventCollapsing: function () {
             return false;
         },
-         _setOption: function( key, value ) {
+        _setOption: function( key, value ) {
             var options = this.options,
                 self = this;
 
@@ -133,8 +167,12 @@
             }
         },
         setColor: function (color) {
-            /*Sets the color of the split button
-                paramType="<string>" optional="<false>" The HEX value of the color to be setted.
+            /* Sets the color of the split button
+            ```
+            $(".selector").igColorPickerSplitButton("setColor", "#f12cf0);
+            ```
+            paramType="string" optional="false" The color value to be set.
+            returnType="object" Returns reference to the igColorPickerSplitButton.
             */
             this._options.itemsList.igColorPicker("selectColor", color);
             this._setButtonColorIndicator(color);
@@ -142,7 +180,12 @@
             this.collapse();
         },
         collapse: function (e) {
-            /* Collapse the widget. */
+            /* Collapse the widget.
+                        ```
+            $(".selector").igColorPickerSplitButton("collapse");
+            ```
+            returnType="object" Returns reference to the igColorPickerSplitButton.
+            */
             var _opt = this._options;
 
             _opt.popover.igPopover("hide");
@@ -155,7 +198,12 @@
             }
         },
         expand: function (e) {
-            /* Expands the widget. */
+            /* Expands the widget.
+            ```
+            $(".selector").igColorPickerSplitButton("expand");
+            ```
+            returnType="object" Returns reference to the igColorPickerSplitButton.
+            */
             var _opt = this._options;
 
             _opt.popover.igPopover("show", this.element);
@@ -167,7 +215,12 @@
             }
         },
         destroy: function () {
-            /* Destroys the widget. */
+            /* Destroys the widget.
+            ```
+            $(".selector").igColorPickerSplitButton("destroy");
+            ```
+            returnType="object" Returns reference to the element the widget was initialized on.
+            */
             $.ui.igSplitButton.prototype.destroy.apply(this, arguments);
         }
     });
