@@ -310,13 +310,13 @@
 				field.val("12:12 AM");
 				editor.blur();
 				var today = new Date();
-				var expectedDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, 0));
+				var expectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, 0);
 				equal(editor.igDatePicker("value").getTime(), expectedDate.getTime(), "The value is not set");
 
 			    var dp = $("#datePickerUTC"), newDate;
 
                 // Bug #212365 - Set value correctly in UTC mode.
-			    dp.igDatePicker("value", "7/1/2000");
+			    dp.igDatePicker("value", new Date(Date.UTC(2000, 6, 1)));
 			    newDate = new Date(dp.igDatePicker("value"));
 			    equal(newDate.getFullYear(), 2000, "Year is not set correctly");
 			    equal(newDate.getMonth(), 6, "Year is not set correctly");
