@@ -617,7 +617,7 @@
 				$("#208350Editor1").igDateEditor("field").blur();
 				equal($("#208350Editor1").igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 				$("#208350Editor1").igDateEditor("field").focus();
-				equal($("#208350Editor1").igDateEditor("value").getTime(), "1476527156000", "The value is changed to 15/10/2016 10:25:56");
+				equal($("#208350Editor1").igDateEditor("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 15/10/2016 10:25:56");
 
 
 				equal($("#208350Editor1").igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
@@ -626,7 +626,7 @@
 				$("#208350Editor2").igDatePicker("field").blur();
 				equal($("#208350Editor2").igDatePicker("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 				$("#208350Editor2").igDatePicker("field").focus();
-				equal($("#208350Editor2").igDatePicker("value").getTime(), "1476527156000", "The value is changed to 1476527156000");
+				equal($("#208350Editor2").igDatePicker("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 1476527156000");
 			});
 			testId = 'Bug 208356';
 			test(testId, 1, function () {
