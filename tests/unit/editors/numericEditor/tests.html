@@ -1130,13 +1130,17 @@
 
 		testId = '_processInternalValueChanging';
 		test(testId, 7, function () {
-			$("#privateFuncEditor").igNumericEditor({
+			var $editor = $('<input id="privateFuncEditor" />')
+				.appendTo("#testBedContainer")
+				.igNumericEditor({
 				allowNullValue: true,
 				revertIfNotValid: false,
 				minValue: 1
 			})
 
-			$("#privateFuncEditor1").igNumericEditor({
+			var $editor1 = $('<input id="privateFuncEditor1" />')
+				.appendTo("#testBedContainer")
+				.igNumericEditor({
 				allowNullValue: false,
 				revertIfNotValid: false,
 				minValue: -5,
@@ -1192,7 +1196,9 @@
 
 		testId = 'selectListIndexDown/Up';
 		test(testId, 4, function () {
-			$("#listEditor2").igNumericEditor({
+			var $editor = $('<div id="listEditor2"></div>')
+			.appendTo("#testBedContainer")
+			.igNumericEditor({
 				buttonType: "dropdown,spin,clear,nonvalid",
 				width: 200,
 				listWidth: 200,
@@ -1204,24 +1210,24 @@
 				spinDelta: 1
 			});
 
-			var $editor = $('#listEditor2'), list = $('#listEditor2').igNumericEditor("dropDownContainer"),
+				var list = $editor.igNumericEditor("dropDownContainer"),
 				ddButton = $editor.igNumericEditor("dropDownButton"),
 				editorInput = $('#listEditor2 input');
-			ddButton.click();
+				ddButton.click();
 
-			item1 = list.children(".ui-igedit-listitem")[0];
-			$(item1).click();
-			equal($editor.outerWidth(), 200, "The width of the container is not set to 200px");
-			equal($editor.outerHeight(), 20, "The heigth of the container is not set to 20px");
-			$editor.igNumericEditor("selectListIndexUp");
-			editorInput.trigger("blur");
-			equal($('#listEditor2 input')[1].value, "2", "Expected index not 2");
-			
-			$editor.igNumericEditor("selectListIndexDown");
-			editorInput.trigger("blur");
-			equal($('#listEditor2 input')[1].value, "1", "Expected index not 1");
+				item1 = list.children(".ui-igedit-listitem")[0];
+				$(item1).click();
+				equal($editor.outerWidth(), 200, "The width of the container is not set to 200px");
+				equal($editor.outerHeight(), 20, "The heigth of the container is not set to 20px");
+				$editor.igNumericEditor("selectListIndexUp");
+				editorInput.trigger("blur");
+				equal($('#listEditor2 input')[1].value, "2", "Expected index not 2");
 
-			$editor.remove();
+				$editor.igNumericEditor("selectListIndexDown");
+				editorInput.trigger("blur");
+				equal($('#listEditor2 input')[1].value, "1", "Expected index not 1");
+
+				$editor.remove();
 		});
 
 		testId = "cover _handleSpinUpEvent/_handleSpinDownEvent";
@@ -1434,7 +1440,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input type="text" id="inputEditor1" />
 		<div id="divEditor1"></div>
 
@@ -1541,7 +1547,6 @@
 		<div id="listEditor"></div>
 		<div id="listEditor1"></div>
 		<br />
-		<div id="listEditor2"></div>
 		<div id="pasteEditor"></div>
 		<br />
 		<input id="disabledEditor" type="text" name="disabledEditor" tabindex="1" disabled=disabled readonly=readonly value="disabled" /></input>
@@ -1593,12 +1598,6 @@
 		<input id="clearButton_439"/>
 		<br />
 		<div id="issue226939"></div>
-		<br />
-		_processInternalValueChanging
-		<br />
-		<input id="privateFuncEditor" />
-		<br />
-		<input id="privateFuncEditor1" />
 		<br />
 		<input id="inputEditor2">
 		<input id="inputEditor3" />
