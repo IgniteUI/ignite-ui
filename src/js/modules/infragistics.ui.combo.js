@@ -2109,7 +2109,8 @@
 				markup, escapedValue;
 
             // Z.K. 27/08/2015 Bug #205313 - Not possible to select item because of illegal special characters encoding
-            escapedValue = $.ig.encode(value);
+            // R.K. 24 November 2016 #543 - Cannot select an item from drop down list when you set HTML character entity reference to a datasource item
+            escapedValue = $.ig.util.escapeHtmlTags($.ig.encode(value));
             markup = '<li class="' + css.listItem + '" data-value="' +
                 escapedValue + '" unselectable="on">';
 
