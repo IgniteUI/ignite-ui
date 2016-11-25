@@ -731,7 +731,7 @@
 		});
 		
 		testId = "Lists testing";
-		test(testId, 24, function () {
+		test(testId, 25, function () {
 			var container = $('#listEditor'), list = $('#listEditor').igNumericEditor("dropDownContainer"), opening = false, opened = false, closing = false, closed = false,
 				itemselecting = false, itemselected = false, valueChanging = false, valueChanged = false, textChanged = false,
 				ddButton = container.igNumericEditor("dropDownButton"), item1, editorInput = $('#listEditor input');
@@ -828,11 +828,19 @@
 					editorInput.trigger("focus");
 					$.ig.TestUtil.paste(editorInput[0], "1");
 					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");
+
+					//test values outside of the set list of values + isLimitedToListValues: true. 
+					//it is expected to have the value method apply values outside of the list
+					$editor = $('#listEditor');
+					$editor.igNumericEditor("option", "isLimitedToListValues", true);
+					$editor.igNumericEditor("value", "7");
+					equal($editor.igNumericEditor("value"), 7, "public value method does not set value outside of list of values");
 				}, 100);
 			}, 100);
 
 			ok($("#listEditor").igNumericEditor("findListItemIndex"), -1, "Must be -1 if no search param is passed");
 			ok($("#listEditor").igNumericEditor("findListItemIndex", 2), 1, "Expected item index is 1");
+
 		});
 		
 		
