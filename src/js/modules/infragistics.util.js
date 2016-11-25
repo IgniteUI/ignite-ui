@@ -5359,20 +5359,6 @@
 		return str.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, "\\$1");
 	};
 
-	// Escape all html tags in given html element content
-	$.ig.util.escapeHtmlTags = function (htmlElemContent) {
-		if (typeof(htmlElemContent) === "string") {
-			return htmlElemContent
-				.replace(/&/g, "&amp;")
-				.replace(/</g, "&lt;")
-				.replace(/>/g, "&gt;")
-				.replace(/"/g, "&quot;")
-				.replace(/'/g, "&#039;");
-		} else {
-			return htmlElemContent;
-		}
-	};
-
 	$.ig.util.replace = function (str, oldValue, newValue) {
 		return str.replace(new RegExp($.ig.util.escapeRegExp(oldValue), "g"), newValue);
 	};
