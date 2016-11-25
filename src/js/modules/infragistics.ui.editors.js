@@ -8970,8 +8970,8 @@
 			} else {
 				newDate = new Date(date.getTime());
 			}
-			newDate.setMinutes(date.getMinutes() +
-				date.getTimezoneOffset() + this.options.displayTimeOffset);
+			newDate.setMinutes(newDate.getMinutes() +
+				newDate.getTimezoneOffset() + this.options.displayTimeOffset);
 			return newDate;
 		},
 		_setDateOffset: function(date) {
