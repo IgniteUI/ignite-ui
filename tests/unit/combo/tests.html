@@ -336,6 +336,9 @@
     <div>
         <div id="suppressKeyboardMultiSelect"></div>
     </div>
+    <div>
+        <div id="htmlEntityDataSource"></div>
+    </div>
     <script type="text/javascript">
         $(function () {
             var testId_1 = 'igCombo existence',
@@ -441,6 +444,7 @@
                 testId_94 = 'Test areSetsEqual method';
                 testId_95 = 'Filtering event arguments';
                 testId_96 = 'suppressKeyboard multiselect';
+                testId_97 = "htmlEntity dataSource";
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -5840,6 +5844,39 @@
                 equal(document.activeElement, $input[0], 'Combo input is focused');
 
                 $.ig.util.isTouchDevice = _oldIsTouch;
+            });
+
+            test(testId_97, function() {
+                var $combo = $("#htmlEntityDataSource"),
+                    $input, $dropDownButton, listItems;
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dataSource: [
+                        {value: '&yen;'},
+                        {value: '&pound;'},
+                        {value: '&dollar;'},
+                        {value: '&euro;'},
+                    ],
+                });
+
+                $input = $combo.data().igCombo._options.$input;
+                $dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
+
+                var items = $combo.igCombo('items');
+
+                $dropDownButton.click();
+                clickElement(items[0].element);
+                equal($combo.igCombo('activeIndex'), 0, 'Yen symbol entity is selected');
+                equal(items[0].element.data('value'), items[0].element.text(), "data-value matches with text representation");
+                equal(items[0].element.data('value'), $input.val(), 'data-value matches with input value');
+
+                $dropDownButton.click();
+                clickElement(items[1].element);
+                equal($combo.igCombo('activeIndex'), 1, 'Pound symbol entity is selected');
+                equal(items[1].element.data('value'), items[1].element.text(), "data-value matches with text representation");
+                equal(items[1].element.data('value'), $input.val(), 'data-value matches with input value');
             });
         });
     </script>

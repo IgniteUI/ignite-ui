@@ -39,7 +39,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446"];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -433,6 +433,15 @@
 						value: "newInputValue"
 					});
 				}
+				
+				window.Bug446Testbed = function () {
+					$("<input/>", { id: "446Editor" })
+					.appendTo("#testBedContainer")
+					.igTextEditor({
+						buttonType: "clear", 
+						value: "has value"
+					});
+				}
 
 				initialized = false;
 				module("Editors Bugs Unit Tests ", {
@@ -447,7 +456,7 @@
 						// 	initialized = true;
 						// }
 					},
-					teardown: function () {
+					teardown: function (assert) {
 					}
 				});
 
@@ -1143,6 +1152,40 @@
 				//check the value attribute and see if it is restored
 				equal(document.getElementById("487Editor").getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
 			});
+
+			var testId = 'Bug 446 - TextEditor doesnt trigger valueChange after clearing';
+			test(testId, 6, function () {	
+				var editor =  $("#446Editor"),
+					field = editor.igTextEditor("field"),
+					clearButton = editor.igTextEditor("clearButton"),
+					textChanged = 0,
+					valueChanged = 0;
+
+				editor.on("igtexteditortextchanged", function() {
+					textChanged++;
+				}).on("igtexteditorvaluechanged", function() {
+					valueChanged++;
+				});
+
+				editor.igTextEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					clearButton.click();
+					equal(editor.igTextEditor("value"), "has value", "Value changed in edit mode clear");
+					equal(textChanged, 1, "textChanged not triggered");
+					equal(valueChanged, 0, "valueChanged triggered in edit mode");
+					field.blur();
+					equal(valueChanged, 1, "valueChanged not triggered on when exiting edit mode");
+
+					// test clear without focusing
+					editor.igTextEditor("value", "text");
+					clearButton.click();
+					equal(textChanged, 2, "textChanged not triggered on clear");
+					equal(valueChanged, 2, "valueChanged not triggered on clear");
+					$("#446Editor").remove();
+				}, 100);
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1266,7 +1309,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input id="inputEditor1" />
 		<input id="inputEditor2" />
 		<input id="inputEditor3" />

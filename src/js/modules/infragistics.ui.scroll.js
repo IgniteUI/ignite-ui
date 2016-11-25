@@ -631,6 +631,10 @@
 			verticalScrollArrowDownActive: "igscroll-downarrow-active",
 			/* Classes applied to the thumb drag of the custom vertical scrollbar */
 			verticalScrollThumbDrag: "igscroll-vdrag",
+			/* Classes applied to the thumb drag of the custom vertical scrollbar when it is in thin form */
+			verticalScrollThumbDragThin: "igscroll-vdrag-thin",
+			/* Classes applied to the thumb drag of the custom vertical scrollbar when it is in big form */
+			verticalScrollThumbDragBig: "igscroll-vdrag-big",
 			/* Classes applied to the container of the custom horizontal scrollbar */
 			horizontalScrollContainer: "igscroll-hcontainer",
 			/* Classes applied to the track of the custom horizontal scrollbar  */
@@ -647,6 +651,10 @@
 			horizontalScrollArrowRightActive: "igscroll-rightarrow-active",
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar */
 			horizontalScrollThumbDrag: "igscroll-hdrag",
+			/* Classes applied to the thumb drag of the custom horizontal scrollbar when it is in thin form */
+			horizontalScrollThumbDragThin: "igscroll-hdrag-thin",
+			/* Classes applied to the thumb drag of the custom horizontal scrollbar when it is in big form */
+			horizontalScrollThumbDragBig: "igscroll-hdrag-big",
 			/* Classes applied to an element that prevents selection when dragging */
 			disabledSelection: "igscroll-select-disabled",
 			/* Classes applied to an element that wraps the content of vertically linked element */
@@ -788,6 +796,7 @@
 
 				mouseenter: $.proxy(this._onMouseEnterContainer, this),
 				mouseleave: $.proxy(this._onMouseLeaveContainer, this),
+				dragstart: $.proxy(this._onDragStartElem, this),
 
 				keydown: $.proxy(this._onKeyDown, this)
 			};
@@ -868,12 +877,12 @@
 			}
 			if (key === "scrollHeight") {
 				this._setScrollHeight(value);
-				this._updateScrollBarsVisibility();
+				this._refreshScrollbarsDrag();
 				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "scrollWidth") {
 				this._setScrollWidth(value);
-				this._updateScrollBarsVisibility();
+				this._refreshScrollbarsDrag();
 				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "syncedElemsH") {
@@ -2521,7 +2530,7 @@
 			this._vDragHeight = (this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewV;
 			// jscs:enable
 			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
-				.addClass(css.verticalScrollThumbDrag)
+				.addClass(css.verticalScrollThumbDrag + " " + css.verticalScrollThumbDragThin)
 				.css("height", this._vDragHeight + "px");
 
 			if (this.options.scrollbarVParent) {
@@ -2595,6 +2604,7 @@
 
 			if (this._vBarContainer) {
 				this._vBarContainer.on({
+					dragstart: $.proxy(this._onDragStartElem, this),
 					wheel: $.proxy(this._onWheelContainer, this),
 					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
 					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this)
@@ -3000,7 +3010,7 @@
 			this._hDragWidth = (this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewH;
 			// jscs:enable
 			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
-				.addClass(css.horizontalScrollThumbDrag)
+				.addClass(css.horizontalScrollThumbDrag + " " + css.horizontalScrollThumbDragThin)
 				.css("width", this._hDragWidth + "px");
 
 			if (this.options.scrollbarHParent) {
@@ -3074,6 +3084,7 @@
 
 			if (this._hBarContainer) {
 				this._hBarContainer.on({
+					dragstart: $.proxy(this._onDragStartElem, this),
 					wheel: $.proxy(this._onWheelContainer, this),
 					mouseenter: $.proxy(this._onMouseEnterScrollbarElem, this),
 					mouseleave: $.proxy(this._onMouseLeaveScrollbarElem, this)
@@ -3611,15 +3622,16 @@
 
 		_setSimpleScrollBarOpacity: function (newOpacity) {
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
+				this._vBarDrag.removeClass(this.css.verticalScrollThumbDragBig)
+								.addClass(this.css.verticalScrollThumbDragThin);
 				this._vBarDrag
-					.css("opacity", newOpacity)
-					.css("width", 5 + "px");
+					.css("opacity", newOpacity);
 			}
 
 			if (this._hBarDrag && this._percentInViewH < 1) {
+				this._hBarDrag.removeClass(this.css.horizontalScrollThumbDragBig)
+								.addClass(this.css.horizontalScrollThumbDragThin);
 				this._hBarDrag
-					.css("height", 5 + "px")
-					.css("top", 5 + "px")
 					.css("opacity", newOpacity);
 			}
 		},
@@ -3627,17 +3639,18 @@
 		/** Sets the desktop scrollbars opacity. */
 		_setScrollBarsOpacity: function (newOpacity) {
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
+				this._vBarDrag.removeClass(this.css.verticalScrollThumbDragThin)
+								.addClass(this.css.verticalScrollThumbDragBig);
 				this._vBarDrag
-					.css("width", 9 + "px")
 					.css("opacity", newOpacity);
 				this._vBarArrowUp.css("opacity", newOpacity);
 				this._vBarArrowDown.css("opacity", newOpacity);
 			}
 
 			if (this._hBarDrag && this._percentInViewH < 1) {
+				this._hBarDrag.removeClass(this.css.horizontalScrollThumbDragThin)
+								.addClass(this.css.horizontalScrollThumbDragBig);
 				this._hBarDrag
-					.css("height", 9 + "px")
-					.css("top", 3 + "px")
 					.css("opacity", newOpacity);
 				this._hBarArrowLeft.css("opacity", newOpacity);
 				this._hBarArrowRight.css("opacity", newOpacity);
@@ -3646,16 +3659,15 @@
 
 		_toSimpleScrollbar: function () {
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
-				this._vBarDrag
-					.css("width", 5 + "px");
+				this._vBarDrag.removeClass(this.css.verticalScrollThumbDragBig)
+								.addClass(this.css.verticalScrollThumbDragThin);
 				this._vBarArrowUp.css("opacity", 0);
 				this._vBarArrowDown.css("opacity", 0);
 			}
 
 			if (this._hBarDrag && this._percentInViewH < 1) {
-				this._hBarDrag
-					.css("height", 5 + "px")
-					.css("top", 5 + "px");
+				this._hBarDrag.removeClass(this.css.horizontalScrollThumbDragBig)
+								.addClass(this.css.horizontalScrollThumbDragThin);
 				this._hBarArrowLeft.css("opacity", 0);
 				this._hBarArrowRight.css("opacity", 0);
 			}
@@ -3703,6 +3715,11 @@
 
 		_enableContentSelection: function () {
 			this._container.removeClass(this.css.disabledSelection);
+		},
+
+		_onDragStartElem: function (event) {
+			/* Prevent dragging of that element due to causing some unwanted behaviour */
+			event.preventDefault();
 		},
 
 		destroy: function () {

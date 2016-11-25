@@ -38,6 +38,7 @@
 *  Vertical Scrollbar  *
 ************************/
 .igscroll-vcontainer {
+	width: 15px;
 	position: absolute;
 	right: 0px;
 	top: 0px;
@@ -111,14 +112,22 @@
 
 /* Thumb Drag */
 .igscroll-vdrag {
-	left: 3px;
-	width: 9px;
 	display: block; 
 	position: relative; 
 	z-index: 1;
 	overflow: hidden;
 	background: #999999;
 	border-radius: 3px;
+}
+
+.igscroll-vdrag-thin {
+	left: 5px;
+	width: 5px;
+}
+
+.igscroll-vdrag-big {
+	left: 3px;
+	width: 9px;
 }
 
 .igscroll-vdrag:hover { 
@@ -208,15 +217,23 @@
 }
 
 /* Thumb Drag */
-.igscroll-hdrag { 
-	top: 3px;
-	height: 9px;
+.igscroll-hdrag {
 	position: relative;
 	display: block;
 	background: #999999;
 	border-radius: 3px;
 	z-index: 1;
 	overflow: hidden;
+}
+
+.igscroll-hdrag-thin {
+	top: 5px;
+	height: 5px;
+}
+
+.igscroll-hdrag-big {
+	top: 3px;
+	height: 9px;
 }
 
 .igscroll-hdrag:hover { 
