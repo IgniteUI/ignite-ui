@@ -74,7 +74,7 @@
 					// Bug #213961
 					$("#inputEditor8").igDatePicker({
 						buttonType: "spin",
-						enableUTCDates: true,
+						displayTimeOffset: 0,
 						dateDisplayFormat: "time",
 						dateInputFormat: "time",
 						dataMode: "date"
@@ -84,7 +84,7 @@
 					    placeHolder: "Select Date...",
 					    readOnly: false,
 					    dateInputFormat: "dateTime",
-					    enableUTCDates: true,
+					    displayTimeOffset: 0,
 					    focusOnDropDownOpen: true,
 					    dataMode: "editModeText",
 					    value: null,
@@ -302,16 +302,20 @@
 			});
 
 			var testId = 'UTC igDatePicker';
-			test(testId, 4, function () {
+			test(testId, 6, function () {
 				var editor = $("#inputEditor8"),
 					field = $("#inputEditor8").igDatePicker("field");
 
 				editor.focus();
+				var today = new Date();
 				field.val("12:12 AM");
 				editor.blur();
-				var today = new Date();
-				var expectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, 0);
-				equal(editor.igDatePicker("value").getTime(), expectedDate.getTime(), "The value is not set");
+
+				var expectedDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, today.getSeconds()));
+				debugger;
+				equal(editor.igDatePicker("value").getDate(), expectedDate.getDate(), "The date is not set");
+				equal(editor.igDatePicker("value").getHours(), expectedDate.getHours(), "The hours is not set");
+				equal(editor.igDatePicker("value").getMinutes(), expectedDate.getMinutes(), "The minutes is not set");
 
 			    var dp = $("#datePickerUTC"), newDate;
 

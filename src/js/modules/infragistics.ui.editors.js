@@ -8929,7 +8929,6 @@
 			var dataModeValue,
 				maskedVal = this._maskedValue ? this._maskedValue : this._maskWithPrompts,
 				dataMode = this.options.dataMode,
-				utc = this.options.enableUTCDates,
 				offset = this.options.displayTimeOffset;
 
 			switch (dataMode) {
@@ -8962,24 +8961,25 @@
 			return dataModeValue;
 		},
 		_getDateOffset: function(date) {
-			var date;
+			var newDate;
 			if (!date) {
 				if (!this._dateObjectValue) {
 					return;
 				}
-				date = new Date(this._dateObjectValue.getTime());
+				newDate = new Date(this._dateObjectValue.getTime());
 			} else {
-				date = new Date(date.getTime());
+				newDate = new Date(date.getTime());
 			}
-			date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + this.options.displayTimeOffset);
-			return date;
+			newDate.setMinutes(date.getMinutes() +
+				date.getTimezoneOffset() + this.options.displayTimeOffset);
+			return newDate;
 		},
 		_setDateOffset: function(date) {
 			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.displayTimeOffset);
 		},
 		_parseDateFromMaskedValue: function (value) {
 			var dateField, monthField, yearField, hourField, minutesField, secondsField,
-				millisecondsField, midDayField, today,
+				millisecondsField, midDayField,
 				dateStartIndex = this._dateIndices.dd, regExpr, ffCount, lastDayOfMonth,
 				monthStartIndex = this._dateIndices.MM,
 				yearStartIndex = this._dateIndices.yy,
