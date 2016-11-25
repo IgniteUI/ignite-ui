@@ -2027,8 +2027,8 @@
             unwrappedDataItem = this._unwrapData(dataItem);
 
 			// A.k August 15, 2016 Fixing Bug #223071 - [igCombo] Text from list items is not escaped.
-            unwrappedDataItem = $.ig.util.escapeHtmlTags(unwrappedDataItem);
             unwrappedDataItem = this._formatItem(unwrappedDataItem);
+            unwrappedDataItem = $.ig.encode(unwrappedDataItem);
 
             return this.options.itemTemplate ?
 				$.ig.tmpl(this.options.itemTemplate, data) : unwrappedDataItem;
@@ -2111,6 +2111,7 @@
 				markup, escapedValue;
 
             // Z.K. 27/08/2015 Bug #205313 - Not possible to select item because of illegal special characters encoding
+            // R.K. 24 November 2016 #543 - Cannot select an item from drop down list when you set HTML character entity reference to a datasource item
             escapedValue = $.ig.encode(value);
             markup = '<li class="' + css.listItem + '" data-value="' +
                 escapedValue + '" unselectable="on">';
