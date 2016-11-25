@@ -7544,7 +7544,7 @@
 				```
 			*/
 			dateInputFormat: null,
-			/* type="date|localDate|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="date|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7560,10 +7560,6 @@
 				date type="string" When this mode is set the value sent to the server on submit is serialized as UTC ISO 8061 string (e.g. "2016-11-03T14:08:08.504Z").
 					The value method returns a Date object. Both enableUTCDates and displayTimeOffset options work only when this mode is used. That is used as default mode.
 					Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
-				localDate type="string" When this mode is set the value sent to the server on submit is serialized as local ISO 8061 string (e.g. "2009-06-15T13:45:30.0000000+0300").
-					The value method returns a Date object.
-					Note: This mode is useful when the server is interested in the time zone of the client or when both are expected to operate within the same time zone.
-					For the latter case, it is recommended that this option is used with an local date value (e.g. "2009-06-15T13:45:30.0000000+0300") so the outcome is consistent.
 				displayModeText type="string" The "text" in display mode (no focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 				editModeText type="string" The "text" in edit mode (focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 			*/
@@ -7818,7 +7814,7 @@
 			} else {
 				//check value
 				if (this._validateValue(value)) {
-					this._updateValue(this._getDateObjectFromValue(value), true);
+					this._updateValue(this._getDateObjectFromValue(value));
 
 					// Update maskedValue according to the new value.
 					this._updateMaskedValue();
@@ -8869,7 +8865,7 @@
 			}
 			return result;
 		},
-		_updateValue: function (value, initOrMethodUpdate) { //igDateEditor
+		_updateValue: function (value) { //igDateEditor
 			//TODO Review
 			if (value === null) {
 				this._maskedValue = this._maskWithPrompts;
@@ -8889,9 +8885,6 @@
 
 				// Convert the value to date object;
 				this._dateObjectValue = this._getDateObjectFromValue(value);
-				if (this.options.displayTimeOffset !== null && !initOrMethodUpdate) {
-					this._setDateOffset(this._dateObjectValue);
-				}
 				this._updateMaskedValue();
 				this.options.value = this._getValueByDataMode();
 
@@ -9220,6 +9213,10 @@
 			if (millisecondsField !== null && millisecondsField !== undefined) {
 				extractedDate =
 					this._setDateField("milliseconds", extractedDate, millisecondsField);
+			}
+
+			if (this.options.displayTimeOffset !== null) {
+				this._setDateOffset(extractedDate);
 			}
 			return extractedDate;
 
@@ -10310,7 +10307,7 @@
 					}
 				}
 				if (this._validateValue(newValue)) {
-					this._updateValue(newValue, true);
+					this._updateValue(newValue);
 
 					//TODO Update maskedValue according to the new value.
 					this._updateMaskedValue();
