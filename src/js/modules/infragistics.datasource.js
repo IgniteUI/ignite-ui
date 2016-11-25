@@ -3437,9 +3437,9 @@
 			}
 		},
 		_addRow: function (row, index, origDs) {
-			var data, key, count = 0, schema = this.settings.schema,
+			var data, key, i, count = 0, schema = this.settings.schema,
 				layouts = schema ? schema.layouts : null, lo, pdata,
-				all = [ this._data ], newRow;
+				all = [ this._data ], newRow, collectionProcessedData = [];
 			this._addOnlyUniqueToCollection(all, this._dataView);
 			this._addOnlyUniqueToCollection(all, origDs);
 			/* M.H. 15 Dec 2014 Fix for bug #186504: Added row is not displayed whether
@@ -3478,7 +3478,20 @@
 					// e.g. in TreeHierarchicalDataSource when argument at(of function _addRow) is set then function returns child data for record with key equals to 'at'
 					pdata = this._preprocessAddRow.apply(this,
 						Array.prototype.slice.call(arguments).concat([ data ]));
-					data = pdata.layoutData;// if data should not be processed by the code return null/undefined for layoutData
+					data = (pdata || {}).layoutData;// if data should not be processed by the code return null/undefined for layoutData
+					/* M.H. 15 Nov 2016 Fix for bug 228594: After updating a record in the igTreeGrid paging no longer works as expected. */
+					/* duplicate record is added when child row is added*/
+					if (data) {
+						for (i = 0; i < collectionProcessedData.length; i++) {
+							if (collectionProcessedData[ i ] === data) {
+								data = null;//skip adding a record in data collection
+								break;
+							}
+						}
+						if (data) {
+							collectionProcessedData.push(data);
+						}
+					}
 				}
 				if (data) {
 					// M.H. 17 June 2014 Fix for bug #171306: The ig_pk property is missing from the added row object.
@@ -9626,11 +9639,16 @@
 		generateFlatDataView: function () {
 			/*Generates a flat data view from the current (hierarchical)data
 			*/
+			var data, resObj;
 			if (this.settings.treeDS.initialFlatDataView) {
 				this._flatDataView = this._data;
 				return;
 			}
-			var resObj = this.generateFlatData(this.dataView());
+			data = this.dataView();
+			if (!this.shouldCallGenerateFlatDataView() && !data.length) {
+				data = !this._filter ? this.data() : this._filteredData;
+			}
+			resObj = this.generateFlatData(data);
 			this._flatDataView = resObj.flatVisibleData;
 		},
 		flatDataView: function () {
@@ -9643,15 +9661,11 @@
 			return this._flatDataView;
 		},
 		_generateFlatDataAndCountProperties: function () {
-			var resObj;
-			if (!this._filter) {
-				resObj = this.generateFlatData(this.data());
-			} else {
-				resObj = this.generateFlatData(this._filteredData);
-			}
+			var data = !this._filter ? this.data() : this._filteredData,
+				resObj = this.generateFlatData(data);
 			this._flatData = resObj.flatData;
 			this._totalRecordsCount = resObj.recordsCount;
-			this._recCount = resObj.visibleRecordsCount;
+			/*this._recCount = resObj.visibleRecordsCount;*/
 			this._flatVisibleData = resObj.flatVisibleData;
 		},
 		getVisibleFlatData: function () {
@@ -10305,6 +10319,31 @@
 				return fdv.length;
 			}
 			return this._super();
+		},
+		/*override pageCount */
+		pageCount: function () {
+			/* returns the total number of pages
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					paging: {
+						enabled : true,
+						pageSize:10,
+						type: "local"
+					}
+				});
+
+				var count = ds.pageCount();
+			```
+			returnType="number" total number fo pages
+			*/
+			var p = this.settings.paging;
+			if (p.enabled && p.type === "local" &&
+				this.settings.treeDS.paging.mode === "allLevels") {
+				return Math.ceil(this.totalLocalRecordsCount() / p.pageSize) || 1;
+			}
+			return this._super.apply(this, arguments);
 		},
 		/* M.H. 19 June 2015 Fix for bug 201486: When remote filtering with
 		DisplayMode=ShowWithAncestorsAndDescendants is used the matching

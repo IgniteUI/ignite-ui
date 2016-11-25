@@ -256,7 +256,6 @@
 				teardown: function () {
 				}
 			});
-
 			test("Test getParentRowsForRow API method", function () {
 				var result = ds2.getParentRowsForRow({ "ID": 16, "Name": "Club sandwich", "Price": "3.5" }, products);
 
@@ -734,6 +733,18 @@
 				ok(!res, "If record has no FK value the result should be false.");
 				res = ds1._hasRecordParent({ "employeeID": 123, "PID": 123, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") }, flatDS);
 				ok(!res, "If record does not exist the in the data source the result should be false.");
+			});
+			test("Test flatDataView when updating filtered data and paging is enabled with mode allLevels", function () {
+				dsLocalSortingFilteringPaging.settings.paging.enabled = true;
+				dsLocalSortingFilteringPaging.settings.treeDS.paging.mode = "allLevels";
+				dsLocalSortingFilteringPaging.dataBind();
+				dsLocalSortingFilteringPaging.filter([{ fieldName: "firstName", expr: "Janet", cond: "equals" }], "OR", true, "employeeID = 4");
+				dsLocalSortingFilteringPaging.insertRow(3001, { "ID": 1001, "Name": "Bread", "Price": 2.5 }, 2, true, 0);
+				ok(dsLocalSortingFilteringPaging.flatDataView().length === 3);
+			});
+			test("Test insertRow for TreeHierarchical data source with hierarchical data", function () {
+				ds2.insertRow(10000, {"ID": 10000, "Name": "test", "Price": "-"}, -1, true, 0);
+				ok(ds2.dataView()[0].Products.length === 2, ds2.dataView()[0].Products[1].ID === 10000, "Test properly added child");
 			});
 
 			var dsRemotePaging, dsRemoteSorting, dsRemoteFiltering;
