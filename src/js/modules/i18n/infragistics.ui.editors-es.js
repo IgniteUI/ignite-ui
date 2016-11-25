@@ -68,8 +68,6 @@
 			    buttonTypeIsDropDownOnly: "Datepicker sólo admite valores de desplegar menú y de borrar para la opción buttonType.",
 			    dateEditorMinValue: "La opción MinValue no puede establecer un tiempo de ejecución.",
 			    dateEditorMaxValue: "La opción MaxValue no puede establecer un tiempo de ejecución.",
-				dateEditorUTCOffset: "When both options enableUTCDates and offset are used, the latter is ignored.",
-				dateEditorLocalDateUTCOffset: "When data mode of the editor is set to localDate, then both options - enableUTCDates and offset will be ignored",
 				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
 				cannotSetRuntime: "Esta opción no puede establecer un tiempo de ejecución",
 			    invalidDate: "Fecha no válida",

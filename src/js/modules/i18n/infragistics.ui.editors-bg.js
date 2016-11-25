@@ -68,8 +68,6 @@
 			    buttonTypeIsDropDownOnly: "Datepicker позволява само dropdown и чисти стойности за опцията buttonType.",
 			    dateEditorMinValue: "Опцията MinValue не може да бъде настроена по време на изпълнение.",
 			    dateEditorMaxValue: "Опцията MaxValue не може да бъде настроена по време на изпълнение.",
-				dateEditorUTCOffset: "Когато опциите enableUTCDates и offset се използват заедно, то последната се игнорира",
-				dateEditorLocalDateUTCOffset: "Когато опцията dataМode приема за стойност localDate, тогава другите две опции - enableUTCDates и offset ще бъдат игнорирани",
 				dateEditorOffsetRange: "Опцията оffset може да приема стойности между -720 и 840, което представя разликата в минути, спрямо координирано универсално време, на всички времеви зони от най-западните (-12:00) до най-източните (+14:00).",
 				cannotSetRuntime: "Тази опцията не може да бъде настроена по време на изпълнение.",
 			    invalidDate: "Невалидна дата",
