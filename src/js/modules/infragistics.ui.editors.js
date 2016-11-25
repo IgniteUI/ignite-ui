@@ -3336,17 +3336,7 @@
 		_valueFromText: function (text) { //igTextEditor
 			return text;
 		},
-		_getSelectionRange: function () {
-			var selection;
-			if (window.getSelection) {
-				selection = window.getSelection();
-				if (selection.rangeCount) {
-					return selection.getRangeAt(0);
-				}
-			} else if (document.selection) {
-				return document.selection.createRange();
-			}
-		},
+
 		_setCursorPosition: function (positionIndex) {
 			this._setSelectionRange(this._editorInput[ 0 ], positionIndex, positionIndex);
 		},
