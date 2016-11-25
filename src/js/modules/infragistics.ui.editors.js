@@ -7558,7 +7558,7 @@
 				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
 				date type="string" When this mode is set the value sent to the server on submit is serialized as UTC ISO 8061 string (e.g. "2016-11-03T14:08:08.504Z").
-					The value method returns a Date object. Both enableUTCDates and timeOffset options work only when this mode is used. That is used as default mode.
+					The value method returns a Date object. Both enableUTCDates and displayTimeOffset options work only when this mode is used. That is used as default mode.
 					Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
 				localDate type="string" When this mode is set the value sent to the server on submit is serialized as local ISO 8061 string (e.g. "2009-06-15T13:45:30.0000000+0300").
 					The value method returns a Date object.
@@ -7574,14 +7574,14 @@
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
-					timeOffset: 180
+					displayTimeOffset: 180
 				});
 
 				//Get
-				var timeOffset = $(".selector").%%WidgetName%%("option", "timeOffset");
+				var displayTimeOffset = $(".selector").%%WidgetName%%("option", "displayTimeOffset");
 			```
 			*/
-			timeOffset: 0,
+			displayTimeOffset: null,
 			/*type="clear|spin" Gets visibility of the spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
 				```
 					//Initialize
@@ -7735,7 +7735,7 @@
 			$.ui.igMaskEditor.prototype._create.call(this);
 		},
 		_initialize: function () {
-			var offset = this.options.timeOffset;
+			var offset = this.options.displayTimeOffset;
 			this._super();
 			this._applyRegionalSettings();
 			this.options.inputMask =
@@ -7744,15 +7744,6 @@
 
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
-			if (this.options.enableUTCDates && offset !== 0) {
-				this.options.timeOffset = 0;
-				console.log($.ig.Editor.locale.dateEditorUTCOffset);
-			}
-			if (this.options.dataMode === "localDate" && (this.options.enableUTCDates || offset !== 0)) {
-				this.options.enableUTCDates = false;
-				this.options.timeOffset = 0;
-				console.log($.ig.Editor.locale.dateEditorLocalDateUTCOffset);
-			}
 			if (offset > 840 || offset < -720) {
 				console.log($.ig.Editor.locale.dateEditorOffsetRange);
 			}
@@ -7785,9 +7776,7 @@
 					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
 				}
 					break;
-				case "dateInputFormat":
-				case "enableUTCDates":
-				case "timeOffset": {
+				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
@@ -7829,7 +7818,7 @@
 			} else {
 				//check value
 				if (this._validateValue(value)) {
-					this._updateValue(this._getDateObjectFromValue(value));
+					this._updateValue(this._getDateObjectFromValue(value), true);
 
 					// Update maskedValue according to the new value.
 					this._updateMaskedValue();
@@ -7893,9 +7882,11 @@
 			var sDate = this._dateObjectValue;
 
 			if (this.options.dataMode === "date") {
-				sDate = sDate.toISOString();
-			} else if (this.options.dataMode === "localDate") {
-				sDate = this._toLocalISOString(sDate);
+				if (this.options.enableUTCDates) {
+					sDate = sDate.toISOString();
+				} else {
+					sDate = this._toLocalISOString(sDate);
+				}
 			} else {
 				sDate = this.options.value;
 			}
@@ -7922,8 +7913,7 @@
 		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)
 		// date DateObject
 		_getDateField: function (flag, date) {
-			var utc = this.options.enableUTCDates,
-				offset = this.options.timeOffset,
+			var offset = this.options.displayTimeOffset,
 				shift = this.options.yearShift, year;
 
 				if (!date) {
@@ -7932,41 +7922,41 @@
 				if (!date) {
 					return null;
 				}
-				if (offset !== 0) {
-					date = this._getDateOffset();
+				if (offset !== null) {
+					date = this._getDateOffset(date);
 				}
 
 				if (flag === "year") {
-					year = utc ? date.getUTCFullYear() : date.getFullYear();
+					year = date.getFullYear();
 					if (shift) {
 						year += shift;
 					}
 					return year;
 				}
 				if (flag === "month") {
-					return utc ? date.getUTCMonth() : date.getMonth();
+					return date.getMonth();
 				}
 				if (flag === "day") {
-					return utc ? date.getUTCDay() : date.getDay();
+					return date.getDay();
 				}
 				if (flag === "date") {
-					return utc ? date.getUTCDate() : date.getDate();
+					return date.getDate();
 				}
 				if (flag === "hours") {
-					return utc ? date.getUTCHours() : date.getHours();
+					return date.getHours();
 				}
 				if (flag === "minutes") {
-					return utc ? date.getUTCMinutes() : date.getMinutes();
+					return date.getMinutes();
 				}
 				if (flag === "seconds") {
-					return utc ? date.getUTCSeconds() : date.getSeconds();
+					return date.getSeconds();
 				}
-				return utc ? date.getUTCMilliseconds() : date.getMilliseconds();
+				return date.getMilliseconds();
 		},
 
 		// This method sets specific field and returns the date
 		_setDateField: function(flag, date, newValue) {
-			var utc = this.options.enableUTCDates, shift = this.options.yearShift;
+			var shift = this.options.yearShift;
 			if (!date) {
 				date = this._dateObjectValue;
 			}
@@ -7974,53 +7964,25 @@
 				if (shift) {
 					newValue -= shift;
 				}
-				if (utc) {
-					date.setUTCFullYear(newValue);
-				} else {
-					date.setFullYear(newValue);
-				}
+				date.setFullYear(newValue);
 			}
 			if (flag === "month") {
-				if (utc) {
-					date.setUTCMonth(newValue);
-				} else {
-					date.setMonth(newValue);
-				}
+				date.setMonth(newValue);
 			}
 			if (flag === "date") {
-				if (utc) {
-					date.setUTCDate(newValue);
-				} else {
-					date.setDate(newValue);
-				}
+				date.setDate(newValue);
 			}
 			if (flag === "hours") {
-				if (utc) {
-					date.setUTCHours(newValue);
-				} else {
-					date.setHours(newValue);
-				}
+				date.setHours(newValue);
 			}
 			if (flag === "minutes") {
-				if (utc) {
-					date.setUTCMinutes(newValue);
-				} else {
-					date.setMinutes(newValue);
-				}
+				date.setMinutes(newValue);
 			}
 			if (flag === "seconds") {
-				if (utc) {
-					date.setUTCSeconds(newValue);
-				} else {
-					date.setSeconds(newValue);
-				}
+				date.setSeconds(newValue);
 			}
 			if (flag === "milliseconds") {
-				if (utc) {
-					date.setUTCMilliseconds(newValue);
-				} else {
-					date.setMilliseconds(newValue);
-				}
+				date.setMilliseconds(newValue);
 			}
 			return date;
 		},
@@ -8907,7 +8869,7 @@
 			}
 			return result;
 		},
-		_updateValue: function (value) { //igDateEditor
+		_updateValue: function (value, initOrMethodUpdate) { //igDateEditor
 			//TODO Review
 			if (value === null) {
 				this._maskedValue = this._maskWithPrompts;
@@ -8927,6 +8889,9 @@
 
 				// Convert the value to date object;
 				this._dateObjectValue = this._getDateObjectFromValue(value);
+				if (this.options.displayTimeOffset !== null && !initOrMethodUpdate) {
+					this._setDateOffset(this._dateObjectValue);
+				}
 				this._updateMaskedValue();
 				this.options.value = this._getValueByDataMode();
 
@@ -8960,18 +8925,16 @@
 			}
 			return date;
 		},
-		_getValueByDataMode: function () {
+		_getValueByDataMode: function (notApplyOffset) {
 			var dataModeValue,
 				maskedVal = this._maskedValue ? this._maskedValue : this._maskWithPrompts,
 				dataMode = this.options.dataMode,
 				utc = this.options.enableUTCDates,
-				offset = this.options.timeOffset;
+				offset = this.options.displayTimeOffset;
 
 			switch (dataMode) {
 				case "date": {
-					if (utc) {
-						dataModeValue = this._getDateUTC();
-					} else if (offset !== 0) {
+					if (offset !== null && !notApplyOffset) {
 						dataModeValue = this._getDateOffset();
 					} else {
 						dataModeValue = this._dateObjectValue;
@@ -8998,22 +8961,21 @@
 			}
 			return dataModeValue;
 		},
-		_getDateUTC: function() {
-			return this._retrieveUTCDate(this._dateObjectValue);
-		},
-		_retrieveUTCDate: function(date) {
-			return new Date(date.getUTCFullYear(),
-						date.getUTCMonth(), date.getUTCDate(),
-						date.getUTCHours(), date.getUTCMinutes(),
-						date.getUTCSeconds(), date.getUTCMilliseconds());
-		},
-		_getDateOffset: function() {
-			var date = new Date(this._dateObjectValue.getTime());
-			date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + this.options.timeOffset);
+		_getDateOffset: function(date) {
+			var date;
+			if (!date) {
+				if (!this._dateObjectValue) {
+					return;
+				}
+				date = new Date(this._dateObjectValue.getTime());
+			} else {
+				date = new Date(date.getTime());
+			}
+			date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + this.options.displayTimeOffset);
 			return date;
 		},
 		_setDateOffset: function(date) {
-			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.timeOffset);
+			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.displayTimeOffset);
 		},
 		_parseDateFromMaskedValue: function (value) {
 			var dateField, monthField, yearField, hourField, minutesField, secondsField,
@@ -9199,21 +9161,11 @@
 
 				// If we have year, month and day field we create date from them, else we create today date.
 				if (yearField !== null && yearField !== undefined &&
-					 monthField !== null && monthField !== undefined &&
-					 dateField !== null && dateField !== undefined) {
-					if (this.options.enableUTCDates) {
-						extractedDate = new Date(Date.UTC(yearField, monthField, dateField));
-					} else {
-						extractedDate = new Date(yearField, monthField, dateField);
-					}
+					monthField !== null && monthField !== undefined &&
+					dateField !== null && dateField !== undefined) {
+					extractedDate = new Date(yearField, monthField, dateField);
 				} else {
-					if (this.options.enableUTCDates) {
-						today = new Date();
-						extractedDate = new Date(Date.UTC(today.getFullYear(),
-							today.getMonth(), today.getDate()));
-					} else {
-						extractedDate = new Date();
-					}
+					extractedDate = new Date();
 					if (yearField !== null && yearField !== undefined) {
 						extractedDate = this._setDateField("year", extractedDate, yearField);
 					}
@@ -9268,9 +9220,6 @@
 			if (millisecondsField !== null && millisecondsField !== undefined) {
 				extractedDate =
 					this._setDateField("milliseconds", extractedDate, millisecondsField);
-			}
-			if (this.options.timeOffset !== 0) {
-				this._setDateOffset(extractedDate);
 			}
 			return extractedDate;
 
@@ -10361,7 +10310,7 @@
 					}
 				}
 				if (this._validateValue(newValue)) {
-					this._updateValue(newValue);
+					this._updateValue(newValue, true);
 
 					//TODO Update maskedValue according to the new value.
 					this._updateMaskedValue();
@@ -10371,7 +10320,7 @@
 					this._getDisplayValue());
 			} else {
 				if (this.options.value) {
-					return this._getValueByDataMode();
+					return this._getValueByDataMode(true);
 				} else {
 					if (this.options.allowNullValue) {
 						return this.options.nullValue;
