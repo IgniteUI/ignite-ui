@@ -109,6 +109,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var leftWidth = borderLayout.leftWidth;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { leftWidth: "30%" });
                     ```
                     */
                     leftWidth: "20%",
@@ -125,6 +128,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var rightWidth = borderLayout.rightWidth;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { rightWidth:"30%" });
                     ```
                     */
                     rightWidth: "10%",
@@ -141,6 +147,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var showFooter = borderLayout.showFooter;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { showFooter: false });
                     ```
                     */
                     showFooter: true,
@@ -157,6 +166,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var showHeader = borderLayout.showHeader;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { showHeader: true });
                     ```
                     */
                     showHeader: true,
@@ -173,6 +185,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var showLeft = borderLayout.showLeft;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { showLeft: true });
                     ```
                     */
                     showLeft: true,
@@ -189,6 +204,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var showRight = borderLayout.showRight;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { showRight: false });
                     ```
                     */
                     showRight: true
@@ -264,6 +282,11 @@
                     //Get
                     var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
                     var cols = gridLayout.cols;
+
+                    // Set
+                    var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                    gridLayout.cols = 4;
+                    $('.selector').igLayoutManager('option', 'gridLayout', gridLayout);
                     ```
                     */
                     cols: null,
@@ -378,6 +401,11 @@
                     // Get
                     var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
                     var rearrangeItems = gridLayout.rearrangeItems;
+
+                    // Set
+                    var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                    gridLayout.rearrangeItems = false;
+                    $('.selector').igLayoutManager('option', 'gridLayout', gridLayout);
                     ```
                     */
                     rearrangeItems: true,
@@ -396,11 +424,16 @@
                     // Get
                     var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
                     var rows = gridLayout.rows;
+
+                    // Set
+                    var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                    gridLayout.rows = 4;
+                    $('.selector').igLayoutManager('option', 'gridLayout', gridLayout);
                     ```
                     */
                     rows: null
                 },
-                /* type="number|string" Gets/Sets height of the layout container
+                /* type="number|string" Gets/Sets height of the layout container.
                 ```
                 // Initialize
                 $('.selector').igLayoutManager({
@@ -661,7 +694,7 @@
                 vertical Column type can be set with vertical layout
                 */
                 layoutMode: "column",
-                /* type="number|string" Gets/Sets width of the layout container
+                /* type="number|string" Gets/Sets width of the layout container.
                 ```
                 // Initialize
                 $('.selector').igLayoutManager({
@@ -719,7 +752,7 @@
                 ```
                 */
                 internalResizing: "internalResizing",
-                /* Event fired after an item has been rendered in the container
+                /* Event fired after an item has been rendered in the container.
                     Function takes arguments evt and ui.
                     Use ui.owner to get reference to the igLayoutManager.
                     Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc.
@@ -752,7 +785,7 @@
                 ```
                 */
                 itemRendered: "itemRendered",
-                /* cancel="false" Event fired before an item is rendered in the container
+                /* cancel="false" Event fired before an item is rendered in the container.
                     Function takes arguments evt and ui.
                     Use ui.owner to get reference to the igLayoutManager.
                     Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc.
@@ -999,9 +1032,12 @@
                 /* Triggers recalculation of the layout dimensions. Layouts may not need to be reflowed manually, if their sizes are in percentages (i.e. they are responsive by default)
                     this can be particularly useful with a grid layout, when the container has percentage sizes, but items are calculated in pixels and positioned absolutely in the container.
                     ```
-                    $(".selector").igLayoutManager("reflow", forceReflow, event);
+                    var forceReflow = true,
+                        animationDuration = 200;
+
+                    $(".selector").igLayoutManager("reflow", forceReflow, animationDuration, event);
                     ```
-                    paramType="boolean" optional="true" Indicates whether the reflow should be forced. Useful in cases where the items size and position was changed manually.
+                    paramType="bool" optional="true" Indicates whether the reflow should be forced. Useful in cases where the items size and position was changed manually.
                     paramType="number" optional="true" The animation duration to be used for this reflow only. Supported only for Grid Layout mode.
                     paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
                 */
