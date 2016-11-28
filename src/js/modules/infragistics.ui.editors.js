@@ -7909,17 +7909,13 @@
 		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)
 		// date DateObject
 		_getDateField: function (flag, date) {
-			var offset = this.options.displayTimeOffset,
-				shift = this.options.yearShift, year;
+			var shift = this.options.yearShift, year;
 
 				if (!date) {
 					date = this._dateObjectValue;
 				}
 				if (!date) {
 					return null;
-				}
-				if (offset !== null) {
-					date = this._getDateOffset(date);
 				}
 
 				if (flag === "year") {
@@ -7993,6 +7989,10 @@
 					this._parseValueByMask(""),
 				dateObj, year, month, day, hours, minutes, seconds, milliseconds;
 			dateObj = newDate ? newDate : this._dateObjectValue;
+
+			if (this.options.displayTimeOffset !== null) {
+				dateObj = this._getDateOffset(dateObj);
+			}
 
 			// TODO update all the fields
 			if (dateObj) {
@@ -8918,22 +8918,13 @@
 			}
 			return date;
 		},
-		_getValueByDataMode: function (notApplyOffset) {
+		_getValueByDataMode: function () {
 			var dataModeValue,
 				maskedVal = this._maskedValue ? this._maskedValue : this._maskWithPrompts,
-				dataMode = this.options.dataMode,
-				offset = this.options.displayTimeOffset;
+				dataMode = this.options.dataMode;
 
 			switch (dataMode) {
 				case "date": {
-					if (offset !== null && !notApplyOffset) {
-						dataModeValue = this._getDateOffset();
-					} else {
-						dataModeValue = this._dateObjectValue;
-					}
-				}
-					break;
-				case "localDate": {
 					dataModeValue = this._dateObjectValue;
 				}
 					break;
@@ -9226,6 +9217,10 @@
 
 			if (!dateObject) {
 				return "";
+			}
+
+			if (this.options.displayTimeOffset !== null) {
+				dateObject = this._getDateOffset(dateObject);
 			}
 
 			maskVal = this.options.dateDisplayFormat;
@@ -10317,7 +10312,7 @@
 					this._getDisplayValue());
 			} else {
 				if (this.options.value) {
-					return this._getValueByDataMode(true);
+					return this._getValueByDataMode();
 				} else {
 					if (this.options.allowNullValue) {
 						return this.options.nullValue;
