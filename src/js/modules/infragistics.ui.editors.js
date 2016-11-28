@@ -7565,7 +7565,7 @@
 				editModeText type="string" The "text" in edit mode (focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 			*/
 			dataMode: "date",
-			/* type="int" Gets/Sets time zone offset from UTC, in minutes. The client Date value is displayed with this offset instead of the local one.
+			/* type="int" Gets/Sets time zone offset from UTC, in minutes. The client date values are displayed with this offset instead of the local one.
 			Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
 				Values with ambiguous time zone could map to unpredictable times depending on the user agent local zone.
 			```
@@ -7874,9 +7874,7 @@
 		_handleSpinDownEvent: function () { // DateEditor
 			this.spinDown(1);
 		},
-		_serializeDate: function () {
-			var sDate = this._dateObjectValue;
-
+		_serializeDate: function (sDate) {
 			if (this.options.dataMode === "date") {
 				if (this.options.enableUTCDates) {
 					sDate = sDate.toISOString();
@@ -7886,11 +7884,10 @@
 			} else {
 				sDate = this.options.value;
 			}
-			this._valueInput.val(sDate);
+			return sDate;
 		},
-		_toLocalISOString: function() {
-			var date = this._dateObjectValue,
-				tzo = -date.getTimezoneOffset(),
+		_toLocalISOString: function(date) {
+			var tzo = -date.getTimezoneOffset(),
 				dif = tzo >= 0 ? "+" : "-",
 				pad = function(num) {
 					var norm = Math.abs(Math.floor(num));
@@ -8888,7 +8885,7 @@
 				this._updateMaskedValue();
 				this.options.value = this._getValueByDataMode();
 
-				this._serializeDate();
+				this._valueInput.val(this._serializeDate(this._dateObjectValue));
 			}
 		},
 		_clearValue: function (textOnly) { //DateEditor
@@ -8954,7 +8951,7 @@
 			} else {
 				newDate = new Date(date.getTime());
 			}
-			newDate.setMinutes(newDate.getMinutes() +
+			newDate.setUTCMinutes(newDate.getUTCMinutes() +
 				newDate.getTimezoneOffset() + this.options.displayTimeOffset);
 			return newDate;
 		},
@@ -10656,12 +10653,21 @@
 						//In Case there is no dateObject which meand the editor has no value when the date is selected it will be with current time value (hours, minutes, seconds)
 						date = new Date();
 					}
-					date = self._setDateField("year", date, dateFromPicker.getFullYear());
 
-					//Temporary change the date to be in the middle of the month 15th, because when using JavaScript Date object to set month when date is 31, the date object is moved with one day.
-					date = self._setDateField("date", date, 15);
-					date = self._setDateField("month", date, dateFromPicker.getMonth());
-					date = self._setDateField("date", date, dateFromPicker.getDate());
+					if (self.options.displayTimeOffset !== null) {
+						self._setDateOffset(dateFromPicker);
+						date.setUTCFullYear(dateFromPicker.getUTCFullYear());
+						date.setDate(15);
+						date.setUTCMonth(dateFromPicker.getMonth());
+						date.setUTCDate(dateFromPicker.getDate());
+					} else {
+						date = self._setDateField("year", date, dateFromPicker.getFullYear());
+
+						//Temporary change the date to be in the middle of the month 15th, because when using JavaScript Date object to set month when date is 31, the date object is moved with one day.
+						date = self._setDateField("date", date, 15);
+						date = self._setDateField("month", date, dateFromPicker.getMonth());
+						date = self._setDateField("date", date, dateFromPicker.getDate());
+					}
 
 					self._processValueChanging(date);
 					self._triggerItemSelected.call(self,
@@ -10946,9 +10952,8 @@
 			}
 
 			if (currentDate) {
-				if (this.options.enableUTCDates) {
-					currentDate = new Date(currentDate.getUTCFullYear(),
-						currentDate.getUTCMonth(), currentDate.getUTCDate());
+				if (this.options.displayTimeOffset !== null) {
+					currentDate = this._getDateOffset(currentDate);
 				}
 
 				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
