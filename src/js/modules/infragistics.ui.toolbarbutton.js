@@ -50,7 +50,7 @@
             ```
             */
             allowToggling: true,
-            /* type="boolean" Enable/Disable the "Selecting" of a button.
+            /* type="boolean" Enable/Disable the toolbar button.
             ```
                 //Initialize
                 $(".selector").igToolbarButton({
@@ -72,7 +72,7 @@
         events: {
             /* cancel="true" Event fired before the toolbar button is activated.
                 Function takes arguments evt and ui.
-                Use ui.owner to get a reference to the toolbar button performing the activation.
+                Use ui.owner to get reference to this igToolbarButton.
             ```
                 $(document).delegate(".selector", "igtoolbarbuttonactivating", function(evt, ui) {
                     //use to obtain reference to the event browser
@@ -91,7 +91,7 @@
             activating: "activating",
             /* Event fired after the toolbar button is activated.
                 Function takes arguments evt and ui.
-                Use ui.owner to get reference to the toolbar button performing the activation.
+                Use ui.owner to get reference to this igToolbarButton.
             ```
                 $(document).delegate(".selector", "igtoolbarbuttonactivated", function(evt, ui) {
                     //use to obtain reference to the event browser
@@ -110,7 +110,7 @@
             activated: "activated",
             /* cancel="true" Event fired before the toolbar button is deactivated.
                 Function takes arguments evt and ui.
-                Use ui.owner to get a reference to the toolbar button performing the deactivation.
+                Use ui.owner to get reference to this igToolbarButton.
             ```
                 $(".selector").igToolbarButton({
                     deactivating: function(evt, ui) {
@@ -130,7 +130,7 @@
             deactivating: "deactivating",
             /* Event fired after the toolbar button is deactivated.
                 Function takes arguments evt and ui.
-                Use ui.owner to get reference to the toolbar button performing the deactivation.
+                Use ui.owner to get reference to this igToolbarButton.
             ```
                 $(".selector").igToolbarButton({
                     deactivated: function(evt, ui) {
