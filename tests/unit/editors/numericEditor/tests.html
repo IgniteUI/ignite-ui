@@ -319,7 +319,6 @@
 					value: 1,
 					minValue: 1
 				});
-				
 			});
 		}
 		initialized = false;
@@ -732,7 +731,7 @@
 		});
 		
 		testId = "Lists testing";
-		test(testId, 22, function () {
+		test(testId, 25, function () {
 			var container = $('#listEditor'), list = $('#listEditor').igNumericEditor("dropDownContainer"), opening = false, opened = false, closing = false, closed = false,
 				itemselecting = false, itemselected = false, valueChanging = false, valueChanged = false, textChanged = false,
 				ddButton = container.igNumericEditor("dropDownButton"), item1, editorInput = $('#listEditor input');
@@ -828,10 +827,21 @@
 					ok(closed, "dropDownListClosed event not fired");
 					editorInput.trigger("focus");
 					$.ig.TestUtil.paste(editorInput[0], "1");
-					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");				
+					equal($('#listEditor').igNumericEditor("value"), "1", "The value after paste is not newVal");
+
+					//test values outside of the set list of values + isLimitedToListValues: true. 
+					//it is expected to have the value method apply values outside of the list
+					$editor = $('#listEditor');
+					$editor.igNumericEditor("option", "isLimitedToListValues", true);
+					$editor.igNumericEditor("value", "7");
+					equal($editor.igNumericEditor("value"), 7, "public value method does not set value outside of list of values");
 				}, 100);
 			}, 100);
-		});		
+
+			ok($("#listEditor").igNumericEditor("findListItemIndex"), -1, "Must be -1 if no search param is passed");
+			ok($("#listEditor").igNumericEditor("findListItemIndex", 2), 1, "Expected item index is 1");
+
+		});
 		
 		
 		testId = "SetOption";
@@ -1125,6 +1135,235 @@
 				}, 20);
 			}, 20);
 		});
+
+		testId = '_processInternalValueChanging';
+		test(testId, 7, function () {
+			var $editor = $('<input id="privateFuncEditor" />')
+				.appendTo("#testBedContainer")
+				.igNumericEditor({
+				allowNullValue: true,
+				revertIfNotValid: false,
+				minValue: 1
+			})
+
+			var $editor1 = $('<input id="privateFuncEditor1" />')
+				.appendTo("#testBedContainer")
+				.igNumericEditor({
+				allowNullValue: false,
+				revertIfNotValid: false,
+				minValue: -5,
+				maxValue: -2
+			})
+
+			var $editor = $("#privateFuncEditor");
+			var $editor1 = $("#privateFuncEditor1");
+			var container = $editor.igNumericEditor("editorContainer");
+
+			//allowNullValue : true, revertIfNotValid: false --> value is null
+			$editor.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($editor.igNumericEditor("value") === null, 'not null');
+
+			//allowNullValue : false, revertIfNotValid: false --> value is minValue
+			$editor.igNumericEditor("option", "allowNullValue", false);
+			$editor.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($editor.igNumericEditor("value") === 1, 'not set to minValue when infalid input is used even though revertIfNotValid: false');
+
+			//allowNullValue : false, revertIfNotValid: true minValue: 1 --> value is minValue
+			$editor.igNumericEditor("option", "revertIfNotValid", true);
+			$editor.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($editor.igNumericEditor("value") === 1, 'not set to minValue');
+
+			//allowNullValue : true, revertIfNotValid: true minValue: 1 --> value is this.options.nullValue;
+			$editor.igNumericEditor("option", "allowNullValue", true);
+			$editor.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($editor.igNumericEditor("value") === null, 'not null');
+
+			//allowNullValue : false, revertIfNotValid: true minValue: -5 maxValue: -2 --> value is ""
+			$editor1.igNumericEditor("option", "allowNullValue", false);
+			$editor1.igNumericEditor("option", "revertIfNotValid", true);
+			$editor1.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($editor1.igNumericEditor("value") === "", 'not set to ""');
+
+			//allowNullValue : false, revertIfNotValid: false minValue: -5 maxValue: -2 --> value is maxValue
+			$editor1.igNumericEditor("option", "allowNullValue", false);
+			$editor1.igNumericEditor("option", "revertIfNotValid", false);
+			$editor1.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($editor1.igNumericEditor("value") === -2, 'not set to maxValue');
+
+			//allowNullValue : false, revertIfNotValid: false minValue: -5 maxValue: 2 --> value is 0
+			$editor1.igNumericEditor("option", "allowNullValue", false);
+			$editor1.igNumericEditor("option", "revertIfNotValid", false);
+			$editor1.igNumericEditor("option", "minValue", -5);
+			$editor1.igNumericEditor("option", "maxValue", 2);
+			$editor1.data("igNumericEditor")._processInternalValueChanging("InvalidValue");
+			ok($editor1.igNumericEditor("value") === 0, 'not set to 0');
+
+			$editor.remove();
+			$editor1.remove();
+		});
+
+		testId = 'selectListIndexDown/Up';
+		test(testId, 4, function () {
+			var $editor = $('<div id="listEditor2"></div>')
+			.appendTo("#testBedContainer")
+			.igNumericEditor({
+				buttonType: "dropdown,spin,clear,nonvalid",
+				width: 200,
+				listWidth: 200,
+				height: 20,
+				listItems: [1, 2, 3, 4, 5],
+				dropDownAnimationDuration: 1,
+				revertIfNotValid: false,
+				isLimitedToListValues: true,
+				spinDelta: 1
+			});
+
+				var list = $editor.igNumericEditor("dropDownContainer"),
+				ddButton = $editor.igNumericEditor("dropDownButton"),
+				editorInput = $('#listEditor2 input');
+				ddButton.click();
+
+				item1 = list.children(".ui-igedit-listitem")[0];
+				$(item1).click();
+				equal($editor.outerWidth(), 200, "The width of the container is not set to 200px");
+				equal($editor.outerHeight(), 20, "The heigth of the container is not set to 20px");
+				$editor.igNumericEditor("selectListIndexUp");
+				editorInput.trigger("blur");
+				equal($('#listEditor2 input')[1].value, "2", "Expected index not 2");
+
+				$editor.igNumericEditor("selectListIndexDown");
+				editorInput.trigger("blur");
+				equal($('#listEditor2 input')[1].value, "1", "Expected index not 1");
+
+				$editor.remove();
+		});
+
+		testId = "cover _handleSpinUpEvent/_handleSpinDownEvent";
+		test(testId, 11, function () {
+			var $editor2 = $('<input id="inputEditor2" />')
+			.appendTo("#testBedContainer")
+			.igNumericEditor({
+				value: 10,
+				numericMaxDecimals: 4,
+				numericMinDecimals: 2,
+				selectionOnFocus: 0,
+				decimalSeparator: ",",
+				spinDelta: 1
+			});
+
+			var $editor3 = $('<input id="listEditor3" />')
+						.appendTo("#testBedContainer")
+						.igNumericEditor({
+							value: .1,
+							numericMaxDecimals: 8,
+							numericMinDecimals: 8,
+							selectionOnFocus: "atStart",
+							decimalSeparator: ".",
+							spinDelta: 0.1,
+							dataMode: "double",
+							buttonType: "spin"
+						});
+
+			var $editor4 = $('<input id="listEditor4" />')
+			.appendTo("#testBedContainer")
+			.igNumericEditor({
+				value: 10,
+				numericMaxDecimals: 4,
+				numericMinDecimals: 2,
+				selectionOnFocus: 0,
+				decimalSeparator: ",",
+				spinDelta: 1
+			});
+
+			var $editor5 = $('<input id="listEditor5" />')
+			.appendTo("#testBedContainer")
+			.igNumericEditor({
+				value: .1,
+				numericMaxDecimals: 8,
+				numericMinDecimals: 8,
+				selectionOnFocus: "atStart",
+				decimalSeparator: ".",
+				spinDelta: 0.1,
+				dataMode: "double",
+				buttonType: "spin"
+			});
+
+			var containerInput = $editor2.igNumericEditor("field"),
+				val = $editor2.igNumericEditor("value"),
+				spinDelta = $editor2.igNumericEditor("option", "spinDelta");
+				
+
+			//Cover switch cases for _handleSpinUpEvent/_handleSpinDownEvent 
+			//_handleSpinUpEvent test All case
+			$editor2.igNumericEditor("option", "selectionOnFocus", 0);
+			containerInput.focus();
+			keyInteraction(38, containerInput); //arrow up
+			containerInput.blur();
+			equal($editor2.igNumericEditor("value"), val + spinDelta, "value is not correct after spin");
+			equal($editor2.igNumericEditor("displayValue"), "11,00", "displayValue is not correct after spin");
+
+			$editor2.igNumericEditor("option", "dataMode", "int");
+			$editor2.igNumericEditor("option", "value", 10);
+			containerInput.focus();
+			keyInteraction(38, containerInput); //arrow up
+			containerInput.blur();
+			equal($editor2.igNumericEditor("value"), val + spinDelta, "value is not correct after spin");
+			equal($editor2.igNumericEditor("displayValue"), "11", "displayValue is not correct after spin");
+			
+			//test integer case
+			var containerInput = $editor3.igNumericEditor("field"),
+				decimalSeparator = $editor3.igNumericEditor("option", "decimalSeparator"),
+				value = containerInput.val(),
+				val = $editor3.igNumericEditor("value");				
+
+			containerInput.focus();
+			$editor3.igNumericEditor("select", 1, 2);
+			keyInteraction(38, containerInput); //arrow up
+			ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");
+
+			//_handleSpinDownEvent ---------------------------------------------------------------------------->>
+			var containerInput = $editor4.igNumericEditor("field"),
+				val = $editor4.igNumericEditor("value");
+				spinDelta = $editor4.igNumericEditor("option", "spinDelta");
+
+			$editor4.igNumericEditor("option", "selectionOnFocus", 0);
+			containerInput.focus();
+			keyInteraction(40, containerInput); //arrow down
+			containerInput.blur();
+			equal($editor4.igNumericEditor("value"), val - spinDelta, "value is not correct after spin");
+			equal($editor4.igNumericEditor("displayValue"), "9,00", "displayValue is not correct after spin");
+
+			$editor4.igNumericEditor("option", "dataMode", "int");
+			$editor4.igNumericEditor("option", "value", 10);
+			containerInput.focus();
+			keyInteraction(40, containerInput); //arrow down
+			containerInput.blur();
+			equal($editor4.igNumericEditor("value"), val - spinDelta, "value is not correct after spin");
+			equal($editor4.igNumericEditor("displayValue"), "9", "displayValue is not correct after spin");
+
+			//test integer case
+			var containerInput = $editor5.igNumericEditor("field"),
+				decimalSeparator = $editor5.igNumericEditor("option", "decimalSeparator"),
+				value = containerInput.val(),
+				val = $editor5.igNumericEditor("value");
+
+			containerInput.focus();
+			$editor5.igNumericEditor("select", 1, 2);
+			keyInteraction(40, containerInput); //arrow down
+			ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");
+
+			//test fractional case
+			$editor5.igNumericEditor("option", "value", 0.123);
+			containerInput.focus();
+			$editor5.igNumericEditor("select", 3, 4);
+			keyInteraction(40, containerInput); //arrow down
+			ok((1 <= value.indexOf(decimalSeparator)), "cursor position is not left of decimal separator");
+
+			$editor2.remove();
+			$editor3.remove();
+			$editor4.remove();
+			$editor5.remove();
+		});
 	});
 
 	function testSelection(input, start, end) {
@@ -1213,7 +1452,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input type="text" id="inputEditor1" />
 		<div id="divEditor1"></div>
 
@@ -1319,6 +1558,7 @@
 		<br />
 		<div id="listEditor"></div>
 		<div id="listEditor1"></div>
+		<br />
 		<div id="pasteEditor"></div>
 		<br />
 		<input id="disabledEditor" type="text" name="disabledEditor" tabindex="1" disabled=disabled readonly=readonly value="disabled" /></input>
