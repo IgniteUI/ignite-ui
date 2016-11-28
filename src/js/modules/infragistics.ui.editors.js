@@ -1847,6 +1847,8 @@
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
 					this._editorInput.val(this._getDisplayValue());
+				} else if (initialValue === null && !this.options.allowNullValue ) {
+					this._setInitialValue("");
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
 				initialValue = this.element.val();
