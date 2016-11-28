@@ -4,17 +4,17 @@
 <head>
 	<title>igTemplating Engine - Unit Testing</title>
 	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-	
+
 	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.templating-en.js"></script>
-	<script type="text/javascript" src="../../../src/js/modules/infragistics.templating.js"></script>	
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.templating.js"></script>
 	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
 	<script type="text/javascript" src="../common/test-util.js"></script>
 	<script type="text/javascript" src="DB3.js"></script>
-	
+
 	<script type="text/javascript">
 		var data1 = {
 			Template: 'Success'
@@ -72,7 +72,7 @@
 				teardown: function() {
 				}
 			});
-			
+
 			testId1 = "igTemplating script loaded and $.ig fully defined";
 			testId2 = "igTemplating comments recognition and removal";
 			testId3 = "igTemplating data substitution and invalid template handling";
@@ -93,7 +93,7 @@
 			testId18 = "igTemplating resolving methods";
 			testId19 = "igTemplating handling objects with 'length' property";
 			testId20 = "igTemplating properties with dashes";
-			
+
 			test(testId1, function () {
 				ok($.ig, '$.ig is undefined');
 				ok($.ig.regExp, '$.ig.regExp object is undefined');
@@ -103,7 +103,7 @@
 				ok($.ig.tmpl, '$.ig.tmpl function is undefined');
 				equal(typeof $.ig.tmpl, 'function', 'Type of $.ig.tmpl is not a function');
 			});
-			
+
 			test(testId2, function () {
 				var tmpl1 = '<div #Some comment#>Test # Comment goes in here # </div>',
 					tmpl = '<a href="#">${Template}</a><a href="#"></a>',
@@ -111,12 +111,12 @@
 					result1 = $.ig.tmpl(tmpl1, data1),
 					result = $.ig.tmpl(tmpl, data1),
 					result2 = $.ig.tmpl(tmpl2, data1);
-				
+
 				equal(result2, '<a href="#">Nothing should be replaced</a><a href="#">yeah?</a>', 'Templating handled incorrectly a no template string.');
 				equal(result1, '<div>Test </div>', 'Comment was not correctly removed from the template');
 				equal(result, '<a href="#">Success</a><a href="#"></a>', 'Comment was not correctly removed from the template');
 			});
-			
+
 			test(testId3, function () {
 				var tmpl1 = 'invalid ${Template}',
 					tmpl2 = '<div id="${ID}">${Template} valid</div>',
@@ -138,14 +138,14 @@
 				equal(result6, '<span id="1">Item 1</span><span id="2">Item 2</span><span id="3">Item 3</span>', 'Template is incorrectly handled by the engine');
 				equal(result7, '<img src="Success" />', 'Template is incorrectly handled by the engine');
 			});
-			
+
 			test(testId4, function () {
 				var tmpl = '<span id="${Value}">$i: ${Text}</span>',
 					result = $.ig.tmpl(tmpl, data2);
-				
+
 				equal(result, '<span id="1">0: Item 1</span><span id="2">1: Item 2</span><span id="3">2: Item 3</span>', 'Template is incorrectly handled by the engine');
 			});
-			
+
 			test(testId5, function () {
 				var tmpl = '{{if $i % 2 === 0}}<span id="${Value}" class="ui-even">${Text}</span>{{else}}<span id="${Value}" class="ui-odd">${Text}</span>{{/if}}',
 					tmpl1 = '{{if true}}<span class="ui-even">${Template}</span>{{/if}}',
@@ -161,50 +161,50 @@
 				equal(result2, 'Testing2Item 3', 'If-elseif-else conditional failed.');
 				equal(result3, '1 > 0a', 'Null or undefined check for properties failed.');
 			});
-			
+
 			test(testId7, function () {
 				var tmpl = "<li>X: ${point.x}, Y: ${point.y}</li>",
 					result = $.ig.tmpl(tmpl, points);
-					
+
 				equal(result, '<li>X: 1, Y: 1</li><li>X: 2, Y: 2</li><li>X: 3, Y: 3</li><li>X: 4, Y: 4</li><li>X: 5, Y: 5</li><li>X: 6, Y: 6</li><li>X: 7, Y: 7</li><li>X: 8, Y: 8</li><li>X: 9, Y: 9</li>', 'Each directive templating failed.');
 				var tmpl1 = '{{if ${point.x} == 1}}${point.y}{{/if}}',
 					result = $.ig.tmpl(tmpl1, points);
 				equal(result, 1, 'The result did not match');
 			});
-			
+
 			test(testId6, function () {
 				var tmpl = "{{each ${point} }}<li>X: ${point.x}, Y: ${point.y}</li>{{/each}}",
 					result = $.ig.tmpl(tmpl, data3),
 					tmpl1 = "{{each ${point}}}<li>X: ${point.x}, Y: ${point.y}</li>{{/each}}",
 					result1 = $.ig.tmpl(tmpl1, data3);
-					
+
 				equal(result, '<li>X: 1, Y: 1</li><li>X: 2, Y: 2</li><li>X: 1a, Y: 1a</li><li>X: 2a, Y: 2a</li>', 'Each directive templating failed.');
 				equal(result1, '<li>X: 1, Y: 1</li><li>X: 2, Y: 2</li><li>X: 1a, Y: 1a</li><li>X: 2a, Y: 2a</li>', 'Each directive templating failed.');
 			});
-			
+
 			test(testId8, function () {
 				var encodeData = [
-					{ html: '<div>Item 1</div>' },
-					{ html: '<div>Item 2</div>' },
-					{ html: '<div>Item 3</div>' }
+					{ html: '<div>Item 1&</div>' },
+					{ html: '<div>Item 2&</div>' },
+					{ html: '<div>Item 3&</div>' }
 				];
 				var tmpl = '${html}', result = $.ig.tmpl(tmpl, encodeData), tmpl2 = '{{html html}}', result1 = $.ig.tmpl(tmpl2, encodeData);
-				equal(result, "&lt;div&gt;Item 1&lt;/div&gt;&lt;div&gt;Item 2&lt;/div&gt;&lt;div&gt;Item 3&lt;/div&gt;", 'The result did not get encoded');
-				equal(result1, '<div>Item 1</div><div>Item 2</div><div>Item 3</div>', 'Non-encode properties did not yield correct results');
-				
+				equal(result, "&lt;div&gt;Item 1&amp;&lt;/div&gt;&lt;div&gt;Item 2&amp;&lt;/div&gt;&lt;div&gt;Item 3&amp;&lt;/div&gt;", 'The result did not get encoded');
+				equal(result1, '<div>Item 1&</div><div>Item 2&</div><div>Item 3&</div>', 'Non-encode properties did not yield correct results');
+
 				var encodeComplexData = [
-					{ html: { html: '<div>Item 1</div>'} },
-					{ html: { html: '<div>Item 2</div>'} },
-					{ html: { html: '<div>Item 3</div>'} }
+					{ html: { html: '<div>Item 1&</div>'} },
+					{ html: { html: '<div>Item 2&</div>'} },
+					{ html: { html: '<div>Item 3&</div>'} }
 				];
 				tmpl = '${html.html}';
 				result = $.ig.tmpl(tmpl, encodeComplexData);
 				tmpl2 = '{{html html.html}}';
 				result1 = $.ig.tmpl(tmpl2, encodeComplexData);
-				equal(result, "&lt;div&gt;Item 1&lt;/div&gt;&lt;div&gt;Item 2&lt;/div&gt;&lt;div&gt;Item 3&lt;/div&gt;", 'The result did not get encoded');
-				equal(result1, '<div>Item 1</div><div>Item 2</div><div>Item 3</div>', 'Non-encode properties did not yield correct results');
+				equal(result, "&lt;div&gt;Item 1&amp;&lt;/div&gt;&lt;div&gt;Item 2&amp;&lt;/div&gt;&lt;div&gt;Item 3&amp;&lt;/div&gt;", 'The result did not get encoded');
+				equal(result1, '<div>Item 1&</div><div>Item 2&</div><div>Item 3&</div>', 'Non-encode properties did not yield correct results');
 			});
-			
+
 			test(testId9, function () {
 				var nestedData = [
 					{prop1: 0, prop2: 1, prop3: 2},
@@ -213,52 +213,52 @@
 				];
 				var tmpl = '{{if ${prop1} !== 0}}{{if ${prop2} !== 100}}Value: ${prop3}{{else}}Value: ${prop2}{{/if}}{{else}}Value: ${prop1}{{/if}}',
 					result = $.ig.tmpl(tmpl, nestedData);
-					
+
 				equal(result, "Value: 0Value: 20Value: 100", 'Nested conditionals were not handled correctly.');
 			});
-			
+
 			test(testId10, function () {
 				var tmpl = '<tr id="${Value}">{{if ${Cond} }}<td>Text: ${Text}</td>{{else}}<td>&nbsp;</td>{{/if}}</tr>',
 					result = $.ig.tmpl(tmpl, data2);
-					
+
 				equal(result, '<tr id="1"><td>&nbsp;</td></tr><tr id="2"><td>Text: Item 2</td></tr><tr id="3"><td>&nbsp;</td></tr>' , 'Combining content with blocks was not handled correctly by the templating engine.');
 			});
-			
+
 			test(testId11, function () {
 				var tmpl = '{{if ${Value} == 1}} ${Value} {{/if}}',
 					result = $.ig.tmpl(tmpl, data2),
 					tmpl1 = '{{if ${Value}== 1}} ${Value}{{/if}}'
 					result1 = $.ig.tmpl(tmpl1, data2);
-					
+
 				equal(result, ' 1 ');
 				equal(result1, ' 1');
 			});
-			
+
 			test(testId12, function () {
 				var tmpl = '<ul>{{each ${entries}}}<li>$index: $data</li>{{/each}}</ul>',
 					entry = [{ entries: [1, 2, 3, 4]}],
 					result = $.ig.tmpl(tmpl, entry);
-					
+
 				equal(result, '<ul><li>0: 1</li><li>1: 2</li><li>2: 3</li><li>3: 4</li></ul>', '$data and $index were not evaluated correctly by the templating engine.');
 			});
-			
+
 			test(testId13, function () {
 				var tmpl = '<div>${entries}</div>',
 					entry = [{ entries: '$0'}],
 					result = $.ig.tmpl(tmpl, entry),
 					entry1 = [{ entries: '$0'}, { entries: '$0'}, { entries: '$0'}],
 					result1 = $.ig.tmpl(tmpl, entry1);
-				
+
 				ok($.ig._internalTmplCache.hasOwnProperty(tmpl), 'The template was not cached');
 				equal(result, '<div>$0</div>', 'The string.replace parameterized $0.');
 				equal(result1, '<div>$0</div><div>$0</div><div>$0</div>', 'The string.replace parameterized $0 in an array.');
 			});
-			
+
 			test(testId14, function () {
 				// Internal caching with loop through the data
 				var tmpl = '<span id="${Value}" data-src="${NavigateUrl}">${Text}</span>', result, result1,
 					tmpl1 = '{{if ${Value} === "boom"}} ${Text} {{/if}}';
-					
+
 				var d1 = new Date();
 				result = $.ig.tmpl(tmpl, DB2);
 				result1 = $.ig.tmpl(tmpl, DB2);
@@ -278,15 +278,15 @@
 				data = [{ Text: '' },{ Text: '' }];
 				QUnit.throws(function () {$.ig.tmpl(tmpl1, data);}, function (err) { return err.message === $.ig.Templating.locale.undefinedArgument + '${Value}'; }, 'An error was not correctly thrown when having an undefined prop.');
 			});
-			
+
 			test(testId15, function () {
 				var tmpl = '${Value$0}',
 					data = { Value$0: 1 },
 					result = $.ig.tmpl(tmpl, data);
-				
+
 				equal(result, '1', 'Property with "$" in the name was not correctly evaluated.');
 			});
-			
+
 			test(testId16, function () {
 				var tmpl = '<div><ul>{{each ${prop1} }}<li>${prop1.subprop1}</li>{{/each}}</ul>' +
 							'<div>{{each ${prop2} }}<span>${prop2.subprop1}</span>{{/each}}</div>' +
@@ -307,10 +307,10 @@
 					result = $.ig.tmpl(tmpl, data);
 				equal(result, '<div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>' +
 							'<div><span>asd</span><span>qwe</span><span>zxc</span></div>' +
-							'<ul><li>a</li><li>b</li><li>c</li><li>d</li></ul></div>', 
+							'<ul><li>a</li><li>b</li><li>c</li><li>d</li></ul></div>',
 							'Sequential {{each}} blocks were not evaluated correctly.');
 			});
-			
+
 			test(testId17, function () {
 				var tmpl = '<div><span>${Prop 1}</span><span>{{html Prop 2}}</span></div>',
 					data = {
@@ -320,7 +320,7 @@
 					result = $.ig.tmpl(tmpl, data);
 				equal(result, '<div><span>test</span><span><p>test</p></span></div>', 'The properties with spaces were not correctly read');
 			});
-			
+
 			test(testId18, function () {
 				var tmpl = '<div><span>${Prop 1}</span><span>{{html Prop 2}}</span><span>${prop.prop1}</span><span>{{html prop.prop2}}</span></div>',
 					data = {
@@ -367,7 +367,7 @@
 				equal($.ig.tmpl(tmpl, data), '<div><span>1</span><span><p>1</p></span><span>prop1 value</span><span><p>prop2 value</p></span></div>', 'The properties which are functions were not correctly read');
 				equal($.ig.tmpl(tmpl, data2), '<div><span>1</span><span><p>1</p></span><span>prop1 value</span><span><p>prop2 value</p></span></div><div><span>2</span><span><p>2</p></span><span>prop1 value 2</span><span><p>prop2 value 2</p></span></div>', 'The properties which are functions were not correctly read');
 			});
-			
+
 			test(testId19, function () {
 				var tmpl = '<div>${length}</div>',
 					data = [
@@ -378,7 +378,7 @@
 					result = $.ig.tmpl(tmpl, data);
 				equal(result, '<div>1</div><div>1</div><div>1</div>', 'The properties with spaces were not correctly read');
 			});
-			
+
 			test(testId20, function () {
 				var tmpl = '<div><span>${Prop-1}</span><span>{{html Prop-2}}</span><span>${Prop-3.Prop-4}</span><span>{{html Prop-3.prop-5}}</span></div>',
 					data = {
@@ -404,7 +404,7 @@
 		<ol id="qunit-tests"></ol>
 	</div>
 	<div id="log">
-	
+
 	</div>
 </body>
 
