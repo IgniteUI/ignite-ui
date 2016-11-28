@@ -10328,7 +10328,8 @@
 			}
 		},
 		getSelectedDate: function() {
-			/* Gets selected date.
+			/* Gets selected date as a date object. This method can be used when dataMode is set as either displayModeText or editModeText.
+			In such cases the value() method will not return date object and getSelectedDate() can be used to replace that functionality.
 			```
 			$(".selector").%%WidgetName%%("getSelectedDate");
 			```
@@ -10336,7 +10337,8 @@
 			return this._dateObjectValue;
 		},
 		selectDate: function (date) {
-			/* Sets selected date.
+			/* Sets selected date. This method can be used when dataMode is set as either displayModeText or editModeText.
+			In such cases the value() cannot accept a date object as a new value and getSelectedDate() can be used to replace that functionality.
 			```
 				$(".selector").igDateEditor("selectDate", new Date (2016, 2, 3));
 			```
