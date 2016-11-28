@@ -273,7 +273,7 @@
             value: ""
         },
         events: {
-            /* cancel="false" Event fired before the html editor widget has been rendered.
+            /* cancel="false" Event fired before the html editor widget is rendered.
             ```
                 //Initialize
                 $(".selector").igHtmlEditor({
@@ -291,7 +291,7 @@
             ```
             */
             rendered: "rendered",
-            /* cancel="false" Event fired before the html editor widget has been rendered.
+            /* cancel="false" Event fired after the html editor widget is rendered.
             ```
                 //Initialize
                 $(".selector").igHtmlEditor({
@@ -498,7 +498,7 @@
             ```
             */
             redo: "redo",
-            /* cancel = "false" Event is fired after rezing of workspace
+            /* cancel="false" Event is fired after rezing of workspace
             ```
                 //Initialize
                 $(".selector").igHtmlEditor({
