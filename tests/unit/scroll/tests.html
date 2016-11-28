@@ -386,6 +386,12 @@
 		var testId_124 = 'linking two different igScroll to a third one by different orientation scrolls the proper one accordingly.';
 		var testId_125 = 'linking two different igScroll to a third one by different orientation scrolls the proper one accordingly on mobile.';
 		
+		var testId_126 = 'setting scrollWidth updates the horizontal scrollbar width and its visibility.';
+		var testId_127 = 'setting scrollHeight updates the vertical scrollbar width and its visibility.';
+		
+		var testId_128 = 'linked element that can be scrolled only vertically updates its position only vertically on touch.';
+		var testId_129 = 'linked element that can be scrolled only horizontally updates its position only horizontally on touchy.';
+		
 	    test(testId_1, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
 	        $('#elemVH').igScroll({ modifyDOM: true });
@@ -3471,6 +3477,126 @@
 				$("#elemVH").remove();
 				$("#syncV").remove();
 				$("#syncH").remove();
+				$.ig.util.isTouch = false;
+				start();
+			}, 2500);
+	    });
+		
+		test(testId_126, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;" tabindex="1"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll();
+		
+			// Claclulating the drag width and height is based on the formula used in the igScroll implementation
+			// vDragHeight = (elemHeight - (2 * ArrowsSize + EmptySpaceSize)) * percentInViewV;
+			// hDragWidth = (elemWidth - (2 * ArrowsSize + EmptySpaceSize)) * percentInViewH;
+			var elemContent = $("#elemVH_content"),
+				hDragWidth = (600 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (600 / elemContent.width()),
+				vDragHeight = (400 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (400 / elemContent.height());
+				
+			ok(Math.round(hDragWidth) - 1 < Math.round($("#elemVH_hBar_drag").width()) < Math.round(hDragWidth) + 1, "Horizontal thumb drag has proper initial width");
+			ok(Math.round(vDragHeight) - 1 < Math.round($("#elemVH_vBar_drag").height()) < Math.round(vDragHeight) + 1, "Vertical thumb drag has proper initial height");
+
+			$('#elemVH').igScroll("option", "scrollWidth", 700);
+			
+			hDragWidth = (600 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (600 / 700),
+			vDragHeight = (400 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (400 / elemContent.height());
+			
+			ok(Math.round(hDragWidth) - 1 < Math.round($("#elemVH_hBar_drag").width()) < Math.round(hDragWidth) + 1, "Horizontal thumb drag has updated its width after setting scrollWidth");
+			ok(Math.round(vDragHeight) - 1 < Math.round($("#elemVH_vBar_drag").height()) < Math.round(vDragHeight) + 1, "Vertical thumb drag has its height unchanged after setting scrollWidth");
+			
+			$('#elemVH').igScroll("option", "scrollWidth", 500);
+			
+			equal($("#elemVH_hBar").length, 0, "Horizontal thumb drag is removed");
+			equal($("#elemVH_vBar").length, 1, "Vertical thumb drag is not removed");
+
+	        $("#elemVH").remove();
+	    });
+		
+		test(testId_127, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;" tabindex="1"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll();
+		
+			// Claclulating the drag width and height is based on the formula used in the igScroll implementation
+			// vDragHeight = (elemHeight - (2 * ArrowsSize + EmptySpaceSize)) * percentInViewV;
+			// hDragWidth = (elemWidth - (2 * ArrowsSize + EmptySpaceSize)) * percentInViewH;
+			var elemContent = $("#elemVH_content"),
+				hDragWidth = (600 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (600 / elemContent.width()),
+				vDragHeight = (400 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (400 / elemContent.height());
+				
+			ok(Math.round(hDragWidth) - 1 < Math.round($("#elemVH_hBar_drag").width()) < Math.round(hDragWidth) + 1, "Horizontal thumb drag has proper initial width");
+			ok(Math.round(vDragHeight) - 1 < Math.round($("#elemVH_vBar_drag").height()) < Math.round(vDragHeight) + 1, "Vertical thumb drag has proper initial height");
+
+			$('#elemVH').igScroll("option", "scrollHeight", 1000);
+			
+			hDragWidth = (600 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (600 / elemContent.width()),
+			vDragHeight = (400 - (2 * $('#elemVH').data("igScroll")._customBarArrowsSize + $('#elemVH').data("igScroll")._customBarEmptySpaceSize)) * (400 / 1000);
+			
+			ok(Math.round(hDragWidth) - 1 < Math.round($("#elemVH_hBar_drag").width()) < Math.round(hDragWidth) + 1, "Horizontal thumb drag has not changed its width after setting scrollWidth");
+			ok(Math.round(vDragHeight) - 1 < Math.round($("#elemVH_vBar_drag").height()) < Math.round(vDragHeight) + 1, "Vertical thumb drag has updated its height after setting scrollHeight");
+			
+			$('#elemVH').igScroll("option", "scrollHeight", 300);
+			
+			equal($("#elemVH_hBar").length, 1, "Horizontal thumb drag is not removed");
+			equal($("#elemVH_vBar").length, 0, "Vertical thumb drag is removed");
+
+	        $("#elemVH").remove();
+	    });
+		
+		test(testId_128, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $("#testBed").append($('<div id="elemVSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollV));
+
+			$('#elemVH').igScroll({
+				modifyDOM: true,
+				syncedElemsV: [$('#elemVSync')],
+			});
+			
+			var elemContainer = $("#elemVH_container");
+				
+			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 3, y: 3}, {x: 7, y: 7}, {x: 8, y: 8}, {x: 9, y: 9}];
+			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 1);
+			setTimeout(function () {
+				equal($("#elemVH").data("igScroll")._getContentPositionX(), 200, "igScroll scrolled horizontally by the swipe");
+				notEqual($("#elemVH").data("igScroll")._getContentPositionY(), 13, "igScroll did not scroll properly vertically");
+				
+				equal($("#elemVH").data("igScroll")._getContentPositionY(), -getTransform3dValueY($('#elemVSync_content')), "igScroll content and linked element did not sync vertically on touch");
+				equal(-getTransform3dValueX($('#elemVSync_content')), 0, "igScroll content and linked element did not sync vertically on touch");
+				
+				$("#elemVH").remove();
+				$("#elemVSync").remove();
+				$.ig.util.isTouch = false;
+				start();
+			}, 2500);
+	    });	
+		
+		test(testId_129, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $("#testBed").append($('<div id="elemHSync" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollH));
+
+			$('#elemVH').igScroll({
+				modifyDOM: true,
+				syncedElemsH: [$('#elemHSync')],
+			});
+			
+			var elemContainer = $("#elemVH_container");
+			
+			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 3, y: 3}, {x: 7, y: 7}, {x: 8 , y: 8}, {x: 9, y: 9}];
+			$.ig.TestUtil.simulateTouchSwipeFromCenter(elemContainer, touchSteps, 10);
+			setTimeout(function () {
+				notEqual($("#elemVH").data("igScroll")._getContentPositionX(), 27, "igScroll scrolled horizontally by the swipe");
+				equal($("#elemVH").data("igScroll")._getContentPositionY(), 27, "igScroll did not scroll vertically");		
+				
+				equal($("#elemVH").data("igScroll")._getContentPositionX(), -getTransform3dValueX($('#elemHSync_content')), "igScroll content and linked element did not sync horizontally on touch");
+				equal(-getTransform3dValueY($('#elemHSync_content')), 0, "igScroll content and linked element did not sync horizontally on touch");
+
+				$("#elemVH").remove();
+				$("#elemHSync").remove();
 				$.ig.util.isTouch = false;
 				start();
 			}, 2500);

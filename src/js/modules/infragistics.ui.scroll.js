@@ -689,7 +689,7 @@
 				});
 			}
 
-			this._refreshScrollbarsDrag();
+			this._refreshScrollbars();
 
 			return this.element;
 		},
@@ -877,12 +877,12 @@
 			}
 			if (key === "scrollHeight") {
 				this._setScrollHeight(value);
-				this._updateScrollBarsVisibility();
+				this._refreshScrollbars();
 				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "scrollWidth") {
 				this._setScrollWidth(value);
-				this._updateScrollBarsVisibility();
+				this._refreshScrollbars();
 				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "syncedElemsH") {
@@ -1107,7 +1107,7 @@
 			return this.element;
 		},
 
-		_refreshScrollbarsDrag: function () {
+		_refreshScrollbars: function () {
 			var containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
 			this._elemHeight = this.element.height();
 			this._elemWidth = this.element.width();
@@ -1756,7 +1756,7 @@
 						//get the current X position
 						var matrixElem = this._linkedHElems[ index ].css("-webkit-transform");
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
-						var destY = valuesElem ? Number(valuesElem[ 5 ]) : -this._getContentPositionY();
+						var destY = valuesElem ? Number(valuesElem[ 5 ]) : 0;
 
 						if (this._linkedHElems[ index ].data("igScroll")  !== undefined &&
 								this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
@@ -1824,7 +1824,7 @@
 						//get the current X position
 						var matrixElem = this._linkedVElems[ index ].css("-webkit-transform");
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
-						var destX = valuesElem ? Number(valuesElem[ 4 ]) : -this._getContentPositionX();
+						var destX = valuesElem ? Number(valuesElem[ 4 ]) : 0;
 
 						if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 								this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
