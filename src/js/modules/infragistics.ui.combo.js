@@ -513,6 +513,7 @@
 			*/
             visibleItemsCount: 15,
             /* type="string" Gets/Sets value that is displayed when input field is empty. That is an override for the $.ig.Combo.locale.placeHolder.
+            ```
                 //Initialize
                 $(".selector").igCombo({
                     placeHolder : "Empty input field"
@@ -523,6 +524,7 @@
 
                 //Set
                 $(".selector").igCombo("option", "placeHolder", "Please type in some text");
+            ```
             */
             placeHolder: null,
             /* type="editable|dropdown|readonlylist|readonly" Sets gets functionality mode.
