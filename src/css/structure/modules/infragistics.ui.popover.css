@@ -11,11 +11,12 @@
 
 .ui-igpopover {
     position: absolute;
-    z-index: 10000;
     display: none;
     white-space: normal;
     word-wrap: break-word;
     position: absolute;
+    /* BUG:228618 /// 11.29.2016 /// M.Popov /// The z-index for the popover was smaller than the z-index for the ui-igcombo-dropdown  */
+    z-index: 100001;
 }
 
 .ui-igpopover > .ui-widget-content {
