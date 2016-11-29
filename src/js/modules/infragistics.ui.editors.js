@@ -8962,8 +8962,8 @@
 				zoneOffset + this.options.displayTimeOffset);
 			if (zoneOffset !== newDate.getTimezoneOffset()) {
 				// if date changes offset due to DST, re-adjust
-				newDate.setUTCMinutes(newDate.getUTCMinutes() 
-					+ newDate.getTimezoneOffset() - zoneOffset);
+				newDate.setUTCMinutes(newDate.getUTCMinutes() +
+					newDate.getTimezoneOffset() - zoneOffset);
 			}
 			return newDate;
 		},
