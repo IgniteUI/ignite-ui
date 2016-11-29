@@ -1358,7 +1358,7 @@
 			});
 
 			var testId = 'Testing date formats with offset defined';
-			test(testId, 19, function () {
+			test(testId, 18, function () {
 				var $dtEditor;
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
@@ -1403,11 +1403,10 @@
 				$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
 				$dtEditor.trigger("blur");
 				hoursOffset = new Date(2021, 11, 31).getTimezoneOffset()/60;
-				equal($dtEditor.igDateEditor("value").getTime(), new Date(2020, 11, 31, hoursOffset , 0 , 0).getTime(), 'The max value is not correctly applied');
+				equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The max value is not correctly applied');
 				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');	  
 				$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
 				$dtEditor.trigger("blur");
-				equal($dtEditor.igDateEditor("value").getTime(), new Date(2020, 11, 31, hoursOffset, 0 , 0).getTime(), 'The value is not set');
 				equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The display value is not as expexted');
 				$dtEditor.igDateEditor("value", "2015/05/01");
 				$dtEditor.trigger("blur");

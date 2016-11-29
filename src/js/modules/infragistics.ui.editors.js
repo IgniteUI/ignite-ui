@@ -7769,8 +7769,12 @@
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
 				case "displayTimeOffset": {
-					this._updateMaskedValue();
-					this._exitEditMode();
+					if (this._editMode) {
+						this._updateMaskedValue();
+						this._enterEditMode();
+					} else {
+						this._editorInput.val(this._getDisplayValue());
+					}
 					break;
 				}
 				case "minValue": {
