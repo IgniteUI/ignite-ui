@@ -3370,11 +3370,6 @@
 		},
 		_setSelectionRange: function (input, selectionStart, selectionEnd) {
 			if (input.setSelectionRange) {
-				// IE specific issue when the editor is detached
-				// and setSelectionRange is called as part of a composition mode end
-				if (!jQuery.contains(document.documentElement, input) && $.ig.util.isIE) {
-					return;
-				}
 				input.setSelectionRange(selectionStart, selectionEnd);
 			} else if (input.createTextRange) {
 				var range = input.createTextRange();
@@ -4397,7 +4392,9 @@
 					this._numericType,
 					this.options.dataMode);
 			if (value !== "" && !isNaN(value)) {
-				if (this.options.maxValue && value > this.options.maxValue) {
+
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
 					value = this.options.maxValue;
 
 					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
@@ -4408,7 +4405,9 @@
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && value < this.options.minValue) {
+
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
 					value = this.options.minValue;
 
 					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
@@ -5508,14 +5507,18 @@
 				if (newValue !== null && !isNaN(this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 					if (newValue !== "" && !isNaN(newValue)) {
-						if (this.options.maxValue && newValue > this.options.maxValue) {
+
+						// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						if (!isNaN((this.options.maxValue)) && newValue > this.options.maxValue) {
 							newValue = this.options.maxValue;
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
 								$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 									this.options.maxValue));
-						} else if (this.options.minValue && newValue < this.options.minValue) {
+
+							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						} else if (!isNaN((this.options.minValue)) && newValue < this.options.minValue) {
 							newValue = this.options.minValue;
 
 							// Raise Warning level 2
