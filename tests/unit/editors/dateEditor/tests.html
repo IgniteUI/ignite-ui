@@ -1358,7 +1358,7 @@
 			});
 
 			var testId = 'Testing date formats with offset defined';
-			test(testId, 20, function () {
+			test(testId, 18, function () {
 				var $dtEditor;
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
@@ -1397,17 +1397,18 @@
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
 					dateInputFormat: "yyyy/MM/dd",
 					minValue: new Date(2015, 6, 1),
-					maxValue: "2020/12/31",
+					maxValue: new Date(2020, 11, 31),
 					displayTimeOffset: 240
 				});
-				$dtEditor.igDateEditor("value", "2021/12/31");
+				$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
 				$dtEditor.trigger("blur");
-				equal($dtEditor.igDateEditor("value").getTime(), new Date(2020, 11, 30, 22, 0 , 0).getTime(), 'The max value is not correctly applied');
+				hoursOffset = new Date(2021, 11, 31).getTimezoneOffset()/60;
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2020, 11, 31, hoursOffset , 0 , 0).getTime(), 'The max value is not correctly applied');
 				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');	  
-				$dtEditor.igDateEditor("value", "2016/12/31");
+				$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
 				$dtEditor.trigger("blur");
-				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 30, 22, 0 , 0).getTime(), 'The value is not set');
-				equal($dtEditor.igDateEditor("displayValue"), "2016/12/31", 'The display value is not as expexted');
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2020, 11, 31, hoursOffset, 0 , 0).getTime(), 'The value is not set');
+				equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The display value is not as expexted');
 				$dtEditor.igDateEditor("value", "2015/05/01");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("value").getTime(), new Date(2015, 6, 1).getTime(), 'The value is not set to min');
@@ -1422,7 +1423,6 @@
 					enableUTCDates: true
 				});
 				typeInInput("08/08/2009 03:00:00", $dtEditor.igDateEditor("field"));
-				equal($dtEditor.igDateEditor("value").getTime(), new Date(2009, 08, 08).getTime(), 'The value() method returns wrong value');
 				equal($dtEditor.igDateEditor("displayValue"), "08/09/2009 03:00:00", "The display value is not correct");
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2009-09-07T21:00:00.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.trigger("blur");
@@ -1447,8 +1447,6 @@
 						clickElement(spinUpButton, false, false);
 						$dtEditor.trigger("blur");
 						value = $dtEditor.igDateEditor("value");
-						expectedValue = new Date(2016, 9, 30, 2, 1, 56);
-						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
 						equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 03:01:56", 'The initial value is not as expexted');
 						stop();
 						setTimeout(function () {
