@@ -7563,7 +7563,7 @@
 				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
 				date type="string" The value method returns a Date object. When this mode is set the value sent to the server on submit is serialized as ISO 8061 string with local time and zone values by default.
-					The enableUTCDates option can be used to output a UTC ISO string instead.
+					The [enableUTCDates](ui.%%WidgetNameLowered%%#options:enableUTCDates) option can be used to output an UTC ISO string instead.
 					For example 10:00 AM from a client with local offset of 5 hours ahead of GMT will be serialized as:
 					"2016-11-11T10:00:00+05:00"
 				displayModeText type="string" The "text" in display mode (no focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
@@ -7631,7 +7631,7 @@
 			*/
 			limitSpinToCurrentField: false,
 			/* type="bool" Enables/Disables serializing client date as UTC ISO 8061 string instead of using the local time and zone values.
-				The option is only applied in "date" dataMode.
+				The option is only applied in "date" [dataMode](ui.%%WidgetNameLowered%%#options:dataMode).
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
