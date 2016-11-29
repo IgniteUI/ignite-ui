@@ -135,7 +135,7 @@
 				$("#toLowerEditor").igTextEditor({
 					toLower: true
 				});
-				//ANI
+
 				try {					
 					$("#imgEditor").igTextEditor();
 				} catch (e) {
@@ -423,7 +423,7 @@
 			equal($("#inputEditor5").igTextEditor("option", "tabIndex"), 2, "The initial value of the tabIndex is not 2");
 			equal(editor.attr("placeHolder"), "enter a value", "The placeHolder attribute is not set corretly");
 			equal($('#inputEditor4').igTextEditor("field").attr("placeHolder"), undefined, "The placeHolder attribute should not be set");
-			//ANI
+
 			equal($inputMaxLength.igTextEditor("option","maxLength"), 3, "The maxLength attribure is not set correctly.");
 			equal($inputMaxLength.igTextEditor("option", "value"), "Max", "The value is not set properly after the maxLength.");
 			equal($('#inputEditor5').igTextEditor("inputName"), "firstName", "name is not properly set");
@@ -439,7 +439,7 @@
 
 			equal($("#passEditor").igTextEditor("field").attr("type"), "password");
 			equal($("#passDiv").igTextEditor("field").attr("type"), "password");
-			//ANI
+
 			$disabledRO.data("igTextEditor")._toggleDropDown();
 			equal($disabledRO.data("igTextEditor")._calculateDropDownListOrientation(), "bottom", "Bottom orientation of the drop down is not calculated correctly.");
 
@@ -560,11 +560,11 @@
 			$enterMultiline.on("igtexteditorkeydown", function(){
 				flag = true;
 			});
-			//ANI
+
 			keyDownChar(8, longInput);
 			ok(flag, "the backspace key was not pressed.");
 			flag = false;
-			//TODO //ANI
+
 			keyDownChar(13, enterMultiline);
 			keyDownChar(8, enterMultiline);
 			ok(flag, "Enter was not pressed.");
@@ -1139,7 +1139,7 @@
 				ok($editor2.attr("class") === undefined, "Some classes are still not removed");
 			}, 100);
 		});
-		//ANI
+
 		var testId = "Test set options runtime";
 		test(testId, 8, function(){
 			var $inputEditorSetOptionRuntime = $("<input id='inputEditorSetOptionRuntime'/>").appendTo("#testBedContainer").igTextEditor({
@@ -1221,7 +1221,7 @@
 			ok(!($("#emptyAndDDBtn").parent().siblings(".ig-egedit-button-common") == 0), "The dropdown button is not supposed to be rendered with listItems with length 0.");
 			ok(!($("#wrongBtn").parent().siblings(".ig-egedit-button-common") == 0), "The editor is not supposed to have any buttons.");
 		});
-		//ANI
+
 		var testId = "Test the undefined";
 		test(testId, 1, function(){
 			var $editor = $("<input id='editor'/>").igTextEditor();
