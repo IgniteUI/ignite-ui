@@ -8961,7 +8961,8 @@
 			return newDate;
 		},
 		_setDateOffset: function(date) {
-			date.setMinutes(date.getMinutes() - date.getTimezoneOffset() - this.options.displayTimeOffset);
+			date.setUTCMinutes(date.getUTCMinutes() -
+				date.getTimezoneOffset() - this.options.displayTimeOffset);
 		},
 		_parseDateFromMaskedValue: function (value) {
 			var dateField, monthField, yearField, hourField, minutesField, secondsField,
