@@ -8956,9 +8956,15 @@
 			return dataModeValue;
 		},
 		_getDateOffset: function(date) {
-			var newDate = new Date(date.getTime());
+			var newDate = new Date(date.getTime()), zoneOffset;
+			zoneOffset = newDate.getTimezoneOffset();
 			newDate.setUTCMinutes(newDate.getUTCMinutes() +
-				newDate.getTimezoneOffset() + this.options.displayTimeOffset);
+				zoneOffset + this.options.displayTimeOffset);
+			if (zoneOffset !== newDate.getTimezoneOffset()) {
+				// if date changes offset due to DST, re-adjust
+				newDate.setUTCMinutes(newDate.getUTCMinutes() 
+					+ newDate.getTimezoneOffset() - zoneOffset);
+			}
 			return newDate;
 		},
 		_setDateOffset: function(date) {
