@@ -7768,6 +7768,11 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
+				case "displayTimeOffset": {
+					this._updateMaskedValue();
+					this._exitEditMode();
+					break;
+				}
 				case "minValue": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.dateEditorMinValue);

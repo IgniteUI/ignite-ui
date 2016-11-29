@@ -1358,7 +1358,7 @@
 			});
 
 			var testId = 'Testing date formats with offset defined';
-			test(testId, 18, function () {
+			test(testId, 19, function () {
 				var $dtEditor;
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
@@ -1446,11 +1446,12 @@
 						start();
 						clickElement(spinUpButton, false, false);
 						$dtEditor.trigger("blur");
-						value = $dtEditor.igDateEditor("value");
 						equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 03:01:56", 'The initial value is not as expexted');
 						stop();
 						setTimeout(function () {
 							start();
+							$dtEditor.igDateEditor("option", "displayTimeOffset", 180);
+							equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 02:01:56", 'The initial value is not as expexted');
 							$dtEditor.remove();
 						}, 300);
 					}, 300);
