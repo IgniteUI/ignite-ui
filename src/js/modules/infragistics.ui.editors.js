@@ -4901,14 +4901,14 @@
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
-				if (this.options.maxValue && newValue > this.options.maxValue) {
+				if (!isNaN(this.options.maxValue) && newValue > this.options.maxValue) {
 					newValue = this.options.maxValue;
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && newValue < this.options.minValue) {
+				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
 
 					// Raise Warning level 2
@@ -4952,10 +4952,10 @@
 			} else {
 
 				// If the min value is different from zero, we clear the value with the minimum value.
-				if (this.options.minValue && this.options.minValue > 0) {
+				if (!isNaN(this.options.minValue) && this.options.minValue > 0) {
 					this._updateValue(this.options.minValue);
 					this._editorInput.val(this.options.minValue);
-				} else if (this.options.maxValue && this.options.maxValue < 0) {
+				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
 					this._updateValue(this.options.maxValue);
 					this._editorInput.val(this.options.maxValue);
 				} else {
@@ -5825,7 +5825,7 @@
 			var newLenght = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
-				if (this.options.maxValue &&
+				if (!isNaN(this.options.maxValue) &&
 					newValue / this.options.displayFactor > this.options.maxValue) {
 					newValue = this.options.maxValue * this.options.displayFactor;
 
@@ -5833,7 +5833,7 @@
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue &&
+				} else if (!isNaN(this.options.minValue) &&
 					newValue / this.options.displayFactor < this.options.minValue) {
 					newValue = this.options.minValue * this.options.displayFactor;
 
