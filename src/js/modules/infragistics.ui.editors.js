@@ -8956,15 +8956,7 @@
 			return dataModeValue;
 		},
 		_getDateOffset: function(date) {
-			var newDate;
-			if (!date) {
-				if (!this._dateObjectValue) {
-					return;
-				}
-				newDate = new Date(this._dateObjectValue.getTime());
-			} else {
-				newDate = new Date(date.getTime());
-			}
+			var newDate = new Date(date.getTime());
 			newDate.setUTCMinutes(newDate.getUTCMinutes() +
 				newDate.getTimezoneOffset() + this.options.displayTimeOffset);
 			return newDate;
