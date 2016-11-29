@@ -68,7 +68,7 @@
 			    buttonTypeIsDropDownOnly: "Datepicker の buttonType オプションの有効な値は dropdown および clear 値のみです。",
 			    dateEditorMinValue: "MinValue オプションはランタイムに設定できません。",
 			    dateEditorMaxValue: "MaxValue オプションはランタイムに設定できません。",
-				dateEditorOffsetRange: "オフセット範囲が -720 ～ 840 です。これは、西 (-12:00) から東 (+14.00) のタイムゾーンの UTC に基づいたオフセットを分で表します。",
+				dateEditorOffsetRange: "displayTimeOffset オプションが -720 ～ 840 です。これは、西 (-12:00) から東 (+14.00) のタイムゾーンの UTC に基づいたオフセットを分で表します。",
 				cannotSetRuntime: "このオプションはランタイムに設定できません。",
 			    invalidDate: "無効な日付",
 			    maskMessage: 'すべての必須文字を入力してください',
