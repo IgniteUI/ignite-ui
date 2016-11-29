@@ -1404,14 +1404,15 @@
 				$dtEditor.trigger("blur");
 				hoursOffset = new Date(2021, 11, 31).getTimezoneOffset()/60;
 				equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The max value is not correctly applied');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');	  
+				equal($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
+				$(".ui-ignotify-warn").hide();
 				$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The display value is not as expexted');
 				$dtEditor.igDateEditor("value", "2015/05/01");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("value").getTime(), new Date(2015, 6, 1).getTime(), 'The value is not set to min');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
+				equal($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text(), "Entry exceeded the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
 				$dtEditor.remove();
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
