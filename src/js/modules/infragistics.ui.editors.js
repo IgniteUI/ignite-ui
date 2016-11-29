@@ -10797,6 +10797,12 @@
 				this.options.datepickerOptions.minDate) {
 				if (this._isValidDate(this.options.datepickerOptions.minDate)) {
 					this.options.minValue = this.options.datepickerOptions.minDate;
+					if (this.options.displayTimeOffset !== null) {
+						this._editorInput.datepicker("option", "minDate", this._getDateOffset(
+							this._getDateObjectFromValue(this.options.datepickerOptions.minDate)
+						));
+						this._editorInput.val(this._getDisplayValue());
+					}
 				}
 			}
 			if (!this.options.maxValue &&
@@ -10804,6 +10810,12 @@
 				this.options.datepickerOptions.maxDate) {
 				if (this._isValidDate(this.options.datepickerOptions.minDate)) {
 					this.options.maxValue = this.options.datepickerOptions.maxDate;
+					if (this.options.displayTimeOffset !== null) {
+						this._editorInput.datepicker("option", "maxDate", this._getDateOffset(
+							this._getDateObjectFromValue(this.options.datepickerOptions.maxDate)
+						));
+						this._editorInput.val(this._getDisplayValue());
+					}
 				}
 			}
 		},
