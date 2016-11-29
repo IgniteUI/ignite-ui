@@ -1221,6 +1221,14 @@
 			ok(!($("#emptyAndDDBtn").parent().siblings(".ig-egedit-button-common") == 0), "The dropdown button is not supposed to be rendered with listItems with length 0.");
 			ok(!($("#wrongBtn").parent().siblings(".ig-egedit-button-common") == 0), "The editor is not supposed to have any buttons.");
 		});
+		//ANI
+		var testId = "Test the undefined";
+		test(testId, 1, function(){
+			var $editor = $("<input id='editor'/>").igTextEditor();
+			var isValid = $editor.data("igTextEditor")._validateValue(undefined);
+			ok(!isValid, "The validation rule for undefined in not working.");
+			$editor.remove();
+		});
 	});
 
 	// Helper functions
