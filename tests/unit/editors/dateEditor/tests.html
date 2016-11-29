@@ -1358,7 +1358,7 @@
 			});
 
 			var testId = 'Testing date formats with offset defined';
-			test(testId, 26, function () {
+			test(testId, 27, function () {
 				var $dtEditor;
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
@@ -1393,6 +1393,8 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
+				var consoleLog = window.console.log; // Supress console.log for the current test.
+				window.console.log = logger;
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
 					value: new Date("2016-10-30T13:25:56.0000000Z"),
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
@@ -1404,7 +1406,9 @@
 				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 13 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
 				equal($dtEditor.igDateEditor("displayValue"), "31/10/2016 20:25:56", "The display value is not correct");
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
+				equal(logBuffer.pop(), $.ig.Editor.locale.dateEditorOffsetRange, 'offset message not logged');
 				$dtEditor.remove();
+				window.console.log = consoleLog;
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
 					value: new Date("2016-03-26T23:59:56.0000000Z"),
