@@ -1407,6 +1407,21 @@
 				$dtEditor.remove();
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					value: new Date("2016-03-26T23:59:56.0000000Z"),
+					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+					displayTimeOffset: 300,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "27/03/2016 04:59:56", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-03-26T23:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtEditor.igDateEditor("value", "2016-10-29T23:59:56.0000000Z");
+				$dtEditor.igDateEditor("option", "displayTimeOffset", 240);
+				$dtEditor.trigger("blur"); // force re-parse
+				equal($dtEditor.igDateEditor("displayValue"), "30/10/2016 03:59:56", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T23:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
 					dateInputFormat: "yyyy/MM/dd",
 					minValue: new Date(2015, 6, 1),
 					maxValue: new Date(2020, 11, 31),
