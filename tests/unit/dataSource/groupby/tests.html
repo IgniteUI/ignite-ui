@@ -314,7 +314,8 @@
 				renderData(gbDataView);
 			});
 			test("Test groupby + paging + filtering", function () {
-				var se = [], i, ds = createDataSource(), data, gbDataView, dataView, gbData;
+				var se = [], i, ds = createDataSource(), data, gbDataView, dataView, gbData,
+					dataGenerated, argsRecordsToggled;
 				se = [{
 					fieldName: "Id",
 					isGroupBy: true,
@@ -333,7 +334,16 @@
 					cond: "greaterThan",
 					expr: 0
 				}];
+				///setup callback for dataGenerated and groupByRecordToggled
+				ds.settings.groupby.dataGeneratedCallback = function () {
+					dataGenerated = true;
+				};
+				ds.settings.groupby.recordToggledCallback = function () {
+					argsRecordsToggled = arguments;
+				};
+				dataGenerated = false;
 				ds.dataBind();
+				equal(dataGenerated, true, "Callback function dataGenerated should be called");
 				dataView = ds.dataView();
 				gbDataView = ds.groupByDataView();
 				ok(dataView.length === 2 &&
@@ -345,6 +355,18 @@
 				ds.pageIndex(1);
 				dataView = ds.dataView();
 				ok(dataView.length === 1 && dataView[0].Id === 3, "Test dataView after changing pageIndex to 1");
+				// toggle first record
+				ds.toggleGroupByRecord(dataView[0].Id, false);
+				ok(argsRecordsToggled[0] === dataView[0].Id && argsRecordsToggled[1] === false, 
+					"Test recordToggledCallback whether it is called and whether its arguments are properly set");
+				dataGenerated = false;
+				// call filter to detect whether data generated callback is called again
+				ds.filter([{
+					fieldName: "Id",
+					cond: "lessThan",
+					expr: 5
+				}]);
+				equal(dataGenerated, true, "Callback function dataGenerated should be called when function filter is applied and there is grouped column(s)");
 			});
 
 			test("Test groupby date column", function () {
@@ -622,6 +644,8 @@
 					ok(groupByData.length > 0, "Verify that groupby data is populated.");
 				}, 500);
 			});
+
+			
 		});
 	</script>
 </head>
