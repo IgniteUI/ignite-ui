@@ -7990,6 +7990,14 @@
 			}
 			return date;
 		},
+		_setNewDateMidnight: function() {
+			var date = new Date();
+			date = this._setDateField("hours", date, 0);
+			date = this._setDateField("minutes", date, 0);
+			date = this._setDateField("seconds", date, 0);
+			date = this._setDateField("milliseconds", date, 0);
+			return date;
+		},
 		_getInternalMaskedValue: function (newDate) {
 			return this._updateMaskedValue(newDate, true);
 		},
@@ -9166,7 +9174,7 @@
 						extractedDate = new Date(Date.UTC(today.getFullYear(),
 							today.getMonth(), today.getDate()));
 					} else {
-						extractedDate = new Date();
+						extractedDate = this._setNewDateMidnight();
 					}
 					if (yearField !== null && yearField !== undefined) {
 						extractedDate = this._setDateField("year", extractedDate, yearField);
@@ -10128,7 +10136,7 @@
 		},
 		_initEmptyMask: function (date) {
 			var mask = this._maskWithPrompts,
-				today = new Date(),
+				today = this._setNewDateMidnight(),
 				timeYear, timeMonth, timeDay, timeHours,
 				timeAmOrPM, timeMinutes, timeSeconds, timeMilliseconds,
 				year, month, day, hours, amPM, minutes, seconds, milliseconds;
@@ -10223,13 +10231,13 @@
 
 				// When there is no date at all we want to set today and should not increase the day.
 				// It's the same for the other time periods.
-				period = this._getDateField(periodName, new Date());
+				period = this._getDateField(periodName, this._setNewDateMidnight());
 				delta = 0;
 			}
 			newPeriod = period + delta;
 
 			if (!date) {
-				date = new Date();
+				date = this._setNewDateMidnight();
 			}
 			if (newPeriod !== period) {
 				this._setDateField(periodName, date, newPeriod);
@@ -10664,8 +10672,8 @@
 					} else {
 
 						//T.P. 10th Dec 2015 211062: When there is no value and the datepicker selects value the stored date object needs to be with current time.
-						//In Case there is no dateObject which meand the editor has no value when the date is selected it will be with current time value (hours, minutes, seconds)
-						date = new Date();
+						//In Case there is no dateObject, which means the editor has no value when the date is selected it will be with current time value (hours, minutes, seconds)
+						date = self._setNewDateMidnight();
 					}
 					date = self._setDateField("year", date, dateFromPicker.getFullYear());
 
