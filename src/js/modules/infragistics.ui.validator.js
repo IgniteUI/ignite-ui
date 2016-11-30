@@ -9,6 +9,7 @@
 * jquery.ui.core.js
 * jquery.ui.widget.js
 * infragistics.util.js
+* infragistics.util.jquery.js
 * infragistics.ui.popover.js
 * infragistics.ui.notifier.js
 
@@ -30,6 +31,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.ui.notifier",
 			"./infragistics.ui.validator-en"
 		], factory );

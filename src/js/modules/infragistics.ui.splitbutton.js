@@ -10,7 +10,8 @@
  *   jquery-1.9.1.js
  *   jquery.ui.core.js
  *   jquery.ui.widget.js
- *   infragistics.util.js
+ * 	 infragistics.util.js
+ *   infragistics.util.jquery.js
  *   infragistics.ui.shared.js
  *   infragistics.ui.toolbarbutton.js
  */
@@ -23,6 +24,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.ui.toolbarbutton"
 		], factory );
 	} else {
@@ -37,7 +39,20 @@
 	*/
     $.widget("ui.igSplitButton", {
         options: {
-			/* type="array" Button items. */
+			/* type="array" Button items.
+            ```
+            // Initialize
+            $(".selector").igSplitButton({
+                items: [{
+                    name: "textColor",
+                    label: "Font Color",
+                    iconClass: "ui-igbutton-forecolor"
+                }]
+            });
+            // Get
+            var items = $(".selector").igSplitButton("option", "items");
+            ```
+            */
             items: [ {
 				/* type="string" Item name*/
                 name: "button1",
@@ -46,30 +61,139 @@
 				/* type="string" Css class to represent the iconClass of the item*/
                 iconClass: "ui-icon-gear"
             } ],
-            /* type="string" Default button item. */
+            /* type="string" Default button item name.
+            ```
+            // Initialize
+            $(".selector").igColorPickerSplitButton({
+                defaultItemName: "SplitButton",
+            });
+            // Get
+            var defaultItemName = $(".selector").igSplitButton("option", "defaultItemName");
+            // Set
+            $(".selector").igSplitButton("option", "defaultItemName", "SplitButton");
+            ```
+            */
             defaultItemName: "button1",
-            /* type="boolean" Specifies whether the default button will be switched when another button is selected. */
+            /* type="boolean" Specifies whether the default button will be switched when another button is selected.
+            ```
+            //Initialize
+            $(".selector").igSplitButton({
+                swapDefaultEnabled: true
+            });
+            // Get
+            var swapDefaultEnabled = $(".selector").igSplitButton("option", "swapDefaultEnabled");
+            // Set
+            $(".selector").igSplitButton("option", "swapDefaultEnabled", true);
+            ```
+            */
             swapDefaultEnabled: false
         },
         events: {
+            /* cancel="false" Event fired when the button is clicked.
+            ```
+            //Initialize
+            $(".selector").igSplitButton({
+                click: function (evt, ui) {...}
+            });
+            //Delegate
+            $(document).delegate(".selector", "igsplitbuttonclick", function (evt, ui) {
+                // return reference to the igSplitButton element
+                ui.item
+                // return type of the event
+                evt.type
+            });
+            ```
+            Function takes arguments evt and ui.
+			Use ui.item to get a reference the igSplitButton element.
+            */
             click: "click",
-            /* cancel="false" Event fired after the button is expanded. */
+            /* cancel="false" Event fired after the button is expanded.
+            ```
+            //Initialize
+            $(".selector").igSplitButton({
+                expanded: function (evt, ui) {...}
+            });
+            //Delegate
+            $(document).delegate(".selector", "igsplitexpanded", function (evt, ui) {
+                // return reference to the igSplitButton
+                ui.owner
+                // return type of the event
+                evt.type
+            });
+            ```
+            Function takes arguments evt and ui.
+			Use ui.owner to get a reference the igSplitButton.
+            */
             expanded: "expanded",
-            /* cancel="true" Event fired before a button item is expanded. */
+            /* cancel="true" Event fired before a button item is expanded.
+            ```
+            //Initialize
+            $(".selector").igSplitButton({
+                expanding: function (evt, ui) {...}
+            });
+            //Delegate
+            $(document).delegate(".selector", "igsplitexpanding", function (evt, ui) {
+                // return reference to the igSplitButton
+                ui.owner
+                // return type of the event
+                evt.type
+            });
+            ```
+            Function takes arguments evt and ui.
+			Use ui.owner to get a reference the igSplitButton.
+            */
             expanding: "expanding",
-            /* cancel="false" Event fired after the button is collapsed. */
+            /* cancel="false" Event fired after the button is collapsed.
+            ```
+            //Initialize
+            $(".selector").igSplitButton({
+                collapsed: function (evt, ui) {...}
+            });
+            //Delegate
+            $(document).delegate(".selector", "igsplitcollapsed", function (evt, ui) {
+                // return reference to the igSplitButton
+                ui.owner
+                // return type of the event
+                evt.type
+            });
+            ```
+            Function takes arguments evt and ui.
+			Use ui.owner to get a reference the igSplitButton.
+            */
             collapsed: "collapsed",
-            /* cancel="true" Event fired before a button item is collapsed. */
+            /* cancel="true" Event fired before a button item is collapsed.
+            ```
+            //Initialize
+            $(".selector").igSplitButton({
+                collapsing: function (evt, ui) {...}
+            });
+            //Delegate
+            $(document).delegate(".selector", "igsplitcollapsing", function (evt, ui) {
+                // return reference to the igSplitButton
+                ui.owner
+                // return type of the event
+                evt.type
+            });
+            ```
+            Function takes arguments evt and ui.
+			Use ui.owner to get a reference the igSplitButton.
+            */
             collapsing: "collapsing"
         },
         css: {
             /* The widget base class css. */
             container: "ui-splitbutton ui-widget ui-state-default",
+            /* The widget arrow css */
             arrow: "ui-splitbutton-arrow",
+            /* The widget left div element css. */
             conrnersLeft: "ui-corner-left",
+            /* The widget right div element css. */
             conrnersRight: "ui-corner-right",
+            /* The widget base element hover css. */
             hover: "ui-splitbutton-hover",
+            /* The widget base element active css. */
             active: "ui-state-active",
+            /* The widget base element focus css. */
             focus: "ui-state-focus"
         },
         _id: function (id) {
@@ -259,8 +383,11 @@
         },
         switchToButton: function (button) {
             /*
-                Switch to given button.
-                paramType="string|object" optional="false". The button to which we are going to switch.
+                Switch to given igToolbar button.
+                ```
+                $(".selector").igSplitButton("switchToButton", $element);
+                ```
+                paramType="string|object" optional="false". The button jQuery element.
             */
             var defaultButton = this._options.defaultButton,
                 targetButton = (typeof button === "string") ?
@@ -311,7 +438,13 @@
             return this.element;
         },
         toggle: function (e) {
-            /* Toggle widget state between collapsed and expanded. */
+            /* Toggle widget state between collapsed and expanded.
+            ```
+            $(".selector").igSplitButton( "toggle", e:object );
+            ```
+            paramType="object" optional="false" The igSplitButton to be expanded/collapsed.
+            returnType="object" Returns reference to the curent igSplitButton.
+            */
             var noCancel,
                 _options = this._options;
 
@@ -328,7 +461,13 @@
             }
         },
         collapse: function (e) {
-            /* Collapse the widget. */
+            /* Collapse the widget.
+            ```
+            $(".selector").igSplitButton("collapse", evt);
+            ```
+            paramType="object" optional="true" Indicates the browser event which triggered this action (not API).
+            returnType="object" Returns reference to the curent igSplitButton.
+            */
             var self = this,
                 _opt = this._options,
                 expandButton = _opt.expandButton;
@@ -346,7 +485,13 @@
             });
         },
         expand: function (e) {
-            /* Expands the widget. */
+            /* Expands the widget.
+            ```
+            $(".selector").igSplitButton("expand", evt);
+            ```
+            paramType="object" optional="true" Indicates the browser event which triggered this action (not API).
+            returnType="object" Returns reference to the curent igSplitButton.
+            */
             var self = this,
                 _opt = this._options,
                 expandButton = _opt.expandButton;
@@ -364,7 +509,11 @@
             });
         },
         destroy: function () {
-            /* Destroy the widget. */
+            /* Destroy the widget.
+            ```
+            $(".selector").igSplitButton("destroy");
+            ```
+            */
             var _opt = this._options;
 
             $.Widget.prototype.destroy.apply(this, arguments);

@@ -19,6 +19,8 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
@@ -34,7 +36,7 @@
 			// Create a editors
 
 				function loadTestbeds() {
-					var testbedIDs = ["206040", "211360", "213900", "215046", "215992", "220775","221368", "221414", "84", "89", "174"];
+					var testbedIDs = ["206040", "211360", "213900", "215046", "215992", "220775","221368", "221414", "84", "89", "174", "432"];
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i].trim() + "Testbed";
 						if (window[testBed]) {
@@ -145,6 +147,15 @@
 								mode: "popover"
 							}
 						}
+					});
+				}
+				
+				window.Bug432Testbed = function () {
+					$("#432Editor").igDatePicker({
+						//max in the past
+						maxValue : new Date(2016, 9, 10),
+						width : '120px',
+						dataMode : 'editModeText'
 					});
 				}
 				
@@ -377,7 +388,32 @@
 
 						$editor1.igDatePicker("dropDownButton").click();
 						equal($editor2.igDatePicker("validator").getErrorMessages()[0], $.ig.Validator.locale.requiredMessage, "There should be error message after blur.");
+						// Breaks other tests as the $.datepicker._datepickerShowing remains true even after focusing another field.. call hide to help it work...
+						$editor1.datepicker("hide");
+						$editor2.datepicker("hide");
 					}, 400);
+				}, 400);
+			});
+
+			testId = 'Issue 432 - Popup is displayed when Enter key is pressed if the editor has no values.';
+			test(testId, 4, function () {
+				var $editor = $("#432Editor"), valueChangedCounter = 0;
+				$editor.on("igdatepickervaluechanging", function () {
+					console.log(arguments);
+					valueChangedCounter++;
+				});
+				console.log(document.activeElement);
+				$editor.igDatePicker("setFocus");				
+				console.log(document.activeElement);
+				console.log("focusing");
+				stop();
+				setTimeout(function () {
+					start();
+					typeInMaskedInput(String.fromCharCode(13), $editor.igDatePicker("field")); // Enter
+					equal($editor.igDatePicker("editorContainer").data("igNotifier"), undefined, "There should be no initial notifier.");
+					equal($editor.igDatePicker("field").val(), "__/__/____", "Text should remain the mask");
+					equal($editor.igDatePicker("value"), "", "Value should set empty string instead.");
+					equal(valueChangedCounter, 1, "Value changing should be called just once!");
 				}, 400);
 			});
 		});
@@ -517,8 +553,10 @@
 				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
 				element.trigger(keyDown);
 				element.trigger(keyPress);
-				value = value.replaceAt(selectionStart++, ch);
-				element.val(value);
+				if (ch.charCodeAt(0) > 31) {
+					value = value.replaceAt(selectionStart++, ch);
+					element.val(value);
+				}
 				element.trigger(keyUp);
 			});
 		}
@@ -578,6 +616,7 @@
 		<input id="174Editor1" />
 		<input id="174Editor2" />
 		
+		<input id="432Editor" />
 	</div></body>
 </html>
 

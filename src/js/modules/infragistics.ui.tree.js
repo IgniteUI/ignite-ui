@@ -13,7 +13,8 @@
  *	jquery.ui.draggable.js
  *	jquery.ui.droppable.js
  *	infragistics.templating.js
- *	infragistics.util.js
+  *	infragistics.util.js
+ *  infragistics.util.jquery.js
  *	infragistics.dataSource.js
  *	infragistics.ui.tree-en.js
  */
@@ -26,6 +27,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.datasource",
 			"./infragistics.templating",
 			"./infragistics.ui.shared",

@@ -16,6 +16,8 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                   
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script> 
@@ -148,7 +150,15 @@
 				$("#pasteEditor").igTextEditor({
 					value: "ade"
 				});
-
+				$("#clearButton_439").igTextEditor({
+					buttonType: "clear"
+				})				
+						
+				$("#issue447").igTextEditor({
+					buttonType : "clear"
+				});				
+				
+				$("#issue481").igTextEditor();
 			});
 		}
 		initialized = false;
@@ -677,7 +687,7 @@
 			}, 500);
 		});
 		testId = "Keyboard/Mouse testing";
-		test(testId, 18, function () {
+		test(testId, 19, function () {
 			var $interactWithButtons = $("<input id='interactWithButtons' />").appendTo("#testBedContainer").igTextEditor({
 					listItems: ["item1", "item2", "item3"],
 					buttonType: "dropdown"
@@ -753,7 +763,10 @@
 
 			listDDBtn.click();
 			listClearBtn.click();
-			equal(listEditor.igTextEditor("value"), "", "the item 1 should be cleared");
+			
+			equal(listInput.val(), "", "the item 1 should be cleared");
+			listInput.blur();
+			equal(listEditor.igTextEditor("value"), "", "the item 1 value should be cleared");
 			listDDBtn.click(); // close dropdown
 			listInput.val("item2");
 			keyInteraction(13, listInput);
@@ -1071,6 +1084,19 @@
 				}, 200);
 			}, 200);
 		});
+		testing = "Clear button dynamic show/hide";
+		test(testing, 4, function() {
+			var field = $("#clearButton_439").igTextEditor("field"),
+			clearButton = $("#clearButton_439").igTextEditor("clearButton");
+			ok(!clearButton.is(":visible"), "The clear button should not be visible initilly");
+			field.focus();
+			ok(!clearButton.is(":visible"), "The clear button should not be visible on focus");
+			field.val("someVal");
+			$("#clearButton_439").data("igTextEditor")._processTextChanged();
+			ok(clearButton.is(":visible"), "The clear button should be visible");
+			field.blur();
+			ok(clearButton.is(":visible"), "The clear button should be visible on blur");
+		});
 		testId = 'Check destroy';
 		asyncTest(testId, 7, function () {
 			var $editor1 = $('#clearEditor'), $editor2 = $("#disabledEditor");
@@ -1381,6 +1407,12 @@
 	<input id="toLowerEditor" type="text" />
 	<input id="testEditor" type="text" />
 	<input id="pasteEditor"/>
+	<input id="clearButton_439"/>
+	<input id="issue447"/>
+	<input id="issue481"/>
+</div>
+
+	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>
 	
 	
 	

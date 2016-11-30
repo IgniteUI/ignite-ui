@@ -16,6 +16,8 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<!--<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>-->
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script> 
@@ -75,8 +77,6 @@
 					minValue: "12/12/2016",
 					maxValue: "12/12/2014"
 				});
-
-
 			});
 		}
 		initialized = false;
@@ -223,6 +223,7 @@
 			
 			$("#textEditorMethods").igTextEditor("value", "MyVal");
 			equal($("#textEditorMethods").igTextEditor("value"), "MyVal", 'The value is not correctly set to MyVal string');
+
 		});
 		testId = 'Base/TextEditor Set Options';
 		test(testId, 2, function () {
@@ -444,6 +445,48 @@
 			equal($notifier.igNotifier("getContent"), $('<div>').append("<div>Ea</div>").html(), "Content from template function is not correct.");
 		});
 
+		var testId = 'Base/TextEditor Read-Set Options.';
+		test(testId, 4, function () {
+
+			var $editor = $('<input id="inputEditor2" name="inputname" value="inputElemValue" readonly disabled />')
+			.appendTo("#testBedContainer")
+			.igTextEditor({
+				maxLength: 15
+		});
+
+			equal($editor.igTextEditor("value"), "inputElemValue", 'Editor value does not match the input attribute value');
+			equal($editor.igTextEditor("option", "inputName"), "inputname", 'Editor input name does not match the input attribute name');
+			equal($editor.igTextEditor("option", "readOnly"), true, 'Editor readonly option does not match the input attribute');
+			equal($editor.igTextEditor("option", "disabled"), true, 'Editor disabled option does not match the input attribute');
+
+			$editor.remove();
+		});
+
+		var testId = 'Base/TextEditor Destroy method reverts input state.';
+		test(testId, 5, function () {
+
+			var $editor = $('<input type="text" id="inputWithAttr" name="myInputName" value="myInputValue" readonly />')
+			.appendTo("#testBedContainer")
+			.igTextEditor({
+				inputName: "newInputName",
+				value: "newInputValue",
+				readOnly: false
+			});
+
+			$("#inputWithAttr").igTextEditor("destroy");
+
+			ok(document.getElementById("inputWithAttr").readOnly === true, 'Input readOnly value is not the same as before Editor init');
+			equal(document.getElementById("inputWithAttr").getAttribute("readonly"), "readonly", 'Input readonly attr is not the same as before Editor init');
+			equal(document.getElementById("inputWithAttr").name, "myInputName", 'Input name value is not the same as before Editor init');
+			//check the value prop and see if it is restored
+			equal(document.getElementById("inputWithAttr").value, "myInputValue", 'Input value is not the same as before Editor init');
+			//check the value attribute and see if it is restored
+			equal(document.getElementById("inputWithAttr").getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
+
+			$editor.remove();
+		});
+
+
 		function mouseout(element) {
 			// create a mouse click event
 			var event = document.createEvent('MouseEvents');
@@ -452,7 +495,6 @@
 			// send click to element
 			element.dispatchEvent(event);
 		}
-
 	});
 	</script>
 	
@@ -464,7 +506,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-<div style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
+<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
 	<input type="text" id="inputEditor1"  />
 	<div id="divEditor1"></div>
 	<div id="divEditor2"></div>
@@ -480,7 +522,6 @@
 	<div id="igNumericEditorNotification"></div>
 	<div id="igMaskEditorNotification"></div>
 	<div id="igDateEditorNotification"></div>
-	
 	<textarea id="textareaEditorFake"></textarea>
 	<p id="notifierTarget"></p>
 </div>

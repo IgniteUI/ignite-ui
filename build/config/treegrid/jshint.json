@@ -5,6 +5,8 @@
 		"<%= config.modulesDir%>/infragistics.templating.js",
 		"<%= config.modulesDir%>/infragistics.ui.grid.framework.js",
 		"<%= config.modulesDir%>/infragistics.ui.shared.js",
-		"<%= config.modulesDir%>/infragistics.util.js"
+		"<%= config.modulesDir%>/infragistics.util.js",
+		"<%= config.modulesDir%>/infragistics.util.jquery.js",
+		"<%= config.modulesDir%>/infragistics.util.jquerydeferred.js"
 	]
 }

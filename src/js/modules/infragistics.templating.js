@@ -26,7 +26,8 @@
 		// AMD. Register as an anonymous module.
 		define( [
 			"jquery",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 
@@ -114,8 +115,12 @@
 				returnType="string" Returns the encoded string.
 			 */
 		    return value !== null && value !== undefined ?
-            value.toString().replace(this.regExp.lt, "&lt;").replace(this.regExp.gt, "&gt;").
-            replace(this.regExp.ap, "&#39;").replace(this.regExp.ic, "&#34;") : "";
+            value.toString()
+				.replace(this.regExp.amp, "&amp;")
+				.replace(this.regExp.lt, "&lt;")
+				.replace(this.regExp.gt, "&gt;")
+				.replace(this.regExp.ap, "&#39;")
+				.replace(this.regExp.ic, "&#34;") : "";
 		},
 		/* type="RegExp" Used to tokenize the template string. */
 		regExp: {
@@ -158,7 +163,8 @@
 			lt: /</g,
 			gt: />/g,
 			ap: /'/g,
-			ic: /"/g
+			ic: /"/g,
+			amp: /&/g
 		},
 		/* Used to compile template directives. */
 		_directives: {

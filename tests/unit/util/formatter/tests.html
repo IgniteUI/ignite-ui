@@ -7,14 +7,17 @@
 	<script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
-	
 
- 
+
+
 	<!--JS Debug-->
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-bg.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-es.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 
 	<script type="text/javascript">
 		function runFormatterTests() {
@@ -45,8 +48,8 @@
 				equal("5,555,555.55", stringValue);
 				stringValue = $.ig.formatter(5555555.55678, "number");
 				equal("5,555,555.56", stringValue);
-				
-				
+
+
 				stringValue = $.ig.formatter(-55, "number", "currency");
 				equal("-$55.00", stringValue);
 				stringValue = $.ig.formatter(5555555.55678, "number", "currency");
@@ -59,14 +62,14 @@
 
 				// change the regional default
 				$.ig.setRegionalDefault("bg");
-				
+
 				stringValue = $.ig.formatter(55, "number", "currency");
 				equal("55,00 лв", stringValue);
 				stringValue = $.ig.formatter(55, "number", "0.00");
 				equal("55,00", stringValue);
 				stringValue = $.ig.formatter(.55, "number", "percent");
 				equal("55,00 %", stringValue);
-			});	
+			});
 
 			test("testdatetype", function() {
 				// d - day 1 digit
@@ -98,17 +101,17 @@
 				equal("3:00:00 AM", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "MM/dd/yyyy");
 				equal("01/01/2013", stringValue);
-				
+
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "M/d/yyyy");
 				equal("1/1/2013", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "M/d/yy");
 				equal("1/1/13", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "MM/dd/yy");
-				equal("01/01/13", stringValue);	
+				equal("01/01/13", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "yy/MM/dd");
-				equal("13/01/01", stringValue);	
+				equal("13/01/01", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "yyyy-MM-dd");
-				equal("2013-01-01", stringValue);	
+				equal("2013-01-01", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dd-MMM-yy");
 				equal("01-Jan-13", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dddd, MMMM d, yyyy");
@@ -125,7 +128,7 @@
 				equal("15:00", stringValue);
 				stringValue = $.ig.formatter(new Date(2013, 0, 1, 1), "date", "HH:mm");
 				equal("01:00", stringValue);
-				
+
 				// bug: 184712 - enableUTCDates is ignored when using a format of 'dddd'
 				//$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, displayStyle)
 				stringValue = $.ig.formatter(new Date(2014, 0, 1, 1, 40), "date", "dddd", true, false);
@@ -163,7 +166,7 @@
 				$.ig.setRegionalDefault("es");
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "dddd, dd \\de MMMM \\de yyyy");
 				equal("Martes, 01 de Enero de 2013", stringValue);
-				
+
 				// check that the escape sequence for the special character placeholders works
 				stringValue = $.ig.formatter(new Date(2013, 0, 1), "date", "\\d \\y \\M\\M\\M \\m \\s \\t \\f");
 				equal("d y MMM m s t f", stringValue);
@@ -185,17 +188,17 @@
 				"<span class='ui-igcheckbox-container' style='display:block;' role='checkbox' aria-disabled='true' aria-checked='false' aria-label='labelText' tabindex='1'><span class='' style='display:inline-block'><span style='display:block' class='ui-igcheckbox-small-off ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>",
 				"Verify the checkbox format is properly applied.");
 		});
-		
+
 		function runEscapeTests() {
 			test("testescape", function() {
 				// change the regional default
 				$.ig.setRegionalDefault("en-US");
-				var stringValue = $.ig.util.escapeHtmlTags("<script>alert()<\/script>");
+				var stringValue = $.ig.encode("<script>alert()<\/script>");
 
 				equal("&lt;script&gt;alert()&lt;/script&gt;", stringValue);
 			});
 		}
-		
+
 		module("Formatter Tests");
         // run tests
 		runFormatterTests();
