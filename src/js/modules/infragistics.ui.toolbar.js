@@ -179,7 +179,7 @@
             ```
             */
             width: null,
-            /* type="boolean" Get/Set whether the toolbar can be collapsing.
+            /* type="boolean" Get/Set whether the toolbar can be collapsed.
             ```
                 //Initialize
                 $(".selector").igToolbar({
@@ -320,7 +320,7 @@
             ```
             */
             items: [  ],
-            /* type="boolean" Get/Set whether the widget to be expanded.
+            /* type="boolean" Get/Set whether the widget is expanded initially.
             ```
                 //Initialize
                 $(".selector").igToolbar({
