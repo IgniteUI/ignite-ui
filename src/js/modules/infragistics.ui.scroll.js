@@ -866,7 +866,7 @@
 
 				if (value !== "none") {
 					this._updateScrollBarsVisibility();
-					this._scrollToXY(0, 0, true);
+					this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
 				}
 			}
 			if (key === "scrollTop") {
@@ -2408,6 +2408,8 @@
 			if ($.ig.util.getScrollHeight() > 0 && this.options.modifyDOM) {
 				this._content.css("padding-right", $.ig.util.getScrollHeight() + "px");
 			}
+			/* Set the scrollbar position before linking it to the igScroll */
+			this._vBarContainer.scrollTop(this._getContentPositionY());
 			this._setOption("scrollbarV", this._vBarContainer);
 
 			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
@@ -2442,6 +2444,8 @@
 			} else {
 				this._hBarContainer.css("bottom", "18px");
 			}
+			/* Set the scrollbar position before linking it to the igScroll */
+			this._hBarContainer.scrollLeft(this._getContentPositionX());
 			this._setOption("scrollbarH", this._hBarContainer);
 
 			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
