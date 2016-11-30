@@ -254,7 +254,7 @@
                                 { colSpan: 2, rowSpan: 1, colIndex: 1, rowIndex: 0 },
                                 { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 },
                                 { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }];
-                igTileManager("option", "items", items);
+                $('.selector').igTileManager("option", "items", items);
             ```
                 array type="object" An array with colSpan, rowSpan, colIndex, rowIndex configurations for each tile.
                 null type="object" Default tile configurations of rowSpan: 1 and colSpan: 1 will be used.
@@ -318,7 +318,7 @@
                 $('.selector').igTileManager({
                         items: [{ colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 0 },
                             { colSpan: 2, rowSpan: 1, colIndex: 1, rowIndex: 0 },
-                            { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 }, \/\* items index : 2 \*\/
+                            { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 },
                             { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }],
                         maximizedTileIndex: 2
                 });
