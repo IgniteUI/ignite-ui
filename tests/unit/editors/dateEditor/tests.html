@@ -1290,7 +1290,7 @@
 			});
 
 			var testId = 'Testing date formats with offset = 0 - UTC time';
-			test(testId, 21, function () {
+			test(testId, 22, function () {
 				var $dtEditor, utcDate;
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
@@ -1305,6 +1305,8 @@
 				equal($dtEditor.igDateEditor("value").getTime(), checkValue.getTime(), 'The value() method returns wrong value');
 				equal($dtEditor.igDateEditor("displayValue"), "30/10/2009 10:25:56", "The display value is not correct");
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
+				$dtEditor.igDateEditor("value", null);
+				equal($dtEditor.igDateEditor("displayValue"), "", 'The value is not empty string');
 				$dtEditor.remove();
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
