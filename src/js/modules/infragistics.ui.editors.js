@@ -7657,6 +7657,9 @@
 
 					//Get
 					var centuryThreshold = $(".selector").%%WidgetName%%("option", "centuryThreshold");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "centuryThreshold", 35);
 				```
 				*/
 			centuryThreshold: 29,
