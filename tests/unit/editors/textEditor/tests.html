@@ -26,6 +26,9 @@
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
+	var logBuffer = [], logOld, 
+		logger = function (msg) { logBuffer.push(msg); };
+	
 	$(document).ready(function () {
 		// Create a editors
 		function loadTestbeds() {
@@ -136,59 +139,6 @@
 					toLower: true
 				});
 
-				try {					
-					$("#imgEditor").igTextEditor();
-				} catch (e) {
-
-				}
-
-				try {
-					$("#multilineError").igTextEditor();
-				} catch (e) {
-
-				}
-
-				try {
-					$("#spinBtnsWithoutItems").igTextEditor({
-						buttonType: "spin"
-					});
-				} catch (e) {
-
-				}
-
-				try{
-					$("#ddBtnWithoutItems").igTextEditor({
-						buttonType: "dropdown"
-					});
-				} catch (e) {
-
-				}
-
-				try {
-					$("#emptyAndSpinBtns").igTextEditor({
-						listItems: [],
-						buttonType: "spin"
-					});
-				} catch (e) {
-
-				}
-
-				try {
-					$("#emptyAndDDBtn").igTextEditor({
-						listItems: [],
-						buttonType: "dropdown"
-					});
-				} catch (e) {
-
-				}
-
-				try {
-					$("#wrongBtn").igTextEditor({
-						buttonType: "dropdownbutton"
-					});
-				} catch (e) {
-
-				}
 				$("#testEditor").igTextEditor({
 					visibleItemsCount: 2,
 					listItems: ["item1", "item2", "item3"],
@@ -1213,13 +1163,86 @@
 		});
 		var testId = "Test creating on wrong field or wrong options combinations."
 		test(testId, 7, function(){
-			ok(!($("multilineError").hasClass("ui-igedit-textarea")), 'Error not throw when igTextEditor is initialized in textArea and textMode is not multiline.');
-			ok($("#imgEditor").data("igTextEditor") !== undefined, 'Error creating igTextEditor in a img.');
-			ok(!($("#spinBtnsWithoutItems").parent().siblings(".ig-egedit-button-common") == 0), "The spinUp/spinDown buttons are not supposed to be rendered without listItems.");
-			ok(!($("#emptyAndSpinBtns").parent().siblings(".ig-egedit-button-common") == 0), "The spinUp/spinDown buttons are not supposed to be rendered with listItems with length 0.");
-			ok(!($("#ddBtnWithoutItems").parent().siblings(".ig-egedit-button-common") == 0), "The dropdown button is not supposed to be rendered without listItems.");
-			ok(!($("#emptyAndDDBtn").parent().siblings(".ig-egedit-button-common") == 0), "The dropdown button is not supposed to be rendered with listItems with length 0.");
-			ok(!($("#wrongBtn").parent().siblings(".ig-egedit-button-common") == 0), "The editor is not supposed to have any buttons.");
+			var $imgEditor = $("<img id='imgEditor' />"),
+				$multilineError = $("<textarea id='multilineError'></textarea>"),
+				$spinBtnsWithoutItems = $("<input id='spinBtnsWithoutItems' />"),
+				$ddBtnWithoutItems = $("<input id='ddBtnWithoutItems' />"),
+				$emptyAndSpinBtns = $("<input id='emptyAndSpinBtns' />"),
+				$emptyAndDDBtn = $("<input id='emptyAndDDBtn' />")
+				$wrongBtn = $("<input id='wrongBtn' />");
+
+			logOld = window.console.log;
+			window.console.log = logger;
+			$wrongBtn.igTextEditor({
+				buttonType: "dropdownbutton"
+			});
+			window.console.log = logOld;
+			equal(logBuffer.pop(), $.ig.Editor.locale.btnValueNotSupported, "The editor is not supposed to have any buttons.");
+			
+
+			throws(function(){
+				$imgEditor.igTextEditor();
+			},
+			$.ig.Editor.locale.targetNotSupported,
+			"The editor should not be created on img.");
+
+			throws(function(){
+				$multilineError.igTextEditor();
+			},
+			$.ig.Editor.locale.multilineErrMsg,
+			"Error not throw when igTextEditor is initialized in textArea and textMode is not multiline.");
+			
+			throws(function(){
+				$spinBtnsWithoutItems.igTextEditor({
+					buttonType: "spin"
+				})
+			},
+			function(err){
+				return err.message === $.ig.Editor.locale.noListItemsNoButton;
+			},
+			"The spinUp/spinDown buttons are not supposed to be rendered without listItems.");
+			
+			throws(function(){
+				$ddBtnWithoutItems.igTextEditor({
+						buttonType: "dropdown"
+				});
+			},
+			function(err){
+				return err.message === $.ig.Editor.locale.noListItemsNoButton;
+			},
+			"The dropdown button is not supposed to be rendered without listItems.");
+
+			throws(function(){
+				$emptyAndSpinBtns.igTextEditor({
+						listItems: [],
+						buttonType: "spin"
+				});
+			},
+			function(err){
+				return err.message === $.ig.Editor.locale.noListItemsNoButton;
+			},
+			"The spinUp/spinDown buttons are not supposed to be rendered with listItems with length 0.")
+
+			throws(function(){
+				$emptyAndDDBtn.igTextEditor({
+						listItems: [],
+						buttonType: "dropdown"
+					});
+			},
+			function(err){
+				return err.message === $.ig.Editor.locale.noListItemsNoButton;
+			},
+			"The dropdown button is not supposed to be rendered with listItems with length 0.");
+
+			
+			
+			$imgEditor.remove();
+			$multilineError.remove();
+			$spinBtnsWithoutItems.remove();
+			$ddBtnWithoutItems.remove();
+			$emptyAndSpinBtns.remove();
+			$emptyAndDDBtn.remove();
+			$wrongBtn.remove();
 		});
 
 		var testId = "Test the undefined";
@@ -1352,7 +1375,7 @@
 	<textarea id="textareaEditor"></textarea>
 	<input id="passEditor" name="password" />
 	<div id="passDiv" ></div>
-	<img id="imgEditor" />
+	
 	<span>ToUpper/ToLower</span>
 	<input id="toUpperEditor" type="text" />
 	<input id="toLowerEditor" type="text" />
@@ -1360,12 +1383,12 @@
 	<input id="pasteEditor"/>
 	
 	
-	<textarea id="multilineError"></textarea>
-	<input id="spinBtnsWithoutItems" />
-	<input id="ddBtnWithoutItems" />
-	<input id="emptyAndSpinBtns" />
-	<input id="emptyAndDDBtn" />
-	<input id="wrongBtn" />
+	
+	
+	
+	
+	
+	
 </div>
 	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>	
 </body>
