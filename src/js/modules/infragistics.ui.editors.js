@@ -4397,7 +4397,9 @@
 					this._numericType,
 					this.options.dataMode);
 			if (value !== "" && !isNaN(value)) {
-				if (this.options.maxValue && value > this.options.maxValue) {
+
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
 					value = this.options.maxValue;
 
 					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
@@ -4408,7 +4410,9 @@
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && value < this.options.minValue) {
+
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
 					value = this.options.minValue;
 
 					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
@@ -4902,14 +4906,14 @@
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
-				if (this.options.maxValue && newValue > this.options.maxValue) {
+				if (!isNaN(this.options.maxValue) && newValue > this.options.maxValue) {
 					newValue = this.options.maxValue;
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && newValue < this.options.minValue) {
+				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
 
 					// Raise Warning level 2
@@ -4953,10 +4957,10 @@
 			} else {
 
 				// If the min value is different from zero, we clear the value with the minimum value.
-				if (this.options.minValue && this.options.minValue > 0) {
+				if (!isNaN(this.options.minValue) && this.options.minValue > 0) {
 					this._updateValue(this.options.minValue);
 					this._editorInput.val(this.options.minValue);
-				} else if (this.options.maxValue && this.options.maxValue < 0) {
+				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
 					this._updateValue(this.options.maxValue);
 					this._editorInput.val(this.options.maxValue);
 				} else {
@@ -5508,14 +5512,18 @@
 				if (newValue !== null && !isNaN(this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 					if (newValue !== "" && !isNaN(newValue)) {
-						if (this.options.maxValue && newValue > this.options.maxValue) {
+
+						// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						if (!isNaN((this.options.maxValue)) && newValue > this.options.maxValue) {
 							newValue = this.options.maxValue;
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
 								$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 									this.options.maxValue));
-						} else if (this.options.minValue && newValue < this.options.minValue) {
+
+							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						} else if (!isNaN((this.options.minValue)) && newValue < this.options.minValue) {
 							newValue = this.options.minValue;
 
 							// Raise Warning level 2
@@ -5822,7 +5830,7 @@
 			var newLenght = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
-				if (this.options.maxValue &&
+				if (!isNaN(this.options.maxValue) &&
 					newValue / this.options.displayFactor > this.options.maxValue) {
 					newValue = this.options.maxValue * this.options.displayFactor;
 
@@ -5830,7 +5838,7 @@
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue &&
+				} else if (!isNaN(this.options.minValue) &&
 					newValue / this.options.displayFactor < this.options.minValue) {
 					newValue = this.options.minValue * this.options.displayFactor;
 
