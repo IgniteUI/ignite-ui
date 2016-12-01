@@ -52,7 +52,7 @@
             ```
             */
             allowToggling: true,
-            /* type="boolean" Enable/Disable the toolbar button.
+            /* type="boolean" Get/Set whether the toolbar button is selected.
             ```
                 //Initialize
                 $(".selector").igToolbarButton({
