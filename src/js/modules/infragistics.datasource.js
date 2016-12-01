@@ -6765,7 +6765,8 @@
 			paramType="bool" if true the record should be collapsed, otherwise expanded
 			*/
 			var ds = this._gbData, i, len = ds.length, res = [], lvl,
-				row, hidden, gbrow, p = this.settings.paging;
+				row, hidden, gbrow, p = this.settings.paging,
+				sgb = this.settings.groupby || {};
 			this._gbCollapsed = this._gbCollapsed || {};
 			this._gbCollapsed[ id ] = !!collapsed;
 			for (i = 0; i < len; i++) {
@@ -6794,6 +6795,9 @@
 			this._gbDataView = this._vgbData;
 			if (p.enabled && p.type === "local") {
 				this._page();
+			}
+			if (sgb.recordToggledCallback) {
+				$.ig.util.invokeCallback(sgb.recordToggledCallback, [ id, collapsed ]);
 			}
 		},
 		isGroupByRecordCollapsed: function (gbRec) {
@@ -6878,7 +6882,7 @@
 									gbExprs,
 									collapsedRows) {
 			// data should be sorted(by gbExprs) when this functions is called - otherwise grouping will not be correct
-			var i, newgb = [];
+			var i, newgb = [], gbs = this.settings.groupby || {};
 			data = data || this._data;
 			gbExprs = gbExprs || [];
 			this._gbData = [];
@@ -6899,6 +6903,9 @@
 			}
 			this._processGroupsRecursive(data, gbExprs, 0, false, "");
 			this._gbDataView = this._vgbData;
+			if (gbs.dataGeneratedCallback) {
+				$.ig.util.invokeCallback(gbs.dataGeneratedCallback);
+			}
 			return this.groupByData();
 		},
 		_clearGroupByData: function () {
