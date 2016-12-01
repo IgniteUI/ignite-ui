@@ -7992,10 +7992,10 @@
 		},
 		_setNewDateMidnight: function() {
 			var date = new Date();
-			date = this._setDateField("hours", date, 0);
-			date = this._setDateField("minutes", date, 0);
-			date = this._setDateField("seconds", date, 0);
-			date = this._setDateField("milliseconds", date, 0);
+			this._setDateField("hours", date, 0);
+			this._setDateField("minutes", date, 0);
+			this._setDateField("seconds", date, 0);
+			this._setDateField("milliseconds", date, 0);
 			return date;
 		},
 		_getInternalMaskedValue: function (newDate) {
@@ -9170,7 +9170,7 @@
 					}
 				} else {
 					if (this.options.enableUTCDates) {
-						today = new Date();
+						today = this._setNewDateMidnight();
 						extractedDate = new Date(Date.UTC(today.getFullYear(),
 							today.getMonth(), today.getDate()));
 					} else {
@@ -10670,9 +10670,6 @@
 						// Date comming from the picker contains only year, month and date - if the user has specified inputMask with hours and minutes - then selecting the date from the picker should keep the same hours and minutes.
 						date = new Date(self._dateObjectValue);
 					} else {
-
-						//T.P. 10th Dec 2015 211062: When there is no value and the datepicker selects value the stored date object needs to be with current time.
-						//In Case there is no dateObject, which means the editor has no value when the date is selected it will be with current time value (hours, minutes, seconds)
 						date = self._setNewDateMidnight();
 					}
 					date = self._setDateField("year", date, dateFromPicker.getFullYear());
