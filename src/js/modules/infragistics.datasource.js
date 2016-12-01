@@ -4464,8 +4464,7 @@
 			}
 			if (s.type === "local" && s.defaultFields.length > 0) {
 				this.sort(s.defaultFields, s.defaultDirection);
-			}
-			if (this.isGroupByApplied(s.expressions)) {
+			} else if (this.isGroupByApplied(s.expressions)) {
 				this._generateGroupByData(this._filter ? this._filteredData : this._data,
 										s.expressions);
 			}
