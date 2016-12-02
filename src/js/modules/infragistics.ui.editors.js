@@ -6298,7 +6298,13 @@
 
 			// In case value is not set we need to use the setInitialValue method to store mask, required field indeces, prompt indeces etc.
 			this._super();
-			if (this.options.value === null || this.options.value === undefined) {
+			if (this.options.value === null) {
+				if (this.options.allowNullValue) {
+				this._setInitialValue();
+				} else {
+					this._setInitialValue("");
+				}
+			} else if (this.options.value === undefined) {
 				this._setInitialValue();
 			}
 		},
