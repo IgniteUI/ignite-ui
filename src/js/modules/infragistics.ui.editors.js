@@ -7983,6 +7983,67 @@
 		_getInternalMaskedValue: function (newDate) {
 			return this._updateMaskedValue(newDate, true);
 		},
+		_replaceDisplayValue: function(selection, previousValue, newValue) {
+
+			// This is special case, when a date is pasted, but the new pasted string is not fully formatted date, and doesn't contain leading zeros (e.g. 11/3/2015 3:24 PM).
+			// In such case, we add underscore in order to fully format date. The date is transformed to 11/_3/2015 _3:24 PM.
+			// But we do this only in cases, when the selection starts from the beginning of the editor, оtherwise it cannot be predicted, how to format the date.
+			if (selection.start === 0) {
+				newValue = this._formatDateString(newValue.toString());
+			}
+			return this._super(selection, previousValue, newValue);
+		},
+		_formatDateString: function(value) {
+			var dateMask, periodName, startIndex, endIndex;
+
+			// This method is used only for date editor/picker to transform not fully fully formatted dates, like 1/3/2015 3:24 PM, to 11/_3/2015 _3:24 PM.
+			// We depend on mask editor to format numbers, because it cannot recognize how to format date. It will transform 1/3/2015 3:24 PM to 11/3_/2015 3_:24 PM.
+			// In addition, in the date editor, we need format this to be correct date.
+			dateMask = this._parseValueByMask(value);
+
+			// We split the parsed date into time periods' chunks (year, month...), according to their indices.
+			// Then we format each chunk to be valid date period - if it is needed we preceed it with underscore.
+			if (dateMask.indexOf("_") >= 0) {
+				for (periodName in this._dateIndices) {
+					startIndex = this._dateIndices[ periodName ];
+					switch (periodName) {
+						case "fourDigitYear":
+						case "ffLength":
+						case "hh24":
+							startIndex = null;
+							break;
+						case "yy":
+							endIndex = startIndex + (this._dateIndices.fourDigitYear ? 4 : 2);
+							break;
+						case "ff":
+							endIndex = startIndex + this._dateIndices.ffLength;
+							break;
+						default:
+							endIndex = startIndex + 2;
+							break;
+					}
+					if (startIndex !== null) {
+						dateMask = (startIndex > 0 ? dateMask.substring(0, startIndex) : "") +
+							this._reverseMaskWithUnderscore(dateMask.substring(startIndex, endIndex)) +
+							(endIndex <  dateMask.length ? dateMask.substring(endIndex, dateMask.length) : "" );
+					}
+				}
+			}
+			return dateMask;
+		},
+		_reverseMaskWithUnderscore: function(mask) {
+			var count, reg, match, reversedMask;
+
+			// Transform 3_ to _3; 999_ to _999
+			reg = /(\d{1,3}_{1,3})/g;
+			match = reg.exec(mask);
+			if (match && match[ 0 ]) {
+				count = (mask.match(/_/g) || []).length;
+				reversedMask = Array(count + 1).join("_") + match[ 0 ].replace(/_/g, "");
+				mask = mask.replace(match[ 0 ], reversedMask);
+			}
+			return mask;
+		},
 		_updateMaskedValue: function (newDate, returnValue) {
 
 			// This method updated maskwith prompts according to te set new date value
