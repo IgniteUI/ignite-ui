@@ -1226,6 +1226,28 @@
                 ok(!$('#reloadedField').data("igValidator")._validateInternal(null, null, true, ""), "Internal validate did not fail with empty value and required.");
                 ok($('#reloadedField').data("igValidator")._validateInternal(null, null, true, "value"), "Internal validate did not fail with empty value and required.");
             });
+
+            testId = 'igCombo asterix';
+            test(testId, 2, function(){
+                var $comboEditor;
+
+                $comboEditor =  $('<div id="requiredCombo"></div>').appendTo("#dateFormatTestBed").igCombo({
+                        width: 200,
+                        dataSource: ["a","b","c"],
+                        validatorOptions: {
+                            required: true,
+                            requiredIndication: true,
+                            notificationOptions: { mode: "popover"}
+                        }
+ 				});
+
+                 var asterixPosition = $("#requiredCombo ~ .ui-igvalidator-required-indication").position();
+
+                 ok(($("#requiredCombo").position().top === asterixPosition.top), "The asterix is not on the same position as the combo.");
+                 ok(($comboEditor.igCombo("option", "width") < asterixPosition.left && asterixPosition.left < 300), "The asterix is not next to the combo.");
+
+                 $comboEditor.remove();
+            });
         });
         function keyInteraction(key, target, special, set) {
             keyDownChar(key, target, special);
@@ -1394,6 +1416,7 @@ line2</textarea>
         <div id="maskEditor"></div>
         <div id="dateEditor"></div>
     </div>
+    <div id="dateFormatTestBed"></div>
 
 </body>
 </html>
