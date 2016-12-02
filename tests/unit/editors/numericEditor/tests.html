@@ -1117,6 +1117,30 @@
 				}, 20);
 			}, 20);
 		});
+
+	testId = "cover _clearValue";
+		test(testId, 3, function () {
+			var $editor = $('<input id="inputEditor_clearValue" />')
+			.appendTo("#testBedContainer")
+			.igNumericEditor({
+				value: 66,
+				minValue:55,
+				maxValue:100,
+				buttonType: "clear"
+			});
+
+			var clearButton = $editor.igNumericEditor("clearButton");
+			equal($editor.igNumericEditor("value"), "66", "Initial value is not correct");
+			clearButton.click();
+			equal($editor.igNumericEditor("value"), 55, "Value after cleaning is not correct");
+
+			$editor.igNumericEditor("option", "minValue", -100);
+			$editor.igNumericEditor("option", "maxValue", -55);
+			clearButton.click();
+			equal($editor.igNumericEditor("value"), -55, "Value after cleaning is not correct");
+
+			$editor.remove();
+		});
 	});
 
 	function testSelection(input, start, end) {
@@ -1205,7 +1229,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input type="text" id="inputEditor1" />
 		<div id="divEditor1"></div>
 
