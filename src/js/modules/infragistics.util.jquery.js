@@ -863,4 +863,4 @@
 		$type: new $.ig.Type("jQueryDomRenderer", $.ig.Object.prototype.$type)
 	}, true);
 
-}));
+}));// REMOVE_FROM_COMBINED_FILES
