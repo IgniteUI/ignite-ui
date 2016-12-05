@@ -10693,8 +10693,9 @@
 		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
-				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker and return focus
-				this._editorInput.focus();
+				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker
+				return;
+
 			} else {
 				this._super(event);
 			}
@@ -10742,8 +10743,14 @@
 					self._pickerOpen = true;
 				},
 				onClose: function (/*dateText, inst*/) {
+
 					// fires before input blur
 					delete self._pickerOpen;
+
+					// I.G. 01/12/2016 Fix for #585 [igDatePicker] Year change dropdown does not open in IE by single click
+					if (!self._editorInput.is(document.activeElement)) {
+						self._editorInput.blur();
+					}
 					self._triggerDropDownClosed();
 				}
 			};
