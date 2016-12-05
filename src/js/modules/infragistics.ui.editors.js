@@ -7996,9 +7996,9 @@
 		_formatDateString: function(value) {
 			var dateMask, periodName, startIndex, endIndex;
 
-			// This method is used only for date editor/picker to transform not fully fully formatted dates, like 1/3/2015 3:24 PM, to 11/_3/2015 _3:24 PM.
+			// This method is used only for date editor/picker to transform not fully formatted dates, like 1/3/2015 3:24 PM, to 11/_3/2015 _3:24 PM.
 			// We depend on mask editor to format numbers, because it cannot recognize how to format date. It will transform 1/3/2015 3:24 PM to 11/3_/2015 3_:24 PM.
-			// In addition, in the date editor, we need format this to be correct date.
+			// In addition, in the date editor, we need to format this to be correct date.
 			dateMask = this._parseValueByMask(value);
 
 			// We split the parsed date into time periods' chunks (year, month...), according to their indices.
