@@ -161,7 +161,9 @@
 			this._positions = [ "balanced", "start", "end" ];
 			this._directionIndex = -1;
 			this._positionIndex = -1;
-			this._forced = this.options.direction !== "auto" && this.options.position !== "auto";
+			// D.K. 5 Dec 2016 Fix for bug 228621 - Although setting direction='right', igNotifier shows on top of the target element at first.
+			// Forcing the position of the popover based only on the direction
+			this._forced = this.options.direction !== "auto";
 			this._visible = false;
 			$( window ).on( "resize.popover", $.proxy( this._resizeHandler, this ) );
 		},
@@ -182,7 +184,7 @@
 					if (this.options.direction !== "auto") {
 						this._getPrioritiesIndex();
 					}
-					this._forced = this.options.direction !== "auto" && this.options.position !== "auto";
+					this._forced = this.options.direction !== "auto";
 					this._resizeHandler();
 					break;
 				case "position":
@@ -190,7 +192,6 @@
 					if (this.options.position !== "auto") {
 						this._getPrioritiesIndex();
 					}
-					this._forced = this.options.direction !== "auto" && this.options.position !== "auto";
 					break;
 				case "contentTemplate":
 					if (typeof value === "string") {
