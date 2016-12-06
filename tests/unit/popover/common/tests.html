@@ -15,7 +15,7 @@
 
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
-	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+  <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
@@ -463,11 +463,55 @@
                 ok($('#notifier_popover_arrow').css("display") !== "none", 'Popover arrow not shown!' );
                 ok($('#notifier_popover_arrow').hasClass("ui-igpopover-arrow-left"), 'Popover arrow is pointing to left!' );
                 ok($('#notifier').offset().top < $('#notifier_popover').offset().top &&
-                  $('#notifier_popover').offset().top < $('#notifier').offset().top + $('#notifier').height(),
-                  'Popover is positioned above or below its target');
+                    $('#notifier_popover').offset().top < $('#notifier').offset().top + $('#notifier').height(),
+                    'Popover is positioned above or below its target');
                 ok($('#notifier').offset().left + $('#notifier').width() <= $('#notifier_popover').offset().left,
-                      'Popover is not positioned on the left its target' );
-                });
+                    'Popover is not positioned on the left its target' );
+
+                $('#notifier').igPopover('option', 'direction', 'top');
+                ok( $( 'notifier_popover' ).css( 'display' ) !== 'none', 'Popover not shown!' );
+                ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
+                ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
+                ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-bottom" ), 'Popover arrow is not pointing to bottom!' );
+                ok( $( '#notifier_popover' ).offset().top + $( '#notifier_popover' ).height() <= $( '#notifier' ).offset().top,
+                    'Popover is not positioned above its target' );
+                ok( $( '#notifier' ).offset().left < $( '#notifier_popover' ).offset().left &&
+                $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() < $( '#notifier' ).offset().left + $( '#notifier' ).width(),
+                    'Popover is positioned into the bounderies of the target' );
+
+                $( '#notifier' ).igPopover( 'option', 'direction', 'bottom' );
+                ok( $( 'notifier_popover' ).css( 'display' ) !== 'none', 'Popover not shown!' );
+                ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
+                ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
+                ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-top" ), 'Popover arrow is not pointing to top!' );
+                ok( $( '#notifier' ).offset().top + $( '#notifier' ).height() <= $( '#notifier_popover' ).offset().top,
+                    'Popover is not positioned below its target' );
+                ok( $( '#notifier' ).offset().left < $( '#notifier_popover' ).offset().left &&
+                $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() < $( '#notifier' ).offset().left + $( '#notifier' ).width(),
+                    'Popover is positioned into the bounderies of the target' );
+
+                $( '#notifier' ).igPopover( 'option', 'direction', 'left' );
+                ok( $( 'notifier_popover' ).css( 'display' ) !== 'none', 'Popover not shown!' );
+                ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
+                ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
+                ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-right" ), 'Popover arrow is not pointing to right!' );
+                ok( $( '#notifier' ).offset().top < $( '#notifier_popover' ).offset().top &&
+                $( '#notifier_popover' ).offset().top < $( '#notifier' ).offset().top + $( '#notifier' ).height(),
+                    'Popover is positioned above or below its target' );
+                ok( $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() <= $( '#notifier' ).offset().left,
+                    'Popover is not positioned on the left its target' );
+
+                $( '#notifier' ).igPopover( 'option', 'direction', 'auto' );
+                ok( $( 'notifier_popover' ).css( 'display' ) !== 'none', 'Popover not shown!' );
+                ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
+                ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
+                ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-top" ), 'Popover arrow is not pointing to top!' );
+                ok( $( '#notifier' ).offset().top + $( '#notifier' ).height() <= $( '#notifier_popover' ).offset().top,
+                    'Popover is not positioned below its target' );
+                ok( $( '#notifier' ).offset().left < $( '#notifier_popover' ).offset().left &&
+                $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() < $( '#notifier' ).offset().left + $( '#notifier' ).width(),
+                    'Popover is positioned into the bounderies of the target' );
+            });
         } );
 
         function contentFunction()
@@ -530,7 +574,7 @@
         <ol id="qunit-tests"></ol>
     </div>
 
-    <div id="notifier" style="width: calc(100vw - 50px); height: 100px; background-color: blue; margin-top: 200px;"></div>
+    <div id="notifier" style="width: calc(100vw - 150px); height: 100px; background-color: blue; margin-left: 100px;"></div>
 
     <div style="float: left;">
 
