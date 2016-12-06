@@ -530,4 +530,4 @@
 		return deferred.promise();
 	};
 
-}));
+}));// REMOVE_FROM_COMBINED_FILES
