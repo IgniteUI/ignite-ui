@@ -1038,6 +1038,25 @@
 			}, 100);
 		});
 		
+		testId = "Test nullValue on initialization";
+		test(testId, 4, function(){
+			var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igTextEditor({ allowNullValue: false});
+			//Get null Value
+			equal($editor.igTextEditor("value"), "", "The value is not an empty string");
+			//Set null Value
+			$editor.igTextEditor("value", null);
+			equal($editor.igTextEditor("value"), "", "The value is not an empty string");
+			//CHange allowNullValue option
+			$editor.igTextEditor("option", "allowNullValue", true);
+			// Get Null value
+			equal($editor.igTextEditor("value"), "", "The value is not an empty string");
+			//Set Null value
+			$editor.igTextEditor("value", null);
+			//Get null value
+			equal($editor.igTextEditor("value"), null, "The value is not an empty string");
+			$editor.remove();
+		});
 	});
 
 	// Helper functions

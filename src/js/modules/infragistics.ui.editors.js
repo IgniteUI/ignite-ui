@@ -6298,7 +6298,7 @@
 
 			// In case value is not set we need to use the setInitialValue method to store mask, required field indeces, prompt indeces etc.
 			this._super();
-			if (this.options.value === null) {
+			/*if (this.options.value === null) {
 				if (this.options.allowNullValue) {
 				this._setInitialValue();
 				} else {
@@ -6306,7 +6306,7 @@
 				}
 			} else if (this.options.value === undefined) {
 				this._setInitialValue();
-			}
+			}*/
 		},
 
 		_enterEditMode: function () { // MaskEditor
@@ -6878,7 +6878,11 @@
 		_setInitialValue: function (value) { //igMaskEditor
 			this._maskWithPrompts = this._parseValueByMask("");
 			this._getMaskLiteralsAndRequiredPositions();
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
@@ -7759,7 +7763,11 @@
 		},
 		_setInitialValue: function (value) { //igDateEditor
 			this._maskWithPrompts = this._parseValueByMask("");
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				//check value
@@ -8799,7 +8807,7 @@
 		_validateValue: function (val) { // igDateEditor
 			var result, dateObj, minValue, maxValue;
 			if (val === null || val === "") {
-				return true;
+				return this._super(val);
 			}
 			dateObj = this._getDateObjectFromValue(val);
 			if (this.options.minValue) {
@@ -8824,10 +8832,17 @@
 		_updateValue: function (value) { //igDateEditor
 			//TODO Review
 			if (value === null) {
-				this._maskedValue = this._maskWithPrompts;
-				this._valueInput.val("");
-				this.options.value = null;
-				this._dateObjectValue = null;
+				if (this.options.allowNullValue) {
+					this._maskedValue = this._maskWithPrompts;
+					this._valueInput.val("");
+					this.options.value = null;
+					this._dateObjectValue = null;
+				} else {
+					this._maskedValue = this._maskWithPrompts;
+					this._valueInput.val("");
+					this.options.value = "";
+					this._dateObjectValue = null;
+				}
 			} else if (value === "") {
 
 				// Empty string is passed only when clear is called, or when an empty value is created
@@ -10272,11 +10287,7 @@
 				if (this.options.value) {
 					return this._getValueByDataMode();
 				} else {
-					if (this.options.allowNullValue) {
-						return this.options.nullValue;
-					} else {
-						return "";
-					}
+					return this.options.value;
 				}
 			}
 		},

@@ -1118,6 +1118,25 @@
 			}, 20);
 		});
 	});
+	testId = "Test nullValue on initialization";
+	test(testId, 4, function(){
+		var $editor = $("<input id='editor'/>").
+		appendTo("#testBedContainer").igNumericEditor({ allowNullValue: false});
+		//Get null Value
+		equal($editor.igNumericEditor("value"), "", "The value is not an empty string");
+		//Set null Value
+		$editor.igNumericEditor("value", null);
+		equal($editor.igNumericEditor("value"), "", "The value is not an empty string");
+		//CHange allowNullValue option
+		$editor.igNumericEditor("option", "allowNullValue", true);
+		// Get Null value
+		equal($editor.igNumericEditor("value"), "", "The value is not an empty string");
+		//Set Null value
+		$editor.igNumericEditor("value", null);
+		//Get null value
+		equal($editor.igNumericEditor("value"), null, "The value is not an empty string");
+		$editor.remove();
+	});
 
 	function testSelection(input, start, end) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
