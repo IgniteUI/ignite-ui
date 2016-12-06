@@ -1815,7 +1815,7 @@ input.ui-igbutton {
  */
 .ui-tabs {
   background: #FFFFFF;
-  border: 0px none;
+  border: 0 none;
 }
 .ui-tabs .ui-tabs-nav {
   padding: 0;
@@ -2006,7 +2006,7 @@ input.ui-igbutton {
   border: 0;
 }
 .ui-iggrid table th.ui-iggrid-rowselector-header {
-  padding: 0px;
+  padding: 0;
 }
 .ui-iggrid table th.ui-iggrid-rowselector-header > .ui-state-default {
   margin: 4px;
@@ -2068,6 +2068,11 @@ input.ui-igbutton {
   border-bottom: 1px solid #dadada !important;
 }
 .ui-iggrid-scrolldiv {
+  /* Bug #228441 // 18.02.2016 // M.Popov // Fix misalignment between fixed and unfixed container */
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-top: none;
   background-color: #F0F0F0;
   border-bottom: 1px solid #dadada !important;
   /* !important needed because layout css removes borders */
@@ -2618,6 +2623,10 @@ input.ui-igbutton {
 .ui-igtooltip-arrow-top,
 .ui-igtooltip-arrow-left,
 .ui-igtooltip-arrow-right {
+  /*
+     M.Popov
+     This image does not exist i think we should remove the whole rule
+    */
   background-image: url(../../structure/images/igPopover/igPopoverArrows.png) !important;
 }
 .ui-igtooltip .ui-icon.ui-icon-close {
@@ -3094,8 +3103,8 @@ input.ui-igbutton {
 .ui-ightmleditor-content iframe,
 .ui-ightmleditor-content textarea {
   border: 1px solid #bcbcbc;
-  -webkit-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
-  -moz-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
+  -webkit-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
+  -moz-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
   box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
 }
 /*breadcrumb styling*/
@@ -3282,7 +3291,7 @@ input.ui-igbutton {
   font-family: "Segoe UI", Arial, sans-serif;
   font-size: 13px;
   padding: 10px 5px 10px 5px;
-  border: 0px;
+  border: 0;
 }
 .ui-sparkline-tooltip {
   background-color: rgba(255, 255, 255, 0.95);
@@ -3350,7 +3359,7 @@ input.ui-igbutton {
   font-family: "Segoe UI", Arial, sans-serif;
   font-size: 12px;
   color: #666;
-  border: 0px;
+  border: 0;
 }
 .ui-funnel-tooltip {
   background-color: rgba(255, 255, 255, 0.95);
@@ -3373,7 +3382,7 @@ input.ui-igbutton {
 /* igDoughnut Chart */
 /********************/
 .ui-doughnut {
-  border: 0px;
+  border: 0;
   font-size: 12px;
   font-family: "Segoe UI", Arial, sans-serif;
 }
@@ -3449,7 +3458,7 @@ input.ui-igbutton {
 }
 .ui-radialgauge-tick {
   background-color: #444444;
-  border-top-color: none;
+  border-top-color: transparent;
 }
 .ui-radialgauge-minorTick {
   background-color: #444444;
