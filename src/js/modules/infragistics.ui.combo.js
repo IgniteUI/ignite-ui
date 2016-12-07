@@ -511,6 +511,7 @@
 			*/
             visibleItemsCount: 15,
             /* type="string" Gets/Sets value that is displayed when input field is empty. That is an override for the $.ig.Combo.locale.placeHolder.
+            ```
                 //Initialize
                 $(".selector").igCombo({
                     placeHolder : "Empty input field"
@@ -521,6 +522,7 @@
 
                 //Set
                 $(".selector").igCombo("option", "placeHolder", "Please type in some text");
+            ```
             */
             placeHolder: null,
             /* type="editable|dropdown|readonlylist|readonly" Sets gets functionality mode.
@@ -4673,7 +4675,8 @@
                     }
                 },
                 mouseup: function (event) {
-                    var $this, multiSelect, closeDropDown;
+                    var $this, multiSelect, closeDropDown,
+                        shouldSuppress = options.suppressKeyboard && $.ig.util.isTouchDevice();
 
                     if (options.disabled) {
                         return;
@@ -4699,13 +4702,15 @@
 
                                 if (multiSelect && self.isSelected($this) &&
                                     !self._$keyNavItem().is(_options.$autoSelectedItem)) {
-                                    self.deselect($this, { focusCombo: true }, event);
+                                        self.deselect($this, {
+                                            focusCombo: !shouldSuppress },
+                                            event);
                                 } else {
-                                    self.select($this, {
-                                        additive: multiSelect,
-                                        closeDropDown: closeDropDown,
-                                        focusCombo: self._focusInInputWhenUsingTouchDevice()
-                                    }, event);
+                                        self.select($this, {
+                                            additive: multiSelect,
+                                            closeDropDown: closeDropDown,
+                                            focusCombo: !shouldSuppress
+                                        }, event);
                                 }
                             }
 
