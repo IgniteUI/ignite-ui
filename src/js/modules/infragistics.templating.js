@@ -20,14 +20,14 @@
 		limitation: Regular expressions are equivalent to finite automatons as described by theory of computation and more precisely the formal languages and automata computability theory. This means that they are limited to recognizing languages of the type AB^nC but noy languages of the type [AB]^n which are recognized by context-free grammars (Regular expressions are still a subset of context-free grammars). However the A^nB^n is recognized due to the fact that we can use greedy regular expressions allowing us to match the last existing token of a type. Thus nested if-statements would not be recognized without stack-tokenizing the block statement.
  */
 
-/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
 		// AMD. Register as an anonymous module.
 		define( [
 			"jquery",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 
@@ -115,8 +115,12 @@
 				returnType="string" Returns the encoded string.
 			 */
 		    return value !== null && value !== undefined ?
-            value.toString().replace(this.regExp.lt, "&lt;").replace(this.regExp.gt, "&gt;").
-            replace(this.regExp.ap, "&#39;").replace(this.regExp.ic, "&#34;") : "";
+            value.toString()
+				.replace(this.regExp.amp, "&amp;")
+				.replace(this.regExp.lt, "&lt;")
+				.replace(this.regExp.gt, "&gt;")
+				.replace(this.regExp.ap, "&#39;")
+				.replace(this.regExp.ic, "&#34;") : "";
 		},
 		/* type="RegExp" Used to tokenize the template string. */
 		regExp: {
@@ -159,7 +163,8 @@
 			lt: /</g,
 			gt: />/g,
 			ap: /'/g,
-			ic: /"/g
+			ic: /"/g,
+			amp: /&/g
 		},
 		/* Used to compile template directives. */
 		_directives: {

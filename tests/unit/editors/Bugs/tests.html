@@ -18,6 +18,8 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
@@ -37,7 +39,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539"];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -49,7 +51,6 @@
 				}
 				window.Bug208808Testbed = function () {
 					$("#208808").igDateEditor({ dateInputFormat: "yyyy/MM/dd" });
-
 				}
 
 				window.Bug209067Testbed = function () {
@@ -63,7 +64,6 @@
 						$("#209067textEditor").igTextEditor("value", "nwsfsd");
 						$("#209067textEditor1").igTextEditor("value", "NWSFSD");
 					});
-
 
 				}
 				window.Bug209174Testbed = function () {
@@ -425,6 +425,31 @@
 					$("#226Editor").igTextEditor();
 				}
 
+
+				window.Bug487Testbed = function () {
+					$("#487Editor").igTextEditor({
+						value: "newInputValue"
+					});
+				}
+				
+				window.Bug446Testbed = function () {
+					$("<input/>", { id: "446Editor" })
+					.appendTo("#testBedContainer")
+					.igTextEditor({
+						buttonType: "clear", 
+						value: "has value"
+					});
+				}
+
+				window.Bug539Testbed = function () {
+					$("<input/>", { id: "539Editor" })
+					.appendTo("#testBedContainer")
+					.igNumericEditor({
+						minValue: 0,
+						maxValue: 10
+					});
+				}
+
 				initialized = false;
 				module("Editors Bugs Unit Tests ", {
 					setup: function (assert) {
@@ -438,7 +463,7 @@
 						// 	initialized = true;
 						// }
 					},
-					teardown: function () {
+					teardown: function (assert) {
 					}
 				});
 
@@ -1126,6 +1151,81 @@
 				}, 100);
 			});
 
+			var testId = 'Bug 487.';
+			test(testId, 2, function () {			
+				$("#487Editor").igTextEditor("destroy");
+				//check the value prop and see if it is restored
+				equal(document.getElementById("487Editor").value, "myInputValue", 'Input value is not the same as before Editor init');
+				//check the value attribute and see if it is restored
+				equal(document.getElementById("487Editor").getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
+			});
+			
+			var testId = 'Bug 446 - TextEditor doesnt trigger valueChange after clearing';
+			test(testId, 6, function () {	
+				var editor =  $("#446Editor"),
+					field = editor.igTextEditor("field"),
+					clearButton = editor.igTextEditor("clearButton"),
+					textChanged = 0,
+					valueChanged = 0;
+
+				editor.on("igtexteditortextchanged", function() {
+					textChanged++;
+				}).on("igtexteditorvaluechanged", function() {
+					valueChanged++;
+				});
+
+				editor.igTextEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					clearButton.click();
+					equal(editor.igTextEditor("value"), "has value", "Value changed in edit mode clear");
+					equal(textChanged, 1, "textChanged not triggered");
+					equal(valueChanged, 0, "valueChanged triggered in edit mode");
+					field.blur();
+					equal(valueChanged, 1, "valueChanged not triggered on when exiting edit mode");
+
+					// test clear without focusing
+					editor.igTextEditor("value", "text");
+					clearButton.click();
+					equal(textChanged, 2, "textChanged not triggered on clear");
+					equal(valueChanged, 2, "valueChanged not triggered on clear");
+					$("#446Editor").remove();
+				}, 100);
+			});
+
+			var testId = 'Bug 539 - If min/max value is set to 0 and the entered value is invalid, the editors value is not reverted';
+			test(testId, 4, function () {	
+				var editor =  $("#539Editor"),
+				field = editor.igNumericEditor("field");
+				
+				//test input interaction
+				editor.igNumericEditor("setFocus");
+				typeInInput("-1", field);
+				keyInteraction(13, field);
+				field.blur();
+				var value = editor.igNumericEditor("value");
+				equal(value, 0, "minValue 0 should be set");
+
+				editor.igNumericEditor("option", "minValue", -5);
+				editor.igNumericEditor("option", "maxValue", 0);
+				typeInInput("1", field);
+				keyInteraction(13, field);
+				field.blur();
+				value = editor.igNumericEditor("value");
+				equal(value, 0, "maxValue 0 should be set");
+
+				//test public value method	
+				editor.igNumericEditor("option", "value", 1);
+				equal(editor.igNumericEditor("value"), 0, "maxValue 0 should be set(value method)");
+
+				editor.igNumericEditor("option", "minValue", 0);
+				editor.igNumericEditor("option", "maxValue", 10);
+				editor.igNumericEditor("option", "value", -1);
+				equal(editor.igNumericEditor("value"), 0, "minValue 0 should be set(value method)");
+
+				$("#539Editor").remove();
+			});	
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1249,7 +1349,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input id="inputEditor1" />
 		<input id="inputEditor2" />
 		<input id="inputEditor3" />
@@ -1365,6 +1465,8 @@
 		<input id="264Editor1" />
 		<input id="264Editor2" />
 		<input id="226Editor" />
+
+		<input type="text" id="487Editor" value="myInputValue"/>
 
 	</div></body>
 </html>

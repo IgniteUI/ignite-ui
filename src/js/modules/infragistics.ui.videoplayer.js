@@ -9,11 +9,11 @@
  *  jquery-1.9.1.js
  *	jquery.ui.core.js
  *	jquery.ui.widget.js
- *  infragistics.util.js
+ *	infragistics.util.js
+ *  infragistics.util.jquery.js
  *  infragistics.ui.shared.js
  */
 
-/*global define, jQuery, window */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -22,6 +22,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.ui.shared",
 			"./infragistics.ui.videoplayer-en"
 		], factory );
@@ -207,7 +208,7 @@
 			```
 			*/
 			loop: false,
-			/* type="bool" Gets/Sets whether if you want to use the built in browser controls. By default player uses Infragistics playback controls. Note that you may have different look and feel across different browsers if you use the built in browser controls.
+			/* type="bool" Gets/Sets whether if you want to use the built in browser controls. By default player uses Infragistics playback controls. Note that you may have different look and feel across different browsers if you use the built in browser controls. When this option is set to true, no [commercials](ui.igvideoplayer#options:commercials) will be displayed as they are not supported.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -981,7 +982,7 @@
 				*/
 				css: null
 			}],
-			/* type="object" Gets/Sets an array of commercials objects that will be displayed when the video is playing.
+			/* type="object" Gets/Sets an array of commercials objects that will be displayed when the video is playing. Note that [broswerControls](ui.igvideoplayer#options:browserControls) doesn't support commercials.
 			```
 				//Initialize
 				$(".selector").igVideoPlayer({
@@ -2128,6 +2129,7 @@
 				if (!o.browserControls) {
 					this._renderControls();
 				}
+
 				this._lastPausedState = video[ 0 ].paused;
 
 				if (o.fullscreen) {
@@ -3770,7 +3772,11 @@
 				if (currentTime - this._commercialsShow[ 0 ] > this._const.COMMERCIAL_SEEK_DELTA) {
 					this.currentTime(this._commercialsShow[ 0 ]);
 				}
-				this.playCommercial(this.options.commercials.linkedCommercials[ this._commercialIndex ]);
+
+				//M.S. November 4th, 2016 - Browser controls doesn't support commercials issue #290
+				if (!this.options.browserControls) {
+					this.playCommercial(this.options.commercials.linkedCommercials[ this._commercialIndex ]);
+				}
 			}
 		},
 

@@ -10,9 +10,9 @@
  *	jquery.ui.core.js
  *	jquery.ui.widget.js
  *	infragistics.util.js
+ *  infragistics.util.jquery.js
  */
 
-/*global window, jQuery, define */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -20,7 +20,8 @@
 		define( [
 			"jquery",
             "jquery-ui",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 

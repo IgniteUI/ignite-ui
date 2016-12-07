@@ -9,6 +9,8 @@
 * jquery-1.9.1.js
 * jquery.ui.core.js
 * jquery.ui.widget.js
+* infragistics.util.js
+* infragistics.util.jquery.js
 * infragistics.ui.rating-en.js
 *
 * Example to use:
@@ -20,7 +22,6 @@
 *	<div id="rating1"></div>
 */
 
-/*global define, jQuery, document, setTimeout */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -28,7 +29,8 @@
 		define( [
 			"jquery",
 			"jquery-ui",
-			"./infragistics.util"
+			"./infragistics.util",
+			"./infragistics.util.jquery"
 		], factory );
 	} else {
 

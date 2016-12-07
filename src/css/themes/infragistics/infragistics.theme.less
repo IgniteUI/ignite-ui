@@ -5,7 +5,7 @@
 //**************/
 //* LESS STUFF */
 //**************/
-//* VARIABLES */ 
+//* VARIABLES */
 //*************/
 // Font 
 @fontfamily: "Segoe UI",Arial,sans-serif;
@@ -1633,6 +1633,11 @@ input.ui-igbutton {
 }
 
 .ui-iggrid-scrolldiv {
+	/* Bug #228441 // 18.02.2016 // M.Popov // Fix misalignment between fixed and unfixed container */
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border-top: none;
     background-color: @igGray1;
     border-bottom: 1px solid @table-border-color !important;
     /* !important needed because layout css removes borders */
@@ -2283,7 +2288,7 @@ input.ui-igbutton {
 .ui-igtooltip-arrow-top,
 .ui-igtooltip-arrow-left,
 .ui-igtooltip-arrow-right {
-    background-image: url(images/igTooltip/igTooltipArrows.png) !important;
+    background-image: url(../../structure/images/igPopover/igPopoverArrows.png) !important;
 }
 
 .ui-igtooltip .ui-icon.ui-icon-close {

@@ -7,7 +7,6 @@
 *
 */
 
-/*global jQuery */
 (function ($) {
 $.ig = $.ig || {};
 
@@ -69,8 +68,8 @@ if (!$.ig.HtmlEditor) {
 			fontNames: {
 				win: [
                     { text: "メイリオ", value: "Meiryo" },
-                    { text: "MSゴシック", value: "MS Gothic" },
-                    { text: "MS明朝", value: "MS Mincho" },
+                    { text: "MSゴシック", value: "MSゴシック" },
+                    { text: "MS明朝", value: "MS明朝" },
 					{ text: "Times New Roman", value: "Times New Roman" },
 					{ text: "Arial", value: "Arial" },
 					{ text: "Arial Black", value: "Arial Black" },

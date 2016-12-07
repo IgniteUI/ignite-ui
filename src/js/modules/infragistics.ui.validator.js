@@ -9,6 +9,7 @@
 * jquery.ui.core.js
 * jquery.ui.widget.js
 * infragistics.util.js
+* infragistics.util.jquery.js
 * infragistics.ui.popover.js
 * infragistics.ui.notifier.js
 
@@ -21,7 +22,7 @@
 *	<input id="text1" type="text" />
 */
 
-/*global define, jQuery, Class */
+/*global Class */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -30,6 +31,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.ui.notifier",
 			"./infragistics.ui.validator-en"
 		], factory );
@@ -1271,23 +1273,29 @@ $.widget("ui.igValidator", {
 		}
 	},
 	_addFieldIndications: function (options) {
-		var ops;
+		var ops, target = options.notifyTarget;
 		if ((options._group && options._group.length > 1) ||
 			(options._control && options._control.widgetName === "igRating")) {
 			// not supported on groups
 			return;
 		}
+
+		// M.S. 12/2/2016 Bug 228364: The target for the igCombo should be the parent in order for the asterix to be displayed next to the control
+		if (options._control !== null && options._control.widgetName === "igCombo") {
+			target = target.parent();
+		}
+
 		ops = this._addGlobalSettings(options);
 		if (ops.required && ops.requiredIndication) {
 			// TODO: or use CSS?
-			options._$indicator = options.notifyTarget.after(
+			options._$indicator = target.after(
 				"<span title='" + this._getLocalizedMessage("required") +
 				"' class='" + this.css.requiredIndication + "'>*</span>")
 			.next();
 		}
 		if (!ops.required && ops.optionalIndication) {
 			// TODO: or use CSS?
-			options._$indicator = options.notifyTarget.after("<span class='" +
+			options._$indicator = target.after("<span class='" +
 				this.css.optionalIndication + "'>" +
 				this._getLocalizedMessage("optional", "String") + "</span>")
 			.next();

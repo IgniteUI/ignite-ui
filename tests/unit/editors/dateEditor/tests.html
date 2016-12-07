@@ -19,6 +19,8 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
@@ -1147,7 +1149,7 @@
 				stop();
 				setTimeout(function () {
 					start();
-					editor.igDateEditor("setFocus");
+				 	editor.igDateEditor("setFocus");
 					editor.igDateEditor("select", 7, 8);
 					editor.igDateEditor("insert", "7");
 					stop();
@@ -1216,6 +1218,85 @@
 				editor.igDateEditor("insert", "05/11/2016");
 				equal(editor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after second insert");
 				equal(editorInput.val(), "5/11/2016", "Insert value not converted to display text");
+			});
+
+			testId = 'Clear null value';
+			test(testId, 4, function () {
+				var $editor1 = $('<input id="clearEditor" />')
+					.appendTo("#testBedContainer")
+					.igDateEditor({
+						allowNullValue: true,
+						nullValue : new Date(2009, 7,8),
+						value: "2010-10-10",
+						buttonType: "clear"
+					});
+
+				var field = $editor1.igDateEditor("field"),
+					clearButton = $editor1.igDateEditor("clearButton"),
+					value = $editor1.igDateEditor("value");
+
+				$editor1.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					clearButton.click();
+					equal(field.val(), "08/08/2009", 'Text not set to null  value');
+					equal($editor1.igDateEditor("value"), value, 'Value changed on clear while editing');
+					field.blur();
+					equal(field.val(), "8/8/2009", 'Cleared nullValue not set on blur.');
+					$editor1.igDateEditor("value", new Date());
+					clearButton.click();
+					equal($editor1.igDateEditor("value"), $editor1.igDateEditor("option", "nullValue"), 'Clear null value not set without focus');
+					$("#clearEditor").remove();
+				}, 100);
+			});
+
+			// Handling different date formats
+			var testId = 'Pasting/inserting not fully formatted dates';
+			test(testId, 10, function () {
+				var $dtEditor, checkValue, displayValue;
+ 
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateDisplayFormat: "M/d/yyyy h:m:s:fff",
+					dateInputFormat: "MM/dd/yyyy hh:mm:ss:fff"
+ 				});
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.igDateEditor("select", 0, 23);
+				$dtEditor.igDateEditor("insert", "1/1/215 1:1:1:1");
+				equal($dtEditor.igDateEditor("field").val(), "_1/_1/_215 _1:_1:_1:__1", "Mask is not correctly formatted after paste");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "1/1/215 1:1:1:100", "Mask is not correctly formatted after paste");
+
+				$dtEditor.igDateEditor("setFocus");
+				keyInteraction(13, $dtEditor.igDateEditor("field"));
+				$dtEditor.igDateEditor("select", 0, 23);
+				$dtEditor.igDateEditor("insert", "10/1/2015 1:1:1:111");
+				equal($dtEditor.igDateEditor("field").val(), "10/_1/2015 _1:_1:_1:111", "Mask is not correctly formatted after paste");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "10/1/2015 1:1:1:111", "Mask is not correctly formatted after paste");
+
+				$dtEditor.igDateEditor("setFocus");
+				keyInteraction(13, $dtEditor.igDateEditor("field"));
+				$dtEditor.igDateEditor("select", 0, 23);
+				$dtEditor.igDateEditor("insert", "10/10/2015 11:1:1:111");
+				equal($dtEditor.igDateEditor("field").val(), "10/10/2015 11:_1:_1:111", "Mask is not correctly formatted after paste");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "10/10/2015 11:1:1:111", "Mask is not correctly formatted after paste");
+
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.igDateEditor("select", 0, 23);
+				$dtEditor.igDateEditor("insert", "1/1/215 1:1:1:1");
+				equal($dtEditor.igDateEditor("field").val(), "_1/_1/_215 _1:_1:_1:__1", "Mask is not correctly formatted after paste");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "1/1/215 1:1:1:100", "Mask is not correctly formatted after paste");
+				
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.igDateEditor("select", 0, 23);
+				$dtEditor.igDateEditor("insert", "12/12/2015 12:12:12:111");
+				equal($dtEditor.igDateEditor("field").val(), "12/12/2015 12:12:12:111", "Mask is not correctly formatted after paste");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "12/12/2015 12:12:12:111", "Mask is not correctly formatted after paste");
+				$dtEditor.remove();
 			});
 		});
 
@@ -1347,7 +1428,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input id="inputEditor1" />
 		<input id="inputEditor2" />
 		<input id="inputEditor3" />

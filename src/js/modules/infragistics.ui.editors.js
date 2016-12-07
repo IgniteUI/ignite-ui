@@ -9,11 +9,11 @@
  * jquery-1.9.1.js
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
+ *  infragistics.util.jquery.js
  *	infragistics.ui.scroll.js
  *	infragistics.ui.validator.js
  */
 
-/*global define, jQuery */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -22,6 +22,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
+			"./infragistics.util.jquery",
 			"./infragistics.scroll",
 			"./infragistics.validator"
 		], factory );
@@ -769,13 +770,18 @@
 			this.options.value = value;
 		}, //BaseEditor
 		//This method sets the value to null, or empty string depending on the nullable option.
-		_clearValue: function () {
+		_clearValue: function (textOnly) {
+			var newValue = "";
 
 			// TODO use null, or 0 depending on the nullable option
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
+			}
+
+			if (textOnly) {
+				this._editorInput.val(newValue);
 			} else {
-				this._updateValue("");
+				this._updateValue(newValue);
 			}
 		},
 		_detachEvents: function () {
@@ -786,7 +792,6 @@
 				this._detachListEvents();
 			}
 
-			// https://css-tricks.com/namespaced-events-jquery/
 			this._editorContainer
 				.off("mousedown.editor mouseup.editor mouseover.editor mouseout.editor");
 		},
@@ -882,11 +887,18 @@
 						this.element.attr(this._initialAttributes[ i ].name,
 							this._initialAttributes[ i ].attrValue);
 
+						// I.G. 11/4/2016 Fix for #487 [igBaseEditor] input value property is not restored when destroy method is called
+						// Restore the initial value property as it was before the widget initialization, so it is aggain displayed in the input
+						if (this._initialAttributes[ i ].name === "value" &&
+							(this.element.is("input"))) {
+							$(this.element).val(this._initialAttributes[ i ].attrValue);
+						}
+
 						// 3/2/2016 Bug #213138: Don't need to recover DOM information, only attributes.
-						/* if (this._initialAttributes[ i ].propValue !== undefined) {
-							this.element.prop(this._initialAttributes[ i ].name,
-								this._initialAttributes[ i ].propValue);
-						}*/
+						// if (this._initialAttributes[ i ].propValue !== undefined) {
+						//	this.element.prop(this._initialAttributes[ i ].name,
+						//		this._initialAttributes[ i ].propValue);
+						//}
 					}
 				}
 				delete this._initialAttributes;
@@ -1422,14 +1434,14 @@
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
-					preventSubmitOnEnter : false
+					revertIfNotValid : false
 				});
 
 				//Get
-				var preventSubmitOnEnter = $(".selector").%%WidgetName%%("option", "preventSubmitOnEnter");
+				var revertIfNotValid = $(".selector").%%WidgetName%%("option", "revertIfNotValid");
 
 				//Set
-				$(".selector").%%WidgetName%%("option", "preventSubmitOnEnter", false);
+				$(".selector").%%WidgetName%%("option", "revertIfNotValid", false);
 			```
 			*/
 			revertIfNotValid: true,
@@ -1776,7 +1788,11 @@
 					}
 					break;
 				case "listItems":
-					this._deleteList();
+
+					//M.S. November, 7th 2016 - Issue 481 - Cannot set listItems on run time when it is not set initially
+					if (prevValue !== null) {
+						this._deleteList();
+					}
 					this._createList();
 					this._clearValue();
 					break;
@@ -1976,6 +1992,7 @@
 			this._attachEvents();
 			this._applyOptions();
 			this._applyAria();
+			this._checkClearButtonState();
 
 			this._triggerRendered();
 		},
@@ -2941,13 +2958,23 @@
 						break;
 					case "clear": {
 						this._currentInputTextValue = this._editorInput.val();
-						this._clearValue();
-						this._processTextChanged();
+
+						//A.M. 3 November 2016 #447 "valueChanged event fired when pressing the close button even if the editor is empty"
+						if (this._editorIsCleared())
+						{
+							if (!this.options.allowNullValue) {
+								this._clearValue();
+							}
+							return;
+						}
 						if (!this._editMode) {
+							this._clearValue();
 							this._exitEditMode();
 							this._triggerValueChanged();
 						} else {
-							this._enterEditMode();
+							this._clearValue(true);
+							this._processTextChanged();
+							this._positionCursor();
 						}
 
 					}
@@ -3020,6 +3047,7 @@
 				}
 				this._currentInputTextValue = currentVal;
 			}
+			this._checkClearButtonState();
 		},
 		_triggerTextChanged: function (oldValue, newValue) {
 			var args = {
@@ -3028,6 +3056,22 @@
 				oldText: oldValue ? oldValue : ""
 			};
 			this._trigger(this.events.textChanged, null, args);
+		},
+		_checkClearButtonState: function () {
+			if (this._clearButton) {
+				if (this._editorIsCleared()) {
+					this._clearButton.hide();
+				} else {
+					this._clearButton.show();
+				}
+			}
+		},
+		_editorIsCleared: function () { //TextEditor
+			var result = false, currentVal = this._editorInput.val();
+			if (currentVal === "") {
+				result = true;
+			}
+			return result;
 		},
 		_elementPositionInViewport: function (el) {
 				var areaTop = Math.ceil(el.parent().offset().top),
@@ -3337,22 +3381,17 @@
 		_valueFromText: function (text) { //igTextEditor
 			return text;
 		},
-		_getSelectionRange: function () {
-			var selection;
-			if (window.getSelection) {
-				selection = window.getSelection();
-				if (selection.rangeCount) {
-					return selection.getRangeAt(0);
-				}
-			} else if (document.selection) {
-				return document.selection.createRange();
-			}
-		},
+
 		_setCursorPosition: function (positionIndex) {
 			this._setSelectionRange(this._editorInput[ 0 ], positionIndex, positionIndex);
 		},
 		_setSelectionRange: function (input, selectionStart, selectionEnd) {
 			if (input.setSelectionRange) {
+				// IE specific issue when the editor is detached
+				// and setSelectionRange is called as part of a composition mode end
+				if (!jQuery.contains(document.documentElement, input) && $.ig.util.isIE) {
+					return;
+				}
 				input.setSelectionRange(selectionStart, selectionEnd);
 			} else if (input.createTextRange) {
 				var range = input.createTextRange();
@@ -3502,8 +3541,8 @@
 			}
 			this._timeouts.push(target._spinTimeOut);
 		},
-		_clearValue: function () {
-			this._super();
+		_clearValue: function (textOnly) {
+			this._super(textOnly);
 			if (this._dropDownList &&
 				this._dropDownList.children(".ui-igedit-listitemselected").length > 0) {
 				this._dropDownList.children(".ui-igedit-listitemselected")
@@ -4375,7 +4414,9 @@
 					this._numericType,
 					this.options.dataMode);
 			if (value !== "" && !isNaN(value)) {
-				if (this.options.maxValue && value > this.options.maxValue) {
+
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
 					value = this.options.maxValue;
 
 					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
@@ -4386,7 +4427,9 @@
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && value < this.options.minValue) {
+
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
 					value = this.options.minValue;
 
 					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
@@ -4880,14 +4923,14 @@
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
-				if (this.options.maxValue && newValue > this.options.maxValue) {
+				if (!isNaN(this.options.maxValue) && newValue > this.options.maxValue) {
 					newValue = this.options.maxValue;
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && newValue < this.options.minValue) {
+				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
 
 					// Raise Warning level 2
@@ -4920,9 +4963,10 @@
 			this._setSpinButtonsState(newValue);
 			this._processTextChanged();
 		},
-		_clearValue: function () { //Numeric Editor
+		_clearValue: function (textOnly) { //Numeric Editor
+			var newValue;
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
 				if (this.options.nullValue === null) {
 					this._editorInput.val("");
 				} else {
@@ -4931,18 +4975,21 @@
 			} else {
 
 				// If the min value is different from zero, we clear the value with the minimum value.
-				if (this.options.minValue && this.options.minValue > 0) {
-					this._updateValue(this.options.minValue);
+				if (!isNaN(this.options.minValue) && this.options.minValue > 0) {
+					newValue = this.options.minValue;
 					this._editorInput.val(this.options.minValue);
-				} else if (this.options.maxValue && this.options.maxValue < 0) {
-					this._updateValue(this.options.maxValue);
+				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
+					newValue = this.options.maxValue;
 					this._editorInput.val(this.options.maxValue);
 				} else {
 					if (this.value()) {
-						this._updateValue(0);
+						newValue = 0;
 						this._editorInput.val(0);
 					}
 				}
+			}
+			if (!textOnly && newValue !== undefined) {
+				this._updateValue(newValue);
 			}
 			if (this.dropDownContainer() &&
 				this.dropDownContainer().children(".ui-igedit-listitemselected").length > 0) {
@@ -5324,6 +5371,13 @@
 			}
 			this._setSpinButtonsState(currVal);
 		},
+		_editorIsCleared: function () { //NumericEditor
+			var result = false, currentVal = this._editorInput.val();
+			if (currentVal === "" || currentVal === "0") {
+				result = true;
+			}
+			return result;
+		},
 		_spinDown: function (delta) { //NumericEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
@@ -5479,14 +5533,18 @@
 				if (newValue !== null && !isNaN(this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 					if (newValue !== "" && !isNaN(newValue)) {
-						if (this.options.maxValue && newValue > this.options.maxValue) {
+
+						// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						if (!isNaN((this.options.maxValue)) && newValue > this.options.maxValue) {
 							newValue = this.options.maxValue;
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
 								$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 									this.options.maxValue));
-						} else if (this.options.minValue && newValue < this.options.minValue) {
+
+							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						} else if (!isNaN((this.options.minValue)) && newValue < this.options.minValue) {
 							newValue = this.options.minValue;
 
 							// Raise Warning level 2
@@ -5793,7 +5851,7 @@
 			var newLenght = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
-				if (this.options.maxValue &&
+				if (!isNaN(this.options.maxValue) &&
 					newValue / this.options.displayFactor > this.options.maxValue) {
 					newValue = this.options.maxValue * this.options.displayFactor;
 
@@ -5801,14 +5859,14 @@
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue &&
+				} else if (!isNaN(this.options.minValue) &&
 					newValue / this.options.displayFactor < this.options.minValue) {
 					newValue = this.options.minValue * this.options.displayFactor;
 
 					//Notify
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-						this.options.minxValue));
+						this.options.minValue));
 				}
 
 				if (!this._validateValue(newValue / this.options.displayFactor) &&
@@ -6760,6 +6818,21 @@
 				this._valueInput.val(this.options.value);
 			}
 		},
+		_clearValue: function (textOnly) { //igMaskEditor
+			var newValue = "";
+			if (this.options.allowNullValue) {
+				newValue = this.options.nullValue;
+				this._editorInput.val(this._parseValueByMask(newValue));
+			} else {
+				this._editorInput.val(this._maskWithPrompts);
+			}
+			if (!textOnly) {
+				this._updateValue(newValue);
+			}
+			if (this._editMode === false) {
+				this._exitEditMode();
+			}
+		},
 		_getDisplayValue: function () { //igMaskEditor
 			var result, maskedVal = this._maskedValue,
 				i, j, p, maskChar, tempChar, index, regExpr,
@@ -6810,6 +6883,13 @@
 		_valueFromText: function (text) { //igMaskEditor
 			return this._getValueByDataMode(text);
 		},
+		_editorIsCleared: function () { //igMaskEditor
+			var result = false, currentVal = this._editorInput.val();
+			if (currentVal === "" || currentVal === this._maskWithPrompts) {
+				result = true;
+			}
+			return result;
+		},
 		_validateValueAgainstMask: function (value) {
 			var i, j, length = value.length, result = true, ch, mask = this._unescapedMask;
 			if (length && length > 0) {
@@ -6845,6 +6925,7 @@
 				this._maskedValue = this._parseValueByMask(value);
 				this._updateValue(this._maskedValue);
 			}
+			this._checkClearButtonState();
 		},
 		_triggerInternalValueChange: function (value) { //MaskEditor
 			var oldValue = this.options.value, message;
@@ -6876,7 +6957,8 @@
 		_validateRequiredPrompts: function (value) {
 			var i;
 			if (value === "") {
-				return false;
+				// D.P. Ignore empty value
+				return true;
 			}
 			for (i = 0; i < this._requiredIndeces.length; i++) {
 				var ch = value.charAt(this._requiredIndeces[ i ]);
@@ -7584,7 +7666,7 @@
 			```
 			*/
 			yearShift: 0,
-			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
+			/* type="string|number|date|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7731,6 +7813,7 @@
 				}
 				this._editorInput.val(this._getDisplayValue());
 			}
+			this._checkClearButtonState();
 		},
 		_applyOptions: function () { // DateEditor
 			this._super();
@@ -7899,6 +7982,67 @@
 		},
 		_getInternalMaskedValue: function (newDate) {
 			return this._updateMaskedValue(newDate, true);
+		},
+		_replaceDisplayValue: function(selection, previousValue, newValue) {
+
+			// This is special case, when a date is pasted, but the new pasted string is not fully formatted date, and doesn't contain leading zeros (e.g. 11/3/2015 3:24 PM).
+			// In such case, we add underscore in order to fully format date. The date is transformed to 11/_3/2015 _3:24 PM.
+			// But we do this only in cases, when the selection starts from the beginning of the editor, оtherwise it cannot be predicted, how to format the date.
+			if (selection.start === 0) {
+				newValue = this._formatDateString(newValue.toString());
+			}
+			return this._super(selection, previousValue, newValue);
+		},
+		_formatDateString: function(value) {
+			var dateMask, periodName, startIndex, endIndex;
+
+			// This method is used only for date editor/picker to transform not fully formatted dates, like 1/3/2015 3:24 PM, to 11/_3/2015 _3:24 PM.
+			// We depend on mask editor to format numbers, because it cannot recognize how to format date. It will transform 1/3/2015 3:24 PM to 11/3_/2015 3_:24 PM.
+			// In addition, in the date editor, we need to format this to be correct date.
+			dateMask = this._parseValueByMask(value);
+
+			// We split the parsed date into time periods' chunks (year, month...), according to their indices.
+			// Then we format each chunk to be valid date period - if it is needed we preceed it with underscore.
+			if (dateMask.indexOf("_") >= 0) {
+				for (periodName in this._dateIndices) {
+					startIndex = this._dateIndices[ periodName ];
+					switch (periodName) {
+						case "fourDigitYear":
+						case "ffLength":
+						case "hh24":
+							startIndex = null;
+							break;
+						case "yy":
+							endIndex = startIndex + (this._dateIndices.fourDigitYear ? 4 : 2);
+							break;
+						case "ff":
+							endIndex = startIndex + this._dateIndices.ffLength;
+							break;
+						default:
+							endIndex = startIndex + 2;
+							break;
+					}
+					if (startIndex !== null) {
+						dateMask = (startIndex > 0 ? dateMask.substring(0, startIndex) : "") +
+							this._reverseMaskWithUnderscore(dateMask.substring(startIndex, endIndex)) +
+							(endIndex <  dateMask.length ? dateMask.substring(endIndex, dateMask.length) : "" );
+					}
+				}
+			}
+			return dateMask;
+		},
+		_reverseMaskWithUnderscore: function(mask) {
+			var count, reg, match, reversedMask;
+
+			// Transform 3_ to _3; 999_ to _999
+			reg = /(\d{1,3}_{1,3})/g;
+			match = reg.exec(mask);
+			if (match && match[ 0 ]) {
+				count = (mask.match(/_/g) || []).length;
+				reversedMask = Array(count + 1).join("_") + match[ 0 ].replace(/_/g, "");
+				mask = mask.replace(match[ 0 ], reversedMask);
+			}
+			return mask;
 		},
 		_updateMaskedValue: function (newDate, returnValue) {
 
@@ -8693,13 +8837,6 @@
 			}
 			return year;
 		},
-		_triggerKeyPress: function (event) { // DateEditor
-			if (event.keyCode === 13) {
-				this._processInternalValueChanging(this._editorInput.val());
-			} else {
-				this._super(event);
-			}
-		},
 		_triggerInternalValueChange: function (value) { //DateEditor
 			if (value === this._maskWithPrompts) {
 				value = "";
@@ -8818,16 +8955,17 @@
 				}
 			}
 		},
-		_clearValue: function () { //DateEditor
-			// TODO
+		_clearValue: function (textOnly) { //DateEditor
+			var newValue = "", maskedValue = this._maskWithPrompts;
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
-				if (this.options.nullValue === null) {
-					this._editorInput.val(this._maskWithPrompts);
+				newValue = this.options.nullValue;
+				if (newValue instanceof Date) {
+					maskedValue = this._updateMaskedValue(this.options.nullValue, true);
 				}
-			} else {
-				this._updateValue("");
-				this._editorInput.val(this._maskWithPrompts);
+			}
+			this._editorInput.val(maskedValue);
+			if (!textOnly) {
+				this._updateValue(newValue);
 			}
 			if (this._editMode === false) {
 				this._exitEditMode();
@@ -8909,7 +9047,7 @@
 					dateField = dateField.replace(regExpr, "");
 				}
 				if (dateField !== "") {
-					dateField = parseInt(dateField);
+					dateField = parseInt(dateField, 10);
 					if (dateField <= 0) {
 						//0 is not valid date
 						dateField = null;
@@ -8928,7 +9066,7 @@
 					monthField = monthField.replace(regExpr, "");
 				}
 				if (monthField !== "") {
-					monthField = parseInt(monthField);
+					monthField = parseInt(monthField, 10);
 					if (monthField <= 0) {
 						monthField = null;
 					} else {
@@ -8954,7 +9092,7 @@
 					yearField = yearField.replace(regExpr, "");
 				}
 				if (yearField !== "") {
-					yearField = parseInt(yearField);
+					yearField = parseInt(yearField, 10);
 					yearField = this._fillCentury(yearField);
 				} else {
 					yearField = null;
@@ -8984,7 +9122,7 @@
 					hourField = hourField.replace(regExpr, "");
 				}
 				if (hourField !== "") {
-					hourField = parseInt(hourField);
+					hourField = parseInt(hourField, 10);
 					if (this._dateIndices.hh24 === false) {
 						if (midDayField && midDayField === "p") {
 
@@ -9012,7 +9150,7 @@
 					minutesField = minutesField.replace(regExpr, "");
 				}
 				if (minutesField !== "") {
-					minutesField = parseInt(minutesField);
+					minutesField = parseInt(minutesField, 10);
 				} else {
 					minutesField = null;
 				}
@@ -9027,7 +9165,7 @@
 					secondsField = secondsField.replace(regExpr, "");
 				}
 				if (secondsField !== "") {
-					secondsField = parseInt(secondsField);
+					secondsField = parseInt(secondsField, 10);
 
 				} else {
 					secondsField = null;
@@ -9049,9 +9187,9 @@
 						ffCount = this._dateIndices.ffLength - millisecondsField.length;
 
 						// If the user has entered 1 in 3 digit field - the value is converted into 300
-						millisecondsField = parseInt(millisecondsField) * Math.pow(10, ffCount);
+						millisecondsField = parseInt(millisecondsField, 10) * Math.pow(10, ffCount);
 					}
-					millisecondsField = parseInt(millisecondsField);
+					millisecondsField = parseInt(millisecondsField, 10);
 					if (this._dateIndices.ffLength === 2) {
 						millisecondsField *= 10;
 					} else if (this._dateIndices.ffLength === 1) {
@@ -10555,8 +10693,9 @@
 		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
-				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker and return focus
-				this._editorInput.focus();
+				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker
+				return;
+
 			} else {
 				this._super(event);
 			}
@@ -10604,8 +10743,14 @@
 					self._pickerOpen = true;
 				},
 				onClose: function (/*dateText, inst*/) {
+
 					// fires before input blur
 					delete self._pickerOpen;
+
+					// I.G. 01/12/2016 Fix for #585 [igDatePicker] Year change dropdown does not open in IE by single click
+					if (!self._editorInput.is(document.activeElement)) {
+						self._editorInput.blur();
+					}
 					self._triggerDropDownClosed();
 				}
 			};

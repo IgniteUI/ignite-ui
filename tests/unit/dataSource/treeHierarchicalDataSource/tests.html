@@ -5,6 +5,8 @@
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 
 	<script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
@@ -241,7 +243,6 @@
 				dsLocalSortingFilteringPaging.dataBind();
 
 			}
-
 			initialized = false;
 			module("igTreeHierarchicalDataSource API methods", {
 				setup: function () {
@@ -735,7 +736,56 @@
 				res = ds1._hasRecordParent({ "employeeID": 123, "PID": 123, "firstName": "Janet", "lastName": "Leverling", "reportsTo": "0", "Date": new Date("01/05/2011") }, flatDS);
 				ok(!res, "If record does not exist the in the data source the result should be false.");
 			});
-
+			test("Test flatDataView when updating filtered data and paging is enabled with mode allLevels", function () {
+				dsLocalSortingFilteringPaging.settings.paging.enabled = true;
+				dsLocalSortingFilteringPaging.settings.treeDS.paging.mode = "allLevels";
+				dsLocalSortingFilteringPaging.dataBind();
+				dsLocalSortingFilteringPaging.filter([{ fieldName: "firstName", expr: "Janet", cond: "equals" }], "OR", true, "employeeID = 4");
+				dsLocalSortingFilteringPaging.insertRow(3001, { "ID": 1001, "Name": "Bread", "Price": 2.5 }, 2, true, 0);
+				ok(dsLocalSortingFilteringPaging.flatDataView().length === 3);
+			});
+			test("Test insertRow for TreeHierarchical data source with hierarchical data", function () {
+				var dv, data, products;
+				ds2.insertRow(10000, {"ID": 10000, "Name": "test", "Price": "-"}, -1, true, 0);
+				dv = ds2.dataView();
+				products = dv[0].Products; 
+				data = ds2.data();
+				ok(dv.length === 3 &&
+					products.length === 2 &&
+					products[0].ID === 15 && 
+				 	products[1].ID === 10000, "Add child for row with ID 0, test dataView()");
+				products = data[0].Products;
+				ok(data.length === 3 &&
+					products.length === 2 &&
+					products[0].ID === 15 && 
+				 	products[1].ID === 10000, "Add child for row with ID 0, test data()");
+				// test inserting row as child for row ID 10000
+				ds2.insertRow(10001, {"ID": 10001, "Name": "test2", "Price": "-"}, -1, true, 10000);
+				products = dv[0].Products; 
+				data = ds2.data();
+				ok(dv.length === 3 &&
+					products.length === 2 &&
+					products[1].ID === 10000 &&
+					products[1].Products.length === 1 &&
+					products[1].Products[0].ID === 10001, "Add child for row with ID 10000, test dataView()");
+				products = data[0].Products;
+				ok(data.length === 3 &&
+					products.length === 2 &&
+					products[1].ID === 10000 &&
+					products[1].Products.length === 1 &&
+					products[1].Products[0].ID === 10001, "Add child for row with ID 10000, test data()");
+				// call dataBind()
+				ds2.dataBind();
+				data = ds2.data();
+				products = data[0].Products;
+				ok(data.length === 3 &&
+					products.length === 2 &&
+					products[0].ID === 15 &&
+					products[1].ID === 10000 &&
+					products[1].Products.length === 1 &&
+					products[1].Products[0].ID === 10001,
+					"Call dataBind and test whether rows with IDs 10000 and 10001 were properly added");
+			});
 			var dsRemotePaging, dsRemoteSorting, dsRemoteFiltering;
 			function loadRemoteTestbeds() {
 

@@ -5,6 +5,8 @@
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
@@ -42,7 +44,7 @@
 
 		var tableDs = null;
 		var jsonDs = null;
-		
+		var treeDs = null;
 		var dataObject = {
 			firstName: "John",
 			lastName: "Resig",
@@ -127,7 +129,44 @@
 				]
 			}
 		];
-		
+		var treeFlatData = [
+			{ "employeeId": 0, "supervisorId": -1, "firstName": "Andrew", "lastName": "Fuller", "Category": { "ID": 0,  "Name": "Name"} },
+			{ "employeeId": 1, "supervisorId": -1, "firstName": "Jonathan", "lastName": "Smith", "Category": { "ID": 1,  "Name": "Name1"}  },
+			{ "employeeId": 2, "supervisorId": -1, "firstName": "Nancy", "lastName": "Davolio", "Category": { "ID": 2,  "Name": "Name2"}  },
+			{ "employeeId": 3, "supervisorId": -1, "firstName": "Steven", "lastName": "Buchanan" , "Category": { "ID": 0,  "Name": "Name"} },
+ 
+			// Andrew Fuller's direct reports
+			{ "employeeId": 4, "supervisorId": 0, "firstName": "Janet", "lastName": "Leverling", "Category": { "ID": 1,  "Name": "Name1"}  },
+			{ "employeeId": 5, "supervisorId": 0, "firstName": "Laura", "lastName": "Callahan", "Category": { "ID": 1,  "Name": "Name1"} },
+			{ "employeeId": 6, "supervisorId": 0, "firstName": "Margaret", "lastName": "Peacock" , "Category": { "ID": 0,  "Name": "Name"}},
+			{ "employeeId": 7, "supervisorId": 0, "firstName": "Michael", "lastName": "Suyama", "Category": { "ID": 2,  "Name": "Name2"} },
+ 
+			// Janet Leverling's direct reports
+			{ "employeeId": 8, "supervisorId": 4, "firstName": "Anne", "lastName": "Dodsworth", "Category": { "ID": 2,  "Name": "Name2"} },
+			{ "employeeId": 9, "supervisorId": 4, "firstName": "Danielle", "lastName": "Davis", "Category": { "ID": 2,  "Name": "Name2"} },
+			{ "employeeId": 10, "supervisorId": 4, "firstName": "Robert", "lastName": "King" , "Category": { "ID": 1,  "Name": "Name1"}},
+ 
+			// Nancy Davolio's direct reports
+			{ "employeeId": 11, "supervisorId": 2, "firstName": "Peter", "lastName": "Lewis", "Category": { "ID": 1,  "Name": "Name1"} },
+			{ "employeeId": 12, "supervisorId": 2, "firstName": "Ryder", "lastName": "Zenaida", "Category": { "ID": 0,  "Name": "Name"} },
+			{ "employeeId": 13, "supervisorId": 2, "firstName": "Wang", "lastName": "Mercedes", "Category": { "ID": 1,  "Name": "Name1"} },
+ 
+			// Steve Buchanan's direct reports
+			{ "employeeId": 14, "supervisorId": 3, "firstName": "Theodore", "lastName": "Zia", "Category": { "ID": 2,  "Name": "Name2"} },
+			{ "employeeId": 15, "supervisorId": 3, "firstName": "Lacota", "lastName": "Mufutau", "Category": { "ID": 0,  "Name": "Name"} },
+ 
+			// Lacota Mufutau's direct reports
+			{ "employeeId": 16, "supervisorId": 15, "firstName": "Jin", "lastName": "Elliott", "Category": { "ID": 0,  "Name": "Name"} },
+			{ "employeeId": 17, "supervisorId": 15, "firstName": "Armand", "lastName": "Ross", "Category": { "ID": 0,  "Name": "Name"} },
+			{ "employeeId": 18, "supervisorId": 15, "firstName": "Dane", "lastName": "Rodriquez", "Category": { "ID": 1,  "Name": "Name1"} },
+ 
+			// Dane Rodriquez's direct reports
+			{ "employeeId": 19, "supervisorId": 18, "firstName": "Declan", "lastName": "Lester", "Category": { "ID": 1,  "Name": "Name1"}  },
+			{ "employeeId": 20, "supervisorId": 18, "firstName": "Bernard", "lastName": "Jarvis" , "Category": { "ID": 1,  "Name": "Name1"} },
+ 
+			// Bernard Jarvis' direct report
+			{ "employeeId": 21, "supervisorId": 20, "firstName": "Jeremy", "lastName": "Donaldson", "Category": { "ID": 2,  "Name": "Name2"}  }
+		];
 		$(function () {
 			function loadTestbeds() {
 				// create the data sources
@@ -140,6 +179,35 @@
 				
 				// use jQuery templating to render the processed/transformed data source 
 				$("#template1").tmpl(jsonDs.dataView()).appendTo("#list1");
+				treeDs = new $.ig.TreeHierarchicalDataSource({
+					dataSource: treeFlatData,
+					primaryKey: "employeeId",
+					paging: {enabled:true, type: "local", pageSize: 3},
+					treeDS: {
+						foreignKey: "supervisorId",
+						foreignKeyRootValue: -1,
+						initialExpandDepth: 2,
+						childDataKey: "childData"
+					},
+					schema: {
+						fields: [{
+							name: "employeeId", type: "number"
+						}, {
+							name: "supervisorId", type: "number"
+						}, {
+							name: "firstName", type: "string"
+						},
+						{
+						name: "lastName", type: "string"
+						},
+						{
+							name: "Category", type: "object", mapper: function (record) {
+								return record.Category.ID;
+							}
+						}]
+					}
+				});
+				treeDs.dataBind();
 			}
 
 			initialized = false;
@@ -201,7 +269,6 @@
 			});
 			
 			test(testId_4, function() {
-				
 				tableDs.pageSize(4);
 				tableDs.nextPage();
 				equal(1, tableDs.pageIndex(), 1);
@@ -210,7 +277,10 @@
 				// check the first rec
 				equal("trainers", tableDs.dataView()[0].col3, "trainers");
 			});
-			
+			// Test bug 228594: After updating a record in the igTreeGrid paging no longer works as expected.
+			test("Test totalRecordsCount in tree hierarchical data source ", function () {
+				ok(treeDs.pageCount() === 2 && treeDs.totalLocalRecordsCount() === 4, "Test totalRecordsCount");
+			});
 		});
 	</script>
 	
