@@ -5868,7 +5868,7 @@
 					//Notify
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-						this.options.minxValue));
+						this.options.minValue));
 				}
 
 				if (!this._validateValue(newValue / this.options.displayFactor) &&
