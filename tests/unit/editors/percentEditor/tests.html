@@ -116,13 +116,13 @@
 				ok($('#pEditor1').data("igPercentEditor") !== undefined, 'Error creating igPercentEditor in an input');
 				ok($('#pEditor2').data("igPercentEditor") !== undefined, 'Error creating igPercentEditor in a div');
 				equal($('#pEditor1').igPercentEditor("value"), 10, 'The initial value is not as expexted');
-				equal($('#pEditor2').igPercentEditor("value"), 30, 'The initial value is not as expexted');
-
+				equal($('#pEditor2').igPercentEditor("value"), 30, 'The initial value is not as expexted');			
 			});
 
 			var testId = 'Percent Editor API';
 			test(testId, 6, function () {
 				var editor = $('#pEditor1'), value;
+				
 				value = editor.igPercentEditor("displayValue");
 				equal(value, "10.00%%", "Initial Value");
 				editor.igPercentEditor("percentSymbol", "%");
@@ -216,6 +216,7 @@
 				field.blur();
 				equal($('#pEditor4').igPercentEditor("displayValue"), "15.50%", "Decimal percent display value changed");
 				equal($('#pEditor4').igPercentEditor("value"), 0.155, "Decimal percent value changed");
+
 			});
 
 			testId = "Group and decimal Separators";
@@ -416,6 +417,104 @@
 					}, 20);					
 				}, 20);
 			});
+
+			var testId = "Revert functionality.";
+			test(testId, 3, function(){
+				var $notRevert = $("<input id='notRevert' />").igPercentEditor({
+					revertIfNotValid: false,
+					blur: function(evt, ui){
+							ui.owner.insert("null");
+						}
+				});
+
+				$notRevert.blur();
+				equal($notRevert.igPercentEditor("value"), "", "When there is no valid value in the editor and enter incorrect value, the editor's value is supposed to be empty string.");
+
+				var $revertMinMax = $("<input id='revertMinMax' />").igPercentEditor({
+					revertIfNotValid: true,
+					displayFactor: 1,
+					listItems: [10, 20, 30],
+					value: 10,
+					isLimitedToListValues : true,
+					blur: function(evt, ui){
+							ui.owner.insert(15);
+						}
+				});
+				$revertMinMax.blur();
+				equal($revertMinMax.igPercentEditor("value"), "10", "The value should be reverted when the new value is not in the listItems.");
+				
+				var $revertEditor = $("<input id='revertEditor' />").igPercentEditor({
+						value: 12,
+						blur: function(evt, ui){
+							ui.owner.insert("abc");
+						},
+						revertIfNotValid: true
+					});
+				$revertEditor.blur();
+				equal($revertEditor.igPercentEditor("value"), "0.12", "The value is not reverted when wrong value was entered.");
+
+				$revertEditor.remove();
+				$revertMinMax.remove();
+				$notRevert.remove();
+			});
+
+			var testId = "Spin events with spinWrapAround set to false.";
+			test(testId, 2, function(){
+				var $falseWrapAround = $("<input id='falseWrapAround' />").igPercentEditor({
+					buttonType: "spin",
+					spinWrapAround: false,
+					spinDelta: 1,
+					displayFactor: 1, 
+					minValue: 0,
+					maxValue: 10,
+					value: 10
+				});
+				$falseWrapAround.igPercentEditor("spinUp");
+				equal($falseWrapAround.igPercentEditor("value"), "10", "The editor value should be reverted to the maxValue.");
+
+				$falseWrapAround.igPercentEditor("value", "0");
+				$falseWrapAround.igPercentEditor("spinDown");
+				equal($falseWrapAround.igPercentEditor("value"), "0", "The editor value should be reverted to the minValue.");
+
+				$falseWrapAround.remove();
+				
+			});
+
+			var testId = "Spin events with set scientificFormat.";
+			test(testId, 2, function(){
+				var $focusedSpinUp = $("<input id='focusedSpinUp' />").igPercentEditor({
+					buttonType: "spin",
+                	minValue: 0,
+                	scientificFormat: "E"
+				});
+
+				$focusedSpinUp.data("igPercentEditor")._focused = true;
+				$focusedSpinUp.igPercentEditor("spinUp");
+				equal($focusedSpinUp.igPercentEditor("field").val(), "1", "The wrong value is set in the editor in edit mode.");
+				$focusedSpinUp.blur();
+				equal($focusedSpinUp.igPercentEditor("value"), "1e-2", "The scientificFormat is not set properly when the spinUp button is clicked.");
+				$focusedSpinUp.remove();
+			});
+			var testId = "Test inserting invalid value when the min value is set.";
+			test(testId, 2, function(){
+				var $minVal = $("<input id='minVal' />").igPercentEditor({
+					minValue: 10,
+					dispalayFactor: 1
+				});
+
+				$minVal.igPercentEditor("insert", "9");
+				equal($minVal.igPercentEditor("option", "value"), $minVal.igPercentEditor("option", "minValue"), "The min value of the editor is not set correctly.");
+
+				var $setRunTimePrevValue = $("<input id='setRunTimePrevValue' />").igPercentEditor({
+					minValue: 0
+				});
+				$setRunTimePrevValue.igPercentEditor("option", "revertIfNotValid", true);
+				$setRunTimePrevValue.igPercentEditor("value", -1);
+				equal($setRunTimePrevValue.igPercentEditor("field").val(), "0.00%", "The editor's value is supposed to be the same as the previous one.");
+
+				$setRunTimePrevValue.remove();
+				$minVal.remove();
+			})
 		});
 	</script>
 </head>
