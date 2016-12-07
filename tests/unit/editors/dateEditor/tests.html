@@ -1217,6 +1217,25 @@
 				equal(editor.igDateEditor("value").getTime(), checkValue.getTime(), "Value not correct after second insert");
 				equal(editorInput.val(), "5/11/2016", "Insert value not converted to display text");
 			});
+			testId = "Test nullValue on initialization";
+			test(testId, 4, function(){
+				var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igDateEditor({ allowNullValue: false});
+				//Get null Value
+				equal($editor.igDateEditor("value"), "", "The value is not an empty string");
+				//Set null Value
+				$editor.igDateEditor("value", null);
+				equal($editor.igDateEditor("value"), "", "The value is not an empty string");
+				//CHange allowNullValue option
+				$editor.igDateEditor("option", "allowNullValue", true);
+				// Get Null value
+				equal($editor.igDateEditor("value"), "", "The value is not an empty string");
+				//Set Null value
+				$editor.igDateEditor("value", null);
+				//Get null value
+				equal($editor.igDateEditor("value"), null, "The value is not an empty string");
+				$editor.remove();
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1347,7 +1366,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input id="inputEditor1" />
 		<input id="inputEditor2" />
 		<input id="inputEditor3" />

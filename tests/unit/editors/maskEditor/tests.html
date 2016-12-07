@@ -1017,6 +1017,25 @@
 					start();
 				});
 			});
+			testId = "Test nullValue on initialization";
+			test(testId, 4, function(){
+				var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igMaskEditor({ allowNullValue: false});
+				//Get null Value
+				equal($editor.igMaskEditor("value"), "", "The value is not an empty string");
+				//Set null Value
+				$editor.igMaskEditor("value", null);
+				equal($editor.igMaskEditor("value"), "", "The value is not an empty string");
+				//CHange allowNullValue option
+				$editor.igMaskEditor("option", "allowNullValue", true);
+				// Get Null value
+				equal($editor.igMaskEditor("value"), "", "The value is not an empty string");
+				//Set Null value
+				$editor.igMaskEditor("value", null);
+				//Get null value
+				equal($editor.igMaskEditor("value"), null, "The value is not an empty string");
+				$editor.remove();
+			});
 		});
 
 		function checkMaskState(editor, keyCode, editValue, displayValue, value) {
@@ -1131,7 +1150,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		
 		<div id="maskEditorRuntime"></div>
 		<input type="text" id="editor1" />
