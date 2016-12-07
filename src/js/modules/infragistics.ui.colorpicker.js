@@ -212,7 +212,7 @@
 		colorTable: function () {
 			/* Gets a reference to the div element of the color table
             ```
-                var colorTable = $(".selector").igColoricker("colorTable");
+                var colorTable = $(".selector").igColorPicker("colorTable");
             ```
 				returnType="object" Returns the div element with the colors table.
 			*/
@@ -221,7 +221,7 @@
 		customColorTable: function () {
 			/* Gets a reference to the div element with the default or custom colors table.
             ```
-                var customColorTable = $(".selector").igColoricker("customColorTable");
+                var customColorTable = $(".selector").igColorPicker("customColorTable");
             ```
 				returnType="object" Returns the div element with the default or custom colors table.
 			*/
@@ -230,7 +230,7 @@
         standardColorsTable: function () {
             /* Returns the div element with the standard color table.
             ```
-                var standardColorsTable = $(".selector").igColoricker("standardColorsTable");
+                var standardColorsTable = $(".selector").igColorPicker("standardColorsTable");
             ```
                 returnType="object" Returns the div element with the standard colors.
             */
@@ -240,7 +240,7 @@
         colorFromElement: function ($element) {
 			/* Gets the color for an element from the color picker in RGB format.
             ```
-            var elementColor = $(".selector").igColoricker("colorFromElement", $element);
+            var elementColor = $(".selector").igColorPicker("colorFromElement", $element);
             ```
 				paramType="object" optional="false" A jQuery element in the color picker from which the color will be retrieved.
 				returnType="string" Returns the color for the provided color element in RGB format.
@@ -250,7 +250,7 @@
         selectedColor: function () {
             /* Returns the hexademical string of the currently selected color in the color picker. Returns null if no color is selected.
             ```
-            var selectedColor = $(".selector").igColoricker("selectedColor");
+            var selectedColor = $(".selector").igColorPicker("selectedColor");
             ```
                 returnType="string|null" Returns the selected color if available. Null if no color is selected.
             */
@@ -263,7 +263,7 @@
         selectColor: function (color) {
             /* Select a color.
             ```
-            $(".selector").igColoricker("selectColor", "#fac08f");
+            $(".selector").igColorPicker("selectColor", "#fac08f");
             ```
 				paramType="string" optional="false" The #RGB value of the color to be selected.
                 returnType="object" Returns reference to the igColorPicker.
