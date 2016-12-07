@@ -1253,7 +1253,7 @@
 
 			// Handling different date formats
 			var testId = 'Pasting/inserting not fully formatted dates';
-			test(testId, 10, function () {
+			test(testId, 18, function () {
 				var $dtEditor, checkValue, displayValue;
  
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
@@ -1296,6 +1296,47 @@
 				equal($dtEditor.igDateEditor("field").val(), "12/12/2015 12:12:12:111", "Mask is not correctly formatted after paste");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("displayValue"), "12/12/2015 12:12:12:111", "Mask is not correctly formatted after paste");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateDisplayFormat: "M/d/yyyy h:m:s:fff",
+					dateInputFormat: "MM/dd/yyyy hh:mm:ss:fff",
+					unfilledCharsPrompt: "x"
+ 				});
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.igDateEditor("select", 0, 23);
+				$dtEditor.igDateEditor("insert", "1/1/215 1:1:1:1");
+				equal($dtEditor.igDateEditor("field").val(), "x1/x1/x215 x1:x1:x1:xx1", "Mask is not correctly formatted after paste");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "1/1/215 1:1:1:100", "Mask is not correctly formatted after paste");
+
+				$dtEditor.igDateEditor("setFocus");
+				keyInteraction(13, $dtEditor.igDateEditor("field"));
+				$dtEditor.igDateEditor("select", 0, 23);
+				$dtEditor.igDateEditor("insert", "10/1/2015 1:1:1:111");
+				equal($dtEditor.igDateEditor("field").val(), "10/x1/2015 x1:x1:x1:111", "Mask is not correctly formatted after paste");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "10/1/2015 1:1:1:111", "Mask is not correctly formatted after paste");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateDisplayFormat: "M/d/yy",
+					dateInputFormat: "MM/dd/yy",
+					unfilledCharsPrompt: "+" // It's a specical RegExp character
+ 				});
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.igDateEditor("select", 0, 23);
+				$dtEditor.igDateEditor("insert", "1/1/5");
+				equal($dtEditor.igDateEditor("field").val(), "+1/+1/+5", "Mask is not correctly formatted after paste");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "1/1/05", "Mask is not correctly formatted after paste");
+				
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.igDateEditor("select", 0, 23);
+				$dtEditor.igDateEditor("insert", "12/1/65");
+				equal($dtEditor.igDateEditor("field").val(), "12/+1/65", "Mask is not correctly formatted after paste");
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "12/1/65", "Mask is not correctly formatted after paste");
 				$dtEditor.remove();
 			});
 		});
