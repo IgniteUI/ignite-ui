@@ -392,6 +392,164 @@
 				$editor.remove();
 			});
 
+		var testId = 'Testing different dataMode formats';
+			test(testId, 28, function () {
+				var $dtPicker;
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "MM/dd/yyyy", // date
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30/2016", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "MM/dd/yyyy", // date
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30/2016", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "10/30/2016", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "time", // time
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4:59 AM", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "time", // time
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4:59 AM", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "4:59 AM", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "timeLong", // timeLong
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4:59:56 AM", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "timeLong", // timeLong
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4:59:56 AM", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "4:59:56 AM", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30/2016 4:59", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30/2016 4:59", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "10/30/2016 4:59", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "MM/dd",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "MM/dd",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "10/30", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "H",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "H",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "4", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+					value: new Date("2016-10-29T22:59:56.599Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "2016/10/30 04:59:56:599", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.599Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+					value: new Date("2016-10-29T22:59:56.599Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "2016/10/30 04:59:56:599", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016/10/30 04:59:56:599", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+			});
 
 	    });
 		function mouseInteraction(type, element) {
