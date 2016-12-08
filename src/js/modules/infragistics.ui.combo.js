@@ -34,8 +34,8 @@
 			"./infragistics.util.jquery",
 			"./infragistics.templating",
 			"./infragistics.datasource",
-			"./infragistics.scroll",
-			"./infragistics.validator"
+			"./infragistics.ui.scroll",
+			"./infragistics.ui.validator"
 		], factory );
 	} else {
 
