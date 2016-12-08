@@ -417,6 +417,25 @@
 					}, 20);					
 				}, 20);
 			});
+			testId = "Test nullValue on initialization";
+			test(testId, 4, function(){
+				var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igPercentEditor({ allowNullValue: false});
+				//Get null Value
+				equal($editor.igPercentEditor("value"), "", "The value is not an empty string");
+				//Set null Value
+				$editor.igPercentEditor("value", null);
+				equal($editor.igPercentEditor("value"), "", "The value is not an empty string");
+				//CHange allowNullValue option
+				$editor.igPercentEditor("option", "allowNullValue", true);
+				// Get Null value
+				equal($editor.igPercentEditor("value"), "", "The value is not an empty string");
+				//Set Null value
+				$editor.igPercentEditor("value", null);
+				//Get null value
+				equal($editor.igPercentEditor("value"), null, "The value is not an empty string");
+				$editor.remove();
+			});
 
 			var testId = "Revert functionality.";
 			test(testId, 3, function(){
@@ -525,7 +544,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 	<div id="pEditor1"></div>
 	<input id="pEditor2" />
 	<input id="pEditor3" />

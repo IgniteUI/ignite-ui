@@ -154,6 +154,25 @@
 			equal(editor.igCurrencyEditor("value"), 1.05, "Value not correct after second insert");
 			equal(editorInput.val(), "$1.05", "Insert value not converted to display text");
 		});
+		testId = "Test nullValue on initialization";
+		test(testId, 4, function(){
+				var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igCurrencyEditor({ allowNullValue: false});
+				//Get null Value
+				equal($editor.igCurrencyEditor("value"), "", "The value is not an empty string");
+				//Set null Value
+				$editor.igCurrencyEditor("value", null);
+				equal($editor.igCurrencyEditor("value"), "", "The value is not an empty string");
+				//CHange allowNullValue option
+				$editor.igCurrencyEditor("option", "allowNullValue", true);
+				// Get Null value
+				equal($editor.igCurrencyEditor("value"), "", "The value is not an empty string");
+				//Set Null value
+				$editor.igCurrencyEditor("value", null);
+				//Get null value
+				equal($editor.igCurrencyEditor("value"), null, "The value is not an null");
+				$editor.remove();
+			});
 	});
 
 	function testSelection(input, start, end ) {
@@ -242,7 +261,7 @@
      <h2 id="qunit-userAgent"></h2>
      <ol id="qunit-tests"></ol>
 </div>
-    <div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+    <div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
         <br />
         <div id="currencyEditor1"></div>
 		<br />
