@@ -8010,7 +8010,8 @@
 			return this._super(selection, previousValue, newValue);
 		},
 		_formatDateString: function(value) {
-			var dateMask, periodName, startIndex, endIndex;
+			var dateMask, periodName, startIndex, endIndex,
+				prompt = this.options.unfilledCharsPrompt;
 
 			// This method is used only for date editor/picker to transform not fully formatted dates, like 1/3/2015 3:24 PM, to 11/_3/2015 _3:24 PM.
 			// We depend on mask editor to format numbers, because it cannot recognize how to format date. It will transform 1/3/2015 3:24 PM to 11/3_/2015 3_:24 PM.
@@ -8019,7 +8020,7 @@
 
 			// We split the parsed date into time periods' chunks (year, month...), according to their indices.
 			// Then we format each chunk to be valid date period - if it is needed we preceed it with underscore.
-			if (dateMask.indexOf("_") >= 0) {
+			if (dateMask.indexOf(prompt) >= 0) {
 				for (periodName in this._dateIndices) {
 					startIndex = this._dateIndices[ periodName ];
 					switch (periodName) {
@@ -8048,14 +8049,16 @@
 			return dateMask;
 		},
 		_reverseMaskWithUnderscore: function(mask) {
-			var count, reg, match, reversedMask;
+			var count, reg, match, reversedMask, regPrompt,
+				prompt = this.options.unfilledCharsPrompt;
 
 			// Transform 3_ to _3; 999_ to _999
-			reg = /(\d{1,3}_{1,3})/g;
+			reg = new RegExp("(\\d{1,3}\\" + prompt + "{1,3})", "g");
+			regPrompt = new RegExp("\\" + prompt, "g");
 			match = reg.exec(mask);
 			if (match && match[ 0 ]) {
-				count = (mask.match(/_/g) || []).length;
-				reversedMask = Array(count + 1).join("_") + match[ 0 ].replace(/_/g, "");
+				count = (mask.match(regPrompt) || []).length;
+				reversedMask = Array(count + 1).join(prompt) + match[ 0 ].replace(regPrompt, "");
 				mask = mask.replace(match[ 0 ], reversedMask);
 			}
 			return mask;
