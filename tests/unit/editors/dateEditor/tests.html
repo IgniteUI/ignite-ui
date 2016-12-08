@@ -1298,6 +1298,25 @@
 				equal($dtEditor.igDateEditor("displayValue"), "12/12/2015 12:12:12:111", "Mask is not correctly formatted after paste");
 				$dtEditor.remove();
 			});
+			testId = "Test nullValue on initialization";
+			test(testId, 4, function(){
+				var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igDateEditor({ allowNullValue: false});
+				//Get null Value
+				equal($editor.igDateEditor("value"), "", "The value is not an empty string");
+				//Set null Value
+				$editor.igDateEditor("value", null);
+				equal($editor.igDateEditor("value"), "", "The value is not an empty string");
+				//CHange allowNullValue option
+				$editor.igDateEditor("option", "allowNullValue", true);
+				// Get Null value
+				equal($editor.igDateEditor("value"), "", "The value is not an empty string");
+				//Set Null value
+				$editor.igDateEditor("value", null);
+				//Get null value
+				equal($editor.igDateEditor("value"), null, "The value is not an empty string");
+				$editor.remove();
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
