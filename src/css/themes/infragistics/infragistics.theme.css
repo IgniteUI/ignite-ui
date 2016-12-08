@@ -2068,6 +2068,11 @@ input.ui-igbutton {
   border-bottom: 1px solid #dadada !important;
 }
 .ui-iggrid-scrolldiv {
+  /* Bug #228441 // 18.02.2016 // M.Popov // Fix misalignment between fixed and unfixed container */
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-top: none;
   background-color: #F0F0F0;
   border-bottom: 1px solid #dadada !important;
   /* !important needed because layout css removes borders */
