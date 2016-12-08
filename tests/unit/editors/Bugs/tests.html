@@ -1146,7 +1146,7 @@
 						edit.trigger("focus");
 						// verify focus won't reset the text or update value without a blur
 						equal(field.val(), "some text", "Text field did not retain text with consecutive focus events");
-						equal(edit.igTextEditor("value"), null, "Text editor updated its value without exiting edit mode!");
+						equal(edit.igTextEditor("value"), "", "Text editor updated its value without exiting edit mode!");
 					}, 100);
 				}, 100);
 			});
