@@ -1602,6 +1602,165 @@
 				}, 300);
 			});
 
+			var testId = 'Testing different dataMode formats';
+			test(testId, 28, function () {
+				var $dtEditor;
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "date",
+					dateInputFormat: "MM/dd/yyyy", // date
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "10/30/2016", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "displayModeText",
+					dateInputFormat: "MM/dd/yyyy", // date
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "10/30/2016", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "10/30/2016", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "date",
+					dateInputFormat: "time", // time
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "4:59 AM", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "displayModeText",
+					dateInputFormat: "time", // time
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "4:59 AM", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "4:59 AM", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "date",
+					dateInputFormat: "timeLong", // timeLong
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "4:59:56 AM", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "displayModeText",
+					dateInputFormat: "timeLong", // timeLong
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "4:59:56 AM", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "4:59:56 AM", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "date",
+					dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "10/30/2016 4:59", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "displayModeText",
+					dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "10/30/2016 4:59", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "10/30/2016 4:59", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "date",
+					dateInputFormat: "MM/dd",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "10/30", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "displayModeText",
+					dateInputFormat: "MM/dd",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "10/30", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "10/30", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "date",
+					dateInputFormat: "H",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "4", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "displayModeText",
+					dateInputFormat: "H",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "4", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "4", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "date",
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+					value: new Date("2016-10-29T22:59:56.599Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "2016/10/30 04:59:56:599", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.599Z", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+					dataMode: "displayModeText",
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+					value: new Date("2016-10-29T22:59:56.599Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "2016/10/30 04:59:56:599", "The display value is not correct");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016/10/30 04:59:56:599", "The hidden value sent to server is not correct");
+				$dtEditor.remove();
+			});
+
 			var testId = 'Testing date formats with dispaly and edit modes text defined';
 			test(testId, 8, function () {
 				var $dtEditor, dateString = "10/15/2016", date = new Date(dateString);
