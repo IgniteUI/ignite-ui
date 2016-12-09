@@ -14,9 +14,11 @@
     <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+  <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
-    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>    
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
 
     <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -128,6 +130,9 @@
             // Destroy test
             var testId_82 = "igPopover test 8.2.: destroy test";
 
+            //Automating bugs
+            var testId_91 = "igPopover test 9.1: Test popover shows correctly when direction is set";
+
             test(testId_21, 6, function () {
                 stop();
                 $("#img1").igPopover("show");
@@ -179,7 +184,7 @@
                         $('#popoverTooltip_popover_closeBtn').trigger("click");
                         //setTimeout( function ()
                         //{
-                        //   ok( $( '#popoverTooltip_popover' ).css( "display" ) === "none", "Popover shown after close buttons is clicked!" );                        
+                        //   ok( $( '#popoverTooltip_popover' ).css( "display" ) === "none", "Popover shown after close buttons is clicked!" );
                         //}, 500 );
                         if (index == $('#popoverTooltip').children('input').length - 1) {
                             start();
@@ -396,7 +401,7 @@
                     //ok( $( '#img1_popover_arrow' ).css( "display" ) !== "none", "Popover arrow not shown!" );
                     //ok( $( '#img1_popover_title' ).css( "display" ) !== "none", "Popover doesn't have a title!" );
                     //ok( $( '#img1_popover_closeBtn' ).css( "display" ) !== "none", "Popover doesn't have a close button!" );
-                    //checkClass( $( '#img1_popover_arrow' ), 'ui-igpopover-arrow-left' );          
+                    //checkClass( $( '#img1_popover_arrow' ), 'ui-igpopover-arrow-left' );
                     start();
                 }, 1000);
 
@@ -447,6 +452,65 @@
                 ok($('#img1_popover_arrow').length === 0, "Popover arrow not shown!");
                 ok($('#img1_popover_closeBtn').length === 0, "Popover doesn't have close button!");
                 ok($('#img1_popover_title').length === 0, "Popover doesn't have a title!");
+            });
+
+            //bug 228621 - Although setting direction='right', igNotifier shows on top of the target element at first.
+            test(testId_91, function() {
+                $('#notifier').igPopover({ direction: 'right' });
+                $('#notifier').igPopover('show');
+                ok($('notifier_popover').css('display') !== 'none', 'Popover not shown!');
+                ok($('#notifier_popover_contentFrame').css("display") !== "none", 'Popover content not shown!');
+                ok($('#notifier_popover_arrow').css("display") !== "none", 'Popover arrow not shown!' );
+                ok($('#notifier_popover_arrow').hasClass("ui-igpopover-arrow-left"), 'Popover arrow is pointing to left!' );
+                ok($('#notifier').offset().top < $('#notifier_popover').offset().top &&
+                    $('#notifier_popover').offset().top < $('#notifier').offset().top + $('#notifier').height(),
+                    'Popover is positioned above or below its target');
+                ok($('#notifier').offset().left + $('#notifier').width() <= $('#notifier_popover').offset().left,
+                    'Popover is not positioned on the left its target' );
+
+                $('#notifier').igPopover('option', 'direction', 'top');
+                ok( $( 'notifier_popover' ).css( 'display' ) !== 'none', 'Popover not shown!' );
+                ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
+                ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
+                ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-bottom" ), 'Popover arrow is not pointing to bottom!' );
+                ok( $( '#notifier_popover' ).offset().top + $( '#notifier_popover' ).height() <= $( '#notifier' ).offset().top,
+                    'Popover is not positioned above its target' );
+                ok( $( '#notifier' ).offset().left < $( '#notifier_popover' ).offset().left &&
+                $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() < $( '#notifier' ).offset().left + $( '#notifier' ).width(),
+                    'Popover is positioned into the bounderies of the target' );
+
+                $( '#notifier' ).igPopover( 'option', 'direction', 'bottom' );
+                ok( $( 'notifier_popover' ).css( 'display' ) !== 'none', 'Popover not shown!' );
+                ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
+                ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
+                ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-top" ), 'Popover arrow is not pointing to top!' );
+                ok( $( '#notifier' ).offset().top + $( '#notifier' ).height() <= $( '#notifier_popover' ).offset().top,
+                    'Popover is not positioned below its target' );
+                ok( $( '#notifier' ).offset().left < $( '#notifier_popover' ).offset().left &&
+                $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() < $( '#notifier' ).offset().left + $( '#notifier' ).width(),
+                    'Popover is positioned into the bounderies of the target' );
+
+                $( '#notifier' ).igPopover( 'option', 'direction', 'left' );
+                ok( $( 'notifier_popover' ).css( 'display' ) !== 'none', 'Popover not shown!' );
+                ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
+                ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
+                ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-right" ), 'Popover arrow is not pointing to right!' );
+                ok( $( '#notifier' ).offset().top < $( '#notifier_popover' ).offset().top &&
+                $( '#notifier_popover' ).offset().top < $( '#notifier' ).offset().top + $( '#notifier' ).height(),
+                    'Popover is positioned above or below its target' );
+                ok( $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() <= $( '#notifier' ).offset().left,
+                    'Popover is not positioned on the left its target' );
+
+                $( '#notifier' ).igPopover( 'option', 'direction', 'auto' );
+                ok( $( 'notifier_popover' ).css( 'display' ) !== 'none', 'Popover not shown!' );
+                ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
+                ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
+                ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-top" ), 'Popover arrow is not pointing to top!' );
+                ok( $( '#notifier' ).offset().top + $( '#notifier' ).height() <= $( '#notifier_popover' ).offset().top,
+                    'Popover is not positioned below its target' );
+                ok( $( '#notifier' ).offset().left < $( '#notifier_popover' ).offset().left &&
+                $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() < $( '#notifier' ).offset().left + $( '#notifier' ).width(),
+                    'Popover is positioned into the bounderies of the target' );
             });
         } );
 
@@ -509,6 +573,9 @@
         <h2 id="qunit-userAgent"></h2>
         <ol id="qunit-tests"></ol>
     </div>
+
+    <div id="notifier" style="width: calc(100vw - 150px); height: 100px; background-color: blue; margin-left: 100px;"></div>
+
     <div style="float: left;">
 
         <div id="registrationForm" style="position: relative; left: 200px;">
