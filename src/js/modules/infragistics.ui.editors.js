@@ -1864,6 +1864,8 @@
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
 					this._editorInput.val(this._getDisplayValue());
+				} else if (initialValue === null && !this.options.allowNullValue ) {
+					this._setInitialValue("");
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
 				initialValue = this.element.val();
@@ -5866,7 +5868,7 @@
 					//Notify
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-						this.options.minxValue));
+						this.options.minValue));
 				}
 
 				if (!this._validateValue(newValue / this.options.displayFactor) &&
@@ -6330,9 +6332,15 @@
 
 			// In case value is not set we need to use the setInitialValue method to store mask, required field indeces, prompt indeces etc.
 			this._super();
-			if (this.options.value === null || this.options.value === undefined) {
+			/*if (this.options.value === null) {
+				if (this.options.allowNullValue) {
 				this._setInitialValue();
-			}
+				} else {
+					this._setInitialValue("");
+				}
+			} else if (this.options.value === undefined) {
+				this._setInitialValue();
+			}*/
 		},
 
 		_enterEditMode: function () { // MaskEditor
@@ -6919,7 +6927,11 @@
 		_setInitialValue: function (value) { //igMaskEditor
 			this._maskWithPrompts = this._parseValueByMask("");
 			this._getMaskLiteralsAndRequiredPositions();
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
@@ -7801,7 +7813,11 @@
 		},
 		_setInitialValue: function (value) { //igDateEditor
 			this._maskWithPrompts = this._parseValueByMask("");
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				//check value
@@ -7994,7 +8010,8 @@
 			return this._super(selection, previousValue, newValue);
 		},
 		_formatDateString: function(value) {
-			var dateMask, periodName, startIndex, endIndex;
+			var dateMask, periodName, startIndex, endIndex,
+				prompt = this.options.unfilledCharsPrompt;
 
 			// This method is used only for date editor/picker to transform not fully formatted dates, like 1/3/2015 3:24 PM, to 11/_3/2015 _3:24 PM.
 			// We depend on mask editor to format numbers, because it cannot recognize how to format date. It will transform 1/3/2015 3:24 PM to 11/3_/2015 3_:24 PM.
@@ -8003,7 +8020,7 @@
 
 			// We split the parsed date into time periods' chunks (year, month...), according to their indices.
 			// Then we format each chunk to be valid date period - if it is needed we preceed it with underscore.
-			if (dateMask.indexOf("_") >= 0) {
+			if (dateMask.indexOf(prompt) >= 0) {
 				for (periodName in this._dateIndices) {
 					startIndex = this._dateIndices[ periodName ];
 					switch (periodName) {
@@ -8032,14 +8049,16 @@
 			return dateMask;
 		},
 		_reverseMaskWithUnderscore: function(mask) {
-			var count, reg, match, reversedMask;
+			var count, reg, match, reversedMask, regPrompt,
+				prompt = this.options.unfilledCharsPrompt;
 
 			// Transform 3_ to _3; 999_ to _999
-			reg = /(\d{1,3}_{1,3})/g;
+			reg = new RegExp("(\\d{1,3}\\" + prompt + "{1,3})", "g");
+			regPrompt = new RegExp("\\" + prompt, "g");
 			match = reg.exec(mask);
 			if (match && match[ 0 ]) {
-				count = (mask.match(/_/g) || []).length;
-				reversedMask = Array(count + 1).join("_") + match[ 0 ].replace(/_/g, "");
+				count = (mask.match(regPrompt) || []).length;
+				reversedMask = Array(count + 1).join(prompt) + match[ 0 ].replace(regPrompt, "");
 				mask = mask.replace(match[ 0 ], reversedMask);
 			}
 			return mask;
@@ -8902,7 +8921,7 @@
 		_validateValue: function (val) { // igDateEditor
 			var result, dateObj, minValue, maxValue;
 			if (val === null || val === "") {
-				return true;
+				return this._super(val);
 			}
 			dateObj = this._getDateObjectFromValue(val);
 			if (this.options.minValue) {
@@ -8927,10 +8946,17 @@
 		_updateValue: function (value) { //igDateEditor
 			//TODO Review
 			if (value === null) {
-				this._maskedValue = this._maskWithPrompts;
-				this._valueInput.val("");
-				this.options.value = null;
-				this._dateObjectValue = null;
+				if (this.options.allowNullValue) {
+					this._maskedValue = this._maskWithPrompts;
+					this._valueInput.val("");
+					this.options.value = null;
+					this._dateObjectValue = null;
+				} else {
+					this._maskedValue = this._maskWithPrompts;
+					this._valueInput.val("");
+					this.options.value = "";
+					this._dateObjectValue = null;
+				}
 			} else if (value === "") {
 
 				// Empty string is passed only when clear is called, or when an empty value is created
@@ -10376,11 +10402,7 @@
 				if (this.options.value) {
 					return this._getValueByDataMode();
 				} else {
-					if (this.options.allowNullValue) {
-						return this.options.nullValue;
-					} else {
-						return "";
-					}
+					return this.options.value;
 				}
 			}
 		},
