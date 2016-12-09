@@ -48,7 +48,7 @@
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
 	$(document).ready(function () {
-        var  testID;
+        var testID, eventTriggered;
 		QUnit.config.reorder = false;
 		function viewModel() {
 			nonObservable = "NonObservable";
@@ -59,6 +59,11 @@
 			};
 			setDefaultText = function() {
 				this.textValue("Default Text");
+			},
+
+			this.customerName = ko.observable("Peter Sanders");
+			this.testFunction = function (evt, ui) {
+				eventTriggered = true;
 			}
 		};
 		
@@ -300,7 +305,36 @@
 			$('#inputValue').val("New Pesho").change();
 			checkAllValues("New Pesho", "Values are as expected");
 		});
-						
+
+		var testId = 'Test valueChanged event';
+		test(testId, 2, function () {
+			var $editor = $("#edChangeEvt"), $input = $("#inpChangeEvt");
+			
+			eventTriggered = false; // global parameter
+			$editor.igTextEditor("setFocus");
+			typeInInput("Peter Sanderson", $editor.igTextEditor("field"));
+			$editor.trigger("blur");
+			stop();
+			setTimeout(function() {
+				start();
+				ok(eventTriggered, "valueChanged is thrown");
+				eventTriggered = false;
+				$editor.remove();
+				$editor = $("#edChangeEvtImmOff");
+				$editor.igTextEditor("setFocus");
+				typeInInput("Peter Sanders", $editor.igTextEditor("field"));
+				$editor.trigger("blur");
+				stop();
+				setTimeout(function() {
+					start();
+					ok(eventTriggered, "valueChanged is thrown");
+					eventTriggered = false;
+					$editor.remove();
+					$input.remove();
+				}, 200);
+			}, 200);
+		});
+
 		function testImmediate(element) {
 			//editorID is the element postfixed with Editor1
 			var editorID = element + "Editor1", editorInput;
@@ -324,6 +358,24 @@
 		};
 
 		});
+
+		function typeInInput(characters, element) {
+			var keyDown = jQuery.Event("keydown"),
+			   keyPress = jQuery.Event("keypress"),
+			   keyUp = jQuery.Event("keyup"),
+			   value = "";
+
+			characters.split('').forEach(function (ch) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				value = value + ch;
+				element.val(value);
+				element.trigger(keyUp);
+			});
+		}
+
 		function checkAllTextValues(val, message) { //used in editMode
 			equal($('#inputEditor1').igTextEditor("field").val(), val, message + " (inputEditor)");
 			equal($('#divEditor1').igTextEditor("field").val(), val, message + " (divEditor1)");
@@ -469,6 +521,21 @@
 		<div id="tempContainer"></div>
 		<div id="tempContainer1"></div>
 		<input id="myButton" type="button" value="Nothing">
+
+		<input id="edChangeEvt" data-bind="igTextEditor: {
+			updateMode: 'immediate',
+			value: customerName, 
+			tabIndex: 1,
+			buttonType: 'clear',
+			valueChanged: testFunction
+		}" />
+		<input id="edChangeEvtImmOff" data-bind="igTextEditor: {
+			value: customerName, 
+			tabIndex: 1,
+			buttonType: 'clear',
+			valueChanged: testFunction
+		}" />
+		<input id="inpChangeEvt" type="text" class="row-control" data-bind="value: customerName" />
 </div>
 </body>
 </html>
