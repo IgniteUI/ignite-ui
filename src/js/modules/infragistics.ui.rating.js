@@ -867,7 +867,7 @@
 			return val || 1;
 		},
 		_valFromEvt: function (evt) {
-			var plus, fix, val, offset, i, o = this.options, targ = evt ? evt.target : null;
+			var plus, val, offset, i, o = this.options, targ = evt ? evt.target : null;
 			i = (targ && targ.nodeName === "SPAN") ? targ._i : null;
 			if (_aNull(i)) {
 				return -1;
@@ -878,11 +878,7 @@
 			offset = this._evtOffset(evt, o.vertical ? "Y" : "X");
 			plus = this._size;
 
-			// fix for Firefox
-			fix = -(o.vertical ? targ.offsetTop : targ.offsetLeft);
-			if (this._swap && $.ig.util.isFF && fix < plus) {
-				offset += fix;
-			}
+			// N.A. December 12th, 2016 #623 With new firefox this workaround (it's deleted) is not necessary, cause now firefox works like other browsers.
 			plus *= i;
 			if (plus > offset) {
 				offset += plus;
