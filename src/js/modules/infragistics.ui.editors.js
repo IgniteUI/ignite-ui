@@ -7486,26 +7486,15 @@
 				"dateTime": the dateTimePattern member of regional option is used
 				List of explicit characters, which should have escape \\ character in front of them: C, &, a, A, ?, L, 9, 0, #, >, <, y, M, d, h, H, m, s, t, f.
 				List of date-flags when explicit date pattern is used:
-				"y": year field without century and without leading zero
 				"yy": year field without century and with leading zero
 				"yyyy": year field with leading zeros
-				"M": month field as digit without leading zero
 				"MM": month field as digit with leading zero
-				"MMM": month field as short month name. Note: in focused state the MM is used.
-				"MMMM": month field as long month name. Note: in focused state the MM is used.
-				"d": day of month field without leading zero
 				"dd": day of month field with leading zero
-				"ddd": day of the week as short name. Note: in focused state that field is skipped.
-				"dddd": day of the week as long name. Note: in focused state that field is skipped.
 				"t": first character of string which represents AM/PM field
 				"tt": 2 characters of string which represents AM/PM field
-				"h": hours field in 12-hours format without leading zero
 				"hh": hours field in 12-hours format with leading zero
-				"H": hours field in 24-hours format without leading zero
 				"HH": hours field in 24-hours format with leading zero
-				"m": minutes field without leading zero
 				"mm": minutes field with leading zero
-				"s": seconds field without leading zero
 				"ss": seconds field with leading zero
 				"f": milliseconds field in hundreds
 				"ff": milliseconds field in tenths
