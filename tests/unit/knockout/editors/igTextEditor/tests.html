@@ -309,7 +309,7 @@
 		});
 
 		var testId = 'Test valueChanged event';
-		test(testId, 2, function () {
+		test(testId, 3, function () {
 			var $editor = $("#edChangeEvt"), $input = $("#inpChangeEvt");
 			
 			eventTriggered = false; // global parameter
@@ -329,6 +329,11 @@
 				stop();
 				setTimeout(function() {
 					start();
+					ok(eventTriggered, "valueChanged is thrown");
+					eventTriggered = false;
+					$editor.igTextEditor("setFocus");
+					$editor.igTextEditor("clearButton").click();
+					$editor.trigger("blur");
 					ok(eventTriggered, "valueChanged is thrown");
 					eventTriggered = false;
 					$editor.remove();
