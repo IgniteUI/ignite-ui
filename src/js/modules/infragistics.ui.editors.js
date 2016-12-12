@@ -2947,10 +2947,10 @@
 						this._processTextChanged();
 						if (!this._editMode) {
 							this._exitEditMode();
-							this._triggerValueChanged();
 						} else {
 							this._enterEditMode();
 						}
+						this._triggerValueChanged();
 
 					}
 						break;
