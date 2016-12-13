@@ -48,7 +48,7 @@
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
 	$(document).ready(function () {
-        var  testID;
+        var testID, eventTriggered;
 		QUnit.config.reorder = false;
 		function viewModel() {
 			nonObservable = 244;
@@ -60,10 +60,14 @@
 			};
 			setDefaultText = function() {
 				this.textValue("Default Text");
-			}
+			};
 			setDefaultCurrencyNumber = function () {
 				this.currencyNumber(32);
-			}
+			};
+			this.customerTax = ko.observable(100);
+			this.testFunction = function (evt, ui) {
+				eventTriggered = true;
+			};
 		};
 		
 		model = new viewModel();
@@ -337,7 +341,41 @@
 				$('#inputValue').val(-26).change();
 				checkAllValues(-26, "Values are as expected");
 			});
-		});//document ready
+
+		var testId = 'Test valueChanged event';
+		test(testId, 3, function () {
+			var $editor = $("#edChangeEvt"), $input = $("#inpChangeEvt");
+			
+			eventTriggered = false; // global parameter
+			$editor.igCurrencyEditor("setFocus");
+			typeInInput("120", $editor.igCurrencyEditor("field"));
+			$editor.trigger("blur");
+			stop();
+			setTimeout(function() {
+				start();
+				ok(eventTriggered, "valueChanged is thrown");
+				eventTriggered = false;
+				$editor.remove();
+				$editor = $("#edChangeEvtImmOff");
+				$editor.igCurrencyEditor("setFocus");
+				typeInInput("100", $editor.igCurrencyEditor("field"));
+				$editor.trigger("blur");
+				stop();
+				setTimeout(function() {
+					start();
+					ok(eventTriggered, "valueChanged is thrown");
+					eventTriggered = false;
+					$editor.igCurrencyEditor("setFocus");
+					$editor.igCurrencyEditor("clearButton").click();
+					$editor.trigger("blur");
+					ok(eventTriggered, "valueChanged is thrown");
+					eventTriggered = false;
+					$editor.remove();
+					$input.remove();
+				}, 200);
+			}, 200);
+		});
+	});//document ready
 
 	function mouseInteraction(type, element) {
 		// create a mouse click event
@@ -406,6 +444,22 @@
 				equal($("#inputValue").val(), val, message + " (inputValue)");
 				equal($("#divValue").html(), val, message + " (divValue)");
 			
+		}
+		function typeInInput(characters, element) {
+			var keyDown = jQuery.Event("keydown"),
+			   keyPress = jQuery.Event("keypress"),
+			   keyUp = jQuery.Event("keyup"),
+			   value = "";
+
+			characters.split('').forEach(function (ch) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				value = value + ch;
+				element.val(value);
+				element.trigger(keyUp);
+			});
 		}
 </script>
 </head>
@@ -491,6 +545,21 @@
 		<div id="tempContainer"></div>
 		<div id="tempContainer1"></div>
 		<input id="myButton" type="button" value="Nothing">
+
+		<input id="edChangeEvt" data-bind="igCurrencyEditor: {
+			updateMode: 'immediate',
+			value: customerTax, 
+			tabIndex: 1,
+			buttonType: 'clear',
+			valueChanged: testFunction
+		}" />
+		<input id="edChangeEvtImmOff" data-bind="igCurrencyEditor: {
+			value: customerTax,
+			tabIndex: 1,
+			buttonType: 'clear',
+			valueChanged: testFunction
+		}" />
+		<input id="inpChangeEvt" type="text" class="row-control" data-bind="value: customerTax" />
 </div>
 </body>
 </html>
