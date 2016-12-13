@@ -338,6 +338,26 @@
 					ok($editor2.attr("class") === undefined, "Some classes are still not removed");
 				}, 100);
 			});
+			testId = "Test nullValue on initialization";
+			test(testId, 4, function(){
+				var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igDatePicker({ allowNullValue: false});
+				//Get null Value
+				equal($editor.igDatePicker("value"), "", "The value is not an empty string");
+				//Set null Value
+				$editor.igDatePicker("value", null);
+				equal($editor.igDatePicker("value"), "", "The value is not an empty string");
+				//CHange allowNullValue option
+				$editor.igDatePicker("option", "allowNullValue", true);
+				// Get Null value
+				equal($editor.igDatePicker("value"), "", "The value is not an empty string");
+				//Set Null value
+				$editor.igDatePicker("value", null);
+				//Get null value
+				equal($editor.igDatePicker("value"), null, "The value is not an empty string");
+				$editor.remove();
+			});
+
 
 	    });
 		function mouseInteraction(type, element) {
@@ -394,7 +414,7 @@
      <h2 id="qunit-userAgent"></h2>
      <ol id="qunit-tests"></ol>
 </div>
-    <div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+    <div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
         <input type="text" id="inputEditor1" />
         <input type="text" id="inputEditor2" />
         <input type="text" id="inputEditor3" />
