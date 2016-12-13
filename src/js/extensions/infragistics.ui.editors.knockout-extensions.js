@@ -63,6 +63,8 @@
 
 				//In that case the model is updated on textChanged event
 				editor.bind("igtexteditortextchanged", function (event, args) {
+					// N.A. December 9th, 2016 #577 Don't update editor value, while typing. It is updated only on blur.
+					editor.data("igTextEditor")._doNotUpdate = true;
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.text);
 					} else {
@@ -89,9 +91,10 @@
 			var value, current, editor = $(element);
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 			current = editor.igTextEditor("value");
-			if (current !== value) {
+			if (current !== value && !editor.data("igTextEditor")._doNotUpdate) {
 				editor.igTextEditor("value", value);
 			}
+			delete editor.data("igTextEditor")._doNotUpdate;
 		}
 	};
 	ko.bindingHandlers.igDatePicker = {
@@ -265,6 +268,7 @@
 				//In that case the model is updated on textChanged event
 				editor.bind("ignumericeditortextchanged", function (event, args) {
 					args.owner._processValueChanging(args.text);
+					editor.data("igNumericEditor")._doNotUpdate = true;
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.owner.value());
 					} else {
@@ -285,9 +289,10 @@
 				value = undefined;
 			}
 			current = editor.igNumericEditor("value");
-			if (current !== value) {
+			if (current !== value && !editor.data("igNumericEditor")._doNotUpdate) {
 				editor.igNumericEditor("value", value);
 			}
+			delete editor.data("igNumericEditor")._doNotUpdate;
 		}
 	};
 	ko.bindingHandlers.igCurrencyEditor = {
@@ -317,6 +322,7 @@
 				//In that case the model is updated on textChanged event
 				editor.bind("igcurrencyeditortextchanged", function (event, args) {
 					args.owner._processValueChanging(args.text);
+					editor.data("igCurrencyEditor")._doNotUpdate = true;
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.owner.value());
 					} else {
@@ -335,9 +341,10 @@
 				value = undefined;
 			}
 			current = editor.igCurrencyEditor("value");
-			if (current !== value) {
+			if (current !== value && !editor.data("igCurrencyEditor")._doNotUpdate) {
 				editor.igCurrencyEditor("value", value);
 			}
+			delete editor.data("igCurrencyEditor")._doNotUpdate;
 		}
 	};
 	ko.bindingHandlers.igPercentEditor = {
@@ -367,6 +374,7 @@
 				//In that case the model is updated on textChanged event
 				editor.bind("igpercenteditortextchanged", function (event, args) {
 					args.owner._processValueChanging(args.text);
+					editor.data("igPercentEditor")._doNotUpdate = true;
 					if (ko.isObservable(valueAccessor().value)) {
 						valueAccessor().value(args.owner.value());
 					} else {
@@ -385,9 +393,10 @@
 				value = undefined;
 			}
 			current = editor.igPercentEditor("value");
-			if (current !== value) {
+			if (current !== value && !editor.data("igPercentEditor")._doNotUpdate) {
 				editor.igPercentEditor("value", value);
 			}
+			delete editor.data("igPercentEditor")._doNotUpdate;
 		}
 	};
 	ko.bindingHandlers.igMaskEditor = {
