@@ -1393,7 +1393,7 @@ td.ui-iggrid-addrow
 .ui-iggrid-deletebutton {
 	cursor:pointer;
 	box-sizing: initial!important;
-	left: 51%; /* don't enforce with !important because Updating has to position it manually based */
+	left: 51%; /* don't enforce with !important because Updating has to position it manually */
 }
 
 .ui-iggrid-button-icon-only,
