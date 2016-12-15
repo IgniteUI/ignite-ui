@@ -646,7 +646,7 @@
 				null type="object" Option is ignored.
 			*/
             responseDataKey: null,
-            /* type="string" String Explicitly set data source type (such as "json"). Please refer to the documentation of [$.ig.DataSource type](ig.datasource#options:settings.type) and its type property.
+            /* type="string|null" Explicitly set data source type (such as "json"). Please refer to the documentation of [$.ig.DataSource type](ig.datasource#options:settings.type) and its type property.
             ```
                 //Initialize
                 $('.selector').igTileManager({
