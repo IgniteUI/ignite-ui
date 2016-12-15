@@ -42,7 +42,7 @@ function buildLocaleMergePairs (locale) {
 }
 
 function replaceAMDWraps(src) {
-    src = src.replace(/\(function\s*\(factory\)\s*\{[\s\S]*?\(function\s*\(\$\)\s*\{/g, '(function ($) {');
+    src = src.replace(/\(function\s*\(factory\)\s*\{[\s\S]*?\(function\s*\((\$)?\)\s*\{/g, '(function ($1) {');
     src = src.replace(/\}\)\)\;\s*\/\/\s*REMOVE_FROM_COMBINED_FILE.*/g, '})(jQuery);');
     src = src.replace(/.*\/\/\s*REMOVE_FROM_COMBINED_FILE.*/g, '');
     return src;
