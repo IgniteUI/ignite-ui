@@ -30,7 +30,7 @@
         position: relative;
         margin: 0;
     }
-    /*D.A. Bug #144045 September 17th, 2013 
+    /*D.A. Bug #144045 September 17th, 2013
     Overrides the default browser textarea display:inline-block. Needed for jQuery's
      show/hide methods to toggle between display:block and display:none */
     .ui-ightmleditor-content textarea {
@@ -293,8 +293,13 @@
 }
 
     .ui-igtablepropertiesdialog-cols-rows-num input {
-        width: 44px; 
+        width: 44px;
     }
+
+.ui-igtablepropertiesdialog-sample-table {
+    /* R.K. 13th December 2016 #652 Force sample table width so it can fill the parent <li> */
+    width: 100%;
+}
 
 .ui-igtablepropertiesdialog-sample-table td {
     height: 10px;
