@@ -2245,7 +2245,7 @@
 				var pagingSettings = ds.pagingSettings();
 			```
 			paramType="object" optional="true" object holding all paging settings. See settings.paging
-			returnType="object" 
+			returnType="object" Returns an object holding the current paging settings when you use the getter and the current instance of the [$.ig.DataSource](ig.datasource) when you use the setter
 			*/
 			if (p === undefined || p === null) {
 				return this.settings.paging;
