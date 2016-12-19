@@ -2245,6 +2245,7 @@
 				var pagingSettings = ds.pagingSettings();
 			```
 			paramType="object" optional="true" object holding all paging settings. See settings.paging
+			returnType="object" 
 			*/
 			if (p === undefined || p === null) {
 				return this.settings.paging;
@@ -6498,6 +6499,7 @@
 				ds.pageSize(25);
 			```
 			paramType="number" optional="true" the page size.
+			returnType="number" the current page size
 			*/
 			if (s === undefined || s === null) {
 				return this.settings.paging.pageSize;
