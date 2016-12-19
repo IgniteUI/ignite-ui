@@ -6807,7 +6807,7 @@
 					if (this.options.nullValue === null) {
 						// D.P. Dec 16th, 2016 #655 Clear masked value (display text) when setting allowed null as value
 						this._maskedValue = "";
-						this._valueInput.val("");						
+						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
 						nullValue = this._parseValueByMask(this.options.nullValue);
