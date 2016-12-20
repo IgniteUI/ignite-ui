@@ -2353,8 +2353,7 @@
             ```
                 $('.selector').igTileManager("splitter")
             ```
-                returnType="object|null" Returns the splitter associated with this tile manager or
-                null if the tile manager was instantiated with maximizedTileIndex.
+                returnType="object|null" Returns the splitter associated with this tile manager or null if the tile manager was instantiated with maximizedTileIndex.
             */
             return this._options.useMaximizedTileIndex ? null : this.element.data("igSplitter");
         },

@@ -39,7 +39,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655"];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -447,6 +447,15 @@
 					.igNumericEditor({
 						minValue: 0,
 						maxValue: 10
+					});
+				}
+
+				window.Bug655Testbed = function () {
+					$("<input/>", { id: "655Editor" })
+					.appendTo("#testBedContainer")
+					.igMaskEditor({ 
+						buttonType: "clear",
+						allowNullValue: true 
 					});
 				}
 
@@ -1213,6 +1222,36 @@
 				equal(editor.igNumericEditor("value"), 0, "minValue 0 should be set(value method)");
 
 				$("#539Editor").remove();
+			});	
+
+			var testId = 'Bug 655 - [igMaskEditor] Clearing the displayed value using the clear button is not possible after setting the value to null';
+			test(testId, 6, function () {	
+				var editor =  $("#655Editor"),
+				field = editor.igMaskEditor("field"),
+				clearButton = editor.igMaskEditor("clearButton");
+				
+				//test input interaction
+				editor.igMaskEditor("setFocus");
+
+				stop();
+				setTimeout(function () {
+					start();
+
+					typeInMaskedInput("test", field);
+					field.blur();
+					equal(editor.igMaskEditor("value"), "test", "Value did not update");
+					editor.igMaskEditor("value", null);
+					strictEqual(editor.igMaskEditor("value"), null, "Value did not set to null");
+					equal(field.val(), "", "Displayed text is not empty after setting null value");
+
+					editor.igMaskEditor("value", "text2");
+					equal(field.val(), "text2", "Displayed text is not set");
+					clearButton.click();
+					strictEqual(editor.igMaskEditor("value"), null, "Value did not set to null");
+					equal(field.val(), "", "Displayed text is not empty after clearing value");
+					
+					editor.remove();
+				}, 100);
 			});	
 		});
 
