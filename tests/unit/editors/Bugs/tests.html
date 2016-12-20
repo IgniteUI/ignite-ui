@@ -37,7 +37,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "539"];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -49,7 +49,6 @@
 				}
 				window.Bug208808Testbed = function () {
 					$("#208808").igDateEditor({ dateInputFormat: "yyyy/MM/dd" });
-
 				}
 
 				window.Bug209067Testbed = function () {
@@ -63,7 +62,6 @@
 						$("#209067textEditor").igTextEditor("value", "nwsfsd");
 						$("#209067textEditor1").igTextEditor("value", "NWSFSD");
 					});
-
 
 				}
 				window.Bug209174Testbed = function () {
@@ -423,6 +421,15 @@
 
 				window.Bug226Testbed = function () {
 					$("#226Editor").igTextEditor();
+				}
+
+				window.Bug539Testbed = function () {
+					$("<input/>", { id: "539Editor" })
+					.appendTo("#testBedContainer")
+					.igNumericEditor({
+						minValue: 0,
+						maxValue: 10
+					});
 				}
 
 				initialized = false;
@@ -823,8 +830,8 @@
 						start();
 						ok(!$editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
 						ok(flag, "Value changed should not be fired.");
-					}, 
-					2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 400 /*normal*/)
+					}, 1000 
+					//2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 400 /*normal*/)
 				);
 			});
 			
@@ -1121,11 +1128,43 @@
 						edit.trigger("focus");
 						// verify focus won't reset the text or update value without a blur
 						equal(field.val(), "some text", "Text field did not retain text with consecutive focus events");
-						equal(edit.igTextEditor("value"), null, "Text editor updated its value without exiting edit mode!");
+						equal(edit.igTextEditor("value"), "", "Text editor updated its value without exiting edit mode!");
 					}, 100);
 				}, 100);
 			});
 
+			var testId = 'Bug 539 - If min/max value is set to 0 and the entered value is invalid, the editors value is not reverted';
+			test(testId, 4, function () {	
+				var editor =  $("#539Editor"),
+				field = editor.igNumericEditor("field");
+				
+				//test input interaction
+				editor.igNumericEditor("setFocus");
+				typeInInput("-1", field);
+				keyInteraction(13, field);
+				field.blur();
+				var value = editor.igNumericEditor("value");
+				equal(value, 0, "minValue 0 should be set");
+
+				editor.igNumericEditor("option", "minValue", -5);
+				editor.igNumericEditor("option", "maxValue", 0);
+				typeInInput("1", field);
+				keyInteraction(13, field);
+				field.blur();
+				value = editor.igNumericEditor("value");
+				equal(value, 0, "maxValue 0 should be set");
+
+				//test public value method	
+				editor.igNumericEditor("option", "value", 1);
+				equal(editor.igNumericEditor("value"), 0, "maxValue 0 should be set(value method)");
+
+				editor.igNumericEditor("option", "minValue", 0);
+				editor.igNumericEditor("option", "maxValue", 10);
+				editor.igNumericEditor("option", "value", -1);
+				equal(editor.igNumericEditor("value"), 0, "minValue 0 should be set(value method)");
+
+				$("#539Editor").remove();
+			});	
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -1249,7 +1288,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input id="inputEditor1" />
 		<input id="inputEditor2" />
 		<input id="inputEditor3" />

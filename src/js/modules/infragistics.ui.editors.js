@@ -1847,6 +1847,8 @@
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
 					this._editorInput.val(this._getDisplayValue());
+				} else if (initialValue === null && !this.options.allowNullValue ) {
+					this._setInitialValue("");
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
 				initialValue = this.element.val();
@@ -4397,7 +4399,9 @@
 					this._numericType,
 					this.options.dataMode);
 			if (value !== "" && !isNaN(value)) {
-				if (this.options.maxValue && value > this.options.maxValue) {
+
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
 					value = this.options.maxValue;
 
 					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
@@ -4408,7 +4412,9 @@
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && value < this.options.minValue) {
+
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
 					value = this.options.minValue;
 
 					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
@@ -4902,14 +4908,14 @@
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
-				if (this.options.maxValue && newValue > this.options.maxValue) {
+				if (!isNaN(this.options.maxValue) && newValue > this.options.maxValue) {
 					newValue = this.options.maxValue;
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && newValue < this.options.minValue) {
+				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
 
 					// Raise Warning level 2
@@ -4953,10 +4959,10 @@
 			} else {
 
 				// If the min value is different from zero, we clear the value with the minimum value.
-				if (this.options.minValue && this.options.minValue > 0) {
+				if (!isNaN(this.options.minValue) && this.options.minValue > 0) {
 					this._updateValue(this.options.minValue);
 					this._editorInput.val(this.options.minValue);
-				} else if (this.options.maxValue && this.options.maxValue < 0) {
+				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
 					this._updateValue(this.options.maxValue);
 					this._editorInput.val(this.options.maxValue);
 				} else {
@@ -5508,14 +5514,18 @@
 				if (newValue !== null && !isNaN(this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 					if (newValue !== "" && !isNaN(newValue)) {
-						if (this.options.maxValue && newValue > this.options.maxValue) {
+
+						// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						if (!isNaN((this.options.maxValue)) && newValue > this.options.maxValue) {
 							newValue = this.options.maxValue;
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
 								$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 									this.options.maxValue));
-						} else if (this.options.minValue && newValue < this.options.minValue) {
+
+							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						} else if (!isNaN((this.options.minValue)) && newValue < this.options.minValue) {
 							newValue = this.options.minValue;
 
 							// Raise Warning level 2
@@ -5822,7 +5832,7 @@
 			var newLenght = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
-				if (this.options.maxValue &&
+				if (!isNaN(this.options.maxValue) &&
 					newValue / this.options.displayFactor > this.options.maxValue) {
 					newValue = this.options.maxValue * this.options.displayFactor;
 
@@ -5830,7 +5840,7 @@
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue &&
+				} else if (!isNaN(this.options.minValue) &&
 					newValue / this.options.displayFactor < this.options.minValue) {
 					newValue = this.options.minValue * this.options.displayFactor;
 
@@ -6301,9 +6311,15 @@
 
 			// In case value is not set we need to use the setInitialValue method to store mask, required field indeces, prompt indeces etc.
 			this._super();
-			if (this.options.value === null || this.options.value === undefined) {
+			/*if (this.options.value === null) {
+				if (this.options.allowNullValue) {
 				this._setInitialValue();
-			}
+				} else {
+					this._setInitialValue("");
+				}
+			} else if (this.options.value === undefined) {
+				this._setInitialValue();
+			}*/
 		},
 
 		_enterEditMode: function () { // MaskEditor
@@ -6875,7 +6891,11 @@
 		_setInitialValue: function (value) { //igMaskEditor
 			this._maskWithPrompts = this._parseValueByMask("");
 			this._getMaskLiteralsAndRequiredPositions();
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
@@ -7756,7 +7776,11 @@
 		},
 		_setInitialValue: function (value) { //igDateEditor
 			this._maskWithPrompts = this._parseValueByMask("");
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				//check value
@@ -8796,7 +8820,7 @@
 		_validateValue: function (val) { // igDateEditor
 			var result, dateObj, minValue, maxValue;
 			if (val === null || val === "") {
-				return true;
+				return this._super(val);
 			}
 			dateObj = this._getDateObjectFromValue(val);
 			if (this.options.minValue) {
@@ -8821,10 +8845,17 @@
 		_updateValue: function (value) { //igDateEditor
 			//TODO Review
 			if (value === null) {
-				this._maskedValue = this._maskWithPrompts;
-				this._valueInput.val("");
-				this.options.value = null;
-				this._dateObjectValue = null;
+				if (this.options.allowNullValue) {
+					this._maskedValue = this._maskWithPrompts;
+					this._valueInput.val("");
+					this.options.value = null;
+					this._dateObjectValue = null;
+				} else {
+					this._maskedValue = this._maskWithPrompts;
+					this._valueInput.val("");
+					this.options.value = "";
+					this._dateObjectValue = null;
+				}
 			} else if (value === "") {
 
 				// Empty string is passed only when clear is called, or when an empty value is created
@@ -10269,11 +10300,7 @@
 				if (this.options.value) {
 					return this._getValueByDataMode();
 				} else {
-					if (this.options.allowNullValue) {
-						return this.options.nullValue;
-					} else {
-						return "";
-					}
+					return this.options.value;
 				}
 			}
 		},
@@ -10586,8 +10613,9 @@
 		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
-				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker and return focus
-				this._editorInput.focus();
+				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker
+				return;
+
 			} else {
 				this._super(event);
 			}
@@ -10635,8 +10663,14 @@
 					self._pickerOpen = true;
 				},
 				onClose: function (/*dateText, inst*/) {
+
 					// fires before input blur
 					delete self._pickerOpen;
+
+					// I.G. 01/12/2016 Fix for #585 [igDatePicker] Year change dropdown does not open in IE by single click
+					if (!self._editorInput.is(document.activeElement)) {
+						self._editorInput.blur();
+					}
 					self._triggerDropDownClosed();
 				}
 			};
