@@ -1099,7 +1099,7 @@
             rendered: "rendered",
             /* cancel="true" Event which is raised before data binding is performed.
             ```
-                $(document).delegate(".selector", "igcombodatabinding", function (null, ui) {
+                $(document).delegate(".selector", "igcombodatabinding", function (evt, ui) {
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to instance of $.ig.DataSource used by combo
@@ -1108,7 +1108,7 @@
 
                 //Initialize
                 $(".selector").igCombo({
-                    dataBinding: function (null, ui) {
+                    dataBinding: function (evt, ui) {
                         ...
                     }
                 });
@@ -1119,7 +1119,7 @@
             dataBinding: "dataBinding",
             /* cancel="false" Event which is raised after data binding is complete.
             ```
-                $(document).delegate(".selector", "igcombodatabound", function (null, ui) {
+                $(document).delegate(".selector", "igcombodatabound", function (evt, ui) {
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to instance of $.ig.DataSource used by combo
@@ -1128,7 +1128,7 @@
 
                 //Initialize
                 $(".selector").igCombo({
-                    dataBound: function (null, ui) {
+                    dataBound: function (evt, ui) {
                     ...
                     }
                 });

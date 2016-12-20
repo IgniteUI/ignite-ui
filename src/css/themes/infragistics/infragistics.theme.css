@@ -4188,7 +4188,6 @@ input.ui-igbutton {
 }
 .ui-icon-triangle-1-n:before {
   content: '\e644';
-  font-size: 10px;
 }
 .ui-icon-triangle-1-ne:before {
   content: '\e645';
@@ -4201,7 +4200,6 @@ input.ui-igbutton {
 }
 .ui-icon-triangle-1-s:before {
   content: '\e648';
-  font-size: 10px;
 }
 .ui-icon-triangle-1-sw:before {
   content: '\e649';
@@ -4343,7 +4341,6 @@ input.ui-igbutton {
 }
 .ui-icon-check:before {
   content: '\e66f';
-  font-size: 12px;
 }
 .ui-icon-circle-check:before {
   content: '\e670';
