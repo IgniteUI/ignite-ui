@@ -7748,7 +7748,7 @@
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
 			if (offset !== null && (offset > 840 || offset < -720)) {
-				console.log($.ig.Editor.locale.dateEditorOffsetRange);
+				throw new Error($.ig.Editor.locale.dateEditorOffsetRange);
 			}
 		},
 		_setNumericType: function () {

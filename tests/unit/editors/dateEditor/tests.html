@@ -1468,7 +1468,7 @@
 			});
 
 			var testId = 'Testing date formats with offset defined';
-			test(testId, 27, function () {
+			test(testId, 24, function () {
 				var $dtEditor;
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
@@ -1503,22 +1503,18 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				var consoleLog = window.console.log; // Supress console.log for the current test.
-				window.console.log = logger;
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
-					value: new Date("2016-10-30T13:25:56.0000000Z"),
-					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
-					displayTimeOffset: 1860,
-					enableUTCDates: true
-				});
-				hoursOffset = new Date("2016-10-30T13:25:56.000Z").getTimezoneOffset()/60;
-				checkValue = new Date(2016, 09, 31, 20, 25, 56);
-				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 09, 30, 13 - hoursOffset, 25, 56).getTime(), 'The value() method returns wrong value');
-				equal($dtEditor.igDateEditor("displayValue"), "31/10/2016 20:25:56", "The display value is not correct");
-				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T13:25:56.000Z", "The hidden value sent to server is not correct");
-				equal(logBuffer.pop(), $.ig.Editor.locale.dateEditorOffsetRange, 'offset message not logged');
-				$dtEditor.remove();
-				window.console.log = consoleLog;
+				throws( function () {
+					$('<input/>').igDateEditor({
+						value: new Date("2016-10-30T13:25:56.0000000Z"),
+						dateInputFormat: "dd/MM/yyyy HH:mm:ss",
+						displayTimeOffset: 1860,
+						enableUTCDates: true
+					});
+				},
+				function (err) {
+					return err.message === $.ig.Editor.locale.dateEditorOffsetRange;
+				},
+				'Wrong offset error not thrown');
 
 				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
 					value: new Date("2016-03-26T23:59:56.0000000Z"),
