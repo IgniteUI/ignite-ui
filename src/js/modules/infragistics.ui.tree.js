@@ -2287,92 +2287,93 @@
 			return opt;
 		},
 		_performDrop: function (event, ui) {
-			var self = this, parent, target = $(event.originalEvent.target), noCancel;
+			var parent, target = $(event.originalEvent.target), noCancel,
+				dndmode = this._sourceNode.owner.options.dragAndDropSettings.dragAndDropMode;
 			if (target.is("div[data-role=insert-line]")) {
 				target = target.closest("li[data-role=node]");
 			}
-			self.element.find("div[data-role=insert-line]").remove();
-			noCancel = self._triggerNodeDropping(event, ui, target.closest("li[data-role=node]"),
-				target.next("li[data-role=node]").length > 0 || !self._validationObject.dropAfter ?
-				target.index() + (self._validationObject.dropAfter ? 1 : 0) : target.index());
+			this.element.find("div[data-role=insert-line]").remove();
+			noCancel = this._triggerNodeDropping(event, ui, target.closest("li[data-role=node]"),
+				target.next("li[data-role=node]").length > 0 || !this._validationObject.dropAfter ?
+				target.index() + (this._validationObject.dropAfter ? 1 : 0) : target.index());
 			if (noCancel) {
 				if (target.is("a") || target.closest("a").parent().is("li[data-role=node]")) {
 					target = target.closest("li[data-role=node]");
-					switch (self.options.dragAndDropSettings.dragAndDropMode) {
+					switch (dndmode) {
 					case "move":
-						self.addNode(self._sourceNode.data, target);
-						self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+						this.addNode(this._sourceNode.data, target);
+						this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						break;
 					case "copy":
-						self.addNode(self._sourceNode.data, target);
+						this.addNode(this._sourceNode.data, target);
 						break;
 					default:
 						if (!event.ctrlKey) {
-							self.addNode(self._sourceNode.data, target);
-							self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+							this.addNode(this._sourceNode.data, target);
+							this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						} else {
-							self.addNode(self._sourceNode.data, target);
+							this.addNode(this._sourceNode.data, target);
 						}
 						break;
 					}
 				} else if (target.is("li")) {
-					parent = self.parentNode(target);
-					switch (self.options.dragAndDropSettings.dragAndDropMode) {
+					parent = this.parentNode(target);
+					switch (dndmode) {
 					case "move":
-						self.addNode(self._sourceNode.data, parent, target
+						this.addNode(this._sourceNode.data, parent, target
 							.next("li[data-role=node]").length > 0 ||
-							!self._validationObject.dropAfter ?
-							target.index() + (self._validationObject.dropAfter ? 1 : 0) : null);
-						self._sourceNode.element.attr("data-path", self._sourceNode.element
+							!this._validationObject.dropAfter ?
+							target.index() + (this._validationObject.dropAfter ? 1 : 0) : null);
+						this._sourceNode.element.attr("data-path", this._sourceNode.element
 							.attr("data-path") + "_remove");
-						self._sourceNode.owner
-							.removeAt(self._sourceNode.element.attr("data-path"));
+						this._sourceNode.owner
+							.removeAt(this._sourceNode.element.attr("data-path"));
 						break;
 					case "copy":
-						self.addNode(self._sourceNode.data, parent, target
+						this.addNode(this._sourceNode.data, parent, target
 							.next("li[data-role=node]").length > 0 ||
-							!self._validationObject.dropAfter ?
-							target.index() + (self._validationObject.dropAfter ? 1 : 0) : null);
+							!this._validationObject.dropAfter ?
+							target.index() + (this._validationObject.dropAfter ? 1 : 0) : null);
 						break;
 					default:
 						if (!event.ctrlKey) {
-							self.addNode(self._sourceNode.data, parent, target
+							this.addNode(this._sourceNode.data, parent, target
 								.next("li[data-role=node]").length > 0 ||
-								!self._validationObject.dropAfter ? target
-								.index() + (self._validationObject.dropAfter ? 1 : 0) : null);
-							self._sourceNode.element.attr("data-path",
-								self._sourceNode.element.attr("data-path") + "_remove");
-							self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+								!this._validationObject.dropAfter ? target
+								.index() + (this._validationObject.dropAfter ? 1 : 0) : null);
+							this._sourceNode.element.attr("data-path",
+								this._sourceNode.element.attr("data-path") + "_remove");
+							this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						} else {
-							self.addNode(self._sourceNode.data, parent, target
+							this.addNode(this._sourceNode.data, parent, target
 								.next("li[data-role=node]").length > 0 ||
-								!self._validationObject.dropAfter ? target
-								.index() + (self._validationObject.dropAfter ? 1 : 0) : null);
+								!this._validationObject.dropAfter ? target
+								.index() + (this._validationObject.dropAfter ? 1 : 0) : null);
 						}
 						break;
 					}
 				} else if (target.is(":ui-igTree")) {
 
 					// K.D. December 13th, 2013 Bug #159540 Allowing for dragging and dropping into an empty tree.
-					switch (self.options.dragAndDropSettings.dragAndDropMode) {
+					switch (dndmode) {
 					case "move":
-						self.addNode(self._sourceNode.data);
-						self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+						this.addNode(this._sourceNode.data);
+						this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						break;
 					case "copy":
-						self.addNode(self._sourceNode.data);
+						this.addNode(this._sourceNode.data);
 						break;
 					default:
 						if (!event.ctrlKey) {
-							self.addNode(self._sourceNode.data);
-							self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+							this.addNode(this._sourceNode.data);
+							this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						} else {
-							self.addNode(self._sourceNode.data);
+							this.addNode(this._sourceNode.data);
 						}
 						break;
 					}
 				}
-				self._triggerNodeDropped(event, ui, target);
+				this._triggerNodeDropped(event, ui, target);
 			} else {
 				return false;
 			}

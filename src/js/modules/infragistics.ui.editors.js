@@ -1864,6 +1864,8 @@
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
 					this._editorInput.val(this._getDisplayValue());
+				} else if (initialValue === null && !this.options.allowNullValue ) {
+					this._setInitialValue("");
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
 				initialValue = this.element.val();
@@ -3381,17 +3383,7 @@
 		_valueFromText: function (text) { //igTextEditor
 			return text;
 		},
-		_getSelectionRange: function () {
-			var selection;
-			if (window.getSelection) {
-				selection = window.getSelection();
-				if (selection.rangeCount) {
-					return selection.getRangeAt(0);
-				}
-			} else if (document.selection) {
-				return document.selection.createRange();
-			}
-		},
+
 		_setCursorPosition: function (positionIndex) {
 			this._setSelectionRange(this._editorInput[ 0 ], positionIndex, positionIndex);
 		},
@@ -5876,7 +5868,7 @@
 					//Notify
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-						this.options.minxValue));
+						this.options.minValue));
 				}
 
 				if (!this._validateValue(newValue / this.options.displayFactor) &&
@@ -6340,9 +6332,15 @@
 
 			// In case value is not set we need to use the setInitialValue method to store mask, required field indeces, prompt indeces etc.
 			this._super();
-			if (this.options.value === null || this.options.value === undefined) {
+			/*if (this.options.value === null) {
+				if (this.options.allowNullValue) {
 				this._setInitialValue();
-			}
+				} else {
+					this._setInitialValue("");
+				}
+			} else if (this.options.value === undefined) {
+				this._setInitialValue();
+			}*/
 		},
 
 		_enterEditMode: function () { // MaskEditor
@@ -6807,6 +6805,8 @@
 			} else if (value === null) {
 				if (this.options.allowNullValue) {
 					if (this.options.nullValue === null) {
+						// D.P. Dec 16th, 2016 #655 Clear masked value (display text) when setting allowed null as value
+						this._maskedValue = "";
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
@@ -6929,7 +6929,11 @@
 		_setInitialValue: function (value) { //igMaskEditor
 			this._maskWithPrompts = this._parseValueByMask("");
 			this._getMaskLiteralsAndRequiredPositions();
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
@@ -7521,26 +7525,15 @@
 				"dateTime": the dateTimePattern member of regional option is used
 				List of explicit characters, which should have escape \\ character in front of them: C, &, a, A, ?, L, 9, 0, #, >, <, y, M, d, h, H, m, s, t, f.
 				List of date-flags when explicit date pattern is used:
-				"y": year field without century and without leading zero
 				"yy": year field without century and with leading zero
 				"yyyy": year field with leading zeros
-				"M": month field as digit without leading zero
 				"MM": month field as digit with leading zero
-				"MMM": month field as short month name. Note: in focused state the MM is used.
-				"MMMM": month field as long month name. Note: in focused state the MM is used.
-				"d": day of month field without leading zero
 				"dd": day of month field with leading zero
-				"ddd": day of the week as short name. Note: in focused state that field is skipped.
-				"dddd": day of the week as long name. Note: in focused state that field is skipped.
 				"t": first character of string which represents AM/PM field
 				"tt": 2 characters of string which represents AM/PM field
-				"h": hours field in 12-hours format without leading zero
 				"hh": hours field in 12-hours format with leading zero
-				"H": hours field in 24-hours format without leading zero
 				"HH": hours field in 24-hours format with leading zero
-				"m": minutes field without leading zero
 				"mm": minutes field with leading zero
-				"s": seconds field without leading zero
 				"ss": seconds field with leading zero
 				"f": milliseconds field in hundreds
 				"ff": milliseconds field in tenths
@@ -7811,7 +7804,11 @@
 		},
 		_setInitialValue: function (value) { //igDateEditor
 			this._maskWithPrompts = this._parseValueByMask("");
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				//check value
@@ -7992,6 +7989,70 @@
 		},
 		_getInternalMaskedValue: function (newDate) {
 			return this._updateMaskedValue(newDate, true);
+		},
+		_replaceDisplayValue: function(selection, previousValue, newValue) {
+
+			// This is special case, when a date is pasted, but the new pasted string is not fully formatted date, and doesn't contain leading zeros (e.g. 11/3/2015 3:24 PM).
+			// In such case, we add underscore in order to fully format date. The date is transformed to 11/_3/2015 _3:24 PM.
+			// But we do this only in cases, when the selection starts from the beginning of the editor, оtherwise it cannot be predicted, how to format the date.
+			if (selection.start === 0) {
+				newValue = this._formatDateString(newValue.toString());
+			}
+			return this._super(selection, previousValue, newValue);
+		},
+		_formatDateString: function(value) {
+			var dateMask, periodName, startIndex, endIndex,
+				prompt = this.options.unfilledCharsPrompt;
+
+			// This method is used only for date editor/picker to transform not fully formatted dates, like 1/3/2015 3:24 PM, to 11/_3/2015 _3:24 PM.
+			// We depend on mask editor to format numbers, because it cannot recognize how to format date. It will transform 1/3/2015 3:24 PM to 11/3_/2015 3_:24 PM.
+			// In addition, in the date editor, we need to format this to be correct date.
+			dateMask = this._parseValueByMask(value);
+
+			// We split the parsed date into time periods' chunks (year, month...), according to their indices.
+			// Then we format each chunk to be valid date period - if it is needed we preceed it with underscore.
+			if (dateMask.indexOf(prompt) >= 0) {
+				for (periodName in this._dateIndices) {
+					startIndex = this._dateIndices[ periodName ];
+					switch (periodName) {
+						case "fourDigitYear":
+						case "ffLength":
+						case "hh24":
+							startIndex = null;
+							break;
+						case "yy":
+							endIndex = startIndex + (this._dateIndices.fourDigitYear ? 4 : 2);
+							break;
+						case "ff":
+							endIndex = startIndex + this._dateIndices.ffLength;
+							break;
+						default:
+							endIndex = startIndex + 2;
+							break;
+					}
+					if (startIndex !== null) {
+						dateMask = (startIndex > 0 ? dateMask.substring(0, startIndex) : "") +
+							this._reverseMaskWithUnderscore(dateMask.substring(startIndex, endIndex)) +
+							(endIndex <  dateMask.length ? dateMask.substring(endIndex, dateMask.length) : "" );
+					}
+				}
+			}
+			return dateMask;
+		},
+		_reverseMaskWithUnderscore: function(mask) {
+			var count, reg, match, reversedMask, regPrompt,
+				prompt = this.options.unfilledCharsPrompt;
+
+			// Transform 3_ to _3; 999_ to _999
+			reg = new RegExp("(\\d{1,3}\\" + prompt + "{1,3})", "g");
+			regPrompt = new RegExp("\\" + prompt, "g");
+			match = reg.exec(mask);
+			if (match && match[ 0 ]) {
+				count = (mask.match(regPrompt) || []).length;
+				reversedMask = Array(count + 1).join(prompt) + match[ 0 ].replace(regPrompt, "");
+				mask = mask.replace(match[ 0 ], reversedMask);
+			}
+			return mask;
 		},
 		_updateMaskedValue: function (newDate, returnValue) {
 
@@ -8851,7 +8912,7 @@
 		_validateValue: function (val) { // igDateEditor
 			var result, dateObj, minValue, maxValue;
 			if (val === null || val === "") {
-				return true;
+				return this._super(val);
 			}
 			dateObj = this._getDateObjectFromValue(val);
 			if (this.options.minValue) {
@@ -8876,10 +8937,17 @@
 		_updateValue: function (value) { //igDateEditor
 			//TODO Review
 			if (value === null) {
-				this._maskedValue = this._maskWithPrompts;
-				this._valueInput.val("");
-				this.options.value = null;
-				this._dateObjectValue = null;
+				if (this.options.allowNullValue) {
+					this._maskedValue = this._maskWithPrompts;
+					this._valueInput.val("");
+					this.options.value = null;
+					this._dateObjectValue = null;
+				} else {
+					this._maskedValue = this._maskWithPrompts;
+					this._valueInput.val("");
+					this.options.value = "";
+					this._dateObjectValue = null;
+				}
 			} else if (value === "") {
 
 				// Empty string is passed only when clear is called, or when an empty value is created
@@ -10325,11 +10393,7 @@
 				if (this.options.value) {
 					return this._getValueByDataMode();
 				} else {
-					if (this.options.allowNullValue) {
-						return this.options.nullValue;
-					} else {
-						return "";
-					}
+					return this.options.value;
 				}
 			}
 		},
@@ -10642,8 +10706,9 @@
 		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
-				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker and return focus
-				this._editorInput.focus();
+				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker
+				return;
+
 			} else {
 				this._super(event);
 			}
@@ -10691,8 +10756,14 @@
 					self._pickerOpen = true;
 				},
 				onClose: function (/*dateText, inst*/) {
+
 					// fires before input blur
 					delete self._pickerOpen;
+
+					// I.G. 01/12/2016 Fix for #585 [igDatePicker] Year change dropdown does not open in IE by single click
+					if (!self._editorInput.is(document.activeElement)) {
+						self._editorInput.blur();
+					}
 					self._triggerDropDownClosed();
 				}
 			};
