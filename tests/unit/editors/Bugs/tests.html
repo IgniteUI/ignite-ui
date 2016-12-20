@@ -40,6 +40,8 @@
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
 					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "539",
+					"646"];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -447,6 +449,14 @@
 					.igNumericEditor({
 						minValue: 0,
 						maxValue: 10
+					});
+				}
+				window.Bug646Testbed = function () {
+					$("<input/>", { id: "646Editor" })
+					.appendTo("#testBedContainer")
+					.igNumericEditor({
+						allowNullValue: false,
+						value: 20
 					});
 				}
 
@@ -1235,6 +1245,20 @@
 
 				$("#539Editor").remove();
 			});	
+			testId = 'Bug 646 - Set null value using setOption';
+			test(testId, 2, function () {	
+				var editor =  $("#646Editor"),
+				field = editor.igNumericEditor("field");
+				equal(editor.igNumericEditor("value"), 20, "value should be 10");
+				editor.igNumericEditor("option",'value', null);
+				equal(editor.igNumericEditor("value"), 20, "value should be 10");
+				
+				
+				
+				
+
+				$("#646Editor").remove();
+			});
 
 			var testId = 'Bug 655 - [igMaskEditor] Clearing the displayed value using the clear button is not possible after setting the value to null';
 			test(testId, 6, function () {	
