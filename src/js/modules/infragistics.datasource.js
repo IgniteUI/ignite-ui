@@ -1033,7 +1033,28 @@
 				```
 				*/
 				exprString: "",
-				/* type="object" an object containing custom defined filtering conditions as objects. */
+				/* type="object" an object containing custom defined filtering conditions as objects.
+				```
+					jsonDs = new $.ig.DataSource( {
+						filtering: {
+							type: "local",
+							caseSensitive: true,
+							applyToAllData: true,
+							customConditions: [
+								Condition1: {
+									labelText: "Condition1",
+									expressionText: "Condition1"
+								},
+								Condition2: {
+									labelText: "Condition2",
+									expressionText: "Condition2"
+								}
+							]
+						},
+						dataSource: jsonData
+					}).dataBind()
+				```
+				*/
 				customConditions: null
 			},
 			/* Settings related to built-in sorting functionality
@@ -2325,6 +2346,7 @@
 				var mySortSettings = ds.sortSettings();
 			```
 			paramType="object" optional="true" object holding all sorting settings. See settings.sorting
+			returnType="object" Returns an object holding the current sorting settings when getter is used and the current instance of the [$.ig.DataSource](ig.datasource) when setter is used
 			*/
 			if (s === undefined || s === null) {
 				return this.settings.sorting;
@@ -6215,6 +6237,7 @@
 			paramType="string" optional="true" the name of the property which hold the total records count value
 			paramType="object" optional="true"
 			paramType="object" optional="true"
+			returnType="number" Returns total records count of the current dasource instance
 			*/
 			var rec, totalRecPath, i;
 			if (context !== undefined && context !== null) {
@@ -6497,7 +6520,7 @@
 				ds.pageSize(25);
 			```
 			paramType="number" optional="true" the page size.
-			returnType="number" the current page size
+			returnType="number" Returns the current page size if getter is used and the current instance of the [$.ig.DataSource](ig.datasource) when setter is used
 			*/
 			if (s === undefined || s === null) {
 				return this.settings.paging.pageSize;
@@ -7020,7 +7043,8 @@
 		Eg: When you need to fetch the data remotely, or when it is stored in a string and needs to be evaluated first
 		*/
 		schema: {
-			/* type="array" A list of field definitions specifying the schema of the data source. Field objects description: {name, [type], [xpath]} */
+			/* A list of field definitions specifying the schema of the data source. Field objects description: {name, [type], [xpath]}
+			returnType="array" */
 			fields: [
 				{
 					/* type="string" Name of the field*/
