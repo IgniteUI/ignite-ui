@@ -151,6 +151,13 @@
 				});
 				$("#pasteEditor").igTextEditor({
 					value: "ade"
+				});
+				$("#clearButton_439").igTextEditor({
+					buttonType: "clear"
+				})				
+						
+				$("#issue447").igTextEditor({
+					buttonType : "clear"
 				});				
 			});
 		}
@@ -1001,6 +1008,19 @@
 				}, 200);
 			}, 200);
 		});
+		testing = "Clear button dynamic show/hide";
+		test(testing, 4, function() {
+			var field = $("#clearButton_439").igTextEditor("field"),
+			clearButton = $("#clearButton_439").igTextEditor("clearButton");
+			ok(!clearButton.is(":visible"), "The clear button should not be visible initilly");
+			field.focus();
+			ok(!clearButton.is(":visible"), "The clear button should not be visible on focus");
+			field.val("someVal");
+			$("#clearButton_439").data("igTextEditor")._processTextChanged();
+			ok(clearButton.is(":visible"), "The clear button should be visible");
+			field.blur();
+			ok(clearButton.is(":visible"), "The clear button should be visible on blur");
+		});
 		testId = 'Check destroy';
 		asyncTest(testId, 7, function () {
 			var $editor1 = $('#clearEditor'), $editor2 = $("#disabledEditor");
@@ -1018,6 +1038,23 @@
 				ok($editor1.attr("class") === undefined, "Some classes are still not removed");
 				ok($editor2.attr("class") === undefined, "Some classes are still not removed");
 			}, 100);
+		});
+		
+		testId = "valueChanged not fired when clearing an empty input";
+		test(testId, 1, function () {
+			var editor = $('#issue447'),
+				clearBtn = editor.igTextEditor("clearButton"),
+				valChanged = false
+				
+			$('#issue447').on("igtexteditorvaluechanged", function (evt, args) {
+				valChanged = true;
+			});
+			clearBtn.click();
+			stop()
+			setTimeout(function () {
+				start();
+				ok(!valChanged, "valueChanged event is fired when input is empty");
+			}, 500);
 		});
 		
 	});
@@ -1133,6 +1170,8 @@
 	<input id="toLowerEditor" type="text" />
 	<input id="testEditor" type="text" />
 	<input id="pasteEditor"/>
+	<input id="clearButton_439"/>
+	<input id="issue447"/>
 </div>
 
 	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>

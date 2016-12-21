@@ -153,7 +153,8 @@ module.exports = function (grunt) {
 			reporter = "build/ReporterJSHint.js";
 			output = "jshint/report.html";
 		} else {
-			reporter = output = undefined;
+			reporter = undefined;
+			output = "";
 		}
 
 		grunt.task.run("clean:jshint");

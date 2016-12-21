@@ -37,9 +37,35 @@
 	*/
     $.widget("ui.igToolbarButton", $.ui.igButton, {
         options: {
-            /* type="boolean" Enable/Disable the "Toggling" of a button. */
+            /* type="boolean" Enable/Disable the "Toggling" of a button.
+            ```
+                //Initialize
+                $(".selector").igToolbarButton({
+                    allowToggling: true
+                });
+
+                // Get
+                var allowedToggling = $(".selector").igToolbarButton("option", "allowToggling");
+
+                // Set
+                $(".selector").igToolbarButton("option", "allowToggling", false);
+            ```
+            */
             allowToggling: true,
-            /* type="boolean" Enable/Disable the "Selecting" of a button. */
+            /* type="boolean" Enable/Disable the "Selecting" of a button.
+            ```
+                //Initialize
+                $(".selector").igToolbarButton({
+                    isSelected: false
+                });
+
+                // Get
+                var isSelected = $(".selector").igToolbarButton("option", "isSelected");
+
+                // Set
+                $(".selector").igToolbarButton("option", "isSelected", true);
+            ```
+            */
             isSelected: false
         },
         css: {
@@ -49,21 +75,79 @@
             /* cancel="true" Event fired before the toolbar button is activated.
                 Function takes arguments evt and ui.
                 Use ui.owner to get a reference to the toolbar button performing the activation.
+            ```
+                $(document).delegate(".selector", "igtoolbarbuttonactivating", function(evt, ui) {
+                    //use to obtain reference to the event browser
+                    evt.originalEvent;
+                    //return reference to igToolbarButton
+                    ui.owner;
+                });
+
+                $(".selector").igToolbarButton({
+                    activating: function(evt, ui) {
+                    ...
+                    }
+                });
+            ```
             */
             activating: "activating",
             /* Event fired after the toolbar button is activated.
                 Function takes arguments evt and ui.
                 Use ui.owner to get reference to the toolbar button performing the activation.
+            ```
+                $(document).delegate(".selector", "igtoolbarbuttonactivated", function(evt, ui) {
+                    //use to obtain reference to the event browser
+                    evt.originalEvent;
+                    //return reference to igToolbarButton
+                    ui.owner;
+                });
+
+                $(".selector").igToolbarButton({
+                    activated: function(evt, ui) {
+                    ...
+                    }
+                });
+            ```
             */
             activated: "activated",
             /* cancel="true" Event fired before the toolbar button is deactivated.
                 Function takes arguments evt and ui.
                 Use ui.owner to get a reference to the toolbar button performing the deactivation.
+            ```
+                $(".selector").igToolbarButton({
+                    deactivating: function(evt, ui) {
+                        //use to obtain reference to the event browser
+                        evt.originalEvent;
+                        //return reference to igToolbarButton
+                        ui.owner;
+                    }
+                });
+
+                $(document).delegate(".selector", "igtoolbarbuttondeactivating", function(evt, ui) {
+                    //return reference to igToolbarButton
+                    ui.owner;
+                });
+            ```
             */
             deactivating: "deactivating",
             /* Event fired after the toolbar button is deactivated.
                 Function takes arguments evt and ui.
                 Use ui.owner to get reference to the toolbar button performing the deactivation.
+            ```
+                $(".selector").igToolbarButton({
+                    deactivated: function(evt, ui) {
+                        //use to obtain reference to the event browser
+                        evt.originalEvent;
+                        //return reference to igToolbarButton
+                        ui.owner;
+                    }
+                });
+
+                $(document).delegate(".selector", "igtoolbarbuttondeactivated", function(evt, ui) {
+                    //return reference to igToolbarButton
+                    ui.owner;
+                });
+            ```
             */
             deactivated: "deactivated"
         },
@@ -199,8 +283,10 @@
             this.element.on("keypress", $.proxy(this._onEnterKey, this));
         },
         toggle: function () {
-            /*
-                Toggle toolbar button
+            /* Toggle toolbar button
+            ```
+                $(".selector").igToolbarButton("toggle");
+            ```
             */
             var o = this.options;
 
@@ -212,8 +298,10 @@
             this.element.toggleClass(o.css.buttonActiveClasses);
         },
         activate: function (event) {
-            /*
-                Activate toolbar button
+            /* Activate toolbar button
+            ```
+                $(".selector").igToolbarButton("activate");
+            ```
             */
             var o = this.options;
 
@@ -229,8 +317,10 @@
             }
         },
         deactivate: function (event) {
-            /*
-                Deactivate toolbar button
+            /* Deactivate toolbar button
+            ```
+                $(".selector").igToolbarButton("deactivate");
+            ```
             */
             var o = this.options;
 
@@ -249,13 +339,18 @@
         },
         widget: function () {
             /* Returns the element that represents this widget.
+            ```
+                $('.selector').igToolbarButton("widget");
+            ```
                returnType="object" Returns the element that represents this widget.
             */
             return this.element;
         },
         destroy: function () {
-            /*
-                Destroy the widget.
+            /* Destroy the widget.
+            ```
+                $(".selector").igToolbarButton("destroy");
+            ```
             */
             $.ui.igButton.prototype.destroy.call(this);
             this.element
