@@ -9053,7 +9053,20 @@
 				```
 				*/
 				initialFlatDataView: false,
-				/*type="function" Specifies a custom function to be called when requesting data to the server - usually when expanding/collapsing record. If set the function should return the encoded URL. It takes as parameters: data record(type: object), expand - (type: bool). */
+				/*type="function" Specifies a custom function to be called when requesting data to the server - usually when expanding/collapsing record. If set the function should return the encoded URL. It takes as parameters: data record(type: object), expand - (type: bool). 
+				```
+ +				var ds = new $.%%WidgetName%%({
+ +								dataSource: products,
+ +								treeDS: {
+ +									customEncodeUrlFunc: function(record, expand){
+ +										var dsUrl = ds.settings.treeDS.dataSourceUrl;
+ +										var path = ds.getPathBy(record);
+ +										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.propertyDataLevel];
+ +									}
+ +								}
+ +							});
+ +				```
+				*/
 				customEncodeUrlFunc: null,
 				/*type="bool" If true save expansion states in internal list and send it to the server. Applying to one of the main constraint of the REST architecture  Stateless Interactions - client specific data(like expansion states) should NOT be stored on the server
 				```
