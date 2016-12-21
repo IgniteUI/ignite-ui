@@ -113,6 +113,12 @@
 			/* type="string|object" Controls where the popover DOM should be attached to.
 				string type="string" A valid jQuery selector for the element
 				object type="object" A reference to the parent jQuery object
+				```
+					//Initialize
+					$(".selector").igPopover({
+						appendTo: $(".jquerySelector")
+					});
+				```
 			*/
 			appendTo: "body"
 		},
