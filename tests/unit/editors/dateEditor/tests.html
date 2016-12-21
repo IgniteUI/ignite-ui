@@ -1226,7 +1226,7 @@
 					equal(field.val(), "8/8/2009", 'Cleared nullValue not set on blur.');
 					$editor1.igDateEditor("value", new Date());
 					clearButton.click();
-					equal($editor1.igDateEditor("value"), $editor1.igDateEditor("option", "nullValue"), 'Clear null value not set without focus');
+					equal($editor1.igDateEditor("value").getTime(), $editor1.igDateEditor("option", "nullValue").getTime(), 'Clear null value not set without focus');
 					$("#clearEditor").remove();
 				}, 100);
 			});

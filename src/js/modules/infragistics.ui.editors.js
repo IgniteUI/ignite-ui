@@ -8997,9 +8997,7 @@
 		},
 		_getDateObjectFromValue: function (value) { //DateEditor
 			var date;
-			if ($.type(value) === "date") {
-				date = value;
-			} else if (this._mvcDateRegex.test(value)) {
+			if (this._mvcDateRegex.test(value)) {
 				date = new Date(parseInt(value.replace(this._mvcDateRegex, "$1"), 10));
 			} else {
 				date = new Date(value);
@@ -10417,7 +10415,7 @@
 			$(".selector").%%WidgetName%%("getSelectedDate");
 			```
 				returnType="date" */
-			return this._dateObjectValue;
+			return new Date(this._dateObjectValue.getTime());
 		},
 		selectDate: function (date) {
 			/* Sets selected date. This method can be used when dataMode is set as either displayModeText or editModeText.
