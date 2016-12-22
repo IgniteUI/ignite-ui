@@ -181,7 +181,7 @@
 								start();
 								var newDate = $("#inputEditor2").igDatePicker("value");
 
-								ok(!newDate.toString().contains("00:00:00"), "The time is not correct.")
+								ok(newDate.toString().contains("00:00:00"), "The time is not correct.")
 							},100);
 						},100);
 					},100);
