@@ -1059,7 +1059,6 @@
 						},
 						dataSource: jsonData
 					}).dataBind()
-					
 					function filterProductNumber(value, expression, dataType, ignoreCase, preciseDateFormat) {
 						return value.startsWith("BE");
 					}
