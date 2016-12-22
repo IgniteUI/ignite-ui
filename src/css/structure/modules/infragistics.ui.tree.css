@@ -7,16 +7,16 @@
     -webkit-user-select: none;
     user-select: none;
 }
-.ui-igtree ul { 
+.ui-igtree ul {
     list-style: none;
 	padding-left: 0;
 	margin-left: 0;
 }
-.ui-igtree .ui-igtree-root { 
+.ui-igtree .ui-igtree-root {
 	padding-left: 0;
 	margin-left: 0;
 }
-.ui-igtree-root { 
+.ui-igtree-root {
 	padding-left: 0;
 	margin-left: 0;
 }
@@ -40,10 +40,12 @@
 }
 .ui-igtree a {
     padding:1px 3px;
+	/* Bug:#620 regression from #226155 12.8.2016 // Marin Popov // */
+	text-decoration: none;
 }
-.ui-igtree a.ui-state-hover, 
-.ui-igtree a.ui-state-active, 
-.ui-igtree a.ui-state-focus 
+.ui-igtree a.ui-state-hover,
+.ui-igtree a.ui-state-active,
+.ui-igtree a.ui-state-focus
 {
     padding:0 2px;/*compensating for the 1px borders of these other states*/
 	text-decoration: none;
@@ -55,18 +57,18 @@
 {
     padding-left: 1.9em;
 }
-.ui-igtree .ui-igtree-parentnode>ul 
+.ui-igtree .ui-igtree-parentnode>ul
 {
     margin-top:0.1em;
     margin-bottom:0.1em;
 }
 
-.ui-igtree img 
+.ui-igtree img
 {
     padding-right:0.2em;
 	vertical-align: baseline;
 }
-.ui-igtree .ui-igcheckbox-normal 
+.ui-igtree .ui-igcheckbox-normal
 {
     position:relative;
     height: 1.6em;
@@ -77,7 +79,7 @@
 	font-size:0.8em;
 }
 
-.ui-igtree .ui-igcheckbox-small 
+.ui-igtree .ui-igcheckbox-small
 {
     height:13px;
     width:13px;
@@ -98,7 +100,7 @@
 }
 
 .ui-igtree-node-nochildren {
-	margin-left: 1.9em; 
+	margin-left: 1.9em;
 }
 
 .ui-igtree-checkbox {
@@ -125,7 +127,7 @@
 
 /*////////////////////////////////// Drag and Drop CSS ////////////////////////////////////////////////*/
 
-.ui-igtree-dropindicator 
+.ui-igtree-dropindicator
 {
     clear:left;
     float:left;
@@ -152,10 +154,10 @@
     padding: 0 0.7em;
 }
 
-.ui-igtree-insertline.ui-state-default 
+.ui-igtree-insertline.ui-state-default
 {
-    height: 0; 
-    border-width:1px 0 0; 
+    height: 0;
+    border-width:1px 0 0;
     background: transparent none;
     margin:-1px 0 0;
 	width: 50%;
