@@ -1041,20 +1041,30 @@
 						filtering: {
 							type: "local",
 							caseSensitive: true,
-						applyToAllData: true,
+							applyToAllData: true,
 							customConditions: [
-								Condition1: {
-									labelText: "Condition1",
-									expressionText: "Condition1"
+								BE: {
+								labelText: "BE",
+								expressionText: "BE-####",
+								requireExpr: false,
+								filterFunc: filterProductNumber
 								},
-								Condition2: {
-									labelText: "Condition2",
-									expressionText: "Condition2"
+								CA: {
+									labelText: "CA",
+									expressionText: "CA-####",
+									requireExpr: false,
+									filterFunc: filterProductNumber1
 								}
 							]
 						},
 						dataSource: jsonData
 					}).dataBind()
+					function filterProductNumber(value, expression, dataType, ignoreCase, preciseDateFormat) {
+						return value.startsWith("BE");
+					}
+					function filterProductNumber1(value, expression, dataType, ignoreCase, preciseDateFormat) {
+						return value.startsWith("CA");
+					}
 				```
 				*/
 				customConditions: null
@@ -6236,9 +6246,6 @@
 				ds.totalRecordsCount(42);
 			```
 			paramType="number" optional="true" the total number of records
-			paramType="string" optional="true" the name of the property which hold the total records count value
-			paramType="object" optional="true"
-			paramType="object" optional="true"
 			returnType="number" Returns total records count of the current dasource instance
 			*/
 			var rec, totalRecPath, i;
