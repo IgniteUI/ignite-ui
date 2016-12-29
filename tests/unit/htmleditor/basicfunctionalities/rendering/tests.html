@@ -1,65 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
-<head>
-    <title>Html Editor Tests</title>
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/themes/infragistics/infragistics.theme.css" />
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.shared.css" />
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.popover.css" />
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.toolbarbutton.css" />
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.splitbutton.css" />
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.colorpicker.css" />
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.combo.css" media="screen" />
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.editors.css" media="screen" />
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.htmleditor.css" media="screen" />
-    <link type="text/css" rel="stylesheet" href="../../../../../src/css/structure/modules/infragistics.ui.toolbar.css" media="screen" />
-    <link type="text/css" href="../../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-    <script type="text/javascript" src="../../../../../bower_components/jquery/dist/jquery.js"></script>
-    <script type="text/javascript" src="../../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
-    <script type="text/javascript" src="../../../../../bower_components/jquery-ui/jquery-ui.js"></script>
-    <script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.shared.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.templating.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.popover.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.toolbarbutton.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.toolbar.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.splitbutton.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.colorpicker.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.colorpickersplitbutton.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.datasource.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.combo.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.toolbar-en.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.htmleditor-en.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.htmleditor.js"></script>
-    <script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.editors.js"></script>
-    <script type="text/javascript" src="../../../common/test-util.js"></script>
-    <script type="text/javascript">
-        var equalWithEpsilon = function (a, b, epsilon) {
-            return Math.abs(a - b) < epsilon;
-        }
-
-        var htmlEditorTestBeds = {
-            htmlEditorId: "html1",
-            secondHtmlEditorId: "htmlEditorSetInitOptions",
-            keyboardHtmlEditorId: "keyboardInteractionEditor",
-            adjustSourceButtonsEditorId: "adjustSourceButtonsEditor",
-            setup: function () {
-                $('<div id="' + this.htmlEditorId + '"></div>')
-                    .appendTo(document.body)
-                    .igHtmlEditor();
-
-                $('<div id="' + this.secondHtmlEditorId + '"></div>')
-                    .appendTo(document.body)
-                    .igHtmlEditor({
-                        showCopyPasteToolbar: false,
-                        toolbarSettings: [
-                        {
-                            name: "textToolbar",
-                            isExpanded: false,
-                            isBold: true,
-                        }]
-                    });
-=======
 <html>
     <head>
         <title>Html Editor Tests</title>
@@ -100,7 +39,6 @@
             var equalWithEpsilon = function (a, b, epsilon) {
                 return Math.abs(a - b) < epsilon;
             }
->>>>>>> 256295d... Fix to #693; Test is created
 
             var htmlEditorTestBeds = {
                 htmlEditorId: "html1",
