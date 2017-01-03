@@ -6805,6 +6805,8 @@
 			} else if (value === null) {
 				if (this.options.allowNullValue) {
 					if (this.options.nullValue === null) {
+						// D.P. Dec 16th, 2016 #655 Clear masked value (display text) when setting allowed null as value
+						this._maskedValue = "";
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
@@ -7748,7 +7750,7 @@
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
 			if (offset !== null && (offset > 840 || offset < -720)) {
-				console.log($.ig.Editor.locale.dateEditorOffsetRange);
+				throw new Error($.ig.Editor.locale.dateEditorOffsetRange);
 			}
 		},
 		_setNumericType: function () {
@@ -7993,6 +7995,14 @@
 			if (flag === "milliseconds") {
 				date.setMilliseconds(newValue);
 			}
+			return date;
+		},
+		_setNewDateMidnight: function() {
+			var date = new Date();
+			this._setDateField("hours", date, 0);
+			this._setDateField("minutes", date, 0);
+			this._setDateField("seconds", date, 0);
+			this._setDateField("milliseconds", date, 0);
 			return date;
 		},
 		_getInternalMaskedValue: function (newDate) {
@@ -8997,9 +9007,7 @@
 		},
 		_getDateObjectFromValue: function (value) { //DateEditor
 			var date;
-			if ($.type(value) === "date") {
-				date = value;
-			} else if (this._mvcDateRegex.test(value)) {
+			if (this._mvcDateRegex.test(value)) {
 				date = new Date(parseInt(value.replace(this._mvcDateRegex, "$1"), 10));
 			} else {
 				date = new Date(value);
@@ -9241,7 +9249,7 @@
 					dateField !== null && dateField !== undefined) {
 					extractedDate = new Date(yearField, monthField, dateField);
 				} else {
-					extractedDate = new Date();
+					extractedDate = this._setNewDateMidnight();
 					if (yearField !== null && yearField !== undefined) {
 						extractedDate = this._setDateField("year", extractedDate, yearField);
 					}
@@ -10209,7 +10217,7 @@
 		},
 		_initEmptyMask: function (date) {
 			var mask = this._maskWithPrompts,
-				today = new Date(),
+				today = this._setNewDateMidnight(),
 				timeYear, timeMonth, timeDay, timeHours,
 				timeAmOrPM, timeMinutes, timeSeconds, timeMilliseconds,
 				year, month, day, hours, amPM, minutes, seconds, milliseconds;
@@ -10304,13 +10312,13 @@
 
 				// When there is no date at all we want to set today and should not increase the day.
 				// It's the same for the other time periods.
-				period = this._getDateField(periodName, new Date());
+				period = this._getDateField(periodName, this._setNewDateMidnight());
 				delta = 0;
 			}
 			newPeriod = period + delta;
 
 			if (!date) {
-				date = new Date();
+				date = this._setNewDateMidnight();
 			}
 			if (newPeriod !== period) {
 				this._setDateField(periodName, date, newPeriod);
@@ -10417,7 +10425,7 @@
 			$(".selector").%%WidgetName%%("getSelectedDate");
 			```
 				returnType="date" */
-			return this._dateObjectValue;
+			return new Date(this._dateObjectValue.getTime());
 		},
 		selectDate: function (date) {
 			/* Sets selected date. This method can be used when dataMode is set as either displayModeText or editModeText.
@@ -10742,10 +10750,7 @@
 						// Date comming from the picker contains only year, month and date - if the user has specified inputMask with hours and minutes - then selecting the date from the picker should keep the same hours and minutes.
 						date = new Date(self._dateObjectValue);
 					} else {
-
-						//T.P. 10th Dec 2015 211062: When there is no value and the datepicker selects value the stored date object needs to be with current time.
-						//In Case there is no dateObject which meand the editor has no value when the date is selected it will be with current time value (hours, minutes, seconds)
-						date = new Date();
+						date = self._setNewDateMidnight();
 					}
 
 					if (self.options.displayTimeOffset !== null) {
