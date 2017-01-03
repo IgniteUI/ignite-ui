@@ -1020,10 +1020,12 @@
 	 		
 	 		dsFilter.settings.filtering.filterExprUrlKey = null;
 			var prevMonthDate = new Date(new Date(ticks).setMonth(-1));
-			var prevMonth =prevMonthDate.getMonth() + 1;
-	 		var currMonth = date.getMonth() % 12 + 1;
-			var nextMonth = currMonth % 12  + 1;
-			var nYear = date.getMonth() + 1 === 12 ? date.getFullYear() + 1 : date.getFullYear();
+			var nextMonthDate = new Date(new Date(ticks).setMonth(1));
+
+			var prevMonth = prevMonthDate.getMonth() + 1;
+	 		var currMonth = date.getMonth() + 1;
+			var nextMonth = nextMonthDate.getMonth() + 1;
+			var nYear = nextMonthDate.getFullYear();
 			var prevMonthYear = prevMonthDate.getFullYear();
 
 			var params = unescape($.param(dsFilter._encodeUrl()));
