@@ -4353,7 +4353,8 @@
 
                     // Simulate proper behavior on input after composition end, excluding FF where all works fine
                     // When composition end is triggered autocomplete does not work properly
-                    if (!$.ig.util.isFF && this.isCompositionEndFired && this.autocompleteText) {
+                    // R.K. 3rd of January 2017 #696: Combo doesn't accept first character of input after clearing an IME composition in Chrome
+                    if ($.ig.util.isSafari && this.isCompositionEndFired && this.autoCompleteText) {
                         val = comboContext._options.$input.val();
 
                         if ($.ig.util.isOpera) {
