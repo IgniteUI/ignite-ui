@@ -1785,6 +1785,275 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), dateString + " 12:00 AM", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 			});
+
+			var testId = 'Testing new Date with different dataMode formats';
+			test(testId, 57, function () {
+				var $dtEditor, newDate;
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "MM/dd/yyyy" // date
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("06/15", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "MM/dd/yyyy", // date
+					value: new Date("2016-10-29T22:59:56.000Z"),
+					enableUTCDates: true
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("06/15", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-06-15T22:59:56.000Z", "The date is not updated");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "time" // time
+				});
+				typeInInput("06:15", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getMinutes(), 15, "The minutes are not updated");
+				equal(newDate.getSeconds() + newDate.getMilliseconds(), 0, "The seconds and milliseconds are not 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "time", // time
+					value: new Date("2016-10-29T22:59:56.000Z")
+				});
+				typeInInput("06:15", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), 2016, "The year is not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getMinutes(), 15, "The minutes are not updated");
+				equal(newDate.getSeconds(), 56, "The seconds are not updated");
+				equal(newDate.getMilliseconds(), 0, "The milliseconds are not 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "timeLong" // timeLong
+				});
+				typeInInput("06:15", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getMinutes(), 15, "The minutes are not updated");
+				equal(newDate.getSeconds() + newDate.getMilliseconds(), 0, "The seconds and milliseconds are not 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "timeLong", // timeLong
+					value: new Date("2016-10-29T22:59:56.000Z")
+				});
+				typeInInput("06:15", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), 2016, "The year is not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getMinutes(), 15, "The minutes are not updated");
+				equal(newDate.getSeconds(), 56, "The seconds are not updated");
+				equal(newDate.getMilliseconds(), 0, "The milliseconds are not 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateDisplayFormat: "MM/dd/yyyy h:m" // dateTime
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("06/15", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
+					value: new Date("2016-10-29T22:59:56.000Z"),
+					enableUTCDates: true
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("06/15", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-06-15T22:59:56.000Z", "The date is not updated");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "MM/dd"
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("06", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "MM/dd",
+					value: new Date("2016-10-29T22:59:56.000Z"),
+					enableUTCDates: true
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("06", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-06-29T22:59:56.000Z", "The date is not updated");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "H"
+				});
+				typeInInput("07", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
+				equal(newDate.getHours(), 7, "The hours are not updated");
+				equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "H",
+					value: new Date("2016-10-29T22:59:56.000Z")
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("07", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getHours(), 7, "The hours are not updated");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "hh:mm"
+				});
+				typeInInput("07", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), new Date().getFullYear(), "The year is not updated");
+				equal(newDate.getHours(), 7, "The hours are not updated");
+				equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "hh:mm",
+					value: new Date("2016-10-29T22:59:56.000Z")
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("07", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getHours(), 7, "The hours are not updated");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff"
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("2010", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), 2010, "The year is not updated");
+				equal(newDate.getHours() + newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The new hour is not set to midnight");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+					value: new Date("2016-10-29T22:59:56.599Z"),
+					enableUTCDates: true
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("2010", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2010-10-29T22:59:56.599Z", "The date is not updated");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss"
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("____/06/__ 06:__:__", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), newDate.getFullYear(), "The year is not updated");
+				equal(newDate.getMonth(), 5, "The hours are not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not set to 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss",
+					value: new Date("2016-10-29T22:59:56.599Z")
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("____/06/__ 06:__:__", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), 2016, "The year is not updated");
+				equal(newDate.getMonth(), 5, "The hours are not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "yyyy/MM/dd HH:mm"
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("2016/__/__ 06:__", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), 2016, "The year is not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not set to 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "yyyy/MM/dd HH:mm",
+					value: new Date("2016-10-29T22:59:56.599Z")
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("2010/__/__ 06:__", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), 2010, "The year is not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getSeconds(), 56, "The hours are not updated");
+				equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "yyyy/MM/dd HH"
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("____/__/__ 06", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), newDate.getFullYear(), "The year is not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getMinutes() + newDate.getSeconds() + newDate.getMilliseconds(), 0, "The minutes, seconds and milliseconds are not set to 0");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "yyyy/MM/dd HH",
+					value: new Date("2016-10-29T22:59:56.599Z")
+				});
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("____/__/__ 06", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				newDate = $dtEditor.igDateEditor("value");
+				equal(newDate.getFullYear(), 2016, "The year is not updated");
+				equal(newDate.getHours(), 6, "The hours are not updated");
+				equal(newDate.getSeconds(), 56, "The hours are not updated");
+				equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
+				$dtEditor.remove();
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {

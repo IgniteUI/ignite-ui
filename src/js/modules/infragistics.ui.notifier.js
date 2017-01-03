@@ -264,7 +264,7 @@
 				```
 				//Initialize
 				$(".selector").igNotifier({
-					headerTemplate {
+					headerTemplate: {
 						closeButton: false
 					}
 				});
@@ -278,7 +278,7 @@
 				```
 				//Initialize
 				$(".selector").igNotifier({
-					headerTemplate {
+					headerTemplate: {
 						closeButton : false,
 						title : null
 					}
@@ -293,7 +293,7 @@
 				```
 				//Initialize
 				$(".selector").igNotifier({
-					headerTemplate {
+					headerTemplate: {
 						closeButton : false,
 						title : null
 					}
