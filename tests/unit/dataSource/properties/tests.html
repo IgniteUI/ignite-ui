@@ -1019,11 +1019,12 @@
 				"Verify that all parameters were properly encoded.");
 	 		
 	 		dsFilter.settings.filtering.filterExprUrlKey = null;
-			var prevMonth = date.getMonth() % 12 !== 0 ?  date.getMonth() % 12 : 12;
+			var prevMonthDate = new Date(new Date(ticks).setMonth(-1));
+			var prevMonth =prevMonthDate.getMonth() + 1;
 	 		var currMonth = date.getMonth() % 12 + 1;
 			var nextMonth = currMonth % 12  + 1;
 			var nYear = date.getMonth() + 1 === 12 ? date.getFullYear() + 1 : date.getFullYear();
-			var prevMonthYear = prevMonth % 12 !== 0 ? date.getFullYear() : date.getFullYear() - 1;
+			var prevMonthYear = prevMonthDate.getFullYear();
 
 			var params = unescape($.param(dsFilter._encodeUrl()));
 			equal(params,
