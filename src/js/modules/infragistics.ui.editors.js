@@ -2108,6 +2108,8 @@
 				this._detachButtonsEvents(this._spinDownButton);
 			}
 		},
+
+		// N.A. January 4th, 2017 #664 Move spin buttons state logic from numeric to text editor in order to be used by the date editor and date picker.
 		_disableSpinButton: function (target) {
 			if (target && !target.attr("disabled") && !this.options.spinWrapAround) {
 				target.addClass(this.css.disabled);
@@ -3107,6 +3109,8 @@
 				this._currentInputTextValue = currentVal;
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
 			this._setSpinButtonsState(currentVal);
 		},
 		_triggerTextChanged: function (oldValue, newValue) {
@@ -7876,6 +7880,8 @@
 			}
 			return noCancel;
 		},
+
+		// N.A. January 4th, 2017 #664 Validate min and max values in date editor and date picker by comparing dates.
 		_exceedsMaxValue: function(value) {
 
 			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it.
@@ -7888,7 +7894,7 @@
 		},
 		_lessThanMinValue: function(value) {
 
-			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it.
+			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it
 			if (!this._editMode) {
 				value = this.value();
 			}
