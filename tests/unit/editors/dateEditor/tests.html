@@ -1343,7 +1343,7 @@
 			test(testId, 20, function () {
 				var $dtEditor, checkValue, displayValue;
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss"
 				});
 				displayValue = "30/10/2009 10:25:56";
@@ -1356,7 +1356,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					value: "2009-06-15T13:45:30.000Z"
 				});
@@ -1376,7 +1376,7 @@
 				$dtEditor.remove();
 
 				
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					value: new Date("2009-06-15T13:45:30.0000000Z")
 				});
@@ -1400,7 +1400,7 @@
 			test(testId, 22, function () {
 				var $dtEditor, utcDate;
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					displayTimeOffset: 0,
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					allowNullValue: true
@@ -1417,7 +1417,7 @@
 				equal($dtEditor.igDateEditor("displayValue"), "", 'The value is not empty string');
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					value: "2016-10-30T13:25:56.0000000Z",
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					displayTimeOffset: 0
@@ -1441,7 +1441,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), toLocalISOString(checkValue), "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					value: new Date("2016-10-30T13:25:56.0000000Z"),
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					displayTimeOffset: 0,
@@ -1471,7 +1471,7 @@
 			test(testId, 24, function () {
 				var $dtEditor;
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					value: "2016-10-30T13:25:56.0000000Z",
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					displayTimeOffset: 420,
@@ -1490,7 +1490,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-30T15:25:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					value: new Date("2016-10-30T13:25:56.0000000Z"),
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					displayTimeOffset: 420,
@@ -1516,7 +1516,7 @@
 				},
 				'Wrong offset error not thrown');
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					value: new Date("2016-03-26T23:59:56.0000000Z"),
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					displayTimeOffset: 300,
@@ -1531,7 +1531,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T23:59:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dateInputFormat: "yyyy/MM/dd",
 					minValue: new Date(2015, 6, 1),
 					maxValue: new Date(2020, 11, 31),
@@ -1552,7 +1552,7 @@
 				equal($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text(), "Entry exceeded the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					value : new Date("2009-09-07T21:00:00.000Z"),
 					minValue: "2009-09-07T21:00:00.000Z",
@@ -1565,7 +1565,7 @@
 				$dtEditor.trigger("blur");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dateInputFormat: "dd/MM/yyyy HH:mm:ss",
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
 					displayTimeOffset: 240,
@@ -1602,7 +1602,7 @@
 			test(testId, 28, function () {
 				var $dtEditor;
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "date",
 					dateInputFormat: "MM/dd/yyyy", // date
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1613,7 +1613,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "displayModeText",
 					dateInputFormat: "MM/dd/yyyy", // date
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1624,7 +1624,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "10/30/2016", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "date",
 					dateInputFormat: "time", // time
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1635,7 +1635,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "displayModeText",
 					dateInputFormat: "time", // time
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1646,7 +1646,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "4:59 AM", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "date",
 					dateInputFormat: "timeLong", // timeLong
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1657,7 +1657,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "displayModeText",
 					dateInputFormat: "timeLong", // timeLong
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1668,7 +1668,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "4:59:56 AM", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "date",
 					dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1679,7 +1679,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "displayModeText",
 					dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1690,7 +1690,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "10/30/2016 4:59", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "date",
 					dateInputFormat: "MM/dd",
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1701,7 +1701,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "displayModeText",
 					dateInputFormat: "MM/dd",
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1712,7 +1712,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "10/30", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "date",
 					dateInputFormat: "H",
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1723,7 +1723,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "displayModeText",
 					dateInputFormat: "H",
 					value: new Date("2016-10-29T22:59:56.0000000Z"),
@@ -1734,7 +1734,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "4", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "date",
 					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
 					value: new Date("2016-10-29T22:59:56.599Z"),
@@ -1745,7 +1745,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-10-29T22:59:56.599Z", "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "displayModeText",
 					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
 					value: new Date("2016-10-29T22:59:56.599Z"),
@@ -1761,7 +1761,7 @@
 			test(testId, 8, function () {
 				var $dtEditor, dateString = "10/15/2016", date = new Date(dateString);
 				
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "displayModeText",
 					dateInputFormat: "dateTime",
 					dateDisplayFormat: "date",
@@ -1773,7 +1773,7 @@
 				equal($dtEditor.data("igDateEditor")._valueInput.val(), dateString, "The hidden value sent to server is not correct");
 				$dtEditor.remove();
 
-				$dtEditor = $('<input/>').appendTo("#dateFormatTestBed").igDateEditor({
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dataMode: "editModeText",
 					dateInputFormat: "dateTime",
 					dateDisplayFormat: "date",
@@ -1808,8 +1808,9 @@
 				$dtEditor.igDateEditor("setFocus");
 				typeInInput("06/15", $dtEditor.igDateEditor("field"));
  				$dtEditor.trigger("blur");
-				newDate = $dtEditor.igDateEditor("value");
-				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-06-15T22:59:56.000Z", "The date is not updated");
+				newDate = new Date(Date.UTC(2016,5,20,22,59,56));
+				newDate.setDate(15);
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), newDate.toISOString(), "The date is not updated");
 				$dtEditor.remove();
 
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
@@ -1882,8 +1883,9 @@
 				$dtEditor.igDateEditor("setFocus");
 				typeInInput("06/15", $dtEditor.igDateEditor("field"));
  				$dtEditor.trigger("blur");
-				newDate = $dtEditor.igDateEditor("value");
-				equal($dtEditor.data("igDateEditor")._valueInput.val(), "2016-06-15T22:59:56.000Z", "The date is not updated");
+				newDate = new Date(Date.UTC(2016,5,20,22,59,56));
+				newDate.setDate(15);
+				equal($dtEditor.data("igDateEditor")._valueInput.val(), newDate.toISOString(), "The date is not updated");
 				$dtEditor.remove();
 
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
@@ -2243,8 +2245,6 @@
 		<input id="inputEditor34" />
 		<input id="insertInput" />
 		<input id="spinHourMinutes" />
-	</div>
-	<div id="dateFormatTestBed" style="float:left;overflow:auto;padding:20px;position:relative;width:500px; height:100%; margin-left: 500px;">
 	</div>
 </body>
 </html>
