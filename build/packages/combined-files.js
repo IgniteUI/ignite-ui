@@ -92,7 +92,7 @@ module.exports = {
             src: [
                     "./dist/js/i18n/infragistics-en.js",
                     "./dist/js/modules/infragistics.util.js",
-                    "./dist/js/modules/infragistics.dataSource.js",
+                    "./dist/js/modules/infragistics.datasource.js",
                     "./dist/js/modules/infragistics.templating.js",
                     "./dist/js/modules/infragistics.ui.shared.js",
                     "./dist/js/modules/infragistics.ui.scroll.js"
