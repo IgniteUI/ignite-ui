@@ -5580,6 +5580,7 @@
 					if (this.options.revertIfNotValid &&
 					!(newValue === null && this.options.allowNullValue)) {
 						newValue = this._valueInput.val();
+						this._updateValue(newValue);
 					} else {
 						this._clearValue();
 					}
