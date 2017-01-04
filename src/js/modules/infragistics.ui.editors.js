@@ -7926,84 +7926,40 @@
 				":" + pad(tzo % 60);
 		},
 
-		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)
+		// Returns numeric value from getFullYear (with shift), getMonth, etc or null.
+		// Flag to get specific date field (year, month, day, hours, minutes, seconds, milliseconds)
 		// date DateObject
 		_getDateField: function (flag, date) {
-			var shift = this.options.yearShift, year;
+			var shift = this.options.yearShift, value;
 
-				if (!date) {
-					date = this._dateObjectValue;
-				}
-				if (!date) {
+				if (!date || isNaN(date.getTime())) {
 					return null;
 				}
 
-				if (flag === "year") {
-					year = date.getFullYear();
-					if (shift) {
-						year += shift;
-					}
-					return year;
+				value = date[ "get" + flag ]();
+				if (flag === "FullYear" && shift) {
+					value += shift;
 				}
-				if (flag === "month") {
-					return date.getMonth();
-				}
-				if (flag === "day") {
-					return date.getDay();
-				}
-				if (flag === "date") {
-					return date.getDate();
-				}
-				if (flag === "hours") {
-					return date.getHours();
-				}
-				if (flag === "minutes") {
-					return date.getMinutes();
-				}
-				if (flag === "seconds") {
-					return date.getSeconds();
-				}
-				return date.getMilliseconds();
+				return value;
 		},
 
-		// This method sets specific field and returns the date
+		// This method sets specific field - setFullYear (with shift), setHours, setMinutes, etc.
 		_setDateField: function(flag, date, newValue) {
 			var shift = this.options.yearShift;
 			if (!date) {
-				date = this._dateObjectValue;
+				return;
 			}
-			if (flag === "year") {
-				if (shift) {
-					newValue -= shift;
-				}
-				date.setFullYear(newValue);
+			if (flag === "FullYear" && shift) {
+				newValue -= shift;
 			}
-			if (flag === "month") {
-				date.setMonth(newValue);
-			}
-			if (flag === "date") {
-				date.setDate(newValue);
-			}
-			if (flag === "hours") {
-				date.setHours(newValue);
-			}
-			if (flag === "minutes") {
-				date.setMinutes(newValue);
-			}
-			if (flag === "seconds") {
-				date.setSeconds(newValue);
-			}
-			if (flag === "milliseconds") {
-				date.setMilliseconds(newValue);
-			}
-			return date;
+			date[ "set" + flag ](newValue);
 		},
 		_setNewDateMidnight: function() {
 			var date = new Date();
-			this._setDateField("hours", date, 0);
-			this._setDateField("minutes", date, 0);
-			this._setDateField("seconds", date, 0);
-			this._setDateField("milliseconds", date, 0);
+			this._setDateField("Hours", date, 0);
+			this._setDateField("Minutes", date, 0);
+			this._setDateField("Seconds", date, 0);
+			this._setDateField("Milliseconds", date, 0);
 			return date;
 		},
 		_getInternalMaskedValue: function (newDate) {
@@ -8089,7 +8045,7 @@
 			// TODO update all the fields
 			if (dateObj) {
 				if (this._dateIndices.yy !== undefined) {
-					year = this._getDateField("year", dateObj).toString();
+					year = this._getDateField("FullYear", dateObj).toString();
 					if (this._dateIndices.fourDigitYear) {
 
 						// T.P. 29th Jan 2016 Bug #212642 When the year is 3 digit for example (111) we need to add extra zero in fron of the value, so in edit mode it's displayed correctly
@@ -8107,7 +8063,7 @@
 					}
 				}
 				if (this._dateIndices.MM !== undefined) {
-					month = this._getDateField("month", dateObj);
+					month = this._getDateField("Month", dateObj);
 					month++;
 					if (month < 10) {
 						month = "0" + month.toString();
@@ -8118,7 +8074,7 @@
 						month, this._dateIndices.MM, this._dateIndices.MM + 1);
 				}
 				if (this._dateIndices.dd !== undefined) {
-					day = this._getDateField("date", dateObj);
+					day = this._getDateField("Date", dateObj);
 					if (day < 10) {
 						day = "0" + day.toString();
 					} else {
@@ -8128,7 +8084,7 @@
 						day, this._dateIndices.dd, this._dateIndices.dd + 1);
 				}
 				if (this._dateIndices.hh !== undefined) {
-					hours = this._getDateField("hours", dateObj);
+					hours = this._getDateField("Hours", dateObj);
 					if (!this._dateIndices.hh24 && hours > 12) {
 						hours -= 12;
 					}
@@ -8146,7 +8102,7 @@
 						hours, this._dateIndices.hh, this._dateIndices.hh + 1);
 				}
 				if (this._dateIndices.mm !== undefined) {
-					minutes = this._getDateField("minutes", dateObj);
+					minutes = this._getDateField("Minutes", dateObj);
 					if (minutes < 10) {
 						minutes = "0" + minutes.toString();
 					} else {
@@ -8156,7 +8112,7 @@
 						minutes, this._dateIndices.mm, this._dateIndices.mm + 1);
 				}
 				if (this._dateIndices.ss !== undefined) {
-					seconds = this._getDateField("seconds", dateObj);
+					seconds = this._getDateField("Seconds", dateObj);
 					if (seconds < 10) {
 						seconds = "0" + seconds.toString();
 					} else {
@@ -8166,7 +8122,7 @@
 						seconds, this._dateIndices.ss, this._dateIndices.ss + 1);
 				}
 				if (this._dateIndices.tt !== undefined) {
-					hours = this._getDateField("hours", dateObj);
+					hours = this._getDateField("Hours", dateObj);
 
 					// N.A. 3/16/2016 Bug #216017: When we are in the 12 hour format, then 12 o'clock is PM and 24 (00) o'clock is AM.
 					if (hours >= 12 && hours < 24) {
@@ -8194,7 +8150,7 @@
 					}
 				}
 				if (this._dateIndices.ff !== undefined) {
-					milliseconds = this._getDateField("milliseconds", dateObj);
+					milliseconds = this._getDateField("Milliseconds", dateObj);
 					if (this._dateIndices.ffLength === 1) {
 						currentMaskValue = this._replaceCharAt(currentMaskValue,
 							this._dateIndices.ff,
@@ -9252,19 +9208,19 @@
 				} else {
 					extractedDate = this._setNewDateMidnight();
 					if (yearField !== null && yearField !== undefined) {
-						extractedDate = this._setDateField("year", extractedDate, yearField);
+						this._setDateField("Year", extractedDate, yearField);
 					}
 					if (monthField !== null && monthField !== undefined) {
-						extractedDate = this._setDateField("month", extractedDate, monthField);
+						this._setDateField("Month", extractedDate, monthField);
 					}
 					if (dateField !== null && dateField !== undefined) {
 						lastDayOfMonth = this._lastDayOfMonth(this
-							._getDateField("year", extractedDate),
-								this._getDateField("month", extractedDate) + 1);
+							._getDateField("FullYear", extractedDate),
+								this._getDateField("Month", extractedDate) + 1);
 						if (dateField > lastDayOfMonth) {
 							dateField = lastDayOfMonth;
 						}
-						extractedDate = this._setDateField("date", extractedDate, dateField);
+						this._setDateField("Date", extractedDate, dateField);
 					}
 				}
 			} else {
@@ -9274,37 +9230,36 @@
 				extractedDate = new Date(this._dateObjectValue.getTime());
 			}
 			if (yearField !== null && yearField !== undefined) {
-				extractedDate = this._setDateField("year", extractedDate, yearField);
+				this._setDateField("Year", extractedDate, yearField);
 			}
 			if (monthField !== null && monthField !== undefined) {
 
 				if (dateField !== null && dateField !== undefined) {
 					//temporary set day to be in the middle of the month to ensure when setting the month the day won't overflow into the next month.
-					extractedDate = this._setDateField("date", extractedDate, "15");
+					this._setDateField("Date", extractedDate, "15");
 				}
-				extractedDate = this._setDateField("month", extractedDate, monthField);
+				this._setDateField("Month", extractedDate, monthField);
 			}
 			if (dateField !== null && dateField !== undefined) {
 				lastDayOfMonth = this._lastDayOfMonth(this
-					._getDateField("year", extractedDate),
-					this._getDateField("month", extractedDate) + 1);
+					._getDateField("FullYear", extractedDate),
+					this._getDateField("Month", extractedDate) + 1);
 				if (dateField > lastDayOfMonth) {
 					dateField = lastDayOfMonth;
 				}
-				extractedDate = this._setDateField("date", extractedDate, dateField);
+				this._setDateField("Date", extractedDate, dateField);
 			}
 			if (hourField !== null && hourField !== undefined) {
-				extractedDate = this._setDateField("hours", extractedDate, hourField);
+				this._setDateField("Hours", extractedDate, hourField);
 			}
 			if (minutesField !== null && minutesField !== undefined) {
-				extractedDate = this._setDateField("minutes", extractedDate, minutesField);
+				this._setDateField("Minutes", extractedDate, minutesField);
 			}
 			if (secondsField !== null && secondsField !== undefined) {
-				extractedDate = this._setDateField("seconds", extractedDate, secondsField);
+				this._setDateField("Seconds", extractedDate, secondsField);
 			}
 			if (millisecondsField !== null && millisecondsField !== undefined) {
-				extractedDate =
-					this._setDateField("milliseconds", extractedDate, millisecondsField);
+				this._setDateField("Milliseconds", extractedDate, millisecondsField);
 			}
 
 			if (this.options.displayTimeOffset !== null) {
@@ -9365,44 +9320,44 @@
 				.replace(/y/g, "\x10053");
 
 			maskVal = maskVal.replace(/\x10030/g,
-				this._getMilliseconds(this._getDateField("milliseconds", dateObject), 1))
-				.replace(/\x10031/g, this._getMilliseconds(this._getDateField("milliseconds",
+				this._getMilliseconds(this._getDateField("Milliseconds", dateObject), 1))
+				.replace(/\x10031/g, this._getMilliseconds(this._getDateField("Milliseconds",
 					dateObject), 10))
-				.replace(/\x10032/g, this._getMilliseconds(this._getDateField("milliseconds",
+				.replace(/\x10032/g, this._getMilliseconds(this._getDateField("Milliseconds",
 					dateObject), 100));
 
 			maskVal = maskVal.replace(/\x10033/g,
-				this._getDay(this._getDateField("day", dateObject), "dddd"))
-				.replace(/\x10034/g, this._getDay(this._getDateField("day", dateObject), "ddd"))
-				.replace(/\x10035/g, this._getDate(this._getDateField("date", dateObject), "dd"))
-				.replace(/\x10036/g, this._getDate(this._getDateField("date", dateObject), "d"))
+				this._getDay(this._getDateField("Day", dateObject), "dddd"))
+				.replace(/\x10034/g, this._getDay(this._getDateField("Day", dateObject), "ddd"))
+				.replace(/\x10035/g, this._getDate(this._getDateField("Date", dateObject), "dd"))
+				.replace(/\x10036/g, this._getDate(this._getDateField("Date", dateObject), "d"))
 				.replace(/\x10037/g,
-					this._getSeconds(this._getDateField("seconds", dateObject), "ss"))
+					this._getSeconds(this._getDateField("Seconds", dateObject), "ss"))
 				.replace(/\x10038/g,
-					this._getSeconds(this._getDateField("seconds", dateObject), "s"))
+					this._getSeconds(this._getDateField("Seconds", dateObject), "s"))
 				.replace(/\x10039/g,
-					this._getMinutes(this._getDateField("minutes", dateObject), "mm"))
+					this._getMinutes(this._getDateField("Minutes", dateObject), "mm"))
 				.replace(/\x10040/g,
-					this._getMinutes(this._getDateField("minutes", dateObject), "m"))
+					this._getMinutes(this._getDateField("Minutes", dateObject), "m"))
 
 				.replace(/\x10041/g,
-					this._getAMorPM(this._getDateField("hours", dateObject), "tt"))
-				.replace(/\x10042/g, this._getAMorPM(this._getDateField("hours", dateObject), "t"))
-				.replace(/\x10043/g, this._getHours(this._getDateField("hours", dateObject), "HH"))
-				.replace(/\x10044/g, this._getHours(this._getDateField("hours", dateObject), "H"))
-				.replace(/\x10045/g, this._getHours(this._getDateField("hours", dateObject), "hh"))
-				.replace(/\x10046/g, this._getHours(this._getDateField("hours", dateObject), "h"));
+					this._getAMorPM(this._getDateField("Hours", dateObject), "tt"))
+				.replace(/\x10042/g, this._getAMorPM(this._getDateField("Hours", dateObject), "t"))
+				.replace(/\x10043/g, this._getHours(this._getDateField("Hours", dateObject), "HH"))
+				.replace(/\x10044/g, this._getHours(this._getDateField("Hours", dateObject), "H"))
+				.replace(/\x10045/g, this._getHours(this._getDateField("Hours", dateObject), "hh"))
+				.replace(/\x10046/g, this._getHours(this._getDateField("Hours", dateObject), "h"));
 
 			maskVal = maskVal.replace(/\x10047/g,
-				this._getMonth(this._getDateField("month", dateObject), "MMMM"))
-				.replace(/\x10048/g, this._getMonth(this._getDateField("month", dateObject), "MMM"))
-				.replace(/\x10049/g, this._getMonth(this._getDateField("month", dateObject), "MM"))
-				.replace(/\x10050/g, this._getMonth(this._getDateField("month", dateObject), "M"));
+				this._getMonth(this._getDateField("Month", dateObject), "MMMM"))
+				.replace(/\x10048/g, this._getMonth(this._getDateField("Month", dateObject), "MMM"))
+				.replace(/\x10049/g, this._getMonth(this._getDateField("Month", dateObject), "MM"))
+				.replace(/\x10050/g, this._getMonth(this._getDateField("Month", dateObject), "M"));
 
 			maskVal = maskVal.replace(/\x10051/g,
-				this._getYear(this._getDateField("year", dateObject), "yyyy"))
-				.replace(/\x10052/g, this._getYear(this._getDateField("year", dateObject), "yy"))
-				.replace(/\x10053/g, this._getYear(this._getDateField("year", dateObject), "y"));
+				this._getYear(this._getDateField("FullYear", dateObject), "yyyy"))
+				.replace(/\x10052/g, this._getYear(this._getDateField("FullYear", dateObject), "yy"))
+				.replace(/\x10053/g, this._getYear(this._getDateField("FullYear", dateObject), "y"));
 
 			// Restore original \\f,d,s,m,etc.
 			maskVal = maskVal.replace(/\x01/g, "g").replace(/\x02/g, "d").replace(/\x03/g, "s")
@@ -9686,9 +9641,9 @@
 					// This is the case, when we don't have seconds in the mask, but we increase/decrease the milliseconds to the next/previous second.
 					// In such a situation, we update the internal date with the new second, so that when we loose focus the second is the correct one.
 					if (!isLimited) {
-						this._setDateField("seconds",
+						this._setDateField("Seconds",
 							this._dateObjectValue,
-							this._getDateField("seconds", this._dateObjectValue) +
+							this._getDateField("Seconds", this._dateObjectValue) +
 								secondsUpdateDelta);
 					}
 				}
@@ -9732,9 +9687,9 @@
 					// This is the case, when we don't have minute in the mask, but we increase/decrease the seconds to the next/previous minute.
 					// In such a situation, we update the internal date with the new minute, so that when we loose focus the minute is the correct one.
 					if (!isLimited) {
-						this._setDateField("minutes",
+						this._setDateField("Minutes",
 							this._dateObjectValue,
-							this._getDateField("minutes", this._dateObjectValue) +
+							this._getDateField("Minutes", this._dateObjectValue) +
 								minuteUpdateDelta);
 					}
 				}
@@ -9777,9 +9732,9 @@
 					// This is the case, when we don't have hours in the mask, but we increase/decrease the minute to the next/previous hour.
 					// In such a situation, we update the internal date with the new hour, so that when we loose focus the hour is the correct one.
 					if (!isLimited) {
-						this._setDateField("hours",
+						this._setDateField("Hours",
 							this._dateObjectValue,
-							this._getDateField("hours", this._dateObjectValue) +
+							this._getDateField("Hours", this._dateObjectValue) +
 								hourUpdateDelta);
 					}
 				}
@@ -9879,8 +9834,8 @@
 					// This is the case, when we don't have day in the mask, but we increase/decrease the hour to the next/previous day.
 					// In such a situation, we update the internal date with the new day, so that when we loose focus the day is the correct one.
 					if (!isLimited) {
-						this._setDateField("date", this._dateObjectValue,
-							this._getDateField("date", this._dateObjectValue) + delta);
+						this._setDateField("Date", this._dateObjectValue,
+							this._getDateField("Date", this._dateObjectValue) + delta);
 					}
 				}
 			}
@@ -9959,8 +9914,8 @@
 					// This is the case, when we don't have month in the mask, but we increase/decrease the days to the next/previous month.
 					// In such a situation, we update the internal date with the new month, so that when we loose focus the month is the correct one.
 					if (!isLimited) {
-						this._setDateField("month", this._dateObjectValue,
-							this._getDateField("month", this._dateObjectValue) + monthUpdateDelta);
+						this._setDateField("Month", this._dateObjectValue,
+							this._getDateField("Month", this._dateObjectValue) + monthUpdateDelta);
 					}
 				}
 			}
@@ -9998,9 +9953,9 @@
 					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous minute.
 					// In such a situation, we update the internal date with the new year, so that when we loose focus the month is the correct one.
 					if (!isLimited) {
-						this._setDateField("year",
+						this._setDateField("Year",
 							this._dateObjectValue,
-							this._getDateField("year", this._dateObjectValue) + yearUpdateDelta);
+							this._getDateField("FullYear", this._dateObjectValue) + yearUpdateDelta);
 					}
 				}
 			}
@@ -10308,7 +10263,7 @@
 			var date, period, newPeriod;
 
 			date = this._dateObjectValue;
-			period = parseInt(this._getDateField(periodName, date), 10);
+			period = this._getDateField(periodName, date);
 			if (period === null) {
 
 				// When there is no date at all we want to set today and should not increase the day.
@@ -10333,26 +10288,26 @@
 			if (indices.dd !== undefined) {
 
 				// Default behavior is that we always spin up/down day if it is available in the mask.
-				periodName = "date";
+				periodName = "Date";
 			} else if (indices.ff !== undefined) {
 
 				// If day is not available then we spin the smallest time period, that's why we start from milliseconds.
-				periodName = "milliseconds";
+				periodName = "Milliseconds";
 				if (indices.ffLength === 2) {
 					delta = delta * 10;
 				} else if (indices.ffLength === 1) {
 					delta = delta * 100;
 				}
 			} else if (indices.ss !== undefined) {
-				periodName = "seconds";
+				periodName = "Seconds";
 			} else if (indices.mm !== undefined) {
-				periodName = "minutes";
+				periodName = "Minutes";
 			} else if (indices.hh !== undefined) {
-				periodName = "hours";
+				periodName = "Hours";
 			} else if (indices.MM !== undefined) {
-				periodName = "month";
+				periodName = "Month";
 			} else if (indices.yy !== undefined) {
-				periodName = "year";
+				periodName = "FullYear";
 			}
 			this._setTimePeriod(periodName, delta);
 		},
@@ -10761,12 +10716,12 @@
 						date.setUTCMonth(dateFromPicker.getMonth());
 						date.setUTCDate(dateFromPicker.getDate());
 					} else {
-						date = self._setDateField("year", date, dateFromPicker.getFullYear());
+						self._setDateField("Year", date, dateFromPicker.getFullYear());
 
 						//Temporary change the date to be in the middle of the month 15th, because when using JavaScript Date object to set month when date is 31, the date object is moved with one day.
-						date = self._setDateField("date", date, 15);
-						date = self._setDateField("month", date, dateFromPicker.getMonth());
-						date = self._setDateField("date", date, dateFromPicker.getDate());
+						self._setDateField("Date", date, 15);
+						self._setDateField("Month", date, dateFromPicker.getMonth());
+						self._setDateField("Date", date, dateFromPicker.getDate());
 					}
 
 					self._processValueChanging(date);
