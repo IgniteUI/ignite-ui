@@ -910,6 +910,159 @@
 
 			});
 
+			var testId = 'Testing spin and max and min values set as date object';
+			test(testId, 36, function () {
+				var $dtEditor, newDate, spinUpButton, spinDownButton;
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					maxValue: new Date(2016, 11, 5),
+					minValue: new Date(2016, 11, 1),
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("12/12/2016", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+				clickElement(spinDownButton, false, false);
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
+				clickElement(spinUpButton, false, false);
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+				
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("11/11/2016", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+				clickElement(spinUpButton, false, false);
+				ok(!spinDownButton.prop("disabled"), "The button should be enabled");
+				equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
+				clickElement(spinDownButton, false, false);
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("12/04/2016", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				clickElement(spinUpButton, false, false);
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("12/02/2016", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				clickElement(spinDownButton, false, false);
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+
+				$dtEditor.igDateEditor("value", new Date(2016, 11, 12));
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
+				$dtEditor.igDateEditor("value", new Date(2016, 10, 11));
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+				$dtEditor.remove();
+			});
+
+			var testId = 'Testing spin and max and min values set as string';
+			test(testId, 36, function () {
+				var $dtEditor, newDate, spinUpButton, spinDownButton;
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "MM/dd/yyyy",
+					maxValue: "12/05/2016",
+					minValue: "12/01/2016",
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("12/12/2016", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+				clickElement(spinDownButton, false, false);
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
+				clickElement(spinUpButton, false, false);
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+				
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("11/11/2016", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+				clickElement(spinUpButton, false, false);
+				ok(!spinDownButton.prop("disabled"), "The button should be enabled");
+				equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
+				clickElement(spinDownButton, false, false);
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("12/04/2016", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				clickElement(spinUpButton, false, false);
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("12/02/2016", $dtEditor.igDateEditor("field"));
+ 				$dtEditor.trigger("blur");
+				clickElement(spinDownButton, false, false);
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+
+				$dtEditor.igDateEditor("value", "12/12/2016");
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+
+				$dtEditor.igDateEditor("value", "11/11/2016");
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+				$dtEditor.remove();
+			});
+
 			var testId = 'Setting options on run time';
 			test(testId, 1 , function(){
 
