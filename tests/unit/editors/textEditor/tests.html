@@ -1039,7 +1039,7 @@
 		});
 		
 		testId = "Test nullValue on initialization";
-		test(testId, 4, function(){
+		test(testId, 4, function() {
 			var $editor = $("<input id='editor'/>").
 			appendTo("#testBedContainer").igTextEditor({ allowNullValue: false});
 			//Get null Value
@@ -1055,6 +1055,17 @@
 			$editor.igTextEditor("value", null);
 			//Get null value
 			equal($editor.igTextEditor("value"), null, "The value is not an empty string");
+			$editor.remove();
+		});
+
+		var testId = 'Clear button state';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ buttonType: "clear" });
+			ok(!$editor.igTextEditor("clearButton").is(":visible"), "Clear button is not hidden");
+			$editor.igTextEditor("value", "someVal");
+			ok($editor.igTextEditor("clearButton").is(":visible"), "Clear button is not visible");
 			$editor.remove();
 		});
 	});
