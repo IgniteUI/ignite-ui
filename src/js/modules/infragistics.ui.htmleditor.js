@@ -3300,7 +3300,8 @@
                     // or typing something to trigger onSelectionChange
                     // A.K August 8th, 2016 Bug #219768 Toolbar button does not work properly for a selected content range if a
                     // text is initially selected by double-tapping, and the selection is changed by mouse dragging.
-                    if (this._selection.focusNode.nodeType !== 3) {
+                    if (this._selection && this._selection.focusNode &&
+                        this._selection.focusNode.nodeType !== this.NODE._Text) {
                         this._updateSelection(this._range);
                     }
                 } else {
