@@ -858,7 +858,7 @@
 			$("#readonlyEditor").igNumericEditor("option", "value", 19);
 			equal($("#readonlyEditor").igNumericEditor("option", "value"), 19, "Value not changed");
 			$("#readonlyEditor").igNumericEditor("option", "value", "abcde");
-			equal($("#readonlyEditor").igNumericEditor("option", "value"), "abcde", "Value should be empty string");
+			equal($("#readonlyEditor").igNumericEditor("option", "value"), 19, "Value should be reverted to the previous value");
 
 			throws( function() {
 					$("#readonlyEditor").igNumericEditor("option", "visibleItemsCount", 3);
