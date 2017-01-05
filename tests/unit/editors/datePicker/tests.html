@@ -392,7 +392,18 @@
 				$editor.remove();
 			});
 
-		var testId = 'Testing different dataMode formats';
+			var testId = 'Clear button state';
+			test(testId, 2, function () {
+				var $editor;
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ buttonType: "clear" });
+				ok(!$editor.igDatePicker("clearButton").is(":visible"), "Clear button is not hidden");
+				$editor.igDatePicker("value", new Date());
+				ok($editor.igDatePicker("clearButton").is(":visible"), "Clear button is not visible");
+				$editor.remove();
+			});
+
+			var testId = 'Testing different dataMode formats';
 			test(testId, 28, function () {
 				var $dtPicker;
 
