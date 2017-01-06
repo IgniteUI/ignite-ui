@@ -4195,12 +4195,16 @@
             if (options.multiSelection.enabled) {
                 startValue = _options.keyNavItemData;
             } else {
-                startValue = _options
-                    .selectedData[ _options.selectedData.length - 1 ][ options.valueKey ];
+                // R.K. 6th of January 2017 #709: Combo throws exception when keypress event is fired in dropdown mode
+                if (_options.selectedData.length < 1) {
+                    startValue = 0;
+                } else {
+                    startValue = _options
+                        .selectedData[ _options.selectedData.length - 1 ][ options.valueKey ];
+                }
             }
 
             startIndex = this._dataIndexByValue(startValue, true);
-
             if (_options.dropDownModeSearchBy.length === 1) {
 
                 // Start from next item when the search string is only single character long
@@ -4218,7 +4222,6 @@
                         _options.dropDownModeSearchBy =
                             _options.dropDownModeSearchBy.toLowerCase();
                     }
-
                     if (curText.startsWith(_options.dropDownModeSearchBy)) {
                         if (options.multiSelection.enabled) {
                             this._setKeyNavigationItem({
