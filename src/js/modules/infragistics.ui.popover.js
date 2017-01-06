@@ -46,13 +46,17 @@
 			/* type="bool" controls whether the popover will close on blur or not */
 			closeOnBlur: true,
 			/* type="auto|left|right|top|bottom" controls the direction in which the control shows relative to the target element
-				auto type="string" lets the control show on the side where enough space is available with the following priority top > bottom > right > left
+				auto type="string" lets the control show on the side where enough space is available with the priority specified by the [directionPriority](ui.igpopover#options:directionPriority) property
 				left type="string" shows popover on the left side of the target element
 				right type="string" shows popover on the right side of the target element
 				top type="string" shows popover on the top of the target element
 				bottom type="string" shows popover on the bottom of the target element
 			*/
 			direction: "auto",
+			/* type="array" Controls the priority in which the control searches for space to show relative to the target element.
+				This property has effect only if the [direction](ui.igpopover#options:direction) property value is "auto" or unset.
+			*/
+			directionPriority: [ "bottom", "top", "right", "left" ],
 			/* type="auto|balanced|start|end" controls the position of the popover according to the target element in case the popover is larger than the target on the side we want to position, if the popover is smaller it should always be in the middle of the visible area
 				auto type="string" lets the control choose a position depending on available space with the following priority balanced > end > start
 				balanced type="string" the popover is positioned at the middle of the target element
@@ -162,38 +166,38 @@
 				this.options.selectors === undefined ) ?
 				this.element :
 				null;
-			this._priorityDir = [ "bottom", "top", "right", "left" ];
-			this._arrowDir = [ "top", "bottom", "left", "right" ];
+			this._arrowDir = {
+				"bottom": "top",
+				"top": "bottom", 
+				"right": "left",
+				"left":"right"
+			};
 			this._positions = [ "balanced", "start", "end" ];
-			this._directionIndex = -1;
-			this._positionIndex = -1;
 			this._visible = false;
 			$( window ).on( "resize.popover", $.proxy( this._resizeHandler, this ) );
 		},
 		_createWidget: function (options, element) {
+			// initialization performance will be better if we don't try to normalize the defaults
+			if (options.directionPriority !== this.options.directionPriority) {
+				this._dp = this._normalizePriority(this.options.directionPriority);
+			} else {
+				this._dp = this.options.directionPriority;
+			}
 			$.Widget.prototype._createWidget.apply(this, arguments);
 			this.element = $(element);
 			if (element && element.nodeType !== undefined) {
 				this._renderPopover();
-			}
-			if (this.options.direction !== "auto" || this.options.position !== "auto") {
-				this._getPrioritiesIndex();
 			}
 		},
 		_setOption: function (key, value) {
 			switch (key) {
 				case "direction":
 					this.options.direction = value;
-					if (this.options.direction !== "auto") {
-						this._getPrioritiesIndex();
-					}
 					this._resizeHandler();
 					break;
-				case "position":
-					this.options.position = value;
-					if (this.options.position !== "auto") {
-						this._getPrioritiesIndex();
-					}
+				case "directionPriority":
+					this.options.directionPriority = value;
+					this._dp = this._normalizePriority(this.options.directionPriority);
 					break;
 				case "contentTemplate":
 					if (typeof value === "string") {
@@ -317,13 +321,12 @@
 			}
 			/* T.G 12 Dec 2013 Fix 159000 - Arrow is separated from the inner frame */
 			if (this.options.direction !== "auto") {
-				this._getPrioritiesIndex();
 				this.arrow = $("<div></div>")
-					.addClass(this.css.arrowBaseClass + this._arrowDir[ this._directionIndex ])
+					.addClass(this.css.arrowBaseClass + this._arrowDir[ this.options.direction ])
 					.appendTo(this.popover);
 				if (this.id()) {
 					this.arrow.attr("id", this.id() + "_popover_arrow");
-			}
+				}
 			}
 			this.popover.appendTo(this.options.appendTo);
 			this._attachEventsToTarget();
@@ -391,13 +394,13 @@
 			  .css("clear", "both")
 			  .appendTo(cnt);
 		},
-		_updateArrowDiv: function (nDir, idx, trg) {
+		_updateArrowDiv: function (nDir, trg) {
 			var conDiv = this.contentInner.parent(),
 				dims;
 			if (!this.arrow) {
 				/* T.G 12 Dec 2013 Fix 159000 - Arrow is separated from the inner frame */
 				this.arrow = $("<div></div>")
-					.addClass(this.css.arrowBaseClass + this._arrowDir[ idx ])
+					.addClass(this.css.arrowBaseClass + this._arrowDir[ nDir ])
 					.appendTo(this.popover);
 				if (this.id()) {
 					this.arrow.attr("id", this.id() + "_popover_arrow");
@@ -408,7 +411,7 @@
 						"ui-igpopover-arrow-right " +
 						"ui-igpopover-arrow-bottom " +
 						"ui-igpopover-arrow-top")
-					.addClass(this.css.arrowBaseClass + this._arrowDir[ idx ]);
+					.addClass(this.css.arrowBaseClass + this._arrowDir[ nDir ]);
 			}
 			dims = this._getHiddenElementsDimensions([ this.arrow, conDiv ], trg);
 			/* Arrow should be positioned according to target, not according to content div. */
@@ -608,27 +611,27 @@
 			var i = 0, fn, fnRes;
 			if (this.options.direction === "auto") {
 				do {
-					this._updateArrowDiv(this._priorityDir[ i ], i, trg);
-					fn = "_" + this._priorityDir[ i ] + "Position";
+					this._updateArrowDiv(this._dp[ i ], trg);
+					fn = "_" + this._dp[ i ] + "Position";
 					fnRes = this[ fn ](trg);
 					i++;
-				} while (fnRes === false && i < this._priorityDir.length);
+				} while (fnRes === false && i < this._dp.length);
 				if (fnRes === false) {
 					/* "Couldn't find space anywhere. Please exceed screen dimensions" */
 					return;
 				}
 			} else {
-				this._updateArrowDiv(this.options.direction, this._directionIndex, trg);
+				this._updateArrowDiv(this.options.direction, trg);
 				fn = "_" + this.options.direction + "Position";
 				if (!this[ fn ](trg)) {
 					/* && (this.options.selectors || !this._target) */
 					/* trying to find a place on the screen if there is no space to show with the position set */
 					do {
-						this._updateArrowDiv(this._priorityDir[ i ], i, trg);
-						fn = "_" + this._priorityDir[ i ] + "Position";
+						this._updateArrowDiv(this._dp[ i ], trg);
+						fn = "_" + this._dp[ i ] + "Position";
 						fnRes = this[ fn ](trg);
 						i++;
-					} while (fnRes === false && i < this._priorityDir.length);
+					} while (fnRes === false && i < this._dp.length);
 					return;
 				}
 			}
@@ -823,10 +826,10 @@
 				topBoundary = 0;
 			}
 			if (left < leftBoundary) {
-				if (this.oDir === "left") {
-					return false;
-				}
 				left = leftBoundary;
+			}
+			if (top < topBoundary) {
+				top = topBoundary;
 			}
 			/*D.K. 7 Apr 2015 Fix for bug #190611: When direction is right and mouse over the last column popover is shown to the cell on the left
 			When the direction is right, don't recalculate 'left', show it even if it is in the invisible area */
@@ -866,24 +869,17 @@
 			});
 			return true;
 		},
-		_getPrioritiesIndex: function () {
-			var i;
-			if (this.options.direction !== "auto") {
-				for (i = 0; i < this._priorityDir.length; i++) {
-					if (this.options.direction === this._priorityDir[ i ]) {
-						this._directionIndex = i;
-						break;
-					}
+		_normalizePriority: function (priority) {
+			var dp = [ "bottom", "top", "right", "left" ], np = [], i;
+			if (!$.isArray(priority)) {
+				return dp;
+			}
+			for (i = 0; i < priority.length; i++) {
+				if ($.inArray(priority[i].toLowerCase(), dp) > -1) {
+					np.push(priority[i]);
 				}
 			}
-			if (this.options.position !== "auto") {
-				for (i = 0; i < this._positions.length; i++) {
-					if (this.options.position === this._positions[ i ]) {
-						this._positionIndex = i;
-						break;
-					}
-				}
-			}
+			return np.length ? np : dp;
 		},
 		_openPopover: function (trg, skipEvents) {
 			var args, noCancel, val = this.getContent(), self = this;
