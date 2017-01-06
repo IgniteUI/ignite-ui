@@ -4194,12 +4194,8 @@
                 startValue = _options.keyNavItemData;
             } else {
                 // R.K. 6th of January 2017 #709: Combo throws exception when keypress event is fired in dropdown mode
-                if (_options.selectedData.length < 1) {
-                    startValue = 0;
-                } else {
-                    startValue = _options
-                        .selectedData[ _options.selectedData.length - 1 ][ options.valueKey ];
-                }
+                startValue = _options.selectedData.length ?
+                _options.selectedData[ _options.selectedData.length - 1 ][ options.valueKey ] : 0;
             }
 
             startIndex = this._dataIndexByValue(startValue, true);
