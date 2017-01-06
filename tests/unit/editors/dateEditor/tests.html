@@ -1780,6 +1780,17 @@
 				equal(newDate.getMilliseconds(), 599, "The minutes, seconds and milliseconds are not set to 0");
 				$dtEditor.remove();
 			});
+
+			var testId = 'Clear button state';
+			test(testId, 2, function () {
+				var $editor;
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igDateEditor({ buttonType: "clear" });
+				ok(!$editor.igDateEditor("clearButton").is(":visible"), "Clear button is not hidden");
+				$editor.igDateEditor("value", new Date());
+				ok($editor.igDateEditor("clearButton").is(":visible"), "Clear button is not visible");
+				$editor.remove();
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {

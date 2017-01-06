@@ -1081,6 +1081,9 @@
 			} else {
 				return this.options.value;
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		field: function () {
 			/* Gets the input element of the editor.
@@ -5593,6 +5596,7 @@
 					if (this.options.revertIfNotValid &&
 					!(newValue === null && this.options.allowNullValue)) {
 						newValue = this._valueInput.val();
+						this._updateValue(newValue);
 					} else {
 						this._clearValue();
 					}
@@ -5605,6 +5609,9 @@
 			} else {
 				return this.options.value;
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		findListItemIndex: function (number) {
 			/* Finds index of list item by text that matches with the search parameters.
@@ -7351,6 +7358,9 @@
 			} else {
 				return this.options.value;
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		dropDownContainer: function () {
 			/*@Ignored@*/
@@ -10439,6 +10449,9 @@
 					return this.options.value;
 				}
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		getSelectedDate: function() {
 			/* Gets selected date.

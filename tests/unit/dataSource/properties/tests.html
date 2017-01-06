@@ -1019,15 +1019,19 @@
 				"Verify that all parameters were properly encoded.");
 	 		
 	 		dsFilter.settings.filtering.filterExprUrlKey = null;
-			var prevMonth = date.getMonth() % 12;
-	 		var currMonth = date.getMonth() % 12 + 1;
-			var nextMonth = currMonth % 12  + 1;
-			var nYear = date.getMonth() + 1 === 12 ? date.getFullYear() + 1 : date.getFullYear();
+			var prevMonthDate = new Date(new Date(ticks).setMonth(-1));
+			var nextMonthDate = new Date(new Date(ticks).setMonth(new Date(ticks).getMonth() + 1));
 
-	 		var params = unescape($.param(dsFilter._encodeUrl()));
-	 		equal(params,
+			var prevMonth = prevMonthDate.getMonth() + 1;
+	 		var currMonth = date.getMonth() + 1;
+			var nextMonth = nextMonthDate.getMonth() + 1;
+			var nYear = nextMonthDate.getFullYear();
+			var prevMonthYear = prevMonthDate.getFullYear();
+
+			var params = unescape($.param(dsFilter._encodeUrl()));
+			equal(params,
 				"$filter=day(Date) eq " + date.getDate().toString() + " and month(Date) eq " + currMonth.toString() + " and year(Date) eq " + date.getFullYear().toString() +
-				" and month(Date2) eq " + prevMonth.toString() + " and year(Date2) eq " + date.getFullYear().toString() + " and month(Date3) eq " +
+				" and month(Date2) eq " + prevMonth.toString() + " and year(Date2) eq " + prevMonthYear.toString() + " and month(Date3) eq " +
 				nextMonth.toString() + " and year(Date3) eq " + nYear.toString() +
 				" and Boolean eq true and Boolean2 eq false and tolower(String) ne 'a' and Boolean3 ne true");
 

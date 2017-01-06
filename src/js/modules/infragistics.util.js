@@ -5619,6 +5619,22 @@
 			return new RegExp(regexpString, modifiers);
 		};
 	})();
+	
+	$.ig.util.appendToQueryString = function (url, str) {
+		if (url.indexOf("?") !== -1) {
+			url += "&";
+		} else {
+			url += "?";
+		}
+		url += str;
+		return url;
+	};
+
+	$.ig.util.prependToQueryString = function (url, str) {
+		var mainUrl = url.substring(0, url.indexOf("?")),
+			queryStr = url.substring(url.indexOf("?"), url.length);
+		return mainUrl + str + queryStr;
+	};
 
 	//jscs:enable
 	$.ig.util.netRegexToJS = function (netPattern) {
