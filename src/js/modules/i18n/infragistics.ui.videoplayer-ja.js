@@ -49,7 +49,8 @@
 			    nonDivException: 'Infragistics HTML5 ビデオ プレーヤーは DIV タグのみにインスタンス化できます。',
 			    relatedVideos: '関連ビデオ',
 			    replayButton: '再生',
-			    replayTooltip: 'クリックすると、前回再生したビデオを再生します'
+			    replayTooltip: 'クリックすると、前回再生したビデオを再生します',
+				noCommercials: 'ブラウザー コントロールでコマーシャルはサポートされません。'
 		    }
 	    });
 
