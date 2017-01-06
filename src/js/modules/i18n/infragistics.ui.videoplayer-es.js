@@ -49,7 +49,8 @@
 			    nonDivException: 'El Reproductor de vídeo Infragistics HTML5 solo puede instanciarse en una etiqueta DIV.',
 			    relatedVideos: 'VÍDEOS RELACIONADOS',
 			    replayButton: 'Volver a reproducir',
-			    replayTooltip: 'Haga clic para volver a reproducir el último vídeo.'
+			    replayTooltip: 'Haga clic para volver a reproducir el último vídeo.',
+				noCommercials: 'Browser controls does not support commercials'
 		    }
 	    });
 

@@ -49,7 +49,8 @@
 			    nonDivException: 'Infragistics HTML5 Video Player может быть определен только через DIV элемент.',
 			    relatedVideos: 'ПОХОЖИЕ КЛИПЫ',
 			    replayButton: 'Еще раз',
-			    replayTooltip: 'Щелкнить чтобы посмотреть еще раз.'
+			    replayTooltip: 'Щелкнить чтобы посмотреть еще раз.',
+				noCommercials: 'Browser controls does not support commercials'
 		    }
 	    });
 
