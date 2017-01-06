@@ -96,6 +96,13 @@
 			equal("Bar", $.ig.TestPublicEnum.prototype.getBox(1).toString(), "Simple public enum member - ToString.");
 			equal("Bar", $.ig.Enum.prototype.parse($.ig.TestPublicEnum.prototype.$type, "bar", true).toString(), "Simple public enum member - Parse");
 		});
+		test("Test appendToQueryString and prependToQueryString util functions", function () {
+			var url = "http://services.odata.org/V2/Northwind/Northwind.svc/Customers?$format=json&%24skip=0&%24top=25&%24inlinecount=allpages&dbdepth=0&pk=CustomerID";
+			var newUrl = $.ig.util.appendToQueryString(url, "additionalParam=1");
+			equal(newUrl, "http://services.odata.org/V2/Northwind/Northwind.svc/Customers?$format=json&%24skip=0&%24top=25&%24inlinecount=allpages&dbdepth=0&pk=CustomerID&additionalParam=1", "Verify url is correct and the new param is appended.");
+			newUrl = $.ig.util.prependToQueryString (url, "('ALFKI')/Orders");
+			equal(newUrl, "http://services.odata.org/V2/Northwind/Northwind.svc/Customers('ALFKI')/Orders?$format=json&%24skip=0&%24top=25&%24inlinecount=allpages&dbdepth=0&pk=CustomerID","Verify url is correct and the new string is prepended.");
+		});
 	</script>
 </head>
 <body>
