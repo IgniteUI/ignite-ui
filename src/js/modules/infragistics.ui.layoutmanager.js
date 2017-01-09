@@ -1937,7 +1937,7 @@
                 }
                 footer.addClass(this.css.borderItem).addClass(this.css.borderFooter);
                 
-                if (header.length === 0 && bl.showHeader) {
+                if (header.length === 0) {
                     this._trigger(this.events.itemRendering, null, { region: "header" });
                     header = $("<div></div>").appendTo(this.element);
                     this._removeHeader = true;
