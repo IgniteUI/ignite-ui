@@ -2013,7 +2013,7 @@
                     isHeaderHidden, isFooterHidden,
                     _bl = this._opt.borderLayout;
                 if (_bl.header.length) {
-                    isHeaderHidden = _bl.header.hasClass(this.css.borderItemHidden)
+                    isHeaderHidden = _bl.header.hasClass(this.css.borderItemHidden);
                     headerHeight = isHeaderHidden ? 0 : _bl.header.outerHeight(true);
                     if (_bl.paddingTop !== headerHeight) {
                         _bl.paddingTop = headerHeight;
@@ -2021,7 +2021,7 @@
                     }
                 }
                 if (_bl.footer.length) {
-                    isFooterHidden = _bl.footer.hasClass(this.css.borderItemHidden),
+                    isFooterHidden = _bl.footer.hasClass(this.css.borderItemHidden);
                     footerHeight = isFooterHidden ? 0 : _bl.footer.outerHeight(true);
                     if (_bl.paddingBottom !== footerHeight) {
                         _bl.paddingBottom = footerHeight;
