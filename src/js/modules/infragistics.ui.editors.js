@@ -9013,7 +9013,7 @@
 			}
 			return newDate;
 		},
-		_setDateOffset: function(date) {
+		_clearDateOffset: function(date) {
 			date.setUTCMinutes(date.getUTCMinutes() -
 				date.getTimezoneOffset() - this.options.displayTimeOffset);
 		},
@@ -9262,7 +9262,7 @@
 			}
 
 			if (this.options.displayTimeOffset !== null) {
-				this._setDateOffset(extractedDate);
+				this._clearDateOffset(extractedDate);
 			}
 			return extractedDate;
 
@@ -10709,11 +10709,13 @@
 					}
 
 					if (self.options.displayTimeOffset !== null) {
-						self._setDateOffset(dateFromPicker);
-						date.setUTCFullYear(dateFromPicker.getUTCFullYear());
+						// use display values to set picker result and reset before processing
+						date = self._getDateOffset(date);
+						date.setFullYear(dateFromPicker.getFullYear());
 						date.setDate(15);
-						date.setUTCMonth(dateFromPicker.getMonth());
-						date.setUTCDate(dateFromPicker.getDate());
+						date.setMonth(dateFromPicker.getMonth());
+						date.setDate(dateFromPicker.getDate());
+						self._clearDateOffset(date);
 					} else {
 						self._setDateField("Year", date, dateFromPicker.getFullYear());
 
