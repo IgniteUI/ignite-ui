@@ -5439,12 +5439,7 @@
 				if (this._focused) {
 
 					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
-						case "fractional": {
-							this._spinUp();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
+						case "fractional":
 						case "integer": {
 							this._spinUp();
 							this._setSelectionRange(this._editorInput[ 0 ],
@@ -5474,12 +5469,8 @@
 			if (this.options.dataMode === "double" || this.options.dataMode === "float") {
 				if (this._focused) {
 					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
-						case "fractional": {
-							this._spinDown();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
+						case "fractional":
+						// TODO: DELETE
 						case "integer": {
 							this._spinDown();
 							this._setSelectionRange(this._editorInput[ 0 ],
