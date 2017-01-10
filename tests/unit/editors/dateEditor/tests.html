@@ -122,28 +122,28 @@
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "HH:mm:ss:f",
-						dateDispalyFormat: "HH:mm:ss:f",
+						dateDisplayFormat: "HH:mm:ss:f",
 						value: new Date(2015, 10, 11, 23, 5, 10)
 					});
 					$("#inputEditor17").igDateEditor({
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "HH:mm:ss:ff",
-						dateDispalyFormat: "HH:mm:ss:ff",
+						dateDisplayFormat: "HH:mm:ss:ff",
 						value: new Date(2015, 10, 11, 23, 5, 10)
 					});
 					$("#inputEditor18").igDateEditor({
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "HH:mm:ss:fff",
-						dateDispalyFormat: "HH:mm:ss:fff",
+						dateDisplayFormat: "HH:mm:ss:fff",
 						value: new Date(2015, 10, 11, 23, 5, 10)
 					});
 					$("#inputEditor19").igDateEditor({
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 10, 11, 23, 5, 10)
 					});
 
@@ -151,7 +151,7 @@
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 10, 30, 23, 59, 59)
 					});
 
@@ -159,7 +159,7 @@
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 0, 1, 0, 1, 1)
 					});
 					$("#inputEditor22").igDateEditor({
@@ -167,7 +167,7 @@
 						buttonType: "spin",
 						limitSpinToCurrentField: true,
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 10, 30, 23, 59, 59)
 					});
 
@@ -176,7 +176,7 @@
 						width: 300,
 						limitSpinToCurrentField: true,
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 0, 1, 0, 0, 0)
 					});
 
@@ -694,6 +694,86 @@
 				}, 200);
 			});
 
+			var testId = 'Spin seconds, munites, hours, days, months, years display mode';
+			test(testId, 10, function () {
+				var $editor, $spinButton, expectedValue;
+
+				// spin seconds:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "MM HH:mm:ss",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinUpButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2015, 10, 11, 23, 5, 11);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin seconds did not increment value correctly");
+				equal($editor.igDateEditor("displayValue"), "11 23:05:11", "Spin seconds did not increment display correctly");
+				$editor.remove();
+
+				// spin minutes:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "yyyy MM HH:mm",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinUpButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2015, 10, 11, 23, 6, 10);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin minutes did not increment value correctly");
+				equal($editor.igDateEditor("displayValue"), "2015 11 23:06", "Spin minutes did not increment display correctly");
+				$editor.remove();
+
+				// spin hours:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "yyyy MM HH",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinDownButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2015, 10, 11, 22, 5, 10);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin hours did not decrement value correctly");
+				equal($editor.igDateEditor("displayValue"), "2015 11 22", "Spin hours did not decrement display correctly");
+				$editor.remove();
+
+				// spin month:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "yyyy MM",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinDownButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2015, 9, 11, 23, 5, 10);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin month did not decrement value correctly");
+				equal($editor.igDateEditor("displayValue"), "2015 10", "Spin month did not decrement display correctly");
+				$editor.remove();
+
+				// spin year:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "yyyy",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinUpButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2016, 10, 11, 23, 5, 10);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin year did not increment value correctly");
+				equal($editor.igDateEditor("displayValue"), "2016", "Spin year did not increment display correctly");
+				$editor.remove();
+			});
+
 			var testId = '(Issue #342) Testing spin munites, hours';
 			test(testId, 1, function () {
 				var $dtEditor = $('#spinHourMinutes');
@@ -1016,6 +1096,84 @@
 					},200);
 					},200);
 				}, 100);
+			});
+
+			var testId = 'Test backspace/delete while editing';
+			test(testId, 17, function(){
+				var $editor = $('<input />')
+					.appendTo("#testBedContainer")
+					.igDateEditor({
+						value: new Date(),
+						dateInputFormat: "M/d/yyyy tt"
+					}),
+					$field = $editor.igDateEditor("field");
+
+				$field.focus();				
+				stop();
+				setTimeout(function() {
+					start();
+					//backspace delete:
+					keyDownChar(8, $field);
+					equal($field.val(), "__/__/____ __", "Backspace did not clear the editor input.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 0), "Cursor not at start after backspace.");
+					
+					$field.val("11/12/1112 AM");
+					$field[0].setSelectionRange(5,5);
+					keyDownChar(8, $field);
+					equal($field.val(), "11/1_/1112 AM", "Backspace did not delete character.");
+					keyDownChar(8, $field);
+					equal($field.val(), "11/__/1112 AM", "Backspace did not delete character.");
+
+					$field.val("11/12/1112 AM");
+					$field[0].setSelectionRange(13,13);
+					keyDownChar(8, $field);
+					equal($field.val(), "11/12/1112 __", "Backspace after AM/PM did not delete the entire time period.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 11), "Cursor not positioned before time period after delete.");
+
+					$field.val("11/12/2345 AM");
+					$field[0].setSelectionRange(12,12);
+					keyDownChar(8, $field);
+					equal($field.val(), "11/12/2345 __", "Backspace on AM/PM did not delete the entire time period.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 11), "Cursor not positioned before time period after delete.");
+
+					//delete :
+					$field.val("10/10/1010 PM");
+					$field[0].select();
+					keyDownChar(46, $field);
+					equal($field.val(), "__/__/____ __", "Delete did not clear the editor input.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 13), "Cursor not at end after delete.");
+
+					$field.val("11/12/1112 AM");
+					$field[0].setSelectionRange(3,3);
+					keyDownChar(46, $field);
+					equal($field.val(), "11/_2/1112 AM", "Delete did not delete character.");
+					keyDownChar(46, $field);
+					equal($field.val(), "11/__/1112 AM", "Delete did not delete character.");
+					
+					$field.val("11/12/1112 AM");
+					$field[0].setSelectionRange(13,13);
+					keyDownChar(46, $field);
+					equal($field.val(), "11/12/1112 AM", "Delete should not result in action at the end of input.");
+					
+					$field[0].setSelectionRange(11,11);
+					keyDownChar(46, $field);
+					equal($field.val(), "11/12/1112 __", "Delete before AM/PM did not delete the entire time period.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 13), "Cursor not positioned after time period on delete.");
+					
+					$field.val("11/12/2345 AM");
+					$field[0].setSelectionRange(12,12);
+					keyDownChar(46, $field);
+					equal($field.val(), "11/12/2345 __", "Delete on AM/PM did not delete the entire time period.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 13), "Cursor not positioned before time period after delete.");
+
+					$editor.remove();
+				}, 150);
 			});
 
 			var testId = 'Replacing displayed value';

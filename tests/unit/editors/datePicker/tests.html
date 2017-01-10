@@ -562,6 +562,78 @@
 				$dtPicker.remove();
 			});
 
+			testId = "Apply different displayTimeOffset on picker display/values";
+			test(testId, 12, function(){
+				var today = new Date(),
+					todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+					pickerTestOpts = [{
+						picker: {
+							displayTimeOffset: 240,
+							value : new Date("2009-09-07T21:00:00.000Z"),
+						},
+						date: "9/8/2009",
+						day: "8",
+						nextDate: "9/9/2009",
+						nextValue: "2009-09-08T21:00:00.000Z"
+					}, {
+						picker: {
+							displayTimeOffset: -300,
+							value : new Date("2017-01-08T15:00:00.000Z"),
+						},
+						date: "1/8/2017",
+						day: "8",
+						nextDate: "1/9/2017",
+						nextValue: "2017-01-09T15:00:00.000Z"
+					}, {
+						picker: {
+							displayTimeOffset: -120
+						},
+						date: "",
+						day: "",
+						nextDate: (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear(),
+						nextValue: today.toISOString().split("T")[0] + "T22:00:00.000Z"
+					}],
+					testWithOptions = function(opts) {
+						if (!opts) {
+							return;
+						}
+						var $editor = $("<input />")
+								.appendTo("#testBedContainer")
+								.igDatePicker(opts.picker),
+							$pickerButton = $editor.igDatePicker("dropDownButton"),
+							$calendar = $editor.igDatePicker( "getCalendar" ),
+							$currentDay;
+
+						equal($editor.igDatePicker("displayValue"), opts.date, "Displayed date should be the " + opts.date + " witn offset");
+						$pickerButton.click();
+						stop();
+						setTimeout(function () {
+							start();
+							$currentDay = $(".ui-datepicker-current-day", $calendar);
+								
+							equal($currentDay.text(), opts.day, "Displayed calendar day not corrent with offset");
+							
+							if(!$currentDay.length) {
+								$currentDay = $(".ui-datepicker-today", $calendar);
+								$currentDay.click();
+							} else {
+								$currentDay.next().click();
+							}
+							
+							stop();
+							setTimeout(function () {
+								start();
+								equal($editor.igDatePicker("displayValue"), opts.nextDate, "Displayed day should be the " + opts.nextDate);
+								equal($editor.igDatePicker("value").toISOString(), opts.nextValue, "Value should match " + opts.nextValue + " in UTC");				
+								$editor.remove();
+								testWithOptions(pickerTestOpts.pop());
+							}, 200);
+						}, 200);
+					}
+				 
+				testWithOptions(pickerTestOpts.pop());
+			});
+
 	    });
 		function mouseInteraction(type, element) {
 		    // create a mouse click event
