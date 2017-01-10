@@ -10720,26 +10720,26 @@
 					if (self._dateObjectValue) {
 
 						// Date comming from the picker contains only year, month and date - if the user has specified inputMask with hours and minutes - then selecting the date from the picker should keep the same hours and minutes.
-						date = new Date(self._dateObjectValue);
+						if (self.options.displayTimeOffset !== null) {
+
+							// use display values to set picker result and reset before processing
+							date = self._getDateOffset(self._dateObjectValue);
+						} else {
+							date = new Date(self._dateObjectValue);
+						}
 					} else {
 						date = self._setNewDateMidnight();
 					}
 
-					if (self.options.displayTimeOffset !== null) {
-						// use display values to set picker result and reset before processing
-						date = self._getDateOffset(date);
-						date.setFullYear(dateFromPicker.getFullYear());
-						date.setDate(15);
-						date.setMonth(dateFromPicker.getMonth());
-						date.setDate(dateFromPicker.getDate());
-						self._clearDateOffset(date);
-					} else {
-						self._setDateField("Year", date, dateFromPicker.getFullYear());
+					self._setDateField("Year", date, dateFromPicker.getFullYear());
 
-						//Temporary change the date to be in the middle of the month 15th, because when using JavaScript Date object to set month when date is 31, the date object is moved with one day.
-						self._setDateField("Date", date, 15);
-						self._setDateField("Month", date, dateFromPicker.getMonth());
-						self._setDateField("Date", date, dateFromPicker.getDate());
+					//Temporary change the date to be in the middle of the month 15th, because when using JavaScript Date object to set month when date is 31, the date object is moved with one day.
+					self._setDateField("Date", date, 15);
+					self._setDateField("Month", date, dateFromPicker.getMonth());
+					self._setDateField("Date", date, dateFromPicker.getDate());
+
+					if (self.options.displayTimeOffset !== null) {
+						self._clearDateOffset(date);
 					}
 
 					self._processValueChanging(date);
