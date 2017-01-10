@@ -9583,14 +9583,18 @@
 			}
 		},
 		_handleDeleteKey: function (skipCursorPosition) { //igDateEditor
-			var cursorPosition;
+			var cursorPosition = this._getSelection(this._editorInput[ 0 ]).start;
+			if (cursorPosition === this._maskWithPrompts.length) {
+				// D.P. Should do nothing at end of input
+				return;
+			}
 			this._super(skipCursorPosition);
 			cursorPosition = this._getSelection(this._editorInput[ 0 ]).start;
 			if ((cursorPosition - 2) === this._dateIndices.tt ||
 				(cursorPosition - 1) === this._dateIndices.tt) {
 				if (this._dateIndices._ttLength === 2) {
 					if ((cursorPosition - 1) === this._dateIndices.tt) {
-						this._super();
+						this._super(skipCursorPosition);
 					} else {
 						if (!skipCursorPosition) {
 							this._setCursorPosition(cursorPosition - 1);

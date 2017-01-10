@@ -1098,6 +1098,84 @@
 				}, 100);
 			});
 
+			var testId = 'Test backspace/delete while editing';
+			test(testId, 17, function(){
+				var $editor = $('<input />')
+					.appendTo("#testBedContainer")
+					.igDateEditor({
+						value: new Date(),
+						dateInputFormat: "M/d/yyyy tt"
+					}),
+					$field = $editor.igDateEditor("field");
+
+				$field.focus();				
+				stop();
+				setTimeout(function() {
+					start();
+					//backspace delete:
+					keyDownChar(8, $field);
+					equal($field.val(), "__/__/____ __", "Backspace did not clear the editor input.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 0), "Cursor not at start after backspace.");
+					
+					$field.val("11/12/1112 AM");
+					$field[0].setSelectionRange(5,5);
+					keyDownChar(8, $field);
+					equal($field.val(), "11/1_/1112 AM", "Backspace did not delete character.");
+					keyDownChar(8, $field);
+					equal($field.val(), "11/__/1112 AM", "Backspace did not delete character.");
+
+					$field.val("11/12/1112 AM");
+					$field[0].setSelectionRange(13,13);
+					keyDownChar(8, $field);
+					equal($field.val(), "11/12/1112 __", "Backspace after AM/PM did not delete the entire time period.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 11), "Cursor not positioned before time period after delete.");
+
+					$field.val("11/12/2345 AM");
+					$field[0].setSelectionRange(12,12);
+					keyDownChar(8, $field);
+					equal($field.val(), "11/12/2345 __", "Backspace on AM/PM did not delete the entire time period.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 11), "Cursor not positioned before time period after delete.");
+
+					//delete :
+					$field.val("10/10/1010 PM");
+					$field[0].select();
+					keyDownChar(46, $field);
+					equal($field.val(), "__/__/____ __", "Delete did not clear the editor input.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 13), "Cursor not at end after delete.");
+
+					$field.val("11/12/1112 AM");
+					$field[0].setSelectionRange(3,3);
+					keyDownChar(46, $field);
+					equal($field.val(), "11/_2/1112 AM", "Delete did not delete character.");
+					keyDownChar(46, $field);
+					equal($field.val(), "11/__/1112 AM", "Delete did not delete character.");
+					
+					$field.val("11/12/1112 AM");
+					$field[0].setSelectionRange(13,13);
+					keyDownChar(46, $field);
+					equal($field.val(), "11/12/1112 AM", "Delete should not result in action at the end of input.");
+					
+					$field[0].setSelectionRange(11,11);
+					keyDownChar(46, $field);
+					equal($field.val(), "11/12/1112 __", "Delete before AM/PM did not delete the entire time period.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 13), "Cursor not positioned after time period on delete.");
+					
+					$field.val("11/12/2345 AM");
+					$field[0].setSelectionRange(12,12);
+					keyDownChar(46, $field);
+					equal($field.val(), "11/12/2345 __", "Delete on AM/PM did not delete the entire time period.");
+					ok(($field[0].selectionStart === $field[0].selectionEnd)
+						&& ($field[0].selectionStart === 13), "Cursor not positioned before time period after delete.");
+
+					$editor.remove();
+				}, 150);
+			});
+
 			var testId = 'Replacing displayed value';
 			test(testId, 1, function(){
 				var currentValue = $("#inputEditor27").igDateEditor("value"), changedValue;
