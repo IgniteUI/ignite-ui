@@ -473,7 +473,8 @@
                 ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
                 ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
                 ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-bottom" ), 'Popover arrow is not pointing to bottom!' );
-                ok( $( '#notifier_popover' ).offset().top + $( '#notifier_popover' ).height() <= $( '#notifier' ).offset().top,
+                ok( $( '#notifier_popover' ).offset().top + $( '#notifier_popover' ).height() <= $( '#notifier' ).offset().top || 
+                    $( '#notifier_popover' ).offset().top === 0,    // fixed positions may now overlap the container
                     'Popover is not positioned above its target' );
                 ok( $( '#notifier' ).offset().left < $( '#notifier_popover' ).offset().left &&
                 $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() < $( '#notifier' ).offset().left + $( '#notifier' ).width(),

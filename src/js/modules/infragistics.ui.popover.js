@@ -168,7 +168,7 @@
 				null;
 			this._arrowDir = {
 				"bottom": "top",
-				"top": "bottom", 
+				"top": "bottom",
 				"right": "left",
 				"left":"right"
 			};
@@ -700,8 +700,8 @@
 					$.ig.util.offset(trg)[ cPos ];
 				y = leftOffset + trgFDim / 2 - this.popover[ cDim ]() / 2;
 				fnRes = dir === "left" ?
-					this._checkCollision(x, y, trg) :
-					this._checkCollision(y, x, trg);
+					this._checkCollision(x, y, trg, null, this.options.direction !== "auto") :
+					this._checkCollision(y, x, trg, null, this.options.direction !== "auto");
 			} else {
 				fnRes = this.
 					_cyclePossiblePositions(trg, dir, cPos, cDim, trgFDim, useParentOffset, x);
@@ -725,15 +725,15 @@
 					do {
 						tPos = this._positions[ i ];
 						y = this._getCounterPosition(trg, trgFDim, tPos, cPos, cDim, useParentOffset);
-					fnRes = dir === "left" ?
-						this._checkCollision(x, y, trg, useDocument) :
-						this._checkCollision(y, x, trg, useDocument);
+						fnRes = dir === "left" ?
+							this._checkCollision(x, y, trg, useDocument, false) :
+							this._checkCollision(y, x, trg, useDocument, false);
 					} while (fnRes === false && ++i < this._positions.length);
 				} else {
 					y = this._getCounterPosition(trg, trgFDim, this.options.position, cPos, cDim, useParentOffset);
-				fnRes = dir === "left" ?
-					this._checkCollision(x, y, trg, useDocument) :
-					this._checkCollision(y, x, trg, useDocument);
+					fnRes = dir === "left" ?
+						this._checkCollision(x, y, trg, useDocument, true) :
+						this._checkCollision(y, x, trg, useDocument, true);
 			}
 			return fnRes;
 		},
@@ -792,7 +792,7 @@
 			}
 			return this._findProperPosition("top", right, trg);
 		},
-		_checkCollision: function (top, left, trg, useDocument) {
+		_checkCollision: function (top, left, trg, useDocument, allowOverlap) {
 			var tfullw = this.popover.outerWidth(),
 				tfullh = this.popover.outerHeight(),
 				win = $(window), wh, ww, os,
@@ -825,11 +825,13 @@
 				bottomBoundary = $(document).height();
 				topBoundary = 0;
 			}
-			if (left < leftBoundary) {
-				left = leftBoundary;
-			}
-			if (top < topBoundary) {
-				top = topBoundary;
+			if (allowOverlap) {
+				if (left < leftBoundary) {
+					left = leftBoundary;
+				}
+				if (top < topBoundary) {
+					top = topBoundary;
+				}
 			}
 			/*D.K. 7 Apr 2015 Fix for bug #190611: When direction is right and mouse over the last column popover is shown to the cell on the left
 			When the direction is right, don't recalculate 'left', show it even if it is in the invisible area */
@@ -851,7 +853,7 @@
 					top + tfullh > bottomBoundary) {
 				/*D.K. 16 Dec 2014 Fix 186350 - Popover tooltip appears below the grid even when there's not enough space on the page
 				if it is forced we can ignore collisions, otherwise they should be taken into account */
-				if (this.options.direction === "auto") {
+				if (!allowOverlap) {
 					/*  T.G. 29 Jan 2014 Fix 162164- When the element is relative in scrollable container the popover does not change its position when you scroll the container. */
 					return false;
 				}
@@ -875,8 +877,8 @@
 				return dp;
 			}
 			for (i = 0; i < priority.length; i++) {
-				if ($.inArray(priority[i].toLowerCase(), dp) > -1) {
-					np.push(priority[i]);
+				if ($.inArray(priority[ i ].toLowerCase(), dp) > -1) {
+					np.push(priority[ i ]);
 				}
 			}
 			return np.length ? np : dp;
