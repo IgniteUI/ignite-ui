@@ -178,7 +178,7 @@
 		},
 		_createWidget: function (options, element) {
 			// initialization performance will be better if we don't try to normalize the defaults
-			if (options.directionPriority !== this.options.directionPriority) {
+			if (options && options.directionPriority !== this.options.directionPriority) {
 				this._dp = this._normalizePriority(this.options.directionPriority);
 			} else {
 				this._dp = this.options.directionPriority;
