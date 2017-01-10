@@ -801,6 +801,7 @@
 				keydown: $.proxy(this._onKeyDown, this)
 			};
 			this._container.on(this._evts);
+			$(window).on("resize.igscroll_" + this.element[ 0 ].id, $.proxy(this.refresh, this));
 
 			this._updateScrollBarsVisibility();
 			this._hideScrollBars(false);
@@ -3756,6 +3757,7 @@
 				}
 				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id);
 				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id);
+				$(window).off("resize.igscroll_" + this.element[ 0 ].id);
 				$.Widget.prototype.destroy.apply(this, arguments);
 			}
 			return this;
