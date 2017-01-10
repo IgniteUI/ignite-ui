@@ -122,28 +122,28 @@
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "HH:mm:ss:f",
-						dateDispalyFormat: "HH:mm:ss:f",
+						dateDisplayFormat: "HH:mm:ss:f",
 						value: new Date(2015, 10, 11, 23, 5, 10)
 					});
 					$("#inputEditor17").igDateEditor({
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "HH:mm:ss:ff",
-						dateDispalyFormat: "HH:mm:ss:ff",
+						dateDisplayFormat: "HH:mm:ss:ff",
 						value: new Date(2015, 10, 11, 23, 5, 10)
 					});
 					$("#inputEditor18").igDateEditor({
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "HH:mm:ss:fff",
-						dateDispalyFormat: "HH:mm:ss:fff",
+						dateDisplayFormat: "HH:mm:ss:fff",
 						value: new Date(2015, 10, 11, 23, 5, 10)
 					});
 					$("#inputEditor19").igDateEditor({
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 10, 11, 23, 5, 10)
 					});
 
@@ -151,7 +151,7 @@
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 10, 30, 23, 59, 59)
 					});
 
@@ -159,7 +159,7 @@
 						width: 300,
 						buttonType: "spin",
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 0, 1, 0, 1, 1)
 					});
 					$("#inputEditor22").igDateEditor({
@@ -167,7 +167,7 @@
 						buttonType: "spin",
 						limitSpinToCurrentField: true,
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 10, 30, 23, 59, 59)
 					});
 
@@ -176,7 +176,7 @@
 						width: 300,
 						limitSpinToCurrentField: true,
 						dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
-						dateDispalyFormat: "yyyy/MM/dd HH:mm:ss:fff",
+						dateDisplayFormat: "yyyy/MM/dd HH:mm:ss:fff",
 						value: new Date(2015, 0, 1, 0, 0, 0)
 					});
 
@@ -692,6 +692,86 @@
 						equal($dtEditor.igDateEditor("displayValue"), "23:05:10:002", 'The initial value is not as expexted');
 					}, 300);
 				}, 200);
+			});
+
+			var testId = 'Spin seconds, munites, hours, days, months, years display mode';
+			test(testId, 10, function () {
+				var $editor, $spinButton, expectedValue;
+
+				// spin seconds:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "MM HH:mm:ss",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinUpButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2015, 10, 11, 23, 5, 11);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin seconds did not increment value correctly");
+				equal($editor.igDateEditor("displayValue"), "11 23:05:11", "Spin seconds did not increment display correctly");
+				$editor.remove();
+
+				// spin minutes:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "yyyy MM HH:mm",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinUpButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2015, 10, 11, 23, 6, 10);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin minutes did not increment value correctly");
+				equal($editor.igDateEditor("displayValue"), "2015 11 23:06", "Spin minutes did not increment display correctly");
+				$editor.remove();
+
+				// spin hours:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "yyyy MM HH",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinDownButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2015, 10, 11, 22, 5, 10);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin hours did not decrement value correctly");
+				equal($editor.igDateEditor("displayValue"), "2015 11 22", "Spin hours did not decrement display correctly");
+				$editor.remove();
+
+				// spin month:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "yyyy MM",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinDownButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2015, 9, 11, 23, 5, 10);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin month did not decrement value correctly");
+				equal($editor.igDateEditor("displayValue"), "2015 10", "Spin month did not decrement display correctly");
+				$editor.remove();
+
+				// spin year:
+				$editor = $("<input />")
+				.appendTo("#testBedContainer")
+				.igDateEditor({
+						buttonType: "spin",
+						dateInputFormat: "yyyy",
+						value: new Date(2015, 10, 11, 23, 5, 10)
+					});
+				$spinButton = $editor.igDateEditor("spinUpButton");
+				clickElement($spinButton, false, false);
+				expectedValue = new Date(2016, 10, 11, 23, 5, 10);
+				equal($editor.igDateEditor("value").getTime(), expectedValue.getTime(), "Spin year did not increment value correctly");
+				equal($editor.igDateEditor("displayValue"), "2016", "Spin year did not increment display correctly");
+				$editor.remove();
 			});
 
 			var testId = '(Issue #342) Testing spin munites, hours';

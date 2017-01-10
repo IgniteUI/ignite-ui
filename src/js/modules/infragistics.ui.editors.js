@@ -10305,7 +10305,7 @@
 				periodName = "Hours";
 			} else if (indices.MM !== undefined) {
 				periodName = "Month";
-			} else if (indices.yy !== undefined) {
+			} else {
 				periodName = "FullYear";
 			}
 			this._setTimePeriod(periodName, delta);
