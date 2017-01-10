@@ -1638,6 +1638,210 @@
 				ok($editor.igDateEditor("clearButton").is(":visible"), "Clear button is not visible");
 				$editor.remove();
 			});
+
+			var testId = 'Spin delta';
+			test(testId, 76, function () {
+				var $editor, spinUpButton, spinDownButton, editorInput,
+					testDate = new Date("2017-01-10T15:18:56.001Z"),
+					eventBuffer = [],
+					logger = function (msg) { eventBuffer.push(msg); };
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					spinDelta: 2,
+					value: new Date("2017-01-10T15:18:56.001Z"),
+					buttonType : "spin",
+					dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
+					valueChanged: function(evt, ui) {
+						logger("Triggered valueChanged");
+					},
+					textChanged: function(evt, ui) {
+						logger("Triggered textChanged");
+					}
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+				// Spin display mode
+				clickElement(spinUpButton, false, false);
+				testDate.setDate(testDate.getDate() + 2);
+				equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value is not updated after spin.");
+				equal($dtEditor.igDateEditor("displayValue"), "01/12/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered valueChanged", "Event should fire"); // This is fired after textChanged
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire"); // This is fired first
+				clickElement(spinDownButton, false, false);
+				testDate.setDate(testDate.getDate() - 2);
+				equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value is not updated after spin.");
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered valueChanged", "Event should fire"); // This is fired after textChanged
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire"); // This is fired first
+
+				$dtEditor.igDateEditor("spinUp");
+				testDate.setDate(testDate.getDate() + 2);
+				equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value is not updated after spin.");
+				equal($dtEditor.igDateEditor("displayValue"), "01/12/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Events should NOT fire"); // The logBuffer should be empty$dtEditor.igDateEditor("spinUp");
+				$dtEditor.igDateEditor("spinDown");
+				testDate.setDate(testDate.getDate() - 2);
+				equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value is not updated after spin.");
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Events should NOT fire"); // The logBuffer should be empty
+
+				$dtEditor.igDateEditor("spinUp", 0);
+				equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value should not be updated after spin with 0.");
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Events should NOT fire"); // The logBuffer should be empty$dtEditor.igDateEditor("spinUp");
+				$dtEditor.igDateEditor("spinDown", 0);
+				equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value should not be updated after spin with 0.");
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Events should NOT fire"); // The logBuffer should be empty
+
+				// Spin edit mode
+				editorInput = $dtEditor.igDateEditor("field")
+				$dtEditor.igDateEditor("setFocus");
+
+				// User interaction month
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				clickElement(spinUpButton, false, false);
+				equal(editorInput.val(), "03/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				clickElement(spinDownButton, false, false);
+				testDate.setMonth(testDate.getMonth() - 2);
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				// API call month
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				$dtEditor.igDateEditor("spinUp");
+				equal(editorInput.val(), "03/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				$dtEditor.igDateEditor("spinDown");
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
+				// User interaction date
+				$dtEditor.data("igDateEditor")._setCursorPosition(3);
+				clickElement(spinUpButton, false, false);
+				equal(editorInput.val(), "01/12/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(3);
+				clickElement(spinDownButton, false, false);
+				testDate.setMonth(testDate.getMonth() - 2);
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				// API call date
+				$dtEditor.data("igDateEditor")._setCursorPosition(3);
+				$dtEditor.igDateEditor("spinUp");
+				equal(editorInput.val(), "01/12/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(3);
+				$dtEditor.igDateEditor("spinDown");
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
+				// User interaction year
+				$dtEditor.data("igDateEditor")._setCursorPosition(8);
+				clickElement(spinUpButton, false, false);
+				equal(editorInput.val(), "01/10/2019 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(8);
+				clickElement(spinDownButton, false, false);
+				testDate.setMonth(testDate.getMonth() - 2);
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				// API call year
+				$dtEditor.data("igDateEditor")._setCursorPosition(8);
+				$dtEditor.igDateEditor("spinUp");
+				equal(editorInput.val(), "01/10/2019 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(8);
+				$dtEditor.igDateEditor("spinDown");
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
+				
+				// User interaction hours
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				equal(editorInput.val(), "01/10/2017 19:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinDownButton, false, false);
+				testDate.setMonth(testDate.getMonth() - 2);
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				// API call hours
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				$dtEditor.igDateEditor("spinUp");
+				equal(editorInput.val(), "01/10/2017 19:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				$dtEditor.igDateEditor("spinDown");
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
+				// User interaction minutes
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				clickElement(spinUpButton, false, false);
+				equal(editorInput.val(), "01/10/2017 17:20:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				clickElement(spinDownButton, false, false);
+				testDate.setMonth(testDate.getMonth() - 2);
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				// API call minutes
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				$dtEditor.igDateEditor("spinUp");
+				equal(editorInput.val(), "01/10/2017 17:20:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(15);
+				$dtEditor.igDateEditor("spinDown");
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
+				// User interaction seconds
+				$dtEditor.data("igDateEditor")._setCursorPosition(18);
+				clickElement(spinUpButton, false, false);
+				equal(editorInput.val(), "01/10/2017 17:18:58:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(18);
+				clickElement(spinDownButton, false, false);
+				testDate.setMonth(testDate.getMonth() - 2);
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				// API call seconds
+				$dtEditor.data("igDateEditor")._setCursorPosition(18);
+				$dtEditor.igDateEditor("spinUp");
+				equal(editorInput.val(), "01/10/2017 17:18:58:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(18);
+				$dtEditor.igDateEditor("spinDown");
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+
+				// User interaction milliseconds
+				$dtEditor.data("igDateEditor")._setCursorPosition(21);
+				clickElement(spinUpButton, false, false);
+				equal(editorInput.val(), "01/10/2017 17:18:56:003");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(21);
+				clickElement(spinDownButton, false, false);
+				testDate.setMonth(testDate.getMonth() - 2);
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire");
+				// API call milliseconds
+				$dtEditor.data("igDateEditor")._setCursorPosition(21);
+				$dtEditor.igDateEditor("spinUp");
+				equal(editorInput.val(), "01/10/2017 17:18:56:003");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+				$dtEditor.data("igDateEditor")._setCursorPosition(21);
+				$dtEditor.igDateEditor("spinDown");
+				equal(editorInput.val(), "01/10/2017 17:18:56:001");
+				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
+				
+				$dtEditor.remove();
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
