@@ -7593,8 +7593,10 @@
 				spin type="string" Spin buttons are located on the right side of the editor
 			*/
 			buttonType: "none",
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement date in editor on spin events, when it is not in edit mode.
-				When in edit mode the time period, where the cursor is positioned, is increment or decrement with the defined delta value.
+			/* type="number" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
+				When not editing (focused) the delta is applied on the day if available in the input mask or the lowest available period.
+				When in edit mode the time period, where the cursor is positioned, is incremented or decremented with the defined delta value.
+				The value can be only a positive integer number, otherwise it will be set as 1, or in the cases with double or float the the whole part will be taken.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7834,6 +7836,7 @@
 			this._checkClearButtonState();
 		},
 		_applyOptions: function () { // DateEditor
+			var delta = this.options.spinDelta;
 			this._super();
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
 				this.options.centuryThreshold = 29;
@@ -7855,6 +7858,16 @@
 			}
 			if (this._maskWithPrompts === undefined) {
 				this._setInitialValue();
+			}
+
+			if (typeof delta !== "number") {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+			} else if (delta < 0) {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+			} else {
+				this.options.spinDelta = parseInt(delta, 10);
 			}
 		},
 		_triggerKeyDown: function (event) { //DateEditor

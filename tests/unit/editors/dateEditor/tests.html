@@ -1640,7 +1640,7 @@
 			});
 
 			var testId = 'Spin delta';
-			test(testId, 76, function () {
+			test(testId, 81, function () {
 				var $editor, spinUpButton, spinDownButton, editorInput,
 					testDate = new Date("2017-01-10T15:18:56.001Z"),
 					eventBuffer = [],
@@ -1841,6 +1841,37 @@
 				equal(editorInput.val(), "01/10/2017 17:18:56:001");
 				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
 				
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer");
+				try {
+					$dtEditor.igDateEditor({
+						spinDelta: "two",
+						buttonType : "spin"
+					});
+				} catch(e) {
+					equal(e.message, $.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+				}
+				equal($dtEditor.igDateEditor("option", "spinDelta"), 1, "Spin delta should be converted to 1");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer");
+				try {
+					$dtEditor.igDateEditor({
+						spinDelta: -5,
+						buttonType : "spin"
+					});
+				} catch(e) {
+					equal(e.message, $.ig.Editor.locale.spinDeltaCouldntBeNegative);
+				}
+				equal($dtEditor.igDateEditor("option", "spinDelta"), 1, "Spin delta should be converted to 1");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					spinDelta: 5.765,
+					buttonType : "spin"
+				});
+				equal($dtEditor.igDateEditor("option", "spinDelta"), 5, "Spin delta should be converted to 1");
 				$dtEditor.remove();
 			});
 		});
