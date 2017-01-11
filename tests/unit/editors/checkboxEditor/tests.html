@@ -298,8 +298,8 @@
 			setTimeout(function() {
 				start();
 				ok($chkEditor.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class should be applied");
+				$chkEditor.remove();
 			}, 500);
-			$chkEditor.remove();
 		});
 
 		testId = '[ID11] Check exception when setting null';
