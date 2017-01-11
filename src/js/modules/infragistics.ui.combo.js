@@ -1853,7 +1853,7 @@
                     $("<div>")).addClass(css.comboWrapper),
 				$combo = $("<div>").addClass(css.combo).attr("unselectable", "on"),
 				$input = (_options.$input ||
-                    $("<input type=text'>")).addClass(css.field)
+                    $("<input type='text'>")).addClass(css.field)
                     .attr({ tabIndex: options.tabIndex, autocomplete: "off" }),
 				$hiddenInput = $("<input type='hidden'>").addClass(css.hiddenField),
 				$fieldCont = $("<div>").addClass(css.fieldHolder),
