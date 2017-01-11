@@ -10294,25 +10294,26 @@
 		_setTimePeriod: function (periodName, delta, userInteraction) {
 			var date, period, newPeriod;
 
-			date = this._dateObjectValue;
-			period = this._getDateField(periodName, date);
-			if (period === null) {
+			if (!this._dateObjectValue || !this._isValidDate(this._dateObjectValue)) {
 
 				// When there is no date at all we want to set today and should not increase the day.
 				// It's the same for the other time periods.
-				period = this._getDateField(periodName, this._setNewDateMidnight());
+				date = this._setNewDateMidnight();
 				delta = 0;
+			} else {
+				date = new Date(this._dateObjectValue);
 			}
+			period = this._getDateField(periodName, date);
 			newPeriod = period + delta;
 
-			if (!date) {
-				date = this._setNewDateMidnight();
-			}
 			this._setDateField(periodName, date, newPeriod);
-			this._editorInput.val(this._getDisplayValue());
 			if (userInteraction) {
-				this._processTextChanged();
 				this._triggerInternalValueChange(date);
+				this._editorInput.val(this._getDisplayValue());
+				this._processTextChanged();
+			} else {
+				this._processInternalValueChanging(date);
+				this._editorInput.val(this._getDisplayValue());
 			}
 		},
 		_spinDisplayMode: function (delta, userInteraction) {

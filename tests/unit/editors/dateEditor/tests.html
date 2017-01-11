@@ -2227,7 +2227,7 @@
 			});
 
 			var testId = 'Spin delta';
-			test(testId, 81, function () {
+			test(testId, 87, function () {
 				var $editor, spinUpButton, spinDownButton, editorInput,
 					testDate = new Date("2017-01-10T15:18:56.001Z"),
 					eventBuffer = [],
@@ -2254,14 +2254,14 @@
 				testDate.setDate(testDate.getDate() + 2);
 				equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value is not updated after spin.");
 				equal($dtEditor.igDateEditor("displayValue"), "01/12/2017 17:18:56:001");
-				equal(eventBuffer.pop(), "Triggered valueChanged", "Event should fire"); // This is fired after textChanged
-				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire"); // This is fired first
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire"); // This is fired after textChanged
+				equal(eventBuffer.pop(), "Triggered valueChanged", "Event should fire"); // This is fired first
 				clickElement(spinDownButton, false, false);
 				testDate.setDate(testDate.getDate() - 2);
 				equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), "Editor value is not updated after spin.");
 				equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 17:18:56:001");
-				equal(eventBuffer.pop(), "Triggered valueChanged", "Event should fire"); // This is fired after textChanged
-				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire"); // This is fired first
+				equal(eventBuffer.pop(), "Triggered textChanged", "Event should fire"); // This is fired after textChanged
+				equal(eventBuffer.pop(), "Triggered valueChanged", "Event should fire"); // This is fired first
 
 				$dtEditor.igDateEditor("spinUp");
 				testDate.setDate(testDate.getDate() + 2);
@@ -2427,7 +2427,25 @@
 				$dtEditor.igDateEditor("spinDown");
 				equal(editorInput.val(), "01/10/2017 17:18:56:001");
 				equal(eventBuffer.pop(), undefined, "Event should NOT fire");
-				
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					spinDelta: 2,
+					buttonType : "spin",
+					dateInputFormat: "MM/dd/yyyy"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				today = new Date();
+				clickElement(spinUpButton, false, false);
+				equal($dtEditor.igDateEditor("value").getFullYear(), today.getFullYear(), "Editor year is not updated after spin.");
+				equal($dtEditor.igDateEditor("value").getMonth(), today.getMonth(), "Editor month is not updated after spin.");
+				equal($dtEditor.igDateEditor("value").getDate(), today.getDate(), "Editor date is not updated after spin.");
+				clickElement(spinUpButton, false, false);
+				today.setDate(today.getDate() + 2);
+				equal($dtEditor.igDateEditor("value").getFullYear(), today.getFullYear(), "Editor year is not updated after spin.");
+				equal($dtEditor.igDateEditor("value").getMonth(), today.getMonth(), "Editor month is not updated after spin.");
+				equal($dtEditor.igDateEditor("value").getDate(), today.getDate(), "Editor date is not updated after spin.");
 				$dtEditor.remove();
 
 				$dtEditor = $('<input/>').appendTo("#testBedContainer");
