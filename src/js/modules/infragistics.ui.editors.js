@@ -10414,6 +10414,9 @@
 				this._editorInput.val(this._editMode ?
 					this._maskedValue :
 					this._getDisplayValue());
+
+				// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+				this._setSpinButtonsState(newValue);
 			} else {
 				if (this.options.value) {
 					return this._getValueByDataMode();
