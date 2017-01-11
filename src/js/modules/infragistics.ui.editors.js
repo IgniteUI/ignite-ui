@@ -5179,10 +5179,9 @@
 			}
 
 			if (this._numericType === "percent" && this.options.displayFactor && val !== "" && !isNaN(val)) {
-				val = this._parseNumericValueByMode(val, this._numericType, this.options.dataMode);
-				val = this._multiplyWithPrecision(val, this.options.displayFactor);
+				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
+				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
 			}
-
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
 			}
