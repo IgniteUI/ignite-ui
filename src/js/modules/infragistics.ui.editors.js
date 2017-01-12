@@ -11601,10 +11601,6 @@
 			};
 			this._trigger(this.events.blur, event, args);
 		},
-		_updateValue: function (value) {
-			this.options.value = value;
-			this._valueInput.val(value);
-		},
 		_getState: function () {
 			var state;
 			if (this._inputValue !== undefined) {
@@ -11746,7 +11742,7 @@
 			if (delay) {
 				this._timeouts.push(setTimeout(function () {
 					self._cancelFocusTrigger = true;
-					this._editorContainer.focus();
+					self._editorContainer.focus();
 					self._setFocus();
 				}, delay));
 			} else {
