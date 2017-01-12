@@ -433,6 +433,70 @@
 				start();
 			}, 2500);
 	    });
+		
+		test("When changing the width of the element the resizing/resized events are fired and are in order", function () {
+			var eventsFired = [];
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;" tabindex="1"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				resizing: function (evt, ui) {
+					eventsFired.push("resizing");
+				},
+				
+				resized: function (evt, ui) {
+					eventsFired.push("resized");
+				}
+			});
+			
+			equal($("#elemVH").css("height"), "400px", "tabindex is the same as the main element");
+			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
+			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
+			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
+			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
+			
+			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
+			$("#elemVH").css("width", "300px")
+			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
+			
+			equal($("#elemVH").css("height"), "400px", "tabindex is the same as the main element");
+			equal($("#elemVH").css("width"), "300px", "tabindex is the same as the main element");
+			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
+			equal($("#elemVH_container").css("width"), "300px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
+			equal($(".igscroll-hcontainer").css("width"), "285px", "tabindex is the same as the main element");
+			equal(eventsFired[0], "resizing", "");
+			equal(eventsFired[1], "resized", "");
+			
+	        $("#elemVH").remove();
+	    });
+		
+		test("When resizing event is canceled the igScroll should not refresh when changing the width of the element", function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;" tabindex="1"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				resizing: function (evt, ui) {
+					return false;
+				}
+			});
+			
+			equal($("#elemVH").css("height"), "400px", "tabindex is the same as the main element");
+			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
+			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
+			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
+			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
+			
+			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
+			$("#elemVH").css("width", "300px")
+			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
+			
+			equal($("#elemVH").css("height"), "400px", "tabindex is the same as the main element");
+			equal($("#elemVH").css("width"), "300px", "tabindex is the same as the main element");
+			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
+			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
+			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
+	        //$("#elemVH").remove();
+	    });
 	</script>
 	<script type="text/javascript" src="../../testswarm/inject.js"></script>
 </head>
