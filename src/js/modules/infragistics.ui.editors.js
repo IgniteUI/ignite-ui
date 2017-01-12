@@ -21,8 +21,8 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
-			"./infragistics.scroll",
-			"./infragistics.validator"
+			"./infragistics.ui.scroll",
+			"./infragistics.ui.validator"
 		], factory );
 	} else {
 
