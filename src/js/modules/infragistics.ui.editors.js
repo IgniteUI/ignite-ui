@@ -7802,12 +7802,10 @@
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
 				}
-					break;
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
-					break;
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
