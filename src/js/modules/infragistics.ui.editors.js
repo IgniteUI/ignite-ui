@@ -7867,6 +7867,9 @@
 				this._editorInput.val(this._getDisplayValue());
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+			this._setSpinButtonsState(value);
 		},
 		_applyOptions: function () { // DateEditor
 			this._super();

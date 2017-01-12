@@ -971,7 +971,7 @@
 			});
 
 			var testId = 'Testing spin and max and min values set as date object';
-			test(testId, 36, function () {
+			test(testId, 48, function () {
 				var $dtEditor, newDate, spinUpButton, spinDownButton;
 
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
@@ -1044,10 +1044,44 @@
 				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
 				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
 				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date(2016, 11, 5),
+					maxValue: new Date(2016, 11, 5),
+					minValue: new Date(2016, 11, 1),
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+				clickElement(spinDownButton, false, false);
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date(2016, 11, 1),
+					maxValue: new Date(2016, 11, 5),
+					minValue: new Date(2016, 11, 1),
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+				clickElement(spinUpButton, false, false);
+				ok(!spinDownButton.prop("disabled"), "The button should be enabled");
+				equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
+				$dtEditor.remove();
 			});
 
 			var testId = 'Testing spin and max and min values set as string';
-			test(testId, 36, function () {
+			test(testId, 48, function () {
 				var $dtEditor, newDate, spinUpButton, spinDownButton;
 
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
@@ -1120,6 +1154,42 @@
 				ok(spinDownButton.prop("disabled"), "The button should be disabled");
 				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
 				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: "12/05/2016",
+					dateInputFormat: "MM/dd/yyyy",
+					maxValue: "12/05/2016",
+					minValue: "12/01/2016",
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+				clickElement(spinDownButton, false, false);
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: "12/01/2016",
+					dateInputFormat: "MM/dd/yyyy",
+					maxValue: "12/05/2016",
+					minValue: "12/01/2016",
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				ok(spinDownButton.prop("disabled"), "The button should be disabled");
+				equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+				clickElement(spinUpButton, false, false);
+				ok(!spinDownButton.prop("disabled"), "The button should be enabled");
+				equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
 				$dtEditor.remove();
 			});
 
