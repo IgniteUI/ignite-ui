@@ -7815,6 +7815,7 @@
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
 				}
+				case "listItems":
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
@@ -10872,9 +10873,6 @@
 					this._getLocaleOption("ariaCalendarButton") + "'></div>"),
 				dropDownIcon = $("<div></div>");
 
-			if (this._dropDownButton) {
-				return;
-			}
 			dropDownButton.addClass(this.css.buttonCommon);
 			dropDownButton.attr("title", this._getLocaleOption("datePickerButtonTitle"));
 			this._editorContainer.prepend(dropDownButton
