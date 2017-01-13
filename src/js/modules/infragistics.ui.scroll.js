@@ -594,7 +594,43 @@
 				});
 			```
 			*/
-			thumbDragEnd: null
+			thumbDragEnd: null,
+			/* cancel="true" Event which is raised when the igScroll detects that the element is reizing.
+				Function takes arguments evt and args.
+				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
+				Use args.owner to obtain reference to igScroll.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igscrollresizing", function (evt, args) {
+					//return reference to igScroll
+					args.owner;
+				});
+
+				//Initialize
+				$(".selector").igScroll({
+					resizing: function(evt, args) {...}
+				});
+			```
+			*/
+			resizing: null,
+			/* cancel="false" Event which is raised after the igScroll has finished resizing.
+				Function takes arguments evt and args.
+				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
+				Use args.owner to obtain reference to igScroll.
+			```
+				//Delegate
+				$(document).delegate(".selector", "igscrollresized", function (evt, args) {
+					//return reference to igScroll
+					args.owner;
+				});
+
+				//Initialize
+				$(".selector").igScroll({
+					resized: function(evt, args) {...}
+				});
+			```
+			*/
+			resized: null
 		},
 		css: {
 			/* Classes applied to the element the igScroll is instantiated on */
@@ -801,6 +837,12 @@
 				keydown: $.proxy(this._onKeyDown, this)
 			};
 			this._container.on(this._evts);
+			$(window).on("resize.igscroll_" + this.element[ 0 ].id, $.proxy(this._onDimensionsChange, this));
+
+			if (typeof MutationObserver === "function") {
+				this._observer = new MutationObserver($.proxy(this._onElementMutation, this));
+				this._observer.observe(this.element[ 0 ], { attributes: true });
+			}
 
 			this._updateScrollBarsVisibility();
 			this._hideScrollBars(false);
@@ -2352,6 +2394,30 @@
 			}
 		},
 
+		_onDimensionsChange: function () {
+			var bNoCancel,
+				evtArgs = {	owner: this };
+
+			bNoCancel = this._trigger("resizing", null, evtArgs);
+			if (bNoCancel) {
+				this.refresh();
+			}
+
+			this._trigger("resized", null, evtArgs);
+		},
+
+		_onElementMutation: function (mutations) {
+			for (var key in mutations) {
+				/*	Make sure only the style is addressed and that any of the width/height is changed. */
+				/*	The elemWidth/elemHeight are not updated until refresh is called, that is why we can use them as old values. */
+				if (mutations[ key ].attributeName === "style" &&
+					(this._elemWidth !== this.element.width() ||
+						this._elemHeight !== this.element.height())) {
+					this._onDimensionsChange();
+				}
+			}
+		},
+
 		_updateScrollBarsVisibility: function () {
 			if (this.options.scrollbarType === "none") {
 				return;
@@ -3747,6 +3813,9 @@
 			clearTimeout(this._toSimpleScrollbarID);
 			clearTimeout(this._holdTimeoutID);
 
+			if (typeof MutationObserver === "function") {
+				this._observer.disconnect();
+			}
 			if (this._evts) {
 				this.element.off(this._evts);
 				delete this._evts;
@@ -3765,6 +3834,7 @@
 				}
 				$("body").off("mousemove.igscroll_" + this.element[ 0 ].id);
 				$(window).off("mouseup.igscroll_" + this.element[ 0 ].id);
+				$(window).off("resize.igscroll_" + this.element[ 0 ].id);
 				$.Widget.prototype.destroy.apply(this, arguments);
 			}
 			return this;
