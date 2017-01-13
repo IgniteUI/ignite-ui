@@ -23,8 +23,8 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.util.jquery",
-			"./infragistics.scroll",
-			"./infragistics.validator"
+			"./infragistics.ui.scroll",
+			"./infragistics.ui.validator"
 		], factory );
 	} else {
 
@@ -2112,6 +2112,65 @@
 			}
 		},
 
+		// N.A. January 4th, 2017 #664 Move spin buttons state logic from numeric to text editor in order to be used by the date editor and date picker.
+		_disableSpinButton: function (target) {
+			if (target && !target.attr("disabled") && !this.options.spinWrapAround) {
+				target.addClass(this.css.disabled);
+				target.attr("disabled", "disabled");
+				target.prop("disabled", true);
+				target.removeClass(this.css.buttonHover);
+				if (target._pressed) {
+					delete target._pressed;
+					target.removeClass(this.css.buttonPressed);
+				}
+				if (target._spinTimeOut) {
+					clearTimeout(target._spinTimeOut);
+					delete this._spinUpButton._spinTimeOut;
+				}
+				if (target._spinInterval) {
+					clearInterval(target._spinInterval);
+					delete target._spinInterval;
+				}
+				this._detachButtonsEvents(target);
+			}
+		},
+		_enableSpinButton: function (target, type) {
+			if (target && target.attr("disabled")) {
+				target.removeClass(this.css.disabled);
+				target.removeAttr("disabled");
+				target.prop("disabled", false);
+				this._attachButtonsEvents(type, target);
+			}
+		},
+		_exceedsMaxValue: function(value) {
+			return this.options.maxValue !== null && value >= this.options.maxValue;
+		},
+		_lessThanMinValue: function(value) {
+			return this.options.minValue !== null && value <= this.options.minValue;
+		},
+		_setSpinButtonsState: function (val) {
+			if (typeof val === "string" || val instanceof String) {
+				val = val.trim();
+			}
+			if (val === null) {
+				this._enableSpinButton(this._spinDownButton, "spinDown");
+				this._enableSpinButton(this._spinUpButton, "spinUp");
+				return;
+			}
+			if (val !== "" && !this.options.spinWrapAround) {
+				if (this._exceedsMaxValue(val)) {
+					this._disableSpinButton(this._spinUpButton);
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+				} else if (this._lessThanMinValue(val)) {
+					this._disableSpinButton(this._spinDownButton);
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				} else {
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				}
+			}
+		},
+
 		// replaces characted at a specific position
 		_replaceCharAt: function (stringValue, index, ch) {
 			if (stringValue !== undefined) {
@@ -3053,6 +3112,9 @@
 				this._currentInputTextValue = currentVal;
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+			this._setSpinButtonsState(currentVal);
 		},
 		_triggerTextChanged: function (oldValue, newValue) {
 			var args = {
@@ -4861,55 +4923,6 @@
 			}
 
 			// return true;
-		},
-		_disableSpinButton: function (target) {
-			if (target && !target.attr("disabled") && !this.options.spinWrapAround) {
-				target.addClass(this.css.disabled);
-				target.attr("disabled", true);
-				target.removeClass(this.css.buttonHover);
-				if (target._pressed) {
-					delete target._pressed;
-					target.removeClass(this.css.buttonPressed);
-				}
-				if (target._spinTimeOut) {
-					clearTimeout(target._spinTimeOut);
-					delete this._spinUpButton._spinTimeOut;
-				}
-				if (target._spinInterval) {
-					clearInterval(target._spinInterval);
-					delete target._spinInterval;
-				}
-				this._detachButtonsEvents(target);
-			}
-		},
-		_enableSpinButton: function (target, type) {
-			if (target && target.attr("disabled")) {
-				target.removeClass(this.css.disabled);
-				target.attr("disabled", false);
-				this._attachButtonsEvents(type, target);
-			}
-		},
-		_setSpinButtonsState: function (val) {
-			if (typeof val === "string" || val instanceof String) {
-				val = val.trim();
-			}
-			if (val === null) {
-				this._enableSpinButton(this._spinDownButton, "spinDown");
-				this._enableSpinButton(this._spinUpButton, "spinUp");
-				return;
-			}
-			if (val !== "" && !this.options.spinWrapAround) {
-				if (val >= this.options.maxValue) {
-					this._disableSpinButton(this._spinUpButton);
-					this._enableSpinButton(this._spinDownButton, "spinDown");
-				} else if (val <= this.options.minValue) {
-					this._disableSpinButton(this._spinDownButton);
-					this._enableSpinButton(this._spinUpButton, "spinUp");
-				} else {
-					this._enableSpinButton(this._spinDownButton, "spinDown");
-					this._enableSpinButton(this._spinUpButton, "spinUp");
-				}
-			}
 		},
 		_validateValue: function (val) { //Numeric Editor
 			var result;
@@ -7609,7 +7622,10 @@
 				spin type="string" Spin buttons are located on the right side of the editor
 			*/
 			buttonType: "none",
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.
+			/* type="number" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
+				When not editing (focused) the delta is applied on the day if available in the input mask or the lowest available period.
+				When in edit mode the time period, where the cursor is positioned, is incremented or decremented with the defined delta value.
+				The value can be only a positive integer number, otherwise it will be set as 1, or in the cases with double or float the the whole part will be taken.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7855,8 +7871,12 @@
 				this._editorInput.val(this._getDisplayValue());
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+			this._setSpinButtonsState(value);
 		},
 		_applyOptions: function () { // DateEditor
+			var delta = this.options.spinDelta;
 			this._super();
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
 				this.options.centuryThreshold = 29;
@@ -7878,6 +7898,16 @@
 			}
 			if (this._maskWithPrompts === undefined) {
 				this._setInitialValue();
+			}
+
+			if (typeof delta !== "number") {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+			} else if (delta < 0) {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+			} else {
+				this.options.spinDelta = parseInt(delta, 10);
 			}
 		},
 		_triggerKeyDown: function (event) { //DateEditor
@@ -7901,11 +7931,35 @@
 			}
 			return noCancel;
 		},
+
+		// N.A. January 4th, 2017 #664 Validate min and max values in date editor and date picker by comparing dates.
+		_exceedsMaxValue: function(value) {
+
+			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it.
+			if (!this._editMode) {
+				value = this.value();
+			}
+			return this.options.maxValue !== null &&
+				this._getDateObjectFromValue(value).getTime() >=
+				this._getDateObjectFromValue(this.options.maxValue).getTime();
+		},
+		_lessThanMinValue: function(value) {
+
+			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it
+			if (!this._editMode) {
+				value = this.value();
+			}
+			return this.options.minValue !== null &&
+				this._getDateObjectFromValue(value).getTime() <=
+				this._getDateObjectFromValue(this.options.minValue).getTime();
+		},
 		_handleSpinUpEvent: function () { // DateEditor
-			this.spinUp(1);
+
+			// N.A. January 10th, 2016 #701 Spin value using the spinDelta option and fire events only on user interaction.
+			this._spin(this.options.spinDelta, true);
 		},
 		_handleSpinDownEvent: function () { // DateEditor
-			this.spinDown(1);
+			this._spin(-this.options.spinDelta, true);
 		},
 		_serializeDate: function (sDate) {
 			if (this.options.dataMode === "date") {
@@ -10241,7 +10295,7 @@
 			}
 			return mask;
 		},
-		_spinEditMode: function (delta) {
+		_spinEditMode: function (delta, userInteraction) {
 			var self = this, cursorPosition = this._getCursorPosition(),
 				mask = this._editorInput.val(), time;
 
@@ -10263,6 +10317,9 @@
 			//	N.A. 3/2/2016 Bug #215046: We don't need to update _maskedValue, before the value is updated.
 			// this._maskedValue = mask;
 			this._editorInput.val(mask);
+			if (userInteraction) {
+				this._processTextChanged();
+			}
 			if ($.ig.util.isChrome || $.ig.util.isSafari || $.ig.util.isFF) {
 
 				// In Chrome, Safari and FF there is a bug and the cursor needs to be set with timeout in order to work.
@@ -10273,30 +10330,32 @@
 				self._setCursorPosition(cursorPosition);
 			}
 		},
-		_setTimePeriod: function (periodName, delta) {
+		_setTimePeriod: function (periodName, delta, userInteraction) {
 			var date, period, newPeriod;
 
-			date = this._dateObjectValue;
-			period = this._getDateField(periodName, date);
-			if (period === null) {
+			if (!this._dateObjectValue || !this._isValidDate(this._dateObjectValue)) {
 
 				// When there is no date at all we want to set today and should not increase the day.
 				// It's the same for the other time periods.
-				period = this._getDateField(periodName, this._setNewDateMidnight());
+				date = this._setNewDateMidnight();
 				delta = 0;
+			} else {
+				date = new Date(this._dateObjectValue);
 			}
+			period = this._getDateField(periodName, date);
 			newPeriod = period + delta;
 
-			if (!date) {
-				date = this._setNewDateMidnight();
-			}
-			if (newPeriod !== period) {
-				this._setDateField(periodName, date, newPeriod);
+			this._setDateField(periodName, date, newPeriod);
+			if (userInteraction) {
 				this._triggerInternalValueChange(date);
+				this._editorInput.val(this._getDisplayValue());
+				this._processTextChanged();
+			} else {
+				this._processInternalValueChanging(date);
 				this._editorInput.val(this._getDisplayValue());
 			}
 		},
-		_spinDisplayMode: function (delta) {
+		_spinDisplayMode: function (delta, userInteraction) {
 			var indices = this._dateIndices, periodName;
 
 			if (indices.dd !== undefined) {
@@ -10323,16 +10382,18 @@
 			} else {
 				periodName = "FullYear";
 			}
-			this._setTimePeriod(periodName, delta);
+			this._setTimePeriod(periodName, delta, userInteraction);
 		},
-		_spin: function (delta) {
+		_spin: function (delta, userInteraction) {
+			if (!delta) {
+				return;
+			}
 			this._currentInputTextValue = this._editorInput.val();
 			if (this._editMode) {
-				this._spinEditMode(delta);
+				this._spinEditMode(delta, userInteraction);
 			} else {
-				this._spinDisplayMode(delta);
+				this._spinDisplayMode(delta, userInteraction);
 			}
-			this._processTextChanged();
 		},
 		_spinUpEditMode: function (delta) {
 			this._spinEditMode(delta ? delta : this.options.spinDelta);
@@ -10380,6 +10441,9 @@
 				this._editorInput.val(this._editMode ?
 					this._maskedValue :
 					this._getDisplayValue());
+
+				// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+				this._setSpinButtonsState(newValue);
 			} else {
 				if (this.options.value) {
 					return this._getValueByDataMode();
@@ -10416,7 +10480,8 @@
 				$(".selector").igDateEditor("spinUp", 2);
 			```
 				paramType="number" optional="true" The increase delta. */
-			this._spin(delta ? delta : this.options.spinDelta);
+			delta = parseInt(delta, 10);
+			this._spin((!isNaN(delta) && delta >= 0) ? delta : this.options.spinDelta);
 		},
 		spinDown: function (delta) {
 			/* Decreases the date or time period, depending on the current cursor position.
@@ -10424,7 +10489,8 @@
 				$(".selector").igDateEditor("spinDown", 3);
 			```
 				paramType="number" optional="true" The decrease delta. */
-			this._spin(delta ? -delta : -this.options.spinDelta);
+			delta = parseInt(delta, 10);
+			this._spin(!isNaN(delta) && delta >= 0 ? -delta : -this.options.spinDelta);
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
@@ -11533,10 +11599,6 @@
 			};
 			this._trigger(this.events.blur, event, args);
 		},
-		_updateValue: function (value) {
-			this.options.value = value;
-			this._valueInput.val(value);
-		},
 		_getState: function () {
 			var state;
 			if (this._inputValue !== undefined) {
@@ -11678,7 +11740,7 @@
 			if (delay) {
 				this._timeouts.push(setTimeout(function () {
 					self._cancelFocusTrigger = true;
-					this._editorContainer.focus();
+					self._editorContainer.focus();
 					self._setFocus();
 				}, delay));
 			} else {
