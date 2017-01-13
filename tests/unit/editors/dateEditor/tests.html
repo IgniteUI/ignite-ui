@@ -2702,6 +2702,34 @@
 				equal($dtEditor.igDateEditor("option", "spinDelta"), 5, "Spin delta should be converted to 1");
 				$dtEditor.remove();
 			});
+
+			var testId = 'Edge case testing';
+			test(testId, 4, function () {
+				var $dtEditor;
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T15:18:56.001Z")
+				});
+				$dtEditor.igDateEditor("option", "value", new Date("2017-01-10T15:18:56.001Z"));
+				equal($dtEditor.igDateEditor("value").getTime(), new Date("2017-01-10T15:18:56.001Z").getTime());
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "MM/dd/yyyy",
+					value: "01/10/2017",
+					dataMode: "displayModeText"
+				});
+				$dtEditor.igDateEditor("option", "value", "01/10/2017");
+				equal($dtEditor.igDateEditor("option", "value"), "01/10/2017");
+				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: "day//month//year"
+				});
+				equal($dtEditor.igDateEditor("value"), "", "Value should be empty");
+				equal($dtEditor.igDateEditor("displayValue"), "", "Display value should be empty");
+				$dtEditor.remove();
+			});	
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
