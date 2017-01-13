@@ -23,8 +23,8 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.util.jquery",
-			"./infragistics.scroll",
-			"./infragistics.validator"
+			"./infragistics.ui.scroll",
+			"./infragistics.ui.validator"
 		], factory );
 	} else {
 
@@ -2112,6 +2112,65 @@
 			}
 		},
 
+		// N.A. January 4th, 2017 #664 Move spin buttons state logic from numeric to text editor in order to be used by the date editor and date picker.
+		_disableSpinButton: function (target) {
+			if (target && !target.attr("disabled") && !this.options.spinWrapAround) {
+				target.addClass(this.css.disabled);
+				target.attr("disabled", "disabled");
+				target.prop("disabled", true);
+				target.removeClass(this.css.buttonHover);
+				if (target._pressed) {
+					delete target._pressed;
+					target.removeClass(this.css.buttonPressed);
+				}
+				if (target._spinTimeOut) {
+					clearTimeout(target._spinTimeOut);
+					delete this._spinUpButton._spinTimeOut;
+				}
+				if (target._spinInterval) {
+					clearInterval(target._spinInterval);
+					delete target._spinInterval;
+				}
+				this._detachButtonsEvents(target);
+			}
+		},
+		_enableSpinButton: function (target, type) {
+			if (target && target.attr("disabled")) {
+				target.removeClass(this.css.disabled);
+				target.removeAttr("disabled");
+				target.prop("disabled", false);
+				this._attachButtonsEvents(type, target);
+			}
+		},
+		_exceedsMaxValue: function(value) {
+			return this.options.maxValue !== null && value >= this.options.maxValue;
+		},
+		_lessThanMinValue: function(value) {
+			return this.options.minValue !== null && value <= this.options.minValue;
+		},
+		_setSpinButtonsState: function (val) {
+			if (typeof val === "string" || val instanceof String) {
+				val = val.trim();
+			}
+			if (val === null) {
+				this._enableSpinButton(this._spinDownButton, "spinDown");
+				this._enableSpinButton(this._spinUpButton, "spinUp");
+				return;
+			}
+			if (val !== "" && !this.options.spinWrapAround) {
+				if (this._exceedsMaxValue(val)) {
+					this._disableSpinButton(this._spinUpButton);
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+				} else if (this._lessThanMinValue(val)) {
+					this._disableSpinButton(this._spinDownButton);
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				} else {
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				}
+			}
+		},
+
 		// replaces characted at a specific position
 		_replaceCharAt: function (stringValue, index, ch) {
 			if (stringValue !== undefined) {
@@ -3053,6 +3112,9 @@
 				this._currentInputTextValue = currentVal;
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+			this._setSpinButtonsState(currentVal);
 		},
 		_triggerTextChanged: function (oldValue, newValue) {
 			var args = {
@@ -4861,55 +4923,6 @@
 			}
 
 			// return true;
-		},
-		_disableSpinButton: function (target) {
-			if (target && !target.attr("disabled") && !this.options.spinWrapAround) {
-				target.addClass(this.css.disabled);
-				target.attr("disabled", true);
-				target.removeClass(this.css.buttonHover);
-				if (target._pressed) {
-					delete target._pressed;
-					target.removeClass(this.css.buttonPressed);
-				}
-				if (target._spinTimeOut) {
-					clearTimeout(target._spinTimeOut);
-					delete this._spinUpButton._spinTimeOut;
-				}
-				if (target._spinInterval) {
-					clearInterval(target._spinInterval);
-					delete target._spinInterval;
-				}
-				this._detachButtonsEvents(target);
-			}
-		},
-		_enableSpinButton: function (target, type) {
-			if (target && target.attr("disabled")) {
-				target.removeClass(this.css.disabled);
-				target.attr("disabled", false);
-				this._attachButtonsEvents(type, target);
-			}
-		},
-		_setSpinButtonsState: function (val) {
-			if (typeof val === "string" || val instanceof String) {
-				val = val.trim();
-			}
-			if (val === null) {
-				this._enableSpinButton(this._spinDownButton, "spinDown");
-				this._enableSpinButton(this._spinUpButton, "spinUp");
-				return;
-			}
-			if (val !== "" && !this.options.spinWrapAround) {
-				if (val >= this.options.maxValue) {
-					this._disableSpinButton(this._spinUpButton);
-					this._enableSpinButton(this._spinDownButton, "spinDown");
-				} else if (val <= this.options.minValue) {
-					this._disableSpinButton(this._spinDownButton);
-					this._enableSpinButton(this._spinUpButton, "spinUp");
-				} else {
-					this._enableSpinButton(this._spinDownButton, "spinDown");
-					this._enableSpinButton(this._spinUpButton, "spinUp");
-				}
-			}
 		},
 		_validateValue: function (val) { //Numeric Editor
 			var result;
@@ -7855,6 +7868,9 @@
 				this._editorInput.val(this._getDisplayValue());
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+			this._setSpinButtonsState(value);
 		},
 		_applyOptions: function () { // DateEditor
 			var delta = this.options.spinDelta;
@@ -7911,6 +7927,28 @@
 				}
 			}
 			return noCancel;
+		},
+
+		// N.A. January 4th, 2017 #664 Validate min and max values in date editor and date picker by comparing dates.
+		_exceedsMaxValue: function(value) {
+
+			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it.
+			if (!this._editMode) {
+				value = this.value();
+			}
+			return this.options.maxValue !== null &&
+				this._getDateObjectFromValue(value).getTime() >=
+				this._getDateObjectFromValue(this.options.maxValue).getTime();
+		},
+		_lessThanMinValue: function(value) {
+
+			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it
+			if (!this._editMode) {
+				value = this.value();
+			}
+			return this.options.minValue !== null &&
+				this._getDateObjectFromValue(value).getTime() <=
+				this._getDateObjectFromValue(this.options.minValue).getTime();
 		},
 		_handleSpinUpEvent: function () { // DateEditor
 
@@ -10400,6 +10438,9 @@
 				this._editorInput.val(this._editMode ?
 					this._maskedValue :
 					this._getDisplayValue());
+
+				// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+				this._setSpinButtonsState(newValue);
 			} else {
 				if (this.options.value) {
 					return this._getValueByDataMode();
