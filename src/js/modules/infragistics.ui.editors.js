@@ -1867,7 +1867,7 @@
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
 					this._editorInput.val(this._getDisplayValue());
-				} else if (initialValue === null && !this.options.allowNullValue ) {
+				} else if (initialValue === null && !this.options.allowNullValue) {
 					this._setInitialValue("");
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
@@ -8975,19 +8975,11 @@
 			return result;
 		},
 		_updateValue: function (value) { //igDateEditor
-			//TODO Review
 			if (value === null) {
-				if (this.options.allowNullValue) {
-					this._maskedValue = this._maskWithPrompts;
-					this._valueInput.val("");
-					this.options.value = null;
-					this._dateObjectValue = null;
-				} else {
-					this._maskedValue = this._maskWithPrompts;
-					this._valueInput.val("");
-					this.options.value = "";
-					this._dateObjectValue = null;
-				}
+				this._maskedValue = this._maskWithPrompts;
+				this._valueInput.val("");
+				this.options.value = this.options.allowNullValue ? null : "";
+				this._dateObjectValue = null;
 			} else if (value === "") {
 
 				// Empty string is passed only when clear is called, or when an empty value is created
@@ -10015,7 +10007,7 @@
 					mask = this._setYearEditMode(mask, timeYear, currentYear, yearUpdateDelta);
 				} else {
 
-					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous minute.
+					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous year.
 					// In such a situation, we update the internal date with the new year, so that when we loose focus the month is the correct one.
 					if (!isLimited) {
 						this._setDateField("FullYear",

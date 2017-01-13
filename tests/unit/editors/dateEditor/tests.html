@@ -2704,7 +2704,7 @@
 			});
 
 			var testId = 'Edge case testing';
-			test(testId, 14, function () {
+			test(testId, 21, function () {
 				var $dtEditor;
 
 				// Set the same time through the option - date object
@@ -2747,6 +2747,31 @@
 				$dtEditor.igDateEditor("value", null);
 				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
 				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.igDateEditor("value", new Date());
+				$dtEditor.igDateEditor("value", true);
+				$dtEditor.remove();
+
+				// Setting wrong dateMode
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					revertIfNotValid: false,
+					value: "3/1/2015"
+				});
+				$dtEditor.igDateEditor("option", "dataMode", "data");
+				$dtEditor.blur();
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.igDateEditor("value", null);
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.remove();
+
+				// Setting wrong not-allowed null value
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					allowNullValue: false,
+					value: null
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
 				$dtEditor.remove();
 
 				// Using some cool masks for input format
@@ -2776,6 +2801,13 @@
 					displayTimeOffset: 0
 				});
 				equal($dtEditor.igDateEditor("displayValue"), "99/00/99" , "Display value is not correct");
+				$dtEditor.remove();
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-10-10T05:18:56.001Z"),
+					dateInputFormat: "M/M/MMM/MMM/d/d/ddd/ddd/yy/yy HH:HH:H:H:m:m:s:s:f:f:ff:ff:fff:fff tt tt MM/MM/dd/dd/yyyy/yyyy hh:hh:mm:mm:ss:ss:ff:ff t t tt tt ddd ddd(dddd dddd)",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "10/10/Oct/Oct/10/10/Tue/Tue/17/17 05:05:5:5:18:18:56:56:0:0:00:00:001:001 AM AM 10/10/10/10/2017/2017 05:05:18:18:56:56:00:00 A A AM AM Tue Tue(Tuesday Tuesday)" , "Display value is not correct");
 				$dtEditor.remove();
 			});
 
