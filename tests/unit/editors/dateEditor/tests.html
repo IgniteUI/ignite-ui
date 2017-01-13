@@ -2704,9 +2704,10 @@
 			});
 
 			var testId = 'Edge case testing';
-			test(testId, 4, function () {
+			test(testId, 14, function () {
 				var $dtEditor;
 
+				// Set the same time through the option - date object
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					value: new Date("2017-01-10T15:18:56.001Z")
 				});
@@ -2714,6 +2715,7 @@
 				equal($dtEditor.igDateEditor("value").getTime(), new Date("2017-01-10T15:18:56.001Z").getTime());
 				$dtEditor.remove();
 
+				// Set the same time through the option - string
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					dateInputFormat: "MM/dd/yyyy",
 					value: "01/10/2017",
@@ -2723,11 +2725,57 @@
 				equal($dtEditor.igDateEditor("option", "value"), "01/10/2017");
 				$dtEditor.remove();
 
+				// Set invalid date - initialization
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					value: "day//month//year"
 				});
 				equal($dtEditor.igDateEditor("value"), "", "Value should be empty");
 				equal($dtEditor.igDateEditor("displayValue"), "", "Display value should be empty");
+				$dtEditor.remove();
+
+				// Set invalid date - method
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor();
+				$dtEditor.igDateEditor("value", "month/day/year");
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.remove();
+
+				// Set null in value method, when value is empty
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor();
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.igDateEditor("value", null);
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.remove();
+
+				// Using some cool masks for input format
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T15:18:56.001Z"),
+					dateInputFormat: "MMMM/dd/yyyy hh:mm:s:f t ddd(dddd)",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "January/10/2017 03:18:56:0 P Tue(Tuesday)" , "Display value is not correct");
+				$dtEditor.remove()
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T02:18:56.001Z"),
+					dateInputFormat: "MMM/d/yy h:m:ss:ff t ddd(dddd)",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "Jan/10/17 2:18:56:00 A Tue(Tuesday)" , "Display value is not correct");
+				$dtEditor.remove();
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				$dtEditor.remove();
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-10-10T15:18:56.001Z"),
+					dateInputFormat: "99/00/99",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "99/00/99" , "Display value is not correct");
 				$dtEditor.remove();
 			});
 
