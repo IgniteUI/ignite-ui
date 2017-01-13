@@ -2729,7 +2729,23 @@
 				equal($dtEditor.igDateEditor("value"), "", "Value should be empty");
 				equal($dtEditor.igDateEditor("displayValue"), "", "Display value should be empty");
 				$dtEditor.remove();
-			});	
+			});
+
+			var testId = 'Year shift option';
+			test(testId, 3, function () {
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T15:18:56.001Z"),
+					dateInputFormat: "MM/dd/yyyy",
+					yearShift: 33
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2050", "Display value is not correct");
+				$dtEditor.igDateEditor("setFocus");
+				typeInMaskedInput("01/10/2040", $dtEditor.igDateEditor("field"));
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2040", "Display value is not correct");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date("2007-01-10T15:18:56.001Z").getTime(), "Value should be empty");
+				$dtEditor.remove();
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {

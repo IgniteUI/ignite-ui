@@ -9269,7 +9269,7 @@
 				} else {
 					extractedDate = this._setNewDateMidnight();
 					if (yearField !== null && yearField !== undefined) {
-						this._setDateField("Year", extractedDate, yearField);
+						this._setDateField("FullYear", extractedDate, yearField);
 					}
 					if (monthField !== null && monthField !== undefined) {
 						this._setDateField("Month", extractedDate, monthField);
@@ -9291,7 +9291,7 @@
 				extractedDate = new Date(this._dateObjectValue.getTime());
 			}
 			if (yearField !== null && yearField !== undefined) {
-				this._setDateField("Year", extractedDate, yearField);
+				this._setDateField("FullYear", extractedDate, yearField);
 			}
 			if (monthField !== null && monthField !== undefined) {
 
@@ -10018,7 +10018,7 @@
 					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous minute.
 					// In such a situation, we update the internal date with the new year, so that when we loose focus the month is the correct one.
 					if (!isLimited) {
-						this._setDateField("Year",
+						this._setDateField("FullYear",
 							this._dateObjectValue,
 							this._getDateField("FullYear", this._dateObjectValue) + yearUpdateDelta);
 					}
@@ -10795,7 +10795,7 @@
 						date = self._setNewDateMidnight();
 					}
 
-					self._setDateField("Year", date, dateFromPicker.getFullYear());
+					self._setDateField("FullYear", date, dateFromPicker.getFullYear());
 
 					//Temporary change the date to be in the middle of the month 15th, because when using JavaScript Date object to set month when date is 31, the date object is moved with one day.
 					self._setDateField("Date", date, 15);
