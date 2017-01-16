@@ -686,6 +686,36 @@
 				}, 500);
 			}, 500);
 		});
+
+		testId = "Lists testing P2, selection-value match";
+		test(testId, 4, function () {
+			var $editor = $("<input />").appendTo("#testBedContainer")
+				.igTextEditor({
+					listItems: ["item1", "item2", null, "item3", ""],
+					buttonType: "dropdown",
+					// remove animation to avoid waiting, show() with effect ignores 0
+					dropDownAnimationDuration: -1, valueChanged: console.log, textChanged: console.log
+				}),
+			$field = $editor.igTextEditor("field"),
+			$ddButton = $editor.igTextEditor("dropDownButton");
+			
+			$editor.igTextEditor("value", "item1");
+			$ddButton.click();
+			ok($editor.igTextEditor("getSelectedListItem").hasClass($.ui.igTextEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item1", "Selected item does not reflect value");
+
+			// select item2:
+			$editor.igTextEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item2", "Selected item (API) did not update after selection");
+
+			// change value in edit mode:
+			$ddButton.click();
+			$field.val("item3");
+			keyInteraction(13, $field);
+			$ddButton.click();
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item (API) did not update after value update.");
+		});
+
 		testId = "Keyboard/Mouse testing";
 		test(testId, 19, function () {
 			var $interactWithButtons = $("<input id='interactWithButtons' />").appendTo("#testBedContainer").igTextEditor({
