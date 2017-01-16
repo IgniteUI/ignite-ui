@@ -3777,7 +3777,7 @@
 				serializedTransactionLog = [];
 
 				for (i = 0; i < this._accumulatedTransactionLog.length; i++) {
-					t = this._accumulatedTransactionLog[ i ];
+					t = $.extend(true, {}, this._accumulatedTransactionLog[ i ]);
 					if (t.type === "cell") {
 						t.value = this._serializeDate(t.value);
 					} else if (t.type === "row" || t.type === "insertrow" || t.type === "newrow") {
