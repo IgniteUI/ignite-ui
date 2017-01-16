@@ -3389,18 +3389,18 @@
 				/* Date fix. We need to encode it using \/Date(ticks)\/ */
 				/* \/Date(ticks)\/ format is changed to ISO 8601.
 				For example - changing this "\/Date(1234656000000)\/" to "2009-02-15T00:00:00Z" */
-				if (globalt.type === "cell" && $.type(globalt.value) === "date") {
-					globalt.value = this._serializeDate(globalt.value);
-				} else if (globalt.type === "row" ||
-					globalt.type === "insertrow" ||
-					globalt.type === "newrow" ||
-					globalt.type === "insertnode") {
-					for (prop in globalt.row) {
-						if (globalt.row.hasOwnProperty(prop) && $.type(globalt.row[ prop ]) === "date") {
-							globalt.row[ prop ] = this._serializeDate(globalt.row[ prop ]);
-						}
-					}
-				}
+				// if (globalt.type === "cell" && $.type(globalt.value) === "date") {
+				// 	globalt.value = this._serializeDate(globalt.value);
+				// } else if (globalt.type === "row" ||
+				// 	globalt.type === "insertrow" ||
+				// 	globalt.type === "newrow" ||
+				// 	globalt.type === "insertnode") {
+				// 	for (prop in globalt.row) {
+				// 		if (globalt.row.hasOwnProperty(prop) && $.type(globalt.row[ prop ]) === "date") {
+				// 			globalt.row[ prop ] = this._serializeDate(globalt.row[ prop ]);
+				// 		}
+				// 	}
+				// }
 				this._accumulatedTransactionLog.push(globalt);
 			}
 		},
@@ -3412,12 +3412,8 @@
 			if (t.type === "cell") {
 				for (i = 0; i < this._accumulatedTransactionLog.length; i++) {
 					if (this._accumulatedTransactionLog[ i ].rowId === t.rowId &&
-						this._accumulatedTransactionLog[ i ].col === t.col) {
-						if ($.type(t.value) === "date") {
-							this._accumulatedTransactionLog[ i ].value = this._serializeDate(t.value);
-						} else {
-							this._accumulatedTransactionLog[ i ].value = t.value;
-						}
+							this._accumulatedTransactionLog[ i ].col === t.col) {
+						this._accumulatedTransactionLog[ i ].value = t.value;
 						break;
 					}
 				}
@@ -3427,12 +3423,7 @@
 						this._accumulatedTransactionLog[ i ].type !== "cell") {
 						for (prop in t.row) {
 							if (t.row.hasOwnProperty(prop)) {
-								if ($.type(t.row[ prop ]) === "date") {
-									this._accumulatedTransactionLog[ i ].row[ prop ] =
-										this._serializeDate(t.row[ prop ]);
-								} else {
-									this._accumulatedTransactionLog[ i ].row[ prop ] = t.row[ prop ];
-								}
+								this._accumulatedTransactionLog[ i ].row[ prop ] = t.row[ prop ];
 							}
 						}
 					}
@@ -3456,11 +3447,16 @@
 				":" + pad(tzo % 60);
 		},
 		_serializeDate: function (date) {
-			if (this.settings.enableUTCDates) {
-				sDate = sDate.toISOString();
-			} else {
-				sDate = this._toLocalISOString(sDate);
+			if ($.type(date) !== "date") {
+				//if the value is not a date don't handle it
+				return date;
 			}
+			if (this.settings.enableUTCDates) {
+				date = date.toISOString();
+			} else {
+				date = this._toLocalISOString(date);
+			}
+			return date;
 		},
 		_removeTransactionByTransactionId: function (tid, removeFromAll) {
 			// removes a transaction by a transaction ID
@@ -3777,12 +3773,32 @@
 			*/
 			if (this.settings.updateUrl !== null) {
 				// post to the Url using $.ajax, by serializing the changes as url params
-				var me = this, opts;
+				var me = this, opts, i, prop, t,
+				serializedTransactionLog = [];
+
+				for (i = 0; i < this._accumulatedTransactionLog.length; i++) {
+					t = this._accumulatedTransactionLog[ i ];
+					if (t.type === "cell") {
+						t.value = this._serializeDate(t.value);
+					} else if (t.type === "row" || t.type === "insertrow" || t.type === "newrow") {
+						for (prop in t.row) {
+							if (t.row.hasOwnProperty(prop)) {
+								if ($.type(t.row[ prop ]) === "date") {
+									t.row[ prop ] =
+										this._serializeDate(t.row[ prop ]);
+								} else {
+									t.row[ prop ] = t.row[ prop ];
+								}
+							}
+						}
+					}
+					serializedTransactionLog.push(t);
+				}
 
 				opts = {
 					type: "POST",
 					url: this.settings.updateUrl,
-					data: { "ig_transactions": JSON.stringify(this._accumulatedTransactionLog) },
+					data: { "ig_transactions": JSON.stringify(serializedTransactionLog) },
 					success: function (data, textStatus, jqXHR) {
 						if (data.Success) {
 							me._saveChangesSuccess(data, textStatus, jqXHR);
