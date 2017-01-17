@@ -18,8 +18,9 @@
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	
-	                                    
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
@@ -375,6 +376,21 @@
 				}, 200);
 			}, 200);
 		});
+
+		testID = "Test regional with reversed decimal(,) and group(.) separators like 'de' .Update from outside input.";
+		test(testID, 4, function () {
+			$("#tempContainer").empty();
+				//Init with regional 'de'
+				var $editor = $("#Issue695_Editor"), $input = $("#Issue695_Input");								
+				$('#Issue695_Input').val(0.123).change();
+				equal($editor.igCurrencyEditor("value"), 0.12, "Value is as expected");
+				equal($editor.igCurrencyEditor("displayValue"), "0,12 €", "displayValue is correct");
+				$("#resetButton").click();
+				equal($editor.igCurrencyEditor("value"), 32.00, "Value is as expected");
+				equal($editor.igCurrencyEditor("displayValue"), "32,00 €", "displayValue is correct");
+				$editor.remove();
+				$input.remove();
+		});
 	});//document ready
 
 	function mouseInteraction(type, element) {
@@ -560,6 +576,13 @@
 			valueChanged: testFunction
 		}" />
 		<input id="inpChangeEvt" type="text" class="row-control" data-bind="value: customerTax" />
+
+		<input id="Issue695_Editor" data-bind="igCurrencyEditor: {
+			value: currencyNumber, 
+			width: 160,
+			regional:'de'
+		}" />
+		<input id="Issue695_Input" type="text" class="row-control" data-bind="value: currencyNumber" />
 </div>
 </body>
 </html>
