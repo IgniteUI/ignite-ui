@@ -2826,6 +2826,335 @@
 				equal($dtEditor.igDateEditor("value").getTime(), new Date("2007-01-10T15:18:56.001Z").getTime(), "Value should be empty");
 				$dtEditor.remove();
 			});
+
+			var testId = 'Testing milliseconds spin up';
+			test(testId, 84, function () {
+				var $dtEditor, testDate, ind, delta;
+
+				testData = [{ // limitSpinToCurrentField: false. Testing spin up boundary value and then spin down to previous one.
+					config: {
+						dateInputFormat: "HH:mm:ss:f",
+						value: new Date(2015, 10, 11, 23, 5, 10, 900)
+					},
+					expRes: [{ display: "23:05:11:0" /*spin up*/ }, { display: "23:05:10:9" /*spin down*/ }]
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff",
+						value: new Date(2015, 10, 11, 23, 5, 10, 990)
+					},
+					expRes: [{ display: "23:05:11:00" /*spin up*/ }, { display: "23:05:10:99" /*spin down*/ }]
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 10, 999)
+					},
+					expRes: [{ display: "23:05:11:000" /*spin up*/ }, { display: "23:05:10:999" /*spin down*/ }]
+				}, { // limitSpinToCurrentField: true. Testing spin up boundary value (no action) and then spin down.
+					config: {
+						dateInputFormat: "HH:mm:ss:f",
+						value: new Date(2015, 10, 11, 23, 5, 10, 900),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:10:9" /*spin up*/ }, { display: "23:05:10:8" /*spin down*/ }]
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff",
+						value: new Date(2015, 10, 11, 23, 5, 10, 990),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:10:99" /*spin up*/ } , { display: "23:05:10:98" /*spin down*/ }]
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 10, 999),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:10:999" /*spin up*/ }, { display: "23:05:10:998" /*spin down*/ }]
+				}, { // limitSpinToCurrentField: false. Testing spin down boundary value and then spin up to previous one.
+					config: {
+						dateInputFormat: "HH:mm:ss:f",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0)
+					},
+					expRes: [{ display: "23:05:10:9" /*spin down*/ }, { display: "23:05:11:0" /*spin up*/ }],
+					spinDown: true
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0)
+					},
+					expRes: [{ display: "23:05:10:99" /*spin down*/ }, { display: "23:05:11:00" /*spin up*/ }],
+					spinDown: true
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0)
+					},
+					expRes: [{ display: "23:05:10:999" /*spin down*/ }, { display: "23:05:11:000" /*spin up*/ }],
+					spinDown: true
+				}, { // limitSpinToCurrentField: true. Testing spin down boundary value (no action) and then spin up.
+					config: {
+						dateInputFormat: "HH:mm:ss:f",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:11:0" /*spin down*/ }, { display: "23:05:11:1" /*spin up*/ }],
+					spinDown: true
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:11:00" /*spin down*/ }, { display: "23:05:11:01" /*spin up*/ }],
+					spinDown: true
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:11:000" /*spin down*/ }, { display: "23:05:11:001" /*spin up*/ }],
+					spinDown: true
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currConfig = { buttonType: "spin" };
+					currData = testData[ind];
+					$.extend(currConfig, currData.config);
+					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
+					switch ($dtEditor.data("igDateEditor")._dateIndices.ffLength) {
+						case 1: delta = 100; break;
+						case 2: delta = 10; break;
+						case 3: delta = 1; break;
+					}
+					var testDate = new Date($dtEditor.igDateEditor("value").getTime());
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+					
+					// Test display mode
+					currData.spinDown ? clickElement(spinDownButton, false, false) : clickElement(spinUpButton, false, false);
+					if (!currConfig.limitSpinToCurrentField) {
+						testDate.setMilliseconds(testDate.getMilliseconds() + (currData.spinDown ? -delta : delta));
+					}
+					equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), 'The value is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), currData.expRes[0].display, 'The dispaly is not as expexted');
+
+					currData.spinDown ? clickElement(spinUpButton, false, false) : clickElement(spinDownButton, false, false);
+					testDate.setMilliseconds(testDate.getMilliseconds() + (currData.spinDown ? delta : -delta));
+					equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), 'The value is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), currData.expRes[1].display, 'The dispaly is not as expexted');
+
+					if (currConfig.limitSpinToCurrentField) {
+						currData.spinDown ? clickElement(spinDownButton, false, false) : clickElement(spinUpButton, false, false);
+						testDate.setMilliseconds(testDate.getMilliseconds() + (currData.spinDown ? -delta : delta));
+						equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), 'The value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), currData.expRes[0].display, 'The dispaly is not as expexted');
+					}
+
+					// Test edit mode
+					$dtEditor.igDateEditor("setFocus");
+					$dtEditor.data("igDateEditor")._setCursorPosition(10);
+					currData.spinDown ? clickElement(spinDownButton, false, false) : clickElement(spinUpButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The dispaly is not as expexted');
+					$dtEditor.data("igDateEditor")._setCursorPosition(10);
+					currData.spinDown ? clickElement(spinUpButton, false, false) : clickElement(spinDownButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The dispaly is not as expexted');
+					$dtEditor.trigger("blur").remove();
+				}
+			});
+
+			var testId = 'Testing spin up on empty mask';
+			test(testId, 14, function () {
+				var $dtEditor, testDate, ind;
+
+				testData = [{
+					config: {
+						dateInputFormat: "HH:mm:ss:fff"
+					},
+					expRes: [{
+						display: "00:00:00:000"
+					}, {
+						display: "23:59:59:999"
+					}],
+					cursorPostion: 10
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff"
+					},
+					expRes: [{
+						display: "00:00:00:00"
+					}, {
+						display: "23:59:59:99"
+					}],
+					cursorPostion: 10
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:f"
+					},
+					expRes: [{
+						display: "00:00:00:0"
+					}, {
+						display: "23:59:59:9"
+					}],
+					cursorPostion: 10
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss"
+					},
+					expRes: [{
+						display: "00:00:00"
+					}, {
+						display: "23:59:59"
+					}],
+					cursorPostion: 7
+				}, {
+					config: {
+						dateInputFormat: "HH:mm"
+					},
+					expRes: [{
+						display: "00:00"
+					}, {
+						display: "23:59"
+					}],
+					cursorPostion: 4
+				}, {
+					config: {
+						dateInputFormat: "HH"
+					},
+					expRes: [{
+						display: "00"
+					}, {
+						display: "23"
+					}],
+					cursorPostion: 0
+				}, {
+					config: {
+						dateInputFormat: "tt"
+					},
+					expRes: [{
+						display: "AM"
+					}, {
+						display: "PM"
+					}],
+					cursorPostion: 0
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currConfig = { buttonType: "spin" };
+					currData = testData[ind];
+					$.extend(currConfig, currData.config);
+					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+					$dtEditor.igDateEditor("setFocus");
+					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
+					clickElement(spinUpButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The dispaly is not as expexted');
+					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
+					clickElement(spinDownButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The dispaly is not as expexted');
+					$dtEditor.trigger("blur").remove();
+				}
+			});
+
+			var testId = 'Spin boundary values and update date object parts that are missing in the mask';
+			test(testId, 16, function () {
+				var $dtEditor, testDate, ind, today;
+
+				today = new Date();
+				testData = [{
+					config: {
+						dateInputFormat: "fff"
+					},
+					expRes: [{
+						display: "000"
+					}, {
+						display: "999"
+					}]
+				}, {
+					config: {
+						dateInputFormat: "ss"
+					},
+					expRes: [{
+						display: "00"
+					}, {
+						display: "59"
+					}]
+				}, {
+					config: {
+						dateInputFormat: "mm"
+					},
+					expRes: [{
+						display: "00"
+					}, {
+						display: "59"
+					}]
+				}, {
+					config: {
+						dateInputFormat: "HH"
+					},
+					expRes: [{
+						display: "00"
+					}, {
+						display: "23"
+					}]
+				}, {
+					config: {
+						dateInputFormat: "dd"
+					},
+					expRes: [{
+						display: pad(today.getDate())
+					}, {
+						display: pad(new Date(today.setDate(today.getDate() - 1)).getDate())
+					}]
+				}, {
+					config: {
+						dateInputFormat: "MM"
+					},
+					expRes: [{
+						display: pad(today.getMonth() + 1)
+					}, {
+						display: pad(new Date(today.setMonth(today.getMonth() - 1)).getMonth() + 1)
+					}]
+				}, {
+					config: {
+						dateInputFormat: "yy"
+					},
+					expRes: [{
+						display: (new Date(today.setMonth(today.getMonth() + 1)).getFullYear()).toString().replace("20", "")
+					}, {
+						display: (today.getFullYear() - 1).toString().replace("20", "")
+					}]
+				}, {
+					config: {
+						dateInputFormat: "yyyy"
+					},
+					expRes: [{
+						display: today.getFullYear()
+					}, {
+						display: today.getFullYear() - 1
+					}]
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currConfig = { buttonType: "spin" };
+					currData = testData[ind];
+					$.extend(currConfig, currData.config);
+					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+					$dtEditor.igDateEditor("setFocus");
+					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
+					clickElement(spinDownButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The dispaly is not as expexted');
+					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
+					clickElement(spinDownButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The dispaly is not as expexted');
+					$dtEditor.trigger("blur").remove();
+				}
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {

@@ -9664,12 +9664,18 @@
 		},
 		_setMillisecondsEditMode: function (mask, time, currentMilliseconds, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMilliseconds,
-				secondsUpdateDelta = 0, currentSecond, timeSecond;
-			if (currentMilliseconds + delta >= 60) {
+				secondsUpdateDelta = 0, currentSecond, timeSecond, boundary;
+
+			switch (this._dateIndices.ffLength) {
+				case 1: boundary = 10; break;
+				case 2: boundary = 100; break;
+				case 3: boundary = 1000; break;
+			}
+			if (currentMilliseconds + delta >= boundary) {
 				if (isLimited) {
 					newMilliseconds = currentMilliseconds;
 				} else {
-					newMilliseconds = (currentMilliseconds + delta) - 60;
+					newMilliseconds = (currentMilliseconds + delta) - boundary;
 					secondsUpdateDelta = 1;
 				}
 			} else if (currentMilliseconds + delta < 0) {
@@ -9679,7 +9685,7 @@
 					if (currentMilliseconds + delta === 0) {
 						newMilliseconds = 0;
 					} else {
-						newMilliseconds = 60 + (currentMilliseconds + delta);
+						newMilliseconds = boundary + (currentMilliseconds + delta);
 						secondsUpdateDelta = -1;
 					}
 				}
@@ -9931,14 +9937,23 @@
 		_setDayEditMode: function (mask, time, currentDay, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, currentYear,
 				currentMonth, lastDayOfMonth, lastDayOfPreviousMonth, newDay,
-				monthUpdateDelta, timeYear, timeMonth;
+				monthUpdateDelta, timeYear, timeMonth, today;
 
+			today = new Date();
 			timeYear = this._createYearPosition();
-			currentYear = parseInt(this._getStringRange(mask,
-				timeYear.startPosition, timeYear.endPosition), 10);
+			if (timeYear === null) {
+				currentYear = today.getFullYear();
+			} else {
+				currentYear = parseInt(this._getStringRange(mask,
+					timeYear.startPosition, timeYear.endPosition), 10);
+			}
 			timeMonth = this._createMonthPosition();
-			currentMonth = parseInt(this._getStringRange(mask,
-				timeMonth.startPosition, timeMonth.endPosition), 10);
+			if (timeMonth === null) {
+				currentMonth = today.getMonth();
+			} else {
+				currentMonth = parseInt(this._getStringRange(mask,
+					timeMonth.startPosition, timeMonth.endPosition), 10);
+			}
 			lastDayOfMonth = this._lastDayOfMonth(currentYear, currentMonth);
 			lastDayOfPreviousMonth = this._lastDayOfMonth(currentYear,
 				currentMonth - 1 !== 0 ? currentMonth - 1 : 12);
@@ -10026,6 +10041,10 @@
 			} else {
 				newYear = currentYear + delta;
 			}
+			newYear = newYear.toString();
+			if (!this._dateIndices.fourDigitYear) {
+				newYear = newYear.substring(newYear.length - 2, newYear.length);
+			}
 			mask = this._setTimeEditMode(mask, time, currentYear, newYear);
 			return mask;
 		},
@@ -10034,7 +10053,11 @@
 
 			newValueAsString = newValue.toString();
 			if (newValueAsString.length === 1) {
-				newValueAsString = "0" + newValueAsString;
+				if (!(time.name === "milliseconds" && this._dateIndices.ffLength === 1)) {
+
+					// Only when milliseconds mask is with length 1, then we don't precede the new value with 0.
+					newValueAsString = "0" + newValueAsString;
+				}
 				if (time.name === "milliseconds" && this._dateIndices.ffLength === 3) {
 					newValueAsString = "0" + newValueAsString;
 				}
@@ -10152,7 +10175,8 @@
 			}
 			if (cursorPosition >= indices.yy &&
 				(indices.fourDigitYear && cursorPosition <= indices.yy + 4 ||
-					indices.fourDigitYear === undefined && indices.yy + 2)) {
+					(indices.fourDigitYear === undefined || indices.fourDigitYear === false) &&
+						cursorPosition <= indices.yy + 2)) {
 				time = this._createYearPosition();
 			} else if (cursorPosition >= indices.MM && cursorPosition <= indices.MM + 2) {
 				time = this._createMonthPosition();
@@ -10335,15 +10359,37 @@
 			period = this._getDateField(periodName, date);
 			newPeriod = period + delta;
 
-			this._setDateField(periodName, date, newPeriod);
-			if (userInteraction) {
-				this._triggerInternalValueChange(date);
-				this._editorInput.val(this._getDisplayValue());
-				this._processTextChanged();
-			} else {
-				this._processInternalValueChanging(date);
-				this._editorInput.val(this._getDisplayValue());
+			if (!this._isNewPeriodLimited(periodName, newPeriod, delta, date)) {
+				this._setDateField(periodName, date, newPeriod);
+				if (userInteraction) {
+					this._triggerInternalValueChange(date);
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
+				} else {
+					this._processInternalValueChanging(date);
+					this._editorInput.val(this._getDisplayValue());
+				}
 			}
+		},
+		_isNewPeriodLimited: function(name, value, delta, date) {
+			var isLimited = false;
+			if (this.options.limitSpinToCurrentField) {
+				if (delta < 0) {
+					if (value < 0) {
+						isLimited = true;
+					}
+				} else {
+					if (name === "Month" && value === 13 ||
+						name === "Month" && value ===
+							this._lastDayOfMonth(date.getFullYear() && date.getMonth()) + 1 ||
+						(name === "Hours" || name === "Minutes"  || name === "Seconds") &&
+							value === 60 ||
+						name === "Milliseconds" && value === 1000) {
+						isLimited = true;
+					}
+				}
+			}
+			return isLimited;
 		},
 		_spinDisplayMode: function (delta, userInteraction) {
 			var indices = this._dateIndices, periodName;
