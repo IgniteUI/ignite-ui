@@ -3389,18 +3389,18 @@
 				/* Date fix. We need to encode it using \/Date(ticks)\/ */
 				/* \/Date(ticks)\/ format is changed to ISO 8601.
 				For example - changing this "\/Date(1234656000000)\/" to "2009-02-15T00:00:00Z" */
-				// if (globalt.type === "cell" && $.type(globalt.value) === "date") {
-				// 	globalt.value = this._serializeDate(globalt.value);
-				// } else if (globalt.type === "row" ||
-				// 	globalt.type === "insertrow" ||
-				// 	globalt.type === "newrow" ||
-				// 	globalt.type === "insertnode") {
-				// 	for (prop in globalt.row) {
-				// 		if (globalt.row.hasOwnProperty(prop) && $.type(globalt.row[ prop ]) === "date") {
-				// 			globalt.row[ prop ] = this._serializeDate(globalt.row[ prop ]);
-				// 		}
-				// 	}
-				// }
+				/* if (globalt.type === "cell" && $.type(globalt.value) === "date") {
+					globalt.value = this._serializeDate(globalt.value);
+				} else if (globalt.type === "row" ||
+					globalt.type === "insertrow" ||
+					globalt.type === "newrow" ||
+					globalt.type === "insertnode") {
+					for (prop in globalt.row) {
+						if (globalt.row.hasOwnProperty(prop) && $.type(globalt.row[ prop ]) === "date") {
+							globalt.row[ prop ] = this._serializeDate(globalt.row[ prop ]);
+						}
+					}
+				} */
 				this._accumulatedTransactionLog.push(globalt);
 			}
 		},
@@ -4285,9 +4285,8 @@
 								if (offsets[ key ].hasOwnProperty(func)) {
 									offset = offsets[ key ][ func ];
 									obj = this._dataSummaries[ key ][ func ];
-									if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
-										this._dataSummaries[ key ][ func ] = new Date(
-											parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
+									if ($.type(obj) === "string") {
+										this._dataSummaries[ key ][ func ] = new Date(obj);
 									}
 								}
 							}
@@ -7022,7 +7021,7 @@
 		toStr: function (obj) {
 			return this.isNullOrUndefined(obj) ? "" : obj + this.empty();
 		},
-		toDate: function (obj, pk, key) {
+		toDate: function (obj) {
 			/* L.A. 18 June 2012 Fixing bug #113265 Column 'date' shows empty values as 'NaN' */
 			if (this.isNullOrUndefined(obj) || obj === "" || $.type(obj) === "function") {
 				return null;
@@ -7031,32 +7030,6 @@
 				return obj;
 			}
 			var d;
-			/* OData & MS */
-			// if (obj.length && obj.indexOf("/Date(") !== -1) {
-			// 	/*
-			// 	// account for timezone offset
-			// 	if (this._tzo === undefined) {
-			// 		this._tzo = new Date().getTimezoneOffset() * 60000;
-			// 	}
-			// 	if (this._dst === undefined) {
-			// 		this._dst = new Date().dst();
-			// 		if (this._dst) {
-			// 			this._tzo = new Date().stdTimezoneOffset() * 60000;
-			// 		}
-			// 	}
-			// 	*/
-			// 	/* we need to get the local daylight offset on the client */
-			// 	if (this._serverOffsets === undefined || this._serverOffsets[ pk ] === undefined) {
-			// 		return new Date(parseInt(obj.replace("/Date(", "")
-			// 			.replace(")/", ""), 10) + this._serverOffset);
-			// 	}
-			// 	if (this._serverOffsets[ pk ][ key ] !== undefined &&
-			// 		this._serverOffsets[ pk ][ key ] !== null) {
-			// 		return new Date(parseInt(obj.replace("/Date(", "")
-			// 			.replace(")/", ""), 10) + this._serverOffsets[ pk ][ key ]);
-			// 	}
-			// 	return new Date(parseInt(obj.replace("/Date(", "").replace(")/", ""), 10));
-			// }
 			d = new Date(obj);
 			/* M.H. 14 Apr 2014 Fix for bug #169770: Column dataType "date" format appear as NaN-NaN-NaN in IE8 */
 			if (isNaN(d)) {
