@@ -1836,10 +1836,21 @@
 
 		//This method validates and updates the value input the hidden input
 		_updateValue: function (value) { //TextEditor //WE should detect dataMode, so we can use the options.
+			var selectedIndex;
 			if (value !== null && value !== undefined) {
 				value = value.toString();
 			}
 			this._super(value);
+			if (this._dropDownList) {
+				selectedIndex = $.inArray(value, this.options.listItems);
+				if (selectedIndex > -1) {
+					this._setSelectedItemByIndex(selectedIndex);
+				} else {
+					this.getSelectedListItem()
+						.removeClass(this.css.listItemSelected)
+						.removeAttr("data-active");
+				}
+			}
 		},
 		_applyOptions: function () { //TextEditor
 			var initialValue;
@@ -2815,47 +2826,50 @@
 							this._processValueChanging(currentInputVal);
 						}
 					}
-				} else if (this._dropDownList) {
-					//Arrow Up
-					if (e.keyCode === 38) {
-						//Close if opened
-						if (e.altKey && this._dropDownList.is(":visible")) {
-							this._toggleDropDown();
-						} else if (this._dropDownList.is(":visible")) {
-							//hover previousItem
-							activeItem = this._dropDownList
-								.children(".ui-igedit-listitem")
-								.filter("[data-active='true']");
-							if (activeItem.length > 0 && !activeItem.is(":first-child")) {
-								this._hoverPreviousDropDownListItem();
-							} else {
-								//Close DropDonw
+				} else {
+					if (this._dropDownList) {
+						//Arrow Up
+						if (e.keyCode === 38) {
+							//Close if opened
+							if (e.altKey && this._dropDownList.is(":visible")) {
 								this._toggleDropDown();
+							} else if (this._dropDownList.is(":visible")) {
+								//hover previousItem
+								activeItem = this._dropDownList
+									.children(".ui-igedit-listitem")
+									.filter("[data-active='true']");
+								if (activeItem.length > 0 && !activeItem.is(":first-child")) {
+									this._hoverPreviousDropDownListItem();
+								} else {
+									//Close DropDonw
+									this._toggleDropDown();
+								}
 							}
-						}
-					} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
-						if (!this._dropDownList.is(":visible")) {
-							//openDropDown
+						} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
+							if (!this._dropDownList.is(":visible")) {
+								//openDropDown
+								this._toggleDropDown();
+							} else {
+								//hover next element
+								this._hoverNextDropDownListItem();
+							}
+						} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
+							//Close dropdown
 							this._toggleDropDown();
-						} else {
-							//hover next element
-							this._hoverNextDropDownListItem();
 						}
-					} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
-						//Close dropdown
-						this._toggleDropDown();
 					}
-				} else if (this.options.maxLength) {
-					currentInputVal = this._editorInput.val();
-					if (currentInputVal.length === this.options.maxLength &&
-							e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
-						selection = this._getSelection(this._editorInput[ 0 ]);
-						if (selection.start === selection.end) {
-							e.preventDefault();
-							e.stopPropagation();
-							this._sendNotification("warning",
-								$.ig.util.stringFormat($.ig.Editor.locale.maxLengthWarningMsg,
-									this.options.maxLength));
+					if (this.options.maxLength) {
+						currentInputVal = this._editorInput.val();
+						if (currentInputVal.length === this.options.maxLength &&
+								e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+							selection = this._getSelection(this._editorInput[ 0 ]);
+							if (selection.start === selection.end) {
+								e.preventDefault();
+								e.stopPropagation();
+								this._sendNotification("warning",
+									$.ig.util.stringFormat($.ig.Editor.locale.maxLengthWarningMsg,
+										this.options.maxLength));
+							}
 						}
 					}
 				}
@@ -3332,7 +3346,7 @@
 		},
 		_showDropDownList: function () {
 			// Open Dropdown
-			var direction;
+			var direction, selectedIndex;
 			this._positionDropDownList();
 			if (this._dropDownListOrientation === "up") {
 
@@ -3340,6 +3354,14 @@
 				direction = "down";
 			} else {
 				direction = "up";
+			}
+			selectedIndex = $.inArray(this._editorInput.val(), this.options.listItems);
+			if (selectedIndex > -1) {
+				this._setSelectedItemByIndex(selectedIndex);
+			} else {
+				this.getSelectedListItem()
+					.removeClass(this.css.listItemSelected)
+					.removeAttr("data-active");
 			}
 			try {
 				$(this._dropDownList).show("blind", { direction: direction },
@@ -3764,7 +3786,7 @@
 
 			```
 				paramType="string" optional="false" The text to search for in the drop down list.
-				paramType="startsWith|endsWith|contains|exactMatch " optional="true" The rule that is applied for searching the text.
+				paramType="startsWith|endsWith|contains|exact" optional="true" The rule that is applied for searching the text.
 				returnType="number" Returns index of the found item. */
 
 			var list = this.options.listItems,
@@ -4608,16 +4630,6 @@
 
 					// Close dropdown
 					this._toggleDropDown();
-				} else if (this.options.maxLength) {
-					currentInputVal = this._editorInput.val();
-					if (currentInputVal.length === this.options.maxLength &&
-						e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
-						e.preventDefault();
-						e.stopPropagation();
-
-						//// Process notification
-						// TODO
-					}
 				}
 			}
 			return noCancel;

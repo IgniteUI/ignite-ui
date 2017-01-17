@@ -688,13 +688,13 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 4, function () {
+		test(testId, 5, function () {
 			var $editor = $("<input />").appendTo("#testBedContainer")
 				.igTextEditor({
-					listItems: ["item1", "item2", null, "item3", ""],
+					listItems: ["item1", "item2", "item3"],
 					buttonType: "dropdown",
 					// remove animation to avoid waiting, show() with effect ignores 0
-					dropDownAnimationDuration: -1, valueChanged: console.log, textChanged: console.log
+					dropDownAnimationDuration: -1
 				}),
 			$field = $editor.igTextEditor("field"),
 			$ddButton = $editor.igTextEditor("dropDownButton");
@@ -714,10 +714,14 @@
 			keyInteraction(13, $field);
 			$ddButton.click();
 			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item (API) did not update after value update.");
+
+			$editor.igTextEditor("value", "notAnItem");
+			equal($editor.igTextEditor("getSelectedListItem").length, 0, "There should be no selected item (API) without matching value.");
+			$editor.remove();
 		});
 
 		testId = "Keyboard/Mouse testing";
-		test(testId, 19, function () {
+		test(testId, 22, function () {
 			var $interactWithButtons = $("<input id='interactWithButtons' />").appendTo("#testBedContainer").igTextEditor({
 					listItems: ["item1", "item2", "item3"],
 					buttonType: "dropdown"
@@ -778,8 +782,28 @@
 			equal(editor.igTextEditor("value"), "newValue", "Value should stay with the previouse value");
 			editor.igTextEditor("value", "newValueto");
 			keyInteraction(56, editorInput);
-			equal(editor.igTextEditor("value"), "newValueto", "Value should stay with the previouse value");
-			
+			ok(editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState) &&
+				editor.igTextEditor("editorContainer").igNotifier( "isVisible" ), "MaxLength reached message not shown.");
+			equal(editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+					$.ig.Editor.locale.maxLengthWarningMsg.replace("{0}", 10), "MaxLength reached message not correct.");
+
+			// maxLength with dropDown key handling:
+			var editor2 = $("<input>").appendTo("#testBedContainer")
+				.igTextEditor({
+					maxLength: 5,
+					buttonType: "dropdown",
+					listItems: ["1", "2", "3"]
+				}),
+				editorInput2 = editor2.igTextEditor("field");
+			editor2.igTextEditor("value", "12345");
+			editorInput2.focus();
+			keyInteraction(65, editorInput2);
+			ok(editor2.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState) &&
+				editor2.igTextEditor("editorContainer").igNotifier( "isVisible" ), "MaxLength reached message not shown.");
+			equal(editor2.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+			 	$.ig.Editor.locale.maxLengthWarningMsg.replace("{0}", 5), "MaxLength reached message not correct.");
+			editor2.remove();
+
 			mouseInteraction("mouseover", editorInput[0]);
 			mouseInteraction("mousedown", editorInput[0]);
 			mouseInteraction("mousemove", editorInput[0]);
@@ -805,6 +829,7 @@
 			listEditor.igTextEditor("option", "isLimitedToListValues", true);
 			listInput.val("item22");
 			keyInteraction(13, listInput);
+			listInput.blur();
 			equal(listEditor.igTextEditor("value"), "", "the item 2 should stay selected");
 
 			listDDBtn.click();
@@ -816,8 +841,9 @@
 
 				listEditor.igTextEditor("value", "item3");
 				listDDBtn.click();
-				keyInteraction(38, listInput);
+				keyInteraction(38, listInput); // at item2
 				ok(listEditor.igTextEditor("dropDownVisible"), "The dropDown is not opened");
+				keyInteraction(38, listInput); // at item1
 				keyInteraction(38, listInput);
 				stop();
 				setTimeout(function () {

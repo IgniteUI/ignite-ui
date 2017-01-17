@@ -142,8 +142,7 @@
 						dropDownAnimationDuration: 0,
 						revertIfNotValid: false,
 						isLimitedToListValues: true,
-						spinDelta: -69, // this is not valid and EXCEPTION is thrown. Needed for coverage.
-						maxLength: 10
+						spinDelta: -69 // this is not valid and EXCEPTION is thrown. Needed for coverage.
 					});
 				} catch (e) { }
 				try {
@@ -160,8 +159,7 @@
 						value: "readOnly",
 						buttonType: "spin",
 						readOnly: true,
-						spinDelta: 1.5, // this is not valid and EXCEPTION is thrown. Needed for coverage.
-						maxLength: 10
+						spinDelta: 1.5 // this is not valid and EXCEPTION is thrown. Needed for coverage.
 					});
 				} catch (e) { }
 
@@ -269,7 +267,6 @@
 				$("#negativeEditor1").igNumericEditor({
 					scientificFormat: "E",
 					spinDelta: 2,
-					maxlength: 5,
 					value: -10
 				});
 				$("#clearButton_439").igNumericEditor({
@@ -337,7 +334,7 @@
 		});
 		
 		var testId = 'Numeric Editor initialization.';
-		test(testId, 10, function () {
+		test(testId, 11, function () {
 			ok(typeof($("#inputEditor1").igNumericEditor)  === 'function', "Editors Script is not loaded");
 			ok($('#inputEditor1').data("igNumericEditor") !== undefined, 'Error creating igNumericEditor in an input');
 			ok($('#divEditor1').data("igNumericEditor") !== undefined, 'Error creating igNumericEditor in a div');
@@ -350,6 +347,11 @@
 			equal($('#negativeEditor1').data("igNumericEditor")._valueFromText("-2e+1"), -2E+1, "The parsed value is not correct");
 			strictEqual($('#negativeEditor1').data("igNumericEditor")._valueFromText("-500"), "-5e+2", "The parsed value is not correct");
 			strictEqual($('#convertScientificToNumeric').data("igNumericEditor")._valueFromText("22"), "2.2e+1", "The parsed value is not correct");
+
+			var $editor = $("<input>").appendTo("#testBedContainer")
+				.igNumericEditor({ maxLength: 10 });
+			strictEqual($editor.igNumericEditor("option", "maxLength"), null, "maxLength is not supported on the numeric editor");
+			$editor.remove();
 		});
 
 		testId = "Events testing";
