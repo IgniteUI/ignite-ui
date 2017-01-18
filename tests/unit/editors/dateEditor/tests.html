@@ -387,13 +387,13 @@
 			test(testId, 4, function () {
 				var $dtEditor = $('#inputEditor8a'), currValue, testValue;
 
-				typeInInput("30,10,2016 10:25:56 12", $dtEditor.igDateEditor("field"));
+				typeInMaskedInput("30,10,2016 10:25:56 12", $dtEditor);
 
 				$dtEditor.trigger("blur");
 				equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2016, 9, 30, 10, 25, 56, 120).getTime(), 'The initial value is not as expexted');
 				equal($dtEditor.igDateEditor("displayValue"), "30,10,2016 10:25:56 120 AM", 'The initial value is not as expexted');
 
-				typeInInput("30,10,2016 10:25:56 112 PM", $dtEditor.igDateEditor("field"));
+				typeInMaskedInput("30,10,2016 10:25:56 112 PM", $dtEditor);
 				$dtEditor.trigger("blur");
 
 				currValue = $dtEditor.igDateEditor("value");
@@ -439,7 +439,7 @@
 				setTimeout(function () {
 					start();
 					$dtEditor.data("igDateEditor")._setCursorPosition(0);
-					typeInMaskedInput("32/04/2015", $dtEditor.igDateEditor("field"));
+					typeInMaskedInput("32/04/2015", $dtEditor);
 					$dtEditor.trigger("blur");
 					equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2015, 03, 30).getTime(), 'The initial value is not as expexted');
 					equal($dtEditor.igDateEditor("displayValue"), "30/04/2015", 'The initial value is not as expexted');
@@ -455,7 +455,7 @@
 				setTimeout(function () {
 					start();
 					$dtEditor.data("igDateEditor")._setCursorPosition(0);
-					typeInMaskedInput("15/29/2016", $dtEditor.igDateEditor("field"));
+					typeInMaskedInput("15/29/2016", $dtEditor);
 					$dtEditor.trigger("blur");
 					equal($dtEditor.igDateEditor("value").getTime(), new Date(2017, 2, 29).getTime(), 'The initial value is not as expexted');
 					equal($dtEditor.igDateEditor("displayValue"), "3/29/2017 12:00 AM", 'The initial value is not as expexted');
@@ -471,7 +471,7 @@
 				setTimeout(function () {
 					start();
 					$dtEditor.data("igDateEditor")._setCursorPosition(0);
-					typeInMaskedInput("26:59:89", $dtEditor.igDateEditor("field"));
+					typeInMaskedInput("26:59:89", $dtEditor);
 					$dtEditor.trigger("blur");
 					value = $dtEditor.igDateEditor("value");
 					value = new Date(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds());
@@ -491,7 +491,7 @@
 				setTimeout(function () {
 					start();
 					$dtEditor.data("igDateEditor")._setCursorPosition(0);
-					typeInMaskedInput("20:59:9", $dtEditor.igDateEditor("field"));
+					typeInMaskedInput("20:59:9", $dtEditor);
 					$dtEditor.trigger("blur");
 					value = $dtEditor.igDateEditor("value");
 					value = new Date(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds());
@@ -510,7 +510,7 @@
 				setTimeout(function () {
 					start();
 					$dtEditor.data("igDateEditor")._setCursorPosition(0);
-					typeInMaskedInput("29/11/16", $dtEditor.igDateEditor("field"));
+					typeInMaskedInput("29/11/16", $dtEditor);
 					$dtEditor.trigger("blur");
 					equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2016, 10, 29).getTime(), 'The initial value is not as expexted');
 					equal($dtEditor.igDateEditor("displayValue"), "29/11/16", 'The initial value is not as expexted');
@@ -2820,7 +2820,7 @@
 				});
 				equal($dtEditor.igDateEditor("displayValue"), "01/10/2050", "Display value is not correct");
 				$dtEditor.igDateEditor("setFocus");
-				typeInMaskedInput("01/10/2040", $dtEditor.igDateEditor("field"));
+				typeInMaskedInput("01/10/2040", $dtEditor);
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("displayValue"), "01/10/2040", "Display value is not correct");
 				equal($dtEditor.igDateEditor("value").getTime(), new Date("2007-01-10T15:18:56.001Z").getTime(), "Value should be empty");
@@ -3058,6 +3058,79 @@
 				}
 			});
 
+			var testId = 'Test typing up - empty mask, initial value';
+			test(testId, 23, function () {
+				var dtEditor;
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T15:18:56.001Z"),
+					dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 15:18:56:001", "Display value is not correct");
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				typeInMaskedInput("12/09/2006 14:25:44:112", $dtEditor);
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "12/09/2006 14:25:44:112", "Display value is not correct");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date("2006-12-09T14:25:44.112Z").getTime(), "Value should be empty");
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.remove();
+
+				testData = [{
+					dateInputFormat: "HH",
+					inputValues: ["9", "a", "12"],
+					expRes: ["09", "09", "12"]
+				}, {
+					dateInputFormat: "hh",
+					inputValues: ["9", "a", "12"],
+					expRes: ["09", "09", "12"]
+				}, {
+					dateInputFormat: "tt",
+					inputValues: ["1", "P", "A"],
+					expRes: ["AM", "AM", "AM"]
+				}, {
+					dateInputFormat: "mm",
+					inputValues: ["9", "a", "12"],
+					expRes: ["09", "09", "12"]
+				}, {
+					dateInputFormat: "ss",
+					inputValues: ["9", "a", "12"],
+					expRes: ["09", "09", "12"]
+				}, {
+					dateInputFormat: "ff",
+					inputValues: ["r", "9", "12"],
+					expRes: ["", "90", "12"]
+				}, {
+					dateInputFormat: "MM/dd/yyyy",
+					inputValues: ["999"],
+					inputPositions: [[0, 3, 6]],
+					expRes: ["09/09/2009"]
+				}, {
+					dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
+					inputValues: ["999999999999"],
+					inputPositions: [[0, 3, 6, 7, 8, 9, 11, 14, 17, 20, 21, 22]],
+					expRes: ["09/09/9999 09:09:09:999"]
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currData = testData[ind];
+					values = currData.inputValues;
+					results = currData.expRes;
+					positions = currData.inputPositions;
+					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({ dateInputFormat: currData.dateInputFormat });
+
+					$dtEditor.igDateEditor("setFocus");
+					for (indV = 0; indV < values.length; indV++) {
+						$dtEditor.data("igDateEditor")._setCursorPosition(0);
+						typeInMaskedInput(values[indV], $dtEditor, positions ? positions[indV] : undefined);
+						$dtEditor.trigger("blur");
+						equal($dtEditor.igDateEditor("displayValue"), results[indV], "Display value is not correct");
+					}
+					//$dtEditor.remove();
+				}
+			});
+
 			var testId = 'Spin boundary values and update date object parts that are missing in the mask';
 			test(testId, 16, function () {
 				var $dtEditor, testDate, ind, today;
@@ -3244,18 +3317,24 @@
 				element.trigger(keyUp);
 			});
 		}
-		function typeInMaskedInput(characters, element) {
+		function typeInMaskedInput(characters, $dtEditor, positions) {
 			var keyDown = jQuery.Event("keydown"),
-			   keyPress = jQuery.Event("keypress"),
-			   keyUp = jQuery.Event("keyup"),
-			   value = element.val(), selectionStart = 0;
+			   	keyPress = jQuery.Event("keypress"),
+			   	keyUp = jQuery.Event("keyup"),
+			   	element = $dtEditor.igDateEditor("field"),
+				value = element.val(), selectionStart = 0;
 
 			characters.split('').forEach(function (ch) {
+				selectionStart = arguments[1];
+				if (positions && positions[arguments[1]]) {
+					selectionStart = positions[arguments[1]];
+				}
+				$dtEditor.data("igDateEditor")._setCursorPosition(selectionStart);
 				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
 				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				value = value.replaceAt(selectionStart++, ch);
 				element.trigger(keyDown);
 				element.trigger(keyPress);
-				value = value.replaceAt(selectionStart++, ch);
 				element.val(value);
 				element.trigger(keyUp);
 			});
