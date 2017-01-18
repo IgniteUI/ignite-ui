@@ -2819,6 +2819,7 @@
 								// We use the same handler, because it runs the common logic for item selecting and so on.
 								this._triggerListItemClick(activeItem);
 							} else {
+								this._hideDropDownList();
 								this._processValueChanging(currentInputVal);
 							}
 						} else {
@@ -2861,7 +2862,7 @@
 					if (this.options.maxLength) {
 						currentInputVal = this._editorInput.val();
 						if (currentInputVal.length === this.options.maxLength &&
-								e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+								e.keyCode > 46 && !e.altKey && !e.ctrlKey) {
 							selection = this._getSelection(this._editorInput[ 0 ]);
 							if (selection.start === selection.end) {
 								e.preventDefault();
@@ -3124,6 +3125,9 @@
 						this._editMode ? this._valueFromText(currentVal) : this.value());
 				}
 				this._currentInputTextValue = currentVal;
+				if (this._editMode && this._dropDownList) {
+					this._updateDropdownSelection(currentVal);
+				}
 			}
 			this._checkClearButtonState();
 
@@ -3346,7 +3350,7 @@
 		},
 		_showDropDownList: function () {
 			// Open Dropdown
-			var direction, selectedIndex;
+			var direction;
 			this._positionDropDownList();
 			if (this._dropDownListOrientation === "up") {
 
@@ -3354,14 +3358,6 @@
 				direction = "down";
 			} else {
 				direction = "up";
-			}
-			selectedIndex = $.inArray(this._editorInput.val(), this.options.listItems);
-			if (selectedIndex > -1) {
-				this._setSelectedItemByIndex(selectedIndex);
-			} else {
-				this.getSelectedListItem()
-					.removeClass(this.css.listItemSelected)
-					.removeAttr("data-active");
 			}
 			try {
 				$(this._dropDownList).show("blind", { direction: direction },
@@ -3721,6 +3717,23 @@
 				newSelectedItem.addClass(this.css.listItemSelected);
 				if (this.dropDownVisible()) {
 					newSelectedItem.attr("data-active", true);
+				}
+			}
+		},
+		_updateDropdownSelection: function (currentVal) { //igTextEditor
+			// only used in edit mode
+			var current = this.getSelectedListItem(), selectedIndex;
+			if (!current.length || current.text() !== currentVal) {
+				selectedIndex = $.inArray(currentVal, this.options.listItems);
+				if (selectedIndex > -1) {
+					this._setSelectedItemByIndex(selectedIndex);
+				} else {
+					this.getSelectedListItem()
+						.removeClass(this.css.listItemSelected)
+						.removeAttr("data-active");
+					if (this._dropDownList.is(":visible")) {
+						this._clearDropDownHoverActiveItem();
+					}
 				}
 			}
 		},
@@ -4866,7 +4879,7 @@
 		//This method validates and updates the value input the hidden input
 		_updateValue: function (value) { //Numeric Editor
 			// WE should detect dataMode, so we can use the options.
-			var val, dataMode = this.options.dataMode;
+			var val, dataMode = this.options.dataMode, selectedIndex;
 			if (value === "" && this.options.allowNullValue) {
 				val = this.options.nullValue;
 				this._valueInput.val("");
@@ -4878,6 +4891,17 @@
 				this._valueInput.val(val);
 			}
 			this.options.value = val;
+
+			if (this._dropDownList) {
+				selectedIndex = $.inArray(val, this.options.listItems);
+				if (selectedIndex > -1) {
+					this._setSelectedItemByIndex(selectedIndex);
+				} else {
+					this.getSelectedListItem()
+						.removeClass(this.css.listItemSelected)
+						.removeAttr("data-active");
+				}
+			}
 		},
 		_validateKey: function (event) { //NumericEditor
 			if (this._super(event)) {
@@ -5026,6 +5050,9 @@
 				this.dropDownContainer().children(".ui-igedit-listitemselected")
 					.removeClass(this.css.listItemSelected);
 			}
+		},
+		_updateDropdownSelection: function (currentVal) { //NumericEditor
+			this._super(this._valueFromText(currentVal));
 		},
 		_getRegionalOption: function (key) {
 			var regional = this.options.regional;
@@ -10735,6 +10762,8 @@
 		_setDropDownListWidth: function () { // igDatePicker
 		},
 		_listMouseDownHandler: function () { // igDatePicker
+		},
+		_updateDropdownSelection: function () { //igDatePicker
 		},
 		_disableEditor: function (applyDisabledClass) { //igDatePicker
 			//T.P. 9th Dec 2015 Bug 211010

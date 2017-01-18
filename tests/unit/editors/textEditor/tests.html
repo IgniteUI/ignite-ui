@@ -688,7 +688,7 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 15, function () {
+		test(testId, 21, function () {
 			var $editor, $field, $ddButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
@@ -715,20 +715,24 @@
 
 			// change value in edit mode:
 			$ddButton.click();
+			keyDownChar(51 /*3*/, $field);
 			$field.val("item3");
+			keyPressChar(51, $field);
+			keyUpChar(51, $field);
 			keyInteraction(13, $field);
-			$ddButton.click();
 			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item (API) did not update after value update.");
 
-			//initial value:
+			//initial value, clear:
 			$editor.remove();
 			editorSetup({
-				listItems: ["item1", "item2", "item3"],
-				buttonType: "dropdown",
-				value: "item2"
+				listItems: ["item1", "abcd", "item2", "item3", "more text", "last"],
+				buttonType: "dropdown, clear",
+				value: "item2",
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
 			});
 			equal($editor.igTextEditor("getSelectedListItem").text(), "item2", "Selected item (API) not correct on initialization");
-			equal($editor.igTextEditor("selectedListIndex"), 1, "Selected item (API) not correct on initialization");
+			equal($editor.igTextEditor("selectedListIndex"), 2, "Selected index (API) not correct on initialization");
 
 			$editor.igTextEditor("value", "notAnItem");
 			equal($editor.igTextEditor("getSelectedListItem").length, 0, "There should be no selected item (API) without matching value.");
@@ -738,19 +742,37 @@
 			keyInteraction(38, $field);
 			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item does not reflect value.");
 			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "item2", "Active item did not move from original selection.");
+			keyDownChar(84 /*t*/, $field);
+			$field.val("more text");
+			keyPressChar(84, $field);
+			keyUpChar(84, $field);
+			equal($editor.igTextEditor("getSelectedListItem").text(), "more text", "Selected item not updated when typing.");
+			keyInteraction(40, $field);
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "last", "Active item did not move from new selection.");
+			keyDownChar(65 /*a*/, $field);
 			$field.val("item1a");
-			keyInteraction(65, $field);
+			keyPressChar(65, $field);
+			keyUpChar(65, $field);
 			equal($editor.igTextEditor("getSelectedListItem").length, 0, "Selected item not cleared when typing.");
-			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");			
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");		
 			keyInteraction(13, $field);
 			equal($editor.igTextEditor("value"), "item1a", "Value not set correctly on enter without list selection.");
 			ok(!$editor.igTextEditor("dropDownContainer").is(":visible"), "Dropdown list did not close on enter.");
 			equal($editor.igTextEditor("getSelectedListItem").length, 0, "There should be no selection when value doesn't match any item.");
-			
+
 			$ddButton.click();
 			$field.val("item2");
 			keyInteraction(13, $field);
 			equal($editor.igTextEditor("getSelectedListItem").text(), "item2", "Selected item does not reflect value.");
+
+			$editor.igTextEditor("clearButton").click();
+			equal($editor.igTextEditor("getSelectedListItem").length, 0, "Selection not removed on clear in edit mode");
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not removed on clear in edit mode.");
+			$field.blur();
+			$editor.igTextEditor("value", "last");
+			equal($editor.igTextEditor("getSelectedListItem").text(), "last", "Selected item does not reflect value.");
+			$editor.igTextEditor("clearButton").click();
+			equal($editor.igTextEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
 
 			$editor.remove();
 		});
