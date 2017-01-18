@@ -68,7 +68,7 @@
 						value: '01/09/50',
 						dateInputFormat: "dd/MM/yyyy",
 						dateDisplayFormat: "dd/MM/yyyy",
-						centuryThreshold: 101
+						//centuryThreshold: 101
 					});
 					console.log = logOld;
 
@@ -316,8 +316,8 @@
 				$dtEditor2.igDateEditor("validator")._setOption("custom", null);
 			});
 
-			var testId = 'Set options, Apply options test';			
-			test(testId, 2, function () {			 
+			var testId = 'Set options, Apply options test';
+			test(testId, 6, function () {			 
 				// if prevValue is same as the newVal
 				$('#inputEditor3').igDateEditor("value", "10/10/2010");			   
 
@@ -330,13 +330,39 @@
 				throws(function () {
 					$('#inputEditor3').igDateEditor("option", "maxValue", "01/12/2015");
 				}, "Uncaught Error: MaxValue option can not be set runtime.");
+
+				// set invalid centuryThreshold. There is no longer setDefault functionality for invalid centuryThreshold 
+				var $dtEditor = $('<input id="boundary"/>').appendTo("#testBedContainer"), 
+					$editor = $('<input id="negativeBoundary"/>').appendTo("#testBedContainer");
+			
+				throws(function () {
+					$dtEditor.igDateEditor({
+						centuryThreshold: 100,
+						value: '01/09/50',
+						dateDisplayFormat: "dd/MM/yyyy"
+					});
+				},
+				$.ig.Editor.locale.centuryThresholdValidValues,
+				"Invalid centuryThreshold is set.");
+				equal($dtEditor.igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is bigger than 99');
+				$dtEditor.remove();
+
+				throws(function () {
+					$editor.igDateEditor({
+						centuryThreshold: -1,
+						value: '01/09/50',
+						dateDisplayFormat: "dd/MM/yyyy"
+					});
+				},
+				$.ig.Editor.locale.centuryThresholdValidValues,
+				"Invalid centuryThreshold is set.");
+				equal($editor.igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is negative 0');
+				$editor.remove();
+
 			});
 
 			var testId = 'Initialize minVal and maxVal with wrong values';
-			test(testId, 4, function () {			  
-				equal(logBuffer.pop(), $.ig.Editor.locale.centuryThresholdValidValues, 'centuryThreshold message not logged');
-				equal($('#inputEditor4').igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is bigger than 99');
-
+			test(testId, 2, function () {
 				// init MinVal
 				throws(function () {
 					$("#inputEditor5").igDateEditor({			            

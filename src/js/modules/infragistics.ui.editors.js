@@ -2059,7 +2059,7 @@
 				//If placeholder is not supported
 				this._editorInput.addClass(this.css.placeHolder);
 				if (this._placeHolderNotSupported()) {
-					console.log($.ig.Editor.locale.placeHolderNotSupported);
+					throw ($.ig.Editor.locale.placeHolderNotSupported);
 				}
 			} else if (this._editorInput.attr("placeholder")) {
 				this._editorInput.removeAttr("placeholder");
@@ -2529,7 +2529,7 @@
 			}
 
 			if (buttonsCountRendered === 0) {
-				console.log($.ig.Editor.locale.btnValueNotSupported);
+				throw ($.ig.Editor.locale.btnValueNotSupported);
 			}
 		},
 		_attachButtonsEvents: function (type, target) {
@@ -7879,8 +7879,7 @@
 			var delta = this.options.spinDelta;
 			this._super();
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
-				this.options.centuryThreshold = 29;
-				console.log($.ig.Editor.locale.centuryThresholdValidValues);
+				throw ($.ig.Editor.locale.centuryThresholdValidValues);
 			}
 			if (this.options.minValue) {
 				if (!this._isValidDate(new Date(this.options.minValue))) {

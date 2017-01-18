@@ -1197,14 +1197,13 @@
 				$emptyAndDDBtn = $("<input id='emptyAndDDBtn' />")
 				$wrongBtn = $("<input id='wrongBtn' />");
 
-			logOld = window.console.log;
-			window.console.log = logger;
-			$wrongBtn.igTextEditor({
-				buttonType: "dropdownbutton"
-			});
-			window.console.log = logOld;
-			equal(logBuffer.pop(), $.ig.Editor.locale.btnValueNotSupported, "The editor is not supposed to have any buttons.");
-			
+			throws(function(){
+				$wrongBtn.igTextEditor({
+					buttonType: "dropdownbutton"
+				});
+			},
+			$.ig.Editor.locale.btnValueNotSupported,
+			"Unsupported/Wrong button value is set.");
 
 			throws(function(){
 				$imgEditor.igTextEditor();
