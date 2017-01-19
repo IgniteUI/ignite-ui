@@ -120,7 +120,7 @@
             var scripts = $(document).find("head > script"), actualPaths = [];
             scripts.each(function () {
                 //console.log("script.src: " + this.src)
-                if (this.src.indexOf("GitHub/src/js/") > 0) {
+                if (this.src.indexOf("ignite-ui/src/js/") > 0) {
                     var array = this.src.split("/");
                     actualPaths.push(array[array.length - 1]);
                 }
@@ -129,7 +129,7 @@
             links = $(document).find("head > link");
             links.each(function () {
                 //console.log("link.href: " + this.href)
-                if (this.href.indexOf("GitHub/src/css/") > 0) {
+                if (this.href.indexOf("ignite-ui/src/css/") > 0) {
                     var array = this.href.split("/");
                     actualPaths.push(array[array.length - 1]);
                 }
