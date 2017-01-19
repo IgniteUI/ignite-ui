@@ -688,13 +688,15 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 21, function () {
-			var $editor, $field, $ddButton,
+		test(testId, 34, function () {
+			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
 					.igTextEditor(options);
 					$field = $editor.igTextEditor("field");
 					$ddButton = $editor.igTextEditor("dropDownButton");
+					$spinUpButton = $editor.igTextEditor("spinUpButton");
+					$spinDownButton = $editor.igTextEditor("spinDownButton");
 				};
 
 			editorSetup({
@@ -774,7 +776,59 @@
 			$editor.igTextEditor("clearButton").click();
 			equal($editor.igTextEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
 
+			// spin
+			var listItems = ["item1", "abcd", "item2", "item3", "more text", "last"];
 			$editor.remove();
+			editorSetup({
+				listItems: listItems,
+				buttonType: "dropdown, spin, clear",
+				value: "item2",
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), "abcd", "Selection not changed on spin button");
+			equal($editor.igTextEditor("value"), "abcd", "Value not changed on spin button");
+			for (var i = 0; i < 3; i++) {
+				mouseInteraction("mousedown", $spinUpButton[0]);
+				mouseInteraction("mouseup", $spinUpButton[0]);
+			}
+			equal($editor.igTextEditor("value"), "item1", "Value not changed on spin button");
+			ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled");
+
+			$editor.focus();
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			mouseInteraction("mousedown", $spinDownButton[0]);
+			mouseInteraction("mouseup", $spinDownButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), "abcd", "Selection not changed on spin button in edit mode.");
+			ok(!$spinUpButton.hasClass("ui-state-disabled"), "Spin up button not enabled");
+
+			$ddButton.click();
+			for (var i = 2; i < listItems.length; i++) {
+				mouseInteraction("mousedown", $spinDownButton[0]);
+				mouseInteraction("mouseup", $spinDownButton[0]);
+				equal($editor.igTextEditor("getSelectedListItem").text(), listItems[i], "Selection not changed on spin button with open dropdown.");
+			}
+			ok($spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
+
+			// spin + spinWrapAround
+			$editor.igTextEditor("option", "spinWrapAround", true);
+			$editor.igTextEditor("selectedListIndex", 1);
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin button with open dropdown.");
+			mouseInteraction("mousedown", $spinDownButton[0]);
+			mouseInteraction("mouseup", $spinDownButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[0], "Selection not changed on spin button with open dropdown.");
+
+			$editor.remove();
+
+			// TODO: add case for clearing value in edit mode and selecting the same item
+
 		});
 
 		testId = "Keyboard/Mouse testing";

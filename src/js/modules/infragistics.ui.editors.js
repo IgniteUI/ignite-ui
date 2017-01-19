@@ -2153,11 +2153,11 @@
 				this._attachButtonsEvents(type, target);
 			}
 		},
-		_exceedsMaxValue: function(value) {
-			return this.options.maxValue !== null && value >= this.options.maxValue;
+		_exceedsMaxValue: function(value) { //TextEditor
+			return this._dropDownList && !this._getSpinItem("up", true).length;
 		},
-		_lessThanMinValue: function(value) {
-			return this.options.minValue !== null && value <= this.options.minValue;
+		_lessThanMinValue: function(value) { //TextEditor
+			return this._dropDownList && !this._getSpinItem("down", true).length;
 		},
 		_setSpinButtonsState: function (val) {
 			if (typeof val === "string" || val instanceof String) {
@@ -2819,7 +2819,7 @@
 								// We use the same handler, because it runs the common logic for item selecting and so on.
 								this._triggerListItemClick(activeItem);
 							} else {
-								this._hideDropDownList();
+								this._toggleDropDown();
 								this._processValueChanging(currentInputVal);
 							}
 						} else {
@@ -3013,8 +3013,7 @@
 				$(item).addClass(this.css.listItemSelected);
 				$(item).attr("aria-selected", true);
 
-				noCancel = this._triggerDropDownClosing();
-				if (noCancel) {
+				if (this._dropDownList.is(":visible") && this._triggerDropDownClosing()) {
 					this._hideDropDownList();
 				}
 				this._triggerDropDownItemSelected(item);
@@ -3023,8 +3022,12 @@
 
 					this._currentInputTextValue = this._editorInput.val();
 					this._processValueChanging($(item).text());
-					this._processTextChanged();
-					this._enterEditMode();
+					if (this._editMode) {
+						this._enterEditMode();
+					} else {
+						this._editorInput.val(this._getDisplayValue());
+						this._processTextChanged();
+					}
 				}
 			}
 		},
@@ -3118,6 +3121,9 @@
 				//In that case we don't have track of previous value, so we trigger the textChanged event
 				this._triggerTextChanged("", currentVal);
 			} else if (currentVal !== previousVal) {
+				if (this._editMode && this._dropDownList) {
+					this._updateDropdownSelection(currentVal);
+				}
 				this._triggerTextChanged(previousVal, currentVal);
 				if (this._validator) {
 					// D.P. 26th Oct 2015 Bug 20972 validation onchange does not work correctly
@@ -3125,9 +3131,6 @@
 						this._editMode ? this._valueFromText(currentVal) : this.value());
 				}
 				this._currentInputTextValue = currentVal;
-				if (this._editMode && this._dropDownList) {
-					this._updateDropdownSelection(currentVal);
-				}
 			}
 			this._checkClearButtonState();
 
@@ -3593,15 +3596,59 @@
 				this._hoverNextDropDownListItem();
 			}
 		},
+		_getSpinItem: function (spinType, selected) { //igTextEditor
+			var items = this._listItems(), newItem, currentItem;
+			if (!items.length) {
+				return items;
+			}
+			if (selected) {
+				currentItem = this.getSelectedListItem();
+			} else {
+				currentItem = items.filter("[data-active='true']");
+			}
+			if (currentItem.length > 0) {
+				newItem = currentItem[ spinType === "up" ? "prev" : "next" ]();
 
-		// We need this level of abstaction because of the numeric editors.
-		_handleSpinUpEvent: function () {
-			this._spinUp();
+				if (!newItem.length && this.options.spinWrapAround) {
+					newItem = items[ spinType === "up" ? "last" : "first" ]();
+				}
+				return newItem;
+			}
+			else {
+				return items.first();
+			}
 		},
-
-		// We need this level of abstaction because of the numeric editors.
-		_handleSpinDownEvent: function () {
-			this._spinDown();
+		_handleSpinUpEvent: function () { //igTextEditor
+			var nextItem;
+			if (false) {
+				this._spinUp();
+			} else {
+				nextItem = this._getSpinItem("up", true);
+				if (nextItem.length) {
+					if (this._editMode) {
+						this._editorInput.val(nextItem.text());
+						this._processTextChanged();
+					} else {
+						this._triggerListItemClick(nextItem);
+					}
+				}
+			}
+		},
+		_handleSpinDownEvent: function () { //igTextEditor
+			var nextItem;
+			if (false) {
+				this._spinDown();
+			} else {
+				nextItem = this._getSpinItem("down", true);
+				if (nextItem.length) {
+					if (this._editMode) {
+						this._editorInput.val(nextItem.text());
+						this._processTextChanged();
+					} else {
+						this._triggerListItemClick(nextItem);
+					}
+				}
+			}
 		},
 		_handleSpinEvent: function (type, target) {
 			var self = this;
@@ -3716,6 +3763,7 @@
 				newSelectedItem = this._getListItemByIndex(index);
 				newSelectedItem.addClass(this.css.listItemSelected);
 				if (this.dropDownVisible()) {
+					this._clearDropDownHoverActiveItem();
 					newSelectedItem.attr("data-active", true);
 				}
 			}
@@ -3731,7 +3779,7 @@
 					this.getSelectedListItem()
 						.removeClass(this.css.listItemSelected)
 						.removeAttr("data-active");
-					if (this._dropDownList.is(":visible")) {
+					if (this.dropDownVisible()) {
 						this._clearDropDownHoverActiveItem();
 					}
 				}
@@ -5254,9 +5302,19 @@
 				this._editorInput.removeClass(this.css.negative);
 			}
 		},
-		_getSpinValue: function (spinType, currentValue, decimalSeparator, delta) {
-			var fractional, scientificPrecision, spinPrecision,
+		_getSpinValue: function (spinType, currentValue, decimalSeparator, delta) { //NumericEditor
+			var fractional, scientificPrecision, spinPrecision, nextItem,
 				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
+			// D.P. 19th Jan 2016 #657 Value is incremented with isLimitedToListValues
+			if (this.options.isLimitedToListValues) {
+				nextItem = this._getSpinItem(spinType === "spinUp" ? "up" : "down", true);
+				if (nextItem.length) {
+					return this._parseNumericValueByMode(nextItem.text(),
+						this._numericType, this.options.dataMode)
+				} else {
+					return currentValue;
+				}
+			}
 			if (delta) {
 				spinDeltaValue = Number(delta);
 			}
@@ -5482,6 +5540,18 @@
 				}
 			}
 			this._setSpinButtonsState(currVal);
+		},
+		_exceedsMaxValue: function(value) {  //NumericEditor
+			if (this.options.isLimitedToListValues) {
+				return this._super(value);
+			}
+			return this.options.maxValue !== null && value >= this.options.maxValue;
+		},
+		_lessThanMinValue: function(value) { //NumericEditor
+			if (this.options.isLimitedToListValues) {
+				return this._super(value);
+			}
+			return this.options.minValue !== null && value <= this.options.minValue;
 		},
 		_handleSpinUpEvent: function () {
 			var cursorPosition = this._getCursorPosition();

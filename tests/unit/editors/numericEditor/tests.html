@@ -846,13 +846,15 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 21, function () {
-			var $editor, $field, $ddButton,
+		test(testId, 35, function () {
+			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
 					.igNumericEditor(options);
 					$field = $editor.igNumericEditor("field");
 					$ddButton = $editor.igNumericEditor("dropDownButton");
+					$spinUpButton = $editor.igNumericEditor("spinUpButton");
+					$spinDownButton = $editor.igNumericEditor("spinDownButton");
 				};
 
 			editorSetup({
@@ -932,8 +934,59 @@
 			$editor.igNumericEditor("clearButton").click();
 			equal($editor.igNumericEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
 
+			// spin + isLimitedToListValues
+			var listItems = [5, 44.5, 44, 575, 55.4, 243, 10];
 			$editor.remove();
-		});		
+			editorSetup({
+				spinDelta: 1,
+				isLimitedToListValues: true,
+				listItems: listItems,
+				buttonType: "dropdown, spin, clear",
+				value: 44,
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button");
+			strictEqual($editor.igNumericEditor("value"), 44.5, "Value not changed on spin button");
+			for (var i = 0; i < 3; i++) {
+				mousedown($spinUpButton[0]);
+				mouseup($spinUpButton[0]);
+			}
+			strictEqual($editor.igNumericEditor("value"), 5, "Value not changed on spin button");
+			ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled");
+
+			$editor.focus();
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			mousedown($spinDownButton[0]);
+			mouseup($spinDownButton[0]);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
+			ok(!$spinUpButton.hasClass("ui-state-disabled"), "Spin up button not enabled");
+
+			$ddButton.click();
+			for (var i = 2; i < listItems.length; i++) {
+				mousedown($spinDownButton[0]);
+				mouseup($spinDownButton[0]);
+				equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[i], "Selection not changed on spin button with open dropdown.");
+			}
+			ok($spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
+			
+			// spin + spinWrapAround
+			$editor.igNumericEditor("option", "spinWrapAround", true);
+			$editor.igNumericEditor("selectedListIndex", 1);
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin button with open dropdown.");
+			mousedown($spinDownButton[0]);
+			mouseup($spinDownButton[0]);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[0], "Selection not changed on spin button with open dropdown.");
+
+			$editor.remove();
+		});
 		
 		testId = "SetOption";
 		test(testId, 23, function () {
@@ -1303,9 +1356,8 @@
 				listWidth: 200,
 				height: 20,
 				listItems: [1, 2, 3, 4, 5],
-				dropDownAnimationDuration: 1,
+				dropDownAnimationDuration: -1,
 				revertIfNotValid: false,
-				isLimitedToListValues: true,
 				spinDelta: 1
 			});
 
