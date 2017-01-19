@@ -3087,11 +3087,6 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
-			if (this.isGroupByApplied(this.settings.sorting.expressions)) {
-				this._generateGroupByData(this._filter ? this._filteredData :
-															this._data,
-										this.settings.sorting.expressions);
-			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
