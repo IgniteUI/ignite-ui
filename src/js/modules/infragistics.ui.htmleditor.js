@@ -277,14 +277,14 @@
             ```
                 //Initialize
                 $(".selector").igHtmlEditor({
-                    rendering: function (evt, ui) {
+                    rendered: function (evt, ui) {
                         //return reference to igHtmlEditor object
                         ui.owner
                     }
                 });
 
                 //Delegate
-                $(document).delegate(".selector", "ightmleditorrendering", function (evt, ui) {
+                $(document).delegate(".selector", "ightmleditorrendered", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -295,14 +295,14 @@
             ```
                 //Initialize
                 $(".selector").igHtmlEditor({
-                    rendered: function (evt, ui) {
+                    rendering: function (evt, ui) {
                         //return reference to igHtmlEditor object
                         ui.owner
                     }
                 });
 
                 //Delegate
-                $(document).delegate(".selector", "ightmleditorrendered", function (evt, ui) {
+                $(document).delegate(".selector", "ightmleditorrendering", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
