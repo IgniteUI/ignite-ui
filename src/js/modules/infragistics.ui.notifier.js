@@ -394,7 +394,7 @@
 		},
 		_setState: function (value, message/*, fireEvents*/) {
 			if ($.inArray(value, this._states) === -1) {
-				throw ($.ig.Notifier.locale.notSupportedState);
+				throw new Error($.ig.Notifier.locale.notSupportedState);
 			}
 
 			//TODO:
@@ -495,7 +495,7 @@
 		},
 		_setMode: function (value, force) {
 			if ($.inArray(value, this._modes) === -1) {
-				throw ($.ig.Notifier.locale.notSupportedMode);
+				throw new Error($.ig.Notifier.locale.notSupportedMode);
 			}
 			if (this.options.mode !== value || force) {
 				// cleanup current popover

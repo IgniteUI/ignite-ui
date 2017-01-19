@@ -342,7 +342,7 @@
 						dateDisplayFormat: "dd/MM/yyyy"
 					});
 				},
-				$.ig.Editor.locale.centuryThresholdValidValues,
+				Error($.ig.Editor.locale.centuryThresholdValidValues),
 				"Invalid centuryThreshold is set.");
 				equal($dtEditor.igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is bigger than 99');
 				$dtEditor.remove();
@@ -354,7 +354,7 @@
 						dateDisplayFormat: "dd/MM/yyyy"
 					});
 				},
-				$.ig.Editor.locale.centuryThresholdValidValues,
+				Error($.ig.Editor.locale.centuryThresholdValidValues),
 				"Invalid centuryThreshold is set.");
 				equal($editor.igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is negative 0');
 				$editor.remove();

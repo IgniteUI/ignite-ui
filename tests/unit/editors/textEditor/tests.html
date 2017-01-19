@@ -1202,19 +1202,19 @@
 					buttonType: "dropdownbutton"
 				});
 			},
-			$.ig.Editor.locale.btnValueNotSupported,
+			Error($.ig.Editor.locale.btnValueNotSupported),
 			"Unsupported/Wrong button value is set.");
 
 			throws(function(){
 				$imgEditor.igTextEditor();
 			},
-			$.ig.Editor.locale.targetNotSupported,
+			Error($.ig.Editor.locale.targetNotSupported),
 			"The editor should not be created on img.");
 
 			throws(function(){
 				$multilineError.igTextEditor();
 			},
-			$.ig.Editor.locale.multilineErrMsg,
+			Error($.ig.Editor.locale.multilineErrMsg),
 			"Error not throw when igTextEditor is initialized in textArea and textMode is not multiline.");
 			
 			throws(function(){

@@ -100,14 +100,14 @@
 			throws(function() {
 					$('#inputEditor1').igBaseEditor();
 				}, 
-				$.ig.Editor.locale.renderErrMsg,
+				Error($.ig.Editor.locale.renderErrMsg),
 				"igBaseEditor should not be initialized"
 			);
 			
 			throws(function() {
 					$("#textareaEditorFake").igTextEditor();
 				},
-				$.ig.Editor.locale.multilineErrMsg,
+				Error($.ig.Editor.locale.multilineErrMsg),
 				"You should have the type of the editor as multiline"
 			);
 
@@ -283,7 +283,7 @@
 			throws(function(){
 				editor.igNotifier("option", "state", "random" );
 			},
-			$.ig.Notifier.locale.notSupportedState,
+			Error($.ig.Notifier.locale.notSupportedState),
 			"Not supported notification state is set.");
 			
 			ok(editor.igNotifier("option", "state") === "success", "Wrong notification state accepted");
@@ -328,7 +328,7 @@
 			throws(function(){
 				editor.igNotifier("option", "mode", "random");
 			},
-			$.ig.Notifier.locale.notSupportedMode,
+			Error($.ig.Notifier.locale.notSupportedMode),
 			"Not supported notification mode is set.");
 
 			ok(editor.igNotifier("option", "mode") === "auto", "Wrong notification mode accepted");
