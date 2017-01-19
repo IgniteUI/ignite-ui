@@ -343,7 +343,7 @@
 		});
 
 		testID = "Test regional with reversed decimal(,) and group(.) separators like 'de' .Update from outside input.";
-		test(testID, 4, function () {
+		test(testID, 6, function () {
 			$("#tempContainer").empty();
 				//Init with regional 'de'
 				var $editor = $("#Issue695_Editor"), $input = $("#Issue695_Input");
@@ -353,6 +353,9 @@
 				$("#resetButton").click();
 				equal($editor.igNumericEditor("value"), 27.00, "Value is as expected");
 				equal($editor.igNumericEditor("displayValue"), "27,00", "displayValue is correct");
+				$('#Issue695_Input').val("").change();
+				equal($editor.igNumericEditor("value"), "", "Value is as expected");
+				equal($editor.igNumericEditor("displayValue"), "", "displayValue is correct");
 				$editor.remove();
 				$input.remove();
 		});
