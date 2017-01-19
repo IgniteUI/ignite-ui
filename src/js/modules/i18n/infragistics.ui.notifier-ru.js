@@ -17,7 +17,9 @@ if (!$.ig.Notifier) {
 		locale: {
 		    successMsg: "Успешно",
 		    errorMsg: "Ошибка",
-		    warningMsg: "Предупреждение"
+		    warningMsg: "Предупреждение",
+		    notSupportedState: "",
+		    notSupportedMode: ""
 		}
 	});
 
