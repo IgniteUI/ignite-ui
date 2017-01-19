@@ -624,17 +624,6 @@
 				this._updateArrowDiv(this.options.direction, trg);
 				fn = "_" + this.options.direction + "Position";
 				this[ fn ](trg);
-				//if (!this[ fn ](trg)) {
-					/* && (this.options.selectors || !this._target) */
-					/* trying to find a place on the screen if there is no space to show with the position set */
-				//	do {
-				//		this._updateArrowDiv(this._dp[ i ], trg);
-				//		fn = "_" + this._dp[ i ] + "Position";
-				//		fnRes = this[ fn ](trg);
-				//		i++;
-				//	} while (fnRes === false && i < this._dp.length);
-				//	return;
-				//}
 			}
 		},
 		_findProperPosition: function (dir, x, trg) {
