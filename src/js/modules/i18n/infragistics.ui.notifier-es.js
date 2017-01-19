@@ -18,8 +18,8 @@ if (!$.ig.Notifier) {
 		    successMsg: "Correcto",
 		    errorMsg: "Error",
 		    warningMsg: "Advertencia",
-		    notSupportedState: "",
-		    notSupportedMode: ""
+		    notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
+		    notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
 		}
 	});
 
