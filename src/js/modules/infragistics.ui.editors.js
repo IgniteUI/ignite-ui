@@ -10378,15 +10378,13 @@
 					if (value < 0) {
 						isLimited = true;
 					}
-				} else {
-					if (name === "Month" && value === 13 ||
-						name === "Month" && value ===
-							this._lastDayOfMonth(date.getFullYear() && date.getMonth()) + 1 ||
-						(name === "Hours" || name === "Minutes"  || name === "Seconds") &&
-							value === 60 ||
-						name === "Milliseconds" && value === 1000) {
-						isLimited = true;
-					}
+				} else if (name === "Month" && value === 13 ||
+					name === "Month" && value ===
+						this._lastDayOfMonth(date.getFullYear() && date.getMonth()) + 1 ||
+					(name === "Hours" || name === "Minutes"  || name === "Seconds") &&
+						value === 60 ||
+					name === "Milliseconds" && value === 1000) {
+					isLimited = true;
 				}
 			}
 			return isLimited;
