@@ -1404,7 +1404,7 @@
 				multiline type="string" Multiline editor based on TEXTAREA element is created.
 			*/
 			textMode: "text",
-			/* type="bool" Gets/Sets the ability of the editor to automatically change the hoverd item into the opened dropdown list to its oposide side. When the last item is reached and the spin down is clicked, the first item gets hovered and vice versa. This option has no effect there is no drop-down list.
+			/* type="bool" Gets/Sets the ability of the editor to automatically move the dropdown list selection item from one end to the opposite side. When the last item is reached and spin down is performed, the first item gets selected and vice versa. This option has no effect there is no drop-down list.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1419,7 +1419,7 @@
 			```
 			*/
 			spinWrapAround: false,
-			/* type="bool" Gets/Sets if the editor should only allow values set into the list of items. This validation is done only when the editor is blured, or enter key is pressed
+			/* type="bool" Gets/Sets if the editor should only allow values from the list of items.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -2161,10 +2161,10 @@
 				this._attachButtonsEvents(type, target);
 			}
 		},
-		_exceedsMaxValue: function(value) { //TextEditor
+		_exceedsMaxValue: function() { //TextEditor
 			return this._dropDownList && !this._getSpinItem("up", true).length;
 		},
-		_lessThanMinValue: function(value) { //TextEditor
+		_lessThanMinValue: function() { //TextEditor
 			return this._dropDownList && !this._getSpinItem("down", true).length;
 		},
 		_setSpinButtonsState: function (val) {
@@ -3621,8 +3621,7 @@
 					newItem = items[ spinType === "up" ? "last" : "first" ]();
 				}
 				return newItem;
-			}
-			else {
+			} else {
 				return items.first();
 			}
 		},
@@ -3969,7 +3968,7 @@
 			this._setSelectionRange(this._editorInput[ 0 ], start, end);
 		},
 		spinUp: function () {
-			/* Hovers the previous item in the drop-down list if the list is opened.
+			/* Selects the previous item from the drop-down list.
 			```
 			 $(".selector").igTextEditor("spinUp");
 			```
@@ -3977,7 +3976,7 @@
 			this._spinUp();
 		},
 		spinDown: function () {
-			/* Hovers the next item in the drop-down list if the list is opened.
+			/* Selects the next item from the drop-down list.
 			```
 				$(".selector").igTextEditor("spinDown");
 			```
@@ -4294,6 +4293,7 @@
 			*/
 			scientificFormat: null,
 			/* type="bool" Gets/Set the ability of the editor to automatically set value in the editor to the opposite side of the limit, when the spin action reaches minimum or maximum limit.
+				This applies to [minValue](ui.%%WidgetNameLowered%%#options:minValue) and [maxValue](ui.%%WidgetNameLowered%%#options:maxValue) or cycling through list items if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -4308,6 +4308,20 @@
 			```
 			*/
 			spinWrapAround: false,
+			/* type="bool" Gets/Sets if the editor should only allow values from the list of items. Enabling this also causes spin actions to cycle through list items instead.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					isLimitedToListValues : true
+				});
+
+				//Get
+				var limited = $(".selector").%%WidgetName%%("option", "isLimitedToListValues");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
+			```*/
+			isLimitedToListValues: false,
 			/* @Ignored@ Removed from numeric editor options*/
 			maxLength: null,
 			/* @Ignored@ Removed from numeric editor options*/
@@ -5313,12 +5327,13 @@
 		_getSpinValue: function (spinType, currentValue, decimalSeparator, delta) { //NumericEditor
 			var fractional, scientificPrecision, spinPrecision, nextItem,
 				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
+
 			// D.P. 19th Jan 2016 #657 Value is incremented with isLimitedToListValues
-			if (this.options.isLimitedToListValues) {
+			if (this._dropDownList && this.options.isLimitedToListValues) {
 				nextItem = this._getSpinItem(spinType === "spinUp" ? "up" : "down", true);
 				if (nextItem.length) {
 					return this._parseNumericValueByMode(nextItem.text(),
-						this._numericType, this.options.dataMode)
+						this._numericType, this.options.dataMode);
 				} else {
 					return currentValue;
 				}
@@ -5751,36 +5766,36 @@
 			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		spinUp: function (delta) {
-			/* Increments value in editor according to the parameter.
+			/* Increments value in editor according to the parameter or selects the previous item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
 			```
 				$(".selector").%%WidgetName%%("spinUp");
 			```
 				paramType="number" optional="true" Increments value. */
-			this._spinUp(delta); // TODO this._spinUp() method should accept delta.
+			this._spinUp(delta);
 		},
 		spinDown: function (delta) {
-			/* Decrements value in editor according to the parameter.
+			/* Decrements value in editor according to the parameter selects the next item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
 			```
 				$(".selector").%%WidgetName%%("spinDown");
 			```
 				paramType="number" optional="true" Decrement value. */
-			this._spinDown(delta); // TODO this._spinUp() method should accept delta.
+			this._spinDown(delta);
 		},
 		selectListIndexUp: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list.
+			/* @Deprecated@ This method is deprecated in favor of [spinUp](ui.%%WidgetNameLowered%%#options:spinUp).
 			```
-				$(".selector").%%WidgetName%%("selectListIndexUp", 2);
+				$(".selector").%%WidgetName%%("selectListIndexUp");
 			```
 			*/
-			$.ui.igTextEditor.prototype.spinUp.call(this);
+			this._spinUp();
 		},
 		selectListIndexDown: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list.
+			/* @Deprecated@ This method is deprecated in favor of [spinDown](ui.%%WidgetNameLowered%%#options:spinDown).
 			```
-				$(".selector").%%WidgetName%%("selectListIndexDown", 1);
+				$(".selector").%%WidgetName%%("selectListIndexDown");
 			```
 			*/
-			$.ui.igTextEditor.prototype.spinDown.call(this);
+			this._spinDown();
 		},
 		getRegionalOption: function () {
 			/* Gets current regional.

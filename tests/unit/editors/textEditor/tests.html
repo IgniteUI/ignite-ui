@@ -68,7 +68,7 @@
 					listWidth: 200,
 					height: 20,
 					listItems: ["item1", "item2", "item3"],
-					dropDownAnimationDuration: 1,
+					dropDownAnimationDuration: -1,
 					revertIfNotValid: false,
 					isLimitedToListValues: true
 				});
@@ -723,9 +723,9 @@
 			keyUpChar(51, $field);
 			keyInteraction(13, $field);
 			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item (API) did not update after value update.");
+			$editor.remove();
 
 			//initial value, clear:
-			$editor.remove();
 			editorSetup({
 				listItems: ["item1", "abcd", "item2", "item3", "more text", "last"],
 				buttonType: "dropdown, clear",
@@ -775,10 +775,10 @@
 			equal($editor.igTextEditor("getSelectedListItem").text(), "last", "Selected item does not reflect value.");
 			$editor.igTextEditor("clearButton").click();
 			equal($editor.igTextEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
+			$editor.remove();
 
 			// spin
 			var listItems = ["item1", "abcd", "item2", "item3", "more text", "last"];
-			$editor.remove();
 			editorSetup({
 				listItems: listItems,
 				buttonType: "dropdown, spin, clear",
@@ -1003,7 +1003,7 @@
 		});
 
 		testId = "Spin buttons";
-		test(testId, 4, function () {
+		test(testId, 5, function () {
 			var listEditor = $("#listEditor"),
 				listContainer = listEditor.igTextEditor("editorContainer"),
 				listInput = listEditor.igTextEditor("field"),
@@ -1018,27 +1018,27 @@
 			listEditor.igTextEditor("option", "disabled", true);
 			listEditor.igTextEditor("option", "disabled", false);
 			ok(!list.hasClass("ui-state-disabled"), "Disabled class is not removed from the drop down");
-			ok(!listDDBtn.hasClass("ui-state-disabled"), "Disabled class is not removed from the drop down button")
-			listDDBtn.click();
+			ok(!listDDBtn.hasClass("ui-state-disabled"), "Disabled class is not removed from the drop down button");
 
-			// SpinUp using keyboard navigation
+			listDDBtn.click();
+			listInput.focus();
+
+			// SpinUp using buttons
 			mouseInteraction("mouseover", listUp[0]);
 			mouseInteraction("mousedown", listUp[0]);
 			mouseInteraction("mousepress", listUp[0]);
 			mouseInteraction("mouseup", listUp[0]);
 			mouseInteraction("mouseout", listUp[0]);
 
+			ok($(listItem).attr("data-active"), "active class should be applied on the first item");
+
 			// SpinUp using API
 			listEditor.igTextEditor("spinUp");
-
+			console.log(list.children(".ui-igedit-listitem"));
 			// SpinDown using keyboard navigation
-			mouseInteraction("mouseover", listDown[0]);
-			mouseInteraction("mousedown", listDown[0]);
-			mouseInteraction("mousepress", listDown[0]);
-			mouseInteraction("mouseup", listDown[0]);
-			mouseInteraction("mouseout", listDown[0]);
+			keyInteraction(40, listInput);
 
-			ok($(listItem).attr("data-active"), "active class should be applied on the last item");
+			ok($(list.children(".ui-igedit-listitem")[1]).attr("data-active"), "active class should be applied on the second item");
 
 			// SpinDown using API
 			listEditor.igTextEditor("spinDown");
