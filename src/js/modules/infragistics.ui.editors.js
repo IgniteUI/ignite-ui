@@ -3026,16 +3026,14 @@
 				}
 				this._triggerDropDownItemSelected(item);
 
-				if (this.value() !== $(item).text()) {
-
-					this._currentInputTextValue = this._editorInput.val();
-					this._processValueChanging($(item).text());
-					if (this._editMode) {
-						this._enterEditMode();
-					} else {
-						this._editorInput.val(this._getDisplayValue());
-						this._processTextChanged();
-					}
+				// D.P. _processValueChanging and text process have checks for change
+				this._currentInputTextValue = this._editorInput.val();
+				this._processValueChanging($(item).text());
+				if (this._editMode) {
+					this._enterEditMode();
+				} else {
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
 				}
 			}
 		},

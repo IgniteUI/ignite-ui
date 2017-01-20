@@ -688,7 +688,7 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 36, function () {
+		test(testId, 38, function () {
 			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
@@ -832,10 +832,17 @@
 			mouseInteraction("mouseup", $spinUpButton[0]);
 			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin with spinWrapAround.");
 
+
+			// clearing value in edit mode and selecting the same item
+			$editor.blur(); //set last value
+			$ddButton.click();
+			$editor.igTextEditor("clearButton").click();
+			$editor.igTextEditor("dropDownContainer")
+				.children(".ui-igedit-listitem").last().click();
+			equal($field.val(), listItems[listItems.length-1], "Selection not reflected in edit field after clear");
+			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed after re-selecting cleared item.");
+			
 			$editor.remove();
-
-			// TODO: add case for clearing value in edit mode and selecting the same item
-
 		});
 
 		testId = "Keyboard/Mouse testing";
@@ -1004,7 +1011,16 @@
 
 		testId = "Spin buttons";
 		test(testId, 5, function () {
-			var listEditor = $("#listEditor"),
+			var listEditor = $("<input>").appendTo("#testBedContainer").igTextEditor({
+					buttonType: "dropdown,spin,clear,nonvalid",
+					width: 200,
+					listWidth: 200,
+					height: 20,
+					listItems: ["item1", "item2", "item3"],
+					dropDownAnimationDuration: -1,
+					revertIfNotValid: false,
+					isLimitedToListValues: true
+				}),
 				listContainer = listEditor.igTextEditor("editorContainer"),
 				listInput = listEditor.igTextEditor("field"),
 				list = listEditor.igTextEditor("dropDownContainer"),
@@ -1045,6 +1061,7 @@
 			listEditor.igTextEditor("spinDown");
 
 			ok($(listItemLast).attr("data-active"), "active class should be applied on the last item");
+			listEditor.remove();
 		});
 
 		testId = "SelectionOnFocus";
