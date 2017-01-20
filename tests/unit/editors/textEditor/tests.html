@@ -688,7 +688,7 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 34, function () {
+		test(testId, 36, function () {
 			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
@@ -824,6 +824,13 @@
 			mouseInteraction("mousedown", $spinDownButton[0]);
 			mouseInteraction("mouseup", $spinDownButton[0]);
 			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[0], "Selection not changed on spin button with open dropdown.");
+			$editor.igTextEditor("option", "spinWrapAround", false);
+			ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled when setting spinWrapAround");
+			$ddButton.click();
+			$editor.igTextEditor("option", "spinWrapAround", true);
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin with spinWrapAround.");
 
 			$editor.remove();
 

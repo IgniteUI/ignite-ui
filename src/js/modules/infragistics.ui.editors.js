@@ -1802,6 +1802,14 @@
 				case "listWidth":
 					this._setDropDownListWidth();
 					break;
+				case "spinWrapAround":
+					if (value) {
+						this._enableSpinButton(this._spinDownButton, "spinDown");
+						this._enableSpinButton(this._spinUpButton, "spinUp");
+					} else {
+						this._setSpinButtonsState(this.value());
+					}
+					break;
 				case "excludeKeys":
 					if (value === "") {
 						this._excludeKeysArray = [];
