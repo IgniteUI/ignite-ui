@@ -10790,7 +10790,7 @@
 		},
 		getPathBy: function (record) {
 			/*Gets the path of a record by the record or the record's key
-			paramType="object|string|number" optional="false" the record or the record's key as string or number
+			paramType="object|string|number" returnType="string" optional="false" the record or the record's key as string or number
 			*/
 			if (record === null || record === undefined) {
 				return null;
