@@ -20,6 +20,8 @@
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.tree-en.js"></script>
+
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	                                   
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquery.js"></script>
@@ -339,6 +341,24 @@
 				}, 200);
 			}, 200);
 		});
+
+		testID = "Test regional with reversed decimal(,) and group(.) separators like 'de' .Update from outside input.";
+		test(testID, 6, function () {
+			$("#tempContainer").empty();
+				//Init with regional 'de'
+				var $editor = $("#Issue695_Editor"), $input = $("#Issue695_Input");
+				$('#Issue695_Input').val(0.123).change();
+				equal($editor.igNumericEditor("value"), 0.12, "Value is as expected");
+				equal($editor.igNumericEditor("displayValue"), "0,12", "displayValue is correct");
+				$("#resetButton").click();
+				equal($editor.igNumericEditor("value"), 27.00, "Value is as expected");
+				equal($editor.igNumericEditor("displayValue"), "27,00", "displayValue is correct");
+				$('#Issue695_Input').val("").change();
+				equal($editor.igNumericEditor("value"), "", "Value is as expected");
+				equal($editor.igNumericEditor("displayValue"), "", "displayValue is correct");
+				$editor.remove();
+				$input.remove();
+		});
 	});
 
 	function testImmediate(element) {
@@ -537,6 +557,14 @@
 		valueChanged: testFunction
 	}" />
 	<input id="inpChangeEvt" type="text" class="row-control" data-bind="value: customerTax" />
+
+	<input id="Issue695_Editor" data-bind="igNumericEditor: {
+		value: number, 
+		width: 160,
+		regional:'de',
+		minDecimals: 2
+	}" />
+	<input id="Issue695_Input" type="text" class="row-control" data-bind="value: number" />
 </div>
 </body>
 </html>
