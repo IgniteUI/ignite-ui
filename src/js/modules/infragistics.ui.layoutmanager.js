@@ -1907,7 +1907,7 @@
                 }
                 if (bl.showRight) {
                     right.removeClass(this.css.borderItemHidden);
-                } else {                    
+                } else {
                     right.addClass(this.css.borderItemHidden);
                 }
                 right.addClass(this.css.borderItem).addClass(this.css.borderRight);
@@ -1920,7 +1920,7 @@
                         { region: "center", element: center });
                 }
                 center.addClass(this.css.borderItem).addClass(this.css.borderCenter);
-                
+
                 if (footer.length === 0) {
                     this._trigger(this.events.itemRendering, null, { region: "footer" });
                     footer = $("<div></div>").appendTo(this.element);
@@ -1934,7 +1934,7 @@
                     footer.addClass(this.css.borderItemHidden);
                 }
                 footer.addClass(this.css.borderItem).addClass(this.css.borderFooter);
-                
+
                 if (header.length === 0) {
                     this._trigger(this.events.itemRendering, null, { region: "header" });
                     header = $("<div></div>").appendTo(this.element);
@@ -1999,7 +1999,8 @@
                 if (this.options.height === null) {
                     sections = left.add(right).add(center);
                     for (i = 0, maxHeight = 0; i < sections.length; i++) {
-                        currHeight = sections.eq(i).hasClass(this.css.borderItemHidden) ? 0 : sections.eq(i).outerHeight(true);
+                        currHeight = sections.eq(i).hasClass(this.css.borderItemHidden) ?
+                            0 : sections.eq(i).outerHeight(true);
                         if (currHeight > maxHeight) {
                             maxHeight = currHeight;
                         }
@@ -2120,7 +2121,8 @@
                     .removeClass(this.css.borderCenter)
                     .removeClass(this.css.borderFooter)
                     .removeClass(this.css.borderHeader);
-                this.element.find("." + this.css.borderItemHidden).removeClass(this.css.borderItemHidden);
+                this.element.find("." + this.css.borderItemHidden)
+                    .removeClass(this.css.borderItemHidden);
             },
             _destroyGridLayout: function () {
                 var $children = this.element.children();
