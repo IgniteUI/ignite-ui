@@ -179,9 +179,7 @@
 		_createWidget: function (options, element) {
 			// initialization performance will be better if we don't try to normalize the defaults
 			if (options && options.directionPriority !== this.options.directionPriority) {
-				this._dp = this._normalizePriority(this.options.directionPriority);
-			} else {
-				this._dp = this.options.directionPriority;
+				options.directionPriority = this._normalizePriority(options.directionPriority);
 			}
 			$.Widget.prototype._createWidget.apply(this, arguments);
 			this.element = $(element);
@@ -196,8 +194,7 @@
 					this._resizeHandler();
 					break;
 				case "directionPriority":
-					this.options.directionPriority = value;
-					this._dp = this._normalizePriority(this.options.directionPriority);
+					this.options.directionPriority = this._normalizePriority(value);
 					break;
 				case "contentTemplate":
 					if (typeof value === "string") {
@@ -611,11 +608,11 @@
 			var i = 0, fn, fnRes;
 			if (this.options.direction === "auto") {
 				do {
-					this._updateArrowDiv(this._dp[ i ], trg);
-					fn = "_" + this._dp[ i ] + "Position";
+					this._updateArrowDiv(this.options.directionPriority[ i ], trg);
+					fn = "_" + this.options.directionPriority[ i ] + "Position";
 					fnRes = this[ fn ](trg);
 					i++;
-				} while (fnRes === false && i < this._dp.length);
+				} while (fnRes === false && i < this.options.directionPriority.length);
 				if (fnRes === false) {
 					/* "Couldn't find space anywhere. Please exceed screen dimensions" */
 					return;
