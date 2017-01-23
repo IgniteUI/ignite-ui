@@ -39,7 +39,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695"];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -456,6 +456,17 @@
 						allowNullValue: false,
 						value: 20
 					});
+				}
+
+				window.Bug695Testbed = function () {
+						$("<input/>", { id: "695Editor" })
+						.appendTo("#testBedContainer")
+						.igPercentEditor({
+							allowNullValue: true,
+							nullValue: "",
+							regional: 'de',
+							value: 0.029
+						});
 				}
 
 				window.Bug655Testbed = function () {
@@ -1228,7 +1239,6 @@
 				editor.igNumericEditor("option", "maxValue", 10);
 				editor.igNumericEditor("option", "value", -1);
 				equal(editor.igNumericEditor("value"), 0, "minValue 0 should be set(value method)");
-
 				$("#539Editor").remove();
 			});	
 			testId = 'Bug 646 - Set null value using setOption';
@@ -1238,11 +1248,6 @@
 				equal(editor.igNumericEditor("value"), 20, "value should be 20");
 				editor.igNumericEditor("option",'value', null);
 				equal(editor.igNumericEditor("value"), 20, "value should be 20");
-				
-				
-				
-				
-
 				$("#646Editor").remove();
 			});
 
@@ -1274,7 +1279,16 @@
 					
 					editor.remove();
 				}, 100);
-			});	
+			});
+
+				testId = 'Bug 695 - Check ';
+				test(testId, 2, function () {
+				var editor =  $("#695Editor");
+				field = editor.igPercentEditor("field");
+				equal(editor.igPercentEditor("field").focus().blur().val(), "2,90%", "value should be to 2,90%");//fails prior fix with 2.900,00%
+				equal(editor.igPercentEditor("value"), 0.029, "value should be 0.029"); //fails prior fix and returns 29 instead
+					$("#695Editor").remove();
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
