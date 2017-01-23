@@ -3013,7 +3013,6 @@
 				if (this._dropDownList.is(":visible") && this._triggerDropDownClosing()) {
 					this._hideDropDownList();
 				}
-				this._triggerDropDownItemSelected(item);
 
 				// D.P. _processValueChanging and text process have checks for change
 				this._currentInputTextValue = this._editorInput.val();
@@ -3024,6 +3023,7 @@
 					this._editorInput.val(this._getDisplayValue());
 					this._processTextChanged();
 				}
+				this._triggerDropDownItemSelected();
 			}
 		},
 		_triggerButtonClick: function (event, buttonType) {
@@ -3100,12 +3100,12 @@
 			};
 			return this._trigger(this.events.dropDownItemSelecting, null, args);
 		},
-		_triggerDropDownItemSelected: function (item) {
+		_triggerDropDownItemSelected: function () {
 			var args = {
 				owner: this,
 				editorInput: this._editorInput,
 				list: this._dropDownList,
-				item: item
+				item: this.getSelectedListItem()[0]
 			};
 			this._trigger(this.events.dropDownItemSelected, null, args);
 		},
@@ -3592,6 +3592,7 @@
 				if (fireEvent && !this._triggerDropDownItemSelecting(nextItem[0])) {
 					return;
 				}
+				this._currentInputTextValue = this._editorInput.val();
 				if (this._editMode) {
 					this._editorInput.val(nextItem.text());
 					this._setSelectedItemByIndex(nextItem.index());
@@ -3602,7 +3603,7 @@
 					this._processTextChanged();
 				}
 				if (fireEvent) {
-					this._triggerDropDownItemSelected(nextItem[0]);
+					this._triggerDropDownItemSelected();
 				}
 			}
 		},
