@@ -34,8 +34,8 @@
 			"./infragistics.util.jquery",
 			"./infragistics.templating",
 			"./infragistics.datasource",
-			"./infragistics.scroll",
-			"./infragistics.validator"
+			"./infragistics.ui.scroll",
+			"./infragistics.ui.validator"
 		], factory );
 	} else {
 
@@ -1099,7 +1099,7 @@
             rendered: "rendered",
             /* cancel="true" Event which is raised before data binding is performed.
             ```
-                $(document).delegate(".selector", "igcombodatabinding", function (null, ui) {
+                $(document).delegate(".selector", "igcombodatabinding", function (evt, ui) {
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to instance of $.ig.DataSource used by combo
@@ -1108,7 +1108,7 @@
 
                 //Initialize
                 $(".selector").igCombo({
-                    dataBinding: function (null, ui) {
+                    dataBinding: function (evt, ui) {
                         ...
                     }
                 });
@@ -1119,7 +1119,7 @@
             dataBinding: "dataBinding",
             /* cancel="false" Event which is raised after data binding is complete.
             ```
-                $(document).delegate(".selector", "igcombodatabound", function (null, ui) {
+                $(document).delegate(".selector", "igcombodatabound", function (evt, ui) {
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to instance of $.ig.DataSource used by combo
@@ -1128,7 +1128,7 @@
 
                 //Initialize
                 $(".selector").igCombo({
-                    dataBound: function (null, ui) {
+                    dataBound: function (evt, ui) {
                     ...
                     }
                 });
@@ -1853,7 +1853,7 @@
                     $("<div>")).addClass(css.comboWrapper),
 				$combo = $("<div>").addClass(css.combo).attr("unselectable", "on"),
 				$input = (_options.$input ||
-                    $("<input type=text'>")).addClass(css.field)
+                    $("<input type='text'>")).addClass(css.field)
                     .attr({ tabIndex: options.tabIndex, autocomplete: "off" }),
 				$hiddenInput = $("<input type='hidden'>").addClass(css.hiddenField),
 				$fieldCont = $("<div>").addClass(css.fieldHolder),
@@ -4195,12 +4195,12 @@
             if (options.multiSelection.enabled) {
                 startValue = _options.keyNavItemData;
             } else {
-                startValue = _options
-                    .selectedData[ _options.selectedData.length - 1 ][ options.valueKey ];
+                // R.K. 6th of January 2017 #709: Combo throws exception when keypress event is fired in dropdown mode
+                startValue = _options.selectedData.length ?
+                _options.selectedData[ _options.selectedData.length - 1 ][ options.valueKey ] : 0;
             }
 
             startIndex = this._dataIndexByValue(startValue, true);
-
             if (_options.dropDownModeSearchBy.length === 1) {
 
                 // Start from next item when the search string is only single character long
@@ -4218,7 +4218,6 @@
                         _options.dropDownModeSearchBy =
                             _options.dropDownModeSearchBy.toLowerCase();
                     }
-
                     if (curText.startsWith(_options.dropDownModeSearchBy)) {
                         if (options.multiSelection.enabled) {
                             this._setKeyNavigationItem({
@@ -4353,7 +4352,8 @@
 
                     // Simulate proper behavior on input after composition end, excluding FF where all works fine
                     // When composition end is triggered autocomplete does not work properly
-                    if (!$.ig.util.isFF && this.isCompositionEndFired && this.autocompleteText) {
+                    // R.K. 3rd of January 2017 #696: Combo doesn't accept first character of input after clearing an IME composition in Chrome
+                    if ($.ig.util.isSafari && this.isCompositionEndFired && this.autoCompleteText) {
                         val = comboContext._options.$input.val();
 
                         if ($.ig.util.isOpera) {

@@ -2214,19 +2214,22 @@
 					dragAndDrop: true,
 					dragAndDropSettings: {
 						revertDuration: 0,
-						dragAndDropMode: "copy"
+						dragAndDropMode: "copy",
+						allowDrop: true
 					},
 					bindings: bindings
 				});
 				treeobj = tree.data("igTree");
+				var x = tree.igTree("children", tree.find("li[data-path=0]")).length,
+					y = tree.igTree("children", tree.find("li[data-path=1]")).length;
 				node = tree.find("li[data-path=0_0]");
 				$.ig.TestUtil.simulateDragStart(node);
 				$.ig.TestUtil.simulateDrag(node, tree.find("li[data-path=1] > a"));
 				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 				equal(treeobj._validationObject.target[0], tree.find("li[data-path=1]")[0], "The validation object target was incorrect.");
-				$.ig.TestUtil.simulateDrop(tree, tree.find("li[data-path=1]"));
-				equal(tree.igTree("children", tree.find("li[data-path=0]")).length, 3, "Source node didn't update correctly.");
-				equal(tree.igTree("children", tree.find("li[data-path=1]")).length, 2, "Target node didn't update correctly.");
+				$.ig.TestUtil.simulateDrop(tree, tree.find("li[data-path=1] > a"));
+				equal(tree.igTree("children", tree.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
+				equal(tree.igTree("children", tree.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
 				
 				var tree2 = $("<div></div>").appendTo(document.body).igTree({
 					dataSource: $.extend(true, [], results2),
@@ -2243,17 +2246,30 @@
 				function validateCustom (target) { 
 					equal(this, tree.find("li[data-path=0_0]")[0], "Context of the custom validation is wrong");
 					equal(target, tree2.find("li[data-path=1]")[0], "Target of the custom validation is wrong");
-					return true; 
+					return true;
 				};
 				
 				node = tree.find("li[data-path=0_0]");
+				y = tree2.igTree("children", tree2.find("li[data-path=1]")).length;
 				$.ig.TestUtil.simulateDragStart(node);
 				$.ig.TestUtil.simulateDrag(node, tree2.find("li[data-path=1] > a"));
 				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 				equal(treeobj._validationObject.target[0], tree2.find("li[data-path=1]")[0], "The validation object target was incorrect.");
-				$.ig.TestUtil.simulateDrop(tree2, tree2.find("li[data-path=1]"));
-				equal(tree.igTree("children", tree.find("li[data-path=0]")).length, 2, "Source node didn't update correctly.");
-				equal(tree2.igTree("children", tree2.find("li[data-path=1]")).length, 2, "Target node didn't update correctly.");
+				$.ig.TestUtil.simulateDrop(tree2, tree2.find("li[data-path=1] > a"));
+				equal(tree.igTree("children", tree.find("li[data-path=0]")).length, x, "Source node in tree didn't update correctly.");
+				equal(tree2.igTree("children", tree2.find("li[data-path=1]")).length, y + 1, "Target node in tree2 didn't update correctly.");
+				
+				treeobj = tree2.data("igTree");
+				node = tree2.find("li[data-path=0_0]");
+				x = tree2.igTree("children", tree2.find("li[data-path=0]")).length
+				y = tree.igTree("children", tree.find("li[data-path=1]")).length;
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, tree.find("li[data-path=1] > a"));
+				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+				equal(treeobj._validationObject.target[0], tree.find("li[data-path=1]")[0], "The validation object target was incorrect.");
+				$.ig.TestUtil.simulateDrop(tree, tree.find("li[data-path=1] > a"));
+				equal(tree2.igTree("children", tree2.find("li[data-path=0]")).length, x - 1, "Source node in tree2 didn't update correctly.");
+				equal(tree.igTree("children", tree.find("li[data-path=1]")).length, y + 1, "Target node in tree didn't update correctly.");
 				
 				var tree3 = $("<div></div>").appendTo(document.body).igTree({
 					dragAndDrop: true,
@@ -2266,15 +2282,53 @@
 				});
 				
 				node = tree.find("li[data-path=0]");
+				y = tree.find("li[data-path=0]").find("li[data-role=node]").length;
 				$.ig.TestUtil.simulateDragStart(node);
 				$.ig.TestUtil.simulateDrag(node, tree3);
 				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
 				$.ig.TestUtil.simulateDrop(tree3, tree3);
-				equal(tree3.igTree("children", tree3.find("li[data-role=node]")).length, 4, "Target node didn't update correctly.");
+				equal(tree3.igTree("children", tree3.find("li[data-role=node]")).length, y, "Target node in tree3 didn't update correctly.");
+				
+				var tree4 = $("<div></div>").appendTo(document.body).igTree({
+					dragAndDrop: true,
+					dragAndDropSettings: {
+						revertDuration: 0,
+						dragAndDropMode: "move",
+						allowDrop: true
+					},
+					bindings: bindings
+				});
+				
+				node = tree.find("li[data-path=0]");
+				y = tree.find("li[data-path=0]").find("li[data-role=node]").length;
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, tree4);
+				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+				$.ig.TestUtil.simulateDrop(tree4, tree4);
+				equal(tree4.igTree("children", tree4.find("li[data-role=node]")).length, y, "Target node in tree4 didn't update correctly.");
+				
+				var tree5 = $("<div></div>").appendTo(document.body).igTree({
+					dragAndDrop: true,
+					dragAndDropSettings: {
+						revertDuration: 0,
+						allowDrop: true
+					},
+					bindings: bindings
+				});
+				
+				node = tree.find("li[data-path=0]");
+				y = tree.find("li[data-path=0]").find("li[data-role=node]").length;
+				$.ig.TestUtil.simulateDragStart(node);
+				$.ig.TestUtil.simulateDrag(node, tree5);
+				equal(treeobj._validationObject.valid, true, "The validation object validity was incorrect.");
+				$.ig.TestUtil.simulateDrop(tree5, tree5);
+				equal(tree5.igTree("children", tree5.find("li[data-role=node]")).length, y, "Target node in tree5 didn't update correctly.");
 				
 				tree.igTree("destroy").remove();
 				tree2.igTree("destroy").remove();
 				tree3.igTree("destroy").remove();
+				tree4.igTree("destroy").remove();
+				tree5.igTree("destroy").remove();
 			});
 			
 			test(testId_9, function () {

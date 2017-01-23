@@ -113,6 +113,12 @@
 			/* type="string|object" Controls where the popover DOM should be attached to.
 				string type="string" A valid jQuery selector for the element
 				object type="object" A reference to the parent jQuery object
+				```
+					//Initialize
+					$(".selector").igPopover({
+						appendTo: $(".jquerySelector")
+					});
+				```
 			*/
 			appendTo: "body"
 		},
@@ -161,7 +167,6 @@
 			this._positions = [ "balanced", "start", "end" ];
 			this._directionIndex = -1;
 			this._positionIndex = -1;
-			this._forced = this.options.direction !== "auto" && this.options.position !== "auto";
 			this._visible = false;
 			$( window ).on( "resize.popover", $.proxy( this._resizeHandler, this ) );
 		},
@@ -182,7 +187,6 @@
 					if (this.options.direction !== "auto") {
 						this._getPrioritiesIndex();
 					}
-					this._forced = this.options.direction !== "auto" && this.options.position !== "auto";
 					this._resizeHandler();
 					break;
 				case "position":
@@ -190,7 +194,6 @@
 					if (this.options.position !== "auto") {
 						this._getPrioritiesIndex();
 					}
-					this._forced = this.options.direction !== "auto" && this.options.position !== "auto";
 					break;
 				case "contentTemplate":
 					if (typeof value === "string") {
@@ -620,7 +623,6 @@
 				if (!this[ fn ](trg)) {
 					/* && (this.options.selectors || !this._target) */
 					/* trying to find a place on the screen if there is no space to show with the position set */
-					this._forced = true;
 					do {
 						this._updateArrowDiv(this._priorityDir[ i ], i, trg);
 						fn = "_" + this._priorityDir[ i ] + "Position";
@@ -846,7 +848,7 @@
 					top + tfullh > bottomBoundary) {
 				/*D.K. 16 Dec 2014 Fix 186350 - Popover tooltip appears below the grid even when there's not enough space on the page
 				if it is forced we can ignore collisions, otherwise they should be taken into account */
-				if (this._forced === false) {
+				if (this.options.direction === "auto") {
 					/*  T.G. 29 Jan 2014 Fix 162164- When the element is relative in scrollable container the popover does not change its position when you scroll the container. */
 					return false;
 				}

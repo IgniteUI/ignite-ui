@@ -79,8 +79,9 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 |[Column Resizing](http://www.igniteui.com/grid/column-resizing)			|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.iggridresizing)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-column-resizing)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igGrid/03_Features/00_Columns/04_igGrid_Column_Resizing.md) |
 |[Column Summaries](http://www.igniteui.com/grid/summaries)					|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.iggridsummaries)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-column-summaries)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/02_Controls/igGrid/03_Features/00_Columns/05_Summaries) |
 |[Column Template](http://www.igniteui.com/grid/column-template)			|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.igGrid)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-column-template)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/02_Controls/igGrid/03_Features/00_Columns/06_Template) |
-|[Filtering](http://www.igniteui.com/grid/simple-filtering)					|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.iggridfiltering)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-filtering)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igGrid/03_Features/00_Columns/07_igGrid_Filtering.md) |
 |[Multi-Column Headers](http://www.igniteui.com/grid/multi-column-headers)	|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.iggridmulticolumnheaders)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-multicolumnheaders-landingpage)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/02_Controls/igGrid/03_Features/00_Columns/08_Multi-Headers) |
+|[Collapsible Column Groups](http://www.igniteui.com/grid/collapsible-column-groups)	|:x:				|:white_check_mark:				|:white_check_mark:							            				|[api](http://www.igniteui.com/help/api/2016.1/ui.igGrid)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-multicolumnheaders-multicolumnheaders#collapsible-column-groups)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/02_Controls/igGrid/03_Features/00_Columns/08_Multi-Headers) |
+|[Filtering](http://www.igniteui.com/grid/simple-filtering)					|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.iggridfiltering)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-filtering)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igGrid/03_Features/00_Columns/07_igGrid_Filtering.md) |
 |[Sorting](http://www.igniteui.com/grid/sorting-remote)						|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.iggridsorting)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-sorting)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/02_Controls/igGrid/03_Features/00_Columns/09_Sorting) |
 |[Unbound Columns](http://www.igniteui.com/grid/unbound-column)				|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.igGrid)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-unboundcolumns-landing-page)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/tree/16.1/topics/02_Controls/igGrid/03_Features/00_Columns/10_Unbound) |
 |[Feature Chooser](http://www.igniteui.com/grid/feature-chooser)			|:x:				|:white_check_mark:							|:white_check_mark:														|[api](http://www.igniteui.com/help/api/2016.1/ui.igGrid)&nbsp;**\\**&nbsp;[help](http://www.igniteui.com/help/iggrid-feature-chooser)&nbsp;**\\**&nbsp;[topics&nbsp;source](https://github.com/IgniteUI/help-topics/blob/16.1/topics/02_Controls/igGrid/03_Features/01_igGrid_Feature_Chooser.md) |
@@ -128,12 +129,12 @@ Ignite UI is built on jQuery and jQuery UI and ties in seamlessly with the jQuer
 The package for this development repository is available on both [`npm`](https://www.npmjs.com/package/ignite-ui) and [`bower`](https://github.com/IgniteUI/ignite-ui-bower).
 To get started follow the respective package manager installation:
 
-### npm
+#### npm
 ```shell
 npm install ignite-ui
 ```
 
-### bower
+#### bower
 ```shell
 bower install ignite-ui
 ```
@@ -145,15 +146,33 @@ Package contains similar files and structure to what you'd find in the [full ver
 ```
 The full built content for both packages can be browsed at the [Ignite UI Bower Shim repository](https://github.com/IgniteUI/ignite-ui-bower).
 
+## Running demos locally
 
-##Getting Help
+Besides browsing our [online samples](http://www.igniteui.com/), you can also run the demos included with this repo in a local clone.
+Those are useful for quickly trying out some control features, as a base for other samples or even testing local changes.
+
+To setup the repository run the following in the root directory:
+```bash
+npm install
+```
+The command will install all build dependencies as well as bower packages used in the demos.
+
+To build the product: 
+```bash
+grunt build
+```
+This will create source files under the `dist/` folder complete with merged locales, combined script and structure CSS and can be called again to include new changes.
+
+The html demos under `demos/<control>` can now be run directly from the file system.
+
+## Getting Help
 
 * [Ignite UI help API](http://www.igniteui.com/help/api/2016.1/)
 * [Ignite UI help topics](http://www.igniteui.com/help/)
 * [Ignite UI online samples](http://www.igniteui.com/)
 * [Ignite UI questions on StackOverflow](http://stackoverflow.com/questions/tagged/ignite-ui)
 
-##Contributing
+## Contributing
 You can find all guidelines on how to contribute on the wiki page.  
 * [How to contribute](https://github.com/IgniteUI/ignite-ui/wiki/Contributing-to-Ignite-UI)  
 * [API documentation guidelines](https://github.com/IgniteUI/ignite-ui/wiki/API-Documentation-Guidelines)

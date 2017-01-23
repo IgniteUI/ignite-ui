@@ -23,8 +23,8 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.util.jquery",
-			"./infragistics.scroll",
-			"./infragistics.validator"
+			"./infragistics.ui.scroll",
+			"./infragistics.ui.validator"
 		], factory );
 	} else {
 
@@ -1081,6 +1081,9 @@
 			} else {
 				return this.options.value;
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		field: function () {
 			/* Gets the input element of the editor.
@@ -1864,7 +1867,7 @@
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
 					this._editorInput.val(this._getDisplayValue());
-				} else if (initialValue === null && !this.options.allowNullValue ) {
+				} else if (initialValue === null && !this.options.allowNullValue) {
 					this._setInitialValue("");
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
@@ -2106,6 +2109,65 @@
 			if (this._spinDownButton) {
 				this._spinDownButton.addClass(this.css.disabled);
 				this._detachButtonsEvents(this._spinDownButton);
+			}
+		},
+
+		// N.A. January 4th, 2017 #664 Move spin buttons state logic from numeric to text editor in order to be used by the date editor and date picker.
+		_disableSpinButton: function (target) {
+			if (target && !target.attr("disabled") && !this.options.spinWrapAround) {
+				target.addClass(this.css.disabled);
+				target.attr("disabled", "disabled");
+				target.prop("disabled", true);
+				target.removeClass(this.css.buttonHover);
+				if (target._pressed) {
+					delete target._pressed;
+					target.removeClass(this.css.buttonPressed);
+				}
+				if (target._spinTimeOut) {
+					clearTimeout(target._spinTimeOut);
+					delete this._spinUpButton._spinTimeOut;
+				}
+				if (target._spinInterval) {
+					clearInterval(target._spinInterval);
+					delete target._spinInterval;
+				}
+				this._detachButtonsEvents(target);
+			}
+		},
+		_enableSpinButton: function (target, type) {
+			if (target && target.attr("disabled")) {
+				target.removeClass(this.css.disabled);
+				target.removeAttr("disabled");
+				target.prop("disabled", false);
+				this._attachButtonsEvents(type, target);
+			}
+		},
+		_exceedsMaxValue: function(value) {
+			return this.options.maxValue !== null && value >= this.options.maxValue;
+		},
+		_lessThanMinValue: function(value) {
+			return this.options.minValue !== null && value <= this.options.minValue;
+		},
+		_setSpinButtonsState: function (val) {
+			if (typeof val === "string" || val instanceof String) {
+				val = val.trim();
+			}
+			if (val === null) {
+				this._enableSpinButton(this._spinDownButton, "spinDown");
+				this._enableSpinButton(this._spinUpButton, "spinUp");
+				return;
+			}
+			if (val !== "" && !this.options.spinWrapAround) {
+				if (this._exceedsMaxValue(val)) {
+					this._disableSpinButton(this._spinUpButton);
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+				} else if (this._lessThanMinValue(val)) {
+					this._disableSpinButton(this._spinDownButton);
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				} else {
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				}
 			}
 		},
 
@@ -3050,6 +3112,9 @@
 				this._currentInputTextValue = currentVal;
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+			this._setSpinButtonsState(currentVal);
 		},
 		_triggerTextChanged: function (oldValue, newValue) {
 			var args = {
@@ -4859,55 +4924,6 @@
 
 			// return true;
 		},
-		_disableSpinButton: function (target) {
-			if (target && !target.attr("disabled") && !this.options.spinWrapAround) {
-				target.addClass(this.css.disabled);
-				target.attr("disabled", true);
-				target.removeClass(this.css.buttonHover);
-				if (target._pressed) {
-					delete target._pressed;
-					target.removeClass(this.css.buttonPressed);
-				}
-				if (target._spinTimeOut) {
-					clearTimeout(target._spinTimeOut);
-					delete this._spinUpButton._spinTimeOut;
-				}
-				if (target._spinInterval) {
-					clearInterval(target._spinInterval);
-					delete target._spinInterval;
-				}
-				this._detachButtonsEvents(target);
-			}
-		},
-		_enableSpinButton: function (target, type) {
-			if (target && target.attr("disabled")) {
-				target.removeClass(this.css.disabled);
-				target.attr("disabled", false);
-				this._attachButtonsEvents(type, target);
-			}
-		},
-		_setSpinButtonsState: function (val) {
-			if (typeof val === "string" || val instanceof String) {
-				val = val.trim();
-			}
-			if (val === null) {
-				this._enableSpinButton(this._spinDownButton, "spinDown");
-				this._enableSpinButton(this._spinUpButton, "spinUp");
-				return;
-			}
-			if (val !== "" && !this.options.spinWrapAround) {
-				if (val >= this.options.maxValue) {
-					this._disableSpinButton(this._spinUpButton);
-					this._enableSpinButton(this._spinDownButton, "spinDown");
-				} else if (val <= this.options.minValue) {
-					this._disableSpinButton(this._spinDownButton);
-					this._enableSpinButton(this._spinUpButton, "spinUp");
-				} else {
-					this._enableSpinButton(this._spinDownButton, "spinDown");
-					this._enableSpinButton(this._spinUpButton, "spinUp");
-				}
-			}
-		},
 		_validateValue: function (val) { //Numeric Editor
 			var result;
 			if (this._super(val) && !isNaN(val = this._parseNumericValueByMode(val,
@@ -5176,10 +5192,9 @@
 			}
 
 			if (this._numericType === "percent" && this.options.displayFactor && val !== "" && !isNaN(val)) {
-				val = this._parseNumericValueByMode(val, this._numericType, this.options.dataMode);
-				val = this._multiplyWithPrecision(val, this.options.displayFactor);
+				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
+				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
 			}
-
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
 			}
@@ -5580,6 +5595,7 @@
 					if (this.options.revertIfNotValid &&
 					!(newValue === null && this.options.allowNullValue)) {
 						newValue = this._valueInput.val();
+						this._updateValue(newValue);
 					} else {
 						this._clearValue();
 					}
@@ -5592,6 +5608,9 @@
 			} else {
 				return this.options.value;
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		findListItemIndex: function (number) {
 			/* Finds index of list item by text that matches with the search parameters.
@@ -6805,6 +6824,8 @@
 			} else if (value === null) {
 				if (this.options.allowNullValue) {
 					if (this.options.nullValue === null) {
+						// D.P. Dec 16th, 2016 #655 Clear masked value (display text) when setting allowed null as value
+						this._maskedValue = "";
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
@@ -7336,6 +7357,9 @@
 			} else {
 				return this.options.value;
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		dropDownContainer: function () {
 			/*@Ignored@*/
@@ -7523,26 +7547,15 @@
 				"dateTime": the dateTimePattern member of regional option is used
 				List of explicit characters, which should have escape \\ character in front of them: C, &, a, A, ?, L, 9, 0, #, >, <, y, M, d, h, H, m, s, t, f.
 				List of date-flags when explicit date pattern is used:
-				"y": year field without century and without leading zero
 				"yy": year field without century and with leading zero
 				"yyyy": year field with leading zeros
-				"M": month field as digit without leading zero
 				"MM": month field as digit with leading zero
-				"MMM": month field as short month name. Note: in focused state the MM is used.
-				"MMMM": month field as long month name. Note: in focused state the MM is used.
-				"d": day of month field without leading zero
 				"dd": day of month field with leading zero
-				"ddd": day of the week as short name. Note: in focused state that field is skipped.
-				"dddd": day of the week as long name. Note: in focused state that field is skipped.
 				"t": first character of string which represents AM/PM field
 				"tt": 2 characters of string which represents AM/PM field
-				"h": hours field in 12-hours format without leading zero
 				"hh": hours field in 12-hours format with leading zero
-				"H": hours field in 24-hours format without leading zero
 				"HH": hours field in 24-hours format with leading zero
-				"m": minutes field without leading zero
 				"mm": minutes field with leading zero
-				"s": seconds field without leading zero
 				"ss": seconds field with leading zero
 				"f": milliseconds field in hundreds
 				"ff": milliseconds field in tenths
@@ -7559,7 +7572,7 @@
 				```
 			*/
 			dateInputFormat: null,
-			/* type="date|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="date|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method and option. Also affects how the value is stored for form submit.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7572,12 +7585,28 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
-				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method.
-				Note: That is used as default.
-				displayModeText type="string" The String object is used and the "text" in display mode (no focus) format (pattern).
-				editModeText type="string" The String object is used and the "text" in edit mode (focus) format (pattern).
+				date type="string" The value method returns a Date object. When this mode is set the value sent to the server on submit is serialized as ISO 8061 string with local time and zone values by default.
+					The [enableUTCDates](ui.%%WidgetNameLowered%%#options:enableUTCDates) option can be used to output an UTC ISO string instead.
+					For example 10:00 AM from a client with local offset of 5 hours ahead of GMT will be serialized as:
+					"2016-11-11T10:00:00+05:00"
+				displayModeText type="string" The "text" in display mode (no focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
+				editModeText type="string" The "text" in edit mode (focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 			*/
 			dataMode: "date",
+			/* type="int" Gets/Sets time zone offset from UTC, in minutes. The client date values are displayed with this offset instead of the local one.
+			Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
+				Values with ambiguous time zone could map to unpredictable times depending on the user agent local zone.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					displayTimeOffset: 180
+				});
+
+				//Get
+				var displayTimeOffset = $(".selector").%%WidgetName%%("option", "displayTimeOffset");
+			```
+			*/
+			displayTimeOffset: null,
 			/*type="clear|spin" Gets visibility of the spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
 				```
 					//Initialize
@@ -7592,7 +7621,10 @@
 				spin type="string" Spin buttons are located on the right side of the editor
 			*/
 			buttonType: "none",
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.
+			/* type="number" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
+				When not editing (focused) the delta is applied on the day if available in the input mask or the lowest available period.
+				When in edit mode the time period, where the cursor is positioned, is incremented or decremented with the defined delta value.
+				The value can be only a positive integer number, otherwise it will be set as 1, or in the cases with double or float the the whole part will be taken.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7624,14 +7656,8 @@
 				```
 			*/
 			limitSpinToCurrentField: false,
-			/* type="bool" Gets/Sets formatting of the dates as UTC.
-				That option is supported only when dataMode option is 'date' and Date objects are used to get/set value of editor.
-				Notes:
-				That option affects only functionality of get/set value method and the Date-value, which was set on initialization.
-				When application uses the set-value, then internal Date-value and displayed-text is incremented by TimezoneOffset.
-				When application uses the get-value, then editor returns internal Date-value decremented by TimezoneOffset.
-				When that option is modified after initialization, then displayed text and internal Date-value are not affected.
-				It is not recommended to change that option without resetting Date-value.
+			/* type="bool" Enables/Disables serializing client date as UTC ISO 8061 string instead of using the local time and zone values.
+				The option is only applied in "date" [dataMode](ui.%%WidgetNameLowered%%#options:dataMode).
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7739,6 +7765,7 @@
 			$.ui.igMaskEditor.prototype._create.call(this);
 		},
 		_initialize: function () {
+			var offset = this.options.displayTimeOffset;
 			this._super();
 			this._applyRegionalSettings();
 			this.options.inputMask =
@@ -7747,6 +7774,9 @@
 
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
+			if (offset !== null && (offset > 840 || offset < -720)) {
+				throw new Error($.ig.Editor.locale.dateEditorOffsetRange);
+			}
 		},
 		_setNumericType: function () {
 			this._numericType = "datetime";
@@ -7767,6 +7797,15 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
+				case "displayTimeOffset": {
+					if (this._editMode) {
+						this._updateMaskedValue();
+						this._enterEditMode();
+					} else {
+						this._editorInput.val(this._getDisplayValue());
+					}
+					break;
+				}
 				case "minValue": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.dateEditorMinValue);
@@ -7775,12 +7814,11 @@
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
 				}
-					break;
+				case "listItems":
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
-					break;
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -7830,8 +7868,12 @@
 				this._editorInput.val(this._getDisplayValue());
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+			this._setSpinButtonsState(value);
 		},
 		_applyOptions: function () { // DateEditor
+			var delta = this.options.spinDelta;
 			this._super();
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
 				this.options.centuryThreshold = 29;
@@ -7853,6 +7895,16 @@
 			}
 			if (this._maskWithPrompts === undefined) {
 				this._setInitialValue();
+			}
+
+			if (typeof delta !== "number") {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+			} else if (delta < 0) {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+			} else {
+				this.options.spinDelta = parseInt(delta, 10);
 			}
 		},
 		_triggerKeyDown: function (event) { //DateEditor
@@ -7876,124 +7928,99 @@
 			}
 			return noCancel;
 		},
+
+		// N.A. January 4th, 2017 #664 Validate min and max values in date editor and date picker by comparing dates.
+		_exceedsMaxValue: function(value) {
+
+			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it.
+			if (!this._editMode) {
+				value = this.value();
+			}
+			return this.options.maxValue !== null &&
+				this._getDateObjectFromValue(value).getTime() >=
+				this._getDateObjectFromValue(this.options.maxValue).getTime();
+		},
+		_lessThanMinValue: function(value) {
+
+			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it
+			if (!this._editMode) {
+				value = this.value();
+			}
+			return this.options.minValue !== null &&
+				this._getDateObjectFromValue(value).getTime() <=
+				this._getDateObjectFromValue(this.options.minValue).getTime();
+		},
 		_handleSpinUpEvent: function () { // DateEditor
-			this.spinUp(1);
+
+			// N.A. January 10th, 2016 #701 Spin value using the spinDelta option and fire events only on user interaction.
+			this._spin(this.options.spinDelta, true);
 		},
 		_handleSpinDownEvent: function () { // DateEditor
-			this.spinDown(1);
+			this._spin(-this.options.spinDelta, true);
+		},
+		_serializeDate: function (sDate) {
+			if (this.options.dataMode === "date") {
+				if (this.options.enableUTCDates) {
+					sDate = sDate.toISOString();
+				} else {
+					sDate = this._toLocalISOString(sDate);
+				}
+			} else {
+				sDate = this.options.value;
+			}
+			return sDate;
+		},
+		_toLocalISOString: function(date) {
+			var tzo = -date.getTimezoneOffset(),
+				dif = tzo >= 0 ? "+" : "-",
+				pad = function(num) {
+					var norm = Math.abs(Math.floor(num));
+					return (norm < 10 ? "0" : "") + norm;
+				};
+			return date.getFullYear() +
+				"-" + pad(date.getMonth() + 1) +
+				"-" + pad(date.getDate()) +
+				"T" + pad(date.getHours()) +
+				":" + pad(date.getMinutes()) +
+				":" + pad(date.getSeconds()) +
+				dif + pad(tzo / 60) +
+				":" + pad(tzo % 60);
 		},
 
-		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)
+		// Returns numeric value from getFullYear (with shift), getMonth, etc or null.
+		// Flag to get specific date field (year, month, day, hours, minutes, seconds, milliseconds)
 		// date DateObject
 		_getDateField: function (flag, date) {
-			var utc = this.options.enableUTCDates, shift = this.options.yearShift, year;
+			var shift = this.options.yearShift, value;
 
-				if (!date) {
-					date = this._dateObjectValue;
-				}
-				if (!date) {
+				if (!date || isNaN(date.getTime())) {
 					return null;
 				}
 
-				//// set into datepicker
-				//	if (f === -1) {
-				//		return (date && utc) ? new Date(date.getTime() + date.getTimezoneOffset() * 60000) : date;
-				//	}
-				//// now
-				//if (!date) {
-				//	date = new Date();
-				//	if (utc) {
-				//		date.setUTCMinutes(date.getUTCMinutes() - date.getTimezoneOffset());
-				//	}
-				//	return date;
-				//}
-
-				if (flag === "year") {
-					year = utc ? date.getUTCFullYear() : date.getFullYear();
-					if (shift) {
-						year += shift;
-					}
-					return year;
+				value = date[ "get" + flag ]();
+				if (flag === "FullYear" && shift) {
+					value += shift;
 				}
-				if (flag === "month") {
-					return utc ? date.getUTCMonth() : date.getMonth();
-				}
-				if (flag === "day") {
-					return utc ? date.getUTCDay() : date.getDay();
-				}
-				if (flag === "date") {
-					return utc ? date.getUTCDate() : date.getDate();
-				}
-				if (flag === "hours") {
-					return utc ? date.getUTCHours() : date.getHours();
-				}
-				if (flag === "minutes") {
-					return utc ? date.getUTCMinutes() : date.getMinutes();
-				}
-				if (flag === "seconds") {
-					return utc ? date.getUTCSeconds() : date.getSeconds();
-				}
-				return utc ? date.getUTCMilliseconds() : date.getMilliseconds();
+				return value;
 		},
 
-		// This method sets specific field and returns the date
+		// This method sets specific field - setFullYear (with shift), setHours, setMinutes, etc.
 		_setDateField: function(flag, date, newValue) {
-			var utc = this.options.enableUTCDates, shift = this.options.yearShift;
+			var shift = this.options.yearShift;
 			if (!date) {
-				date = this._dateObjectValue;
+				return;
 			}
-			if (flag === "year") {
-				if (shift) {
-					newValue -= shift;
-				}
-				if (utc) {
-					date.setUTCFullYear(newValue);
-				} else {
-					date.setFullYear(newValue);
-				}
+			if (flag === "FullYear" && shift) {
+				newValue -= shift;
 			}
-			if (flag === "month") {
-				if (utc) {
-					date.setUTCMonth(newValue);
-				} else {
-					date.setMonth(newValue);
-				}
-			}
-			if (flag === "date") {
-				if (utc) {
-					date.setUTCDate(newValue);
-				} else {
-					date.setDate(newValue);
-				}
-			}
-			if (flag === "hours") {
-				if (utc) {
-					date.setUTCHours(newValue);
-				} else {
-					date.setHours(newValue);
-				}
-			}
-			if (flag === "minutes") {
-				if (utc) {
-					date.setUTCMinutes(newValue);
-				} else {
-					date.setMinutes(newValue);
-				}
-			}
-			if (flag === "seconds") {
-				if (utc) {
-					date.setUTCSeconds(newValue);
-				} else {
-					date.setSeconds(newValue);
-				}
-			}
-			if (flag === "milliseconds") {
-				if (utc) {
-					date.setUTCMilliseconds(newValue);
-				} else {
-					date.setMilliseconds(newValue);
-				}
-			}
+			date[ "set" + flag ](newValue);
+		},
+		_setNewDateMidnight: function() {
+			var date = new Date();
+			this._setDateField("Hours", date, 0);
+			this._setDateField("Minutes", date, 0);
+			this._setDateField("Seconds", date, 0);
+			this._setDateField("Milliseconds", date, 0);
 			return date;
 		},
 		_getInternalMaskedValue: function (newDate) {
@@ -8072,10 +8099,14 @@
 				dateObj, year, month, day, hours, minutes, seconds, milliseconds;
 			dateObj = newDate ? newDate : this._dateObjectValue;
 
+			if (this.options.displayTimeOffset !== null) {
+				dateObj = this._getDateOffset(dateObj);
+			}
+
 			// TODO update all the fields
 			if (dateObj) {
 				if (this._dateIndices.yy !== undefined) {
-					year = this._getDateField("year", dateObj).toString();
+					year = this._getDateField("FullYear", dateObj).toString();
 					if (this._dateIndices.fourDigitYear) {
 
 						// T.P. 29th Jan 2016 Bug #212642 When the year is 3 digit for example (111) we need to add extra zero in fron of the value, so in edit mode it's displayed correctly
@@ -8093,7 +8124,7 @@
 					}
 				}
 				if (this._dateIndices.MM !== undefined) {
-					month = this._getDateField("month", dateObj);
+					month = this._getDateField("Month", dateObj);
 					month++;
 					if (month < 10) {
 						month = "0" + month.toString();
@@ -8104,7 +8135,7 @@
 						month, this._dateIndices.MM, this._dateIndices.MM + 1);
 				}
 				if (this._dateIndices.dd !== undefined) {
-					day = this._getDateField("date", dateObj);
+					day = this._getDateField("Date", dateObj);
 					if (day < 10) {
 						day = "0" + day.toString();
 					} else {
@@ -8114,7 +8145,7 @@
 						day, this._dateIndices.dd, this._dateIndices.dd + 1);
 				}
 				if (this._dateIndices.hh !== undefined) {
-					hours = this._getDateField("hours", dateObj);
+					hours = this._getDateField("Hours", dateObj);
 					if (!this._dateIndices.hh24 && hours > 12) {
 						hours -= 12;
 					}
@@ -8132,7 +8163,7 @@
 						hours, this._dateIndices.hh, this._dateIndices.hh + 1);
 				}
 				if (this._dateIndices.mm !== undefined) {
-					minutes = this._getDateField("minutes", dateObj);
+					minutes = this._getDateField("Minutes", dateObj);
 					if (minutes < 10) {
 						minutes = "0" + minutes.toString();
 					} else {
@@ -8142,7 +8173,7 @@
 						minutes, this._dateIndices.mm, this._dateIndices.mm + 1);
 				}
 				if (this._dateIndices.ss !== undefined) {
-					seconds = this._getDateField("seconds", dateObj);
+					seconds = this._getDateField("Seconds", dateObj);
 					if (seconds < 10) {
 						seconds = "0" + seconds.toString();
 					} else {
@@ -8152,7 +8183,7 @@
 						seconds, this._dateIndices.ss, this._dateIndices.ss + 1);
 				}
 				if (this._dateIndices.tt !== undefined) {
-					hours = this._getDateField("hours", dateObj);
+					hours = this._getDateField("Hours", dateObj);
 
 					// N.A. 3/16/2016 Bug #216017: When we are in the 12 hour format, then 12 o'clock is PM and 24 (00) o'clock is AM.
 					if (hours >= 12 && hours < 24) {
@@ -8180,7 +8211,7 @@
 					}
 				}
 				if (this._dateIndices.ff !== undefined) {
-					milliseconds = this._getDateField("milliseconds", dateObj);
+					milliseconds = this._getDateField("Milliseconds", dateObj);
 					if (this._dateIndices.ffLength === 1) {
 						currentMaskValue = this._replaceCharAt(currentMaskValue,
 							this._dateIndices.ff,
@@ -8944,19 +8975,11 @@
 			return result;
 		},
 		_updateValue: function (value) { //igDateEditor
-			//TODO Review
 			if (value === null) {
-				if (this.options.allowNullValue) {
-					this._maskedValue = this._maskWithPrompts;
-					this._valueInput.val("");
-					this.options.value = null;
-					this._dateObjectValue = null;
-				} else {
-					this._maskedValue = this._maskWithPrompts;
-					this._valueInput.val("");
-					this.options.value = "";
-					this._dateObjectValue = null;
-				}
+				this._maskedValue = this._maskWithPrompts;
+				this._valueInput.val("");
+				this.options.value = this.options.allowNullValue ? null : "";
+				this._dateObjectValue = null;
 			} else if (value === "") {
 
 				// Empty string is passed only when clear is called, or when an empty value is created
@@ -8973,12 +8996,7 @@
 				this._updateMaskedValue();
 				this.options.value = this._getValueByDataMode();
 
-				// TODO here maybe the format of the submit value of the date should be some standart format like 2015-03-25T12:00:00
-				if ($.type(this.options.value) === "date") {
-						this._valueInput.val(this.options.value.toISOString());
-				} else {
-					this._valueInput.val(this.options.value);
-				}
+				this._valueInput.val(this._serializeDate(this._dateObjectValue));
 			}
 		},
 		_clearValue: function (textOnly) { //DateEditor
@@ -8999,23 +9017,10 @@
 		},
 		_getDateObjectFromValue: function (value) { //DateEditor
 			var date;
-			if ($.type(value) === "date") {
-
-				//if (this.options.enableUTCDates) {
-				//	//T.P. 26th Oct 2015 Bug 208350 when creating UTC date we need to set hours, minutes, seconds and milliseconds
-				//	value = new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds(), value.getMilliseconds()));
-				//}
-				date = value;
-			} else if (this._mvcDateRegex.test(value)) {
+			if (this._mvcDateRegex.test(value)) {
 				date = new Date(parseInt(value.replace(this._mvcDateRegex, "$1"), 10));
 			} else {
 				date = new Date(value);
-				if (this.options.enableUTCDates) {
-					date = new Date(Date.UTC(date.getFullYear(),
-						date.getMonth(), date.getDate(),
-						date.getHours(), date.getMinutes(),
-						date.getSeconds(), date.getMilliseconds()));
-				}
 			}
 			return date;
 		},
@@ -9024,10 +9029,9 @@
 				maskedVal = this._maskedValue ? this._maskedValue : this._maskWithPrompts,
 				dataMode = this.options.dataMode;
 
-			// TODO implement all of the modes
 			switch (dataMode) {
 				case "date": {
-						dataModeValue = this._dateObjectValue;
+					dataModeValue = this._dateObjectValue;
 				}
 					break;
 				case "displayModeText": {
@@ -9046,9 +9050,30 @@
 			}
 			return dataModeValue;
 		},
+		_getDateOffset: function(date) {
+			var newDate, zoneOffset;
+
+			if (!date) {
+				return date;
+			}
+			newDate = new Date(date.getTime());
+			zoneOffset = newDate.getTimezoneOffset();
+			newDate.setUTCMinutes(newDate.getUTCMinutes() +
+				zoneOffset + this.options.displayTimeOffset);
+			if (zoneOffset !== newDate.getTimezoneOffset()) {
+				// if date changes offset due to DST, re-adjust
+				newDate.setUTCMinutes(newDate.getUTCMinutes() +
+					newDate.getTimezoneOffset() - zoneOffset);
+			}
+			return newDate;
+		},
+		_clearDateOffset: function(date) {
+			date.setUTCMinutes(date.getUTCMinutes() -
+				date.getTimezoneOffset() - this.options.displayTimeOffset);
+		},
 		_parseDateFromMaskedValue: function (value) {
 			var dateField, monthField, yearField, hourField, minutesField, secondsField,
-				millisecondsField, midDayField, today,
+				millisecondsField, midDayField,
 				dateStartIndex = this._dateIndices.dd, regExpr, ffCount, lastDayOfMonth,
 				monthStartIndex = this._dateIndices.MM,
 				yearStartIndex = this._dateIndices.yy,
@@ -9230,35 +9255,25 @@
 
 				// If we have year, month and day field we create date from them, else we create today date.
 				if (yearField !== null && yearField !== undefined &&
-					 monthField !== null && monthField !== undefined &&
-					 dateField !== null && dateField !== undefined) {
-					if (this.options.enableUTCDates) {
-						extractedDate = new Date(Date.UTC(yearField, monthField, dateField));
-					} else {
-						extractedDate = new Date(yearField, monthField, dateField);
-					}
+					monthField !== null && monthField !== undefined &&
+					dateField !== null && dateField !== undefined) {
+					extractedDate = new Date(yearField, monthField, dateField);
 				} else {
-					if (this.options.enableUTCDates) {
-						today = new Date();
-						extractedDate = new Date(Date.UTC(today.getFullYear(),
-							today.getMonth(), today.getDate()));
-					} else {
-						extractedDate = new Date();
-					}
+					extractedDate = this._setNewDateMidnight();
 					if (yearField !== null && yearField !== undefined) {
-						extractedDate = this._setDateField("year", extractedDate, yearField);
+						this._setDateField("FullYear", extractedDate, yearField);
 					}
 					if (monthField !== null && monthField !== undefined) {
-						extractedDate = this._setDateField("month", extractedDate, monthField);
+						this._setDateField("Month", extractedDate, monthField);
 					}
 					if (dateField !== null && dateField !== undefined) {
 						lastDayOfMonth = this._lastDayOfMonth(this
-							._getDateField("year", extractedDate),
-								this._getDateField("month", extractedDate) + 1);
+							._getDateField("FullYear", extractedDate),
+								this._getDateField("Month", extractedDate) + 1);
 						if (dateField > lastDayOfMonth) {
 							dateField = lastDayOfMonth;
 						}
-						extractedDate = this._setDateField("date", extractedDate, dateField);
+						this._setDateField("Date", extractedDate, dateField);
 					}
 				}
 			} else {
@@ -9268,39 +9283,41 @@
 				extractedDate = new Date(this._dateObjectValue.getTime());
 			}
 			if (yearField !== null && yearField !== undefined) {
-				extractedDate = this._setDateField("year", extractedDate, yearField);
+				this._setDateField("FullYear", extractedDate, yearField);
 			}
 			if (monthField !== null && monthField !== undefined) {
 
 				if (dateField !== null && dateField !== undefined) {
 					//temporary set day to be in the middle of the month to ensure when setting the month the day won't overflow into the next month.
-					extractedDate = this._setDateField("date", extractedDate, "15");
+					this._setDateField("Date", extractedDate, "15");
 				}
-				extractedDate = this._setDateField("month", extractedDate, monthField);
+				this._setDateField("Month", extractedDate, monthField);
 			}
 			if (dateField !== null && dateField !== undefined) {
 				lastDayOfMonth = this._lastDayOfMonth(this
-					._getDateField("year", extractedDate),
-					this._getDateField("month", extractedDate) + 1);
+					._getDateField("FullYear", extractedDate),
+					this._getDateField("Month", extractedDate) + 1);
 				if (dateField > lastDayOfMonth) {
 					dateField = lastDayOfMonth;
 				}
-				extractedDate = this._setDateField("date", extractedDate, dateField);
+				this._setDateField("Date", extractedDate, dateField);
 			}
 			if (hourField !== null && hourField !== undefined) {
-				extractedDate = this._setDateField("hours", extractedDate, hourField);
+				this._setDateField("Hours", extractedDate, hourField);
 			}
 			if (minutesField !== null && minutesField !== undefined) {
-				extractedDate = this._setDateField("minutes", extractedDate, minutesField);
+				this._setDateField("Minutes", extractedDate, minutesField);
 			}
 			if (secondsField !== null && secondsField !== undefined) {
-				extractedDate = this._setDateField("seconds", extractedDate, secondsField);
+				this._setDateField("Seconds", extractedDate, secondsField);
 			}
 			if (millisecondsField !== null && millisecondsField !== undefined) {
-				extractedDate =
-					this._setDateField("milliseconds", extractedDate, millisecondsField);
+				this._setDateField("Milliseconds", extractedDate, millisecondsField);
 			}
 
+			if (this.options.displayTimeOffset !== null) {
+				this._clearDateOffset(extractedDate);
+			}
 			return extractedDate;
 
 		},
@@ -9309,6 +9326,10 @@
 
 			if (!dateObject) {
 				return "";
+			}
+
+			if (this.options.displayTimeOffset !== null) {
+				dateObject = this._getDateOffset(dateObject);
 			}
 
 			maskVal = this.options.dateDisplayFormat;
@@ -9352,44 +9373,44 @@
 				.replace(/y/g, "\x10053");
 
 			maskVal = maskVal.replace(/\x10030/g,
-				this._getMilliseconds(this._getDateField("milliseconds", dateObject), 1))
-				.replace(/\x10031/g, this._getMilliseconds(this._getDateField("milliseconds",
+				this._getMilliseconds(this._getDateField("Milliseconds", dateObject), 1))
+				.replace(/\x10031/g, this._getMilliseconds(this._getDateField("Milliseconds",
 					dateObject), 10))
-				.replace(/\x10032/g, this._getMilliseconds(this._getDateField("milliseconds",
+				.replace(/\x10032/g, this._getMilliseconds(this._getDateField("Milliseconds",
 					dateObject), 100));
 
 			maskVal = maskVal.replace(/\x10033/g,
-				this._getDay(this._getDateField("day", dateObject), "dddd"))
-				.replace(/\x10034/g, this._getDay(this._getDateField("day", dateObject), "ddd"))
-				.replace(/\x10035/g, this._getDate(this._getDateField("date", dateObject), "dd"))
-				.replace(/\x10036/g, this._getDate(this._getDateField("date", dateObject), "d"))
+				this._getDay(this._getDateField("Day", dateObject), "dddd"))
+				.replace(/\x10034/g, this._getDay(this._getDateField("Day", dateObject), "ddd"))
+				.replace(/\x10035/g, this._getDate(this._getDateField("Date", dateObject), "dd"))
+				.replace(/\x10036/g, this._getDate(this._getDateField("Date", dateObject), "d"))
 				.replace(/\x10037/g,
-					this._getSeconds(this._getDateField("seconds", dateObject), "ss"))
+					this._getSeconds(this._getDateField("Seconds", dateObject), "ss"))
 				.replace(/\x10038/g,
-					this._getSeconds(this._getDateField("seconds", dateObject), "s"))
+					this._getSeconds(this._getDateField("Seconds", dateObject), "s"))
 				.replace(/\x10039/g,
-					this._getMinutes(this._getDateField("minutes", dateObject), "mm"))
+					this._getMinutes(this._getDateField("Minutes", dateObject), "mm"))
 				.replace(/\x10040/g,
-					this._getMinutes(this._getDateField("minutes", dateObject), "m"))
+					this._getMinutes(this._getDateField("Minutes", dateObject), "m"))
 
 				.replace(/\x10041/g,
-					this._getAMorPM(this._getDateField("hours", dateObject), "tt"))
-				.replace(/\x10042/g, this._getAMorPM(this._getDateField("hours", dateObject), "t"))
-				.replace(/\x10043/g, this._getHours(this._getDateField("hours", dateObject), "HH"))
-				.replace(/\x10044/g, this._getHours(this._getDateField("hours", dateObject), "H"))
-				.replace(/\x10045/g, this._getHours(this._getDateField("hours", dateObject), "hh"))
-				.replace(/\x10046/g, this._getHours(this._getDateField("hours", dateObject), "h"));
+					this._getAMorPM(this._getDateField("Hours", dateObject), "tt"))
+				.replace(/\x10042/g, this._getAMorPM(this._getDateField("Hours", dateObject), "t"))
+				.replace(/\x10043/g, this._getHours(this._getDateField("Hours", dateObject), "HH"))
+				.replace(/\x10044/g, this._getHours(this._getDateField("Hours", dateObject), "H"))
+				.replace(/\x10045/g, this._getHours(this._getDateField("Hours", dateObject), "hh"))
+				.replace(/\x10046/g, this._getHours(this._getDateField("Hours", dateObject), "h"));
 
 			maskVal = maskVal.replace(/\x10047/g,
-				this._getMonth(this._getDateField("month", dateObject), "MMMM"))
-				.replace(/\x10048/g, this._getMonth(this._getDateField("month", dateObject), "MMM"))
-				.replace(/\x10049/g, this._getMonth(this._getDateField("month", dateObject), "MM"))
-				.replace(/\x10050/g, this._getMonth(this._getDateField("month", dateObject), "M"));
+				this._getMonth(this._getDateField("Month", dateObject), "MMMM"))
+				.replace(/\x10048/g, this._getMonth(this._getDateField("Month", dateObject), "MMM"))
+				.replace(/\x10049/g, this._getMonth(this._getDateField("Month", dateObject), "MM"))
+				.replace(/\x10050/g, this._getMonth(this._getDateField("Month", dateObject), "M"));
 
 			maskVal = maskVal.replace(/\x10051/g,
-				this._getYear(this._getDateField("year", dateObject), "yyyy"))
-				.replace(/\x10052/g, this._getYear(this._getDateField("year", dateObject), "yy"))
-				.replace(/\x10053/g, this._getYear(this._getDateField("year", dateObject), "y"));
+				this._getYear(this._getDateField("FullYear", dateObject), "yyyy"))
+				.replace(/\x10052/g, this._getYear(this._getDateField("FullYear", dateObject), "yy"))
+				.replace(/\x10053/g, this._getYear(this._getDateField("FullYear", dateObject), "y"));
 
 			// Restore original \\f,d,s,m,etc.
 			maskVal = maskVal.replace(/\x01/g, "g").replace(/\x02/g, "d").replace(/\x03/g, "s")
@@ -9616,14 +9637,18 @@
 			}
 		},
 		_handleDeleteKey: function (skipCursorPosition) { //igDateEditor
-			var cursorPosition;
+			var cursorPosition = this._getSelection(this._editorInput[ 0 ]).start;
+			if (cursorPosition === this._maskWithPrompts.length) {
+				// D.P. Should do nothing at end of input
+				return;
+			}
 			this._super(skipCursorPosition);
 			cursorPosition = this._getSelection(this._editorInput[ 0 ]).start;
 			if ((cursorPosition - 2) === this._dateIndices.tt ||
 				(cursorPosition - 1) === this._dateIndices.tt) {
 				if (this._dateIndices._ttLength === 2) {
 					if ((cursorPosition - 1) === this._dateIndices.tt) {
-						this._super();
+						this._super(skipCursorPosition);
 					} else {
 						if (!skipCursorPosition) {
 							this._setCursorPosition(cursorPosition - 1);
@@ -9638,12 +9663,18 @@
 		},
 		_setMillisecondsEditMode: function (mask, time, currentMilliseconds, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMilliseconds,
-				secondsUpdateDelta = 0, currentSecond, timeSecond;
-			if (currentMilliseconds + delta >= 60) {
+				secondsUpdateDelta = 0, currentSecond, timeSecond, boundary;
+
+			switch (this._dateIndices.ffLength) {
+				case 1: boundary = 10; break;
+				case 2: boundary = 100; break;
+				case 3: boundary = 1000; break;
+			}
+			if (currentMilliseconds + delta >= boundary) {
 				if (isLimited) {
 					newMilliseconds = currentMilliseconds;
 				} else {
-					newMilliseconds = (currentMilliseconds + delta) - 60;
+					newMilliseconds = (currentMilliseconds + delta) - boundary;
 					secondsUpdateDelta = 1;
 				}
 			} else if (currentMilliseconds + delta < 0) {
@@ -9653,7 +9684,7 @@
 					if (currentMilliseconds + delta === 0) {
 						newMilliseconds = 0;
 					} else {
-						newMilliseconds = 60 + (currentMilliseconds + delta);
+						newMilliseconds = boundary + (currentMilliseconds + delta);
 						secondsUpdateDelta = -1;
 					}
 				}
@@ -9673,9 +9704,9 @@
 					// This is the case, when we don't have seconds in the mask, but we increase/decrease the milliseconds to the next/previous second.
 					// In such a situation, we update the internal date with the new second, so that when we loose focus the second is the correct one.
 					if (!isLimited) {
-						this._setDateField("seconds",
+						this._setDateField("Seconds",
 							this._dateObjectValue,
-							this._getDateField("seconds", this._dateObjectValue) +
+							this._getDateField("Seconds", this._dateObjectValue) +
 								secondsUpdateDelta);
 					}
 				}
@@ -9719,9 +9750,9 @@
 					// This is the case, when we don't have minute in the mask, but we increase/decrease the seconds to the next/previous minute.
 					// In such a situation, we update the internal date with the new minute, so that when we loose focus the minute is the correct one.
 					if (!isLimited) {
-						this._setDateField("minutes",
+						this._setDateField("Minutes",
 							this._dateObjectValue,
-							this._getDateField("minutes", this._dateObjectValue) +
+							this._getDateField("Minutes", this._dateObjectValue) +
 								minuteUpdateDelta);
 					}
 				}
@@ -9764,9 +9795,9 @@
 					// This is the case, when we don't have hours in the mask, but we increase/decrease the minute to the next/previous hour.
 					// In such a situation, we update the internal date with the new hour, so that when we loose focus the hour is the correct one.
 					if (!isLimited) {
-						this._setDateField("hours",
+						this._setDateField("Hours",
 							this._dateObjectValue,
-							this._getDateField("hours", this._dateObjectValue) +
+							this._getDateField("Hours", this._dateObjectValue) +
 								hourUpdateDelta);
 					}
 				}
@@ -9866,8 +9897,8 @@
 					// This is the case, when we don't have day in the mask, but we increase/decrease the hour to the next/previous day.
 					// In such a situation, we update the internal date with the new day, so that when we loose focus the day is the correct one.
 					if (!isLimited) {
-						this._setDateField("date", this._dateObjectValue,
-							this._getDateField("date", this._dateObjectValue) + delta);
+						this._setDateField("Date", this._dateObjectValue,
+							this._getDateField("Date", this._dateObjectValue) + delta);
 					}
 				}
 			}
@@ -9905,14 +9936,23 @@
 		_setDayEditMode: function (mask, time, currentDay, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, currentYear,
 				currentMonth, lastDayOfMonth, lastDayOfPreviousMonth, newDay,
-				monthUpdateDelta, timeYear, timeMonth;
+				monthUpdateDelta, timeYear, timeMonth, today;
 
+			today = new Date();
 			timeYear = this._createYearPosition();
-			currentYear = parseInt(this._getStringRange(mask,
-				timeYear.startPosition, timeYear.endPosition), 10);
+			if (timeYear === null) {
+				currentYear = today.getFullYear();
+			} else {
+				currentYear = parseInt(this._getStringRange(mask,
+					timeYear.startPosition, timeYear.endPosition), 10);
+			}
 			timeMonth = this._createMonthPosition();
-			currentMonth = parseInt(this._getStringRange(mask,
-				timeMonth.startPosition, timeMonth.endPosition), 10);
+			if (timeMonth === null) {
+				currentMonth = today.getMonth();
+			} else {
+				currentMonth = parseInt(this._getStringRange(mask,
+					timeMonth.startPosition, timeMonth.endPosition), 10);
+			}
 			lastDayOfMonth = this._lastDayOfMonth(currentYear, currentMonth);
 			lastDayOfPreviousMonth = this._lastDayOfMonth(currentYear,
 				currentMonth - 1 !== 0 ? currentMonth - 1 : 12);
@@ -9946,8 +9986,8 @@
 					// This is the case, when we don't have month in the mask, but we increase/decrease the days to the next/previous month.
 					// In such a situation, we update the internal date with the new month, so that when we loose focus the month is the correct one.
 					if (!isLimited) {
-						this._setDateField("month", this._dateObjectValue,
-							this._getDateField("month", this._dateObjectValue) + monthUpdateDelta);
+						this._setDateField("Month", this._dateObjectValue,
+							this._getDateField("Month", this._dateObjectValue) + monthUpdateDelta);
 					}
 				}
 			}
@@ -9982,12 +10022,12 @@
 					mask = this._setYearEditMode(mask, timeYear, currentYear, yearUpdateDelta);
 				} else {
 
-					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous minute.
+					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous year.
 					// In such a situation, we update the internal date with the new year, so that when we loose focus the month is the correct one.
 					if (!isLimited) {
-						this._setDateField("year",
+						this._setDateField("FullYear",
 							this._dateObjectValue,
-							this._getDateField("year", this._dateObjectValue) + yearUpdateDelta);
+							this._getDateField("FullYear", this._dateObjectValue) + yearUpdateDelta);
 					}
 				}
 			}
@@ -10000,6 +10040,10 @@
 			} else {
 				newYear = currentYear + delta;
 			}
+			newYear = newYear.toString();
+			if (!this._dateIndices.fourDigitYear) {
+				newYear = newYear.substring(newYear.length - 2, newYear.length);
+			}
 			mask = this._setTimeEditMode(mask, time, currentYear, newYear);
 			return mask;
 		},
@@ -10008,7 +10052,11 @@
 
 			newValueAsString = newValue.toString();
 			if (newValueAsString.length === 1) {
-				newValueAsString = "0" + newValueAsString;
+				if (!(time.name === "milliseconds" && this._dateIndices.ffLength === 1)) {
+
+					// Only when milliseconds mask is with length 1, then we don't precede the new value with 0.
+					newValueAsString = "0" + newValueAsString;
+				}
 				if (time.name === "milliseconds" && this._dateIndices.ffLength === 3) {
 					newValueAsString = "0" + newValueAsString;
 				}
@@ -10126,7 +10174,8 @@
 			}
 			if (cursorPosition >= indices.yy &&
 				(indices.fourDigitYear && cursorPosition <= indices.yy + 4 ||
-					indices.fourDigitYear === undefined && indices.yy + 2)) {
+					(indices.fourDigitYear === undefined || indices.fourDigitYear === false) &&
+						cursorPosition <= indices.yy + 2)) {
 				time = this._createYearPosition();
 			} else if (cursorPosition >= indices.MM && cursorPosition <= indices.MM + 2) {
 				time = this._createMonthPosition();
@@ -10205,7 +10254,7 @@
 		},
 		_initEmptyMask: function (date) {
 			var mask = this._maskWithPrompts,
-				today = new Date(),
+				today = this._setNewDateMidnight(),
 				timeYear, timeMonth, timeDay, timeHours,
 				timeAmOrPM, timeMinutes, timeSeconds, timeMilliseconds,
 				year, month, day, hours, amPM, minutes, seconds, milliseconds;
@@ -10259,7 +10308,7 @@
 			}
 			return mask;
 		},
-		_spinEditMode: function (delta) {
+		_spinEditMode: function (delta, userInteraction) {
 			var self = this, cursorPosition = this._getCursorPosition(),
 				mask = this._editorInput.val(), time;
 
@@ -10281,6 +10330,9 @@
 			//	N.A. 3/2/2016 Bug #215046: We don't need to update _maskedValue, before the value is updated.
 			// this._maskedValue = mask;
 			this._editorInput.val(mask);
+			if (userInteraction) {
+				this._processTextChanged();
+			}
 			if ($.ig.util.isChrome || $.ig.util.isSafari || $.ig.util.isFF) {
 
 				// In Chrome, Safari and FF there is a bug and the cursor needs to be set with timeout in order to work.
@@ -10291,66 +10343,90 @@
 				self._setCursorPosition(cursorPosition);
 			}
 		},
-		_setTimePeriod: function (periodName, delta) {
+		_setTimePeriod: function (periodName, delta, userInteraction) {
 			var date, period, newPeriod;
 
-			date = this._dateObjectValue;
-			period = parseInt(this._getDateField(periodName, date), 10);
-			if (period === null) {
+			if (!this._dateObjectValue || !this._isValidDate(this._dateObjectValue)) {
 
 				// When there is no date at all we want to set today and should not increase the day.
 				// It's the same for the other time periods.
-				period = this._getDateField(periodName, new Date());
+				date = this._setNewDateMidnight();
 				delta = 0;
+			} else {
+				date = new Date(this._dateObjectValue);
 			}
+			period = this._getDateField(periodName, date);
 			newPeriod = period + delta;
 
-			if (!date) {
-				date = new Date();
-			}
-			if (newPeriod !== period) {
+			if (!this._isNewPeriodLimited(periodName, newPeriod, delta, date)) {
 				this._setDateField(periodName, date, newPeriod);
-				this._triggerInternalValueChange(date);
-				this._editorInput.val(this._getDisplayValue());
+				if (userInteraction) {
+					this._triggerInternalValueChange(date);
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
+				} else {
+					this._processInternalValueChanging(date);
+					this._editorInput.val(this._getDisplayValue());
+				}
 			}
 		},
-		_spinDisplayMode: function (delta) {
+		_isNewPeriodLimited: function(name, value, delta, date) {
+			var isLimited = false;
+			if (this.options.limitSpinToCurrentField) {
+				if (delta < 0) {
+					if (value < 0) {
+						isLimited = true;
+					}
+				} else if (name === "Month" && value === 13 ||
+					name === "Month" && value ===
+						this._lastDayOfMonth(date.getFullYear() && date.getMonth()) + 1 ||
+					(name === "Hours" || name === "Minutes"  || name === "Seconds") &&
+						value === 60 ||
+					name === "Milliseconds" && value === 1000) {
+					isLimited = true;
+				}
+			}
+			return isLimited;
+		},
+		_spinDisplayMode: function (delta, userInteraction) {
 			var indices = this._dateIndices, periodName;
 
 			if (indices.dd !== undefined) {
 
 				// Default behavior is that we always spin up/down day if it is available in the mask.
-				periodName = "date";
+				periodName = "Date";
 			} else if (indices.ff !== undefined) {
 
 				// If day is not available then we spin the smallest time period, that's why we start from milliseconds.
-				periodName = "milliseconds";
+				periodName = "Milliseconds";
 				if (indices.ffLength === 2) {
 					delta = delta * 10;
 				} else if (indices.ffLength === 1) {
 					delta = delta * 100;
 				}
 			} else if (indices.ss !== undefined) {
-				periodName = "seconds";
+				periodName = "Seconds";
 			} else if (indices.mm !== undefined) {
-				periodName = "minutes";
+				periodName = "Minutes";
 			} else if (indices.hh !== undefined) {
-				periodName = "hours";
+				periodName = "Hours";
 			} else if (indices.MM !== undefined) {
-				periodName = "month";
-			} else if (indices.yy !== undefined) {
-				periodName = "year";
+				periodName = "Month";
+			} else {
+				periodName = "FullYear";
 			}
-			this._setTimePeriod(periodName, delta);
+			this._setTimePeriod(periodName, delta, userInteraction);
 		},
-		_spin: function (delta) {
+		_spin: function (delta, userInteraction) {
+			if (!delta) {
+				return;
+			}
 			this._currentInputTextValue = this._editorInput.val();
 			if (this._editMode) {
-				this._spinEditMode(delta);
+				this._spinEditMode(delta, userInteraction);
 			} else {
-				this._spinDisplayMode(delta);
+				this._spinDisplayMode(delta, userInteraction);
 			}
-			this._processTextChanged();
 		},
 		_spinUpEditMode: function (delta) {
 			this._spinEditMode(delta ? delta : this.options.spinDelta);
@@ -10398,6 +10474,9 @@
 				this._editorInput.val(this._editMode ?
 					this._maskedValue :
 					this._getDisplayValue());
+
+				// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+				this._setSpinButtonsState(newValue);
 			} else {
 				if (this.options.value) {
 					return this._getValueByDataMode();
@@ -10405,17 +10484,22 @@
 					return this.options.value;
 				}
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		getSelectedDate: function() {
-			/* Gets selected date.
+			/* Gets selected date as a date object. This method can be used when dataMode is set as either displayModeText or editModeText.
+			In such cases the value() method will not return date object and getSelectedDate() can be used to replace that functionality.
 			```
 			$(".selector").%%WidgetName%%("getSelectedDate");
 			```
 				returnType="date" */
-			return this._dateObjectValue;
+			return new Date(this._dateObjectValue.getTime());
 		},
 		selectDate: function (date) {
-			/* Sets selected date.
+			/* Sets selected date. This method can be used when dataMode is set as either displayModeText or editModeText.
+			In such cases the value() cannot accept a date object as a new value and getSelectedDate() can be used to replace that functionality.
 			```
 				$(".selector").igDateEditor("selectDate", new Date (2016, 2, 3));
 			```
@@ -10429,7 +10513,8 @@
 				$(".selector").igDateEditor("spinUp", 2);
 			```
 				paramType="number" optional="true" The increase delta. */
-			this._spin(delta ? delta : this.options.spinDelta);
+			delta = parseInt(delta, 10);
+			this._spin((!isNaN(delta) && delta >= 0) ? delta : this.options.spinDelta);
 		},
 		spinDown: function (delta) {
 			/* Decreases the date or time period, depending on the current cursor position.
@@ -10437,7 +10522,8 @@
 				$(".selector").igDateEditor("spinDown", 3);
 			```
 				paramType="number" optional="true" The decrease delta. */
-			this._spin(delta ? -delta : -this.options.spinDelta);
+			delta = parseInt(delta, 10);
+			this._spin(!isNaN(delta) && delta >= 0 ? -delta : -this.options.spinDelta);
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
@@ -10734,19 +10820,27 @@
 					if (self._dateObjectValue) {
 
 						// Date comming from the picker contains only year, month and date - if the user has specified inputMask with hours and minutes - then selecting the date from the picker should keep the same hours and minutes.
-						date = new Date(self._dateObjectValue);
-					} else {
+						if (self.options.displayTimeOffset !== null) {
 
-						//T.P. 10th Dec 2015 211062: When there is no value and the datepicker selects value the stored date object needs to be with current time.
-						//In Case there is no dateObject which meand the editor has no value when the date is selected it will be with current time value (hours, minutes, seconds)
-						date = new Date();
+							// use display values to set picker result and reset before processing
+							date = self._getDateOffset(self._dateObjectValue);
+						} else {
+							date = new Date(self._dateObjectValue);
+						}
+					} else {
+						date = self._setNewDateMidnight();
 					}
-					date = self._setDateField("year", date, dateFromPicker.getFullYear());
+
+					self._setDateField("FullYear", date, dateFromPicker.getFullYear());
 
 					//Temporary change the date to be in the middle of the month 15th, because when using JavaScript Date object to set month when date is 31, the date object is moved with one day.
-					date = self._setDateField("date", date, 15);
-					date = self._setDateField("month", date, dateFromPicker.getMonth());
-					date = self._setDateField("date", date, dateFromPicker.getDate());
+					self._setDateField("Date", date, 15);
+					self._setDateField("Month", date, dateFromPicker.getMonth());
+					self._setDateField("Date", date, dateFromPicker.getDate());
+
+					if (self.options.displayTimeOffset !== null) {
+						self._clearDateOffset(date);
+					}
 
 					self._processValueChanging(date);
 					self._triggerItemSelected.call(self,
@@ -10822,9 +10916,6 @@
 					this._getLocaleOption("ariaCalendarButton") + "'></div>"),
 				dropDownIcon = $("<div></div>");
 
-			if (this._dropDownButton) {
-				return;
-			}
 			dropDownButton.addClass(this.css.buttonCommon);
 			dropDownButton.attr("title", this._getLocaleOption("datePickerButtonTitle"));
 			this._editorContainer.prepend(dropDownButton
@@ -10865,6 +10956,12 @@
 				this.options.datepickerOptions.minDate) {
 				if (this._isValidDate(this.options.datepickerOptions.minDate)) {
 					this.options.minValue = this.options.datepickerOptions.minDate;
+					if (this.options.displayTimeOffset !== null) {
+						this._editorInput.datepicker("option", "minDate", this._getDateOffset(
+							this._getDateObjectFromValue(this.options.datepickerOptions.minDate)
+						));
+						this._editorInput.val(this._getDisplayValue());
+					}
 				}
 			}
 			if (!this.options.maxValue &&
@@ -10872,6 +10969,12 @@
 				this.options.datepickerOptions.maxDate) {
 				if (this._isValidDate(this.options.datepickerOptions.minDate)) {
 					this.options.maxValue = this.options.datepickerOptions.maxDate;
+					if (this.options.displayTimeOffset !== null) {
+						this._editorInput.datepicker("option", "maxDate", this._getDateOffset(
+							this._getDateObjectFromValue(this.options.datepickerOptions.maxDate)
+						));
+						this._editorInput.val(this._getDisplayValue());
+					}
 				}
 			}
 		},
@@ -11037,9 +11140,8 @@
 			}
 
 			if (currentDate) {
-				if (this.options.enableUTCDates) {
-					currentDate = new Date(currentDate.getUTCFullYear(),
-						currentDate.getUTCMonth(), currentDate.getUTCDate());
+				if (this.options.displayTimeOffset !== null) {
+					currentDate = this._getDateOffset(currentDate);
 				}
 
 				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
@@ -11530,10 +11632,6 @@
 			};
 			this._trigger(this.events.blur, event, args);
 		},
-		_updateValue: function (value) {
-			this.options.value = value;
-			this._valueInput.val(value);
-		},
 		_getState: function () {
 			var state;
 			if (this._inputValue !== undefined) {
@@ -11675,7 +11773,7 @@
 			if (delay) {
 				this._timeouts.push(setTimeout(function () {
 					self._cancelFocusTrigger = true;
-					this._editorContainer.focus();
+					self._editorContainer.focus();
 					self._setFocus();
 				}, delay));
 			} else {

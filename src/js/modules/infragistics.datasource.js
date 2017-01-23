@@ -1035,7 +1035,38 @@
 				```
 				*/
 				exprString: "",
-				/* type="object" an object containing custom defined filtering conditions as objects. */
+				/* type="object" an object containing custom defined filtering conditions as objects.
+				```
+					jsonDs = new $.ig.DataSource( {
+						filtering: {
+							type: "local",
+							caseSensitive: true,
+							applyToAllData: true,
+							customConditions: [
+								BE: {
+								labelText: "BE",
+								expressionText: "BE-####",
+								requireExpr: false,
+								filterFunc: filterProductNumber
+								},
+								CA: {
+									labelText: "CA",
+									expressionText: "CA-####",
+									requireExpr: false,
+									filterFunc: filterProductNumber1
+								}
+							]
+						},
+						dataSource: jsonData
+					}).dataBind()
+					function filterProductNumber(value, expression, dataType, ignoreCase, preciseDateFormat) {
+						return value.startsWith("BE");
+					}
+					function filterProductNumber1(value, expression, dataType, ignoreCase, preciseDateFormat) {
+						return value.startsWith("CA");
+					}
+				```
+				*/
 				customConditions: null
 			},
 			/* Settings related to built-in sorting functionality
@@ -2245,6 +2276,7 @@
 				var pagingSettings = ds.pagingSettings();
 			```
 			paramType="object" optional="true" object holding all paging settings. See settings.paging
+			returnType="object" Returns an object holding the current paging settings when you use the getter and the current instance of the [$.ig.DataSource](ig.datasource) when you use the setter
 			*/
 			if (p === undefined || p === null) {
 				return this.settings.paging;
@@ -2326,6 +2358,7 @@
 				var mySortSettings = ds.sortSettings();
 			```
 			paramType="object" optional="true" object holding all sorting settings. See settings.sorting
+			returnType="object" Returns an object holding the current sorting settings when getter is used and the current instance of the [$.ig.DataSource](ig.datasource) when setter is used
 			*/
 			if (s === undefined || s === null) {
 				return this.settings.sorting;
@@ -3452,6 +3485,9 @@
 			if (this._filter && this._filteredData &&
 				this.settings.paging.enabled && this.settings.paging.type === "local") {
 				this._addOnlyUniqueToCollection(all, this._filteredData);
+			}
+			if (this._vgbData && this.isGroupByApplied(this.settings.sorting.expressions)) {
+				this._addOnlyUniqueToCollection(all, this._vgbData);
 			}
 			if (layouts) {
 				/* we'll try to include empty collections for the child layouts to keep the data source consistent */
@@ -6213,9 +6249,7 @@
 				ds.totalRecordsCount(42);
 			```
 			paramType="number" optional="true" the total number of records
-			paramType="string" optional="true" the name of the property which hold the total records count value
-			paramType="object" optional="true"
-			paramType="object" optional="true"
+			returnType="number" Returns total records count of the current dasource instance
 			*/
 			var rec, totalRecPath, i;
 			if (context !== undefined && context !== null) {
@@ -6498,6 +6532,7 @@
 				ds.pageSize(25);
 			```
 			paramType="number" optional="true" the page size.
+			returnType="number" Returns the current page size if getter is used and the current instance of the [$.ig.DataSource](ig.datasource) when setter is used
 			*/
 			if (s === undefined || s === null) {
 				return this.settings.paging.pageSize;
@@ -7027,7 +7062,8 @@
 		Eg: When you need to fetch the data remotely, or when it is stored in a string and needs to be evaluated first
 		*/
 		schema: {
-			/* type="array" A list of field definitions specifying the schema of the data source. Field objects description: {name, [type], [xpath]} */
+			/* A list of field definitions specifying the schema of the data source. Field objects description: {name, [type], [xpath]}
+			returnType="array" */
 			fields: [
 				{
 					/* type="string" Name of the field*/
@@ -9036,7 +9072,20 @@
 				```
 				*/
 				initialFlatDataView: false,
-				/*type="function" Specifies a custom function to be called when requesting data to the server - usually when expanding/collapsing record. If set the function should return the encoded URL. It takes as parameters: data record(type: object), expand - (type: bool). */
+				/*type="function" Specifies a custom function to be called when requesting data to the server - usually when expanding/collapsing record. If set the function should return the encoded URL. It takes as parameters: data record(type: object), expand - (type: bool).
+				```
+				var ds = new $.%%WidgetName%%({
+								dataSource: products,
+								treeDS: {
+									customEncodeUrlFunc: function(record, expand){
+										var dsUrl = ds.settings.treeDS.dataSourceUrl;
+										var path = ds.getPathBy(record);
+										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.propertyDataLevel];
+									}
+								}
+							});
+				```
+				*/
 				customEncodeUrlFunc: null,
 				/*type="bool" If true save expansion states in internal list and send it to the server. Applying to one of the main constraint of the REST architecture  Stateless Interactions - client specific data(like expansion states) should NOT be stored on the server
 				```
@@ -10694,7 +10743,21 @@
 			}
 		},
 		shouldCallGenerateFlatDataView: function () {
-			/*Gets whether the flat data view should be generated by calling the generateFlatDataView method. */
+			/*Gets whether the flat data view should be generated by calling the generateFlatDataView method.
+				```
+				var ds = new $.%%WidgetName%%({
+					dataSource: products,
+					primaryKey: "ID",
+					treeDS: {
+						childDataKey: "Products"
+					}
+				});
+				ds.dataBind();
+				if (ds.shouldCallGenerateFlatDataView()) {
+					ds.generateFlatDataView();
+				}
+		```
+			*/
 			var s = this.settings, paging = s.paging;
 			return !paging || !paging.enabled ||
 						paging.type !== "local" ||
@@ -10727,7 +10790,7 @@
 		},
 		getPathBy: function (record) {
 			/*Gets the path of a record by the record or the record's key
-			paramType="object|string|number" optional="false" the record or the record's key as string or number
+			paramType="object|string|number" returnType="string" optional="false" the record or the record's key as string or number
 			*/
 			if (record === null || record === undefined) {
 				return null;
