@@ -473,4 +473,24 @@
 			}
 		}
 	};
+
+	ko.bindingHandlers.igEditorDisable = {
+        update: function (element, valueAccessor) {
+            var disabled = valueAccessor(),
+                editor = $(element),
+				widgetNames = ["igTextEditor", "igNumericEditor",
+					"igPercentEditor", "igCurrencyEditor", "igMaskEditor",
+					"igDateEditor", "igDatePicker", "igCheckboxEditor"];
+
+            if (!ko.isObservable(disabled)) {
+                return;
+            }
+			for (name in editor.data()) {
+				if ($.inArray(name, widgetNames) !== -1) {
+					editor[name]("option", "disabled", disabled());
+					break;
+				}
+			}
+        }
+    };
 }));// REMOVE_FROM_COMBINED_FILES
