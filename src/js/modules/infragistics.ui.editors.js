@@ -3112,14 +3112,16 @@
 		_processTextChanged: function () {
 			var currentVal = this._editorInput.val(),
 				previousVal = this._currentInputTextValue;
-			if (previousVal === undefined) {
-				//In that case we don't have track of previous value, so we trigger the textChanged event
-				this._triggerTextChanged("", currentVal);
-			} else if (currentVal !== previousVal) {
+			if (currentVal !== previousVal) {
+				if (previousVal === undefined) {
+					//In case we don't have track of previous value
+					previousVal = "";
+				}
+				this._triggerTextChanged(previousVal, currentVal);
+
 				if (this._editMode && this._dropDownList) {
 					this._updateDropdownSelection(currentVal);
 				}
-				this._triggerTextChanged(previousVal, currentVal);
 				if (this._validator) {
 					// D.P. 26th Oct 2015 Bug 20972 validation onchange does not work correctly
 					this._validator._validateInternal(this.element, null, false,
