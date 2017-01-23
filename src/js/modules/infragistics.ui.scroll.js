@@ -1072,6 +1072,10 @@
 			if (val === "undefined" || val === null) {
 				return this._getContentPositionX();
 			}
+
+			/* Cancels any ongoing inertia otherwise the method call might be ignored */
+			cancelAnimationFrame(this._touchInertiaAnimID);
+
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
 				var posY = this._getContentPositionY();
 				this._scrollTouchToXY(val, posY, triggerEvents);
@@ -1101,6 +1105,10 @@
 			if (val === "undefined" || val === null) {
 				return this._getContentPositionY();
 			}
+
+			/* Cancels any ongoing inertia otherwise the method call might be ignored */
+			cancelAnimationFrame(this._touchInertiaAnimID);
+
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
 				var posX = this._getContentPositionX();
 				this._scrollTouchToXY(posX, val, triggerEvents);
@@ -2139,7 +2147,8 @@
 
 		_onPointerDownContainer: function (event) {
 			var evt = event.originalEvent;
-			if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch")) {
+			if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch") ||
+				typeof MSGesture !== "function") {
 				return true;
 			}
 
