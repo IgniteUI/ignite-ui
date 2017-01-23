@@ -1850,14 +1850,7 @@
 			}
 			this._super(value);
 			if (this._dropDownList) {
-				selectedIndex = $.inArray(value, this.options.listItems);
-				if (selectedIndex > -1) {
-					this._setSelectedItemByIndex(selectedIndex);
-				} else {
-					this.getSelectedListItem()
-						.removeClass(this.css.listItemSelected)
-						.removeAttr("data-active");
-				}
+				this._updateDropdownSelection(value);
 			}
 		},
 		_applyOptions: function () { //TextEditor
@@ -3015,11 +3008,7 @@
 			if (noCancel) {
 
 				// TODO select closest parent class
-				$(item).parent().children(".ui-igedit-listitem")
-					.removeClass(this.css.listItemSelected)
-					.attr("aria-selected", false);
-				$(item).addClass(this.css.listItemSelected);
-				$(item).attr("aria-selected", true);
+				this._setSelectedItemByIndex($(item).index());
 
 				if (this._dropDownList.is(":visible") && this._triggerDropDownClosing()) {
 					this._hideDropDownList();
@@ -3592,14 +3581,29 @@
 				after: value.substring(index)
 			};
 		},
-		_spinUp: function () {
-			if (this._dropDownList && this._dropDownList.is(":visible")) {
-				this._hoverPreviousDropDownListItem();
-			}
-		},
-		_spinDown: function () {
-			if (this._dropDownList && this._dropDownList.is(":visible")) {
-				this._hoverNextDropDownListItem();
+		_spin: function (type, fireEvent) {
+			var nextItem;
+			if (this._dropDownList) {
+				nextItem = this._getSpinItem(type, true);
+				if (!nextItem.length) {
+					// no allowed item found
+					return;
+				}
+				if (fireEvent && !this._triggerDropDownItemSelecting(nextItem[0])) {
+					return;
+				}
+				if (this._editMode) {
+					this._editorInput.val(nextItem.text());
+					this._setSelectedItemByIndex(nextItem.index());
+					this._processTextChanged();
+				} else {
+					this._processValueChanging(nextItem.text());
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
+				}
+				if (fireEvent) {
+					this._triggerDropDownItemSelected(nextItem[0]);
+				}
 			}
 		},
 		_getSpinItem: function (spinType, selected) { //igTextEditor
@@ -3624,36 +3628,10 @@
 			}
 		},
 		_handleSpinUpEvent: function () { //igTextEditor
-			var nextItem;
-			if (false) {
-				this._spinUp();
-			} else {
-				nextItem = this._getSpinItem("up", true);
-				if (nextItem.length) {
-					if (this._editMode) {
-						this._editorInput.val(nextItem.text());
-						this._processTextChanged();
-					} else {
-						this._triggerListItemClick(nextItem);
-					}
-				}
-			}
+			this._spin("up",true);
 		},
 		_handleSpinDownEvent: function () { //igTextEditor
-			var nextItem;
-			if (false) {
-				this._spinDown();
-			} else {
-				nextItem = this._getSpinItem("down", true);
-				if (nextItem.length) {
-					if (this._editMode) {
-						this._editorInput.val(nextItem.text());
-						this._processTextChanged();
-					} else {
-						this._triggerListItemClick(nextItem);
-					}
-				}
-			}
+			this._spin("down",true);
 		},
 		_handleSpinEvent: function (type, target) {
 			var self = this;
@@ -3680,11 +3658,6 @@
 		},
 		_clearValue: function (textOnly) {
 			this._super(textOnly);
-			if (this._dropDownList &&
-				this._dropDownList.children(".ui-igedit-listitemselected").length > 0) {
-				this._dropDownList.children(".ui-igedit-listitemselected")
-					.removeClass(this.css.listItemSelected);
-			}
 		},
 		_clearEditorNotifier: function () {
 			var notifier = this._editorContainer.data("igNotifier");
@@ -3765,8 +3738,10 @@
 				oldSelectedItem = this.getSelectedListItem();
 				oldSelectedItem.removeClass(this.css.listItemSelected);
 				oldSelectedItem.removeAttr("data-active");
+				oldSelectedItem.attr("aria-selected", false);
 				newSelectedItem = this._getListItemByIndex(index);
 				newSelectedItem.addClass(this.css.listItemSelected);
+				newSelectedItem.attr("aria-selected", true);
 				if (this.dropDownVisible()) {
 					this._clearDropDownHoverActiveItem();
 					newSelectedItem.attr("data-active", true);
@@ -3774,15 +3749,18 @@
 			}
 		},
 		_updateDropdownSelection: function (currentVal) { //igTextEditor
-			// only used in edit mode
-			var current = this.getSelectedListItem(), selectedIndex;
-			if (!current.length || current.text() !== currentVal) {
-				selectedIndex = $.inArray(currentVal, this.options.listItems);
+			var current = this.getSelectedListItem().index(), selectedIndex;
+			if (this._editMode) {
+				currentVal = this._valueFromText(currentVal);
+			}
+			selectedIndex = $.inArray(currentVal, this.options.listItems);
+			if (current !== selectedIndex) {				
 				if (selectedIndex > -1) {
 					this._setSelectedItemByIndex(selectedIndex);
 				} else {
 					this.getSelectedListItem()
 						.removeClass(this.css.listItemSelected)
+						.attr("aria-selected", false)
 						.removeAttr("data-active");
 					if (this.dropDownVisible()) {
 						this._clearDropDownHoverActiveItem();
@@ -3971,7 +3949,7 @@
 			 $(".selector").igTextEditor("spinUp");
 			```
 			*/
-			this._spinUp();
+			this._spin("up");
 		},
 		spinDown: function () {
 			/* Selects the next item from the drop-down list.
@@ -3979,7 +3957,7 @@
 				$(".selector").igTextEditor("spinDown");
 			```
 			*/
-			this._spinDown();
+			this._spin("down");
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
@@ -4961,14 +4939,7 @@
 			this.options.value = val;
 
 			if (this._dropDownList) {
-				selectedIndex = $.inArray(val, this.options.listItems);
-				if (selectedIndex > -1) {
-					this._setSelectedItemByIndex(selectedIndex);
-				} else {
-					this.getSelectedListItem()
-						.removeClass(this.css.listItemSelected)
-						.removeAttr("data-active");
-				}
+				this._updateDropdownSelection(val);
 			}
 		},
 		_validateKey: function (event) { //NumericEditor
@@ -5113,14 +5084,6 @@
 			if (!textOnly && newValue !== undefined) {
 				this._updateValue(newValue);
 			}
-			if (this.dropDownContainer() &&
-				this.dropDownContainer().children(".ui-igedit-listitemselected").length > 0) {
-				this.dropDownContainer().children(".ui-igedit-listitemselected")
-					.removeClass(this.css.listItemSelected);
-			}
-		},
-		_updateDropdownSelection: function (currentVal) { //NumericEditor
-			this._super(this._valueFromText(currentVal));
 		},
 		_getRegionalOption: function (key) {
 			var regional = this.options.regional;
@@ -5330,8 +5293,7 @@
 			if (this._dropDownList && this.options.isLimitedToListValues) {
 				nextItem = this._getSpinItem(spinType === "spinUp" ? "up" : "down", true);
 				if (nextItem.length) {
-					return this._parseNumericValueByMode(nextItem.text(),
-						this._numericType, this.options.dataMode);
+					return this._valueFromText(nextItem.text());
 				} else {
 					return currentValue;
 				}
