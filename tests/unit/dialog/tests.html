@@ -404,6 +404,32 @@
             } catch (e) { }
             equal($("#dialog5").igDialog("option", "mainElement"), null, "mainElement is set at runtime!");
         });
+
+        test("Modal Dialog with open Animation bug: 230989", function () {
+            $dialog = $("<div id='230989'></div>")
+            .appendTo("#newContainer")
+            .igDialog({
+	             modal: true,
+	             closeOnEscape: false,
+	             draggable: false,
+	             resizable: false,
+	             openAnimation: "bounce",
+	             closeAnimation: "fade",
+                 width: "350px"
+            });
+            
+            stop();
+            setTimeout(function(){
+                start();
+                
+                var zIndexDialog = $dialog.css("z-index"), zIndex = $(".ui-igdialog-overlay").css("z-index");
+                equal(parseInt(zIndexDialog), parseInt(zIndex) + 1, "The dialog is not interactable.");
+
+                
+                $dialog.remove();
+            }, 1000);
+
+        });
     });
     </script>
 </head>
@@ -430,5 +456,6 @@
         <div id="dialog5"></div>
         <div id="newContainer"></div>
     </div>
+    <div id="newContainer"></div>
 </body>
 </html>

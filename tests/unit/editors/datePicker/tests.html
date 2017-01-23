@@ -120,7 +120,7 @@
 			});
 
 			var testId = 'Date Picker methods.';
-			test(testId, 3, function () {
+			test(testId, 7, function () {
 				var editor = $('#inputEditor1'), date, testDate = new Date(2006, 10, 22) ;
 				editor.igDatePicker("selectDate", testDate);
 				date = editor.igDatePicker("getSelectedDate");
@@ -140,14 +140,50 @@
 				date = editor.igDatePicker("getSelectedDate");
 				testDate.setDate(testDate.getDate() - 3);
 				equal(date.getTime(), testDate.getTime(), "date is not correct");
+				
+				//not supported:
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker();
 
+				throws(function(){
+					$editor.igDatePicker("dropDownContainer");
+				},
+				$.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+				throws(function(){
+					$editor.igDatePicker("findListItemIndex");
+				},
+				$.ig.Editor.locale.datePickerEditorNoSuchMethod);
+				throws(function(){
+					$editor.igDatePicker("getSelectedListItem");
+				},
+				$.ig.Editor.locale.datePickerEditorNoSuchMethod);
+				throws(function(){
+					$editor.igDatePicker("selectedListIndex");
+				},
+				$.ig.Editor.locale.datePickerEditorNoSuchMethod);
+				$editor.remove();
 			});
 
 			var testId = 'Date Picker set options.';
-			test(testId, 0, function () {
-				var editor = $('#inputEditor1');
+			test(testId, 3, function () {
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker();
+				
+				throws(function(){
+					$editor.igDatePicker("option", "listItems", []);
+				},
+				$.ig.Editor.locale.setOptionError + "listItems");
 
-				editor.igDatePicker("option", "isLimitedToListValues", false);
+				$editor.igDatePicker("option", "dropDownOrientation", "up");
+				$editor.igDatePicker("dropDownButton").click();
+				equal($editor.igDatePicker("field").datepicker("option", "showOptions").direction, "up", "Picker direction not set on open");
+				$editor.igDatePicker("hideDropDown");
+				stop();
+				$editor.igDatePicker("getCalendar").promise().done(function () {
+					start();
+					ok(!$editor.igDatePicker("getCalendar").is(":visible"), "Calendar not hidden");
+					$editor.remove();
+				});
 			});
 
 			var testId = 'Date Picker onSelect event.';
@@ -315,12 +351,13 @@
 		    });
 
 			var testId = 'Disable igDatePicker';
-			test(testId, 5, function(){
-				var ddButton = $("#inputEditor6").igDatePicker("dropDownButton"),
-						ddButtonDisable = $("#inputEditor7").igDatePicker("dropDownButton"),
-						spinUpButton = $("#inputEditor6").igDatePicker("spinUpButton"),
-						spinDownButton = $("#inputEditor6").igDatePicker("spinDownButton"),
-						clearButton = $("#inputEditor6").igDatePicker("clearButton");
+			test(testId, 10, function(){
+				var today,
+					ddButton = $("#inputEditor6").igDatePicker("dropDownButton"),
+					ddButtonDisable = $("#inputEditor7").igDatePicker("dropDownButton"),
+					spinUpButton = $("#inputEditor6").igDatePicker("spinUpButton"),
+					spinDownButton = $("#inputEditor6").igDatePicker("spinDownButton"),
+					clearButton = $("#inputEditor6").igDatePicker("clearButton");
 
 				ok(!ddButton.hasClass("ui-state-disabled"), "The igDatePicker is disabled.The DropDownButton is enabled.");
 				ok(spinUpButton.hasClass("ui-state-disabled"), "The igDatePicker's spinUp button is disabled.");
@@ -329,6 +366,42 @@
 
 				$("#inputEditor7").igDatePicker("option","readOnly",true);
 				ok(ddButtonDisable.hasClass("ui-state-disabled"), "The igDatePicker is disabled.");
+
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({ 
+						readOnly: true,
+						dropDownOnReadOnly: false
+					});
+				ok($editor.igDatePicker("dropDownButton").hasClass("ui-state-disabled"), "Picker should not be enabled in readOnly without dropDownOnReadOnly");
+				$editor.remove();
+
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({ disabled: true });
+				ok($editor.igDatePicker("editorContainer").hasClass("ui-state-disabled"), "Editor not disabled");
+				ok($editor.igDatePicker("dropDownButton").hasClass("ui-state-disabled"), "Picker not disabled");
+				$editor.remove();
+
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({ 
+						readOnly: true,
+						dropDownOnReadOnly: true
+					});
+				$editor.igDatePicker("dropDownButton").click();
+				stop();
+				setTimeout(function() {
+					start();
+					today = new Date();
+					$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-today").click();
+					equal((today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear(),
+						$editor.igDatePicker( "displayValue" ),
+						"Editor text did not update from readonly selection.");
+
+					today.setHours(0);
+					today.setMinutes(0);
+					today.setSeconds(0);
+					today.setMilliseconds(0);
+					equal($editor.igDatePicker( "value" ).getTime(), today.getTime(), "Editor text did not update from readonly selection.");
+				}, 200);
 			});
 
 			var testId = 'UTC igDatePicker';

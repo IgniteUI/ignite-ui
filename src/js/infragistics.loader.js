@@ -1586,7 +1586,10 @@ $.extend($.ig.loaderClass, {
 		} else {
 
 			//~ Make jQuery to hold firing ready event until all of our resources are loaded
-			$.holdReady(true);
+			if (!this._readyHeld) {
+				$.holdReady(true);
+				this._readyHeld = true;
+			}
 
 			if (!this._themeLoaded && this.settings.theme) {
 				this._themeLoaded = true;
@@ -1828,7 +1831,10 @@ $.extend($.ig.loaderClass, {
 		}
 
 		//~ Allow firing jQuery ready event
-		$.holdReady(false);
+		if (this._readyHeld) {
+			$.holdReady(false);
+			delete this._readyHeld;
+		}
 	},
 
 	_findWidgetScriptData: function (widgetName, parentWidget) {
