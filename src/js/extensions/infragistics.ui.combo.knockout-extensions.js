@@ -222,4 +222,15 @@
             combo.css("display", visible() ? "inline-block" : "none");
         }
     };
+
+    ko.bindingHandlers.igComboDisable = {
+        update: function (element, valueAccessor) {
+            var disabled = valueAccessor(),
+                combo = $(element);
+            if (!ko.isObservable(disabled)) {
+                return;
+            }
+            combo.igCombo("option", "disabled", disabled());
+        }
+    };
 }));// REMOVE_FROM_COMBINED_FILES
