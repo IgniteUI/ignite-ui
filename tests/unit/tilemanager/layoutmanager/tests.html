@@ -236,7 +236,7 @@
 					});
 					equal($('#layoutmanager').find('.ig-layout-border-left').outerWidth(), 300, 'The left holder is with a different width than the containing element');
 					equal($('#layoutmanager').find('.ig-layout-border-center').outerWidth(), 700, 'The center holder is with a different width than the containing element');
-					equal($('#layoutmanager').find('.ig-layout-border-right').length, 0, 'The right holder is with a different width than the containing element');
+					$.ig.TestUtil.checkClass($('#layoutmanager').find('.ig-layout-border-right'), 'ig-layout-border-item-hidden');
 					equal($('#layoutmanager').outerHeight(), 100, 'The height of the element does not match');
 					totalHeight = 0;
 					$('#layoutmanager').children().each(function () { totalHeight += $(this).outerHeight(true) });
@@ -252,7 +252,7 @@
 							showLeft: false
 						}
 					});
-					equal($('#layoutmanager').find('.ig-layout-border-left').length, 0, 'The left holder is with a different width than the containing element');
+					$.ig.TestUtil.checkClass($('#layoutmanager').find('.ig-layout-border-left'), 'ig-layout-border-item-hidden');
 					equal($('#layoutmanager').find('.ig-layout-border-center').outerWidth(), 700, 'The center holder is with a different width than the containing element');
 					equal($('#layoutmanager').find('.ig-layout-border-right').outerWidth(), 300, 'The right holder is with a different width than the containing element');
 					equal($('#layoutmanager').outerHeight(), 100, 'The height of the element does not match');
