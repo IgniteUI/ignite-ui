@@ -18,8 +18,8 @@ if (!$.ig.Notifier) {
 		    successMsg: "成功",
 		    errorMsg: "エラー",
 		    warningMsg: "警告",
-		    notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		    notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+			notSupportedState: "サポートされていない通知状態です。success、info、warning、error のいずれかのサポートされる状態を使用してください。",
+			notSupportedMode: "サポートされていない通知モードです。auto、popover、inline のいずれかのサポートされるモードを使用してください。"
 		}
 	});
 
