@@ -30,8 +30,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
-			"./infragistics.ui.notifier",
-			"./infragistics.ui.validator-en"
+			"./infragistics.ui.notifier"
 		], factory );
 	} else {
 
