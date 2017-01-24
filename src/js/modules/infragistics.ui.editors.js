@@ -572,7 +572,7 @@
 			}
 		},
 		_render: function () {
-			throw ($.ig.Editor.locale.renderErrMsg);
+			throw new Error($.ig.Editor.locale.renderErrMsg);
 		},
 		_applyOptions: function () {
 			if (this.options.tabIndex !== null) {
@@ -1946,7 +1946,7 @@
 				this._editorInputWrapper = editorElementWrapper;
 			} else if (this.element.is("textarea")) {
 				if (this.options.textMode !== "multiline") {
-					throw ($.ig.Editor.locale.multilineErrMsg);
+					throw new Error($.ig.Editor.locale.multilineErrMsg);
 				} else {
 					this._editorContainer = this.element.wrap($("<div></div>")).parent();
 					this._editorInput = this.element;
@@ -1958,7 +1958,7 @@
 			} else {
 
 				//TODO Throw target element not supported.
-				throw ($.ig.Editor.locale.targetNotSupported);
+				throw new Error($.ig.Editor.locale.targetNotSupported);
 			}
 			this._editorContainer.addClass(this.css.container);
 			this._editorInput.addClass(this.css.editor);
@@ -2070,7 +2070,7 @@
 				//If placeholder is not supported
 				this._editorInput.addClass(this.css.placeHolder);
 				if (this._placeHolderNotSupported()) {
-					console.log($.ig.Editor.locale.placeHolderNotSupported);
+					throw new Error($.ig.Editor.locale.placeHolderNotSupported);
 				}
 			} else if (this._editorInput.attr("placeholder")) {
 				this._editorInput.removeAttr("placeholder");
@@ -2540,7 +2540,7 @@
 			}
 
 			if (buttonsCountRendered === 0) {
-				console.log($.ig.Editor.locale.btnValueNotSupported);
+				throw new Error($.ig.Editor.locale.btnValueNotSupported);
 			}
 		},
 		_attachButtonsEvents: function (type, target) {
@@ -4399,7 +4399,7 @@
 						break;
 					default: {
 						result = "e";
-						throw ($.ig.Editor.locale.scientificFormatErrMsg);
+						throw new Error($.ig.Editor.locale.scientificFormatErrMsg);
 					}
 				}
 			} else {
@@ -5656,15 +5656,15 @@
 		},
 		getSelectedText: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		getSelectionStart: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		getSelectionEnd: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		spinUp: function (delta) {
 			/* Increments value in editor according to the parameter or selects the previous item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
@@ -7901,8 +7901,7 @@
 			var delta = this.options.spinDelta;
 			this._super();
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
-				this.options.centuryThreshold = 29;
-				console.log($.ig.Editor.locale.centuryThresholdValidValues);
+				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
 			}
 			if (this.options.minValue) {
 				if (!this._isValidDate(new Date(this.options.minValue))) {
@@ -10597,32 +10596,32 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownButton: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownVisible: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		}
 	});
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
@@ -11221,22 +11220,22 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		showDropDown: function () {
 			/* Shows the drop down list.
@@ -11484,7 +11483,7 @@
 				this._editorContainer = this.element.wrap($("<div></div>")).parent();
 				this._editorInput.after(this._valueInput);
 			} else {
-				throw ($.ig.Editor.locale.instantiateCheckBoxErrMsg);
+				throw new Error($.ig.Editor.locale.instantiateCheckBoxErrMsg);
 			}
 
 			this._editorContainer
@@ -11668,7 +11667,7 @@
 				if (value.ret) {
 					state = value.p1;
 				} else {
-					throw ($.ig.Editor.locale.cannotParseNonBoolValue);
+					throw new Error($.ig.Editor.locale.cannotParseNonBoolValue);
 				}
 			}
 
@@ -11850,7 +11849,7 @@
 					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
-						throw ($.ig.Editor.locale.cannotSetNonBoolValue);
+						throw new Error($.ig.Editor.locale.cannotSetNonBoolValue);
 					}
 				} else {
 					/* update value only */
