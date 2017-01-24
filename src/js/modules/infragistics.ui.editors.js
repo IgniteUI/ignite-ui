@@ -7906,7 +7906,7 @@
 			}
 
 			// N.A. January 23th, 2017 #731 If value exceeds the min/max value, then set it to min/max and show notification.
-			this.options.value = this._validateMinMax(this.options.value);
+			this.options.value = this._getValueBetweenMinMax(this.options.value);
 
 			this._super();
 
@@ -8925,7 +8925,7 @@
 			} else {
 				parsedVal = this._parseDateFromMaskedValue(value);
 			}
-			parsedVal = this._validateMinMax(parsedVal);
+			parsedVal = this._getValueBetweenMinMax(parsedVal);
 			if (this._validateValue(parsedVal)) {
 				this._updateValue(parsedVal);
 			} else {
@@ -8969,7 +8969,7 @@
 			}
 			return result;
 		},
-		_validateMinMax: function(date) {
+		_getValueBetweenMinMax: function(date) {
 			var validDate = date;
 			if (date !== null && this._isValidDate(date)) {
 				if (this.options.maxValue && date > this.options.maxValue) {
