@@ -3433,12 +3433,17 @@
 			return result;
 		},
 		_enterEditMode: function () { //TextEditor
+			var val = this._valueInput.val(),
+				selection = this._getSelection(this._editorInput[ 0 ]);
+
 			this._editMode = true;
-			var selection = this._getSelection(this._editorInput[ 0 ]);
 			this._currentInputTextValue = this._editorInput.val();
-			this._editorInput.val(this._valueInput.val());
+			this._editorInput.val(this._getEditModeValue(val));
 			this._positionCursor(selection.start, selection.end);
 			this._processTextChanged();
+		},
+		_getEditModeValue: function (val) { //igTextEditor
+			return val;
 		},
 		_exitEditMode: function () { //TextEditor
 			// Update the editor input with display value
@@ -5250,33 +5255,24 @@
 			return integerDigits;
 		},
 		_enterEditMode: function () { //NumericEditor
-			var val, selection = this._getSelection(this._editorInput[ 0 ]);
 			if (!$.ig.util.isIE8) {
 				this._editorInput.attr("type", "tel");
 			}
-			this._currentInputTextValue = this._editorInput.val();
-			val = this._valueInput.val();
-			if (val < 0) {
+			if (this._valueInput.val() < 0) {
 
 				// Remove negative css into edit mode
 				this._editorInput.removeClass(this.css.negative);
-
 			}
-
-			if (this._numericType === "percent" && this.options.displayFactor && val !== "" && !isNaN(val)) {
-				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
-				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
-			}
+			this._super();
+		},
+		_getEditModeValue: function (val) { //NumericEditor
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
 			}
 			if (this.options.negativeSign !== "-") {
 				val = val.toString().replace("-", this.options.negativeSign);
 			}
-			this._editorInput.val(val);
-			this._editMode = true;
-			this._positionCursor(selection.start, selection.end);
-			this._processTextChanged();
+			return val;
 		},
 		_exitEditMode: function () { //NumericEditor
 			this._super();
@@ -6005,6 +6001,13 @@
 					break;
 			}
 		},
+		_getEditModeValue: function (val) { //igPercentEditor
+			if (val !== "" && !isNaN(val)) {
+				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
+				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
+			}
+			return this._super(val);
+		},
 		_valueFromText: function (text) { //igPercentEditor
 			var val = this._parseNumericValueByMode(text, this._numericType, this.options.dataMode);
 			return this._divideWithPrecision(val, this.options.displayFactor);
@@ -6387,17 +6390,13 @@
 			}*/
 		},
 
-		_enterEditMode: function () { // MaskEditor
-			var selection = this._getSelection(this._editorInput[ 0 ]);
-			this._editMode = true;
-			this._currentInputTextValue = this._editorInput.val();
+		_getEditModeValue: function () { // MaskEditor
+			// Use already parsed mask, other uses already handled by _parseValueByMask
 			if (this._maskedValue === "") {
-				this._editorInput.val(this._maskWithPrompts);
+				return this._maskWithPrompts;
 			} else {
-				this._editorInput.val(this._maskedValue);
+				return this._maskedValue;
 			}
-			this._positionCursor(selection.start, selection.end);
-			this._processTextChanged();
 		},
 		_insert: function (newValue, previousValue, selection) { // MaskEditor
 			if (this.options.toUpper) {
