@@ -3486,6 +3486,9 @@
 				this.settings.paging.enabled && this.settings.paging.type === "local") {
 				this._addOnlyUniqueToCollection(all, this._filteredData);
 			}
+			if (this._vgbData && this.isGroupByApplied(this.settings.sorting.expressions)) {
+				this._addOnlyUniqueToCollection(all, this._vgbData);
+			}
 			if (layouts) {
 				/* we'll try to include empty collections for the child layouts to keep the data source consistent */
 				for (key in layouts) {
@@ -10787,7 +10790,7 @@
 		},
 		getPathBy: function (record) {
 			/*Gets the path of a record by the record or the record's key
-			paramType="object|string|number" optional="false" the record or the record's key as string or number
+			paramType="object|string|number" returnType="string" optional="false" the record or the record's key as string or number
 			*/
 			if (record === null || record === undefined) {
 				return null;
