@@ -3484,6 +3484,9 @@
 				this.settings.paging.enabled && this.settings.paging.type === "local") {
 				this._addOnlyUniqueToCollection(all, this._filteredData);
 			}
+			if (this._vgbData && this.isGroupByApplied(this.settings.sorting.expressions)) {
+				this._addOnlyUniqueToCollection(all, this._vgbData);
+			}
 			if (layouts) {
 				/* we'll try to include empty collections for the child layouts to keep the data source consistent */
 				for (key in layouts) {

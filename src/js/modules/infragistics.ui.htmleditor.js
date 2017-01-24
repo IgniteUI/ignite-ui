@@ -275,14 +275,14 @@
             ```
                 //Initialize
                 $(".selector").igHtmlEditor({
-                    rendering: function (evt, ui) {
+                    rendered: function (evt, ui) {
                         //return reference to igHtmlEditor object
                         ui.owner
                     }
                 });
 
                 //Delegate
-                $(document).delegate(".selector", "ightmleditorrendering", function (evt, ui) {
+                $(document).delegate(".selector", "ightmleditorrendered", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -293,14 +293,14 @@
             ```
                 //Initialize
                 $(".selector").igHtmlEditor({
-                    rendered: function (evt, ui) {
+                    rendering: function (evt, ui) {
                         //return reference to igHtmlEditor object
                         ui.owner
                     }
                 });
 
                 //Delegate
-                $(document).delegate(".selector", "ightmleditorrendered", function (evt, ui) {
+                $(document).delegate(".selector", "ightmleditorrendering", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -3300,7 +3300,8 @@
                     // or typing something to trigger onSelectionChange
                     // A.K August 8th, 2016 Bug #219768 Toolbar button does not work properly for a selected content range if a
                     // text is initially selected by double-tapping, and the selection is changed by mouse dragging.
-                    if (this._selection.focusNode.nodeType !== 3) {
+                    if (this._selection && this._selection.focusNode &&
+                        this._selection.focusNode.nodeType !== this.NODE._Text) {
                         this._updateSelection(this._range);
                     }
                 } else {
