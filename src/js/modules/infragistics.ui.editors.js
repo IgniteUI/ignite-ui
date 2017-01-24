@@ -2155,10 +2155,10 @@
 			}
 		},
 		_exceedsMaxValue: function() { //TextEditor
-			return this._dropDownList && !this._getSpinItem("up", true).length;
+			return this._dropDownList && !this._getSpinItem("up").length;
 		},
 		_lessThanMinValue: function() { //TextEditor
-			return this._dropDownList && !this._getSpinItem("down", true).length;
+			return this._dropDownList && !this._getSpinItem("down").length;
 		},
 		_setSpinButtonsState: function (val) {
 			if (typeof val === "string" || val instanceof String) {
@@ -3120,7 +3120,7 @@
 				this._triggerTextChanged(previousVal, currentVal);
 
 				if (this._editMode && this._dropDownList) {
-					this._updateDropdownSelection(currentVal);
+					this._updateDropdownSelection(this._valueFromText(currentVal));
 				}
 				if (this._validator) {
 					// D.P. 26th Oct 2015 Bug 20972 validation onchange does not work correctly
@@ -3173,62 +3173,45 @@
 				return result;
 		},
 		_hoverPreviousDropDownListItem: function () {
-			var items = this._dropDownList.children(".ui-igedit-listitem"), newItem, currentItem;
-			if (items && items.length > 0) {
-				if (items.filter("[data-active='true']").length > 0) {
-					currentItem = items.filter("[data-active='true']");
-					newItem = currentItem.prev();
-					if (currentItem.is(":first-child")) {
-						if (this.options.spinWrapAround) {
-							newItem = items.last();
-							this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-								newItem.position().top);
-						} else {
-							return;
-						}
-					} else {
-						if (this._elementPositionInViewport(newItem) === "top") {
-							this._dropDownList.scrollTop(this._dropDownList.scrollTop() -
-								newItem.outerHeight());
-						}
-					}
-					currentItem.removeClass(this.css.listItemActive,
-						this.options.listItemHoverDuration);
-					currentItem.removeAttr("data-active");
-					newItem.addClass(this.css.listItemActive, this.options.listItemHoverDuration);
-					newItem.attr("data-active", true);
+			var newItem, position,
+				currentItem = this._listItems().filter("[data-active='true']");
+			newItem = this._getSpinItem("up", currentItem);
+			if (newItem.length > 0) {
+				position = this._elementPositionInViewport(newItem);
+
+				// Element is outside the viewPort and we need to scroll
+				if (position === "top") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() -
+						newItem.outerHeight());
+				} else if (position === "bottom") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						newItem.position().top);
 				}
+				currentItem.removeClass(this.css.listItemActive,
+					this.options.listItemHoverDuration);
+				currentItem.removeAttr("data-active");
+				newItem.addClass(this.css.listItemActive, this.options.listItemHoverDuration);
+				newItem.attr("data-active", true);
 			}
 		},
 		_hoverNextDropDownListItem: function () {
-			var items = this._dropDownList.children(".ui-igedit-listitem"), newItem, currentItem;
-			if (items && items.length > 0) {
-				if (items.filter("[data-active='true']").length > 0) {
-					//we have already hovered item.
-					currentItem = items.filter("[data-active='true']");
-					newItem = currentItem.next();
-					if (currentItem.is(":last-child")) {
+			var newItem, position,
+				currentItem = this._listItems().filter("[data-active='true']");
+			newItem = this._getSpinItem("down", currentItem);
+			if (newItem.length > 0) {
+				position = this._elementPositionInViewport(newItem);
 
-						if (this.options.spinWrapAround) {
-							newItem = items.first();
-							this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-								newItem.position().top);
-						} else {
-							return;
-						}
-					}
-
-					// Element is below the viewPort and we need to scroll
-					if (this._elementPositionInViewport(newItem) === "bottom") {
-						this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-							newItem.outerHeight());
-					}
-					currentItem.removeClass(this.css.listItemActive,
-						this.options.listItemHoverDuration);
-					currentItem.removeAttr("data-active");
-				} else {
-					newItem = items.filter(":visible").first();
+				// Element is outside the viewPort and we need to scroll
+				if (position === "bottom") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						newItem.outerHeight());
+				} else if (position === "top") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						newItem.position().top);
 				}
+				currentItem.removeClass(this.css.listItemActive,
+					this.options.listItemHoverDuration);
+				currentItem.removeAttr("data-active");
 				newItem.addClass(this.css.listItemActive, this.options.listItemHoverDuration);
 				newItem.attr("data-active", true);
 			}
@@ -3586,7 +3569,7 @@
 		_spin: function (type, fireEvent) {
 			var nextItem;
 			if (this._dropDownList) {
-				nextItem = this._getSpinItem(type, true);
+				nextItem = this._getSpinItem(type);
 				if (!nextItem.length) {
 					// no allowed item found
 					return;
@@ -3597,7 +3580,7 @@
 				this._currentInputTextValue = this._editorInput.val();
 				if (this._editMode) {
 					this._editorInput.val(nextItem.text());
-					this._setSelectedItemByIndex(nextItem.index());
+					//this._setSelectedItemByIndex(nextItem.index());
 					this._processTextChanged();
 				} else {
 					this._processValueChanging(nextItem.text());
@@ -3615,9 +3598,9 @@
 				return items;
 			}
 			if (selected) {
-				currentItem = this.getSelectedListItem();
+				currentItem = selected;
 			} else {
-				currentItem = items.filter("[data-active='true']");
+				currentItem = this.getSelectedListItem();
 			}
 			if (currentItem.length > 0) {
 				newItem = currentItem[ spinType === "up" ? "prev" : "next" ]();
@@ -3722,8 +3705,7 @@
 			return this._dropDownList.children(".ui-igedit-listitem");
 		},
 		_getListItemByIndex: function (index) {
-			return this._dropDownList.
-				children(".ui-igedit-listitem:nth-child(" + (index + 1) + ")");
+			return this._listItems().eq(index);
 		},
 		_getSelectedItemIndex: function () {
 			var items = this._listItems(), i;
@@ -3752,11 +3734,8 @@
 			}
 		},
 		_updateDropdownSelection: function (currentVal) { //igTextEditor
-			var current = this.getSelectedListItem().index(), selectedIndex;
-			if (this._editMode) {
-				currentVal = this._valueFromText(currentVal);
-			}
-			selectedIndex = $.inArray(currentVal, this.options.listItems);
+			var current = this.getSelectedListItem().index(), 
+				selectedIndex = $.inArray(currentVal, this.options.listItems);
 			if (current !== selectedIndex) {				
 				if (selectedIndex > -1) {
 					this._setSelectedItemByIndex(selectedIndex);
@@ -3876,8 +3855,8 @@
 			```
 				paramType="number" optional="true" The index of the item that needs to be selected.
 				returnType="number" Returns the selected index. */
-			if (index !== undefined) {
-				this._setSelectedItemByIndex(index);
+			if (index !== undefined && typeof this.options.listItems[ index ] !== "undefined") {
+				this._processInternalValueChanging(this.options.listItems[ index ]);
 			} else {
 				return this._getSelectedItemIndex();
 			}
@@ -5294,7 +5273,7 @@
 
 			// D.P. 19th Jan 2016 #657 Value is incremented with isLimitedToListValues
 			if (this._dropDownList && this.options.isLimitedToListValues) {
-				nextItem = this._getSpinItem(spinType === "spinUp" ? "up" : "down", true);
+				nextItem = this._getSpinItem(spinType === "spinUp" ? "up" : "down");
 				if (nextItem.length) {
 					return this._valueFromText(nextItem.text());
 				} else {

@@ -688,7 +688,7 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 38, function () {
+		test(testId, 43, function () {
 			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
@@ -705,10 +705,20 @@
 				// remove animation to avoid waiting, show() with effect ignores 0
 				dropDownAnimationDuration: -1
 			});
-			
+
+			//selectedListIndex
+			$editor.igTextEditor("selectedListIndex", 2);
+			equal($editor.igTextEditor("value"), "item3", "selectedListIndex did not update value");
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item does not reflect value");
+			$editor.igTextEditor("selectedListIndex", -1);
+			equal($editor.igTextEditor("value"), "item3", "selectedListIndex should not update with wrong index");
+			$editor.igTextEditor("selectedListIndex", 4);
+			equal($editor.igTextEditor("value"), "item3", "selectedListIndex should not update with wrong index");
+
 			$editor.igTextEditor("value", "item1");
 			$ddButton.click();
 			ok($editor.igTextEditor("getSelectedListItem").hasClass($.ui.igTextEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
+			equal($editor.igTextEditor("selectedListIndex"), 0, "Selected index does not reflect value");
 			equal($editor.igTextEditor("getSelectedListItem").text(), "item1", "Selected item does not reflect value");
 
 			// select item2:
