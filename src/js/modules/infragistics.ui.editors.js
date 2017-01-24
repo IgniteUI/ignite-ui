@@ -2845,6 +2845,9 @@
 									//Close DropDonw
 									this._toggleDropDown();
 								}
+								if (this.options.readOnly) {
+									e.preventDefault();
+								}
 							}
 						} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
 							if (!this._dropDownList.is(":visible")) {
@@ -2853,6 +2856,9 @@
 							} else {
 								//hover next element
 								this._hoverNextDropDownListItem();
+							}
+							if (this.options.readOnly) {
+								e.preventDefault();
 							}
 						} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
 							//Close dropdown
@@ -4649,32 +4655,36 @@
 					// Close if opened
 					if (e.altKey && this._dropDownList && this._dropDownList.is(":visible")) {
 						this._toggleDropDown();
-					} else if (!this.options.readOnly) {
-						if (this._dropDownList && this._dropDownList.is(":visible")) {
+					} else if (this._dropDownList && this._dropDownList.is(":visible")) {
 
-							// Hover previous element
-							this._hoverPreviousDropDownListItem();
-						} else {
+						// Hover previous element
+						this._hoverPreviousDropDownListItem();
+					} else if (!this.options.readOnly ||
+						(this.options.readOnly && this.options.isLimitedToListValues)) {
 
-							// Spin numeric value
-							this._handleSpinUpEvent();
-						}
+						// Spin numeric value
+						this._handleSpinUpEvent();
+					}
+					if (this.options.readOnly) {
+						e.preventDefault();
 					}
 				} else if (e.keyCode === 40) {//Arrow Down
 					if (e.altKey && this._dropDownList && !this._dropDownList.is(":visible")) {
 
 						// OpenDropDown
 						this._toggleDropDown();
-					} else if (!this.options.readOnly) {
-						if (this._dropDownList && this._dropDownList.is(":visible")) {
+					} else if (this._dropDownList && this._dropDownList.is(":visible")) {
 
-							// Hover next element
-							this._hoverNextDropDownListItem();
-						} else {
+						// Hover next element
+						this._hoverNextDropDownListItem();
+					} else if (!this.options.readOnly ||
+						(this.options.readOnly && this.options.isLimitedToListValues)) {
 
-							// Spin numeric value
-							this._handleSpinDownEvent();
-						}
+						// Spin numeric value
+						this._handleSpinDownEvent();
+					}
+					if (this.options.readOnly) {
+						e.preventDefault();
 					}
 				} else if (e.keyCode === 27 && this._dropDownList &&
 					this._dropDownList.is(":visible")) { //Escape and dropdown is opened

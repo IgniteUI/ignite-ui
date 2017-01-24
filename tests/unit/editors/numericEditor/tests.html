@@ -846,7 +846,7 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 45, function () {
+		test(testId, 50, function () {
 			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
@@ -1022,6 +1022,30 @@
 			mousedown($spinUpButton[0]);
 			mouseup($spinUpButton[0]);
 			strictEqual($editor.igNumericEditor("value"), 10, "Value not changed on spin button");
+			$editor.remove();
+
+			// readOnly spin
+			editorSetup({
+				listItems: listItems,
+				dropDownOnReadOnly: true,
+				isLimitedToListValues: true,
+				buttonType: "dropdown, spin, clear",
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+			$editor.igNumericEditor("option", "readOnly", true);
+			$ddButton.click();
+			keyInteraction(40, $field); //down
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").text(), listItems[0], "Arrow down with dropDownOnReadOnly did not select first item.");
+			keyInteraction(40, $field);
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").text(), listItems[1], "Arrow down with dropDownOnReadOnly did not select second item.");
+			keyInteraction(38, $field); //up
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").text(), listItems[0], "Arrow up with dropDownOnReadOnly did not select first item.");
+			keyInteraction(13, $field);
+			equal($editor.igNumericEditor("value"), listItems[0], "Select up with dropDownOnReadOnly did not update value.");
+			$ddButton.click();
+			keyInteraction(40, $field);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[0], "Spin up with dropDownOnReadOnly did not update selection.");
 
 			$editor.remove();
 		});
