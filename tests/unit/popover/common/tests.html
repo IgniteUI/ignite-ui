@@ -133,7 +133,7 @@
             // directionPriority tests
             var testId_71 = "test 7.1 Test directionPriority get/set";
             var testId_72 = "test 7.2 Test directionPriority when showing Popover";
-            var testId_73 = "test 7.3 Test strict direction"; //?
+            var testId_73 = "test 7.3 Test strict direction";
 
             //Automating bugs
             var testId_91 = "igPopover test 9.1: Test popover shows correctly when direction is set";
@@ -502,7 +502,7 @@
                 p.igPopover("destroy");
             });
 
-            test(testId_72, 4, function () {
+            test(testId_72, 5, function () {
                 var p = $("#notifier");
                 p.igPopover({ directionPriority: [ "right", "bottom" ]});
                 p.igPopover("show");
@@ -519,6 +519,29 @@
                 p = $("#green").igPopover({ directionPriority: [ "right", "left", "bottom" ]});
                 p.igPopover("show");
                 ok(p.outerWidth() < p.igPopover("container").offset().left, "The popover should appear at the right.");
+                p.igPopover("destroy");
+                p.igPopover({ directionPriority: [ "top", "right" ]});
+                p.igPopover("show");
+                ok(p.offset().top > p.igPopover("container").offset().top, "The popover should appear at the top.");
+            });
+
+            test(testId_73, 4, function () {
+                var p = $("#green").igPopover({ direction: "left", directionPriority: [ "right", "bottom", "left" ]});
+                p.igPopover("show");
+                ok(p.offset().left > p.igPopover("container").offset().left, "Strict direction should make the Popover appear there.");
+                p.igPopover("destroy");
+                p = $("#notifier").igPopover({ direction: "right", directionPriority: [ "top", "bottom", "right" ]});
+                p.igPopover("show");
+                ok(p.outerWidth() < p.igPopover("container").offset().left, "Strict direction should make the Popover appear there.");
+                p.igPopover("destroy");
+                p.igPopover({ direction: "top", directionPriority: [ "bottom", "top", "right" ]});
+                p.igPopover("show");
+                ok(p.offset().top > p.igPopover("container").offset().top, "Strict direction should make the Popover appear there.");
+                p.igPopover("destroy");
+                p.igPopover({ direction: "bottom", directionPriority: [ "top", "bottom", "right" ]});
+                p.igPopover("show");
+                ok(p.outerHeight() < p.igPopover("container").offset().top, "Strict direction should make the Popover appear there.");
+                p.igPopover("destroy");
             });
 
             //bug 228621 - Although setting direction='right', igNotifier shows on top of the target element at first.
@@ -720,7 +743,7 @@
         </div>
     </div>
 
-    <div id="green" style="width: calc(100vw - 150px); height: 100px; background-color: green; margin-left: 5px;"></div>
+    <div id="green" style="width: 500px; height: 100px; background-color: green; margin-left: 5px;"></div>
 
 </body>
 </html>
