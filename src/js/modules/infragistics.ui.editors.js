@@ -1844,7 +1844,6 @@
 
 		//This method validates and updates the value input the hidden input
 		_updateValue: function (value) { //TextEditor //WE should detect dataMode, so we can use the options.
-			var selectedIndex;
 			if (value !== null && value !== undefined) {
 				value = value.toString();
 			}
@@ -3105,7 +3104,7 @@
 				owner: this,
 				editorInput: this._editorInput,
 				list: this._dropDownList,
-				item: this.getSelectedListItem()[0]
+				item: this.getSelectedListItem()[ 0 ]
 			};
 			this._trigger(this.events.dropDownItemSelected, null, args);
 		},
@@ -3310,11 +3309,17 @@
 			}
 		},
 		_markDropDownHoverActiveItem: function () {
-			var activeItem =
-				this._dropDownList
+			var activeItem = this._dropDownList
 					.children(".ui-igedit-listitem")
 					.filter(".ui-igedit-listitemselected");
 
+			if (!activeItem.length) {
+				return;
+			}
+			if (this._elementPositionInViewport(activeItem) !== "inside") {
+				this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						activeItem.position().top);
+			}
 			activeItem.attr("data-active", true);
 		},
 		_clearDropDownHoverActiveItem: function () {
@@ -3574,14 +3579,14 @@
 					// no allowed item found
 					return;
 				}
-				if (fireEvent && !this._triggerDropDownItemSelecting(nextItem[0])) {
+				if (fireEvent && !this._triggerDropDownItemSelecting(nextItem[ 0 ])) {
 					return;
 				}
 				this._currentInputTextValue = this._editorInput.val();
 				if (this._editMode) {
 					this._editorInput.val(nextItem.text());
-					//this._setSelectedItemByIndex(nextItem.index());
 					this._processTextChanged();
+					this._editorInput.select();
 				} else {
 					this._processValueChanging(nextItem.text());
 					this._editorInput.val(this._getDisplayValue());
@@ -3614,10 +3619,10 @@
 			}
 		},
 		_handleSpinUpEvent: function () { //igTextEditor
-			this._spin("up",true);
+			this._spin("up", true);
 		},
 		_handleSpinDownEvent: function () { //igTextEditor
-			this._spin("down",true);
+			this._spin("down", true);
 		},
 		_handleSpinEvent: function (type, target) {
 			var self = this;
@@ -3717,7 +3722,7 @@
 			return -1;
 		},
 		_setSelectedItemByIndex: function (index) {
-			var oldSelectedItem, newSelectedItem;
+			var oldSelectedItem, newSelectedItem, position;
 
 			if (this._getSelectedItemIndex() !== index) {
 				oldSelectedItem = this.getSelectedListItem();
@@ -3728,15 +3733,20 @@
 				newSelectedItem.addClass(this.css.listItemSelected);
 				newSelectedItem.attr("aria-selected", true);
 				if (this.dropDownVisible()) {
+					position = this._elementPositionInViewport(newSelectedItem);
+					if (position !== "inside") {
+						this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+							newSelectedItem.position().top);
+					}
 					this._clearDropDownHoverActiveItem();
 					newSelectedItem.attr("data-active", true);
 				}
 			}
 		},
 		_updateDropdownSelection: function (currentVal) { //igTextEditor
-			var current = this.getSelectedListItem().index(), 
+			var current = this.getSelectedListItem().index(),
 				selectedIndex = $.inArray(currentVal, this.options.listItems);
-			if (current !== selectedIndex) {				
+			if (current !== selectedIndex) {
 				if (selectedIndex > -1) {
 					this._setSelectedItemByIndex(selectedIndex);
 				} else {
@@ -4907,7 +4917,7 @@
 		//This method validates and updates the value input the hidden input
 		_updateValue: function (value) { //Numeric Editor
 			// WE should detect dataMode, so we can use the options.
-			var val, dataMode = this.options.dataMode, selectedIndex;
+			var val, dataMode = this.options.dataMode;
 			if (value === "" && this.options.allowNullValue) {
 				val = this.options.nullValue;
 				this._valueInput.val("");
@@ -5519,84 +5529,24 @@
 			return this.options.minValue !== null && value <= this.options.minValue;
 		},
 		_handleSpinUpEvent: function () {
-			var cursorPosition = this._getCursorPosition();
-			if (this.options.dataMode === "double" || this.options.dataMode === "float") {
-
-				// Get cursor position
-				if (this._focused) {
-
-					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
-						case "fractional":
-						case "integer": {
-							this._spinUp();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "all": {
-							this._spinUp();
-							this._editorInput.select();
-
-							// Select All
-						}
-							break;
-						default:
-							this._spinUp();
-							this._editorInput.select();
-					}
-				} else {
-					this._spinUp();
-				}
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				// default to text list selection
+				this._super();
 			} else {
 				this._spinUp();
+				if (this._focused) {
+					this._editorInput.select();
+				}
 			}
 		},
 		_handleSpinDownEvent: function () {
-			var cursorPosition = this._getCursorPosition();
-			if (this.options.dataMode === "double" || this.options.dataMode === "float") {
-				if (this._focused) {
-					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
-						case "fractional":
-						// TODO: DELETE
-						case "integer": {
-							this._spinDown();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "all": {
-							this._spinDown();
-							this._editorInput.select();
-
-							//Select All
-						}
-							break;
-						default:
-							this._spinDown();
-							this._editorInput.select();
-					}
-				} else {
-					this._spinDown();
-				}
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				// default to text list selection
+				this._super();
 			} else {
 				this._spinDown();
-			}
-		},
-		_fractionalOrIntegerSelected: function (cursorPosition) {
-			var decimalSeparator, val;
-			if (cursorPosition === -1) {
-				return "all";
-			} else {
-				decimalSeparator = this.options.decimalSeparator;
-				val = this._editorInput.val();
-				if (val.indexOf(decimalSeparator) < 0) {
-					return "all";
-				} else {
-					if (cursorPosition <= val.indexOf(decimalSeparator)) {
-						return "integer";
-					} else {
-						return "fractional";
-					}
+				if (this._focused) {
+					this._editorInput.select();
 				}
 			}
 		},
