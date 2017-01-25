@@ -707,7 +707,7 @@
 			throws(function() {
 					$("#scientificFormat").igNumericEditor("option", "value", "3");
 				},
-				$.ig.Editor.locale.scientificFormatErrMsg,
+				Error($.ig.Editor.locale.scientificFormatErrMsg),
 				"Acepted value with wrong scientificFormat."
 			);
 			container.click();
