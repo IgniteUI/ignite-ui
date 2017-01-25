@@ -5266,6 +5266,11 @@
 			this._super();
 		},
 		_getEditModeValue: function (val) { //NumericEditor
+			// value must be numeric
+			if (this.options.scientificFormat) {
+				val = Number(val).toExponential()
+					.replace("e", this._getScientificFormat());
+			}
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
 			}
@@ -5422,7 +5427,7 @@
 		_spinUp: function (delta) { //NumericEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
-				currVal = this._editorInput.val();
+				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
 				if (this.value() || this.value() === 0) {
 					currVal = this.value().toString();
@@ -5446,10 +5451,7 @@
 						this.options.maxValue));
 			}
 			if (this._focused) {
-				if (this.options.scientificFormat) {
-					currVal = Number(currVal).toExponential()
-						.replace("e", this._getScientificFormat());
-				}
+				currVal = this._getEditModeValue(currVal);
 				this._editorInput.val(currVal);
 				this._processTextChanged();
 			} else {
@@ -5476,7 +5478,7 @@
 		_spinDown: function (delta) { //NumericEditor
 			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
 			if (this._focused) {
-				currVal = this._editorInput.val();
+				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
 				if (this.value() || this.value() === 0) {
 					currVal = this.value().toString();
@@ -5501,10 +5503,7 @@
 						this.options.minValue));
 			}
 			if (this._focused) {
-				if (this.options.scientificFormat) {
-					currVal = Number(currVal).toExponential()
-						.replace("e", this._getScientificFormat());
-				}
+				currVal = this._getEditModeValue(currVal);
 				this._editorInput.val(currVal);
 				this._processTextChanged();
 			} else {
@@ -6002,6 +6001,7 @@
 			}
 		},
 		_getEditModeValue: function (val) { //igPercentEditor
+			// value must be numeric
 			if (val !== "" && !isNaN(val)) {
 				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
 				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
@@ -6011,101 +6011,6 @@
 		_valueFromText: function (text) { //igPercentEditor
 			var val = this._parseNumericValueByMode(text, this._numericType, this.options.dataMode);
 			return this._divideWithPrecision(val, this.options.displayFactor);
-		},
-		_spinUp: function (delta) { //igPercentEditor
-			// TODO: refactor numemic spin functions
-			var currVal, displayValue, decimalSeparator = this.options.decimalSeparator, noCancel;
-			if (this._focused) {
-				currVal = this._divideWithPrecision(this._editorInput.val(),
-					this.options.displayFactor).toString();
-			} else {
-				if (this.value() || this.value() === 0) {
-					currVal = this.value().toString();
-				} else {
-					currVal = "";
-				}
-			}
-			this._clearEditorNotifier();
-			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
-
-			if ((currVal > this.options.maxValue &&
-				this.options.spinWrapAround) || currVal < this.options.minValue) {
-				currVal = this.options.minValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValExceededWrappedAroundErrMsg,
-					this.options.maxValue));
-			} else if (currVal >= this.options.maxValue && !this.options.spinWrapAround) {
-				currVal = this.options.maxValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValErrMsg,
-						this.options.maxValue));
-			}
-			if (this._focused) {
-				displayValue = this._multiplyWithPrecision(currVal, this.options.displayFactor);
-				if (this.options.scientificFormat) {
-					currVal = Number(displayValue).toExponential()
-						.replace("e", this._getScientificFormat());
-				}
-				this._editorInput.val(displayValue);
-				this._processTextChanged();
-			} else {
-				//trigger value changing
-				noCancel = this._triggerValueChanging(currVal);
-				if (noCancel) {
-					this._updateValue(currVal);
-					this._exitEditMode();
-
-					// We pass the new value in order to have the original value into the arguments
-					this._triggerValueChanged(currVal);
-				}
-			}
-			this._setSpinButtonsState(currVal);
-		},
-		_spinDown: function (delta) { //igPercentEditor
-			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
-			if (this._focused) {
-				currVal = this._divideWithPrecision(this._editorInput.val(),
-					this.options.displayFactor).toString();
-			} else {
-				if (this.value() || this.value() === 0) {
-					currVal = this.value().toString();
-				} else {
-					currVal = "";
-				}
-			}
-			this._clearEditorNotifier();
-			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
-			if ((currVal < this.options.minValue &&
-				this.options.spinWrapAround) || currVal > this.options.maxValue) {
-				currVal = this.options.maxValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceededWrappedAroundErrMsg,
-						this.options.minValue));
-
-			} else if (currVal <= this.options.minValue && !this.options.spinWrapAround) {
-				currVal = this.options.minValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValErrMsg,
-						this.options.minValue));
-			}
-			if (this._focused) {
-				this._editorInput
-					.val(this._multiplyWithPrecision(currVal, this.options.displayFactor));
-				this._processTextChanged();
-			} else {
-				//trigger value changing
-				noCancel = this._triggerValueChanging(currVal);
-				if (noCancel) {
-					this._updateValue(currVal);
-					this._exitEditMode();
-
-					// We pass the new value in order to have the original value into the arguments
-					this._triggerValueChanged(currVal);
-				}
-			}
-			this._setSpinButtonsState(currVal);
 		},
 
 		// igPercentEditor public methods

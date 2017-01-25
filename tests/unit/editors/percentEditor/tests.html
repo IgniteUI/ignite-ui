@@ -501,15 +501,16 @@
 
 			var testId = "Spin events with set scientificFormat.";
 			test(testId, 2, function(){
-				var $focusedSpinUp = $("<input id='focusedSpinUp' />").igPercentEditor({
-					buttonType: "spin",
-                	minValue: 0,
-                	scientificFormat: "E"
-				});
+				var $focusedSpinUp = $("<input id='focusedSpinUp' />").appendTo("#testBedContainer")
+					.igPercentEditor({
+						buttonType: "spin",
+						minValue: 0,
+						scientificFormat: "E"
+					});
 
-				$focusedSpinUp.data("igPercentEditor")._focused = true;
+				$focusedSpinUp.focus();
 				$focusedSpinUp.igPercentEditor("spinUp");
-				equal($focusedSpinUp.igPercentEditor("field").val(), "1", "The wrong value is set in the editor in edit mode.");
+				equal($focusedSpinUp.igPercentEditor("field").val(), "1E+0", "The wrong value is set in the editor in edit mode.");
 				$focusedSpinUp.blur();
 				equal($focusedSpinUp.igPercentEditor("value"), "1e-2", "The scientificFormat is not set properly when the spinUp button is clicked.");
 				$focusedSpinUp.remove();

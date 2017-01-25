@@ -465,7 +465,7 @@
 				"No warning message shown for exceeding min value on spin");
 			ok(spinDownButton.hasClass("ui-state-disabled"), "Button spinDown is not disabled");
 			equal($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("container").text(),
-				$.ig.Editor.locale.maxValErrMsg.replace("{0}", 5));
+				$.ig.Editor.locale.minValErrMsg.replace("{0}", 5));
 			equal($editor.igNumericEditor("field").val(), "5", "Text not set to the minimum on spin down");
 			
 			$editor.remove();
