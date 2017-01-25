@@ -4075,6 +4075,23 @@
 				```
 				*/
 			minDecimals: null,
+			/* type="bool" Gets/Sets whether the last decimal place will be rounded, when the maxDecimal option is defined and applied.
+			For example if the initial editor value is set to 123.4567, maxDecimals option is set to 3 and roundDecimals is enabled,
+			then editor will round the value and will display it as 123.457. If roundDecimals is disabled then editor value will be truncated to 123.456.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					roundDecimals : false
+				});
+
+				//Get
+				var roundDecimals = $(".selector").%%WidgetName%%("option", "roundDecimals");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "roundDecimals", false);
+				```
+			*/
+			roundDecimals: true,
 			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor.
 				```
 					//Initialize
@@ -4757,9 +4774,24 @@
 							fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
 						}
 						if (fractionalDigits.length > maxDecimals) {
-							fractionalDigits = fractionalDigits.substring(0, maxDecimals);
+
+							// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
+							if (this.options.roundDecimals) {
+								stringValue = this._roundExponential(value, maxDecimals).toString();
+								if (stringValue.indexOf(decimalSeparator) > -1) {
+									fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+								} else {
+									fractionalDigits = "";
+								}
+							} else {
+								fractionalDigits = fractionalDigits.substring(0, maxDecimals);
+							}
 						}
-						integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+						if (stringValue.indexOf(decimalSeparator) > -1) {
+							integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+						} else {
+							integerDigits = stringValue;
+						}
 
 						//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
 						val = (integerDigits + "." + fractionalDigits) / 1;
@@ -4807,6 +4839,9 @@
 				}
 			}
 			return x;
+		},
+		_roundExponential: function(value, decimals) {
+			return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
 		},
 		_multiplyWithPrecision: function (value1, value2, precision) {
 
