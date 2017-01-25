@@ -11102,7 +11102,7 @@
 			if (this.settings.paging.enabled && this.settings.paging.type !== "remote") {
 				this._generateFlatDataAndCountProperties();
 			}
-			if (this.settings.type !== "remoteUrl") {
+			if (this._runtimeType !== "remoteUrl") {
 				this.dataBind();
 			} else {
 				this.generateFlatDataView();
