@@ -5287,7 +5287,7 @@
 				this._editorInput.removeClass(this.css.negative);
 			}
 		},
-		_getSpinValue: function (spinType, currentValue, decimalSeparator, delta) { //NumericEditor
+		_getSpinValue: function (spinType, currentValue, delta) { //NumericEditor
 			var fractional, scientificPrecision, spinPrecision, nextItem,
 				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
 
@@ -5318,17 +5318,12 @@
 				} else {
 					currentValue -= spinDelta;
 				}
-			} else if (currentValue.toString().indexOf(decimalSeparator) !== -1) {
+			} else if (currentValue.toString().indexOf(".") !== -1) {
 				fractional = currentValue
-					.substring(currentValue.toString().indexOf(decimalSeparator) + 1);
+					.substring(currentValue.toString().indexOf(".") + 1);
 
 				toFixedVal = fractional.toString().length;
 
-				if (decimalSeparator !== ".") {
-
-					// Replace the decimal separator with .
-					currentValue = currentValue.toString().replace(decimalSeparator, ".");
-				}
 				currentValue = currentValue / 1;
 
 				// D.P. value is already float, always use precision
@@ -5373,11 +5368,6 @@
 				if (currentValue.toString().substring(currentValue
 					.toString().indexOf(".") + 1).length < fractional.length) {
 					currentValue = currentValue.toFixed(toFixedVal);
-				}
-				if (decimalSeparator !== ".") {
-
-					// Replace . with decimal separator
-					currentValue = currentValue.toString().replace(".", decimalSeparator);
 				}
 			} else {
 				currentValue = currentValue / 1;
@@ -5425,7 +5415,7 @@
 			return currentValue;
 		},
 		_spinUp: function (delta) { //NumericEditor
-			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
+			var currVal, noCancel;
 			if (this._focused) {
 				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
@@ -5437,7 +5427,7 @@
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
+			currVal = this._getSpinValue("spinUp", currVal, delta);
 			if ((currVal > this.options.maxValue &&
 				this.options.spinWrapAround) || currVal < this.options.minValue) {
 				currVal = this.options.minValue;
@@ -5476,7 +5466,7 @@
 			return result;
 		},
 		_spinDown: function (delta) { //NumericEditor
-			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
+			var currVal, noCancel;
 			if (this._focused) {
 				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
@@ -5488,7 +5478,7 @@
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
+			currVal = this._getSpinValue("spinDown", currVal, delta);
 			if ((currVal < this.options.minValue &&
 				this.options.spinWrapAround) || currVal > this.options.maxValue) {
 				currVal = this.options.maxValue;
