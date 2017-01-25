@@ -100,14 +100,14 @@
 			throws(function() {
 					$('#inputEditor1').igBaseEditor();
 				}, 
-				$.ig.Editor.locale.renderErrMsg,
+				Error($.ig.Editor.locale.renderErrMsg),
 				"igBaseEditor should not be initialized"
 			);
 			
 			throws(function() {
 					$("#textareaEditorFake").igTextEditor();
 				},
-				$.ig.Editor.locale.multilineErrMsg,
+				Error($.ig.Editor.locale.multilineErrMsg),
 				"You should have the type of the editor as multiline"
 			);
 
@@ -280,11 +280,12 @@
 			editor.igNotifier("option", "contentTemplate", $.ui.igNotifier.prototype.options.contentTemplate);
 
 			/* set states */
-			logOld = console.log;
-			console.log = logger;
-			editor.igNotifier("option", "state", "random" );
-			console.log = logOld;
-			equal(logBuffer.pop(), "Supported states: success, info, warning, error", 'Supported states message not logged');
+			throws(function(){
+				editor.igNotifier("option", "state", "random" );
+			},
+			Error($.ig.Notifier.locale.notSupportedState),
+			"Not supported notification state is set.");
+			
 			ok(editor.igNotifier("option", "state") === "success", "Wrong notification state accepted");
 
 			editor.igNotifier("option", "state", "error");
@@ -324,13 +325,14 @@
 
 			editor.igNotifier({ notifyLevel: "warning" }).igNotifier("show");
 			/* inline */
-			logOld = console.log;
-			console.log = logger;
-			editor.igNotifier("option", "mode", "random");
-			console.log = logOld;
-			equal(logBuffer.pop(), "Supported modes: auto, popover, inline", 'Supported modes message not logged');
+			throws(function(){
+				editor.igNotifier("option", "mode", "random");
+			},
+			Error($.ig.Notifier.locale.notSupportedMode),
+			"Not supported notification mode is set.");
+
 			ok(editor.igNotifier("option", "mode") === "auto", "Wrong notification mode accepted");
-			
+
 			editor.igNotifier("option", "mode", "inline");
 			ok(editor.igNotifier("isVisible"), "Inline changed visible state");
 			ok(editor.igNotifier("option", "mode") === "inline"
