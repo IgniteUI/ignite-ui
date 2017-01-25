@@ -5291,15 +5291,7 @@
 			var fractional, scientificPrecision, spinPrecision, nextItem,
 				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
 
-			// D.P. 19th Jan 2016 #657 Value is incremented with isLimitedToListValues
-			if (this._dropDownList && this.options.isLimitedToListValues) {
-				nextItem = this._getSpinItem(spinType === "spinUp" ? "up" : "down");
-				if (nextItem.length) {
-					return this._valueFromText(nextItem.text());
-				} else {
-					return currentValue;
-				}
-			}
+			// currentValue much be a valid number string
 			if (delta) {
 				spinDeltaValue = Number(delta);
 			}
@@ -5416,6 +5408,11 @@
 		},
 		_spinUp: function (delta) { //NumericEditor
 			var currVal, noCancel;
+
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				this._spin("up");
+				return;
+			}
 			if (this._focused) {
 				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
@@ -5467,6 +5464,11 @@
 		},
 		_spinDown: function (delta) { //NumericEditor
 			var currVal, noCancel;
+
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				this._spin("down");
+				return;
+			}
 			if (this._focused) {
 				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
