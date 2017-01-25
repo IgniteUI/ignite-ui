@@ -390,7 +390,7 @@
 		});
 
 		testId = "Spin buttons disabling when the min/max value is exceeded";
-		test(testId, 14, function () {
+		test(testId, 22, function () {
 			var container = $('#minMaxDisableSpins').igNumericEditor("editorContainer"),
 				containerInput = $('#minMaxDisableSpins').igNumericEditor("field"),
 				spinUpButton = $('#minMaxDisableSpins').igNumericEditor("spinUpButton"),
@@ -435,6 +435,40 @@
 			mousedown(spinUpButton[0]);
 			mouseup(spinUpButton[0]);
 			ok($('#minMaxDisableSpins').hasClass($.ui.igNotifier.prototype.css.warningState), "The minMaxDisableSpins missing warning class without suppressed notifications");
+
+			// with decimalSeparator in edit mode
+			var $editor = $("<input>").appendTo("#testBedContainer")
+				.igNumericEditor({ 
+					buttonType : "spin",
+					maxValue: 15,
+					minValue: 5,
+					value: 14.7,
+					decimalSeparator: ",",
+					groupSeparator: ".",
+				});
+			spinUpButton = $editor.igNumericEditor("spinUpButton");
+			spinDownButton = $editor.igNumericEditor("spinDownButton");
+
+			$editor.focus();
+			mousedown(spinUpButton[0]);
+			mouseup(spinUpButton[0]);
+			ok($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("isVisible"),
+				"No warning message shown for exceeding max value on spin");
+			ok(spinUpButton.hasClass("ui-state-disabled"), "Button spinUp is not disabled");
+			equal($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("container").text(),
+				$.ig.Editor.locale.maxValErrMsg.replace("{0}", 15));
+			equal($editor.igNumericEditor("field").val(), "15", "Text not set to the maximum on spin up");
+			$editor.igNumericEditor("value", 5.5);
+			mousedown(spinDownButton[0]);
+			mouseup(spinDownButton[0]);
+			ok($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("isVisible"),
+				"No warning message shown for exceeding min value on spin");
+			ok(spinDownButton.hasClass("ui-state-disabled"), "Button spinDown is not disabled");
+			equal($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("container").text(),
+				$.ig.Editor.locale.maxValErrMsg.replace("{0}", 5));
+			equal($editor.igNumericEditor("field").val(), "5", "Text not set to the minimum on spin down");
+			
+			$editor.remove();
 		});
 
 		var testId = 'Clear value';
