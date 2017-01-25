@@ -533,7 +533,18 @@
 
 				$setRunTimePrevValue.remove();
 				$minVal.remove();
-			})
+			});
+
+			var testId = 'Clear button state';
+			test(testId, 2, function () {
+				var $editor;
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ buttonType: "clear" });
+				ok(!$editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not hidden");
+				$editor.igPercentEditor("value", 45);
+				ok($editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not visible");
+				$editor.remove();
+			});
 		});
 	</script>
 </head>

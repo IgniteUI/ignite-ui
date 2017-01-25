@@ -49,7 +49,8 @@
 			    nonDivException: 'Le lecteur vidéo Infragistics HTML5 peut uniquement être instancié sur une balise DIV.',
 			    relatedVideos: 'VIDÉOS RELIÉES',
 			    replayButton: 'Rejouer',
-			    replayTooltip: 'Cliquer pour rejouer la dernière vidéo.'
+			    replayTooltip: 'Cliquer pour rejouer la dernière vidéo.',
+				noCommercials: 'Browser controls does not support commercials'
 		    }
 	    });
 
