@@ -880,7 +880,7 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 53, function () {
+		test(testId, 60, function () {
 			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
@@ -1086,6 +1086,36 @@
 			$ddButton.click();
 			keyInteraction(40, $field);
 			equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[0], "Spin up with dropDownOnReadOnly did not update selection.");
+			$editor.remove();
+
+			// list items with decimalSeparator
+			editorSetup({
+				listItems: [ 10, 0.15, 55.47, 12045, 2413.5],
+				buttonType: "spin, clear",
+				value: 55.47,
+				isLimitedToListValues: true, // attempt list values spin
+				decimalSeparator: ",",
+				groupSeparator: "."
+			});
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
+			$editor.igNumericEditor("value", 12045);
+			$editor.focus();
+			$editor.blur();
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
+			
+			$ddButton.click();
+			$editor.igNumericEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+			equal($editor.igNumericEditor("field").val(), "0,15", "Selected item did not update text with correct decimalSeparator.");
+			$editor.blur();
+			equal($editor.igNumericEditor("value"), 0.15, "Selected item did not update text with correct decimalSeparator.");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "0,15", "Selected item (API) did not update after selection");
+
+			$editor.igNumericEditor("value", 12045);
+			$editor.igNumericEditor("spinDown");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
+			$editor.focus();
+			$editor.igNumericEditor("spinDown");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
 
 			$editor.remove();
 		});

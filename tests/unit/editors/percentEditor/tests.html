@@ -268,7 +268,7 @@
 			});
 
 			testId = "Lists testing P2, selection-value match";
-			test(testId, 37, function () {
+			test(testId, 44, function () {
 				var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 					editorSetup = function (options) {
 						$editor = $("<input />").appendTo("#testBedContainer")
@@ -396,6 +396,36 @@
 				ok($spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
 				$editor.igPercentEditor("spinUp");
 				equal($editor.igPercentEditor("getSelectedListItem").text(), "243", "Value not changed on spin method in edit mode");
+				$editor.remove();
+
+				// list items with decimalSeparator
+				editorSetup({
+					listItems: [ 0.1, 0.0015, 0.5547, 120.45, 24.135],
+					buttonType: "spin, clear",
+					value: 0.5547,
+					isLimitedToListValues: true, // attempt list values spin
+					decimalSeparator: ",",
+					groupSeparator: "."
+				});
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
+				$editor.igPercentEditor("value", 120.45);
+				$editor.focus();
+				$editor.blur();
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
+				
+				$ddButton.click();
+				$editor.igPercentEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+				equal($editor.igPercentEditor("field").val(), "0,15", "Selected item did not update text with correct decimalSeparator.");
+				$editor.blur();
+				equal($editor.igPercentEditor("value"), 0.0015, "Selected item did not update text with correct decimalSeparator.");
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "0,15", "Selected item (API) did not update after selection");
+
+				$editor.igPercentEditor("value", 120.45);
+				$editor.igPercentEditor("spinDown");
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
+				$editor.focus();
+				$editor.igPercentEditor("spinDown");
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
 
 				$editor.remove();
 			});

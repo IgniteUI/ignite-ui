@@ -2341,8 +2341,8 @@
 				this._editorInputId + "'>";
 			this._editorInput.attr("aria-owns", this.id + "_list");
 			for (i = 0; i < list.length; i++) {
-				itemValue = this.options.displayFactor ?
-					this._multiplyWithPrecision(list[ i ], this.options.displayFactor) :
+				itemValue = list[ i ] ?
+					this._getEditModeValue(list[ i ]) :
 					list[ i ];
 				currentItem = "<span id='" + id + "_item_" + (i + 1) +
 					"' tabindex='-1' role='option' aria-selected='false' aria-posinset='" +
@@ -5288,8 +5288,8 @@
 			}
 		},
 		_getSpinValue: function (spinType, currentValue, delta) { //NumericEditor
-			var fractional, scientificPrecision, spinPrecision, nextItem,
-				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
+			var fractional, scientificPrecision, spinPrecision, valuePrecision,
+				spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
 
 			// currentValue much be a valid number string
 			if (delta) {
