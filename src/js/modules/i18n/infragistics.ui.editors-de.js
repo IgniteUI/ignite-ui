@@ -74,7 +74,7 @@
                 maskMessage: 'Alle erforderlichen Positionen sollten ausgefüllt werden',
                 maskRevertMessage: 'Alle erforderlichen Positionen sollten ausgefüllt werden, weshalb der Wert auf den letzten gültigen zurückgestellt wurde.',
 				dateMessage: 'Ein gültiges Datum sollte eingegeben werden',
-                centuryThresholdValidValues: "centuryThreshold-Eigenschaft muss zwischen 0 und 99 liegen. Der Wert wurde auf Standardwerte zurückgesetzt.",
+                centuryThresholdValidValues: "centuryThreshold-Eigenschaft muss zwischen 0 und 99 liegen.",
                 noListItemsNoButton: "Es wird keine Spin- oder Dropdown-Schaltfläche gerendert, da keine Listenelemente vorliegen."
 		    }
 	    };
