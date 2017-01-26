@@ -3087,11 +3087,6 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
-			if (this.isGroupByApplied(this.settings.sorting.expressions)) {
-				this._generateGroupByData(this._filter ? this._filteredData :
-															this._data,
-										this.settings.sorting.expressions);
-			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
@@ -3611,6 +3606,11 @@
 					this.removeRecordByIndex(parseInt(t.rowId, 10), origDs);
 				} else {
 					this.removeRecordByKey(t.rowId, origDs);
+				}
+				if (this.isGroupByApplied(this.settings.sorting.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData :
+																this._data,
+											this.settings.sorting.expressions);
 				}
 			} else if (t.type === "newrow") {
 				this._addRow(t.row, -1, origDs);
