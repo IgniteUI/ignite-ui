@@ -45,7 +45,7 @@
 			    maxValExceedRevertErrMsg: "La valeur entrée a atteint la valeur maximum fixée à {0} et est revenue à la valeur antérieure",
 			    minValExceedRevertErrMsg: "La saisie est inférieure à la valeur minimale de {0} et a été ramenée à la précédente",
 			    maxValExceedSetErrMsg: "La saisie a dépassé la valeur maximum de {0} et a été fixée sur la valeur maximum",
-			    minValExceedSetErrMsg: "La saisie a dépassé la valeur minimum de {0} et a été fixée sur la valeur minimum",
+			    minValExceedSetErrMsg: "La saisie est inférieure à la valeur minimale de {0} et a été fixée sur la valeur minimum",
 			    maxValExceededWrappedAroundErrMsg: "La valeur entrée a atteint la valeur maximum fixée à {0} et a été fixée à la valeur minimum autorisée",
 			    minValExceededWrappedAroundErrMsg: "La saisie est inférieure à la valeur minimale de {0} et a été réglée sur la valeur maximale autorisée",
 			    btnValueNotSupported: "Une valeur de bouton différente est requise. Choisissez une valeur entre « dropdown », « clear » et « spin ».",
