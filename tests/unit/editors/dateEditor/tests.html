@@ -316,7 +316,7 @@
 			});
 
 			var testId = 'Set options, Apply options test';
-			test(testId, 6, function () {			 
+			test(testId, 4, function () {			 
 				// if prevValue is same as the newVal
 				$('#inputEditor3').igDateEditor("value", "10/10/2010");			   
 
@@ -343,7 +343,6 @@
 				},
 				Error($.ig.Editor.locale.centuryThresholdValidValues),
 				"Invalid centuryThreshold is set.");
-				equal($dtEditor.igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is bigger than 99');
 				$dtEditor.remove();
 
 				throws(function () {
@@ -355,7 +354,6 @@
 				},
 				Error($.ig.Editor.locale.centuryThresholdValidValues),
 				"Invalid centuryThreshold is set.");
-				equal($editor.igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is negative');
 				$editor.remove();
 
 			});
