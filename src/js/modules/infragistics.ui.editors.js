@@ -4777,7 +4777,7 @@
 
 							// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
 							if (this.options.roundDecimals) {
-								stringValue = this._roundExponential(value, maxDecimals).toString();
+								stringValue = Math.round10(value, -maxDecimals).toString();
 								if (stringValue.indexOf(decimalSeparator) > -1) {
 									fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
 								} else {
@@ -4839,9 +4839,6 @@
 				}
 			}
 			return x;
-		},
-		_roundExponential: function(value, decimals) {
-			return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
 		},
 		_multiplyWithPrecision: function (value1, value2, precision) {
 

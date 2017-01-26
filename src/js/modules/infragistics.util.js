@@ -5339,6 +5339,15 @@
 		"Saturday": 6
 	});
 
+	/**
+	 * Decimal adjustment of a number.
+	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round#Decimal_rounding
+	 * 
+	 * @param {String}  type  The type of adjustment.
+	 * @param {Number}  value The number.
+	 * @param {Integer} exp   The exponent (the 10 logarithm of the adjustment base).
+	 * @returns {Number} The adjusted value.
+	 */
 	function decimalAdjust(type, value, exp) {
 
 		// If the exp is undefined or zero...
