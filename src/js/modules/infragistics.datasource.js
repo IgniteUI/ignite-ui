@@ -3386,21 +3386,6 @@
 				since it's the one that will go to the server for the local transaction log,
 				we need to keep the Date "as is", because it won't get serialized/deserialized */
 				globalt = $.extend(true, {}, t);
-				/* Date fix. We need to encode it using \/Date(ticks)\/ */
-				/* \/Date(ticks)\/ format is changed to ISO 8601.
-				For example - changing this "\/Date(1234656000000)\/" to "2009-02-15T00:00:00Z" */
-				/* if (globalt.type === "cell" && $.type(globalt.value) === "date") {
-					globalt.value = this._serializeDate(globalt.value);
-				} else if (globalt.type === "row" ||
-					globalt.type === "insertrow" ||
-					globalt.type === "newrow" ||
-					globalt.type === "insertnode") {
-					for (prop in globalt.row) {
-						if (globalt.row.hasOwnProperty(prop) && $.type(globalt.row[ prop ]) === "date") {
-							globalt.row[ prop ] = this._serializeDate(globalt.row[ prop ]);
-						}
-					}
-				} */
 				this._accumulatedTransactionLog.push(globalt);
 			}
 		},
