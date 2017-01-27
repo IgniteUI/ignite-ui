@@ -7906,10 +7906,21 @@
 		},
 		_applyOptions: function () { // DateEditor
 			var delta = this.options.spinDelta;
-			this._super();
+
+			if (typeof delta !== "number") {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+			} else if (delta < 0) {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+			} else {
+				this.options.spinDelta = parseInt(delta, 10);
+			}
+
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
 				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
 			}
+
 			if (this.options.minValue) {
 				if (!this._isValidDate(new Date(this.options.minValue))) {
 					throw new Error($.ig.Editor.locale.invalidDate);
@@ -7924,18 +7935,14 @@
 					this.options.maxValue = this._getDateObjectFromValue(this.options.maxValue);
 				}
 			}
+
+			// N.A. January 23th, 2017 #731 If value exceeds the min/max value, then set it to min/max and show notification.
+			this.options.value = this._getValueBetweenMinMax(this.options.value);
+
+			this._super();
+
 			if (this._maskWithPrompts === undefined) {
 				this._setInitialValue();
-			}
-
-			if (typeof delta !== "number") {
-				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
-			} else if (delta < 0) {
-				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
-			} else {
-				this.options.spinDelta = parseInt(delta, 10);
 			}
 		},
 		_triggerKeyDown: function (event) { //DateEditor
@@ -8949,19 +8956,7 @@
 			} else {
 				parsedVal = this._parseDateFromMaskedValue(value);
 			}
-			if (this._isValidDate(parsedVal)) {
-				if (this.options.maxValue && parsedVal > this.options.maxValue) {
-					parsedVal = this._getDateObjectFromValue(this.options.maxValue);
-					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.maxValue))));
-				} else if (this.options.minValue && parsedVal < this.options.minValue) {
-					parsedVal = this._getDateObjectFromValue(this.options.minValue);
-					this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.minValue))));
-				}
-			}
+			parsedVal = this._getValueBetweenMinMax(parsedVal);
 			if (this._validateValue(parsedVal)) {
 				this._updateValue(parsedVal);
 			} else {
@@ -9004,6 +8999,23 @@
 				result = false;
 			}
 			return result;
+		},
+		_getValueBetweenMinMax: function(date) {
+			var validDate = date;
+			if (date !== null && this._isValidDate(date)) {
+				if (this.options.maxValue && date > this.options.maxValue) {
+					validDate = this._getDateObjectFromValue(this.options.maxValue);
+					this._sendNotification("warning",
+						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
+							this._getDisplayValue(new Date(this.options.maxValue))));
+				} else if (this.options.minValue && date < this.options.minValue) {
+					validDate = this._getDateObjectFromValue(this.options.minValue);
+					this._sendNotification("warning",
+					$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
+							this._getDisplayValue(new Date(this.options.minValue))));
+				}
+			}
+			return validDate;
 		},
 		_updateValue: function (value) { //igDateEditor
 			if (value === null) {
@@ -10452,6 +10464,7 @@
 			if (!delta) {
 				return;
 			}
+			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
 			if (this._editMode) {
 				this._spinEditMode(delta, userInteraction);
