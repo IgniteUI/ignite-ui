@@ -4037,7 +4037,7 @@
 				```
 				*/
 			groups: null,
-			/* type="number" Gets/Sets the maximum number of decimal places which are used in display mode(no focus).
+			/* type="number" Gets/Sets the maximum number of decimal places supported by the editor.
 				Note: this option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
@@ -4055,7 +4055,7 @@
 				```
 				*/
 			maxDecimals: null,
-			/* type="number" Gets/Sets the minimum number of decimal places which are used in display (no focus) state.
+			/* type="number" Gets/Sets the minimum number of decimal places supported by the editor.
 				If number of digits in fractional part of number is less than the value of this option, then the "0" characters are used to fill missing digits.
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
