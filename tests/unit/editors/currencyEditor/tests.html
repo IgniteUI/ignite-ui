@@ -47,7 +47,7 @@
 				
 				$("#currencyEditor4").igCurrencyEditor({
 					dataMode: "invalidMode",
-					maxDecimals: 55
+					maxDecimals: 15
 				});
 				
 				$("#currencyEditor5").igCurrencyEditor({
@@ -112,7 +112,7 @@
 			equal($('#currencyEditor3').igCurrencyEditor('displayValue'), "^=44.00=", "The display value is not correct");
 		});
 		
-		testId = "MaxDecimals greater than TypeMaxDecimals";
+		testId = "Invalid dataMode converted to default - double";
 		test(testId, 1, function () {
 		var container = $('#currencyEditor4');
 			$('#currencyEditor4').igCurrencyEditor("value", 10.1234567890123456789);

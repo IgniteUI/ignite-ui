@@ -4041,6 +4041,7 @@
 				Note: this option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4060,7 +4061,7 @@
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
-				Note: This option supports values below or equal to 20.
+				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4348,22 +4349,31 @@
 				this.options.minDecimals;
 		},
 		_applyOptions: function () { // NumericEditor
-			var delta, fractional, initialValue;
+
 			this._super();
-			initialValue = this.options.value;
+			this._validateSpinSettings();
+			this._validateDecimalSettings();
+
+			if (this.options.maxLength !== null) {
+				this.options.maxLength = null;
+			}
+			if (this.options.value < 0) {
+				this._editorInput.addClass(this.css.negative);
+			}
+		},
+		_validateSpinSettings: function() {
+			var delta, fractional;
 
 			// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 			if (this.options.buttonType === "spin") {
-				this._setSpinButtonsState(initialValue);
+				this._setSpinButtonsState(this.options.value);
 			}
 			if (this.options.spinDelta !== 1) {
 				delta = this.options.spinDelta;
 				if (typeof delta !== "number") {
-					this.options.spinDelta = 1;
 					throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
 				}
 				if (delta < 0) {
-					this.options.spinDelta = 1;
 					throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
 				}
 				if (this.options.dataMode === "float" || this.options.dataMode === "double") {
@@ -4374,7 +4384,7 @@
 						if (fractional.toString().length > this.options.maxDecimals) {
 							throw new Error($.ig.util.stringFormat($.ig.Editor.locale.
 								spinDeltaContainsExceedsMaxDecimals,
-								this.options.maxDecimals));
+							this.options.maxDecimals));
 						}
 					}
 				} else {
@@ -4387,11 +4397,32 @@
 			if (this.options.scientificFormat) {
 				this.options.spinDelta = Number(this.options.spinDelta.toExponential());
 			}
-			if (this.options.maxLength !== null) {
-				this.options.maxLength = null;
+		},
+		_validateDecimalSettings: function() {
+			this._validateDecimalSetting("minDecimals", this.options.minDecimals);
+			this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
+			this._validateDecimalMinMax();
+		},
+		_validateDecimalSetting: function(name, value) {
+			var mode = this.options.dataMode, boundary;
+
+			if (mode === "double") {
+				boundary = 15;
+			} else if (mode === "float") {
+				boundary = 7;
 			}
-			if (this.options.value < 0) {
-				this._editorInput.addClass(this.css.negative);
+
+			if (value === "" || isNaN(value) || (!isNaN(value) && value < 0)) {
+				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalNumber,
+					mode, name, boundary));
+			} else if (value > boundary) {
+				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalUnhandledNumber,
+					mode, name, boundary));
+			}
+		},
+		_validateDecimalMinMax: function() {
+			if (this.options.minDecimals > this.options.maxDecimals) {
+				this.options.maxDecimals = this.options.minDecimals;
 			}
 		},
 		_setOption: function (option, value) { // igNumericEditor
@@ -4429,13 +4460,15 @@
 				case "maxValue":
 					this._setSpinButtonsState(this.value());
 					break;
-				case "minDecimals",
-					 "maxDecimals":
-					value = parseFloat(value);
-					if (isNaN(value)) {
+				case "minDecimals":
+				case "maxDecimals":
+					try {
+						this._validateDecimalSetting(option, value);
+					} catch (e) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.setOptionError + option);
+						throw e;
 					}
+					this._validateDecimalMinMax();
 					break;
 
 				case "regional":
@@ -4623,19 +4656,14 @@
 			return noCancel;
 		},
 		_applyDataModeSettings: function () {
-			// We need to adjust max decimals, based on the dataMode limits
-			var doubleMaxDecimals = 15;
 			switch (this.options.dataMode) {
 				case "double": {
 					this._setMinMaxValues(-(Number.MAX_VALUE), Number.MAX_VALUE);
-					this._setMinMaxDecimals(doubleMaxDecimals);
 				}
 					break;
 				case "float": {
-					var floatMaxDecimals = 7, floatMinValue = -3.40282347e38,
-						floatMaxValue = 3.40282347e38;
+					var floatMinValue = -3.40282347e38, floatMaxValue = 3.40282347e38;
 					this._setMinMaxValues(floatMinValue, floatMaxValue);
-					this._setMinMaxDecimals(floatMaxDecimals);
 				}
 					break;
 				case "long": {
@@ -4683,19 +4711,7 @@
 				default: {
 					this.options.dataMode = "double";
 					this._setMinMaxValues(Number.MIN_VALUE, Number.MAX_VALUE);
-					this._setMinMaxDecimals(doubleMaxDecimals);
 				}
-			}
-		},
-		_setMinMaxDecimals: function (typeMaxDecimals) {
-			if (this.options.maxDecimals === null || this.options.maxDecimals > typeMaxDecimals) {
-				this.options.maxDecimals = typeMaxDecimals;
-			}
-
-			// this.options.numericMinDecimals = this._getRegionalOption("numericMinDecimals");
-			// In case of conflict between min and max decimals - both values are equaled to the max decimals
-			if (this.options.minDecimals && this.options.minDecimals > this.options.maxDecimals) {
-				this.options.maxDecimals = this.options.minDecimals;
 			}
 		},
 		_setMinMaxValues: function (typeMinValue, typeMaxValue) {

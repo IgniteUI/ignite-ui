@@ -74,7 +74,9 @@
 				maskRevertMessage: 'All required positions should be filled, that is why the value was reverted to the last valid one.',
 				dateMessage: 'A valid date should be entered',
 				centuryThresholdValidValues: "centuryThreshold property shoud be between 0 and 99.",
-				noListItemsNoButton: "No spin or dropdown button is rendered because there are no listitems."
+				noListItemsNoButton: "No spin or dropdown button is rendered because there are no listitems.",
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
+				decimalUnhandledNumber: "When dataMode is '{0}', the value of {1} option cannot exceed {2}, otherwise arithmetic operations with such numbers can lead to unexpected results."
 			}
 		};
 	}

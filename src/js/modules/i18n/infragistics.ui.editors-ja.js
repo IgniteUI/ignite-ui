@@ -75,7 +75,9 @@
 			    maskRevertMessage: '値が以前の有効な値に戻されました。すべての必須文字を入力してください。',
 				dateMessage: '有効な日付を入力してください',
 			    centuryThresholdValidValues: "centuryThreshold プロパティは 0 ~ 99 である必要があります。",
-			    noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。"
+			    noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。",
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
+				decimalUnhandledNumber: "When dataMode is '{0}', the value of {1} option cannot exceed {2}, otherwise arithmetic operations with such numbers can lead to unexpected results."
 		    }
 	    };
     }
