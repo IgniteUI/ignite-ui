@@ -1207,7 +1207,7 @@
 			*/
 			buttonType: "none",
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
-				Items in the list can be of type string, number or object. The items are directly rendered without any casting, or manipulation.
+				Items in the list can be of type string.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1419,7 +1419,7 @@
 			```
 			*/
 			spinWrapAround: false,
-			/* type="bool" Gets/Sets if the editor should only allow values from the list of items.
+			/* type="bool" Gets/Sets if the editor should only allow values from the list of items. Matching is case-insensitive.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -2202,8 +2202,17 @@
 			}
 			return stringValue;
 		},
+		_valueIndexInList: function (val) {
+			if (!val && val !== 0) {
+				return -1;
+			}
+			var loweredItems = $.map(this.options.listItems, function (item) {
+				return item.toString().toLowerCase();
+			});
+			return $.inArray(val.toString().toLowerCase(), loweredItems);
+		},
 		_validateValue: function (val) { //Text Editor
-			var loweredItems, result;
+			var result;
 			if (val === undefined) {
 				result = false;
 			} else if (val === null) {
@@ -2213,11 +2222,7 @@
 					result = false;
 				}
 			} else if (this.options.isLimitedToListValues && this._dropDownList) {
-				loweredItems = $.map(this.options.listItems, function (item) {
-					// M.H. 4 Dec 2015 Fix for bug 210666: "Uncaught TypeError: Cannot read property 'toString' of undefined" when using filter API
-					return (item === null || item === undefined) ? "" : item.toString().toLowerCase();
-				});
-				if ($.inArray(val.toString().toLowerCase(), loweredItems) !== -1) {
+				if (this._valueIndexInList(val) !== -1) {
 					result = true;
 				} else {
 					this._sendNotification("warning", $.ig.Editor.locale.allowedValuesMsg);
@@ -2320,6 +2325,12 @@
 			this._setDropDownListWidth();
 		},
 		_createList: function () {
+			// Remove items that can't be displayed. isArray, filter polyfills in util
+			if (Array.isArray(this.options.listItems)) {
+				this.options.listItems = this.options.listItems.filter(function (item) {
+					return item || item === 0;
+				});
+			}
 			if (this.options.textMode !== "multiline" &&
 				this.options.textMode !== "password" &&
 				this.options.listItems && this.options.listItems.length > 0) {
@@ -3756,7 +3767,7 @@
 		},
 		_updateDropdownSelection: function (currentVal) { //igTextEditor
 			var current = this.getSelectedListItem().index(),
-				selectedIndex = $.inArray(currentVal, this.options.listItems);
+				selectedIndex = this._valueIndexInList(currentVal);
 			if (current !== selectedIndex) {
 				if (selectedIndex > -1) {
 					this._setSelectedItemByIndex(selectedIndex);
@@ -3983,7 +3994,7 @@
 	$.widget("ui.igNumericEditor", $.ui.igTextEditor, {
 		options: {
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
-				Items in the list can be of type string, number or object. The items are directly rendered without any casting, or manipulation.
+				Items in the list can be of type number.
 				```
 				$(".selector").%%WidgetName%%({
 					listItems : [

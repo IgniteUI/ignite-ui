@@ -892,7 +892,7 @@
 				};
 
 			editorSetup({
-				listItems: [1, 2, 3],
+				listItems: [1, 0, 3],
 				buttonType: "dropdown",
 				// remove animation to avoid waiting, show() with effect ignores 0
 				dropDownAnimationDuration: -1
@@ -915,7 +915,7 @@
 
 			// select item2:
 			$editor.igNumericEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
-			equal($editor.igNumericEditor("getSelectedListItem").text(), 2, "Selected item (API) did not update after selection");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "0", "Selected item (API) did not update after selection");
 
 			// change value in edit mode:
 			$ddButton.click();

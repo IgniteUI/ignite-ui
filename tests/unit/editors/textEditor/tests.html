@@ -688,7 +688,7 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 48, function () {
+		test(testId, 49, function () {
 			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
@@ -700,11 +700,15 @@
 				};
 
 			editorSetup({
-				listItems: ["item1", "item2", "item3"],
+				listItems: [undefined, "item1", "item2", null, "", "item3"],
 				buttonType: "dropdown",
 				// remove animation to avoid waiting, show() with effect ignores 0
 				dropDownAnimationDuration: -1
 			});
+
+			var expectedItems = ["item1", "item2", "item3"], items = $editor.igTextEditor("option", "listItems");
+			ok(expectedItems.length === items.length &&
+				expectedItems.every(function(v,i) { return v === items[i]}), "List items did not match expected result after init.")
 
 			//selectedListIndex
 			$editor.igTextEditor("selectedListIndex", 2);
@@ -715,7 +719,7 @@
 			$editor.igTextEditor("selectedListIndex", 4);
 			equal($editor.igTextEditor("value"), "item3", "selectedListIndex should not update with wrong index");
 
-			$editor.igTextEditor("value", "item1");
+			$editor.igTextEditor("value", "ITEM1"); //casing
 			$ddButton.click();
 			ok($editor.igTextEditor("getSelectedListItem").hasClass($.ui.igTextEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
 			equal($editor.igTextEditor("selectedListIndex"), 0, "Selected index does not reflect value");
@@ -728,7 +732,7 @@
 			// change value in edit mode:
 			$ddButton.click();
 			keyDownChar(51 /*3*/, $field);
-			$field.val("item3");
+			$field.val("iTem3"); //casing
 			keyPressChar(51, $field);
 			keyUpChar(51, $field);
 			keyInteraction(13, $field);
