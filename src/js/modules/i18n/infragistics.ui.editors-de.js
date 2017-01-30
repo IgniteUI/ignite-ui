@@ -45,7 +45,7 @@
 			    maxValExceedRevertErrMsg: "Eintrag hat den maximalen Wert von {0} überstiegen und wurde auf den vorherigen zurückgestellt",
 			    minValExceedRevertErrMsg: "Eintrag lag unter dem Mindestwert von {0} und wurde auf den vorherigen zurückgesetzt",
 			    maxValExceedSetErrMsg: "Eintrag hat den maximalen Wert von {0} überstiegen und wurde auf den maximalen Wert eingestellt",
-			    minValExceedSetErrMsg: "Eintrag hat den minimalen Wert von {0} überstiegen und wurde auf den minimalen Wert eingestellt",
+			    minValExceedSetErrMsg: "Eintrag lag unter dem Mindestwert von {0} überstiegen und wurde auf den minimalen Wert eingestellt",
 			    maxValExceededWrappedAroundErrMsg: "Eintrag hat den maximalen Wert von {0} überstiegen und wurde auf den minimal erlaubten eingestellt",
 			    minValExceededWrappedAroundErrMsg: "Eintrag lag unter dem Mindestwert von {0} und wurde auf den maximal zulässigen eingestellt",
 			    btnValueNotSupported: 'Ein anderer Schaltflächenwert ist erforderlich. Wert zwischen "dropdown", "clear" und "spin" wählen.',
