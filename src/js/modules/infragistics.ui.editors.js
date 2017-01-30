@@ -4418,15 +4418,18 @@
 						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
 					} else if (this.options.scientificFormat) {
 						this.options[ option ] = Number(value.toExponential());
-			}
+					}
 					break;
 				}
-
-				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 				case "minValue":
-					this._setSpinButtonsState(this.value());
-					break;
 				case "maxValue":
+					if (isNaN(value)) {
+						this.options[ option ] = prevValue;
+						return;
+					}
+					this._processInternalValueChanging(this.value());
+
+					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 					this._setSpinButtonsState(this.value());
 					break;
 				case "minDecimals",
@@ -7465,6 +7468,9 @@
 
 					//Get
 					var minValue = $(".selector").%%WidgetName%%("option", "minValue");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "minValue", new Date(1980, 6, 1));
 				```
 				*/
 			minValue: null,
@@ -7479,6 +7485,9 @@
 
 					//Get
 					var maxValue = $(".selector").%%WidgetName%%("option", "maxValue");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "maxValue", new Date(2020, 11, 21));
 				```
 				*/
 			maxValue: null,
@@ -7806,14 +7815,19 @@
 					}
 					break;
 				}
-				case "minValue": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.dateEditorMinValue);
-				}
-				case "maxValue": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
-				}
+				case "minValue":
+				case "maxValue":
+					if (this._isValidDate(value)) {
+						this.options[ option ] = this._getDateObjectFromValue(value);
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+						}
+						this._setSpinButtonsState(this.value());
+					} else {
+						this.options[ option ] = prevValue;
+					}
+					break;
 				case "listItems":
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
@@ -11049,6 +11063,13 @@
 							this._editorInput.data("datepicker").settings.maxDate;
 					}
 				}
+					break;
+				case "minValue":
+				case "maxValue":
+					this.options[ option ] = prevValue;
+					this._super(option, value);
+					this._editorInput.datepicker("option", "minDate", this.options.minValue);
+					this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
 					break;
 				default: {
 

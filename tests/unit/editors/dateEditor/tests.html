@@ -316,19 +316,23 @@
 			});
 
 			var testId = 'Set options, Apply options test';
-			test(testId, 4, function () {			 
+			test(testId, 8, function () {			 
 				// if prevValue is same as the newVal
 				$('#inputEditor3').igDateEditor("value", "10/10/2010");			   
 
-				// set MinVal
-				throws(function () {
-					$('#inputEditor3').igDateEditor("option", "minValue", "01/10/2010");
-				}, "Uncaught Error: MinValue option can not be set runtime.");
+				// set minValue / maxValue:
+				$('#inputEditor3').igDateEditor("option", "minValue", new Date(2010, 0, 10).toLocaleString());
+				equal($('#inputEditor3').igDateEditor("option", "minValue").getTime(), new Date(2010, 0, 10).getTime(), "minValue not set correctly");
+				$('#inputEditor3').igDateEditor("option", "minValue", new Date(2011, 0, 10));
+				equal($('#inputEditor3').igDateEditor("value").getTime(), new Date(2011, 0, 10).getTime(), "Value not updated when setting minValue after that time.");
+				equal($('#inputEditor3').igDateEditor("field").val(), "1/10/2011 12:00 AM", "Text not updated when setting minValue after that time.");
 
-				// set MinVal
-				throws(function () {
-					$('#inputEditor3').igDateEditor("option", "maxValue", "01/12/2015");
-				}, "Uncaught Error: MaxValue option can not be set runtime.");
+				$('#inputEditor3').igDateEditor("value", new Date(2014, 9, 10));	
+				$('#inputEditor3').igDateEditor("option", "maxValue", new Date(2015, 0, 12).toLocaleString());
+				equal($('#inputEditor3').igDateEditor("option", "maxValue").getTime(), new Date(2015, 0, 12).getTime(), "maxValue not set correctly");
+				$('#inputEditor3').igDateEditor("option", "maxValue", new Date(2014, 0, 12));
+				equal($('#inputEditor3').igDateEditor("value").getTime(), new Date(2014, 0, 12).getTime(), "Value not updated when setting maxValue before that time.");
+				equal($('#inputEditor3').igDateEditor("field").val(), "1/12/2014 12:00 AM", "Text not updated when setting maxValue before that time.");
 
 				// set invalid centuryThreshold. There is no longer setDefault functionality for invalid centuryThreshold 
 				var $dtEditor = $('<input id="boundary"/>').appendTo("#testBedContainer"), 
