@@ -607,7 +607,7 @@
 		});
 		
 		testId = "Min/Max value";
-		test(testId, 4, function () {
+		test(testId, 8, function () {
 			var container = $('#minMaxValue'), containerInput = $('#minMaxValue').igNumericEditor("field");
 
 			container.igNumericEditor("value", 9);
@@ -620,7 +620,23 @@
 			container.igNumericEditor("value", null);
 			equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
 
-		});		
+			// runtime changes:
+			var $editor = $('<input id="privateFuncEditor" />')
+				.appendTo("#testBedContainer")
+				.igNumericEditor({
+					value: 5
+				});
+			
+			$editor.igNumericEditor("option", "minValue", -150);
+			strictEqual($editor.igNumericEditor("value"), 5, "Value should remain the same");
+			$editor.igNumericEditor("option", "maxValue", 5);
+			strictEqual($editor.igNumericEditor("value"), 5, "Value should remain the same");
+			$editor.igNumericEditor("option", "maxValue", 4);
+			strictEqual($editor.igNumericEditor("value"), 4, "Value should be set to max");
+			$editor.igNumericEditor("value", 0);
+			$editor.igNumericEditor("option", "minValue", 1);
+			strictEqual($editor.igNumericEditor("value"), 1, "Value should be set to min");
+		});
 
 		testId = "Scientific spin buttons";
 		test(testId, 2, function () {
@@ -1045,17 +1061,23 @@
 		});
 		
 		testId = 'Issue 226939'
-		test(testId, 3, function () {
+		test(testId, 6, function () {
 			var $editor = $("#issue226939"),
 				editorInput = $editor.igNumericEditor("field"), btnSpinDown = $editor.igNumericEditor("spinDownButton"),
 				btnSpinUp = $editor.igNumericEditor("spinUpButton");
 				
 				$editor.igNumericEditor("option", "minValue", 5);
-				$("#issue226939").igNumericEditor("spinUp");
-				equal($("#issue226939").igNumericEditor("value"), 5, 'Spin up method not working.');
 				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");
+				$editor.igNumericEditor("spinUp");
+				equal($editor.igNumericEditor("value"), 6, 'Spin up method not working.');
+				ok(!btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not enabled.");
 				$editor.igNumericEditor("option", "minValue", 1);
-				ok(!(btnSpinDown.hasClass("ui-state-disabled")), "The spinDown button is disabled.");
+				ok(!(btnSpinDown.hasClass("ui-state-disabled")), "The spinDown button is enabled.");
+				$editor.igNumericEditor("option", "maxValue", 6);
+				ok(btnSpinUp.hasClass("ui-state-disabled"), "The spinUp button is not disabled.");
+				$editor.igNumericEditor("option", "minValue", 5);
+				$editor.igNumericEditor("value", 5);
+				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");
 		});
 
 		testing = "Clear button dynamic show/hide";
