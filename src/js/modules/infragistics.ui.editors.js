@@ -4483,9 +4483,11 @@
 			if (this.options.spinDelta !== 1) {
 				delta = this.options.spinDelta;
 				if (typeof delta !== "number") {
+					this.options.spinDelta = 1;
 					throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
 				}
 				if (delta < 0) {
+					this.options.spinDelta = 1;
 					throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
 				}
 				if (this.options.dataMode === "float" || this.options.dataMode === "double") {
@@ -4579,11 +4581,11 @@
 						throw e;
 					}
 					if (this.options[ option ] !== prevValue) {
+						this._validateDecimalMinMax();
 						this._processInternalValueChanging(this.value());
 						if (!this._editMode) {
 							this._editorInput.val(this._getDisplayValue());
 						}
-						this._validateDecimalMinMax();
 					}
 					break;
 				case "regional":
