@@ -4446,15 +4446,17 @@
 				case "maxValue":
 					this._setSpinButtonsState(this.value());
 					break;
-				case "minDecimals",
-					 "maxDecimals":
+				case "minDecimals":
+				case "maxDecimals":
 					value = parseFloat(value);
 					if (isNaN(value)) {
 						this.options[ option ] = prevValue;
 						throw new Error($.ig.Editor.locale.setOptionError + option);
+					} else {
+						this._processInternalValueChanging(this.value());
+						this._editorInput.val(this._getDisplayValue());
 					}
 					break;
-
 				case "regional":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
