@@ -2733,10 +2733,13 @@
 								this._triggerListItemClick(activeItem);
 							} else {
 								this._processValueChanging(currentInputVal);
+								this._enterEditMode();
 							}
 						} else {
 							// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput.
 							this._processValueChanging(currentInputVal);
+							// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+							this._enterEditMode();
 						}
 					}
 				} else if (this._dropDownList) {
@@ -4413,10 +4416,6 @@
 				if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
 					value = this.options.maxValue;
 
-					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
-					this._valueInput.val(value);
-					this._enterEditMode();
-
 					//Raise warning
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
@@ -4425,10 +4424,6 @@
 				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
 				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
 					value = this.options.minValue;
-
-					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
-					this._valueInput.val(value);
-					this._enterEditMode();
 
 						// Raise Warning level 2
 						this._sendNotification("warning",
@@ -4495,6 +4490,7 @@
 
 						// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput
 						this._processValueChanging(currentInputVal);
+						this._enterEditMode();
 					}
 
 				} else if (e.keyCode === 38) {
