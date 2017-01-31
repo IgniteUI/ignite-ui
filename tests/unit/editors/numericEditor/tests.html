@@ -142,8 +142,7 @@
 						dropDownAnimationDuration: 0,
 						revertIfNotValid: false,
 						isLimitedToListValues: true,
-						spinDelta: -69, // this is not valid and EXCEPTION is thrown. Needed for coverage.
-						maxLength: 10
+						spinDelta: -69 // this is not valid and EXCEPTION is thrown. Needed for coverage.
 					});
 				} catch (e) { }
 				try {
@@ -160,8 +159,7 @@
 						value: "readOnly",
 						buttonType: "spin",
 						readOnly: true,
-						spinDelta: 1.5, // this is not valid and EXCEPTION is thrown. Needed for coverage.
-						maxLength: 10
+						spinDelta: 1.5 // this is not valid and EXCEPTION is thrown. Needed for coverage.
 					});
 				} catch (e) { }
 
@@ -269,7 +267,6 @@
 				$("#negativeEditor1").igNumericEditor({
 					scientificFormat: "E",
 					spinDelta: 2,
-					maxlength: 5,
 					value: -10
 				});
 				$("#clearButton_439").igNumericEditor({
@@ -337,7 +334,7 @@
 		});
 		
 		var testId = 'Numeric Editor initialization.';
-		test(testId, 10, function () {
+		test(testId, 11, function () {
 			ok(typeof($("#inputEditor1").igNumericEditor)  === 'function', "Editors Script is not loaded");
 			ok($('#inputEditor1').data("igNumericEditor") !== undefined, 'Error creating igNumericEditor in an input');
 			ok($('#divEditor1').data("igNumericEditor") !== undefined, 'Error creating igNumericEditor in a div');
@@ -350,6 +347,11 @@
 			equal($('#negativeEditor1').data("igNumericEditor")._valueFromText("-2e+1"), -2E+1, "The parsed value is not correct");
 			strictEqual($('#negativeEditor1').data("igNumericEditor")._valueFromText("-500"), "-5e+2", "The parsed value is not correct");
 			strictEqual($('#convertScientificToNumeric').data("igNumericEditor")._valueFromText("22"), "2.2e+1", "The parsed value is not correct");
+
+			var $editor = $("<input>").appendTo("#testBedContainer")
+				.igNumericEditor({ maxLength: 10 });
+			strictEqual($editor.igNumericEditor("option", "maxLength"), null, "maxLength is not supported on the numeric editor");
+			$editor.remove();
 		});
 
 		testId = "Events testing";
@@ -388,7 +390,7 @@
 		});
 
 		testId = "Spin buttons disabling when the min/max value is exceeded";
-		test(testId, 14, function () {
+		test(testId, 22, function () {
 			var container = $('#minMaxDisableSpins').igNumericEditor("editorContainer"),
 				containerInput = $('#minMaxDisableSpins').igNumericEditor("field"),
 				spinUpButton = $('#minMaxDisableSpins').igNumericEditor("spinUpButton"),
@@ -433,6 +435,40 @@
 			mousedown(spinUpButton[0]);
 			mouseup(spinUpButton[0]);
 			ok($('#minMaxDisableSpins').hasClass($.ui.igNotifier.prototype.css.warningState), "The minMaxDisableSpins missing warning class without suppressed notifications");
+
+			// with decimalSeparator in edit mode
+			var $editor = $("<input>").appendTo("#testBedContainer")
+				.igNumericEditor({ 
+					buttonType : "spin",
+					maxValue: 15,
+					minValue: 5,
+					value: 14.7,
+					decimalSeparator: ",",
+					groupSeparator: ".",
+				});
+			spinUpButton = $editor.igNumericEditor("spinUpButton");
+			spinDownButton = $editor.igNumericEditor("spinDownButton");
+
+			$editor.focus();
+			mousedown(spinUpButton[0]);
+			mouseup(spinUpButton[0]);
+			ok($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("isVisible"),
+				"No warning message shown for exceeding max value on spin");
+			ok(spinUpButton.hasClass("ui-state-disabled"), "Button spinUp is not disabled");
+			equal($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("container").text(),
+				$.ig.Editor.locale.maxValErrMsg.replace("{0}", 15));
+			equal($editor.igNumericEditor("field").val(), "15", "Text not set to the maximum on spin up");
+			$editor.igNumericEditor("value", 5.5);
+			mousedown(spinDownButton[0]);
+			mouseup(spinDownButton[0]);
+			ok($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("isVisible"),
+				"No warning message shown for exceeding min value on spin");
+			ok(spinDownButton.hasClass("ui-state-disabled"), "Button spinDown is not disabled");
+			equal($editor.igNumericEditor("editorContainer").data("igNotifier") && $editor.igNumericEditor("editorContainer").igNotifier("container").text(),
+				$.ig.Editor.locale.minValErrMsg.replace("{0}", 5));
+			equal($editor.igNumericEditor("field").val(), "5", "Text not set to the minimum on spin down");
+			
+			$editor.remove();
 		});
 
 		var testId = 'Clear value';
@@ -586,7 +622,7 @@
 				floatEditorInput.trigger("blur");
 			});
 			$('#floatEditor').one("ignumericeditorvaluechanged", function () {
-				equal(floatEditorInput = $('#floatEditor').igNumericEditor("value"), "12.3216549", "The value is not as expexted ");
+				equal(floatEditorInput = $('#floatEditor').igNumericEditor("value"), "12.321655", "The value is not as expexted ");
 			});
 			floatEditorInput.trigger("focus");
 
@@ -842,7 +878,247 @@
 			ok($("#listEditor").igNumericEditor("findListItemIndex", 2), 1, "Expected item index is 1");
 
 		});
-		
+
+		testId = "Lists testing P2, selection-value match";
+		test(testId, 60, function () {
+			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
+				editorSetup = function (options) {
+					$editor = $("<input />").appendTo("#testBedContainer")
+					.igNumericEditor(options);
+					$field = $editor.igNumericEditor("field");
+					$ddButton = $editor.igNumericEditor("dropDownButton");
+					$spinUpButton = $editor.igNumericEditor("spinUpButton");
+					$spinDownButton = $editor.igNumericEditor("spinDownButton");
+				};
+
+			editorSetup({
+				listItems: [1, 0, 3],
+				buttonType: "dropdown",
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+
+			//selectedListIndex
+			$editor.igNumericEditor("selectedListIndex", 2);
+			strictEqual($editor.igNumericEditor("value"), 3, "selectedListIndex did not update value");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "3", "Selected item does not reflect value");
+			$editor.igNumericEditor("selectedListIndex", -1);
+			strictEqual($editor.igNumericEditor("value"), 3, "selectedListIndex should not update with wrong index");
+			$editor.igNumericEditor("selectedListIndex", 4);
+			strictEqual($editor.igNumericEditor("value"), 3, "selectedListIndex should not update with wrong index");
+
+			$editor.igNumericEditor("value", 1);
+			$ddButton.click();
+			ok($editor.igNumericEditor("getSelectedListItem").hasClass($.ui.igNumericEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
+			equal($editor.igNumericEditor("selectedListIndex"), 0, "Selected index does not reflect value");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "1", "Selected item does not reflect value");
+
+			// select item2:
+			$editor.igNumericEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "0", "Selected item (API) did not update after selection");
+
+			// change value in edit mode:
+			$ddButton.click();
+			keyDownChar(51 /*3*/, $field);
+			$field.val("3");
+			keyPressChar(51, $field);
+			keyUpChar(51, $field);
+			keyInteraction(13, $field);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "3", "Selected item (API) did not update after value update.");
+			$editor.remove();
+
+			//initial value, clear:
+			editorSetup({
+				listItems: [1, 123, 2, 3, 156, 99],
+				buttonType: "dropdown, clear",
+				value: 2,
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+			equal($editor.igNumericEditor("getSelectedListItem").text(), 2, "Selected item (API) not correct on initialization");
+			equal($editor.igNumericEditor("selectedListIndex"), 2, "Selected index (API) not correct on initialization");
+
+			$editor.igNumericEditor("value", 999);
+			equal($editor.igNumericEditor("getSelectedListItem").length, 0, "There should be no selected item (API) without matching value.");
+
+			$editor.igNumericEditor("value", "3");
+			$ddButton.click();
+			keyInteraction(38, $field);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "3", "Selected item does not reflect value.");
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "2", "Active item did not move from original selection.");
+			keyDownChar(54 /*6*/, $field);
+			$field.val("156");
+			keyPressChar(54, $field);
+			keyUpChar(54, $field);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "156", "Selected item not updated when typing.");
+			keyInteraction(40, $field);
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "99", "Active item did not move from new selection.");
+			keyDownChar(56 /*8*/, $field);
+			$field.val("8");
+			keyPressChar(56, $field);
+			keyUpChar(56, $field);
+			equal($editor.igNumericEditor("getSelectedListItem").length, 0, "Selected item not cleared when typing.");
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");						
+			keyInteraction(13, $field);
+			equal($editor.igNumericEditor("value"), 8, "Value not set correctly on enter without list selection.");
+			ok(!$editor.igNumericEditor("dropDownContainer").is(":visible"), "Dropdown list did not close on enter.");
+			equal($editor.igNumericEditor("getSelectedListItem").length, 0, "There should be no selection when value doesn't match any item.");
+
+			$ddButton.click();
+			$field.val("2");
+			keyInteraction(13, $field);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), 2, "Selected item does not reflect value.");
+
+			$editor.igNumericEditor("clearButton").click();
+			equal($editor.igNumericEditor("getSelectedListItem").length, 0, "Selection not removed on clear in edit mode");
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not removed on clear in edit mode.");
+			$field.blur();
+			$editor.igNumericEditor("value", 99);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "99", "Selected item does not reflect value.");
+			$editor.igNumericEditor("clearButton").click();
+			equal($editor.igNumericEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
+			$editor.remove();
+
+			// spin + isLimitedToListValues
+			var listItems = [5, 44.5, 44, 575, 55.4, 243, 10];
+			editorSetup({
+				spinDelta: 1,
+				isLimitedToListValues: true,
+				listItems: listItems,
+				buttonType: "dropdown, spin, clear",
+				value: 44,
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button");
+			strictEqual($editor.igNumericEditor("value"), 44.5, "Value not changed on spin button");
+			for (var i = 0; i < 3; i++) {
+				mousedown($spinUpButton[0]);
+				mouseup($spinUpButton[0]);
+			}
+			strictEqual($editor.igNumericEditor("value"), 5, "Value not changed on spin button");
+			ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled");
+			$editor.igNumericEditor("spinDown");
+			strictEqual($editor.igNumericEditor("value"), 44.5, "Value not changed on spin method");
+			$editor.igNumericEditor("spinUp");
+			strictEqual($editor.igNumericEditor("value"), 5, "Value not changed on spin method");
+
+			$editor.focus();
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			mousedown($spinDownButton[0]);
+			mouseup($spinDownButton[0]);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
+			ok(!$spinUpButton.hasClass("ui-state-disabled"), "Spin up button not enabled");
+
+			$ddButton.click();
+			for (var i = 2; i < listItems.length; i++) {
+				mousedown($spinDownButton[0]);
+				mouseup($spinDownButton[0]);
+				equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[i], "Selection not changed on spin button with open dropdown.");
+			}
+			ok($spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
+			$editor.igNumericEditor("spinUp");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "243", "Value not changed on spin method in edit mode");
+			
+			// spin + spinWrapAround
+			$editor.igNumericEditor("option", "spinWrapAround", true);
+			$editor.igNumericEditor("selectedListIndex", 1);
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin button with open dropdown.");
+			mousedown($spinDownButton[0]);
+			mouseup($spinDownButton[0]);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[0], "Selection not changed on spin button with open dropdown.");
+			$editor.igNumericEditor("option", "spinWrapAround", false);
+			ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled when setting spinWrapAround");
+			$ddButton.click();
+			$editor.igNumericEditor("option", "spinWrapAround", true);
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin with spinWrapAround.");
+			
+			// clearing value in edit mode and selecting the same item
+			$editor.blur(); //set last value
+			$ddButton.click();
+			$editor.igNumericEditor("clearButton").click();
+			$editor.igNumericEditor("dropDownContainer")
+				.children(".ui-igedit-listitem").last().click();
+			equal($field.val(), listItems[listItems.length-1], "Selection not reflected in edit field after clear");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed after re-selecting cleared item.");
+			$editor.remove();
+
+			// spin editor without listItems
+			editorSetup({
+				spinDelta: 10,
+				isLimitedToListValues: true, // attempt list values spin
+				spinWrapAround: true,
+				buttonType: "spin, clear"
+			});
+			mousedown($spinUpButton[0]);
+			mouseup($spinUpButton[0]);
+			strictEqual($editor.igNumericEditor("value"), 10, "Value not changed on spin button");
+			$editor.remove();
+
+			// readOnly spin
+			editorSetup({
+				listItems: listItems,
+				dropDownOnReadOnly: true,
+				isLimitedToListValues: true,
+				buttonType: "dropdown, spin, clear",
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+			$editor.igNumericEditor("option", "readOnly", true);
+			$ddButton.click();
+			keyInteraction(40, $field); //down
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").text(), listItems[0], "Arrow down with dropDownOnReadOnly did not select first item.");
+			keyInteraction(40, $field);
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").text(), listItems[1], "Arrow down with dropDownOnReadOnly did not select second item.");
+			keyInteraction(38, $field); //up
+			equal($editor.igNumericEditor("dropDownContainer").find(".ui-igedit-listitemactive").text(), listItems[0], "Arrow up with dropDownOnReadOnly did not select first item.");
+			keyInteraction(13, $field);
+			equal($editor.igNumericEditor("value"), listItems[0], "Select up with dropDownOnReadOnly did not update value.");
+			$ddButton.click();
+			keyInteraction(40, $field);
+			equal($editor.igNumericEditor("getSelectedListItem").text(), listItems[0], "Spin up with dropDownOnReadOnly did not update selection.");
+			$editor.remove();
+
+			// list items with decimalSeparator
+			editorSetup({
+				listItems: [ 10, 0.15, 55.47, 12045, 2413.5],
+				buttonType: "spin, clear",
+				value: 55.47,
+				isLimitedToListValues: true, // attempt list values spin
+				decimalSeparator: ",",
+				groupSeparator: "."
+			});
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
+			$editor.igNumericEditor("value", 12045);
+			$editor.focus();
+			$editor.blur();
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
+			
+			$ddButton.click();
+			$editor.igNumericEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+			equal($editor.igNumericEditor("field").val(), "0,15", "Selected item did not update text with correct decimalSeparator.");
+			$editor.blur();
+			equal($editor.igNumericEditor("value"), 0.15, "Selected item did not update text with correct decimalSeparator.");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "0,15", "Selected item (API) did not update after selection");
+
+			$editor.igNumericEditor("value", 12045);
+			$editor.igNumericEditor("spinDown");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
+			$editor.focus();
+			$editor.igNumericEditor("spinDown");
+			equal($editor.igNumericEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
+
+			$editor.remove();
+		});
 		
 		testId = "SetOption";
 		test(testId, 23, function () {
@@ -1212,9 +1488,8 @@
 				listWidth: 200,
 				height: 20,
 				listItems: [1, 2, 3, 4, 5],
-				dropDownAnimationDuration: 1,
+				dropDownAnimationDuration: -1,
 				revertIfNotValid: false,
-				isLimitedToListValues: true,
 				spinDelta: 1
 			});
 
@@ -1420,6 +1695,91 @@
 		$editor.remove();
 	});
 
+	testId = "Test roundDecimals options";
+	test(testId, 146, function() {
+		var $editorRound, $editorTrunc, testData;
+
+		testData = [
+		/*maxDecimals*/
+		/*0*/[{ input: 5.5, round: 6, trunc: 5 }, { input: 5.5784546, round: 6, trunc: 5 },
+			  { input: 0.0001, round: 0, trunc: 0 }, { input: 0.9999999999, round: 1, trunc: 0 }],
+		/*1*/[{ input: 5.55, round: 5.6, trunc: 5.5 }, { input: 5.555, round: 5.6, trunc: 5.5 },
+		      { input: 5.899, round: 5.9, trunc: 5.8 }, { input: 5.999, round: 6, trunc: 5.9 }],
+		/*2*/[{ input: 1.999, round: 2, trunc: 1.99  }, { input: 1.019, round: 1.02, trunc: 1.01 },
+			  { input: 9.999, round: 10, trunc: 9.99  }, { input: "aaaa", round: 10, trunc: 9.99 }],
+		/*3*/[{ input: 123.4567, round: 123.457, trunc: 123.456 }, { input: 123.4561, round: 123.456, trunc: 123.456 },
+			  { input: 123.4597, round: 123.46, trunc: 123.459 }, { input: 123.4509, round: 123.451, trunc: 123.45 }],
+		/*4*/[{ input: 1.999, round: 1.999, trunc: 1.999 }, { input: 99.9999999, round: 100, trunc: 99.9999 },
+			  { input: 34.555555, round: 34.5556, trunc: 34.5555 }, { input: 99.0000000001, round: 99, trunc: 99 }],
+		/*5*/[{ input: 0.9090999, round: 0.9091, trunc: 0.90909 }, { input: 23.555555, round: 23.55556, trunc: 23.55555 },
+			  { input: 23.5555555, round: 23.55556, trunc: 23.55555 }, { input: 0.000009, round: 0.00001, trunc: 0 }],
+		/*6*/[{ input: 99.0000009, round: 99.000001, trunc: 99 }, { input: 5.5555555, round: 5.555556, trunc: 5.555555 },
+			  { input: 99.0000001, round: 99, trunc: 99 }, { input: 1.000000000001, round: 1, trunc: 1 }],
+		/*7*/[{ input: 99.00000001, round: 99, trunc: 99 }, { input: 1.000000000001, round: 1, trunc: 1 },
+		      { input: 5.55555555, round: 5.5555556, trunc: 5.5555555 }, { input: 1.23456789, round: 1.2345679, trunc: 1.2345678 }]
+		];
+		$editorRound = $('<input/>').appendTo("#testBedContainer").igNumericEditor();
+		$editorTrunc = $('<input/>').appendTo("#testBedContainer").igNumericEditor({ roundDecimals: false });
+
+		for (maxDecimalIndex = 0; maxDecimalIndex < testData.length; maxDecimalIndex++) {
+			$editorRound.igNumericEditor("option", "maxDecimals", maxDecimalIndex);
+			$editorTrunc.igNumericEditor("option", "maxDecimals", maxDecimalIndex);
+			currTestData = testData[maxDecimalIndex];
+
+			for(index = 0; index < currTestData.length; index++) {
+				data = currTestData[index];
+				$editorRound.igNumericEditor("setFocus");
+				$editorRound.igNumericEditor("field").val("");
+				typeInMaskedInput(data.input.toString(), $editorRound.igNumericEditor("field"));
+				$editorRound.trigger("blur");
+				equal($editorRound.igNumericEditor("displayValue"), data.round.toString(), "The display value is not correct");
+				equal($editorRound.igNumericEditor("value"), data.round, "The hidden value sent to server is not correct");
+				$editorTrunc.igNumericEditor("setFocus");
+				$editorTrunc.igNumericEditor("field").val("");
+				typeInMaskedInput(data.input.toString(), $editorTrunc.igNumericEditor("field"));
+				$editorTrunc.trigger("blur");
+				equal($editorTrunc.igNumericEditor("displayValue"), data.trunc.toString(), "The display value is not correct");
+				equal($editorTrunc.igNumericEditor("value"), data.trunc, "The hidden value sent to server is not correct");
+			}
+		}
+		$editorRound.remove();
+		$editorTrunc.remove();
+
+		// Change maxDecimals/minDecimals runtime
+		$editorRound = $('<input/>').appendTo("#testBedContainer").igNumericEditor({ value: 12.5555555555, minDecimals: 2, maxDecimals: 5 });
+		equal($editorRound.igNumericEditor("displayValue"), "12.55556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.55556, "The hidden value sent to server is not correct");
+		$editorRound.igNumericEditor("option", "maxDecimals", 3);
+		equal($editorRound.igNumericEditor("displayValue"), "12.556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		$editorRound.igNumericEditor("option", "minDecimals", 7);
+		equal($editorRound.igNumericEditor("displayValue"), "12.5560000", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		equal($editorRound.igNumericEditor("option", "maxDecimals"), 7, "maxDecimals should be equal to minDecimals");
+		$editorRound.remove();
+
+		// Change maxDecimals/minDecimals runtime - edit mode
+		$editorRound = $('<input/>').appendTo("#testBedContainer").igNumericEditor({ value: 12.5555555555, minDecimals: 2, maxDecimals: 5 });
+		equal($editorRound.igNumericEditor("field").val(), "12.55556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.55556, "The hidden value sent to server is not correct");
+		$editorRound.igNumericEditor("setFocus");
+		$editorRound.igNumericEditor("option", "maxDecimals", 3);
+		equal($editorRound.igNumericEditor("field").val(), "12.55556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		$editorRound.trigger("blur");
+		equal($editorRound.igNumericEditor("field").val(), "12.556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		$editorRound.igNumericEditor("setFocus");
+		$editorRound.igNumericEditor("option", "minDecimals", 7);
+		equal($editorRound.igNumericEditor("field").val(), "12.556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		$editorRound.trigger("blur");
+		equal($editorRound.igNumericEditor("field").val(), "12.5560000", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		equal($editorRound.igNumericEditor("option", "maxDecimals"), 7, "maxDecimals should be equal to minDecimals");
+		$editorRound.remove();
+	});
+
 	testId = "Test minDecimals/maxDecimals options";
 	test(testId, 62, function() {
 		var $editorRound, $editorTrunc, testData, errorMessage, mode, boundary;
@@ -1497,6 +1857,29 @@
 	function testSelection(input, start, end) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
 		equal(input[0].selectionEnd, end, "The selection doesn't end from index " + end);
+	}
+
+	function typeInMaskedInput(characters, element) {
+		var keyDown = jQuery.Event("keydown"),
+			keyPress = jQuery.Event("keypress"),
+			keyUp = jQuery.Event("keyup"),
+			value = element.val(), selectionStart = 0;
+
+		characters.split('').forEach(function (ch) {
+			keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+			keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+			element.trigger(keyDown);
+			element.trigger(keyPress);
+			// refresh selection EACH time, mask editor moves over literals:
+			selectionStart = element[0].selectionStart;
+			value = value.replaceAt(selectionStart++, ch);
+			element.val(value);
+			element[0].selectionStart = selectionStart;
+			element.trigger(keyUp);
+		});
+	}
+	String.prototype.replaceAt = function (index, character) {
+		return this.substr(0, index) + character + this.substr(index + character.length);
 	}
 	function keyInteraction(key, target, special) {
 		keyDownChar(key, target, special);
