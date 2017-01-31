@@ -1421,7 +1421,7 @@
 	});
 
 	testId = "Test roundDecimals options";
-	test(testId, 134, function() {
+	test(testId, 144, function() {
 		var $editorRound, $editorTrunc, testData;
 
 		testData = [
@@ -1479,6 +1479,26 @@
 		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
 		$editorRound.igNumericEditor("option", "minDecimals", 7);
 		equal($editorRound.igNumericEditor("displayValue"), "12.5560000", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		$editorRound.remove();
+
+		// Change maxDecimals/minDecimals runtime - edit mode
+		$editorRound = $('<input/>').appendTo("#testBedContainer").igNumericEditor({ value: 12.5555555555, minDecimals: 2, maxDecimals: 5 });
+		equal($editorRound.igNumericEditor("field").val(), "12.55556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.55556, "The hidden value sent to server is not correct");
+		$editorRound.igNumericEditor("setFocus");
+		$editorRound.igNumericEditor("option", "maxDecimals", 3);
+		equal($editorRound.igNumericEditor("field").val(), "12.55556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		$editorRound.trigger("blur");
+		equal($editorRound.igNumericEditor("field").val(), "12.556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		$editorRound.igNumericEditor("setFocus");
+		$editorRound.igNumericEditor("option", "minDecimals", 7);
+		equal($editorRound.igNumericEditor("field").val(), "12.556", "The display value is not correct");
+		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		$editorRound.trigger("blur");
+		equal($editorRound.igNumericEditor("field").val(), "12.5560000", "The display value is not correct");
 		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
 		$editorRound.remove();
 	});
