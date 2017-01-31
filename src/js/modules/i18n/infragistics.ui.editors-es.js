@@ -76,8 +76,7 @@
 				dateMessage: 'Debe introducirse una fecha válida',
 			    centuryThresholdValidValues: "La propiedad centuryThreshold debería estar entre 0 y 99.",
 			    noListItemsNoButton: "No se representa ningún botón desplegable o de control de número porque no hay elementos de lista.",
-				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
-				decimalUnhandledNumber: "When dataMode is '{0}', the value of {1} option cannot exceed {2}, otherwise arithmetic operations with such numbers can lead to unexpected results."
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
 		    }
 	    };
     }

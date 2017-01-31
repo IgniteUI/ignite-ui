@@ -4412,11 +4412,9 @@
 				boundary = 7;
 			}
 
-			if (value === "" || isNaN(value) || (!isNaN(value) && value < 0)) {
+			if (value === "" || isNaN(value) ||
+				(!isNaN(value) && (value < 0 || value > boundary))) {
 				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalNumber,
-					mode, name, boundary));
-			} else if (value > boundary) {
-				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalUnhandledNumber,
 					mode, name, boundary));
 			}
 		},

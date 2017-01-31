@@ -76,8 +76,7 @@
 				dateMessage: 'Следует ввести правильную дату',
 			    centuryThresholdValidValues: "Свойство centuryThreshold должно находиться в диапазоне от 0 до 99.",
 			    noListItemsNoButton: "Счетчик или кнопка раскрытия списка не отображаются вследствие отсутствия элементов списка.",
-				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
-				decimalUnhandledNumber: "When dataMode is '{0}', the value of {1} option cannot exceed {2}, otherwise arithmetic operations with such numbers can lead to unexpected results."
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
 		    }
 	    };
     }
