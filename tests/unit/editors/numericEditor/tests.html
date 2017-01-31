@@ -607,7 +607,7 @@
 		});
 		
 		testId = "Min/Max value";
-		test(testId, 8, function () {
+		test(testId, 15, function () {
 			var container = $('#minMaxValue'), containerInput = $('#minMaxValue').igNumericEditor("field");
 
 			container.igNumericEditor("value", 9);
@@ -621,8 +621,7 @@
 			equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
 
 			// runtime changes:
-			var $editor = $('<input id="privateFuncEditor" />')
-				.appendTo("#testBedContainer")
+			var $editor = $('<input />').appendTo("#testBedContainer")
 				.igNumericEditor({
 					value: 5
 				});
@@ -633,9 +632,26 @@
 			strictEqual($editor.igNumericEditor("value"), 5, "Value should remain the same");
 			$editor.igNumericEditor("option", "maxValue", 4);
 			strictEqual($editor.igNumericEditor("value"), 4, "Value should be set to max");
+			equal($editor.igNumericEditor("field").val(), "4", "Text not updated with max value");
 			$editor.igNumericEditor("value", 0);
 			$editor.igNumericEditor("option", "minValue", 1);
 			strictEqual($editor.igNumericEditor("value"), 1, "Value should be set to min");
+			equal($editor.igNumericEditor("field").val(), "1", "Text not updated with min value");
+			$editor.focus();
+			$editor.igNumericEditor("field").val("3");
+			$editor.igNumericEditor("option", "minValue", 2);
+			strictEqual($editor.igNumericEditor("value"), 2, "Value not set to min while editng");
+			equal($editor.igNumericEditor("field").val(), "3", "Editing text should remain unchanged");
+			$editor.igNumericEditor("field").blur();			
+			strictEqual($editor.igNumericEditor("value"), 3, "Value not updated after chaning min");
+
+			// ensure base dataMode min/max, double:
+			$editor.igNumericEditor("option", "minValue", null);
+			$editor.igNumericEditor("option", "maxValue", null);
+			equal($editor.igNumericEditor("option", "minValue"), -(Number.MAX_VALUE), "minValue not set to null");
+			equal($editor.igNumericEditor("option", "maxValue"), Number.MAX_VALUE, "maxValue not set to null");
+
+			//$editor.remove();
 		});
 
 		testId = "Scientific spin buttons";

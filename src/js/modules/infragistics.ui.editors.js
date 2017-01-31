@@ -2738,6 +2738,7 @@
 						} else {
 							// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput.
 							this._processValueChanging(currentInputVal);
+
 							// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
 							this._enterEditMode();
 						}
@@ -4354,7 +4355,15 @@
 						this.options[ option ] = prevValue;
 						return;
 					}
-					this._processInternalValueChanging(this.value());
+					if (value === null) {
+						// ensure dataMode defaults
+						this._applyDataModeSettings();
+					} else {
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+						}
+					}
 
 					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 					this._setSpinButtonsState(this.value());
@@ -7726,9 +7735,9 @@
 		},
 		_setOption: function (option, value) { // igDateEditor
 			/* igDateEditor custom setOption goes here */
-			var prevValue = this.options[ option ];
+			var prevValue = this.options[ option ], date;
 			if ($.type(prevValue) === "date") {
-				var date = this._getDateObjectFromValue(value);
+				date = this._getDateObjectFromValue(value);
 				if ($.type(date) === "date" && (prevValue.getTime() === date.getTime())) {
 					return;
 				}
@@ -7742,14 +7751,17 @@
 			switch (option) {
 				case "minValue":
 				case "maxValue":
-					if (this._isValidDate(value)) {
+					if (!this._isValidDate(value)) {
+						this.options[ option ] = prevValue;
+						return;
+					}
+					if (value !== null) {
 						this.options[ option ] = this._getDateObjectFromValue(value);
 						this._processInternalValueChanging(this.value());
 						if (!this._editMode) {
 							this._editorInput.val(this._getDisplayValue());
+							this._currentInputTextValue = this._editorInput.val();
 						}
-					} else {
-						this.options[ option ] = prevValue;
 					}
 					break;
 				case "listItems":
@@ -10856,6 +10868,9 @@
 					this._super(option, value);
 					this._editorInput.datepicker("option", "minDate", this.options.minValue);
 					this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
+
+					// prevent datepicker from updating the input text (if min/max change selection)
+					this._editorInput.val(this._currentInputTextValue);
 					break;
 				default: {
 
