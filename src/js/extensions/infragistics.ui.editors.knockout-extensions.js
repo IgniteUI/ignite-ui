@@ -509,16 +509,17 @@
         update: function (element, valueAccessor) {
             var disabled = valueAccessor(),
                 editor = $(element),
-				widgetNames = ["igTextEditor", "igNumericEditor",
+				widgetNames = [ "igTextEditor", "igNumericEditor",
 					"igPercentEditor", "igCurrencyEditor", "igMaskEditor",
-					"igDateEditor", "igDatePicker", "igCheckboxEditor"];
+					"igDateEditor", "igDatePicker", "igCheckboxEditor" ],
+				name;
 
             if (!ko.isObservable(disabled)) {
                 return;
             }
 			for (name in editor.data()) {
 				if ($.inArray(name, widgetNames) !== -1) {
-					editor[name]("option", "disabled", disabled());
+					editor[ name ]("option", "disabled", disabled());
 					break;
 				}
 			}
