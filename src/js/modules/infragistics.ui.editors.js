@@ -4117,7 +4117,7 @@
 				```
 				*/
 			groups: null,
-			/* type="number" Gets/Sets the maximum number of decimal places which are used in display mode(no focus).
+			/* type="number" Gets/Sets the maximum number of decimal places supported by the editor.
 				Note: this option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
@@ -4135,7 +4135,7 @@
 				```
 				*/
 			maxDecimals: null,
-			/* type="number" Gets/Sets the minimum number of decimal places which are used in display (no focus) state.
+			/* type="number" Gets/Sets the minimum number of decimal places supported by the editor.
 				If number of digits in fractional part of number is less than the value of this option, then the "0" characters are used to fill missing digits.
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
@@ -4155,6 +4155,23 @@
 				```
 				*/
 			minDecimals: null,
+			/* type="bool" Gets/Sets whether the last decimal place will be rounded, when the maxDecimal option is defined and applied.
+			For example if the initial editor value is set to 123.4567, maxDecimals option is set to 3 and roundDecimals is enabled,
+			then editor will round the value and will display it as 123.457. If roundDecimals is disabled then editor value will be truncated to 123.456.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					roundDecimals : false
+				});
+
+				//Get
+				var roundDecimals = $(".selector").%%WidgetName%%("option", "roundDecimals");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "roundDecimals", false);
+				```
+			*/
+			roundDecimals: true,
 			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor.
 				```
 					//Initialize
@@ -4524,15 +4541,19 @@
 				case "maxValue":
 					this._setSpinButtonsState(this.value());
 					break;
-				case "minDecimals",
-					 "maxDecimals":
+				case "minDecimals":
+				case "maxDecimals":
 					value = parseFloat(value);
 					if (isNaN(value)) {
 						this.options[ option ] = prevValue;
 						throw new Error($.ig.Editor.locale.setOptionError + option);
+					} else {
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+						}
 					}
 					break;
-
 				case "regional":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
@@ -4846,9 +4867,24 @@
 							fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
 						}
 						if (fractionalDigits.length > maxDecimals) {
-							fractionalDigits = fractionalDigits.substring(0, maxDecimals);
+
+							// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
+							if (this.options.roundDecimals) {
+								stringValue = Math.round10(value, -maxDecimals).toString();
+								if (stringValue.indexOf(decimalSeparator) > -1) {
+									fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+								} else {
+									fractionalDigits = "";
+								}
+							} else {
+								fractionalDigits = fractionalDigits.substring(0, maxDecimals);
+							}
 						}
-						integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+						if (stringValue.indexOf(decimalSeparator) > -1) {
+							integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+						} else {
+							integerDigits = stringValue;
+						}
 
 						//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
 						val = (integerDigits + "." + fractionalDigits) / 1;
