@@ -4513,8 +4513,18 @@
 			}
 		},
 		_validateDecimalSettings: function() {
-			this._validateDecimalSetting("minDecimals", this.options.minDecimals);
-			this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
+			try {
+				this._validateDecimalSetting("minDecimals", this.options.minDecimals);
+			} catch (e) {
+				this.options.minDecimals = this._getRegionalOption("numericMinDecimals");
+				throw e;
+			}
+			try {
+				this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
+			} catch (e) {
+				this.options.minDecimals = this._getRegionalOption("numericMaxDecimals");
+				throw e;
+			}
 			this._validateDecimalMinMax();
 		},
 		_validateDecimalSetting: function(name, value) {
@@ -7871,6 +7881,7 @@
 			}
 
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
+				this.options.centuryThreshold = 29;
 				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
 			}
 
