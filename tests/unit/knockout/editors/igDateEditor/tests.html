@@ -78,7 +78,8 @@
 			};
 			setDefaultDate5 = function () {
 				this.dateValue("/Date(1224043200000)/");
-			}
+			};
+			this.isDisabled =  ko.observable(false);
 		};
 
 		model = new viewModel();
@@ -461,6 +462,30 @@
 		//			}, 300);
 		//		});
 
+		var testId = 'Test disabled binding';
+		test(testId, 12, function () {
+			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
+
+			ok(!$editor.igDateEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igDateEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igDateEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igDateEditor("editorContainer").hasClass($.ui.igDateEditor.prototype.css.disabled), "Editor should be enabled");
+			$chk.click();
+			ok($editor.igDateEditor("option", "disabled"), "Editor should be disabled");
+			ok($editor.igDateEditor("field").prop("disabled"), "Editor should be disabled");
+			equal($editor.igDateEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			ok($editor.igDateEditor("editorContainer").hasClass($.ui.igDateEditor.prototype.css.disabled), "Editor should be disabled");
+			$chk.click();
+			$chk.click();
+			$chk.click();
+			ok(!$editor.igDateEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igDateEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igDateEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igDateEditor("editorContainer").hasClass($.ui.igDateEditor.prototype.css.disabled), "Editor should be enabled");
+			$editor.remove();
+			$chk.remove();
+		});
+
 			function inputCheckImmediate() {
 				var date = new Date("12/10/2002"), val;
 				if ($.ig.util.isFF) {
@@ -654,6 +679,12 @@
 </div>
 </div>
 	<input id="outerInput" type="text"  />
+
+	<input id="edDisabled" data-bind="igDateEditor: {
+				width: '200'
+          }, igEditorDisable: isDisabled" />
+
+	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
 </body>
 </html>
 

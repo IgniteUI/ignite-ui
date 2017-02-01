@@ -67,6 +67,7 @@
 			this.testFunction = function (evt, ui) {
 				eventTriggered = true;
 			};
+			this.isDisabled =  ko.observable(false);
 		};
 		
 		model = new viewModel();
@@ -359,6 +360,30 @@
 				$editor.remove();
 				$input.remove();
 		});
+
+		var testId = 'Test disabled binding';
+		test(testId, 12, function () {
+			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
+
+			ok(!$editor.igNumericEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igNumericEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igNumericEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igNumericEditor("editorContainer").hasClass($.ui.igNumericEditor.prototype.css.disabled), "Editor should be enabled");
+			$chk.click();
+			ok($editor.igNumericEditor("option", "disabled"), "Editor should be disabled");
+			ok($editor.igNumericEditor("field").prop("disabled"), "Editor should be disabled");
+			equal($editor.igNumericEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			ok($editor.igNumericEditor("editorContainer").hasClass($.ui.igNumericEditor.prototype.css.disabled), "Editor should be disabled");
+			$chk.click();
+			$chk.click();
+			$chk.click();
+			ok(!$editor.igNumericEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igNumericEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igNumericEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igNumericEditor("editorContainer").hasClass($.ui.igNumericEditor.prototype.css.disabled), "Editor should be enabled");
+			$editor.remove();
+			$chk.remove();
+		});
 	});
 
 	function testImmediate(element) {
@@ -565,6 +590,12 @@
 		minDecimals: 2
 	}" />
 	<input id="Issue695_Input" type="text" class="row-control" data-bind="value: number" />
+
+	<input id="edDisabled" data-bind="igNumericEditor: {
+			width: '200'
+		}, igEditorDisable: isDisabled" />
+
+	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
 </div>
 </body>
 </html>
