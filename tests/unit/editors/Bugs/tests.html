@@ -865,7 +865,7 @@
 						ok(!$editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
 						ok(flag, "Value changed should not be fired.");
 					}, 
-					2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 400 /*normal*/)
+					2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 600 /*normal*/)
 				);
 			});
 			
@@ -1030,10 +1030,10 @@
 					item = editor.data("igNumericEditor")._getListItemByIndex(0);
 
 				ddBtn.click();
-				keyInteraction(40, input);
+				keyInteraction(40, input); //down
 				equal(editor.igNumericEditor("value"), 2, "The value should stay unchanged");
 				keyInteraction(13, input);
-				equal(editor.igNumericEditor("value"), 1, "The value 1 should be selected");
+				equal(editor.igNumericEditor("value"), 3, "The value 1 should be selected");
 			});
 
 			testId = 'Bug 221494';

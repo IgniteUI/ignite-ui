@@ -104,6 +104,83 @@
 				$input[0].selectionStart = startPos;
 				$input[0].selectionEnd = startPos + newVal.length;
 			}
+		},
+		/**
+		 * Triggers key interaction sequence on an element
+		 * @param key Key code to use for the events
+		 * @param target jQuery object target
+		 * @param special Used for combinations to set true on the event - "altKey", "ctrlKey", "shiftKey"
+		 */
+		keyInteraction: function (key, target, special) {
+			if (!this.keyDownChar(key, target, special)) {
+				return;
+			}
+			if (!this.keyPressChar(key, target, special)) {
+				return;
+			}
+			this.keyUpChar(key, target, special);
+		},
+		keyDownChar: function (key, target, special) {
+			var evt = $.Event("keydown");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			return target.trigger(evt);
+		},
+		keyPressChar: function (key, target, special) {
+			var evt = $.Event("keypress");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			return target.trigger(evt);
+		},
+		keyUpChar: function (key, target, special) {
+			var evt = $.Event("keyup");
+			evt.keyCode = key;
+			evt.charCode = key;
+			if (special) {
+				evt[special] = true;
+			}
+			target.trigger(evt);
+		},
+		/**
+		 * Triggers a mouse event on an element
+		 * @param target Can be DOM or jQuery
+		 * @param type The mouse event type by name
+		 * @param params Optional object with value accepted by mouseEventInit. Defaults: main button, cancellable
+		 * @returns False if canceled (inverted)
+		 */
+		mouseEvent: function (target, type, params) {
+			var evt;
+			if (target instanceof $) {
+				target = target[0];
+			}
+			params = $.extend({ 
+				"button": 0 ,
+				"bubbles": true,
+				"cancelable": true
+			}, params);
+			//evt = new MouseEvent(type, params);
+			// No DOM4 MouseEvent in PhantomJS yet :\
+			evt = document.createEvent('MouseEvent');
+			evt.initMouseEvent(type, params.bubbles, params.cancelable, window, 1, 0, 0, null, null, false, false, false, false, params.button, null);
+
+			return !target.dispatchEvent(evt);
+		},
+		/**
+		 * Triggers a click event on an element
+		 * @param target Can be DOM or jQuery
+		 * @param params Optional object with value accepted by mouseEventInit.
+		 */
+		click: function (target, params) {
+			if (this.mouseEvent(target, "mousedown", params)) {
+				this.mouseEvent(target, "mouseup", params);
+				this.mouseEvent(target, "click", params);
+			}
 		}
 	});
 
