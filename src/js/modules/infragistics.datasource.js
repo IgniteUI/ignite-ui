@@ -4858,11 +4858,6 @@
 				} else {
 					ffields = f.expressions;
 				}
-				if (ffields.length && ffields[ 0 ] && ffields[ 0 ].filterAllFields) {
-					key = f.filterExprUrlKey ? f.filterExprUrlKey : "$filter";
-					params.filteringParams[ key ] = ffields[ 0 ].expr;
-					return;
-				}
 				for (i = 0; i < ffields.length; i++) {
 					// is a filtering request
 					this._isFilteringReq = true;
