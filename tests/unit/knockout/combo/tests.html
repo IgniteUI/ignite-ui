@@ -189,6 +189,8 @@
 						}
 					}
 				}
+
+				self.isDisabled =  ko.observable(false);
 			}
 
 			ko.applyBindings(globalViewModel = new ViewModel());
@@ -304,6 +306,30 @@
 			ok(itemList1.length === 1, "First item is added.");
 			ok(itemList2.length === 1, "First item is added.");
 
+		});
+
+		var testId = 'Test disabled binding';
+		test(testId, 12, function () {
+			var $combo = $("#comboDisabled"), $chk = $("#chkDisabled");
+
+			ok(!$combo.igCombo("option", "disabled"), "Editor should be enabled");
+			ok(!$combo.igCombo("valueInput").prop("disabled"), "Editor should be enabled");
+			equal($combo.igCombo("valueInput").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$combo.igCombo("comboWrapper").hasClass($.ui.igCombo.prototype.css.disabled), "Editor should be enabled");
+			$chk.click();
+			ok($combo.igCombo("option", "disabled"), "Editor should be disabled");
+			ok($combo.igCombo("valueInput").prop("disabled"), "Editor should be disabled");
+			equal($combo.igCombo("valueInput").attr("disabled"), "disabled", "Editor should be disabled");
+			ok($combo.igCombo("comboWrapper").hasClass($.ui.igCombo.prototype.css.disabled), "Editor should be disabled");
+			$chk.click();
+			$chk.click();
+			$chk.click();
+			ok(!$combo.igCombo("option", "disabled"), "Editor should be enabled");
+			ok(!$combo.igCombo("valueInput").prop("disabled"), "Editor should be enabled");
+			equal($combo.igCombo("valueInput").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$combo.igCombo("comboWrapper").hasClass($.ui.igCombo.prototype.css.disabled), "Editor should be enabled");
+			$combo.remove();
+			$chk.remove();
 		});
 
 		function testBasic(newText, newValue, input) {
@@ -544,6 +570,13 @@
 		<div class="clear-floating"></div>
 	</div>
 	<div class="clear-floating"></div>
+
+	<input id="comboDisabled" data-bind="igCombo: {
+			dataSource: dataNew,
+			width: '200'
+		}, igComboDisable: isDisabled" />
+
+	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
 </div>
 </body>
 </html>
