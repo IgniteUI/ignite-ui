@@ -76,7 +76,7 @@
 				dateMessage: '有効な日付を入力してください',
 			    centuryThresholdValidValues: "centuryThreshold プロパティは 0 ~ 99 である必要があります。",
 			    noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。",
-				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
+				decimalNumber: "dataMode が '{0}' の場合、{1} オプションは 0 ～ {2} の間の値を承諾します。"
 		    }
 	    };
     }
