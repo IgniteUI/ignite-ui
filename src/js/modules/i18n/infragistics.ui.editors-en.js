@@ -45,7 +45,7 @@
 				maxValExceedRevertErrMsg: "Entry exceeded the maximum value of {0} and was reverted to previous one",
 				minValExceedRevertErrMsg: "Entry was less than the minimum value of {0} and was reverted to previous one",
 				maxValExceedSetErrMsg: "Entry exceeded the maximum value of {0} and was set to the maximum value",
-				minValExceedSetErrMsg: "Entry exceeded the minimum value of {0} and was set to the minimum value",
+				minValExceedSetErrMsg: "Entry was less than the minimum value of {0} and was set to the minimum value",
 				maxValExceededWrappedAroundErrMsg: "Entry exceeded the maximum value of {0} and was set to the minimum allowed one",
 				minValExceededWrappedAroundErrMsg: "Entry was less than the minimum value of {0} and was set to the maximum allowed one",
 				btnValueNotSupported: 'A different button value is required. Choose a value between "dropdown", "clear" and "spin".',
@@ -73,7 +73,7 @@
 				maskMessage: 'All required positions should be filled',
 				maskRevertMessage: 'All required positions should be filled, that is why the value was reverted to the last valid one.',
 				dateMessage: 'A valid date should be entered',
-				centuryThresholdValidValues: "centuryThreshold property shoud be between 0 and 99. The value has been reverted to defaults.",
+				centuryThresholdValidValues: "centuryThreshold property shoud be between 0 and 99.",
 				noListItemsNoButton: "No spin or dropdown button is rendered because there are no listitems."
 			}
 		};
