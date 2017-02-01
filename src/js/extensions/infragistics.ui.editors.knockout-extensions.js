@@ -466,7 +466,11 @@
 		},
 		update: function (element, valueAccessor) {
 			var value, current, editor = $(element);
-			value = ko.utils.unwrapObservable(valueAccessor().checked());
+			if (ko.isObservable(valueAccessor().checked)) {
+				value = ko.utils.unwrapObservable(valueAccessor().checked());
+			} else {
+				return;
+			}
 			current = editor.igCheckboxEditor("value");
 			if (current !== value) {
 				editor.igCheckboxEditor("value", value);
