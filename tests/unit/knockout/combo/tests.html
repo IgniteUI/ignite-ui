@@ -11,7 +11,7 @@
 		.test-coantiner label { font-size: 30px; }
 		.float-left { float: left; padding: 10px; }
 		.float-clear { clear: both; }
-		.buttons-container { float: right; width: 300px;  } 
+		.buttons-container { float: right; width: 300px;  }
 	</style>
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
@@ -23,11 +23,11 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.combo.js"></script>
-	
+
 	<script type="text/javascript" src="../../../../src/js/extensions/infragistics.ui.combo.knockout-extensions.js"></script>
 	<link type="text/css" rel="stylesheet" href="../../../../bower_components/qunit/qunit/qunit.css" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
-	
+
 	<script type="text/html" id="data-template">
 		<li>
 			<input data-bind="value: text" />
@@ -92,6 +92,11 @@
 				self.codeList = dsModelSelectionChanged;
 				self.selectedItems = ko.observableArray();
 
+				self.colorList = ko.observableArray([
+					{ "Color": "Black" },
+					{ "Color": "Blue" },
+					{ "Color": "Red" },
+				]);
 
 				self.item = { name: "name5", value: 5 };
 				self.addItem = function () {
@@ -218,7 +223,8 @@
 			testId_13 = '[ID13] Test selected indexes',
 			testId_14 = '[ID14] Test event attributes and igCombo API',
 			testId_15 = '[ID15] Test enableSelectionChangedUpdate property',
-			testId_16 = '[ID16] Bug #186778 Test setting values with null';
+			testId_16 = '[ID16] Bug #186778 Test setting values with null',
+			testId_17 = '[ID17] Custom values should be persisted in the combo input';
 
 		module("igComboMVVM");
 
@@ -308,6 +314,16 @@
 
 		});
 
+		test(testId_17, function() {
+			var $combo = $('#comboCustomVal'),
+				$comboInput = $combo.data('igCombo')._options.$input;
+
+			typeInInput('Block', $comboInput);
+			$comboInput.blur();
+			ok($comboInput.val() !== "", "The igCombo custom value is not removed from the input");
+			ok($combo.igCombo("text") === "Block", "The custom value is persisted");
+		});
+
 		var testId = 'Test disabled binding';
 		test(testId, 12, function () {
 			var $combo = $("#comboDisabled"), $chk = $("#chkDisabled");
@@ -356,13 +372,24 @@
 			$element.trigger(mouseUp);
 		}
 
+		function typeInInput(key, element) {
+                var keyDown = jQuery.Event("keydown"),
+					keyUp = jQuery.Event("keyup");
+
+                keyDown.keyCode = keyUp.keyCode = key;
+
+                element.trigger(keyDown);
+                element.val(key);
+                element.trigger(keyUp);
+            }
+
 		function openCloseAll() {
 			$('#comboBasic').igCombo("openDropDown");
 			$('#comboBasic').igCombo("closeDropDown");
 			$('#comboSelectedItems').igCombo("openDropDown");
 			$('#comboSelectedItems').igCombo("closeDropDown");
 		}
-		
+
 		function checkViewForNew(itemLength, value, text, index) {
 			var combo = $('#comboBasic'),
 				comboList = combo.data("igCombo")._options.$dropDownCont.find("li"),
@@ -393,7 +420,7 @@
 			}
 		}
 	</script>
-	
+
 </head>
 <body>
 <div style="float:right;width:400px;overflow:auto">
@@ -471,6 +498,16 @@
 			}" />
 			<input id="textActorName" data-bind="value: model.condition.actorName" />
 		</div>
+	</div>
+	<div class="test-container">
+		<input id="comboCustomVal" data-bind="
+			igCombo: {
+				dataSource: colorList,
+				textKey: 'Color',
+				valueKey: 'Color',
+				allowCustomValue: true
+			}
+		" />
 	</div>
 	<div class="clear-floating"></div>
 	<div class="view-container">

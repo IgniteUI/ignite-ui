@@ -3087,11 +3087,6 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
-			if (this.isGroupByApplied(this.settings.sorting.expressions)) {
-				this._generateGroupByData(this._filter ? this._filteredData :
-															this._data,
-										this.settings.sorting.expressions);
-			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
@@ -3611,6 +3606,11 @@
 					this.removeRecordByIndex(parseInt(t.rowId, 10), origDs);
 				} else {
 					this.removeRecordByKey(t.rowId, origDs);
+				}
+				if (this.isGroupByApplied(this.settings.sorting.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData :
+																this._data,
+											this.settings.sorting.expressions);
 				}
 			} else if (t.type === "newrow") {
 				this._addRow(t.row, -1, origDs);
@@ -9065,17 +9065,17 @@
 				initialFlatDataView: false,
 				/*type="function" Specifies a custom function to be called when requesting data to the server - usually when expanding/collapsing record. If set the function should return the encoded URL. It takes as parameters: data record(type: object), expand - (type: bool).
 				```
- +				var ds = new $.%%WidgetName%%({
- +								dataSource: products,
- +								treeDS: {
- +									customEncodeUrlFunc: function(record, expand){
- +										var dsUrl = ds.settings.treeDS.dataSourceUrl;
- +										var path = ds.getPathBy(record);
- +										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.propertyDataLevel];
- +									}
- +								}
- +							});
- +				```
+ 				var ds = new $.%%WidgetName%%({
+ 								dataSource: products,
+ 								treeDS: {
+ 									customEncodeUrlFunc: function(record, expand){
+ 										var dsUrl = ds.settings.treeDS.dataSourceUrl;
+ 										var path = ds.getPathBy(record);
+ 										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.propertyDataLevel];
+ 									}
+ 								}
+ 							});
+ 				```
 				*/
 				customEncodeUrlFunc: null,
 				/*type="bool" If true save expansion states in internal list and send it to the server. Applying to one of the main constraint of the REST architecture  Stateless Interactions - client specific data(like expansion states) should NOT be stored on the server
