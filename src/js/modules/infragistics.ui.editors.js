@@ -10645,7 +10645,7 @@
 				spin type="string" Spin buttons are located on the right side of the editor.
 			*/
 			buttonType: "dropdown",
-			/* type="object" Gets/Sets the options supported by the jquery.ui.datepicker. Only options related to the drop-down calendar are supported.
+			/* type="object" Gets/Sets the options supported by the [jquery.ui.datepicker](http://api.jqueryui.com/datepicker/). Only options related to the drop-down calendar are supported.
 			```
 			//Initialize
 			$(".selector").igDatePicker({
