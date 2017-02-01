@@ -66,7 +66,8 @@
 			}
 			setDefaultMaskValue = function () {
 				this.maskValue("9f2s");
-			}
+			};
+			this.isDisabled =  ko.observable(false);
 		};
 		
 		model = new viewModel();
@@ -253,7 +254,30 @@
 				$("#GoshoEditor1").focus().val("9f2s").change();
 				checkAllValues("9f2s", "Values are as expected");
 			});
-		
+			
+			var testId = 'Test disabled binding';
+			test(testId, 12, function () {
+				var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
+
+				ok(!$editor.igMaskEditor("option", "disabled"), "Editor should be enabled");
+				ok(!$editor.igMaskEditor("field").prop("disabled"), "Editor should be enabled");
+				equal($editor.igMaskEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+				ok(!$editor.igMaskEditor("editorContainer").hasClass($.ui.igMaskEditor.prototype.css.disabled), "Editor should be enabled");
+				$chk.click();
+				ok($editor.igMaskEditor("option", "disabled"), "Editor should be disabled");
+				ok($editor.igMaskEditor("field").prop("disabled"), "Editor should be disabled");
+				equal($editor.igMaskEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+				ok($editor.igMaskEditor("editorContainer").hasClass($.ui.igMaskEditor.prototype.css.disabled), "Editor should be disabled");
+				$chk.click();
+				$chk.click();
+				$chk.click();
+				ok(!$editor.igMaskEditor("option", "disabled"), "Editor should be enabled");
+				ok(!$editor.igMaskEditor("field").prop("disabled"), "Editor should be enabled");
+				equal($editor.igMaskEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+				ok(!$editor.igMaskEditor("editorContainer").hasClass($.ui.igMaskEditor.prototype.css.disabled), "Editor should be enabled");
+				$editor.remove();
+				$chk.remove();
+			});
 		});//document ready
 
 	function mouseInteraction(type, element) {
@@ -428,6 +452,12 @@
 	<div id="tempContainer13" data-bind ="igMaskEditor: { value: maskValue1, width: 160, inputMask1: '9&9&' }"></div>
 	
 		<input id="myButton" type="button" value="Nothing">
+
+		<input id="edDisabled" data-bind="igMaskEditor: {
+				width: '200'
+          }, igEditorDisable: isDisabled" />
+
+		<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
 </div>
 </body>
 </html>

@@ -76,7 +76,8 @@
 			};
 			setDefaultDate5 = function () {
 				this.dateValue("/Date(1224043200000)/");  
-			}
+			};
+			this.isDisabled =  ko.observable(false);
 		};
 		
 		model = new viewModel();
@@ -211,6 +212,30 @@
 				
 				checkFieldsValues(date.toString(), "Values are as expected");
 				
+			});
+
+			var testId = 'Test disabled binding';
+			test(testId, 12, function () {
+				var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
+
+				ok(!$editor.igDatePicker("option", "disabled"), "Editor should be enabled");
+				ok(!$editor.igDatePicker("field").prop("disabled"), "Editor should be enabled");
+				equal($editor.igDatePicker("field").attr("disabled"), undefined, "Editor should be enabled");
+				ok(!$editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be enabled");
+				$chk.click();
+				ok($editor.igDatePicker("option", "disabled"), "Editor should be disabled");
+				ok($editor.igDatePicker("field").prop("disabled"), "Editor should be disabled");
+				equal($editor.igDatePicker("field").attr("disabled"), "disabled", "Editor should be disabled");
+				ok($editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be disabled");
+				$chk.click();
+				$chk.click();
+				$chk.click();
+				ok(!$editor.igDatePicker("option", "disabled"), "Editor should be enabled");
+				ok(!$editor.igDatePicker("field").prop("disabled"), "Editor should be enabled");
+				equal($editor.igDatePicker("field").attr("disabled"), undefined, "Editor should be enabled");
+				ok(!$editor.igDatePicker("editorContainer").hasClass($.ui.igDatePicker.prototype.css.disabled), "Editor should be enabled");
+				$editor.remove();
+				$chk.remove();
 			});
 		}); // Document Ready handler
 
@@ -388,6 +413,12 @@
 					width: '160px'
 				}">
 			</input></div>
+
+		<input id="edDisabled" data-bind="igDatePicker: {
+				width: '200'
+          }, igEditorDisable: isDisabled" />
+
+		<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
 </div>
 </body>
 </html>
