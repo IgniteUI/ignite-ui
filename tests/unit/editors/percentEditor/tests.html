@@ -29,6 +29,7 @@
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
 		$(document).ready(function () {
+			var util = $.ig.TestUtil;
 			// Create a editors
 			function loadTestbeds() {
 				$(function () {
@@ -265,6 +266,169 @@
 				}).click();
 				equal($("#percentEditorList").igPercentEditor("value"), 1.5, "Selected value is not accepted");
 			});
+
+			testId = "Lists testing P2, selection-value match";
+			test(testId, 44, function () {
+				var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
+					editorSetup = function (options) {
+						$editor = $("<input />").appendTo("#testBedContainer")
+						.igPercentEditor(options);
+						$field = $editor.igPercentEditor("field");
+						$ddButton = $editor.igPercentEditor("dropDownButton");
+						$spinUpButton = $editor.igPercentEditor("spinUpButton");
+						$spinDownButton = $editor.igPercentEditor("spinDownButton");
+					};
+
+				editorSetup({
+					listItems: [0.1, 0.2, 0.3],
+					buttonType: "dropdown",
+					// remove animation to avoid waiting, show() with effect ignores 0
+					dropDownAnimationDuration: -1
+				});
+
+				$editor.igPercentEditor("value", 0.1);
+				$ddButton.click();
+				ok($editor.igPercentEditor("getSelectedListItem").hasClass($.ui.igPercentEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
+				equal($editor.igPercentEditor("selectedListIndex"), 0, "Selected index does not reflect value");
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "10", "Selected item does not reflect value");
+
+				// select item2:
+				$editor.igPercentEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "20", "Selected item (API) did not update after selection");
+
+				// change value in edit mode:
+				$ddButton.click();
+				util.keyDownChar(51 /*3*/, $field);
+				$field.val("30");
+				util.keyPressChar(51, $field);
+				util.keyUpChar(51, $field);
+				util.keyInteraction(13, $field);
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "30", "Selected item (API) did not update after value update.");
+				$editor.remove();
+
+				//initial value, clear:
+				editorSetup({
+					listItems: [0.01, 1.23, 0.02, 0.03, 1.56, 0.99],
+					buttonType: "dropdown, clear",
+					value: 0.02,
+					// remove animation to avoid waiting, show() with effect ignores 0
+					dropDownAnimationDuration: -1
+				});
+				equal($editor.igPercentEditor("getSelectedListItem").text(), 2, "Selected item (API) not correct on initialization");
+				equal($editor.igPercentEditor("selectedListIndex"), 2, "Selected index (API) not correct on initialization");
+
+				$editor.igPercentEditor("value", 999);
+				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "There should be no selected item (API) without matching value.");
+
+				$editor.igPercentEditor("value", 0.03);
+				$ddButton.click();
+				util.keyInteraction(38, $field);
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "3", "Selected item does not reflect value.");
+				equal($editor.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "2", "Active item did not move from original selection.");
+				util.keyDownChar(54 /*6*/, $field);
+				$field.val("156");
+				util.keyPressChar(54, $field);
+				util.keyUpChar(54, $field);
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "156", "Selected item not updated when typing.");
+				util.keyInteraction(40, $field);
+				equal($editor.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "99", "Active item did not move from new selection.");
+				util.keyDownChar(56 /*8*/, $field);
+				$field.val("8");
+				util.keyPressChar(56, $field);
+				util.keyUpChar(56, $field);
+				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "Selected item not cleared when typing.");
+				equal($editor.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");						
+				util.keyInteraction(13, $field);
+				equal($editor.igPercentEditor("value"), 0.08, "Value not set correctly on enter without list selection.");
+				ok(!$editor.igPercentEditor("dropDownContainer").is(":visible"), "Dropdown list did not close on enter.");
+				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "There should be no selection when value doesn't match any item.");
+
+				$ddButton.click();
+				$field.val("2");
+				util.keyInteraction(13, $field);
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "2", "Selected item does not reflect value.");
+
+				$editor.igPercentEditor("clearButton").click();
+				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "Selection not removed on clear in edit mode");
+				equal($editor.igPercentEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not removed on clear in edit mode.");
+				$field.blur();
+				$editor.igPercentEditor("value", 0.99);
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "99", "Selected item does not reflect value.");
+				$editor.igPercentEditor("clearButton").click();
+				equal($editor.igPercentEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
+				$editor.remove();
+
+				// spin + isLimitedToListValues
+				var listItems = [0.05, 0.445, 0.44, 5.75, 0.554, 2.43, 0.1];
+				editorSetup({
+					spinDelta: 1,
+					isLimitedToListValues: true,
+					listItems: listItems,
+					buttonType: "dropdown, spin, clear",
+					value: 0.44,
+					// remove animation to avoid waiting, show() with effect ignores 0
+					dropDownAnimationDuration: -1
+				});
+				util.click($spinUpButton);
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button");
+				strictEqual($editor.igPercentEditor("value"), 0.445, "Value not changed on spin button");
+				for (var i = 0; i < 3; i++) {
+					util.click($spinUpButton);
+				}
+				strictEqual($editor.igPercentEditor("value"), 0.05, "Value not changed on spin button");
+				ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled");
+				$editor.igPercentEditor("spinDown");
+				strictEqual($editor.igPercentEditor("value"), 0.445, "Value not changed on spin method");
+				$editor.igPercentEditor("spinUp");
+				strictEqual($editor.igPercentEditor("value"), 0.05, "Value not changed on spin method");
+
+				$editor.focus();
+				util.click($spinUpButton);
+				util.click($spinDownButton);
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "44.5", "Selection not changed on spin button in edit mode.");
+				ok(!$spinUpButton.hasClass("ui-state-disabled"), "Spin up button not enabled");
+
+				$ddButton.click();
+				for (var i = 2; i < listItems.length; i++) {
+					util.click($spinDownButton);
+					equal($editor.igPercentEditor("getSelectedListItem").index(), i, "Selection not changed on spin button with open dropdown.");
+				}
+				ok($spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
+				$editor.igPercentEditor("spinUp");
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "243", "Value not changed on spin method in edit mode");
+				$editor.remove();
+
+				// list items with decimalSeparator
+				editorSetup({
+					listItems: [ 0.1, 0.0015, 0.5547, 120.45, 24.135],
+					buttonType: "spin, clear",
+					value: 0.5547,
+					isLimitedToListValues: true, // attempt list values spin
+					decimalSeparator: ",",
+					groupSeparator: "."
+				});
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "55,47", "decimalSeparator selected item not correct.");
+				$editor.igPercentEditor("value", 120.45);
+				$editor.focus();
+				$editor.blur();
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "12045", "decimalSeparator selected item did not remain correct.");
+				
+				$ddButton.click();
+				$editor.igPercentEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+				equal($editor.igPercentEditor("field").val(), "0,15", "Selected item did not update text with correct decimalSeparator.");
+				$editor.blur();
+				equal($editor.igPercentEditor("value"), 0.0015, "Selected item did not update text with correct decimalSeparator.");
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "0,15", "Selected item (API) did not update after selection");
+
+				$editor.igPercentEditor("value", 120.45);
+				$editor.igPercentEditor("spinDown");
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call");
+				$editor.focus();
+				$editor.igPercentEditor("spinDown");
+				equal($editor.igPercentEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
+
+				$editor.remove();
+			});
 			
 			var testId = 'Percent Editor Scientific format.';
 			test(testId, 1, function () {
@@ -341,7 +505,7 @@
 				editorInput.trigger("focus");
 				stop();
 				setTimeout(function () {
-					$.ig.TestUtil.paste(editorInput[0], "33");					
+					util.paste(editorInput[0], "33");					
 					setTimeout(function () {
 						start();
 						equal(editorInput[0].selectionStart, 2, "Cusrsor position not correct after paste");
@@ -351,7 +515,7 @@
 						editorInput[0].setSelectionRange(0);
 						var parseInt = window.parseInt;
 						window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
-						$.ig.TestUtil.paste(editorInput[0], "+0024");
+						util.paste(editorInput[0], "+0024");
 						stop();
 						setTimeout(function () {
 							window.parseInt = parseInt;
@@ -383,14 +547,14 @@
 
 				stop();
 				editorInput[0].selectionStart = 0;
-				$.ig.TestUtil.drop(editorInput[0], "33");					
+				util.drop(editorInput[0], "33");					
 				setTimeout(function () {
 					start();
 					equal(editorInput[0].selectionStart, 0, "Cusrsor position not correct after drop");
 					equal(editorInput[0].selectionEnd, 2, "Cusrsor position not correct after drop");
 					equal(editorInput.val(), "330", "The text after drop is not correct");	
 					editorInput[0].selectionStart = 1;
-					$.ig.TestUtil.drop(editorInput[0], "5");
+					util.drop(editorInput[0], "5");
 					stop();
 					setTimeout(function () {
 						start();
@@ -402,7 +566,7 @@
 						editorInput[0].selectionStart = 0;
 						var parseInt = window.parseInt;
 						window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
-						$.ig.TestUtil.drop(editorInput[0], "+0024");
+						util.drop(editorInput[0], "+0024");
 						stop();
 						setTimeout(function () {
 							window.parseInt = parseInt;
@@ -501,15 +665,16 @@
 
 			var testId = "Spin events with set scientificFormat.";
 			test(testId, 2, function(){
-				var $focusedSpinUp = $("<input id='focusedSpinUp' />").igPercentEditor({
-					buttonType: "spin",
-                	minValue: 0,
-                	scientificFormat: "E"
-				});
+				var $focusedSpinUp = $("<input id='focusedSpinUp' />").appendTo("#testBedContainer")
+					.igPercentEditor({
+						buttonType: "spin",
+						minValue: 0,
+						scientificFormat: "E"
+					});
 
-				$focusedSpinUp.data("igPercentEditor")._focused = true;
+				$focusedSpinUp.focus();
 				$focusedSpinUp.igPercentEditor("spinUp");
-				equal($focusedSpinUp.igPercentEditor("field").val(), "1", "The wrong value is set in the editor in edit mode.");
+				equal($focusedSpinUp.igPercentEditor("field").val(), "1E+0", "The wrong value is set in the editor in edit mode.");
 				$focusedSpinUp.blur();
 				equal($focusedSpinUp.igPercentEditor("value"), "1e-2", "The scientificFormat is not set properly when the spinUp button is clicked.");
 				$focusedSpinUp.remove();
