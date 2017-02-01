@@ -400,9 +400,9 @@
 				gbDataView = ds.groupByDataView();
 				dataView = ds.dataView();
 				renderData(gbDataView);
-				ok(gbDataView.length === 10 &&
-					gbDataView[8].__gbRecord === true &&
-					gbDataView[9].Id === i &&
+				ok(gbDataView.length === 9 &&
+					gbDataView[8].__gbRecord === undefined &&
+					gbDataView[8].Id === i &&
 					dataView.length === 5,
 				 	"Test groupByDataView and dataView after new row is added");
 				// test delete row
