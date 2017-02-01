@@ -39,7 +39,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695"];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -449,6 +449,25 @@
 						maxValue: 10
 					});
 				}
+				window.Bug646Testbed = function () {
+					$("<input/>", { id: "646Editor" })
+					.appendTo("#testBedContainer")
+					.igNumericEditor({
+						allowNullValue: false,
+						value: 20
+					});
+				}
+
+				window.Bug695Testbed = function () {
+						$("<input/>", { id: "695Editor" })
+						.appendTo("#testBedContainer")
+						.igPercentEditor({
+							allowNullValue: true,
+							nullValue: "",
+							regional: 'de',
+							value: 0.029
+						});
+				}
 
 				window.Bug655Testbed = function () {
 					$("<input/>", { id: "655Editor" })
@@ -633,7 +652,7 @@
 				$("#208350Editor1").igDateEditor("field").blur();
 				equal($("#208350Editor1").igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 				$("#208350Editor1").igDateEditor("field").focus();
-				equal($("#208350Editor1").igDateEditor("value").getTime(), "1476527156000", "The value is changed to 15/10/2016 10:25:56");
+				equal($("#208350Editor1").igDateEditor("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 15/10/2016 10:25:56");
 
 
 				equal($("#208350Editor1").igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
@@ -642,7 +661,7 @@
 				$("#208350Editor2").igDatePicker("field").blur();
 				equal($("#208350Editor2").igDatePicker("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 				$("#208350Editor2").igDatePicker("field").focus();
-				equal($("#208350Editor2").igDatePicker("value").getTime(), "1476527156000", "The value is changed to 1476527156000");
+				equal($("#208350Editor2").igDatePicker("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 1476527156000");
 			});
 			testId = 'Bug 208356';
 			test(testId, 1, function () {
@@ -846,7 +865,7 @@
 						ok(!$editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
 						ok(flag, "Value changed should not be fired.");
 					}, 
-					2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 400 /*normal*/)
+					2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 600 /*normal*/)
 				);
 			});
 			
@@ -1220,9 +1239,17 @@
 				editor.igNumericEditor("option", "maxValue", 10);
 				editor.igNumericEditor("option", "value", -1);
 				equal(editor.igNumericEditor("value"), 0, "minValue 0 should be set(value method)");
-
 				$("#539Editor").remove();
 			});	
+			testId = 'Bug 646 - Set null value using setOption';
+			test(testId, 2, function () {	
+				var editor =  $("#646Editor"),
+				field = editor.igNumericEditor("field");
+				equal(editor.igNumericEditor("value"), 20, "value should be 20");
+				editor.igNumericEditor("option",'value', null);
+				equal(editor.igNumericEditor("value"), 20, "value should be 20");
+				$("#646Editor").remove();
+			});
 
 			var testId = 'Bug 655 - [igMaskEditor] Clearing the displayed value using the clear button is not possible after setting the value to null';
 			test(testId, 6, function () {	
@@ -1252,7 +1279,16 @@
 					
 					editor.remove();
 				}, 100);
-			});	
+			});
+
+				testId = 'Bug 695 - Check ';
+				test(testId, 2, function () {
+				var editor =  $("#695Editor");
+				field = editor.igPercentEditor("field");
+				equal(editor.igPercentEditor("field").focus().blur().val(), "2,90%", "value should be to 2,90%");//fails prior fix with 2.900,00%
+				equal(editor.igPercentEditor("value"), 0.029, "value should be 0.029"); //fails prior fix and returns 29 instead
+					$("#695Editor").remove();
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {

@@ -17,7 +17,9 @@ if (!$.ig.Notifier) {
 		locale: {
 		    successMsg: "Erfolgreich",
 		    errorMsg: "Fehler",
-		    warningMsg: "Warnung"
+		    warningMsg: "Warnung",
+		    notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
+		    notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
 		}
 	});
 

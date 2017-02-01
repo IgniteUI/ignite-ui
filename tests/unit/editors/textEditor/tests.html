@@ -1197,25 +1197,24 @@
 				$emptyAndDDBtn = $("<input id='emptyAndDDBtn' />")
 				$wrongBtn = $("<input id='wrongBtn' />");
 
-			logOld = window.console.log;
-			window.console.log = logger;
-			$wrongBtn.igTextEditor({
-				buttonType: "dropdownbutton"
-			});
-			window.console.log = logOld;
-			equal(logBuffer.pop(), $.ig.Editor.locale.btnValueNotSupported, "The editor is not supposed to have any buttons.");
-			
+			throws(function(){
+				$wrongBtn.igTextEditor({
+					buttonType: "dropdownbutton"
+				});
+			},
+			Error($.ig.Editor.locale.btnValueNotSupported),
+			"Unsupported/Wrong button value is set.");
 
 			throws(function(){
 				$imgEditor.igTextEditor();
 			},
-			$.ig.Editor.locale.targetNotSupported,
+			Error($.ig.Editor.locale.targetNotSupported),
 			"The editor should not be created on img.");
 
 			throws(function(){
 				$multilineError.igTextEditor();
 			},
-			$.ig.Editor.locale.multilineErrMsg,
+			Error($.ig.Editor.locale.multilineErrMsg),
 			"Error not throw when igTextEditor is initialized in textArea and textMode is not multiline.");
 			
 			throws(function(){
@@ -1279,7 +1278,7 @@
 			$editor.remove();
 		});
 		testId = "Test nullValue on initialization";
-		test(testId, 4, function(){
+		test(testId, 4, function() {
 			var $editor = $("<input id='editor'/>").
 			appendTo("#testBedContainer").igTextEditor({ allowNullValue: false});
 			//Get null Value
@@ -1295,6 +1294,17 @@
 			$editor.igTextEditor("value", null);
 			//Get null value
 			equal($editor.igTextEditor("value"), null, "The value is not an empty string");
+			$editor.remove();
+		});
+
+		var testId = 'Clear button state';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ buttonType: "clear" });
+			ok(!$editor.igTextEditor("clearButton").is(":visible"), "Clear button is not hidden");
+			$editor.igTextEditor("value", "someVal");
+			ok($editor.igTextEditor("clearButton").is(":visible"), "Clear button is not visible");
 			$editor.remove();
 		});
 	});

@@ -85,7 +85,7 @@
 			notStrictEqual($chkContainer.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a DIV');
 			notStrictEqual($chkSpan.data("igCheckboxEditor"), undefined, 'Error creating igCheckboxEditor in a SPAN');
 			equal($chkInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
-			equal(errorSpan, $.ig.Editor.locale.instantiateCheckBoxErrMsg, "Error message is wrong");
+			equal(errorSpan.message, $.ig.Editor.locale.instantiateCheckBoxErrMsg, "Error message is wrong");
 			equal($chkInput.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
 			equal($chkContainer.data("igCheckboxEditor")._valueInput.attr("type"), "checkbox", 'Type of igCheckboxEditor is not checkbox');
 			equal($chkContainer.igCheckboxEditor("inputName"), "agree", 'Input name shoud be set');
@@ -152,7 +152,7 @@
 			throws(function() {
 					$chkInput.igCheckboxEditor("value", "fail");
 				},
-				$.ig.Editor.locale.cannotParseNonBoolValue,
+				Error($.ig.Editor.locale.cannotParseNonBoolValue),
 				"igCheckboxEditor acepted wrong value."
 			);
 			ok(isChecked($chkInput, true), 'The value is not updated properly');
@@ -234,7 +234,7 @@
 			throws(function() {
 					$chkInput.igCheckboxEditor("value");
 				},
-				$.ig.Editor.locale.cannotParseNonBoolValue,
+				Error($.ig.Editor.locale.cannotParseNonBoolValue),
 				"igCheckboxEditor acepted wrong value."
 			);
 			$chkInput.igCheckboxEditor("destroy");
@@ -281,13 +281,25 @@
 		});
 
 		testId = '[ID10] Check focus using the focus API';
-		test(testId, 3, function () {
+		test(testId, 5, function () {
 		    $chk = $("#chkStyled"), $chk1 = $("#chkInput2"), css = $chk.data("igCheckboxEditor").css;
 		    $chk.igCheckboxEditor("setFocus");
 		    ok($chk.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not applied");
 		    ok($(document.activeElement).html() === $chk.igCheckboxEditor("editorContainer").html(), "Focus class not applied");
 		    $chk1.igCheckboxEditor("setFocus");
 		    ok($chk1.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class not removed");
+
+			var $chkEditor = $('<input/>').appendTo("#testBedContainer").igCheckboxEditor({
+				checked: true
+			});
+			$chkEditor.igCheckboxEditor("setFocus", 500);
+			ok(!$chkEditor.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class should not be still applied");
+			stop();
+			setTimeout(function() {
+				start();
+				ok($chkEditor.igCheckboxEditor("editorContainer").hasClass(css.focus), "Focus class should be applied");
+				$chkEditor.remove();
+			}, 500);
 		});
 
 		testId = '[ID11] Check exception when setting null';
@@ -295,7 +307,7 @@
 
 			throws(
 				function () { $("#chkNull").igCheckboxEditor("value", null); },
-				$.ig.Editor.locale.cannotSetNonBoolValue,
+				Error($.ig.Editor.locale.cannotSetNonBoolValue),
 				$.ig.Editor.locale.cannotSetNonBoolValue);
 		});
 
@@ -349,7 +361,7 @@
         <h2 id="qunit-userAgent"></h2>
         <ol id="qunit-tests"></ol>
     </div>
-    <div style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
+    <div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
         <label id="label1" for="chkInput">Label 1</label>
         <input id="chkInput" />
         <label id="label2" for="chkInput2">Label 2</label>

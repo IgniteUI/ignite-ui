@@ -671,7 +671,7 @@
 			throws(function() {
 					$("#scientificFormat").igNumericEditor("option", "value", "3");
 				},
-				$.ig.Editor.locale.scientificFormatErrMsg,
+				Error($.ig.Editor.locale.scientificFormatErrMsg),
 				"Acepted value with wrong scientificFormat."
 			);
 			container.click();
@@ -876,7 +876,7 @@
 			$("#readonlyEditor").igNumericEditor("option", "value", 19);
 			equal($("#readonlyEditor").igNumericEditor("option", "value"), 19, "Value not changed");
 			$("#readonlyEditor").igNumericEditor("option", "value", "abcde");
-			equal($("#readonlyEditor").igNumericEditor("option", "value"), "abcde", "Value should be empty string");
+			equal($("#readonlyEditor").igNumericEditor("option", "value"), 19, "Value should be reverted to the previous value");
 
 			throws( function() {
 					$("#readonlyEditor").igNumericEditor("option", "visibleItemsCount", 3);
@@ -1386,6 +1386,17 @@
 			clearButton.click();
 			equal($editor.igNumericEditor("value"), -55, "Value after cleaning is not correct");
 
+			$editor.remove();
+		});
+
+		var testId = 'Clear button state';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({ buttonType: "clear" });
+			ok(!$editor.igNumericEditor("clearButton").is(":visible"), "Clear button is not hidden");
+			$editor.igNumericEditor("value", 45);
+			ok($editor.igNumericEditor("clearButton").is(":visible"), "Clear button is not visible");
 			$editor.remove();
 		});
 	});
