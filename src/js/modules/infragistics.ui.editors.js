@@ -4191,9 +4191,9 @@
 			*/
 			textAlign: "right",
 			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
-			This is achieved by setting the minValue and maxValue editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			This is achieved by setting the [minValue](ui.igNumericEditor#options:minValue) and [maxValue](ui.igNumericEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
 			The range for the specific type follows the numeric type standarts, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
-			In addition, the maximum value that can be set to minDecimals and maxDecimals options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
+			In addition, the maximum value that can be set to [minDecimals](ui.igNumericEditor#options:minDecimals) and [maxDecimals](ui.igNumericEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -5882,9 +5882,9 @@
 				*/
 			displayFactor: 100,
 			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
-			This is achieved by setting the minValue and maxValue editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			This is achieved by setting the [minValue](ui.igPercentEditor#options:minValue) and [maxValue](ui.igPercentEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
 			The range for the specific type follows the numeric type standarts, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
-			In addition, the maximum value that can be set to minDecimals and maxDecimals options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
+			In addition, the maximum value that can be set to [minDecimals](ui.igPercentEditor#options:minDecimals) and [maxDecimals](ui.igPercentEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
