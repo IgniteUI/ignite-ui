@@ -75,7 +75,8 @@
 			    maskRevertMessage: '値が以前の有効な値に戻されました。すべての必須文字を入力してください。',
 				dateMessage: '有効な日付を入力してください',
 			    centuryThresholdValidValues: "centuryThreshold プロパティは 0 ~ 99 である必要があります。",
-			    noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。"
+			    noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。",
+				decimalNumber: "dataMode が '{0}' の場合、{1} オプションは 0 ～ {2} の間の値を承諾します。"
 		    }
 	    };
     }
