@@ -1279,7 +1279,41 @@
 					fd = ds.filteredData();
 					ok(fd.length === 9, "The filtered records are not the expected ones!");
 				});
-
+				// Test bug 231214: When you update a formatted field it can't be found by the allFields search filtering.
+				// Add tests when adding/removing/deleting record
+				test("IgDataSource Test - add/remove/delete record and test filterByText", function () {
+					var fd, ds, fd;
+					ds = new $.ig.DataSource({
+						filtering: { type: "local", enabled: true },
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON,
+						schema: {
+							fields: [{
+								name: "ID", type: "number"
+							}, {
+								name: "Name", type: "string", formatter: function (val, record) { return "Formatted " + val + "1"; }
+							}, {
+								name: "Description", type: "string"
+							}, {
+								name: "ReleaseDate", type: "date"
+							}]
+						}
+					}).dataBind();
+					// update value
+					ds.setCellValue(1, "Name", "123", true);
+					ds.filterByText("Formatted 123");
+					fd = ds.filteredData();
+					ok(fd.length === 1 && fd[0].Name === "123", "Change cell in record with ID 1 and apply filtering (ONLY editted record should match filtering text)!");
+					// remove record
+					ds.deleteRow(8, true);
+					ds.filterByText("LCD HDTV");
+					ok(ds.filteredData().length === 0, "Remove record with ID 8 and apply filtering(ONLY deleted record matches filtering text)!");
+					// add new record
+					ds.addRow(8,  { "ID": 9, "Name": "MyTest", "Description": "Description1", "ReleaseDate": "\/Date(1210204800000)\/"}, true);
+					ds.filterByText("Formatted MyTest1");
+					fd = ds.filteredData();
+					ok(fd.length === 1 && fd[0].ID === 9, "Add new record and search by text which could be found ONLY in the newly-added record!");
+				});
 			});
 			var northwindProductsJSON = [
 				{ "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseDate": "\/Date(694224000000)\/", "DiscontinuedDate": null, "Rating": 4, "Price": "2.5", "Category": { "ID": 0, "Name": "Food" } },
