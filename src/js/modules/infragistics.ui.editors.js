@@ -4014,7 +4014,10 @@
 				center type="string" The text into the input gets aligned to the center.
 			*/
 			textAlign: "right",
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept. The range for the specific type follows the numeric type standarts, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the minValue and maxValue editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standarts, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to minDecimals and maxDecimals options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -5786,7 +5789,10 @@
 				```
 				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept. The range for the specific type follows the numeric type standarts, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the minValue and maxValue editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standarts, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to minDecimals and maxDecimals options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
