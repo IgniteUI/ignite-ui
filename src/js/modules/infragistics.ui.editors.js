@@ -4014,7 +4014,10 @@
 				center type="string" The text into the input gets aligned to the center.
 			*/
 			textAlign: "right",
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igNumericEditor#options:minValue) and [maxValue](ui.igNumericEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standarts, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igNumericEditor#options:minDecimals) and [maxDecimals](ui.igNumericEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -4027,16 +4030,16 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "dataMode", "float");
 			```
-				double type="string" the Number object is used with limits of double and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'. Note: that is used as default.
-				float type="string" the Number object is used with limits of float and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'.
-				long type="string" the Number object is used with limits of signed long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ulong type="string" the Number object is used with limits of unsigned long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				int type="string" the Number object is used with limits of signed int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				uint type="string" the Number object is used with limits of unsigned int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				short type="string" the Number object is used with limits of signed short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ushort type="string" the Number object is used with limits of unsigned short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				sbyte type="string" the Number object is used with limits of signed byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				byte type="string" the Number object is used with limits of unsigned byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
+				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue). Note: that is used as default.
+				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				long type="string" the Number object is used with the limits of a signed long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ulong type="string" the Number object is used with the limits of an unsigned long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				int type="string" the Number object is used with the limits of a signed int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				uint type="string" the Number object is used with the limits of an unsigned int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				short type="string" the Number object is used with the limits of a signed short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ushort type="string" the Number object is used with the limits of an unsigned short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				sbyte type="string" the Number object is used with the limits of a signed byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				byte type="string" the Number object is used with the limits of an unsigned byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
 			*/
 			dataMode: "double",
 			/* type="number" Gets/Sets the minimum value which can be entered in the editor by the end user.
@@ -5786,7 +5789,10 @@
 				```
 				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igPercentEditor#options:minValue) and [maxValue](ui.igPercentEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standarts, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igPercentEditor#options:minDecimals) and [maxDecimals](ui.igPercentEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
