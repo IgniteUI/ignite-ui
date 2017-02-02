@@ -2099,6 +2099,10 @@
 		},
 
 		_onWheelContainer: function (event) {
+			if (event.ctrlKey === true) {
+				return true;
+			}
+
 			var evt = event.originalEvent;
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
@@ -2401,9 +2405,9 @@
 			bNoCancel = this._trigger("resizing", null, evtArgs);
 			if (bNoCancel) {
 				this.refresh();
-			}
 
-			this._trigger("resized", null, evtArgs);
+				this._trigger("resized", null, evtArgs);
+			}
 		},
 
 		_onElementMutation: function (mutations) {
