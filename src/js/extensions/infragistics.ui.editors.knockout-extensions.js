@@ -497,11 +497,36 @@
 		},
 		update: function (element, valueAccessor) {
 			var value, current, editor = $(element);
-			value = ko.utils.unwrapObservable(valueAccessor().checked());
+			if (ko.isObservable(valueAccessor().checked)) {
+				value = ko.utils.unwrapObservable(valueAccessor().checked());
+			} else {
+				return;
+			}
 			current = editor.igCheckboxEditor("value");
 			if (current !== value) {
 				editor.igCheckboxEditor("value", value);
 			}
 		}
 	};
+
+	ko.bindingHandlers.igEditorDisable = {
+        update: function (element, valueAccessor) {
+            var disabled = valueAccessor(),
+                editor = $(element),
+				widgetNames = [ "igTextEditor", "igNumericEditor",
+					"igPercentEditor", "igCurrencyEditor", "igMaskEditor",
+					"igDateEditor", "igDatePicker", "igCheckboxEditor" ],
+				name;
+
+            if (!ko.isObservable(disabled)) {
+                return;
+            }
+			for (name in editor.data()) {
+				if ($.inArray(name, widgetNames) !== -1) {
+					editor[ name ]("option", "disabled", disabled());
+					break;
+				}
+			}
+        }
+    };
 }));// REMOVE_FROM_COMBINED_FILES
