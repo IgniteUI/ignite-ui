@@ -18,6 +18,8 @@
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 	
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	                                    
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquery.js"></script>
@@ -31,15 +33,9 @@
 	
 	
 	<link type="text/css" href="../../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
-	<script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>
-
-	
+	<script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>	
 	<script type='text/javascript' src='../../../../../bower_components/knockout/dist/knockout.debug.js'></script>
-	
-	
-	 
-	
-	<!--<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>-->
+
 	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
 	
 	
@@ -60,6 +56,7 @@
 			this.testFunction = function (evt, ui) {
 				eventTriggered = true;
 			};
+			this.isDisabled =  ko.observable(false);
 		};
 		
 		model = new viewModel();
@@ -352,7 +349,48 @@
 				}, 200);
 			}, 200);
 		});
+
+		testID = "Test regional with reversed decimal(,) and group(.) separators like 'de' .Update from outside input.";
+		test(testID, 6, function () {
+			$("#tempContainer").empty();
+				//Init with regional 'de'
+				var $editor = $("#Issue695_Editor"), $input = $("#Issue695_Input");
+				$('#Issue695_Input').val(0.123).change();
+				equal($editor.igPercentEditor("value"), 0.123, "Value is as expected");
+				equal($editor.igPercentEditor("displayValue"), "12,30%", "displayValue is correct");
+				$("#resetButton").click();
+				equal($editor.igPercentEditor("value"), 32.00, "Value is as expected");
+				equal($editor.igPercentEditor("displayValue"), "3.200,00%", "displayValue is correct");
+				$('#Issue695_Input').val("").change();
+				equal($editor.igPercentEditor("value"), "", "Value is as expected");
+				equal($editor.igPercentEditor("displayValue"), "", "displayValue is correct");
+				$editor.remove();
+				$input.remove();
+		});
 		
+		var testId = 'Test disabled binding';
+		test(testId, 12, function () {
+			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
+
+			ok(!$editor.igPercentEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igPercentEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igPercentEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igPercentEditor("editorContainer").hasClass($.ui.igPercentEditor.prototype.css.disabled), "Editor should be enabled");
+			$chk.click();
+			ok($editor.igPercentEditor("option", "disabled"), "Editor should be disabled");
+			ok($editor.igPercentEditor("field").prop("disabled"), "Editor should be disabled");
+			equal($editor.igPercentEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			ok($editor.igPercentEditor("editorContainer").hasClass($.ui.igPercentEditor.prototype.css.disabled), "Editor should be disabled");
+			$chk.click();
+			$chk.click();
+			$chk.click();
+			ok(!$editor.igPercentEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igPercentEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igPercentEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igPercentEditor("editorContainer").hasClass($.ui.igPercentEditor.prototype.css.disabled), "Editor should be enabled");
+			$editor.remove();
+			$chk.remove();
+		});
 	});//document ready
 
 	function mouseInteraction(type, element) {
@@ -544,6 +582,19 @@
 		valueChanged: testFunction
 	}" />
 	<input id="inpChangeEvt" type="text" class="row-control" data-bind="value: customerTax" />
+	
+	<input id="Issue695_Editor" data-bind="igPercentEditor: {
+			value: percentNumber, 
+			width: 160,
+			regional:'de'
+		}" />
+		<input id="Issue695_Input" type="text" class="row-control" data-bind="value: percentNumber" />
+
+	<input id="edDisabled" data-bind="igPercentEditor: {
+			width: '200'
+		}, igEditorDisable: isDisabled" />
+
+	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
 </div>
 </body>
 </html>

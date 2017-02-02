@@ -288,10 +288,19 @@
 			var value, current, editor = $(element);
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
-			// K.D. Good!
-			if (isNaN(value)) {
-				value = undefined;
+			// Related to #695. Editors should allow empty string.
+			if (value !== "") {
+				// K.D. Good!
+				if (isNaN(value)) {
+					value = undefined;
+				}
+
+				// I.G. 16/1/2017 #695 Fix igNumericEditor 'Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
+				else {
+					value = parseFloat(value);
+				}
 			}
+
 			current = editor.igNumericEditor("value");
 			if (current !== value && !editor.data("igNumericEditor")._doNotUpdate) {
 				editor.igNumericEditor("value", value);
@@ -341,8 +350,17 @@
 		update: function (element, valueAccessor) {
 			var value, current, editor = $(element);
 			value = ko.utils.unwrapObservable(valueAccessor().value);
-			if (isNaN(value)) {
-				value = undefined;
+
+			// Related to #695. Editors should allow empty string.
+			if (value !== "") {
+				if (isNaN(value)) {
+					value = undefined;
+				}
+
+				// I.G. 16/1/2017 #695 Fix igCurrencyEditor 'Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
+				else {
+					value = parseFloat(value);
+				}
 			}
 			current = editor.igCurrencyEditor("value");
 			if (current !== value && !editor.data("igCurrencyEditor")._doNotUpdate) {
@@ -393,8 +411,17 @@
 		update: function (element, valueAccessor) {
 			var value, current, editor = $(element);
 			value = ko.utils.unwrapObservable(valueAccessor().value);
-			if (isNaN(value)) {
-				value = undefined;
+
+			// Related to #695. Editors should allow empty string.
+			if (value !== "") {
+				if (isNaN(value)) {
+					value = undefined;
+				}
+
+				// I.G. 16/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
+				else {
+					value = parseFloat(value);
+				}
 			}
 			current = editor.igPercentEditor("value");
 			if (current !== value && !editor.data("igPercentEditor")._doNotUpdate) {
@@ -470,11 +497,36 @@
 		},
 		update: function (element, valueAccessor) {
 			var value, current, editor = $(element);
-			value = ko.utils.unwrapObservable(valueAccessor().checked());
+			if (ko.isObservable(valueAccessor().checked)) {
+				value = ko.utils.unwrapObservable(valueAccessor().checked());
+			} else {
+				return;
+			}
 			current = editor.igCheckboxEditor("value");
 			if (current !== value) {
 				editor.igCheckboxEditor("value", value);
 			}
 		}
 	};
+
+	ko.bindingHandlers.igEditorDisable = {
+        update: function (element, valueAccessor) {
+            var disabled = valueAccessor(),
+                editor = $(element),
+				widgetNames = [ "igTextEditor", "igNumericEditor",
+					"igPercentEditor", "igCurrencyEditor", "igMaskEditor",
+					"igDateEditor", "igDatePicker", "igCheckboxEditor" ],
+				name;
+
+            if (!ko.isObservable(disabled)) {
+                return;
+            }
+			for (name in editor.data()) {
+				if ($.inArray(name, widgetNames) !== -1) {
+					editor[ name ]("option", "disabled", disabled());
+					break;
+				}
+			}
+        }
+    };
 }));// REMOVE_FROM_COMBINED_FILES

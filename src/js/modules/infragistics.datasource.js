@@ -3089,11 +3089,6 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
-			if (this.isGroupByApplied(this.settings.sorting.expressions)) {
-				this._generateGroupByData(this._filter ? this._filteredData :
-															this._data,
-										this.settings.sorting.expressions);
-			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
@@ -3613,6 +3608,11 @@
 					this.removeRecordByIndex(parseInt(t.rowId, 10), origDs);
 				} else {
 					this.removeRecordByKey(t.rowId, origDs);
+				}
+				if (this.isGroupByApplied(this.settings.sorting.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData :
+																this._data,
+											this.settings.sorting.expressions);
 				}
 			} else if (t.type === "newrow") {
 				this._addRow(t.row, -1, origDs);
@@ -7808,6 +7808,10 @@
 		}
 	});
 	$.ig.JSONDataSource = $.ig.JSONDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "json"
+		},
 		init: function (options) {
 			if (!options) {
 				options = {};
@@ -8171,7 +8175,9 @@
 			string Setting the name of the callback function for a JSONP request
 			function As of jQuery 1.5, you can also use a function, in which case the value of jsonpCallback is set to the return value of that function
 			*/
-			jsonpCallback: null
+			jsonpCallback: null,
+			/* type="string" Type of the data source. */
+			type: "json"
 		},
 		init: function (options) {
 			if (!options) {
@@ -8193,6 +8199,10 @@
 		}
 	});
 	$.ig.FunctionDataSource = $.ig.FunctionDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "function"
+		},
 		init: function (options) {
 			if (!options) {
 				options = {};
@@ -8204,6 +8214,10 @@
 	});
 	/* the dataSource should be a reference to a DOM element */
 	$.ig.HtmlTableDataSource = $.ig.HtmlTableDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "htmlTableDom"
+		},
 		init: function (options) {
 
 			if (!options) {
@@ -10790,7 +10804,7 @@
 		},
 		getPathBy: function (record) {
 			/*Gets the path of a record by the record or the record's key
-			paramType="object|string|number" optional="false" the record or the record's key as string or number
+			paramType="object|string|number" returnType="string" optional="false" the record or the record's key as string or number
 			*/
 			if (record === null || record === undefined) {
 				return null;

@@ -95,6 +95,10 @@
 	position: relative;
 }
 
+.ig-layout-border-item-hidden {
+	display: none;
+}
+
 .ig-layout-border-container {
 	height: 100%;
 	width: 100%;
