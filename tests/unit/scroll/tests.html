@@ -1309,38 +1309,38 @@
 			}, 325);
 	    });
 		
-		// test(testId_42, function () {
-	    //     $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-	    //     $('#elemVH').igScroll({
-		// 		modifyDOM: true
-		// 	});
+		test(testId_42, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+		 	});
 			
-	    //     var vDrag = $("#elemVH_vBar_drag"),
-		// 		arrowUp = $("#elemVH_vBar_arrowUp"),
-		// 		arrowDown = $("#elemVH_vBar_arrowDown"),
-		// 		vScrollbarContainer = $("#elemVH_vBar"),
-		// 		elemContainer = $("#elemVH_container"),
-		// 		elemContent = $("#elemVH_content");;
+	        var vDrag = $("#elemVH_vBar_drag"),
+		 		arrowUp = $("#elemVH_vBar_arrowUp"),
+		 		arrowDown = $("#elemVH_vBar_arrowDown"),
+		 		vScrollbarContainer = $("#elemVH_vBar"),
+		 		elemContainer = $("#elemVH_container"),
+		 		elemContent = $("#elemVH_content");;
 				
-		// 	vScrollbarContainer.mouseenter();
-		// 	ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
-		// 	ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+		 	vScrollbarContainer.mouseenter();
+		 	ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+		 	ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
 			
-		// 	$.ig.TestUtil.simulateSingleClick(arrowDown);
-		// 	$.ig.TestUtil.simulateSingleClick(arrowDown);
-		// 	equal(elemContainer.scrollTop(), 80, "igScroll did not scroll properly");
+		 	$.ig.TestUtil.simulateSingleClick(arrowDown);
+		 	$.ig.TestUtil.simulateSingleClick(arrowDown);
+		 	equal(elemContainer.scrollTop(), 80, "igScroll did not scroll properly");
 			
-		// 	$.ig.TestUtil.simulateSingleClick(arrowUp);
-		// 	equal(elemContainer.scrollTop(), 40, "igScroll did not scroll properly");
+		 	$.ig.TestUtil.simulateSingleClick(arrowUp);
+		 	equal(elemContainer.scrollTop(), 40, "igScroll did not scroll properly");
 			
-		// 	stop();
-		// 	setTimeout(function () {
-		// 		var scrollbarPixelContentRatio = ($('#elemVH').height() - 3 * 15) / elemContent.height();
-		// 		equal((getTransform3dValueY(vDrag)).toFixed(4), (40 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
-		// 		$("#elemVH").remove();
-		// 		start();
-		// 	}, 25);
-	    // });
+		 	stop();
+		 	setTimeout(function () {
+		 		var scrollbarPixelContentRatio = ($('#elemVH').height() - 3 * 15) / elemContent.height();
+		 		equal((getTransform3dValueY(vDrag)).toFixed(4), (40 * scrollbarPixelContentRatio).toFixed(4), "igScroll did not update scrollbar position properly");
+		 		$("#elemVH").remove();
+		 		start();
+		 	}, 500);
+	    });
 		
 		test(testId_43, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
@@ -1934,37 +1934,37 @@
 			}, 25);
 	    });
 		
-		// test(testId_65, function () {
-	    //     $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
-	    //     $('#elemVH').igScroll({
-		// 		modifyDOM: true
-		// 	});
+		test(testId_65, function () {
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+		 		modifyDOM: true
+		 	});
 			
-	    //     var hDrag = $("#elemVH_hBar_drag"),
-		// 		hTrack = $("#elemVH_hBar_track"),
-		// 		hScrollbarContainer = $("#elemVH_hBar"),
-		// 		elemContainer = $("#elemVH_container"),
-		// 		elemContent = $("#elemVH_content");
+	        var hDrag = $("#elemVH_hBar_drag"),
+		 		hTrack = $("#elemVH_hBar_track"),
+		 		hScrollbarContainer = $("#elemVH_hBar"),
+		 		elemContainer = $("#elemVH_container"),
+		 		elemContent = $("#elemVH_content");
 				
-		// 	//scroll to the bottom first
-		// 	$('#elemVH').igScroll("option", "scrollLeft", elemContent.width() - elemContainer.width());
-		// 	stop();
-		// 	setTimeout(function () {
-		// 		equal(elemContainer.scrollLeft(), 200, "igScroll did not scroll properly");
+		 	//scroll to the bottom first
+		 	$('#elemVH').igScroll("option", "scrollLeft", elemContent.width() - elemContainer.width());
+		 	stop();
+		 	setTimeout(function () {
+		 		equal(elemContainer.scrollLeft(), 200, "igScroll did not scroll properly");
 				
-		// 		hScrollbarContainer.mouseenter();			
-		// 		$.ig.TestUtil.simulateSingleClick(hTrack, { offsetX: 50 });
-		// 		equal(elemContainer.scrollLeft(), 0, "igScroll did not scroll properly");
-		// 		setTimeout(function () {
-		// 			//Check horizontal thumb drag position
-		// 			var scrollbarPixelContentRatio = ($('#elemVH').width() - 3 * 15) / elemContent.width();
-		// 			equal(getTransform3dValueX(hDrag), 0, "igScroll did not scroll properly");
+		 		hScrollbarContainer.mouseenter();			
+		 		$.ig.TestUtil.simulateSingleClick(hTrack, { offsetX: 50 });
+		 		equal(elemContainer.scrollLeft(), 0, "igScroll did not scroll properly");
+		 		setTimeout(function () {
+		 			//Check horizontal thumb drag position
+		 			var scrollbarPixelContentRatio = ($('#elemVH').width() - 3 * 15) / elemContent.width();
+		 			equal(getTransform3dValueX(hDrag), 0, "igScroll did not scroll properly");
 					
-		// 			$("#elemVH").remove();
-		// 			start();
-		// 		}, 25);
-		// 	}, 100);
-	    // });
+		 			//$("#elemVH").remove();
+		 			start();
+		 		}, 500);
+		 	}, 500);
+	    });
 		
 		test(testId_66, function () {
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
