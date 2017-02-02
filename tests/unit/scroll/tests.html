@@ -2425,6 +2425,32 @@
 			}, 1500);
 	    });
 		
+		test(testId_87, function () {
+			$.ig.util.isTouch = true;
+	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
+	        $('#elemVH').igScroll({
+				modifyDOM: true
+			});
+
+			var vBarContainer = $("#elemVH_vBar"),
+				hBarContainer = $("#elemVH_hBar"),
+				elemContainer = $("#elemVH_container"),
+				elemContent = $("#elemVH_content");
+	
+			stop();
+			$('#elemVH').data('igScroll')._bMixedEnvironment = false;
+			var touchSteps = [{x: 3, y: 0}, {x: 7, y: 0}, {x: 15 , y: 0}, {x: 15, y: 0}, {x: 6, y: 0}, {x: 5, y: 0}, {x: 1, y: 0}];
+			$.ig.TestUtil.simulateTouchSwipeFromCenterIE(elemContainer, touchSteps, 10);
+			setTimeout(function () {
+				//22 because there is compensation for horizontal scroll of 30 pixels by default
+				equal($("#elemVH").data("igScroll")._getContentPositionX(), 22, "igScroll scrolled horizontally by the swipe");
+				equal($("#elemVH").data("igScroll")._getContentPositionY(), 0, "igScroll did not scroll properly vertically");
+				$.ig.util.isTouch = false;
+				$("#elemVH").remove();
+				start();
+			}, 2500);
+	    });
+		
 		test(testId_88, function () {
 			$.ig.util.isTouch = true;
 	        $("#testBed").append($('<div id="elemVH" style="height:400px; width: 600px; overflow: hidden;"></div>').append(contentScrollVH));
