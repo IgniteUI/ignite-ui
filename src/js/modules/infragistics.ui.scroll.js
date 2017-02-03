@@ -2266,7 +2266,7 @@
 			}
 
 			//On Safari preventing the touchmove would prevent default page scroll behaviour even if there is the element doesn't have overflow
-			if (!$.ig.util.isSafari || ($.ig.util.isSafari && !this._igScollTouchPrevented)) {
+			if (!this._igScollTouchPrevented) {
 				event.preventDefault();
 			}
 		},
