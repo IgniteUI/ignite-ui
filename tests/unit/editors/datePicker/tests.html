@@ -149,7 +149,7 @@
 			});
 
 			var testId = 'Date Picker min/max values.';
-			test(testId, 11, function () {
+			test(testId, 16, function () {
 				var $editor = $("<input />").appendTo("#testBedContainer")
 					.igDatePicker({
 						dateInputFormat: "dateTime"
@@ -164,7 +164,19 @@
 				$editor.igDatePicker("option", "maxValue", new Date(2017, 0, 31).toLocaleString());
 				equal($editor.igDatePicker("option", "maxValue").getTime(), new Date(2017, 0, 31).getTime(), "maxValue not set correctly");
 				equal($editor.datepicker("option", "maxDate").getTime(), new Date(2017, 0, 31).getTime(), "maxValue not set to picker");
+
+				// set through datepickerOptions (support for #84)
+				$editor.igDatePicker("value", new Date(2017, 0, 10));
+				$editor.igDatePicker({ datepickerOptions: { minDate : new Date(2017, 0, 11) } });
+				equal($editor.igDatePicker("option", "minValue").getTime(), new Date(2017, 0, 11).getTime(), "minValue not set correctly through datepickerOptions");
+				equal($editor.datepicker("option", "minDate").getTime(), new Date(2017, 0, 11).getTime(), "minDate not set through datepickerOptions");
+				equal($editor.igDatePicker("value").getTime(), new Date(2017, 0, 11).getTime(), "Value not updated when below min set through datepickerOptions");
+
+				$editor.igDatePicker({ datepickerOptions: { maxDate : new Date(2017, 1, 1) } });
+				equal($editor.igDatePicker("option", "maxValue").getTime(), new Date(2017, 1, 1).getTime(), "maxValue not set correctly through datepickerOptions");
+				equal($editor.datepicker("option", "maxDate").getTime(), new Date(2017, 1, 1).getTime(), "maxDate not set through datepickerOptions");
 				
+
 				$editor.igDatePicker("value", new Date(2017, 0, 11));
 				$editor.igDatePicker("option", "minValue", new Date(2017, 0, 12));
 				equal($editor.igDatePicker("value").getTime(), new Date(2017, 0, 12).getTime(), "Value not updated when setting minValue after that time.");

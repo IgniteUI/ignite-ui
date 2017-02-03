@@ -10848,15 +10848,13 @@
 						(this._editorInput.data("datepicker").settings.minDate !==
 							this.options.minValue))
 					{
-						this.options.minValue =
-							this._editorInput.data("datepicker").settings.minDate;
+						this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
 					}
 					if (value.maxDate &&
 						(this._editorInput.data("datepicker").settings.maxDate !==
 							this.options.maxValue))
 					{
-						this.options.maxValue =
-							this._editorInput.data("datepicker").settings.maxDate;
+						this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
 					}
 				}
 					break;
