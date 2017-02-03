@@ -5574,10 +5574,11 @@
 		_getFieldsWithFormatter: function () {
 			/* return array of fields(from the data schema) that have property "formatter" defined
 			if schema is not defined OR there aren't such fields - ruturns empty array */
+			var i, f, res = [];
 			if (!this.schema()) {
-				return [];
+				return res;
 			}
-			var i, f = this.schema().fields(), res = [];
+			f = this.schema().fields();
 			for (i = 0; i < f.length ; i++) {
 				if (f[ i ].formatter) {
 					res.push(f[ i ]);
@@ -5586,9 +5587,10 @@
 			return res;
 		},
 		_generateFormattedRecords: function (data) {
-			data = data || this._data;
-			var i, j, f, len = data.length, fr = [], schema = this.schema(),
+			var i, j, f, len, fr = [], schema = this.schema(),
 				fields = this._getFieldsWithFormatter(), fieldsLen = fields.length;
+			data = data || this._data;
+			len = data.length;
 			if (!len || !schema || !fieldsLen) {
 				return;
 			}
