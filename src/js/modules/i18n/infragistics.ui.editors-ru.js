@@ -66,8 +66,6 @@
 			    datePickerEditorNoSuchMethod: "Этот способ не поддерживается редактором дат.",
 			    datePickerNoSuchMethodDropDownContainer: "Этот метод не поддерживается редактором даты. Используйте взамен 'getCalendar'.",
 			    buttonTypeIsDropDownOnly: "Элемент выбора даты позволяет устанавливать значение параметра buttonType только dropdown и clear.",
-			    dateEditorMinValue: "Параметр MinValue не может быть задан во время выполнения программы.",
-			    dateEditorMaxValue: "Параметр MaxValue не может быть задан во время выполнения программы.",
 				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
 				cannotSetRuntime: "Этот параметр не может быть задан во время выполнения программы",
 			    invalidDate: "Неверная дата",

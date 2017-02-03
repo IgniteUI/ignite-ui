@@ -65,8 +65,6 @@
 				datePickerEditorNoSuchMethod: "The date editor does not support this method.",
 				datePickerNoSuchMethodDropDownContainer: "The date editor does not support this method. Use 'getCalendar' one instead.",
 				buttonTypeIsDropDownOnly: "Datepicker allows only dropdown and clear values for the buttonType option.",
-				dateEditorMinValue: "MinValue option can not be set runtime.",
-				dateEditorMaxValue: "MaxValue option can not be set runtime.",
 				dateEditorOffsetRange: "The displayTimeOffset option should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
 				setOptionError: 'Runtime changes are not allowed for the following option: ',
 				invalidDate: "Invalid date",
