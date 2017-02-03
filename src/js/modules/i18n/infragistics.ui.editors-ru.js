@@ -73,7 +73,8 @@
 			    maskRevertMessage: 'Все обязательные поля должны быть заполнены, поэтому было восстановлено последнее правильное значение.',
 				dateMessage: 'Следует ввести правильную дату',
 			    centuryThresholdValidValues: "Свойство centuryThreshold должно находиться в диапазоне от 0 до 99.",
-			    noListItemsNoButton: "Счетчик или кнопка раскрытия списка не отображаются вследствие отсутствия элементов списка."
+			    noListItemsNoButton: "Счетчик или кнопка раскрытия списка не отображаются вследствие отсутствия элементов списка.",
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
 		    }
 	    };
     }

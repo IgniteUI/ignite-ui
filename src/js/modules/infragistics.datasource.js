@@ -7808,6 +7808,10 @@
 		}
 	});
 	$.ig.JSONDataSource = $.ig.JSONDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "json"
+		},
 		init: function (options) {
 			if (!options) {
 				options = {};
@@ -8171,7 +8175,9 @@
 			string Setting the name of the callback function for a JSONP request
 			function As of jQuery 1.5, you can also use a function, in which case the value of jsonpCallback is set to the return value of that function
 			*/
-			jsonpCallback: null
+			jsonpCallback: null,
+			/* type="string" Type of the data source. */
+			type: "json"
 		},
 		init: function (options) {
 			if (!options) {
@@ -8193,6 +8199,10 @@
 		}
 	});
 	$.ig.FunctionDataSource = $.ig.FunctionDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "function"
+		},
 		init: function (options) {
 			if (!options) {
 				options = {};
@@ -8204,6 +8214,10 @@
 	});
 	/* the dataSource should be a reference to a DOM element */
 	$.ig.HtmlTableDataSource = $.ig.HtmlTableDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "htmlTableDom"
+		},
 		init: function (options) {
 
 			if (!options) {

@@ -15,7 +15,7 @@
 
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
-  <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
     <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
@@ -128,7 +128,12 @@
             var testId_54 = "test 5.4 igPopover getContent method";
 
             // Destroy test
-            var testId_82 = "igPopover test 8.2.: destroy test";
+            var testId_62 = "igPopover test 8.2.: destroy test";
+
+            // directionPriority tests
+            var testId_71 = "test 7.1 Test directionPriority get/set";
+            var testId_72 = "test 7.2 Test directionPriority when showing Popover";
+            var testId_73 = "test 7.3 Test strict direction";
 
             //Automating bugs
             var testId_91 = "igPopover test 9.1: Test popover shows correctly when direction is set";
@@ -444,7 +449,7 @@
                 }, 1000);
             });
 
-            test(testId_82, 5, function () {
+            test(testId_62, 5, function () {
                 $("#img1").igPopover("destroy");
 
                 ok($('#img1_popover').length === 0, "Popover not shown!");
@@ -452,6 +457,91 @@
                 ok($('#img1_popover_arrow').length === 0, "Popover arrow not shown!");
                 ok($('#img1_popover_closeBtn').length === 0, "Popover doesn't have close button!");
                 ok($('#img1_popover_title').length === 0, "Popover doesn't have a title!");
+            });
+
+            test(testId_71, 17, function () {
+                var i, dpo, p = $("#notifier");
+                // test init default
+                p.igPopover();
+                dpo = p.igPopover("option", "directionPriority");
+                ok($.ui.igPopover.prototype.options.directionPriority === dpo, "The array should be the same");
+                // test init set
+                p.igPopover("destroy");
+                p.igPopover({ directionPriority: ["right", "top", "bottom"]});
+                dpo = p.igPopover("option", "directionPriority");
+                strictEqual(dpo[0], "right", "The first direction is properly set.");
+                strictEqual(dpo[1], "top", "The second direction is properly set.");
+                strictEqual(dpo[2], "bottom", "The third direction is properly set.");
+                strictEqual(dpo.length, 3, "The direction array's length is properly set.");
+                // test init wrongly set
+                p.igPopover("destroy");
+                p.igPopover({ directionPriority: ["wrong", "bottom", "verywrong", "left"]});
+                dpo = p.igPopover("option", "directionPriority");
+                strictEqual(dpo[0], "bottom", "The first direction is properly set.");
+                strictEqual(dpo[1], "left", "The second direction is properly set.");
+                strictEqual(dpo.length, 2, "The direction array's length is properly set.");
+                // test init fully wrong (should return the default)
+                p.igPopover("destroy");
+                p.igPopover({ directionPriority: ["wrong", "verywrong"]});
+                dpo = p.igPopover("option", "directionPriority");
+                strictEqual(dpo[0], $.ui.igPopover.prototype.options.directionPriority[0], "The first direction is properly set.");
+                strictEqual(dpo[1], $.ui.igPopover.prototype.options.directionPriority[1], "The second direction is properly set.");
+                strictEqual(dpo[2], $.ui.igPopover.prototype.options.directionPriority[2], "The third direction is properly set.");
+                strictEqual(dpo[3], $.ui.igPopover.prototype.options.directionPriority[3], "The fourth direction is properly set.");
+                strictEqual(dpo.length, 4, "The direction array's length is properly set.");
+                p.igPopover("destroy");
+                // test setOption runtime
+                p.igPopover({ directionPriority: ["wrong", "bottom", "verywrong", "left"]});
+                p.igPopover("option", "directionPriority", ["left", "wrong", "top", "right"]);
+                dpo = p.igPopover("option", "directionPriority");
+                strictEqual(dpo[0], "left", "The first direction is properly set.");
+                strictEqual(dpo[1], "top", "The second direction is properly set.");
+                strictEqual(dpo[2], "right", "The third direction is properly set.");
+                strictEqual(dpo.length, 3, "The direction array's length is properly set.");
+                //
+                p.igPopover("destroy");
+            });
+
+            test(testId_72, 5, function () {
+                var p = $("#notifier");
+                p.igPopover({ directionPriority: [ "right", "bottom" ]});
+                p.igPopover("show");
+                ok(p.outerHeight() < p.igPopover("container").offset().top, "No place to the right so the popover should appear at the bottom.");
+                p.igPopover("hide");
+                p.igPopover({ directionPriority: [ "right", "top", "bottom"]});
+                p.igPopover("show");
+                ok(p.outerHeight() < p.igPopover("container").offset().top, "No place to the right or top so the popover should appear at the bottom.");
+                p.igPopover("hide");
+                p.igPopover({ directionPriority: [ "right", "bottom", "top"]});
+                p.igPopover("show");
+                ok(p.outerHeight() < p.igPopover("container").offset().top, "No place to the right so the popover should appear at the bottom.");
+                p.igPopover("destroy");
+                p = $("#green").igPopover({ directionPriority: [ "right", "left", "bottom" ]});
+                p.igPopover("show");
+                ok(p.outerWidth() < p.igPopover("container").offset().left, "The popover should appear at the right.");
+                p.igPopover("destroy");
+                p.igPopover({ directionPriority: [ "top", "right" ]});
+                p.igPopover("show");
+                ok(p.offset().top > p.igPopover("container").offset().top, "The popover should appear at the top.");
+            });
+
+            test(testId_73, 4, function () {
+                var p = $("#green").igPopover({ direction: "left", directionPriority: [ "right", "bottom", "left" ]});
+                p.igPopover("show");
+                ok(p.offset().left > p.igPopover("container").offset().left, "Strict direction should make the Popover appear there.");
+                p.igPopover("destroy");
+                p = $("#notifier").igPopover({ direction: "right", directionPriority: [ "top", "bottom", "right" ]});
+                p.igPopover("show");
+                ok(p.outerWidth() < p.igPopover("container").offset().left, "Strict direction should make the Popover appear there.");
+                p.igPopover("destroy");
+                p.igPopover({ direction: "top", directionPriority: [ "bottom", "top", "right" ]});
+                p.igPopover("show");
+                ok(p.offset().top > p.igPopover("container").offset().top, "Strict direction should make the Popover appear there.");
+                p.igPopover("destroy");
+                p.igPopover({ direction: "bottom", directionPriority: [ "top", "bottom", "right" ]});
+                p.igPopover("show");
+                ok(p.outerHeight() < p.igPopover("container").offset().top, "Strict direction should make the Popover appear there.");
+                p.igPopover("destroy");
             });
 
             //bug 228621 - Although setting direction='right', igNotifier shows on top of the target element at first.
@@ -473,7 +563,8 @@
                 ok( $( '#notifier_popover_contentFrame' ).css( "display" ) !== "none", 'Popover content not shown!' );
                 ok( $( '#notifier_popover_arrow' ).css( "display" ) !== "none", 'Popover arrow not shown!' );
                 ok( $( '#notifier_popover_arrow' ).hasClass( "ui-igpopover-arrow-bottom" ), 'Popover arrow is not pointing to bottom!' );
-                ok( $( '#notifier_popover' ).offset().top + $( '#notifier_popover' ).height() <= $( '#notifier' ).offset().top,
+                ok( $( '#notifier_popover' ).offset().top + $( '#notifier_popover' ).height() <= $( '#notifier' ).offset().top || 
+                    $( '#notifier_popover' ).offset().top === 0,    // fixed positions may now overlap the container
                     'Popover is not positioned above its target' );
                 ok( $( '#notifier' ).offset().left < $( '#notifier_popover' ).offset().left &&
                 $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() < $( '#notifier' ).offset().left + $( '#notifier' ).width(),
@@ -651,6 +742,8 @@
             </table>
         </div>
     </div>
+
+    <div id="green" style="width: 500px; height: 100px; background-color: green; margin-left: 5px;"></div>
 
 </body>
 </html>

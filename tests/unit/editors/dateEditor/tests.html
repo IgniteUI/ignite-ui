@@ -3269,36 +3269,36 @@
 						dateInputFormat: "dd"
 					},
 					expRes: [{
-						display: pad(today.getDate())
+						display: pad(new Date().getDate())
 					}, {
-						display: pad(new Date(today.setDate(today.getDate() - 1)).getDate())
+						display: pad(new Date(new Date().setDate(new Date().getDate() - 1)).getDate())
 					}]
 				}, {
 					config: {
 						dateInputFormat: "MM"
 					},
 					expRes: [{
-						display: pad(today.getMonth() + 1)
+						display: pad(new Date().getMonth() + 1)
 					}, {
-						display: pad(new Date(today.setMonth(today.getMonth() - 1)).getMonth() + 1)
+						display: pad(new Date(new Date().setMonth(new Date().getMonth() - 1)).getMonth() + 1)
 					}]
 				}, {
 					config: {
 						dateInputFormat: "yy"
 					},
 					expRes: [{
-						display: (new Date(today.setMonth(today.getMonth() + 1)).getFullYear()).toString().replace("20", "")
+						display: (new Date(new Date().setMonth(new Date().getMonth() + 1)).getFullYear()).toString().replace("20", "")
 					}, {
-						display: (today.getFullYear() - 1).toString().replace("20", "")
+						display: (new Date().getFullYear() - 1).toString().replace("20", "")
 					}]
 				}, {
 					config: {
 						dateInputFormat: "yyyy"
 					},
 					expRes: [{
-						display: today.getFullYear()
+						display: new Date().getFullYear()
 					}, {
-						display: today.getFullYear() - 1
+						display: new Date().getFullYear() - 1
 					}]
 				}];
 
@@ -3358,7 +3358,7 @@
 				":" + pad(tzo % 60);
 		}
 		function pad(n) {
-			return (n < 10) ? ("0" + n) : n;
+			return (n < 10) ? ("0" + n) : n.toString();
 		}
 
 		function keyInteraction(key, target, special) {
