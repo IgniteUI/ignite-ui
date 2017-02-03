@@ -7419,7 +7419,6 @@
 			value: null,
 			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
-				Note! This option can not be set runtime.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7436,7 +7435,6 @@
 			minValue: null,
 			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
-				Note! This option can not be set runtime.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({

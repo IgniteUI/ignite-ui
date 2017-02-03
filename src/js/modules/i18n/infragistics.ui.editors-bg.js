@@ -66,8 +66,6 @@
 			    datePickerEditorNoSuchMethod: "Редакторът на дати не поддържа този метод.",
 			    datePickerNoSuchMethodDropDownContainer: "Редакторът на дати не поддържа този метод. Вместо него използвайте 'getCalendar'.",
 			    buttonTypeIsDropDownOnly: "Datepicker позволява само dropdown и чисти стойности за опцията buttonType.",
-			    dateEditorMinValue: "Опцията MinValue не може да бъде настроена по време на изпълнение.",
-			    dateEditorMaxValue: "Опцията MaxValue не може да бъде настроена по време на изпълнение.",
 			    cannotSetRuntime: "Тази опцията не може да бъде настроена по време на изпълнение.",
 			    invalidDate: "Невалидна дата",
 			    maskMessage: 'Всички задължителни позиции трябва да бъдат попълнени.',
