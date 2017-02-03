@@ -123,7 +123,7 @@
 	//and setting them in a a box can be done by the predefined classes "ui-state-default ui-corner-all ui-igcheckbox-small"
 	$.ig.checkboxMarkupClasses = "";
 
-	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates,
+	$.ig.formatter = function (val, type, format, notTemplate, displayTimeOffset,
 		displayStyle, labelText, tabIndex) {
 		var min, y, h, m, s, ms, am, e, day, pattern, len, n, dot, gr,
 			gr0, grps, curS, percS, cur, perc, prefix, i, d = val && val.getTime,
@@ -151,16 +151,8 @@
 			}
 			pattern = reg[ (format && format !== "null" && format !== "undefined") ?
 				format + "Pattern" : "datePattern" ] || format;
-			if (enableUTCDates) {
-				y = val.getUTCFullYear();
-				m = val.getUTCMonth() + 1;
-				d = val.getUTCDate();
-				h = val.getUTCHours();
-				min = val.getUTCMinutes();
-				s = val.getUTCSeconds();
-				ms = val.getUTCMilliseconds();
-				day = val.getUTCDay();
-			} else {
+			if (displayTimeOffset === null || displayTimeOffset === undefined ||
+					displayTimeOffset === "local") {
 				y = val.getFullYear();
 				m = val.getMonth() + 1;
 				d = val.getDate();
@@ -169,6 +161,15 @@
 				s = val.getSeconds();
 				ms = val.getMilliseconds();
 				day = val.getDay();
+			} else if (displayTimeOffset === "utc") {
+				y = val.getUTCFullYear();
+				m = val.getUTCMonth() + 1;
+				d = val.getUTCDate();
+				h = val.getUTCHours();
+				min = val.getUTCMinutes();
+				s = val.getUTCSeconds();
+				ms = val.getUTCMilliseconds();
+				day = val.getUTCDay();
 			}
 
 			// M.P. 25 July 2014: 176543 - $.ig.formatter doesn't work with escaped characters for date formatting
