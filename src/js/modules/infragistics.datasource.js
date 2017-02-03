@@ -3089,6 +3089,10 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
+			/* M.H. 2 Feb 2017 Fix for bug 231214: When you update a formatted field it can't be found by the allFields search filtering. */
+			if (this._getFieldsWithFormatter().length) {
+				this._generateFormattedRecords();
+			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
@@ -4858,11 +4862,6 @@
 				} else {
 					ffields = f.expressions;
 				}
-				if (ffields.length && ffields[ 0 ] && ffields[ 0 ].filterAllFields) {
-					key = f.filterExprUrlKey ? f.filterExprUrlKey : "$filter";
-					params.filteringParams[ key ] = ffields[ 0 ].expr;
-					return;
-				}
 				for (i = 0; i < ffields.length; i++) {
 					// is a filtering request
 					this._isFilteringReq = true;
@@ -5571,6 +5570,39 @@
 				}
 			}
 			return true;
+		},
+		_getFieldsWithFormatter: function () {
+			/* return array of fields(from the data schema) that have property "formatter" defined
+			if schema is not defined OR there aren't such fields - ruturns empty array */
+			if (!this.schema()) {
+				return [];
+			}
+			var i, f = this.schema().fields(), res = [];
+			for (i = 0; i < f.length ; i++) {
+				if (f[ i ].formatter) {
+					res.push(f[ i ]);
+				}
+			}
+			return res;
+		},
+		_generateFormattedRecords: function (data) {
+			data = data || this._data;
+			var i, j, f, len = data.length, fr = [], schema = this.schema(),
+				fields = this._getFieldsWithFormatter(), fieldsLen = fields.length;
+			if (!len || !schema || !fieldsLen) {
+				return;
+			}
+			for (i = 0; i < len; i++) {
+				fr[ i ] = {};
+				for (j = 0; j < fieldsLen; j++) {
+					f = fields[ j ];
+					fr[ i ][ f.name ] = f.formatter(
+						data[ i ][ f.name ],
+						data[ i ],
+						f);
+				}
+			}
+			schema._formattedRecords = fr;
 		},
 		filterByText: function (expression, fields) {
 			/* Filters the data source locally by text. If "fields" parameter is set search is performed only in the listed fields otherwise all fields are searched.
