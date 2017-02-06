@@ -7264,7 +7264,7 @@
                 $(".selector").igCombo("deselectAll");
 
                 //deselect all, focus combo, keep input text and trigger events
-                $(".selector").igCombo("deselectAll", { focusCombo: ture, keepInputText: true }, true);
+                $(".selector").igCombo("deselectAll", { focusCombo: true, keepInputText: true }, true);
             ```
                 paramType="object" optional="true" Object with set of options controlling the behavior of this api method.
                     focusCombo (boolean): Set to true to focus combo after the deselection.
