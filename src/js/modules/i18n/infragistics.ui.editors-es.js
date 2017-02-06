@@ -66,8 +66,6 @@
 			    datePickerEditorNoSuchMethod: "El editor de fechas no admite este método.",
 			    datePickerNoSuchMethodDropDownContainer: "El editor de fechas no admite este método. En su lugar, utilice 'getCalendar' uno.",
 			    buttonTypeIsDropDownOnly: "Datepicker sólo admite valores de desplegar menú y de borrar para la opción buttonType.",
-			    dateEditorMinValue: "La opción MinValue no puede establecer un tiempo de ejecución.",
-			    dateEditorMaxValue: "La opción MaxValue no puede establecer un tiempo de ejecución.",
 				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
 				cannotSetRuntime: "Esta opción no puede establecer un tiempo de ejecución",
 			    invalidDate: "Fecha no válida",
