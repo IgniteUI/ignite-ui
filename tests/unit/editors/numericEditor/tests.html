@@ -650,7 +650,7 @@
 		});
 		
 		testId = "Min/Max value";
-		test(testId, 4, function () {
+		test(testId, 15, function () {
 			var container = $('#minMaxValue'), containerInput = $('#minMaxValue').igNumericEditor("field");
 
 			container.igNumericEditor("value", 9);
@@ -663,7 +663,39 @@
 			container.igNumericEditor("value", null);
 			equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
 
-		});		
+			// runtime changes:
+			var $editor = $('<input />').appendTo("#testBedContainer")
+				.igNumericEditor({
+					value: 5
+				});
+			
+			$editor.igNumericEditor("option", "minValue", -150);
+			strictEqual($editor.igNumericEditor("value"), 5, "Value should remain the same");
+			$editor.igNumericEditor("option", "maxValue", 5);
+			strictEqual($editor.igNumericEditor("value"), 5, "Value should remain the same");
+			$editor.igNumericEditor("option", "maxValue", 4);
+			strictEqual($editor.igNumericEditor("value"), 4, "Value should be set to max");
+			equal($editor.igNumericEditor("field").val(), "4", "Text not updated with max value");
+			$editor.igNumericEditor("value", 0);
+			$editor.igNumericEditor("option", "minValue", 1);
+			strictEqual($editor.igNumericEditor("value"), 1, "Value should be set to min");
+			equal($editor.igNumericEditor("field").val(), "1", "Text not updated with min value");
+			$editor.focus();
+			$editor.igNumericEditor("field").val("3");
+			$editor.igNumericEditor("option", "minValue", 2);
+			strictEqual($editor.igNumericEditor("value"), 2, "Value not set to min while editng");
+			equal($editor.igNumericEditor("field").val(), "3", "Editing text should remain unchanged");
+			$editor.igNumericEditor("field").blur();			
+			strictEqual($editor.igNumericEditor("value"), 3, "Value not updated after chaning min");
+
+			// ensure base dataMode min/max, double:
+			$editor.igNumericEditor("option", "minValue", null);
+			$editor.igNumericEditor("option", "maxValue", null);
+			equal($editor.igNumericEditor("option", "minValue"), -(Number.MAX_VALUE), "minValue not set to null");
+			equal($editor.igNumericEditor("option", "maxValue"), Number.MAX_VALUE, "maxValue not set to null");
+
+			//$editor.remove();
+		});
 
 		testId = "Scientific spin buttons";
 		test(testId, 2, function () {
@@ -1339,17 +1371,23 @@
 		});
 		
 		testId = 'Issue 226939'
-		test(testId, 3, function () {
+		test(testId, 6, function () {
 			var $editor = $("#issue226939"),
 				editorInput = $editor.igNumericEditor("field"), btnSpinDown = $editor.igNumericEditor("spinDownButton"),
 				btnSpinUp = $editor.igNumericEditor("spinUpButton");
 				
 				$editor.igNumericEditor("option", "minValue", 5);
-				$("#issue226939").igNumericEditor("spinUp");
-				equal($("#issue226939").igNumericEditor("value"), 5, 'Spin up method not working.');
 				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");
+				$editor.igNumericEditor("spinUp");
+				equal($editor.igNumericEditor("value"), 6, 'Spin up method not working.');
+				ok(!btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not enabled.");
 				$editor.igNumericEditor("option", "minValue", 1);
-				ok(!(btnSpinDown.hasClass("ui-state-disabled")), "The spinDown button is disabled.");
+				ok(!(btnSpinDown.hasClass("ui-state-disabled")), "The spinDown button is enabled.");
+				$editor.igNumericEditor("option", "maxValue", 6);
+				ok(btnSpinUp.hasClass("ui-state-disabled"), "The spinUp button is not disabled.");
+				$editor.igNumericEditor("option", "minValue", 5);
+				$editor.igNumericEditor("value", 5);
+				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");
 		});
 
 		testing = "Clear button dynamic show/hide";
