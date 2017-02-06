@@ -4121,6 +4121,7 @@
 				Note: this option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4140,7 +4141,7 @@
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
-				Note: This option supports values below or equal to 20.
+				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4190,7 +4191,10 @@
 				center type="string" The text into the input gets aligned to the center.
 			*/
 			textAlign: "right",
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igNumericEditor#options:minValue) and [maxValue](ui.igNumericEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standards, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igNumericEditor#options:minDecimals) and [maxDecimals](ui.igNumericEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -4203,16 +4207,16 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "dataMode", "float");
 			```
-				double type="string" the Number object is used with limits of double and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'. Note: that is used as default.
-				float type="string" the Number object is used with limits of float and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'.
-				long type="string" the Number object is used with limits of signed long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ulong type="string" the Number object is used with limits of unsigned long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				int type="string" the Number object is used with limits of signed int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				uint type="string" the Number object is used with limits of unsigned int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				short type="string" the Number object is used with limits of signed short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ushort type="string" the Number object is used with limits of unsigned short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				sbyte type="string" the Number object is used with limits of signed byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				byte type="string" the Number object is used with limits of unsigned byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
+				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue). Note: that is used as default.
+				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				long type="string" the Number object is used with the limits of a signed long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ulong type="string" the Number object is used with the limits of an unsigned long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				int type="string" the Number object is used with the limits of a signed int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				uint type="string" the Number object is used with the limits of an unsigned int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				short type="string" the Number object is used with the limits of a signed short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ushort type="string" the Number object is used with the limits of an unsigned short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				sbyte type="string" the Number object is used with the limits of a signed byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				byte type="string" the Number object is used with the limits of an unsigned byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
 			*/
 			dataMode: "double",
 			/* type="number" Gets/Sets the minimum value which can be entered in the editor by the end user.
@@ -4460,13 +4464,24 @@
 				this.options.minDecimals;
 		},
 		_applyOptions: function () { // NumericEditor
-			var delta, fractional, initialValue;
+
 			this._super();
-			initialValue = this.options.value;
+			this._validateSpinSettings();
+			this._validateDecimalSettings();
+
+			if (this.options.maxLength !== null) {
+				this.options.maxLength = null;
+			}
+			if (this.options.value < 0) {
+				this._editorInput.addClass(this.css.negative);
+			}
+		},
+		_validateSpinSettings: function() {
+			var delta, fractional;
 
 			// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 			if (this.options.buttonType === "spin") {
-				this._setSpinButtonsState(initialValue);
+				this._setSpinButtonsState(this.options.value);
 			}
 			if (this.options.spinDelta !== 1) {
 				delta = this.options.spinDelta;
@@ -4486,7 +4501,7 @@
 						if (fractional.toString().length > this.options.maxDecimals) {
 							throw new Error($.ig.util.stringFormat($.ig.Editor.locale.
 								spinDeltaContainsExceedsMaxDecimals,
-								this.options.maxDecimals));
+							this.options.maxDecimals));
 						}
 					}
 				} else {
@@ -4499,11 +4514,40 @@
 			if (this.options.scientificFormat) {
 				this.options.spinDelta = Number(this.options.spinDelta.toExponential());
 			}
-			if (this.options.maxLength !== null) {
-				this.options.maxLength = null;
+		},
+		_validateDecimalSettings: function() {
+			try {
+				this._validateDecimalSetting("minDecimals", this.options.minDecimals);
+			} catch (e) {
+				this.options.minDecimals = this._getRegionalOption("numericMinDecimals");
+				throw e;
 			}
-			if (this.options.value < 0) {
-				this._editorInput.addClass(this.css.negative);
+			try {
+				this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
+			} catch (e) {
+				this.options.minDecimals = this._getRegionalOption("numericMaxDecimals");
+				throw e;
+			}
+			this._validateDecimalMinMax();
+		},
+		_validateDecimalSetting: function(name, value) {
+			var mode = this.options.dataMode, boundary;
+
+			if (mode === "double") {
+				boundary = 15;
+			} else if (mode === "float") {
+				boundary = 7;
+			}
+
+			if (value === "" || isNaN(value) ||
+				(!isNaN(value) && (value < 0 || value > boundary))) {
+				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalNumber,
+					mode, name, boundary));
+			}
+		},
+		_validateDecimalMinMax: function() {
+			if (this.options.minDecimals > this.options.maxDecimals) {
+				this.options.maxDecimals = this.options.minDecimals;
 			}
 		},
 		_setOption: function (option, value) { // igNumericEditor
@@ -4530,7 +4574,7 @@
 						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
 					} else if (this.options.scientificFormat) {
 						this.options[ option ] = Number(value.toExponential());
-			}
+					}
 					break;
 				}
 
@@ -4543,11 +4587,14 @@
 					break;
 				case "minDecimals":
 				case "maxDecimals":
-					value = parseFloat(value);
-					if (isNaN(value)) {
+					try {
+						this._validateDecimalSetting(option, value);
+					} catch (e) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.setOptionError + option);
-					} else {
+						throw e;
+					}
+					if (this.options[ option ] !== prevValue) {
+						this._validateDecimalMinMax();
 						this._processInternalValueChanging(this.value());
 						if (!this._editMode) {
 							this._editorInput.val(this._getDisplayValue());
@@ -4733,19 +4780,14 @@
 			return noCancel;
 		},
 		_applyDataModeSettings: function () {
-			// We need to adjust max decimals, based on the dataMode limits
-			var doubleMaxDecimals = 15;
 			switch (this.options.dataMode) {
 				case "double": {
 					this._setMinMaxValues(-(Number.MAX_VALUE), Number.MAX_VALUE);
-					this._setMinMaxDecimals(doubleMaxDecimals);
 				}
 					break;
 				case "float": {
-					var floatMaxDecimals = 7, floatMinValue = -3.40282347e38,
-						floatMaxValue = 3.40282347e38;
+					var floatMinValue = -3.40282347e38, floatMaxValue = 3.40282347e38;
 					this._setMinMaxValues(floatMinValue, floatMaxValue);
-					this._setMinMaxDecimals(floatMaxDecimals);
 				}
 					break;
 				case "long": {
@@ -4793,19 +4835,7 @@
 				default: {
 					this.options.dataMode = "double";
 					this._setMinMaxValues(Number.MIN_VALUE, Number.MAX_VALUE);
-					this._setMinMaxDecimals(doubleMaxDecimals);
 				}
-			}
-		},
-		_setMinMaxDecimals: function (typeMaxDecimals) {
-			if (this.options.maxDecimals === null || this.options.maxDecimals > typeMaxDecimals) {
-				this.options.maxDecimals = typeMaxDecimals;
-			}
-
-			// this.options.numericMinDecimals = this._getRegionalOption("numericMinDecimals");
-			// In case of conflict between min and max decimals - both values are equaled to the max decimals
-			if (this.options.minDecimals && this.options.minDecimals > this.options.maxDecimals) {
-				this.options.maxDecimals = this.options.minDecimals;
 			}
 		},
 		_setMinMaxValues: function (typeMinValue, typeMaxValue) {
@@ -5878,7 +5908,10 @@
 				```
 				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igPercentEditor#options:minValue) and [maxValue](ui.igPercentEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standards, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igPercentEditor#options:minDecimals) and [maxDecimals](ui.igPercentEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
@@ -7854,6 +7887,7 @@
 			}
 
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
+				this.options.centuryThreshold = 29;
 				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
 			}
 
