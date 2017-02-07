@@ -38,12 +38,22 @@
 				__init = false;
 			/* Helper functions */
 			function renderData(data) {
-				var $tbody = $("#t1>tbody"), i, html = '', r;
+				var $tbody = $("#t1>tbody"), i, j, html = '', r;
 				$tbody.empty();
 				for (i = 0; i < data.length; i++) {
 					r = data[i];
 					if (r.__gbRecord) {
 						html += "<tr><td colspan='6'>GroupBy record with val: " + r.val + "</td></tr>"
+					} else if (r.__gbSummaryRecord) {
+						var summaries = r.summaries;
+						html += "<tr>" +
+							"<td>" + (summaries["Id"] || "" )+ "</td>" +
+							"<td>" + (summaries["ProductName"] || "") + "</td>" +
+							"<td>" + (summaries["ProductDescription"] || "") + "</td>" +
+							"<td>" + (summaries["Price"] || "") + "</td>" +
+							"<td>" + (summaries["Promotion"] || "") + "</td>" +
+							"<td>" + (summaries["Date"] || "") + "</td>" +
+						"</tr>";
 					} else {
 						html += "<tr>" +
 							"<td>" + r.Id + "</td>" +
@@ -456,6 +466,104 @@
 					dataView.length === 4,
 				 	"Test groupByDataView and dataView after row with id 100 is updated");
 			});
+
+			//Basic Group Summary tests
+			test("Test basic summary group row with defaultCollapseState:false.", function () {
+				var expr = [
+					{
+						fieldName : "Promotion", dir:"asc", isGroupBy:true
+					}
+				], gbDataView,
+				ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName", type: "string" },
+							{ name: "ProductDescription", type: "string" },
+							{ name: "Price", type: "number" }, 
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "date" }]
+					},
+					sorting:{
+						type: "local",
+						expressions: expr,
+						defaultFields: expr
+					},
+					groupby: {
+						defaultCollapseState: false,
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["avg","sum"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 9, "There should be 9 records in the groupBy data view.");
+
+				var gbRecs = [];
+				var gbSumRecs = [];
+				var recs = [];
+				for (var i = 0; i < gbDataView.length; i++) {
+					if (gbDataView[i].__gbRecord) {
+						gbRecs.push(gbDataView[i]);
+					} else if(gbDataView[i].__gbSummaryRecord){
+						gbSumRecs.push(gbDataView[i]);
+					} else {
+						recs.push(gbDataView[i]);
+					}
+				}
+				equal(gbRecs.length, 2, "There should be 2 groupby records in the data view.");
+				equal(gbRecs[0].val, false, "First group value should be: false.");
+				equal(gbRecs[1].val, true, "Second group value should be: true.");
+
+				equal(recs.length, 5, "Data recrods should be 5.");
+
+				equal(gbSumRecs.length, 2, "There should be 2 groupby summary records in the data view.");
+				equal(gbSumRecs[0].groupValue, false, "First group value should be: false.");
+				equal(gbSumRecs[1].groupValue, true, "Second group value should be: true.");
+				equal(JSON.stringify(gbSumRecs[0].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(gbSumRecs[0].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+				equal(JSON.stringify(gbSumRecs[1].summaries["Price"]), "[1,2]", "There should be two summaries for Price with values for avg:1, sum:2.");
+				equal(JSON.stringify(gbSumRecs[1].summaries["Promotion"]), "[2]", "There should be one summary for Promotion with values for count:2.");
+			});
+
+			//test("Test basic summary group row with defaultCollapseState:true.", function () {
+			//});
+
+			//test("Test summary group row is properly shown/hidden on toggle.", function () {
+			//});
+
+			//test("Test summary group row with all default summaries per column type.", function () {
+			//});
+
+			//test("Test summary group row when fields don't have a specified type in the schema.", function () {
+			//});
+
+			//test("Test basic summary group row - custom summary functions.", function () {
+			//});
+
+			//test("Test basic summary group row - test setting custom options for groupRecordKey and groupSummaryRecordKey.", function () {
+			//});
+
+			////Integration Group Summary tests
+
+			//test("Test group summary rows + Paging", function () { });
+			//test("Test group summary rows + Sorting", function () { });
+			//test("Test group summary rows + Updating", function () { });
+			//test("Test group summary rows + Filtering", function () { });
+
+
 			/* Test GroupBy with type: "local"*/
 
 			/* Test GroupBy with type: "remote"*/
