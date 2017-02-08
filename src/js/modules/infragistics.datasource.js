@@ -5245,7 +5245,8 @@
 				this._gbDataView = [];
 				for (i = startIndex; i < endIndex; i++) {
 					this._gbDataView.push(data[ i ]);
-					if (!data[ i ][ this.settings.groupby.groupRecordKey ]) {
+					if (!data[ i ][ this.settings.groupby.groupRecordKey ] &&
+						!data[ i ][ this.settings.groupby.groupSummaryRecordKey ]) {
 						this._dataView.push(data[ i ]);
 					}
 				}
@@ -6976,7 +6977,8 @@
 					summaryVal = $.ig.calcSummaries(
 						sumFuncName,
 						fieldValues,
-						sumFunc, this._getFieldTypeFromSchema(summary.field)
+						sumFunc,
+						this._fields ? this._getFieldTypeFromSchema(summary.field) : null
 					);
 					if (!gbSummaryRec.summaries[ summary.field ]) {
 						gbSummaryRec.summaries[ summary.field ] = [];
