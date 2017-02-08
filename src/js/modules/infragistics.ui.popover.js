@@ -174,6 +174,7 @@
 			};
 			this._positions = [ "balanced", "start", "end" ];
 			this._visible = false;
+			this._useDocumentBoundary = false;
 			$( window ).on( "resize.popover", $.proxy( this._resizeHandler, this ) );
 		},
 		_createWidget: function (options, element) {
@@ -613,6 +614,19 @@
 					fnRes = this[ fn ](trg);
 					i++;
 				} while (fnRes === false && i < this.options.directionPriority.length);
+
+				if (fnRes === false && !this.options.containment) {
+					/* Try positioning it once again when the boundary is the document */
+					i = 0;
+					this._useDocumentBoundary = true;
+					do {
+						this._updateArrowDiv(this.options.directionPriority[ i ], trg);
+						fn = "_" + this.options.directionPriority[ i ] + "Position";
+						fnRes = this[ fn ](trg);
+						i++;
+					} while (fnRes === false && i < this.options.directionPriority.length);
+				}
+
 				if (fnRes === false) {
 					/* "Couldn't find space anywhere. Please exceed screen dimensions" */
 					return;
@@ -693,11 +707,6 @@
 				fnRes = this.
 					_cyclePossiblePositions(trg, dir, cPos, cDim, trgFDim, useParentOffset, x);
 			}
-			/* if the popover did't fit, try position it using as borders the whole page */
-			if (fnRes === false && !this.options.containment) {
-				fnRes = this.
-					_cyclePossiblePositions(trg, dir, cPos, cDim, trgFDim, useParentOffset, x, true);
-			}
 
 			if (fnRes === true) {
 				this._adjustArrowPosition(trg, dir, cPos, cDim, trgFDim, useParentOffset);
@@ -705,7 +714,7 @@
 			return fnRes;
 		},
 		_cyclePossiblePositions: function (
-				trg, dir, cPos, cDim, trgFDim, useParentOffset, x, useDocument) {
+				trg, dir, cPos, cDim, trgFDim, useParentOffset, x) {
 			var i = 0, y, tPos, fnRes;
 				/* rotate between possible positions until the popover fits or it's clear it won't fit */
 				if (this.options.position === "auto") {
@@ -713,21 +722,21 @@
 						tPos = this._positions[ i ];
 						y = this._getCounterPosition(trg, trgFDim, tPos, cPos, cDim, useParentOffset);
 						fnRes = dir === "left" ?
-							this._checkCollision(x, y, trg, useDocument, false, false) :
-							this._checkCollision(y, x, trg, useDocument, false, false);
+							this._checkCollision(x, y, trg, false, false) :
+							this._checkCollision(y, x, trg, false, false);
 					} while (fnRes === false && ++i < this._positions.length);
 					if (!fnRes && this.options.direction !== "auto") {
 						tPos = this._positions[ 0 ];
 						y = this._getCounterPosition(trg, trgFDim, tPos, cPos, cDim, useParentOffset);
 						fnRes = dir === "left" ?
-							this._checkCollision(x, y, trg, useDocument, false, true) :
-							this._checkCollision(y, x, trg, useDocument, false, true);
+							this._checkCollision(x, y, trg, false, true) :
+							this._checkCollision(y, x, trg, false, true);
 					}
 				} else {
 					y = this._getCounterPosition(trg, trgFDim, this.options.position, cPos, cDim, useParentOffset);
 					fnRes = dir === "left" ?
-						this._checkCollision(x, y, trg, useDocument, true, false) :
-						this._checkCollision(y, x, trg, useDocument, true, false);
+						this._checkCollision(x, y, trg, true, false) :
+						this._checkCollision(y, x, trg, true, false);
 			}
 			return fnRes;
 		},
@@ -786,7 +795,8 @@
 			}
 			return this._findProperPosition("top", right, trg);
 		},
-		_checkCollision: function (top, left, trg, useDocument, allowOverlap, fromDirection) {
+
+		_checkCollision: function (top, left, trg, allowOverlap, fromDirection) {
 			var tfullw = this.popover.outerWidth(),
 				tfullh = this.popover.outerHeight(),
 				win = $(window), wh, ww, os,
@@ -813,7 +823,7 @@
 					topBoundary = $.ig.util.offset($containment).top;
 				}
 			}
-			if (useDocument) {
+			if (this._useDocumentBoundary) {
 				leftBoundary = 0;
 				rightBoundary = $(document).width();
 				bottomBoundary = $(document).height();
@@ -906,6 +916,8 @@
 					}
 				});
 				this._visible = true;
+				/* reset flag when the popover is shown */
+				this._useDocumentBoundary = false;
 				this._removeOriginalTitle(trg);
 			}
 		},
