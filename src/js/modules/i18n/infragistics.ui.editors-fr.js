@@ -45,7 +45,7 @@
 			    maxValExceedRevertErrMsg: "La valeur entrée a atteint la valeur maximum fixée à {0} et est revenue à la valeur antérieure",
 			    minValExceedRevertErrMsg: "La saisie est inférieure à la valeur minimale de {0} et a été ramenée à la précédente",
 			    maxValExceedSetErrMsg: "La saisie a dépassé la valeur maximum de {0} et a été fixée sur la valeur maximum",
-			    minValExceedSetErrMsg: "La saisie a dépassé la valeur minimum de {0} et a été fixée sur la valeur minimum",
+			    minValExceedSetErrMsg: "La saisie est inférieure à la valeur minimale de {0} et a été fixée sur la valeur minimum",
 			    maxValExceededWrappedAroundErrMsg: "La valeur entrée a atteint la valeur maximum fixée à {0} et a été fixée à la valeur minimum autorisée",
 			    minValExceededWrappedAroundErrMsg: "La saisie est inférieure à la valeur minimale de {0} et a été réglée sur la valeur maximale autorisée",
 			    btnValueNotSupported: "Une valeur de bouton différente est requise. Choisissez une valeur entre « dropdown », « clear » et « spin ».",
@@ -66,16 +66,15 @@
 			    datePickerEditorNoSuchMethod: "L’éditeur de date ne prend pas cette méthode en charge.",
 			    datePickerNoSuchMethodDropDownContainer: "L’éditeur de date ne prend pas cette méthode en charge. Utilisez 'getCalendar' à la place.",
 			    buttonTypeIsDropDownOnly: "Le sélecteur de dates autorise uniquement les valeurs de la liste déroulante ou d’effacement pour l’option buttonType.",
-			    dateEditorMinValue: "L’option MinValue ne peut pas être définie lors de l’exécution.",
-			    dateEditorMaxValue: "L’option MaxValue ne peut pas être définie lors de l’exécution.",
 				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
 				cannotSetRuntime: "Cette option ne peut pas être définie lors de l’exécution",
 			    invalidDate: "Date non valide",
 			    maskMessage: 'Tous les postes requis doivent être remplis',
 			    maskRevertMessage: "Toutes les positions requises doivent être remplies, c'est pourquoi la valeur a été réinitialisée à la dernière valeur valide.",
 				dateMessage: 'Une date valide doit être saisie',
-			    centuryThresholdValidValues: "La propriété centuryThreshold doit être comprise entre 0 et 99. La valeur a été réinitialisée à son état par défaut.",
-			    noListItemsNoButton: "Aucun compteur ni bouton de liste ne s’affiche car il n’y a pas d’éléments de liste."
+			    centuryThresholdValidValues: "La propriété centuryThreshold doit être comprise entre 0 et 99.",
+			    noListItemsNoButton: "Aucun compteur ni bouton de liste ne s’affiche car il n’y a pas d’éléments de liste.",
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
 		    }
 	    };
     }

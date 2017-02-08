@@ -68,7 +68,7 @@
 					listWidth: 200,
 					height: 20,
 					listItems: ["item1", "item2", "item3"],
-					dropDownAnimationDuration: 1,
+					dropDownAnimationDuration: -1,
 					revertIfNotValid: false,
 					isLimitedToListValues: true
 				});
@@ -686,8 +686,204 @@
 				}, 500);
 			}, 500);
 		});
+
+		testId = "Lists testing P2, selection-value match";
+		test(testId, 49, function () {
+			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
+				editorSetup = function (options) {
+					$editor = $("<input />").appendTo("#testBedContainer")
+					.igTextEditor(options);
+					$field = $editor.igTextEditor("field");
+					$ddButton = $editor.igTextEditor("dropDownButton");
+					$spinUpButton = $editor.igTextEditor("spinUpButton");
+					$spinDownButton = $editor.igTextEditor("spinDownButton");
+				};
+
+			editorSetup({
+				listItems: [undefined, "item1", "item2", null, "", "item3"],
+				buttonType: "dropdown",
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+
+			var expectedItems = ["item1", "item2", "item3"], items = $editor.igTextEditor("option", "listItems");
+			ok(expectedItems.length === items.length &&
+				expectedItems.every(function(v,i) { return v === items[i]}), "List items did not match expected result after init.")
+
+			//selectedListIndex
+			$editor.igTextEditor("selectedListIndex", 2);
+			equal($editor.igTextEditor("value"), "item3", "selectedListIndex did not update value");
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item does not reflect value");
+			$editor.igTextEditor("selectedListIndex", -1);
+			equal($editor.igTextEditor("value"), "item3", "selectedListIndex should not update with wrong index");
+			$editor.igTextEditor("selectedListIndex", 4);
+			equal($editor.igTextEditor("value"), "item3", "selectedListIndex should not update with wrong index");
+
+			$editor.igTextEditor("value", "ITEM1"); //casing
+			$ddButton.click();
+			ok($editor.igTextEditor("getSelectedListItem").hasClass($.ui.igTextEditor.prototype.css.listItemSelected), "Selected item (API) does't have proper styles applied");
+			equal($editor.igTextEditor("selectedListIndex"), 0, "Selected index does not reflect value");
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item1", "Selected item does not reflect value");
+
+			// select item2:
+			$editor.igTextEditor("dropDownContainer").find("span.ui-igedit-listitem").eq(1).click();
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item2", "Selected item (API) did not update after selection");
+
+			// change value in edit mode:
+			$ddButton.click();
+			keyDownChar(51 /*3*/, $field);
+			$field.val("iTem3"); //casing
+			keyPressChar(51, $field);
+			keyUpChar(51, $field);
+			keyInteraction(13, $field);
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item (API) did not update after value update.");
+			$editor.remove();
+
+			//initial value, clear:
+			editorSetup({
+				listItems: ["item1", "abcd", "item2", "item3", "more text", "last"],
+				buttonType: "dropdown, clear",
+				value: "item2",
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item2", "Selected item (API) not correct on initialization");
+			equal($editor.igTextEditor("selectedListIndex"), 2, "Selected index (API) not correct on initialization");
+
+			$editor.igTextEditor("value", "notAnItem");
+			equal($editor.igTextEditor("getSelectedListItem").length, 0, "There should be no selected item (API) without matching value.");
+
+			$editor.igTextEditor("value", "item3");
+			$ddButton.click();
+			keyInteraction(38, $field);
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item does not reflect value.");
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "item2", "Active item did not move from original selection.");
+			keyDownChar(84 /*t*/, $field);
+			$field.val("more text");
+			keyPressChar(84, $field);
+			keyUpChar(84, $field);
+			equal($editor.igTextEditor("getSelectedListItem").text(), "more text", "Selected item not updated when typing.");
+			keyInteraction(40, $field);
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").last().text(), "last", "Active item did not move from new selection.");
+			keyDownChar(65 /*a*/, $field);
+			$field.val("item1a");
+			keyPressChar(65, $field);
+			keyUpChar(65, $field);
+			equal($editor.igTextEditor("getSelectedListItem").length, 0, "Selected item not cleared when typing.");
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not cleared when typing.");		
+			keyInteraction(13, $field);
+			equal($editor.igTextEditor("value"), "item1a", "Value not set correctly on enter without list selection.");
+			ok(!$editor.igTextEditor("dropDownContainer").is(":visible"), "Dropdown list did not close on enter.");
+			equal($editor.igTextEditor("getSelectedListItem").length, 0, "There should be no selection when value doesn't match any item.");
+
+			$ddButton.click();
+			$field.val("item2");
+			keyInteraction(13, $field);
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item2", "Selected item does not reflect value.");
+
+			$editor.igTextEditor("clearButton").click();
+			equal($editor.igTextEditor("getSelectedListItem").length, 0, "Selection not removed on clear in edit mode");
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").length, 0, "Active item not removed on clear in edit mode.");
+			$field.blur();
+			$editor.igTextEditor("value", "last");
+			equal($editor.igTextEditor("getSelectedListItem").text(), "last", "Selected item does not reflect value.");
+			$editor.igTextEditor("clearButton").click();
+			equal($editor.igTextEditor("getSelectedListItem").length, 0, "Selection not removed on clear outside edit mode.");
+			$editor.remove();
+
+			// spin
+			var listItems = ["item1", "abcd", "item2", "item3", "more text", "last"];
+			editorSetup({
+				listItems: listItems,
+				buttonType: "dropdown, spin, clear",
+				value: "item2",
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), "abcd", "Selection not changed on spin button");
+			equal($editor.igTextEditor("value"), "abcd", "Value not changed on spin button");
+			for (var i = 0; i < 3; i++) {
+				mouseInteraction("mousedown", $spinUpButton[0]);
+				mouseInteraction("mouseup", $spinUpButton[0]);
+			}
+			equal($editor.igTextEditor("value"), "item1", "Value not changed on spin button");
+			ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled");
+
+			$editor.focus();
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			mouseInteraction("mousedown", $spinDownButton[0]);
+			mouseInteraction("mouseup", $spinDownButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), "abcd", "Selection not changed on spin button in edit mode.");
+			ok(!$spinUpButton.hasClass("ui-state-disabled"), "Spin up button not enabled");
+
+			$ddButton.click();
+			for (var i = 2; i < listItems.length; i++) {
+				mouseInteraction("mousedown", $spinDownButton[0]);
+				mouseInteraction("mouseup", $spinDownButton[0]);
+				equal($editor.igTextEditor("getSelectedListItem").text(), listItems[i], "Selection not changed on spin button with open dropdown.");
+			}
+			ok($spinDownButton.hasClass("ui-state-disabled"), "Spin down button not disabled");
+
+			// spin + spinWrapAround
+			$editor.igTextEditor("option", "spinWrapAround", true);
+			$editor.igTextEditor("selectedListIndex", 1);
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin button with open dropdown.");
+			mouseInteraction("mousedown", $spinDownButton[0]);
+			mouseInteraction("mouseup", $spinDownButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[0], "Selection not changed on spin button with open dropdown.");
+			$editor.igTextEditor("option", "spinWrapAround", false);
+			ok($spinUpButton.hasClass("ui-state-disabled"), "Spin up button not disabled when setting spinWrapAround");
+			$ddButton.click();
+			$editor.igTextEditor("option", "spinWrapAround", true);
+			mouseInteraction("mousedown", $spinUpButton[0]);
+			mouseInteraction("mouseup", $spinUpButton[0]);
+			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed on spin with spinWrapAround.");
+
+
+			// clearing value in edit mode and selecting the same item
+			$editor.blur(); //set last value
+			$ddButton.click();
+			$editor.igTextEditor("clearButton").click();
+			$editor.igTextEditor("dropDownContainer")
+				.children(".ui-igedit-listitem").last().click();
+			equal($field.val(), listItems[listItems.length-1], "Selection not reflected in edit field after clear");
+			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[listItems.length-1], "Selection not changed after re-selecting cleared item.");
+			$editor.remove();
+
+			// readOnly spin
+			editorSetup({
+				listItems: listItems,
+				dropDownOnReadOnly: true,
+				buttonType: "dropdown, spin, clear",
+				// remove animation to avoid waiting, show() with effect ignores 0
+				dropDownAnimationDuration: -1
+			});
+			$editor.igTextEditor("option", "readOnly", true);
+			$ddButton.click();
+			keyInteraction(40, $field); //down
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").text(), listItems[0], "Arrow down with dropDownOnReadOnly did not select first item.");
+			keyInteraction(40, $field);
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").text(), listItems[1], "Arrow down with dropDownOnReadOnly did not select second item.");
+			keyInteraction(38, $field); //up
+			equal($editor.igTextEditor("dropDownContainer").find(".ui-igedit-listitemactive").text(), listItems[0], "Arrow up with dropDownOnReadOnly did not select first item.");
+			keyInteraction(13, $field);
+			equal($editor.igTextEditor("value"), listItems[0], "Select up with dropDownOnReadOnly did not update value.");
+			$ddButton.click();
+			keyInteraction(40, $field);
+			equal($editor.igTextEditor("getSelectedListItem").text(), listItems[0], "Spin up with dropDownOnReadOnly did not update selection.");
+
+			$editor.remove();
+		});
+
 		testId = "Keyboard/Mouse testing";
-		test(testId, 19, function () {
+		test(testId, 22, function () {
 			var $interactWithButtons = $("<input id='interactWithButtons' />").appendTo("#testBedContainer").igTextEditor({
 					listItems: ["item1", "item2", "item3"],
 					buttonType: "dropdown"
@@ -748,8 +944,28 @@
 			equal(editor.igTextEditor("value"), "newValue", "Value should stay with the previouse value");
 			editor.igTextEditor("value", "newValueto");
 			keyInteraction(56, editorInput);
-			equal(editor.igTextEditor("value"), "newValueto", "Value should stay with the previouse value");
-			
+			ok(editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState) &&
+				editor.igTextEditor("editorContainer").igNotifier( "isVisible" ), "MaxLength reached message not shown.");
+			equal(editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+					$.ig.Editor.locale.maxLengthWarningMsg.replace("{0}", 10), "MaxLength reached message not correct.");
+
+			// maxLength with dropDown key handling:
+			var editor2 = $("<input>").appendTo("#testBedContainer")
+				.igTextEditor({
+					maxLength: 5,
+					buttonType: "dropdown",
+					listItems: ["1", "2", "3"]
+				}),
+				editorInput2 = editor2.igTextEditor("field");
+			editor2.igTextEditor("value", "12345");
+			editorInput2.focus();
+			keyInteraction(65, editorInput2);
+			ok(editor2.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState) &&
+				editor2.igTextEditor("editorContainer").igNotifier( "isVisible" ), "MaxLength reached message not shown.");
+			equal(editor2.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+			 	$.ig.Editor.locale.maxLengthWarningMsg.replace("{0}", 5), "MaxLength reached message not correct.");
+			editor2.remove();
+
 			mouseInteraction("mouseover", editorInput[0]);
 			mouseInteraction("mousedown", editorInput[0]);
 			mouseInteraction("mousemove", editorInput[0]);
@@ -775,6 +991,7 @@
 			listEditor.igTextEditor("option", "isLimitedToListValues", true);
 			listInput.val("item22");
 			keyInteraction(13, listInput);
+			listInput.blur();
 			equal(listEditor.igTextEditor("value"), "", "the item 2 should stay selected");
 
 			listDDBtn.click();
@@ -786,8 +1003,9 @@
 
 				listEditor.igTextEditor("value", "item3");
 				listDDBtn.click();
-				keyInteraction(38, listInput);
+				keyInteraction(38, listInput); // at item2
 				ok(listEditor.igTextEditor("dropDownVisible"), "The dropDown is not opened");
+				keyInteraction(38, listInput); // at item1
 				keyInteraction(38, listInput);
 				stop();
 				setTimeout(function () {
@@ -829,8 +1047,17 @@
 		});
 
 		testId = "Spin buttons";
-		test(testId, 4, function () {
-			var listEditor = $("#listEditor"),
+		test(testId, 5, function () {
+			var listEditor = $("<input>").appendTo("#testBedContainer").igTextEditor({
+					buttonType: "dropdown,spin,clear,nonvalid",
+					width: 200,
+					listWidth: 200,
+					height: 20,
+					listItems: ["item1", "item2", "item3"],
+					dropDownAnimationDuration: -1,
+					revertIfNotValid: false,
+					isLimitedToListValues: true
+				}),
 				listContainer = listEditor.igTextEditor("editorContainer"),
 				listInput = listEditor.igTextEditor("field"),
 				list = listEditor.igTextEditor("dropDownContainer"),
@@ -844,33 +1071,34 @@
 			listEditor.igTextEditor("option", "disabled", true);
 			listEditor.igTextEditor("option", "disabled", false);
 			ok(!list.hasClass("ui-state-disabled"), "Disabled class is not removed from the drop down");
-			ok(!listDDBtn.hasClass("ui-state-disabled"), "Disabled class is not removed from the drop down button")
-			listDDBtn.click();
+			ok(!listDDBtn.hasClass("ui-state-disabled"), "Disabled class is not removed from the drop down button");
 
-			// SpinUp using keyboard navigation
+			listDDBtn.click();
+			listInput.focus();
+
+			// SpinUp using buttons
 			mouseInteraction("mouseover", listUp[0]);
 			mouseInteraction("mousedown", listUp[0]);
 			mouseInteraction("mousepress", listUp[0]);
 			mouseInteraction("mouseup", listUp[0]);
 			mouseInteraction("mouseout", listUp[0]);
 
+			ok($(listItem).attr("data-active"), "active class should be applied on the first item");
+
 			// SpinUp using API
 			listEditor.igTextEditor("spinUp");
 
 			// SpinDown using keyboard navigation
-			mouseInteraction("mouseover", listDown[0]);
-			mouseInteraction("mousedown", listDown[0]);
-			mouseInteraction("mousepress", listDown[0]);
-			mouseInteraction("mouseup", listDown[0]);
-			mouseInteraction("mouseout", listDown[0]);
+			keyInteraction(40, listInput);
 
-			ok($(listItem).attr("data-active"), "active class should be applied on the last item");
+			ok($(list.children(".ui-igedit-listitem")[1]).attr("data-active"), "active class should be applied on the second item");
 
 			// SpinDown using API
 			listEditor.igTextEditor("spinDown");
 			listEditor.igTextEditor("spinDown");
 
 			ok($(listItemLast).attr("data-active"), "active class should be applied on the last item");
+			listEditor.remove();
 		});
 
 		testId = "SelectionOnFocus";
@@ -1197,25 +1425,24 @@
 				$emptyAndDDBtn = $("<input id='emptyAndDDBtn' />")
 				$wrongBtn = $("<input id='wrongBtn' />");
 
-			logOld = window.console.log;
-			window.console.log = logger;
-			$wrongBtn.igTextEditor({
-				buttonType: "dropdownbutton"
-			});
-			window.console.log = logOld;
-			equal(logBuffer.pop(), $.ig.Editor.locale.btnValueNotSupported, "The editor is not supposed to have any buttons.");
-			
+			throws(function(){
+				$wrongBtn.igTextEditor({
+					buttonType: "dropdownbutton"
+				});
+			},
+			Error($.ig.Editor.locale.btnValueNotSupported),
+			"Unsupported/Wrong button value is set.");
 
 			throws(function(){
 				$imgEditor.igTextEditor();
 			},
-			$.ig.Editor.locale.targetNotSupported,
+			Error($.ig.Editor.locale.targetNotSupported),
 			"The editor should not be created on img.");
 
 			throws(function(){
 				$multilineError.igTextEditor();
 			},
-			$.ig.Editor.locale.multilineErrMsg,
+			Error($.ig.Editor.locale.multilineErrMsg),
 			"Error not throw when igTextEditor is initialized in textArea and textMode is not multiline.");
 			
 			throws(function(){

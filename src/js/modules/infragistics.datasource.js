@@ -3089,11 +3089,6 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
-			if (this.isGroupByApplied(this.settings.sorting.expressions)) {
-				this._generateGroupByData(this._filter ? this._filteredData :
-															this._data,
-										this.settings.sorting.expressions);
-			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
@@ -3415,22 +3410,6 @@
 				}
 			}
 		},
-		_toLocalISOString: function(date) {
-			var tzo = -date.getTimezoneOffset(),
-				dif = tzo >= 0 ? "+" : "-",
-				pad = function(num) {
-					var norm = Math.abs(Math.floor(num));
-					return (norm < 10 ? "0" : "") + norm;
-				};
-			return date.getFullYear() +
-				"-" + pad(date.getMonth() + 1) +
-				"-" + pad(date.getDate()) +
-				"T" + pad(date.getHours()) +
-				":" + pad(date.getMinutes()) +
-				":" + pad(date.getSeconds()) +
-				dif + pad(tzo / 60) +
-				":" + pad(tzo % 60);
-		},
 		_serializeDate: function (date) {
 			if ($.type(date) !== "date") {
 				//if the value is not a date don't handle it
@@ -3439,7 +3418,7 @@
 			if (this.settings.enableUTCDates) {
 				date = date.toISOString();
 			} else {
-				date = this._toLocalISOString(date);
+				date = $.ig.toLocalISOString(date);
 			}
 			return date;
 		},
@@ -3619,6 +3598,11 @@
 					this.removeRecordByIndex(parseInt(t.rowId, 10), origDs);
 				} else {
 					this.removeRecordByKey(t.rowId, origDs);
+				}
+				if (this.isGroupByApplied(this.settings.sorting.expressions)) {
+					this._generateGroupByData(this._filter ? this._filteredData :
+																this._data,
+											this.settings.sorting.expressions);
 				}
 			} else if (t.type === "newrow") {
 				this._addRow(t.row, -1, origDs);
@@ -7136,12 +7120,12 @@
 			}
 			return out;
 		},
-		_convertType: function (t, obj, pk, key) {
+		_convertType: function (t, obj) {
 			if (t === "string") {
 				return this._parser.toStr(obj);
 			}
 			if (t === "date") {
-				return this._parser.toDate(obj, pk, key);
+				return this._parser.toDate(obj);
 			}
 			if (t === "number") {
 				return this._parser.toNumber(obj);
@@ -7158,11 +7142,13 @@
 			var t = field.type, j = null;
 			if (!this.isEmpty(t)) {
 				if (this.isEmpty(field.name)) {
-					results[ i ][ j ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ j ] = this._convertType(t, val);
 				} else {
-					results[ i ][ field.name ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ field.name ] = this._convertType(t, val);
+					/* assign offset in the record if applicable */
+					if (t === "date") {
+						this._addOffset(results[ i ], field.name, i);
+					}
 				}
 			} else {
 				if (this.isEmpty(field.name)) {
@@ -7183,6 +7169,14 @@
 				}
 			}
 		},
+		_addOffset: function (result, fieldName, i) {
+			var id = this._pk ? result[ this._pk ] : i;
+			if (this._serverOffsets &&
+				this._serverOffsets[ id ] &&
+				!this.isEmpty(this._serverOffsets[ id ][ fieldName ])) {
+					result[ "igoffset_" + fieldName ] = this._serverOffsets[ id ][ fieldName ];
+				}
+		},
 		isEmpty: function (o) {
 			/* specifies if the object is null, undefined, or an empty string
 			paramType="object" the object to check for being empty
@@ -7202,9 +7196,13 @@
 
 				if (!this.isEmpty(t)) {
 					if (this.isEmpty(fName)) {
-						nDataRow[ j ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ j ] = this._convertType(t, tmp);
 					} else {
-						nDataRow[ fName ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ fName ] = this._convertType(t, tmp);
+						/* assign offset in the record if applicable */
+						if (t === "date") {
+							this._addOffset(nDataRow, fName, index);
+						}
 					}
 				} else {
 					if (this.isEmpty(fName)) {
@@ -7807,6 +7805,10 @@
 		}
 	});
 	$.ig.JSONDataSource = $.ig.JSONDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "json"
+		},
 		init: function (options) {
 			if (!options) {
 				options = {};
@@ -8170,7 +8172,9 @@
 			string Setting the name of the callback function for a JSONP request
 			function As of jQuery 1.5, you can also use a function, in which case the value of jsonpCallback is set to the return value of that function
 			*/
-			jsonpCallback: null
+			jsonpCallback: null,
+			/* type="string" Type of the data source. */
+			type: "json"
 		},
 		init: function (options) {
 			if (!options) {
@@ -8192,6 +8196,10 @@
 		}
 	});
 	$.ig.FunctionDataSource = $.ig.FunctionDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "function"
+		},
 		init: function (options) {
 			if (!options) {
 				options = {};
@@ -8203,6 +8211,10 @@
 	});
 	/* the dataSource should be a reference to a DOM element */
 	$.ig.HtmlTableDataSource = $.ig.HtmlTableDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "htmlTableDom"
+		},
 		init: function (options) {
 
 			if (!options) {

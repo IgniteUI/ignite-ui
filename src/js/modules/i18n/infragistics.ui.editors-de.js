@@ -45,7 +45,7 @@
 			    maxValExceedRevertErrMsg: "Eintrag hat den maximalen Wert von {0} überstiegen und wurde auf den vorherigen zurückgestellt",
 			    minValExceedRevertErrMsg: "Eintrag lag unter dem Mindestwert von {0} und wurde auf den vorherigen zurückgesetzt",
 			    maxValExceedSetErrMsg: "Eintrag hat den maximalen Wert von {0} überstiegen und wurde auf den maximalen Wert eingestellt",
-			    minValExceedSetErrMsg: "Eintrag hat den minimalen Wert von {0} überstiegen und wurde auf den minimalen Wert eingestellt",
+			    minValExceedSetErrMsg: "Eintrag lag unter dem Mindestwert von {0} überstiegen und wurde auf den minimalen Wert eingestellt",
 			    maxValExceededWrappedAroundErrMsg: "Eintrag hat den maximalen Wert von {0} überstiegen und wurde auf den minimal erlaubten eingestellt",
 			    minValExceededWrappedAroundErrMsg: "Eintrag lag unter dem Mindestwert von {0} und wurde auf den maximal zulässigen eingestellt",
 			    btnValueNotSupported: 'Ein anderer Schaltflächenwert ist erforderlich. Wert zwischen "dropdown", "clear" und "spin" wählen.',
@@ -66,17 +66,16 @@
 			    datePickerEditorNoSuchMethod: "Der Daten-Editor unterstützt diese Methode nicht.",
 			    datePickerNoSuchMethodDropDownContainer: "Der Daten-Editor unterstützt diese Methode nicht. Verwenden Sie stattdessen „getCalendar“.",
 			    buttonTypeIsDropDownOnly: "Der Datepicker erlaubt nur Dropdown und Wert löschen für die buttonType-Option.",
-			    dateEditorMinValue: "MinValue-Option kann nicht zur Laufzeit festgelegt werden.",
-			    dateEditorMaxValue: "MaxValue-Option kann nicht zur Laufzeit festgelegt werden.",
 				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
 				cannotSetRuntime: "Diese Option kann nicht zur Laufzeit festgelegt werden",
                 invalidDate: "Ungültiges Datum",
                 maskMessage: 'Alle erforderlichen Positionen sollten ausgefüllt werden',
                 maskRevertMessage: 'Alle erforderlichen Positionen sollten ausgefüllt werden, weshalb der Wert auf den letzten gültigen zurückgestellt wurde.',
 				dateMessage: 'Ein gültiges Datum sollte eingegeben werden',
-                centuryThresholdValidValues: "centuryThreshold-Eigenschaft muss zwischen 0 und 99 liegen. Der Wert wurde auf Standardwerte zurückgesetzt.",
-                noListItemsNoButton: "Es wird keine Spin- oder Dropdown-Schaltfläche gerendert, da keine Listenelemente vorliegen."
-		    }
+                centuryThresholdValidValues: "centuryThreshold-Eigenschaft muss zwischen 0 und 99 liegen.",
+                noListItemsNoButton: "Es wird keine Spin- oder Dropdown-Schaltfläche gerendert, da keine Listenelemente vorliegen.",
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
+			}
 	    };
     }
 })(jQuery);

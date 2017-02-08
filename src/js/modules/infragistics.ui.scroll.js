@@ -1072,6 +1072,10 @@
 			if (val === "undefined" || val === null) {
 				return this._getContentPositionX();
 			}
+
+			/* Cancels any ongoing inertia otherwise the method call might be ignored */
+			cancelAnimationFrame(this._touchInertiaAnimID);
+
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
 				var posY = this._getContentPositionY();
 				this._scrollTouchToXY(val, posY, triggerEvents);
@@ -1101,6 +1105,10 @@
 			if (val === "undefined" || val === null) {
 				return this._getContentPositionY();
 			}
+
+			/* Cancels any ongoing inertia otherwise the method call might be ignored */
+			cancelAnimationFrame(this._touchInertiaAnimID);
+
 			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
 				var posX = this._getContentPositionX();
 				this._scrollTouchToXY(posX, val, triggerEvents);
@@ -2091,6 +2099,10 @@
 		},
 
 		_onWheelContainer: function (event) {
+			if (event.ctrlKey === true) {
+				return true;
+			}
+
 			var evt = event.originalEvent;
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
@@ -2139,7 +2151,8 @@
 
 		_onPointerDownContainer: function (event) {
 			var evt = event.originalEvent;
-			if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch")) {
+			if (!evt || (evt.pointerType !== 2 && evt.pointerType !== "touch") ||
+				typeof MSGesture !== "function") {
 				return true;
 			}
 
@@ -2176,14 +2189,30 @@
 			this._touchStartX = event.originalEvent.screenX;
 			this._touchStartY = event.originalEvent.screenY;
 			this._moving = true;
+
+			//Vars regarding swipe offset
+			this._totalMovedX = 0;
+			this._offsetRecorded = false;
+			this._offsetDirection = 0;
 		},
 
 		_onMSGestureChangeContainer: function (event) {
 			var touchPos = event.originalEvent,
 				destX = this._startX + this._touchStartX - touchPos.screenX,
 				destY = this._startY + this._touchStartY - touchPos.screenY;
-
-			this._scrollToXY(destX, destY, true);
+			/* Logic regarding x tolerance to prevent accidental horizontal scrolling when scrolling vertically */
+			this._totalMovedX = this._touchStartX - touchPos.screenX;
+			if (Math.abs(this._totalMovedX) < this.options.swipeToleranceX && !this._offsetRecorded) {
+				/* Do not scroll horizontally yet while in the tolerance range */
+				this._scrollToXY(this._startX, destY, true);
+			} else {
+				if (!this._offsetRecorded) {
+					this._offsetDirection = Math.sign(destX - this._startX);
+					this._offsetRecorded = true;
+				}
+				/* Once the tolerance is exceeded it can be scrolled horizontally */
+				this._scrollToXY(destX - this._offsetDirection * this.options.swipeToleranceX, destY, true);
+			}
 			this._moving = true;
 		},
 
@@ -2392,9 +2421,9 @@
 			bNoCancel = this._trigger("resizing", null, evtArgs);
 			if (bNoCancel) {
 				this.refresh();
-			}
 
-			this._trigger("resized", null, evtArgs);
+				this._trigger("resized", null, evtArgs);
+			}
 		},
 
 		_onElementMutation: function (mutations) {

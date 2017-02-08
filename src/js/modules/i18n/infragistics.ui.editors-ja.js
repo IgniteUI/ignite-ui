@@ -66,16 +66,15 @@
 			    datePickerEditorNoSuchMethod: "日付エディターはこのメソッドをサポートしません。",
 			    datePickerNoSuchMethodDropDownContainer: "日付エディターはこのメソッドをサポートしません。'getCalendar' メソッドを使用してください。",
 			    buttonTypeIsDropDownOnly: "Datepicker の buttonType オプションの有効な値は dropdown および clear 値のみです。",
-			    dateEditorMinValue: "MinValue オプションはランタイムに設定できません。",
-			    dateEditorMaxValue: "MaxValue オプションはランタイムに設定できません。",
 				dateEditorOffsetRange: "displayTimeOffset オプションが -720 ～ 840 です。これは、西 (-12:00) から東 (+14.00) のタイムゾーンの UTC に基づいたオフセットを分で表します。",
 				cannotSetRuntime: "このオプションはランタイムに設定できません。",
 			    invalidDate: "無効な日付",
 			    maskMessage: 'すべての必須文字を入力してください',
 			    maskRevertMessage: '値が以前の有効な値に戻されました。すべての必須文字を入力してください。',
 				dateMessage: '有効な日付を入力してください',
-			    centuryThresholdValidValues: "centuryThreshold プロパティは 0 ~ 99 である必要があります。値はデフォルトに戻されました。",
-			    noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。"
+			    centuryThresholdValidValues: "centuryThreshold プロパティは 0 ~ 99 である必要があります。",
+			    noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。",
+				decimalNumber: "dataMode が '{0}' の場合、{1} オプションは 0 ～ {2} の間の値を承諾します。"
 		    }
 	    };
     }
