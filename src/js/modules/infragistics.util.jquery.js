@@ -409,16 +409,49 @@
 				(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
 		}
 	};
-	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
-		var sum = function (data) {
-			var sum = 0,
-				i;
-			for (i = 0; i < data.length; i++) {
-				sum += data[ i ];
-			}
-			return sum;
-		};
 
+	$.ig.util.summaries = $.ig.util.summaries || {};
+	$.ig.util.summaries.min = function (data, dataType) {
+		if (data.length === 0) {
+			if (dataType === "date") {
+				return null;
+			}
+			return 0;
+		}
+		return Math.min.apply(Math, data);
+	};
+
+	$.ig.util.summaries.max = function (data, dataType) {
+		if (data.length === 0) {
+			if (dataType === "date") {
+				return null;
+			}
+			return 0;
+		}
+		return Math.max.apply(Math, data);
+	};
+
+	$.ig.util.summaries.sum = function (data, dataType) {
+		var sum = 0,
+			i;
+		for (i = 0; i < data.length; i++) {
+			sum += data[ i ];
+		}
+		return sum;
+	};
+
+	$.ig.util.summaries.avg = function (data, dataType) {
+		if (data.length === 0) {
+			return 0;
+		}
+		return $.ig.util.summaries.sum(data) / data.length;
+	};
+
+	$.ig.util.summaries.count = function (data, dataType) {
+		return data.length;
+	};
+
+	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
 		// M.H. 16 Nov. 2011 Fix for bug 97886
 		summaryFunction = summaryFunction.toLowerCase();
 		if (summaryFunction.startsWith("custom")) {
@@ -427,41 +460,26 @@
 
 		switch (summaryFunction) {
 			case "min":
-				if (data.length === 0) {
-					if (dataType === "date") {
-						return null;
-					}
-					return 0;
-				}
-				return Math.min.apply(Math, data);
+				return $.ig.util.summaries.min(data, dataType);
 			case "max":
-				if (data.length === 0) {
-					if (dataType === "date") {
-						return null;
-					}
-					return 0;
-				}
-				return Math.max.apply(Math, data);
+				return $.ig.util.summaries.max(data, dataType);
 			case "sum":
-				return sum(data);
+				return $.ig.util.summaries.sum(data, dataType);
 			case "avg":
-				if (data.length === 0) {
-					return 0;
-				}
-				return sum(data) / data.length;
+				return $.ig.util.summaries.avg(data, dataType);
 			case "count":
-				return data.length;
+				return $.ig.util.summaries.count(data, dataType);
 			case "custom":
 
 				// M.H. 30 Sept. 2011 Fix for bug #88717 - fix when caller is string
 				if (caller !== undefined && caller !== null) {
 					if ($.type(caller) === "function") {
-						return caller(data);
+						return caller(data, dataType);
 					}
 					if ($.type(caller) === "string") {
 						/*jshint evil:true */
 						caller = eval(caller);
-						return caller(data);
+						return caller(data, dataType);
 					}
 				} else {
 					return null;
@@ -469,6 +487,54 @@
 				break;
 		}
 	};
+
+	$.ig.util.defaultSummaryMethods = [
+		{
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelCount : "Count = ",
+			"name": "count",
+			"summaryFunction": $.ig.util.summaries.count,
+			"dataType": "all",
+			"active": true,
+			"order": 0,
+			"decimalDisplay": 2
+		},
+		{
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMin : "Min = ",
+			"name": "min",
+			"summaryFunction": $.ig.util.summaries.min,
+			"dataType": [ "number", "date", "numeric" ],
+			"active": true,
+			"order": 1,
+			"decimalDisplay": 2
+		},
+		{
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMax : "Max = ",
+			"name": "max",
+			"summaryFunction": $.ig.util.summaries.max,
+			"dataType": [ "number", "date", "numeric" ],
+			"active": true,
+			"order": 2,
+			"decimalDisplay": 2
+		},
+		{
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelSum : "Sum = ",
+			"name": "sum",
+			"summaryFunction": $.ig.util.summaries.sum,
+			"dataType": [ "number", "numeric" ],
+			"active": true,
+			"order": 3,
+			"decimalDisplay": 2
+		},
+		{
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelAvg : "Avg = ",
+			"name": "avg",
+			"summaryFunction": $.ig.util.summaries.avg,
+			"dataType": [ "number", "numeric" ],
+			"active": true,
+			"order": 4,
+			"decimalDisplay": 2
+		}
+	];
 
 	// get max zIndex of ui-dialogs - method is usually called by feautures for configuring zIndex of modal dialogs(like filtering, feature chooser, hiding, etc.)
 	$.ig.getMaxZIndex = function (id) {
