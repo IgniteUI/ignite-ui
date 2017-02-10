@@ -1021,7 +1021,7 @@
 	 		dsFilter.settings.filtering.filterExprUrlKey = null;
 			var prevMonthDate = new Date(ticks);
 			prevMonthDate.setDate(15); //prevent month change due to date limits
-			prevMonthDate.setMonth(-1);
+			prevMonthDate.setMonth(prevMonthDate.getMonth() - 1);
 			var nextMonthDate = new Date(ticks);
 			nextMonthDate.setDate(15); //prevent month change due to date limits
 			nextMonthDate.setMonth(nextMonthDate.getMonth() + 1)

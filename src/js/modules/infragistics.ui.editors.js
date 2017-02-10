@@ -1207,7 +1207,7 @@
 			*/
 			buttonType: "none",
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
-				Items in the list can be of type string, number or object. The items are directly rendered without any casting, or manipulation.
+				Items in the list can be of type string.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1404,7 +1404,7 @@
 				multiline type="string" Multiline editor based on TEXTAREA element is created.
 			*/
 			textMode: "text",
-			/* type="bool" Gets/Sets the ability of the editor to automatically change the hoverd item into the opened dropdown list to its oposide side. When the last item is reached and the spin down is clicked, the first item gets hovered and vice versa. This option has no effect there is no drop-down list.
+			/* type="bool" Gets/Sets the ability of the editor to automatically move the dropdown list selection item from one end to the opposite side. When the last item is reached and spin down is performed, the first item gets selected and vice versa. This option has no effect there is no drop-down list.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1419,7 +1419,7 @@
 			```
 			*/
 			spinWrapAround: false,
-			/* type="bool" Gets/Sets if the editor should only allow values set into the list of items. This validation is done only when the editor is blured, or enter key is pressed
+			/* type="bool" Gets/Sets if the editor should only allow values from the list of items. Matching is case-insensitive.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1802,6 +1802,14 @@
 				case "listWidth":
 					this._setDropDownListWidth();
 					break;
+				case "spinWrapAround":
+					if (value) {
+						this._enableSpinButton(this._spinDownButton, "spinDown");
+						this._enableSpinButton(this._spinUpButton, "spinUp");
+					} else {
+						this._setSpinButtonsState(this.value());
+					}
+					break;
 				case "excludeKeys":
 					if (value === "") {
 						this._excludeKeysArray = [];
@@ -1840,6 +1848,9 @@
 				value = value.toString();
 			}
 			this._super(value);
+			if (this._dropDownList) {
+				this._updateDropdownSelection(value);
+			}
 		},
 		_applyOptions: function () { //TextEditor
 			var initialValue;
@@ -2142,11 +2153,11 @@
 				this._attachButtonsEvents(type, target);
 			}
 		},
-		_exceedsMaxValue: function(value) {
-			return this.options.maxValue !== null && value >= this.options.maxValue;
+		_exceedsMaxValue: function() { //TextEditor
+			return this._dropDownList && !this._getSpinItem("up").length;
 		},
-		_lessThanMinValue: function(value) {
-			return this.options.minValue !== null && value <= this.options.minValue;
+		_lessThanMinValue: function() { //TextEditor
+			return this._dropDownList && !this._getSpinItem("down").length;
 		},
 		_setSpinButtonsState: function (val) {
 			if (typeof val === "string" || val instanceof String) {
@@ -2191,8 +2202,17 @@
 			}
 			return stringValue;
 		},
+		_valueIndexInList: function (val) {
+			if (!val && val !== 0) {
+				return -1;
+			}
+			var loweredItems = $.map(this.options.listItems, function (item) {
+				return item.toString().toLowerCase();
+			});
+			return $.inArray(val.toString().toLowerCase(), loweredItems);
+		},
 		_validateValue: function (val) { //Text Editor
-			var loweredItems, result;
+			var result;
 			if (val === undefined) {
 				result = false;
 			} else if (val === null) {
@@ -2202,11 +2222,7 @@
 					result = false;
 				}
 			} else if (this.options.isLimitedToListValues && this._dropDownList) {
-				loweredItems = $.map(this.options.listItems, function (item) {
-					// M.H. 4 Dec 2015 Fix for bug 210666: "Uncaught TypeError: Cannot read property 'toString' of undefined" when using filter API
-					return (item === null || item === undefined) ? "" : item.toString().toLowerCase();
-				});
-				if ($.inArray(val.toString().toLowerCase(), loweredItems) !== -1) {
+				if (this._valueIndexInList(val) !== -1) {
 					result = true;
 				} else {
 					this._sendNotification("warning", $.ig.Editor.locale.allowedValuesMsg);
@@ -2309,6 +2325,12 @@
 			this._setDropDownListWidth();
 		},
 		_createList: function () {
+			// Remove items that can't be displayed. isArray, filter polyfills in util
+			if (Array.isArray(this.options.listItems)) {
+				this.options.listItems = this.options.listItems.filter(function (item) {
+					return item || item === 0;
+				});
+			}
 			if (this.options.textMode !== "multiline" &&
 				this.options.textMode !== "password" &&
 				this.options.listItems && this.options.listItems.length > 0) {
@@ -2330,8 +2352,8 @@
 				this._editorInputId + "'>";
 			this._editorInput.attr("aria-owns", this.id + "_list");
 			for (i = 0; i < list.length; i++) {
-				itemValue = this.options.displayFactor ?
-					this._multiplyWithPrecision(list[ i ], this.options.displayFactor) :
+				itemValue = list[ i ] ?
+					this._getEditModeValue(list[ i ]) :
 					list[ i ];
 				currentItem = "<span id='" + id + "_item_" + (i + 1) +
 					"' tabindex='-1' role='option' aria-selected='false' aria-posinset='" +
@@ -2808,54 +2830,68 @@
 								// We use the same handler, because it runs the common logic for item selecting and so on.
 								this._triggerListItemClick(activeItem);
 							} else {
+								this._toggleDropDown();
 								this._processValueChanging(currentInputVal);
+								this._enterEditMode();
 							}
 						} else {
 							// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput.
 							this._processValueChanging(currentInputVal);
+
+							// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+							this._enterEditMode();
 						}
 					}
-				} else if (this._dropDownList) {
-					//Arrow Up
-					if (e.keyCode === 38) {
-						//Close if opened
-						if (e.altKey && this._dropDownList.is(":visible")) {
-							this._toggleDropDown();
-						} else if (this._dropDownList.is(":visible")) {
-							//hover previousItem
-							activeItem = this._dropDownList
-								.children(".ui-igedit-listitem")
-								.filter("[data-active='true']");
-							if (activeItem.length > 0 && !activeItem.is(":first-child")) {
-								this._hoverPreviousDropDownListItem();
-							} else {
-								//Close DropDonw
+				} else {
+					if (this._dropDownList) {
+						//Arrow Up
+						if (e.keyCode === 38) {
+							//Close if opened
+							if (e.altKey && this._dropDownList.is(":visible")) {
 								this._toggleDropDown();
+							} else if (this._dropDownList.is(":visible")) {
+								//hover previousItem
+								activeItem = this._dropDownList
+									.children(".ui-igedit-listitem")
+									.filter("[data-active='true']");
+								if (activeItem.length > 0 && !activeItem.is(":first-child")) {
+									this._hoverPreviousDropDownListItem();
+								} else {
+									//Close DropDonw
+									this._toggleDropDown();
+								}
+								if (this.options.readOnly) {
+									e.preventDefault();
+								}
 							}
-						}
-					} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
-						if (!this._dropDownList.is(":visible")) {
-							//openDropDown
+						} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
+							if (!this._dropDownList.is(":visible")) {
+								//openDropDown
+								this._toggleDropDown();
+							} else {
+								//hover next element
+								this._hoverNextDropDownListItem();
+							}
+							if (this.options.readOnly) {
+								e.preventDefault();
+							}
+						} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
+							//Close dropdown
 							this._toggleDropDown();
-						} else {
-							//hover next element
-							this._hoverNextDropDownListItem();
 						}
-					} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
-						//Close dropdown
-						this._toggleDropDown();
 					}
-				} else if (this.options.maxLength) {
-					currentInputVal = this._editorInput.val();
-					if (currentInputVal.length === this.options.maxLength &&
-							e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
-						selection = this._getSelection(this._editorInput[ 0 ]);
-						if (selection.start === selection.end) {
-							e.preventDefault();
-							e.stopPropagation();
-							this._sendNotification("warning",
-								$.ig.util.stringFormat($.ig.Editor.locale.maxLengthWarningMsg,
-									this.options.maxLength));
+					if (this.options.maxLength) {
+						currentInputVal = this._editorInput.val();
+						if (currentInputVal.length === this.options.maxLength &&
+								e.keyCode > 46 && !e.altKey && !e.ctrlKey) {
+							selection = this._getSelection(this._editorInput[ 0 ]);
+							if (selection.start === selection.end) {
+								e.preventDefault();
+								e.stopPropagation();
+								this._sendNotification("warning",
+									$.ig.util.stringFormat($.ig.Editor.locale.maxLengthWarningMsg,
+										this.options.maxLength));
+							}
 						}
 					}
 				}
@@ -2992,25 +3028,22 @@
 			if (noCancel) {
 
 				// TODO select closest parent class
-				$(item).parent().children(".ui-igedit-listitem")
-					.removeClass(this.css.listItemSelected)
-					.attr("aria-selected", false);
-				$(item).addClass(this.css.listItemSelected);
-				$(item).attr("aria-selected", true);
+				this._setSelectedItemByIndex($(item).index());
 
-				noCancel = this._triggerDropDownClosing();
-				if (noCancel) {
+				if (this._dropDownList.is(":visible") && this._triggerDropDownClosing()) {
 					this._hideDropDownList();
 				}
-				this._triggerDropDownItemSelected(item);
 
-				if (this.value() !== $(item).text()) {
-
-					this._currentInputTextValue = this._editorInput.val();
-					this._processValueChanging($(item).text());
-					this._processTextChanged();
+				// D.P. _processValueChanging and text process have checks for change
+				this._currentInputTextValue = this._editorInput.val();
+				this._processValueChanging($(item).text());
+				if (this._editMode) {
 					this._enterEditMode();
+				} else {
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
 				}
+				this._triggerDropDownItemSelected();
 			}
 		},
 		_triggerButtonClick: function (event, buttonType) {
@@ -3087,23 +3120,28 @@
 			};
 			return this._trigger(this.events.dropDownItemSelecting, null, args);
 		},
-		_triggerDropDownItemSelected: function (item) {
+		_triggerDropDownItemSelected: function () {
 			var args = {
 				owner: this,
 				editorInput: this._editorInput,
 				list: this._dropDownList,
-				item: item
+				item: this.getSelectedListItem()[ 0 ]
 			};
 			this._trigger(this.events.dropDownItemSelected, null, args);
 		},
 		_processTextChanged: function () {
 			var currentVal = this._editorInput.val(),
 				previousVal = this._currentInputTextValue;
-			if (previousVal === undefined) {
-				//In that case we don't have track of previous value, so we trigger the textChanged event
-				this._triggerTextChanged("", currentVal);
-			} else if (currentVal !== previousVal) {
+			if (currentVal !== previousVal) {
+				if (previousVal === undefined) {
+					//In case we don't have track of previous value
+					previousVal = "";
+				}
 				this._triggerTextChanged(previousVal, currentVal);
+
+				if (this._editMode && this._dropDownList) {
+					this._updateDropdownSelection(this._valueFromText(currentVal));
+				}
 				if (this._validator) {
 					// D.P. 26th Oct 2015 Bug 20972 validation onchange does not work correctly
 					this._validator._validateInternal(this.element, null, false,
@@ -3155,62 +3193,45 @@
 				return result;
 		},
 		_hoverPreviousDropDownListItem: function () {
-			var items = this._dropDownList.children(".ui-igedit-listitem"), newItem, currentItem;
-			if (items && items.length > 0) {
-				if (items.filter("[data-active='true']").length > 0) {
-					currentItem = items.filter("[data-active='true']");
-					newItem = currentItem.prev();
-					if (currentItem.is(":first-child")) {
-						if (this.options.spinWrapAround) {
-							newItem = items.last();
-							this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-								newItem.position().top);
-						} else {
-							return;
-						}
-					} else {
-						if (this._elementPositionInViewport(newItem) === "top") {
-							this._dropDownList.scrollTop(this._dropDownList.scrollTop() -
-								newItem.outerHeight());
-						}
-					}
-					currentItem.removeClass(this.css.listItemActive,
-						this.options.listItemHoverDuration);
-					currentItem.removeAttr("data-active");
-					newItem.addClass(this.css.listItemActive, this.options.listItemHoverDuration);
-					newItem.attr("data-active", true);
+			var newItem, position,
+				currentItem = this._listItems().filter("[data-active='true']");
+			newItem = this._getSpinItem("up", currentItem);
+			if (newItem.length > 0) {
+				position = this._elementPositionInViewport(newItem);
+
+				// Element is outside the viewPort and we need to scroll
+				if (position === "top") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() -
+						newItem.outerHeight());
+				} else if (position === "bottom") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						newItem.position().top);
 				}
+				currentItem.removeClass(this.css.listItemActive,
+					this.options.listItemHoverDuration);
+				currentItem.removeAttr("data-active");
+				newItem.addClass(this.css.listItemActive, this.options.listItemHoverDuration);
+				newItem.attr("data-active", true);
 			}
 		},
 		_hoverNextDropDownListItem: function () {
-			var items = this._dropDownList.children(".ui-igedit-listitem"), newItem, currentItem;
-			if (items && items.length > 0) {
-				if (items.filter("[data-active='true']").length > 0) {
-					//we have already hovered item.
-					currentItem = items.filter("[data-active='true']");
-					newItem = currentItem.next();
-					if (currentItem.is(":last-child")) {
+			var newItem, position,
+				currentItem = this._listItems().filter("[data-active='true']");
+			newItem = this._getSpinItem("down", currentItem);
+			if (newItem.length > 0) {
+				position = this._elementPositionInViewport(newItem);
 
-						if (this.options.spinWrapAround) {
-							newItem = items.first();
-							this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-								newItem.position().top);
-						} else {
-							return;
-						}
-					}
-
-					// Element is below the viewPort and we need to scroll
-					if (this._elementPositionInViewport(newItem) === "bottom") {
-						this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-							newItem.outerHeight());
-					}
-					currentItem.removeClass(this.css.listItemActive,
-						this.options.listItemHoverDuration);
-					currentItem.removeAttr("data-active");
-				} else {
-					newItem = items.filter(":visible").first();
+				// Element is outside the viewPort and we need to scroll
+				if (position === "bottom") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						newItem.outerHeight());
+				} else if (position === "top") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						newItem.position().top);
 				}
+				currentItem.removeClass(this.css.listItemActive,
+					this.options.listItemHoverDuration);
+				currentItem.removeAttr("data-active");
 				newItem.addClass(this.css.listItemActive, this.options.listItemHoverDuration);
 				newItem.attr("data-active", true);
 			}
@@ -3309,11 +3330,17 @@
 			}
 		},
 		_markDropDownHoverActiveItem: function () {
-			var activeItem =
-				this._dropDownList
+			var activeItem = this._dropDownList
 					.children(".ui-igedit-listitem")
 					.filter(".ui-igedit-listitemselected");
 
+			if (!activeItem.length) {
+				return;
+			}
+			if (this._elementPositionInViewport(activeItem) !== "inside") {
+				this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						activeItem.position().top);
+			}
 			activeItem.attr("data-active", true);
 		},
 		_clearDropDownHoverActiveItem: function () {
@@ -3421,12 +3448,17 @@
 			return result;
 		},
 		_enterEditMode: function () { //TextEditor
+			var val = this._valueInput.val(),
+				selection = this._getSelection(this._editorInput[ 0 ]);
+
 			this._editMode = true;
-			var selection = this._getSelection(this._editorInput[ 0 ]);
 			this._currentInputTextValue = this._editorInput.val();
-			this._editorInput.val(this._valueInput.val());
+			this._editorInput.val(this._getEditModeValue(val));
 			this._positionCursor(selection.start, selection.end);
 			this._processTextChanged();
+		},
+		_getEditModeValue: function (val) { //igTextEditor
+			return val;
 		},
 		_exitEditMode: function () { //TextEditor
 			// Update the editor input with display value
@@ -3565,25 +3597,58 @@
 				after: value.substring(index)
 			};
 		},
-		_spinUp: function () {
-			if (this._dropDownList && this._dropDownList.is(":visible")) {
-				this._hoverPreviousDropDownListItem();
+		_spin: function (type, fireEvent) {
+			var nextItem;
+			if (this._dropDownList) {
+				nextItem = this._getSpinItem(type);
+				if (!nextItem.length) {
+					// no allowed item found
+					return;
+				}
+				if (fireEvent && !this._triggerDropDownItemSelecting(nextItem[ 0 ])) {
+					return;
+				}
+				this._currentInputTextValue = this._editorInput.val();
+				if (this._editMode) {
+					this._editorInput.val(nextItem.text());
+					this._processTextChanged();
+					this._editorInput.select();
+				} else {
+					this._processValueChanging(nextItem.text());
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
+				}
+				if (fireEvent) {
+					this._triggerDropDownItemSelected();
+				}
 			}
 		},
-		_spinDown: function () {
-			if (this._dropDownList && this._dropDownList.is(":visible")) {
-				this._hoverNextDropDownListItem();
+		_getSpinItem: function (spinType, selected) { //igTextEditor
+			var items = this._listItems(), newItem, currentItem;
+			if (!items.length) {
+				return items;
+			}
+			if (selected) {
+				currentItem = selected;
+			} else {
+				currentItem = this.getSelectedListItem();
+			}
+			if (currentItem.length > 0) {
+				newItem = currentItem[ spinType === "up" ? "prev" : "next" ]();
+
+				if (!newItem.length && this.options.spinWrapAround) {
+					newItem = items[ spinType === "up" ? "last" : "first" ]();
+				}
+				return newItem;
+			} else {
+				return items.first();
 			}
 		},
-
-		// We need this level of abstaction because of the numeric editors.
-		_handleSpinUpEvent: function () {
-			this._spinUp();
+		_handleSpinUpEvent: function () { //igTextEditor
+			this._spin("up", true);
 		},
-
-		// We need this level of abstaction because of the numeric editors.
-		_handleSpinDownEvent: function () {
-			this._spinDown();
+		_handleSpinDownEvent: function () { //igTextEditor
+			this._spin("down", true);
 		},
 		_handleSpinEvent: function (type, target) {
 			var self = this;
@@ -3610,11 +3675,6 @@
 		},
 		_clearValue: function (textOnly) {
 			this._super(textOnly);
-			if (this._dropDownList &&
-				this._dropDownList.children(".ui-igedit-listitemselected").length > 0) {
-				this._dropDownList.children(".ui-igedit-listitemselected")
-					.removeClass(this.css.listItemSelected);
-			}
 		},
 		_clearEditorNotifier: function () {
 			var notifier = this._editorContainer.data("igNotifier");
@@ -3676,8 +3736,7 @@
 			return this._dropDownList.children(".ui-igedit-listitem");
 		},
 		_getListItemByIndex: function (index) {
-			return this._dropDownList.
-				children(".ui-igedit-listitem:nth-child(" + (index + 1) + ")");
+			return this._listItems().eq(index);
 		},
 		_getSelectedItemIndex: function () {
 			var items = this._listItems(), i;
@@ -3689,16 +3748,41 @@
 			return -1;
 		},
 		_setSelectedItemByIndex: function (index) {
-			var oldSelectedItem, newSelectedItem;
+			var oldSelectedItem, newSelectedItem, position;
 
 			if (this._getSelectedItemIndex() !== index) {
 				oldSelectedItem = this.getSelectedListItem();
 				oldSelectedItem.removeClass(this.css.listItemSelected);
 				oldSelectedItem.removeAttr("data-active");
+				oldSelectedItem.attr("aria-selected", false);
 				newSelectedItem = this._getListItemByIndex(index);
 				newSelectedItem.addClass(this.css.listItemSelected);
+				newSelectedItem.attr("aria-selected", true);
 				if (this.dropDownVisible()) {
+					position = this._elementPositionInViewport(newSelectedItem);
+					if (position !== "inside") {
+						this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+							newSelectedItem.position().top);
+					}
+					this._clearDropDownHoverActiveItem();
 					newSelectedItem.attr("data-active", true);
+				}
+			}
+		},
+		_updateDropdownSelection: function (currentVal) { //igTextEditor
+			var current = this.getSelectedListItem().index(),
+				selectedIndex = this._valueIndexInList(currentVal);
+			if (current !== selectedIndex) {
+				if (selectedIndex > -1) {
+					this._setSelectedItemByIndex(selectedIndex);
+				} else {
+					this.getSelectedListItem()
+						.removeClass(this.css.listItemSelected)
+						.attr("aria-selected", false)
+						.removeAttr("data-active");
+					if (this.dropDownVisible()) {
+						this._clearDropDownHoverActiveItem();
+					}
 				}
 			}
 		},
@@ -3764,7 +3848,7 @@
 
 			```
 				paramType="string" optional="false" The text to search for in the drop down list.
-				paramType="startsWith|endsWith|contains|exactMatch " optional="true" The rule that is applied for searching the text.
+				paramType="startsWith|endsWith|contains|exact" optional="true" The rule that is applied for searching the text.
 				returnType="number" Returns index of the found item. */
 
 			var list = this.options.listItems,
@@ -3807,8 +3891,8 @@
 			```
 				paramType="number" optional="true" The index of the item that needs to be selected.
 				returnType="number" Returns the selected index. */
-			if (index !== undefined) {
-				this._setSelectedItemByIndex(index);
+			if (index !== undefined && typeof this.options.listItems[ index ] !== "undefined") {
+				this._processInternalValueChanging(this.options.listItems[ index ]);
 			} else {
 				return this._getSelectedItemIndex();
 			}
@@ -3878,20 +3962,20 @@
 			this._setSelectionRange(this._editorInput[ 0 ], start, end);
 		},
 		spinUp: function () {
-			/* Hovers the previous item in the drop-down list if the list is opened.
+			/* Selects the previous item from the drop-down list.
 			```
 			 $(".selector").igTextEditor("spinUp");
 			```
 			*/
-			this._spinUp();
+			this._spin("up");
 		},
 		spinDown: function () {
-			/* Hovers the next item in the drop-down list if the list is opened.
+			/* Selects the next item from the drop-down list.
 			```
 				$(".selector").igTextEditor("spinDown");
 			```
 			*/
-			this._spinDown();
+			this._spin("down");
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
@@ -3914,7 +3998,7 @@
 	$.widget("ui.igNumericEditor", $.ui.igTextEditor, {
 		options: {
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
-				Items in the list can be of type string, number or object. The items are directly rendered without any casting, or manipulation.
+				Items in the list can be of type number.
 				```
 				$(".selector").%%WidgetName%%({
 					listItems : [
@@ -4037,10 +4121,11 @@
 				```
 				*/
 			groups: null,
-			/* type="number" Gets/Sets the maximum number of decimal places which are used in display mode(no focus).
+			/* type="number" Gets/Sets the maximum number of decimal places supported by the editor.
 				Note: this option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4055,12 +4140,12 @@
 				```
 				*/
 			maxDecimals: null,
-			/* type="number" Gets/Sets the minimum number of decimal places which are used in display (no focus) state.
+			/* type="number" Gets/Sets the minimum number of decimal places supported by the editor.
 				If number of digits in fractional part of number is less than the value of this option, then the "0" characters are used to fill missing digits.
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
-				Note: This option supports values below or equal to 20.
+				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4075,6 +4160,23 @@
 				```
 				*/
 			minDecimals: null,
+			/* type="bool" Gets/Sets whether the last decimal place will be rounded, when the maxDecimal option is defined and applied.
+			For example if the initial editor value is set to 123.4567, maxDecimals option is set to 3 and roundDecimals is enabled,
+			then editor will round the value and will display it as 123.457. If roundDecimals is disabled then editor value will be truncated to 123.456.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					roundDecimals : false
+				});
+
+				//Get
+				var roundDecimals = $(".selector").%%WidgetName%%("option", "roundDecimals");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "roundDecimals", false);
+				```
+			*/
+			roundDecimals: true,
 			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor.
 				```
 					//Initialize
@@ -4093,7 +4195,10 @@
 				center type="string" The text into the input gets aligned to the center.
 			*/
 			textAlign: "right",
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igNumericEditor#options:minValue) and [maxValue](ui.igNumericEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standards, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igNumericEditor#options:minDecimals) and [maxDecimals](ui.igNumericEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -4106,16 +4211,16 @@
 				//Set
 				$(".selector").%%WidgetName%%("option", "dataMode", "float");
 			```
-				double type="string" the Number object is used with limits of double and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'. Note: that is used as default.
-				float type="string" the Number object is used with limits of float and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'.
-				long type="string" the Number object is used with limits of signed long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ulong type="string" the Number object is used with limits of unsigned long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				int type="string" the Number object is used with limits of signed int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				uint type="string" the Number object is used with limits of unsigned int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				short type="string" the Number object is used with limits of signed short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ushort type="string" the Number object is used with limits of unsigned short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				sbyte type="string" the Number object is used with limits of signed byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				byte type="string" the Number object is used with limits of unsigned byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
+				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue). Note: that is used as default.
+				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				long type="string" the Number object is used with the limits of a signed long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ulong type="string" the Number object is used with the limits of an unsigned long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				int type="string" the Number object is used with the limits of a signed int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				uint type="string" the Number object is used with the limits of an unsigned int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				short type="string" the Number object is used with the limits of a signed short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ushort type="string" the Number object is used with the limits of an unsigned short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				sbyte type="string" the Number object is used with the limits of a signed byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				byte type="string" the Number object is used with the limits of an unsigned byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
 			*/
 			dataMode: "double",
 			/* type="number" Gets/Sets the minimum value which can be entered in the editor by the end user.
@@ -4203,6 +4308,7 @@
 			*/
 			scientificFormat: null,
 			/* type="bool" Gets/Set the ability of the editor to automatically set value in the editor to the opposite side of the limit, when the spin action reaches minimum or maximum limit.
+				This applies to [minValue](ui.%%WidgetNameLowered%%#options:minValue) and [maxValue](ui.%%WidgetNameLowered%%#options:maxValue) or cycling through list items if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -4217,6 +4323,20 @@
 			```
 			*/
 			spinWrapAround: false,
+			/* type="bool" Gets/Sets if the editor should only allow values from the list of items. Enabling this also causes spin actions to cycle through list items instead.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					isLimitedToListValues : true
+				});
+
+				//Get
+				var limited = $(".selector").%%WidgetName%%("option", "isLimitedToListValues");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
+			```*/
+			isLimitedToListValues: false,
 			/* @Ignored@ Removed from numeric editor options*/
 			maxLength: null,
 			/* @Ignored@ Removed from numeric editor options*/
@@ -4348,13 +4468,24 @@
 				this.options.minDecimals;
 		},
 		_applyOptions: function () { // NumericEditor
-			var delta, fractional, initialValue;
+
 			this._super();
-			initialValue = this.options.value;
+			this._validateSpinSettings();
+			this._validateDecimalSettings();
+
+			if (this.options.maxLength !== null) {
+				this.options.maxLength = null;
+			}
+			if (this.options.value < 0) {
+				this._editorInput.addClass(this.css.negative);
+			}
+		},
+		_validateSpinSettings: function() {
+			var delta, fractional;
 
 			// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 			if (this.options.buttonType === "spin") {
-				this._setSpinButtonsState(initialValue);
+				this._setSpinButtonsState(this.options.value);
 			}
 			if (this.options.spinDelta !== 1) {
 				delta = this.options.spinDelta;
@@ -4374,7 +4505,7 @@
 						if (fractional.toString().length > this.options.maxDecimals) {
 							throw new Error($.ig.util.stringFormat($.ig.Editor.locale.
 								spinDeltaContainsExceedsMaxDecimals,
-								this.options.maxDecimals));
+							this.options.maxDecimals));
 						}
 					}
 				} else {
@@ -4387,11 +4518,40 @@
 			if (this.options.scientificFormat) {
 				this.options.spinDelta = Number(this.options.spinDelta.toExponential());
 			}
-			if (this.options.maxLength !== null) {
-				this.options.maxLength = null;
+		},
+		_validateDecimalSettings: function() {
+			try {
+				this._validateDecimalSetting("minDecimals", this.options.minDecimals);
+			} catch (e) {
+				this.options.minDecimals = this._getRegionalOption("numericMinDecimals");
+				throw e;
 			}
-			if (this.options.value < 0) {
-				this._editorInput.addClass(this.css.negative);
+			try {
+				this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
+			} catch (e) {
+				this.options.minDecimals = this._getRegionalOption("numericMaxDecimals");
+				throw e;
+			}
+			this._validateDecimalMinMax();
+		},
+		_validateDecimalSetting: function(name, value) {
+			var mode = this.options.dataMode, boundary;
+
+			if (mode === "double") {
+				boundary = 15;
+			} else if (mode === "float") {
+				boundary = 7;
+			}
+
+			if (value === "" || isNaN(value) ||
+				(!isNaN(value) && (value < 0 || value > boundary))) {
+				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalNumber,
+					mode, name, boundary));
+			}
+		},
+		_validateDecimalMinMax: function() {
+			if (this.options.minDecimals > this.options.maxDecimals) {
+				this.options.maxDecimals = this.options.minDecimals;
 			}
 		},
 		_setOption: function (option, value) { // igNumericEditor
@@ -4418,26 +4578,44 @@
 						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
 					} else if (this.options.scientificFormat) {
 						this.options[ option ] = Number(value.toExponential());
-			}
-					break;
-				}
-
-				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
-				case "minValue":
-					this._setSpinButtonsState(this.value());
-					break;
-				case "maxValue":
-					this._setSpinButtonsState(this.value());
-					break;
-				case "minDecimals",
-					 "maxDecimals":
-					value = parseFloat(value);
-					if (isNaN(value)) {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.setOptionError + option);
 					}
 					break;
+				}
+				case "minValue":
+				case "maxValue":
+					if (isNaN(value)) {
+						this.options[ option ] = prevValue;
+						return;
+					}
+					if (value === null) {
+						// ensure dataMode defaults
+						this._applyDataModeSettings();
+					} else {
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+						}
+					}
 
+					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
+					this._setSpinButtonsState(this.value());
+					break;
+				case "minDecimals":
+				case "maxDecimals":
+					try {
+						this._validateDecimalSetting(option, value);
+					} catch (e) {
+						this.options[ option ] = prevValue;
+						throw e;
+					}
+					if (this.options[ option ] !== prevValue) {
+						this._validateDecimalMinMax();
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+						}
+					}
+					break;
 				case "regional":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
@@ -4486,10 +4664,6 @@
 				if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
 					value = this.options.maxValue;
 
-					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
-					this._valueInput.val(value);
-					this._enterEditMode();
-
 					//Raise warning
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
@@ -4498,10 +4672,6 @@
 				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
 				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
 					value = this.options.minValue;
-
-					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
-					this._valueInput.val(value);
-					this._enterEditMode();
 
 						// Raise Warning level 2
 						this._sendNotification("warning",
@@ -4568,6 +4738,7 @@
 
 						// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput
 						this._processValueChanging(currentInputVal);
+						this._enterEditMode();
 					}
 
 				} else if (e.keyCode === 38) {
@@ -4576,66 +4747,55 @@
 					// Close if opened
 					if (e.altKey && this._dropDownList && this._dropDownList.is(":visible")) {
 						this._toggleDropDown();
-					} else if (!this.options.readOnly) {
-						if (this._dropDownList && this._dropDownList.is(":visible")) {
+					} else if (this._dropDownList && this._dropDownList.is(":visible")) {
 
-							// Hover previous element
-							this._hoverPreviousDropDownListItem();
-						} else {
+						// Hover previous element
+						this._hoverPreviousDropDownListItem();
+					} else if (!this.options.readOnly ||
+						(this.options.readOnly && this.options.isLimitedToListValues)) {
 
-							// Spin numeric value
-							this._handleSpinUpEvent();
-						}
+						// Spin numeric value
+						this._handleSpinUpEvent();
+					}
+					if (this.options.readOnly) {
+						e.preventDefault();
 					}
 				} else if (e.keyCode === 40) {//Arrow Down
 					if (e.altKey && this._dropDownList && !this._dropDownList.is(":visible")) {
 
 						// OpenDropDown
 						this._toggleDropDown();
-					} else if (!this.options.readOnly) {
-						if (this._dropDownList && this._dropDownList.is(":visible")) {
+					} else if (this._dropDownList && this._dropDownList.is(":visible")) {
 
-							// Hover next element
-							this._hoverNextDropDownListItem();
-						} else {
+						// Hover next element
+						this._hoverNextDropDownListItem();
+					} else if (!this.options.readOnly ||
+						(this.options.readOnly && this.options.isLimitedToListValues)) {
 
-							// Spin numeric value
-							this._handleSpinDownEvent();
-						}
+						// Spin numeric value
+						this._handleSpinDownEvent();
+					}
+					if (this.options.readOnly) {
+						e.preventDefault();
 					}
 				} else if (e.keyCode === 27 && this._dropDownList &&
 					this._dropDownList.is(":visible")) { //Escape and dropdown is opened
 
 					// Close dropdown
 					this._toggleDropDown();
-				} else if (this.options.maxLength) {
-					currentInputVal = this._editorInput.val();
-					if (currentInputVal.length === this.options.maxLength &&
-						e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
-						e.preventDefault();
-						e.stopPropagation();
-
-						//// Process notification
-						// TODO
-					}
 				}
 			}
 			return noCancel;
 		},
 		_applyDataModeSettings: function () {
-			// We need to adjust max decimals, based on the dataMode limits
-			var doubleMaxDecimals = 15;
 			switch (this.options.dataMode) {
 				case "double": {
 					this._setMinMaxValues(-(Number.MAX_VALUE), Number.MAX_VALUE);
-					this._setMinMaxDecimals(doubleMaxDecimals);
 				}
 					break;
 				case "float": {
-					var floatMaxDecimals = 7, floatMinValue = -3.40282347e38,
-						floatMaxValue = 3.40282347e38;
+					var floatMinValue = -3.40282347e38, floatMaxValue = 3.40282347e38;
 					this._setMinMaxValues(floatMinValue, floatMaxValue);
-					this._setMinMaxDecimals(floatMaxDecimals);
 				}
 					break;
 				case "long": {
@@ -4683,19 +4843,7 @@
 				default: {
 					this.options.dataMode = "double";
 					this._setMinMaxValues(Number.MIN_VALUE, Number.MAX_VALUE);
-					this._setMinMaxDecimals(doubleMaxDecimals);
 				}
-			}
-		},
-		_setMinMaxDecimals: function (typeMaxDecimals) {
-			if (this.options.maxDecimals === null || this.options.maxDecimals > typeMaxDecimals) {
-				this.options.maxDecimals = typeMaxDecimals;
-			}
-
-			// this.options.numericMinDecimals = this._getRegionalOption("numericMinDecimals");
-			// In case of conflict between min and max decimals - both values are equaled to the max decimals
-			if (this.options.minDecimals && this.options.minDecimals > this.options.maxDecimals) {
-				this.options.maxDecimals = this.options.minDecimals;
 			}
 		},
 		_setMinMaxValues: function (typeMinValue, typeMaxValue) {
@@ -4757,9 +4905,24 @@
 							fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
 						}
 						if (fractionalDigits.length > maxDecimals) {
-							fractionalDigits = fractionalDigits.substring(0, maxDecimals);
+
+							// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
+							if (this.options.roundDecimals) {
+								stringValue = Math.round10(value, -maxDecimals).toString();
+								if (stringValue.indexOf(decimalSeparator) > -1) {
+									fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+								} else {
+									fractionalDigits = "";
+								}
+							} else {
+								fractionalDigits = fractionalDigits.substring(0, maxDecimals);
+							}
 						}
-						integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+						if (stringValue.indexOf(decimalSeparator) > -1) {
+							integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+						} else {
+							integerDigits = stringValue;
+						}
 
 						//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
 						val = (integerDigits + "." + fractionalDigits) / 1;
@@ -4866,6 +5029,10 @@
 				this._valueInput.val(val);
 			}
 			this.options.value = val;
+
+			if (this._dropDownList) {
+				this._updateDropdownSelection(val);
+			}
 		},
 		_validateKey: function (event) { //NumericEditor
 			if (this._super(event)) {
@@ -5008,11 +5175,6 @@
 			}
 			if (!textOnly && newValue !== undefined) {
 				this._updateValue(newValue);
-			}
-			if (this.dropDownContainer() &&
-				this.dropDownContainer().children(".ui-igedit-listitemselected").length > 0) {
-				this.dropDownContainer().children(".ui-igedit-listitemselected")
-					.removeClass(this.css.listItemSelected);
 			}
 		},
 		_getRegionalOption: function (key) {
@@ -5178,22 +5340,21 @@
 			return integerDigits;
 		},
 		_enterEditMode: function () { //NumericEditor
-			var val, selection = this._getSelection(this._editorInput[ 0 ]);
 			if (!$.ig.util.isIE8) {
 				this._editorInput.attr("type", "tel");
 			}
-			this._currentInputTextValue = this._editorInput.val();
-			val = this._valueInput.val();
-			if (val < 0) {
+			if (this._valueInput.val() < 0) {
 
 				// Remove negative css into edit mode
 				this._editorInput.removeClass(this.css.negative);
-
 			}
-
-			if (this._numericType === "percent" && this.options.displayFactor && val !== "" && !isNaN(val)) {
-				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
-				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
+			this._super();
+		},
+		_getEditModeValue: function (val) { //NumericEditor
+			// value must be numeric
+			if (this.options.scientificFormat) {
+				val = Number(val).toExponential()
+					.replace("e", this._getScientificFormat());
 			}
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
@@ -5201,10 +5362,7 @@
 			if (this.options.negativeSign !== "-") {
 				val = val.toString().replace("-", this.options.negativeSign);
 			}
-			this._editorInput.val(val);
-			this._editMode = true;
-			this._positionCursor(selection.start, selection.end);
-			this._processTextChanged();
+			return val;
 		},
 		_exitEditMode: function () { //NumericEditor
 			this._super();
@@ -5214,9 +5372,11 @@
 				this._editorInput.removeClass(this.css.negative);
 			}
 		},
-		_getSpinValue: function (spinType, currentValue, decimalSeparator, delta) {
-			var fractional, scientificPrecision, spinPrecision,
-				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
+		_getSpinValue: function (spinType, currentValue, delta) { //NumericEditor
+			var fractional, scientificPrecision, spinPrecision, valuePrecision,
+				spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
+
+			// currentValue much be a valid number string
 			if (delta) {
 				spinDeltaValue = Number(delta);
 			}
@@ -5235,17 +5395,12 @@
 				} else {
 					currentValue -= spinDelta;
 				}
-			} else if (currentValue.toString().indexOf(decimalSeparator) !== -1) {
+			} else if (currentValue.toString().indexOf(".") !== -1) {
 				fractional = currentValue
-					.substring(currentValue.toString().indexOf(decimalSeparator) + 1);
+					.substring(currentValue.toString().indexOf(".") + 1);
 
 				toFixedVal = fractional.toString().length;
 
-				if (decimalSeparator !== ".") {
-
-					// Replace the decimal separator with .
-					currentValue = currentValue.toString().replace(decimalSeparator, ".");
-				}
 				currentValue = currentValue / 1;
 
 				// D.P. value is already float, always use precision
@@ -5290,11 +5445,6 @@
 				if (currentValue.toString().substring(currentValue
 					.toString().indexOf(".") + 1).length < fractional.length) {
 					currentValue = currentValue.toFixed(toFixedVal);
-				}
-				if (decimalSeparator !== ".") {
-
-					// Replace . with decimal separator
-					currentValue = currentValue.toString().replace(".", decimalSeparator);
 				}
 			} else {
 				currentValue = currentValue / 1;
@@ -5342,9 +5492,14 @@
 			return currentValue;
 		},
 		_spinUp: function (delta) { //NumericEditor
-			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
+			var currVal, noCancel;
+
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				this._spin("up");
+				return;
+			}
 			if (this._focused) {
-				currVal = this._editorInput.val();
+				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
 				if (this.value() || this.value() === 0) {
 					currVal = this.value().toString();
@@ -5354,7 +5509,7 @@
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
+			currVal = this._getSpinValue("spinUp", currVal, delta);
 			if ((currVal > this.options.maxValue &&
 				this.options.spinWrapAround) || currVal < this.options.minValue) {
 				currVal = this.options.minValue;
@@ -5368,10 +5523,7 @@
 						this.options.maxValue));
 			}
 			if (this._focused) {
-				if (this.options.scientificFormat) {
-					currVal = Number(currVal).toExponential()
-						.replace("e", this._getScientificFormat());
-				}
+				currVal = this._getEditModeValue(currVal);
 				this._editorInput.val(currVal);
 				this._processTextChanged();
 			} else {
@@ -5396,9 +5548,14 @@
 			return result;
 		},
 		_spinDown: function (delta) { //NumericEditor
-			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
+			var currVal, noCancel;
+
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				this._spin("down");
+				return;
+			}
 			if (this._focused) {
-				currVal = this._editorInput.val();
+				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
 				if (this.value() || this.value() === 0) {
 					currVal = this.value().toString();
@@ -5408,7 +5565,7 @@
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
+			currVal = this._getSpinValue("spinDown", currVal, delta);
 			if ((currVal < this.options.minValue &&
 				this.options.spinWrapAround) || currVal > this.options.maxValue) {
 				currVal = this.options.maxValue;
@@ -5423,10 +5580,7 @@
 						this.options.minValue));
 			}
 			if (this._focused) {
-				if (this.options.scientificFormat) {
-					currVal = Number(currVal).toExponential()
-						.replace("e", this._getScientificFormat());
-				}
+				currVal = this._getEditModeValue(currVal);
 				this._editorInput.val(currVal);
 				this._processTextChanged();
 			} else {
@@ -5443,94 +5597,37 @@
 			}
 			this._setSpinButtonsState(currVal);
 		},
+		_exceedsMaxValue: function(value) {  //NumericEditor
+			if (this.options.isLimitedToListValues) {
+				return this._super(value);
+			}
+			return this.options.maxValue !== null && value >= this.options.maxValue;
+		},
+		_lessThanMinValue: function(value) { //NumericEditor
+			if (this.options.isLimitedToListValues) {
+				return this._super(value);
+			}
+			return this.options.minValue !== null && value <= this.options.minValue;
+		},
 		_handleSpinUpEvent: function () {
-			var cursorPosition = this._getCursorPosition();
-			if (this.options.dataMode === "double" || this.options.dataMode === "float") {
-
-				// Get cursor position
-				if (this._focused) {
-
-					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
-						case "fractional": {
-							this._spinUp();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "integer": {
-							this._spinUp();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "all": {
-							this._spinUp();
-							this._editorInput.select();
-
-							// Select All
-						}
-							break;
-						default:
-							this._spinUp();
-							this._editorInput.select();
-					}
-				} else {
-					this._spinUp();
-				}
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				// default to text list selection
+				this._super();
 			} else {
 				this._spinUp();
+				if (this._focused) {
+					this._editorInput.select();
+				}
 			}
 		},
 		_handleSpinDownEvent: function () {
-			var cursorPosition = this._getCursorPosition();
-			if (this.options.dataMode === "double" || this.options.dataMode === "float") {
-				if (this._focused) {
-					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
-						case "fractional": {
-							this._spinDown();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "integer": {
-							this._spinDown();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "all": {
-							this._spinDown();
-							this._editorInput.select();
-
-							//Select All
-						}
-							break;
-						default:
-							this._spinDown();
-							this._editorInput.select();
-					}
-				} else {
-					this._spinDown();
-				}
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				// default to text list selection
+				this._super();
 			} else {
 				this._spinDown();
-			}
-		},
-		_fractionalOrIntegerSelected: function (cursorPosition) {
-			var decimalSeparator, val;
-			if (cursorPosition === -1) {
-				return "all";
-			} else {
-				decimalSeparator = this.options.decimalSeparator;
-				val = this._editorInput.val();
-				if (val.indexOf(decimalSeparator) < 0) {
-					return "all";
-				} else {
-					if (cursorPosition <= val.indexOf(decimalSeparator)) {
-						return "integer";
-					} else {
-						return "fractional";
-					}
+				if (this._focused) {
+					this._editorInput.select();
 				}
 			}
 		},
@@ -5642,36 +5739,36 @@
 			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		spinUp: function (delta) {
-			/* Increments value in editor according to the parameter.
+			/* Increments value in editor according to the parameter or selects the previous item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
 			```
 				$(".selector").%%WidgetName%%("spinUp");
 			```
 				paramType="number" optional="true" Increments value. */
-			this._spinUp(delta); // TODO this._spinUp() method should accept delta.
+			this._spinUp(delta);
 		},
 		spinDown: function (delta) {
-			/* Decrements value in editor according to the parameter.
+			/* Decrements value in editor according to the parameter selects the next item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
 			```
 				$(".selector").%%WidgetName%%("spinDown");
 			```
 				paramType="number" optional="true" Decrement value. */
-			this._spinDown(delta); // TODO this._spinUp() method should accept delta.
+			this._spinDown(delta);
 		},
 		selectListIndexUp: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list.
+			/* @Deprecated@ This method is deprecated in favor of [spinUp](ui.%%WidgetNameLowered%%#options:spinUp).
 			```
-				$(".selector").%%WidgetName%%("selectListIndexUp", 2);
+				$(".selector").%%WidgetName%%("selectListIndexUp");
 			```
 			*/
-			$.ui.igTextEditor.prototype.spinUp.call(this);
+			this._spinUp();
 		},
 		selectListIndexDown: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list.
+			/* @Deprecated@ This method is deprecated in favor of [spinDown](ui.%%WidgetNameLowered%%#options:spinDown).
 			```
-				$(".selector").%%WidgetName%%("selectListIndexDown", 1);
+				$(".selector").%%WidgetName%%("selectListIndexDown");
 			```
 			*/
-			$.ui.igTextEditor.prototype.spinDown.call(this);
+			this._spinDown();
 		},
 		getRegionalOption: function () {
 			/* Gets current regional.
@@ -5819,7 +5916,10 @@
 				```
 				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igPercentEditor#options:minValue) and [maxValue](ui.igPercentEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standards, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igPercentEditor#options:minDecimals) and [maxDecimals](ui.igPercentEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
@@ -5980,104 +6080,17 @@
 					break;
 			}
 		},
+		_getEditModeValue: function (val) { //igPercentEditor
+			// value must be numeric
+			if (val !== "" && !isNaN(val)) {
+				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
+				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
+			}
+			return this._super(val);
+		},
 		_valueFromText: function (text) { //igPercentEditor
 			var val = this._parseNumericValueByMode(text, this._numericType, this.options.dataMode);
 			return this._divideWithPrecision(val, this.options.displayFactor);
-		},
-		_spinUp: function (delta) { //igPercentEditor
-			// TODO: refactor numemic spin functions
-			var currVal, displayValue, decimalSeparator = this.options.decimalSeparator, noCancel;
-			if (this._focused) {
-				currVal = this._divideWithPrecision(this._editorInput.val(),
-					this.options.displayFactor).toString();
-			} else {
-				if (this.value() || this.value() === 0) {
-					currVal = this.value().toString();
-				} else {
-					currVal = "";
-				}
-			}
-			this._clearEditorNotifier();
-			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
-
-			if ((currVal > this.options.maxValue &&
-				this.options.spinWrapAround) || currVal < this.options.minValue) {
-				currVal = this.options.minValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValExceededWrappedAroundErrMsg,
-					this.options.maxValue));
-			} else if (currVal >= this.options.maxValue && !this.options.spinWrapAround) {
-				currVal = this.options.maxValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValErrMsg,
-						this.options.maxValue));
-			}
-			if (this._focused) {
-				displayValue = this._multiplyWithPrecision(currVal, this.options.displayFactor);
-				if (this.options.scientificFormat) {
-					currVal = Number(displayValue).toExponential()
-						.replace("e", this._getScientificFormat());
-				}
-				this._editorInput.val(displayValue);
-				this._processTextChanged();
-			} else {
-				//trigger value changing
-				noCancel = this._triggerValueChanging(currVal);
-				if (noCancel) {
-					this._updateValue(currVal);
-					this._exitEditMode();
-
-					// We pass the new value in order to have the original value into the arguments
-					this._triggerValueChanged(currVal);
-				}
-			}
-			this._setSpinButtonsState(currVal);
-		},
-		_spinDown: function (delta) { //igPercentEditor
-			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
-			if (this._focused) {
-				currVal = this._divideWithPrecision(this._editorInput.val(),
-					this.options.displayFactor).toString();
-			} else {
-				if (this.value() || this.value() === 0) {
-					currVal = this.value().toString();
-				} else {
-					currVal = "";
-				}
-			}
-			this._clearEditorNotifier();
-			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
-			if ((currVal < this.options.minValue &&
-				this.options.spinWrapAround) || currVal > this.options.maxValue) {
-				currVal = this.options.maxValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceededWrappedAroundErrMsg,
-						this.options.minValue));
-
-			} else if (currVal <= this.options.minValue && !this.options.spinWrapAround) {
-				currVal = this.options.minValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValErrMsg,
-						this.options.minValue));
-			}
-			if (this._focused) {
-				this._editorInput
-					.val(this._multiplyWithPrecision(currVal, this.options.displayFactor));
-				this._processTextChanged();
-			} else {
-				//trigger value changing
-				noCancel = this._triggerValueChanging(currVal);
-				if (noCancel) {
-					this._updateValue(currVal);
-					this._exitEditMode();
-
-					// We pass the new value in order to have the original value into the arguments
-					this._triggerValueChanged(currVal);
-				}
-			}
-			this._setSpinButtonsState(currVal);
 		},
 
 		// igPercentEditor public methods
@@ -6362,17 +6375,13 @@
 			}*/
 		},
 
-		_enterEditMode: function () { // MaskEditor
-			var selection = this._getSelection(this._editorInput[ 0 ]);
-			this._editMode = true;
-			this._currentInputTextValue = this._editorInput.val();
+		_getEditModeValue: function () { // MaskEditor
+			// Use already parsed mask, other uses already handled by _parseValueByMask
 			if (this._maskedValue === "") {
-				this._editorInput.val(this._maskWithPrompts);
+				return this._maskWithPrompts;
 			} else {
-				this._editorInput.val(this._maskedValue);
+				return this._maskedValue;
 			}
-			this._positionCursor(selection.start, selection.end);
-			this._processTextChanged();
 		},
 		_insert: function (newValue, previousValue, selection) { // MaskEditor
 			if (this.options.toUpper) {
@@ -7456,7 +7465,6 @@
 			value: null,
 			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
-				Note! This option can not be set runtime.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7465,12 +7473,14 @@
 
 					//Get
 					var minValue = $(".selector").%%WidgetName%%("option", "minValue");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "minValue", new Date(1980, 6, 1));
 				```
 				*/
 			minValue: null,
 			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
 				Note! This option doesn't use the displayInputFormat to extract the date.
-				Note! This option can not be set runtime.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7479,6 +7489,9 @@
 
 					//Get
 					var maxValue = $(".selector").%%WidgetName%%("option", "maxValue");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "maxValue", new Date(2020, 11, 21));
 				```
 				*/
 			maxValue: null,
@@ -7783,9 +7796,9 @@
 		},
 		_setOption: function (option, value) { // igDateEditor
 			/* igDateEditor custom setOption goes here */
-			var prevValue = this.options[ option ];
+			var prevValue = this.options[ option ], date;
 			if ($.type(prevValue) === "date") {
-				var date = this._getDateObjectFromValue(value);
+				date = this._getDateObjectFromValue(value);
 				if ($.type(date) === "date" && (prevValue.getTime() === date.getTime())) {
 					return;
 				}
@@ -7806,14 +7819,22 @@
 					}
 					break;
 				}
-				case "minValue": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.dateEditorMinValue);
-				}
-				case "maxValue": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
-				}
+				case "minValue":
+				case "maxValue":
+					if (!this._isValidDate(value)) {
+						this.options[ option ] = prevValue;
+						return;
+					}
+					if (value !== null) {
+						this.options[ option ] = this._getDateObjectFromValue(value);
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+							this._currentInputTextValue = this._editorInput.val();
+						}
+					}
+					this._setSpinButtonsState(this.value());
+					break;
 				case "listItems":
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
@@ -7886,6 +7907,7 @@
 			}
 
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
+				this.options.centuryThreshold = 29;
 				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
 			}
 
@@ -10649,7 +10671,7 @@
 				spin type="string" Spin buttons are located on the right side of the editor.
 			*/
 			buttonType: "dropdown",
-			/* type="object" Gets/Sets the options supported by the jquery.ui.datepicker. Only options related to the drop-down calendar are supported.
+			/* type="object" Gets/Sets the options supported by the [jquery.ui.datepicker](http://api.jqueryui.com/datepicker/). Only options related to the drop-down calendar are supported.
 			```
 			//Initialize
 			$(".selector").igDatePicker({
@@ -10777,6 +10799,8 @@
 		_setDropDownListWidth: function () { // igDatePicker
 		},
 		_listMouseDownHandler: function () { // igDatePicker
+		},
+		_updateDropdownSelection: function () { //igDatePicker
 		},
 		_disableEditor: function (applyDisabledClass) { //igDatePicker
 			//T.P. 9th Dec 2015 Bug 211010
@@ -11038,17 +11062,25 @@
 						(this._editorInput.data("datepicker").settings.minDate !==
 							this.options.minValue))
 					{
-						this.options.minValue =
-							this._editorInput.data("datepicker").settings.minDate;
+						this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
 					}
 					if (value.maxDate &&
 						(this._editorInput.data("datepicker").settings.maxDate !==
 							this.options.maxValue))
 					{
-						this.options.maxValue =
-							this._editorInput.data("datepicker").settings.maxDate;
+						this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
 					}
 				}
+					break;
+				case "minValue":
+				case "maxValue":
+					this.options[ option ] = prevValue;
+					this._super(option, value);
+					this._editorInput.datepicker("option", "minDate", this.options.minValue);
+					this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
+
+					// prevent datepicker from updating the input text (if min/max change selection)
+					this._editorInput.val(this._currentInputTextValue);
 					break;
 				default: {
 
