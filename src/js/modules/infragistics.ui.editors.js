@@ -572,7 +572,7 @@
 			}
 		},
 		_render: function () {
-			throw ($.ig.Editor.locale.renderErrMsg);
+			throw new Error($.ig.Editor.locale.renderErrMsg);
 		},
 		_applyOptions: function () {
 			if (this.options.tabIndex !== null) {
@@ -1867,7 +1867,7 @@
 				if (this._validateValue(initialValue)) {
 					this._setInitialValue(initialValue);
 					this._editorInput.val(this._getDisplayValue());
-				} else if (initialValue === null && !this.options.allowNullValue ) {
+				} else if (initialValue === null && !this.options.allowNullValue) {
 					this._setInitialValue("");
 				}
 			} else if (this.element.val() && this._validateValue(this.element.val())) {
@@ -1935,7 +1935,7 @@
 				this._editorInputWrapper = editorElementWrapper;
 			} else if (this.element.is("textarea")) {
 				if (this.options.textMode !== "multiline") {
-					throw ($.ig.Editor.locale.multilineErrMsg);
+					throw new Error($.ig.Editor.locale.multilineErrMsg);
 				} else {
 					this._editorContainer = this.element.wrap($("<div></div>")).parent();
 					this._editorInput = this.element;
@@ -1947,7 +1947,7 @@
 			} else {
 
 				//TODO Throw target element not supported.
-				throw ($.ig.Editor.locale.targetNotSupported);
+				throw new Error($.ig.Editor.locale.targetNotSupported);
 			}
 			this._editorContainer.addClass(this.css.container);
 			this._editorInput.addClass(this.css.editor);
@@ -2059,7 +2059,7 @@
 				//If placeholder is not supported
 				this._editorInput.addClass(this.css.placeHolder);
 				if (this._placeHolderNotSupported()) {
-					console.log($.ig.Editor.locale.placeHolderNotSupported);
+					throw new Error($.ig.Editor.locale.placeHolderNotSupported);
 				}
 			} else if (this._editorInput.attr("placeholder")) {
 				this._editorInput.removeAttr("placeholder");
@@ -2529,7 +2529,7 @@
 			}
 
 			if (buttonsCountRendered === 0) {
-				console.log($.ig.Editor.locale.btnValueNotSupported);
+				throw new Error($.ig.Editor.locale.btnValueNotSupported);
 			}
 		},
 		_attachButtonsEvents: function (type, target) {
@@ -4320,7 +4320,7 @@
 						break;
 					default: {
 						result = "e";
-						throw ($.ig.Editor.locale.scientificFormatErrMsg);
+						throw new Error($.ig.Editor.locale.scientificFormatErrMsg);
 					}
 				}
 			} else {
@@ -5192,10 +5192,9 @@
 			}
 
 			if (this._numericType === "percent" && this.options.displayFactor && val !== "" && !isNaN(val)) {
-				val = this._parseNumericValueByMode(val, this._numericType, this.options.dataMode);
-				val = this._multiplyWithPrecision(val, this.options.displayFactor);
+				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
+				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
 			}
-
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
 			}
@@ -5632,15 +5631,15 @@
 		},
 		getSelectedText: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		getSelectionStart: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		getSelectionEnd: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		spinUp: function (delta) {
 			/* Increments value in editor according to the parameter.
@@ -7815,13 +7814,11 @@
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
 				}
-					break;
 				case "listItems":
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
-					break;
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -7877,11 +7874,21 @@
 		},
 		_applyOptions: function () { // DateEditor
 			var delta = this.options.spinDelta;
-			this._super();
-			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
-				this.options.centuryThreshold = 29;
-				console.log($.ig.Editor.locale.centuryThresholdValidValues);
+
+			if (typeof delta !== "number") {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+			} else if (delta < 0) {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+			} else {
+				this.options.spinDelta = parseInt(delta, 10);
 			}
+
+			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
+				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
+			}
+
 			if (this.options.minValue) {
 				if (!this._isValidDate(new Date(this.options.minValue))) {
 					throw new Error($.ig.Editor.locale.invalidDate);
@@ -7896,18 +7903,14 @@
 					this.options.maxValue = this._getDateObjectFromValue(this.options.maxValue);
 				}
 			}
+
+			// N.A. January 23th, 2017 #731 If value exceeds the min/max value, then set it to min/max and show notification.
+			this.options.value = this._getValueBetweenMinMax(this.options.value);
+
+			this._super();
+
 			if (this._maskWithPrompts === undefined) {
 				this._setInitialValue();
-			}
-
-			if (typeof delta !== "number") {
-				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
-			} else if (delta < 0) {
-				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
-			} else {
-				this.options.spinDelta = parseInt(delta, 10);
 			}
 		},
 		_triggerKeyDown: function (event) { //DateEditor
@@ -8921,19 +8924,7 @@
 			} else {
 				parsedVal = this._parseDateFromMaskedValue(value);
 			}
-			if (this._isValidDate(parsedVal)) {
-				if (this.options.maxValue && parsedVal > this.options.maxValue) {
-					parsedVal = this._getDateObjectFromValue(this.options.maxValue);
-					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.maxValue))));
-				} else if (this.options.minValue && parsedVal < this.options.minValue) {
-					parsedVal = this._getDateObjectFromValue(this.options.minValue);
-					this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.minValue))));
-				}
-			}
+			parsedVal = this._getValueBetweenMinMax(parsedVal);
 			if (this._validateValue(parsedVal)) {
 				this._updateValue(parsedVal);
 			} else {
@@ -8977,20 +8968,29 @@
 			}
 			return result;
 		},
-		_updateValue: function (value) { //igDateEditor
-			//TODO Review
-			if (value === null) {
-				if (this.options.allowNullValue) {
-					this._maskedValue = this._maskWithPrompts;
-					this._valueInput.val("");
-					this.options.value = null;
-					this._dateObjectValue = null;
-				} else {
-					this._maskedValue = this._maskWithPrompts;
-					this._valueInput.val("");
-					this.options.value = "";
-					this._dateObjectValue = null;
+		_getValueBetweenMinMax: function(date) {
+			var validDate = date;
+			if (date !== null && this._isValidDate(date)) {
+				if (this.options.maxValue && date > this.options.maxValue) {
+					validDate = this._getDateObjectFromValue(this.options.maxValue);
+					this._sendNotification("warning",
+						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
+							this._getDisplayValue(new Date(this.options.maxValue))));
+				} else if (this.options.minValue && date < this.options.minValue) {
+					validDate = this._getDateObjectFromValue(this.options.minValue);
+					this._sendNotification("warning",
+					$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
+							this._getDisplayValue(new Date(this.options.minValue))));
 				}
+			}
+			return validDate;
+		},
+		_updateValue: function (value) { //igDateEditor
+			if (value === null) {
+				this._maskedValue = this._maskWithPrompts;
+				this._valueInput.val("");
+				this.options.value = this.options.allowNullValue ? null : "";
+				this._dateObjectValue = null;
 			} else if (value === "") {
 
 				// Empty string is passed only when clear is called, or when an empty value is created
@@ -9272,7 +9272,7 @@
 				} else {
 					extractedDate = this._setNewDateMidnight();
 					if (yearField !== null && yearField !== undefined) {
-						this._setDateField("Year", extractedDate, yearField);
+						this._setDateField("FullYear", extractedDate, yearField);
 					}
 					if (monthField !== null && monthField !== undefined) {
 						this._setDateField("Month", extractedDate, monthField);
@@ -9294,7 +9294,7 @@
 				extractedDate = new Date(this._dateObjectValue.getTime());
 			}
 			if (yearField !== null && yearField !== undefined) {
-				this._setDateField("Year", extractedDate, yearField);
+				this._setDateField("FullYear", extractedDate, yearField);
 			}
 			if (monthField !== null && monthField !== undefined) {
 
@@ -9674,12 +9674,18 @@
 		},
 		_setMillisecondsEditMode: function (mask, time, currentMilliseconds, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMilliseconds,
-				secondsUpdateDelta = 0, currentSecond, timeSecond;
-			if (currentMilliseconds + delta >= 60) {
+				secondsUpdateDelta = 0, currentSecond, timeSecond, boundary;
+
+			switch (this._dateIndices.ffLength) {
+				case 1: boundary = 10; break;
+				case 2: boundary = 100; break;
+				case 3: boundary = 1000; break;
+			}
+			if (currentMilliseconds + delta >= boundary) {
 				if (isLimited) {
 					newMilliseconds = currentMilliseconds;
 				} else {
-					newMilliseconds = (currentMilliseconds + delta) - 60;
+					newMilliseconds = (currentMilliseconds + delta) - boundary;
 					secondsUpdateDelta = 1;
 				}
 			} else if (currentMilliseconds + delta < 0) {
@@ -9689,7 +9695,7 @@
 					if (currentMilliseconds + delta === 0) {
 						newMilliseconds = 0;
 					} else {
-						newMilliseconds = 60 + (currentMilliseconds + delta);
+						newMilliseconds = boundary + (currentMilliseconds + delta);
 						secondsUpdateDelta = -1;
 					}
 				}
@@ -9941,14 +9947,23 @@
 		_setDayEditMode: function (mask, time, currentDay, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, currentYear,
 				currentMonth, lastDayOfMonth, lastDayOfPreviousMonth, newDay,
-				monthUpdateDelta, timeYear, timeMonth;
+				monthUpdateDelta, timeYear, timeMonth, today;
 
+			today = new Date();
 			timeYear = this._createYearPosition();
-			currentYear = parseInt(this._getStringRange(mask,
-				timeYear.startPosition, timeYear.endPosition), 10);
+			if (timeYear === null) {
+				currentYear = today.getFullYear();
+			} else {
+				currentYear = parseInt(this._getStringRange(mask,
+					timeYear.startPosition, timeYear.endPosition), 10);
+			}
 			timeMonth = this._createMonthPosition();
-			currentMonth = parseInt(this._getStringRange(mask,
-				timeMonth.startPosition, timeMonth.endPosition), 10);
+			if (timeMonth === null) {
+				currentMonth = today.getMonth();
+			} else {
+				currentMonth = parseInt(this._getStringRange(mask,
+					timeMonth.startPosition, timeMonth.endPosition), 10);
+			}
 			lastDayOfMonth = this._lastDayOfMonth(currentYear, currentMonth);
 			lastDayOfPreviousMonth = this._lastDayOfMonth(currentYear,
 				currentMonth - 1 !== 0 ? currentMonth - 1 : 12);
@@ -10018,10 +10033,10 @@
 					mask = this._setYearEditMode(mask, timeYear, currentYear, yearUpdateDelta);
 				} else {
 
-					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous minute.
+					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous year.
 					// In such a situation, we update the internal date with the new year, so that when we loose focus the month is the correct one.
 					if (!isLimited) {
-						this._setDateField("Year",
+						this._setDateField("FullYear",
 							this._dateObjectValue,
 							this._getDateField("FullYear", this._dateObjectValue) + yearUpdateDelta);
 					}
@@ -10036,6 +10051,10 @@
 			} else {
 				newYear = currentYear + delta;
 			}
+			newYear = newYear.toString();
+			if (!this._dateIndices.fourDigitYear) {
+				newYear = newYear.substring(newYear.length - 2, newYear.length);
+			}
 			mask = this._setTimeEditMode(mask, time, currentYear, newYear);
 			return mask;
 		},
@@ -10044,7 +10063,11 @@
 
 			newValueAsString = newValue.toString();
 			if (newValueAsString.length === 1) {
-				newValueAsString = "0" + newValueAsString;
+				if (!(time.name === "milliseconds" && this._dateIndices.ffLength === 1)) {
+
+					// Only when milliseconds mask is with length 1, then we don't precede the new value with 0.
+					newValueAsString = "0" + newValueAsString;
+				}
 				if (time.name === "milliseconds" && this._dateIndices.ffLength === 3) {
 					newValueAsString = "0" + newValueAsString;
 				}
@@ -10162,7 +10185,8 @@
 			}
 			if (cursorPosition >= indices.yy &&
 				(indices.fourDigitYear && cursorPosition <= indices.yy + 4 ||
-					indices.fourDigitYear === undefined && indices.yy + 2)) {
+					(indices.fourDigitYear === undefined || indices.fourDigitYear === false) &&
+						cursorPosition <= indices.yy + 2)) {
 				time = this._createYearPosition();
 			} else if (cursorPosition >= indices.MM && cursorPosition <= indices.MM + 2) {
 				time = this._createMonthPosition();
@@ -10345,15 +10369,35 @@
 			period = this._getDateField(periodName, date);
 			newPeriod = period + delta;
 
-			this._setDateField(periodName, date, newPeriod);
-			if (userInteraction) {
-				this._triggerInternalValueChange(date);
-				this._editorInput.val(this._getDisplayValue());
-				this._processTextChanged();
-			} else {
-				this._processInternalValueChanging(date);
-				this._editorInput.val(this._getDisplayValue());
+			if (!this._isNewPeriodLimited(periodName, newPeriod, delta, date)) {
+				this._setDateField(periodName, date, newPeriod);
+				if (userInteraction) {
+					this._triggerInternalValueChange(date);
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
+				} else {
+					this._processInternalValueChanging(date);
+					this._editorInput.val(this._getDisplayValue());
+				}
 			}
+		},
+		_isNewPeriodLimited: function(name, value, delta, date) {
+			var isLimited = false;
+			if (this.options.limitSpinToCurrentField) {
+				if (delta < 0) {
+					if (value < 0) {
+						isLimited = true;
+					}
+				} else if (name === "Month" && value === 13 ||
+					name === "Month" && value ===
+						this._lastDayOfMonth(date.getFullYear() && date.getMonth()) + 1 ||
+					(name === "Hours" || name === "Minutes"  || name === "Seconds") &&
+						value === 60 ||
+					name === "Milliseconds" && value === 1000) {
+					isLimited = true;
+				}
+			}
+			return isLimited;
 		},
 		_spinDisplayMode: function (delta, userInteraction) {
 			var indices = this._dateIndices, periodName;
@@ -10388,6 +10432,7 @@
 			if (!delta) {
 				return;
 			}
+			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
 			if (this._editMode) {
 				this._spinEditMode(delta, userInteraction);
@@ -10539,32 +10584,32 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownButton: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownVisible: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		}
 	});
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
@@ -10798,7 +10843,7 @@
 						date = self._setNewDateMidnight();
 					}
 
-					self._setDateField("Year", date, dateFromPicker.getFullYear());
+					self._setDateField("FullYear", date, dateFromPicker.getFullYear());
 
 					//Temporary change the date to be in the middle of the month 15th, because when using JavaScript Date object to set month when date is 31, the date object is moved with one day.
 					self._setDateField("Date", date, 15);
@@ -11161,22 +11206,22 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		showDropDown: function () {
 			/* Shows the drop down list.
@@ -11424,7 +11469,7 @@
 				this._editorContainer = this.element.wrap($("<div></div>")).parent();
 				this._editorInput.after(this._valueInput);
 			} else {
-				throw ($.ig.Editor.locale.instantiateCheckBoxErrMsg);
+				throw new Error($.ig.Editor.locale.instantiateCheckBoxErrMsg);
 			}
 
 			this._editorContainer
@@ -11608,7 +11653,7 @@
 				if (value.ret) {
 					state = value.p1;
 				} else {
-					throw ($.ig.Editor.locale.cannotParseNonBoolValue);
+					throw new Error($.ig.Editor.locale.cannotParseNonBoolValue);
 				}
 			}
 
@@ -11790,7 +11835,7 @@
 					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
-						throw ($.ig.Editor.locale.cannotSetNonBoolValue);
+						throw new Error($.ig.Editor.locale.cannotSetNonBoolValue);
 					}
 				} else {
 					/* update value only */

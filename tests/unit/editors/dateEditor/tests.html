@@ -67,8 +67,7 @@
 					$("#inputEditor4").igDateEditor({
 						value: '01/09/50',
 						dateInputFormat: "dd/MM/yyyy",
-						dateDisplayFormat: "dd/MM/yyyy",
-						centuryThreshold: 101
+						dateDisplayFormat: "dd/MM/yyyy"
 					});
 					console.log = logOld;
 
@@ -316,8 +315,8 @@
 				$dtEditor2.igDateEditor("validator")._setOption("custom", null);
 			});
 
-			var testId = 'Set options, Apply options test';			
-			test(testId, 2, function () {			 
+			var testId = 'Set options, Apply options test';
+			test(testId, 4, function () {			 
 				// if prevValue is same as the newVal
 				$('#inputEditor3').igDateEditor("value", "10/10/2010");			   
 
@@ -330,13 +329,37 @@
 				throws(function () {
 					$('#inputEditor3').igDateEditor("option", "maxValue", "01/12/2015");
 				}, "Uncaught Error: MaxValue option can not be set runtime.");
+
+				// set invalid centuryThreshold. There is no longer setDefault functionality for invalid centuryThreshold 
+				var $dtEditor = $('<input id="boundary"/>').appendTo("#testBedContainer"), 
+					$editor = $('<input id="negativeBoundary"/>').appendTo("#testBedContainer");
+			
+				throws(function () {
+					$dtEditor.igDateEditor({
+						centuryThreshold: 100,
+						value: '01/09/50',
+						dateDisplayFormat: "dd/MM/yyyy"
+					});
+				},
+				Error($.ig.Editor.locale.centuryThresholdValidValues),
+				"Invalid centuryThreshold is set.");
+				$dtEditor.remove();
+
+				throws(function () {
+					$editor.igDateEditor({
+						centuryThreshold: -1,
+						value: '01/09/50',
+						dateDisplayFormat: "dd/MM/yyyy"
+					});
+				},
+				Error($.ig.Editor.locale.centuryThresholdValidValues),
+				"Invalid centuryThreshold is set.");
+				$editor.remove();
+
 			});
 
 			var testId = 'Initialize minVal and maxVal with wrong values';
-			test(testId, 4, function () {			  
-				equal(logBuffer.pop(), $.ig.Editor.locale.centuryThresholdValidValues, 'centuryThreshold message not logged');
-				equal($('#inputEditor4').igDateEditor("displayValue"), "09/01/1950", 'centuryThreshold is not reverted if it is bigger than 99');
-
+			test(testId, 2, function () {
 				// init MinVal
 				throws(function () {
 					$("#inputEditor5").igDateEditor({			            
@@ -426,7 +449,7 @@
 				$dtEditor.igDateEditor("value", "2015/05/01");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("value"), new Date(2015, 6, 1).toString(), 'The value is not set to min');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
+				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry was less than the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
 
 			});
 			
@@ -439,7 +462,7 @@
 				setTimeout(function () {
 					start();
 					$dtEditor.data("igDateEditor")._setCursorPosition(0);
-					typeInMaskedInput("32/04/2015", $dtEditor.igDateEditor("field"));
+					typeInInput("32/04/2015", $dtEditor.igDateEditor("field"));
 					$dtEditor.trigger("blur");
 					equal(new Date($dtEditor.igDateEditor("value")).getTime(), new Date(2015, 03, 30).getTime(), 'The initial value is not as expexted');
 					equal($dtEditor.igDateEditor("displayValue"), "30/04/2015", 'The initial value is not as expexted');
@@ -971,7 +994,7 @@
 			});
 
 			var testId = 'Testing spin and max and min values set as date object';
-			test(testId, 48, function () {
+			test(testId, 66, function () {
 				var $dtEditor, newDate, spinUpButton, spinDownButton;
 
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
@@ -1078,6 +1101,54 @@
 				equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
 				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
 				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date(2016, 11, 10),
+					maxValue: new Date(2016, 11, 5),
+					minValue: new Date(2016, 11, 1),
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				ok(spinUpButton.prop("disabled"), "The button should be disabled");
+				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
+				ok($(".ui-ignotify-warn .ui-ignotify-content").is(":visible"), "Notification not shown");
+				ok($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text().indexOf("Entry exceeded the maximum value of") > -1, "Notification text not correct");
+				clickElement(spinDownButton, false, false);
+				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
+				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 4).getTime(), "New date is not correct");
+				stop();
+				setTimeout(function() {
+					start();
+					ok(!$(".ui-ignotify-warn .ui-ignotify-content").is(":visible"), "Notification not hidden");
+					$dtEditor.remove();
+
+					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+						value: new Date(2016, 10, 30),
+						maxValue: new Date(2016, 11, 5),
+						minValue: new Date(2016, 11, 1),
+						buttonType: "spin"
+					});
+					spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+					ok(spinDownButton.prop("disabled"), "The button should be disabled");
+					equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
+					equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
+					ok($(".ui-ignotify-warn .ui-ignotify-content").is(":visible"), "Notification not shown");
+					ok($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text().indexOf("Entry was less than the minimum value of") > -1, "Notification text not correct");
+					clickElement(spinUpButton, false, false);
+					ok(!spinDownButton.prop("disabled"), "The button should be enabled");
+					equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
+					equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 2).getTime(), "New date is not correct");
+					stop();
+					setTimeout(function() {
+						start();
+						ok(!$(".ui-ignotify-warn .ui-ignotify-content").is(":visible"), "Notification not hidden");
+						$dtEditor.remove();
+					}, 500);
+				}, 500);
 			});
 
 			var testId = 'Testing spin and max and min values set as string';
@@ -1930,7 +2001,7 @@
 				$dtEditor.igDateEditor("value", "2015/05/01");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("value").getTime(), new Date(2015, 6, 1).getTime(), 'The value is not set to min');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text(), "Entry exceeded the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
+				equal($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text(), "Entry was less than the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
 				$dtEditor.remove();
 
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
@@ -2702,6 +2773,541 @@
 				equal($dtEditor.igDateEditor("option", "spinDelta"), 5, "Spin delta should be converted to 1");
 				$dtEditor.remove();
 			});
+
+			var testId = 'Edge case testing';
+			test(testId, 21, function () {
+				var $dtEditor;
+
+				// Set the same time through the option - date object
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T15:18:56.001Z")
+				});
+				$dtEditor.igDateEditor("option", "value", new Date("2017-01-10T15:18:56.001Z"));
+				equal($dtEditor.igDateEditor("value").getTime(), new Date("2017-01-10T15:18:56.001Z").getTime());
+				$dtEditor.remove();
+
+				// Set the same time through the option - string
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "MM/dd/yyyy",
+					value: "01/10/2017",
+					dataMode: "displayModeText"
+				});
+				$dtEditor.igDateEditor("option", "value", "01/10/2017");
+				equal($dtEditor.igDateEditor("option", "value"), "01/10/2017");
+				$dtEditor.remove();
+
+				// Set invalid date - initialization
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: "day//month//year"
+				});
+				equal($dtEditor.igDateEditor("value"), "", "Value should be empty");
+				equal($dtEditor.igDateEditor("displayValue"), "", "Display value should be empty");
+				$dtEditor.remove();
+
+				// Set invalid date - method
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor();
+				$dtEditor.igDateEditor("value", "month/day/year");
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.remove();
+
+				// Set null in value method, when value is empty
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor();
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.igDateEditor("value", null);
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.igDateEditor("value", new Date());
+				$dtEditor.igDateEditor("value", true);
+				$dtEditor.remove();
+
+				// Setting wrong dateMode
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					revertIfNotValid: false,
+					value: "3/1/2015"
+				});
+				$dtEditor.igDateEditor("option", "dataMode", "data");
+				$dtEditor.blur();
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.igDateEditor("value", null);
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.remove();
+
+				// Setting wrong not-allowed null value
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					allowNullValue: false,
+					value: null
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				equal($dtEditor.igDateEditor("value"), "" , "Display value is not correct");
+				$dtEditor.remove();
+
+				// Using some cool masks for input format
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T15:18:56.001Z"),
+					dateInputFormat: "MMMM/dd/yyyy hh:mm:s:f t ddd(dddd)",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "January/10/2017 03:18:56:0 P Tue(Tuesday)" , "Display value is not correct");
+				$dtEditor.remove()
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T02:18:56.001Z"),
+					dateInputFormat: "MMM/d/yy h:m:ss:ff t ddd(dddd)",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "Jan/10/17 2:18:56:00 A Tue(Tuesday)" , "Display value is not correct");
+				$dtEditor.remove();
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					dateInputFormat: "",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "" , "Display value is not correct");
+				$dtEditor.remove();
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-10-10T15:18:56.001Z"),
+					dateInputFormat: "99/00/99",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "99/00/99" , "Display value is not correct");
+				$dtEditor.remove();
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-10-10T05:18:56.001Z"),
+					dateInputFormat: "M/M/MMM/MMM/d/d/ddd/ddd/yy/yy HH:HH:H:H:m:m:s:s:f:f:ff:ff:fff:fff tt tt MM/MM/dd/dd/yyyy/yyyy hh:hh:mm:mm:ss:ss:ff:ff t t tt tt ddd ddd(dddd dddd)",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "10/10/Oct/Oct/10/10/Tue/Tue/17/17 05:05:5:5:18:18:56:56:0:0:00:00:001:001 AM AM 10/10/10/10/2017/2017 05:05:18:18:56:56:00:00 A A AM AM Tue Tue(Tuesday Tuesday)" , "Display value is not correct");
+				$dtEditor.remove();
+			});
+
+			var testId = 'Year shift option';
+			test(testId, 3, function () {
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T15:18:56.001Z"),
+					dateInputFormat: "MM/dd/yyyy",
+					yearShift: 33
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2050", "Display value is not correct");
+				$dtEditor.igDateEditor("setFocus");
+				typeInInput("01/10/2040", $dtEditor.igDateEditor("field"));
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2040", "Display value is not correct");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date("2007-01-10T15:18:56.001Z").getTime(), "Value should be empty");
+				$dtEditor.remove();
+			});
+
+			var testId = 'Testing milliseconds spin up';
+			test(testId, 84, function () {
+				var $dtEditor, testDate, ind, delta;
+
+				testData = [{ // limitSpinToCurrentField: false. Testing spin up boundary value and then spin down to previous one.
+					config: {
+						dateInputFormat: "HH:mm:ss:f",
+						value: new Date(2015, 10, 11, 23, 5, 10, 900)
+					},
+					expRes: [{ display: "23:05:11:0" /*spin up*/ }, { display: "23:05:10:9" /*spin down*/ }]
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff",
+						value: new Date(2015, 10, 11, 23, 5, 10, 990)
+					},
+					expRes: [{ display: "23:05:11:00" /*spin up*/ }, { display: "23:05:10:99" /*spin down*/ }]
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 10, 999)
+					},
+					expRes: [{ display: "23:05:11:000" /*spin up*/ }, { display: "23:05:10:999" /*spin down*/ }]
+				}, { // limitSpinToCurrentField: true. Testing spin up boundary value (no action) and then spin down.
+					config: {
+						dateInputFormat: "HH:mm:ss:f",
+						value: new Date(2015, 10, 11, 23, 5, 10, 900),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:10:9" /*spin up*/ }, { display: "23:05:10:8" /*spin down*/ }]
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff",
+						value: new Date(2015, 10, 11, 23, 5, 10, 990),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:10:99" /*spin up*/ } , { display: "23:05:10:98" /*spin down*/ }]
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 10, 999),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:10:999" /*spin up*/ }, { display: "23:05:10:998" /*spin down*/ }]
+				}, { // limitSpinToCurrentField: false. Testing spin down boundary value and then spin up to previous one.
+					config: {
+						dateInputFormat: "HH:mm:ss:f",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0)
+					},
+					expRes: [{ display: "23:05:10:9" /*spin down*/ }, { display: "23:05:11:0" /*spin up*/ }],
+					spinDown: true
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0)
+					},
+					expRes: [{ display: "23:05:10:99" /*spin down*/ }, { display: "23:05:11:00" /*spin up*/ }],
+					spinDown: true
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0)
+					},
+					expRes: [{ display: "23:05:10:999" /*spin down*/ }, { display: "23:05:11:000" /*spin up*/ }],
+					spinDown: true
+				}, { // limitSpinToCurrentField: true. Testing spin down boundary value (no action) and then spin up.
+					config: {
+						dateInputFormat: "HH:mm:ss:f",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:11:0" /*spin down*/ }, { display: "23:05:11:1" /*spin up*/ }],
+					spinDown: true
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:11:00" /*spin down*/ }, { display: "23:05:11:01" /*spin up*/ }],
+					spinDown: true
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:fff",
+						value: new Date(2015, 10, 11, 23, 5, 11, 0),
+						limitSpinToCurrentField: true
+					},
+					expRes: [{ display: "23:05:11:000" /*spin down*/ }, { display: "23:05:11:001" /*spin up*/ }],
+					spinDown: true
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currConfig = { buttonType: "spin" };
+					currData = testData[ind];
+					$.extend(currConfig, currData.config);
+					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
+					switch ($dtEditor.data("igDateEditor")._dateIndices.ffLength) {
+						case 1: delta = 100; break;
+						case 2: delta = 10; break;
+						case 3: delta = 1; break;
+					}
+					var testDate = new Date($dtEditor.igDateEditor("value").getTime());
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+					
+					// Test display mode
+					currData.spinDown ? clickElement(spinDownButton, false, false) : clickElement(spinUpButton, false, false);
+					if (!currConfig.limitSpinToCurrentField) {
+						testDate.setMilliseconds(testDate.getMilliseconds() + (currData.spinDown ? -delta : delta));
+					}
+					equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), 'The value is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), currData.expRes[0].display, 'The dispaly is not as expexted');
+
+					currData.spinDown ? clickElement(spinUpButton, false, false) : clickElement(spinDownButton, false, false);
+					testDate.setMilliseconds(testDate.getMilliseconds() + (currData.spinDown ? delta : -delta));
+					equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), 'The value is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), currData.expRes[1].display, 'The dispaly is not as expexted');
+
+					if (currConfig.limitSpinToCurrentField) {
+						currData.spinDown ? clickElement(spinDownButton, false, false) : clickElement(spinUpButton, false, false);
+						testDate.setMilliseconds(testDate.getMilliseconds() + (currData.spinDown ? -delta : delta));
+						equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), 'The value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), currData.expRes[0].display, 'The dispaly is not as expexted');
+					}
+
+					// Test edit mode
+					$dtEditor.igDateEditor("setFocus");
+					$dtEditor.data("igDateEditor")._setCursorPosition(10);
+					currData.spinDown ? clickElement(spinDownButton, false, false) : clickElement(spinUpButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The dispaly is not as expexted');
+					$dtEditor.data("igDateEditor")._setCursorPosition(10);
+					currData.spinDown ? clickElement(spinUpButton, false, false) : clickElement(spinDownButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The dispaly is not as expexted');
+					$dtEditor.trigger("blur").remove();
+				}
+			});
+
+			var testId = 'Testing spin up on empty mask';
+			test(testId, 14, function () {
+				var $dtEditor, testDate, ind;
+
+				testData = [{
+					config: {
+						dateInputFormat: "HH:mm:ss:fff"
+					},
+					expRes: [{
+						display: "00:00:00:000"
+					}, {
+						display: "23:59:59:999"
+					}],
+					cursorPostion: 10
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:ff"
+					},
+					expRes: [{
+						display: "00:00:00:00"
+					}, {
+						display: "23:59:59:99"
+					}],
+					cursorPostion: 10
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss:f"
+					},
+					expRes: [{
+						display: "00:00:00:0"
+					}, {
+						display: "23:59:59:9"
+					}],
+					cursorPostion: 10
+				}, {
+					config: {
+						dateInputFormat: "HH:mm:ss"
+					},
+					expRes: [{
+						display: "00:00:00"
+					}, {
+						display: "23:59:59"
+					}],
+					cursorPostion: 7
+				}, {
+					config: {
+						dateInputFormat: "HH:mm"
+					},
+					expRes: [{
+						display: "00:00"
+					}, {
+						display: "23:59"
+					}],
+					cursorPostion: 4
+				}, {
+					config: {
+						dateInputFormat: "HH"
+					},
+					expRes: [{
+						display: "00"
+					}, {
+						display: "23"
+					}],
+					cursorPostion: 0
+				}, {
+					config: {
+						dateInputFormat: "tt"
+					},
+					expRes: [{
+						display: "AM"
+					}, {
+						display: "PM"
+					}],
+					cursorPostion: 0
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currConfig = { buttonType: "spin" };
+					currData = testData[ind];
+					$.extend(currConfig, currData.config);
+					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+					$dtEditor.igDateEditor("setFocus");
+					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
+					clickElement(spinUpButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The dispaly is not as expexted');
+					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
+					clickElement(spinDownButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The dispaly is not as expexted');
+					$dtEditor.trigger("blur").remove();
+				}
+			});
+
+			var testId = 'Test typing up - empty mask, initial value';
+			test(testId, 28, function () {
+				var dtEditor;
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date("2017-01-10T15:18:56.001Z"),
+					dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
+					displayTimeOffset: 0
+				});
+				equal($dtEditor.igDateEditor("displayValue"), "01/10/2017 15:18:56:001", "Display value is not correct");
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.data("igDateEditor")._setCursorPosition(0);
+				typeInMaskedInput("12/09/2006 14:25:44:112", $dtEditor.igDateEditor("field"));
+				$dtEditor.trigger("blur");
+				equal($dtEditor.igDateEditor("displayValue"), "12/09/2006 14:25:44:112", "Display value is not correct");
+				equal($dtEditor.igDateEditor("value").getTime(), new Date("2006-12-09T14:25:44.112Z").getTime(), "Value should be empty");
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.remove();
+
+				testData = [{
+					dateInputFormat: "HH",
+					inputValues: ["9", "a", "12"],
+					expRes: ["09", "09", "12"]
+				}, {
+					dateInputFormat: "hh",
+					inputValues: ["9", "a", "01"],
+					expRes: ["09", "09", "01"]
+				}, {
+					dateInputFormat: "tt",
+					inputValues: ["1", "P", "A"],
+					expRes: ["AM", "AM", "AM"]
+				}, {
+					dateInputFormat: "mm",
+					inputValues: ["9", "a", "12"],
+					expRes: ["09", "09", "12"]
+				}, {
+					dateInputFormat: "ss",
+					inputValues: ["9", "a", "12"],
+					expRes: ["09", "09", "12"]
+				}, {
+					dateInputFormat: "ff",
+					inputValues: ["r", "9", "12"],
+					expRes: ["", "90", "12"]
+				}, {
+					dateInputFormat: "MM/dd/yyyy",
+					inputValues: ["999"],
+					expRes: ["09/09/2009"]
+				}, {
+					dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff",
+					inputValues: ["999999999999"],
+					expRes: ["09/09/9999 09:09:09:999"]
+				}, {
+					dateInputFormat: "dd,MM,yyyy hh:m:ss ff tt",
+					inputValues: ["30,10,2016 10:25:56 12 PM", "30,10,2016 10:25:56 10"],
+					expRes: ["30,10,2016 10:25:56 12 PM", "30,10,2016 10:25:56 10 PM"]
+				}, {
+					dateInputFormat: "dd,MM,yyyy hh:mm:ss fff tt",
+					inputValues: ["30,10,2016 10:25:56 12", "30,10,2016 10:25:56 112 PM"],
+					expRes: ["30,10,2016 10:25:56 120 AM", "30,10,2016 10:25:56 112 PM"]
+				}, {
+					dateInputFormat: "dd,MM,yyyy hh:mm:ss fff tt",
+					inputValues: ["432016 17:17:17 999 S"],
+					expRes: ["04,03,2016 05:17:17 999 PM"]
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currData = testData[ind];
+					values = currData.inputValues;
+					results = currData.expRes;
+					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({ dateInputFormat: currData.dateInputFormat });
+
+					$dtEditor.igDateEditor("setFocus");
+					for (indV = 0; indV < values.length; indV++) {
+						$dtEditor.data("igDateEditor")._setCursorPosition(0);
+						typeInMaskedInput(values[indV], $dtEditor.igDateEditor("field"));
+						$dtEditor.trigger("blur");
+						equal($dtEditor.igDateEditor("displayValue"), results[indV], "Display value is not correct");
+					}
+					$dtEditor.remove();
+				}
+			});
+
+			var testId = 'Spin boundary values and update date object parts that are missing in the mask';
+			test(testId, 16, function () {
+				var $dtEditor, testDate, ind, today;
+
+				today = new Date();
+				testData = [{
+					config: {
+						dateInputFormat: "fff"
+					},
+					expRes: [{
+						display: "000"
+					}, {
+						display: "999"
+					}]
+				}, {
+					config: {
+						dateInputFormat: "ss"
+					},
+					expRes: [{
+						display: "00"
+					}, {
+						display: "59"
+					}]
+				}, {
+					config: {
+						dateInputFormat: "mm"
+					},
+					expRes: [{
+						display: "00"
+					}, {
+						display: "59"
+					}]
+				}, {
+					config: {
+						dateInputFormat: "HH"
+					},
+					expRes: [{
+						display: "00"
+					}, {
+						display: "23"
+					}]
+				}, {
+					config: {
+						dateInputFormat: "dd"
+					},
+					expRes: [{
+						display: pad(today.getDate())
+					}, {
+						display: pad(new Date(today.setDate(today.getDate() - 1)).getDate())
+					}]
+				}, {
+					config: {
+						dateInputFormat: "MM"
+					},
+					expRes: [{
+						display: pad(today.getMonth() + 1)
+					}, {
+						display: pad(new Date(today.setMonth(today.getMonth() - 1)).getMonth() + 1)
+					}]
+				}, {
+					config: {
+						dateInputFormat: "yy"
+					},
+					expRes: [{
+						display: (new Date(today.setMonth(today.getMonth() + 1)).getFullYear()).toString().replace("20", "")
+					}, {
+						display: (today.getFullYear() - 1).toString().replace("20", "")
+					}]
+				}, {
+					config: {
+						dateInputFormat: "yyyy"
+					},
+					expRes: [{
+						display: today.getFullYear()
+					}, {
+						display: today.getFullYear() - 1
+					}]
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currConfig = { buttonType: "spin" };
+					currData = testData[ind];
+					$.extend(currConfig, currData.config);
+					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor(currConfig);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+
+					$dtEditor.igDateEditor("setFocus");
+					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
+					clickElement(spinDownButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The dispaly is not as expexted');
+					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
+					clickElement(spinDownButton, false, false);
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The dispaly is not as expexted');
+					$dtEditor.trigger("blur").remove();
+				}
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
@@ -2793,17 +3399,20 @@
 		}
 		function typeInMaskedInput(characters, element) {
 			var keyDown = jQuery.Event("keydown"),
-			   keyPress = jQuery.Event("keypress"),
-			   keyUp = jQuery.Event("keyup"),
-			   value = element.val(), selectionStart = 0;
+			   	keyPress = jQuery.Event("keypress"),
+			   	keyUp = jQuery.Event("keyup"),
+				value = element.val(), selectionStart = 0;
 
 			characters.split('').forEach(function (ch) {
 				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
 				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
 				element.trigger(keyDown);
 				element.trigger(keyPress);
+				// refresh selection EACH time, mask editor moves over literals:
+				selectionStart = element[0].selectionStart;
 				value = value.replaceAt(selectionStart++, ch);
 				element.val(value);
+				element[0].selectionStart = selectionStart;
 				element.trigger(keyUp);
 			});
 		}
