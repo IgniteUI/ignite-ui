@@ -1586,6 +1586,7 @@ $.ig.dependencies = [
 			{ name: "_ig_ext_ui" },
 			{ name: "_ig_ext_io" },
 			{ name: "_ig_ext_web" },
+			{ name: "igScroll" },
 			{ name: "_ig_dv_core" },
 			{ name: "_ig_dv_jquerydom" },
 			{ name: "_ig_undo" }
@@ -1611,6 +1612,7 @@ $.ig.dependencies = [
 			{ name: "_ig_ext_io" },
 			{ name: "_ig_ext_threading" },
 			{ name: "_ig_ext_web" },
+			{ name: "igScroll" },
 			{ name: "_ig_dv_core" },
 			{ name: "_ig_dv_jquerydom" }
 		],
