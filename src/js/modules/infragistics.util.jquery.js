@@ -473,10 +473,10 @@
 
 				// M.H. 30 Sept. 2011 Fix for bug #88717 - fix when caller is string
 				if (caller !== undefined && caller !== null) {
-					if ($.type(caller) === "function") {
+					if (typeof caller === "function") {
 						return caller(data, dataType);
 					}
-					if ($.type(caller) === "string") {
+					if (typeof caller === "string") {
 						/*jshint evil:true */
 						caller = eval(caller);
 						return caller(data, dataType);
@@ -490,13 +490,21 @@
 
 	$.ig.util.defaultSummaryMethods = [
 		{
+			/* type="string" Label that will be applied to the result of the summary function */
 			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelCount : "Count = ",
+			/* type="string" Name of the summary that can be set as an option inside the igGrid for example */
 			"name": "count",
+			/* type="function" Speficies the function that will be used when calculating the summary */
 			"summaryFunction": $.ig.util.summaries.count,
-			"dataType": "all",
+			/* type="'any'|Array" Speficies to which type of column this summary is applicable. Setting it to 'any' will apply to any type */
+			"dataType": "any",
+			/* type="bool" Enables/disables the summary to be applied by default */
 			"active": true,
+			/* type="bool" Speficies the order in which this summary will be placed when there are multiple summaries.
+				order: 0 means that it will be displayed on top of all summaries */
 			"order": 0,
-			"decimalDisplay": 2
+			/* type="bool" Enables/disables applying format to the summary value */
+			"applyFormat": false
 		},
 		{
 			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMin : "Min = ",
@@ -505,7 +513,7 @@
 			"dataType": [ "number", "date", "numeric" ],
 			"active": true,
 			"order": 1,
-			"decimalDisplay": 2
+			"applyFormat": true
 		},
 		{
 			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMax : "Max = ",
@@ -514,7 +522,7 @@
 			"dataType": [ "number", "date", "numeric" ],
 			"active": true,
 			"order": 2,
-			"decimalDisplay": 2
+			"applyFormat": true
 		},
 		{
 			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelSum : "Sum = ",
@@ -523,7 +531,7 @@
 			"dataType": [ "number", "numeric" ],
 			"active": true,
 			"order": 3,
-			"decimalDisplay": 2
+			"applyFormat": true
 		},
 		{
 			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelAvg : "Avg = ",
@@ -532,7 +540,7 @@
 			"dataType": [ "number", "numeric" ],
 			"active": true,
 			"order": 4,
-			"decimalDisplay": 2
+			"applyFormat": true
 		}
 	];
 
