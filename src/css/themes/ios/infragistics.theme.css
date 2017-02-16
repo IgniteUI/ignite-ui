@@ -2118,6 +2118,9 @@ body .ui-tooltip {
   border-top: 1px solid #cccccc !important;
   /* border-top for tables without headers */
 }
+.ui-iggrid-layout-helper {
+  border-bottom: 1px solid #DCDCDC;
+}
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
 .ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tbody > tr:first-child td {
