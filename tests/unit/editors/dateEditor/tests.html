@@ -318,20 +318,32 @@
 				$dtEditor2.igDateEditor("validator")._setOption("custom", null);
 			});
 
-			var testId = 'Set options, Apply options test';			
-			test(testId, 2, function () {			 
+			var testId = 'Set options, Apply options test';
+			test(testId, 8, function () {
+				var $editor = $('#inputEditor3');
+
 				// if prevValue is same as the newVal
-				$('#inputEditor3').igDateEditor("value", "10/10/2010");			   
+				$editor.igDateEditor("value", "10/10/2010");			   
 
-				// set MinVal
-				throws(function () {
-					$('#inputEditor3').igDateEditor("option", "minValue", "01/10/2010");
-				}, "Uncaught Error: MinValue option can not be set runtime.");
+				// set minValue / maxValue:
+				$editor.igDateEditor("option", "minValue", new Date(2010, 0, 10).toLocaleString());
+				equal($editor.igDateEditor("option", "minValue").getTime(), new Date(2010, 0, 10).getTime(), "minValue not set correctly");
+				$editor.igDateEditor("option", "minValue", new Date(2011, 0, 10));
+				equal($editor.igDateEditor("value").getTime(), new Date(2011, 0, 10).getTime(), "Value not updated when setting minValue after that time.");
+				equal($editor.igDateEditor("field").val(), "1/10/2011 12:00 AM", "Text not updated when setting minValue after that time.");
 
-				// set MinVal
-				throws(function () {
-					$('#inputEditor3').igDateEditor("option", "maxValue", "01/12/2015");
-				}, "Uncaught Error: MaxValue option can not be set runtime.");
+				$editor.igDateEditor("value", new Date(2014, 9, 10));	
+				$editor.igDateEditor("option", "maxValue", new Date(2015, 0, 12).toLocaleString());
+				equal($editor.igDateEditor("option", "maxValue").getTime(), new Date(2015, 0, 12).getTime(), "maxValue not set correctly");
+				$editor.igDateEditor("option", "maxValue", new Date(2014, 0, 12));
+				equal($editor.igDateEditor("value").getTime(), new Date(2014, 0, 12).getTime(), "Value not updated when setting maxValue before that time.");
+				equal($editor.igDateEditor("field").val(), "1/12/2014 12:00 AM", "Text not updated when setting maxValue before that time.");
+
+				//restore initial state:
+				$editor.igDateEditor("option", "minValue", null);
+				$editor.igDateEditor("option", "maxValue", null);
+				equal($editor.igDateEditor("option", "minValue"), null, "minValue not set to null");
+				equal($editor.igDateEditor("option", "maxValue"), null, "maxValue not set to null");
 			});
 
 			var testId = 'Initialize minVal and maxVal with wrong values';
@@ -413,7 +425,7 @@
 				$dtEditor.igDateEditor("value", "2021/12/31");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("value"), new Date("2020/12/31").toString(), 'The max value is not correctly applied');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
+				equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
 				//$(".ui-ignotify-warn .ui-igpopover-close-button").click();
 
 				// Set value different from ""			  
@@ -428,7 +440,7 @@
 				$dtEditor.igDateEditor("value", "2015/05/01");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("value"), new Date(2015, 6, 1).toString(), 'The value is not set to min');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").text(), "Entry exceeded the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
 
 			});
 			
