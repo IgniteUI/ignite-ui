@@ -2014,7 +2014,7 @@ body .ui-tooltip {
  * jQuery UI Spinner Overrides
  */
 .touch .ui-spinner-button,
-.touchevents .ui-spinner- button,
+.touchevents .ui-spinner-button,
 .pointerevents .ui-spinner-button {
   width: 1.4em;
   height: 1.4em;
