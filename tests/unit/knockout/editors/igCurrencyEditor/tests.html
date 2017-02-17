@@ -30,17 +30,9 @@
 	
 	<link type="text/css" href="../../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>
-
-	
 	<script type='text/javascript' src='../../../../../bower_components/knockout/dist/knockout.debug.js'></script>
-	
-	
-	 
-	
-	<!--<script type="text/javascript" src="../../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>-->
+
 	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
-	
-	<!-- <script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script> -->
 
 	
 	<script type="text/javascript">
@@ -66,6 +58,7 @@
 			this.testFunction = function (evt, ui) {
 				eventTriggered = true;
 			};
+			this.isDisabled =  ko.observable(false);
 		};
 		
 		model = new viewModel();
@@ -373,6 +366,30 @@
 				}, 200);
 			}, 200);
 		});
+
+		var testId = 'Test disabled binding';
+		test(testId, 12, function () {
+			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
+
+			ok(!$editor.igCurrencyEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igCurrencyEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igCurrencyEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igCurrencyEditor("editorContainer").hasClass($.ui.igCurrencyEditor.prototype.css.disabled), "Editor should be enabled");
+			$chk.click();
+			ok($editor.igCurrencyEditor("option", "disabled"), "Editor should be disabled");
+			ok($editor.igCurrencyEditor("field").prop("disabled"), "Editor should be disabled");
+			equal($editor.igCurrencyEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			ok($editor.igCurrencyEditor("editorContainer").hasClass($.ui.igCurrencyEditor.prototype.css.disabled), "Editor should be disabled");
+			$chk.click();
+			$chk.click();
+			$chk.click();
+			ok(!$editor.igCurrencyEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igCurrencyEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igCurrencyEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igCurrencyEditor("editorContainer").hasClass($.ui.igCurrencyEditor.prototype.css.disabled), "Editor should be enabled");
+			$editor.remove();
+			$chk.remove();
+		});
 	});//document ready
 
 	function mouseInteraction(type, element) {
@@ -558,6 +575,12 @@
 			valueChanged: testFunction
 		}" />
 		<input id="inpChangeEvt" type="text" class="row-control" data-bind="value: customerTax" />
+
+		<input id="edDisabled" data-bind="igCurrencyEditor: {
+				width: '200'
+          }, igEditorDisable: isDisabled" />
+
+		<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
 </div>
 </body>
 </html>

@@ -2031,6 +2031,10 @@
 		},
 
 		_onWheelContainer: function (event) {
+			if (event.ctrlKey === true) {
+				return true;
+			}
+
 			var evt = event.originalEvent;
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
