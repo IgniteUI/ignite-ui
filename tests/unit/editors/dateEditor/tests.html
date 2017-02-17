@@ -316,19 +316,31 @@
 			});
 
 			var testId = 'Set options, Apply options test';
-			test(testId, 4, function () {			 
+			test(testId, 10, function () {
+				var $editor = $('#inputEditor3');
+
 				// if prevValue is same as the newVal
-				$('#inputEditor3').igDateEditor("value", "10/10/2010");			   
+				$editor.igDateEditor("value", "10/10/2010");			   
 
-				// set MinVal
-				throws(function () {
-					$('#inputEditor3').igDateEditor("option", "minValue", "01/10/2010");
-				}, "Uncaught Error: MinValue option can not be set runtime.");
+				// set minValue / maxValue:
+				$editor.igDateEditor("option", "minValue", new Date(2010, 0, 10).toLocaleString());
+				equal($editor.igDateEditor("option", "minValue").getTime(), new Date(2010, 0, 10).getTime(), "minValue not set correctly");
+				$editor.igDateEditor("option", "minValue", new Date(2011, 0, 10));
+				equal($editor.igDateEditor("value").getTime(), new Date(2011, 0, 10).getTime(), "Value not updated when setting minValue after that time.");
+				equal($editor.igDateEditor("field").val(), "1/10/2011 12:00 AM", "Text not updated when setting minValue after that time.");
 
-				// set MinVal
-				throws(function () {
-					$('#inputEditor3').igDateEditor("option", "maxValue", "01/12/2015");
-				}, "Uncaught Error: MaxValue option can not be set runtime.");
+				$editor.igDateEditor("value", new Date(2014, 9, 10));	
+				$editor.igDateEditor("option", "maxValue", new Date(2015, 0, 12).toLocaleString());
+				equal($editor.igDateEditor("option", "maxValue").getTime(), new Date(2015, 0, 12).getTime(), "maxValue not set correctly");
+				$editor.igDateEditor("option", "maxValue", new Date(2014, 0, 12));
+				equal($editor.igDateEditor("value").getTime(), new Date(2014, 0, 12).getTime(), "Value not updated when setting maxValue before that time.");
+				equal($editor.igDateEditor("field").val(), "1/12/2014 12:00 AM", "Text not updated when setting maxValue before that time.");
+
+				//restore initial state:
+				$editor.igDateEditor("option", "minValue", null);
+				$editor.igDateEditor("option", "maxValue", null);
+				equal($editor.igDateEditor("option", "minValue"), null, "minValue not set to null");
+				equal($editor.igDateEditor("option", "maxValue"), null, "maxValue not set to null");
 
 				// set invalid centuryThreshold. There is no longer setDefault functionality for invalid centuryThreshold 
 				var $dtEditor = $('<input id="boundary"/>').appendTo("#testBedContainer"), 
@@ -434,7 +446,7 @@
 				$dtEditor.igDateEditor("value", "2021/12/31");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("value"), new Date("2020/12/31").toString(), 'The max value is not correctly applied');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
+				equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
 				//$(".ui-ignotify-warn .ui-igpopover-close-button").click();
 
 				// Set value different from ""			  
@@ -449,7 +461,7 @@
 				$dtEditor.igDateEditor("value", "2015/05/01");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("value"), new Date(2015, 6, 1).toString(), 'The value is not set to min');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").text(), "Entry was less than the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").text(), "Entry was less than the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
 
 			});
 			
@@ -1113,8 +1125,8 @@
 				ok(spinUpButton.prop("disabled"), "The button should be disabled");
 				equal(spinUpButton.attr("disabled"), "disabled", "The button should be disabled");
 				equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 5).getTime(), "New date is not correct");
-				ok($(".ui-ignotify-warn .ui-ignotify-content").is(":visible"), "Notification not shown");
-				ok($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text().indexOf("Entry exceeded the maximum value of") > -1, "Notification text not correct");
+				ok($dtEditor.igDateEditor("editorContainer").igNotifier("container").is(":visible"), "Notification not shown");
+				ok($dtEditor.igDateEditor("editorContainer").igNotifier("container").text().indexOf("Entry exceeded the maximum value of") > -1, "Notification text not correct");
 				clickElement(spinDownButton, false, false);
 				ok(!spinUpButton.prop("disabled"), "The button should be enabled");
 				equal(spinUpButton.attr("disabled"), undefined, "The button should be enabled");
@@ -1122,7 +1134,7 @@
 				stop();
 				setTimeout(function() {
 					start();
-					ok(!$(".ui-ignotify-warn .ui-ignotify-content").is(":visible"), "Notification not hidden");
+					ok(!$dtEditor.igDateEditor("editorContainer").igNotifier("container").is(":visible"), "Notification not hidden");
 					$dtEditor.remove();
 
 					$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
@@ -1136,8 +1148,8 @@
 					ok(spinDownButton.prop("disabled"), "The button should be disabled");
 					equal(spinDownButton.attr("disabled"), "disabled", "The button should be disabled");
 					equal($dtEditor.igDateEditor("value").getTime(), new Date(2016, 11, 1).getTime(), "New date is not correct");
-					ok($(".ui-ignotify-warn .ui-ignotify-content").is(":visible"), "Notification not shown");
-					ok($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text().indexOf("Entry was less than the minimum value of") > -1, "Notification text not correct");
+					ok($dtEditor.igDateEditor("editorContainer").igNotifier("container").is(":visible"), "Notification not shown");
+					ok($dtEditor.igDateEditor("editorContainer").igNotifier("container").filter(":visible").text().indexOf("Entry was less than the minimum value of") > -1, "Notification text not correct");
 					clickElement(spinUpButton, false, false);
 					ok(!spinDownButton.prop("disabled"), "The button should be enabled");
 					equal(spinDownButton.attr("disabled"), undefined, "The button should be enabled");
@@ -1145,7 +1157,7 @@
 					stop();
 					setTimeout(function() {
 						start();
-						ok(!$(".ui-ignotify-warn .ui-ignotify-content").is(":visible"), "Notification not hidden");
+						ok(!$dtEditor.igDateEditor("editorContainer").igNotifier("container").is(":visible"), "Notification not hidden");
 						$dtEditor.remove();
 					}, 500);
 				}, 500);
@@ -1993,7 +2005,7 @@
 				$dtEditor.trigger("blur");
 				hoursOffset = new Date(2021, 11, 31).getTimezoneOffset()/60;
 				equal($dtEditor.igDateEditor("displayValue"), "2020/12/31", 'The max value is not correctly applied');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
+				equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").filter(":visible").text(), "Entry exceeded the maximum value of 2020/12/31 and was set to the maximum value", 'The maximum value warning not correct');
 				$(".ui-ignotify-warn").hide();
 				$dtEditor.igDateEditor("value", new Date(2021, 11, 31));
 				$dtEditor.trigger("blur");
@@ -2001,7 +2013,7 @@
 				$dtEditor.igDateEditor("value", "2015/05/01");
 				$dtEditor.trigger("blur");
 				equal($dtEditor.igDateEditor("value").getTime(), new Date(2015, 6, 1).getTime(), 'The value is not set to min');
-				equal($(".ui-ignotify-warn .ui-ignotify-content").filter(":visible").text(), "Entry was less than the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
+				equal($dtEditor.igDateEditor("editorContainer").igNotifier("container").filter(":visible").text(), "Entry was less than the minimum value of 2015/07/01 and was set to the minimum value", 'The initial value is not as expexted');
 				$dtEditor.remove();
 
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
@@ -3257,36 +3269,36 @@
 						dateInputFormat: "dd"
 					},
 					expRes: [{
-						display: pad(today.getDate())
+						display: pad(new Date().getDate())
 					}, {
-						display: pad(new Date(today.setDate(today.getDate() - 1)).getDate())
+						display: pad(new Date(new Date().setDate(new Date().getDate() - 1)).getDate())
 					}]
 				}, {
 					config: {
 						dateInputFormat: "MM"
 					},
 					expRes: [{
-						display: pad(today.getMonth() + 1)
+						display: pad(new Date().getMonth() + 1)
 					}, {
-						display: pad(new Date(today.setMonth(today.getMonth() - 1)).getMonth() + 1)
+						display: pad(new Date(new Date().setMonth(new Date().getMonth() - 1)).getMonth() + 1)
 					}]
 				}, {
 					config: {
 						dateInputFormat: "yy"
 					},
 					expRes: [{
-						display: (new Date(today.setMonth(today.getMonth() + 1)).getFullYear()).toString().replace("20", "")
+						display: (new Date(new Date().setMonth(new Date().getMonth() + 1)).getFullYear()).toString().replace("20", "")
 					}, {
-						display: (today.getFullYear() - 1).toString().replace("20", "")
+						display: (new Date().getFullYear() - 1).toString().replace("20", "")
 					}]
 				}, {
 					config: {
 						dateInputFormat: "yyyy"
 					},
 					expRes: [{
-						display: today.getFullYear()
+						display: new Date().getFullYear()
 					}, {
-						display: today.getFullYear() - 1
+						display: new Date().getFullYear() - 1
 					}]
 				}];
 
@@ -3346,7 +3358,7 @@
 				":" + pad(tzo % 60);
 		}
 		function pad(n) {
-			return (n < 10) ? ("0" + n) : n;
+			return (n < 10) ? ("0" + n) : n.toString();
 		}
 
 		function keyInteraction(key, target, special) {

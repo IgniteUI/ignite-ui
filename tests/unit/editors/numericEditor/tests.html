@@ -58,7 +58,7 @@
 				//dataModes
 				$("#doubleEditor").igNumericEditor({
 					value: "123.6548",
-					numericMaxDecimals: 18,
+					numericMaxDecimals: 15,
 					numericMinDecimals: 3,
 					width: 300,
 					dataMode: "double",
@@ -66,12 +66,12 @@
 				});
 				$("#floatEditor").igNumericEditor({
 					value: "123.6548",
-					numericMaxDecimals: 18,
+					numericMaxDecimals: 7,
 					dataMode: "float",
 				});
 				$("#longEditor").igNumericEditor({
 					value: "123.6548",
-					numericMaxDecimals: 18,
+					numericMaxDecimals: 15,
 					dataMode: "long",
 				});
 				$("#ulongEditor").igNumericEditor({
@@ -650,7 +650,7 @@
 		});
 		
 		testId = "Min/Max value";
-		test(testId, 4, function () {
+		test(testId, 15, function () {
 			var container = $('#minMaxValue'), containerInput = $('#minMaxValue').igNumericEditor("field");
 
 			container.igNumericEditor("value", 9);
@@ -663,7 +663,39 @@
 			container.igNumericEditor("value", null);
 			equal($('#minMaxValue').igNumericEditor("value"), 99, "The maxValue is not respected");
 
-		});		
+			// runtime changes:
+			var $editor = $('<input />').appendTo("#testBedContainer")
+				.igNumericEditor({
+					value: 5
+				});
+			
+			$editor.igNumericEditor("option", "minValue", -150);
+			strictEqual($editor.igNumericEditor("value"), 5, "Value should remain the same");
+			$editor.igNumericEditor("option", "maxValue", 5);
+			strictEqual($editor.igNumericEditor("value"), 5, "Value should remain the same");
+			$editor.igNumericEditor("option", "maxValue", 4);
+			strictEqual($editor.igNumericEditor("value"), 4, "Value should be set to max");
+			equal($editor.igNumericEditor("field").val(), "4", "Text not updated with max value");
+			$editor.igNumericEditor("value", 0);
+			$editor.igNumericEditor("option", "minValue", 1);
+			strictEqual($editor.igNumericEditor("value"), 1, "Value should be set to min");
+			equal($editor.igNumericEditor("field").val(), "1", "Text not updated with min value");
+			$editor.focus();
+			$editor.igNumericEditor("field").val("3");
+			$editor.igNumericEditor("option", "minValue", 2);
+			strictEqual($editor.igNumericEditor("value"), 2, "Value not set to min while editng");
+			equal($editor.igNumericEditor("field").val(), "3", "Editing text should remain unchanged");
+			$editor.igNumericEditor("field").blur();			
+			strictEqual($editor.igNumericEditor("value"), 3, "Value not updated after chaning min");
+
+			// ensure base dataMode min/max, double:
+			$editor.igNumericEditor("option", "minValue", null);
+			$editor.igNumericEditor("option", "maxValue", null);
+			equal($editor.igNumericEditor("option", "minValue"), -(Number.MAX_VALUE), "minValue not set to null");
+			equal($editor.igNumericEditor("option", "maxValue"), Number.MAX_VALUE, "maxValue not set to null");
+
+			//$editor.remove();
+		});
 
 		testId = "Scientific spin buttons";
 		test(testId, 2, function () {
@@ -1339,17 +1371,23 @@
 		});
 		
 		testId = 'Issue 226939'
-		test(testId, 3, function () {
+		test(testId, 6, function () {
 			var $editor = $("#issue226939"),
 				editorInput = $editor.igNumericEditor("field"), btnSpinDown = $editor.igNumericEditor("spinDownButton"),
 				btnSpinUp = $editor.igNumericEditor("spinUpButton");
 				
 				$editor.igNumericEditor("option", "minValue", 5);
-				$("#issue226939").igNumericEditor("spinUp");
-				equal($("#issue226939").igNumericEditor("value"), 5, 'Spin up method not working.');
 				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");
+				$editor.igNumericEditor("spinUp");
+				equal($editor.igNumericEditor("value"), 6, 'Spin up method not working.');
+				ok(!btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not enabled.");
 				$editor.igNumericEditor("option", "minValue", 1);
-				ok(!(btnSpinDown.hasClass("ui-state-disabled")), "The spinDown button is disabled.");
+				ok(!(btnSpinDown.hasClass("ui-state-disabled")), "The spinDown button is enabled.");
+				$editor.igNumericEditor("option", "maxValue", 6);
+				ok(btnSpinUp.hasClass("ui-state-disabled"), "The spinUp button is not disabled.");
+				$editor.igNumericEditor("option", "minValue", 5);
+				$editor.igNumericEditor("value", 5);
+				ok(btnSpinDown.hasClass("ui-state-disabled"), "The spinDown button is not disabled.");
 		});
 
 		testing = "Clear button dynamic show/hide";
@@ -1696,7 +1734,7 @@
 	});
 
 	testId = "Test roundDecimals options";
-	test(testId, 144, function() {
+	test(testId, 146, function() {
 		var $editorRound, $editorTrunc, testData;
 
 		testData = [
@@ -1755,6 +1793,7 @@
 		$editorRound.igNumericEditor("option", "minDecimals", 7);
 		equal($editorRound.igNumericEditor("displayValue"), "12.5560000", "The display value is not correct");
 		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		equal($editorRound.igNumericEditor("option", "maxDecimals"), 7, "maxDecimals should be equal to minDecimals");
 		$editorRound.remove();
 
 		// Change maxDecimals/minDecimals runtime - edit mode
@@ -1775,7 +1814,82 @@
 		$editorRound.trigger("blur");
 		equal($editorRound.igNumericEditor("field").val(), "12.5560000", "The display value is not correct");
 		equal($editorRound.igNumericEditor("value"), 12.556, "The hidden value sent to server is not correct");
+		equal($editorRound.igNumericEditor("option", "maxDecimals"), 7, "maxDecimals should be equal to minDecimals");
 		$editorRound.remove();
+	});
+
+	testId = "Test minDecimals/maxDecimals options";
+	test(testId, 62, function() {
+		var $editorRound, $editorTrunc, testData, errorMessage, mode, boundary;
+
+		testData = [ null, undefined];
+		for(index = 0; index < testData.length; index++) {
+			$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
+				minDecimals: testData[index],
+				maxDecimals: testData[index]
+			});
+			equal($editor.igNumericEditor("option", "minDecimals"), 0, "minDecimals should be taken from regional");
+			equal($editor.igNumericEditor("option", "maxDecimals"), 2, "maxDecimals should be taken from regional");
+			$editor.remove();
+		}
+
+		settingsData = [{ mode: "double", max: 15}, { mode: "float", max: 7 }];
+		testData = [ NaN, "abc", -5, "-7", "", 16, "105" ];
+
+		for(settingsIndex = 0; settingsIndex < settingsData.length; settingsIndex++) {
+			mode = settingsData[settingsIndex].mode;
+			boundary = settingsData[settingsIndex].max;
+			errorMessage = $.ig.util.stringFormat($.ig.Editor.locale.decimalNumber, mode, "{optionName}", boundary);
+			for(index = 0; index < testData.length; index++) {
+				throws(function() {
+					$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
+						dataMode: mode,
+						minDecimals: testData[index]
+					});
+					$editor.remove();
+				}, Error(errorMessage.replace("{optionName}", "minDecimals")), "Exception should be thrown");
+
+				throws(function() {
+					$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
+						dataMode: mode,
+						maxDecimals: testData[index]
+					});
+					$editor.remove();
+				}, Error(errorMessage.replace("{optionName}", "maxDecimals")), "Exception should be thrown");
+			}
+		}
+
+		for(settingsIndex = 0; settingsIndex < settingsData.length; settingsIndex++) {
+			mode = settingsData[settingsIndex].mode;
+			boundary = settingsData[settingsIndex].max;
+			errorMessage = $.ig.util.stringFormat($.ig.Editor.locale.decimalNumber, mode, "{optionName}", boundary);
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
+				dataMode: mode,
+				minDecimals: 2,
+				maxDecimals: 5
+			});
+			for(index = 0; index < testData.length; index++) {
+				throws(function() {
+					$editor.igNumericEditor("option", "minDecimals", testData[index]);
+				}, Error(errorMessage.replace("{optionName}", "minDecimals")), "Exception should be thrown");
+
+				throws(function() {
+					$editor.igNumericEditor("option", "maxDecimals", testData[index]);
+				}, Error(errorMessage.replace("{optionName}", "maxDecimals")), "Exception should be thrown");
+			}
+			$editor.remove();
+		}
+
+		$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
+			dataMode: "double",
+			minDecimals: 2,
+			maxDecimals: 5
+		});
+		$editor.igNumericEditor("option", "minDecimals", 10);
+		equal($editor.igNumericEditor("option", "minDecimals"), 10, "minDecimal should be set");
+		equal($editor.igNumericEditor("option", "maxDecimals"), 10, "minDecimal should be the same as minDecimals");
+		$editor.remove();
 	});
 
 	function testSelection(input, start, end) {
