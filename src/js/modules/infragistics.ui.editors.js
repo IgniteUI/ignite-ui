@@ -1060,6 +1060,7 @@
 			}
 		},
 		value: function (newValue) {
+			var listIndex;
 			if (newValue !== undefined) {
 
 				// N.A. 12/1/2015 Bug #207198: Remove notifier when value updated through value method.
@@ -1069,6 +1070,11 @@
 						if (newValue) { newValue = newValue.toLocaleUpperCase(); }
 					} else if (this.options.toLower) {
 						if (newValue) { newValue = newValue.toLocaleLowerCase(); }
+					}
+					if (this._dropDownList && this.options.isLimitedToListValues &&
+						(listIndex = this._valueIndexInList(newValue)) !== -1 ) {
+						// D.P. 6th Feb 2017 #786 Double check, final value should match list item casing
+						newValue = this.options.listItems[ listIndex ];
 					}
 					this._updateValue(newValue);
 					this._editorInput.val(this._getDisplayValue());
@@ -2788,19 +2794,25 @@
 			}
 		},
 		_processInternalValueChanging: function (value) { //TextEditor
-				if (this._validateValue(value)) {
+			var listIndex;
+			if (this._validateValue(value)) {
+				if (this._dropDownList && this.options.isLimitedToListValues &&
+					(listIndex = this._valueIndexInList(value)) !== -1 ) {
+					// D.P. 6th Feb 2017 #786 Double check, final value should match list item casing
+					value = this.options.listItems[ listIndex ];
+				}
+				this._updateValue(value);
+			} else {
+
+				// If the value is not valid, we clear the editor
+				if (this.options.revertIfNotValid) {
+					value = this._valueInput.val();
 					this._updateValue(value);
 				} else {
-
-					// If the value is not valid, we clear the editor
-					if (this.options.revertIfNotValid) {
-						value = this._valueInput.val();
-						this._updateValue(value);
-					} else {
-						this._clearValue();
-						value = this._valueInput.val();
-					}
+					this._clearValue();
+					value = this._valueInput.val();
 				}
+			}
 		},
 		_triggerKeyDown: function (event) { //TextEditor
 			//cancellable
