@@ -21,6 +21,7 @@ When working on an issue for the Ignite UI repository, you need to be aware of a
 3. `status: by-design` this is the status of an issue that has been reviewed and has been determined that the current design of the feature is such that the issue describes the correct behavior as incorrect. Remove other statuses and place this status if you've reviewed the issue.
 4. `status: third-party-issue` this is the status of an issue that has been reviewed, has been determined to be an issue, but the root case is not in the Ignite UI code. Example would be browser specific bugs caused by the particular browser's rendering or JavaScript engines. Remove other statuses and place only this one if you're the one performing the investigation.
 5. `status: not-to-fix` this is the status of issues that derive from our code, but have been decided to leave as is. This is done when fixes require general design and/or architecture changes and are very risky.
+6. `status: duplicate` this is the status of issues that are duplicates of another issue. When applying the duplicate status, make sure to reference the duplicated issue in a comment.
 
 ## Testing - applicable to pull requests
 1. `status: awaiting-test` this is the initial status of pull requests. If you're performing the pull request, please place this status on it. Pull requests are accepted if and only if all status checks pass, review is performed, and the pull request has been tested and contains `status: verified`.
@@ -45,7 +46,7 @@ When fixing a bug you need to follow these guidelines:
    * e.g. Title: `#123 Changing foo to bar` Description: `closes #123`
 5. Don't forget to make the necessary status updates, as described in the workflow section.
 
-When bug fixes are applicable to multiple branches, there will be additional steps between 3 and 4. So if let’s say we have a 16.2, 17.1, and a master branch the process will look like this:
+When bug fixes are applicable to multiple branches, there will be additional steps between 3 and 4. So if letâ€™s say we have a 16.2, 17.1, and a master branch the process will look like this:
 
 1.	If the bug is in 16.2, then switch the branch your branching from to 16.2. For code example purposes let's say the new branch is called `fixing-bug-162`.
 2.	Commit your changes to your `fixing-bug-162` branch.
