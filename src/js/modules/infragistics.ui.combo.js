@@ -3798,7 +3798,7 @@
 
                     // R.K. 22nd of February #830: igCombo not loading on demand with small pageSize
                     if (options.virtualization && lod && lod.enabled &&
-                        (this.activeIndex() + 1 == this.listItems().length) &&
+                        (this.activeIndex() + 1 === this.listItems().length) &&
                         (this.listItems().length < options.visibleItemsCount)) {
                             self._callNextChunk(_options.$dropDownListCont, self._itemHeight());
                     }
