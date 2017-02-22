@@ -32,7 +32,9 @@
 			selectedValues = [],
 			index, item, value;
 
-        if (selectedItems) {
+        // R.K. 18th January, 2017: #746 Custom values are not persisted in the combo input
+        if (ko.utils.unwrapObservable(selectedItems) &&
+                ko.utils.unwrapObservable(selectedItems).length) {
             selectedItems = ko.utils.unwrapObservable(selectedItems);
             for (index = 0; index < selectedItems.length; index++) {
                 item = selectedItems[ index ];
@@ -220,6 +222,17 @@
                 return;
             }
             combo.css("display", visible() ? "inline-block" : "none");
+        }
+    };
+
+    ko.bindingHandlers.igComboDisable = {
+        update: function (element, valueAccessor) {
+            var disabled = valueAccessor(),
+                combo = $(element);
+            if (!ko.isObservable(disabled)) {
+                return;
+            }
+            combo.igCombo("option", "disabled", disabled());
         }
     };
 }));// REMOVE_FROM_COMBINED_FILES

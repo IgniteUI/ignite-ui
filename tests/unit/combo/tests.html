@@ -337,6 +337,9 @@
     <div>
         <div id="htmlEntityDataSource"></div>
     </div>
+    <div>
+        <div id="dropdowninputpress"></div>
+    </div>
     <script type="text/javascript">
         $(function () {
             var testId_1 = 'igCombo existence',
@@ -443,6 +446,7 @@
                 testId_95 = 'Filtering event arguments';
                 testId_96 = 'suppressKeyboard multiselect';
                 testId_97 = "htmlEntity dataSource";
+                testId_98 = 'Keypress empty selection dropdown combo';
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -5877,6 +5881,43 @@
                 equal($combo.igCombo('activeIndex'), 1, 'Pound symbol entity is selected');
                 equal(items[1].element.data('value'), items[1].element.text(), "data-value matches with text representation");
                 equal(items[1].element.data('value'), $input.val(), 'data-value matches with input value');
+            });
+
+            test(testId_98, function() {
+                var $combo = $("#dropdowninputpress"),
+                    $input;
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    dataSource: [
+                        { "ID":1, "Name": "John Smith", "Age": 45 },
+                        { "ID":6, "Name": "John Ricks", "Age": 45 },
+                        { "ID":2, "Name": "Mary Johnson", "Age": 32 },
+                        { "ID":3, "Name": "Bob Ferguson", "Age": 27 },
+                        { "ID": 4, Name: "Jane Smith", "Age": 22},
+                        { "ID": 5, "Name": "Johnatan Doe", "Age": 45 },
+                    ],
+                    valueKey: "ID",
+                    textKey: "Name",
+                    mode: "dropdown",
+                    itemsRendered: function(evt, ui) {
+                        ui.owner.deselectByIndex(0);
+                    }
+                });
+
+                $input = $combo.data().igCombo._options.$input;
+
+                $input.focus();
+                emulateNonSpecialKeyPress(106, $input);
+                equal($combo.igCombo('selectedItems')[0].data.Name, 'John Smith', 'Selected item matches');
+                emulateNonSpecialKeyPress(106, $input);
+                equal($combo.igCombo('selectedItems')[0].data.Name, 'John Ricks');
+                emulateNonSpecialKeyPress(106, $input);
+                equal($combo.igCombo('selectedItems')[0].data.Name, 'Jane Smith');
+                emulateNonSpecialKeyPress(106, $input);
+                equal($combo.igCombo('selectedItems')[0].data.Name, 'Johnatan Doe');
             });
         });
     </script>
