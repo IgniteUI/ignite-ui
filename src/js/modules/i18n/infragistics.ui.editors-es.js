@@ -66,8 +66,6 @@
 			    datePickerEditorNoSuchMethod: "El editor de fechas no admite este método.",
 			    datePickerNoSuchMethodDropDownContainer: "El editor de fechas no admite este método. En su lugar, utilice 'getCalendar' uno.",
 			    buttonTypeIsDropDownOnly: "Datepicker sólo admite valores de desplegar menú y de borrar para la opción buttonType.",
-			    dateEditorMinValue: "La opción MinValue no puede establecer un tiempo de ejecución.",
-			    dateEditorMaxValue: "La opción MaxValue no puede establecer un tiempo de ejecución.",
 				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
 				cannotSetRuntime: "Esta opción no puede establecer un tiempo de ejecución",
 			    invalidDate: "Fecha no válida",
@@ -75,7 +73,8 @@
 			    maskRevertMessage: 'Deben rellenarse todas las posiciones requeridas. Por eso el valor ha vuelto al último valor válido.',
 				dateMessage: 'Debe introducirse una fecha válida',
 			    centuryThresholdValidValues: "La propiedad centuryThreshold debería estar entre 0 y 99.",
-			    noListItemsNoButton: "No se representa ningún botón desplegable o de control de número porque no hay elementos de lista."
+			    noListItemsNoButton: "No se representa ningún botón desplegable o de control de número porque no hay elementos de lista.",
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
 		    }
 	    };
     }

@@ -66,8 +66,6 @@
 			    datePickerEditorNoSuchMethod: "Редакторът на дати не поддържа този метод.",
 			    datePickerNoSuchMethodDropDownContainer: "Редакторът на дати не поддържа този метод. Вместо него използвайте 'getCalendar'.",
 			    buttonTypeIsDropDownOnly: "Datepicker позволява само dropdown и чисти стойности за опцията buttonType.",
-			    dateEditorMinValue: "Опцията MinValue не може да бъде настроена по време на изпълнение.",
-			    dateEditorMaxValue: "Опцията MaxValue не може да бъде настроена по време на изпълнение.",
 				dateEditorOffsetRange: "Опцията displayTimeOffset може да приема стойности между -720 и 840, което представя разликата в минути, спрямо координирано универсално време, на всички времеви зони от най-западните (-12:00) до най-източните (+14:00).",
 				cannotSetRuntime: "Тази опцията не може да бъде настроена по време на изпълнение.",
 			    invalidDate: "Невалидна дата",
@@ -75,8 +73,9 @@
 			    maskRevertMessage: 'Всички задължителни позиции трябва да бъдат попълнени, заради което стойността беше върната към последната валидна',
 				dateMessage: 'Трябва да бъде въведена валидна дата.',
 			    centuryThresholdValidValues: "Свойството centuryThreshold трябва да е между 0 и 99.",
-			    noListItemsNoButton: "Брояча или падащия бутон са рендирани понеже няма listitems."
-		    }
+			    noListItemsNoButton: "Брояча или падащия бутон са рендирани понеже няма listitems.",
+				decimalNumber: "Когато dataMode приеме стойност {0}, опцията {1} може да приема числени стойности между 0 и {2}."
+			}
 	    };
     }
 })(jQuery);

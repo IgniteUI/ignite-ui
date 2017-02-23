@@ -688,7 +688,7 @@
 		});
 
 		testId = "Lists testing P2, selection-value match";
-		test(testId, 49, function () {
+		test(testId, 54, function () {
 			var $editor, $field, $ddButton, $spinUpButton, $spinDownButton,
 				editorSetup = function (options) {
 					$editor = $("<input />").appendTo("#testBedContainer")
@@ -736,7 +736,22 @@
 			keyPressChar(51, $field);
 			keyUpChar(51, $field);
 			keyInteraction(13, $field);
+			equal($editor.igTextEditor("value"), "item3", "Value should match the list item");
 			equal($editor.igTextEditor("getSelectedListItem").text(), "item3", "Selected item (API) did not update after value update.");
+			
+			// isLimitedToListValues (casing)
+			$editor.igTextEditor("option", "isLimitedToListValues", true);
+			$editor.igTextEditor("value", "ITEM1"); //casing
+			equal($editor.igTextEditor("value"), "item1", "Set value should match the list item casing.");
+
+			keyDownChar(50 /*3*/, $field);
+			$field.val("iTeM2"); //casing
+			keyPressChar(50, $field);
+			keyUpChar(50, $field);
+			keyInteraction(13, $field);
+			equal($editor.igTextEditor("field").val(), "item2", "Text should be updated to match the list item when set (enter)");
+			equal($editor.igTextEditor("value"), "item2", "Value should match the list item");
+			equal($editor.igTextEditor("getSelectedListItem").text(), "item2", "Selected item (API) did not update after value update.");
 			$editor.remove();
 
 			//initial value, clear:

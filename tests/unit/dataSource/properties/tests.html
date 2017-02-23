@@ -1021,7 +1021,7 @@
 	 		dsFilter.settings.filtering.filterExprUrlKey = null;
 			var prevMonthDate = new Date(ticks);
 			prevMonthDate.setDate(15); //prevent month change due to date limits
-			prevMonthDate.setMonth(-1);
+			prevMonthDate.setMonth(prevMonthDate.getMonth() - 1);
 			var nextMonthDate = new Date(ticks);
 			nextMonthDate.setDate(15); //prevent month change due to date limits
 			nextMonthDate.setMonth(nextMonthDate.getMonth() + 1)
@@ -1078,7 +1078,7 @@
 		});
 
 		test("Test _dataFilter method for xml data", function () {
-			var xmlres = '<Response><Session>542235629</Session><Tracks start="1" count="10" total="98" errorCount="0" defaultSort="popularity+" description="Top 100 Tracks" name="Top 100 Tracks"><Track id="59672468" rating="-1" title="I Kissed A Girl"> <Artist id="30326214" rating="-1">Katy Perry</Artist>  </Tracks></Response>';
+			var xmlres = '<Response><Session>542235629</Session><Tracks start="1" count="10" total="98" errorCount="0" defaultSort="popularity+" description="Top 100 Tracks" name="Top 100 Tracks"><Track id="59672468" rating="-1" title="I Kissed A Girl"> <Artist id="30326214" rating="-1">Katy Perry</Artist> </Track> </Tracks></Response>';
 			
 			var dsXML = new $.ig.DataSource({
 				filtering: { type: "remote", expressions: [], defaultFields: [{ fieldName: "song", expr: "I Kissed A Girl", cond: "equals" }] },
