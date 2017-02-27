@@ -5236,7 +5236,8 @@
 									count);
 		},
 		_generatePageData: function (data, count) {
-			var i, startIndex, endIndex;
+			var i, startIndex, endIndex, groupRecordKey = this.settings.groupby.groupRecordKey,
+			groupSummaryRecordKey = this.settings.groupby.groupSummaryRecordKey;
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
@@ -5253,8 +5254,8 @@
 				this._gbDataView = [];
 				for (i = startIndex; i < endIndex; i++) {
 					this._gbDataView.push(data[ i ]);
-					if (!data[ i ][ this.settings.groupby.groupRecordKey ] &&
-						!data[ i ][ this.settings.groupby.groupSummaryRecordKey ]) {
+					if (!data[ i ][ groupRecordKey ] &&
+						!data[ i ][ groupSummaryRecordKey ]) {
 						this._dataView.push(data[ i ]);
 					}
 				}
@@ -6917,7 +6918,9 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt;
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt,
+			groupRecordKey = this.settings.groupby.groupRecordKey,
+			summaries = this.settings.groupby.summaries;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
@@ -6933,7 +6936,7 @@
 					recs: [],
 					val: undefined
 				};
-				gbRec[ this.settings.groupby.groupRecordKey ] = true;
+				gbRec[ groupRecordKey ] = true;
 				this._gbData.push(gbRec);
 				if (!parentCollapsed) {
 					this._vgbData.push(gbRec);
@@ -6959,26 +6962,28 @@
 						}
 					}
 				}
-				if (this.settings.groupby.summaries && this.settings.groupby.summaries.length > 0) {
-					this._calculateSummaries(res, gbRec, parentCollapsed);
-				}
+
 				gbRec.recs = res;
 				gbRec.len = resLen;
+				if (summaries && summaries.length > 0) {
+					this._calculateGroupBySummaries(gbRec, parentCollapsed);
+				}
 				i += resLen - 1;
 			}
 		},
-		_calculateSummaries: function(res, gbRec, parentCollapsed) {
-			var gbSummaryRec = { summaries: {}, level: gbRec.level + 1,
+		_calculateGroupBySummaries: function(gbRec, parentCollapsed) {
+			var res = gbRec.recs, gbSummaryRec = { summaries: {}, level: gbRec.level + 1,
 				groupValue: gbRec.val, id: gbRec.id }, fieldValues, i, j,
 				sumFunc, summaries = this.settings.groupby.summaries,
-				sumFuncName, mapfunc, summary, summaryVal;
+				sumFuncName, summary, summaryVal, fieldType, getValuesPerField;
 			gbSummaryRec[ this.settings.groupby.groupSummaryRecordKey ] = true;
-			mapfunc = function (elem) {
-					return elem[ summary.field ];
-				};
+			getValuesPerField = function (arr, fieldName) {
+				return arr.map(function (val) {return val[ fieldName ];});
+			};
 			for (i = 0; i < summaries.length; i++) {
 				summary = summaries[ i ];
-				fieldValues = res.map(mapfunc);
+				fieldValues = getValuesPerField(res, summary.field);
+				fieldType = this._fields ? this._getFieldTypeFromSchema(summary.field) : null;
 				for (j = 0; j < summary.summaryFunctions.length; j++) {
 					sumFunc = summary.summaryFunctions[ j ];
 					sumFuncName = typeof sumFunc === "string" ? sumFunc : "custom";
@@ -6986,7 +6991,7 @@
 						sumFuncName,
 						fieldValues,
 						sumFunc,
-						this._fields ? this._getFieldTypeFromSchema(summary.field) : null
+						fieldType
 					);
 					if (!gbSummaryRec.summaries[ summary.field ]) {
 						gbSummaryRec.summaries[ summary.field ] = [];
