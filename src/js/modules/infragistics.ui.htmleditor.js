@@ -275,14 +275,14 @@
             ```
                 //Initialize
                 $(".selector").igHtmlEditor({
-                    rendering: function (evt, ui) {
+                    rendered: function (evt, ui) {
                         //return reference to igHtmlEditor object
                         ui.owner
                     }
                 });
 
                 //Delegate
-                $(document).delegate(".selector", "ightmleditorrendering", function (evt, ui) {
+                $(document).delegate(".selector", "ightmleditorrendered", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -293,14 +293,14 @@
             ```
                 //Initialize
                 $(".selector").igHtmlEditor({
-                    rendered: function (evt, ui) {
+                    rendering: function (evt, ui) {
                         //return reference to igHtmlEditor object
                         ui.owner
                     }
                 });
 
                 //Delegate
-                $(document).delegate(".selector", "ightmleditorrendered", function (evt, ui) {
+                $(document).delegate(".selector", "ightmleditorrendering", function (evt, ui) {
                     //return reference to igHtmlEditor object
                     ui.owner
                 });
@@ -1538,7 +1538,7 @@
                             }
 
                             this._initialSelectionSetup();
-                            this._execCommand(command, args, true);
+                            this._execCommand(command, args);
                             this._emptyAndCollapseSelection();
                         }
                     }
@@ -1588,30 +1588,13 @@
         //        }
         //    }
         //},
-        _execCommand: function (name, args, skipIETimeout) {
-            var self = this;
+        _execCommand: function (name, args) {
+            this._selectionWrapperSaved.focus();
 
-            function execute() {
-                self._selectionWrapperSaved.focus();
-                self._selectionWrapperSaved.execCommand(name.toLowerCase(), args);
-                self._onSelectionChange();
-            }
-
-            if ($.ig.util.isIE && !skipIETimeout) {
-
-                // D.A., 15th August 2014, Bug #168180 When changing font family and font
-                // size the new values are not applied on the typed text in IE and Firefox
-
-                // Combo gets focus in IE after the command is executed
-                // This causes some commands to be lost
-                // We need to execute commands after focus was taken and then
-                // to return the focus and selection back to the editor
-                setTimeout(function () {
-                    execute();
-                }, 0);
-            } else {
-                execute();
-            }
+            // R.K. 7th February 2017 #774: Font and fontsize do not change in IE11
+            this._selectionWrapperSaved._updateSelection(this._selectionWrapperSaved._getRange());
+            this._selectionWrapperSaved.execCommand(name.toLowerCase(), args);
+            this._onSelectionChange();
         },
         _hideDialogs: function () {
             this.element.find(":ui-igLinkPropertiesDialog").igLinkPropertiesDialog("hide");
@@ -3300,7 +3283,8 @@
                     // or typing something to trigger onSelectionChange
                     // A.K August 8th, 2016 Bug #219768 Toolbar button does not work properly for a selected content range if a
                     // text is initially selected by double-tapping, and the selection is changed by mouse dragging.
-                    if (this._selection.focusNode.nodeType !== 3) {
+                    if (this._selection && this._selection.focusNode &&
+                        this._selection.focusNode.nodeType !== this.NODE._Text) {
                         this._updateSelection(this._range);
                     }
                 } else {

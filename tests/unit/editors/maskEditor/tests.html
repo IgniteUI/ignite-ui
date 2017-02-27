@@ -1036,6 +1036,17 @@
 				equal($editor.igMaskEditor("value"), null, "The value is not an empty string");
 				$editor.remove();
 			});
+
+			var testId = 'Clear button state';
+			test(testId, 2, function () {
+				var $editor;
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igMaskEditor({ buttonType: "clear" });
+				ok(!$editor.igMaskEditor("clearButton").is(":visible"), "Clear button is not hidden");
+				$editor.igMaskEditor("value", "someVal");
+				ok($editor.igMaskEditor("clearButton").is(":visible"), "Clear button is not visible");
+				$editor.remove();
+			});
 		});
 
 		function checkMaskState(editor, keyCode, editValue, displayValue, value) {

@@ -154,23 +154,34 @@
 		});
 		testId = "Test nullValue on initialization";
 		test(testId, 4, function(){
-				var $editor = $("<input id='editor'/>").
-				appendTo("#testBedContainer").igCurrencyEditor({ allowNullValue: false});
-				//Get null Value
-				equal($editor.igCurrencyEditor("value"), "", "The value is not an empty string");
-				//Set null Value
-				$editor.igCurrencyEditor("value", null);
-				equal($editor.igCurrencyEditor("value"), "", "The value is not an empty string");
-				//CHange allowNullValue option
-				$editor.igCurrencyEditor("option", "allowNullValue", true);
-				// Get Null value
-				equal($editor.igCurrencyEditor("value"), "", "The value is not an empty string");
-				//Set Null value
-				$editor.igCurrencyEditor("value", null);
-				//Get null value
-				equal($editor.igCurrencyEditor("value"), null, "The value is not an null");
-				$editor.remove();
-			});
+			var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igCurrencyEditor({ allowNullValue: false});
+			//Get null Value
+			equal($editor.igCurrencyEditor("value"), "", "The value is not an empty string");
+			//Set null Value
+			$editor.igCurrencyEditor("value", null);
+			equal($editor.igCurrencyEditor("value"), "", "The value is not an empty string");
+			//CHange allowNullValue option
+			$editor.igCurrencyEditor("option", "allowNullValue", true);
+			// Get Null value
+			equal($editor.igCurrencyEditor("value"), "", "The value is not an empty string");
+			//Set Null value
+			$editor.igCurrencyEditor("value", null);
+			//Get null value
+			equal($editor.igCurrencyEditor("value"), null, "The value is not an null");
+			$editor.remove();
+		});
+
+		var testId = 'Clear button state';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ buttonType: "clear" });
+			ok(!$editor.igCurrencyEditor("clearButton").is(":visible"), "Clear button is not hidden");
+			$editor.igCurrencyEditor("value", 45);
+			ok($editor.igCurrencyEditor("clearButton").is(":visible"), "Clear button is not visible");
+			$editor.remove();
+		});
 	});
 
 	function testSelection(input, start, end ) {

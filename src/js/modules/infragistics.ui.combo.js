@@ -1851,7 +1851,7 @@
                     $("<div>")).addClass(css.comboWrapper),
 				$combo = $("<div>").addClass(css.combo).attr("unselectable", "on"),
 				$input = (_options.$input ||
-                    $("<input type=text'>")).addClass(css.field)
+                    $("<input type='text'>")).addClass(css.field)
                     .attr({ tabIndex: options.tabIndex, autocomplete: "off" }),
 				$hiddenInput = $("<input type='hidden'>").addClass(css.hiddenField),
 				$fieldCont = $("<div>").addClass(css.fieldHolder),
@@ -4193,12 +4193,12 @@
             if (options.multiSelection.enabled) {
                 startValue = _options.keyNavItemData;
             } else {
-                startValue = _options
-                    .selectedData[ _options.selectedData.length - 1 ][ options.valueKey ];
+                // R.K. 6th of January 2017 #709: Combo throws exception when keypress event is fired in dropdown mode
+                startValue = _options.selectedData.length ?
+                _options.selectedData[ _options.selectedData.length - 1 ][ options.valueKey ] : 0;
             }
 
             startIndex = this._dataIndexByValue(startValue, true);
-
             if (_options.dropDownModeSearchBy.length === 1) {
 
                 // Start from next item when the search string is only single character long
@@ -4216,7 +4216,6 @@
                         _options.dropDownModeSearchBy =
                             _options.dropDownModeSearchBy.toLowerCase();
                     }
-
                     if (curText.startsWith(_options.dropDownModeSearchBy)) {
                         if (options.multiSelection.enabled) {
                             this._setKeyNavigationItem({
@@ -4351,7 +4350,8 @@
 
                     // Simulate proper behavior on input after composition end, excluding FF where all works fine
                     // When composition end is triggered autocomplete does not work properly
-                    if (!$.ig.util.isFF && this.isCompositionEndFired && this.autocompleteText) {
+                    // R.K. 3rd of January 2017 #696: Combo doesn't accept first character of input after clearing an IME composition in Chrome
+                    if ($.ig.util.isSafari && this.isCompositionEndFired && this.autoCompleteText) {
                         val = comboContext._options.$input.val();
 
                         if ($.ig.util.isOpera) {
@@ -7262,7 +7262,7 @@
                 $(".selector").igCombo("deselectAll");
 
                 //deselect all, focus combo, keep input text and trigger events
-                $(".selector").igCombo("deselectAll", { focusCombo: ture, keepInputText: true }, true);
+                $(".selector").igCombo("deselectAll", { focusCombo: true, keepInputText: true }, true);
             ```
                 paramType="object" optional="true" Object with set of options controlling the behavior of this api method.
                     focusCombo (boolean): Set to true to focus combo after the deselection.

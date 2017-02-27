@@ -1489,14 +1489,16 @@
 			if (anim) {
 				elem.hide().show(anim, function () {
 					self._trigger("animationEnded", e, arg);
+					self.moveToTop(true);
 				});
+			} else {
+				self.moveToTop(true);
 			}
 			self._vis = true;
 			_visCount++;
 
 			// enable focus/blur processing
 			self._trackFocus(elem);
-			self.moveToTop(true);
 			self._fixState();
 			if (raiseEvt) {
 				self._fireState(e, false, arg);

@@ -137,6 +137,28 @@
 				strictEqual($('#pEditor4').data("igPercentEditor")._valueFromText("22%"), 0.22, "The parsed value is not correct");
 			});
 
+			testId = "Runtime Min/Max value";
+			test(testId, 6, function () {
+				var $editor = $('<input />').appendTo("#testBedContainer")
+					.igPercentEditor({
+						value: 0.5
+					});
+				
+				$editor.igPercentEditor("option", "minValue", -1.5);
+				strictEqual($editor.igPercentEditor("value"), 0.5, "Value should remain the same");
+				$editor.igPercentEditor("option", "maxValue", 0.5);
+				strictEqual($editor.igPercentEditor("value"), 0.5, "Value should remain the same");
+				$editor.igPercentEditor("option", "maxValue", 0.4);
+				strictEqual($editor.igPercentEditor("value"), 0.4, "Value should be set to max");
+				equal($editor.igPercentEditor("field").val(), "40.00%", "Text not updated with max value");
+				$editor.igPercentEditor("value", 0);
+				$editor.igPercentEditor("option", "minValue", 0.1);
+				strictEqual($editor.igPercentEditor("value"), 0.1, "Value should be set to min");
+				equal($editor.igPercentEditor("field").val(), "10.00%", "Text not updated with min value");
+
+				$editor.remove();
+			});
+
 			var testId = 'Editors initialization with display factor different from 1 and 100';
 			test(testId, 3, function () {			   
 				throws(function () {
@@ -431,6 +453,17 @@
 				$editor.igPercentEditor("value", null);
 				//Get null value
 				equal($editor.igPercentEditor("value"), null, "The value is not an empty string");
+				$editor.remove();
+			});
+
+			var testId = 'Clear button state';
+			test(testId, 2, function () {
+				var $editor;
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ buttonType: "clear" });
+				ok(!$editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not hidden");
+				$editor.igPercentEditor("value", 45);
+				ok($editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not visible");
 				$editor.remove();
 			});
 		});
