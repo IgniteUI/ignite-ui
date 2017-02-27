@@ -66,8 +66,6 @@
 			    datePickerEditorNoSuchMethod: "Der Daten-Editor unterstützt diese Methode nicht.",
 			    datePickerNoSuchMethodDropDownContainer: "Der Daten-Editor unterstützt diese Methode nicht. Verwenden Sie stattdessen „getCalendar“.",
 			    buttonTypeIsDropDownOnly: "Der Datepicker erlaubt nur Dropdown und Wert löschen für die buttonType-Option.",
-			    dateEditorMinValue: "MinValue-Option kann nicht zur Laufzeit festgelegt werden.",
-			    dateEditorMaxValue: "MaxValue-Option kann nicht zur Laufzeit festgelegt werden.",
 				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
 				cannotSetRuntime: "Diese Option kann nicht zur Laufzeit festgelegt werden",
                 invalidDate: "Ungültiges Datum",
@@ -75,8 +73,9 @@
                 maskRevertMessage: 'Alle erforderlichen Positionen sollten ausgefüllt werden, weshalb der Wert auf den letzten gültigen zurückgestellt wurde.',
 				dateMessage: 'Ein gültiges Datum sollte eingegeben werden',
                 centuryThresholdValidValues: "centuryThreshold-Eigenschaft muss zwischen 0 und 99 liegen.",
-                noListItemsNoButton: "Es wird keine Spin- oder Dropdown-Schaltfläche gerendert, da keine Listenelemente vorliegen."
-		    }
+                noListItemsNoButton: "Es wird keine Spin- oder Dropdown-Schaltfläche gerendert, da keine Listenelemente vorliegen.",
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
+			}
 	    };
     }
 })(jQuery);
