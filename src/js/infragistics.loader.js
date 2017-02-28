@@ -1598,7 +1598,10 @@ $.ig.dependencies = [
 /*/ start igGridExcelExporter/// */
 	{
 		widget: "igGridExcelExporter",
-		dependency: [ { name: "igExcel.*" } ],
+		dependency: [
+			{ name: "igExcel" },
+			{ name: "LoadSaveXlsx" }
+		],
 		scripts: [ "$path$/modules/infragistics.gridexcelexporter.js" ],
 		css: [  ]
 	}
