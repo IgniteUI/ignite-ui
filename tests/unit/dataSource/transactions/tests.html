@@ -121,6 +121,57 @@
 				equal(ds.data().length, 4, "The row is added only once.");
 			});
 
+			test("Test if transactions are correct when setting them to original value.", function () {
+				var ds = new $.ig.DataSource({
+					autoCommit: false,
+					aggregateTransactions: true,
+					dataSource: [
+						{ "ProductID": 1, "Name": "Test", "ProductNumber": "AR-5381" },
+						{ "ProductID": 2, "Name": "Test1", "ProductNumber": "BA-8327" },
+						{ "ProductID": 3, "Name": "Test1", "ProductNumber": "BE-2349" }
+					],
+					primaryKey: "ProductID"
+				}).dataBind();
+
+				ds.setCellValue(1, "Name", "Test1", false);
+				ds.setCellValue(2, "Name", "Test1", false);
+				ds.setCellValue(3, "Name", "Test1", false);
+
+				//verify transactions
+				var pending= ds.pendingTransactions();
+				var all = ds.allTransactions();
+
+				ok(pending.length === 1 && all.length === 1, "There should be only 1 transaction.");
+
+				ds.setCellValue(1, "Name", "Test", false);
+
+				pending= ds.pendingTransactions();
+				all = ds.allTransactions();
+
+				ok(pending.length === 0 && all.length === 0, "There should be no transaction.");
+
+				ds.updateRow(2, { "ProductID": 2, "Name": "Test", "ProductNumber": "New" }, false);
+				pending= ds.pendingTransactions();
+				all = ds.allTransactions();
+
+				ok(pending.length === 1 && all.length === 1, "There should be only 1 transaction.");
+				ok(pending[0].row.Name === "Test" && pending[0].row.ProductNumber === "New", "The transaction should contain the updated data.");
+
+				ds.updateRow(2, { "ProductID": 2, "Name": "Test", "ProductNumber": "BA-8327" }, false);
+
+				pending= ds.pendingTransactions();
+				all = ds.allTransactions();
+
+				ok(pending.length === 1 && all.length === 1, "There should be only 1 transaction.");
+				ok(pending[0].row.Name === "Test" && pending[0].row.ProductNumber === "BA-8327", "The transaction should contain the updated data.");
+
+				pending= ds.pendingTransactions();
+				all = ds.allTransactions();
+				ds.updateRow(2, { "ProductID": 2, "Name": "Test1", "ProductNumber": "BA-8327" }, false);
+				ok(pending.length === 0 && all.length === 0, "There should be no transaction.");
+			});
+
+
 			module("igDataSource transactions (autoCommit - ", {
 				setup: function() {
 					ds3 = new $.ig.DataSource({
