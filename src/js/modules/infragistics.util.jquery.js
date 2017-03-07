@@ -123,11 +123,11 @@
 	//and setting them in a a box can be done by the predefined classes "ui-state-default ui-corner-all ui-igcheckbox-small"
 	$.ig.checkboxMarkupClasses = "";
 
-	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates,
+	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
 		displayStyle, labelText, tabIndex) {
 		var min, y, h, m, s, ms, am, e, day, pattern, len, n, dot, gr,
 			gr0, grps, curS, percS, cur, perc, prefix, i, d = val && val.getTime,
-			reg = $.ig.regional.defaults, pow,
+			reg = $.ig.regional.defaults, pow, tDate,
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
 			display = displayStyle || "inline-block";
@@ -151,7 +151,10 @@
 			}
 			pattern = reg[ (format && format !== "null" && format !== "undefined") ?
 				format + "Pattern" : "datePattern" ] || format;
-			if (enableUTCDates) {
+			if (dateOffset !== undefined && dateOffset !== null) {
+				val = new Date(val.getTime() + dateOffset);
+			}
+			if (enableUTCDates || (dateOffset !== undefined && dateOffset !== null)) {
 				y = val.getUTCFullYear();
 				m = val.getUTCMonth() + 1;
 				d = val.getUTCDate();
@@ -446,6 +449,23 @@
 			return "string";
 		}
 
+	};
+
+	$.ig.toLocalISOString = function (date) {
+		var tzo = -date.getTimezoneOffset(),
+			dif = tzo >= 0 ? "+" : "-",
+			pad = function(num) {
+				var norm = Math.abs(Math.floor(num));
+				return (norm < 10 ? "0" : "") + norm;
+			};
+		return date.getFullYear() +
+			"-" + pad(date.getMonth() + 1) +
+			"-" + pad(date.getDate()) +
+			"T" + pad(date.getHours()) +
+			":" + pad(date.getMinutes()) +
+			":" + pad(date.getSeconds()) +
+			dif + pad(tzo / 60) +
+			":" + pad(tzo % 60);
 	};
 
 	(function ($) {
