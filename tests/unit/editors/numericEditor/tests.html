@@ -1891,6 +1891,48 @@
 		equal($editor.igNumericEditor("option", "maxDecimals"), 10, "minDecimal should be the same as minDecimals");
 		$editor.remove();
 	});
+	
+	testId = "Test decimalSeparator on initialization #769";
+	test(testId, 2, function(){
+		throws(function () {
+			var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: true, value:1.01});
+		}, function (err) {
+				return err.message.indexOf($.ig.Editor.locale.decimalSeparatorErrorMsg) > -1;
+			}, $.ig.Editor.locale.decimalSeparatorErrorMsg + "not shown");
+		$editor.remove();
+		
+		throws(function () {
+			var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: ".,", value:1.01});
+		}, function (err) {
+				return err.message.indexOf($.ig.Editor.locale.decimalSeparatorErrorMsg) > -1;
+			}, $.ig.Editor.locale.decimalSeparatorErrorMsg + "not shown");
+		$editor.remove();
+	});
+	
+	testId = "Test decimalSeparator at runtime #769";
+	test(testId, 4, function(){
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: "/", value:1.01});
+		throws(function () {
+			$("#editor").igNumericEditor("option", "decimalSeparator", "true")
+		}, function (err) {
+				return err.message.indexOf($.ig.Editor.locale.decimalSeparatorErrorMsg) > -1;
+			}, $.ig.Editor.locale.decimalSeparatorErrorMsg + "not shown");
+			equal($editor.igNumericEditor("option", "decimalSeparator"), "/", "decimalSeparator is changed.");
+		$editor.remove();
+		
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: "/", value:1.01});
+		throws(function () {
+			$("#editor").igNumericEditor("option", "decimalSeparator", ".,")
+		}, function (err) {
+				return err.message.indexOf($.ig.Editor.locale.decimalSeparatorErrorMsg) > -1;
+			}, $.ig.Editor.locale.decimalSeparatorErrorMsg + "not shown");
+		equal($editor.igNumericEditor("option", "decimalSeparator"), "/", "decimalSeparator is changed.");
+		$editor.remove();
+	});
 
 	function testSelection(input, start, end) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
