@@ -3431,19 +3431,6 @@
 				since it's the one that will go to the server for the local transaction log,
 				we need to keep the Date "as is", because it won't get serialized/deserialized */
 				globalt = $.extend(true, {}, t);
-				/* Date fix. We need to encode it using \/Date(ticks)\/ */
-				if (globalt.type === "cell" && $.type(globalt.value) === "date") {
-					globalt.value = "\/Date(" + globalt.value.getTime() + ")\/";
-				} else if (globalt.type === "row" ||
-					globalt.type === "insertrow" ||
-					globalt.type === "newrow" ||
-					globalt.type === "insertnode") {
-					for (prop in globalt.row) {
-						if (globalt.row.hasOwnProperty(prop) && $.type(globalt.row[ prop ]) === "date") {
-							globalt.row[ prop ] = "\/Date(" + globalt.row[ prop ].getTime() + ")\/";
-						}
-					}
-				}
 				this._accumulatedTransactionLog.push(globalt);
 			}
 		},
@@ -3455,12 +3442,8 @@
 			if (t.type === "cell") {
 				for (i = 0; i < this._accumulatedTransactionLog.length; i++) {
 					if (this._accumulatedTransactionLog[ i ].rowId === t.rowId &&
-						this._accumulatedTransactionLog[ i ].col === t.col) {
-						if ($.type(t.value) === "date") {
-							this._accumulatedTransactionLog[ i ].value = "\/Date(" + t.value.getTime() + ")\/";
-						} else {
-							this._accumulatedTransactionLog[ i ].value = t.value;
-						}
+							this._accumulatedTransactionLog[ i ].col === t.col) {
+						this._accumulatedTransactionLog[ i ].value = t.value;
 						break;
 					}
 				}
@@ -3470,17 +3453,24 @@
 						this._accumulatedTransactionLog[ i ].type !== "cell") {
 						for (prop in t.row) {
 							if (t.row.hasOwnProperty(prop)) {
-								if ($.type(t.row[ prop ]) === "date") {
-									this._accumulatedTransactionLog[ i ].row[ prop ] =
-										"\/Date(" + t.row[ prop ].getTime() + ")\/";
-								} else {
-									this._accumulatedTransactionLog[ i ].row[ prop ] = t.row[ prop ];
-								}
+								this._accumulatedTransactionLog[ i ].row[ prop ] = t.row[ prop ];
 							}
 						}
 					}
 				}
 			}
+		},
+		_serializeDate: function (date) {
+			if ($.type(date) !== "date") {
+				//if the value is not a date don't handle it
+				return date;
+			}
+			if (this.settings.enableUTCDates) {
+				date = date.toISOString();
+			} else {
+				date = $.ig.toLocalISOString(date);
+			}
+			return date;
 		},
 		_removeTransactionByTransactionId: function (tid, removeFromAll) {
 			// removes a transaction by a transaction ID
@@ -3802,12 +3792,32 @@
 			*/
 			if (this.settings.updateUrl !== null) {
 				// post to the Url using $.ajax, by serializing the changes as url params
-				var me = this, opts;
+				var me = this, opts, i, prop, t,
+				serializedTransactionLog = [];
+
+				for (i = 0; i < this._accumulatedTransactionLog.length; i++) {
+					t = $.extend(true, {}, this._accumulatedTransactionLog[ i ]);
+					if (t.type === "cell") {
+						t.value = this._serializeDate(t.value);
+					} else if (t.type === "row" || t.type === "insertrow" || t.type === "newrow") {
+						for (prop in t.row) {
+							if (t.row.hasOwnProperty(prop)) {
+								if ($.type(t.row[ prop ]) === "date") {
+									t.row[ prop ] =
+										this._serializeDate(t.row[ prop ]);
+								} else {
+									t.row[ prop ] = t.row[ prop ];
+								}
+							}
+						}
+					}
+					serializedTransactionLog.push(t);
+				}
 
 				opts = {
 					type: "POST",
 					url: this.settings.updateUrl,
-					data: { "ig_transactions": JSON.stringify(this._accumulatedTransactionLog) },
+					data: { "ig_transactions": JSON.stringify(serializedTransactionLog) },
 					success: function (data, textStatus, jqXHR) {
 						if (data.Success) {
 							me._saveChangesSuccess(data, textStatus, jqXHR);
@@ -4294,9 +4304,8 @@
 								if (offsets[ key ].hasOwnProperty(func)) {
 									offset = offsets[ key ][ func ];
 									obj = this._dataSummaries[ key ][ func ];
-									if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
-										this._dataSummaries[ key ][ func ] = new Date(
-											parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
+									if ($.type(obj) === "string") {
+										this._dataSummaries[ key ][ func ] = new Date(obj);
 									}
 								}
 							}
@@ -7073,7 +7082,7 @@
 		toStr: function (obj) {
 			return this.isNullOrUndefined(obj) ? "" : obj + this.empty();
 		},
-		toDate: function (obj, pk, key) {
+		toDate: function (obj) {
 			/* L.A. 18 June 2012 Fixing bug #113265 Column 'date' shows empty values as 'NaN' */
 			if (this.isNullOrUndefined(obj) || obj === "" || $.type(obj) === "function") {
 				return null;
@@ -7082,32 +7091,6 @@
 				return obj;
 			}
 			var d;
-			/* OData & MS */
-			if (obj.length && obj.indexOf("/Date(") !== -1) {
-				/*
-				// account for timezone offset
-				if (this._tzo === undefined) {
-					this._tzo = new Date().getTimezoneOffset() * 60000;
-				}
-				if (this._dst === undefined) {
-					this._dst = new Date().dst();
-					if (this._dst) {
-						this._tzo = new Date().stdTimezoneOffset() * 60000;
-					}
-				}
-				*/
-				/* we need to get the local daylight offset on the client */
-				if (this._serverOffsets === undefined || this._serverOffsets[ pk ] === undefined) {
-					return new Date(parseInt(obj.replace("/Date(", "")
-						.replace(")/", ""), 10) + this._serverOffset);
-				}
-				if (this._serverOffsets[ pk ][ key ] !== undefined &&
-					this._serverOffsets[ pk ][ key ] !== null) {
-					return new Date(parseInt(obj.replace("/Date(", "")
-						.replace(")/", ""), 10) + this._serverOffsets[ pk ][ key ]);
-				}
-				return new Date(parseInt(obj.replace("/Date(", "").replace(")/", ""), 10));
-			}
 			d = new Date(obj);
 			/* M.H. 14 Apr 2014 Fix for bug #169770: Column dataType "date" format appear as NaN-NaN-NaN in IE8 */
 			if (isNaN(d)) {
@@ -7229,12 +7212,12 @@
 			}
 			return out;
 		},
-		_convertType: function (t, obj, pk, key) {
+		_convertType: function (t, obj) {
 			if (t === "string") {
 				return this._parser.toStr(obj);
 			}
 			if (t === "date") {
-				return this._parser.toDate(obj, pk, key);
+				return this._parser.toDate(obj);
 			}
 			if (t === "number") {
 				return this._parser.toNumber(obj);
@@ -7251,11 +7234,13 @@
 			var t = field.type, j = null;
 			if (!this.isEmpty(t)) {
 				if (this.isEmpty(field.name)) {
-					results[ i ][ j ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ j ] = this._convertType(t, val);
 				} else {
-					results[ i ][ field.name ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ field.name ] = this._convertType(t, val);
+					/* assign offset in the record if applicable */
+					if (t === "date") {
+						this._addOffset(results[ i ], field.name, i);
+					}
 				}
 			} else {
 				if (this.isEmpty(field.name)) {
@@ -7276,6 +7261,14 @@
 				}
 			}
 		},
+		_addOffset: function (result, fieldName, i) {
+			var id = this._pk ? result[ this._pk ] : i;
+			if (this._serverOffsets &&
+				this._serverOffsets[ id ] &&
+				!this.isEmpty(this._serverOffsets[ id ][ fieldName ])) {
+					result[ "igoffset_" + fieldName ] = this._serverOffsets[ id ][ fieldName ];
+				}
+		},
 		isEmpty: function (o) {
 			/* specifies if the object is null, undefined, or an empty string
 			paramType="object" the object to check for being empty
@@ -7295,9 +7288,13 @@
 
 				if (!this.isEmpty(t)) {
 					if (this.isEmpty(fName)) {
-						nDataRow[ j ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ j ] = this._convertType(t, tmp);
 					} else {
-						nDataRow[ fName ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ fName ] = this._convertType(t, tmp);
+						/* assign offset in the record if applicable */
+						if (t === "date") {
+							this._addOffset(nDataRow, fName, index);
+						}
 					}
 				} else {
 					if (this.isEmpty(fName)) {
