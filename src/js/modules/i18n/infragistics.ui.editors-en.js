@@ -65,8 +65,6 @@
 				datePickerEditorNoSuchMethod: "The date editor does not support this method.",
 				datePickerNoSuchMethodDropDownContainer: "The date editor does not support this method. Use 'getCalendar' one instead.",
 				buttonTypeIsDropDownOnly: "Datepicker allows only dropdown and clear values for the buttonType option.",
-				dateEditorMinValue: "MinValue option can not be set runtime.",
-				dateEditorMaxValue: "MaxValue option can not be set runtime.",
 				setOptionError: 'Runtime changes are not allowed for the following option: ',
 				invalidDate: "Invalid date",
 				maskMessage: 'All required positions should be filled',
