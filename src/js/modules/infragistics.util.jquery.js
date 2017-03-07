@@ -123,11 +123,11 @@
 	//and setting them in a a box can be done by the predefined classes "ui-state-default ui-corner-all ui-igcheckbox-small"
 	$.ig.checkboxMarkupClasses = "";
 
-	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates,
+	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
 		displayStyle, labelText, tabIndex) {
 		var min, y, h, m, s, ms, am, e, day, pattern, len, n, dot, gr,
 			gr0, grps, curS, percS, cur, perc, prefix, i, d = val && val.getTime,
-			reg = $.ig.regional.defaults, pow,
+			reg = $.ig.regional.defaults, pow, tDate,
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
 			display = displayStyle || "inline-block";
@@ -151,7 +151,10 @@
 			}
 			pattern = reg[ (format && format !== "null" && format !== "undefined") ?
 				format + "Pattern" : "datePattern" ] || format;
-			if (enableUTCDates) {
+			if (dateOffset !== undefined && dateOffset !== null) {
+				val = new Date(val.getTime() + dateOffset);
+			}
+			if (enableUTCDates || (dateOffset !== undefined && dateOffset !== null)) {
 				y = val.getUTCFullYear();
 				m = val.getUTCMonth() + 1;
 				d = val.getUTCDate();
@@ -409,66 +412,6 @@
 				(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
 		}
 	};
-	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
-		var sum = function (data) {
-			var sum = 0,
-				i;
-			for (i = 0; i < data.length; i++) {
-				sum += data[ i ];
-			}
-			return sum;
-		};
-
-		// M.H. 16 Nov. 2011 Fix for bug 97886
-		summaryFunction = summaryFunction.toLowerCase();
-		if (summaryFunction.startsWith("custom")) {
-			summaryFunction = "custom";
-		}
-
-		switch (summaryFunction) {
-			case "min":
-				if (data.length === 0) {
-					if (dataType === "date") {
-						return null;
-					}
-					return 0;
-				}
-				return Math.min.apply(Math, data);
-			case "max":
-				if (data.length === 0) {
-					if (dataType === "date") {
-						return null;
-					}
-					return 0;
-				}
-				return Math.max.apply(Math, data);
-			case "sum":
-				return sum(data);
-			case "avg":
-				if (data.length === 0) {
-					return 0;
-				}
-				return sum(data) / data.length;
-			case "count":
-				return data.length;
-			case "custom":
-
-				// M.H. 30 Sept. 2011 Fix for bug #88717 - fix when caller is string
-				if (caller !== undefined && caller !== null) {
-					if ($.type(caller) === "function") {
-						return caller(data);
-					}
-					if ($.type(caller) === "string") {
-						/*jshint evil:true */
-						caller = eval(caller);
-						return caller(data);
-					}
-				} else {
-					return null;
-				}
-				break;
-		}
-	};
 
 	// get max zIndex of ui-dialogs - method is usually called by feautures for configuring zIndex of modal dialogs(like filtering, feature chooser, hiding, etc.)
 	$.ig.getMaxZIndex = function (id) {
@@ -506,6 +449,23 @@
 			return "string";
 		}
 
+	};
+
+	$.ig.toLocalISOString = function (date) {
+		var tzo = -date.getTimezoneOffset(),
+			dif = tzo >= 0 ? "+" : "-",
+			pad = function(num) {
+				var norm = Math.abs(Math.floor(num));
+				return (norm < 10 ? "0" : "") + norm;
+			};
+		return date.getFullYear() +
+			"-" + pad(date.getMonth() + 1) +
+			"-" + pad(date.getDate()) +
+			"T" + pad(date.getHours()) +
+			":" + pad(date.getMinutes()) +
+			":" + pad(date.getSeconds()) +
+			dif + pad(tzo / 60) +
+			":" + pad(tzo % 60);
 	};
 
 	(function ($) {
