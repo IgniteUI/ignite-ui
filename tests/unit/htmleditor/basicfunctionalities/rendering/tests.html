@@ -1308,9 +1308,6 @@
             test("Execute Action background color.", function () {
                 this.changeBackgroundColor();
             });
-            test("Execute Action background color with interaction.", function () {
-                this.changeBackgroundColorWithInteraction();
-            });
             test("Test domPathToolbar buttons", function () {
                 this.manipulateDomPathToolbarButton();
             });
@@ -1340,6 +1337,9 @@
             });
             test("Test surround contents", function () {
                 this._testInsertElement();
+            });
+			test("Execute Action background color with interaction.", function () {
+                this.changeBackgroundColorWithInteraction();
             });
             module("HtmlEditor Rendering Tests", htmlEditorTestBeds);
             test("Default toolbars rendering.", function () {

@@ -3277,7 +3277,11 @@
 		},
 		/* END Transactions for igTree */
 		_addTransaction: function (t) {
-			var exists = false, i = 0, prop, globalt, j, dirty = true, k;
+			var exists = false, i = 0, prop, globalt, j, dirty = true, k,
+				shouldAggregateTransactions = this.settings.autoCommit === false &&
+					this.settings.aggregateTransactions === true,
+				isSameAsOrigValue = false,
+				rec = shouldAggregateTransactions ? this.findRecordByKey(t.rowId) : null;
 			if (t.type === "cell") {
 				// check if we don't have an existing transaction and if we do, overwrite it
 				for (i = 0; i < this._transactionLog.length; i++) {
@@ -3285,26 +3289,26 @@
 						exists = true;
 						/* add extra check to see if the "new" value isn't the same as the
 						original one, in that case remove the existing transaction */
-						if (this.settings.autoCommit === false && this.settings.aggregateTransactions === true) {
+						if (shouldAggregateTransactions) {
 							/* we need to find the data source row corresponding to rowId */
-							for (j = 0; j < this.dataView().length; j++) {
-								if (this.dataView()[ j ][ this.settings.primaryKey ] === t.rowId &&
-									this.dataView()[ j ][ t.col ] === t.value) {
-									for (k = 0; k < this._accumulatedTransactionLog.length; k++) {
-										if (this._accumulatedTransactionLog[ k ].rowId === this._transactionLog[ i ].rowId) {
-											$.ig.removeFromArray(this._accumulatedTransactionLog, k);
-										}
+							if (rec && rec[ t.col ] === t.value) {
+								for (k = 0; k < this._accumulatedTransactionLog.length; k++) {
+									if (this._accumulatedTransactionLog[ k ].rowId === this._transactionLog[ i ].rowId) {
+										$.ig.removeFromArray(this._accumulatedTransactionLog, k);
 									}
-									/* remove the transaction because the last entered value is the same as the first one */
-									this._removeTransactionByTransactionId(this._transactionLog[ i ].tid);
-									dirty = false;
 								}
+								/* remove the transaction because the last entered value is the same as the first one */
+								this._removeTransactionByTransactionId(this._transactionLog[ i ].tid);
+								dirty = false;
 							}
 						}
 						if (dirty) {
 							this._transactionLog[ i ].value = t.value;
 							this._syncGlobalTransaction(this._transactionLog[ i ]);
 						}
+					}
+					if (shouldAggregateTransactions && rec && rec[ t.col ] === t.value) {
+						isSameAsOrigValue = true;
 					}
 				}
 				/* ensure we check the newly added rows as well */
@@ -3326,33 +3330,28 @@
 				for (i = 0; i < this._transactionLog.length; i++) {
 					if (this._transactionLog[ i ].rowId === t.rowId && this._transactionLog[ i ].type !== "cell") {
 						exists = true;
-						if (this.settings.autoCommit === false && this.settings.aggregateTransactions === true) {
+						if (shouldAggregateTransactions) {
 							dirty = false;
-							for (j = 0; j < this.dataView().length; j++) {
-								if (this.dataView()[ j ][ this.settings.primaryKey ] === t.rowId) {
-									/* now verify all values in the row correspond to the original ones */
-									for (prop in t.row) {
-										if (t.row.hasOwnProperty(prop) && t.row[ prop ] !== this.dataView()[ j ][ prop ]) {
-											dirty = true;
-											break;
-										}
-									}
+							/* now verify all values in the row correspond to the original ones */
+							for (prop in t.row) {
+								if (rec && t.row.hasOwnProperty(prop) && t.row[ prop ] !== rec[ prop ]) {
+									dirty = true;
 									break;
 								}
 							}
-							/* ensure we check the newly added rows as well */
-							for (j = 0, !dirty; j < this._transactionLog.length; j++) {
-								if (this._transactionLog[ j ].type === "newrow" &&
-									this._transactionLog[ j ].rowId === t.rowId) {
-									/* copy the t.row into newrow's row */
-									this._transactionLog[ j ].row = t.row;
-									/* we need to find and sync the global transaction */
-									this._syncGlobalTransaction(this._transactionLog[ j ]);
-									/* don't add "t" */
-									return;
-								}
+						/* ensure we check the newly added rows as well */
+						for (j = 0, !dirty; j < this._transactionLog.length; j++) {
+							if (this._transactionLog[ j ].type === "newrow" &&
+								this._transactionLog[ j ].rowId === t.rowId) {
+								/* copy the t.row into newrow's row */
+								this._transactionLog[ j ].row = t.row;
+								/* we need to find and sync the global transaction */
+								this._syncGlobalTransaction(this._transactionLog[ j ]);
+								/* don't add "t" */
+								return;
 							}
 						}
+					}
 						if (dirty) {
 							this._transactionLog[ i ].row = t.row;
 							this._syncGlobalTransaction(this._transactionLog[ i ]);
@@ -3367,6 +3366,15 @@
 						}
 					}
 				}
+				if (shouldAggregateTransactions) {
+					for (prop in t.row) {
+						isSameAsOrigValue = true;
+						if (!(t.row.hasOwnProperty(prop) && rec && t.row[ prop ] === rec[ prop ])) {
+							isSameAsOrigValue = false;
+							break;
+						}
+					}
+				}
 			} else if (t.type === "addnode" || t.type === "removenode") {
 				/* K.D. November 11th, 2013 Bug #155067 A deep copy of the object here throws
 				call stack exceeded with recursive objects, so moving the transaction push here and exiting. */
@@ -3375,25 +3383,12 @@
 				this._accumulatedTransactionLog.push(t);
 				return;
 			}
-			if (!exists) {
+			if (!exists && !isSameAsOrigValue) {
 				this._transactionLog.push(t);
 				/* A.T. 27 Sept. we need this change only for the global transaction log,
 				since it's the one that will go to the server for the local transaction log,
 				we need to keep the Date "as is", because it won't get serialized/deserialized */
 				globalt = $.extend(true, {}, t);
-				/* Date fix. We need to encode it using \/Date(ticks)\/ */
-				if (globalt.type === "cell" && $.type(globalt.value) === "date") {
-					globalt.value = "\/Date(" + globalt.value.getTime() + ")\/";
-				} else if (globalt.type === "row" ||
-					globalt.type === "insertrow" ||
-					globalt.type === "newrow" ||
-					globalt.type === "insertnode") {
-					for (prop in globalt.row) {
-						if (globalt.row.hasOwnProperty(prop) && $.type(globalt.row[ prop ]) === "date") {
-							globalt.row[ prop ] = "\/Date(" + globalt.row[ prop ].getTime() + ")\/";
-						}
-					}
-				}
 				this._accumulatedTransactionLog.push(globalt);
 			}
 		},
@@ -3405,12 +3400,8 @@
 			if (t.type === "cell") {
 				for (i = 0; i < this._accumulatedTransactionLog.length; i++) {
 					if (this._accumulatedTransactionLog[ i ].rowId === t.rowId &&
-						this._accumulatedTransactionLog[ i ].col === t.col) {
-						if ($.type(t.value) === "date") {
-							this._accumulatedTransactionLog[ i ].value = "\/Date(" + t.value.getTime() + ")\/";
-						} else {
-							this._accumulatedTransactionLog[ i ].value = t.value;
-						}
+							this._accumulatedTransactionLog[ i ].col === t.col) {
+						this._accumulatedTransactionLog[ i ].value = t.value;
 						break;
 					}
 				}
@@ -3420,17 +3411,24 @@
 						this._accumulatedTransactionLog[ i ].type !== "cell") {
 						for (prop in t.row) {
 							if (t.row.hasOwnProperty(prop)) {
-								if ($.type(t.row[ prop ]) === "date") {
-									this._accumulatedTransactionLog[ i ].row[ prop ] =
-										"\/Date(" + t.row[ prop ].getTime() + ")\/";
-								} else {
-									this._accumulatedTransactionLog[ i ].row[ prop ] = t.row[ prop ];
-								}
+								this._accumulatedTransactionLog[ i ].row[ prop ] = t.row[ prop ];
 							}
 						}
 					}
 				}
 			}
+		},
+		_serializeDate: function (date) {
+			if ($.type(date) !== "date") {
+				//if the value is not a date don't handle it
+				return date;
+			}
+			if (this.settings.enableUTCDates) {
+				date = date.toISOString();
+			} else {
+				date = $.ig.toLocalISOString(date);
+			}
+			return date;
 		},
 		_removeTransactionByTransactionId: function (tid, removeFromAll) {
 			// removes a transaction by a transaction ID
@@ -3752,12 +3750,32 @@
 			*/
 			if (this.settings.updateUrl !== null) {
 				// post to the Url using $.ajax, by serializing the changes as url params
-				var me = this, opts;
+				var me = this, opts, i, prop, t,
+				serializedTransactionLog = [];
+
+				for (i = 0; i < this._accumulatedTransactionLog.length; i++) {
+					t = $.extend(true, {}, this._accumulatedTransactionLog[ i ]);
+					if (t.type === "cell") {
+						t.value = this._serializeDate(t.value);
+					} else if (t.type === "row" || t.type === "insertrow" || t.type === "newrow") {
+						for (prop in t.row) {
+							if (t.row.hasOwnProperty(prop)) {
+								if ($.type(t.row[ prop ]) === "date") {
+									t.row[ prop ] =
+										this._serializeDate(t.row[ prop ]);
+								} else {
+									t.row[ prop ] = t.row[ prop ];
+								}
+							}
+						}
+					}
+					serializedTransactionLog.push(t);
+				}
 
 				opts = {
 					type: "POST",
 					url: this.settings.updateUrl,
-					data: { "ig_transactions": JSON.stringify(this._accumulatedTransactionLog) },
+					data: { "ig_transactions": JSON.stringify(serializedTransactionLog) },
 					success: function (data, textStatus, jqXHR) {
 						if (data.Success) {
 							me._saveChangesSuccess(data, textStatus, jqXHR);
@@ -4244,9 +4262,8 @@
 								if (offsets[ key ].hasOwnProperty(func)) {
 									offset = offsets[ key ][ func ];
 									obj = this._dataSummaries[ key ][ func ];
-									if ($.type(obj) === "string" && obj.indexOf("/Date(") !== -1) {
-										this._dataSummaries[ key ][ func ] = new Date(
-											parseInt(obj.replace("/Date(", "").replace(")/", ""), 10) + offset);
+									if ($.type(obj) === "string") {
+										this._dataSummaries[ key ][ func ] = new Date(obj);
 									}
 								}
 							}
@@ -6981,7 +6998,7 @@
 		toStr: function (obj) {
 			return this.isNullOrUndefined(obj) ? "" : obj + this.empty();
 		},
-		toDate: function (obj, pk, key) {
+		toDate: function (obj) {
 			/* L.A. 18 June 2012 Fixing bug #113265 Column 'date' shows empty values as 'NaN' */
 			if (this.isNullOrUndefined(obj) || obj === "" || $.type(obj) === "function") {
 				return null;
@@ -6990,32 +7007,6 @@
 				return obj;
 			}
 			var d;
-			/* OData & MS */
-			if (obj.length && obj.indexOf("/Date(") !== -1) {
-				/*
-				// account for timezone offset
-				if (this._tzo === undefined) {
-					this._tzo = new Date().getTimezoneOffset() * 60000;
-				}
-				if (this._dst === undefined) {
-					this._dst = new Date().dst();
-					if (this._dst) {
-						this._tzo = new Date().stdTimezoneOffset() * 60000;
-					}
-				}
-				*/
-				/* we need to get the local daylight offset on the client */
-				if (this._serverOffsets === undefined || this._serverOffsets[ pk ] === undefined) {
-					return new Date(parseInt(obj.replace("/Date(", "")
-						.replace(")/", ""), 10) + this._serverOffset);
-				}
-				if (this._serverOffsets[ pk ][ key ] !== undefined &&
-					this._serverOffsets[ pk ][ key ] !== null) {
-					return new Date(parseInt(obj.replace("/Date(", "")
-						.replace(")/", ""), 10) + this._serverOffsets[ pk ][ key ]);
-				}
-				return new Date(parseInt(obj.replace("/Date(", "").replace(")/", ""), 10));
-			}
 			d = new Date(obj);
 			/* M.H. 14 Apr 2014 Fix for bug #169770: Column dataType "date" format appear as NaN-NaN-NaN in IE8 */
 			if (isNaN(d)) {
@@ -7137,12 +7128,12 @@
 			}
 			return out;
 		},
-		_convertType: function (t, obj, pk, key) {
+		_convertType: function (t, obj) {
 			if (t === "string") {
 				return this._parser.toStr(obj);
 			}
 			if (t === "date") {
-				return this._parser.toDate(obj, pk, key);
+				return this._parser.toDate(obj);
 			}
 			if (t === "number") {
 				return this._parser.toNumber(obj);
@@ -7159,11 +7150,13 @@
 			var t = field.type, j = null;
 			if (!this.isEmpty(t)) {
 				if (this.isEmpty(field.name)) {
-					results[ i ][ j ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ j ] = this._convertType(t, val);
 				} else {
-					results[ i ][ field.name ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ field.name ] = this._convertType(t, val);
+					/* assign offset in the record if applicable */
+					if (t === "date") {
+						this._addOffset(results[ i ], field.name, i);
+					}
 				}
 			} else {
 				if (this.isEmpty(field.name)) {
@@ -7184,6 +7177,14 @@
 				}
 			}
 		},
+		_addOffset: function (result, fieldName, i) {
+			var id = this._pk ? result[ this._pk ] : i;
+			if (this._serverOffsets &&
+				this._serverOffsets[ id ] &&
+				!this.isEmpty(this._serverOffsets[ id ][ fieldName ])) {
+					result[ "igoffset_" + fieldName ] = this._serverOffsets[ id ][ fieldName ];
+				}
+		},
 		isEmpty: function (o) {
 			/* specifies if the object is null, undefined, or an empty string
 			paramType="object" the object to check for being empty
@@ -7203,9 +7204,13 @@
 
 				if (!this.isEmpty(t)) {
 					if (this.isEmpty(fName)) {
-						nDataRow[ j ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ j ] = this._convertType(t, tmp);
 					} else {
-						nDataRow[ fName ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ fName ] = this._convertType(t, tmp);
+						/* assign offset in the record if applicable */
+						if (t === "date") {
+							this._addOffset(nDataRow, fName, index);
+						}
 					}
 				} else {
 					if (this.isEmpty(fName)) {
@@ -7808,6 +7813,10 @@
 		}
 	});
 	$.ig.JSONDataSource = $.ig.JSONDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "json"
+		},
 		init: function (options) {
 			if (!options) {
 				options = {};
@@ -8171,7 +8180,9 @@
 			string Setting the name of the callback function for a JSONP request
 			function As of jQuery 1.5, you can also use a function, in which case the value of jsonpCallback is set to the return value of that function
 			*/
-			jsonpCallback: null
+			jsonpCallback: null,
+			/* type="string" Type of the data source. */
+			type: "json"
 		},
 		init: function (options) {
 			if (!options) {
@@ -8193,6 +8204,10 @@
 		}
 	});
 	$.ig.FunctionDataSource = $.ig.FunctionDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "function"
+		},
 		init: function (options) {
 			if (!options) {
 				options = {};
@@ -8204,6 +8219,10 @@
 	});
 	/* the dataSource should be a reference to a DOM element */
 	$.ig.HtmlTableDataSource = $.ig.HtmlTableDataSource || $.ig.DataSource.extend({
+		settings: {
+			/* type="string" Type of the data source. */
+			type: "htmlTableDom"
+		},
 		init: function (options) {
 
 			if (!options) {

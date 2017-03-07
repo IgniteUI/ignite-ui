@@ -2205,6 +2205,7 @@
             var markup, dropDownScrollHeight, schema, noCancel,
 				options = this.options,
 				_options = this._options,
+                lod = this.options.loadOnDemandSettings,
 				dataView = data.dataView(),
 				dataLen = this._itemsToRenderCount();
 
@@ -2255,6 +2256,12 @@
                     // D.A. 19th March 2015, Bug #190783 In Nexus virtualization does not have scroll bar
                     _options.$dropDownScrollCont.width($.ig.util.getScrollWidth() + 1);
                     this._updateVirtualScrollVisibility();
+
+                    // R.K. 22nd of February #830: igCombo not loading on demand with small pageSize
+                    if (lod && lod.enabled && lod.pageSize <= options.visibleItemsCount) {
+                        _options.$dropDownScroll.height(dropDownScrollHeight + this._itemHeight());
+                        _options.$dropDownScrollCont.removeClass(this.css.hidden);
+                    }
                 }
 
                 this._updateFooterVariables();
@@ -3720,6 +3727,7 @@
                 self = this,
 				options = this.options,
 				_options = this._options,
+                lod = this.options.loadOnDemandSettings,
 				multiSelection = options.multiSelection.enabled,
 				$keyNavItem = this._$keyNavItem(),
 				$visibleItems = this._$items().filter(":visible"),
@@ -3788,6 +3796,13 @@
                     // S.T. March 9th, 2015 Bug #188227: Handling DOWN arrow with virtualization.
                     if (options.virtualization && (activeIndex >= visibleItemsCount)) {
                         this.listScrollTop(currentScrollTop + itemHeight + 1);
+                    }
+
+                    // R.K. 22nd of February #830: igCombo not loading on demand with small pageSize
+                    if (options.virtualization && lod && lod.enabled &&
+                        (this.activeIndex() + 1 === this.listItems().length) &&
+                        (this.listItems().length < options.visibleItemsCount)) {
+                            self._callNextChunk(_options.$dropDownListCont, self._itemHeight());
                     }
                 }
 
@@ -7264,7 +7279,7 @@
                 $(".selector").igCombo("deselectAll");
 
                 //deselect all, focus combo, keep input text and trigger events
-                $(".selector").igCombo("deselectAll", { focusCombo: ture, keepInputText: true }, true);
+                $(".selector").igCombo("deselectAll", { focusCombo: true, keepInputText: true }, true);
             ```
                 paramType="object" optional="true" Object with set of options controlling the behavior of this api method.
                     focusCombo (boolean): Set to true to focus combo after the deselection.

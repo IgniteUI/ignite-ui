@@ -174,5 +174,5 @@ The html demos under `demos/<control>` can now be run directly from the file sys
 
 ## Contributing
 You can find all guidelines on how to contribute on the wiki page.  
-* [How to contribute](https://github.com/IgniteUI/ignite-ui/wiki/Contributing-to-Ignite-UI)  
+* [How to contribute](https://github.com/IgniteUI/ignite-ui/blob/master/CONTRIBUTING.md)  
 * [API documentation guidelines](https://github.com/IgniteUI/ignite-ui/wiki/API-Documentation-Guidelines)
