@@ -7995,28 +7995,12 @@
 				if (this.options.enableUTCDates) {
 					sDate = sDate.toISOString();
 				} else {
-					sDate = this._toLocalISOString(sDate);
+					sDate = $.ig.toLocalISOString(sDate);
 				}
 			} else {
 				sDate = this.options.value;
 			}
 			return sDate;
-		},
-		_toLocalISOString: function(date) {
-			var tzo = -date.getTimezoneOffset(),
-				dif = tzo >= 0 ? "+" : "-",
-				pad = function(num) {
-					var norm = Math.abs(Math.floor(num));
-					return (norm < 10 ? "0" : "") + norm;
-				};
-			return date.getFullYear() +
-				"-" + pad(date.getMonth() + 1) +
-				"-" + pad(date.getDate()) +
-				"T" + pad(date.getHours()) +
-				":" + pad(date.getMinutes()) +
-				":" + pad(date.getSeconds()) +
-				dif + pad(tzo / 60) +
-				":" + pad(tzo % 60);
 		},
 
 		// Returns numeric value from getFullYear (with shift), getMonth, etc or null.
