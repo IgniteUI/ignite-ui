@@ -88,6 +88,8 @@
 			{ eventID: 1, eventName: "EU ST 2016", d1: "2016-03-26T03:00:00Z" }
 		];
 
+		$.mockjaxSettings.logging = 0;
+
 		$.mockjax({
 			url: 'products',
 			responseText: {
@@ -130,26 +132,31 @@
 			if (!isUTC) {
 				ok(expectedString.match(regex), "The string representation of the date is valid");
 				matches = expectedString.match(regex);
-				ok(parseInt(matches[1]) === date.getFullYear() &&
-					parseInt(matches[2]) === date.getMonth() + 1 &&
-					parseInt(matches[3]) === date.getDate() &&
-					parseInt(matches[4]) === date.getHours() &&
-					parseInt(matches[5]) === date.getMinutes() &&
-					parseInt(matches[6]) === date.getSeconds() &&
-					parseInt(matches[8]) * 60 + parseInt(matches[9]) ===
-					(matches[7] === "+" ? -date.getTimezoneOffset() : date.getTimezoneOffset()),
-					"The string representation of the date is correct");
+				strictEqual(parseInt(matches[1], 10), date.getFullYear(), "Year portion of the dates match.");
+				strictEqual(parseInt(matches[2], 10), date.getMonth() + 1, "Month portion of the dates match.");
+				strictEqual(parseInt(matches[3], 10), date.getDate(), "Day portion of the dates match.");
+				strictEqual(parseInt(matches[4], 10), date.getHours(), "Hours portion of the dates match.");
+				strictEqual(parseInt(matches[5], 10), date.getMinutes(), "Minutes portion of the dates match.");
+				strictEqual(parseInt(matches[6], 10), date.getSeconds(), "Seconds portion of the dates match.");
+				strictEqual(
+					parseInt(matches[8], 10) * 60 + parseInt(matches[9], 10),
+					matches[7] === "+" ? -date.getTimezoneOffset() : date.getTimezoneOffset(),
+					"Offset portion of the dates match."
+				);
 			} else {
 				ok(expectedString.match(regexUCT), "The string representation of the date is valid");
 				matches = expectedString.match(regexUCT);
-				ok(parseInt(matches[1]) === date.getUTCFullYear() &&
-					parseInt(matches[2]) === date.getUTCMonth() + 1 &&
-					parseInt(matches[3]) === date.getUTCDate() &&
-					parseInt(matches[4]) === date.getUTCHours() &&
-					parseInt(matches[5]) === date.getUTCMinutes() &&
-					parseInt(matches[6]) === date.getUTCSeconds() &&
-					(!matches[7] || parseInt(matches[7].replace(".", "")) === date.getUTCMilliseconds()),
-					"The string representation of the date is correct");
+				strictEqual(parseInt(matches[1], 10), date.getUTCFullYear(), "Year portion of the dates match.");
+				strictEqual(parseInt(matches[2], 10), date.getUTCMonth() + 1, "Month portion of the dates match.");
+				strictEqual(parseInt(matches[3], 10), date.getUTCDate(), "Day portion of the dates match.");
+				strictEqual(parseInt(matches[4], 10), date.getUTCHours(), "Hours portion of the dates match.");
+				strictEqual(parseInt(matches[5], 10), date.getUTCMinutes(), "Minutes portion of the dates match.");
+				strictEqual(parseInt(matches[6], 10), date.getUTCSeconds(), "Seconds portion of the dates match.");
+				strictEqual(
+					!matches[7] || parseInt(matches[7].replace(".", ""), 10),
+					date.getUTCMilliseconds(),
+					"Milliseconds portion of the dates match."
+				);
 			}
 		}
 
@@ -322,7 +329,6 @@
 				verifyDate(dataSource.allTransactions()[2].value, now);
 				verifyDate(dataSource.pendingTransactions()[2].value, now);
 				dataSource.saveChanges(function(data) {
-					console.log(data);
 					var t = JSON.parse(data.requestData["ig_transactions"]);
 					verifySerializedDate(t[0].row.d1, now);
 
@@ -389,7 +395,6 @@
 				verifyDate(dataSource.allTransactions()[2].value, now);
 				verifyDate(dataSource.pendingTransactions()[2].value, now);
 				dataSource.saveChanges(function(data) {
-					console.log(data);
 					var t = JSON.parse(data.requestData["ig_transactions"]);
 					verifySerializedDate(t[0].row.d1, now, true);
 

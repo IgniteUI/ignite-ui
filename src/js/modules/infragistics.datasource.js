@@ -3418,22 +3418,6 @@
 				}
 			}
 		},
-		_toLocalISOString: function(date) {
-			var tzo = -date.getTimezoneOffset(),
-				dif = tzo >= 0 ? "+" : "-",
-				pad = function(num) {
-					var norm = Math.abs(Math.floor(num));
-					return (norm < 10 ? "0" : "") + norm;
-				};
-			return date.getFullYear() +
-				"-" + pad(date.getMonth() + 1) +
-				"-" + pad(date.getDate()) +
-				"T" + pad(date.getHours()) +
-				":" + pad(date.getMinutes()) +
-				":" + pad(date.getSeconds()) +
-				dif + pad(tzo / 60) +
-				":" + pad(tzo % 60);
-		},
 		_serializeDate: function (date) {
 			if ($.type(date) !== "date") {
 				//if the value is not a date don't handle it
@@ -3442,7 +3426,7 @@
 			if (this.settings.enableUTCDates) {
 				date = date.toISOString();
 			} else {
-				date = this._toLocalISOString(date);
+				date = $.ig.toLocalISOString(date);
 			}
 			return date;
 		},
@@ -7144,12 +7128,12 @@
 			}
 			return out;
 		},
-		_convertType: function (t, obj, pk, key) {
+		_convertType: function (t, obj) {
 			if (t === "string") {
 				return this._parser.toStr(obj);
 			}
 			if (t === "date") {
-				return this._parser.toDate(obj, pk, key);
+				return this._parser.toDate(obj);
 			}
 			if (t === "number") {
 				return this._parser.toNumber(obj);
@@ -7166,11 +7150,13 @@
 			var t = field.type, j = null;
 			if (!this.isEmpty(t)) {
 				if (this.isEmpty(field.name)) {
-					results[ i ][ j ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ j ] = this._convertType(t, val);
 				} else {
-					results[ i ][ field.name ] =
-						this._convertType(t, val, this._pk ? results[ i ][ this._pk ] : i, field.name);
+					results[ i ][ field.name ] = this._convertType(t, val);
+					/* assign offset in the record if applicable */
+					if (t === "date") {
+						this._addOffset(results[ i ], field.name, i);
+					}
 				}
 			} else {
 				if (this.isEmpty(field.name)) {
@@ -7191,6 +7177,14 @@
 				}
 			}
 		},
+		_addOffset: function (result, fieldName, i) {
+			var id = this._pk ? result[ this._pk ] : i;
+			if (this._serverOffsets &&
+				this._serverOffsets[ id ] &&
+				!this.isEmpty(this._serverOffsets[ id ][ fieldName ])) {
+					result[ "igoffset_" + fieldName ] = this._serverOffsets[ id ][ fieldName ];
+				}
+		},
 		isEmpty: function (o) {
 			/* specifies if the object is null, undefined, or an empty string
 			paramType="object" the object to check for being empty
@@ -7210,9 +7204,13 @@
 
 				if (!this.isEmpty(t)) {
 					if (this.isEmpty(fName)) {
-						nDataRow[ j ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ j ] = this._convertType(t, tmp);
 					} else {
-						nDataRow[ fName ] = this._convertType(t, tmp, this._pk ? dataRow[ this._pk ] : index, fName);
+						nDataRow[ fName ] = this._convertType(t, tmp);
+						/* assign offset in the record if applicable */
+						if (t === "date") {
+							this._addOffset(nDataRow, fName, index);
+						}
 					}
 				} else {
 					if (this.isEmpty(fName)) {
