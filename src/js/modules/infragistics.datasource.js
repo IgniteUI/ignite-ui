@@ -1487,7 +1487,49 @@
 					});
 				```
 				*/
-				defaultCollapseState: false
+				defaultCollapseState: false,
+				/* type="string" The name of the property that determines whether a record from the group data view is a group record.
+					```
+						ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							groupRecordKey: "__gbRecord"
+						}
+					});
+					```
+				*/
+				groupRecordKey: "__gbRecord",
+				/* type="string" The name of the property that determines whether a record from the group data view is a summary group record.
+					```
+						ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							groupRecordKey: "__gbRecord"
+						}
+					});
+					```
+				*/
+				groupSummaryRecordKey: "__gbSummaryRecord",
+				/* type="array" Array of objects containing the summaries for each field.
+				Each summary object has the following format { field:"fieldName", summaryFunctions: [] }, where the summaryFunctions arrays can contain either a summary name (avg, sum, count etc.) or a custom function for caclulating a custom summary.
+					```
+						ds = new $.%%WidgetName%%({
+						dataSource: data,
+						groupby: {
+							summaries: [
+							{
+								field:"Age",
+								summaryFunctions: ["avg","sum"]
+							},
+							{
+								field: "Name",
+								summaryFunctions: ["count", customFunc]
+							}]
+						}
+					});
+					```
+				*/
+				summaries: []
 			},
 			/* M.H. add summaries support */
 			/* Settings related to built-in summaries functionality
@@ -5203,7 +5245,8 @@
 									count);
 		},
 		_generatePageData: function (data, count) {
-			var i, startIndex, endIndex;
+			var i, startIndex, endIndex, groupRecordKey = this.settings.groupby.groupRecordKey,
+			groupSummaryRecordKey = this.settings.groupby.groupSummaryRecordKey;
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
@@ -5220,7 +5263,8 @@
 				this._gbDataView = [];
 				for (i = startIndex; i < endIndex; i++) {
 					this._gbDataView.push(data[ i ]);
-					if (!data[ i ].__gbRecord) {
+					if (!data[ i ][ groupRecordKey ] &&
+						!data[ i ][ groupSummaryRecordKey ]) {
 						this._dataView.push(data[ i ]);
 					}
 				}
@@ -6816,18 +6860,19 @@
 			paramType="bool" if true the record should be collapsed, otherwise expanded
 			*/
 			var ds = this._gbData, i, len = ds.length, res = [], lvl,
-				row, hidden, gbrow, p = this.settings.paging,
+				row, hidden, gbrow, p = this.settings.paging, gbSumRow,
 				sgb = this.settings.groupby || {};
 			this._gbCollapsed = this._gbCollapsed || {};
 			this._gbCollapsed[ id ] = !!collapsed;
 			for (i = 0; i < len; i++) {
 				row = ds[ i ];
-				gbrow = row.__gbRecord;
-				if (row.id === id) {
+				gbrow = row[ sgb.groupRecordKey ];
+				gbSumRow = row[ sgb.groupSummaryRecordKey ];
+				if (gbrow && row.id === id) {
 					row.collapsed = !!collapsed;
 				}
 				if (hidden) {
-					if (gbrow && row.level <= lvl) {
+					if ((gbrow || gbSumRow) && row.level <= lvl) {
 						hidden = false;
 					} else {
 						continue;
@@ -6882,7 +6927,9 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt;
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt,
+			groupRecordKey = this.settings.groupby.groupRecordKey,
+			summaries = this.settings.groupby.summaries;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
@@ -6892,13 +6939,13 @@
 			for (i = 0; i < len; i++) {
 				gbExpr = gbExprs[ gbInd ];
 				gbRec = {
-					__gbRecord: true,
 					gbExpr: gbExpr,
 					level: gbInd,
 					len: 1,
 					recs: [],
 					val: undefined
 				};
+				gbRec[ groupRecordKey ] = true;
 				this._gbData.push(gbRec);
 				if (!parentCollapsed) {
 					this._vgbData.push(gbRec);
@@ -6924,9 +6971,46 @@
 						}
 					}
 				}
+
 				gbRec.recs = res;
 				gbRec.len = resLen;
+				if (summaries && summaries.length > 0) {
+					this._calculateGroupBySummaries(gbRec, parentCollapsed);
+				}
 				i += resLen - 1;
+			}
+		},
+		_calculateGroupBySummaries: function(gbRec, parentCollapsed) {
+			var res = gbRec.recs, gbSummaryRec = { summaries: {}, level: gbRec.level + 1,
+				groupValue: gbRec.val, id: gbRec.id }, fieldValues, i, j,
+				sumFunc, summaries = this.settings.groupby.summaries,
+				sumFuncName, summary, summaryVal, fieldType, getValuesPerField;
+			gbSummaryRec[ this.settings.groupby.groupSummaryRecordKey ] = true;
+			getValuesPerField = function (arr, fieldName) {
+				return arr.map(function (val) {return val[ fieldName ];});
+			};
+			for (i = 0; i < summaries.length; i++) {
+				summary = summaries[ i ];
+				fieldValues = getValuesPerField(res, summary.field);
+				fieldType = this._fields ? this._getFieldTypeFromSchema(summary.field) : null;
+				for (j = 0; j < summary.summaryFunctions.length; j++) {
+					sumFunc = summary.summaryFunctions[ j ];
+					sumFuncName = typeof sumFunc === "string" ? sumFunc : "custom";
+					summaryVal = $.ig.calcSummaries(
+						sumFuncName,
+						fieldValues,
+						sumFunc,
+						fieldType
+					);
+					if (!gbSummaryRec.summaries[ summary.field ]) {
+						gbSummaryRec.summaries[ summary.field ] = [];
+					}
+					gbSummaryRec.summaries[ summary.field ].push(summaryVal);
+				}
+			}
+			this._gbData.push(gbSummaryRec);
+			if (!gbRec.collapsed && !parentCollapsed) {
+				this._vgbData.push(gbSummaryRec);
 			}
 		},
 		_generateGroupByData: function (data,
