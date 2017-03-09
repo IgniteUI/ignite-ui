@@ -3569,7 +3569,7 @@
 				if (data) {
 					// M.H. 17 June 2014 Fix for bug #171306: The ig_pk property is missing from the added row object.
 					newRow = row;
-					if (data !== origDs && $.type(row) === "object") {
+					if (origDs && data !== origDs && $.type(row) === "object") {
 						newRow = $.extend(true, {}, row);
 					}
 					if (index >= 0 && index < data.length) {
