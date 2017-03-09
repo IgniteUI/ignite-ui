@@ -4484,6 +4484,15 @@
 				this._getRegionalOption("numericMinDecimals") :
 				this.options.minDecimals;
 		},
+		_setInitialValue: function (value) { // NumericEditor
+			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
+			if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
+				value = this.options.maxValue;
+			} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
+				value = this.options.minValue;
+			}
+			this._super(value);
+		},
 		_applyOptions: function () { // NumericEditor
 
 			this._super();
