@@ -1710,7 +1710,7 @@
 					/* {key: '', summaryOperands: []}*/
 				]
 			},
-			/* type="array" *** IMPORTANT DEPRECATED ***
+			/* @Deprecated@ type="array" *** IMPORTANT DEPRECATED ***
 			A list of field definitions specifying the schema of the data source.
 			Field objects description: {name, [type], [xpath]}
 			```
@@ -9160,10 +9160,10 @@
 				requestDataSuccessCallback: null,
 				/*type="function" Specifies a custom function to be called when the remote request for data has finished with an error. */
 				requestDataErrorCallback: null,
-				/* type="string" *** IMPORTANT DEPRECATED *** Use the expandedKey option instead.
+				/* @Deprecated@ type="string" *** IMPORTANT DEPRECATED *** Use the expandedKey option instead.
 				The name of the property that keeps track of the expansion state of a data item. Defaults to __ig_options.expanded.*/
 				propertyExpanded: null,
-				/* type="string" *** IMPORTANT DEPRECATED *** Use the dataLevelKey option instead.
+				/* @Deprecated@ type="string" *** IMPORTANT DEPRECATED *** Use the dataLevelKey option instead.
 				The name of the property that keeps track of the level in the hierarchy.Defaults to __ig_options.dataLevel.*/
 				propertyDataLevel: null,
 				/* type="string" The name of the property that keeps track of the expansion state of a data item. Defaults to __ig_options.expanded.*/
