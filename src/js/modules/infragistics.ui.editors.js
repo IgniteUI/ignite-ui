@@ -4430,6 +4430,11 @@
 				this.options.excludeKeys = null;
 			}
 
+			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+			if (this.options.decimalSeparator.toString().length > 1) {
+				throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+			}
+
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
 		},
@@ -4478,6 +4483,15 @@
 			this.options.minDecimals = this.options.minDecimals === null ?
 				this._getRegionalOption("numericMinDecimals") :
 				this.options.minDecimals;
+		},
+		_setInitialValue: function (value) { // NumericEditor
+			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
+			if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
+				value = this.options.maxValue;
+			} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
+				value = this.options.minValue;
+			}
+			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
 
@@ -4627,6 +4641,15 @@
 							this._editorInput.val(this._getDisplayValue());
 						}
 					}
+					break;
+
+				// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+				case "decimalSeparator": {
+					if (value.toString().length > 1) {
+						this.options[ option ] = prevValue;
+						throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+					}
+				}
 					break;
 				case "regional":
 					this.options[ option ] = prevValue;
