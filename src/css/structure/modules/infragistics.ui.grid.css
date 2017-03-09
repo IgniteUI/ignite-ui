@@ -893,6 +893,26 @@ right: 3px;
     border-bottom:1px dotted #FFF;
     opacity:0.3; filter:alpha(opacity=30);
 }
+.ui-iggrid-summaryiconcontainer-group-by
+{
+    display:block;
+    margin-top: 4px;
+}
+
+.ui-iggrid-summaryiconcolumn
+{
+	-webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+	vertical-align: top !important;
+}
+
+.ui-iggrid-summarycolumn
+{
+	vertical-align: top !important;
+}
 
 /**************
 *   Tooltip  *
