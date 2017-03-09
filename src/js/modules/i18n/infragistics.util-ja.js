@@ -27,7 +27,12 @@
 			    operaDownload: "http://www.opera.com/download/",
 			    chromeDownload: "http://www.google.co.jp/chrome/intl/ja/landing_ff.html?hl=ja",
 			    firefoxDownload: "http://www.mozilla.com/",
-			    safariDownload: "http://www.apple.com/jp/safari/download/"
+			    safariDownload: "http://www.apple.com/jp/safari/download/",
+			    defaultSummaryMethodLabelMin: "Min = ",
+			    defaultSummaryMethodLabelMax: "Max = ",
+			    defaultSummaryMethodLabelSum: "Sum = ",
+			    defaultSummaryMethodLabelAvg: "Avg = ",
+			    defaultSummaryMethodLabelCount: "Count = "
 		    }
 	    });
 
