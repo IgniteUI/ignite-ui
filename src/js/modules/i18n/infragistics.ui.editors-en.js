@@ -73,7 +73,8 @@
 				dateMessage: 'A valid date should be entered',
 				centuryThresholdValidValues: "centuryThreshold property shoud be between 0 and 99.",
 				noListItemsNoButton: "No spin or dropdown button is rendered because there are no listitems.",
-				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
+				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character."
 			}
 		};
 	}
