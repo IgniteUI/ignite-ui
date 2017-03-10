@@ -6187,7 +6187,7 @@
 				```
 			*/
 			inputMask: "CCCCCCCCCC",
-			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" It affects the value of the control (value method/option and submitted in forms). It defines what the value should contain from text, unfilled prompts and literals. The default is allText and when used value method/option returns the text entered, all prompts (positions) and literals. 
+			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" It affects the value of the control (value method/option and submitted in forms). It defines what the value should contain from text, unfilled prompts and literals. The default is allText and when used value method/option returns the text entered, all prompts (positions) and literals.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
