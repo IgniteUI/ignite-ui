@@ -4718,10 +4718,16 @@
 				if (value !== "" && !isNaN(value)) {
 
 					//Verify
-					if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
-						value = this._valueInput.val();
+
+					// I.G. 11/03/2017 #809 'Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false'
+					if (this.options.allowNullValue) {
+						value = this.options.nullValue;
 					} else {
-						if (value <= this.options.minValue) {
+						if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
+							value = this._valueInput.val();
+						} else if (this.options.isLimitedToListValues) {
+							value = "";
+						} else if (value <= this.options.minValue) {
 							value = this.options.minValue;
 						} else {
 							value = this.options.maxValue;
