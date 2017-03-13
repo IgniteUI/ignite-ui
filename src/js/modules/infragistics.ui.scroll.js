@@ -1142,7 +1142,7 @@
 		_linkElementsH: function (inElements) {
 			this._linkedHElems = [];
 			if (inElements) {
-				for (var index in inElements) {
+				for (var index = 0; index < inElements.length; index++) {
 					var elemObject = $(inElements[ index ]);
 
 					if (elemObject.length) {
@@ -1164,7 +1164,7 @@
 		_linkElementsV: function (inElements) {
 			this._linkedVElems = [];
 			if (inElements) {
-				for (var index in inElements) {
+				for (var index = 0; index < inElements.length; index++) {
 					var elemObject = $(inElements[ index ]);
 
 					if (elemObject.length) {
@@ -1745,7 +1745,7 @@
 				}
 
 				if (this._linkedHElems.length > 0) {
-					for (index in this._linkedHElems) {
+					for (index = 0; index < this._linkedHElems.length; index++) {
 						if (this._linkedHElems[ index ].data("igScroll")  !== undefined &&
 								this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
 							//We do not set igScroll option because there will be infinite recursion of syncing
@@ -1767,7 +1767,7 @@
 				destX = baseElem.scrollLeft;
 
 				if (this._linkedHElems.length > 0) {
-					for (index in this._linkedHElems) {
+					for (index = 0; index < this._linkedHElems.length; index++) {
 						if (this._linkedHElems[ index ].length) {
 							if (this._linkedHElems[ index ].data("igScroll") !== undefined &&
 									this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
@@ -1805,7 +1805,7 @@
 				}
 
 				if (this._linkedVElems.length > 0) {
-					for (index in this._linkedVElems) {
+					for (index = 0; index < this._linkedVElems.length; index++) {
 						//get the current X position
 						var matrixElem = this._linkedVElems[ index ].css("-webkit-transform");
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
@@ -1832,7 +1832,7 @@
 				destY = baseElem.scrollTop;
 
 				if (this._linkedVElems.length > 0) {
-					for (index in this._linkedVElems) {
+					for (index = 0; index < this._linkedVElems.length; index++) {
 						if (this._linkedVElems[ index ].length) {
 							if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 									this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
