@@ -3918,7 +3918,7 @@
 			return this._listItems().filter(".ui-igedit-listitemselected");
 		},
 		getSelectedText: function () {
-			/* Gets the selected text from the editor in edit mode. This can be done on key event like keydown or keyup. This method can be used only when the editor is focused. If you call this method in display mode (The editor input is blured) the returned value will be an empty string.	
+			/* Gets the selected text from the editor in edit mode. This can be done on key event like keydown or keyup. This method can be used only when the editor is focused. If you call this method in display mode (The editor input is blured) the returned value will be an empty string.
 			```
 			var text =  (".selector").%%WidgetName%%("getSelectedText");
 			```
@@ -4436,7 +4436,7 @@
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
 
-			if(!this.options.value && this.options.allowNullValue){
+			if (!this.options.value && this.options.allowNullValue) {
 				this.options.value = this.options.nullValue;
 			}
 		},
