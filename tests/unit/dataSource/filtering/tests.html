@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title> Infragistics jQuery Data Source - filtering QUnit tests </title> 
+	<title> Infragistics jQuery Data Source - filtering QUnit tests </title>
 	<script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="../../../../bower_components/jquery-tmpl/jquery.tmpl.js"></script>
 
@@ -13,44 +13,44 @@
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
-	
+
 	<style type="text/css">
 		body {
 			font-family: Verdana;
 			font-size: 11pt;
 		}
-		
+
 		body table {
 			border-width: 1px;
 			border-color: green;
 			border-style: solid;
 			background-color: lightGrey;
 		}
-		
+
 		body table td {
 			border: 1px green solid;
 		}
 	</style>
-	
+
 	<script id="template1" type="text/x-jquery-tmpl">
 		${firstName} <strong> ${lastName} </strong> <br/>
 	</script>
-	
+
 	<script id="tableTemplate" type="text/x-jquery-tmpl">
 		<tr> <td> ${col1} </td> <td> ${col2} </td> <td> ${col3} </td>  <td> ${col4} </td> <td> ${col5} </td>  <td> ${col6} </td> </tr>
 	</script>
-	
-	<script type="text/javascript"> 
+
+	<script type="text/javascript">
 
 		var tableDs = null;
 		var jsonDs = null;
 		var mapperDs = null;
 		var treeDs = null;
-		
+
 		var cond = null; // filtering condition
-		
+
 		var date, before1, before2, before3, before4, before5, after1, after2, after3, after4, after5;
-		
+
 		var dataObject = {
 			firstName: "John",
 			lastName: "Resig",
@@ -60,10 +60,10 @@
 				"San Francisco, CA"
 			]
 		}
-		
-		var arrayOfDataObjects = [ 
+
+		var arrayOfDataObjects = [
 			dataObject
-			, 
+			,
 			{
 				firstName: "Dave",
 				lastName: "Reed",
@@ -137,15 +137,15 @@
 		];
 
 		var northwindProductsJSON = [
-			   { "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseDate": "\/Date(694224000000)\/", "DiscontinuedDate": null, "Rating": 4, "Price": "2.5", "Category": { "ID": 0, "Name": "Food" } },
-			   { "ID": 1, "Name": "Milk", "Description": "Low fatfat milk", "ReleaseDate": "\/Date(812505600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "3.5", "Category": { "ID": 1, "Name": "Beverages" } },
-			   { "ID": 2, "Name": "Vint Soda", "Description": null, "ReleaseDate": "\/Date(970358400000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "20.9", "Category": { "ID": 1, "Name": "Beverages" } },
-			   { "ID": 3, "Name": "Havina Cola", "Description": "The Original Key Lime Cola", "ReleaseDate": "\/Date(1128124800000)\/", "DiscontinuedDate": "\/Date(1159660800000)\/", "Rating": 3, "Price": "19.9", "Category": { "ID": 1, "Name": "Beverages" } },
-			   { "ID": 4, "Name": "Fruit Punch", "Description": "Mango flavor, 8.3 Ounce Cans (Pack of 24)", "ReleaseDate": "\/Date(1041724800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.99", "Category": { "ID": 1, "Name": "Beverages" } },
-			   { "ID": 5, "Name": "Cranberry Juice", "Description": "16-Ounce Plastic Bottles (Pack of 12)", "ReleaseDate": "\/Date(1154649600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.8", "Category": { "ID": 1, "Name": "Beverages" }, },
-			   { "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseDate": "\/Date(1162684800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "18.8", "Category": { "ID": 1, "Name": "Beverages" }, },
-			   { "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseDate": "\/Date(1163548800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": { "ID": 2, "Name": "Electronics" } },
-			   { "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseDate": "\/Date(1210204800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": { "ID": 2, "Name": "Electronics" } }
+			   { "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseDate": "1992-01-01T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 4, "Price": "2.5", "Category": { "ID": 0, "Name": "Food" } },
+			   { "ID": 1, "Name": "Milk", "Description": "Low fat milk", "ReleaseDate": "1995-10-01T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "3.5", "Category": { "ID": 1, "Name": "Beverages" } },
+			   { "ID": 2, "Name": "Vint Soda", "Description": null, "ReleaseDate": "2000-10-01T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "20.9", "Category": { "ID": 1, "Name": "Beverages" } },
+			   { "ID": 3, "Name": "Havina Cola", "Description": "The Original Key Lime Cola", "ReleaseDate": "2005-10-01T00:00:00.000Z", "DiscontinuedDate": "2006-10-01T00:00:00.000Z", "Rating": 3, "Price": "19.9", "Category": { "ID": 1, "Name": "Beverages" } },
+			   { "ID": 4, "Name": "Fruit Punch", "Description": "Mango flavor, 8.3 Ounce Cans (Pack of 24)", "ReleaseDate": "2003-01-05T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "22.99", "Category": { "ID": 1, "Name": "Beverages" } },
+			   { "ID": 5, "Name": "Cranberry Juice", "Description": "16-Ounce Plastic Bottles (Pack of 12)", "ReleaseDate": "2006-08-04T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "22.8", "Category": { "ID": 1, "Name": "Beverages" }, },
+			   { "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseDate": "2006-11-05T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "18.8", "Category": { "ID": 1, "Name": "Beverages" }, },
+			   { "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseDate": "2006-11-15T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": { "ID": 2, "Name": "Electronics" } },
+			   { "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseDate": "2008-05-08T00:00:00.000Z", "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": { "ID": 2, "Name": "Electronics" } }
 		];
 
 		var treeFlatData = [
@@ -189,7 +189,7 @@
 
 		var yearsCount = { 'lastYear': 0, 'thisYear': 0, 'nextYear': 0 };
 		var monthsCount = { 'lastMonth': 0, 'thisMonth': 0, 'nextMonth': 0 };
-		
+
 			$(document).ready(function () {
 				function loadTestbeds() {
 				// create the data sources
@@ -248,7 +248,7 @@
 				});
 				treeDs.dataBind();
 
-				// use jQuery templating to render the processed/transformed data source 
+				// use jQuery templating to render the processed/transformed data source
 				var jsonDataView = jsonDs.dataView();
 				$("#template1").tmpl(jsonDataView).appendTo("#list1");
 
@@ -275,7 +275,7 @@
 				//before
 				tableDs.dataView()[1].col5 = before1; // this month yesterday
 				tableDs.dataView()[2].col5 = before2; // last month (this year)
-				tableDs.dataView()[3].col5 = before3;  // last year 
+				tableDs.dataView()[3].col5 = before3;  // last year
 
 				// after
 				tableDs.dataView()[4].col5 = after1; // this month tomorrow
@@ -463,7 +463,7 @@
 					$("#t1 tbody").empty();
 					$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
 
-					// now test Equals for numeric and date columns 
+					// now test Equals for numeric and date columns
 
 					tableDs.filter([{ fieldName: "col2", expr: 987, cond: "equals"}], true);
 					equal(tableDs.dataView().length, 1, 1);
@@ -472,7 +472,7 @@
 					tableDs.filter([{ fieldName: "col2", expr: "", cond: "equals"}], true);
 					equal(tableDs.dataView().length, 11, 11);
 
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: date.toString(), cond: "equals"}], true);
 					equal(tableDs.dataView().length, 1, 1);
 					deepEqual(date, tableDs.dataView()[0].col5, date);
@@ -498,7 +498,7 @@
 					$("#t1 tbody").empty();
 					$("#tableTemplate").tmpl(tableDs.dataView()).appendTo("#t1 tbody");
 
-					// now test Does Not Equal for numeric and date columns 
+					// now test Does Not Equal for numeric and date columns
 
 					tableDs.filter([{ fieldName: "col2", expr: 987, cond: "doesNotEqual"}], true);
 					equal(tableDs.dataView().length, 10, 10);
@@ -507,7 +507,7 @@
 					tableDs.filter([{ fieldName: "col2", expr: "", cond: "doesNotEqual"}], true);
 					equal(tableDs.dataView().length, 11, 11);
 
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: date.toString(), cond: "doesNotEqual"}], true);
 					equal(tableDs.dataView().length, 10, 10);
 					//same(date, tableDs.dataView()[0].col5, date);
@@ -520,7 +520,7 @@
 				// IgDataSource filtering test 7: Filtering with schema - GreaterThan
 				test(testId_7, function () {
 
-					// now test GreaterThan for numeric and date columns 
+					// now test GreaterThan for numeric and date columns
 
 					tableDs.filter([{ fieldName: "col2", expr: 100, cond: "greaterThan"}], true);
 					equal(tableDs.dataView().length, 4, 4);
@@ -592,7 +592,7 @@
 				// IgDataSource filtering test 13: Filtering with schema - Before
 				test(testId_13, function () {
 
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: date.toString(), cond: "before"}], true);
 					equal(tableDs.dataView().length, 5, 5);
 					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
@@ -605,7 +605,7 @@
 				// IgDataSource filtering test 14: Filtering with schema - Today
 				test(testId_14, function () {
 
-					//dates 
+					//dates
 					var col5Date, countTodayRecords = 0, today = new Date(), y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
 					for (i = 0; i < tableDs.dataView().length; ++i) {
 						col5Date = tableDs.dataView()[i].col5;
@@ -625,7 +625,7 @@
 				// IgDataSource filtering test 15: Filtering with schema - Yesterday
 				test(testId_15, function () {
 
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: "", cond: "yesterday"}], true);
 					equal(tableDs.dataView().length, 1, 1);
 					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
@@ -637,7 +637,7 @@
 				// IgDataSource filtering test 16: Filtering with schema - ThisMonth
 				test(testId_16, function () {
 
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: "", cond: "thisMonth"}], true);
 					equal(tableDs.dataView().length, monthsCount['thisMonth'], monthsCount['thisMonth']);
 					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
@@ -649,7 +649,7 @@
 				// IgDataSource filtering test 17: Filtering with schema - LastMonth
 				test(testId_17, function () {
 
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: "", cond: "lastMonth"}], true);
 					equal(tableDs.dataView().length, monthsCount['lastMonth'], monthsCount['lastMonth']);
 					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
@@ -661,7 +661,7 @@
 				// IgDataSource filtering test 18: Filtering with schema - NextMonth
 				test(testId_18, function () {
 
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: "", cond: "nextMonth"}], true);
 					equal(tableDs.dataView().length, monthsCount['nextMonth'], monthsCount['nextMonth']);
 					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
@@ -672,7 +672,7 @@
 
 				// IgDataSource filtering test 19: Filtering with schema - ThisYear
 				test(testId_19, function () {
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: "", cond: "thisYear"}], true);
 					equal(tableDs.dataView().length, yearsCount['thisYear'], yearsCount['thisYear']);
 					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
@@ -683,7 +683,7 @@
 
 				// IgDataSource filtering test 20: Filtering with schema - LastYear
 				test(testId_20, function () {
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: "", cond: "lastYear"}], true);
 					equal(tableDs.dataView().length, yearsCount['lastYear'], yearsCount['lastYear']);
 					// remove the filter and check if all records are back there
@@ -694,7 +694,7 @@
 				// IgDataSource filtering test 21: Filtering with schema - NextYear
 				test(testId_21, function () {
 
-					//dates 
+					//dates
 					tableDs.filter([{ fieldName: "col5", expr: "", cond: "nextYear"}], true);
 					equal(tableDs.dataView().length, yearsCount['nextYear'], yearsCount['nextYear']);
 					//equal(new Date("Wed Nov 10 00:00:00 UTC+0200 2010"), tableDs.dataView()[0].col5, new Date("Wed Nov 10 00:00:00 UTC+0200 2010"));
@@ -708,15 +708,15 @@
 				test(testId_22, function() {
 				ok(true);
 				});
-	
+
 				test(testId_23, function() {
 				ok(true);
 				});
-	
+
 				test(testId_24, function() {
 				ok(true);
 				});
-	
+
 				test(testId_25, function() {
 				ok(true);
 				});
@@ -809,7 +809,7 @@
 
 				test(testId_35, function () {
 					treeDs.filter([{ fieldName: "Category", expr: 1 , cond: "lessThan" }], "AND", true);
-					
+
 					$(treeDs.flatDataView()).each(function () {
 						equal(this.__matchFiltering === true, this.Category.ID === 0, "Check if filtering parameter __matchFiltering was appled based on the mapped value: Category.ID");
 					});
@@ -818,8 +818,8 @@
 				var ds;
 				module("Test filtering", {
 					setup: function () {
-						ds = new $.ig.DataSource({ 
-							filtering: { type: "local", enabled: true }, 
+						ds = new $.ig.DataSource({
+							filtering: { type: "local", enabled: true },
 							summaries: { type: "local" },
 							dataSource: northwindProductsJSON,
 							schema: { fields: [{
@@ -850,7 +850,7 @@
 					ds.schema(s);
 					ds.filter([{ fieldIndex: 0, expr: 100, cond: "greaterThanOrEqualTo"}]);
 					fd = ds.filteredData();
-					ok(fd.length === 0 && ds.dataView().length === 0, 
+					ok(fd.length === 0 && ds.dataView().length === 0,
 						"Test count of filtered records");
 				});
 				test("Test conditions null, notNull, empty, notEmpty for string", function () {
@@ -860,26 +860,26 @@
 									{ fieldIndex: 1, expr: "a", cond: "null", logic: "OR" }
 								]);
 					fd = ds.filteredData();
-					ok(fd.length === 0 && ds.dataView().length === 0, 
+					ok(fd.length === 0 && ds.dataView().length === 0,
 						"Test condition null");
 					ds.filter([
 									{ fieldIndex: 1, expr: "a", cond: "notNull", logic: "OR" }
 								]);
 					fd = ds.filteredData();
-					ok(fd.length === 9 && ds.dataView().length === 9, 
+					ok(fd.length === 9 && ds.dataView().length === 9,
 						"Test condition notNull");
 					ds.filter([
 								{ fieldIndex: 1, expr: "a", cond: "empty", logic: "OR" }
 							]);
 					fd = ds.filteredData();
-					ok(fd.length === 0 && ds.dataView().length === 0, 
+					ok(fd.length === 0 && ds.dataView().length === 0,
 						"Test condition empty");
-					
+
 					ds.filter([
 								{ fieldName: "Description", expr: "", cond: "notEmpty", logic: "OR" }
 							]);
 					fd = ds.filteredData();
-					ok(fd.length === 8 && ds.dataView().length === 8, 
+					ok(fd.length === 8 && ds.dataView().length === 8,
 						"Test condition notEmpty");
 				});
 				test("Test conditions on, notOn, null, notNull, empty, notEmpty", function () {
@@ -888,7 +888,7 @@
 						{ fieldName: "ReleaseDate", expr: new Date(694224000000), cond: "on", logic: "OR" }
 					]);
 					fd = ds.filteredData();
-					ok(fd.length === 1 && ds.dataView().length === 1, 
+					ok(fd.length === 1 && ds.dataView().length === 1,
 						"Condition on");
 					ds.filter([
 						{ fieldName: "ReleaseDate", expr: new Date(694224000000), cond: "notOn", logic: "OR" }
@@ -897,7 +897,7 @@
 					ok(fd.length === 8 &&
 						ds.dataView().length === 8 &&
 						ds.totalLocalRecordsCount() === 8 &&
-						ds.pageCount() === 2, 
+						ds.pageCount() === 2,
 						"Condition notOn");
 
 					ds.filter([
@@ -905,14 +905,14 @@
 					]);
 					fd = ds.filteredData();
 					ok(fd.length === 0 &&
-						ds.dataView().length === 0, 
+						ds.dataView().length === 0,
 						"Condition null");
 					ds.filter([
 						{ fieldName: "ReleaseDate", cond: "notNull" }
 					]);
 					fd = ds.filteredData();
 					ok(fd.length === 9 &&
-						ds.dataView().length === 9, 
+						ds.dataView().length === 9,
 						"Condition notNull");
 
 					ds.filter([
@@ -920,14 +920,14 @@
 					]);
 					fd = ds.filteredData();
 					ok(fd.length === 0 &&
-						ds.dataView().length === 0, 
+						ds.dataView().length === 0,
 						"Condition empty");
 					ds.filter([
 						{ fieldName: "ReleaseDate", cond: "notEmpty" }
 					]);
 					fd = ds.filteredData();
 					ok(fd.length === 9 &&
-						ds.dataView().length === 9, 
+						ds.dataView().length === 9,
 						"Condition notEmpty");
 				});
 
@@ -936,28 +936,28 @@
 						{ fieldName: "ID", expr: "", cond: "null", logic: "OR" }
 					]);
 					fd = ds.filteredData();
-					ok(fd.length === 0 && ds.dataView().length === 0, 
+					ok(fd.length === 0 && ds.dataView().length === 0,
 						"Condition null");
 
 					ds.filter([
 						{ fieldName: "ID", expr: "", cond: "notNull", logic: "OR" }
 					]);
 					fd = ds.filteredData();
-					ok(fd.length === 9 && ds.dataView().length === 9, 
+					ok(fd.length === 9 && ds.dataView().length === 9,
 						"Condition null");
-					
+
 					ds.filter([
 						{ fieldName: "ID", expr: "", cond: "empty", logic: "OR" }
 					]);
 					fd = ds.filteredData();
-					ok(fd.length === 0 && ds.dataView().length === 0, 
+					ok(fd.length === 0 && ds.dataView().length === 0,
 						"Condition null");
 
 					ds.filter([
 						{ fieldName: "ID", expr: "", cond: "notEmpty", logic: "OR" }
 					]);
 					fd = ds.filteredData();
-					ok(fd.length === 9 && ds.dataView().length === 9, 
+					ok(fd.length === 9 && ds.dataView().length === 9,
 						"Condition null");
 					ds.filter([
 						{ fieldName: "ID", expr: "", cond: "notEmpty", logic: "OR" }
@@ -1196,18 +1196,372 @@
 					fd = ds.filteredData();
 					ok(fd.length === 0, "The filtered records are not the expected ones!");
 				});
+
+				test("IgDataSource Test - filter data source without schema", function () {
+					var fd, ds, fd;
+					ds = new $.ig.DataSource({
+						filtering: { type: "local", enabled: true, caseSensitive: true },
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON,
+						schema: {
+							//fields: []
+						}
+					}).dataBind();
+					ds.filterByText('LCD HDTV');
+					fd = ds.filteredData();
+					ok(fd.length === 0, "The filtered records are not the expected ones!");
+				});
+
+				test("IgDataSource Test - filter all fields with overlapping expressions", function () {
+					var fd, ds, fd;
+					ds = new $.ig.DataSource({
+						filtering: { type: "local", enabled: true, caseSensitive: true },
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON,
+						schema: {
+							fields: [{
+								name: "ID", type: "number"
+							}, {
+								name: "Name", type: "string", formatter: function (val, record) { return "Formatted " + val + "1"; }
+							}, {
+								name: "Description", type: "string"
+							}, {
+								name: "ReleaseDate", type: "date"
+							}]
+						}
+					}).dataBind();
+					ds.filterByText('Lemon Le Lemonade');
+					fd = ds.filteredData();
+					ok(fd.length === 1 && fd[0].ID === 6, "The filtered records are not the expected ones!");
+				});
+
+				test("IgDataSource Test - filter all fields with empty expression", function () {
+					var fd, ds, fd;
+					ds = new $.ig.DataSource({
+						filtering: { type: "local", enabled: true, caseSensitive: true },
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON,
+						schema: {
+							fields: [{
+								name: "ID", type: "number"
+							}, {
+								name: "Name", type: "string", formatter: function (val, record) { return "Formatted " + val + "1"; }
+							}, {
+								name: "Description", type: "string"
+							}, {
+								name: "ReleaseDate", type: "date"
+							}]
+						}
+					}).dataBind();
+					ds.filterByText('');
+					fd = ds.filteredData();
+					ok(fd.length === 9, "The filtered records are not the expected ones!");
+				});
+
+				test("IgDataSource Test - filter all fields with empty expression", function () {
+					var fd, ds, fd;
+					ds = new $.ig.DataSource({
+						filtering: { type: "remote", enabled: true, caseSensitive: true },
+						dataSource: northwindProductsJSON,
+						schema: {
+							fields: [{
+								name: "ID", type: "number"
+							}, {
+								name: "Name", type: "string", formatter: function (val, record) { return "Formatted " + val + "1"; }
+							}, {
+								name: "Description", type: "string"
+							}, {
+								name: "ReleaseDate", type: "date"
+							}]
+						}
+					}).dataBind();
+					ds.filterByText('');
+					fd = ds.filteredData();
+					ok(fd.length === 9, "The filtered records are not the expected ones!");
+				});
+				// Test bug 231214: When you update a formatted field it can't be found by the allFields search filtering.
+				// Add tests when adding/removing/deleting record
+				test("IgDataSource Test - add/remove/delete record and test filterByText", function () {
+					//Create copy of the data so we don't alter it
+					var fd, ds, fd, data = JSON.parse(JSON.stringify(northwindProductsJSON));
+					ds = new $.ig.DataSource({
+						filtering: { type: "local", enabled: true },
+						summaries: { type: "local" },
+						dataSource: data,
+						schema: {
+							fields: [{
+								name: "ID", type: "number"
+							}, {
+								name: "Name", type: "string", formatter: function (val, record) { return "Formatted " + val + "1"; }
+							}, {
+								name: "Description", type: "string"
+							}, {
+								name: "ReleaseDate", type: "date"
+							}]
+						}
+					}).dataBind();
+					// update value
+					ds.setCellValue(1, "Name", "123", true);
+					ds.filterByText("Formatted 123");
+					fd = ds.filteredData();
+					ok(fd.length === 1 && fd[0].Name === "123", "Change cell in record with ID 1 and apply filtering (ONLY editted record should match filtering text)!");
+					// remove record
+					ds.deleteRow(8, true);
+					ds.filterByText("LCD HDTV");
+					ok(ds.filteredData().length === 0, "Remove record with ID 8 and apply filtering(ONLY deleted record matches filtering text)!");
+					// add new record
+					ds.addRow(8,  { "ID": 9, "Name": "MyTest", "Description": "Description1", "ReleaseDate": "\/Date(1210204800000)\/"}, true);
+					ds.filterByText("Formatted MyTest1");
+					fd = ds.filteredData();
+					ok(fd.length === 1 && fd[0].ID === 9, "Add new record and search by text which could be found ONLY in the newly-added record!");
+				});
+				
+				test("Test _splitFilterExpression private method with mixed spaces and quotes", function () {
+					var ds, splitExpr;					
+					ds = new $.ig.DataSource({ 
+						filtering: { type: "local", enabled: true }, 
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON,
+						schema: { fields: [{
+										name: "ID", type: "number"
+									}, {
+										name: "Name", type: "string"
+									}, {
+										name: "Description", type: "string"
+									}, {
+										name: "ReleaseDate", type: "date"
+									}]
+						}
+					}).dataBind();
+					
+					//Mixed single words with quoted phrases and one is at the end
+					splitExpr = ds._splitFilterExpression('Cat "Dog food" Bird "Something else"');
+					equal(splitExpr[0], "Dog food", "The split expressions contians quoted phrases first");
+					equal(splitExpr[1], "Something else", "The split expressions contians quoted phrases first");
+					equal(splitExpr[2], "Cat", "The split expressions contian single words as well after quoted phrases");
+					equal(splitExpr[3], "Bird", "The split expressions contian single words as well after quoted phrases");
+					equal(splitExpr[4], "", "The split expressions contian a leftover empty string due to splitting");
+					equal(splitExpr.length, 5, "The split expressions contian single words as well after quoted phrases");
+					
+					//Only phrases with double quotes at both ends
+					splitExpr = ds._splitFilterExpression('"Dog food" "Something else"');
+					equal(splitExpr[0], "Dog food", "The split expressions contians quoted phrase");
+					equal(splitExpr[1], "Something else", "The split expressions contians quoted phrase");
+					equal(splitExpr[2], "", "The split expressions contians two leftover empty strings due to splitting");
+					equal(splitExpr[3], "", "The split expressions contians two leftover empty strings due to splitting");
+					equal(splitExpr.length, 4, "The split expressions contian single words as well after quoted phrases");
+					
+					//Only phrases with double quotes at the the beginnig
+					splitExpr = ds._splitFilterExpression('"Dog food" water');
+					equal(splitExpr[0], "Dog food", "The split expressions contians quoted phrase");
+					equal(splitExpr[1], "", "The split expressions contians a leftover empty string due to splitti");
+					equal(splitExpr[2], "water", "The split expressions contians word not in quotes");
+					equal(splitExpr.length, 3, "The split expressions contian single words as well after quoted phrases");
+					
+					//Only words with mistyped double quote
+					splitExpr = ds._splitFilterExpression('Cat " dog');
+					equal(splitExpr[0], "Cat", "The split expressions contians word not in quotes");
+					equal(splitExpr[1], "\"", "The split expressions contians the mistyped double quote");
+					equal(splitExpr[2], "dog", "The split expressions contians word not in quotes");
+					equal(splitExpr.length, 3, "The split expressions contian single words as well after quoted phrases");
+
+					//Only words with no double quotes
+					splitExpr = ds._splitFilterExpression('Cat dog');
+					equal(splitExpr[0], "Cat", "The split expressions contians word not in quotes");
+					equal(splitExpr[1], "dog", "The split expressions contians word not in quotes");
+					equal(splitExpr.length, 2, "The split expressions contian single words as well after quoted phrases");
+				});
+				
+				test("Test _findMatchByFields private method", function () {
+					var ds, searchTokens, rec, formattedRecord,
+						dFields = [{ name: "ID", type: "number" },
+									{ name: "Name", type: "string" },
+									{ name: "Description", type: "string" },
+									{ name: "ReleaseDate", type: "date" },
+									{ name: "Available", type: "bool"}];
+									
+					ds = new $.ig.DataSource({ 
+						filtering: { type: "local", enabled: true }, 
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON,
+						schema: { fields: dFields }
+					}).dataBind();
+					
+					//Empty search token
+					searchTokens = [""];
+					rec = { ID: 2, Name: "John Tron", Description: "Some description ", ReleaseDate: new Date("Sun Oct 01 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: false };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");
+
+					//Record with all fields null or empty strings
+					searchTokens = ["dog"];
+					rec = { ID: 2, Name: "", Description: "", ReleaseDate: null, Available: false };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), false, "");
+					
+					//No mathes with one word search token
+					searchTokens = ["pork"];
+					rec = { ID: 2, Name: "Inception", Description: "A mindblowing movie", ReleaseDate: new Date("Sun Oct 01 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), false, "");
+
+					//No matches with multiple one word seach tokens
+					searchTokens = ["fresh", "cat"];
+					rec = { ID: 2, Name: "Cool breakfast", Description: "Contains milk and cornflakes", ReleaseDate: new Date("Sun Oct 01 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), false, "");
+					
+					//No matches with one word and multiple word seach tokens
+					searchTokens = ["fresh milk", "cat"];
+					rec = { ID: 2, Name: "Cool breakfast", Description: "Contains milk and cornflakes", ReleaseDate: new Date("Sun Oct 01 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), false, "");	
+
+					//No matches multiple word token
+					searchTokens = ["cool milk"];
+					rec = { ID: 18, Name: "Cool breakfast", Description: "Contains milk and cool cornflakes", ReleaseDate: new Date("Sun Oct 08 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), false, "");					
+					
+					//Matches with boolean
+					searchTokens = ["true"];
+					rec = { ID: 2, Name: "Cool breakfast", Description: "Contains milk and cornflakes", ReleaseDate: new Date("Sun Oct 01 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");		
+					
+					//Matches with number
+					searchTokens = ["18"];
+					rec = { ID: 18, Name: "Cool breakfast", Description: "Contains milk and cornflakes", ReleaseDate: new Date("Sun Oct 01 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");					
+					
+					//Matches with date
+					searchTokens = ["08 2000"];
+					rec = { ID: 18, Name: "Cool breakfast", Description: "Contains milk and cornflakes", ReleaseDate: new Date("Sun Oct 08 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");		
+					
+					//Matches single word no case sensitive
+					searchTokens = ["cool"];
+					rec = { ID: 18, Name: "COOL breakfast", Description: "Contains cool milk and cornflakes", ReleaseDate: new Date("Sun Oct 08 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");				
+					
+					//Matches single word with multiple occuranses
+					searchTokens = ["cool"];
+					rec = { ID: 18, Name: "Cool breakfast", Description: "Contains cool milk and cool cornflakes", ReleaseDate: new Date("Sun Oct 08 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");	
+					
+					//Matches multiple word token
+					searchTokens = ["cool milk"];
+					rec = { ID: 18, Name: "Cool breakfast", Description: "Contains cool milk and cornflakes", ReleaseDate: new Date("Sun Oct 08 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = null;
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");
+					
+					//Matches multiple word token with formatted record
+					searchTokens = ["cool milk"];
+					rec = { ID: 18, Name: "Cool breakfast", Description: "cornflakes", ReleaseDate: new Date("Sun Oct 08 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = { Description: "Contains cool milk and cornflakes" };
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), true, "");
+
+					//No match multiple word token with formatted record
+					searchTokens = ["cool milk"];
+					rec = { ID: 18, Name: "Cool breakfast", Description: "Contains cool milk and cornflakes", ReleaseDate: new Date("Sun Oct 08 2000 03:00:00 GMT+0300 (FLE Daylight Time)"), Available: true };
+					formattedRecord = { Description: "cornflakes" };
+					equal(ds._findMatchByFields(searchTokens, rec, dFields, formattedRecord), false, "");
+				});
+				
+				test("Test _getFieldsWithFormatter private method with no schema set", function () {
+					var ds;					
+					ds = new $.ig.DataSource({ 
+						filtering: { type: "local", enabled: true }, 
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON
+					}).dataBind();
+					
+					equal(typeof ds._getFieldsWithFormatter(), "object", "");
+					equal(ds._getFieldsWithFormatter().length, 0, "");
+				});
+				
+				test("Test _getFieldsWithFormatter private method with no formatters set", function () {
+					var ds;					
+					ds = new $.ig.DataSource({ 
+						filtering: { type: "local", enabled: true }, 
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON,
+						schema: { fields: [{ name: "ID", type: "number" },
+									{ name: "Name", type: "string" },
+									{ name: "Description", type: "string" },
+									{ name: "ReleaseDate", type: "date" },
+									{ name: "Available", type: "bool"}]
+						}
+					}).dataBind();
+					
+					equal(typeof ds._getFieldsWithFormatter(), "object", "");
+					equal(ds._getFieldsWithFormatter().length, 0, "");
+				});
+				
+				test("Test _getFieldsWithFormatter private method with formatters set", function () {
+					var ds;					
+					ds = new $.ig.DataSource({ 
+						filtering: { type: "local", enabled: true }, 
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON,
+						schema: { fields: [{ name: "ID", type: "number" },
+									{ name: "Name", type: "string", formatter: function (val, record) { return "Formatted " + val + " :)"; } },
+									{ name: "Description", type: "string", formatter: function (val, record) { return "Formatted " + val + " !"; } },
+									{ name: "ReleaseDate", type: "date" },
+									{ name: "Available", type: "bool"}]
+						}
+					}).dataBind();
+					
+					equal(typeof ds._getFieldsWithFormatter(), "object", "");
+					equal(ds._getFieldsWithFormatter().length, 2, "");
+				});
+				
+				test("Test _generateFormattedRecords private method", function () {
+					var ds, formattedRecs;
+					ds = new $.ig.DataSource({ 
+						filtering: { type: "local", enabled: true }, 
+						summaries: { type: "local" },
+						dataSource: northwindProductsJSON,
+						schema: { fields: [{ name: "ID", type: "number" },
+									{ name: "Name", type: "string", formatter: function (val, record) { return "Funky " + val + " :)"; } },
+									{ name: "Description", type: "string", formatter: function (val, record) { return "Formatted " + val + " !"; } },
+									{ name: "ReleaseDate", type: "date" },
+									{ name: "Available", type: "bool"}]
+						}
+					}).dataBind();
+					
+					ds._generateFormattedRecords();
+					formattedRecs = ds.schema()._formattedRecords;
+					equal(formattedRecs[0]["ID"], undefined, "");
+					equal(formattedRecs[0]["Name"], "Funky Bread :)", "");
+					equal(formattedRecs[0]["Description"], "Formatted Whole grain bread !", "");
+					equal(formattedRecs[1]["Name"], "Funky Milk :)", "");
+					equal(formattedRecs[1]["Description"], "Formatted Low fat milk !", "");
+					equal(formattedRecs[5]["Name"], "Funky Cranberry Juice :)", "");
+					equal(formattedRecs[5]["Description"], "Formatted 16-Ounce Plastic Bottles (Pack of 12) !", "");
+					equal(formattedRecs[7]["ID"], undefined, "");
+					equal(formattedRecs[7]["Price"], undefined, "");
+					equal(formattedRecs[7]["Name"], "Funky DVD Player :)", "");
+					equal(formattedRecs[7]["Description"], "Formatted 1080P Upconversion DVD Player !", "");
+					equal(formattedRecs[8]["Name"], "Funky LCD HDTV :)", "");
+					equal(formattedRecs[8]["Description"], "Formatted 42 inch 1080p LCD with Built-in Blu-ray Disc Player !", "");
+				});
 			});
-		var northwindProductsJSON = [
-			   { "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseDate": "\/Date(694224000000)\/", "DiscontinuedDate": null, "Rating": 4, "Price": "2.5", "Category": { "ID": 0, "Name": "Food" } },
-			   { "ID": 1, "Name": "Milk", "Description": "Low fatfat milk", "ReleaseDate": "\/Date(812505600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "3.5", "Category": { "ID": 1, "Name": "Beverages" } },
-			   { "ID": 2, "Name": "Vint Soda", "Description": null, "ReleaseDate": "\/Date(970358400000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "20.9", "Category": { "ID": 1, "Name": "Beverages" } },
-			   { "ID": 3, "Name": "Havina Cola", "Description": "The Original Key Lime Cola", "ReleaseDate": "\/Date(1128124800000)\/", "DiscontinuedDate": "\/Date(1159660800000)\/", "Rating": 3, "Price": "19.9", "Category": { "ID": 1, "Name": "Beverages" } },
-			   { "ID": 4, "Name": "Fruit Punch", "Description": "Mango flavor, 8.3 Ounce Cans (Pack of 24)", "ReleaseDate": "\/Date(1041724800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.99", "Category": { "ID": 1, "Name": "Beverages" } },
-			   { "ID": 5, "Name": "Cranberry Juice", "Description": "16-Ounce Plastic Bottles (Pack of 12)", "ReleaseDate": "\/Date(1154649600000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "22.8", "Category": { "ID": 1, "Name": "Beverages" }, },
-			   { "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseDate": "\/Date(1162684800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "18.8", "Category": { "ID": 1, "Name": "Beverages" }, },
-			   { "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseDate": "\/Date(1163548800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": { "ID": 2, "Name": "Electronics" } },
-			   { "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseDate": "\/Date(1210204800000)\/", "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": { "ID": 2, "Name": "Electronics" } }
-		];
+			var northwindProductsJSON = [
+				{ "ID": 0, "Name": "Bread", "Description": "Whole grain bread", "ReleaseDate": "1992-01-01T00:00:00.000Z", "Available": true, "DiscontinuedDate": null, "Rating": 4, "Price": "2.5", "Category": { "ID": 0, "Name": "Food" } },
+				{ "ID": 1, "Name": "Milk", "Description": "Low fat milk", "ReleaseDate": "1995-10-01T00:00:00.000Z", "Available": true, "DiscontinuedDate": null, "Rating": 3, "Price": "3.5", "Category": { "ID": 1, "Name": "Beverages" } },
+				{ "ID": 2, "Name": "Vint Soda", "Description": null, "ReleaseDate": "2000-10-01T00:00:00.000Z", "Available": true, "DiscontinuedDate": null, "Rating": 3, "Price": "20.9", "Category": { "ID": 1, "Name": "Beverages" } },
+				{ "ID": 3, "Name": "Havina Cola", "Description": "The Original Key Lime Cola", "ReleaseDate": "2005-10-01T00:00:00.000Z", "Available": true, "DiscontinuedDate": "2006-10-01T00:00:00.000Z", "Rating": 3, "Price": "19.9", "Category": { "ID": 1, "Name": "Beverages" } },
+				{ "ID": 4, "Name": "Fruit Punch", "Description": "Mango flavor, 8.3 Ounce Cans (Pack of 24)", "ReleaseDate": "2003-01-05T00:00:00.000Z", "Available": true, "DiscontinuedDate": null, "Rating": 3, "Price": "22.99", "Category": { "ID": 1, "Name": "Beverages" } },
+				{ "ID": 5, "Name": "Cranberry Juice", "Description": "16-Ounce Plastic Bottles (Pack of 12)", "ReleaseDate": "2006-08-04T00:00:00.000Z", "Available": true, "DiscontinuedDate": null, "Rating": 3, "Price": "22.8", "Category": { "ID": 1, "Name": "Beverages" }, },
+				{ "ID": 6, "Name": "Pink Lemonade", "Description": "36 Ounce Cans (Pack of 3)", "ReleaseDate": "2006-11-05T00:00:00.000Z", "Available": true, "DiscontinuedDate": null, "Rating": 3, "Price": "18.8", "Category": { "ID": 1, "Name": "Beverages" }, },
+				{ "ID": 7, "Name": "DVD Player", "Description": "1080P Upconversion DVD Player", "ReleaseDate": "2006-11-15T00:00:00.000Z", "Available": true, "DiscontinuedDate": null, "Rating": 3, "Price": "35.88", "Category": { "ID": 2, "Name": "Electronics" } },
+				{ "ID": 8, "Name": "LCD HDTV", "Description": "42 inch 1080p LCD with Built-in Blu-ray Disc Player", "ReleaseDate": "2008-05-08T00:00:00.000Z", "Available": true, "DiscontinuedDate": null, "Rating": 3, "Price": "1088.8", "Category": { "ID": 2, "Name": "Electronics" } }
+			];
 	</script>
 </head>
 <body>

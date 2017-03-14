@@ -25,6 +25,8 @@
 	<script type="text/javascript" src="../common/test-util.js"></script>
 
 	<script type="text/javascript">
+		//This is to tests for improper use of for..in.. loops. Tests will fail that touch array parsing in the scroll.
+		Array.prototype.foo = 1;
         //Content for igScroll that does not need to render any scrollbars due to the content beeing too small
         var contentNoScroll = '<table width="600" style="border: 1px solid #777777;">' +
 			"<thead>" +

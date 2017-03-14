@@ -2454,7 +2454,7 @@
 				dropOptions = this._initDropOptions();
 			if (!this._insertLine.html) {
 				this._insertLine.html =
-					'<div data-role="insert-line" class="' + this.css.insertLine + '"></div>';
+					"<div data-role='insert-line' class='" + this.css.insertLine + "'></div>";
 			}
 			if (!element) {
 				this.element.find("li[data-role=node]").draggable(dragOptions);
@@ -2620,8 +2620,8 @@
 						value = data[ i ][ binding.valueKey ];
 					}
 				}
-				li = '<li class="' + this._buildNodeCssString(data[ i ], depth, binding) +
-					'" data-path="' + childPath + '" data-value="' + value + '" data-role="node">';
+				li = "<li class='" + this._buildNodeCssString(data[ i ], depth, binding) +
+					"' data-path='" + childPath + "' data-value='" + value + "' data-role='node'>";
 
 				children = data[ i ][ binding.childDataProperty ];
 				if (typeof children === "function") {
@@ -2651,11 +2651,11 @@
 				}
 
 				if ((children && children.length > 0) || (children && opt.loadOnDemand)) {
-					childUl = '<ul style="display: ' + display + '" data-depth="' + (depth + 1) + '"';
+					childUl = "<ul style='display: " + display + "' data-depth='" + (depth + 1) + "'";
 					if (children.length > 0 && !opt.loadOnDemand) {
 						childUl += ">" + this._initChildrenRecursively(childPath, children, depth + 1, checkFlag);
 					} else {
-						childUl += ' data-populated="false">';
+						childUl += " data-populated='false'>";
 					}
 					childUl += "</ul>";
 				}
@@ -2788,10 +2788,10 @@
 				if (typeof data[ binding.imageUrlKey ] === "function") {
 					src = data[ binding.imageUrlKey ]();
 					if (src && src.length > 0) {
-						img = '<img src="' + src + '" alt="error" data-role="node-image" />';
+						img = "<img src='" + src + "' alt='error' data-role='node-image' />";
 					}
 				} else if (data[ binding.imageUrlKey ].length > 0) {
-					img = '<img src="' + data[ binding.imageUrlKey ] + '" alt="error" data-role="node-image" />';
+					img = "<img src='" + data[ binding.imageUrlKey ] + "' alt='error' data-role='node-image' />";
 				}
 			}
 			if (opt.parentNodeImageUrl && hasChildren) {
@@ -3036,7 +3036,7 @@
 
 			// Clear the loading indicator space
 			// K.D. August 16th, 2013 Bug #149438 Keeping the already rendered nodes and rendering the loaded ones after
-			ul.children('li[data-role="loading"]').remove();
+			ul.children("li[data-role='loading']").remove();
 			if (!originalData[ binding.childDataProperty ] ||
 				!originalData[ binding.childDataProperty ].length) {
 				originalData[ binding.childDataProperty ] = newData;
@@ -3106,7 +3106,7 @@
 			ul = node.children("ul");
 
 			// Create loading indicator space
-			li = $('<li style="width: 20px" data-role="loading">&nbsp;</li>').appendTo(ul);
+			li = $("<li style='width: 20px' data-role='loading'>&nbsp;</li>").appendTo(ul);
 			ul.show();
 
 			// K.D. December 19th, 2011 Bug #98217 Adding flag pointing that the loading indicator is instantiated by the tree
@@ -3594,7 +3594,7 @@
 
 			// K.D. August 15th, 2013 Bug #149367 The member does not necessarily need to be observable
 			switch (item) {
-				case binding.textKey:
+			case binding.textKey:
 
 				// K.D. June 25th, 2014 Bug #173722 Adding handling for templates
 				if (!binding.nodeContentTemplate) {
@@ -3629,6 +3629,8 @@
 			case binding.imageUrlKey:
 				value = typeof data[ item ] === "function" ? data[ item ]() : data[ item ];
 				element.children("img[data-role=node-image]").attr("src", value);
+				break;
+			default:
 				break;
 			}
 		},
@@ -3933,7 +3935,7 @@
 				paramType="string" optional="false" Specifies the path to the required node.
 				returnType="object" Returns the jQuery selected node element with the specified path. The length property would be 0 if node isn't found.
 			*/
-			return this.element.find('li[data-path="' + nodePath + '"]');
+			return this.element.find("li[data-path='" + nodePath + "']");
 		},
 		nodesByValue: function (value) {
 			/* Retrieves the jQuery element of the node with the specified value.
@@ -3943,7 +3945,7 @@
 				paramType="string" optional="false" Specifies the value of the required node.
 				returnType="object" Returns the jQuery object of the node element with the specified value. The length property would be 0 if node isn't found.
 			*/
-			return this.element.find('li[data-value="' + value + '"]');
+			return this.element.find("li[data-value='" + value + "']");
 		},
 		checkedNodes: function () {
 			/* Retrieves all the node objects for the nodes that have their checkboxes checked.
@@ -4115,8 +4117,8 @@
 				returnType="array" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			var collection = [], nodes, self = this;
-			nodes = parent ? parent.find('li > a:contains("' + text + '")') :
-				this.element.find('li > a:contains("' + text + '")');
+			nodes = parent ? parent.find("li > a:contains('" + text + "')") :
+				this.element.find("li > a:contains('" + text + "')");
 			nodes.each(function () {
 				collection.push(self.nodeFromElement($(this).closest("li[data-role=node]")));
 			});
@@ -4133,9 +4135,9 @@
 				returnType="array" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			var collection = [], nodes, self = this;
-			nodes = parent ? parent.children("ul").children("li").children('a:contains("' + text + '")') :
-				this.element.is("ul") ? this.element.children("li").children('a:contains("' + text + '")') :
-					this.element.children("ul").children("li").children('a:contains("' + text + '")');
+			nodes = parent ? parent.children("ul").children("li").children("a:contains('" + text + "')") :
+				this.element.is("ul") ? this.element.children("li").children("a:contains('" + text + "')") :
+					this.element.children("ul").children("li").children("a:contains('" + text + "')");
 			nodes.each(function () {
 				collection.push(self.nodeFromElement($(this).closest("li[data-role=node]")));
 			});
