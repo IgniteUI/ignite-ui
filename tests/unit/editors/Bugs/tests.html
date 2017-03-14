@@ -39,7 +39,7 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695"];
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695", "809" ];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -475,6 +475,18 @@
 					.igMaskEditor({ 
 						buttonType: "clear",
 						allowNullValue: true 
+					});
+				}
+
+				window.Bug809Testbed = function () {
+					$("<input/>", { id: "809Editor" })
+					.appendTo("#testBedContainer")
+					.igNumericEditor({
+						buttonType: "dropdown",
+						listItems: [3, 4, 5],
+						isLimitedToListValues: true,
+						revertIfNotValid: false,
+						allowNullValue: false
 					});
 				}
 
@@ -1288,6 +1300,33 @@
 				equal(editor.igPercentEditor("field").focus().blur().val(), "2,90%", "value should be to 2,90%");//fails prior fix with 2.900,00%
 				equal(editor.igPercentEditor("value"), 0.029, "value should be 0.029"); //fails prior fix and returns 29 instead
 					$("#695Editor").remove();
+			});
+
+				testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
+				test(testId, 3, function () {
+				var editor =  $("#809Editor");
+				input = editor.igNumericEditor("field"),
+				editor.select();
+				keyInteraction(38, input); //Arrow Up
+				input.val("");
+				editor.blur();
+				equal(editor.igNumericEditor("value"), "", "Value should be empty string");
+				editor.igNumericEditor("option","allowNullValue", "true");
+				editor.select();
+				keyInteraction(38, input); //Arrow Up
+				input.val(null);
+				editor.blur();
+				equal(editor.igNumericEditor("value"), null, "Value should be null when allowNullValue=true");
+				editor.igNumericEditor("option","allowNullValue", "false");
+				editor.igNumericEditor("option","revertIfNotValid", "true");
+				editor.select();
+				keyInteraction(38, input); //Arrow Up
+				editor.blur();
+				editor.select();
+				keyInteraction(55, input); //7
+				editor.blur();
+				equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
+				$("#809Editor").remove();
 			});
 		});
 
