@@ -4435,6 +4435,10 @@
 
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
+
+			if(!this.options.value && this.options.allowNullValue){
+				this.options.value = this.options.nullValue;
+			}
 		},
 		_setNumericType: function () {
 			this._numericType = "numeric";
