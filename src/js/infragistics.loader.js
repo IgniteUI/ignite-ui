@@ -26,6 +26,11 @@ $.ig.loaderClass.locale = {
 	miscGroup: "Miscellaneous"
 };
 
+$.ig.loaderClass.locale.descriptions = {
+	gridDescription: "igGrid is a control used for displaying data.",
+	gridcolumnmovingDescription: "igGrid feature for moving columns."
+};
+
 $.ig.dependencies = [
 	{
 		widget: "theme",
@@ -795,7 +800,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.grid.framework.js" ],
 		locale: [ "$localePath$/infragistics.ui.grid-$locale$.js" ],
 		group: $.ig.loaderClass.locale.gridGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.grid.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.grid.css" ],
+		description: $.ig.loaderClass.locale.descriptions.gridDescription
 	},
 	{
 		widget: "ColumnMoving",
@@ -805,6 +811,7 @@ $.ig.dependencies = [
 			{ name: "FeatureChooser" },
 			{ name: "igTree" }
 			],
+		description: $.ig.loaderClass.locale.descriptions.gridcolumnmovingDescription,
 		scripts: [ "$path$/modules/infragistics.ui.grid.columnmoving.js" ],
 		css: [  ]
 	},
