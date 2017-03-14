@@ -1958,6 +1958,16 @@
 		$editor.remove();
 	});
 
+	testId = "Test allowNullValue and NullValue at initialization #779";
+	test(testId, 1, function(){
+		var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igNumericEditor({ allowNullValue: true, nullValue: 0});
+			
+			var currentValue = $editor.igNumericEditor("value");
+			equal(currentValue, 0, "The value is not 0, although the nullValue is set to 0.")
+			$editor.remove();
+		});
+
 	function testSelection(input, start, end) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
 		equal(input[0].selectionEnd, end, "The selection doesn't end from index " + end);
