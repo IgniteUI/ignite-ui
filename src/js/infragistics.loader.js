@@ -26,10 +26,54 @@ $.ig.loaderClass.locale = {
 	miscGroup: "Miscellaneous"
 };
 
+// jscs:disable
 $.ig.loaderClass.locale.descriptions = {
-	gridDescription: "igGrid is a control used for displaying data.",
-	gridcolumnmovingDescription: "igGrid feature for moving columns."
+	gridDescription: "Component used for displaying tabular data.",
+	gridColumnMovingDescription: "Grid feature that allows moving columns to change their order.",
+	dataSourceDescription: "Component used for binding to various kinds of data.",
+	olapFlatDataSourceDescription: "Component used for binding to flat data and transforming it into multi-dimensional data.",
+	olapXmlaDataSourceDescription: "Component used for binding to a multi-dimensional data from a SSAS server.",
+	gridAppendRowsOnDemandDescription: "Grid feature for appending the rows on demand.",
+	gridCellMergingDescription: "Grid feature for combining cells with the same values.",
+	gridColumnFixingDescription: "Grid feature that allows you to pin the columns on the left/right of the grid.",
+	gridFeatureChooserDescription: "Grid feature that provides menu-like interface to grid columns when multiple features are enabled.",
+	gridFilteringDescription: "Grid feature that allows filtering the data based on a given criteria.",
+	gridSharedDescription: "Grid shared code that contains commonly used widgets for the grid.",
+	gridGroupByDescription: "Grid feature that allows you to group rows of data by common column values.",
+	gridHidingDescription: "Grid feature that allows you to hide/show columns.",
+	gridMultiColumnHeadersDescription: "Grid featue that allows header grouping.",
+	gridPagingDescription: "Grid featue that allows the grid to render a limited number of rows.",
+	gridResizingDescription: "Grid feature that allows you to resize the grid columns.",
+	gridResponsiveDescription: "Grid feature that allows adoption of the grid size to the devices’ screen.",
+	gridSelectionDescription: "Grid feature that allows selecting rows or cells in the grid.",
+	gridRowSelectorsDescription: "Grid feature that renders a row selector column.",
+	gridSortingDescription: "Grid feature that allows sorting the column data in ascending or descending order.",
+	gridSummariesDescription: "Grid feature for showing summary data for each column.",
+	gridTooltipsDescription: "Grid feature that allows showing tooltips for grid cells.",
+	gridUpdating: "Grid feature that allows editing, deleting and adding records in the grid.",
+	hierarchicalGridDescription: "Component used for displaying hierarchical tabular data.",
+	treeGridDescription: "Component used for displaying hierarchical tabular data in a tree like structure.",
+	treeGridColumnFixingDescription: "TreeGrid feature that allows you to pin the columns on the left or the right of the grid.",
+	treeGridColumnMovingDescription: "TreeGrid feature that allows moving columns to change their order.",
+	treeGridFilteringDescription: "TreeGrid feature that allows filtering the data based on a given criteria.",
+	treeGridHidingDescription: "TreeGrid feature that allows you to hide/show columns.",
+	treeGridMultiColumnHeadersDescription: "TreeGrid featue that allows header grouping.",
+	treeGridPagingDescription: "TreeGrid featue that allows the grid to render a limited number of rows.",
+	treeGridResizingDescription: "TreeGrid feature that allows you to resize the grid columns.",
+	treeGridSelectionDescription: "TreeGrid feature that allows selecting rows or cells in the grid.",
+	treeGridRowSelectorsDescription: "TreeGrid feature that renders a row selector column.",
+	treeGridSortingDescription: "TreeGrid feature that allows sorting the column data in ascending or descending order.",
+	treeGridTooltipsDescription: "TreeGrid feature that allows showing tooltips for grid cells.",
+	treeGridUpdatingDescription: "TreeGrid feature that allows editing, deleting and adding records in the grid.",
+	pivotDataSelectorDescription: "Component that enables users to select data slices when data is being visualized in a PivotGrid.",
+	pivotGridDescription: "Component used for displaying data in a pivot table.",
+	pivotSharedDescription: "Shared Pivot Grid code.",
+	pivotViewDescription: "Component that combines a Pivot Grid and a Pivot Data Selector separated with a splitter.",
+	scrollDescription: "Component that enables support for custom fluid scrolling functionality on all devices.",
+	uploadDescription: "Component for uploading files for ASP.NET and ASP.NET MVC."
 };
+
+// jscs:enable
 
 $.ig.dependencies = [
 	{
@@ -62,21 +106,24 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.datasource.js" ],
 		locale: [ "$localePath$/infragistics.datasource-$locale$.js" ],
 		group: $.ig.loaderClass.locale.frameworkGroup,
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.dataSourceDescription
 	},
 	{
 		widget: "igOlapXmlaDataSource",
 		dependency: [ { name: "igUtil" } ],
 		scripts: [ "$path$/modules/infragistics.olapxmladatasource.js" ],
 		group: $.ig.loaderClass.locale.frameworkGroup,
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.olapXmlaDataSourceDescription
 	},
 	{
 		widget: "igOlapFlatDataSource",
 		dependency: [ { name: "igUtil" } ],
 		scripts: [ "$path$/modules/infragistics.olapflatdatasource.js" ],
 		group: $.ig.loaderClass.locale.frameworkGroup,
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.olapFlatDataSourceDescription
 	},
 	{
 		widget: "igTemplating",
@@ -811,7 +858,8 @@ $.ig.dependencies = [
 			{ name: "FeatureChooser" },
 			{ name: "igTree" }
 			],
-		description: $.ig.loaderClass.locale.descriptions.gridcolumnmovingDescription,
+
+		description: $.ig.loaderClass.locale.descriptions.gridColumnMovingDescription,
 		scripts: [ "$path$/modules/infragistics.ui.grid.columnmoving.js" ],
 		css: [  ]
 	},
@@ -820,7 +868,8 @@ $.ig.dependencies = [
 		parentWidget: "igGrid,igHierarchicalGrid",
 		dependency: [ { name: "igGrid" } ],
 		scripts: [ "$path$/modules/infragistics.ui.grid.responsive.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridResponsiveDescription
 	},
 	{
 		widget: "GridShared",
@@ -830,7 +879,8 @@ $.ig.dependencies = [
 			{ name: "igGrid" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.shared.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridSharedDescription
 	},
 	{
 		widget: "FeatureChooser",
@@ -841,7 +891,8 @@ $.ig.dependencies = [
 			{ name: "igPopover" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.featurechooser.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridFeatureChooserDescription
 	},
 	{
 		widget: "Filtering",
@@ -852,7 +903,8 @@ $.ig.dependencies = [
 			{ name: "FeatureChooser" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.filtering.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridFilteringDescription
 	},
 	{
 		widget: "GroupBy",
@@ -863,7 +915,8 @@ $.ig.dependencies = [
 			{ name: "igTree" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.groupby.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridGroupByDescription
 	},
 	{
 		widget: "Hiding",
@@ -873,14 +926,16 @@ $.ig.dependencies = [
 			{ name: "FeatureChooser" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.hiding.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridHidingDescription
 	},
 	{
 		widget: "CellMerging",
 		parentWidget: "igGrid,igHierarchicalGrid",
 		dependency: [ { name: "igGrid" } ],
 		scripts: [ "$path$/modules/infragistics.ui.grid.cellmerging.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridCellMergingDescription
 	},
 	{
 		widget: "Paging",
@@ -890,7 +945,8 @@ $.ig.dependencies = [
 			{ name: "igEditors" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.paging.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridPagingDescription
 	},
 	{
 		widget: "Resizing",
@@ -900,28 +956,32 @@ $.ig.dependencies = [
 			{ name: "FeatureChooser" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.resizing.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridResizingDescription
 	},
 	{
 		widget: "RowSelectors",
 		parentWidget: "igGrid,igHierarchicalGrid",
 		dependency: [ { name: "igGrid" } ],
 		scripts: [ "$path$/modules/infragistics.ui.grid.rowselectors.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridRowSelectorsDescription
 	},
 	{
 		widget: "Selection",
 		parentWidget: "igGrid,igHierarchicalGrid",
 		dependency: [ { name: "igGrid" } ],
 		scripts: [ "$path$/modules/infragistics.ui.grid.selection.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridSelectionDescription
 	},
 	{
 		widget: "Sorting",
 		parentWidget: "igGrid,igHierarchicalGrid",
 		dependency: [ { name: "igGrid" }, { name: "FeatureChooser" } ],
 		scripts: [ "$path$/modules/infragistics.ui.grid.sorting.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridSortingDescription
 	},
 	{
 		widget: "Summaries",
@@ -931,14 +991,16 @@ $.ig.dependencies = [
 			{ name: "FeatureChooser" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.summaries.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridSummariesDescription
 	},
 	{
 		widget: "MultiColumnHeaders",
 		parentWidget: "igGrid,igHierarchicalGrid",
 		dependency: [ { name: "igGrid" } ],
 		scripts: [ "$path$/modules/infragistics.ui.grid.multicolumnheaders.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridMultiColumnHeadersDescription
 	},
 	{
 		widget: "Tooltips",
@@ -948,14 +1010,16 @@ $.ig.dependencies = [
 			{ name: "igPopover" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.tooltips.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridTooltipsDescription
 	},
 	{
 		widget: "ColumnFixing",
 		parentWidget: "igGrid",
 		dependency: [ { name: "igGrid" } ],
 		scripts: [ "$path$/modules/infragistics.ui.grid.columnfixing.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridColumnFixingDescription
 	},
 	{
 		widget: "Updating",
@@ -967,14 +1031,16 @@ $.ig.dependencies = [
 			{ name: "GridShared" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.updating.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridUpdating
 	},
 	{
 		widget: "AppendRowsOnDemand",
 		parentWidget: "igGrid",
 		dependency: [ { name: "igGrid" } ],
 		scripts: [ "$path$/modules/infragistics.ui.grid.appendrowsondemand.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridAppendRowsOnDemandDescription
 	},
 	{
 		widget: "igGrid.*",
@@ -1007,7 +1073,8 @@ $.ig.dependencies = [
 		dependency: [ { name: "igGrid" } ],
 		scripts: [ "$path$/modules/infragistics.ui.grid.hierarchical.js" ],
 		group: $.ig.loaderClass.locale.gridGroup,
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.hierarchicalGridDescription
 	},
 	{
 		widget: "igHierarchicalGrid.*",
@@ -1077,7 +1144,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.pivot.shared.js" ],
 		locale: [ "$localePath$/infragistics.ui.pivot.shared-$locale$.js" ],
 		group: $.ig.loaderClass.locale.pivotGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.pivot.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.pivot.css" ],
+		description: $.ig.loaderClass.locale.descriptions.pivotSharedDescription
 	},
 
 	{
@@ -1089,7 +1157,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.pivotgrid.js" ],
 		locale: [ "$localePath$/infragistics.ui.pivotgrid-$locale$.js" ],
 		group: $.ig.loaderClass.locale.pivotGroup,
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.pivotGridDescription
 	},
 
 	{
@@ -1102,7 +1171,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.pivotdataselector.js" ],
 		locale: [ "$localePath$/infragistics.ui.pivotdataselector-$locale$.js" ],
 		group: $.ig.loaderClass.locale.pivotGroup,
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.pivotDataSelectorDescription
 	},
 
 	{
@@ -1115,7 +1185,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.pivotview.js" ],
 		locale: [  ],
 		group: $.ig.loaderClass.locale.pivotGroup,
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.pivotViewDescription
 	},
 
 	{
@@ -1225,7 +1296,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.upload.js" ],
 		locale: [ "$localePath$/infragistics.ui.upload-$locale$.js" ],
 		group: $.ig.loaderClass.locale.interactionsGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.upload.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.upload.css" ],
+		description: $.ig.loaderClass.locale.descriptions.uploadDescription
 	},
 	{
 		widget: "igValidator",
@@ -1287,7 +1359,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.treegrid.js" ],
 		locale: [ "$localePath$/infragistics.ui.treegrid-$locale$.js" ],
 		group: $.ig.loaderClass.locale.gridGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.treegrid.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.treegrid.css" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridDescription
 	},
 	{
 		widget: "igTreeGrid.*",
@@ -1317,7 +1390,8 @@ $.ig.dependencies = [
 		dependency: [
 			{ name: "igTreeGrid" },
 			{ name: "Filtering", parentWidget: "igGrid,igHierarchicalGrid" } ],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.filtering.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.filtering.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridFilteringDescription
 	},
 	{
 		widget: "Hiding",
@@ -1326,7 +1400,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "Hiding", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.hiding.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.hiding.js" ],
+		description:  $.ig.loaderClass.locale.descriptions.treeGridHidingDescription
 	},
 	{
 		widget: "Updating",
@@ -1335,7 +1410,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "Updating", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.updating.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.updating.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridUpdatingDescription
 	},
 	{
 		widget: "Paging",
@@ -1344,7 +1420,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "Paging", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.paging.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.paging.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridPagingDescription
 	},
 	{
 		widget: "Resizing",
@@ -1353,7 +1430,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "Resizing", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.resizing.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.resizing.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridResizingDescription
 	},
 	{
 		widget: "Selection",
@@ -1362,7 +1440,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "Selection", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.selection.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.selection.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridSelectionDescription
 	},
 	{
 		widget: "RowSelectors",
@@ -1371,7 +1450,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "RowSelectors", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.rowselectors.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.rowselectors.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridRowSelectorsDescription
 	},
 	{
 		widget: "Sorting",
@@ -1380,7 +1460,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "Sorting", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.sorting.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.sorting.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridSortingDescription
 	},
 	{
 		widget: "MultiColumnHeaders",
@@ -1389,7 +1470,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "MultiColumnHeaders", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.multicolumnheaders.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.multicolumnheaders.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridMultiColumnHeadersDescription
 	},
 	{
 		widget: "Tooltips",
@@ -1398,7 +1480,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "Tooltips", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.tooltips.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.tooltips.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridTooltipsDescription
 	},
 	{
 		widget: "ColumnFixing",
@@ -1407,7 +1490,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "ColumnFixing", parentWidget: "igGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.columnfixing.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.columnfixing.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridColumnFixingDescription
 	},
 	{
 		widget: "ColumnMoving",
@@ -1416,7 +1500,8 @@ $.ig.dependencies = [
 			{ name: "igTreeGrid" },
 			{ name: "ColumnMoving", parentWidget: "igGrid,igHierarchicalGrid" }
 			],
-		scripts: [ "$path$/modules/infragistics.ui.treegrid.columnmoving.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.treegrid.columnmoving.js" ],
+		description: $.ig.loaderClass.locale.descriptions.treeGridColumnMovingDescription
 	},
 /*/ end igTreeGrid Features/// */
 /*/ start igExcel/// */
