@@ -26,6 +26,7 @@ $.ig.loaderClass.locale = {
 	miscGroup: "Miscellaneous"
 };
 
+// jscs:disable
 $.ig.loaderClass.locale.descriptions = {
 	sparklineDescription: "Component used for displaying line graph that illustrates a single trend.",
 	dialogDescription: "Component that displays customizable dialog window.",
