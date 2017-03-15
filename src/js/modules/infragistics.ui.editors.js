@@ -5261,7 +5261,11 @@
 				symbol = this.options[ this._numericType + "Symbol" ];
 			}
 			negativePattern = this.options.negativePattern;
-			groups = this.options.groups;
+
+			// A. M. March 15, 2017 #771 "If the 'groups' option's array contains '0' no groups are rendered"
+			var originalArray = this.options.groups;
+			var zero = 0;
+			groups = originalArray.filter(function(item) {return item !== zero;} );
 			groupSeparator = this.options.groupSeparator;
 			if (this._numericType === "percent" && this.options.displayFactor) {
 				value = this._multiplyWithPrecision(value, this.options.displayFactor);
