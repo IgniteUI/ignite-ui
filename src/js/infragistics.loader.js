@@ -26,15 +26,16 @@ $.ig.loaderClass.locale = {
 	miscGroup: "Miscellaneous"
 };
 
+// jscs:disable
 $.ig.loaderClass.locale.descriptions = {
 	gridDescription: "Component used for displaying tabular data.",
 	gridColumnMovingDescription: "Grid feature that allows moving columns to change their order.",
 	dataSourceDescription: "Component used for binding to various kinds of data.",
-	olapFlatDataSourceDescription: "Component used for binding to flat data and transforming it into multi-dimensional (OLAP-like) data.",
-	olapXmlaDataSourceDescription: "Component used for binding to a multi-dimensional data from a Microsoft® SQL Server Analysis Services (SSAS) server configured with the msmdpump.dll HTTP data provider.",
+	olapFlatDataSourceDescription: "Component used for binding to flat data and transforming it into multi-dimensional data.",
+	olapXmlaDataSourceDescription: "Component used for binding to a multi-dimensional data from a SSAS server.",
 	gridAppendRowsOnDemandDescription: "Grid feature for appending the rows on demand.",
-	gridCellMergingDescription: "Grid feature for combining cells in a column that have the same values.",
-	gridColumnFixingDescription: "Grid feature that allows you to pin the columns on the left or the right of the grid so that they are always visible.",
+	gridCellMergingDescription: "Grid feature for combining cells with the same values.",
+	gridColumnFixingDescription: "Grid feature that allows you to pin the columns on the left/right of the grid.",
 	gridFeatureChooserDescription: "Grid feature that provides menu-like interface to grid columns when multiple features are enabled.",
 	gridFilteringDescription: "Grid feature that allows filtering the data based on a given criteria.",
 	gridSharedDescription: "Grid shared code that contains commonly used widgets for the grid.",
@@ -52,7 +53,7 @@ $.ig.loaderClass.locale.descriptions = {
 	gridUpdating: "Grid feature that allows editing, deleting and adding records in the grid.",
 	hierarchicalGridDescription: "Component used for displaying hierarchical tabular data.",
 	treeGridDescription: "Component used for displaying hierarchical tabular data in a tree like structure.",
-	treeGridColumnFixingDescription: "TreeGrid feature that allows you to pin the columns on the left or the right of the grid so that they are always visible.",
+	treeGridColumnFixingDescription: "TreeGrid feature that allows you to pin the columns on the left or the right of the grid.",
 	treeGridColumnMovingDescription: "TreeGrid feature that allows moving columns to change their order.",
 	treeGridFilteringDescription: "TreeGrid feature that allows filtering the data based on a given criteria.",
 	treeGridHidingDescription: "TreeGrid feature that allows you to hide/show columns.",
@@ -64,13 +65,15 @@ $.ig.loaderClass.locale.descriptions = {
 	treeGridSortingDescription: "TreeGrid feature that allows sorting the column data in ascending or descending order.",
 	treeGridTooltipsDescription: "TreeGrid feature that allows showing tooltips for grid cells.",
 	treeGridUpdatingDescription: "TreeGrid feature that allows editing, deleting and adding records in the grid.",
-	pivotDataSelectorDescription: "Component that enables users to select data slices, typically, when data is being visualized in an PivotGrid.",
+	pivotDataSelectorDescription: "Component that enables users to select data slices when data is being visualized in a PivotGrid.",
 	pivotGridDescription: "Component used for displaying data in a pivot table.",
 	pivotSharedDescription: "Shared Pivot Grid code.",
 	pivotViewDescription: "Component that combines a Pivot Grid and a Pivot Data Selector separated with a splitter.",
-	scrollDescription: "Component that enables support for custom fluid scrolling functionality via custom or native scrollbars on all devices.",
+	scrollDescription: "Component that enables support for custom fluid scrolling functionality on all devices.",
 	uploadDescription: "Component for uploading files for ASP.NET and ASP.NET MVC."
 };
+
+// jscs:enable
 
 $.ig.dependencies = [
 	{
