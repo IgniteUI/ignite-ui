@@ -1264,7 +1264,7 @@
 			});
 
 			var testId = 'Bug 655 - [igMaskEditor] Clearing the displayed value using the clear button is not possible after setting the value to null';
-			test(testId, 6, function () {	
+		test(testId, 6, function () {	
 				var editor =  $("#655Editor"),
 				field = editor.igMaskEditor("field"),
 				clearButton = editor.igMaskEditor("clearButton");
@@ -1302,30 +1302,35 @@
 					$("#695Editor").remove();
 			});
 
-				testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
-				test(testId, 3, function () {
+			testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
+			test(testId, 5, function () {
 				var editor =  $("#809Editor");
 				input = editor.igNumericEditor("field"),
-				editor.select();
+				editor.focus();
 				keyInteraction(38, input); //Arrow Up
 				input.val("");
 				editor.blur();
 				equal(editor.igNumericEditor("value"), "", "Value should be empty string");
+
 				editor.igNumericEditor("option","allowNullValue", "true");
-				editor.select();
+				editor.focus();
 				keyInteraction(38, input); //Arrow Up
-				input.val(null);
+				keyInteraction(13, input);
+				//input.val(null);
+				editor.igNumericEditor("value", null),
 				editor.blur();
 				equal(editor.igNumericEditor("value"), null, "Value should be null when allowNullValue=true");
+
 				editor.igNumericEditor("option","allowNullValue", "false");
 				editor.igNumericEditor("option","revertIfNotValid", "true");
-				editor.select();
+				editor.focus();
 				keyInteraction(38, input); //Arrow Up
 				editor.blur();
-				editor.select();
-				keyInteraction(55, input); //7
+				equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
+				editor.focus().val(55);
 				editor.blur();
 				equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
+				ok(editor.igNumericEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "There should be warning notification");
 				$("#809Editor").remove();
 			});
 		});
