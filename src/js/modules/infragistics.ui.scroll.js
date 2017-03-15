@@ -2221,7 +2221,7 @@
 		},
 
 		_onTouchStartContainer: function (event) {
-			if (event.isDefaultPrevented()) {
+			if (event.isDefaultPrevented() || typeof MSGesture === "function") {
 				return;
 			}
 
@@ -2263,7 +2263,8 @@
 		},
 
 		_onTouchMoveContainer: function (event) {
-			if (event.isDefaultPrevented() || this._igScollTouchPrevented) {
+			if (event.isDefaultPrevented() || this._igScollTouchPrevented ||
+					typeof MSGesture === "function") {
 				this._igScollTouchPrevented = false;
 				return;
 			}
@@ -2356,7 +2357,7 @@
 		},
 
 		_onTouchEndContainer: function (event) {
-			if (event.isDefaultPrevented()) {
+			if (event.isDefaultPrevented() || typeof MSGesture === "function") {
 				return;
 			}
 			var speedX = 0;
