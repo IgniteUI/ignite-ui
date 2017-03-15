@@ -28,6 +28,15 @@ $.ig.loaderClass.locale = {
 
 // jscs:disable
 $.ig.loaderClass.locale.descriptions = {
+	sparklineDescription: "Component used for displaying line graph that illustrates a single trend.",
+	dialogDescription: "Component that displays customizable dialog window.",
+	editorsDescription: "A set of components that allow editing of different types of values.",
+	ratingDescription: "Component that allows rating items from a given range.",
+	treeDescription: "A graphical control that is used to present a hierarchical view of information.",
+	notifierDescription: "Component that offers informative feedback about system state.",
+	validatorDescription: "Component that offers validation options for variety of page elements.",
+	videoPlayerDescription: "Component that displays HTML 5 videos.",
+	templatingDescription: "A JavaScript library used to apply a content template to HTML elements.",
 	gridDescription: "Component used for displaying tabular data.",
 	gridColumnMovingDescription: "Grid feature that allows moving columns to change their order.",
 	dataSourceDescription: "Component used for binding to various kinds of data.",
@@ -74,7 +83,6 @@ $.ig.loaderClass.locale.descriptions = {
 };
 
 // jscs:enable
-
 $.ig.dependencies = [
 	{
 		widget: "theme",
@@ -131,7 +139,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.templating.js" ],
 		locale: [ "$localePath$/infragistics.templating-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.templatingDescription
 	},
 	{
 		widget: "igScroll",
@@ -474,7 +483,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.sparkline.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.sparkline.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.sparkline.css" ],
+		description: $.ig.loaderClass.locale.descriptions.sparklineDescription
 	},
 
 	{
@@ -804,7 +814,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.dialog.js" ],
 		locale: [ "$localePath$/infragistics.ui.dialog-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.dialog.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.dialog.css" ],
+		description: $.ig.loaderClass.locale.descriptions.dialogDescription
 	},
 	{
 		widget: "igEditors",
@@ -820,7 +831,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.editors.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.editorsDescription
 	},
 	{
 		widget: "igZoombar",
@@ -1200,7 +1212,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.rating.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.ratingDescription
 	},
 
 	{
@@ -1226,7 +1239,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.tree.js" ],
 		locale: [ "$localePath$/infragistics.ui.tree-$locale$.js" ],
 		group: $.ig.loaderClass.locale.interactionsGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.tree.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.tree.css" ],
+		description: $.ig.loaderClass.locale.descriptions.treeDescription
 	},
 	{
 		widget: "igPopover",
@@ -1240,7 +1254,8 @@ $.ig.dependencies = [
 		dependency: [ { name: "igPopover" } ],
 		scripts: [ "$path$/modules/infragistics.ui.notifier.js" ],
 		locale: [ "$localePath$/infragistics.ui.notifier-$locale$.js" ],
-		css: [ "$path$/structure/modules/infragistics.ui.notifier.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.notifier.css" ],
+		description: $.ig.loaderClass.locale.descriptions.notifierDescription
 	},
 	{
 		widget: "igSplitButton",
@@ -1308,7 +1323,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.validator.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.validatorDescription
 	},
 	{
 		widget: "igVideoPlayer",
@@ -1322,7 +1338,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.html5.css",
 			"$path$/structure/modules/infragistics.ui.videoplayer.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.videoPlayerDescription
 	},
 	{
 		widget: "igSplitter",
