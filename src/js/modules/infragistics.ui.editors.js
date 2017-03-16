@@ -3918,7 +3918,8 @@
 			return this._listItems().filter(".ui-igedit-listitemselected");
 		},
 		getSelectedText: function () {
-			/* Gets the selected text in the editor.
+			/* Gets the selected text from the editor in edit mode. This can be done inside key event handlers, like keydown or keyup. This method can be used only when the editor is focused. If you invoke this method in display mode, when the editor input is blurred, the returned value will be an empty string.
+
 			```
 			var text =  (".selector").%%WidgetName%%("getSelectedText");
 			```
@@ -4220,8 +4221,6 @@
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "float");
 			```
 				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue). Note: that is used as default.
 				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
@@ -4430,8 +4429,18 @@
 				this.options.excludeKeys = null;
 			}
 
+			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+			if (this.options.decimalSeparator.toString().length > 1) {
+				throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+			}
+
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
+
+			//M.S. 3/14/2017. Issue 779 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!this.options.value && this.options.allowNullValue) {
+				this.options.value = this.options.nullValue;
+			}
 		},
 		_setNumericType: function () {
 			this._numericType = "numeric";
@@ -4478,6 +4487,15 @@
 			this.options.minDecimals = this.options.minDecimals === null ?
 				this._getRegionalOption("numericMinDecimals") :
 				this.options.minDecimals;
+		},
+		_setInitialValue: function (value) { // NumericEditor
+			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
+			if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
+				value = this.options.maxValue;
+			} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
+				value = this.options.minValue;
+			}
+			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
 
@@ -4627,6 +4645,15 @@
 							this._editorInput.val(this._getDisplayValue());
 						}
 					}
+					break;
+
+				// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+				case "decimalSeparator": {
+					if (value.toString().length > 1) {
+						this.options[ option ] = prevValue;
+						throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+					}
+				}
 					break;
 				case "regional":
 					this.options[ option ] = prevValue;
@@ -5941,8 +5968,6 @@
 				//Get
 				var dataMode = $(".selector").igPercentEditor("option", "dataMode");
 
-				//Set
-				$(".selector").igPercentEditor("option", "dataMode", "double");
 				```
 				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue). Note: that is used as default.
 				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
@@ -6191,7 +6216,7 @@
 				```
 			*/
 			inputMask: "CCCCCCCCCC",
-			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" Gets/Sets type of value returned by the get of [value](ui.igmaskeditor#methods:value) method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" It affects the value of the control (value method/option and submitted in forms). It defines what the value should contain from text, unfilled prompts and literals. The default is allText and when used value method/option returns the text entered, all prompts (positions) and literals.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6201,8 +6226,6 @@
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "rawTextWithLiterals");
 				```
 				rawText type="string" only entered text. All unfilled prompts (positions) and literals are ignored (removed).
 				rawTextWithRequiredPrompts type="string" only entered text and required prompts (positions). All optional unfilled prompts and literals are ignored (removed)
@@ -7597,7 +7620,7 @@
 				```
 			*/
 			dateInputFormat: null,
-			/* type="date|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method and option. Also affects how the value is stored for form submit.
+			/* type="date|editModeText|displayModeText|" Gets the value type returned by the get of value() method and option. Also affects how the value is stored for form submit.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7607,8 +7630,6 @@
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
 				date type="string" The value method returns a Date object. When this mode is set the value sent to the server on submit is serialized as ISO 8061 string with local time and zone values by default.
 					The [enableUTCDates](ui.%%WidgetNameLowered%%#options:enableUTCDates) option can be used to output an UTC ISO string instead.

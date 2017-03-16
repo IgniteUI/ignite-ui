@@ -1487,7 +1487,49 @@
 					});
 				```
 				*/
-				defaultCollapseState: false
+				defaultCollapseState: false,
+				/* type="string" The name of the property that determines whether a record from the group data view is a group record.
+					```
+						ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							groupRecordKey: "__gbRecord"
+						}
+					});
+					```
+				*/
+				groupRecordKey: "__gbRecord",
+				/* type="string" The name of the property that determines whether a record from the group data view is a summary group record.
+					```
+						ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							groupRecordKey: "__gbRecord"
+						}
+					});
+					```
+				*/
+				groupSummaryRecordKey: "__gbSummaryRecord",
+				/* type="array" Array of objects containing the summaries for each field.
+				Each summary object has the following format { field:"fieldName", summaryFunctions: [] }, where the summaryFunctions arrays can contain either a summary name (avg, sum, count etc.) or a custom function for caclulating a custom summary.
+					```
+						ds = new $.%%WidgetName%%({
+						dataSource: data,
+						groupby: {
+							summaries: [
+							{
+								field:"Age",
+								summaryFunctions: ["avg","sum"]
+							},
+							{
+								field: "Name",
+								summaryFunctions: ["count", customFunc]
+							}]
+						}
+					});
+					```
+				*/
+				summaries: []
 			},
 			/* M.H. add summaries support */
 			/* Settings related to built-in summaries functionality
@@ -1668,7 +1710,7 @@
 					/* {key: '', summaryOperands: []}*/
 				]
 			},
-			/* type="array" *** IMPORTANT DEPRECATED ***
+			/* @Deprecated@ type="array" *** IMPORTANT DEPRECATED ***
 			A list of field definitions specifying the schema of the data source.
 			Field objects description: {name, [type], [xpath]}
 			```
@@ -3089,6 +3131,10 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
+			/* M.H. 2 Feb 2017 Fix for bug 231214: When you update a formatted field it can't be found by the allFields search filtering. */
+			if (this._getFieldsWithFormatter().length) {
+				this._generateFormattedRecords();
+			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
@@ -3527,7 +3573,7 @@
 				if (data) {
 					// M.H. 17 June 2014 Fix for bug #171306: The ig_pk property is missing from the added row object.
 					newRow = row;
-					if (data !== origDs && $.type(row) === "object") {
+					if (origDs && data !== origDs && $.type(row) === "object") {
 						newRow = $.extend(true, {}, row);
 					}
 					if (index >= 0 && index < data.length) {
@@ -5203,7 +5249,8 @@
 									count);
 		},
 		_generatePageData: function (data, count) {
-			var i, startIndex, endIndex;
+			var i, startIndex, endIndex, groupRecordKey = this.settings.groupby.groupRecordKey,
+			groupSummaryRecordKey = this.settings.groupby.groupSummaryRecordKey;
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
@@ -5220,7 +5267,8 @@
 				this._gbDataView = [];
 				for (i = startIndex; i < endIndex; i++) {
 					this._gbDataView.push(data[ i ]);
-					if (!data[ i ].__gbRecord) {
+					if (!data[ i ][ groupRecordKey ] &&
+						!data[ i ][ groupSummaryRecordKey ]) {
 						this._dataView.push(data[ i ]);
 					}
 				}
@@ -5510,6 +5558,146 @@
 
 			return fields;
 		},
+		_splitFilterExpression: function (search) {
+			var matches = search.match(/\"[^\"]+\"/g) || [], res = [], i;
+
+			for (i = 0; i < matches.length; i++) {
+				search = search.replace(matches[ i ], "");
+				res.push(matches[ i ].replace(/\"/g, ""));
+			}
+			matches = search.split(/\s+/);
+			res = res.concat(matches);
+			return res;
+		},
+		_filterAllFields: function (val, data, fields) {
+			fields = fields || this.schema().fields();
+			if (!fields || !fields.length) {
+				return [];
+			}
+			var i, j, len = data.length,
+				filteredData = [], count = 0, curr,
+				formattedRecords = (this.schema() || {})._formattedRecords || [],
+				push,
+				searchExprs = this._splitFilterExpression(val), se = [];/*split by spaces */
+			for (i = 0; i < searchExprs.length; i++) {
+				curr = searchExprs[ i ];
+				if (curr) {// remove empty strings
+					push = true;
+					/* check whether there are duplicate tokens and remove those that are substring tokens in array "se"
+					For instance if array "searchExpr" is ["1", "2", "123"], then array "se" should be ["123"]*/
+					for (j = 0; j < se.length; j++) {
+						if (se[ j ] === curr || se[ j ].indexOf(curr) !== -1) {
+							push = false;
+							break;
+						}
+						/* remove those elements in array "se" which are substring of variable "curr" */
+						if (curr.indexOf(se[ j ]) !== -1) {
+							se.splice(j, 1);
+							j = -1;
+						}
+					}
+					if (push) {
+						se.push(this.settings.filtering.caseSensitive ? curr : curr.toLowerCase());
+					}
+				}
+			}
+			if (!se.length) {
+				return data;
+			}
+			for (i = 0; i < len; i++) {
+				if (this._findMatchByFields(se, data[ i ], fields, formattedRecords[ i ] || null)) {
+					filteredData[ count++ ] = data[ i ];
+				}
+			}
+			return filteredData;
+		},
+		_findMatchByFields: function (searchTokens, rec, fields, formattedRecord) {
+			var j, fl = fields.length, dataVal, fieldName, i,
+				ignoreCase = !this.settings.filtering.caseSensitive, s = "";
+			for (j = 0; j < fl; j++) {
+				fieldName = fields[ j ].name;
+				if (formattedRecord && formattedRecord[ fieldName ] !== undefined) {
+					dataVal = formattedRecord[ fieldName ];
+				} else {
+					dataVal = this._hasMapper ? this.getCellValue(fieldName, rec) : rec[ fieldName ];
+				}
+				dataVal = (dataVal === null || dataVal === undefined) ? "" : dataVal;
+				s += dataVal + "||";
+			}
+			s = ignoreCase ? s.toLowerCase() : s;
+			for (i = 0; i < searchTokens.length; i++) {
+				if (s.indexOf(searchTokens[ i ]) === -1) {
+					return false;
+				}
+			}
+			return true;
+		},
+		_getFieldsWithFormatter: function () {
+			/* return array of fields(from the data schema) that have property "formatter" defined
+			if schema is not defined OR there aren't such fields - ruturns empty array */
+			var i, f, res = [];
+			if (!this.schema()) {
+				return res;
+			}
+			f = this.schema().fields();
+			for (i = 0; i < f.length ; i++) {
+				if (f[ i ].formatter) {
+					res.push(f[ i ]);
+				}
+			}
+			return res;
+		},
+		_generateFormattedRecords: function (data) {
+			var i, j, f, len, fr = [], schema = this.schema(),
+				fields = this._getFieldsWithFormatter(), fieldsLen = fields.length;
+			data = data || this._data;
+			len = data.length;
+			if (!len || !schema || !fieldsLen) {
+				return;
+			}
+			for (i = 0; i < len; i++) {
+				fr[ i ] = {};
+				for (j = 0; j < fieldsLen; j++) {
+					f = fields[ j ];
+					fr[ i ][ f.name ] = f.formatter(
+						data[ i ][ f.name ],
+						data[ i ],
+						f);
+				}
+			}
+			schema._formattedRecords = fr;
+		},
+		filterByText: function (expression, fields) {
+			/* Filters the data source locally by text. If "fields" parameter is set search is performed only in the listed fields otherwise all fields are searched.
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					schema: {
+						fields: [{
+							name: "ID", type: "number"
+						}, {
+							name: "Name", type: "string"
+						}, {
+							name: "Description", type: "string"
+						}, {
+							name: "ReleaseDate", type: "date"
+						}]
+				});
+				ds.dataBind();
+
+				// Search in all fields
+				ds.filterByText("Apples");
+				// Search only in "Name" field
+				ds.filterByText("Apples", [{name: "Name", type: "string"}]);
+			```
+
+			paramType="string" a text to search for. Multiple search texts should be separated by space. When multiple search texts are provided all of them should be presented in the search fields (bool logic "and" is applied).
+			paramType="array" optional="true" an array of fields that will be searched.
+			*/
+			fields = fields || this.schema().fields();
+			return this.filter([{ filterAllFields: true, expr: expression, fields: fields }]);
+		},
 		/* this is used when sorting data
 		type can be "string", "number", "boolean", "date".
 		Other values are ignored and default conversion is used
@@ -5527,9 +5715,12 @@
 			setting the settings.filtering.expressions. The result (filtered data) can be obtained by calling dataView()
 			example: [{fieldName : "firstName", expr: "abc", cond: "StartsWith"}, {fieldName : "lastName"}]
 			example 2: [{fieldIndex : 1} , {fieldIndex : 2, expr: "a", cond : "contains"}]
+			example 3: [{filterAllFields: true, expr: "abc", fields: [name: "Description", type: "string"]}]
 			expr is the filter expression text , such as "abc", or a regular expression such as *test*
 			cond is the filtering condition such as startsWith, endsWith, contains, equals, doesNotEqual, doesNotContain
 			if expr is detected to be a regular expression, the "cond" part is skipped
+			To [filter by text](ig.datasource#methods:filterByText) "fieldExpressions" should have only one object with the following schema:
+			{filterAllFields: <type="bool" should be set to true>, expr: <type="string" the text to search for>, fields: <type="array" an array of [fields](ig.dataschema#options:schema.fields) to search in>}
 
 			```
 				ds = new $.%%WidgetName%%({
@@ -5540,6 +5731,9 @@
 				ds.dataBind();
 
 				ds.filter([{fieldName : "Color", expr: "Red", cond: "Equals"}], "AND", true);
+
+				// Filter by text
+				ds.filter([{filterAllFields: true, expr: "abc", fields: [name: "Description", type: "string"]}]);
 			```
 
 			paramType="object" a list of field expression definitions
@@ -5593,20 +5787,26 @@
 				/* A.T. 20 Dec. 2011 Fix for bug #96819 - igDataSource filtering feature
 				with own defined custom function does not filtering data */
 				this._dataView = [];
+			} else if (fieldExpressions && fieldExpressions.length &&
+						fieldExpressions[ 0 ] && fieldExpressions[ 0 ].filterAllFields) {
+				data = this._filterAllFields(fieldExpressions[ 0 ].expr, data,
+											fieldExpressions[ 0 ].fields || schema.fields());
+				this._filteredData = data;
+				this._dataView = [];
 			} else {
 				// re-initialize the dataView. We can do that safely, since data will either be cached, or will be stored in this.data(), meaning that will be the whole ds
 				this._dataView = [];
 				this._filteredData = [];
 				/* filter "data"
 				we will store all results in tmpData, and then assign it to the dataView. please ensure that */
+				if (expr) {
+					fieldExpressions = this._parseFilterExprString(expr);
+				}
+				if (allFieldsExpr) {
+					fieldExpressionsOnStrings = this._parseFilterExprString(allFieldsExpr);
+				}
 				for (i = 0; i < data.length; i++) {
 					skipRec = false;
-					if (expr) {
-						fieldExpressions = this._parseFilterExprString(expr);
-					}
-					if (allFieldsExpr) {
-						fieldExpressionsOnStrings = this._parseFilterExprString(allFieldsExpr);
-					}
 					for (j = 0; j < fieldExpressions.length; j++) {
 						/* if there is no match, break, we aren't going to add the record to the resulting data view.
 						the default boolean logic is to "AND" the fields */
@@ -6816,18 +7016,19 @@
 			paramType="bool" if true the record should be collapsed, otherwise expanded
 			*/
 			var ds = this._gbData, i, len = ds.length, res = [], lvl,
-				row, hidden, gbrow, p = this.settings.paging,
+				row, hidden, gbrow, p = this.settings.paging, gbSumRow,
 				sgb = this.settings.groupby || {};
 			this._gbCollapsed = this._gbCollapsed || {};
 			this._gbCollapsed[ id ] = !!collapsed;
 			for (i = 0; i < len; i++) {
 				row = ds[ i ];
-				gbrow = row.__gbRecord;
-				if (row.id === id) {
+				gbrow = row[ sgb.groupRecordKey ];
+				gbSumRow = row[ sgb.groupSummaryRecordKey ];
+				if (gbrow && row.id === id) {
 					row.collapsed = !!collapsed;
 				}
 				if (hidden) {
-					if (gbrow && row.level <= lvl) {
+					if ((gbrow || gbSumRow) && row.level <= lvl) {
 						hidden = false;
 					} else {
 						continue;
@@ -6882,7 +7083,9 @@
 			this._gbCollapsed = {};
 		},
 		_processGroupsRecursive: function (data, gbExprs, gbInd, parentCollapsed, parentId) {
-			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt;
+			var i, j, hc, len = data.length, resLen, gbExpr, res, gbRec, dt,
+			groupRecordKey = this.settings.groupby.groupRecordKey,
+			summaries = this.settings.groupby.summaries;
 			gbInd = gbInd || 0;
 			parentId = parentId || "";
 			if (!gbInd || !this._gbData) {
@@ -6892,13 +7095,13 @@
 			for (i = 0; i < len; i++) {
 				gbExpr = gbExprs[ gbInd ];
 				gbRec = {
-					__gbRecord: true,
 					gbExpr: gbExpr,
 					level: gbInd,
 					len: 1,
 					recs: [],
 					val: undefined
 				};
+				gbRec[ groupRecordKey ] = true;
 				this._gbData.push(gbRec);
 				if (!parentCollapsed) {
 					this._vgbData.push(gbRec);
@@ -6924,9 +7127,46 @@
 						}
 					}
 				}
+
 				gbRec.recs = res;
 				gbRec.len = resLen;
+				if (summaries && summaries.length > 0) {
+					this._calculateGroupBySummaries(gbRec, parentCollapsed);
+				}
 				i += resLen - 1;
+			}
+		},
+		_calculateGroupBySummaries: function(gbRec, parentCollapsed) {
+			var res = gbRec.recs, gbSummaryRec = { summaries: {}, level: gbRec.level + 1,
+				groupValue: gbRec.val, id: gbRec.id }, fieldValues, i, j,
+				sumFunc, summaries = this.settings.groupby.summaries,
+				sumFuncName, summary, summaryVal, fieldType, getValuesPerField;
+			gbSummaryRec[ this.settings.groupby.groupSummaryRecordKey ] = true;
+			getValuesPerField = function (arr, fieldName) {
+				return arr.map(function (val) {return val[ fieldName ];});
+			};
+			for (i = 0; i < summaries.length; i++) {
+				summary = summaries[ i ];
+				fieldValues = getValuesPerField(res, summary.field);
+				fieldType = this._fields ? this._getFieldTypeFromSchema(summary.field) : null;
+				for (j = 0; j < summary.summaryFunctions.length; j++) {
+					sumFunc = summary.summaryFunctions[ j ];
+					sumFuncName = typeof sumFunc === "string" ? sumFunc : "custom";
+					summaryVal = $.ig.calcSummaries(
+						sumFuncName,
+						fieldValues,
+						sumFunc,
+						fieldType
+					);
+					if (!gbSummaryRec.summaries[ summary.field ]) {
+						gbSummaryRec.summaries[ summary.field ] = [];
+					}
+					gbSummaryRec.summaries[ summary.field ].push(summaryVal);
+				}
+			}
+			this._gbData.push(gbSummaryRec);
+			if (!gbRec.collapsed && !parentCollapsed) {
+				this._vgbData.push(gbSummaryRec);
 			}
 		},
 		_generateGroupByData: function (data,
@@ -7070,7 +7310,9 @@
 					/* type="string" The XPath expression to map the node to the field */
 					xpath: undefined,
 					/* type="string|function" This option is applicable only for fields with fieldDataType="object". Reference to a function (string or function) that can be used for complex data extraction from the data records, whose return value will be used for all data operations associated with this field. */
-					mapper: undefined
+					mapper: undefined,
+					/*paramType="function" optional="true" formatter function which accepts three parameters: val - value of the field; record - data source record; field - field definition; and return the formatted string. Formatter function is used when filtering by all fields.*/
+					formatter: undefined
 				}
 			],
 			/* type="string" this is the property (path) in the data source where the records are located. */
@@ -7175,6 +7417,16 @@
 						results[ i ][ field.name ] = val;
 					}
 				}
+			}
+			if (field.formatter) {
+				this._formattedRecords = this._formattedRecords || [];
+				this._formattedRecords[ i ] = this._formattedRecords[ i ] || {};
+				this._formattedRecords[ i ][ field.name ] =
+					field.formatter(
+						results[ i ][ field.name ],
+						results[ i ],
+						field
+					);
 			}
 		},
 		_addOffset: function (result, fieldName, i) {
@@ -9076,10 +9328,16 @@
 				requestDataSuccessCallback: null,
 				/*type="function" Specifies a custom function to be called when the remote request for data has finished with an error. */
 				requestDataErrorCallback: null,
+				/* @Deprecated@ type="string" *** IMPORTANT DEPRECATED *** Use the expandedKey option instead.
+				The name of the property that keeps track of the expansion state of a data item. Defaults to __ig_options.expanded.*/
+				propertyExpanded: null,
+				/* @Deprecated@ type="string" *** IMPORTANT DEPRECATED *** Use the dataLevelKey option instead.
+				The name of the property that keeps track of the level in the hierarchy.Defaults to __ig_options.dataLevel.*/
+				propertyDataLevel: null,
 				/* type="string" The name of the property that keeps track of the expansion state of a data item. Defaults to __ig_options.expanded.*/
-				propertyExpanded: "__ig_options.expanded",
+				expandedKey: "__ig_options.expanded",
 				/* type="string" The name of the property that keeps track of the level in the hierarchy.Defaults to __ig_options.dataLevel.*/
-				propertyDataLevel: "__ig_options.dataLevel",
+				dataLevelKey: "__ig_options.dataLevel",
 				/* type="bool" if set to TRUE it is expected that the source of data is normalized and transformed(has set dataLevel and expansion state). The source of data is used as flatDataView. Usually used when the paging is remote and paging mode is allLevels, or features are remote(and the processing of the returned result should be made on the server)
 				```
 				var ds = new $.%%WidgetName%%({
@@ -9099,7 +9357,7 @@
 									customEncodeUrlFunc: function(record, expand){
 										var dsUrl = ds.settings.treeDS.dataSourceUrl;
 										var path = ds.getPathBy(record);
-										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.propertyDataLevel];
+										return dsUrl + "?" + "path=" + path + "&depth= " + record[ds.settings.treeDS.dataLevelKey];
 									}
 								}
 							});
@@ -9176,6 +9434,8 @@
 			this._totalRecordsCount = 0;
 			options.treeDS = $.extend(true, {}, this.settings.treeDS, options.treeDS);
 			this._flatVisibleData = [];
+			options.treeDS.expandedKey = options.treeDS.propertyExpanded || options.treeDS.expandedKey;
+			options.treeDS.dataLevelKey = options.treeDS.propertyDataLevel || options.treeDS.dataLevelKey;
 			this._super(options);
 			this._isHierarchicalDataSource = options.treeDS.foreignKey === null ? true : false;
 			return this;
@@ -9183,7 +9443,7 @@
 		_checkGeneratedSchema: function () {
 			var s = this.settings.treeDS,
 				fs = this.settings.filtering,
-				propertyExp = s.propertyExpanded,
+				propertyExp = s.expandedKey,
 				propertyMatchFiltering = s.filtering.matchFiltering;
 			this._checkGeneratedSchemaByKey(s.childDataKey);
 			if (!this._isHierarchicalDataSource) {
@@ -9195,8 +9455,8 @@
 			if (fs && fs.enabled && fs.type === "remote" && propertyMatchFiltering) {
 				this._addSchemaField(propertyMatchFiltering, "boolean");
 			}
-			if (s.initialFlatDataView && s.propertyDataLevel) {
-				this._addSchemaField(s.propertyDataLevel, "number");
+			if (s.initialFlatDataView && s.dataLevelKey) {
+				this._addSchemaField(s.dataLevelKey, "number");
 			}
 		},
 		_addSchemaField: function (propName, propType) {
@@ -9262,7 +9522,10 @@
 			var s = this.schema();
 			this.isTransformedToHierarchicalData(false);
 			if (s) {
-				this._checkGeneratedSchema();
+				if ((this._runtimeType !== "remoteUrl" && this.schema().schema.fields.length !== 0) ||
+				this.settings.treeDS.enableRemoteLoadOnDemand ) {
+					this._checkGeneratedSchema();
+				}
 				/* overwrite default schema transform function - for now there is no igTreeHierarchicalSchema */
 				if (!this._transformCallback) {
 					this._transformCallback = $.proxy(s.transform, s);
@@ -9297,7 +9560,7 @@
 			if (this._metadata &&
 				$.type(this._metadata.ancestors) === "array") {
 				prows = this._metadata.ancestors;
-				propL = this.settings.treeDS.propertyDataLevel;
+				propL = this.settings.treeDS.dataLevelKey;
 				res = [];
 				for (i = 0; i < prows.length; i++) {
 					res.push({
@@ -9318,7 +9581,7 @@
 				data = ds || this._data,
 				len = data ? data.length : 0,
 				dsLayoutKey = this.settings.treeDS.childDataKey,
-				rowLevel = dataRow[this.settings.treeDS.propertyDataLevel];
+				rowLevel = dataRow[this.settings.treeDS.dataLevelKey];
 			currLevel = currLevel || 0;
 			for (i = 0; i < len; i++) {
 				d = data[i];
@@ -9521,8 +9784,8 @@
 			var i, layoutKey = this.settings.treeDS.childDataKey, dataLen, dataRow, isRootLevel = false,
 				expDepth = this.settings.treeDS.initialExpandDepth, exp, nData = [],
 				s = this.schema(), layout, hasChildren, lLen,
-				propertyExp = this.settings.treeDS.propertyExpanded,
-				propertyDataLevel = this.settings.treeDS.propertyDataLevel,
+				propertyExp = this.settings.treeDS.expandedKey,
+				propertyDataLevel = this.settings.treeDS.dataLevelKey,
 				applyPropertyDataLevel = (propertyDataLevel !== null && propertyDataLevel !== undefined),
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
 			if (!data) {
@@ -9623,7 +9886,7 @@
 				return;
 			}
 			var layoutKey = this.settings.treeDS.childDataKey,
-				propertyDataLevel = this.settings.treeDS.propertyDataLevel,
+				propertyDataLevel = this.settings.treeDS.dataLevelKey,
 				data = record[ layoutKey ];
 			if (data) {
 				if (level === undefined || level === null) {
@@ -9660,8 +9923,8 @@
 		_generateFlatDataRecursive: function (data, level, obj, parentCollapsed) {
 			var i, dataRow, dataLen, exp,
 				expDepth = this.settings.treeDS.initialExpandDepth,
-				propertyExp = this.settings.treeDS.propertyExpanded,
-				propertyDataLevel = this.settings.treeDS.propertyDataLevel,
+				propertyExp = this.settings.treeDS.expandedKey,
+				propertyDataLevel = this.settings.treeDS.dataLevelKey,
 				layoutKey = this.settings.treeDS.childDataKey,
 				applyPropertyDataLevel = (propertyDataLevel !== null && propertyDataLevel !== undefined),
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
@@ -9851,7 +10114,7 @@
 			//paramType="string" optional="false" The id of the row.
 			//returnType="bool" Returns true if expanded and false if not.*/
 			var rec = this.findRecordByKey(rowId),
-				propertyExp = this.settings.treeDS.propertyExpanded,
+				propertyExp = this.settings.treeDS.expandedKey,
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
 			if (!rec || !applyPropertyExp) {
 				return;
@@ -9863,7 +10126,7 @@
 			paramType="string" optional="false" The id of the row.
 			paramType="function" Specifies a custom function to be called when the state of the row is changed.*/
 			var rec = this.findRecordByKey(rowId), expanded,
-				propertyExp = this.settings.treeDS.propertyExpanded,
+				propertyExp = this.settings.treeDS.expandedKey,
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
 			if (!rec || !applyPropertyExp) {
 				return;
@@ -9887,7 +10150,7 @@
 				record = requestArgs.record;
 				callbackArgs = requestArgs.callbackArgs;
 				expand = requestArgs.expand;
-				level = record[ this.settings.treeDS.propertyDataLevel ];
+				level = record[ this.settings.treeDS.dataLevelKey ];
 				/* get layout data */
 				layoutData = this.processDataPerLevel(data, level + 1);
 				record[ layoutKey ] = layoutData;
@@ -9900,7 +10163,7 @@
 		Because of the one of the main constraint of the REST architecture - Stateless Interactions - client specific data should NOT be stored on the server(like expansion states) */
 		_encodeUrl: function () {
 			var params = this._super(),
-				s = this.settings.treeDS;
+				s = this.settings.treeDS, paramName;
 			if (s.persistExpansionStates) {
 				params = this._encodeExpansionStates(params);
 			}
@@ -9912,8 +10175,10 @@
 					params.fkRootValue = s.foreignKeyRootValue;
 				}
 			}
-			params.propertyDataLevel = s.propertyDataLevel;
-			params.propertyExpanded = s.propertyExpanded;
+			paramName = s.propertyDataLevel ? "propertyDataLevel" : "dataLevelKey";
+			params[ paramName ] = s[ paramName ];
+			paramName = s.propertyExpanded ? "propertyExpanded" : "expandedKey";
+			params[ paramName ] = s[ paramName ];
 			params.childDataKey = s.childDataKey;
 			params.initialExpandDepth = s.initialExpandDepth;
 			if (s.enableRemoteLoadOnDemand) {
@@ -9982,7 +10247,7 @@
 			path = this.getPathBy(record);
 			params = this._encodeUrl();
 			params.expand = expand;
-			url = s.dataSourceUrl + "?" + this._encodeUrlPath(path, record[ s.propertyDataLevel ]);
+			url = s.dataSourceUrl + "?" + this._encodeUrlPath(path, record[ s.dataLevelKey ]);
 			func = s.customEncodeUrlFunc;
 			if (func) {
 				if ($.type(func) !== "function") {
@@ -10052,7 +10317,7 @@
 			}
 		},
 		_onRecordToggled: function (record, expand, callbackArgs) {
-			var propertyExp = this.settings.treeDS.propertyExpanded,
+			var propertyExp = this.settings.treeDS.expandedKey,
 				filteredRecord = null, res = record, resObj,
 				paging = this.settings.paging, pkVal,
 				applyPropertyExp = (propertyExp !== null && propertyExp !== undefined);
@@ -10504,7 +10769,7 @@
 			keepFilterState, fieldExpressionsOnStrings) {
 			var i, j, expr = null, count = 0, skipRec = false, f = this.settings.filtering,
 				foundChildDS, subDS, t, k, schema, fields, tmpbool, allFieldsExpr, stringVal,
-				fExprLen, fExprStrLen, propertyExp = this.settings.treeDS.propertyExpanded,
+				fExprLen, fExprStrLen, propertyExp = this.settings.treeDS.expandedKey,
 				filteredData = [], childDS, layoutKey = this.settings.treeDS.childDataKey,
 				fts = this.settings.treeDS.filtering,
 				matchFiltering = fts.matchFiltering;
@@ -10873,7 +11138,7 @@
 			for (i = 0; i < len; i++) {
 				d = data[ i ];
 				if (d[ search ] === key) {
-					objPath.parentRows.push({ row: d, level: d[ this.settings.treeDS.propertyDataLevel ] });
+					objPath.parentRows.push({ row: d, level: d[ this.settings.treeDS.dataLevelKey ] });
 					return data[ i ];
 				}
 				if (d[ dsLayoutKey ]) {
@@ -10887,7 +11152,7 @@
 							path: path + d[ search ],
 							parentRows: objPath.parentRows.concat({
 								row: d,
-								level: d[ this.settings.treeDS.propertyDataLevel ]
+								level: d[ this.settings.treeDS.dataLevelKey ]
 							})
 						}
 					});
@@ -11044,7 +11309,7 @@
 						treeDS: {
 							childDataKey: "Products",
 							initialExpandDepth: 10,
-							propertyDataLevel: "dataLevel"
+							dataLevelKey: "dataLevel"
 						}
 					});
 					ds.dataBind();
@@ -11169,7 +11434,7 @@
 				childKey = this.settings.treeDS.childDataKey;
 			if (parentRec && pdata.newData && childKey !== null) {
 				parentRec[ childKey ] = pdata.newData;
-				if (parentRec[ this.settings.treeDS.propertyDataLevel ] === this.getDataBoundDepth()) {
+				if (parentRec[ this.settings.treeDS.dataLevelKey ] === this.getDataBoundDepth()) {
 					this._dataBoundDepth++;
 				}
 			}
@@ -11180,7 +11445,7 @@
 			if at is not defined insert at root level
 			*/
 			var ret = this._super.call(this, row, index, origDs, at);
-			if (at !== undefined && at !== null && !this.settings.treeDS.propertyDataLevel) {
+			if (at !== undefined && at !== null && !this.settings.treeDS.dataLevelKey) {
 				this._dataBoundDepth = null;
 				this.getDataBoundDepth();
 			}
