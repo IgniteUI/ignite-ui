@@ -847,7 +847,6 @@ $.ig.dependencies = [
 			],
 		description: $.ig.loaderClass.locale.descriptions.gridColumnMovingDescription,
 		scripts: [ "$path$/modules/infragistics.ui.grid.columnmoving.js" ],
-		description: $.ig.loaderClass.locale.descriptions.gridcolumnmovingDescription,
 		css: [  ]
 	},
 	{
