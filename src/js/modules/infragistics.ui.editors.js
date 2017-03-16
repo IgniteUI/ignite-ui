@@ -4118,7 +4118,8 @@
 				If the sum of all values in array is smaller than the length of integer part, then the last item in array is used for all following groups.
 				Count of groups starts from the decimal point (from right to left).
 				That option has effect only in display mode(no focus).
-				Note: this option has priority over possible regional settings.
+				Note: The numbers in the array must be positive integers.
+				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
 				```
 					//Initialize
@@ -5264,8 +5265,7 @@
 
 			// A. M. March 15, 2017 #771 "If the 'groups' option's array contains '0' no groups are rendered"
 			var originalArray = this.options.groups;
-			var zero = 0;
-			groups = originalArray.filter(function(item) {return item !== zero;} );
+			groups = originalArray.filter(function(item) {return item !== 0;} );
 			groupSeparator = this.options.groupSeparator;
 			if (this._numericType === "percent" && this.options.displayFactor) {
 				value = this._multiplyWithPrecision(value, this.options.displayFactor);
