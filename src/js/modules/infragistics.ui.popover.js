@@ -701,8 +701,8 @@
 					$.ig.util.offset(trg)[ cPos ];
 				y = leftOffset + trgFDim / 2 - this.popover[ cDim ]() / 2;
 				fnRes = dir === "left" ?
-					this._checkCollision(x, y, trg, null, this.options.direction !== "auto", true) :
-					this._checkCollision(y, x, trg, null, this.options.direction !== "auto", true);
+					this._checkCollision(x, y, trg, this.options.direction !== "auto", true) :
+					this._checkCollision(y, x, trg, this.options.direction !== "auto", true);
 			} else {
 				fnRes = this.
 					_cyclePossiblePositions(trg, dir, cPos, cDim, trgFDim, useParentOffset, x);
@@ -857,8 +857,7 @@
 					top + tfullh > bottomBoundary) {
 				/*D.K. 16 Dec 2014 Fix 186350 - Popover tooltip appears below the grid even when there's not enough space on the page
 				if it is forced we can ignore collisions, otherwise they should be taken into account */
-				if ((fromDirection && this.options.direction === "auto") ||
-					(!fromDirection && this.options.position === "auto")) {
+				if (!fromDirection || this.options.direction === "auto") {
 					/*  T.G. 29 Jan 2014 Fix 162164- When the element is relative in scrollable container the popover does not change its position when you scroll the container. */
 					return false;
 				}
