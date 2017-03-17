@@ -4599,13 +4599,12 @@
 
 					//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
 					if (this._getScientificFormat()) {
+						if (prevValue) {
+							this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
+						}
 						 var numericChars = this._getScientificFormat();
 						 this.options.includeKeys += numericChars;
 						 this._includeKeysArray = this.options.includeKeys.split( "" );
-
-						 if (prevValue) {
-							this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
-						}
 					}
 				}
 					break;
