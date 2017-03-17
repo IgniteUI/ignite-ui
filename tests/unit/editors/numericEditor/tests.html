@@ -1955,6 +1955,30 @@
 		$editor.remove();
 	});
 
+	testId = "Test groups contain 0 #771";
+	test(testId, 3, function(){
+		var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igNumericEditor({ groups : [0, 2, 10], value: 111222333444});
+			
+			var displayValue = $editor.igNumericEditor("displayValue");
+			equal(displayValue, "1112223334,44", "The displayValue is not correct.")
+			$editor.remove();
+			
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ groups : [0, 2, 0, 1, 9], value: 111222333444});
+		
+			var displayValue = $editor.igNumericEditor("displayValue");
+			equal(displayValue, "111222333,4,44", "The displayValue is not correct.")
+			$editor.remove();
+			
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ groups : [2, 1, 9], value: 111222333444});
+		
+			var displayValue = $editor.igNumericEditor("displayValue");
+			equal(displayValue, "111222333,4,44", "The displayValue is not correct.")
+			$editor.remove();
+		});
+		
 	testId = "Test allowNullValue and NullValue at initialization #779";
 	test(testId, 1, function(){
 		var $editor = $("<input id='editor'/>").
