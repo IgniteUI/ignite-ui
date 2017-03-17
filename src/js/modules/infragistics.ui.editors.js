@@ -4297,7 +4297,7 @@
 			*/
 			spinDelta: 1,
 			/* type="null|E|e|E+|e+"
-				Gets/Sets support for scientific format in edit mode.
+				Gets/Sets support for scientific format.
 				If that option is set, then numeric value appears as a string with possible E-power flag. In edit mode the "E" or "e" character can be entered as well.
 				Notes: The "+" character is not supported in edit mode.
 				```
@@ -4596,6 +4596,25 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
+				case "scientificFormat": {
+					//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
+					if (this._getScientificFormat() || value === null) {
+						if (prevValue) {
+							if (prevValue === "e+" || prevValue === "E+") {
+								prevValue = prevValue.replace("+", "");
+							}
+							this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
+						}
+						if (value === null) {
+							 this._includeKeysArray = this.options.includeKeys.split( "" );
+							break;
+						}
+						 var numericChars = this._getScientificFormat();
+						 this.options.includeKeys += numericChars;
+						 this._includeKeysArray = this.options.includeKeys.split( "" );
+					}
+				}
+					break;
 				case "spinDelta": {
 					if (typeof value !== "number") {
 						this.options[ option ] = prevValue;

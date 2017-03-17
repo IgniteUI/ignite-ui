@@ -763,11 +763,8 @@
 			equal(editorInput.val(), "2.2E+1", "Value is not correct");
 
 			//Change scientificFormat to invalid value
-
-			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "s");
-			editorInput.click();
 			throws(function() {
-					$("#scientificFormat").igNumericEditor("option", "value", "3");
+					$("#scientificFormat").igNumericEditor("option", "scientificFormat", "s");
 				},
 				Error($.ig.Editor.locale.scientificFormatErrMsg),
 				"Acepted value with wrong scientificFormat."
@@ -1989,6 +1986,25 @@
 			
 			var currentValue = $editor.igNumericEditor("value");
 			equal(currentValue, 0, "The value is not 0, although the nullValue is set to 0.")
+			$editor.remove();
+		});
+
+	testId = "Test Setting scientificFormat runtime #745";
+	test(testId, 3, function(){
+		var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igNumericEditor();
+			
+			var includedKeys = $editor.igNumericEditor("option", "includeKeys");
+			equal(includedKeys, "0123456789.-", "The included keys are not the defaut one.")
+
+			$editor.igNumericEditor("option", "scientificFormat", "e");
+			includedKeys = $editor.igNumericEditor("option", "includeKeys");
+			equal(includedKeys, "0123456789.-e", "The included keys do not include the scientificFormat 'e'.");
+			
+			$editor.igNumericEditor("option", "scientificFormat", "E");
+			includedKeys = $editor.igNumericEditor("option", "includeKeys");
+			equal(includedKeys, "0123456789.-E", "The included keys do not include the scientificFormat 'E'.")
+						
 			$editor.remove();
 		});
 
