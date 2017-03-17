@@ -4596,11 +4596,17 @@
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
 				case "scientificFormat": {
-
 					//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
-					if (this._getScientificFormat()) {
+					if (this._getScientificFormat() || value === null) {
 						if (prevValue) {
+							if (prevValue === "e+" || prevValue === "E+") {
+								prevValue = prevValue.replace("+", "");
+							}
 							this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
+						}
+						if (value === null) {
+							 this._includeKeysArray = this.options.includeKeys.split( "" );
+							break;
 						}
 						 var numericChars = this._getScientificFormat();
 						 this.options.includeKeys += numericChars;
