@@ -6198,7 +6198,7 @@
 				```
 			*/
 			regional: null,
-			/*type="clear" Gets visibility of the clear button. That option can be set only on initialization.
+			/*type="clear|none" Gets visibility of the clear button. That option can be set only on initialization.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
