@@ -38,48 +38,70 @@ $.ig.loaderClass.locale.descriptions = {
 	videoPlayerDescription: "Component that displays HTML 5 videos.",
 	templatingDescription: "A JavaScript library used to apply a content template to HTML elements.",
 	gridDescription: "Component used for displaying tabular data.",
-	gridColumnMovingDescription: "Grid feature that allows moving columns to change their order.",
+	gridColumnMovingDescription: "Allows moving columns to change their order.",
 	dataSourceDescription: "Component used for binding to various kinds of data.",
 	olapFlatDataSourceDescription: "Component used for binding to flat data and transforming it into multi-dimensional data.",
 	olapXmlaDataSourceDescription: "Component used for binding to a multi-dimensional data from a SSAS server.",
-	gridAppendRowsOnDemandDescription: "Grid feature for appending the rows on demand.",
-	gridCellMergingDescription: "Grid feature for combining cells with the same values.",
-	gridColumnFixingDescription: "Grid feature that allows you to pin the columns on the left/right of the grid.",
-	gridFeatureChooserDescription: "Grid feature that provides menu-like interface to grid columns when multiple features are enabled.",
-	gridFilteringDescription: "Grid feature that allows filtering the data based on a given criteria.",
+	gridAppendRowsOnDemandDescription: "Appends the rows on demand.",
+	gridCellMergingDescription: "Combines cells with the same values.",
+	gridColumnFixingDescription: "Allows pinning the columns on the left/right of the grid.",
+	gridFeatureChooserDescription: "Provides menu-like interface to grid columns when multiple features are enabled.",
+	gridFilteringDescription: "Allows filtering the data based on a given criteria.",
 	gridSharedDescription: "Grid shared code that contains commonly used widgets for the grid.",
-	gridGroupByDescription: "Grid feature that allows you to group rows of data by common column values.",
-	gridHidingDescription: "Grid feature that allows you to hide/show columns.",
-	gridMultiColumnHeadersDescription: "Grid featue that allows header grouping.",
-	gridPagingDescription: "Grid featue that allows the grid to render a limited number of rows.",
-	gridResizingDescription: "Grid feature that allows you to resize the grid columns.",
-	gridResponsiveDescription: "Grid feature that allows adoption of the grid size to the devices’ screen.",
-	gridSelectionDescription: "Grid feature that allows selecting rows or cells in the grid.",
-	gridRowSelectorsDescription: "Grid feature that renders a row selector column.",
-	gridSortingDescription: "Grid feature that allows sorting the column data in ascending or descending order.",
-	gridSummariesDescription: "Grid feature for showing summary data for each column.",
-	gridTooltipsDescription: "Grid feature that allows showing tooltips for grid cells.",
-	gridUpdating: "Grid feature that allows editing, deleting and adding records in the grid.",
+	gridGroupByDescription: "Allows grouping rows of data by common column values.",
+	gridHidingDescription: "Allows hiding/showing columns.",
+	gridMultiColumnHeadersDescription: "Allows header grouping.",
+	gridPagingDescription: "Allows the grid to render a limited number of rows per page.",
+	gridResizingDescription: "Allows resizing of the grid columns.",
+	gridResponsiveDescription: "Allows adoption of the grid size to the devices’ screen.",
+	gridSelectionDescription: "Allows selecting rows or cells in the grid.",
+	gridRowSelectorsDescription: "Renders a row selector column that allows managing row selection.",
+	gridSortingDescription: "Allows sorting the column data in ascending or descending order.",
+	gridSummariesDescription: "Allows showing summary data for each column.",
+	gridTooltipsDescription: "Allows showing tooltips for grid cells.",
+	gridUpdating: "Allows editing, deleting and adding records in the grid.",
 	hierarchicalGridDescription: "Component used for displaying hierarchical tabular data.",
 	treeGridDescription: "Component used for displaying hierarchical tabular data in a tree like structure.",
-	treeGridColumnFixingDescription: "TreeGrid feature that allows you to pin the columns on the left or the right of the grid.",
-	treeGridColumnMovingDescription: "TreeGrid feature that allows moving columns to change their order.",
-	treeGridFilteringDescription: "TreeGrid feature that allows filtering the data based on a given criteria.",
-	treeGridHidingDescription: "TreeGrid feature that allows you to hide/show columns.",
-	treeGridMultiColumnHeadersDescription: "TreeGrid featue that allows header grouping.",
-	treeGridPagingDescription: "TreeGrid featue that allows the grid to render a limited number of rows.",
-	treeGridResizingDescription: "TreeGrid feature that allows you to resize the grid columns.",
-	treeGridSelectionDescription: "TreeGrid feature that allows selecting rows or cells in the grid.",
-	treeGridRowSelectorsDescription: "TreeGrid feature that renders a row selector column.",
-	treeGridSortingDescription: "TreeGrid feature that allows sorting the column data in ascending or descending order.",
-	treeGridTooltipsDescription: "TreeGrid feature that allows showing tooltips for grid cells.",
-	treeGridUpdatingDescription: "TreeGrid feature that allows editing, deleting and adding records in the grid.",
+	treeGridColumnFixingDescription: "Allows pinning the columns on the left/right of the grid.",
+	treeGridColumnMovingDescription: "Allows moving columns to change their order.",
+	treeGridFilteringDescription: "Allows filtering the data based on a given criteria.",
+	treeGridHidingDescription: "Allows hiding/showing columns.",
+	treeGridMultiColumnHeadersDescription: "Allows header grouping.",
+	treeGridPagingDescription: "Allows the grid to render a limited number of rows per page.",
+	treeGridResizingDescription: "Allows you to resize the grid columns.",
+	treeGridSelectionDescription: "Allows selecting rows or cells in the grid.",
+	treeGridRowSelectorsDescription: "Renders a row selector column that allows managing row selection.",
+	treeGridSortingDescription: "Allows sorting the column data in ascending or descending order.",
+	treeGridTooltipsDescription: "Allows showing tooltips for grid cells.",
+	treeGridUpdatingDescription: "Allows editing, deleting and adding records in the grid.",
 	pivotDataSelectorDescription: "Component that enables users to select data slices when data is being visualized in a PivotGrid.",
 	pivotGridDescription: "Component used for displaying data in a pivot table.",
 	pivotSharedDescription: "Shared Pivot Grid code.",
 	pivotViewDescription: "Component that combines a Pivot Grid and a Pivot Data Selector separated with a splitter.",
 	scrollDescription: "Component that enables support for custom fluid scrolling functionality on all devices.",
-	uploadDescription: "Component for uploading files for ASP.NET and ASP.NET MVC."
+	uploadDescription: "Component for uploading files for ASP.NET and ASP.NET MVC.",
+	comboDescription: "Combo box that offers auto-complete, auto-suggest, and rich editing capabilities.",
+	qrCodeBarcodeDescription: "The QRCodeBarcode control generates QR (Quick Response) barcode images.",
+	splitButtonDescription: "Drop down button that provides a default and secondary action/commands.",
+	colorPickerDescription: "Component that provides color selection from a grid layout.",
+	colorPickerSplitButtonDescription: "Drop down button which default action is to select a color and the secondary action is to open the igColorPicker.",
+	layoutManagerDescription: "Component that enables easily applying different layouts to a page.",
+	tileManagerDescription: "The TileManager is a layout control for rendering and arranging data into tiles.",
+	splitterDescription: "Component that divides the space into two panels, separated by a splitter bar to allow resizing.",
+	toolbarDescription: "Component that groups buttons visually together into a single toolbar.",
+	toolbarButtonDescription: "Component that defines a button and manages its state.",
+	excelDescription: "The Excel Library is is used to create, load and modify Excel workbooks through an object model.",
+	gridExcelExporterDescription: "Component that allows instant exporting of the igGrid, igHierarchicalGrid or igTreeGrid data into an Excel Worksheet",
+	categoryChartDescription: "Component that renders categorized data into a canvas on the page.",
+	dataChartDescription: "Component that provides extremely rich functionality to create and render various types of charts in an HTML 5 canvas",
+	pieChartDescription: "Component to create a pie chart with features like tooltips, legends, managing slices.",
+	doughnutChartDescription: "Component to create a doughnut chart that displays multiple sets of data around a common center.",
+	funnelChartDescription: "Component to create a funnel chart that displays values associated with different categories in a conic shape.",
+	linearGaugeDescription: "Component that visualizes data in the form of a linear gauge enriched with scales, tick marks and needles.",
+	radialGaugeDescription: "Component that visualizes data in the form of a circular gauge enriched with scales, tick marks and needles.",
+	radialMenuDescription: "Component that visualizes a context menu presenting its items in a circular arrangement around a center button.",
+	bulletGraphDescription: "Component that visualizes data in the form of a linear bullet graph, enriched with scale and tick marks to represent progress.",
+	htmlEditorDescription: "Component to provide a text editor for creating and formatting online content though standard HTML editing capabilities."
 };
 
 // jscs:enable
@@ -148,7 +170,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.scroll.js" ],
 		locale: [ "$localePath$/infragistics.ui.scroll-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.scroll.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.scroll.css" ],
+		description: $.ig.loaderClass.locale.descriptions.scrollDescription
 	},
 	{
 		widget: "igShared",
@@ -333,7 +356,8 @@ $.ig.dependencies = [
 			"$path$/structure/modules/infragistics.ui.html5.css",
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.chart.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.dataChartDescription
 	},
 	{
 		widget: "Category",
@@ -425,7 +449,8 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
 			"$path$/modules/infragistics.piechart.js"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.pieChartDescription
 	},
 
 	{
@@ -437,7 +462,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.basechart.js",
 			"$path$/modules/infragistics.ui.doughnutchart.js"
 			],
-		locale: [ "$localePath$/infragistics.ui.doughnutchart-$locale$.js" ]
+		locale: [ "$localePath$/infragistics.ui.doughnutchart-$locale$.js" ],
+		description: $.ig.loaderClass.locale.descriptions.doughnutChartDescription
 	},
 
 	{
@@ -450,7 +476,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.funnelchart.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ],
+		description: $.ig.loaderClass.locale.descriptions.funnelChartDescription
 	},
 
 	{
@@ -495,7 +522,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.radialgauge.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.radialgauge.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.radialgauge.css" ],
+		description: $.ig.loaderClass.locale.descriptions.radialGaugeDescription
 	},
 
 	{
@@ -505,7 +533,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.lineargauge.js",
 			"$path$/modules/infragistics.ui.lineargauge.js"
 			],
-		group: $.ig.loaderClass.locale.dvGroup
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.linearGaugeDescription
 	},
 
 	{
@@ -516,7 +545,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.bulletgraph.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.bulletgraph.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.bulletgraph.css" ],
+		description: $.ig.loaderClass.locale.descriptions.bulletGraphDescription
 	},
 
 	{
@@ -532,7 +562,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.chart.css",
 			"$path$/structure/modules/infragistics.ui.categorychart.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.categoryChartDescription
 	},
 /* /// End Data Visualization /// */
 
@@ -548,7 +579,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.radialmenu.js"
 			],
 		group: $.ig.loaderClass.locale.interactionsGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.radialmenu.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.radialmenu.css" ],
+		description: $.ig.loaderClass.locale.descriptions.radialMenuDescription
 	},
 
 	{
@@ -563,7 +595,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.barcode.js"
 			],
 		locale: [ "$localePath$/infragistics.ui.barcode-$locale$.js" ],
-		group: $.ig.loaderClass.locale.dvGroup
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.qrCodeBarcodeDescription
 	},
 	{
 		widget: "igQRCodeBarcode.*",
@@ -806,7 +839,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.combo.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.comboDescription
 	},
 	{
 		widget: "igDialog",
@@ -1128,7 +1162,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.htmleditor.js" ],
 		locale: [ "$localePath$/infragistics.ui.htmleditor-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.htmleditor.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.htmleditor.css" ],
+		description: $.ig.loaderClass.locale.descriptions.htmlEditorDescription
 	},
 
 /*/ igMap /// */
@@ -1262,14 +1297,16 @@ $.ig.dependencies = [
 		dependency: [ { name: "igToolbarButton" } ],
 		scripts: [ "$path$/modules/infragistics.ui.splitbutton.js" ],
 		locale: [  ],
-		css: [ "$path$/structure/modules/infragistics.ui.splitbutton.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.splitbutton.css" ],
+		description: $.ig.loaderClass.locale.descriptions.splitButtonDescription
 	},
 	{
 		widget: "igColorPicker",
 		dependency: [  ],
 		scripts: [ "$path$/modules/infragistics.ui.colorpicker.js" ],
 		locale: [  ],
-		css: [ "$path$/structure/modules/infragistics.ui.colorpicker.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.colorpicker.css" ],
+		description: $.ig.loaderClass.locale.descriptions.colorPickerDescription
 	},
 	{
 		widget: "igColorPickerSplitButton",
@@ -1280,14 +1317,16 @@ $.ig.dependencies = [
 			],
 		scripts: [ "$path$/modules/infragistics.ui.colorpickersplitbutton.js" ],
 		locale: [  ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.colorPickerSplitButtonDescription
 	},
 	{
 		widget: "igLayoutManager",
 		dependency: [ { name: "igUtil" } ],
 		scripts: [ "$path$/modules/infragistics.ui.layoutmanager.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.layout.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.layout.css" ],
+		description: $.ig.loaderClass.locale.descriptions.layoutManagerDescription
 	},
 	{
 		widget: "igTileManager",
@@ -1300,7 +1339,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.tilemanager.js" ],
 		locale: [ "$localePath$/infragistics.ui.tilemanager-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.tilemanager.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.tilemanager.css" ],
+		description: $.ig.loaderClass.locale.descriptions.tileManagerDescription
 	},
 	{
 		widget: "igUpload",
@@ -1347,7 +1387,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.splitter.js" ],
 		locale: [ "$localePath$/infragistics.ui.splitter-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.splitter.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.splitter.css" ],
+		description: $.ig.loaderClass.locale.descriptions.splitterDescription
 	},
 	{
 		widget: "igToolbarButton",
@@ -1357,7 +1398,8 @@ $.ig.dependencies = [
 			],
 		scripts: [ "$path$/modules/infragistics.ui.toolbarbutton.js" ],
 		locale: [  ],
-		css: [ "$path$/structure/modules/infragistics.ui.toolbarbutton.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.toolbarbutton.css" ],
+		description: $.ig.loaderClass.locale.descriptions.toolbarButtonDescription
 	},
 	{
 		widget: "igToolbar",
@@ -1367,7 +1409,8 @@ $.ig.dependencies = [
 			],
 		scripts: [ "$path$/modules/infragistics.ui.toolbar.js" ],
 		locale: [ "$localePath$/infragistics.ui.toolbar-$locale$.js" ],
-		css: [ "$path$/structure/modules/infragistics.ui.toolbar.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.toolbar.css" ],
+		description: $.ig.loaderClass.locale.descriptions.toolbarDescription
 	},
 /*/ igTreeGrid /// */
 	{
@@ -1573,7 +1616,8 @@ $.ig.dependencies = [
 		],
 		scripts: [ "$path$/modules/infragistics.excel_core.js" ],
 		locale: [ "$localePath$/infragistics.excel_core-$locale$.js" ],
-		css: []
+		css: [],
+		description: $.ig.loaderClass.locale.descriptions.excelDescription
 	},
 	{
 		widget: "Functions",
@@ -1740,7 +1784,8 @@ $.ig.dependencies = [
 			{ name: "LoadSaveXlsx" }
 		],
 		scripts: [ "$path$/modules/infragistics.gridexcelexporter.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridExcelExporterDescription
 	}
 /*/ end igGridExcelExporter /// */
  ];
