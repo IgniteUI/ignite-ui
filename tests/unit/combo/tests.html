@@ -342,6 +342,12 @@
     <div>
         <div id="dropdowninputpress"></div>
     </div>
+    <div>
+        <div id="lodpagesize-scroll"></div>
+    </div>
+    <div>
+        <div id="lodpagesize-keyboard"></div>
+    </div>
     <script type="text/javascript">
         $(function () {
             var testId_1 = 'igCombo existence',
@@ -449,6 +455,8 @@
                 testId_96 = 'suppressKeyboard multiselect';
                 testId_97 = "htmlEntity dataSource";
                 testId_98 = 'Keypress empty selection dropdown combo';
+                testId_99 = "Small pageSize does not trigger load on demand (scroll)";
+                testId_100 = "Small pageSize does not trigger load on demand (keyboard)";
 
             function testDataBinding($combo, expDataView, expSchema) {
                 var i, key,
@@ -5918,6 +5926,130 @@
                 equal($combo.igCombo('selectedItems')[0].data.Name, 'Jane Smith');
                 emulateNonSpecialKeyPress(106, $input);
                 equal($combo.igCombo('selectedItems')[0].data.Name, 'Johnatan Doe');
+            });
+
+            asyncTest(testId_99, function() {
+                var $combo = $("#lodpagesize-scroll"),
+                    $dropDown,
+                    $listCont,
+                    $scrollCont,
+                    options,
+                    lod;
+
+                options = {
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    loadOnDemandSettings: {
+                        enabled: true,
+                        pageSize: 3
+                    },
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    valueKey: "UnitPrice",
+                    textKey: "Salesperson",
+                    responseDataKey: "d.results.Results",
+                    responseTotalRecCountKey: "d.results.Count",
+                    width: "400px",
+                    virtualization: true,
+                    autoComplete: true,
+                    headerTemplate: "<div class='dropDownHeaderFooter'>Available Products</div>",
+                    footerTemplate: "<div class='dropDownHeaderFooter'>Product Count: {0} / {3}</div>",
+                    itemTemplate: "<div>${ProductName} (${QuantityPerUnit})</div>",
+                    placeHolder: "Please, select a product",
+                    filterExprUrlKey: 'startsWith',
+                    highlightMatchesMode: "startsWith",
+                    filteringCondition: "startsWith",
+                };
+
+                $combo.igCombo(options);
+                lod = $combo.igCombo("option", "loadOnDemandSettings");
+
+                $combo.igCombo("openDropDown");
+                $listCont = $combo.data().igCombo._options.$dropDownListCont;
+                $scrollCont = $combo.data().igCombo._options.$dropDownScrollCont;
+
+                setTimeout(function() {
+                    start();
+
+                    equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                    equal($scrollCont.is(":visible"), true, "Scrollbar is shown");
+                    $listItems = $combo.igCombo("listItems");
+                    equal(lod.pageSize, 5, "Page size minimum should be 5");
+                    equal($listItems.length, lod.pageSize, "Visible rendered items match 'pageSize'");
+                    $listCont.scrollTop(1000);
+                    $listCont.trigger("scroll");
+                    stop();
+
+                    setTimeout(function() {
+                        start();
+                        $listItems = $combo.igCombo("listItems");
+                        equal($listItems.length, lod.pageSize * 2, "Load on demand succeeded");
+                    }, 550);
+
+                }, 500);
+            });
+
+            asyncTest(testId_100, function() {
+                var $combo = $("#lodpagesize-keyboard"),
+                    $dropDown,
+                    $listCont,
+                    $scrollCont,
+                    options,
+                    lod;
+
+                options = {
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    loadOnDemandSettings: {
+                        enabled: true,
+                        pageSize: 3
+                    },
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    valueKey: "UnitPrice",
+                    textKey: "Salesperson",
+                    responseDataKey: "d.results.Results",
+                    responseTotalRecCountKey: "d.results.Count",
+                    width: "400px",
+                    virtualization: true,
+                    autoComplete: true,
+                    headerTemplate: "<div class='dropDownHeaderFooter'>Available Products</div>",
+                    footerTemplate: "<div class='dropDownHeaderFooter'>Product Count: {0} / {3}</div>",
+                    itemTemplate: "<div>${ProductName} (${QuantityPerUnit})</div>",
+                    placeHolder: "Please, select a product",
+                    filterExprUrlKey: 'startsWith',
+                    highlightMatchesMode: "startsWith",
+                    filteringCondition: "startsWith",
+                };
+
+                $combo.igCombo(options);
+                lod = $combo.igCombo("option", "loadOnDemandSettings");
+
+                $combo.igCombo("openDropDown");
+                $listCont = $combo.data().igCombo._options.$dropDownListCont;
+                $scrollCont = $combo.data().igCombo._options.$dropDownScrollCont;
+
+                setTimeout(function() {
+                    start();
+
+                    equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                    equal($scrollCont.is(":visible"), true, "Scrollbar is shown");
+                    $listItems = $combo.igCombo("listItems");
+                    equal(lod.pageSize, 5, "Page size minimum should be 5");
+                    equal($listItems.length, lod.pageSize, "Visible rendered items match 'pageSize'");
+
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                    stop();
+
+                    setTimeout(function() {
+                        start();
+                        $listItems = $combo.igCombo("listItems");
+                        equal($listItems.length, lod.pageSize * 2, "Load on demand succeeded");
+                    }, 550);
+
+                }, 500);
             });
         });
     </script>
