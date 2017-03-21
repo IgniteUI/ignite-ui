@@ -1553,9 +1553,7 @@ $.ig.dependencies = [
 /*/ start igExcel/// */
 	{
 		widget: "igExcel",
-<<<<<<< HEAD
 		dependency: [ { name: "igUtil" } ],
-=======
 		dependency: [
 			{ name: "_ig_documents_core_core" },
 			{ name: "_ig_ext_collections_extended" }
@@ -1715,7 +1713,6 @@ $.ig.dependencies = [
 			{ name: "_ig_dv_core" },
 			{ name: "_ig_dv_jquerydom" }
 		],
->>>>>>> d41c952... add descriptions in igLoader
 		scripts: [
 			"$path$/modules/infragistics.documents.core.js",
 			"$path$/modules/infragistics.excel.js"
