@@ -832,7 +832,6 @@
 
 				mouseenter: $.proxy(this._onMouseEnterContainer, this),
 				mouseleave: $.proxy(this._onMouseLeaveContainer, this),
-				dragstart: $.proxy(this._onDragStartElem, this),
 
 				keydown: $.proxy(this._onKeyDown, this)
 			};
@@ -1408,15 +1407,16 @@
 				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
 				this._syncElemsX(this._container[ 0 ], false);
 				/*self._syncHBar(this._container[ 0 ], false);*/
-
-				var curPosY;
-				if (this.options.scrollOnlyVBar) {
-					curPosY = this._getScrollbarVPosition();
-				} else {
-					curPosY = this._getContentPositionY();
-				}
-				this._updateScrollBarsPos(destX, curPosY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosY;
+			if (this.options.scrollOnlyVBar) {
+				curPosY = this._getScrollbarVPosition();
+			} else {
+				curPosY = this._getContentPositionY();
+			}
+			this._updateScrollBarsPos(destX, curPosY, true);
 
 			return destX - curPosX;
 		},
@@ -1463,15 +1463,16 @@
 				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
-
-				var curPosX;
-				if (this.options.scrollOnlyHBar) {
-					curPosX = this._getScrollbarHPosition();
-				} else {
-					curPosX = this._getContentPositionX();
-				}
-				this._updateScrollBarsPos(curPosX, destY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosX;
+			if (this.options.scrollOnlyHBar) {
+				curPosX = this._getScrollbarHPosition();
+			} else {
+				curPosX = this._getContentPositionX();
+			}
+			this._updateScrollBarsPos(curPosX, destY, true);
 
 			return destY - curPosY;
 		},
@@ -3818,7 +3819,7 @@
 		},
 
 		_onDragStartElem: function (event) {
-			/* Prevent dragging of that element due to causing some unwanted behaviour */
+			/* Prevent dragging of that element due to causing some unwanted behaviour when using the custom scrollbars and you drag on them */
 			event.preventDefault();
 		},
 
