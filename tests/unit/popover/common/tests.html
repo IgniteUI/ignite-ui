@@ -132,6 +132,7 @@
 
             //Automating bugs
             var testId_91 = "igPopover test 9.1: Test popover shows correctly when direction is set";
+            var testId_92 = "igPopover test 9.2: Test popover uses the document boundary if it doesn't fit on the current window";
 
             test(testId_21, 6, function () {
                 stop();
@@ -511,6 +512,86 @@
                 ok( $( '#notifier' ).offset().left < $( '#notifier_popover' ).offset().left &&
                 $( '#notifier_popover' ).offset().left + $( '#notifier_popover' ).width() < $( '#notifier' ).offset().left + $( '#notifier' ).width(),
                     'Popover is positioned into the bounderies of the target' );
+            });
+
+
+            //bug #230963 - Popover is not positioned as expected
+            test(testId_92, function () {
+                //use the container to add scrollbar to the page
+                var windowHeight = $(window.document).height();
+                var windowWidth = $(window.document).width();
+                var targetContainer = $("<div>").css({ height: windowHeight + 200, width: windowWidth + 100, position: "absolute", "background-color": "red"})
+                    .append($("<div id='target_boundary'>").css({ height: windowHeight - 200, width: windowWidth, top: 0, position: "relative", "background-color": "#CC0000"}));
+                //height should be smaller than 200 so it can fit in the boundary of the document
+                var popoverContent = $("<div>Content</div>").css({ height: 150, width: 50, "background-color": "green"});
+                targetContainer.prependTo($("body"));
+                $('#target_boundary').igPopover({ "contentTemplate": popoverContent });
+                $('#target_boundary').igPopover("show");
+
+                //popover can fit on the bottom inside the boundaries of the current window
+                ok($('#target_boundary_popover_arrow').hasClass( "ui-igpopover-arrow-top" ), 'Popover arrow is not pointing to top!');
+                ok( $('#target_boundary').offset().top + $('#target_boundary').height() <= $('#target_boundary_popover').offset().top,
+                    'Popover is not positioned below its target' );
+
+                //popover can fit on the top inside the boundaries of the current window
+                $("#target_boundary").css("top", 200);
+                $('#target_boundary').igPopover("show");
+                ok($('#target_boundary_popover_arrow').hasClass( "ui-igpopover-arrow-bottom" ), 'Popover arrow is not pointing to bottom!');
+                ok( $('#target_boundary_popover').offset().top + $('#target_boundary_popover').height() <= $('#target_boundary').offset().top,
+                    'Popover is not positioned above its target' );
+
+                //popover can fit on the right inside the boundaries of the current window
+                $("#target_boundary").css({"top": 0, height: windowHeight, width: windowWidth - 100 });
+                $('#target_boundary').igPopover("show");
+                ok($('#target_boundary_popover_arrow').hasClass( "ui-igpopover-arrow-left" ), 'Popover arrow is not pointing to left!');
+                ok($('#target_boundary').offset().left + $('#target_boundary').width() <= $('#target_boundary_popover').offset().left,
+                            'Popover is not positioned on the left its target' );
+
+                //popover can fit on the left inside the boundaries of the current window
+                $("#target_boundary").css({"left": 100, height: windowHeight, width: windowWidth - 100 });
+                $('#target_boundary').igPopover("show");
+                ok($('#target_boundary_popover_arrow').hasClass( "ui-igpopover-arrow-right" ), 'Popover arrow is not pointing to right!');
+                ok( $('#target_boundary_popover').offset().left + $('#target_boundary_popover').width() <= $('#target_boundary').offset().left,
+                            'Popover is not positioned on the left its target' );
+
+                //popover can't fit in the boundaries of the window, but can fit on the bottom inside the boundaries of the document
+                windowHeight = $(window.document).height();
+                $("#target_boundary").parent().css("height", windowHeight + 200);
+                $("#target_boundary").css({left: 0, height: windowHeight, width: windowWidth });
+                $('#target_boundary').igPopover("show");
+                ok($('#target_boundary_popover_arrow').hasClass( "ui-igpopover-arrow-top" ), 'Popover arrow is not pointing to top!');
+                ok( $('#target_boundary').offset().top + $('#target_boundary').height() <= $('#target_boundary_popover').offset().top,
+                    'Popover is not positioned below its target' );
+
+                //popover can't fit in the boundaries of the window, but can fit on the top inside the boundaries of the document
+                $("#target_boundary").css("top", 200);
+                $(window).scrollTop(200);
+                $('#target_boundary').igPopover("show");
+                ok($('#target_boundary_popover_arrow').hasClass( "ui-igpopover-arrow-bottom" ), 'Popover arrow is not pointing to bottom!');
+                ok( $('#target_boundary_popover').offset().top + $('#target_boundary_popover').height() <= $('#target_boundary').offset().top,
+                    'Popover is not positioned above its target' );
+
+                //popover can't fit in the boundaries of the window, but can fit on the right inside the boundaries of the document
+                windowHeight = $(window.document).height();
+                $("#target_boundary").parent().css("height", windowHeight + 200);
+                $("#target_boundary").css({top: 0, height: windowHeight + 200});
+                $(window).scrollTop(0);
+                $('#target_boundary').igPopover("show");
+                ok($('#target_boundary_popover_arrow').hasClass( "ui-igpopover-arrow-left" ), 'Popover arrow is not pointing to left!');
+                ok($('#target_boundary').offset().left + $('#target_boundary').width() <= $('#target_boundary_popover').offset().left,
+                            'Popover is not positioned on the left its target' );
+
+                //popover can't fit in the boundaries of the window, but can fit on the left inside the boundaries of the document
+                $("#target_boundary").css("left", 100);
+                $(window).scrollLeft(100);
+                $('#target_boundary').igPopover("show");
+                ok($('#target_boundary_popover_arrow').hasClass( "ui-igpopover-arrow-right" ), 'Popover arrow is not pointing to right!');
+                ok( $('#target_boundary_popover').offset().left + $('#target_boundary_popover').width() <= $('#target_boundary').offset().left,
+                            'Popover is not positioned on the left its target' );
+
+                targetContainer.remove();
+                $('#target_boundary').remove();
+                $(window).scrollLeft(0);
             });
         } );
 

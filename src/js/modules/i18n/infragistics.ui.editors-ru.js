@@ -66,8 +66,6 @@
 			    datePickerEditorNoSuchMethod: "Этот способ не поддерживается редактором дат.",
 			    datePickerNoSuchMethodDropDownContainer: "Этот метод не поддерживается редактором даты. Используйте взамен 'getCalendar'.",
 			    buttonTypeIsDropDownOnly: "Элемент выбора даты позволяет устанавливать значение параметра buttonType только dropdown и clear.",
-			    dateEditorMinValue: "Параметр MinValue не может быть задан во время выполнения программы.",
-			    dateEditorMaxValue: "Параметр MaxValue не может быть задан во время выполнения программы.",
 			    cannotSetRuntime: "Этот параметр не может быть задан во время выполнения программы",
 			    invalidDate: "Неверная дата",
 			    maskMessage: 'Следует заполнить все обязательные поля',

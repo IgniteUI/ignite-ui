@@ -66,8 +66,6 @@
 			    datePickerEditorNoSuchMethod: "Der Daten-Editor unterstützt diese Methode nicht.",
 			    datePickerNoSuchMethodDropDownContainer: "Der Daten-Editor unterstützt diese Methode nicht. Verwenden Sie stattdessen „getCalendar“.",
 			    buttonTypeIsDropDownOnly: "Der Datepicker erlaubt nur Dropdown und Wert löschen für die buttonType-Option.",
-			    dateEditorMinValue: "MinValue-Option kann nicht zur Laufzeit festgelegt werden.",
-			    dateEditorMaxValue: "MaxValue-Option kann nicht zur Laufzeit festgelegt werden.",
 			    cannotSetRuntime: "Diese Option kann nicht zur Laufzeit festgelegt werden",
                 invalidDate: "Ungültiges Datum",
                 maskMessage: 'Alle erforderlichen Positionen sollten ausgefüllt werden',

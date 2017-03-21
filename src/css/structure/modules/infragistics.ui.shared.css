@@ -155,7 +155,6 @@
 	padding: 4px;
 	overflow: hidden;	
 	font-size:11px;	
-	background:url("../images/igPopover/igPopoverBackground.svg") no-repeat;	
 	background-color: #DADADA;
     background-image:none;    
     /* Added to make a consistent look and feel among all Jquery themes */
