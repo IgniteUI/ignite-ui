@@ -1553,7 +1553,6 @@ $.ig.dependencies = [
 /*/ start igExcel/// */
 	{
 		widget: "igExcel",
-		dependency: [ { name: "igUtil" } ],
 		dependency: [
 			{ name: "_ig_documents_core_core" },
 			{ name: "_ig_ext_collections_extended" }
