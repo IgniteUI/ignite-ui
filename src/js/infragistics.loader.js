@@ -79,7 +79,29 @@ $.ig.loaderClass.locale.descriptions = {
 	pivotSharedDescription: "Shared Pivot Grid code.",
 	pivotViewDescription: "Component that combines a Pivot Grid and a Pivot Data Selector separated with a splitter.",
 	scrollDescription: "Component that enables support for custom fluid scrolling functionality on all devices.",
-	uploadDescription: "Component for uploading files for ASP.NET and ASP.NET MVC."
+	uploadDescription: "Component for uploading files for ASP.NET and ASP.NET MVC.",
+	comboDescription: "Combo box that offers auto-complete, auto-suggest, and rich editing capabilities.",
+	qrCodeBarcodeDescription: "The QRCodeBarcode control generates QR (Quick Response) barcode images.",
+	splitButtonDescription: "Drop down button that provides a default and secondary action/commands.",
+	colorPickerDescription: "Component that provides color selection from a grid layout.",
+	colorPickerSplitButtonDescription: "Drop down button which default action is to select a color and the secondary action is to open the igColorPicker.",
+	layoutManagerDescription: "Component that enables easily applying different layouts to a page.",
+	tileManagerDescription: "The TileManager is a layout control for rendering and arranging data into tiles.",
+	splitterDescription: "Component that divides the space into two panels, separated by a splitter bar to allow resizing.",
+	toolbarDescription: "Component that groups buttons visually together into a single toolbar.",
+	toolbarButtonDescription: "Component that defines a button and manages its state.",
+	excelDescription: "The Excel Library is is used to create, load and modify Excel workbooks through an object model.",
+	gridExcelExporterDescription: "Component that allows instant exporting of the igGrid, igHierarchicalGrid or igTreeGrid data into an Excel Worksheet",
+	categoryChartDescription: "Component that renders categorized data into a canvas on the page.",
+	dataChartDescription: "Component that provides extremely rich functionality to create and render various types of charts in an HTML 5 canvas",
+	pieChartDescription: "Component to create a pie chart with features like tooltips, legends, managing slices.",
+	doughnutChartDescription: "Component to create a doughnut chart that displays multiple sets of data around a common center.",
+	funnelChartDescription: "Component to create a funnel chart that displays values associated with different categories in a conic shape.",
+	linearGaugeDescription: "Component that visualizes data in the form of a linear gauge enriched with scales, tick marks and needles.",
+	radialGaugeDescription: "Component that visualizes data in the form of a circular gauge enriched with scales, tick marks and needles.",
+	radialMenuDescription: "Component that visualizes a context menu presenting its items in a circular arrangement around a center button.",
+	bulletGraphDescription: "Component that visualizes data in the form of a linear bullet graph, enriched with scale and tick marks to represent progress.",
+	htmlEditorDescription: "Component to provide a text editor for creating and formatting online content though standard HTML editing capabilities."
 };
 
 // jscs:enable
@@ -325,7 +347,8 @@ $.ig.dependencies = [
 			"$path$/structure/modules/infragistics.ui.html5.css",
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.chart.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.dataChartDescription
 	},
 	{
 		widget: "Category",
@@ -417,7 +440,8 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.dvGroup,
 		scripts: [
 			"$path$/modules/infragistics.piechart.js"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.pieChartDescription
 	},
 
 	{
@@ -429,7 +453,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.basechart.js",
 			"$path$/modules/infragistics.ui.doughnutchart.js"
 			],
-		locale: [ "$localePath$/infragistics.ui.doughnutchart-$locale$.js" ]
+		locale: [ "$localePath$/infragistics.ui.doughnutchart-$locale$.js" ],
+		description: $.ig.loaderClass.locale.descriptions.doughnutChartDescription
 	},
 
 	{
@@ -442,7 +467,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.funnelchart.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.chart.css" ],
+		description: $.ig.loaderClass.locale.descriptions.funnelChartDescription
 	},
 
 	{
@@ -485,7 +511,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.radialgauge.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.radialgauge.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.radialgauge.css" ],
+		description: $.ig.loaderClass.locale.descriptions.radialGaugeDescription
 	},
 
 	{
@@ -495,7 +522,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.lineargauge.js",
 			"$path$/modules/infragistics.ui.lineargauge.js"
 			],
-		group: $.ig.loaderClass.locale.dvGroup
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.linearGaugeDescription
 	},
 
 	{
@@ -506,7 +534,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.bulletgraph.js"
 			],
 		group: $.ig.loaderClass.locale.dvGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.bulletgraph.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.bulletgraph.css" ],
+		description: $.ig.loaderClass.locale.descriptions.bulletGraphDescription
 	},
 
 	{
@@ -522,7 +551,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.chart.css",
 			"$path$/structure/modules/infragistics.ui.categorychart.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.categoryChartDescription
 	},
 /* /// End Data Visualization /// */
 
@@ -537,7 +567,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.radialmenu.js"
 			],
 		group: $.ig.loaderClass.locale.interactionsGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.radialmenu.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.radialmenu.css" ],
+		description: $.ig.loaderClass.locale.descriptions.radialMenuDescription
 	},
 
 	{
@@ -551,7 +582,8 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.barcode.js"
 			],
 		locale: [ "$localePath$/infragistics.ui.barcode-$locale$.js" ],
-		group: $.ig.loaderClass.locale.dvGroup
+		group: $.ig.loaderClass.locale.dvGroup,
+		description: $.ig.loaderClass.locale.descriptions.qrCodeBarcodeDescription
 	},
 	{
 		widget: "igQRCodeBarcode.*",
@@ -794,7 +826,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.combo.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.comboDescription
 	},
 	{
 		widget: "igDialog",
@@ -1115,7 +1148,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.htmleditor.js" ],
 		locale: [ "$localePath$/infragistics.ui.htmleditor-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.htmleditor.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.htmleditor.css" ],
+		description: $.ig.loaderClass.locale.descriptions.htmlEditorDescription
 	},
 
 /*/ igMap /// */
@@ -1249,14 +1283,16 @@ $.ig.dependencies = [
 		dependency: [ { name: "igToolbarButton" } ],
 		scripts: [ "$path$/modules/infragistics.ui.splitbutton.js" ],
 		locale: [  ],
-		css: [ "$path$/structure/modules/infragistics.ui.splitbutton.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.splitbutton.css" ],
+		description: $.ig.loaderClass.locale.descriptions.splitButtonDescription
 	},
 	{
 		widget: "igColorPicker",
 		dependency: [  ],
 		scripts: [ "$path$/modules/infragistics.ui.colorpicker.js" ],
 		locale: [  ],
-		css: [ "$path$/structure/modules/infragistics.ui.colorpicker.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.colorpicker.css" ],
+		description: $.ig.loaderClass.locale.descriptions.colorPickerDescription
 	},
 	{
 		widget: "igColorPickerSplitButton",
@@ -1267,14 +1303,16 @@ $.ig.dependencies = [
 			],
 		scripts: [ "$path$/modules/infragistics.ui.colorpickersplitbutton.js" ],
 		locale: [  ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.colorPickerSplitButtonDescription
 	},
 	{
 		widget: "igLayoutManager",
 		dependency: [ { name: "igUtil" } ],
 		scripts: [ "$path$/modules/infragistics.ui.layoutmanager.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.layout.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.layout.css" ],
+		description: $.ig.loaderClass.locale.descriptions.layoutManagerDescription
 	},
 	{
 		widget: "igTileManager",
@@ -1287,7 +1325,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.tilemanager.js" ],
 		locale: [ "$localePath$/infragistics.ui.tilemanager-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.tilemanager.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.tilemanager.css" ],
+		description: $.ig.loaderClass.locale.descriptions.tileManagerDescription
 	},
 	{
 		widget: "igUpload",
@@ -1334,7 +1373,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.splitter.js" ],
 		locale: [ "$localePath$/infragistics.ui.splitter-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.splitter.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.splitter.css" ],
+		description: $.ig.loaderClass.locale.descriptions.splitterDescription
 	},
 	{
 		widget: "igToolbarButton",
@@ -1344,7 +1384,8 @@ $.ig.dependencies = [
 			],
 		scripts: [ "$path$/modules/infragistics.ui.toolbarbutton.js" ],
 		locale: [  ],
-		css: [ "$path$/structure/modules/infragistics.ui.toolbarbutton.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.toolbarbutton.css" ],
+		description: $.ig.loaderClass.locale.descriptions.toolbarButtonDescription
 	},
 	{
 		widget: "igToolbar",
@@ -1354,7 +1395,8 @@ $.ig.dependencies = [
 			],
 		scripts: [ "$path$/modules/infragistics.ui.toolbar.js" ],
 		locale: [ "$localePath$/infragistics.ui.toolbar-$locale$.js" ],
-		css: [ "$path$/structure/modules/infragistics.ui.toolbar.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.toolbar.css" ],
+		description: $.ig.loaderClass.locale.descriptions.toolbarDescription
 	},
 /*/ igTreeGrid /// */
 	{
@@ -1511,7 +1553,165 @@ $.ig.dependencies = [
 /*/ start igExcel/// */
 	{
 		widget: "igExcel",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [
+			{ name: "_ig_documents_core_core" },
+			{ name: "_ig_ext_collections_extended" }
+		],
+		scripts: [ "$path$/modules/infragistics.excel_core.js" ],
+		locale: [ "$localePath$/infragistics.excel_core-$locale$.js" ],
+		css: [],
+		description: $.ig.loaderClass.locale.descriptions.excelDescription
+	},
+	{
+		widget: "Functions",
+		parentWidget: "igExcel",
+		dependency: [ { name: "igExcel" } ],
+		scripts: [ "$path$/modules/infragistics.excel_functions.js" ],
+		css: []
+	},
+	{
+		widget: "_ig_documents_core_openxml",
+		dependency: [
+			{ name: "_ig_documents_core_core" },
+			{ name: "_ig_ext_collections_extended" },
+			{ name: "_ig_xml" }
+		],
+		group: $.ig.loaderClass.locale.miscGroup,
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.documents.core_openxml.js" ],
+		css: []
+	},
+	{
+		widget: "_ig_excel_openxml",
+		dependency: [
+			{ name: "igExcel" },
+			{ name: "_ig_documents_core_openxml" }
+		],
+		group: $.ig.loaderClass.locale.miscGroup,
+		scripts: [ "$path$/modules/infragistics.excel_serialization_openxml.js" ],
+		internal: true,
+		css: []
+	},
+	{
+		widget: "_ig_excel_biff8",
+		dependency: [ { name: "igExcel" } ],
+		group: $.ig.loaderClass.locale.miscGroup,
+		scripts: [ "$path$/modules/infragistics.excel_serialization_biff8.js" ],
+		internal: true,
+		css: []
+	},
+	{
+		widget: "LoadSaveXls",
+		parentWidget: "igExcel",
+		dependency: [ { name: "_ig_excel_biff8" } ],
+		scripts: [],
+		css: []
+	},
+	{
+		widget: "LoadSaveXlt",
+		parentWidget: "igExcel",
+		dependency: [ { name: "_ig_excel_biff8" } ],
+		scripts: [],
+		css: []
+	},
+	{
+		widget: "LoadSaveXlsx",
+		parentWidget: "igExcel",
+		dependency: [ { name: "_ig_excel_openxml" } ],
+		scripts: [],
+		css: []
+	},
+	{
+		widget: "LoadSaveXlsm",
+		parentWidget: "igExcel",
+		dependency: [ { name: "_ig_excel_openxml" } ],
+		scripts: [],
+		css: []
+	},
+	{
+		widget: "LoadSaveXltm",
+		parentWidget: "igExcel",
+		dependency: [ { name: "_ig_excel_openxml" } ],
+		scripts: [],
+		css: []
+	},
+	{
+		widget: "LoadSaveXltx",
+		parentWidget: "igExcel",
+		dependency: [ { name: "_ig_excel_openxml" } ],
+		scripts: [],
+		css: []
+	},
+	{
+		widget: "igExcel.*",
+		dependency: [
+			{ name: "Functions" },
+			{ name: "LoadSaveXls" },
+			{ name: "LoadSaveXlt" },
+			{ name: "LoadSaveXlsx" },
+			{ name: "LoadSaveXlsm" },
+			{ name: "LoadSaveXltm" },
+			{ name: "LoadSaveXltx" }
+		]
+	},
+/*/ end igExcel /// */
+/*/ start igSpreadsheet/// */
+	{
+		widget: "_ig_undo",
+		dependency: [
+			{ name: "igUtil" },
+			{ name: "_ig_ext_core" },
+			{ name: "_ig_ext_collections" }
+		],
+		group: $.ig.loaderClass.locale.miscGroup,
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.undo.js" ],
+		locale: [ "$localePath$/infragistics.undo-$locale$.js" ],
+		css: []
+	},
+	{
+		widget: "igSpreadsheet",
+		dependency: [
+			{ name: "_ig_documents_core_openxml" },
+			{ name: "igExcel" },
+			{ name: "igUtil" },
+			{ name: "_ig_ext_core" },
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_collections_extended" },
+			{ name: "_ig_xml" },
+			{ name: "_ig_ext_ui" },
+			{ name: "_ig_ext_io" },
+			{ name: "_ig_ext_web" },
+			{ name: "igScroll" },
+			{ name: "_ig_dv_core" },
+			{ name: "_ig_dv_jquerydom" },
+			{ name: "_ig_undo" }
+		],
+		scripts: [
+			"$path$/modules/infragistics.spreadsheet.js",
+			"$path$/modules/infragistics.ui.spreadsheet.js"
+		],
+		locale: [ "$localePath$/infragistics.spreadsheet-$locale$.js" ],
+		css: [  ]
+	},
+/*/ end igSpreadsheet /// */
+/*/ start igScheduler/// */
+	{
+		widget: "igScheduler",
+		dependency: [
+			{ name: "igUtil" },
+			{ name: "_ig_ext_core" },
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_collections_extended" },
+			{ name: "_ig_ext_ui" },
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_io" },
+			{ name: "_ig_ext_threading" },
+			{ name: "_ig_ext_web" },
+			{ name: "igScroll" },
+			{ name: "_ig_dv_core" },
+			{ name: "_ig_dv_jquerydom" }
+		],
 		scripts: [
 			"$path$/modules/infragistics.documents.core.js",
 			"$path$/modules/infragistics.excel.js"
@@ -1524,7 +1724,8 @@ $.ig.dependencies = [
 		widget: "igGridExcelExporter",
 		dependency: [ { name: "igExcel" } ],
 		scripts: [ "$path$/modules/infragistics.gridexcelexporter.js" ],
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.gridExcelExporterDescription
 	}
 /*/ end igExcel /// */
 
