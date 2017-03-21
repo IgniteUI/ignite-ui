@@ -3131,6 +3131,10 @@
 					this._commitTransaction(this._transactionLog.pop());
 				}
 			}
+			/* M.H. 2 Feb 2017 Fix for bug 231214: When you update a formatted field it can't be found by the allFields search filtering. */
+			if (this._getFieldsWithFormatter().length) {
+				this._generateFormattedRecords();
+			}
 		},
 		rollback: function (id) {
 			/* clears the transaction log without updating anything in the data source
@@ -3569,7 +3573,7 @@
 				if (data) {
 					// M.H. 17 June 2014 Fix for bug #171306: The ig_pk property is missing from the added row object.
 					newRow = row;
-					if (data !== origDs && $.type(row) === "object") {
+					if (origDs && data !== origDs && $.type(row) === "object") {
 						newRow = $.extend(true, {}, row);
 					}
 					if (index >= 0 && index < data.length) {
@@ -5554,6 +5558,146 @@
 
 			return fields;
 		},
+		_splitFilterExpression: function (search) {
+			var matches = search.match(/\"[^\"]+\"/g) || [], res = [], i;
+
+			for (i = 0; i < matches.length; i++) {
+				search = search.replace(matches[ i ], "");
+				res.push(matches[ i ].replace(/\"/g, ""));
+			}
+			matches = search.split(/\s+/);
+			res = res.concat(matches);
+			return res;
+		},
+		_filterAllFields: function (val, data, fields) {
+			fields = fields || this.schema().fields();
+			if (!fields || !fields.length) {
+				return [];
+			}
+			var i, j, len = data.length,
+				filteredData = [], count = 0, curr,
+				formattedRecords = (this.schema() || {})._formattedRecords || [],
+				push,
+				searchExprs = this._splitFilterExpression(val), se = [];/*split by spaces */
+			for (i = 0; i < searchExprs.length; i++) {
+				curr = searchExprs[ i ];
+				if (curr) {// remove empty strings
+					push = true;
+					/* check whether there are duplicate tokens and remove those that are substring tokens in array "se"
+					For instance if array "searchExpr" is ["1", "2", "123"], then array "se" should be ["123"]*/
+					for (j = 0; j < se.length; j++) {
+						if (se[ j ] === curr || se[ j ].indexOf(curr) !== -1) {
+							push = false;
+							break;
+						}
+						/* remove those elements in array "se" which are substring of variable "curr" */
+						if (curr.indexOf(se[ j ]) !== -1) {
+							se.splice(j, 1);
+							j = -1;
+						}
+					}
+					if (push) {
+						se.push(this.settings.filtering.caseSensitive ? curr : curr.toLowerCase());
+					}
+				}
+			}
+			if (!se.length) {
+				return data;
+			}
+			for (i = 0; i < len; i++) {
+				if (this._findMatchByFields(se, data[ i ], fields, formattedRecords[ i ] || null)) {
+					filteredData[ count++ ] = data[ i ];
+				}
+			}
+			return filteredData;
+		},
+		_findMatchByFields: function (searchTokens, rec, fields, formattedRecord) {
+			var j, fl = fields.length, dataVal, fieldName, i,
+				ignoreCase = !this.settings.filtering.caseSensitive, s = "";
+			for (j = 0; j < fl; j++) {
+				fieldName = fields[ j ].name;
+				if (formattedRecord && formattedRecord[ fieldName ] !== undefined) {
+					dataVal = formattedRecord[ fieldName ];
+				} else {
+					dataVal = this._hasMapper ? this.getCellValue(fieldName, rec) : rec[ fieldName ];
+				}
+				dataVal = (dataVal === null || dataVal === undefined) ? "" : dataVal;
+				s += dataVal + "||";
+			}
+			s = ignoreCase ? s.toLowerCase() : s;
+			for (i = 0; i < searchTokens.length; i++) {
+				if (s.indexOf(searchTokens[ i ]) === -1) {
+					return false;
+				}
+			}
+			return true;
+		},
+		_getFieldsWithFormatter: function () {
+			/* return array of fields(from the data schema) that have property "formatter" defined
+			if schema is not defined OR there aren't such fields - ruturns empty array */
+			var i, f, res = [];
+			if (!this.schema()) {
+				return res;
+			}
+			f = this.schema().fields();
+			for (i = 0; i < f.length ; i++) {
+				if (f[ i ].formatter) {
+					res.push(f[ i ]);
+				}
+			}
+			return res;
+		},
+		_generateFormattedRecords: function (data) {
+			var i, j, f, len, fr = [], schema = this.schema(),
+				fields = this._getFieldsWithFormatter(), fieldsLen = fields.length;
+			data = data || this._data;
+			len = data.length;
+			if (!len || !schema || !fieldsLen) {
+				return;
+			}
+			for (i = 0; i < len; i++) {
+				fr[ i ] = {};
+				for (j = 0; j < fieldsLen; j++) {
+					f = fields[ j ];
+					fr[ i ][ f.name ] = f.formatter(
+						data[ i ][ f.name ],
+						data[ i ],
+						f);
+				}
+			}
+			schema._formattedRecords = fr;
+		},
+		filterByText: function (expression, fields) {
+			/* Filters the data source locally by text. If "fields" parameter is set search is performed only in the listed fields otherwise all fields are searched.
+			```
+				ds = new $.%%WidgetName%%({
+					type: "json",
+					dataSource: adventureWorks,
+					schema: {
+						fields: [{
+							name: "ID", type: "number"
+						}, {
+							name: "Name", type: "string"
+						}, {
+							name: "Description", type: "string"
+						}, {
+							name: "ReleaseDate", type: "date"
+						}]
+				});
+				ds.dataBind();
+
+				// Search in all fields
+				ds.filterByText("Apples");
+				// Search only in "Name" field
+				ds.filterByText("Apples", [{name: "Name", type: "string"}]);
+			```
+
+			paramType="string" a text to search for. Multiple search texts should be separated by space. When multiple search texts are provided all of them should be presented in the search fields (bool logic "and" is applied).
+			paramType="array" optional="true" an array of fields that will be searched.
+			*/
+			fields = fields || this.schema().fields();
+			return this.filter([{ filterAllFields: true, expr: expression, fields: fields }]);
+		},
 		/* this is used when sorting data
 		type can be "string", "number", "boolean", "date".
 		Other values are ignored and default conversion is used
@@ -5571,9 +5715,12 @@
 			setting the settings.filtering.expressions. The result (filtered data) can be obtained by calling dataView()
 			example: [{fieldName : "firstName", expr: "abc", cond: "StartsWith"}, {fieldName : "lastName"}]
 			example 2: [{fieldIndex : 1} , {fieldIndex : 2, expr: "a", cond : "contains"}]
+			example 3: [{filterAllFields: true, expr: "abc", fields: [name: "Description", type: "string"]}]
 			expr is the filter expression text , such as "abc", or a regular expression such as *test*
 			cond is the filtering condition such as startsWith, endsWith, contains, equals, doesNotEqual, doesNotContain
 			if expr is detected to be a regular expression, the "cond" part is skipped
+			To [filter by text](ig.datasource#methods:filterByText) "fieldExpressions" should have only one object with the following schema:
+			{filterAllFields: <type="bool" should be set to true>, expr: <type="string" the text to search for>, fields: <type="array" an array of [fields](ig.dataschema#options:schema.fields) to search in>}
 
 			```
 				ds = new $.%%WidgetName%%({
@@ -5584,6 +5731,9 @@
 				ds.dataBind();
 
 				ds.filter([{fieldName : "Color", expr: "Red", cond: "Equals"}], "AND", true);
+
+				// Filter by text
+				ds.filter([{filterAllFields: true, expr: "abc", fields: [name: "Description", type: "string"]}]);
 			```
 
 			paramType="object" a list of field expression definitions
@@ -5637,20 +5787,26 @@
 				/* A.T. 20 Dec. 2011 Fix for bug #96819 - igDataSource filtering feature
 				with own defined custom function does not filtering data */
 				this._dataView = [];
+			} else if (fieldExpressions && fieldExpressions.length &&
+						fieldExpressions[ 0 ] && fieldExpressions[ 0 ].filterAllFields) {
+				data = this._filterAllFields(fieldExpressions[ 0 ].expr, data,
+											fieldExpressions[ 0 ].fields || schema.fields());
+				this._filteredData = data;
+				this._dataView = [];
 			} else {
 				// re-initialize the dataView. We can do that safely, since data will either be cached, or will be stored in this.data(), meaning that will be the whole ds
 				this._dataView = [];
 				this._filteredData = [];
 				/* filter "data"
 				we will store all results in tmpData, and then assign it to the dataView. please ensure that */
+				if (expr) {
+					fieldExpressions = this._parseFilterExprString(expr);
+				}
+				if (allFieldsExpr) {
+					fieldExpressionsOnStrings = this._parseFilterExprString(allFieldsExpr);
+				}
 				for (i = 0; i < data.length; i++) {
 					skipRec = false;
-					if (expr) {
-						fieldExpressions = this._parseFilterExprString(expr);
-					}
-					if (allFieldsExpr) {
-						fieldExpressionsOnStrings = this._parseFilterExprString(allFieldsExpr);
-					}
 					for (j = 0; j < fieldExpressions.length; j++) {
 						/* if there is no match, break, we aren't going to add the record to the resulting data view.
 						the default boolean logic is to "AND" the fields */
@@ -7154,7 +7310,9 @@
 					/* type="string" The XPath expression to map the node to the field */
 					xpath: undefined,
 					/* type="string|function" This option is applicable only for fields with fieldDataType="object". Reference to a function (string or function) that can be used for complex data extraction from the data records, whose return value will be used for all data operations associated with this field. */
-					mapper: undefined
+					mapper: undefined,
+					/*paramType="function" optional="true" formatter function which accepts three parameters: val - value of the field; record - data source record; field - field definition; and return the formatted string. Formatter function is used when filtering by all fields.*/
+					formatter: undefined
 				}
 			],
 			/* type="string" this is the property (path) in the data source where the records are located. */
@@ -7259,6 +7417,16 @@
 						results[ i ][ field.name ] = val;
 					}
 				}
+			}
+			if (field.formatter) {
+				this._formattedRecords = this._formattedRecords || [];
+				this._formattedRecords[ i ] = this._formattedRecords[ i ] || {};
+				this._formattedRecords[ i ][ field.name ] =
+					field.formatter(
+						results[ i ][ field.name ],
+						results[ i ],
+						field
+					);
 			}
 		},
 		_addOffset: function (result, fieldName, i) {
@@ -9354,7 +9522,10 @@
 			var s = this.schema();
 			this.isTransformedToHierarchicalData(false);
 			if (s) {
-				this._checkGeneratedSchema();
+				if ((this._runtimeType !== "remoteUrl" && this.schema().schema.fields.length !== 0) ||
+				this.settings.treeDS.enableRemoteLoadOnDemand ) {
+					this._checkGeneratedSchema();
+				}
 				/* overwrite default schema transform function - for now there is no igTreeHierarchicalSchema */
 				if (!this._transformCallback) {
 					this._transformCallback = $.proxy(s.transform, s);
