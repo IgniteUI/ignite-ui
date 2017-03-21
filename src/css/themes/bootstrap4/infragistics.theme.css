@@ -2996,7 +2996,7 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
   border-bottom-color: #eceeef;
 }
 
-.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
   border-bottom: 1px solid #eceeef;
 }
 
