@@ -832,7 +832,6 @@
 
 				mouseenter: $.proxy(this._onMouseEnterContainer, this),
 				mouseleave: $.proxy(this._onMouseLeaveContainer, this),
-				dragstart: $.proxy(this._onDragStartElem, this),
 
 				keydown: $.proxy(this._onKeyDown, this)
 			};
@@ -2350,7 +2349,7 @@
 			}
 
 			//On Safari preventing the touchmove would prevent default page scroll behaviour even if there is the element doesn't have overflow
-			if (!$.ig.util.isSafari || ($.ig.util.isSafari && !this._igScollTouchPrevented)) {
+			if (!this._igScollTouchPrevented) {
 				event.preventDefault();
 			}
 		},
@@ -3817,7 +3816,7 @@
 		},
 
 		_onDragStartElem: function (event) {
-			/* Prevent dragging of that element due to causing some unwanted behaviour */
+			/* Prevent dragging of that element due to causing some unwanted behaviour when using the custom scrollbars and you drag on them */
 			event.preventDefault();
 		},
 
