@@ -1585,7 +1585,7 @@ sans-serif;
  */
 
 .touch .ui-spinner-button,
-.touchevents .ui-spinner- button,
+.touchevents .ui-spinner-button,
 .pointerevents .ui-spinner-button
 {
     width: 1.4em;
@@ -1704,6 +1704,10 @@ sans-serif;
 .ui-iggrid-responsive-vertical {
     border-top: 1px solid @igGray6!important;
     /* border-top for tables without headers */
+}
+
+.ui-iggrid-layout-helper {
+  border-bottom: 1px solid @igGray3;
 }
 
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
@@ -2349,7 +2353,7 @@ sans-serif;
     border-bottom-color: @igGray3!important;
 }
 
-.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
     border-bottom: 1px solid @igGray3;
 }
 /************/
