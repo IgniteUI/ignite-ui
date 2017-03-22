@@ -1351,15 +1351,16 @@
 				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
 				this._syncElemsX(this._container[ 0 ], false);
 				/*self._syncHBar(this._container[ 0 ], false);*/
-
-				var curPosY;
-				if (this.options.scrollOnlyVBar) {
-					curPosY = this._getScrollbarVPosition();
-				} else {
-					curPosY = this._getContentPositionY();
-				}
-				this._updateScrollBarsPos(destX, curPosY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosY;
+			if (this.options.scrollOnlyVBar) {
+				curPosY = this._getScrollbarVPosition();
+			} else {
+				curPosY = this._getContentPositionY();
+			}
+			this._updateScrollBarsPos(destX, curPosY);
 
 			return destX - curPosX;
 		},
@@ -1406,15 +1407,16 @@
 				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
-
-				var curPosX;
-				if (this.options.scrollOnlyHBar) {
-					curPosX = this._getScrollbarHPosition();
-				} else {
-					curPosX = this._getContentPositionX();
-				}
-				this._updateScrollBarsPos(curPosX, destY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosX;
+			if (this.options.scrollOnlyHBar) {
+				curPosX = this._getScrollbarHPosition();
+			} else {
+				curPosX = this._getContentPositionX();
+			}
+			this._updateScrollBarsPos(curPosX, destY);
 
 			return destY - curPosY;
 		},
@@ -2272,7 +2274,7 @@
 			}
 
 			//On Safari preventing the touchmove would prevent default page scroll behaviour even if there is the element doesn't have overflow
-			if (!$.ig.util.isSafari || ($.ig.util.isSafari && !this._igScollTouchPrevented)) {
+			if (!this._igScollTouchPrevented) {
 				event.preventDefault();
 			}
 		},
