@@ -2073,6 +2073,9 @@ body .ui-tooltip {
 .ui-iggrid.ui-igpivotgrid > table > tbody tr:first-child th {
   border-top: none!important;
 }
+.ui-iggrid-layout-helper {
+  border: 1px solid #e6e6e6;
+}
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
 .ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tbody > tr:first-child td,
