@@ -6954,7 +6954,9 @@
 		_validateRequiredPrompts: function (value) {
 			var i;
 			if (value === "") {
-				return false;
+
+				// D.P. #446 Ignore empty value. Mask editor required prompts validation now allows empty value.
+				return true;
 			}
 			for (i = 0; i < this._requiredIndeces.length; i++) {
 				var ch = value.charAt(this._requiredIndeces[ i ]);
