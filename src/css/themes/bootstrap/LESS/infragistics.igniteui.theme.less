@@ -179,6 +179,10 @@
     border-top: none!important;
 }
 
+.ui-iggrid-layout-helper {
+	border-bottom: 1px solid @table-border-color;
+}
+
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
 .ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tbody > tr:first-child td,
@@ -730,7 +734,7 @@
     border-bottom-color: @table-border-color;
 }
 
-.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
     border-bottom: 1px solid @table-border-color;
 }
 /************/
