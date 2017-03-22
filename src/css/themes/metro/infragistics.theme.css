@@ -2331,6 +2331,10 @@ body .ui-tooltip {
     border-color: #b1b1b1;
 }
 
+.ui-iggrid-layout-helper {
+  border-bottom: 1px solid #DCDCDC;
+}
+
 .ui-iggrid-scrolldiv {
     background-color: #f3f3f3;
     /* !important needed because layout css removes borders */
