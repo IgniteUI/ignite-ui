@@ -7790,8 +7790,9 @@
 			return true;
 		},
 		fields: function () {
-			/* type="array" A list of field definitions specifying the schema of the data source.
-			Field objects description: {fieldName, [fieldDataType], [fieldXPath]} */
+			/* A list of field definitions specifying the schema of the data source.
+			Field objects description: {fieldName, [fieldDataType], [fieldXPath]}
+			returnType="array"*/
 			return this.schema.fields;
 		}
 	});
