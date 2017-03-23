@@ -120,7 +120,8 @@ $.ig.loaderClass.locale.descriptions = {
 	verticalDescription: "Contains the column series that vsualizes categorized data with vertical columns.",
 	dateTimeAxisDescription: "Allows for configuring DateTimeAxis.",
 	overviewPlusDetailPaneDescription: "Component that display an OverviewPlusDetailPane over the igDataChart plot area.",
-	zoombarDescription: "The igZoombar control provides zooming functionality to range-based controls."
+	zoombarDescription: "The igZoombar control provides zooming functionality to range-based controls.",
+	mapDescription: "The igMap visualize various kinds of maps based on the HTML5 canvas element and performs all rendering on the client-side."
 };
 
 // jscs:enable
@@ -143,9 +144,7 @@ $.ig.dependencies = [
 	{
 		widget: "igUtil",
 		priority: true,
-		scripts: [ "$path$/modules/infragistics.util.js",
-		"$path$/modules/infragistics.util.jquery.js",
-		"$path$/modules/infragistics.util.jquerydeferred.js" ],
+		scripts: [ "$path$/modules/infragistics.util.js" ],
 		locale: [ "$localePath$/infragistics.util-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
 		css: [  ],
@@ -269,13 +268,6 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.dv_core.js" ]
 	},
 	{
-		widget: "_ig_dv_jquerydom",
-		group: $.ig.loaderClass.locale.dvGroup,
-		dependency: [ { name: "_ig_dv_core" } ],
-		internal: true,
-		scripts: [ "$path$/modules/infragistics.dv_jquerydom.js" ]
-	},
-	{
 		widget: "_ig_dv_geo",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_io" }, { name: "_ig_ext_ui" }, { name: "_ig_dv_core" } ],
@@ -322,7 +314,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "_ig_dv_commonwidget",
-		dependency: [ { name: "_ig_datachart_core" }, { name: "_ig_dv_jquerydom" } ],
+		dependency: [ { name: "_ig_datachart_core" } ],
 		scripts: [ "$path$/modules/infragistics.dvcommonwidget.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		internal: true,
@@ -524,9 +516,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "_ig_simple_datachart_core",
-		dependency: [ { name: "igUtil" }, { name: "igTemplating" },
-			{ name: "igDataSource" }, { name: "_ig_dv_jquerydom" }
-		],
+		dependency: [ { name: "igUtil" }, { name: "igTemplating" }, { name: "igDataSource" } ],
 		scripts: [ "$path$/modules/infragistics.ui.basechart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		internal: true,
@@ -551,7 +541,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igRadialGauge",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_jquerydom" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.radialgauge.js",
 			"$path$/modules/infragistics.ui.radialgauge.js"
@@ -563,7 +553,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igLinearGauge",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_jquerydom" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.lineargauge.js",
 			"$path$/modules/infragistics.ui.lineargauge.js"
@@ -574,7 +564,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igBulletGraph",
-		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_jquerydom" } ],
+		dependency: [ { name: "_ig_dv_geometry" } ],
 		scripts: [
 			"$path$/modules/infragistics.ui.bulletgraph.js",
 			"$path$/modules/infragistics.bulletgraph.js"
@@ -606,8 +596,7 @@ $.ig.dependencies = [
 		widget: "igRadialMenu",
 		dependency: [
 			{ name: "igUtil" },
-			{ name: "_ig_dv_core" },
-			{ name: "_ig_dv_jquerydom" }
+			{ name: "_ig_dv_core" }
 			],
 		scripts: [
 			"$path$/modules/infragistics.radialmenu_core.js",
@@ -622,8 +611,7 @@ $.ig.dependencies = [
 		widget: "igQRCodeBarcode",
 		dependency: [
 			{ name: "igUtil" },
-			{ name: "_ig_dv_simple_core" },
-			{ name: "_ig_dv_jquerydom" }
+			{ name: "_ig_dv_simple_core" }
 			],
 		scripts: [
 			"$path$/modules/infragistics.barcode_qrcodebarcode.js",
@@ -940,7 +928,6 @@ $.ig.dependencies = [
 			{ name: "FeatureChooser" },
 			{ name: "igTree" }
 			],
-
 		description: $.ig.loaderClass.locale.descriptions.gridColumnMovingDescription,
 		scripts: [ "$path$/modules/infragistics.ui.grid.columnmoving.js" ],
 		css: [  ]
@@ -1217,7 +1204,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.map.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.mapDescription
 	},
 /*/ end igMap /// */
 
@@ -1604,49 +1592,6 @@ $.ig.dependencies = [
 /*/ end igTreeGrid Features/// */
 /*/ start igExcel/// */
 	{
-		widget: "_ig_xml",
-		dependency: [
-			{ name: "igUtil" },
-			{ name: "_ig_ext_core" },
-			{ name: "_ig_ext_collections" },
-			{ name: "_ig_ext_io" },
-			{ name: "_ig_ext_text" },
-			{ name: "_ig_ext_web" }
-		],
-		group: $.ig.loaderClass.locale.miscGroup,
-		internal: true,
-		scripts: [ "$path$/modules/infragistics.xml.js" ]
-	},
-	{
-		widget: "_ig_documents_core_core",
-		dependency: [
-			{ name: "igUtil" },
-			{ name: "_ig_ext_core" },
-			{ name: "_ig_ext_collections" },
-			{ name: "_ig_ext_text" },
-			{ name: "_ig_ext_io" },
-			{ name: "_ig_ext_ui" }
-		],
-		priority: true,
-		group: $.ig.loaderClass.locale.miscGroup,
-		internal: true,
-		scripts: [ "$path$/modules/infragistics.documents.core_core.js" ],
-		locale: [ "$localePath$/infragistics.documents.core_core-$locale$.js" ],
-		css: []
-	},
-	{
-		widget: "_ig_documents_core_openxml",
-		dependency: [
-			{ name: "_ig_documents_core_core" },
-			{ name: "_ig_ext_collections_extended" },
-			{ name: "_ig_xml" }
-		],
-		group: $.ig.loaderClass.locale.miscGroup,
-		internal: true,
-		scripts: [ "$path$/modules/infragistics.documents.core_openxml.js" ],
-		css: []
-	},
-	{
 		widget: "igExcel",
 		dependency: [
 			{ name: "_ig_documents_core_core" },
@@ -1808,24 +1753,22 @@ $.ig.dependencies = [
 			{ name: "_ig_dv_jquerydom" }
 		],
 		scripts: [
-			"$path$/modules/infragistics.scheduler.js",
-			"$path$/modules/infragistics.ui.scheduler.js"
-		],
+			"$path$/modules/infragistics.documents.core.js",
+			"$path$/modules/infragistics.excel.js"
+			],
 		css: [  ]
 	},
-/*/ end igScheduler /// */
-/*/ start igGridExcelExporter/// */
+/*/ end igExcel /// */
+/*/ start igExcel/// */
 	{
 		widget: "igGridExcelExporter",
-		dependency: [
-			{ name: "igExcel" },
-			{ name: "LoadSaveXlsx" }
-		],
+		dependency: [ { name: "igExcel" } ],
 		scripts: [ "$path$/modules/infragistics.gridexcelexporter.js" ],
 		css: [  ],
 		description: $.ig.loaderClass.locale.descriptions.gridExcelExporterDescription
 	}
-/*/ end igGridExcelExporter /// */
+/*/ end igExcel /// */
+
  ];
 
 $.ig.theme = "infragistics";
