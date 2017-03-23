@@ -120,7 +120,8 @@ $.ig.loaderClass.locale.descriptions = {
 	verticalDescription: "Contains the column series that vsualizes categorized data with vertical columns.",
 	dateTimeAxisDescription: "Allows for configuring DateTimeAxis.",
 	overviewPlusDetailPaneDescription: "Component that display an OverviewPlusDetailPane over the igDataChart plot area.",
-	zoombarDescription: "The igZoombar control provides zooming functionality to range-based controls."
+	zoombarDescription: "The igZoombar control provides zooming functionality to range-based controls.",
+	mapDescription: "The igMap visualize various kinds of maps based on the HTML5 canvas element and performs all rendering on the client-side."
 };
 
 // jscs:enable
@@ -1203,7 +1204,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.map.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.mapDescription
 	},
 /*/ end igMap /// */
 
