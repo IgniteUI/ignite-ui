@@ -7176,7 +7176,7 @@
 			// data should be sorted(by gbExprs) when this functions is called - otherwise grouping will not be correct
 			var i, newgb = [], gbs = this.settings.groupby || {};
 			data = data || this._data;
-			gbExprs = this._findSortingExpressionsForLayout(gbExprs || [], this.settings.key);;
+			gbExprs = this._findSortingExpressionsForLayout(gbExprs || [], this.settings.key);
 			this._gbData = [];
 			this._vgbData = [];
 			this._gbDataView = [];
