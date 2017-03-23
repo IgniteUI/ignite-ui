@@ -101,7 +101,27 @@ $.ig.loaderClass.locale.descriptions = {
 	radialGaugeDescription: "Component that visualizes data in the form of a circular gauge enriched with scales, tick marks and needles.",
 	radialMenuDescription: "Component that visualizes a context menu presenting its items in a circular arrangement around a center button.",
 	bulletGraphDescription: "Component that visualizes data in the form of a linear bullet graph, enriched with scale and tick marks to represent progress.",
-	htmlEditorDescription: "Component to provide a text editor for creating and formatting online content though standard HTML editing capabilities."
+	htmlEditorDescription: "Component to provide a text editor for creating and formatting online content though standard HTML editing capabilities.",
+	themeDescription: "Stylesheet containing the style rules for the corresponding theme.",
+	regionalDescription: "This component contains regional settings.",
+	utilDescription: "Contains util functions that extend the jQuery namespace.",
+	sharedDescription: "Containes shared localization resources.",
+	reportViewerDescription: "This component is designed to render NetAdvantage Reporting Reports within web applications.",
+	popoverDescription: "The igPopover control displays contextual information over elements in a user interface.",
+	chartLegendDescription: "The igChartLegend displays the name of a series or its elements represented in chart plot area.",
+	annotationDescription: "Component that provides displaying annotations over the chart like tooltips, highlight layers, crosshair, etc.",
+	extendedFinancialDescription: "Contains the extended financial indicators for the Finance type chart series.",
+	polarDescription: "Contains the polar series for the igDataChart.",
+	radialDescription: "Contains the radial series to display category data evenly across a full circle.",
+	rangeCategoryDescription: "Contains the range category series, used to depict the spread between two values.",
+	scatterDescription: "Contains the scatter series used to depict individual points in orthogonal (Cartesian) coordinate system.",
+	categoryDescription: "Contains the category series that allow data for separate distinct category axis values to be plotted.",
+	stackedDescription: "Containes the stacked series used to visualize categorized data in stacked segments.",
+	verticalDescription: "Contains the column series that vsualizes categorized data with vertical columns.",
+	dateTimeAxisDescription: "Allows for configuring DateTimeAxis.",
+	overviewPlusDetailPaneDescription: "Component that display an OverviewPlusDetailPane over the igDataChart plot area.",
+	zoombarDescription: "The igZoombar control provides zooming functionality to range-based controls.",
+	mapDescription: "The igMap visualize various kinds of maps based on the HTML5 canvas element and performs all rendering on the client-side."
 };
 
 // jscs:enable
@@ -110,14 +130,16 @@ $.ig.dependencies = [
 		widget: "theme",
 		scripts: [  ],
 		internal: true,
-		css: [ "$path$/themes/$theme$/infragistics.theme.css" ]
+		css: [ "$path$/themes/$theme$/infragistics.theme.css" ],
+		description: $.ig.loaderClass.locale.descriptions.themeDescription
 	},
 	{
 		widget: "regional",
 		scripts: [  ],
 		css: [  ],
 		internal: true,
-		regional: [ "$localePath$/regional/infragistics.ui.regional-$regional$.js" ]
+		regional: [ "$localePath$/regional/infragistics.ui.regional-$regional$.js" ],
+		description: $.ig.loaderClass.locale.descriptions.regionalDescription
 	},
 	{
 		widget: "igUtil",
@@ -125,7 +147,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.util.js" ],
 		locale: [ "$localePath$/infragistics.util-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
-		css: [  ]
+		css: [  ],
+		description: $.ig.loaderClass.locale.descriptions.utilDescription
 	},
 	{
 		widget: "igDataSource",
@@ -177,7 +200,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.shared.js" ],
 		locale: [ "$localePath$/infragistics.shared-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.shared.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.shared.css" ],
+		description: $.ig.loaderClass.locale.descriptions.sharedDescription
 	},
 /* /// Data Visualization /// */
 	{
@@ -322,19 +346,22 @@ $.ig.dependencies = [
 		widget: "igChartLegend",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_legend" }, { name: "_ig_dv_commonwidget" } ],
-		scripts: [ "$path$/modules/infragistics.ui.chartlegend.js" ]
+		scripts: [ "$path$/modules/infragistics.ui.chartlegend.js" ],
+		description: $.ig.loaderClass.locale.descriptions.chartLegendDescription
 	},
 	{
 		widget: "igDateTimeAxis",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_dv_extendedaxes" } ],
-		scripts: []
+		scripts: [],
+		description: $.ig.loaderClass.locale.descriptions.dateTimeAxisDescription
 	},
 	{
 		widget: "igOverviewPlusDetailPane",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_dv_core" } ],
-		scripts: [ "$path$/modules/infragistics.dv_opd.js" ]
+		scripts: [ "$path$/modules/infragistics.dv_opd.js" ],
+		description: $.ig.loaderClass.locale.descriptions.overviewPlusDetailPaneDescription
 	},
 
 	{
@@ -355,21 +382,24 @@ $.ig.dependencies = [
 		parentWidget: "igDataChart",
 		dependency: [ { name: "_ig_datachart_categorycore" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_category.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_category.js" ],
+		description: $.ig.loaderClass.locale.descriptions.categoryDescription
 	},
 	{
 		widget: "RangeCategory",
 		parentWidget: "igDataChart",
 		dependency: [ { name: "_ig_datachart_categorycore" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_rangecategory.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_rangecategory.js" ],
+		description: $.ig.loaderClass.locale.descriptions.rangeCategoryDescription
 	},
 	{
 		widget: "VerticalCategory",
 		parentWidget: "igDataChart",
 		dependency: [ { name: "_ig_datachart_categorycore" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_verticalcategory.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_verticalcategory.js" ],
+		description: $.ig.loaderClass.locale.descriptions.verticalDescription
 	},
 	{
 		widget: "Financial",
@@ -383,42 +413,48 @@ $.ig.dependencies = [
 		parentWidget: "igDataChart",
 		dependency: [ { name: "Financial" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_extendedfinancial.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_extendedfinancial.js" ],
+		description: $.ig.loaderClass.locale.descriptions.extendedFinancialDescription
 	},
 	{
 		widget: "Polar",
 		parentWidget: "igDataChart",
 		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_polar.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_polar.js" ],
+		description: $.ig.loaderClass.locale.descriptions.polarDescription
 	},
 	{
 		widget: "Radial",
 		parentWidget: "igDataChart",
 		dependency: [ { name: "_ig_dv_extendedaxes" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_radial.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_radial.js" ],
+		description: $.ig.loaderClass.locale.descriptions.radialDescription
 	},
 	{
 		widget: "Scatter",
 		parentWidget: "igDataChart",
 		dependency: [ { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_scatter.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_scatter.js" ],
+		description: $.ig.loaderClass.locale.descriptions.scatterDescription
 	},
 	{
 		widget: "Stacked",
 		parentWidget: "igDataChart",
 		dependency: [ { name: "Category" }, { name: "VerticalCategory" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_stacked.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_stacked.js" ],
+		description: $.ig.loaderClass.locale.descriptions.stackedDescription
 	},
 	{
 		widget: "Annotation",
 		parentWidget: "igDataChart",
 		dependency: [ { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_annotation.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_annotation.js" ],
+		description: $.ig.loaderClass.locale.descriptions.annotationDescription
 	},
 	{
 		widget: "igDataChart.*",
@@ -863,7 +899,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.zoombar.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.zoombarDescription
 	},
 
 /*/ igGrid /// */
@@ -1167,7 +1204,8 @@ $.ig.dependencies = [
 		css: [
 			"$path$/structure/modules/infragistics.ui.shared.css",
 			"$path$/structure/modules/infragistics.ui.map.css"
-			]
+			],
+		description: $.ig.loaderClass.locale.descriptions.mapDescription
 	},
 /*/ end igMap /// */
 
@@ -1246,7 +1284,8 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.ui.reportviewer.js" ],
 		locale: [ "$localePath$/infragistics.ui.reportviewer-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
-		css: [ "$path$/structure/modules/infragistics.ui.reportviewer.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.reportviewer.css" ],
+		description: $.ig.loaderClass.locale.descriptions.reportViewerDescription
 	},
 
 	{
@@ -1268,7 +1307,8 @@ $.ig.dependencies = [
 		dependency: [ { name: "igUtil" } ],
 		scripts: [ "$path$/modules/infragistics.ui.popover.js" ],
 		locale: [ "$localePath$/infragistics.ui.popover-$locale$.js" ],
-		css: [ "$path$/structure/modules/infragistics.ui.popover.css" ]
+		css: [ "$path$/structure/modules/infragistics.ui.popover.css" ],
+		description: $.ig.loaderClass.locale.descriptions.popoverDescription
 	},
 	{
 		widget: "igNotifier",
