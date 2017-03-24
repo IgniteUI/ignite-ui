@@ -59,7 +59,7 @@ $.ig.loaderClass.locale.descriptions = {
 	gridSortingDescription: "Allows sorting the column data in ascending or descending order.",
 	gridSummariesDescription: "Allows showing summary data for each column.",
 	gridTooltipsDescription: "Allows showing tooltips for grid cells.",
-	gridUpdating: "Allows editing, deleting and adding records in the grid.",
+	gridUpdatingDescription: "Allows editing, deleting and adding records in the grid.",
 	hierarchicalGridDescription: "Component used for displaying hierarchical tabular data.",
 	treeGridDescription: "Component used for displaying hierarchical tabular data in a tree like structure.",
 	treeGridColumnFixingDescription: "Allows pinning the columns on the left/right of the grid.",
@@ -95,6 +95,7 @@ $.ig.loaderClass.locale.descriptions = {
 	categoryChartDescription: "Component that renders categorized data into a canvas on the page.",
 	dataChartDescription: "Component that provides extremely rich functionality to create and render various types of charts in an HTML 5 canvas",
 	pieChartDescription: "Component to create a pie chart with features like tooltips, legends, managing slices.",
+	financialDescription: "Contains the financial series for the igDataChart.",
 	doughnutChartDescription: "Component to create a doughnut chart that displays multiple sets of data around a common center.",
 	funnelChartDescription: "Component to create a funnel chart that displays values associated with different categories in a conic shape.",
 	linearGaugeDescription: "Component that visualizes data in the form of a linear gauge enriched with scales, tick marks and needles.",
@@ -385,7 +386,8 @@ $.ig.dependencies = [
 		parentWidget: "igDataChart",
 		dependency: [ { name: "_ig_datachart_categorycore" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_financial.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_financial.js" ],
+		description: $.ig.loaderClass.locale.descriptions.financialDescription
 	},
 	{
 		widget: "ExtendedFinancial",
@@ -1078,7 +1080,7 @@ $.ig.dependencies = [
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.updating.js" ],
 		css: [  ],
-		description: $.ig.loaderClass.locale.descriptions.gridUpdating
+		description: $.ig.loaderClass.locale.descriptions.gridUpdatingDescription
 	},
 	{
 		widget: "AppendRowsOnDemand",
