@@ -59,7 +59,7 @@ $.ig.loaderClass.locale.descriptions = {
 	gridSortingDescription: "Allows sorting the column data in ascending or descending order.",
 	gridSummariesDescription: "Allows showing summary data for each column.",
 	gridTooltipsDescription: "Allows showing tooltips for grid cells.",
-	gridUpdating: "Allows editing, deleting and adding records in the grid.",
+	gridUpdatingDescription: "Allows editing, deleting and adding records in the grid.",
 	hierarchicalGridDescription: "Component used for displaying hierarchical tabular data.",
 	treeGridDescription: "Component used for displaying hierarchical tabular data in a tree like structure.",
 	treeGridColumnFixingDescription: "Allows pinning the columns on the left/right of the grid.",
@@ -111,6 +111,7 @@ $.ig.loaderClass.locale.descriptions = {
 	chartLegendDescription: "The igChartLegend displays the name of a series or its elements represented in chart plot area.",
 	annotationDescription: "Component that provides displaying annotations over the chart like tooltips, highlight layers, crosshair, etc.",
 	extendedFinancialDescription: "Contains the extended financial indicators for the Finance type chart series.",
+	financialDescription: "Contains the financial series for the igDataChart.",
 	polarDescription: "Contains the polar series for the igDataChart.",
 	radialDescription: "Contains the radial series to display category data evenly across a full circle.",
 	rangeCategoryDescription: "Contains the range category series, used to depict the spread between two values.",
@@ -406,7 +407,8 @@ $.ig.dependencies = [
 		parentWidget: "igDataChart",
 		dependency: [ { name: "_ig_datachart_categorycore" }, { name: "igDataChart" } ],
 		group: $.ig.loaderClass.locale.dvGroup,
-		scripts: [ "$path$/modules/infragistics.datachart_financial.js" ]
+		scripts: [ "$path$/modules/infragistics.datachart_financial.js" ],
+		description: $.ig.loaderClass.locale.descriptions.financialDescription
 	},
 	{
 		widget: "ExtendedFinancial",
@@ -1101,7 +1103,7 @@ $.ig.dependencies = [
 			],
 		scripts: [ "$path$/modules/infragistics.ui.grid.updating.js" ],
 		css: [  ],
-		description: $.ig.loaderClass.locale.descriptions.gridUpdating
+		description: $.ig.loaderClass.locale.descriptions.gridUpdatingDescription
 	},
 	{
 		widget: "AppendRowsOnDemand",
@@ -1693,70 +1695,6 @@ $.ig.dependencies = [
 			{ name: "LoadSaveXltm" },
 			{ name: "LoadSaveXltx" }
 		]
-	},
-/*/ end igExcel /// */
-/*/ start igSpreadsheet/// */
-	{
-		widget: "_ig_undo",
-		dependency: [
-			{ name: "igUtil" },
-			{ name: "_ig_ext_core" },
-			{ name: "_ig_ext_collections" }
-		],
-		group: $.ig.loaderClass.locale.miscGroup,
-		internal: true,
-		scripts: [ "$path$/modules/infragistics.undo.js" ],
-		locale: [ "$localePath$/infragistics.undo-$locale$.js" ],
-		css: []
-	},
-	{
-		widget: "igSpreadsheet",
-		dependency: [
-			{ name: "_ig_documents_core_openxml" },
-			{ name: "igExcel" },
-			{ name: "igUtil" },
-			{ name: "_ig_ext_core" },
-			{ name: "_ig_ext_collections" },
-			{ name: "_ig_ext_collections_extended" },
-			{ name: "_ig_xml" },
-			{ name: "_ig_ext_ui" },
-			{ name: "_ig_ext_io" },
-			{ name: "_ig_ext_web" },
-			{ name: "igScroll" },
-			{ name: "_ig_dv_core" },
-			{ name: "_ig_dv_jquerydom" },
-			{ name: "_ig_undo" }
-		],
-		scripts: [
-			"$path$/modules/infragistics.spreadsheet.js",
-			"$path$/modules/infragistics.ui.spreadsheet.js"
-		],
-		locale: [ "$localePath$/infragistics.spreadsheet-$locale$.js" ],
-		css: [  ]
-	},
-/*/ end igSpreadsheet /// */
-/*/ start igScheduler/// */
-	{
-		widget: "igScheduler",
-		dependency: [
-			{ name: "igUtil" },
-			{ name: "_ig_ext_core" },
-			{ name: "_ig_ext_collections" },
-			{ name: "_ig_ext_collections_extended" },
-			{ name: "_ig_ext_ui" },
-			{ name: "_ig_ext_text" },
-			{ name: "_ig_ext_io" },
-			{ name: "_ig_ext_threading" },
-			{ name: "_ig_ext_web" },
-			{ name: "igScroll" },
-			{ name: "_ig_dv_core" },
-			{ name: "_ig_dv_jquerydom" }
-		],
-		scripts: [
-			"$path$/modules/infragistics.documents.core.js",
-			"$path$/modules/infragistics.excel.js"
-			],
-		css: [  ]
 	},
 /*/ end igExcel /// */
 /*/ start igExcel/// */
