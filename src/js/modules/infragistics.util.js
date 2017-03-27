@@ -531,6 +531,10 @@
                     // of the parent type
 			        if (isFinite(placeholders[ i ]) && !isFinite(arguments[ placeholders[ i ] ])) {
 			            ret.typeArguments[ i ] = arguments[ placeholders[ i ] ];
+			        } else if (placeholders[ i ] &&
+						placeholders[ i ] != arguments[ i ] &&
+						placeholders[ i ].typeArguments) {
+			            ret.typeArguments[ i ] = this.specialize.apply(placeholders[ i ], arguments);
 			        } else {
 			            ret.typeArguments[ i ] = placeholders[ i ];
 			        }
