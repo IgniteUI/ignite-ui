@@ -278,6 +278,9 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .ui-iggrid-indicatorcontainer {
     margin-top/*\**/:0.25em\9; /* value hack for OldIE */
     margin-top: calc(0.8em - 8px); /* vertically centered for newer browsers */
+
+	/* #221461 // 11.01.2016 // M.Popov // Auto-sizing a column... */
+	min-width:34px;
 }
 
 
