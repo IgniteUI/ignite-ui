@@ -832,7 +832,6 @@
 
 				mouseenter: $.proxy(this._onMouseEnterContainer, this),
 				mouseleave: $.proxy(this._onMouseLeaveContainer, this),
-				dragstart: $.proxy(this._onDragStartElem, this),
 
 				keydown: $.proxy(this._onKeyDown, this)
 			};
@@ -1197,7 +1196,7 @@
 		_linkElementsH: function (inElements) {
 			this._linkedHElems = [];
 			if (inElements) {
-				for (var index in inElements) {
+				for (var index = 0; index < inElements.length; index++) {
 					var elemObject = $(inElements[ index ]);
 
 					if (elemObject.length) {
@@ -1220,7 +1219,7 @@
 		_linkElementsV: function (inElements) {
 			this._linkedVElems = [];
 			if (inElements) {
-				for (var index in inElements) {
+				for (var index = 0; index < inElements.length; index++) {
 					var elemObject = $(inElements[ index ]);
 
 					if (elemObject.length) {
@@ -1408,15 +1407,16 @@
 				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
 				this._syncElemsX(this._container[ 0 ], false);
 				/*self._syncHBar(this._container[ 0 ], false);*/
-
-				var curPosY;
-				if (this.options.scrollOnlyVBar) {
-					curPosY = this._getScrollbarVPosition();
-				} else {
-					curPosY = this._getContentPositionY();
-				}
-				this._updateScrollBarsPos(destX, curPosY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosY;
+			if (this.options.scrollOnlyVBar) {
+				curPosY = this._getScrollbarVPosition();
+			} else {
+				curPosY = this._getContentPositionY();
+			}
+			this._updateScrollBarsPos(destX, curPosY, true);
 
 			return destX - curPosX;
 		},
@@ -1463,15 +1463,16 @@
 				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
-
-				var curPosX;
-				if (this.options.scrollOnlyHBar) {
-					curPosX = this._getScrollbarHPosition();
-				} else {
-					curPosX = this._getContentPositionX();
-				}
-				this._updateScrollBarsPos(curPosX, destY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosX;
+			if (this.options.scrollOnlyHBar) {
+				curPosX = this._getScrollbarHPosition();
+			} else {
+				curPosX = this._getContentPositionX();
+			}
+			this._updateScrollBarsPos(curPosX, destY, true);
 
 			return destY - curPosY;
 		},
@@ -1508,7 +1509,7 @@
 					return;
 				}
 
-				self._nextY += ((-3 * x * x + 3) * (deltaY > 0 ? 1 : -1) * 2) * smoothingStep;
+				self._nextY += ((-3 * x * x + 3) * deltaY * 2) * smoothingStep;
 				self._scrollToY(self._nextY, true);
 
 				//continue the intertia
@@ -1802,7 +1803,7 @@
 				}
 
 				if (this._linkedHElems.length > 0) {
-					for (index in this._linkedHElems) {
+					for (index = 0; index < this._linkedHElems.length; index++) {
 						//get the current X position
 						var matrixElem = this._linkedHElems[ index ].css("-webkit-transform");
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
@@ -1832,7 +1833,7 @@
 				destX = baseElem.scrollLeft;
 
 				if (this._linkedHElems.length > 0) {
-					for (index in this._linkedHElems) {
+					for (index = 0; index < this._linkedHElems.length; index++) {
 						if (this._linkedHElems[ index ].length) {
 							if (this._linkedHElems[ index ].data("igScroll") !== undefined &&
 									this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
@@ -1870,7 +1871,7 @@
 				}
 
 				if (this._linkedVElems.length > 0) {
-					for (index in this._linkedVElems) {
+					for (index = 0; index < this._linkedVElems.length; index++) {
 						//get the current X position
 						var matrixElem = this._linkedVElems[ index ].css("-webkit-transform");
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
@@ -1900,7 +1901,7 @@
 				destY = baseElem.scrollTop;
 
 				if (this._linkedVElems.length > 0) {
-					for (index in this._linkedVElems) {
+					for (index = 0; index < this._linkedVElems.length; index++) {
 						if (this._linkedVElems[ index ].length) {
 							if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 									this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
@@ -2103,7 +2104,11 @@
 				return true;
 			}
 
-			var evt = event.originalEvent;
+			var evt = event.originalEvent,
+				scrollDeltaY = 0,
+				scrollStep = this.options.wheelStep,
+				scrolledY;
+
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
 			if (!this._bMixedEnvironment) {
@@ -2113,9 +2118,18 @@
 				this._switchFromTouchToMixed();
 			}
 
+			if (evt.wheelDeltaY) {
+				/* Option supported on Chrome, Safari, Opera.
+				/* 120 is default for mousewheel on these browsers. Other values are for trackpads */
+				scrollDeltaY = -evt.wheelDeltaY / 120;
+			} else if (evt.deltaY) {
+				/* For other browsers that don't provide wheelDelta, use the deltaY to determine direction and pass default values. */
+				scrollDeltaY = evt.deltaY > 0 ? 1 : -1;
+			}
+
 			if (this.options.smoothing) {
 				//Scroll with small inertia
-				this._smoothWheelScrollY(evt.deltaY);
+				this._smoothWheelScrollY(scrollDeltaY);
 			} else {
 				//Normal scroll
 				if (this.options.scrollOnlyVBar) {
@@ -2124,14 +2138,7 @@
 					this._startY = this._getContentPositionY();
 				}
 
-				var scrollStep = this.options.wheelStep,
-					scrollDirection = 0;
-				if (evt.deltaY && evt.deltaY > 0) {
-					scrollDirection = 1;
-				} else if (evt.deltaY) {
-					scrollDirection = -1;
-				}
-				var scrolledY = this._scrollToY(this._startY + scrollDirection * scrollStep, true);
+				scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
 
 				if (!this._cancelScrolling) {
 					//Trigger scrolled event
@@ -2221,7 +2228,7 @@
 		},
 
 		_onTouchStartContainer: function (event) {
-			if (event.isDefaultPrevented()) {
+			if (event.isDefaultPrevented() || typeof MSGesture === "function") {
 				return;
 			}
 
@@ -2263,7 +2270,8 @@
 		},
 
 		_onTouchMoveContainer: function (event) {
-			if (event.isDefaultPrevented() || this._igScollTouchPrevented) {
+			if (event.isDefaultPrevented() || this._igScollTouchPrevented ||
+					typeof MSGesture === "function") {
 				this._igScollTouchPrevented = false;
 				return;
 			}
@@ -2350,13 +2358,13 @@
 			}
 
 			//On Safari preventing the touchmove would prevent default page scroll behaviour even if there is the element doesn't have overflow
-			if (!$.ig.util.isSafari || ($.ig.util.isSafari && !this._igScollTouchPrevented)) {
+			if (!this._igScollTouchPrevented) {
 				event.preventDefault();
 			}
 		},
 
 		_onTouchEndContainer: function (event) {
-			if (event.isDefaultPrevented()) {
+			if (event.isDefaultPrevented() || typeof MSGesture === "function") {
 				return;
 			}
 			var speedX = 0;
@@ -2427,10 +2435,10 @@
 		},
 
 		_onElementMutation: function (mutations) {
-			for (var key in mutations) {
+			for (var index = 0; index < mutations.length; index++) {
 				/*	Make sure only the style is addressed and that any of the width/height is changed. */
 				/*	The elemWidth/elemHeight are not updated until refresh is called, that is why we can use them as old values. */
-				if (mutations[ key ].attributeName === "style" &&
+				if (mutations[ index ].attributeName === "style" &&
 					(this._elemWidth !== this.element.width() ||
 						this._elemHeight !== this.element.height())) {
 					this._onDimensionsChange();
@@ -3817,7 +3825,7 @@
 		},
 
 		_onDragStartElem: function (event) {
-			/* Prevent dragging of that element due to causing some unwanted behaviour */
+			/* Prevent dragging of that element due to causing some unwanted behaviour when using the custom scrollbars and you drag on them */
 			event.preventDefault();
 		},
 

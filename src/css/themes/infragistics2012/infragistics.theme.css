@@ -2344,6 +2344,10 @@ body .ui-tooltip {
     /* border-top for tables without headers */
 }
 
+.ui-iggrid-layout-helper  {
+	border-bottom: 1px solid #DCDCDC;
+}
+
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
 .ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tfoot + tbody > tr:first-child td,
@@ -2860,7 +2864,7 @@ ui-iggrid-groupbyarea a,
     border-bottom-color: #B3E2F6;
 }
 
-.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
     border-bottom-color: #DCDCDC;
 }
 /************/
