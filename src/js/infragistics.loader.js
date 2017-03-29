@@ -1612,6 +1612,37 @@ $.ig.dependencies = [
 		css: []
 	},
 	{
+		widget: "_ig_xml",
+		dependency: [
+			{ name: "igUtil" },
+			{ name: "_ig_ext_core" },
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_io" },
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_web" }
+		],
+		group: $.ig.loaderClass.locale.miscGroup,
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.xml.js" ]
+	},
+	{
+		widget: "_ig_documents_core_core",
+		dependency: [
+			{ name: "igUtil" },
+			{ name: "_ig_ext_core" },
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_io" },
+			{ name: "_ig_ext_ui" }
+		],
+		priority: true,
+		group: $.ig.loaderClass.locale.miscGroup,
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.documents.core_core.js" ],
+		locale: [ "$localePath$/infragistics.documents.core_core-$locale$.js" ],
+		css: []
+	},
+	{
 		widget: "_ig_documents_core_openxml",
 		dependency: [
 			{ name: "_ig_documents_core_core" },
@@ -1697,15 +1728,15 @@ $.ig.dependencies = [
 		]
 	},
 /*/ end igExcel /// */
-/*/ start igExcel/// */
+/*/ start igGridExcelExporter/// */
 	{
 		widget: "igGridExcelExporter",
-		dependency: [ { name: "igExcel" } ],
+		dependency: [ { name: "igExcel" }, { name: "LoadSaveXlsx" } ],
 		scripts: [ "$path$/modules/infragistics.gridexcelexporter.js" ],
 		css: [  ],
 		description: $.ig.loaderClass.locale.descriptions.gridExcelExporterDescription
 	}
-/*/ end igExcel /// */
+/*/ end igGridExcelExporter /// */
 
  ];
 
