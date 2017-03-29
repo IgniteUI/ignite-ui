@@ -122,7 +122,8 @@ $.ig.loaderClass.locale.descriptions = {
 	dateTimeAxisDescription: "Allows for configuring DateTimeAxis.",
 	overviewPlusDetailPaneDescription: "Component that display an OverviewPlusDetailPane over the igDataChart plot area.",
 	zoombarDescription: "The igZoombar control provides zooming functionality to range-based controls.",
-	mapDescription: "The igMap visualize various kinds of maps based on the HTML5 canvas element and performs all rendering on the client-side."
+	mapDescription: "The igMap visualize various kinds of maps based on the HTML5 canvas element and performs all rendering on the client-side.",
+	excelDescription: "The JavaScript Excel Library is used to create entire Microsoft® Excel® Workbooks, including Worksheets"
 };
 
 // jscs:enable
@@ -1595,143 +1596,19 @@ $.ig.dependencies = [
 /*/ start igExcel/// */
 	{
 		widget: "igExcel",
-		dependency: [
-			{ name: "_ig_documents_core_core" },
-			{ name: "_ig_ext_collections_extended" }
-		],
-		scripts: [ "$path$/modules/infragistics.excel_core.js" ],
-		locale: [ "$localePath$/infragistics.excel_core-$locale$.js" ],
-		css: [],
+		dependency: [ { name: "igUtil" } ],
+		scripts: [
+			"$path$/modules/infragistics.documents.core.js",
+			"$path$/modules/infragistics.excel.js"
+			],
+		css: [  ],
 		description: $.ig.loaderClass.locale.descriptions.excelDescription
-	},
-	{
-		widget: "Functions",
-		parentWidget: "igExcel",
-		dependency: [ { name: "igExcel" } ],
-		scripts: [ "$path$/modules/infragistics.excel_functions.js" ],
-		css: []
-	},
-	{
-		widget: "_ig_xml",
-		dependency: [
-			{ name: "igUtil" },
-			{ name: "_ig_ext_core" },
-			{ name: "_ig_ext_collections" },
-			{ name: "_ig_ext_io" },
-			{ name: "_ig_ext_text" },
-			{ name: "_ig_ext_web" }
-		],
-		group: $.ig.loaderClass.locale.miscGroup,
-		internal: true,
-		scripts: [ "$path$/modules/infragistics.xml.js" ]
-	},
-	{
-		widget: "_ig_documents_core_core",
-		dependency: [
-			{ name: "igUtil" },
-			{ name: "_ig_ext_core" },
-			{ name: "_ig_ext_collections" },
-			{ name: "_ig_ext_text" },
-			{ name: "_ig_ext_io" },
-			{ name: "_ig_ext_ui" }
-		],
-		priority: true,
-		group: $.ig.loaderClass.locale.miscGroup,
-		internal: true,
-		scripts: [ "$path$/modules/infragistics.documents.core_core.js" ],
-		locale: [ "$localePath$/infragistics.documents.core_core-$locale$.js" ],
-		css: []
-	},
-	{
-		widget: "_ig_documents_core_openxml",
-		dependency: [
-			{ name: "_ig_documents_core_core" },
-			{ name: "_ig_ext_collections_extended" },
-			{ name: "_ig_xml" }
-		],
-		group: $.ig.loaderClass.locale.miscGroup,
-		internal: true,
-		scripts: [ "$path$/modules/infragistics.documents.core_openxml.js" ],
-		css: []
-	},
-	{
-		widget: "_ig_excel_openxml",
-		dependency: [
-			{ name: "igExcel" },
-			{ name: "_ig_documents_core_openxml" }
-		],
-		group: $.ig.loaderClass.locale.miscGroup,
-		scripts: [ "$path$/modules/infragistics.excel_serialization_openxml.js" ],
-		internal: true,
-		css: []
-	},
-	{
-		widget: "_ig_excel_biff8",
-		dependency: [ { name: "igExcel" } ],
-		group: $.ig.loaderClass.locale.miscGroup,
-		scripts: [ "$path$/modules/infragistics.excel_serialization_biff8.js" ],
-		internal: true,
-		css: []
-	},
-	{
-		widget: "LoadSaveXls",
-		parentWidget: "igExcel",
-		dependency: [ { name: "_ig_excel_biff8" } ],
-		scripts: [],
-		css: []
-	},
-	{
-		widget: "LoadSaveXlt",
-		parentWidget: "igExcel",
-		dependency: [ { name: "_ig_excel_biff8" } ],
-		scripts: [],
-		css: []
-	},
-	{
-		widget: "LoadSaveXlsx",
-		parentWidget: "igExcel",
-		dependency: [ { name: "_ig_excel_openxml" } ],
-		scripts: [],
-		css: []
-	},
-	{
-		widget: "LoadSaveXlsm",
-		parentWidget: "igExcel",
-		dependency: [ { name: "_ig_excel_openxml" } ],
-		scripts: [],
-		css: []
-	},
-	{
-		widget: "LoadSaveXltm",
-		parentWidget: "igExcel",
-		dependency: [ { name: "_ig_excel_openxml" } ],
-		scripts: [],
-		css: []
-	},
-	{
-		widget: "LoadSaveXltx",
-		parentWidget: "igExcel",
-		dependency: [ { name: "_ig_excel_openxml" } ],
-		scripts: [],
-		css: []
-	},
-	{
-		widget: "igExcel.*",
-		dependency: [
-			{ name: "Functions" },
-			{ name: "LoadSaveXls" },
-			{ name: "LoadSaveXlt" },
-			{ name: "LoadSaveXlsx" },
-			{ name: "LoadSaveXlsm" },
-			{ name: "LoadSaveXltm" },
-			{ name: "LoadSaveXltx" }
-		]
 	},
 /*/ end igExcel /// */
 /*/ start igGridExcelExporter/// */
 	{
 		widget: "igGridExcelExporter",
-		dependency: [ { name: "igExcel" }, { name: "LoadSaveXlsx" } ],
+		dependency: [ { name: "igExcel" }],
 		scripts: [ "$path$/modules/infragistics.gridexcelexporter.js" ],
 		css: [  ],
 		description: $.ig.loaderClass.locale.descriptions.gridExcelExporterDescription
