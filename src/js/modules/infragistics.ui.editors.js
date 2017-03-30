@@ -10021,7 +10021,7 @@
 			}
 			timeMonth = this._createMonthPosition();
 			if (timeMonth === null) {
-				currentMonth = today.getMonth();
+				currentMonth = today.getMonth() + 1;
 			} else {
 				currentMonth = parseInt(this._getStringRange(mask,
 					timeMonth.startPosition, timeMonth.endPosition), 10);
