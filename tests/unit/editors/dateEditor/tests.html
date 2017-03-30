@@ -3280,7 +3280,7 @@
 					expRes: [{
 						display: pad(new Date().getMonth() + 1)
 					}, {
-						display: pad(new Date().getMonth())
+						display: new Date().getMonth() === 0 ? "12" : pad(new Date().getMonth())
 					}]
 				}, {
 					config: {
