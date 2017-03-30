@@ -271,6 +271,13 @@ $.ig.dependencies = [
 		scripts: [ "$path$/modules/infragistics.dv_core.js" ]
 	},
 	{
+		widget: "_ig_dv_jquerydom",
+		group: $.ig.loaderClass.locale.dvGroup,
+		dependency: [ { name: "_ig_dv_core" } ],
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.dv_jquerydom.js" ]
+	},
+	{
 		widget: "_ig_dv_geo",
 		group: $.ig.loaderClass.locale.dvGroup,
 		dependency: [ { name: "_ig_ext_io" }, { name: "_ig_ext_ui" }, { name: "_ig_dv_core" } ],
@@ -317,7 +324,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "_ig_dv_commonwidget",
-		dependency: [ { name: "_ig_datachart_core" } ],
+		dependency: [ { name: "_ig_datachart_core" }, { name: "_ig_dv_jquerydom" } ],
 		scripts: [ "$path$/modules/infragistics.dvcommonwidget.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		internal: true,
@@ -520,7 +527,9 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "_ig_simple_datachart_core",
-		dependency: [ { name: "igUtil" }, { name: "igTemplating" }, { name: "igDataSource" } ],
+		dependency: [ { name: "igUtil" }, { name: "igTemplating" },
+					{ name: "igDataSource" }, { name: "_ig_dv_jquerydom" }
+		],
 		scripts: [ "$path$/modules/infragistics.ui.basechart.js" ],
 		group: $.ig.loaderClass.locale.dvGroup,
 		internal: true,
@@ -545,7 +554,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igRadialGauge",
-		dependency: [ { name: "_ig_dv_geometry" } ],
+		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_jquerydom" } ],
 		scripts: [
 			"$path$/modules/infragistics.radialgauge.js",
 			"$path$/modules/infragistics.ui.radialgauge.js"
@@ -557,7 +566,7 @@ $.ig.dependencies = [
 
 	{
 		widget: "igLinearGauge",
-		dependency: [ { name: "_ig_dv_geometry" } ],
+		dependency: [ { name: "_ig_dv_geometry" }, { name: "_ig_dv_jquerydom" } ],
 		scripts: [
 			"$path$/modules/infragistics.lineargauge.js",
 			"$path$/modules/infragistics.ui.lineargauge.js"
@@ -600,7 +609,8 @@ $.ig.dependencies = [
 		widget: "igRadialMenu",
 		dependency: [
 			{ name: "igUtil" },
-			{ name: "_ig_dv_core" }
+			{ name: "_ig_dv_core" },
+			{ name: "_ig_dv_jquerydom" }
 			],
 		scripts: [
 			"$path$/modules/infragistics.radialmenu_core.js",
@@ -615,7 +625,8 @@ $.ig.dependencies = [
 		widget: "igQRCodeBarcode",
 		dependency: [
 			{ name: "igUtil" },
-			{ name: "_ig_dv_simple_core" }
+			{ name: "_ig_dv_simple_core" },
+			{ name: "_ig_dv_jquerydom" }
 			],
 		scripts: [
 			"$path$/modules/infragistics.barcode_qrcodebarcode.js",
@@ -1614,6 +1625,37 @@ $.ig.dependencies = [
 		css: []
 	},
 	{
+		widget: "_ig_xml",
+		dependency: [
+			{ name: "igUtil" },
+			{ name: "_ig_ext_core" },
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_io" },
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_web" }
+		],
+		group: $.ig.loaderClass.locale.miscGroup,
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.xml.js" ]
+	},
+	{
+		widget: "_ig_documents_core_core",
+		dependency: [
+			{ name: "igUtil" },
+			{ name: "_ig_ext_core" },
+			{ name: "_ig_ext_collections" },
+			{ name: "_ig_ext_text" },
+			{ name: "_ig_ext_io" },
+			{ name: "_ig_ext_ui" }
+		],
+		priority: true,
+		group: $.ig.loaderClass.locale.miscGroup,
+		internal: true,
+		scripts: [ "$path$/modules/infragistics.documents.core_core.js" ],
+		locale: [ "$localePath$/infragistics.documents.core_core-$locale$.js" ],
+		css: []
+	},
+	{
 		widget: "_ig_documents_core_openxml",
 		dependency: [
 			{ name: "_ig_documents_core_core" },
@@ -1757,21 +1799,21 @@ $.ig.dependencies = [
 			{ name: "_ig_dv_jquerydom" }
 		],
 		scripts: [
-			"$path$/modules/infragistics.documents.core.js",
-			"$path$/modules/infragistics.excel.js"
+			"$path$/modules/infragistics.scheduler.js",
+			"$path$/modules/infragistics.ui.scheduler.js"
 			],
 		css: [  ]
 	},
-/*/ end igExcel /// */
-/*/ start igExcel/// */
+/*/ end igScheduler /// */
+/*/ start igGridExcelExporter/// */
 	{
 		widget: "igGridExcelExporter",
-		dependency: [ { name: "igExcel" } ],
+		dependency: [ { name: "igExcel" }, { name: "LoadSaveXlsx" }],
 		scripts: [ "$path$/modules/infragistics.gridexcelexporter.js" ],
 		css: [  ],
 		description: $.ig.loaderClass.locale.descriptions.gridExcelExporterDescription
 	}
-/*/ end igExcel /// */
+/*/ end igGridExcelExporter /// */
 
  ];
 
