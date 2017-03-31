@@ -1350,15 +1350,16 @@
 				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
 				this._syncElemsX(this._container[ 0 ], false);
 				/*self._syncHBar(this._container[ 0 ], false);*/
-
-				var curPosY;
-				if (this.options.scrollOnlyVBar) {
-					curPosY = this._getScrollbarVPosition();
-				} else {
-					curPosY = this._getContentPositionY();
-				}
-				this._updateScrollBarsPos(destX, curPosY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosY;
+			if (this.options.scrollOnlyVBar) {
+				curPosY = this._getScrollbarVPosition();
+			} else {
+				curPosY = this._getContentPositionY();
+			}
+			this._updateScrollBarsPos(destX, curPosY);
 
 			return destX - curPosX;
 		},
@@ -1405,15 +1406,16 @@
 				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
-
-				var curPosX;
-				if (this.options.scrollOnlyHBar) {
-					curPosX = this._getScrollbarHPosition();
-				} else {
-					curPosX = this._getContentPositionX();
-				}
-				this._updateScrollBarsPos(curPosX, destY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosX;
+			if (this.options.scrollOnlyHBar) {
+				curPosX = this._getScrollbarHPosition();
+			} else {
+				curPosX = this._getContentPositionX();
+			}
+			this._updateScrollBarsPos(curPosX, destY);
 
 			return destY - curPosY;
 		},
@@ -1450,7 +1452,7 @@
 					return;
 				}
 
-				self._nextY += ((-3 * x * x + 3) * (deltaY > 0 ? 1 : -1) * 2) * smoothingStep;
+				self._nextY += ((-3 * x * x + 3) * deltaY * 2) * smoothingStep;
 				self._scrollToY(self._nextY, true);
 
 				//continue the intertia
@@ -2034,7 +2036,11 @@
 				return true;
 			}
 
-			var evt = event.originalEvent;
+			var evt = event.originalEvent,
+				scrollDeltaY = 0,
+				scrollStep = this.options.wheelStep,
+				scrolledY;
+
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
 			if (!this._bMixedEnvironment) {
@@ -2044,9 +2050,18 @@
 				this._switchFromTouchToMixed();
 			}
 
+			if (evt.wheelDeltaY) {
+				/* Option supported on Chrome, Safari, Opera.
+				/* 120 is default for mousewheel on these browsers. Other values are for trackpads */
+				scrollDeltaY = -evt.wheelDeltaY / 120;
+			} else if (evt.deltaY) {
+				/* For other browsers that don't provide wheelDelta, use the deltaY to determine direction and pass default values. */
+				scrollDeltaY = evt.deltaY > 0 ? 1 : -1;
+			}
+
 			if (this.options.smoothing) {
 				//Scroll with small inertia
-				this._smoothWheelScrollY(evt.deltaY);
+				this._smoothWheelScrollY(scrollDeltaY);
 			} else {
 				//Normal scroll
 				if (this.options.scrollOnlyVBar) {
@@ -2055,14 +2070,7 @@
 					this._startY = this._getContentPositionY();
 				}
 
-				var scrollStep = this.options.wheelStep,
-					scrollDirection = 0;
-				if (evt.deltaY && evt.deltaY > 0) {
-					scrollDirection = 1;
-				} else if (evt.deltaY) {
-					scrollDirection = -1;
-				}
-				var scrolledY = this._scrollToY(this._startY + scrollDirection * scrollStep, true);
+				scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
 
 				if (!this._cancelScrolling) {
 					//Trigger scrolled event
