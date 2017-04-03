@@ -1801,7 +1801,7 @@ $.ig.dependencies = [
         ],
         scripts: [
             "$path$/modules/infragistics.scheduler.core.js",
-			"$path$/modules/infragistics.ui.scheduler.core.js.js",
+            "$path$/modules/infragistics.ui.scheduler.core.js",
             "$path$/modules/infragistics.ui.scheduler.js"
         ],
         locale: [ "$localePath$/infragistics.ui.scheduler-$locale$.js" ],
