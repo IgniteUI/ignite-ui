@@ -122,35 +122,35 @@
 		},
 		events: {
 			/* cancel="true" Event fired before popover is shown.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover will show for.
-			Use ui.content to get or set the content to be shown as a string.
-			Use ui.popover to get the popover element showing.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover will show for.
+			eventArgument="ui.content" argType="string" Gets or set the content to be shown as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element showing.
+			eventArgument="ui.owner" argType="object" Gets a reference to the igPopover widget.
 			*/
 			showing: "showing",
 			/* Event fired after popover is shown.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover showed for.
-			Use ui.content to get the content that was shown as a string.
-			Use ui.popover to get the popover element shown.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover showed for.
+			eventArgument="ui.content" argType="string" Gets the content that was shown as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element showing.
+			eventArgument="ui.owner" argType="object" Gets a reference to the igPopover widget.
 			*/
 			shown: "shown",
 			/* cancel="true" Event fired before popover is hidden.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover will hide for.
-			Use ui.content to get the current content displayed in the popover as a string.
-			Use ui.popover to get the popover element hiding.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover will hide for.
+			eventArgument="ui.content" argType="string" Gets the current content displayed in the popover as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element hiding.
+			eventArgument="ui.owner" argType="object" Gets reference to the igPopover widget.
 			*/
 			hiding: "hiding",
 			/* Event fired after popover is hidden.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover is hidden for.
-			Use ui.content to get the content displayed in the popover as a string.
-			Use ui.popover to get the popover element hidden.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover is hidden for.
+			eventArgument="ui.content" argType="string" Gets the content displayed in the popover as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element hidden.
+			eventArgument="ui.owner" argType="object" Gets reference to the igPopover widget.
 			*/
 			hidden: "hidden"
 		},
