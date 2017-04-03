@@ -169,7 +169,7 @@ The html demos under `demos/<control>` can now be run directly from the file sys
 
 * [Ignite UI help API](http://www.igniteui.com/help/api/2016.1/)
 * [Ignite UI help topics](http://www.igniteui.com/help/)
-* [Ignite UI online samples](http://www.igniteui.com/)
+* [Ignite UI online samples](http://www.igniteui.com/grid/overview)
 * [Ignite UI questions on StackOverflow](http://stackoverflow.com/questions/tagged/ignite-ui)
 
 ## Contributing
