@@ -265,7 +265,7 @@
 			eventArgument="evt" argType="event" jQuery event object.
 			eventArgument="ui.previousZoom.left" argType="number" Gets the previous zoom window left position as a fraction of the absolute width of the target.
 			eventArgument="ui.previousZoom.width" argType="number" Gets the previous zoom window width as a fraction of the absolute width of the target.
-			eventArgument="ui.previousZoom.left" argType="number" Gets the new zoom window left position as a fraction of the absolute width of the target.
+			eventArgument="ui.newZoom.left" argType="number" Gets the new zoom window left position as a fraction of the absolute width of the target.
 			eventArgument="ui.newZoom.width" argType="number" Gets the new zoom window width as a fraction of the absolute width of the target.
 			eventArgument="ui.owner" argType="object" Gets reference to igZoombar.
 			```
@@ -294,7 +294,7 @@
 			eventArgument="evt" argType="event" jQuery event object.
 			eventArgument="ui.previousZoom.left" argType="number" Gets the previous zoom window left position as a fraction of the absolute width of the target.
 			eventArgument="ui.previousZoom.width" argType="number" Gets the previous zoom window width as a fraction of the absolute width of the target.
-			eventArgument="ui.previousZoom.left" argType="number" Gets the new zoom window left position as a fraction of the absolute width of the target.
+			eventArgument="ui.newZoom.left" argType="number" Gets the new zoom window left position as a fraction of the absolute width of the target.
 			eventArgument="ui.newZoom.width" argType="number" Gets the new zoom window width as a fraction of the absolute width of the target.
 			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
