@@ -1800,7 +1800,8 @@ $.ig.dependencies = [
             { name: "_ig_dv_jquerydom" }
         ],
         scripts: [
-            "$path$/modules/infragistics.scheduler.js",
+            "$path$/modules/infragistics.scheduler.core.js",
+			"$path$/modules/infragistics.ui.scheduler.core.js.js",
             "$path$/modules/infragistics.ui.scheduler.js"
         ],
         locale: [ "$localePath$/infragistics.ui.scheduler-$locale$.js" ],
