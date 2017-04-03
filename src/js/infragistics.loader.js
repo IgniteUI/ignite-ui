@@ -28,7 +28,7 @@ $.ig.loaderClass.locale = {
 
 // jscs:disable
 $.ig.loaderClass.locale.descriptions = {
-	schedulerDescription :"Component used for organizing based on appointments",
+	schedulerDescription : "Component used for organizing based on appointments",
 	sparklineDescription: "Component used for displaying line graph that illustrates a single trend.",
 	dialogDescription: "Component that displays customizable dialog window.",
 	editorsDescription: "A set of components that allow editing of different types of values.",
