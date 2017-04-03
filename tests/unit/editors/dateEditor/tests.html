@@ -3020,28 +3020,28 @@
 						testDate.setMilliseconds(testDate.getMilliseconds() + (currData.spinDown ? -delta : delta));
 					}
 					equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), 'The value is not as expexted');
-					equal($dtEditor.igDateEditor("displayValue"), currData.expRes[0].display, 'The dispaly is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), currData.expRes[0].display, 'The display is not as expected');
 
 					currData.spinDown ? clickElement(spinUpButton, false, false) : clickElement(spinDownButton, false, false);
 					testDate.setMilliseconds(testDate.getMilliseconds() + (currData.spinDown ? delta : -delta));
 					equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), 'The value is not as expexted');
-					equal($dtEditor.igDateEditor("displayValue"), currData.expRes[1].display, 'The dispaly is not as expexted');
+					equal($dtEditor.igDateEditor("displayValue"), currData.expRes[1].display, 'The display is not as expected');
 
 					if (currConfig.limitSpinToCurrentField) {
 						currData.spinDown ? clickElement(spinDownButton, false, false) : clickElement(spinUpButton, false, false);
 						testDate.setMilliseconds(testDate.getMilliseconds() + (currData.spinDown ? -delta : delta));
 						equal($dtEditor.igDateEditor("value").getTime(), testDate.getTime(), 'The value is not as expexted');
-						equal($dtEditor.igDateEditor("displayValue"), currData.expRes[0].display, 'The dispaly is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), currData.expRes[0].display, 'The display is not as expected');
 					}
 
 					// Test edit mode
 					$dtEditor.igDateEditor("setFocus");
 					$dtEditor.data("igDateEditor")._setCursorPosition(10);
 					currData.spinDown ? clickElement(spinDownButton, false, false) : clickElement(spinUpButton, false, false);
-					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The dispaly is not as expexted');
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The display is not as expected');
 					$dtEditor.data("igDateEditor")._setCursorPosition(10);
 					currData.spinDown ? clickElement(spinUpButton, false, false) : clickElement(spinDownButton, false, false);
-					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The dispaly is not as expexted');
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The display is not as expected');
 					$dtEditor.trigger("blur").remove();
 				}
 			});
@@ -3133,10 +3133,10 @@
 					$dtEditor.igDateEditor("setFocus");
 					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
 					clickElement(spinUpButton, false, false);
-					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The dispaly is not as expexted');
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The display is not as expected');
 					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
 					clickElement(spinDownButton, false, false);
-					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The dispaly is not as expexted');
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The display is not as expected');
 					$dtEditor.trigger("blur").remove();
 				}
 			});
@@ -3280,7 +3280,7 @@
 					expRes: [{
 						display: pad(new Date().getMonth() + 1)
 					}, {
-						display: pad(new Date(new Date().setMonth(new Date().getMonth() - 1)).getMonth() + 1)
+						display: new Date().getMonth() === 0 ? "12" : pad(new Date().getMonth())
 					}]
 				}, {
 					config: {
@@ -3313,10 +3313,10 @@
 					$dtEditor.igDateEditor("setFocus");
 					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
 					clickElement(spinDownButton, false, false);
-					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The dispaly is not as expexted');
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[0].display, 'The display is not as expected');
 					$dtEditor.data("igDateEditor")._setCursorPosition(currData.cursorPostion);
 					clickElement(spinDownButton, false, false);
-					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The dispaly is not as expexted');
+					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The display is not as expected');
 					$dtEditor.trigger("blur").remove();
 				}
 			});
