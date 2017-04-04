@@ -156,7 +156,9 @@
 						
 				$("#issue447").igTextEditor({
 					buttonType : "clear"
-				});				
+				});
+
+				$("#issue481").igTextEditor();
 			});
 		}
 		initialized = false;
@@ -1068,6 +1070,17 @@
 			ok($editor.igTextEditor("clearButton").is(":visible"), "Clear button is not visible");
 			$editor.remove();
 		});
+		
+		testId = "Setting listItems on run time";
+		test(testId, 2, function () {
+			var editor = $('#issue481'), items = ["item 1", "item 2", "item 3"],
+			currentVal = editor.igTextEditor("option", "listItems");
+
+			ok(currentVal === null, "ListItems should not be set on initialization");
+				
+			editor.igTextEditor("option", "listItems", items);
+			equal(editor.igTextEditor("option", "listItems"), items, "ListItems were not set on run time.");	
+		});
 	});
 
 	// Helper functions
@@ -1182,6 +1195,7 @@
 	<input id="testEditor" type="text" />
 	<input id="pasteEditor"/>
 	<input id="clearButton_439"/>
+	<input id="issue481"/>
 </div>
 
 	<div id="editorTopList" style="position: absolute; bottom: 30px; left: 30px; width: 400px"></div>
