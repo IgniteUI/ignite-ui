@@ -1778,7 +1778,7 @@
 					}
 					break;
 				case "listItems":
-				
+
 					// A. M. April, 4th 2017 #921 "Cannot apply `listItems` to `igNumericEditor` after initialization"
 					// This is the same fix made on Nov 8, 2016 by M. S. for Issue #481 in version 17.1
 					if (prevValue !== null) {
