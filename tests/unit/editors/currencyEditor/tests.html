@@ -349,6 +349,30 @@
 
 			$editor.remove();
 		});
+		
+		var testId = 'MaxValue SpinUpButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ displayFactor : 1, maxValue: 8, spinDelta: 1, buttonType: "spin" });
+			ok($editor.igCurrencyEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
+			$editor.igCurrencyEditor("value", 8);
+			$editor.blur();
+			ok($editor.igCurrencyEditor("spinUpButton").hasClass("ui-state-disabled"), "Spin up button is not disabled.");
+			$editor.remove();
+		});
+		
+		var testId = 'MinValue SpinDownButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ displayFactor : 1, minValue: 2, spinDelta: 1, buttonType: "spin" });
+			ok($editor.igCurrencyEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
+			$editor.igCurrencyEditor("value", 2);
+			$editor.blur();
+			ok($editor.igCurrencyEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
+			$editor.remove();
+		});
 	});
 
 	function testSelection(input, start, end ) {
