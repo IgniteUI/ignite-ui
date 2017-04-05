@@ -373,6 +373,19 @@
 			ok($editor.igCurrencyEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
 			$editor.remove();
 		});
+		
+		var testId = 'Reaching MinValue with clear button disables SpinDownButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ displayFactor : 1, maxValue: 8, minValue: 5, spinDelta: 1, buttonType: "spin, clear" });
+			ok($editor.igCurrencyEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
+			$editor.igCurrencyEditor("value", 6);
+			$editor.blur();
+			$editor.igCurrencyEditor("clearButton").click();
+			ok($editor.igCurrencyEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
+			$editor.remove();
+		});
 	});
 
 	function testSelection(input, start, end ) {
