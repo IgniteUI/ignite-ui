@@ -5572,8 +5572,12 @@
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinUp", currVal, delta);
+
+			// A. M. April 5th, 2017 #896 spinWrapAround doesn't spin to minValue if there is no maxValue set
 			if ((currVal > this.options.maxValue &&
-				this.options.spinWrapAround) || currVal < this.options.minValue) {
+				this.options.spinWrapAround) || currVal < this.options.minValue ||
+				(this._currentInputTextValue === this.options.maxValue.toString() &&
+				this.options.spinWrapAround)) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
 					$.ig.util.stringFormat($.ig.Editor.locale.maxValExceededWrappedAroundErrMsg,
