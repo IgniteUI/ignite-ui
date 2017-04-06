@@ -1782,28 +1782,39 @@ $.ig.dependencies = [
 	},
 /*/ end igSpreadsheet /// */
 /*/ start igScheduler/// */
-	{
-		widget: "igScheduler",
-		dependency: [
-			{ name: "igUtil" },
-			{ name: "_ig_ext_core" },
-			{ name: "_ig_ext_collections" },
-			{ name: "_ig_ext_collections_extended" },
-			{ name: "_ig_ext_ui" },
-			{ name: "_ig_ext_text" },
-			{ name: "_ig_ext_io" },
-			{ name: "_ig_ext_threading" },
-			{ name: "_ig_ext_web" },
-			{ name: "igScroll" },
-			{ name: "_ig_dv_core" },
-			{ name: "_ig_dv_jquerydom" }
-		],
-		scripts: [
-			"$path$/modules/infragistics.scheduler.js",
-			"$path$/modules/infragistics.ui.scheduler.js"
-			],
-		css: [  ]
-	},
+    {
+        widget: "igScheduler",
+        dependency: [
+            { name: "igUtil" },
+            { name: "_ig_ext_core" },
+            { name: "_ig_ext_collections" },
+            { name: "_ig_ext_collections_extended" },
+            { name: "_ig_ext_ui" },
+            { name: "_ig_ext_text" },
+            { name: "_ig_ext_io" },
+            { name: "_ig_ext_threading" },
+            { name: "_ig_ext_web" },
+            { name: "igScroll" },
+            { name: "_ig_dv_core" },
+            { name: "_ig_dv_jquerydom" },
+            { name: "igDataSource" }
+        ],
+        scripts: [
+            "$path$/modules/infragistics.scheduler.core.js",
+            "$path$/modules/infragistics.ui.scheduler.core.js",
+            "$path$/modules/infragistics.ui.scheduler.js"
+        ],
+        locale: [
+            "$localePath$/infragistics.scheduler.core-$locale$.js",
+            "$localePath$/infragistics.ui.scheduler-$locale$.js"
+        ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        css: [
+            "$path$/structure/modules/infragistics.ui.shared.css",
+            "$path$/structure/modules/infragistics.ui.scheduler.css"
+            ],
+        description: $.ig.loaderClass.locale.descriptions.schedulerDescription
+    },
 /*/ end igScheduler /// */
 /*/ start igGridExcelExporter/// */
 	{
