@@ -1797,14 +1797,17 @@ $.ig.dependencies = [
             { name: "igScroll" },
             { name: "_ig_dv_core" },
             { name: "_ig_dv_jquerydom" },
-			{ name: "igDataSource" }
+            { name: "igDataSource" }
         ],
         scripts: [
             "$path$/modules/infragistics.scheduler.core.js",
-			"$path$/modules/infragistics.ui.scheduler.core.js",
+            "$path$/modules/infragistics.ui.scheduler.core.js",
             "$path$/modules/infragistics.ui.scheduler.js"
         ],
-		locale: [ "$localePath$/infragistics.scheduler.core-$locale$.js","$localePath$/infragistics.ui.scheduler-$locale$.js" ],
+        locale: [
+            "$localePath$/infragistics.scheduler.core-$locale$.js",
+            "$localePath$/infragistics.ui.scheduler-$locale$.js"
+        ],
         group: $.ig.loaderClass.locale.dvGroup,
         css: [
             "$path$/structure/modules/infragistics.ui.shared.css",
