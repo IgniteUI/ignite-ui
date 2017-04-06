@@ -1908,6 +1908,12 @@
 					this._editorInput.val("");
 			}
 			}
+
+			//M.S. 3/14/2017. Issue 779 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!this.options.value && this.options.allowNullValue && this.options.nullValue !== null) {
+				this.options.value = this.options.nullValue;
+			}
+
 			this._applyPlaceHolder();
 		},
 		_render: function () {
@@ -4437,11 +4443,6 @@
 
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
-
-			//M.S. 3/14/2017. Issue 779 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			if (!this.options.value && this.options.allowNullValue) {
-				this.options.value = this.options.nullValue;
-			}
 		},
 		_setNumericType: function () {
 			this._numericType = "numeric";
