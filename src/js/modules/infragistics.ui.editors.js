@@ -5693,6 +5693,10 @@
 				}
 			}
 		},
+		_setSpinButtonsState: function (val) {
+			val = this._valueFromText(val);
+			this._super(val);
+		},
 
 		// igNumericEditor public methods
 		value: function (newValue) { // Numeric Editor
