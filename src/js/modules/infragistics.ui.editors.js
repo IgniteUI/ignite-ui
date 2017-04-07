@@ -4675,6 +4675,14 @@
 					}
 				}
 					break;
+
+				// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
+				case "groupSeparator": {
+					if (this.options[ option ] === null) {
+						this.options[ option ] = this._getRegionalOption("numericGroupSeparator");
+					}
+				}
+					break;
 				case "regional":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
