@@ -1758,8 +1758,6 @@ $.ig.dependencies = [
 	{
 		widget: "igSpreadsheet",
 		dependency: [
-			{ name: "_ig_documents_core_openxml" },
-			{ name: "igExcel" },
 			{ name: "igUtil" },
 			{ name: "_ig_ext_core" },
 			{ name: "_ig_ext_collections" },
@@ -1768,9 +1766,10 @@ $.ig.dependencies = [
 			{ name: "_ig_ext_ui" },
 			{ name: "_ig_ext_io" },
 			{ name: "_ig_ext_web" },
-			{ name: "igScroll" },
 			{ name: "_ig_dv_core" },
 			{ name: "_ig_dv_jquerydom" },
+			{ name: "_ig_documents_core_openxml" },
+			{ name: "igExcel" },
 			{ name: "_ig_undo" }
 		],
 		scripts: [
@@ -1778,7 +1777,7 @@ $.ig.dependencies = [
 			"$path$/modules/infragistics.ui.spreadsheet.js"
 		],
 		locale: [ "$localePath$/infragistics.spreadsheet-$locale$.js" ],
-		css: [  ]
+		css: [ "$path$/structure/modules/infragistics.ui.spreadsheet.css" ]
 	},
 /*/ end igSpreadsheet /// */
 /*/ start igScheduler/// */
