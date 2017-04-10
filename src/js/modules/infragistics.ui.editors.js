@@ -2895,7 +2895,7 @@
 					if (this.options.maxLength) {
 						currentInputVal = this._editorInput.val();
 						if (currentInputVal.length === this.options.maxLength &&
-								e.keyCode > 46 && !e.altKey && !e.ctrlKey) {
+								(e.keyCode > 46 || e.keyCode === 32) && !e.altKey && !e.ctrlKey) {
 							selection = this._getSelection(this._editorInput[ 0 ]);
 							if (selection.start === selection.end) {
 								e.preventDefault();
@@ -4675,6 +4675,14 @@
 					}
 				}
 					break;
+
+				// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
+				case "groupSeparator": {
+					if (this.options[ option ] === null) {
+						this.options[ option ] = this._getRegionalOption("numericGroupSeparator");
+					}
+				}
+					break;
 				case "regional":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
@@ -5692,6 +5700,10 @@
 					this._editorInput.select();
 				}
 			}
+		},
+		_setSpinButtonsState: function (val) {
+			val = this._valueFromText(val);
+			this._super(val);
 		},
 
 		// igNumericEditor public methods
@@ -10021,7 +10033,7 @@
 			}
 			timeMonth = this._createMonthPosition();
 			if (timeMonth === null) {
-				currentMonth = today.getMonth();
+				currentMonth = today.getMonth() + 1;
 			} else {
 				currentMonth = parseInt(this._getStringRange(mask,
 					timeMonth.startPosition, timeMonth.endPosition), 10);

@@ -154,6 +154,37 @@
 				setup: function () {
 				}
 			});
+			test("Test sorting dataSource for grouped columns with specific layout", function () {
+				var se = [], i, ds = createDataSource(), data, 
+					dataView, gbDataView;
+				// this sorting expression should be ignored
+				se.push({
+					fieldName: "OtherID",
+					isGroupBy: true,
+					dir: "desc",
+					layout: "SomeLayout"
+				});
+				se.push({
+					fieldName: "Id",
+					isGroupBy: true,
+					dir: "desc"
+				});
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.defaultFields = se;
+				ds.dataBind();
+				data = ds.data();
+				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
+				ok(gbDataView[0].__gbRecord && gbDataView[0].id === "Id:51" && gbDataView[0].len === 1 &&
+					gbDataView[1].Id === 3 &&
+					gbDataView[7].Id === 0,
+					"Test content of data view");
+				equal(data.length, 4, "Group by Id desc(initial sorting) - Test count of data records");
+				equal(gbDataView.length, data.length * 2, "Group by Id desc(initial sorting) - Test count of dataView records");
+				ok(data[0].Id === 3 && data[3].Id === 0, "Group by Id desc(initial sorting) - Test whether properly is sorted data");
+				ok(ds.isGroupByApplied(), "Test 'isGroupByApplied'");
+				renderData(data);
+			});
 			test("Test sorting dataSource for grouped columns", function () {
 				var se = [], i, ds = createDataSource(), data, 
 					dataView, gbDataView;
@@ -1426,7 +1457,7 @@
 			/* Test GroupBy with type: "local"*/
 
 			/* Test GroupBy with type: "remote"*/
-			module("Remote GroupBy", {
+			module("igDataSource Remote GroupBy", {
 				setup: function () {
 					stop();
 					__init = false;

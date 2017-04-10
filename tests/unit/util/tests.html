@@ -29,7 +29,7 @@
 }
 </style>
 	<script type="text/javascript">		
-		module("Basic Tests");
+		module("igUtil Basic Tests");
         // run tests
 		
 		test("Test getColType function",function(){
@@ -160,6 +160,10 @@
 			
 			equal($.ig.calcSummaries("random", [], $.ig.util.summaries.count), null, "Count function returns null when the summary name is not starting with custom");
 			equal($.ig.calcSummaries("custom", []), null, "Count function returns null when the custom summary function is not defined");
+		});
+		test("Test Complex Generic TypeArguments", function () {
+			var listNullInt = $.ig.IList$1.prototype.$type.specialize($.ig.Nullable$1.prototype.$type.specialize($.ig.Number.prototype.$type));
+			equal($.ig.Number.prototype.$type, listNullInt.typeArguments[0].typeArguments[0], "List<Nullable<int>>");
 		});
 	</script>
 </head>
