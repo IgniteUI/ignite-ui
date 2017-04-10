@@ -3918,7 +3918,8 @@
 			return this._listItems().filter(".ui-igedit-listitemselected");
 		},
 		getSelectedText: function () {
-			/* Gets the selected text in the editor.
+			/* Gets the selected text from the editor in edit mode. This can be done inside key event handlers, like keydown or keyup. This method can be used only when the editor is focused. If you invoke this method in display mode, when the editor input is blurred, the returned value will be an empty string.
+
 			```
 			var text =  (".selector").%%WidgetName%%("getSelectedText");
 			```
@@ -4117,7 +4118,8 @@
 				If the sum of all values in array is smaller than the length of integer part, then the last item in array is used for all following groups.
 				Count of groups starts from the decimal point (from right to left).
 				That option has effect only in display mode(no focus).
-				Note: this option has priority over possible regional settings.
+				Note: The numbers in the array must be positive integers.
+				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
 				```
 					//Initialize
@@ -4295,7 +4297,7 @@
 			*/
 			spinDelta: 1,
 			/* type="null|E|e|E+|e+"
-				Gets/Sets support for scientific format in edit mode.
+				Gets/Sets support for scientific format.
 				If that option is set, then numeric value appears as a string with possible E-power flag. In edit mode the "E" or "e" character can be entered as well.
 				Notes: The "+" character is not supported in edit mode.
 				```
@@ -4435,6 +4437,11 @@
 
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
+
+			//M.S. 3/14/2017. Issue 779 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!this.options.value && this.options.allowNullValue) {
+				this.options.value = this.options.nullValue;
+			}
 		},
 		_setNumericType: function () {
 			this._numericType = "numeric";
@@ -4589,6 +4596,25 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
+				case "scientificFormat": {
+					//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
+					if (this._getScientificFormat() || value === null) {
+						if (prevValue) {
+							if (prevValue === "e+" || prevValue === "E+") {
+								prevValue = prevValue.replace("+", "");
+							}
+							this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
+						}
+						if (value === null) {
+							 this._includeKeysArray = this.options.includeKeys.split( "" );
+							break;
+						}
+						 var numericChars = this._getScientificFormat();
+						 this.options.includeKeys += numericChars;
+						 this._includeKeysArray = this.options.includeKeys.split( "" );
+					}
+				}
+					break;
 				case "spinDelta": {
 					if (typeof value !== "number") {
 						this.options[ option ] = prevValue;
@@ -5255,7 +5281,10 @@
 				symbol = this.options[ this._numericType + "Symbol" ];
 			}
 			negativePattern = this.options.negativePattern;
-			groups = this.options.groups;
+
+			// A. M. March 15, 2017 #771 "If the 'groups' option's array contains '0' no groups are rendered"
+			var originalArray = this.options.groups;
+			groups = originalArray.filter(function(item) {return item !== 0;} );
 			groupSeparator = this.options.groupSeparator;
 			if (this._numericType === "percent" && this.options.displayFactor) {
 				value = this._multiplyWithPrecision(value, this.options.displayFactor);
@@ -6169,7 +6198,7 @@
 				```
 			*/
 			regional: null,
-			/*type="clear" Gets visibility of the clear button. That option can be set only on initialization.
+			/*type="clear|none" Gets visibility of the clear button. That option can be set only on initialization.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({

@@ -8048,8 +8048,9 @@
 			return true;
 		},
 		fields: function () {
-			/* type="array" A list of field definitions specifying the schema of the data source.
-			Field objects description: {fieldName, [fieldDataType], [fieldXPath]} */
+			/* A list of field definitions specifying the schema of the data source.
+			Field objects description: {fieldName, [fieldDataType], [fieldXPath]}
+			returnType="array"*/
 			return this.schema.fields;
 		}
 	});
@@ -9522,7 +9523,10 @@
 			var s = this.schema();
 			this.isTransformedToHierarchicalData(false);
 			if (s) {
-				this._checkGeneratedSchema();
+				if ((this._runtimeType !== "remoteUrl" && this.schema().schema.fields.length !== 0) ||
+				this.settings.treeDS.enableRemoteLoadOnDemand ) {
+					this._checkGeneratedSchema();
+				}
 				/* overwrite default schema transform function - for now there is no igTreeHierarchicalSchema */
 				if (!this._transformCallback) {
 					this._transformCallback = $.proxy(s.transform, s);
