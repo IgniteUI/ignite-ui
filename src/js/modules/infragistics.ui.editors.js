@@ -5633,7 +5633,9 @@
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinDown", currVal, delta);
 			if ((currVal < this.options.minValue &&
-				this.options.spinWrapAround) || currVal > this.options.maxValue) {
+				this.options.spinWrapAround) || currVal > this.options.maxValue ||
+				(this._currentInputTextValue === this.options.minValue.toString() &&
+				this.options.spinWrapAround)) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
 					$.ig.util.stringFormat($.ig.Editor.locale.minValExceededWrappedAroundErrMsg,
