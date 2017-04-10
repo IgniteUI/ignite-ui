@@ -3440,26 +3440,27 @@ input.ui-igbutton {
 /* igRadialGauge Chart */
 /***********************/
 .ui-radialgauge-needle {
-  background-color: #9A9A9A;
+  background-color: #999999;
+  border-color: #FFFFFF;
 }
-.ui-radialgauge-needleCap {
-  background-color: #888888;
-  border-color: #888888;
+.ui-radialgauge-needlePivot {
+  background-color: #999999;
+  border-color: #FFFFFF;
 }
 .ui-radialgauge-backing {
   background-color: #FFFFFF;
   border: #cccccc;
 }
 .ui-radialgauge-scale {
-  background-color: #9ECBD6;
+  background-color: transparent;
   border: none;
 }
 .ui-radialgauge-tick {
-  background-color: #444444;
+  background-color: rgba(0, 0, 0, 0.35);
   border-top-color: none;
 }
 .ui-radialgauge-minorTick {
-  background-color: #444444;
+  background-color: rgba(0, 0, 0, 0.2);
   border: none;
 }
 .ui-radialgauge-label {
@@ -3467,32 +3468,28 @@ input.ui-igbutton {
   border: none;
 }
 .ui-radialgauge-range-palette-1 {
-  background-color: #439C47;
+  background-color: #005E9C;
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-2 {
-  background-color: #FF9800;
+  background-color: #0078C8;
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-3 {
-  background-color: #C62828;
+  background-color: #0092F4;
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-4 {
-  background-color: #F96232;
+  background-color: #21A7FF;
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-5 {
-  background-color: #9FB328;
+  background-color: #4FB9FF;
   border-top-color: transparent;
 }
-.ui-radialgauge-range-palette-6 {
-  background-color: #7446B9;
-  border-top-color: transparent;
-}
-.ui-radialgauge {
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 12px;
+.ui-radialgauge-container {
+  font-family: Verdana;
+  font-size: 11px;
 }
 /***********************/
 /* igBulletGraph Chart */
@@ -3502,16 +3499,16 @@ input.ui-igbutton {
   border-color: #ffffff;
 }
 .ui-bulletgraph-targetvalue {
-  background-color: #FFFFFF;
-  border-color: #FFFFFF;
+  background-color: #333333;
+  border-color: transparent;
 }
 /* TICKS AND LABELS */
 .ui-bulletgraph-tick {
-  background-color: #888888;
+  background-color: rgba(0, 0, 0, 0.35);
   border: transparent;
 }
 .ui-bulletgraph-minortick {
-  background-color: #888888;
+  background-color: rgba(0, 0, 0, 0.2);
   border: transparent;
 }
 .ui-bulletgraph-label {
@@ -3520,28 +3517,28 @@ input.ui-igbutton {
 }
 /* RANGE VALUES */
 .ui-bulletgraph-range-palette-1 {
-  background-color: #439C47;
+  background-color: #005E9C;
   border: transparent;
 }
 .ui-bulletgraph-range-palette-2 {
-  background-color: #FF9800;
+  background-color: #0078C8;
   border: transparent;
 }
 .ui-bulletgraph-range-palette-3 {
-  background-color: #C62828;
+  background-color: #0092F4;
   border: transparent;
 }
 .ui-bulletgraph-range-palette-4 {
-  background-color: #3F51B5;
+  background-color: #21A7FF;
   border: transparent;
 }
 .ui-bulletgraph-range-palette-5 {
-  background-color: #795548;
+  background-color: #4FB9FF;
   border: transparent;
 }
 /* ACTUAL VALUES */
 .ui-bulletgraph-value {
-  background-color: #ffffff;
+  background-color: #333333;
   border: transparent;
 }
 /* TOOLTIPS */
@@ -3571,10 +3568,9 @@ input.ui-igbutton {
   padding: 4px;
   font-weight: bold;
 }
-.ui-bulletgraph {
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 12px;
-  color: #494949;
+.ui-bulletgraph-container {
+  font-family: Verdana;
+  font-size: 11px;
 }
 /***********************/
 /* igLinearGauge Chart */
@@ -3584,45 +3580,45 @@ input.ui-igbutton {
   border-color: #ffffff;
 }
 .ui-lineargauge-needle {
-  background-color: #888888;
-  border-color: #888888;
+  background-color: #999999;
+  border-color: #FFFFFF;
 }
 .ui-lineargauge-scale {
-  background-color: #888888;
-  border-color: #888888;
+  background-color: transparent;
+  border-color: transparent;
 }
 /* TICKS AND LABELS */
 .ui-lineargauge-tick {
-  background-color: #333333;
+  background-color: rgba(0, 0, 0, 0.35);
   border: transparent;
 }
 .ui-lineargauge-minortick {
-  background-color: #333333;
+  background-color: rgba(0, 0, 0, 0.2);
   border: transparent;
 }
 .ui-lineargauge-label {
-  background-color: #333;
+  background-color: #666;
   border: transparent;
 }
 /* RANGE VALUES */
 .ui-lineargauge-range-palette-1 {
-  background-color: #3D7D8D;
+  background-color: #005E9C;
   border: transparent;
 }
 .ui-lineargauge-range-palette-2 {
-  background-color: #5A94A2;
+  background-color: #0078C8;
   border: transparent;
 }
 .ui-lineargauge-range-palette-3 {
-  background-color: #77B5C5;
+  background-color: #0092F4;
   border: transparent;
 }
 .ui-lineargauge-range-palette-4 {
-  background-color: #A0CBD7;
+  background-color: #21A7FF;
   border: transparent;
 }
 .ui-lineargauge-range-palette-5 {
-  background-color: #C9E1E8;
+  background-color: #4FB9FF;
   border: transparent;
 }
 /* TOOLTIPS */
@@ -3645,10 +3641,9 @@ input.ui-igbutton {
   padding: 4px;
   font-weight: bold;
 }
-.ui-lineargauge {
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 12px;
-  color: #444444;
+.ui-lineargauge-container {
+  font-family: Verdana;
+  font-size: 11px;
 }
 /***********************/
 /* Tile manager        */
