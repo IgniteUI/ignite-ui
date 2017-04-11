@@ -2895,7 +2895,7 @@
 					if (this.options.maxLength) {
 						currentInputVal = this._editorInput.val();
 						if (currentInputVal.length === this.options.maxLength &&
-								e.keyCode > 46 && !e.altKey && !e.ctrlKey) {
+								(e.keyCode > 46 || e.keyCode === 32) && !e.altKey && !e.ctrlKey) {
 							selection = this._getSelection(this._editorInput[ 0 ]);
 							if (selection.start === selection.end) {
 								e.preventDefault();
@@ -4118,7 +4118,8 @@
 				If the sum of all values in array is smaller than the length of integer part, then the last item in array is used for all following groups.
 				Count of groups starts from the decimal point (from right to left).
 				That option has effect only in display mode(no focus).
-				Note: this option has priority over possible regional settings.
+				Note: The numbers in the array must be positive integers.
+				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
 				```
 					//Initialize
@@ -4296,7 +4297,7 @@
 			*/
 			spinDelta: 1,
 			/* type="null|E|e|E+|e+"
-				Gets/Sets support for scientific format in edit mode.
+				Gets/Sets support for scientific format.
 				If that option is set, then numeric value appears as a string with possible E-power flag. In edit mode the "E" or "e" character can be entered as well.
 				Notes: The "+" character is not supported in edit mode.
 				```
@@ -4595,6 +4596,25 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
+				case "scientificFormat": {
+					//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
+					if (this._getScientificFormat() || value === null) {
+						if (prevValue) {
+							if (prevValue === "e+" || prevValue === "E+") {
+								prevValue = prevValue.replace("+", "");
+							}
+							this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
+						}
+						if (value === null) {
+							 this._includeKeysArray = this.options.includeKeys.split( "" );
+							break;
+						}
+						 var numericChars = this._getScientificFormat();
+						 this.options.includeKeys += numericChars;
+						 this._includeKeysArray = this.options.includeKeys.split( "" );
+					}
+				}
+					break;
 				case "spinDelta": {
 					if (typeof value !== "number") {
 						this.options[ option ] = prevValue;
@@ -4652,6 +4672,14 @@
 					if (value.toString().length > 1) {
 						this.options[ option ] = prevValue;
 						throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+					}
+				}
+					break;
+
+				// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
+				case "groupSeparator": {
+					if (this.options[ option ] === null) {
+						this.options[ option ] = this._getRegionalOption("numericGroupSeparator");
 					}
 				}
 					break;
@@ -5257,7 +5285,10 @@
 				symbol = this.options[ this._numericType + "Symbol" ];
 			}
 			negativePattern = this.options.negativePattern;
-			groups = this.options.groups;
+
+			// A. M. March 15, 2017 #771 "If the 'groups' option's array contains '0' no groups are rendered"
+			var originalArray = this.options.groups;
+			groups = originalArray.filter(function(item) {return item !== 0;} );
 			groupSeparator = this.options.groupSeparator;
 			if (this._numericType === "percent" && this.options.displayFactor) {
 				value = this._multiplyWithPrecision(value, this.options.displayFactor);
@@ -5665,6 +5696,10 @@
 					this._editorInput.select();
 				}
 			}
+		},
+		_setSpinButtonsState: function (val) {
+			val = this._valueFromText(val);
+			this._super(val);
 		},
 
 		// igNumericEditor public methods
@@ -6171,7 +6206,7 @@
 				```
 			*/
 			regional: null,
-			/*type="clear" Gets visibility of the clear button. That option can be set only on initialization.
+			/*type="clear|none" Gets visibility of the clear button. That option can be set only on initialization.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -9994,7 +10029,7 @@
 			}
 			timeMonth = this._createMonthPosition();
 			if (timeMonth === null) {
-				currentMonth = today.getMonth();
+				currentMonth = today.getMonth() + 1;
 			} else {
 				currentMonth = parseInt(this._getStringRange(mask,
 					timeMonth.startPosition, timeMonth.endPosition), 10);

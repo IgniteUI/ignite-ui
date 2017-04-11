@@ -128,35 +128,35 @@
 		},
 		events: {
 			/* cancel="true" Event fired before popover is shown.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover will show for.
-			Use ui.content to get or set the content to be shown as a string.
-			Use ui.popover to get the popover element showing.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover will show for.
+			eventArgument="ui.content" argType="string" Gets or set the content to be shown as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element showing.
+			eventArgument="ui.owner" argType="object" Gets a reference to the igPopover widget.
 			*/
 			showing: "showing",
 			/* Event fired after popover is shown.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover showed for.
-			Use ui.content to get the content that was shown as a string.
-			Use ui.popover to get the popover element shown.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover showed for.
+			eventArgument="ui.content" argType="string" Gets the content that was shown as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element showing.
+			eventArgument="ui.owner" argType="object" Gets a reference to the igPopover widget.
 			*/
 			shown: "shown",
 			/* cancel="true" Event fired before popover is hidden.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover will hide for.
-			Use ui.content to get the current content displayed in the popover as a string.
-			Use ui.popover to get the popover element hiding.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover will hide for.
+			eventArgument="ui.content" argType="string" Gets the current content displayed in the popover as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element hiding.
+			eventArgument="ui.owner" argType="object" Gets reference to the igPopover widget.
 			*/
 			hiding: "hiding",
 			/* Event fired after popover is hidden.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover is hidden for.
-			Use ui.content to get the content displayed in the popover as a string.
-			Use ui.popover to get the popover element hidden.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover is hidden for.
+			eventArgument="ui.content" argType="string" Gets the content displayed in the popover as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element hidden.
+			eventArgument="ui.owner" argType="object" Gets reference to the igPopover widget.
 			*/
 			hidden: "hidden"
 		},
@@ -174,6 +174,7 @@
 			};
 			this._positions = [ "balanced", "start", "end" ];
 			this._visible = false;
+			this._useDocumentBoundary = false;
 			$( window ).on( "resize.popover", $.proxy( this._resizeHandler, this ) );
 		},
 		_createWidget: function (options, element) {
@@ -613,6 +614,19 @@
 					fnRes = this[ fn ](trg);
 					i++;
 				} while (fnRes === false && i < this.options.directionPriority.length);
+
+				if (fnRes === false && !this.options.containment) {
+					/* Try positioning it once again when the boundary is the document */
+					i = 0;
+					this._useDocumentBoundary = true;
+					do {
+						this._updateArrowDiv(this.options.directionPriority[ i ], trg);
+						fn = "_" + this.options.directionPriority[ i ] + "Position";
+						fnRes = this[ fn ](trg);
+						i++;
+					} while (fnRes === false && i < this.options.directionPriority.length);
+				}
+
 				if (fnRes === false) {
 					/* "Couldn't find space anywhere. Please exceed screen dimensions" */
 					return;
@@ -687,16 +701,11 @@
 					$.ig.util.offset(trg)[ cPos ];
 				y = leftOffset + trgFDim / 2 - this.popover[ cDim ]() / 2;
 				fnRes = dir === "left" ?
-					this._checkCollision(x, y, trg, null, this.options.direction !== "auto", true) :
-					this._checkCollision(y, x, trg, null, this.options.direction !== "auto", true);
+					this._checkCollision(x, y, trg, this.options.direction !== "auto", true) :
+					this._checkCollision(y, x, trg, this.options.direction !== "auto", true);
 			} else {
 				fnRes = this.
 					_cyclePossiblePositions(trg, dir, cPos, cDim, trgFDim, useParentOffset, x);
-			}
-			/* if the popover did't fit, try position it using as borders the whole page */
-			if (fnRes === false && !this.options.containment) {
-				fnRes = this.
-					_cyclePossiblePositions(trg, dir, cPos, cDim, trgFDim, useParentOffset, x, true);
 			}
 
 			if (fnRes === true) {
@@ -705,7 +714,7 @@
 			return fnRes;
 		},
 		_cyclePossiblePositions: function (
-				trg, dir, cPos, cDim, trgFDim, useParentOffset, x, useDocument) {
+				trg, dir, cPos, cDim, trgFDim, useParentOffset, x) {
 			var i = 0, y, tPos, fnRes;
 				/* rotate between possible positions until the popover fits or it's clear it won't fit */
 				if (this.options.position === "auto") {
@@ -713,21 +722,21 @@
 						tPos = this._positions[ i ];
 						y = this._getCounterPosition(trg, trgFDim, tPos, cPos, cDim, useParentOffset);
 						fnRes = dir === "left" ?
-							this._checkCollision(x, y, trg, useDocument, false, false) :
-							this._checkCollision(y, x, trg, useDocument, false, false);
+							this._checkCollision(x, y, trg, false, false) :
+							this._checkCollision(y, x, trg, false, false);
 					} while (fnRes === false && ++i < this._positions.length);
 					if (!fnRes && this.options.direction !== "auto") {
 						tPos = this._positions[ 0 ];
 						y = this._getCounterPosition(trg, trgFDim, tPos, cPos, cDim, useParentOffset);
 						fnRes = dir === "left" ?
-							this._checkCollision(x, y, trg, useDocument, false, true) :
-							this._checkCollision(y, x, trg, useDocument, false, true);
+							this._checkCollision(x, y, trg, false, true) :
+							this._checkCollision(y, x, trg, false, true);
 					}
 				} else {
 					y = this._getCounterPosition(trg, trgFDim, this.options.position, cPos, cDim, useParentOffset);
 					fnRes = dir === "left" ?
-						this._checkCollision(x, y, trg, useDocument, true, false) :
-						this._checkCollision(y, x, trg, useDocument, true, false);
+						this._checkCollision(x, y, trg, true, false) :
+						this._checkCollision(y, x, trg, true, false);
 			}
 			return fnRes;
 		},
@@ -786,7 +795,8 @@
 			}
 			return this._findProperPosition("top", right, trg);
 		},
-		_checkCollision: function (top, left, trg, useDocument, allowOverlap, fromDirection) {
+
+		_checkCollision: function (top, left, trg, allowOverlap, fromDirection) {
 			var tfullw = this.popover.outerWidth(),
 				tfullh = this.popover.outerHeight(),
 				win = $(window), wh, ww, os,
@@ -813,7 +823,7 @@
 					topBoundary = $.ig.util.offset($containment).top;
 				}
 			}
-			if (useDocument) {
+			if (this._useDocumentBoundary) {
 				leftBoundary = 0;
 				rightBoundary = $(document).width();
 				bottomBoundary = $(document).height();
@@ -847,8 +857,7 @@
 					top + tfullh > bottomBoundary) {
 				/*D.K. 16 Dec 2014 Fix 186350 - Popover tooltip appears below the grid even when there's not enough space on the page
 				if it is forced we can ignore collisions, otherwise they should be taken into account */
-				if ((fromDirection && this.options.direction === "auto") ||
-					(!fromDirection && this.options.position === "auto")) {
+				if (!fromDirection || this.options.direction === "auto") {
 					/*  T.G. 29 Jan 2014 Fix 162164- When the element is relative in scrollable container the popover does not change its position when you scroll the container. */
 					return false;
 				}
@@ -906,6 +915,8 @@
 					}
 				});
 				this._visible = true;
+				/* reset flag when the popover is shown */
+				this._useDocumentBoundary = false;
 				this._removeOriginalTitle(trg);
 			}
 		},

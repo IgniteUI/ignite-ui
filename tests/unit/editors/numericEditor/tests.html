@@ -319,7 +319,7 @@
 			});
 		}
 		initialized = false;
-		module("Numeric Editor ", {
+		module("igNumericEditor ", {
 			setup: function() {
 				//pause testing until editors are initialized
 				if (!initialized) {
@@ -763,11 +763,8 @@
 			equal(editorInput.val(), "2.2E+1", "Value is not correct");
 
 			//Change scientificFormat to invalid value
-
-			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "s");
-			editorInput.click();
 			throws(function() {
-					$("#scientificFormat").igNumericEditor("option", "value", "3");
+					$("#scientificFormat").igNumericEditor("option", "scientificFormat", "s");
 				},
 				Error($.ig.Editor.locale.scientificFormatErrMsg),
 				"Acepted value with wrong scientificFormat."
@@ -1736,7 +1733,7 @@
 			ok($editor.igNumericEditor("clearButton").is(":visible"), "Clear button is not visible");
 			$editor.remove();
 		});
-	});
+	
 	testId = "Test nullValue on initialization";
 	test(testId, 4, function(){
 		var $editor = $("<input id='editor'/>").
@@ -1958,6 +1955,30 @@
 		$editor.remove();
 	});
 
+	testId = "Test groups contain 0 #771";
+	test(testId, 3, function(){
+		var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igNumericEditor({ groups : [0, 2, 10], value: 111222333444});
+			
+			var displayValue = $editor.igNumericEditor("displayValue");
+			equal(displayValue, "1112223334,44", "The displayValue is not correct.")
+			$editor.remove();
+			
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ groups : [0, 2, 0, 1, 9], value: 111222333444});
+		
+			var displayValue = $editor.igNumericEditor("displayValue");
+			equal(displayValue, "111222333,4,44", "The displayValue is not correct.")
+			$editor.remove();
+			
+		var $editor = $("<input id='editor'/>").
+			appendTo("#testBedContainer").igNumericEditor({ groups : [2, 1, 9], value: 111222333444});
+		
+			var displayValue = $editor.igNumericEditor("displayValue");
+			equal(displayValue, "111222333,4,44", "The displayValue is not correct.")
+			$editor.remove();
+		});
+		
 	testId = "Test allowNullValue and NullValue at initialization #779";
 	test(testId, 1, function(){
 		var $editor = $("<input id='editor'/>").
@@ -1968,6 +1989,39 @@
 			$editor.remove();
 		});
 
+	testId = "Test Setting scientificFormat runtime #745";
+	test(testId, 3, function(){
+		var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igNumericEditor();
+			
+			var includedKeys = $editor.igNumericEditor("option", "includeKeys");
+			equal(includedKeys, "0123456789.-", "The included keys are not the defaut one.")
+
+			$editor.igNumericEditor("option", "scientificFormat", "e");
+			includedKeys = $editor.igNumericEditor("option", "includeKeys");
+			equal(includedKeys, "0123456789.-e", "The included keys do not include the scientificFormat 'e'.");
+			
+			$editor.igNumericEditor("option", "scientificFormat", "E");
+			includedKeys = $editor.igNumericEditor("option", "includeKeys");
+			equal(includedKeys, "0123456789.-E", "The included keys do not include the scientificFormat 'E'.")
+						
+			$editor.remove();
+		});
+
+	testId = "Set groupSeparator to null at runtime";
+	test(testId, 2, function() {
+		var $editor = $("<input id='editorGS'/>").
+			appendTo("#testBedContainer").igNumericEditor({ value: 12209 });
+			
+			equal($editor.igNumericEditor("displayValue"), "12,209", "The displayed value is not correct.")
+			$("#editorGS").igNumericEditor("option", "groupSeparator", null)
+			$editor.click();
+			$editor.blur();
+			equal($editor.igNumericEditor("displayValue"), "12,209", "The displayed value is not correct.")
+			
+			$editor.remove();
+		});
+});
 	function testSelection(input, start, end) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
 		equal(input[0].selectionEnd, end, "The selection doesn't end from index " + end);

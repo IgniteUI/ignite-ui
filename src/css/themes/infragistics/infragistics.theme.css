@@ -2089,6 +2089,9 @@ input.ui-igbutton {
 .ui-iggrid.ui-igpivotgrid > table > tbody tr:first-child th {
   border-top: none!important;
 }
+.ui-iggrid-layout-helper {
+  border-bottom: 1px solid #dadada;
+}
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
 .ui-iggrid-layout-helper > tbody > tr:first-child > td th,
 .ui-iggrid > table > thead + tbody > tr:first-child td,
@@ -2545,7 +2548,7 @@ input.ui-igbutton {
 .ui-iggrid .ui-iggrid-mergedcellsbottom.ui-state-highlight {
   border-bottom-color: #9ECBD6;
 }
-.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
   border-bottom: 1px solid #dadada;
 }
 /************/
@@ -5672,3 +5675,4 @@ input.ui-igbutton {
   margin-left: 0;
   margin-top: 0;
 }
+/*# sourceMappingURL=infragistics.theme.css.map */

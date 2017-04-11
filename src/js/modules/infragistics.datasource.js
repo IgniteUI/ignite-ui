@@ -5422,10 +5422,11 @@
 			if ($.type(fields) === "string") {
 				fields = this._parseSortExpressions(fields);
 			}
-			isGb = this.isGroupByApplied(fields);
 			if (fields === undefined || fields === null) {
 				throw new Error($.ig.DataSourceLocale.locale.noSortingFields);
 			}
+			fields = this._findSortingExpressionsForLayout(fields, this.settings.key);
+			isGb = this.isGroupByApplied(fields);
 			if (s.applyToAllData && s.type === "local") {
 				/* M.H. 11 Mar 2013 Fix for bug #135542: When filtering is applied and then sort
 				any column and there is remote paging, all of the records for the current page
@@ -7175,7 +7176,7 @@
 			// data should be sorted(by gbExprs) when this functions is called - otherwise grouping will not be correct
 			var i, newgb = [], gbs = this.settings.groupby || {};
 			data = data || this._data;
-			gbExprs = gbExprs || [];
+			gbExprs = this._findSortingExpressionsForLayout(gbExprs || [], this.settings.key);
 			this._gbData = [];
 			this._vgbData = [];
 			this._gbDataView = [];
@@ -7229,8 +7230,15 @@
 			```
 			paramType="array" optional="true" array of sorting expressions. If not set check expressions defined in sorting settings
 			returnType="bool" Returns true if grouping is applied */
-			exprs = exprs || this.settings.sorting.expressions;
+			exprs = this._findSortingExpressionsForLayout(exprs || this.settings.sorting.expressions,
+															this.settings.key);
 			return !!(exprs && exprs.length && exprs[ 0 ].isGroupBy);
+		},
+		/* M.H. 23 Mar 2017 Fix for bug 232173: In remote GroupBy scenario the child layouts cannot be grouped */
+		_findSortingExpressionsForLayout: function (expressions, layout) {
+			return (expressions || []).filter(function (expr) {
+				return (!expr.layout && !layout) || expr.layout === layout;
+			});
 		}
 		/* //GroupBy functionallity*/
 	});
@@ -8048,8 +8056,9 @@
 			return true;
 		},
 		fields: function () {
-			/* type="array" A list of field definitions specifying the schema of the data source.
-			Field objects description: {fieldName, [fieldDataType], [fieldXPath]} */
+			/* A list of field definitions specifying the schema of the data source.
+			Field objects description: {fieldName, [fieldDataType], [fieldXPath]}
+			returnType="array"*/
 			return this.schema.fields;
 		}
 	});
@@ -9522,8 +9531,8 @@
 			var s = this.schema();
 			this.isTransformedToHierarchicalData(false);
 			if (s) {
-				if ((this._runtimeType !== "remoteUrl" && this.schema().schema.fields.length !== 0) ||
-				this.settings.treeDS.enableRemoteLoadOnDemand ) {
+				if (this.schema().schema.fields.length !== 0 ||
+					this.settings.treeDS.enableRemoteLoadOnDemand) {
 					this._checkGeneratedSchema();
 				}
 				/* overwrite default schema transform function - for now there is no igTreeHierarchicalSchema */
