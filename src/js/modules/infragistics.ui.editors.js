@@ -4726,10 +4726,6 @@
 							value = this._valueInput.val();
 						} else if (this.options.isLimitedToListValues) {
 							value = "";
-						} else if (value <= this.options.minValue) {
-							value = this.options.minValue;
-						} else {
-							value = this.options.maxValue;
 						}
 				} else {
 					if (this.options.allowNullValue) { // TODO VERIFY!!! allowNullValue > revertIfNotValid
