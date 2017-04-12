@@ -38,7 +38,7 @@
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
 					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "539",
-					"646"];
+					"646", "876"];
 					
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -442,7 +442,7 @@
 				}
 
 				initialized = false;
-				module("Editors Bugs Unit Tests ", {
+				module("igEditors Bugs Unit Tests ", {
 					setup: function (assert) {
 						var testID = /^Bug (\d+)/.exec(assert.test.testName).pop();
 						loadTestbeds([testID]);
@@ -746,27 +746,15 @@
 					} else {
 						month = month.toString();
 					}
-					hours = date.getHours();
-					if (hours < 10) {
-						hours = "0" + hours;
-					} else {
-						hours = hours.toString();
-					}
-					minutes = date.getMinutes();
-					if (minutes < 10) {
-						minutes = "0" + minutes;
-					} else {
-						minutes = minutes.toString();
-					}
 					result += day;
 					result += "/";
 					result += month;
 					result += "/";
 					result += date.getFullYear();
 					result += " ";
-					result += hours;
+					result += "00";
 					result += ":";
-					result += minutes;
+					result += "00";
 
 					return result;
 				}
@@ -782,6 +770,32 @@
 				equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The text should've changed to " + getDDmmYYYYHHSS(targetDate));
 			});
 			
+			
+			testId = 'Bug 876';
+			test(testId, 2, function () {
+				// D.P. Updated for  #876:Warning popup is displayed when maxValue date is selected on the dropdown calendar.
+				var todayDate = new Date(), $editor;
+				
+				todayDate.setHours(0);
+				todayDate.setMinutes(0);
+				todayDate.setSeconds(0);
+				todayDate.setMilliseconds(0);
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({
+						maxValue: todayDate,
+						dateDisplayFormat: "yy/MM/dd dddd"
+					});
+
+				$editor.igDatePicker("dropDownButton").click();
+				stop();
+				setTimeout(function () {
+					start();
+					$editor.igDatePicker("getCalendar").find(".ui-datepicker-today").find("a").click();
+					equal($editor.igDatePicker("value").getTime(), todayDate.getTime(), "Max value not selected");
+					ok(!$editor.igDatePicker("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message should not be shown");
+					$editor.remove();
+				}, 400); //This timeout is need because the test requires calendar which needs focus
+			});
 			
 			testId = 'Bug 210990';
 			test(testId, 3, function () {

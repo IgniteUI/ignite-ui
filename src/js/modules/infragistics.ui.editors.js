@@ -1778,7 +1778,12 @@
 					}
 					break;
 				case "listItems":
-					this._deleteList();
+
+					// A. M. April, 4th 2017 #921 "Cannot apply `listItems` to `igNumericEditor` after initialization"
+					// This is the same fix made on Nov 8, 2016 by M. S. for Issue #481 in version 17.1
+					if (prevValue !== null) {
+						this._deleteList();
+					}
 					this._createList();
 					this._clearValue();
 					break;
@@ -3747,7 +3752,7 @@
 			return this._listItems().filter(".ui-igedit-listitemselected");
 		},
 		getSelectedText: function () {
-			/* Gets the selected text in the editor.
+			/* Gets the selected text from the editor in edit mode. This can be done on key event like keydown or keyup. This method can be used only when the editor is focused. If you call this method in display mode (The editor input is blured) the returned value will be an empty string.
 			```
 			var text =  (".selector").%%WidgetName%%("getSelectedText");
 			```
@@ -6954,7 +6959,9 @@
 		_validateRequiredPrompts: function (value) {
 			var i;
 			if (value === "") {
-				return false;
+
+				// D.P. #446 Ignore empty value. Mask editor required prompts validation now allows empty value.
+				return true;
 			}
 			for (i = 0; i < this._requiredIndeces.length; i++) {
 				var ch = value.charAt(this._requiredIndeces[ i ]);
@@ -7981,6 +7988,14 @@
 					date.setMilliseconds(newValue);
 				}
 			}
+			return date;
+		},
+		_setNewDateMidnight: function () {
+			var date = new Date();
+			this._setDateField("hours", date, 0);
+			this._setDateField("minutes", date, 0);
+			this._setDateField("seconds", date, 0);
+			this._setDateField("milliseconds", date, 0);
 			return date;
 		},
 		_getInternalMaskedValue: function (newDate) {
@@ -10664,7 +10679,8 @@
 
 						//T.P. 10th Dec 2015 211062: When there is no value and the datepicker selects value the stored date object needs to be with current time.
 						//In Case there is no dateObject which meand the editor has no value when the date is selected it will be with current time value (hours, minutes, seconds)
-						date = new Date();
+						//D.P. 16th Mar 2017 #876: Warning popup is displayed when maxValue date is selected on the dropdown calendar.
+						date = self._setNewDateMidnight();
 					}
 					date = self._setDateField("year", date, dateFromPicker.getFullYear());
 
