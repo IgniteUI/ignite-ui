@@ -11391,11 +11391,15 @@
 					}
 				}
 			}
-			/* M.H. 19 August 2015 Fix for bug 204302: Paging is lost when dataSource.updateRow is called */
-			if (this.settings.paging.enabled && this.settings.paging.type !== "remote") {
-				this._generateFlatDataAndCountProperties();
+			/* M.H. 12 Apr 2017 Fix for bug 229997: When paging is enabled after editing a value in TreeGrid the tooltip shows incorrect text */
+			if (!this.settings.paging.enabled ||
+				!(t.type === "cell" || t.type === "row")) {
+				/* M.H. 19 August 2015 Fix for bug 204302: Paging is lost when dataSource.updateRow is called */
+				if (this.settings.paging.type !== "remote") {
+					this._generateFlatDataAndCountProperties();
+				}
+				this.generateFlatDataView();
 			}
-			this.generateFlatDataView();
 		},
 		_preprocessAddRow: function (row, index, origDs, at, data) {
 			/* This function is called from _addRow - before adding row in data.
