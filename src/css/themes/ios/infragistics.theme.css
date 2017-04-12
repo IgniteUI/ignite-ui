@@ -21,18 +21,18 @@
 }
 .stateNormal-B {
   border-color: #007aff;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   color: #007aff;
 }
 .stateHover-B {
   border: 1px solid #cccccc;
-  background-color: #d9d9d9;
+  background-color: #D9D9D9;
   color: #000000;
 }
 .stateActive-B {
   border: 1px solid #007aff;
   background-color: #007aff;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .stateNormal-C {
   border-color: #fd472b;
@@ -47,7 +47,7 @@
 .stateActive-C {
   border: 1px solid #fd472b;
   background-color: #fd472b;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .buttonNormal-A {
   border: 1px solid transparent;
@@ -972,7 +972,7 @@ body .ui-tooltip {
 }
 .ui-widget-content {
   border: 1px solid #cccccc;
-  background: #ffffff;
+  background: #FFFFFF;
   color: #000000;
 }
 .ui-widget-content a {
@@ -1090,7 +1090,7 @@ body .ui-tooltip {
 .ui-state-error-text,
 .ui-widget-content .ui-state-error-text,
 .ui-widget-header .ui-state-error-text {
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .ui-priority-primary,
 .ui-widget-content .ui-priority-primary,
@@ -1670,6 +1670,24 @@ body .ui-tooltip {
 .ui-icon-squaresmall-close {
   background-position: -80px -208px;
 }
+/* Scheduler icons */
+.ui-igscheduler .ui-igscheduler-tabs.ui-igscheduler-tabs-selected .ui-icon {
+  background-image: url(images/ui-icons_007aff_256x240.png);
+}
+.ui-igscheduler .ui-igscheduler-tabs:hover .ui-icon,
+.ui-igscheduler .ui-igscheduler-today-button:hover .ui-icon {
+  background-image: url(images/ui-icons_007aff_256x240.png);
+}
+.ui-igscheduler .ui-icon-calendar-day {
+  background-position: -96px -208px;
+}
+.ui-igscheduler .ui-icon-calendar {
+  background-position: -112px -208px;
+}
+.ui-igscheduler .ui-icon-note {
+  background-position: -128px -208px;
+}
+/* Scheduler icons END */
 .ui-icon-grip-dotted-vertical {
   background-position: 0 -224px;
 }
@@ -1736,7 +1754,7 @@ body .ui-tooltip {
 .ui-accordion-header.ui-accordion-header-active {
   border: 1px solid #007aff;
   background-color: #007aff;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .ui-accordion-header.ui-accordion-header-active .ui-icon {
   background-image: url(images/ui-icons_ffffff_256x240.png);
@@ -1770,13 +1788,13 @@ body .ui-tooltip {
 .ui-menu .ui-menu-item.ui-state-focus {
   border: 1px solid #007aff;
   background-color: #007aff;
-  color: #ffffff;
+  color: #FFFFFF;
   border-width: 1px 0;
   margin: 0;
 }
 .ui-menu .ui-menu-item.ui-state-active {
   border: 1px solid #cccccc;
-  background-color: #d9d9d9;
+  background-color: #D9D9D9;
   color: #000000;
   border-width: 1px 0;
   margin: 0;
@@ -1811,7 +1829,7 @@ body .ui-tooltip {
  * jQuery UI Slider Overrides
  */
 .ui-slider {
-  background: #d9d9d9;
+  background: #D9D9D9;
   border: 0 none;
   margin: 0;
   height: 4px;
@@ -1840,7 +1858,7 @@ body .ui-tooltip {
  * jQuery UI Progressbar Overrides
  */
 .ui-progressbar {
-  background: #d9d9d9;
+  background: #D9D9D9;
   border: 0 none;
   margin: 0;
   height: 4px;
@@ -1855,7 +1873,7 @@ body .ui-tooltip {
 .ui-button.ui-state-default,
 .ui-buttonset .ui-button.ui-state-default {
   border-color: #007aff;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   color: #007aff;
 }
 .ui-button.ui-state-hover,
@@ -1873,7 +1891,7 @@ body .ui-tooltip {
 .ui-buttonset .ui-button.ui-state-active {
   border: 1px solid #007aff;
   background-color: #007aff;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .ui-button.ui-state-default,
 .ui-button.ui-state-hover,
@@ -1926,7 +1944,7 @@ body .ui-tooltip {
   display: none !important;
 }
 .ui-tabs .ui-tabs-nav li.ui-state-default {
-  background: #ffffff;
+  background: #FFFFFF;
 }
 .ui-tabs .ui-tabs-nav li.ui-state-default a {
   color: #007aff;
@@ -1942,7 +1960,7 @@ body .ui-tooltip {
   background: #007aff;
 }
 .ui-tabs .ui-tabs-nav li.ui-state-active a {
-  color: #ffffff;
+  color: #FFFFFF;
 }
 /*
  * jQuery UI Datepicker Overrides
@@ -1971,22 +1989,22 @@ body .ui-tooltip {
 }
 .ui-datepicker .ui-datepicker-calendar a.ui-state-hover {
   border: 1px solid #cccccc;
-  background-color: #d9d9d9;
+  background-color: #D9D9D9;
   color: #000000;
 }
 .ui-datepicker .ui-datepicker-calendar a.ui-state-active {
   border: 1px solid #fd472b;
   background-color: #fd472b;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .ui-datepicker .ui-datepicker-calendar .ui-state-disabled {
   border: 1px solid transparent;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
 }
 .ui-datepicker .ui-datepicker-current-day .ui-state-default {
   border: 1px solid #fd472b;
   background-color: #fd472b;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .ui-datepicker .ui-datepicker-today a.ui-state-default {
   color: #fd472b;
@@ -1995,7 +2013,7 @@ body .ui-tooltip {
 .ui-datepicker .ui-datepicker-today a.ui-state-active {
   border: 1px solid #fd472b;
   background-color: #fd472b;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .ui-datepicker-header .ui-icon {
   background-image: url(images/ui-icons_fd472b_256x240.png);
@@ -2014,9 +2032,8 @@ body .ui-tooltip {
  * jQuery UI Spinner Overrides
  */
 .touch .ui-spinner-button,
-.touchevents .ui-spinner-button,
-.pointerevents .ui-spinner-button
-{
+.touchevents .ui-spinner- button,
+.pointerevents .ui-spinner-button {
   width: 1.4em;
   height: 1.4em;
   display: inline-block;
@@ -2078,18 +2095,18 @@ body .ui-tooltip {
   border: 1px solid #ececec !important;
 }
 .ui-iggrid .ui-iggrid-table-mrl td.ui-state-hover {
-  border-color: #ffffff !important;
+  border-color: #FFFFFF !important;
 }
 .ui-iggrid .ui-iggrid-headertable-mrl th,
 .ui-iggrid .ui-iggrid-table-mrl th.ui-state-default {
-  border: 1px solid #d9d9d9 !important;
+  border: 1px solid #D9D9D9 !important;
 }
 .ui-widget-content.ui-iggrid-buttoncontainer {
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25) !important;
 }
 /* footer summary tables*/
 .ui-iggrid tfoot td {
-  border-color: #ffffff;
+  border-color: #FFFFFF;
 }
 .ui-iggrid tfoot tr:first-child td,
 .ui-iggrid > table tfoot tr:first-child td {
@@ -2103,7 +2120,7 @@ body .ui-tooltip {
 }
 .ui-iggrid tfoot,
 .ui-iggrid-footer {
-  border-bottom: 1px solid #ffffff !important;
+  border-bottom: 1px solid #FFFFFF !important;
 }
 .ui-iggrid-scrolldiv {
   background-color: #f8f8f8;
@@ -2128,13 +2145,13 @@ body .ui-tooltip {
   border-right: 1px solid #ececec;
 }
 .ui-iggrid th.ui-iggrid-header {
-  border-color: #d9d9d9;
+  border-color: #D9D9D9;
 }
 .ui-iggrid th.ui-iggrid-header:last-child {
   border-right-color: transparent;
 }
 .ui-iggrid .ui-iggrid-headertable-mrl th.ui-iggrid-header:last-child {
-  border-right-color: #d9d9d9;
+  border-right-color: #D9D9D9;
 }
 .ui-iggrid > table > tbody tr:first-child th.ui-igpivotgrid-header {
   border-top-color: #535353!important;
@@ -2153,7 +2170,7 @@ body .ui-tooltip {
 .ui-iggrid th.ui-state-active {
   border: 1px solid #007aff;
   background-color: #007aff;
-  color: #ffffff;
+  color: #FFFFFF;
   border-top: 0!important;
   /* overides ui-states */
   border-left: 0!important;
@@ -2162,7 +2179,7 @@ body .ui-tooltip {
   /* overides ui-states */
 }
 .ui-iggrid th.ui-state-active a {
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .ui-iggrid th.ui-state-active .ui-icon {
   background-image: url(images/ui-icons_ffffff_256x240.png);
@@ -2172,7 +2189,7 @@ body .ui-tooltip {
 }
 .ui-iggrid th.ui-state-focus .ui-iggrid-headertext,
 .ui-iggrid th.ui-state-active ui-iggrid-headertext {
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .ui-iggrid th .ui-iggrid-indicatorcontainer .ui-iggrid-summaries-header-icon.ui-icon {
   background: url(images/igGrid/filter-icons-333333.png) no-repeat scroll -416px 0 transparent;
@@ -2290,7 +2307,7 @@ body .ui-tooltip {
   background: #ffffff none;
 }
 .ui-iggrid .ui-ig-altrecord.ui-state-focus {
-  background: #ffffff none;
+  background: #FFFFFF none;
 }
 .ui-iggrid tr.ui-state-focus td,
 .ui-iggrid tr.ui-state-focus th,
@@ -2317,7 +2334,7 @@ body .ui-tooltip {
 .ui-iggrid tbody .ui-ig-altrecord .ui-iggrid-mergedcellstop.ui-state-active {
   border: 1px solid #007aff;
   background-color: #007aff;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 /* Focus state on paging buttons */
 .ui-iggrid .ui-iggrid-paging-item.ui-state-focus,
@@ -2421,7 +2438,7 @@ body .ui-tooltip {
 .ui-iggrid-hiding-dropdown-list li.ui-state-default,
 .ui-iggrid-columnmoving-dropdown-list li.ui-state-default,
 .ui-igcombo-listitemholder li.ui-state-default {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   padding-top: 0.4em;
   padding-bottom: 0.4em;
   border: 1px solid transparent;
@@ -2439,7 +2456,7 @@ body .ui-tooltip {
 .ui-igcombo-listitemholder li.ui-state-hover a {
   border: 1px solid #007aff;
   background-color: #007aff;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
 .ui-igedit-list .ui-igedit-listitem.ui-state-active,
@@ -2454,7 +2471,7 @@ body .ui-tooltip {
 .ui-igcombo-listitemholder li.ui-state-active,
 .ui-igcombo-listitemholder li.ui-state-active a {
   border: 1px solid #cccccc;
-  background-color: #d9d9d9;
+  background-color: #D9D9D9;
   color: #000000;
 }
 /* switch filter icons to white on hover */
@@ -2469,7 +2486,7 @@ body .ui-tooltip {
 .ui-igcombo-listitemholder li.ui-state-highlight,
 .ui-igcombo-listitemholder li.ui-state-highlight a {
   border: 1px solid #cccccc;
-  background-color: #d9d9d9;
+  background-color: #D9D9D9;
   color: #000000;
 }
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-hover a,
@@ -2479,7 +2496,7 @@ body .ui-tooltip {
 }
 /* Group by */
 .ui-iggrid-groupbyarea {
-  background-color: #ffffff !important;
+  background-color: #FFFFFF !important;
   border-width: 1px 1px 0 1px!important;
 }
 .ui-iggrid-groupbylabelrightedgeend {
@@ -2520,7 +2537,7 @@ body .ui-tooltip {
   background-image: url(images/ui-icons_ffffff_256x240.png);
 }
 .ui-ig-altrecord + tr > td.ui-iggrid-childarea {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   /* expanded from altrecord should have the same bg colour */
   border-color: transparent #ececec #ececec;
 }
@@ -2558,9 +2575,9 @@ body .ui-tooltip {
 }
 .ui-iggrid tfoot td.ui-widget-content,
 .ui-iggrid tfoot td.ui-state-default {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   color: #303030;
-  border-color: #ffffff #ececec #ececec;
+  border-color: #FFFFFF #ececec #ececec;
   border-style: solid;
 }
 .ui-iggrid tfoot td.ui-state-hover {
@@ -2896,7 +2913,7 @@ body .ui-tooltip {
 }
 .ui-igtree a.ui-state-hover {
   border: 1px solid #cccccc;
-  background-color: #d9d9d9;
+  background-color: #D9D9D9;
   color: #000000;
   border: 1px solid transparent;
 }
@@ -2927,7 +2944,7 @@ body .ui-tooltip {
 .ui-igcombo-checkbox.ui-state-default {
   background-image: none;
   background-color: white;
-  border: 1px solid #d9d9d9;
+  border: 1px solid #D9D9D9;
   border-radius: 0;
 }
 .ui-igcheckbox-small.ui-state-hover,
@@ -2971,7 +2988,7 @@ body .ui-tooltip {
 }
 .ui-ightmleditor {
   background-color: #cccccc;
-  border: 1px solid #d9d9d9;
+  border: 1px solid #D9D9D9;
 }
 .ui-ightmleditor .ui-igtoolbar {
   background: #ececec;
@@ -3251,7 +3268,7 @@ body .ui-tooltip {
 .ui-igedit-cleararea.ui-state-hover,
 .ui-igedit.ui-state-hover .ui-igedit-cleararea,
 .ui-igedit.ui-state-focus .ui-igedit-cleararea {
-  background: none #ffffff;
+  background: none #FFFFFF;
   border: 0 none;
 }
 .ui-igcombo-clear .ui-icon,
@@ -3344,8 +3361,7 @@ body .ui-tooltip {
   margin-left: -9px !important;
   top: -9px !important;
 }
-.igTouch .ui-chart-toolbar .ui-slider-handle
-{
+.igTouch .ui-chart-toolbar .ui-slider-handle {
   border: 1px solid #535353;
   background: #4f4f4f;
   margin-left: -15px;
@@ -3522,7 +3538,7 @@ body .ui-tooltip {
   border-color: #787878;
 }
 .ui-radialgauge-backing {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   border: #cccccc;
 }
 .ui-radialgauge-scale {
@@ -3751,7 +3767,7 @@ body .ui-tooltip {
 /***********************/
 /*TreeGrid Paging Context Row*/
 .ui-igtreegrid-contextrow {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   color: #999999;
 }
 .ui-igtreegrid-contextrow td {
@@ -3761,3 +3777,143 @@ body .ui-tooltip {
   background-image: url(images/igGrid/filter-icons-333333.png);
   background-position: -464px 0;
 }
+/* ============
+  Scheduler
+============= */
+.ui-igscheduler.ui-state-default {
+  background: transparent;
+}
+.ui-igscheduler-core .ui-igscheduler-agendaview-day-header {
+  background-color: #FFFFFF;
+  color: #303030;
+}
+.ui-igscheduler-header {
+  border-color: #ebebeb;
+}
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
+  color: #007aff;
+}
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected .ui-icon {
+  color: #007aff;
+}
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:hover,
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:active {
+  color: #007aff;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject {
+  color: #000000;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time {
+  color: #787878;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-of-week-header,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-location {
+  color: #303030;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected {
+  background-color: #FFFFFF;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-horizontal-separator {
+  background-color: #ececec;
+}
+.ui-igscheduler-monthview {
+  box-shadow: 1px 2px 15px #cccccc;
+  z-index: 1;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-horizontal-separator {
+  background-color: #ececec;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-selected {
+  background-color: #f8f8f8;
+  color: #787878;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-today-indicator {
+  background: transparent;
+}
+.ui-igscheduler-monthview-day-today span {
+  color: #007aff;
+}
+.ui-igscheduler-core .ui-igscheduler-agendaview-day-header {
+  background: #fff;
+  border-color: #ebebeb;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-vertical-separator {
+  background-color: #f8f8f8;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-month-header {
+  background-color: #007aff;
+  color: white;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-week-header {
+  color: black;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
+  background-color: #fff;
+  color: #D9D9D9 !important;
+}
+.ui-igscheduler-agendaview {
+  border-color: #cccccc;
+}
+.ui-igscheduler-selectall {
+  background-color: #007aff;
+}
+.ui-igscheduler-appointment-dialog-save-button,
+.ui-igscheduler-appointment-dialog-cancel-button {
+  border-color: #ebebeb;
+  background: #ebebeb;
+}
+.ui-igscheduler-appointment-dialog-save-button:hover,
+.ui-igscheduler-appointment-dialog-cancel-button:hover {
+  background: #ececec;
+}
+.ui-igscheduler-navigator-back-button:hover,
+.ui-igscheduler-navigator-date-range-button:hover,
+.ui-igscheduler-navigator-forward-button:hover {
+  background-color: #ececec;
+}
+.ui-igscheduler-today-button:hover,
+.ui-igscheduler-tabs:hover {
+  background-color: #fff;
+  color: #303030;
+}
+.ui-igscheduler-tabs .ui-icon,
+.ui-igscheduler-today-button .ui-icon {
+  margin-top: -9px !important;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
+  cursor: pointer;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected {
+  color: #007aff;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
+  color: #4cd864;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject-selected {
+  color: #007aff;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-location-selected {
+  color: #8be69a;
+}
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-area {
+  margin: 10px 0;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview {
+  background-color: transparent;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-activity-indicator {
+  background-color: #c0c0c0;
+}
+.ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
+  font-size: .75em;
+}
+.ui-igscheduler-tabs .ui-icon,
+.ui-igscheduler-today-button .ui-icon {
+  margin-top: -9px !important;
+}
+/* Scheduler END */
