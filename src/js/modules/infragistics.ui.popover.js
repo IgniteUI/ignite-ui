@@ -208,7 +208,7 @@
 					}
 					break;
 				case "containment":
-					if (value instanceof jQuery) {
+					if (value instanceof $) {
 						this.options.containment = value;
 					}
 					break;
@@ -566,7 +566,7 @@
 			/* D.K. checking the node type of the element as an alternative of "instanceof HTMLElement" for IE8
 			nodeType === 1 represents an elements */
 			if ( t && ( ( window.HTMLElement !== undefined &&
-				( t instanceof HTMLElement || t instanceof jQuery ) && showEvt ) ||
+				( t instanceof HTMLElement || t instanceof $ ) && showEvt ) ||
 				(typeof t[ 0 ] === "object") && (t[ 0 ].nodeType === 1) &&
 				( typeof t[ 0 ].style === "object" ) &&
 				( typeof t[ 0 ].ownerDocument === "object" ) ) ) {
@@ -593,7 +593,7 @@
 			/* D.K. checking the node type of the element as an alternative of "instanceof HTMLElement" for IE8
 			nodeType === 1 represents an elements */
 			if ( t && ( ( window.HTMLElement !== undefined &&
-				( t instanceof HTMLElement || t instanceof jQuery ) ) ||
+				( t instanceof HTMLElement || t instanceof $ ) ) ||
 				(typeof t[ 0 ] === "object") && (t[ 0 ].nodeType === 1) &&
 				( typeof t[ 0 ].style === "object" ) &&
 				( typeof t[ 0 ].ownerDocument === "object" ) ) ) {
@@ -1021,7 +1021,7 @@
 		},
 		_setNewContent: function (nc) {
 			var newContent = nc;
-			if (nc instanceof jQuery) {
+			if (nc instanceof $) {
 				newContent = nc.html();
 			} else if (typeof nc === "object") {
 				newContent = nc.innerHTML;
