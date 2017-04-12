@@ -311,6 +311,34 @@
 				$.ig.Editor.locale.cannotSetNonBoolValue);
 		});
 
+		var testId = 'Testing key code event arguments';
+		test(testId, 3, function () {
+			var keyD, keyP, keyU;
+
+			$chkInput = $('<input/>').appendTo("#testBedContainer").igCheckboxEditor({
+				keydown: function(e, args) {
+					keyD = args.key;
+				},
+				keypress: function(e, args) {
+					keyP = args.key;
+				},
+				keyup: function(e, args) {
+					keyU = args.key;
+				}
+			});
+			
+			fireKeyEvent($chkInput, 32);
+			stop();
+			setTimeout(function() {
+				start();
+				debugger;
+				ok(keyD === 32, "Key code is not correct in keyDown event");
+				ok(keyP === 32, "Key code is not correct in keyPress event");
+				ok(keyU === 32, "Key code is not correct in keyUp event");
+				$chkInput.remove();
+			}, 300);
+		});
+
 		function isChecked($input, expectedValue, expectedState) {
 			return $input.igCheckboxEditor("value") === expectedValue &&
 				$input.data("igCheckboxEditor").options.checked === (expectedState !== undefined ? expectedState : expectedValue);
