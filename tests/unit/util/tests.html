@@ -29,7 +29,7 @@
 }
 </style>
 	<script type="text/javascript">		
-		module("Basic Tests");
+		module("igUtil Basic Tests");
         // run tests
 		
 		test("Test getColType function",function(){
@@ -102,6 +102,68 @@
 			equal(newUrl, "http://services.odata.org/V2/Northwind/Northwind.svc/Customers?$format=json&%24skip=0&%24top=25&%24inlinecount=allpages&dbdepth=0&pk=CustomerID&additionalParam=1", "Verify url is correct and the new param is appended.");
 			newUrl = $.ig.util.prependToQueryString (url, "('ALFKI')/Orders");
 			equal(newUrl, "http://services.odata.org/V2/Northwind/Northwind.svc/Customers('ALFKI')/Orders?$format=json&%24skip=0&%24top=25&%24inlinecount=allpages&dbdepth=0&pk=CustomerID","Verify url is correct and the new string is prepended.");
+		});
+		
+		test("Test calcSummaries function by specifying summary name", function () {
+			var data = [ 114601, 82742, 63895, 27186, 63198, 73758 ];
+			
+			//Min
+			equal($.ig.calcSummaries("min", data, null, "number"), 27186, "Function did determine the minimum number correctly");
+			equal($.ig.calcSummaries("min", [], null, "number"), 0, "Min return 0 when the data is empty and dataType is 'number'");
+			equal($.ig.calcSummaries("min", [], null, "date"), null, "Min returns null when the data is empty and dataType is 'date'");
+
+			//Max
+			equal($.ig.calcSummaries("max", data, null, "number"), 114601, "Max function did determine the minimum number correctly");
+			equal($.ig.calcSummaries("max", [], null, "number"), 0, "Max return 0 when the data is empty and dataType is 'number'");
+			equal($.ig.calcSummaries("max", [], null, "date"), null, "Max returns null when the data is empty and dataType is 'date'");
+			
+			//Sum
+			equal($.ig.calcSummaries("sum", data, null, "number"), 425380, "Sum function calculated the sum correctly");
+			equal($.ig.calcSummaries("sum", data), 425380, "Sum function calculated the sum correctly");
+			equal($.ig.calcSummaries("sum", [], null, "number"), 0, "Sum function return 0 when the array is empty");
+			
+			//Avg
+			equal($.ig.calcSummaries("avg", data, null, "number").toFixed(0), 70897, "Avg function calculated the average correctly");
+			equal($.ig.calcSummaries("avg", data).toFixed(0), 70897, "Avg function calculated the average correctly");
+			equal($.ig.calcSummaries("avg", [], null, "number"), 0, "Avg function return 0 when the array is empty");
+			
+			//Count
+			equal($.ig.calcSummaries("count", data, null, "number"), 6, "Count function return the number of elements correctly");
+			equal($.ig.calcSummaries("count", [], null, "number"), 0, "Count function return 0 when the array is empty");
+		});
+		
+				
+		test("Test calcSummaries function by specifying summary function directly", function () {
+			var data = [ 114601, 82742, 63895, 27186, 63198, 73758 ];
+			
+			//Min
+			equal($.ig.calcSummaries("customMin", data, $.ig.util.summaries.min, "number"), 27186, "Function did determine the minimum number correctly");
+			equal($.ig.calcSummaries("customMin", [], $.ig.util.summaries.min, "number"), 0, "Min return 0 when the data is empty and dataType is 'number'");
+			equal($.ig.calcSummaries("customMin", [], $.ig.util.summaries.min, "date"), null, "Min returns null when the data is empty and dataType is 'date'");
+
+			//Max
+			equal($.ig.calcSummaries("customMax", data, $.ig.util.summaries.max, "number"), 114601, "Max function did determine the minimum number correctly");
+			equal($.ig.calcSummaries("customMax", [], $.ig.util.summaries.max, "number"), 0, "Max return 0 when the data is empty and dataType is 'number'");
+			equal($.ig.calcSummaries("customMax", [], $.ig.util.summaries.max, "date"), null, "Max returns null when the data is empty and dataType is 'date'");
+			
+			//Sum
+			equal($.ig.calcSummaries("customSum", data, $.ig.util.summaries.sum, "number"), 425380, "Sum function calculated the sum correctly");
+			equal($.ig.calcSummaries("customSum", [], $.ig.util.summaries.sum), 0, "Sum function return 0 when the array is empty");
+			
+			//Avg
+			equal($.ig.calcSummaries("customAvg", data, $.ig.util.summaries.avg, "number").toFixed(0), 70897, "Avg function calculated the average correctly");
+			equal($.ig.calcSummaries("customAvg", [], $.ig.util.summaries.avg, "number"), 0, "Avg function return 0 when the array is empty");
+			
+			//Count
+			equal($.ig.calcSummaries("custom", data, $.ig.util.summaries.count), 6, "Count function return the number of elements correctly");
+			equal($.ig.calcSummaries("custom", [], $.ig.util.summaries.count), 0, "Count function return 0 when the array is empty");
+			
+			equal($.ig.calcSummaries("random", [], $.ig.util.summaries.count), null, "Count function returns null when the summary name is not starting with custom");
+			equal($.ig.calcSummaries("custom", []), null, "Count function returns null when the custom summary function is not defined");
+		});
+		test("Test Complex Generic TypeArguments", function () {
+			var listNullInt = $.ig.IList$1.prototype.$type.specialize($.ig.Nullable$1.prototype.$type.specialize($.ig.Number.prototype.$type));
+			equal($.ig.Number.prototype.$type, listNullInt.typeArguments[0].typeArguments[0], "List<Nullable<int>>");
 		});
 	</script>
 </head>

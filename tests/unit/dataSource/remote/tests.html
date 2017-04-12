@@ -286,7 +286,7 @@
 		var dsXMLWrappedRender = function (success, error) {
 		};
 
-		module("igDataSource", {
+		module("igDataSource Remote", {
 			setup: function() {
 				//pause testing until tree is initialized
 				QUnit.stop();
@@ -633,6 +633,24 @@
 				sr.ID.min === 0 &&
 				sr.ReleaseDate.max.getTime() === maxDate.getTime(),
 				"Test summaries response");
+		});
+
+		test("OData filtering parameters with exprString", function () {
+			var str, currDate, year, month, params, lastMonth, nextMonth, day, date;
+			ds.settings.localSchemaTransform = true;
+			ds.settings.filtering.exprString = "ProductID LIKE Cr%";
+			ds.settings.filtering.type = "remote";
+
+			ds.settings.sorting.exprString = "";
+			ds.settings.sorting.expressions = [];
+			ds.settings.paging.enabled = false;
+			ds.settings.filtering.expressions = [
+				{ fieldName: "ProductID", expr: "b", cond: "StartsWith" }
+			];
+			// compare the "params" string with the expected one 
+			params = $.param(ds._encodeUrl());
+
+			equal(params, "%24filter=startswith(tolower(ProductID)%2C'cr')%20eq%20true");
 		});
 	});
 

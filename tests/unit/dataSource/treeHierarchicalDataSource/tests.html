@@ -244,7 +244,7 @@
 
 			}
 			initialized = false;
-			module("igTreeHierarchicalDataSource API methods", {
+			module("igDataSource TreeHierarchicalDataSource API methods", {
 				setup: function () {
 					//pause testing until tree is initialized
 					if (!initialized) {
@@ -786,6 +786,60 @@
 					products[1].Products[0].ID === 10001,
 					"Call dataBind and test whether rows with IDs 10000 and 10001 were properly added");
 			});
+			
+			test("Test expandedKey and dataLevelKey option settings.", function () {
+				var ds = new $.ig.TreeHierarchicalDataSource({
+					dataSource: [
+						{ "employeeID": 0, "PID": -1, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-", "Date": new Date("01/01/2011") },
+						{ "employeeID": 1, "PID": 0, "firstName": "Andrew", "lastName": "Fuller", "reportsTo": "-", "Date": new Date("01/01/2011") }
+					],
+					primaryKey: "employeeID",
+					foreignKey: "PID",
+					localSchemaTransform: true,
+					schema: {
+						fields: [
+							{ name: "employeeID", type: "number" },
+							{ name: "PID", type: "number" },
+							{ name: "firstName", type: "string" },
+							{ name: "lastName", type: "string" },
+							{ name: "reportsTo", type: "string" }
+						]
+					},
+					treeDS: {
+						key: "employeeID",
+						foreignKey: "PID",
+						primaryKey: "employeeID",
+						initialExpandDepth: 3,
+						foreignKeyRootValue: -1,
+						childDataKey: "childData",
+						dataLevelKey: "dataLevel",
+						expandedKey: "expanded"
+					}
+				});
+
+				ds.dataBind();
+
+				//verify schema is correctly applied
+				ok(ds.getFlatData()[0].expanded, "Expanded prop of record should be true.");
+				equal(ds.getFlatData()[0].dataLevel, 0, "Data level prop of record should be 0.");
+
+				ok(ds.getFlatData()[1].expanded, "Expanded prop of record should be true.");
+				equal(ds.getFlatData()[1].dataLevel, 1, "Data level prop of record should be 0.");
+
+				//expand/collapse
+				ds.toggleRow(0);
+
+				ok(!ds.getFlatData()[0].expanded, "Expanded prop of record should be false.");
+				equal(ds.getFlatData()[0].dataLevel, 0, "Data level prop of record should be 0.");
+
+				ok(ds.getFlatData()[1].expanded, "Expanded prop of record should be true.");
+				equal(ds.getFlatData()[1].dataLevel, 1, "Data level prop of record should be 0.");
+
+				//check if url is correctly encoded
+				var url = JSON.stringify(ds._encodeUrl())
+				equal(url, '{"pk":"employeeID","fk":"PID","fkRootValue":-1,"dataLevelKey":"dataLevel","expandedKey":"expanded","childDataKey":"childData","initialExpandDepth":3}', "Url shold contain the properties dataLevelKey and expandedKey.");
+			});
+
 			var dsRemotePaging, dsRemoteSorting, dsRemoteFiltering;
 			function loadRemoteTestbeds() {
 
@@ -979,7 +1033,7 @@
 			}
 
 			var isInit = false;
-			module("igTreeHierarchicalDataSource Remote scenarios", {
+			module("igDataSource TreeHierarchicalDataSource Remote scenarios", {
 				setup: function () {
 					//pause testing until tree is initialized
 					if (!isInit) {
