@@ -3517,23 +3517,23 @@ input.ui-igbutton {
 }
 /* RANGE VALUES */
 .ui-bulletgraph-range-palette-1 {
-  background-color: #005E9C;
-  border: transparent;
-}
-.ui-bulletgraph-range-palette-2 {
   background-color: #0078C8;
   border: transparent;
 }
-.ui-bulletgraph-range-palette-3 {
-  background-color: #0092F4;
+.ui-bulletgraph-range-palette-2 {
+  background-color: #0099FF;
   border: transparent;
 }
-.ui-bulletgraph-range-palette-4 {
+.ui-bulletgraph-range-palette-3 {
   background-color: #21A7FF;
   border: transparent;
 }
-.ui-bulletgraph-range-palette-5 {
+.ui-bulletgraph-range-palette-4 {
   background-color: #4FB9FF;
+  border: transparent;
+}
+.ui-bulletgraph-range-palette-5 {
+  background-color: #79C9FF;
   border: transparent;
 }
 /* ACTUAL VALUES */
@@ -3602,23 +3602,23 @@ input.ui-igbutton {
 }
 /* RANGE VALUES */
 .ui-lineargauge-range-palette-1 {
-  background-color: #005E9C;
-  border: transparent;
-}
-.ui-lineargauge-range-palette-2 {
   background-color: #0078C8;
   border: transparent;
 }
-.ui-lineargauge-range-palette-3 {
-  background-color: #0092F4;
+.ui-lineargauge-range-palette-2 {
+  background-color: #0099FF;
   border: transparent;
 }
-.ui-lineargauge-range-palette-4 {
+.ui-lineargauge-range-palette-3 {
   background-color: #21A7FF;
   border: transparent;
 }
-.ui-lineargauge-range-palette-5 {
+.ui-lineargauge-range-palette-4 {
   background-color: #4FB9FF;
+  border: transparent;
+}
+.ui-lineargauge-range-palette-5 {
+  background-color: #79C9FF;
   border: transparent;
 }
 /* TOOLTIPS */
