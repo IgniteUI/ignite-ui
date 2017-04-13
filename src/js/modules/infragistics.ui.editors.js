@@ -5233,6 +5233,9 @@
 				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
 					newValue = this.options.maxValue;
 					this._editorInput.val(this.options.maxValue);
+				} else if (this.options.isLimitedToListValues) {
+					newValue = "";
+					this._editorInput.val("");
 				} else {
 					if (this.value()) {
 						newValue = 0;
