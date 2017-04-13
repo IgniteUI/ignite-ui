@@ -1098,7 +1098,7 @@
 				// target is specified we"ll get the element from there
 				if (typeof opts.target === "string") {
 					this._target = $(opts.target);
-				} else if (opts.target instanceof jQuery) {
+				} else if (opts.target instanceof $) {
 					this._target = $(opts.target[ 0 ]);
 				}
 			} else {
@@ -1247,7 +1247,7 @@
 		},
 		_dragCont: function (left, evt) {
 			var ol = this._cw.left, ow = this._cw.width, nl = ol, nw = ow, args, dragging = false, noCancel;
-			if (!this._draggedElement || !(this._draggedElement instanceof jQuery)) {
+			if (!this._draggedElement || !(this._draggedElement instanceof $)) {
 				return;
 			}
 			if (this._draggedElement.hasClass("ui-igzoombar-window-handle-left")) {
