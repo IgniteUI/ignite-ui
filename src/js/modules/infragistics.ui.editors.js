@@ -4047,6 +4047,7 @@
 			/* type="string" Gets/Sets the character, which is used as negative sign.
 				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4081,7 +4082,7 @@
 			/* type="string" Gets/Sets the character, which is used as decimal separator.
 				Note: this option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
-				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) option.
+				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4100,7 +4101,7 @@
 				That option has effect only in display mode(no focus).
 				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
-				Note: This option's value should not be equal to the value of [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) option.
+				Note: This option's value should not be equal to the value of [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
