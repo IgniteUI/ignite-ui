@@ -75,7 +75,7 @@
 				noListItemsNoButton: "No spin or dropdown button is rendered because there are no listitems.",
 				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
 				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
-				decimalSeparatorEqualsGroupSeparatorErrorMsg: "The groupSeparator option requires a different value than the decimalSeparator."
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "The groupSeparator and the decimalSeparator options can not have equal values."
 			}
 		};
 	}
