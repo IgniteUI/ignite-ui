@@ -1485,7 +1485,9 @@
 					});
 				```
 				*/
-				defaultCollapseState: false
+				defaultCollapseState: false,
+				/* type="allRecords|onlyDataRecords"  */
+				pagingMode: "allRecords"
 			},
 			/* M.H. add summaries support */
 			/* Settings related to built-in summaries functionality
@@ -4359,8 +4361,8 @@
 				/*A.T. workaround for jQuery's 1.5 and above bug related to dataFilter and success callback.
 				We need to explicitly set the dataType to "text" when manually parsing it */
 				/* get jquery version */
-				if ($.fn.jquery) {
-					ver = $.fn.jquery.split(".");
+				if (jQuery.fn.jquery) {
+					ver = jQuery.fn.jquery.split(".");
 				}
 				if (ver && ver.length >= 2) {
 					/* if jQuery is 1.5 and greater or if the first major version is greater than 1 (when jQuery 2 comes out)
@@ -5186,37 +5188,109 @@
 				this._dataView = [];
 			}
 			data = this._filter ? this._filteredData : this._data;
-			this._generatePageData(this.isGroupByApplied() ?
-										this.visibleGroupByData() :
-										data,
-									count);
+			this._generatePageData(data, count);
 		},
-		_generatePageData: function (data, count) {
-			var i, startIndex, endIndex;
+		_getPageStartEndIndex: function (data) {
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
 			load the data for the current page only , in the DataView */
-			startIndex = this.pageIndex() * this.pageSize();
+			var startIndex = this.pageIndex() * this.pageSize(), endIndex;
 			if (startIndex >= data.length) {
 				this.settings.paging.pageIndex = 0;
 				startIndex = this.pageIndex() * this.pageSize();
 			}
 			endIndex = startIndex + this.pageSize() >= data.length ?
 				data.length : startIndex + this.pageSize();
-			if (this.isGroupByApplied()) {
-				this._dataView = [];
-				this._gbDataView = [];
-				for (i = startIndex; i < endIndex; i++) {
-					this._gbDataView.push(data[ i ]);
-					if (!data[ i ].__gbRecord) {
-						this._dataView.push(data[ i ]);
+			return {
+				startIndex: startIndex,
+				endIndex: endIndex
+			};
+		},
+		_generateGroupByPageDataForAllRecords: function () {
+			var i, data = this.visibleGroupByData(),
+				metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._gbDataView.push(data[ i ]);
+				if (!data[ i ].__gbRecord) {
+					this._dataView.push(data[ i ]);
+				}
+			}
+		},
+		_generateGroupByPageDataForDataRecords: function (data) {
+			var i, rec, startIndex, parents, visible, level = 100,
+				gbData = this.groupByData(), len = gbData.length,
+				metadata = this._getPageStartEndIndex(data),
+				startDataRec = data[ metadata.startIndex ],
+				endDataRec = data[ metadata.endIndex - 1 ];
+			/*find start index from groupByData*/
+			parents = [];
+			for (i = 0; i < len; i++) {
+				if (gbData[ i ] === startDataRec ) {
+					startIndex = i;
+					break;
+				}
+			}
+			/* find groupby parent records for the first data record */
+			for (i = startIndex - 1; i >= 0; i--) {
+				rec = gbData[ i ];
+				if (rec.__gbRecord) {
+					if (level > rec.level) {
+						level = rec.level;
+						parents.unshift(rec);
+						if (!level) {
+							break;
+						}
 					}
 				}
-			} else {
-				for (i = startIndex; i < endIndex; i++) {
-					this._dataView[ count++ ] = data[ i ];
+			}
+			/* detect whether data records are visible(according to collapse state of parent group-by record(s)) */
+			level = 0;
+			visible = true;
+			for (i = 0; i < parents.length; i++) {
+				this._gbDataView.push(parents[ i ]);
+				if (parents[ i ].collapsed) {
+					visible = false;
+					level = parents[ i ].level;
+					break;
 				}
+			}
+			/* populate _gbDataView(visible group-by data view) and _dataView */
+			for (i = startIndex; i < len; i++) {
+				rec = gbData[ i ];
+				if (rec.__gbRecord) {
+					if (rec.level <= level || visible) {
+						level = rec.level;
+						visible = !(rec.collapsed);
+						this._gbDataView.push(rec);
+					}
+				} else {
+					this._dataView.push(rec);
+					if (visible) {
+						this._gbDataView.push(rec);
+					}
+					if (rec === endDataRec) {
+						break;
+					}
+				}
+			}
+		},
+		_generateGroupByPageData: function (data) {
+			this._dataView = [];
+			this._gbDataView = [];
+			return (this.settings.groupby.pagingMode === "allRecords") ?
+					this._generateGroupByPageDataForAllRecords(data) :
+					this._generateGroupByPageDataForDataRecords(data);
+		},
+		_generatePageData: function (data, count) {
+			if (this.isGroupByApplied()) {
+				return this._generateGroupByPageData(data, count);
+			}
+			var i, metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._dataView[ count++ ] = data[ i ];
 			}
 		},
 		_compareValues: function (x, y) {
@@ -6418,7 +6492,8 @@
 			returnType="number" total number fo pages
 			*/
 			var c, realCount;
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				realCount = this._vgbData.length;
 			} else if (!this._filter) {
 				realCount = this.totalRecordsCount() > 0 ? this.totalRecordsCount() : this._data.length;
