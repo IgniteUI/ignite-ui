@@ -4407,7 +4407,7 @@
 					control._showVolumeSlider();
 				},
 				mouseout: function (event) {
-					if (!jQuery.contains(event.currentTarget, event.relatedTarget) &&
+					if (!$.contains(event.currentTarget, event.relatedTarget) &&
 						event.currentTarget !== event.relatedTarget) {
 						control._volumeSliderTimeoutId =
 							setTimeout($.proxy(control._hideVolumeSlider, control),
