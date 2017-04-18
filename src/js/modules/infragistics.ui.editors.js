@@ -1910,8 +1910,8 @@
 			}
 
 			//M.S. 3/14/2017. Issue 779 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			if (!this.options.value && this.options.allowNullValue && this.options.nullValue !== null) {
-				this.options.value = this.options.nullValue;
+			if (!this.options.value && this.options.allowNullValue && this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
+				this._setOption("value", this.options.nullValue);
 			}
 
 			this._applyPlaceHolder();
@@ -4684,6 +4684,13 @@
 				case "includeKeys":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.numericEditorNoSuchOption);
+
+				//M.S. 4/10/2017 Issue #892 Value is null even when 'nullValue: 0'
+				// case "value":
+				// 	if (typeof value === "string") {
+				// 		throw new Error($.ig.Editor.locale.numericEditorValueErrorMsg);
+				// 	}
+				// 	break;
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -5705,6 +5712,11 @@
 				returnType="number" Current editor value. */
 			if (newValue !== undefined) {
 
+				//M.S. 4/10/2017 Issue #892 Value is null even when 'nullValue: 0'
+				// if (typeof newValue === "string") {
+				// 		throw new Error($.ig.Editor.locale.numericEditorValueErrorMsg);
+				// }
+
 				// N.A. 12/1/2015 Bug #207198: Remove notifier when value updated through value method.
 				this._clearEditorNotifier();
 				if (newValue !== null && !isNaN(this._parseNumericValueByMode(newValue,
@@ -6417,6 +6429,10 @@
 				this._maskFlagsArray = [ "C", "&", "a", "A", "?", "L", "9", "0", "<", ">", "#" ];
 			}
 			this._promptCharsIndices = [];
+
+			if (this.options.allowNullValue && !this.options.value && this.options.nullValue) {
+				this.options.value = this.options.nullValue;
+			}
 		},
 		_applyOptions: function () { //igMaskEditor
 			this._getMaskLiteralsAndRequiredPositions();
@@ -6897,10 +6913,11 @@
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
-						nullValue = this._parseValueByMask(this.options.nullValue);
+						nullValue = this._parseValueByMask(value);
 						this._maskedValue = nullValue;
 						this._valueInput.val(nullValue);
 						this.options.value = nullValue;
+
 					}
 				} else {
 
@@ -7410,12 +7427,15 @@
 				if (newValue !== null) {
 					this._promptCharsIndices = [];
 					newValue = this._parseValueByMask(newValue);
-				}
+				} 
 				if (newValue === this._maskWithPrompts) {
 					newValue = "";
 				}
 				this._updateValue(newValue);
 
+				if (this.options.allowNullValue && newValue === null && this.options.nullValue) {
+					this.value(this.options.nullValue);
+				}
 				// this._setInitialValue(newValue);
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
 				//if (this._focused === false || this._focused === undefined) {
