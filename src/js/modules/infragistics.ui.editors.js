@@ -3480,7 +3480,7 @@
 			if (input.setSelectionRange) {
 				// IE specific issue when the editor is detached
 				// and setSelectionRange is called as part of a composition mode end
-				if (!jQuery.contains(document.documentElement, input) && $.ig.util.isIE) {
+				if (!$.contains(document.documentElement, input) && $.ig.util.isIE) {
 					return;
 				}
 				input.setSelectionRange(selectionStart, selectionEnd);
