@@ -4384,7 +4384,7 @@
 	}
 
 	Boolean.prototype.getType = function () {
-		return jQuery.ig.Boolean.prototype.$type;
+		return $.ig.Boolean.prototype.$type;
 	};
 
 	Number.prototype.getType = function () {
@@ -4503,7 +4503,7 @@
 					actual;
 				for ( i = 0, length = args.length; i < length; i++ ) {
 					elem = args[ i ];
-					type = jQuery.type( elem );
+					type = $.type( elem );
 					if (type === "array") {
 
 						// Inspect recursively
@@ -4715,7 +4715,7 @@
 				},
 				pipe: function ( fnDone, fnFail, fnProgress ) {
 					return $.ig.util.jqueryDeferred(function ( newDefer ) {
-						jQuery.each( {
+						$.each( {
 							done: [ fnDone, "resolve" ],
 							fail: [ fnFail, "reject" ],
 							progress: [ fnProgress, "notify" ]
@@ -4723,10 +4723,10 @@
 							var fn = data[ 0 ],
 								action = data[ 1 ],
 								returned;
-							if ( jQuery.isFunction( fn ) ) {
+							if ( $.isFunction( fn ) ) {
 								deferred[ handler ](function () {
 									returned = fn.apply( this, arguments );
-									if ( returned && jQuery.isFunction( returned.promise ) ) {
+									if ( returned && $.isFunction( returned.promise ) ) {
 										returned.promise().then( newDefer.resolve, newDefer.reject, newDefer.notify );
 									} else {
 										newDefer[ action + "With" ]( this === deferred ? newDefer : this, [ returned ] );
