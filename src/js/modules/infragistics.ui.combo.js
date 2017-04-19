@@ -5020,8 +5020,7 @@
                     this._options.$input.attr("tabIndex", value);
                     break;
                 case "validatorOptions":
-                    this.validator();
-                if (this._options.validator) {
+                    if (this._options.validator) {
                         this.element.igValidator(this.options.validatorOptions);
                     } else {
                         this.validator();
