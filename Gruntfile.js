@@ -234,14 +234,11 @@ module.exports = function (grunt) {
 			require('./build/ReporterQUnit.js').onError(message, source, result, actual, expected);
 		}
 	});
-	grunt.event.on("qunit.error", function (message, stackTrace) {
-		require('./build/ReporterQUnit.js').onError(message, stackTrace);
-	});
 	grunt.event.on("qunit.error.onError", function (message, stackTrace) {
 		require('./build/ReporterQUnit.js').onError(message, stackTrace);
 	});
-	grunt.event.on("qunit.fail ", function (message, stackTrace) {
-		require('./build/ReporterQUnit.js').onError(message, stackTrace);
+	grunt.event.on("qunit.fail.load ", function (url) {
+		require('./build/ReporterQUnit.js').onError(url);
 	});
 	grunt.event.on("qunit.fail.timeout", function () {
 		require('./build/ReporterQUnit.js').onError("Timeout due to wrong references: Qunit and all other external references should reference files in Bower folder. The IgniteUI files should reference Source folder; ");
