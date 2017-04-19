@@ -1486,7 +1486,18 @@
 				```
 				*/
 				defaultCollapseState: false,
-				/* type="allRecords|onlyDataRecords"  */
+				/* type="allRecords|dataRecordsOnly". Specifies how paging should be applied when there is at least one grouped column
+				```
+					ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							pagingMode: "allRecords"
+						}
+					});
+				```
+				allRecords type="string" Paging is applied for all records - data and non-data records(like group-by records)
+				dataRecordsOnly type="string" Paging is applied ONLY for data records. Non-data records are disregarded in paging calculations.
+				*/
 				pagingMode: "allRecords"
 			},
 			/* M.H. add summaries support */
@@ -5218,50 +5229,52 @@
 				}
 			}
 		},
-		_generateGroupByPageDataForDataRecords: function (data) {
-			var i, rec, startIndex, parents, visible, level = 100,
+		_generateGroupByPageDataForDataRecordsOnly: function (data) {
+			/* Populates _gbDataView and _dataView collections. This function should be called only when - group by and paging are applied and this.settings.groupby.pagingMode is set to "dataRecordsOnly"
+			First record(s) is/are group-by record(s) in visible group-by data view collection.
+			*/
+			var i, rec, startIndex = 0, parents = [],
+				visible, level = 100, levelCollapsed,
 				gbData = this.groupByData(), len = gbData.length,
 				metadata = this._getPageStartEndIndex(data),
 				startDataRec = data[ metadata.startIndex ],
 				endDataRec = data[ metadata.endIndex - 1 ];
-			/*find start index from groupByData*/
-			parents = [];
+			/*find start index(first data record in page)*/
 			for (i = 0; i < len; i++) {
 				if (gbData[ i ] === startDataRec ) {
 					startIndex = i;
 					break;
 				}
 			}
-			/* find groupby parent records for the first data record */
+			visible = true;
+			/* find groupby parent records for the first(in the page) data record*/
 			for (i = startIndex - 1; i >= 0; i--) {
 				rec = gbData[ i ];
 				if (rec.__gbRecord) {
 					if (level > rec.level) {
 						level = rec.level;
 						parents.unshift(rec);
+						/* detect whether data records are visible(according to collapse state of parent group-by record(s))
+						insert in _gbDataView visible parent group-by records
+						*/
+						this._gbDataView.unshift(rec);
+						if (rec.collapsed) {
+							this._gbDataView = [ rec ];
+							visible = false;
+							levelCollapsed = level;
+						}
 						if (!level) {
 							break;
 						}
 					}
 				}
 			}
-			/* detect whether data records are visible(according to collapse state of parent group-by record(s)) */
-			level = 0;
-			visible = true;
-			for (i = 0; i < parents.length; i++) {
-				this._gbDataView.push(parents[ i ]);
-				if (parents[ i ].collapsed) {
-					visible = false;
-					level = parents[ i ].level;
-					break;
-				}
-			}
-			/* populate _gbDataView(visible group-by data view) and _dataView */
+			/* populate _gbDataView(visible group-by data view collection) and _dataView, collapsed records are not added in _gbDataView */
 			for (i = startIndex; i < len; i++) {
 				rec = gbData[ i ];
 				if (rec.__gbRecord) {
-					if (rec.level <= level || visible) {
-						level = rec.level;
+					if (rec.level <= levelCollapsed || visible) {
+						levelCollapsed = rec.level;
 						visible = !(rec.collapsed);
 						this._gbDataView.push(rec);
 					}
@@ -5281,7 +5294,7 @@
 			this._gbDataView = [];
 			return (this.settings.groupby.pagingMode === "allRecords") ?
 					this._generateGroupByPageDataForAllRecords(data) :
-					this._generateGroupByPageDataForDataRecords(data);
+					this._generateGroupByPageDataForDataRecordsOnly(data);
 		},
 		_generatePageData: function (data, count) {
 			if (this.isGroupByApplied()) {
@@ -6466,7 +6479,8 @@
 			```
 			returnType="number" the number of records that are bound / exist locally
 			*/
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				return this._vgbData.length;
 			}
 			if (!this._filter) {
