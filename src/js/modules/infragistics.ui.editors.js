@@ -1888,7 +1888,6 @@
 				this._setInitialValue("");
 			}
 
-
 			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 			if (!this.options.value && this.options.allowNullValue &&
 				this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
