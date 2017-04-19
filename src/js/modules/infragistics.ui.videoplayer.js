@@ -2060,8 +2060,8 @@
 		_create: function () {
 			/* create the video element */
 
-			// Under mobile devices always browser controls are rendered, except when Modernizr is undefined
-			if ($.ig.util.isTouch) {
+			// Under mobile devices always browser controls are rendered
+			if ($.ig.util.isTouchDevice()) {
 				this.options.browserControls = true;
 			}
 
@@ -3090,7 +3090,7 @@
 			case "browserControls":
 
 				// Under mobile devices always browser controls are rendered
-				if ($.ig.util.isTouch) {
+				if ($.ig.util.isTouchDevice()) {
 					return;
 				}
 				if (value !== options.browserControls) {
@@ -4407,7 +4407,7 @@
 					control._showVolumeSlider();
 				},
 				mouseout: function (event) {
-					if (!jQuery.contains(event.currentTarget, event.relatedTarget) &&
+					if (!$.contains(event.currentTarget, event.relatedTarget) &&
 						event.currentTarget !== event.relatedTarget) {
 						control._volumeSliderTimeoutId =
 							setTimeout($.proxy(control._hideVolumeSlider, control),

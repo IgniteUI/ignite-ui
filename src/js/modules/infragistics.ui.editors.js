@@ -1869,45 +1869,25 @@
 			if (this.options.excludeKeys) {
 				this._excludeKeysArray = this.options.excludeKeys.toString().split("");
 			}
-			if (this.options.value !== undefined) {
-				initialValue = this.options.value;
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
-				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
-					this._editorInput.val(this._getDisplayValue());
-				} else if (initialValue === null && !this.options.allowNullValue) {
-					this._setInitialValue("");
-				}
-			} else if (this.element.val() && this._validateValue(this.element.val())) {
-				initialValue = this.element.val();
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue
-							.toString()
-							.substring(0, this.options.maxLength);
+			initialValue = this.options.value;
+			if (this.options.maxLength) {
+				if (initialValue && initialValue.toString().length > this.options.maxLength) {
+					initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
+					//Raise warning
+					this._sendNotification("warning",
+						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+							this.options.maxLength));
 				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
+			}
+			if (this._validateValue(initialValue)) {
+				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
-				} else {
-					this._editorInput.val("");
+			} else if (initialValue === null && !this.options.allowNullValue) {
+				this._setInitialValue("");
 			}
-			}
+
 			this._applyPlaceHolder();
 		},
 		_render: function () {
@@ -2916,6 +2896,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -3500,7 +3481,7 @@
 			if (input.setSelectionRange) {
 				// IE specific issue when the editor is detached
 				// and setSelectionRange is called as part of a composition mode end
-				if (!jQuery.contains(document.documentElement, input) && $.ig.util.isIE) {
+				if (!$.contains(document.documentElement, input) && $.ig.util.isIE) {
 					return;
 				}
 				input.setSelectionRange(selectionStart, selectionEnd);
@@ -4767,16 +4748,12 @@
 			if (!this._validateValue(value)) {
 				if (value !== "" && !isNaN(value)) {
 
-					//Verify
-					if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
-						value = this._valueInput.val();
-					} else {
-						if (value <= this.options.minValue) {
-							value = this.options.minValue;
-						} else {
-							value = this.options.maxValue;
+					// I.G. 11/03/2017 #809 'Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false'
+						if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
+							value = this._valueInput.val();
+						} else if (this.options.isLimitedToListValues) {
+							value = "";
 						}
-					}
 				} else {
 					if (this.options.allowNullValue) { // TODO VERIFY!!! allowNullValue > revertIfNotValid
 						value = this.options.nullValue;
@@ -11523,6 +11500,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11532,6 +11510,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11541,6 +11520,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
