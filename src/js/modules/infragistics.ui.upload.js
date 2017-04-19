@@ -1217,8 +1217,8 @@
 		events: {
 			/* cancel="true" Defines the name of the file upload selecting event. Fired when browse button is pressed.
 			Return false in order to cancel selecting file.
-			Function takes arguments evt and ui.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileselecting", function (evt, ui) {
@@ -1238,10 +1238,10 @@
 			fileSelecting: "fileSelecting",
 			/* Defines the name of the file upload selected event. Fired when file is selected from browse dialog.
 			Return false in order to cancel uploading file.
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.filePath to get the name of the uploaded file
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.filePath" argType="string" Gets the name of the uploaded file.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileselected", function (evt, ui) {
@@ -1264,14 +1264,14 @@
 			fileSelected: "fileSelected",
 			/* cancel="true" Defines the name of the file uploading event. Fired every time when fileuploader get status for the upload.
 			Return false in order to cancel uploading file.
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.filePath to get the name of the uploaded file
-			Use ui.totalSize to get the file size of the uploaded file
-			Use ui.uploadedBytes to get uploaded bytes
-			Use ui.fileStatus to get current file status
-			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.filePath" argType="string" Gets the name of the uploaded file.
+			eventArgument="ui.totalSize" argType="number" Gets the file size of the uploaded file.
+			eventArgument="ui.uploadedBytes" argType="number" Gets the uploaded bytes.
+			eventArgument="ui.fileStatus" argType="number" Gets the current file status.
+			eventArgument="ui.fileInfo" argType="object" Gets reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileuploading", function (evt, ui) {
@@ -1305,12 +1305,12 @@
 			*/
 			fileUploading: "fileUploading",
 			/* Defines the name of the uploaded event. Fired when the file is uploaded
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.filePath to get the name of the uploaded file
-			Use ui.totalSize to get the file size of the uploaded file
-			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.filePath" argType="string" Gets the name of the uploaded file.
+			eventArgument="ui.totalSize" argType="number" Gets the file size of the uploaded file.
+			eventArgument="ui.fileInfo" argType="object" Gets reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileuploaded", function (evt, ui) {
@@ -1338,13 +1338,13 @@
 			*/
 			fileUploaded: "fileUploaded",
 			/* Defines the name of the file upload cancel event. Fired when the server responses that the file is canceled.
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.filePath to get the name of the uploaded file
-			Use ui.totalSize to get the file size of the uploaded file
-			Use ui.uploadedBytes to get uploaded bytes
-			Use ui.fileStatus to get current file status
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.filePath" argType="string" Gets the name of the uploaded file.
+			eventArgument="ui.totalSize" argType="number" Gets the file size of the uploaded file.
+			eventArgument="ui.uploadedBytes" argType="number" Gets the uploaded bytes.
+			eventArgument="ui.fileStatus" argType="number" Gets the current file status.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileuploadaborted", function (evt, ui) {
@@ -1375,8 +1375,8 @@
 			*/
 			fileUploadAborted: "fileUploadAborted",
 			/* Defines the name of the cancel all button event click. Fired when cancel all button in summary is clicked. Fired only in multiple upload mode.
-			Function takes arguments evt and ui.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadcancelallclicked", function (evt, ui) {
@@ -1395,13 +1395,13 @@
 			*/
 			cancelAllClicked: "cancelAllClicked",
 			/* Defines the name of the file upload error event. Fired when error is occurred.
-			Function takes arguments evt and ui.
-			Use ui.errorCode to get current errorCode
-			Use ui.fileId to get identifier of the file for which the event is fired(after that it can be used API function getFileInfo). NOTE: It is possible to be null in some cases: try to drop multiple files when mode is single , check maximum allowed uploading files fails or check for count of maximum allowed simultaneous files upload fails.
-			Use ui.errorMessage to get detailed error description
-			Use ui.errorType to get error type - it could be clientside or serverside
-			Use ui.serverMessage to get specific server message returned by server - if errorType is serverside
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.errorCode" argType="number" Gets the current errorCode.
+			eventArgument="ui.fileId" argType="number" Gets the identifier of the file for which the event is fired(after that it can be used API function getFileInfo). NOTE: It is possible to be null in some cases: try to drop multiple files when mode is single , check maximum allowed uploading files fails or check for count of maximum allowed simultaneous files upload fails.
+			eventArgument="ui.errorMessage" argType="string" Gets the detailed error description.
+			eventArgument="ui.errorType" argType="string" Gets the error type - it could be clientside or serverside.
+			eventArgument="ui.serverMessage" argType="string" Gets the specific server message returned by server - if errorType is serverside.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadonerror", function (evt, ui) {
@@ -1429,10 +1429,10 @@
 			*/
 			onError: "onError",
 			/* cancel="true" It is fired when validating file extensions
-			Function takes arguments evt and ui.
-			Use ui.fileName to get the full file name
-			Use ui.fileExtension to get file extension
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileName" argType="string" Gets the full file name.
+			eventArgument="ui.fileExtension" argType="string" Gets the file extension.
+			eventArgument="ui.owner" argType="object" Gets the the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileextensionsvalidating", function (evt, ui) {
@@ -1454,11 +1454,11 @@
 			*/
 			fileExtensionsValidating: "fileExtensionsValidating",
 			/* It is fired when event onload(of XmlHttpRequest) is fired. This event will be fired only if the browser supports HTML5 file API
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.xhr to get reference to the original XMLHttpRequest object
-			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from the server-side), etc.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.xhr" argType="object" Gets reference to the original XMLHttpRequest object.
+			eventArgument="ui.fileInfo" argType="object" Gets reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from the server-side), etc.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadoonxhrload", function (evt, ui) {
@@ -1486,12 +1486,12 @@
 			*/
 			onXHRLoad: "onXHRLoad",
 			/* It is fired before submitting to the server the uploading file(and its additional data if any). It could be used to append additional data fields to the FormData object(if the browser supports HTML5 file API - like newest Chrome, Firefox, IE11+). If the browser does not support HTML5 file API(IE10 and older) it could be added these data fields(as hidden input fields) to the form. Use the public API function addDataFields.
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.fileInfo to get reference to the fileInfo object - containing information for the fileName, fileSize, serverMessage, etc.
-			Use ui.xhr to get reference to the original XMLHttpRequest object(if the browser supports HTML 5 file API - if not it is undefined)
-			Use ui.formData to get reference to FormData object(if the browser supports HTML5 file API) OR reference to jQuery representation of <form>
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.fileInfo" argType="object" Gets reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from the server-side), etc.
+			eventArgument="ui.xhr" argType="object" Gets reference to the original XMLHttpRequest object(if the browser supports HTML 5 file API - if not it is undefined).
+			eventArgument="ui.formData" argType="object" Gets reference to FormData object(if the browser supports HTML5 file API) OR reference to jQuery representation of <form>.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadonformdatasubmit", function (evt, ui) {
