@@ -3751,23 +3751,13 @@ body .ui-tooltip {
 .ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
 .ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
   background-color: transparent;
+  color: #888;
 }
-.ui-igscheduler-core .ui-igscheduler-monthview-day-leading span,
-.ui-igscheduler-core .ui-igscheduler-monthview-day-trailing span {
-  color: #222222;
-}
+
 .ui-igscheduler-selectall {
   background-color: #008cba;
 }
-.ui-igscheduler-appointment-dialog-save-button,
-.ui-igscheduler-appointment-dialog-cancel-button {
-  border-color: #ddd;
-  background: #dadada;
-}
-.ui-igscheduler-appointment-dialog-save-button:hover,
-.ui-igscheduler-appointment-dialog-cancel-button:hover {
-  background: #e8e8e8;
-}
+
 .ui-igscheduler-navigator-back-button:hover,
 .ui-igscheduler-navigator-date-range-button:hover,
 .ui-igscheduler-navigator-forward-button:hover {
