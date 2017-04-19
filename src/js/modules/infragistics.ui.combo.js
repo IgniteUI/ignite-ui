@@ -5027,7 +5027,7 @@
                     } else {
                         this.validator();
                     }
-					break;
+                    break;
                 case "dropDownButtonTitle":
                     _options.$dropDownBtnCont.attr("title", value);
                     break;
