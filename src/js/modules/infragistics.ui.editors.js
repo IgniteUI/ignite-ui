@@ -1909,7 +1909,7 @@
 			}
 			}
 
-			//M.S. 4/19/2017. Issue 779 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 			if (!this.options.value && this.options.allowNullValue &&
 				this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
 				this._setOption("value", this.options.nullValue);
@@ -5217,6 +5217,8 @@
 				if (this.options.nullValue === null) {
 					this._editorInput.val("");
 				} else {
+
+					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 					if (this._validateValue(newValue)) {
 						this._editorInput.val(this.options.nullValue);
 					} else {
@@ -5239,6 +5241,8 @@
 					}
 				}
 			}
+
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 			if (!textOnly && newValue !== undefined && this._validateValue(newValue)) {
 				this._updateValue(newValue);
 			}
@@ -5758,6 +5762,8 @@
 					}
 					this._setSpinButtonsState(newValue);
 				} else {
+
+					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 					if (newValue === null && this.options.allowNullValue && this._validateValue(newValue)) {
 						this._updateValue(newValue);
 					} else if (this.options.revertIfNotValid &&
@@ -6426,6 +6432,7 @@
 			}
 			this._promptCharsIndices = [];
 
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 			if (this.options.allowNullValue && !this.options.value && this.options.nullValue) {
 				this.options.value = this.options.nullValue;
 			}
@@ -7429,6 +7436,7 @@
 				}
 				this._updateValue(newValue);
 
+				//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 				if (this.options.allowNullValue && newValue === null && this.options.nullValue) {
 					this.value(this.options.nullValue);
 				}
