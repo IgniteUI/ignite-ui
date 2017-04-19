@@ -5021,6 +5021,11 @@
                     break;
                 case "validatorOptions":
                     this.validator();
+                if (this._options.validator) {
+                        this.element.igValidator(this.options.validatorOptions);
+                    } else {
+                        this.validator();
+                    }
                     break;
                 case "dropDownButtonTitle":
                     _options.$dropDownBtnCont.attr("title", value);
@@ -7444,12 +7449,6 @@
                 this._options.validator = validator =
                     this.element.igValidator(validatorOptions).data("igValidator");
                 this._options.validator.owner = this;
-
-                // A.M. May 12th, 2015 Bug #193960 "The validatorOptions are not reflected when set at runtime"
-            } else if (validator && !destroy &&
-                validatorOptions && this.element.igValidator) {
-                this._options.validator = validator =
-                    this.element.igValidator(validatorOptions).data("igValidator");
             }
 
             return validator;
