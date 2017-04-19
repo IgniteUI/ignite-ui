@@ -55,6 +55,28 @@
 				}
 				$tbody.html(html)
 			}
+			function testGroupByData(actualData, expectedData, keyToTest) {
+				var i, len = actualData.length, aRec, eRec;
+				if (len !== expectedData.length) {
+					return false;
+				}
+				for (i = 0; i < len; i++) {
+					aRec = actualData[i];
+					eRec = expectedData[i];
+					if (aRec.__gbRecord !== eRec.__gbRecord) {
+						return false;
+					}
+					if (!aRec.__gbRecord) {
+						if (keyToTest !== undefined &&
+							aRec[keyToTest] !== eRec[keyToTest]) {
+							return false;
+						}
+					} else if (eRec.val !== undefined && aRec.val !== eRec.val) {
+						return false;
+					}
+				}
+				return true;
+			}
 			function generateData(count, key, dir) {
 				var i, count = count || 4, data = [];
 				for (i = 0; i < count; i++) {
@@ -342,6 +364,96 @@
 					"Test groupByDataView records");
 				renderData(gbDataView);
 			});
+			test("Test groupby + paging with pagingMode: dataRecordsOnly", function () {
+				var se = [], i, ds = createDataSource(), data, gbDataView, dataView, gbData;
+				se = [{
+					fieldName: "Id",
+					isGroupBy: true,
+					dir: "asc"
+				}];
+				// enable paging
+				ds.settings.paging.enabled = true;
+				ds.settings.paging.pageSize = 5;
+				ds.settings.paging.type = "local";
+				// set sorting expressions
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.enabled = true;
+				// set paginMode to "dataRecordsOnly"
+				ds.settings.groupby.pagingMode = "dataRecordsOnly";
+				ds.dataBind();
+				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
+				ok(dataView.length === 4 && gbDataView.length === 8, "Test dataView and gbDataView length");
+				// set page size to 3
+				ds.settings.paging.pageSize = 3;
+				ds.dataBind();
+				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
+				ok(dataView.length === 3 &&
+					gbDataView.length === 6 &&
+					gbDataView[0].__gbRecord === true &&
+					gbDataView[1].Id === 0 &&
+					gbDataView[5].Id === 2, 
+					"Test gbDataView", 
+					"Test dataView and gbDataView length with pageSize: 3");
+				// collapse first record
+				ds.toggleGroupByRecord(gbDataView[0].id, true);
+				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
+				ok(dataView.length === 3 &&
+					gbDataView.length === 5 &&
+					gbDataView[0].__gbRecord === true &&
+					gbDataView[1].__gbRecord === true &&
+					gbDataView[4].Id === 2, 
+					"Test gbDataView", 
+					"Test dataView and gbDataView length with pageSize: 3 and collapse first group-by record");
+				// go to 2nd page
+				ds.pageIndex(1);
+				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
+				ok(dataView.length === 1 &&
+					gbDataView.length === 2, 
+					"Test gbDataView", 
+					"Test dataView and gbDataView length with pageSize: 3 and collapse first group-by record");
+			});
+			test("Test groupby + paging with pagingMode: dataRecordsOnly and group 3 columns", function () {
+				var se = [], i, ds = createDataSource(), data, gbDataView, dataView;
+				se = [{
+					fieldName: "Promotion",
+					isGroupBy: true,
+					dir: "asc"
+				}, {
+					fieldName: "Id",
+					isGroupBy: true,
+					dir: "asc"
+				}, {
+					fieldName: "Price",
+					isGroupBy: true,
+					dir: "asc"
+				}];
+				// enable paging
+				ds.settings.paging.enabled = true;
+				ds.settings.paging.pageSize = 3;
+				ds.settings.paging.type = "local";
+				// set sorting expressions
+				ds.settings.sorting.defaultFields = se;
+				ds.settings.sorting.expressions = se;
+				ds.settings.sorting.enabled = true;
+				// set paginMode to "dataRecordsOnly"
+				ds.settings.groupby.pagingMode = "dataRecordsOnly";
+				ds.dataBind();
+				dataView = ds.dataView();
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				ok(gbDataView.length === 11 && 
+					dataView.length === 3 && 
+					gbDataView[0].__gbRecord && gbDataView[1].__gbRecord && gbDataView[2].__gbRecord &&
+					gbDataView[10].Id === 1,
+					"Test 1st page");
+			});
+
+
 			test("Test groupby + paging + filtering", function () {
 				var se = [], i, ds = createDataSource(), data, gbDataView, dataView, gbData;
 				se = [{
