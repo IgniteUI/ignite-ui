@@ -648,17 +648,17 @@
 			});
 			testId = 'mask editor _update -> Null Value';
 			test(testId, 9, function () {
-				$("#customNullValueEditor").data("igMaskEditor")._updateValue(null);
+				$("#customNullValueEditor").igMaskEditor("value", null);
 				equal($('#customNullValueEditor').igMaskEditor("value"), "Zero", "Value is not Zero ");
 				equal($("#customNullValueEditor").data("igMaskEditor")._valueInput.val(), "Zero", "Hidden Input value is not Zero ");
 				equal($('#customNullValueEditor').igMaskEditor("displayValue"), "Zero", "displayValue is not Zero");
 				//nullValueEditor
-				$("#nullValueEditor").data("igMaskEditor")._updateValue(null);
+				$("#nullValueEditor").igMaskEditor("value", null);
 				equal($('#nullValueEditor').igMaskEditor("value"), null, "Value is not null ");
 				equal($("#nullValueEditor").data("igMaskEditor")._valueInput.val(), "", "Hidden Input value is not Zero ");
 				equal($('#nullValueEditor').igMaskEditor("displayValue"), "", "displayValue is not Zero");
 				//notNullValueEditor
-				$("#notNullValueEditor").data("igMaskEditor")._updateValue(null);
+				$("#notNullValueEditor").igMaskEditor("value", null);
 				equal($('#notNullValueEditor').igMaskEditor("value"), "", "Value is not null ");
 				equal($("#notNullValueEditor").data("igMaskEditor")._valueInput.val(), "", "Hidden Input value is not Zero ");
 				equal($('#notNullValueEditor').igMaskEditor("displayValue"), "", "displayValue is not Zero");
