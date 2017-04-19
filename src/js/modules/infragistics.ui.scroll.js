@@ -447,9 +447,9 @@
 		},
 		events: {
 			/* cancel="false" Event which is raised after the scroller has been rendered fully
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="event" Gets a reference to the igScroll.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollrendered", function (evt, args) {
@@ -466,14 +466,14 @@
 			rendered: null,
 			/* cancel="true" Event which is raised before scrolling or before each step when having inertia.
 				Return false in order to cancel action.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.smallIncrement to obtain if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
-				Use args.bigIncrement to obtain if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
-				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
-				Use args.stepX to obtain how much the content will be scrolled horizontally
-				Use args.stepY to obtain how much the content will be scrolled vertically
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.smallIncrement" argType="number" Gets if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
+				eventArgument="args.bigIncrement" argType="number" Gets if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
+				eventArgument="args.horizontal" argType="bool" Gets which axis is being used to scroll - horizontal(true) or vertical(false).
+				eventArgument="args.stepX" argType="number" Gets how much the content will be scrolled horizontally.
+				eventArgument="args.stepY" argType="number" Gets how much the content will be scrolled vertically.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollscrolling", function (evt, args) {
@@ -499,12 +499,12 @@
 			*/
 			scrolling: null,
 			/* cancel="false" Event which is raised after scrolling has stopped.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.smallIncrement to obtain if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
-				Use args.bigIncrement to obtain if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
-				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.smallIncrement" argType="number" Gets if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
+				eventArgument="args.bigIncrement" argType="number" Gets if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
+				eventArgument="args.horizontal" argType="bool" Gets which axis is being used to scroll - horizontal(true) or vertical(false).
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollscrolled", function (evt, args) {
@@ -526,10 +526,10 @@
 			*/
 			scrolled: null,
 			/* cancel="false" Event which is raised when there is mouse click on the scrollbar's thumb drag.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.horizontal" argType="bool" Gets which axis is being used to scroll - horizontal(true) or vertical(false).
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollthumbdragstart", function (evt, args) {
@@ -547,13 +547,12 @@
 			*/
 			thumbDragStart: null,
 			/* cancel="true" Event which is raised when the thumb drag is being moved.
-				Return false in order to cancel action.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
-				Use args.stepX to obtain how much the content will be scrolled horizontally
-				Use args.stepY to obtain how much the content will be scrolled vertically
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.horizontal" argType="bool" Gets which scrollbar thumb is being used - horizontal(true) or vertical(false).
+				eventArgument="args.stepX" argType="number" Gets how much the content will be scrolled horizontally.
+				eventArgument="args.stepY" argType="number" Gets how much the content will be scrolled vertically.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollthumbdragmove", function (evt, args) {
@@ -575,10 +574,10 @@
 			*/
 			thumbDragMove: null,
 			/* cancel="false" Event which is raised on mouse up from the scrollbar's thumb drag.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.horizontal" argType="bool" Gets which scrollbar thumb is being used - horizontal(true) or vertical(false).
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollthumbdragend", function (evt, args) {
@@ -2107,7 +2106,7 @@
 			var evt = event.originalEvent,
 				scrollDeltaY = 0,
 				scrollStep = this.options.wheelStep,
-				scrolledY;
+				scrolledY, scrolledYDir;
 
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
@@ -2150,7 +2149,10 @@
 					});
 				}
 
-				return !scrolledY;
+				/* Check if the browser scroll in the oposite direction. Happens in IE when the content's heigh is for ex. 140.3 and not a round number */
+				/* When the content scrolls to the bottom on IE it might start to scroll very small ammoung up and down while scrolling only down with the mouse wheel*/
+				scrolledYDir = scrolledY > 0 ? 1 : -1;
+				return !scrolledY || (Math.abs(scrollDeltaY) === 1 && scrolledYDir !== scrollDeltaY);
 			}
 
 			return false;

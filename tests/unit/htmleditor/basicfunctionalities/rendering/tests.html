@@ -1211,7 +1211,7 @@
                 },
             };
 
-            module("HtmlEditor Interaction Tests", htmlEditorInteractionTests);
+            module("igHtmlEditor Interaction Tests", htmlEditorInteractionTests);
             test("Bold.", function () {
                 this.bold();
             });
@@ -1341,7 +1341,7 @@
 			test("Execute Action background color with interaction.", function () {
                 this.changeBackgroundColorWithInteraction();
             });
-            module("HtmlEditor Rendering Tests", htmlEditorTestBeds);
+            module("igHtmlEditor Rendering Tests", htmlEditorTestBeds);
             test("Default toolbars rendering.", function () {
                 this.areDefaultToolbarsRendered();
             });
@@ -1430,7 +1430,7 @@
                 }
             }
 
-            module("igHtmlEditorPopover unit tests", igHtmlEditorPopoverUnitTestsSetup);
+            module("igHtmlEditor Popover unit tests", igHtmlEditorPopoverUnitTestsSetup);
 
             test("test _setOptions method with name isHidden", function () {
                 $(this.popOverSelector).igHtmlEditorPopover('option', 'isHidden', true);
@@ -1486,7 +1486,7 @@
                 }
             };
 
-            module("igLinkPropertiesDialogTestSetup unit tests", igLinkPropertiesDialogTestSetup);
+            module("igHtmlEditor igLinkPropertiesDialogTestSetup unit tests", igLinkPropertiesDialogTestSetup);
 
             test("igLinkPropertiesDialog initializing", function () {
                 var initialized = $(this.linkTargerSelector).length > 0;
@@ -1508,7 +1508,7 @@
                 }
             };
 
-            module("igTablePropertiesDialog unit tests", igTablePropertiesDialogTestSetup);
+            module("igHtmlEditor igTablePropertiesDialog unit tests", igTablePropertiesDialogTestSetup);
 
             test("igTablePropertiesDialog initializing", function () {
                 var initialized = $(this.igTableSelector + "_popover").length > 0;
@@ -1549,7 +1549,7 @@
                 }
             }
 
-            module("igToolbarHelper unit tests", igToolbarHelperTestSetup);
+            module("igHtmlEditor igToolbarHelper unit tests", igToolbarHelperTestSetup);
 
             test("QueryCommandState with left, right, center and full justify", function () {
                 var self = this;

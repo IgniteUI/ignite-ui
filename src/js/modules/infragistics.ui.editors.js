@@ -1869,45 +1869,25 @@
 			if (this.options.excludeKeys) {
 				this._excludeKeysArray = this.options.excludeKeys.toString().split("");
 			}
-			if (this.options.value !== undefined) {
-				initialValue = this.options.value;
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
-				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
-					this._editorInput.val(this._getDisplayValue());
-				} else if (initialValue === null && !this.options.allowNullValue) {
-					this._setInitialValue("");
-				}
-			} else if (this.element.val() && this._validateValue(this.element.val())) {
-				initialValue = this.element.val();
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue
-							.toString()
-							.substring(0, this.options.maxLength);
+			initialValue = this.options.value;
+			if (this.options.maxLength) {
+				if (initialValue && initialValue.toString().length > this.options.maxLength) {
+					initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
+					//Raise warning
+					this._sendNotification("warning",
+						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+							this.options.maxLength));
 				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
+			}
+			if (this._validateValue(initialValue)) {
+				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
-				} else {
-					this._editorInput.val("");
+			} else if (initialValue === null && !this.options.allowNullValue) {
+				this._setInitialValue("");
 			}
-			}
+
 
 			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 			if (!this.options.value && this.options.allowNullValue &&
@@ -2902,7 +2882,7 @@
 					if (this.options.maxLength) {
 						currentInputVal = this._editorInput.val();
 						if (currentInputVal.length === this.options.maxLength &&
-								e.keyCode > 46 && !e.altKey && !e.ctrlKey) {
+								(e.keyCode > 46 || e.keyCode === 32) && !e.altKey && !e.ctrlKey) {
 							selection = this._getSelection(this._editorInput[ 0 ]);
 							if (selection.start === selection.end) {
 								e.preventDefault();
@@ -2923,6 +2903,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -3507,7 +3488,7 @@
 			if (input.setSelectionRange) {
 				// IE specific issue when the editor is detached
 				// and setSelectionRange is called as part of a composition mode end
-				if (!jQuery.contains(document.documentElement, input) && $.ig.util.isIE) {
+				if (!$.contains(document.documentElement, input) && $.ig.util.isIE) {
 					return;
 				}
 				input.setSelectionRange(selectionStart, selectionEnd);
@@ -4677,6 +4658,14 @@
 					}
 				}
 					break;
+
+				// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
+				case "groupSeparator": {
+					if (this.options[ option ] === null) {
+						this.options[ option ] = this._getRegionalOption("numericGroupSeparator");
+					}
+				}
+					break;
 				case "regional":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
@@ -4744,16 +4733,12 @@
 			if (!this._validateValue(value)) {
 				if (value !== "" && !isNaN(value)) {
 
-					//Verify
-					if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
-						value = this._valueInput.val();
-					} else {
-						if (value <= this.options.minValue) {
-							value = this.options.minValue;
-						} else {
-							value = this.options.maxValue;
+					// I.G. 11/03/2017 #809 'Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false'
+						if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
+							value = this._valueInput.val();
+						} else if (this.options.isLimitedToListValues) {
+							value = "";
 						}
-					}
 				} else {
 					if (this.options.allowNullValue) { // TODO VERIFY!!! allowNullValue > revertIfNotValid
 						value = this.options.nullValue;
@@ -5703,6 +5688,10 @@
 					this._editorInput.select();
 				}
 			}
+		},
+		_setSpinButtonsState: function (val) {
+			val = this._valueFromText(val);
+			this._super(val);
 		},
 
 		// igNumericEditor public methods
@@ -11519,6 +11508,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11528,6 +11518,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11537,6 +11528,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
