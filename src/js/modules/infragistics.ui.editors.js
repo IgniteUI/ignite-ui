@@ -2781,7 +2781,7 @@
 				} else if (this.options.maxLength) {
 					currentInputVal = this._editorInput.val();
 					if (currentInputVal.length === this.options.maxLength &&
-							e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
+							(e.keyCode > 46 || e.keyCode === 32) && !e.altKey && !e.ctrlKey) {
 						selection = this._getSelection(this._editorInput[ 0 ]);
 						if (selection.start === selection.end) {
 							e.preventDefault();
