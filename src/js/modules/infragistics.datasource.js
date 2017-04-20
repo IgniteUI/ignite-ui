@@ -5234,7 +5234,7 @@
 			First record(s) is/are group-by record(s) in visible group-by data view collection.
 			*/
 			var i, rec, startIndex = 0, parents = [],
-				visible, level = 100, levelCollapsed,
+				visible = true, level = 100, levelCollapsed,
 				gbData = this.groupByData(), len = gbData.length,
 				metadata = this._getPageStartEndIndex(data),
 				startDataRec = data[ metadata.startIndex ],
@@ -5246,7 +5246,6 @@
 					break;
 				}
 			}
-			visible = true;
 			/* find groupby parent records for the first(in the page) data record*/
 			for (i = startIndex - 1; i >= 0; i--) {
 				rec = gbData[ i ];
