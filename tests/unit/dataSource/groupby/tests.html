@@ -365,6 +365,7 @@
 				renderData(gbDataView);
 			});
 			test("Test groupby + paging with pagingMode: dataRecordsOnly", function () {
+				var se = [], i, ds = createDataSource(), gbDataView;
 				se = [{
 					fieldName: "Id",
 					isGroupBy: true,
@@ -412,6 +413,7 @@
 					"Test gbDataView length with pageSize: 3 and collapse first group-by record and pageIndex = 1");
 			});
 			test("Test groupby + paging with pagingMode: dataRecordsOnly and group 3 columns", function () {
+				var se = [], i, ds = createDataSource(), gbDataView;
 				se = [{
 					fieldName: "Promotion",
 					isGroupBy: true,
