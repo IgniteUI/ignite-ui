@@ -1888,6 +1888,12 @@
 				this._setInitialValue("");
 			}
 
+			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!this.options.value && this.options.allowNullValue &&
+				this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
+				this._setOption("value", this.options.nullValue);
+			}
+
 			this._applyPlaceHolder();
 		},
 		_render: function () {
@@ -4418,11 +4424,6 @@
 
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
-
-			//M.S. 3/14/2017. Issue 779 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			if (!this.options.value && this.options.allowNullValue) {
-				this.options.value = this.options.nullValue;
-			}
 		},
 		_setNumericType: function () {
 			this._numericType = "numeric";
@@ -4672,6 +4673,7 @@
 				case "includeKeys":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.numericEditorNoSuchOption);
+
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -5199,7 +5201,13 @@
 				if (this.options.nullValue === null) {
 					this._editorInput.val("");
 				} else {
-					this._editorInput.val(this.options.nullValue);
+
+					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+					if (this._validateValue(newValue)) {
+						this._editorInput.val(this.options.nullValue);
+					} else {
+						this._editorInput.val(this.options.value);
+					}
 				}
 			} else {
 
@@ -5217,7 +5225,9 @@
 					}
 				}
 			}
-			if (!textOnly && newValue !== undefined) {
+
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!textOnly && newValue !== undefined && this._validateValue(newValue)) {
 				this._updateValue(newValue);
 			}
 		},
@@ -5740,7 +5750,11 @@
 					}
 					this._setSpinButtonsState(newValue);
 				} else {
-					if (this.options.revertIfNotValid &&
+
+					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+					if (newValue === null && this.options.allowNullValue && this._validateValue(newValue)) {
+						this._updateValue(newValue);
+					} else if (this.options.revertIfNotValid &&
 					!(newValue === null && this.options.allowNullValue)) {
 						newValue = this._valueInput.val();
 						this._updateValue(newValue);
@@ -6405,6 +6419,11 @@
 				this._maskFlagsArray = [ "C", "&", "a", "A", "?", "L", "9", "0", "<", ">", "#" ];
 			}
 			this._promptCharsIndices = [];
+
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (this.options.allowNullValue && !this.options.value && this.options.nullValue) {
+				this.options.value = this.options.nullValue;
+			}
 		},
 		_applyOptions: function () { //igMaskEditor
 			this._getMaskLiteralsAndRequiredPositions();
@@ -6885,10 +6904,11 @@
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
-						nullValue = this._parseValueByMask(this.options.nullValue);
+						nullValue = this._parseValueByMask(value);
 						this._maskedValue = nullValue;
 						this._valueInput.val(nullValue);
 						this.options.value = nullValue;
+
 					}
 				} else {
 
@@ -7403,6 +7423,11 @@
 					newValue = "";
 				}
 				this._updateValue(newValue);
+
+				//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+				if (this.options.allowNullValue && newValue === null && this.options.nullValue) {
+					this.value(this.options.nullValue);
+				}
 
 				// this._setInitialValue(newValue);
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
