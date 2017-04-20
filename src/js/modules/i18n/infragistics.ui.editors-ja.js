@@ -75,8 +75,8 @@
 			    centuryThresholdValidValues: "centuryThreshold プロパティは 0 ~ 99 である必要があります。",
 			    noListItemsNoButton: "リスト項目がないため、スピンまたはドロップダウン ボタンは描画されません。",
 				decimalNumber: "dataMode が '{0}' の場合、{1} オプションは 0 ～ {2} の間の値を承諾します。",
-				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
-				decimalSeparatorEqualsGroupSeparatorErrorMsg: "The groupSeparator and the decimalSeparator options can not have equal values."
+				decimalSeparatorErrorMsg: "decimalSeparator オプションには別の値が必要です。値を単一文字に設定してください。",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "groupSeparator および decimalSeparator オプションを同じ値に設定できません。"
 		    }
 	    };
     }
