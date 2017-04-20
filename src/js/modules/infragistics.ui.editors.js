@@ -1869,45 +1869,31 @@
 			if (this.options.excludeKeys) {
 				this._excludeKeysArray = this.options.excludeKeys.toString().split("");
 			}
-			if (this.options.value !== undefined) {
-				initialValue = this.options.value;
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
-				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
-					this._editorInput.val(this._getDisplayValue());
-				} else if (initialValue === null && !this.options.allowNullValue) {
-					this._setInitialValue("");
-				}
-			} else if (this.element.val() && this._validateValue(this.element.val())) {
-				initialValue = this.element.val();
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue
-							.toString()
-							.substring(0, this.options.maxLength);
+			initialValue = this.options.value;
+			if (this.options.maxLength) {
+				if (initialValue && initialValue.toString().length > this.options.maxLength) {
+					initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
+					//Raise warning
+					this._sendNotification("warning",
+						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+							this.options.maxLength));
 				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
+			}
+			if (this._validateValue(initialValue)) {
+				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
-				} else {
-					this._editorInput.val("");
+			} else if (initialValue === null && !this.options.allowNullValue) {
+				this._setInitialValue("");
 			}
+
+			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!this.options.value && this.options.allowNullValue &&
+				this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
+				this._setOption("value", this.options.nullValue);
 			}
+
 			this._applyPlaceHolder();
 		},
 		_render: function () {
@@ -2916,6 +2902,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -3500,7 +3487,7 @@
 			if (input.setSelectionRange) {
 				// IE specific issue when the editor is detached
 				// and setSelectionRange is called as part of a composition mode end
-				if (!jQuery.contains(document.documentElement, input) && $.ig.util.isIE) {
+				if (!$.contains(document.documentElement, input) && $.ig.util.isIE) {
 					return;
 				}
 				input.setSelectionRange(selectionStart, selectionEnd);
@@ -4441,11 +4428,6 @@
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
 
-			//M.S. 3/14/2017. Issue 779 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			if (!this.options.value && this.options.allowNullValue) {
-				this.options.value = this.options.nullValue;
-			}
-
 			// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
 			if (this.options.decimalSeparator === this.options.groupSeparator) {
 				throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
@@ -4709,6 +4691,7 @@
 				case "includeKeys":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.numericEditorNoSuchOption);
+
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -4767,16 +4750,12 @@
 			if (!this._validateValue(value)) {
 				if (value !== "" && !isNaN(value)) {
 
-					//Verify
-					if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
-						value = this._valueInput.val();
-					} else {
-						if (value <= this.options.minValue) {
-							value = this.options.minValue;
-						} else {
-							value = this.options.maxValue;
+					// I.G. 11/03/2017 #809 'Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false'
+						if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
+							value = this._valueInput.val();
+						} else if (this.options.isLimitedToListValues) {
+							value = "";
 						}
-					}
 				} else {
 					if (this.options.allowNullValue) { // TODO VERIFY!!! allowNullValue > revertIfNotValid
 						value = this.options.nullValue;
@@ -5240,7 +5219,13 @@
 				if (this.options.nullValue === null) {
 					this._editorInput.val("");
 				} else {
-					this._editorInput.val(this.options.nullValue);
+
+					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+					if (this._validateValue(newValue)) {
+						this._editorInput.val(this.options.nullValue);
+					} else {
+						this._editorInput.val(this.options.value);
+					}
 				}
 			} else {
 
@@ -5258,7 +5243,9 @@
 					}
 				}
 			}
-			if (!textOnly && newValue !== undefined) {
+
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!textOnly && newValue !== undefined && this._validateValue(newValue)) {
 				this._updateValue(newValue);
 			}
 		},
@@ -5781,7 +5768,11 @@
 					}
 					this._setSpinButtonsState(newValue);
 				} else {
-					if (this.options.revertIfNotValid &&
+
+					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+					if (newValue === null && this.options.allowNullValue && this._validateValue(newValue)) {
+						this._updateValue(newValue);
+					} else if (this.options.revertIfNotValid &&
 					!(newValue === null && this.options.allowNullValue)) {
 						newValue = this._valueInput.val();
 						this._updateValue(newValue);
@@ -6446,6 +6437,11 @@
 				this._maskFlagsArray = [ "C", "&", "a", "A", "?", "L", "9", "0", "<", ">", "#" ];
 			}
 			this._promptCharsIndices = [];
+
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (this.options.allowNullValue && !this.options.value && this.options.nullValue) {
+				this.options.value = this.options.nullValue;
+			}
 		},
 		_applyOptions: function () { //igMaskEditor
 			this._getMaskLiteralsAndRequiredPositions();
@@ -6926,10 +6922,11 @@
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
-						nullValue = this._parseValueByMask(this.options.nullValue);
+						nullValue = this._parseValueByMask(value);
 						this._maskedValue = nullValue;
 						this._valueInput.val(nullValue);
 						this.options.value = nullValue;
+
 					}
 				} else {
 
@@ -7444,6 +7441,11 @@
 					newValue = "";
 				}
 				this._updateValue(newValue);
+
+				//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+				if (this.options.allowNullValue && newValue === null && this.options.nullValue) {
+					this.value(this.options.nullValue);
+				}
 
 				// this._setInitialValue(newValue);
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
@@ -11523,6 +11525,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11532,6 +11535,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11541,6 +11545,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};

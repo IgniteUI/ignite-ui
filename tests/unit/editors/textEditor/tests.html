@@ -1430,6 +1430,21 @@
 
 			$classSelector.remove();
 		});
+		var testId = "NullValue set on init.";
+		test(testId, 2, function(){
+			var $editor=$("<input id='textEditorNull' />").appendTo("#testBedContainer").igTextEditor({
+					allowNullValue: true,
+					nullValue: 0
+				});
+			
+			var currentValue = $editor.igTextEditor("value");
+			equal(currentValue, 0 , "The value is not set to the nullValue");
+			$editor.igTextEditor("value", "hey");
+			$editor.igTextEditor("value", null);
+			currentValue = $editor.igTextEditor("value");
+			equal(currentValue, "0" , "The value is not set to the nullValue");
+			$editor.remove();
+		});
 		var testId = "Test creating on wrong field or wrong options combinations."
 		test(testId, 7, function(){
 			var $imgEditor = $("<img id='imgEditor' />"),
@@ -1560,6 +1575,33 @@
 			ok($('#maxLengthTest').parents().hasClass("ui-ignotify-warn"), "The notifier is not shown");
 			$editor.remove();
 		});
+
+		var testId = 'Testing key code event arguments';
+		test(testId, 3, function () {
+			var keyD, keyP, keyU;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({
+				keydown: function(e, args) {
+					keyD = args.key;
+				},
+				keypress: function(e, args) {
+					keyP = args.key;
+				},
+				keyup: function(e, args) {
+					keyU = args.key;
+				}
+			});
+			
+			typeInInput("s", $editor.igTextEditor("field"));
+			stop();
+			setTimeout(function() {
+				start();
+				ok(keyD === "s".charCodeAt(0), "Key code is not correct in keyDown event");
+				ok(keyP === "s".charCodeAt(0), "Key code is not correct in keyPress event");
+				ok(keyU === "s".charCodeAt(0), "Key code is not correct in keyUp event");
+				$editor.remove();
+			}, 300);
+		}); 
 	});
 
 	// Helper functions
