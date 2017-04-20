@@ -1430,6 +1430,21 @@
 
 			$classSelector.remove();
 		});
+		var testId = "NullValue set on init.";
+		test(testId, 2, function(){
+			var $editor=$("<input id='textEditorNull' />").appendTo("#testBedContainer").igTextEditor({
+					allowNullValue: true,
+					nullValue: 0
+				});
+			
+			var currentValue = $editor.igTextEditor("value");
+			equal(currentValue, 0 , "The value is not set to the nullValue");
+			$editor.igTextEditor("value", "hey");
+			$editor.igTextEditor("value", null);
+			currentValue = $editor.igTextEditor("value");
+			equal(currentValue, "0" , "The value is not set to the nullValue");
+			$editor.remove();
+		});
 		var testId = "Test creating on wrong field or wrong options combinations."
 		test(testId, 7, function(){
 			var $imgEditor = $("<img id='imgEditor' />"),
