@@ -4034,6 +4034,7 @@
 			/* type="string" Gets/Sets the character, which is used as negative sign.
 				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4068,6 +4069,7 @@
 			/* type="string" Gets/Sets the character, which is used as decimal separator.
 				Note: this option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4084,8 +4086,9 @@
 			decimalSeparator: null,
 			/* type="string" Gets/Sets the character, which is used as separator for groups (like thousands).
 				That option has effect only in display mode(no focus).
-				Note: this option has priority over possible regional settings.
+				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4424,6 +4427,11 @@
 
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
+
+			// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+			if (this.options.decimalSeparator === this.options.groupSeparator) {
+				throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+			}
 		},
 		_setNumericType: function () {
 			this._numericType = "numeric";
@@ -4482,9 +4490,9 @@
 		},
 		_applyOptions: function () { // NumericEditor
 
+			this._validateDecimalSettings();
 			this._super();
 			this._validateSpinSettings();
-			this._validateDecimalSettings();
 
 			if (this.options.maxLength !== null) {
 				this.options.maxLength = null;
@@ -4655,6 +4663,11 @@
 						this.options[ option ] = prevValue;
 						throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
 					}
+
+					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+					if (this.options[ option ] === this.options.groupSeparator) {
+						throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+					}
 				}
 					break;
 
@@ -4662,6 +4675,11 @@
 				case "groupSeparator": {
 					if (this.options[ option ] === null) {
 						this.options[ option ] = this._getRegionalOption("numericGroupSeparator");
+					}
+
+					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+					if (this.options[ option ] === this.options.decimalSeparator) {
+						throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
 					}
 				}
 					break;

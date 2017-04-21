@@ -74,7 +74,9 @@
 				dateMessage: 'Следует ввести правильную дату',
 			    centuryThresholdValidValues: "Свойство centuryThreshold должно находиться в диапазоне от 0 до 99.",
 			    noListItemsNoButton: "Счетчик или кнопка раскрытия списка не отображаются вследствие отсутствия элементов списка.",
-				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
+				decimalNumber: "Когда dataMode  '{0}', параметр {1} может принимать числовые значения от 0 до {2}.",
+				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Параметры groupSeparator и decimalSeparator не могут иметь равные значения."
 		    }
 	    };
     }

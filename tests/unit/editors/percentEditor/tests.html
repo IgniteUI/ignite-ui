@@ -247,8 +247,8 @@
 				var containerInput = $('#pEditor6').igPercentEditor("field");
 
 				// For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
-				$("#pEditor6").igPercentEditor("option", "decimalSeparator", ",");
 				$("#pEditor6").igPercentEditor("option", "groupSeparator", "");
+				$("#pEditor6").igPercentEditor("option", "decimalSeparator", ",");
 				$("#pEditor6").igPercentEditor("option", "value", 1264.89);
 				equal($("#pEditor6").igPercentEditor("displayValue"), "1264,89%", "The decimal value is not correct");
 			});
