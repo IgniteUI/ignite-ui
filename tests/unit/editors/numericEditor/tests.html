@@ -2012,6 +2012,20 @@
 						
 			$editor.remove();
 		});
+		
+	testId = "spinWrapAround spin to minValue if there is no maxValue set";
+	test(testId, 3, function () {
+		var $editor;
+		$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({ dataMode: 'double', minValue: 5, spinWrapAround : true, buttonType: 'spin' });
+		ok($editor.igNumericEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
+		$editor.igNumericEditor("value", 5);
+		$editor.igNumericEditor("spinDownButton");
+		!equal($editor.val(), 5, "Spin down was not performed!")
+		$editor.igNumericEditor("spinUpButton");
+		equal($editor.val(), 5, "SpinWrap around was not performed!")
+		
+		$editor.remove();
+		});
 
 	testId = "Set groupSeparator to null at runtime";
 	test(testId, 2, function() {
