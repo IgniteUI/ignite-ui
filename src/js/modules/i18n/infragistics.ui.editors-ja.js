@@ -67,7 +67,7 @@
 			    datePickerNoSuchMethodDropDownContainer: "日付エディターはこのメソッドをサポートしません。'getCalendar' メソッドを使用してください。",
 			    buttonTypeIsDropDownOnly: "Datepicker の buttonType オプションの有効な値は dropdown および clear 値のみです。",
 				dateEditorOffsetRange: "displayTimeOffset オプションが -720 ～ 840 です。これは、西 (-12:00) から東 (+14.00) のタイムゾーンの UTC に基づいたオフセットを分で表します。",
-				setOptionError: "このオプションはランタイムに設定できません。",
+				setOptionError: "このオプションはランタイムに設定できません:",
 			    invalidDate: "無効な日付",
 			    maskMessage: 'すべての必須文字を入力してください',
 			    maskRevertMessage: '値が以前の有効な値に戻されました。すべての必須文字を入力してください。',
