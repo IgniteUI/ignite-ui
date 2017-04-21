@@ -5180,15 +5180,6 @@ input.ui-igcombo-field {
 .ui-igscheduler-selectall {
     background-color: #80d7f2;
 }
-.ui-igscheduler-appointment-dialog-save-button,
-.ui-igscheduler-appointment-dialog-cancel-button {
-    border-color: #dadada;
-    background: #dadada;
-}
-.ui-igscheduler-appointment-dialog-save-button:hover,
-.ui-igscheduler-appointment-dialog-cancel-button:hover {
-    background: #e8e8e8;
-}
 .ui-igscheduler-navigator-back-button:hover,
 .ui-igscheduler-navigator-date-range-button:hover,
 .ui-igscheduler-navigator-forward-button:hover {
