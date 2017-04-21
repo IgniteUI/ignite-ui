@@ -1340,8 +1340,8 @@
 					$("#695Editor").remove();
 			});
 
-        testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
-			  test(testId, 5, function () {
+        		testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
+			test(testId, 5, function () {
 				var editor =  $("#809Editor");
 				input = editor.igNumericEditor("field"),
 				editor.focus();
@@ -1370,9 +1370,9 @@
 				equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
 				ok(editor.igNumericEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "There should be warning notification");
 				$("#809Editor").remove();
-        
-				testId = 'Bug 942 - When clearing with the "clear" button, the value is set to 0 even if 0 is not in the list of items ';
-				test(testId, 4, function () {
+			});
+			testId = 'Bug 942 - When clearing with the "clear" button, the value is set to 0 even if 0 is not in the list of items ';
+			test(testId, 4, function () {
 				var editor =  $("#942Editor");
 				field = editor.igNumericEditor("field");
 				clearButton = editor.igNumericEditor("clearButton"),
