@@ -12,7 +12,7 @@
 * modernizr.js
 */
 
-/*global MSGesture*/
+/*global MSGesture, define */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

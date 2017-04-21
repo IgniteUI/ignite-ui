@@ -21,7 +21,7 @@
 *	<input id="text1" type="text" />
 */
 
-/*global Class */
+/*global Class, define */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 

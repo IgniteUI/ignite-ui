@@ -12,6 +12,7 @@
 *   infragistics.util.js
 */
 
+/*global define */
 (function (factory) {
     if (typeof define === "function" && define.amd) {
 
