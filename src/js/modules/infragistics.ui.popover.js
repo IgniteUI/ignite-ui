@@ -13,7 +13,7 @@
  *  infragistics.util.jquery.js
  */
 
-/*global HTMLElement */
+/*global HTMLElement, define */
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
