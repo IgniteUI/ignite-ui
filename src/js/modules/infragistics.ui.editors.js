@@ -4490,9 +4490,9 @@
 		},
 		_applyOptions: function () { // NumericEditor
 
+			this._validateDecimalSettings();
 			this._super();
 			this._validateSpinSettings();
-			this._validateDecimalSettings();
 
 			if (this.options.maxLength !== null) {
 				this.options.maxLength = null;
