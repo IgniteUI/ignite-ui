@@ -105,6 +105,12 @@
   font-weight: normal;
   border: 0;
 }
+
+/* Bug #741 S.D. 20.04.2017 When bootstrap theme used with bootstrap css text in editor can't be seen when editor has focus*/
+.ui-state-focus input:focus {
+	color:initial;
+}
+
 /* Interaction Cues
 ----------------------------------*/
 .ui-iggrid-colasc .ui-state-highlight {
