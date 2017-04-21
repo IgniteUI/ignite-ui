@@ -5741,18 +5741,6 @@
 						} else {
 							this._enterEditMode();
 						}
-					} else {
-						if (newValue < this.options.minValue) {
-							newValue = this.options.minValue;
-						} else if (newValue > this.options.maxValue) {
-							newValue = this.options.maxValue;
-						}
-						this._updateValue(newValue);
-						if (!this._focused) {
-							this._editorInput.val(this._getDisplayValue());
-						} else {
-							this._enterEditMode();
-						}
 					}
 					this._setSpinButtonsState(newValue);
 				} else {
