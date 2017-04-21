@@ -1869,45 +1869,31 @@
 			if (this.options.excludeKeys) {
 				this._excludeKeysArray = this.options.excludeKeys.toString().split("");
 			}
-			if (this.options.value !== undefined) {
-				initialValue = this.options.value;
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
-				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
-					this._editorInput.val(this._getDisplayValue());
-				} else if (initialValue === null && !this.options.allowNullValue) {
-					this._setInitialValue("");
-				}
-			} else if (this.element.val() && this._validateValue(this.element.val())) {
-				initialValue = this.element.val();
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue
-							.toString()
-							.substring(0, this.options.maxLength);
+			initialValue = this.options.value;
+			if (this.options.maxLength) {
+				if (initialValue && initialValue.toString().length > this.options.maxLength) {
+					initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
+					//Raise warning
+					this._sendNotification("warning",
+						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+							this.options.maxLength));
 				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
+			}
+			if (this._validateValue(initialValue)) {
+				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
-				} else {
-					this._editorInput.val("");
+			} else if (initialValue === null && !this.options.allowNullValue) {
+				this._setInitialValue("");
 			}
+
+			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!this.options.value && this.options.allowNullValue &&
+				this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
+				this._setOption("value", this.options.nullValue);
 			}
+
 			this._applyPlaceHolder();
 		},
 		_render: function () {
@@ -2916,6 +2902,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -4437,11 +4424,6 @@
 
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
-
-			//M.S. 3/14/2017. Issue 779 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			if (!this.options.value && this.options.allowNullValue) {
-				this.options.value = this.options.nullValue;
-			}
 		},
 		_setNumericType: function () {
 			this._numericType = "numeric";
@@ -4691,6 +4673,7 @@
 				case "includeKeys":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.numericEditorNoSuchOption);
+
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -4749,16 +4732,12 @@
 			if (!this._validateValue(value)) {
 				if (value !== "" && !isNaN(value)) {
 
-					//Verify
-					if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
-						value = this._valueInput.val();
-					} else {
-						if (value <= this.options.minValue) {
-							value = this.options.minValue;
-						} else {
-							value = this.options.maxValue;
+					// I.G. 11/03/2017 #809 'Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false'
+						if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
+							value = this._valueInput.val();
+						} else if (this.options.isLimitedToListValues) {
+							value = "";
 						}
-					}
 				} else {
 					if (this.options.allowNullValue) { // TODO VERIFY!!! allowNullValue > revertIfNotValid
 						value = this.options.nullValue;
@@ -5222,7 +5201,13 @@
 				if (this.options.nullValue === null) {
 					this._editorInput.val("");
 				} else {
-					this._editorInput.val(this.options.nullValue);
+
+					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+					if (this._validateValue(newValue)) {
+						this._editorInput.val(this.options.nullValue);
+					} else {
+						this._editorInput.val(this.options.value);
+					}
 				}
 			} else {
 
@@ -5245,7 +5230,9 @@
 					}
 				}
 			}
-			if (!textOnly && newValue !== undefined) {
+
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!textOnly && newValue !== undefined && this._validateValue(newValue)) {
 				this._updateValue(newValue);
 			}
 		},
@@ -5585,8 +5572,12 @@
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinUp", currVal, delta);
+
+			// A. M. April 5th, 2017 #896 spinWrapAround doesn't spin to minValue if there is no maxValue set
 			if ((currVal > this.options.maxValue &&
-				this.options.spinWrapAround) || currVal < this.options.minValue) {
+				this.options.spinWrapAround) || currVal < this.options.minValue ||
+				(this._currentInputTextValue === this.options.maxValue.toString() &&
+				this.options.spinWrapAround)) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
 					$.ig.util.stringFormat($.ig.Editor.locale.maxValExceededWrappedAroundErrMsg,
@@ -5642,7 +5633,9 @@
 			this._currentInputTextValue = this._editorInput.val();
 			currVal = this._getSpinValue("spinDown", currVal, delta);
 			if ((currVal < this.options.minValue &&
-				this.options.spinWrapAround) || currVal > this.options.maxValue) {
+				this.options.spinWrapAround) || currVal > this.options.maxValue ||
+				(this._currentInputTextValue === this.options.minValue.toString() &&
+				this.options.spinWrapAround)) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
 					$.ig.util.stringFormat($.ig.Editor.locale.minValExceededWrappedAroundErrMsg,
@@ -5768,7 +5761,11 @@
 					}
 					this._setSpinButtonsState(newValue);
 				} else {
-					if (this.options.revertIfNotValid &&
+
+					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+					if (newValue === null && this.options.allowNullValue && this._validateValue(newValue)) {
+						this._updateValue(newValue);
+					} else if (this.options.revertIfNotValid &&
 					!(newValue === null && this.options.allowNullValue)) {
 						newValue = this._valueInput.val();
 						this._updateValue(newValue);
@@ -6433,6 +6430,11 @@
 				this._maskFlagsArray = [ "C", "&", "a", "A", "?", "L", "9", "0", "<", ">", "#" ];
 			}
 			this._promptCharsIndices = [];
+
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (this.options.allowNullValue && !this.options.value && this.options.nullValue) {
+				this.options.value = this.options.nullValue;
+			}
 		},
 		_applyOptions: function () { //igMaskEditor
 			this._getMaskLiteralsAndRequiredPositions();
@@ -6913,10 +6915,11 @@
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
-						nullValue = this._parseValueByMask(this.options.nullValue);
+						nullValue = this._parseValueByMask(value);
 						this._maskedValue = nullValue;
 						this._valueInput.val(nullValue);
 						this.options.value = nullValue;
+
 					}
 				} else {
 
@@ -7431,6 +7434,11 @@
 					newValue = "";
 				}
 				this._updateValue(newValue);
+
+				//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+				if (this.options.allowNullValue && newValue === null && this.options.nullValue) {
+					this.value(this.options.nullValue);
+				}
 
 				// this._setInitialValue(newValue);
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
@@ -10592,7 +10600,7 @@
 			/* Sets selected date. This method can be used when dataMode is set as either displayModeText or editModeText.
 			In such cases the value() cannot accept a date object as a new value and getSelectedDate() can be used to replace that functionality.
 			```
-				$(".selector").igDateEditor("selectDate", new Date (2016, 2, 3));
+				$(".selector").%%WidgetName%%("selectDate", new Date (2016, 2, 3));
 			```
 				paramType="date" optional="false" */
 			this._updateValue(date);
@@ -10601,7 +10609,7 @@
 		spinUp: function (delta) {
 			/* Increases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinUp", 2);
+				$(".selector").%%WidgetName%%("spinUp", 2);
 			```
 				paramType="number" optional="true" The increase delta. */
 			delta = parseInt(delta, 10);
@@ -10610,7 +10618,7 @@
 		spinDown: function (delta) {
 			/* Decreases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinDown", 3);
+				$(".selector").%%WidgetName%%("spinDown", 3);
 			```
 				paramType="number" optional="true" The decrease delta. */
 			delta = parseInt(delta, 10);
@@ -10619,7 +10627,7 @@
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
 			```
-			$(".selector").igDateEditor("spinUpButton");
+			$(".selector").%%WidgetName%%("spinUpButton");
 			```
 				returnType="$" The jQuery object representing the spin up UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinUpButton.call(this);
@@ -10627,7 +10635,7 @@
 		spinDownButton: function () {
 			/* Returns a reference to the spin down UI element of the editor.
 			```
-				$(".selector").igDateEditor("spinDownButton");
+				$(".selector").%%WidgetName%%("spinDownButton");
 			```
 				returnType="$" The jQuery object representing the spin down UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinDownButton.call(this);
@@ -11510,6 +11518,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11519,6 +11528,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11528,6 +11538,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
