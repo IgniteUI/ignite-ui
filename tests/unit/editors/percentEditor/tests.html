@@ -97,7 +97,7 @@
 				});
 			}
 			initialized = false;
-			module("Percentage Editor", {
+			module("igPercentEditor", {
 				setup: function () {
 					//pause testing until tree is initialized
 					if (!initialized) {
@@ -247,8 +247,8 @@
 				var containerInput = $('#pEditor6').igPercentEditor("field");
 
 				// For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
-				$("#pEditor6").igPercentEditor("option", "decimalSeparator", ",");
 				$("#pEditor6").igPercentEditor("option", "groupSeparator", "");
+				$("#pEditor6").igPercentEditor("option", "decimalSeparator", ",");
 				$("#pEditor6").igPercentEditor("option", "value", 1264.89);
 				equal($("#pEditor6").igPercentEditor("displayValue"), "1264,89%", "The decimal value is not correct");
 			});
@@ -732,6 +732,30 @@
 				ok($editor.igPercentEditor("clearButton").is(":visible"), "Clear button is not visible");
 				$editor.remove();
 			});
+			
+			var testId = 'MaxValue SpinUpButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, maxValue: 8, spinDelta: 1, buttonType: "spin" });
+			ok($editor.igPercentEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
+			$editor.igPercentEditor("value", 8);
+			$editor.blur();
+			ok($editor.igPercentEditor("spinUpButton").hasClass("ui-state-disabled"), "Spin up button is not disabled.");
+			$editor.remove();
+		});
+		
+		var testId = 'MinValue SpinDownButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igPercentEditor({ displayFactor : 1, minValue: 2, spinDelta: 1, buttonType: "spin" });
+			ok($editor.igPercentEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
+			$editor.igPercentEditor("value", 2);
+			$editor.blur();
+			ok($editor.igPercentEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
+			$editor.remove();
+		});
 		});
 	</script>
 </head>

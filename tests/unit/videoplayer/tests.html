@@ -191,17 +191,21 @@
 	}
 
 	initialized = false;
+	var realTouchCheck;
 	module("igVideoPlayer", {
 		setup: function() {
 			//pause testing until grid is rendered
 			if (!initialized) {
 				stop();
 				loadTestbeds();
+				realTouchCheck = $.ig.util.isTouchDevice;
+				$.ig.util.isTouchDevice = function() { return false; }
 				setTimeout(function () { start(); }, 3000);
 				initialized = true;
 			}
 		},
 		teardown: function() {
+			$.ig.util.isTouchDevice = realTouchCheck;
 		}
 	});
 

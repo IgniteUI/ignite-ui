@@ -653,7 +653,7 @@
 		},
 		_setNewContent: function (nc) {
 			var newContent = nc;
-			if (nc instanceof jQuery) {
+			if (nc instanceof $) {
 				newContent = nc.html();
 			} else if (typeof nc === "object") {
 				newContent = nc.innerHTML;

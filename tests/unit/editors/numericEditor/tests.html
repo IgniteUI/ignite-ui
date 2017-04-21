@@ -278,7 +278,8 @@
 				});
 
 				$("#decimalSeparatorEditor").igNumericEditor({
-					decimalSeparator: ","
+					decimalSeparator: ",",
+					groupSeparator: " "
 				});
 
 				$("#spinUp").igNumericEditor({
@@ -319,7 +320,7 @@
 			});
 		}
 		initialized = false;
-		module("Numeric Editor ", {
+		module("igNumericEditor ", {
 			setup: function() {
 				//pause testing until editors are initialized
 				if (!initialized) {
@@ -777,8 +778,8 @@
 		test(testId, 5, function () {
 			var val = 1264.89;
 			var containerInput = $('#inputEditor1').igNumericEditor("field");
-			$("#inputEditor1").igNumericEditor("option", "decimalSeparator", ",");
 			$("#inputEditor1").igNumericEditor("option", "groupSeparator", " ");
+			$("#inputEditor1").igNumericEditor("option", "decimalSeparator", ",");
 			$("#inputEditor1").igNumericEditor("option", "value", 1264.89);
 			equal(containerInput.val(), "1 264,89000", "The decimal value is not correct");
 
@@ -1582,6 +1583,7 @@
 				numericMinDecimals: 2,
 				selectionOnFocus: 0,
 				decimalSeparator: ",",
+				groupSeparator: " ",
 				spinDelta: 1
 			});
 
@@ -1593,6 +1595,7 @@
 							numericMinDecimals: 8,
 							selectionOnFocus: "atStart",
 							decimalSeparator: ".",
+							groupSeparator: ",",
 							spinDelta: 0.1,
 							dataMode: "double",
 							buttonType: "spin"
@@ -1606,6 +1609,7 @@
 				numericMinDecimals: 2,
 				selectionOnFocus: 0,
 				decimalSeparator: ",",
+				groupSeparator: " ",
 				spinDelta: 1
 			});
 
@@ -1617,6 +1621,7 @@
 				numericMinDecimals: 8,
 				selectionOnFocus: "atStart",
 				decimalSeparator: ".",
+				groupSeparator: ",",
 				spinDelta: 0.1,
 				dataMode: "double",
 				buttonType: "spin"
@@ -1733,7 +1738,7 @@
 			ok($editor.igNumericEditor("clearButton").is(":visible"), "Clear button is not visible");
 			$editor.remove();
 		});
-	});
+	
 	testId = "Test nullValue on initialization";
 	test(testId, 4, function(){
 		var $editor = $("<input id='editor'/>").
@@ -2007,7 +2012,77 @@
 						
 			$editor.remove();
 		});
+		
+	testId = "spinWrapAround spin to minValue if there is no maxValue set";
+	test(testId, 3, function () {
+		var $editor;
+		$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({ dataMode: 'double', minValue: 5, spinWrapAround : true, buttonType: 'spin' });
+		ok($editor.igNumericEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
+		$editor.igNumericEditor("value", 5);
+		$editor.igNumericEditor("spinDownButton");
+		!equal($editor.val(), 5, "Spin down was not performed!")
+		$editor.igNumericEditor("spinUpButton");
+		equal($editor.val(), 5, "SpinWrap around was not performed!")
+		
+		$editor.remove();
+		});
 
+	testId = "Set groupSeparator to null at runtime";
+	test(testId, 2, function() {
+		var $editor = $("<input id='editorGS'/>").
+			appendTo("#testBedContainer").igNumericEditor({ value: 12209 });
+			
+			equal($editor.igNumericEditor("displayValue"), "12,209", "The displayed value is not correct.")
+			$("#editorGS").igNumericEditor("option", "groupSeparator", null)
+			$editor.click();
+			$editor.blur();
+			equal($editor.igNumericEditor("displayValue"), "12,209", "The displayed value is not correct.")
+			
+			$editor.remove();
+		});
+		
+	testId = "decimalSeparator and groupSeparator use the same symbol - init";
+	test(testId, 1, function() {
+		throws(function() {
+			$editor = $('<input/>').appendTo("#testBedContainer").igNumericEditor({
+				decimalSeparator: ",",
+				groupSeparator: ",",
+				value: 1.1
+			});
+			$editor.remove();
+		}, Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg), "Exception is not thrown when groupSeparator and decimalSeparator have the same value.");
+	});
+	
+	testId = "decimalSeparator uses the same symbol as the groupSeparator - runtime";
+		test(testId, 1, function(){
+		var $editor = $("<input id='editorDecimalGroupSeparators'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: ",", groupSeparator: "/", value:1.01});
+		throws(function () {
+			$("#editorDecimalGroupSeparators").igNumericEditor("option", "decimalSeparator", "/");
+			$editor.remove();
+		}, Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg), $.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg + "not shown");
+		
+		
+		//var $editor = $("<input id='editor'/>").
+		//	appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: "/", groupSeparator: ",", value:1.01});
+		//throws(function () {
+		//	$("#editor").igNumericEditor("option", "groupSeparator", "/")
+		//}, function (err) {
+		//		return err.message.indexOf($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg) > -1;
+		//	}, $.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg + "not shown");
+		//$editor.remove();
+	});
+	
+	testId = "groupSeparator uses the same symbol as the decimalSeparator - runtime";
+		test(testId, 1, function(){
+		var $editor = $("<input id='editorGroupSeparators'/>").
+			appendTo("#testBedContainer").igNumericEditor({ decimalSeparator: "/", groupSeparator: ",", value:1.01});
+		throws(function () {
+			$("#editorGroupSeparators").igNumericEditor("option", "groupSeparator", "/");
+			$editor.remove();
+		}, Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg), $.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg + "not shown");
+	});
+});
 	function testSelection(input, start, end) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index " + start);
 		equal(input[0].selectionEnd, end, "The selection doesn't end from index " + end);
