@@ -10357,7 +10357,7 @@
 		selectDate: function (date) {
 			/* Sets selected date.
 			```
-				$(".selector").igDateEditor("selectDate", new Date (2016, 2, 3));
+				$(".selector").%%WidgetName%%("selectDate", new Date (2016, 2, 3));
 			```
 				paramType="date" optional="false" */
 			this._updateValue(date);
@@ -10366,7 +10366,7 @@
 		spinUp: function (delta) {
 			/* Increases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinUp", 2);
+				$(".selector").%%WidgetName%%("spinUp", 2);
 			```
 				paramType="number" optional="true" The increase delta. */
 			this._spin(delta ? delta : this.options.spinDelta);
@@ -10374,7 +10374,7 @@
 		spinDown: function (delta) {
 			/* Decreases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinDown", 3);
+				$(".selector").%%WidgetName%%("spinDown", 3);
 			```
 				paramType="number" optional="true" The decrease delta. */
 			this._spin(delta ? -delta : -this.options.spinDelta);
@@ -10382,7 +10382,7 @@
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
 			```
-			$(".selector").igDateEditor("spinUpButton");
+			$(".selector").%%WidgetName%%("spinUpButton");
 			```
 				returnType="$" The jQuery object representing the spin up UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinUpButton.call(this);
@@ -10390,7 +10390,7 @@
 		spinDownButton: function () {
 			/* Returns a reference to the spin down UI element of the editor.
 			```
-				$(".selector").igDateEditor("spinDownButton");
+				$(".selector").%%WidgetName%%("spinDownButton");
 			```
 				returnType="$" The jQuery object representing the spin down UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinDownButton.call(this);
