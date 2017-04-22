@@ -11395,7 +11395,11 @@
 			if (this.settings.paging.enabled && this.settings.paging.type !== "remote") {
 				this._generateFlatDataAndCountProperties();
 			}
-			this.generateFlatDataView();
+			if (this._runtimeType !== "remoteUrl") {
+				this.dataBind();
+			} else {
+				this.generateFlatDataView();
+			}
 		},
 		_preprocessAddRow: function (row, index, origDs, at, data) {
 			/* This function is called from _addRow - before adding row in data.
