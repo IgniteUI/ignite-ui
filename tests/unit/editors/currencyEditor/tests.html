@@ -135,8 +135,8 @@
 		    var containerInput = $('#currencyEditor5').igCurrencyEditor("field");
 
 		    // For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
+			$("#currencyEditor5").igCurrencyEditor("option", "groupSeparator", "");
 		    $("#currencyEditor5").igCurrencyEditor("option", "decimalSeparator", ",");
-		    $("#currencyEditor5").igCurrencyEditor("option", "groupSeparator", "");
 		    $("#currencyEditor5").igCurrencyEditor("option", "value", 1264.89);
 		    equal($("#currencyEditor5").igCurrencyEditor("displayValue"), "$1264,8900000000", "The decimal value is not correct");
 		});

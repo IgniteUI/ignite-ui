@@ -74,7 +74,9 @@
 				dateMessage: 'Ein gültiges Datum sollte eingegeben werden',
                 centuryThresholdValidValues: "centuryThreshold-Eigenschaft muss zwischen 0 und 99 liegen.",
                 noListItemsNoButton: "Es wird keine Spin- oder Dropdown-Schaltfläche gerendert, da keine Listenelemente vorliegen.",
-				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
+				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "The groupSeparator and the decimalSeparator options can not have equal values."
 			}
 	    };
     }

@@ -74,7 +74,9 @@
 				dateMessage: 'Debe introducirse una fecha válida',
 			    centuryThresholdValidValues: "La propiedad centuryThreshold debería estar entre 0 y 99.",
 			    noListItemsNoButton: "No se representa ningún botón desplegable o de control de número porque no hay elementos de lista.",
-				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
+				decimalNumber: "Cuando dataMode es '{0}', la opcion {1} se puede transformar en valor numeroso entre 0 y {2}.",
+				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Las opciones groupSeparator y decimalSeparator no pueden tener valores iguales."
 		    }
 	    };
     }
