@@ -4372,8 +4372,8 @@
 				/*A.T. workaround for jQuery's 1.5 and above bug related to dataFilter and success callback.
 				We need to explicitly set the dataType to "text" when manually parsing it */
 				/* get jquery version */
-				if (jQuery.fn.jquery) {
-					ver = jQuery.fn.jquery.split(".");
+				if ($.fn.jquery) {
+					ver = $.fn.jquery.split(".");
 				}
 				if (ver && ver.length >= 2) {
 					/* if jQuery is 1.5 and greater or if the first major version is greater than 1 (when jQuery 2 comes out)
