@@ -1070,6 +1070,16 @@
 			ok($editor.igTextEditor("clearButton").is(":visible"), "Clear button is not visible");
 			$editor.remove();
 		});
+
+		var testId = 'maxLength is respected';
+		test(testId, 1, function () {
+			var $editor;
+
+			$editor = $('<input id="maxLengthTest"/>').appendTo("#testBedContainer").igTextEditor({ maxLength : 3 });
+			typeInInput("abc s",  $editor.igTextEditor("field"));
+			ok($('#maxLengthTest').parents().hasClass("ui-ignotify-warn"), "The notifier is not shown");
+			$editor.remove();
+    });
 		
 		testId = "Setting listItems on run time";
 		test(testId, 2, function () {
@@ -1079,11 +1089,27 @@
 			ok(currentVal === null, "ListItems should not be set on initialization");
 				
 			editor.igTextEditor("option", "listItems", items);
-			equal(editor.igTextEditor("option", "listItems"), items, "ListItems were not set on run time.");	
+			equal(editor.igTextEditor("option", "listItems"), items, "ListItems were not set on run time.");
+		  });
 		});
-	});
 
 	// Helper functions
+	function typeInInput(characters, element) {
+		var keyDown = jQuery.Event("keydown"),
+		   keyPress = jQuery.Event("keypress"),
+		   keyUp = jQuery.Event("keyup"),
+		   value = "";
+
+		characters.split('').forEach(function (ch) {
+			keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+			keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+			element.trigger(keyDown);
+			element.trigger(keyPress);
+			value = value + ch;
+			element.val(value);
+			element.trigger(keyUp);
+		});
+	}
 	function testSelection(input, start, end ) {
 		equal(input[0].selectionStart, start, "The selection doesn't start from index" + start);
 		equal(input[0].selectionEnd, end, "The selection doesn't end at index " + end);
