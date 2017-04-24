@@ -105,6 +105,12 @@
   font-weight: normal;
   border: 0;
 }
+
+/* Bug #741 S.D. 20.04.2017 When bootstrap theme used with bootstrap css text in editor can't be seen when editor has focus*/
+.ui-state-focus input:focus {
+	color:initial;
+}
+
 /* Interaction Cues
 ----------------------------------*/
 .ui-iggrid-colasc .ui-state-highlight {
@@ -755,6 +761,36 @@
 .ui-icon-squaresmall-close {
   background-position: -80px -208px;
 }
+
+/* Scheduler icons */
+.ui-igscheduler {
+  .ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
+    .ui-icon
+    {
+      background-image: @ui-icons-darker;
+    }
+  }
+  .ui-igscheduler-tabs,
+  .ui-igscheduler-today-button{
+    &:hover {
+      .ui-icon
+      {
+        background-image: @ui-icons-darker;
+      }
+    }
+  }
+  .ui-icon-calendar-day {
+    background-position: -96px -208px;
+  }
+  .ui-icon-calendar {
+    background-position: -112px -208px;
+  }
+  .ui-icon-note {
+    background-position: -128px -208px;
+  }
+}
+/* Scheduler icons END */
+
 .ui-icon-grip-dotted-vertical {
   background-position: 0 -224px;
 }
