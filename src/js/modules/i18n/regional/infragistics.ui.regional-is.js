@@ -1,5 +1,14 @@
 ﻿/* Iceland +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -50,4 +59,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('is');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

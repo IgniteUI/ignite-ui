@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
 $.ig = $.ig || {};
 
@@ -19,6 +28,5 @@ if (!$.ig.Popover) {
 			popoverShowMethodWithoutTarget: "Der Target-Parameter der Show-Funktion ist obligatorisch, wenn die Selectors-Option verwendet wird"
 		}
 	});
-
 }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES
