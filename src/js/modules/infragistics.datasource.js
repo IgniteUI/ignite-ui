@@ -5341,6 +5341,17 @@
 						this._gbDataView.push(rec);
 					}
 					if (rec === endDataRec) {
+						// find non-data group-by summary rows and add them to group-by dataview
+						while(i++ < len) {
+							rec = gbData[ i ];
+							if (rec && rec[ sgb.groupSummaryRecordKey ]) {
+								if (rec.level <= levelCollapsed || visible) {
+									this._gbDataView.push(rec);
+								}
+							} else {
+								break;
+							}
+						}
 						break;
 					}
 				}
@@ -6688,7 +6699,8 @@
 			```
 			returnType="number" the number of records that are bound / exist locally
 			*/
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				return this._vgbData.length;
 			}
 			if (!this._filter) {
@@ -6714,7 +6726,8 @@
 			returnType="number" total number fo pages
 			*/
 			var c, realCount;
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				realCount = this._vgbData.length;
 			} else if (!this._filter) {
 				realCount = this.totalRecordsCount() > 0 ? this.totalRecordsCount() : this._data.length;
