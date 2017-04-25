@@ -1529,7 +1529,30 @@
 					});
 					```
 				*/
-				summaries: []
+				summaries: [],
+				/* type="top|bottom|both" Specifies the postion for the summaries for each field inside each group.
+				```
+					ds = new $.%%WidgetName%%({
+					dataSource: data,
+					groupby: {
+						summariesPosition: "top",
+						summaries: [
+						{
+							field:"Age",
+							summaryFunctions: ["avg","sum"]
+						},
+						{
+							field: "Name",
+							summaryFunctions: ["count", customFunc]
+						}]
+					}
+				});
+				```
+				top type="string" One summary row will be displayed at the top for each group
+				bottom type="string"  One summary row will be displayed at the bottom for each group
+				both type="string" Two summary rows will be be display for each group. One on the top and one on the bottom.
+				*/
+				summariesPosition: "bottom"
 			},
 			/* M.H. add summaries support */
 			/* Settings related to built-in summaries functionality
@@ -7165,9 +7188,26 @@
 					gbSummaryRec.summaries[ summary.field ].push(summaryVal);
 				}
 			}
-			this._gbData.push(gbSummaryRec);
+			this._addSummaryRecToArray(gbSummaryRec, gbRec, this._gbData);
 			if (!gbRec.collapsed && !parentCollapsed) {
-				this._vgbData.push(gbSummaryRec);
+				this._addSummaryRecToArray(gbSummaryRec, gbRec, this._vgbData);
+			}
+		},
+		_addSummaryRecToArray: function (gbSummaryRec, gbRec, array) {
+			var index;
+			if (this.settings.groupby.summariesPosition === "bottom" ||
+				this.settings.groupby.summariesPosition === "both") {
+				gbSummaryRec.position = "bottom";
+				/* Extend the gbSummaryRec so it can be specified if it top or bottom positioned */
+				array.push(jQuery.extend({}, gbSummaryRec));
+			}
+			if (this.settings.groupby.summariesPosition === "top" ||
+				this.settings.groupby.summariesPosition === "both") {
+				//insert after groupby rec index
+				index = array.indexOf(gbRec);
+				gbSummaryRec.position = "top";
+				/* Extend the gbSummaryRec so it can be specified if it top or bottom positioned */
+				array.splice(index + 1, 0, jQuery.extend({}, gbSummaryRec));
 			}
 		},
 		_generateGroupByData: function (data,

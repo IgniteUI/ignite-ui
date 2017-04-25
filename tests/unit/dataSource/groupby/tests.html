@@ -1097,7 +1097,812 @@
 				equal(gbRecs.length, 5, "There should be 5 group records in the group by data view.");
 
 			});
+			
+			test("Test basic summary group row with defaultCollapseState:false with top position.", function () {
+				var expr = [
+					{
+						fieldName : "Promotion", dir:"asc", isGroupBy:true
+					}
+				], gbDataView, recsByType,
+				ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName", type: "string" },
+							{ name: "ProductDescription", type: "string" },
+							{ name: "Price", type: "number" }, 
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "date" }]
+					},
+					sorting:{
+						type: "local",
+						expressions: expr,
+						defaultFields: expr
+					},
+					groupby: {
+						defaultCollapseState: false,
+						summariesPosition: "top",
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["avg","sum"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
 
+				ds.dataBind();
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 9, "There should be 9 records in the groupBy data view.");
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.gbRecs.length, 2, "There should be 2 groupby records in the data view.");
+				equal(recsByType.gbRecs[0].val, false, "First group value should be: false.");
+				equal(recsByType.gbRecs[1].val, true, "Second group value should be: true.");
+
+				equal(recsByType.dataRecs.length, 5, "Data records should be 5.");
+
+				equal(recsByType.gbSumRecs.length, 2, "There should be 2 groupby summary records in the data view.");
+				equal(recsByType.gbSumRecs[0].groupValue, false, "First group value should be: false.");
+				equal(recsByType.gbSumRecs[1].groupValue, true, "Second group value should be: true.");
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Price"]), "[1,2]", "There should be two summaries for Price with values for avg:1, sum:2.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Promotion"]), "[2]", "There should be one summary for Promotion with values for count:2.");
+				
+				//change grouped cols
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}, {fieldName : "ProductName", isGroupBy:true}], "desc", false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				equal(gbDataView.length, 19, "There should be 15 records in the groupBy data view.");
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.dataRecs.length, 5, "Data records should be 5.");
+				equal(recsByType.gbRecs.length, 7, "There should be 5 group recs.");
+				equal(recsByType.gbSumRecs.length, 7, "There should be 5 summary recs.");
+
+				//collapse first group
+				ds.toggleGroupByRecord(gbDataView[0].id, true);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 9, "Toggling the first group should remove its children and summary from the view.");
+
+				ds.toggleGroupByRecord(gbDataView[1].id, true);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 2, "Toggling the second group should remove its children and summary from the view.");
+			});
+
+			test("Test basic summary group row with defaultCollapseState:true wiht top position.", function () {
+				var expr = [
+					{
+						fieldName : "Promotion", dir:"asc", isGroupBy:true
+					}
+				], gbDataView, recsByType,
+				ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName", type: "string" },
+							{ name: "ProductDescription", type: "string" },
+							{ name: "Price", type: "number" }, 
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "date" }]
+					},
+					sorting:{
+						type: "local",
+						expressions: expr,
+						defaultFields: expr
+					},
+					groupby: {
+						defaultCollapseState: true,
+						summariesPosition: "top",
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["avg","sum"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 2, "There should be 2 records in the groupBy data view.");
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.dataRecs.length, 0, "There should be no data records in the group by data view.");
+				equal(recsByType.gbSumRecs.length, 0, "There should be no summary records in the group by data view.");
+				equal(recsByType.gbRecs.length, 2, "There should be 2 group records in the group by data view.");
+
+				//expand first group row
+				ds.toggleGroupByRecord(gbDataView[0].id, false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 6, "There should be 6 records in the groupBy data view.");
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.dataRecs.length, 3, "There should be 3 data records in the group by data view.");
+				equal(recsByType.gbSumRecs.length, 1, "There should be 1 summary record in the group by data view.");
+				equal(recsByType.gbRecs.length, 2, "There should be 2 group records in the group by data view.");
+
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+
+				//change grouped cols
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}, {fieldName : "ProductName", isGroupBy:true}], "desc", false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 6, "There should be 6 records in the groupBy data view.");
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.dataRecs.length, 0, "There should be no data records in the group by data view.");
+				equal(recsByType.gbSumRecs.length, 1, "There should be 1 summary record in the group by data view.");
+				equal(recsByType.gbRecs.length, 5, "There should be 5 group records in the group by data view.");
+
+				equal(recsByType.gbRecs[0].id, recsByType.gbSumRecs[0].id, "Visible summary rec should belong to the expanded group row.");
+
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+
+				//expand last child group row in first group
+				ds.toggleGroupByRecord(gbDataView[4].id, false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				equal(gbDataView.length, 8, "There should be 8 records in the groupBy data view.");
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.dataRecs.length, 1, "There should be 1 data record in the group by data view.");
+				equal(recsByType.gbSumRecs.length, 2, "There should be 2 summary record in the group by data view.");
+				equal(recsByType.gbRecs.length, 5, "There should be 5 group records in the group by data view.");
+
+				equal(recsByType.gbRecs[3].id, recsByType.gbSumRecs[1].id, "Visible summary rec should belong to the expanded group row.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Price"]),"[1,1]", "There should be two summaries for Price with values for avg:1, sum:1.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Promotion"]), "[1]", "There should be one summary for Promotion with values for count:1.");
+
+			});
+
+			test("Test summary group row is properly shown/hidden on toggle with top position.", function () {
+				var gbDataView, recsByType,
+				ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName", type: "string" },
+							{ name: "ProductDescription", type: "string" },
+							{ name: "Price", type: "number" }, 
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "date" }]
+					},
+					sorting:{
+						type: "local"
+					},
+					groupby: {
+						defaultCollapseState: false,
+						summariesPosition: "top",
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["avg","sum"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				//apply sort expr
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}], "asc", false);
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				for (var i = 0; i < recsByType.gbSumRecs.length; i++) {
+					equal(recsByType.gbRecs[i].id, recsByType.gbSumRecs[i].id, "Visible summary rec should belong to the expanded group row.");
+					equal(recsByType.gbRecs[i].val, recsByType.gbSumRecs[i].groupValue, "Visible summary rec should belong to the expanded group row.");
+					equal(recsByType.gbRecs[i].level, recsByType.gbSumRecs[i].level - 1, "Summary level should be correct.");
+				}
+
+				//apply sort expr
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}, {fieldName : "ProductName", isGroupBy:true}], "desc", false);
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				for (var i = 0; i < recsByType.gbRecs.length; i++) {
+					var id = recsByType.gbRecs[i].id;
+					for (var j = 0; j < recsByType.gbSumRecs.length; j++) {
+						if (recsByType.gbSumRecs[j].id === id)
+						{
+							equal(recsByType.gbRecs[i].level, recsByType.gbSumRecs[j].level - 1, "Group level should be correct.");
+							equal(recsByType.gbRecs[i].val, recsByType.gbSumRecs[j].groupValue, "Group value should be correct.");
+							break;
+						}
+					}
+				}
+
+				equal(gbDataView.length, 19, "There should be 19 recs in the group by data view.");
+				//collapse
+				ds.toggleGroupByRecord(gbDataView[8].id, true);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				equal(gbDataView.length, 17, "There should be 17 recs in the group by data view.");
+
+				//since we have set position top, it is right after the group row
+				ok(gbDataView[1].id === gbDataView[0].id && gbDataView[1].val === gbDataView[0].groupValue, "Rec after the parent group should be the summary for that parent group.");
+
+				//expand
+				ds.toggleGroupByRecord(gbDataView[8].id, false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				equal(gbDataView.length, 19, "There should be 19 recs in the group by data view.");
+
+				ok(gbDataView[8].id === gbDataView[9].id && gbDataView[8].val === gbDataView[9].groupValue, "Rec after the expanded one should be its summary.");
+
+			});
+
+			test("Test summary group row with all default summaries per column type with top position.", function () {
+				var gbDataView, recsByType,
+				ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName", type: "string" },
+							{ name: "ProductDescription", type: "string" },
+							{ name: "Price", type: "number" }, 
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "date" }]
+					},
+					sorting:{
+						type: "local"
+					},
+					groupby: {
+						defaultCollapseState: false,
+						summariesPosition: "top",
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["count","min", "max", "sum", "avg"]
+							},
+							{
+								field:"ProductName", 
+								summaryFunctions: ["count"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							},
+							{
+								field:"Date", 
+								summaryFunctions: ["count", "min", "max"]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				//apply sort expr
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}], "asc", false);
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				var summaries = recsByType.gbSumRecs[0].summaries;
+				equal(JSON.stringify(summaries["Date"]), "[3,0,4]", "Date summarries for Date field should be correct.");
+				equal(JSON.stringify(summaries["Price"]), "[3,1,1,3,1]", "Date summarries for Price field should be correct.");
+				equal(JSON.stringify(summaries["ProductName"]), "[3]", "Date summarries for ProductName field should be correct.");
+				equal(JSON.stringify(summaries["Promotion"]), "[3]", "Date summarries for Promotion field should be correct.");
+				
+				summaries = recsByType.gbSumRecs[1].summaries;
+				equal(JSON.stringify(summaries["Date"]), "[2,1,3]", "Date summarries for Date field should be correct.");
+				equal(JSON.stringify(summaries["Price"]), "[2,1,1,2,1]", "Date summarries for Price field should be correct.");
+				equal(JSON.stringify(summaries["ProductName"]), "[2]", "Date summarries for ProductName should be correct.");
+				equal(JSON.stringify(summaries["Promotion"]), "[2]", "Date summarries for Promotion should be correct.");
+			});
+
+			test("Test summary group row when fields are not defined in the schema with top position.", function () {
+				var gbDataView, recsByType,
+				ds = createDataSource({
+					sorting:{
+						type: "local"
+					},
+					groupby: {
+						defaultCollapseState: false,
+						summariesPosition: "top",
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["count","min", "max", "sum", "avg"]
+							},
+							{
+								field:"ProductName", 
+								summaryFunctions: ["count"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							},
+							{
+								field:"Date", 
+								summaryFunctions: ["count", "min", "max"]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				//apply sort expr
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}], "asc", false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				
+				recsByType = getRecsInViewByType(gbDataView);
+
+				var summaries = recsByType.gbSumRecs[0].summaries;
+				equal(JSON.stringify(summaries["Date"]), "[3,0,4]", "Date summarries for Date field should be correct.");
+				equal(JSON.stringify(summaries["Price"]), "[3,1,1,3,1]", "Date summarries for Price field should be correct.");
+				equal(JSON.stringify(summaries["ProductName"]), "[3]", "Date summarries for ProductName field should be correct.");
+				equal(JSON.stringify(summaries["Promotion"]), "[3]", "Date summarries for Promotion field should be correct.");
+				
+				summaries = recsByType.gbSumRecs[1].summaries;
+				equal(JSON.stringify(summaries["Date"]), "[2,1,3]", "Date summarries for Date field should be correct.");
+				equal(JSON.stringify(summaries["Price"]), "[2,1,1,2,1]", "Date summarries for Price field should be correct.");
+				equal(JSON.stringify(summaries["ProductName"]), "[2]", "Date summarries for ProductName should be correct.");
+				equal(JSON.stringify(summaries["Promotion"]), "[2]", "Date summarries for Promotion should be correct.");
+			});
+			test("Test summary group row when fields don't have a type defined with top position.", function () {
+				var gbDataView, recsByType,
+				ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName" },
+							{ name: "ProductDescription" },
+							{ name: "Price" }, 
+							{ name: "Promotion" },
+							{ name: "Date" }]
+					},
+					sorting:{
+						type: "local"
+					},
+					groupby: {
+						defaultCollapseState: false,
+						summariesPosition: "top",
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["count","min", "max", "sum", "avg"]
+							},
+							{
+								field:"ProductName", 
+								summaryFunctions: ["count"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							},
+							{
+								field:"Date", 
+								summaryFunctions: ["count", "min", "max"]
+							}
+						]						
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				//apply sort expr
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}], "asc", false);
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				var summaries = recsByType.gbSumRecs[0].summaries;
+				equal(JSON.stringify(summaries["Date"]), "[3,0,4]", "Date summarries for Date field should be correct.");
+				equal(JSON.stringify(summaries["Price"]), "[3,1,1,3,1]", "Date summarries for Price field should be correct.");
+				equal(JSON.stringify(summaries["ProductName"]), "[3]", "Date summarries for ProductName field should be correct.");
+				equal(JSON.stringify(summaries["Promotion"]), "[3]", "Date summarries for Promotion field should be correct.");
+				
+				summaries = recsByType.gbSumRecs[1].summaries;
+				equal(JSON.stringify(summaries["Date"]), "[2,1,3]", "Date summarries for Date field should be correct.");
+				equal(JSON.stringify(summaries["Price"]), "[2,1,1,2,1]", "Date summarries for Price field should be correct.");
+				equal(JSON.stringify(summaries["ProductName"]), "[2]", "Date summarries for ProductName should be correct.");
+				equal(JSON.stringify(summaries["Promotion"]), "[2]", "Date summarries for Promotion should be correct.");
+			})
+
+			test("Test basic summary group row - custom summary functions with top position.", function () {
+				var gbDataView, recsByType, trueCount = function (data) {
+					var count = 0; 
+					for (var i = 0; i < data.length; i++) {
+						if (data[i]) { 
+							count++;
+						}
+					}
+					return count;
+				},
+				falseCount = function (data) {
+					var count = 0; 
+					for (var i = 0; i < data.length; i++) {
+						if (!data[i]) { 
+							count++;
+						}
+					}
+					return count;
+				},
+				ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName" },
+							{ name: "ProductDescription" },
+							{ name: "Price" }, 
+							{ name: "Promotion" },
+							{ name: "Date" }]
+					},
+					sorting:{
+						type: "local"
+					},
+					groupby: {
+						defaultCollapseState: false,
+						summariesPosition: "top",
+						summaries: [
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count",  trueCount, falseCount]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				//apply sort expr
+				ds.sort([{fieldName : "Price", dir:"asc", isGroupBy:true}], "asc", false);
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				recsByType = getRecsInViewByType(gbDataView);
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Promotion"]),"[5,2,3]", "Th custom summaries should be correctly calculated.");
+			});
+
+			test("Test basic summary group row - test setting custom options for groupRecordKey and groupSummaryRecordKey with position 'top'.", function () {
+				var gbDataView, recsByType,
+					ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id" }, 
+							{ name: "ProductName" },
+							{ name: "ProductDescription" },
+							{ name: "Price" }, 
+							{ name: "Promotion" },
+							{ name: "Date" }]
+					},
+					sorting:{
+						type: "local"
+					},
+					groupby: {
+						defaultCollapseState: false,
+						groupRecordKey: "__grRecordProperty",
+						groupSummaryRecordKey: "__grRecordSummariesProperty",
+						summariesPosition: "top",
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["count","min", "max", "sum", "avg"]
+							},
+							{
+								field:"ProductName", 
+								summaryFunctions: ["count"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							},
+							{
+								field:"Date", 
+								summaryFunctions: ["count", "min", "max"]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				//apply sort expr
+				ds.sort([{fieldName : "ProductName", dir:"asc", isGroupBy:true}], "asc", false);
+
+				gbDataView = ds.groupByDataView();
+
+				var gbRecs = [], gbSumRecs = [], recs = [];
+				for (var i = 0; i < gbDataView.length; i++) {
+					if (gbDataView[i].__grRecordProperty) {
+						gbRecs.push(gbDataView[i]);
+					} else if(gbDataView[i].__grRecordSummariesProperty){
+						gbSumRecs.push(gbDataView[i]);
+					} else {
+						recs.push(gbDataView[i]);
+					}
+				}
+				equal(recs.length, 5, "There should be 5 data records in the group by data view.");
+				equal(gbSumRecs.length, 5, "There should be 1 summary record in the group by data view.");
+				equal(gbRecs.length, 5, "There should be 5 group records in the group by data view.");
+
+				//toggle first rec
+				ds.toggleGroupByRecord(gbDataView[0].id, true);
+				gbDataView = ds.groupByDataView();
+				equal(gbDataView.length, 13, "There should be 13 recs in the group by data view.");
+				gbRecs = [], gbSumRecs = [], recs = [];
+				for (var i = 0; i < gbDataView.length; i++) {
+					if (gbDataView[i].__grRecordProperty) {
+						gbRecs.push(gbDataView[i]);
+					} else if(gbDataView[i].__grRecordSummariesProperty){
+						gbSumRecs.push(gbDataView[i]);
+					} else {
+						recs.push(gbDataView[i]);
+					}
+				}
+				equal(recs.length, 4, "There should be 4 data records in the group by data view.");
+				equal(gbSumRecs.length, 4, "There should be 1 summary record in the group by data view.");
+				equal(gbRecs.length, 5, "There should be 5 group records in the group by data view.");
+
+			});
+
+			test("Test basic summary group row with defaultCollapseState:true wiht both top and bottom position.", function () {
+				var expr = [
+					{
+						fieldName : "Promotion", dir:"asc", isGroupBy:true
+					}
+				], gbDataView, recsByType,
+				ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName", type: "string" },
+							{ name: "ProductDescription", type: "string" },
+							{ name: "Price", type: "number" }, 
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "date" }]
+					},
+					sorting:{
+						type: "local",
+						expressions: expr,
+						defaultFields: expr
+					},
+					groupby: {
+						defaultCollapseState: true,
+						summariesPosition: "both",
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["avg","sum"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 2, "There should be 2 records in the groupBy data view.");
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.dataRecs.length, 0, "There should be no data records in the group by data view.");
+				equal(recsByType.gbSumRecs.length, 0, "There should be no summary records in the group by data view.");
+				equal(recsByType.gbRecs.length, 2, "There should be 2 group records in the group by data view.");
+
+				//expand first group row
+				ds.toggleGroupByRecord(gbDataView[0].id, false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 7, "There should be 7 records in the groupBy data view."); //2 group recors + 2 summaries + 3 data recs
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.dataRecs.length, 3, "There should be 3 data records in the group by data view.");
+				equal(recsByType.gbSumRecs.length, 2, "There should be 2 summary record in the group by data view.");
+				equal(recsByType.gbRecs.length, 2, "There should be 2 group records in the group by data view.");
+
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+
+				//change grouped cols
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}, {fieldName : "ProductName", isGroupBy:true}], "desc", false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+				equal(gbDataView.length, 7, "There should be 7 records in the groupBy data view.");
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.dataRecs.length, 0, "There should be no data records in the group by data view.");
+				equal(recsByType.gbSumRecs.length, 2, "There should be 2 summary record in the group by data view.");
+				equal(recsByType.gbRecs.length, 5, "There should be 5 group records in the group by data view.");
+
+				equal(recsByType.gbRecs[0].id, recsByType.gbSumRecs[0].id, "Visible summary rec should belong to the expanded group row.");
+
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+
+				//expand last child group row in first group
+				ds.toggleGroupByRecord(gbDataView[4].id, false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				equal(gbDataView.length, 10, "There should be 10 records in the groupBy data view.");
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				equal(recsByType.dataRecs.length, 1, "There should be 1 data record in the group by data view.");
+				equal(recsByType.gbSumRecs.length, 4, "There should be 2 summary record in the group by data view.");
+				equal(recsByType.gbRecs.length, 5, "There should be 5 group records in the group by data view.");
+
+				equal(recsByType.gbRecs[0].id, recsByType.gbSumRecs[0].id, "Visible summary rec should belong to the expanded group row.");
+				equal(recsByType.gbRecs[3].id, recsByType.gbSumRecs[1].id, "Visible summary rec should belong to the expanded group row.");
+				equal(recsByType.gbRecs[3].id, recsByType.gbSumRecs[2].id, "Visible summary rec should belong to the expanded group row.");
+				equal(recsByType.gbRecs[0].id, recsByType.gbSumRecs[3].id, "Visible summary rec should belong to the expanded group row.");
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Price"]),"[1,1]", "There should be two summaries for Price with values for avg:1, sum:1.");
+				equal(JSON.stringify(recsByType.gbSumRecs[2].summaries["Price"]),"[1,1]", "There should be two summaries for Price with values for avg:1, sum:1.");
+				equal(JSON.stringify(recsByType.gbSumRecs[3].summaries["Price"]),"[1,3]", "There should be two summaries for Price with values for avg:1, sum:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[0].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+				equal(JSON.stringify(recsByType.gbSumRecs[1].summaries["Promotion"]), "[1]", "There should be one summary for Promotion with values for count:1.");
+				equal(JSON.stringify(recsByType.gbSumRecs[2].summaries["Promotion"]), "[1]", "There should be one summary for Promotion with values for count:1.");
+				equal(JSON.stringify(recsByType.gbSumRecs[3].summaries["Promotion"]), "[3]", "There should be one summary for Promotion with values for count:3.");
+
+			});
+			
+			test("Test summary group row is properly shown/hidden on toggle with both top and bottom position.", function () {
+				var gbDataView, recsByType,
+				ds = createDataSource({ 
+					schema: { 
+						fields: [
+							{ name: "Id", type: "number" }, 
+							{ name: "ProductName", type: "string" },
+							{ name: "ProductDescription", type: "string" },
+							{ name: "Price", type: "number" }, 
+							{ name: "Promotion", type: "bool" },
+							{ name: "Date", type: "date" }]
+					},
+					sorting:{
+						type: "local"
+					},
+					groupby: {
+						defaultCollapseState: false,
+						summariesPosition: "both",
+						summaries: [
+							{
+								field:"Price", 
+								summaryFunctions: ["avg","sum"]
+							},
+							{
+								field:"Promotion", 
+								summaryFunctions: ["count"]
+							}
+						]
+					},
+					dataSource: generateData(5)
+				});
+
+				ds.dataBind();
+
+				//apply sort expr
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}], "asc", false);
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				<!-- equal(recsByType.gbRecs[0].id, recsByType.gbSumRecs[0].id, "Visible summary rec should belong to the expanded group row."); -->
+				<!-- equal(recsByType.gbRecs[0].val, recsByType.gbSumRecs[0].groupValue, "Visible summary rec should belong to the expanded group row."); -->
+				<!-- equal(recsByType.gbRecs[0].level, recsByType.gbSumRecs[0].level - 1, "Summary level should be correct."); -->
+				<!-- equal(recsByType.gbRecs[0].id, recsByType.gbSumRecs[1].id, "Visible summary rec should belong to the expanded group row."); -->
+				<!-- equal(recsByType.gbRecs[0].val, recsByType.gbSumRecs[1].groupValue, "Visible summary rec should belong to the expanded group row."); -->
+				<!-- equal(recsByType.gbRecs[0].level, recsByType.gbSumRecs[1].level - 1, "Summary level should be correct."); -->
+				<!-- equal(recsByType.gbRecs[1].id, recsByType.gbSumRecs[2].id, "Visible summary rec should belong to the expanded group row."); -->
+				<!-- equal(recsByType.gbRecs[1].val, recsByType.gbSumRecs[2].groupValue, "Visible summary rec should belong to the expanded group row."); -->
+				<!-- equal(recsByType.gbRecs[1].level, recsByType.gbSumRecs[2].level - 1, "Summary level should be correct."); -->
+				<!-- equal(recsByType.gbRecs[1].id, recsByType.gbSumRecs[3].id, "Visible summary rec should belong to the expanded group row."); -->
+				<!-- equal(recsByType.gbRecs[1].val, recsByType.gbSumRecs[3].groupValue, "Visible summary rec should belong to the expanded group row."); -->
+				<!-- equal(recsByType.gbRecs[1].level, recsByType.gbSumRecs[3].level - 1, "Summary level should be correct."); -->
+
+				//apply sort expr
+				ds.sort([{fieldName : "Promotion", dir:"asc", isGroupBy:true}, {fieldName : "ProductName", isGroupBy:true}], "desc", false);
+
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				recsByType = getRecsInViewByType(gbDataView);
+
+				for (var i = 0; i < recsByType.gbRecs.length; i++) {
+					var id = recsByType.gbRecs[i].id;
+					for (var j = 0; j < recsByType.gbSumRecs.length; j++) {
+						if (recsByType.gbSumRecs[j].id === id)
+						{
+							equal(recsByType.gbRecs[i].level, recsByType.gbSumRecs[j].level - 1, "Group level should be correct.");
+							equal(recsByType.gbRecs[i].val, recsByType.gbSumRecs[j].groupValue, "Group value should be correct.");
+							break;
+						}
+					}
+				}
+
+				equal(gbDataView.length, 26, "There should be 26 recs in the group by data view.");
+				//collapse
+				ds.toggleGroupByRecord(gbDataView[10].id, true);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				equal(gbDataView.length, 23, "There should be 23 recs in the group by data view.");
+
+				//since we have set position top, it is right after the group row
+				ok(gbDataView[1].id === gbDataView[0].id && gbDataView[1].val === gbDataView[0].groupValue, "Rec after the parent group should be the summary for that parent group.");
+
+				//expand
+				ds.toggleGroupByRecord(gbDataView[10].id, false);
+				gbDataView = ds.groupByDataView();
+				renderData(gbDataView);
+
+				equal(gbDataView.length, 26, "There should be 26 recs in the group by data view.");
+
+				ok(gbDataView[10].id === gbDataView[11].id && gbDataView[10].val === gbDataView[11].groupValue, "Rec after the expanded one should be its summary.");
+
+			});
+			
 			////Integration Group Summary tests
 
 			test("Test group summary rows + Paging", function () {
