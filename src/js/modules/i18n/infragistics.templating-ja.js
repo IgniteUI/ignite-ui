@@ -7,16 +7,25 @@
 *
 */
 
-(function ($) {
-$.ig = $.ig || {};
-
-if (!$.ig.Templating) {
-	$.ig.Templating = {};
-
-	$.extend($.ig.Templating, {
-		locale: {
-		    undefinedArgument: 'データ ソース プロパティを取得する際にエラーが発生しました: '
-		}
-	});
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
 }
-})(jQuery);
+(function ($) {
+	$.ig = $.ig || {};
+
+	if (!$.ig.Templating) {
+		$.ig.Templating = {};
+
+		$.extend($.ig.Templating, {
+			locale: {
+				undefinedArgument: 'データ ソース プロパティを取得する際にエラーが発生しました: '
+			}
+		});
+	}
+}));// REMOVE_FROM_COMBINED_FILES
