@@ -1529,7 +1529,43 @@
 					});
 					```
 				*/
-				summaries: []
+				summaries: [],
+				/* type="top|bottom|both" Specifies the postion for the summaries for each field inside each group.
+				```
+					ds = new $.%%WidgetName%%({
+					dataSource: data,
+					groupby: {
+						summariesPosition: "top",
+						summaries: [
+						{
+							field:"Age",
+							summaryFunctions: ["avg","sum"]
+						},
+						{
+							field: "Name",
+							summaryFunctions: ["count", customFunc]
+						}]
+					}
+				});
+				```
+				top type="string" One summary row will be displayed at the top for each group
+				bottom type="string"  One summary row will be displayed at the bottom for each group
+				both type="string" Two summary rows will be be display for each group. One on the top and one on the bottom.
+				*/
+				summariesPosition: "bottom",
+				/* type="allRecords|dataRecordsOnly". Specifies how paging should be applied when there is at least one grouped column
+				```
+					ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							pagingMode: "allRecords"
+						}
+					});
+				```
+				allRecords type="string" Paging is applied for all records - data and non-data records(like group-by records)
+				dataRecordsOnly type="string" Paging is applied ONLY for data records. Non-data records are disregarded in paging calculations.
+				*/
+				pagingMode: "allRecords"
 			},
 			/* M.H. add summaries support */
 			/* Settings related to built-in summaries functionality
@@ -5243,39 +5279,122 @@
 				this._dataView = [];
 			}
 			data = this._filter ? this._filteredData : this._data;
-			this._generatePageData(this.isGroupByApplied() ?
-										this.visibleGroupByData() :
-										data,
-									count);
+			this._generatePageData(data, count);
 		},
-		_generatePageData: function (data, count) {
-			var i, startIndex, endIndex, groupRecordKey = this.settings.groupby.groupRecordKey,
-			groupSummaryRecordKey = this.settings.groupby.groupSummaryRecordKey;
+		_getPageStartEndIndex: function (data) {
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
 			load the data for the current page only , in the DataView */
-			startIndex = this.pageIndex() * this.pageSize();
+			var startIndex = this.pageIndex() * this.pageSize(), endIndex;
 			if (startIndex >= data.length) {
 				this.settings.paging.pageIndex = 0;
 				startIndex = this.pageIndex() * this.pageSize();
 			}
 			endIndex = startIndex + this.pageSize() >= data.length ?
 				data.length : startIndex + this.pageSize();
-			if (this.isGroupByApplied()) {
-				this._dataView = [];
-				this._gbDataView = [];
-				for (i = startIndex; i < endIndex; i++) {
-					this._gbDataView.push(data[ i ]);
-					if (!data[ i ][ groupRecordKey ] &&
-						!data[ i ][ groupSummaryRecordKey ]) {
-						this._dataView.push(data[ i ]);
+			return {
+				startIndex: startIndex,
+				endIndex: endIndex
+			};
+		},
+		_generateGroupByPageDataForAllRecords: function () {
+			var i, data = this.visibleGroupByData(), sgb = this.settings.groupby || {},
+				metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._gbDataView.push(data[ i ]);
+				if (!data[ i ][ sgb.groupRecordKey ] &&
+					!data[ i ][ sgb.groupSummaryRecordKey ]) {
+					this._dataView.push(data[ i ]);
+				}
+			}
+		},
+		_generateGroupByPageDataForDataRecordsOnly: function (data) {
+			/* Populates _gbDataView and _dataView collections. This function should be called only when - group by and paging are applied and this.settings.groupby.pagingMode is set to "dataRecordsOnly"
+			First record(s) is/are group-by record(s) in visible group-by data view collection.
+			*/
+			var i, rec, startIndex = 0, parents = [], sgb = this.settings.groupby || {},
+				visible = true, level = 100, levelCollapsed,
+				gbData = this.groupByData(), len = gbData.length,
+				metadata = this._getPageStartEndIndex(data),
+				startDataRec = data[ metadata.startIndex ],
+				endDataRec = data[ metadata.endIndex - 1 ];
+			/*find start index(first data record in page)*/
+			for (i = 0; i < len; i++) {
+				if (gbData[ i ] === startDataRec ) {
+					startIndex = i;
+					break;
+				}
+			}
+			/* find groupby parent records for the first(in the page) data record*/
+			for (i = startIndex - 1; i >= 0; i--) {
+				rec = gbData[ i ];
+				if (rec[ sgb.groupRecordKey ]) {
+					if (level > rec.level) {
+						level = rec.level;
+						parents.unshift(rec);
+						/* detect whether data records are visible(according to collapse state of parent group-by record(s))
+						insert in _gbDataView visible parent group-by records
+						*/
+						this._gbDataView.unshift(rec);
+						if (rec.collapsed) {
+							this._gbDataView = [ rec ];
+							visible = false;
+							levelCollapsed = level;
+						}
+						if (!level) {
+							break;
+						}
 					}
 				}
-			} else {
-				for (i = startIndex; i < endIndex; i++) {
-					this._dataView[ count++ ] = data[ i ];
+			}
+			/* populate _gbDataView(visible group-by data view collection) and _dataView, collapsed records are not added in _gbDataView */
+			for (i = startIndex; i < len; i++) {
+				rec = gbData[ i ];
+				if (rec[ sgb.groupRecordKey ]) {
+					if (rec.level <= levelCollapsed || visible) {
+						levelCollapsed = rec.level;
+						visible = !(rec.collapsed);
+						this._gbDataView.push(rec);
+					}
+				} else {
+					this._dataView.push(rec);
+					if (visible) {
+						this._gbDataView.push(rec);
+					}
+					if (rec === endDataRec) {
+						// find non-data group-by summary rows and add them to group-by dataview
+						while (i++ < len) {
+							rec = gbData[ i ];
+							if (rec && rec[ sgb.groupSummaryRecordKey ]) {
+								if (rec.level <= levelCollapsed || visible) {
+									this._gbDataView.push(rec);
+								}
+							} else {
+								break;
+							}
+						}
+						break;
+					}
 				}
+			}
+		},
+		_generateGroupByPageData: function (data) {
+			this._dataView = [];
+			this._gbDataView = [];
+			return (this.settings.groupby.pagingMode === "allRecords") ?
+					this._generateGroupByPageDataForAllRecords(data) :
+					this._generateGroupByPageDataForDataRecordsOnly(data);
+		},
+		_generatePageData: function (data, count) {
+			if (this.isGroupByApplied()) {
+				return this._generateGroupByPageData(data, count);
+			}
+			var i, metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._dataView[ count++ ] = data[ i ];
 			}
 		},
 		_compareValues: function (x, y) {
@@ -6603,7 +6722,8 @@
 			```
 			returnType="number" the number of records that are bound / exist locally
 			*/
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				return this._vgbData.length;
 			}
 			if (!this._filter) {
@@ -6629,7 +6749,8 @@
 			returnType="number" total number fo pages
 			*/
 			var c, realCount;
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				realCount = this._vgbData.length;
 			} else if (!this._filter) {
 				realCount = this.totalRecordsCount() > 0 ? this.totalRecordsCount() : this._data.length;
@@ -7165,9 +7286,26 @@
 					gbSummaryRec.summaries[ summary.field ].push(summaryVal);
 				}
 			}
-			this._gbData.push(gbSummaryRec);
+			this._addSummaryRecToArray(gbSummaryRec, gbRec, this._gbData);
 			if (!gbRec.collapsed && !parentCollapsed) {
-				this._vgbData.push(gbSummaryRec);
+				this._addSummaryRecToArray(gbSummaryRec, gbRec, this._vgbData);
+			}
+		},
+		_addSummaryRecToArray: function (gbSummaryRec, gbRec, array) {
+			var index;
+			if (this.settings.groupby.summariesPosition === "bottom" ||
+				this.settings.groupby.summariesPosition === "both") {
+				gbSummaryRec.position = "bottom";
+				/* Extend the gbSummaryRec so it can be specified if it top or bottom positioned */
+				array.push($.extend({}, gbSummaryRec));
+			}
+			if (this.settings.groupby.summariesPosition === "top" ||
+				this.settings.groupby.summariesPosition === "both") {
+				//insert after groupby rec index
+				index = array.indexOf(gbRec);
+				gbSummaryRec.position = "top";
+				/* Extend the gbSummaryRec so it can be specified if it top or bottom positioned */
+				array.splice(index + 1, 0, $.extend({}, gbSummaryRec));
 			}
 		},
 		_generateGroupByData: function (data,
@@ -11391,11 +11529,15 @@
 					}
 				}
 			}
-			/* M.H. 19 August 2015 Fix for bug 204302: Paging is lost when dataSource.updateRow is called */
-			if (this.settings.paging.enabled && this.settings.paging.type !== "remote") {
-				this._generateFlatDataAndCountProperties();
+			/* M.H. 12 Apr 2017 Fix for bug 229997: When paging is enabled after editing a value in TreeGrid the tooltip shows incorrect text */
+			if (!this.settings.paging.enabled ||
+				!(t.type === "cell" || t.type === "row")) {
+				/* M.H. 19 August 2015 Fix for bug 204302: Paging is lost when dataSource.updateRow is called */
+				if (this.settings.paging.type !== "remote") {
+					this._generateFlatDataAndCountProperties();
+				}
+				this.generateFlatDataView();
 			}
-			this.generateFlatDataView();
 		},
 		_preprocessAddRow: function (row, index, origDs, at, data) {
 			/* This function is called from _addRow - before adding row in data.
