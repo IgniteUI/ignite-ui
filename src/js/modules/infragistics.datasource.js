@@ -1552,7 +1552,7 @@
 				bottom type="string"  One summary row will be displayed at the bottom for each group
 				both type="string" Two summary rows will be be display for each group. One on the top and one on the bottom.
 				*/
-				summariesPosition: "bottom"
+				summariesPosition: "bottom",
 				/* type="allRecords|dataRecordsOnly". Specifies how paging should be applied when there is at least one grouped column
 				```
 					ds = new $.%%WidgetName%%({
@@ -7297,7 +7297,7 @@
 				this.settings.groupby.summariesPosition === "both") {
 				gbSummaryRec.position = "bottom";
 				/* Extend the gbSummaryRec so it can be specified if it top or bottom positioned */
-				array.push(jQuery.extend({}, gbSummaryRec));
+				array.push($.extend({}, gbSummaryRec));
 			}
 			if (this.settings.groupby.summariesPosition === "top" ||
 				this.settings.groupby.summariesPosition === "both") {
@@ -7305,7 +7305,7 @@
 				index = array.indexOf(gbRec);
 				gbSummaryRec.position = "top";
 				/* Extend the gbSummaryRec so it can be specified if it top or bottom positioned */
-				array.splice(index + 1, 0, jQuery.extend({}, gbSummaryRec));
+				array.splice(index + 1, 0, $.extend({}, gbSummaryRec));
 			}
 		},
 		_generateGroupByData: function (data,
