@@ -5307,7 +5307,7 @@
 			/* find groupby parent records for the first(in the page) data record*/
 			for (i = startIndex - 1; i >= 0; i--) {
 				rec = gbData[ i ];
-				if (rec[sgb.groupRecordKey]) {
+				if (rec[ sgb.groupRecordKey ]) {
 					if (level > rec.level) {
 						level = rec.level;
 						parents.unshift(rec);
@@ -5329,7 +5329,7 @@
 			/* populate _gbDataView(visible group-by data view collection) and _dataView, collapsed records are not added in _gbDataView */
 			for (i = startIndex; i < len; i++) {
 				rec = gbData[ i ];
-				if (rec[sgb.groupRecordKey]) {
+				if (rec[ sgb.groupRecordKey ]) {
 					if (rec.level <= levelCollapsed || visible) {
 						levelCollapsed = rec.level;
 						visible = !(rec.collapsed);
@@ -5342,7 +5342,7 @@
 					}
 					if (rec === endDataRec) {
 						// find non-data group-by summary rows and add them to group-by dataview
-						while(i++ < len) {
+						while (i++ < len) {
 							rec = gbData[ i ];
 							if (rec && rec[ sgb.groupSummaryRecordKey ]) {
 								if (rec.level <= levelCollapsed || visible) {
