@@ -1485,7 +1485,20 @@
 					});
 				```
 				*/
-				defaultCollapseState: false
+				defaultCollapseState: false,
+				/* type="allRecords|dataRecordsOnly". Specifies how paging should be applied when there is at least one grouped column
+				```
+					ds = new $.%%WidgetName%%({
+						dataSource: products,
+						groupby: {
+							pagingMode: "allRecords"
+						}
+					});
+				```
+				allRecords type="string" Paging is applied for all records - data and non-data records(like group-by records)
+				dataRecordsOnly type="string" Paging is applied ONLY for data records. Non-data records are disregarded in paging calculations.
+				*/
+				pagingMode: "allRecords"
 			},
 			/* M.H. add summaries support */
 			/* Settings related to built-in summaries functionality
@@ -5186,37 +5199,110 @@
 				this._dataView = [];
 			}
 			data = this._filter ? this._filteredData : this._data;
-			this._generatePageData(this.isGroupByApplied() ?
-										this.visibleGroupByData() :
-										data,
-									count);
+			this._generatePageData(data, count);
 		},
-		_generatePageData: function (data, count) {
-			var i, startIndex, endIndex;
+		_getPageStartEndIndex: function (data) {
 			/* when changing logic with filtering and paging check bug 186504 - because
 			the new rows are added in _filteredData as well when there is applied filtering and local paging */
 			/* this._dataView should contain only the number of records specified by pageSize.
 			load the data for the current page only , in the DataView */
-			startIndex = this.pageIndex() * this.pageSize();
+			var startIndex = this.pageIndex() * this.pageSize(), endIndex;
 			if (startIndex >= data.length) {
 				this.settings.paging.pageIndex = 0;
 				startIndex = this.pageIndex() * this.pageSize();
 			}
 			endIndex = startIndex + this.pageSize() >= data.length ?
 				data.length : startIndex + this.pageSize();
-			if (this.isGroupByApplied()) {
-				this._dataView = [];
-				this._gbDataView = [];
-				for (i = startIndex; i < endIndex; i++) {
-					this._gbDataView.push(data[ i ]);
-					if (!data[ i ].__gbRecord) {
-						this._dataView.push(data[ i ]);
+			return {
+				startIndex: startIndex,
+				endIndex: endIndex
+			};
+		},
+		_generateGroupByPageDataForAllRecords: function () {
+			var i, data = this.visibleGroupByData(),
+				metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._gbDataView.push(data[ i ]);
+				if (!data[ i ].__gbRecord) {
+					this._dataView.push(data[ i ]);
+				}
+			}
+		},
+		_generateGroupByPageDataForDataRecordsOnly: function (data) {
+			/* Populates _gbDataView and _dataView collections. This function should be called only when - group by and paging are applied and this.settings.groupby.pagingMode is set to "dataRecordsOnly"
+			First record(s) is/are group-by record(s) in visible group-by data view collection.
+			*/
+			var i, rec, startIndex = 0, parents = [],
+				visible = true, level = 100, levelCollapsed,
+				gbData = this.groupByData(), len = gbData.length,
+				metadata = this._getPageStartEndIndex(data),
+				startDataRec = data[ metadata.startIndex ],
+				endDataRec = data[ metadata.endIndex - 1 ];
+			/*find start index(first data record in page)*/
+			for (i = 0; i < len; i++) {
+				if (gbData[ i ] === startDataRec ) {
+					startIndex = i;
+					break;
+				}
+			}
+			/* find groupby parent records for the first(in the page) data record*/
+			for (i = startIndex - 1; i >= 0; i--) {
+				rec = gbData[ i ];
+				if (rec.__gbRecord) {
+					if (level > rec.level) {
+						level = rec.level;
+						parents.unshift(rec);
+						/* detect whether data records are visible(according to collapse state of parent group-by record(s))
+						insert in _gbDataView visible parent group-by records
+						*/
+						this._gbDataView.unshift(rec);
+						if (rec.collapsed) {
+							this._gbDataView = [ rec ];
+							visible = false;
+							levelCollapsed = level;
+						}
+						if (!level) {
+							break;
+						}
 					}
 				}
-			} else {
-				for (i = startIndex; i < endIndex; i++) {
-					this._dataView[ count++ ] = data[ i ];
+			}
+			/* populate _gbDataView(visible group-by data view collection) and _dataView, collapsed records are not added in _gbDataView */
+			for (i = startIndex; i < len; i++) {
+				rec = gbData[ i ];
+				if (rec.__gbRecord) {
+					if (rec.level <= levelCollapsed || visible) {
+						levelCollapsed = rec.level;
+						visible = !(rec.collapsed);
+						this._gbDataView.push(rec);
+					}
+				} else {
+					this._dataView.push(rec);
+					if (visible) {
+						this._gbDataView.push(rec);
+					}
+					if (rec === endDataRec) {
+						break;
+					}
 				}
+			}
+		},
+		_generateGroupByPageData: function (data) {
+			this._dataView = [];
+			this._gbDataView = [];
+			return (this.settings.groupby.pagingMode === "allRecords") ?
+					this._generateGroupByPageDataForAllRecords(data) :
+					this._generateGroupByPageDataForDataRecordsOnly(data);
+		},
+		_generatePageData: function (data, count) {
+			if (this.isGroupByApplied()) {
+				return this._generateGroupByPageData(data, count);
+			}
+			var i, metadata = this._getPageStartEndIndex(data),
+				startIndex = metadata.startIndex, endIndex = metadata.endIndex;
+			for (i = startIndex; i < endIndex; i++) {
+				this._dataView[ count++ ] = data[ i ];
 			}
 		},
 		_compareValues: function (x, y) {
@@ -6392,7 +6478,8 @@
 			```
 			returnType="number" the number of records that are bound / exist locally
 			*/
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				return this._vgbData.length;
 			}
 			if (!this._filter) {
@@ -6418,7 +6505,8 @@
 			returnType="number" total number fo pages
 			*/
 			var c, realCount;
-			if (this.isGroupByApplied() && this._vgbData) {
+			if (this.isGroupByApplied() && this._vgbData &&
+				this.settings.groupby.pagingMode === "allRecords") {
 				realCount = this._vgbData.length;
 			} else if (!this._filter) {
 				realCount = this.totalRecordsCount() > 0 ? this.totalRecordsCount() : this._data.length;
