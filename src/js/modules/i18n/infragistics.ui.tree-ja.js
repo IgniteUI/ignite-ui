@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -14,7 +23,6 @@
 	    $.ig.Tree = {};
 
 	    $.extend($.ig.Tree, {
-
 		    locale: {
 			    invalidArgumentType: '提供された引数のタイプは無効です。',
 			    errorOnRequest: 'データを取得するときにエラーが発生しました: ',
@@ -35,4 +43,4 @@
 	    });
 
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

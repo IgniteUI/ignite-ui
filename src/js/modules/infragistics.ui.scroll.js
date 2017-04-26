@@ -2105,7 +2105,7 @@
 			var evt = event.originalEvent,
 				scrollDeltaY = 0,
 				scrollStep = this.options.wheelStep,
-				scrolledY;
+				scrolledY, scrolledYDir;
 
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
@@ -2148,7 +2148,10 @@
 					});
 				}
 
-				return !scrolledY;
+				/* Check if the browser scroll in the oposite direction. Happens in IE when the content's heigh is for ex. 140.3 and not a round number */
+				/* When the content scrolls to the bottom on IE it might start to scroll very small ammoung up and down while scrolling only down with the mouse wheel*/
+				scrolledYDir = scrolledY > 0 ? 1 : -1;
+				return !scrolledY || (Math.abs(scrollDeltaY) === 1 && scrolledYDir !== scrollDeltaY);
 			}
 
 			return false;

@@ -90,7 +90,15 @@ $.ig.loaderClass.locale.descriptions = {
 	splitterDescription: "Component that divides the space into two panels, separated by a splitter bar to allow resizing.",
 	toolbarDescription: "Component that groups buttons visually together into a single toolbar.",
 	toolbarButtonDescription: "Component that defines a button and manages its state.",
-	excelDescription: "The Excel Library is is used to create, load and modify Excel workbooks through an object model.",
+	excelDescription: "The Excel Library is used to create, load and modify Excel workbooks through an object model.",
+	excelFunctionsDescription: "Provides the custom functions used to solve formulas in the Excel library.",
+	excelLoadSaveXlsDescription: "Allows the Excel library to load and save .xls files - the Excel 97- Excel 2003 Binary file format (BIFF8).",
+	excelLoadSaveXltDescription: "Allows the Excel library to load and save .xlt files - the Excel 97- Excel 2003 Binary file format (BIFF8) for an Excel template.",
+	excelLoadSaveXlsxDescription: "Allows the Excel library to load and save .xlsx files - the default Office Excel 2007 (and later) XML-based file format.",
+	excelLoadSaveXlsmDescription: "Allows the Excel library to load and save .xlsm files - the Office Excel 2007 (and later) XML-based and macro-enabled file format.",
+	excelLoadSaveXltxDescription: "Allows the Excel library to load and save .xltx files - the Office Excel 2007 (and later) XML-based file format for an Excel template.",
+	excelLoadSaveXltmDescription: "Allows the Excel library to load and save .xltm files - the Office Excel 2007 (and later) XML-based and macro-enabled file format for an Excel template.",
+	spreadsheetDescription: "Component used to visualize and modify worksheets of a Workbook from the Excel library.",
 	gridExcelExporterDescription: "Component that allows instant exporting of the igGrid, igHierarchicalGrid or igTreeGrid data into an Excel Worksheet",
 	categoryChartDescription: "Component that renders categorized data into a canvas on the page.",
 	dataChartDescription: "Component that provides extremely rich functionality to create and render various types of charts in an HTML 5 canvas",
@@ -1614,7 +1622,6 @@ $.ig.dependencies = [
 		],
 		scripts: [ "$path$/modules/infragistics.excel_core.js" ],
 		locale: [ "$localePath$/infragistics.excel_core-$locale$.js" ],
-		css: [],
 		description: $.ig.loaderClass.locale.descriptions.excelDescription
 	},
 	{
@@ -1622,7 +1629,7 @@ $.ig.dependencies = [
 		parentWidget: "igExcel",
 		dependency: [ { name: "igExcel" } ],
 		scripts: [ "$path$/modules/infragistics.excel_functions.js" ],
-		css: []
+		description: $.ig.loaderClass.locale.descriptions.excelFunctionsDescription
 	},
 	{
 		widget: "_ig_xml",
@@ -1652,8 +1659,7 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.miscGroup,
 		internal: true,
 		scripts: [ "$path$/modules/infragistics.documents.core_core.js" ],
-		locale: [ "$localePath$/infragistics.documents.core_core-$locale$.js" ],
-		css: []
+		locale: [ "$localePath$/infragistics.documents.core_core-$locale$.js" ]
 	},
 	{
 		widget: "_ig_documents_core_openxml",
@@ -1664,8 +1670,7 @@ $.ig.dependencies = [
 		],
 		group: $.ig.loaderClass.locale.miscGroup,
 		internal: true,
-		scripts: [ "$path$/modules/infragistics.documents.core_openxml.js" ],
-		css: []
+		scripts: [ "$path$/modules/infragistics.documents.core_openxml.js" ]
 	},
 	{
 		widget: "_ig_excel_openxml",
@@ -1675,58 +1680,50 @@ $.ig.dependencies = [
 		],
 		group: $.ig.loaderClass.locale.miscGroup,
 		scripts: [ "$path$/modules/infragistics.excel_serialization_openxml.js" ],
-		internal: true,
-		css: []
+		internal: true
 	},
 	{
 		widget: "_ig_excel_biff8",
 		dependency: [ { name: "igExcel" } ],
 		group: $.ig.loaderClass.locale.miscGroup,
 		scripts: [ "$path$/modules/infragistics.excel_serialization_biff8.js" ],
-		internal: true,
-		css: []
+		internal: true
 	},
 	{
 		widget: "LoadSaveXls",
 		parentWidget: "igExcel",
 		dependency: [ { name: "_ig_excel_biff8" } ],
-		scripts: [],
-		css: []
+		description: $.ig.loaderClass.locale.descriptions.excelLoadSaveXlsDescription
 	},
 	{
 		widget: "LoadSaveXlt",
 		parentWidget: "igExcel",
 		dependency: [ { name: "_ig_excel_biff8" } ],
-		scripts: [],
-		css: []
+		description: $.ig.loaderClass.locale.descriptions.excelLoadSaveXltDescription
 	},
 	{
 		widget: "LoadSaveXlsx",
 		parentWidget: "igExcel",
 		dependency: [ { name: "_ig_excel_openxml" } ],
-		scripts: [],
-		css: []
+		description: $.ig.loaderClass.locale.descriptions.excelLoadSaveXlsxDescription
 	},
 	{
 		widget: "LoadSaveXlsm",
 		parentWidget: "igExcel",
 		dependency: [ { name: "_ig_excel_openxml" } ],
-		scripts: [],
-		css: []
+		description: $.ig.loaderClass.locale.descriptions.excelLoadSaveXlsmDescription
 	},
 	{
 		widget: "LoadSaveXltm",
 		parentWidget: "igExcel",
 		dependency: [ { name: "_ig_excel_openxml" } ],
-		scripts: [],
-		css: []
+		description: $.ig.loaderClass.locale.descriptions.excelLoadSaveXltmDescription
 	},
 	{
 		widget: "LoadSaveXltx",
 		parentWidget: "igExcel",
 		dependency: [ { name: "_ig_excel_openxml" } ],
-		scripts: [],
-		css: []
+		description: $.ig.loaderClass.locale.descriptions.excelLoadSaveXltxDescription
 	},
 	{
 		widget: "igExcel.*",
@@ -1752,14 +1749,11 @@ $.ig.dependencies = [
 		group: $.ig.loaderClass.locale.miscGroup,
 		internal: true,
 		scripts: [ "$path$/modules/infragistics.undo.js" ],
-		locale: [ "$localePath$/infragistics.undo-$locale$.js" ],
-		css: []
+		locale: [ "$localePath$/infragistics.undo-$locale$.js" ]
 	},
 	{
 		widget: "igSpreadsheet",
 		dependency: [
-			{ name: "_ig_documents_core_openxml" },
-			{ name: "igExcel" },
 			{ name: "igUtil" },
 			{ name: "_ig_ext_core" },
 			{ name: "_ig_ext_collections" },
@@ -1768,49 +1762,63 @@ $.ig.dependencies = [
 			{ name: "_ig_ext_ui" },
 			{ name: "_ig_ext_io" },
 			{ name: "_ig_ext_web" },
-			{ name: "igScroll" },
 			{ name: "_ig_dv_core" },
 			{ name: "_ig_dv_jquerydom" },
+			{ name: "_ig_documents_core_openxml" },
+			{ name: "igExcel" },
+			{ name: "igCombo" },
 			{ name: "_ig_undo" }
 		],
+		group: $.ig.loaderClass.locale.gridGroup,
 		scripts: [
 			"$path$/modules/infragistics.spreadsheet.js",
 			"$path$/modules/infragistics.ui.spreadsheet.js"
 		],
 		locale: [ "$localePath$/infragistics.spreadsheet-$locale$.js" ],
-		css: [  ]
+		css: [ "$path$/structure/modules/infragistics.ui.spreadsheet.css" ],
+		description: $.ig.loaderClass.locale.descriptions.spreadsheetDescription
 	},
 /*/ end igSpreadsheet /// */
 /*/ start igScheduler/// */
-	{
-		widget: "igScheduler",
-		dependency: [
-			{ name: "igUtil" },
-			{ name: "_ig_ext_core" },
-			{ name: "_ig_ext_collections" },
-			{ name: "_ig_ext_collections_extended" },
-			{ name: "_ig_ext_ui" },
-			{ name: "_ig_ext_text" },
-			{ name: "_ig_ext_io" },
-			{ name: "_ig_ext_threading" },
-			{ name: "_ig_ext_web" },
-			{ name: "igScroll" },
-			{ name: "_ig_dv_core" },
-			{ name: "_ig_dv_jquerydom" }
-		],
-		scripts: [
-			"$path$/modules/infragistics.scheduler.js",
-			"$path$/modules/infragistics.ui.scheduler.js"
-			],
-		css: [  ]
-	},
+    {
+        widget: "igScheduler",
+        dependency: [
+            { name: "igUtil" },
+            { name: "_ig_ext_core" },
+            { name: "_ig_ext_collections" },
+            { name: "_ig_ext_collections_extended" },
+            { name: "_ig_ext_ui" },
+            { name: "_ig_ext_text" },
+            { name: "_ig_ext_io" },
+            { name: "_ig_ext_threading" },
+            { name: "_ig_ext_web" },
+            { name: "igScroll" },
+            { name: "_ig_dv_core" },
+            { name: "_ig_dv_jquerydom" },
+            { name: "igDataSource" }
+        ],
+        scripts: [
+            "$path$/modules/infragistics.scheduler.core.js",
+            "$path$/modules/infragistics.ui.scheduler.core.js",
+            "$path$/modules/infragistics.ui.scheduler.js"
+        ],
+        locale: [
+            "$localePath$/infragistics.scheduler.core-$locale$.js",
+            "$localePath$/infragistics.ui.scheduler-$locale$.js"
+        ],
+        group: $.ig.loaderClass.locale.dvGroup,
+        css: [
+            "$path$/structure/modules/infragistics.ui.shared.css",
+            "$path$/structure/modules/infragistics.ui.scheduler.css"
+            ],
+        description: $.ig.loaderClass.locale.descriptions.schedulerDescription
+    },
 /*/ end igScheduler /// */
 /*/ start igGridExcelExporter/// */
 	{
 		widget: "igGridExcelExporter",
 		dependency: [ { name: "igExcel" }, { name: "LoadSaveXlsx" }],
 		scripts: [ "$path$/modules/infragistics.gridexcelexporter.js" ],
-		css: [  ],
 		description: $.ig.loaderClass.locale.descriptions.gridExcelExporterDescription
 	}
 /*/ end igGridExcelExporter /// */

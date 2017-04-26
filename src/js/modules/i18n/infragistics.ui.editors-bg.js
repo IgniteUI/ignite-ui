@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -74,8 +83,10 @@
 				dateMessage: 'Трябва да бъде въведена валидна дата.',
 			    centuryThresholdValidValues: "Свойството centuryThreshold трябва да е между 0 и 99.",
 			    noListItemsNoButton: "Брояча или падащия бутон са рендирани понеже няма listitems.",
-				decimalNumber: "Когато dataMode приеме стойност {0}, опцията {1} може да приема числени стойности между 0 и {2}."
+				decimalNumber: "Когато dataMode приеме стойност {0}, опцията {1} може да приема числени стойности между 0 и {2}.",
+				decimalSeparatorErrorMsg: "Опцията decimalSeparator изисква различна стойност. Стойността трябва да бъде единичен символ.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Опциите groupSeparator и decimalSeparator не могат да имат еднакви стойности."
 			}
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -74,8 +83,10 @@
 				dateMessage: 'Une date valide doit être saisie',
 			    centuryThresholdValidValues: "La propriété centuryThreshold doit être comprise entre 0 et 99.",
 			    noListItemsNoButton: "Aucun compteur ni bouton de liste ne s’affiche car il n’y a pas d’éléments de liste.",
-				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}."
+				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
+				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "The groupSeparator and the decimalSeparator options can not have equal values."
 		    }
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

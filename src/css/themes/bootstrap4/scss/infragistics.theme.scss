@@ -16,6 +16,19 @@ $iggrid-icons-light: url(images/igGrid/filter-icons-FFFFFF.png);
 //**************/
 //import bootstrap variables to override the defaults
 @import 'variables';
+
+$igGray1: #f0f0f0;
+$igGray2: #eee;
+$igGray3: #e8e8e8;
+$igGray4: #dadada;
+$igGray5: #bcbcbc;
+$igGray6: #ccc;
+$igGray7: #999;
+$igGray8: #888;
+$igGray9: #777;
+$igGray10: #444;
+$igGray11: rgba(0,0,0, 0.12);
+
 //***********/
 /*  MIXINS  */ 
 /************/
@@ -145,3 +158,4 @@ $chartGradualPalette10: lighten($brand-primary,
 /********************/
 
 @import 'infragistics.igniteui.theme';
+
