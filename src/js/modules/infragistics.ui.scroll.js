@@ -10,7 +10,6 @@
 * jquery.ui-1.9.0.js
 * infragistics.util.js
 * infragistics.util.jquery.js
-* modernizr.js
 */
 
 /*global MSGesture*/
@@ -845,7 +844,7 @@
 			this._updateScrollBarsVisibility();
 			this._hideScrollBars(false);
 			if (this.options.alwaysVisible) {
-				if ($.ig.util.isTouch) {
+				if ($.ig.util.isTouchDevice()) {
 					this._showScrollBars(false, true, false);
 				} else {
 					this._showScrollBars(false, false, false);
@@ -894,7 +893,7 @@
 
 			if (key === "alwaysVisible") {
 				if (value === true) {
-					if ($.ig.util.isTouch) {
+					if ($.ig.util.isTouchDevice()) {
 						this._showScrollBars(false, true, false);
 					} else {
 						this._showScrollBars(false, false, false);
@@ -983,7 +982,7 @@
 		},
 
 		_getContentPositionX: function () {
-			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posX = 0;
 				if (this._contentX) {
 					posX = -this._getTransform3dValueX(this._contentX);
@@ -998,7 +997,7 @@
 		},
 
 		_getContentPositionY: function () {
-			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posY = -this._getTransform3dValueY(this._content);
 
 				return posY;
@@ -1074,7 +1073,7 @@
 			/* Cancels any ongoing inertia otherwise the method call might be ignored */
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
-			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posY = this._getContentPositionY();
 				this._scrollTouchToXY(val, posY, triggerEvents);
 			} else {
@@ -1107,7 +1106,7 @@
 			/* Cancels any ongoing inertia otherwise the method call might be ignored */
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
-			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posX = this._getContentPositionX();
 				this._scrollTouchToXY(posX, val, triggerEvents);
 			} else {
@@ -2485,7 +2484,7 @@
 					this._removeHorizontalScrollbar();
 				}
 
-				if ($.ig.util.isTouch) {
+				if ($.ig.util.isTouchDevice()) {
 					this._toSimpleScrollbar();
 				}
 			}
