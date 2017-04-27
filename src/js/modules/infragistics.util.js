@@ -3958,7 +3958,7 @@
 		$type: new $.ig.Type("Stream", $.ig.Object.prototype.$type)
 	}, true);
 
-	(function () {
+	(function ($) {
 
 		$.ig.util.profiler = {};
 
@@ -4015,7 +4015,7 @@
 					" callCount: " + meths[ k ].callCount);
 			}
 		};
-	})();
+	})($);
 
 	/*
 	Function.prototype.invoke = function () {
