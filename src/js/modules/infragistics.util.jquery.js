@@ -468,7 +468,7 @@
 			":" + pad(tzo % 60);
 	};
 
-	(function () {
+	(function ($) {
 
 		$.ig.util.profiler = {};
 
@@ -525,7 +525,7 @@
 					" callCount: " + meths[ k ].callCount);
 			}
 		};
-	})();
+	})($);
 
 	// N.A. 10/17/2013 - Bug #155039: The property "offset" is deprecated in 1.9.
 	$.ig.util.jQueryUIMainVersion = $.ui && $.ui.version &&
