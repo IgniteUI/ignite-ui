@@ -1,5 +1,14 @@
 ﻿﻿/* Japan +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
 $.ig = $.ig || {};
 $.ig.regional = $.ig.regional || {};
@@ -46,4 +55,4 @@ $.ig.regional.ja = {
 if ($.ig.setRegionalDefault) {
 	$.ig.setRegionalDefault('ja');
 }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

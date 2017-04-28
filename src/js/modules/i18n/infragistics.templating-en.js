@@ -7,16 +7,25 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
-    $.ig = $.ig || {};
+	$.ig = $.ig || {};
 
-    if (!$.ig.Templating) {
-	    $.ig.Templating = {};
+	if (!$.ig.Templating) {
+		$.ig.Templating = {};
 
-	    $.extend($.ig.Templating, {
-		    locale: {
-			    undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
-		    }
-	    });
-    }
-})(jQuery);
+		$.extend($.ig.Templating, {
+			locale: {
+				undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
+			}
+		});
+	}
+}));// REMOVE_FROM_COMBINED_FILES
