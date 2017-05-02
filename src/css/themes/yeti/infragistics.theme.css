@@ -3751,10 +3751,7 @@ body .ui-tooltip {
 .ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
 .ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
   background-color: transparent;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-leading span,
-.ui-igscheduler-core .ui-igscheduler-monthview-day-trailing span {
-  color: #222222;
+  color: #999999;
 }
 .ui-igscheduler-selectall {
   background-color: #008cba;

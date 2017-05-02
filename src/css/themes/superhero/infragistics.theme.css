@@ -2086,7 +2086,7 @@ body .ui-tooltip {
   border-top: none!important;
 }
 .ui-iggrid-layout-helper {
-  border-bottom: 1px solid #4e5d6c !important;
+  border-bottom: 1px solid #4E5D6C;
 }
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
 .ui-iggrid-layout-helper > tbody > tr:first-child > td th,
@@ -2550,7 +2550,7 @@ body .ui-tooltip {
 .ui-iggrid .ui-iggrid-mergedcellsbottom.ui-state-highlight {
   border-bottom-color: #4E5D6C;
 }
-.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
   border-bottom: 1px solid #4E5D6C;
 }
 /************/
@@ -3751,10 +3751,7 @@ body .ui-tooltip {
 .ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
 .ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
   background-color: transparent;
-}
-.ui-igscheduler-core .ui-igscheduler-monthview-day-leading span,
-.ui-igscheduler-core .ui-igscheduler-monthview-day-trailing span {
-  color: #EBEBEB;
+  color: #4E5D6C;
 }
 .ui-igscheduler-selectall {
   background-color: #DF691A;
