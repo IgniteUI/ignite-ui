@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+
+    <script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+    <script type="text/javascript" src="../../../../tests/unit/common/test-util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.combo.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+
+    <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="../sample-data/local-data.js"></script>
+    <script type="text/javascript" src="../sample-data/remote-data.js"></script>
+    <script type="text/javascript" src="../test-shared.js"></script>
+    <style>
+        .cont {
+            margin-top: 75px;
+        }
+    </style>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto; z-index: 100; position: relative;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div id="combo"></div>
+    <div class="cont">
+        <div id='combo-json-ds' name="combo-json"></div>
+    </div>
+    <div class="cont">
+        <div id='combo-xml-ds'></div>
+    </div>
+    <div class="cont bind_select">
+        <select id="combo-select-ds">
+            <option value="1">John Smith</option>
+            <option value="2">Mary Johnson</option>
+            <option value="3">Bob Ferguson</option>
+        </select>
+    </div>
+    <div class="cont">
+        <div id='combo-function-ds'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-remote-ds'></div>
+    </div>
+    <div class="cont">
+        <div id='combo_numberarray'></div>
+    </div>
+    <div class="cont">
+        <div id='combo_datearray'></div>
+    </div>
+    <div class="cont">
+        <div id="htmlEntityDataSource"></div>
+    </div>
+
+    <script>
+        $(function() {
+            var testId_1 = 'JSON data binding',
+				testId_2 = 'XML data binding',
+				testId_3 = 'Select data binding',
+				testId_4 = 'Function data binding',
+				testId_5 = 'Remote data binding',
+				testId_6 = 'Data binding to number array',
+				testId_7 = 'Data binding to date array',
+                testId_8 = 'Html entity in dataSource';
+
+            function testDataBinding($combo, expDataView, expSchema) {
+                var i, key,
+					dataSource = $combo.igCombo('option', 'dataSource'),
+					dataView = dataSource.dataView(),
+					fields = dataSource.schema().schema.fields;
+
+                // Data view
+                strictEqual(dataView.length, expDataView.length, 'Data view length is incorrect');
+                for (i = 0; i < dataView.length; i++) {
+                    curDataViewItem = dataView[i];
+
+                    for (key in curDataViewItem) {
+                        if (curDataViewItem.hasOwnProperty(key)) {
+                            strictEqual(curDataViewItem[key], expDataView[i][key], key + ' of data view item ' + i + ' did not match');
+                        }
+                    }
+                }
+
+                // Schema
+                strictEqual(fields.length, expSchema.length, 'Schema length is incorrect');
+                for (i = 0; i < fields.length; i++) {
+                    curSchemaItem = fields[i];
+
+                    for (key in curSchemaItem) {
+                        if (curSchemaItem.hasOwnProperty(key)) {
+                            strictEqual(curSchemaItem[key], expSchema[i][key], key + ' of schema item ' + i + ' did not match');
+                        }
+                    }
+                }
+            }
+
+            $.mockjaxSettings.logging = 0;  // only critical error messages
+            // Mock remote binding
+            $.mockjax({
+                url: "http://localhost/api/invoices*",
+                dataType: 'json',
+                contentType: "application/json",
+                responseTime: 500,
+                response: function (settings) {
+                    var responseText = remoteData;
+                    if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
+                        responseText = $.map(responseText, function (val, i) {
+                            if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
+                                return val;
+                            }
+                        });
+                    }
+
+                    if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+                        responseText = {
+                            "Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+                            "Count": remoteData.length
+                        }
+                    }
+
+                    this.responseText = {
+                        "d": {
+                            "results": responseText
+                        }
+                    }
+                }
+            });
+
+            $.mockjax({
+                url: "http://localhost/api/employees*",
+                dataType: 'json',
+                contentType: "application/json",
+                responseTime: 500,
+                response: function (settings) {
+                    var responseText = remoteData;
+
+                    if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+                        responseText = {
+                            "Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+                            "Count": remoteData.length
+                        }
+                    }
+
+                    this.responseText = {
+                        "d": {
+                            "results": responseText
+                        }
+                    }
+                }
+            });
+
+            module("igCombo - data binding", {
+                setup: function() {},
+                teardown: function() {}
+            });
+
+            test(testId_1, function() {
+                var i, ds,
+					$comboWrapper = $('#combo-json-ds'),
+					$hiddenInput,
+					wrapper,
+					dataSource = [{ ID: 1, Name: "John Smith", Age: 45 },
+						{ ID: 2, Name: "Mary Johnson", Age: 32 },
+						{ ID: 3, Name: "Bob Ferguson", Age: 27 }],
+					expSchema = [{
+					    name: 'ID',
+					    type: 'number'
+					}, {
+					    name: 'Name',
+					    type: 'string'
+					}, {
+					    name: 'Age',
+					    type: 'number'
+					}];
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID'
+                });
+
+                wrapper = $comboWrapper.igCombo('comboWrapper');
+                equal(wrapper[0], $comboWrapper[0], 'comboWrapper does not return the expected wrap element');
+
+                $hiddenInput = $('#combo-json-ds input.ui-igcombo-hidden-field');
+                equal($hiddenInput.attr("name"), "combo-json", "The name attribute was not transferred to the hidden input");
+
+                testDataBinding($comboWrapper, dataSource, expSchema);
+
+                $comboWrapper.igCombo("destroy");
+                testComboIsDestroyed($comboWrapper);
+            });
+
+            // XML Data binding
+            test(testId_2, function () {
+                var i, ds,
+					$comboWrapper = $('#combo-xml-ds'),
+					xmlDoc = '<People>' +
+								'<Person ID="1" Name="Gustavo Achong" />' +
+								'<Person ID="2" Name="Catherine Abel" />' +
+								'<Person ID="3" Name="Kim Abercrombie" />' +
+							'</People>',
+					xmlSchema = new $.ig.DataSchema("xml",
+						{
+						    searchField: "//Person",
+						    fields: [
+								{ name: "ID", xpath: "./@ID" },
+								{ name: "Name", xpath: "./@Name" }
+						    ]
+						}
+					),
+					dataSource = new $.ig.DataSource({
+					    type: "xml",
+					    dataSource: xmlDoc,
+					    schema: xmlSchema
+					}),
+					expDataView = [{
+					    ID: '1',
+					    Name: 'Gustavo Achong'
+					}, {
+					    ID: '2',
+					    Name: 'Catherine Abel'
+					}, {
+					    ID: '3',
+					    Name: 'Kim Abercrombie'
+					}],
+					expSchema = [{
+					    name: 'ID',
+					    xpath: './@ID'
+					}, {
+					    name: 'Name',
+					    xpath: './@Name'
+					}];
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID'
+                });
+
+                testDataBinding($comboWrapper, expDataView, expSchema);
+            });
+
+            // Select data binding
+            test(testId_3, function () {
+                var i, ds, $comboWrapper,
+					$comboInitElement = $('#combo-select-ds'),
+					expDataView = [{ value: "1", text: "John Smith" },
+						{ value: "2", text: "Mary Johnson" },
+						{ value: "3", text: "Bob Ferguson" }],
+					expSchema = [{
+					    name: 'value',
+					    type: 'string'
+					}, {
+					    name: 'text',
+					    type: 'string'
+					}];
+
+                $comboInitElement.igCombo();
+
+                testDataBinding($comboInitElement, expDataView, expSchema);
+            });
+
+            test(testId_4, function () {
+                var i, ds,
+					$comboWrapper = $('#combo-function-ds'),
+					expDataView = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" }],
+					expSchema = [{
+					    name: 'ID',
+					    type: 'number'
+					}, {
+					    name: 'Name',
+					    type: 'string'
+					}];
+
+                $comboWrapper.igCombo({
+                    dataSource: function () {
+                        return [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" }];
+                    },
+                    textKey: 'Name',
+                    valueKey: 'ID'
+                });
+
+                testDataBinding($comboWrapper, expDataView, expSchema);
+            });
+
+            // Remote data binding
+            test(testId_5, function () {
+                var dataSource, dataView, fields,
+					$combo = $('#combo-remote-ds'),
+					expDataViewLen = 2155;
+
+                $combo.igCombo({
+                    textKey: 'ProductName',
+                    responseDataKey: "d.results",
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    dataSourceType: "json"
+                });
+
+                stop();
+                $combo.igCombo({
+                    dataBound: function (test, ui) {
+                        start();
+
+                        dataSource = $combo.igCombo('option', 'dataSource');
+                        dataView = dataSource.dataView();
+                        strictEqual(dataView.length, expDataViewLen, 'Data view len is incorrect');
+                    }
+                });
+            });
+
+            // Data binding to number array
+            test(testId_6, function () {
+                var $combo = $('#combo_numberarray'),
+					dataSource = [1, 2, 3, 4, 5],
+					expData = [{
+					    text: 1,
+					    value: 1
+					}, {
+					    text: 2,
+					    value: 2
+					}, {
+					    text: 3,
+					    value: 3
+					}, {
+					    text: 4,
+					    value: 4
+					}, {
+					    text: 5,
+					    value: 5
+					}],
+					expShema = [{
+					    name: 'text',
+					    type: 'number'
+					}, {
+					    name: 'value',
+					    type: 'number'
+					}];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    animationShowDuration: 0,
+                    animationHideDuration: 0
+                });
+
+                testDataBinding($combo, expData, expShema);
+            });
+
+            // Data binding to date array
+            test(testId_7, function () {
+                var comboDataSource, dataView, fields, key, i,
+					$combo = $('#combo_datearray'),
+					dataSource = [new Date(2015, 0, 1), new Date(2000, 0, 10), new Date(2008, 1, 6), new Date(2012, 7, 22), new Date(1962, 11, 31)],
+					expSchema = [{
+					    name: 'text',
+					    type: 'date'
+					}, {
+					    name: 'value',
+					    type: 'date'
+					}],
+					expItemsText = ['1/1/2015', '1/10/2000', '2/6/2008', '8/22/2012', '12/31/1962'];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    animationShowDuration: 0,
+                    animationHideDuration: 0
+                });
+
+                comboDataSource = $combo.igCombo('option', 'dataSource');
+                dataView = comboDataSource.dataView();
+                fields = comboDataSource.schema().schema.fields;
+                $items = $combo.igCombo('listItems');
+
+                // Data view
+                strictEqual(dataView.length, 5, 'Data view length is incorrect');
+
+                // Schema
+                strictEqual(fields.length, expSchema.length, 'Schema length is incorrect');
+                for (i = 0; i < fields.length; i++) {
+                    curSchemaItem = fields[i];
+
+                    for (key in curSchemaItem) {
+                        if (curSchemaItem.hasOwnProperty(key)) {
+                            strictEqual(curSchemaItem[key], expSchema[i][key], key + ' of schema item ' + i + ' did not match');
+                        }
+                    }
+                }
+
+                // Rendered items format
+                for (i = 0; i < $items.length; i++) {
+                    strictEqual($items.eq(i).text(), expItemsText[i], 'Text of list item ' + i + ' did not match');
+                }
+            });
+
+            test(testId_8, function() {
+                var $combo = $("#htmlEntityDataSource"),
+                    $input, $dropDownButton, listItems;
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dataSource: [
+                        {value: '&yen;'},
+                        {value: '&pound;'},
+                        {value: '&dollar;'},
+                        {value: '&euro;'},
+                    ],
+                });
+
+                $input = $combo.data().igCombo._options.$input;
+                $dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
+
+                var items = $combo.igCombo('items');
+
+                $dropDownButton.click();
+                clickElement(items[0].element);
+                equal($combo.igCombo('activeIndex'), 0, 'Yen symbol entity is selected');
+                equal(items[0].element.data('value'), items[0].element.text(), "data-value matches with text representation");
+                equal(items[0].element.data('value'), $input.val(), 'data-value matches with input value');
+
+                $dropDownButton.click();
+                clickElement(items[1].element);
+                equal($combo.igCombo('activeIndex'), 1, 'Pound symbol entity is selected');
+                equal(items[1].element.data('value'), items[1].element.text(), "data-value matches with text representation");
+                equal(items[1].element.data('value'), $input.val(), 'data-value matches with input value');
+            });
+        });
+    </script>
+</body>
+</html>
