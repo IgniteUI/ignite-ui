@@ -9921,7 +9921,8 @@
 				dayUpdateDelta = false,
 				amPmUpdateDelta = false,
 				newHour = currentHour + delta,
-				hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm, timeDay, timeAmPm;
+				hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm,
+				timeDay, timeAmPm, dayDelta;
 
 			if (is24format) {
 				hours = 24;
@@ -9938,6 +9939,7 @@
 				if (isLimited) {
 					newHour = currentHour;
 				} else {
+					dayDelta = (delta !== 0) ? 1 : 0;
 					if (is24format) {
 
 						// In 24H format date, when the hour changes (wraps up) from 23 to 00, this is the time that the day is increased also.
@@ -9947,8 +9949,12 @@
 
 						// In 12H format date, when the hour changes (wraps up) from 12 to 01, this is NOT the time that the day is increased.
 						// It is increased an hour earlier. (implemented in the top else block).
-						if (newHour === 13) {
-							newHour = 1;
+						if (newHour >= 13) {
+							newHour = newHour - hours;
+							if (currentAmPm === "pm") {
+								amPmUpdateDelta = true;
+								dayUpdateDelta = true;
+							}
 						}
 					}
 				}
@@ -9956,6 +9962,7 @@
 				if (isLimited) {
 					newHour = currentHour;
 				} else {
+					dayDelta = (delta !== 0) ? -1 : 0;
 					if (is24format) {
 
 						// In 24H format date, when the hour changes (wraps up) from 00 to 23, this is the time that the day is decreased also.
@@ -9968,6 +9975,10 @@
 						// N.A. September 15th, 2016 #342: Fix spinning down of the limit value.
 						if (newHour <= 0) {
 							newHour = 12 + newHour;
+							if (currentAmPm === "am") {
+								amPmUpdateDelta = true;
+								dayUpdateDelta = true;
+							}
 						}
 					}
 				}
@@ -9976,12 +9987,14 @@
 
 					// Update AM/PM and date in 12H format.
 					if (delta > 0 && newHour === 12) {
+						dayDelta = (delta !== 0) ? 1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "pm") {
 							dayUpdateDelta = true;
 						}
 					}
 					if (delta < 0 && newHour === 11) {
+						dayDelta = (delta !== 0) ? -1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "am") {
 							dayUpdateDelta = true;
@@ -10002,14 +10015,14 @@
 				if (timeDay !== null) {
 					currentDay = parseInt(this._getStringRange(mask, timeDay.startPosition,
 						timeDay.endPosition), 10);
-					mask = this._setDayEditMode(mask, timeDay, currentDay, delta);
+					mask = this._setDayEditMode(mask, timeDay, currentDay, dayDelta);
 				} else {
 
 					// This is the case, when we don't have day in the mask, but we increase/decrease the hour to the next/previous day.
 					// In such a situation, we update the internal date with the new day, so that when we loose focus the day is the correct one.
 					if (!isLimited) {
 						this._setDateField("Date", this._dateObjectValue,
-							this._getDateField("Date", this._dateObjectValue) + delta);
+							this._getDateField("Date", this._dateObjectValue) + dayDelta);
 					}
 				}
 			}

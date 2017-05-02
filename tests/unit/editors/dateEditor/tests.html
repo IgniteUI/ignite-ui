@@ -117,6 +117,14 @@
 						selectionOnFocus: "browserDefault",
 						dateInputFormat: "dateTime"
 					});
+					$("#inputEditor15a").igDateEditor({
+						width: 300,
+						value: new Date(2015, 11, 30, 23, 58, 58, 999),
+						buttonType: "clear,spin",
+						selectionOnFocus: "browserDefault",
+						dateInputFormat: "dateTime",
+						spinDelta: 2
+					});
 					$("#inputEditor16").igDateEditor({
 						width: 300,
 						buttonType: "spin",
@@ -662,7 +670,48 @@
 						expectedValue = new Date(2015, 11, 31, 1, 58, 58, 999);
 						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
 						equal($dtEditor.igDateEditor("displayValue"), "12/31/2015 1:58 AM", 'The initial value is not as expexted');
-					}, 300);
+					}, 200);
+				}, 200);
+			});
+
+			var testId = 'Testing spin hours to next day in edit mode with big spin delta';
+			test(testId, 4, function () {
+				var $dtEditor = $('#inputEditor15a'), today = new Date();
+				$dtEditor.igDateEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					$dtEditor.data("igDateEditor")._setCursorPosition(12);
+					var spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+					clickElement(spinUpButton, false, false);
+					stop();
+					setTimeout(function () {
+						start();
+						clickElement(spinUpButton, false, false);
+						$dtEditor.trigger("blur");
+						value = $dtEditor.igDateEditor("value");
+						expectedValue = new Date(2015, 11, 31, 3, 58, 58, 999);
+						equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+						equal($dtEditor.igDateEditor("displayValue"), "12/31/2015 3:58 AM", 'The initial value is not as expexted');
+						$dtEditor.igDateEditor("setFocus");
+						stop();
+						setTimeout(function () {
+							var spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+							start();
+							$dtEditor.data("igDateEditor")._setCursorPosition(12);
+							clickElement(spinDownButton, false, false);
+							stop();
+							setTimeout(function () {
+								start();
+								clickElement(spinDownButton, false, false);
+								$dtEditor.trigger("blur");
+								value = $dtEditor.igDateEditor("value");
+								expectedValue = new Date(2015, 11, 30, 23, 58, 58, 999);
+								equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
+								equal($dtEditor.igDateEditor("displayValue"), "12/30/2015 11:58 PM", 'The initial value is not as expexted');
+							}, 200);
+						}, 200);
+					}, 200);
 				}, 200);
 			});
 
@@ -3491,6 +3540,7 @@
 		<input id="dropdown"/>
 		<input type="text" id="validInEditModeEditor" />
 		<input id="inputEditor15" />
+		<input id="inputEditor15a" />
 		<input id="inputEditor16" />
 		<input id="inputEditor17" />
 		<input id="inputEditor18" />
