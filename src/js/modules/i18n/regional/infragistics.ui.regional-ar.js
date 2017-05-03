@@ -24,8 +24,8 @@ $.ig.regional.ar = {
 	dateTimePattern: 'dd/MM/yyyy hh:mm tt',
 	timePattern: 'hh:mm tt',
 	timeLongPattern: 'hh:mm:ss tt',
-	dateTitleFullPattern: 'dd yy ,MM',
-	dateTitleMonthPattern: 'yy ,MM',
+	dateTitleFullPattern: 'dd yy MM',
+	dateTitleMonthPattern: 'yy MM',
 	//
 	numericNegativePattern: 'n$-',
 	numericMaxDecimals: 2,
