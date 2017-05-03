@@ -9827,6 +9827,8 @@
 		_setSecondsEditMode: function (mask, time, currentSecond, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newSecond,
 				minuteUpdateDelta = 0, currentMinute, timeMinute;
+
+			delta = delta % 60;
 			if (currentSecond + delta >= 60) {
 				if (isLimited) {
 					newSecond = currentSecond;
@@ -9873,6 +9875,8 @@
 		_setMinutesEditMode: function (mask, time, currentMinute, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMinute,
 				hourUpdateDelta = 0, currentHour, timeHour;
+
+			delta = delta % 60;
 			if (currentMinute + delta >= 60) {
 				if (isLimited) {
 					newMinute = currentMinute;
@@ -9920,16 +9924,17 @@
 				is24format = this._dateIndices.hh24,
 				dayUpdateDelta = false,
 				amPmUpdateDelta = false,
-				newHour = currentHour + delta,
-				hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm,
+				newHour, hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm,
 				timeDay, timeAmPm, dayDelta;
 
 			if (is24format) {
 				hours = 24;
+				newHour = currentHour + (delta % 24);
 				wrapUpHours = newHour >= hours; // The maximum hour in 24H format is 23, that's why 24 is the turning point.
 				wrapDownHours = newHour < 0; // The minumum hour in 24H format is 00, that's why -1 is the turing point.
 			} else {
 				hours = 12;
+				newHour = currentHour + (delta % 12);
 				wrapUpHours = newHour > hours; // The maximum hour in 12H format is 12, that's why 13 is the turning point.
 				wrapDownHours = newHour < 1; // The minumum hour in 12H format is 01, that's why 0 is the turning point.
 				currentAmPm = (mask.toLowerCase().indexOf(" pm") >= 0) ? "pm" : "am";
