@@ -3864,15 +3864,6 @@ body .ui-tooltip {
 .ui-igscheduler-selectall {
   background-color: #007aff;
 }
-.ui-igscheduler-appointment-dialog-save-button,
-.ui-igscheduler-appointment-dialog-cancel-button {
-  border-color: #ebebeb;
-  background: #ebebeb;
-}
-.ui-igscheduler-appointment-dialog-save-button:hover,
-.ui-igscheduler-appointment-dialog-cancel-button:hover {
-  background: #ececec;
-}
 .ui-igscheduler-navigator-back-button:hover,
 .ui-igscheduler-navigator-date-range-button:hover,
 .ui-igscheduler-navigator-forward-button:hover {

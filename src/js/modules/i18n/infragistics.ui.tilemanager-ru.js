@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
 $.ig = $.ig || {};
 
@@ -19,6 +28,5 @@ if (!$.ig.TileManager) {
 		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles."
 		}
 	});
-
 }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

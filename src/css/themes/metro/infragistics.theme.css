@@ -1225,7 +1225,7 @@ body .ui-tooltip {
 .ui-state-active .ui-icon,
 .ui-igedit.ui-state-focus .ui-igedit-button-common .ui-icon, 
 .ui-igedit.ui-state-active .ui-igedit-button-common .ui-icon {
-    background-image: url(images/ui-icons_ffffff_256x240.png)!important;
+    background-image: url(images/ui-icons_ffffff_256x240.png);
 }
 
 .ui-state-highlight .ui-icon {
@@ -5179,15 +5179,6 @@ input.ui-igcombo-field {
 }
 .ui-igscheduler-selectall {
     background-color: #80d7f2;
-}
-.ui-igscheduler-appointment-dialog-save-button,
-.ui-igscheduler-appointment-dialog-cancel-button {
-    border-color: #dadada;
-    background: #dadada;
-}
-.ui-igscheduler-appointment-dialog-save-button:hover,
-.ui-igscheduler-appointment-dialog-cancel-button:hover {
-    background: #e8e8e8;
 }
 .ui-igscheduler-navigator-back-button:hover,
 .ui-igscheduler-navigator-date-range-button:hover,
