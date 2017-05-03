@@ -1225,7 +1225,7 @@ body .ui-tooltip {
 .ui-state-active .ui-icon,
 .ui-igedit.ui-state-focus .ui-igedit-button-common .ui-icon, 
 .ui-igedit.ui-state-active .ui-igedit-button-common .ui-icon {
-    background-image: url(images/ui-icons_ffffff_256x240.png)!important;
+    background-image: url(images/ui-icons_ffffff_256x240.png);
 }
 
 .ui-state-highlight .ui-icon {
