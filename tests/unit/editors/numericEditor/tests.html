@@ -21,6 +21,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                      
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-ja.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -772,6 +773,71 @@
 			);
 			container.click();
 			equal(editorInput.val(), "2.2E+1", "Value is not correct");
+		});
+
+		testId = "Convert between Scientific and fixed-point formats (dateMode, scientificFormat, min/maxDecimals)";
+		test(testId, 28, function () {
+			var $editor, $editorInput,
+				setup = [{
+					// #761: Wrong value when setting the value to a number with too many digits
+					options: { dateMode: "double", value: 1e-21 },
+					value: 0,
+					displayed: "0",
+					editText: "0"
+				}, {
+					// Auto-convert from parsing (parse with diff separator)
+					options: { dateMode: "double", value: "1,11e+15", decimalSeparator: ",", groupSeparator: "" },
+					value: 1.11e+15,
+					displayed: "1110000000000000",
+					editText: "1110000000000000"
+				}, {
+					// Auto-convert from parsing
+					options: { dateMode: "double", value: "1e-2" },
+					value: 0.01,
+					displayed: "0.01",
+					editText: "0.01"
+				}, {
+					// Forced fixed-point conversion:
+					options: { dateMode: "double", value: 1e-7, maxDecimals: 7 },
+					value: 1e-7,
+					displayed: "0.0000001",
+					editText: "0.0000001"
+				}, {
+					// Can't convert very big numbers to fixed:
+					options: { dateMode: "double", value: 1e21},
+					value: 1e+21,
+					displayed: "1e+21",
+					editText: "1e+21"
+				}, {
+					options: { dateMode: "int", value: 1e-21 },
+					value: 0,
+					displayed: "0",
+					editText: "0"
+				}, {
+					options: { scientificFormat: "e", value: 1.332e-7 },
+					value: 1.332e-7,
+					displayed: "1.332e-7",
+					editText: "1.332e-7"
+				}, {
+					options: { scientificFormat: "e", decimalSeparator: ",", groupSeparator: " ", value: 1.332e-7 },
+					value: 1.332e-7,
+					displayed: "1,332e-7",
+					editText: "1,332e-7"
+				}];
+
+			for (var i = 0; i < setup.length; i++) {
+				$editor = $("<input>").appendTo("#testBedContainer").igNumericEditor(setup[i].options);
+				$editorInput = $editor.igNumericEditor("field");
+
+				strictEqual($editor.igNumericEditor("value"), setup[i].value, "Value did not match expected for setup:" + (i + 1));
+				equal($editorInput.val(), setup[i].displayed, "Display text did not match expected for setup:" + (i + 1));
+				$editor.trigger("focus");
+				equal($editorInput.val(), setup[i].editText, "Edit Text did not match expected for setup:" + (i + 1));
+				$editor.trigger("blur");
+				//re-validate value after edit mode:
+				strictEqual($editor.igNumericEditor("value"), setup[i].value, "Value did not match expected for setup:" + (i + 1));
+				$editor.remove();
+			}
 		});
 
 		testId = "Group and decimal Separators";

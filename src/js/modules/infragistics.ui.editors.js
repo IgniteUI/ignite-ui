@@ -4946,55 +4946,63 @@
 				} else if (numericEditorType === "currency") {
 					value = value.replace(this.options.currencySymbol, "").trim();
 				}
+
+				// D.P. decimalSeparator replace before any parsing, regardless of mode! (ensure scientific decimals are parsed correctly)
+				if (value.indexOf(decimalSeparator) !== -1) {
+					value = value.replace(decimalSeparator, ".");
+				}
 			}
 			if (dataMode === "double" || dataMode === "float") {
 				stringValue = value.toString().toLowerCase();
 				if (stringValue.indexOf("e") !== -1) {
+					if (this.options.scientificFormat) {
+						// In that case leave the value as it is
+						// TODO work on validation method
+						return value;
+					}
 
-					// In that case leave the value as it is
-					// TODO work on validation method
-					val = value;
+					// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
+					// If scientific value when not enabled, expand to fixed-point notation and carry on with processsing
+					stringValue = (+value).toFixed(this.options.maxDecimals);
+				}
+
+				// In that case we need to validate the value against the constraints.
+				if (stringValue.indexOf(".") !== -1) {
+					var integerDigits, fractionalDigits;
+					decimalSeparator = ".";
+					fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+
+					//In case of pasted value with multiple decimal points. We can't use parseFloat because we want to keep the number of the fractional digits, but parseFloat cuts to 6th
+					if (fractionalDigits.indexOf(decimalSeparator) > 0) {
+						fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
+					}
+					if (fractionalDigits.length > maxDecimals) {
+
+						// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
+						if (this.options.roundDecimals) {
+							stringValue = Math.round10(value, -maxDecimals).toString();
+							if (stringValue.indexOf(decimalSeparator) > -1) {
+								fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+							} else {
+								fractionalDigits = "";
+							}
+						} else {
+							fractionalDigits = fractionalDigits.substring(0, maxDecimals);
+						}
+					}
+					if (stringValue.indexOf(decimalSeparator) > -1) {
+						integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+					} else {
+						integerDigits = stringValue;
+					}
+
+					//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
+					val = (integerDigits + "." + fractionalDigits) / 1;
 				} else {
 
-					// In that case we need to validate the value against the constraints.
-					if (stringValue.indexOf(decimalSeparator) !== -1 || stringValue.indexOf(".") !== -1) {
-						var integerDigits, fractionalDigits;
-						if (stringValue.indexOf(".") !== -1) {
-							decimalSeparator = ".";
-						}
-						fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
-
-						//In case of pasted value with multiple decimal points. We can't use parseFloat because we want to keep the number of the fractional digits, but parseFloat cuts to 6th
-						if (fractionalDigits.indexOf(decimalSeparator) > 0) {
-							fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
-						}
-						if (fractionalDigits.length > maxDecimals) {
-
-							// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
-							if (this.options.roundDecimals) {
-								stringValue = Math.round10(value, -maxDecimals).toString();
-								if (stringValue.indexOf(decimalSeparator) > -1) {
-									fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
-								} else {
-									fractionalDigits = "";
-								}
-							} else {
-								fractionalDigits = fractionalDigits.substring(0, maxDecimals);
-							}
-						}
-						if (stringValue.indexOf(decimalSeparator) > -1) {
-							integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
-						} else {
-							integerDigits = stringValue;
-						}
-
-						//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
-						val = (integerDigits + "." + fractionalDigits) / 1;
-					} else {
-
-						//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
-						val = parseFloat(parseInt(value).toFixed(minDecimals));
-					}
+					//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
+					// D.P: Don't parseInt as it won't handle scientific, use Number instead
+					val = parseFloat(Number(value).toFixed(minDecimals));
 				}
 			} else {
 				if (value.toString().toLowerCase().indexOf("e") !== -1) {
@@ -5271,19 +5279,20 @@
 			}
 		},
 		_convertScientificToNumeric: function (num) {
-			var parts = num.toString().split("e+"), first, zeroes, i;
-			first = parts[ 0 ].replace(".", "");
-			zeroes = parseInt(parts[ 1 ], 10) - (first.length - 1);
-			for (i = 0; i < zeroes; i++) {
-				first += "0";
+			var stringValue = num.toString(),
+				scientificPrecision = stringValue
+				.substring(stringValue.toLowerCase().indexOf("e") + 1);
+			num = num / 1;
+			if (scientificPrecision <= 20) {
+				num = num.toFixed(Math.abs(scientificPrecision));
 			}
-			return first;
+			return num.toString();
 		},
 		_getDisplayValue: function () { //Numeric Editor
 			var value = this._valueInput.val(),
 				decimalSeparator = this.options.decimalSeparator, decimalPoint = ".",
 				minDecimals = this.options.minDecimals, dataMode = this.options.dataMode,
-				stringValue, displayValue, integerDigits, fractionalDigits, scientificPrecision,
+				stringValue, displayValue, integerDigits, fractionalDigits,
 				scientificValue, negativeSign,
 				positivePattern, negativePattern, groups, groupSeparator, symbol = "";
 			if (value === this.options.nullValue || value === "" || isNaN(value)) {
@@ -5319,19 +5328,12 @@
 						scientificValue = (stringValue / 1).toExponential();
 						displayValue = scientificValue.toString().replace("e", this._getScientificFormat());
 					}
+					displayValue = displayValue.replace(decimalPoint, decimalSeparator);
 				} else {
 					if (stringValue.indexOf("e") !== -1) {
 
-						// In that case leave the value as it is
-						scientificPrecision = stringValue
-							.substring(stringValue.toLowerCase().indexOf("e") + 1);
-						stringValue = stringValue / 1;
-						if (scientificPrecision > 0) {
-							stringValue = this._convertScientificToNumeric(stringValue);
-						} else {
-							stringValue = stringValue.toFixed(Math.abs(scientificPrecision));
-						}
-
+						// If the value is scientific, convert:
+						stringValue = this._convertScientificToNumeric(stringValue);
 					}
 
 					// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
@@ -5435,6 +5437,8 @@
 			if (this.options.scientificFormat) {
 				val = Number(val).toExponential()
 					.replace("e", this._getScientificFormat());
+			} else if (val.toString().indexOf("e") !== -1) {
+				val = this._convertScientificToNumeric(val);
 			}
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
