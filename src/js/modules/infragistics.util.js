@@ -4015,7 +4015,7 @@
 					" callCount: " + meths[ k ].callCount);
 			}
 		};
-	}(jQuery));
+	})($);
 
 	/*
 	Function.prototype.invoke = function () {
