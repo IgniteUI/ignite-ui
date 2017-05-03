@@ -3440,27 +3440,26 @@ input.ui-igbutton {
 /* igRadialGauge Chart */
 /***********************/
 .ui-radialgauge-needle {
-  background-color: #999999;
-  border-color: #FFFFFF;
+  background-color: #9A9A9A;
 }
-.ui-radialgauge-needlePivot {
-  background-color: #999999;
-  border-color: #FFFFFF;
+.ui-radialgauge-needleCap {
+  background-color: #888888;
+  border-color: #888888;
 }
 .ui-radialgauge-backing {
   background-color: #FFFFFF;
   border: #cccccc;
 }
 .ui-radialgauge-scale {
-  background-color: transparent;
+  background-color: #9ECBD6;
   border: none;
 }
 .ui-radialgauge-tick {
-  background-color: rgba(0, 0, 0, 0.35);
+  background-color: #444444;
   border-top-color: none;
 }
 .ui-radialgauge-minorTick {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #444444;
   border: none;
 }
 .ui-radialgauge-label {
@@ -3468,28 +3467,32 @@ input.ui-igbutton {
   border: none;
 }
 .ui-radialgauge-range-palette-1 {
-  background-color: #005E9C;
+  background-color: #439C47;
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-2 {
-  background-color: #0078C8;
+  background-color: #FF9800;
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-3 {
-  background-color: #0092F4;
+  background-color: #C62828;
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-4 {
-  background-color: #21A7FF;
+  background-color: #F96232;
   border-top-color: transparent;
 }
 .ui-radialgauge-range-palette-5 {
-  background-color: #4FB9FF;
+  background-color: #9FB328;
   border-top-color: transparent;
 }
-.ui-radialgauge-container {
-  font-family: Verdana;
-  font-size: 11px;
+.ui-radialgauge-range-palette-6 {
+  background-color: #7446B9;
+  border-top-color: transparent;
+}
+.ui-radialgauge {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 12px;
 }
 /***********************/
 /* igBulletGraph Chart */
@@ -3499,16 +3502,16 @@ input.ui-igbutton {
   border-color: #ffffff;
 }
 .ui-bulletgraph-targetvalue {
-  background-color: #333333;
-  border-color: transparent;
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
 }
 /* TICKS AND LABELS */
 .ui-bulletgraph-tick {
-  background-color: rgba(0, 0, 0, 0.35);
+  background-color: #888888;
   border: transparent;
 }
 .ui-bulletgraph-minortick {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #888888;
   border: transparent;
 }
 .ui-bulletgraph-label {
@@ -3517,28 +3520,28 @@ input.ui-igbutton {
 }
 /* RANGE VALUES */
 .ui-bulletgraph-range-palette-1 {
-  background-color: #0078C8;
+  background-color: #439C47;
   border: transparent;
 }
 .ui-bulletgraph-range-palette-2 {
-  background-color: #0099FF;
+  background-color: #FF9800;
   border: transparent;
 }
 .ui-bulletgraph-range-palette-3 {
-  background-color: #21A7FF;
+  background-color: #C62828;
   border: transparent;
 }
 .ui-bulletgraph-range-palette-4 {
-  background-color: #4FB9FF;
+  background-color: #3F51B5;
   border: transparent;
 }
 .ui-bulletgraph-range-palette-5 {
-  background-color: #79C9FF;
+  background-color: #795548;
   border: transparent;
 }
 /* ACTUAL VALUES */
 .ui-bulletgraph-value {
-  background-color: #333333;
+  background-color: #ffffff;
   border: transparent;
 }
 /* TOOLTIPS */
@@ -3568,9 +3571,10 @@ input.ui-igbutton {
   padding: 4px;
   font-weight: bold;
 }
-.ui-bulletgraph-container {
-  font-family: Verdana;
-  font-size: 11px;
+.ui-bulletgraph {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 12px;
+  color: #494949;
 }
 /***********************/
 /* igLinearGauge Chart */
@@ -3580,45 +3584,45 @@ input.ui-igbutton {
   border-color: #ffffff;
 }
 .ui-lineargauge-needle {
-  background-color: #999999;
-  border-color: #FFFFFF;
+  background-color: #888888;
+  border-color: #888888;
 }
 .ui-lineargauge-scale {
-  background-color: transparent;
-  border-color: transparent;
+  background-color: #888888;
+  border-color: #888888;
 }
 /* TICKS AND LABELS */
 .ui-lineargauge-tick {
-  background-color: rgba(0, 0, 0, 0.35);
+  background-color: #333333;
   border: transparent;
 }
 .ui-lineargauge-minortick {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #333333;
   border: transparent;
 }
 .ui-lineargauge-label {
-  background-color: #666;
+  background-color: #333;
   border: transparent;
 }
 /* RANGE VALUES */
 .ui-lineargauge-range-palette-1 {
-  background-color: #0078C8;
+  background-color: #3D7D8D;
   border: transparent;
 }
 .ui-lineargauge-range-palette-2 {
-  background-color: #0099FF;
+  background-color: #5A94A2;
   border: transparent;
 }
 .ui-lineargauge-range-palette-3 {
-  background-color: #21A7FF;
+  background-color: #77B5C5;
   border: transparent;
 }
 .ui-lineargauge-range-palette-4 {
-  background-color: #4FB9FF;
+  background-color: #A0CBD7;
   border: transparent;
 }
 .ui-lineargauge-range-palette-5 {
-  background-color: #79C9FF;
+  background-color: #C9E1E8;
   border: transparent;
 }
 /* TOOLTIPS */
@@ -3641,9 +3645,10 @@ input.ui-igbutton {
   padding: 4px;
   font-weight: bold;
 }
-.ui-lineargauge-container {
-  font-family: Verdana;
-  font-size: 11px;
+.ui-lineargauge {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 12px;
+  color: #444444;
 }
 /***********************/
 /* Tile manager        */
@@ -5670,7 +5675,6 @@ input.ui-igbutton {
   margin-left: 0;
   margin-top: 0;
 }
-
 /* ============
   Scheduler
 ============= */
@@ -5801,4 +5805,3 @@ input.ui-igbutton {
   font-size: .75em;
 }
 /* Scheduler END */
-
