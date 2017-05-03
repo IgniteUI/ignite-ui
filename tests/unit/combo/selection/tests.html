@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+
+    <script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+    <script type="text/javascript" src="../../../../tests/unit/common/test-util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.combo.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+
+    <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="../sample-data/local-data.js"></script>
+    <script type="text/javascript" src="../sample-data/remote-data.js"></script>
+    <script type="text/javascript" src="../test-shared.js"></script>
+    <style>
+        .cont {
+            margin-top: 75px;
+        }
+    </style>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto; z-index: 100; position: relative;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div class="cont">
+        <div id="combo-selitem"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-ddmode"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-romode"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-rolmode"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-validation"></div>
+    </div>
+    <div class="cont">
+        <div id='combo-keynav'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-keynavmulti'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-keynavmultishift'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-singleseltype'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-multiseltype'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-singleseltypeasfmfalse'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-multiseltypeasfmfalse'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-selectAll'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-getitem'></div>
+    </div>
+    <div class="cont">
+        <select id="combo-multiple-attribute" multiple></select>
+    </div>
+    <div class="cont">
+        <select id="combo-multiple-single-selection" multiple></select>
+    </div>
+    <div class="cont">
+        <select id="combo-multiple-multi-selection" multiple></select>
+    </div>
+    <div class="cont">
+        <div id="keyboard-interactions"></div>
+    </div>
+    <div class="cont">
+        <div id="suppressKeyboard"></div>
+    </div>
+    <div class="cont">
+        <div id="suppressKeyboardMultiSelect"></div>
+    </div>
+    <div class="cont">
+        <div id="dropdowninputpress"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-bug-190262"></div>
+    </div>
+
+    <script>
+        $(function() {
+            var testId_1 = 'Item selection',
+                testId_2 = 'Drop down mode',
+				testId_3 = 'Readonly mode',
+				testId_4 = 'Readonlylist mode',
+				testId_5 = 'Validation',
+				testId_6 = 'Keyboard navigation single selection',
+				testId_7 = 'Keyboard navigation multi selection',
+				testId_8 = 'Keyboard navigation multi selection shift key',
+				testId_9 = 'Single selection typing in input',
+				testId_10 = 'Multi selection typing in input',
+				testId_11 = 'Single selection typing in input autoSelectFirstMatch false',
+				testId_12 = 'Multi selection typing in input autoSelectFirstMatch false',
+				testId_13 = 'Item selection multi',
+				testId_14 = 'Getting items',
+                testId_15 = 'Multiple selection on <select multiple> element',
+				testId_16 = 'Disable multiple selection from option on <select multiple> element',
+				testId_17 = 'Enable multiple selection from option on <select multiple> element',
+                testId_18 = 'Keyboard interacting',
+                testId_19 = 'suppressKeyboard interaction',
+                testId_20 = 'suppressKeyboard multiselect',
+                testId_21 = 'Keypress empty selection dropdown combo',
+                testId_22 = 'When selection is single and press enter the list should be closed';
+
+            module("igCombo - selection", {
+                setup: function() {},
+                teardown: function() {}
+            });
+
+            // Item selection
+            test(testId_1, function () {
+                var $hiddenInput, $itemToSel, $input, $selectedItems, $items,
+					selectionChangingFires = 0,
+					selectionChangedFires = 0,
+					$combo = $('#combo-selitem'),
+					expInputVal = 'John Smith',
+					expHiddenInputVal = '1',
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    selectionChanging: function (event, args) { selectionChangingFires++; },
+                    selectionChanged: function (event, args) { selectionChangedFires++; },
+                    initialSelectedItems: [{ index: 1 }]
+                });
+
+                $input = $combo.find('.ui-igcombo-field');
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $itemToSel = $combo.igCombo('dropDown').find('.ui-igcombo-listitem').first();
+                $items = $combo.igCombo('dropDown').find('li');
+
+                // Verify initialSelectedItems
+                strictEqual($input.val(), "Mary Johnson", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "2", 'Hidden input value is incorrect');
+
+                // Select item
+                $combo.igCombo('select', $itemToSel);
+
+                strictEqual($input.val(), expInputVal, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), expHiddenInputVal, 'Hidden input value is incorrect');
+
+                $selectedItems = $combo.igCombo('selectedItems');
+                strictEqual($selectedItems.length, 1, 'Selected items count is not correct');
+                strictEqual($selectedItems[0].data.ID, 1, 'Item data is not correct');
+                ok($combo.igCombo('isIndexSelected', 0), 'Item should be selected');
+                ok($combo.igCombo('isValueSelected', 1), 'Item should be selected');
+                strictEqual(selectionChangingFires, 0, 'selectionChanging event should not fire');
+                strictEqual(selectionChangedFires, 0, 'selectionChanged event should not fire');
+
+                // deselect item
+                $combo.igCombo('deselect');
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                $selectedItems = $combo.igCombo('selectedItems');
+                strictEqual($selectedItems, null, 'Selected items count is not correct');
+                ok(!$combo.igCombo('isIndexSelected', 0), 'Item should not be selected');
+                ok(!$combo.igCombo('isValueSelected', 1), 'Item should not be selected');
+                strictEqual(selectionChangingFires, 0, 'selectionChanging event should not fire');
+                strictEqual(selectionChangedFires, 0, 'selectionChanged event should not fire');
+
+                // Select item by index
+                $combo.igCombo('index', 0);
+
+                strictEqual($input.val(), expInputVal, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), expHiddenInputVal, 'Hidden input value is incorrect');
+                strictEqual(selectionChangingFires, 0, 'selectionChanging event should not fire');
+                strictEqual(selectionChangedFires, 0, 'selectionChanged event should not fire 1');
+
+                // deselect item by index
+                $combo.igCombo('deselectByIndex', 0);
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+                strictEqual(selectionChangingFires, 0, 'selectionChanging event should not fire');
+                strictEqual(selectionChangedFires, 0, 'selectionChanged event should not fire');
+
+                // Select items by value
+                $combo.igCombo('value', 1);
+
+                strictEqual($input.val(), expInputVal, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), expHiddenInputVal, 'Hidden input value is incorrect');
+                strictEqual(selectionChangingFires, 0, 'selectionChanging event should not fire');
+                strictEqual(selectionChangedFires, 0, 'selectionChanged event should not fire');
+
+                // deselect item by value
+                $combo.igCombo('deselectByValue', 3);
+                strictEqual($input.val(), expInputVal, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), expHiddenInputVal, 'Hidden input value is incorrect');
+                strictEqual(selectionChangingFires, 0, 'selectionChanging event should not fire');
+                strictEqual(selectionChangedFires, 0, 'selectionChanged event should not fire');
+
+                // Get first selected item by value
+                strictEqual($item = $combo.igCombo('value'), 1, 'Item value is not correct');
+
+                // Get first selected item by index
+                strictEqual($item = $combo.igCombo('index'), 0, 'Item index is not correct');
+            });
+
+            // Drop down mode
+            test(testId_2, function () {
+                var $input, $item,
+					$combo = $('#combo-ddmode'),
+					itemHeight = 29,
+					border = 1,
+					dropDownExpHeight = 3 * itemHeight + border,
+					listItemExpWidth = 198,
+					listItemExpHeight = itemHeight,
+					listItemExpPosLeft = $combo.offset().left + 1,
+					listItemExpPosTop = $combo.offset().top + 30,
+					click = $.Event('click'),
+					mouseEnter = $.Event('mouseenter'),
+					mouseLeave = $.Event('mouseleave'),
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" }];
+
+                $combo.igCombo({
+                    width: 200,
+                    height: 30,
+                    dataSource: dataSource,
+                    mode: 'dropdown',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dropDownAttachedToBody: false
+                });
+
+                $input = $combo.find('.ui-igcombo-field');
+                $dropDown = $combo.find('.ui-igcombo-dropdown');
+                $item = $combo.find('li').eq(0);
+
+                strictEqual($input.attr('readonly'), 'readonly', 'Readonly attribute was not applied');
+                strictEqual($input.hasClass('ui-unselectable'), true, 'Unselectable class was not applied');
+
+                $input.trigger(click); // click on input
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect')
+                //strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
+
+                $item.trigger(mouseEnter); // Hover item
+                ok($item.hasClass('ui-state-hover'), 'Class ui-state-hover was not applied to list item 0');
+
+                $item.trigger(mouseLeave);
+                ok(!$item.hasClass('ui-state-hover'), 'Class ui-state-hover was not applied to list item 0');
+
+                $input.trigger(click); // click on input
+                strictEqual($dropDown.outerHeight(), 0, 'Drop down height is incorrect');
+            });
+
+            // Readonly mode
+            test(testId_3, function () {
+                var $input, $dropDown, $hiddenInput,
+					$combo = $('#combo-romode'),
+					click = $.Event('click'),
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    mode: 'readonly',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0
+                });
+
+                $input = $combo.find('.ui-igcombo-field');
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $button = $combo.find('.ui-igcombo-button');
+
+                strictEqual($input.attr('readonly'), 'readonly', 'Readonly attribute was not applied');
+                strictEqual($input.hasClass('ui-unselectable'), true, 'Unselectable class was not applied');
+
+                strictEqual($input.val(), "1", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "1", 'Hidden input value is incorrect');
+
+                $input.trigger(click); // click on input
+                $dropDown = $combo.igCombo('dropDown');
+                strictEqual($dropDown.outerHeight(), 0, 'Drop down should not be opened');
+
+                $button.trigger(click); // click on expand button
+                $dropDown = $combo.igCombo('dropDown');
+                strictEqual($dropDown.outerHeight(), 0, 'Drop down should not be opened');
+            });
+
+            test(testId_4, function () {
+                var $input, $item, $item1, $hiddenInput, $dropDown,
+					$combo = $('#combo-rolmode'),
+					listItemExpWidth = 198,
+					listItemExpHeight = 29,
+					listItemExpPosLeft = $combo.offset().left + 1,
+					listItemExpPosTop = $combo.offset().top + 30,
+					dropDownExpHeight = 3 * listItemExpHeight + 1,
+					click = $.Event('click'),
+					mouseEnter = $.Event('mouseenter'),
+					mouseLeave = $.Event('mouseleave'),
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" }];
+
+                $combo.igCombo({
+                    width: 200,
+                    height: 30,
+                    dataSource: dataSource,
+                    dropDownOrientation: "bottom",
+                    mode: 'readonlylist',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dropDownAttachedToBody: false
+                });
+
+                $input = $combo.find('.ui-igcombo-field');
+                $dropDown = $combo.find('.ui-igcombo-dropdown');
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $item = $combo.find('li').eq(0);
+                $item1 = $combo.find('li').eq(1);
+
+                strictEqual($input.attr('readonly'), 'readonly', 'Readonly attribute was not applied');
+                strictEqual($input.hasClass('ui-unselectable'), true, 'Unselectable class was not applied');
+
+                $input.trigger(click); // click on input
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect')
+                //strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
+
+                // Verify first item is selected
+                ok($item.hasClass('ui-state-active'), 'Item should be selected');
+                strictEqual($input.val(), "1", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "1", 'Hidden input value is incorrect');
+
+                clickElement($item1, false, false); // Click on item
+
+                ok($item.hasClass('ui-state-active'), 'Item should be selected');
+                ok(!$item1.hasClass('ui-state-active'), 'Item should not be selected');
+                strictEqual($input.val(), "1", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "1", 'Hidden input value is incorrect');
+
+                $item.trigger(mouseEnter);
+                ok(!$item1.hasClass('ui-state-hover'), 'Class ui-state-hover was applied to list item 1');
+
+                $item.trigger(mouseLeave);
+                ok(!$item1.hasClass('ui-state-hover'), 'Class ui-state-hover was applied to list item 1');
+            });
+
+            // Validation
+            test(testId_5, function () {
+                var validator, validateResult,
+					destroy = true,
+					$combo = $('#combo-validation'),
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    validatorOptions: {
+                        required: true
+                    }
+                });
+
+                // Validator
+                validator = $combo.igCombo('validator');
+                ok($.type(validator) === "object", "Validator should be object.");
+                ok(validator.widgetName === "igValidator", "The type of Validator should be igValidator.");
+
+                strictEqual($combo.igCombo('validate'), false, 'Validation error message should be previewed');
+
+                // Bug #209248 : Error when using igCombo with validatorOptions using closeDropDown()
+                $combo.igCombo('openDropDown');
+                emulateKeyBoard("down", false, false, false, $combo.igCombo("textInput"));
+                $combo.igCombo('closeDropDown'); //causes validation
+                strictEqual(validator.isValid(), true, 'Validation should pass when closeDropDown() is called');
+
+                validator = $combo.igCombo('validator', destroy);
+                ok(validator === null, "Validator should be null.");
+
+                strictEqual($combo.igCombo('validate'), null, 'Validate should return null when validator is destroyed');
+            });
+
+            // Key navigation single selection
+            test(testId_6, function () {
+                var $input, $items, $hiddenInput, $listItemsDiv,
+					$combo = $('#combo-keynav'),
+					selectionChangingFires = 0, selectionChangedFires = 0,
+					dropDownOpenedFires = 0, dropDownOpeningFires = 0,
+					dropDownClosedFires = 0, dropDownClosingFires = 0,
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" },
+						{ ID: 4, Name: "Tom Tomov" },
+						{ ID: 5, Name: "Stewerd Matewson" },
+						{ ID: 6, Name: "David Bengalski" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    selectionChanging: function (event, args) { selectionChangingFires++; },
+                    selectionChanged: function (event, args) { selectionChangedFires++; },
+                    dropDownOpening: function (event, args) { dropDownOpeningFires++; },
+                    dropDownOpened: function (event, args) { dropDownOpenedFires++; },
+                    dropDownClosing: function (event, args) { dropDownClosingFires++; },
+                    dropDownClosed: function (event, args) { dropDownClosedFires++; }
+                });
+
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $input = $combo.find('.ui-igcombo-field');
+                $listItemsDiv = $combo.igCombo('dropDown');
+                $items = $listItemsDiv.find('li');
+
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                ok($listItemsDiv.height() > 0, 'List items list should  be visible');
+                strictEqual(1, dropDownOpeningFires, 'dropDownOpening event should fires');
+                strictEqual(1, dropDownOpenedFires, 'dropDownOpened event should fires');
+                emulateKeyBoard("down", false, false, false, $input); // key down
+
+                strictEqual($input.val(), "John Smith", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "John Smith", 'Hidden input value is incorrect');
+                ok($items.eq(0).hasClass('ui-state-active'), 'Item should be selected by key down');
+                strictEqual(1, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(1, selectionChangedFires, 'selectionChanged event should fires');
+
+                emulateKeyBoard("up", false, false, false, $input); // key up
+                ok($items.eq(0).hasClass('ui-state-active'), 'Item should be selected by key up');
+                strictEqual($input.val(), "John Smith", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "John Smith", 'Hidden input value is incorrect');
+                strictEqual(1, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(1, selectionChangedFires, 'selectionChanged event should fires');
+                strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible');
+                strictEqual(1, dropDownClosingFires, 'dropDownClosing event should fires');
+                strictEqual(1, dropDownClosedFires, 'dropDownClosed event should fires');
+
+                emulateKeyBoard("down", false, false, true, $input); // alt + key down
+                ok($listItemsDiv.height() > 0, 'List items list should  be visible');
+                ok($items.eq(0).hasClass('ui-state-active'), 'Item should be selected');
+                strictEqual($input.val(), "John Smith", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "John Smith", 'Hidden input value is incorrect');
+                strictEqual(2, dropDownOpeningFires, 'dropDownOpening event should fires');
+                strictEqual(2, dropDownOpenedFires, 'dropDownOpened event should fires');
+
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                strictEqual($input.val(), "Bob Ferguson", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "Bob Ferguson", 'Hidden input value is incorrect');
+                strictEqual(2, $combo.igCombo('activeIndex'), 'activ index is not correct');
+                ok($items.eq(2).hasClass('ui-state-active'), 'Item should be selected');
+                strictEqual(3, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(3, selectionChangedFires, 'selectionChanged event should fires');
+                ok($listItemsDiv.height() > 0, 'List items list should  be visible');
+
+                emulateKeyBoard("up", false, false, false, $input); // key up
+                strictEqual($input.val(), "Mary Johnson", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "Mary Johnson", 'Hidden input value is incorrect');
+                strictEqual(1, $combo.igCombo('activeIndex'), 'activ index is not correct');
+                ok($items.eq(1).hasClass('ui-state-active'), 'Item was not selected by key down');
+                strictEqual(4, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(4, selectionChangedFires, 'selectionChanged event should fires');
+                ok($listItemsDiv.height() > 0, 'List items list should be visible');
+
+                emulateKeyBoard(36, true, false, false, $input); // ctrl + home key
+
+                ok($items.eq(0).hasClass('ui-state-active'), 'Item was not selected by home key');
+                strictEqual($input.val(), "John Smith", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "John Smith", 'Hidden input value is incorrect');
+                strictEqual(5, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(5, selectionChangedFires, 'selectionChanged event should fires');
+
+                emulateKeyBoard(35, true, false, false, $input); // ctrl + end key
+
+                ok($items.eq(5).hasClass('ui-state-active'), 'Item was not selected by end key');
+                strictEqual($input.val(), "David Bengalski", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "David Bengalski", 'Hidden input value is incorrect');
+                strictEqual(6, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(6, selectionChangedFires, 'selectionChanged event should fires');
+
+                var currentScrollPosition = $(window).scrollTop();
+
+                emulateKeyBoard(33, false, false, false, $input); // page up key
+                ok($items.eq(0).hasClass('ui-state-active'), 'Item should be selected');
+                ok(!$items.eq(5).hasClass('ui-state-active'), 'Item was not selected');
+                strictEqual($input.val(), "John Smith", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "John Smith", 'Hidden input value is incorrect');
+                strictEqual(7, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(7, selectionChangedFires, 'selectionChanged event should fires');
+                ok(currentScrollPosition === $(window).scrollTop(), 'Page should not be scrolled up');
+
+                emulateKeyBoard(34, false, false, false, $input); // page down key
+                ok($items.eq(5).hasClass('ui-state-active'), 'Item should be selected');
+                ok(!$items.eq(0).hasClass('ui-state-active'), 'Item was not selected');
+                strictEqual($input.val(), "David Bengalski", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "David Bengalski", 'Hidden input value is incorrect');
+                strictEqual(8, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(8, selectionChangedFires, 'selectionChanged event should fires');
+
+                emulateKeyBoard(27, false, false, false, $input); // escape key
+                ok($items.eq(5).hasClass('ui-state-active'), 'Item should be selected');
+                strictEqual($input.val(), "David Bengalski", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "David Bengalski", 'Hidden input value is incorrect');
+
+                $combo.igCombo('deselect', $items.eq(5)) // deselect item
+                ok(!$items.eq(5).hasClass('ui-state-active'), 'Item should not be selected');
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                $combo.igCombo('activeIndex', 1) // Set active index to be first item
+                strictEqual(1, $combo.igCombo('activeIndex'), 'active index is not correct');
+                ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should be active');
+
+                emulateKeyBoard("up", false, false, true, $input); // alt + arrow up
+
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+                strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible');
+                strictEqual(2, dropDownClosingFires, 'dropDownClosing event should fires');
+                strictEqual(2, dropDownClosedFires, 'dropDownClosed event should fires');
+            });
+
+            // Key navigation multi selection
+            test(testId_7, function () {
+                var $input, $items, $hiddenInput, $listItemsDiv, isValueCorrect,
+					$combo = $('#combo-keynavmulti'),
+					selectionChangingFires = 0, selectionChangedFires = 0,
+					dropDownOpenedFires = 0, dropDownOpeningFires = 0,
+					dropDownClosedFires = 0, dropDownClosingFires = 0,
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" },
+						{ ID: 4, Name: "Tom Tomov" },
+						{ ID: 5, Name: "Stewerd Matewson" },
+						{ ID: 6, Name: "David Bengalski" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    multiSelection: { enabled: true },
+                    selectionChanging: function (event, args) { selectionChangingFires++; },
+                    selectionChanged: function (event, args) { selectionChangedFires++; },
+                    dropDownOpening: function (event, args) { dropDownOpeningFires++; },
+                    dropDownOpened: function (event, args) { dropDownOpenedFires++; },
+                    dropDownClosing: function (event, args) { dropDownClosingFires++; },
+                    dropDownClosed: function (event, args) { dropDownClosedFires++; }
+                });
+
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $input = $combo.find('.ui-igcombo-field');
+                $listItemsDiv = $combo.igCombo('dropDown');
+                $items = $listItemsDiv.find('li');
+
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                ok($listItemsDiv.height() > 0, 'List items list should  be visible');
+                strictEqual(1, dropDownOpeningFires, 'dropDownOpening event should fires');
+                strictEqual(1, dropDownOpenedFires, 'dropDownOpened event should fires');
+
+                emulateKeyBoard("down", false, false, false, $input); // key down
+
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+                ok($items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused by key down');
+                strictEqual(0, selectionChangingFires, 'selectionChanging event should not fire');
+                strictEqual(0, selectionChangedFires, 'selectionChanged event should not fire');
+
+                emulateKeyBoard("up", false, false, false, $input); // key up
+                ok(!$items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should be unfocused by key up');
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+                strictEqual(0, selectionChangingFires, 'selectionChanging event should not fire');
+                strictEqual(0, selectionChangedFires, 'selectionChanged event should not fire');
+                strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible');
+
+                emulateKeyBoard("down", false, false, true, $input); // key down
+                ok($listItemsDiv.height() > 0, 'List items list should  be visible after pressing Alt+key down');
+                ok(!$items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should not be focused');
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                ok($items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+                strictEqual(2, dropDownOpeningFires, 'dropDownOpening event should fires');
+                strictEqual(2, dropDownOpenedFires, 'dropDownOpened event should fires');
+
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+                strictEqual(2, $combo.igCombo('activeIndex'), 'activ index is not correct');
+                ok($items.eq(2).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused by key down');
+                ok(!$items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
+                strictEqual(0, selectionChangingFires, 'selectionChanging event should not fire');
+                strictEqual(0, selectionChangedFires, 'selectionChanged event should not fire');
+                ok($listItemsDiv.height() > 0, 'List items list should  be visible');
+
+                emulateKeyBoard("up", false, false, false, $input); // key up
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+                strictEqual(1, $combo.igCombo('activeIndex'), 'activ index is not correct');
+                ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused by key up');
+                ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected by key up');
+                strictEqual(0, selectionChangingFires, 'selectionChanging event should not fire');
+                strictEqual(0, selectionChangedFires, 'selectionChanged event should not fire');
+
+                emulateKeyBoard(13, false, false, false, $input); // enter key
+
+                // Workaround for issue where the input is not focused when running tests headless, thus 'Mary Jonhson' is without item separator
+                isValueCorrect = $input.val() === 'Mary Johnson, ' || $input.val() === 'Mary Johnson';
+
+                ok(isValueCorrect, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "Mary Johnson", 'Hidden input value is incorrect');
+                ok($items.eq(1).hasClass('ui-state-active'), 'Item should be selected by press Enter');
+                strictEqual(1, selectionChangingFires, 'selectionChanging event should fires');
+                //strictEqual(1, selectionChangedFires, 'selectionChanged event should not fires');
+
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                emulateKeyBoard("down", false, false, false, $input); // key down
+
+                // Workaround for issue where the input is not focused when running tests headless, thus 'Mary Jonhson' is without item separator
+                isValueCorrect = $input.val() === 'Mary Johnson, ' || $input.val() === 'Mary Johnson';
+
+                ok(isValueCorrect, 'Input value is incorrect 2');
+                strictEqual($hiddenInput.val(), "Mary Johnson", 'Hidden input value is incorrect');
+                strictEqual(3, $combo.igCombo('activeIndex'), 'active index is not correct');
+                ok($items.eq(3).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused by key down');
+                ok(!$items.eq(3).hasClass('ui-state-active'), 'Item should not be selected by key down');
+                strictEqual(1, selectionChangingFires, 'selectionChanging event should not fire');
+                strictEqual(1, selectionChangedFires, 'selectionChanged event should not fire');
+
+                emulateKeyBoard(13, true, false, false, $input); // ctrl + enter key
+
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                isValueCorrect = $input.val() === 'Mary Johnson, Tom Tomov, ' || $input.val() === 'Mary Johnson, Tom Tomov';
+
+                ok(isValueCorrect, 'Input value is incorrect');
+                ok($listItemsDiv.height() > 0, 'List items list should be visible after pressing Ctrl+enter');
+                strictEqual($hiddenInput.val(), "Mary Johnson, Tom Tomov", 'Hidden input value is incorrect');
+                ok($items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(3).hasClass('ui-state-active'), 'Item should be selected');
+                strictEqual(2, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(2, selectionChangedFires, 'selectionChanged event should fires');
+
+                emulateKeyBoard("up", false, false, false, $input); // key up
+                emulateKeyBoard("up", false, false, false, $input); // key up
+
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                isValueCorrect = $input.val() === 'Mary Johnson, Tom Tomov, ' || $input.val() === 'Mary Johnson, Tom Tomov';
+
+                ok(isValueCorrect, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "Mary Johnson, Tom Tomov", 'Hidden input value is incorrect');
+                strictEqual(1, $combo.igCombo('activeIndex'), 'activ index is not correct');
+                ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused by key up');
+                ok($items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+
+                emulateKeyBoard(13, true, false, false, $input); // ctrl + enter key
+
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                isValueCorrect = $input.val() === 'Tom Tomov, ' || $input.val() === 'Tom Tomov';
+
+                ok(isValueCorrect, 'Input value is incorrect');
+                ok($listItemsDiv.height() > 0, 'List items list should be visible after pressing Ctrl+enter');
+                strictEqual($hiddenInput.val(), "Tom Tomov", 'Hidden input value is incorrect');
+                ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                ok($items.eq(3).hasClass('ui-state-active'), 'Item should be selected');
+                strictEqual(3, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(3, selectionChangedFires, 'selectionChanged event should fires');
+
+                $combo.igCombo('activeIndex', 0) // Set active index to be first item
+                strictEqual(0, $combo.igCombo('activeIndex'), 'activ index is not correct');
+                ok($items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should be active');
+
+                emulateKeyBoard(13, true, false, false, $input); // ctrl + enter key
+
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                isValueCorrect = $input.val() === 'Tom Tomov, John Smith, ' || $input.val() === 'Tom Tomov, John Smith';
+
+                ok(isValueCorrect, 'Input value is incorrect');
+                ok($listItemsDiv.height() > 0, 'List items list should be visible after pressing Ctrl+enter');
+                strictEqual($hiddenInput.val(), "Tom Tomov, John Smith", 'Hidden input value is incorrect');
+                ok($items.eq(0).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(3).hasClass('ui-state-active'), 'Item should be selected');
+                strictEqual(4, selectionChangingFires, 'selectionChanging event should fires');
+                strictEqual(4, selectionChangedFires, 'selectionChanged event should fires');
+
+                emulateKeyBoard("up", false, false, true, $input); // alt + key up
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                isValueCorrect = $input.val() === 'Tom Tomov, John Smith, ' || $input.val() === 'Tom Tomov, John Smith';
+
+                ok(isValueCorrect, 'Input value is incorrect');
+                strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible after pressing alt+ key up');
+                strictEqual($hiddenInput.val(), "Tom Tomov, John Smith", 'Hidden input value is incorrect');
+            });
+
+            // Keyboard navigation multi selection shift key
+            test(testId_8, function () {
+                var $input, $items, $hiddenInput, $listItemsDiv, isValueCorrect,
+					$combo = $('#combo-keynavmultishift'),
+					keyDown = $.Event('keydown'),
+					 keyUp = $.Event('keyup'),
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" },
+						{ ID: 4, Name: "Tom Tomov" },
+						{ ID: 5, Name: "Stewerd Matewson" },
+						{ ID: 6, Name: "David Bengalski" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    multiSelection: { enabled: true }
+                });
+
+                keyUp.keyCode = keyDown.keyCode = 16; // shift
+
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $input = $combo.find('.ui-igcombo-field');
+
+                emulateKeyBoard("down", false, false, true, $input); // alt + key down
+                $listItemsDiv = $combo.igCombo('dropDown');
+                $items = $listItemsDiv.find('li');
+                ok($listItemsDiv.height() > 0, 'List items list should  be visible after pressing Alt+key down');
+
+                $input.trigger(keyDown); // Press and hold shift key
+                emulateKeyBoard("down", false, true, false, $input); // shift + key down
+                emulateKeyBoard("down", false, true, false, $input); // shift + key down
+                emulateKeyBoard("down", false, true, false, $input); // shift + key down
+
+                ok($items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused by key down');
+                ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused by key down');
+                ok($items.eq(2).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused by key down');
+                ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(!$items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
+                ok($items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                ok($items.eq(2).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                $input.trigger(keyUp); // release shift key
+
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                isValueCorrect = $input.val() === 'John Smith, Mary Johnson, Bob Ferguson, ' || $input.val() === 'John Smith, Mary Johnson, Bob Ferguson';
+
+                ok($items.eq(0).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(2).hasClass('ui-state-active'), 'Item should be selected');
+                ok(isValueCorrect, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "John Smith, Mary Johnson, Bob Ferguson", 'Hidden input value is incorrect');
+
+                $combo.igCombo('deselectAll') // Deselect all
+                ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(!$items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect 1');
+
+                // Go to last position, because deselect all cleared the navigation item
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                emulateKeyBoard("down", false, false, false, $input); // key down
+                $input.trigger(keyDown); // Press and hold shift key
+                emulateKeyBoard("up", false, true, false, $input); // shift + key up
+                ok(!$items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should not be in focused');
+                ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                ok($items.eq(2).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+
+                $input.trigger(keyUp); // release shift key
+
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                isValueCorrect = $input.val() === 'Mary Johnson, Bob Ferguson, ' || $input.val() === 'Mary Johnson, Bob Ferguson';
+
+                ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(2).hasClass('ui-state-active'), 'Item should be selected');
+                ok(isValueCorrect, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "Mary Johnson, Bob Ferguson", 'Hidden input value is incorrect');
+
+                $input.trigger(keyDown); // Press and hold shift key
+                emulateKeyBoard("down", false, true, false, $input); // shift + key down
+                emulateKeyBoard("down", false, true, false, $input); // shift + key down
+                emulateKeyBoard("down", false, true, false, $input); // shift + key down
+
+                ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                ok($items.eq(2).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                ok($items.eq(3).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                ok($items.eq(4).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused ');
+
+                emulateKeyBoard("up", false, true, false, $input); // shift + key up
+                ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused ');
+                ok($items.eq(2).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                ok($items.eq(3).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused ');
+                ok(!$items.eq(4).hasClass('ui-igcombo-item-in-focus'), 'Item should not be in focused by key up');
+
+                $input.trigger(keyUp); // release shift key
+
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                isValueCorrect = $input.val() === 'Mary Johnson, Bob Ferguson, Tom Tomov, ' || $input.val() === 'Mary Johnson, Bob Ferguson, Tom Tomov';
+
+                ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                ok($items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(2).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(3).hasClass('ui-state-active'), 'Item should be selected');
+                ok(!$items.eq(4).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(isValueCorrect, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "Mary Johnson, Bob Ferguson, Tom Tomov", 'Hidden input value is incorrect');
+
+                $item = $items.eq(5);
+                clickElement($item, false, true); // Click item holding shift key
+
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                isValueCorrect = $input.val() === 'Mary Johnson, Bob Ferguson, Tom Tomov, Stewerd Matewson, David Bengalski, ' || $input.val() === 'Mary Johnson, Bob Ferguson, Tom Tomov, Stewerd Matewson, David Bengalski';
+
+                ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                ok($items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                ok($items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
+                ok($items.eq(3).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(4).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(5).hasClass('ui-state-active'), 'Item should be selected');
+                ok(isValueCorrect, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "Mary Johnson, Bob Ferguson, Tom Tomov, Stewerd Matewson, David Bengalski", 'Hidden input value is incorrect');
+
+                $item = $items.eq(4);
+                clickElement($item, true, false); // Click item holding control key
+
+                // Workaround for issue where the input is not focused when running tests headless and item separator is not added and item separator is not added
+                isValueCorrect = $input.val() === 'Mary Johnson, Bob Ferguson, Tom Tomov, David Bengalski, ' || $input.val() === 'Mary Johnson, Bob Ferguson, Tom Tomov, David Bengalski';
+
+                ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                ok($items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                ok($items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
+                ok($items.eq(3).hasClass('ui-state-active'), 'Item should be selected');
+                ok(!$items.eq(4).hasClass('ui-state-active'), 'Item should be selected');
+                ok($items.eq(5).hasClass('ui-state-active'), 'Item should be selected');
+                ok(isValueCorrect, 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "Mary Johnson, Bob Ferguson, Tom Tomov, David Bengalski", 'Hidden input value is incorrect');
+
+                $combo.igCombo('clearInput') // Clear input
+                ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(!$items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(!$items.eq(4).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(!$items.eq(5).hasClass('ui-state-active'), 'Item should not be selected');
+                ok(!$items.eq(6).hasClass('ui-state-active'), 'Item should not be selected');
+                strictEqual($input.val(), "", 'Input value is incorrect');
+                strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect 1');
+
+                emulateKeyBoard("up", false, false, true, $input); // alt + key up
+                strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible after pressing alt+ key up');
+            });
+
+            // Single selection typing in input
+            asyncTest(testId_9, 29, function () {
+                var $input, $items, $hiddenInput, $listItemsDiv, $button,
+					$combo = $('#combo-singleseltype'),
+					selectionChangingFires = 0, selectionChangedFires = 0,
+					click = $.Event('click'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" },
+						{ ID: 4, Name: "Tom" },
+						{ ID: 5, Name: "Stewerd" },
+						{ ID: 6, Name: "David" },
+						{ ID: 7, Name: "Anna" },
+						{ ID: 7, Name: "Hana" },
+						{ ID: 8, Name: "Betty" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    selectionChanging: function (event, args) { selectionChangingFires++; },
+                    selectionChanged: function (event, args) { selectionChangedFires++; }
+                });
+
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $input = $combo.find('.ui-igcombo-field');
+                $button = $combo.find('.ui-igcombo-button');
+
+                // 1. Type 'h'
+                typeInInput("h", $input);
+                setTimeout(function () {
+                    start();
+
+                    // Test 'h'
+                    $listItemsDiv = $combo.igCombo('dropDown');
+                    $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                    ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                    ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                    ok($items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+                    strictEqual($input.val(), "h", 'Input value is incorrect');
+                    strictEqual($hiddenInput.val(), "Hana", 'Hidden input value is incorrect');
+
+                    emulateKeyBoard("up", false, false, true, $input); // alt + key up
+                    $listItemsDiv = $combo.igCombo('dropDown');
+                    $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                    strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible after pressing alt+ key up');
+                    ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                    ok($items.eq(7).hasClass('ui-state-active'), 'Item should be selected');
+                    strictEqual($input.val(), "Hana", 'Input value is incorrect');
+                    strictEqual($hiddenInput.val(), "Hana", 'Hidden input value is incorrect');
+
+                    // 2. Type 'hn'
+                    typeInInput("hn", $input);
+                    setTimeout(function () {
+                        start();
+
+                        // Test 'hn'
+                        $listItemsDiv = $combo.igCombo('dropDown');
+                        $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+
+                        ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                        strictEqual($input.val(), "hn", 'Input value is incorrect');
+                        strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+                        ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+
+                        $button.trigger(click); // Close drop down
+
+                        $listItemsDiv = $combo.igCombo('dropDown');
+                        $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                        strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible after pressing alt+ key up');
+                        ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                        ok(!$items.eq(7).hasClass('ui-state-active'), 'Item should not be selected');
+                        strictEqual($input.val(), "", 'Input value is incorrect');
+                        strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                        // 3. Type 'm'
+                        typeInInput("m", $input);
+                        setTimeout(function () {
+                            start();
+
+                            // Test 'm'
+                            $listItemsDiv = $combo.igCombo('dropDown');
+                            $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                            ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                            ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                            ok($items.eq(0).hasClass('ui-state-active'), 'Item should be selected');
+                            strictEqual($input.val(), "m", 'Input value is incorrect');
+                            strictEqual($hiddenInput.val(), "Mary", 'Hidden input value is incorrect');
+
+                            $item = $items.eq(0);
+                            clickElement($item, false, false); // Click on selected item
+
+                            $listItemsDiv = $combo.igCombo('dropDown');
+                            $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                            strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible after selecting item');
+                            ok($items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+                            ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                            strictEqual($input.val(), "Mary", 'Input value is incorrect');
+                            strictEqual($hiddenInput.val(), "Mary", 'Hidden input value is incorrect');
+                        }, 100);
+
+                        stop();
+                    }, 100);
+
+                    stop();
+                }, 100);
+            });
+
+            // Multi selection typing in input
+            asyncTest(testId_10, 28, function () {
+                var $input, $items, $hiddenInput, $listItemsDiv, isValueCorrect,
+					$combo = $('#combo-multiseltype'),
+					selectionChangingFires = 0, selectionChangedFires = 0,
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" },
+						{ ID: 4, Name: "Tom" },
+						{ ID: 5, Name: "Stewerd" },
+						{ ID: 6, Name: "David" },
+						{ ID: 7, Name: "Anna" },
+						{ ID: 7, Name: "Hana" },
+						{ ID: 8, Name: "Betty" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    selectionChanging: function (event, args) { selectionChangingFires++; },
+                    selectionChanged: function (event, args) { selectionChangedFires++; },
+                    multiSelection: { enabled: true }
+                });
+
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $input = $combo.find('.ui-igcombo-field');
+
+                // 1. Type 'a'
+                typeInInput("a", $input);
+                setTimeout(function () {
+                    start();
+
+                    // Test 'a'
+                    $listItemsDiv = $combo.igCombo('dropDown');
+                    $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                    ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                    ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                    ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                    ok(!$items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
+                    ok(!$items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should not be focused');
+                    ok(!$items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should not be focused');
+                    ok($items.eq(2).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                    strictEqual($input.val(), "a", 'Input value is incorrect');
+                    strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                    // 2. Type 'a, '
+                    typeInInput("a, ", $input);
+                    setTimeout(function () {
+                        start();
+
+                        // Test 'a, '
+                        $listItemsDiv = $combo.igCombo('dropDown');
+                        $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+
+                        ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+
+                        // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                        isValueCorrect = $input.val() === 'Anna, ' || $input.val() === 'Anna';
+
+                        ok(isValueCorrect, 'Input value is incorrect');
+                        strictEqual($hiddenInput.val(), "Anna", 'Hidden input value is incorrect');
+                        ok(!$items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
+                        ok($items.eq(6).hasClass('ui-state-active'), 'Item should be selected');
+
+                        // 3. Type 'Anna, h'
+                        typeInInput("Anna, h", $input);
+                        setTimeout(function () {
+                            start();
+
+                            // Test 'Anna, h'
+                            $listItemsDiv = $combo.igCombo('dropDown');
+                            $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                            ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                            ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                            ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                            ok(!$items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should not be focused');
+                            ok($items.eq(1).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                            strictEqual($input.val(), "Anna, h", 'Input value is incorrect');
+                            strictEqual($hiddenInput.val(), "Anna", 'Hidden input value is incorrect');
+
+                            emulateKeyBoard(13, false, false, false, $input); // press enter key
+                            $listItemsDiv = $combo.igCombo('dropDown');
+                            $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+
+                            // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                            isValueCorrect = $input.val() === 'Anna, Hana, ' || $input.val() === 'Anna, Hana';
+
+                            ok($listItemsDiv.height() > 0, 'List items list should be visible after press enter key');
+                            ok($items.eq(6).hasClass('ui-state-active'), 'Item should be selected');
+                            ok($items.eq(7).hasClass('ui-state-active'), 'Item should be selected');
+                            ok(isValueCorrect, 'Input value is incorrect');
+                            strictEqual($hiddenInput.val(), "Anna, Hana", 'Hidden input value is incorrect');
+
+                            emulateKeyBoard("up", false, false, true, $input); // alt + key up
+
+                            // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                            isValueCorrect = $input.val() === 'Anna, Hana, ' || $input.val() === 'Anna, Hana';
+
+                            ok(isValueCorrect, 'Input value is incorrect');
+                            strictEqual($hiddenInput.val(), "Anna, Hana", 'Hidden input value is incorrect');
+                        }, 100);
+
+                        stop();
+                    }, 100);
+
+                    stop();
+                }, 100);
+            });
+
+            // Single selection typing in input autoSelectFirstMatch false
+            asyncTest(testId_11, 28, function () {
+                var $input, $items, $hiddenInput, $listItemsDiv,
+					$combo = $('#combo-singleseltypeasfmfalse'),
+					selectionChangingFires = 0, selectionChangedFires = 0,
+					click = $.Event('click'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" },
+						{ ID: 4, Name: "Tom" },
+						{ ID: 5, Name: "Stewerd" },
+						{ ID: 6, Name: "David" },
+						{ ID: 7, Name: "Anna" },
+						{ ID: 7, Name: "Hana" },
+						{ ID: 8, Name: "Betty" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    autoSelectFirstMatch: false,
+                    selectionChanging: function (event, args) { selectionChangingFires++; },
+                    selectionChanged: function (event, args) { selectionChangedFires++; }
+                });
+
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $input = $combo.find('.ui-igcombo-field');
+                $listItemsDiv = $combo.igCombo('dropDown');
+                $button = $combo.find('.ui-igcombo-button');
+
+                // 1. Type 'h'
+                typeInInput("h", $input);
+                setTimeout(function () {
+                    start();
+
+                    // Test 'h'
+                    $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                    ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                    ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                    ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+                    strictEqual($input.val(), "h", 'Input value is incorrect');
+                    strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                    emulateKeyBoard("up", false, false, true, $input); // alt + key up
+                    $listItemsDiv = $combo.igCombo('dropDown');
+                    $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                    strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible after pressing alt+ key up');
+                    ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                    ok(!$items.eq(7).hasClass('ui-state-active'), 'Item should not be selected');
+                    strictEqual($input.val(), "", 'Input value is incorrect');
+                    strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                    // 2. Type 'hana'
+                    typeInInput("hana", $input);
+                    setTimeout(function () {
+                        start();
+
+                        // Test 'hana'
+                        $listItemsDiv = $combo.igCombo('dropDown');
+                        $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+
+                        ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                        strictEqual($input.val(), "hana", 'Input value is incorrect');
+                        strictEqual($hiddenInput.val(), "Hana", 'Hidden input value is incorrect');
+                        ok($items.eq(0).hasClass('ui-state-active'), 'Item should be selected');
+
+                        $button.trigger(click); // Close drop down
+
+                        $listItemsDiv = $combo.igCombo('dropDown');
+                        $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                        strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible');
+                        ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                        ok($items.eq(7).hasClass('ui-state-active'), 'Item should be selected');
+                        strictEqual($input.val(), "Hana", 'Input value is incorrect');
+                        strictEqual($hiddenInput.val(), "Hana", 'Hidden input value is incorrect');
+
+                        // 3. Type 'm'
+                        typeInInput("m", $input);
+                        setTimeout(function () {
+                            start();
+
+                            // Test 'm'
+                            $listItemsDiv = $combo.igCombo('dropDown');
+                            $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                            ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                            ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should be selected');
+                            strictEqual($input.val(), "m", 'Input value is incorrect');
+                            strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                            $item = $items.eq(0);
+                            clickElement($item, false, false); // Click on selected item
+
+                            $listItemsDiv = $combo.igCombo('dropDown');
+                            $items = $listItemsDiv.find('li').not('.ui-helper-hidden');
+                            strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible after selecting item');
+                            ok($items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+                            ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                            strictEqual($input.val(), "Mary", 'Input value is incorrect');
+                            strictEqual($hiddenInput.val(), "Mary", 'Hidden input value is incorrect');
+                        }, 100);
+
+                        stop();
+                    }, 100);
+
+                    stop();
+                }, 100);
+            });
+
+            // Multi selection typing in input autoSelectFirstMatch false
+            asyncTest(testId_12, 24, function () {
+                var $input, $items, $hiddenInput, $listItemsDiv, isValueCorrect,
+					$combo = $('#combo-multiseltypeasfmfalse'),
+					selectionChangingFires = 0, selectionChangedFires = 0,
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" },
+						{ ID: 4, Name: "Tom" },
+						{ ID: 5, Name: "Stewerd" },
+						{ ID: 6, Name: "David" },
+						{ ID: 7, Name: "Anna" },
+						{ ID: 7, Name: "Hana" },
+						{ ID: 8, Name: "Betty" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    selectionChanging: function (event, args) { selectionChangingFires++; },
+                    selectionChanged: function (event, args) { selectionChangedFires++; },
+                    multiSelection: { enabled: true },
+                    autoSelectFirstMatch: false
+                });
+
+                $hiddenInput = $combo.find('.ui-igcombo-hidden-field');
+                $input = $combo.find('.ui-igcombo-field');
+                $listItemsDiv = $combo.igCombo('dropDown');
+
+                typeInInput("a", $input);
+                setTimeout(function () {
+                    start();
+
+                    $items = $combo.igCombo('dropDown').find('li').not('.ui-helper-hidden');
+                    ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                    ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                    ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should not be selected');
+                    ok(!$items.eq(2).hasClass('ui-state-active'), 'Item should be selected');
+                    strictEqual($input.val(), "a", 'Input value is incorrect');
+                    strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                    typeInInput("anna", $input);
+                    setTimeout(function () {
+                        start();
+
+                        $items = $combo.igCombo('dropDown').find('li').not('.ui-helper-hidden');
+                        ok($items.eq(0).hasClass('ui-igcombo-item-in-focus'), 'Item should be focused');
+                        strictEqual($input.val(), "anna", 'Input value is incorrect');
+                        strictEqual($hiddenInput.val(), "", 'Hidden input value is incorrect');
+
+                        typeInInput("anna, ", $input);
+                        setTimeout(function () {
+                            start();
+
+                            $items = $combo.igCombo('dropDown').find('li').not('.ui-helper-hidden');
+
+                            // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                            isValueCorrect = $input.val() === 'Anna, ' || $input.val() === 'Anna';
+
+                            ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                            ok(isValueCorrect, 'Input value is incorrect');
+                            strictEqual($hiddenInput.val(), "Anna", 'Hidden input value is incorrect');
+                            ok(!$items.eq(2).hasClass('ui-state-active'), 'Item should not be selected');
+                            ok($items.eq(6).hasClass('ui-state-active'), 'Item should be selected');
+
+                            typeInInput("Anna, h", $input);
+                            setTimeout(function () {
+                                start();
+
+                                $items = $combo.igCombo('dropDown').find('li').not('.ui-helper-hidden');
+                                ok($listItemsDiv.height() > 0, 'List items list should be visible after typing in input');
+                                ok(!$items.eq(0).hasClass('ui-state-active'), 'Item should not be selected');
+                                ok(!$items.eq(1).hasClass('ui-state-active'), 'Item should be selected');
+                                strictEqual($input.val(), "Anna, h", 'Input value is incorrect');
+                                strictEqual($hiddenInput.val(), "Anna", 'Hidden input value is incorrect');
+
+                                emulateKeyBoard("up", false, false, true, $input); // alt + key up
+                                strictEqual(0, $listItemsDiv.height(), 'List items list should not be visible after pressing alt+ key up');
+                                $items = $combo.igCombo('dropDown').find('li').not('.ui-helper-hidden');
+
+                                // Workaround for issue where the input is not focused when running tests headless and item separator is not added
+                                isValueCorrect = $input.val() === 'Anna, ' || $input.val() === 'Anna';
+
+                                ok($items.eq(6).hasClass('ui-state-active'), 'Item should be selected');
+                                ok(!$items.eq(7).hasClass('ui-state-active'), 'Item should be selected');
+                                ok(isValueCorrect, 'Input value is incorrect');
+                                strictEqual($hiddenInput.val(), "Anna", 'Hidden input value is incorrect');
+                            }, 100);
+
+                            stop();
+                        }, 100);
+
+                        stop();
+                    }, 100);
+
+                    stop();
+                }, 100);
+            });
+
+            // Multiple selection should be enabled when a select element is decorated with the multiple attribute
+            test(testId_15, function () {
+                var multiSelection,
+					$comboWrapper = $('#combo-multiple-attribute'),
+					dataSource = [
+						{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }
+					],
+					multiSelectionEnabledValue = false;
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID'
+                });
+
+                multiSelection = $comboWrapper.igCombo('option', 'multiSelection');
+                multiSelectionEnabledValue = multiSelection.enabled;
+                ok(multiSelectionEnabledValue, 'Multiple selection was not enabled.');
+            });
+
+            // If the settings for multiple selection are present they should override the attribute on the element
+            test(testId_16, function () {
+                var multiSelection,
+					$comboWrapper = $('#combo-multiple-single-selection'),
+					dataSource = [
+						{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }
+					],
+					multiSelectionEnabledValue = false;
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    multiSelection: {
+                        enabled: false
+                    }
+                });
+
+                multiSelection = $comboWrapper.igCombo('option', 'multiSelection');
+                multiSelectionEnabledValue = multiSelection.enabled;
+                ok(!multiSelectionEnabledValue, 'Multiple selection was not disabled.');
+            });
+
+            // If the settings for multiple selection are present they should override the attribute on the element
+            test(testId_17, function () {
+                var multiSelection,
+					$comboWrapper = $('#combo-multiple-multi-selection'),
+					dataSource = [
+						{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }
+					],
+					multiSelectionEnabledValue = false;
+
+                $comboWrapper.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    multiSelection: {
+                        enabled: true
+                    }
+                });
+
+                multiSelection = $comboWrapper.igCombo('option', 'multiSelection');
+                multiSelectionEnabledValue = multiSelection.enabled;
+                ok(multiSelectionEnabledValue, 'Multiple selection was not enabled.');
+            });
+
+            // Keyboard interacting
+            test(testId_18, function () {
+                var data, selectedItem, $input,
+                $combo = $("#keyboard-interactions");
+
+                data = [{ "ID": 1, "ProductName": "Chai", "SupplierName": "Exotic Liquids" },
+                       { "ID": 2, "ProductName": "Chang", "SupplierName": "Exotic Liquids" },
+                       { "ID": 3, "ProductName": "Aniseed Syrup", "SupplierName": "Exotic Liquids" },
+                       { "ID": 4, "ProductName": "Chef Anton's Cajun Seasoning", "SupplierName": "New Orleans Cajun Delights" },
+                       { "ID": 5, "ProductName": "Chef Anton's Gumbo Mix", "SupplierName": "New Orleans Cajun Delights", },
+                       { "ID": 6, "ProductName": "Grandma's Boysenberry Spread", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 7, "ProductName": "Uncle Bob's Organic Dried Pears", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 8, "ProductName": "Northwoods Cranberry Sauce", "SupplierName": "Grandma Kelly Homestead", },
+                      { "ID": 9, "ProductName": "Mishi Kobe Niku", "SupplierName": "Tokyo Traders", },
+                      { "ID": 10, "ProductName": "Ikura", "SupplierName": "Tokyo Traders", },
+                      { "ID": 11, "ProductName": "Queso Cabrales", "SupplierName": "Cooperativa de Quesos Las Cabras", }]
+
+                $combo.igCombo({
+                    dataSource: data,
+                    valueKey: "ID",
+                    textKey: 'ProductName',
+                    mode: "dropdown",
+                    width: 200,
+                    height: 30,
+                    allowCustomValues: true,
+                    autoSelectFirstMatch: true,
+                    multiSelection: {
+                        enabled: false,
+                    },
+                });
+
+                $input = $combo.igCombo("textInput");
+                emulateNonSpecialKeyPress(77, $input);
+                selectedItem = $combo.igCombo("selectedItems")[0];
+                equal(selectedItem.data[$combo.igCombo("option", "textKey")], "Mishi Kobe Niku", "Correct item is selected");
+
+                $combo.igCombo("option", "multiSelection", { enabled: true });
+
+                setTimeout(function () {
+                    start();
+                    emulateNonSpecialKeyPress(67, $input);
+                    equal($($combo.igCombo('dropDown').find("li")[0]).hasClass("ui-igcombo-item-in-focus"), true, "The auto completed item is highlighted with css class 'ui-igcombo-item-in-focus'");
+                }, 1100);
+                stop();
+
+            });
+
+            test(testId_19, function () {
+
+                var $combo = $("#suppressKeyboard"),
+                    $input, $dropDownButton;
+
+                // Emulate touch environment
+                var _oldIsTouch = $.ig.util.isTouchDevice;
+                $.ig.util.isTouchDevice = function () { return true; };
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    width: "270px",
+                    dataSource: [
+                        { 'ID': 1 },
+                        { 'ID': 2 },
+                        { 'ID': 3 }
+                    ],
+                    suppressKeyboard: true,
+                    virtualization: true
+                });
+
+                $input = $combo.data().igCombo._options.$input;
+                $dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
+
+                $dropDownButton.click();
+                equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                notEqual(document.activeElement, $input[0], "Combo input should not be focused [suppressKeyboard = false]");
+
+                $dropDownButton.click();
+                equal($combo.igCombo("dropDownOpened"), false, "Combo drop down should be hidden");
+                notEqual(document.activeElement, $input[0], "Combo input still should not be focused [suppressKeyboard = false]");
+
+                $combo.igCombo("option", "suppressKeyboard", false);
+                equal($combo.igCombo("option", "suppressKeyboard"), false, "suppressKeyboard successfully changed");
+
+                $dropDownButton.click();
+                equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                equal(document.activeElement, $input[0], "Combo input should be focused [suppressKeyboard = true]");
+
+                $dropDownButton.click();
+                equal($combo.igCombo("dropDownOpened"), false, "Combo drop down should be hidden");
+                equal(document.activeElement, $input[0], "Combo input still should be focused [suppressKeyboard = true]");
+
+
+                $.ig.util.isTouchDevice = _oldIsTouch;
+            });
+
+            test(testId_20, function () {
+
+                var $combo = $("#suppressKeyboardMultiSelect"),
+                    $input, $dropDownButton, listItems;
+
+                // Emulate touch environment
+                var _oldIsTouch = $.ig.util.isTouchDevice;
+                $.ig.util.isTouchDevice = function () { return true; };
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    width: "270px",
+                    dataSource: [
+                        { "ID":1, "Name": "Captain America", "Age": 45 },
+                        { "ID":2, "Name": "Hawkeye", "Age": 32 },
+                        { "ID":3, "Name": "Quicksilver", "Age": 27 },
+                    ],
+                    valueKey: "ID",
+                    textKey: "Name",
+                    multiSelection: {
+                        enabled: true
+                    },
+                    suppressKeyboard: true,
+                    virtualization: true
+                });
+
+                $input = $combo.data().igCombo._options.$input;
+                $dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
+
+                var items = $combo.igCombo('items');
+
+                $dropDownButton.click();
+                equal($combo.igCombo("dropDownOpened"), true, "Combo drop down should be rendered");
+                notEqual(document.activeElement, $input[0], "Combo input should not be focused [suppressKeyboard = true]");
+                clickElement(items[0].element);
+
+                equal($combo.igCombo('activeIndex'), 0, 'Selected item matches');
+                notEqual(document.activeElement, $input[0], 'Combo input is not focused');
+
+                clickElement(items[1].element);
+
+                equal($combo.igCombo('activeIndex'), 1, 'Selected item matches');
+                notEqual(document.activeElement, $input[0], 'Combo input is still not focused');
+
+                clickElement(items[0].element);
+                clickElement(items[1].element);
+                equal($combo.igCombo('activeIndex'), -1);
+                notEqual(document.activeElement, $input[0], 'Combo input is still not focused');
+
+                clickElement($input);
+                equal(document.activeElement, $input[0], 'Combo input is focused');
+
+                $dropDownButton.click();
+
+                $combo.igCombo('option', 'suppressKeyboard', false);
+                $combo.igCombo('clearInput');
+
+                $dropDownButton.click();
+                equal(document.activeElement, $input[0], "Combo input should be focused [suppressKeyboard = false]");
+
+                clickElement(items[0].element);
+
+                equal($combo.igCombo('activeIndex'), 0, 'Selected item matches');
+                equal(document.activeElement, $input[0], 'Combo input is focused');
+
+                $.ig.util.isTouchDevice = _oldIsTouch;
+            });
+
+            test(testId_21, function() {
+                var $combo = $("#dropdowninputpress"),
+                    $input;
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    delayInputChangeProcessing: 0,
+                    dataSource: [
+                        { "ID":1, "Name": "John Smith", "Age": 45 },
+                        { "ID":6, "Name": "John Ricks", "Age": 45 },
+                        { "ID":2, "Name": "Mary Johnson", "Age": 32 },
+                        { "ID":3, "Name": "Bob Ferguson", "Age": 27 },
+                        { "ID": 4, Name: "Jane Smith", "Age": 22},
+                        { "ID": 5, "Name": "Johnatan Doe", "Age": 45 },
+                    ],
+                    valueKey: "ID",
+                    textKey: "Name",
+                    mode: "dropdown",
+                    itemsRendered: function(evt, ui) {
+                        ui.owner.deselectByIndex(0);
+                    }
+                });
+
+                $input = $combo.data().igCombo._options.$input;
+
+                $input.focus();
+                emulateNonSpecialKeyPress(106, $input);
+                equal($combo.igCombo('selectedItems')[0].data.Name, 'John Smith', 'Selected item matches');
+                emulateNonSpecialKeyPress(106, $input);
+                equal($combo.igCombo('selectedItems')[0].data.Name, 'John Ricks', 'Selected item matches');
+                emulateNonSpecialKeyPress(106, $input);
+                equal($combo.igCombo('selectedItems')[0].data.Name, 'Jane Smith', 'Selected item matches');
+                emulateNonSpecialKeyPress(106, $input);
+                equal($combo.igCombo('selectedItems')[0].data.Name, 'Johnatan Doe', 'Selected item matches');
+            });
+
+            // Bug #190262
+            test(testId_22, function () {
+                var data, $input, $listItems,
+                    $combo = $("#combo-bug-190262");
+
+                data = [{ ID: 0, Name: "John", Age: 45, ModifiedDate: "1/1/2000" },
+		            { ID: 1, Name: "Chai", Age: 32, ModifiedDate: new Date(1309467600000) },
+		            { ID: 2, Name: "Chang", Age: 32, ModifiedDate: "/Date(1078992096827)/" },
+		            { ID: 5, Name: "3", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 4, Name: "test dsf", Age: 32, ModifiedDate: "\/Date(1078992096827)\/" },
+		            { ID: 3, Name: "Bob ", Age: 27, ModifiedDate: "\/Date(1078992096827)\/" }];
+
+                $combo.igCombo({
+                    dataSource: data,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                });
+
+                $listItems = $combo.igCombo("dropDown").find('.ui-igcombo-listitem');
+                $input = $combo.igCombo("textInput");
+                $input.focus();
+                emulateKeyBoard("down", false, false, false, $input);
+                emulateKeyBoard("down", false, false, false, $input);
+                emulateNonSpecialKeyPress(13, $input);
+                stop();
+                setTimeout(function () {
+                    start();
+                    equal($combo.igCombo("dropDownOpened"), false, "Combo drop down should be closed");
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
