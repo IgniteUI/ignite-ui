@@ -2168,12 +2168,22 @@
 .ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
     background-color: transparent;
     span {
-        color: @igGray8;
+        color: @gray-light;
     }
 }
 
 .ui-igscheduler-selectall {
     background-color: @brand-primary;
+}
+
+.ui-igscheduler-appointment-dialog-save-button,
+.ui-igscheduler-appointment-dialog-cancel-button {
+
+    border-color: @table-border-color;
+    background: @igGray4;
+    &:hover {
+        background: @igGray3;
+    }
 }
 
 .ui-igscheduler-navigator-back-button:hover,

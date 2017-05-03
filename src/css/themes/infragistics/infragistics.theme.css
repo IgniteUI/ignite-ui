@@ -2339,8 +2339,6 @@ input.ui-igbutton {
   background-color: #cccccc;
   color: #444444;
 }
-.ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
-.ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-iggrid-filterddlist li.ui-state-active,
 .ui-iggrid-filterddlistitem.ui-state-active a,
 .ui-iggrid-featurechooser-list li.ui-state-active,
@@ -3185,6 +3183,8 @@ input.ui-igbutton {
 .ui-igcombo-field {
   color: #444444;
 }
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
+.ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-igcombo-listitem.ui-state-hover.ui-igcombo-item-in-focus,
 .ui-igcombo-listitem.ui-state-active.ui-igcombo-item-in-focus,
 .ui-igcombo-listitem.ui-state-default.ui-igcombo-item-in-focus {
