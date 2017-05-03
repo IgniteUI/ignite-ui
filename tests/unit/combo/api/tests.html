@@ -118,6 +118,9 @@
         <div id="combo-enableClearButton"></div>
         <div id="combo-paste"></div>
     </div>
+    <div class="cont">
+        <div id="combo-validator"></div>
+    </div>
 
     <script>
         $(function() {
@@ -156,6 +159,7 @@
                 testId_33 = 'Changing enableClearButton option at runtime does not work',
                 testId_34 = 'combo input paste handling',
                 testId_35 = 'Test areSetsEqual method';
+                testId_36 = 'Test setting validator options at runtime';
 
             $.mockjaxSettings.logging = 0;
 
@@ -1625,6 +1629,31 @@
 
                 equal($.ig.util.areSetsEqual(x, y), true, "Arrays x:" + x + " and y:" + y + " are equal (same reference)");
                 equal($.ig.util.areSetsEqual(x, x), true, "Arrays x:" + x + " and x:" + x + " are equal");
+            });
+            
+            // Test setting validator options runtime
+            test(testId_36, function () {
+                var $listItems,
+					$combo = $('#combo-enableCheckboxes'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                });
+
+                equal($combo.igCombo("option", "validatorOptions"), null, "No validator options set");
+                $combo.igCombo("option", "validatorOptions", {required: true, errorMessage: "You must populate this field !", successMessage: "Well done!"});
+                equal($combo.igCombo("option", "validatorOptions").required, true, "Required must be set to true");
+                equal($combo.igCombo("option", "validatorOptions").errorMessage, "You must populate this field !", "error message is correct");
+                equal($combo.igCombo("option", "validatorOptions").successMessage, "Well done!", "success message is correct");
+                $combo.igCombo("option", "validatorOptions", {required: false, errorMessage: "Try again", successMessage: "Checked"});
+                equal($combo.igCombo("option", "validatorOptions").required, false, "Required must be set to false");
+                equal($combo.igCombo("option", "validatorOptions").errorMessage, "Try again", "error message is correct");
+                equal($combo.igCombo("option", "validatorOptions").successMessage, "Checked", "success message is correct");
             });
         });
     </script>
