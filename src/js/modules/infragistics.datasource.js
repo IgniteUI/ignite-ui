@@ -6746,7 +6746,7 @@
 
 				var count = ds.pageCount();
 			```
-			returnType="number" total number fo pages
+			returnType="number" total number of pages
 			*/
 			var c, realCount;
 			if (this.isGroupByApplied() && this._vgbData &&
@@ -10824,7 +10824,7 @@
 
 				var count = ds.pageCount();
 			```
-			returnType="number" total number fo pages
+			returnType="number" total number of pages
 			*/
 			var p = this.settings.paging;
 			if (p.enabled && p.type === "local" &&
