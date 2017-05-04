@@ -4958,7 +4958,7 @@
 					if (this.options.scientificFormat) {
 						// In that case leave the value as it is
 						// TODO work on validation method
-						return value;
+						return Number(value);
 					}
 
 					// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
@@ -5019,10 +5019,6 @@
 					val = parseInt(value);
 				}
 			}
-			if (this.options.scientificFormat &&
-				val.toString().toLowerCase().indexOf("e") === -1) {
-				val = val.toExponential();
-			}
 			return val;
 		},
 		_toFixed: function (x) {
@@ -5039,6 +5035,8 @@
 					e -= 20;
 					x /= Math.pow(10, e);
 					x += (new Array(e + 1)).join("0");
+				} else {
+					x = Number(x).toFixed();
 				}
 			}
 			return x;
@@ -5284,16 +5282,16 @@
 				.substring(stringValue.toLowerCase().indexOf("e") + 1);
 			num = num / 1;
 			if (scientificPrecision <= 20) {
-				num = num.toFixed(Math.abs(scientificPrecision));
+				stringValue = num.toFixed(Math.abs(scientificPrecision));
 			}
-			return num.toString();
+			return stringValue;
 		},
 		_getDisplayValue: function () { //Numeric Editor
 			var value = this._valueInput.val(),
 				decimalSeparator = this.options.decimalSeparator, decimalPoint = ".",
 				minDecimals = this.options.minDecimals, dataMode = this.options.dataMode,
 				stringValue, displayValue, integerDigits, fractionalDigits,
-				scientificValue, negativeSign,
+				scientificValue, scientificExponent, negativeSign,
 				positivePattern, negativePattern, groups, groupSeparator, symbol = "";
 			if (value === this.options.nullValue || value === "" || isNaN(value)) {
 				if (isNaN(value)) {
@@ -5318,63 +5316,71 @@
 				value = this._parseNumericValueByMode(value, this._numericType, this.options.dataMode);
 			}
 
+			stringValue = value.toString().toLowerCase();
+			if (this.options.scientificFormat) {
+				if (stringValue.indexOf("e") === -1) {
+					stringValue = (stringValue / 1).toExponential();
+					scientificValue = stringValue.split("e")[ 0 ];
+					scientificExponent = stringValue.split(/e\+?/).pop();
+				}
+			} else if (stringValue.indexOf("e") !== -1) {
+				// If the value is in scientific, try to convert:
+				stringValue = this._convertScientificToNumeric(stringValue);
+			}
+			displayValue = stringValue;
+
 			// Min decimals check.
 			if (dataMode === "double" || dataMode === "float") {
-				stringValue = value.toString().toLowerCase();
-				if (this.options.scientificFormat) {
-					if (stringValue.indexOf("e") !== -1) {
-						displayValue = stringValue.replace("e", this._getScientificFormat());
-					} else {
-						scientificValue = (stringValue / 1).toExponential();
-						displayValue = scientificValue.toString().replace("e", this._getScientificFormat());
-					}
-					displayValue = displayValue.replace(decimalPoint, decimalSeparator);
+
+				// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
+				if (stringValue.indexOf("e") !== -1) {
+					displayValue = stringValue;
 				} else {
-					if (stringValue.indexOf("e") !== -1) {
 
-						// If the value is scientific, convert:
-						stringValue = this._convertScientificToNumeric(stringValue);
-					}
-
-					// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
-					if (stringValue.indexOf("e") !== -1) {
-						displayValue = stringValue;
+					// In that case we need to validate the value against the constraints.
+					// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hiddedn input, which is Number, so the decimalSeparator is dot.
+					if (stringValue.indexOf(decimalPoint) !== -1) {
+						fractionalDigits = stringValue
+							.substring(stringValue.indexOf(decimalPoint) + 1);
+						if (fractionalDigits.length < minDecimals) {
+							var missingDecimals = minDecimals - fractionalDigits.length;
+							while (missingDecimals > 0) {
+								fractionalDigits += "0";
+								missingDecimals--;
+							}
+						}
+						integerDigits = stringValue
+							.substring(0, stringValue.indexOf(decimalPoint));
 					} else {
-
-						// In that case we need to validate the value against the constraints.
-						// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hiddedn input, which is Number, so the decimalSeparator is dot.
-						if (stringValue.indexOf(decimalPoint) !== -1) {
+						integerDigits = stringValue;
+						if (minDecimals > 0) {
+							stringValue = parseInt(stringValue).toFixed(minDecimals);
 							fractionalDigits = stringValue
 								.substring(stringValue.indexOf(decimalPoint) + 1);
-							if (fractionalDigits.length < minDecimals) {
-								var missingDecimals = minDecimals - fractionalDigits.length;
-								while (missingDecimals > 0) {
-									fractionalDigits += "0";
-									missingDecimals--;
-								}
-							}
-							integerDigits = stringValue
-								.substring(0, stringValue.indexOf(decimalPoint));
-						} else {
-							integerDigits = stringValue;
-							if (minDecimals > 0) {
-								stringValue = parseInt(stringValue).toFixed(minDecimals);
-								fractionalDigits = stringValue
-									.substring(stringValue.indexOf(decimalPoint) + 1);
-							}
-						}
-						integerDigits = this._applyGroups(integerDigits, groups, groupSeparator);
-						if (fractionalDigits && fractionalDigits.length > 0) {
-							displayValue = integerDigits + decimalSeparator + fractionalDigits;
-						} else {
-							displayValue = integerDigits;
 						}
 					}
+					integerDigits = this._applyGroups(integerDigits, groups, groupSeparator);
+					if (fractionalDigits && fractionalDigits.length > 0) {
+						displayValue = integerDigits + decimalSeparator + fractionalDigits;
+					} else {
+						displayValue = integerDigits;
+					}
 				}
-			} else {
+			} else if (stringValue.indexOf("e") === -1) {
+				// Only apply groups to non-scientific format:
 				displayValue = this._applyGroups(value.toString(), groups, groupSeparator);
-
 			}
+
+			if (this.options.scientificFormat) {
+				// Scientific format:
+				if (scientificExponent > 0) {
+					displayValue = scientificValue + this.options.scientificFormat + scientificExponent;
+				} else {
+					displayValue = stringValue.replace("e", this._getScientificFormat());
+				}
+				displayValue = displayValue.replace(decimalPoint, decimalSeparator);
+			}
+
 			if (value < 0 ) {
 				negativeSign = this.options.negativeSign;
 				displayValue = displayValue.replace("-", "");
@@ -5436,9 +5442,10 @@
 			// value must be numeric
 			if (this.options.scientificFormat) {
 				val = Number(val).toExponential()
-					.replace("e", this._getScientificFormat());
+					.replace("e", this._getScientificFormat())
+					.replace("+", "");
 			} else if (val.toString().indexOf("e") !== -1) {
-				val = this._convertScientificToNumeric(val);
+				val = this._convertScientificToNumeric(val).replace("+", "");
 			}
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
