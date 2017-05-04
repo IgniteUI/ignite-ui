@@ -39,6 +39,8 @@
 	    dateTimePattern: 'd/M/yyyy H:mm',
 	    timePattern: 'H:mm',
 	    timeLongPattern: 'H:mm:ss',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 	    //
 	    numericMaxDecimals: 2,
 	    currencySymbol: 'HK$'
