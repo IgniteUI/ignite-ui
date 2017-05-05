@@ -41,6 +41,8 @@
 		dateTimePattern: 'dd/MM/yyyy HH:mm',
 		timePattern: 'hh:mm tt',
 		timeLongPattern: 'hh:mm:ss tt',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 		am: 'a. m.',
 		pm: 'p. m.',
 		numericNegativePattern: '-n',
