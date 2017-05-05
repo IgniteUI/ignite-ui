@@ -45,6 +45,8 @@ $.ig.regional.ja = {
 	dateTimePattern: 'yyyy/MM/dd HH:mm',
 	timePattern: 'HH:mm',
 	timeLongPattern: 'HH:mm:ss',
+	dateTitleFullPattern: 'yy年m月d日',
+	dateTitleMonthPattern: 'yy年m月',
 	//
 	numericMaxDecimals: 2,
 	currencyNegativePattern: '-$n',
