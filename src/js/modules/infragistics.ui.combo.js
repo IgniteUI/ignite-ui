@@ -6780,6 +6780,7 @@
                 }
 
                 if (noCancel) {
+                    options.selCanceled = false;
 
                     // Update selected data
                     _options.selectedData = newSelData;
@@ -6856,6 +6857,8 @@
                     if (event && !skipEventTrigger) {
                         this._triggerSelectionChanged(newSelItems, prevSelItems, event);
                     }
+                } else {
+                    options.selCanceled = true;
                 }
             } else if (options.closeDropDown) {
 
@@ -6906,6 +6909,7 @@
                 returnType="object" Returns reference to this igCombo, or array of values if the value parameter is provided.
             */
             var selectedValues, selectedItems, i;
+            options = options || {};
 
             // Return value of the value input when called without params
             if (value === undefined) {
@@ -6929,7 +6933,9 @@
             }
 
             this._selectData(this._dataForValues(value), options, event);
-            if (this.options.allowCustomValue && !this.selectedItems()) {
+
+            // R.K. 5th of May 2017 #986: The editor text changes even if selectionChanging event is canceled when allowCustomValue is set to true
+            if (this.options.allowCustomValue && !this.selectedItems() && !options.selCanceled) {
                 this._options.$input.val(value);
                 this._updateInputValues();
 
