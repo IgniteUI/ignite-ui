@@ -43,6 +43,8 @@
 	    dateTimePattern: 'dd/MM/yyyy HH.mm',
 	    timePattern: 'HH.mm',
 	    timeLongPattern: 'HH.mm.ss',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 	    //
 	    numericDecimalSeparator: ',',
 	    numericGroupSeparator: '.',

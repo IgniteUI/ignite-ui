@@ -45,6 +45,8 @@
 	    dateTimePattern: 'yyyy-MM-dd tt hh:mm',
 	    timePattern: 'tt hh:mm',
 	    timeLongPattern: 'tt hh:mm:ss',
+		dateTitleFullPattern: 'yy MM dd',
+		dateTitleMonthPattern: 'yy MM',
 	    //
 	    numericMaxDecimals: 2,
 	    currencyNegativePattern: '-$n',
