@@ -117,14 +117,6 @@
 						selectionOnFocus: "browserDefault",
 						dateInputFormat: "dateTime"
 					});
-					$("#inputEditor15a").igDateEditor({
-						width: 300,
-						value: new Date(2015, 11, 30, 23, 58, 58, 999),
-						buttonType: "clear,spin",
-						selectionOnFocus: "browserDefault",
-						dateInputFormat: "dateTime",
-						spinDelta: 2
-					});
 					$("#inputEditor16").igDateEditor({
 						width: 300,
 						buttonType: "spin",
@@ -676,7 +668,15 @@
 
 			var testId = 'Testing spin hours to next day in edit mode with big spin delta';
 			test(testId, 4, function () {
-				var $dtEditor = $('#inputEditor15a'), today = new Date();
+				var $dtEditor = $("<input/>").appendTo("#testBedContainer").igDateEditor({
+						width: 300,
+						value: new Date(2015, 11, 30, 23, 58, 58, 999),
+						buttonType: "clear,spin",
+						selectionOnFocus: "browserDefault",
+						dateInputFormat: "dateTime",
+						spinDelta: 2
+					}), today = new Date();
+
 				$dtEditor.igDateEditor("setFocus");
 				stop();
 				setTimeout(function () {
@@ -709,10 +709,11 @@
 								expectedValue = new Date(2015, 11, 30, 23, 58, 58, 999);
 								equal(value.getTime(), expectedValue.getTime(), 'The initial value is not as expexted');
 								equal($dtEditor.igDateEditor("displayValue"), "12/30/2015 11:58 PM", 'The initial value is not as expexted');
-							}, 200);
-						}, 200);
-					}, 200);
-				}, 200);
+								$dtEditor.remove();
+							}, 100);
+						}, 100);
+					}, 100);
+				}, 100);
 			});
 
 			var testId = 'Testing spin milliseconds display mode with f mask';
@@ -3540,7 +3541,6 @@
 		<input id="dropdown"/>
 		<input type="text" id="validInEditModeEditor" />
 		<input id="inputEditor15" />
-		<input id="inputEditor15a" />
 		<input id="inputEditor16" />
 		<input id="inputEditor17" />
 		<input id="inputEditor18" />
