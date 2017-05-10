@@ -1795,7 +1795,10 @@ $.ig.dependencies = [
             { name: "igScroll" },
             { name: "_ig_dv_core" },
             { name: "_ig_dv_jquerydom" },
-            { name: "igDataSource" }
+            { name: "igDataSource" },
+            { name: "igShared" },
+            { name: "igCombo" },
+            { name: "igEditors" }
         ],
         scripts: [
             "$path$/modules/infragistics.scheduler.core.js",

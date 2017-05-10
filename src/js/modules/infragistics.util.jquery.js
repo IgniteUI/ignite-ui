@@ -377,6 +377,8 @@
 		dateTimePattern: "M/d/yyyy h:mm tt",
 		timePattern: "h:mm tt",
 		timeLongPattern: "h:mm:ss tt",
+		dateTitleFullPattern: "dd MM yy",
+		dateTitleMonthPattern: "MM yy",
 		negativeSign: "-",
 		numericNegativePattern: "-$n",
 		numericDecimalSeparator: ".",
