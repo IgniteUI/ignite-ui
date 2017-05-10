@@ -9961,7 +9961,9 @@
 						// It is increased an hour earlier. (implemented in the top else block).
 						if (newHour >= 13) {
 							newHour = newHour - hours;
-							amPmUpdateDelta = true;
+							if (newHour > 13 || delta > 1) {
+								amPmUpdateDelta = true;
+							}
 							if (currentAmPm === "pm") {
 								dayUpdateDelta = true;
 							}
@@ -9985,7 +9987,9 @@
 						// N.A. September 15th, 2016 #342: Fix spinning down of the limit value.
 						if (newHour <= 0) {
 							newHour = 12 + newHour;
-							amPmUpdateDelta = true;
+							if (newHour < 0 || delta < -1) {
+								amPmUpdateDelta = true;
+							}
 							if (currentAmPm === "am") {
 								dayUpdateDelta = true;
 							}
