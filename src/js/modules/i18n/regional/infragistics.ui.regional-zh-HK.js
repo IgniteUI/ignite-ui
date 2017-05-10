@@ -1,5 +1,14 @@
 ﻿/* China (Hong Kong SAR, PRC) +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -30,6 +39,8 @@
 	    dateTimePattern: 'd/M/yyyy H:mm',
 	    timePattern: 'H:mm',
 	    timeLongPattern: 'H:mm:ss',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 	    //
 	    numericMaxDecimals: 2,
 	    currencySymbol: 'HK$'
@@ -37,4 +48,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('zh-HK');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

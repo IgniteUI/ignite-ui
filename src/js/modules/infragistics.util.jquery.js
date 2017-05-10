@@ -32,7 +32,7 @@
 	}
 }
 (function ($) {
-	$.ig = window.$.ig || $.ig || { _isNamespace: true };
+	$.ig = (window.$ && window.$.ig) || $.ig || { _isNamespace: true };
 	window.$ig = window.$ig || $.ig;
 
 	$.fn.startsWith = function (str) {
@@ -525,7 +525,7 @@
 					" callCount: " + meths[ k ].callCount);
 			}
 		};
-	}(jQuery));
+	})($);
 
 	// N.A. 10/17/2013 - Bug #155039: The property "offset" is deprecated in 1.9.
 	$.ig.util.jQueryUIMainVersion = $.ui && $.ui.version &&

@@ -5236,6 +5236,11 @@
 				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
 					newValue = this.options.maxValue;
 					this._editorInput.val(this.options.maxValue);
+
+				// I.G. 13/04/2017 #942 'When clearing with the 'clear' button, the value is set to 0 even if 0 is not in the list of items'
+				} else if (this.options.isLimitedToListValues) {
+					newValue = "";
+					this._editorInput.val("");
 				} else {
 					if (this.value()) {
 						newValue = 0;

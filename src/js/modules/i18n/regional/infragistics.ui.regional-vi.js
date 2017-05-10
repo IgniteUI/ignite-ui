@@ -1,5 +1,14 @@
 ﻿/* Vietnam +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -34,6 +43,8 @@
 	    datePattern: 'dd/MM/yyyy',
 	    dateLongPattern: 'dd MMMM yyyy',
 	    dateTimePattern: 'dd/MM/yyyy h:mm tt',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 	    //
 	    numericNegativePattern: '-n$',
 	    numericDecimalSeparator: ',',
@@ -52,4 +63,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('vi');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

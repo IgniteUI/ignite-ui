@@ -1,5 +1,14 @@
 ﻿/* Poland +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -34,6 +43,8 @@
 	    dateTimePattern: 'yyyy-MM-dd HH:mm',
 	    timePattern: 'HH:mm',
 	    timeLongPattern: 'HH:mm:ss',
+		dateTitleFullPattern: 'yy MM dd',
+		dateTitleMonthPattern: 'yy MM',
 	    //
 	    numericNegativePattern: '-n$',
 	    numericDecimalSeparator: ',',
@@ -50,4 +61,4 @@
     if ($.ig.setRegionalDefault) {
     	$.ig.setRegionalDefault('pl');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

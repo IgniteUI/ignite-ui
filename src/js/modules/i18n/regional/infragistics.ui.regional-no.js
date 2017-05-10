@@ -1,5 +1,14 @@
 ﻿/* Norway +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -32,6 +41,8 @@
 	    dateTimePattern: 'dd.MM.yyyy HH:mm',
 	    timePattern: 'HH:mm',
 	    timeLongPattern: 'HH:mm:ss',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 	    //
 	    numericDecimalSeparator: ',',
 	    numericGroupSeparator: ' ',
@@ -49,4 +60,4 @@
     if ($.ig.setRegionalDefault) {
     	$.ig.setRegionalDefault('no');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES
