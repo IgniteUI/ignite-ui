@@ -112,6 +112,9 @@
     <div class="cont">
         <div id="combo-bug-190262"></div>
     </div>
+    <div class="cont">
+        <div id="combo-bug-236423"></div>
+    </div>
 
     <script>
         $(function() {
@@ -136,7 +139,8 @@
                 testId_19 = 'suppressKeyboard interaction',
                 testId_20 = 'suppressKeyboard multiselect',
                 testId_21 = 'Keypress empty selection dropdown combo',
-                testId_22 = 'When selection is single and press enter the list should be closed';
+                testId_22 = 'When selection is single and press enter the list should be closed',
+                testId_23 = 'The editor text changes even if selectionChanging event is canceled when allowCustomValue is set to true';
 
             module("igCombo - selection", {
                 setup: function() {},
@@ -1626,6 +1630,57 @@
                     start();
                     equal($combo.igCombo("dropDownOpened"), false, "Combo drop down should be closed");
                 }, 1000);
+            });
+
+            // Bug #236423
+            test(testId_23, function() {
+                var data, $input, $listItems,
+                    $combo = $("#combo-bug-236423"),
+                    evtCanceled = false, evtDone = false;
+
+                data = ["test", "test1", "test2"];
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dataSource: data,
+                    itemTemplate: '<span>${value}</span>',
+                    autoSelectFirstMatch: false,
+                    allowCustomValue: true,
+                    filteringType: "none",
+                    selectionChanging: function (evt, ui) {
+                        if (ui.items.length <= 0 || ui.items[0].data.text=="test") {
+                            evtDone = true;
+                            return true;
+                        }
+                        evtCanceled = true;
+                        return false;
+                    },
+                });
+
+                $input = $combo.igCombo("textInput");
+                $listItems = $combo.igCombo("dropDown").find(".ui-igcombo-listitem");
+
+                $input.focus();
+                typeInInput("w", $input);
+
+                $combo.igCombo("refreshValue");
+                equal($combo.igCombo("valueInput").val(), "w", "Custom Value is set");
+
+                $combo.igCombo("openDropDown");
+                clickElement($($listItems[1]));
+
+                equal(evtCanceled, true, "Selection event was canceled");
+                equal($input.val(), "w", "Input text not changed");
+                equal($combo.igCombo("value"), "w", "Value was not changed");
+
+                clickElement($($listItems[0]));
+
+                equal(evtDone, true, "Selection event was handled");
+                equal($input.val(), "test", "Input text changed to reflect selection");
+                equal($combo.igCombo("value"), "test" ,"Value was changed to reflect selection");
+
+
             });
         });
     </script>
