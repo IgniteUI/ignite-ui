@@ -2858,9 +2858,9 @@
 									//Close DropDonw
 									this._toggleDropDown();
 								}
-								if (this.options.readOnly) {
-									e.preventDefault();
-								}
+
+								// prevent default arrow action (cursor move or page scroll on readonly):
+								e.preventDefault();
 							}
 						} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
 							if (!this._dropDownList.is(":visible")) {
@@ -2870,9 +2870,7 @@
 								//hover next element
 								this._hoverNextDropDownListItem();
 							}
-							if (this.options.readOnly) {
-								e.preventDefault();
-							}
+							e.preventDefault();
 						} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
 							//Close dropdown
 							this._toggleDropDown();
@@ -4821,9 +4819,9 @@
 						// Spin numeric value
 						this._handleSpinUpEvent();
 					}
-					if (this.options.readOnly) {
-						e.preventDefault();
-					}
+
+					// prevent default arrow action (cursor move or page scroll on readonly):
+					e.preventDefault();
 				} else if (e.keyCode === 40) {//Arrow Down
 					if (e.altKey && this._dropDownList && !this._dropDownList.is(":visible")) {
 
@@ -4839,9 +4837,7 @@
 						// Spin numeric value
 						this._handleSpinDownEvent();
 					}
-					if (this.options.readOnly) {
-						e.preventDefault();
-					}
+					e.preventDefault();
 				} else if (e.keyCode === 27 && this._dropDownList &&
 					this._dropDownList.is(":visible")) { //Escape and dropdown is opened
 
@@ -8045,9 +8041,11 @@
 				// TODO: Optimize this method together with _triggerKeyDown in the igDatePicker.
 				if (key === 38 && !(this instanceof $.ui.igDatePicker)) {
 					this._spinUpEditMode();
+					event.preventDefault();
 				}
 				if (key === 40 && !(this instanceof $.ui.igDatePicker)) {
 					this._spinDownEditMode();
+					event.preventDefault();
 				}
 				if (key === 13) {
 					this._enterEditMode();
@@ -10471,15 +10469,7 @@
 			if (userInteraction) {
 				this._processTextChanged();
 			}
-			if ($.ig.util.isChrome || $.ig.util.isSafari || $.ig.util.isFF) {
-
-				// In Chrome, Safari and FF there is a bug and the cursor needs to be set with timeout in order to work.
-				this._timeouts.push(setTimeout(function () {
-					self._setCursorPosition(cursorPosition);
-				}, 0));
-			} else {
-				self._setCursorPosition(cursorPosition);
-			}
+			self._setCursorPosition(cursorPosition);
 		},
 		_setTimePeriod: function (periodName, delta, userInteraction) {
 			var date, period, newPeriod;
@@ -11202,10 +11192,12 @@
 			if (event.keyCode === 38 && !event.altKey) {
 				if (!event.ctrlKey) {
 					this._spinUpEditMode();
+					event.preventDefault();
 				}
 			} else if (event.keyCode === 40 && !event.altKey) {
 				if (!event.ctrlKey) {
 					this._spinDownEditMode();
+					event.preventDefault();
 				}
 			} else {
 				this._super(event);
