@@ -6692,14 +6692,17 @@
                     keepNavItem (boolean): Set to true to keep current navigation item unchanged after the selection. By default the navigation item is changed to the new selected item.
                     keepScrollPosition (boolean): Set to true to keep current scroll position. By default the scroll position will change so that the last selected item is visible.
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger selection changed event.
-                returnType="object" Returns reference to this igCombo.
+                returnType="object" Returns an object consisting of the following members.
+                    combo (object): Reference to this combo.
+                    selectionCanceled (boolean): Whether or not the selectionChanging event was canceled.
             */
             var items, itemsLen, selectedValues, newSelItems, selAutoSelectedItem,
                 selChanged, additive, prevSelValues, newSelData, skipEventTrigger, noCancel, i,
                 comboOptions = this.options,
                 _options = this._options,
                 multiSelEnabled = comboOptions.multiSelection.enabled,
-                prevSelItems = this.selectedItems();
+                prevSelItems = this.selectedItems(),
+                returnValue = { combo: this, selectionCanceled: false };
 
             // Use first data when multi selection is not enabled
             data = ($.type(data) === "array" && !multiSelEnabled) ? data[ 0 ] : data;
@@ -6714,7 +6717,7 @@
                     this.deselectAll(options, event);
                 }
 
-                return this;
+                return returnValue;
             }
 
             if ($.type(items) !== "array") {
@@ -6780,6 +6783,9 @@
                 } else {
                     noCancel = true;
                 }
+
+                // R.K. 5th of May 2017 #986: The editor text changes even if selectionChanging event is canceled when allowCustomValue is set to true
+                returnValue.selectionCanceled = !noCancel;
 
                 if (noCancel) {
 
@@ -6868,7 +6874,7 @@
                 }
             }
 
-            return this;
+            return returnValue;
         },
         value: function (value, options, event) {
             /* Selects list item/items from the drop-down list by specified value or array of values. When called witout params will return the value of the selected item or if [multiSelection](ui.igcombo#options:multiSelection) is enabled array of selected values.
@@ -6907,7 +6913,7 @@
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [selectionChanging](ui.igcombo#events:selectionChanging) and [selectionChanged](ui.igcombo#events:selectionChanged) events.
                 returnType="object" Returns reference to this igCombo, or array of values if the value parameter is provided.
             */
-            var selectedValues, selectedItems, i;
+            var selectedValues, selectedItems, i, retValue;
 
             // Return value of the value input when called without params
             if (value === undefined) {
@@ -6930,8 +6936,11 @@
                 return selectedValues;
             }
 
-            this._selectData(this._dataForValues(value), options, event);
-            if (this.options.allowCustomValue && !this.selectedItems()) {
+            retValue = this._selectData(this._dataForValues(value), options, event);
+
+            // R.K. 5th of May 2017 #986: The editor text changes even if selectionChanging event is canceled when allowCustomValue is set to true
+            if (this.options.allowCustomValue && !this.selectedItems() &&
+                    !retValue.selectionCanceled) {
                 this._options.$input.val(value);
                 this._updateInputValues();
 
