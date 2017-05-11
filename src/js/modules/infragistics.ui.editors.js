@@ -9998,14 +9998,14 @@
 				if (!is24format) {
 
 					// Update AM/PM and date in 12H format.
-					if (delta > 0 && newHour === 12) {
+					if (delta > 0 && newHour >= 12 && newHour - delta < 12 ) {
 						dayDelta = (delta !== 0) ? 1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "pm") {
 							dayUpdateDelta = true;
 						}
 					}
-					if (delta < 0 && newHour === 11) {
+					if (delta < 0 && newHour < 12 && newHour - delta >= 12) {
 						dayDelta = (delta !== 0) ? -1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "am") {
