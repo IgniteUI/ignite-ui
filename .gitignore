@@ -45,8 +45,5 @@ bower_components
 
 #Build output
 dist
-.idea/ignite-ui.iml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/workspace.xml
+.idea/
 src/css/themes/prepros.cfg

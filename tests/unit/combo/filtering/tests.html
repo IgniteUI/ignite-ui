@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+
+    <script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+    <script type="text/javascript" src="../../../../tests/unit/common/test-util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.combo.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+
+    <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="../sample-data/local-data.js"></script>
+    <script type="text/javascript" src="../sample-data/remote-data.js"></script>
+    <script type="text/javascript" src="../test-shared.js"></script>
+    <style>
+        .cont {
+            margin-top: 75px;
+        }
+    </style>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto; z-index: 100; position: relative;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div class="cont">
+        <div id="combo-div"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-filtering"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-defaultFilteringType"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-lod-local"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-lod-remote"></div>
+    </div>
+    <div class="cont">
+        <div id="local-filtering-virt"></div>
+    </div>
+    <div class="cont">
+        <div id="turkish-case-insensitive"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-bug-200569"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-189514"></div>
+    </div>
+    <div class="cont">
+        <div id="filteringExpressions"></div>
+    </div>
+    <div class="cont">
+        <div id="combo-remote-filtering-blur"></div>
+    </div>
+
+    <script>
+        $(function() {
+            var testId_1 = 'Generate expressions from texts for filtering',
+                testId_2 = 'Filtering by texts',
+                testId_3 = 'Set default filtering type',
+                testId_4 = 'Load on demand with local filtering type',
+                testId_5 = 'Load on demand with remote filtering type',
+                testId_6 = 'Local filtering with virtualization',
+                testId_7 = 'Only lowercase items returned by igCombo filtering when filtering by turkish symbol ı',
+                testId_8 = 'When fitering is remote and multiSelection is enabled input value is not cleared after clicking outside the combo',
+                testId_9 = 'In LoadOnDemand and virtualization when filtering is local, data is not filtered',
+                testId_10 = 'Filtering event arguments',
+                testId_11 = 'While remotely filtering combo is loading and blurred it should clear the input and close dropdown';
+
+            $.mockjaxSettings.logging = 0;
+
+            $.mockjax({
+                url: "http://localhost/api/invoices*",
+                dataType: 'json',
+                contentType: "application/json",
+                responseTime: 500,
+                response: function (settings) {
+                    var responseText = remoteData;
+                    if (settings.data.$filter && settings.data.$filter === "indexof(tolower(ProductName),'pavlova') ge 0") {
+                        responseText = $.map(responseText, function (val, i) {
+                            if (val.ProductName.toLowerCase().indexOf('pavlova') !== -1) {
+                                return val;
+                            }
+                        });
+                    }
+
+                    if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+                        responseText = {
+                            "Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+                            "Count": remoteData.length
+                        }
+                    }
+
+                    this.responseText = {
+                        "d": {
+                            "results": responseText
+                        }
+                    }
+                }
+            });
+
+            $.mockjax({
+                url: "http://localhost/api/employees*",
+                dataType: 'json',
+                contentType: "application/json",
+                responseTime: 500,
+                response: function (settings) {
+                    var responseText = remoteData;
+
+                    if (settings.data.$inlinecount && settings.data.$inlinecount === "allpages") {
+                        responseText = {
+                            "Results": responseText.slice(settings.data.$skip, settings.data.$skip + settings.data.$top),
+                            "Count": remoteData.length
+                        }
+                    }
+
+                    this.responseText = {
+                        "d": {
+                            "results": responseText
+                        }
+                    }
+                }
+            });
+
+            module("IgCombo - filtering", {
+                setup: function() {},
+                teardown: function() {}
+            });
+
+            // Filtering
+            test(testId_1, function () {
+                var resultText, resultTexts,
+                    $combo = $('#combo-div').igCombo({
+                        animationShowDuration: 0,
+                        valueKey: 'id',
+                        textKey: 'name',
+                        dataSource: [{
+					        id: '1',
+					        name: 'Tom'
+					    }, {
+					        id: '2',
+					        name: 'Jerry'
+					    }]
+                    }),
+					combo = $('#combo-div').data().igCombo,
+
+					// text
+					inputText = "Bob",
+					expectedTextResult = [{
+					    cond: "contains",
+					    expr: "Bob",
+					    fieldName: "name"
+					}],
+
+					// texts
+					inputTexts = ["Bob", "Mary"],
+					expectedTextsResult = [{
+					    cond: "contains",
+					    expr: "Bob",
+					    fieldName: "name",
+					    logic: "OR"
+					}, {
+					    cond: "contains",
+					    expr: "Mary",
+					    fieldName: "name",
+					    logic: "OR"
+					}],
+
+				// not supported types
+				inputNotSupportedTexts = [{}, null, undefined];
+
+                resultText = combo._generateExpressions(inputText);
+                deepEqual(resultText, expectedTextResult, "The expression from the text is not generated correct.");
+
+                resultTexts = combo._generateExpressions(inputTexts);
+                deepEqual(resultTexts, expectedTextsResult, "The expressions from the texts are not generated correct.");
+
+                for (var i = 0; i < inputNotSupportedTexts.length; i++) {
+                    throws(
+						function () {
+						    combo._generateExpressions(inputNotSupportedTexts[i]);
+						},
+						/*
+						function(err) {
+						  return err.toString() === "some error description";
+						},
+						*/
+						"raised error on not supported text"
+					);
+                };
+
+                throws(
+					function () {
+					    combo._generateExpressions(inputNotSupportedTexts);
+					},
+					/*
+					function(err) {
+					  return err.toString() === "some error description";
+					},
+					*/
+					"raised error on not supported texts"
+				);
+            });
+
+            // Filtering by texts
+            test(testId_2, function () {
+                var $comboElem = $("#combo-filtering"),
+					itemsCount = 40,
+
+					// text
+					filteringText = "magna",
+					expectedFilteringTextResult = 2,
+
+					// texts
+					filteringTexts = ["duis", "dolor"],
+					expectedFilteringTextsResult = 3,
+					$listItems, combo;
+
+                $comboElem.igCombo({
+                    width: 200,
+                    height: 30,
+                    valueKey: 'id',
+                    textKey: 'name',
+                    dataSource: localData,
+                    dataSourceType: "json",
+                    filteringType: "local",
+                    dropDownAttachedToBody: false
+                });
+
+                combo = $comboElem.data().igCombo;
+
+                combo.options.filteringType = "local";
+
+                // local filtering tests
+                equal(combo.options.filteringType, "local", "The filtering should be local.");
+
+                combo.filter(filteringText);
+
+                $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder').children().not('.ui-helper-hidden');
+
+                equal($listItems.length, expectedFilteringTextResult, "The items are not filtered when text is passed.");
+
+                combo.clearFiltering();
+
+                $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder').children();
+
+                equal($listItems.length, itemsCount, "Clear filtering is not working.");
+
+                combo.filter(filteringTexts);
+
+                $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder').children().not('.ui-helper-hidden');
+
+                equal($listItems.length, expectedFilteringTextsResult, "The items are not filtered when texts are passed.");
+
+                combo.clearFiltering();
+
+                combo.options.filteringType = "none";
+
+                combo.filter(filteringText);
+
+                $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder')
+								.children();
+
+                equal($listItems.length, itemsCount, "The items should not be filtered when filteringType is null.");
+
+                // remote filtering tests
+                // TODO: use set methods
+                combo.options.filteringType = "remote";
+                combo.options.responseDataKey = "d.results";
+                combo.options.dataSource = "http://localhost/api/invoices?callback=?";
+                combo.options.dataSourceType = "json";
+                combo.options.textKey = "ProductName";
+                combo._initDataSource();
+
+                equal(combo.options.filteringType, "remote", "The filtering should be remote.");
+
+                combo.filter("pavlova", {});
+                stop();
+                $comboElem.igCombo({
+                    filtered: function (evt, ui) {
+                        start();
+                        $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder')
+                                            .children();
+
+                        equal($listItems.length, 43, "The items should not be filtered when filteringType is null.");
+                    }
+                });
+            });
+
+            // Default filtering value
+            test(testId_3, function () {
+                var filteringType,
+					$combo = $('#combo-defaultFilteringType'),
+					dataSource = [{ ID: 1, Name: "John" },
+						{ ID: 2, Name: "Mary" },
+						{ ID: 3, Name: "Bob" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    filteringType: 'nonExistentType'
+                });
+
+                filteringType = $combo.igCombo('option', 'filteringType');
+
+                strictEqual(filteringType, "none", "The filtering type did not match");
+            });
+
+            // Load on demand with local filtering type
+            test(testId_4, function () {
+                var $listItems, combo, jsonSchema, dataSource
+                $comboElem = $("#combo-lod-local")
+                dataSourceUrl = "http://localhost/api/invoices?callback=?";
+
+                jsonSchema = new $.ig.DataSchema("json", {
+                    fields: [{ name: "ProductName", type: "string" }]
+                });
+
+                dataSource = new $.ig.DataSource({ type: "json", dataSource: dataSourceUrl, schema: jsonSchema }).dataBind();
+
+                $comboElem.igCombo({
+                    width: 200,
+                    height: 30,
+                    textKey: 'ProductName',
+                    responseDataKey: "d.results.Results",
+                    responseTotalRecCountKey: "d.results.Count",
+                    dataSource: dataSource.data(),
+                    dataSourceType: "json",
+                    dataSourceUrl: dataSourceUrl,
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dropDownAttachedToBody: false,
+                    loadOnDemandSettings: {
+                        enabled: true
+                    },
+                    filteringType: "local",
+                    filtered: function (evt, ui) {
+                        $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder').children().not('.ui-helper-hidden');
+
+                        equal($listItems.length, 1, "1 item should be filtered when load on demand is enabled and filteringType is local.");
+
+                        $dropDownCont = $comboElem.find('.ui-igcombo-list');
+
+                        equal($dropDownCont.prop('scrollHeight'), $dropDownCont.height(), "All items should be visible.");
+
+                        start();
+                    }
+                });
+
+                combo = $comboElem.data().igCombo;
+
+                stop();
+                combo.filter("chai", {});
+            });
+
+            // Load on demand with remote filtering type
+            test(testId_5, function () {
+                var $listItems, combo,
+                    $comboElem = $("#combo-lod-remote"),
+                    itemsRenderedFiredCount = 0,
+                    pageSize = 16,
+                    itemsRenderedFiredCountForNextChunk = [2, 3],
+                    itemsRenderedFiredCountForAssert = 4;
+
+                $comboElem.igCombo({
+                    width: 200,
+                    height: 30,
+                    textKey: 'ProductName',
+                    responseDataKey: "d.results.Results",
+                    responseTotalRecCountKey: "d.results.Count",
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dropDownAttachedToBody: false,
+                    loadOnDemandSettings: {
+                        enabled: true
+                    },
+                    filteringType: "remote",
+                    filtered: function (evt, ui) {
+                        $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder').children().not('.ui-helper-hidden');
+                        equal($listItems.length, pageSize, "16 items should be filtered when load on demand is enabled and filteringType is remote.");
+                    },
+                    itemsRendered: function (evt, ui) {
+                        itemsRenderedFiredCount++;
+                        if ($.inArray(itemsRenderedFiredCount, itemsRenderedFiredCountForNextChunk) != -1) {
+                            ui.owner._nextChunk();
+                        }
+
+                        if (itemsRenderedFiredCount == itemsRenderedFiredCountForAssert) {
+                            $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder').children().not('.ui-helper-hidden');
+                            equal($listItems.length, 43, "43 items should be filtered when load on demand is enabled and filteringType is remote.");
+
+                            start();
+                        }
+                    }
+                });
+
+                combo = $comboElem.data().igCombo;
+
+                stop();
+                combo.filter("pavlova", {});
+            });
+
+            // Local filtering with virtualization
+            test(testId_6, function () {
+                var filteredItems, allItems,
+                   $combo = $("#local-filtering-virt");
+
+                $combo.igCombo({
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    textKey: "ProductName",
+                    valueKey: "ProductID",
+                    responseDataKey: "d.results",
+                    allowCustomValues: true,
+                    filteringType: "local",
+                    virtualization: true
+                });
+
+                stop(); // Pause the test
+                //Add your wait
+                setTimeout(function () {
+                    //Make assertion
+                    start();
+                    $combo.igCombo("filter", "Sauerkraut");
+                    filteredItems = $combo.igCombo("filteredItems");
+                    equal(filteredItems.length, 33, "Filtered items are 33");
+                    allItems = $combo.igCombo("items");
+                    equal(allItems.length, 2155, "Items are 2155");
+                }, 2000);
+
+            });
+
+            asyncTest(testId_7, function () {
+                var $combo = $("#turkish-case-insensitive"),
+                    $input, $listItemsDiv, $items;
+
+                var data = [
+                    { Id: 11, Description: "ADAPAZARI" },
+                    { Id: 22, Description: "Adapazarı" }
+                ];
+
+
+                $combo.igCombo({
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    width: '270px',
+                    valueKey: 'Id',
+                    caseSensitive: false,
+                    textKey: 'Description',
+                    dataSource: data
+                });
+
+                $input = $combo.find('.ui-igcombo-field');
+
+                typeInInput("ı", $input);
+                setTimeout(function () {
+                    start();
+                    $listItemsDiv = $combo.igCombo("dropDown");
+                    $items = $listItemsDiv.find("li").not(".ui-helper-hidden");
+                    equal($items.length, 2, "Should return 2 matches");
+                }, 300);
+            });
+
+            // Bug #200569
+            test(testId_8, function () {
+                var data, $input, $listItems, $dropDownButton,
+                    $combo = $("#combo-bug-200569");
+
+                $combo.igCombo({
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    responseDataKey: "d.results",
+                    textKey: "Salesperson",
+                    height: "600px",
+                    dropDownOrientation: "auto",
+                    filteringType: "remote",
+                    noMatchFoundText: "not found",
+                    multiSelection: { enabled: true }
+                });
+                $combo.data().igCombo._options.$dropDownListCont.outerHeight(1000);
+                $input = $combo.igCombo("textInput");
+                $input.focus();
+                typeInInput("v,", $input);
+                $dropDownButton = $combo.data().igCombo._options.$dropDownBtnCont;
+
+                stop();
+                setTimeout(function () {
+                    start();
+                    $dropDownButton.click();
+                    stop();
+                    setTimeout(function () {
+                        start();
+                        equal($combo.igCombo("dropDownOpened"), false, "Combo drop down should be closed");
+                        equal($combo.igCombo("text"), "", "Text in input is empty string");
+                    }, 1000);
+
+                }, 2000);
+
+            });
+
+            // In LoadOnDemand and virtualization when filtering is local, data is not filtered
+            test(testId_9, function () {
+                var items,
+                    $combo = $("#combo-189514");
+
+                $combo.igCombo({
+                    dataSourceUrl: "http://localhost/api/invoices?callback=?",
+                    responseDataKey: "d.results",
+                    textKey: "ProductName",
+                    valueKey: "OrderID",
+                    noMatchFoundText: "no data",
+                    virtualization: true,
+                });
+
+                equal($combo.igCombo("option", "dataSourceUrl"), "http://localhost/api/invoices?callback=?", "DataSource is set the dataSourceUrl");
+                notEqual($combo.igCombo("option", "dataSource"), null, "DataSource is set the dataSourceUrl");
+                equal($combo.igCombo("option", "validatorOptions"), null, "validatorOptions is not set");
+                //set validator options
+                $combo.igCombo("option", "validatorOptions", {
+                    required: true
+                });
+                equal($combo.igCombo("option", "validatorOptions").required, true, "validatorOptions is not set");
+
+                //set itemTemplate options
+                $combo.igCombo("option", "itemTemplate", "<span>Item text is ${ProductName}</span>");
+                $combo.igCombo("openDropDown");
+
+
+                stop();
+                setTimeout(function () {
+                    start();
+                    $items = $combo.igCombo("items");
+                    equal($items[0].element[0].innerHTML, "<span>Item text is Queso Cabrales</span>", "ItemTemplate is set and rendered");
+                }, 2000);
+            });
+
+            test(testId_10, function() {
+
+                var data, $combo, timesCalled = 0;
+
+                data = [
+                    { "ID":1, "Name": "John Smith", "Age": 45 },
+                    { "ID":2, "Name": "Mary Johnson", "Age": 32 },
+                    { "ID":3, "Name": "Bob Ferguson", "Age": 27 }
+                ];
+                $combo = $('#filteringExpressions');
+                $combo.igCombo({
+                    dataSource: data,
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    valueKey: "ID",
+                    textKey: "Name",
+                    filteringType: "local",
+                    filtering: function(ev, ui) {
+                        timesCalled++;
+                        if (timesCalled == 1) {
+                            equal(ui.expression[0].expr, 'mary', "Expression matches");
+                        } else {
+                            equal(ui.expression[0].expr, 'sue', 'Expression matches');
+                        }
+
+                    }
+			    });
+
+                $combo.igCombo('filter', 'mary', true);
+                $combo.igCombo('filter', 'sue', true);
+                equal(timesCalled, 2, 'Handler called 2 times');
+            });
+
+            // While remotely filtering combo is loading and blurred it should clear the input and close dropdown
+            test(testId_11, function () {
+                var $comboWrapper = $("#combo-remote-filtering-blur"),
+                    $input,
+                    currentMockjaxSettingsReposnseTime = $.mockjaxSettings.responseTime,
+                    requiredMockjaxSettingsReposnseTime = 1000;
+
+                $.mockjaxSettings.responseTime = requiredMockjaxSettingsReposnseTime;
+
+                $comboWrapper.igCombo({
+                    dataSource: "http://localhost/api/invoices?callback=?",
+                    dataSourceType: "json",
+                    textKey: "ProductName",
+                    valueKey: "ProductID",
+                    responseDataKey: "d.results",
+                    filteringType: "remote",
+                    autocomplete: true
+                });
+
+                $input = $comboWrapper.igCombo("textInput");
+                typeInInput("qwerty", $input);
+
+                // We are going to blur in the middle of the loading
+                var blurAfter = Math.floor($.mockjaxSettings.responseTime / 2);
+                stop();
+                setTimeout(function () {
+                    $input.blur();
+                    $comboWrapper.igCombo({
+                        // Filtered event is used because after the dropdown is closed while loading clear filtering is called
+                        filtered: function (evt, ui) {
+                            strictEqual(ui.owner.dropDownOpened(), false, "Dropdown should be closed when load on demand is enabled and blur while loading.");
+                            strictEqual($input.val(), "", "Dropdown input should be empty when load on demand is enabled and blur while loading.");
+                            start();
+                            $.mockjaxSettings.responseTime = currentMockjaxSettingsReposnseTime;
+                        }
+                    });
+                }, blurAfter)
+            });
+        });
+    </script>
+</body>
+</html>

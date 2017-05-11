@@ -80,6 +80,8 @@
 	    dateTimePattern: 'MM/dd/yyyy hh:mm tt',
 	    timePattern: 'hh:mm tt',
 	    timeLongPattern: 'hh:mm:ss tt',
+		dateTitleFullPattern: 'yy dd MM',
+		dateTitleMonthPattern: 'yy MM',
 	    //
 	    numericNegativePattern: 'n$-',
 	    numericMaxDecimals: 2,

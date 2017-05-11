@@ -1011,6 +1011,10 @@ body .ui-tooltip {
   font-weight: normal;
   border: 0;
 }
+/* Bug #741 S.D. 20.04.2017 When bootstrap theme used with bootstrap css text in editor can't be seen when editor has focus*/
+.ui-state-focus input:focus {
+  color: initial;
+}
 /* Interaction Cues
 ----------------------------------*/
 .ui-iggrid-colasc .ui-state-highlight {
@@ -2086,7 +2090,7 @@ body .ui-tooltip {
   border-top: none!important;
 }
 .ui-iggrid-layout-helper {
-  border-bottom: 1px solid #4e5d6c !important;
+  border-bottom: 1px solid #4E5D6C;
 }
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
 .ui-iggrid-layout-helper > tbody > tr:first-child > td th,
@@ -2348,8 +2352,6 @@ body .ui-tooltip {
   background-color: #3d4954;
   color: #fff;
 }
-.ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
-.ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-iggrid-filterddlist li.ui-state-active,
 .ui-iggrid-filterddlistitem.ui-state-active a,
 .ui-iggrid-featurechooser-list li.ui-state-active,
@@ -2550,7 +2552,7 @@ body .ui-tooltip {
 .ui-iggrid .ui-iggrid-mergedcellsbottom.ui-state-highlight {
   border-bottom-color: #4E5D6C;
 }
-.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
   border-bottom: 1px solid #4E5D6C;
 }
 /************/
@@ -3180,6 +3182,8 @@ body .ui-tooltip {
 .ui-igcombo-field {
   color: #333;
 }
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
+.ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-igcombo-listitem.ui-state-hover.ui-igcombo-item-in-focus,
 .ui-igcombo-listitem.ui-state-active.ui-igcombo-item-in-focus,
 .ui-igcombo-listitem.ui-state-default.ui-igcombo-item-in-focus {
@@ -3751,13 +3755,23 @@ body .ui-tooltip {
 .ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
 .ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
   background-color: transparent;
-  color: #888;
 }
-
+.ui-igscheduler-core .ui-igscheduler-monthview-day-leading span,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-trailing span {
+  color: #4E5D6C;
+}
 .ui-igscheduler-selectall {
   background-color: #DF691A;
 }
-
+.ui-igscheduler-appointment-dialog-save-button,
+.ui-igscheduler-appointment-dialog-cancel-button {
+  border-color: #4E5D6C;
+  background: #dadada;
+}
+.ui-igscheduler-appointment-dialog-save-button:hover,
+.ui-igscheduler-appointment-dialog-cancel-button:hover {
+  background: #e8e8e8;
+}
 .ui-igscheduler-navigator-back-button:hover,
 .ui-igscheduler-navigator-date-range-button:hover,
 .ui-igscheduler-navigator-forward-button:hover {
