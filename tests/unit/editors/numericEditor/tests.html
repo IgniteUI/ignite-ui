@@ -782,7 +782,7 @@
 		});
 
 		testId = "Convert between Scientific and fixed-point formats (dateMode, scientificFormat, min/maxDecimals)";
-		test(testId, 56, function () {
+		test(testId, 72, function () {
 			var $editor, $editorInput,
 				setup = [{
 					//1: #761: Wrong value when setting the value to a number with too many digits
@@ -815,23 +815,23 @@
 					displayed: "1e+21",
 					editText: "1e21"
 				}, {
-					//6: 
+					//6: Force convert to int
 					options: { dateMode: "int", value: 1e-21 },
 					value: 0,
 					displayed: "0",
 					editText: "0"
 				}, {
-					//7: 
-					options: { scientificFormat: "e", value: 1.332e-7 },
-					value: 1.332e-7,
-					displayed: "1.332e-7",
-					editText: "1.332e-7"
+					//7: Round decimals
+					options: { scientificFormat: "e", value: 1.332e-7, maxDecimals: 2 },
+					value: 1.33e-7,
+					displayed: "1.33e-7",
+					editText: "1.33e-7"
 				}, {
-					//8: 
-					options: { scientificFormat: "e+", decimalSeparator: ",", groupSeparator: " ", value: 1.332e-7 },
-					value: 1.332e-7,
-					displayed: "1,332e-7",
-					editText: "1,332e-7"
+					//8: Round decimals, decimalSeparator
+					options: { scientificFormat: "e+", decimalSeparator: ",", groupSeparator: " ", value: 1.338e-7 },
+					value: 1.34e-7,
+					displayed: "1,34e-7",
+					editText: "1,34e-7"
 				}, {
 					//9: 
 					options: { scientificFormat: "e+", value: 1, dataMode: "int" },
@@ -868,6 +868,30 @@
 					value: 2147483647, //intMaxValue
 					displayed: "2,147,483,647",
 					editText: "2147483647"
+				}, {
+					//15: Very large sceintific in double (no decimal cut)
+					options: { value: 1.56547e+55, dataMode: "double", scientificFormat: "E+" },
+					value: 1.56547e+55,
+					displayed: "1.56547E+55",
+					editText: "1.56547E55"
+				}, {
+					//16: Very small sceintific in double (decimal round)
+					options: { value: 1.56547e-55, dataMode: "double", scientificFormat: "E+" },
+					value: 1.57e-55,
+					displayed: "1.57E-55",
+					editText: "1.57E-55"
+				}, {
+					//17: Very small sceintific in float (decimal cut)
+					options: { value: "1.5699e-51", dataMode: "float", roundDecimals:false, scientificFormat: "e" },
+					value: 1.56e-51,
+					displayed: "1.56e-51",
+					editText: "1.56e-51"
+				}, {
+					//18: Value expand from sting entry
+					options: { value: "156.547e-53", dataMode: "float", roundDecimals:false, scientificFormat: "e" },
+					value: 1.56e-51,
+					displayed: "1.56e-51",
+					editText: "1.56e-51"
 				}];
 
 			for (var i = 0; i < setup.length; i++) {

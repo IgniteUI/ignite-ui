@@ -4920,11 +4920,10 @@
 			}
 		},
 		_parseNumericValueByMode: function (value, numericEditorType, dataMode) { //NumericEditor
-			var val, stringValue, decimalSeparator, groupSeparator, minDecimals, maxDecimals;
-			decimalSeparator = this.options.decimalSeparator;
-			groupSeparator = this.options.groupSeparator;
-			minDecimals = this.options.minDecimals;
-			maxDecimals = this.options.maxDecimals;
+			var val, stringValue, exponent, exponentIndex,
+				decimalSeparator = this.options.decimalSeparator,
+				groupSeparator = this.options.groupSeparator,
+				maxDecimals = this.options.maxDecimals;
 
 			if (value === null || value === "") { // TODO VERIFY _validateValue and _updateValue both have cases calling parse with null!
 				return value;
@@ -4955,15 +4954,24 @@
 			if (dataMode === "double" || dataMode === "float") {
 				stringValue = value.toString().toLowerCase();
 				if (stringValue.indexOf("e") !== -1) {
-					if (this.options.scientificFormat) {
-						// In that case leave the value as it is
-						// TODO work on validation method
-						return Number(value);
-					}
+					val = value = Number(value);
 
-					// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
-					// If scientific value when not enabled, expand to fixed-point notation and carry on with processsing
-					stringValue = (+value).toFixed(this.options.maxDecimals);
+					// values with negative exponent (less than 1) go through maxDecimal handling:
+					if (value < 1) {
+						if (!this.options.scientificFormat) {
+							// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
+							// If scientific value when not enabled, expand to fixed-point notation and carry on with processsing
+							stringValue = value.toFixed(this.options.maxDecimals + 1);
+						} else {
+							//refresh stringValue in case the original value entered has more than one digit before the decimal sep.
+							stringValue = value.toString().toLowerCase();
+							exponentIndex = stringValue.indexOf("e");
+							exponent = stringValue.substring(exponentIndex + 1);
+							stringValue = stringValue.substring(0, exponentIndex);
+						}
+					} else {
+						return value;
+					}
 				}
 
 				// In that case we need to validate the value against the constraints.
@@ -4980,7 +4988,7 @@
 
 						// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
 						if (this.options.roundDecimals) {
-							stringValue = Math.round10(value, -maxDecimals).toString();
+							stringValue = Math.round10(stringValue, -maxDecimals).toFixed(maxDecimals);
 							if (stringValue.indexOf(decimalSeparator) > -1) {
 								fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
 							} else {
@@ -4996,13 +5004,16 @@
 						integerDigits = stringValue;
 					}
 
-					//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
-					val = (integerDigits + "." + fractionalDigits) / 1;
-				} else {
+					val = integerDigits + "." + fractionalDigits;
+					if (exponent) {
+						val += "e" + exponent;
+					}
 
+					//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
+					val = val / 1;
+				} else if (!exponent) {
 					//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
-					// D.P: Don't parseInt as it won't handle scientific, use Number instead
-					val = parseFloat(Number(value).toFixed());
+					val = parseInt(value);
 				}
 			} else {
 				if (value.toString().toLowerCase().indexOf("e") !== -1) {
