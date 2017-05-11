@@ -5002,7 +5002,7 @@
 
 					//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
 					// D.P: Don't parseInt as it won't handle scientific, use Number instead
-					val = parseFloat(Number(value).toFixed(minDecimals));
+					val = parseFloat(Number(value).toFixed());
 				}
 			} else {
 				if (value.toString().toLowerCase().indexOf("e") !== -1) {
@@ -5261,8 +5261,9 @@
 				scientificPrecision = stringValue
 				.substring(stringValue.toLowerCase().indexOf("e") + 1);
 			num = num / 1;
+			scientificPrecision = Math.abs(scientificPrecision);
 			if (scientificPrecision <= 20) {
-				stringValue = num.toFixed(Math.abs(scientificPrecision));
+				stringValue = num.toFixed(scientificPrecision);
 			}
 			return stringValue;
 		},
@@ -5602,8 +5603,8 @@
 				this._editorInput.val(currVal);
 				this._processTextChanged();
 			} else {
-
 				noCancel = this._triggerValueChanging(currVal);
+
 				// Trigger value changing
 				if (noCancel) {
 					this._updateValue(currVal);
