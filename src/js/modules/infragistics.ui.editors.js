@@ -4947,7 +4947,7 @@
 					value = value.replace(this.options.currencySymbol, "").trim();
 				}
 
-				// D.P. decimalSeparator replace before any parsing, regardless of mode! (ensure scientific decimals are parsed correctly)
+				// D.P. decimalSeparator replace before any parsing, regardless of mode (ensure scientific decimals are parsed correctly)
 				if (value.indexOf(decimalSeparator) !== -1) {
 					value = value.replace(decimalSeparator, ".");
 				}
@@ -5006,7 +5006,7 @@
 				}
 			} else {
 				if (value.toString().toLowerCase().indexOf("e") !== -1) {
-					value = this._toFixed(value.toString().toLocaleLowerCase());
+					value = Number(value).toFixed();
 				}
 				if (this._numericType === "percent" &&
 					this.options.displayFactor === 100 &&
@@ -5020,26 +5020,6 @@
 				}
 			}
 			return val;
-		},
-		_toFixed: function (x) {
-			var e;
-			if (Math.abs(x) < 1.0) {
-				e = parseInt(x.toString().split("e-")[ 1 ]);
-				if (e) {
-					x *= Math.pow(10, e - 1);
-					x = "0." + (new Array(e)).join("0") + x.toString().substring(2);
-				}
-			} else {
-				e = parseInt(x.toString().split("+")[ 1 ]);
-				if (e > 20) {
-					e -= 20;
-					x /= Math.pow(10, e);
-					x += (new Array(e + 1)).join("0");
-				} else {
-					x = Number(x).toFixed();
-				}
-			}
-			return x;
 		},
 		_multiplyWithPrecision: function (value1, value2, precision) {
 
@@ -5623,8 +5603,8 @@
 				this._processTextChanged();
 			} else {
 
-				// Trigger value changing
 				noCancel = this._triggerValueChanging(currVal);
+				// Trigger value changing
 				if (noCancel) {
 					this._updateValue(currVal);
 					this._exitEditMode();

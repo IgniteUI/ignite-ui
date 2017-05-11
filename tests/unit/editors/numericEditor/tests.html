@@ -782,7 +782,7 @@
 		});
 
 		testId = "Convert between Scientific and fixed-point formats (dateMode, scientificFormat, min/maxDecimals)";
-		test(testId, 52, function () {
+		test(testId, 56, function () {
 			var $editor, $editorInput,
 				setup = [{
 					//1: #761: Wrong value when setting the value to a number with too many digits
@@ -862,6 +862,12 @@
 					value: 1e-7,
 					displayed: "1E-7",
 					editText: "1E-7"
+				}, {
+					//14: Very large sceintific in int mode (caps at maxValue)
+					options: { value: 1e+45, dataMode: "int" },
+					value: 2147483647, //intMaxValue
+					displayed: "2,147,483,647",
+					editText: "2147483647"
 				}];
 
 			for (var i = 0; i < setup.length; i++) {
