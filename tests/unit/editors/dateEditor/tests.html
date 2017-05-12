@@ -667,9 +667,9 @@
 			});
 
 			var testId = 'Testing spin hours to next day in edit mode with big spin delta';
-			test(testId, 16, function () {
+			test(testId, 20, function () {
 				
-				function testSpinHours(options, hoursPos, spins, textAfterSpinUp) {
+				function testSpinHours(options, hoursPos, spins, textAfterSpinUp, hoursOnly) {
 					var $dtEditor = $("<input/>").appendTo("#testBedContainer").igDateEditor(options),
 						value = new Date(options.value), //clone
 						textAfterSpinDown,
@@ -689,7 +689,12 @@
 
 						equal($dtEditor.igDateEditor("field").val(), textAfterSpinUp, 'Display is not as expected after spin up');
 						keyInteraction(13, $dtEditor.igDateEditor("field"));
-						equal($dtEditor.igDateEditor("value").getTime(), value.getTime(), 'Value is not as expected after spin up');
+						if (hoursOnly) {
+							equal($dtEditor.igDateEditor("value").getHours(), value.getHours(), 'Hours not as expected after spin up');
+						} else {
+							equal($dtEditor.igDateEditor("value").getTime(), value.getTime(), 'Value is not as expected after spin up');
+						}
+						
 
 						$dtEditor[0].setSelectionRange(hoursPos, hoursPos);
 						for (var i = 0; i < spins; i++) {
@@ -699,8 +704,12 @@
 						
 						equal($dtEditor.igDateEditor("field").val(), textAfterSpinDown, 'Display is not as expected after spin down');
 						$dtEditor.trigger("blur");
-						equal($dtEditor.igDateEditor("value").getTime(), value.getTime(), 'Value is not as expected after spin down');
-						$dtEditor.remove();
+						if (hoursOnly) {
+							equal($dtEditor.igDateEditor("value").getHours(), value.getHours(), 'Hours not as expected after spin up');
+						} else {
+							equal($dtEditor.igDateEditor("value").getTime(), value.getTime(), 'Value is not as expected after spin up');
+						}
+						//$dtEditor.remove();
 						stop();
 						defer.resolve();
 					}, 100);
@@ -741,7 +750,7 @@
 						dataMode: "date",
 						buttonType: "spin",
 						spinDelta: 5
-					}, 5, 3, "02 14:00");
+					}, 4, 3, "02 14:00");
 				})
 				.then(function() {
 					return testSpinHours({
@@ -752,6 +761,15 @@
 						spinDelta: 5
 					}, 5, 5, "03 12:00 AM");
 				})
+				.then(function() {
+					return testSpinHours({
+						dateInputFormat: "hh:mm",
+						value: new Date(2016, 1, 1, 1, 0),
+						dataMode: "date",
+						buttonType: "spin",
+						spinDelta: 15
+					}, 2, 5, "04:00" /* 01 -> 04 -> 07-> 10 */, true);
+				})				
 				.then(start, start);
 				
 			});
