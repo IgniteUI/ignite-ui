@@ -6968,7 +6968,14 @@
 			}
 		},
 		_getDisplayValue: function () { //igMaskEditor
-			var result, maskedVal = this._maskedValue,
+			return this._replaceValueInMask(this.options.unfilledCharsPrompt, this.options.padChar);
+		},
+		_getMaskedValue: function (maskedValue) {
+			return this._replaceValueInMask(this.options.emptyChar, this.options.unfilledCharsPrompt,
+				maskedValue);
+		},
+		_replaceValueInMask: function (oldChar, newChar, maskedValue) {
+			var result, maskedVal = maskedValue || this._maskedValue,
 				i, j, p, maskChar, tempChar, index, regExpr,
 				inputMask = this.options.inputMask, maskFlagsArray = this._maskFlagsArray;
 
@@ -6995,13 +7002,13 @@
 					continue;
 				}
 
-				if (maskedVal.charAt(i) === this.options.unfilledCharsPrompt) {
+				if (maskedVal.charAt(i) === oldChar) {
 					maskChar = inputMask.charAt(j);
 					if (maskChar === "&" || maskChar === "A" ||
 						maskChar === "L" || maskChar === "0") {
 
 						// All the required fields, which are unfilled are replaced with the padChar
-						result = this._replaceCharAt(result, p, this.options.padChar);
+						result = this._replaceCharAt(result, p, newChar);
 					} else {
 						result = this._replaceCharAt(result, p, "");
 						p--;
@@ -7010,7 +7017,7 @@
 			}
 			if (this._promptCharsIndices.length > 0) {
 				regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
-				result = result.replace(regExpr, this.options.unfilledCharsPrompt);
+				result = result.replace(regExpr, oldChar);
 			}
 			return result;
 		},
@@ -7120,7 +7127,9 @@
 
 				// If the value is not valid, we clear the editor
 				if (this.options.revertIfNotValid) {
-					value = this._valueInput.val().trim();
+
+					// N.A. May 12th, 2017 #903: Properly revert display value.
+					value = this._getMaskedValue(this._valueInput.val().trim());
 					this._updateValue(value);
 
 					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
