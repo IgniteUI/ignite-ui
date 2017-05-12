@@ -3242,6 +3242,54 @@ input.ui-igbutton {
   background-color: #9f725f!important;
   border: 1px solid #fff!important;
 }
+.ui-chart-marker-palette-1 {
+  background-color: #fff!important;
+  border: 1px solid #7446B9!important;
+}
+.ui-chart-marker-palette-2 {
+  background-color: #fff!important;
+  border: 1px solid #9FB328!important;
+}
+.ui-chart-marker-palette-3 {
+  background-color: #fff!important;
+  border: 1px solid #F96232!important;
+}
+.ui-chart-marker-palette-4 {
+  background-color: #fff!important;
+  border: 1px solid #2E9CA6!important;
+}
+.ui-chart-marker-palette-5 {
+  background-color: #fff!important;
+  border: 1px solid #DC3F76!important;
+}
+.ui-chart-marker-palette-6 {
+  background-color: #fff!important;
+  border: 1px solid #FF9800!important;
+}
+.ui-chart-marker-palette-7 {
+  background-color: #fff!important;
+  border: 1px solid #3F51B5!important;
+}
+.ui-chart-marker-palette-8 {
+  background-color: #fff!important;
+  border: 1px solid #439C47!important;
+}
+.ui-chart-marker-palette-9 {
+  background-color: #fff!important;
+  border: 1px solid #795548!important;
+}
+.ui-chart-marker-palette-10 {
+  background-color: #fff!important;
+  border: 1px solid #9A9A9A!important;
+}
+.ui-chart-marker-palette-11 {
+  background-color: #fff!important;
+  border: 1px solid #C62828!important;
+}
+.ui-chart-marker-palette-12 {
+  background-color: #fff!important;
+  border: 1px solid #9f725f!important;
+}
 .ui-chart-legend,
 .ui-chart-piechart-container {
   border: none;
