@@ -700,7 +700,7 @@
 						equal($dtEditor.igDateEditor("field").val(), textAfterSpinDown, 'Display is not as expected after spin down');
 						$dtEditor.trigger("blur");
 						equal($dtEditor.igDateEditor("value").getTime(), value.getTime(), 'Value is not as expected after spin down');
-						//$dtEditor.remove();
+						$dtEditor.remove();
 						stop();
 						defer.resolve();
 					}, 100);
@@ -716,14 +716,23 @@
 							dateInputFormat: "dateTime",
 							spinDelta: 2
 						}, 12, 2, "12/31/2015 03:58 AM")
+				// .then(function() {
+				// 	return testSpinHours({
+				// 		dateInputFormat: "hh:mm tt",
+				// 		value: new Date(2016, 1, 1, 1, 0),
+				// 		dataMode: "date",
+				// 		buttonType: "spin",
+				// 		spinDelta: 15
+				// 	}, 2, 5, "04:00 PM" /* 01 -> 04 -> 07 -> 10 in jumps of 3 in 12H format */);
+				// })
 				.then(function() {
 					return testSpinHours({
 						dateInputFormat: "hh:mm tt",
 						value: new Date(2016, 1, 1, 1, 0),
 						dataMode: "date",
 						buttonType: "spin",
-						spinDelta: 15
-					}, 2, 5, "04:00 PM" /* 01 -> 04 -> 07 -> 10 in jumps of 3 in 12H format */);
+						spinDelta: 10
+					}, 2, 2, "09:00 PM" /* 01AM -> 11AM -> 9PM  */);
 				})
 				.then(function() {
 					return testSpinHours({
