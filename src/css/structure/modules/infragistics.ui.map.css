@@ -220,65 +220,45 @@
     top: -9px;
 }
 /* Touch Support */
-.touch .ui-chart-opd-button,
-.touchevents .ui-chart-opd-button,
-.pointerevents .ui-chart-opd-button,
-.touch .ui-chart-toolbar,
-.touchevents .ui-chart-toolbar,
-.pointerevents .ui-chart-toolbar
+.igTouch .ui-chart-opd-button,
+.igTouch .ui-chart-toolbar
 {
     font-size:20px;
 }
-.touch .ui-chart-toolbar,
-.touchevents .ui-chart-toolbar,
-.pointerevents .ui-chart-toolbar
+.igTouch .ui-chart-toolbar
 {
     display:table;
    background-color: rgba(79, 79, 79, 0.40);
 }
-.touch .ui-chart-toolbar ul,
-.touchevents .ui-chart-toolbar ul,
-.pointerevents .ui-chart-toolbar ul
+.igTouch .ui-chart-toolbar ul
 {
     display:table-row;
 }
-.touch .ui-chart-toolbar li,
-.touchevents .ui-chart-toolbar li,
-.pointerevents .ui-chart-toolbar li
+.igTouch .ui-chart-toolbar li
 {
     display:table-cell;
 }
 
-.touch .ui-chart-toolbar .ui-chart-slider-holder,
-.touchevents .ui-chart-toolbar .ui-chart-slider-holder,
-.pointerevents .ui-chart-toolbar .ui-chart-slider-holder
+.igTouch .ui-chart-toolbar .ui-chart-slider-holder
 {
     width:100%;
 }
-.touch .ui-chart-toolbar button,
-.touchevents .ui-chart-toolbar button,
-.pointerevents .ui-chart-toolbar button
+.igTouch .ui-chart-toolbar button
 {
     width:44px;
     height:44px;
     margin:5px;
 }
-.touch .ui-chart-toolbar button .ui-button-text,
-.touchevents .ui-chart-toolbar button .ui-button-text,
-.pointerevents .ui-chart-toolbar button .ui-button-text
+.igTouch .ui-chart-toolbar button .ui-button-text
 {
     line-height:35px;
 }
-.touch .ui-chart-slider,
-.touchevents .ui-chart-slider,
-.pointerevents .ui-chart-slider
+.igTouch .ui-chart-slider
 {
  width:90%;    
  padding: 0 30px;
 }
-.touch .ui-chart-toolbar .ui-slider-handle,
-.touchevents .ui-chart-toolbar .ui-slider-handle,
-.pointerevents .ui-chart-toolbar .ui-slider-handle
+.igTouch .ui-chart-toolbar .ui-slider-handle
 {
     width:30px;
     height:30px;

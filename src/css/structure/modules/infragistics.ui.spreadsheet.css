@@ -45,10 +45,12 @@
 .ui-igspreadsheet-splitterintersection
 {
 	background-color: #d3d3d3;
+    border: none;
 }
 
 .ui-igspreadsheet-columnsplitter, 
-.ui-igspreadsheet-tabareasplitter
+.ui-igspreadsheet-tabareasplitter,
+.ui-igspreadsheet-nameboxsplitter
 {
 	cursor: nw-resize;
 	cursor: url(data:application/cur;base64,AAACAAEAICAAAA8ADwAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAgAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB+AAAAWgAAAFoAAABaAAAAWgAABlpgAApaUAAT28gAIBgEACAYBAAT28gAClpQAAZaYAAAWgAAAFoAAABaAAAAWgAAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA///////////////////////////////////////4H///+B////gf///4H///+B///5gZ//8YGP/+AAB//AAAP/wAAD/+AAB//xgY//+YGf//+B////gf///4H///+B////gf//////////////////////////////////////8=), col-resize;
@@ -61,6 +63,7 @@
 
 .ui-igspreadsheet-columnsplitter.ui-state-disabled
 {
+    opacity: 1;
 	width: 1px;
 	pointer-events: none;
 }
@@ -74,6 +77,7 @@
 
 .ui-igspreadsheet-rowsplitter.ui-state-disabled
 {
+    opacity: 1;
 	height: 1px;
 	pointer-events: none;
 }
@@ -98,6 +102,8 @@
 	color: #c6c6c6;
 	overflow: hidden;
 	box-sizing: border-box;
+    border-left: none;
+    border-top: none;
 	border-right: solid 4px transparent;
 	border-bottom: solid 4px transparent;
 }
@@ -127,14 +133,18 @@
 /* TabArea Related
    ===============
 */
-.ui-igspreadsheet-tabareasplitter
+.ui-igspreadsheet-tabareasplitter,
+.ui-igspreadsheet-nameboxsplitter
 {
+    background-color: transparent;
+    border: none;
 	color: #b3b3b3;
 	width: 28px;
 	min-height: 12px;
 }
 
-.ui-igspreadsheet-tabareasplitter::before
+.ui-igspreadsheet-tabareasplitter::before,
+.ui-igspreadsheet-nameboxsplitter::before
 {
 	content: " ";
 	position: absolute;
@@ -178,6 +188,7 @@
 	border-right: 1px solid #ababab;
 	border-left: 1px solid #ababab;
 	border-bottom: 2px solid transparent;
+    border-top: none;
 	background-color: #e6e6e6;
 	color: #444444;
 	white-space: pre;
@@ -225,6 +236,16 @@
 		tabitemcontent
 	*/
 	margin-top: 3px;
+}
+
+/* we don't want the text editor within the tab to define its own style or spacing */
+.ui-igspreadsheet-tabitem input
+{
+    border: none;
+    outline: none;
+    margin: 0px;
+    padding: 0px;
+    font: inherit;
 }
 
 /* [PROTECTED START] protected add some space before the text and show a lock */
@@ -344,6 +365,8 @@
 .ui-igspreadsheet-activateprevioushiddentab,
 .ui-igspreadsheet-activatenexthiddentab
 {
+    background-color: transparent;
+    border: none;
 	color: #0a6332;
 	width: 27px;
 }
@@ -353,6 +376,8 @@
 .ui-igspreadsheet-scrollprevioustab,
 .ui-igspreadsheet-scrollnexttab
 {
+    background-color: transparent;
+    border: none;
 	color: #0a6332;
 	width: 28px;
 }
@@ -380,6 +405,7 @@
 .ui-igspreadsheet-scrollprevioustab.ui-state-disabled,
 .ui-igspreadsheet-scrollnexttab.ui-state-disabled
 {
+    opacity: 1;
 	color: #c6c6c6;
 }
 
@@ -447,6 +473,8 @@
 */
 .ui-igspreadsheet-addnewworksheet
 {
+    background-color: transparent;
+    border: none;
 	color: #777777;
 	width: 28px;
 }
@@ -605,6 +633,7 @@
 .ui-igspreadsheet-scrollbar-track-up,
 .ui-igspreadsheet-scrollbar-track-down
 {
+    border: none;
 	background-color: #dbdbdb;
 }
 
@@ -696,6 +725,162 @@
 }
 
 
+
+/* Formula Bar
+   ===========
+*/
+.ui-igspreadsheet-nameboxcontainer .ui-igcombo,
+.ui-igspreadsheet-nameboxcontainer .ui-igcombo-field,
+.ui-igspreadsheet-nameboxcontainer .ui-igcombo-textbox,
+.ui-igspreadsheet-nameboxcontainer .ui-igcombo-dropdown
+{
+  font: inherit;
+}
+
+/* we don't want the combo's normal background or border */
+.ui-igspreadsheet-nameboxcontainer .ui-igcombo
+{
+    background-color: transparent;
+    border: none;
+}
+.ui-igspreadsheet-nameboxcontainer .ui-igcombo-button
+{
+    border: none;
+}
+
+.ui-igspreadsheet-nameboxcontainer .ui-igcombo-dropdown
+{
+    /* since the border comes from the container we need to shift the drop down down by 1 pixel*/
+    margin-top: 1px;
+}
+
+.ui-igspreadsheet-formulabar
+{
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+    background-color: #e6e6e6;
+    /* note we're not specifying bottom because the text area splitter will be there */
+}
+.ui-igspreadsheet-formulabartextareasplitter
+{
+    height: 10px;
+    cursor: row-resize;
+    background-color: transparent;
+    border: none;
+}
+.ui-igspreadsheet-formulabarexpandbutton
+{
+    background-color: transparent;
+    border: none;
+    height: 20px;
+    color: rgb(119,119,119);
+}
+.ui-igspreadsheet-formulabarexpandbutton::before
+{
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  margin-top: -4px;
+  border: 2px solid currentColor;
+  box-sizing: border-box;
+  transform: rotate(45deg);
+  border-width: 0 2px 2px 0;
+}
+.ui-igspreadsheet-formulabarexpandbutton-open
+{
+    transform: rotate(180deg);
+}
+
+.ui-igspreadsheet-nameboxcontainer,
+.ui-igspreadsheet-formulabartextareacontainer,
+.ui-igspreadsheet-formulabarbuttoncontainer
+{
+    border: 1px solid rgb(198, 198, 198);
+    box-sizing: border-box;
+    background-color: white;
+}
+.ui-igspreadsheet-nameboxcontainer
+{
+    cursor: pointer;
+}
+
+.ui-igspreadsheet-formulabarbuttoncontainer
+{
+    margin-right: 3px;
+}
+.ui-igspreadsheet-formulabartextareacontainer textarea
+{
+    resize: none;
+    border: none;
+    padding-left: 11px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 0;
+    outline: 0;
+    margin: 0;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.ui-igspreadsheet-formulabarenterbutton,
+.ui-igspreadsheet-formulabarcancelbutton
+{
+    background-color: transparent;
+    border: none;
+    color: rgb(119,119,119);
+}
+.ui-igspreadsheet-formulabarenterbutton.ui-state-disabled,
+.ui-igspreadsheet-formulabarcancelbutton.ui-state-disabled
+{
+    opacity: 0.62;
+}
+.ui-igspreadsheet-formulabarenterbutton.ui-state-hover
+{
+    color: rgb(56,131,183);
+}
+.ui-igspreadsheet-formulabarcancelbutton.ui-state-hover
+{
+    color: rgb(209,52,52);
+}
+.ui-igspreadsheet-formulabarenterbutton::before,
+.ui-igspreadsheet-formulabarenterbutton::after,
+.ui-igspreadsheet-formulabarcancelbutton::before,
+.ui-igspreadsheet-formulabarcancelbutton::after
+{
+    content: " ";
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    left: 50%;
+    top: 50%;
+    margin-left: -1px;
+    margin-top: -5px;
+    background-color: currentColor;
+}
+.ui-igspreadsheet-formulabarenterbutton::before
+{
+    transform: rotate(45deg);
+}
+.ui-igspreadsheet-formulabarenterbutton::after
+{
+    transform: rotate(-45deg);
+    height: 5px;
+    margin-top: 0px;
+    margin-left: -5px;
+}
+.ui-igspreadsheet-formulabarcancelbutton::before
+{
+    transform: rotate(45deg);
+}
+.ui-igspreadsheet-formulabarcancelbutton::after
+{
+    transform: rotate(-45deg);
+}
 
 /* Miscellaneous
    =============

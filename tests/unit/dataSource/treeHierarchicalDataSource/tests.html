@@ -711,6 +711,14 @@
 				var dv = dsLocalFiltering.dataView();
 				equal(dv[0].firstName, "UpdatedValue", "DataView should be updated.");
 			});
+			/* M.H. 12 Apr 2017 Fix for bug 229997: When paging is enabled after editing a value in TreeGrid the tooltip shows incorrect text */
+			test("Test updating a record when paging is applied.", function () {
+				dsPaging.pageIndex(1);
+				dsPaging.setCellValue(9, "firstName", "UpdatedValue", true);
+
+				var dv = dsPaging.flatDataView();
+				equal(dv[0].firstName, "UpdatedValue", "DataView should be updated.");
+			});
 
 			test("Test applying filtering when paging is enabled", function () {
 				dsPaging.settings.filtering.type = "local";

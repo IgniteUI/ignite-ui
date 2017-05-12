@@ -1,5 +1,14 @@
 ﻿﻿/* Albania +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -36,6 +45,8 @@
 	    dateTimePattern: 'yyyy-MM-dd h:mm.tt',
 	    timePattern: 'h:mm.tt',
 	    timeLongPattern: 'h:mm:ss.tt',
+		dateTitleFullPattern: 'yy MM dd',
+		dateTitleMonthPattern: 'yy MM',
 	    //
 	    numericNegativePattern: '-n$',
 	    numericDecimalSeparator: ',',
@@ -54,4 +65,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('sq');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES
