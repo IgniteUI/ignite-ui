@@ -5100,13 +5100,35 @@
 		},
 		_validateKey: function (event) { //NumericEditor
 			if (this._super(event)) {
-				var dataMode = this.options.dataMode,
-					negativeSign = this.options.negativeSign, ch, val,
+				var dataMode = this.options.dataMode, ch, val,
+					negativeSign = this.options.negativeSign, nextCh, prevCh,
+					leadPos = 0, nextDirection = 1,
 					cursorPos = this._getCursorPosition(),
 					isDecimal = event.which ? event.which === 46 : false;
 				ch = String.fromCharCode(event.charCode || event.which);
-				if (ch === negativeSign && cursorPos > 0) {
-					return false;
+
+				//don't block replacing entire value if everything is selected (-1)
+				if (cursorPos !== -1) {
+					val = this._editorInput.val();
+					nextCh = val.substring(cursorPos, cursorPos + nextDirection);
+
+					//nothing before the negative sign
+					if (cursorPos === leadPos && nextCh === negativeSign) {
+						return false;
+					}
+
+					// Allow negative at start and after exponent
+					prevCh = val.substring(cursorPos - nextDirection, cursorPos).toLowerCase();
+					if (ch === negativeSign && (cursorPos === leadPos || prevCh === "e")) { 
+						return true;
+					}
+				}
+
+				// Allow negative at start and after exponent, don't block replacing entire value if everything is selected (-1)
+				if (cursorPos !== -1 && ch === negativeSign) { 
+					
+					return (cursorPos === leadPos || prevCh === "e")
+						&& nextCh !== negativeSign;
 				}
 
 				//We need this extra validation in case the user tries to enter decimal separator multiple times

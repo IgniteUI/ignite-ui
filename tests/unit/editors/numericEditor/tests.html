@@ -27,6 +27,7 @@
 	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
+	var util = $.ig.TestUtil;
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
 	$(document).ready(function () {
 		// Create a editors
@@ -824,6 +825,40 @@
 			ok(!flag, "'.' char is typed");
 			container.blur();
 			equal($('#longEditor').igNumericEditor("value"), "123", "The value is not correct");
+		});
+
+		testId = "Typing negative signs (multiple prevention, leading, scientific)";
+		test(testId, 5, function () {
+			var $editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 3.33
+			});
+
+			// 46: ".", 45: "-", 65: "a", 94: "^"
+			$editor.trigger("focus");
+			stop();
+			setTimeout(function(){
+				start();
+				$editor[0].setSelectionRange(0,0);
+				util.keyInteraction(45, $editor);
+				equal($editor.val(), "-3.33", "Negative sign was not allowed before a number");
+				//move back in front:
+				$editor[0].setSelectionRange(0,0);
+				util.keyInteraction(45, $editor);
+				equal($editor.val(), "-3.33", "Second negative sign should not be allowed");
+				//try after:
+				$editor[0].setSelectionRange(1,1);
+				util.keyInteraction(45, $editor);
+				equal($editor.val(), "-3.33", "Second negative sign should not be allowed");
+				//try typing other stuff in front:
+				$editor.val("-3");
+				$editor[0].setSelectionRange(0,0);
+				util.keyInteraction(46, $editor);
+				equal($editor.val(), "-3", "Decimal should not be allowed before negative sign");
+				$editor.val("-3");
+				$editor[0].setSelectionRange(0,0);
+				util.keyInteraction(65, $editor);
+				equal($editor.val(), "-3", "Letter sign should not be allowed before negative sign");
+			}, 100);
 		});
 		
 		testId = "Lists testing";
