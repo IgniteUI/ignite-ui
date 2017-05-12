@@ -1,5 +1,14 @@
 ﻿﻿/* Arabic Egypt +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
 $.ig = $.ig || {};
 $.ig.regional = $.ig.regional || {};
@@ -15,6 +24,8 @@ $.ig.regional.ar = {
 	dateTimePattern: 'dd/MM/yyyy hh:mm tt',
 	timePattern: 'hh:mm tt',
 	timeLongPattern: 'hh:mm:ss tt',
+	dateTitleFullPattern: 'dd yy MM',
+	dateTitleMonthPattern: 'yy MM',
 	//
 	numericNegativePattern: 'n$-',
 	numericMaxDecimals: 2,
@@ -29,4 +40,4 @@ $.ig.regional.ar = {
 if ($.ig.setRegionalDefault) {
 	$.ig.setRegionalDefault('ar');
 }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

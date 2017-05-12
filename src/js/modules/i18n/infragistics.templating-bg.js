@@ -7,16 +7,25 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
-    $.ig = $.ig || {};
+	$.ig = $.ig || {};
 
-    if (!$.ig.Templating) {
-	    $.ig.Templating = {};
+	if (!$.ig.Templating) {
+		$.ig.Templating = {};
 
-	    $.extend($.ig.Templating, {
-		    locale: {
-			    undefinedArgument: 'Грешка при опит да се вземе стойността на следното свойство от източника на данни: '
-		    }
-	    });
-    }
-})(jQuery);
+		$.extend($.ig.Templating, {
+			locale: {
+				undefinedArgument: 'Грешка при опит да се вземе стойността на следното свойство от източника на данни: '
+			}
+		});
+	}
+}));// REMOVE_FROM_COMBINED_FILES

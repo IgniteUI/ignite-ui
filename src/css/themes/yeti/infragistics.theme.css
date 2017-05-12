@@ -1011,6 +1011,10 @@ body .ui-tooltip {
   font-weight: normal;
   border: 0;
 }
+/* Bug #741 S.D. 20.04.2017 When bootstrap theme used with bootstrap css text in editor can't be seen when editor has focus*/
+.ui-state-focus input:focus {
+  color: initial;
+}
 /* Interaction Cues
 ----------------------------------*/
 .ui-iggrid-colasc .ui-state-highlight {
@@ -2348,8 +2352,6 @@ body .ui-tooltip {
   background-color: #d3d3d3;
   color: #333333;
 }
-.ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
-.ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-iggrid-filterddlist li.ui-state-active,
 .ui-iggrid-filterddlistitem.ui-state-active a,
 .ui-iggrid-featurechooser-list li.ui-state-active,
@@ -3180,6 +3182,8 @@ body .ui-tooltip {
 .ui-igcombo-field {
   color: #333;
 }
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
+.ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-igcombo-listitem.ui-state-hover.ui-igcombo-item-in-focus,
 .ui-igcombo-listitem.ui-state-active.ui-igcombo-item-in-focus,
 .ui-igcombo-listitem.ui-state-default.ui-igcombo-item-in-focus {

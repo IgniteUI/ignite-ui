@@ -39,7 +39,8 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695", "876", "809"];		
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695", "876", "809", "942"];					
+
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
@@ -475,6 +476,18 @@
 						buttonType: "clear",
 						allowNullValue: true 
 					});
+				}
+				
+				window.Bug942Testbed = function () {
+						$("<input/>", { id: "942Editor" })
+						.appendTo("#testBedContainer")
+						.igNumericEditor({
+							buttonType: "clear",
+							listItems: [3, 4, 5],
+							isLimitedToListValues: true,
+							revertIfNotValid: false,
+							value: 3
+						});
 				}
 
 				window.Bug809Testbed = function () {
@@ -1327,7 +1340,7 @@
 					$("#695Editor").remove();
 			});
 
-			testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
+        		testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
 			test(testId, 5, function () {
 				var editor =  $("#809Editor");
 				input = editor.igNumericEditor("field"),
@@ -1357,6 +1370,30 @@
 				equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
 				ok(editor.igNumericEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "There should be warning notification");
 				$("#809Editor").remove();
+			});
+			testId = 'Bug 942 - When clearing with the "clear" button, the value is set to 0 even if 0 is not in the list of items ';
+			test(testId, 4, function () {
+				var editor =  $("#942Editor");
+				field = editor.igNumericEditor("field");
+				clearButton = editor.igNumericEditor("clearButton"),
+				editor.igNumericEditor("setFocus");
+
+				stop();
+				setTimeout(function () {
+					start();
+					equal(field.val(), 3, 'input value should init with value of 3');
+					clearButton.click();
+					equal(field.val(), "", 'input value is not set to ""');//Prior the fix- the value was set to 0 even if zero is not in the list of items.
+					// test clear without focusing
+					editor.igNumericEditor("value", 4);
+					clearButton.click();
+					equal(field.val(), "", 'input value is not set to ""' );
+					// test clear with invalid list item value
+					editor.igNumericEditor("value", 666);
+					clearButton.click();
+					equal(field.val(), "", 'input value is not set to ""' );
+					$("#942Editor").remove();
+					}, 100);
 			});
 		});
 

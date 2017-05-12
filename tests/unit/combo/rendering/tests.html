@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" href="../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+    <link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+
+    <script type="text/javascript" src="../../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+    <script type="text/javascript" src="../../../../tests/unit/common/test-util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.templating.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.combo.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+    <script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+
+    <script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="../sample-data/local-data.js"></script>
+    <script type="text/javascript" src="../sample-data/remote-data.js"></script>
+    <script type="text/javascript" src="../test-shared.js"></script>
+    <style>
+        .cont {
+            margin-top: 75px;
+        }
+    </style>
+</head>
+<body>
+    <div style="float: right; width: 400px; overflow: auto; z-index: 100; position: relative;">
+        <h1 id="qunit-header">Test results</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+    </div>
+    <div class="cont">
+        <div id='combo-div'></div>
+    </div>
+    <div class="cont">
+        <span id='combo-span'></span>
+    </div>
+    <div class="cont render_input">
+        <input id='combo-input' name="input-combo" />
+    </div>
+    <div class="cont render_select">
+        <select id="combo-select" name="select-combo">
+            <option value="1">John Smith</option>
+            <option value="2">Mary Johnson</option>
+            <option value="3">Bob Ferguson</option>
+        </select>
+    </div>
+    <div class="cont">
+        <div id='combo-highlight'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-scroll'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-virtualization'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-ddopen'></div>
+    </div>
+    <div class="cont">
+        <div id='combo-ddclose'></div>
+    </div>
+
+    <script>
+        $(function() {
+            var testId_1 = 'igCombo existence',
+				testId_2 = 'Div rendering',
+				testId_3 = 'Span rendering',
+				testId_4 = 'Input rendering',
+                testId_5 = 'Select rendering',
+				testId_6 = 'Highlight',
+				testId_7 = 'Scrolling',
+				testId_8 = 'Vitualization',
+                testId_9 = 'Drop down opening',
+				testId_10 = 'Drop down closing';
+
+
+            // // classes - array of strings (classes) that the element should have
+            // // attributes - array of objects with key/value attribute pairs that the element should have
+            function testElementRendering($elem, elName, elType, width, height, top, left, childrenLen, classes, attributes, tolerance) {
+                var curClass, i,
+					clasesLen = classes ? classes.length : 0,
+					attrLen = attributes ? attributes.length : 0,
+					elOffset = $elem.offset();
+
+                strictEqual($elem.length, 1, elName + ' was not rendered');
+                ok($elem.is(elType), elName + ' should be div element');
+
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                if (tolerance && tolerance.width && tolerance.height) {
+                    ok(width - tolerance.width <= $elem.outerWidth() && width + tolerance.width >= $elem.outerWidth(), width, elName + ' width is not correct');
+                    ok(height - tolerance.height <= $elem.outerHeight() && height + tolerance.height >= $elem.outerHeight(), height, elName + ' height is not correct');
+                } else {
+                    strictEqual($elem.outerWidth(), width, elName + ' width is not correct');
+                    strictEqual($elem.outerHeight(), height, elName + ' height is not correct');
+                }
+
+                strictEqual(getClassesCount($elem), clasesLen, elName + ' has incorrect classes count');
+
+                for (i = 0; i < clasesLen; i++) {
+                    curClass = classes[i];
+                    ok($elem.hasClass(curClass), 'Class ' + curClass + ' was not applied to ' + elName);
+                }
+
+                for (i = 0; i < attrLen; i++) {
+                    curAttr = attributes[i];
+                    strictEqual($elem.attr(curAttr.key), curAttr.value, 'The value of ' + curAttr.key + ' attribute should be ' + curAttr.value);
+                }
+
+                if (top !== null) {
+                    strictEqual(elOffset.top, top, elName + ' top position was incorrect');
+                }
+
+                if (left !== null) {
+                    strictEqual(elOffset.left, left, elName + ' left position was incorrect');
+                }
+
+                strictEqual($elem.children().length, childrenLen, elName + ' has incorrect number of child elements');
+            }
+
+            function testComboRendering($comboWrapper, width, height, itemsCount, comboExpElem, itemsText) {
+                var $parent = $comboWrapper.parent(),
+					$combo = $comboWrapper.children('.ui-igcombo'),
+					$txtBoxChildren = $combo.children(),
+					$ddBtn = $txtBoxChildren.filter('.ui-igcombo-button'),
+					$ddIcon = $ddBtn.children('.ui-igcombo-buttonicon'),
+					$clearBtn = $txtBoxChildren.filter('.ui-igcombo-clear'),
+					$clearIcon = $clearBtn.children('.ui-igcombo-clearicon'),
+					$textFieldCont = $txtBoxChildren.filter('.ui-igcombo-fieldholder'),
+					$textFieldInput = $textFieldCont.children('.ui-igcombo-field'),
+					$hiddenInput = $txtBoxChildren.filter('input'),
+					$dropDown = $comboWrapper.children('.ui-igcombo-dropdown'),
+					$dropDownListCont = $dropDown.children('.ui-igcombo-list'),
+					$dropDownList = $dropDownListCont.children('.ui-igcombo-listitemholder'),
+					$listItems = $dropDownList.children(),
+					border = 1,
+					comboWrapperExpWidth = comboExpWidth = width,
+					comboWrapperExpHeight = comboExpHeight = height,
+					comboWrapperExpPosTop = comboExpPosTop = $parent.offset().top,
+					comboWrapperExpPosLeft = comboExpPosLeft = $parent.offset().left,
+					comboOffset = $comboWrapper.offset(),
+					ddIconExpWidth = 16,
+					ddIconExpHeight = 16,
+					ddBtnPadding = 5,
+					ddBtnExpWidth = ddIconExpWidth + border + 2 * ddBtnPadding,
+					ddBtnExpHeight = comboExpHeight - 2 * border,
+					ddBtnExpPosTop = comboWrapperExpPosTop + border,
+					ddBtnExpPosLeft = comboExpWidth + comboOffset.left - border - ddBtnExpWidth,
+					ddIconExpPosTop = (ddBtnExpHeight - ddIconExpHeight) / 2 + $ddBtn.offset().top,
+					ddIconExpPosLeft = ddBtnExpPosLeft + border + ddBtnPadding,
+					clearIconExpWidth = 16,
+					clearIconExpHeight = 16,
+					clearBtnExpWidth = clearIconExpWidth,
+					clearBtnExpHeight = comboExpHeight - 2 * border,
+					clearBtnExpPosTop = comboWrapperExpPosTop + border,
+					clearBtnExpPosLeft = ddBtnExpPosLeft - clearBtnExpWidth,
+					clearIconExpPosTop = (clearBtnExpHeight - clearIconExpHeight) / 2 + $clearBtn.offset().top,
+					clearIconExpPosLeft = clearBtnExpPosLeft,
+					textFieldContExpWidth = comboExpWidth - 2 * border - ddBtnExpWidth,
+					textFieldContExpHeight = comboExpHeight - 2 * border,
+					textFieldContExpPosTop = comboWrapperExpPosTop + border,
+					textFieldContExpPosLeft = comboWrapperExpPosLeft + border,
+					textFieldInputExpWidth = textFieldContExpWidth,
+					textFieldInputExpHeight = textFieldContExpHeight,
+					textFieldInputExpPosTop = textFieldContExpPosTop,
+					textFieldInputExpPosLeft = textFieldContExpPosLeft,
+					listItemExpHeight = 29,
+					dropDownExpWidth = comboExpWidth,
+					dropDownExpHeight = itemsCount * listItemExpHeight + border,
+					dropDownExpPosTop = comboOffset.top + comboExpHeight,
+					dropDownExpPosLeft = comboOffset.left,
+					dropDownListContExpWidth = dropDownExpWidth - 2 * border,
+					dropDownListContExpHeight = dropDownExpHeight - border,
+					dropDownListContExpPosTop = dropDownExpPosTop,
+					dropDownListContExpPosLeft = dropDownExpPosLeft + border,
+					dropDownListExpWidth = dropDownListContExpWidth,
+					dropDownListExpHeight = dropDownListContExpHeight,
+					dropDownListExpPosTop = dropDownListContExpPosTop,
+					dropDownListExpPosLeft = dropDownListContExpPosLeft,
+					listItemExpWidth = dropDownListContExpWidth,
+					listItemExpPosTop = dropDownListContExpPosTop,
+					listItemExpPosLeft = dropDownListContExpPosLeft,
+					i, $curItem;
+
+                // Combo wrapper
+                testElementRendering($comboWrapper, 'combo wrapper', comboExpElem, comboWrapperExpWidth, comboWrapperExpHeight,
+					comboWrapperExpPosTop, comboWrapperExpPosLeft, 2, ['ui-igcombo-wrapper']);
+
+                // Combo
+                testElementRendering($combo, 'combo', 'div', comboExpWidth, comboExpHeight, comboExpPosTop,
+					comboExpPosLeft, 4, ['ui-igcombo', 'ui-widget', 'ui-state-default', 'ui-corner-all', 'ui-state-active', 'ui-unselectable']);
+
+                // Drop down button
+                testElementRendering($ddBtn, 'drop down button', 'div', ddBtnExpWidth, ddBtnExpHeight, ddBtnExpPosTop, ddBtnExpPosLeft, 1,
+					['ui-igcombo-button', 'ui-state-default', 'ui-unselectable', 'ui-igcombo-button-ltr', 'ui-corner-right']);
+
+                // Drop down icon
+                testElementRendering($ddIcon, 'drop down icon', 'div', ddIconExpWidth, ddIconExpHeight,
+					ddIconExpPosTop, ddIconExpPosLeft, 0, ['ui-igcombo-buttonicon', 'ui-icon-triangle-1-s', 'ui-icon']);
+
+                // Clear button
+                // testElementRendering($clearBtn, 'clear button', 'div', clearBtnExpWidth, clearBtnExpHeight,
+                //    clearBtnExpPosTop, clearBtnExpPosLeft, 1, ['ui-igcombo-clear', 'ui-unselectable']);
+
+                // Clear icon
+                // testElementRendering($clearIcon, 'clear icon', 'div', clearIconExpWidth, clearIconExpHeight,
+                //    clearIconExpPosTop, clearIconExpPosLeft, 0, ['ui-igcombo-clearicon', 'ui-icon-circle-close', 'ui-icon']);
+
+                // Text field
+                testElementRendering($textFieldCont, 'text field container', 'div', textFieldContExpWidth, textFieldContExpHeight,
+					textFieldContExpPosTop, textFieldContExpPosLeft, 1, ['ui-igcombo-fieldholder', 'ui-igcombo-fieldholder-ltr', 'ui-corner-left']);
+
+                // Text field input
+                testElementRendering($textFieldInput, 'text field input', 'input', textFieldInputExpWidth, textFieldInputExpHeight,
+					textFieldInputExpPosTop, textFieldInputExpPosLeft, 0, ['ui-igcombo-field', 'ui-corner-all']);
+
+                // Hidden input
+                testElementRendering($hiddenInput, 'hidden field', 'input', 0, 0, null, null, 0, ['ui-igcombo-hidden-field'], [{ key: 'type', value: 'hidden' }]);
+
+                // Drop down
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                testElementRendering($dropDown, 'drop down', 'div', dropDownExpWidth, dropDownExpHeight, dropDownExpPosTop,
+					dropDownExpPosLeft, 1, ['ui-igcombo-dropdown', 'ui-widget-content', 'ui-widget', 'ui-corner-all', 'ui-igcombo-orientation-bottom'], null, { width: border * 2, height: 8 });
+
+                // Drop down list cont
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                testElementRendering($dropDownListCont, 'drop down list container', 'div', dropDownListContExpWidth, dropDownListContExpHeight, dropDownListContExpPosTop,
+					dropDownListContExpPosLeft, 1, ['ui-igcombo-list'], null, { width: border * 2, height: 8 });
+
+                // Drop down <ul> list
+                // Removing this test because of differences between real browser vs the test engine
+                //testElementRendering($dropDownList, 'drop down list', 'ul', dropDownListExpWidth, dropDownListExpHeight, dropDownListExpPosTop, dropDownListExpPosLeft, itemsCount, ['ui-igcombo-listitemholder']);
+                ok($dropDownList.hasClass('ui-igcombo-listitemholder'), 'Class ui-igcombo-listitemholder was not applied to ul');
+
+                // List items
+                for (i = 0; i < $listItems.length; i++) {
+                    $curItem = $listItems.eq(i);
+                    // Removing this test because of differences between real browser vs the test engine
+                    //testElementRendering($curItem, 'list item ' + i, 'li', listItemExpWidth, listItemExpHeight, listItemExpPosTop + i * listItemExpHeight, listItemExpPosLeft, 0, ['ui-igcombo-listitem', 'ui-state-default', 'ui-unselectable']);
+
+                    ok($curItem.hasClass('ui-igcombo-listitem'), 'Class ui-igcombo-listitem was not applied to list item ' + i);
+                    ok($curItem.hasClass('ui-state-default'), 'Class ui-state-default was not applied to list item ' + i);
+                    ok($curItem.hasClass('ui-unselectable'), 'Class ui-unselectable was not applied to list item ' + i);
+                    strictEqual($curItem.text(), itemsText[i], 'Text value of item ' + i + 'did not match');
+                }
+            }
+
+            module("igCombo - rendering", {
+                setup: function() {},
+                teardown: function() {}
+            });
+
+            test(testId_1, function () {
+                var combo = $('#combo-div').igCombo;
+                ok($.type(combo) === 'function', 'igCombo is not defined.');
+            });
+
+            test(testId_2, function() {
+                var $comboWrapper = $('#combo-div'),
+					width = 200,
+					height = 30,
+					itemsCount = 2,
+					comboElem = 'div',
+					itemsText = ['Tom', 'Jerry'];
+
+                $comboWrapper
+					.igCombo({
+					    width: width,
+					    height: height,
+					    animationShowDuration: 0,
+					    dropDownAttachedToBody: false,
+					    valueKey: 'id',
+					    textKey: 'name',
+					    dropDownOrientation: 'bottom',
+					    dataSource: [{
+					        id: '1',
+					        name: 'Tom'
+					    }, {
+					        id: '2',
+					        name: 'Jerry'
+					    }]
+					})
+					.igCombo('openDropDown');
+
+                testComboRendering($comboWrapper, width, height, itemsCount, comboElem, itemsText);
+            });
+
+            // Span rendering
+            test(testId_3, function () {
+                var $comboWrapper = $('#combo-span'),
+					width = 166,
+					height = 32,
+					itemsCount = 3,
+					comboElem = 'span',
+					itemsText = ['Tom', 'Jerry', 'Spiky'];
+
+                $comboWrapper
+					.igCombo({
+					    width: width,
+					    height: height,
+					    valueKey: 'id',
+					    textKey: 'name',
+					    animationShowDuration: 0,
+					    dropDownAttachedToBody: false,
+					    dropDownOrientation: 'bottom',
+					    dataSource: [{
+					        id: '1',
+					        name: 'Tom'
+					    }, {
+					        id: '2',
+					        name: 'Jerry'
+					    }, {
+					        id: '3',
+					        name: 'Spiky'
+					    }]
+					})
+					.igCombo('openDropDown');
+
+                testComboRendering($comboWrapper, width, height, itemsCount, comboElem, itemsText);
+            });
+
+            // Input rendering
+            test(testId_4, function () {
+                var $comboElement = $('#combo-input'),
+					$hiddenInput,
+					width = 333,
+					height = 40,
+					itemsCount = 4,
+					comboElem = 'div',
+					itemsText = ['Tom', 'Jerry', 'Spiky', 'Bendji'];
+
+                $comboElement
+					.igCombo({
+					    width: width,
+					    height: height,
+					    valueKey: 'id',
+					    textKey: 'name',
+					    animationShowDuration: 0,
+					    dropDownAttachedToBody: false,
+					    dropDownOrientation: 'bottom',
+					    dataSource: [{
+					        id: '1',
+					        name: 'Tom'
+					    }, {
+					        id: '2',
+					        name: 'Jerry'
+					    }, {
+					        id: '3',
+					        name: 'Spiky'
+					    }, {
+					        id: '4',
+					        name: 'Bendji'
+					    }]
+					})
+					.igCombo('openDropDown');
+
+                $comboWrapper = $('.render_input').find('.ui-igcombo-wrapper');
+                $hiddenInput = $(".render_input input.ui-igcombo-hidden-field");
+
+                equal($hiddenInput.attr("name"), "input-combo", "The name attribute was not transferred to the hidden input");
+                testComboRendering($comboWrapper, width, height, itemsCount, comboElem, itemsText);
+
+                $comboElement.igCombo("destroy");
+                testComboIsDestroyed($comboElement);
+            });
+
+            // Select rendering
+            test(testId_5, function () {
+                var $comboInitElem = $('#combo-select'),
+					$comboWrapper,
+					$hiddenInput,
+					width = 200, // default
+					height = 32, // default
+					itemsCount = 3,
+					comboElem = 'div',
+					itemsText = ['John Smith', 'Mary Johnson', 'Bob Ferguson'];
+
+                $comboInitElem
+					.igCombo({
+					    animationShowDuration: 0,
+					    dropDownAttachedToBody: false,
+					    dropDownOrientation: 'bottom'
+					})
+					.igCombo('openDropDown');
+
+                // Init on select auto selects first element
+                $comboInitElem.igCombo('deselect');
+
+                $comboWrapper = $('.render_select div.ui-igcombo-wrapper');
+                $hiddenInput = $('.render_select input.ui-igcombo-hidden-field');
+
+                testComboRendering($comboWrapper, width, height, itemsCount, comboElem, itemsText);
+                equal($hiddenInput.attr("name"), "select-combo", "The name attribute was not transferred to the input element");
+                $comboInitElem.igCombo("destroy");
+                testComboIsDestroyed($comboInitElem);
+            });
+
+            // Highlight tests
+            test(testId_6, function () {
+                var combo, $listItems, $highlightedItems,
+					inputText = "john",
+					inputTextWithRegex = "jo.*",
+					inputEmptyText = "",
+					inputTexts = ["bob", "mat", "", "ma.*"],
+					$comboElem = $("#combo-highlight");
+
+                $highlightedItems = function () {
+                    return $comboElem.igCombo('listItems').find('.ui-igcombo-highlight');
+                };
+
+                $comboElem.igCombo({
+                    width: 200,
+                    height: 30,
+                    textKey: 'Name',
+                    dataSource: [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" },
+						{ ID: 4, Name: "Tom Tomov" },
+						{ ID: 5, Name: "Stewerd Matewson" },
+						{ ID: 6, Name: "David Bengalski" }],
+                    dropDownAttachedToBody: false
+                });
+
+                combo = $comboElem.data().igCombo;
+
+                combo._highlight(inputText);
+                equal($highlightedItems().length, 2, "Correct number items should be highlighted.");
+
+                combo._unhighlight();
+                equal($highlightedItems().length, 0, "None of the items should be highlighted.");
+
+                combo._highlight(inputTextWithRegex);
+                equal($highlightedItems().length, 0, "None of the items should be highlighted when regex text is passed");
+
+                combo._highlight(inputEmptyText);
+                equal($highlightedItems().length, 0, 'None of the should be highlighted when empty text is passed.');
+
+                combo._highlight(inputTexts);
+                equal($highlightedItems().length, 2, "Correct number items should be highlighted.");
+
+                // Highlight matches 'null'
+                combo._unhighlight();
+                combo.options.highlightMatchesMode = null;
+
+                combo._highlight(inputText);
+                equal($highlightedItems().length, 0, 'None of items the should be highlighted when highlightMatchesMode is null.');
+
+                // Highlight matches 'startsWith'
+                combo._unhighlight();
+                combo.options.highlightMatchesMode = 'startsWith';
+
+                combo._highlight(inputText);
+                equal($highlightedItems().length, 1, "Correct number items should be highlighted.");
+
+                combo._unhighlight();
+                equal($highlightedItems().length, 0, "None of the items should be highlighted.");
+
+                // Highlight matches 'full'
+                combo.options.highlightMatchesMode = 'full';
+                inputText = "Tom Tomov";
+
+                combo._highlight(inputText);
+                equal($highlightedItems().length, 1, "Correct number items should be highlighted.");
+
+                combo._unhighlight();
+                equal($highlightedItems().length, 0, "None of the items should be highlighted.");
+
+                inputTexts = ["Tom Tomov", "David Bengalski"];
+
+                combo._highlight(inputTexts);
+                equal($highlightedItems().length, 2, "Correct number items should be highlighted.");
+
+                combo._unhighlight();
+                equal($highlightedItems().length, 0, "None of the items should be highlighted.");
+
+                // Highligh matches 'contains'
+                combo.options.highlightMatchesMode = 'contains';
+                //inputText = "jo";
+
+                combo._highlight(inputText);
+                equal($highlightedItems().length, 1, "Correct number items should be highlighted.");
+
+                combo._unhighlight();
+                equal($highlightedItems().length, 0, "None of the items should be highlighted.");
+
+                combo._highlight(inputTexts);
+                equal($highlightedItems().length, 2, "Correct number items should be highlighted.");
+            });
+
+            // Scrolling tests
+            test(testId_7, function () {
+                var combo, $dropDownCont, scrollResult, dropDownContHeight,
+					$comboElem = $("#combo-scroll");
+
+                $comboElem.igCombo({
+                    textKey: 'name',
+                    dataSource: localData,
+                    dropDownAttachedToBody: false
+                });
+
+                combo = $comboElem.data().igCombo;
+
+                combo.closeDropDown();
+                scrollResult = combo.listScrollTop();
+                $dropDownCont = $comboElem.find('.ui-igcombo-list');
+
+
+                notEqual($dropDownCont.css('height'), 0, "The height should be 0.");
+
+
+                equal(scrollResult, 0, "When value is undefined, then scroll top is returned.");
+
+                combo.closeDropDown();
+                scrollResult = combo.listScrollTop(100);
+
+                notEqual($dropDownCont.css('height'), 0, "The height should be 0.");
+
+                equal(scrollResult.widgetName, "igCombo", "Returns reference to igCombo.");
+
+                equal(combo.listScrollTop(), 100, "When value is undefined, then scroll top is returned.");
+                equal($dropDownCont.prop('scrollTop'), 100, "Drop down container should be equal to set top scroll.");
+
+                combo.listScrollTop(200);
+
+                equal(combo.listScrollTop(), 200, "When value is undefined, then scroll top is returned.");
+                equal($dropDownCont.prop('scrollTop'), 200, "Drop down container should be equal to set top scroll.");
+
+                scrollHeight = $dropDownCont.prop('scrollHeight') - $dropDownCont.innerHeight();
+
+                // set invalid scroll height
+                combo.listScrollTop(scrollHeight + 200);
+
+                equal(combo.listScrollTop(), scrollHeight, "When value is invalid, then scroll is max scroll height of the list items.");
+
+                equal($dropDownCont.prop("scrollTop"), scrollHeight, "Drop down container should be equal to max top scroll.");
+
+                combo.listScrollTop(-200);
+                equal(combo.listScrollTop(), 0, "When negative value is put, then top scroll is 0.");
+            });
+
+            // Virtualization tests
+            test(testId_8, function () {
+                var combo, $list, $dropDownCont, $scrollCont, $scroll,
+					scrollIncrement = 0,
+					itemsIncrement = 0,
+					itemHeight = 29,
+					itemsCount = 40,
+					scrollHeight = itemsCount * itemHeight,
+					$comboElem = $("#combo-virtualization");
+
+                $comboElem.igCombo({
+                    virtualization: true,
+                    textKey: 'name',
+                    dataSource: localData,
+                    animationShowDuration: 0,
+                    animationHideDuration: 0,
+                    dropDownAttachedToBody: false
+                });
+
+                combo = $comboElem.data().igCombo;
+                combo.openDropDown();
+
+                $dropDownCont = $comboElem.find('.ui-igcombo-list');
+                $scrollCont = $dropDownCont.children('div');
+
+                $list = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder');
+
+                ok($scrollCont.is('div'), "The scroll container should be div.");
+                ok($scrollCont.hasClass('ui-igcombo-scrollholder'), "The scroll container should has ui-igcombo-scrollholder class.");
+                ok($scrollCont.hasClass('ui-unselectable'), "The scroll container should not be selectable.");
+                equal($scrollCont.css("overflow-y"), "scroll", "The scroll container should has vertical scroll.");
+                equal($scrollCont.css("overflow-x"), "hidden", "The scroll container should not has horizontal scroll.");
+                equal($scrollCont.css("right"), "0px", "The scroll container should be positioned on the right.");
+                equal($dropDownCont.css("overflow"), "hidden", "The list container should be with hidden scrolls.");
+
+                $scroll = $scrollCont.children();
+
+                ok($scroll.is('div'), "The scroll should be div.");
+                ok($scroll.hasClass('ui-igcombo-scroll'), "The scroll should has ui-igcombo-scroll class.");
+                ok($scroll.hasClass('ui-unselectable'), "The scroll should not be selectable.");
+
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                ok(scrollHeight - 80 <= $scroll.height() && scrollHeight + 80 >= $scroll.height(), scrollHeight, 'Scroll has wrong height.')
+                // equal($scroll.height(), scrollHeight, "Scroll has wrong height.");
+
+                $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder')
+								.children();
+
+                equal($listItems.length, 15, "15 items should be rendered.");
+
+                $listItems.each(function (i) {
+                    ok($(this).text() === localData[i + itemsIncrement].name, "The item value " + $(this).text() + " should be equal to data source value: " + localData[i].name);
+                });
+
+                combo.listScrollTop(860);
+
+                stop(); // Pause the test
+                //Add your wait
+                setTimeout(function () {
+                    //Make assertion
+                    equal($listItems.length, 15, "15 items should be rendered.");
+
+                    $listItems = $comboElem.find('.ui-igcombo-list .ui-igcombo-listitemholder')
+									.children();
+
+                    $listItems.each(function (i) {
+                        ok($(this).text() === localData[i + 25].name, "The item value " + $(this).text() + " should be equal to data source value: " + localData[i].name);
+                    });
+                    // After the assertion called, restart the test
+                    start();
+                }, 10);
+            });
+
+            // Drop down opening
+            test(testId_9, function () {
+                var $dropDown,
+					$combo = $('#combo-ddclose'),
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" }],
+					itemHeight = 29,
+					border = 1,
+					dropDownExpHeight = 3 * itemHeight + border,
+					isDropDownOpen;
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0
+                });
+
+                $dropDown = $combo.igCombo('dropDown');
+
+                // Open drop down
+                $combo.igCombo('openDropDown');
+
+                isDropDownOpen = $combo.igCombo('dropDownOpened');
+
+                strictEqual(isDropDownOpen, true, 'dropDownOpened is incorrect');
+
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect')
+
+                // Open drop down again
+                $combo.igCombo('openDropDown');
+
+                // Adding tolerance for inconsistencies between the running engine and real browsers
+                ok(dropDownExpHeight - 6 <= $dropDown.outerHeight() && dropDownExpHeight + 6 >= $dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect')
+                //strictEqual($dropDown.outerHeight(), dropDownExpHeight, 'Drop down height is incorrect');
+            });
+
+            // Drop down closing
+            test(testId_10, function () {
+                var $dropDown,
+					$combo = $('#combo-ddopen'),
+					dataSource = [{ ID: 1, Name: "John Smith" },
+						{ ID: 2, Name: "Mary Johnson" },
+						{ ID: 3, Name: "Bob Ferguson" }];
+
+                $combo.igCombo({
+                    dataSource: dataSource,
+                    textKey: 'Name',
+                    valueKey: 'ID',
+                    animationShowDuration: 0,
+                    animationHideDuration: 0
+                });
+
+                $dropDown = $combo.igCombo('dropDown');
+
+                // Open drop down. Drop down is initially closed
+                $combo.igCombo('openDropDown');
+
+                // Close drop down
+                $combo.igCombo('closeDropDown');
+
+                strictEqual($dropDown.outerHeight(), 0, 'Drop down height is incorrect');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -43,7 +43,7 @@
 	window.igRoot.ig = window.igRoot.ig || { _isNamespace: true };
 	window.$ig = window.$ig || window.igRoot.ig;
 
-	var $ = igRoot;
+	var $ = igRoot; // REMOVE_FROM_COMBINED_FILES
 
 	var initializing = false, fnTest = /xyz/.test(function () { xyz(); }) ? /\b_super\b/ : /.*/;
 
@@ -239,6 +239,7 @@
 
 	$.ig.util.isTouchDevice = function () {
 		return "ontouchstart" in window ||
+			window.navigator.maxTouchPoints > 0 ||
 			window.navigator.msMaxTouchPoints > 0;
 	};
 
