@@ -38,62 +38,122 @@
 
 .chartPalette1 {
     background-color: #7446B9!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #7446B9!important;
 }
 
 .chartPalette2 {
     background-color: #9FB328!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #9FB328!important;
 }
 
 .chartPalette3 {
     background-color: #F96232!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #F96232!important;
 }
 
 .chartPalette4 {
     background-color: #2E9CA6!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #2E9CA6!important;
 }
 
 .chartPalette5 {
     background-color: #DC3F76!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #DC3F76!important;
 }
 
 .chartPalette6 {
     background-color: #FF9800!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #FF9800!important;
 }
 
 .chartPalette7 {
     background-color: #3F51B5!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #3F51B5!important;
 }
 
 .chartPalette8 {
     background-color: #439C47!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #439C47!important;
 }
 
 .chartPalette9 {
     background-color: #795548!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #795548!important;
 }
 
 .chartPalette10 {
     background-color: #9A9A9A!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #9A9A9A!important;
 }
 
 .chartPalette11 {
     background-color: #C62828!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #C62828!important;
 }
 
 .chartPalette12 {
     background-color: #9f725f!important;
-    border: 1px solid #fff!important;
+    border: 1px solid #9f725f!important;
+}
+
+.chartMarkerPalette1 {
+    background-color: #fff!important;
+    border: 1px solid #7446B9!important;
+}
+
+.chartMarkerPalette2 {
+    background-color: #fff!important;
+    border: 1px solid #9FB328!important;
+}
+
+.chartMarkerPalette3 {
+    background-color: #fff!important;
+    border: 1px solid #F96232!important;
+}
+
+.chartMarkerPalette4 {
+    background-color: #fff!important;
+    border: 1px solid #2E9CA6!important;
+}
+
+.chartMarkerPalette5 {
+    background-color: #fff!important;
+    border: 1px solid #DC3F76!important;
+}
+
+.chartMarkerPalette6 {
+    background-color: #fff!important;
+    border: 1px solid #FF9800!important;
+}
+
+.chartMarkerPalette7 {
+    background-color: #fff!important;
+    border: 1px solid #3F51B5!important;
+}
+
+.chartMarkerPalette8 {
+    background-color: #fff!important;
+    border: 1px solid #439C47!important;
+}
+
+.chartMarkerPalette9 {
+    background-color: #fff!important;
+    border: 1px solid #795548!important;
+}
+
+.chartMarkerPalette10 {
+    background-color: #fff!important;
+    border: 1px solid #9A9A9A!important;
+}
+
+.chartMarkerPalette11 {
+    background-color: #fff!important;
+    border: 1px solid #C62828!important;
+}
+
+.chartMarkerPalette12 {
+    background-color: #fff!important;
+    border: 1px solid #9f725f!important;
 }
 
 .chartPaletteNegative {
@@ -2951,6 +3011,54 @@ input.ui-igbutton {
 .ui-chart-palette-12 {
     .chartPalette12;
 }
+
+.ui-chart-maker-palette-1 {
+    .chartMarkerPalette1;
+}
+
+.ui-chart-maker-palette-2 {
+    .chartMarkerPalette2;
+}
+
+.ui-chart-maker-palette-3 {
+    .chartMarkerPalette3;
+}
+
+.ui-chart-maker-palette-4 {
+    .chartMarkerPalette4;
+}
+
+.ui-chart-maker-palette-5 {
+    .chartMarkerPalette5;
+}
+
+.ui-chart-maker-palette-6 {
+    .chartMarkerPalette6;
+}
+
+.ui-chart-maker-palette-7 {
+    .chartMarkerPalette7;
+}
+
+.ui-chart-maker-palette-8 {
+    .chartMarkerPalette8;
+}
+
+.ui-chart-maker-palette-9 {
+    .chartMarkerPalette9;
+}
+
+.ui-chart-maker-palette-10 {
+    .chartMarkerPalette10;
+}
+
+.ui-chart-maker-palette-11 {
+    .chartMarkerPalette11;
+}
+
+.ui-chart-maker-palette-12 {
+    .chartMarkerPalette12;
+}
 .ui-chart-legend,.ui-chart-piechart-container {
 	border:none;
 }
@@ -3191,260 +3299,256 @@ input.ui-igbutton {
 /***********************/
 
 .ui-radialgauge-needle {
-    background-color: @chartGradualPalette10;
+  background-color: #999999;
+  border-color: #FFFFFF;
 }
 
-.ui-radialgauge-needleCap {
-    background-color: @igGray8;
-    border-color: @igGray8;
+.ui-radialgauge-needlePivot {
+  background-color: #999999;
+  border-color: #FFFFFF;
 }
 
 .ui-radialgauge-backing {
-    background-color: #FFFFFF;
-    border: @igGray6;
+  background-color: #FFFFFF;
+  border: #cccccc;
 }
 
 .ui-radialgauge-scale {
-    background-color: @accent1;
-    border: none;
+  background-color: transparent;
+  border: none;
 }
 
 .ui-radialgauge-tick {
-    background-color: @igGray10;
-    border-top-color: none;
+  background-color: rgba(0, 0, 0, 0.35);
+  border-top-color: none;
 }
 
 .ui-radialgauge-minorTick {
-    background-color: @igGray10;
-    border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
 }
 
 .ui-radialgauge-label {
-    background-color: #666;
-    border: none;
+  background-color: #666;
+  border: none;
 }
 
 .ui-radialgauge-range-palette-1 {
-    background-color: @chartGradualPalette8;
-    border-top-color: transparent;
+  background-color: #005E9C;
+  border-top-color: transparent;
 }
 
 .ui-radialgauge-range-palette-2 {
-    background-color: @chartGradualPalette6;
-    border-top-color: transparent;
+  background-color: #0078C8;
+  border-top-color: transparent;
 }
 
 .ui-radialgauge-range-palette-3 {
-    background-color: @chartGradualPalette11;
-    border-top-color: transparent;
+  background-color: #0092F4;
+  border-top-color: transparent;
 }
 
 .ui-radialgauge-range-palette-4 {
-    background-color: @chartGradualPalette3;
-    border-top-color: transparent;
+  background-color: #21A7FF;
+  border-top-color: transparent;
 }
 
 .ui-radialgauge-range-palette-5 {
-    background-color: @chartGradualPalette2;
-    border-top-color: transparent;
+  background-color: #4FB9FF;
+  border-top-color: transparent;
 }
 
-.ui-radialgauge-range-palette-6 {
-    background-color: @chartGradualPalette1;
-    border-top-color: transparent;
-}
-
-.ui-radialgauge {
-    font-family: @fontfamily;
-    font-size: 12px;
+.ui-radialgauge-container {
+  font-family: Verdana;
+  font-size: 11px;
 }
 /***********************/
 /* igBulletGraph Chart */
 /***********************/
 
 .ui-bulletgraph-backing {
-    background-color: #ffffff;
-    border-color: #ffffff;
+  background-color: #ffffff;
+  border-color: #ffffff;
 }
 
 .ui-bulletgraph-targetvalue {
-    background-color: #FFFFFF;
-    border-color: #FFFFFF;
+  background-color: #333333;
+  border-color: transparent;
 }
-/* TICKS AND LABELS */
 
+/* TICKS AND LABELS */
 .ui-bulletgraph-tick {
-    background-color: @igGray8;
-    border: transparent;
+  background-color: rgba(0, 0, 0, 0.35);
+  border: transparent;
 }
 
 .ui-bulletgraph-minortick {
-    background-color: @igGray8;
-    border: transparent;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: transparent;
 }
 
 .ui-bulletgraph-label {
-    background-color: #666;
-    border: transparent;
+  background-color: #666;
+  border: transparent;
 }
-/* RANGE VALUES */
 
+/* RANGE VALUES */
 .ui-bulletgraph-range-palette-1 {
-    background-color: @chartGradualPalette8;
-    border: transparent;
+  background-color: #005E9C;
+  border: transparent;
 }
 
 .ui-bulletgraph-range-palette-2 {
-    background-color: @chartGradualPalette6;
-    border: transparent;
+  background-color: #0078C8;
+  border: transparent;
 }
 
 .ui-bulletgraph-range-palette-3 {
-    background-color: @chartGradualPalette11;
-    border: transparent;
+  background-color: #0092F4;
+  border: transparent;
 }
 
 .ui-bulletgraph-range-palette-4 {
-    background-color: @chartGradualPalette7;
-    border: transparent;
+  background-color: #21A7FF;
+  border: transparent;
 }
 
 .ui-bulletgraph-range-palette-5 {
-    background-color: @chartGradualPalette9;
-    border: transparent;
+  background-color: #4FB9FF;
+  border: transparent;
 }
+
 /* ACTUAL VALUES */
-
 .ui-bulletgraph-value {
-    background-color: #ffffff;
-    border: transparent;
+  background-color: #333333;
+  border: transparent;
 }
-/* TOOLTIPS */
 
+/* TOOLTIPS */
 .ui-bulletgraph-tooltip {
-    border-style: none;
-    white-space: nowrap;
-    background-color: transparent;
+  border-style: none;
+  white-space: nowrap;
+  background-color: transparent;
 }
 
 .ui-bulletgraph-range-tooltip {
-    border-style: solid;
-    border-width: 2px;
-    background-color: rgba(230, 230, 230, 0.74);
-    padding: 4px;
-    font-weight: bold;
+  border-style: solid;
+  border-width: 2px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
 }
 
 .ui-bulletgraph-value-tooltip {
-    border-style: solid;
-    border-width: 2px;
-    background-color: rgba(230, 230, 230, 0.74);
-    padding: 4px;
-    font-weight: bold;
+  border-style: solid;
+  border-width: 2px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
 }
 
 .ui-bulletgraph-targetvalue-tooltip {
-    border-style: solid;
-    border-width: 2px;
-    background-color: rgba(230, 230, 230, 0.74);
-    padding: 4px;
-    font-weight: bold;
+  border-style: solid;
+  border-width: 2px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
 }
 
-.ui-bulletgraph {
-    font-family: @fontfamily;
-    font-size: 12px;
-    color: #494949;
+.ui-bulletgraph-container {
+  font-family: Verdana;
+  font-size: 11px;
 }
+
 /***********************/
 /* igLinearGauge Chart */
 /***********************/
 
 .ui-lineargauge-backing {
-    background-color: #ffffff;
-    border-color: #ffffff;
+  background-color: #ffffff;
+  border-color: #ffffff;
 }
 
 .ui-lineargauge-needle {
-    background-color: @igGray8;
-    border-color: @igGray8;
+  background-color: #999999;
+  border-color: #FFFFFF;
 }
 
 .ui-lineargauge-scale {
-    background-color: @igGray8;
-    border-color: @igGray8;
+  background-color: transparent;
+  border-color: transparent;
 }
-/* TICKS AND LABELS */
 
+/* TICKS AND LABELS */
 .ui-lineargauge-tick {
-    background-color: #333333;
-    border: transparent;
+  background-color: rgba(0, 0, 0, 0.35);
+  border: transparent;
 }
 
 .ui-lineargauge-minortick {
-    background-color: #333333;
-    border: transparent;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: transparent;
 }
 
 .ui-lineargauge-label {
-    background-color: #333;
-    border: transparent;
+  background-color: #666;
+  border: transparent;
 }
-/* RANGE VALUES */
 
+/* RANGE VALUES */
 .ui-lineargauge-range-palette-1 {
-    background-color: #3D7D8D;
-    border: transparent;
+  background-color: #005E9C;
+  border: transparent;
 }
 
 .ui-lineargauge-range-palette-2 {
-    background-color: #5A94A2;
-    border: transparent;
+  background-color: #0078C8;
+  border: transparent;
 }
 
 .ui-lineargauge-range-palette-3 {
-    background-color: #77B5C5;
-    border: transparent;
+  background-color: #0092F4;
+  border: transparent;
 }
 
 .ui-lineargauge-range-palette-4 {
-    background-color: #A0CBD7;
-    border: transparent;
+  background-color: #21A7FF;
+  border: transparent;
 }
 
 .ui-lineargauge-range-palette-5 {
-    background-color: #C9E1E8;
-    border: transparent;
+  background-color: #4FB9FF;
+  border: transparent;
 }
-/* TOOLTIPS */
 
+/* TOOLTIPS */
 .ui-lineargauge-tooltip {
-    border-style: none;
-    white-space: nowrap;
-    background-color: transparent;
+  border-style: none;
+  white-space: nowrap;
+  background-color: transparent;
 }
 
 .ui-lineargauge-range-tooltip {
-    border-style: solid;
-    border-width: 2px;
-    background-color: rgba(230, 230, 230, 0.74);
-    padding: 4px;
-    font-weight: bold;
+  border-style: solid;
+  border-width: 2px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
 }
 
 .ui-lineargauge-needle-tooltip {
-    border-style: solid;
-    border-width: 2px;
-    background-color: rgba(230, 230, 230, 0.74);
-    padding: 4px;
-    font-weight: bold;
+  border-style: solid;
+  border-width: 2px;
+  background-color: rgba(230, 230, 230, 0.74);
+  padding: 4px;
+  font-weight: bold;
 }
 
-.ui-lineargauge {
-    font-family: @fontfamily;
-    font-size: 12px;
-    color: @text-color;
+.ui-lineargauge-container {
+  font-family: Verdana;
+  font-size: 11px;
 }
+
 /***********************/
 /* Tile manager        */
 /***********************/
