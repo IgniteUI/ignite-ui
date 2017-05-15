@@ -152,10 +152,10 @@ $chartGradualPalette10: lighten($brand-primary,
 /* JQuery UI styles */
 /********************/
 
-@import 'infragistics.jqueryui.theme';
+@import '_shared-styles/scss/infragistics.jqueryui.theme';
 /********************/
 /* Ignite UI styles */
 /********************/
 
-@import 'infragistics.igniteui.theme';
+@import '_shared-styles/scss/infragistics.igniteui.theme';
 
