@@ -114,15 +114,16 @@
 		keyInteraction: function (key, target, special) {
 			// could use an update in the future - https://www.w3.org/TR/DOM-Level-3-Events/#keypress-event-order
 			var char, endPos;
+			char = (key > 31) ? String.fromCharCode(key) : "";
+			if (special && char) {
+				char = special === "shiftKey" ? char.toUpperCase() : "";
+				key = char.charCodeAt(0);
+			}
 			if (this.keyDownChar(key, target, special)) {
 				return;
 			}
 			if (this.keyPressChar(key, target, special)) {
 				return;
-			}
-			char = (key > 31) ? String.fromCharCode(key) : "";
-			if (special) {
-				char = special === "shiftKey" ? char.toUpperCase() : "";
 			}
 			if (char && target[0].selectionEnd !== undefined) {
 				endPos = target[0].selectionEnd;

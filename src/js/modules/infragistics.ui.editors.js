@@ -5112,23 +5112,16 @@
 					val = this._editorInput.val();
 					nextCh = val.substring(cursorPos, cursorPos + nextDirection);
 
-					//nothing before the negative sign
+					//nothing before the number negative sign
 					if (cursorPos === leadPos && nextCh === negativeSign) {
 						return false;
 					}
 
 					// Allow negative at start and after exponent
 					prevCh = val.substring(cursorPos - nextDirection, cursorPos).toLowerCase();
-					if (ch === negativeSign && (cursorPos === leadPos || prevCh === "e")) { 
-						return true;
+					if (ch === negativeSign) {
+						return cursorPos === leadPos || prevCh === "e" && nextCh !== negativeSign;
 					}
-				}
-
-				// Allow negative at start and after exponent, don't block replacing entire value if everything is selected (-1)
-				if (cursorPos !== -1 && ch === negativeSign) { 
-					
-					return (cursorPos === leadPos || prevCh === "e")
-						&& nextCh !== negativeSign;
 				}
 
 				//We need this extra validation in case the user tries to enter decimal separator multiple times
