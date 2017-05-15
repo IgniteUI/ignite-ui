@@ -3687,10 +3687,8 @@ border-top removed for tables with virtualization, or headers */ }
 
 .ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
 .ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
-  background-color: transparent; }
-  .ui-igscheduler-core .ui-igscheduler-monthview-day-leading span,
-  .ui-igscheduler-core .ui-igscheduler-monthview-day-trailing span {
-    color: #373a3c; }
+  background-color: transparent;
+  color: #373a3c; }
 
 .ui-igscheduler-selectall {
   background-color: #0275d8; }

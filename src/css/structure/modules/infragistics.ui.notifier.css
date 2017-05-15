@@ -78,10 +78,12 @@
     border-left-color: #ffde66;
 }
 
+.ui-ignotify-error.ui-widget,
 .ui-ignotify-error
 {
     border-color: #f33;
 }
+
 .ui-ignotify-error.ui-ignotify-inline
 {
     color: #f33;
