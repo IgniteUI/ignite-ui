@@ -687,7 +687,7 @@
 			});
 
 			testId = "Apply different displayTimeOffset on picker display/values";
-			test(testId, 12, function(){
+			test(testId, 16, function(){
 				var today = new Date(),
 					todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()),
 					pickerTestOpts = [{
@@ -716,6 +716,18 @@
 						day: "",
 						nextDate: (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear(),
 						nextValue: today.toISOString().split("T")[0] + "T03:00:00.000Z"
+					}, {
+						//#1002: igDatePicker drop down cannot be opened 
+						picker: {
+							displayTimeOffset: 120,
+							dateInputFormat: "dateTime",
+							value: new Date("2015-09-10T23:05:10.000Z"),
+							dataMode: "editModeText"
+						},
+						date: "9/11/2015 1:05 AM",
+						day: "11",
+						nextDate: "9/12/2015 1:05 AM",
+						nextValue: "09/12/2015 01:05 AM"
 					}],
 					testWithOptions = function(opts) {
 						if (!opts) {
@@ -748,7 +760,11 @@
 							setTimeout(function () {
 								start();
 								equal($editor.igDatePicker("displayValue"), opts.nextDate, "Displayed day should be the " + opts.nextDate);
-								equal($editor.igDatePicker("value").toISOString(), opts.nextValue, "Value should match " + opts.nextValue + " in UTC");				
+								if(opts.picker.dataMode && opts.picker.dataMode !== "date") {
+									equal($editor.igDatePicker("value"), opts.nextValue, "Value should match " + opts.nextValue + " in UTC");			
+								} else {
+									equal($editor.igDatePicker("value").toISOString(), opts.nextValue, "Value should match " + opts.nextValue + " in UTC");				
+								}
 								$editor.remove();
 								testWithOptions(pickerTestOpts.pop());
 							}, 200);

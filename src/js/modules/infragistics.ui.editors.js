@@ -7563,7 +7563,7 @@
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
 			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7579,7 +7579,7 @@
 				*/
 			value: null,
 			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7595,7 +7595,7 @@
 				*/
 			minValue: null,
 			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -10589,7 +10589,7 @@
 				$(".selector").%%WidgetName%%("value", new Date (2016, 2, 3);
 			```
 				paramType="date" optional="true" New editor value. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
-				Note! This option doesn't use the displayInputFormat to extract the date
+				Note! This option doesn't use the dateInputFormat to extract the date
 				returnType="date" Current editor value. */
 			var parsedVal;
 			if (newValue !== undefined) {
@@ -11295,7 +11295,8 @@
 				direction = "down";
 			}
 			if (this._editMode && this._editorInput.val() !== this._maskWithPrompts) {
-				currentDate = this._valueFromText(this._editorInput.val());
+				// D.P. 15th May 2017 #1002 Drop down cannot be opened w/ displayTimeOffset when dataMode is "editModeText"
+				currentDate = this._parseDateFromMaskedValue(this._editorInput.val());
 			}
 
 			if (currentDate) {
