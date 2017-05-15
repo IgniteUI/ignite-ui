@@ -5096,12 +5096,34 @@
 		},
 		_validateKey: function (event) { //NumericEditor
 			if (this._super(event)) {
-				var dataMode = this.options.dataMode,
-					negativeSign = this.options.negativeSign, ch, val,
+				var dataMode = this.options.dataMode, ch, val,
+					negativeSign = this.options.negativeSign, nextCh, prevCh,
+					leadPos = 0, nextDirection = 1,
 					cursorPos = this._getCursorPosition(),
 					isDecimal = event.which ? event.which === 46 : false;
-				ch = String.fromCharCode(event.charCode || event.which);
-				if (ch === negativeSign && cursorPos > 0) {
+				ch = String.fromCharCode(event.charCode || event.which).toLowerCase();
+
+				//don't block replacing entire value if everything is selected (-1)
+				if (cursorPos === -1) {
+					//all includeKeys, except E-s
+					return ch !== "e";
+				}
+
+				val = this._editorInput.val().toLowerCase();
+				nextCh = val.substring(cursorPos, cursorPos + nextDirection);
+
+				//nothing before the number negative sign
+				if (cursorPos === leadPos && nextCh === negativeSign) {
+					return false;
+				}
+
+				// Allow negative at start and after exponent
+				prevCh = val.substring(cursorPos - nextDirection, cursorPos);
+				if (ch === negativeSign) {
+					return (cursorPos === leadPos || prevCh === "e") && nextCh !== negativeSign;
+				}
+
+				if (ch === "e" && val.indexOf("e") !== -1) {
 					return false;
 				}
 
@@ -5110,7 +5132,6 @@
 					var decimalSeparator = this.options.decimalSeparator;
 
 					// val = $(event.target).val();
-					val = this._editorInput.val();
 					if (decimalSeparator !== "." && isDecimal &&
 						(val.indexOf(".") !== -1 || val.indexOf(decimalSeparator) !== -1) &&
 						cursorPos !== -1) {
@@ -5118,9 +5139,6 @@
 					}
 					if (((ch === decimalSeparator || isDecimal) &&
 							(val.indexOf(decimalSeparator) !== -1 || val.indexOf(".") !== -1) &&
-							cursorPos !== -1) ||
-						(ch === negativeSign &&
-							val.indexOf(negativeSign) !== -1 &&
 							cursorPos !== -1)) {
 
 						// We already have decimal separator so prevent default
@@ -5128,23 +5146,11 @@
 					} else {
 						return true;
 					}
-				} else if (dataMode === "long" || dataMode === "int" ||
-					dataMode === "short" || dataMode === "sbyte") {
-					val = $(event.target).val();
-					if (ch === negativeSign && val.indexOf(negativeSign) > 0 && cursorPos !== -1) {
-
-						// We already have decimal separator so prevent default
-						return false;
-					} else {
-						return true;
-					}
 				} else {
-
 					// If the dataMode differs from double, or float and the super method returns true the cher is valid
 					return true;
 				}
 			} else {
-
 				// If the super method fails, the char is not allowed
 				return false;
 			}
@@ -6298,7 +6304,7 @@
 				```
 			*/
 			unfilledCharsPrompt: "_",
-			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused). Note that this option is visible, only when the [revertIfNotValid](ui.igmaskeditor#options:revertIfNotValid) option is set to false.
+			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused).
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6964,7 +6970,14 @@
 			}
 		},
 		_getDisplayValue: function () { //igMaskEditor
-			var result, maskedVal = this._maskedValue,
+			return this._replaceValueInMask(this.options.unfilledCharsPrompt, this.options.padChar);
+		},
+		_getMaskedValue: function (maskedValue) {
+			return this._replaceValueInMask(this.options.emptyChar, this.options.unfilledCharsPrompt,
+				maskedValue);
+		},
+		_replaceValueInMask: function (oldChar, newChar, maskedValue) {
+			var result, maskedVal = maskedValue || this._maskedValue,
 				i, j, p, maskChar, tempChar, index, regExpr,
 				inputMask = this.options.inputMask, maskFlagsArray = this._maskFlagsArray;
 
@@ -6991,13 +7004,13 @@
 					continue;
 				}
 
-				if (maskedVal.charAt(i) === this.options.unfilledCharsPrompt) {
+				if (maskedVal.charAt(i) === oldChar) {
 					maskChar = inputMask.charAt(j);
 					if (maskChar === "&" || maskChar === "A" ||
 						maskChar === "L" || maskChar === "0") {
 
 						// All the required fields, which are unfilled are replaced with the padChar
-						result = this._replaceCharAt(result, p, this.options.padChar);
+						result = this._replaceCharAt(result, p, newChar);
 					} else {
 						result = this._replaceCharAt(result, p, "");
 						p--;
@@ -7006,7 +7019,7 @@
 			}
 			if (this._promptCharsIndices.length > 0) {
 				regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
-				result = result.replace(regExpr, this.options.unfilledCharsPrompt);
+				result = result.replace(regExpr, oldChar);
 			}
 			return result;
 		},
@@ -7116,7 +7129,9 @@
 
 				// If the value is not valid, we clear the editor
 				if (this.options.revertIfNotValid) {
-					value = this._valueInput.val().trim();
+
+					// N.A. May 12th, 2017 #903: Properly revert display value.
+					value = this._getMaskedValue(this._valueInput.val().trim());
 					this._updateValue(value);
 
 					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
