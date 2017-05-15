@@ -21,6 +21,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                      
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-ja.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -347,8 +348,8 @@
 			//internal value parse
 			strictEqual($('#inputEditor1').data("igNumericEditor")._valueFromText("-3.33333"), -3.33333, "The parsed value is not correct");
 			equal($('#negativeEditor1').data("igNumericEditor")._valueFromText("-2e+1"), -2E+1, "The parsed value is not correct");
-			strictEqual($('#negativeEditor1').data("igNumericEditor")._valueFromText("-500"), "-5e+2", "The parsed value is not correct");
-			strictEqual($('#convertScientificToNumeric').data("igNumericEditor")._valueFromText("22"), "2.2e+1", "The parsed value is not correct");
+			strictEqual($('#negativeEditor1').data("igNumericEditor")._valueFromText("-5000000000000000000000"), -5e+21, "The parsed value is not correct");
+			strictEqual($('#convertScientificToNumeric').data("igNumericEditor")._valueFromText("2.2e+1"), 22, "The parsed value is not correct");
 
 			var $editor = $("<input>").appendTo("#testBedContainer")
 				.igNumericEditor({ maxLength: 10 });
@@ -749,20 +750,26 @@
 		}); 
 		
 		testId = "Scientific format";
-		test(testId, 4, function () {
+		test(testId, 6, function () {
 			var mainContainer = $('#scientificFormat'),
 				editorInput = $('#scientificFormat').igNumericEditor("field"), container = $('#clearEditor');
 			editorInput.click();
 			$("#scientificFormat").igNumericEditor("option", "value", "94");
 			container.click();
-			equal(editorInput.val(), "9.4e+1", "Value is not correct");
+			equal(editorInput.val(), "9.4e1", "Text is not correct");
 
 			//Change scientificFormat to "E"
 			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "E");
+			$("#scientificFormat").igNumericEditor("option", "value", "6441");
+			equal(editorInput.val(), "6.441E3", "Text is not correct");
+
+			//Change scientificFormat to "E+"
+			$("#scientificFormat").igNumericEditor("option", "scientificFormat", "E+");
 			editorInput.click();
 			$("#scientificFormat").igNumericEditor("option", "value", "22");
 			container.click();
-			equal(editorInput.val(), "2.2E+1", "Value is not correct");
+			equal(editorInput.val(), "2.2E+1", "Text is not correct");
+			strictEqual($("#scientificFormat").igNumericEditor("option", "value"), 22, "Text is not correct");
 
 			//Change scientificFormat to invalid value
 			throws(function() {
@@ -773,6 +780,161 @@
 			);
 			container.click();
 			equal(editorInput.val(), "2.2E+1", "Value is not correct");
+		});
+
+		testId = "Convert between Scientific and fixed-point formats (dateMode, scientificFormat, min/maxDecimals)";
+		test(testId, 76, function () {
+			var $editor, $editorInput,
+				setup = [{
+					//1: #761: Wrong value when setting the value to a number with too many digits
+					options: { dateMode: "double", value: 1e-21 },
+					value: 0,
+					displayed: "0",
+					editText: "0"
+				}, {
+					//2: Auto-convert from parsing (parse with diff separator)
+					options: { dateMode: "double", value: "1,11e+15", decimalSeparator: ",", groupSeparator: "" },
+					value: 1.11e+15,
+					displayed: "1110000000000000",
+					editText: "1110000000000000"
+				}, {
+					//3: Auto-convert from parsing
+					options: { dateMode: "double", value: "1e-2" },
+					value: 0.01,
+					displayed: "0.01",
+					editText: "0.01"
+				}, {
+					//4: Forced fixed-point conversion:
+					options: { dateMode: "double", value: 1e-7, maxDecimals: 7 },
+					value: 1e-7,
+					displayed: "0.0000001",
+					editText: "0.0000001"
+				}, {
+					//5: Can't convert very big numbers to fixed:
+					options: { dateMode: "double", value: 1e21},
+					value: 1e+21,
+					displayed: "1e+21",
+					editText: "1e21"
+				}, {
+					//6: Force convert to int
+					options: { dateMode: "int", value: 1e-21 },
+					value: 0,
+					displayed: "0",
+					editText: "0"
+				}, {
+					//7: Round decimals
+					options: { scientificFormat: "e", value: 1.332e-7, maxDecimals: 2 },
+					value: 1.33e-7,
+					displayed: "1.33e-7",
+					editText: "1.33e-7"
+				}, {
+					//8: Round decimals, decimalSeparator
+					options: { scientificFormat: "e+", decimalSeparator: ",", groupSeparator: " ", value: 1.338e-7 },
+					value: 1.34e-7,
+					displayed: "1,34e-7",
+					editText: "1,34e-7"
+				}, {
+					//9: 
+					options: { scientificFormat: "e+", value: 1, dataMode: "int" },
+					value: 1,
+					displayed: "1e+0",
+					editText: "1e0"
+				}, {
+					//10: positive exponents ignore max decimals:
+					options: { scientificFormat: "E", value: 1234, dataMode: "int", maxDecimals: 2 },
+					value: 1234,
+					displayed:"1.234E3",
+					editText:"1.234E3"
+				}, {
+					//11: positive exponents ignore max decimals:
+					options: { scientificFormat: "e", value: 1234, dataMode: "double", maxDecimals: 2 },
+					value: 1234,
+					displayed:"1.234e3",
+					editText:"1.234e3"
+				}, {
+					//12: format + decimalSeparator
+					options: { scientificFormat: "E+", value: 123, dataMode: "int", decimalSeparator: ",", groupSeparator: " ", },
+					value: 123,
+					displayed: "1,23E+2",
+					editText: "1,23E2"
+				}, {
+					//13: positive format set on negative expo value
+					options: { dataMode: 'double', value: 1e-7, maxDecimals: 15, scientificFormat: "E+" },
+					value: 1e-7,
+					displayed: "1E-7",
+					editText: "1E-7"
+				}, {
+					//14: Very large sceintific in int mode (caps at maxValue)
+					options: { value: 1e+45, dataMode: "int" },
+					value: 2147483647, //intMaxValue
+					displayed: "2,147,483,647",
+					editText: "2147483647"
+				}, {
+					//15: Very large sceintific in double (no decimal cut)
+					options: { value: 1.56547e+55, dataMode: "double", scientificFormat: "E+" },
+					value: 1.56547e+55,
+					displayed: "1.56547E+55",
+					editText: "1.56547E55"
+				}, {
+					//16: Very small sceintific in double (decimal round)
+					options: { value: 1.56547e-55, dataMode: "double", scientificFormat: "E+" },
+					value: 1.57e-55,
+					displayed: "1.57E-55",
+					editText: "1.57E-55"
+				}, {
+					//17: Very small sceintific in float (decimal cut)
+					options: { value: "1.5699e-51", dataMode: "float", roundDecimals:false, scientificFormat: "e" },
+					value: 1.56e-51,
+					displayed: "1.56e-51",
+					editText: "1.56e-51"
+				}, {
+					//18: Value expand from sting entry
+					options: { value: "156.547e-53", dataMode: "float", roundDecimals:false, scientificFormat: "e" },
+					value: 1.56e-51,
+					displayed: "1.56e-51",
+					editText: "1.56e-51"
+				}];
+
+			for (var i = 0; i < setup.length; i++) {
+				$editor = $("<input>").appendTo("#testBedContainer").igNumericEditor(setup[i].options);
+				$editorInput = $editor.igNumericEditor("field");
+
+				strictEqual($editor.igNumericEditor("value"), setup[i].value, "Value did not match expected for setup:" + (i + 1));
+				equal($editorInput.val(), setup[i].displayed, "Display text did not match expected for setup:" + (i + 1));
+				$editor.trigger("focus");
+				equal($editorInput.val(), setup[i].editText, "Edit Text did not match expected for setup:" + (i + 1));
+				$editor.trigger("blur");
+				//re-validate value after edit mode:
+				strictEqual($editor.igNumericEditor("value"), setup[i].value, "Value did not match expected for setup:" + (i + 1));
+				$editor.remove();
+			}
+
+			// paste formatting:
+			$editor = $("<input>").appendTo("#testBedContainer").igNumericEditor({
+				value: 2, dataMode: "double", scientificFormat: "E+"
+			});
+
+			$editor.trigger("focus")[0].select();
+			$.ig.TestUtil.paste($editor[0], "100");
+			stop();
+			setTimeout(function() {
+				equal($editor.val(), "1E2", "Edit Text not as expected on scientific format value paste.");
+				$editor[0].select();
+				$.ig.TestUtil.paste($editor[0], "1e-22");
+				setTimeout(function() {
+					equal($editor.val(), "1E-22", "Edit Text not as expected on scientific format value paste.");
+					$editor.igNumericEditor("option", "scientificFormat", "e+");
+					$editor[0].select();
+					$.ig.TestUtil.paste($editor[0], "23e+1");
+					setTimeout(function() {
+						start();
+						equal($editor.val(), "2.3e2", "Edit Text not as expected on scientific format value paste.");
+						$editor.trigger("blur");
+						equal($editor.val(), "2.3e+2", "Display Text not as expected on scientific format value paste.");
+						$editor.remove();
+					}, 20);
+				}, 20);
+			}, 20);
 		});
 
 		testId = "Group and decimal Separators";
@@ -1592,7 +1754,7 @@
 				equal(editorInput.val(), "33", "The text after paste is not correct");	
 				
 				// paste "+0024" in front, ultimately only adding 24:
-				editorInput[0].setSelectionRange(0);
+				editorInput[0].setSelectionRange(0,0);
 				var parseInt = window.parseInt;
 				window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
 				$.ig.TestUtil.paste(editorInput[0], "+0024");
