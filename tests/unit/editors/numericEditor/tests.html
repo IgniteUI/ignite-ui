@@ -28,6 +28,7 @@
 	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
+	var util = $.ig.TestUtil;
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
 	$(document).ready(function () {
 		// Create a editors
@@ -986,6 +987,150 @@
 			ok(!flag, "'.' char is typed");
 			container.blur();
 			equal($('#longEditor').igNumericEditor("value"), "123", "The value is not correct");
+		});
+
+		testId = "Typing negative signs (multiple prevention, leading, scientific)";
+		test(testId, 21, function () {
+			var $editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 3.33
+			});
+			// 46: ".", 45: "-", 65: "a", 94: "^"
+
+			$editor.trigger("focus");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-3.33", "Negative sign was not allowed before a number");
+			//move back in front:
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-3.33", "Second negative sign should not be allowed");
+			//try after:
+			$editor[0].setSelectionRange(1,1);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-3.33", "Second negative sign should not be allowed");
+			//try typing other stuff in front:
+			$editor.val("-3");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(46, $editor);
+			equal($editor.val(), "-3", "Decimal should not be allowed before negative sign");
+			$editor.val("-3");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(65, $editor);
+			equal($editor.val(), "-3", "Letter char should not be allowed before negative sign");
+			$editor.remove();
+
+			// unsigned
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 5,
+				dataMode: "ushort"
+			});
+			$editor.trigger("focus");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "5", "Negative sign not allowed in unsigned modes");
+			util.keyInteraction(55, $editor);
+			equal($editor.val(), "75", "Numeric key not accepted.");
+			$editor[0].setSelectionRange(1,1);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "75", "Negative sign not allowed in unsigned modes");
+			$editor.remove();
+
+			//scientific
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 0,
+				scientificFormat: "E"
+			});
+			$editor.trigger("focus");
+			$editor[0].select();
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-", "Negative sign was not allowed to repalce entire value");
+			util.keyInteraction(49, $editor);
+			equal($editor.val(), "-1", "1 was not allowed after negative sign");
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "-1E", "Negative sign was not allowed before a number");
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-", "Negative sign was not allowed after exponent");
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-", "Second negative sign should not be allowed after exponent");
+			$editor[0].setSelectionRange(3,3);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-", "Second exponent negative sign should not be allowed.");
+			$editor[0].setSelectionRange(4,4);
+			util.keyInteraction(55, $editor);
+			equal($editor.val(), "-1E-7", "Number should be allowed after negative sign in exponent");
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-7", "Second exponent negative sign should not be allowed.");
+			$editor.val("-1E1");
+			$editor[0].setSelectionRange(3,3);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "-1E-1", "Negative sign was not allowed after exponent");
+			$editor.remove();
+
+			//change default sign:
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				value: 55,
+				negativeSign: "^"
+			});
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(94, $editor);
+			equal($editor.val(), "^55", "Negative sign was not allowed if first position");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(94, $editor);
+			equal($editor.val(), "^55", "Second negative should not be allowed");
+			$editor.igNumericEditor("option", "scientificFormat", "e");
+			$editor[0].setSelectionRange(3,3);
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "^55e", "Exponent not accepted");
+			util.keyInteraction(94, $editor);
+			equal($editor.val(), "^55e^", "Second exponent negative sign should not be allowed.");
+			$editor.remove();
+		});
+
+		testId = "Typing multiple exponent chars (scientific E-notation)";
+		test(testId, 8, function () {
+			var $editor;
+			// 46: ".", 45: "-", 65: "a", 94: "^"
+			
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({ 
+				dataMode: 'double', 
+				value: 1e-7,
+				scientificFormat: "E+"
+			});
+			$editor.trigger("focus");
+			$editor[0].select();
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E-7", "E character should not be allowed to repalce entire value");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E-7", "Second E character should not be allowed");
+			$editor.val("1");
+			$editor[0].setSelectionRange(1,1);
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E", "E character was not allowed");
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E", "Second E character should not be allowed");
+			$editor.remove();
+
+			//change format:
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				dataMode: 'double', 
+				value: 1e-27,
+				scientificFormat: "e"
+			});
+			$editor.trigger("focus");
+			$editor[0].select();
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "1e-27", "e character should not be allowed to repalce entire value");
+			$editor[0].setSelectionRange(4,4);
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "1e-27", "Second e character should not be allowed");
+			$editor.val("255");
+			$editor[0].setSelectionRange(2,2);
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "25e5", "e character was not be allowed");
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "25e5", "Second e character should not be allowed");
+			$editor.remove();
 		});
 		
 		testId = "Lists testing";
