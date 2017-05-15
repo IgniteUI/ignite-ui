@@ -782,7 +782,7 @@
 		});
 
 		testId = "Convert between Scientific and fixed-point formats (dateMode, scientificFormat, min/maxDecimals)";
-		test(testId, 74, function () {
+		test(testId, 76, function () {
 			var $editor, $editorInput,
 				setup = [{
 					//1: #761: Wrong value when setting the value to a number with too many digits
@@ -921,8 +921,17 @@
 				$editor[0].select();
 				$.ig.TestUtil.paste($editor[0], "1e-22");
 				setTimeout(function() {
-					start();
 					equal($editor.val(), "1E-22", "Edit Text not as expected on scientific format value paste.");
+					$editor.igNumericEditor("option", "scientificFormat", "e+");
+					$editor[0].select();
+					$.ig.TestUtil.paste($editor[0], "23e+1");
+					setTimeout(function() {
+						start();
+						equal($editor.val(), "2.3e2", "Edit Text not as expected on scientific format value paste.");
+						$editor.trigger("blur");
+						equal($editor.val(), "2.3e+2", "Display Text not as expected on scientific format value paste.");
+						$editor.remove();
+					}, 20);
 				}, 20);
 			}, 20);
 		});
