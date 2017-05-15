@@ -46,4 +46,13 @@ bower_components
 #Build output
 dist
 .idea/
+_framework.css
+_infragistics.igniteui.theme.css
+_infragistics.jqueryui.theme.css
+_variables-igniteui.css
+framework.css
+infragistics.igniteui.theme.css
+infragistics.jqueryui.theme.css
+variables-igniteui.css
+variables.css
 src/css/themes/prepros.cfg
