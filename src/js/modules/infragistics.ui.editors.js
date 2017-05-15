@@ -5190,7 +5190,7 @@
 				newValue = "";
 			}
 			if (this._editMode) {
-				this._editorInput.val(newValue);
+				this._editorInput.val(this._getEditModeValue(newValue));
 				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
 					diff = newLenght - newValue.toString().length;

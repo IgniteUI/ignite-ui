@@ -782,7 +782,7 @@
 		});
 
 		testId = "Convert between Scientific and fixed-point formats (dateMode, scientificFormat, min/maxDecimals)";
-		test(testId, 72, function () {
+		test(testId, 74, function () {
 			var $editor, $editorInput,
 				setup = [{
 					//1: #761: Wrong value when setting the value to a number with too many digits
@@ -907,6 +907,24 @@
 				strictEqual($editor.igNumericEditor("value"), setup[i].value, "Value did not match expected for setup:" + (i + 1));
 				$editor.remove();
 			}
+
+			// paste formatting:
+			$editor = $("<input>").appendTo("#testBedContainer").igNumericEditor({
+				value: 2, dataMode: "double", scientificFormat: "E+"
+			});
+
+			$editor.trigger("focus")[0].select();
+			$.ig.TestUtil.paste($editor[0], "100");
+			stop();
+			setTimeout(function() {
+				equal($editor.val(), "1E2", "Edit Text not as expected on scientific format value paste.");
+				$editor[0].select();
+				$.ig.TestUtil.paste($editor[0], "1e-22");
+				setTimeout(function() {
+					start();
+					equal($editor.val(), "1E-22", "Edit Text not as expected on scientific format value paste.");
+				}, 20);
+			}, 20);
 		});
 
 		testId = "Group and decimal Separators";
@@ -1582,7 +1600,7 @@
 				equal(editorInput.val(), "33", "The text after paste is not correct");	
 				
 				// paste "+0024" in front, ultimately only adding 24:
-				editorInput[0].setSelectionRange(0);
+				editorInput[0].setSelectionRange(0,0);
 				var parseInt = window.parseInt;
 				window.parseInt = function (val, radix) { return parseInt(val, 10); }; // we don't parseInt like it's ES3 anymore...
 				$.ig.TestUtil.paste(editorInput[0], "+0024");
