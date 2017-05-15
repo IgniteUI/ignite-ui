@@ -6298,7 +6298,7 @@
 				```
 			*/
 			unfilledCharsPrompt: "_",
-			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused). Note that this option is visible, only when the [revertIfNotValid](ui.igmaskeditor#options:revertIfNotValid) option is set to false.
+			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused).
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
