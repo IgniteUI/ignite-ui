@@ -2858,9 +2858,9 @@
 									//Close DropDonw
 									this._toggleDropDown();
 								}
-								if (this.options.readOnly) {
-									e.preventDefault();
-								}
+
+								// prevent default arrow action (cursor move or page scroll on readonly):
+								e.preventDefault();
 							}
 						} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
 							if (!this._dropDownList.is(":visible")) {
@@ -2870,9 +2870,7 @@
 								//hover next element
 								this._hoverNextDropDownListItem();
 							}
-							if (this.options.readOnly) {
-								e.preventDefault();
-							}
+							e.preventDefault();
 						} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
 							//Close dropdown
 							this._toggleDropDown();
@@ -4821,9 +4819,9 @@
 						// Spin numeric value
 						this._handleSpinUpEvent();
 					}
-					if (this.options.readOnly) {
-						e.preventDefault();
-					}
+
+					// prevent default arrow action (cursor move or page scroll on readonly):
+					e.preventDefault();
 				} else if (e.keyCode === 40) {//Arrow Down
 					if (e.altKey && this._dropDownList && !this._dropDownList.is(":visible")) {
 
@@ -4839,9 +4837,7 @@
 						// Spin numeric value
 						this._handleSpinDownEvent();
 					}
-					if (this.options.readOnly) {
-						e.preventDefault();
-					}
+					e.preventDefault();
 				} else if (e.keyCode === 27 && this._dropDownList &&
 					this._dropDownList.is(":visible")) { //Escape and dropdown is opened
 
@@ -8045,9 +8041,11 @@
 				// TODO: Optimize this method together with _triggerKeyDown in the igDatePicker.
 				if (key === 38 && !(this instanceof $.ui.igDatePicker)) {
 					this._spinUpEditMode();
+					event.preventDefault();
 				}
 				if (key === 40 && !(this instanceof $.ui.igDatePicker)) {
 					this._spinDownEditMode();
+					event.preventDefault();
 				}
 				if (key === 13) {
 					this._enterEditMode();
@@ -9832,6 +9830,8 @@
 		_setSecondsEditMode: function (mask, time, currentSecond, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newSecond,
 				minuteUpdateDelta = 0, currentMinute, timeMinute;
+
+			delta = delta % 60;
 			if (currentSecond + delta >= 60) {
 				if (isLimited) {
 					newSecond = currentSecond;
@@ -9878,6 +9878,8 @@
 		_setMinutesEditMode: function (mask, time, currentMinute, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMinute,
 				hourUpdateDelta = 0, currentHour, timeHour;
+
+			delta = delta % 60;
 			if (currentMinute + delta >= 60) {
 				if (isLimited) {
 					newMinute = currentMinute;
@@ -9925,15 +9927,17 @@
 				is24format = this._dateIndices.hh24,
 				dayUpdateDelta = false,
 				amPmUpdateDelta = false,
-				newHour = currentHour + delta,
-				hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm, timeDay, timeAmPm;
+				newHour, hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm,
+				timeDay, timeAmPm, dayDelta;
 
 			if (is24format) {
 				hours = 24;
+				newHour = currentHour + (delta % 24);
 				wrapUpHours = newHour >= hours; // The maximum hour in 24H format is 23, that's why 24 is the turning point.
 				wrapDownHours = newHour < 0; // The minumum hour in 24H format is 00, that's why -1 is the turing point.
 			} else {
 				hours = 12;
+				newHour = currentHour + (delta % 12);
 				wrapUpHours = newHour > hours; // The maximum hour in 12H format is 12, that's why 13 is the turning point.
 				wrapDownHours = newHour < 1; // The minumum hour in 12H format is 01, that's why 0 is the turning point.
 				currentAmPm = (mask.toLowerCase().indexOf(" pm") >= 0) ? "pm" : "am";
@@ -9943,6 +9947,7 @@
 				if (isLimited) {
 					newHour = currentHour;
 				} else {
+					dayDelta = (delta !== 0) ? 1 : 0;
 					if (is24format) {
 
 						// In 24H format date, when the hour changes (wraps up) from 23 to 00, this is the time that the day is increased also.
@@ -9952,8 +9957,14 @@
 
 						// In 12H format date, when the hour changes (wraps up) from 12 to 01, this is NOT the time that the day is increased.
 						// It is increased an hour earlier. (implemented in the top else block).
-						if (newHour === 13) {
-							newHour = 1;
+						if (newHour >= 13) {
+							newHour = newHour - hours;
+							if (newHour > 13 || delta > 1) {
+								amPmUpdateDelta = true;
+							}
+							if (currentAmPm === "pm") {
+								dayUpdateDelta = true;
+							}
 						}
 					}
 				}
@@ -9961,6 +9972,7 @@
 				if (isLimited) {
 					newHour = currentHour;
 				} else {
+					dayDelta = (delta !== 0) ? -1 : 0;
 					if (is24format) {
 
 						// In 24H format date, when the hour changes (wraps up) from 00 to 23, this is the time that the day is decreased also.
@@ -9973,6 +9985,12 @@
 						// N.A. September 15th, 2016 #342: Fix spinning down of the limit value.
 						if (newHour <= 0) {
 							newHour = 12 + newHour;
+							if (newHour < 0 || delta < -1) {
+								amPmUpdateDelta = true;
+							}
+							if (currentAmPm === "am") {
+								dayUpdateDelta = true;
+							}
 						}
 					}
 				}
@@ -9980,13 +9998,15 @@
 				if (!is24format) {
 
 					// Update AM/PM and date in 12H format.
-					if (delta > 0 && newHour === 12) {
+					if (delta > 0 && newHour >= 12 && newHour - delta < 12 ) {
+						dayDelta = (delta !== 0) ? 1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "pm") {
 							dayUpdateDelta = true;
 						}
 					}
-					if (delta < 0 && newHour === 11) {
+					if (delta < 0 && newHour < 12 && newHour - delta >= 12) {
+						dayDelta = (delta !== 0) ? -1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "am") {
 							dayUpdateDelta = true;
@@ -10007,14 +10027,14 @@
 				if (timeDay !== null) {
 					currentDay = parseInt(this._getStringRange(mask, timeDay.startPosition,
 						timeDay.endPosition), 10);
-					mask = this._setDayEditMode(mask, timeDay, currentDay, delta);
+					mask = this._setDayEditMode(mask, timeDay, currentDay, dayDelta);
 				} else {
 
 					// This is the case, when we don't have day in the mask, but we increase/decrease the hour to the next/previous day.
 					// In such a situation, we update the internal date with the new day, so that when we loose focus the day is the correct one.
 					if (!isLimited) {
 						this._setDateField("Date", this._dateObjectValue,
-							this._getDateField("Date", this._dateObjectValue) + delta);
+							this._getDateField("Date", this._dateObjectValue) + dayDelta);
 					}
 				}
 			}
@@ -10449,15 +10469,7 @@
 			if (userInteraction) {
 				this._processTextChanged();
 			}
-			if ($.ig.util.isChrome || $.ig.util.isSafari || $.ig.util.isFF) {
-
-				// In Chrome, Safari and FF there is a bug and the cursor needs to be set with timeout in order to work.
-				this._timeouts.push(setTimeout(function () {
-					self._setCursorPosition(cursorPosition);
-				}, 0));
-			} else {
-				self._setCursorPosition(cursorPosition);
-			}
+			self._setCursorPosition(cursorPosition);
 		},
 		_setTimePeriod: function (periodName, delta, userInteraction) {
 			var date, period, newPeriod;
@@ -11180,10 +11192,12 @@
 			if (event.keyCode === 38 && !event.altKey) {
 				if (!event.ctrlKey) {
 					this._spinUpEditMode();
+					event.preventDefault();
 				}
 			} else if (event.keyCode === 40 && !event.altKey) {
 				if (!event.ctrlKey) {
 					this._spinDownEditMode();
+					event.preventDefault();
 				}
 			} else {
 				this._super(event);
