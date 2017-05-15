@@ -828,7 +828,7 @@
 		});
 
 		testId = "Typing negative signs (multiple prevention, leading, scientific)";
-		test(testId, 19, function () {
+		test(testId, 21, function () {
 			var $editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
 				value: 3.33
 			});
@@ -866,6 +866,11 @@
 			$editor[0].setSelectionRange(0,0);
 			util.keyInteraction(45, $editor);
 			equal($editor.val(), "5", "Negative sign not allowed in unsigned modes");
+			util.keyInteraction(55, $editor);
+			equal($editor.val(), "75", "Numeric key not accepted.");
+			$editor[0].setSelectionRange(1,1);
+			util.keyInteraction(45, $editor);
+			equal($editor.val(), "75", "Negative sign not allowed in unsigned modes");
 			$editor.remove();
 
 			//scientific
@@ -916,6 +921,53 @@
 			equal($editor.val(), "^55e", "Exponent not accepted");
 			util.keyInteraction(94, $editor);
 			equal($editor.val(), "^55e^", "Second exponent negative sign should not be allowed.");
+			$editor.remove();
+		});
+
+		testId = "Typing multiple exponent chars (scientific E-notation)";
+		test(testId, 8, function () {
+			var $editor;
+			// 46: ".", 45: "-", 65: "a", 94: "^"
+			
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({ 
+				dataMode: 'double', 
+				value: 1e-7,
+				scientificFormat: "E+"
+			});
+			$editor.trigger("focus");
+			$editor[0].select();
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E-7", "E character should not be allowed to repalce entire value");
+			$editor[0].setSelectionRange(0,0);
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E-7", "Second E character should not be allowed");
+			$editor.val("1");
+			$editor[0].setSelectionRange(1,1);
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E", "E character was not allowed");
+			util.keyInteraction(101, $editor, "shiftKey");
+			equal($editor.val(), "1E", "Second E character should not be allowed");
+			$editor.remove();
+
+			//change format:
+			$editor = $("<input />").appendTo("#testBedContainer").igNumericEditor({
+				dataMode: 'double', 
+				value: 1e-27,
+				scientificFormat: "e"
+			});
+			$editor.trigger("focus");
+			$editor[0].select();
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "1e-27", "e character should not be allowed to repalce entire value");
+			$editor[0].setSelectionRange(4,4);
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "1e-27", "Second e character should not be allowed");
+			$editor.val("255");
+			$editor[0].setSelectionRange(2,2);
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "25e5", "e character was not be allowed");
+			util.keyInteraction(101, $editor);
+			equal($editor.val(), "25e5", "Second e character should not be allowed");
 			$editor.remove();
 		});
 		

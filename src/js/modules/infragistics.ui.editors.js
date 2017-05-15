@@ -5105,23 +5105,30 @@
 					leadPos = 0, nextDirection = 1,
 					cursorPos = this._getCursorPosition(),
 					isDecimal = event.which ? event.which === 46 : false;
-				ch = String.fromCharCode(event.charCode || event.which);
+				ch = String.fromCharCode(event.charCode || event.which).toLowerCase();
 
 				//don't block replacing entire value if everything is selected (-1)
-				if (cursorPos !== -1) {
-					val = this._editorInput.val();
-					nextCh = val.substring(cursorPos, cursorPos + nextDirection);
+				if (cursorPos === -1) {
+					//all includeKeys, except E-s
+					return ch !== "e";
+				}
 
-					//nothing before the number negative sign
-					if (cursorPos === leadPos && nextCh === negativeSign) {
-						return false;
-					}
+				val = this._editorInput.val().toLowerCase();
+				nextCh = val.substring(cursorPos, cursorPos + nextDirection);
 
-					// Allow negative at start and after exponent
-					prevCh = val.substring(cursorPos - nextDirection, cursorPos).toLowerCase();
-					if (ch === negativeSign) {
-						return cursorPos === leadPos || prevCh === "e" && nextCh !== negativeSign;
-					}
+				//nothing before the number negative sign
+				if (cursorPos === leadPos && nextCh === negativeSign) {
+					return false;
+				}
+
+				// Allow negative at start and after exponent
+				prevCh = val.substring(cursorPos - nextDirection, cursorPos);
+				if (ch === negativeSign) {
+					return (cursorPos === leadPos || prevCh === "e") && nextCh !== negativeSign;
+				}
+
+				if (ch === "e" && val.indexOf("e") !== -1) {
+					return false;
 				}
 
 				//We need this extra validation in case the user tries to enter decimal separator multiple times
@@ -5129,7 +5136,6 @@
 					var decimalSeparator = this.options.decimalSeparator;
 
 					// val = $(event.target).val();
-					val = this._editorInput.val();
 					if (decimalSeparator !== "." && isDecimal &&
 						(val.indexOf(".") !== -1 || val.indexOf(decimalSeparator) !== -1) &&
 						cursorPos !== -1) {
@@ -5137,9 +5143,6 @@
 					}
 					if (((ch === decimalSeparator || isDecimal) &&
 							(val.indexOf(decimalSeparator) !== -1 || val.indexOf(".") !== -1) &&
-							cursorPos !== -1) ||
-						(ch === negativeSign &&
-							val.indexOf(negativeSign) !== -1 &&
 							cursorPos !== -1)) {
 
 						// We already have decimal separator so prevent default
@@ -5147,23 +5150,11 @@
 					} else {
 						return true;
 					}
-				} else if (dataMode === "long" || dataMode === "int" ||
-					dataMode === "short" || dataMode === "sbyte") {
-					val = $(event.target).val();
-					if (ch === negativeSign && val.indexOf(negativeSign) > 0 && cursorPos !== -1) {
-
-						// We already have decimal separator so prevent default
-						return false;
-					} else {
-						return true;
-					}
 				} else {
-
 					// If the dataMode differs from double, or float and the super method returns true the cher is valid
 					return true;
 				}
 			} else {
-
 				// If the super method fails, the char is not allowed
 				return false;
 			}
