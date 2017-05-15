@@ -453,13 +453,17 @@
 			});
 			
 			var testId = 'Percent Editor Scientific format.';
-			test(testId, 1, function () {
+			test(testId, 2, function () {
 				var field = $('#pEditor8').igPercentEditor("field");
 
 				field.focus();
 				field.val("10");
 				field.blur();
-				equal($("#pEditor8").igPercentEditor("displayValue"), "1e+1%", "Displayed value is not correct!");
+				equal($("#pEditor8").igPercentEditor("displayValue"), "1e1%", "Displayed value is not correct!");
+
+				$("#pEditor8").igPercentEditor("option", "scientificFormat", "e+")
+				$('#pEditor8').igPercentEditor("value", 0.57);
+				equal($("#pEditor8").igPercentEditor("displayValue"), "5.7e+1%", "Displayed value is not correct for e+!");
 			});
 
 			var testId = 'Percent Editor Set options.';
@@ -686,7 +690,7 @@
 			});
 
 			var testId = "Spin events with set scientificFormat.";
-			test(testId, 2, function(){
+			test(testId, 3, function(){
 				var $focusedSpinUp = $("<input id='focusedSpinUp' />").appendTo("#testBedContainer")
 					.igPercentEditor({
 						buttonType: "spin",
@@ -695,8 +699,9 @@
 					});
 
 				$focusedSpinUp.focus();
+				equal($focusedSpinUp.igPercentEditor("field").val(), "0E0", "The wrong value is set in the editor in edit mode.");
 				$focusedSpinUp.igPercentEditor("spinUp");
-				equal($focusedSpinUp.igPercentEditor("field").val(), "1E+0", "The wrong value is set in the editor in edit mode.");
+				equal($focusedSpinUp.igPercentEditor("field").val(), "1E0", "The wrong value is set in the editor in edit mode.");
 				$focusedSpinUp.blur();
 				equal($focusedSpinUp.igPercentEditor("value"), "1e-2", "The scientificFormat is not set properly when the spinUp button is clicked.");
 				$focusedSpinUp.remove();
