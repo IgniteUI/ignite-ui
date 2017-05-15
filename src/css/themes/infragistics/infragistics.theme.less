@@ -5,71 +5,12 @@
 //**************/
 //* LESS STUFF */
 //**************/
-//* VARIABLES */
-//*************/
-// Font 
-@fontfamily: "Segoe UI",Arial,sans-serif;
-@text-color: @igGray10;
-@text-muted: fade(@text-color,
-70%);
-//* Colour Variables: */
-//*1-10 are brightness levels, 1 is lightest and 10 is darkest*/
-//* highlighters */
-@accent1: #9ECBD6;
-@accent2: #4897AA;
-//* grays */
-@igGray1: #F0F0F0;
-@igGray2: #eeeeee;
-@igGray3: #e8e8e8;
-@igGray4: #dadada;
-@igGray5: #bcbcbc;
-@igGray6: #cccccc;
-@igGray7: #999999;
-@igGray8: #888888;
-@igGray9: #777777;
-@igGray10: #444444;
-//* Gradual palette, used mainly for bulletGraph and linearGauge */
-@chartGradualPalette1: #7446B9;
-@chartGradualPalette2: #9FB328;
-@chartGradualPalette3: #F96232;
-@chartGradualPalette4: #2E9CA6;
-@chartGradualPalette5: #DC3F76;
-@chartGradualPalette6: #FF9800;
-@chartGradualPalette7: #3F51B5;
-@chartGradualPalette8: #439C47;
-@chartGradualPalette9: #795548;
-@chartGradualPalette10: #9A9A9A;
-@chartGradualPalette11: #C62828;
-//* igChart colors */
 
-@chartToolTipBgColor: rgba(255, 255, 255, 0.95);
-// Icon sprites
-@ui-icons-darker: #222222;
-@ui-icons-dark: #888888;
-@ui-icons-light: #ffffff;
-@ui-icons-accent: @accent2;
-// Border radius 
-@border-radius-base: 0;
-// Variables for Grids 
-//
-@body-bg: #FFFFFF;
-@table-bg: @body-bg; // table bg
-@table-border-color: @igGray4;
-@table-bg-accent: @igGray1; // alt row bg
-@table-bg-hover: @igGray6;
-@table-bg-active: @accent1; // select
-@iggrid-icons-dark: url(../../structure/images/igGrid/filter-icons-333333.png); //dark filter icons
-@iggrid-icons-light: url(../../structure/images/igGrid/filter-icons-FFFFFF.png); //white filter icons
-//== Dropdowns and Menus
-//
-@dropdown-bg: @body-bg;
-@dropdown-link-color: @text-color;
-@dropdown-link-hover-color: @text-color;
-@dropdown-link-hover-bg: @igGray6;
-@dropdown-link-active-color: @text-color;
-@dropdown-link-active-bg: @accent1;
+@import "variables.less";
+
 /*  MIXINS  */
 /************/
+
 /* states */
 
 .stateNormal {
@@ -77,7 +18,6 @@
     background-color: @igGray3;
     color: @text-color;
 }
-
 .stateHover {
     border: 1px solid @igGray7;
     background-color: @igGray6;
@@ -2914,8 +2854,8 @@ input.ui-igbutton {
 .ui-ightmleditor-content iframe,
 .ui-ightmleditor-content textarea {
     border: 1px solid @igGray5;
-    -webkit-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
-    -moz-box-shadow: inset 2px 2px 3px rgba rgba(50, 50, 50, 0.1);
+    -webkit-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
+    -moz-box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
     box-shadow: inset 2px 2px 3px rgba(50, 50, 50, 0.1);
 }
 /*breadcrumb styling*/
