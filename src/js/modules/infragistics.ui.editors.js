@@ -11292,7 +11292,8 @@
 				direction = "down";
 			}
 			if (this._editMode && this._editorInput.val() !== this._maskWithPrompts) {
-				currentDate = this._valueFromText(this._editorInput.val());
+				// D.P. 15th May 2017 #1002 Drop down cannot be opened w/ displayTimeOffset when dataMode is "editModeText"
+				currentDate = this._parseDateFromMaskedValue(this._editorInput.val());
 			}
 
 			if (currentDate) {
