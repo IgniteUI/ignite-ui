@@ -28,7 +28,7 @@ if (!$.ig.Notifier) {
 			errorMsg: "Грешка",
 			warningMsg: "Внимание",
 			notSupportedState: "Неподдържано състояние на нотификациите! Използвайте някое от поддържаните състояния 'success', 'info', 'warning', 'error’.",
-			notSupportedMode: "Неподдържан режим на нотификациите. Използвайте някое от поддържаните състояния 'auto', 'popover', 'inline'."
+			notSupportedMode: "Неподдържан режим на нотификациите. Използвайте някое от поддържаните режим 'auto', 'popover', 'inline'."
 		}
 	});
 
