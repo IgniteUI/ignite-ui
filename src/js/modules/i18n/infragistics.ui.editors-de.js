@@ -75,7 +75,7 @@
 			    datePickerEditorNoSuchMethod: "Der Daten-Editor unterstützt diese Methode nicht.",
 			    datePickerNoSuchMethodDropDownContainer: "Der Daten-Editor unterstützt diese Methode nicht. Verwenden Sie stattdessen „getCalendar“.",
 			    buttonTypeIsDropDownOnly: "Der Datepicker erlaubt nur Dropdown und Wert löschen für die buttonType-Option.",
-				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
+				dateEditorOffsetRange: "Die Option displayTimeOffset sollte zwischen -720 und 840 liegen, wodurch das Offset in Minuten angegeben wird. Es entspricht der UTC-Zeit aller Zeitzonen von Westen (-12:00) bis Osten (+14:00).",
 				cannotSetRuntime: "Diese Option kann nicht zur Laufzeit festgelegt werden",
                 invalidDate: "Ungültiges Datum",
                 maskMessage: 'Alle erforderlichen Positionen sollten ausgefüllt werden',
@@ -83,9 +83,9 @@
 				dateMessage: 'Ein gültiges Datum sollte eingegeben werden',
                 centuryThresholdValidValues: "centuryThreshold-Eigenschaft muss zwischen 0 und 99 liegen.",
                 noListItemsNoButton: "Es wird keine Spin- oder Dropdown-Schaltfläche gerendert, da keine Listenelemente vorliegen.",
-				decimalNumber: "When dataMode is '{0}', the {1} option can accept numeric values between 0 and {2}.",
-				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
-				decimalSeparatorEqualsGroupSeparatorErrorMsg: "The groupSeparator and the decimalSeparator options can not have equal values."
+				decimalNumber: "Wenn der dataMode auf '{0}' eingestellt ist, kann die Option {1} Zahlenwerte zwischen 0 und {2} akzeptieren.",
+				decimalSeparatorErrorMsg: "Die Option decimalSeparator erfordert einen anderen Wert. Der Wert sollte einstellig sein.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Die Optionen groupSeparator und decimalSeparator können nicht denselben Wert haben."
 			}
 	    };
     }

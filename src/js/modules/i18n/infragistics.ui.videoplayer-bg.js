@@ -59,7 +59,7 @@
 			    relatedVideos: 'Подобни видея',
 			    replayButton: 'Започни отначало',
 			    replayTooltip: 'Натиснете тук, за да пуснете видеото отначало.',
-				noCommercials: 'Browser controls does not support commercials'
+				noCommercials: 'Браузър контролите не поддържат реклами.'
 		    }
 	    });
 

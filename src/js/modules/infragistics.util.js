@@ -19,7 +19,7 @@
 
 // Inspired by base2 and Prototype
 
-/*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape, igRoot*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
+/*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape, $, igRoot*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -34,9 +34,11 @@
 }
 (function () {
 	window.igRoot = window.igRoot || {};
-	if (window.jQuery !== undefined) {
-		window.igRoot = jQuery;
+	/* jshint ignore:start */
+	if (window.$ !== undefined || typeof $ === "function") {
+		window.igRoot = window.$ || $;
 	}
+	/* jshint ignore:end */
 
 	//window.$ = window.$ || window.igRoot;
 

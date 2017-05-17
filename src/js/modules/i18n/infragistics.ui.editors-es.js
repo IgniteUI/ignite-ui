@@ -75,7 +75,7 @@
 			    datePickerEditorNoSuchMethod: "El editor de fechas no admite este método.",
 			    datePickerNoSuchMethodDropDownContainer: "El editor de fechas no admite este método. En su lugar, utilice 'getCalendar' uno.",
 			    buttonTypeIsDropDownOnly: "Datepicker sólo admite valores de desplegar menú y de borrar para la opción buttonType.",
-				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
+				dateEditorOffsetRange: "La opción displayTimeOffset debe estar entre -720 y 840, lo que representa el intervalo en minutos, según el UTC, de todas las zonas horarias desde el extremo oeste (-12:00) hasta el extremo este (+14:00).",
 				cannotSetRuntime: "Esta opción no puede establecer un tiempo de ejecución",
 			    invalidDate: "Fecha no válida",
 			    maskMessage: 'Deben rellenarse todas las posiciones requeridas.',
@@ -83,8 +83,8 @@
 				dateMessage: 'Debe introducirse una fecha válida',
 			    centuryThresholdValidValues: "La propiedad centuryThreshold debería estar entre 0 y 99.",
 			    noListItemsNoButton: "No se representa ningún botón desplegable o de control de número porque no hay elementos de lista.",
-				decimalNumber: "Cuando dataMode es '{0}', la opcion {1} se puede transformar en valor numeroso entre 0 y {2}.",
-				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
+				decimalNumber: "Cuando dataMode es '{0}', la opción {1} puede aceptar valores numéricos entre 0 y {2}.",
+				decimalSeparatorErrorMsg: "La opción decimalSeparator requiere un valor diferente. Su valor debe ser un carácter individual.",
 				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Las opciones groupSeparator y decimalSeparator no pueden tener valores iguales."
 		    }
 	    };
