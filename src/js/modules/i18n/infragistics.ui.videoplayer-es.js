@@ -59,7 +59,7 @@
 			    relatedVideos: 'VÍDEOS RELACIONADOS',
 			    replayButton: 'Volver a reproducir',
 			    replayTooltip: 'Haga clic para volver a reproducir el último vídeo.',
-				noCommercials: 'Browser controls does not support commercials'
+				noCommercials: 'Los controles del explorador no admiten publicidad'
 		    }
 	    });
 

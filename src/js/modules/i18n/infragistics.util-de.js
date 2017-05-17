@@ -39,9 +39,9 @@
 			    safariDownload: "http://www.apple.com/safari/download/",
 			    defaultSummaryMethodLabelMin: "Min = ",
 			    defaultSummaryMethodLabelMax: "Max = ",
-			    defaultSummaryMethodLabelSum: "Sum = ",
-			    defaultSummaryMethodLabelAvg: "Avg = ",
-			    defaultSummaryMethodLabelCount: "Count = "
+			    defaultSummaryMethodLabelSum: "Summe = ",
+			    defaultSummaryMethodLabelAvg: "Mittelw. = ",
+			    defaultSummaryMethodLabelCount: "Anzahl = "
 		    }
 	    });
 
