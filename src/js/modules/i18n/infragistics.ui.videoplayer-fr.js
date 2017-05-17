@@ -59,7 +59,7 @@
 			    relatedVideos: 'VIDÉOS RELIÉES',
 			    replayButton: 'Rejouer',
 			    replayTooltip: 'Cliquer pour rejouer la dernière vidéo.',
-				noCommercials: 'Browser controls does not support commercials'
+				noCommercials: 'Les commandes du navigateur ne prennent pas en charge les publicités'
 		    }
 	    });
 

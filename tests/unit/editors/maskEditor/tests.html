@@ -893,6 +893,25 @@
 				equal(field.val(), "1234", "Text is not 1234");
 			});
 
+			testId = "Revert correctly value when revertIfNotValid is set to true";
+			test(testId, 2, function () {
+				var $editor = $("<input/>").appendTo("#testBedContainer")
+					.igMaskEditor({
+						inputMask: "CCC00",
+						padChar: "+",
+						emptyChar: "/",
+						value: "aaa"
+					}),
+				field = $editor.igMaskEditor("field");
+
+				$editor.igMaskEditor("setFocus");
+				$editor.data("igMaskEditor")._insert("sss__");
+				$editor.blur();
+				equal(field.val(), "aaa++", "Text is not reverted");
+				equal($editor.igMaskEditor("value"), "aaa//", "Value is not reverted");
+				$editor.remove();
+			});
+
 			testId = 'Paste and insert';
 			test(testId, 16, function () {
 				var $editor = $("#pasteEditor"),
