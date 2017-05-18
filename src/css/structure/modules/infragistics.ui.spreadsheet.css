@@ -536,7 +536,16 @@
 	margin-top: -4px;
 	border-top: 4px solid transparent;
 	border-bottom: 4px solid transparent;
+}
+
+.ui-igspreadsheet-scrollbar-button-left:before
+{
 	border-right: 6px solid currentColor;
+}
+
+.ui-igspreadsheet-scrollbar-button-right:before
+{
+	border-left: 6px solid currentColor;
 }
 
 .ui-igspreadsheet-scrollbar-button-up:before,
@@ -546,7 +555,16 @@
 	margin-top: -3px;
 	border-left: 4px solid transparent;
 	border-right: 4px solid transparent;
+}
+
+.ui-igspreadsheet-scrollbar-button-up:before
+{
 	border-bottom: 6px solid currentColor;
+}
+
+.ui-igspreadsheet-scrollbar-button-down:before
+{
+	border-top: 6px solid currentColor;
 }
 
 .ui-igspreadsheet-scrollbar-track-left,
@@ -560,7 +578,6 @@
 .ui-igspreadsheet-scrollbar-thumb-vertical,
 .ui-igspreadsheet-scrollbar-thumb-horizontal
 {
-
 	box-sizing: border-box;
 }
 
