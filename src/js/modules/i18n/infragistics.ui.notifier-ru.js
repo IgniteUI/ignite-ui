@@ -27,8 +27,8 @@ if (!$.ig.Notifier) {
 		    successMsg: "Успешно",
 		    errorMsg: "Ошибка",
 		    warningMsg: "Предупреждение",
-		    notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		    notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+		    notSupportedState: "Состояние уведомления не поддерживается! Используйте одно из поддерживаемых состояний: 'success', 'info', 'warning', 'error'",
+		    notSupportedMode: "Режим уведомлений не поддерживается! Используйте один из поддерживаемых режимов: 'auto', 'popover', 'inline'"
 		}
 	});
 
