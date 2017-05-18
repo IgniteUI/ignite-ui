@@ -4916,11 +4916,10 @@
 			}
 		},
 		_parseNumericValueByMode: function (value, numericEditorType, dataMode) { //NumericEditor
-			var val, stringValue, decimalSeparator, groupSeparator, minDecimals, maxDecimals;
-			decimalSeparator = this.options.decimalSeparator;
-			groupSeparator = this.options.groupSeparator;
-			minDecimals = this.options.minDecimals;
-			maxDecimals = this.options.maxDecimals;
+			var val, stringValue, exponent, exponentIndex,
+				decimalSeparator = this.options.decimalSeparator,
+				groupSeparator = this.options.groupSeparator,
+				maxDecimals = this.options.maxDecimals;
 
 			if (value === null || value === "") { // TODO VERIFY _validateValue and _updateValue both have cases calling parse with null!
 				return value;
@@ -4942,59 +4941,79 @@
 				} else if (numericEditorType === "currency") {
 					value = value.replace(this.options.currencySymbol, "").trim();
 				}
+
+				// D.P. decimalSeparator replace before any parsing, regardless of mode (ensure scientific decimals are parsed correctly)
+				if (value.indexOf(decimalSeparator) !== -1) {
+					value = value.replace(decimalSeparator, ".");
+				}
 			}
 			if (dataMode === "double" || dataMode === "float") {
 				stringValue = value.toString().toLowerCase();
 				if (stringValue.indexOf("e") !== -1) {
+					val = value = Number(value);
 
-					// In that case leave the value as it is
-					// TODO work on validation method
-					val = value;
-				} else {
-
-					// In that case we need to validate the value against the constraints.
-					if (stringValue.indexOf(decimalSeparator) !== -1 || stringValue.indexOf(".") !== -1) {
-						var integerDigits, fractionalDigits;
-						if (stringValue.indexOf(".") !== -1) {
-							decimalSeparator = ".";
-						}
-						fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
-
-						//In case of pasted value with multiple decimal points. We can't use parseFloat because we want to keep the number of the fractional digits, but parseFloat cuts to 6th
-						if (fractionalDigits.indexOf(decimalSeparator) > 0) {
-							fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
-						}
-						if (fractionalDigits.length > maxDecimals) {
-
-							// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
-							if (this.options.roundDecimals) {
-								stringValue = Math.round10(value, -maxDecimals).toString();
-								if (stringValue.indexOf(decimalSeparator) > -1) {
-									fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
-								} else {
-									fractionalDigits = "";
-								}
-							} else {
-								fractionalDigits = fractionalDigits.substring(0, maxDecimals);
-							}
-						}
-						if (stringValue.indexOf(decimalSeparator) > -1) {
-							integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+					// values with negative exponent (less than 1) go through maxDecimal handling:
+					if (value < 1) {
+						if (!this.options.scientificFormat) {
+							// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
+							// If scientific value when not enabled, expand to fixed-point notation and carry on with processsing
+							stringValue = value.toFixed(this.options.maxDecimals + 1);
 						} else {
-							integerDigits = stringValue;
+							//refresh stringValue in case the original value entered has more than one digit before the decimal sep.
+							stringValue = value.toString().toLowerCase();
+							exponentIndex = stringValue.indexOf("e");
+							exponent = stringValue.substring(exponentIndex + 1);
+							stringValue = stringValue.substring(0, exponentIndex);
 						}
-
-						//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
-						val = (integerDigits + "." + fractionalDigits) / 1;
 					} else {
-
-						//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
-						val = parseFloat(parseInt(value).toFixed(minDecimals));
+						return value;
 					}
+				}
+
+				// In that case we need to validate the value against the constraints.
+				if (stringValue.indexOf(".") !== -1) {
+					var integerDigits, fractionalDigits;
+					decimalSeparator = ".";
+					fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+
+					//In case of pasted value with multiple decimal points. We can't use parseFloat because we want to keep the number of the fractional digits, but parseFloat cuts to 6th
+					if (fractionalDigits.indexOf(decimalSeparator) > 0) {
+						fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
+					}
+					if (fractionalDigits.length > maxDecimals) {
+
+						// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
+						if (this.options.roundDecimals) {
+							stringValue = Math.round10(stringValue, -maxDecimals).toFixed(maxDecimals);
+							if (stringValue.indexOf(decimalSeparator) > -1) {
+								fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+							} else {
+								fractionalDigits = "";
+							}
+						} else {
+							fractionalDigits = fractionalDigits.substring(0, maxDecimals);
+						}
+					}
+					if (stringValue.indexOf(decimalSeparator) > -1) {
+						integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+					} else {
+						integerDigits = stringValue;
+					}
+
+					val = integerDigits + "." + fractionalDigits;
+					if (exponent) {
+						val += "e" + exponent;
+					}
+
+					//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
+					val = val / 1;
+				} else if (!exponent) {
+					//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
+					val = parseInt(value);
 				}
 			} else {
 				if (value.toString().toLowerCase().indexOf("e") !== -1) {
-					value = this._toFixed(value.toString().toLocaleLowerCase());
+					value = Number(value).toFixed();
 				}
 				if (this._numericType === "percent" &&
 					this.options.displayFactor === 100 &&
@@ -5007,29 +5026,7 @@
 					val = parseInt(value);
 				}
 			}
-			if (this.options.scientificFormat &&
-				val.toString().toLowerCase().indexOf("e") === -1) {
-				val = val.toExponential();
-			}
 			return val;
-		},
-		_toFixed: function (x) {
-			var e;
-			if (Math.abs(x) < 1.0) {
-				e = parseInt(x.toString().split("e-")[ 1 ]);
-				if (e) {
-					x *= Math.pow(10, e - 1);
-					x = "0." + (new Array(e)).join("0") + x.toString().substring(2);
-				}
-			} else {
-				e = parseInt(x.toString().split("+")[ 1 ]);
-				if (e > 20) {
-					e -= 20;
-					x /= Math.pow(10, e);
-					x += (new Array(e + 1)).join("0");
-				}
-			}
-			return x;
 		},
 		_multiplyWithPrecision: function (value1, value2, precision) {
 
@@ -5096,12 +5093,34 @@
 		},
 		_validateKey: function (event) { //NumericEditor
 			if (this._super(event)) {
-				var dataMode = this.options.dataMode,
-					negativeSign = this.options.negativeSign, ch, val,
+				var dataMode = this.options.dataMode, ch, val,
+					negativeSign = this.options.negativeSign, nextCh, prevCh,
+					leadPos = 0, nextDirection = 1,
 					cursorPos = this._getCursorPosition(),
 					isDecimal = event.which ? event.which === 46 : false;
-				ch = String.fromCharCode(event.charCode || event.which);
-				if (ch === negativeSign && cursorPos > 0) {
+				ch = String.fromCharCode(event.charCode || event.which).toLowerCase();
+
+				//don't block replacing entire value if everything is selected (-1)
+				if (cursorPos === -1) {
+					//all includeKeys, except E-s
+					return ch !== "e";
+				}
+
+				val = this._editorInput.val().toLowerCase();
+				nextCh = val.substring(cursorPos, cursorPos + nextDirection);
+
+				//nothing before the number negative sign
+				if (cursorPos === leadPos && nextCh === negativeSign) {
+					return false;
+				}
+
+				// Allow negative at start and after exponent
+				prevCh = val.substring(cursorPos - nextDirection, cursorPos);
+				if (ch === negativeSign) {
+					return (cursorPos === leadPos || prevCh === "e") && nextCh !== negativeSign;
+				}
+
+				if (ch === "e" && val.indexOf("e") !== -1) {
 					return false;
 				}
 
@@ -5110,7 +5129,6 @@
 					var decimalSeparator = this.options.decimalSeparator;
 
 					// val = $(event.target).val();
-					val = this._editorInput.val();
 					if (decimalSeparator !== "." && isDecimal &&
 						(val.indexOf(".") !== -1 || val.indexOf(decimalSeparator) !== -1) &&
 						cursorPos !== -1) {
@@ -5118,9 +5136,6 @@
 					}
 					if (((ch === decimalSeparator || isDecimal) &&
 							(val.indexOf(decimalSeparator) !== -1 || val.indexOf(".") !== -1) &&
-							cursorPos !== -1) ||
-						(ch === negativeSign &&
-							val.indexOf(negativeSign) !== -1 &&
 							cursorPos !== -1)) {
 
 						// We already have decimal separator so prevent default
@@ -5128,23 +5143,11 @@
 					} else {
 						return true;
 					}
-				} else if (dataMode === "long" || dataMode === "int" ||
-					dataMode === "short" || dataMode === "sbyte") {
-					val = $(event.target).val();
-					if (ch === negativeSign && val.indexOf(negativeSign) > 0 && cursorPos !== -1) {
-
-						// We already have decimal separator so prevent default
-						return false;
-					} else {
-						return true;
-					}
 				} else {
-
 					// If the dataMode differs from double, or float and the super method returns true the cher is valid
 					return true;
 				}
 			} else {
-
 				// If the super method fails, the char is not allowed
 				return false;
 			}
@@ -5193,7 +5196,7 @@
 				newValue = "";
 			}
 			if (this._editMode) {
-				this._editorInput.val(newValue);
+				this._editorInput.val(this._getEditModeValue(newValue));
 				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
 					diff = newLenght - newValue.toString().length;
@@ -5267,20 +5270,22 @@
 			}
 		},
 		_convertScientificToNumeric: function (num) {
-			var parts = num.toString().split("e+"), first, zeroes, i;
-			first = parts[ 0 ].replace(".", "");
-			zeroes = parseInt(parts[ 1 ], 10) - (first.length - 1);
-			for (i = 0; i < zeroes; i++) {
-				first += "0";
+			var stringValue = num.toString(),
+				scientificPrecision = stringValue
+				.substring(stringValue.toLowerCase().indexOf("e") + 1);
+			num = num / 1;
+			scientificPrecision = Math.abs(scientificPrecision);
+			if (scientificPrecision <= 20) {
+				stringValue = num.toFixed(scientificPrecision);
 			}
-			return first;
+			return stringValue;
 		},
 		_getDisplayValue: function () { //Numeric Editor
 			var value = this._valueInput.val(),
 				decimalSeparator = this.options.decimalSeparator, decimalPoint = ".",
 				minDecimals = this.options.minDecimals, dataMode = this.options.dataMode,
-				stringValue, displayValue, integerDigits, fractionalDigits, scientificPrecision,
-				scientificValue, negativeSign,
+				stringValue, displayValue, integerDigits, fractionalDigits,
+				scientificValue, scientificExponent, negativeSign,
 				positivePattern, negativePattern, groups, groupSeparator, symbol = "";
 			if (value === this.options.nullValue || value === "" || isNaN(value)) {
 				if (isNaN(value)) {
@@ -5305,70 +5310,71 @@
 				value = this._parseNumericValueByMode(value, this._numericType, this.options.dataMode);
 			}
 
+			stringValue = value.toString().toLowerCase();
+			if (this.options.scientificFormat) {
+				if (stringValue.indexOf("e") === -1) {
+					stringValue = (stringValue / 1).toExponential();
+					scientificValue = stringValue.split("e")[ 0 ];
+					scientificExponent = stringValue.split(/e\+?/).pop();
+				}
+			} else if (stringValue.indexOf("e") !== -1) {
+				// If the value is in scientific, try to convert:
+				stringValue = this._convertScientificToNumeric(stringValue);
+			}
+			displayValue = stringValue;
+
 			// Min decimals check.
 			if (dataMode === "double" || dataMode === "float") {
-				stringValue = value.toString().toLowerCase();
-				if (this.options.scientificFormat) {
-					if (stringValue.indexOf("e") !== -1) {
-						displayValue = stringValue.replace("e", this._getScientificFormat());
-					} else {
-						scientificValue = (stringValue / 1).toExponential();
-						displayValue = scientificValue.toString().replace("e", this._getScientificFormat());
-					}
+
+				// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
+				if (stringValue.indexOf("e") !== -1) {
+					displayValue = stringValue;
 				} else {
-					if (stringValue.indexOf("e") !== -1) {
 
-						// In that case leave the value as it is
-						scientificPrecision = stringValue
-							.substring(stringValue.toLowerCase().indexOf("e") + 1);
-						stringValue = stringValue / 1;
-						if (scientificPrecision > 0) {
-							stringValue = this._convertScientificToNumeric(stringValue);
-						} else {
-							stringValue = stringValue.toFixed(Math.abs(scientificPrecision));
+					// In that case we need to validate the value against the constraints.
+					// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hiddedn input, which is Number, so the decimalSeparator is dot.
+					if (stringValue.indexOf(decimalPoint) !== -1) {
+						fractionalDigits = stringValue
+							.substring(stringValue.indexOf(decimalPoint) + 1);
+						if (fractionalDigits.length < minDecimals) {
+							var missingDecimals = minDecimals - fractionalDigits.length;
+							while (missingDecimals > 0) {
+								fractionalDigits += "0";
+								missingDecimals--;
+							}
 						}
-
-					}
-
-					// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
-					if (stringValue.indexOf("e") !== -1) {
-						displayValue = stringValue;
+						integerDigits = stringValue
+							.substring(0, stringValue.indexOf(decimalPoint));
 					} else {
-
-						// In that case we need to validate the value against the constraints.
-						// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hiddedn input, which is Number, so the decimalSeparator is dot.
-						if (stringValue.indexOf(decimalPoint) !== -1) {
+						integerDigits = stringValue;
+						if (minDecimals > 0) {
+							stringValue = parseInt(stringValue).toFixed(minDecimals);
 							fractionalDigits = stringValue
 								.substring(stringValue.indexOf(decimalPoint) + 1);
-							if (fractionalDigits.length < minDecimals) {
-								var missingDecimals = minDecimals - fractionalDigits.length;
-								while (missingDecimals > 0) {
-									fractionalDigits += "0";
-									missingDecimals--;
-								}
-							}
-							integerDigits = stringValue
-								.substring(0, stringValue.indexOf(decimalPoint));
-						} else {
-							integerDigits = stringValue;
-							if (minDecimals > 0) {
-								stringValue = parseInt(stringValue).toFixed(minDecimals);
-								fractionalDigits = stringValue
-									.substring(stringValue.indexOf(decimalPoint) + 1);
-							}
-						}
-						integerDigits = this._applyGroups(integerDigits, groups, groupSeparator);
-						if (fractionalDigits && fractionalDigits.length > 0) {
-							displayValue = integerDigits + decimalSeparator + fractionalDigits;
-						} else {
-							displayValue = integerDigits;
 						}
 					}
+					integerDigits = this._applyGroups(integerDigits, groups, groupSeparator);
+					if (fractionalDigits && fractionalDigits.length > 0) {
+						displayValue = integerDigits + decimalSeparator + fractionalDigits;
+					} else {
+						displayValue = integerDigits;
+					}
 				}
-			} else {
+			} else if (stringValue.indexOf("e") === -1) {
+				// Only apply groups to non-scientific format:
 				displayValue = this._applyGroups(value.toString(), groups, groupSeparator);
-
 			}
+
+			if (this.options.scientificFormat) {
+				// Scientific format:
+				if (scientificExponent > 0) {
+					displayValue = scientificValue + this.options.scientificFormat + scientificExponent;
+				} else {
+					displayValue = stringValue.replace("e", this._getScientificFormat());
+				}
+				displayValue = displayValue.replace(decimalPoint, decimalSeparator);
+			}
+
 			if (value < 0 ) {
 				negativeSign = this.options.negativeSign;
 				displayValue = displayValue.replace("-", "");
@@ -5430,7 +5436,10 @@
 			// value must be numeric
 			if (this.options.scientificFormat) {
 				val = Number(val).toExponential()
-					.replace("e", this._getScientificFormat());
+					.replace("e", this._getScientificFormat())
+					.replace("+", "");
+			} else if (val.toString().indexOf("e") !== -1) {
+				val = this._convertScientificToNumeric(val).replace("+", "");
 			}
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
@@ -5607,9 +5616,9 @@
 				this._editorInput.val(currVal);
 				this._processTextChanged();
 			} else {
+				noCancel = this._triggerValueChanging(currVal);
 
 				// Trigger value changing
-				noCancel = this._triggerValueChanging(currVal);
 				if (noCancel) {
 					this._updateValue(currVal);
 					this._exitEditMode();
@@ -6298,7 +6307,7 @@
 				```
 			*/
 			unfilledCharsPrompt: "_",
-			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused). Note that this option is visible, only when the [revertIfNotValid](ui.igmaskeditor#options:revertIfNotValid) option is set to false.
+			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused).
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6964,7 +6973,14 @@
 			}
 		},
 		_getDisplayValue: function () { //igMaskEditor
-			var result, maskedVal = this._maskedValue,
+			return this._replaceValueInMask(this.options.unfilledCharsPrompt, this.options.padChar);
+		},
+		_getMaskedValue: function (maskedValue) {
+			return this._replaceValueInMask(this.options.emptyChar, this.options.unfilledCharsPrompt,
+				maskedValue);
+		},
+		_replaceValueInMask: function (oldChar, newChar, maskedValue) {
+			var result, maskedVal = maskedValue || this._maskedValue,
 				i, j, p, maskChar, tempChar, index, regExpr,
 				inputMask = this.options.inputMask, maskFlagsArray = this._maskFlagsArray;
 
@@ -6991,13 +7007,13 @@
 					continue;
 				}
 
-				if (maskedVal.charAt(i) === this.options.unfilledCharsPrompt) {
+				if (maskedVal.charAt(i) === oldChar) {
 					maskChar = inputMask.charAt(j);
 					if (maskChar === "&" || maskChar === "A" ||
 						maskChar === "L" || maskChar === "0") {
 
 						// All the required fields, which are unfilled are replaced with the padChar
-						result = this._replaceCharAt(result, p, this.options.padChar);
+						result = this._replaceCharAt(result, p, newChar);
 					} else {
 						result = this._replaceCharAt(result, p, "");
 						p--;
@@ -7006,7 +7022,7 @@
 			}
 			if (this._promptCharsIndices.length > 0) {
 				regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
-				result = result.replace(regExpr, this.options.unfilledCharsPrompt);
+				result = result.replace(regExpr, oldChar);
 			}
 			return result;
 		},
@@ -7116,7 +7132,9 @@
 
 				// If the value is not valid, we clear the editor
 				if (this.options.revertIfNotValid) {
-					value = this._valueInput.val().trim();
+
+					// N.A. May 12th, 2017 #903: Properly revert display value.
+					value = this._getMaskedValue(this._valueInput.val().trim());
 					this._updateValue(value);
 
 					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
@@ -7545,7 +7563,7 @@
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
 			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7561,7 +7579,7 @@
 				*/
 			value: null,
 			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7577,7 +7595,7 @@
 				*/
 			minValue: null,
 			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -10571,7 +10589,7 @@
 				$(".selector").%%WidgetName%%("value", new Date (2016, 2, 3);
 			```
 				paramType="date" optional="true" New editor value. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
-				Note! This option doesn't use the displayInputFormat to extract the date
+				Note! This option doesn't use the dateInputFormat to extract the date
 				returnType="date" Current editor value. */
 			var parsedVal;
 			if (newValue !== undefined) {
@@ -11277,7 +11295,8 @@
 				direction = "down";
 			}
 			if (this._editMode && this._editorInput.val() !== this._maskWithPrompts) {
-				currentDate = this._valueFromText(this._editorInput.val());
+				// D.P. 15th May 2017 #1002 Drop down cannot be opened w/ displayTimeOffset when dataMode is "editModeText"
+				currentDate = this._parseDateFromMaskedValue(this._editorInput.val());
 			}
 
 			if (currentDate) {

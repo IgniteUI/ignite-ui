@@ -27,8 +27,8 @@ if (!$.ig.Notifier) {
 		    successMsg: "Erfolgreich",
 		    errorMsg: "Fehler",
 		    warningMsg: "Warnung",
-		    notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
-		    notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
+		    notSupportedState: "Benachrichtigungsstatus wird nicht unterstützt! Verwenden Sie einen der unterstützten Status 'success', 'info', 'warning', 'error'",
+		    notSupportedMode: "Benachrichtigungsmodus wird nicht unterstützt! Verwenden Sie einen der unterstützten Modi 'auto', 'popover', 'inline'"
 		}
 	});
 

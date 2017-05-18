@@ -59,7 +59,7 @@
 			    relatedVideos: 'VERWANDTE VIDEOS',
 			    replayButton: 'Wiedergeben',
 			    replayTooltip: 'Klicken, um das letzte Video wiederzugeben.',
-				noCommercials: 'Browser controls does not support commercials'
+				noCommercials: 'Die Browser-Steuerelemente unterstützen keine Werbung'
 		    }
 	    });
 

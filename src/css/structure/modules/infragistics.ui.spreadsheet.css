@@ -623,6 +623,7 @@
 {
 	border: none;
 	height: 20px;
+	width: 20px;
 }
 
 .ui-igspreadsheet-formulabarexpandbutton::before
@@ -679,6 +680,7 @@
 {
 	background-color: transparent;
 	border: none;
+	width: 20px;
 }
 .ui-igspreadsheet-formulabarenterbutton.ui-state-disabled,
 .ui-igspreadsheet-formulabarcancelbutton.ui-state-disabled
