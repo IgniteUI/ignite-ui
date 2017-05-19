@@ -28,7 +28,7 @@
 			    pinButtonTitle: "прикрепить",
 			    unpinButtonTitle: "открепить",
 			    restoreButtonTitle: "восстановить",
-				setOptionError: 'Динамические изменения следующей опции не поддерживаются: '
+				setOptionError: 'Этот параметр не может быть задан во время выполнения программы'
 		    }
 	    };
     }

@@ -75,7 +75,7 @@
 			    datePickerEditorNoSuchMethod: "Этот способ не поддерживается редактором дат.",
 			    datePickerNoSuchMethodDropDownContainer: "Этот метод не поддерживается редактором даты. Используйте взамен 'getCalendar'.",
 			    buttonTypeIsDropDownOnly: "Элемент выбора даты позволяет устанавливать значение параметра buttonType только dropdown и clear.",
-				dateEditorOffsetRange: "Offset range should be between -720 and 840, which represents the offset in minutes, according to the UTC, of all the timezones from the westernmost (−12:00) to the easternmost (+14:00).",
+				dateEditorOffsetRange: "Значение параметра displayTimeOffset должно находиться в диапазоне от -720 до 840, что представляет смещение в минутах всех часовых поясов от самого западного (-12:00) до самого восточного (+14:00) согласно универсальному глобальному времени.",
 				cannotSetRuntime: "Этот параметр не может быть задан во время выполнения программы",
 			    invalidDate: "Неверная дата",
 			    maskMessage: 'Следует заполнить все обязательные поля',
@@ -83,9 +83,9 @@
 				dateMessage: 'Следует ввести правильную дату',
 			    centuryThresholdValidValues: "Свойство centuryThreshold должно находиться в диапазоне от 0 до 99.",
 			    noListItemsNoButton: "Счетчик или кнопка раскрытия списка не отображаются вследствие отсутствия элементов списка.",
-				decimalNumber: "Когда dataMode  '{0}', параметр {1} может принимать числовые значения от 0 до {2}.",
-				decimalSeparatorErrorMsg: "The decimalSeparator option requires a different value. Its value should be a single character.",
-				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Параметры groupSeparator и decimalSeparator не могут иметь равные значения."
+				decimalNumber: "Если свойство dataMode имеет значение '{0}', параметр {1} может принимать числовые значения от 0 до {2}.",
+				decimalSeparatorErrorMsg: "Для параметра decimalSeparator требуется другое значение. Это значение должно быть одиночным символом.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Значения параметров groupSeparator и decimalSeparator не могут быть одинаковыми."
 		    }
 	    };
     }
