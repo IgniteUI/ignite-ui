@@ -195,15 +195,9 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 .ui-iggrid-colheaderasc .ui-iggrid-headertext,
 .ui-iggrid-colheaderdesc .ui-iggrid-headertext,
 .ui-iggrid-headercell-featureenabled .ui-iggrid-headertext {
-<<<<<<< HEAD
-    width: -webkit-calc(100% - 18px)!important; /** Chrome / Safari 6 **/
-    width: -moz-calc(100% - 18px)!important; /**  FF 4-15  **/
-    width: calc(100% - 18px)!important; /** FF 16+, IE 9+, and future other browsers **/ 
-=======
     width: -webkit-calc(100% - 34px)!important; /** Chrome / Safari 6 **/ 
     width: -moz-calc(100% - 34px)!important; /**  FF 4-15  **/
     width: calc(100% - 34px)!important; /** FF 16+, IE 9+, and future other browsers **/
->>>>>>> 210815d... Add 34px in all cases
     display:block;
     text-overflow:ellipsis;
     overflow: hidden;
