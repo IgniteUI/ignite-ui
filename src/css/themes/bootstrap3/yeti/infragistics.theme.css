@@ -1,11 +1,6 @@
 /******************************************/
 /* Infragistics Ignite UI Bootstrap theme */
 /******************************************/
-/*
-    Spreadsheet
-  =================
-*/
-/* needs to be improved with mixin*/
 /*  MIXINS  */
 /************/
 /* states */
@@ -81,6 +76,11 @@
   background-color: #731708 !important;
   border: 1px solid #541106 !important;
 }
+/*
+    Spreadsheet
+  =================
+*/
+/* needs to be improved with mixin*/
 /*  Misc    */
 /************/
 .boxShadow {
