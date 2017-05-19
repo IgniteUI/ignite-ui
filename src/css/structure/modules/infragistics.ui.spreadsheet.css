@@ -14,6 +14,11 @@
 	white-space: nowrap;
 }
 
+.ui-igspreadsheet .ui-menu-item > a {
+	text-decoration: none;
+	white-space: nowrap;
+}
+
 .ui-igspreadsheet .ui-menu-divider {
 	margin: 0;
 	border-top: none;
