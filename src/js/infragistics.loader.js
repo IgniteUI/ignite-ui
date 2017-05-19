@@ -1767,6 +1767,7 @@ $.ig.dependencies = [
 			{ name: "_ig_dv_jquerydom" },
 			{ name: "_ig_documents_core_openxml" },
 			{ name: "igExcel" },
+			{ name: "Functions", parentWidget: "igExcel" },
 			{ name: "igCombo" },
 			{ name: "_ig_undo" }
 		],

@@ -59,7 +59,7 @@
 			    relatedVideos: 'ПОХОЖИЕ КЛИПЫ',
 			    replayButton: 'Еще раз',
 			    replayTooltip: 'Щелкнить чтобы посмотреть еще раз.',
-				noCommercials: 'Browser controls does not support commercials'
+				noCommercials: 'Элементы управления браузером не поддерживают рекламу'
 		    }
 	    });
 
