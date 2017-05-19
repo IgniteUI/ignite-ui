@@ -142,6 +142,42 @@ $chartGradualPalette10: lighten($brand-primary,
     background-color: darken($brand-danger, 30%)!important;
     border: 1px solid darken($brand-danger, 36.5%)!important;
 }
+
+/*
+    Spreadsheet
+  =================
+*/
+
+$accent1: $brand-primary;
+
+$bar-background: #e4e4e4;
+$row-col-bar-border: #cccccc;
+
+$tab-bar-border: #999;
+
+$spreadsheet-accent: $brand-primary;
+$spreadsheet-icon:$brand-primary;
+
+$spreadsheet-cell-selection: $brand-primary;
+$spreadsheet-cell-selection-rgba: rgba(2,117,216, .22); /* needs to be improved with mixin*/
+
+$spreadsheet-text-color:#111;
+$spreadsheet-wight-text: #fff;
+
+$spreadsheet-empty-bg: #fff;
+
+$spreadsheet-disabled: #c4c4c4;
+
+$spreadsheet-danger: $brand-danger;
+
+$spreadsheet-menu-item-bg-hover: $spreadsheet-cell-selection-rgba;
+
+$spreadsheet-formula-btn-bg: $brand-primary;
+
+$spreadsheet-header-selected-cell-bg:lighten($body-bg,15%);
+
+$spreadsheet-formula-btn-color: #fff;
+
 /*  Misc    */
 /************/
 
