@@ -2359,6 +2359,73 @@
 			$editor.remove();
 		}, Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg), "Exception is not thrown when groupSeparator and decimalSeparator have the same value.");
 	});
+
+	testId = "nullValue dynamic setting";
+	test(testId, 11, function() {
+		var $editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": true,
+				"nullValue": null,
+				"revertIfNotValid": false
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("displayValue"), "", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "", "The displayed value is not correct.");
+			$editor.remove();
+
+			$editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": true,
+				"nullValue": null,
+				"revertIfNotValid": true
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("displayValue"), "", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "", "The displayed value is not correct.");
+			$editor.remove();
+
+			$editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": false,
+				"revertIfNotValid": true
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("displayValue"), "1", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "1", "The displayed value is not correct.");
+			$editor.remove();
+
+			$editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": false,
+				"revertIfNotValid": false
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("displayValue"), "0", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "0", "The displayed value is not correct.");
+			$editor.remove();
+
+			$editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({
+				"allowNullValue": true,
+				"nullValue": 10,
+				"revertIfNotValid": false
+			});
+			$editor.igNumericEditor("setFocus");
+			$editor.igNumericEditor("value", 1);
+			$editor.igNumericEditor("field").blur();
+			$editor.igNumericEditor("value", null);
+			equal($editor.igNumericEditor("value"), 10, "The value is not correct.");
+			equal($editor.igNumericEditor("displayValue"), "10", "The displayed value is not correct.");
+			equal($editor.igNumericEditor("field").val(), "10", "The displayed value is not correct.");
+			$editor.remove();
+	});
 	
 	testId = "decimalSeparator uses the same symbol as the groupSeparator - runtime";
 		test(testId, 1, function(){
