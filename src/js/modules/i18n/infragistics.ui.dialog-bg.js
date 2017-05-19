@@ -28,7 +28,7 @@
 			    pinButtonTitle: "Закачи",
 			    unpinButtonTitle: "Откачи",
 			    restoreButtonTitle: "Възстанови",
-				setOptionError: 'Стойността на следната опция не може да бъде променяна след инициализация: '
+				setOptionError: 'Тази опцията не може да бъде настроена по време на изпълнение.'
 		    }
 	    };
     }

@@ -130,7 +130,8 @@ $.ig.loaderClass.locale.descriptions = {
 	dateTimeAxisDescription: "Allows for configuring DateTimeAxis.",
 	overviewPlusDetailPaneDescription: "Component that display an OverviewPlusDetailPane over the igDataChart plot area.",
 	zoombarDescription: "The igZoombar control provides zooming functionality to range-based controls.",
-	mapDescription: "The igMap visualize various kinds of maps based on the HTML5 canvas element and performs all rendering on the client-side."
+	mapDescription: "The igMap visualize various kinds of maps based on the HTML5 canvas element and performs all rendering on the client-side.",
+	schedulerDescription: "Component that provides scheduling solution for presenting and managing time periods and associated activities."
 };
 
 // jscs:enable
@@ -1766,6 +1767,7 @@ $.ig.dependencies = [
 			{ name: "_ig_dv_jquerydom" },
 			{ name: "_ig_documents_core_openxml" },
 			{ name: "igExcel" },
+			{ name: "Functions", parentWidget: "igExcel" },
 			{ name: "igCombo" },
 			{ name: "_ig_undo" }
 		],

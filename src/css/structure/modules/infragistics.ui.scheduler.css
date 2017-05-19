@@ -1,0 +1,404 @@
+.ui-igscheduler {
+  height: calc(100% - 70px);
+  box-sizing: border-box; }
+
+.ui-igscheduler-header {
+  position: relative;
+  height: 70px;
+  background-color: #fff; }
+
+.ui-igscheduler-body {
+  height: calc(100% - 71px); }
+
+.ui-igscheduler-today-button,
+.ui-igscheduler-navigator {
+  float: left;
+  margin: 20px 5px;
+  height: 30px;
+  box-sizing: border-box; }
+
+.ui-igscheduler-today-button {
+  border-radius: 0;
+  color: #444;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  height: 30px;
+  line-height: 30px;
+  outline: none;
+  padding: 0 8px 0 20px;
+  margin-left: 15px;
+  -o-transition: all .218s;
+  -webkit-transition: all .218s;
+  -webkit-user-select: none; }
+
+.ui-igscheduler-today-button,
+.ui-igscheduler-navigator-back-button,
+.ui-igscheduler-navigator-date-range-button,
+.ui-igscheduler-navigator-forward-button,
+.ui-igscheduler-navigator-disabled-date-range-button,
+.ui-igscheduler-navigator-disabled-date-range-button:hover {
+  position: relative;
+  display: inline-block;
+  color: #333; }
+
+.ui-igscheduler-tabs {
+  position: relative; }
+
+.ui-igscheduler-navigator-back-button {
+  height: 30px;
+  width: 30px;
+  border-radius: 4px 0 0 4px; }
+
+.ui-igscheduler-navigator-date-range-button,
+.ui-igscheduler-navigator-disabled-date-range-button {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  box-sizing: border-box;
+  border: none; }
+  .ui-igscheduler-navigator-date-range-button:hover,
+  .ui-igscheduler-navigator-disabled-date-range-button:hover {
+    border: none; }
+
+.ui-igscheduler-navigator-forward-button {
+  height: 30px;
+  width: 30px;
+  border-radius: 0 4px 4px 0; }
+
+.ui-igscheduler-tabs-container {
+  position: absolute;
+  right: 15px;
+  top: calc(50% - 16px); }
+
+.ui-igscheduler-tabs {
+  position: relative;
+  display: inline-block;
+  float: left;
+  vertical-align: middle;
+  cursor: pointer;
+  white-space: nowrap;
+  background: transparent;
+  color: #444;
+  font-size: 14px;
+  font-weight: bold;
+  height: 27px;
+  min-width: 54px;
+  line-height: 27px;
+  outline: none;
+  padding: 0 8px 0 20px;
+  text-align: center;
+  transition: all .218s;
+  -moz-transition: all .218s;
+  -o-transition: all .218s;
+  -webkit-transition: all .218s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  margin-left: 15px; }
+
+.ui-igscheduler-tabs .ui-icon,
+.ui-igscheduler-today-button .ui-icon {
+  left: 0;
+  top: 50%;
+  margin-top: -7px;
+  position: absolute; }
+
+.ui-igscheduler-header .hasDatepicker {
+  position: absolute;
+  bottom: -10px;
+  left: -30px;
+  visibility: hidden;
+  width: 0;
+  height: 0; }
+
+.ui-igscheduler-navigator-next-button,
+.ui-igscheduler-navigator-previous-button {
+  width: 30px;
+  height: 30px;
+  position: relative; }
+  .ui-igscheduler-navigator-next-button span,
+  .ui-igscheduler-navigator-previous-button span {
+    cursor: pointer;
+    display: block;
+    height: 30px;
+    width: 30px; }
+    .ui-igscheduler-navigator-next-button span:after,
+    .ui-igscheduler-navigator-previous-button span:after {
+      background: transparent;
+      content: "";
+      width: 7px;
+      height: 7px;
+      position: absolute;
+      border-top: 2px solid #999;
+      border-left: 2px solid #999; }
+  .ui-igscheduler-navigator-next-button:hover span:after,
+  .ui-igscheduler-navigator-previous-button:hover span:after {
+    border-color: #333; }
+
+.ui-igscheduler-navigator-next-button span:after {
+  top: 16px;
+  right: 13px;
+  -webkit-transform: translateY(-60%) rotate(135deg);
+  -ms-transform: translateY(-60%) rotate(135deg);
+  transform: translateY(-60%) rotate(135deg);
+  -webkit-transition: all ease 224ms;
+  transition: all ease 224ms; }
+
+.ui-igscheduler-navigator-previous-button span:after {
+  top: 16px;
+  left: 13px;
+  -webkit-transform: translateY(-60%) rotate(315deg);
+  -ms-transform: translateY(-60%) rotate(315deg);
+  transform: translateY(-60%) rotate(315deg);
+  -webkit-transition: all ease 224ms;
+  transition: all ease 224ms; }
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-of-week-header {
+  padding: 5px 2px;
+  font-size: 14px; }
+
+.ui-igscheduler-core .ui-igscheduler-agendaview-day-header {
+  padding: 0 10px 10px 10px !important;
+  margin-bottom: 10px !important;
+  border-bottom-width: 1px;
+  border-bottom-style: solid; }
+  .ui-igscheduler-core .ui-igscheduler-agendaview-day-header span {
+    text-transform: capitalize; }
+
+.ui-igscheduler-core .ui-igscheduler-agendaview-message {
+  font-size: 1.1em; }
+
+.ui-igscheduler-core .ui-igscheduler-monthview-month-header {
+  font-size: 1.3em;
+  padding: .3em .1em;
+  text-align: center !important; }
+
+.ui-igscheduler-core .ui-igscheduler-monthview-week-header {
+  font-size: .75em;
+  padding: 0 5px; }
+
+.ui-igscheduler-appointment-dialog-form > .ui-igscheduler-appointment-form-group,
+.ui-igscheduler-side-by-side-group::after,
+.ui-igscheduler-header::after,
+.ui-igscheduler-navigator::after,
+.ui-igscheduler-tabs-container::after {
+  content: "";
+  display: table;
+  clear: both; }
+
+.ui-igscheduler-header {
+  border-bottom-width: 1px;
+  border-bottom-style: solid; }
+
+.ui-igscheduler-agenda-appt-color-bar {
+  width: 4px !important; }
+
+.ui-igscheduler-monthview-day-today span {
+  font-weight: bold !important; }
+
+/* Popup styles */
+.ui-dialog {
+  box-sizing: border-box; }
+
+.ui-igscheduler-appointment-form-group {
+  margin-bottom: 10px; }
+  .ui-igscheduler-appointment-form-group .ui-igedit-container {
+    width: 100%; }
+  .ui-igscheduler-appointment-form-group .ui-igtoolbarbutton.ui-button {
+    padding: 0;
+    width: 30px;
+    height: 30px; }
+  .ui-igscheduler-appointment-form-group .ui-splitbutton.ui-state-default {
+    border: none; }
+
+.ui-igscheduler-appointment-form-group label,
+.ui-igscheduler-side-by-side-group label {
+  display: block;
+  margin: 15px 0 5px 0; }
+
+.ui-igscheduler-appointment-dialog-form > .ui-igscheduler-appointment-form-group:last-of-type {
+  margin: 15px 0 10px 0; }
+
+.ui-igscheduler-side-by-side-group .ui-igscheduler-appointment-form-group {
+  width: 49%;
+  margin: 0 0 20px 2%;
+  float: left; }
+  .ui-igscheduler-side-by-side-group .ui-igscheduler-appointment-form-group:first-of-type {
+    margin-left: 0; }
+  .ui-igscheduler-side-by-side-group .ui-igscheduler-appointment-form-group:last-of-type {
+    margin-right: 0; }
+
+.ui-igscheduler-appointment-dialog-from-date-time-label {
+  margin: 5px 0;
+  display: block; }
+
+.ui-igscheduler-side-by-side-group + .ui-igscheduler-appointment-form-group label {
+  margin-top: 0; }
+
+.ui-widget.ui-ignotify.ui-ignotify-inline {
+  margin-bottom: -20px;
+  min-height: 20px; }
+  .ui-widget.ui-ignotify.ui-ignotify-inline .ui-ignotify-icon-container {
+    display: none; }
+
+.ui-igscheduler-appointment-form-group.ui-igscheduler-side-by-side-group .ui-igedit-container {
+  width: 49%;
+  margin: 0 0 25px 2%;
+  float: left; }
+  .ui-igscheduler-appointment-form-group.ui-igscheduler-side-by-side-group .ui-igedit-container:first-of-type {
+    margin-left: 0; }
+  .ui-igscheduler-appointment-form-group.ui-igscheduler-side-by-side-group .ui-igedit-container:last-of-type {
+    margin-right: 0; }
+
+.ui-igscheduler-appointment-form-group {
+  width: 100%;
+  box-sizing: border-box; }
+  .ui-igscheduler-appointment-form-group .ui-button-text {
+    width: 100%;
+    height: 100%; }
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time {
+  padding-right: 10px !important; }
+
+.ui-igscheduler-agenda-appt-subject {
+  padding-left: 10px !important; }
+
+.ui-igscheduler-navigator-previous-button {
+  float: left; }
+
+.ui-igscheduler-navigator-next-button {
+  float: right; }
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-horizontal-separator {
+  margin: 10px 0; }
+
+.ui-igscheduler-monthview > div:focus,
+.igscroll-content > div:focus {
+  outline: none; }
+
+.ui-igscheduler-delete-appointment-dialog-confirmation {
+  margin: 15px 0;
+  text-align: center; }
+
+input.ui-igscheduler-appointment-popover-delete-button {
+  margin: 10px 0; }
+
+.ui-igscheduler-appointment-dialog-cancel-button {
+  margin-left: 10px; }
+
+input.ui-igscheduler-appointment-popover-delete-button,
+input.ui-igscheduler-appointment-popover-open-button {
+  display: block;
+  width: 100%;
+  font-size: 14px !important; }
+
+.ui-igscheduler-delete-appotinemtn-dialog-confirmation,
+.ui-igscheduler-delete-appointment-dialog-actions {
+  text-align: center; }
+
+.ui-igscheduler-delete-appotinemtn-dialog-confirmation {
+  margin: 10px 0 15px 0;
+  color: #ea4d4d; }
+
+.ui-igscheduler-delete-appointment-dialog-actions input {
+  margin-right: 10px; }
+
+.ui-igscheduler-popover .ui-igColorPicker {
+  width: auto; }
+.ui-igscheduler-popover.ui-igpopover {
+  width: auto !important;
+  min-width: 0 !important; }
+.ui-igscheduler-popover .ui-widget-content {
+  height: 50px !important;
+  width: auto !important;
+  min-height: 0; }
+.ui-igscheduler-popover .igColorPicker-color {
+  cursor: pointer; }
+
+.touch .ui-igscheduler-popover .ui-widget-content {
+  height: 100px !important; }
+
+.ui-igscheduler-resources-combo-item-color {
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: calc(50% - 5px);
+  left: 5px; }
+
+.ui-igscheduler-resources-combo-item-text {
+  padding-left: 20px; }
+
+/* Popup styles END */
+@media (max-width: 575px) {
+  .touch .ui-igscheduler-popover.ui-igpopover {
+    width: 188px !important;
+    min-width: 0 !important; }
+  .touch .ui-igscheduler-popover .ui-widget-content {
+    height: 200px !important;
+    width: auto !important;
+    min-height: 0; }
+
+  .ui-igscheduler-header {
+    height: 50px; }
+
+  .ui-igscheduler-today-button {
+    margin: 11px 5px 11px 15px; }
+
+  .ui-igscheduler-navigator {
+    margin: 11px 0 11px 0; }
+
+  .ui-igscheduler-tabs-container {
+    top: calc(50% - 12px); }
+
+  .ui-igscheduler-body {
+    height: calc(100% - 51px); }
+
+  .ui-draggable .ui-dialog-titlebar {
+    cursor: default; }
+
+  .ui-igscheduler-side-by-side-group:first-of-type .ui-igscheduler-appointment-form-group {
+    width: 100%;
+    margin: 0;
+    float: none; }
+
+  .ui-igscheduler-appointment-form-group.ui-igscheduler-side-by-side-group .ui-igedit-container {
+    width: 100%;
+    margin: 0 0 20px 0; }
+
+  .ui-igscheduler-tabs,
+  .ui-igscheduler-today-button {
+    min-width: 0; }
+    .ui-igscheduler-tabs span:last-of-type,
+    .ui-igscheduler-today-button span:last-of-type {
+      display: none; }
+
+  .ui-igscheduler-today-button {
+    margin-right: 0; }
+
+  .date-range-button-text,
+  .ui-igscheduler-navigator {
+    font-size: 16px; }
+
+  .ui-igscheduler-core .ui-igscheduler-monthview-week-header {
+    font-size: .5em;
+    padding: 0 2px; } }
+@media (max-width: 767px) {
+  .ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time span,
+  .ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time span,
+  .ui-igscheduler-core .ui-igscheduler-agenda-appt-subject span {
+    font-size: 12px; }
+
+  .ui-igscheduler-monthview-day,
+  .ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
+  .ui-igscheduler-core .ui-igscheduler-monthview-day-trailing,
+  .ui-igscheduler-core .ui-igscheduler-monthview-day-selected,
+  .ui-igscheduler-monthview-day-today {
+    font-size: 12px; }
+
+  .ui-igscheduler-header {
+    height: auto; }
+
+  .ui-igscheduler-monthview-activity-indicator {
+    width: 6px !important;
+    height: 6px !important; } }

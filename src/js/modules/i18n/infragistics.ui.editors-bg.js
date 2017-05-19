@@ -75,7 +75,7 @@
 			    datePickerEditorNoSuchMethod: "Редакторът на дати не поддържа този метод.",
 			    datePickerNoSuchMethodDropDownContainer: "Редакторът на дати не поддържа този метод. Вместо него използвайте 'getCalendar'.",
 			    buttonTypeIsDropDownOnly: "Datepicker позволява само dropdown и чисти стойности за опцията buttonType.",
-				dateEditorOffsetRange: "Опцията displayTimeOffset може да приема стойности между -720 и 840, което представя разликата в минути, спрямо координирано универсално време, на всички времеви зони от най-западните (-12:00) до най-източните (+14:00).",
+				dateEditorOffsetRange: "Опцията displayTimeOffset трябва да бъде между -720 и 840, тя показва изместването в минути според UTC на всички часови зони от най-западната (-12:00) до най-източната (+14:00).",
 				cannotSetRuntime: "Тази опцията не може да бъде настроена по време на изпълнение.",
 			    invalidDate: "Невалидна дата",
 			    maskMessage: 'Всички задължителни позиции трябва да бъдат попълнени.',
@@ -83,7 +83,7 @@
 				dateMessage: 'Трябва да бъде въведена валидна дата.',
 			    centuryThresholdValidValues: "Свойството centuryThreshold трябва да е между 0 и 99.",
 			    noListItemsNoButton: "Брояча или падащия бутон са рендирани понеже няма listitems.",
-				decimalNumber: "Когато dataMode приеме стойност {0}, опцията {1} може да приема числени стойности между 0 и {2}.",
+				decimalNumber: "Когато dataMode е '{0}’ опция {1} може да приема числови стойности в интервала 0 - {2}.",
 				decimalSeparatorErrorMsg: "Опцията decimalSeparator изисква различна стойност. Стойността трябва да бъде единичен символ.",
 				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Опциите groupSeparator и decimalSeparator не могат да имат еднакви стойности."
 			}
