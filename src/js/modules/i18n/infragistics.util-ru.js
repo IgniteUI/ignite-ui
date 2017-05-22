@@ -37,11 +37,11 @@
 			    chromeDownload: "http://www.google.com/chrome",
 			    firefoxDownload: "http://www.mozilla.com/",
 			    safariDownload: "http://www.apple.com/safari/download/",
-			    defaultSummaryMethodLabelMin: "Min = ",
-			    defaultSummaryMethodLabelMax: "Max = ",
-			    defaultSummaryMethodLabelSum: "Sum = ",
-			    defaultSummaryMethodLabelAvg: "Avg = ",
-			    defaultSummaryMethodLabelCount: "Count = "
+			    defaultSummaryMethodLabelMin: "Мин. = ",
+			    defaultSummaryMethodLabelMax: "Макс. = ",
+			    defaultSummaryMethodLabelSum: "Сумма = ",
+			    defaultSummaryMethodLabelAvg: "Ср. = ",
+			    defaultSummaryMethodLabelCount: "Кол-во = "
 		    }
 	    });
 

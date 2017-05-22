@@ -7,7 +7,7 @@ Ignite UI OSS version accepts contributions, as long as they follow the guidelin
 
 Your pull request will undergo a review and if approved will be merged. All checks for the pull request should pass before a pull request is merged.
 
-In order to perform all the necessary checks before pulling your changes in, you need to run
+In order to perform all the necessary checks before pulling your changes in, you need to run  
 
     npm install
     grunt verify
@@ -52,9 +52,9 @@ When bug fixes are applicable to multiple branches, there will be additional ste
 2.	Commit your changes to your `fixing-bug-162` branch.
 3.	Push and PR to the 16.2 branch.
 4.	Switch to the 17.1 branch.
-5.      Create a new branch.  For code example purposes let's say the new branch is called `fixing-bug-171`.
-6.      Cherry pick your commit from the `fixing-bug-162` branch: `git cherry-pick fixing-bug-162`
-7.      Push to your `fixing-bug-171` branch and PR to the 17.1 branch.
+5.  Create a new branch.  For code example purposes let's say the new branch is called `fixing-bug-171`.
+6.  Cherry pick your commit from the `fixing-bug-162` branch: `git cherry-pick fixing-bug-162`
+7.  Push to your `fixing-bug-171` branch and PR to the 17.1 branch.
 8.	Repeat steps 4-7 for all other applicable branches including `master`.
 
 # New feature development
