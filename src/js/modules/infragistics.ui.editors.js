@@ -5784,11 +5784,7 @@
 					}
 					this._setSpinButtonsState(newValue);
 				} else {
-
-					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-					if (newValue === null && this.options.allowNullValue && this._validateValue(newValue)) {
-						this._updateValue(newValue);
-					} else if (this.options.revertIfNotValid &&
+					if (this.options.revertIfNotValid &&
 					!(newValue === null && this.options.allowNullValue)) {
 						newValue = this._valueInput.val();
 						this._updateValue(newValue);
