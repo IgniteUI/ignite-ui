@@ -51,7 +51,7 @@
 				});
 
 				//Get
-				var closeOnBlur = $(".selector").%%WidgetName%%("option","closeOnBlur");
+				var closeOnBlur = $(".selector").%%WidgetName%%("option", "closeOnBlur");
 			```
 			*/
 			closeOnBlur: true,
@@ -68,10 +68,10 @@
 					});
 
 					//Get
-					var direction = $(".selector").%%WidgetName%%("option","direction");
+					var direction = $(".selector").%%WidgetName%%("option", "direction");
 
 					//Set
-					$(".selector").%%WidgetName%%("option", "direction","top");
+					$(".selector").%%WidgetName%%("option", "direction", "top");
 
 				```
 			*/
@@ -85,7 +85,7 @@
 					});
 
 					//Get
-					var position = $(".selector").%%WidgetName%%("option","directionPriority");
+					var position = $(".selector").%%WidgetName%%("option", "directionPriority");
 
 					//Set
 					$(".selector").%%WidgetName%%("option", "directionPriority",[ "left", "top", "bottom", "right" ]);
@@ -104,10 +104,10 @@
 					});
 
 					//Get
-					var position = $(".selector").%%WidgetName%%("option","position");
+					var position = $(".selector").%%WidgetName%%("option", "position");
 
 					//Set
-					$(".selector").%%WidgetName%%("option", "position","start");
+					$(".selector").%%WidgetName%%("option", "position", "start");
 				```
 			*/
 			position: "auto",
@@ -121,7 +121,7 @@
 					});
 
 					//Get
-					var width = $(".selector").%%WidgetName%%("option","width");
+					var width = $(".selector").%%WidgetName%%("option", "width");
 				```
 			*/
 			width: null,
@@ -135,7 +135,7 @@
 					});
 
 					// Get
-					var height = $(".selector").%%WidgetName%%("option","height");
+					var height = $(".selector").%%WidgetName%%("option", "height");
 				```
 			*/
 			height: null,
@@ -148,7 +148,7 @@
 						minWidth:"70px"
 					});
 					// Get
-					var minWidth = $(".selector").%%WidgetName%%("option","minWidth");
+					var minWidth = $(".selector").%%WidgetName%%("option", "minWidth");
 				```
 			*/
 			minWidth: 60,
@@ -162,7 +162,7 @@
 					});
 
 					//Get
-					var maxWidth = $(".selector").%%WidgetName%%("option","maxWidth");
+					var maxWidth = $(".selector").%%WidgetName%%("option", "maxWidth");
 				```
 			*/
 			maxWidth: 200,
@@ -176,7 +176,7 @@
 					});
 
 					// Get
-					var maxHeight = $(".selector").%%WidgetName%%("option","maxHeight");
+					var maxHeight = $(".selector").%%WidgetName%%("option", "maxHeight");
 				```
 			*/
 			maxHeight: 200,
@@ -188,10 +188,10 @@
 				});
 
 				// Get
-				var animationDuration = $(".selector").%%WidgetName%%("option","animationDuration");
+				var animationDuration = $(".selector").%%WidgetName%%("option", "animationDuration");
 
 				// Set
-				$(".selector").%%WidgetName%%("option","animationDuration", 100);
+				$(".selector").%%WidgetName%%("option", "animationDuration", 100);
 			```
 			*/
 			animationDuration: 150,
@@ -219,7 +219,7 @@
 						$(".selector").%%WidgetName%%("option", "contentTemplate", "<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' />");
 
 					//Get
-					var contentFunction = $(".selector").%%WidgetName%%("option","contentTemplate");
+					var contentFunction = $(".selector").%%WidgetName%%("option", "contentTemplate");
 			```
 			*/
 			contentTemplate: null,
@@ -231,7 +231,7 @@
 				});
 
 				//Get
-				var selectors = $(".selector").%%WidgetName%%("option","selectors");
+				var selectors = $(".selector").%%WidgetName%%("option", "selectors");
 			```
 			*/
 			selectors: null,
@@ -246,7 +246,7 @@
 				});
 
 				//Get
-				var headerTemplate = $(".selector").%%WidgetName%%("option","headerTemplate");
+				var headerTemplate = $(".selector").%%WidgetName%%("option", "headerTemplate");
 			```
 			*/
 			headerTemplate: {
@@ -266,7 +266,7 @@
 				});
 
 				//Get
-				var showOn = $(".selector").%%WidgetName%%("option","showOn");
+				var showOn = $(".selector").%%WidgetName%%("option", "showOn");
 			```
 			*/
 			showOn: "mouseenter",
@@ -278,7 +278,7 @@
 				});
 
 				//Get
-				var containment = $(".selector").%%WidgetName%%("option","containment");
+				var containment = $(".selector").%%WidgetName%%("option", "containment");
 
 				// Set
 				$(".selector").%%WidgetName%%("option", "containment", $('#popoverTooltip' ));
@@ -559,7 +559,7 @@
 		hide: function () {
 			/* hides the popover for the specified target
 			```
-				$(".selector").%%WidgetName%%("hide" );
+				$(".selector").%%WidgetName%%( "hide" );
 			```
 			*/
 			this._closePopover(true);
@@ -577,7 +577,7 @@
 			/* sets the content for the popover container
 				paramType="string" The popover content to set.
 			```
-				$( ".selector" ).%%WidgetName%%("setContent","New Content To be Set");
+				$( ".selector" ).%%WidgetName%%("setContent", "New Content To be Set");
 			```
 			*/
 			if (typeof newCnt === "string") {
