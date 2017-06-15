@@ -22,8 +22,7 @@
             "jquery",
             "jquery-ui",
             "./infragistics.util",
-			"./infragistics.util.jquery",
-            "./infragistics.ui.splitter-en"
+			"./infragistics.util.jquery"
         ], factory);
     } else {
 
