@@ -28,8 +28,7 @@
 			"./infragistics.util",
 			"./infragistics.datasource",
 			"./infragistics.templating",
-			"./infragistics.ui.shared",
-			"./infragistics.ui.tree-en"
+			"./infragistics.ui.shared"
 		], factory );
 	} else {
 
