@@ -28,6 +28,7 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.datasource",
 			"./infragistics.templating",
 			"./infragistics.ui.shared",
@@ -49,7 +50,7 @@
 		data sources via load on demand. The igTree can be bound to various types of data such as JSON, XML, Remote data
 		providers, etc.
 	*/
-	$.widget("ui.igTree", {
+	$.widget("ui.igTree", $.ui.igWidget, {
 		_const: {
 			dragCursorAt: {
 				top: -10,
@@ -1778,10 +1779,7 @@
 		},
 		_setOption: function (option, value) {
 			var css = this.css, elements, prevValue = this.options[ option ];
-			if (prevValue === value) {
-				return;
-			}
-			$.Widget.prototype._setOption.apply(this, arguments);
+			this._super(option, value);
 
 			switch (option) {
 			case "width":
@@ -4723,7 +4721,7 @@
 				$(".selector").igTree("destroy");
 			```
 			*/
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._super();
 
 			// K.D. February 17th, 2014 Bug #164398 Attaching events only on create as delegate is used instead of bind now.
 			this.element.undelegate();
