@@ -35,6 +35,7 @@
 		Base igWidget for all Ignite UI widgets.
 	*/
     $.widget("ui.igWidget", {
+		localeWidgetName: null,
         options: {
             /* type="string" Set/Get the locale setting for the widget.
             ```
@@ -67,9 +68,6 @@
             */
             regional: "en-US"
 		},
-		_createWidget: function () {
-			// set locale and regional to util initialized
-		},
 		_setOption: function (option, value) {
 			var prevValue = this.options[ option ];
 			if (prevValue === value) {
@@ -86,6 +84,18 @@
 				break;
 			default:
 				break;
+			}
+		},
+		_getLocaleValue: function (key) {
+			var locale = this.options.locale,
+				widgetName = this.localeWidgetName || this.widgetName.split("ig")[1];
+
+			if (locale && locale[ key ]) {
+				return locale[ key ];
+			} else if ($.ig && $.ig[ widgetName ] && $.ig[ widgetName ].locale) {
+				return $.ig[ widgetName ].locale[ key ];
+			} else {
+				return "";
 			}
 		},
 		_changeLocale: $.noop,

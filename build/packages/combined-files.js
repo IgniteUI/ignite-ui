@@ -113,6 +113,7 @@ module.exports = {
                     "./dist/js/modules/infragistics.util.jquerydeferred.js",
                     "./dist/js/modules/infragistics.datasource.js",
                     "./dist/js/modules/infragistics.templating.js",
+					"./dist/js/modules/infragistics.ui.widget.js",
                     "./dist/js/modules/infragistics.ui.shared.js",
                     "./dist/js/modules/infragistics.ui.scroll.js"
                 ]

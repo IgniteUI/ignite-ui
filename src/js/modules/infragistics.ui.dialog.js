@@ -32,7 +32,8 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
-			"./infragistics.util.jquery"
+			"./infragistics.util.jquery",
+			"./infragistics.ui.widget"
 		], factory );
 	} else {
 
@@ -123,7 +124,7 @@
 		Note: if application uses tabIndex attributes for child elements of dialog-content, then it is not recommended to have mixed values of tabIndexes for
 		elements located inside and outside of dialog.
 	*/
-	$.widget("ui.igDialog", {
+	$.widget("ui.igDialog", $.ui.igWidget, {
 		options: {
 			/* type="dom" Gets the jquery DIV object which is used as the main container for the dialog.
 				Notes:
@@ -1619,7 +1620,7 @@
 					$("<span />").addClass(css[ id + "Icon" ]).appendTo(button);
 
 					// i=order of buttons in header:pin,min,max,close
-					self._loc(button, i === 3 ? CLOSE : (i === 2 ? MAX : (i === 1 ? MIN : PIN)));
+					self._changeLocale(button, i === 3 ? CLOSE : (i === 2 ? MAX : (i === 1 ? MIN : PIN)));
 				}
 			}
 			if (!o.showHeader) {
@@ -1660,7 +1661,7 @@
 			if (e && e.type && min && this._max) {
 				this._onMax(false, true, true);
 			}
-			this._loc(but, min ? RESTORE : MIN);
+			this._changeLocale(but, min ? RESTORE : MIN);
 			if (min) {
 				header.addClass(css.headerMinimized);
 				if (bar) {
@@ -1715,7 +1716,7 @@
 			but = header.find("." + css.maximize);
 			but.find("*").removeClass(max ? css.maximizeIcon : css.restoreIcon)
 				.addClass(max ? css.restoreIcon : css.maximizeIcon);
-			this._loc(but, max ? RESTORE : MAX);
+			this._changeLocale(but, max ? RESTORE : MAX);
 
 			if (max) {
 				header.addClass(css.unmovable);
@@ -1750,7 +1751,7 @@
 			if (this._max && pin) {
 				this._onMax(false, false, true);
 			}
-			this._loc(but, pin ? UNPIN : PIN);
+			this._changeLocale(but, pin ? UNPIN : PIN);
 			if (pin) {
 				header.addClass(css.unmovable);
 			} else {
@@ -2587,7 +2588,7 @@
 				}
 			}
 		},
-		_loc: function (but, state) {
+		_changeLocale: function (but, state) {
 			state = ((state === MIN) ? "minimize" : ((state === MAX) ? "maximize" : ((state === RESTORE) ?
 					"restore" : ((state === CLOSE) ? "close" : ((state === PIN) ?
 					"pin" : ((state === UNPIN) ? "unpin" : "open")))))) + "ButtonTitle";
@@ -2620,7 +2621,7 @@
 					resize = true;
 				}
 			}
-			$.Widget.prototype._setOption.apply(this, arguments);
+			this._super(key, val);
 			if (typeof val === "function") {
 				return this;
 			}

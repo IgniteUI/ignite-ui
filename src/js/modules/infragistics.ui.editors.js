@@ -34,7 +34,8 @@
 }
 (function ($) {
 	/* The igBaseEditor is a widget based on jQuery UI. */
-	$.widget("ui.igBaseEditor", {
+	$.widget("ui.igBaseEditor", $.ui.igWidget, {
+		localeWidgetName: "Editor",
 		options: {
 			/* type="string|number|null" Gets/Sets the width of the control.
 				```
@@ -2012,35 +2013,35 @@
 			var ariaLabelText;
 			switch (this.widgetName) {
 				case "igTextEditor": {
-					ariaLabelText = this._getLocaleOption("ariaTextEditorFieldLabel");
+					ariaLabelText = this._getLocaleValue("ariaTextEditorFieldLabel");
 				}
 					break;
 				case "igNumericEditor": {
-					ariaLabelText = this._getLocaleOption("ariaNumericEditorFieldLabel");
+					ariaLabelText = this._getLocaleValue("ariaNumericEditorFieldLabel");
 				}
 					break;
 				case "igCurrencyEditor": {
-					ariaLabelText = this._getLocaleOption("ariaCurrencyEditorFieldLabel");
+					ariaLabelText = this._getLocaleValue("ariaCurrencyEditorFieldLabel");
 				}
 					break;
 				case "igPercentEditor": {
-					ariaLabelText = this._getLocaleOption("ariaPercentEditorFieldLabel");
+					ariaLabelText = this._getLocaleValue("ariaPercentEditorFieldLabel");
 				}
 					break;
 				case "igMaskEditor": {
-					ariaLabelText = this._getLocaleOption("ariaMaskEditorFieldLabel");
+					ariaLabelText = this._getLocaleValue("ariaMaskEditorFieldLabel");
 				}
 					break;
 				case "igDateEditor": {
-					ariaLabelText = this._getLocaleOption("ariaDateEditorFieldLabel");
+					ariaLabelText = this._getLocaleValue("ariaDateEditorFieldLabel");
 				}
 					break;
 				case "igDatePicker": {
-					ariaLabelText = this._getLocaleOption("ariaDatePickerFieldLabel");
+					ariaLabelText = this._getLocaleValue("ariaDatePickerFieldLabel");
 				}
 					break;
 				default: {
-					ariaLabelText = this._getLocaleOption("ariaTextEditorFieldLabel");
+					ariaLabelText = this._getLocaleValue("ariaTextEditorFieldLabel");
 				}
 			}
 			this._editorInput.attr("aria-label", ariaLabelText);
@@ -2451,13 +2452,13 @@
 		_renderDropDownButton: function () {
 			var dropDownButton = $("<div role='button' tabindex='-1' id='" +
 				this.id + "_dropDownButton' aria-label='" +
-				this._getLocaleOption("ariaDropDownButton") + "'></div>"),
+				this._getLocaleValue("ariaDropDownButton") + "'></div>"),
 					dropDownIcon = $("<div></div>");
 			if (this._dropDownButton) {
 				return;
 			}
 			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr("title", this._getLocaleOption("buttonTitle"));
+			dropDownButton.attr("title", this._getLocaleValue("buttonTitle"));
 			this._editorContainer.prepend(dropDownButton
 				.addClass(this.css.dropDownButton)
 				.append(dropDownIcon.addClass(this.css.dropDownImage)));
@@ -2468,12 +2469,12 @@
 			var spinButtonUp = $("<div role='button' tabindex='-1' id='" +
 				this.id +
 				"_spinUpButton' aria-label='" +
-				this._getLocaleOption("ariaSpinUpButton") +
+				this._getLocaleValue("ariaSpinUpButton") +
 				"'></div>"), spinButtonUpImage = $("<div></div>"),
 
 				spinButtonDown = $("<div role='button' tabindex='-1' id='" +
 					this.id + "_spinDownButton' aria-label='" +
-					this._getLocaleOption("ariaSpinDownButton") +
+					this._getLocaleValue("ariaSpinDownButton") +
 					"'></div>"),
 
 				spinButtonDownImage = $("<div></div>");
@@ -2486,8 +2487,8 @@
 			spinButtonDown
 				.addClass(this.css.buttonCommon)
 				.append(spinButtonDownImage.addClass(this.css.spinButtonDownImage));
-			spinButtonUp.attr("title", this._getLocaleOption("spinUpperTitle"));
-			spinButtonDown.attr("title", this._getLocaleOption("spinLowerTitle"));
+			spinButtonUp.attr("title", this._getLocaleValue("spinUpperTitle"));
+			spinButtonDown.attr("title", this._getLocaleValue("spinLowerTitle"));
 			this._editorContainer.prepend(spinButtonDown).prepend(spinButtonUp);
 			this._attachButtonsEvents("spinDown", spinButtonDown);
 			this._attachButtonsEvents("spinUp", spinButtonUp);
@@ -2498,7 +2499,7 @@
 			var clearButton = $("<div role='button' id='" +
 				this.id +
 				"_clearButton' tabindex='-1' aria-label='" +
-				this._getLocaleOption("ariaClearButton") + "'></div>"),
+				this._getLocaleValue("ariaClearButton") + "'></div>"),
 
 				buttonClearIcon = $("<div></div>");
 			if (this._clearButton) {
@@ -2506,7 +2507,7 @@
 			}
 			clearButton.addClass(this.css.buttonCommon);
 			clearButton.append(buttonClearIcon.addClass(this.css.clearButtonImage));
-			clearButton.attr("title", this._getLocaleOption("clearTitle"));
+			clearButton.attr("title", this._getLocaleValue("clearTitle"));
 			this._editorContainer.prepend(clearButton.addClass(this.css.clearButton));
 			this._clearButton = clearButton;
 			this._attachButtonsEvents("clear", clearButton);
@@ -3718,16 +3719,6 @@
 				}
 			}
 			return { start: startPostion, end: endPosition };
-		},
-		_getLocaleOption: function (key) {
-			var locale = this.options.locale;
-			if (locale && locale[ key ]) {
-				return locale[ key ];
-			} else if ($.ig && $.ig.Editor && $.ig.Editor.locale) {
-				return $.ig.Editor.locale[ key ];
-			} else {
-				return "";
-			}
 		},
 		_listItems: function () {
 			return this._dropDownList.children(".ui-igedit-listitem");
@@ -11058,11 +11049,11 @@
 		_renderDropDownButton: function () {
 			var dropDownButton = $("<div role='button' tabindex='-1' id='" +
 					this.id + "_calendarButton' aria-label='" +
-					this._getLocaleOption("ariaCalendarButton") + "'></div>"),
+					this._getLocaleValue("ariaCalendarButton") + "'></div>"),
 				dropDownIcon = $("<div></div>");
 
 			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr("title", this._getLocaleOption("datePickerButtonTitle"));
+			dropDownButton.attr("title", this._getLocaleValue("datePickerButtonTitle"));
 			this._editorContainer.prepend(dropDownButton
 				.addClass(this.css.dropDownButton)
 				.append(dropDownIcon.addClass(this.css.dropDownImage)));

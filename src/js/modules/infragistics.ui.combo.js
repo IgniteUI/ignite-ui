@@ -32,6 +32,7 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.templating",
 			"./infragistics.datasource",
 			"./infragistics.ui.scroll",
