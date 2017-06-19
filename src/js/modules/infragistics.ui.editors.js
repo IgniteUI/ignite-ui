@@ -573,7 +573,7 @@
 			}
 		},
 		_render: function () {
-			throw new Error($.ig.Editor.locale.renderErrMsg);
+			throw new Error(this._getLocaleValue("renderErrMsg"));
 		},
 		_applyOptions: function () {
 			if (this.options.tabIndex !== null) {
@@ -1839,7 +1839,7 @@
 				case "buttonType":
 				case "dropDownAttachedToBody":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				default:
 
 					//In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -1878,7 +1878,7 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("maxLengthErrMsg"),
 							this.options.maxLength));
 				}
 			}
@@ -1939,7 +1939,7 @@
 				this._editorInputWrapper = editorElementWrapper;
 			} else if (this.element.is("textarea")) {
 				if (this.options.textMode !== "multiline") {
-					throw new Error($.ig.Editor.locale.multilineErrMsg);
+					throw new Error(this._getLocaleValue("multilineErrMsg"));
 				} else {
 					this._editorContainer = this.element.wrap($("<div></div>")).parent();
 					this._editorInput = this.element;
@@ -1951,7 +1951,7 @@
 			} else {
 
 				//TODO Throw target element not supported.
-				throw new Error($.ig.Editor.locale.targetNotSupported);
+				throw new Error(this._getLocaleValue("targetNotSupported"));
 			}
 			this._editorContainer.addClass(this.css.container);
 			this._editorInput.addClass(this.css.editor);
@@ -2063,7 +2063,7 @@
 				//If placeholder is not supported
 				this._editorInput.addClass(this.css.placeHolder);
 				if (this._placeHolderNotSupported()) {
-					throw new Error($.ig.Editor.locale.placeHolderNotSupported);
+					throw new Error(this._getLocaleValue("placeHolderNotSupported"));
 				}
 			} else if (this._editorInput.attr("placeholder")) {
 				this._editorInput.removeAttr("placeholder");
@@ -2218,7 +2218,7 @@
 				if (this._valueIndexInList(val) !== -1) {
 					result = true;
 				} else {
-					this._sendNotification("warning", $.ig.Editor.locale.allowedValuesMsg);
+					this._sendNotification("warning", this._getLocaleValue("allowedValuesMsg"));
 					result = false;
 				}
 			} else if (this.options.maxLength) {
@@ -2226,7 +2226,7 @@
 					result = true;
 				} else {
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("maxLengthErrMsg"),
 							this.options.maxLength));
 					result = false;
 				}
@@ -2528,7 +2528,7 @@
 					this._renderSpinButtons();
 					buttonsCountRendered += 2;
 				} else if (this.options.listItems === null || this.options.listItems.length === 0) { //#208356 S.D. Error for no listitems
-					throw new Error($.ig.Editor.locale.noListItemsNoButton);
+					throw new Error(this._getLocaleValue("noListItemsNoButton"));
 				}
 			}
 
@@ -2539,12 +2539,12 @@
 					this._renderDropDownButton();
 					buttonsCountRendered++;
 				} else if (this.options.listItems === null || this.options.listItems.length === 0) {
-					throw new Error($.ig.Editor.locale.noListItemsNoButton);
+					throw new Error(this._getLocaleValue("noListItemsNoButton"));
 				}
 			}
 
 			if (buttonsCountRendered === 0) {
-				throw new Error($.ig.Editor.locale.btnValueNotSupported);
+				throw new Error(this._getLocaleValue("btnValueNotSupported"));
 			}
 		},
 		_attachButtonsEvents: function (type, target) {
@@ -2886,7 +2886,7 @@
 								e.preventDefault();
 								e.stopPropagation();
 								this._sendNotification("warning",
-									$.ig.util.stringFormat($.ig.Editor.locale.maxLengthWarningMsg,
+									$.ig.util.stringFormat(this._getLocaleValue("maxLengthWarningMsg"),
 										this.options.maxLength));
 							}
 						}
@@ -3282,7 +3282,7 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("maxLengthErrMsg"),
 							this.options.maxLength));
 					}
 				}
@@ -4411,7 +4411,7 @@
 
 			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
 			if (this.options.decimalSeparator.toString().length > 1) {
-				throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+				throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
 			}
 
 			// This property is only internally used and it's not configurable in this widget.
@@ -4419,7 +4419,7 @@
 
 			// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
 			if (this.options.decimalSeparator === this.options.groupSeparator) {
-				throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+				throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 			}
 		},
 		_setNumericType: function () {
@@ -4441,7 +4441,7 @@
 						break;
 					default: {
 						result = "e";
-						throw new Error($.ig.Editor.locale.scientificFormatErrMsg);
+						throw new Error(this._getLocaleValue("scientificFormatErrMsg"));
 					}
 				}
 			} else {
@@ -4501,11 +4501,11 @@
 				delta = this.options.spinDelta;
 				if (typeof delta !== "number") {
 					this.options.spinDelta = 1;
-					throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+					throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
 				}
 				if (delta < 0) {
 					this.options.spinDelta = 1;
-					throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+					throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
 				}
 				if (this.options.dataMode === "float" || this.options.dataMode === "double") {
 
@@ -4513,15 +4513,14 @@
 					if (delta % 1 !== 0) {
 						fractional = delta.toString().substring(delta.toString().indexOf(".") + 1);
 						if (fractional.toString().length > this.options.maxDecimals) {
-							throw new Error($.ig.util.stringFormat($.ig.Editor.locale.
-								spinDeltaContainsExceedsMaxDecimals,
-							this.options.maxDecimals));
+							throw new Error($.ig.util.stringFormat(this._getLocaleValue("spinDeltaContainsExceedsMaxDecimals"),
+								this.options.maxDecimals));
 						}
 					}
 				} else {
 					// This means the value is integer, without floating point
 					if (delta % 1 !== 0) {
-						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
+						throw new Error(this._getLocaleValue("spinDeltaIncorrectFloatingPoint"));
 					}
 				}
 			}
@@ -4555,7 +4554,7 @@
 
 			if (value === "" || isNaN(value) ||
 				(!isNaN(value) && (value < 0 || value > boundary))) {
-				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalNumber,
+				throw new Error($.ig.util.stringFormat(this._getLocaleValue("decimalNumber"),
 					mode, name, boundary));
 			}
 		},
@@ -4597,14 +4596,14 @@
 				case "spinDelta": {
 					if (typeof value !== "number") {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+						throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
 					} else if (value < 0) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+						throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
 					} else if ((this.options.dataMode !== "float" &&
 						this.options.dataMode !== "double") && value % 1 !== 0) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
+						throw new Error(this._getLocaleValue("spinDeltaIncorrectFloatingPoint"));
 					} else if (this.options.scientificFormat) {
 						this.options[ option ] = Number(value.toExponential());
 					}
@@ -4650,12 +4649,12 @@
 				case "decimalSeparator": {
 					if (value.toString().length > 1) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+						throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
 					}
 
 					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
 					if (this.options[ option ] === this.options.groupSeparator) {
-						throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+						throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 					}
 				}
 					break;
@@ -4668,18 +4667,18 @@
 
 					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
 					if (this.options[ option ] === this.options.decimalSeparator) {
-						throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+						throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 					}
 				}
 					break;
 				case "regional":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 
 				case "excludeKeys":
 				case "includeKeys":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.numericEditorNoSuchOption);
+					throw new Error(this._getLocaleValue("numericEditorNoSuchOption"));
 
 				default: {
 
@@ -4723,7 +4722,7 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
 							this.options.maxValue));
 
 				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
@@ -4732,7 +4731,7 @@
 
 						// Raise Warning level 2
 						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
+							$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
 								this.options.minValue));
 				}
 			}
@@ -5167,14 +5166,14 @@
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
 							this.options.maxValue));
 				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
 							this.options.minValue));
 				}
 
@@ -5594,12 +5593,12 @@
 				this.options.spinWrapAround)) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValExceededWrappedAroundErrMsg,
+					$.ig.util.stringFormat(this._getLocaleValue("maxValExceededWrappedAroundErrMsg"),
 						this.options.maxValue));
 			} else if (currVal >= this.options.maxValue && !this.options.spinWrapAround) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValErrMsg,
+					$.ig.util.stringFormat(this._getLocaleValue("maxValErrMsg"),
 						this.options.maxValue));
 			}
 			if (this._focused) {
@@ -5652,13 +5651,13 @@
 				this.options.spinWrapAround)) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceededWrappedAroundErrMsg,
+					$.ig.util.stringFormat(this._getLocaleValue("minValExceededWrappedAroundErrMsg"),
 						this.options.minValue));
 
 			} else if (currVal <= this.options.minValue && !this.options.spinWrapAround) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValErrMsg,
+					$.ig.util.stringFormat(this._getLocaleValue("minValErrMsg"),
 						this.options.minValue));
 			}
 			if (this._focused) {
@@ -5740,7 +5739,7 @@
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
-								$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
+								$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
 									this.options.maxValue));
 
 							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
@@ -5749,7 +5748,7 @@
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
-								$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
+								$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
 									this.options.value));
 						}
 					}
@@ -5814,15 +5813,15 @@
 		},
 		getSelectedText: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("numericEditorNoSuchMethod"));
 		},
 		getSelectionStart: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("numericEditorNoSuchMethod"));
 		},
 		getSelectionEnd: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("numericEditorNoSuchMethod"));
 		},
 		spinUp: function (delta) {
 			/* Increments value in editor according to the parameter or selects the previous item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
@@ -6062,7 +6061,7 @@
 
 					//Notify
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
 							this.options.maxValue));
 				} else if (!isNaN(this.options.minValue) &&
 					newValue / this.options.displayFactor < this.options.minValue) {
@@ -6070,7 +6069,7 @@
 
 					//Notify
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
 						this.options.minValue));
 				}
 
@@ -6130,9 +6129,9 @@
 			this.options.displayFactor = this.options.displayFactor ||
 				this._getRegionalOption("displayFactor");
 			if (typeof this.options.displayFactor !== "number") {
-				throw new Error($.ig.Editor.locale.displayFactorIsOfTypeNumber);
+				throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
 			} else if (this.options.displayFactor !== 1 && this.options.displayFactor !== 100) {
-				throw new Error($.ig.Editor.locale.displayFactorAllowedValue);
+				throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
 			}
 		},
 		_setOption: function (option, value) { // igPercentEditor
@@ -6149,10 +6148,10 @@
 				case "displayFactor": {
 					if (typeof value !== "number") {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.displayFactorIsOfTypeNumber);
+						throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
 					} else if (value !== 1 && value !== 100) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.displayFactorAllowedValue);
+						throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
 					}
 				}
 					break;
@@ -7083,9 +7082,9 @@
 					// Raise warning not all required fields are entered
 					// State - message
 					if (this.options.revertIfNotValid) {
-						message = $.ig.Editor.locale.maskRevertMessage;
+						message = this._getLocaleValue("maskRevertMessage");
 					} else {
-						message = $.ig.Editor.locale.maskMessage;
+						message = this._getLocaleValue("maskMessage");
 					}
 					this._sendNotification("warning", message);
 				}
@@ -7366,14 +7365,14 @@
 			switch (option) {
 				case "inputMask": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				case "excludeKeys":
 				case "includeKeys":
 				case "regional":
 				case "unfilledCharsPrompt":
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -7474,51 +7473,51 @@
 		},
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		showDropDown: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		hideDropDown: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		dropDownButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinUpButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinDownButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		dropDownVisible: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinUp: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinDown: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		isValid: function () { //igMaskEditor
 			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
@@ -7540,7 +7539,7 @@
 					// Raise warning not all required fields are entered
 					// State - message
 					valid = false;
-					this._sendNotification("warning", $.ig.Editor.locale.maskMessage);
+					this._sendNotification("warning", this._getLocaleValue("maskMessage"));
 				}
 			}
 			this._skipMessages = false;
@@ -7888,7 +7887,7 @@
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
 			if (offset !== null && (offset > 840 || offset < -720)) {
-				throw new Error($.ig.Editor.locale.dateEditorOffsetRange);
+				throw new Error(this._getLocaleValue("dateEditorOffsetRange"));
 			}
 		},
 		_setNumericType: function () {
@@ -7938,7 +7937,7 @@
 				case "listItems":
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				default: {
 
@@ -7998,29 +7997,29 @@
 
 			if (typeof delta !== "number") {
 				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+				throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
 			} else if (delta < 0) {
 				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+				throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
 			} else {
 				this.options.spinDelta = parseInt(delta, 10);
 			}
 
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
 				this.options.centuryThreshold = 29;
-				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
+				throw new Error(this._getLocaleValue("centuryThresholdValidValues"));
 			}
 
 			if (this.options.minValue) {
 				if (!this._isValidDate(new Date(this.options.minValue))) {
-					throw new Error($.ig.Editor.locale.invalidDate);
+					throw new Error(this._getLocaleValue("invalidDate"));
 				} else {
 					this.options.minValue = this._getDateObjectFromValue(this.options.minValue);
 				}
 			}
 			if (this.options.maxValue) {
 				if (!this._isValidDate(new Date(this.options.maxValue))) {
-					throw new Error($.ig.Editor.locale.invalidDate);
+					throw new Error(this._getLocaleValue("invalidDate"));
 				} else {
 					this.options.maxValue = this._getDateObjectFromValue(this.options.maxValue);
 				}
@@ -9082,12 +9081,12 @@
 				if (this.options.maxValue && date > this.options.maxValue) {
 					validDate = this._getDateObjectFromValue(this.options.maxValue);
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
 							this._getDisplayValue(new Date(this.options.maxValue))));
 				} else if (this.options.minValue && date < this.options.minValue) {
 					validDate = this._getDateObjectFromValue(this.options.minValue);
 					this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
+					$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
 							this._getDisplayValue(new Date(this.options.minValue))));
 				}
 			}
@@ -10590,12 +10589,12 @@
 					if (this.options.maxValue && parsedVal > this.options.maxValue) {
 						newValue = this._getDateObjectFromValue(this.options.maxValue);
 						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
+							$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
 								this._getDisplayValue(new Date(this.options.maxValue))));
 					} else if (this.options.minValue && parsedVal < this.options.minValue) {
 						newValue = this._getDateObjectFromValue(this.options.minValue);
 						this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
+						$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
 								this._getDisplayValue(new Date(this.options.minValue))));
 					}
 				}
@@ -10697,7 +10696,7 @@
 					//Raise warning not all required fields are entered
 					//State - message
 					valid = false;
-					this._sendNotification("warning", $.ig.Editor.locale.dateMessage);
+					this._sendNotification("warning", this._getLocaleValue("dateMessage"));
 				}
 			}
 			this._skipMessages = false;
@@ -10706,32 +10705,32 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownVisible: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		}
 	});
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
@@ -11341,22 +11340,22 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		showDropDown: function () {
 			/* Shows the drop down list.
@@ -11607,7 +11606,7 @@
 				this._editorContainer = this.element.wrap($("<div></div>")).parent();
 				this._editorInput.after(this._valueInput);
 			} else {
-				throw new Error($.ig.Editor.locale.instantiateCheckBoxErrMsg);
+				throw new Error(this._getLocaleValue("instantiateCheckBoxErrMsg"));
 			}
 
 			this._editorContainer
@@ -11791,7 +11790,7 @@
 				if (value.ret) {
 					state = value.p1;
 				} else {
-					throw new Error($.ig.Editor.locale.cannotParseNonBoolValue);
+					throw new Error(this._getLocaleValue("cannotParseNonBoolValue"));
 				}
 			}
 
@@ -11973,7 +11972,7 @@
 					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
-						throw new Error($.ig.Editor.locale.cannotSetNonBoolValue);
+						throw new Error(this._getLocaleValue("cannotSetNonBoolValue"));
 					}
 				} else {
 					/* update value only */
