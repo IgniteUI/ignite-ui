@@ -163,6 +163,14 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.utilDescription
 	},
 	{
+		widget: "igWidget",
+		priority: true,
+		scripts: [ "$path$/modules/infragistics.ui.widget.js" ],
+		dependency: [ { name: "igUtil" } ],
+		group: $.ig.loaderClass.locale.miscGroup,
+		description: $.ig.loaderClass.locale.descriptions.utilDescription
+	},
+	{
 		widget: "igDataSource",
 		dependency: [ { name: "igUtil" } ],
 		priority: true,
@@ -874,12 +882,13 @@ $.ig.dependencies = [
 	{
 		widget: "igCombo",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
+			{ name: "igWidget" },
 			{ name: "igDataSource" },
 			{ name: "igTemplating" },
 			{ name: "igScroll" },
 			{ name: "igValidator" }
-			],
+		],
 		scripts: [ "$path$/modules/infragistics.ui.combo.js" ],
 		locale: [ "$localePath$/infragistics.ui.combo-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
@@ -891,7 +900,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igDialog",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.dialog.js" ],
 		locale: [ "$localePath$/infragistics.ui.dialog-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
@@ -901,7 +910,7 @@ $.ig.dependencies = [
 	{
 		widget: "igEditors",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "regional" },
 			{ name: "igScroll" },
 			{ name: "igValidator" }
@@ -1315,7 +1324,7 @@ $.ig.dependencies = [
 	{
 		widget: "igTree",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igShared" },
 			{ name: "igTemplating" },
 			{ name: "igDataSource" }

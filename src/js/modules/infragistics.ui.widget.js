@@ -88,7 +88,7 @@
 		},
 		_getLocaleValue: function (key) {
 			var locale = this.options.locale,
-				widgetName = this.localeWidgetName || this.widgetName.split("ig")[1];
+				widgetName = this.localeWidgetName || this.widgetName.split("ig")[ 1 ];
 
 			if (locale && locale[ key ]) {
 				return locale[ key ];

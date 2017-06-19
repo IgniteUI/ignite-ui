@@ -1774,7 +1774,7 @@
 				if (elements.length > 0) {
 					elements.attr("src", value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "parentNodeImageTooltip":
@@ -1785,7 +1785,7 @@
 				if (elements.length > 0) {
 					elements.attr("title", value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "parentNodeImageClass":
@@ -1794,7 +1794,7 @@
 					elements.removeClass();
 					elements.addClass(value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "leafNodeImageUrl":
@@ -1802,7 +1802,7 @@
 				if (elements.length > 0) {
 					elements.attr("src", value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "leafNodeImageTooltip":
@@ -1813,7 +1813,7 @@
 				if (elements.length > 0) {
 					elements.attr("title", value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "leafNodeImageClass":
@@ -1822,7 +1822,7 @@
 					elements.removeClass();
 					elements.addClass(value);
 				} else {
-					throw new Error($.ig.Tree.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("setOptionError") + option);
 				}
 				break;
 			case "hotTracking":
@@ -1875,7 +1875,7 @@
 			case "defaultNodeTarget":
 
 				// K.D. April 14th, 2014 Bug #169669 Throwing an error on bindings
-				throw new Error($.ig.Tree.locale.setOptionError + option);
+				throw new Error(this._getLocaleValue("setOptionError") + option);
 			default:
 				break;
 			}
@@ -1886,21 +1886,21 @@
 			options = options || this.options;
 			if (options && options.dragAndDrop) {
 				this.options.dragAndDropSettings.moveToMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveTo + "</p></div>";
+					"<div><p><span></span>" + this._getLocaleValue("moveTo") + "</p></div>";
 				this.options.dragAndDropSettings.moveBetweenMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveBetween + "</p></div>";
+					"<div><p><span></span>" + this._getLocaleValue("moveBetween") + "</p></div>";
 				this.options.dragAndDropSettings.moveAfterMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveAfter + "</p></div>";
+					"<div><p><span></span>" + this._getLocaleValue("moveAfter") + "</p></div>";
 				this.options.dragAndDropSettings.moveBeforeMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveBefore + "</p></div>";
+					"<div><p><span></span>" + this._getLocaleValue("moveBefore") + "</p></div>";
 				this.options.dragAndDropSettings.copyToMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyTo + "</p></div>";
+					"<div><p><span></span>" + this._getLocaleValue("copyTo") + "</p></div>";
 				this.options.dragAndDropSettings.copyBetweenMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyBetween + "</p></div>";
+					"<div><p><span></span>" + this._getLocaleValue("copyBetween") + "</p></div>";
 				this.options.dragAndDropSettings.copyAfterMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyAfter + "</p></div>";
+					"<div><p><span></span>" + this._getLocaleValue("copyAfter") + "</p></div>";
 				this.options.dragAndDropSettings.copyBeforeMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyBefore + "</p></div>";
+					"<div><p><span></span>" + this._getLocaleValue("copyBefore") + "</p></div>";
 			}
 		},
 		_removeCheckboxes: function () {
@@ -3038,7 +3038,7 @@
 		_populatingNode: null,
 		_populateNodeData: function (success, msg, data) {
 			if (!success) {
-				throw new Error($.ig.Tree.locale.errorOnRequest + msg);
+				throw new Error(this._getLocaleValue("errorOnRequest") + msg);
 			}
 			var ul = this._populatingNode.ul, node = this._populatingNode.node,
 				originalData = this.nodeDataFor(node.attr("data-path")),
@@ -3164,7 +3164,7 @@
 			if (opt.dataSourceUrl && opt.dataSourceUrl.lastIndexOf("?") === -1) {
 				opt.dataSourceUrl += "?";
 			} else if (!opt.dataSourceUrl) {
-				throw new Error($.ig.Tree.locale.noDataSourceUrl);
+				throw new Error(this._getLocaleValue("noDataSourceUrl"));
 			}
 
 			// K.D. April 26, 2016 Bug #217440 Response data key is not correctly set on additional LOD requests
@@ -3676,7 +3676,7 @@
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			if (!opt.checkboxMode || opt.checkboxMode.toLowerCase() === "off") {
 				return;
@@ -3775,7 +3775,7 @@
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			if (!event) {
 				expander = node.children("." + css.nodeExpander);
@@ -3876,7 +3876,7 @@
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node || node.length <= 0) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 
 			if (node.children("ul").attr("data-populated") &&
@@ -3919,7 +3919,7 @@
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node || node.length <= 0) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			expander = node.children("." + css.nodeExpander);
 
@@ -3937,7 +3937,7 @@
 				returnType="object" Returns the parent node element, null if the node provided as parameter is a root level node.
 			*/
 			if (!node) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			var parent = node.parent().closest("li[data-role=node]");
 			return parent.length > 0 ? parent : null;
@@ -4019,7 +4019,7 @@
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node || node.length <= 0) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			var css = this.css, nodeId = node.attr("data-path"), noCancel, prevent = false;
 
@@ -4072,7 +4072,7 @@
 
 			// K.D. November 28th, 2011 Bug #96672 Checking if no argument is provided when doing the API call
 			if (!node) {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 			var css = this.css, nodeId = node.attr("data-path");
 
@@ -4218,7 +4218,7 @@
 				}
 				return children;
 			}
-			throw new Error($.ig.Tree.locale.incorrectNodeObject);
+			throw new Error(this._getLocaleValue("incorrectNodeObject"));
 		},
 		childrenByPath: function (path) {
 			/* Retrieves a node object collection of the immediate children of the node with the provided path.
@@ -4240,7 +4240,7 @@
 				}
 				return children;
 			}
-			throw new Error($.ig.Tree.locale.incorrectPath + path);
+			throw new Error(this._getLocaleValue("incorrectPath") + path);
 		},
 		isSelected: function (node) {
 			/* Returns true if the provided node element is selected and false otherwise.
@@ -4256,7 +4256,7 @@
 			if (node && node.length > 0) {
 				return this._selectedNode[ 0 ].path === node.attr("data-path");
 			}
-			throw new Error($.ig.Tree.locale.incorrectNodeObject);
+			throw new Error(this._getLocaleValue("incorrectNodeObject"));
 		},
 		isExpanded: function (node) {
 			/* Returns true if the provided node element is expanded and false otherwise.
@@ -4272,7 +4272,7 @@
 					return expander.attr("data-exp") === "true";
 				}
 			} else {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 		},
 		isChecked: function (node) {
@@ -4289,7 +4289,7 @@
 					return checkbox.attr("data-chk") === "on";
 				}
 			} else {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 		},
 		checkState: function (node) {
@@ -4306,7 +4306,7 @@
 					return checkbox.attr("data-chk");
 				}
 			} else {
-				throw new Error($.ig.Tree.locale.incorrectNodeObject);
+				throw new Error(this._getLocaleValue("incorrectNodeObject"));
 			}
 		},
 		addNode: function (node, parent, nodeIndex) {
