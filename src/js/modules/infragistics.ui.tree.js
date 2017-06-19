@@ -1740,26 +1740,7 @@
 			nodeDropped: "nodeDropped"
 		},
 		_createWidget: function (options) {
-			/* !Strip dummy objects from options, because they are defined for documentation purposes only! */
-			this.options.bindings = null;
-			if (options && options.dragAndDrop) {
-				this.options.dragAndDropSettings.moveToMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveTo + "</p></div>";
-				this.options.dragAndDropSettings.moveBetweenMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveBetween + "</p></div>";
-				this.options.dragAndDropSettings.moveAfterMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveAfter + "</p></div>";
-				this.options.dragAndDropSettings.moveBeforeMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.moveBefore + "</p></div>";
-				this.options.dragAndDropSettings.copyToMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyTo + "</p></div>";
-				this.options.dragAndDropSettings.copyBetweenMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyBetween + "</p></div>";
-				this.options.dragAndDropSettings.copyAfterMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyAfter + "</p></div>";
-				this.options.dragAndDropSettings.copyBeforeMarkup =
-					"<div><p><span></span>" + $.ig.Tree.locale.copyBefore + "</p></div>";
-			}
+			this._changeLocale(options);
 			$.Widget.prototype._createWidget.apply(this, arguments);
 		},
 		_create: function () {
@@ -1897,6 +1878,29 @@
 				throw new Error($.ig.Tree.locale.setOptionError + option);
 			default:
 				break;
+			}
+		},
+		_changeLocale: function (options) {
+			/* !Strip dummy objects from options, because they are defined for documentation purposes only! */
+			this.options.bindings = null;
+			options = options || this.options;
+			if (options && options.dragAndDrop) {
+				this.options.dragAndDropSettings.moveToMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.moveTo + "</p></div>";
+				this.options.dragAndDropSettings.moveBetweenMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.moveBetween + "</p></div>";
+				this.options.dragAndDropSettings.moveAfterMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.moveAfter + "</p></div>";
+				this.options.dragAndDropSettings.moveBeforeMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.moveBefore + "</p></div>";
+				this.options.dragAndDropSettings.copyToMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.copyTo + "</p></div>";
+				this.options.dragAndDropSettings.copyBetweenMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.copyBetween + "</p></div>";
+				this.options.dragAndDropSettings.copyAfterMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.copyAfter + "</p></div>";
+				this.options.dragAndDropSettings.copyBeforeMarkup =
+					"<div><p><span></span>" + $.ig.Tree.locale.copyBefore + "</p></div>";
 			}
 		},
 		_removeCheckboxes: function () {
