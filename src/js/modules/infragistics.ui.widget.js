@@ -98,7 +98,19 @@
 				return "";
 			}
 		},
-		_changeLocale: $.noop,
+		_changeLocale: function () {
+			var elements = this.element.find("[data-localeid]");
+			elements.each(function () {
+				var $el = $(this),
+					attr;
+				if ($el.hasAttr("data-localeattr")) {
+					attr = $el.attr("data-localeattr");
+					$el.attr(attr, this._getLocaleValue($el.attr("data-localeid")));
+				} else {
+					$el.text(this._getLocaleValue($el.attr("data-localeid")));
+				}
+			});
+		},
 		_changeRegional: $.noop
     });
 

@@ -2010,41 +2010,41 @@
 			this._applyInputAriaLabel();
 		},
 		_applyInputAriaLabel: function () {
-			var ariaLabelText;
+			var ariaLabelText,
+				localeid;
 			switch (this.widgetName) {
-				case "igTextEditor": {
-					ariaLabelText = this._getLocaleValue("ariaTextEditorFieldLabel");
-				}
+				case "igTextEditor":
+					localeid = "ariaTextEditorFieldLabel";
 					break;
-				case "igNumericEditor": {
-					ariaLabelText = this._getLocaleValue("ariaNumericEditorFieldLabel");
-				}
+				case "igNumericEditor":
+					localeid = "ariaNumericEditorFieldLabel";
 					break;
-				case "igCurrencyEditor": {
-					ariaLabelText = this._getLocaleValue("ariaCurrencyEditorFieldLabel");
-				}
+				case "igCurrencyEditor":
+					localeid = "ariaCurrencyEditorFieldLabel";
 					break;
-				case "igPercentEditor": {
-					ariaLabelText = this._getLocaleValue("ariaPercentEditorFieldLabel");
-				}
+				case "igPercentEditor":
+					localeid = "ariaPercentEditorFieldLabel";
 					break;
-				case "igMaskEditor": {
-					ariaLabelText = this._getLocaleValue("ariaMaskEditorFieldLabel");
-				}
+				case "igMaskEditor":
+					localeid = "ariaMaskEditorFieldLabel";
 					break;
-				case "igDateEditor": {
-					ariaLabelText = this._getLocaleValue("ariaDateEditorFieldLabel");
-				}
+				case "igDateEditor":
+					localeid = "ariaDateEditorFieldLabel";
 					break;
-				case "igDatePicker": {
-					ariaLabelText = this._getLocaleValue("ariaDatePickerFieldLabel");
-				}
+				case "igDatePicker":
+					localeid = "ariaDatePickerFieldLabel";
 					break;
 				default: {
-					ariaLabelText = this._getLocaleValue("ariaTextEditorFieldLabel");
+					localeid = "ariaTextEditorFieldLabel";
+					break;
 				}
 			}
-			this._editorInput.attr("aria-label", ariaLabelText);
+			ariaLabelText = this._getLocaleValue(localeid);
+			this._editorInput.attr({
+				"aria-label": ariaLabelText,
+				"data-localeid": localeid,
+				"data-localeattr": "aria-label"
+			});
 		},
 		_sendNotification: function (state, message) {
 			if (this.options.suppressNotifications || this._skipMessages /* flag on isValid() call */) {
@@ -2450,15 +2450,21 @@
 			}
 		},
 		_renderDropDownButton: function () {
-			var dropDownButton = $("<div role='button' tabindex='-1' id='" +
-				this.id + "_dropDownButton' aria-label='" +
-				this._getLocaleValue("ariaDropDownButton") + "'></div>"),
-					dropDownIcon = $("<div></div>");
+			var dropDownButton = $("<div></div>"),
+				dropDownIcon = $("<div></div>");
 			if (this._dropDownButton) {
 				return;
 			}
 			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr("title", this._getLocaleValue("buttonTitle"));
+			dropDownButton.attr({
+				"role": "button",
+				"tabindex": -1,
+				"id": this.id + "_dropDownButton",
+				"aria-label": this._getLocaleValue("ariaDropDownButton"),
+				"title": this._getLocaleValue("buttonTitle"),
+				"data-localeid": "buttonTitle",
+				"data-localeattr": "title"
+			});
 			this._editorContainer.prepend(dropDownButton
 				.addClass(this.css.dropDownButton)
 				.append(dropDownIcon.addClass(this.css.dropDownImage)));
@@ -11052,7 +11058,9 @@
 				dropDownIcon = $("<div></div>");
 
 			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr("title", this._getLocaleValue("datePickerButtonTitle"));
+			dropDownButton.attr({
+				"title": this._getLocaleValue("datePickerButtonTitle")
+			});
 			this._editorContainer.prepend(dropDownButton
 				.addClass(this.css.dropDownButton)
 				.append(dropDownIcon.addClass(this.css.dropDownImage)));
