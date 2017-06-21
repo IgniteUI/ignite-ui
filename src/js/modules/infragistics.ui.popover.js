@@ -43,59 +43,212 @@
 			titleClass: "ui-igpopover-title"
 		},
 		options: {
-			/* type="bool" controls whether the popover will close on blur or not */
+			/* type="bool" controls whether the popover will close on blur or not
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					closeOnBlur:false
+				});
+
+				//Get
+				var closeOnBlur = $(".selector").%%WidgetName%%("option", "closeOnBlur");
+			```
+			*/
 			closeOnBlur: true,
 			/* type="auto|left|right|top|bottom" controls the direction in which the control shows relative to the target element
-				auto type="string" lets the control show on the side where enough space is available with the following priority top > bottom > right > left
+				auto type="string" lets the control show on the side where enough space is available with the priority specified by the [directionPriority](ui.%%WidgetNameLowered%%#options:directionPriority) property
 				left type="string" shows popover on the left side of the target element
 				right type="string" shows popover on the right side of the target element
 				top type="string" shows popover on the top of the target element
 				bottom type="string" shows popover on the bottom of the target element
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						direction:"right"
+					});
+
+					//Get
+					var direction = $(".selector").%%WidgetName%%("option", "direction");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "direction", "top");
+
+				```
 			*/
 			direction: "auto",
+			/* type="array" Controls the priority in which the control searches for space to show relative to the target element.
+				This property has effect only if the [direction](ui.%%WidgetNameLowered%%#options:direction) property value is "auto" or unset.
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						directionPriority:[ "top", "bottom", "left", "right" ]
+					});
+
+					//Get
+					var position = $(".selector").%%WidgetName%%("option", "directionPriority");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "directionPriority",[ "left", "top", "bottom", "right" ]);
+				```
+			*/
+			directionPriority: [ "bottom", "top", "right", "left" ],
 			/* type="auto|balanced|start|end" controls the position of the popover according to the target element in case the popover is larger than the target on the side we want to position, if the popover is smaller it should always be in the middle of the visible area
 				auto type="string" lets the control choose a position depending on available space with the following priority balanced > end > start
 				balanced type="string" the popover is positioned at the middle of the target element
 				start type="string" the popover is positioned at the beginning of the target element
 				end type="string" the popover is positioned at the end of the target element
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						position:"balanced"
+					});
+
+					//Get
+					var position = $(".selector").%%WidgetName%%("option", "position");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "position", "start");
+				```
 			*/
 			position: "auto",
 			/* type="number|string" defines width for the popover. leave null for auto.
 				number The width can be set as a number.
 				string The width can be set in pixels (px).
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						width:300
+					});
+
+					//Get
+					var width = $(".selector").%%WidgetName%%("option", "width");
+				```
 			*/
 			width: null,
 			/* type="number|string" defines height for the popover. leave null for auto
 				number The height can be set as a number.
 				string The height can be set in pixels (px).
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						height:200
+					});
+
+					// Get
+					var height = $(".selector").%%WidgetName%%("option", "height");
+				```
 			*/
 			height: null,
 			/* type="number|string" defines width the popover won't go under the value even if no specific one is set.
 				number The minWidth can be set as a number.
 				string The minWidth can be set in pixels (px).
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						minWidth:"70px"
+					});
+					// Get
+					var minWidth = $(".selector").%%WidgetName%%("option", "minWidth");
+				```
 			*/
 			minWidth: 60,
 			/* type="number|string" defines width the popover won't exceed even if no specific one is set.
 				number The maxWidth can be set as a number.
 				string The maxWidth can be set in pixels (px).
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						maxWidth:"300px"
+					});
+
+					//Get
+					var maxWidth = $(".selector").%%WidgetName%%("option", "maxWidth");
+				```
 			*/
 			maxWidth: 200,
 			/* type="number|string" defines height the popover won't exceed even if no specific one is set.
 				number The max height can be set as a number.
 				string The max height can be set in pixels (px).
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						maxHeight:"300px"
+					});
+
+					// Get
+					var maxHeight = $(".selector").%%WidgetName%%("option", "maxHeight");
+				```
 			*/
 			maxHeight: 200,
-			/* type="number" sets the time popover fades in and out when showing/hiding */
+			/* type="number" sets the time popover fades in and out when showing/hiding
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					animationDuration:200
+				});
+
+				// Get
+				var animationDuration = $(".selector").%%WidgetName%%("option", "animationDuration");
+
+				// Set
+				$(".selector").%%WidgetName%%("option", "animationDuration", 100);
+			```
+			*/
 			animationDuration: 150,
 			/* type="string|function" sets the content for the popover container. If left null the content will be get from the target.
 				string type="string" String content of the popover container
 				function type="function" Function which is a callback that should return the content. Use the 'this' value to access the target DOM element.
+				```
+					//Initialize
+					//callback function
+						$(".selector").%%WidgetName%%({
+							contentTemplate:function()
+								{
+								var imgTemplate = "<img class='map' alt='${value}' src='http://maps.google.com/maps/api/staticmap?zoom=10&size=250x250&maptype=terrain&sensor=false&center=${value}'>";
+								var data = [{ value: $( this )[0].value }];
+								return $.ig.tmpl( imgTemplate, data );
+								}
+						});
+					//string content for the popover container
+					$(".selector").%%WidgetName%%({
+						contentTemplate:"<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' />"
+						});
+
+					//Set
+					//Accepts setting the value only if string type is passed
+						$(".selector").%%WidgetName%%("option", "contentTemplate", "<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' />");
+
+					//Get
+					var contentFunction = $(".selector").%%WidgetName%%("option", "contentTemplate");
+			```
 			*/
 			contentTemplate: null,
 			/* type="string" Selectors indicating which items should show popovers. The predefined value is [title]. Customize if you're using something other then the title attribute for the popover content, or if you need a different selector for event delegation. When changing this option, you likely need to also change the contentTemplate option
+			```
+				/Initialize
+				$(".selector").%%WidgetName%%({
+					selectors:"[value],a"  // elements which have attribute 'value' and the hyperlinks (anchor elements)
+				});
+
+				//Get
+				var selectors = $(".selector").%%WidgetName%%("option", "selectors");
+			```
 			*/
 			selectors: null,
-			/* type="object" sets the content for the popover header */
+			/* type="object" sets the content for the popover header
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					headerTemplate {
+						closeButton:true,
+						title :"The title of the popover"
+					}
+				});
+
+				//Get
+				var headerTemplate = $(".selector").%%WidgetName%%("option", "headerTemplate");
+			```
+			*/
 			headerTemplate: {
 				/* type="bool" controls whether the popover renders a functional close button */
 				closeButton: false,
@@ -106,47 +259,179 @@
 				mouseenter   type="string" the popover is shown on mouse enter in the target element
 				click        type="string" the popover is shown on click on the target element
 				focus        type="string" the popover is shown on focusing the target element
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					showOn:"focus"
+				});
+
+				//Get
+				var showOn = $(".selector").%%WidgetName%%("option", "showOn");
+			```
 			*/
 			showOn: "mouseenter",
-			/* type="object" sets the containment for the popover. Accepts a jQuery object */
+			/* type="object" sets the containment for the popover. Accepts a jQuery object
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					containment:$('#popoverDivElement')
+				});
+
+				//Get
+				var containment = $(".selector").%%WidgetName%%("option", "containment");
+
+				// Set
+				$(".selector").%%WidgetName%%("option", "containment", $('#popoverTooltip' ));
+			```
+			*/
 			containment: null,
 			/* type="string|object" Controls where the popover DOM should be attached to.
 				string type="string" A valid jQuery selector for the element
 				object type="object" A reference to the parent jQuery object
+				```
+					//Initialize
+					$(".selector").%%WidgetName%%({
+						appendTo: $(".jquerySelector")
+					});
+				```
 			*/
 			appendTo: "body"
 		},
 		events: {
 			/* cancel="true" Event fired before popover is shown.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover will show for.
-			Use ui.content to get or set the content to be shown as a string.
-			Use ui.popover to get the popover element showing.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover will show for.
+			eventArgument="ui.content" argType="string" Gets or set the content to be shown as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element showing.
+			eventArgument="ui.owner" argType="object" Gets a reference to the %%WidgetName%% widget.
+			```
+			//Bind after initialization
+				$(document).delegate(".selector", "%%WidgetNameLowered%%showing", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					//reference to the %%WidgetName%% widget.
+					ui.owner;
+
+					//reference the element the popover will show for.
+					ui.element;
+
+					//reference the current content to be shown as a string.
+					ui.content;
+
+					//reference the popover element showing.
+					ui.popover;
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					showing: function (evt, ui) {
+						...
+					}
+				});
+			```
 			*/
 			showing: "showing",
 			/* Event fired after popover is shown.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover showed for.
-			Use ui.content to get the content that was shown as a string.
-			Use ui.popover to get the popover element shown.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover showed for.
+			eventArgument="ui.content" argType="string" Gets the content that was shown as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element showing.
+			eventArgument="ui.owner" argType="object" Gets a reference to the %%WidgetName%% widget.
+			```
+				//Bind after initialization
+				$(document).delegate(".selector","%%WidgetNameLowered%%shown",function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					//reference to the %%WidgetName%% widget.
+					ui.owner;
+
+					// reference the element the popover showed for.
+					ui.element;
+
+					//reference the content that was shown as a string.
+					ui.content;
+
+					// reference the popover element shown.
+					ui.popover;
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					shown: function (evt, ui) {
+						...
+				}
+				});
+			```
 			*/
 			shown: "shown",
 			/* cancel="true" Event fired before popover is hidden.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover will hide for.
-			Use ui.content to get the current content displayed in the popover as a string.
-			Use ui.popover to get the popover element hiding.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover will hide for.
+			eventArgument="ui.content" argType="string" Gets the current content displayed in the popover as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element hiding.
+			eventArgument="ui.owner" argType="object" Gets reference to the %%WidgetName%% widget.
+			```
+				//Bind after initialization
+				(document).delegate(".selector", "%%WidgetNameLowered%%hiding", function (evt, ui) {
+				//return the triggered event
+				evt;
+
+				//reference to the %%WidgetName%% widget.
+				ui.owner;
+
+				//reference the element the popover will hide for.
+				ui.element;
+
+				//reference the current content in the popover as a string.
+				ui.content;
+
+				//reference the popover element hiding.
+				ui.popover;
+				);
+
+				/Initialize
+				(".selector").%%WidgetName%%({
+					hiding: function (evt, ui) {
+						...
+					}
+				});
+			```
 			*/
 			hiding: "hiding",
 			/* Event fired after popover is hidden.
-			Function takes arguments evt and ui.
-			Use ui.element to get the element the popover is hidden for.
-			Use ui.content to get the content displayed in the popover as a string.
-			Use ui.popover to get the popover element hidden.
-			Use ui.owner to get reference to the igPopover widget
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.element" argType="$" Gets the element the popover is hidden for.
+			eventArgument="ui.content" argType="string" Gets the content displayed in the popover as a string.
+			eventArgument="ui.popover" argType="$" Gets the popover element hidden.
+			eventArgument="ui.owner" argType="object" Gets reference to the %%WidgetName%% widget.
+			```
+			//Bind after initialization
+				$(document).delegate(".selector", "%%WidgetNameLowered%%hidden", function (evt, ui) {
+					//return the triggered event
+					evt;
+
+					//reference to the %%WidgetName%% widget.
+					ui.owner;
+
+					//reference the element the popover hid for.
+					ui.element;
+
+					// reference the current content displayed in the popover as a string.
+					ui.content;
+
+					//reference the popover element hidden.
+					ui.popover;
+				});
+
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					hidden: function (evt, ui) {
+						...
+					}
+				});
+			```
 			*/
 			hidden: "hidden"
 		},
@@ -156,41 +441,36 @@
 				this.options.selectors === undefined ) ?
 				this.element :
 				null;
-			this._priorityDir = [ "bottom", "top", "right", "left" ];
-			this._arrowDir = [ "top", "bottom", "left", "right" ];
+			this._arrowDir = {
+				"bottom": "top",
+				"top": "bottom",
+				"right": "left",
+				"left":"right"
+			};
 			this._positions = [ "balanced", "start", "end" ];
-			this._directionIndex = -1;
-			this._positionIndex = -1;
-			this._forced = this.options.direction !== "auto" && this.options.position !== "auto";
 			this._visible = false;
+			this._useDocumentBoundary = false;
 			$( window ).on( "resize.popover", $.proxy( this._resizeHandler, this ) );
 		},
 		_createWidget: function (options, element) {
+			// initialization performance will be better if we don't try to normalize the defaults
+			if (options && options.directionPriority !== this.options.directionPriority) {
+				options.directionPriority = this._normalizePriority(options.directionPriority);
+			}
 			$.Widget.prototype._createWidget.apply(this, arguments);
 			this.element = $(element);
 			if (element && element.nodeType !== undefined) {
 				this._renderPopover();
-			}
-			if (this.options.direction !== "auto" || this.options.position !== "auto") {
-				this._getPrioritiesIndex();
 			}
 		},
 		_setOption: function (key, value) {
 			switch (key) {
 				case "direction":
 					this.options.direction = value;
-					if (this.options.direction !== "auto") {
-						this._getPrioritiesIndex();
-					}
-					this._forced = this.options.direction !== "auto" && this.options.position !== "auto";
 					this._resizeHandler();
 					break;
-				case "position":
-					this.options.position = value;
-					if (this.options.position !== "auto") {
-						this._getPrioritiesIndex();
-					}
-					this._forced = this.options.direction !== "auto" && this.options.position !== "auto";
+				case "directionPriority":
+					this.options.directionPriority = this._normalizePriority(value);
 					break;
 				case "contentTemplate":
 					if (typeof value === "string") {
@@ -203,7 +483,7 @@
 					}
 					break;
 				case "containment":
-					if (value instanceof jQuery) {
+					if (value instanceof $) {
 						this.options.containment = value;
 					}
 					break;
@@ -224,7 +504,11 @@
 			}
 		},
 		destroy: function () {
-			/* Destroys the popover widget.*/
+			/* Destroys the popover widget.
+			```
+				$( ".selector" ).%%WidgetName%%( "destroy" );
+			```
+			*/
 			this._detachEventsFromTarget();
 			$(window).off("resize.popover", this._resizeHandler);
 			this.popover.remove();
@@ -234,15 +518,19 @@
 		id: function () {
 			/* returns the ID of the element the popover is attached to
 				returnType="string"
+			```
+				var popoverID = $( ".selector" ).%%WidgetName%%( "id" );
+
+			```
 			*/
 			return this.element[ 0 ].id;
 		},
 		container: function () {
 			/* returns the container for the popover contents
 				returnType="object"
-				```
-				$( ".selector" ).%%WidgetName%%( "destroy" );
-				```
+			```
+				$( ".selector" ).%%WidgetName%%( "container" );
+			```
 			*/
 			return this.contentInner;
 		},
@@ -250,6 +538,13 @@
 			/* shows the popover for the specified target
 				paramType="dom" optional="true" The element to show popover for.
 				paramType="string" optional="true" The string to set for the popover to show.
+			```
+				//show the popover for the target it has been initialized before
+				$(".selector").%%WidgetName%%( "show" );
+
+				//show the popover for a new target and with s new content to be displayed
+				$(".selector").%%WidgetName%%("show", $( "#popover_target" ),"Content to be displayed in the popover");
+			```
 			*/
 			var target = trg || this._target;
 			if (content) {
@@ -262,18 +557,28 @@
 			this._openPopover(target, true);
 		},
 		hide: function () {
-			/* hides the popover for the specified target */
+			/* hides the popover for the specified target
+			```
+				$(".selector").%%WidgetName%%( "hide" );
+			```
+			*/
 			this._closePopover(true);
 		},
 		getContent: function () {
 			/* gets the currently set content for the popover container
 				returnType="string" The popover content.
+			```
+				var currentContent = $( ".selector" ).%%WidgetName%%( "getContent" );
+			```
 			*/
 			return this.contentInner.html();
 		},
 		setContent: function (newCnt) {
 			/* sets the content for the popover container
 				paramType="string" The popover content to set.
+			```
+				$( ".selector" ).%%WidgetName%%("setContent", "New Content To be Set");
+			```
 			*/
 			if (typeof newCnt === "string") {
 				this._setNewContent(newCnt);
@@ -282,6 +587,9 @@
 		target: function () {
 			/* gets the popover current target
 				returnType="object" The current target.
+			```
+				var target =  $( ".selector" ).%%WidgetName%%( "target" );
+			```
 			*/
 			if (this._currentTarget) {
 				return this._currentTarget;
@@ -291,6 +599,9 @@
 		getCoordinates: function () {
 			/* gets the current coordinates of the popover
 				returnType="object" The popover coordinates in pixels.
+			```
+				var coordinates =  $( ".selector" ).%%WidgetName%%( "getCoordinates" );
+			```
 			*/
 			var currPosition = { left: 0, top: 0 };
 			currPosition.left = this.popover.css("left");
@@ -300,6 +611,10 @@
 		setCoordinates: function (pos) {
 			/* Sets the popover to specific coordinates.
 				paramType="object" The popover coordinates in pixels.
+			```
+				var position = {top: 300, left: 450};
+				$( ".selector" ).%%WidgetName%%( "setCoordinates" , position);
+			```
 			*/
 			this.popover.css({
 				"top": pos.top,
@@ -314,13 +629,12 @@
 			}
 			/* T.G 12 Dec 2013 Fix 159000 - Arrow is separated from the inner frame */
 			if (this.options.direction !== "auto") {
-				this._getPrioritiesIndex();
 				this.arrow = $("<div></div>")
-					.addClass(this.css.arrowBaseClass + this._arrowDir[ this._directionIndex ])
+					.addClass(this.css.arrowBaseClass + this._arrowDir[ this.options.direction ])
 					.appendTo(this.popover);
 				if (this.id()) {
 					this.arrow.attr("id", this.id() + "_popover_arrow");
-			}
+				}
 			}
 			this.popover.appendTo(this.options.appendTo);
 			this._attachEventsToTarget();
@@ -388,13 +702,13 @@
 			  .css("clear", "both")
 			  .appendTo(cnt);
 		},
-		_updateArrowDiv: function (nDir, idx, trg) {
+		_updateArrowDiv: function (nDir, trg) {
 			var conDiv = this.contentInner.parent(),
 				dims;
 			if (!this.arrow) {
 				/* T.G 12 Dec 2013 Fix 159000 - Arrow is separated from the inner frame */
 				this.arrow = $("<div></div>")
-					.addClass(this.css.arrowBaseClass + this._arrowDir[ idx ])
+					.addClass(this.css.arrowBaseClass + this._arrowDir[ nDir ])
 					.appendTo(this.popover);
 				if (this.id()) {
 					this.arrow.attr("id", this.id() + "_popover_arrow");
@@ -405,7 +719,7 @@
 						"ui-igpopover-arrow-right " +
 						"ui-igpopover-arrow-bottom " +
 						"ui-igpopover-arrow-top")
-					.addClass(this.css.arrowBaseClass + this._arrowDir[ idx ]);
+					.addClass(this.css.arrowBaseClass + this._arrowDir[ nDir ]);
 			}
 			dims = this._getHiddenElementsDimensions([ this.arrow, conDiv ], trg);
 			/* Arrow should be positioned according to target, not according to content div. */
@@ -562,7 +876,7 @@
 			/* D.K. checking the node type of the element as an alternative of "instanceof HTMLElement" for IE8
 			nodeType === 1 represents an elements */
 			if ( t && ( ( window.HTMLElement !== undefined &&
-				( t instanceof HTMLElement || t instanceof jQuery ) && showEvt ) ||
+				( t instanceof HTMLElement || t instanceof $ ) && showEvt ) ||
 				(typeof t[ 0 ] === "object") && (t[ 0 ].nodeType === 1) &&
 				( typeof t[ 0 ].style === "object" ) &&
 				( typeof t[ 0 ].ownerDocument === "object" ) ) ) {
@@ -589,7 +903,7 @@
 			/* D.K. checking the node type of the element as an alternative of "instanceof HTMLElement" for IE8
 			nodeType === 1 represents an elements */
 			if ( t && ( ( window.HTMLElement !== undefined &&
-				( t instanceof HTMLElement || t instanceof jQuery ) ) ||
+				( t instanceof HTMLElement || t instanceof $ ) ) ||
 				(typeof t[ 0 ] === "object") && (t[ 0 ].nodeType === 1) &&
 				( typeof t[ 0 ].style === "object" ) &&
 				( typeof t[ 0 ].ownerDocument === "object" ) ) ) {
@@ -605,30 +919,32 @@
 			var i = 0, fn, fnRes;
 			if (this.options.direction === "auto") {
 				do {
-					this._updateArrowDiv(this._priorityDir[ i ], i, trg);
-					fn = "_" + this._priorityDir[ i ] + "Position";
+					this._updateArrowDiv(this.options.directionPriority[ i ], trg);
+					fn = "_" + this.options.directionPriority[ i ] + "Position";
 					fnRes = this[ fn ](trg);
 					i++;
-				} while (fnRes === false && i < this._priorityDir.length);
+				} while (fnRes === false && i < this.options.directionPriority.length);
+
+				if (fnRes === false && !this.options.containment) {
+					/* Try positioning it once again when the boundary is the document */
+					i = 0;
+					this._useDocumentBoundary = true;
+					do {
+						this._updateArrowDiv(this.options.directionPriority[ i ], trg);
+						fn = "_" + this.options.directionPriority[ i ] + "Position";
+						fnRes = this[ fn ](trg);
+						i++;
+					} while (fnRes === false && i < this.options.directionPriority.length);
+				}
+
 				if (fnRes === false) {
 					/* "Couldn't find space anywhere. Please exceed screen dimensions" */
 					return;
 				}
 			} else {
-				this._updateArrowDiv(this.options.direction, this._directionIndex, trg);
+				this._updateArrowDiv(this.options.direction, trg);
 				fn = "_" + this.options.direction + "Position";
-				if (!this[ fn ](trg)) {
-					/* && (this.options.selectors || !this._target) */
-					/* trying to find a place on the screen if there is no space to show with the position set */
-					this._forced = true;
-					do {
-						this._updateArrowDiv(this._priorityDir[ i ], i, trg);
-						fn = "_" + this._priorityDir[ i ] + "Position";
-						fnRes = this[ fn ](trg);
-						i++;
-					} while (fnRes === false && i < this._priorityDir.length);
-					return;
-				}
+				this[ fn ](trg);
 			}
 		},
 		_findProperPosition: function (dir, x, trg) {
@@ -695,16 +1011,11 @@
 					$.ig.util.offset(trg)[ cPos ];
 				y = leftOffset + trgFDim / 2 - this.popover[ cDim ]() / 2;
 				fnRes = dir === "left" ?
-					this._checkCollision(x, y, trg) :
-					this._checkCollision(y, x, trg);
+					this._checkCollision(x, y, trg, this.options.direction !== "auto", true) :
+					this._checkCollision(y, x, trg, this.options.direction !== "auto", true);
 			} else {
 				fnRes = this.
 					_cyclePossiblePositions(trg, dir, cPos, cDim, trgFDim, useParentOffset, x);
-			}
-			/* if the popover did't fit, try position it using as borders the whole page */
-			if (fnRes === false && !this.options.containment) {
-				fnRes = this.
-					_cyclePossiblePositions(trg, dir, cPos, cDim, trgFDim, useParentOffset, x, true);
 			}
 
 			if (fnRes === true) {
@@ -713,22 +1024,29 @@
 			return fnRes;
 		},
 		_cyclePossiblePositions: function (
-				trg, dir, cPos, cDim, trgFDim, useParentOffset, x, useDocument) {
+				trg, dir, cPos, cDim, trgFDim, useParentOffset, x) {
 			var i = 0, y, tPos, fnRes;
 				/* rotate between possible positions until the popover fits or it's clear it won't fit */
 				if (this.options.position === "auto") {
 					do {
 						tPos = this._positions[ i ];
 						y = this._getCounterPosition(trg, trgFDim, tPos, cPos, cDim, useParentOffset);
-					fnRes = dir === "left" ?
-						this._checkCollision(x, y, trg, useDocument) :
-						this._checkCollision(y, x, trg, useDocument);
+						fnRes = dir === "left" ?
+							this._checkCollision(x, y, trg, false, false) :
+							this._checkCollision(y, x, trg, false, false);
 					} while (fnRes === false && ++i < this._positions.length);
+					if (!fnRes && this.options.direction !== "auto") {
+						tPos = this._positions[ 0 ];
+						y = this._getCounterPosition(trg, trgFDim, tPos, cPos, cDim, useParentOffset);
+						fnRes = dir === "left" ?
+							this._checkCollision(x, y, trg, false, true) :
+							this._checkCollision(y, x, trg, false, true);
+					}
 				} else {
 					y = this._getCounterPosition(trg, trgFDim, this.options.position, cPos, cDim, useParentOffset);
-				fnRes = dir === "left" ?
-					this._checkCollision(x, y, trg, useDocument) :
-					this._checkCollision(y, x, trg, useDocument);
+					fnRes = dir === "left" ?
+						this._checkCollision(x, y, trg, true, false) :
+						this._checkCollision(y, x, trg, true, false);
 			}
 			return fnRes;
 		},
@@ -787,7 +1105,8 @@
 			}
 			return this._findProperPosition("top", right, trg);
 		},
-		_checkCollision: function (top, left, trg, useDocument) {
+
+		_checkCollision: function (top, left, trg, allowOverlap, fromDirection) {
 			var tfullw = this.popover.outerWidth(),
 				tfullh = this.popover.outerHeight(),
 				win = $(window), wh, ww, os,
@@ -814,17 +1133,19 @@
 					topBoundary = $.ig.util.offset($containment).top;
 				}
 			}
-			if (useDocument) {
+			if (this._useDocumentBoundary) {
 				leftBoundary = 0;
 				rightBoundary = $(document).width();
 				bottomBoundary = $(document).height();
 				topBoundary = 0;
 			}
-			if (left < leftBoundary) {
-				if (this.oDir === "left") {
-					return false;
+			if (allowOverlap) {
+				if (left < leftBoundary) {
+					left = leftBoundary;
 				}
-				left = leftBoundary;
+				if (top < topBoundary) {
+					top = topBoundary;
+				}
 			}
 			/*D.K. 7 Apr 2015 Fix for bug #190611: When direction is right and mouse over the last column popover is shown to the cell on the left
 			When the direction is right, don't recalculate 'left', show it even if it is in the invisible area */
@@ -846,7 +1167,7 @@
 					top + tfullh > bottomBoundary) {
 				/*D.K. 16 Dec 2014 Fix 186350 - Popover tooltip appears below the grid even when there's not enough space on the page
 				if it is forced we can ignore collisions, otherwise they should be taken into account */
-				if (this._forced === false) {
+				if (!fromDirection || this.options.direction === "auto") {
 					/*  T.G. 29 Jan 2014 Fix 162164- When the element is relative in scrollable container the popover does not change its position when you scroll the container. */
 					return false;
 				}
@@ -864,24 +1185,17 @@
 			});
 			return true;
 		},
-		_getPrioritiesIndex: function () {
-			var i;
-			if (this.options.direction !== "auto") {
-				for (i = 0; i < this._priorityDir.length; i++) {
-					if (this.options.direction === this._priorityDir[ i ]) {
-						this._directionIndex = i;
-						break;
-					}
+		_normalizePriority: function (priority) {
+			var dp = [ "bottom", "top", "right", "left" ], np = [], i;
+			if (!$.isArray(priority)) {
+				return dp;
+			}
+			for (i = 0; i < priority.length; i++) {
+				if ($.inArray(priority[ i ].toLowerCase(), dp) > -1) {
+					np.push(priority[ i ]);
 				}
 			}
-			if (this.options.position !== "auto") {
-				for (i = 0; i < this._positions.length; i++) {
-					if (this.options.position === this._positions[ i ]) {
-						this._positionIndex = i;
-						break;
-					}
-				}
-			}
+			return np.length ? np : dp;
 		},
 		_openPopover: function (trg, skipEvents) {
 			var args, noCancel, val = this.getContent(), self = this;
@@ -911,6 +1225,8 @@
 					}
 				});
 				this._visible = true;
+				/* reset flag when the popover is shown */
+				this._useDocumentBoundary = false;
 				this._removeOriginalTitle(trg);
 			}
 		},
@@ -1015,7 +1331,7 @@
 		},
 		_setNewContent: function (nc) {
 			var newContent = nc;
-			if (nc instanceof jQuery) {
+			if (nc instanceof $) {
 				newContent = nc.html();
 			} else if (typeof nc === "object") {
 				newContent = nc.innerHTML;

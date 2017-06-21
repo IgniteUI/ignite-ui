@@ -155,7 +155,6 @@
 	padding: 4px;
 	overflow: hidden;	
 	font-size:11px;	
-	background:url("../images/igTooltip/igTooltipBackground.svg") no-repeat;	
 	background-color: #DADADA;
     background-image:none;    
     /* Added to make a consistent look and feel among all Jquery themes */
@@ -173,9 +172,9 @@
     box-shadow: 		0px 0px 10px black;
 }
 
-.ui-igplayer-tooltip  ui-igtooltip-arrow-top {
+.ui-igplayer-tooltip .ui-igpopover-arrow-top {
 	z-index: 10000;
-	background: transparent url("../images/igTooltip/igTooltipArrowTop.png") no-repeat 100% 100%;
+	background: transparent url("../images/igPopover/igPopoverArrowTop.png") no-repeat 100% 100%;
 	width: 14px;
 	height: 7px;
 	
@@ -185,9 +184,9 @@
 	margin-left:-7px;
 }
 
-.ui-igplayer-tooltip  ui-igtooltip-arrow-left {
+.ui-igplayer-tooltip .ui-igpopover-arrow-left {
 	z-index: 10000;
-	background: transparent url("../images/igTooltip/igTooltipArrowLeft.png") no-repeat 100% 100%;
+	background: transparent url("../images/igPopover/igPopoverArrowLeft.png") no-repeat 100% 100%;
 	width: 7px;
 	height: 14px;	
 	position:relative;
@@ -196,9 +195,9 @@
 	margin-top:7px;
 }
 
-.ui-igplayer-tooltip  ui-igtooltip-arrow-right {
+.ui-igplayer-tooltip .ui-igpopover-arrow-right {
 	z-index: 10000;
-	background: transparent url("../images/igTooltip/igTooltipArrowRight.png") no-repeat 100% 100%;
+	background: transparent url("../images/igPopover/igPopoverArrowRight.png") no-repeat 100% 100%;
 	width: 7px;
 	height: 14px;
 	
@@ -208,9 +207,9 @@
 	margin-top:7px;
 }
 
-.ui-igplayer-tooltip ui-igtooltip-arrow-bottom {
+.ui-igplayer-tooltip .ui-igpopover-arrow-bottom {
 	z-index: 10000;
-	background: transparent url("../images/igTooltip/igTooltipArrowBottom.png") no-repeat 100% 100%;
+	background: transparent url("../images/igPopover/igPopoverArrowBottom.png") no-repeat 100% 100%;
 	width: 14px;
 	height: 7px;	
 	position:relative;

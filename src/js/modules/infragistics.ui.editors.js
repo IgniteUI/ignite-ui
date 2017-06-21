@@ -23,8 +23,8 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.util.jquery",
-			"./infragistics.scroll",
-			"./infragistics.validator"
+			"./infragistics.ui.scroll",
+			"./infragistics.ui.validator"
 		], factory );
 	} else {
 
@@ -572,7 +572,7 @@
 			}
 		},
 		_render: function () {
-			throw ($.ig.Editor.locale.renderErrMsg);
+			throw new Error($.ig.Editor.locale.renderErrMsg);
 		},
 		_applyOptions: function () {
 			if (this.options.tabIndex !== null) {
@@ -770,13 +770,18 @@
 			this.options.value = value;
 		}, //BaseEditor
 		//This method sets the value to null, or empty string depending on the nullable option.
-		_clearValue: function () {
+		_clearValue: function (textOnly) {
+			var newValue = "";
 
 			// TODO use null, or 0 depending on the nullable option
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
+			}
+
+			if (textOnly) {
+				this._editorInput.val(newValue);
 			} else {
-				this._updateValue("");
+				this._updateValue(newValue);
 			}
 		},
 		_detachEvents: function () {
@@ -787,7 +792,6 @@
 				this._detachListEvents();
 			}
 
-			// https://css-tricks.com/namespaced-events-jquery/
 			this._editorContainer
 				.off("mousedown.editor mouseup.editor mouseover.editor mouseout.editor");
 		},
@@ -1056,6 +1060,7 @@
 			}
 		},
 		value: function (newValue) {
+			var listIndex;
 			if (newValue !== undefined) {
 
 				// N.A. 12/1/2015 Bug #207198: Remove notifier when value updated through value method.
@@ -1065,6 +1070,11 @@
 						if (newValue) { newValue = newValue.toLocaleUpperCase(); }
 					} else if (this.options.toLower) {
 						if (newValue) { newValue = newValue.toLocaleLowerCase(); }
+					}
+					if (this._dropDownList && this.options.isLimitedToListValues &&
+						(listIndex = this._valueIndexInList(newValue)) !== -1 ) {
+						// D.P. 6th Feb 2017 #786 Double check, final value should match list item casing
+						newValue = this.options.listItems[ listIndex ];
 					}
 					this._updateValue(newValue);
 					this._editorInput.val(this._getDisplayValue());
@@ -1077,6 +1087,9 @@
 			} else {
 				return this.options.value;
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		field: function () {
 			/* Gets the input element of the editor.
@@ -1200,7 +1213,7 @@
 			*/
 			buttonType: "none",
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
-				Items in the list can be of type string, number or object. The items are directly rendered without any casting, or manipulation.
+				Items in the list can be of type string.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1397,7 +1410,7 @@
 				multiline type="string" Multiline editor based on TEXTAREA element is created.
 			*/
 			textMode: "text",
-			/* type="bool" Gets/Sets the ability of the editor to automatically change the hoverd item into the opened dropdown list to its oposide side. When the last item is reached and the spin down is clicked, the first item gets hovered and vice versa. This option has no effect there is no drop-down list.
+			/* type="bool" Gets/Sets the ability of the editor to automatically move the dropdown list selection item from one end to the opposite side. When the last item is reached and spin down is performed, the first item gets selected and vice versa. This option has no effect there is no drop-down list.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1412,7 +1425,7 @@
 			```
 			*/
 			spinWrapAround: false,
-			/* type="bool" Gets/Sets if the editor should only allow values set into the list of items. This validation is done only when the editor is blured, or enter key is pressed
+			/* type="bool" Gets/Sets if the editor should only allow values from the list of items. Matching is case-insensitive.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -1784,12 +1797,24 @@
 					}
 					break;
 				case "listItems":
-					this._deleteList();
+
+					//M.S. November, 7th 2016 - Issue 481 - Cannot set listItems on run time when it is not set initially
+					if (prevValue !== null) {
+						this._deleteList();
+					}
 					this._createList();
 					this._clearValue();
 					break;
 				case "listWidth":
 					this._setDropDownListWidth();
+					break;
+				case "spinWrapAround":
+					if (value) {
+						this._enableSpinButton(this._spinDownButton, "spinDown");
+						this._enableSpinButton(this._spinUpButton, "spinUp");
+					} else {
+						this._setSpinButtonsState(this.value());
+					}
 					break;
 				case "excludeKeys":
 					if (value === "") {
@@ -1829,6 +1854,9 @@
 				value = value.toString();
 			}
 			this._super(value);
+			if (this._dropDownList) {
+				this._updateDropdownSelection(value);
+			}
 		},
 		_applyOptions: function () { //TextEditor
 			var initialValue;
@@ -1841,43 +1869,31 @@
 			if (this.options.excludeKeys) {
 				this._excludeKeysArray = this.options.excludeKeys.toString().split("");
 			}
-			if (this.options.value !== undefined) {
-				initialValue = this.options.value;
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
-				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
-					this._editorInput.val(this._getDisplayValue());
-				}
-			} else if (this.element.val() && this._validateValue(this.element.val())) {
-				initialValue = this.element.val();
-				if (this.options.maxLength) {
-					if (initialValue && initialValue.toString().length > this.options.maxLength) {
-						initialValue = initialValue
-							.toString()
-							.substring(0, this.options.maxLength);
+			initialValue = this.options.value;
+			if (this.options.maxLength) {
+				if (initialValue && initialValue.toString().length > this.options.maxLength) {
+					initialValue = initialValue.toString().substring(0, this.options.maxLength);
 
-						//Raise warning
-						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-								this.options.maxLength));
-					}
+					//Raise warning
+					this._sendNotification("warning",
+						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+							this.options.maxLength));
 				}
-				if (this._validateValue(initialValue)) {
-					this._setInitialValue(initialValue);
+			}
+			if (this._validateValue(initialValue)) {
+				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
-				} else {
-					this._editorInput.val("");
+			} else if (initialValue === null && !this.options.allowNullValue) {
+				this._setInitialValue("");
 			}
+
+			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!this.options.value && this.options.allowNullValue &&
+				this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
+				this._setOption("value", this.options.nullValue);
 			}
+
 			this._applyPlaceHolder();
 		},
 		_render: function () {
@@ -1922,7 +1938,7 @@
 				this._editorInputWrapper = editorElementWrapper;
 			} else if (this.element.is("textarea")) {
 				if (this.options.textMode !== "multiline") {
-					throw ($.ig.Editor.locale.multilineErrMsg);
+					throw new Error($.ig.Editor.locale.multilineErrMsg);
 				} else {
 					this._editorContainer = this.element.wrap($("<div></div>")).parent();
 					this._editorInput = this.element;
@@ -1934,7 +1950,7 @@
 			} else {
 
 				//TODO Throw target element not supported.
-				throw ($.ig.Editor.locale.targetNotSupported);
+				throw new Error($.ig.Editor.locale.targetNotSupported);
 			}
 			this._editorContainer.addClass(this.css.container);
 			this._editorInput.addClass(this.css.editor);
@@ -2046,7 +2062,7 @@
 				//If placeholder is not supported
 				this._editorInput.addClass(this.css.placeHolder);
 				if (this._placeHolderNotSupported()) {
-					console.log($.ig.Editor.locale.placeHolderNotSupported);
+					throw new Error($.ig.Editor.locale.placeHolderNotSupported);
 				}
 			} else if (this._editorInput.attr("placeholder")) {
 				this._editorInput.removeAttr("placeholder");
@@ -2099,6 +2115,65 @@
 			}
 		},
 
+		// N.A. January 4th, 2017 #664 Move spin buttons state logic from numeric to text editor in order to be used by the date editor and date picker.
+		_disableSpinButton: function (target) {
+			if (target && !target.attr("disabled") && !this.options.spinWrapAround) {
+				target.addClass(this.css.disabled);
+				target.attr("disabled", "disabled");
+				target.prop("disabled", true);
+				target.removeClass(this.css.buttonHover);
+				if (target._pressed) {
+					delete target._pressed;
+					target.removeClass(this.css.buttonPressed);
+				}
+				if (target._spinTimeOut) {
+					clearTimeout(target._spinTimeOut);
+					delete this._spinUpButton._spinTimeOut;
+				}
+				if (target._spinInterval) {
+					clearInterval(target._spinInterval);
+					delete target._spinInterval;
+				}
+				this._detachButtonsEvents(target);
+			}
+		},
+		_enableSpinButton: function (target, type) {
+			if (target && target.attr("disabled")) {
+				target.removeClass(this.css.disabled);
+				target.removeAttr("disabled");
+				target.prop("disabled", false);
+				this._attachButtonsEvents(type, target);
+			}
+		},
+		_exceedsMaxValue: function() { //TextEditor
+			return this._dropDownList && !this._getSpinItem("up").length;
+		},
+		_lessThanMinValue: function() { //TextEditor
+			return this._dropDownList && !this._getSpinItem("down").length;
+		},
+		_setSpinButtonsState: function (val) {
+			if (typeof val === "string" || val instanceof String) {
+				val = val.trim();
+			}
+			if (val === null) {
+				this._enableSpinButton(this._spinDownButton, "spinDown");
+				this._enableSpinButton(this._spinUpButton, "spinUp");
+				return;
+			}
+			if (val !== "" && !this.options.spinWrapAround) {
+				if (this._exceedsMaxValue(val)) {
+					this._disableSpinButton(this._spinUpButton);
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+				} else if (this._lessThanMinValue(val)) {
+					this._disableSpinButton(this._spinDownButton);
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				} else {
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				}
+			}
+		},
+
 		// replaces characted at a specific position
 		_replaceCharAt: function (stringValue, index, ch) {
 			if (stringValue !== undefined) {
@@ -2119,8 +2194,17 @@
 			}
 			return stringValue;
 		},
+		_valueIndexInList: function (val) {
+			if (!val && val !== 0) {
+				return -1;
+			}
+			var loweredItems = $.map(this.options.listItems, function (item) {
+				return item.toString().toLowerCase();
+			});
+			return $.inArray(val.toString().toLowerCase(), loweredItems);
+		},
 		_validateValue: function (val) { //Text Editor
-			var loweredItems, result;
+			var result;
 			if (val === undefined) {
 				result = false;
 			} else if (val === null) {
@@ -2130,11 +2214,7 @@
 					result = false;
 				}
 			} else if (this.options.isLimitedToListValues && this._dropDownList) {
-				loweredItems = $.map(this.options.listItems, function (item) {
-					// M.H. 4 Dec 2015 Fix for bug 210666: "Uncaught TypeError: Cannot read property 'toString' of undefined" when using filter API
-					return (item === null || item === undefined) ? "" : item.toString().toLowerCase();
-				});
-				if ($.inArray(val.toString().toLowerCase(), loweredItems) !== -1) {
+				if (this._valueIndexInList(val) !== -1) {
 					result = true;
 				} else {
 					this._sendNotification("warning", $.ig.Editor.locale.allowedValuesMsg);
@@ -2237,6 +2317,12 @@
 			this._setDropDownListWidth();
 		},
 		_createList: function () {
+			// Remove items that can't be displayed. isArray, filter polyfills in util
+			if (Array.isArray(this.options.listItems)) {
+				this.options.listItems = this.options.listItems.filter(function (item) {
+					return item || item === 0;
+				});
+			}
 			if (this.options.textMode !== "multiline" &&
 				this.options.textMode !== "password" &&
 				this.options.listItems && this.options.listItems.length > 0) {
@@ -2258,8 +2344,8 @@
 				this._editorInputId + "'>";
 			this._editorInput.attr("aria-owns", this.id + "_list");
 			for (i = 0; i < list.length; i++) {
-				itemValue = this.options.displayFactor ?
-					this._multiplyWithPrecision(list[ i ], this.options.displayFactor) :
+				itemValue = list[ i ] ?
+					this._getEditModeValue(list[ i ]) :
 					list[ i ];
 				currentItem = "<span id='" + id + "_item_" + (i + 1) +
 					"' tabindex='-1' role='option' aria-selected='false' aria-posinset='" +
@@ -2457,7 +2543,7 @@
 			}
 
 			if (buttonsCountRendered === 0) {
-				console.log($.ig.Editor.locale.btnValueNotSupported);
+				throw new Error($.ig.Editor.locale.btnValueNotSupported);
 			}
 		},
 		_attachButtonsEvents: function (type, target) {
@@ -2694,19 +2780,25 @@
 			}
 		},
 		_processInternalValueChanging: function (value) { //TextEditor
-				if (this._validateValue(value)) {
+			var listIndex;
+			if (this._validateValue(value)) {
+				if (this._dropDownList && this.options.isLimitedToListValues &&
+					(listIndex = this._valueIndexInList(value)) !== -1 ) {
+					// D.P. 6th Feb 2017 #786 Double check, final value should match list item casing
+					value = this.options.listItems[ listIndex ];
+				}
+				this._updateValue(value);
+			} else {
+
+				// If the value is not valid, we clear the editor
+				if (this.options.revertIfNotValid) {
+					value = this._valueInput.val();
 					this._updateValue(value);
 				} else {
-
-					// If the value is not valid, we clear the editor
-					if (this.options.revertIfNotValid) {
-						value = this._valueInput.val();
-						this._updateValue(value);
-					} else {
-						this._clearValue();
-						value = this._valueInput.val();
-					}
+					this._clearValue();
+					value = this._valueInput.val();
 				}
+			}
 		},
 		_triggerKeyDown: function (event) { //TextEditor
 			//cancellable
@@ -2736,54 +2828,66 @@
 								// We use the same handler, because it runs the common logic for item selecting and so on.
 								this._triggerListItemClick(activeItem);
 							} else {
+								this._toggleDropDown();
 								this._processValueChanging(currentInputVal);
+								this._enterEditMode();
 							}
 						} else {
 							// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput.
 							this._processValueChanging(currentInputVal);
+
+							// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+							this._enterEditMode();
 						}
 					}
-				} else if (this._dropDownList) {
-					//Arrow Up
-					if (e.keyCode === 38) {
-						//Close if opened
-						if (e.altKey && this._dropDownList.is(":visible")) {
-							this._toggleDropDown();
-						} else if (this._dropDownList.is(":visible")) {
-							//hover previousItem
-							activeItem = this._dropDownList
-								.children(".ui-igedit-listitem")
-								.filter("[data-active='true']");
-							if (activeItem.length > 0 && !activeItem.is(":first-child")) {
-								this._hoverPreviousDropDownListItem();
-							} else {
-								//Close DropDonw
+				} else {
+					if (this._dropDownList) {
+						//Arrow Up
+						if (e.keyCode === 38) {
+							//Close if opened
+							if (e.altKey && this._dropDownList.is(":visible")) {
 								this._toggleDropDown();
+							} else if (this._dropDownList.is(":visible")) {
+								//hover previousItem
+								activeItem = this._dropDownList
+									.children(".ui-igedit-listitem")
+									.filter("[data-active='true']");
+								if (activeItem.length > 0 && !activeItem.is(":first-child")) {
+									this._hoverPreviousDropDownListItem();
+								} else {
+									//Close DropDonw
+									this._toggleDropDown();
+								}
+
+								// prevent default arrow action (cursor move or page scroll on readonly):
+								e.preventDefault();
 							}
-						}
-					} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
-						if (!this._dropDownList.is(":visible")) {
-							//openDropDown
-							this._toggleDropDown();
-						} else {
-							//hover next element
-							this._hoverNextDropDownListItem();
-						}
-					} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
-						//Close dropdown
-						this._toggleDropDown();
-					}
-				} else if (this.options.maxLength) {
-					currentInputVal = this._editorInput.val();
-					if (currentInputVal.length === this.options.maxLength &&
-							e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
-						selection = this._getSelection(this._editorInput[ 0 ]);
-						if (selection.start === selection.end) {
+						} else if (e.keyCode === 40 || (e.keyCode === 38 && e.altKey)) { //Arrow Down
+							if (!this._dropDownList.is(":visible")) {
+								//openDropDown
+								this._toggleDropDown();
+							} else {
+								//hover next element
+								this._hoverNextDropDownListItem();
+							}
 							e.preventDefault();
-							e.stopPropagation();
-							this._sendNotification("warning",
-								$.ig.util.stringFormat($.ig.Editor.locale.maxLengthWarningMsg,
-									this.options.maxLength));
+						} else if (e.keyCode === 27 && this._dropDownList.is(":visible")) { //Escape and dropdown is opened
+							//Close dropdown
+							this._toggleDropDown();
+						}
+					}
+					if (this.options.maxLength) {
+						currentInputVal = this._editorInput.val();
+						if (currentInputVal.length === this.options.maxLength &&
+								(e.keyCode > 46 || e.keyCode === 32) && !e.altKey && !e.ctrlKey) {
+							selection = this._getSelection(this._editorInput[ 0 ]);
+							if (selection.start === selection.end) {
+								e.preventDefault();
+								e.stopPropagation();
+								this._sendNotification("warning",
+									$.ig.util.stringFormat($.ig.Editor.locale.maxLengthWarningMsg,
+										this.options.maxLength));
+							}
 						}
 					}
 				}
@@ -2796,6 +2900,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -2920,25 +3025,22 @@
 			if (noCancel) {
 
 				// TODO select closest parent class
-				$(item).parent().children(".ui-igedit-listitem")
-					.removeClass(this.css.listItemSelected)
-					.attr("aria-selected", false);
-				$(item).addClass(this.css.listItemSelected);
-				$(item).attr("aria-selected", true);
+				this._setSelectedItemByIndex($(item).index());
 
-				noCancel = this._triggerDropDownClosing();
-				if (noCancel) {
+				if (this._dropDownList.is(":visible") && this._triggerDropDownClosing()) {
 					this._hideDropDownList();
 				}
-				this._triggerDropDownItemSelected(item);
 
-				if (this.value() !== $(item).text()) {
-
-					this._currentInputTextValue = this._editorInput.val();
-					this._processValueChanging($(item).text());
-					this._processTextChanged();
+				// D.P. _processValueChanging and text process have checks for change
+				this._currentInputTextValue = this._editorInput.val();
+				this._processValueChanging($(item).text());
+				if (this._editMode) {
 					this._enterEditMode();
+				} else {
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
 				}
+				this._triggerDropDownItemSelected();
 			}
 		},
 		_triggerButtonClick: function (event, buttonType) {
@@ -2952,20 +3054,21 @@
 						this._currentInputTextValue = this._editorInput.val();
 
 						//A.M. 3 November 2016 #447 "valueChanged event fired when pressing the close button even if the editor is empty"
-						if (this._currentInputTextValue === "")
+						if (this._editorIsCleared())
 						{
 							if (!this.options.allowNullValue) {
 								this._clearValue();
 							}
 							return;
 						}
-						this._clearValue();
-						this._processTextChanged();
 						if (!this._editMode) {
+							this._clearValue();
 							this._exitEditMode();
 							this._triggerValueChanged();
 						} else {
-							this._enterEditMode();
+							this._clearValue(true);
+							this._processTextChanged();
+							this._positionCursor();
 						}
 
 					}
@@ -3014,23 +3117,28 @@
 			};
 			return this._trigger(this.events.dropDownItemSelecting, null, args);
 		},
-		_triggerDropDownItemSelected: function (item) {
+		_triggerDropDownItemSelected: function () {
 			var args = {
 				owner: this,
 				editorInput: this._editorInput,
 				list: this._dropDownList,
-				item: item
+				item: this.getSelectedListItem()[ 0 ]
 			};
 			this._trigger(this.events.dropDownItemSelected, null, args);
 		},
 		_processTextChanged: function () {
 			var currentVal = this._editorInput.val(),
 				previousVal = this._currentInputTextValue;
-			if (previousVal === undefined) {
-				//In that case we don't have track of previous value, so we trigger the textChanged event
-				this._triggerTextChanged("", currentVal);
-			} else if (currentVal !== previousVal) {
+			if (currentVal !== previousVal) {
+				if (previousVal === undefined) {
+					//In case we don't have track of previous value
+					previousVal = "";
+				}
 				this._triggerTextChanged(previousVal, currentVal);
+
+				if (this._editMode && this._dropDownList) {
+					this._updateDropdownSelection(this._valueFromText(currentVal));
+				}
 				if (this._validator) {
 					// D.P. 26th Oct 2015 Bug 20972 validation onchange does not work correctly
 					this._validator._validateInternal(this.element, null, false,
@@ -3039,6 +3147,9 @@
 				this._currentInputTextValue = currentVal;
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+			this._setSpinButtonsState(currentVal);
 		},
 		_triggerTextChanged: function (oldValue, newValue) {
 			var args = {
@@ -3079,62 +3190,45 @@
 				return result;
 		},
 		_hoverPreviousDropDownListItem: function () {
-			var items = this._dropDownList.children(".ui-igedit-listitem"), newItem, currentItem;
-			if (items && items.length > 0) {
-				if (items.filter("[data-active='true']").length > 0) {
-					currentItem = items.filter("[data-active='true']");
-					newItem = currentItem.prev();
-					if (currentItem.is(":first-child")) {
-						if (this.options.spinWrapAround) {
-							newItem = items.last();
-							this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-								newItem.position().top);
-						} else {
-							return;
-						}
-					} else {
-						if (this._elementPositionInViewport(newItem) === "top") {
-							this._dropDownList.scrollTop(this._dropDownList.scrollTop() -
-								newItem.outerHeight());
-						}
-					}
-					currentItem.removeClass(this.css.listItemActive,
-						this.options.listItemHoverDuration);
-					currentItem.removeAttr("data-active");
-					newItem.addClass(this.css.listItemActive, this.options.listItemHoverDuration);
-					newItem.attr("data-active", true);
+			var newItem, position,
+				currentItem = this._listItems().filter("[data-active='true']");
+			newItem = this._getSpinItem("up", currentItem);
+			if (newItem.length > 0) {
+				position = this._elementPositionInViewport(newItem);
+
+				// Element is outside the viewPort and we need to scroll
+				if (position === "top") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() -
+						newItem.outerHeight());
+				} else if (position === "bottom") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						newItem.position().top);
 				}
+				currentItem.removeClass(this.css.listItemActive,
+					this.options.listItemHoverDuration);
+				currentItem.removeAttr("data-active");
+				newItem.addClass(this.css.listItemActive, this.options.listItemHoverDuration);
+				newItem.attr("data-active", true);
 			}
 		},
 		_hoverNextDropDownListItem: function () {
-			var items = this._dropDownList.children(".ui-igedit-listitem"), newItem, currentItem;
-			if (items && items.length > 0) {
-				if (items.filter("[data-active='true']").length > 0) {
-					//we have already hovered item.
-					currentItem = items.filter("[data-active='true']");
-					newItem = currentItem.next();
-					if (currentItem.is(":last-child")) {
+			var newItem, position,
+				currentItem = this._listItems().filter("[data-active='true']");
+			newItem = this._getSpinItem("down", currentItem);
+			if (newItem.length > 0) {
+				position = this._elementPositionInViewport(newItem);
 
-						if (this.options.spinWrapAround) {
-							newItem = items.first();
-							this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-								newItem.position().top);
-						} else {
-							return;
-						}
-					}
-
-					// Element is below the viewPort and we need to scroll
-					if (this._elementPositionInViewport(newItem) === "bottom") {
-						this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
-							newItem.outerHeight());
-					}
-					currentItem.removeClass(this.css.listItemActive,
-						this.options.listItemHoverDuration);
-					currentItem.removeAttr("data-active");
-				} else {
-					newItem = items.filter(":visible").first();
+				// Element is outside the viewPort and we need to scroll
+				if (position === "bottom") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						newItem.outerHeight());
+				} else if (position === "top") {
+					this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						newItem.position().top);
 				}
+				currentItem.removeClass(this.css.listItemActive,
+					this.options.listItemHoverDuration);
+				currentItem.removeAttr("data-active");
 				newItem.addClass(this.css.listItemActive, this.options.listItemHoverDuration);
 				newItem.attr("data-active", true);
 			}
@@ -3233,11 +3327,17 @@
 			}
 		},
 		_markDropDownHoverActiveItem: function () {
-			var activeItem =
-				this._dropDownList
+			var activeItem = this._dropDownList
 					.children(".ui-igedit-listitem")
 					.filter(".ui-igedit-listitemselected");
 
+			if (!activeItem.length) {
+				return;
+			}
+			if (this._elementPositionInViewport(activeItem) !== "inside") {
+				this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+						activeItem.position().top);
+			}
 			activeItem.attr("data-active", true);
 		},
 		_clearDropDownHoverActiveItem: function () {
@@ -3345,12 +3445,17 @@
 			return result;
 		},
 		_enterEditMode: function () { //TextEditor
+			var val = this._valueInput.val(),
+				selection = this._getSelection(this._editorInput[ 0 ]);
+
 			this._editMode = true;
-			var selection = this._getSelection(this._editorInput[ 0 ]);
 			this._currentInputTextValue = this._editorInput.val();
-			this._editorInput.val(this._valueInput.val());
+			this._editorInput.val(this._getEditModeValue(val));
 			this._positionCursor(selection.start, selection.end);
 			this._processTextChanged();
+		},
+		_getEditModeValue: function (val) { //igTextEditor
+			return val;
 		},
 		_exitEditMode: function () { //TextEditor
 			// Update the editor input with display value
@@ -3372,22 +3477,17 @@
 		_valueFromText: function (text) { //igTextEditor
 			return text;
 		},
-		_getSelectionRange: function () {
-			var selection;
-			if (window.getSelection) {
-				selection = window.getSelection();
-				if (selection.rangeCount) {
-					return selection.getRangeAt(0);
-				}
-			} else if (document.selection) {
-				return document.selection.createRange();
-			}
-		},
+
 		_setCursorPosition: function (positionIndex) {
 			this._setSelectionRange(this._editorInput[ 0 ], positionIndex, positionIndex);
 		},
 		_setSelectionRange: function (input, selectionStart, selectionEnd) {
 			if (input.setSelectionRange) {
+				// IE specific issue when the editor is detached
+				// and setSelectionRange is called as part of a composition mode end
+				if (!$.contains(document.documentElement, input) && $.ig.util.isIE) {
+					return;
+				}
 				input.setSelectionRange(selectionStart, selectionEnd);
 			} else if (input.createTextRange) {
 				var range = input.createTextRange();
@@ -3494,25 +3594,58 @@
 				after: value.substring(index)
 			};
 		},
-		_spinUp: function () {
-			if (this._dropDownList && this._dropDownList.is(":visible")) {
-				this._hoverPreviousDropDownListItem();
+		_spin: function (type, fireEvent) {
+			var nextItem;
+			if (this._dropDownList) {
+				nextItem = this._getSpinItem(type);
+				if (!nextItem.length) {
+					// no allowed item found
+					return;
+				}
+				if (fireEvent && !this._triggerDropDownItemSelecting(nextItem[ 0 ])) {
+					return;
+				}
+				this._currentInputTextValue = this._editorInput.val();
+				if (this._editMode) {
+					this._editorInput.val(nextItem.text());
+					this._processTextChanged();
+					this._editorInput.select();
+				} else {
+					this._processValueChanging(nextItem.text());
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
+				}
+				if (fireEvent) {
+					this._triggerDropDownItemSelected();
+				}
 			}
 		},
-		_spinDown: function () {
-			if (this._dropDownList && this._dropDownList.is(":visible")) {
-				this._hoverNextDropDownListItem();
+		_getSpinItem: function (spinType, selected) { //igTextEditor
+			var items = this._listItems(), newItem, currentItem;
+			if (!items.length) {
+				return items;
+			}
+			if (selected) {
+				currentItem = selected;
+			} else {
+				currentItem = this.getSelectedListItem();
+			}
+			if (currentItem.length > 0) {
+				newItem = currentItem[ spinType === "up" ? "prev" : "next" ]();
+
+				if (!newItem.length && this.options.spinWrapAround) {
+					newItem = items[ spinType === "up" ? "last" : "first" ]();
+				}
+				return newItem;
+			} else {
+				return items.first();
 			}
 		},
-
-		// We need this level of abstaction because of the numeric editors.
-		_handleSpinUpEvent: function () {
-			this._spinUp();
+		_handleSpinUpEvent: function () { //igTextEditor
+			this._spin("up", true);
 		},
-
-		// We need this level of abstaction because of the numeric editors.
-		_handleSpinDownEvent: function () {
-			this._spinDown();
+		_handleSpinDownEvent: function () { //igTextEditor
+			this._spin("down", true);
 		},
 		_handleSpinEvent: function (type, target) {
 			var self = this;
@@ -3537,13 +3670,8 @@
 			}
 			this._timeouts.push(target._spinTimeOut);
 		},
-		_clearValue: function () {
-			this._super();
-			if (this._dropDownList &&
-				this._dropDownList.children(".ui-igedit-listitemselected").length > 0) {
-				this._dropDownList.children(".ui-igedit-listitemselected")
-					.removeClass(this.css.listItemSelected);
-			}
+		_clearValue: function (textOnly) {
+			this._super(textOnly);
 		},
 		_clearEditorNotifier: function () {
 			var notifier = this._editorContainer.data("igNotifier");
@@ -3605,8 +3733,7 @@
 			return this._dropDownList.children(".ui-igedit-listitem");
 		},
 		_getListItemByIndex: function (index) {
-			return this._dropDownList.
-				children(".ui-igedit-listitem:nth-child(" + (index + 1) + ")");
+			return this._listItems().eq(index);
 		},
 		_getSelectedItemIndex: function () {
 			var items = this._listItems(), i;
@@ -3618,16 +3745,41 @@
 			return -1;
 		},
 		_setSelectedItemByIndex: function (index) {
-			var oldSelectedItem, newSelectedItem;
+			var oldSelectedItem, newSelectedItem, position;
 
 			if (this._getSelectedItemIndex() !== index) {
 				oldSelectedItem = this.getSelectedListItem();
 				oldSelectedItem.removeClass(this.css.listItemSelected);
 				oldSelectedItem.removeAttr("data-active");
+				oldSelectedItem.attr("aria-selected", false);
 				newSelectedItem = this._getListItemByIndex(index);
 				newSelectedItem.addClass(this.css.listItemSelected);
+				newSelectedItem.attr("aria-selected", true);
 				if (this.dropDownVisible()) {
+					position = this._elementPositionInViewport(newSelectedItem);
+					if (position !== "inside") {
+						this._dropDownList.scrollTop(this._dropDownList.scrollTop() +
+							newSelectedItem.position().top);
+					}
+					this._clearDropDownHoverActiveItem();
 					newSelectedItem.attr("data-active", true);
+				}
+			}
+		},
+		_updateDropdownSelection: function (currentVal) { //igTextEditor
+			var current = this.getSelectedListItem().index(),
+				selectedIndex = this._valueIndexInList(currentVal);
+			if (current !== selectedIndex) {
+				if (selectedIndex > -1) {
+					this._setSelectedItemByIndex(selectedIndex);
+				} else {
+					this.getSelectedListItem()
+						.removeClass(this.css.listItemSelected)
+						.attr("aria-selected", false)
+						.removeAttr("data-active");
+					if (this.dropDownVisible()) {
+						this._clearDropDownHoverActiveItem();
+					}
 				}
 			}
 		},
@@ -3693,7 +3845,7 @@
 
 			```
 				paramType="string" optional="false" The text to search for in the drop down list.
-				paramType="startsWith|endsWith|contains|exactMatch " optional="true" The rule that is applied for searching the text.
+				paramType="startsWith|endsWith|contains|exact" optional="true" The rule that is applied for searching the text.
 				returnType="number" Returns index of the found item. */
 
 			var list = this.options.listItems,
@@ -3736,8 +3888,8 @@
 			```
 				paramType="number" optional="true" The index of the item that needs to be selected.
 				returnType="number" Returns the selected index. */
-			if (index !== undefined) {
-				this._setSelectedItemByIndex(index);
+			if (index !== undefined && typeof this.options.listItems[ index ] !== "undefined") {
+				this._processInternalValueChanging(this.options.listItems[ index ]);
 			} else {
 				return this._getSelectedItemIndex();
 			}
@@ -3751,7 +3903,8 @@
 			return this._listItems().filter(".ui-igedit-listitemselected");
 		},
 		getSelectedText: function () {
-			/* Gets the selected text in the editor.
+			/* Gets the selected text from the editor in edit mode. This can be done inside key event handlers, like keydown or keyup. This method can be used only when the editor is focused. If you invoke this method in display mode, when the editor input is blurred, the returned value will be an empty string.
+
 			```
 			var text =  (".selector").%%WidgetName%%("getSelectedText");
 			```
@@ -3807,20 +3960,20 @@
 			this._setSelectionRange(this._editorInput[ 0 ], start, end);
 		},
 		spinUp: function () {
-			/* Hovers the previous item in the drop-down list if the list is opened.
+			/* Selects the previous item from the drop-down list.
 			```
 			 $(".selector").igTextEditor("spinUp");
 			```
 			*/
-			this._spinUp();
+			this._spin("up");
 		},
 		spinDown: function () {
-			/* Hovers the next item in the drop-down list if the list is opened.
+			/* Selects the next item from the drop-down list.
 			```
 				$(".selector").igTextEditor("spinDown");
 			```
 			*/
-			this._spinDown();
+			this._spin("down");
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
@@ -3843,7 +3996,7 @@
 	$.widget("ui.igNumericEditor", $.ui.igTextEditor, {
 		options: {
 			/* type="array" Gets/Sets list of items which are used as a source for the drop-down list.
-				Items in the list can be of type string, number or object. The items are directly rendered without any casting, or manipulation.
+				Items in the list can be of type number.
 				```
 				$(".selector").%%WidgetName%%({
 					listItems : [
@@ -3879,6 +4032,7 @@
 			/* type="string" Gets/Sets the character, which is used as negative sign.
 				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -3913,6 +4067,7 @@
 			/* type="string" Gets/Sets the character, which is used as decimal separator.
 				Note: this option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [groupSeparator](ui.igNumericEditor#options:groupSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -3929,8 +4084,9 @@
 			decimalSeparator: null,
 			/* type="string" Gets/Sets the character, which is used as separator for groups (like thousands).
 				That option has effect only in display mode(no focus).
-				Note: this option has priority over possible regional settings.
+				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option's value should not be equal to the value of [decimalSeparator](ui.igNumericEditor#options:decimalSeparator) or [negativeSign](ui.igNumericEditor#options:negativeSign) options.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -3950,7 +4106,8 @@
 				If the sum of all values in array is smaller than the length of integer part, then the last item in array is used for all following groups.
 				Count of groups starts from the decimal point (from right to left).
 				That option has effect only in display mode(no focus).
-				Note: this option has priority over possible regional settings.
+				Note: The numbers in the array must be positive integers.
+				Note: This option has priority over possible regional settings.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
 				```
 					//Initialize
@@ -3966,10 +4123,11 @@
 				```
 				*/
 			groups: null,
-			/* type="number" Gets/Sets the maximum number of decimal places which are used in display mode(no focus).
+			/* type="number" Gets/Sets the maximum number of decimal places supported by the editor.
 				Note: this option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
+				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -3984,12 +4142,12 @@
 				```
 				*/
 			maxDecimals: null,
-			/* type="number" Gets/Sets the minimum number of decimal places which are used in display (no focus) state.
+			/* type="number" Gets/Sets the minimum number of decimal places supported by the editor.
 				If number of digits in fractional part of number is less than the value of this option, then the "0" characters are used to fill missing digits.
 				Note: This option has priority over possible regional settings.
 				Note: In case of min decimals value higher than max decimals - max decimals are equaled to min decimals property.
 				Note: Even if the default value is null - if internationalization file is provided and it contains default values for those properties the values are imlicitly set.
-				Note: This option supports values below or equal to 20.
+				Note: This option supports values between 0 and 15, when dataMode is 'double' (default) and values between 0 and 7 in 'float' mode.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -4004,6 +4162,23 @@
 				```
 				*/
 			minDecimals: null,
+			/* type="bool" Gets/Sets whether the last decimal place will be rounded, when the maxDecimal option is defined and applied.
+			For example if the initial editor value is set to 123.4567, maxDecimals option is set to 3 and roundDecimals is enabled,
+			then editor will round the value and will display it as 123.457. If roundDecimals is disabled then editor value will be truncated to 123.456.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					roundDecimals : false
+				});
+
+				//Get
+				var roundDecimals = $(".selector").%%WidgetName%%("option", "roundDecimals");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "roundDecimals", false);
+				```
+			*/
+			roundDecimals: true,
 			/* type="left|right|center" Gets/Sets the horizontal alignment of the text in the editor.
 				```
 					//Initialize
@@ -4022,7 +4197,10 @@
 				center type="string" The text into the input gets aligned to the center.
 			*/
 			textAlign: "right",
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets type of value returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igNumericEditor#options:minValue) and [maxValue](ui.igNumericEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standards, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igNumericEditor#options:minDecimals) and [maxDecimals](ui.igNumericEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -4032,19 +4210,17 @@
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "float");
 			```
-				double type="string" the Number object is used with limits of double and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'. Note: that is used as default.
-				float type="string" the Number object is used with limits of float and if value is not set, then the null or Number.NaN is used depending on the option 'nullable'.
-				long type="string" the Number object is used with limits of signed long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ulong type="string" the Number object is used with limits of unsigned long and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				int type="string" the Number object is used with limits of signed int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				uint type="string" the Number object is used with limits of unsigned int and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				short type="string" the Number object is used with limits of signed short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				ushort type="string" the Number object is used with limits of unsigned short and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				sbyte type="string" the Number object is used with limits of signed byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
-				byte type="string" the Number object is used with limits of unsigned byte and if value is not set, then the null or 0 is used depending on the option 'nullable'.
+				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue). Note: that is used as default.
+				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				long type="string" the Number object is used with the limits of a signed long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ulong type="string" the Number object is used with the limits of an unsigned long and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				int type="string" the Number object is used with the limits of a signed int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				uint type="string" the Number object is used with the limits of an unsigned int and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				short type="string" the Number object is used with the limits of a signed short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				ushort type="string" the Number object is used with the limits of an unsigned short and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				sbyte type="string" the Number object is used with the limits of a signed byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
+				byte type="string" the Number object is used with the limits of an unsigned byte and if the value is not set, then the null or 0 is used depending on the option [allowNullValue](ui.igNumericEditor#options:allowNullValue).
 			*/
 			dataMode: "double",
 			/* type="number" Gets/Sets the minimum value which can be entered in the editor by the end user.
@@ -4109,7 +4285,7 @@
 			*/
 			spinDelta: 1,
 			/* type="null|E|e|E+|e+"
-				Gets/Sets support for scientific format in edit mode.
+				Gets/Sets support for scientific format.
 				If that option is set, then numeric value appears as a string with possible E-power flag. In edit mode the "E" or "e" character can be entered as well.
 				Notes: The "+" character is not supported in edit mode.
 				```
@@ -4132,6 +4308,7 @@
 			*/
 			scientificFormat: null,
 			/* type="bool" Gets/Set the ability of the editor to automatically set value in the editor to the opposite side of the limit, when the spin action reaches minimum or maximum limit.
+				This applies to [minValue](ui.%%WidgetNameLowered%%#options:minValue) and [maxValue](ui.%%WidgetNameLowered%%#options:maxValue) or cycling through list items if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -4146,6 +4323,20 @@
 			```
 			*/
 			spinWrapAround: false,
+			/* type="bool" Gets/Sets if the editor should only allow values from the list of items. Enabling this also causes spin actions to cycle through list items instead.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					isLimitedToListValues : true
+				});
+
+				//Get
+				var limited = $(".selector").%%WidgetName%%("option", "isLimitedToListValues");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "isLimitedToListValues", false);
+			```*/
+			isLimitedToListValues: false,
 			/* @Ignored@ Removed from numeric editor options*/
 			maxLength: null,
 			/* @Ignored@ Removed from numeric editor options*/
@@ -4227,8 +4418,18 @@
 				this.options.excludeKeys = null;
 			}
 
+			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+			if (this.options.decimalSeparator.toString().length > 1) {
+				throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+			}
+
 			// This property is only internally used and it's not configurable in this widget.
 			this.options.includeKeys = numericChars;
+
+			// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+			if (this.options.decimalSeparator === this.options.groupSeparator) {
+				throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+			}
 		},
 		_setNumericType: function () {
 			this._numericType = "numeric";
@@ -4249,7 +4450,7 @@
 						break;
 					default: {
 						result = "e";
-						throw ($.ig.Editor.locale.scientificFormatErrMsg);
+						throw new Error($.ig.Editor.locale.scientificFormatErrMsg);
 					}
 				}
 			} else {
@@ -4276,14 +4477,34 @@
 				this._getRegionalOption("numericMinDecimals") :
 				this.options.minDecimals;
 		},
+		_setInitialValue: function (value) { // NumericEditor
+			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
+			if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
+				value = this.options.maxValue;
+			} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
+				value = this.options.minValue;
+			}
+			this._super(value);
+		},
 		_applyOptions: function () { // NumericEditor
-			var delta, fractional, initialValue;
+
+			this._validateDecimalSettings();
 			this._super();
-			initialValue = this.options.value;
+			this._validateSpinSettings();
+
+			if (this.options.maxLength !== null) {
+				this.options.maxLength = null;
+			}
+			if (this.options.value < 0) {
+				this._editorInput.addClass(this.css.negative);
+			}
+		},
+		_validateSpinSettings: function() {
+			var delta, fractional;
 
 			// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 			if (this.options.buttonType === "spin") {
-				this._setSpinButtonsState(initialValue);
+				this._setSpinButtonsState(this.options.value);
 			}
 			if (this.options.spinDelta !== 1) {
 				delta = this.options.spinDelta;
@@ -4303,7 +4524,7 @@
 						if (fractional.toString().length > this.options.maxDecimals) {
 							throw new Error($.ig.util.stringFormat($.ig.Editor.locale.
 								spinDeltaContainsExceedsMaxDecimals,
-								this.options.maxDecimals));
+							this.options.maxDecimals));
 						}
 					}
 				} else {
@@ -4316,11 +4537,40 @@
 			if (this.options.scientificFormat) {
 				this.options.spinDelta = Number(this.options.spinDelta.toExponential());
 			}
-			if (this.options.maxLength !== null) {
-				this.options.maxLength = null;
+		},
+		_validateDecimalSettings: function() {
+			try {
+				this._validateDecimalSetting("minDecimals", this.options.minDecimals);
+			} catch (e) {
+				this.options.minDecimals = this._getRegionalOption("numericMinDecimals");
+				throw e;
 			}
-			if (this.options.value < 0) {
-				this._editorInput.addClass(this.css.negative);
+			try {
+				this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
+			} catch (e) {
+				this.options.minDecimals = this._getRegionalOption("numericMaxDecimals");
+				throw e;
+			}
+			this._validateDecimalMinMax();
+		},
+		_validateDecimalSetting: function(name, value) {
+			var mode = this.options.dataMode, boundary;
+
+			if (mode === "double") {
+				boundary = 15;
+			} else if (mode === "float") {
+				boundary = 7;
+			}
+
+			if (value === "" || isNaN(value) ||
+				(!isNaN(value) && (value < 0 || value > boundary))) {
+				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalNumber,
+					mode, name, boundary));
+			}
+		},
+		_validateDecimalMinMax: function() {
+			if (this.options.minDecimals > this.options.maxDecimals) {
+				this.options.maxDecimals = this.options.minDecimals;
 			}
 		},
 		_setOption: function (option, value) { // igNumericEditor
@@ -4334,6 +4584,25 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
+				case "scientificFormat": {
+					//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
+					if (this._getScientificFormat() || value === null) {
+						if (prevValue) {
+							if (prevValue === "e+" || prevValue === "E+") {
+								prevValue = prevValue.replace("+", "");
+							}
+							this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
+						}
+						if (value === null) {
+							 this._includeKeysArray = this.options.includeKeys.split( "" );
+							break;
+						}
+						 var numericChars = this._getScientificFormat();
+						 this.options.includeKeys += numericChars;
+						 this._includeKeysArray = this.options.includeKeys.split( "" );
+					}
+				}
+					break;
 				case "spinDelta": {
 					if (typeof value !== "number") {
 						this.options[ option ] = prevValue;
@@ -4347,26 +4616,71 @@
 						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
 					} else if (this.options.scientificFormat) {
 						this.options[ option ] = Number(value.toExponential());
-			}
+					}
 					break;
 				}
-
-				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
 				case "minValue":
-					this._setSpinButtonsState(this.value());
-					break;
 				case "maxValue":
-					this._setSpinButtonsState(this.value());
-					break;
-				case "minDecimals",
-					 "maxDecimals":
-					value = parseFloat(value);
 					if (isNaN(value)) {
 						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.setOptionError + option);
+						return;
+					}
+					if (value === null) {
+						// ensure dataMode defaults
+						this._applyDataModeSettings();
+					} else {
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+						}
+					}
+
+					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
+					this._setSpinButtonsState(this.value());
+					break;
+				case "minDecimals":
+				case "maxDecimals":
+					try {
+						this._validateDecimalSetting(option, value);
+					} catch (e) {
+						this.options[ option ] = prevValue;
+						throw e;
+					}
+					if (this.options[ option ] !== prevValue) {
+						this._validateDecimalMinMax();
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+						}
 					}
 					break;
 
+				// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+				case "decimalSeparator": {
+					if (value.toString().length > 1) {
+						this.options[ option ] = prevValue;
+						throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+					}
+
+					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+					if (this.options[ option ] === this.options.groupSeparator) {
+						throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+					}
+				}
+					break;
+
+				// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
+				case "groupSeparator": {
+					if (this.options[ option ] === null) {
+						this.options[ option ] = this._getRegionalOption("numericGroupSeparator");
+					}
+
+					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+					if (this.options[ option ] === this.options.decimalSeparator) {
+						throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+					}
+				}
+					break;
 				case "regional":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
@@ -4375,6 +4689,7 @@
 				case "includeKeys":
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.numericEditorNoSuchOption);
+
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -4410,23 +4725,19 @@
 					this._numericType,
 					this.options.dataMode);
 			if (value !== "" && !isNaN(value)) {
-				if (this.options.maxValue && value > this.options.maxValue) {
-					value = this.options.maxValue;
 
-					// A. M. 18/07/2016 #98 'Value of numeric editor is not set to 'maxValue' after pressing ENTER'
-					this._valueInput.val(value);
-					this._enterEditMode();
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
+					value = this.options.maxValue;
 
 					//Raise warning
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && value < this.options.minValue) {
-					value = this.options.minValue;
 
-					// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
-					this._valueInput.val(value);
-					this._enterEditMode();
+				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
+					value = this.options.minValue;
 
 						// Raise Warning level 2
 						this._sendNotification("warning",
@@ -4437,16 +4748,12 @@
 			if (!this._validateValue(value)) {
 				if (value !== "" && !isNaN(value)) {
 
-					//Verify
-					if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
-						value = this._valueInput.val();
-					} else {
-						if (value <= this.options.minValue) {
-							value = this.options.minValue;
-						} else {
-							value = this.options.maxValue;
+					// I.G. 11/03/2017 #809 'Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false'
+						if (this.options.revertIfNotValid) { // TODO VERIFY!!! revertIfNotValid > minValue/maxValue
+							value = this._valueInput.val();
+						} else if (this.options.isLimitedToListValues) {
+							value = "";
 						}
-					}
 				} else {
 					if (this.options.allowNullValue) { // TODO VERIFY!!! allowNullValue > revertIfNotValid
 						value = this.options.nullValue;
@@ -4493,6 +4800,7 @@
 
 						// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput
 						this._processValueChanging(currentInputVal);
+						this._enterEditMode();
 					}
 
 				} else if (e.keyCode === 38) {
@@ -4501,66 +4809,53 @@
 					// Close if opened
 					if (e.altKey && this._dropDownList && this._dropDownList.is(":visible")) {
 						this._toggleDropDown();
-					} else if (!this.options.readOnly) {
-						if (this._dropDownList && this._dropDownList.is(":visible")) {
+					} else if (this._dropDownList && this._dropDownList.is(":visible")) {
 
-							// Hover previous element
-							this._hoverPreviousDropDownListItem();
-						} else {
+						// Hover previous element
+						this._hoverPreviousDropDownListItem();
+					} else if (!this.options.readOnly ||
+						(this.options.readOnly && this.options.isLimitedToListValues)) {
 
-							// Spin numeric value
-							this._handleSpinUpEvent();
-						}
+						// Spin numeric value
+						this._handleSpinUpEvent();
 					}
+
+					// prevent default arrow action (cursor move or page scroll on readonly):
+					e.preventDefault();
 				} else if (e.keyCode === 40) {//Arrow Down
 					if (e.altKey && this._dropDownList && !this._dropDownList.is(":visible")) {
 
 						// OpenDropDown
 						this._toggleDropDown();
-					} else if (!this.options.readOnly) {
-						if (this._dropDownList && this._dropDownList.is(":visible")) {
+					} else if (this._dropDownList && this._dropDownList.is(":visible")) {
 
-							// Hover next element
-							this._hoverNextDropDownListItem();
-						} else {
+						// Hover next element
+						this._hoverNextDropDownListItem();
+					} else if (!this.options.readOnly ||
+						(this.options.readOnly && this.options.isLimitedToListValues)) {
 
-							// Spin numeric value
-							this._handleSpinDownEvent();
-						}
+						// Spin numeric value
+						this._handleSpinDownEvent();
 					}
+					e.preventDefault();
 				} else if (e.keyCode === 27 && this._dropDownList &&
 					this._dropDownList.is(":visible")) { //Escape and dropdown is opened
 
 					// Close dropdown
 					this._toggleDropDown();
-				} else if (this.options.maxLength) {
-					currentInputVal = this._editorInput.val();
-					if (currentInputVal.length === this.options.maxLength &&
-						e.keyCode > 46 && !e.altKey && !e.ctrlKey && !e.shiftKey) {
-						e.preventDefault();
-						e.stopPropagation();
-
-						//// Process notification
-						// TODO
-					}
 				}
 			}
 			return noCancel;
 		},
 		_applyDataModeSettings: function () {
-			// We need to adjust max decimals, based on the dataMode limits
-			var doubleMaxDecimals = 15;
 			switch (this.options.dataMode) {
 				case "double": {
 					this._setMinMaxValues(-(Number.MAX_VALUE), Number.MAX_VALUE);
-					this._setMinMaxDecimals(doubleMaxDecimals);
 				}
 					break;
 				case "float": {
-					var floatMaxDecimals = 7, floatMinValue = -3.40282347e38,
-						floatMaxValue = 3.40282347e38;
+					var floatMinValue = -3.40282347e38, floatMaxValue = 3.40282347e38;
 					this._setMinMaxValues(floatMinValue, floatMaxValue);
-					this._setMinMaxDecimals(floatMaxDecimals);
 				}
 					break;
 				case "long": {
@@ -4608,19 +4903,7 @@
 				default: {
 					this.options.dataMode = "double";
 					this._setMinMaxValues(Number.MIN_VALUE, Number.MAX_VALUE);
-					this._setMinMaxDecimals(doubleMaxDecimals);
 				}
-			}
-		},
-		_setMinMaxDecimals: function (typeMaxDecimals) {
-			if (this.options.maxDecimals === null || this.options.maxDecimals > typeMaxDecimals) {
-				this.options.maxDecimals = typeMaxDecimals;
-			}
-
-			// this.options.numericMinDecimals = this._getRegionalOption("numericMinDecimals");
-			// In case of conflict between min and max decimals - both values are equaled to the max decimals
-			if (this.options.minDecimals && this.options.minDecimals > this.options.maxDecimals) {
-				this.options.maxDecimals = this.options.minDecimals;
 			}
 		},
 		_setMinMaxValues: function (typeMinValue, typeMaxValue) {
@@ -4633,11 +4916,10 @@
 			}
 		},
 		_parseNumericValueByMode: function (value, numericEditorType, dataMode) { //NumericEditor
-			var val, stringValue, decimalSeparator, groupSeparator, minDecimals, maxDecimals;
-			decimalSeparator = this.options.decimalSeparator;
-			groupSeparator = this.options.groupSeparator;
-			minDecimals = this.options.minDecimals;
-			maxDecimals = this.options.maxDecimals;
+			var val, stringValue, exponent, exponentIndex,
+				decimalSeparator = this.options.decimalSeparator,
+				groupSeparator = this.options.groupSeparator,
+				maxDecimals = this.options.maxDecimals;
 
 			if (value === null || value === "") { // TODO VERIFY _validateValue and _updateValue both have cases calling parse with null!
 				return value;
@@ -4659,44 +4941,79 @@
 				} else if (numericEditorType === "currency") {
 					value = value.replace(this.options.currencySymbol, "").trim();
 				}
+
+				// D.P. decimalSeparator replace before any parsing, regardless of mode (ensure scientific decimals are parsed correctly)
+				if (value.indexOf(decimalSeparator) !== -1) {
+					value = value.replace(decimalSeparator, ".");
+				}
 			}
 			if (dataMode === "double" || dataMode === "float") {
 				stringValue = value.toString().toLowerCase();
 				if (stringValue.indexOf("e") !== -1) {
+					val = value = Number(value);
 
-					// In that case leave the value as it is
-					// TODO work on validation method
-					val = value;
-				} else {
-
-					// In that case we need to validate the value against the constraints.
-					if (stringValue.indexOf(decimalSeparator) !== -1 || stringValue.indexOf(".") !== -1) {
-						var integerDigits, fractionalDigits;
-						if (stringValue.indexOf(".") !== -1) {
-							decimalSeparator = ".";
+					// values with negative exponent (less than 1) go through maxDecimal handling:
+					if (value < 1) {
+						if (!this.options.scientificFormat) {
+							// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
+							// If scientific value when not enabled, expand to fixed-point notation and carry on with processsing
+							stringValue = value.toFixed(this.options.maxDecimals + 1);
+						} else {
+							//refresh stringValue in case the original value entered has more than one digit before the decimal sep.
+							stringValue = value.toString().toLowerCase();
+							exponentIndex = stringValue.indexOf("e");
+							exponent = stringValue.substring(exponentIndex + 1);
+							stringValue = stringValue.substring(0, exponentIndex);
 						}
-						fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+					} else {
+						return value;
+					}
+				}
 
-						//In case of pasted value with multiple decimal points. We can't use parseFloat because we want to keep the number of the fractional digits, but parseFloat cuts to 6th
-						if (fractionalDigits.indexOf(decimalSeparator) > 0) {
-							fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
-						}
-						if (fractionalDigits.length > maxDecimals) {
+				// In that case we need to validate the value against the constraints.
+				if (stringValue.indexOf(".") !== -1) {
+					var integerDigits, fractionalDigits;
+					decimalSeparator = ".";
+					fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+
+					//In case of pasted value with multiple decimal points. We can't use parseFloat because we want to keep the number of the fractional digits, but parseFloat cuts to 6th
+					if (fractionalDigits.indexOf(decimalSeparator) > 0) {
+						fractionalDigits = fractionalDigits.substring(0, fractionalDigits.indexOf(decimalSeparator));
+					}
+					if (fractionalDigits.length > maxDecimals) {
+
+						// January 26th, 2017 #626: Round values, when decimal places are more than the allowed, set at the maxDecimals option.
+						if (this.options.roundDecimals) {
+							stringValue = Math.round10(stringValue, -maxDecimals).toFixed(maxDecimals);
+							if (stringValue.indexOf(decimalSeparator) > -1) {
+								fractionalDigits = stringValue.substring(stringValue.indexOf(decimalSeparator) + 1);
+							} else {
+								fractionalDigits = "";
+							}
+						} else {
 							fractionalDigits = fractionalDigits.substring(0, maxDecimals);
 						}
-						integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
-
-						//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
-						val = (integerDigits + "." + fractionalDigits) / 1;
-					} else {
-
-						//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
-						val = parseFloat(parseInt(value).toFixed(minDecimals));
 					}
+					if (stringValue.indexOf(decimalSeparator) > -1) {
+						integerDigits = stringValue.substring(0, stringValue.indexOf(decimalSeparator));
+					} else {
+						integerDigits = stringValue;
+					}
+
+					val = integerDigits + "." + fractionalDigits;
+					if (exponent) {
+						val += "e" + exponent;
+					}
+
+					//We want to evaluate the number without losing fractional digits, as parseFloat cuts six digits after the decimal point.
+					val = val / 1;
+				} else if (!exponent) {
+					//In that case we don't have fractional digits, so we can use ParseInt for the integer digits.
+					val = parseInt(value);
 				}
 			} else {
 				if (value.toString().toLowerCase().indexOf("e") !== -1) {
-					value = this._toFixed(value.toString().toLocaleLowerCase());
+					value = Number(value).toFixed();
 				}
 				if (this._numericType === "percent" &&
 					this.options.displayFactor === 100 &&
@@ -4709,29 +5026,7 @@
 					val = parseInt(value);
 				}
 			}
-			if (this.options.scientificFormat &&
-				val.toString().toLowerCase().indexOf("e") === -1) {
-				val = val.toExponential();
-			}
 			return val;
-		},
-		_toFixed: function (x) {
-			var e;
-			if (Math.abs(x) < 1.0) {
-				e = parseInt(x.toString().split("e-")[ 1 ]);
-				if (e) {
-					x *= Math.pow(10, e - 1);
-					x = "0." + (new Array(e)).join("0") + x.toString().substring(2);
-				}
-			} else {
-				e = parseInt(x.toString().split("+")[ 1 ]);
-				if (e > 20) {
-					e -= 20;
-					x /= Math.pow(10, e);
-					x += (new Array(e + 1)).join("0");
-				}
-			}
-			return x;
 		},
 		_multiplyWithPrecision: function (value1, value2, precision) {
 
@@ -4791,15 +5086,41 @@
 				this._valueInput.val(val);
 			}
 			this.options.value = val;
+
+			if (this._dropDownList) {
+				this._updateDropdownSelection(val);
+			}
 		},
 		_validateKey: function (event) { //NumericEditor
 			if (this._super(event)) {
-				var dataMode = this.options.dataMode,
-					negativeSign = this.options.negativeSign, ch, val,
+				var dataMode = this.options.dataMode, ch, val,
+					negativeSign = this.options.negativeSign, nextCh, prevCh,
+					leadPos = 0, nextDirection = 1,
 					cursorPos = this._getCursorPosition(),
 					isDecimal = event.which ? event.which === 46 : false;
-				ch = String.fromCharCode(event.charCode || event.which);
-				if (ch === negativeSign && cursorPos > 0) {
+				ch = String.fromCharCode(event.charCode || event.which).toLowerCase();
+
+				//don't block replacing entire value if everything is selected (-1)
+				if (cursorPos === -1) {
+					//all includeKeys, except E-s
+					return ch !== "e";
+				}
+
+				val = this._editorInput.val().toLowerCase();
+				nextCh = val.substring(cursorPos, cursorPos + nextDirection);
+
+				//nothing before the number negative sign
+				if (cursorPos === leadPos && nextCh === negativeSign) {
+					return false;
+				}
+
+				// Allow negative at start and after exponent
+				prevCh = val.substring(cursorPos - nextDirection, cursorPos);
+				if (ch === negativeSign) {
+					return (cursorPos === leadPos || prevCh === "e") && nextCh !== negativeSign;
+				}
+
+				if (ch === "e" && val.indexOf("e") !== -1) {
 					return false;
 				}
 
@@ -4808,7 +5129,6 @@
 					var decimalSeparator = this.options.decimalSeparator;
 
 					// val = $(event.target).val();
-					val = this._editorInput.val();
 					if (decimalSeparator !== "." && isDecimal &&
 						(val.indexOf(".") !== -1 || val.indexOf(decimalSeparator) !== -1) &&
 						cursorPos !== -1) {
@@ -4816,9 +5136,6 @@
 					}
 					if (((ch === decimalSeparator || isDecimal) &&
 							(val.indexOf(decimalSeparator) !== -1 || val.indexOf(".") !== -1) &&
-							cursorPos !== -1) ||
-						(ch === negativeSign &&
-							val.indexOf(negativeSign) !== -1 &&
 							cursorPos !== -1)) {
 
 						// We already have decimal separator so prevent default
@@ -4826,77 +5143,16 @@
 					} else {
 						return true;
 					}
-				} else if (dataMode === "long" || dataMode === "int" ||
-					dataMode === "short" || dataMode === "sbyte") {
-					val = $(event.target).val();
-					if (ch === negativeSign && val.indexOf(negativeSign) > 0 && cursorPos !== -1) {
-
-						// We already have decimal separator so prevent default
-						return false;
-					} else {
-						return true;
-					}
 				} else {
-
 					// If the dataMode differs from double, or float and the super method returns true the cher is valid
 					return true;
 				}
 			} else {
-
 				// If the super method fails, the char is not allowed
 				return false;
 			}
 
 			// return true;
-		},
-		_disableSpinButton: function (target) {
-			if (target && !target.attr("disabled") && !this.options.spinWrapAround) {
-				target.addClass(this.css.disabled);
-				target.attr("disabled", true);
-				target.removeClass(this.css.buttonHover);
-				if (target._pressed) {
-					delete target._pressed;
-					target.removeClass(this.css.buttonPressed);
-				}
-				if (target._spinTimeOut) {
-					clearTimeout(target._spinTimeOut);
-					delete this._spinUpButton._spinTimeOut;
-				}
-				if (target._spinInterval) {
-					clearInterval(target._spinInterval);
-					delete target._spinInterval;
-				}
-				this._detachButtonsEvents(target);
-			}
-		},
-		_enableSpinButton: function (target, type) {
-			if (target && target.attr("disabled")) {
-				target.removeClass(this.css.disabled);
-				target.attr("disabled", false);
-				this._attachButtonsEvents(type, target);
-			}
-		},
-		_setSpinButtonsState: function (val) {
-			if (typeof val === "string" || val instanceof String) {
-				val = val.trim();
-			}
-			if (val === null) {
-				this._enableSpinButton(this._spinDownButton, "spinDown");
-				this._enableSpinButton(this._spinUpButton, "spinUp");
-				return;
-			}
-			if (val !== "" && !this.options.spinWrapAround) {
-				if (val >= this.options.maxValue) {
-					this._disableSpinButton(this._spinUpButton);
-					this._enableSpinButton(this._spinDownButton, "spinDown");
-				} else if (val <= this.options.minValue) {
-					this._disableSpinButton(this._spinDownButton);
-					this._enableSpinButton(this._spinUpButton, "spinUp");
-				} else {
-					this._enableSpinButton(this._spinDownButton, "spinDown");
-					this._enableSpinButton(this._spinUpButton, "spinUp");
-				}
-			}
 		},
 		_validateValue: function (val) { //Numeric Editor
 			var result;
@@ -4915,14 +5171,14 @@
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 
-				if (this.options.maxValue && newValue > this.options.maxValue) {
+				if (!isNaN(this.options.maxValue) && newValue > this.options.maxValue) {
 					newValue = this.options.maxValue;
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue && newValue < this.options.minValue) {
+				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
 
 					// Raise Warning level 2
@@ -4940,7 +5196,7 @@
 				newValue = "";
 			}
 			if (this._editMode) {
-				this._editorInput.val(newValue);
+				this._editorInput.val(this._getEditModeValue(newValue));
 				if (selection !== undefined) {
 					// Move the caret, account for cuts from number parsing:
 					diff = newLenght - newValue.toString().length;
@@ -4955,34 +5211,46 @@
 			this._setSpinButtonsState(newValue);
 			this._processTextChanged();
 		},
-		_clearValue: function () { //Numeric Editor
+		_clearValue: function (textOnly) { //Numeric Editor
+			var newValue;
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
+				newValue = this.options.nullValue;
 				if (this.options.nullValue === null) {
 					this._editorInput.val("");
 				} else {
-					this._editorInput.val(this.options.nullValue);
+
+					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+					if (this._validateValue(newValue)) {
+						this._editorInput.val(this.options.nullValue);
+					} else {
+						this._editorInput.val(this.options.value);
+					}
 				}
 			} else {
 
 				// If the min value is different from zero, we clear the value with the minimum value.
-				if (this.options.minValue && this.options.minValue > 0) {
-					this._updateValue(this.options.minValue);
+				if (!isNaN(this.options.minValue) && this.options.minValue > 0) {
+					newValue = this.options.minValue;
 					this._editorInput.val(this.options.minValue);
-				} else if (this.options.maxValue && this.options.maxValue < 0) {
-					this._updateValue(this.options.maxValue);
+				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
+					newValue = this.options.maxValue;
 					this._editorInput.val(this.options.maxValue);
+
+				// I.G. 13/04/2017 #942 'When clearing with the 'clear' button, the value is set to 0 even if 0 is not in the list of items'
+				} else if (this.options.isLimitedToListValues) {
+					newValue = "";
+					this._editorInput.val("");
 				} else {
 					if (this.value()) {
-						this._updateValue(0);
+						newValue = 0;
 						this._editorInput.val(0);
 					}
 				}
 			}
-			if (this.dropDownContainer() &&
-				this.dropDownContainer().children(".ui-igedit-listitemselected").length > 0) {
-				this.dropDownContainer().children(".ui-igedit-listitemselected")
-					.removeClass(this.css.listItemSelected);
+
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (!textOnly && newValue !== undefined && this._validateValue(newValue)) {
+				this._updateValue(newValue);
 			}
 		},
 		_getRegionalOption: function (key) {
@@ -5002,20 +5270,22 @@
 			}
 		},
 		_convertScientificToNumeric: function (num) {
-			var parts = num.toString().split("e+"), first, zeroes, i;
-			first = parts[ 0 ].replace(".", "");
-			zeroes = parseInt(parts[ 1 ], 10) - (first.length - 1);
-			for (i = 0; i < zeroes; i++) {
-				first += "0";
+			var stringValue = num.toString(),
+				scientificPrecision = stringValue
+				.substring(stringValue.toLowerCase().indexOf("e") + 1);
+			num = num / 1;
+			scientificPrecision = Math.abs(scientificPrecision);
+			if (scientificPrecision <= 20) {
+				stringValue = num.toFixed(scientificPrecision);
 			}
-			return first;
+			return stringValue;
 		},
 		_getDisplayValue: function () { //Numeric Editor
 			var value = this._valueInput.val(),
 				decimalSeparator = this.options.decimalSeparator, decimalPoint = ".",
 				minDecimals = this.options.minDecimals, dataMode = this.options.dataMode,
-				stringValue, displayValue, integerDigits, fractionalDigits, scientificPrecision,
-				scientificValue, negativeSign,
+				stringValue, displayValue, integerDigits, fractionalDigits,
+				scientificValue, scientificExponent, negativeSign,
 				positivePattern, negativePattern, groups, groupSeparator, symbol = "";
 			if (value === this.options.nullValue || value === "" || isNaN(value)) {
 				if (isNaN(value)) {
@@ -5030,77 +5300,81 @@
 				symbol = this.options[ this._numericType + "Symbol" ];
 			}
 			negativePattern = this.options.negativePattern;
-			groups = this.options.groups;
+
+			// A. M. March 15, 2017 #771 "If the 'groups' option's array contains '0' no groups are rendered"
+			var originalArray = this.options.groups;
+			groups = originalArray.filter(function(item) {return item !== 0;} );
 			groupSeparator = this.options.groupSeparator;
 			if (this._numericType === "percent" && this.options.displayFactor) {
 				value = this._multiplyWithPrecision(value, this.options.displayFactor);
 				value = this._parseNumericValueByMode(value, this._numericType, this.options.dataMode);
 			}
 
+			stringValue = value.toString().toLowerCase();
+			if (this.options.scientificFormat) {
+				if (stringValue.indexOf("e") === -1) {
+					stringValue = (stringValue / 1).toExponential();
+					scientificValue = stringValue.split("e")[ 0 ];
+					scientificExponent = stringValue.split(/e\+?/).pop();
+				}
+			} else if (stringValue.indexOf("e") !== -1) {
+				// If the value is in scientific, try to convert:
+				stringValue = this._convertScientificToNumeric(stringValue);
+			}
+			displayValue = stringValue;
+
 			// Min decimals check.
 			if (dataMode === "double" || dataMode === "float") {
-				stringValue = value.toString().toLowerCase();
-				if (this.options.scientificFormat) {
-					if (stringValue.indexOf("e") !== -1) {
-						displayValue = stringValue.replace("e", this._getScientificFormat());
-					} else {
-						scientificValue = (stringValue / 1).toExponential();
-						displayValue = scientificValue.toString().replace("e", this._getScientificFormat());
-					}
+
+				// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
+				if (stringValue.indexOf("e") !== -1) {
+					displayValue = stringValue;
 				} else {
-					if (stringValue.indexOf("e") !== -1) {
 
-						// In that case leave the value as it is
-						scientificPrecision = stringValue
-							.substring(stringValue.toLowerCase().indexOf("e") + 1);
-						stringValue = stringValue / 1;
-						if (scientificPrecision > 0) {
-							stringValue = this._convertScientificToNumeric(stringValue);
-						} else {
-							stringValue = stringValue.toFixed(Math.abs(scientificPrecision));
+					// In that case we need to validate the value against the constraints.
+					// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hiddedn input, which is Number, so the decimalSeparator is dot.
+					if (stringValue.indexOf(decimalPoint) !== -1) {
+						fractionalDigits = stringValue
+							.substring(stringValue.indexOf(decimalPoint) + 1);
+						if (fractionalDigits.length < minDecimals) {
+							var missingDecimals = minDecimals - fractionalDigits.length;
+							while (missingDecimals > 0) {
+								fractionalDigits += "0";
+								missingDecimals--;
+							}
 						}
-
-					}
-
-					// There are edge cases where the value after convertion still contains scientific format. In that case we just pass that value.
-					if (stringValue.indexOf("e") !== -1) {
-						displayValue = stringValue;
+						integerDigits = stringValue
+							.substring(0, stringValue.indexOf(decimalPoint));
 					} else {
-
-						// In that case we need to validate the value against the constraints.
-						// Here decimalPoint is used instead of the decimalSeparator, as we work with the value from the hiddedn input, which is Number, so the decimalSeparator is dot.
-						if (stringValue.indexOf(decimalPoint) !== -1) {
+						integerDigits = stringValue;
+						if (minDecimals > 0) {
+							stringValue = parseInt(stringValue).toFixed(minDecimals);
 							fractionalDigits = stringValue
 								.substring(stringValue.indexOf(decimalPoint) + 1);
-							if (fractionalDigits.length < minDecimals) {
-								var missingDecimals = minDecimals - fractionalDigits.length;
-								while (missingDecimals > 0) {
-									fractionalDigits += "0";
-									missingDecimals--;
-								}
-							}
-							integerDigits = stringValue
-								.substring(0, stringValue.indexOf(decimalPoint));
-						} else {
-							integerDigits = stringValue;
-							if (minDecimals > 0) {
-								stringValue = parseInt(stringValue).toFixed(minDecimals);
-								fractionalDigits = stringValue
-									.substring(stringValue.indexOf(decimalPoint) + 1);
-							}
-						}
-						integerDigits = this._applyGroups(integerDigits, groups, groupSeparator);
-						if (fractionalDigits && fractionalDigits.length > 0) {
-							displayValue = integerDigits + decimalSeparator + fractionalDigits;
-						} else {
-							displayValue = integerDigits;
 						}
 					}
+					integerDigits = this._applyGroups(integerDigits, groups, groupSeparator);
+					if (fractionalDigits && fractionalDigits.length > 0) {
+						displayValue = integerDigits + decimalSeparator + fractionalDigits;
+					} else {
+						displayValue = integerDigits;
+					}
 				}
-			} else {
+			} else if (stringValue.indexOf("e") === -1) {
+				// Only apply groups to non-scientific format:
 				displayValue = this._applyGroups(value.toString(), groups, groupSeparator);
-
 			}
+
+			if (this.options.scientificFormat) {
+				// Scientific format:
+				if (scientificExponent > 0) {
+					displayValue = scientificValue + this.options.scientificFormat + scientificExponent;
+				} else {
+					displayValue = stringValue.replace("e", this._getScientificFormat());
+				}
+				displayValue = displayValue.replace(decimalPoint, decimalSeparator);
+			}
+
 			if (value < 0 ) {
 				negativeSign = this.options.negativeSign;
 				displayValue = displayValue.replace("-", "");
@@ -5148,34 +5422,32 @@
 			return integerDigits;
 		},
 		_enterEditMode: function () { //NumericEditor
-			var val, selection = this._getSelection(this._editorInput[ 0 ]);
 			if (!$.ig.util.isIE8) {
 				this._editorInput.attr("type", "tel");
 			}
-			this._currentInputTextValue = this._editorInput.val();
-			val = this._valueInput.val();
-			if (val < 0) {
+			if (this._valueInput.val() < 0) {
 
 				// Remove negative css into edit mode
 				this._editorInput.removeClass(this.css.negative);
-
 			}
-
-			if (this._numericType === "percent" && this.options.displayFactor && val !== "" && !isNaN(val)) {
-				val = this._parseNumericValueByMode(val, this._numericType, this.options.dataMode);
-				val = this._multiplyWithPrecision(val, this.options.displayFactor);
+			this._super();
+		},
+		_getEditModeValue: function (val) { //NumericEditor
+			// value must be numeric
+			if (this.options.scientificFormat) {
+				val = Number(val).toExponential()
+					.replace("e", this._getScientificFormat())
+					.replace("+", "");
+			} else if (val.toString().indexOf("e") !== -1) {
+				val = this._convertScientificToNumeric(val).replace("+", "");
 			}
-
 			if (this.options.decimalSeparator !== ".") {
 				val = val.toString().replace(".", this.options.decimalSeparator);
 			}
 			if (this.options.negativeSign !== "-") {
 				val = val.toString().replace("-", this.options.negativeSign);
 			}
-			this._editorInput.val(val);
-			this._editMode = true;
-			this._positionCursor(selection.start, selection.end);
-			this._processTextChanged();
+			return val;
 		},
 		_exitEditMode: function () { //NumericEditor
 			this._super();
@@ -5185,9 +5457,11 @@
 				this._editorInput.removeClass(this.css.negative);
 			}
 		},
-		_getSpinValue: function (spinType, currentValue, decimalSeparator, delta) {
-			var fractional, scientificPrecision, spinPrecision,
-				valuePrecision, spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
+		_getSpinValue: function (spinType, currentValue, delta) { //NumericEditor
+			var fractional, scientificPrecision, spinPrecision, valuePrecision,
+				spinDelta, toFixedVal, precision, spinDeltaValue = this.options.spinDelta;
+
+			// currentValue much be a valid number string
 			if (delta) {
 				spinDeltaValue = Number(delta);
 			}
@@ -5206,17 +5480,12 @@
 				} else {
 					currentValue -= spinDelta;
 				}
-			} else if (currentValue.toString().indexOf(decimalSeparator) !== -1) {
+			} else if (currentValue.toString().indexOf(".") !== -1) {
 				fractional = currentValue
-					.substring(currentValue.toString().indexOf(decimalSeparator) + 1);
+					.substring(currentValue.toString().indexOf(".") + 1);
 
 				toFixedVal = fractional.toString().length;
 
-				if (decimalSeparator !== ".") {
-
-					// Replace the decimal separator with .
-					currentValue = currentValue.toString().replace(decimalSeparator, ".");
-				}
 				currentValue = currentValue / 1;
 
 				// D.P. value is already float, always use precision
@@ -5261,11 +5530,6 @@
 				if (currentValue.toString().substring(currentValue
 					.toString().indexOf(".") + 1).length < fractional.length) {
 					currentValue = currentValue.toFixed(toFixedVal);
-				}
-				if (decimalSeparator !== ".") {
-
-					// Replace . with decimal separator
-					currentValue = currentValue.toString().replace(".", decimalSeparator);
 				}
 			} else {
 				currentValue = currentValue / 1;
@@ -5313,9 +5577,14 @@
 			return currentValue;
 		},
 		_spinUp: function (delta) { //NumericEditor
-			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
+			var currVal, noCancel;
+
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				this._spin("up");
+				return;
+			}
 			if (this._focused) {
-				currVal = this._editorInput.val();
+				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
 				if (this.value() || this.value() === 0) {
 					currVal = this.value().toString();
@@ -5325,9 +5594,13 @@
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
+			currVal = this._getSpinValue("spinUp", currVal, delta);
+
+			// A. M. April 5th, 2017 #896 spinWrapAround doesn't spin to minValue if there is no maxValue set
 			if ((currVal > this.options.maxValue &&
-				this.options.spinWrapAround) || currVal < this.options.minValue) {
+				this.options.spinWrapAround) || currVal < this.options.minValue ||
+				(this._currentInputTextValue === this.options.maxValue.toString() &&
+				this.options.spinWrapAround)) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
 					$.ig.util.stringFormat($.ig.Editor.locale.maxValExceededWrappedAroundErrMsg,
@@ -5339,16 +5612,13 @@
 						this.options.maxValue));
 			}
 			if (this._focused) {
-				if (this.options.scientificFormat) {
-					currVal = Number(currVal).toExponential()
-						.replace("e", this._getScientificFormat());
-				}
+				currVal = this._getEditModeValue(currVal);
 				this._editorInput.val(currVal);
 				this._processTextChanged();
 			} else {
+				noCancel = this._triggerValueChanging(currVal);
 
 				// Trigger value changing
-				noCancel = this._triggerValueChanging(currVal);
 				if (noCancel) {
 					this._updateValue(currVal);
 					this._exitEditMode();
@@ -5367,9 +5637,14 @@
 			return result;
 		},
 		_spinDown: function (delta) { //NumericEditor
-			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
+			var currVal, noCancel;
+
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				this._spin("down");
+				return;
+			}
 			if (this._focused) {
-				currVal = this._editorInput.val();
+				currVal = this._valueFromText(this._editorInput.val()).toString();
 			} else {
 				if (this.value() || this.value() === 0) {
 					currVal = this.value().toString();
@@ -5379,9 +5654,11 @@
 			}
 			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
+			currVal = this._getSpinValue("spinDown", currVal, delta);
 			if ((currVal < this.options.minValue &&
-				this.options.spinWrapAround) || currVal > this.options.maxValue) {
+				this.options.spinWrapAround) || currVal > this.options.maxValue ||
+				(this._currentInputTextValue === this.options.minValue.toString() &&
+				this.options.spinWrapAround)) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
 					$.ig.util.stringFormat($.ig.Editor.locale.minValExceededWrappedAroundErrMsg,
@@ -5394,10 +5671,7 @@
 						this.options.minValue));
 			}
 			if (this._focused) {
-				if (this.options.scientificFormat) {
-					currVal = Number(currVal).toExponential()
-						.replace("e", this._getScientificFormat());
-				}
+				currVal = this._getEditModeValue(currVal);
 				this._editorInput.val(currVal);
 				this._processTextChanged();
 			} else {
@@ -5414,96 +5688,43 @@
 			}
 			this._setSpinButtonsState(currVal);
 		},
+		_exceedsMaxValue: function(value) {  //NumericEditor
+			if (this.options.isLimitedToListValues) {
+				return this._super(value);
+			}
+			return this.options.maxValue !== null && value >= this.options.maxValue;
+		},
+		_lessThanMinValue: function(value) { //NumericEditor
+			if (this.options.isLimitedToListValues) {
+				return this._super(value);
+			}
+			return this.options.minValue !== null && value <= this.options.minValue;
+		},
 		_handleSpinUpEvent: function () {
-			var cursorPosition = this._getCursorPosition();
-			if (this.options.dataMode === "double" || this.options.dataMode === "float") {
-
-				// Get cursor position
-				if (this._focused) {
-
-					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
-						case "fractional": {
-							this._spinUp();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "integer": {
-							this._spinUp();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "all": {
-							this._spinUp();
-							this._editorInput.select();
-
-							// Select All
-						}
-							break;
-						default:
-							this._spinUp();
-							this._editorInput.select();
-					}
-				} else {
-					this._spinUp();
-				}
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				// default to text list selection
+				this._super();
 			} else {
 				this._spinUp();
+				if (this._focused) {
+					this._editorInput.select();
+				}
 			}
 		},
 		_handleSpinDownEvent: function () {
-			var cursorPosition = this._getCursorPosition();
-			if (this.options.dataMode === "double" || this.options.dataMode === "float") {
-				if (this._focused) {
-					switch (this._fractionalOrIntegerSelected(cursorPosition)) {
-						case "fractional": {
-							this._spinDown();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "integer": {
-							this._spinDown();
-							this._setSelectionRange(this._editorInput[ 0 ],
-								cursorPosition, cursorPosition);
-						}
-							break;
-						case "all": {
-							this._spinDown();
-							this._editorInput.select();
-
-							//Select All
-						}
-							break;
-						default:
-							this._spinDown();
-							this._editorInput.select();
-					}
-				} else {
-					this._spinDown();
-				}
+			if (this._dropDownList && this.options.isLimitedToListValues) {
+				// default to text list selection
+				this._super();
 			} else {
 				this._spinDown();
-			}
-		},
-		_fractionalOrIntegerSelected: function (cursorPosition) {
-			var decimalSeparator, val;
-			if (cursorPosition === -1) {
-				return "all";
-			} else {
-				decimalSeparator = this.options.decimalSeparator;
-				val = this._editorInput.val();
-				if (val.indexOf(decimalSeparator) < 0) {
-					return "all";
-				} else {
-					if (cursorPosition <= val.indexOf(decimalSeparator)) {
-						return "integer";
-					} else {
-						return "fractional";
-					}
+				if (this._focused) {
+					this._editorInput.select();
 				}
 			}
+		},
+		_setSpinButtonsState: function (val) {
+			val = this._valueFromText(val);
+			this._super(val);
 		},
 
 		// igNumericEditor public methods
@@ -5521,14 +5742,18 @@
 				if (newValue !== null && !isNaN(this._parseNumericValueByMode(newValue,
 					this._numericType, this.options.dataMode))) {
 					if (newValue !== "" && !isNaN(newValue)) {
-						if (this.options.maxValue && newValue > this.options.maxValue) {
+
+						// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						if (!isNaN((this.options.maxValue)) && newValue > this.options.maxValue) {
 							newValue = this.options.maxValue;
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
 								$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 									this.options.maxValue));
-						} else if (this.options.minValue && newValue < this.options.minValue) {
+
+							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
+						} else if (!isNaN((this.options.minValue)) && newValue < this.options.minValue) {
 							newValue = this.options.minValue;
 
 							// Raise Warning level 2
@@ -5562,6 +5787,7 @@
 					if (this.options.revertIfNotValid &&
 					!(newValue === null && this.options.allowNullValue)) {
 						newValue = this._valueInput.val();
+						this._updateValue(newValue);
 					} else {
 						this._clearValue();
 					}
@@ -5574,6 +5800,9 @@
 			} else {
 				return this.options.value;
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		findListItemIndex: function (number) {
 			/* Finds index of list item by text that matches with the search parameters.
@@ -5594,47 +5823,47 @@
 		},
 		getSelectedText: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		getSelectionStart: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		getSelectionEnd: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
 		},
 		spinUp: function (delta) {
-			/* Increments value in editor according to the parameter.
+			/* Increments value in editor according to the parameter or selects the previous item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
 			```
 				$(".selector").%%WidgetName%%("spinUp");
 			```
 				paramType="number" optional="true" Increments value. */
-			this._spinUp(delta); // TODO this._spinUp() method should accept delta.
+			this._spinUp(delta);
 		},
 		spinDown: function (delta) {
-			/* Decrements value in editor according to the parameter.
+			/* Decrements value in editor according to the parameter selects the next item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
 			```
 				$(".selector").%%WidgetName%%("spinDown");
 			```
 				paramType="number" optional="true" Decrement value. */
-			this._spinDown(delta); // TODO this._spinUp() method should accept delta.
+			this._spinDown(delta);
 		},
 		selectListIndexUp: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list.
+			/* @Deprecated@ This method is deprecated in favor of [spinUp](ui.%%WidgetNameLowered%%#options:spinUp).
 			```
-				$(".selector").%%WidgetName%%("selectListIndexUp", 2);
+				$(".selector").%%WidgetName%%("selectListIndexUp");
 			```
 			*/
-			$.ui.igTextEditor.prototype.spinUp.call(this);
+			this._spinUp();
 		},
 		selectListIndexDown: function () {
-			/* Moves the hovered index to the item that appears above the current one in the list.
+			/* @Deprecated@ This method is deprecated in favor of [spinDown](ui.%%WidgetNameLowered%%#options:spinDown).
 			```
-				$(".selector").%%WidgetName%%("selectListIndexDown", 1);
+				$(".selector").%%WidgetName%%("selectListIndexDown");
 			```
 			*/
-			$.ui.igTextEditor.prototype.spinDown.call(this);
+			this._spinDown();
 		},
 		getRegionalOption: function () {
 			/* Gets current regional.
@@ -5782,7 +6011,10 @@
 				```
 				*/
 			displayFactor: 100,
-			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Gets/Sets the type of the value returned by the getter of [value](ui.igpercenteditor#methods:value) method. That also affects the functionality of the setter [value](ui.igpercenteditor#methods:value) method and the copy/paste operations of the browser.
+			/* type="double|float|long|ulong|int|uint|short|ushort|sbyte|byte" Defines the range that editor's value can accept.
+			This is achieved by setting the [minValue](ui.igPercentEditor#options:minValue) and [maxValue](ui.igPercentEditor#options:maxValue) editor's options, accordingly to the lowest and highest accepted values for the defined numeric mode.
+			The range for the specific type follows the numeric type standards, e.g. in .NET Framework  [floating-point](https://msdn.microsoft.com/en-us/library/9ahet949.aspx) types and [integral types](https://msdn.microsoft.com/en-us/library/exx3b86w.aspx).
+			In addition, the maximum value that can be set to [minDecimals](ui.igPercentEditor#options:minDecimals) and [maxDecimals](ui.igPercentEditor#options:maxDecimals) options can be 15, when editor is in 'double' mode and 7, when in 'float' mode.
 				```
 				//Initialize
 				$(".selector").igPercentEditor({
@@ -5792,8 +6024,6 @@
 				//Get
 				var dataMode = $(".selector").igPercentEditor("option", "dataMode");
 
-				//Set
-				$(".selector").igPercentEditor("option", "dataMode", "double");
 				```
 				double type="string" the Number object is used with the limits of a double and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue). Note: that is used as default.
 				float type="string" the Number object is used with the limits of a float and if the value is not set, then the null or Number.NaN is used depending on the option [allowNullValue](ui.igpercenteditor#options:allowNullValue).
@@ -5835,7 +6065,7 @@
 			var newLenght = newValue.length, diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
-				if (this.options.maxValue &&
+				if (!isNaN(this.options.maxValue) &&
 					newValue / this.options.displayFactor > this.options.maxValue) {
 					newValue = this.options.maxValue * this.options.displayFactor;
 
@@ -5843,14 +6073,14 @@
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
 							this.options.maxValue));
-				} else if (this.options.minValue &&
+				} else if (!isNaN(this.options.minValue) &&
 					newValue / this.options.displayFactor < this.options.minValue) {
 					newValue = this.options.minValue * this.options.displayFactor;
 
 					//Notify
 					this._sendNotification("warning",
 						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-						this.options.minxValue));
+						this.options.minValue));
 				}
 
 				if (!this._validateValue(newValue / this.options.displayFactor) &&
@@ -5943,104 +6173,17 @@
 					break;
 			}
 		},
+		_getEditModeValue: function (val) { //igPercentEditor
+			// value must be numeric
+			if (val !== "" && !isNaN(val)) {
+				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
+				val = this._multiplyWithPrecision(parseFloat(val), this.options.displayFactor);
+			}
+			return this._super(val);
+		},
 		_valueFromText: function (text) { //igPercentEditor
 			var val = this._parseNumericValueByMode(text, this._numericType, this.options.dataMode);
 			return this._divideWithPrecision(val, this.options.displayFactor);
-		},
-		_spinUp: function (delta) { //igPercentEditor
-			// TODO: refactor numemic spin functions
-			var currVal, displayValue, decimalSeparator = this.options.decimalSeparator, noCancel;
-			if (this._focused) {
-				currVal = this._divideWithPrecision(this._editorInput.val(),
-					this.options.displayFactor).toString();
-			} else {
-				if (this.value() || this.value() === 0) {
-					currVal = this.value().toString();
-				} else {
-					currVal = "";
-				}
-			}
-			this._clearEditorNotifier();
-			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinUp", currVal, decimalSeparator, delta);
-
-			if ((currVal > this.options.maxValue &&
-				this.options.spinWrapAround) || currVal < this.options.minValue) {
-				currVal = this.options.minValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValExceededWrappedAroundErrMsg,
-					this.options.maxValue));
-			} else if (currVal >= this.options.maxValue && !this.options.spinWrapAround) {
-				currVal = this.options.maxValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValErrMsg,
-						this.options.maxValue));
-			}
-			if (this._focused) {
-				displayValue = this._multiplyWithPrecision(currVal, this.options.displayFactor);
-				if (this.options.scientificFormat) {
-					currVal = Number(displayValue).toExponential()
-						.replace("e", this._getScientificFormat());
-				}
-				this._editorInput.val(displayValue);
-				this._processTextChanged();
-			} else {
-				//trigger value changing
-				noCancel = this._triggerValueChanging(currVal);
-				if (noCancel) {
-					this._updateValue(currVal);
-					this._exitEditMode();
-
-					// We pass the new value in order to have the original value into the arguments
-					this._triggerValueChanged(currVal);
-				}
-			}
-			this._setSpinButtonsState(currVal);
-		},
-		_spinDown: function (delta) { //igPercentEditor
-			var currVal, decimalSeparator = this.options.decimalSeparator, noCancel;
-			if (this._focused) {
-				currVal = this._divideWithPrecision(this._editorInput.val(),
-					this.options.displayFactor).toString();
-			} else {
-				if (this.value() || this.value() === 0) {
-					currVal = this.value().toString();
-				} else {
-					currVal = "";
-				}
-			}
-			this._clearEditorNotifier();
-			this._currentInputTextValue = this._editorInput.val();
-			currVal = this._getSpinValue("spinDown", currVal, decimalSeparator, delta);
-			if ((currVal < this.options.minValue &&
-				this.options.spinWrapAround) || currVal > this.options.maxValue) {
-				currVal = this.options.maxValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceededWrappedAroundErrMsg,
-						this.options.minValue));
-
-			} else if (currVal <= this.options.minValue && !this.options.spinWrapAround) {
-				currVal = this.options.minValue;
-				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValErrMsg,
-						this.options.minValue));
-			}
-			if (this._focused) {
-				this._editorInput
-					.val(this._multiplyWithPrecision(currVal, this.options.displayFactor));
-				this._processTextChanged();
-			} else {
-				//trigger value changing
-				noCancel = this._triggerValueChanging(currVal);
-				if (noCancel) {
-					this._updateValue(currVal);
-					this._exitEditMode();
-
-					// We pass the new value in order to have the original value into the arguments
-					this._triggerValueChanged(currVal);
-				}
-			}
-			this._setSpinButtonsState(currVal);
 		},
 
 		// igPercentEditor public methods
@@ -6088,7 +6231,7 @@
 				```
 			*/
 			regional: null,
-			/*type="clear" Gets visibility of the clear button. That option can be set only on initialization.
+			/*type="clear|none" Gets visibility of the clear button. That option can be set only on initialization.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6129,7 +6272,7 @@
 				```
 			*/
 			inputMask: "CCCCCCCCCC",
-			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" Gets/Sets type of value returned by the get of [value](ui.igmaskeditor#methods:value) method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="rawText|rawTextWithRequiredPrompts|rawTextWithAllPrompts|rawTextWithLiterals|rawTextWithRequiredPromptsAndLiterals|allText" It affects the value of the control (value method/option and submitted in forms). It defines what the value should contain from text, unfilled prompts and literals. The default is allText and when used value method/option returns the text entered, all prompts (positions) and literals.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6139,8 +6282,6 @@
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "rawTextWithLiterals");
 				```
 				rawText type="string" only entered text. All unfilled prompts (positions) and literals are ignored (removed).
 				rawTextWithRequiredPrompts type="string" only entered text and required prompts (positions). All optional unfilled prompts and literals are ignored (removed)
@@ -6162,7 +6303,7 @@
 				```
 			*/
 			unfilledCharsPrompt: "_",
-			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused). Note that this option is visible, only when the [revertIfNotValid](ui.igmaskeditor#options:revertIfNotValid) option is set to false.
+			/* type="string" Gets/Sets character which is used as replacement of not-filled required position in mask when editor is in display mode (not focused).
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6308,28 +6449,35 @@
 				this._maskFlagsArray = [ "C", "&", "a", "A", "?", "L", "9", "0", "<", ">", "#" ];
 			}
 			this._promptCharsIndices = [];
+
+			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			if (this.options.allowNullValue && !this.options.value && this.options.nullValue) {
+				this.options.value = this.options.nullValue;
+			}
 		},
 		_applyOptions: function () { //igMaskEditor
 			this._getMaskLiteralsAndRequiredPositions();
 
 			// In case value is not set we need to use the setInitialValue method to store mask, required field indeces, prompt indeces etc.
 			this._super();
-			if (this.options.value === null || this.options.value === undefined) {
+			/*if (this.options.value === null) {
+				if (this.options.allowNullValue) {
 				this._setInitialValue();
-			}
+				} else {
+					this._setInitialValue("");
+				}
+			} else if (this.options.value === undefined) {
+				this._setInitialValue();
+			}*/
 		},
 
-		_enterEditMode: function () { // MaskEditor
-			var selection = this._getSelection(this._editorInput[ 0 ]);
-			this._editMode = true;
-			this._currentInputTextValue = this._editorInput.val();
+		_getEditModeValue: function () { // MaskEditor
+			// Use already parsed mask, other uses already handled by _parseValueByMask
 			if (this._maskedValue === "") {
-				this._editorInput.val(this._maskWithPrompts);
+				return this._maskWithPrompts;
 			} else {
-				this._editorInput.val(this._maskedValue);
+				return this._maskedValue;
 			}
-			this._positionCursor(selection.start, selection.end);
-			this._processTextChanged();
 		},
 		_insert: function (newValue, previousValue, selection) { // MaskEditor
 			if (this.options.toUpper) {
@@ -6781,13 +6929,16 @@
 			} else if (value === null) {
 				if (this.options.allowNullValue) {
 					if (this.options.nullValue === null) {
+						// D.P. Dec 16th, 2016 #655 Clear masked value (display text) when setting allowed null as value
+						this._maskedValue = "";
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
-						nullValue = this._parseValueByMask(this.options.nullValue);
+						nullValue = this._parseValueByMask(value);
 						this._maskedValue = nullValue;
 						this._valueInput.val(nullValue);
 						this.options.value = nullValue;
+
 					}
 				} else {
 
@@ -6802,8 +6953,30 @@
 				this._valueInput.val(this.options.value);
 			}
 		},
+		_clearValue: function (textOnly) { //igMaskEditor
+			var newValue = "";
+			if (this.options.allowNullValue) {
+				newValue = this.options.nullValue;
+				this._editorInput.val(this._parseValueByMask(newValue));
+			} else {
+				this._editorInput.val(this._maskWithPrompts);
+			}
+			if (!textOnly) {
+				this._updateValue(newValue);
+			}
+			if (this._editMode === false) {
+				this._exitEditMode();
+			}
+		},
 		_getDisplayValue: function () { //igMaskEditor
-			var result, maskedVal = this._maskedValue,
+			return this._replaceValueInMask(this.options.unfilledCharsPrompt, this.options.padChar);
+		},
+		_getMaskedValue: function (maskedValue) {
+			return this._replaceValueInMask(this.options.emptyChar, this.options.unfilledCharsPrompt,
+				maskedValue);
+		},
+		_replaceValueInMask: function (oldChar, newChar, maskedValue) {
+			var result, maskedVal = maskedValue || this._maskedValue,
 				i, j, p, maskChar, tempChar, index, regExpr,
 				inputMask = this.options.inputMask, maskFlagsArray = this._maskFlagsArray;
 
@@ -6830,13 +7003,13 @@
 					continue;
 				}
 
-				if (maskedVal.charAt(i) === this.options.unfilledCharsPrompt) {
+				if (maskedVal.charAt(i) === oldChar) {
 					maskChar = inputMask.charAt(j);
 					if (maskChar === "&" || maskChar === "A" ||
 						maskChar === "L" || maskChar === "0") {
 
 						// All the required fields, which are unfilled are replaced with the padChar
-						result = this._replaceCharAt(result, p, this.options.padChar);
+						result = this._replaceCharAt(result, p, newChar);
 					} else {
 						result = this._replaceCharAt(result, p, "");
 						p--;
@@ -6845,7 +7018,7 @@
 			}
 			if (this._promptCharsIndices.length > 0) {
 				regExpr = new RegExp($.ig.util.escapeRegExp(tempChar), "g");
-				result = result.replace(regExpr, this.options.unfilledCharsPrompt);
+				result = result.replace(regExpr, oldChar);
 			}
 			return result;
 		},
@@ -6888,7 +7061,11 @@
 		_setInitialValue: function (value) { //igMaskEditor
 			this._maskWithPrompts = this._parseValueByMask("");
 			this._getMaskLiteralsAndRequiredPositions();
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
@@ -6926,7 +7103,8 @@
 		_validateRequiredPrompts: function (value) {
 			var i;
 			if (value === "") {
-				return false;
+				// D.P. Ignore empty value
+				return true;
 			}
 			for (i = 0; i < this._requiredIndeces.length; i++) {
 				var ch = value.charAt(this._requiredIndeces[ i ]);
@@ -6950,7 +7128,9 @@
 
 				// If the value is not valid, we clear the editor
 				if (this.options.revertIfNotValid) {
-					value = this._valueInput.val().trim();
+
+					// N.A. May 12th, 2017 #903: Properly revert display value.
+					value = this._getMaskedValue(this._valueInput.val().trim());
 					this._updateValue(value);
 
 					// N.A. July 25th, 2016 #150: Mask editor empty mask is deleted.
@@ -7283,6 +7463,11 @@
 				}
 				this._updateValue(newValue);
 
+				//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+				if (this.options.allowNullValue && newValue === null && this.options.nullValue) {
+					this.value(this.options.nullValue);
+				}
+
 				// this._setInitialValue(newValue);
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
 				//if (this._focused === false || this._focused === undefined) {
@@ -7292,6 +7477,9 @@
 			} else {
 				return this.options.value;
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		dropDownContainer: function () {
 			/*@Ignored@*/
@@ -7371,7 +7559,7 @@
 	$.widget("ui.igDateEditor", $.ui.igMaskEditor, {
 		options: {
 			/* type="date" Gets/Sets the value of the editor. Date object can be set as value. String can be set and the editor will pass it to the Date object constructor and use the corresponding Date object as the value. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7387,8 +7575,7 @@
 				*/
 			value: null,
 			/* type="date" Gets the minimum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
-				Note! This option can not be set runtime.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7397,12 +7584,14 @@
 
 					//Get
 					var minValue = $(".selector").%%WidgetName%%("option", "minValue");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "minValue", new Date(1980, 6, 1));
 				```
 				*/
 			minValue: null,
 			/* type="date" Gets the maximum value which can be entered in editor by user. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too.
-				Note! This option doesn't use the displayInputFormat to extract the date.
-				Note! This option can not be set runtime.
+				Note! This option doesn't use the dateInputFormat to extract the date.
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7411,6 +7600,9 @@
 
 					//Get
 					var maxValue = $(".selector").%%WidgetName%%("option", "maxValue");
+
+					//Set
+					$(".selector").%%WidgetName%%("option", "maxValue", new Date(2020, 11, 21));
 				```
 				*/
 			maxValue: null,
@@ -7479,26 +7671,15 @@
 				"dateTime": the dateTimePattern member of regional option is used
 				List of explicit characters, which should have escape \\ character in front of them: C, &, a, A, ?, L, 9, 0, #, >, <, y, M, d, h, H, m, s, t, f.
 				List of date-flags when explicit date pattern is used:
-				"y": year field without century and without leading zero
 				"yy": year field without century and with leading zero
 				"yyyy": year field with leading zeros
-				"M": month field as digit without leading zero
 				"MM": month field as digit with leading zero
-				"MMM": month field as short month name. Note: in focused state the MM is used.
-				"MMMM": month field as long month name. Note: in focused state the MM is used.
-				"d": day of month field without leading zero
 				"dd": day of month field with leading zero
-				"ddd": day of the week as short name. Note: in focused state that field is skipped.
-				"dddd": day of the week as long name. Note: in focused state that field is skipped.
 				"t": first character of string which represents AM/PM field
 				"tt": 2 characters of string which represents AM/PM field
-				"h": hours field in 12-hours format without leading zero
 				"hh": hours field in 12-hours format with leading zero
-				"H": hours field in 24-hours format without leading zero
 				"HH": hours field in 24-hours format with leading zero
-				"m": minutes field without leading zero
 				"mm": minutes field with leading zero
-				"s": seconds field without leading zero
 				"ss": seconds field with leading zero
 				"f": milliseconds field in hundreds
 				"ff": milliseconds field in tenths
@@ -7515,7 +7696,7 @@
 				```
 			*/
 			dateInputFormat: null,
-			/* type="date|editModeText|displayModeText|" Gets/Sets the value type returned by the get of value() method. That also affects functionality of the set value(val) method and the copy/paste operations of browser.
+			/* type="date|editModeText|displayModeText|" Gets the value type returned by the get of value() method and option. Also affects how the value is stored for form submit.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7525,15 +7706,29 @@
 				//Get
 				var dataMode = $(".selector").%%WidgetName%%("option", "dataMode");
 
-				//Set
-				$(".selector").%%WidgetName%%("option", "dataMode", "displayModeText");
 			```
-				date type="string" The Date object is used. When that mode is set the value send to the server on submit is string value converter from the javascript Date object using "toISOString" method.
-				Note: That is used as default.
-				displayModeText type="string" The String object is used and the "text" in display mode (no focus) format (pattern).
-				editModeText type="string" The String object is used and the "text" in edit mode (focus) format (pattern).
+				date type="string" The value method returns a Date object. When this mode is set the value sent to the server on submit is serialized as ISO 8061 string with local time and zone values by default.
+					The [enableUTCDates](ui.%%WidgetNameLowered%%#options:enableUTCDates) option can be used to output an UTC ISO string instead.
+					For example 10:00 AM from a client with local offset of 5 hours ahead of GMT will be serialized as:
+					"2016-11-11T10:00:00+05:00"
+				displayModeText type="string" The "text" in display mode (no focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
+				editModeText type="string" The "text" in edit mode (focus) format (pattern) is used to be send to the server and is returned from the value() method (returns a string object).
 			*/
 			dataMode: "date",
+			/* type="int" Gets/Sets time zone offset from UTC, in minutes. The client date values are displayed with this offset instead of the local one.
+			Note: It is recommended that this option is used with an UTC value (e.g. "2016-11-03T14:08:08.504Z") so the outcome is consistent.
+				Values with ambiguous time zone could map to unpredictable times depending on the user agent local zone.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					displayTimeOffset: 180
+				});
+
+				//Get
+				var displayTimeOffset = $(".selector").%%WidgetName%%("option", "displayTimeOffset");
+			```
+			*/
+			displayTimeOffset: null,
 			/*type="clear|spin" Gets visibility of the spin and clear buttons. That option can be set only on initialization. Combinations like 'spin,clear' are supported too.
 				```
 					//Initialize
@@ -7548,7 +7743,10 @@
 				spin type="string" Spin buttons are located on the right side of the editor
 			*/
 			buttonType: "none",
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement value in editor on spin events. If value is set to negative value an exception is thrown. Non integer value is supported only for dataMode double and float.
+			/* type="number" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
+				When not editing (focused) the delta is applied on the day if available in the input mask or the lowest available period.
+				When in edit mode the time period, where the cursor is positioned, is incremented or decremented with the defined delta value.
+				The value can be only a positive integer number, otherwise it will be set as 1, or in the cases with double or float the the whole part will be taken.
 			```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7580,14 +7778,8 @@
 				```
 			*/
 			limitSpinToCurrentField: false,
-			/* type="bool" Gets/Sets formatting of the dates as UTC.
-				That option is supported only when dataMode option is 'date' and Date objects are used to get/set value of editor.
-				Notes:
-				That option affects only functionality of get/set value method and the Date-value, which was set on initialization.
-				When application uses the set-value, then internal Date-value and displayed-text is incremented by TimezoneOffset.
-				When application uses the get-value, then editor returns internal Date-value decremented by TimezoneOffset.
-				When that option is modified after initialization, then displayed text and internal Date-value are not affected.
-				It is not recommended to change that option without resetting Date-value.
+			/* type="bool" Enables/Disables serializing client date as UTC ISO 8061 string instead of using the local time and zone values.
+				The option is only applied in "date" [dataMode](ui.%%WidgetNameLowered%%#options:dataMode).
 				```
 					//Initialize
 					$(".selector").%%WidgetName%%({
@@ -7634,7 +7826,7 @@
 			```
 			*/
 			yearShift: 0,
-			/* type="string|number|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
+			/* type="string|number|date|null" Gets/Sets the representation of null value. In case of default the value for the input is set to null, which makes the input to hold an empty string
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -7695,6 +7887,7 @@
 			$.ui.igMaskEditor.prototype._create.call(this);
 		},
 		_initialize: function () {
+			var offset = this.options.displayTimeOffset;
 			this._super();
 			this._applyRegionalSettings();
 			this.options.inputMask =
@@ -7703,15 +7896,18 @@
 
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
+			if (offset !== null && (offset > 840 || offset < -720)) {
+				throw new Error($.ig.Editor.locale.dateEditorOffsetRange);
+			}
 		},
 		_setNumericType: function () {
 			this._numericType = "datetime";
 		},
 		_setOption: function (option, value) { // igDateEditor
 			/* igDateEditor custom setOption goes here */
-			var prevValue = this.options[ option ];
+			var prevValue = this.options[ option ], date;
 			if ($.type(prevValue) === "date") {
-				var date = this._getDateObjectFromValue(value);
+				date = this._getDateObjectFromValue(value);
 				if ($.type(date) === "date" && (prevValue.getTime() === date.getTime())) {
 					return;
 				}
@@ -7723,20 +7919,36 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "minValue": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.dateEditorMinValue);
-				}
-				case "maxValue": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.dateEditorMaxValue);
-				}
+				case "displayTimeOffset": {
+					if (this._editMode) {
+						this._updateMaskedValue();
+						this._enterEditMode();
+					} else {
+						this._editorInput.val(this._getDisplayValue());
+					}
 					break;
+				}
+				case "minValue":
+				case "maxValue":
+					if (!this._isValidDate(value)) {
+						this.options[ option ] = prevValue;
+						return;
+					}
+					if (value !== null) {
+						this.options[ option ] = this._getDateObjectFromValue(value);
+						this._processInternalValueChanging(this.value());
+						if (!this._editMode) {
+							this._editorInput.val(this._getDisplayValue());
+							this._currentInputTextValue = this._editorInput.val();
+						}
+					}
+					this._setSpinButtonsState(this.value());
+					break;
+				case "listItems":
 				case "dateInputFormat": {
 					this.options[ option ] = prevValue;
 					throw new Error($.ig.Editor.locale.setOptionError + option);
 				}
-					break;
 				default: {
 
 					// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -7769,7 +7981,11 @@
 		},
 		_setInitialValue: function (value) { //igDateEditor
 			this._maskWithPrompts = this._parseValueByMask("");
-			if (value === null || value === "" || typeof value === "undefined") {
+			if (value === null || value === "") {
+				this._updateValue(value);
+				this._maskedValue = "";
+			} else if (typeof value === "undefined") {
+				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				//check value
@@ -7782,13 +7998,28 @@
 				this._editorInput.val(this._getDisplayValue());
 			}
 			this._checkClearButtonState();
+
+			// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+			this._setSpinButtonsState(value);
 		},
 		_applyOptions: function () { // DateEditor
-			this._super();
+			var delta = this.options.spinDelta;
+
+			if (typeof delta !== "number") {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+			} else if (delta < 0) {
+				this.options.spinDelta = 1;
+				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+			} else {
+				this.options.spinDelta = parseInt(delta, 10);
+			}
+
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
 				this.options.centuryThreshold = 29;
-				console.log($.ig.Editor.locale.centuryThresholdValidValues);
+				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
 			}
+
 			if (this.options.minValue) {
 				if (!this._isValidDate(new Date(this.options.minValue))) {
 					throw new Error($.ig.Editor.locale.invalidDate);
@@ -7803,6 +8034,12 @@
 					this.options.maxValue = this._getDateObjectFromValue(this.options.maxValue);
 				}
 			}
+
+			// N.A. January 23th, 2017 #731 If value exceeds the min/max value, then set it to min/max and show notification.
+			this.options.value = this._getValueBetweenMinMax(this.options.value);
+
+			this._super();
+
 			if (this._maskWithPrompts === undefined) {
 				this._setInitialValue();
 			}
@@ -7818,9 +8055,11 @@
 				// TODO: Optimize this method together with _triggerKeyDown in the igDatePicker.
 				if (key === 38 && !(this instanceof $.ui.igDatePicker)) {
 					this._spinUpEditMode();
+					event.preventDefault();
 				}
 				if (key === 40 && !(this instanceof $.ui.igDatePicker)) {
 					this._spinDownEditMode();
+					event.preventDefault();
 				}
 				if (key === 13) {
 					this._enterEditMode();
@@ -7828,128 +8067,151 @@
 			}
 			return noCancel;
 		},
+
+		// N.A. January 4th, 2017 #664 Validate min and max values in date editor and date picker by comparing dates.
+		_exceedsMaxValue: function(value) {
+
+			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it.
+			if (!this._editMode) {
+				value = this.value();
+			}
+			return this.options.maxValue !== null &&
+				this._getDateObjectFromValue(value).getTime() >=
+				this._getDateObjectFromValue(this.options.maxValue).getTime();
+		},
+		_lessThanMinValue: function(value) {
+
+			// Display mode may remove leading zeros, and also in display mode value is already updated, that's why we can use it
+			if (!this._editMode) {
+				value = this.value();
+			}
+			return this.options.minValue !== null &&
+				this._getDateObjectFromValue(value).getTime() <=
+				this._getDateObjectFromValue(this.options.minValue).getTime();
+		},
 		_handleSpinUpEvent: function () { // DateEditor
-			this.spinUp(1);
+
+			// N.A. January 10th, 2016 #701 Spin value using the spinDelta option and fire events only on user interaction.
+			this._spin(this.options.spinDelta, true);
 		},
 		_handleSpinDownEvent: function () { // DateEditor
-			this.spinDown(1);
+			this._spin(-this.options.spinDelta, true);
+		},
+		_serializeDate: function (sDate) {
+			if (this.options.dataMode === "date") {
+				if (this.options.enableUTCDates) {
+					sDate = sDate.toISOString();
+				} else {
+					sDate = $.ig.toLocalISOString(sDate);
+				}
+			} else {
+				sDate = this.options.value;
+			}
+			return sDate;
 		},
 
-		// Flag to get/set specific date field (year, month, day, hours, minutes, seconds, milliseconds)
+		// Returns numeric value from getFullYear (with shift), getMonth, etc or null.
+		// Flag to get specific date field (year, month, day, hours, minutes, seconds, milliseconds)
 		// date DateObject
 		_getDateField: function (flag, date) {
-			var utc = this.options.enableUTCDates, shift = this.options.yearShift, year;
+			var shift = this.options.yearShift, value;
 
-				if (!date) {
-					date = this._dateObjectValue;
-				}
-				if (!date) {
+				if (!date || isNaN(date.getTime())) {
 					return null;
 				}
 
-				//// set into datepicker
-				//	if (f === -1) {
-				//		return (date && utc) ? new Date(date.getTime() + date.getTimezoneOffset() * 60000) : date;
-				//	}
-				//// now
-				//if (!date) {
-				//	date = new Date();
-				//	if (utc) {
-				//		date.setUTCMinutes(date.getUTCMinutes() - date.getTimezoneOffset());
-				//	}
-				//	return date;
-				//}
-
-				if (flag === "year") {
-					year = utc ? date.getUTCFullYear() : date.getFullYear();
-					if (shift) {
-						year += shift;
-					}
-					return year;
+				value = date[ "get" + flag ]();
+				if (flag === "FullYear" && shift) {
+					value += shift;
 				}
-				if (flag === "month") {
-					return utc ? date.getUTCMonth() : date.getMonth();
-				}
-				if (flag === "day") {
-					return utc ? date.getUTCDay() : date.getDay();
-				}
-				if (flag === "date") {
-					return utc ? date.getUTCDate() : date.getDate();
-				}
-				if (flag === "hours") {
-					return utc ? date.getUTCHours() : date.getHours();
-				}
-				if (flag === "minutes") {
-					return utc ? date.getUTCMinutes() : date.getMinutes();
-				}
-				if (flag === "seconds") {
-					return utc ? date.getUTCSeconds() : date.getSeconds();
-				}
-				return utc ? date.getUTCMilliseconds() : date.getMilliseconds();
+				return value;
 		},
 
-		// This method sets specific field and returns the date
+		// This method sets specific field - setFullYear (with shift), setHours, setMinutes, etc.
 		_setDateField: function(flag, date, newValue) {
-			var utc = this.options.enableUTCDates, shift = this.options.yearShift;
+			var shift = this.options.yearShift;
 			if (!date) {
-				date = this._dateObjectValue;
+				return;
 			}
-			if (flag === "year") {
-				if (shift) {
-					newValue -= shift;
-				}
-				if (utc) {
-					date.setUTCFullYear(newValue);
-				} else {
-					date.setFullYear(newValue);
-				}
+			if (flag === "FullYear" && shift) {
+				newValue -= shift;
 			}
-			if (flag === "month") {
-				if (utc) {
-					date.setUTCMonth(newValue);
-				} else {
-					date.setMonth(newValue);
-				}
-			}
-			if (flag === "date") {
-				if (utc) {
-					date.setUTCDate(newValue);
-				} else {
-					date.setDate(newValue);
-				}
-			}
-			if (flag === "hours") {
-				if (utc) {
-					date.setUTCHours(newValue);
-				} else {
-					date.setHours(newValue);
-				}
-			}
-			if (flag === "minutes") {
-				if (utc) {
-					date.setUTCMinutes(newValue);
-				} else {
-					date.setMinutes(newValue);
-				}
-			}
-			if (flag === "seconds") {
-				if (utc) {
-					date.setUTCSeconds(newValue);
-				} else {
-					date.setSeconds(newValue);
-				}
-			}
-			if (flag === "milliseconds") {
-				if (utc) {
-					date.setUTCMilliseconds(newValue);
-				} else {
-					date.setMilliseconds(newValue);
-				}
-			}
+			date[ "set" + flag ](newValue);
+		},
+		_setNewDateMidnight: function() {
+			var date = new Date();
+			this._setDateField("Hours", date, 0);
+			this._setDateField("Minutes", date, 0);
+			this._setDateField("Seconds", date, 0);
+			this._setDateField("Milliseconds", date, 0);
 			return date;
 		},
 		_getInternalMaskedValue: function (newDate) {
 			return this._updateMaskedValue(newDate, true);
+		},
+		_replaceDisplayValue: function(selection, previousValue, newValue) {
+
+			// This is special case, when a date is pasted, but the new pasted string is not fully formatted date, and doesn't contain leading zeros (e.g. 11/3/2015 3:24 PM).
+			// In such case, we add underscore in order to fully format date. The date is transformed to 11/_3/2015 _3:24 PM.
+			// But we do this only in cases, when the selection starts from the beginning of the editor, оtherwise it cannot be predicted, how to format the date.
+			if (selection.start === 0) {
+				newValue = this._formatDateString(newValue.toString());
+			}
+			return this._super(selection, previousValue, newValue);
+		},
+		_formatDateString: function(value) {
+			var dateMask, periodName, startIndex, endIndex,
+				prompt = this.options.unfilledCharsPrompt;
+
+			// This method is used only for date editor/picker to transform not fully formatted dates, like 1/3/2015 3:24 PM, to 11/_3/2015 _3:24 PM.
+			// We depend on mask editor to format numbers, because it cannot recognize how to format date. It will transform 1/3/2015 3:24 PM to 11/3_/2015 3_:24 PM.
+			// In addition, in the date editor, we need to format this to be correct date.
+			dateMask = this._parseValueByMask(value);
+
+			// We split the parsed date into time periods' chunks (year, month...), according to their indices.
+			// Then we format each chunk to be valid date period - if it is needed we preceed it with underscore.
+			if (dateMask.indexOf(prompt) >= 0) {
+				for (periodName in this._dateIndices) {
+					startIndex = this._dateIndices[ periodName ];
+					switch (periodName) {
+						case "fourDigitYear":
+						case "ffLength":
+						case "hh24":
+							startIndex = null;
+							break;
+						case "yy":
+							endIndex = startIndex + (this._dateIndices.fourDigitYear ? 4 : 2);
+							break;
+						case "ff":
+							endIndex = startIndex + this._dateIndices.ffLength;
+							break;
+						default:
+							endIndex = startIndex + 2;
+							break;
+					}
+					if (startIndex !== null) {
+						dateMask = (startIndex > 0 ? dateMask.substring(0, startIndex) : "") +
+							this._reverseMaskWithUnderscore(dateMask.substring(startIndex, endIndex)) +
+							(endIndex <  dateMask.length ? dateMask.substring(endIndex, dateMask.length) : "" );
+					}
+				}
+			}
+			return dateMask;
+		},
+		_reverseMaskWithUnderscore: function(mask) {
+			var count, reg, match, reversedMask, regPrompt,
+				prompt = this.options.unfilledCharsPrompt;
+
+			// Transform 3_ to _3; 999_ to _999
+			reg = new RegExp("(\\d{1,3}\\" + prompt + "{1,3})", "g");
+			regPrompt = new RegExp("\\" + prompt, "g");
+			match = reg.exec(mask);
+			if (match && match[ 0 ]) {
+				count = (mask.match(regPrompt) || []).length;
+				reversedMask = Array(count + 1).join(prompt) + match[ 0 ].replace(regPrompt, "");
+				mask = mask.replace(match[ 0 ], reversedMask);
+			}
+			return mask;
 		},
 		_updateMaskedValue: function (newDate, returnValue) {
 
@@ -7960,10 +8222,14 @@
 				dateObj, year, month, day, hours, minutes, seconds, milliseconds;
 			dateObj = newDate ? newDate : this._dateObjectValue;
 
+			if (this.options.displayTimeOffset !== null) {
+				dateObj = this._getDateOffset(dateObj);
+			}
+
 			// TODO update all the fields
 			if (dateObj) {
 				if (this._dateIndices.yy !== undefined) {
-					year = this._getDateField("year", dateObj).toString();
+					year = this._getDateField("FullYear", dateObj).toString();
 					if (this._dateIndices.fourDigitYear) {
 
 						// T.P. 29th Jan 2016 Bug #212642 When the year is 3 digit for example (111) we need to add extra zero in fron of the value, so in edit mode it's displayed correctly
@@ -7981,7 +8247,7 @@
 					}
 				}
 				if (this._dateIndices.MM !== undefined) {
-					month = this._getDateField("month", dateObj);
+					month = this._getDateField("Month", dateObj);
 					month++;
 					if (month < 10) {
 						month = "0" + month.toString();
@@ -7992,7 +8258,7 @@
 						month, this._dateIndices.MM, this._dateIndices.MM + 1);
 				}
 				if (this._dateIndices.dd !== undefined) {
-					day = this._getDateField("date", dateObj);
+					day = this._getDateField("Date", dateObj);
 					if (day < 10) {
 						day = "0" + day.toString();
 					} else {
@@ -8002,7 +8268,7 @@
 						day, this._dateIndices.dd, this._dateIndices.dd + 1);
 				}
 				if (this._dateIndices.hh !== undefined) {
-					hours = this._getDateField("hours", dateObj);
+					hours = this._getDateField("Hours", dateObj);
 					if (!this._dateIndices.hh24 && hours > 12) {
 						hours -= 12;
 					}
@@ -8020,7 +8286,7 @@
 						hours, this._dateIndices.hh, this._dateIndices.hh + 1);
 				}
 				if (this._dateIndices.mm !== undefined) {
-					minutes = this._getDateField("minutes", dateObj);
+					minutes = this._getDateField("Minutes", dateObj);
 					if (minutes < 10) {
 						minutes = "0" + minutes.toString();
 					} else {
@@ -8030,7 +8296,7 @@
 						minutes, this._dateIndices.mm, this._dateIndices.mm + 1);
 				}
 				if (this._dateIndices.ss !== undefined) {
-					seconds = this._getDateField("seconds", dateObj);
+					seconds = this._getDateField("Seconds", dateObj);
 					if (seconds < 10) {
 						seconds = "0" + seconds.toString();
 					} else {
@@ -8040,7 +8306,7 @@
 						seconds, this._dateIndices.ss, this._dateIndices.ss + 1);
 				}
 				if (this._dateIndices.tt !== undefined) {
-					hours = this._getDateField("hours", dateObj);
+					hours = this._getDateField("Hours", dateObj);
 
 					// N.A. 3/16/2016 Bug #216017: When we are in the 12 hour format, then 12 o'clock is PM and 24 (00) o'clock is AM.
 					if (hours >= 12 && hours < 24) {
@@ -8068,7 +8334,7 @@
 					}
 				}
 				if (this._dateIndices.ff !== undefined) {
-					milliseconds = this._getDateField("milliseconds", dateObj);
+					milliseconds = this._getDateField("Milliseconds", dateObj);
 					if (this._dateIndices.ffLength === 1) {
 						currentMaskValue = this._replaceCharAt(currentMaskValue,
 							this._dateIndices.ff,
@@ -8775,19 +9041,7 @@
 			} else {
 				parsedVal = this._parseDateFromMaskedValue(value);
 			}
-			if (this._isValidDate(parsedVal)) {
-				if (this.options.maxValue && parsedVal > this.options.maxValue) {
-					parsedVal = this._getDateObjectFromValue(this.options.maxValue);
-					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.maxValue))));
-				} else if (this.options.minValue && parsedVal < this.options.minValue) {
-					parsedVal = this._getDateObjectFromValue(this.options.minValue);
-					this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.minValue))));
-				}
-			}
+			parsedVal = this._getValueBetweenMinMax(parsedVal);
 			if (this._validateValue(parsedVal)) {
 				this._updateValue(parsedVal);
 			} else {
@@ -8809,7 +9063,7 @@
 		_validateValue: function (val) { // igDateEditor
 			var result, dateObj, minValue, maxValue;
 			if (val === null || val === "") {
-				return true;
+				return this._super(val);
 			}
 			dateObj = this._getDateObjectFromValue(val);
 			if (this.options.minValue) {
@@ -8831,12 +9085,28 @@
 			}
 			return result;
 		},
+		_getValueBetweenMinMax: function(date) {
+			var validDate = date;
+			if (date !== null && this._isValidDate(date)) {
+				if (this.options.maxValue && date > this.options.maxValue) {
+					validDate = this._getDateObjectFromValue(this.options.maxValue);
+					this._sendNotification("warning",
+						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
+							this._getDisplayValue(new Date(this.options.maxValue))));
+				} else if (this.options.minValue && date < this.options.minValue) {
+					validDate = this._getDateObjectFromValue(this.options.minValue);
+					this._sendNotification("warning",
+					$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
+							this._getDisplayValue(new Date(this.options.minValue))));
+				}
+			}
+			return validDate;
+		},
 		_updateValue: function (value) { //igDateEditor
-			//TODO Review
 			if (value === null) {
 				this._maskedValue = this._maskWithPrompts;
 				this._valueInput.val("");
-				this.options.value = null;
+				this.options.value = this.options.allowNullValue ? null : "";
 				this._dateObjectValue = null;
 			} else if (value === "") {
 
@@ -8854,24 +9124,20 @@
 				this._updateMaskedValue();
 				this.options.value = this._getValueByDataMode();
 
-				// TODO here maybe the format of the submit value of the date should be some standart format like 2015-03-25T12:00:00
-				if ($.type(this.options.value) === "date") {
-						this._valueInput.val(this.options.value.toISOString());
-				} else {
-					this._valueInput.val(this.options.value);
-				}
+				this._valueInput.val(this._serializeDate(this._dateObjectValue));
 			}
 		},
-		_clearValue: function () { //DateEditor
-			// TODO
+		_clearValue: function (textOnly) { //DateEditor
+			var newValue = "", maskedValue = this._maskWithPrompts;
 			if (this.options.allowNullValue) {
-				this._updateValue(this.options.nullValue);
-				if (this.options.nullValue === null) {
-					this._editorInput.val(this._maskWithPrompts);
+				newValue = this.options.nullValue;
+				if (newValue instanceof Date) {
+					maskedValue = this._updateMaskedValue(this.options.nullValue, true);
 				}
-			} else {
-				this._updateValue("");
-				this._editorInput.val(this._maskWithPrompts);
+			}
+			this._editorInput.val(maskedValue);
+			if (!textOnly) {
+				this._updateValue(newValue);
 			}
 			if (this._editMode === false) {
 				this._exitEditMode();
@@ -8879,23 +9145,10 @@
 		},
 		_getDateObjectFromValue: function (value) { //DateEditor
 			var date;
-			if ($.type(value) === "date") {
-
-				//if (this.options.enableUTCDates) {
-				//	//T.P. 26th Oct 2015 Bug 208350 when creating UTC date we need to set hours, minutes, seconds and milliseconds
-				//	value = new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate(), value.getHours(), value.getMinutes(), value.getSeconds(), value.getMilliseconds()));
-				//}
-				date = value;
-			} else if (this._mvcDateRegex.test(value)) {
+			if (this._mvcDateRegex.test(value)) {
 				date = new Date(parseInt(value.replace(this._mvcDateRegex, "$1"), 10));
 			} else {
 				date = new Date(value);
-				if (this.options.enableUTCDates) {
-					date = new Date(Date.UTC(date.getFullYear(),
-						date.getMonth(), date.getDate(),
-						date.getHours(), date.getMinutes(),
-						date.getSeconds(), date.getMilliseconds()));
-				}
 			}
 			return date;
 		},
@@ -8904,10 +9157,9 @@
 				maskedVal = this._maskedValue ? this._maskedValue : this._maskWithPrompts,
 				dataMode = this.options.dataMode;
 
-			// TODO implement all of the modes
 			switch (dataMode) {
 				case "date": {
-						dataModeValue = this._dateObjectValue;
+					dataModeValue = this._dateObjectValue;
 				}
 					break;
 				case "displayModeText": {
@@ -8926,9 +9178,30 @@
 			}
 			return dataModeValue;
 		},
+		_getDateOffset: function(date) {
+			var newDate, zoneOffset;
+
+			if (!date) {
+				return date;
+			}
+			newDate = new Date(date.getTime());
+			zoneOffset = newDate.getTimezoneOffset();
+			newDate.setUTCMinutes(newDate.getUTCMinutes() +
+				zoneOffset + this.options.displayTimeOffset);
+			if (zoneOffset !== newDate.getTimezoneOffset()) {
+				// if date changes offset due to DST, re-adjust
+				newDate.setUTCMinutes(newDate.getUTCMinutes() +
+					newDate.getTimezoneOffset() - zoneOffset);
+			}
+			return newDate;
+		},
+		_clearDateOffset: function(date) {
+			date.setUTCMinutes(date.getUTCMinutes() -
+				date.getTimezoneOffset() - this.options.displayTimeOffset);
+		},
 		_parseDateFromMaskedValue: function (value) {
 			var dateField, monthField, yearField, hourField, minutesField, secondsField,
-				millisecondsField, midDayField, today,
+				millisecondsField, midDayField,
 				dateStartIndex = this._dateIndices.dd, regExpr, ffCount, lastDayOfMonth,
 				monthStartIndex = this._dateIndices.MM,
 				yearStartIndex = this._dateIndices.yy,
@@ -8953,7 +9226,7 @@
 					dateField = dateField.replace(regExpr, "");
 				}
 				if (dateField !== "") {
-					dateField = parseInt(dateField);
+					dateField = parseInt(dateField, 10);
 					if (dateField <= 0) {
 						//0 is not valid date
 						dateField = null;
@@ -8972,7 +9245,7 @@
 					monthField = monthField.replace(regExpr, "");
 				}
 				if (monthField !== "") {
-					monthField = parseInt(monthField);
+					monthField = parseInt(monthField, 10);
 					if (monthField <= 0) {
 						monthField = null;
 					} else {
@@ -8998,7 +9271,7 @@
 					yearField = yearField.replace(regExpr, "");
 				}
 				if (yearField !== "") {
-					yearField = parseInt(yearField);
+					yearField = parseInt(yearField, 10);
 					yearField = this._fillCentury(yearField);
 				} else {
 					yearField = null;
@@ -9028,7 +9301,7 @@
 					hourField = hourField.replace(regExpr, "");
 				}
 				if (hourField !== "") {
-					hourField = parseInt(hourField);
+					hourField = parseInt(hourField, 10);
 					if (this._dateIndices.hh24 === false) {
 						if (midDayField && midDayField === "p") {
 
@@ -9056,7 +9329,7 @@
 					minutesField = minutesField.replace(regExpr, "");
 				}
 				if (minutesField !== "") {
-					minutesField = parseInt(minutesField);
+					minutesField = parseInt(minutesField, 10);
 				} else {
 					minutesField = null;
 				}
@@ -9071,7 +9344,7 @@
 					secondsField = secondsField.replace(regExpr, "");
 				}
 				if (secondsField !== "") {
-					secondsField = parseInt(secondsField);
+					secondsField = parseInt(secondsField, 10);
 
 				} else {
 					secondsField = null;
@@ -9093,9 +9366,9 @@
 						ffCount = this._dateIndices.ffLength - millisecondsField.length;
 
 						// If the user has entered 1 in 3 digit field - the value is converted into 300
-						millisecondsField = parseInt(millisecondsField) * Math.pow(10, ffCount);
+						millisecondsField = parseInt(millisecondsField, 10) * Math.pow(10, ffCount);
 					}
-					millisecondsField = parseInt(millisecondsField);
+					millisecondsField = parseInt(millisecondsField, 10);
 					if (this._dateIndices.ffLength === 2) {
 						millisecondsField *= 10;
 					} else if (this._dateIndices.ffLength === 1) {
@@ -9110,35 +9383,25 @@
 
 				// If we have year, month and day field we create date from them, else we create today date.
 				if (yearField !== null && yearField !== undefined &&
-					 monthField !== null && monthField !== undefined &&
-					 dateField !== null && dateField !== undefined) {
-					if (this.options.enableUTCDates) {
-						extractedDate = new Date(Date.UTC(yearField, monthField, dateField));
-					} else {
-						extractedDate = new Date(yearField, monthField, dateField);
-					}
+					monthField !== null && monthField !== undefined &&
+					dateField !== null && dateField !== undefined) {
+					extractedDate = new Date(yearField, monthField, dateField);
 				} else {
-					if (this.options.enableUTCDates) {
-						today = new Date();
-						extractedDate = new Date(Date.UTC(today.getFullYear(),
-							today.getMonth(), today.getDate()));
-					} else {
-						extractedDate = new Date();
-					}
+					extractedDate = this._setNewDateMidnight();
 					if (yearField !== null && yearField !== undefined) {
-						extractedDate = this._setDateField("year", extractedDate, yearField);
+						this._setDateField("FullYear", extractedDate, yearField);
 					}
 					if (monthField !== null && monthField !== undefined) {
-						extractedDate = this._setDateField("month", extractedDate, monthField);
+						this._setDateField("Month", extractedDate, monthField);
 					}
 					if (dateField !== null && dateField !== undefined) {
 						lastDayOfMonth = this._lastDayOfMonth(this
-							._getDateField("year", extractedDate),
-								this._getDateField("month", extractedDate) + 1);
+							._getDateField("FullYear", extractedDate),
+								this._getDateField("Month", extractedDate) + 1);
 						if (dateField > lastDayOfMonth) {
 							dateField = lastDayOfMonth;
 						}
-						extractedDate = this._setDateField("date", extractedDate, dateField);
+						this._setDateField("Date", extractedDate, dateField);
 					}
 				}
 			} else {
@@ -9148,39 +9411,41 @@
 				extractedDate = new Date(this._dateObjectValue.getTime());
 			}
 			if (yearField !== null && yearField !== undefined) {
-				extractedDate = this._setDateField("year", extractedDate, yearField);
+				this._setDateField("FullYear", extractedDate, yearField);
 			}
 			if (monthField !== null && monthField !== undefined) {
 
 				if (dateField !== null && dateField !== undefined) {
 					//temporary set day to be in the middle of the month to ensure when setting the month the day won't overflow into the next month.
-					extractedDate = this._setDateField("date", extractedDate, "15");
+					this._setDateField("Date", extractedDate, "15");
 				}
-				extractedDate = this._setDateField("month", extractedDate, monthField);
+				this._setDateField("Month", extractedDate, monthField);
 			}
 			if (dateField !== null && dateField !== undefined) {
 				lastDayOfMonth = this._lastDayOfMonth(this
-					._getDateField("year", extractedDate),
-					this._getDateField("month", extractedDate) + 1);
+					._getDateField("FullYear", extractedDate),
+					this._getDateField("Month", extractedDate) + 1);
 				if (dateField > lastDayOfMonth) {
 					dateField = lastDayOfMonth;
 				}
-				extractedDate = this._setDateField("date", extractedDate, dateField);
+				this._setDateField("Date", extractedDate, dateField);
 			}
 			if (hourField !== null && hourField !== undefined) {
-				extractedDate = this._setDateField("hours", extractedDate, hourField);
+				this._setDateField("Hours", extractedDate, hourField);
 			}
 			if (minutesField !== null && minutesField !== undefined) {
-				extractedDate = this._setDateField("minutes", extractedDate, minutesField);
+				this._setDateField("Minutes", extractedDate, minutesField);
 			}
 			if (secondsField !== null && secondsField !== undefined) {
-				extractedDate = this._setDateField("seconds", extractedDate, secondsField);
+				this._setDateField("Seconds", extractedDate, secondsField);
 			}
 			if (millisecondsField !== null && millisecondsField !== undefined) {
-				extractedDate =
-					this._setDateField("milliseconds", extractedDate, millisecondsField);
+				this._setDateField("Milliseconds", extractedDate, millisecondsField);
 			}
 
+			if (this.options.displayTimeOffset !== null) {
+				this._clearDateOffset(extractedDate);
+			}
 			return extractedDate;
 
 		},
@@ -9189,6 +9454,10 @@
 
 			if (!dateObject) {
 				return "";
+			}
+
+			if (this.options.displayTimeOffset !== null) {
+				dateObject = this._getDateOffset(dateObject);
 			}
 
 			maskVal = this.options.dateDisplayFormat;
@@ -9232,44 +9501,44 @@
 				.replace(/y/g, "\x10053");
 
 			maskVal = maskVal.replace(/\x10030/g,
-				this._getMilliseconds(this._getDateField("milliseconds", dateObject), 1))
-				.replace(/\x10031/g, this._getMilliseconds(this._getDateField("milliseconds",
+				this._getMilliseconds(this._getDateField("Milliseconds", dateObject), 1))
+				.replace(/\x10031/g, this._getMilliseconds(this._getDateField("Milliseconds",
 					dateObject), 10))
-				.replace(/\x10032/g, this._getMilliseconds(this._getDateField("milliseconds",
+				.replace(/\x10032/g, this._getMilliseconds(this._getDateField("Milliseconds",
 					dateObject), 100));
 
 			maskVal = maskVal.replace(/\x10033/g,
-				this._getDay(this._getDateField("day", dateObject), "dddd"))
-				.replace(/\x10034/g, this._getDay(this._getDateField("day", dateObject), "ddd"))
-				.replace(/\x10035/g, this._getDate(this._getDateField("date", dateObject), "dd"))
-				.replace(/\x10036/g, this._getDate(this._getDateField("date", dateObject), "d"))
+				this._getDay(this._getDateField("Day", dateObject), "dddd"))
+				.replace(/\x10034/g, this._getDay(this._getDateField("Day", dateObject), "ddd"))
+				.replace(/\x10035/g, this._getDate(this._getDateField("Date", dateObject), "dd"))
+				.replace(/\x10036/g, this._getDate(this._getDateField("Date", dateObject), "d"))
 				.replace(/\x10037/g,
-					this._getSeconds(this._getDateField("seconds", dateObject), "ss"))
+					this._getSeconds(this._getDateField("Seconds", dateObject), "ss"))
 				.replace(/\x10038/g,
-					this._getSeconds(this._getDateField("seconds", dateObject), "s"))
+					this._getSeconds(this._getDateField("Seconds", dateObject), "s"))
 				.replace(/\x10039/g,
-					this._getMinutes(this._getDateField("minutes", dateObject), "mm"))
+					this._getMinutes(this._getDateField("Minutes", dateObject), "mm"))
 				.replace(/\x10040/g,
-					this._getMinutes(this._getDateField("minutes", dateObject), "m"))
+					this._getMinutes(this._getDateField("Minutes", dateObject), "m"))
 
 				.replace(/\x10041/g,
-					this._getAMorPM(this._getDateField("hours", dateObject), "tt"))
-				.replace(/\x10042/g, this._getAMorPM(this._getDateField("hours", dateObject), "t"))
-				.replace(/\x10043/g, this._getHours(this._getDateField("hours", dateObject), "HH"))
-				.replace(/\x10044/g, this._getHours(this._getDateField("hours", dateObject), "H"))
-				.replace(/\x10045/g, this._getHours(this._getDateField("hours", dateObject), "hh"))
-				.replace(/\x10046/g, this._getHours(this._getDateField("hours", dateObject), "h"));
+					this._getAMorPM(this._getDateField("Hours", dateObject), "tt"))
+				.replace(/\x10042/g, this._getAMorPM(this._getDateField("Hours", dateObject), "t"))
+				.replace(/\x10043/g, this._getHours(this._getDateField("Hours", dateObject), "HH"))
+				.replace(/\x10044/g, this._getHours(this._getDateField("Hours", dateObject), "H"))
+				.replace(/\x10045/g, this._getHours(this._getDateField("Hours", dateObject), "hh"))
+				.replace(/\x10046/g, this._getHours(this._getDateField("Hours", dateObject), "h"));
 
 			maskVal = maskVal.replace(/\x10047/g,
-				this._getMonth(this._getDateField("month", dateObject), "MMMM"))
-				.replace(/\x10048/g, this._getMonth(this._getDateField("month", dateObject), "MMM"))
-				.replace(/\x10049/g, this._getMonth(this._getDateField("month", dateObject), "MM"))
-				.replace(/\x10050/g, this._getMonth(this._getDateField("month", dateObject), "M"));
+				this._getMonth(this._getDateField("Month", dateObject), "MMMM"))
+				.replace(/\x10048/g, this._getMonth(this._getDateField("Month", dateObject), "MMM"))
+				.replace(/\x10049/g, this._getMonth(this._getDateField("Month", dateObject), "MM"))
+				.replace(/\x10050/g, this._getMonth(this._getDateField("Month", dateObject), "M"));
 
 			maskVal = maskVal.replace(/\x10051/g,
-				this._getYear(this._getDateField("year", dateObject), "yyyy"))
-				.replace(/\x10052/g, this._getYear(this._getDateField("year", dateObject), "yy"))
-				.replace(/\x10053/g, this._getYear(this._getDateField("year", dateObject), "y"));
+				this._getYear(this._getDateField("FullYear", dateObject), "yyyy"))
+				.replace(/\x10052/g, this._getYear(this._getDateField("FullYear", dateObject), "yy"))
+				.replace(/\x10053/g, this._getYear(this._getDateField("FullYear", dateObject), "y"));
 
 			// Restore original \\f,d,s,m,etc.
 			maskVal = maskVal.replace(/\x01/g, "g").replace(/\x02/g, "d").replace(/\x03/g, "s")
@@ -9496,14 +9765,18 @@
 			}
 		},
 		_handleDeleteKey: function (skipCursorPosition) { //igDateEditor
-			var cursorPosition;
+			var cursorPosition = this._getSelection(this._editorInput[ 0 ]).start;
+			if (cursorPosition === this._maskWithPrompts.length) {
+				// D.P. Should do nothing at end of input
+				return;
+			}
 			this._super(skipCursorPosition);
 			cursorPosition = this._getSelection(this._editorInput[ 0 ]).start;
 			if ((cursorPosition - 2) === this._dateIndices.tt ||
 				(cursorPosition - 1) === this._dateIndices.tt) {
 				if (this._dateIndices._ttLength === 2) {
 					if ((cursorPosition - 1) === this._dateIndices.tt) {
-						this._super();
+						this._super(skipCursorPosition);
 					} else {
 						if (!skipCursorPosition) {
 							this._setCursorPosition(cursorPosition - 1);
@@ -9518,12 +9791,18 @@
 		},
 		_setMillisecondsEditMode: function (mask, time, currentMilliseconds, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMilliseconds,
-				secondsUpdateDelta = 0, currentSecond, timeSecond;
-			if (currentMilliseconds + delta >= 60) {
+				secondsUpdateDelta = 0, currentSecond, timeSecond, boundary;
+
+			switch (this._dateIndices.ffLength) {
+				case 1: boundary = 10; break;
+				case 2: boundary = 100; break;
+				case 3: boundary = 1000; break;
+			}
+			if (currentMilliseconds + delta >= boundary) {
 				if (isLimited) {
 					newMilliseconds = currentMilliseconds;
 				} else {
-					newMilliseconds = (currentMilliseconds + delta) - 60;
+					newMilliseconds = (currentMilliseconds + delta) - boundary;
 					secondsUpdateDelta = 1;
 				}
 			} else if (currentMilliseconds + delta < 0) {
@@ -9533,7 +9812,7 @@
 					if (currentMilliseconds + delta === 0) {
 						newMilliseconds = 0;
 					} else {
-						newMilliseconds = 60 + (currentMilliseconds + delta);
+						newMilliseconds = boundary + (currentMilliseconds + delta);
 						secondsUpdateDelta = -1;
 					}
 				}
@@ -9553,9 +9832,9 @@
 					// This is the case, when we don't have seconds in the mask, but we increase/decrease the milliseconds to the next/previous second.
 					// In such a situation, we update the internal date with the new second, so that when we loose focus the second is the correct one.
 					if (!isLimited) {
-						this._setDateField("seconds",
+						this._setDateField("Seconds",
 							this._dateObjectValue,
-							this._getDateField("seconds", this._dateObjectValue) +
+							this._getDateField("Seconds", this._dateObjectValue) +
 								secondsUpdateDelta);
 					}
 				}
@@ -9565,6 +9844,8 @@
 		_setSecondsEditMode: function (mask, time, currentSecond, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newSecond,
 				minuteUpdateDelta = 0, currentMinute, timeMinute;
+
+			delta = delta % 60;
 			if (currentSecond + delta >= 60) {
 				if (isLimited) {
 					newSecond = currentSecond;
@@ -9599,9 +9880,9 @@
 					// This is the case, when we don't have minute in the mask, but we increase/decrease the seconds to the next/previous minute.
 					// In such a situation, we update the internal date with the new minute, so that when we loose focus the minute is the correct one.
 					if (!isLimited) {
-						this._setDateField("minutes",
+						this._setDateField("Minutes",
 							this._dateObjectValue,
-							this._getDateField("minutes", this._dateObjectValue) +
+							this._getDateField("Minutes", this._dateObjectValue) +
 								minuteUpdateDelta);
 					}
 				}
@@ -9611,6 +9892,8 @@
 		_setMinutesEditMode: function (mask, time, currentMinute, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMinute,
 				hourUpdateDelta = 0, currentHour, timeHour;
+
+			delta = delta % 60;
 			if (currentMinute + delta >= 60) {
 				if (isLimited) {
 					newMinute = currentMinute;
@@ -9644,9 +9927,9 @@
 					// This is the case, when we don't have hours in the mask, but we increase/decrease the minute to the next/previous hour.
 					// In such a situation, we update the internal date with the new hour, so that when we loose focus the hour is the correct one.
 					if (!isLimited) {
-						this._setDateField("hours",
+						this._setDateField("Hours",
 							this._dateObjectValue,
-							this._getDateField("hours", this._dateObjectValue) +
+							this._getDateField("Hours", this._dateObjectValue) +
 								hourUpdateDelta);
 					}
 				}
@@ -9658,15 +9941,17 @@
 				is24format = this._dateIndices.hh24,
 				dayUpdateDelta = false,
 				amPmUpdateDelta = false,
-				newHour = currentHour + delta,
-				hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm, timeDay, timeAmPm;
+				newHour, hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm,
+				timeDay, timeAmPm, dayDelta;
 
 			if (is24format) {
 				hours = 24;
+				newHour = currentHour + (delta % 24);
 				wrapUpHours = newHour >= hours; // The maximum hour in 24H format is 23, that's why 24 is the turning point.
 				wrapDownHours = newHour < 0; // The minumum hour in 24H format is 00, that's why -1 is the turing point.
 			} else {
 				hours = 12;
+				newHour = currentHour + (delta % 12);
 				wrapUpHours = newHour > hours; // The maximum hour in 12H format is 12, that's why 13 is the turning point.
 				wrapDownHours = newHour < 1; // The minumum hour in 12H format is 01, that's why 0 is the turning point.
 				currentAmPm = (mask.toLowerCase().indexOf(" pm") >= 0) ? "pm" : "am";
@@ -9676,6 +9961,7 @@
 				if (isLimited) {
 					newHour = currentHour;
 				} else {
+					dayDelta = (delta !== 0) ? 1 : 0;
 					if (is24format) {
 
 						// In 24H format date, when the hour changes (wraps up) from 23 to 00, this is the time that the day is increased also.
@@ -9685,8 +9971,14 @@
 
 						// In 12H format date, when the hour changes (wraps up) from 12 to 01, this is NOT the time that the day is increased.
 						// It is increased an hour earlier. (implemented in the top else block).
-						if (newHour === 13) {
-							newHour = 1;
+						if (newHour >= 13) {
+							newHour = newHour - hours;
+							if (newHour > 13 || delta > 1) {
+								amPmUpdateDelta = true;
+							}
+							if (currentAmPm === "pm") {
+								dayUpdateDelta = true;
+							}
 						}
 					}
 				}
@@ -9694,6 +9986,7 @@
 				if (isLimited) {
 					newHour = currentHour;
 				} else {
+					dayDelta = (delta !== 0) ? -1 : 0;
 					if (is24format) {
 
 						// In 24H format date, when the hour changes (wraps up) from 00 to 23, this is the time that the day is decreased also.
@@ -9706,6 +9999,12 @@
 						// N.A. September 15th, 2016 #342: Fix spinning down of the limit value.
 						if (newHour <= 0) {
 							newHour = 12 + newHour;
+							if (newHour < 0 || delta < -1) {
+								amPmUpdateDelta = true;
+							}
+							if (currentAmPm === "am") {
+								dayUpdateDelta = true;
+							}
 						}
 					}
 				}
@@ -9713,13 +10012,15 @@
 				if (!is24format) {
 
 					// Update AM/PM and date in 12H format.
-					if (delta > 0 && newHour === 12) {
+					if (delta > 0 && newHour >= 12 && newHour - delta < 12 ) {
+						dayDelta = (delta !== 0) ? 1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "pm") {
 							dayUpdateDelta = true;
 						}
 					}
-					if (delta < 0 && newHour === 11) {
+					if (delta < 0 && newHour < 12 && newHour - delta >= 12) {
+						dayDelta = (delta !== 0) ? -1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "am") {
 							dayUpdateDelta = true;
@@ -9740,14 +10041,14 @@
 				if (timeDay !== null) {
 					currentDay = parseInt(this._getStringRange(mask, timeDay.startPosition,
 						timeDay.endPosition), 10);
-					mask = this._setDayEditMode(mask, timeDay, currentDay, delta);
+					mask = this._setDayEditMode(mask, timeDay, currentDay, dayDelta);
 				} else {
 
 					// This is the case, when we don't have day in the mask, but we increase/decrease the hour to the next/previous day.
 					// In such a situation, we update the internal date with the new day, so that when we loose focus the day is the correct one.
 					if (!isLimited) {
-						this._setDateField("date", this._dateObjectValue,
-							this._getDateField("date", this._dateObjectValue) + delta);
+						this._setDateField("Date", this._dateObjectValue,
+							this._getDateField("Date", this._dateObjectValue) + dayDelta);
 					}
 				}
 			}
@@ -9785,14 +10086,23 @@
 		_setDayEditMode: function (mask, time, currentDay, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, currentYear,
 				currentMonth, lastDayOfMonth, lastDayOfPreviousMonth, newDay,
-				monthUpdateDelta, timeYear, timeMonth;
+				monthUpdateDelta, timeYear, timeMonth, today;
 
+			today = new Date();
 			timeYear = this._createYearPosition();
-			currentYear = parseInt(this._getStringRange(mask,
-				timeYear.startPosition, timeYear.endPosition), 10);
+			if (timeYear === null) {
+				currentYear = today.getFullYear();
+			} else {
+				currentYear = parseInt(this._getStringRange(mask,
+					timeYear.startPosition, timeYear.endPosition), 10);
+			}
 			timeMonth = this._createMonthPosition();
-			currentMonth = parseInt(this._getStringRange(mask,
-				timeMonth.startPosition, timeMonth.endPosition), 10);
+			if (timeMonth === null) {
+				currentMonth = today.getMonth() + 1;
+			} else {
+				currentMonth = parseInt(this._getStringRange(mask,
+					timeMonth.startPosition, timeMonth.endPosition), 10);
+			}
 			lastDayOfMonth = this._lastDayOfMonth(currentYear, currentMonth);
 			lastDayOfPreviousMonth = this._lastDayOfMonth(currentYear,
 				currentMonth - 1 !== 0 ? currentMonth - 1 : 12);
@@ -9826,8 +10136,8 @@
 					// This is the case, when we don't have month in the mask, but we increase/decrease the days to the next/previous month.
 					// In such a situation, we update the internal date with the new month, so that when we loose focus the month is the correct one.
 					if (!isLimited) {
-						this._setDateField("month", this._dateObjectValue,
-							this._getDateField("month", this._dateObjectValue) + monthUpdateDelta);
+						this._setDateField("Month", this._dateObjectValue,
+							this._getDateField("Month", this._dateObjectValue) + monthUpdateDelta);
 					}
 				}
 			}
@@ -9862,12 +10172,12 @@
 					mask = this._setYearEditMode(mask, timeYear, currentYear, yearUpdateDelta);
 				} else {
 
-					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous minute.
+					// This is the case, when we don't have year in the mask, but we increase/decrease the month to the next/previous year.
 					// In such a situation, we update the internal date with the new year, so that when we loose focus the month is the correct one.
 					if (!isLimited) {
-						this._setDateField("year",
+						this._setDateField("FullYear",
 							this._dateObjectValue,
-							this._getDateField("year", this._dateObjectValue) + yearUpdateDelta);
+							this._getDateField("FullYear", this._dateObjectValue) + yearUpdateDelta);
 					}
 				}
 			}
@@ -9880,6 +10190,10 @@
 			} else {
 				newYear = currentYear + delta;
 			}
+			newYear = newYear.toString();
+			if (!this._dateIndices.fourDigitYear) {
+				newYear = newYear.substring(newYear.length - 2, newYear.length);
+			}
 			mask = this._setTimeEditMode(mask, time, currentYear, newYear);
 			return mask;
 		},
@@ -9888,7 +10202,11 @@
 
 			newValueAsString = newValue.toString();
 			if (newValueAsString.length === 1) {
-				newValueAsString = "0" + newValueAsString;
+				if (!(time.name === "milliseconds" && this._dateIndices.ffLength === 1)) {
+
+					// Only when milliseconds mask is with length 1, then we don't precede the new value with 0.
+					newValueAsString = "0" + newValueAsString;
+				}
 				if (time.name === "milliseconds" && this._dateIndices.ffLength === 3) {
 					newValueAsString = "0" + newValueAsString;
 				}
@@ -10006,7 +10324,8 @@
 			}
 			if (cursorPosition >= indices.yy &&
 				(indices.fourDigitYear && cursorPosition <= indices.yy + 4 ||
-					indices.fourDigitYear === undefined && indices.yy + 2)) {
+					(indices.fourDigitYear === undefined || indices.fourDigitYear === false) &&
+						cursorPosition <= indices.yy + 2)) {
 				time = this._createYearPosition();
 			} else if (cursorPosition >= indices.MM && cursorPosition <= indices.MM + 2) {
 				time = this._createMonthPosition();
@@ -10085,7 +10404,7 @@
 		},
 		_initEmptyMask: function (date) {
 			var mask = this._maskWithPrompts,
-				today = new Date(),
+				today = this._setNewDateMidnight(),
 				timeYear, timeMonth, timeDay, timeHours,
 				timeAmOrPM, timeMinutes, timeSeconds, timeMilliseconds,
 				year, month, day, hours, amPM, minutes, seconds, milliseconds;
@@ -10139,7 +10458,7 @@
 			}
 			return mask;
 		},
-		_spinEditMode: function (delta) {
+		_spinEditMode: function (delta, userInteraction) {
 			var self = this, cursorPosition = this._getCursorPosition(),
 				mask = this._editorInput.val(), time;
 
@@ -10161,76 +10480,96 @@
 			//	N.A. 3/2/2016 Bug #215046: We don't need to update _maskedValue, before the value is updated.
 			// this._maskedValue = mask;
 			this._editorInput.val(mask);
-			if ($.ig.util.isChrome || $.ig.util.isSafari || $.ig.util.isFF) {
-
-				// In Chrome, Safari and FF there is a bug and the cursor needs to be set with timeout in order to work.
-				this._timeouts.push(setTimeout(function () {
-					self._setCursorPosition(cursorPosition);
-				}, 0));
-			} else {
-				self._setCursorPosition(cursorPosition);
+			if (userInteraction) {
+				this._processTextChanged();
 			}
+			self._setCursorPosition(cursorPosition);
 		},
-		_setTimePeriod: function (periodName, delta) {
+		_setTimePeriod: function (periodName, delta, userInteraction) {
 			var date, period, newPeriod;
 
-			date = this._dateObjectValue;
-			period = parseInt(this._getDateField(periodName, date), 10);
-			if (period === null) {
+			if (!this._dateObjectValue || !this._isValidDate(this._dateObjectValue)) {
 
 				// When there is no date at all we want to set today and should not increase the day.
 				// It's the same for the other time periods.
-				period = this._getDateField(periodName, new Date());
+				date = this._setNewDateMidnight();
 				delta = 0;
+			} else {
+				date = new Date(this._dateObjectValue);
 			}
+			period = this._getDateField(periodName, date);
 			newPeriod = period + delta;
 
-			if (!date) {
-				date = new Date();
-			}
-			if (newPeriod !== period) {
+			if (!this._isNewPeriodLimited(periodName, newPeriod, delta, date)) {
 				this._setDateField(periodName, date, newPeriod);
-				this._triggerInternalValueChange(date);
-				this._editorInput.val(this._getDisplayValue());
+				if (userInteraction) {
+					this._triggerInternalValueChange(date);
+					this._editorInput.val(this._getDisplayValue());
+					this._processTextChanged();
+				} else {
+					this._processInternalValueChanging(date);
+					this._editorInput.val(this._getDisplayValue());
+				}
 			}
 		},
-		_spinDisplayMode: function (delta) {
+		_isNewPeriodLimited: function(name, value, delta, date) {
+			var isLimited = false;
+			if (this.options.limitSpinToCurrentField) {
+				if (delta < 0) {
+					if (value < 0) {
+						isLimited = true;
+					}
+				} else if (name === "Month" && value === 13 ||
+					name === "Month" && value ===
+						this._lastDayOfMonth(date.getFullYear() && date.getMonth()) + 1 ||
+					(name === "Hours" || name === "Minutes"  || name === "Seconds") &&
+						value === 60 ||
+					name === "Milliseconds" && value === 1000) {
+					isLimited = true;
+				}
+			}
+			return isLimited;
+		},
+		_spinDisplayMode: function (delta, userInteraction) {
 			var indices = this._dateIndices, periodName;
 
 			if (indices.dd !== undefined) {
 
 				// Default behavior is that we always spin up/down day if it is available in the mask.
-				periodName = "date";
+				periodName = "Date";
 			} else if (indices.ff !== undefined) {
 
 				// If day is not available then we spin the smallest time period, that's why we start from milliseconds.
-				periodName = "milliseconds";
+				periodName = "Milliseconds";
 				if (indices.ffLength === 2) {
 					delta = delta * 10;
 				} else if (indices.ffLength === 1) {
 					delta = delta * 100;
 				}
 			} else if (indices.ss !== undefined) {
-				periodName = "seconds";
+				periodName = "Seconds";
 			} else if (indices.mm !== undefined) {
-				periodName = "minutes";
+				periodName = "Minutes";
 			} else if (indices.hh !== undefined) {
-				periodName = "hours";
+				periodName = "Hours";
 			} else if (indices.MM !== undefined) {
-				periodName = "month";
-			} else if (indices.yy !== undefined) {
-				periodName = "year";
+				periodName = "Month";
+			} else {
+				periodName = "FullYear";
 			}
-			this._setTimePeriod(periodName, delta);
+			this._setTimePeriod(periodName, delta, userInteraction);
 		},
-		_spin: function (delta) {
+		_spin: function (delta, userInteraction) {
+			if (!delta) {
+				return;
+			}
+			this._clearEditorNotifier();
 			this._currentInputTextValue = this._editorInput.val();
 			if (this._editMode) {
-				this._spinEditMode(delta);
+				this._spinEditMode(delta, userInteraction);
 			} else {
-				this._spinDisplayMode(delta);
+				this._spinDisplayMode(delta, userInteraction);
 			}
-			this._processTextChanged();
 		},
 		_spinUpEditMode: function (delta) {
 			this._spinEditMode(delta ? delta : this.options.spinDelta);
@@ -10246,7 +10585,7 @@
 				$(".selector").%%WidgetName%%("value", new Date (2016, 2, 3);
 			```
 				paramType="date" optional="true" New editor value. Date object can be set as value. String value can be passed and the editor will use the javascript Date object constructor to create date object and will use it for the comparison. MVC date format can be used too. For example Date(/"thicks"/).
-				Note! This option doesn't use the displayInputFormat to extract the date
+				Note! This option doesn't use the dateInputFormat to extract the date
 				returnType="date" Current editor value. */
 			var parsedVal;
 			if (newValue !== undefined) {
@@ -10278,30 +10617,34 @@
 				this._editorInput.val(this._editMode ?
 					this._maskedValue :
 					this._getDisplayValue());
+
+				// N.A. January 4th, 2017 #664 Validate spin button state on a change.
+				this._setSpinButtonsState(newValue);
 			} else {
 				if (this.options.value) {
 					return this._getValueByDataMode();
 				} else {
-					if (this.options.allowNullValue) {
-						return this.options.nullValue;
-					} else {
-						return "";
-					}
+					return this.options.value;
 				}
 			}
+
+			// N.A. January 3th, 2017 #665: Update button state, when value is changed using API method.
+			this._checkClearButtonState();
 		},
 		getSelectedDate: function() {
-			/* Gets selected date.
+			/* Gets selected date as a date object. This method can be used when dataMode is set as either displayModeText or editModeText.
+			In such cases the value() method will not return date object and getSelectedDate() can be used to replace that functionality.
 			```
 			$(".selector").%%WidgetName%%("getSelectedDate");
 			```
 				returnType="date" */
-			return this._dateObjectValue;
+			return new Date(this._dateObjectValue.getTime());
 		},
 		selectDate: function (date) {
-			/* Sets selected date.
+			/* Sets selected date. This method can be used when dataMode is set as either displayModeText or editModeText.
+			In such cases the value() cannot accept a date object as a new value and getSelectedDate() can be used to replace that functionality.
 			```
-				$(".selector").igDateEditor("selectDate", new Date (2016, 2, 3));
+				$(".selector").%%WidgetName%%("selectDate", new Date (2016, 2, 3));
 			```
 				paramType="date" optional="false" */
 			this._updateValue(date);
@@ -10310,23 +10653,25 @@
 		spinUp: function (delta) {
 			/* Increases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinUp", 2);
+				$(".selector").%%WidgetName%%("spinUp", 2);
 			```
 				paramType="number" optional="true" The increase delta. */
-			this._spin(delta ? delta : this.options.spinDelta);
+			delta = parseInt(delta, 10);
+			this._spin((!isNaN(delta) && delta >= 0) ? delta : this.options.spinDelta);
 		},
 		spinDown: function (delta) {
 			/* Decreases the date or time period, depending on the current cursor position.
 			```
-				$(".selector").igDateEditor("spinDown", 3);
+				$(".selector").%%WidgetName%%("spinDown", 3);
 			```
 				paramType="number" optional="true" The decrease delta. */
-			this._spin(delta ? -delta : -this.options.spinDelta);
+			delta = parseInt(delta, 10);
+			this._spin(!isNaN(delta) && delta >= 0 ? -delta : -this.options.spinDelta);
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.
 			```
-			$(".selector").igDateEditor("spinUpButton");
+			$(".selector").%%WidgetName%%("spinUpButton");
 			```
 				returnType="$" The jQuery object representing the spin up UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinUpButton.call(this);
@@ -10334,7 +10679,7 @@
 		spinDownButton: function () {
 			/* Returns a reference to the spin down UI element of the editor.
 			```
-				$(".selector").igDateEditor("spinDownButton");
+				$(".selector").%%WidgetName%%("spinDownButton");
 			```
 				returnType="$" The jQuery object representing the spin down UI element of the editor. */
 			return $.ui.igTextEditor.prototype.spinDownButton.call(this);
@@ -10370,32 +10715,32 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownButton: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownVisible: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		}
 	});
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
@@ -10435,7 +10780,7 @@
 				spin type="string" Spin buttons are located on the right side of the editor.
 			*/
 			buttonType: "dropdown",
-			/* type="object" Gets/Sets the options supported by the jquery.ui.datepicker. Only options related to the drop-down calendar are supported.
+			/* type="object" Gets/Sets the options supported by the [jquery.ui.datepicker](http://api.jqueryui.com/datepicker/). Only options related to the drop-down calendar are supported.
 			```
 			//Initialize
 			$(".selector").igDatePicker({
@@ -10564,6 +10909,8 @@
 		},
 		_listMouseDownHandler: function () { // igDatePicker
 		},
+		_updateDropdownSelection: function () { //igDatePicker
+		},
 		_disableEditor: function (applyDisabledClass) { //igDatePicker
 			//T.P. 9th Dec 2015 Bug 211010
 			//applyDisabledClass parameter is flag wheather the ui-state-disabled class is applied to the both _editorInput and _valueInput
@@ -10599,8 +10946,9 @@
 		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
-				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker and return focus
-				this._editorInput.focus();
+				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker
+				return;
+
 			} else {
 				this._super(event);
 			}
@@ -10617,19 +10965,27 @@
 					if (self._dateObjectValue) {
 
 						// Date comming from the picker contains only year, month and date - if the user has specified inputMask with hours and minutes - then selecting the date from the picker should keep the same hours and minutes.
-						date = new Date(self._dateObjectValue);
-					} else {
+						if (self.options.displayTimeOffset !== null) {
 
-						//T.P. 10th Dec 2015 211062: When there is no value and the datepicker selects value the stored date object needs to be with current time.
-						//In Case there is no dateObject which meand the editor has no value when the date is selected it will be with current time value (hours, minutes, seconds)
-						date = new Date();
+							// use display values to set picker result and reset before processing
+							date = self._getDateOffset(self._dateObjectValue);
+						} else {
+							date = new Date(self._dateObjectValue);
+						}
+					} else {
+						date = self._setNewDateMidnight();
 					}
-					date = self._setDateField("year", date, dateFromPicker.getFullYear());
+
+					self._setDateField("FullYear", date, dateFromPicker.getFullYear());
 
 					//Temporary change the date to be in the middle of the month 15th, because when using JavaScript Date object to set month when date is 31, the date object is moved with one day.
-					date = self._setDateField("date", date, 15);
-					date = self._setDateField("month", date, dateFromPicker.getMonth());
-					date = self._setDateField("date", date, dateFromPicker.getDate());
+					self._setDateField("Date", date, 15);
+					self._setDateField("Month", date, dateFromPicker.getMonth());
+					self._setDateField("Date", date, dateFromPicker.getDate());
+
+					if (self.options.displayTimeOffset !== null) {
+						self._clearDateOffset(date);
+					}
 
 					self._processValueChanging(date);
 					self._triggerItemSelected.call(self,
@@ -10648,8 +11004,14 @@
 					self._pickerOpen = true;
 				},
 				onClose: function (/*dateText, inst*/) {
+
 					// fires before input blur
 					delete self._pickerOpen;
+
+					// I.G. 01/12/2016 Fix for #585 [igDatePicker] Year change dropdown does not open in IE by single click
+					if (!self._editorInput.is(document.activeElement)) {
+						self._editorInput.blur();
+					}
 					self._triggerDropDownClosed();
 				}
 			};
@@ -10699,9 +11061,6 @@
 					this._getLocaleOption("ariaCalendarButton") + "'></div>"),
 				dropDownIcon = $("<div></div>");
 
-			if (this._dropDownButton) {
-				return;
-			}
 			dropDownButton.addClass(this.css.buttonCommon);
 			dropDownButton.attr("title", this._getLocaleOption("datePickerButtonTitle"));
 			this._editorContainer.prepend(dropDownButton
@@ -10742,6 +11101,12 @@
 				this.options.datepickerOptions.minDate) {
 				if (this._isValidDate(this.options.datepickerOptions.minDate)) {
 					this.options.minValue = this.options.datepickerOptions.minDate;
+					if (this.options.displayTimeOffset !== null) {
+						this._editorInput.datepicker("option", "minDate", this._getDateOffset(
+							this._getDateObjectFromValue(this.options.datepickerOptions.minDate)
+						));
+						this._editorInput.val(this._getDisplayValue());
+					}
 				}
 			}
 			if (!this.options.maxValue &&
@@ -10749,6 +11114,12 @@
 				this.options.datepickerOptions.maxDate) {
 				if (this._isValidDate(this.options.datepickerOptions.minDate)) {
 					this.options.maxValue = this.options.datepickerOptions.maxDate;
+					if (this.options.displayTimeOffset !== null) {
+						this._editorInput.datepicker("option", "maxDate", this._getDateOffset(
+							this._getDateObjectFromValue(this.options.datepickerOptions.maxDate)
+						));
+						this._editorInput.val(this._getDisplayValue());
+					}
 				}
 			}
 		},
@@ -10800,17 +11171,25 @@
 						(this._editorInput.data("datepicker").settings.minDate !==
 							this.options.minValue))
 					{
-						this.options.minValue =
-							this._editorInput.data("datepicker").settings.minDate;
+						this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
 					}
 					if (value.maxDate &&
 						(this._editorInput.data("datepicker").settings.maxDate !==
 							this.options.maxValue))
 					{
-						this.options.maxValue =
-							this._editorInput.data("datepicker").settings.maxDate;
+						this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
 					}
 				}
+					break;
+				case "minValue":
+				case "maxValue":
+					this.options[ option ] = prevValue;
+					this._super(option, value);
+					this._editorInput.datepicker("option", "minDate", this.options.minValue);
+					this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
+
+					// prevent datepicker from updating the input text (if min/max change selection)
+					this._editorInput.val(this._currentInputTextValue);
 					break;
 				default: {
 
@@ -10827,10 +11206,12 @@
 			if (event.keyCode === 38 && !event.altKey) {
 				if (!event.ctrlKey) {
 					this._spinUpEditMode();
+					event.preventDefault();
 				}
 			} else if (event.keyCode === 40 && !event.altKey) {
 				if (!event.ctrlKey) {
 					this._spinDownEditMode();
+					event.preventDefault();
 				}
 			} else {
 				this._super(event);
@@ -10910,13 +11291,13 @@
 				direction = "down";
 			}
 			if (this._editMode && this._editorInput.val() !== this._maskWithPrompts) {
-				currentDate = this._valueFromText(this._editorInput.val());
+				// D.P. 15th May 2017 #1002 Drop down cannot be opened w/ displayTimeOffset when dataMode is "editModeText"
+				currentDate = this._parseDateFromMaskedValue(this._editorInput.val());
 			}
 
 			if (currentDate) {
-				if (this.options.enableUTCDates) {
-					currentDate = new Date(currentDate.getUTCFullYear(),
-						currentDate.getUTCMonth(), currentDate.getUTCDate());
+				if (this.options.displayTimeOffset !== null) {
+					currentDate = this._getDateOffset(currentDate);
 				}
 
 				// N.A. July 11th, 2016 #89 Enter edit mode in order to put 0 if date or month is < 10.
@@ -10969,22 +11350,22 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw ($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
 		},
 		showDropDown: function () {
 			/* Shows the drop down list.
@@ -11184,6 +11565,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11193,6 +11575,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11202,6 +11585,7 @@
 			var args = {
 				originalEvent: event,
 				owner: this,
+				key: event.keyCode,
 				element: event.target,
 				editorInput: this._editorInput
 			};
@@ -11232,7 +11616,7 @@
 				this._editorContainer = this.element.wrap($("<div></div>")).parent();
 				this._editorInput.after(this._valueInput);
 			} else {
-				throw ($.ig.Editor.locale.instantiateCheckBoxErrMsg);
+				throw new Error($.ig.Editor.locale.instantiateCheckBoxErrMsg);
 			}
 
 			this._editorContainer
@@ -11407,10 +11791,6 @@
 			};
 			this._trigger(this.events.blur, event, args);
 		},
-		_updateValue: function (value) {
-			this.options.value = value;
-			this._valueInput.val(value);
-		},
 		_getState: function () {
 			var state;
 			if (this._inputValue !== undefined) {
@@ -11420,7 +11800,7 @@
 				if (value.ret) {
 					state = value.p1;
 				} else {
-					throw ($.ig.Editor.locale.cannotParseNonBoolValue);
+					throw new Error($.ig.Editor.locale.cannotParseNonBoolValue);
 				}
 			}
 
@@ -11552,7 +11932,7 @@
 			if (delay) {
 				this._timeouts.push(setTimeout(function () {
 					self._cancelFocusTrigger = true;
-					this._editorContainer.focus();
+					self._editorContainer.focus();
 					self._setFocus();
 				}, delay));
 			} else {
@@ -11602,7 +11982,7 @@
 					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
-						throw ($.ig.Editor.locale.cannotSetNonBoolValue);
+						throw new Error($.ig.Editor.locale.cannotSetNonBoolValue);
 					}
 				} else {
 					/* update value only */

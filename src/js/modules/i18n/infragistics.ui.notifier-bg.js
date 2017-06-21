@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function($) {
 $.ig = $.ig || {};
 
@@ -17,9 +26,11 @@ if (!$.ig.Notifier) {
 		locale: {
 			successMsg: "Успех",
 			errorMsg: "Грешка",
-			warningMsg: "Внимание"
+			warningMsg: "Внимание",
+			notSupportedState: "Неподдържано състояние на нотификациите! Използвайте някое от поддържаните състояния 'success', 'info', 'warning', 'error’.",
+			notSupportedMode: "Неподдържан режим на нотификациите. Използвайте някой от поддържаните режими 'auto', 'popover', 'inline'."
 		}
 	});
 
 }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

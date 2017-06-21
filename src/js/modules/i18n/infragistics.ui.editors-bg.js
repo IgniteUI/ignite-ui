@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -45,7 +54,7 @@
 			    maxValExceedRevertErrMsg: "Входните данни надхвърлиха максималната стойност от {0} и бяха върнат към предишната им стойност.",
 			    minValExceedRevertErrMsg: "Входните данни бяха по-малки от минималната стойност от {0} и бяха върнати към предишната им стойност.",
 			    maxValExceedSetErrMsg: "Входните данни надхвърлиха максималната стойност от {0} и бяха върнати към максималната стойност.",
-			    minValExceedSetErrMsg: "Входните данни надхвърлиха минималната стойност от {0} и бяха върнати към минималната стойност.",
+			    minValExceedSetErrMsg: "Входните данни данни бяха по-малки минималната стойност от {0} и бяха върнати към минималната стойност.",
 			    maxValExceededWrappedAroundErrMsg: "Входните данни надхвърлиха максималната стойност от {0} и бяха върнати към най-ниската им позволена такава.",
 			    minValExceededWrappedAroundErrMsg: "Входните данни бяха по-малки от минималната стойност от {0} и бяха върнати към предишната им стойност.",
 			    btnValueNotSupported: 'Необходима е различна стойност на бутона. Изберете една от следните стойности: "dropdown", "clear" или "spin".',
@@ -66,16 +75,18 @@
 			    datePickerEditorNoSuchMethod: "Редакторът на дати не поддържа този метод.",
 			    datePickerNoSuchMethodDropDownContainer: "Редакторът на дати не поддържа този метод. Вместо него използвайте 'getCalendar'.",
 			    buttonTypeIsDropDownOnly: "Datepicker позволява само dropdown и чисти стойности за опцията buttonType.",
-			    dateEditorMinValue: "Опцията MinValue не може да бъде настроена по време на изпълнение.",
-			    dateEditorMaxValue: "Опцията MaxValue не може да бъде настроена по време на изпълнение.",
-			    cannotSetRuntime: "Тази опцията не може да бъде настроена по време на изпълнение.",
+				dateEditorOffsetRange: "Опцията displayTimeOffset трябва да бъде между -720 и 840, тя показва изместването в минути според UTC на всички часови зони от най-западната (-12:00) до най-източната (+14:00).",
+				cannotSetRuntime: "Тази опцията не може да бъде настроена по време на изпълнение.",
 			    invalidDate: "Невалидна дата",
 			    maskMessage: 'Всички задължителни позиции трябва да бъдат попълнени.',
 			    maskRevertMessage: 'Всички задължителни позиции трябва да бъдат попълнени, заради което стойността беше върната към последната валидна',
 				dateMessage: 'Трябва да бъде въведена валидна дата.',
-			    centuryThresholdValidValues: "Свойството centuryThreshold трябва да е между 0 и 99. Стойността беше върната към началната си стойност. ",
-			    noListItemsNoButton: "Брояча или падащия бутон са рендирани понеже няма listitems."
-		    }
+			    centuryThresholdValidValues: "Свойството centuryThreshold трябва да е между 0 и 99.",
+			    noListItemsNoButton: "Брояча или падащия бутон са рендирани понеже няма listitems.",
+				decimalNumber: "Когато dataMode е '{0}’ опция {1} може да приема числови стойности в интервала 0 - {2}.",
+				decimalSeparatorErrorMsg: "Опцията decimalSeparator изисква различна стойност. Стойността трябва да бъде единичен символ.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Опциите groupSeparator и decimalSeparator не могат да имат еднакви стойности."
+			}
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

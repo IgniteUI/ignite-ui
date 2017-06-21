@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -49,9 +58,10 @@
 			    nonDivException: 'Le lecteur vidéo Infragistics HTML5 peut uniquement être instancié sur une balise DIV.',
 			    relatedVideos: 'VIDÉOS RELIÉES',
 			    replayButton: 'Rejouer',
-			    replayTooltip: 'Cliquer pour rejouer la dernière vidéo.'
+			    replayTooltip: 'Cliquer pour rejouer la dernière vidéo.',
+				noCommercials: 'Les commandes du navigateur ne prennent pas en charge les publicités'
 		    }
 	    });
 
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

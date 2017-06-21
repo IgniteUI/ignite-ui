@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -45,7 +54,7 @@
 			    maxValExceedRevertErrMsg: "La entrada ha superado el valor máximo de {0} y se ha vuelto a la anterior.",
 			    minValExceedRevertErrMsg: "La entrada es inferior al valor mínimo de {0} y ha vuelto al valor anterior",
 			    maxValExceedSetErrMsg: "La entrada ha superado el valor máximo de {0} y se ha ajustado al valor máximo.",
-			    minValExceedSetErrMsg: "La entrada ha superado el valor máximo de {0} y se ha ajustado al valor mínimo.",
+			    minValExceedSetErrMsg: "La entrada es inferior al valor mínimo de {0} y se ha ajustado al valor mínimo.",
 			    maxValExceededWrappedAroundErrMsg: "La entrada ha superado el valor máximo de {0} y se ha ajustado al mínimo permitido.",
 			    minValExceededWrappedAroundErrMsg: "La entrada es inferior al valor mínimo de {0} y se ha ajustado en el valor máximo permitido",
 			    btnValueNotSupported: 'Se requiere un valor de botón diferente. Elija un valor entre "dropdown", "clear" y "spin".',
@@ -66,16 +75,18 @@
 			    datePickerEditorNoSuchMethod: "El editor de fechas no admite este método.",
 			    datePickerNoSuchMethodDropDownContainer: "El editor de fechas no admite este método. En su lugar, utilice 'getCalendar' uno.",
 			    buttonTypeIsDropDownOnly: "Datepicker sólo admite valores de desplegar menú y de borrar para la opción buttonType.",
-			    dateEditorMinValue: "La opción MinValue no puede establecer un tiempo de ejecución.",
-			    dateEditorMaxValue: "La opción MaxValue no puede establecer un tiempo de ejecución.",
-			    cannotSetRuntime: "Esta opción no puede establecer un tiempo de ejecución",
+				dateEditorOffsetRange: "La opción displayTimeOffset debe estar entre -720 y 840, lo que representa el intervalo en minutos, según el UTC, de todas las zonas horarias desde el extremo oeste (-12:00) hasta el extremo este (+14:00).",
+				cannotSetRuntime: "Esta opción no puede establecer un tiempo de ejecución",
 			    invalidDate: "Fecha no válida",
 			    maskMessage: 'Deben rellenarse todas las posiciones requeridas.',
 			    maskRevertMessage: 'Deben rellenarse todas las posiciones requeridas. Por eso el valor ha vuelto al último valor válido.',
 				dateMessage: 'Debe introducirse una fecha válida',
-			    centuryThresholdValidValues: "La propiedad centuryThreshold debería estar entre 0 y 99. Se ha devuelto este valor a su ajuste predeterminado.",
-			    noListItemsNoButton: "No se representa ningún botón desplegable o de control de número porque no hay elementos de lista."
+			    centuryThresholdValidValues: "La propiedad centuryThreshold debería estar entre 0 y 99.",
+			    noListItemsNoButton: "No se representa ningún botón desplegable o de control de número porque no hay elementos de lista.",
+				decimalNumber: "Cuando dataMode es '{0}', la opción {1} puede aceptar valores numéricos entre 0 y {2}.",
+				decimalSeparatorErrorMsg: "La opción decimalSeparator requiere un valor diferente. Su valor debe ser un carácter individual.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Las opciones groupSeparator y decimalSeparator no pueden tener valores iguales."
 		    }
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

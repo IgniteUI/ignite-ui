@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -19,8 +28,8 @@
 			    pinButtonTitle: "Закачи",
 			    unpinButtonTitle: "Откачи",
 			    restoreButtonTitle: "Възстанови",
-				setOptionError: 'Стойността на следната опция не може да бъде променяна след инициализация: '
+				setOptionError: 'Тази опцията не може да бъде настроена по време на изпълнение.'
 		    }
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

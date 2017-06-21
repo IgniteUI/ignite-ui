@@ -22,8 +22,7 @@
             "jquery",
             "jquery-ui",
             "./infragistics.util",
-			"./infragistics.util.jquery",
-            "./infragistics.ui.splitter-en"
+			"./infragistics.util.jquery"
         ], factory);
     } else {
 
@@ -234,7 +233,7 @@
                 Use ui.owner to get a reference to the splitter instance.
                 */
                 resizeEnded: "resizeEnded",
-                /* cancel="true" Fired before the panels are going to go refreshed because of browser"s resizing.
+                /* cancel="true" Fired before the panels are refreshed because of browser"s resizing.
                 ```
                     // Bind
                     $(document).delegate(".selector", "igsplitterlayoutrefreshing", function (evt, ui) {
@@ -321,10 +320,23 @@
                 horizontal type="string"
                 */
                 orientation: "vertical",
-                /* type="array" Array of objects options that specify the panels settings. The panels are no more than two. Settings are specified via enumeration.*/
+                /* type="array" Array of objects options that specify the panels settings. The panels are no more than two. Settings are specified via enumeration.
+                ```
+                    $("#splitter").igSplitter({
+                        panels: [
+                            {size: "50%", min: "40%", max: "55%", collapsed: true, collapsible: true},
+                            {collapsible: true}
+                        ]
+                    });
+
+                    // Get
+                    var panels = $(".selector").igSplitter("option", "panels");
+                    panels[0].size;
+                ```
+                */
                 panels: [
                     {
-                        /* type="string|number" Gets/Sets the size of the panel
+                        /* type="string|number" Gets the size of the panel
                         ```
                             // Initialize
                             $('.selector').igSplitter({
@@ -339,7 +351,7 @@
                         ```
                         */
                         size: null,
-                        /* type="string|number" Gets/Sets the minimum size that the panel can have
+                        /* type="string|number" Gets the minimum size that the panel can have
                         ```
                             // Initialize
                             $('.selector').igSplitter({
@@ -354,7 +366,7 @@
                         ```
                         */
                         min: null,
-                        /* type="string|number" Gets/Sets the maximum size that the panel can have
+                        /* type="string|number" Gets the maximum size that the panel can have
                         ```
                             // Initialize
                             $('.selector').igSplitter({
@@ -369,7 +381,7 @@
                         ```
                         */
                         max: null,
-                        /* type="bool" Gets/Sets whether the panel can be resized
+                        /* type="bool" Gets whether the panel can be resized
                         ```
                             // Initialize
                             $('.selector').igSplitter({
@@ -384,7 +396,7 @@
                         ```
                         */
                         resizable: false,
-                        /* type="bool" Gets/Sets whether the panel is initially collapsed
+                        /* type="bool" Gets whether the panel is initially collapsed
                         ```
                             // Initialize
                             $('.selector').igSplitter({
@@ -399,7 +411,7 @@
                         ```
                         */
                         collapsed: false,
-                        /* type="bool" Gets/Sets whether the panel can be collapsed
+                        /* type="bool" Gets whether the panel can be collapsed
                         ```
                             // Initialize
                             $('.selector').igSplitter({

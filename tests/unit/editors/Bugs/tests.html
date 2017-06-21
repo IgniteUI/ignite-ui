@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
@@ -39,8 +40,8 @@
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226"];
-					
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695", "876", "809", "942"];					
+
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
@@ -51,7 +52,6 @@
 				}
 				window.Bug208808Testbed = function () {
 					$("#208808").igDateEditor({ dateInputFormat: "yyyy/MM/dd" });
-
 				}
 
 				window.Bug209067Testbed = function () {
@@ -65,7 +65,6 @@
 						$("#209067textEditor").igTextEditor("value", "nwsfsd");
 						$("#209067textEditor1").igTextEditor("value", "NWSFSD");
 					});
-
 
 				}
 				window.Bug209174Testbed = function () {
@@ -433,9 +432,80 @@
 						value: "newInputValue"
 					});
 				}
+				
+				window.Bug446Testbed = function () {
+					$("<input/>", { id: "446Editor" })
+					.appendTo("#testBedContainer")
+					.igTextEditor({
+						buttonType: "clear", 
+						value: "has value"
+					});
+				}
+
+				window.Bug539Testbed = function () {
+					$("<input/>", { id: "539Editor" })
+					.appendTo("#testBedContainer")
+					.igNumericEditor({
+						minValue: 0,
+						maxValue: 10
+					});
+				}
+				window.Bug646Testbed = function () {
+					$("<input/>", { id: "646Editor" })
+					.appendTo("#testBedContainer")
+					.igNumericEditor({
+						allowNullValue: false,
+						value: 20
+					});
+				}
+
+				window.Bug695Testbed = function () {
+						$("<input/>", { id: "695Editor" })
+						.appendTo("#testBedContainer")
+						.igPercentEditor({
+							allowNullValue: true,
+							nullValue: "",
+							regional: 'de',
+							value: 0.029
+						});
+				}
+
+				window.Bug655Testbed = function () {
+					$("<input/>", { id: "655Editor" })
+					.appendTo("#testBedContainer")
+					.igMaskEditor({ 
+						buttonType: "clear",
+						allowNullValue: true 
+					});
+				}
+				
+				window.Bug942Testbed = function () {
+						$("<input/>", { id: "942Editor" })
+						.appendTo("#testBedContainer")
+						.igNumericEditor({
+							buttonType: "clear",
+							listItems: [3, 4, 5],
+							isLimitedToListValues: true,
+							revertIfNotValid: false,
+							value: 3
+						});
+				}
+
+				window.Bug809Testbed = function () {
+					$("<input/>", { id: "809Editor" })
+					.appendTo("#testBedContainer")
+					.igNumericEditor({
+						buttonType: "dropdown",
+						listItems: [3, 4, 5],
+						isLimitedToListValues: true,
+						revertIfNotValid: false,
+						allowNullValue: false
+					});
+				}
 
 				initialized = false;
-				module("Editors Bugs Unit Tests ", {
+
+				module("igEditors Bugs Unit Tests ", {
 					setup: function (assert) {
 						var testID = /^Bug (\d+)/.exec(assert.test.testName).pop();
 						loadTestbeds([testID]);
@@ -447,7 +517,7 @@
 						// 	initialized = true;
 						// }
 					},
-					teardown: function () {
+					teardown: function (assert) {
 					}
 				});
 
@@ -608,7 +678,7 @@
 				$("#208350Editor1").igDateEditor("field").blur();
 				equal($("#208350Editor1").igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 				$("#208350Editor1").igDateEditor("field").focus();
-				equal($("#208350Editor1").igDateEditor("value").getTime(), "1476527156000", "The value is changed to 15/10/2016 10:25:56");
+				equal($("#208350Editor1").igDateEditor("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 15/10/2016 10:25:56");
 
 
 				equal($("#208350Editor1").igDateEditor("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
@@ -617,7 +687,7 @@
 				$("#208350Editor2").igDatePicker("field").blur();
 				equal($("#208350Editor2").igDatePicker("field").val(), "15/10/2016 10:25:56", "The value is changed to 15/10/2016 10:25:56");
 				$("#208350Editor2").igDatePicker("field").focus();
-				equal($("#208350Editor2").igDatePicker("value").getTime(), "1476527156000", "The value is changed to 1476527156000");
+				equal($("#208350Editor2").igDatePicker("value").getTime(), new Date(2016, 9, 15, 10, 25, 56).getTime(), "The value is changed to 1476527156000");
 			});
 			testId = 'Bug 208356';
 			test(testId, 1, function () {
@@ -739,27 +809,15 @@
 					} else {
 						month = month.toString();
 					}
-					hours = date.getHours();
-					if (hours < 10) {
-						hours = "0" + hours;
-					} else {
-						hours = hours.toString();
-					}
-					minutes = date.getMinutes();
-					if (minutes < 10) {
-						minutes = "0" + minutes;
-					} else {
-						minutes = minutes.toString();
-					}
 					result += day;
 					result += "/";
 					result += month;
 					result += "/";
 					result += date.getFullYear();
 					result += " ";
-					result += hours;
+					result += "00";
 					result += ":";
-					result += minutes;
+					result += "00";
 
 					return result;
 				}
@@ -775,6 +833,31 @@
 				equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The text should've changed to " + getDDmmYYYYHHSS(targetDate));
 			});
 			
+			testId = 'Bug 876';
+			test(testId, 2, function () {
+				// D.P. Updated for  #876:Warning popup is displayed when maxValue date is selected on the dropdown calendar.
+				var todayDate = new Date(), $editor;
+				
+				todayDate.setHours(0);
+				todayDate.setMinutes(0);
+				todayDate.setSeconds(0);
+				todayDate.setMilliseconds(0);
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({
+						maxValue: todayDate,
+						dateDisplayFormat: "yy/MM/dd dddd"
+					});
+
+				$editor.igDatePicker("dropDownButton").click();
+				stop();
+				setTimeout(function () {
+					start();
+					$editor.igDatePicker("getCalendar").find(".ui-datepicker-today").find("a").click();
+					equal($editor.igDatePicker("value").getTime(), todayDate.getTime(), "Max value not selected");
+					ok(!$editor.igDatePicker("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message should not be shown");
+					$editor.remove();
+				}, 400); //This timeout is need because the test requires calendar which needs focus
+			});
 			
 			testId = 'Bug 210990';
 			test(testId, 3, function () {
@@ -833,7 +916,7 @@
 						ok(!$editor.igDatePicker("getCalendar").is(":visible"), "Calendar should be hidden");
 						ok(flag, "Value changed should not be fired.");
 					}, 
-					2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 400 /*normal*/)
+					2 * ($editor.igDatePicker("option", "dropDownAnimationDuration") || 600 /*normal*/)
 				);
 			});
 			
@@ -998,10 +1081,10 @@
 					item = editor.data("igNumericEditor")._getListItemByIndex(0);
 
 				ddBtn.click();
-				keyInteraction(40, input);
+				keyInteraction(40, input); //down
 				equal(editor.igNumericEditor("value"), 2, "The value should stay unchanged");
 				keyInteraction(13, input);
-				equal(editor.igNumericEditor("value"), 1, "The value 1 should be selected");
+				equal(editor.igNumericEditor("value"), 3, "The value 1 should be selected");
 			});
 
 			testId = 'Bug 221494';
@@ -1130,7 +1213,7 @@
 						edit.trigger("focus");
 						// verify focus won't reset the text or update value without a blur
 						equal(field.val(), "some text", "Text field did not retain text with consecutive focus events");
-						equal(edit.igTextEditor("value"), null, "Text editor updated its value without exiting edit mode!");
+						equal(edit.igTextEditor("value"), "", "Text editor updated its value without exiting edit mode!");
 					}, 100);
 				}, 100);
 			});
@@ -1142,6 +1225,176 @@
 				equal(document.getElementById("487Editor").value, "myInputValue", 'Input value is not the same as before Editor init');
 				//check the value attribute and see if it is restored
 				equal(document.getElementById("487Editor").getAttribute("value"), "myInputValue", 'Input value attr is not the same as before Editor init');
+			});
+			
+			var testId = 'Bug 446 - TextEditor doesnt trigger valueChange after clearing';
+			test(testId, 6, function () {	
+				var editor =  $("#446Editor"),
+					field = editor.igTextEditor("field"),
+					clearButton = editor.igTextEditor("clearButton"),
+					textChanged = 0,
+					valueChanged = 0;
+
+				editor.on("igtexteditortextchanged", function() {
+					textChanged++;
+				}).on("igtexteditorvaluechanged", function() {
+					valueChanged++;
+				});
+
+				editor.igTextEditor("setFocus");
+				stop();
+				setTimeout(function () {
+					start();
+					clearButton.click();
+					equal(editor.igTextEditor("value"), "has value", "Value changed in edit mode clear");
+					equal(textChanged, 1, "textChanged not triggered");
+					equal(valueChanged, 0, "valueChanged triggered in edit mode");
+					field.blur();
+					equal(valueChanged, 1, "valueChanged not triggered on when exiting edit mode");
+
+					// test clear without focusing
+					editor.igTextEditor("value", "text");
+					clearButton.click();
+					equal(textChanged, 2, "textChanged not triggered on clear");
+					equal(valueChanged, 2, "valueChanged not triggered on clear");
+					$("#446Editor").remove();
+				}, 100);
+			});
+
+			var testId = 'Bug 539 - If min/max value is set to 0 and the entered value is invalid, the editors value is not reverted';
+			test(testId, 4, function () {	
+				var editor =  $("#539Editor"),
+				field = editor.igNumericEditor("field");
+				
+				//test input interaction
+				editor.igNumericEditor("setFocus");
+				typeInInput("-1", field);
+				keyInteraction(13, field);
+				field.blur();
+				var value = editor.igNumericEditor("value");
+				equal(value, 0, "minValue 0 should be set");
+
+				editor.igNumericEditor("option", "minValue", -5);
+				editor.igNumericEditor("option", "maxValue", 0);
+				typeInInput("1", field);
+				keyInteraction(13, field);
+				field.blur();
+				value = editor.igNumericEditor("value");
+				equal(value, 0, "maxValue 0 should be set");
+
+				//test public value method	
+				editor.igNumericEditor("option", "value", 1);
+				equal(editor.igNumericEditor("value"), 0, "maxValue 0 should be set(value method)");
+
+				editor.igNumericEditor("option", "minValue", 0);
+				editor.igNumericEditor("option", "maxValue", 10);
+				editor.igNumericEditor("option", "value", -1);
+				equal(editor.igNumericEditor("value"), 0, "minValue 0 should be set(value method)");
+				$("#539Editor").remove();
+			});	
+			testId = 'Bug 646 - Set null value using setOption';
+			test(testId, 2, function () {	
+				var editor =  $("#646Editor"),
+				field = editor.igNumericEditor("field");
+				equal(editor.igNumericEditor("value"), 20, "value should be 20");
+				editor.igNumericEditor("option",'value', null);
+				equal(editor.igNumericEditor("value"), 20, "value should be 20");
+				$("#646Editor").remove();
+			});
+
+			var testId = 'Bug 655 - [igMaskEditor] Clearing the displayed value using the clear button is not possible after setting the value to null';
+		test(testId, 6, function () {	
+				var editor =  $("#655Editor"),
+				field = editor.igMaskEditor("field"),
+				clearButton = editor.igMaskEditor("clearButton");
+				
+				//test input interaction
+				editor.igMaskEditor("setFocus");
+
+				stop();
+				setTimeout(function () {
+					start();
+
+					typeInMaskedInput("test", field);
+					field.blur();
+					equal(editor.igMaskEditor("value"), "test", "Value did not update");
+					editor.igMaskEditor("value", null);
+					strictEqual(editor.igMaskEditor("value"), null, "Value did not set to null");
+					equal(field.val(), "", "Displayed text is not empty after setting null value");
+
+					editor.igMaskEditor("value", "text2");
+					equal(field.val(), "text2", "Displayed text is not set");
+					clearButton.click();
+					strictEqual(editor.igMaskEditor("value"), null, "Value did not set to null");
+					equal(field.val(), "", "Displayed text is not empty after clearing value");
+					
+					editor.remove();
+				}, 100);
+			});
+
+				testId = 'Bug 695 - Check ';
+				test(testId, 2, function () {
+				var editor =  $("#695Editor");
+				field = editor.igPercentEditor("field");
+				equal(editor.igPercentEditor("field").focus().blur().val(), "2,90%", "value should be to 2,90%");//fails prior fix with 2.900,00%
+				equal(editor.igPercentEditor("value"), 0.029, "value should be 0.029"); //fails prior fix and returns 29 instead
+					$("#695Editor").remove();
+			});
+
+        		testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
+			test(testId, 5, function () {
+				var editor =  $("#809Editor");
+				input = editor.igNumericEditor("field"),
+				editor.focus();
+				keyInteraction(38, input); //Arrow Up
+				input.val("");
+				editor.blur();
+				equal(editor.igNumericEditor("value"), "", "Value should be empty string");
+
+				editor.igNumericEditor("option","allowNullValue", "true");
+				editor.focus();
+				keyInteraction(38, input); //Arrow Up
+				keyInteraction(13, input);
+				//input.val(null);
+				editor.igNumericEditor("value", null),
+				editor.blur();
+				equal(editor.igNumericEditor("value"), null, "Value should be null when allowNullValue=true");
+
+				editor.igNumericEditor("option","allowNullValue", "false");
+				editor.igNumericEditor("option","revertIfNotValid", "true");
+				editor.focus();
+				keyInteraction(38, input); //Arrow Up
+				editor.blur();
+				equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
+				editor.focus().val(55);
+				editor.blur();
+				equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
+				ok(editor.igNumericEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "There should be warning notification");
+				$("#809Editor").remove();
+			});
+			testId = 'Bug 942 - When clearing with the "clear" button, the value is set to 0 even if 0 is not in the list of items ';
+			test(testId, 4, function () {
+				var editor =  $("#942Editor");
+				field = editor.igNumericEditor("field");
+				clearButton = editor.igNumericEditor("clearButton"),
+				editor.igNumericEditor("setFocus");
+
+				stop();
+				setTimeout(function () {
+					start();
+					equal(field.val(), 3, 'input value should init with value of 3');
+					clearButton.click();
+					equal(field.val(), "", 'input value is not set to ""');//Prior the fix- the value was set to 0 even if zero is not in the list of items.
+					// test clear without focusing
+					editor.igNumericEditor("value", 4);
+					clearButton.click();
+					equal(field.val(), "", 'input value is not set to ""' );
+					// test clear with invalid list item value
+					editor.igNumericEditor("value", 666);
+					clearButton.click();
+					equal(field.val(), "", 'input value is not set to ""' );
+					$("#942Editor").remove();
+					}, 100);
 			});
 		});
 
@@ -1266,7 +1519,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		<input id="inputEditor1" />
 		<input id="inputEditor2" />
 		<input id="inputEditor3" />

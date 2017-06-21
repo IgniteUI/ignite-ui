@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -49,9 +58,10 @@
 			    nonDivException: 'Infragistics HTML5 Video Player може да бъде инстанциран само на DIV елемент.',
 			    relatedVideos: 'Подобни видея',
 			    replayButton: 'Започни отначало',
-			    replayTooltip: 'Натиснете тук, за да пуснете видеото отначало.'
+			    replayTooltip: 'Натиснете тук, за да пуснете видеото отначало.',
+				noCommercials: 'Браузър контролите не поддържат реклами.'
 		    }
 	    });
 
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

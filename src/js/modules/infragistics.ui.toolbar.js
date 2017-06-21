@@ -181,7 +181,7 @@
             ```
             */
             width: null,
-            /* type="boolean" Set whether the toolbar can be collapsing. Get value of allowCollapsing property.
+            /* type="boolean" Get/Set whether the toolbar can be collapsed.
             ```
                 //Initialize
                 $(".selector").igToolbar({
@@ -211,7 +211,7 @@
             ```
             */
             collapseButtonIcon: "ui-igbutton-collapsed",
-            /* type="string" The css class that will be applied to expandButtonIcon.
+            /* type="string" The css class that will be applied to the expand/collapse button icon.
             ```
                 //Initialize
                 $(".selector").igToolbar({
@@ -322,7 +322,7 @@
             ```
             */
             items: [  ],
-            /* type="boolean" Get/Set widget's isExpanded property.
+            /* type="boolean" Get/Set whether the widget is expanded initially.
             ```
                 //Initialize
                 $(".selector").igToolbar({
@@ -356,7 +356,7 @@
             ```
             */
             toolbarButtonClick: "toolbarButtonClick",
-            /*cancel="true" Event fired before fully opened toolbar combo
+            /*cancel="true" Event is fired before the toolbar is opened.
             ```
                 //Initialize
                 $(".selector").igToolbar({
@@ -441,7 +441,7 @@
             ```
             */
             itemAdded: "itemAdded",
-            /*cancel="true" Event fired before item finish collapsing
+            /*cancel="true" Event is fired before item is collapsed.
             ```
                 //Initialize
                 $(".selector").igToolbar({
@@ -1156,7 +1156,7 @@
             this._hiddenButtons.pop();
         },
         getItem: function (index) {
-            /* Gets the item with provided index.
+            /* Gets the item by matching the provided index.
             ```
                 $(".selector").igToolbar("getItem", 0);
             ```

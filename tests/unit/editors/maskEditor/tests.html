@@ -308,7 +308,7 @@
 				});
 			}
 			initialized = false;
-			module("Mask Editor", {
+			module("igMaskEditor", {
 				setup: function () {
 					//pause testing until editors are initialized
 					if (!initialized) {
@@ -648,17 +648,17 @@
 			});
 			testId = 'mask editor _update -> Null Value';
 			test(testId, 9, function () {
-				$("#customNullValueEditor").data("igMaskEditor")._updateValue(null);
+				$("#customNullValueEditor").igMaskEditor("value", null);
 				equal($('#customNullValueEditor').igMaskEditor("value"), "Zero", "Value is not Zero ");
 				equal($("#customNullValueEditor").data("igMaskEditor")._valueInput.val(), "Zero", "Hidden Input value is not Zero ");
 				equal($('#customNullValueEditor').igMaskEditor("displayValue"), "Zero", "displayValue is not Zero");
 				//nullValueEditor
-				$("#nullValueEditor").data("igMaskEditor")._updateValue(null);
+				$("#nullValueEditor").igMaskEditor("value", null);
 				equal($('#nullValueEditor').igMaskEditor("value"), null, "Value is not null ");
 				equal($("#nullValueEditor").data("igMaskEditor")._valueInput.val(), "", "Hidden Input value is not Zero ");
 				equal($('#nullValueEditor').igMaskEditor("displayValue"), "", "displayValue is not Zero");
 				//notNullValueEditor
-				$("#notNullValueEditor").data("igMaskEditor")._updateValue(null);
+				$("#notNullValueEditor").igMaskEditor("value", null);
 				equal($('#notNullValueEditor').igMaskEditor("value"), "", "Value is not null ");
 				equal($("#notNullValueEditor").data("igMaskEditor")._valueInput.val(), "", "Hidden Input value is not Zero ");
 				equal($('#notNullValueEditor').igMaskEditor("displayValue"), "", "displayValue is not Zero");
@@ -690,7 +690,7 @@
 						ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("23Rsd"), "The value 23Rsd is not valid");
 						ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask(""), "The value zz23 is valid");
 						ok($('#pasteHandlerInput').data("igMaskEditor")._validateValueAgainstMask("ffR23"), "The value ffdd is valid");
-						ok(!$('#pasteHandlerInput').data("igMaskEditor")._validateRequiredPrompts(""), "The value \"\" is not valid");
+						ok($('#pasteHandlerInput').data("igMaskEditor")._validateRequiredPrompts(""), "The value \"\" is not valid");
 						$("#pasteHandlerInput1").igMaskEditor("field").focus();
 						$("#pasteHandlerInput1").data("igMaskEditor")._setCursorPosition(2);
 						var evt = $.Event("keydown");
@@ -893,6 +893,25 @@
 				equal(field.val(), "1234", "Text is not 1234");
 			});
 
+			testId = "Revert correctly value when revertIfNotValid is set to true";
+			test(testId, 2, function () {
+				var $editor = $("<input/>").appendTo("#testBedContainer")
+					.igMaskEditor({
+						inputMask: "CCC00",
+						padChar: "+",
+						emptyChar: "/",
+						value: "aaa"
+					}),
+				field = $editor.igMaskEditor("field");
+
+				$editor.igMaskEditor("setFocus");
+				$editor.data("igMaskEditor")._insert("sss__");
+				$editor.blur();
+				equal(field.val(), "aaa++", "Text is not reverted");
+				equal($editor.igMaskEditor("value"), "aaa//", "Value is not reverted");
+				$editor.remove();
+			});
+
 			testId = 'Paste and insert';
 			test(testId, 16, function () {
 				var $editor = $("#pasteEditor"),
@@ -1019,6 +1038,36 @@
 					start();
 				});
 			});
+			testId = "Test nullValue on initialization";
+			test(testId, 4, function(){
+				var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igMaskEditor({ allowNullValue: false});
+				//Get null Value
+				equal($editor.igMaskEditor("value"), "", "The value is not an empty string");
+				//Set null Value
+				$editor.igMaskEditor("value", null);
+				equal($editor.igMaskEditor("value"), "", "The value is not an empty string");
+				//CHange allowNullValue option
+				$editor.igMaskEditor("option", "allowNullValue", true);
+				// Get Null value
+				equal($editor.igMaskEditor("value"), "", "The value is not an empty string");
+				//Set Null value
+				$editor.igMaskEditor("value", null);
+				//Get null value
+				equal($editor.igMaskEditor("value"), null, "The value is not an empty string");
+				$editor.remove();
+			});
+
+			var testId = 'Clear button state';
+			test(testId, 2, function () {
+				var $editor;
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igMaskEditor({ buttonType: "clear" });
+				ok(!$editor.igMaskEditor("clearButton").is(":visible"), "Clear button is not hidden");
+				$editor.igMaskEditor("value", "someVal");
+				ok($editor.igMaskEditor("clearButton").is(":visible"), "Clear button is not visible");
+				$editor.remove();
+			});
 		});
 
 		function checkMaskState(editor, keyCode, editValue, displayValue, value) {
@@ -1133,7 +1182,7 @@
 	 <h2 id="qunit-userAgent"></h2>
 	 <ol id="qunit-tests"></ol>
 </div>
-	<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+	<div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
 		
 		<div id="maskEditorRuntime"></div>
 		<input type="text" id="editor1" />

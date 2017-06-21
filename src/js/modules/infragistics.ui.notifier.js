@@ -101,12 +101,12 @@
 			/* type="string|object" Controls where the popover DOM should be attached to (only applies to popovers).
 				```
 				//Initialize
-                $('.selector').igNotifier({
-                  appendTo: "body"
-                });
+				$('.selector').igNotifier({
+				  appendTo: "body"
+				});
 
-                //Get
-                var appendTo = $(".selector").igNotifier("option", "appendTo");
+				//Get
+				var appendTo = $(".selector").igNotifier("option", "appendTo");
 				```
 				string type="string" A valid jQuery selector for the element
 				object type="object" A reference to the parent jQuery object
@@ -138,11 +138,11 @@
 					allowCSSOnTarget: true
 				});
 
-                //Get
-                var allowCSSOnTarget = $(".selector").igNotifier("option", "allowCSSOnTarget");
+				//Get
+				var allowCSSOnTarget = $(".selector").igNotifier("option", "allowCSSOnTarget");
 
-                //Set
-                $(".selector").igNotifier("option", "allowCSSOnTarget", false);
+				//Set
+				$(".selector").igNotifier("option", "allowCSSOnTarget", false);
 				```
 			*/
 			allowCSSOnTarget: true,
@@ -244,17 +244,17 @@
 			/* type="string|function" Gets/Sets the content for the popover container. Templated with parameters by default: {0} - icon container class, {1} - the icon class and {2} - message text.
 				```
 				//Initialize
-                    // string content for the popover container
-                    $(".selector").igNotifier({
-                        contentTemplate:"<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' /> {1}"
-                    });
+					// string content for the popover container
+					$(".selector").igNotifier({
+						contentTemplate:"<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' /> {1}"
+					});
 
-                    //Get
-                    var contentFunction = $(".selector").igNotifier("option", "contentTemplate");
+					//Get
+					var contentFunction = $(".selector").igNotifier("option", "contentTemplate");
 
-                    // Set
-                    // Accepts setting the value only if string type is passed
-                    $(".selector").igNotifier("option", "contentTemplate", "<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' /> {1}");
+					// Set
+					// Accepts setting the value only if string type is passed
+					$(".selector").igNotifier("option", "contentTemplate", "<img src='http://www.infragistics.com/assets/images/logo.png' title='IG logo' /> {1}");
 				```
 				string type="string" String content of the popover container
 				function type="function" Function which is a callback that should return the content. Use the 'this' value to access the target DOM element and passed argument for state value. Result can also include the same template parametes.
@@ -264,7 +264,7 @@
 				```
 				//Initialize
 				$(".selector").igNotifier({
-					headerTemplate {
+					headerTemplate: {
 						closeButton: false
 					}
 				});
@@ -278,7 +278,7 @@
 				```
 				//Initialize
 				$(".selector").igNotifier({
-					headerTemplate {
+					headerTemplate: {
 						closeButton : false,
 						title : null
 					}
@@ -293,7 +293,7 @@
 				```
 				//Initialize
 				$(".selector").igNotifier({
-					headerTemplate {
+					headerTemplate: {
 						closeButton : false,
 						title : null
 					}
@@ -324,30 +324,30 @@
 			/* type="bool" Controls whether the popover will close on blur or not. This option has effect only when the corresponding [showOn](ui.ignotifier#options:showOn) is set (manual by default)
 				```
 				//Initialize
-                $('.selector').igNotifier({
-                  closeOnBlur: true
-                });
+				$('.selector').igNotifier({
+				  closeOnBlur: true
+				});
 
-                //Get
-                var closeOnBlur = $(".selector").igNotifier("option", "closeOnBlur");
+				//Get
+				var closeOnBlur = $(".selector").igNotifier("option", "closeOnBlur");
 
-                //Set
-                $(".selector").igNotifier("option", "closeOnBlur", true);
+				//Set
+				$(".selector").igNotifier("option", "closeOnBlur", true);
 				```
 			*/
 			closeOnBlur: false,
 			/* type="number" Gets/Sets the time in milliseconds the notification fades in and out when showing/hiding
 				```
 				//Initialize
-                $('.selector').igNotifier({
-                  animationDuration: 300
-                });
+				$('.selector').igNotifier({
+				  animationDuration: 300
+				});
 
-                //Get
-                var animationDuration = $(".selector").igNotifier("option", "animationDuration");
+				//Get
+				var animationDuration = $(".selector").igNotifier("option", "animationDuration");
 
-                //Set
-                $(".selector").igNotifier("option", "animationDuration", 300);
+				//Set
+				$(".selector").igNotifier("option", "animationDuration", 300);
 				```
 			*/
 			animationDuration: 250,
@@ -374,8 +374,7 @@
 			$.ui.igPopover.prototype._create.apply(this, arguments);
 
 			// D.P. Override position prio to top > bottom
-			this._priorityDir = [ "top", "left", "right", "bottom" ];
-			this._arrowDir = [ "bottom", "right", "left", "top" ];
+			this._setOption("directionPriority", [ "top", "left", "right", "bottom" ]);
 
 			this._states = [ "success", "info", "warning", "error" ];
 			this._modes = [ "auto", "popover", "inline" ];
@@ -394,8 +393,7 @@
 		},
 		_setState: function (value, message/*, fireEvents*/) {
 			if ($.inArray(value, this._states) === -1) {
-				console.log("Supported states: " + this._states.join(", "));
-				return;
+				throw new Error($.ig.Notifier.locale.notSupportedState);
 			}
 
 			//TODO:
@@ -496,8 +494,7 @@
 		},
 		_setMode: function (value, force) {
 			if ($.inArray(value, this._modes) === -1) {
-				console.log("Supported modes: " + this._modes.join(", "));
-				return;
+				throw new Error($.ig.Notifier.locale.notSupportedMode);
 			}
 			if (this.options.mode !== value || force) {
 				// cleanup current popover
@@ -656,7 +653,7 @@
 		},
 		_setNewContent: function (nc) {
 			var newContent = nc;
-			if (nc instanceof jQuery) {
+			if (nc instanceof $) {
 				newContent = nc.html();
 			} else if (typeof nc === "object") {
 				newContent = nc.innerHTML;

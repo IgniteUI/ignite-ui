@@ -1,5 +1,14 @@
 ﻿/* English, US */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
 $.ig = $.ig || {};
 $.ig.regional = $.ig.regional || {};
@@ -15,6 +24,8 @@ $.ig.regional['en-US'] = {
 	dateTimePattern: 'M/d/yyyy h:mm tt',
 	timePattern: 'h:mm tt',
 	timeLongPattern: 'h:mm:ss tt',
+	dateTitleFullPattern: 'dd MM yy',
+	dateTitleMonthPattern: 'MM yy',
 	negativeSign: '-',
 	numericNegativePattern: '-$n',
 	numericDecimalSeparator: '.',
@@ -1202,4 +1213,4 @@ $.ig.regional['zh-TW'] = {
 	currencyNegativePattern: '-$n',
 	currencySymbol: 'NT$'
 };
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

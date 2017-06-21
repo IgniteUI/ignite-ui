@@ -30,8 +30,7 @@
 			"./infragistics.datasource",
 			"./infragistics.templating",
 			"./infragistics.ui.layoutmanager",
-			"./infragistics.ui.splitter",
-			"./infragistics.ui.tilemanager-en"
+			"./infragistics.ui.splitter"
 		], factory );
 	} else {
 
@@ -254,7 +253,7 @@
                                 { colSpan: 2, rowSpan: 1, colIndex: 1, rowIndex: 0 },
                                 { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 },
                                 { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }];
-                igTileManager("option", "items", items);
+                $('.selector').igTileManager("option", "items", items);
             ```
                 array type="object" An array with colSpan, rowSpan, colIndex, rowIndex configurations for each tile.
                 null type="object" Default tile configurations of rowSpan: 1 and colSpan: 1 will be used.
@@ -318,7 +317,7 @@
                 $('.selector').igTileManager({
                         items: [{ colSpan: 1, rowSpan: 1, colIndex: 0, rowIndex: 0 },
                             { colSpan: 2, rowSpan: 1, colIndex: 1, rowIndex: 0 },
-                            { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 }, \/\* items index : 2 \*\/
+                            { colSpan: 3, rowSpan: 2, colIndex: 0, rowIndex: 1 },
                             { colSpan: 3, rowSpan: 1, colIndex: 0, rowIndex: 3 }],
                         maximizedTileIndex: 2
                 });
@@ -648,7 +647,7 @@
 				null type="object" Option is ignored.
 			*/
             responseDataKey: null,
-            /* type="string" String Explicitly set data source type (such as "json"). Please refer to the documentation of [$.ig.DataSource type](ig.datasource#options:settings.type) and its type property.
+            /* type="string|null" Explicitly set data source type (such as "json"). Please refer to the documentation of [$.ig.DataSource type](ig.datasource#options:settings.type) and its type property.
             ```
                 //Initialize
                 $('.selector').igTileManager({
@@ -2353,8 +2352,7 @@
             ```
                 $('.selector').igTileManager("splitter")
             ```
-                returnType="object|null" Returns the splitter associated with this tile manager or
-                null if the tile manager was instantiated with maximizedTileIndex.
+                returnType="object|null" Returns the splitter associated with this tile manager or null if the tile manager was instantiated with maximizedTileIndex.
             */
             return this._options.useMaximizedTileIndex ? null : this.element.data("igSplitter");
         },

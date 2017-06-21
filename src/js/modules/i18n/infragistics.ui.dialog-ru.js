@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -19,8 +28,8 @@
 			    pinButtonTitle: "прикрепить",
 			    unpinButtonTitle: "открепить",
 			    restoreButtonTitle: "восстановить",
-				setOptionError: 'Динамические изменения следующей опции не поддерживаются: '
+				setOptionError: 'Этот параметр не может быть задан во время выполнения программы'
 		    }
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -49,9 +58,10 @@
 			    nonDivException: 'Infragistics HTML5 Video Player может быть определен только через DIV элемент.',
 			    relatedVideos: 'ПОХОЖИЕ КЛИПЫ',
 			    replayButton: 'Еще раз',
-			    replayTooltip: 'Щелкнить чтобы посмотреть еще раз.'
+			    replayTooltip: 'Щелкнить чтобы посмотреть еще раз.',
+				noCommercials: 'Элементы управления браузером не поддерживают рекламу'
 		    }
 	    });
 
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

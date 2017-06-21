@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -45,7 +54,7 @@
 			    maxValExceedRevertErrMsg: "La valeur entrée a atteint la valeur maximum fixée à {0} et est revenue à la valeur antérieure",
 			    minValExceedRevertErrMsg: "La saisie est inférieure à la valeur minimale de {0} et a été ramenée à la précédente",
 			    maxValExceedSetErrMsg: "La saisie a dépassé la valeur maximum de {0} et a été fixée sur la valeur maximum",
-			    minValExceedSetErrMsg: "La saisie a dépassé la valeur minimum de {0} et a été fixée sur la valeur minimum",
+			    minValExceedSetErrMsg: "La saisie est inférieure à la valeur minimale de {0} et a été fixée sur la valeur minimum",
 			    maxValExceededWrappedAroundErrMsg: "La valeur entrée a atteint la valeur maximum fixée à {0} et a été fixée à la valeur minimum autorisée",
 			    minValExceededWrappedAroundErrMsg: "La saisie est inférieure à la valeur minimale de {0} et a été réglée sur la valeur maximale autorisée",
 			    btnValueNotSupported: "Une valeur de bouton différente est requise. Choisissez une valeur entre « dropdown », « clear » et « spin ».",
@@ -66,16 +75,18 @@
 			    datePickerEditorNoSuchMethod: "L’éditeur de date ne prend pas cette méthode en charge.",
 			    datePickerNoSuchMethodDropDownContainer: "L’éditeur de date ne prend pas cette méthode en charge. Utilisez 'getCalendar' à la place.",
 			    buttonTypeIsDropDownOnly: "Le sélecteur de dates autorise uniquement les valeurs de la liste déroulante ou d’effacement pour l’option buttonType.",
-			    dateEditorMinValue: "L’option MinValue ne peut pas être définie lors de l’exécution.",
-			    dateEditorMaxValue: "L’option MaxValue ne peut pas être définie lors de l’exécution.",
-			    cannotSetRuntime: "Cette option ne peut pas être définie lors de l’exécution",
+				dateEditorOffsetRange: "L’option displayTimeOffset doit être comprise entre -720 et 840, ce qui représente le décalage en minutes, selon l’UTC, de tous les fuseaux horaires du point ouest (−12:00) au point est (+14:00).",
+				cannotSetRuntime: "Cette option ne peut pas être définie lors de l’exécution",
 			    invalidDate: "Date non valide",
 			    maskMessage: 'Tous les postes requis doivent être remplis',
 			    maskRevertMessage: "Toutes les positions requises doivent être remplies, c'est pourquoi la valeur a été réinitialisée à la dernière valeur valide.",
 				dateMessage: 'Une date valide doit être saisie',
-			    centuryThresholdValidValues: "La propriété centuryThreshold doit être comprise entre 0 et 99. La valeur a été réinitialisée à son état par défaut.",
-			    noListItemsNoButton: "Aucun compteur ni bouton de liste ne s’affiche car il n’y a pas d’éléments de liste."
+			    centuryThresholdValidValues: "La propriété centuryThreshold doit être comprise entre 0 et 99.",
+			    noListItemsNoButton: "Aucun compteur ni bouton de liste ne s’affiche car il n’y a pas d’éléments de liste.",
+				decimalNumber: "Lorsque dataMode est '{0}', l’option {1} peut accepter des valeurs numériques comprises entre 0 et {2}.",
+				decimalSeparatorErrorMsg: "L’option decimalSeparator requiert une valeur différente. Sa valeur doit être d’un seul caractère.",
+				decimalSeparatorEqualsGroupSeparatorErrorMsg: "Les options groupSeparator et decimalSeparator peuvent ne pas avoir des valeurs égales."
 		    }
 	    };
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

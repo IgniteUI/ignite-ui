@@ -18,8 +18,9 @@
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	
-	                                    
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
@@ -32,23 +33,15 @@
 	
 	<link type="text/css" href="../../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>
-
-	
 	<script type='text/javascript' src='../../../../../bower_components/knockout/dist/knockout.debug.js'></script>
-	
-	
-	 
-	
-	<!--<script type="text/javascript" src="../../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>-->
+
 	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
-	
-	<!-- <script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script> -->
 
 	
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
 	$(document).ready(function () {
-        var  testID;
+        var testID, eventTriggered;
 		QUnit.config.reorder = false;
 		function viewModel() {
 			nonObservable = 244;
@@ -60,10 +53,15 @@
 			};
 			setDefaultText = function() {
 				this.textValue("Default Text");
-			}
+			};
 			setDefaultCurrencyNumber = function () {
 				this.currencyNumber(32);
-			}
+			};
+			this.customerTax = ko.observable(100);
+			this.testFunction = function (evt, ui) {
+				eventTriggered = true;
+			};
+			this.isDisabled =  ko.observable(false);
 		};
 		
 		model = new viewModel();
@@ -74,7 +72,7 @@
 		}
 			
 		initialized = false;
-		module('igCurrencyEditors Knockout', {
+		module('igCurrencyEditor Knockout', {
 				setup: function() {
 					//pause testing until tree is initialized
 					if (!initialized) {
@@ -337,7 +335,83 @@
 				$('#inputValue').val(-26).change();
 				checkAllValues(-26, "Values are as expected");
 			});
-		});//document ready
+
+		var testId = 'Test valueChanged event';
+		test(testId, 3, function () {
+			var $editor = $("#edChangeEvt"), $input = $("#inpChangeEvt");
+			
+			eventTriggered = false; // global parameter
+			$editor.igCurrencyEditor("setFocus");
+			typeInInput("120", $editor.igCurrencyEditor("field"));
+			$editor.trigger("blur");
+			stop();
+			setTimeout(function() {
+				start();
+				ok(eventTriggered, "valueChanged is thrown");
+				eventTriggered = false;
+				$editor.remove();
+				$editor = $("#edChangeEvtImmOff");
+				$editor.igCurrencyEditor("setFocus");
+				typeInInput("100", $editor.igCurrencyEditor("field"));
+				$editor.trigger("blur");
+				stop();
+				setTimeout(function() {
+					start();
+					ok(eventTriggered, "valueChanged is thrown");
+					eventTriggered = false;
+					$editor.igCurrencyEditor("setFocus");
+					$editor.igCurrencyEditor("clearButton").click();
+					$editor.trigger("blur");
+					ok(eventTriggered, "valueChanged is thrown");
+					eventTriggered = false;
+					$editor.remove();
+					$input.remove();
+				}, 200);
+			}, 200);
+		});
+
+		testID = "Test regional with reversed decimal(,) and group(.) separators like 'de' .Update from outside input.";
+		test(testID, 6, function () {
+			$("#tempContainer").empty();
+				//Init with regional 'de'
+				var $editor = $("#Issue695_Editor"), $input = $("#Issue695_Input");
+				$('#Issue695_Input').val(0.123).change();
+				equal($editor.igCurrencyEditor("value"), 0.12, "Value is as expected");
+				equal($editor.igCurrencyEditor("displayValue"), "0,12 €", "displayValue is correct");
+				$("#resetButton").click();
+				equal($editor.igCurrencyEditor("value"), 32.00, "Value is as expected");
+				equal($editor.igCurrencyEditor("displayValue"), "32,00 €", "displayValue is correct");
+				$('#Issue695_Input').val("").change();
+				equal($editor.igCurrencyEditor("value"), "", "Value is as expected");
+				equal($editor.igCurrencyEditor("displayValue"), "", "displayValue is correct");
+				$editor.remove();
+				$input.remove();
+		});
+
+		var testId = 'Test disabled binding';
+		test(testId, 12, function () {
+			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
+
+			ok(!$editor.igCurrencyEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igCurrencyEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igCurrencyEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igCurrencyEditor("editorContainer").hasClass($.ui.igCurrencyEditor.prototype.css.disabled), "Editor should be enabled");
+			$chk.click();
+			ok($editor.igCurrencyEditor("option", "disabled"), "Editor should be disabled");
+			ok($editor.igCurrencyEditor("field").prop("disabled"), "Editor should be disabled");
+			equal($editor.igCurrencyEditor("field").attr("disabled"), "disabled", "Editor should be disabled");
+			ok($editor.igCurrencyEditor("editorContainer").hasClass($.ui.igCurrencyEditor.prototype.css.disabled), "Editor should be disabled");
+			$chk.click();
+			$chk.click();
+			$chk.click();
+			ok(!$editor.igCurrencyEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igCurrencyEditor("field").prop("disabled"), "Editor should be enabled");
+			equal($editor.igCurrencyEditor("field").attr("disabled"), undefined, "Editor should be enabled");
+			ok(!$editor.igCurrencyEditor("editorContainer").hasClass($.ui.igCurrencyEditor.prototype.css.disabled), "Editor should be enabled");
+			$editor.remove();
+			$chk.remove();
+		});
+	});//document ready
 
 	function mouseInteraction(type, element) {
 		// create a mouse click event
@@ -406,6 +480,22 @@
 				equal($("#inputValue").val(), val, message + " (inputValue)");
 				equal($("#divValue").html(), val, message + " (divValue)");
 			
+		}
+		function typeInInput(characters, element) {
+			var keyDown = jQuery.Event("keydown"),
+			   keyPress = jQuery.Event("keypress"),
+			   keyUp = jQuery.Event("keyup"),
+			   value = "";
+
+			characters.split('').forEach(function (ch) {
+				keyDown.keyCode = keyUp.keyCode = keyPress.keyCode = ch.charCodeAt(0);
+				keyDown.charCode = keyUp.charCode = keyPress.charCode = ch.charCodeAt(0);
+				element.trigger(keyDown);
+				element.trigger(keyPress);
+				value = value + ch;
+				element.val(value);
+				element.trigger(keyUp);
+			});
 		}
 </script>
 </head>
@@ -491,6 +581,34 @@
 		<div id="tempContainer"></div>
 		<div id="tempContainer1"></div>
 		<input id="myButton" type="button" value="Nothing">
+
+		<input id="edChangeEvt" data-bind="igCurrencyEditor: {
+			updateMode: 'immediate',
+			value: customerTax, 
+			tabIndex: 1,
+			buttonType: 'clear',
+			valueChanged: testFunction
+		}" />
+		<input id="edChangeEvtImmOff" data-bind="igCurrencyEditor: {
+			value: customerTax,
+			tabIndex: 1,
+			buttonType: 'clear',
+			valueChanged: testFunction
+		}" />
+		<input id="inpChangeEvt" type="text" class="row-control" data-bind="value: customerTax" />
+
+		<input id="Issue695_Editor" data-bind="igCurrencyEditor: {
+			value: currencyNumber, 
+			width: 160,
+			regional:'de'
+		}" />
+		<input id="Issue695_Input" type="text" class="row-control" data-bind="value: currencyNumber" />
+
+		<input id="edDisabled" data-bind="igCurrencyEditor: {
+				width: '200'
+          }, igEditorDisable: isDisabled" />
+
+		<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
 </div>
 </body>
 </html>

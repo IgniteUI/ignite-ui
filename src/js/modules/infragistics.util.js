@@ -19,7 +19,7 @@
 
 // Inspired by base2 and Prototype
 
-/*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape, igRoot*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
+/*global xyz, Class, ActiveXObject, Modernizr, VBArray, Intl, XDomainRequest, unescape, $, igRoot*/ /*jshint -W106*/ /*jshint -W116*/ /*jshint unused:false*/
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
 
@@ -34,16 +34,18 @@
 }
 (function () {
 	window.igRoot = window.igRoot || {};
-	if (window.jQuery !== undefined) {
-		window.igRoot = jQuery;
+	/* jshint ignore:start */
+	if (window.$ !== undefined || typeof $ === "function") {
+		window.igRoot = window.$ || $;
 	}
+	/* jshint ignore:end */
 
 	//window.$ = window.$ || window.igRoot;
 
 	window.igRoot.ig = window.igRoot.ig || { _isNamespace: true };
 	window.$ig = window.$ig || window.igRoot.ig;
 
-	var $ = igRoot;
+	var $ = igRoot; // REMOVE_FROM_COMBINED_FILES
 
 	var initializing = false, fnTest = /xyz/.test(function () { xyz(); }) ? /\b_super\b/ : /.*/;
 
@@ -239,6 +241,7 @@
 
 	$.ig.util.isTouchDevice = function () {
 		return "ontouchstart" in window ||
+			window.navigator.maxTouchPoints > 0 ||
 			window.navigator.msMaxTouchPoints > 0;
 	};
 
@@ -531,6 +534,10 @@
                     // of the parent type
 			        if (isFinite(placeholders[ i ]) && !isFinite(arguments[ placeholders[ i ] ])) {
 			            ret.typeArguments[ i ] = arguments[ placeholders[ i ] ];
+			        } else if (placeholders[ i ] &&
+						placeholders[ i ] != arguments[ i ] &&
+						placeholders[ i ].typeArguments) {
+			            ret.typeArguments[ i ] = this.specialize.apply(placeholders[ i ], arguments);
 			        } else {
 			            ret.typeArguments[ i ] = placeholders[ i ];
 			        }
@@ -4189,20 +4196,6 @@
 		return str.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, "\\$1");
 	};
 
-	// Escape all html tags in given html element content
-	$.ig.util.escapeHtmlTags = function (htmlElemContent) {
-		if (typeof(htmlElemContent) === "string") {
-			return htmlElemContent
-				.replace(/&/g, "&amp;")
-				.replace(/</g, "&lt;")
-				.replace(/>/g, "&gt;")
-				.replace(/"/g, "&quot;")
-				.replace(/'/g, "&#039;");
-		} else {
-			return htmlElemContent;
-		}
-	};
-
 	$.ig.util.replace = function (str, oldValue, newValue) {
 		return str.replace(new RegExp($.ig.util.escapeRegExp(oldValue), "g"), newValue);
 	};
@@ -5353,6 +5346,15 @@
 		"Saturday": 6
 	});
 
+	/**
+	 * Decimal adjustment of a number.
+	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round#Decimal_rounding
+	 *
+	 * @param {String}  type  The type of adjustment.
+	 * @param {Number}  value The number.
+	 * @param {Integer} exp   The exponent (the 10 logarithm of the adjustment base).
+	 * @returns {Number} The adjusted value.
+	 */
 	function decimalAdjust(type, value, exp) {
 
 		// If the exp is undefined or zero...
@@ -5633,6 +5635,22 @@
 			return new RegExp(regexpString, modifiers);
 		};
 	})();
+	
+	$.ig.util.appendToQueryString = function (url, str) {
+		if (url.indexOf("?") !== -1) {
+			url += "&";
+		} else {
+			url += "?";
+		}
+		url += str;
+		return url;
+	};
+
+	$.ig.util.prependToQueryString = function (url, str) {
+		var mainUrl = url.substring(0, url.indexOf("?")),
+			queryStr = url.substring(url.indexOf("?"), url.length);
+		return mainUrl + str + queryStr;
+	};
 
 	//jscs:enable
 	$.ig.util.netRegexToJS = function (netPattern) {
@@ -5789,6 +5807,140 @@
 			matchMustStartAtCurrentPosition: matchMustStartAtCurrentPosition
 		};
 	};
+
+	$.ig.util.summaries = $.ig.util.summaries || {};
+	$.ig.util.summaries.min = function (data, dataType) {
+		if (data.length === 0) {
+			if (dataType === "date") {
+				return null;
+			}
+			return 0;
+		}
+		return Math.min.apply(Math, data);
+	};
+
+	$.ig.util.summaries.max = function (data, dataType) {
+		if (data.length === 0) {
+			if (dataType === "date") {
+				return null;
+			}
+			return 0;
+		}
+		return Math.max.apply(Math, data);
+	};
+
+	$.ig.util.summaries.sum = function (data, dataType) {
+		var sum = 0,
+			i;
+		for (i = 0; i < data.length; i++) {
+			sum += data[ i ];
+		}
+		return sum;
+	};
+
+	$.ig.util.summaries.avg = function (data, dataType) {
+		if (data.length === 0) {
+			return 0;
+		}
+		return $.ig.util.summaries.sum(data) / data.length;
+	};
+
+	$.ig.util.summaries.count = function (data, dataType) {
+		return data.length;
+	};
+
+	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
+		// M.H. 16 Nov. 2011 Fix for bug 97886
+		summaryFunction = summaryFunction.toLowerCase();
+		if (summaryFunction.startsWith("custom")) {
+			summaryFunction = "custom";
+		}
+
+		switch (summaryFunction) {
+			case "min":
+				return $.ig.util.summaries.min(data, dataType);
+			case "max":
+				return $.ig.util.summaries.max(data, dataType);
+			case "sum":
+				return $.ig.util.summaries.sum(data, dataType);
+			case "avg":
+				return $.ig.util.summaries.avg(data, dataType);
+			case "count":
+				return $.ig.util.summaries.count(data, dataType);
+			case "custom":
+
+				// M.H. 30 Sept. 2011 Fix for bug #88717 - fix when caller is string
+				if (caller !== undefined && caller !== null) {
+					if (typeof caller === "function") {
+						return caller(data, dataType);
+					}
+					if (typeof caller === "string") {
+						/*jshint evil:true */
+						caller = eval(caller);
+						return caller(data, dataType);
+					}
+				} else {
+					return null;
+				}
+				break;
+		}
+	};
+
+	$.ig.util.defaultSummaryMethods = [
+		{
+			/* type="string" Label that will be applied to the result of the summary function */
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelCount : "Count = ",
+			/* type="string" Name of the summary that can be set as an option inside the igGrid for example */
+			"name": "count",
+			/* type="function" Speficies the function that will be used when calculating the summary */
+			"summaryFunction": $.ig.util.summaries.count,
+			/* type="'any'|Array" Speficies to which type of column this summary is applicable. Setting it to 'any' will apply to any type */
+			"dataType": "any",
+			/* type="bool" Enables/disables the summary to be applied by default */
+			"active": true,
+			/* type="bool" Speficies the order in which this summary will be placed when there are multiple summaries.
+				order: 0 means that it will be displayed on top of all summaries */
+			"order": 0,
+			/* type="bool" Enables/disables applying format to the summary value */
+			"applyFormat": false
+		},
+		{
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMin : "Min = ",
+			"name": "min",
+			"summaryFunction": $.ig.util.summaries.min,
+			"dataType": [ "number", "date", "numeric" ],
+			"active": true,
+			"order": 1,
+			"applyFormat": true
+		},
+		{
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMax : "Max = ",
+			"name": "max",
+			"summaryFunction": $.ig.util.summaries.max,
+			"dataType": [ "number", "date", "numeric" ],
+			"active": true,
+			"order": 2,
+			"applyFormat": true
+		},
+		{
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelSum : "Sum = ",
+			"name": "sum",
+			"summaryFunction": $.ig.util.summaries.sum,
+			"dataType": [ "number", "numeric" ],
+			"active": true,
+			"order": 3,
+			"applyFormat": true
+		},
+		{
+			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelAvg : "Avg = ",
+			"name": "avg",
+			"summaryFunction": $.ig.util.summaries.avg,
+			"dataType": [ "number", "numeric" ],
+			"active": true,
+			"order": 4,
+			"applyFormat": true
+		}
+	];
 
 	return igRoot;
 }));// REMOVE_FROM_COMBINED_FILES

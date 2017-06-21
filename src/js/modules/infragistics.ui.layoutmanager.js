@@ -53,6 +53,8 @@
                 "border": "ig-layout-border",
                 /* classes applied to the individual layout item, when layout is of border type */
                 "borderItem": "ig-layout-border-item",
+                /* classes applied to the hidden individual layout item, when layout is of border type */
+                "borderItemHidden": "ig-layout-border-item-hidden",
                 /* classes applied to the  header region of a border layout */
                 "borderHeader": "ig-layout-border-header",
                 /* classes applied to the  footer region of a border layout */
@@ -111,6 +113,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var leftWidth = borderLayout.leftWidth;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { leftWidth: "30%" });
                     ```
                     */
                     leftWidth: "20%",
@@ -127,6 +132,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var rightWidth = borderLayout.rightWidth;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { rightWidth:"30%" });
                     ```
                     */
                     rightWidth: "10%",
@@ -143,6 +151,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var showFooter = borderLayout.showFooter;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { showFooter: false });
                     ```
                     */
                     showFooter: true,
@@ -159,6 +170,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var showHeader = borderLayout.showHeader;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { showHeader: true });
                     ```
                     */
                     showHeader: true,
@@ -175,6 +189,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var showLeft = borderLayout.showLeft;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { showLeft: true });
                     ```
                     */
                     showLeft: true,
@@ -191,6 +208,9 @@
                     // Get
                     var borderLayout = $('.selector').igLayoutManager("option", "borderLayout");
                     var showRight = borderLayout.showRight;
+
+                    // Set
+                    $('.selector').igLayoutManager("option", "borderLayout", { showRight: false });
                     ```
                     */
                     showRight: true
@@ -266,6 +286,11 @@
                     //Get
                     var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
                     var cols = gridLayout.cols;
+
+                    // Set
+                    var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                    gridLayout.cols = 4;
+                    $('.selector').igLayoutManager('option', 'gridLayout', gridLayout);
                     ```
                     */
                     cols: null,
@@ -380,6 +405,11 @@
                     // Get
                     var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
                     var rearrangeItems = gridLayout.rearrangeItems;
+
+                    // Set
+                    var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                    gridLayout.rearrangeItems = false;
+                    $('.selector').igLayoutManager('option', 'gridLayout', gridLayout);
                     ```
                     */
                     rearrangeItems: true,
@@ -398,11 +428,16 @@
                     // Get
                     var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
                     var rows = gridLayout.rows;
+
+                    // Set
+                    var gridLayout = $('.selector').igLayoutManager('option', 'gridLayout');
+                    gridLayout.rows = 4;
+                    $('.selector').igLayoutManager('option', 'gridLayout', gridLayout);
                     ```
                     */
                     rows: null
                 },
-                /* type="number|string" Gets/Sets height of the layout container
+                /* type="number|string" Gets/Sets height of the layout container.
                 ```
                 // Initialize
                 $('.selector').igLayoutManager({
@@ -663,7 +698,7 @@
                 vertical Column type can be set with vertical layout
                 */
                 layoutMode: "column",
-                /* type="number|string" Gets/Sets width of the layout container
+                /* type="number|string" Gets/Sets width of the layout container.
                 ```
                 // Initialize
                 $('.selector').igLayoutManager({
@@ -721,7 +756,7 @@
                 ```
                 */
                 internalResizing: "internalResizing",
-                /* Event fired after an item has been rendered in the container
+                /* Event fired after an item has been rendered in the container.
                     Function takes arguments evt and ui.
                     Use ui.owner to get reference to the igLayoutManager.
                     Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc.
@@ -754,7 +789,7 @@
                 ```
                 */
                 itemRendered: "itemRendered",
-                /* cancel="false" Event fired before an item is rendered in the container
+                /* cancel="false" Event fired before an item is rendered in the container.
                     Function takes arguments evt and ui.
                     Use ui.owner to get reference to the igLayoutManager.
                     Use ui.itemData to get a reference of item's settings, such as colspan ,rowspan, etc.
@@ -1001,9 +1036,12 @@
                 /* Triggers recalculation of the layout dimensions. Layouts may not need to be reflowed manually, if their sizes are in percentages (i.e. they are responsive by default)
                     this can be particularly useful with a grid layout, when the container has percentage sizes, but items are calculated in pixels and positioned absolutely in the container.
                     ```
-                    $(".selector").igLayoutManager("reflow", forceReflow, event);
+                    var forceReflow = true,
+                        animationDuration = 200;
+
+                    $(".selector").igLayoutManager("reflow", forceReflow, animationDuration, event);
                     ```
-                    paramType="boolean" optional="true" Indicates whether the reflow should be forced. Useful in cases where the items size and position was changed manually.
+                    paramType="bool" optional="true" Indicates whether the reflow should be forced. Useful in cases where the items size and position was changed manually.
                     paramType="number" optional="true" The animation duration to be used for this reflow only. Supported only for Grid Layout mode.
                     paramType="object" optional="true" Indicates the browser even which triggered this action (not API).
                 */
@@ -1848,22 +1886,34 @@
                 footer = this.element.find(".footer");
 
                 // create elements if they don't exist
-                if (left.length === 0 && bl.showLeft) {
+                if (left.length === 0) {
                     this._trigger(this.events.itemRendering, null, { region: "left" });
                     left = $("<div></div>").appendTo(this.element);
                     this._removeLeft = true;
                     this._trigger(this.events.itemRendered, null,
                         { region: "left", element: left });
                 }
+                if (bl.showLeft) {
+                    left.removeClass(this.css.borderItemHidden);
+                } else {
+                    left.addClass(this.css.borderItemHidden);
+                }
                 left.addClass(this.css.borderItem).addClass(this.css.borderLeft);
-                if (right.length === 0 && bl.showRight) {
+
+                if (right.length === 0) {
                     this._trigger(this.events.itemRendering, null, { region: "right" });
                     right = $("<div></div>").appendTo(this.element);
                     this._removeRight = true;
                     this._trigger(this.events.itemRendered, null,
                         { region: "right", element: right });
                 }
+                if (bl.showRight) {
+                    right.removeClass(this.css.borderItemHidden);
+                } else {
+                    right.addClass(this.css.borderItemHidden);
+                }
                 right.addClass(this.css.borderItem).addClass(this.css.borderRight);
+
                 if (center.length === 0) {
                     this._trigger(this.events.itemRendering, null, { region: "center" });
                     center = $("<div></div>").appendTo(this.element);
@@ -1872,20 +1922,32 @@
                         { region: "center", element: center });
                 }
                 center.addClass(this.css.borderItem).addClass(this.css.borderCenter);
-                if (footer.length === 0 && bl.showFooter) {
+
+                if (footer.length === 0) {
                     this._trigger(this.events.itemRendering, null, { region: "footer" });
                     footer = $("<div></div>").appendTo(this.element);
                     this._removeFooter = true;
                     this._trigger(this.events.itemRendered, null,
                         { region: "footer", element: footer });
                 }
+                if (bl.showFooter) {
+                    footer.removeClass(this.css.borderItemHidden);
+                } else {
+                    footer.addClass(this.css.borderItemHidden);
+                }
                 footer.addClass(this.css.borderItem).addClass(this.css.borderFooter);
-                if (header.length === 0 && bl.showHeader) {
+
+                if (header.length === 0) {
                     this._trigger(this.events.itemRendering, null, { region: "header" });
                     header = $("<div></div>").appendTo(this.element);
                     this._removeHeader = true;
                     this._trigger(this.events.itemRendered, null,
                         { region: "header", element: header });
+                }
+                if (bl.showHeader) {
+                    header.removeClass(this.css.borderItemHidden);
+                } else {
+                    header.addClass(this.css.borderItemHidden);
                 }
                 header.addClass(this.css.borderItem).addClass(this.css.borderHeader);
 
@@ -1939,7 +2001,8 @@
                 if (this.options.height === null) {
                     sections = left.add(right).add(center);
                     for (i = 0, maxHeight = 0; i < sections.length; i++) {
-                        currHeight = sections.eq(i).outerHeight(true);
+                        currHeight = sections.eq(i).hasClass(this.css.borderItemHidden) ?
+                            0 : sections.eq(i).outerHeight(true);
                         if (currHeight > maxHeight) {
                             maxHeight = currHeight;
                         }
@@ -1950,16 +2013,19 @@
             },
             _setBorderLayoutPaddings: function () {
                 var headerHeight, footerHeight,
+                    isHeaderHidden, isFooterHidden,
                     _bl = this._opt.borderLayout;
                 if (_bl.header.length) {
-                    headerHeight = _bl.header.outerHeight(true);
+                    isHeaderHidden = _bl.header.hasClass(this.css.borderItemHidden);
+                    headerHeight = isHeaderHidden ? 0 : _bl.header.outerHeight(true);
                     if (_bl.paddingTop !== headerHeight) {
                         _bl.paddingTop = headerHeight;
                         this.element.css("paddingTop", _bl.paddingTop);
                     }
                 }
                 if (_bl.footer.length) {
-                    footerHeight = _bl.footer.outerHeight(true);
+                    isFooterHidden = _bl.footer.hasClass(this.css.borderItemHidden);
+                    footerHeight = isFooterHidden ? 0 : _bl.footer.outerHeight(true);
                     if (_bl.paddingBottom !== footerHeight) {
                         _bl.paddingBottom = footerHeight;
                         this.element.css("paddingBottom", _bl.paddingBottom);
@@ -2057,6 +2123,8 @@
                     .removeClass(this.css.borderCenter)
                     .removeClass(this.css.borderFooter)
                     .removeClass(this.css.borderHeader);
+                this.element.find("." + this.css.borderItemHidden)
+                    .removeClass(this.css.borderItemHidden);
             },
             _destroyGridLayout: function () {
                 var $children = this.element.children();

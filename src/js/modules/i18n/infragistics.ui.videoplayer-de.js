@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -49,9 +58,10 @@
 			    nonDivException: 'Der Infragistics HTML5 Videoplayer kann nur auf einem DIV Tag instanziiert werden.',
 			    relatedVideos: 'VERWANDTE VIDEOS',
 			    replayButton: 'Wiedergeben',
-			    replayTooltip: 'Klicken, um das letzte Video wiederzugeben.'
+			    replayTooltip: 'Klicken, um das letzte Video wiederzugeben.',
+				noCommercials: 'Die Browser-Steuerelemente unterstützen keine Werbung'
 		    }
 	    });
 
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

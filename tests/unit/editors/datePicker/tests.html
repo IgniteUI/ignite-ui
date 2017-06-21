@@ -74,7 +74,7 @@
 					// Bug #213961
 					$("#inputEditor8").igDatePicker({
 						buttonType: "spin",
-						enableUTCDates: true,
+						displayTimeOffset: 0,
 						dateDisplayFormat: "time",
 						dateInputFormat: "time",
 						dataMode: "date"
@@ -84,7 +84,7 @@
 					    placeHolder: "Select Date...",
 					    readOnly: false,
 					    dateInputFormat: "dateTime",
-					    enableUTCDates: true,
+					    displayTimeOffset: 0,
 					    focusOnDropDownOpen: true,
 					    dataMode: "editModeText",
 					    value: null,
@@ -94,7 +94,7 @@
 			}
 
 			initialized = false;
-			module("Date Picker ", {
+			module("igDatePicker", {
 				setup: function () {
 					//pause testing until editors are initialized
 					if (!initialized) {
@@ -120,7 +120,7 @@
 			});
 
 			var testId = 'Date Picker methods.';
-			test(testId, 3, function () {
+			test(testId, 7, function () {
 				var editor = $('#inputEditor1'), date, testDate = new Date(2006, 10, 22) ;
 				editor.igDatePicker("selectDate", testDate);
 				date = editor.igDatePicker("getSelectedDate");
@@ -140,14 +140,101 @@
 				date = editor.igDatePicker("getSelectedDate");
 				testDate.setDate(testDate.getDate() - 3);
 				equal(date.getTime(), testDate.getTime(), "date is not correct");
+				
+				//not supported:
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker();
 
+				throws(function(){
+					$editor.igDatePicker("dropDownContainer");
+				},
+				$.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+				throws(function(){
+					$editor.igDatePicker("findListItemIndex");
+				},
+				$.ig.Editor.locale.datePickerEditorNoSuchMethod);
+				throws(function(){
+					$editor.igDatePicker("getSelectedListItem");
+				},
+				$.ig.Editor.locale.datePickerEditorNoSuchMethod);
+				throws(function(){
+					$editor.igDatePicker("selectedListIndex");
+				},
+				$.ig.Editor.locale.datePickerEditorNoSuchMethod);
+				$editor.remove();
 			});
 
 			var testId = 'Date Picker set options.';
-			test(testId, 0, function () {
-				var editor = $('#inputEditor1');
+			test(testId, 3, function () {
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker();
+				
+				throws(function(){
+					$editor.igDatePicker("option", "listItems", []);
+				},
+				$.ig.Editor.locale.setOptionError + "listItems");
 
-				editor.igDatePicker("option", "isLimitedToListValues", false);
+				$editor.igDatePicker("option", "dropDownOrientation", "up");
+				$editor.igDatePicker("dropDownButton").click();
+				equal($editor.igDatePicker("field").datepicker("option", "showOptions").direction, "up", "Picker direction not set on open");
+				$editor.igDatePicker("hideDropDown");
+				stop();
+				$editor.igDatePicker("getCalendar").promise().done(function () {
+					start();
+					ok(!$editor.igDatePicker("getCalendar").is(":visible"), "Calendar not hidden");
+					$editor.remove();
+				});
+			});
+
+			var testId = 'Date Picker min/max values.';
+			test(testId, 16, function () {
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({
+						dateInputFormat: "dateTime"
+					}),
+					$ddButton = $editor.igDatePicker("dropDownButton"),
+					$calendar = $editor.igDatePicker("getCalendar");
+				
+				$editor.igDatePicker("option", "minValue", new Date(2017, 0, 10).toLocaleString());
+				equal($editor.igDatePicker("option", "minValue").getTime(), new Date(2017, 0, 10).getTime(), "minValue not set correctly");
+				equal($editor.datepicker("option", "minDate").getTime(), new Date(2017, 0, 10).getTime(), "minValue not set to picker");
+
+				$editor.igDatePicker("option", "maxValue", new Date(2017, 0, 31).toLocaleString());
+				equal($editor.igDatePicker("option", "maxValue").getTime(), new Date(2017, 0, 31).getTime(), "maxValue not set correctly");
+				equal($editor.datepicker("option", "maxDate").getTime(), new Date(2017, 0, 31).getTime(), "maxValue not set to picker");
+
+				// set through datepickerOptions (support for #84)
+				$editor.igDatePicker("value", new Date(2017, 0, 10));
+				$editor.igDatePicker({ datepickerOptions: { minDate : new Date(2017, 0, 11) } });
+				equal($editor.igDatePicker("option", "minValue").getTime(), new Date(2017, 0, 11).getTime(), "minValue not set correctly through datepickerOptions");
+				equal($editor.datepicker("option", "minDate").getTime(), new Date(2017, 0, 11).getTime(), "minDate not set through datepickerOptions");
+				equal($editor.igDatePicker("value").getTime(), new Date(2017, 0, 11).getTime(), "Value not updated when below min set through datepickerOptions");
+
+				$editor.igDatePicker({ datepickerOptions: { maxDate : new Date(2017, 1, 1) } });
+				equal($editor.igDatePicker("option", "maxValue").getTime(), new Date(2017, 1, 1).getTime(), "maxValue not set correctly through datepickerOptions");
+				equal($editor.datepicker("option", "maxDate").getTime(), new Date(2017, 1, 1).getTime(), "maxDate not set through datepickerOptions");
+				
+
+				$editor.igDatePicker("value", new Date(2017, 0, 11));
+				$editor.igDatePicker("option", "minValue", new Date(2017, 0, 12));
+				equal($editor.igDatePicker("value").getTime(), new Date(2017, 0, 12).getTime(), "Value not updated when setting minValue after that time.");
+				equal($editor.igDatePicker("field").val(), "1/12/2017 12:00 AM", "Text not updated when setting minValue after that time.");
+
+				$ddButton.click();
+				stop();
+				$calendar.promise().done(function () {
+					start();
+					equal($calendar.find("td.ui-datepicker-current-day").text(), "12", "Picker selection not correct");
+					
+					$editor.igDatePicker("option", "minValue", new Date(2017, 0, 13));
+					equal($editor.igDatePicker("field").val(), "01/12/2017 12:00 AM", "Text should not update.");
+					equal($calendar.find("td.ui-datepicker-current-day").text(), "13", "Picker selection not correct");
+					ok($calendar.find("td:contains(12)").hasClass("ui-state-disabled"), "MinValue did not update currently visible calendar");
+					
+					$editor.igDatePicker("option", "maxValue", new Date(2017, 0, 30).toLocaleString());
+					ok($calendar.find("td:contains(31)").hasClass("ui-state-disabled"), "MaxValue did not update currently visible calendar");
+					$editor.remove();
+				});
 			});
 
 			var testId = 'Date Picker onSelect event.';
@@ -181,7 +268,7 @@
 								start();
 								var newDate = $("#inputEditor2").igDatePicker("value");
 
-								ok(!newDate.toString().contains("00:00:00"), "The time is not correct.")
+								ok(newDate.toString().contains("00:00:00"), "The time is not correct.")
 							},100);
 						},100);
 					},100);
@@ -189,7 +276,7 @@
 			});
 
 			var testId = 'Apply datepicker options';
-			test(testId, 3, function(){
+			test(testId, 9, function(){
 				var datepickerOptions = $("#inputEditor3").igDatePicker("option", "datepickerOptions"),
 				minDisplayDate , maxDisplayDate ,
 				minDate = new Date(2016, 1, 17), maxDate = new Date(2016, 1, 30),
@@ -202,6 +289,36 @@
 				minDisplayDate = datepickerOptions["minDate"], maxDisplayDate = datepickerOptions["maxDate"]
 				ok(minDisplayDate.toString() === minDate.toString(), "The minDate option is not set right.");
 				ok(maxDisplayDate.toString() === maxDate.toString(), "The maxDate option is not set right.");
+
+				// test mix/max with offset
+				var $picker = $("<input>").appendTo("#testBedContainer").igDatePicker({
+					displayTimeOffset: 360,
+					dateDisplayFormat: "dateTime",
+					dateInputFormat: "dateTime",
+					value : new Date("2009-09-07T20:00:00.000Z"),
+					datepickerOptions: {
+						minDate : new Date("2009-09-07T20:00:00.000Z"),
+						maxDate : new Date("2009-09-08T20:00:00.000Z")
+					}
+				}), 
+				$calendar = $picker.igDatePicker( "getCalendar" ),
+				disabledClass = "ui-datepicker-unselectable ui-state-disabled",
+				$currentDay;
+				
+				equal($picker.datepicker("option", "minDate").getDate(), 8, "Picker min date should be shifted with the offset");
+				equal($picker.datepicker("option", "maxDate").getDate(), 9, "Picker max date should be shifted with the offset");
+
+				$picker.igDatePicker( "dropDownButton" ).click();
+				stop();
+				setTimeout(function(){
+					start();
+					$currentDay = $(".ui-datepicker-current-day", $calendar);
+					equal($currentDay.text(), "8", "Current day not corrent");
+					ok($currentDay.prev().hasClass(disabledClass), "Previous day not disabled");
+					ok(!$currentDay.next().hasClass(disabledClass), "Nexy day (9) should be selectable");
+					ok($currentDay.next().next().hasClass(disabledClass), "The day of 10th should be disabled");
+					$picker.remove();
+				}, 250);
 			});
 
 			var testId = 'Apply datepicker options';
@@ -285,12 +402,13 @@
 		    });
 
 			var testId = 'Disable igDatePicker';
-			test(testId, 5, function(){
-				var ddButton = $("#inputEditor6").igDatePicker("dropDownButton"),
-						ddButtonDisable = $("#inputEditor7").igDatePicker("dropDownButton"),
-						spinUpButton = $("#inputEditor6").igDatePicker("spinUpButton"),
-						spinDownButton = $("#inputEditor6").igDatePicker("spinDownButton"),
-						clearButton = $("#inputEditor6").igDatePicker("clearButton");
+			test(testId, 10, function(){
+				var today,
+					ddButton = $("#inputEditor6").igDatePicker("dropDownButton"),
+					ddButtonDisable = $("#inputEditor7").igDatePicker("dropDownButton"),
+					spinUpButton = $("#inputEditor6").igDatePicker("spinUpButton"),
+					spinDownButton = $("#inputEditor6").igDatePicker("spinDownButton"),
+					clearButton = $("#inputEditor6").igDatePicker("clearButton");
 
 				ok(!ddButton.hasClass("ui-state-disabled"), "The igDatePicker is disabled.The DropDownButton is enabled.");
 				ok(spinUpButton.hasClass("ui-state-disabled"), "The igDatePicker's spinUp button is disabled.");
@@ -299,24 +417,64 @@
 
 				$("#inputEditor7").igDatePicker("option","readOnly",true);
 				ok(ddButtonDisable.hasClass("ui-state-disabled"), "The igDatePicker is disabled.");
+
+				var $editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({ 
+						readOnly: true,
+						dropDownOnReadOnly: false
+					});
+				ok($editor.igDatePicker("dropDownButton").hasClass("ui-state-disabled"), "Picker should not be enabled in readOnly without dropDownOnReadOnly");
+				$editor.remove();
+
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({ disabled: true });
+				ok($editor.igDatePicker("editorContainer").hasClass("ui-state-disabled"), "Editor not disabled");
+				ok($editor.igDatePicker("dropDownButton").hasClass("ui-state-disabled"), "Picker not disabled");
+				$editor.remove();
+
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({ 
+						readOnly: true,
+						dropDownOnReadOnly: true
+					});
+				$editor.igDatePicker("dropDownButton").click();
+				stop();
+				setTimeout(function() {
+					start();
+					today = new Date();
+					$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-today").click();
+					equal((today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear(),
+						$editor.igDatePicker( "displayValue" ),
+						"Editor text did not update from readonly selection.");
+
+					today.setHours(0);
+					today.setMinutes(0);
+					today.setSeconds(0);
+					today.setMilliseconds(0);
+					equal($editor.igDatePicker( "value" ).getTime(), today.getTime(), "Editor text did not update from readonly selection.");
+				}, 200);
 			});
 
 			var testId = 'UTC igDatePicker';
-			test(testId, 4, function () {
+			test(testId, 6, function () {
 				var editor = $("#inputEditor8"),
 					field = $("#inputEditor8").igDatePicker("field");
 
 				editor.focus();
+				var today = new Date();
 				field.val("12:12 AM");
 				editor.blur();
-				var today = new Date();
-				var expectedDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, 0));
-				equal(editor.igDatePicker("value").getTime(), expectedDate.getTime(), "The value is not set");
+
+				var expectedDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 12, today.getSeconds()));
+				debugger;
+				equal(editor.igDatePicker("value").getDate(), expectedDate.getDate(), "The date is not set");
+				equal(editor.igDatePicker("value").getHours(), expectedDate.getHours(), "The hours is not set");
+				equal(editor.igDatePicker("value").getMinutes(), expectedDate.getMinutes(), "The minutes is not set");
 
 			    var dp = $("#datePickerUTC"), newDate;
 
                 // Bug #212365 - Set value correctly in UTC mode.
-			    dp.igDatePicker("value", "7/1/2000");
+			    dp.igDatePicker("value", new Date(Date.UTC(2000, 6, 1)));
 			    newDate = new Date(dp.igDatePicker("value"));
 			    equal(newDate.getFullYear(), 2000, "Year is not set correctly");
 			    equal(newDate.getMonth(), 6, "Year is not set correctly");
@@ -337,6 +495,283 @@
 					ok($editor1.attr("class") === undefined, "Some classes are still not removed");
 					ok($editor2.attr("class") === undefined, "Some classes are still not removed");
 				}, 100);
+			});
+			testId = "Test nullValue on initialization";
+			test(testId, 4, function(){
+				var $editor = $("<input id='editor'/>").
+				appendTo("#testBedContainer").igDatePicker({ allowNullValue: false});
+				//Get null Value
+				equal($editor.igDatePicker("value"), "", "The value is not an empty string");
+				//Set null Value
+				$editor.igDatePicker("value", null);
+				equal($editor.igDatePicker("value"), "", "The value is not an empty string");
+				//CHange allowNullValue option
+				$editor.igDatePicker("option", "allowNullValue", true);
+				// Get Null value
+				equal($editor.igDatePicker("value"), "", "The value is not an empty string");
+				//Set Null value
+				$editor.igDatePicker("value", null);
+				//Get null value
+				equal($editor.igDatePicker("value"), null, "The value is not an empty string");
+				$editor.remove();
+			});
+
+			var testId = 'Clear button state';
+			test(testId, 2, function () {
+				var $editor;
+
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ buttonType: "clear" });
+				ok(!$editor.igDatePicker("clearButton").is(":visible"), "Clear button is not hidden");
+				$editor.igDatePicker("value", new Date());
+				ok($editor.igDatePicker("clearButton").is(":visible"), "Clear button is not visible");
+				$editor.remove();
+			});
+
+			var testId = 'Testing different dataMode formats';
+			test(testId, 28, function () {
+				var $dtPicker;
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "MM/dd/yyyy", // date
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30/2016", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "MM/dd/yyyy", // date
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30/2016", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "10/30/2016", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "time", // time
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4:59 AM", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "time", // time
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4:59 AM", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "4:59 AM", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "timeLong", // timeLong
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4:59:56 AM", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "timeLong", // timeLong
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4:59:56 AM", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "4:59:56 AM", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30/2016 4:59", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateDisplayFormat: "MM/dd/yyyy h:m", // dateTime
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30/2016 4:59", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "10/30/2016 4:59", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "MM/dd",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "MM/dd",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "10/30", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "10/30", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "H",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.000Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "H",
+					value: new Date("2016-10-29T22:59:56.0000000Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "4", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "4", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "date",
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+					value: new Date("2016-10-29T22:59:56.599Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "2016/10/30 04:59:56:599", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016-10-29T22:59:56.599Z", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					dataMode: "displayModeText",
+					dateInputFormat: "yyyy/MM/dd HH:mm:ss:fff",
+					value: new Date("2016-10-29T22:59:56.599Z"),
+					displayTimeOffset: 360,
+					enableUTCDates: true
+				});
+				equal($dtPicker.igDatePicker("displayValue"), "2016/10/30 04:59:56:599", "The display value is not correct");
+				equal($dtPicker.data("igDatePicker")._valueInput.val(), "2016/10/30 04:59:56:599", "The hidden value sent to server is not correct");
+				$dtPicker.remove();
+			});
+
+			testId = "Apply different displayTimeOffset on picker display/values";
+			test(testId, 16, function(){
+				var today = new Date(),
+					todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+					pickerTestOpts = [{
+						picker: {
+							displayTimeOffset: 240,
+							value : new Date("2009-09-07T21:00:00.000Z"),
+						},
+						date: "9/8/2009",
+						day: "8",
+						nextDate: "9/9/2009",
+						nextValue: "2009-09-08T21:00:00.000Z"
+					}, {
+						picker: {
+							displayTimeOffset: -300,
+							value : new Date("2017-01-08T15:00:00.000Z"),
+						},
+						date: "1/8/2017",
+						day: "8",
+						nextDate: "1/9/2017",
+						nextValue: "2017-01-09T15:00:00.000Z"
+					}, {
+						picker: {
+							displayTimeOffset: -180
+						},
+						date: "",
+						day: "",
+						nextDate: (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear(),
+						nextValue: today.toISOString().split("T")[0] + "T03:00:00.000Z"
+					}, {
+						//#1002: igDatePicker drop down cannot be opened 
+						picker: {
+							displayTimeOffset: 120,
+							dateInputFormat: "dateTime",
+							value: new Date("2015-09-10T23:05:10.000Z"),
+							dataMode: "editModeText"
+						},
+						date: "9/11/2015 1:05 AM",
+						day: "11",
+						nextDate: "9/12/2015 1:05 AM",
+						nextValue: "09/12/2015 01:05 AM"
+					}],
+					testWithOptions = function(opts) {
+						if (!opts) {
+							return;
+						}
+						var $editor = $("<input />")
+								.appendTo("#testBedContainer")
+								.igDatePicker(opts.picker),
+							$pickerButton = $editor.igDatePicker("dropDownButton"),
+							$calendar = $editor.igDatePicker( "getCalendar" ),
+							$currentDay;
+
+						equal($editor.igDatePicker("displayValue"), opts.date, "Displayed date should be the " + opts.date + " witn offset");
+						$pickerButton.click();
+						stop();
+						setTimeout(function () {
+							start();
+							$currentDay = $(".ui-datepicker-current-day", $calendar);
+								
+							equal($currentDay.text(), opts.day, "Displayed calendar day not corrent with offset");
+							
+							if(!$currentDay.length) {
+								$currentDay = $(".ui-datepicker-today", $calendar);
+								$currentDay.click();
+							} else {
+								$currentDay.next().click();
+							}
+							
+							stop();
+							setTimeout(function () {
+								start();
+								equal($editor.igDatePicker("displayValue"), opts.nextDate, "Displayed day should be the " + opts.nextDate);
+								if(opts.picker.dataMode && opts.picker.dataMode !== "date") {
+									equal($editor.igDatePicker("value"), opts.nextValue, "Value should match " + opts.nextValue + " in UTC");			
+								} else {
+									equal($editor.igDatePicker("value").toISOString(), opts.nextValue, "Value should match " + opts.nextValue + " in UTC");				
+								}
+								$editor.remove();
+								testWithOptions(pickerTestOpts.pop());
+							}, 200);
+						}, 200);
+					}
+				 
+				testWithOptions(pickerTestOpts.pop());
 			});
 
 	    });
@@ -394,7 +829,7 @@
      <h2 id="qunit-userAgent"></h2>
      <ol id="qunit-tests"></ol>
 </div>
-    <div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
+    <div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:500px; height:100%">
         <input type="text" id="inputEditor1" />
         <input type="text" id="inputEditor2" />
         <input type="text" id="inputEditor3" />

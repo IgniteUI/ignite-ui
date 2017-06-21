@@ -6,100 +6,9 @@
 // * LESS STUFF */
 // **************/
 // VARIABLES */ 
-// Font 
-@fontfamily: "HelveticaNeue-Light",
-"Helvetica Neue Light",
-"Helvetica Neue",
-Helvetica,
-Arial,
-"Lucida Grande",
-sans-serif;
-// highlighters 
-@accent1: #007aff; //blue
-@accent2: #4cd864; //green
-@accent3: #fd472b; //red
-@accent1-light: lighten(@accent1,
-45%);
-@accent1-mid: lighten(@accent1,
-20%);
-@accent3-light: lighten(@accent3,
-45%);
-@accent3-mid: lighten(@accent3,
-20%);
-// additional highlighters, used mostly in charts
-@accent4: #5ac8fa;
-@accent5: #ffcc00;
-@accent6: #ff9500;
-@accent7: #ff2d55;
-@accent8: #8e8e93;
-// swatches 
-@header-bg-A: @igGray2;
-@header-active-bg-A: @accent1-light;
-@header-text-A: @igGray10;
-@header-active-text-A: @accent1;
-@border-color-A: @igGray6;
-@content-bg-A: @igGray1;
-@text-color-A: @igGray10;
-@link-color-A: @igGray10;
-@accent-color-A: @accent1;
-@header-bg-B: @igGray1;
-@header-active-bg-B: @accent1;
-@header-text-B: @accent1;
-@header-active-text-B: @igGray1;
-@border-color-B: @accent1;
-@content-bg-B: @igGray1;
-@text-color-B: @igGray10;
-@link-color-B: @igGray10;
-@accent-color-B: @accent1;
-@header-bg-C: @igGray2;
-@header-active-bg-C: @accent3;
-@header-text-C: @igGray10;
-@header-active-text-C: @igGray1;
-@border-color-C: @accent3;
-@content-bg-C: @igGray1;
-@text-color-C: @igGray10;
-@link-color-C: @igGray10;
-@accent-color-C: @accent3;
-@jq-icons-base: url(images/ui-icons_8e8e93_256x240.png);
-@jq-icons-accent: url(images/ui-icons_007aff_256x240.png);
-@jq-icons-dark: url(images/ui-icons_000000_256x240.png);
-@jq-icons-light: url(images/ui-icons_ffffff_256x240.png);
-@jq-icons-error: url(images/ui-icons_fd472b_256x240.png);
-@iggrid-icons-dark: url(images/igGrid/filter-icons-333333.png);
-@iggrid-icons-light: url(images/igGrid/filter-icons-FFFFFF.png);
-// * Colour Variables: */
-// *1-10 are brightness levels, 1 is the lightest and 10 is the darkest*/
-// * grays */
-@igGray1: #FFFFFF;
-@igGray2: #f8f8f8;
-@igGray3: #ececec;
-@igGray4: #ebebeb;
-@igGray5: #D9D9D9;
-@igGray6: #cccccc;
-@igGray7: #999999;
-@igGray8: #787878;
-@igGray9: #303030;
-@igGray10: #000000;
-// Gradual palette, used mainly for bulletGraph and linearGauge 
-@chartGradualPalette1: @accent1;
-@chartGradualPalette2: lighten(@accent1,
-5%);
-@chartGradualPalette3: lighten(@accent1,
-10%);
-@chartGradualPalette4: lighten(@accent1,
-15%);
-@chartGradualPalette5: lighten(@accent1,
-20%);
-@chartGradualPalette6: lighten(@accent1,
-24%);
-@chartGradualPalette7: lighten(@accent1,
-28%);
-@chartGradualPalette8: lighten(@accent1,
-32%);
-@chartGradualPalette9: lighten(@accent1,
-36%);
-@chartGradualPalette10: lighten(@accent1,
-40%);
+
+@import "variables.less";
+
 /*  LESS MIXINS  */
 /*****************/
 /* states */
@@ -187,10 +96,6 @@ sans-serif;
     cursor: default !important;
 }
 
-// * Radius */
-@radius: 6px;
-/* Palettes */
-
 .chartPalette1 {
     background-color: @accent1!important;
     border: 1px solid transparent!important;
@@ -266,6 +171,7 @@ sans-serif;
 /***************************/
 
 @import "framework.less";
+
 /* jQuery UI CSS theme */
 /* Component containers
 ----------------------------------*/
@@ -1189,6 +1095,36 @@ sans-serif;
     background-position: -80px -208px;
 }
 
+/* Scheduler icons */
+.ui-igscheduler {
+    .ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
+        .ui-icon
+        {
+            background-image: @jq-icons-accent;
+        }
+    }
+    .ui-igscheduler-tabs,
+    .ui-igscheduler-today-button{
+        &:hover {
+            .ui-icon
+            {
+                background-image: @jq-icons-accent;
+            }
+        }
+    }
+
+    .ui-icon-calendar-day {
+        background-position: -96px -208px;
+    }
+    .ui-icon-calendar {
+        background-position: -112px -208px;
+    }
+    .ui-icon-note {
+        background-position: -128px -208px;
+    }
+}
+/* Scheduler icons END */
+
 .ui-icon-grip-dotted-vertical {
     background-position: 0 -224px;
 }
@@ -1585,7 +1521,7 @@ sans-serif;
  */
 
 .touch .ui-spinner-button,
-.touchevents .ui-spinner- button,
+.touchevents .ui-spinner-button,
 .pointerevents .ui-spinner-button
 {
     width: 1.4em;
@@ -1704,6 +1640,10 @@ sans-serif;
 .ui-iggrid-responsive-vertical {
     border-top: 1px solid @igGray6!important;
     /* border-top for tables without headers */
+}
+
+.ui-iggrid-layout-helper {
+  border-bottom: 1px solid @igGray3;
 }
 
 .ui-iggrid-layout-helper > tbody > tr:first-child > td,
@@ -2094,8 +2034,6 @@ sans-serif;
     .stateActive-B;
 }
 
-.ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
-.ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-iggrid-filterddlist li.ui-state-active,
 .ui-iggrid-filterddlistitem.ui-state-active a,
 .ui-iggrid-featurechooser-list li.ui-state-active,
@@ -2349,7 +2287,7 @@ sans-serif;
     border-bottom-color: @igGray3!important;
 }
 
-.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom {
+.ui-iggrid tbody .ui-iggrid-mergedcell.ui-iggrid-mergedcellsbottom:not(.ui-state-active) {
     border-bottom: 1px solid @igGray3;
 }
 /************/
@@ -2434,7 +2372,7 @@ sans-serif;
 .ui-igtooltip-arrow-top,
 .ui-igtooltip-arrow-left,
 .ui-igtooltip-arrow-right {
-    background-image: url(images/igTooltip/igTooltipArrows.png) !important;
+    background-image: url(../../structure/images/igPopover/igPopoverArrows.png) !important;
 }
 
 .ui-igtooltip .ui-icon.ui-icon-close {
@@ -3075,6 +3013,8 @@ sans-serif;
     line-height: 2.4em;
 }
 
+.ui-igedit-dropdown .ui-igedit-listitem.ui-state-active,
+.ui-igedit-list .ui-igedit-listitem.ui-state-active,
 .ui-igcombo-listitem.ui-state-hover.ui-igcombo-item-in-focus,
 .ui-igcombo-listitem.ui-state-active.ui-igcombo-item-in-focus,
 .ui-igcombo-listitem.ui-state-default.ui-igcombo-item-in-focus {
@@ -3650,3 +3590,627 @@ sans-serif;
     background-image: @iggrid-icons-dark;
     background-position: -464px 0;
 }
+
+
+/* ============
+  Scheduler
+============= */
+
+.ui-igscheduler.ui-state-default {
+    background: transparent;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agendaview-day-header {
+    background-color: @igGray1;
+    color: @igGray9;
+}
+
+.ui-igscheduler-header {
+    border-color: @igGray4;
+}
+
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected {
+    color: @accent1;
+    .ui-icon {
+        color: @accent1;
+    }
+}
+
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:hover,
+.ui-igscheduler-tabs.ui-igscheduler-tabs-selected:active {
+    color: @accent1;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject {
+    color: @igGray10
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time {
+    color: @igGray8;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-of-week-header,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-location {
+    color: @igGray9;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-selected {
+    background-color: @igGray1;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-horizontal-separator {
+    background-color: @igGray3;
+}
+
+.ui-igscheduler-monthview {
+    box-shadow: 1px 2px 15px @igGray6;
+    z-index: 1;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-horizontal-separator {
+    background-color: @igGray3;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-selected {
+    background-color: @igGray2;
+    color: @igGray8;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-today-indicator {
+    background: transparent;
+}
+
+.ui-igscheduler-monthview-day-today {
+    span {
+        color: @accent1;
+    }
+}
+
+.ui-igscheduler-core .ui-igscheduler-agendaview-day-header {
+    background: #fff;
+    border-color: @igGray4;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-vertical-separator {
+    background-color: @igGray2;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-month-header {
+    background-color: @accent1;
+    color: white;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-week-header {
+    color: black;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-leading,
+.ui-igscheduler-core .ui-igscheduler-monthview-day-trailing {
+    background-color: #fff;
+    color: @igGray5 !important;
+}
+
+.ui-igscheduler-agendaview {
+    border-color: @igGray6;
+}
+
+.ui-igscheduler-selectall {
+    background-color: @accent1;
+}
+
+.ui-igscheduler-navigator-back-button:hover,
+.ui-igscheduler-navigator-date-range-button:hover,
+.ui-igscheduler-navigator-forward-button:hover {
+    background-color: @igGray3;
+}
+
+.ui-igscheduler-today-button:hover,
+.ui-igscheduler-tabs:hover {
+    background-color: #fff;
+    color: @igGray9;
+}
+
+.ui-igscheduler-tabs,
+.ui-igscheduler-today-button {
+    .ui-icon {
+        margin-top: -9px!important;
+    }
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected,
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
+    cursor: pointer;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-start-time-selected {
+    color: @accent1;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-end-time-selected {
+    color: @accent2;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-subject-selected {
+    color: @accent1;
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-location-selected {
+    color: lighten(@accent2, 15%);
+}
+
+.ui-igscheduler-core .ui-igscheduler-agenda-appt-area {
+    margin: 10px 0;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview {
+    background-color: transparent;
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-activity-indicator {
+    background-color: rgb(192, 192, 192);
+}
+
+.ui-igscheduler-core .ui-igscheduler-monthview-day-appointment {
+    font-size: .75em;
+}
+
+.ui-igscheduler-tabs,
+.ui-igscheduler-today-button {
+    .ui-icon {
+        margin-top: -9px!important;
+    }
+}
+/* Scheduler END */
+
+
+/*
+=========================
+Spreadsheet colors
+=========================
+*/
+.ui-igspreadsheet-inputmessage
+{
+    background-color: @igGray4;
+    border-color: @igGray9;
+    color: @igGray10;
+}
+
+/* ToolTip ??? */
+.ui-igspreadsheet-tooltip
+{
+    background-color: @igGray4;
+    border-color: @igGray6;
+    color: @igGray9;
+}
+
+/* Splitters ??? */
+.ui-igspreadsheet-rowsplitter,
+.ui-igspreadsheet-columnsplitter,
+.ui-igspreadsheet-splitterintersection
+{
+    background-color: @igGray4;
+}
+
+/* SelectAll */
+.ui-igspreadsheet-selectall
+{
+    background-color: @igGray4;
+    color: @igGray6;
+}
+
+.ui-igspreadsheet-selectall.ui-state-active
+{
+    color: @spreadsheet-accent;
+    background-color: lighten(@spreadsheet-accent, 15%);
+}
+
+
+
+
+/* SpreadSheet Header & Footer background */
+.ui-igspreadsheet-tabareabackground,
+.ui-igspreadsheet-formulabar
+{
+    background-color: @bar-background;
+}
+
+/* SpreadSheet Footer top border */
+.ui-igspreadsheet-tabareaborder
+{
+    background-color: @tab-bar-border;
+}
+
+/* Splitter icon */
+.ui-igspreadsheet-tabareasplitter,
+.ui-igspreadsheet-nameboxsplitter
+{
+    color: @spreadsheet-icon;
+}
+
+/* TabItem
+ =========
+ */
+
+/* Unselected tab */
+.ui-igspreadsheet-tabitem
+{
+    border-right: 1px solid @tab-bar-border;
+    border-left: 1px solid @tab-bar-border;
+    background-color: transparent;
+    border-bottom: 2px solid transparent; /* reserved space so we don't see jumping when the tab is selected */
+    color: @spreadsheet-tab-text-color;
+}
+
+
+/* Tab hover */
+.ui-igspreadsheet-tabitem.ui-state-hover
+{
+    color: @spreadsheet-accent;
+}
+
+/* Active tab */
+.ui-igspreadsheet-tabitem-active
+{
+    background: @spreadsheet-empty-bg;
+    border-bottom-color: @spreadsheet-accent;
+}
+.ui-igspreadsheet-tabitem-active,
+.ui-igspreadsheet-tabitem-active.ui-state-hover
+{
+    color:@spreadsheet-accent;
+}
+
+/* [LIGHT|DARK TAB START]  */
+.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span
+{
+    color: @spreadsheet-accent;
+}
+.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span
+{
+    color: @igGray3;
+}
+.ui-igspreadsheet-tabitem-selected.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span,
+.ui-igspreadsheet-tabitem-selected.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span
+{
+    color: @spreadsheet-accent;
+}
+.ui-igspreadsheet-tabitem-active.ui-igspreadsheet-tabitem-dark > .ui-igspreadsheet-tabitemcontent > span,
+.ui-igspreadsheet-tabitem-active.ui-igspreadsheet-tabitem-light > .ui-igspreadsheet-tabitemcontent > span
+{
+    color: @spreadsheet-accent;
+}
+/* [LIGHT|DARK TAB END] */
+
+/* Tab Area Buttons */
+.ui-igspreadsheet-activateprevioushiddentab,
+.ui-igspreadsheet-activatenexthiddentab,
+.ui-igspreadsheet-scrollfirsttab,
+.ui-igspreadsheet-scrolllasttab,
+.ui-igspreadsheet-scrollprevioustab,
+.ui-igspreadsheet-scrollnexttab
+{
+    color: @spreadsheet-icon;
+}
+
+.ui-igspreadsheet-addnewworksheet.ui-state-hover,
+.ui-igspreadsheet-activateprevioushiddentab.ui-state-hover,
+.ui-igspreadsheet-activatenexthiddentab.ui-state-hover,
+.ui-igspreadsheet-scrollfirsttab.ui-state-hover,
+.ui-igspreadsheet-scrolllasttab.ui-state-hover,
+.ui-igspreadsheet-scrollprevioustab.ui-state-hover,
+.ui-igspreadsheet-scrollnexttab.ui-state-hover
+{
+    color: darken(@spreadsheet-accent,15%);
+}
+
+.ui-igspreadsheet-addnewworksheet.ui-state-disabled,
+.ui-igspreadsheet-scrollfirsttab.ui-state-disabled,
+.ui-igspreadsheet-scrolllasttab.ui-state-disabled,
+.ui-igspreadsheet-scrollprevioustab.ui-state-disabled,
+.ui-igspreadsheet-scrollnexttab.ui-state-disabled
+{
+    color: @spreadsheet-disabled;
+}
+
+/* Add New Worksheet */
+.ui-igspreadsheet-addnewworksheet
+{
+    color: @spreadsheet-accent;
+    cursor: pointer;
+}
+
+
+/* ScrollBar related
+====================
+*/
+
+.ui-igspreadsheet-scrollbar-button-left,
+.ui-igspreadsheet-scrollbar-button-right,
+.ui-igspreadsheet-scrollbar-button-up,
+.ui-igspreadsheet-scrollbar-button-down
+{
+    background-color: @igGray4;
+    border: 1px solid @igGray7;
+    color: @igGray9;
+}
+
+.ui-igspreadsheet-scrollbar-button-left.ui-state-hover,
+.ui-igspreadsheet-scrollbar-button-right.ui-state-hover,
+.ui-igspreadsheet-scrollbar-button-up.ui-state-hover,
+.ui-igspreadsheet-scrollbar-button-down.ui-state-hover
+{
+    background-color: @igGray4;
+    border-color: @igGray7;
+    color: @igGray9;
+}
+
+.ui-igspreadsheet-scrollbar-button-left.ui-state-active,
+.ui-igspreadsheet-scrollbar-button-right.ui-state-active,
+.ui-igspreadsheet-scrollbar-button-up.ui-state-active,
+.ui-igspreadsheet-scrollbar-button-down.ui-state-active
+{
+    background-color: @igGray1;
+    border-color: @igGray7;
+    color: @igGray8;
+}
+
+.ui-igspreadsheet-scrollbar-track-left,
+.ui-igspreadsheet-scrollbar-track-right,
+.ui-igspreadsheet-scrollbar-track-up,
+.ui-igspreadsheet-scrollbar-track-down
+{
+    background-color:  @igGray4;
+}
+
+.ui-igspreadsheet-scrollbar-thumb-vertical,
+.ui-igspreadsheet-scrollbar-thumb-horizontal
+{
+    background-color: @igGray6;
+    border: 1px solid @igGray7;
+}
+
+.ui-igspreadsheet-scrollbar-thumb-vertical.ui-state-hover,
+.ui-igspreadsheet-scrollbar-thumb-horizontal.ui-state-hover,
+.ui-igspreadsheet-scrollbar-thumb-vertical.ui-state-active,
+.ui-igspreadsheet-scrollbar-thumb-horizontal.ui-state-active
+{
+    background-color:@igGray7;
+    border-color: @igGray4;
+}
+
+/* Headers
+   =======
+*/
+
+/* Cols & Rows Headers */
+.ui-igspreadsheet-columnheader,
+.ui-igspreadsheet-rowheader
+{
+    background-color: @bar-background;
+    color: @spreadsheet-text-color;
+}
+
+/* Cols & Rows Headers borders  */
+.ui-igspreadsheet-columnheader { border-right-color: @row-col-bar-border; }
+.ui-igspreadsheet-rowheader { border-bottom-color: @row-col-bar-border; }
+
+/* Cols & Rows Header, Selected  */
+.ui-igspreadsheet-columnheader-selected { border-right-color: darken(@spreadsheet-accent,10%); }
+.ui-igspreadsheet-rowheader-selected { border-bottom-color: darken(@spreadsheet-accent,10%); }
+
+/* Cols & Rows Header, Selected but not focused */
+.ui-igspreadsheet-columnheader-selected,
+.ui-igspreadsheet-rowheader-selected
+{
+    background-color: @spreadsheet-accent;
+    color: @spreadsheet-text-color;
+}
+
+.ui-igspreadsheet-columnheader-selected.ui-state-highlight,
+.ui-igspreadsheet-rowheader-selected.ui-state-highlight
+{
+    color: lighten(@accent1,40%);
+}
+
+
+/* Selected cel, header col & row background and color */
+.ui-igspreadsheet-columnheader-selectedcells,
+.ui-igspreadsheet-rowheader-selectedcells
+{
+    background-color: @igGray6;
+    color: @spreadsheet-text-color;
+}
+
+/* Selected cel, header col & row border color */
+.ui-igspreadsheet-columnheader-selectedcells { border-right-color: darken(@row-col-bar-border, 5%); }
+.ui-igspreadsheet-rowheader-selectedcells { border-bottom-color: darken(@row-col-bar-border, 5%); }
+
+
+/* Selected cel, header hover col & row  background & colors */
+.ui-igspreadsheet-columnheader-hover,
+.ui-igspreadsheet-rowheader-hover
+{
+    background-color: lighten(@accent1,10%);
+    color: lighten(@spreadsheet-accent,30%);
+}
+
+
+.ui-igspreadsheet-columnheader-hover { border-right-color: darken(@spreadsheet-accent, 10%); }
+.ui-igspreadsheet-rowheader-hover { border-bottom-color:  darken(@spreadsheet-accent, 10%); }
+
+.ui-igspreadsheet-header-resizeline
+{
+    background-color: @spreadsheet-accent;
+}
+
+/* Formula Bar
+   =======
+*/
+
+.ui-igspreadsheet .ui-igspreadsheet-formulabarexpandbutton
+{
+    background-color:@spreadsheet-formula-btn-bg;
+    cursor: pointer;
+    &:hover {
+        opacity: 0.8;
+    }
+    &:before {
+        border-color: @spreadsheet-formula-btn-color;
+    }
+}
+
+/* Buttons background */
+.ui-igspreadsheet-nameboxcontainer,
+.ui-igspreadsheet-formulabartextareacontainer,
+.ui-igspreadsheet-formulabarbuttoncontainer
+{
+    border: 1px solid @igGray5;
+    box-sizing: border-box;
+    background-color: @igGray3;
+    border-radius:@radius;
+}
+
+/* Enabled buttons */
+.ui-igspreadsheet-formulabarenterbutton,
+.ui-igspreadsheet-formulabarcancelbutton
+{
+    color: @igGray10;
+}
+
+/* Disabled Buttons */
+.ui-igspreadsheet-formulabarenterbutton.ui-state-disabled,
+.ui-igspreadsheet-formulabarcancelbutton.ui-state-disabled
+{
+    color: @spreadsheet-disabled;
+}
+
+// Enter Button
+.ui-igspreadsheet-formulabarenterbutton.ui-state-hover
+{
+    color: @spreadsheet-accent;
+}
+
+// Cancel Button
+.ui-igspreadsheet-formulabarcancelbutton.ui-state-hover
+{
+    color: @spreadsheet-danger;
+}
+
+.ui-igspreadsheet-invaliddata
+{
+    border-color: @spreadsheet-danger;
+}
+
+/*
+    Formula Bar END
+   ==================
+*/
+
+// Multi cell selection
+.ui-igspreadsheet-cellselection
+{
+    background-color:@spreadsheet-cell-selection-rgba;
+    border-color: white;
+    outline-color: @spreadsheet-cell-selection-rgba;
+}
+.ui-igspreadsheet-cellselection.ui-state-highlight
+{
+    outline-color: @spreadsheet-cell-selection;
+}
+.ui-igspreadsheet-cellselectionhandle
+{
+    background-color: @spreadsheet-cell-selection;
+    border-color: @igGray4;
+}
+
+
+/* Icons image */
+.ui-icon.ui-igspreadsheet-copy-icon,
+.ui-icon.ui-igspreadsheet-cut-icon,
+.ui-icon.ui-igspreadsheet-paste-icon,
+.ui-icon.ui-igspreadsheet-paste-icon,
+.ui-icon.ui-igspreadsheet-clearcontents-icon,
+    /* insert */
+.ui-icon.ui-igspreadsheet-insertcellsshiftright-icon,
+.ui-icon.ui-igspreadsheet-insertcellsshiftdown-icon,
+.ui-icon.ui-igspreadsheet-insertrows-icon,
+.ui-icon.ui-igspreadsheet-insertcolumns-icon,
+    /* delete */
+.ui-icon.ui-igspreadsheet-deletecellsshiftleft-icon,
+.ui-icon.ui-igspreadsheet-deletecellsshiftup-icon,
+.ui-icon.ui-igspreadsheet-deleterows-icon,
+.ui-icon.ui-igspreadsheet-deletecolumns-icon
+{
+    background-image: url(images/igSpreadsheet/ig-Spreadsheet.png) !important;
+    left: 0.5em;
+    width: 16px;
+    height: 16px;
+}
+
+
+// Icons positions
+.ui-igspreadsheet-copy-icon {
+    background-position: 0 0;
+}
+
+.ui-igspreadsheet-cut-icon {
+    background-position: 0 -16px;
+}
+
+.ui-igspreadsheet-paste-icon {
+    background-position: 0 -32px;
+}
+
+.ui-igspreadsheet-clearcontents-icon {
+    background-position: 0 -128px;
+}
+
+.ui-igspreadsheet-insertcellsshiftdown-icon {
+    background-position: 0 -112px;
+
+}
+.ui-igspreadsheet-insertcellsshiftright-icon {
+    background-position: 0 -96px;
+}
+
+.ui-igspreadsheet-deletecellsshiftup-icon
+{
+    background-position: 0 -80px;
+}
+
+.ui-igspreadsheet-deletecellsshiftleft-icon {
+    background-position: 0 -64px;
+}
+
+.ui-igspreadsheet-insertrows-icon,
+.ui-igspreadsheet-deleterows-icon {
+    background-position: 0 -160px;
+}
+
+.ui-igspreadsheet-insertcolumns-icon,
+.ui-igspreadsheet-deletecolumns-icon {
+    background-position: 0 -144px;
+}
+
+
+.ui-igspreadsheet .ui-menu {
+    box-shadow: 0 0 10px @igGray5;
+}
+
+.ui-igspreadsheet .ui-menu-item .ui-menu {
+    border-radius: 0 @radius @radius @radius;
+}
+
+.ui-igspreadsheet .ui-menu-item:hover {
+    background: @spreadsheet-menu-item-bg-hover;
+    border-radius: 0;
+}
+
+/*
+=========================
+Spreadsheet colors END
+=========================
+*/

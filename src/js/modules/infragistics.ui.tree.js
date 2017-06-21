@@ -30,8 +30,7 @@
 			"./infragistics.util.jquery",
 			"./infragistics.datasource",
 			"./infragistics.templating",
-			"./infragistics.ui.shared",
-			"./infragistics.ui.tree-en"
+			"./infragistics.ui.shared"
 		], factory );
 	} else {
 
@@ -1214,8 +1213,8 @@
 					dataBinding: function(evt, ui) {...}
 				});
 			```
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tree performing databinding.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree performing databinding.
 			*/
 			dataBinding: "dataBinding",
 			/* cancel="false" Fired after databinding is finished.
@@ -1233,9 +1232,9 @@
 					dataBound: function(evt, ui) {...}
 				});
 			```
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tree performing the databinding.
-				Use ui.dataView to get a reference to the data the tree has been databound to.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree performing databinding.
+				eventArgument="ui.dataView" argType="object" Gets a reference to the data the tree has been databound to.
 			*/
 			dataBound: "dataBound",
 			/* cancel="false" Fired before rendering of the tree begins.
@@ -1253,9 +1252,9 @@
 					rendering: function(evt, ui) {...}
 				});
 			```
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tree performing rendering.
-				Use ui.dataView to get a reference to the data the tree is going to render.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree performing rendering.
+				eventArgument="ui.dataView" argType="object" Gets a reference to the data the tree is going to render.
 			*/
 			rendering: "rendering",
 			/* cancel="false" Fired after rendering of the tree has finished.
@@ -1271,8 +1270,8 @@
 					rendered: function(evt, ui) {...}
 				});
 			```
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tree.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree that performed the rendering.
 			*/
 			rendered: "rendered",
 			/* cancel="true" Fired before a new node is selected.
@@ -1292,10 +1291,10 @@
 					selectionChanging: function(evt, ui) {...}
 				});
 			```
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tree.
-				Use ui.selectedNodes to get a reference to currently selected nodes.
-				Use ui.newNodes to get a reference to the new nodes getting selected.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
+				eventArgument="ui.selectedNodes" argType="array" Gets a reference to currently selected nodes.
+				eventArgument="ui.newNodes" argType="array" Gets a reference to the new nodes getting selected.
 			*/
 			selectionChanging: "selectionChanging",
 			/* cancel="false" Fired after a new node is selected.
@@ -1315,10 +1314,10 @@
 					selectionChanged: function(evt, ui) {...}
 				});
 			```
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tree.
-				Use ui.selectedNodes to get a reference to the selected nodes.
-				Use ui.newNodes to get a reference to the newly added nodes to the selection.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
+				eventArgument="ui.selectedNodes" argType="array" Gets a reference to currently selected nodes.
+				eventArgument="ui.newNodes" argType="array" Gets a reference to the newly added nodes to the selection.
 			*/
 			selectionChanged: "selectionChanged",
 			/* cancel="true" Fired before the checkbox state of a node is changed.
@@ -1342,12 +1341,12 @@
 					nodeCheckstateChanging: function(evt, ui) {...}
 				});
 			```
-				Function takes arguments evt and ui.
-				Use ui.owner to get a reference to the tree.
-				Use ui.node to get a reference to the node object the checkbox of which is being interacted with.
-				Use ui.currentState to get the current state of the checkbox.
-				Use ui.newState to get the new state that is going to be applied to the checkbox.
-				Use ui.currentCheckedNodes to get the collection of all checked nodes before the new state is applied.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
+				eventArgument="ui.node" argType="object" Gets a reference to the node object the checkbox of which is being interacted with.
+				eventArgument="ui.currentState" argType="string" Gets the current state of the checkbox.
+				eventArgument="ui.newState" argType="string" Gets the new state that is going to be applied to the checkbox.
+				eventArgument="ui.currentCheckedNodes" argType="array" Gets the collection of all checked nodes before the new state is applied.
 			*/
 			nodeCheckstateChanging: "nodeCheckstateChanging",
 			/* cancel="false" Fired after the checkstate of a node is changed.
@@ -1371,11 +1370,12 @@
 					nodeCheckstateChanged: function(evt, ui) {...}
 				});
 			```
-				Use ui.owner to get a reference to the tree.
-				Use ui.node to get a reference to the node object the checkbox of which is being interacted with.
-				Use ui.newState to get the new state that is already applied to the checkbox.
-				Use ui.newCheckedNodes to get the collection of all checked nodes.
-				Use ui.newPartiallyCheckedNodes to get the collection of all partially checked nodes.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
+				eventArgument="ui.node" argType="object" Gets a reference to the node object the checkbox of which is being interacted with.
+				eventArgument="ui.newState" argType="string" Gets the new state that is already applied to the checkbox.
+				eventArgument="ui.newCheckedNodes" argType="array" Gets the collection of all checked nodes.
+				eventArgument="ui.newPartiallyCheckedNodes" argType="array" Gets the collection of all partially checked nodes.
 			*/
 			nodeCheckstateChanged: "nodeCheckstateChanged",
 			/* cancel="true" Fired before the children of a node are populated in the case of load on demand.
@@ -1397,10 +1397,11 @@
 					nodePopulating: function(evt, ui) {...}
 				});
 			```
-				Use ui.path to get the data-path attribute of the node being populated.
-				Use ui.element to get a reference to the jQuery element of the node being populated.
-				Use ui.data to get the node data.
-				Use ui.binding to get a reference to the bindings object for the level at which the populating node is located.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.path" argType="string" Gets the data-path attribute of the node being populated.
+				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node whose children are being populated.
+				eventArgument="ui.data" argType="object" Gets the node data.
+				eventArgument="ui.binding" argType="object" Gets a reference to the bindings object for the level at which the populating node is located.
 			*/
 			nodePopulating: "nodePopulating",
 			/* cancel="false" Fired after the children of a node are populated in the case of load on demand.
@@ -1422,10 +1423,11 @@
 					nodePopulated: function(evt, ui) {...}
 				});
 			```
-				Use ui.path to get the data-path atrribute of the populated node.
-				Use ui.element to get a reference to the jQuery element of the populated node.
-				Use ui.data to get the node data.
-				Use ui.binding to get a reference to the bindings object for the level at which the populated node is located.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.path" argType="string" Gets the data-path atrribute of the populated node.
+				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node whose children are populated.
+				eventArgument="ui.data" argType="object" Gets the node data.
+				eventArgument="ui.binding" argType="object" Gets a reference to the bindings object for the level at which the populated node is located.
 			*/
 			nodePopulated: "nodePopulated",
 			/* cancel="true" Fired before a node is collapsed.
@@ -1443,8 +1445,9 @@
 					nodeCollapsing: function(evt, ui) {...}
 				});
 			```
-				Use ui.owner to get a reference to the tree.
-				Use ui.node to get a reference to the node object about to collapse.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
+				eventArgument="ui.node" argType="object" Gets a reference to the node object about to collapse.
 			*/
 			nodeCollapsing: "nodeCollapsing",
 			/* cancel="false" Fired after a node is collapsed.
@@ -1462,8 +1465,9 @@
 					nodeCollapsed: function(evt, ui) {...}
 				});
 			```
-				Use ui.owner to get a reference to the tree.
-				Use ui.node to get a reference to the collapsed node object.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
+				eventArgument="ui.node" argType="object" Gets a reference to the collapsed node object.
 			*/
 			nodeCollapsed: "nodeCollapsed",
 			/* cancel="true" Fired before a node is expanded.
@@ -1481,8 +1485,9 @@
 					nodeExpanding: function(evt, ui) {...}
 				});
 			```
-				Use ui.owner to get a reference to the tree.
-				Use ui.node to get a reference to the node object about to expand.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
+				eventArgument="ui.node" argType="object" Gets a reference to the node object about to expand.
 			*/
 			nodeExpanding: "nodeExpanding",
 			/* cancel="false" Fired after a node is expanded.
@@ -1500,8 +1505,9 @@
 					nodeExpanded: function(evt, ui) {...}
 				});
 			```
-				Use ui.owner to get a reference to the tree.
-				Use ui.node to get a reference to the expanded node object.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
+				eventArgument="ui.node" argType="object" Gets a reference to the expanded node object.
 			*/
 			nodeExpanded: "nodeExpanded",
 			/* cancel="false" Fired on node click.
@@ -1519,8 +1525,9 @@
 					nodeClick: function(evt, ui) {...}
 				});
 			```
-				Use ui.owner to get a reference to the tree.
-				Use ui.node to get a reference to the node object being clicked.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.owner" argType="object" Gets a reference to the tree.
+				eventArgument="ui.node" argType="object" Gets a reference to the node object being clicked.
 			*/
 			nodeClick: "nodeClick",
 			/* cancel="false" Fired on node double click.
@@ -1542,10 +1549,11 @@
 					nodeDoubleClick: function(evt, ui) {...}
 				});
 			```
-				Use ui.path to get the data-path attribute of the double clicked node.
-				Use ui.element to get a reference to the jQuery element of the double clicked node.
-				Use ui.data to get the node data.
-				Use ui.binding to get a reference to the bindings object for the level at which the double clicked node is located.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.path" argType="string" Gets the data-path attribute of the double clicked node.
+				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the double clicked node.
+				eventArgument="ui.data" argType="object" Gets the node data.
+				eventArgument="ui.binding" argType="object" Gets a reference to the bindings object for the level at which the double clicked node is located.
 			*/
 			nodeDoubleClick: "nodeDoubleClick",
 			/* cancel="true" Fired on node drag start.
@@ -1575,14 +1583,15 @@
 					dragStart: function(evt, ui) {...}
 				});
 			```
-				Use ui.binding to gets a reference to the bindings object for the level at which the dragged node is located.
-				Use ui.data	to get a reference to the node data.
-				Use ui.element to get a reference to the node element.
-				Use ui.helper to get a reference to the helper.
-				Use ui.offset to get a reference to the offset.
-				Use ui.orginalPosition to get a reference to the original position of the draggable element (the node).
-				Use ui.path	to get the node data-path attrubte.
-				Use ui.position to get a reference to the current position of the draggable element.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.path" argType="string" Gets the node data-path attrubte.
+				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node.
+				eventArgument="ui.data" argType="object" Gets the node data.
+				eventArgument="ui.binding" argType="object" Gets a reference to the bindings object for the level at which the dragged node is located.
+				eventArgument="ui.helper" argType="$" Gets a reference to the helper.
+				eventArgument="ui.offset" argType="object" Gets a reference to the offset.
+				eventArgument="ui.orginalPosition" argType="object" Gets a reference to the original position of the draggable element (the node).
+				eventArgument="ui.position" argType="object" Gets a reference to the current position of the draggable element.
 			*/
 			dragStart: "dragStart",
 			/* cancel="true" Fired on node drag.
@@ -1613,14 +1622,15 @@
 				});
 
 			```
-				Use ui.binding to gets a reference to the binding object for the level at which the dragged node is located.
-				Use ui.data	to get a reference to the node data.
-				Use ui.element to get a reference to the node element.
-				Use ui.helper to get a reference to the helper.
-				Use ui.offset to get a reference to the offset.
-				Use ui.orginalPosition to get a reference to the original position of the draggable element (the node).
-				Use ui.path	to get the node data-path attribute.
-				Use ui.position to get a reference to the current position of the draggable element.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.path" argType="string" Gets the node data-path attrubte.
+				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node.
+				eventArgument="ui.data" argType="object" Gets the node data.
+				eventArgument="ui.binding" argType="object" Gets a reference to the bindings object for the level at which the dragged node is located.
+				eventArgument="ui.helper" argType="$" Gets a reference to the helper.
+				eventArgument="ui.offset" argType="object" Gets a reference to the offset.
+				eventArgument="ui.orginalPosition" argType="object" Gets a reference to the original position of the draggable element (the node).
+				eventArgument="ui.position" argType="object" Gets a reference to the current position of the draggable element.
 			*/
 			drag: "drag",
 			/* cancel="false" Fired after a drag operation has completed.
@@ -1641,10 +1651,11 @@
 					dragStop: function(evt, ui) {...}
 				});
 			```
-				Use ui.helper to get a reference to the helper.
-				Use ui.offset to get a reference to the offset.
-				Use ui.orginalPosition to get a reference to the original position of the draggable element (the node).
-				Use ui.position to get a reference to the current position of the draggable element.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.helper" argType="$" Gets a reference to the helper.
+				eventArgument="ui.offset" argType="object" Gets a reference to the offset.
+				eventArgument="ui.orginalPosition" argType="object" Gets a reference to the original position of the draggable element (the node).
+				eventArgument="ui.position" argType="object" Gets a reference to the current position of the draggable element.
 			*/
 			dragStop: "dragStop",
 			/* cancel="true" Fired before a node is dropped.
@@ -1674,14 +1685,15 @@
 					nodeDropping: function(evt, ui) {...}
 				});
 			```
-				Use ui.binding to gets a reference to the binding object for the level at which the target node is located.
-				Use ui.data	to get a reference to the target node data.
-				Use ui.draggable to get a reference to the draggable element (the node).
-				Use ui.element to get a reference to the node element.
-				Use ui.helper to get a reference to the helper.
-				Use ui.offset to get a reference to the offset.
-				Use ui.path	to get the target node data-path attribute.
-				Use ui.position to get a reference to the current position of the draggable element.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.path" argType="string" Gets the target node data-path attribute.
+				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node.
+				eventArgument="ui.data" argType="object" Gets a reference to the target node data.
+				eventArgument="ui.binding" argType="object" Gets a reference to the binding object for the level at which the target node is located.
+				eventArgument="ui.helper" argType="$" Gets a reference to the helper.
+				eventArgument="ui.offset" argType="object" Gets a reference to the offset.
+				eventArgument="ui.position" argType="object" Gets a reference to the current position of the draggable element.
+				eventArgument="ui.draggable" argType="$" Gets a reference to the draggable element (the node).
 			*/
 			nodeDropping: "nodeDropping",
 			/* cancel="false" Fired after a node is dropped.
@@ -1713,14 +1725,15 @@
 					nodeDropped: function(evt, ui) {...}
 				});
 			```
-				Use ui.binding to gets a reference to the binding object for the level at which the target node is located.
-				Use ui.data	to get a reference to the target node data.
-				Use ui.draggable to get a reference to the draggable element (the node).
-				Use ui.element to get a reference to the element.
-				Use ui.helper to get a reference to the helper.
-				Use ui.offset to get a reference to the offset.
-				Use ui.path	to get the target node data-path attribute.
-				Use ui.position to get a reference to the current position of the draggable element.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="ui.path" argType="string" Gets the target node data-path attribute.
+				eventArgument="ui.element" argType="$" Gets a reference to the jQuery element of the node.
+				eventArgument="ui.data" argType="object" Gets a reference to the target node data.
+				eventArgument="ui.binding" argType="object" Gets a reference to the binding object for the level at which the target node is located.
+				eventArgument="ui.helper" argType="$" Gets a reference to the helper.
+				eventArgument="ui.offset" argType="object" Gets a reference to the offset.
+				eventArgument="ui.position" argType="object" Gets a reference to the current position of the draggable element.
+				eventArgument="ui.draggable" argType="$" Gets a reference to the draggable element (the node).
 			*/
 			nodeDropped: "nodeDropped"
 		},
@@ -2287,92 +2300,93 @@
 			return opt;
 		},
 		_performDrop: function (event, ui) {
-			var self = this, parent, target = $(event.originalEvent.target), noCancel;
+			var parent, target = $(event.originalEvent.target), noCancel,
+				dndmode = this._sourceNode.owner.options.dragAndDropSettings.dragAndDropMode;
 			if (target.is("div[data-role=insert-line]")) {
 				target = target.closest("li[data-role=node]");
 			}
-			self.element.find("div[data-role=insert-line]").remove();
-			noCancel = self._triggerNodeDropping(event, ui, target.closest("li[data-role=node]"),
-				target.next("li[data-role=node]").length > 0 || !self._validationObject.dropAfter ?
-				target.index() + (self._validationObject.dropAfter ? 1 : 0) : target.index());
+			this.element.find("div[data-role=insert-line]").remove();
+			noCancel = this._triggerNodeDropping(event, ui, target.closest("li[data-role=node]"),
+				target.next("li[data-role=node]").length > 0 || !this._validationObject.dropAfter ?
+				target.index() + (this._validationObject.dropAfter ? 1 : 0) : target.index());
 			if (noCancel) {
 				if (target.is("a") || target.closest("a").parent().is("li[data-role=node]")) {
 					target = target.closest("li[data-role=node]");
-					switch (self.options.dragAndDropSettings.dragAndDropMode) {
+					switch (dndmode) {
 					case "move":
-						self.addNode(self._sourceNode.data, target);
-						self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+						this.addNode(this._sourceNode.data, target);
+						this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						break;
 					case "copy":
-						self.addNode(self._sourceNode.data, target);
+						this.addNode(this._sourceNode.data, target);
 						break;
 					default:
 						if (!event.ctrlKey) {
-							self.addNode(self._sourceNode.data, target);
-							self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+							this.addNode(this._sourceNode.data, target);
+							this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						} else {
-							self.addNode(self._sourceNode.data, target);
+							this.addNode(this._sourceNode.data, target);
 						}
 						break;
 					}
 				} else if (target.is("li")) {
-					parent = self.parentNode(target);
-					switch (self.options.dragAndDropSettings.dragAndDropMode) {
+					parent = this.parentNode(target);
+					switch (dndmode) {
 					case "move":
-						self.addNode(self._sourceNode.data, parent, target
+						this.addNode(this._sourceNode.data, parent, target
 							.next("li[data-role=node]").length > 0 ||
-							!self._validationObject.dropAfter ?
-							target.index() + (self._validationObject.dropAfter ? 1 : 0) : null);
-						self._sourceNode.element.attr("data-path", self._sourceNode.element
+							!this._validationObject.dropAfter ?
+							target.index() + (this._validationObject.dropAfter ? 1 : 0) : null);
+						this._sourceNode.element.attr("data-path", this._sourceNode.element
 							.attr("data-path") + "_remove");
-						self._sourceNode.owner
-							.removeAt(self._sourceNode.element.attr("data-path"));
+						this._sourceNode.owner
+							.removeAt(this._sourceNode.element.attr("data-path"));
 						break;
 					case "copy":
-						self.addNode(self._sourceNode.data, parent, target
+						this.addNode(this._sourceNode.data, parent, target
 							.next("li[data-role=node]").length > 0 ||
-							!self._validationObject.dropAfter ?
-							target.index() + (self._validationObject.dropAfter ? 1 : 0) : null);
+							!this._validationObject.dropAfter ?
+							target.index() + (this._validationObject.dropAfter ? 1 : 0) : null);
 						break;
 					default:
 						if (!event.ctrlKey) {
-							self.addNode(self._sourceNode.data, parent, target
+							this.addNode(this._sourceNode.data, parent, target
 								.next("li[data-role=node]").length > 0 ||
-								!self._validationObject.dropAfter ? target
-								.index() + (self._validationObject.dropAfter ? 1 : 0) : null);
-							self._sourceNode.element.attr("data-path",
-								self._sourceNode.element.attr("data-path") + "_remove");
-							self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+								!this._validationObject.dropAfter ? target
+								.index() + (this._validationObject.dropAfter ? 1 : 0) : null);
+							this._sourceNode.element.attr("data-path",
+								this._sourceNode.element.attr("data-path") + "_remove");
+							this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						} else {
-							self.addNode(self._sourceNode.data, parent, target
+							this.addNode(this._sourceNode.data, parent, target
 								.next("li[data-role=node]").length > 0 ||
-								!self._validationObject.dropAfter ? target
-								.index() + (self._validationObject.dropAfter ? 1 : 0) : null);
+								!this._validationObject.dropAfter ? target
+								.index() + (this._validationObject.dropAfter ? 1 : 0) : null);
 						}
 						break;
 					}
 				} else if (target.is(":ui-igTree")) {
 
 					// K.D. December 13th, 2013 Bug #159540 Allowing for dragging and dropping into an empty tree.
-					switch (self.options.dragAndDropSettings.dragAndDropMode) {
+					switch (dndmode) {
 					case "move":
-						self.addNode(self._sourceNode.data);
-						self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+						this.addNode(this._sourceNode.data);
+						this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						break;
 					case "copy":
-						self.addNode(self._sourceNode.data);
+						this.addNode(this._sourceNode.data);
 						break;
 					default:
 						if (!event.ctrlKey) {
-							self.addNode(self._sourceNode.data);
-							self._sourceNode.owner.removeAt(self._sourceNode.element.attr("data-path"));
+							this.addNode(this._sourceNode.data);
+							this._sourceNode.owner.removeAt(this._sourceNode.element.attr("data-path"));
 						} else {
-							self.addNode(self._sourceNode.data);
+							this.addNode(this._sourceNode.data);
 						}
 						break;
 					}
 				}
-				self._triggerNodeDropped(event, ui, target);
+				this._triggerNodeDropped(event, ui, target);
 			} else {
 				return false;
 			}
@@ -2453,7 +2467,7 @@
 				dropOptions = this._initDropOptions();
 			if (!this._insertLine.html) {
 				this._insertLine.html =
-					'<div data-role="insert-line" class="' + this.css.insertLine + '"></div>';
+					"<div data-role='insert-line' class='" + this.css.insertLine + "'></div>";
 			}
 			if (!element) {
 				this.element.find("li[data-role=node]").draggable(dragOptions);
@@ -2619,8 +2633,8 @@
 						value = data[ i ][ binding.valueKey ];
 					}
 				}
-				li = '<li class="' + this._buildNodeCssString(data[ i ], depth, binding) +
-					'" data-path="' + childPath + '" data-value="' + value + '" data-role="node">';
+				li = "<li class='" + this._buildNodeCssString(data[ i ], depth, binding) +
+					"' data-path='" + childPath + "' data-value='" + value + "' data-role='node'>";
 
 				children = data[ i ][ binding.childDataProperty ];
 				if (typeof children === "function") {
@@ -2650,11 +2664,11 @@
 				}
 
 				if ((children && children.length > 0) || (children && opt.loadOnDemand)) {
-					childUl = '<ul style="display: ' + display + '" data-depth="' + (depth + 1) + '"';
+					childUl = "<ul style='display: " + display + "' data-depth='" + (depth + 1) + "'";
 					if (children.length > 0 && !opt.loadOnDemand) {
 						childUl += ">" + this._initChildrenRecursively(childPath, children, depth + 1, checkFlag);
 					} else {
-						childUl += ' data-populated="false">';
+						childUl += " data-populated='false'>";
 					}
 					childUl += "</ul>";
 				}
@@ -2787,10 +2801,10 @@
 				if (typeof data[ binding.imageUrlKey ] === "function") {
 					src = data[ binding.imageUrlKey ]();
 					if (src && src.length > 0) {
-						img = '<img src="' + src + '" alt="error" data-role="node-image" />';
+						img = "<img src='" + src + "' alt='error' data-role='node-image' />";
 					}
 				} else if (data[ binding.imageUrlKey ].length > 0) {
-					img = '<img src="' + data[ binding.imageUrlKey ] + '" alt="error" data-role="node-image" />';
+					img = "<img src='" + data[ binding.imageUrlKey ] + "' alt='error' data-role='node-image' />";
 				}
 			}
 			if (opt.parentNodeImageUrl && hasChildren) {
@@ -3035,7 +3049,7 @@
 
 			// Clear the loading indicator space
 			// K.D. August 16th, 2013 Bug #149438 Keeping the already rendered nodes and rendering the loaded ones after
-			ul.children('li[data-role="loading"]').remove();
+			ul.children("li[data-role='loading']").remove();
 			if (!originalData[ binding.childDataProperty ] ||
 				!originalData[ binding.childDataProperty ].length) {
 				originalData[ binding.childDataProperty ] = newData;
@@ -3105,7 +3119,7 @@
 			ul = node.children("ul");
 
 			// Create loading indicator space
-			li = $('<li style="width: 20px" data-role="loading">&nbsp;</li>').appendTo(ul);
+			li = $("<li style='width: 20px' data-role='loading'>&nbsp;</li>").appendTo(ul);
 			ul.show();
 
 			// K.D. December 19th, 2011 Bug #98217 Adding flag pointing that the loading indicator is instantiated by the tree
@@ -3593,7 +3607,7 @@
 
 			// K.D. August 15th, 2013 Bug #149367 The member does not necessarily need to be observable
 			switch (item) {
-				case binding.textKey:
+			case binding.textKey:
 
 				// K.D. June 25th, 2014 Bug #173722 Adding handling for templates
 				if (!binding.nodeContentTemplate) {
@@ -3628,6 +3642,8 @@
 			case binding.imageUrlKey:
 				value = typeof data[ item ] === "function" ? data[ item ]() : data[ item ];
 				element.children("img[data-role=node-image]").attr("src", value);
+				break;
+			default:
 				break;
 			}
 		},
@@ -3932,7 +3948,7 @@
 				paramType="string" optional="false" Specifies the path to the required node.
 				returnType="object" Returns the jQuery selected node element with the specified path. The length property would be 0 if node isn't found.
 			*/
-			return this.element.find('li[data-path="' + nodePath + '"]');
+			return this.element.find("li[data-path='" + nodePath + "']");
 		},
 		nodesByValue: function (value) {
 			/* Retrieves the jQuery element of the node with the specified value.
@@ -3942,7 +3958,7 @@
 				paramType="string" optional="false" Specifies the value of the required node.
 				returnType="object" Returns the jQuery object of the node element with the specified value. The length property would be 0 if node isn't found.
 			*/
-			return this.element.find('li[data-value="' + value + '"]');
+			return this.element.find("li[data-value='" + value + "']");
 		},
 		checkedNodes: function () {
 			/* Retrieves all the node objects for the nodes that have their checkboxes checked.
@@ -4114,8 +4130,8 @@
 				returnType="array" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			var collection = [], nodes, self = this;
-			nodes = parent ? parent.find('li > a:contains("' + text + '")') :
-				this.element.find('li > a:contains("' + text + '")');
+			nodes = parent ? parent.find("li > a:contains('" + text + "')") :
+				this.element.find("li > a:contains('" + text + "')");
 			nodes.each(function () {
 				collection.push(self.nodeFromElement($(this).closest("li[data-role=node]")));
 			});
@@ -4132,9 +4148,9 @@
 				returnType="array" Node Object description: { path: "node_path", element: jQuery LI Element, data: data, binding: binding }
 			*/
 			var collection = [], nodes, self = this;
-			nodes = parent ? parent.children("ul").children("li").children('a:contains("' + text + '")') :
-				this.element.is("ul") ? this.element.children("li").children('a:contains("' + text + '")') :
-					this.element.children("ul").children("li").children('a:contains("' + text + '")');
+			nodes = parent ? parent.children("ul").children("li").children("a:contains('" + text + "')") :
+				this.element.is("ul") ? this.element.children("li").children("a:contains('" + text + "')") :
+					this.element.children("ul").children("li").children("a:contains('" + text + "')");
 			nodes.each(function () {
 				collection.push(self.nodeFromElement($(this).closest("li[data-role=node]")));
 			});

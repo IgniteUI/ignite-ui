@@ -7,6 +7,15 @@
 *
 */
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
 
@@ -27,9 +36,14 @@
 			    operaDownload: "http://www.opera.com/download/",
 			    chromeDownload: "http://www.google.com/chrome",
 			    firefoxDownload: "http://www.mozilla.com/",
-			    safariDownload: "http://www.apple.com/safari/download/"
+			    safariDownload: "http://www.apple.com/safari/download/",
+			    defaultSummaryMethodLabelMin: "Мин. = ",
+			    defaultSummaryMethodLabelMax: "Макс. = ",
+			    defaultSummaryMethodLabelSum: "Сумма = ",
+			    defaultSummaryMethodLabelAvg: "Ср. = ",
+			    defaultSummaryMethodLabelCount: "Кол-во = "
 		    }
 	    });
 
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

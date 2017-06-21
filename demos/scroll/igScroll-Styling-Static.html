@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+	
+	<link type="text/css" href="../../src/css/structure/modules/infragistics.ui.scroll.css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="../../src/js/modules/i18n/infragistics.ui.scroll-en.js"></script>
+	
+	<script type="text/javascript" src="../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../src/js/modules/infragistics.ui.scroll.js"></script>
+	
+	<style type="text/css">			
+		#loremText {
+			height:400px;
+			width: 600px;
+			overflow: hidden;
+			border: 1px solid #ccc;
+			border-radius: 9px;
+			padding-right: 20px;
+			padding-left: 20px;
+		}
+		
+		.igscroll-varrow {
+			visibility: hidden;
+		}
+		
+		.igscroll-harrow {
+			visibility: hidden;
+		}
+		
+		.igscroll-vcontainer {
+			right: 3px;
+		}
+		
+		.igscroll-vtrack {
+			background-color: #dfdfdf;
+			border-radius: 30px;
+			width: 12px;
+			box-shadow: inset 0px 0px 5px #888888;			
+		}
+		
+		.igscroll-vdrag {
+			border-radius: 6px;
+			border: 1px solid #ccc;
+			box-shadow: inset 0px 0px 5px #888888;
+			background-color: #587adb;
+		}
+		
+		.igscroll-vdrag-thin {
+			width: 10px;
+			left: 0px;
+		}
+		
+		.igscroll-vdrag-big {
+			width: 10px;
+			left: 0px;
+		}
+
+		.igscroll-vdrag:hover {
+			background-color: #4c69ba;
+		}
+		
+		.igscroll-vdrag:active {
+			background-color: #3f58a0;
+		}
+		
+		
+		.igscroll-htrack {
+			background-color: #dfdfdf;
+			border-radius: 30px;
+			height: 12px !important;
+			box-shadow: inset 0px 0px 5px #888888;			
+		}
+		
+		.igscroll-hdrag {
+			height: 10px !important;
+			top: 0px !important;
+			border-radius: 6px;
+			border: 1px solid #ccc;
+			box-shadow: inset 0px 0px 5px #888888;
+			background-color: #587adb;
+		}
+		
+		.igscroll-hdrag:hover {
+			background-color: #4c69ba;
+		}
+		
+		.igscroll-hdrag:active {
+			background-color: #3f58a0;
+		}
+	</style>
+</head>
+<body style='touch-action: none;'>
+	<div id="loremText" tabindex="1">
+		<h3> Lorem ipsum </h3>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin varius finibus lorem vel rhoncus.
+			Nulla varius bibendum ex, et consequat tortor fringilla in. Donec ultricies, nulla sed finibus lacinia, nisl massa imperdiet massa, vitae ultricies enim nulla nec ligula.
+			Curabitur ut odio dolor. Sed at feugiat metus, at auctor eros. Nam dui metus, semper tincidunt porta ac, semper sed lorem. Nulla sed eleifend ante, eu tempor justo.
+		</p>			
+		<p>
+			Curabitur vulputate bibendum convallis. Phasellus non purus ligula.
+			Vivamus posuere scelerisque nibh, et bibendum libero lacinia ac. Suspendisse sem lectus, rutrum vestibulum diam tincidunt, aliquam porta urna.
+			Praesent pulvinar magna velit. Praesent nisl nunc, placerat vel euismod a, tincidunt vitae turpis. Sed auctor nunc sit amet ipsum lobortis auctor.
+			Morbi efficitur erat in lacus egestas, sed viverra lectus lobortis. Proin id neque fermentum, aliquet lorem sed, mattis nibh. Nam sed fringilla odio.
+			Nulla ac nisi viverra, sagittis nisl non, faucibus lorem. Etiam eu sollicitudin elit, sed congue sem. Morbi aliquet vulputate semper.
+			Mauris volutpat nunc at molestie lacinia. Nullam accumsan felis non quam vehicula sodales. Phasellus facilisis elit id arcu vehicula placerat.
+		</p>
+		<p>
+			Vivamus id egestas metus, id posuere turpis. Aliquam accumsan, erat eu dapibus elementum, ante mi porta velit, at interdum urna lacus nec mauris.
+			Vivamus varius eleifend justo at aliquet. Sed fermentum, orci non consequat cursus, lectus felis bibendum turpis, et fringilla magna ex in felis.
+			Integer gravida magna sit amet massa tristique, quis ultrices ex accumsan. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+			Integer vitae nisi aliquam, pretium magna quis, commodo orci.
+		</p>
+		<p>
+			Curabitur tempus suscipit facilisis. Proin sed accumsan purus, a pellentesque risus. Donec lacinia est metus, quis maximus enim fringilla vel.
+			Praesent hendrerit augue vel justo interdum elementum. Maecenas vitae molestie augue. Duis sed nunc ornare metus maximus imperdiet.
+			Mauris fermentum nec tortor id venenatis. Vivamus convallis eros elementum, mollis ipsum id, efficitur urna. Phasellus nec lectus sit amet sem laoreet ornare.
+			Praesent posuere lorem ornare purus consequat, ut cursus velit dapibus. Nullam fermentum purus erat, non dictum sapien gravida a. Cras volutpat nibh eget tortor placerat, quis congue mauris commodo.
+		</p>
+		<p>
+			Suspendisse sem lacus, volutpat ac varius eu, eleifend tempor ex. Etiam libero nunc, vulputate sit amet ligula at, fringilla luctus urna.
+			Quisque eget mattis justo. In a congue mauris. Nam maximus metus eget viverra venenatis. Integer vehicula ex in eros vestibulum tincidunt.
+			Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum bibendum ipsum in felis viverra convallis.
+			Ut in leo volutpat, porttitor arcu ac, finibus enim. Praesent venenatis malesuada leo quis feugiat. Cras ut nisl ac ligula cursus fringilla.
+		</p>
+		<p>
+			Proin ultricies, neque ut viverra sagittis, turpis lacus euismod magna, et feugiat justo ligula vitae massa. Nam tellus ligula, posuere nec venenatis ut, ornare vel turpis.
+			In blandit tellus a sapien sodales aliquam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Phasellus congue eget turpis nec blandit.
+			Aliquam placerat fermentum erat ut hendrerit. Sed faucibus magna vitae sem sodales, eget malesuada dolor vehicula. Vivamus sed ante lectus.
+			Etiam et est nec neque posuere bibendum. Nam rutrum molestie placerat. Nullam sagittis est nibh, eget iaculis enim pulvinar et.
+		</p>
+		<p>
+			Nam consectetur convallis lectus ac blandit. Nulla facilisi. Nulla pretium convallis nibh id accumsan. Vestibulum egestas augue justo, id mattis lectus gravida non.
+			Sed tempus dui et tellus iaculis, eu convallis lacus ultrices. Phasellus molestie, sapien non porta bibendum, elit nunc scelerisque dolor, nec luctus elit sapien et orci.
+			Fusce vitae libero nec nunc tempor aliquet.
+		</p>
+		<p>
+			Nulla sed tincidunt nulla, euismod efficitur magna. Sed erat purus, aliquet et egestas vel, ornare nec est. Suspendisse rutrum nunc ipsum, vitae suscipit mi maximus ut.
+			Fusce euismod bibendum lacus, convallis placerat augue porttitor nec. Fusce elit tortor, aliquam eget imperdiet quis, malesuada quis eros.
+			Vestibulum faucibus, magna at volutpat fermentum, magna massa egestas nibh, sagittis pharetra sapien dolor sed lorem. Pellentesque aliquam nisi a arcu tempus tempor.
+		</p>
+		<p>
+			Maecenas placerat eu libero id lobortis. Aenean nunc felis, fringilla in maximus et, ultricies at dolor. Duis ultricies elit nunc, a lacinia lorem sodales eu.
+			Curabitur ultrices sapien in congue vehicula. Sed at ipsum ac dolor sollicitudin sagittis. Aenean feugiat a lectus porta dictum. 
+			Vestibulum consectetur purus elit, et molestie turpis consectetur a. Ut ante quam, tempus sit amet diam a, semper ultrices turpis.
+			Sed fringilla ipsum mi, in pharetra velit molestie et. Quisque eu nisl vestibulum, aliquam mauris quis, sodales justo.
+		</p>
+		<p>
+			In sit amet risus at odio auctor volutpat. Suspendisse aliquam congue turpis nec pharetra. Proin sit amet condimentum neque, non vulputate ipsum.
+			Vivamus lacinia tortor feugiat porta rutrum. Vestibulum magna nunc, ullamcorper a augue non, finibus dictum nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+			Vestibulum at feugiat turpis. Integer quis metus sed nisl posuere rhoncus nec nec metus. Etiam ac porta elit. Sed tellus ante, porttitor ut mollis elementum, vulputate id arcu.
+		</p>
+	</div>
+	<script>
+		$("#loremText").igScroll({
+			alwaysVisible: true,
+			smoothing: true,
+			scrollbarType: "custom"
+		});
+	</script>
+</body>
+</html>

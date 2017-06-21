@@ -34,8 +34,8 @@
 			"./infragistics.util.jquery",
 			"./infragistics.templating",
 			"./infragistics.datasource",
-			"./infragistics.scroll",
-			"./infragistics.validator"
+			"./infragistics.ui.scroll",
+			"./infragistics.ui.validator"
 		], factory );
 	} else {
 
@@ -513,6 +513,7 @@
 			*/
             visibleItemsCount: 15,
             /* type="string" Gets/Sets value that is displayed when input field is empty. That is an override for the $.ig.Combo.locale.placeHolder.
+            ```
                 //Initialize
                 $(".selector").igCombo({
                     placeHolder : "Empty input field"
@@ -523,6 +524,7 @@
 
                 //Set
                 $(".selector").igCombo("option", "placeHolder", "Please type in some text");
+            ```
             */
             placeHolder: null,
             /* type="editable|dropdown|readonlylist|readonly" Sets gets functionality mode.
@@ -1097,7 +1099,7 @@
             rendered: "rendered",
             /* cancel="true" Event which is raised before data binding is performed.
             ```
-                $(document).delegate(".selector", "igcombodatabinding", function (null, ui) {
+                $(document).delegate(".selector", "igcombodatabinding", function (evt, ui) {
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to instance of $.ig.DataSource used by combo
@@ -1106,7 +1108,7 @@
 
                 //Initialize
                 $(".selector").igCombo({
-                    dataBinding: function (null, ui) {
+                    dataBinding: function (evt, ui) {
                         ...
                     }
                 });
@@ -1117,7 +1119,7 @@
             dataBinding: "dataBinding",
             /* cancel="false" Event which is raised after data binding is complete.
             ```
-                $(document).delegate(".selector", "igcombodatabound", function (null, ui) {
+                $(document).delegate(".selector", "igcombodatabound", function (evt, ui) {
                     //use to obtain reference to igCombo
                     ui.owner;
                     //use to obtain reference to instance of $.ig.DataSource used by combo
@@ -1126,7 +1128,7 @@
 
                 //Initialize
                 $(".selector").igCombo({
-                    dataBound: function (null, ui) {
+                    dataBound: function (evt, ui) {
                     ...
                     }
                 });
@@ -1851,7 +1853,7 @@
                     $("<div>")).addClass(css.comboWrapper),
 				$combo = $("<div>").addClass(css.combo).attr("unselectable", "on"),
 				$input = (_options.$input ||
-                    $("<input type=text'>")).addClass(css.field)
+                    $("<input type='text'>")).addClass(css.field)
                     .attr({ tabIndex: options.tabIndex, autocomplete: "off" }),
 				$hiddenInput = $("<input type='hidden'>").addClass(css.hiddenField),
 				$fieldCont = $("<div>").addClass(css.fieldHolder),
@@ -2027,8 +2029,8 @@
             unwrappedDataItem = this._unwrapData(dataItem);
 
 			// A.k August 15, 2016 Fixing Bug #223071 - [igCombo] Text from list items is not escaped.
-            unwrappedDataItem = $.ig.util.escapeHtmlTags(unwrappedDataItem);
             unwrappedDataItem = this._formatItem(unwrappedDataItem);
+            unwrappedDataItem = $.ig.encode(unwrappedDataItem);
 
             return this.options.itemTemplate ?
 				$.ig.tmpl(this.options.itemTemplate, data) : unwrappedDataItem;
@@ -2111,6 +2113,7 @@
 				markup, escapedValue;
 
             // Z.K. 27/08/2015 Bug #205313 - Not possible to select item because of illegal special characters encoding
+            // R.K. 24 November 2016 #543 - Cannot select an item from drop down list when you set HTML character entity reference to a datasource item
             escapedValue = $.ig.encode(value);
             markup = '<li class="' + css.listItem + '" data-value="' +
                 escapedValue + '" unselectable="on">';
@@ -2202,6 +2205,7 @@
             var markup, dropDownScrollHeight, schema, noCancel,
 				options = this.options,
 				_options = this._options,
+                lod = this.options.loadOnDemandSettings,
 				dataView = data.dataView(),
 				dataLen = this._itemsToRenderCount();
 
@@ -2252,6 +2256,12 @@
                     // D.A. 19th March 2015, Bug #190783 In Nexus virtualization does not have scroll bar
                     _options.$dropDownScrollCont.width($.ig.util.getScrollWidth() + 1);
                     this._updateVirtualScrollVisibility();
+
+                    // R.K. 22nd of February #830: igCombo not loading on demand with small pageSize
+                    if (lod && lod.enabled && lod.pageSize <= options.visibleItemsCount) {
+                        _options.$dropDownScroll.height(dropDownScrollHeight + this._itemHeight());
+                        _options.$dropDownScrollCont.removeClass(this.css.hidden);
+                    }
                 }
 
                 this._updateFooterVariables();
@@ -3717,6 +3727,7 @@
                 self = this,
 				options = this.options,
 				_options = this._options,
+                lod = this.options.loadOnDemandSettings,
 				multiSelection = options.multiSelection.enabled,
 				$keyNavItem = this._$keyNavItem(),
 				$visibleItems = this._$items().filter(":visible"),
@@ -3785,6 +3796,13 @@
                     // S.T. March 9th, 2015 Bug #188227: Handling DOWN arrow with virtualization.
                     if (options.virtualization && (activeIndex >= visibleItemsCount)) {
                         this.listScrollTop(currentScrollTop + itemHeight + 1);
+                    }
+
+                    // R.K. 22nd of February #830: igCombo not loading on demand with small pageSize
+                    if (options.virtualization && lod && lod.enabled &&
+                        (this.activeIndex() + 1 === this.listItems().length) &&
+                        (this.listItems().length < options.visibleItemsCount)) {
+                            self._callNextChunk(_options.$dropDownListCont, self._itemHeight());
                     }
                 }
 
@@ -4192,12 +4210,12 @@
             if (options.multiSelection.enabled) {
                 startValue = _options.keyNavItemData;
             } else {
-                startValue = _options
-                    .selectedData[ _options.selectedData.length - 1 ][ options.valueKey ];
+                // R.K. 6th of January 2017 #709: Combo throws exception when keypress event is fired in dropdown mode
+                startValue = _options.selectedData.length ?
+                _options.selectedData[ _options.selectedData.length - 1 ][ options.valueKey ] : 0;
             }
 
             startIndex = this._dataIndexByValue(startValue, true);
-
             if (_options.dropDownModeSearchBy.length === 1) {
 
                 // Start from next item when the search string is only single character long
@@ -4215,7 +4233,6 @@
                         _options.dropDownModeSearchBy =
                             _options.dropDownModeSearchBy.toLowerCase();
                     }
-
                     if (curText.startsWith(_options.dropDownModeSearchBy)) {
                         if (options.multiSelection.enabled) {
                             this._setKeyNavigationItem({
@@ -4350,7 +4367,8 @@
 
                     // Simulate proper behavior on input after composition end, excluding FF where all works fine
                     // When composition end is triggered autocomplete does not work properly
-                    if (!$.ig.util.isFF && this.isCompositionEndFired && this.autocompleteText) {
+                    // R.K. 3rd of January 2017 #696: Combo doesn't accept first character of input after clearing an IME composition in Chrome
+                    if ($.ig.util.isSafari && this.isCompositionEndFired && this.autoCompleteText) {
                         val = comboContext._options.$input.val();
 
                         if ($.ig.util.isOpera) {
@@ -5004,7 +5022,11 @@
                     this._options.$input.attr("tabIndex", value);
                     break;
                 case "validatorOptions":
-                    this.validator();
+                    if (this._options.validator) {
+                        this.element.igValidator(this.options.validatorOptions);
+                    } else {
+                        this.validator();
+                    }
                     break;
                 case "dropDownButtonTitle":
                     _options.$dropDownBtnCont.attr("title", value);
@@ -6672,14 +6694,17 @@
                     keepNavItem (boolean): Set to true to keep current navigation item unchanged after the selection. By default the navigation item is changed to the new selected item.
                     keepScrollPosition (boolean): Set to true to keep current scroll position. By default the scroll position will change so that the last selected item is visible.
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger selection changed event.
-                returnType="object" Returns reference to this igCombo.
+                returnType="object" Returns an object consisting of the following members.
+                    combo (object): Reference to this combo.
+                    selectionCanceled (boolean): Whether or not the selectionChanging event was canceled.
             */
             var items, itemsLen, selectedValues, newSelItems, selAutoSelectedItem,
                 selChanged, additive, prevSelValues, newSelData, skipEventTrigger, noCancel, i,
                 comboOptions = this.options,
                 _options = this._options,
                 multiSelEnabled = comboOptions.multiSelection.enabled,
-                prevSelItems = this.selectedItems();
+                prevSelItems = this.selectedItems(),
+                returnValue = { combo: this, selectionCanceled: false };
 
             // Use first data when multi selection is not enabled
             data = ($.type(data) === "array" && !multiSelEnabled) ? data[ 0 ] : data;
@@ -6694,7 +6719,7 @@
                     this.deselectAll(options, event);
                 }
 
-                return this;
+                return returnValue;
             }
 
             if ($.type(items) !== "array") {
@@ -6760,6 +6785,9 @@
                 } else {
                     noCancel = true;
                 }
+
+                // R.K. 5th of May 2017 #986: The editor text changes even if selectionChanging event is canceled when allowCustomValue is set to true
+                returnValue.selectionCanceled = !noCancel;
 
                 if (noCancel) {
 
@@ -6848,7 +6876,7 @@
                 }
             }
 
-            return this;
+            return returnValue;
         },
         value: function (value, options, event) {
             /* Selects list item/items from the drop-down list by specified value or array of values. When called witout params will return the value of the selected item or if [multiSelection](ui.igcombo#options:multiSelection) is enabled array of selected values.
@@ -6887,7 +6915,7 @@
                 paramType="object" optional="true" Indicates the browser event which triggered this action (not API). Calling the method with this param set to "true" will trigger [selectionChanging](ui.igcombo#events:selectionChanging) and [selectionChanged](ui.igcombo#events:selectionChanged) events.
                 returnType="object" Returns reference to this igCombo, or array of values if the value parameter is provided.
             */
-            var selectedValues, selectedItems, i;
+            var selectedValues, selectedItems, i, retValue;
 
             // Return value of the value input when called without params
             if (value === undefined) {
@@ -6910,8 +6938,11 @@
                 return selectedValues;
             }
 
-            this._selectData(this._dataForValues(value), options, event);
-            if (this.options.allowCustomValue && !this.selectedItems()) {
+            retValue = this._selectData(this._dataForValues(value), options, event);
+
+            // R.K. 5th of May 2017 #986: The editor text changes even if selectionChanging event is canceled when allowCustomValue is set to true
+            if (this.options.allowCustomValue && !this.selectedItems() &&
+                    !retValue.selectionCanceled) {
                 this._options.$input.val(value);
                 this._updateInputValues();
 
@@ -7261,7 +7292,7 @@
                 $(".selector").igCombo("deselectAll");
 
                 //deselect all, focus combo, keep input text and trigger events
-                $(".selector").igCombo("deselectAll", { focusCombo: ture, keepInputText: true }, true);
+                $(".selector").igCombo("deselectAll", { focusCombo: true, keepInputText: true }, true);
             ```
                 paramType="object" optional="true" Object with set of options controlling the behavior of this api method.
                     focusCombo (boolean): Set to true to focus combo after the deselection.
@@ -7428,12 +7459,6 @@
                 this._options.validator = validator =
                     this.element.igValidator(validatorOptions).data("igValidator");
                 this._options.validator.owner = this;
-
-                // A.M. May 12th, 2015 Bug #193960 "The validatorOptions are not reflected when set at runtime"
-            } else if (validator && !destroy &&
-                validatorOptions && this.element.igValidator) {
-                this._options.validator = validator =
-                    this.element.igValidator(validatorOptions).data("igValidator");
             }
 
             return validator;

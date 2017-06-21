@@ -160,7 +160,7 @@
 				}
 				
 				initialized = false;
-				module("DatePicker Bugs Unit Tests ", {
+				module("igDatePicker Bugs Unit Tests ", {
 					setup: function () {
 						//pause testing until editors are initialized
 						if (!initialized) {
@@ -399,13 +399,9 @@
 			test(testId, 4, function () {
 				var $editor = $("#432Editor"), valueChangedCounter = 0;
 				$editor.on("igdatepickervaluechanging", function () {
-					console.log(arguments);
 					valueChangedCounter++;
 				});
-				console.log(document.activeElement);
 				$editor.igDatePicker("setFocus");				
-				console.log(document.activeElement);
-				console.log("focusing");
 				stop();
 				setTimeout(function () {
 					start();

@@ -154,10 +154,10 @@
     font-weight: bold;
 }
 
-.ui-igcombo-no-border {
-    border-width: 0px;
+/* H.A 01 Dec 2016, https://github.com/IgniteUI/ignite-ui/issues/581 - Combo editor has bottom border when applyng jQuery UI 1.12.1 css theme. */
+.ui-igcombo-dropdown.ui-igcombo-no-border {
+	border-width: 0px;
 }
-
 .ui-igcombo-loading {
     position: absolute;
     width: 100%;
@@ -242,7 +242,6 @@ li.ui-igcombo-listitem.ui-igcombo-item-in-focus + li.ui-igcombo-listitem.ui-stat
 {
     text-align: right;
 }
-
 /* Z.K. September 1st, 2015 Bug #189210 when dir="rtl" use class ig-rtl to align the list to the right */
 .ig-rtl .ui-igcombo-checkbox
 {

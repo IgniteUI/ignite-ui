@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>Infragistics jQuery Client Editors - List items example </title>
+	<link type="text/css" href="../../../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+	<script type="text/javascript" src="../../../../../bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../../bower_components/jquery-ui/jquery-ui.js"></script>
+	
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	
+	                                    
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.notifier.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	
+	<link type="text/css" href="../../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="../../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type='text/javascript' src='../../../../../bower_components/knockout/dist/knockout.debug.js'></script>
+
+	<script type="text/javascript" src="../../../../../src/js/extensions/infragistics.ui.editors.knockout-extensions.js"></script>
+
+	
+	<script type="text/javascript">
+	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equal*/
+	$(document).ready(function () {
+		function viewModel() {
+			this.isDisabled =  ko.observable(false);
+		};
+		
+		model = new viewModel();
+        ko.applyBindings(model);
+    	
+		initialized = false;
+		module('igCheckboxEditor Knockout', {
+			setup: function() {
+				//pause testing until tree is initialized
+				if (!initialized) {
+					stop();
+					setTimeout(function () { start(); }, 100);
+					initialized = true;
+				}
+			},
+			teardown: function() {
+			}
+		});
+		
+		var testId = 'Test disabled binding';
+		test(testId, 9, function () {
+			var $editor = $("#edDisabled"), $chk = $("#chkDisabled");
+
+			ok(!$editor.igCheckboxEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igCheckboxEditor("field").prop("disabled"), "Editor should be enabled");
+			ok(!$editor.igCheckboxEditor("editorContainer").hasClass($.ui.igCheckboxEditor.prototype.css.disabled), "Editor should be enabled");
+			$chk.click();
+			ok($editor.igCheckboxEditor("option", "disabled"), "Editor should be disabled");
+			ok($editor.igCheckboxEditor("field").prop("disabled"), "Editor should be disabled");
+			ok($editor.igCheckboxEditor("editorContainer").hasClass($.ui.igCheckboxEditor.prototype.css.disabled), "Editor should be disabled");
+			$chk.click();
+			$chk.click();
+			$chk.click();
+			ok(!$editor.igCheckboxEditor("option", "disabled"), "Editor should be enabled");
+			ok(!$editor.igCheckboxEditor("field").prop("disabled"), "Editor should be enabled");
+			ok(!$editor.igCheckboxEditor("editorContainer").hasClass($.ui.igCheckboxEditor.prototype.css.disabled), "Editor should be enabled");
+			$editor.remove();
+			$chk.remove();
+		});
+	});//document ready
+</script>
+</head>
+<body>
+<div style="float:right;width:500px;overflow:auto">
+     <h1 id="qunit-header">Test results</h1>
+     <h2 id="qunit-banner"></h2>
+     <h2 id="qunit-userAgent"></h2>
+     <ol id="qunit-tests"></ol>
+</div>
+<div style="float:left;overflow:auto;padding:20px;position:absolute;width:500px;">
+
+	<input id="edDisabled" data-bind="igCheckboxEditor: { checked: false }, igEditorDisable: isDisabled" />
+
+	<input id="chkDisabled" type="checkbox" data-bind="checked: isDisabled"/>
+</div>
+</body>
+</html>
+

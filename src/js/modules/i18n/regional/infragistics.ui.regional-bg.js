@@ -1,5 +1,14 @@
 ﻿/* Bulgaria +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -16,8 +25,8 @@
 			'Юли','Авг','Сеп','Окт','Нов','Дек'],
 			dayNames: ['Неделя','Понеделник','Вторник','Сряда','Четвъртък','Петък','Събота'],
 			dayNamesShort: ['Нед','Пон','Вто','Сря','Чет','Пет','Съб'],
-			dayNamesMin: ['Не','По','Вт','Ср','Че','Пе','Съ'],
-			weekHeader: 'Wk',
+			dayNamesMin: ['Нд','Пн','Вт','Ср','Чт','Пт','Сб'],
+			weekHeader: 'Сед.',
 			dateFormat: 'dd.mm.yy',
 			firstDay: 1,
 			isRTL: false,
@@ -30,12 +39,14 @@
 	    monthNamesShort: ['Яну', 'Фев', 'Мар', 'Апр', 'Май', 'Юни', 'Юли', 'Авг', 'Сеп', 'Окт', 'Нов', 'Дек'],
 	    dayNames: ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'],
 	    dayNamesShort: ['Нед', 'Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб'],
-	    dayNamesMin: ['Не', 'По', 'Вт', 'Ср', 'Че', 'Пе', 'Съ'],
+	    dayNamesMin: ['Нд','Пн','Вт','Ср','Чт','Пт','Сб'],
 	    datePattern: 'dd.MM.yyyy г.',
 	    dateLongPattern: 'dd MMMM yyyy г.',
 	    dateTimePattern: 'dd.MM.yyyy г. HH:mm',
 	    timePattern: 'HH:mm',
 	    timeLongPattern: 'HH:mm:ss',
+		dateTitleFullPattern: 'dd MM yy',
+		dateTitleMonthPattern: 'MM yy',
 	    //
 	    numericNegativePattern: '-n$',
 	    numericDecimalSeparator: ',',
@@ -54,4 +65,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('bg');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES
