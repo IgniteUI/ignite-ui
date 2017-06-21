@@ -23,8 +23,7 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.util.jquery",
-			"./infragistics.ui.shared",
-			"./infragistics.ui.upload-en"
+			"./infragistics.ui.shared"
 		], factory );
 	} else {
 
