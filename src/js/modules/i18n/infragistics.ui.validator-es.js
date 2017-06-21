@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Validator) {
 	    $.ig.Validator = {
 		    locale: {
 			    defaultMessage: 'Corrija este campo',
@@ -46,5 +45,8 @@
 		        optionalString: '(opcional)'
 		    }
 	    };
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.es = $.ig.locale.es || {};
+		$.ig.locale.es.Validator = $.extend({}, $.ig.Validator.locale);
 }));// REMOVE_FROM_COMBINED_FILES

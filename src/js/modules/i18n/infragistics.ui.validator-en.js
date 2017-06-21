@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Validator) {
 	    $.ig.Validator = {
 		    locale: {
 		        defaultMessage: 'This field needs attention',
@@ -46,5 +45,8 @@
 		        optionalString: '(optional)'
 		    }
 	    };
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.en = $.ig.locale.en || {};
+		$.ig.locale.en.Validator = $.extend({}, $.ig.Validator.locale);
 }));// REMOVE_FROM_COMBINED_FILES
