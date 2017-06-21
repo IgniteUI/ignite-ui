@@ -22,8 +22,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
-			"./infragistics.ui.shared",
-			"./infragistics.ui.zoombar-en"
+			"./infragistics.ui.shared"
 		], factory );
 	} else {
 
