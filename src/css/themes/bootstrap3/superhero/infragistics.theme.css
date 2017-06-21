@@ -2334,14 +2334,9 @@ body .ui-tooltip {
   background-color: #2B3E50;
   border: 1px solid transparent;
 }
-/*
-    Bug:220147 08.24.2016 M.Popov
-    This is needed only for the superhero theme. Fix hover background matches text color
- */
 .ui-iggrid-featurechooser-list li.ui-state-default:hover .ui-iggrid-featurechooserddlistitemtext {
-  color: #EBEBEB;
+  color: #555555;
 }
-/* END bug 220147*/
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-hover,
 .ui-igedit-list .ui-igedit-listitem.ui-state-hover,
 .ui-iggrid-filterddlist li.ui-state-hover,
