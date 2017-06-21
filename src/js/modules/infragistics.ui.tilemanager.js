@@ -30,8 +30,7 @@
 			"./infragistics.datasource",
 			"./infragistics.templating",
 			"./infragistics.ui.layoutmanager",
-			"./infragistics.ui.splitter",
-			"./infragistics.ui.tilemanager-en"
+			"./infragistics.ui.splitter"
 		], factory );
 	} else {
 
