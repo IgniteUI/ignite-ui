@@ -476,14 +476,12 @@
     border: 1px solid transparent;
 }
 
-/*
-    Bug:220147 08.24.2016 M.Popov
-    This is needed only for the superhero theme. Fix hover background matches text color
- */
+
+// Bug:220147 06.16.2017 Marin Popov
+// Fix hover background matches text color
 .ui-iggrid-featurechooser-list li.ui-state-default:hover .ui-iggrid-featurechooserddlistitemtext {
-  color: @text-color;
+  color: @gray;
 }
-/* END bug 220147*/
 
 .ui-igedit-dropdown .ui-igedit-listitem.ui-state-hover,
 .ui-igedit-list .ui-igedit-listitem.ui-state-hover,
