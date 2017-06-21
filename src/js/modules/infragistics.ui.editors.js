@@ -4519,7 +4519,8 @@
 					if (delta % 1 !== 0) {
 						fractional = delta.toString().substring(delta.toString().indexOf(".") + 1);
 						if (fractional.toString().length > this.options.maxDecimals) {
-							throw new Error($.ig.util.stringFormat(this._getLocaleValue("spinDeltaContainsExceedsMaxDecimals"),
+							throw new Error($.ig.util.stringFormat(
+								this._getLocaleValue("spinDeltaContainsExceedsMaxDecimals"),
 								this.options.maxDecimals));
 						}
 					}
