@@ -21,8 +21,7 @@
 			"jquery",
 			"jquery-ui",
 			"./infragistics.util",
-			"./infragistics.ui.shared",
-			"./infragistics.ui.videoplayer-en"
+			"./infragistics.ui.shared"
 		], factory );
 	} else {
 
