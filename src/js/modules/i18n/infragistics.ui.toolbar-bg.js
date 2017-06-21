@@ -19,7 +19,6 @@
 (function ($) {
 $.ig = $.ig || {};
 
-if (!$.ig.Toolbar) {
     $.ig.Toolbar = {};
 
 	$.extend($.ig.Toolbar, {
@@ -30,5 +29,8 @@ if (!$.ig.Toolbar) {
 		}
 
 	});
-}
+	
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	$.ig.locale.bg.Toolbar = $.extend({}, $.ig.Toolbar.locale);
 }));// REMOVE_FROM_COMBINED_FILES
