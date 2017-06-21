@@ -29,6 +29,6 @@
 	    });
 
 		$.ig.locale = $.ig.locale || {};
-		$.ig.locale.es = $.ig.locale.bg || {};
+		$.ig.locale.es = $.ig.locale.es || {};
 		$.ig.locale.es.Scroll = $.extend({}, $.ig.Scroll.locale);
 }));// REMOVE_FROM_COMBINED_FILES

@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Splitter) {
 	    $.ig.Splitter = {};
 
 	    $.extend($.ig.Splitter, {
@@ -29,5 +28,7 @@
 		    }
 	    });
 
-    }
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.ru = $.ig.locale.ru || {};
+		$.ig.locale.ru.Splitter = $.extend({}, $.ig.Splitter.locale);
 }));// REMOVE_FROM_COMBINED_FILES
