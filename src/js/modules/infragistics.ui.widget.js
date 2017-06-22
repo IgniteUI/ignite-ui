@@ -1,5 +1,5 @@
 /*!@license
- * Infragistics.Web.ClientUI Toolbar <build_number>
+ * Infragistics.Web.ClientUI Base Widget <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
  * <Licensing info>
@@ -37,7 +37,7 @@
     $.widget("ui.igWidget", {
 		localeWidgetName: null,
         options: {
-            /* type="string" Set/Get the locale setting for the widget.
+            /* type="string|object" Set/Get the locale setting for the widget.
             ```
                  //Initialize
                 $(".selector").igWidget({
@@ -52,7 +52,7 @@
             ```
             */
             locale: "en",
-            /* type="string" Set/Get the regional setting for the widget.
+            /* type="string|object" Set/Get the regional setting for the widget.
             ```
                 //Initialize
                 $(".selector").igWidget({
@@ -66,13 +66,9 @@
                 $(".selector").igWidget("option", "regional", "ja");
             ```
             */
-            regional: "en-US"
+			regional: "en-US"
 		},
 		_setOption: function (option, value) {
-			var prevValue = this.options[ option ];
-			if (prevValue === value) {
-				return;
-			}
 			this._super(option, value);
 
 			switch (option) {
@@ -84,6 +80,22 @@
 				break;
 			default:
 				break;
+			}
+		},
+		_getRegionalValue: function (key) {
+			var regional = this.options.regional;
+			if (this.options[ key ]) {
+				return this.options[ key ];
+			}
+			if (typeof regional === "string") {
+				regional = $.ig.regional[ regional ];
+			}
+			if (regional && regional[ key ]) {
+				return regional[ key ];
+			} else {
+
+				// return defaults
+				return $.ig.regional.defaults[ key ];
 			}
 		},
 		_getLocaleValue: function (key) {
@@ -99,17 +111,19 @@
 			}
 		},
 		_changeLocale: function () {
-			var elements = this.element.find("[data-localeid]");
+			var elements = this.element.find("[data-localeid]"),
+				self = this;
 			elements.each(function () {
-				var $el = $(this),
-					attr;
-				if ($el.hasAttr("data-localeattr")) {
-					attr = $el.attr("data-localeattr");
-					$el.attr(attr, this._getLocaleValue($el.attr("data-localeid")));
-				} else {
-					$el.text(this._getLocaleValue($el.attr("data-localeid")));
-				}
+				var $el = $(this);
+				self._changeLocaleByKey($el, $el.attr("data-localeid", $el.attr("data-localeattr")));
 			});
+		},
+		_changeLocaleByKey: function (element, key, attr) {
+			if (attr) {
+				element.attr(attr, this._getLocaleValue(key));
+			} else {
+				element.text(this._getLocaleValue(key));
+			}
 		},
 		_changeRegional: $.noop
     });

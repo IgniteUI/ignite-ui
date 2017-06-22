@@ -13,6 +13,7 @@
 * infragistics.util.js
 * infragistics.util.jquery.js
 * infragistics.dataSource.js
+* infragistics.ui.widget.js
 *
 * Example to use:
 *   <script type="text/javascript">
@@ -28,10 +29,6 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
 			"./infragistics.ui.widget",
 			"./infragistics.templating",
 			"./infragistics.datasource",
@@ -1620,15 +1617,15 @@
                 inputInput: $.proxy(this._inputInputHandler, this)
             };
 
-            this._analyzeOptions();
+			this._analyzeOptions();
 
 			// Options related to localization
 			this._changeLocale();
-            this._analyzeInitialElem();
-            this._render();
-            this.validator();
-            this._attachEvents();
-            this.dataBind();
+			this._analyzeInitialElem();
+			this._render();
+			this.validator();
+			this._attachEvents();
+			this.dataBind();
 
             // P.P 07-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
             this._initCompositionObject();

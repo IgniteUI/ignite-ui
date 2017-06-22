@@ -883,7 +883,6 @@ $.ig.dependencies = [
 		widget: "igCombo",
 		dependency: [
 			{ name: "igWidget" },
-			{ name: "igWidget" },
 			{ name: "igDataSource" },
 			{ name: "igTemplating" },
 			{ name: "igScroll" },
