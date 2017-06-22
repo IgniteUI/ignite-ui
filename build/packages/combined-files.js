@@ -5,7 +5,7 @@ function buildLocaleBundles () {
     var locales = ["bg", "de", "en", "es", "fr", "ja", "ru"],
     newFiles = {}, i;
 
-    for (var i = 0; i < locales.length; i++) {
+    for (i = 0; i < locales.length; i++) {
         newFiles["./dist/js/i18n/infragistics-" + locales[i] + ".js"] = "./dist/js/modules/i18n/*-" + locales[i] + ".js"; 
     }
     return newFiles;
@@ -30,12 +30,12 @@ function buildLocaleMergePairs (locale) {
             pairs[modulePath + "infragistics.ui.shared.js"] = [
                 i18nPath + fileName,
                 modulePath + "infragistics.ui.shared.js"
-            ]
+            ];
         } else {
             pairs[modulePath + fileName.replace("-" + locale, "")] = [
                 i18nPath + fileName,
                 modulePath + fileName.replace("-" + locale, "")
-            ]
+            ];
         }
     }
     return pairs;
