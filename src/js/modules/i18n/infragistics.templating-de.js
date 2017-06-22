@@ -19,13 +19,15 @@
 (function ($) {
 	$.ig = $.ig || {};
 
-	if (!$.ig.Templating) {
-		$.ig.Templating = {};
+	$.ig.Templating = {};
 
-		$.extend($.ig.Templating, {
-			locale: {
-				undefinedArgument: 'Beim Abrufen der Datenquellen-Eigenschaft ist ein Fehler aufgetreten: '
-			}
-		});
-	}
+	$.extend($.ig.Templating, {
+		locale: {
+			undefinedArgument: 'Beim Abrufen der Datenquellen-Eigenschaft ist ein Fehler aufgetreten: '
+		}
+	});
+
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
+	$.ig.locale.de.Templating = $.extend({}, $.ig.Templating.locale);
 }));// REMOVE_FROM_COMBINED_FILES

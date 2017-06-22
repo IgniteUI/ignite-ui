@@ -19,13 +19,15 @@
 (function ($) {
 	$.ig = $.ig || {};
 
-	if (!$.ig.Templating) {
-		$.ig.Templating = {};
+	$.ig.Templating = {};
 
-		$.extend($.ig.Templating, {
-			locale: {
-				undefinedArgument: 'データ ソース プロパティを取得する際にエラーが発生しました: '
-			}
-		});
-	}
+	$.extend($.ig.Templating, {
+		locale: {
+			undefinedArgument: 'データ ソース プロパティを取得する際にエラーが発生しました: '
+		}
+	});
+
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
+	$.ig.locale.ja.Templating = $.extend({}, $.ig.Templating.locale);
 }));// REMOVE_FROM_COMBINED_FILES

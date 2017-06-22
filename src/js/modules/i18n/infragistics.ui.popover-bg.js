@@ -19,14 +19,16 @@
 (function ($) {
 $.ig = $.ig || {};
 
-if (!$.ig.Popover) {
-	$.ig.Popover = {};
+$.ig.Popover = {};
 
-	$.extend( $.ig.Popover, {
-		locale: {
-			popoverOptionChangeNotSupported: "Промяната на следната опция след инициализация на igPopover не се поддържа:",
-			popoverShowMethodWithoutTarget: "Целевият параметър на функцията show е задължителен, когато се използва опцията за селектори."
-		}
-	});
-}
+$.extend( $.ig.Popover, {
+	locale: {
+		popoverOptionChangeNotSupported: "Промяната на следната опция след инициализация на igPopover не се поддържа:",
+		popoverShowMethodWithoutTarget: "Целевият параметър на функцията show е задължителен, когато се използва опцията за селектори."
+	}
+});
+
+$.ig.locale = $.ig.locale || {};
+$.ig.locale.bg = $.ig.locale.bg || {};
+$.ig.locale.bg.Popover = $.extend({}, $.ig.Popover.locale);
 }));// REMOVE_FROM_COMBINED_FILES

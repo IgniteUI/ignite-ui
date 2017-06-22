@@ -19,17 +19,19 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Dialog) {
-	    $.ig.Dialog = {
-		    locale: {
-			    closeButtonTitle: "Close",
-			    minimizeButtonTitle: "Minimize",
-			    maximizeButtonTitle: "Maximize",
-			    pinButtonTitle: "Pin",
-			    unpinButtonTitle: "Unpin",
-			    restoreButtonTitle: "Restore",
-				setOptionError: 'Runtime changes are not allowed for the following option: '
-		    }
-	    };
-    }
+	$.ig.Dialog = {
+		locale: {
+			closeButtonTitle: "Close",
+			minimizeButtonTitle: "Minimize",
+			maximizeButtonTitle: "Maximize",
+			pinButtonTitle: "Pin",
+			unpinButtonTitle: "Unpin",
+			restoreButtonTitle: "Restore",
+			setOptionError: 'Runtime changes are not allowed for the following option: '
+		}
+	};
+
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.locale.en.Dialog = $.extend({}, $.ig.Dialog.locale);
 }));// REMOVE_FROM_COMBINED_FILES

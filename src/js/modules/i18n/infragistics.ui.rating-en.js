@@ -19,13 +19,15 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Rating) {
-	    $.ig.Rating = {};
+	$.ig.Rating = {};
 
-	    $.extend($.ig.Rating, {
-		    locale: {
-			    setOptionError: 'Runtime changes are not allowed for the following option: '
-		    }
-	    });
-    }
+	$.extend($.ig.Rating, {
+		locale: {
+			setOptionError: 'Runtime changes are not allowed for the following option: '
+		}
+	});
+	
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.locale.en.Rating = $.extend({}, $.ig.Rating.locale);
 }));// REMOVE_FROM_COMBINED_FILES

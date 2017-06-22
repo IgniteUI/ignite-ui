@@ -19,13 +19,15 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Rating) {
-	    $.ig.Rating = {};
+	$.ig.Rating = {};
 
-	    $.extend($.ig.Rating, {
-		    locale: {
-			    setOptionError: 'Laufzeit-Änderungen sind für die folgende Option nicht zugelassen: '
-		    }
-	    });
-    }
+	$.extend($.ig.Rating, {
+		locale: {
+			setOptionError: 'Laufzeit-Änderungen sind für die folgende Option nicht zugelassen: '
+		}
+	});
+		
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
+	$.ig.locale.de.Rating = $.extend({}, $.ig.Rating.locale);
 }));// REMOVE_FROM_COMBINED_FILES

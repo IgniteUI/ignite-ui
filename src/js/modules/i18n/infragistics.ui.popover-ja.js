@@ -19,14 +19,16 @@
 (function ($) {
 $.ig = $.ig || {};
 
-if (!$.ig.Popover) {
-	$.ig.Popover = {};
+$.ig.Popover = {};
 
-	$.extend( $.ig.Popover, {
-		locale: {
-			popoverOptionChangeNotSupported: "igPopover が初期化された後のこのオプションの変更はサポートされません:",
-			popoverShowMethodWithoutTarget: "selectors オプションが使用される場合、show 関数の target パラメーターは必要です。"
-		}
-	});
-}
+$.extend( $.ig.Popover, {
+	locale: {
+		popoverOptionChangeNotSupported: "igPopover が初期化された後のこのオプションの変更はサポートされません:",
+		popoverShowMethodWithoutTarget: "selectors オプションが使用される場合、show 関数の target パラメーターは必要です。"
+	}
+});
+
+$.ig.locale = $.ig.locale || {};
+$.ig.locale.ja = $.ig.locale.ja || {};
+$.ig.locale.ja.Popover = $.extend({}, $.ig.Popover.locale);
 }));// REMOVE_FROM_COMBINED_FILES

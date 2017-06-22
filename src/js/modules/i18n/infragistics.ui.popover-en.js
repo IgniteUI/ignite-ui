@@ -19,14 +19,16 @@
 (function($) {
 $.ig = $.ig || {};
 
-if (!$.ig.Popover) {
-	$.ig.Popover = {};
+$.ig.Popover = {};
 
-	$.extend( $.ig.Popover, {
-		locale: {
-			popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
-			popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
-		}
-	});
-}
+$.extend( $.ig.Popover, {
+	locale: {
+		popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
+		popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
+	}
+});
+
+$.ig.locale = $.ig.locale || {};
+$.ig.locale.en = $.ig.locale.en || {};
+$.ig.locale.en.Popover = $.extend({}, $.ig.Popover.locale);
 }));// REMOVE_FROM_COMBINED_FILES

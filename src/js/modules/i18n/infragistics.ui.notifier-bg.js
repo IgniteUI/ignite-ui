@@ -19,18 +19,18 @@
 (function($) {
 $.ig = $.ig || {};
 
-if (!$.ig.Notifier) {
-	$.ig.Notifier = {};
+$.ig.Notifier = {};
 
-	$.extend($.ig.Notifier, {
-		locale: {
-			successMsg: "Успех",
-			errorMsg: "Грешка",
-			warningMsg: "Внимание",
-			notSupportedState: "Неподдържано състояние на нотификациите! Използвайте някое от поддържаните състояния 'success', 'info', 'warning', 'error’.",
-			notSupportedMode: "Неподдържан режим на нотификациите. Използвайте някой от поддържаните режими 'auto', 'popover', 'inline'."
-		}
-	});
-
-}
+$.extend($.ig.Notifier, {
+	locale: {
+		successMsg: "Успех",
+		errorMsg: "Грешка",
+		warningMsg: "Внимание",
+		notSupportedState: "Неподдържано състояние на нотификациите! Използвайте някое от поддържаните състояния 'success', 'info', 'warning', 'error’.",
+		notSupportedMode: "Неподдържан режим на нотификациите. Използвайте някой от поддържаните режими 'auto', 'popover', 'inline'."
+	}
+});
+$.ig.locale = $.ig.locale || {};
+$.ig.locale.bg = $.ig.locale.bg || {};
+$.ig.locale.bg.Notifier = $.extend({}, $.ig.Notifier.locale);
 }));// REMOVE_FROM_COMBINED_FILES

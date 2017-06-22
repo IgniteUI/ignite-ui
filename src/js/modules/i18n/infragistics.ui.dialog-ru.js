@@ -19,17 +19,19 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Dialog) {
-	    $.ig.Dialog = {
-		    locale: {
-			    closeButtonTitle: "закрыть",
-			    minimizeButtonTitle: "минимизировать",
-			    maximizeButtonTitle: "максимизировать",
-			    pinButtonTitle: "прикрепить",
-			    unpinButtonTitle: "открепить",
-			    restoreButtonTitle: "восстановить",
-				setOptionError: 'Этот параметр не может быть задан во время выполнения программы'
-		    }
-	    };
-    }
+	$.ig.Dialog = {
+		locale: {
+			closeButtonTitle: "закрыть",
+			minimizeButtonTitle: "минимизировать",
+			maximizeButtonTitle: "максимизировать",
+			pinButtonTitle: "прикрепить",
+			unpinButtonTitle: "открепить",
+			restoreButtonTitle: "восстановить",
+			setOptionError: 'Этот параметр не может быть задан во время выполнения программы'
+		}
+	};
+
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
+	$.ig.locale.ru.Dialog = $.extend({}, $.ig.Dialog.locale);
 }));// REMOVE_FROM_COMBINED_FILES
