@@ -69,10 +69,6 @@
 			regional: "en-US"
 		},
 		_setOption: function (option, value) {
-			var prevValue = this.options[ option ];
-			if (prevValue === value) {
-				return;
-			}
 			this._super(option, value);
 
 			switch (option) {
