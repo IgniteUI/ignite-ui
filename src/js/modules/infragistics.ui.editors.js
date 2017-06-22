@@ -10,6 +10,7 @@
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
+ *  infragistics.ui.widget.js
  *	infragistics.ui.scroll.js
  *	infragistics.ui.validator.js
  */
@@ -19,10 +20,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.ui.scroll",
 			"./infragistics.ui.validator"
 		], factory );
@@ -4519,7 +4517,8 @@
 					if (delta % 1 !== 0) {
 						fractional = delta.toString().substring(delta.toString().indexOf(".") + 1);
 						if (fractional.toString().length > this.options.maxDecimals) {
-							throw new Error($.ig.util.stringFormat(this._getLocaleValue("spinDeltaContainsExceedsMaxDecimals"),
+							throw new Error($.ig.util.stringFormat(
+								this._getLocaleValue("spinDeltaContainsExceedsMaxDecimals"),
 								this.options.maxDecimals));
 						}
 					}
@@ -5179,7 +5178,7 @@
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
+						$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
 							this.options.minValue));
 				}
 
@@ -5247,22 +5246,6 @@
 			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 			if (!textOnly && newValue !== undefined && this._validateValue(newValue)) {
 				this._updateValue(newValue);
-			}
-		},
-		_getRegionalOption: function (key) {
-			var regional = this.options.regional;
-			if (this.options[ key ]) {
-				return this.options[ key ];
-			}
-			if (typeof regional === "string") {
-				regional = $.ig.regional[ regional ];
-			}
-			if (regional && regional[ key ]) {
-				return regional[ key ];
-			} else {
-
-				// return defaults
-				return $.ig.regional.defaults[ key ];
 			}
 		},
 		_convertScientificToNumeric: function (num) {
@@ -5754,7 +5737,7 @@
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
-								$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
+								$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
 									this.options.value));
 						}
 					}
@@ -6075,7 +6058,7 @@
 
 					//Notify
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
+						$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
 						this.options.minValue));
 				}
 

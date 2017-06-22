@@ -15,6 +15,8 @@
 * jquery.ui.resizable.js
 * infragistics.util.js
 * infragistics.util.jquery.js
+* infragistics.ui.widget.js
+*
 * Example to use:
 *	<script type="text/javascript">
 *	$(function () {
@@ -29,10 +31,6 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
 			"./infragistics.ui.widget"
 		], factory );
 	} else {

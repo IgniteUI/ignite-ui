@@ -13,9 +13,10 @@
  *	jquery.ui.draggable.js
  *	jquery.ui.droppable.js
  *	infragistics.templating.js
-  *	infragistics.util.js
+ *	infragistics.util.js
  *  infragistics.util.jquery.js
  *	infragistics.dataSource.js
+ *  infragistics.ui.widget.js
  *	infragistics.ui.tree-en.js
  */
 
@@ -24,10 +25,6 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
 			"./infragistics.ui.widget",
 			"./infragistics.datasource",
 			"./infragistics.templating",
@@ -1740,7 +1737,12 @@
 			nodeDropped: "nodeDropped"
 		},
 		_createWidget: function (options) {
-			this._changeLocale(options);
+			/* !Strip dummy objects from options, because they are defined for documentation purposes only! */
+			this.options.bindings = null;
+
+			if (options && options.dragAndDrop) {
+				this._changeLocale();
+			}
 			$.Widget.prototype._createWidget.apply(this, arguments);
 		},
 		_create: function () {
@@ -1880,28 +1882,24 @@
 				break;
 			}
 		},
-		_changeLocale: function (options) {
-			/* !Strip dummy objects from options, because they are defined for documentation purposes only! */
-			this.options.bindings = null;
-			options = options || this.options;
-			if (options && options.dragAndDrop) {
-				this.options.dragAndDropSettings.moveToMarkup =
-					"<div><p><span></span>" + this._getLocaleValue("moveTo") + "</p></div>";
-				this.options.dragAndDropSettings.moveBetweenMarkup =
-					"<div><p><span></span>" + this._getLocaleValue("moveBetween") + "</p></div>";
-				this.options.dragAndDropSettings.moveAfterMarkup =
-					"<div><p><span></span>" + this._getLocaleValue("moveAfter") + "</p></div>";
-				this.options.dragAndDropSettings.moveBeforeMarkup =
-					"<div><p><span></span>" + this._getLocaleValue("moveBefore") + "</p></div>";
-				this.options.dragAndDropSettings.copyToMarkup =
-					"<div><p><span></span>" + this._getLocaleValue("copyTo") + "</p></div>";
-				this.options.dragAndDropSettings.copyBetweenMarkup =
-					"<div><p><span></span>" + this._getLocaleValue("copyBetween") + "</p></div>";
-				this.options.dragAndDropSettings.copyAfterMarkup =
-					"<div><p><span></span>" + this._getLocaleValue("copyAfter") + "</p></div>";
-				this.options.dragAndDropSettings.copyBeforeMarkup =
-					"<div><p><span></span>" + this._getLocaleValue("copyBefore") + "</p></div>";
-			}
+		_changeLocale: function () {
+			this._super();
+			this.options.dragAndDropSettings.moveToMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("moveTo") + "</p></div>";
+			this.options.dragAndDropSettings.moveBetweenMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("moveBetween") + "</p></div>";
+			this.options.dragAndDropSettings.moveAfterMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("moveAfter") + "</p></div>";
+			this.options.dragAndDropSettings.moveBeforeMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("moveBefore") + "</p></div>";
+			this.options.dragAndDropSettings.copyToMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("copyTo") + "</p></div>";
+			this.options.dragAndDropSettings.copyBetweenMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("copyBetween") + "</p></div>";
+			this.options.dragAndDropSettings.copyAfterMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("copyAfter") + "</p></div>";
+			this.options.dragAndDropSettings.copyBeforeMarkup =
+				"<div><p><span></span>" + this._getLocaleValue("copyBefore") + "</p></div>";
 		},
 		_removeCheckboxes: function () {
 			this.element.find("span[data-role=checkbox]").remove();

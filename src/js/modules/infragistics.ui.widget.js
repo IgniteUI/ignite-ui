@@ -1,5 +1,5 @@
 /*!@license
- * Infragistics.Web.ClientUI Toolbar <build_number>
+ * Infragistics.Web.ClientUI Base Widget <build_number>
  *
  * Copyright (c) 2011-<year> Infragistics Inc.
  * <Licensing info>
@@ -37,7 +37,7 @@
     $.widget("ui.igWidget", {
 		localeWidgetName: null,
         options: {
-            /* type="string" Set/Get the locale setting for the widget.
+            /* type="string|object" Set/Get the locale setting for the widget.
             ```
                  //Initialize
                 $(".selector").igWidget({
@@ -66,7 +66,7 @@
                 $(".selector").igWidget("option", "regional", "ja");
             ```
             */
-            regional: "en-US"
+			regional: "en-US"
 		},
 		_setOption: function (option, value) {
 			var prevValue = this.options[ option ];
@@ -84,6 +84,22 @@
 				break;
 			default:
 				break;
+			}
+		},
+		_getRegionalOption: function (key) {
+			var regional = this.options.regional;
+			if (this.options[ key ]) {
+				return this.options[ key ];
+			}
+			if (typeof regional === "string") {
+				regional = $.ig.regional[ regional ];
+			}
+			if (regional && regional[ key ]) {
+				return regional[ key ];
+			} else {
+
+				// return defaults
+				return $.ig.regional.defaults[ key ];
 			}
 		},
 		_getLocaleValue: function (key) {
