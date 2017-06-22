@@ -366,6 +366,10 @@ input.ui-igscheduler-appointment-popover-open-button {
     width: 100%;
     margin: 0 0 20px 0; }
 
+  .ui-igscheduler-appointment-form-group .ui-igcombo-wrapper {
+    width: 100%;
+  }
+
   .ui-igscheduler-tabs,
   .ui-igscheduler-today-button {
     min-width: 0; }
