@@ -4454,22 +4454,22 @@
 			return result;
 		},
 		_applyRegionalSettings: function () { //Numeric
-			this.options.negativeSign = this._getRegionalOption("negativeSign");
+			this.options.negativeSign = this._getRegionalValue("negativeSign");
 			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalOption("numericNegativePattern");
+				this._getRegionalValue("numericNegativePattern");
 			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalOption("numericDecimalSeparator");
+				this._getRegionalValue("numericDecimalSeparator");
 
 			// TODO: make a validate function to ignore numbers as separators, undefined vs allowed chars here?
 			this.options.groupSeparator = this.options.groupSeparator !== null ?
 				this.options.groupSeparator :
-				this._getRegionalOption("numericGroupSeparator");
-			this.options.groups = this.options.groups || this._getRegionalOption("numericGroups");
+				this._getRegionalValue("numericGroupSeparator");
+			this.options.groups = this.options.groups || this._getRegionalValue("numericGroups");
 			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalOption("numericMaxDecimals") :
+				this._getRegionalValue("numericMaxDecimals") :
 				this.options.maxDecimals;
 			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalOption("numericMinDecimals") :
+				this._getRegionalValue("numericMinDecimals") :
 				this.options.minDecimals;
 		},
 		_setInitialValue: function (value) { // NumericEditor
@@ -4537,13 +4537,13 @@
 			try {
 				this._validateDecimalSetting("minDecimals", this.options.minDecimals);
 			} catch (e) {
-				this.options.minDecimals = this._getRegionalOption("numericMinDecimals");
+				this.options.minDecimals = this._getRegionalValue("numericMinDecimals");
 				throw e;
 			}
 			try {
 				this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
 			} catch (e) {
-				this.options.minDecimals = this._getRegionalOption("numericMaxDecimals");
+				this.options.minDecimals = this._getRegionalValue("numericMaxDecimals");
 				throw e;
 			}
 			this._validateDecimalMinMax();
@@ -4667,7 +4667,7 @@
 				// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
 				case "groupSeparator": {
 					if (this.options[ option ] === null) {
-						this.options[ option ] = this._getRegionalOption("numericGroupSeparator");
+						this.options[ option ] = this._getRegionalValue("numericGroupSeparator");
 					}
 
 					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
@@ -5850,7 +5850,7 @@
 				$(".selector").%%WidgetName%%("getRegionalOption");
 			```
 				returnType="string" Current regional */
-			return this._getRegionalOption();
+			return this._getRegionalValue();
 		}
 	});
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
@@ -5900,24 +5900,24 @@
 		},
 		_applyRegionalSettings: function () { //igCurrencyEditor
 
-			this.options.negativeSign = this._getRegionalOption("negativeSign");
-			this.options.currencySymbol = this._getRegionalOption("currencySymbol");
+			this.options.negativeSign = this._getRegionalValue("negativeSign");
+			this.options.currencySymbol = this._getRegionalValue("currencySymbol");
 			this.options.positivePattern = this.options.positivePattern ||
-				this._getRegionalOption("currencyPositivePattern");
+				this._getRegionalValue("currencyPositivePattern");
 			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalOption("currencyNegativePattern");
+				this._getRegionalValue("currencyNegativePattern");
 			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalOption("currencyDecimalSeparator");
+				this._getRegionalValue("currencyDecimalSeparator");
 			this.options.groupSeparator = this.options.groupSeparator !== null ?
 				this.options.groupSeparator :
-				this._getRegionalOption("currencyGroupSeparator");
+				this._getRegionalValue("currencyGroupSeparator");
 			this.options.groups = this.options.groups ||
-				this._getRegionalOption("currencyGroups");
+				this._getRegionalValue("currencyGroups");
 			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalOption("currencyMaxDecimals") :
+				this._getRegionalValue("currencyMaxDecimals") :
 				this.options.maxDecimals;
 			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalOption("currencyMinDecimals") :
+				this._getRegionalValue("currencyMinDecimals") :
 				this.options.minDecimals;
 		},
 
@@ -6091,32 +6091,32 @@
 		_applyRegionalSettings: function () { //Percent
 
 			this.options.negativeSign = this.options.negativeSign ||
-				this._getRegionalOption("negativeSign");
+				this._getRegionalValue("negativeSign");
 			this.options.percentSymbol = this.options.percentSymbol ||
-				this._getRegionalOption("percentSymbol");
+				this._getRegionalValue("percentSymbol");
 			this.options.positivePattern = this.options.positivePattern ||
-				this._getRegionalOption("percentPositivePattern");
+				this._getRegionalValue("percentPositivePattern");
 			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalOption("percentNegativePattern");
+				this._getRegionalValue("percentNegativePattern");
 			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalOption("percentDecimalSeparator");
+				this._getRegionalValue("percentDecimalSeparator");
 			this.options.groupSeparator = this.options.groupSeparator !== null ?
 				this.options.groupSeparator :
-				this._getRegionalOption("percentGroupSeparator");
+				this._getRegionalValue("percentGroupSeparator");
 			this.options.groups = this.options.groups ||
-				this._getRegionalOption("percentGroups");
+				this._getRegionalValue("percentGroups");
 			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalOption("percentMaxDecimals") :
+				this._getRegionalValue("percentMaxDecimals") :
 				this.options.maxDecimals;
 			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalOption("percentMinDecimals") :
+				this._getRegionalValue("percentMinDecimals") :
 				this.options.minDecimals;
 			if (this.options.displayFactor === 100) {
 				// TODO - this is needed, cause when value(20.34) is devided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
 				this.options.maxDecimals += 2;
 			}
 			this.options.displayFactor = this.options.displayFactor ||
-				this._getRegionalOption("displayFactor");
+				this._getRegionalValue("displayFactor");
 			if (typeof this.options.displayFactor !== "number") {
 				throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
 			} else if (this.options.displayFactor !== 1 && this.options.displayFactor !== 100) {
@@ -7943,16 +7943,16 @@
 				format = this.options.dateInputFormat;
 				if (format === "date" || format === "dateLong" || format === "dateTime" ||
 					format === "time" || format === "timeLong") {
-					this.options.dateInputFormat = this._getRegionalOption(format + "Pattern");
+					this.options.dateInputFormat = this._getRegionalValue(format + "Pattern");
 				}
 			} else {
-				this.options.dateInputFormat = this._getRegionalOption("datePattern");
+				this.options.dateInputFormat = this._getRegionalValue("datePattern");
 			}
 			if (this.options.dateDisplayFormat !== null) {
 				format = this.options.dateDisplayFormat;
 				if (format === "date" || format === "dateLong" || format === "dateTime" ||
 					format === "time" || format === "timeLong") {
-					this.options.dateDisplayFormat = this._getRegionalOption(format + "Pattern");
+					this.options.dateDisplayFormat = this._getRegionalValue(format + "Pattern");
 				}
 			} else {
 				this.options.dateDisplayFormat = this.options.dateInputFormat;
@@ -8586,22 +8586,6 @@
 			// Restore temporary removed 0 and 9 flags.
 			txt = txt.replace(/\x11/g, 9).replace(/\x12/g, 0);
 			return txt;
-		},
-		_getRegionalOption: function (key) { // igDateEditor
-			var regional = this.options.regional;
-			if (this.options[ key ]) {
-				return this.options[ key ];
-			}
-			if (typeof regional === "string") {
-				regional = $.ig.regional[ regional ];
-			}
-			if (regional && regional[ key ]) {
-				return regional[ key ];
-			} else {
-
-				// return defaults
-				return $.ig.regional.defaults[ key ];
-			}
 		},
 		_validateKey: function (event) {
 			var result = true, ch, key, cursorPosition;
@@ -9598,9 +9582,9 @@
 			if (hours >= 12) {
 
 				// pm
-				result = this._getRegionalOption("pm");
+				result = this._getRegionalValue("pm");
 			} else {
-				result = this._getRegionalOption("am");
+				result = this._getRegionalValue("am");
 			}
 			if (flag === "t") {
 				result = result.charAt(0);
@@ -9676,11 +9660,11 @@
 			var result;
 			switch (flag) {
 				case "dddd": {
-					result = this._getRegionalOption("dayNames")[ day ];
+					result = this._getRegionalValue("dayNames")[ day ];
 				}
 					break;
 				case "ddd": {
-					result = this._getRegionalOption("dayNamesShort")[ day ];
+					result = this._getRegionalValue("dayNamesShort")[ day ];
 				}
 					break;
 			}
@@ -9690,11 +9674,11 @@
 			var result;
 			switch (flag) {
 				case "MMMM": {
-					result = this._getRegionalOption("monthNames")[ month ];
+					result = this._getRegionalValue("monthNames")[ month ];
 				}
 					break;
 				case "MMM": {
-					result = this._getRegionalOption("monthNamesShort")[ month ];
+					result = this._getRegionalValue("monthNamesShort")[ month ];
 				}
 					break;
 				case "MM": {

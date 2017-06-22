@@ -52,7 +52,7 @@
             ```
             */
             locale: "en",
-            /* type="string" Set/Get the regional setting for the widget.
+            /* type="string|object" Set/Get the regional setting for the widget.
             ```
                 //Initialize
                 $(".selector").igWidget({
@@ -86,7 +86,7 @@
 				break;
 			}
 		},
-		_getRegionalOption: function (key) {
+		_getRegionalValue: function (key) {
 			var regional = this.options.regional;
 			if (this.options[ key ]) {
 				return this.options[ key ];
@@ -115,17 +115,19 @@
 			}
 		},
 		_changeLocale: function () {
-			var elements = this.element.find("[data-localeid]");
+			var elements = this.element.find("[data-localeid]"),
+				self = this;
 			elements.each(function () {
-				var $el = $(this),
-					attr;
-				if ($el.hasAttr("data-localeattr")) {
-					attr = $el.attr("data-localeattr");
-					$el.attr(attr, this._getLocaleValue($el.attr("data-localeid")));
-				} else {
-					$el.text(this._getLocaleValue($el.attr("data-localeid")));
-				}
+				var $el = $(this);
+				self._changeLocaleByKey($el, $el.attr("data-localeid", $el.attr("data-localeattr")));
 			});
+		},
+		_changeLocaleByKey: function (element, key, attr) {
+			if (attr) {
+				element.attr(attr, this._getLocaleValue(key));
+			} else {
+				element.text(this._getLocaleValue(key));
+			}
 		},
 		_changeRegional: $.noop
     });

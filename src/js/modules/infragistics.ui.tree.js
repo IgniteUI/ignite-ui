@@ -1882,7 +1882,6 @@
 			}
 		},
 		_changeLocale: function () {
-			this._super();
 			this.options.dragAndDropSettings.moveToMarkup =
 				"<div><p><span></span>" + this._getLocaleValue("moveTo") + "</p></div>";
 			this.options.dragAndDropSettings.moveBetweenMarkup =
