@@ -40,30 +40,30 @@
             /* type="string|object" Set/Get the locale setting for the widget.
             ```
                  //Initialize
-                $(".selector").igWidget({
+                $(".selector").%%WidgetName%%({
                     locale: "ja"
                 });
 
                 // Get
-                var locale = $(".selector").igWidget("option", "locale");
+                var locale = $(".selector").%%WidgetName%%("option", "locale");
 
                 // Set
-                $(".selector").igWidget("option", "locale", "ja");
+                $(".selector").%%WidgetName%%("option", "locale", "ja");
             ```
             */
             locale: "en",
             /* type="string|object" Set/Get the regional setting for the widget.
             ```
                 //Initialize
-                $(".selector").igWidget({
+                $(".selector").%%WidgetName%%({
                     regional: "ja"
                 });
 
                 // Get
-                var regional = $(".selector").igWidget("option", "regional");
+                var regional = $(".selector").%%WidgetName%%("option", "regional");
 
                 // Set
-                $(".selector").igWidget("option", "regional", "ja");
+                $(".selector").%%WidgetName%%("option", "regional", "ja");
             ```
             */
 			regional: "en-US"
