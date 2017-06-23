@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Validator) {
 	    $.ig.Validator = {
 		    locale: {
 		        defaultMessage: 'Обърнете внимание на това поле',
@@ -46,5 +45,8 @@
 			    optionalString: '(незадължително)'
 		    }
 	    };
-    }
+    
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.bg = $.ig.locale.bg || {};
+		$.ig.locale.bg.Validator = $.extend({}, $.ig.Validator.locale);
 }));// REMOVE_FROM_COMBINED_FILES

@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Validator) {
 	    $.ig.Validator = {
 		    locale: {
 		        defaultMessage: "このフィールドは無効です",
@@ -46,5 +45,8 @@
 			    optionalString: '(オプション)'
 		    }
 	    };
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.ja = $.ig.locale.ja || {};
+		$.ig.locale.ja.Validator = $.extend({}, $.ig.Validator.locale);
 }));// REMOVE_FROM_COMBINED_FILES

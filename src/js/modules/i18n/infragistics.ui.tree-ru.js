@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Tree) {
 	    $.ig.Tree = {};
 
 	    $.extend($.ig.Tree, {
@@ -41,6 +40,8 @@
 			    and: 'и'
 		    }
 	    });
-
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.ru = $.ig.locale.ru || {};
+		$.ig.locale.ru.Tree = $.extend({}, $.ig.Tree.locale);
 }));// REMOVE_FROM_COMBINED_FILES

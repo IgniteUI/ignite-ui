@@ -19,7 +19,6 @@
 (function ($) {
 $.ig = $.ig || {};
 
-if (!$.ig.TileManager) {
 	$.ig.TileManager = {};
 
 	$.extend($.ig.TileManager, {
@@ -28,5 +27,8 @@ if (!$.ig.TileManager) {
 		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles."
 		}
 	});
-}
+	
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
+	$.ig.locale.ja.TileManager = $.extend({}, $.ig.TileManager.locale);
 }));// REMOVE_FROM_COMBINED_FILES

@@ -18,8 +18,7 @@
 }
 (function ($) {
     $.ig = $.ig || {};
-
-    if (!$.ig.Tree) {
+	
 	    $.ig.Tree = {};
 
 	    $.extend($.ig.Tree, {
@@ -41,6 +40,8 @@
 			    and: 'et'
 		    }
 	    });
-
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.fr = $.ig.locale.fr || {};
+		$.ig.locale.fr.Tree = $.extend({}, $.ig.Tree.locale);
 }));// REMOVE_FROM_COMBINED_FILES

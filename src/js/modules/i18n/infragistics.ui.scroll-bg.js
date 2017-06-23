@@ -19,15 +19,16 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Scroll) {
-	    $.ig.Scroll = {};
+    $.ig.Scroll = {};
 
-	    $.extend($.ig.Scroll, {
+		$.extend($.ig.Scroll, {
 		    locale: {
 		        errorNoElementLink: 'Елементът, който бива свързван, не съществува.',
 		        errorNoScrollbarLink: 'Елементът плъзгач, който бива свързван, не съществува.'
 		    }
 	    });
-
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.bg = $.ig.locale.bg || {};
+		$.ig.locale.bg.Scroll = $.extend({}, $.ig.Scroll.locale);
 }));// REMOVE_FROM_COMBINED_FILES
