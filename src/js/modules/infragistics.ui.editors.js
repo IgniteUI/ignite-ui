@@ -2459,8 +2459,8 @@
 				"role": "button",
 				"tabindex": -1,
 				"id": this.id + "_dropDownButton",
-				"title": this._getLocaleValue("ariaDropDownButton"),
-				"data-localeid": "ariaDropDownButton",
+				"title": this._getLocaleValue("buttonTitle"),
+				"data-localeid": "buttonTitle",
 				"data-localeattr": "title"
 			});
 			this._editorContainer.prepend(dropDownButton
@@ -2479,20 +2479,20 @@
 			}
 			spinButtonUp.addClass(this.css.buttonCommon)
 				.attr({
-					"title": this._getLocaleValue("ariaSpinUpButton"),
+					"title": this._getLocaleValue("spinUpperTitle"),
 					"role": "button",
 					"tabindex": -1,
 					"id": this.id + "_spinUpButton",
-					"data-localeid": "ariaSpinUpButton",
+					"data-localeid": "spinUpperTitle",
 					"data-localeattr": "title"
 				}).append(spinButtonUpImage.addClass(this.css.spinButtonUpImage));
 			spinButtonDown.addClass(this.css.buttonCommon)
 				.attr({
-					"title": this._getLocaleValue("ariaSpinDownButton"),
+					"title": this._getLocaleValue("spinLowerTitle"),
 					"role": "button",
 					"tabindex": -1,
 					"id": this.id + "_spinDownButton",
-					"data-localeid": "ariaSpinDownButton",
+					"data-localeid": "spinLowerTitle",
 					"data-localeattr": "title"
 				}).append(spinButtonDownImage.addClass(this.css.spinButtonDownImage));
 			this._editorContainer.prepend(spinButtonDown).prepend(spinButtonUp);
@@ -2510,11 +2510,11 @@
 			}
 			clearButton.addClass(this.css.buttonCommon)
 				.attr({
-					"title": this._getLocaleValue("ariaClearButton"),
+					"title": this._getLocaleValue("clearTitle"),
 					"role": "button",
 					"id": this.id + "_clearButton",
 					"tabindex": -1,
-					"data-localeid": "ariaClearButton",
+					"data-localeid": "clearTitle",
 					"data-localeattr": "title"
 				}).append(buttonClearIcon.addClass(this.css.clearButtonImage));
 			this._editorContainer.prepend(clearButton.addClass(this.css.clearButton));
@@ -11018,11 +11018,11 @@
 				dropDownIcon = $("<div></div>");
 
 			dropDownButton.addClass(this.css.buttonCommon).attr({
-				"title": this._getLocaleValue("ariaCalendarButton"),
+				"title": this._getLocaleValue("datePickerButtonTitle"),
 				"role": "button",
 				"tabindex": -1,
 				"id": this.id + "_calendarButton",
-				"data-localeid": "ariaCalendarButton",
+				"data-localeid": "datePickerButtonTitle",
 				"data-localeattr": "title"
 			});
 			this._editorContainer.prepend(dropDownButton

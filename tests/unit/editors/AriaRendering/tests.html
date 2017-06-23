@@ -62,9 +62,9 @@
 
 				$("#changeUSLocale").click(function () {
 					$("#divEditor3").igDatePicker("option", "locale", {
-						ariaCalendarButton: "New DD Title",
-						ariaSpinUpButton: "New SU Title",
-						ariaSpinDownButton: "New SL Title"
+						datePickerButtonTitle: "New DD Title",
+						spinUpperTitle: "New SU Title",
+						spinLowerTitle: "New SL Title"
 					});
 				});
 
@@ -112,7 +112,7 @@
 			dropDownButton = $("#divEditor").data("igTextEditor")._dropDownButton;
 
 			equal(dropDownButton.attr("role"), "button", "role='button' attribute is not rendered");
-			equal(dropDownButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("ariaDropDownButton"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("ariaDropDownButton"));
+			equal(dropDownButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("buttonTitle"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("buttonTitle"));
 			equal(dropDownButton.attr("id"), "divEditor_dropDownButton", "The id of the dropDownButton should be divEditor_dropDownButton");
 			// Bug 214846:igGrid Paging dropdown in the header has negative tabindex
 			// Make sure tabIndex is only applied when set
@@ -121,15 +121,15 @@
 
 			clearButton = $("#divEditor").data("igTextEditor")._clearButton;
 			equal(clearButton.attr("role"), "button", "role='button' attribute is not rendered");
-			equal(clearButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("ariaClearButton"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("ariaClearButton"));
+			equal(clearButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("clearTitle"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("clearTitle"));
 			equal(clearButton.attr("id"), "divEditor_clearButton", "The id of the clearButton should be divEditor_clearButton");
 			spinUpButton = $("#divEditor").data("igTextEditor")._spinUpButton;
 			equal(spinUpButton.attr("role"), "button", "role='button' attribute is not rendered");
-			equal(spinUpButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("ariaSpinUpButton"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("ariaSpinUpButton"));
+			equal(spinUpButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("spinUpperTitle"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("spinUpperTitle"));
 			equal(spinUpButton.attr("id"), "divEditor_spinUpButton", "The id of the spinUpButton should be divEditor_spinUpButton");
 			spinDownButton = $("#divEditor").data("igTextEditor")._spinDownButton;
 			equal(spinDownButton.attr("role"), "button", "role='button' attribute is not rendered");
-			equal(spinDownButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("ariaSpinDownButton"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("ariaSpinDownButton"));
+			equal(spinDownButton.attr("title"), $("#divEditor").data("igTextEditor")._getLocaleValue("spinLowerTitle"), "The title attribute should be: " + $("#divEditor").data("igTextEditor")._getLocaleValue("spinLowerTitle"));
 			equal(spinDownButton.attr("id"), "divEditor_spinDownButton", "The id of the spinDownButton should be divEditor_spinDownButton");
 			ddlist = $("#divEditor").data("igTextEditor")._dropDownList;
 			equal(ddlist.attr("id"), "divEditor_list", "The list id should be divEditor_list");
