@@ -718,7 +718,7 @@
 			this._trigger(this.events.blur, event, args);
 		},
 		_setOption: function (option, value) { //Base editor
-			/* igWidget custom setOption goes here */
+			/* igBaseEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
 			if (prevValue === value) {
 				return;
@@ -728,29 +728,31 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "readOnly":
-					this._setReadOnly(value);
-					break;
-				case "disabled":
-					this._setDisabled(value);
-					break;
-				case "width":
-					this._setWidth(value);
-					break;
-				case "height":
-					this._setHeight(value);
-					break;
-				case "validatorOptions":
-					this._setupValidator();
-					break;
-				case "tabIndex":
-					this._setTabIndex(value);
-					break;
-				case "inputName":
-					this._valueInput.attr("name", value);
-					break;
-				default:
-					break;
+			case "readOnly":
+				this._setReadOnly(value);
+				break;
+			case "disabled":
+				this._setDisabled(value);
+				break;
+			case "width":
+				this._setWidth(value);
+				break;
+			case "height":
+				this._setHeight(value);
+				break;
+			case "validatorOptions":
+				this._setupValidator();
+				break;
+			case "tabIndex":
+				this._setTabIndex(value);
+				break;
+			case "inputName":
+				this._valueInput.attr("name", value);
+				break;
+			default:
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_validateValue: function (val) {//Base editor
@@ -1776,74 +1778,74 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "value":
-					this.value(value);
+			case "value":
+				this.value(value);
 
-					//if (this._validateValue(value)) {
-					//	this._updateValue(value);
-					//	this._exitEditMode();
-					//} else {
-					//	this._clearValue();
-					//	this._exitEditMode();
-					//}
-					break;
-				case "placeHolder":
-					this._applyPlaceHolder();
-					break;
-				case "suppressNotifications":
-					if (value) {
-						this._clearEditorNotifier();
-					}
-					break;
-				case "listItems":
+				//if (this._validateValue(value)) {
+				//	this._updateValue(value);
+				//	this._exitEditMode();
+				//} else {
+				//	this._clearValue();
+				//	this._exitEditMode();
+				//}
+				break;
+			case "placeHolder":
+				this._applyPlaceHolder();
+				break;
+			case "suppressNotifications":
+				if (value) {
+					this._clearEditorNotifier();
+				}
+				break;
+			case "listItems":
 
-					//M.S. November, 7th 2016 - Issue 481 - Cannot set listItems on run time when it is not set initially
-					if (prevValue !== null) {
-						this._deleteList();
-					}
-					this._createList();
-					this._clearValue();
-					break;
-				case "listWidth":
-					this._setDropDownListWidth();
-					break;
-				case "spinWrapAround":
-					if (value) {
-						this._enableSpinButton(this._spinDownButton, "spinDown");
-						this._enableSpinButton(this._spinUpButton, "spinUp");
-					} else {
-						this._setSpinButtonsState(this.value());
-					}
-					break;
-				case "excludeKeys":
-					if (value === "") {
-						this._excludeKeysArray = [];
-					} else {
-						this._excludeKeysArray = value.toString().split("");
-					}
-					break;
-				case "includeKeys":
-					if (value === "") {
-						this._includeKeysArray = [];
-					} else {
-						this._includeKeysArray = value.toString().split("");
-					}
-					break;
-				case "textAlign":
-					this._editorInput.css("text-align", value);
-					break;
-				case "dropDownOnReadOnly":
-				case "visibleItemsCount":
-				case "buttonType":
-				case "dropDownAttachedToBody":
-					this.options[ option ] = prevValue;
-					throw new Error(this._getLocaleValue("setOptionError") + option);
-				default:
+				//M.S. November, 7th 2016 - Issue 481 - Cannot set listItems on run time when it is not set initially
+				if (prevValue !== null) {
+					this._deleteList();
+				}
+				this._createList();
+				this._clearValue();
+				break;
+			case "listWidth":
+				this._setDropDownListWidth();
+				break;
+			case "spinWrapAround":
+				if (value) {
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				} else {
+					this._setSpinButtonsState(this.value());
+				}
+				break;
+			case "excludeKeys":
+				if (value === "") {
+					this._excludeKeysArray = [];
+				} else {
+					this._excludeKeysArray = value.toString().split("");
+				}
+				break;
+			case "includeKeys":
+				if (value === "") {
+					this._includeKeysArray = [];
+				} else {
+					this._includeKeysArray = value.toString().split("");
+				}
+				break;
+			case "textAlign":
+				this._editorInput.css("text-align", value);
+				break;
+			case "dropDownOnReadOnly":
+			case "visibleItemsCount":
+			case "buttonType":
+			case "dropDownAttachedToBody":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			default:
 
-					//In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-					break;
+				//In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 
@@ -2453,8 +2455,7 @@
 			if (this._dropDownButton) {
 				return;
 			}
-			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr({
+			dropDownButton.addClass(this.css.buttonCommon).attr({
 				"role": "button",
 				"tabindex": -1,
 				"id": this.id + "_dropDownButton",
@@ -2470,29 +2471,33 @@
 			this._attachButtonsEvents("dropdown", dropDownButton);
 		},
 		_renderSpinButtons: function () {
-			var spinButtonUp = $("<div role='button' tabindex='-1' id='" +
-				this.id +
-				"_spinUpButton' aria-label='" +
-				this._getLocaleValue("ariaSpinUpButton") +
-				"'></div>"), spinButtonUpImage = $("<div></div>"),
-
-				spinButtonDown = $("<div role='button' tabindex='-1' id='" +
-					this.id + "_spinDownButton' aria-label='" +
-					this._getLocaleValue("ariaSpinDownButton") +
-					"'></div>"),
-
+			var spinButtonUp = $("<div></div>"),
+				spinButtonUpImage = $("<div></div>"),
+				spinButtonDown = $("<div></div>"),
 				spinButtonDownImage = $("<div></div>");
 			if (this._spinUpButton) {
 				return;
 			}
-			spinButtonUp
-				.addClass(this.css.buttonCommon)
-				.append(spinButtonUpImage.addClass(this.css.spinButtonUpImage));
-			spinButtonDown
-				.addClass(this.css.buttonCommon)
-				.append(spinButtonDownImage.addClass(this.css.spinButtonDownImage));
-			spinButtonUp.attr("title", this._getLocaleValue("spinUpperTitle"));
-			spinButtonDown.attr("title", this._getLocaleValue("spinLowerTitle"));
+			spinButtonUp.addClass(this.css.buttonCommon)
+				.attr({
+					"title": this._getLocaleValue("spinUpperTitle"),
+					"role": "button",
+					"tabindex": -1,
+					"id": this.id + "_spinUpButton",
+					"aria-label": this._getLocaleValue("ariaSpinUpButton"),
+					"data-localeid": "spinUpperTitle",
+					"data-localeattr": "title"
+				}).append(spinButtonUpImage.addClass(this.css.spinButtonUpImage));
+			spinButtonDown.addClass(this.css.buttonCommon)
+				.attr({
+					"title": this._getLocaleValue("spinLowerTitle"),
+					"role": "button",
+					"tabindex": -1,
+					"id": this.id + "_spinDownButton",
+					"aria-label": this._getLocaleValue("ariaSpinDownButton"),
+					"data-localeid": "spinLowerTitle",
+					"data-localeattr": "title"
+				}).append(spinButtonDownImage.addClass(this.css.spinButtonDownImage));
 			this._editorContainer.prepend(spinButtonDown).prepend(spinButtonUp);
 			this._attachButtonsEvents("spinDown", spinButtonDown);
 			this._attachButtonsEvents("spinUp", spinButtonUp);
@@ -2500,18 +2505,22 @@
 			this._spinDownButton = spinButtonDown;
 		},
 		_renderClearButton: function () {
-			var clearButton = $("<div role='button' id='" +
-				this.id +
-				"_clearButton' tabindex='-1' aria-label='" +
-				this._getLocaleValue("ariaClearButton") + "'></div>"),
-
+			var clearButton = $("<div></div>"),
 				buttonClearIcon = $("<div></div>");
+
 			if (this._clearButton) {
 				return;
 			}
-			clearButton.addClass(this.css.buttonCommon);
-			clearButton.append(buttonClearIcon.addClass(this.css.clearButtonImage));
-			clearButton.attr("title", this._getLocaleValue("clearTitle"));
+			clearButton.addClass(this.css.buttonCommon)
+				.attr({
+					"title": this._getLocaleValue("clearTitle"),
+					"role": "button",
+					"id": this.id + "_clearButton",
+					"tabindex": -1,
+					"aria-label": this._getLocaleValue("ariaClearButton"),
+					"data-localeid": "clearTitle",
+					"data-localeattr": "title"
+				}).append(buttonClearIcon.addClass(this.css.clearButtonImage));
 			this._editorContainer.prepend(clearButton.addClass(this.css.clearButton));
 			this._clearButton = clearButton;
 			this._attachButtonsEvents("clear", clearButton);
@@ -4579,119 +4588,114 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "scientificFormat": {
-					//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
-					if (this._getScientificFormat() || value === null) {
-						if (prevValue) {
-							if (prevValue === "e+" || prevValue === "E+") {
-								prevValue = prevValue.replace("+", "");
-							}
-							this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
+			case "scientificFormat":
+				//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
+				if (this._getScientificFormat() || value === null) {
+					if (prevValue) {
+						if (prevValue === "e+" || prevValue === "E+") {
+							prevValue = prevValue.replace("+", "");
 						}
-						if (value === null) {
-							 this._includeKeysArray = this.options.includeKeys.split( "" );
-							break;
-						}
-						 var numericChars = this._getScientificFormat();
-						 this.options.includeKeys += numericChars;
-						 this._includeKeysArray = this.options.includeKeys.split( "" );
-					}
-				}
-					break;
-				case "spinDelta": {
-					if (typeof value !== "number") {
-						this.options[ option ] = prevValue;
-						throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
-					} else if (value < 0) {
-						this.options[ option ] = prevValue;
-						throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
-					} else if ((this.options.dataMode !== "float" &&
-						this.options.dataMode !== "double") && value % 1 !== 0) {
-						this.options[ option ] = prevValue;
-						throw new Error(this._getLocaleValue("spinDeltaIncorrectFloatingPoint"));
-					} else if (this.options.scientificFormat) {
-						this.options[ option ] = Number(value.toExponential());
-					}
-					break;
-				}
-				case "minValue":
-				case "maxValue":
-					if (isNaN(value)) {
-						this.options[ option ] = prevValue;
-						return;
+						this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
 					}
 					if (value === null) {
-						// ensure dataMode defaults
-						this._applyDataModeSettings();
-					} else {
-						this._processInternalValueChanging(this.value());
-						if (!this._editMode) {
-							this._editorInput.val(this._getDisplayValue());
-						}
+							this._includeKeysArray = this.options.includeKeys.split( "" );
+						break;
 					}
-
-					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
-					this._setSpinButtonsState(this.value());
-					break;
-				case "minDecimals":
-				case "maxDecimals":
-					try {
-						this._validateDecimalSetting(option, value);
-					} catch (e) {
-						this.options[ option ] = prevValue;
-						throw e;
-					}
-					if (this.options[ option ] !== prevValue) {
-						this._validateDecimalMinMax();
-						this._processInternalValueChanging(this.value());
-						if (!this._editMode) {
-							this._editorInput.val(this._getDisplayValue());
-						}
-					}
-					break;
-
-				// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
-				case "decimalSeparator": {
-					if (value.toString().length > 1) {
-						this.options[ option ] = prevValue;
-						throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
-					}
-
-					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-					if (this.options[ option ] === this.options.groupSeparator) {
-						throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
+					var numericChars = this._getScientificFormat();
+					this.options.includeKeys += numericChars;
+					this._includeKeysArray = this.options.includeKeys.split( "" );
+				}
+				break;
+			case "spinDelta":
+				if (typeof value !== "number") {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
+				} else if (value < 0) {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
+				} else if ((this.options.dataMode !== "float" &&
+					this.options.dataMode !== "double") && value % 1 !== 0) {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("spinDeltaIncorrectFloatingPoint"));
+				} else if (this.options.scientificFormat) {
+					this.options[ option ] = Number(value.toExponential());
+				}
+				break;
+			case "minValue":
+			case "maxValue":
+				if (isNaN(value)) {
+					this.options[ option ] = prevValue;
+					return;
+				}
+				if (value === null) {
+					// ensure dataMode defaults
+					this._applyDataModeSettings();
+				} else {
+					this._processInternalValueChanging(this.value());
+					if (!this._editMode) {
+						this._editorInput.val(this._getDisplayValue());
 					}
 				}
-					break;
 
-				// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
-				case "groupSeparator": {
-					if (this.options[ option ] === null) {
-						this.options[ option ] = this._getRegionalValue("numericGroupSeparator");
-					}
-
-					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-					if (this.options[ option ] === this.options.decimalSeparator) {
-						throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
+				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
+				this._setSpinButtonsState(this.value());
+				break;
+			case "minDecimals":
+			case "maxDecimals":
+				try {
+					this._validateDecimalSetting(option, value);
+				} catch (e) {
+					this.options[ option ] = prevValue;
+					throw e;
+				}
+				if (this.options[ option ] !== prevValue) {
+					this._validateDecimalMinMax();
+					this._processInternalValueChanging(this.value());
+					if (!this._editMode) {
+						this._editorInput.val(this._getDisplayValue());
 					}
 				}
-					break;
-				case "regional":
+				break;
+
+			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+			case "decimalSeparator":
+				if (value.toString().length > 1) {
 					this.options[ option ] = prevValue;
-					throw new Error(this._getLocaleValue("setOptionError") + option);
+					throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
+				}
 
-				case "excludeKeys":
-				case "includeKeys":
-					this.options[ option ] = prevValue;
-					throw new Error(this._getLocaleValue("numericEditorNoSuchOption"));
+				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+				if (this.options[ option ] === this.options.groupSeparator) {
+					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
+				}
+				break;
 
-				default: {
+			// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
+			case "groupSeparator":
+				if (this.options[ option ] === null) {
+					this.options[ option ] = this._getRegionalValue("numericGroupSeparator");
+				}
 
-					// In case no propery matches, we call the super. Into the base widget default statement breaks
-						this.options[ option ] = prevValue;
-						this._super(option, value);
-					}
-					break;
+				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+				if (this.options[ option ] === this.options.decimalSeparator) {
+					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
+				}
+				break;
+			case "regional":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+
+			case "excludeKeys":
+			case "includeKeys":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("numericEditorNoSuchOption"));
+
+			default:
+
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_processValueChanging: function (value) { //NumericEditor
@@ -6134,22 +6138,20 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "displayFactor": {
-					if (typeof value !== "number") {
-						this.options[ option ] = prevValue;
-						throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
-					} else if (value !== 1 && value !== 100) {
-						this.options[ option ] = prevValue;
-						throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
-					}
-				}
-					break;
-				default: {
-					//In case no propery matches, we call the super. Into the base widget default statement breaks
+			case "displayFactor":
+				if (typeof value !== "number") {
 					this.options[ option ] = prevValue;
-					this._super(option, value);
+					throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
+				} else if (value !== 1 && value !== 100) {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
 				}
-					break;
+				break;
+			default:
+				//In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_getEditModeValue: function (val) { //igPercentEditor
@@ -7352,23 +7354,21 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "inputMask": {
-					this.options[ option ] = prevValue;
-					throw new Error(this._getLocaleValue("setOptionError") + option);
-				}
-				case "excludeKeys":
-				case "includeKeys":
-				case "regional":
-				case "unfilledCharsPrompt":
-					this.options[ option ] = prevValue;
-					throw new Error(this._getLocaleValue("setOptionError") + option);
-				default: {
+			case "inputMask":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			case "excludeKeys":
+			case "includeKeys":
+			case "regional":
+			case "unfilledCharsPrompt":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			default:
 
-					// In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-				}
-					break;
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_handleBackSpaceKey: function () {
@@ -7898,43 +7898,40 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "displayTimeOffset": {
-					if (this._editMode) {
-						this._updateMaskedValue();
-						this._enterEditMode();
-					} else {
+			case "displayTimeOffset":
+				if (this._editMode) {
+					this._updateMaskedValue();
+					this._enterEditMode();
+				} else {
+					this._editorInput.val(this._getDisplayValue());
+				}
+				break;
+			case "minValue":
+			case "maxValue":
+				if (!this._isValidDate(value)) {
+					this.options[ option ] = prevValue;
+					return;
+				}
+				if (value !== null) {
+					this.options[ option ] = this._getDateObjectFromValue(value);
+					this._processInternalValueChanging(this.value());
+					if (!this._editMode) {
 						this._editorInput.val(this._getDisplayValue());
+						this._currentInputTextValue = this._editorInput.val();
 					}
-					break;
 				}
-				case "minValue":
-				case "maxValue":
-					if (!this._isValidDate(value)) {
-						this.options[ option ] = prevValue;
-						return;
-					}
-					if (value !== null) {
-						this.options[ option ] = this._getDateObjectFromValue(value);
-						this._processInternalValueChanging(this.value());
-						if (!this._editMode) {
-							this._editorInput.val(this._getDisplayValue());
-							this._currentInputTextValue = this._editorInput.val();
-						}
-					}
-					this._setSpinButtonsState(this.value());
-					break;
-				case "listItems":
-				case "dateInputFormat": {
-					this.options[ option ] = prevValue;
-					throw new Error(this._getLocaleValue("setOptionError") + option);
-				}
-				default: {
+				this._setSpinButtonsState(this.value());
+				break;
+			case "listItems":
+			case "dateInputFormat":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			default:
 
-					// In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-				}
-					break;
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_applyRegionalSettings: function () { //DateEditor
@@ -11019,14 +11016,17 @@
 			this._dropDownList = this._editorInput.datepicker("widget");
 		},
 		_renderDropDownButton: function () {
-			var dropDownButton = $("<div role='button' tabindex='-1' id='" +
-					this.id + "_calendarButton' aria-label='" +
-					this._getLocaleValue("ariaCalendarButton") + "'></div>"),
+			var dropDownButton = $("<div></div>"),
 				dropDownIcon = $("<div></div>");
 
-			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr({
-				"title": this._getLocaleValue("datePickerButtonTitle")
+			dropDownButton.addClass(this.css.buttonCommon).attr({
+				"title": this._getLocaleValue("datePickerButtonTitle"),
+				"role": "button",
+				"tabindex": -1,
+				"id": this.id + "_calendarButton",
+				"aria-label": this._getLocaleValue("ariaCalendarButton"),
+				"data-localeid": "datePickerButtonTitle",
+				"data-localeattr": "title"
 			});
 			this._editorContainer.prepend(dropDownButton
 				.addClass(this.css.dropDownButton)
@@ -11099,70 +11099,68 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "datepickerOptions": {
-					var pickerOptions = this._editorInput.data("datepicker").settings,
-						settings, self = this, options;
-					settings = $.extend(value, this._pickerDefaults());
+			case "datepickerOptions":
+				var pickerOptions = this._editorInput.data("datepicker").settings,
+					settings, self = this, options;
+				settings = $.extend(value, this._pickerDefaults());
 
-				    //A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
-					options = $.extend(pickerOptions, settings);
+				//A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
+				options = $.extend(pickerOptions, settings);
 
-					if (settings.onSelect) {
-						var igOnSelect = settings.onSelect;
-						options.onSelect = function (dateText, inst) {
-							igOnSelect.call(this, dateText, inst);
-							if (self.options.datepickerOptions &&
-								self.options.datepickerOptions.onSelect) {
-								self.options.datepickerOptions
-									.onSelect.call(this, dateText, inst);
-							}
-						};
-					}
-					if (settings.onClose) {
-						var igOnClose = settings.onClose;
-						pickerOptions.onClose = function (dateText, inst) {
-							igOnClose.call(this);
-							if (self.options.datepickerOptions &&
-								self.options.datepickerOptions.onClose) {
-								self.options.datepickerOptions
-									.onClose.call(this, dateText, inst);
-							}
-						};
-					}
-					this._editorInput.data("datepicker").settings = pickerOptions;
-
-					// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
-					if (value.minDate &&
-						(this._editorInput.data("datepicker").settings.minDate !==
-							this.options.minValue))
-					{
-						this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
-					}
-					if (value.maxDate &&
-						(this._editorInput.data("datepicker").settings.maxDate !==
-							this.options.maxValue))
-					{
-						this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
-					}
+				if (settings.onSelect) {
+					var igOnSelect = settings.onSelect;
+					options.onSelect = function (dateText, inst) {
+						igOnSelect.call(this, dateText, inst);
+						if (self.options.datepickerOptions &&
+							self.options.datepickerOptions.onSelect) {
+							self.options.datepickerOptions
+								.onSelect.call(this, dateText, inst);
+						}
+					};
 				}
-					break;
-				case "minValue":
-				case "maxValue":
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-					this._editorInput.datepicker("option", "minDate", this.options.minValue);
-					this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
-
-					// prevent datepicker from updating the input text (if min/max change selection)
-					this._editorInput.val(this._currentInputTextValue);
-					break;
-				default: {
-
-					//In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
+				if (settings.onClose) {
+					var igOnClose = settings.onClose;
+					pickerOptions.onClose = function (dateText, inst) {
+						igOnClose.call(this);
+						if (self.options.datepickerOptions &&
+							self.options.datepickerOptions.onClose) {
+							self.options.datepickerOptions
+								.onClose.call(this, dateText, inst);
+						}
+					};
 				}
-					break;
+				this._editorInput.data("datepicker").settings = pickerOptions;
+
+				// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
+				if (value.minDate &&
+					(this._editorInput.data("datepicker").settings.minDate !==
+						this.options.minValue))
+				{
+					this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
+				}
+				if (value.maxDate &&
+					(this._editorInput.data("datepicker").settings.maxDate !==
+						this.options.maxValue))
+				{
+					this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
+				}
+				break;
+			case "minValue":
+			case "maxValue":
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				this._editorInput.datepicker("option", "minDate", this.options.minValue);
+				this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
+
+				// prevent datepicker from updating the input text (if min/max change selection)
+				this._editorInput.val(this._currentInputTextValue);
+				break;
+			default:
+
+				//In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_triggerKeyDown: function (event) { //igDatePicker
@@ -11636,21 +11634,21 @@
 
 			this._super(option, value);
 			switch (option) {
-				case "checked":
-					this._updateState(value && value !== "false" ? true : false);
-					break;
-				case "value":
-					this._inputValue = value;
-					this._updateState(this.options.checked);
-					break;
-				case "size":
-					this._size(value);
-					break;
-				case "iconClass":
-					this._setIconClass(iconClass, value);
-					break;
-				default:
-					break;
+			case "checked":
+				this._updateState(value && value !== "false" ? true : false);
+				break;
+			case "value":
+				this._inputValue = value;
+				this._updateState(this.options.checked);
+				break;
+			case "size":
+				this._size(value);
+				break;
+			case "iconClass":
+				this._setIconClass(iconClass, value);
+				break;
+			default:
+				break;
 			}
 
 		},

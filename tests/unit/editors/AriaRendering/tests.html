@@ -59,6 +59,15 @@
 					placeHolder: "Select Date",
 					width: 400
 				});
+
+				$("#changeUSLocale").click(function () {
+					$("#divEditor3").igDatePicker("option", "locale", {
+						datePickerButtonTitle: "New DD Title",
+						spinUpperTitle: "New SU Title",
+						spinLowerTitle: "New SL Title"
+					});
+				});
+
 				$("#divEditor4").igMaskEditor({
 					buttonType: "clear",
 					placeHolder: "Fill Mask",
@@ -80,6 +89,7 @@
 				
 			});
 		}
+
 		initialized = false;
 		module("igEditors ARIA rendering", {
 			setup: function() {
@@ -154,11 +164,18 @@
 				$("#divEditor6").data("igPercentEditor")._getLocaleValue("ariaPercentEditorFieldLabel"),
 				"The aria-label should be: " + $("#divEditor6").data("igPercentEditor")._getLocaleValue("ariaPercentEditorFieldLabel"));
 		});
-		var testId = 'Aria List Rendering';
+		testId = 'Aria List Rendering';
 		test(testId, 0, function () {
 
 		});
-		
+
+		testId = "Change locale";
+		test(testId, 3, function () {
+			$("#changeUSLocale").click();
+			equal($("#divEditor3").find("#divEditor3_calendarButton").attr("title"), "New DD Title", "The Drop Down title locale didn't change");
+			equal($("#divEditor3").find("#divEditor3_spinUpButton").attr("title"), "New SU Title", "The Spin Up title locale didn't change");
+			equal($("#divEditor3").find("#divEditor3_spinDownButton").attr("title"), "New SL Title", "The Spin Down title locale didn't change");
+		});
 	});
 	</script>
 
@@ -180,6 +197,7 @@
 	</div>
 	<div id="divEditor3">
 	</div>
+	<button id="changeUSLocale">Change Locale</button>
 	<div id="divEditor4">
 	</div>
 	<div id="divEditor5">
@@ -187,6 +205,8 @@
 	<div id="divEditor6">
 	</div>
 	<div id="divEditor7">
-	</div></body>
+	</div>
+</div>
+</body>
 </html>
 

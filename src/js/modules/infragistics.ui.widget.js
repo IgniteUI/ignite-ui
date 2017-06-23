@@ -115,7 +115,7 @@
 				self = this;
 			elements.each(function () {
 				var $el = $(this);
-				self._changeLocaleByKey($el, $el.attr("data-localeid", $el.attr("data-localeattr")));
+				self._changeLocaleByKey($el, $el.attr("data-localeid"), $el.attr("data-localeattr"));
 			});
 		},
 		_changeLocaleByKey: function (element, key, attr) {
