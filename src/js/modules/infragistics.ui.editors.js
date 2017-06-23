@@ -2459,9 +2459,8 @@
 				"role": "button",
 				"tabindex": -1,
 				"id": this.id + "_dropDownButton",
-				"aria-label": this._getLocaleValue("ariaDropDownButton"),
-				"title": this._getLocaleValue("buttonTitle"),
-				"data-localeid": "buttonTitle",
+				"title": this._getLocaleValue("ariaDropDownButton"),
+				"data-localeid": "ariaDropDownButton",
 				"data-localeattr": "title"
 			});
 			this._editorContainer.prepend(dropDownButton
@@ -2480,22 +2479,20 @@
 			}
 			spinButtonUp.addClass(this.css.buttonCommon)
 				.attr({
-					"title": this._getLocaleValue("spinUpperTitle"),
+					"title": this._getLocaleValue("ariaSpinUpButton"),
 					"role": "button",
 					"tabindex": -1,
 					"id": this.id + "_spinUpButton",
-					"aria-label": this._getLocaleValue("ariaSpinUpButton"),
-					"data-localeid": "spinUpperTitle",
+					"data-localeid": "ariaSpinUpButton",
 					"data-localeattr": "title"
 				}).append(spinButtonUpImage.addClass(this.css.spinButtonUpImage));
 			spinButtonDown.addClass(this.css.buttonCommon)
 				.attr({
-					"title": this._getLocaleValue("spinLowerTitle"),
+					"title": this._getLocaleValue("ariaSpinDownButton"),
 					"role": "button",
 					"tabindex": -1,
 					"id": this.id + "_spinDownButton",
-					"aria-label": this._getLocaleValue("ariaSpinDownButton"),
-					"data-localeid": "spinLowerTitle",
+					"data-localeid": "ariaSpinDownButton",
 					"data-localeattr": "title"
 				}).append(spinButtonDownImage.addClass(this.css.spinButtonDownImage));
 			this._editorContainer.prepend(spinButtonDown).prepend(spinButtonUp);
@@ -2513,12 +2510,11 @@
 			}
 			clearButton.addClass(this.css.buttonCommon)
 				.attr({
-					"title": this._getLocaleValue("clearTitle"),
+					"title": this._getLocaleValue("ariaClearButton"),
 					"role": "button",
 					"id": this.id + "_clearButton",
 					"tabindex": -1,
-					"aria-label": this._getLocaleValue("ariaClearButton"),
-					"data-localeid": "clearTitle",
+					"data-localeid": "ariaClearButton",
 					"data-localeattr": "title"
 				}).append(buttonClearIcon.addClass(this.css.clearButtonImage));
 			this._editorContainer.prepend(clearButton.addClass(this.css.clearButton));
@@ -4589,7 +4585,8 @@
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
 			case "scientificFormat":
-				//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
+
+				// M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
 				if (this._getScientificFormat() || value === null) {
 					if (prevValue) {
 						if (prevValue === "e+" || prevValue === "E+") {
@@ -6148,7 +6145,8 @@
 				}
 				break;
 			default:
-				//In case no propery matches, we call the super. Into the base widget default statement breaks
+
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
 				this.options[ option ] = prevValue;
 				this._super(option, value);
 				break;
@@ -11020,12 +11018,11 @@
 				dropDownIcon = $("<div></div>");
 
 			dropDownButton.addClass(this.css.buttonCommon).attr({
-				"title": this._getLocaleValue("datePickerButtonTitle"),
+				"title": this._getLocaleValue("ariaCalendarButton"),
 				"role": "button",
 				"tabindex": -1,
 				"id": this.id + "_calendarButton",
-				"aria-label": this._getLocaleValue("ariaCalendarButton"),
-				"data-localeid": "datePickerButtonTitle",
+				"data-localeid": "ariaCalendarButton",
 				"data-localeattr": "title"
 			});
 			this._editorContainer.prepend(dropDownButton
