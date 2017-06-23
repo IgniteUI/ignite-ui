@@ -19,13 +19,15 @@
 (function ($) {
 	$.ig = $.ig || {};
 
-	if (!$.ig.Templating) {
-		$.ig.Templating = {};
+	$.ig.Templating = {};
 
-		$.extend($.ig.Templating, {
-			locale: {
-				undefinedArgument: 'Грешка при опит да се вземе стойността на следното свойство от източника на данни: '
-			}
-		});
-	}
+	$.extend($.ig.Templating, {
+		locale: {
+			undefinedArgument: 'Грешка при опит да се вземе стойността на следното свойство от източника на данни: '
+		}
+	});
+
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	$.ig.locale.bg.Templating = $.extend({}, $.ig.Templating.locale);
 }));// REMOVE_FROM_COMBINED_FILES

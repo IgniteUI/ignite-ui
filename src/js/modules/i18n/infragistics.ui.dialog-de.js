@@ -19,17 +19,19 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Dialog) {
-	    $.ig.Dialog = {
-		    locale: {
-			    closeButtonTitle: "Schließen",
-			    minimizeButtonTitle: "Minimieren",
-			    maximizeButtonTitle: "Maximieren",
-			    pinButtonTitle: "Anheften",
-			    unpinButtonTitle: "Lösen",
-			    restoreButtonTitle: "Wiederherstellen",
-				setOptionError: 'Laufzeit-Änderungen sind für die folgende Option nicht zugelassen: '
-		    }
-	    };
-    }
+	$.ig.Dialog = {
+		locale: {
+			closeButtonTitle: "Schließen",
+			minimizeButtonTitle: "Minimieren",
+			maximizeButtonTitle: "Maximieren",
+			pinButtonTitle: "Anheften",
+			unpinButtonTitle: "Lösen",
+			restoreButtonTitle: "Wiederherstellen",
+			setOptionError: 'Laufzeit-Änderungen sind für die folgende Option nicht zugelassen: '
+		}
+	};
+		
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
+	$.ig.locale.de.Dialog = $.extend({}, $.ig.Dialog.locale);
 }));// REMOVE_FROM_COMBINED_FILES

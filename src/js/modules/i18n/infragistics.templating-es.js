@@ -19,13 +19,15 @@
 (function ($) {
 	$.ig = $.ig || {};
 
-	if (!$.ig.Templating) {
-		$.ig.Templating = {};
+	$.ig.Templating = {};
 
-		$.extend($.ig.Templating, {
-			locale: {
-				undefinedArgument: 'Se ha producido un error al intentar recuperar las propiedades del origen de datos: '
-			}
-		});
-	}
+	$.extend($.ig.Templating, {
+		locale: {
+			undefinedArgument: 'Se ha producido un error al intentar recuperar las propiedades del origen de datos: '
+		}
+	});
+
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.es = $.ig.locale.es || {};
+	$.ig.locale.es.Templating = $.extend({}, $.ig.Templating.locale);
 }));// REMOVE_FROM_COMBINED_FILES

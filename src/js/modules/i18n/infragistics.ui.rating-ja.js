@@ -19,13 +19,15 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Rating) {
-	    $.ig.Rating = {};
+	$.ig.Rating = {};
 
-	    $.extend($.ig.Rating, {
-		    locale: {
-			    setOptionError: '次のオプションはランタイムで変更できません: '
-		    }
-	    });
-    }
+	$.extend($.ig.Rating, {
+		locale: {
+			setOptionError: '次のオプションはランタイムで変更できません: '
+		}
+	});
+
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
+	$.ig.locale.ja.Rating = $.extend({}, $.ig.Rating.locale);
 }));// REMOVE_FROM_COMBINED_FILES
