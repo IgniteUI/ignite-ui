@@ -106,7 +106,7 @@
 			return this.localeWidgetName;
 		},
 		_getLocaleObject: function (locale) {
-			return 	$.ig.locale &&
+			return $.ig.locale &&
 					$.ig.locale[ locale ] &&
 					$.ig.locale[ locale ][ this._getLocaleWidgetName() ];
 		},
@@ -129,7 +129,7 @@
 		_changeLocaleForElement: function ($element, localeId) {
 			// localeId is optional - if set - then changes only those locale setting specified by localeId in attribute data-locale
 			// if localeId is NOT set - changes all locales for the specified element(set in attribute data-locale)
-			var i, pairs, localeAttr = $element.attr(this.localeAttributeName);// format "optionName0:attributeName0;optionName1:attributeName1;"
+			var keyValue, key, attr, i, pairs, localeAttr = $element.attr(this.localeAttributeName);// format "optionName0:attributeName0;optionName1:attributeName1;"
 			if (!localeAttr) {
 				return;
 			}
