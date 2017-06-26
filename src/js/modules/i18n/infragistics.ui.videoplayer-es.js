@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.VideoPlayer) {
 	    $.ig.VideoPlayer = {};
 
 	    $.extend($.ig.VideoPlayer, {
@@ -63,5 +62,7 @@
 		    }
 	    });
 
-    }
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.es = $.ig.locale.es || {};
+		$.ig.locale.es.VideoPlayer = $.extend({}, $.ig.VideoPlayer.locale);
 }));// REMOVE_FROM_COMBINED_FILES

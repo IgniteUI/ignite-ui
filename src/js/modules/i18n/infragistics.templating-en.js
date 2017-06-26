@@ -19,13 +19,15 @@
 (function ($) {
 	$.ig = $.ig || {};
 
-	if (!$.ig.Templating) {
-		$.ig.Templating = {};
+	$.ig.Templating = {};
 
-		$.extend($.ig.Templating, {
-			locale: {
-				undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
-			}
-		});
-	}
+	$.extend($.ig.Templating, {
+		locale: {
+			undefinedArgument: 'An error has occurred while trying to retrieve data source property: '
+		}
+	});
+
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.locale.en.Templating = $.extend({}, $.ig.Templating.locale);
 }));// REMOVE_FROM_COMBINED_FILES

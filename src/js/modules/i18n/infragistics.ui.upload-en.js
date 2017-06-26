@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Upload) {
 	    $.ig.Upload = {};
 
 	    $.extend($.ig.Upload, {
@@ -70,6 +69,8 @@
 			    titleClearAllButton: "Clear Uploaded"
 		    }
 	    });
-
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.en = $.ig.locale.en || {};
+		$.ig.locale.en.Upload = $.extend({}, $.ig.Upload.locale);
 }));// REMOVE_FROM_COMBINED_FILES

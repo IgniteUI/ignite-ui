@@ -19,13 +19,15 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Rating) {
-	    $.ig.Rating = {};
+	$.ig.Rating = {};
 
-	    $.extend($.ig.Rating, {
-		    locale: {
-			    setOptionError: 'Стойността на следната опция не може да бъде променяна след инициализация: '
-		    }
-	    });
-    }
+	$.extend($.ig.Rating, {
+		locale: {
+			setOptionError: 'Стойността на следната опция не може да бъде променяна след инициализация: '
+		}
+	});
+
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	$.ig.locale.bg.Rating = $.extend({}, $.ig.Rating.locale);
 }));// REMOVE_FROM_COMBINED_FILES

@@ -18,8 +18,7 @@
 }
 (function ($) {
     $.ig = $.ig || {};
-
-    if (!$.ig.Validator) {
+	
 	    $.ig.Validator = {
 		    locale: {
 			    defaultMessage: 'Veuillez réparer ce champ',
@@ -46,5 +45,8 @@
 		        optionalString: '(facultatif)'
 		    }
 	    };
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.fr = $.ig.locale.fr || {};
+		$.ig.locale.fr.Validator = $.extend({}, $.ig.Validator.locale);
 }));// REMOVE_FROM_COMBINED_FILES

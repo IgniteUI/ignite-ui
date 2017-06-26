@@ -19,7 +19,6 @@
 (function ($) {
 $.ig = $.ig || {};
 
-if (!$.ig.Splitter) {
 	$.ig.Splitter = {};
 
 	$.extend($.ig.Splitter, {
@@ -29,5 +28,7 @@ if (!$.ig.Splitter) {
 		}
 	});
 
-}
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.fr = $.ig.locale.fr || {};
+		$.ig.locale.fr.Splitter = $.extend({}, $.ig.Splitter.locale);
 }));// REMOVE_FROM_COMBINED_FILES

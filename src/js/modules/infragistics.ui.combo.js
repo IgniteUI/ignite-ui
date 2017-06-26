@@ -13,6 +13,7 @@
 * infragistics.util.js
 * infragistics.util.jquery.js
 * infragistics.dataSource.js
+* infragistics.ui.widget.js
 *
 * Example to use:
 *   <script type="text/javascript">
@@ -28,10 +29,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.templating",
 			"./infragistics.datasource",
 			"./infragistics.ui.scroll",
@@ -49,7 +47,7 @@
 		Drop-down list supports multiple selection, filtering, templating, rendering matching items, active item, etc.
 		Editing of field supports auto-complete, editing multiple items, synchronization with selection in drop-down list, clear button, etc.
 	*/
-    $.widget("ui.igCombo", {
+    $.widget("ui.igCombo", $.ui.igWidget, {
         options: {
             /* type="number|string" Gets/Sets the width of combo. The numeric and string values (valid html units for size) are supported. It includes %, px, em and other units.
             ```
@@ -1619,12 +1617,15 @@
                 inputInput: $.proxy(this._inputInputHandler, this)
             };
 
-            this._analyzeOptions();
-            this._analyzeInitialElem();
-            this._render();
-            this.validator();
-            this._attachEvents();
-            this.dataBind();
+			this._analyzeOptions();
+
+			// Options related to localization
+			this._changeLocale();
+			this._analyzeInitialElem();
+			this._render();
+			this.validator();
+			this._attachEvents();
+			this.dataBind();
 
             // P.P 07-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
             this._initCompositionObject();
@@ -1699,6 +1700,27 @@
                 options.inputName = $combo.attr("name");
             }
 
+            // Multiple attribute
+            // JD 6/25/15 - Bug 201623 - The attribute should only apply if multiSelection.enabled was not
+            // set by the developer.
+            if ($combo.attr("multiple") === "multiple" &&
+				(this._options.originalOptions.multiSelection === undefined ||
+				this._options.originalOptions.multiSelection.enabled === undefined)) {
+                this.options.multiSelection.enabled = true;
+            }
+
+            // Right-to-left implementation
+            // Z.K 25/08/15 Bug #189210 - When combo is initialized form input with dir="rtl", list is not aligned correct
+            if ($combo.attr("dir") === "rtl") {
+                this._options.ltr = false;
+            }
+
+            if (this.options.grouping.key && firstDataItem &&
+                firstDataItem[ this.options.grouping.key ] === undefined) {
+                throw new Error($.ig.Combo.locale.errorIncorrectGroupingKey);
+            }
+        },
+		_changeLocale: function () {
             // No match found text
             this.options.noMatchFoundText = this.options.noMatchFoundText ||
 				$.ig.Combo && $.ig.Combo.locale && $.ig.Combo.locale.noMatchFoundText ||
@@ -1723,27 +1745,7 @@
             this.options.dropDownButtonTitle = this.options.dropDownButtonTitle ||
 				$.ig.Combo && $.ig.Combo.locale && $.ig.Combo.locale.dropDownButtonTitle ||
 				"Show drop-down";
-
-            // Multiple attribute
-            // JD 6/25/15 - Bug 201623 - The attribute should only apply if multiSelection.enabled was not
-            // set by the developer.
-            if ($combo.attr("multiple") === "multiple" &&
-				(this._options.originalOptions.multiSelection === undefined ||
-				this._options.originalOptions.multiSelection.enabled === undefined)) {
-                this.options.multiSelection.enabled = true;
-            }
-
-            // Right-to-left implementation
-            // Z.K 25/08/15 Bug #189210 - When combo is initialized form input with dir="rtl", list is not aligned correct
-            if ($combo.attr("dir") === "rtl") {
-                this._options.ltr = false;
-            }
-
-            if (this.options.grouping.key && firstDataItem &&
-                firstDataItem[ this.options.grouping.key ] === undefined) {
-                throw new Error($.ig.Combo.locale.errorIncorrectGroupingKey);
-            }
-        },
+		},
         _analyzeInitialElem: function () {
             var element = this.element,
 				_options = this._options;
@@ -4956,22 +4958,21 @@
                 value = $.extend(true, {}, options.grouping, value);
             }
 
-            // S.T. 3th Sept 2015, Bug #203257: Add support for changing option enableClearButton
-            if (option === "enableClearButton") {
-                if (_options.inputVal) {
-                    if (value === true) {
-                        this._showClearButton(true);
-                    } else {
-                        this._hideClearButton();
-                    }
-                }
-            }
-
-            $.Widget.prototype._setOption.apply(this, arguments);
+            this._super(option, value);
 
             this._analyzeOptions();
 
             switch (option) {
+				// S.T. 3th Sept 2015, Bug #203257: Add support for changing option enableClearButton
+				case "enableClearButton":
+					if (_options.inputVal) {
+						if (value === true) {
+							this._showClearButton(true);
+						} else {
+							this._hideClearButton();
+						}
+					}
+					break;
                 case "width":
                     _options.$comboWrapper.outerWidth(value);
                     this.positionDropDown();

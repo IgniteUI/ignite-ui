@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Splitter) {
 	    $.ig.Splitter = {};
 
 	    $.extend($.ig.Splitter, {
@@ -28,6 +27,8 @@
 		        errorSettingOption: 'Error setting option.'
 		    }
 	    });
-
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.en = $.ig.locale.en || {};
+		$.ig.locale.en.Splitter = $.extend({}, $.ig.Splitter.locale);
 }));// REMOVE_FROM_COMBINED_FILES

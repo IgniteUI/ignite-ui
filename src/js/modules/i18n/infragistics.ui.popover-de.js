@@ -19,14 +19,16 @@
 (function ($) {
 $.ig = $.ig || {};
 
-if (!$.ig.Popover) {
-	$.ig.Popover = {};
+$.ig.Popover = {};
 
-	$.extend( $.ig.Popover, {
-		locale: {
-			popoverOptionChangeNotSupported: "Die Änderung der folgenden Option nach der Initialisierung von igPopover wird nicht unterstützt:",
-			popoverShowMethodWithoutTarget: "Der Target-Parameter der Show-Funktion ist obligatorisch, wenn die Selectors-Option verwendet wird"
-		}
-	});
-}
+$.extend( $.ig.Popover, {
+	locale: {
+		popoverOptionChangeNotSupported: "Die Änderung der folgenden Option nach der Initialisierung von igPopover wird nicht unterstützt:",
+		popoverShowMethodWithoutTarget: "Der Target-Parameter der Show-Funktion ist obligatorisch, wenn die Selectors-Option verwendet wird"
+	}
+});
+
+$.ig.locale = $.ig.locale || {};
+$.ig.locale.de = $.ig.locale.de || {};
+$.ig.locale.de.Popover = $.extend({}, $.ig.Popover.locale);
 }));// REMOVE_FROM_COMBINED_FILES

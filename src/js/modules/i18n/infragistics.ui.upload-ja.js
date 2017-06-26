@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Upload) {
 	    $.ig.Upload = {};
 
 	    $.extend($.ig.Upload, {
@@ -65,6 +64,8 @@
 			    titleClearAllButton: "すべてクリア"
 		    }
 	    });
-
-    }
+		
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.ja = $.ig.locale.ja || {};
+		$.ig.locale.ja.Upload = $.extend({}, $.ig.Upload.locale);
 }));// REMOVE_FROM_COMBINED_FILES

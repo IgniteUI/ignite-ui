@@ -19,7 +19,6 @@
 (function ($) {
 $.ig = $.ig || {};
 
-if (!$.ig.TileManager) {
 	$.ig.TileManager = {};
 
 	$.extend($.ig.TileManager, {
@@ -28,5 +27,8 @@ if (!$.ig.TileManager) {
 		    setOptionItemsLengthError: "Дължината на подадената items конфигурация не отговаря на броя на плочките."
 		}
 	});
-}
+	
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	$.ig.locale.bg.TileManager = $.extend({}, $.ig.TileManager.locale);
 }));// REMOVE_FROM_COMBINED_FILES

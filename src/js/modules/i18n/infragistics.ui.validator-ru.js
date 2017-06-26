@@ -19,7 +19,6 @@
 (function ($) {
     $.ig = $.ig || {};
 
-    if (!$.ig.Validator) {
 	    $.ig.Validator = {
 		    locale: {
 			    defaultMessage: 'Пожалуйста, исправьте это поле',
@@ -46,5 +45,7 @@
 		        optionalString: '(необязательно)'
 		    }
 	    };
-    }
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.ru = $.ig.locale.ru || {};
+		$.ig.locale.ru.Validator = $.extend({}, $.ig.Validator.locale);
 }));// REMOVE_FROM_COMBINED_FILES
