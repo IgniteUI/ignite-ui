@@ -4595,7 +4595,7 @@
 						this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
 					}
 					if (value === null) {
-							this._includeKeysArray = this.options.includeKeys.split( "" );
+						this._includeKeysArray = this.options.includeKeys.split( "" );
 						break;
 					}
 					var numericChars = this._getScientificFormat();
