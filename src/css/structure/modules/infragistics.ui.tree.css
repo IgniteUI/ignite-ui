@@ -135,8 +135,8 @@
 }
 .ui-igtree .ui-igcheckbox-normal-off,
 .ui-igtree .ui-igcheckbox-normal-on {
-	width:100%!important;
-	height:100%!important;
+	width:100%;
+	height:100%;
 }
 /* Bug 236973 END */
 
