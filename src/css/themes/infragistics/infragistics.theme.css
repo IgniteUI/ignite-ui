@@ -128,6 +128,10 @@
   background-color: #c33d4a!important;
   border: 1px solid #872933!important;
 }
+.doughnutPalette1 {
+  background-color: #7446B9!important;
+  border: 1px solid #fff!important;
+}
 .doughnutPalette2 {
   background-color: #9FB328!important;
   border: 1px solid #fff!important;
@@ -5840,8 +5844,8 @@ input.ui-igbutton {
 .ui-igedit .ui-icon,
 .ui-igsplitter .ui-icon,
 .ui-igcombo .ui-icon {
-  height: 16px!important;
-  width: 16px!important;
+  height: 16px;
+  width: 16px;
   font-size: 11px;
 }
 /* Bug 217562, 8th Apr 2016, D.P., Cursor style is like text when hovering over expand/checkbox icons in IE11 and Edge (igTree, Tree grid, gric selection, pivot, checkbox editor) */
