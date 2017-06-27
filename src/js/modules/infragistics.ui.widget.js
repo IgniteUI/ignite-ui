@@ -37,21 +37,36 @@
     $.widget("ui.igWidget", {
 		localeWidgetName: null,
         options: {
-            /* type="string|object" Set/Get the locale setting for the widget.
+            /* type="object" Set/Get the locale setting for the widget.
             ```
                  //Initialize
                 $(".selector").%%WidgetName%%({
-                    locale: "ja"
+                    locale: {}
                 });
 
                 // Get
                 var locale = $(".selector").%%WidgetName%%("option", "locale");
 
                 // Set
-                $(".selector").%%WidgetName%%("option", "locale", "ja");
+                $(".selector").%%WidgetName%%("option", "locale", {});
             ```
             */
-            locale: "en",
+            locale: null,
+			/* type="object" Set/Get the locale language setting for the widget.
+            ```
+                 //Initialize
+                $(".selector").%%WidgetName%%({
+                    language: "ja"
+                });
+
+                // Get
+                var language = $(".selector").%%WidgetName%%("option", "language");
+
+                // Set
+                $(".selector").%%WidgetName%%("option", "language", "ja");
+            ```
+            */
+			language: "en",
             /* type="string|object" Set/Get the regional setting for the widget.
             ```
                 //Initialize
@@ -72,6 +87,7 @@
 			this._super(option, value);
 
 			switch (option) {
+			case "language":
 			case "locale":
 				this._changeLocale();
 				break;
@@ -100,14 +116,15 @@
 		},
 		_getLocaleValue: function (key) {
 			var locale = this.options.locale,
-				widgetName = this.localeWidgetName || this.widgetName.split("ig")[ 1 ];
+				language = this.options.language,
+				widgetName = this.localeWidgetName || this.widgetName.replace("ig", "");
 
 			if (locale && locale[ key ]) {
 				return locale[ key ];
-			} else if ($.ig && $.ig[ widgetName ] && $.ig[ widgetName ].locale) {
-				return $.ig[ widgetName ].locale[ key ];
 			} else {
-				return "";
+				return ($.ig.locale &&
+						$.ig.locale[ language ][ widgetName ] &&
+						$.ig.locale[ language ][ widgetName ][ key ]) || "";
 			}
 		},
 		_changeLocale: function () {
