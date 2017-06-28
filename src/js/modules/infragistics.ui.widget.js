@@ -52,7 +52,7 @@
             ```
             */
             locale: null,
-			/* type="object" Set/Get the locale language setting for the widget.
+			/* type="string" Set/Get the locale language setting for the widget.
             ```
                  //Initialize
                 $(".selector").%%WidgetName%%({
@@ -66,7 +66,7 @@
                 $(".selector").%%WidgetName%%("option", "language", "ja");
             ```
             */
-			language: "en",
+			language: null,
             /* type="string|object" Set/Get the regional setting for the widget.
             ```
                 //Initialize
@@ -88,6 +88,8 @@
 
 			switch (option) {
 			case "language":
+				this._changeLanguage();
+				break;
 			case "locale":
 				this._changeLocale();
 				break;
@@ -104,7 +106,7 @@
 				return this.options[ key ];
 			}
 			if (typeof regional === "string") {
-				regional = $.ig.regional[ regional ];
+				regional = $.ig.regional[ regional ]; 
 			}
 			if (regional && regional[ key ]) {
 				return regional[ key ];
@@ -114,25 +116,49 @@
 				return $.ig.regional.defaults[ key ];
 			}
 		},
+		_getLocaleValueFromCollection: function (key, collection) {
+			var c, i, keys;
+			if (!collection) {
+				return "";
+			}
+			if (collection && collection[ key ]) {
+				return collection[ key ];
+			}
+			if (key.indexOf(".") > 0) {
+				keys = key.split(".");
+				c = collection;
+				for (i = 0; i < keys.length; i++) {
+					c = c[ keys[ i ] ];
+					if (!c) {
+						return "";
+					}
+				}
+			}
+			return c || "";
+		},
 		_getLocaleValue: function (key) {
 			var locale = this.options.locale,
 				language = this.options.language,
 				widgetName = this.localeWidgetName || this.widgetName.replace("ig", "");
+			return	this._getLocaleValueFromCollection(key, locale) ||
+					this._getLocaleValueFromCollection(key, ($.ig.locale &&
+												$.ig.locale[ language ] &&
+												$.ig.locale[ language ][ widgetName ])) ||
+					this._getLocaleValueFromCollection(key, ($.ig && $.ig[ widgetName ] &&
+												$.ig[ widgetName ].locale));
 
-			if (locale && locale[ key ]) {
-				return locale[ key ];
-			} else {
-				return ($.ig.locale &&
-						$.ig.locale[ language ][ widgetName ] &&
-						$.ig.locale[ language ][ widgetName ][ key ]) || "";
-			}
+		},
+		_changeLanguage: function () {
+			this._changeLocale();
 		},
 		_changeLocale: function () {
-			var elements = this.element.find("[data-localeid]"),
-				self = this;
-			elements.each(function () {
-				var $el = $(this);
-				self._changeLocaleByKey($el, $el.attr("data-localeid"), $el.attr("data-localeattr"));
+			this._changeLocaleForContainer(this.element);
+		},
+		_changeLocaleForContainer: function ($container) {
+			var self = this;
+			this._changeLocaleForElement($container);
+			$container.find("[data-localeid]").each(function () {
+				self._changeLocaleForElement($(this));
 			});
 		},
 		_changeLocaleForElement: function ($element) {
