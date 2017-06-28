@@ -106,7 +106,7 @@
 				return this.options[ key ];
 			}
 			if (typeof regional === "string") {
-				regional = $.ig.regional[ regional ]; 
+				regional = $.ig.regional[ regional ];
 			}
 			if (regional && regional[ key ]) {
 				return regional[ key ];
@@ -151,11 +151,9 @@
 		_changeLanguage: function () {
 			this._changeLocale();
 		},
-		_changeLocale: function () {
-			this._changeLocaleForContainer(this.element);
-		},
-		_changeLocaleForContainer: function ($container) {
+		_changeLocale: function ($container) {
 			var self = this;
+			$container = $container || this.element;
 			this._changeLocaleForElement($container);
 			$container.find("[data-localeid]").each(function () {
 				self._changeLocaleForElement($(this));
@@ -164,14 +162,15 @@
 		_changeLocaleForElement: function ($element) {
 			var key = $element.attr("data-localeid");
 			if (key) {
-				this._changeLocaleByKey($element, key, $element.attr("data-localeattr"));
+				this._changeLocaleByKey(key, $element);
 			}
 		},
-		_changeLocaleByKey: function (element, key, attr) {
+		_changeLocaleByKey: function (key, $element) {
+			var attr = $element.attr("data-localeattr");
 			if (attr) {
-				element.attr(attr, this._getLocaleValue(key));
+				$element.attr(attr, this._getLocaleValue(key));
 			} else {
-				element.text(this._getLocaleValue(key));
+				$element.text(this._getLocaleValue(key));
 			}
 		},
 		_changeRegional: $.noop
