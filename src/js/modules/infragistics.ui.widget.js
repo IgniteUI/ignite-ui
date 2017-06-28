@@ -135,6 +135,12 @@
 				self._changeLocaleByKey($el, $el.attr("data-localeid"), $el.attr("data-localeattr"));
 			});
 		},
+		_changeLocaleForElement: function ($element) {
+			var key = $element.attr("data-localeid");
+			if (key) {
+				this._changeLocaleByKey($element, key, $element.attr("data-localeattr"));
+			}
+		},
 		_changeLocaleByKey: function (element, key, attr) {
 			if (attr) {
 				element.attr(attr, this._getLocaleValue(key));
