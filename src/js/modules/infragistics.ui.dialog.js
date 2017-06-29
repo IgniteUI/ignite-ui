@@ -1618,7 +1618,7 @@
 					$("<span />").addClass(css[ id + "Icon" ]).appendTo(button);
 
 					// i=order of buttons in header:pin,min,max,close
-					self._changeLocale(button, i === 3 ? CLOSE : (i === 2 ? MAX : (i === 1 ? MIN : PIN)));
+					self.changeLocale(button, i === 3 ? CLOSE : (i === 2 ? MAX : (i === 1 ? MIN : PIN)));
 				}
 			}
 			if (!o.showHeader) {
@@ -1659,7 +1659,7 @@
 			if (e && e.type && min && this._max) {
 				this._onMax(false, true, true);
 			}
-			this._changeLocale(but, min ? RESTORE : MIN);
+			this.changeLocale(but, min ? RESTORE : MIN);
 			if (min) {
 				header.addClass(css.headerMinimized);
 				if (bar) {
@@ -1714,7 +1714,7 @@
 			but = header.find("." + css.maximize);
 			but.find("*").removeClass(max ? css.maximizeIcon : css.restoreIcon)
 				.addClass(max ? css.restoreIcon : css.maximizeIcon);
-			this._changeLocale(but, max ? RESTORE : MAX);
+			this.changeLocale(but, max ? RESTORE : MAX);
 
 			if (max) {
 				header.addClass(css.unmovable);
@@ -1749,7 +1749,7 @@
 			if (this._max && pin) {
 				this._onMax(false, false, true);
 			}
-			this._changeLocale(but, pin ? UNPIN : PIN);
+			this.changeLocale(but, pin ? UNPIN : PIN);
 			if (pin) {
 				header.addClass(css.unmovable);
 			} else {
@@ -2586,7 +2586,7 @@
 				}
 			}
 		},
-		_changeLocale: function (but, state) {
+		changeLocale: function (but, state) {
 			state = ((state === MIN) ? "minimize" : ((state === MAX) ? "maximize" : ((state === RESTORE) ?
 					"restore" : ((state === CLOSE) ? "close" : ((state === PIN) ?
 					"pin" : ((state === UNPIN) ? "unpin" : "open")))))) + "ButtonTitle";

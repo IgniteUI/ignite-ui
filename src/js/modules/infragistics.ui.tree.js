@@ -1740,7 +1740,7 @@
 			this.options.bindings = null;
 
 			if (options && options.dragAndDrop) {
-				this._changeLocale();
+				this.changeLocale();
 			}
 			this._superApply(arguments);
 		},
@@ -1881,7 +1881,7 @@
 				break;
 			}
 		},
-		_changeLocale: function () {
+		changeLocale: function () {
 			this.options.dragAndDropSettings.moveToMarkup =
 				"<div><p><span></span>" + this._getLocaleValue("moveTo") + "</p></div>";
 			this.options.dragAndDropSettings.moveBetweenMarkup =

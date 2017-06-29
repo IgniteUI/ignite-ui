@@ -4855,7 +4855,7 @@
 				this._options.$hiddenInput.removeAttr("disabled");
 			}
 		},
-		_changeLocale: function () {
+		changeLocale: function () {
 			this._super();
 			var $noMatchFound = this._options.$noMatchFound;
 			if ($noMatchFound && $noMatchFound.length) {
