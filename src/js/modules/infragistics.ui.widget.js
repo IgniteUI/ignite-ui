@@ -85,7 +85,8 @@
 		},
 		_createWidget: function (options) {
 			this._userPreset = options;
-			$.ig.util.widgetStack.push(this);
+
+			this._registerWidget();
 
 			if (!options || !options.language) {
 				this.options.language = $.ig.util.language;
@@ -106,6 +107,12 @@
 			default:
 				break;
 			}
+		},
+		_registerWidget: function () {
+			$.ig.util.widgetStack.push(this);
+		},
+		_unregisterWidget: function () {
+			$.ig.util.widgetStack.splice($.ig.util.widgetStack.indexOf(this), 1);
 		},
 		_getRegionalValue: function (key) {
 			var regional = this.options.regional;
@@ -175,7 +182,7 @@
 			}
 		},
 		destroy: function () {
-			$.ig.util.widgetStack.splice($.ig.util.widgetStack.indexOf(this), 1);
+			this._unregisterWidget();
 			this._super();
 		}
 	});
