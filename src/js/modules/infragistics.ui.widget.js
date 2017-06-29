@@ -31,36 +31,36 @@
 	}
 }
 (function ($) {
-    /*
+	/*
 		Base igWidget for all Ignite UI widgets.
 	*/
-    $.widget("ui.igWidget", {
+	$.widget("ui.igWidget", {
 		localeWidgetName: null,
-        options: {
-            /* type="object" Set/Get the locale setting for the widget.
-            ```
-                 //Initialize
-                $(".selector").%%WidgetName%%({
-                    locale: {}
-                });
+		options: {
+			/* type="object" Set/Get the locale setting for the widget.
+			```
+					//Initialize
+				$(".selector").%%WidgetName%%({
+					locale: {}
+				});
 
-                // Get
-                var locale = $(".selector").%%WidgetName%%("option", "locale");
+				// Get
+				var locale = $(".selector").%%WidgetName%%("option", "locale");
 
-                // Set
-                $(".selector").%%WidgetName%%("option", "locale", {});
-            ```
-            */
-            locale: null,
+				// Set
+				$(".selector").%%WidgetName%%("option", "locale", {});
+			```
+			*/
+			locale: null,
 			/* type="string" Set/Get the locale language setting for the widget.
-            ```
-                 //Initialize
-                $(".selector").%%WidgetName%%({
-                    language: "ja"
-                });
+			```
+					//Initialize
+				$(".selector").%%WidgetName%%({
+					language: "ja"
+				});
 
-                // Get
-                var language = $(".selector").%%WidgetName%%("option", "language");
+				// Get
+				var language = $(".selector").%%WidgetName%%("option", "language");
 
                 // Set
                 $(".selector").%%WidgetName%%("option", "language", "ja");
@@ -74,13 +74,13 @@
                     regional: "ja"
                 });
 
-                // Get
-                var regional = $(".selector").%%WidgetName%%("option", "regional");
+				// Get
+				var regional = $(".selector").%%WidgetName%%("option", "regional");
 
-                // Set
-                $(".selector").%%WidgetName%%("option", "regional", "ja");
-            ```
-            */
+				// Set
+				$(".selector").%%WidgetName%%("option", "regional", "ja");
+			```
+			*/
 			regional: "en-US"
 		},
 		_setOption: function (option, value) {
@@ -109,7 +109,6 @@
 			if (regional && regional[ key ]) {
 				return regional[ key ];
 			} else {
-
 				// return defaults
 				return $.ig.regional.defaults[ key ];
 			}
@@ -161,8 +160,8 @@
 			}
 		},
 		_changeRegional: $.noop
-    });
+	});
 
-    $.extend($.ui.igWidget, { version: "<build_number>" });
-    return $.ui.igWidget;// REMOVE_FROM_COMBINED_FILES
+	$.extend($.ui.igWidget, { version: "<build_number>" });
+	return $.ui.igWidget;// REMOVE_FROM_COMBINED_FILES
 }));// REMOVE_FROM_COMBINED_FILES
