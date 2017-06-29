@@ -139,8 +139,8 @@
 		_getLocaleValue: function (key) {
 			var language = this.options.language,
 				widgetName = this.localeWidgetName || this.widgetName.replace("ig", ""),
-				locale = $.extend(false, {}, $.ig.locale[ language ][ widgetName ]);
-			locale = $.extend(false, locale, this.options.locale);
+				locale = $.extend({}, $.ig.locale[ language ][ widgetName ]);
+			locale = $.extend(locale, this.options.locale);
 			return	this._getLocaleValueFromCollection(key, locale);
 		},
 		_changeLocale: function ($container) {
