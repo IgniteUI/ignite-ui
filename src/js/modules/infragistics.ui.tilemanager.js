@@ -2565,10 +2565,10 @@
             ```
                 returnType="object"
             */
-            $.Widget.prototype.destroy.apply(this, arguments);
             this.element.removeClass(this.css.container);
             this._destroyTiles();
             this._removeEventHandlers();
+            this._super();
             return this;
         }
     });

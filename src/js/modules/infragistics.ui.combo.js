@@ -7534,7 +7534,7 @@
 			}
 
 			_options = null;
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._super();
 			return this;
 		}
 	});

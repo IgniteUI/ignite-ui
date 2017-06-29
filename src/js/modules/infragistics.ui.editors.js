@@ -1184,7 +1184,7 @@
 			this._restoreDOMStructure();
 			this._deleteInternalProperties();
 			delete this.options;
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._super();
 			return this;
 		}
 	});

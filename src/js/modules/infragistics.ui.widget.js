@@ -84,6 +84,9 @@
 			regional: "en-US"
 		},
 		_createWidget: function (options) {
+			this._userPreset = options;
+			$.ig.util.widgetStack.push(this);
+
 			if (!options || !options.language) {
 				this.options.language = $.ig.util.language;
 			}
@@ -95,7 +98,7 @@
 			switch (option) {
 			case "language":
 			case "locale":
-				this._changeLocale();
+				this.changeLocale();
 				break;
 			case "regional":
 				this._changeRegional();
@@ -143,14 +146,6 @@
 			locale = $.extend(locale, this.options.locale);
 			return	this._getLocaleValueFromCollection(key, locale);
 		},
-		_changeLocale: function ($container) {
-			var self = this;
-			$container = $container || this.element;
-			this._changeLocaleForElement($container);
-			$container.find("[data-localeid]").each(function () {
-				self._changeLocaleForElement($(this));
-			});
-		},
 		_changeLocaleForElement: function ($element) {
 			var key = $element.attr("data-localeid");
 			if (key) {
@@ -165,7 +160,24 @@
 				$element.text(this._getLocaleValue(key));
 			}
 		},
-		_changeRegional: $.noop
+		_changeRegional: $.noop,
+		changeLocale: function ($container) {
+			var self = this;
+			$container = $container || this.element;
+			this._changeLocaleForElement($container);
+			$container.find("[data-localeid]").each(function () {
+				self._changeLocaleForElement($(this));
+			});
+		},
+		changeGlobalLanguage: function () {
+			if (!this._userPreset || !this._userPreset.language) {
+				this._setOption("language", $.ig.util.language);
+			}
+		},
+		destroy: function () {
+			$.ig.util.widgetStack.splice($.ig.util.widgetStack.indexOf(this), 1);
+			this._super();
+		}
 	});
 
 	$.extend($.ui.igWidget, { version: "<build_number>" });

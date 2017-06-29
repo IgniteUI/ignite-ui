@@ -206,6 +206,13 @@
 	$.ig.util.regional = "en-US";
 	$.ig.util.widgetStack = [];
 
+	$.ig.util.changeGlobalLanguage = function (language) {
+		$.ig.util.language = language;
+		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
+			$.ig.util.widgetStack[i].changeGlobalLanguage();
+		}
+	};
+
 	//D.A. 11th November 2013, Updated the isIE & browserVersion to be compatible with IE11+
 	$.ig.util.isIE = window.navigator.userAgent.indexOf("MSIE") > -1 || !!window.navigator.userAgent.match(/trident/i);
 	$.ig.util.isIEOld = $.ig.util.isIE && !window.HTMLElement ? true : false;
