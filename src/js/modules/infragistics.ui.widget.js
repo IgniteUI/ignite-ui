@@ -66,7 +66,7 @@
                 $(".selector").%%WidgetName%%("option", "language", "ja");
             ```
             */
-			language: null,
+			language: "en",
             /* type="string|object" Set/Get the regional setting for the widget.
             ```
                 //Initialize
@@ -88,8 +88,6 @@
 
 			switch (option) {
 			case "language":
-				this._changeLanguage();
-				break;
 			case "locale":
 				this._changeLocale();
 				break;
@@ -117,7 +115,7 @@
 			}
 		},
 		_getLocaleValueFromCollection: function (key, collection) {
-			var c, i, keys;
+			var value, i, keys;
 			if (!collection) {
 				return "";
 			}
@@ -126,30 +124,19 @@
 			}
 			if (key.indexOf(".") > 0) {
 				keys = key.split(".");
-				c = collection;
+				value = collection;
 				for (i = 0; i < keys.length; i++) {
-					c = c[ keys[ i ] ];
-					if (!c) {
-						return "";
-					}
+					value = value[ keys[ i ] ];
 				}
 			}
-			return c || "";
+			return value || "";
 		},
 		_getLocaleValue: function (key) {
-			var locale = this.options.locale,
-				language = this.options.language,
-				widgetName = this.localeWidgetName || this.widgetName.replace("ig", "");
-			return	this._getLocaleValueFromCollection(key, locale) ||
-					this._getLocaleValueFromCollection(key, ($.ig.locale &&
-												$.ig.locale[ language ] &&
-												$.ig.locale[ language ][ widgetName ])) ||
-					this._getLocaleValueFromCollection(key, ($.ig && $.ig[ widgetName ] &&
-												$.ig[ widgetName ].locale));
-
-		},
-		_changeLanguage: function () {
-			this._changeLocale();
+			var language = this.options.language,
+				widgetName = this.localeWidgetName || this.widgetName.replace("ig", ""),
+				locale = $.extend(false, {}, $.ig.locale[ language ][ widgetName ]);
+			locale = $.extend(false, locale, this.options.locale);
+			return	this._getLocaleValueFromCollection(key, locale);
 		},
 		_changeLocale: function ($container) {
 			var self = this;
