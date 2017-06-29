@@ -84,7 +84,7 @@
 			regional: "en-US"
 		},
 		_createWidget: function (options) {
-			if (!options.language) {
+			if (!options || !options.language) {
 				this.options.language = $.ig.util.language;
 			}
 			this._superApply(arguments);
