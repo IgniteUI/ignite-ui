@@ -83,6 +83,12 @@
 			*/
 			regional: "en-US"
 		},
+		_createWidget: function (options) {
+			if (!options.language) {
+				this.options.language = $.ig.util.language;
+			}
+			this._superApply(arguments);
+		},
 		_setOption: function (option, value) {
 			this._super(option, value);
 

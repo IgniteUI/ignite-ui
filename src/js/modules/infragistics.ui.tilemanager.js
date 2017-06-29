@@ -934,9 +934,6 @@
             splitbarSelector: ".ui-igsplitter-splitbar-vertical",
             innerContainerSelector: ".ui-igtile-inner-container"
         },
-        _createWidget: function () {
-            $.Widget.prototype._createWidget.apply(this, arguments);
-        },
         _create: function () {
             var opt = this.options;
 

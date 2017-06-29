@@ -492,7 +492,7 @@
 
 			// Those are only the options that are defined by the user, before merged with the default ones.
 			this._definedOptions = options;
-			$.Widget.prototype._createWidget.apply(this, arguments);
+			this._superApply(arguments);
 		},
 		_create: function () { //BaseEditor
 			/* igWidget constructor goes here */

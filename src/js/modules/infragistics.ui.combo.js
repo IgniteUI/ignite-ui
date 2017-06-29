@@ -1531,7 +1531,7 @@
 				}
 			}
 
-			$.Widget.prototype._createWidget.apply(this, arguments);
+			this._superApply(arguments);
 		},
 		_create: function () {
 
@@ -1557,11 +1557,6 @@
 			};
 
 			this._analyzeOptions();
-			/* in case of locale file for Combo is not loaded and option `locale` is not set*/
-			this._setDefaultLocaleOption("noMatchFoundText", "No Results");
-			this._setDefaultLocaleOption("placeHolder", "select...");
-			this._setDefaultLocaleOption("clearButtonTitle", "Clear value");
-			this._setDefaultLocaleOption("dropDownButtonTitle", "Show drop-down");
 			this._analyzeInitialElem();
 			this._render();
 			this.validator();
@@ -1570,13 +1565,6 @@
 
 			// P.P 07-Mar-2016 #212238: Incorrect confirmation of Japanese symbols using IME
 			this._initCompositionObject();
-		},
-		_setDefaultLocaleOption: function (key, defaultValue) {
-			if ((!this.options.locale || this.options.locale[ key ] === undefined) &&
-						!this._getLocaleValue(key)) {
-				this.options.locale = this.options.locale || {};
-				this.options.locale[ key ] = defaultValue;
-			}
 		},
 		_analyzeOptions: function () {
 			var key, firstDataItem,

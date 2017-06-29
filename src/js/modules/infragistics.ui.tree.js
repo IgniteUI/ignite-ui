@@ -1742,7 +1742,7 @@
 			if (options && options.dragAndDrop) {
 				this._changeLocale();
 			}
-			$.Widget.prototype._createWidget.apply(this, arguments);
+			this._superApply(arguments);
 		},
 		_create: function () {
 			var opt = this.options;

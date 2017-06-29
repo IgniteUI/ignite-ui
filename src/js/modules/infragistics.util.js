@@ -198,10 +198,13 @@
 		};
 	}
 
-	//$.ig = $.ig || { _isNamespace: true };
 	$.ig.util = $.ig.util || {};
 
 	$.ig.util.browserVersion = "";
+
+	$.ig.util.language = "en";
+	$.ig.util.regional = "en-US";
+	$.ig.util.widgetStack = [];
 
 	//D.A. 11th November 2013, Updated the isIE & browserVersion to be compatible with IE11+
 	$.ig.util.isIE = window.navigator.userAgent.indexOf("MSIE") > -1 || !!window.navigator.userAgent.match(/trident/i);
