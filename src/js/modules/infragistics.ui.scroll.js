@@ -655,6 +655,8 @@
 			verticalScrollTrack: "igscroll-vtrack",
 			/* Classes applied to the arrows of the custom vertical scrollbar */
 			verticalScrollArrow: "igscroll-varrow",
+			/* Classes applied to the arrows of the custom vertical scrollbar when it is hidden */
+			verticalScrollArrowHidden: "igscroll-varrow-hidden",
 			/* Classes applied to the Arrow Up of the custom vertical scrollbar */
 			verticalScrollArrowUp: "igscroll-uparrow",
 			/* Classes applied to the Arrow Up of the custom vertical scrollbar when it is active */
@@ -667,6 +669,8 @@
 			verticalScrollThumbDrag: "igscroll-vdrag",
 			/* Classes applied to the thumb drag of the custom vertical scrollbar when it is in thin form */
 			verticalScrollThumbDragThin: "igscroll-vdrag-thin",
+			/* Classes applied to the thumb drag of the custom vertical scrollbar when it is hidden but previously was visible the thin. */
+			verticalScrollThumbDragHidden: "igscroll-vdrag-hidden",
 			/* Classes applied to the thumb drag of the custom vertical scrollbar when it is in big form */
 			verticalScrollThumbDragBig: "igscroll-vdrag-big",
 			/* Classes applied to the container of the custom horizontal scrollbar */
@@ -675,6 +679,8 @@
 			horizontalScrollTrack: "igscroll-htrack",
 			/* Classes applied to the arrows of the custom horizontal scrollbar */
 			horizontalScrollArrow: "igscroll-harrow",
+			/* Classes applied to the arrows of the custom horizontal scrollbar when it is hidden */
+			horizontalScrollArrowHidden: "igscroll-harrow-hidden",
 			/* Classes applied to the Arrow Left of the custom horizontal scrollbar */
 			horizontalScrollArrowLeft: "igscroll-leftarrow",
 			/* Classes applied to the Arrow Left of the custom horizontal scrollbar when it is active */
@@ -687,6 +693,8 @@
 			horizontalScrollThumbDrag: "igscroll-hdrag",
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar when it is in thin form */
 			horizontalScrollThumbDragThin: "igscroll-hdrag-thin",
+			/* Classes applied to the thumb drag of the custom horizontal scrollbar when it is hidden but previously was visible the thin. */
+			horizontalScrollThumbDragHidden: "igscroll-hdrag-hidden",
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar when it is in big form */
 			horizontalScrollThumbDragBig: "igscroll-hdrag-big",
 			/* Classes applied to an element that prevents selection when dragging */
@@ -745,7 +753,7 @@
 			//IDs of the timeouts used for waiting until hiding, switching to simple scrollbars, touch inertia
 			this._showScrollbarsAnimId = 0;
 			this._hideScrollbarID = 0;
-			this._toSimpleScrollbarID = 0;
+			this._toSimpleScrollbarsID = 0;
 			this._touchInertiaAnimID = 0;
 
 			//Track if the mouse is inside the scroll container
@@ -842,15 +850,15 @@
 			}
 
 			this._updateScrollBarsVisibility();
-			this._hideScrollBars(false);
+			this._hideScrollbars();
 			if (this.options.alwaysVisible) {
 				if ($.ig.util.isTouchDevice()) {
-					this._showScrollBars(false, true, false);
+					this._showScrollbars(true);
 				} else {
-					this._showScrollBars(false, false, false);
+					this._showScrollbars(false);
 				}
 			} else {
-				this._showScrollBars(true, true, true, 0.02);
+				this._showScrollbars(true, 2000);
 			}
 
 			this._trigger("rendered", null, {
@@ -894,9 +902,9 @@
 			if (key === "alwaysVisible") {
 				if (value === true) {
 					if ($.ig.util.isTouchDevice()) {
-						this._showScrollBars(false, true, false);
+						this._showScrollbars(true);
 					} else {
-						this._showScrollBars(false, false, false);
+						this._showScrollbars(false);
 					}
 				}
 			}
@@ -905,7 +913,7 @@
 
 				if (value !== "none") {
 					this._updateScrollBarsVisibility();
-					this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
+					this._updateScrollbarsPos(this._getContentPositionX(), this._getContentPositionY());
 				}
 			}
 			if (key === "scrollTop") {
@@ -917,12 +925,12 @@
 			if (key === "scrollHeight") {
 				this._setScrollHeight(value);
 				this._refreshScrollbars();
-				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
+				this._updateScrollbarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "scrollWidth") {
 				this._setScrollWidth(value);
 				this._refreshScrollbars();
-				this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
+				this._updateScrollbarsPos(this._getContentPositionX(), this._getContentPositionY());
 			}
 			if (key === "syncedElemsH") {
 				this._linkElementsH(value);
@@ -1188,7 +1196,7 @@
 			}
 
 			this._updateScrollBarsVisibility();
-			this._updateScrollBarsPos(this._getContentPositionX(), this._getContentPositionY());
+			this._updateScrollbarsPos(this._getContentPositionX(), this._getContentPositionY());
 		},
 
 		_linkElementsH: function (inElements) {
@@ -1414,7 +1422,7 @@
 			} else {
 				curPosY = this._getContentPositionY();
 			}
-			this._updateScrollBarsPos(destX, curPosY, true);
+			this._updateScrollbarsPos(destX, curPosY, true);
 
 			return destX - curPosX;
 		},
@@ -1470,7 +1478,7 @@
 			} else {
 				curPosX = this._getContentPositionX();
 			}
-			this._updateScrollBarsPos(curPosX, destY, true);
+			this._updateScrollbarsPos(curPosX, destY, true);
 
 			return destY - curPosY;
 		},
@@ -1598,7 +1606,7 @@
 
 				/* Sync other elements */
 				destY = this._getScrollbarVPosition();
-				this._updateScrollBarsPos(destX, destY);
+				this._updateScrollbarsPos(destX, destY);
 
 				return { x: destX - curPosX, y: destY - curPosY };
 			}
@@ -1615,7 +1623,7 @@
 			/* Sync other elements */
 			this._syncElemsX(this._content, true);
 			this._syncElemsY(this._content, true);
-			this._updateScrollBarsPos(destX, destY);
+			this._updateScrollbarsPos(destX, destY);
 
 			//No need to sync these bars since they don't show on safari and we use custom ones.
 			this._syncHBar(this._content, true);
@@ -1645,7 +1653,7 @@
 			//Sets timeout until executing next movement iteration of the inertia
 			function inertiaStep() {
 				if (x > 6) {
-					self._hideScrollBars(true, true); //hide scrollbars when inertia ends naturally
+					self._hideScrollbars(); //hide scrollbars when inertia ends naturally
 					cancelAnimationFrame(self._touchInertiaAnimID);
 					if (!self._cancelScrolling) {
 						self._trigger("scrolled", null, {
@@ -2092,7 +2100,7 @@
 				posY = this._getContentPositionY();
 			}
 
-			this._updateScrollBarsPos(posX, posY);
+			this._updateScrollbarsPos(posX, posY);
 
 			return false;
 		},
@@ -2267,7 +2275,7 @@
 
 			this._igScollTouchPrevented = false;
 
-			this._showScrollBars(false, true);
+			this._showScrollbars(true);
 		},
 
 		_onTouchMoveContainer: function (event) {
@@ -2382,10 +2390,10 @@
 			//Use the lastMovedX and lastMovedY to determine if the swipe stops without lifting the finger so we don't start inertia
 			if ((Math.abs(speedX) > 0.1 || Math.abs(speedY) > 0.1) &&
 					(Math.abs(this._lastMovedX) > 2 || Math.abs(this._lastMovedY) > 2)) {
-				this._showScrollBars(false, true);
+				this._showScrollbars(true);
 				this._inertiaInit(speedX, speedY, this._bMixedEnvironment);
 			} else {
-				this._hideScrollBars(true, true);
+				this._hideScrollbars();
 
 				if (!this._cancelScrolling) {
 					//Trigger scrolled event
@@ -2404,10 +2412,10 @@
 
 			cancelAnimationFrame(this._showScrollbarsAnimId);
 			clearTimeout(this._hideScrollbarID);
-			if (!this._toSimpleScrollbarID && !this._bMouseDownH && !this._bMouseDownV) {
-				//We move the mouse inside the container but we weren't previously hovering the scrollbars (that's why we don't have _toSimpleScrollbarID for a timeout to switch to simple scrollbars).
+			if (!this._toSimpleScrollbarsID && !this._bMouseDownH && !this._bMouseDownV) {
+				//We move the mouse inside the container but we weren't previously hovering the scrollbars (that's why we don't have _toSimpleScrollbarsID for a timeout to switch to simple scrollbars).
 				//So we instantly show simple scrollbars.
-				this._showScrollBars(false, true);
+				this._showScrollbars(true);
 			}
 		},
 
@@ -2416,9 +2424,12 @@
 
 			this._mOverContainer = false;
 			if (!this._bMouseDownV && !this._bMouseDownH) {
+				clearTimeout(this._toSimpleScrollbarsID);
+				this._toSimpleScrollbarsID = 0;
+
 				//Hide scrollbars after 2 secs. We cencel the timeout if we enter scrollbars area.
 				this._hideScrollbarID = setTimeout(function () {
-					self._hideScrollBars(false);
+					self._hideScrollbars();
 				}, 2000);
 			}
 		},
@@ -2485,7 +2496,7 @@
 				}
 
 				if ($.ig.util.isTouchDevice()) {
-					this._toSimpleScrollbar();
+					this._toSimpleScrollbars();
 				}
 			}
 		},
@@ -3055,7 +3066,7 @@
 				*	We hide the scrollbar after 2 secs since the mouse is outside the scrollable content
 				*/
 				this._hideScrollbarID = setTimeout(function () {
-					self._hideScrollBars(false);
+					self._hideScrollbars();
 				}, 2000);
 			} else if (this._bMouseDownV && !this._mOverScrollbars && this._mOverContainer) {
 				/** Scenario:
@@ -3065,9 +3076,9 @@
 				*
 				*	We don't hide the scrollbar this time but switch to simple after 2 secs
 				*/
-				this._toSimpleScrollbarID = setTimeout(function () {
-					self._toSimpleScrollbar();
-					self._toSimpleScrollbarID = 0;
+				this._toSimpleScrollbarsID = setTimeout(function () {
+					self._toSimpleScrollbars();
+					self._toSimpleScrollbarsID = 0;
 				}, 2000);
 			}
 			this._bMouseDownV = false;
@@ -3551,7 +3562,7 @@
 				*	We hide the scrollbar after 2 secs since the mouse is outside the scrollable content
 				*/
 				this._hideScrollbarID = setTimeout(function () {
-					self._hideScrollBars(false);
+					self._hideScrollbars();
 				}, 2000);
 			} else if (this._bMouseDownH && !this._mOverScrollbars && this._mOverContainer) {
 				/** Scenario:
@@ -3561,9 +3572,9 @@
 				*
 				*	We don't hide the scrollbar this time but switch to simple after 2 secs
 				*/
-				this._toSimpleScrollbarID = setTimeout(function () {
-					self._toSimpleScrollbar();
-					self._toSimpleScrollbarID = 0;
+				this._toSimpleScrollbarsID = setTimeout(function () {
+					self._toSimpleScrollbars();
+					self._toSimpleScrollbarsID = 0;
 				}, 2000);
 			}
 			this._bMouseDownH = false;
@@ -3591,56 +3602,53 @@
 
 		/** Shows the mobile/touch scrollbars when they are hidden.
 		*
-		*	animate - true/false if hide the scrollbar slowly with animation and not momentarily
-		*	bDragOnly - show only the drag button. Used when using simple scrollbars
+		*	bSimple - boolean saying if only the simple scrollbars should be shown if not visible already (simple is thing thumb bar without arrows visible)
+		*	hideAfter - sets the ammount of ms to delay the scrollbars being hidden after showing them
 		*/
-		_showScrollBars: function (animate, bDragOnly, hideAfterShown, opacityStep) {
+		_showScrollbars: function (bSimple, hideAfter) {
+			var self = this;
 			if (this.options.scrollbarType !== "custom") {
 				return;
 			}
 
-			var self = this,
-				targetOpacty = 0.9,
-				currentOpacity = 0;
+			if (bSimple) {
+				this._hideScrollbarArrows();
 
-			function showStep() {
-				if (currentOpacity > targetOpacty) {
-					/* end */
-					if (hideAfterShown) {
-						self._hideScrollBars(true, opacityStep);
-					}
-
-					self._touchBarsShown = true;
-					cancelAnimationFrame(self._showScrollbarsAnimId);
-					self._showScrollbarsAnimId = 0;
-					return;
+				if (this._vBarDrag && this._percentInViewV < 1) {
+					this._vBarDrag.removeClass(this.css.verticalScrollThumbDragHidden)
+						.addClass(this.css.verticalScrollThumbDragThin);
 				}
 
-				if (bDragOnly) {
-					self._setSimpleScrollBarOpacity(currentOpacity);
-				} else {
-					self._setScrollBarsOpacity(currentOpacity);
+				if (this._hBarDrag && this._percentInViewH < 1) {
+					this._hBarDrag.removeClass(this.css.horizontalScrollThumbDragHidden)
+						.addClass(this.css.horizontalScrollThumbDragThin);
 				}
-				currentOpacity += opacityStep ? opacityStep : 0.05;
+			} else {
+				this._showScrollbarArrows();
 
-				/* continue */
-				self._showScrollbarsAnimId = requestAnimationFrame(showStep);
+				if (this._vBarDrag && this._percentInViewV < 1) {
+					this._vBarDrag
+						.removeClass(this.css.verticalScrollThumbDragHidden)
+						.removeClass(this.css.verticalScrollThumbDragThin)
+						.addClass(this.css.verticalScrollThumbDragBig);
+				}
+
+				if (this._hBarDrag && this._percentInViewH < 1) {
+					this._hBarDrag
+						.removeClass(this.css.horizontalScrollThumbDragHidden)
+						.removeClass(this.css.horizontalScrollThumbDragThin)
+						.addClass(this.css.horizontalScrollThumbDragBig);
+				}
 			}
 
-			if (!animate) {
-				if (bDragOnly) {
-					this._setSimpleScrollBarOpacity(targetOpacty);
-				} else {
-					this._setScrollBarsOpacity(targetOpacty);
-				}
-
-				this._touchBarsShown = true;
-			} else {
-				this._showScrollbarsAnimId = requestAnimationFrame(showStep);
+			if (hideAfter) {
+				this._hideScrollbarID = setTimeout(function () {
+					self._hideScrollbars();
+				}, hideAfter);
 			}
 		},
 
-		_updateScrollBarsPos: function (destX, destY) {
+		_updateScrollbarsPos: function (destX, destY) {
 			if (this.options.scrollbarType !== "custom") {
 				return;
 			}
@@ -3674,110 +3682,74 @@
 			animationID = requestAnimationFrame(updateCSS);
 		},
 
-		/** Hides the mobile/touch scrollbars.
-		*
-		*	animate - true/false if hide the scrollbar slowly with animation and not momentarily
-		*	waitForBarsToShow - makes sure to wait wiht the hiding in the case where the scrollbars are in a proccess of showing and are not fully shown
-		*	bDragOnly - hide only the drag button. Used when using simple scrollbars
-		*/
-		_hideScrollBars: function (animate, bDragOnly, opacityStep) {
+		/** Hides the full/simple scrollbars. */
+		_hideScrollbars: function () {
 			if (this.options.scrollbarType !== "custom" ||
 					this.options.alwaysVisible || (!this._vBarDrag && !this._hBarDrag)) {
 				return;
 			}
 
-			var self = this,
-				targetOpacty = 0,
-				currentOpacity = this._vBarDrag ? this._vBarDrag.css("opacity") : this._hBarDrag.css("opacity"),
-				animationId;
-
-			if (currentOpacity === 0) {
-				return;
+			if (this._vBarDrag && this._percentInViewV < 1) {
+				this._vBarDrag
+					.removeClass(this.css.verticalScrollThumbDragThin)
+					.removeClass(this.css.verticalScrollThumbDragBig)
+					.addClass(this.css.verticalScrollThumbDragHidden);
 			}
 
-			function fadeStep() {
-				if (currentOpacity < targetOpacty) {
-					/* end */
-					self._setScrollBarsOpacity(currentOpacity);
-					self._touchBarsShown = false;
-					cancelAnimationFrame(animationId);
-					return;
-				}
-
-				if (bDragOnly) {
-					self._setSimpleScrollBarOpacity(currentOpacity);
-				} else {
-					self._setScrollBarsOpacity(currentOpacity);
-				}
-				currentOpacity -= opacityStep ? opacityStep : 0.05;
-
-				/* continue */
-				animationId = requestAnimationFrame(fadeStep);
+			if (this._hBarDrag && this._percentInViewH < 1) {
+				this._hBarDrag
+					.removeClass(this.css.horizontalScrollThumbDragThin)
+					.removeClass(this.css.horizontalScrollThumbDragBig)
+					.addClass(this.css.horizontalScrollThumbDragHidden);
 			}
 
-			if (!animate) {
-				if (bDragOnly) {
-					this._setSimpleScrollBarOpacity(targetOpacty);
-				} else {
-					this._setScrollBarsOpacity(targetOpacty);
-				}
-
-				this._touchBarsShown = false;
-			} else {
-				animationId = requestAnimationFrame(fadeStep);
-			}
+			this._hideScrollbarArrows();
 		},
 
-		_setSimpleScrollBarOpacity: function (newOpacity) {
+		/** Switches from big scrollbar to simple one */
+		_toSimpleScrollbars: function () {
 			if (this._vBarDrag && (this._percentInViewV < 1)) {
 				this._vBarDrag.removeClass(this.css.verticalScrollThumbDragBig)
-								.addClass(this.css.verticalScrollThumbDragThin);
-				this._vBarDrag
-					.css("opacity", newOpacity);
+					.addClass(this.css.verticalScrollThumbDragThin);
 			}
 
 			if (this._hBarDrag && this._percentInViewH < 1) {
 				this._hBarDrag.removeClass(this.css.horizontalScrollThumbDragBig)
-								.addClass(this.css.horizontalScrollThumbDragThin);
-				this._hBarDrag
-					.css("opacity", newOpacity);
+					.addClass(this.css.horizontalScrollThumbDragThin);
 			}
+
+			this._hideScrollbarArrows();
 		},
 
-		/** Sets the desktop scrollbars opacity. */
-		_setScrollBarsOpacity: function (newOpacity) {
-			if (this._vBarDrag && (this._percentInViewV < 1)) {
-				this._vBarDrag.removeClass(this.css.verticalScrollThumbDragThin)
-								.addClass(this.css.verticalScrollThumbDragBig);
-				this._vBarDrag
-					.css("opacity", newOpacity);
-				this._vBarArrowUp.css("opacity", newOpacity);
-				this._vBarArrowDown.css("opacity", newOpacity);
+		_showScrollbarArrows: function() {
+			if (this._vBarDrag && this._percentInViewV < 1) {
+				this._vBarArrowUp.removeClass(this.css.verticalScrollArrowHidden)
+					.addClass(this.css.verticalScrollArrow);
+				this._vBarArrowDown.removeClass(this.css.verticalScrollArrowHidden)
+					.addClass(this.css.verticalScrollArrow);
 			}
 
 			if (this._hBarDrag && this._percentInViewH < 1) {
-				this._hBarDrag.removeClass(this.css.horizontalScrollThumbDragThin)
-								.addClass(this.css.horizontalScrollThumbDragBig);
-				this._hBarDrag
-					.css("opacity", newOpacity);
-				this._hBarArrowLeft.css("opacity", newOpacity);
-				this._hBarArrowRight.css("opacity", newOpacity);
+				this._hBarArrowLeft.removeClass(this.css.horizontalScrollArrowHidden)
+					.addClass(this.css.horizontalScrollArrow);
+				this._hBarArrowRight.removeClass(this.css.horizontalScrollArrowHidden)
+					.addClass(this.css.horizontalScrollArrow);
 			}
 		},
 
-		_toSimpleScrollbar: function () {
-			if (this._vBarDrag && (this._percentInViewV < 1)) {
-				this._vBarDrag.removeClass(this.css.verticalScrollThumbDragBig)
-								.addClass(this.css.verticalScrollThumbDragThin);
-				this._vBarArrowUp.css("opacity", 0);
-				this._vBarArrowDown.css("opacity", 0);
+		_hideScrollbarArrows: function () {
+			if (this._vBarDrag && this._percentInViewV < 1) {
+				this._vBarArrowUp.removeClass(this.css.verticalScrollArrow)
+					.addClass(this.css.verticalScrollArrowHidden);
+				this._vBarArrowDown.removeClass(this.css.verticalScrollArrow)
+					.addClass(this.css.verticalScrollArrowHidden);
 			}
 
 			if (this._hBarDrag && this._percentInViewH < 1) {
-				this._hBarDrag.removeClass(this.css.horizontalScrollThumbDragBig)
-								.addClass(this.css.horizontalScrollThumbDragThin);
-				this._hBarArrowLeft.css("opacity", 0);
-				this._hBarArrowRight.css("opacity", 0);
+				this._hBarArrowLeft.removeClass(this.css.horizontalScrollArrow)
+					.addClass(this.css.horizontalScrollArrowHidden);
+				this._hBarArrowRight.removeClass(this.css.horizontalScrollArrow)
+					.addClass(this.css.horizontalScrollArrowHidden);
 			}
 		},
 
@@ -3788,10 +3760,10 @@
 			clearTimeout(this._hideScrollbarID);
 
 			//Cancel any timeout set to switch to simple scrollbar. Makes sure we don't switch to simple while we still hover over the scrollbars.
-			clearTimeout(this._toSimpleScrollbarID);
-			this._toSimpleScrollbarID = 0;
+			clearTimeout(this._toSimpleScrollbarsID);
+			this._toSimpleScrollbarsID = 0;
 
-			this._showScrollBars(false);
+			this._showScrollbars(false);
 		},
 
 		_onMouseLeaveScrollbarElem: function () {
@@ -3801,13 +3773,13 @@
 			if (!this._bMouseDownV && !this._bMouseDownH) {
 				//Hide scrollbars after 2 secconds. This will be canceled if we go the scrollable content or any other element of the scrollbars by _hideScrollbarID
 				this._hideScrollbarID = setTimeout(function () {
-					self._hideScrollBars(false);
+					self._hideScrollbars();
 				}, 2000);
 
 				//Switch to simple scrollbar (i.e. only drag bar showing with no arrows) after timeout of 2sec
-				this._toSimpleScrollbarID = setTimeout(function () {
-					self._toSimpleScrollbar();
-					self._toSimpleScrollbarID = 0;
+				this._toSimpleScrollbarsID = setTimeout(function () {
+					self._toSimpleScrollbars();
+					self._toSimpleScrollbarsID = 0;
 				}, 2000);
 			}
 		},
@@ -3839,7 +3811,7 @@
 			cancelAnimationFrame(this._touchInertiaAnimID);
 			cancelAnimationFrame(this._showScrollbarsAnimId);
 			clearTimeout(this._hideScrollbarID);
-			clearTimeout(this._toSimpleScrollbarID);
+			clearTimeout(this._toSimpleScrollbarsID);
 			clearTimeout(this._holdTimeoutID);
 
 			if (typeof MutationObserver === "function") {
