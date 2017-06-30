@@ -209,7 +209,7 @@
 	$.ig.util.changeGlobalLanguage = function (language) {
 		$.ig.util.language = language;
 		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
-			$.ig.util.widgetStack[i].changeGlobalLanguage();
+			$.ig.util.widgetStack[ i ].changeGlobalLanguage();
 		}
 	};
 
