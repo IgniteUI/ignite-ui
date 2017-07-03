@@ -42,10 +42,17 @@
 	position: absolute;
 	right: 0px;
 	top: 0px;
+	height: 100%;
 }
 
 .igscroll-vtrack {
+	top: 15px;
+	bottom: 30px;
+	position: absolute;
+}
 
+.igscroll-vtrack-singlescrollbar {
+	bottom: 15px !important;
 }
 
 /* Vertical arrow - general */
@@ -93,6 +100,20 @@
 }
 
 /* Arrow Down */
+.igscroll-downarrow {
+	bottom: 15px;
+	position: absolute;
+}
+
+.igscroll-downarrow-singlescrollbar {
+	bottom: 0px !important;
+}
+
+.igscroll-downarrow-active {
+	bottom: 15px;
+	position: absolute;
+}
+
 .igscroll-downarrow:before {
 	-webkit-transform: rotate(-180deg);
 	-moz-transform: rotate(-180deg);
@@ -146,11 +167,19 @@
 	height: 15px;
 	position: absolute;
 	bottom: 0px;
+	width: 100%;
 }
 
 .igscroll-htrack {
 	height: 15px;
 	float: left;
+	left: 15px;
+	right: 30px;
+	position: absolute;
+}
+
+.igscroll-htrack-singlescrollbar {
+	right: 15px !important;
 }
 
 /* Horizontal arrow - general */
@@ -199,6 +228,20 @@
 }
 
 /* Arrow Right */
+.igscroll-rightarrow {
+	right: 15px;
+	position: absolute;
+}
+
+.igscroll-rightarrow-singlescrollbar {
+	right: 0px !important;
+}
+
+.igscroll-rightarrow-active {
+	right: 15px;
+	position: absolute;
+}
+
 .igscroll-rightarrow:before {
 	-webkit-transform: rotate(90deg);
 	-moz-transform: rotate(90deg);

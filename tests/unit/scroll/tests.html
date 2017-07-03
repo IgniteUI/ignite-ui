@@ -832,8 +832,8 @@
 			var hDragWidth = Math.floor(($('#elemVH').width() - 3 * 15) * ($('#elemVH').width() / elemContent.width()));
 			equal(elemContainer.css("height"), "300px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "500px", "igScroll container did not update it's width");
-			equal(vBarContainer.height(), 300 - 15, "igScroll did not update vertical scrollbar container height");
-			equal(hBarContainer.width(), 500 - 15, "igScroll did not update horizontal scrollbar container width");			
+			equal(vBarContainer.height(), 300, "igScroll did not update vertical scrollbar container height");
+			equal(hBarContainer.width(), 500, "igScroll did not update horizontal scrollbar container width");			
 			ok(300 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 300 - 3 * 15 + 1, "igScroll did not update vertical track height");
 			ok(500 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update horizontal track width");
 			ok(vDragHeight - 1 <= parseInt(vDrag.css("height"), 10) && parseInt(vDrag.css("height"), 10) <= vDragHeight + 1, "igScroll did not update vertical thumb drag height");
@@ -848,8 +848,8 @@
 			hDragWidth = Math.floor(($('#elemVH').width() - 3 * 15) * ($('#elemVH').width() / elemContent.width()));
 			equal(elemContainer.css("height"), "500px", "igScroll container did not update it's height");
 			equal(elemContainer.css("width"), "700px", "igScroll container did not update it's width");
-			equal(vBarContainer.height(), 500 - 15, "igScroll did not update vertical scrollbar container height");
-			equal(hBarContainer.width(), 700 - 15, "igScroll did not update horizontal scrollbar container width");		
+			equal(vBarContainer.height(), 500, "igScroll did not update vertical scrollbar container height");
+			equal(hBarContainer.width(), 700, "igScroll did not update horizontal scrollbar container width");		
 			ok(500 - 3 * 15 - 1 <= parseInt(vTrack.css("height"), 10) && parseInt(vTrack.css("height"), 10) <= 500 - 3 * 15 + 1, "igScroll did not update vertical track height");
 			ok(700 - 3 * 15 - 1 <= parseInt(hTrack.css("width"), 10) && parseInt(hTrack.css("width"), 10) <= 700 - 3 * 15 + 1, "igScroll did not update horizontal track width");
 			ok(vDragHeight - 1 <= parseInt(vDrag.css("height"), 10) && parseInt(vDrag.css("height"), 10) <= vDragHeight + 1, "igScroll did not update vertical thumb drag height");
@@ -3736,7 +3736,7 @@
 			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "400px", "tabindex is the same as the main element");
 			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
 			
 			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
@@ -3747,8 +3747,8 @@
 			equal($("#elemVH").css("width"), "300px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("width"), "300px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
-			equal($(".igscroll-hcontainer").css("width"), "285px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "400px", "tabindex is the same as the main element");
+			equal($(".igscroll-hcontainer").css("width"), "300px", "tabindex is the same as the main element");
 	        $("#elemVH").remove();
 	    });
 		
@@ -3760,7 +3760,7 @@
 			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "400px", "tabindex is the same as the main element");
 			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
 			
 			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
@@ -3771,8 +3771,8 @@
 			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("height"), "600px", "tabindex is the same as the main element");
 			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "585px", "tabindex is the same as the main element");
-			equal($(".igscroll-hcontainer").css("width"), "585px", "tabindex is the same as the main element");
+			equal($(".igscroll-vcontainer").css("height"), "600px", "tabindex is the same as the main element");
+			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
 	        $("#elemVH").remove();
 	    });
 		
