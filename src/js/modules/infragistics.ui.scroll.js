@@ -654,19 +654,15 @@
 			/* Classes applied to the track of the custom vertical scrollbar */
 			verticalScrollTrack: "igscroll-vtrack",
 			/* Classes applied to the track of the custom vertical scrollbar when no horizontal scrollbar is displayed */
-			verticalScrollTrackSingleScrollbar: "igscroll-vtrack-singlescrollbar",
+			verticalScrollTrackSingleScrollbar: "igscroll-vtrack-single",
 			/* Classes applied to the arrows of the custom vertical scrollbar */
 			verticalScrollArrow: "igscroll-varrow",
 			/* Classes applied to the Arrow Up of the custom vertical scrollbar */
 			verticalScrollArrowUp: "igscroll-uparrow",
-			/* Classes applied to the Arrow Up of the custom vertical scrollbar when it is active */
-			verticalScrollArrowUpActive: "igscroll-uparrow-active",
 			/* Classes applied to the Arrow Down of the custom vertical scrollbar */
 			verticalScrollArrowDown: "igscroll-downarrow",
-			/* Classes applied to the Arrow Down of the custom vertical scrollbar when it is active */
-			verticalScrollArrowDownActive: "igscroll-downarrow-active",
 			/* Classes applied to the Arrow Down of the custom vertical scrollbar when the horizontal scrollbar is not visible */
-			verticalScrollArrowDownSingleScrollbar: "igscroll-downarrow-singlescrollbar",
+			verticalScrollArrowDownSingleScrollbar: "igscroll-downarrow-single",
 			/* Classes applied to the thumb drag of the custom vertical scrollbar */
 			verticalScrollThumbDrag: "igscroll-vdrag",
 			/* Classes applied to the thumb drag of the custom vertical scrollbar when it is in thin form */
@@ -678,19 +674,15 @@
 			/* Classes applied to the track of the custom horizontal scrollbar  */
 			horizontalScrollTrack: "igscroll-htrack",
 			/* Classes applied to the track of the custom horizontal scrollbar when no vertical scrollbar is displayed */
-			horizontalScrollTrackSingleScrollbar: "igscroll-htrack-singlescrollbar",
+			horizontalScrollTrackSingleScrollbar: "igscroll-htrack-single",
 			/* Classes applied to the arrows of the custom horizontal scrollbar */
 			horizontalScrollArrow: "igscroll-harrow",
 			/* Classes applied to the Arrow Left of the custom horizontal scrollbar */
 			horizontalScrollArrowLeft: "igscroll-leftarrow",
-			/* Classes applied to the Arrow Left of the custom horizontal scrollbar when it is active */
-			horizontalScrollArrowLeftActive: "igscroll-leftarrow-active",
 			/* Classes applied  to the Arrow Right of the custom horizontal scrollbar */
 			horizontalScrollArrowRight: "igscroll-rightarrow",
-			/* Classes applied to the Arrow Right of the custom horizontal scrollbar when it is active */
-			horizontalScrollArrowRightActive: "igscroll-rightarrow-active",
 			/* Classes applied to the Arrow Right of the custom horizontal scrollbar when the vertical scrollbar is not visible */
-			horizontalScrollArrowRightSingleScrollbar: "igscroll-rightarrow-singlescrollbar",
+			horizontalScrollArrowRightSingleScrollbar: "igscroll-rightarrow-single",
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar */
 			horizontalScrollThumbDrag: "igscroll-hdrag",
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar when it is in thin form */
@@ -2815,9 +2807,6 @@
 			if (bNoCancel) {
 				this._bMouseDownV = true;
 				this._bUseArrowUp = true;
-				this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUp,
-												this.css.verticalScrollArrowUpActive);
-
 				this._scrollTop(curPosY + scrollStep, false);
 
 				var self = this;
@@ -2830,8 +2819,6 @@
 		_onMouseUpArrowUp: function() {
 			this._bMouseDownV = false;
 			this._bUseArrowUp = true; //We later set it to false with mouseup event of window
-			this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUpActive,
-											this.css.verticalScrollArrowUp);
 			clearTimeout(this._holdTimeoutID);
 		},
 
@@ -2867,8 +2854,6 @@
 			if (bNoCancel) {
 				this._bMouseDownV = true;
 				this._bUseArrowDown = true;
-				this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDown,
-												this.css.verticalScrollArrowDownActive);
 
 				this._scrollTop(curPosY + scrollStep, false);
 
@@ -2882,8 +2867,6 @@
 		_onMouseUpArrowDown: function() {
 			this._bMouseDownV = false;
 			this._bUseArrowDown = true; //We later set it to false with mouseup event of window
-			this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDownActive,
-											this.css.verticalScrollArrowDown);
 			clearTimeout(this._holdTimeoutID);
 		},
 
@@ -3035,8 +3018,6 @@
 			/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
 			if (this._bUseArrowUp) {
 				this._bUseArrowUp = false;
-				this._vBarArrowUp
-					.switchClass(this.css.verticalScrollArrowUpActive, this.css.verticalScrollArrowUp);
 
 				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {
@@ -3049,8 +3030,6 @@
 			}
 			if (this._bUseArrowDown) {
 				this._bUseArrowDown = false;
-				this._vBarArrowDown
-					.switchClass(this.css.verticalScrollArrowDownActive, this.css.verticalScrollArrowDown);
 
 				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {
@@ -3303,8 +3282,6 @@
 			if (bNoCancel) {
 				this._bMouseDownH = true;
 				this._bUseArrowLeft = true;
-				this._hBarArrowLeft
-					.switchClass(this.css.horizontalScrollArrowLeft, this.css.horizontalScrollArrowLeftActive);
 
 				this._scrollLeft(curPosX + scrollStep, false);
 
@@ -3318,8 +3295,6 @@
 		_onMouseUpArrowLeft: function () {
 			this._bMouseDownH = false;
 			this._bUseArrowLeft = false;
-			this._hBarArrowLeft
-				.switchClass(this.css.horizontalScrollArrowLeftActive, this.css.horizontalScrollArrowLeft);
 
 			clearTimeout(this._holdTimeoutID);
 
@@ -3363,8 +3338,6 @@
 			if (bNoCancel) {
 				this._bMouseDownH = true;
 				this._bUseArrowRight = true;
-				this._hBarArrowRight
-					.switchClass(this.css.horizontalScrollArrowRight, this.css.horizontalScrollArrowRightActive);
 
 				this._scrollLeft(curPosX + scrollStep, false);
 
@@ -3376,8 +3349,6 @@
 		_onMouseUpArrowRight: function () {
 			this._bMouseDownH = false;
 			this._bUseArrowRight = false;
-			this._hBarArrowRight
-				.switchClass(this.css.horizontalScrollArrowRightActive, this.css.horizontalScrollArrowRight);
 
 			clearTimeout(this._holdTimeoutID);
 
@@ -3536,8 +3507,6 @@
 			/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
 			if (this._bUseArrowLeft) {
 				this._bUseArrowLeft = false;
-				this._hBarArrowLeft
-					.switchClass(this.css.horizontalScrollArrowLeftActive, this.css.horizontalScrollArrowLeft);
 
 				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {
@@ -3550,8 +3519,6 @@
 			}
 			if (this._bUseArrowRight) {
 				this._bUseArrowRight = false;
-				this._hBarArrowRight
-					.switchClass(this.css.horizontalScrollArrowRightActive, this.css.horizontalScrollArrowRight);
 
 				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {

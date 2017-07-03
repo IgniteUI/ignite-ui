@@ -49,10 +49,11 @@
 	top: 15px;
 	bottom: 30px;
 	position: absolute;
+	width: 15px;
 }
 
-.igscroll-vtrack-singlescrollbar {
-	bottom: 15px !important;
+.igscroll-vtrack-single {
+	bottom: 15px;
 }
 
 /* Vertical arrow - general */
@@ -90,7 +91,7 @@
 	transform: rotate(0);
 }		
 
-.igscroll-uparrow-active:before {
+.igscroll-uparrow:active:before {
 	background-image: url('../images/igScroll/up_active.png');
 	-webkit-transform: rotate(0);
 	-moz-transform: rotate(0);
@@ -105,13 +106,8 @@
 	position: absolute;
 }
 
-.igscroll-downarrow-singlescrollbar {
-	bottom: 0px !important;
-}
-
-.igscroll-downarrow-active {
-	bottom: 15px;
-	position: absolute;
+.igscroll-downarrow-single {
+	bottom: 0px;
 }
 
 .igscroll-downarrow:before {
@@ -122,7 +118,7 @@
 	transform: rotate(-180deg);
 }		
 
-.igscroll-downarrow-active:before {
+.igscroll-downarrow:active:before {
 	background-image: url('../images/igScroll/up_active.png');
 	-webkit-transform: rotate(-180deg);
 	-moz-transform: rotate(-180deg);
@@ -178,8 +174,8 @@
 	position: absolute;
 }
 
-.igscroll-htrack-singlescrollbar {
-	right: 15px !important;
+.igscroll-htrack-single {
+	right: 15px;
 }
 
 /* Horizontal arrow - general */
@@ -218,7 +214,7 @@
 	transform: rotate(-90deg);
 }	
 
-.igscroll-leftarrow-active:before {
+.igscroll-leftarrow:active:before {
 	background-image: url('../images/igScroll/up_active.png');
 	-webkit-transform: rotate(-90deg);
 	-moz-transform: rotate(-90deg);
@@ -233,13 +229,8 @@
 	position: absolute;
 }
 
-.igscroll-rightarrow-singlescrollbar {
-	right: 0px !important;
-}
-
-.igscroll-rightarrow-active {
-	right: 15px;
-	position: absolute;
+.igscroll-rightarrow-single {
+	right: 0px;
 }
 
 .igscroll-rightarrow:before {
@@ -250,7 +241,7 @@
 	transform: rotate(90deg);
 }		
 
-.igscroll-rightarrow-active:before {
+.igscroll-rightarrow:active:before {
 	background-image: url('../images/igScroll/up_active.png');
 	-webkit-transform: rotate(90deg);
 	-moz-transform: rotate(90deg);
