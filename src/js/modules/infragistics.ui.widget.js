@@ -37,21 +37,6 @@
 	$.widget("ui.igWidget", {
 		localeWidgetName: null,
 		options: {
-			/* type="object" Set/Get the locale container(jQuery object) for the widget.
-			```
-					//Initialize
-				$(".selector").%%WidgetName%%({
-					localeContainer: $(".selectorLocaleContainer")
-				});
-
-				// Get
-				var locale = $(".selector").%%WidgetName%%("option", "localeContainer");
-
-				// Set
-				$(".selector").%%WidgetName%%("option", "locale", $(".selectorLocaleContainer"));
-			```
-			*/
-			localeContainer: null,
 			/* type="object" Set/Get the locale setting for the widget.
 			```
 					//Initialize
@@ -77,17 +62,17 @@
 				// Get
 				var language = $(".selector").%%WidgetName%%("option", "language");
 
-                // Set
-                $(".selector").%%WidgetName%%("option", "language", "ja");
-            ```
-            */
+				// Set
+				$(".selector").%%WidgetName%%("option", "language", "ja");
+			```
+			*/
 			language: "en",
-            /* type="string|object" Set/Get the regional setting for the widget.
-            ```
-                //Initialize
-                $(".selector").%%WidgetName%%({
-                    regional: "ja"
-                });
+			/* type="string|object" Set/Get the regional setting for the widget.
+			```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					regional: "ja"
+				});
 
 				// Get
 				var regional = $(".selector").%%WidgetName%%("option", "regional");
@@ -145,21 +130,7 @@
 			}
 		},
 		_getLocaleValueFromCollection: function (key, collection) {
-			var value, i, keys;
-			if (!collection) {
-				return "";
-			}
-			if (collection && collection[ key ]) {
-				return collection[ key ];
-			}
-			if (key.indexOf(".") > 0) {
-				keys = key.split(".");
-				value = collection;
-				for (i = 0; i < keys.length; i++) {
-					value = value[ keys[ i ] ];
-				}
-			}
-			return value || "";
+			return !collection ? "" : (collection[ key ] || "");
 		},
 		_getLocaleValue: function (key) {
 			var language = this.options.language,
