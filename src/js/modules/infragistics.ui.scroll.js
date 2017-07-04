@@ -641,10 +641,14 @@
 			scrollContainer: "igscroll-container",
 			/* Classes applied to the outer element of the native vertical scrollbar */
 			nativeVScrollOuter: "igscroll-vnative-outer",
+			/* Classes applied to the outer element of the native vertical scrollbar */
+			nativeVScrollOuterSingle: "igscroll-vnative-outer-single",
 			/* Classes applied to the inner element of the native vertical scrollbar */
 			nativeVScrollInner: "igscroll-vnative-inner",
 			/* Classes applied to the outer element of the native horizontal scrollbar */
 			nativeHScrollOuter: "igscroll-hnative-outer",
+			/* Classes applied to the outer element of the native horizontal scrollbar */
+			nativeHScrollOuterSingle: "igscroll-hnative-outer-single",
 			/* Classes applied to the inner element of the native horizontal scrollbar */
 			nativeHScrollInner: "igscroll-hnative-inner",
 			/* Classes applied to the fill element that cover the area between the scrollbars */
@@ -704,17 +708,9 @@
 			```
 			*/
 
-			//width specific
+			/* Get the width/height and update first the container, because the content width/height might change from that */
 			this._elemWidth = this.element.width();
-			this._contentWidth = this._getContentWidth();
-			this._percentInViewH = this._elemWidth / this._contentWidth;
-			this._isScrollableH = this._percentInViewH < 1;
-
-			//height specific
 			this._elemHeight = this.element.height();
-			this._contentHeight = this._getContentHeight();
-			this._percentInViewV = this._elemHeight / this._contentHeight;
-			this._isScrollableV = this._percentInViewV < 1;
 
 			if (this.options.modifyDOM) {
 				this._container.css({
@@ -722,6 +718,16 @@
 					"height": this._elemHeight + "px"
 				});
 			}
+
+			/* width specific */
+			this._contentWidth = this._getContentWidth();
+			this._percentInViewH = this._elemWidth / this._contentWidth;
+			this._isScrollableH = this._percentInViewH < 1;
+
+			/* height specific */
+			this._contentHeight = this._getContentHeight();
+			this._percentInViewV = this._elemHeight / this._contentHeight;
+			this._isScrollableV = this._percentInViewV < 1;
 
 			this._refreshScrollbars();
 
@@ -1160,24 +1166,18 @@
 			this._elemWidth = this.element.width();
 
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
-				// jscs:disable
 				this._vDragHeight = this._percentInViewV * 100;
-				// jscs:enable
 				this._vBarDrag.css("height", this._vDragHeight + "%");
 			} else if (this.options.scrollbarType === "native" && this._vBarContainer && this._vBarDrag) {
-				this._vBarContainer.css("height", (this._elemHeight - containerSizeOffset) + "px");
-				this._vDragHeight = this._getContentHeight();
+				this._vDragHeight = this._content.height();
 				this._vBarDrag.css("height", this._vDragHeight + "px");
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
-				// jscs:disable
 				this._hDragWidth = this._percentInViewH * 100;
-				// jscs:enable
 				this._hBarDrag.css("width", this._hDragWidth + "%");
 			} else if (this.options.scrollbarType === "native" && this._hBarContainer && this._hBarDrag) {
-				this._hBarContainer.css("width", (this._elemWidth - containerSizeOffset) + "px");
-				this._hDragWidth = this._getContentWidth();
+				this._hDragWidth = this._content.width();
 				this._hBarDrag.css("width", this._hDragWidth + "px");
 			}
 
@@ -2443,10 +2443,8 @@
 
 		_updateScrollBarsVisibility: function () {
 			var bRenderScrollbarV = this._isScrollableV &&
-									!this._vBarContainer &&
 									this._renderVerticalScrollbar,
 				bRenderScrollbarH = this._isScrollableH &&
-									!this._hBarContainer &&
 									this._renderHorizontalScrollbar,
 				bRemoveScrollbarV = (!this._isScrollableV || !this._renderVerticalScrollbar) &&
 									this._vBarContainer,
@@ -2457,32 +2455,29 @@
 			}
 
 			if (this.options.scrollbarType === "native") {
-				if (bRenderScrollbarV) {
+				if (bRenderScrollbarV && !this._vBarContainer) {
 					this._initNativeScrollBarV(bRenderScrollbarH);
 				} else if (bRemoveScrollbarV) {
 					this._removeVerticalScrollbar();
 				}
-				if (bRenderScrollbarH) {
+				if (bRenderScrollbarH && !this._hBarContainer) {
 					this._initNativeScrollBarH(bRenderScrollbarV);
 				} else if (bRemoveScrollbarH) {
 					this._removeHorizontalScrollbar();
 				}
 
-				//In case we no longer have any native scrollbars and we have added padding. Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
-				if (!this._vBarContainer && !this._hBarContainer && this._desktopFiller) {
+				//In case we no longer have both native scrollbars. Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
+				if ((!this._vBarContainer || !this._hBarContainer) && this._desktopFiller) {
 					this._desktopFiller.remove();
 					this._desktopFiller = null;
-					this._content
-						.css("padding-right", "0px")
-						.css("padding-bottom", "0px");
 				}
 			} else if (this.options.scrollbarType === "custom") {
-				if (bRenderScrollbarV) {
+				if (bRenderScrollbarV && !this._vBarContainer) {
 					this._initCustomScrollBarV(bRenderScrollbarH);
 				} else if (bRemoveScrollbarV) {
 					this._removeVerticalScrollbar();
 				}
-				if (bRenderScrollbarH) {
+				if (bRenderScrollbarH && !this._hBarContainer) {
 					this._initCustomScrollBarH(bRenderScrollbarV);
 				} else if (bRemoveScrollbarH) {
 					this._removeHorizontalScrollbar();
@@ -2494,15 +2489,22 @@
 			}
 		},
 
-		_initNativeScrollBarV: function () {
+		_initNativeScrollBarV: function (bRenderScrollbarH) {
 			var css = this.css,
+				nativeScrollSize = $.ig.util.getScrollWidth(),
 				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
 
 			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
-				.addClass(css.nativeVScrollOuter)
-				.css("height", this._elemHeight - containerSizeOffset + "px");
+				.addClass(css.nativeVScrollOuter);
+			/* Use auto sizing by setting only top and bottom absolute positions, without height */
+			if (!bRenderScrollbarH) {
+				this._vBarContainer.addClass(css.nativeVScrollOuterSingle);
+			} else {
+				this._vBarContainer.css("bottom", nativeScrollSize + "px");
+			}
 
-			this._vDragHeight = this._getContentHeight();
+			/* We need the height without the padding, so we have proper scroll position */
+			this._vDragHeight = this._content.height();
 			this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
 				.addClass(css.nativeVScrollInner)
 				.css("height", this._vDragHeight + "px");
@@ -2514,29 +2516,39 @@
 			}
 
 			if ($.ig.util.getScrollHeight() > 0 && this.options.modifyDOM) {
-				this._content.css("padding-right", $.ig.util.getScrollHeight() + "px");
+				this._content.css("padding-right", nativeScrollSize + "px");
 			}
+
+			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
+			if (bRenderScrollbarH && this._bMixedEnvironment && !this._desktopFiller) {
+				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
+					.addClass(css.nativeScrollFiller)
+					.css("height", nativeScrollSize + "px")
+					.css("width", nativeScrollSize + "px");
+				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
+			}
+
 			/* Set the scrollbar position before linking it to the igScroll */
 			this._vBarContainer.scrollTop(this._getContentPositionY());
 			this._setOption("scrollbarV", this._vBarContainer);
-
-			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
-			if (this._bMixedEnvironment && !this._desktopFiller) {
-				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
-					.addClass(css.nativeScrollFiller);
-				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
-			}
 		},
 
-		_initNativeScrollBarH: function () {
+		_initNativeScrollBarH: function (bRenderScrollbarV) {
 			var css = this.css,
+				nativeScrollSize = $.ig.util.getScrollWidth(),
 				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize  : 0;
 
 			this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
-				.addClass(css.nativeHScrollOuter)
-				.css("width", this._elemWidth - containerSizeOffset + "px");
+				.addClass(css.nativeHScrollOuter);
+			/* Use auto sizing by setting only left and right absolute positions, without width */
+			if (!bRenderScrollbarV) {
+				this._hBarContainer.addClass(css.nativeHScrollOuterSingle);
+			} else {
+				this._hBarContainer.css("right", nativeScrollSize + "px")
+			}
 
-			this._hDragWidth = this._getContentWidth();
+			/* We need the width without the padding, so we have proper scroll position */
+			this._hDragWidth = this._content.width();
 			this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
 				.addClass(css.nativeHScrollInner)
 				.css("width", this._hDragWidth + "px");
@@ -2547,21 +2559,22 @@
 				this._hBarContainer.append(this._hBarDrag).appendTo(this._container[ 0 ].parentElement);
 			}
 
-			if ($.ig.util.getScrollWidth() > 0 && this.options.modifyDOM) {
-				this._content.css("padding-bottom", $.ig.util.getScrollWidth() + "px");
-			} else {
-				this._hBarContainer.css("bottom", "18px");
+			if (nativeScrollSize > 0 && this.options.modifyDOM) {
+				this._content.css("padding-bottom", nativeScrollSize + "px");
 			}
+
+			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
+			if (bRenderScrollbarV && this._bMixedEnvironment && !this._desktopFiller) {
+				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
+					.addClass(css.nativeScrollFiller)
+					.css("height", nativeScrollSize + "px")
+					.css("width", nativeScrollSize + "px");
+				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
+			}
+
 			/* Set the scrollbar position before linking it to the igScroll */
 			this._hBarContainer.scrollLeft(this._getContentPositionX());
 			this._setOption("scrollbarH", this._hBarContainer);
-
-			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
-			if (this._bMixedEnvironment && !this._desktopFiller) {
-				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
-					.addClass(css.nativeScrollFiller);
-				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
-			}
 		},
 
 		_removeScrollbars: function() {

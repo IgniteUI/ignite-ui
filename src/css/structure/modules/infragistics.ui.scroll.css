@@ -283,34 +283,42 @@
 *  Native Scrollbars  *
 ***********************/
 .igscroll-vnative-outer {
-	position: relative;
+	position: absolute;
 	float: right;
 	width: 18px;
 	overflow-x: hidden;
 	overflow-y: auto;
+	top: 0;
 	right: 0px;
 }
 
+.igscroll-vnative-outer-single {
+	bottom: 0px;
+}
+
 .igscroll-vnative-inner {
-	width: 17px;
+	width: 1px;
 }
 
 .igscroll-hnative-outer {
-	position: relative;
+	position: absolute;
 	height: 18px;
-	bottom: 2px;
 	overflow-x: auto;
 	overflow-y: hidden;
+	left: 0px;
+	bottom: 0px;
+}
+
+.igscroll-hnative-outer-single {
+	right: 0px;
 }
 
 .igscroll-hnative-inner {
-	height: 17px;
+	height: 1px;
 }
 
 .igscroll-filler {
 	position: absolute;
-	width: 17px;
-	height: 17px;
 	right: 0px;
 	bottom: 0px;
 	background-color: white;
