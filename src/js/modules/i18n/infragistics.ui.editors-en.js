@@ -87,6 +87,6 @@
 		decimalSeparatorEqualsGroupSeparatorErrorMsg: "The groupSeparator and the decimalSeparator options can not have equal values."
 	};
 
-	$.ig.Edtior.locale = $.ig.Edtior.locale || $.ig.locale.en.Editor;
+	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.en.Editor;
 	return $.ig.locale.en.Editor;
 }));// REMOVE_FROM_COMBINED_FILES

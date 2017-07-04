@@ -198,11 +198,13 @@
 			teardown: function() {}
 		});
 			
-		test("Loading correct locales", 1, function () {
-			stop();
+		test("Loading correct locales asyncronously", 3, function ( assert ) {
+			var done = assert.async();
 			require(["../../../src/js/modules/i18n/infragistics.ui.editors-ja"], function (locale) {
 				ok(locale, "The ja locale is not returned correctly by the locale file.");
-				start();
+				ok($.ig.Tree.locale, "The tree locale got overwritten");
+				notEqual(locale.spinUpperTitle, $.ig.Editor.locale.spinUpperTitle, "The default locale got overwritten");
+				done();
 			});
 		});
 	});
