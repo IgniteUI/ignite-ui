@@ -1,0 +1,69 @@
+=====================
+Bootstrao 3 framework
+=====================
+
+
+==== SHARED STYLES ====
+
+*** bootstrap3/_shared-styles/less ***
+This folder contain shared .LESS styles between all jQuery UI related themes, those files are important for all bootstrap3 themes
+
+less/infragistics-igniteui-theme.less - Contain all style for ignite UI components
+less/jquery-ui-structure.less -  Contain all structure styles for jQuery UI components
+less/jquery-ui-theme.less -  Contain all theme styles for jQuery UI components
+less/jquery-ui-overrides.less -  Contain all styles, that are needed, in order to make ignite UI component's to work properly witch jQueryUI components
+
+
+
+==== THEMES ====
+
+*** bootstrap3/themes/ ***
+Contain all theme related to bootstrap 3
+
+- Bootstrap3 Themes:
+1. default
+2. flatly
+3. yeti
+4. superhero
+
+
+
+*** bootstrap3/themes/[Theme name] ***
+
+themes/[Theme name]/images - Contain all images related to the theme (This will be removed after we implement the web font in each theme)
+themes/[Theme name]/infragistics.theme.less - This is the root file for the theme,this file import all partial files in "_shared-styles" + "variables.less" and "mixins.less"
+themes/[Theme name]/variables.less - contain all variables related to Ignite UI components
+themes/[Theme name]/mixins.less - contain all mixins related to Ignite UI components
+
+NOTE: the root file "infragistics.theme.less" is the only file that needs to be compiled to .CSS
+NOTE: The order for the imported files in "infragistics.theme.less" is important! In order the theme to work correctly.
+
+
+
+==== STYLE GUIDES ====
+
+*** bootstrap3/style-guides ***
+This folder holds the style guides for all bootstrap 3 related themes
+
+- how to change the style guide to much the theme you are using
+1. Go to "style-guide/style-guide.less"
+2. Change the path "../[theme-name]/variables" with the pat for your theme variables.
+
+Example: if you are using "SUPERHERO" theme you need to change the path to "../superhero/variables"
+
+
+
+==== ICONS WEB FONT ====
+
+*** css/structure/fonts ***
+hold all files related to icons web font
+
+- in order ot add/remove/change icons form the web font.
+1. Go to icomoon.io/app/ and upload the file "jqurey-ui.svg" located in: C css/structure/fonts
+2. Make the desired modification, download and replace the changed font.
+
+IMPORTANT
+Note: in order the font to work you need to specify the prefix for the icons clsss in  icomoon.io font settings the prefix
+should be "ui-icon-". We change the prefix in order to prevent conflicts with class names.
+
+Note: Keep the name for the font the same in order to override the existing font, otherwise
