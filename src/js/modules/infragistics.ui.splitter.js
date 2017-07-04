@@ -2279,7 +2279,7 @@
                 $(document).unbind(this._getEvent("mouseup"), evtHandlers.documentMouseUp);
                 $(document).unbind(this._getEvent("mousemove"), evtHandlers.documentMouseMove);
                 $(window).unbind("resize", evtHandlers.windowResize);
-                this.super();
+                this._super();
                 this._opt = null;
                 return this;
             }
