@@ -393,12 +393,15 @@ a.ui-iggrid-pagelink, a.ui-iggrid-pagelinkcurrent {line-height: 1.4em;}
 {
     float:right; 
 	margin-top:0;
-} 
+}
+/*
+BUG 237522 - 4.07.2017 - Marin Popov - input in grid don't go to the end of the cell
 .ui-iggrid-filtercell .ui-igedit-container > .ui-igeditor-input-container
 {
     float:left;
 	width:calc(100% - 10px);
-} 
+}
+*/
 .ui-iggrid-filtercell  .ui-igedit-button-common~.ui-igeditor-input-container
 {
     float:left;
