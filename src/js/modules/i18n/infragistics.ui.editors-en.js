@@ -14,7 +14,8 @@
 		return factory();
 	}
 }
-(function ($) {
+(function () {
+	$ = $ || {};
 	$.ig = $.ig || {};
 	$.ig.Editor = $.ig.Editor || {};
 	$.ig.locale = $.ig.locale || {};
