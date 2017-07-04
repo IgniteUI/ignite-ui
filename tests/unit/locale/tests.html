@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" href="../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.tree.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.layout.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.tilemanager.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.splitter.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+    <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+    <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
+
+    <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
+    <script type="text/javascript" src="../../../tests/unit/common/test-util.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.datasource.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.combo.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.datasource-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.combo-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.tree-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.tilemanager-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.splitter-en.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.popover.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.notifier.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.tree.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.layoutmanager.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.tilemanager.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitter.js"></script>
+
+    <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../../bower_components/requirejs/require.js"></script>
+
+	<script type="text/javascript">
+
+	$(function () {
+		requirejs.config({
+			//By default load any module IDs from js/lib
+			//baseUrl: 'js/lib',
+			//except, if the module ID starts with "app",
+			//load it from the js/app directory. paths
+			//config is relative to the baseUrl, and
+			//never includes a ".js" extension since
+			//the paths config could be for a directory.
+			paths: {
+				jquery: '../../../bower_components/jquery/dist/jquery'
+			}
+		});
+
+		var dataSource = [
+			{ ID: 1, Name: "John", IsFemale: false },
+			{ ID: 2, Name: "Mary", IsFemale: true },
+			{ ID: 3, Name: "Bob", IsFemale: false }
+		], results = [{
+			Text: 'Food', Expanded: true, Target: "_blank", Nodes: [
+				{ Text: 'Sandwiches', Nodes: [
+					{ Text: 'Ham & Cheese' }
+				]},
+				{ Text: 'Fish' },
+				{ Text: 'Hamburgers' },
+				{ Text: 'Sishi' },
+				{ Text: 'Steaks' }
+			]},
+			{
+				Text: 'Beverages', Nodes: [
+				{ Text: 'Coke' },
+				{ Text: 'Pepsi' },
+				{ Text: 'Mountain Dew' },
+				{ Text: 'Wine' },
+				{ Text: 'Beer' },
+				{ Text: 'Lemonade' }
+			]},
+			{
+				Text: 'Tech', Nodes: [
+				{ Text: 'Laptops' },
+				{ Text: 'Desktops' },
+				{ Text: 'Tablets' },
+				{ Text: 'Smartphones' },
+				{ Text: 'Mainframes' }
+			]},
+			{
+				Text: 'Literature', Nodes: [
+				{ Text: 'Dostoevsky' },
+				{ Text: 'Vazov' },
+				{ Text: 'Tolstoy' },
+				{ Text: 'Goethe' },
+				{ Text: 'Stainbeck' }
+			]},
+			{
+				Text: 'Accessories', Nodes: [
+				{ Text: 'Mouse' },
+				{ Text: 'Keyboard' },
+				{ Text: 'Microphone' },
+				{ Text: 'Camera' },
+				{ Text: 'Mousepad' }
+			]}
+		];
+
+		// Setup controls
+
+		// Tree
+		$("#combo").igCombo({
+			dataSource: dataSource,
+			textKey: 'Name',
+			valueKey: 'ID',
+			animationShowDuration: 0,
+			animationHideDuration: 0,
+			mode: 'dropdown',
+			multiSelection: {
+				enabled: true
+			}
+		});
+		
+		// Checkbox
+		$("#checkbox").igCheckboxEditor({
+			buttonType: "spin,clear"
+		});
+
+		// Currency
+		$("#currency").igCurrencyEditor({
+			buttonType: "spin,clear"
+		});
+
+		// Date Editor
+		$("#dateeditor").igDateEditor({
+			value: "10/10/2010",
+			buttonType: "clear",
+			validatorOptions: { required: true, notificationOptions: { mode: "popover" } }
+		});
+
+		// Date Picker
+		$("#datepicker").igDatePicker({
+			buttonType: "spin,clear"
+		});
+
+		// Mask Editor
+		$("#mask").igMaskEditor({
+			buttonType: "clear",
+			value: "AAAAAAAA"
+		});
+
+		// Numeric Editor
+		$("#numeric").igNumericEditor({
+			dataMode: "double",
+			buttonType: "spin,clear",
+			maxValue: 80000
+		});
+
+		// Percent Editor
+		$("#percent").igPercentEditor({
+			displayFactor: 1,
+			value: 30,
+			buttonType: "spin,clear",
+			positivePattern: "%(n)"
+		});
+
+		// Text Editor
+		$("#text").igTextEditor({
+			includeKeys: "abc",
+			maxLength: 10,
+			selectionOnFocus: "atStart",
+			listItems: ["item1", "item2"],
+			buttonType: "dropdown,spin,clear",
+			preventSubmitOnEnter: true
+		});
+
+		// Tree
+		$('#tree').igTree({
+			dataSource: results
+		});
+
+		// Tile Manager
+		$('#tilemanager').igTileManager({
+			animationDuration: 0,
+			width: 1000,
+			height: 1000
+		});
+		
+
+		module("Runtime locale changes", {
+			setup: function() {},
+			teardown: function() {}
+		});
+			
+		test("Loading correct locales", 1, function () {
+			stop();
+			require(["../../../src/js/modules/i18n/infragistics.ui.editors-ja"], function (locale) {
+				ok(locale, "The ja locale is not returned correctly by the locale file.");
+				start();
+			});
+		});
+	});
+	
+	</script>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<div style="float:right;width:400px;overflow:auto">
+		<h1 id="qunit-header">Test results</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+	</div>
+    <div id="combo"></div>
+	<div id="text"></div>
+	<input id="numeric" />
+	<input id="checkbox" />
+	<input id="currency" />
+	<span id="dateeditor"></span>
+	<input id="datepicker" />
+	<span id="mask"></span>
+	<ul id="tree"></ul>
+
+	<div id="tilemanager">
+		<div>
+			<div class="minimized"><p>Minimized state text</p></div>
+			<div class="maximized"><img src="../tilemanager/tilemanager/assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+		</div>
+		<div>
+			<div class="minimized"><p>Minimized state text</p></div>
+			<div class="maximized"><img src="../tilemanager/tilemanager/assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+		</div>
+		<div>
+			<div class="minimized"><p>Minimized state text</p></div>
+			<div class="maximized"><img src="../tilemanager/tilemanager/assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+		</div>
+		<div>
+			<div class="minimized"><p>Minimized state text</p></div>
+			<div class="maximized"><img src="../tilemanager/tilemanager/assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+		</div>
+		<div>
+			<div class="minimized"><p>Minimized state text</p></div>
+			<div class="maximized"><img src="../tilemanager/tilemanager/assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+		</div>
+		<div>
+			<div class="minimized"><p>Minimized state text</p></div>
+			<div class="maximized"><img src="../tilemanager/tilemanager/assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+		</div>
+		<div>
+			<div class="minimized"><p>Minimized state text</p></div>
+			<div class="maximized"><img src="../tilemanager/tilemanager/assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+		</div>
+		<div>
+			<div class="minimized"><p>Minimized state text</p></div>
+			<div class="maximized"><img src="../tilemanager/tilemanager/assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+		</div>
+		<div>
+			<div class="minimized"><p>Minimized state text</p></div>
+			<div class="maximized"><img src="../tilemanager/tilemanager/assets/IMG_1556.jpg"><p>Maximized state text</p></div>
+		</div>
+	</div>
+</body>
+</html>
