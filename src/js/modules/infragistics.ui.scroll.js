@@ -801,8 +801,6 @@
 			this._contentWidth = this._content[ 0 ].scrollWidth;
 			this._percentInViewH = this._elemWidth / this._contentWidth;
 			this._percentInViewV = this._elemHeight / this._contentHeight;
-			this._customBarArrowsSize = 15;
-			this._customBarEmptySpaceSize = 15;
 
 			//1 equals 100%
 			this._isScrollableV = this._percentInViewV < 1;
@@ -1161,24 +1159,61 @@
 		},
 
 		_refreshScrollbars: function () {
-			var containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
+			var	css = this.css,
+				nativeScrollSize = $.ig.util.getScrollWidth();
 			this._elemHeight = this.element.height();
 			this._elemWidth = this.element.width();
 
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
 				this._vDragHeight = this._percentInViewV * 100;
 				this._vBarDrag.css("height", this._vDragHeight + "%");
+				/* Update classes if only vertical scrollbar will be visible */
+				if (this._percentInViewH >= 1) {
+					this._vBarTrack.addClass(css.verticalScrollTrackSingleScrollbar);
+					this._vBarArrowDown.addClass(css.verticalScrollArrowDownSingleScrollbar);
+				} else {
+					this._vBarTrack.removeClass(css.verticalScrollTrackSingleScrollbar);
+					this._vBarArrowDown.removeClass(css.verticalScrollArrowDownSingleScrollbar);
+				}
 			} else if (this.options.scrollbarType === "native" && this._vBarContainer && this._vBarDrag) {
 				this._vDragHeight = this._content.height();
 				this._vBarDrag.css("height", this._vDragHeight + "px");
+				/* Update classes if only vertical scrollbar will be visible */
+				if (this._percentInViewH >= 1 &&
+					!this._vBarContainer.hasClass(css.nativeVScrollOuterSingle)) {
+					this._vBarContainer.css("bottom", "");
+					this._vBarContainer.addClass(this.css.nativeVScrollOuterSingle);
+				} else if (this._percentInViewH < 1 &&
+					this._vBarContainer.hasClass(css.nativeVScrollOuterSingle)) {
+					this._vBarContainer.removeClass(css.nativeVScrollOuterSingle);
+					this._vBarContainer.css("bottom", nativeScrollSize + "px");
+				}
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
 				this._hDragWidth = this._percentInViewH * 100;
 				this._hBarDrag.css("width", this._hDragWidth + "%");
+				/* Update classes if only vertical scrollbar will be visible */
+				if (this._percentInViewV >= 1) {
+					this._hBarTrack.addClass(css.horizontalScrollTrackSingleScrollbar);
+					this._hBarArrowRight.addClass(css.horizontalScrollArrowRightSingleScrollbar);
+				} else {
+					this._hBarTrack.removeClass(css.horizontalScrollTrackSingleScrollbar);
+					this._hBarArrowRight.removeClass(css.horizontalScrollArrowRightSingleScrollbar);
+				}
 			} else if (this.options.scrollbarType === "native" && this._hBarContainer && this._hBarDrag) {
 				this._hDragWidth = this._content.width();
 				this._hBarDrag.css("width", this._hDragWidth + "px");
+				/* Update classes if only horozontal scrollbar will be visible */
+				if (this._percentInViewV >= 1 &&
+					!this._hBarContainer.hasClass(css.nativeHScrollOuterSingle)) {
+					this._hBarContainer.css("right", "");
+					this._hBarContainer.addClass(css.nativeHScrollOuterSingle);
+				} else if (this._percentInViewV < 1 &&
+					this._hBarContainer.hasClass(css.nativeHScrollOuterSingle)) {
+					this._hBarContainer.removeClass(css.nativeHScrollOuterSingle);
+					this._hBarContainer.css("right", nativeScrollSize + "px");
+				}
 			}
 
 			this._updateScrollBarsVisibility();
@@ -2491,8 +2526,7 @@
 
 		_initNativeScrollBarV: function (bRenderScrollbarH) {
 			var css = this.css,
-				nativeScrollSize = $.ig.util.getScrollWidth(),
-				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
+				nativeScrollSize = $.ig.util.getScrollWidth();
 
 			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
 				.addClass(css.nativeVScrollOuter);
@@ -2535,8 +2569,7 @@
 
 		_initNativeScrollBarH: function (bRenderScrollbarV) {
 			var css = this.css,
-				nativeScrollSize = $.ig.util.getScrollWidth(),
-				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize  : 0;
+				nativeScrollSize = $.ig.util.getScrollWidth();
 
 			this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
 				.addClass(css.nativeHScrollOuter);
@@ -2544,7 +2577,7 @@
 			if (!bRenderScrollbarV) {
 				this._hBarContainer.addClass(css.nativeHScrollOuterSingle);
 			} else {
-				this._hBarContainer.css("right", nativeScrollSize + "px")
+				this._hBarContainer.css("right", nativeScrollSize + "px");
 			}
 
 			/* We need the width without the padding, so we have proper scroll position */
