@@ -9,20 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
 (function ($) {
+	$ = $ || {};
     $.ig = $.ig || {};
-
-	    $.ig.Tree = {};
-
-	    $.extend($.ig.Tree, {
-		    locale: {
+	$.ig.Tree = $.ig.Tree || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
+	
+	$.ig.locale.ja.Tree = {
 			    invalidArgumentType: '提供された引数のタイプは無効です。',
 			    errorOnRequest: 'データを取得するときにエラーが発生しました: ',
 			    noDataSourceUrl: 'igTree コントロールは、その URL にデータの要求を送信するために dataSourceUrl を提供する必要があります。',
@@ -38,10 +37,8 @@
 			    copyAfter: '{0} <strong>の後へコピー</strong>',
 			    copyBefore: '{0} <strong>の前へコピー</strong>',
 			    and: 'および'
-		    }
-	    });
+	}
 
-		$.ig.locale = $.ig.locale || {};
-		$.ig.locale.ja = $.ig.locale.ja || {};
-		$.ig.locale.ja.Tree = $.extend({}, $.ig.Tree.locale);
+	$.ig.Tree.locale = $.ig.Tree.locale || $.ig.locale.ja.Tree;
+	return $.ig.locale.ja.Tree;
 }));// REMOVE_FROM_COMBINED_FILES
