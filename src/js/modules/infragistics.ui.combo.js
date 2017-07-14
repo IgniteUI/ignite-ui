@@ -6010,6 +6010,8 @@
                 returnType="object" Returns reference to this combo.
 			*/
             this._updateInputValues(true);
+
+            return this;
         },
         dataForValue: function (value) {
             /* Gets the associated data of an item by value matching it's [valueKey](ui.igcombo#options:valueKey) property.
@@ -6949,6 +6951,8 @@
                 // K.D. September 8th, 2015 Bug #205881 Clear button is not shown after setting custom value through API.
                 this._showClearButton();
             }
+
+            return this;
         },
         select: function ($items, options, event) {
             /* Selects a list item from the drop-down list.
@@ -7486,7 +7490,6 @@
             ```
                 $(".selector").igCombo("positionDropDown");
             ```
-                returnType="object" Returns reference to this combo.
             */
             var comboOffset, width,
                 _options = this._options,
