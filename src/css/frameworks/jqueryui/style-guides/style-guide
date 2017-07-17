@@ -1,4 +1,4 @@
-@import "../themes/infragistics/variables";
+@import "../themes/ios/variables";
 
 // STYLES NOT RELATED TO THE STYLE GUIDE
 body {

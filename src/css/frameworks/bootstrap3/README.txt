@@ -1,26 +1,27 @@
 =====================
-Bootstrao 3 framework
+Bootstrap 3 framework
 =====================
-
 
 ==== SHARED STYLES ====
 
 *** bootstrap3/_shared-styles/less ***
-This folder contain shared .LESS styles between all jQuery UI related themes, those files are important for all bootstrap3 themes
+This folder contain shared .SCSS styles between all bootstrap4 related themes, those files are important for all bootstrap3 themes
 
-less/infragistics-igniteui-theme.less - Contain all style for ignite UI components
+less/icons-styles.less - Contain all style for webfont icons
+
 less/jquery-ui-structure.less -  Contain all structure styles for jQuery UI components
-less/jquery-ui-theme.less -  Contain all theme styles for jQuery UI components
-less/jquery-ui-overrides.less -  Contain all styles, that are needed, in order to make ignite UI component's to work properly witch jQueryUI components
 
+less/jquery-ui-theme.less -  Contain all theme styles for jQuery UI components
+
+less/jquery-ui-overrides.less -  Contain all styles, that are needed, in order to make ignite UI component's to work properly witch jQueryUI components.
 
 
 ==== THEMES ====
 
 *** bootstrap3/themes/ ***
-Contain all theme related to bootstrap 3
+Contain all theme related to Bootstrap 3 framework
 
-- Bootstrap3 Themes:
+- Bootstrap 3 Themes:
 1. default
 2. flatly
 3. yeti
@@ -31,19 +32,29 @@ Contain all theme related to bootstrap 3
 *** bootstrap3/themes/[Theme name] ***
 
 themes/[Theme name]/images - Contain all images related to the theme (This will be removed after we implement the web font in each theme)
-themes/[Theme name]/infragistics.theme.less - This is the root file for the theme,this file import all partial files in "_shared-styles" + "variables.less" and "mixins.less"
+
+themes/[Theme name]/infragistics.theme.less - This is the root file which import all partial files to form the theme
+
+themes/[Theme name]/infragistics-ignite-ui-controls - Contain all theme styles related to ignite ui controls
+
+themes/[Theme name]/jquery-ui-theme.less -  Contain all theme styles for jQuery UI components
+
+themes/[Theme name]/jquery-ui-overrides.less -  Contain all styles, that are needed, in order to make ignite UI component's to work properly witch jQueryUI components.
+
 themes/[Theme name]/variables.less - contain all variables related to Ignite UI components
+
 themes/[Theme name]/mixins.less - contain all mixins related to Ignite UI components
 
-NOTE: the root file "infragistics.theme.less" is the only file that needs to be compiled to .CSS
-NOTE: The order for the imported files in "infragistics.theme.less" is important! In order the theme to work correctly.
+
+NOTE: the root file "infragistics-theme-less" is the only file that needs to be compiled to .CSS
+NOTE: The order for the imported files inside "infragistics.theme.less" is important! In order the theme to work correctly.
 
 
 
 ==== STYLE GUIDES ====
 
 *** bootstrap3/style-guides ***
-This folder holds the style guides for all bootstrap 3 related themes
+This folder holds the style guides for all jQuery UI related themes
 
 - how to change the style guide to much the theme you are using
 1. Go to "style-guide/style-guide.less"
@@ -63,7 +74,7 @@ hold all files related to icons web font
 2. Make the desired modification, download and replace the changed font.
 
 IMPORTANT
-Note: in order the font to work you need to specify the prefix for the icons clsss in  icomoon.io font settings the prefix
+Note: in order the font to work you need to specify the prefix for the icons clsss. In "icomoon.io", font settings the prefix
 should be "ui-icon-". We change the prefix in order to prevent conflicts with class names.
 
-Note: Keep the name for the font the same in order to override the existing font, otherwise
+Note: Keep the name for the font the same in order to override the existing font

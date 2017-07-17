@@ -50,24 +50,12 @@
   .stateNormal;
 }
 
-.ui-state-default a,
-.ui-state-default a:link,
-.ui-state-default a:visited {
-  color: #ffffff;
-}
-
-
 // Hover state
 .ui-state-hover,
 .ui-widget-content .ui-state-hover,
 .ui-widget-header .ui-state-hover {
   background: @igGray10;
   color: #fff;
-}
-
-.ui-state-hover a,
-.ui-state-hover a:hover {
-  color: #ffffff;
 }
 
 // Focus state
@@ -161,25 +149,26 @@
 
 .ui-widget-header.ui-state-active {
   background: @accent1;
-  color: #ffffff;
+  color: @text-color;
   font-weight: normal;
 }
 
 .ui-widget-header.ui-state-hover {
-  background: @igGray10;
-  color: #ffffff;
+  background: @accent1;
+  color: @text-color;
   font-weight: normal;
 }
 
 .ui-widget-header.ui-state-default a,
-.ui-widget-header.ui-state-active a,
 .ui-widget-header.ui-state-hover a {
-  color: #ffffff;
+  color: @text-color;
   font-weight: normal;
   border: 0;
 }
 
-
+.ui-widget-header.ui-state-active a {
+  color: #FFF;
+}
 
 // Priority
 .ui-priority-primary,

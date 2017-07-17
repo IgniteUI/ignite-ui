@@ -5,7 +5,7 @@ This folder contains all styles related to ignite UI & jquery UI components
 
 styles/structure
 - in this folder you can find all styles related to ignite UI components structure (widths,heights,margins,paddings.etc).
-The files in that folder are very important, otherwise ignite UI controls NOT work correctly.
+The files in that folder are very important, otherwise ignite UI controls will NOT work correctly.
 
 NOTE: The structure files are NOT related to any framework!
 

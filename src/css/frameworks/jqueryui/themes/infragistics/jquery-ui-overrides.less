@@ -1,21 +1,23 @@
-/* jQueryUI Structure
-----------------------------------*/
-@import "jquery-ui-structure.less";
+/*
+
+  List with Overwritten components
+
+  1. jQuery UI Accordion
+  2. jQuery UI Auto complete
+  3. jQuery UI Menu
+  4. jQuery UI Dialog
+  5. jQuery UI Slider
+  6. jQuery UI Tabs
+  7. jQuery UI Date picker
+  8. jQuery UI Progressbar
+  9. jQuery UI Spinner
+
+*/
 
 
-
-/* jQuery UI CSS theme */
-/* Component containers
-----------------------------------*/
-@import "jqueryui.theme.less";
-
-
-
-/* jQuery UI Overrides
-----------------------------------*/
-
-
-//// jQuery UI Accordion Overrides ////
+/**********************
+* jQuery UI Accordion *
+**********************/
 
 .ui-accordion .ui-accordion-content {
   background: @body-bg;
@@ -32,7 +34,10 @@
 
 
 
-//// jQuery UI Autocomplete Overrides ////
+
+/*************************
+* jQuery UI Auto complete *
+**************************/
 
 .ui-autocomplete {
   background: @dropdown-bg;
@@ -44,7 +49,9 @@
 
 
 
-//// jQuery UI Menu Overrides ////
+/*****************
+* jQuery UI Menu *
+******************/
 
 .ui-menu {
   background: @dropdown-bg;
@@ -65,7 +72,9 @@
 
 
 
-//// jQuery UI Dialog Overrides ////
+/*******************
+* jQuery UI Dialog *
+********************/
 
 .ui-dialog,
 .ui-dialog.ui-igdialog {
@@ -96,7 +105,9 @@
 
 
 
-//// jQuery UI Slider Overrides ////
+/*******************
+* jQuery UI Slider *
+********************/
 
 .ui-slider {
   border-color: @igGray3;
@@ -138,7 +149,9 @@
 
 
 
-//// jQuery UI Tabs Overrides ////
+/*****************
+* jQuery UI Tabs *
+******************/
 
 .ui-tabs {
   background: #FFFFFF;
@@ -181,7 +194,9 @@
 
 
 
-//// jQuery UI Datepicker Overrides ////
+/************************
+* jQuery UI Date picker *
+*************************/
 
 .ui-datepicker {
   background: @body-bg;
@@ -249,7 +264,23 @@
 
 
 
-//// jQuery UI Spinner Overrides ////
+/************************
+* jQuery UI Progressbar *
+************************/
+.ui-progressbar {
+  height: 13px;
+  background: @igGray3;
+}
+
+.ui-progressbar .ui-progressbar-value {
+  background: @accent2;
+}
+
+
+
+/***********************
+* jQuery UI Spinner *
+***********************/
 
 .touch .ui-spinner-button,
 .touchevents .ui-spinner-button,
@@ -265,13 +296,3 @@
 
 
 
-//// jQuery UI Progressbar Overrides ////
-
-.ui-progressbar {
-  height: 13px;
-  background: @igGray3;
-}
-
-.ui-progressbar .ui-progressbar-value {
-  background: @accent2;
-}

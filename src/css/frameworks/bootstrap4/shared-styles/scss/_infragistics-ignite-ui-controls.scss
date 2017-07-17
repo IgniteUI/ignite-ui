@@ -6,6 +6,9 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 /***********************************/
 /* Infragistics Ignite UI Controls */
 /***********************************/
+
+
+
 /************/
 /* igDialog */
 /************/
@@ -13,10 +16,11 @@ Planned revisions concerning navbar & panels (new navbar and cards instead of pa
 .ui-igdialog-footer {
     @include stateNormal;
 }
+
+
 /**********/
 /* igGrid */
 /**********/
-
 .ui-iggrid table tbody td,
 .ui-iggrid .ui-iggrid-header,
 .ui-iggrid table th {
