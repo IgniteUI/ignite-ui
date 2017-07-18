@@ -33,6 +33,7 @@
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-ja.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.tilemanager-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.splitter-en.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>
@@ -198,14 +199,16 @@
 			teardown: function() {}
 		});
 			
-		test("Loading correct locales asyncronously", 3, function ( assert ) {
-			var done = assert.async();
-			require(["../../../src/js/modules/i18n/infragistics.ui.editors-ja"], function (locale) {
-				ok(locale, "The ja locale is not returned correctly by the locale file.");
-				ok($.ig.Tree.locale, "The tree locale got overwritten");
-				notEqual(locale.spinUpperTitle, $.ig.Editor.locale.spinUpperTitle, "The default locale got overwritten");
-				done();
-			});
+		test("Loading correct locales asyncronously", 6, function ( assert ) {
+			var locale = $.ig.locale.ja.Editor;
+			ok(locale, "The ja locale is not loaded.");
+			ok($.ig.Tree.locale, "The tree locale got overwritten");
+			notEqual(locale.spinUpperTitle, $.ig.Editor.locale.spinUpperTitle, "The default locale got overwritten");
+			equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), $.ig.Editor.locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
+			$("#datepicker").igDatePicker("option", "language", "ja");
+			equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), locale.spinUpperTitle, "_getLocaleValue returned wrong after setting language for the Date Picker");
+			var dropDownButton = $("#datepicker").data("igDatePicker")._dropDownButton;
+			equal(dropDownButton.attr("title"), locale.datePickerButtonTitle, "The title attribute should be: " + locale.buttonTitle);
 		});
 	});
 	

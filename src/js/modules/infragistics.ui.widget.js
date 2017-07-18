@@ -36,6 +36,7 @@
 	*/
 	$.widget("ui.igWidget", {
 		localeWidgetName: null,
+		localeContainer: null,
 		options: {
 			/* type="object" Set/Get the locale setting for the widget.
 			```
@@ -156,9 +157,8 @@
 		_changeRegional: $.noop,
 		changeLocale: function ($container) {
 			var self = this;
-			$container = $container || this.options.localeContainer || this.element;
-			this._changeLocaleForElement($container);
-			$container.find("[data-localeid]").each(function () {
+			$container = $container || this.localeContainer || this.element;
+			$container.find("[data-localeid]").addBack("[data-localeid]").each(function () {
 				self._changeLocaleForElement($(this));
 			});
 		},
