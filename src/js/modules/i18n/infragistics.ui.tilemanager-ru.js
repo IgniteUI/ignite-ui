@@ -9,9 +9,11 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [], factory );
+		define( [
+			"jquery"
+		], factory );
 	} else {
-		return factory();
+		return factory(jQuery);
 	}
 }
 (function ($) {
