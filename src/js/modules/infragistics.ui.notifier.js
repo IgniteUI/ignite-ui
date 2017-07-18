@@ -9,7 +9,7 @@
 *  jquery-1.9.1.js
 *  jquery.ui.core.js
 *  jquery.ui.widget.js
-*	infragistics.util.js
+*  infragistics.util.js
 *  infragistics.util.jquery.js
 *  infragistics.ui.popover.js
 */
@@ -383,19 +383,25 @@
 		_createWidget: function (options/*, element*/) {
 			// ensure localized defaults
 			var messageDefaults = {
-				success: $.ig.Notifier && $.ig.Notifier.locale ? $.ig.Notifier.locale.successMsg : "Success",
-				info: "",
-				warning: $.ig.Notifier && $.ig.Notifier.locale ? $.ig.Notifier.locale.warningMsg : "Warning",
-				error: $.ig.Notifier && $.ig.Notifier.locale ? $.ig.Notifier.locale.errorMsg : "Error"
+				success: this._getLocaleValue("successMsg") || "Success",
+				info: this._getLocaleValue("infoMsg") || "Information",
+				warning: this._getLocaleValue("warningMsg") || "Warning",
+				error: this._getLocaleValue("errorMsg") || "Error"
 			};
 			this.options.messages = $.extend(messageDefaults, (options && options.messages) || {});
 			$.ui.igPopover.prototype._createWidget.apply(this, arguments);
 		},
+		changeLocale: function() {
+			var msgElement = this.contentInner; 
+			this._changeLocaleForElement(msgElement);
+		},
+		_getMessageByState: function (state) {
+			//this.options.messages[ value ]
+		},
 		_setState: function (value, message/*, fireEvents*/) {
 			if ($.inArray(value, this._states) === -1) {
-				throw new Error($.ig.Notifier.locale.notSupportedState);
+				throw new Error(this._getLocaleValue("notSupportedState"));
 			}
-
 			//TODO:
 			/*var args, noCancel, val = this.getContent(), self = this, contentFunc;
 			args = {
@@ -413,7 +419,11 @@
 				this._currentText = message;
 			}
 			if (this.options.state !== value) {
-				this._currentText = message !== undefined ? this._currentText : this.options.messages[ value ];
+				if (message === undefined) {
+					this._currentText = this._getMessageByState(value);
+				} else {
+					this.contentInner.removeAttr("data-localeid");
+				}
 				this._previousState = this.options.state;
 				this.options.state = value;
 				if (this._visible) {
@@ -494,7 +504,7 @@
 		},
 		_setMode: function (value, force) {
 			if ($.inArray(value, this._modes) === -1) {
-				throw new Error($.ig.Notifier.locale.notSupportedMode);
+				throw new Error(this._getLocaleValue("notSupportedMode"));
 			}
 			if (this.options.mode !== value || force) {
 				// cleanup current popover
@@ -556,9 +566,24 @@
 			} else {
 				$.ui.igPopover.prototype._renderPopover.apply(this, arguments);
 			}
-
+			var id;
+			switch(this.options.state) {
+				case "success":
+					id = "successMsg";
+					break;
+				case "error":
+					id = "errorMsg";
+					break;
+				case "warning":
+					id = "warningMsg";
+					break;
+				default:
+					id = "infoMsg";
+			}
+			this.contentInner
+				.addClass(this.css.contentInner)
+				.attr("data-localeid", id);
 			this._setState(this.options.state);
-			this.contentInner.addClass(this.css.contentInner);
 		},
 		_openPopover: function (/*trg, skipEvents*/) {
 			var initialState = this._visible;
