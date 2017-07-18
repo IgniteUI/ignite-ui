@@ -46,24 +46,10 @@
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitter.js"></script>
 
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
-	<script type="text/javascript" src="../../../bower_components/requirejs/require.js"></script>
 
 	<script type="text/javascript">
 
 	$(function () {
-		requirejs.config({
-			//By default load any module IDs from js/lib
-			//baseUrl: 'js/lib',
-			//except, if the module ID starts with "app",
-			//load it from the js/app directory. paths
-			//config is relative to the baseUrl, and
-			//never includes a ".js" extension since
-			//the paths config could be for a directory.
-			paths: {
-				jquery: '../../../bower_components/jquery/dist/jquery'
-			}
-		});
-
 		var dataSource = [
 			{ ID: 1, Name: "John", IsFemale: false },
 			{ ID: 2, Name: "Mary", IsFemale: true },
