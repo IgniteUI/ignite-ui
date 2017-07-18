@@ -17,8 +17,7 @@
 	}
 }
 (function ($) {
-$.ig = $.ig || {};
-
+	$.ig = $.ig || {};
 	$.ig.TileManager = {};
 
 	$.extend($.ig.TileManager, {
