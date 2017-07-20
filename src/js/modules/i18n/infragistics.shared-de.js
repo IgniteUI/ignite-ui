@@ -18,16 +18,12 @@
 }
 (function ($) {
 $.ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
+	$.ig.SharedLocale = $.ig.SharedLocale || {};
+	
+	$.ig.locale.de.SharedLocale = {
 
-if (!$.ig.SharedLocale) {
-	$.ig.SharedLocale = {};
-
-	$.extend($.ig.SharedLocale, {
-
-		locale: {
-		    
-		}
-	});
-
-}
+	};
+$.ig.SharedLocale.locale = $.ig.SharedLocale.locale || $.ig.locale.de.SharedLocale;
 }));// REMOVE_FROM_COMBINED_FILES

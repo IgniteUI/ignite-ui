@@ -17,18 +17,15 @@
 	}
 }
 (function ($) {
-$.ig = $.ig || {};
-
-$.ig.Popover = {};
-
-$.extend( $.ig.Popover, {
-	locale: {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.es = $.ig.locale.es || {};
+	$.ig.Popover = $.ig.Popover || {};
+	
+	$.ig.locale.es.Popover = {
 		popoverOptionChangeNotSupported: "No se admite el cambio de la siguiente opción después de inicializar igPopover:",
 		popoverShowMethodWithoutTarget: "El parámetro target de la función show es obligatorio cuando se utiliza la opción selectors"
-	}
-});
+	};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.es = $.ig.locale.es || {};
-$.ig.locale.es.Popover = $.extend({}, $.ig.Popover.locale);
+$.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale.es.Popover;
 }));// REMOVE_FROM_COMBINED_FILES

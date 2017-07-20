@@ -17,10 +17,12 @@
 	}
 }
 (function ($) {
-    $.ig = $.ig || {};
-
-	$.ig.Combo = {
-		locale: {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	$.ig.Combo = $.ig.Combo || {};
+	
+	$.ig.locale.bg.Combo = {
 			noMatchFoundText: 'Няма намерени резултати',
 			dropDownButtonTitle: 'Покажи падащото меню',
 			clearButtonTitle: 'Изчисти стойността',
@@ -29,10 +31,7 @@
 			errorNoSupportedTextsType: "Необходим е различен филтър текст. Подайте стойност, която е или низ или масив от низове.",
 			errorUnrecognizedHighlightMatchesMode: 'Необходим е друг highlight matches режим.  Изберете стойност измежду "multi", "contains", "startsWith", "full" и "null".',
 			errorIncorrectGroupingKey: "Ключът за групиране не е правилен."
-		}
 	};
 	
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.bg = $.ig.locale.bg || {};
-	$.ig.locale.bg.Combo = $.extend({}, $.ig.Combo.locale);
+	$.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale.bg.Combo;
 }));// REMOVE_FROM_COMBINED_FILES

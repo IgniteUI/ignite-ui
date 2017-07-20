@@ -17,13 +17,12 @@
 	}
 }
 (function ($) {
-$.ig = $.ig || {};
-
-$.ig.HtmlEditor = {};
-
-$.extend($.ig.HtmlEditor, {
-
-	locale: {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.fr = $.ig.locale.fr || {};
+	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
+	
+	$.ig.locale.fr.HtmlEditor = {
 		boldButtonTitle: 'Gras',
 		italicButtonTitle: 'Italique',
 		underlineButtonTitle: 'Souligné',
@@ -134,11 +133,7 @@ $.extend($.ig.HtmlEditor, {
 				{ text: "h6", value: "En-tête 6" },
 				{ text: "p", value: "Normal" }
 			]
-	}
+};
 
-});
-
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.fr = $.ig.locale.fr || {};
-$.ig.locale.fr.HtmlEditor = $.extend({}, $.ig.HtmlEditor.locale);
+$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.fr.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

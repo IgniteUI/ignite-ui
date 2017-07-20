@@ -18,12 +18,11 @@
 }
 (function ($) {
     $.ig = $.ig || {};
-
-	$.ig.DataSourceLocale = {};
-
-	$.extend($.ig.DataSourceLocale, {
-
-		locale: {
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.fr = $.ig.locale.fr || {};
+	$.ig.DataSourceLocale = $.ig.DataSourceLocale || {};
+	
+	$.ig.locale.fr.DataSourceLocale = {
 			invalidDataSource: "La source de données fournie est invalide. Il s'agit d'un scalaire.",
 			unknownDataSource: "Impossible de déterminer le type de source de données. Veuillez préciser s'il s'agit de données JSON ou XML.",
 			errorParsingArrays: "Une erreur s'est produite lors de l'analyse syntaxique des données de tableaux  et de l'application du schéma de données défini : ",
@@ -49,10 +48,7 @@
 			filteringNoSchema: "Aucun schéma/champ spécifié. Spécifiez un schéma avec des définitions et types de champs pour pouvoir filtrer la source de données.",
 			noSaveChanges: "Échec de l’enregistrement des modifications. Le serveur n’a pas renvoyé l’objet Success ou a renvoyé Success:false.",
 			errorUnexpectedCustomFilterFunction: "Une valeur inattendue a été fournie pour une fonction de filtre personnalisé. Une fonction ou une chaîne est attendue."
-		}
-	});
+	};
 	
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.fr = $.ig.locale.fr || {};
-	$.ig.locale.fr.DataSourceLocale = $.extend({}, $.ig.DataSourceLocale.locale);
+	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale.fr.DataSourceLocale;
 }));// REMOVE_FROM_COMBINED_FILES

@@ -17,9 +17,10 @@
 	}
 }
 (function($) {
-$.ig = $.ig || {};
+	ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.Notifier = $.ig.Notifier || {};
 	
 	$.ig.locale.en.Notifier = {
 		successMsg: "Success",
@@ -28,8 +29,7 @@ $.ig = $.ig || {};
 		infoMsg: "Information",
 		notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
 		notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
-	}
-});
+};
 
 $.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.en.Notifier;
 }));// REMOVE_FROM_COMBINED_FILES

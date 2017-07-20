@@ -17,13 +17,12 @@
 	}
 }
 (function ($) {
-$.ig = $.ig || {};
-
-$.ig.HtmlEditor = {};
-
-$.extend($.ig.HtmlEditor, {
-
-	locale: {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
+	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
+	
+	$.ig.locale.ru.HtmlEditor = {
 		boldButtonTitle: 'Жирность',
 		italicButtonTitle: 'Наклон',
 		underlineButtonTitle: 'Подчеркивание',
@@ -134,11 +133,7 @@ $.extend($.ig.HtmlEditor, {
 				{ text: "h6", value: "Заголовок 6" },
 				{ text: "p", value: "Обычный" }
 			]
-	}
+};
 
-});
-
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.ru = $.ig.locale.ru || {};
-$.ig.locale.ru.HtmlEditor = $.extend({}, $.ig.HtmlEditor.locale);
+$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.ru.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

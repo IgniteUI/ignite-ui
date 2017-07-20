@@ -18,11 +18,11 @@
 }
 (function ($) {
     $.ig = $.ig || {};
-
-	$.ig.DataSourceLocale = {};
-
-	$.extend($.ig.DataSourceLocale, {
-		locale: {
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
+	$.ig.DataSourceLocale = $.ig.DataSourceLocale || {};
+	
+	$.ig.locale.ja.DataSourceLocale = {
 			invalidDataSource: "指定したデータ ソースは無効です。スカラーです。",
 			unknownDataSource: "データ ソース型を決定できません。JSON または XML データであるかどうかを指定してください。",
 			errorParsingArrays: "配列データを解析して定義したデータ スキーマを適用したときにエラーが発生しました。 ",
@@ -48,10 +48,7 @@
 			filteringNoSchema: "スキーマまたはフィールドが指定されていません。データ ソースをフィルターするには、フィールド定義および型を含むスキーマを指定する必要があります。",
 			noSaveChanges: "変更の保存に失敗しました。サーバーが Success オブジェクトを返さなかったか Success:false を返しました。",
 			errorUnexpectedCustomFilterFunction: "カスタム フィルター関数で予期しない値が提供されました。関数または文字列が必要です。"
-		}
-	});
+	};
 	
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ja = $.ig.locale.ja || {};
-	$.ig.locale.ja.DataSourceLocale = $.extend({}, $.ig.DataSourceLocale.locale);
+	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale.ja.DataSourceLocale;
 }));// REMOVE_FROM_COMBINED_FILES

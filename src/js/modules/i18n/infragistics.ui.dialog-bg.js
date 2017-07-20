@@ -17,10 +17,12 @@
 	}
 }
 (function ($) {
-    $.ig = $.ig || {};
-
-	$.ig.Dialog = {
-		locale: {
+    ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	$.ig.Dialog = $.ig.Dialog || {};
+	
+	$.ig.locale.bg.Dialog = {
 			closeButtonTitle: "Затвори",
 			minimizeButtonTitle: "Минимизирай",
 			maximizeButtonTitle: "Максимизирай",
@@ -28,10 +30,7 @@
 			unpinButtonTitle: "Откачи",
 			restoreButtonTitle: "Възстанови",
 			setOptionError: 'Тази опцията не може да бъде настроена по време на изпълнение.'
-		}
 	};
 
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.bg = $.ig.locale.bg || {};
-	$.ig.locale.bg.Dialog = $.extend({}, $.ig.Dialog.locale);
+	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.bg.Dialog;
 }));// REMOVE_FROM_COMBINED_FILES

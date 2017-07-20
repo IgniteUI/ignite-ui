@@ -146,87 +146,6 @@
 				```
 			*/
 			allowCSSOnTarget: true,
-			/* type="object" A set of default messages for each state
-				```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						success:"Well done!",
-						info: "Info about the input status.",
-						warning: "Warning",
-						error: "Error"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {success: "Well done!"});
-				```
-			*/
-			messages: {
-				/*```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						success:"Well done!"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {success: "Well done!"});
-				```*/
-				success: "Success",
-				/*```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						info: "Info"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {info: "Info"});
-				```*/
-				info: "",
-				/*```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						warning: "Warning"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {warning: "Warning"});
-				```*/
-				warning: "Warning",
-				/*```
-				//Initialize
-				$(".selector").igNotifier({
-					messages: {
-						error: "Error"
-					}
-				});
-
-				//Get
-				var messages = $(".selector").igNotifier("option", "messages");
-
-				//Set
-				$(".selector").igNotifier("option", "messages", {error: "Something went wrong!"});
-				```*/
-				error:  "Error"
-			},
 			/* type="bool" Allows rendering a span with the respective state CSS to display jQuery UI framework icons
 				```
 				//Initialize
@@ -378,31 +297,20 @@
 
 			this._states = [ "success", "info", "warning", "error" ];
 			this._modes = [ "auto", "popover", "inline" ];
-			this._currentText = this.options.messages[ this.options.state ];
+			this._currentText = this._getDefaultMessageByState(this.options.state);
 		},
-		_createWidget: function (options/*, element*/) {
-			// ensure localized defaults
-			var messageDefaults = {
-				success: this._getLocaleValue("successMsg") || "Success",
-				info: this._getLocaleValue("infoMsg") || "Information",
-				warning: this._getLocaleValue("warningMsg") || "Warning",
-				error: this._getLocaleValue("errorMsg") || "Error"
-			};
-			this.options.messages = $.extend(messageDefaults, (options && options.messages) || {});
-			$.ui.igPopover.prototype._createWidget.apply(this, arguments);
+		_getDefaultMessageByState: function (state) {
+			return this._getLocaleValue(state + "Msg");
 		},
 		changeLocale: function() {
-			var msgElement = this.contentInner; 
-			this._changeLocaleForElement(msgElement);
+			if (this.contentInner.attr("data-localeid")) {
+				this._setState(this.options.state);
+			}
 		},
-		_getMessageByState: function (state) {
-			//this.options.messages[ value ]
-		},
-		_setState: function (value, message/*, fireEvents*/) {
+		_setState: function (value, message) {
 			if ($.inArray(value, this._states) === -1) {
 				throw new Error(this._getLocaleValue("notSupportedState"));
 			}
-			//TODO:
 			/*var args, noCancel, val = this.getContent(), self = this, contentFunc;
 			args = {
 				newState: value,
@@ -413,17 +321,17 @@
 				owner: this
 			};
 			noCancel = this._trigger(this.events.stateChanging, this, args);
-			if (noCancel === true) {*/
+			if (noCancel === true) {
+			*/
 			if (message !== undefined) {
 				// must be able to handle text change without state
 				this._currentText = message;
+				this.contentInner.removeAttr("data-localeid");
+			} else {
+				this._currentText = this._getDefaultMessageByState(value);
+				this.contentInner.attr("data-localeid", value);
 			}
 			if (this.options.state !== value) {
-				if (message === undefined) {
-					this._currentText = this._getMessageByState(value);
-				} else {
-					this.contentInner.removeAttr("data-localeid");
-				}
 				this._previousState = this.options.state;
 				this.options.state = value;
 				if (this._visible) {
@@ -473,17 +381,6 @@
 						this._setNewContent(this._getTemplate());
 					}
 					break;
-				case "messages":
-					if (typeof value === "object") {
-						this.options.messages = $.extend(this.options.messages, value);
-						this._currentText = this.options.messages[ this.options.state ];
-						this._setNewContent(this._getTemplate());
-						if (this._visible && !this._isInline()) {
-							this._positionPopover(this._target);
-							this._slide();
-						}
-					}
-					break;
 				case "allowCSSOnTarget":
 					if (typeof value === "boolean") {
 						this.options.allowCSSOnTarget = value;
@@ -499,7 +396,7 @@
 					}
 					break;
 				default:
-					$.ui.igPopover.prototype._setOption.apply(this, arguments);
+					this._superApply(arguments);
 			}
 		},
 		_setMode: function (value, force) {
@@ -567,7 +464,7 @@
 				$.ui.igPopover.prototype._renderPopover.apply(this, arguments);
 			}
 			var id;
-			switch(this.options.state) {
+			switch (this.options.state) {
 				case "success":
 					id = "successMsg";
 					break;
@@ -581,8 +478,7 @@
 					id = "infoMsg";
 			}
 			this.contentInner
-				.addClass(this.css.contentInner)
-				.attr("data-localeid", id);
+				.addClass(this.css.contentInner);
 			this._setState(this.options.state);
 		},
 		_openPopover: function (/*trg, skipEvents*/) {

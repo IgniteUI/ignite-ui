@@ -17,10 +17,12 @@
 	}
 }
 (function ($) {
-    $.ig = $.ig || {};
-
-	$.ig.Dialog = {
-		locale: {
+    ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
+	$.ig.Dialog = $.ig.Dialog || {};
+	
+	$.ig.locale.ru.Dialog = {
 			closeButtonTitle: "закрыть",
 			minimizeButtonTitle: "минимизировать",
 			maximizeButtonTitle: "максимизировать",
@@ -28,10 +30,7 @@
 			unpinButtonTitle: "открепить",
 			restoreButtonTitle: "восстановить",
 			setOptionError: 'Этот параметр не может быть задан во время выполнения программы'
-		}
 	};
 
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ru = $.ig.locale.ru || {};
-	$.ig.locale.ru.Dialog = $.extend({}, $.ig.Dialog.locale);
+	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.ru.Dialog;
 }));// REMOVE_FROM_COMBINED_FILES

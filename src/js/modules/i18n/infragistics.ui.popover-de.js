@@ -17,18 +17,15 @@
 	}
 }
 (function ($) {
-$.ig = $.ig || {};
-
-$.ig.Popover = {};
-
-$.extend( $.ig.Popover, {
-	locale: {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
+	$.ig.Popover = $.ig.Popover || {};
+	
+	$.ig.locale.de.Popover = {
 		popoverOptionChangeNotSupported: "Die Änderung der folgenden Option nach der Initialisierung von igPopover wird nicht unterstützt:",
 		popoverShowMethodWithoutTarget: "Der Target-Parameter der Show-Funktion ist obligatorisch, wenn die Selectors-Option verwendet wird"
-	}
-});
+	};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.de = $.ig.locale.de || {};
-$.ig.locale.de.Popover = $.extend({}, $.ig.Popover.locale);
+$.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale.de.Popover;
 }));// REMOVE_FROM_COMBINED_FILES

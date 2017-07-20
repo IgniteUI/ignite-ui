@@ -18,12 +18,11 @@
 }
 (function ($) {
     $.ig = $.ig || {};
-
-	$.ig.DataSourceLocale = {};
-
-	$.extend($.ig.DataSourceLocale, {
-
-		locale: {
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	$.ig.DataSourceLocale = $.ig.DataSourceLocale || {};
+	
+	$.ig.locale.bg.DataSourceLocale = {
 			invalidDataSource: "Подаденият източник на данни е невалиден.",
 			unknownDataSource: "Типът на източника на данни не може да бъде определен. Моля дефинирайте дали данните са в JSON или XML формат.",
 			errorParsingArrays: "Грешка при парсирането на масива от данни и при прилагането на дефинираната schema: ",
@@ -49,9 +48,7 @@
 			filteringNoSchema: "Нямате зададени schema / fields. Нужно е да зададете schema с field дефиниция и типове, за да можете да филтрирате източника на данни.",
 			noSaveChanges: "Запазването на промените беше неуспешно. Сървърът не върна обект Success или върна Success:false.",
 			errorUnexpectedCustomFilterFunction: "Беше подадена неочаквана стойност за създадената от потребителя функция за филтриране Очаква се функция или низ."
-		}
-	});
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.bg = $.ig.locale.bg || {};
-	$.ig.locale.bg.DataSourceLocale = $.extend({}, $.ig.DataSourceLocale.locale);
+	};
+	
+	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale.bg.DataSourceLocale;
 }));// REMOVE_FROM_COMBINED_FILES

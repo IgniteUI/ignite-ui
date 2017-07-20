@@ -20,6 +20,7 @@
     $.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.Validator = $.ig.Validator || {};
 	
 	$.ig.locale.en.Validator = {
 		defaultMessage: 'This field needs attention',
