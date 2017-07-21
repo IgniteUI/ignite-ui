@@ -925,7 +925,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igZoombar",
-		dependency: [ { name: "igWidget" }, { name: "igUtil" }, { name: "igShared" } ],
+		dependency: [ { name: "igWidget" }, { name: "igShared" } ],
 		scripts: [ "$path$/modules/infragistics.ui.zoombar.js" ],
 		locale: [ "$localePath$/infragistics.ui.zoombar-$locale$.js" ],
 		css: [
