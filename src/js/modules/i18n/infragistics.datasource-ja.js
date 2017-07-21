@@ -14,7 +14,7 @@
 		factory();
 	}
 }
-(function ($) {
+(function () {
     $.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.ja = $.ig.locale.ja || {};
