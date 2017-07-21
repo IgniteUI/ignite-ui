@@ -33,8 +33,21 @@
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-ja.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-bg.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.tilemanager-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.splitter-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.datasource-de.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.combo-de.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.notifier-de.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.tree-de.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.popover-de.js"></script>
+    <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.validator-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.tilemanager-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.splitter-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-ja.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.editors-bg.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.popover.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.notifier.js"></script>
@@ -45,24 +58,10 @@
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitter.js"></script>
 
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
-	<script type="text/javascript" src="../../../bower_components/requirejs/require.js"></script>
 
 	<script type="text/javascript">
 
 	$(function () {
-		requirejs.config({
-			//By default load any module IDs from js/lib
-			//baseUrl: 'js/lib',
-			//except, if the module ID starts with "app",
-			//load it from the js/app directory. paths
-			//config is relative to the baseUrl, and
-			//never includes a ".js" extension since
-			//the paths config could be for a directory.
-			paths: {
-				jquery: '../../../bower_components/jquery/dist/jquery'
-			}
-		});
-
 		var dataSource = [
 			{ ID: 1, Name: "John", IsFemale: false },
 			{ ID: 2, Name: "Mary", IsFemale: true },
@@ -128,9 +127,7 @@
 		});
 		
 		// Checkbox
-		$("#checkbox").igCheckboxEditor({
-			buttonType: "spin,clear"
-		});
+		$("#checkbox").igCheckboxEditor();
 
 		// Currency
 		$("#currency").igCurrencyEditor({
@@ -198,12 +195,43 @@
 			teardown: function() {}
 		});
 			
-		test("Loading correct locales", 1, function () {
-			stop();
-			require(["../../../src/js/modules/i18n/infragistics.ui.editors-ja"], function (locale) {
-				ok(locale, "The ja locale is not returned correctly by the locale file.");
-				start();
-			});
+		test("Loading correct locales when setting language and locale", 12, function () {
+			var locale = $.ig.locale.ja.Editor;
+			ok(locale, "The ja locale is not loaded.");
+			ok($.ig.Tree.locale, "The tree locale got overwritten");
+			notEqual(locale.spinUpperTitle, $.ig.Editor.locale.spinUpperTitle, "The default locale got overwritten");
+			equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), $.ig.Editor.locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
+			$("#datepicker").igDatePicker("option", "language", "ja");
+			equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), locale.spinUpperTitle, "_getLocaleValue returned wrong after setting language for the Date Picker");
+			var button = $("#datepicker").data("igDatePicker")._dropDownButton;
+			equal(button.attr("title"), locale.datePickerButtonTitle, "The title attribute should be: " + locale.buttonTitle);
+			button = $("#datepicker").data("igDatePicker")._spinUpButton;
+			equal(button.attr("title"), locale.spinUpperTitle, "The title attribute should be: " + locale.spinUpperTitle);
+			button = $("#datepicker").data("igDatePicker")._spinDownButton;
+			equal(button.attr("title"), locale.spinLowerTitle, "The title attribute should be: " + locale.spinLowerTitle);
+			equal($("#numeric").data("igNumericEditor")._getLocaleValue("spinUpperTitle"), $.ig.Editor.locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
+			locale = $.ig.locale.bg.Editor;
+			$("#numeric").igNumericEditor("option", "locale", locale);
+			equal($("#numeric").data("igNumericEditor")._getLocaleValue("spinUpperTitle"), locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
+			button = $("#numeric").data("igNumericEditor")._spinUpButton;
+			equal(button.attr("title"), locale.spinUpperTitle, "The title attribute should be: " + locale.spinUpperTitle);
+			button = $("#numeric").data("igNumericEditor")._spinDownButton;
+			equal(button.attr("title"), locale.spinLowerTitle, "The title attribute should be: " + locale.spinLowerTitle);
+		});
+
+		test("Changing language globally", 10, function () {
+			var locale = $.ig.locale;
+			$.ig.util.changeGlobalLanguage("de");
+			equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), $.ig.locale.de.Editor.spinUpperTitle, "_getLocaleValue returned wrong after setting global language");
+			equal($("#numeric").data("igNumericEditor")._getLocaleValue("spinUpperTitle"), $.ig.locale.bg.Editor.spinUpperTitle, "_getLocaleValue returned wrong after setting global language but having locale object set spefically for an instance.");
+			equal($("#combo").data("igCombo")._getLocaleValue("noMatchFoundText"), $.ig.locale.de.Combo.noMatchFoundText, "_getLocaleValue returned wrong after setting global language.");
+			equal($("#text").data("igTextEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+			equal($("#checkbox").data("igCheckboxEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+			equal($("#currency").data("igCurrencyEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+			equal($("#dateeditor").data("igDateEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+			equal($("#mask").data("igMaskEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+			equal($("#tree").data("igTree")._getLocaleValue("invalidArgumentType"), $.ig.locale.de.Tree.invalidArgumentType, "_getLocaleValue returned wrong after setting global language.");
+			equal($("#tilemanager").data("igTileManager")._getLocaleValue("setOptionItemsLengthError"), $.ig.locale.de.TileManager.setOptionItemsLengthError, "_getLocaleValue returned wrong after setting global language.");
 		});
 	});
 	

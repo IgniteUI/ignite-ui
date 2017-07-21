@@ -500,6 +500,7 @@
 			this._readAttributes();
 			this._saveDOMConent();
 			this._render();
+			this.localeContainer = this._editorContainer;
 		},
 		_initialize: function () {
 			this._timeouts = [];
