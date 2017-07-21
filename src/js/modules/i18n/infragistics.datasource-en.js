@@ -9,22 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
+(function () {
 
     $.ig = $.ig || {};
-
-	$.ig.DataSourceLocale = {};
-
-	$.extend($.ig.DataSourceLocale, {
-
-		locale: {
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.DataSourceLocale = $.ig.DataSourceLocale || {};
+	
+	$.ig.locale.en.DataSourceLocale = {
 			invalidDataSource: "The supplied data source is invalid. It happens to be a scalar.",
 			unknownDataSource: "Cannot determine the data source type. Please specify if it is JSON or XML data.",
 			errorParsingArrays: "There was an error parsing the array data and applying the defined data schema: ",
@@ -50,10 +47,8 @@
 			filteringNoSchema: "There is no schema / fields specified. You need to specify a schema with field definitions and types to be able to filter the data source.",
 			noSaveChanges: "Saving changes was not successful. Server did not return Success object or returned Success:false.",
 			errorUnexpectedCustomFilterFunction: "An unexpected value was provided for a custom filtering function. A function or string is expected."
-		}
-	});
+	};
 	
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.en = $.ig.locale.en || {};
-	$.ig.locale.en.DataSourceLocale = $.extend({}, $.ig.DataSourceLocale.locale);
+	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale.en.DataSourceLocale;
+	return $.ig.locale.en.DataSourceLocale;
 }));// REMOVE_FROM_COMBINED_FILES

@@ -9,18 +9,18 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
-    $.ig = $.ig || {};
-
-	$.ig.Dialog = {
-		locale: {
+(function () {
+    ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.fr = $.ig.locale.fr || {};
+	$.ig.Dialog = $.ig.Dialog || {};
+	
+	$.ig.locale.fr.Dialog = {
 			closeButtonTitle: "Fermer",
 			minimizeButtonTitle: "Minimiser",
 			maximizeButtonTitle: "Maximiser",
@@ -28,10 +28,8 @@
 			unpinButtonTitle: "Dépunaiser",
 			restoreButtonTitle: "Restaurer",
 			setOptionError: "Les modifications de temps d'exécution ne sont pas autorisées pour l'option suivante : "
-		}
 	};
 	
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.fr = $.ig.locale.fr || {};
-	$.ig.locale.fr.Dialog = $.extend({}, $.ig.Dialog.locale);
+	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.fr.Dialog;
+	return $.ig.locale.fr.Dialog;
 }));// REMOVE_FROM_COMBINED_FILES

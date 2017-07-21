@@ -9,29 +9,26 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function($) {
-$.ig = $.ig || {};
-
-$.ig.Notifier = {};
-
-$.extend($.ig.Notifier, {
-	locale: {
+(function() {
+ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
+	$.ig.Notifier = $.ig.Notifier || {};
+	
+	$.ig.locale.ru.Notifier = {
 		successMsg: "Успешно",
 		errorMsg: "Ошибка",
 		warningMsg: "Предупреждение",
+		infoMsg: "Информация",
 		notSupportedState: "Состояние уведомления не поддерживается! Используйте одно из поддерживаемых состояний: 'success', 'info', 'warning', 'error'",
 		notSupportedMode: "Режим уведомлений не поддерживается! Используйте один из поддерживаемых режимов: 'auto', 'popover', 'inline'"
-	}
-});
+};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.ru = $.ig.locale.ru || {};
-$.ig.locale.ru.Notifier = $.extend({}, $.ig.Notifier.locale);
+$.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.ru.Notifier;
+return $.ig.locale.ru.Notifier;
 }));// REMOVE_FROM_COMBINED_FILES

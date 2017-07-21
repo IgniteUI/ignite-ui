@@ -9,29 +9,26 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function($) {
-$.ig = $.ig || {};
-
-$.ig.Notifier = {};
-
-$.extend($.ig.Notifier, {
-	locale: {
+(function() {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.Notifier = $.ig.Notifier || {};
+	
+	$.ig.locale.en.Notifier = {
 		successMsg: "Success",
 		errorMsg: "Error",
 		warningMsg: "Warning",
+		infoMsg: "Information",
 		notSupportedState: "Not supported notification state! Use one of the supported states 'success', 'info', 'warning', 'error'",
 		notSupportedMode: "Not supported notification mode! Use one of the supported modes 'auto', 'popover', 'inline'"
-	}
-});
+};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.en = $.ig.locale.en || {};
-$.ig.locale.en.Notifier = $.extend({}, $.ig.Notifier.locale);
+$.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.en.Notifier;
+return $.ig.locale.en.Notifier;
 }));// REMOVE_FROM_COMBINED_FILES

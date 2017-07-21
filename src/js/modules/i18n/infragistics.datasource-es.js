@@ -9,22 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
+(function () {
 
     $.ig = $.ig || {};
-
-	$.ig.DataSourceLocale = {};
-
-	$.extend($.ig.DataSourceLocale, {
-
-		locale: {
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.es = $.ig.locale.es || {};
+	$.ig.DataSourceLocale = $.ig.DataSourceLocale || {};
+	
+	$.ig.locale.es.DataSourceLocale = {
 			invalidDataSource: "El origen de datos proporcionado no es válido. Es de tipo escalar.",
 			unknownDataSource: "No se puede determinar el tipo de origen de datos. Especifique si son datos JSON o XML.",
 			errorParsingArrays: "Se ha producido un error al analizar los datos de matriz y aplicar el esquema de datos definido: ",
@@ -50,10 +47,8 @@
 			filteringNoSchema: "No se ha especificado ningún esquema / campo. Debe especificar un esquema con definiciones y tipos de campo para poder filtrar el origen de datos.",
 			noSaveChanges: "No se han guardado los cambios correctamente. El servidor no ha devuelto el objeto Success, o ha devuelto Success:false.",
 			errorUnexpectedCustomFilterFunction: "Se ha proporcionado un valor inesperado para una función de filtrado personalizado. Se esperaba una función o cadena."
-		}
-	});
+	};
 	
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.es = $.ig.locale.es || {};
-	$.ig.locale.es.DataSourceLocale = $.extend({}, $.ig.DataSourceLocale.locale);
+	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale.es.DataSourceLocale;
+	return $.ig.locale.es.DataSourceLocale;
 }));// REMOVE_FROM_COMBINED_FILES

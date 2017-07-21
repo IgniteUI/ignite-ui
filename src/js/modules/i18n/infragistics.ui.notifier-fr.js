@@ -9,29 +9,26 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function($) {
-$.ig = $.ig || {};
-
-$.ig.Notifier = {};
-
-$.extend($.ig.Notifier, {
-	locale: {
+(function() {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.fr = $.ig.locale.fr || {};
+	$.ig.Notifier = $.ig.Notifier || {};
+	
+	$.ig.locale.fr.Notifier = {
 		successMsg: "Réussite",
 		errorMsg: "Erreur",
 		warningMsg: "Avertissement",
+		infoMsg: "Information",
 		notSupportedState: "État de notification non pris en charge ! Utilisez un des états pris en charge 'success', 'info', 'warning', 'error'",
 		notSupportedMode: "Mode de notification non pris en charge ! Utilisez un des modes pris en charge 'auto', 'popover', 'inline'"
-	}
-});
+};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.fr = $.ig.locale.fr || {};
-$.ig.locale.fr.Notifier = $.extend({}, $.ig.Notifier.locale);
+$.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.fr.Notifier;
+return $.ig.locale.fr.Notifier;
 }));// REMOVE_FROM_COMBINED_FILES

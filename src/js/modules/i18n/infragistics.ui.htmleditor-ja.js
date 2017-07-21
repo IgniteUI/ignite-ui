@@ -9,21 +9,18 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
-$.ig = $.ig || {};
-
-$.ig.HtmlEditor = {};
-
-$.extend($.ig.HtmlEditor, {
-
-	locale: {
+(function () {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
+	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
+	
+	$.ig.locale.ja.HtmlEditor = {
 		boldButtonTitle: '太字',
 		italicButtonTitle: 'イタリック',
 		underlineButtonTitle: '下線',
@@ -137,11 +134,9 @@ $.extend($.ig.HtmlEditor, {
 			{ text: "h6", value: "見出し 6" },
 			{ text: "p", value: "標準" }
 		]
-	}
 
-});
+};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.ja = $.ig.locale.ja || {};
-$.ig.locale.ja.HtmlEditor = $.extend({}, $.ig.HtmlEditor.locale);
+$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.ja.HtmlEditor;
+return $.ig.locale.ja.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

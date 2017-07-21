@@ -9,22 +9,18 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
-$.ig = $.ig || {};
-
-
-$.ig.HtmlEditor = {};
-
-$.extend($.ig.HtmlEditor, {
-
-	locale: {
+(function () {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
+	
+	$.ig.locale.bg.HtmlEditor = {
 		boldButtonTitle: 'Получер',
 		italicButtonTitle: 'Курсив',
 		underlineButtonTitle: 'Подчертано',
@@ -135,11 +131,9 @@ $.extend($.ig.HtmlEditor, {
 				{ text: "h6", value: "Заглавие 6" },
 				{ text: "p", value: "Нормално" }
 			]
-	}
 
-});
+};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.bg = $.ig.locale.bg || {};
-$.ig.locale.bg.HtmlEditor = $.extend({}, $.ig.HtmlEditor.locale);
+$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.bg.HtmlEditor;
+return $.ig.locale.bg.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

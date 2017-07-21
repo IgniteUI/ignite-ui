@@ -9,21 +9,18 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
-$.ig = $.ig || {};
-
-$.ig.HtmlEditor = {};
-
-$.extend($.ig.HtmlEditor, {
-
-	locale: {
+(function () {
+	ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
+	
+	$.ig.locale.en.HtmlEditor = {
 		boldButtonTitle: 'Bold',
 		italicButtonTitle: 'Italic',
 		underlineButtonTitle: 'Underline',
@@ -134,11 +131,8 @@ $.extend($.ig.HtmlEditor, {
 				{ text: "h6", value: "Heading 6" },
 				{ text: "p", value: "Normal" }
 			]
-	}
+};
 
-});
-
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.en = $.ig.locale.en || {};
-$.ig.locale.en.HtmlEditor = $.extend({}, $.ig.HtmlEditor.locale);
+$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.en.HtmlEditor;
+return $.ig.locale.en.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES
