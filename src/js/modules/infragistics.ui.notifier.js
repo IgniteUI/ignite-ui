@@ -303,8 +303,9 @@
 			return this._getLocaleValue(state + "Msg");
 		},
 		changeLocale: function() {
-			if (this.contentInner.attr("data-localeid")) {
-				this._setState(this.options.state);
+			if (this.contentInner.attr("data-default-locale")) {
+				this._currentText = this._getDefaultMessageByState(this.options.state);
+				this._setNewContent(this._getTemplate());
 			}
 		},
 		_setState: function (value, message) {
@@ -326,12 +327,12 @@
 			if (message !== undefined) {
 				// must be able to handle text change without state
 				this._currentText = message;
-				this.contentInner.removeAttr("data-localeid");
+				this.contentInner.removeAttr("data-default-locale");
 			} else {
-				this._currentText = this._getDefaultMessageByState(value);
-				this.contentInner.attr("data-localeid", value);
+				this.contentInner.attr("data-default-locale", true);
 			}
 			if (this.options.state !== value) {
+				this._currentText = message !== undefined ? this._currentText : this._getDefaultMessageByState(value);
 				this._previousState = this.options.state;
 				this.options.state = value;
 				if (this._visible) {

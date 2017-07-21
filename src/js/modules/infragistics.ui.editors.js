@@ -1768,6 +1768,17 @@
 		_create: function () { //igTextEditor
 			$.ui.igBaseEditor.prototype._create.call(this);
 		},
+		_changeLocaleForNotifier: function () {
+			var notifier = this._editorContainer.data("igNotifier"), message;
+			if (notifier && notifier.isVisible()) {
+				message = this._getMessageForNotifier(this._notifierMessage);
+				notifier.notify(notifier.options.state, message);
+			}
+		},
+		changeLocale: function () {
+			this._superApply(arguments);
+			this._changeLocaleForNotifier();
+		},
 		_setOption: function (option, value) { // igTextEditor
 			/* igTextEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
@@ -1879,8 +1890,10 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("maxLengthErrMsg"),
-							this.options.maxLength));
+						{
+							optName: "maxLengthErrMsg",
+							argument: this.options.maxLength
+						});
 				}
 			}
 			if (this._validateValue(initialValue)) {
@@ -2047,7 +2060,14 @@
 				"data-localeattr": "aria-label"
 			});
 		},
-		_sendNotification: function (state, message) {
+		_getMessageForNotifier: function (messageObj) {
+			var optName = messageObj.optName,
+				message = this._getLocaleValue(optName),
+				arg = messageObj.argument;
+			return (arg !== undefined) ? $.ig.util.stringFormat(message, arg) : message;
+		},
+		_sendNotification: function (state, messageObj) {
+			var message = this._getMessageForNotifier(messageObj);
 			if (this.options.suppressNotifications || this._skipMessages /* flag on isValid() call */) {
 				this._currentMessage = message;
 				return;
@@ -2055,6 +2075,7 @@
 			if (!this._editorContainer.data("igNotifier")) {
 				this._editorContainer.igNotifier();
 			}
+			this._notifierMessage = messageObj;
 			this._editorContainer.igNotifier("notify", state, message);
 		},
 		_applyPlaceHolder: function() {
@@ -2219,7 +2240,7 @@
 				if (this._valueIndexInList(val) !== -1) {
 					result = true;
 				} else {
-					this._sendNotification("warning", this._getLocaleValue("allowedValuesMsg"));
+					this._sendNotification("warning", { optName: "allowedValuesMsg" });
 					result = false;
 				}
 			} else if (this.options.maxLength) {
@@ -2227,8 +2248,10 @@
 					result = true;
 				} else {
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("maxLengthErrMsg"),
-							this.options.maxLength));
+						{
+							optName: "maxLengthErrMsg",
+							argument: this.options.maxLength
+						});
 					result = false;
 				}
 			} else {
@@ -2896,8 +2919,10 @@
 								e.preventDefault();
 								e.stopPropagation();
 								this._sendNotification("warning",
-									$.ig.util.stringFormat(this._getLocaleValue("maxLengthWarningMsg"),
-										this.options.maxLength));
+									{
+										optName: maxLengthWarningMsg,
+										arg: this.options.maxLength
+									});
 							}
 						}
 					}
@@ -3292,8 +3317,10 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("maxLengthErrMsg"),
-							this.options.maxLength));
+						{
+							optName: "maxLengthErrMsg",
+							argument: this.options.maxLength
+						});
 					}
 				}
 			if (this._validateValue(newValue)) {
@@ -4729,8 +4756,10 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
-							this.options.maxValue));
+						{
+							optName: "maxValExceedSetErrMsg",
+							argument: this.options.maxValue
+						});
 
 				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
 				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
@@ -4738,8 +4767,10 @@
 
 						// Raise Warning level 2
 						this._sendNotification("warning",
-							$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
-								this.options.minValue));
+							{
+								optName: "minValExceedSetErrMsg",
+								argument: this.options.minValue
+							});
 				}
 			}
 			if (!this._validateValue(value)) {
@@ -5173,15 +5204,19 @@
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
-							this.options.maxValue));
+						{
+							optName: "maxValExceedSetErrMsg",
+							argument: this.options.maxValue
+						});
 				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
-							this.options.minValue));
+						{
+							optName: "minValExceedSetErrMsg",
+							argument: this.options.minValue
+						});
 				}
 
 				if (!this._validateValue(newValue) && this.options.revertIfNotValid) {
@@ -5584,13 +5619,17 @@
 				this.options.spinWrapAround)) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat(this._getLocaleValue("maxValExceededWrappedAroundErrMsg"),
-						this.options.maxValue));
+					{
+						optName: "maxValExceededWrappedAroundErrMsg",
+						argument: this.options.maxValue
+					});
 			} else if (currVal >= this.options.maxValue && !this.options.spinWrapAround) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat(this._getLocaleValue("maxValErrMsg"),
-						this.options.maxValue));
+					{
+						optName: "maxValErrMsg",
+						argument: [this.options.maxValue]
+					});
 			}
 			if (this._focused) {
 				currVal = this._getEditModeValue(currVal);
@@ -5642,14 +5681,18 @@
 				this.options.spinWrapAround)) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat(this._getLocaleValue("minValExceededWrappedAroundErrMsg"),
-						this.options.minValue));
+					{
+						optName: "minValExceededWrappedAroundErrMsg",
+						argument: this.options.minValue
+					});
 
 			} else if (currVal <= this.options.minValue && !this.options.spinWrapAround) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat(this._getLocaleValue("minValErrMsg"),
-						this.options.minValue));
+					{
+						optName: "minValErrMsg",
+						argument: this.options.minValue
+					});
 			}
 			if (this._focused) {
 				currVal = this._getEditModeValue(currVal);
@@ -5730,8 +5773,10 @@
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
-								$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
-									this.options.maxValue));
+								{
+									optName: "maxValExceedSetErrMsg",
+									argument: this.options.maxValue
+								});
 
 							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
 						} else if (!isNaN((this.options.minValue)) && newValue < this.options.minValue) {
@@ -5739,8 +5784,10 @@
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
-								$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
-									this.options.value));
+								{
+									optName: "minValExceedSetErrMsg",
+									argument: this.options.value
+								});
 						}
 					}
 					if (this._validateValue(newValue)) {
@@ -6052,18 +6099,21 @@
 
 					//Notify
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
-							this.options.maxValue));
+						{
+							optName: "maxValExceedSetErrMsg",
+							argument: this.options.maxValue
+						});
 				} else if (!isNaN(this.options.minValue) &&
 					newValue / this.options.displayFactor < this.options.minValue) {
 					newValue = this.options.minValue * this.options.displayFactor;
 
 					//Notify
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
-						this.options.minValue));
+						{
+							optName: "minValExceedSetErrMsg",
+							argument: this.options.minValue
+						});
 				}
-
 				if (!this._validateValue(newValue / this.options.displayFactor) &&
 					this.options.revertIfNotValid) {
 					newValue = previousValue;
@@ -7072,11 +7122,11 @@
 					// Raise warning not all required fields are entered
 					// State - message
 					if (this.options.revertIfNotValid) {
-						message = this._getLocaleValue("maskRevertMessage");
+						message = "maskRevertMessage";
 					} else {
-						message = this._getLocaleValue("maskMessage");
+						message = "maskMessage";
 					}
-					this._sendNotification("warning", message);
+					this._sendNotification("warning", { optName: message });
 				}
 			}
 		},
@@ -7527,7 +7577,7 @@
 					// Raise warning not all required fields are entered
 					// State - message
 					valid = false;
-					this._sendNotification("warning", this._getLocaleValue("maskMessage"));
+					this._sendNotification("warning", { optName: "maskMessage" });
 				}
 			}
 			this._skipMessages = false;
@@ -9050,13 +9100,17 @@
 				if (this.options.maxValue && date > this.options.maxValue) {
 					validDate = this._getDateObjectFromValue(this.options.maxValue);
 					this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
-							this._getDisplayValue(new Date(this.options.maxValue))));
+						{
+							optName: "maxValExceedSetErrMsg",
+							argument: this._getDisplayValue(new Date(this.options.maxValue))
+						});
 				} else if (this.options.minValue && date < this.options.minValue) {
 					validDate = this._getDateObjectFromValue(this.options.minValue);
 					this._sendNotification("warning",
-					$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
-							this._getDisplayValue(new Date(this.options.minValue))));
+						{
+							optName: "minValExceedSetErrMsg",
+							argument:this._getDisplayValue(new Date(this.options.minValue)) 
+						});
 				}
 			}
 			return validDate;
@@ -10558,13 +10612,17 @@
 					if (this.options.maxValue && parsedVal > this.options.maxValue) {
 						newValue = this._getDateObjectFromValue(this.options.maxValue);
 						this._sendNotification("warning",
-							$.ig.util.stringFormat(this._getLocaleValue("maxValExceedSetErrMsg"),
-								this._getDisplayValue(new Date(this.options.maxValue))));
+							{
+								optName: "maxValExceedSetErrMsg",
+								argument: this._getDisplayValue(new Date(this.options.maxValue))
+							});
 					} else if (this.options.minValue && parsedVal < this.options.minValue) {
 						newValue = this._getDateObjectFromValue(this.options.minValue);
 						this._sendNotification("warning",
-						$.ig.util.stringFormat(this._getLocaleValue("minValExceedSetErrMsg"),
-								this._getDisplayValue(new Date(this.options.minValue))));
+							{
+								optName: "minValExceedSetErrMsg",
+								argument: this._getDisplayValue(new Date(this.options.minValue))
+							});
 					}
 				}
 				if (this._validateValue(newValue)) {
@@ -10665,7 +10723,7 @@
 					//Raise warning not all required fields are entered
 					//State - message
 					valid = false;
-					this._sendNotification("warning", this._getLocaleValue("dateMessage"));
+					this._sendNotification("warning", { optName: "dateMessage" });
 				}
 			}
 			this._skipMessages = false;
