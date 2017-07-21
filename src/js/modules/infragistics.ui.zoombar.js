@@ -11,6 +11,7 @@
  * jquery.ui.widget.js
  * infragistics.util.js
  * infragistics.util.jquery.js
+ * infragistics.ui.widget.js
  * infragistics.ui.shared.js
 */
 
@@ -24,6 +25,7 @@
 			"jquery-ui",
 			"./infragistics.util",
 			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.ui.shared"
 		], factory );
 	} else {
@@ -36,7 +38,7 @@
 	/*
 		igZoombar is a widget based on jQuery UI that provides ability to easily zoom in and out a chart or other compatible control.
 	*/
-	$.widget("ui.igZoombar", {
+	$.widget("ui.igZoombar", $.ui.igWidget, {
 		options: {
 			/* type="object" Specifies a provider class which interfaces the widget that is being zoomed.
 				object Provider class to use. The provider should implement all methods in the $.ig.ZoombarProviderDefault class and is suggested to be extended from it.
@@ -586,7 +588,7 @@
 				case "zoomWindowMoveDistance":
 					break;
 				default:
-					throw new Error($.ig.Zoombar.locale.optionChangeNotSupported + " " + key);
+					throw new Error(this._getLocaleValue("optionChangeNotSupported") + " " + key);
 			}
 			$.Widget.prototype._setOption.apply(this, arguments);
 		},
@@ -1101,7 +1103,7 @@
 					this._target = $(opts.target[ 0 ]);
 				}
 			} else {
-				throw new Error($.ig.Zoombar.locale.zoombarTargetNotSpecified);
+				throw new Error(this._getLocaleValue("zoombarTargetNotSpecified"));
 			}
 			if (opts.provider === $.ig.ZoombarProviderDataChart) {
 				// the target widget should have an igDataChart initialized on it
@@ -1111,7 +1113,7 @@
 						zoomChangedCallback: this._targetWindowChangedHandler
 					});
 				} else {
-					throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
+					throw new Error(this._getLocaleValue("zoombarTypeNotSupported"));
 				}
 			} else {
 				try {
@@ -1119,7 +1121,7 @@
 						zoomChangedCallback: this._targetWindowChangedHandler
 					});
 				} catch (e) {
-					throw new Error($.ig.Zoombar.locale.zoombarProviderNotRecognized + " " + e);
+					throw new Error(this._getLocaleValue("zoombarProviderNotRecognized") + " " + e);
 				}
 			}
 			this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
