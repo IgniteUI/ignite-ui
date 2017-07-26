@@ -133,10 +133,13 @@
 		_getLocaleValueFromCollection: function (key, collection) {
 			return !collection ? "" : (collection[ key ] || "");
 		},
-		_getLocaleValue: function (key) {
+		_getLocaleDictionary: function () {
 			var language = this.options.language,
-				widgetName = this.localeWidgetName || this.widgetName.replace("ig", ""),
-				locale = $.extend({}, $.ig.locale[ language ][ widgetName ]);
+				widgetName = this.localeWidgetName || this.widgetName.replace("ig", "");
+			return $.ig.locale[ language ][ widgetName ];
+		},
+		_getLocaleValue: function (key) {
+			var locale = $.extend({}, this._getLocaleDictionary());
 			locale = $.extend(locale, this.options.locale);
 			return	this._getLocaleValueFromCollection(key, locale);
 		},

@@ -325,7 +325,7 @@
 			*/
 			this.element.unbind(this._internalEvents);
 			this.element.unbind(this.mouseMoveEvent);
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			/* M.H. 10 May 2011 - fix bug 75039: remove unnecessary comment and unnecessary line of code */
 			$.ui.igButton.prototype.destroy.apply(this);
 
@@ -2730,7 +2730,7 @@
 			if ($button.length) {
 				$button.igButton("option", {
 					title: this._getLocaleValue("titleShowDetailsButton"),
-					labelText: this._getLocaleValue("labelShowDetails"),
+					labelText: this._getLocaleValue("labelSummaryProgressButtonCancel"),
 				});
 			}
 			$button = $("button[id$='cbtn']");

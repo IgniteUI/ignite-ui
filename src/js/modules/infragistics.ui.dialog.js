@@ -1082,7 +1082,7 @@
 			// } else {
 				// dad.appendChild(elem0);
 			// }
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			return this;
 		},
 		state: function (state) {

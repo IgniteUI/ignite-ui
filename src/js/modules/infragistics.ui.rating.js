@@ -1129,7 +1129,7 @@
 			if (this._rtl) {
 				e.css("direction", "rtl");
 			}
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			this._elem = this._hov = this._sel =
 			this._selSwap = this._hovSwap = this._foc = this._evts = null;
 			return this;

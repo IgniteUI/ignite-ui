@@ -1328,7 +1328,7 @@
                 .remove();
             this.buttonsList.remove();
             this.element.removeClass();
-            $.Widget.prototype.destroy.apply(this, arguments);
+            this._superApply(arguments);
         }
     });
 
