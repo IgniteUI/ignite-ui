@@ -17,7 +17,7 @@
 	}
 }
 (function ($) {
-	ig = $.ig || {};
+	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.es = $.ig.locale.es || {};
 	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
@@ -66,12 +66,10 @@
 		linkTargetTopmostWindowDialogText: 'Ventana de nivel superior',
 		applyButtonTitle: 'Aplicar',
 		cancelButtonTitle: 'Cancelar',
-		defaultToolbars: {
-			textToolbar: "text manipulation toolbar",
-			formattingToolbar: "text formatting toolbar",
-			insertObjectToolbar: "objects insertion toolbar",
-			copyPasteToolbar: "copy/paste toolbar"
-		},
+		textToolbar: "text manipulation toolbar",
+		formattingToolbar: "text formatting toolbar",
+		insertObjectToolbar: "objects insertion toolbar",
+		copyPasteToolbar: "copy/paste toolbar",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },

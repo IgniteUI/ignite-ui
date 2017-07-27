@@ -17,7 +17,7 @@
 	}
 }
 (function ($) {
-    ig = $.ig || {};
+    $.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.ru = $.ig.locale.ru || {};
 	$.ig.Dialog = $.ig.Dialog || {};

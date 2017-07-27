@@ -17,7 +17,7 @@
 	}
 }
 (function ($) {
-    ig = $.ig || {};
+    $.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.en = $.ig.locale.en || {};
 	$.ig.Combo = $.ig.Combo || {};
