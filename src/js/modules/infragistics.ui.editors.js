@@ -1060,9 +1060,17 @@
 					this._updateValue(newValue);
 					this._editorInput.val(this._getDisplayValue());
 				} else {
-					this._clearValue();
-					if (this._focused !== true) {
-						this._exitEditMode();
+
+					// N.A. July 27th, 2017, #1042: Trim value, when its length is larger then the maxLenght one.
+					if (this.options.maxLength) {
+						newValue = newValue.toString().substring(0, this.options.maxLength);
+						this._updateValue(newValue);
+						this._editorInput.val(this._getDisplayValue());
+					} else {
+						this._clearValue();
+						if (this._focused !== true) {
+							this._exitEditMode();
+						}
 					}
 				}
 			} else {
