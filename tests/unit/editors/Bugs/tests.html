@@ -1204,15 +1204,8 @@
 				equal(editor.igNumericEditor("value"), 20, "value should be 20");
 				editor.igNumericEditor("option",'value', null);
 				equal(editor.igNumericEditor("value"), 20, "value should be 20");
-				
-				
-				
-				
-
 				$("#646Editor").remove();
 			});
-		});
-
 			testId = 'Bug 1090';
 			test(testId, 3, function(){
 				var editor = $("#1090Editor"),
@@ -1233,6 +1226,8 @@
 				$("#1090Editor").remove();
 			});
 		});
+
+			
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
 			var keyDown = jQuery.Event("keydown"),
 				keyUp = jQuery.Event("keyup");
