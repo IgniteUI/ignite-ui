@@ -1915,18 +1915,10 @@
 				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
 			} else if (initialValue === null && !this.options.allowNullValue) {
-				//D.P.
 				this._setInitialValue("");
 			} else {
 				//D.P. Fallback if initial is not valid and can be null
 				this._setInitialValue();
-			}
-
-			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			// D.P.
-			if (!this.options.value && this.options.allowNullValue &&
-				this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
-				//this._setOption("value", this.options.nullValue);
 			}
 
 			this._applyPlaceHolder();
@@ -6499,12 +6491,6 @@
 				this._maskFlagsArray = [ "C", "&", "a", "A", "?", "L", "9", "0", "<", ">", "#" ];
 			}
 			this._promptCharsIndices = [];
-
-			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			// D.P. nullValue/value can be 0 or empty string
-			if (this.options.allowNullValue && !this.options.value && this.options.nullValue) {
-				//this.options.value = this.options.nullValue;
-			}
 		},
 		_applyOptions: function () { //igMaskEditor
 			this._getMaskLiteralsAndRequiredPositions();
@@ -6725,7 +6711,8 @@
 				ch, maskFlagsArray = this._maskFlagsArray,
 			length = mask.length, i, j, tempChar;
 
-			value = value ? value.toString() : "";
+			// D.P. Since other numbers are converted, so should be 0
+			value = value === 0 || value ? value.toString() : "";
 			if (length && length > 0) {
 				if (value.indexOf(this.options.unfilledCharsPrompt !== -1)) {
 					i = 225;
@@ -6985,7 +6972,7 @@
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
-						nullValue = this._parseValueByMask(value);
+						nullValue = this._parseValueByMask(this.options.nullValue);
 						this._maskedValue = nullValue;
 						this._valueInput.val(nullValue);
 						this.options.value = nullValue;
@@ -7119,7 +7106,7 @@
 				this._updateValue("");
 				this._maskedValue = "";
 			} else {
-				this._maskedValue = this._parseValueByMask(value.toString());
+				this._maskedValue = this._parseValueByMask(value);
 				this._updateValue(this._maskedValue);
 			}
 			this._checkClearButtonState();
@@ -7512,16 +7499,9 @@
 				}
 				this._updateValue(newValue);
 
-				//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-				if (this.options.allowNullValue && newValue === null && this.options.nullValue) {
-					//D.P. NO!
-					//this.value(this.options.nullValue);
-				}
-
-				// this._setInitialValue(newValue);
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
 				//if (this._focused === false || this._focused === undefined) {
-					this._editorInput.val(this._editMode ?
+				this._editorInput.val(this._editMode ?
 						this._maskedValue :
 						this._getDisplayValue());
 			} else {
