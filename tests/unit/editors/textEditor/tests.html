@@ -1578,14 +1578,15 @@
 		});
 		
 		testId = "Setting listItems on run time";
-		test(testId, 2, function () {
+		test(testId, 3, function () {
 			var editor = $('#issue481'), items = ["item 1", "item 2", "item 3"],
 			currentVal = editor.igTextEditor("option", "listItems");
 
 			ok(currentVal === null, "ListItems should not be set on initialization");
 				
 			editor.igTextEditor("option", "listItems", items);
-			equal(editor.igTextEditor("option", "listItems"), items, "ListItems were not set on run time.");
+			equal(editor.igTextEditor("option", "listItems").length, items.length, "ListItems were not set on run time.");
+			equal(editor.igTextEditor("option", "listItems")[0], items[0], "ListItems were not set on run time.");
 		});
 
 		var testId = 'Testing key code event arguments';
