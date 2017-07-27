@@ -1892,6 +1892,13 @@
 			}
 
 			initialValue = this.options.value;
+
+			// D.P. Set nullValue if needed. NB! Both value and nullValue *can* be 0 or ""
+			if (this.options.allowNullValue && initialValue === null) {
+				//doesn't really matter what nullValue is, at worst it will be null as well
+				initialValue = this.options.nullValue;
+			}
+
 			if (this.options.maxLength) {
 				if (initialValue && initialValue.toString().length > this.options.maxLength) {
 					initialValue = initialValue.toString().substring(0, this.options.maxLength);
@@ -1908,13 +1915,18 @@
 				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
 			} else if (initialValue === null && !this.options.allowNullValue) {
+				//D.P.
 				this._setInitialValue("");
+			} else {
+				//D.P. Fallback if initial is not valid and can be null
+				this._setInitialValue();
 			}
 
 			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			// D.P.
 			if (!this.options.value && this.options.allowNullValue &&
 				this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
-				this._setOption("value", this.options.nullValue);
+				//this._setOption("value", this.options.nullValue);
 			}
 
 			this._applyPlaceHolder();
@@ -6489,8 +6501,9 @@
 			this._promptCharsIndices = [];
 
 			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
+			// D.P. nullValue/value can be 0 or empty string
 			if (this.options.allowNullValue && !this.options.value && this.options.nullValue) {
-				this.options.value = this.options.nullValue;
+				//this.options.value = this.options.nullValue;
 			}
 		},
 		_applyOptions: function () { //igMaskEditor
@@ -7106,7 +7119,7 @@
 				this._updateValue("");
 				this._maskedValue = "";
 			} else {
-				this._maskedValue = this._parseValueByMask(value);
+				this._maskedValue = this._parseValueByMask(value.toString());
 				this._updateValue(this._maskedValue);
 			}
 			this._checkClearButtonState();
@@ -7501,7 +7514,8 @@
 
 				//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 				if (this.options.allowNullValue && newValue === null && this.options.nullValue) {
-					this.value(this.options.nullValue);
+					//D.P. NO!
+					//this.value(this.options.nullValue);
 				}
 
 				// this._setInitialValue(newValue);
@@ -8074,6 +8088,7 @@
 			this._super();
 
 			if (this._maskWithPrompts === undefined) {
+				//D.P.
 				this._setInitialValue();
 			}
 		},
