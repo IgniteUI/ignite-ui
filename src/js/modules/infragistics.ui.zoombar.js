@@ -21,10 +21,6 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
 			"./infragistics.ui.widget",
 			"./infragistics.ui.shared"
 		], factory );

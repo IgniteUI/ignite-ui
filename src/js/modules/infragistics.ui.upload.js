@@ -11,6 +11,7 @@
  *	jquery.ui.widget.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
+ *  infragistics.ui.widget.js
  *  infragistics.ui.shared.js
  */
 
@@ -19,10 +20,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.ui.shared"
 		], factory );
 	} else {
