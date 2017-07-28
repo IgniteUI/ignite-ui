@@ -2293,7 +2293,7 @@
 		});
 		
 	testId = "Test allowNullValue and NullValue at initialization #779";
-	test(testId, 8, function(){
+	test(testId, 9, function(){
 		var $editor = $("<input id='editor'/>").
 				appendTo("#testBedContainer").igNumericEditor({ allowNullValue: true, nullValue: 0});
 			
@@ -2315,6 +2315,9 @@
 			$editor.igNumericEditor("value", 5);
 			$editor.igNumericEditor("clearButton").trigger("click");
 			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on clear");
+			$editor.igNumericEditor("value", 5);
+			$editor.igNumericEditor("value", null);
+			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on set");
 			//verify empty string is still accepted
 			$editor.igNumericEditor("value", "");
 			strictEqual($editor.igNumericEditor("value"), "", "Empty value should be accepted");

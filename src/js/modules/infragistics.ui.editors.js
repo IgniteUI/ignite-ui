@@ -780,6 +780,10 @@
 				newValue = this.options.nullValue;
 			}
 
+			if (!this._validateValue(newValue)) {
+				newValue = "";
+			}
+
 			if (textOnly) {
 				this._editorInput.val(newValue);
 			} else {
