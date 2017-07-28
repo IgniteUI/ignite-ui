@@ -332,7 +332,9 @@
 				this.contentInner.attr("data-default-locale", true);
 			}
 			if (this.options.state !== value) {
-				this._currentText = message !== undefined ? this._currentText : this._getDefaultMessageByState(value);
+				this._currentText = message !== undefined ?
+									this._currentText :
+									this._getDefaultMessageByState(value);
 				this._previousState = this.options.state;
 				this.options.state = value;
 				if (this._visible) {

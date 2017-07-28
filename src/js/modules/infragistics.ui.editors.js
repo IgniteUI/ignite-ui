@@ -2920,7 +2920,7 @@
 								e.stopPropagation();
 								this._sendNotification("warning",
 									{
-										optName: maxLengthWarningMsg,
+										optName: "maxLengthWarningMsg",
 										arg: this.options.maxLength
 									});
 							}
@@ -5628,7 +5628,7 @@
 				this._sendNotification("warning",
 					{
 						optName: "maxValErrMsg",
-						argument: [this.options.maxValue]
+						argument: [ this.options.maxValue ]
 					});
 			}
 			if (this._focused) {
@@ -9109,7 +9109,7 @@
 					this._sendNotification("warning",
 						{
 							optName: "minValExceedSetErrMsg",
-							argument:this._getDisplayValue(new Date(this.options.minValue)) 
+							argument:this._getDisplayValue(new Date(this.options.minValue))
 						});
 				}
 			}

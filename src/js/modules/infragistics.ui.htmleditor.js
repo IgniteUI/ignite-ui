@@ -535,7 +535,6 @@
             // show[ ToolbarName ]: {name: '[ ToolbarName ]', value: true},
         },
         _isDirty: false,
-        
         _initDefaultToolbars: function () {
             this.defaultToolbars = [ {
                 name: "textToolbar",
@@ -1407,8 +1406,9 @@
             });
         },
         _initFontsCombos: function () {
-            var textToolbar = this._getToolbar("textToolbar"), 
-                fontFamiliesCombo = textToolbar.igToolbar("getItem", "fontFamily").addClass("ui-combo-fontfamily");
+            var textToolbar = this._getToolbar("textToolbar"),
+                fontFamiliesCombo = textToolbar.igToolbar("getItem", "fontFamily")
+                                    .addClass("ui-combo-fontfamily");
             fontFamiliesCombo.igCombo("option", {
                 // K.D. July 24th, 2012 Bug #111689 Combo items with item template cannot be selected under IE7/IE8
                 // Combo bug #113720
@@ -1492,7 +1492,6 @@
             }, this);
         },
         changeLocale: function () {
-            var self = this, $toolbar = this._toolbars;
             this._superApply(arguments);
             this._changeLocaleForToolbars();
             /* remove Link Properties dialog */
@@ -1505,7 +1504,7 @@
                 this._imageDialog.remove();
                 this._imageDialog = null;
             }
-            // change locale for font family combo
+            /* change locale for font family combo */
             this._changeLocaleForFontFamilies();
             this._changeLocaleForFontSizes();
             this._changeLocaleForFormatsList();
