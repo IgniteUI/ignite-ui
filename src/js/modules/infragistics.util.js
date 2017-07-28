@@ -213,6 +213,12 @@
 		}
 	};
 
+	$.ig.util.getLocaleValue = function (collection, key) {
+		var language = $.ig.util.language,
+			locale = $.ig.locale[ language ][ collection ];
+		return locale[ key ] || "";
+	};
+
 	//D.A. 11th November 2013, Updated the isIE & browserVersion to be compatible with IE11+
 	$.ig.util.isIE = window.navigator.userAgent.indexOf("MSIE") > -1 || !!window.navigator.userAgent.match(/trident/i);
 	$.ig.util.isIEOld = $.ig.util.isIE && !window.HTMLElement ? true : false;
@@ -5899,7 +5905,8 @@
 	$.ig.util.defaultSummaryMethods = [
 		{
 			/* type="string" Label that will be applied to the result of the summary function */
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelCount : "Count = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelCount") : "Count = ",
 			/* type="string" Name of the summary that can be set as an option inside the igGrid for example */
 			"name": "count",
 			/* type="function" Speficies the function that will be used when calculating the summary */
@@ -5915,7 +5922,8 @@
 			"applyFormat": false
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMin : "Min = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMin") : "Min = ",
 			"name": "min",
 			"summaryFunction": $.ig.util.summaries.min,
 			"dataType": [ "number", "date", "numeric" ],
@@ -5924,7 +5932,8 @@
 			"applyFormat": true
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMax : "Max = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMax") : "Max = ",
 			"name": "max",
 			"summaryFunction": $.ig.util.summaries.max,
 			"dataType": [ "number", "date", "numeric" ],
@@ -5933,7 +5942,8 @@
 			"applyFormat": true
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelSum : "Sum = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelSum") : "Sum = ",
 			"name": "sum",
 			"summaryFunction": $.ig.util.summaries.sum,
 			"dataType": [ "number", "numeric" ],
@@ -5942,7 +5952,8 @@
 			"applyFormat": true
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelAvg : "Avg = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelAvg") : "Avg = ",
 			"name": "avg",
 			"summaryFunction": $.ig.util.summaries.avg,
 			"dataType": [ "number", "numeric" ],
