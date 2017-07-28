@@ -9,18 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
-    $.ig = $.ig || {};
+(function () {
+    $ = $ || {};
+	$.ig = $.ig || {};
+	$.ig.Editor = $.ig.Editor || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.fr = $.ig.locale.fr || {};
 
-	$.ig.Editor = {
-		locale: {
+	$.ig.locale.fr.Editor = {
 			spinUpperTitle: 'Augmenter',
 			spinLowerTitle: 'Diminuer',
 			buttonTitle: 'Afficher la liste',
@@ -85,10 +86,8 @@
 			decimalNumber: "Lorsque dataMode est '{0}', l’option {1} peut accepter des valeurs numériques comprises entre 0 et {2}.",
 			decimalSeparatorErrorMsg: "L’option decimalSeparator requiert une valeur différente. Sa valeur doit être d’un seul caractère.",
 			decimalSeparatorEqualsGroupSeparatorErrorMsg: "Les options groupSeparator et decimalSeparator peuvent ne pas avoir des valeurs égales."
-		}
 	};
 
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.fr = $.ig.locale.fr || {};
-	$.ig.locale.fr.Editor = $.extend({}, $.ig.Editor.locale);
+	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.fr.Editor;
+	return $.ig.locale.fr.Editor;
 }));// REMOVE_FROM_COMBINED_FILES

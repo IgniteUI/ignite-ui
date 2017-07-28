@@ -9,14 +9,13 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
+(function () {
+	$ = $ || {};
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.ja = $.ig.locale.ja || {};
@@ -66,10 +65,12 @@
 		linkTargetTopmostWindowDialogText: '最上位のウィンドウで開く',
 		applyButtonTitle: '適用',
 		cancelButtonTitle: 'キャンセル',
-		textToolbar: "テキスト操作ツールバー",
-		formattingToolbar: "テキスト書式設定ツールバー",
-		insertObjectToolbar: "オブジェクト挿入ツールバー",
-		copyPasteToolbar: "コピー/貼り付けツールバー",
+		defaultToolbars: {
+			textToolbar: "テキスト操作ツールバー",
+			formattingToolbar: "テキスト書式設定ツールバー",
+			insertObjectToolbar: "オブジェクト挿入ツールバー",
+			copyPasteToolbar: "コピー/貼り付けツールバー"
+		},
 		fontNames: {
 			win: [
 				{ text: "メイリオ", value: "Meiryo" },
@@ -138,4 +139,5 @@
 };
 
 $.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.ja.HtmlEditor;
+return $.ig.locale.ja.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

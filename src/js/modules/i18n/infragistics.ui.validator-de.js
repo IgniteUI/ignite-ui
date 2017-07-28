@@ -9,18 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.Validator = $.ig.Validator || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
 
-	    $.ig.Validator = {
-		    locale: {
+	$.ig.locale.de.Validator = {
 			    defaultMessage: 'Bitte korrigieren Sie dieses Feld',
 			    selectMessage: 'Bitte wählen Sie einen Wert aus',
 			    rangeSelectMessage: 'Bitte wählen Sie nicht mehr als {0} und nicht weniger als {1} Elemente',
@@ -43,10 +44,8 @@
 				creditCardMessage: 'Eine gültige Zahlungskartennummer sollte eingegeben werden',
 		        equalToMessage: 'Die zwei Werte stimmen nicht überein',
 		        optionalString: '(optional)'
-		    }
-	    };
+	}
 		
-		$.ig.locale = $.ig.locale || {};
-		$.ig.locale.de = $.ig.locale.de || {};
-		$.ig.locale.de.Validator = $.extend({}, $.ig.Validator.locale);
+	$.ig.Validator.locale = $.ig.Validator.locale || $.ig.locale.de.Validator;
+	return $.ig.locale.de.Validator;
 }));// REMOVE_FROM_COMBINED_FILES

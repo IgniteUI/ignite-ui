@@ -33,7 +33,7 @@
 }
 (function ($) {
 
-	$.widget("ui.igVideoPlayer", {
+	$.widget("ui.igVideoPlayer", $.ui.igWidget,  {
 		_const: {
 			VOLUME_MAX: 1.0,
 			VOLUME_MIN: 0.0,
@@ -2070,7 +2070,7 @@
 				this.container = $("<div></div>").attr("id", this._id("_container")).insertBefore(this.element);
 				this.element.appendTo(this.container);
 			} else {
-				throw new Error($.ig.VideoPlayer.locale.nonDivException);
+				throw new Error(this._getLocaleValue("nonDivException"));
 			}
 
 			this._oldWidth = this.element.css("width");
@@ -2246,8 +2246,13 @@
 		_renderUnsupportedBrowser: function () {
 			if (this._trigger(this.events.browserNotSupported)) {
 				var container =
-				$("<div></div>").addClass(this.css.unsupportedBrowserClass).appendTo(this.container),
-				 ul, browserUnsupported;
+					$("<div data-test></div>")
+						.attr({
+							"data-not-supported-browser": true
+						})
+						.addClass(this.css.unsupportedBrowserClass)
+						.appendTo(this.container),
+				ul, browserUnsupported;
 
 				// K.D. June 7th, 2011 Bug #76981 Currently only the version is shown and as this is important for
 				// IE showing the name of the browser before the version as well
@@ -2264,30 +2269,33 @@
 				}
 
 				$("<div></div>").addClass("ui-igvideoplayer-current-browser-label")
-								.html($.ig.VideoPlayer.locale.currentBrowser.replace("{0}", browserUnsupported))
+								.html(this._getLocaleValue("currentBrowser").replace("{0}", browserUnsupported))
 								.appendTo(container);
 				$("<div></div>").addClass("ui-igvideoplayer-non-html5-text")
-								.html($.ig.VideoPlayer.locale.unsupportedBrowser).appendTo(container);
+								.html(this._getLocaleValue("unsupportedBrowser")).appendTo(container);
 				ul = $("<ul></ul>").addClass("ui-igplayer-browsers-list").appendTo(container);
-				$("<a></a>").attr("href", $.ig.VideoPlayer.locale.chromeDownload).attr("target", "_blank")
+				$("<a></a>").attr({
+								"href": this._getLocaleValue("chromeDownload"),
+								"target": "_blank"
+							})
 							.addClass("ui-igplayer-chrome-icon")
-							.html($.ig.VideoPlayer.locale.chrome8).appendTo($("<li></li>")
+							.html(this._getLocaleValue("chrome8")).appendTo($("<li></li>")
 							.addClass("ui-corner-all").appendTo(ul));
-				$("<a></a>").attr("href", $.ig.VideoPlayer.locale.firefoxDownload).attr("target", "_blank")
+				$("<a></a>").attr("href", this._getLocaleValue("firefoxDownload")).attr("target", "_blank")
 							.addClass("ui-igplayer-firefox-icon")
-							.html($.ig.VideoPlayer.locale.firefox36).appendTo($("<li></li>")
+							.html(this._getLocaleValue("firefox36")).appendTo($("<li></li>")
 							.addClass("ui-corner-all").appendTo(ul));
-				$("<a></a>").attr("href", $.ig.VideoPlayer.locale.operaDownload).attr("target", "_blank")
+				$("<a></a>").attr("href", this._getLocaleValue("operaDownload")).attr("target", "_blank")
 							.addClass("ui-igplayer-Opera-icon")
-							.html($.ig.VideoPlayer.locale.opera11).appendTo($("<li></li>")
+							.html(this._getLocaleValue("opera11")).appendTo($("<li></li>")
 							.addClass("ui-corner-all").appendTo(ul));
-				$("<a></a>").attr("href", $.ig.VideoPlayer.locale.safariDownload).attr("target", "_blank")
+				$("<a></a>").attr("href", this._getLocaleValue("safariDownload")).attr("target", "_blank")
 							.addClass("ui-igplayer-safari-icon")
-							.html($.ig.VideoPlayer.locale.safari5).appendTo($("<li></li>")
+							.html(this._getLocaleValue("safari5")).appendTo($("<li></li>")
 							.addClass("ui-corner-all").appendTo(ul));
-				$("<a></a>").attr("href", $.ig.VideoPlayer.locale.ieDownload).attr("target", "_blank")
+				$("<a></a>").attr("href", this._getLocaleValue("ieDownload")).attr("target", "_blank")
 							.addClass("ui-igplayer-ie-icon")
-							.html($.ig.VideoPlayer.locale.ie9).appendTo($("<li></li>")
+							.html(this._getLocaleValue("ie9")).appendTo($("<li></li>")
 							.addClass("ui-corner-all").appendTo(ul));
 				this.container.addClass("ui-igvideoplayer-non-html5");
 			}
@@ -2312,7 +2320,11 @@
 			).igButton({
 				link: { href: this._const.HREF },
 				css: { buttonLabelClass: css.fullScreenIconClass }
-			}).attr("title", $.ig.VideoPlayer.locale.enterFullscreen).addClass(css.fullScreenClass).bind({
+			}).attr({
+				"title": this._getLocaleValue("enterFullscreen"),
+				"data-localeid": "enterFullscreen",
+				"data-localeattr": "title"
+			}).addClass(css.fullScreenClass).bind({
 				click: function (event) {
 					event.preventDefault();
 					control._setOption("fullscreen", !control.options.fullscreen);
@@ -2321,10 +2333,14 @@
 			/* render related video replay button */
 			$("<a></a>").attr("id", this._id("_rv_bar_replay")).appendTo(relatedVideoBar).igButton({
 				onlyIcons: false,
-				labelText: $.ig.VideoPlayer.locale.replayButton,
+				labelText: this._getLocaleValue("replayButton"),
 				icons: { primary: css.relatedVideoReplayIconClass },
 				link: { href: this._const.HREF }
-			}).attr("title", $.ig.VideoPlayer.locale.replayTooltip).bind({
+			}).attr({
+				"title": this._getLocaleValue("replayTooltip"),
+				"data-localeid": "replayButton",
+				"data-localeattr": "title"
+			}).bind({
 				click: function (event) {
 					event.preventDefault();
 					if (!$(this).igButton("option", "disabled")) {
@@ -2372,7 +2388,10 @@
 											.addClass(css.relatedVideosOuterContainerClass)
 											.appendTo(this.container).hide();
 				/* render header div */
-				$("<div><div>").html($.ig.VideoPlayer.locale.relatedVideos)
+				$("<div><div>").html(this._getLocaleValue("relatedVideos"))
+					.attr({
+						"data-localeid": "relatedVideos"
+					})
 					.addClass(css.relatedVideosHeaderClass).appendTo(container);
 				/* render scroll container with buttons and ul */
 				scrollContainer = $("<div></div>").attr("id", this._id("_rvc"))
@@ -2712,9 +2731,11 @@
 						}
 					}).hide();
 
-				$("<span></span>").attr("id", this._id("_ad_msg")).appendTo(container)
-					.addClass(css.adMsgClass).html($.ig.VideoPlayer.locale.adMessage);
-
+				$("<span></span>").attr({
+					"id": this._id("_ad_msg"),
+					"data-localeid": "adMessage"
+				}).appendTo(container)
+					.addClass(css.adMsgClass).html(this._getLocaleValue("adMessage"));
 				this._renderAdClose(container);
 			}
 		},
@@ -2741,14 +2762,14 @@
 			var msg = $("#" + this._id("_ad_msg"));
 			if (msg.is(":visible") || force) {
 				if (isNaN(seconds)) {
-					msg.html($.ig.VideoPlayer.locale.adMessageNoDuration);
+					msg.html(this._getLocaleValue("adMessageNoDuration"));
 				} else {
 					seconds = parseInt(seconds, 10);
 					if (seconds > 60) {
-						msg.html($.ig.VideoPlayer.locale.adMessageLong
+						msg.html(this._getLocaleValue("adMessageLong")
 							.replace("$duration$", this._toTimeString(seconds)));
 					} else {
-						msg.html($.ig.VideoPlayer.locale.adMessage.replace("$duration$", seconds));
+						msg.html(this._getLocaleValue("adMessage").replace("$duration$", seconds));
 					}
 				}
 				this._isHiddenAdMessage = false;
@@ -2836,7 +2857,11 @@
 			comVideo[ 0 ].play();
 
 			if (commercial.link && commercial.link.length > 0) {
-				comVideo.attr("title", $.ig.VideoPlayer.locale.adNewWindowTip);
+				comVideo.attr({
+					"title": this._getLocaleValue("adNewWindowTip"),
+					"data-localeid": "adNewWindowTip",
+					"data-localeattr": "title"
+				});
 			} else {
 				comVideo.removeAttr("title");
 			}
@@ -3032,6 +3057,7 @@
 
 		_setOption: function (key, value, force) {
 			var video = this.currentVideo,
+				titleOption,
 				videoElem = video[ 0 ],
 				mainVideo = this._getMainVideo(),
 				videoOffset = video.offset(),
@@ -3262,15 +3288,21 @@
 
 					if (!options.browserControls) {
 						$("#" + this._id("_ctrls_fs_btn"))
-						.attr("title", value ?
-									$.ig.VideoPlayer.locale.exitFullscreen :
-									$.ig.VideoPlayer.locale.enterFullscreen);
+						.attr({
+							"title": value ? this._getLocaleValue("exitFullscreen")
+								: this._getLocaleValue("enterFullscreen"),
+							"data-localeid": "exitFullscreen",
+							"data-localeattr": "title"
+						});
 					}
 					if ($("#" + this._id("_rv_bar_fs")).is(":visible")) {
+						titleOption = value ? "exitFullscreen" : "enterFullscreen";
 						$("#" + this._id("_rv_bar_fs"))
-						.attr("title", value ?
-									$.ig.VideoPlayer.locale.exitFullscreen :
-									$.ig.VideoPlayer.locale.enterFullscreen);
+						.attr({
+							"title": this._getLocaleValue(titleOption),
+							"data-localeid": titleOption,
+							"data-localeattr": "title"
+						});
 					}
 					options.fullscreen = value;
 				}
@@ -3338,9 +3370,8 @@
 			default:
 				break;
 			}
-			$.Widget.prototype._setOption.apply(this, arguments);
+			this._superApply(arguments);
 		},
-
 		_onVideoStateChange: function () {
 			var video = this.currentVideo,
 				videoElem = video[ 0 ],
@@ -3521,14 +3552,14 @@
 				playing: function (event) {
 					control._hideWaitingIndicator();
 					$("span", $("#" + control._id("_ctrls_play")))
-					    .addClass("ui-icon-pause")
-					    .removeClass("ui-icon-play");
+						.addClass("ui-icon-pause")
+						.removeClass("ui-icon-play");
 					control._playing(this.currentSrc, this.duration, event);
 				},
 				pause: function (event) {
 					$("span", $("#" + control._id("_ctrls_play")))
-					    .addClass("ui-icon-play")
-					    .removeClass("ui-icon-pause");
+						.addClass("ui-icon-play")
+						.removeClass("ui-icon-pause");
 					control._paused(this.currentSrc, this.duration, event);
 				},
 				click: function (event) {
@@ -3791,7 +3822,11 @@
 					$("#" + this._id("_ctrls_s")).igSlider("option", "disabled", true);
 					this._showAdMessage(currentCommercial.endTime - currentCommercial.startTime);
 					if (currentCommercial.link && currentCommercial.link.length > 0) {
-						this.currentVideo.attr("title", $.ig.VideoPlayer.locale.adNewWindowTip);
+						this.currentVideo.attr({
+							"title": this._getLocaleValue("adNewWindowTip"),
+							"data-localeid": "adNewWindowTip",
+							"data-localeattr": "title"
+						});
 					}
 				} else if (currentTime >= currentCommercial.endTime && this._embeddedCommercialPlaying) {
 					this._embeddedCommercialsShow.shift();
@@ -3805,7 +3840,6 @@
 				}
 			}
 		},
-
 		_updateProgressLabel: function () {
 			var videoElem = this.currentVideo[ 0 ],
 				progressLabel = $("#" + this._id("_ctrls_pl")),
@@ -3816,11 +3850,10 @@
 			progressString = progressString
 				.replace("${currentTime}", this._toTimeString(currentTime))
 					.replace("${duration}", (rawDuration === Infinity ?
-															$.ig.VideoPlayer.locale.liveStream :
+															this._getLocaleValue("liveStream ") :
 															this._toTimeString(duration)));
 			progressLabel.html(progressString);
 		},
-
 		_toTimeString: function (val) {
 			/* val is assumed to be always seconds, because video.currentTime is always in seconds. */
 			if (typeof val === "number") {
@@ -3854,10 +3887,14 @@
 		_createUnsupportedVideoSourceMsg: function () {
 			var css = this.css;
 			return this._createButton(this._id("_detectError"),
-									  css.unsupportedVideoSourceClass,
-									  css.unsupportedVideoSourceIconClass,
-									  $.ig.VideoPlayer.locale.missingVideoSource)
-										.attr("title", $.ig.VideoPlayer.locale.unsupportedVideoSource);
+										css.unsupportedVideoSourceClass,
+										css.unsupportedVideoSourceIconClass,
+										this._getLocaleValue("missingVideoSource"))
+									.attr({
+										"title": this._getLocaleValue("unsupportedVideoSource"),
+										"data-localeid": "unsupportedVideoSource",
+										"data-localeattr": "title"
+									});
 		},
 
 		_showUnsupportedVideoSourceMsg: function () {
@@ -3878,9 +3915,9 @@
 			var control = this, css = this.css;
 
 			this._createButton(this._id("_play"),
-							   css.centerPlayButtonClass,
-							   css.centerPlayButtonIconClass,
-							   "").bind({
+								css.centerPlayButtonClass,
+								css.centerPlayButtonIconClass,
+								"").bind({
 				click: function (event) {
 					event.preventDefault();
 					if (event.button === 0) {
@@ -3895,9 +3932,14 @@
 				}
 			});
 		},
-
+		_updateButtonLabel: function (buttonId, text) {
+			var $buttonLabel = $("#" + buttonId).find("[data-button-label]");
+			if ($buttonLabel.length) {
+				$buttonLabel.html(text);
+			}
+		},
 		_createButton: function (buttonId, buttonClass, spanClass, text) {
-			$("<span></span>").html(text).addClass(spanClass)
+			$("<span data-button-label></span>").html(text).addClass(spanClass)
 				.appendTo($("<a></a>").attr("id", buttonId)
 				.attr("href", this._const.HREF).attr("tabIndex", -1)
 				.addClass("ui-state-default").addClass(buttonClass)
@@ -3947,15 +3989,13 @@
 		_hideCenterPlayButton: function () {
 			return $("#" + this._id("_play")).hide();
 		},
-
 		_createWaitingIndicator: function () {
 			var css = this.css;
 			this._createButton(this._id("_waiting"),
-							   css.waitingIndicatorClass,
-							   css.waitingIndicatorIconClass,
-							   $.ig.VideoPlayer.locale.buffering);
+								css.waitingIndicatorClass,
+								css.waitingIndicatorIconClass,
+								this._getLocaleValue("buffering"));
 		},
-
 		_createSeekTimeToolTip: function () {
 			$("<div></div>").attr("id", this._id("_seek_tooltip")).hide().igTooltip({
 				text: "00:00",
@@ -4005,8 +4045,9 @@
 							'" class="ui-button ui-igplayer-playbutton ui-igplayer-playback-with-time ' +
 							'ui-state-default ui-corner-all ui-priority-primary" href="' +
 							this._const.HREF + '">';
-			html += '			<span title="' + $.ig.VideoPlayer.locale.play +
-								'" class="ui-icon ui-icon-play ui-igplayer-playbutton-icon"></span>';
+			html += '			<span title="' + this._getLocaleValue("play") + '" ' +
+								'data-localeid="play" data-localeattr="title" ' +
+								'"class="ui-icon ui-icon-play ui-igplayer-playbutton-icon"></span>';
 			html += '			<span title="00:00" class="ui-button-text ui-igplayer-playbutton-text">00:00</span>';
 			html += "		</a>";
 			html += "</div>";
@@ -4131,7 +4172,7 @@
 							css.bookmarkItemTimeClass + '">$time$</span><span class="' +
 							css.bookmarkItemTitleClass + '" title="$titleAttr$">$title$</span></li>',
 					bookmarkAreaStr = '<div id="$id$" class="$bookmarkContainerClass$">' +
-									'<div class="$headerClass$">$headerText$</div>' +
+									'<div class="$headerClass$" data-localeid="skipTo">$headerText$</div>' +
 									'<ul class="$bookmarkListClass$">$list$</ul></div>',
 					bookmarkList = "",
 					bookmarkArea,
@@ -4152,7 +4193,7 @@
 					.replace("$bookmarkContainerClass$", css.bookmarkContainerClass)
 					.replace("$headerClass$", css.bookmarkContainerHeaderClass)
 					.replace("$bookmarkListClass$", css.bookmarkListClass)
-					.replace("$headerText$", $.ig.VideoPlayer.locale.skipTo)
+					.replace("$headerText$", this._getLocaleValue("skipTo"))
 					.replace("$list$", bookmarkList);
 
 				bookmarkArea = $(bookmarkAreaStr).appendTo(this.container);
@@ -4222,6 +4263,7 @@
 			}
 
 			var videoElem = this.currentVideo[ 0 ],
+				titleOption,
 				control = this,
 				controlsDiv,
 				controlsArray = [],
@@ -4296,7 +4338,7 @@
 			}
 
 			this.controls = $(controlsArray);
-
+			titleOption = autoPlay ? "playing" : "paused";
 			/* bind events */
 			$("#" + this._id("_ctrls_play")).bind({
 				click: function (event) {
@@ -4309,7 +4351,11 @@
 						  css: { buttonLabelClass: "ui-icon " +
 						  (autoPlay ? "ui-icon-pause " : "ui-icon-play ") + "ui-igplayer-playbutton-icon " }
 						}).addClass("ui-priority-primary")
-				.attr("title", (autoPlay ? $.ig.VideoPlayer.locale.playing : $.ig.VideoPlayer.locale.paused));
+				.attr({
+					"title": this._getLocaleValue(titleOption),
+					"data-localeid": titleOption,
+					"data-localeattr": "title"
+				});
 
 			$("#" + this._id("_ctrls_fs_btn")).bind({
 				click: function (event) {
@@ -4318,7 +4364,10 @@
 				}
 			}).igButton({ link: { href: this._const.HREF },
 						  css: { buttonLabelClass: this.css.fullScreenIconClass }
-						}).attr("title", $.ig.VideoPlayer.locale.enterFullscreen);
+						}).attr({
+							"title": this._getLocaleValue("enterFullscreen"),
+							"data-localeattr": "title",
+							"data-localeid": "enterFullscreen" });
 
 			$('<div id="' + this._id("_ctrls_pb") + '"></div>').appendTo(
 				$("#" + this._id("_ctrls_s")).igSlider({
@@ -4423,7 +4472,11 @@
 								"ui-icon-volume-off" :
 								"ui-icon-volume-on") +
 							" ui-igbutton-icon" }
-						  }).attr("title", $.ig.VideoPlayer.locale.volume);
+			}).attr({
+				"title": this._getLocaleValue("volume"),
+				"data-localeid": "volume",
+				"data-localeattr": "title"
+			});
 
 			$("#" + this._id("_ctrls_vs")).hide().bind({
 				mouseover: function () {
@@ -4512,7 +4565,34 @@
 				}
 			});
 		},
+		_updateNotSupportedBrowserContainer: function () {
+			var $container = this.container.find("[data-not-supported-browser]");
+			if ($container.length) {
+				$container.remove();
+				$.ig.util._renderUnsupportedBrowser(this, this._getLocaleDictionary());
+			}
+		},
+		changeLocale: function() {
+			this._super();
+			var $button = $("#" + this._id("_rv_bar_replay")),
+				$progressLabel = $("#" + this._id("_ctrls_pl"));
+			if ($button.length) {
+				 $button.igButton("option", {
+					labelText: this._getLocaleValue("replayButton")
+				});
+			}
+			if ($progressLabel.length) {
+				this._updateProgressLabel();
+			}
 
+			// update labels for buttons
+			this._updateButtonLabel(this._id("_waiting"),
+					this._getLocaleValue("buffering"));
+			this._updateButtonLabel(this._id("_detectError"),
+					this._getLocaleValue("missingVideoSource"));
+			this._refreshDuration(true);
+			this._updateNotSupportedBrowserContainer();
+		},
 		_slide: function (ui) {
 			var value = ui.value,
 				rawDuration = this.currentVideo[ 0 ].duration,
@@ -4691,7 +4771,6 @@
 				$("#" + this._id("_rvcc")).hide();
 			}
 		},
-
 		togglePlay: function () {
 			/* Toggle control play state. If video is playing it will pause, if video is paused it will play.
 			```
@@ -4702,19 +4781,24 @@
 
 			this._prepareForPlay();
 			this._toggleCenterPlayButton();
-
 			if (videoElem.paused || videoElem.ended) {
-
 				// K.D. June 3rd, 2011 Bug #75771 The title of the play/pause button has to be updated
 				if (!this.options.browserControls) {
-					$("#" + this._id("_ctrls_play")).attr("title", $.ig.VideoPlayer.locale.playing);
+					$("#" + this._id("_ctrls_play")).attr({
+						"title": this._getLocaleValue("playing"),
+						"data-localeid": "playing",
+						"data-localeattr": "title"
+					});
 				}
 				videoElem.play();
 			} else {
-
 				// K.D. June 3rd, 2011 Bug #75771 The title of the play/pause button has to be updated
 				if (!this.options.browserControls) {
-					$("#" + this._id("_ctrls_play")).attr("title", $.ig.VideoPlayer.locale.paused);
+					$("#" + this._id("_ctrls_play")).attr({
+						"title": this._getLocaleValue("paused"),
+						"data-localeid": "paused",
+						"data-localeattr": "title"
+					});
 				}
 				videoElem.pause();
 			}
@@ -4733,7 +4817,11 @@
 
 				// K.D. June 3rd, 2011 Bug #75771 The title of the play/pause button has to be updated
 				if (!this.options.browserControls) {
-					$("#" + this._id("_ctrls_play")).attr("title", $.ig.VideoPlayer.locale.playing);
+					$("#" + this._id("_ctrls_play")).attr({
+						"title": this._getLocaleValue("playing"),
+						"data-localeid": "playing",
+						"data-localeattr": "title"
+					});
 				}
 				videoElem.play();
 			}
@@ -4751,7 +4839,11 @@
 
 				// K.D. June 3rd, 2011 Bug #75771 The title of the play/pause button has to be updated
 				if (!this.options.browserControls) {
-					$("#" + this._id("_ctrls_play")).attr("title", $.ig.VideoPlayer.locale.paused);
+					$("#" + this._id("_ctrls_play")).attr({
+						"title": this._getLocaleValue("paused"),
+						"data-localeid": "paused",
+						"data-localeattr": "title"
+					});
 				}
 				videoElem.pause();
 			}
@@ -4772,16 +4864,16 @@
 			var videoElem = this.currentVideo[ 0 ],
 				rawDuration = videoElem.duration;
 			if (val !== null && val !== undefined) {
-			    try {
-			        // A.M. May 9, 2016 #218835 "currentTime method does not work as setter in IE"
+				try {
+					// A.M. May 9, 2016 #218835 "currentTime method does not work as setter in IE"
 					if ($.ig.util.isIE) {
-					    $("video").bind("canplay", function () { this.currentTime = val; });
+						$("video").bind("canplay", function () { this.currentTime = val; });
 					}
-					    videoElem.currentTime = val;
-					    $("#" + this._id("_ctrls_pb"))
-						    .igProgressBar("option", "value", (val / rawDuration).toFixed(2) * 100);
-					    this._checkCommercialsShow(val);
-					    this._checkEmbeddedCommercialShow(val);
+						videoElem.currentTime = val;
+						$("#" + this._id("_ctrls_pb"))
+							.igProgressBar("option", "value", (val / rawDuration).toFixed(2) * 100);
+						this._checkCommercialsShow(val);
+						this._checkEmbeddedCommercialShow(val);
 				} catch (ex) {}
 
 				if (videoElem.paused && !isNaN(rawDuration)) {
@@ -4893,13 +4985,13 @@
 			return this._duration;
 		},
 
-		_refreshDuration: function () {
+		_refreshDuration: function (forceUpdate) {
 			var duration = this.currentVideo[ 0 ].duration;
-			if (duration !== this._duration) {
+			if (duration !== this._duration || forceUpdate) {
 				this._duration = duration;
 				if (duration === Infinity) {
-					this._updateTitleControlsTimeString($.ig.VideoPlayer.locale.live,
-														$.ig.VideoPlayer.locale.liveStream);
+					this._updateTitleControlsTimeString(this._getLocaleValue("live"),
+														this._getLocaleValue("liveStream"));
 					$("#" + this._id("_ctrls_s")).data("igSlider").handle.hide();
 					$("#" + this._id("_ctrls_s")).igSlider("option", "disabled", true);
 				} else if (!isNaN(duration)) {
@@ -4987,10 +5079,8 @@
 			} else {
 				this.container.children().remove();
 			}
-
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 		},
-
 		_destroyBookmarks: function () {
 			if (this.bookmarkElements && this.bookmarkElements.length > 0) {
 				this.bookmarkElements.unbind();

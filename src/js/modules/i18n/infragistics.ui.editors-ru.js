@@ -9,18 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
+(function () {
+	$ = $ || {};
     $.ig = $.ig || {};
+	$.ig.Editor = $.ig.Editor || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
 
-	$.ig.Editor = {
-		locale: {
+	$.ig.locale.ru.Editor = {
 			spinUpperTitle: 'Увеличение',
 			spinLowerTitle: 'Уменьшение',
 			buttonTitle: 'Показать список',
@@ -85,10 +86,8 @@
 			decimalNumber: "Если свойство dataMode имеет значение '{0}', параметр {1} может принимать числовые значения от 0 до {2}.",
 			decimalSeparatorErrorMsg: "Для параметра decimalSeparator требуется другое значение. Это значение должно быть одиночным символом.",
 			decimalSeparatorEqualsGroupSeparatorErrorMsg: "Значения параметров groupSeparator и decimalSeparator не могут быть одинаковыми."
-		}
 	};
 
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ru = $.ig.locale.ru || {};
-	$.ig.locale.ru.Editor = $.extend({}, $.ig.Editor.locale);
+	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.ru.Editor;
+	return $.ig.locale.ru.Editor;
 }));// REMOVE_FROM_COMBINED_FILES

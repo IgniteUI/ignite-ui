@@ -9,25 +9,22 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
+(function () {
+   $ = $ || {};
     $.ig = $.ig || {};
-
-	$.ig.Rating = {};
-
-	$.extend($.ig.Rating, {
-		locale: {
-			setOptionError: 'Динамические изменения следующей опции не поддерживаются: '
-		}
-	});
-	
+	$.ig.Rating = $.ig.Rating || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.ru = $.ig.locale.ru || {};
-	$.ig.locale.ru.Rating = $.extend({}, $.ig.Rating.locale);
+
+	$.ig.locale.ru.Rating = {
+			setOptionError: 'Динамические изменения следующей опции не поддерживаются: '
+	}
+
+	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.ru.Rating;
+	return $.ig.locale.ru.Rating;
 }));// REMOVE_FROM_COMBINED_FILES

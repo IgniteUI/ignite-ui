@@ -9,16 +9,15 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
+(function () {
 
-    $.ig = $.ig || {};
+	$ = $ || {};
+	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.de = $.ig.locale.de || {};
 	$.ig.DataSourceLocale = $.ig.DataSourceLocale || {};
@@ -51,4 +50,5 @@
 			errorUnexpectedCustomFilterFunction: "Für eine kundenspezifische Filterfunktion wurde ein unerwarteter Wert angegeben. Eine Funktion oder Zeichenfolge wird erwartet."
 	};
 	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale.de.DataSourceLocale;
+	return $.ig.locale.de.DataSourceLocale;
 }));// REMOVE_FROM_COMBINED_FILES
