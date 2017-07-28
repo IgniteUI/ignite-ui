@@ -11,6 +11,7 @@
 *  jquery.ui.widget.js
 *  infragistics.util.js
 *  infragistics.util.jquery.js
+*  infragistics.ui.widget.js
 *  infragistics.ui.popover.js
 */
 
@@ -19,10 +20,6 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
 			"./infragistics.ui.popover"
 		], factory );
 	} else {
@@ -466,23 +463,9 @@
 			} else {
 				$.ui.igPopover.prototype._renderPopover.apply(this, arguments);
 			}
-			var id;
-			switch (this.options.state) {
-				case "success":
-					id = "successMsg";
-					break;
-				case "error":
-					id = "errorMsg";
-					break;
-				case "warning":
-					id = "warningMsg";
-					break;
-				default:
-					id = "infoMsg";
-			}
+			this._setState(this.options.state);
 			this.contentInner
 				.addClass(this.css.contentInner);
-			this._setState(this.options.state);
 		},
 		_openPopover: function (/*trg, skipEvents*/) {
 			var initialState = this._visible;

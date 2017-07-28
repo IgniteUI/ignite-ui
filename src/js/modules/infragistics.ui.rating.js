@@ -11,6 +11,7 @@
 * jquery.ui.widget.js
 * infragistics.util.js
 * infragistics.util.jquery.js
+* infragistics.ui.widget.js
 * infragistics.ui.rating-en.js
 *
 * Example to use:
@@ -27,10 +28,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery"
+			"./infragistics.ui.widget"
 		], factory );
 	} else {
 

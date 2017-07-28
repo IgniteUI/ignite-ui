@@ -841,8 +841,8 @@
         },
         _getTooltipByExpandState: function (state) {
 			return (state === "expand" ?
-					this._getLocaleValue("collapseButtonTitle") :
-					this._getLocaleValue("expandButtonTitle"))
+					$.ig.util.getLocaleValues("Toolbar", "collapseButtonTitle") :
+					$.ig.util.getLocaleValues("Toolbar", "expandButtonTitle"))
 				.replace("{0}", this.options.displayName);
         },
 		changeLocale: function() {

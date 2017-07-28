@@ -11,6 +11,7 @@
 * jquery.ui.widget.js
 * infragistics.util.js
 * infragistics.util.jquery.js
+* infragistics.ui.widget.js
 * infragistics.ui.popover.js
 * infragistics.ui.notifier.js
 
@@ -29,10 +30,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.ui.notifier"
 		], factory );
 	} else {
