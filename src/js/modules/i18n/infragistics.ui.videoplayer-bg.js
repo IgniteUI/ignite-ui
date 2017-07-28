@@ -9,21 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.VideoPlayer = $.ig.VideoPlayer || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
 
-	    $.ig.VideoPlayer = {};
-
-	    $.extend($.ig.VideoPlayer, {
-
-		    locale: {
+	$.ig.locale.bg.VideoPlayer = {
 			    liveStream: "Видео на живо",
 			    live: "На живо",
 			    paused: "Паузирано",
@@ -59,10 +57,8 @@
 			    replayButton: 'Започни отначало',
 			    replayTooltip: 'Натиснете тук, за да пуснете видеото отначало.',
 				noCommercials: 'Браузър контролите не поддържат реклами.'
-		    }
-	    });
+	}
 
-		$.ig.locale = $.ig.locale || {};
-		$.ig.locale.bg = $.ig.locale.bg || {};
-		$.ig.locale.bg.VideoPlayer = $.extend({}, $.ig.VideoPlayer.locale);
+	$.ig.VideoPlayer.locale = $.ig.VideoPlayer.locale || $.ig.locale.bg.VideoPlayer;
+	return $.ig.locale.bg.VideoPlayer;
 }));// REMOVE_FROM_COMBINED_FILES

@@ -9,14 +9,13 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
+(function () {
+	$ = $ || {};
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.bg = $.ig.locale.bg || {};
@@ -66,10 +65,12 @@
 		linkTargetTopmostWindowDialogText: 'Най-горният прозорец',
 		applyButtonTitle: 'Изпълни',
 		cancelButtonTitle: 'Отказ',
-		textToolbar: "лентата с инструменти за манипулация на текст",
-		formattingToolbar: "лентата с инструменти за форматиране на текст",
-		insertObjectToolbar: "лентата с инструменти за вмъкване на обекти",
-		copyPasteToolbar: "лентата с инструменти за копиране/поставяне",
+		defaultToolbars: {
+			textToolbar: "лентата с инструменти за манипулация на текст",
+			formattingToolbar: "лентата с инструменти за форматиране на текст",
+			insertObjectToolbar: "лентата с инструменти за вмъкване на обекти",
+			copyPasteToolbar: "лентата с инструменти за копиране/поставяне"
+		},
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
@@ -135,4 +136,5 @@
 };
 
 $.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.bg.HtmlEditor;
+return $.ig.locale.bg.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

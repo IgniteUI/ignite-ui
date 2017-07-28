@@ -840,7 +840,7 @@
             }
         },
         _getTooltipByExpandState: function (state) {
-            return (state === "expand" ?
+			return (state === "expand" ?
 					this._getLocaleValue("collapseButtonTitle") :
 					this._getLocaleValue("expandButtonTitle"))
 				.replace("{0}", this.options.displayName);
@@ -1335,7 +1335,7 @@
                 .remove();
             this.buttonsList.remove();
             this.element.removeClass();
-            $.Widget.prototype.destroy.apply(this, arguments);
+            this._superApply(arguments);
         }
     });
 

@@ -9,14 +9,13 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
+(function () {
+	$ = $ || {};
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.fr = $.ig.locale.fr || {};
@@ -66,10 +65,12 @@
 		linkTargetTopmostWindowDialogText: 'Fenêtre supérieure',
 		applyButtonTitle: 'Appliquer',
 		cancelButtonTitle: 'Annuler',
-		textToolbar: "text manipulation toolbar",
-		formattingToolbar: "text formatting toolbar",
-		insertObjectToolbar: "objects insertion toolbar",
-		copyPasteToolbar: "copy/paste toolbar",
+		defaultToolbars: {
+			textToolbar: "text manipulation toolbar",
+			formattingToolbar: "text formatting toolbar",
+			insertObjectToolbar: "objects insertion toolbar",
+			copyPasteToolbar: "copy/paste toolbar"
+		},
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
@@ -134,4 +135,5 @@
 };
 
 $.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.fr.HtmlEditor;
+return $.ig.locale.fr.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

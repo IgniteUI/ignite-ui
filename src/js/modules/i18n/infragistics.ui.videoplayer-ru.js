@@ -9,21 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.VideoPlayer = $.ig.VideoPlayer || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
 
-	    $.ig.VideoPlayer = {};
-
-	    $.extend($.ig.VideoPlayer, {
-
-		    locale: {
+	$.ig.locale.ru.VideoPlayer = {
 			    liveStream: "Прямой эфир",
 			    live: "Вживую",
 			    paused: "Пауза",
@@ -59,10 +57,8 @@
 			    replayButton: 'Еще раз',
 			    replayTooltip: 'Щелкнить чтобы посмотреть еще раз.',
 				noCommercials: 'Элементы управления браузером не поддерживают рекламу'
-		    }
-	    });
+	}
 
-		$.ig.locale = $.ig.locale || {};
-		$.ig.locale.ru = $.ig.locale.ru || {};
-		$.ig.locale.ru.VideoPlayer = $.extend({}, $.ig.VideoPlayer.locale);
+	$.ig.VideoPlayer.locale = $.ig.VideoPlayer.locale || $.ig.locale.ru.VideoPlayer;
+	return $.ig.locale.ru.VideoPlayer;
 }));// REMOVE_FROM_COMBINED_FILES

@@ -9,29 +9,25 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
-$.ig = $.ig || {};
+(function () {
+	$ = $ || {};
+    $.ig = $.ig || {};
+	$.ig.Zoombar = $.ig.Zoombar || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
 
-	$.ig.Zoombar = {};
-
-	$.extend($.ig.Zoombar, {
-
-		locale: {
+	$.ig.locale.ru.Zoombar = {
 			zoombarTargetNotSpecified: "Виджету igZoombar необходим целевой объект для отображения!",
 			zoombarTypeNotSupported: "Целевой виджет, к которому Zoombar пытается присоединиться, не поддерживается!",
 			zoombarProviderNotRecognized: "igZoombar не удалось инициализировать поставщика из указанного класса — возможно, переданное значение не является классом.",
 			optionChangeNotSupported: "Изменение этой опции после создания igZoombar не поддерживается:"
-		}
-	});
+	}
 
-		$.ig.locale = $.ig.locale || {};
-		$.ig.locale.ru = $.ig.locale.ru || {};
-		$.ig.locale.ru.Zoombar = $.extend({}, $.ig.Zoombar.locale);
+	$.ig.Zoombar.locale = $.ig.Zoombar.locale || $.ig.locale.ru.Zoombar;
+	return $.ig.locale.ru.Zoombar;;
 }));// REMOVE_FROM_COMBINED_FILES

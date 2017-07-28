@@ -9,14 +9,13 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
+(function () {
+	$ = $ || {};
 	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.ru = $.ig.locale.ru || {};
@@ -66,10 +65,12 @@
 		linkTargetTopmostWindowDialogText: 'Верхнее окно',
 		applyButtonTitle: 'Применить',
 		cancelButtonTitle: 'Отмена',
-		textToolbar: "Панель инструментов для работы с текстом",
-		formattingToolbar: "Панель инструментов для форматирования текста",
-		insertObjectToolbar: "Панель инструментов для добавления объектов",
-		copyPasteToolbar: "Панель инструментов для копирования и вставки",
+		defaultToolbars: {
+			textToolbar: "Панель инструментов для работы с текстом",
+			formattingToolbar: "Панель инструментов для форматирования текста",
+			insertObjectToolbar: "Панель инструментов для добавления объектов",
+			copyPasteToolbar: "Панель инструментов для копирования и вставки"
+		},
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
@@ -134,4 +135,5 @@
 };
 
 $.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.ru.HtmlEditor;
+return $.ig.locale.ru.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

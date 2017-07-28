@@ -9,18 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		factory();
 	}
 }
-(function ($) {
-    $.ig = $.ig || {};
+(function () {
+    $ = $ || {};
+	$.ig = $.ig || {};
+	$.ig.Editor = $.ig.Editor || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.es = $.ig.locale.es || {};
 
-	$.ig.Editor = {
-		locale: {
+	$.ig.locale.es.Editor = {
 			spinUpperTitle: 'Incrementar',
 			spinLowerTitle: 'Reducir',
 			buttonTitle: 'Mostrar lista',
@@ -85,10 +86,8 @@
 			decimalNumber: "Cuando dataMode es '{0}', la opción {1} puede aceptar valores numéricos entre 0 y {2}.",
 			decimalSeparatorErrorMsg: "La opción decimalSeparator requiere un valor diferente. Su valor debe ser un carácter individual.",
 			decimalSeparatorEqualsGroupSeparatorErrorMsg: "Las opciones groupSeparator y decimalSeparator no pueden tener valores iguales."
-		}
 	};
-	
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.es = $.ig.locale.es || {};
-	$.ig.locale.es.Editor = $.extend({}, $.ig.Editor.locale);
+
+	$.ig.Editor.locale = $.ig.Editor.locale || $.ig.locale.es.Editor;
+	return $.ig.locale.es.Editor;
 }));// REMOVE_FROM_COMBINED_FILES
