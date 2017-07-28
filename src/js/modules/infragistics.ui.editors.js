@@ -1804,14 +1804,6 @@
 			switch (option) {
 			case "value":
 				this.value(value);
-
-				//if (this._validateValue(value)) {
-				//	this._updateValue(value);
-				//	this._exitEditMode();
-				//} else {
-				//	this._clearValue();
-				//	this._exitEditMode();
-				//}
 				break;
 			case "placeHolder":
 				this._applyPlaceHolder();
@@ -6940,7 +6932,6 @@
 			return dataModeValue;
 		},
 		_updateValue: function (value) { //igMaskEditor
-			var nullValue;
 			if (value === "") {
 
 				// Convert empty value by dataMode
@@ -7481,9 +7472,8 @@
 				if (newValue === this._maskWithPrompts) {
 					newValue = "";
 				}
-				//if (this._validateValue(newValue)) {
-					this._updateValue(newValue);
-				//}
+
+				this._updateValue(newValue);
 
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
 				//if (this._focused === false || this._focused === undefined) {
@@ -9124,9 +9114,12 @@
 		_clearValue: function (textOnly) { //DateEditor
 			var newValue = "", maskedValue = this._maskWithPrompts;
 			if (this.options.allowNullValue) {
-				newValue = this.options.nullValue;
-				if (newValue instanceof Date) {
-					maskedValue = this._updateMaskedValue(this.options.nullValue, true);
+				if (this._validateValue(this.options.nullValue)) {
+					newValue = this.options.nullValue;
+					if (newValue !== null && newValue !== "") {
+						newValue = this._getDateObjectFromValue(this.options.nullValue);
+						maskedValue = this._updateMaskedValue(this.options.nullValue, true);
+					}
 				}
 			}
 			this._editorInput.val(maskedValue);
@@ -10589,7 +10582,7 @@
 
 				//If the value is valid proceed with min/max value
 				parsedVal = this._getDateObjectFromValue(newValue);
-				if (this._isValidDate(parsedVal)) {
+				if (newValue !== null && this._isValidDate(parsedVal)) {
 					if (this.options.maxValue && parsedVal > this.options.maxValue) {
 						newValue = this._getDateObjectFromValue(this.options.maxValue);
 						this._sendNotification("warning",
@@ -10606,11 +10599,20 @@
 							});
 					}
 				}
+
 				if (this._validateValue(newValue)) {
 					this._updateValue(newValue);
 
 					//TODO Update maskedValue according to the new value.
 					this._updateMaskedValue();
+				} else {
+					if (this.options.revertIfNotValid &&
+					!(newValue === null && this.options.allowNullValue)) {
+						newValue = this._valueInput.val();
+						this._updateValue(newValue);
+					} else {
+						this._clearValue();
+					}
 				}
 				this._editorInput.val(this._editMode ?
 					this._maskedValue :
