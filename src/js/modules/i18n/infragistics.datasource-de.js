@@ -19,12 +19,11 @@
 (function ($) {
 
     $.ig = $.ig || {};
-
-	$.ig.DataSourceLocale = {};
-
-	$.extend($.ig.DataSourceLocale, {
-
-		locale: {
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
+	$.ig.DataSourceLocale = $.ig.DataSourceLocale || {};
+	
+	$.ig.locale.de.DataSourceLocale = {
 			invalidDataSource: "Die angegebene Datenquelle ist ungültig. Es kann ein Skalar sein.",
 			unknownDataSource: "Der Datenquellentyp kann nicht bestimmt werden. Bitte angeben, ob es sich um JSON- oder XML-Daten handelt.",
 			errorParsingArrays: "Bei der Analyse der Arraydaten und der Anwendung des definierten Datenschemas ist ein Fehler aufgetreten: ",
@@ -50,9 +49,6 @@
 			filteringNoSchema: "Es wurden kein Schema / Felder angegeben. Es muss ein Schema mit Felddefinitionen und Feldtypen angegeben werden, um die Datenquelle filtern zu können.",
 			noSaveChanges: "Speichern der Änderungen war nicht erfolgreich. Server hat Success-Objekt nicht zurückgegeben oder Success:false zurückgegeben.",
 			errorUnexpectedCustomFilterFunction: "Für eine kundenspezifische Filterfunktion wurde ein unerwarteter Wert angegeben. Eine Funktion oder Zeichenfolge wird erwartet."
-		}
-	});
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.de = $.ig.locale.de || {};
-	$.ig.locale.de.DataSourceLocale = $.extend({}, $.ig.DataSourceLocale.locale);
+	};
+	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale.de.DataSourceLocale;
 }));// REMOVE_FROM_COMBINED_FILES

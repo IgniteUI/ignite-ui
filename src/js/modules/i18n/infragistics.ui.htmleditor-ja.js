@@ -17,13 +17,12 @@
 	}
 }
 (function ($) {
-$.ig = $.ig || {};
-
-$.ig.HtmlEditor = {};
-
-$.extend($.ig.HtmlEditor, {
-
-	locale: {
+	$.ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
+	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
+	
+	$.ig.locale.ja.HtmlEditor = {
 		boldButtonTitle: '太字',
 		italicButtonTitle: 'イタリック',
 		underlineButtonTitle: '下線',
@@ -67,12 +66,10 @@ $.extend($.ig.HtmlEditor, {
 		linkTargetTopmostWindowDialogText: '最上位のウィンドウで開く',
 		applyButtonTitle: '適用',
 		cancelButtonTitle: 'キャンセル',
-		defaultToolbars: {
-			textToolbar: "テキスト操作ツールバー",
-			formattingToolbar: "テキスト書式設定ツールバー",
-			insertObjectToolbar: "オブジェクト挿入ツールバー",
-			copyPasteToolbar: "コピー/貼り付けツールバー"
-		},
+		textToolbar: "テキスト操作ツールバー",
+		formattingToolbar: "テキスト書式設定ツールバー",
+		insertObjectToolbar: "オブジェクト挿入ツールバー",
+		copyPasteToolbar: "コピー/貼り付けツールバー",
 		fontNames: {
 			win: [
 				{ text: "メイリオ", value: "Meiryo" },
@@ -137,11 +134,8 @@ $.extend($.ig.HtmlEditor, {
 			{ text: "h6", value: "見出し 6" },
 			{ text: "p", value: "標準" }
 		]
-	}
 
-});
+};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.ja = $.ig.locale.ja || {};
-$.ig.locale.ja.HtmlEditor = $.extend({}, $.ig.HtmlEditor.locale);
+$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.ja.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

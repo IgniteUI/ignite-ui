@@ -18,9 +18,11 @@
 }
 (function ($) {
     $.ig = $.ig || {};
-
-	$.ig.Combo = {
-		locale: {
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
+	$.ig.Combo = $.ig.Combo || {};
+	
+	$.ig.locale.ru.Combo = {
 			noMatchFoundText: 'Результатов нет',
 			dropDownButtonTitle: 'Показать список',
 			clearButtonTitle: 'Очистить значение',
@@ -29,10 +31,7 @@
 			errorNoSupportedTextsType: "Требуется другой текст для фильтрации. Укажите либо текстовую строку, либо набор текстовых строк.",
 			errorUnrecognizedHighlightMatchesMode: 'Требуется другой режим выделения совпадений. Выберите значение из "multi", "contains", "startsWith", "full" и "null".',
 			errorIncorrectGroupingKey: "Неправильный ключ группирования."
-		}
 	};
 	
-    $.ig.locale = $.ig.locale || {};
-	$.ig.locale.ru = $.ig.locale.ru || {};
-	$.ig.locale.ru.Combo = $.extend({}, $.ig.Combo.locale);
+    $.ig.Combo.locale = $.ig.Combo.locale || $.ig.locale.ru.Combo;
 }));// REMOVE_FROM_COMBINED_FILES

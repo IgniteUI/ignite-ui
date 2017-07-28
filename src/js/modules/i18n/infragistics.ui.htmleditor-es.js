@@ -17,13 +17,12 @@
 	}
 }
 (function ($) {
-$.ig = $.ig || {};
-
-$.ig.HtmlEditor = {};
-
-$.extend($.ig.HtmlEditor, {
-
-	locale: {
+	$.ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.es = $.ig.locale.es || {};
+	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
+	
+	$.ig.locale.es.HtmlEditor = {
 		boldButtonTitle: 'Negrita',
 		italicButtonTitle: 'Cursiva',
 		underlineButtonTitle: 'Subrayado',
@@ -67,12 +66,10 @@ $.extend($.ig.HtmlEditor, {
 		linkTargetTopmostWindowDialogText: 'Ventana de nivel superior',
 		applyButtonTitle: 'Aplicar',
 		cancelButtonTitle: 'Cancelar',
-		defaultToolbars: {
-			textToolbar: "text manipulation toolbar",
-			formattingToolbar: "text formatting toolbar",
-			insertObjectToolbar: "objects insertion toolbar",
-			copyPasteToolbar: "copy/paste toolbar"
-		},
+		textToolbar: "text manipulation toolbar",
+		formattingToolbar: "text formatting toolbar",
+		insertObjectToolbar: "objects insertion toolbar",
+		copyPasteToolbar: "copy/paste toolbar",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
@@ -134,11 +131,8 @@ $.extend($.ig.HtmlEditor, {
 				{ text: "h6", value: "Encabezado 6" },
 				{ text: "p", value: "Normal" }
 			]
-	}
 
-});
+};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.es = $.ig.locale.es || {};
-$.ig.locale.es.HtmlEditor = $.extend({}, $.ig.HtmlEditor.locale);
+$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.es.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

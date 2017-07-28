@@ -18,9 +18,11 @@
 }
 (function ($) {
     $.ig = $.ig || {};
-
-	$.ig.Dialog = {
-		locale: {
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.fr = $.ig.locale.fr || {};
+	$.ig.Dialog = $.ig.Dialog || {};
+	
+	$.ig.locale.fr.Dialog = {
 			closeButtonTitle: "Fermer",
 			minimizeButtonTitle: "Minimiser",
 			maximizeButtonTitle: "Maximiser",
@@ -28,10 +30,7 @@
 			unpinButtonTitle: "Dépunaiser",
 			restoreButtonTitle: "Restaurer",
 			setOptionError: "Les modifications de temps d'exécution ne sont pas autorisées pour l'option suivante : "
-		}
 	};
 	
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.fr = $.ig.locale.fr || {};
-	$.ig.locale.fr.Dialog = $.extend({}, $.ig.Dialog.locale);
+	$.ig.Dialog.locale = $.ig.Dialog.locale || $.ig.locale.fr.Dialog;
 }));// REMOVE_FROM_COMBINED_FILES

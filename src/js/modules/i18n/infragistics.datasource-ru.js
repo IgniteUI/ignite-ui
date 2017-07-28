@@ -18,12 +18,11 @@
 }
 (function ($) {
     $.ig = $.ig || {};
-
-	$.ig.DataSourceLocale = {};
-
-	$.extend($.ig.DataSourceLocale, {
-
-		locale: {
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
+	$.ig.DataSourceLocale = $.ig.DataSourceLocale || {};
+	
+	$.ig.locale.ru.DataSourceLocale = {
 			invalidDataSource: "Источник данных неизвестен. Скалярные данные не поддерживаются.",
 			unknownDataSource: "Невозможно определить тип источника данных. Установите тип данных: JSON или XML.",
 			errorParsingArrays: "Произошла ошибка при обработке массива данных. Схема не соответствует: ",
@@ -49,10 +48,7 @@
 			filteringNoSchema: "Схема/поля не установлены. Необходимо установить схему с определением полей и типов перед фильтровкой источника данных.",
 			noSaveChanges: "Сохранение изменений не выполнено. Сервер не вернул объект успешного завершения или вернул для успешного завершения значение 'ложь'.",
 			errorUnexpectedCustomFilterFunction: "Для пользовательской функции фильтрации введено неожиданное значение. Ожидается функция или строка."
-		}
-	});
+	};
 	
-	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.ru = $.ig.locale.ru || {};
-	$.ig.locale.ru.DataSourceLocale = $.extend({}, $.ig.DataSourceLocale.locale);
+	$.ig.DataSourceLocale.locale = $.ig.DataSourceLocale.locale || $.ig.locale.ru.DataSourceLocale;
 }));// REMOVE_FROM_COMBINED_FILES

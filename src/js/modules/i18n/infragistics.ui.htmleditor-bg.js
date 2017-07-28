@@ -17,14 +17,12 @@
 	}
 }
 (function ($) {
-$.ig = $.ig || {};
-
-
-$.ig.HtmlEditor = {};
-
-$.extend($.ig.HtmlEditor, {
-
-	locale: {
+	$.ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	$.ig.HtmlEditor = $.ig.HtmlEditor || {};
+	
+	$.ig.locale.bg.HtmlEditor = {
 		boldButtonTitle: 'Получер',
 		italicButtonTitle: 'Курсив',
 		underlineButtonTitle: 'Подчертано',
@@ -68,12 +66,10 @@ $.extend($.ig.HtmlEditor, {
 		linkTargetTopmostWindowDialogText: 'Най-горният прозорец',
 		applyButtonTitle: 'Изпълни',
 		cancelButtonTitle: 'Отказ',
-		defaultToolbars: {
-			textToolbar: "лентата с инструменти за манипулация на текст",
-			formattingToolbar: "лентата с инструменти за форматиране на текст",
-			insertObjectToolbar: "лентата с инструменти за вмъкване на обекти",
-			copyPasteToolbar: "лентата с инструменти за копиране/поставяне"
-		},
+		textToolbar: "лентата с инструменти за манипулация на текст",
+		formattingToolbar: "лентата с инструменти за форматиране на текст",
+		insertObjectToolbar: "лентата с инструменти за вмъкване на обекти",
+		copyPasteToolbar: "лентата с инструменти за копиране/поставяне",
 		fontNames: {
 			win: [
 					{ text: "Times New Roman", value: "Times New Roman" },
@@ -135,11 +131,8 @@ $.extend($.ig.HtmlEditor, {
 				{ text: "h6", value: "Заглавие 6" },
 				{ text: "p", value: "Нормално" }
 			]
-	}
 
-});
+};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.bg = $.ig.locale.bg || {};
-$.ig.locale.bg.HtmlEditor = $.extend({}, $.ig.HtmlEditor.locale);
+$.ig.HtmlEditor.locale = $.ig.HtmlEditor.locale || $.ig.locale.bg.HtmlEditor;
 }));// REMOVE_FROM_COMBINED_FILES

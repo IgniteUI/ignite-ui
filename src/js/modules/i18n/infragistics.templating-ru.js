@@ -18,16 +18,13 @@
 }
 (function ($) {
 	$.ig = $.ig || {};
-
-	$.ig.Templating = {};
-
-	$.extend($.ig.Templating, {
-		locale: {
-			undefinedArgument: 'Произошла ошибка при извлечении значения поля из источника данных: '
-		}
-	});
-	
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.ru = $.ig.locale.ru || {};
-	$.ig.locale.ru.Templating = $.extend({}, $.ig.Templating.locale);
+	$.ig.Templating = $.ig.Templating || {};
+	
+	$.ig.locale.ru.Templating = {
+			undefinedArgument: 'Произошла ошибка при извлечении значения поля из источника данных: '
+	};
+	
+	$.ig.Templating.locale = $.ig.Templating.locale || $.ig.locale.ru.Templating;
 }));// REMOVE_FROM_COMBINED_FILES

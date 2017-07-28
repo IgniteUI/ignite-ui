@@ -17,22 +17,19 @@
 	}
 }
 (function($) {
-$.ig = $.ig || {};
-
-
-$.ig.Notifier = {};
-
-$.extend($.ig.Notifier, {
-	locale: {
+	$.ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
+	$.ig.Notifier = $.ig.Notifier || {};
+	
+	$.ig.locale.ja.Notifier = {
 		successMsg: "成功",
 		errorMsg: "エラー",
 		warningMsg: "警告",
+		infoMsg: "情報",
 		notSupportedState: "サポートされていない通知状態です。success、info、warning、error のいずれかのサポートされる状態を使用してください。",
 		notSupportedMode: "サポートされていない通知モードです。auto、popover、inline のいずれかのサポートされるモードを使用してください。"
-	}
-});
+};
 
-$.ig.locale = $.ig.locale || {};
-$.ig.locale.ja = $.ig.locale.ja || {};
-$.ig.locale.ja.Notifier = $.extend({}, $.ig.Notifier.locale);
+$.ig.Notifier.locale = $.ig.Notifier.locale || $.ig.locale.ja.Notifier;
 }));// REMOVE_FROM_COMBINED_FILES
