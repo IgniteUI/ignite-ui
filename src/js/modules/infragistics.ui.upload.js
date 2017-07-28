@@ -2004,7 +2004,6 @@
 			/* check if exists such button
 			*  if not exists add to markup */
 			var self = this,
-				o = self.options,
 				startUploadButtonId = "_strtuplbtn",
 				startUploadButton = $("#" + this._id(startUploadButtonId)),
 				browseButton = $("#" + this._id("_bb"));
@@ -2152,7 +2151,6 @@
 		/* M.H. 10 May 2011 - fix bug 74272: add method to render FileName properly in file upload info */
 		_renderFileName: function (formNumber, fileSize, fn) {
 			var self = this,
-				o = self.options,
 				fileName = fn,
 				previousFileName = "",
 				originalFileSize,
@@ -2232,7 +2230,8 @@
 				isHTML5 = false;
 
 			if (formNumber === null || fileInfo === null || fileInfo === undefined) {
-				self._setError(this._getLocaleValue("errorMessageTryToStartNonExistingFile").replace("{0}", formNumber),
+				self._setError(this._getLocaleValue("errorMessageTryToStartNonExistingFile")
+									.replace("{0}", formNumber),
 									formNumber,
 									self._const.clientSideErrorCode.startUpload, "clientside");
 				return;
@@ -2552,7 +2551,8 @@
 				singleFileInfo = this.getFileInfo(formNumber);
 
 			if (singleFileInfo === null) {
-				self._setError(this._getLocaleValue("errorMessageTryToRemoveNonExistingFile").replace("{0}", formNumber), formNumber,
+				self._setError(this._getLocaleValue("errorMessageTryToRemoveNonExistingFile")
+					.replace("{0}", formNumber), formNumber,
 					self._const.clientSideErrorCode.removeFileUpload, "clientside");
 				return;
 			}
@@ -2699,12 +2699,14 @@
 		},
 		changeLocale: function () {
 			var $button = $("#" + this._id("_ibb")),
-				$sumarryProgressTmp = $("#upload_summplbl");
+				$sumarryProgressTmp = $("#upload_summplbl"),
 				self = this;
 				this._super();
 
 			if ($sumarryProgressTmp.length) {
-				$sumarryProgressTmp.text(this._getLocaleValue("labelSummaryTemplate").replace("{0}", this.fileInfoData.countUploadingFiles).replace("{1}", this.fileInfoData.countTotalFiles));
+				$sumarryProgressTmp.text(this._getLocaleValue("labelSummaryTemplate")
+					.replace("{0}", this.fileInfoData.countUploadingFiles)
+					.replace("{1}", this.fileInfoData.countTotalFiles));
 			}
 			if ($button.length) {
 				$button.igBrowseButton("option", {
@@ -2712,7 +2714,7 @@
 					title: this._getLocaleValue("titleUploadFileButtonInit")
 				});
 			}
-			$button = $("#" +this._id("_bb"));
+			$button = $("#" + this._id("_bb"));
 			if ($button.length) {
 				$button.igBrowseButton("option", {
 					labelText: this._getLocaleValue("labelAddButton"),
@@ -2723,14 +2725,14 @@
 			if ($button.length) {
 				$button.igButton("option", {
 					title: this._getLocaleValue("titleClearAllButton"),
-					labelText: this._getLocaleValue("labelClearAllButton"),
+					labelText: this._getLocaleValue("labelClearAllButton")
 				});
 			}
 			$button = $("#" + this._id("_spbtncncl"));
 			if ($button.length) {
 				$button.igButton("option", {
 					title: this._getLocaleValue("titleShowDetailsButton"),
-					labelText: this._getLocaleValue("labelSummaryProgressButtonCancel"),
+					labelText: this._getLocaleValue("labelSummaryProgressButtonCancel")
 				});
 			}
 			$button = $("button[id$='cbtn']");
@@ -2738,8 +2740,8 @@
 				$button.each(function() {
 					$(this).igButton("option", {
 						title: self._getLocaleValue("labelSummaryProgressButtonCancel")
-					})
-				})
+					});
+				});
 			}
 		},
 		_setOption: function (key, value) {
@@ -3025,9 +3027,7 @@
 			}
 		},
 		_setShowHideDetailsButtonText: function (isHidden) {
-			var o = this.options,
-				showHideDetailsButton = $("#" + this._id("_shdbtn"));
-
+			var showHideDetailsButton = $("#" + this._id("_shdbtn"));
 			if (isHidden) {
 				showHideDetailsButton.text(this._getLocaleValue("labelShowDetails"));
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
@@ -3117,7 +3117,8 @@
 		_spbRenderInit: function () {
 			var self = this, o = this.options,
 				css = self.css,
-				uploaderId = this._id("_fu"), labelSummaryButton = this._getLocaleValue("labelSummaryProgressButtonContinue"),
+				uploaderId = this._id("_fu"),
+				labelSummaryButton = this._getLocaleValue("labelSummaryProgressButtonContinue"),
 				summaryProgressContainerId = this._id("_spbcntr"),
 				summaryProgressBarLabelId = this._id("_summpbrlbl"),
 				summaryProgressBarId = this._id("_summpbar"),
@@ -3136,8 +3137,10 @@
 			html +=	 '	<div  class="' + css.summaryInformationContainerClass + '">';
 			html += '		<span id="$summaryProgressLabelId$"  data-localeid="labelSummaryTemplate" ';
 			html +=	 '			class="' + css.summaryUploadedFilesLabelClass + '"></span>';
-			html += '		<a href="javascript:void(0);" id="$showHideDetailsId$" data-localeid="titleHideDetailsButton" ';
-			html +=	 '			class="' + css.summaryShowHideDetailsButtonClass + '">$labelShowHideDetails$</a>';
+			html += '		<a href="javascript:void(0);"' +
+							' id="$showHideDetailsId$" data-localeid="titleHideDetailsButton" ';
+			html += '			class="' + css.summaryShowHideDetailsButtonClass +
+										'">$labelShowHideDetails$</a>';
 			html +=	 "	</div>";
 			html +=	 '	<div class="' + css.clearClass + '">';
 			html +=	 '		<button id="$summaryProgressButtonCancelId$"></button>';
@@ -3151,7 +3154,8 @@
 					.replace("$summaryProgressBarId$", summaryProgressBarId)
 					.replace("$showHideDetailsId$", showHideDetailsId)
 					.replace("$labelShowHideDetails$", this._getLocaleValue("labelHideDetails"))
-					.replace("$labelSummaryProgressButtonCancel$", this._getLocaleValue("labelSummaryProgressButtonCancel"))
+					.replace("$labelSummaryProgressButtonCancel$",
+					this._getLocaleValue("labelSummaryProgressButtonCancel"))
 					.replace("$summaryProgressButtonCancelId$", summaryProgressButtonCancelId);
 			$(html).appendTo($("#" + uploaderId));
 
@@ -3214,8 +3218,7 @@
 			}).addClass(css.summaryButtonClass);
 		},
 		_spbRenderProgress: function () {
-			var o = this.options,
-				summaryProgressBar = $("#" + this._id("_summpbar")),
+			var summaryProgressBar = $("#" + this._id("_summpbar")),
 				summaryProgressLabel = $("#" + this._id("_summplbl")),
 				summaryProgressBarLabel = $("#" + this._id("_summpbrlbl")),
 				summaryProgressBarLabel1 = $("#" + this._id("_summpbrlbl_1")),
@@ -3243,7 +3246,8 @@
 			}
 			summaryProgressBar.igProgressBar("option", "value", value);
 			/* M.H. 13 May 2011 - fix bug 75042 */
-			textSummaryProgressBarLabel = this._getLocaleValue("labelSummaryProgressBarTemplate").replace("{0}",
+			textSummaryProgressBarLabel = this._getLocaleValue("labelSummaryProgressBarTemplate")
+																					.replace("{0}",
 																					this._formatFileSize(fileSizeUploaded)).replace("{1}",
 																					this._formatFileSize(fileSizeTotal)).replace("{2}",
 																					value);
@@ -3293,8 +3297,7 @@
 		/* Set different Modes for the Summary Button - Cancel, Done, Submit */
 		_spbSetButtonDone: function () {
 			/* submit all forms and enable cancel action */
-			var o = this.options,
-				button = $("#" + this._id("_spbtncncl"));
+			var button = $("#" + this._id("_spbtncncl"));
 			this.spbButtonMode = this.summaryButtonModes.done;
 			/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
 			button.igButton("option", {
@@ -3305,8 +3308,7 @@
 		},
 		_spbSetContinueButton: function () {
 			/* submit all forms and enable cancel action */
-			var o = this.options,
-				button = $("#" + this._id("_spbtncncl"));
+			var button = $("#" + this._id("_spbtncncl"));
 			this.spbButtonMode = this.summaryButtonModes.startupload;
 			button.igButton({
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
@@ -3496,7 +3498,7 @@
 		_setError: function (message, fileId, errorCode, errorType, serverMessage) {
 			/* error handling
 			/* error message, errorCode - type int, errorType - serverside|clientside */
-			var eArgs, o = this.options,
+			var eArgs,
 				errC = this._const.errorCode;
 
 			if (serverMessage === undefined) {

@@ -648,7 +648,7 @@
                 .igToolbarButton({
                     "onlyIcons": true,
                     "labelText": "&nbsp;",
-                    "title" : this._getTooltipByExpandState("expand"),
+                    "title": this._getTooltipByExpandState("expand"),
                     "icons": {
                         "primary": o.collapseButtonIcon
                     }
@@ -691,7 +691,7 @@
 
                     this.collapseBtn
                         .attr({
-							"title" : this._getTooltipByExpandState("collapse"),
+							"title": this._getTooltipByExpandState("collapse"),
 							"data-state": "collapse"
 						})
                         .children(":first")
@@ -717,7 +717,7 @@
 
                     this.collapseBtn
                         .attr({
-							"title" : this._getTooltipByExpandState("expand"),
+							"title": this._getTooltipByExpandState("expand"),
 							"data-state": "expand"
 						})
                         .children(":first")
@@ -837,7 +837,7 @@
             }
         },
         _getTooltipByExpandState: function (state) {
-        	return (state === "expand" ?
+			return (state === "expand" ?
 					this._getLocaleValue("collapseButtonTitle") :
 					this._getLocaleValue("expandButtonTitle"))
 				.replace("{0}", this.options.displayName);
@@ -845,7 +845,7 @@
 		changeLocale: function() {
 			var $button = this.collapseBtn;
 			if ($button && $button.length) {
-				$button.attr("title", this._getTooltipByExpandState($button.attr("data-state")))
+				$button.attr("title", this._getTooltipByExpandState($button.attr("data-state")));
 			}
 		},
         _expandOrCollapse: function () {
@@ -856,7 +856,7 @@
                 this._oldWidth = this._width;
                 self.collapseBtn
                     .attr({
-							"title" : this._getTooltipByExpandState("expand"),
+							"title": this._getTooltipByExpandState("expand"),
 							"data-state": "expand"
 					})
                     .children(":first")
@@ -874,7 +874,7 @@
                 self.buttonsList.hide();
                 self.collapseBtn
                     .attr({
-						"title" : this._getTooltipByExpandState("collapse"),
+						"title": this._getTooltipByExpandState("collapse"),
 						"data-state": "collapse"
 					})
                     .children(":first")

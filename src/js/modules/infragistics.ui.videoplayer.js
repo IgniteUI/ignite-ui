@@ -2321,7 +2321,7 @@
 				link: { href: this._const.HREF },
 				css: { buttonLabelClass: css.fullScreenIconClass }
 			}).attr({
-				"title" : this._getLocaleValue("enterFullscreen"),
+				"title": this._getLocaleValue("enterFullscreen"),
 				"data-localeid": "enterFullscreen",
 				"data-localeattr": "title"
 			}).addClass(css.fullScreenClass).bind({
@@ -2337,7 +2337,7 @@
 				icons: { primary: css.relatedVideoReplayIconClass },
 				link: { href: this._const.HREF }
 			}).attr({
-				"title" : this._getLocaleValue("replayTooltip"),
+				"title": this._getLocaleValue("replayTooltip"),
 				"data-localeid": "replayButton",
 				"data-localeattr": "title"
 			}).bind({
@@ -3289,10 +3289,11 @@
 					if (!options.browserControls) {
 						$("#" + this._id("_ctrls_fs_btn"))
 						.attr({
-							"title" : value ? this._getLocaleValue("exitFullscreen") : this._getLocaleValue("enterFullscreen"),
-							"data-localeid" : "exitFullscreen",
+							"title": value ? this._getLocaleValue("exitFullscreen")
+								: this._getLocaleValue("enterFullscreen"),
+							"data-localeid": "exitFullscreen",
 							"data-localeattr": "title"
-						})
+						});
 					}
 					if ($("#" + this._id("_rv_bar_fs")).is(":visible")) {
 						titleOption = value ? "exitFullscreen" : "enterFullscreen";
@@ -3849,7 +3850,7 @@
 			progressString = progressString
 				.replace("${currentTime}", this._toTimeString(currentTime))
 					.replace("${duration}", (rawDuration === Infinity ?
-															this._getLocaleValue("liveStream "):
+															this._getLocaleValue("liveStream ") :
 															this._toTimeString(duration)));
 			progressLabel.html(progressString);
 		},
@@ -4261,7 +4262,7 @@
 				this._createSeekTimeToolTip();
 			}
 
-			var videoElem = this.currentVideo[0],
+			var videoElem = this.currentVideo[ 0 ],
 				titleOption,
 				control = this,
 				controlsDiv,
@@ -4364,9 +4365,9 @@
 			}).igButton({ link: { href: this._const.HREF },
 						  css: { buttonLabelClass: this.css.fullScreenIconClass }
 						}).attr({
-							"title" : this._getLocaleValue("enterFullscreen"),
+							"title": this._getLocaleValue("enterFullscreen"),
 							"data-localeattr": "title",
-							"data-localeid" : "enterFullscreen"});
+							"data-localeid": "enterFullscreen" });
 
 			$('<div id="' + this._id("_ctrls_pb") + '"></div>').appendTo(
 				$("#" + this._id("_ctrls_s")).igSlider({
@@ -4571,9 +4572,8 @@
 				$.ig.util._renderUnsupportedBrowser(this, this._getLocaleDictionary());
 			}
 		},
-		changeLocale: function(){
+		changeLocale: function() {
 			this._super();
-			
 			var $button = $("#" + this._id("_rv_bar_replay")),
 				$progressLabel = $("#" + this._id("_ctrls_pl"));
 			if ($button.length) {
@@ -4584,6 +4584,7 @@
 			if ($progressLabel.length) {
 				this._updateProgressLabel();
 			}
+
 			// update labels for buttons
 			this._updateButtonLabel(this._id("_waiting"),
 					this._getLocaleValue("buffering"));

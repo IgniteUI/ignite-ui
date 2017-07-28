@@ -2502,9 +2502,9 @@
 					"pin" : ((state === UNPIN) ? "unpin" : "open")))))) + "ButtonTitle";
 			var val = this._getLocaleValue(state);
 			but.attr({
-				"title" : val,
+				"title": val,
 				"longdesc": val,
-				"data-localeid" : state,
+				"data-localeid": state,
 				"data-dialog-button": true
 			});
 		},
@@ -2515,7 +2515,7 @@
 				$button.attr({
 					"title": value,
 					"longdesc": value
-				})
+				});
 			});
 		},
 		_setOption: function (key, val) {
