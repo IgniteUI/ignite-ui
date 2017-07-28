@@ -1917,8 +1917,9 @@
 			} else if (initialValue === null && !this.options.allowNullValue) {
 				this._setInitialValue("");
 			} else {
-				//D.P. Fallback if initial is not valid and can be null
+				//D.P. Fallback if initial is not valid
 				this._setInitialValue();
+				this._editorInput.val(this._getDisplayValue());
 			}
 
 			this._applyPlaceHolder();
@@ -2109,6 +2110,9 @@
 
 		//We use this extra function so we can branch the logic into mask editor.
 		_setInitialValue: function (value) { //igTextEditor
+			if (typeof value === "undefined") {
+				value = "";
+			}
 			this._updateValue(value);
 		},
 		_disableEditor: function (applyDisabledClass) { //TextEditor
@@ -4518,6 +4522,11 @@
 				this.options.minDecimals;
 		},
 		_setInitialValue: function (value) { // NumericEditor
+			if (typeof value === "undefined") {
+				// D.P. Fallback zero in case both the value/nullValue are not valid
+				value = 0;
+			}
+
 			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
 			if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
 				value = this.options.maxValue;
@@ -5111,21 +5120,17 @@
 			return (value1 / value2);
 		},
 
-		//This method validates and updates the value input the hidden input
+		//This method updates the value and the hidden input
+		// D.P. This should not alter the value beyond parsing
 		_updateValue: function (value) { //Numeric Editor
-			// WE should detect dataMode, so we can use the options.
-			var val, dataMode = this.options.dataMode;
-			if (value === "" && this.options.allowNullValue) {
-				val = this.options.nullValue;
-				this._valueInput.val("");
-			} else if (value === this.options.nullValue && value === null) {
-				val = value;
-				this._valueInput.val("");
+			var val = value, dataMode = this.options.dataMode;
+			if (value === null) {
+				value = "";
 			} else {
-				val = this._parseNumericValueByMode(value, this._numericType, dataMode);
-				this._valueInput.val(val);
+				value = val = this._parseNumericValueByMode(value, this._numericType, dataMode);
 			}
 			this.options.value = val;
+			this._valueInput.val(value);
 
 			if (this._dropDownList) {
 				this._updateDropdownSelection(val);
@@ -5256,44 +5261,28 @@
 			this._processTextChanged();
 		},
 		_clearValue: function (textOnly) { //Numeric Editor
-			var newValue;
+			var newValue = 0;
 			if (this.options.allowNullValue) {
 				newValue = this.options.nullValue;
-				if (this.options.nullValue === null) {
-					this._editorInput.val("");
-				} else {
-
-					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-					if (this._validateValue(newValue)) {
-						this._editorInput.val(this.options.nullValue);
-					} else {
-						this._editorInput.val(this.options.value);
-					}
-				}
-			} else {
-
-				// If the min value is different from zero, we clear the value with the minimum value.
-				if (!isNaN(this.options.minValue) && this.options.minValue > 0) {
-					newValue = this.options.minValue;
-					this._editorInput.val(this.options.minValue);
-				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
-					newValue = this.options.maxValue;
-					this._editorInput.val(this.options.maxValue);
-
-				// I.G. 13/04/2017 #942 'When clearing with the 'clear' button, the value is set to 0 even if 0 is not in the list of items'
-				} else if (this.options.isLimitedToListValues) {
-					newValue = "";
-					this._editorInput.val("");
-				} else {
-					if (this.value()) {
-						newValue = 0;
-						this._editorInput.val(0);
-					}
-				}
 			}
 
-			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			if (!textOnly && newValue !== undefined && this._validateValue(newValue)) {
+			// D.P. nullValue does not override min/max
+			// If the min value is different from zero, we clear the value with the minimum value.
+			if (!isNaN(this.options.minValue) && this.options.minValue > newValue) {
+				newValue = this.options.minValue;
+			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < newValue) {
+				newValue = this.options.maxValue;
+			}
+
+			//D.P. This handles both invalid nullValue and 0 not being in the list of items for #942
+			if (!this._validateValue(newValue)) {
+				newValue = "";
+				this._editorInput.val("");
+			} else {
+				this._editorInput.val(newValue);
+			}
+
+			if (!textOnly) {
 				this._updateValue(newValue);
 			}
 		},
@@ -8066,11 +8055,6 @@
 			this.options.value = this._getValueBetweenMinMax(this.options.value);
 
 			this._super();
-
-			if (this._maskWithPrompts === undefined) {
-				//D.P.
-				this._setInitialValue();
-			}
 		},
 		_triggerKeyDown: function (event) { //DateEditor
 			var key = !event.charCode ? event.which : event.charCode,
