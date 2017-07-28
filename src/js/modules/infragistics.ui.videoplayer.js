@@ -4047,7 +4047,7 @@
 							this._const.HREF + '">';
 			html += '			<span title="' + this._getLocaleValue("play") + '" ' +
 								'data-localeid="play" data-localeattr="title" ' +
-								'"class="ui-icon ui-icon-play ui-igplayer-playbutton-icon"></span>';
+								'class="ui-icon ui-icon-play ui-igplayer-playbutton-icon"></span>';
 			html += '			<span title="00:00" class="ui-button-text ui-igplayer-playbutton-text">00:00</span>';
 			html += "		</a>";
 			html += "</div>";
