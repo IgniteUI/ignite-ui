@@ -1914,11 +1914,9 @@
 			if (this._validateValue(initialValue)) {
 				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
-			} else if (initialValue === null && !this.options.allowNullValue) {
-				this._setInitialValue("");
 			} else {
-				//D.P. Fallback if initial is not valid
-				this._setInitialValue();
+				//D.P. 2017-07-27 #1027 Fallback if initial value is not valid
+				this._setInitialValue("");
 				this._editorInput.val(this._getDisplayValue());
 			}
 
@@ -2110,9 +2108,6 @@
 
 		//We use this extra function so we can branch the logic into mask editor.
 		_setInitialValue: function (value) { //igTextEditor
-			if (typeof value === "undefined") {
-				value = "";
-			}
 			this._updateValue(value);
 		},
 		_disableEditor: function (applyDisabledClass) { //TextEditor
@@ -4522,16 +4517,11 @@
 				this.options.minDecimals;
 		},
 		_setInitialValue: function (value) { // NumericEditor
-			if (typeof value === "undefined") {
-				// D.P. Fallback zero in case both the value/nullValue are not valid
-				value = 0;
-			}
-
 			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
-			if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
-				value = this.options.maxValue;
-			} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
+			if (!isNaN(this.options.minValue) && this.options.minValue > value) {
 				value = this.options.minValue;
+			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < value) {
+				value = this.options.maxValue;
 			}
 			this._super(value);
 		},
@@ -7091,9 +7081,6 @@
 			if (value === null || value === "") {
 				this._updateValue(value);
 				this._maskedValue = "";
-			} else if (typeof value === "undefined") {
-				this._updateValue("");
-				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
 				this._updateValue(this._maskedValue);
@@ -7999,9 +7986,6 @@
 			this._maskWithPrompts = this._parseValueByMask("");
 			if (value === null || value === "") {
 				this._updateValue(value);
-				this._maskedValue = "";
-			} else if (typeof value === "undefined") {
-				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				//check value

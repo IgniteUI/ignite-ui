@@ -2305,9 +2305,8 @@
 			$editor = $("<input id='editor'/>").appendTo("#testBedContainer")
 				.igNumericEditor({ 
 					buttonType: "clear", 
-					nullValue: "abc", 
-					allowNullValue: true,
-					value: "" 
+					nullValue: "abc",
+					allowNullValue: true
 				});
 
 			equal($editor.val(), "", "Display did not initialize correctly");
