@@ -6955,10 +6955,9 @@
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
-						nullValue = this._parseValueByMask(this.options.nullValue);
-						this._maskedValue = nullValue;
-						this._valueInput.val(nullValue);
-						this.options.value = nullValue;
+						this._maskedValue = this._parseValueByMask(this.options.nullValue);
+						this.options.value = this._getValueByDataMode();
+						this._valueInput.val(this.options.value);
 
 					}
 				} else {
@@ -6978,10 +6977,15 @@
 			var newValue = "";
 			if (this.options.allowNullValue) {
 				newValue = this.options.nullValue;
+			}
+
+			if (this._validateValue(newValue)) {
 				this._editorInput.val(this._parseValueByMask(newValue));
 			} else {
+				newValue = "";
 				this._editorInput.val(this._maskWithPrompts);
 			}
+
 			if (!textOnly) {
 				this._updateValue(newValue);
 			}
@@ -7477,7 +7481,9 @@
 				if (newValue === this._maskWithPrompts) {
 					newValue = "";
 				}
-				this._updateValue(newValue);
+				//if (this._validateValue(newValue)) {
+					this._updateValue(newValue);
+				//}
 
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
 				//if (this._focused === false || this._focused === undefined) {
