@@ -19,9 +19,9 @@
 	$.ig = $.ig || {};
 	$.ig.Editor = $.ig.Editor || {};
 	$.ig.locale = $.ig.locale || {};
-	$.ig.locale.es = $.ig.locale.es || {};
+	$.ig.locale.fr = $.ig.locale.fr || {};
 
-	$.ig.locale.es.Editor = {
+	$.ig.locale.fr.Editor = {
 			spinUpperTitle: 'Augmenter',
 			spinLowerTitle: 'Diminuer',
 			buttonTitle: 'Afficher la liste',

@@ -8,6 +8,7 @@
 * jquery-1.9.1.js
 * jquery.ui.core.js
 * jquery.ui.widget.js
+* jquery.ui.widget.js
 * infragistics.util.js
 * infragistics.util.jquery.js
 * infragistics.ui.popover.js
@@ -54,7 +55,7 @@
 	Example:
 	$.ui.igValidator.defaults.showAllErrorsOnSubmit = false;
 */
-$.widget("ui.igValidator", {
+$.widget("ui.igValidator",  $.ui.igWidget, {
 	options: {
 		/* type="bool"  Gets/Sets whether validation is triggered when the text in editor changes.
 			Note that this is more appropriate for selection controls such as checkbox, combo or rating.
@@ -1075,7 +1076,7 @@ $.widget("ui.igValidator", {
 				break;
 
 		}
-		$.Widget.prototype._setOption.apply(this, arguments);
+		this._super(option, value);
 	},
 	_initalizeRules: function () {
 		// prevent using the prototype array
@@ -1669,9 +1670,9 @@ $.widget("ui.igValidator", {
 	},
 	_getLocalizedMessage: function (key, postfix) {
 		key += postfix || "Message";
-		var message = this.options.locale ? this.options.locale[ key ] : null;
+		var message = this._getLocaleValue(key);
 		if (!message && $.ig && $.ig.Validator && $.ig.Validator.locale) {
-			message = $.ig.Validator.locale[ key ];
+			message = this._getLocaleValue(key);
 		}
 		return message || "";
 	},

@@ -74,6 +74,9 @@
         getProperties: function () {
             return this.settings.props;
         },
+        getLocaleProperties: function () {
+            return this.settings.localeProperties;
+        },
         callbackRenderer: function () {
             if (this.settings.callbackRenderer && $.isFunction(this.settings.callbackRenderer)) {
                 return this.settings.callbackRenderer();
@@ -892,6 +895,7 @@
         _createItems: function () {
             var o = this.options,
                 i,
+                localeProps,
                 self = this,
                 itemProps = {},
                 newItem,
@@ -915,7 +919,10 @@
                 itemProps = {};
                 newItem = (o.items[ i ].callbackRenderer() || $('<div tabIndex="0"></div>'))
                     .attr("id", this._id("_item_" + o.items[ i ].name)).appendTo(this.buttonsList);
-
+                localeProps = o.items[ i ].getLocaleProperties();
+                if (localeProps) {
+                    newItem.attr(localeProps);
+                }
                 $.each(o.items[ i ].getProperties(), tbItemsPropsTraversing);
 
                 if (tbItemsHash.hasOwnProperty(o.items[ i ].type)) {

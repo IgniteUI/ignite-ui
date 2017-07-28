@@ -14,8 +14,9 @@
 		factory();
 	}
 }
-(function() {
-	ig = $.ig || {};
+(function () {
+	$ = $ || {};
+	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.bg = $.ig.locale.bg || {};
 	$.ig.Notifier = $.ig.Notifier || {};

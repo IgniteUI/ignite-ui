@@ -15,7 +15,8 @@
 	}
 }
 (function () {
-$.ig = $.ig || {};
+	$ = $ || {};
+	$.ig = $.ig || {};
 	$.ig.locale = $.ig.locale || {};
 	$.ig.locale.fr = $.ig.locale.fr || {};
 	$.ig.SharedLocale = $.ig.SharedLocale || {};
