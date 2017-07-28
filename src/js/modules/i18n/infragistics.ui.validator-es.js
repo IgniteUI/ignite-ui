@@ -9,19 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.Validator = $.ig.Validator || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.es = $.ig.locale.es || {};
 
-    if (!$.ig.Validator) {
-	    $.ig.Validator = {
-		    locale: {
+	$.ig.locale.es.Validator = {
 			    defaultMessage: 'Corrija este campo',
 			    selectMessage: 'Seleccione un valor',
 			    rangeSelectMessage: 'Seleccione un número de elementos entre {0} como máximo y {1} como mínimo',
@@ -44,7 +44,8 @@
 				creditCardMessage: 'Debe introducir un número de tarjeta de pago válido.',
 		        equalToMessage: 'Los dos valores no coinciden',
 		        optionalString: '(opcional)'
-		    }
-	    };
-    }
+	}
+		
+	$.ig.Validator.locale = $.ig.Validator.locale || $.ig.locale.es.Validator;
+	return $.ig.locale.es.Validator;
 }));// REMOVE_FROM_COMBINED_FILES
