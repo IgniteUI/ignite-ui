@@ -1892,7 +1892,7 @@
 					this._sendNotification("warning",
 						{
 							optName: "maxLengthErrMsg",
-							argument: this.options.maxLength
+							arg: this.options.maxLength
 						});
 				}
 			}
@@ -2063,7 +2063,7 @@
 		_getMessageForNotifier: function (messageObj) {
 			var optName = messageObj.optName,
 				message = this._getLocaleValue(optName),
-				arg = messageObj.argument;
+				arg = messageObj.arg;
 			return (arg !== undefined) ? $.ig.util.stringFormat(message, arg) : message;
 		},
 		_sendNotification: function (state, messageObj) {
@@ -2250,7 +2250,7 @@
 					this._sendNotification("warning",
 						{
 							optName: "maxLengthErrMsg",
-							argument: this.options.maxLength
+							arg: this.options.maxLength
 						});
 					result = false;
 				}
@@ -3319,7 +3319,7 @@
 					this._sendNotification("warning",
 						{
 							optName: "maxLengthErrMsg",
-							argument: this.options.maxLength
+							arg: this.options.maxLength
 						});
 					}
 				}
@@ -4758,7 +4758,7 @@
 					this._sendNotification("warning",
 						{
 							optName: "maxValExceedSetErrMsg",
-							argument: this.options.maxValue
+							arg: this.options.maxValue
 						});
 
 				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
@@ -4769,7 +4769,7 @@
 						this._sendNotification("warning",
 							{
 								optName: "minValExceedSetErrMsg",
-								argument: this.options.minValue
+								arg: this.options.minValue
 							});
 				}
 			}
@@ -5206,7 +5206,7 @@
 					this._sendNotification("warning",
 						{
 							optName: "maxValExceedSetErrMsg",
-							argument: this.options.maxValue
+							arg: this.options.maxValue
 						});
 				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
@@ -5215,7 +5215,7 @@
 					this._sendNotification("warning",
 						{
 							optName: "minValExceedSetErrMsg",
-							argument: this.options.minValue
+							arg: this.options.minValue
 						});
 				}
 
@@ -5621,14 +5621,14 @@
 				this._sendNotification("warning",
 					{
 						optName: "maxValExceededWrappedAroundErrMsg",
-						argument: this.options.maxValue
+						arg: this.options.maxValue
 					});
 			} else if (currVal >= this.options.maxValue && !this.options.spinWrapAround) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
 					{
 						optName: "maxValErrMsg",
-						argument: [ this.options.maxValue ]
+						arg: [ this.options.maxValue ]
 					});
 			}
 			if (this._focused) {
@@ -5683,7 +5683,7 @@
 				this._sendNotification("warning",
 					{
 						optName: "minValExceededWrappedAroundErrMsg",
-						argument: this.options.minValue
+						arg: this.options.minValue
 					});
 
 			} else if (currVal <= this.options.minValue && !this.options.spinWrapAround) {
@@ -5691,7 +5691,7 @@
 				this._sendNotification("warning",
 					{
 						optName: "minValErrMsg",
-						argument: this.options.minValue
+						arg: this.options.minValue
 					});
 			}
 			if (this._focused) {
@@ -5775,7 +5775,7 @@
 							this._sendNotification("warning",
 								{
 									optName: "maxValExceedSetErrMsg",
-									argument: this.options.maxValue
+									arg: this.options.maxValue
 								});
 
 							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
@@ -5786,7 +5786,7 @@
 							this._sendNotification("warning",
 								{
 									optName: "minValExceedSetErrMsg",
-									argument: this.options.value
+									arg: this.options.value
 								});
 						}
 					}
@@ -6101,7 +6101,7 @@
 					this._sendNotification("warning",
 						{
 							optName: "maxValExceedSetErrMsg",
-							argument: this.options.maxValue
+							arg: this.options.maxValue
 						});
 				} else if (!isNaN(this.options.minValue) &&
 					newValue / this.options.displayFactor < this.options.minValue) {
@@ -6111,7 +6111,7 @@
 					this._sendNotification("warning",
 						{
 							optName: "minValExceedSetErrMsg",
-							argument: this.options.minValue
+							arg: this.options.minValue
 						});
 				}
 				if (!this._validateValue(newValue / this.options.displayFactor) &&
@@ -9102,14 +9102,14 @@
 					this._sendNotification("warning",
 						{
 							optName: "maxValExceedSetErrMsg",
-							argument: this._getDisplayValue(new Date(this.options.maxValue))
+							arg: this._getDisplayValue(new Date(this.options.maxValue))
 						});
 				} else if (this.options.minValue && date < this.options.minValue) {
 					validDate = this._getDateObjectFromValue(this.options.minValue);
 					this._sendNotification("warning",
 						{
 							optName: "minValExceedSetErrMsg",
-							argument:this._getDisplayValue(new Date(this.options.minValue))
+							arg: this._getDisplayValue(new Date(this.options.minValue))
 						});
 				}
 			}
@@ -10614,14 +10614,14 @@
 						this._sendNotification("warning",
 							{
 								optName: "maxValExceedSetErrMsg",
-								argument: this._getDisplayValue(new Date(this.options.maxValue))
+								arg: this._getDisplayValue(new Date(this.options.maxValue))
 							});
 					} else if (this.options.minValue && parsedVal < this.options.minValue) {
 						newValue = this._getDateObjectFromValue(this.options.minValue);
 						this._sendNotification("warning",
 							{
 								optName: "minValExceedSetErrMsg",
-								argument: this._getDisplayValue(new Date(this.options.minValue))
+								arg: this._getDisplayValue(new Date(this.options.minValue))
 							});
 					}
 				}
