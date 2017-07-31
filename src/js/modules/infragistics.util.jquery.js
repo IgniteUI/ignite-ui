@@ -122,7 +122,7 @@
 	//checkbox markup classes can be changed
 	//and setting them in a a box can be done by the predefined classes "ui-state-default ui-corner-all ui-igcheckbox-small"
 	$.ig.checkboxMarkupClasses = "";
-	$.ig.getRegionalOption = function (reg) {
+	$.ig.getRegionalOptions = function (reg) {
 		if (!reg) {
 			return $.ig.regional.defaults || {};
 		}
@@ -364,7 +364,7 @@
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
 			display = displayStyle || "inline-block";
 
-		reg = $.ig.getRegionalOption(reg, val);
+		reg = $.ig.getRegionalOptions(reg, val);
 
 		if (format === "checkbox" && notTemplate) {
 			return $.ig.formatCheckboxes(display, val, labelText, tabIndex);
