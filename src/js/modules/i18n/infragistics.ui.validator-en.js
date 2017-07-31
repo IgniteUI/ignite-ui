@@ -9,19 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.Validator = $.ig.Validator || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
 
-    if (!$.ig.Validator) {
-	    $.ig.Validator = {
-		    locale: {
+	$.ig.locale.en.Validator = {
 		        defaultMessage: 'This field needs attention',
 		        selectMessage: 'A value should be selected',
 		        rangeSelectMessage: 'At least {0} but no more than {1} items should be selected',
@@ -44,7 +44,8 @@
 		        creditCardMessage: 'A valid payment card number should be entered',
 		        equalToMessage: 'The two values do not match',
 		        optionalString: '(optional)'
-		    }
-	    };
-    }
+	}
+		
+	$.ig.Validator.locale = $.ig.Validator.locale || $.ig.locale.en.Validator;
+	return $.ig.locale.en.Validator;
 }));// REMOVE_FROM_COMBINED_FILES
