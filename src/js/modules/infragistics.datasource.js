@@ -3865,9 +3865,10 @@
 								success(data, textStatus, jqXHR);
 							}
 						} else {
-							me._saveChangesError(jqXHR, textStatus, $.ig.DataSourceLocale.locale.noSaveChanges);
+							me._saveChangesError(jqXHR, textStatus,
+								$.ig.util.getLocaleValue("DataSourceLocale", "noSaveChanges"));
 							if (error) {
-								error(jqXHR, textStatus, $.ig.DataSourceLocale.locale.noSaveChanges);
+								error(jqXHR, textStatus, $.ig.util.getLocaleValue("DataSourceLocale", "noSaveChanges"));
 							}
 						}
 					},
@@ -3902,7 +3903,7 @@
 				sche = this._saveChangesErrorHandlers;
 				i = sche ? sche.length : 0;
 				while (i-- > 0) {
-					sche[ i ](jqXHR, textStatus, $.ig.DataSourceLocale.locale.noSaveChanges);
+					sche[ i ](jqXHR, textStatus, $.ig.util.getLocaleValue("DataSourceLocale", "noSaveChanges"));
 				}
 			}
 		},
@@ -4074,13 +4075,13 @@
 						this._data = this.schema().transform(this.dataSource());
 						break;
 					case "invalid":
-						throw new Error($.ig.DataSourceLocale.locale.invalidDataSource);
+						throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "invalidDataSource"));
 					case "unknown":
 					case "json":
 					case "xml":
 						if (this.settings.type !== "json" && p.type !== "xml") {
 							/* throw new Error("Cannot determine the data source type. Please specify if it is JSON or XML data. "); */
-							throw new Error($.ig.DataSourceLocale.locale.unknownDataSource);
+							throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "unknownDataSource"));
 						} else {
 							resKey = this.settings.responseDataKey;
 							/* there are two cases:
@@ -4120,7 +4121,8 @@
 								in fact when the igGrid is bound to the igDataSource, and there is no explicit schema defined, we can assume a predefined schema, something like:
 								<row> <cell></cell> ... </row> and so on. The initial schema comes from the column definitions, and 1) => if we cannot find the XPath, fallback
 								to the default schema, or 2) => if no columns are defined, assume the default xml schema again. */
-								throw new Error($.ig.DataSourceLocale.locale.errorXmlSourceWithoutSchema);
+								throw new Error(
+									$.ig.util.getLocaleValue("DataSourceLocale", "errorXmlSourceWithoutSchema"));
 							}
 							/* make sure to read the responseTotalRecCountKey no matter if localSchemaTransform = true or false */
 							this.totalRecordsCount(null, this.settings.responseTotalRecCountKey, dsObj, this);
@@ -4498,7 +4500,7 @@
 					}
 					ds = this.context._processXmlResponse(data, true, this.context);
 				} else if (data !== "" && data !== null) {
-					throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedResponseType);
+					throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedResponseType"));
 				}
 			}
 			/*
@@ -4581,7 +4583,7 @@
 			} else if (error !== undefined) {
 				statusMsg = " ( " + (error.message || error) + " ) ";
 			}
-			errmsg = $.ig.DataSourceLocale.locale.errorRemoteRequest + statusMsg;
+			errmsg = $.ig.util.getLocaleValue("DataSourceLocale", "errorRemoteRequest") + statusMsg;
 			if (f && this._callee) {
 				f.apply(this._callee, [ false, errmsg, req, this ]);
 			} else if (f) {
@@ -5542,7 +5544,7 @@
 				fields = this._parseSortExpressions(fields);
 			}
 			if (fields === undefined || fields === null) {
-				throw new Error($.ig.DataSourceLocale.locale.noSortingFields);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "noSortingFields"));
 			}
 			fields = this._findSortingExpressionsForLayout(fields, this.settings.key);
 			isGb = this.isGroupByApplied(fields);
@@ -5867,7 +5869,7 @@
 			this._clearGroupByData();
 			schema = this.schema();
 			if (schema === null || schema === undefined) {
-				throw new Error($.ig.DataSourceLocale.locale.filteringNoSchema);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "filteringNoSchema"));
 			}
 			if ($.type(fieldExpressions) === "string") {
 				expr = fieldExpressions;
@@ -6163,7 +6165,8 @@
 				if (isInvalid) {
 					/* A.T. 18 Jan 2011 - fix for bug 62406 - filtering
 					expression string fallback scenario should return an error */
-					throw new Error($.ig.DataSourceLocale.locale.fieldMismatch + fields[ i ].fieldName);
+					throw new Error(
+						$.ig.util.getLocaleValue("DataSourceLocale", "fieldMismatch") + fields[ i ].fieldName);
 				}
 				isInvalid = true;
 				if (tmp2[ 0 ] === ">") {
@@ -6206,7 +6209,7 @@
 				} else {
 					/* A.T. 18 Jan 2011 - fix for bug 62406 - filtering expression
 					string fallback scenario should return an error */
-					throw new Error($.ig.DataSourceLocale.locale.unrecognizedCondition + expr);
+					throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "unrecognizedCondition") + expr);
 					/* fallback
 					fields[i].cond = "Contains"; */
 				}
@@ -6246,7 +6249,8 @@
 				} else if (window[ func ] && typeof window[ func ] === "function") {
 					f = window[ func ];
 				} else {
-					throw new Error($.ig.DataSourceLocale.locale.errorUnexpectedCustomFilterFunction);
+					throw new Error(
+						$.ig.util.getLocaleValue("DataSourceLocale", "errorUnexpectedCustomFilterFunction"));
 				}
 				return f(val, expr, t, ignoreCase, preciseDateFormat, colKey);
 			}
@@ -6326,7 +6330,8 @@
 			if (cond === "notEmpty") {
 				return localVal === null || localVal === undefined || localVal.length !== 0;
 			}
-			throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedFilterCondition + cond);
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
 			/* return false; */
 		},
 		_findRegExpMatch: function (val, expr, str) {
@@ -6372,7 +6377,8 @@
 			if (cond === "notEmpty") {
 				return (val !== null && val !== undefined && !isNaN(val));
 			}
-			throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedFilterCondition + cond);
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
 		},
 		/* True or False */
 		_findBoolMatch: function (val, cond) {
@@ -6394,7 +6400,8 @@
 			if (cond === "notEmpty") {
 				return (val !== null && val !== undefined);
 			}
-			throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedFilterCondition + cond);
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
 		},
 		_getDateParts: function (date) {
 			// returns object containing parts of the data like year, month, day, hours, etc.
@@ -6554,7 +6561,8 @@
 			if (cond === "notEmpty") {
 				return (val !== null && val !== undefined);
 			}
-			throw new Error($.ig.DataSourceLocale.locale.errorUnrecognizedFilterCondition + cond);
+			throw new Error(
+				$.ig.util.getLocaleValue("DataSourceLocale", "errorUnrecognizedFilterCondition") + cond);
 		},
 		/*
 		clearFilter: function (fields) {
@@ -6960,12 +6968,14 @@
 				}
 				return data;
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingHtmlTableNoSchema + e.message);
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingHtmlTableNoSchema") + e.message);
 			}
 		},
 		_validateTable: function (obj) {
 			if (obj.length === 0) {
-				throw new Error($.ig.DataSourceLocale.locale.errorTableWithIdNotFound + this.dataSource());
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorTableWithIdNotFound") + this.dataSource());
 			} else {
 				return obj[ 0 ];
 			}
@@ -6984,7 +6994,8 @@
 				//A.T. 20 Jan 2011 Fix for bug #62124 - igDataSource JSON string binding error
 				data = JSON.parse(s);
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingJsonNoSchema + e.message);
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingJsonNoSchema") + e.message);
 			}
 			return data;
 		},
@@ -7007,7 +7018,8 @@
 					doc = parser.parseFromString(s, "text/xml");
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingXmlNoSchema + e.message);
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingXmlNoSchema") + e.message);
 			}
 			return doc;
 		},
@@ -7619,7 +7631,7 @@
 				}
 			}
 			/* } catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingArrays + e.message);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", ".errorParsingArrays + e.message);
 			} */
 			return nDataRow;
 		},
@@ -7668,7 +7680,7 @@
 					}
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingArrays + e.message);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "errorParsingArrays") + e.message);
 			}
 			return out;
 		},
@@ -7751,7 +7763,8 @@
 							if (j < this.schema.fields.length) { // if defined in the schema
 								if (root[ i ][ this._pk ] === undefined) {
 									// the input data doesn't match the schema
-									throw new Error($.ig.DataSourceLocale.locale.errorSchemaMismatch + this._pk);
+									throw new Error(
+										$.ig.util.getLocaleValue("DataSourceLocale", "errorSchemaMismatch") + this._pk);
 								}
 								this._val(
 									this.schema.fields[ j ], root[ i ][ this.schema.fields[ j ].name ], results, i, root
@@ -7765,7 +7778,7 @@
 								purposes. Uncomment and re-enable for local too to reach parity if it's needed in the future.
 								if (root[i][this.schema.fields[j].name] === undefined) {
 								the input data doesn't match the schema
-									throw new Error($.ig.DataSourceLocale.locale.errorSchemaMismatch + this.schema.fields[j].name);
+									throw new Error($.ig.util.getLocaleValue("DataSourceLocale", ".errorSchemaMismatch + this.schema.fields[j].name);
 								} */
 								this._val(
 									this.schema.fields[ j ], root[ i ][ this.schema.fields[ j ].name ], results, i, root
@@ -7775,7 +7788,7 @@
 					}
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingJson + e.message);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "errorParsingJson") + e.message);
 			}
 			return out;
 		},
@@ -7917,7 +7930,7 @@
 					}
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingXml + e.message);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", ".errorParsingXml") + e.message);
 			}
 			return out;
 		},
@@ -7996,10 +8009,11 @@
 						}
 					}
 				} else {
-					throw new Error($.ig.DataSourceLocale.locale.errorExpectedTbodyParameter);
+					throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "errorExpectedTbodyParameter"));
 				}
 			} catch (e) {
-				throw new Error($.ig.DataSourceLocale.locale.errorParsingHtmlTable + e.message);
+				throw new Error(
+					$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingHtmlTable") + e.message);
 			}
 			return out;
 		},
@@ -10012,7 +10026,8 @@
 						}
 					}
 				} catch (e) {
-					throw new Error($.ig.DataSourceLocale.locale.errorParsingArrays + e.message);
+					throw new Error(
+						$.ig.util.getLocaleValue("DataSourceLocale", "errorParsingArrays") + e.message);
 				}
 			} else {
 				nData = this._transformCallback(data);
@@ -10556,7 +10571,7 @@
 			*/
 			var s = this.settings.sorting, p = this.settings.paging, data, resetPaging = false;
 			if (fields === undefined || fields === null) {
-				throw new Error($.ig.DataSourceLocale.locale.noSortingFields);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "noSortingFields"));
 			}
 			this._generatedFlatData = false;
 			if (s.applyToAllData && s.type === "local") {
@@ -10922,7 +10937,7 @@
 				matchFiltering = fts.matchFiltering;
 			schema = this.schema();
 			if (schema === null || schema === undefined) {
-				throw new Error($.ig.DataSourceLocale.locale.filteringNoSchema);
+				throw new Error($.ig.util.getLocaleValue("DataSourceLocale", "filteringNoSchema"));
 			}
 			if ($.type(fieldExpressions) === "string") {
 				expr = fieldExpressions;

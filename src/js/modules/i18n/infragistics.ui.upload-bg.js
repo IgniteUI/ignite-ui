@@ -9,22 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.Upload = $.ig.Upload || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
 
-    if (!$.ig.Upload) {
-	    $.ig.Upload = {};
-
-	    $.extend($.ig.Upload, {
-
-		    locale: {
+	$.ig.locale.bg.Upload = {
 			    labelUploadButton: "Качи файл",
 			    labelAddButton: "Прибави",
 			    labelClearAllButton: "Изчисти качените",
@@ -68,8 +65,8 @@
 			    // M.H. 1 June 2011 Fix bug #77532
 			    titleSingleUploadButtonContinue: "Качи",
 			    titleClearAllButton: "Изчисти качените"
-		    }
-	    });
+	};
 
-    }
+	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale.bg.Upload;
+	return $.ig.locale.bg.Upload;
 }));// REMOVE_FROM_COMBINED_FILES
