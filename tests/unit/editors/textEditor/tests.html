@@ -1079,7 +1079,7 @@
 			typeInInput("abc s",  $editor.igTextEditor("field"));
 			ok($('#maxLengthTest').parents().hasClass("ui-ignotify-warn"), "The notifier is not shown");
 			$editor.remove();
-    });
+		});
 		
 		testId = "Setting listItems on run time";
 		test(testId, 2, function () {
@@ -1090,8 +1090,17 @@
 				
 			editor.igTextEditor("option", "listItems", items);
 			equal(editor.igTextEditor("option", "listItems"), items, "ListItems were not set on run time.");
-		  });
 		});
+
+		testing = "Set text dynamically with maxLength defined";
+		test(testing, 1, function() {
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ maxLength: 5, value: "ade" });
+
+			$editor.igTextEditor("value","abcdefg");
+			equal($editor.igTextEditor("value"), "abcde", "Clear button is not visible");
+			$editor.remove();
+		});
+	});
 
 	// Helper functions
 	function typeInInput(characters, element) {
