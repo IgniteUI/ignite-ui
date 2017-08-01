@@ -148,7 +148,7 @@
 	};
 
 	$.ig.formatDates = function (val, d, format, enableUTCDates, dateOffset, reg) {
-		var min, y, h, m, s, ms, am, e, day, pattern;
+		var min, y, h, m, s, ms, am, day, pattern;
 		if (!val) {
 			return "&nbsp;";
 		}
