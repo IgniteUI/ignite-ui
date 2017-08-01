@@ -1210,20 +1210,22 @@
 			test(testId, 3, function(){
 				var editor = $("#1090Editor"),
 				field = editor.igTextEditor("field"),
-				textarea = field[0],
 				text = "add some text";
 				typeInInput(text, field);
 				keyInteraction(13, field);
-				var inputSelection = editor.igTextEditor("getSelectedText"),
-				selectionStart = editor.igTextEditor("getSelectionStart"),
-				selectionEnd = editor.igTextEditor("getSelectionEnd"),
-				curentLine = textarea.value.substr(0, textarea.selectionStart).split("\n").length;
 
-				equal(field.val(), text, 'the text is selected but should not be' );
-				equal(selectionStart, selectionEnd, 'there is selection but should not be' );
-				equal("", inputSelection, 'there is selected text but should not be' );
+				stop();
+				setTimeout(function () {
+					start();
+					var inputSelection = editor.igTextEditor("getSelectedText"),
+					selectionStart = editor.igTextEditor("getSelectionStart"),
+					selectionEnd = editor.igTextEditor("getSelectionEnd");
 
-				$("#1090Editor").remove();
+					equal(field.val(), text, 'text is not set correctly');
+					equal(selectionStart, selectionEnd, 'there is selection but should not be');
+					equal("", inputSelection, 'there is selected text but should not be');
+					$("#1090Editor").remove();
+				}, 100);
 			});
 		});
 
