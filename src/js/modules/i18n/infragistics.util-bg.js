@@ -9,22 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
+(function () {
+	$ = $ || {};
     $.ig = $.ig || {};
+	$.ig.util = $.ig.util || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
 
-    if (!$.ig.util) {
-	    $.ig.util = {};
-
-	    $.extend($.ig.util, {
-
-		    locale: {
+	$.ig.locale.bg.util = {
 			    unsupportedBrowser: "Браузърът ви не поддържа HTML5 canvas елемент. <br/>Моля обновете до някоя от следните версии:",
 			    currentBrowser: "Вашият браузър: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
@@ -42,8 +39,8 @@
 			    defaultSummaryMethodLabelSum: "Сума = ",
 			    defaultSummaryMethodLabelAvg: "Осреднено = ",
 			    defaultSummaryMethodLabelCount: "Брой = "
-		    }
-	    });
+	}
 
-    }
+	$.ig.util.locale = $.ig.util.locale || $.ig.locale.bg.util;
+	return $.ig.locale.bg.util;
 }));// REMOVE_FROM_COMBINED_FILES

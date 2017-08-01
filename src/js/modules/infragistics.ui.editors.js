@@ -10,6 +10,7 @@
  *	jquery.ui-1.9.0.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
+ *  infragistics.ui.widget.js
  *	infragistics.ui.scroll.js
  *	infragistics.ui.validator.js
  */
@@ -19,10 +20,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.ui.scroll",
 			"./infragistics.ui.validator"
 		], factory );
@@ -34,7 +32,8 @@
 }
 (function ($) {
 	/* The igBaseEditor is a widget based on jQuery UI. */
-	$.widget("ui.igBaseEditor", {
+	$.widget("ui.igBaseEditor", $.ui.igWidget, {
+		localeWidgetName: "Editor",
 		options: {
 			/* type="string|number|null" Gets/Sets the width of the control.
 				```
@@ -493,7 +492,7 @@
 
 			// Those are only the options that are defined by the user, before merged with the default ones.
 			this._definedOptions = options;
-			$.Widget.prototype._createWidget.apply(this, arguments);
+			this._superApply(arguments);
 		},
 		_create: function () { //BaseEditor
 			/* igWidget constructor goes here */
@@ -501,6 +500,7 @@
 			this._readAttributes();
 			this._saveDOMConent();
 			this._render();
+			this.localeContainer = this._editorContainer;
 		},
 		_initialize: function () {
 			this._timeouts = [];
@@ -572,7 +572,7 @@
 			}
 		},
 		_render: function () {
-			throw new Error($.ig.Editor.locale.renderErrMsg);
+			throw new Error(this._getLocaleValue("renderErrMsg"));
 		},
 		_applyOptions: function () {
 			if (this.options.tabIndex !== null) {
@@ -719,7 +719,7 @@
 			this._trigger(this.events.blur, event, args);
 		},
 		_setOption: function (option, value) { //Base editor
-			/* igWidget custom setOption goes here */
+			/* igBaseEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
 			if (prevValue === value) {
 				return;
@@ -729,29 +729,31 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "readOnly":
-					this._setReadOnly(value);
-					break;
-				case "disabled":
-					this._setDisabled(value);
-					break;
-				case "width":
-					this._setWidth(value);
-					break;
-				case "height":
-					this._setHeight(value);
-					break;
-				case "validatorOptions":
-					this._setupValidator();
-					break;
-				case "tabIndex":
-					this._setTabIndex(value);
-					break;
-				case "inputName":
-					this._valueInput.attr("name", value);
-					break;
-				default:
-					break;
+			case "readOnly":
+				this._setReadOnly(value);
+				break;
+			case "disabled":
+				this._setDisabled(value);
+				break;
+			case "width":
+				this._setWidth(value);
+				break;
+			case "height":
+				this._setHeight(value);
+				break;
+			case "validatorOptions":
+				this._setupValidator();
+				break;
+			case "tabIndex":
+				this._setTabIndex(value);
+				break;
+			case "inputName":
+				this._valueInput.attr("name", value);
+				break;
+			default:
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_validateValue: function (val) {//Base editor
@@ -1191,7 +1193,7 @@
 			this._restoreDOMStructure();
 			this._deleteInternalProperties();
 			delete this.options;
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._super();
 			return this;
 		}
 	});
@@ -1774,6 +1776,17 @@
 		_create: function () { //igTextEditor
 			$.ui.igBaseEditor.prototype._create.call(this);
 		},
+		_changeLocaleForNotifier: function () {
+			var notifier = this._editorContainer.data("igNotifier"), message;
+			if (notifier && notifier.isVisible()) {
+				message = this._getMessageForNotifier(this._notifierMessage);
+				notifier.notify(notifier.options.state, message);
+			}
+		},
+		changeLocale: function () {
+			this._superApply(arguments);
+			this._changeLocaleForNotifier();
+		},
 		_setOption: function (option, value) { // igTextEditor
 			/* igTextEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
@@ -1785,74 +1798,74 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "value":
-					this.value(value);
+			case "value":
+				this.value(value);
 
-					//if (this._validateValue(value)) {
-					//	this._updateValue(value);
-					//	this._exitEditMode();
-					//} else {
-					//	this._clearValue();
-					//	this._exitEditMode();
-					//}
-					break;
-				case "placeHolder":
-					this._applyPlaceHolder();
-					break;
-				case "suppressNotifications":
-					if (value) {
-						this._clearEditorNotifier();
-					}
-					break;
-				case "listItems":
+				//if (this._validateValue(value)) {
+				//	this._updateValue(value);
+				//	this._exitEditMode();
+				//} else {
+				//	this._clearValue();
+				//	this._exitEditMode();
+				//}
+				break;
+			case "placeHolder":
+				this._applyPlaceHolder();
+				break;
+			case "suppressNotifications":
+				if (value) {
+					this._clearEditorNotifier();
+				}
+				break;
+			case "listItems":
 
-					//M.S. November, 7th 2016 - Issue 481 - Cannot set listItems on run time when it is not set initially
-					if (prevValue !== null) {
-						this._deleteList();
-					}
-					this._createList();
-					this._clearValue();
-					break;
-				case "listWidth":
-					this._setDropDownListWidth();
-					break;
-				case "spinWrapAround":
-					if (value) {
-						this._enableSpinButton(this._spinDownButton, "spinDown");
-						this._enableSpinButton(this._spinUpButton, "spinUp");
-					} else {
-						this._setSpinButtonsState(this.value());
-					}
-					break;
-				case "excludeKeys":
-					if (value === "") {
-						this._excludeKeysArray = [];
-					} else {
-						this._excludeKeysArray = value.toString().split("");
-					}
-					break;
-				case "includeKeys":
-					if (value === "") {
-						this._includeKeysArray = [];
-					} else {
-						this._includeKeysArray = value.toString().split("");
-					}
-					break;
-				case "textAlign":
-					this._editorInput.css("text-align", value);
-					break;
-				case "dropDownOnReadOnly":
-				case "visibleItemsCount":
-				case "buttonType":
-				case "dropDownAttachedToBody":
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
-				default:
+				//M.S. November, 7th 2016 - Issue 481 - Cannot set listItems on run time when it is not set initially
+				if (prevValue !== null) {
+					this._deleteList();
+				}
+				this._createList();
+				this._clearValue();
+				break;
+			case "listWidth":
+				this._setDropDownListWidth();
+				break;
+			case "spinWrapAround":
+				if (value) {
+					this._enableSpinButton(this._spinDownButton, "spinDown");
+					this._enableSpinButton(this._spinUpButton, "spinUp");
+				} else {
+					this._setSpinButtonsState(this.value());
+				}
+				break;
+			case "excludeKeys":
+				if (value === "") {
+					this._excludeKeysArray = [];
+				} else {
+					this._excludeKeysArray = value.toString().split("");
+				}
+				break;
+			case "includeKeys":
+				if (value === "") {
+					this._includeKeysArray = [];
+				} else {
+					this._includeKeysArray = value.toString().split("");
+				}
+				break;
+			case "textAlign":
+				this._editorInput.css("text-align", value);
+				break;
+			case "dropDownOnReadOnly":
+			case "visibleItemsCount":
+			case "buttonType":
+			case "dropDownAttachedToBody":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			default:
 
-					//In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-					break;
+				//In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 
@@ -1885,8 +1898,10 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-							this.options.maxLength));
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
 				}
 			}
 			if (this._validateValue(initialValue)) {
@@ -1946,7 +1961,7 @@
 				this._editorInputWrapper = editorElementWrapper;
 			} else if (this.element.is("textarea")) {
 				if (this.options.textMode !== "multiline") {
-					throw new Error($.ig.Editor.locale.multilineErrMsg);
+					throw new Error(this._getLocaleValue("multilineErrMsg"));
 				} else {
 					this._editorContainer = this.element.wrap($("<div></div>")).parent();
 					this._editorInput = this.element;
@@ -1958,7 +1973,7 @@
 			} else {
 
 				//TODO Throw target element not supported.
-				throw new Error($.ig.Editor.locale.targetNotSupported);
+				throw new Error(this._getLocaleValue("targetNotSupported"));
 			}
 			this._editorContainer.addClass(this.css.container);
 			this._editorInput.addClass(this.css.editor);
@@ -2017,43 +2032,50 @@
 			this._applyInputAriaLabel();
 		},
 		_applyInputAriaLabel: function () {
-			var ariaLabelText;
+			var ariaLabelText,
+				localeid;
 			switch (this.widgetName) {
-				case "igTextEditor": {
-					ariaLabelText = this._getLocaleOption("ariaTextEditorFieldLabel");
-				}
+				case "igTextEditor":
+					localeid = "ariaTextEditorFieldLabel";
 					break;
-				case "igNumericEditor": {
-					ariaLabelText = this._getLocaleOption("ariaNumericEditorFieldLabel");
-				}
+				case "igNumericEditor":
+					localeid = "ariaNumericEditorFieldLabel";
 					break;
-				case "igCurrencyEditor": {
-					ariaLabelText = this._getLocaleOption("ariaCurrencyEditorFieldLabel");
-				}
+				case "igCurrencyEditor":
+					localeid = "ariaCurrencyEditorFieldLabel";
 					break;
-				case "igPercentEditor": {
-					ariaLabelText = this._getLocaleOption("ariaPercentEditorFieldLabel");
-				}
+				case "igPercentEditor":
+					localeid = "ariaPercentEditorFieldLabel";
 					break;
-				case "igMaskEditor": {
-					ariaLabelText = this._getLocaleOption("ariaMaskEditorFieldLabel");
-				}
+				case "igMaskEditor":
+					localeid = "ariaMaskEditorFieldLabel";
 					break;
-				case "igDateEditor": {
-					ariaLabelText = this._getLocaleOption("ariaDateEditorFieldLabel");
-				}
+				case "igDateEditor":
+					localeid = "ariaDateEditorFieldLabel";
 					break;
-				case "igDatePicker": {
-					ariaLabelText = this._getLocaleOption("ariaDatePickerFieldLabel");
-				}
+				case "igDatePicker":
+					localeid = "ariaDatePickerFieldLabel";
 					break;
 				default: {
-					ariaLabelText = this._getLocaleOption("ariaTextEditorFieldLabel");
+					localeid = "ariaTextEditorFieldLabel";
+					break;
 				}
 			}
-			this._editorInput.attr("aria-label", ariaLabelText);
+			ariaLabelText = this._getLocaleValue(localeid);
+			this._editorInput.attr({
+				"aria-label": ariaLabelText,
+				"data-localeid": localeid,
+				"data-localeattr": "aria-label"
+			});
 		},
-		_sendNotification: function (state, message) {
+		_getMessageForNotifier: function (messageObj) {
+			var optName = messageObj.optName,
+				message = this._getLocaleValue(optName),
+				arg = messageObj.arg;
+			return (arg !== undefined) ? $.ig.util.stringFormat(message, arg) : message;
+		},
+		_sendNotification: function (state, messageObj) {
+			var message = this._getMessageForNotifier(messageObj);
 			if (this.options.suppressNotifications || this._skipMessages /* flag on isValid() call */) {
 				this._currentMessage = message;
 				return;
@@ -2061,6 +2083,7 @@
 			if (!this._editorContainer.data("igNotifier")) {
 				this._editorContainer.igNotifier();
 			}
+			this._notifierMessage = messageObj;
 			this._editorContainer.igNotifier("notify", state, message);
 		},
 		_applyPlaceHolder: function() {
@@ -2070,7 +2093,7 @@
 				//If placeholder is not supported
 				this._editorInput.addClass(this.css.placeHolder);
 				if (this._placeHolderNotSupported()) {
-					throw new Error($.ig.Editor.locale.placeHolderNotSupported);
+					throw new Error(this._getLocaleValue("placeHolderNotSupported"));
 				}
 			} else if (this._editorInput.attr("placeholder")) {
 				this._editorInput.removeAttr("placeholder");
@@ -2225,7 +2248,7 @@
 				if (this._valueIndexInList(val) !== -1) {
 					result = true;
 				} else {
-					this._sendNotification("warning", $.ig.Editor.locale.allowedValuesMsg);
+					this._sendNotification("warning", { optName: "allowedValuesMsg" });
 					result = false;
 				}
 			} else if (this.options.maxLength) {
@@ -2233,8 +2256,10 @@
 					result = true;
 				} else {
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-							this.options.maxLength));
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
 					result = false;
 				}
 			} else {
@@ -2457,15 +2482,19 @@
 			}
 		},
 		_renderDropDownButton: function () {
-			var dropDownButton = $("<div role='button' tabindex='-1' id='" +
-				this.id + "_dropDownButton' aria-label='" +
-				this._getLocaleOption("ariaDropDownButton") + "'></div>"),
-					dropDownIcon = $("<div></div>");
+			var dropDownButton = $("<div></div>"),
+				dropDownIcon = $("<div></div>");
 			if (this._dropDownButton) {
 				return;
 			}
-			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr("title", this._getLocaleOption("buttonTitle"));
+			dropDownButton.addClass(this.css.buttonCommon).attr({
+				"role": "button",
+				"tabindex": -1,
+				"id": this.id + "_dropDownButton",
+				"title": this._getLocaleValue("buttonTitle"),
+				"data-localeid": "buttonTitle",
+				"data-localeattr": "title"
+			});
 			this._editorContainer.prepend(dropDownButton
 				.addClass(this.css.dropDownButton)
 				.append(dropDownIcon.addClass(this.css.dropDownImage)));
@@ -2473,29 +2502,31 @@
 			this._attachButtonsEvents("dropdown", dropDownButton);
 		},
 		_renderSpinButtons: function () {
-			var spinButtonUp = $("<div role='button' tabindex='-1' id='" +
-				this.id +
-				"_spinUpButton' aria-label='" +
-				this._getLocaleOption("ariaSpinUpButton") +
-				"'></div>"), spinButtonUpImage = $("<div></div>"),
-
-				spinButtonDown = $("<div role='button' tabindex='-1' id='" +
-					this.id + "_spinDownButton' aria-label='" +
-					this._getLocaleOption("ariaSpinDownButton") +
-					"'></div>"),
-
+			var spinButtonUp = $("<div></div>"),
+				spinButtonUpImage = $("<div></div>"),
+				spinButtonDown = $("<div></div>"),
 				spinButtonDownImage = $("<div></div>");
 			if (this._spinUpButton) {
 				return;
 			}
-			spinButtonUp
-				.addClass(this.css.buttonCommon)
-				.append(spinButtonUpImage.addClass(this.css.spinButtonUpImage));
-			spinButtonDown
-				.addClass(this.css.buttonCommon)
-				.append(spinButtonDownImage.addClass(this.css.spinButtonDownImage));
-			spinButtonUp.attr("title", this._getLocaleOption("spinUpperTitle"));
-			spinButtonDown.attr("title", this._getLocaleOption("spinLowerTitle"));
+			spinButtonUp.addClass(this.css.buttonCommon)
+				.attr({
+					"title": this._getLocaleValue("spinUpperTitle"),
+					"role": "button",
+					"tabindex": -1,
+					"id": this.id + "_spinUpButton",
+					"data-localeid": "spinUpperTitle",
+					"data-localeattr": "title"
+				}).append(spinButtonUpImage.addClass(this.css.spinButtonUpImage));
+			spinButtonDown.addClass(this.css.buttonCommon)
+				.attr({
+					"title": this._getLocaleValue("spinLowerTitle"),
+					"role": "button",
+					"tabindex": -1,
+					"id": this.id + "_spinDownButton",
+					"data-localeid": "spinLowerTitle",
+					"data-localeattr": "title"
+				}).append(spinButtonDownImage.addClass(this.css.spinButtonDownImage));
 			this._editorContainer.prepend(spinButtonDown).prepend(spinButtonUp);
 			this._attachButtonsEvents("spinDown", spinButtonDown);
 			this._attachButtonsEvents("spinUp", spinButtonUp);
@@ -2503,18 +2534,21 @@
 			this._spinDownButton = spinButtonDown;
 		},
 		_renderClearButton: function () {
-			var clearButton = $("<div role='button' id='" +
-				this.id +
-				"_clearButton' tabindex='-1' aria-label='" +
-				this._getLocaleOption("ariaClearButton") + "'></div>"),
-
+			var clearButton = $("<div></div>"),
 				buttonClearIcon = $("<div></div>");
+
 			if (this._clearButton) {
 				return;
 			}
-			clearButton.addClass(this.css.buttonCommon);
-			clearButton.append(buttonClearIcon.addClass(this.css.clearButtonImage));
-			clearButton.attr("title", this._getLocaleOption("clearTitle"));
+			clearButton.addClass(this.css.buttonCommon)
+				.attr({
+					"title": this._getLocaleValue("clearTitle"),
+					"role": "button",
+					"id": this.id + "_clearButton",
+					"tabindex": -1,
+					"data-localeid": "clearTitle",
+					"data-localeattr": "title"
+				}).append(buttonClearIcon.addClass(this.css.clearButtonImage));
 			this._editorContainer.prepend(clearButton.addClass(this.css.clearButton));
 			this._clearButton = clearButton;
 			this._attachButtonsEvents("clear", clearButton);
@@ -2535,7 +2569,7 @@
 					this._renderSpinButtons();
 					buttonsCountRendered += 2;
 				} else if (this.options.listItems === null || this.options.listItems.length === 0) { //#208356 S.D. Error for no listitems
-					throw new Error($.ig.Editor.locale.noListItemsNoButton);
+					throw new Error(this._getLocaleValue("noListItemsNoButton"));
 				}
 			}
 
@@ -2546,12 +2580,12 @@
 					this._renderDropDownButton();
 					buttonsCountRendered++;
 				} else if (this.options.listItems === null || this.options.listItems.length === 0) {
-					throw new Error($.ig.Editor.locale.noListItemsNoButton);
+					throw new Error(this._getLocaleValue("noListItemsNoButton"));
 				}
 			}
 
 			if (buttonsCountRendered === 0) {
-				throw new Error($.ig.Editor.locale.btnValueNotSupported);
+				throw new Error(this._getLocaleValue("btnValueNotSupported"));
 			}
 		},
 		_attachButtonsEvents: function (type, target) {
@@ -2893,8 +2927,10 @@
 								e.preventDefault();
 								e.stopPropagation();
 								this._sendNotification("warning",
-									$.ig.util.stringFormat($.ig.Editor.locale.maxLengthWarningMsg,
-										this.options.maxLength));
+									{
+										optName: "maxLengthWarningMsg",
+										arg: this.options.maxLength
+									});
 							}
 						}
 					}
@@ -3289,8 +3325,10 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-							this.options.maxLength));
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
 					}
 				}
 			if (this._validateValue(newValue)) {
@@ -3726,16 +3764,6 @@
 				}
 			}
 			return { start: startPostion, end: endPosition };
-		},
-		_getLocaleOption: function (key) {
-			var locale = this.options.locale;
-			if (locale && locale[ key ]) {
-				return locale[ key ];
-			} else if ($.ig && $.ig.Editor && $.ig.Editor.locale) {
-				return $.ig.Editor.locale[ key ];
-			} else {
-				return "";
-			}
 		},
 		_listItems: function () {
 			return this._dropDownList.children(".ui-igedit-listitem");
@@ -4428,7 +4456,7 @@
 
 			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
 			if (this.options.decimalSeparator.toString().length > 1) {
-				throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
+				throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
 			}
 
 			// This property is only internally used and it's not configurable in this widget.
@@ -4436,7 +4464,7 @@
 
 			// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
 			if (this.options.decimalSeparator === this.options.groupSeparator) {
-				throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+				throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 			}
 		},
 		_setNumericType: function () {
@@ -4458,7 +4486,7 @@
 						break;
 					default: {
 						result = "e";
-						throw new Error($.ig.Editor.locale.scientificFormatErrMsg);
+						throw new Error(this._getLocaleValue("scientificFormatErrMsg"));
 					}
 				}
 			} else {
@@ -4467,22 +4495,22 @@
 			return result;
 		},
 		_applyRegionalSettings: function () { //Numeric
-			this.options.negativeSign = this._getRegionalOption("negativeSign");
+			this.options.negativeSign = this._getRegionalValue("negativeSign");
 			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalOption("numericNegativePattern");
+				this._getRegionalValue("numericNegativePattern");
 			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalOption("numericDecimalSeparator");
+				this._getRegionalValue("numericDecimalSeparator");
 
 			// TODO: make a validate function to ignore numbers as separators, undefined vs allowed chars here?
 			this.options.groupSeparator = this.options.groupSeparator !== null ?
 				this.options.groupSeparator :
-				this._getRegionalOption("numericGroupSeparator");
-			this.options.groups = this.options.groups || this._getRegionalOption("numericGroups");
+				this._getRegionalValue("numericGroupSeparator");
+			this.options.groups = this.options.groups || this._getRegionalValue("numericGroups");
 			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalOption("numericMaxDecimals") :
+				this._getRegionalValue("numericMaxDecimals") :
 				this.options.maxDecimals;
 			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalOption("numericMinDecimals") :
+				this._getRegionalValue("numericMinDecimals") :
 				this.options.minDecimals;
 		},
 		_setInitialValue: function (value) { // NumericEditor
@@ -4518,11 +4546,11 @@
 				delta = this.options.spinDelta;
 				if (typeof delta !== "number") {
 					this.options.spinDelta = 1;
-					throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+					throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
 				}
 				if (delta < 0) {
 					this.options.spinDelta = 1;
-					throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+					throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
 				}
 				if (this.options.dataMode === "float" || this.options.dataMode === "double") {
 
@@ -4530,15 +4558,15 @@
 					if (delta % 1 !== 0) {
 						fractional = delta.toString().substring(delta.toString().indexOf(".") + 1);
 						if (fractional.toString().length > this.options.maxDecimals) {
-							throw new Error($.ig.util.stringFormat($.ig.Editor.locale.
-								spinDeltaContainsExceedsMaxDecimals,
-							this.options.maxDecimals));
+							throw new Error($.ig.util.stringFormat(
+								this._getLocaleValue("spinDeltaContainsExceedsMaxDecimals"),
+								this.options.maxDecimals));
 						}
 					}
 				} else {
 					// This means the value is integer, without floating point
 					if (delta % 1 !== 0) {
-						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
+						throw new Error(this._getLocaleValue("spinDeltaIncorrectFloatingPoint"));
 					}
 				}
 			}
@@ -4550,13 +4578,13 @@
 			try {
 				this._validateDecimalSetting("minDecimals", this.options.minDecimals);
 			} catch (e) {
-				this.options.minDecimals = this._getRegionalOption("numericMinDecimals");
+				this.options.minDecimals = this._getRegionalValue("numericMinDecimals");
 				throw e;
 			}
 			try {
 				this._validateDecimalSetting("maxDecimals", this.options.maxDecimals);
 			} catch (e) {
-				this.options.minDecimals = this._getRegionalOption("numericMaxDecimals");
+				this.options.minDecimals = this._getRegionalValue("numericMaxDecimals");
 				throw e;
 			}
 			this._validateDecimalMinMax();
@@ -4572,7 +4600,7 @@
 
 			if (value === "" || isNaN(value) ||
 				(!isNaN(value) && (value < 0 || value > boundary))) {
-				throw new Error($.ig.util.stringFormat($.ig.Editor.locale.decimalNumber,
+				throw new Error($.ig.util.stringFormat(this._getLocaleValue("decimalNumber"),
 					mode, name, boundary));
 			}
 		},
@@ -4592,119 +4620,115 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "scientificFormat": {
-					//M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
-					if (this._getScientificFormat() || value === null) {
-						if (prevValue) {
-							if (prevValue === "e+" || prevValue === "E+") {
-								prevValue = prevValue.replace("+", "");
-							}
-							this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
+			case "scientificFormat":
+
+				// M.S. 3/16/2017 Issue 745 - When we set scientificFormat runtime, we cannot write 'e' or 'E' in edit mode.
+				if (this._getScientificFormat() || value === null) {
+					if (prevValue) {
+						if (prevValue === "e+" || prevValue === "E+") {
+							prevValue = prevValue.replace("+", "");
 						}
-						if (value === null) {
-							 this._includeKeysArray = this.options.includeKeys.split( "" );
-							break;
-						}
-						 var numericChars = this._getScientificFormat();
-						 this.options.includeKeys += numericChars;
-						 this._includeKeysArray = this.options.includeKeys.split( "" );
-					}
-				}
-					break;
-				case "spinDelta": {
-					if (typeof value !== "number") {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
-					} else if (value < 0) {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
-					} else if ((this.options.dataMode !== "float" &&
-						this.options.dataMode !== "double") && value % 1 !== 0) {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.spinDeltaIncorrectFloatingPoint);
-					} else if (this.options.scientificFormat) {
-						this.options[ option ] = Number(value.toExponential());
-					}
-					break;
-				}
-				case "minValue":
-				case "maxValue":
-					if (isNaN(value)) {
-						this.options[ option ] = prevValue;
-						return;
+						this.options.includeKeys = this.options.includeKeys.replace(prevValue, "");
 					}
 					if (value === null) {
-						// ensure dataMode defaults
-						this._applyDataModeSettings();
-					} else {
-						this._processInternalValueChanging(this.value());
-						if (!this._editMode) {
-							this._editorInput.val(this._getDisplayValue());
-						}
+						this._includeKeysArray = this.options.includeKeys.split( "" );
+						break;
 					}
-
-					// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
-					this._setSpinButtonsState(this.value());
-					break;
-				case "minDecimals":
-				case "maxDecimals":
-					try {
-						this._validateDecimalSetting(option, value);
-					} catch (e) {
-						this.options[ option ] = prevValue;
-						throw e;
-					}
-					if (this.options[ option ] !== prevValue) {
-						this._validateDecimalMinMax();
-						this._processInternalValueChanging(this.value());
-						if (!this._editMode) {
-							this._editorInput.val(this._getDisplayValue());
-						}
-					}
-					break;
-
-				// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
-				case "decimalSeparator": {
-					if (value.toString().length > 1) {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.decimalSeparatorErrorMsg);
-					}
-
-					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-					if (this.options[ option ] === this.options.groupSeparator) {
-						throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+					var numericChars = this._getScientificFormat();
+					this.options.includeKeys += numericChars;
+					this._includeKeysArray = this.options.includeKeys.split( "" );
+				}
+				break;
+			case "spinDelta":
+				if (typeof value !== "number") {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
+				} else if (value < 0) {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
+				} else if ((this.options.dataMode !== "float" &&
+					this.options.dataMode !== "double") && value % 1 !== 0) {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("spinDeltaIncorrectFloatingPoint"));
+				} else if (this.options.scientificFormat) {
+					this.options[ option ] = Number(value.toExponential());
+				}
+				break;
+			case "minValue":
+			case "maxValue":
+				if (isNaN(value)) {
+					this.options[ option ] = prevValue;
+					return;
+				}
+				if (value === null) {
+					// ensure dataMode defaults
+					this._applyDataModeSettings();
+				} else {
+					this._processInternalValueChanging(this.value());
+					if (!this._editMode) {
+						this._editorInput.val(this._getDisplayValue());
 					}
 				}
-					break;
 
-				// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
-				case "groupSeparator": {
-					if (this.options[ option ] === null) {
-						this.options[ option ] = this._getRegionalOption("numericGroupSeparator");
-					}
-
-					// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-					if (this.options[ option ] === this.options.decimalSeparator) {
-						throw new Error($.ig.Editor.locale.decimalSeparatorEqualsGroupSeparatorErrorMsg);
+				// A.M. October 11 2016 #420 "Spin button increase/decrease button not disabled"
+				this._setSpinButtonsState(this.value());
+				break;
+			case "minDecimals":
+			case "maxDecimals":
+				try {
+					this._validateDecimalSetting(option, value);
+				} catch (e) {
+					this.options[ option ] = prevValue;
+					throw e;
+				}
+				if (this.options[ option ] !== prevValue) {
+					this._validateDecimalMinMax();
+					this._processInternalValueChanging(this.value());
+					if (!this._editMode) {
+						this._editorInput.val(this._getDisplayValue());
 					}
 				}
-					break;
-				case "regional":
+				break;
+
+			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
+			case "decimalSeparator":
+				if (value.toString().length > 1) {
 					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
+					throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
+				}
 
-				case "excludeKeys":
-				case "includeKeys":
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.numericEditorNoSuchOption);
+				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+				if (this.options[ option ] === this.options.groupSeparator) {
+					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
+				}
+				break;
 
-				default: {
+			// A.M. April 06, 2017 #772 Exception is thrown when the 'groupSeparator' is set to null at runtime
+			case "groupSeparator":
+				if (this.options[ option ] === null) {
+					this.options[ option ] = this._getRegionalValue("numericGroupSeparator");
+				}
 
-					// In case no propery matches, we call the super. Into the base widget default statement breaks
-						this.options[ option ] = prevValue;
-						this._super(option, value);
-					}
-					break;
+				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
+				if (this.options[ option ] === this.options.decimalSeparator) {
+					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
+				}
+				break;
+			case "regional":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+
+			case "excludeKeys":
+			case "includeKeys":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("numericEditorNoSuchOption"));
+
+			default:
+
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_processValueChanging: function (value) { //NumericEditor
@@ -4740,8 +4764,10 @@
 
 					//Raise warning
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this.options.maxValue));
+						{
+							optName: "maxValExceedSetErrMsg",
+							arg: this.options.maxValue
+						});
 
 				// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
 				} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
@@ -4749,8 +4775,10 @@
 
 						// Raise Warning level 2
 						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-								this.options.minValue));
+							{
+								optName: "minValExceedSetErrMsg",
+								arg: this.options.minValue
+							});
 				}
 			}
 			if (!this._validateValue(value)) {
@@ -5184,15 +5212,19 @@
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this.options.maxValue));
+						{
+							optName: "maxValExceedSetErrMsg",
+							arg: this.options.maxValue
+						});
 				} else if (!isNaN(this.options.minValue) && newValue < this.options.minValue) {
 					newValue = this.options.minValue;
 
 					// Raise Warning level 2
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-							this.options.minValue));
+						{
+							optName: "minValExceedSetErrMsg",
+							arg: this.options.minValue
+						});
 				}
 
 				if (!this._validateValue(newValue) && this.options.revertIfNotValid) {
@@ -5259,22 +5291,6 @@
 			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
 			if (!textOnly && newValue !== undefined && this._validateValue(newValue)) {
 				this._updateValue(newValue);
-			}
-		},
-		_getRegionalOption: function (key) {
-			var regional = this.options.regional;
-			if (this.options[ key ]) {
-				return this.options[ key ];
-			}
-			if (typeof regional === "string") {
-				regional = $.ig.regional[ regional ];
-			}
-			if (regional && regional[ key ]) {
-				return regional[ key ];
-			} else {
-
-				// return defaults
-				return $.ig.regional.defaults[ key ];
 			}
 		},
 		_convertScientificToNumeric: function (num) {
@@ -5611,13 +5627,17 @@
 				this.options.spinWrapAround)) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValExceededWrappedAroundErrMsg,
-						this.options.maxValue));
+					{
+						optName: "maxValExceededWrappedAroundErrMsg",
+						arg: this.options.maxValue
+					});
 			} else if (currVal >= this.options.maxValue && !this.options.spinWrapAround) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.maxValErrMsg,
-						this.options.maxValue));
+					{
+						optName: "maxValErrMsg",
+						arg: [ this.options.maxValue ]
+					});
 			}
 			if (this._focused) {
 				currVal = this._getEditModeValue(currVal);
@@ -5669,14 +5689,18 @@
 				this.options.spinWrapAround)) {
 				currVal = this.options.maxValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceededWrappedAroundErrMsg,
-						this.options.minValue));
+					{
+						optName: "minValExceededWrappedAroundErrMsg",
+						arg: this.options.minValue
+					});
 
 			} else if (currVal <= this.options.minValue && !this.options.spinWrapAround) {
 				currVal = this.options.minValue;
 				this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValErrMsg,
-						this.options.minValue));
+					{
+						optName: "minValErrMsg",
+						arg: this.options.minValue
+					});
 			}
 			if (this._focused) {
 				currVal = this._getEditModeValue(currVal);
@@ -5757,8 +5781,10 @@
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
-								$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-									this.options.maxValue));
+								{
+									optName: "maxValExceedSetErrMsg",
+									arg: this.options.maxValue
+								});
 
 							// I.G. 29/11/2016 #539 'If min/max value is set to 0 and the entered value is invalid, the editor's value is not reverted'
 						} else if (!isNaN((this.options.minValue)) && newValue < this.options.minValue) {
@@ -5766,8 +5792,10 @@
 
 							// Raise Warning level 2
 							this._sendNotification("warning",
-								$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-									this.options.value));
+								{
+									optName: "minValExceedSetErrMsg",
+									arg: this.options.value
+								});
 						}
 					}
 					if (this._validateValue(newValue)) {
@@ -5831,15 +5859,15 @@
 		},
 		getSelectedText: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("numericEditorNoSuchMethod"));
 		},
 		getSelectionStart: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("numericEditorNoSuchMethod"));
 		},
 		getSelectionEnd: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.numericEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("numericEditorNoSuchMethod"));
 		},
 		spinUp: function (delta) {
 			/* Increments value in editor according to the parameter or selects the previous item from the drop-down list if [isLimitedToListValues](ui.%%WidgetNameLowered%%#options:isLimitedToListValues) is enabled.
@@ -5879,7 +5907,7 @@
 				$(".selector").%%WidgetName%%("getRegionalOption");
 			```
 				returnType="string" Current regional */
-			return this._getRegionalOption();
+			return this._getRegionalValue();
 		}
 	});
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
@@ -5929,24 +5957,24 @@
 		},
 		_applyRegionalSettings: function () { //igCurrencyEditor
 
-			this.options.negativeSign = this._getRegionalOption("negativeSign");
-			this.options.currencySymbol = this._getRegionalOption("currencySymbol");
+			this.options.negativeSign = this._getRegionalValue("negativeSign");
+			this.options.currencySymbol = this._getRegionalValue("currencySymbol");
 			this.options.positivePattern = this.options.positivePattern ||
-				this._getRegionalOption("currencyPositivePattern");
+				this._getRegionalValue("currencyPositivePattern");
 			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalOption("currencyNegativePattern");
+				this._getRegionalValue("currencyNegativePattern");
 			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalOption("currencyDecimalSeparator");
+				this._getRegionalValue("currencyDecimalSeparator");
 			this.options.groupSeparator = this.options.groupSeparator !== null ?
 				this.options.groupSeparator :
-				this._getRegionalOption("currencyGroupSeparator");
+				this._getRegionalValue("currencyGroupSeparator");
 			this.options.groups = this.options.groups ||
-				this._getRegionalOption("currencyGroups");
+				this._getRegionalValue("currencyGroups");
 			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalOption("currencyMaxDecimals") :
+				this._getRegionalValue("currencyMaxDecimals") :
 				this.options.maxDecimals;
 			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalOption("currencyMinDecimals") :
+				this._getRegionalValue("currencyMinDecimals") :
 				this.options.minDecimals;
 		},
 
@@ -6079,18 +6107,21 @@
 
 					//Notify
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this.options.maxValue));
+						{
+							optName: "maxValExceedSetErrMsg",
+							arg: this.options.maxValue
+						});
 				} else if (!isNaN(this.options.minValue) &&
 					newValue / this.options.displayFactor < this.options.minValue) {
 					newValue = this.options.minValue * this.options.displayFactor;
 
 					//Notify
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-						this.options.minValue));
+						{
+							optName: "minValExceedSetErrMsg",
+							arg: this.options.minValue
+						});
 				}
-
 				if (!this._validateValue(newValue / this.options.displayFactor) &&
 					this.options.revertIfNotValid) {
 					newValue = previousValue;
@@ -6120,36 +6151,36 @@
 		_applyRegionalSettings: function () { //Percent
 
 			this.options.negativeSign = this.options.negativeSign ||
-				this._getRegionalOption("negativeSign");
+				this._getRegionalValue("negativeSign");
 			this.options.percentSymbol = this.options.percentSymbol ||
-				this._getRegionalOption("percentSymbol");
+				this._getRegionalValue("percentSymbol");
 			this.options.positivePattern = this.options.positivePattern ||
-				this._getRegionalOption("percentPositivePattern");
+				this._getRegionalValue("percentPositivePattern");
 			this.options.negativePattern = this.options.negativePattern ||
-				this._getRegionalOption("percentNegativePattern");
+				this._getRegionalValue("percentNegativePattern");
 			this.options.decimalSeparator = this.options.decimalSeparator ||
-				this._getRegionalOption("percentDecimalSeparator");
+				this._getRegionalValue("percentDecimalSeparator");
 			this.options.groupSeparator = this.options.groupSeparator !== null ?
 				this.options.groupSeparator :
-				this._getRegionalOption("percentGroupSeparator");
+				this._getRegionalValue("percentGroupSeparator");
 			this.options.groups = this.options.groups ||
-				this._getRegionalOption("percentGroups");
+				this._getRegionalValue("percentGroups");
 			this.options.maxDecimals = this.options.maxDecimals === null ?
-				this._getRegionalOption("percentMaxDecimals") :
+				this._getRegionalValue("percentMaxDecimals") :
 				this.options.maxDecimals;
 			this.options.minDecimals = this.options.minDecimals === null ?
-				this._getRegionalOption("percentMinDecimals") :
+				this._getRegionalValue("percentMinDecimals") :
 				this.options.minDecimals;
 			if (this.options.displayFactor === 100) {
 				// TODO - this is needed, cause when value(20.34) is devided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
 				this.options.maxDecimals += 2;
 			}
 			this.options.displayFactor = this.options.displayFactor ||
-				this._getRegionalOption("displayFactor");
+				this._getRegionalValue("displayFactor");
 			if (typeof this.options.displayFactor !== "number") {
-				throw new Error($.ig.Editor.locale.displayFactorIsOfTypeNumber);
+				throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
 			} else if (this.options.displayFactor !== 1 && this.options.displayFactor !== 100) {
-				throw new Error($.ig.Editor.locale.displayFactorAllowedValue);
+				throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
 			}
 		},
 		_setOption: function (option, value) { // igPercentEditor
@@ -6163,22 +6194,21 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "displayFactor": {
-					if (typeof value !== "number") {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.displayFactorIsOfTypeNumber);
-					} else if (value !== 1 && value !== 100) {
-						this.options[ option ] = prevValue;
-						throw new Error($.ig.Editor.locale.displayFactorAllowedValue);
-					}
-				}
-					break;
-				default: {
-					//In case no propery matches, we call the super. Into the base widget default statement breaks
+			case "displayFactor":
+				if (typeof value !== "number") {
 					this.options[ option ] = prevValue;
-					this._super(option, value);
+					throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
+				} else if (value !== 1 && value !== 100) {
+					this.options[ option ] = prevValue;
+					throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
 				}
-					break;
+				break;
+			default:
+
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_getEditModeValue: function (val) { //igPercentEditor
@@ -7100,11 +7130,11 @@
 					// Raise warning not all required fields are entered
 					// State - message
 					if (this.options.revertIfNotValid) {
-						message = $.ig.Editor.locale.maskRevertMessage;
+						message = "maskRevertMessage";
 					} else {
-						message = $.ig.Editor.locale.maskMessage;
+						message = "maskMessage";
 					}
-					this._sendNotification("warning", message);
+					this._sendNotification("warning", { optName: message });
 				}
 			}
 		},
@@ -7381,23 +7411,21 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "inputMask": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
-				}
-				case "excludeKeys":
-				case "includeKeys":
-				case "regional":
-				case "unfilledCharsPrompt":
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
-				default: {
+			case "inputMask":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			case "excludeKeys":
+			case "includeKeys":
+			case "regional":
+			case "unfilledCharsPrompt":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			default:
 
-					// In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-				}
-					break;
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_handleBackSpaceKey: function () {
@@ -7491,51 +7519,51 @@
 		},
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		showDropDown: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		hideDropDown: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		dropDownButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinUpButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinDownButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		dropDownVisible: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinUp: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		spinDown: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.maskEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("maskEditorNoSuchMethod"));
 		},
 		isValid: function () { //igMaskEditor
 			/* Checks if the value in the editor is valid. Note: This function will not trigger automatic notifications.
@@ -7557,7 +7585,7 @@
 					// Raise warning not all required fields are entered
 					// State - message
 					valid = false;
-					this._sendNotification("warning", $.ig.Editor.locale.maskMessage);
+					this._sendNotification("warning", { optName: "maskMessage" });
 				}
 			}
 			this._skipMessages = false;
@@ -7905,7 +7933,7 @@
 			// RegEx for /Date(milisecond)/
 			this._mvcDateRegex = /^\/Date\((.*?)\)\/$/i;
 			if (offset !== null && (offset > 840 || offset < -720)) {
-				throw new Error($.ig.Editor.locale.dateEditorOffsetRange);
+				throw new Error(this._getLocaleValue("dateEditorOffsetRange"));
 			}
 		},
 		_setNumericType: function () {
@@ -7927,43 +7955,40 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "displayTimeOffset": {
-					if (this._editMode) {
-						this._updateMaskedValue();
-						this._enterEditMode();
-					} else {
+			case "displayTimeOffset":
+				if (this._editMode) {
+					this._updateMaskedValue();
+					this._enterEditMode();
+				} else {
+					this._editorInput.val(this._getDisplayValue());
+				}
+				break;
+			case "minValue":
+			case "maxValue":
+				if (!this._isValidDate(value)) {
+					this.options[ option ] = prevValue;
+					return;
+				}
+				if (value !== null) {
+					this.options[ option ] = this._getDateObjectFromValue(value);
+					this._processInternalValueChanging(this.value());
+					if (!this._editMode) {
 						this._editorInput.val(this._getDisplayValue());
+						this._currentInputTextValue = this._editorInput.val();
 					}
-					break;
 				}
-				case "minValue":
-				case "maxValue":
-					if (!this._isValidDate(value)) {
-						this.options[ option ] = prevValue;
-						return;
-					}
-					if (value !== null) {
-						this.options[ option ] = this._getDateObjectFromValue(value);
-						this._processInternalValueChanging(this.value());
-						if (!this._editMode) {
-							this._editorInput.val(this._getDisplayValue());
-							this._currentInputTextValue = this._editorInput.val();
-						}
-					}
-					this._setSpinButtonsState(this.value());
-					break;
-				case "listItems":
-				case "dateInputFormat": {
-					this.options[ option ] = prevValue;
-					throw new Error($.ig.Editor.locale.setOptionError + option);
-				}
-				default: {
+				this._setSpinButtonsState(this.value());
+				break;
+			case "listItems":
+			case "dateInputFormat":
+				this.options[ option ] = prevValue;
+				throw new Error(this._getLocaleValue("setOptionError") + option);
+			default:
 
-					// In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-				}
-					break;
+				// In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_applyRegionalSettings: function () { //DateEditor
@@ -7972,16 +7997,16 @@
 				format = this.options.dateInputFormat;
 				if (format === "date" || format === "dateLong" || format === "dateTime" ||
 					format === "time" || format === "timeLong") {
-					this.options.dateInputFormat = this._getRegionalOption(format + "Pattern");
+					this.options.dateInputFormat = this._getRegionalValue(format + "Pattern");
 				}
 			} else {
-				this.options.dateInputFormat = this._getRegionalOption("datePattern");
+				this.options.dateInputFormat = this._getRegionalValue("datePattern");
 			}
 			if (this.options.dateDisplayFormat !== null) {
 				format = this.options.dateDisplayFormat;
 				if (format === "date" || format === "dateLong" || format === "dateTime" ||
 					format === "time" || format === "timeLong") {
-					this.options.dateDisplayFormat = this._getRegionalOption(format + "Pattern");
+					this.options.dateDisplayFormat = this._getRegionalValue(format + "Pattern");
 				}
 			} else {
 				this.options.dateDisplayFormat = this.options.dateInputFormat;
@@ -8015,29 +8040,29 @@
 
 			if (typeof delta !== "number") {
 				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaIsOfTypeNumber);
+				throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
 			} else if (delta < 0) {
 				this.options.spinDelta = 1;
-				throw new Error($.ig.Editor.locale.spinDeltaCouldntBeNegative);
+				throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
 			} else {
 				this.options.spinDelta = parseInt(delta, 10);
 			}
 
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
 				this.options.centuryThreshold = 29;
-				throw new Error($.ig.Editor.locale.centuryThresholdValidValues);
+				throw new Error(this._getLocaleValue("centuryThresholdValidValues"));
 			}
 
 			if (this.options.minValue) {
 				if (!this._isValidDate(new Date(this.options.minValue))) {
-					throw new Error($.ig.Editor.locale.invalidDate);
+					throw new Error(this._getLocaleValue("invalidDate"));
 				} else {
 					this.options.minValue = this._getDateObjectFromValue(this.options.minValue);
 				}
 			}
 			if (this.options.maxValue) {
 				if (!this._isValidDate(new Date(this.options.maxValue))) {
-					throw new Error($.ig.Editor.locale.invalidDate);
+					throw new Error(this._getLocaleValue("invalidDate"));
 				} else {
 					this.options.maxValue = this._getDateObjectFromValue(this.options.maxValue);
 				}
@@ -8616,22 +8641,6 @@
 			txt = txt.replace(/\x11/g, 9).replace(/\x12/g, 0);
 			return txt;
 		},
-		_getRegionalOption: function (key) { // igDateEditor
-			var regional = this.options.regional;
-			if (this.options[ key ]) {
-				return this.options[ key ];
-			}
-			if (typeof regional === "string") {
-				regional = $.ig.regional[ regional ];
-			}
-			if (regional && regional[ key ]) {
-				return regional[ key ];
-			} else {
-
-				// return defaults
-				return $.ig.regional.defaults[ key ];
-			}
-		},
 		_validateKey: function (event) {
 			var result = true, ch, key, cursorPosition;
 			if (this._super(event) === true) {
@@ -9099,13 +9108,17 @@
 				if (this.options.maxValue && date > this.options.maxValue) {
 					validDate = this._getDateObjectFromValue(this.options.maxValue);
 					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.maxValue))));
+						{
+							optName: "maxValExceedSetErrMsg",
+							arg: this._getDisplayValue(new Date(this.options.maxValue))
+						});
 				} else if (this.options.minValue && date < this.options.minValue) {
 					validDate = this._getDateObjectFromValue(this.options.minValue);
 					this._sendNotification("warning",
-					$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-							this._getDisplayValue(new Date(this.options.minValue))));
+						{
+							optName: "minValExceedSetErrMsg",
+							arg: this._getDisplayValue(new Date(this.options.minValue))
+						});
 				}
 			}
 			return validDate;
@@ -9627,9 +9640,9 @@
 			if (hours >= 12) {
 
 				// pm
-				result = this._getRegionalOption("pm");
+				result = this._getRegionalValue("pm");
 			} else {
-				result = this._getRegionalOption("am");
+				result = this._getRegionalValue("am");
 			}
 			if (flag === "t") {
 				result = result.charAt(0);
@@ -9705,11 +9718,11 @@
 			var result;
 			switch (flag) {
 				case "dddd": {
-					result = this._getRegionalOption("dayNames")[ day ];
+					result = this._getRegionalValue("dayNames")[ day ];
 				}
 					break;
 				case "ddd": {
-					result = this._getRegionalOption("dayNamesShort")[ day ];
+					result = this._getRegionalValue("dayNamesShort")[ day ];
 				}
 					break;
 			}
@@ -9719,11 +9732,11 @@
 			var result;
 			switch (flag) {
 				case "MMMM": {
-					result = this._getRegionalOption("monthNames")[ month ];
+					result = this._getRegionalValue("monthNames")[ month ];
 				}
 					break;
 				case "MMM": {
-					result = this._getRegionalOption("monthNamesShort")[ month ];
+					result = this._getRegionalValue("monthNamesShort")[ month ];
 				}
 					break;
 				case "MM": {
@@ -10607,13 +10620,17 @@
 					if (this.options.maxValue && parsedVal > this.options.maxValue) {
 						newValue = this._getDateObjectFromValue(this.options.maxValue);
 						this._sendNotification("warning",
-							$.ig.util.stringFormat($.ig.Editor.locale.maxValExceedSetErrMsg,
-								this._getDisplayValue(new Date(this.options.maxValue))));
+							{
+								optName: "maxValExceedSetErrMsg",
+								arg: this._getDisplayValue(new Date(this.options.maxValue))
+							});
 					} else if (this.options.minValue && parsedVal < this.options.minValue) {
 						newValue = this._getDateObjectFromValue(this.options.minValue);
 						this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.minValExceedSetErrMsg,
-								this._getDisplayValue(new Date(this.options.minValue))));
+							{
+								optName: "minValExceedSetErrMsg",
+								arg: this._getDisplayValue(new Date(this.options.minValue))
+							});
 					}
 				}
 				if (this._validateValue(newValue)) {
@@ -10714,7 +10731,7 @@
 					//Raise warning not all required fields are entered
 					//State - message
 					valid = false;
-					this._sendNotification("warning", $.ig.Editor.locale.dateMessage);
+					this._sendNotification("warning", { optName: "dateMessage" });
 				}
 			}
 			this._skipMessages = false;
@@ -10723,32 +10740,32 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownButton: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownVisible: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		}
 	});
 	$.widget("ui.igDatePicker", $.ui.igDateEditor, {
@@ -11064,13 +11081,17 @@
 			this._dropDownList = this._editorInput.datepicker("widget");
 		},
 		_renderDropDownButton: function () {
-			var dropDownButton = $("<div role='button' tabindex='-1' id='" +
-					this.id + "_calendarButton' aria-label='" +
-					this._getLocaleOption("ariaCalendarButton") + "'></div>"),
+			var dropDownButton = $("<div></div>"),
 				dropDownIcon = $("<div></div>");
 
-			dropDownButton.addClass(this.css.buttonCommon);
-			dropDownButton.attr("title", this._getLocaleOption("datePickerButtonTitle"));
+			dropDownButton.addClass(this.css.buttonCommon).attr({
+				"title": this._getLocaleValue("datePickerButtonTitle"),
+				"role": "button",
+				"tabindex": -1,
+				"id": this.id + "_calendarButton",
+				"data-localeid": "datePickerButtonTitle",
+				"data-localeattr": "title"
+			});
 			this._editorContainer.prepend(dropDownButton
 				.addClass(this.css.dropDownButton)
 				.append(dropDownIcon.addClass(this.css.dropDownImage)));
@@ -11142,70 +11163,68 @@
 			// have to perform this.options[ option ] = value;
 			$.Widget.prototype._setOption.apply(this, arguments);
 			switch (option) {
-				case "datepickerOptions": {
-					var pickerOptions = this._editorInput.data("datepicker").settings,
-						settings, self = this, options;
-					settings = $.extend(value, this._pickerDefaults());
+			case "datepickerOptions":
+				var pickerOptions = this._editorInput.data("datepicker").settings,
+					settings, self = this, options;
+				settings = $.extend(value, this._pickerDefaults());
 
-				    //A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
-					options = $.extend(pickerOptions, settings);
+				//A.M. June 30, 2016 #221414 "'Cannot read property 'dpDiv' of undefined' exception"
+				options = $.extend(pickerOptions, settings);
 
-					if (settings.onSelect) {
-						var igOnSelect = settings.onSelect;
-						options.onSelect = function (dateText, inst) {
-							igOnSelect.call(this, dateText, inst);
-							if (self.options.datepickerOptions &&
-								self.options.datepickerOptions.onSelect) {
-								self.options.datepickerOptions
-									.onSelect.call(this, dateText, inst);
-							}
-						};
-					}
-					if (settings.onClose) {
-						var igOnClose = settings.onClose;
-						pickerOptions.onClose = function (dateText, inst) {
-							igOnClose.call(this);
-							if (self.options.datepickerOptions &&
-								self.options.datepickerOptions.onClose) {
-								self.options.datepickerOptions
-									.onClose.call(this, dateText, inst);
-							}
-						};
-					}
-					this._editorInput.data("datepicker").settings = pickerOptions;
-
-					// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
-					if (value.minDate &&
-						(this._editorInput.data("datepicker").settings.minDate !==
-							this.options.minValue))
-					{
-						this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
-					}
-					if (value.maxDate &&
-						(this._editorInput.data("datepicker").settings.maxDate !==
-							this.options.maxValue))
-					{
-						this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
-					}
+				if (settings.onSelect) {
+					var igOnSelect = settings.onSelect;
+					options.onSelect = function (dateText, inst) {
+						igOnSelect.call(this, dateText, inst);
+						if (self.options.datepickerOptions &&
+							self.options.datepickerOptions.onSelect) {
+							self.options.datepickerOptions
+								.onSelect.call(this, dateText, inst);
+						}
+					};
 				}
-					break;
-				case "minValue":
-				case "maxValue":
-					this.options[ option ] = prevValue;
-					this._super(option, value);
-					this._editorInput.datepicker("option", "minDate", this.options.minValue);
-					this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
-
-					// prevent datepicker from updating the input text (if min/max change selection)
-					this._editorInput.val(this._currentInputTextValue);
-					break;
-				default: {
-
-					//In case no propery matches, we call the super. Into the base widget default statement breaks
-					this.options[ option ] = prevValue;
-					this._super(option, value);
+				if (settings.onClose) {
+					var igOnClose = settings.onClose;
+					pickerOptions.onClose = function (dateText, inst) {
+						igOnClose.call(this);
+						if (self.options.datepickerOptions &&
+							self.options.datepickerOptions.onClose) {
+							self.options.datepickerOptions
+								.onClose.call(this, dateText, inst);
+						}
+					};
 				}
-					break;
+				this._editorInput.data("datepicker").settings = pickerOptions;
+
+				// A . M. 08/07/2016 #84 "If 'minDate' is set when initializing date picker, it cannot be changed at runtime"
+				if (value.minDate &&
+					(this._editorInput.data("datepicker").settings.minDate !==
+						this.options.minValue))
+				{
+					this._setOption("minValue", this._editorInput.data("datepicker").settings.minDate);
+				}
+				if (value.maxDate &&
+					(this._editorInput.data("datepicker").settings.maxDate !==
+						this.options.maxValue))
+				{
+					this._setOption("maxValue", this._editorInput.data("datepicker").settings.maxDate);
+				}
+				break;
+			case "minValue":
+			case "maxValue":
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				this._editorInput.datepicker("option", "minDate", this.options.minValue);
+				this._editorInput.datepicker("option", "maxDate", this.options.maxValue);
+
+				// prevent datepicker from updating the input text (if min/max change selection)
+				this._editorInput.val(this._currentInputTextValue);
+				break;
+			default:
+
+				//In case no propery matches, we call the super. Into the base widget default statement breaks
+				this.options[ option ] = prevValue;
+				this._super(option, value);
+				break;
 			}
 		},
 		_triggerKeyDown: function (event) { //igDatePicker
@@ -11358,22 +11377,22 @@
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		dropDownContainer: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerNoSuchMethodDropDownContainer);
+			throw new Error(this._getLocaleValue("datePickerNoSuchMethodDropDownContainer"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		findListItemIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		getSelectedListItem: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor and igDatePicker */
 		selectedListIndex: function () {
 			/*@Ignored@*/
-			throw new Error($.ig.Editor.locale.datePickerEditorNoSuchMethod);
+			throw new Error(this._getLocaleValue("datePickerEditorNoSuchMethod"));
 		},
 		showDropDown: function () {
 			/* Shows the drop down list.
@@ -11624,7 +11643,7 @@
 				this._editorContainer = this.element.wrap($("<div></div>")).parent();
 				this._editorInput.after(this._valueInput);
 			} else {
-				throw new Error($.ig.Editor.locale.instantiateCheckBoxErrMsg);
+				throw new Error(this._getLocaleValue("instantiateCheckBoxErrMsg"));
 			}
 
 			this._editorContainer
@@ -11679,21 +11698,21 @@
 
 			this._super(option, value);
 			switch (option) {
-				case "checked":
-					this._updateState(value && value !== "false" ? true : false);
-					break;
-				case "value":
-					this._inputValue = value;
-					this._updateState(this.options.checked);
-					break;
-				case "size":
-					this._size(value);
-					break;
-				case "iconClass":
-					this._setIconClass(iconClass, value);
-					break;
-				default:
-					break;
+			case "checked":
+				this._updateState(value && value !== "false" ? true : false);
+				break;
+			case "value":
+				this._inputValue = value;
+				this._updateState(this.options.checked);
+				break;
+			case "size":
+				this._size(value);
+				break;
+			case "iconClass":
+				this._setIconClass(iconClass, value);
+				break;
+			default:
+				break;
 			}
 
 		},
@@ -11808,7 +11827,7 @@
 				if (value.ret) {
 					state = value.p1;
 				} else {
-					throw new Error($.ig.Editor.locale.cannotParseNonBoolValue);
+					throw new Error(this._getLocaleValue("cannotParseNonBoolValue"));
 				}
 			}
 
@@ -11990,7 +12009,7 @@
 					if (result && result.ret) {
 						this._updateState(result.p1);
 					} else {
-						throw new Error($.ig.Editor.locale.cannotSetNonBoolValue);
+						throw new Error(this._getLocaleValue("cannotSetNonBoolValue"));
 					}
 				} else {
 					/* update value only */

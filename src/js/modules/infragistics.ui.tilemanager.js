@@ -13,6 +13,7 @@
  *	infragistics.dataSource.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
+ *  infragistics.ui.widget.js
  *  infragistics.ui.splitter.js
  *	infragistics.ui.layoutmanager.js
  *	infragistics.ui.tilemanager-en.js
@@ -23,10 +24,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
+			"./infragistics.ui.widget",
 			"./infragistics.datasource",
 			"./infragistics.templating",
 			"./infragistics.ui.layoutmanager",
@@ -44,7 +42,7 @@
 		type. The igTileManager control provides the functionality of wrapping content in a tile view and displaying them in a fully responsive
 		grid layout.
 	*/
-    $.widget("ui.igTileManager", {
+    $.widget("ui.igTileManager", $.ui.igWidget, {
         css: {
             /* classes applied to the top container element */
             container: "ui-widget ui-igtilemanager ui-widget-content",
@@ -936,9 +934,6 @@
             splitbarSelector: ".ui-igsplitter-splitbar-vertical",
             innerContainerSelector: ".ui-igtile-inner-container"
         },
-        _createWidget: function () {
-            $.Widget.prototype._createWidget.apply(this, arguments);
-        },
         _create: function () {
             var opt = this.options;
 
@@ -997,7 +992,7 @@
                 self = this,
                 _opt = this._options;
 
-            $.Widget.prototype._setOption.apply(this, arguments);
+            this._super(option, value);
             switch (option) {
                 case "dataSource":
                     this.dataBind();
@@ -1046,7 +1041,7 @@
 
                     // TODO: Implement setting items number different than the number of tiles
                     if (value.length !== _opt.$tiles.length) {
-                        throw new Error($.ig.TileManager.locale.setOptionItemsLengthError);
+                        throw new Error(this._getLocaleValue("setOptionItemsLengthError"));
                     }
 
                     if (_opt.useMaximizedTileIndex) {
@@ -1142,7 +1137,7 @@
                     break;
                 case "splitterOptions":
                     if (value.hasOwnProperty("collapsed") || value.hasOwnProperty("collapsible")) {
-                        throw new Error($.ig.Splitter.locale.errorSettingOption);
+                        throw new Error(this._getLocaleValue("errorSettingOption"));
                     }
 
                     if (value.enabled === true) {
@@ -1224,7 +1219,7 @@
                 this.element.empty();
                 this._initLayoutManager(data._data);
             } else {
-                throw new Error($.ig.TileManager.locale.renderDataError);
+                throw new Error(this._getLocaleValue("renderDataError"));
             }
         },
         _resetInternalOptions: function () {
@@ -2570,10 +2565,10 @@
             ```
                 returnType="object"
             */
-            $.Widget.prototype.destroy.apply(this, arguments);
             this.element.removeClass(this.css.container);
             this._destroyTiles();
             this._removeEventHandlers();
+            this._super();
             return this;
         }
     });
