@@ -2200,7 +2200,7 @@ $.extend($.ig.loaderClass, {
 
 		for (i = 0; i < len; i++) {
 			path = (type === "script" ?
-				(this._resources[i].oss ? this.settings.ossPath : this.settings.scriptPath) :
+				(this._resources[ i ].oss ? this.settings.ossPath : this.settings.scriptPath) :
 				this.settings.cssPath);
 			scriptData = (type === "script" ? this._resources[ i ].scripts : this._resources[ i ].css);
 			scriptData = scriptData || [  ];
