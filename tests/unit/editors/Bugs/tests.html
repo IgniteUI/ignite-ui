@@ -30,6 +30,7 @@
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" /> 
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -1342,7 +1343,7 @@
 					$("#695Editor").remove();
 			});
 
-        		testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
+			testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
 			test(testId, 5, function () {
 				var editor =  $("#809Editor");
 				input = editor.igNumericEditor("field"),
@@ -1395,7 +1396,68 @@
 					clearButton.click();
 					equal(field.val(), "", 'input value is not set to ""' );
 					$("#942Editor").remove();
-					}, 100);
+				}, 100);
+			});
+
+			testId = 'Bug 1027 Exception is thrown when typing due to incorrect value/nullValue on init';
+			test(testId, 7, function () {
+				var $editor;
+
+				// value not matching mask (fails validation)
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({ 
+						 inputMask : "9900",
+						 value: "abc" //should be numerics
+					 });
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(49, $editor);
+					$.ig.TestUtil.keyInteraction(50, $editor);
+					$.ig.TestUtil.keyInteraction(51, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(wrong value) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "123_", "(wrong value) Typing did not update Edit text.");
+				$editor.remove();
+				
+				// nullValue not matching mask (fails validation)
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({ 
+						 inputMask : "AA??",
+						 allowNullValue: true,
+						 nullValue: "#5a" //wrong first char
+					 });
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(97, $editor);
+					$.ig.TestUtil.keyInteraction(98, $editor);
+					$.ig.TestUtil.keyInteraction(99, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(wrong nullValue) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "abc_", "(wrong nullValue) Typing did not update Edit text.");
+				$editor.remove();
+
+				// nullValue not a string
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({
+						 allowNullValue: true,
+						 nullValue: 0
+					 });
+				equal($editor.val(), "0", "Null value not applied on Display text.")
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(49, $editor);
+					$.ig.TestUtil.keyInteraction(50, $editor);
+					$.ig.TestUtil.keyInteraction(51, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(numeric nullValue) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "123_______", "(numeric nullValue) Typing did not update Edit text.");
+				$editor.remove();
 			});
 		});
 
