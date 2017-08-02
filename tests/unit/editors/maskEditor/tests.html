@@ -1040,7 +1040,7 @@
 				});
 			});
 			testId = "Test nullValue on initialization";
-			test(testId, 4, function(){
+			test(testId, 9, function(){
 				var $editor = $("<input id='editor'/>").
 				appendTo("#testBedContainer").igMaskEditor({ allowNullValue: false});
 				//Get null Value
@@ -1057,9 +1057,33 @@
 				//Get null value
 				equal($editor.igMaskEditor("value"), null, "The value is not an empty string");
 				$editor.remove();
+
+				// test invalid nullValue
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igMaskEditor({ 
+						inputMask: "9990",
+						dataMode: "rawText",
+						nullValue: "abc",
+						allowNullValue: true,
+						buttonType: "clear"
+					});
+
+				equal($editor.val(), "", "Display did not initialize correctly");
+				strictEqual($editor.igMaskEditor("value"), "", "Null value should be ignored on init");
+				//check clear also ignores the wrong nullValue:
+				$editor.igMaskEditor("value", "555");
+				$editor.igMaskEditor("clearButton").trigger("click");
+				strictEqual($editor.igMaskEditor("value"), "", "Null value should be ignored on clear");
+				$editor.igMaskEditor("value", "123");
+				$editor.igMaskEditor("value", null);
+				strictEqual($editor.igMaskEditor("value"), "", "Null value should be ignored on set");
+				//verify empty string is still accepted
+				$editor.igMaskEditor("value", "");
+				strictEqual($editor.igMaskEditor("value"), "", "Empty value should be accepted");
+				$editor.remove();
 			});
 
-			var testId = 'Clear button state';
+			testId = 'Clear button state';
 			test(testId, 2, function () {
 				var $editor;
 
