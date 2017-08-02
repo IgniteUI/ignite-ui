@@ -10,5 +10,7 @@ if (typeof (jQuery) === "undefined") {
 			return $(video);
 		}
 	});
+	//should extend the locale values of the video player, they are using the name of the widget now
+	$.ig.locale.en.VideoPlayerUnitTesting = $.extend({}, $.ig.locale.en.VideoPlayer);
     $.extend($.ui.igVideoPlayerUnitTesting, {version: "1.0.0"});
 }(jQuery));

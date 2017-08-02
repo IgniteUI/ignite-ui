@@ -770,7 +770,11 @@
 		if (!widget.events || !widget.events.browserNotSupported ||
 			widget._trigger(widget.events.browserNotSupported)) {
 			var elem = widget.element, o = widget.options,
-				container = $("<div></div>").css("overflow", "auto")
+				container = $("<div></div>")
+					.attr({
+						"data-not-supported-browser": true
+					})
+					.css("overflow", "auto")
 					.addClass(widget.css.unsupportedBrowserClass).appendTo(elem),
 				ul, browserUnsupported;
 			locale = locale || $.ig.util.locale;
