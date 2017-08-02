@@ -10843,7 +10843,22 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listItems: null,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
-			listWidth: 0
+			listWidth: 0,
+			/* type="bool" Suppress on-screen keyboard from showing when the date picker dropdown button is clicked.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		events: {
 			/* cancel="true" Event which is raised when the drop down is opening.
@@ -11021,7 +11036,9 @@
 						self._exitEditMode();
 					} else {
 						self._focused = false;
-						self._editorInput.focus();
+						if (!self.options.suppressKeyboard) {
+							self._editorInput.focus();
+						}
 					}
 				},
 				beforeShow: function(/*input*/) {
@@ -11303,6 +11320,7 @@
 			this._trigger(this.events.itemSelected, null, args);
 		},
 		_showDropDownList: function () { //DatePicker
+			var shouldFocusInput;
 
 			this._dropDownOpened = true;
 
@@ -11336,7 +11354,20 @@
 			if (currentInputValue === undefined) {
 				currentInputValue = this._editorInput.val();
 			}
+
 			try {
+				if (this.options.suppressKeyboard) {
+					if (this._focused) {
+
+						// If we are in edit mode and virtual keyboard is visible, we want to hide it before the drop down is opened.
+						this._editorInput.blur();
+					}
+
+					// Overwrite internal _shouldFocusInput function of the jQuery datepicker in order to prevent the datepicker to focus the input.
+					shouldFocusInput =  $.datepicker._shouldFocusInput;
+					$.datepicker._shouldFocusInput = function() { return false; };
+				}
+
 				this._editorInput.datepicker("option", "showOptions", { direction: direction });
 
 				// $(this._dropDownList).show("blind", { direction: direction }, this.options.dropDownAnimationDuration);
@@ -11350,6 +11381,12 @@
 				this._editorInput.datepicker("show");
 				if (currentInputValue) {
 					this._editorInput.val(currentInputValue);
+				}
+			} finally {
+				if (this.options.suppressKeyboard) {
+
+					// Restore the initial loguc of the internal _shouldFocusInput function of the jQuery datepicker.
+					$.datepicker._shouldFocusInput = shouldFocusInput;
 				}
 			}
 
