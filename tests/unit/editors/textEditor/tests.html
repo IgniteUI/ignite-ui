@@ -1432,7 +1432,7 @@
 			$classSelector.remove();
 		});
 		var testId = "NullValue set on init.";
-		test(testId, 2, function(){
+		test(testId, 5, function(){
 			var $editor=$("<input id='textEditorNull' />").appendTo("#testBedContainer").igTextEditor({
 					allowNullValue: true,
 					nullValue: 0
@@ -1444,6 +1444,25 @@
 			$editor.igTextEditor("value", null);
 			currentValue = $editor.igTextEditor("value");
 			equal(currentValue, "0" , "The value is not set to the nullValue");
+			$editor.remove();
+
+			//invalid null value:
+			var $editor=$("<input />").appendTo("#testBedContainer").igTextEditor({
+					nullValue: "312",
+					allowNullValue: true,
+					isLimitedToListValues: true,
+					listItems: ["a", "b", "c"],
+					buttonType: "clear"
+				});
+			
+			var currentValue = $editor.igTextEditor("value");
+			strictEqual($editor.igTextEditor("value"), "" , "Initial value should ignore wrong nullValue");
+			$editor.igTextEditor("value", "a");
+			$editor.igTextEditor("value", null);
+			strictEqual($editor.igTextEditor("value"), "" , "Value set should ignore wrong nullValue");
+			$editor.igTextEditor("value", "a");
+			$editor.igTextEditor("clearButton").trigger("click");
+			strictEqual($editor.igTextEditor("value"), "" , "Clear should ignore wrong nullValue");
 			$editor.remove();
 		});
 		var testId = "Test creating on wrong field or wrong options combinations."
@@ -1575,6 +1594,18 @@
 			typeInInput("abc s",  $editor.igTextEditor("field"));
 			ok($('#maxLengthTest').parents().hasClass("ui-ignotify-warn"), "The notifier is not shown");
 			$editor.remove();
+		});
+		
+		testId = "Setting listItems on run time";
+		test(testId, 3, function () {
+			var editor = $('#issue481'), items = ["item 1", "item 2", "item 3"],
+			currentVal = editor.igTextEditor("option", "listItems");
+
+			ok(currentVal === null, "ListItems should not be set on initialization");
+				
+			editor.igTextEditor("option", "listItems", items);
+			equal(editor.igTextEditor("option", "listItems").length, items.length, "ListItems were not set on run time.");
+			equal(editor.igTextEditor("option", "listItems")[0], items[0], "ListItems were not set on run time.");
 		});
 
 		var testId = 'Testing key code event arguments';

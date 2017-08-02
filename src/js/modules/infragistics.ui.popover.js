@@ -455,7 +455,7 @@
 			if (options && options.directionPriority !== this.options.directionPriority) {
 				options.directionPriority = this._normalizePriority(options.directionPriority);
 			}
-			$.Widget.prototype._createWidget.apply(this, arguments);
+			this._superApply(arguments);
 			this.element = $(element);
 			if (element && element.nodeType !== undefined) {
 				this._renderPopover();
@@ -465,29 +465,10 @@
 			this._super(key, value);
 			switch (key) {
 				case "direction":
-					this.options.direction = value;
 					this._resizeHandler();
 					break;
 				case "directionPriority":
 					this.options.directionPriority = this._normalizePriority(value);
-					break;
-				case "contentTemplate":
-					if (typeof value === "string") {
-						this.options.contentTemplate = value;
-					}
-					break;
-				case "animationDuration":
-					if (typeof value === "number") {
-						this.options.animationDuration = value;
-					}
-					break;
-				case "containment":
-					if (value instanceof $) {
-						this.options.containment = value;
-					}
-					break;
-				case "closeOnBlur":
-					this.options.closeOnBlur = value;
 					break;
 				case "headerTemplate":
 				case "selectors":
@@ -499,7 +480,7 @@
 				case "showOn":
 					throw new Error(this._getLocaleValue("popoverOptionChangeNotSupported") + " " + key);
 				default:
-					$.Widget.prototype._setOption.apply(this, arguments);
+					break;
 			}
 		},
 		destroy: function () {
@@ -511,7 +492,7 @@
 			this._detachEventsFromTarget();
 			$(window).off("resize.popover", this._resizeHandler);
 			this.popover.remove();
-			$.Widget.prototype.destroy.call(this);
+			this._super();
 			return this;
 		},
 		id: function () {

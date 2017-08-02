@@ -287,7 +287,7 @@
 		/* States that appear as inline in auto mode */
 		inlineStates: [ "success", "error" ],
 		_create: function () {
-			$.ui.igPopover.prototype._create.apply(this, arguments);
+			this._super();
 
 			// D.P. Override position prio to top > bottom
 			this._setOption("directionPriority", [ "top", "left", "right", "bottom" ]);
@@ -577,7 +577,7 @@
 				```
 			*/
 			this._setTargetState(true);
-			$.ui.igPopover.prototype.destroy.apply(this, arguments);
+			this._super();
 			return this;
 		}
 	});
