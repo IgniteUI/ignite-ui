@@ -1007,10 +1007,6 @@
 			}
 		},
 		_setFocus: function (event) {
-			if (this._shouldNotFocusInput) {
-				event.target.blur();
-				return;
-			}
 
 			// D.P. 22nd Aug 2016 #226 Can't right-click paste in Edge, double focus event on menu closing
 			if (this._focused) {
@@ -11010,6 +11006,13 @@
 				this._spinDownButton.addClass(this.css.disabled);
 				this._detachButtonsEvents(this._spinDownButton);
 			}
+		},
+		_setFocus: function (event) {
+			if (this._shouldNotFocusInput) {
+				event.target.blur();
+					return;
+			}
+			this._super(event);
 		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
