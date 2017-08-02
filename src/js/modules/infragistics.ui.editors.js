@@ -1007,6 +1007,11 @@
 			}
 		},
 		_setFocus: function (event) {
+			if (this._shouldNotFocusInput) {
+				event.target.blur();
+				return;
+			}
+
 			// D.P. 22nd Aug 2016 #226 Can't right-click paste in Edge, double focus event on menu closing
 			if (this._focused) {
 				return;
@@ -11342,8 +11347,6 @@
 			this._trigger(this.events.itemSelected, null, args);
 		},
 		_showDropDownList: function () { //DatePicker
-			var shouldFocusInput;
-
 			this._dropDownOpened = true;
 
 			// Open Dropdown
@@ -11385,9 +11388,8 @@
 						this._editorInput.blur();
 					}
 
-					// Overwrite internal _shouldFocusInput function of the jQuery datepicker in order to prevent the datepicker to focus the input.
-					shouldFocusInput =  $.datepicker._shouldFocusInput;
-					$.datepicker._shouldFocusInput = function() { return false; };
+					// When suppressKeyboard option for igDatePicker is true, we don't want to focus input.
+					this._shouldNotFocusInput = true;
 				}
 
 				this._editorInput.datepicker("option", "showOptions", { direction: direction });
@@ -11406,9 +11408,7 @@
 				}
 			} finally {
 				if (this.options.suppressKeyboard) {
-
-					// Restore the initial loguc of the internal _shouldFocusInput function of the jQuery datepicker.
-					$.datepicker._shouldFocusInput = shouldFocusInput;
+					delete this._shouldNotFocusInput;
 				}
 			}
 
