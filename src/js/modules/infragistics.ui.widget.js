@@ -135,8 +135,10 @@
 		},
 		_getLocaleDictionary: function () {
 			var language = this.options.language,
-				widgetName = this.localeWidgetName || this.widgetName.replace("ig", "");
-			return $.ig.locale[ language ][ widgetName ];
+				widgetName = this.localeWidgetName || this.widgetName.replace("ig", ""),
+				localeObj = $.ig.locale[ language ];
+			return (localeObj && localeObj[ widgetName ]) ||
+					$.ig[ widgetName ].locale;
 		},
 		_getLocaleValue: function (key) {
 			var locale = $.extend({}, this._getLocaleDictionary());

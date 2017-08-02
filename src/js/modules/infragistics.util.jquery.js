@@ -130,12 +130,9 @@
 			$.ig.regional[ reg ] : reg) || {};
 	};
 	$.ig.getRegionalValue = function (key, reg) {
-		reg = reg || $.ig.regional.defaults || {};
+		reg = $.ig.getRegionalOptions(reg);
 		var value = reg[ key ];
-		if (value === undefined) {
-			value = $.ig.regional.defaults[ key ];
-		}
-		return value;
+		return (value === undefined) ? $.ig.regional.defaults[ key ] : value;
 	};
 
 	$.ig.formatCheckboxes = function (display, val, labelText, tabIndex) {
@@ -363,9 +360,6 @@
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
 			display = displayStyle || "inline-block";
-
-		reg = $.ig.getRegionalOptions(reg, val);
-
 		if (format === "checkbox" && notTemplate) {
 			return $.ig.formatCheckboxes(display, val, labelText, tabIndex);
 		}
