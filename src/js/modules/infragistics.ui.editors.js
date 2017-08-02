@@ -1592,7 +1592,22 @@
 				$(".selector").%%WidgetName%%("option", "suppressNotifications", true);
 			```
 			*/
-			suppressNotifications: false
+			suppressNotifications: false,
+			/* type="bool" Suppress on-screen keyboard from showing when the dropdown button is clicked and the list is opened.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		css: {
 			/* igWidget element classes go here */
@@ -3461,8 +3476,11 @@
 
 					// Proceed with hiding
 					// D.P. 21 Jun 2016 Bug 220712: igTextEditor - typed text is reverted to previous value in case the drop down is opened
-					if (!this._editMode) {
+					if (!this._editMode && !this.options.suppressKeyboard) {
 						this._editorInput.focus();
+					}
+					if (this._editMode && this.options.suppressKeyboard) {
+						this._editorInput.blur();
 					}
 					this._showDropDownList();
 				}
@@ -6448,7 +6466,9 @@
 
 			```
 			*/
-			value: null
+			value: null,
+			/* type="bool" @Ignored@ Suppress on-screen keyboard from showing when the date picker dropdown button is clicked and calendar is opened. */
+			suppressKeyboard: false
 		},
 		events: {
 			/* igWidget events go here */
@@ -7902,7 +7922,9 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			toUpper: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
-			toLower: false
+			toLower: false,
+			/* type="bool" @Ignored@ Suppress on-screen keyboard from showing when the date picker dropdown button is clicked and calendar is opened. */
+			suppressKeyboard: false
 		},
 		events: {
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
@@ -10844,7 +10866,7 @@
 			listItems: null,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listWidth: 0,
-			/* type="bool" Suppress on-screen keyboard from showing when the date picker dropdown button is clicked.
+			/* type="bool" Suppress on-screen keyboard from showing when the date picker dropdown button is clicked and calendar is opened.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
