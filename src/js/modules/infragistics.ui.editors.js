@@ -1020,6 +1020,7 @@
 			}
 		},
 		_setBlur: function (event) { //Base Editor
+			//log("blur");
 			var newValue;
 			if (this._cancelBlurOnInput) {
 				this._editorInput.focus();
@@ -2726,11 +2727,12 @@
 				},
 				"compositionend.editor": function () {
 					setTimeout(function () {
+						//log("compositionend.editor:" + self._editorInput.val());
 						var value, pastedValue, widgetName = self.widgetName,
 							cursorPosition = self._getCursorPosition();
 
 						// In that case blur event is triggered before the composition end and the editor has already processed the change.
-						if (self._inComposition !== true) {
+						if (self._focused !== true) {
 							return;
 						}
 						switch (widgetName) {
@@ -2763,20 +2765,22 @@
 							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
 						}
-						if (self._validateValue(value)) {
+						//log("inserting:" + value);
+						// if (self._validateValue(value)) {
+							//D.P. Insert handler should validate
 							self._insert(pastedValue, self._compositionStartValue);
 							self._setCursorPosition(cursorPosition);
-						} else {
-							if (self.options.revertIfNotValid) {
-								value = self._valueInput.val();
-								self._updateValue(value);
-							} else {
-								self._clearValue();
-							}
-							if (self._focused) {
-								self._enterEditMode();
-							}
-						}
+						// } else {
+						// 	if (self.options.revertIfNotValid) {
+						// 		value = self._valueInput.val();
+						// 		self._updateValue(value);
+						// 	} else {
+						// 		self._clearValue();
+						// 	}
+						// 	if (self._focused) {
+						// 		self._enterEditMode();
+						// 	}
+						// }
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -2823,6 +2827,18 @@
 		},
 		_processInternalValueChanging: function (value) { //TextEditor
 			var listIndex;
+			if (this.options.maxLength) {
+				if (value && value.toString().length > this.options.maxLength) {
+					value = value.toString().substring(0, this.options.maxLength);
+
+					//Raise warning
+					this._sendNotification("warning",
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
+				}
+			}
 			if (this._validateValue(value)) {
 				if (this._dropDownList && this.options.isLimitedToListValues &&
 					(listIndex = this._valueIndexInList(value)) !== -1 ) {
