@@ -9,24 +9,24 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
-$.ig = $.ig || {};
+(function () {
+	$ = $ || {};
+    $.ig = $.ig || {};
+	$.ig.TileManager = $.ig.TileManager || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
 
-if (!$.ig.TileManager) {
-	$.ig.TileManager = {};
-
-	$.extend($.ig.TileManager, {
-		locale: {
+	$.ig.locale.en.TileManager = {
 			renderDataError: "Data was not successfully retrieved or parsed.",
-		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles."
-		}
-	});
-}
+		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles.",
+			setOptionError: "Runtime changes are not allowed for this option."
+	}
+	
+	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.en.TileManager;
+	return $.ig.locale.en.TileManager;
 }));// REMOVE_FROM_COMBINED_FILES
