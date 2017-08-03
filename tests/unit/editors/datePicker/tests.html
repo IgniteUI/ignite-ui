@@ -24,6 +24,7 @@
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -772,6 +773,48 @@
 					}
 				 
 				testWithOptions(pickerTestOpts.pop());
+			});
+
+			var testId = 'Test suppressKeyboard option';
+			test(testId, 10, function () {
+				var $editor, ddButton;
+				
+				// Test that the input DOESN'T have focus after the drop down is opened
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-today").click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.remove();
+
+				// Test that the input DOESN'T have focus after the drop down is opened (before that the input is focused)
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: true });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				$editor.igDatePicker("setFocus");
+				$ddButton.click();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$input.blur();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.remove();
+
+				// Test that the input DOES have focus after the drop down is opened
+				$editor = $('<input/>').appendTo("#testBedContainer").igDatePicker({ suppressKeyboard: false });
+				$ddButton = $editor.igDatePicker("dropDownButton");
+				$input = $editor.igDatePicker("field");
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$ddButton.click();
+				ok($input.is(":focus"), "The input should be focused");
+				$editor.igDatePicker( "getCalendar" ).find(".ui-datepicker-today").click();
+				ok($input.is(":focus"), "The input should be focused");
+				$ddButton.click();
+				ok($input.is(":focus"), "The input should be focused");
+				$input.blur();
+				ok(!$input.is(":focus"), "The input should not be focused");
+				$editor.remove();
 			});
 
 	    });
