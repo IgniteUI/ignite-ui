@@ -11410,9 +11410,7 @@
 					this._editorInput.val(currentInputValue);
 				}
 			} finally {
-				if (this.options.suppressKeyboard) {
-					delete this._shouldNotFocusInput;
-				}
+				delete this._shouldNotFocusInput;
 			}
 
 			// We cannot trigger drop down opened callback, using the datepicker widget API.
