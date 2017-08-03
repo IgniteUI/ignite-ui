@@ -1593,7 +1593,7 @@
 			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ maxLength: 5, value: "ade" });
 
 			$editor.igTextEditor("value","abcdefg");
-			equal($editor.igTextEditor("value"), "abcde", "Clear button is not visible");
+			equal($editor.igTextEditor("value"), "abcde", "Value is not trimmed properly");
 			$editor.remove();
 		});
 
