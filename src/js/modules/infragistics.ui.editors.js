@@ -1020,7 +1020,6 @@
 			}
 		},
 		_setBlur: function (event) { //Base Editor
-			//log("blur");
 			var newValue;
 			if (this._cancelBlurOnInput) {
 				this._editorInput.focus();
@@ -2727,7 +2726,6 @@
 				},
 				"compositionend.editor": function () {
 					setTimeout(function () {
-						//log("compositionend.editor:" + self._editorInput.val());
 						var value, pastedValue, widgetName = self.widgetName,
 							cursorPosition = self._getCursorPosition();
 
@@ -2765,22 +2763,10 @@
 							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
 						}
-						//log("inserting:" + value);
-						// if (self._validateValue(value)) {
-							//D.P. Insert handler should validate
-							self._insert(pastedValue, self._compositionStartValue);
-							self._setCursorPosition(cursorPosition);
-						// } else {
-						// 	if (self.options.revertIfNotValid) {
-						// 		value = self._valueInput.val();
-						// 		self._updateValue(value);
-						// 	} else {
-						// 		self._clearValue();
-						// 	}
-						// 	if (self._focused) {
-						// 		self._enterEditMode();
-						// 	}
-						// }
+						
+						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
+						self._insert(pastedValue, self._compositionStartValue);
+						self._setCursorPosition(cursorPosition);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -2827,6 +2813,8 @@
 		},
 		_processInternalValueChanging: function (value) { //TextEditor
 			var listIndex;
+
+			//D.P. 3rd Aug 2017 #1043 Make sure maxLength is respected when typing handlers can't prevent entry
 			if (this.options.maxLength) {
 				if (value && value.toString().length > this.options.maxLength) {
 					value = value.toString().substring(0, this.options.maxLength);
