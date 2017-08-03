@@ -2840,12 +2840,17 @@
 								this._processValueChanging(currentInputVal);
 								this._enterEditMode();
 							}
-						} else {
+							} else {
+
 							// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput.
 							this._processValueChanging(currentInputVal);
 
-							// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
-							this._enterEditMode();
+							//I.G. 27/07/2017 #1090 'igTextEditor in multiline mode removes the existing text on Enter key'
+							if (this.options.textMode !== "multiline") {
+
+							//A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+								this._enterEditMode();
+							}
 						}
 					}
 				} else {
@@ -4810,7 +4815,6 @@
 						this._processValueChanging(currentInputVal);
 						this._enterEditMode();
 					}
-
 				} else if (e.keyCode === 38) {
 
 					// Arrow Up
