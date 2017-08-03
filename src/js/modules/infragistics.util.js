@@ -1460,7 +1460,6 @@
 	$.ig.Date.prototype.toStringFormat = function (value, format, provider) {
 		var result;
 		provider = provider || $.ig.CultureInfo.prototype.currentCulture(); // TODO: Use the provider below
-		
 		var mmm = function(value, provider) {
 			// On some browsers, the ja-JP month short formatting seems to not match .NET"s "MMM" formatting
 			var cultureName = provider.name();
@@ -1528,11 +1527,10 @@
 			case "%t":
 				return value.getHours() <= 11 ? "A" : "P"; // TODO: Figure out how to get this based on culture
 		}
-		
 		result = format;
 		result = result.replace("yyyy", value.getFullYear().toString());
 		result = result.replace("MMM", mmm(value, provider));
-		result = result.replace("MM", (value.getMonth() + 1).toString().replace( /^(\d)$/, "0$1")); 
+		result = result.replace("MM", (value.getMonth() + 1).toString().replace( /^(\d)$/, "0$1"));
 		result = result.replace("dd", value.getDate().toString().replace(/^(\d)$/, "0$1"));
 		return result;
 	};
