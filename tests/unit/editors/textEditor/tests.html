@@ -1588,6 +1588,15 @@
 			equal(editor.igTextEditor("option", "listItems")[0], items[0], "ListItems were not set on run time.");
 		});
 
+		testing = "Set text dynamically with maxLength defined";
+		test(testing, 1, function() {
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ maxLength: 5, value: "ade" });
+
+			$editor.igTextEditor("value","abcdefg");
+			equal($editor.igTextEditor("value"), "abcde", "Value is not trimmed properly");
+			$editor.remove();
+		});
+
 		var testId = 'Testing key code event arguments';
 		test(testId, 3, function () {
 			var keyD, keyP, keyU;
