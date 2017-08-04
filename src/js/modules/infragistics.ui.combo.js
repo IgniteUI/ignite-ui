@@ -1965,9 +1965,31 @@
 			if ($.ig && $.ig.formatter) {
 				if (this.options.format === "auto" &&
 					($.type(item) === "date" || $.type(item) === "number")) {
-					item = $.ig.formatter(item, null, null);
+					item = $.ig.formatter(
+						item,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						$.ig.regional[ this.options.regional ]
+					);
 				} else if (this._formatEnabled()) {
-					item = $.ig.formatter(item, null, this.options.format);
+					item = $.ig.formatter(
+						item,
+						null,
+						this.options.format,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						$.ig.regional[ this.options.regional ]
+					);
 				}
 			}
 
@@ -4861,6 +4883,9 @@
 			if ($noMatchFound && $noMatchFound.length) {
 				this._changeLocaleForElement($noMatchFound);
 			}
+		},
+		_changeRegional: function () {
+			this.dataBind();
 		},
 		_setOption: function (option, value) {
 			var options = this.options,
