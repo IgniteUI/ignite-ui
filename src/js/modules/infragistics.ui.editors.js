@@ -1067,6 +1067,18 @@
 
 				// N.A. 12/1/2015 Bug #207198: Remove notifier when value updated through value method.
 				this._clearEditorNotifier();
+
+				// N.A. July 27th, 2017, #1042: Trim value, when its length is larger then the maxLength one.
+				if (this.options.maxLength) {
+					if (newValue && newValue.toString().length > this.options.maxLength) {
+						newValue = newValue.toString().substring(0, this.options.maxLength);
+						this._sendNotification("warning",
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
+					}
+				}
 				if (this._validateValue(newValue)) {
 					if (this.options.toUpper) {
 						if (newValue) { newValue = newValue.toLocaleUpperCase(); }
@@ -1081,17 +1093,9 @@
 					this._updateValue(newValue);
 					this._editorInput.val(this._getDisplayValue());
 				} else {
-
-					// N.A. July 27th, 2017, #1042: Trim value, when its length is larger then the maxLenght one.
-					if (this.options.maxLength) {
-						newValue = newValue.toString().substring(0, this.options.maxLength);
-						this._updateValue(newValue);
-						this._editorInput.val(this._getDisplayValue());
-					} else {
-						this._clearValue();
-						if (this._focused !== true) {
-							this._exitEditMode();
-						}
+					this._clearValue();
+					if (this._focused !== true) {
+						this._exitEditMode();
 					}
 				}
 			} else {
@@ -2255,11 +2259,6 @@
 				 if (val.toString().length <= this.options.maxLength) {
 					result = true;
 				} else {
-					this._sendNotification("warning",
-						{
-							optName: "maxLengthErrMsg",
-							arg: this.options.maxLength
-						});
 					result = false;
 				}
 			} else {
