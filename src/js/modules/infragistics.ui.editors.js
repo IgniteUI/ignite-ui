@@ -1573,7 +1573,9 @@
 			```
 			*/
 			suppressNotifications: false,
-			/* type="bool" Suppress on-screen keyboard from showing when the dropdown button is clicked and the list is opened.
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				Note: When drop down is opened the only way to close it will be using the drop down button.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -6325,7 +6327,7 @@
 			```
 			*/
 			value: null,
-			/* type="bool" @Ignored@ Suppress on-screen keyboard from showing when the date picker dropdown button is clicked and calendar is opened. */
+			/* @Ignored@ */
 			suppressKeyboard: false
 		},
 		events: {
@@ -7740,7 +7742,7 @@
 			toUpper: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			toLower: false,
-			/* type="bool" @Ignored@ Suppress on-screen keyboard from showing when the date picker dropdown button is clicked and calendar is opened. */
+			/* @Ignored@ */
 			suppressKeyboard: false
 		},
 		events: {
@@ -10566,7 +10568,8 @@
 			listItems: null,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listWidth: 0,
-			/* type="bool" Suppress on-screen keyboard from showing when the date picker dropdown button is clicked and calendar is opened.
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
 				```
 				//Initialize
 				$(".selector").%%WidgetName%%({
@@ -10580,7 +10583,7 @@
 				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
 				```
 			*/
-suppressKeyboard: false
+			suppressKeyboard: false
 		},
 		events: {
 			/* cancel="true" Event which is raised when the drop down is opening.
@@ -10707,7 +10710,8 @@ suppressKeyboard: false
 		_setFocus: function (event) {
 			if (this._shouldNotFocusInput) {
 				event.target.blur();
-					return;
+				delete this._shouldNotFocusInput;
+				return;
 			}
 			this._super(event);
 		},
@@ -10814,6 +10818,11 @@ suppressKeyboard: false
 					}
 				};
 			}
+			options.onChangeMonthYear  = function () {
+				if (self.options.suppressKeyboard) {
+					self._shouldNotFocusInput = true;
+				}
+			};
 			this._editorInput.datepicker(options);
 			this._dropDownList = this._editorInput.datepicker("widget");
 		},
@@ -11084,8 +11093,6 @@ suppressKeyboard: false
 				if (currentInputValue) {
 					this._editorInput.val(currentInputValue);
 				}
-			} finally {
-				delete this._shouldNotFocusInput;
 			}
 
 			// We cannot trigger drop down opened callback, using the datepicker widget API.
