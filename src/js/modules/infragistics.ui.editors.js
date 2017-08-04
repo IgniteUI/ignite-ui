@@ -2763,7 +2763,7 @@
 							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
 						}
-						
+
 						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
 						self._insert(pastedValue, self._compositionStartValue);
 						self._setCursorPosition(cursorPosition);
