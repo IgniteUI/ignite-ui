@@ -6470,7 +6470,7 @@
 			```
 			*/
 			value: null,
-			/* type="bool" @Ignored@ Suppress on-screen keyboard from showing when the date picker dropdown button is clicked and calendar is opened. */
+			/* @Ignored@ */
 			suppressKeyboard: false
 		},
 		events: {
@@ -7926,7 +7926,7 @@
 			toUpper: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			toLower: false,
-			/* type="bool" @Ignored@ Suppress on-screen keyboard from showing when the date picker dropdown button is clicked and calendar is opened. */
+			/* @Ignored@ */
 			suppressKeyboard: false
 		},
 		events: {
