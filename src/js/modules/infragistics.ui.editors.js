@@ -2776,6 +2776,14 @@
 					}, 0);
 				},
 				"compositionupdate.editor": function (evt) {
+					if (typeof self._copositionStartIndex === "undefined") {
+						//D.P. Chrome on Adroid will not fire compositionstart if replacing the entire selection
+						//In this case patch start index and value:
+						var startIndex = self._getCursorPosition();
+						startIndex -= evt.originalEvent.data ? evt.originalEvent.data.length : 1;
+						self._copositionStartIndex = startIndex;
+						self._compositionStartValue = self._editorInput.val().substring(0, startIndex);
+					}
 					setTimeout(function () {
 						self._currentCompositionValue =
 							$(evt.target)
