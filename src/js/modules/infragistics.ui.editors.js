@@ -11128,11 +11128,21 @@
 					}
 				};
 			}
-			options.onChangeMonthYear  = function () {
-				if (self.options.suppressKeyboard) {
-					self._shouldNotFocusInput = true;
-				}
-			};
+			if (self.options.datepickerOptions && self.options.datepickerOptions.onChangeMonthYear) {
+				var isOnChangeMonthYear = regional.onChangeMonthYear;
+				options.onChangeMonthYear  = function () {
+					isOnChangeMonthYear.call(this);
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
+					}
+				};
+			} else {
+				options.onChangeMonthYear  = function () {
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
+					}
+				};
+			}
 			this._editorInput.datepicker(options);
 			this._dropDownList = this._editorInput.datepicker("widget");
 		},
