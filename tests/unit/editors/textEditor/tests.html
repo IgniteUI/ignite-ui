@@ -1432,7 +1432,7 @@
 			$classSelector.remove();
 		});
 		var testId = "NullValue set on init.";
-		test(testId, 2, function(){
+		test(testId, 5, function(){
 			var $editor=$("<input id='textEditorNull' />").appendTo("#testBedContainer").igTextEditor({
 					allowNullValue: true,
 					nullValue: 0
@@ -1444,6 +1444,25 @@
 			$editor.igTextEditor("value", null);
 			currentValue = $editor.igTextEditor("value");
 			equal(currentValue, "0" , "The value is not set to the nullValue");
+			$editor.remove();
+
+			//invalid null value:
+			var $editor=$("<input />").appendTo("#testBedContainer").igTextEditor({
+					nullValue: "312",
+					allowNullValue: true,
+					isLimitedToListValues: true,
+					listItems: ["a", "b", "c"],
+					buttonType: "clear"
+				});
+			
+			var currentValue = $editor.igTextEditor("value");
+			strictEqual($editor.igTextEditor("value"), "" , "Initial value should ignore wrong nullValue");
+			$editor.igTextEditor("value", "a");
+			$editor.igTextEditor("value", null);
+			strictEqual($editor.igTextEditor("value"), "" , "Value set should ignore wrong nullValue");
+			$editor.igTextEditor("value", "a");
+			$editor.igTextEditor("clearButton").trigger("click");
+			strictEqual($editor.igTextEditor("value"), "" , "Clear should ignore wrong nullValue");
 			$editor.remove();
 		});
 		var testId = "Test creating on wrong field or wrong options combinations."
@@ -1587,6 +1606,15 @@
 			editor.igTextEditor("option", "listItems", items);
 			equal(editor.igTextEditor("option", "listItems").length, items.length, "ListItems were not set on run time.");
 			equal(editor.igTextEditor("option", "listItems")[0], items[0], "ListItems were not set on run time.");
+		});
+
+		testing = "Set text dynamically with maxLength defined";
+		test(testing, 1, function() {
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ maxLength: 5, value: "ade" });
+
+			$editor.igTextEditor("value","abcdefg");
+			equal($editor.igTextEditor("value"), "abcde", "Value is not trimmed properly");
+			$editor.remove();
 		});
 
 		var testId = 'Testing key code event arguments';
