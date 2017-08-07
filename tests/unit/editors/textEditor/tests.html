@@ -667,11 +667,11 @@
 			equal(editor.igTextEditor("value"), "newValue", "Value should be changed");
 			editorInput.val("1234567890987654");
 			keyInteraction(13, editorInput);
-			equal(editor.igTextEditor("value"), "newValue", "Value should be limited to 10 symbols");
+			equal(editor.igTextEditor("value"), "1234567890", "Value should be limited to 10 symbols");
 			listEditor.igTextEditor("option", "preventSubmitOnEnter", true);
 			editorInput.val("newNewValue");
 			keyInteraction(13, editorInput);
-			equal(editor.igTextEditor("value"), "newValue", "Value should stay with the previouse value");
+			equal(editor.igTextEditor("value"), "newNewValu", "Value should stay with the previouse value");
 			editor.igTextEditor("value", "newValueto");
 			keyInteraction(56, editorInput);
 			equal(editor.igTextEditor("value"), "newValueto", "Value should stay with the previouse value");
