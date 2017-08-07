@@ -1051,6 +1051,16 @@
 
 				// N.A. 12/1/2015 Bug #207198: Remove notifier when value updated through value method.
 				this._clearEditorNotifier();
+
+				// N.A. July 27th, 2017, #1042: Trim value, when its length is larger then the maxLength one.
+				if (this.options.maxLength) {
+					if (newValue && newValue.toString().length > this.options.maxLength) {
+						newValue = newValue.toString().substring(0, this.options.maxLength);
+						this._sendNotification("warning",
+							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+								this.options.maxLength));
+					}
+				}
 				if (this._validateValue(newValue)) {
 					if (this.options.toUpper) {
 						if (newValue) { newValue = newValue.toLocaleUpperCase(); }
@@ -1060,17 +1070,9 @@
 					this._updateValue(newValue);
 					this._editorInput.val(this._getDisplayValue());
 				} else {
-
-					// N.A. July 27th, 2017, #1042: Trim value, when its length is larger then the maxLenght one.
-					if (this.options.maxLength) {
-						newValue = newValue.toString().substring(0, this.options.maxLength);
-						this._updateValue(newValue);
-						this._editorInput.val(this._getDisplayValue());
-					} else {
-						this._clearValue();
-						if (this._focused !== true) {
-							this._exitEditMode();
-						}
+					this._clearValue();
+					if (this._focused !== true) {
+						this._exitEditMode();
 					}
 				}
 			} else {
@@ -2153,9 +2155,6 @@
 				 if (val.toString().length <= this.options.maxLength) {
 					result = true;
 				} else {
-					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-							this.options.maxLength));
 					result = false;
 				}
 			} else {
@@ -2611,7 +2610,7 @@
 							cursorPosition = self._getCursorPosition();
 
 						// In that case blur event is triggered before the composition end and the editor has already processed the change.
-						if (self._inComposition !== true) {
+						if (self._focused !== true) {
 							return;
 						}
 						switch (widgetName) {
@@ -2644,20 +2643,10 @@
 							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
 						}
-						if (self._validateValue(value)) {
-							self._insert(pastedValue, self._compositionStartValue);
-							self._setCursorPosition(cursorPosition);
-						} else {
-							if (self.options.revertIfNotValid) {
-								value = self._valueInput.val();
-								self._updateValue(value);
-							} else {
-								self._clearValue();
-							}
-							if (self._focused) {
-								self._enterEditMode();
-							}
-						}
+
+						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
+						self._insert(pastedValue, self._compositionStartValue);
+						self._setCursorPosition(cursorPosition);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -2667,6 +2656,14 @@
 					}, 0);
 				},
 				"compositionupdate.editor": function (evt) {
+					if (typeof self._copositionStartIndex === "undefined") {
+						//D.P. Chrome on Adroid will not fire compositionstart if replacing the entire selection
+						//In this case patch start index and value:
+						var startIndex = self._getCursorPosition();
+						startIndex -= evt.originalEvent.data ? evt.originalEvent.data.length : 1;
+						self._copositionStartIndex = startIndex;
+						self._compositionStartValue = self._editorInput.val().substring(0, startIndex);
+					}
 					setTimeout(function () {
 						self._currentCompositionValue =
 							$(evt.target)
@@ -2703,19 +2700,32 @@
 			}
 		},
 		_processInternalValueChanging: function (value) { //TextEditor
-				if (this._validateValue(value)) {
+			//D.P. 3rd Aug 2017 #1043 Make sure maxLength is respected when typing handlers can't prevent entry
+			if (this.options.maxLength) {
+				if (value && value.toString().length > this.options.maxLength) {
+					value = value.toString().substring(0, this.options.maxLength);
+
+					//Raise warning
+					this._sendNotification("warning",
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
+				}
+			}
+			if (this._validateValue(value)) {
+				this._updateValue(value);
+			} else {
+
+				// If the value is not valid, we clear the editor
+				if (this.options.revertIfNotValid) {
+					value = this._valueInput.val();
 					this._updateValue(value);
 				} else {
-
-					// If the value is not valid, we clear the editor
-					if (this.options.revertIfNotValid) {
-						value = this._valueInput.val();
-						this._updateValue(value);
-					} else {
-						this._clearValue();
-						value = this._valueInput.val();
-					}
+					this._clearValue();
+					value = this._valueInput.val();
 				}
+			}
 		},
 		_triggerKeyDown: function (event) { //TextEditor
 			//cancellable
