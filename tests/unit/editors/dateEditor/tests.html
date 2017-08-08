@@ -21,6 +21,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
@@ -1891,7 +1892,7 @@
 				$dtEditor.remove();
 			});
 			testId = "Test nullValue on initialization";
-			test(testId, 4, function(){
+			test(testId, 9, function(){
 				var $editor = $("<input id='editor'/>").
 				appendTo("#testBedContainer").igDateEditor({ allowNullValue: false});
 				//Get null Value
@@ -1907,6 +1908,28 @@
 				$editor.igDateEditor("value", null);
 				//Get null value
 				equal($editor.igDateEditor("value"), null, "The value is not an empty string");
+				$editor.remove();
+
+				// test invalid nullValue
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDateEditor({ 
+						buttonType: "clear", 
+						nullValue: new Date("abc"),
+						allowNullValue: true
+					});
+
+				equal($editor.val(), "", "Display did not initialize correctly");
+				strictEqual($editor.igDateEditor("value"), "", "Null value should be ignored on init");
+				//check clear also ignores the wrong nullValue:
+				$editor.igDateEditor("value", new Date());
+				$editor.igDateEditor("clearButton").trigger("click");
+				strictEqual($editor.igDateEditor("value"), "", "Null value should be ignored on clear");
+				$editor.igDateEditor("value", new Date(2017,5,4));
+				$editor.igDateEditor("value", null);
+				strictEqual($editor.igDateEditor("value"), "", "Null value should be ignored on set");
+				//verify empty string is still accepted
+				$editor.igDateEditor("value", "");
+				strictEqual($editor.igDateEditor("value"), "", "Empty value should be accepted");
 				$editor.remove();
 			});
 

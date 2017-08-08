@@ -9,19 +9,19 @@
 
 (function (factory) {
 	if (typeof define === "function" && define.amd) {
-		define( [
-			"jquery"
-		], factory );
+		define( [], factory );
 	} else {
-		factory(jQuery);
+		return factory();
 	}
 }
-(function ($) {
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.Validator = $.ig.Validator || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ru = $.ig.locale.ru || {};
 
-    if (!$.ig.Validator) {
-	    $.ig.Validator = {
-		    locale: {
+	$.ig.locale.ru.Validator = {
 			    defaultMessage: 'Пожалуйста, исправьте это поле',
 			    selectMessage: 'Пожалуйста, выберите значение',
 			    rangeSelectMessage: 'Пожалуйста, выберите не более {0} и не менее {1} пунктов',
@@ -44,7 +44,8 @@
 				creditCardMessage: 'Следует ввести правильный номер платежной карты.',
 		        equalToMessage: 'Эти два значения не совпадают',
 		        optionalString: '(необязательно)'
-		    }
-	    };
-    }
+	}
+	
+	$.ig.Validator.locale = $.ig.Validator.locale || $.ig.locale.ru.Validator;
+	return $.ig.locale.ru.Validator;
 }));// REMOVE_FROM_COMBINED_FILES

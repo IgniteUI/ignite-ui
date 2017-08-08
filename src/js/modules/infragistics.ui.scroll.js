@@ -8,8 +8,10 @@
 * Depends on:
 * jquery-1.9.1.js
 * jquery.ui-1.9.0.js
+* jquery.ui.widget.js
 * infragistics.util.js
 * infragistics.util.jquery.js
+* infragistics.ui.widget.js
 */
 
 /*global MSGesture*/
@@ -18,10 +20,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery"
+			"./infragistics.ui.widget"
 		], factory );
 	} else {
 
@@ -38,7 +37,7 @@
 									"msReleasePointerCapture" :
 									"releasePointerCapture";
 
-	$.widget("ui.igScroll", {
+	$.widget("ui.igScroll", $.ui.igWidget, {
 		options: {
 			/* type="bool" Sets or gets if the scrollbars should be always visible (on all environments). Otherwise it will be the default behavior. Note: this option is only for the custom scrollbars set through the scrollbarType option.
 			```
@@ -1214,7 +1213,7 @@
 						}
 						this._linkedHElems.push(elemObject);
 					} else {
-						throw new Error($.ig.Scroll.locale.errorNoElementLink);
+						throw new Error(this._getLocaleValue("errorNoElementLink"));
 					}
 				}
 			}
@@ -1237,7 +1236,7 @@
 						}
 						this._linkedVElems.push(elemObject);
 					} else {
-						throw new Error($.ig.Scroll.locale.errorNoElementLink);
+						throw new Error(this._getLocaleValue("errorNoElementLink"));
 					}
 				}
 			}
@@ -1277,7 +1276,7 @@
 					}
 					this._linkedHBar = elemObject;
 				} else {
-					throw new Error($.ig.Scroll.locale.errorNoScrollbarLink);
+					throw new Error(this._getLocaleValue("errorNoScrollbarLink"));
 				}
 			}
 
@@ -1318,7 +1317,7 @@
 					}
 					this._linkedVBar = elemObject;
 				} else {
-					throw new Error($.ig.Scroll.locale.errorNoScrollbarLink);
+					throw new Error(this._getLocaleValue("errorNoScrollbarLink"));
 				}
 			}
 

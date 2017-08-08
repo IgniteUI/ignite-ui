@@ -163,6 +163,14 @@ $.ig.dependencies = [
 		description: $.ig.loaderClass.locale.descriptions.utilDescription
 	},
 	{
+		widget: "igWidget",
+		priority: true,
+		scripts: [ "$path$/modules/infragistics.ui.widget.js" ],
+		dependency: [ { name: "igUtil" } ],
+		group: $.ig.loaderClass.locale.miscGroup,
+		description: $.ig.loaderClass.locale.descriptions.utilDescription
+	},
+	{
 		widget: "igDataSource",
 		dependency: [ { name: "igUtil" } ],
 		priority: true,
@@ -199,7 +207,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igScroll",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.scroll.js" ],
 		locale: [ "$localePath$/infragistics.ui.scroll-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
@@ -633,7 +641,7 @@ $.ig.dependencies = [
 	{
 		widget: "igQRCodeBarcode",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "_ig_dv_simple_core" },
 			{ name: "_ig_dv_jquerydom" }
 			],
@@ -874,12 +882,12 @@ $.ig.dependencies = [
 	{
 		widget: "igCombo",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igDataSource" },
 			{ name: "igTemplating" },
 			{ name: "igScroll" },
 			{ name: "igValidator" }
-			],
+		],
 		scripts: [ "$path$/modules/infragistics.ui.combo.js" ],
 		locale: [ "$localePath$/infragistics.ui.combo-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
@@ -891,7 +899,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igDialog",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.dialog.js" ],
 		locale: [ "$localePath$/infragistics.ui.dialog-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
@@ -901,7 +909,7 @@ $.ig.dependencies = [
 	{
 		widget: "igEditors",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "regional" },
 			{ name: "igScroll" },
 			{ name: "igValidator" }
@@ -917,7 +925,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igZoombar",
-		dependency: [ { name: "igUtil" }, { name: "igShared" } ],
+		dependency: [ { name: "igWidget" }, { name: "igShared" } ],
 		scripts: [ "$path$/modules/infragistics.ui.zoombar.js" ],
 		locale: [ "$localePath$/infragistics.ui.zoombar-$locale$.js" ],
 		css: [
@@ -931,7 +939,7 @@ $.ig.dependencies = [
 	{
 		widget: "igGrid",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "regional" },
 			{ name: "igDataSource" },
 			{ name: "igTemplating" },
@@ -1196,7 +1204,7 @@ $.ig.dependencies = [
 	{
 		widget: "igHtmlEditor",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igPopover" },
 			{ name: "igSplitButton" },
 			{ name: "igColorPicker" },
@@ -1288,7 +1296,7 @@ $.ig.dependencies = [
 		widget: "igRating",
 		/* I.K. March 6th, 2013 Bug #135150 The rating now depends on util */
 		/* as of jQuery 1.9 because browser specific checks are now in util */
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.rating.js" ],
 		locale: [ "$localePath$/infragistics.ui.rating-$locale$.js" ],
 		group: $.ig.loaderClass.locale.editorsGroup,
@@ -1315,7 +1323,7 @@ $.ig.dependencies = [
 	{
 		widget: "igTree",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igShared" },
 			{ name: "igTemplating" },
 			{ name: "igDataSource" }
@@ -1328,7 +1336,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igPopover",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.popover.js" ],
 		locale: [ "$localePath$/infragistics.ui.popover-$locale$.js" ],
 		css: [ "$path$/structure/modules/infragistics.ui.popover.css" ],
@@ -1372,7 +1380,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igLayoutManager",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.layoutmanager.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
 		css: [ "$path$/structure/modules/infragistics.ui.layout.css" ],
@@ -1395,7 +1403,7 @@ $.ig.dependencies = [
 	{
 		widget: "igUpload",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igShared" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.upload.js" ],
@@ -1406,7 +1414,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igValidator",
-		dependency: [ { name: "igUtil" }, { name: "igNotifier" } ],
+		dependency: [ { name: "igWidget" }, { name: "igNotifier" } ],
 		scripts: [ "$path$/modules/infragistics.ui.validator.js" ],
 		locale: [ "$localePath$/infragistics.ui.validator-$locale$.js" ],
 		group: $.ig.loaderClass.locale.miscGroup,
@@ -1419,7 +1427,7 @@ $.ig.dependencies = [
 	{
 		widget: "igVideoPlayer",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igShared" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.videoplayer.js" ],
@@ -1433,7 +1441,7 @@ $.ig.dependencies = [
 	},
 	{
 		widget: "igSplitter",
-		dependency: [ { name: "igUtil" } ],
+		dependency: [ { name: "igWidget" } ],
 		scripts: [ "$path$/modules/infragistics.ui.splitter.js" ],
 		locale: [ "$localePath$/infragistics.ui.splitter-$locale$.js" ],
 		group: $.ig.loaderClass.locale.layoutGroup,
@@ -1454,7 +1462,7 @@ $.ig.dependencies = [
 	{
 		widget: "igToolbar",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "igToolbarButton" }
 			],
 		scripts: [ "$path$/modules/infragistics.ui.toolbar.js" ],
@@ -1755,7 +1763,7 @@ $.ig.dependencies = [
 	{
 		widget: "igSpreadsheet",
 		dependency: [
-			{ name: "igUtil" },
+			{ name: "igWidget" },
 			{ name: "_ig_ext_core" },
 			{ name: "_ig_ext_collections" },
 			{ name: "_ig_ext_collections_extended" },
@@ -1785,7 +1793,7 @@ $.ig.dependencies = [
     {
         widget: "igScheduler",
         dependency: [
-            { name: "igUtil" },
+            { name: "igWidget" },
             { name: "_ig_ext_core" },
             { name: "_ig_ext_collections" },
             { name: "_ig_ext_collections_extended" },
