@@ -1965,31 +1965,16 @@
 			if ($.ig && $.ig.formatter) {
 				if (this.options.format === "auto" &&
 					($.type(item) === "date" || $.type(item) === "number")) {
-					item = $.ig.formatter(
-						item,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						$.ig.regional[ this.options.regional ]
-					);
+					item = $.ig.formatter({
+						"val": item,
+						"reg": $.ig.regional[ this.options.regional ]
+					});
 				} else if (this._formatEnabled()) {
-					item = $.ig.formatter(
-						item,
-						null,
-						this.options.format,
-						null,
-						null,
-						null,
-						null,
-						null,
-						null,
-						$.ig.regional[ this.options.regional ]
-					);
+					item = $.ig.formatter({
+						"val": item,
+						"format": this.options.format,
+						"reg": $.ig.regional[ this.options.regional ]
+					});
 				}
 			}
 

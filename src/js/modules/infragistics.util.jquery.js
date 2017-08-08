@@ -356,6 +356,20 @@
 
 	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
 		displayStyle, labelText, tabIndex, reg) {
+		var firstArg = arguments[ 0 ];
+		if (typeof firstArg === "object" && firstArg.hasOwnProperty("val")) {
+			val = firstArg.val;
+			type = firstArg.type;
+			format = firstArg.format;
+			notTemplate = firstArg.notTemplate;
+			enableUTCDates = firstArg.enableUTCDates;
+			dateOffset = firstArg.dateOffset;
+			displayStyle = firstArg.displayStyle;
+			labelText = firstArg.labelText;
+			tabIndex = firstArg.tabIndex;
+			reg = firstArg.reg;
+		}
+
 		var n, curS, percS, cur, perc, i, d = val && val.getTime, s,
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
