@@ -11,6 +11,7 @@
 * jquery.ui.widget.js
 * infragistics.util.js
 * infragistics.util.jquery.js
+* infragistics.ui.widget.js
 * infragistics.ui.rating-en.js
 *
 * Example to use:
@@ -27,10 +28,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery"
+			"./infragistics.ui.widget"
 		], factory );
 	} else {
 
@@ -45,7 +43,7 @@
 	/*
 		igRating is a widget based on jQuery UI that provides functionality to edit numeric value by mouse, which appears as a row or a column of vote/star images.
 	*/
-	$.widget("ui.igRating", {
+	$.widget("ui.igRating", $.ui.igWidget, {
 		options: {
 			/* type="bool" Gets a vertical or horizontal orientation for the votes.
 				Change of that option is not supported after igRating was created.
@@ -800,7 +798,7 @@
 			    return this;
 			}
 			if (key === "swapDirection" || key === "vertical" || key === "focusable") {
-			    throw new Error($.ig.Rating.locale.setOptionError + key);
+			    throw new Error(this._getLocaleValue("setOptionError") + key);
 			}
 			count = this._count(o);
 			if (key === "disabled") {
@@ -1129,7 +1127,7 @@
 			if (this._rtl) {
 				e.css("direction", "rtl");
 			}
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			this._elem = this._hov = this._sel =
 			this._selSwap = this._hovSwap = this._foc = this._evts = null;
 			return this;

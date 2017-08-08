@@ -1518,6 +1518,11 @@ td.ui-iggrid-addrow
 	border-bottom-color: #aaa;
 }
 
+.ui-iggrid .ui-iggrid-physicalmergedcell
+{
+	vertical-align: top;
+}
+
 /**********************
 *  Features chooser   *
 **********************/

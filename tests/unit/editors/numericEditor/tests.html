@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                      
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
@@ -2292,12 +2293,51 @@
 		});
 		
 	testId = "Test allowNullValue and NullValue at initialization #779";
-	test(testId, 1, function(){
+	test(testId, 9, function(){
 		var $editor = $("<input id='editor'/>").
 				appendTo("#testBedContainer").igNumericEditor({ allowNullValue: true, nullValue: 0});
 			
 			var currentValue = $editor.igNumericEditor("value");
 			equal(currentValue, 0, "The value is not 0, although the nullValue is set to 0.")
+			$editor.remove();
+
+			// test invalid nullValue
+			$editor = $("<input id='editor'/>").appendTo("#testBedContainer")
+				.igNumericEditor({ 
+					buttonType: "clear", 
+					nullValue: "abc",
+					allowNullValue: true
+				});
+
+			equal($editor.val(), "", "Display did not initialize correctly");
+			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on init");
+			//check clear also ignores the wrong nullValue:
+			$editor.igNumericEditor("value", 5);
+			$editor.igNumericEditor("clearButton").trigger("click");
+			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on clear");
+			$editor.igNumericEditor("value", 5);
+			$editor.igNumericEditor("value", null);
+			strictEqual($editor.igNumericEditor("value"), "", "Null value should be ignored on set");
+			//verify empty string is still accepted
+			$editor.igNumericEditor("value", "");
+			strictEqual($editor.igNumericEditor("value"), "", "Empty value should be accepted");
+			$editor.remove();
+
+			//nullValue outside min/max:
+			$editor = $("<input id='editor'/>").appendTo("#testBedContainer")
+				.igNumericEditor({ 
+					buttonType: "clear", 
+					nullValue: 5,
+					maxValue: -3,
+					allowNullValue: true 
+				});
+			equal($editor.igNumericEditor("value"), -3, "Null value should be ignored on init and default to max.");
+			$editor.igNumericEditor("value", -5);
+			$editor.igNumericEditor("clearButton").trigger("click");
+			equal($editor.igNumericEditor("value"), -3, "Null value should be ignored on clear and default to max.");
+			//verify empty string is still accepted
+			$editor.igNumericEditor("value", "");
+			strictEqual($editor.igNumericEditor("value"), "", "Empty value should be accepted");
 			$editor.remove();
 		});
 

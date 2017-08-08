@@ -74,6 +74,9 @@
         getProperties: function () {
             return this.settings.props;
         },
+        getLocaleProperties: function () {
+            return this.settings.localeProperties;
+        },
         callbackRenderer: function () {
             if (this.settings.callbackRenderer && $.isFunction(this.settings.callbackRenderer)) {
                 return this.settings.callbackRenderer();
@@ -149,7 +152,7 @@
 		The igToolbar is a jQuery based widget that support a set from toolbar buttons,
         split buttons, color picker split buttons, and combos.
 	*/
-    $.widget("ui.igToolbar", {
+    $.widget("ui.igToolbar", $.ui.igWidget, {
         options: {
             /* type="numeric" Set/Get the widget height.
             ```
@@ -642,11 +645,13 @@
             this.collapseBtn = $('<div tabIndex="0" id="' +
                 this._id("_collapseButton") + '"></div>')
                 .appendTo(this.element)
+				.attr({
+					"data-state": "expand"
+				})
                 .igToolbarButton({
                     "onlyIcons": true,
                     "labelText": "&nbsp;",
-                    "title": $.ig.Toolbar.locale.collapseButtonTitle + " " +
-                        this.options.displayName,
+                    "title": this._getTooltipByExpandState("expand"),
                     "icons": {
                         "primary": o.collapseButtonIcon
                     }
@@ -688,8 +693,10 @@
                     this._oldWidth = this._width;
 
                     this.collapseBtn
-                        .attr("title", $.ig.Toolbar.locale.expandButtonTitle + " " +
-                            this.options.displayName)
+                        .attr({
+							"title": this._getTooltipByExpandState("collapse"),
+							"data-state": "collapse"
+						})
                         .children(":first")
                             .switchClass(this.options.collapseButtonIcon,
                                 this.options.expandButtonIcon);
@@ -712,8 +719,10 @@
                     width = this._getAdjustedWidth();
 
                     this.collapseBtn
-                        .attr("title", $.ig.Toolbar.locale.collapseButtonTitle + " " +
-                            this.options.displayName)
+                        .attr({
+							"title": this._getTooltipByExpandState("expand"),
+							"data-state": "expand"
+						})
                         .children(":first")
                             .switchClass(this.options.expandButtonIcon,
                                 this.options.collapseButtonIcon);
@@ -789,7 +798,7 @@
         } ]);
         */
         _setOption: function (name, value) {
-            $.Widget.prototype._setOption.apply(this, arguments);
+			this._super(name, value);
             var i, options = this.options;
 
             switch (name) {
@@ -830,17 +839,29 @@
                 break;
             }
         },
+        _getTooltipByExpandState: function (state) {
+			return (state === "expand" ?
+					$.ig.util.getLocaleValue("Toolbar", "collapseButtonTitle") :
+					$.ig.util.getLocaleValue("Toolbar", "expandButtonTitle"))
+				.replace("{0}", this.options.displayName);
+        },
+		changeLocale: function() {
+			var $button = this.collapseBtn;
+			if ($button && $button.length) {
+				$button.attr("title", this._getTooltipByExpandState($button.attr("data-state")));
+			}
+		},
         _expandOrCollapse: function () {
             var self = this;
-
             if (self.options.isExpanded) {
-
                 // Collapsing
                 self.buttonsList.show();
                 this._oldWidth = this._width;
                 self.collapseBtn
-                    .attr("title", $.ig.Toolbar.locale.collapseButtonTitle + " " +
-                        self.options.displayName)
+                    .attr({
+							"title": this._getTooltipByExpandState("expand"),
+							"data-state": "expand"
+					})
                     .children(":first")
                         .switchClass(self.options.expandButtonIcon,
                             self.options.collapseButtonIcon);
@@ -855,8 +876,10 @@
                 this._oldWidth = this._width;
                 self.buttonsList.hide();
                 self.collapseBtn
-                    .attr("title", $.ig.Toolbar.locale.expandButtonTitle + " " +
-                        self.options.displayName)
+                    .attr({
+						"title": this._getTooltipByExpandState("collapse"),
+						"data-state": "collapse"
+					})
                     .children(":first")
                         .switchClass(self.options.collapseButtonIcon,
                             self.options.expandButtonIcon);
@@ -872,6 +895,7 @@
         _createItems: function () {
             var o = this.options,
                 i,
+                localeProps,
                 self = this,
                 itemProps = {},
                 newItem,
@@ -895,7 +919,10 @@
                 itemProps = {};
                 newItem = (o.items[ i ].callbackRenderer() || $('<div tabIndex="0"></div>'))
                     .attr("id", this._id("_item_" + o.items[ i ].name)).appendTo(this.buttonsList);
-
+                localeProps = o.items[ i ].getLocaleProperties();
+                if (localeProps) {
+                    newItem.attr(localeProps);
+                }
                 $.each(o.items[ i ].getProperties(), tbItemsPropsTraversing);
 
                 if (tbItemsHash.hasOwnProperty(o.items[ i ].type)) {
@@ -1308,7 +1335,7 @@
                 .remove();
             this.buttonsList.remove();
             this.element.removeClass();
-            $.Widget.prototype.destroy.apply(this, arguments);
+            this._superApply(arguments);
         }
     });
 

@@ -198,10 +198,26 @@
 		};
 	}
 
-	//$.ig = $.ig || { _isNamespace: true };
 	$.ig.util = $.ig.util || {};
 
 	$.ig.util.browserVersion = "";
+
+	$.ig.util.language = "en";
+	$.ig.util.regional = "en-US";
+	$.ig.util.widgetStack = [];
+
+	$.ig.util.changeGlobalLanguage = function (language) {
+		$.ig.util.language = language;
+		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
+			$.ig.util.widgetStack[ i ].changeGlobalLanguage();
+		}
+	};
+
+	$.ig.util.getLocaleValue = function (collection, key) {
+		var language = $.ig.util.language,
+			locale = $.ig.locale[ language ][ collection ];
+		return locale[ key ] || "";
+	};
 
 	//D.A. 11th November 2013, Updated the isIE & browserVersion to be compatible with IE11+
 	$.ig.util.isIE = window.navigator.userAgent.indexOf("MSIE") > -1 || !!window.navigator.userAgent.match(/trident/i);
@@ -1444,6 +1460,27 @@
 	$.ig.Date.prototype.toStringFormat = function (value, format, provider) {
 		var result;
 		provider = provider || $.ig.CultureInfo.prototype.currentCulture(); // TODO: Use the provider below
+		var mmm = function(value, provider) {
+			// On some browsers, the ja-JP month short formatting seems to not match .NET"s "MMM" formatting
+			var cultureName = provider.name();
+			if (cultureName == "ja-JP") {
+				result = value.toLocaleString("en-US", { month: "numeric" })
+					.replace(/\u200E/g, "");
+			} else {
+				result = value.toLocaleString(provider.name(), { month: "short" })
+					.replace(/\u200E/g, "");
+			}
+
+			if (result.contains(" ")) {
+
+				// Date.toLocaleString is not supported fully
+				// TODO: Handle other cultures?
+				return [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+					"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ][ value.getMonth() ];
+			}
+
+			return result;
+		};
 		switch (format) {
 			case "s":
 				{
@@ -1458,28 +1495,7 @@
 				}
 
 			case "MMM":
-				{
-
-					// On some browsers, the ja-JP month short formatting seems to not match .NET"s "MMM" formatting
-					var cultureName = provider.name();
-					if (cultureName == "ja-JP") {
-						result = value.toLocaleString("en-US", { month: "numeric" })
-							.replace(/\u200E/g, "");
-					} else {
-						result = value.toLocaleString(provider.name(), { month: "short" })
-							.replace(/\u200E/g, "");
-					}
-
-					if (result.contains(" ")) {
-
-						// Date.toLocaleString is not supported fully
-						// TODO: Handle other cultures?
-						return [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-							"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ][ value.getMonth() ];
-					}
-
-					return result;
-				}
+				return mmm(value, provider);
 
 			case "MMMM":
 				return value.toLocaleString(provider.name(), { month: "long" })
@@ -1511,8 +1527,12 @@
 			case "%t":
 				return value.getHours() <= 11 ? "A" : "P"; // TODO: Figure out how to get this based on culture
 		}
-
-		throw new $.ig.FormatException(1, "Unknown Date format: " + format);
+		result = format;
+		result = result.replace("yyyy", value.getFullYear().toString());
+		result = result.replace("MMM", mmm(value, provider));
+		result = result.replace("MM", (value.getMonth() + 1).toString().replace( /^(\d)$/, "0$1"));
+		result = result.replace("dd", value.getDate().toString().replace(/^(\d)$/, "0$1"));
+		return result;
 	};
 
 	// implement casting
@@ -5889,7 +5909,8 @@
 	$.ig.util.defaultSummaryMethods = [
 		{
 			/* type="string" Label that will be applied to the result of the summary function */
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelCount : "Count = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelCount") : "Count = ",
 			/* type="string" Name of the summary that can be set as an option inside the igGrid for example */
 			"name": "count",
 			/* type="function" Speficies the function that will be used when calculating the summary */
@@ -5905,7 +5926,8 @@
 			"applyFormat": false
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMin : "Min = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMin") : "Min = ",
 			"name": "min",
 			"summaryFunction": $.ig.util.summaries.min,
 			"dataType": [ "number", "date", "numeric" ],
@@ -5914,7 +5936,8 @@
 			"applyFormat": true
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelMax : "Max = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelMax") : "Max = ",
 			"name": "max",
 			"summaryFunction": $.ig.util.summaries.max,
 			"dataType": [ "number", "date", "numeric" ],
@@ -5923,7 +5946,8 @@
 			"applyFormat": true
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelSum : "Sum = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelSum") : "Sum = ",
 			"name": "sum",
 			"summaryFunction": $.ig.util.summaries.sum,
 			"dataType": [ "number", "numeric" ],
@@ -5932,7 +5956,8 @@
 			"applyFormat": true
 		},
 		{
-			"label": $.ig.util.locale ? $.ig.util.locale.defaultSummaryMethodLabelAvg : "Avg = ",
+			"label": $.ig.util.locale ?
+				$.ig.util.getLocaleValue("util", "defaultSummaryMethodLabelAvg") : "Avg = ",
 			"name": "avg",
 			"summaryFunction": $.ig.util.summaries.avg,
 			"dataType": [ "number", "numeric" ],
