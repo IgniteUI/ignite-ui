@@ -356,18 +356,18 @@
 
 	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
 		displayStyle, labelText, tabIndex, reg) {
-		var firstArg = arguments[ 0 ];
-		if (typeof firstArg === "object" && firstArg.hasOwnProperty("val")) {
-			val = firstArg.val;
-			type = firstArg.type;
-			format = firstArg.format;
-			notTemplate = firstArg.notTemplate;
-			enableUTCDates = firstArg.enableUTCDates;
-			dateOffset = firstArg.dateOffset;
-			displayStyle = firstArg.displayStyle;
-			labelText = firstArg.labelText;
-			tabIndex = firstArg.tabIndex;
-			reg = firstArg.reg;
+		var formatterArgs = arguments[ 0 ];
+		if (typeof formatterArgs === "object" && formatterArgs.hasOwnProperty("val")) {
+			val = formatterArgs.val;
+			type = formatterArgs.type;
+			format = formatterArgs.format;
+			notTemplate = formatterArgs.notTemplate;
+			enableUTCDates = formatterArgs.enableUTCDates;
+			dateOffset = formatterArgs.dateOffset;
+			displayStyle = formatterArgs.displayStyle;
+			labelText = formatterArgs.labelText;
+			tabIndex = formatterArgs.tabIndex;
+			reg = formatterArgs.reg;
 		}
 
 		var n, curS, percS, cur, perc, i, d = val && val.getTime, s,
