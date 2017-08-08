@@ -992,6 +992,7 @@
 			}
 		},
 		_setFocus: function (event) {
+
 			// D.P. 22nd Aug 2016 #226 Can't right-click paste in Edge, double focus event on menu closing
 			if (this._focused) {
 				return;
@@ -1051,6 +1052,16 @@
 
 				// N.A. 12/1/2015 Bug #207198: Remove notifier when value updated through value method.
 				this._clearEditorNotifier();
+
+				// N.A. July 27th, 2017, #1042: Trim value, when its length is larger then the maxLength one.
+				if (this.options.maxLength) {
+					if (newValue && newValue.toString().length > this.options.maxLength) {
+						newValue = newValue.toString().substring(0, this.options.maxLength);
+						this._sendNotification("warning",
+							$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
+								this.options.maxLength));
+					}
+				}
 				if (this._validateValue(newValue)) {
 					if (this.options.toUpper) {
 						if (newValue) { newValue = newValue.toLocaleUpperCase(); }
@@ -1563,7 +1574,24 @@
 				$(".selector").%%WidgetName%%("option", "suppressNotifications", true);
 			```
 			*/
-			suppressNotifications: false
+			suppressNotifications: false,
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				Note: When drop down is opened the only way to close it will be using the drop down button.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		css: {
 			/* igWidget element classes go here */
@@ -2145,9 +2173,6 @@
 				 if (val.toString().length <= this.options.maxLength) {
 					result = true;
 				} else {
-					this._sendNotification("warning",
-						$.ig.util.stringFormat($.ig.Editor.locale.maxLengthErrMsg,
-							this.options.maxLength));
 					result = false;
 				}
 			} else {
@@ -2603,7 +2628,7 @@
 							cursorPosition = self._getCursorPosition();
 
 						// In that case blur event is triggered before the composition end and the editor has already processed the change.
-						if (self._inComposition !== true) {
+						if (self._focused !== true) {
 							return;
 						}
 						switch (widgetName) {
@@ -2636,20 +2661,10 @@
 							value = $.ig.util.IMEtoNumberString(value, $.ig.util.IMEtoENNumbersMapping());
 							pastedValue = $.ig.util.IMEtoNumberString(pastedValue, $.ig.util.IMEtoENNumbersMapping());
 						}
-						if (self._validateValue(value)) {
-							self._insert(pastedValue, self._compositionStartValue);
-							self._setCursorPosition(cursorPosition);
-						} else {
-							if (self.options.revertIfNotValid) {
-								value = self._valueInput.val();
-								self._updateValue(value);
-							} else {
-								self._clearValue();
-							}
-							if (self._focused) {
-								self._enterEditMode();
-							}
-						}
+
+						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
+						self._insert(pastedValue, self._compositionStartValue);
+						self._setCursorPosition(cursorPosition);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -2659,6 +2674,14 @@
 					}, 0);
 				},
 				"compositionupdate.editor": function (evt) {
+					if (typeof self._copositionStartIndex === "undefined") {
+						//D.P. Chrome on Adroid will not fire compositionstart if replacing the entire selection
+						//In this case patch start index and value:
+						var startIndex = self._getCursorPosition();
+						startIndex -= evt.originalEvent.data ? evt.originalEvent.data.length : 1;
+						self._copositionStartIndex = startIndex;
+						self._compositionStartValue = self._editorInput.val().substring(0, startIndex);
+					}
 					setTimeout(function () {
 						self._currentCompositionValue =
 							$(evt.target)
@@ -2695,19 +2718,32 @@
 			}
 		},
 		_processInternalValueChanging: function (value) { //TextEditor
-				if (this._validateValue(value)) {
+			//D.P. 3rd Aug 2017 #1043 Make sure maxLength is respected when typing handlers can't prevent entry
+			if (this.options.maxLength) {
+				if (value && value.toString().length > this.options.maxLength) {
+					value = value.toString().substring(0, this.options.maxLength);
+
+					//Raise warning
+					this._sendNotification("warning",
+						{
+							optName: "maxLengthErrMsg",
+							arg: this.options.maxLength
+						});
+				}
+			}
+			if (this._validateValue(value)) {
+				this._updateValue(value);
+			} else {
+
+				// If the value is not valid, we clear the editor
+				if (this.options.revertIfNotValid) {
+					value = this._valueInput.val();
 					this._updateValue(value);
 				} else {
-
-					// If the value is not valid, we clear the editor
-					if (this.options.revertIfNotValid) {
-						value = this._valueInput.val();
-						this._updateValue(value);
-					} else {
-						this._clearValue();
-						value = this._valueInput.val();
-					}
+					this._clearValue();
+					value = this._valueInput.val();
 				}
+			}
 		},
 		_triggerKeyDown: function (event) { //TextEditor
 			//cancellable
@@ -2741,11 +2777,16 @@
 								this._enterEditMode();
 							}
 						} else {
+
 							// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput.
 							this._processValueChanging(currentInputVal);
 
+							//I.G. 20/07/2017 # 1090 'igTextEditor in multiline mode removes the existing text on Enter key'
+							if (this.options.textMode !== "multiline") {
+
 							// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
 							this._enterEditMode();
+							}
 						}
 					}
 				} else if (this._dropDownList) {
@@ -3311,8 +3352,11 @@
 
 					// Proceed with hiding
 					// D.P. 21 Jun 2016 Bug 220712: igTextEditor - typed text is reverted to previous value in case the drop down is opened
-					if (!this._editMode) {
+					if (!this._editMode && !this.options.suppressKeyboard) {
 						this._editorInput.focus();
+					}
+					if (this._editMode && this.options.suppressKeyboard) {
+						this._editorInput.blur();
 					}
 					this._showDropDownList();
 				}
@@ -6292,7 +6336,9 @@
 
 			```
 			*/
-			value: null
+			value: null,
+			/* @Ignored@ */
+			suppressKeyboard: false
 		},
 		events: {
 			/* igWidget events go here */
@@ -7705,7 +7751,9 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			toUpper: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
-			toLower: false
+			toLower: false,
+			/* @Ignored@ */
+			suppressKeyboard: false
 		},
 		events: {
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
@@ -10529,7 +10577,23 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listItems: null,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
-			listWidth: 0
+			listWidth: 0,
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		events: {
 			/* cancel="true" Event which is raised when the drop down is opening.
@@ -10653,6 +10717,14 @@
 				this._detachButtonsEvents(this._spinDownButton);
 			}
 		},
+		_setFocus: function (event) {
+			if (this._shouldNotFocusInput) {
+				event.target.blur();
+				delete this._shouldNotFocusInput;
+				return;
+			}
+			this._super(event);
+		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
 				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker
@@ -10698,7 +10770,9 @@
 						self._exitEditMode();
 					} else {
 						self._focused = false;
-						self._editorInput.focus();
+						if (!self.options.suppressKeyboard) {
+							self._editorInput.focus();
+						}
 					}
 				},
 				beforeShow: function(/*input*/) {
@@ -10751,6 +10825,21 @@
 					isbeforeShow.call(this);
 					if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
 						self.options.datepickerOptions.beforeShow.call(this, input);
+					}
+				};
+			}
+			if (self.options.datepickerOptions && self.options.datepickerOptions.onChangeMonthYear) {
+				var isOnChangeMonthYear = regional.onChangeMonthYear;
+				options.onChangeMonthYear  = function () {
+					isOnChangeMonthYear.call(this);
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
+					}
+				};
+			} else {
+				options.onChangeMonthYear  = function () {
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
 					}
 				};
 			}
@@ -10967,7 +11056,6 @@
 			this._trigger(this.events.itemSelected, null, args);
 		},
 		_showDropDownList: function () { //DatePicker
-
 			this._dropDownOpened = true;
 
 			// Open Dropdown
@@ -11001,6 +11089,16 @@
 				currentInputValue = this._editorInput.val();
 			}
 			try {
+				if (this.options.suppressKeyboard) {
+					if (this._focused) {
+
+						// If we are in edit mode and virtual keyboard is visible, we want to hide it before the drop down is opened.
+						this._editorInput.blur();
+					}
+
+					// When suppressKeyboard option for igDatePicker is true, we don't want to focus input.
+					this._shouldNotFocusInput = true;
+				}
 				this._editorInput.datepicker("option", "showOptions", { direction: direction });
 
 				// $(this._dropDownList).show("blind", { direction: direction }, this.options.dropDownAnimationDuration);
