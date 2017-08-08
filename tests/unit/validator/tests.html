@@ -1113,7 +1113,7 @@
             });
 
             testId = '#1102 Setting valueRange min/max to null causes exceptions';
-            test(testId, 4, function () {
+            test(testId, 7, function () {
                 var $field = $("<input>").appendTo("#testBedContainer")
                     .igValidator({
                         valueRange: { min: 10, max: null }
@@ -1136,6 +1136,24 @@
                 ok($field.igValidator("isValid"), "Value below max should be valid");
                 $field.val(55);
                 ok(!$field.igValidator("isValid"), "Value above max should not be valid");
+                $field.remove();
+
+                $field = $("<input>").appendTo("#testBedContainer")
+                    .igValidator({
+                        valueRange: { min: null, max: undefined }
+                    });
+                $field.val(555);
+                ok($field.igValidator("isValid"), "Value should be valid");
+                $field.igValidator("option", "valueRange", [null, null]);
+                ok($field.igValidator("isValid"), "Value should be valid");
+                $field.remove();
+
+                $field = $("<input>").appendTo("#testBedContainer")
+                    .igValidator({
+                        valueRange: { min: "50", max: undefined }
+                    });
+                $field.val(10);
+                ok(!$field.igValidator("isValid"), "Value below min should not be valid");
                 $field.remove()
             });
 
