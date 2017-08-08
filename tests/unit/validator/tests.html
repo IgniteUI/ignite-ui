@@ -1111,6 +1111,33 @@
                 ok(valid, "Custom rule result not applied");
             });
 
+            testId = '#1102 Setting valueRange min/max to null causes exceptions';
+            test(testId, 4, function () {
+                var $field = $("<input>").appendTo("#testBedContainer")
+                    .igValidator({
+                        valueRange: { min: 10, max: null }
+                    });
+                $field.focus();
+                $field.val(5);
+                $field.blur();
+                ok(!$field.igValidator("isValid"), "Value below min should not be valid");
+                $field.val(10);
+                ok($field.igValidator("isValid"), "Value at min should be valid");
+                $field.remove();
+
+                $field = $("<input>").appendTo("#testBedContainer")
+                    .igValidator({
+                        valueRange: { min: null, max: 50 }
+                    });
+                $field.focus();
+                $field.val(-44);
+                $field.blur();
+                ok($field.igValidator("isValid"), "Value below max should be valid");
+                $field.val(55);
+                ok(!$field.igValidator("isValid"), "Value above max should not be valid");
+                $field.remove()
+            });
+
             testId = 'igControls integration';
             test(testId, 19, function () {
                 var event, value, rule, valid;
@@ -1295,7 +1322,7 @@
         <h2 id="qunit-userAgent"></h2>
         <ol id="qunit-tests"></ol>
     </div>
-    <div style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
+    <div id="testBedContainer" style="float:left;overflow:auto;padding:20px;position:absolute;width:300px;">
         <p> email input ( onblur, onchange API)</p>
         <input type="text" id="input1" />
         <input type="text" id="input2" />
