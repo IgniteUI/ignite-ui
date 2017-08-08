@@ -1488,6 +1488,50 @@
 					$("#1090Editor").remove();
 				}, 100);
 			});
+			testId = 'Bug 1043 - maxLength not respected on Android';
+			test(testId, 6, function () {
+				var $editor =  $("<input/>").appendTo("#testBedContainer")
+					.igTextEditor({
+						maxLength: 5
+					});
+				$field = $editor.igTextEditor("field");
+
+				$field.focus();
+				var composition = jQuery.Event("compositionstart");
+				$field.trigger(composition);
+				$field.val("12345678");
+				var compositionend = jQuery.Event("compositionend");
+				$field.trigger(compositionend);
+				stop();
+				setTimeout(function () {
+					start();
+					equal($field.val(), "12345", "Text was not trimmed");
+					ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+					equal($editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+						$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+					$field.blur();
+					// test case without start (Chrome Android)
+					$field.focus();
+					$field.select();
+					var compositionupdate = jQuery.Event("compositionupdate");
+					compositionupdate.originalEvent = {data: "2"};
+					$field.val("12");
+					$field[0].setSelectionRange(1,1);
+					$field.trigger(compositionupdate);
+					$field.val("12345678");
+					var compositionend = jQuery.Event("compositionend");
+					$field.trigger(compositionend);
+					stop();
+					setTimeout(function () {
+						start();
+						equal($field.val(), "12345", "Text was not trimmed with update only");
+						ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+						equal($editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+							$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+						$editor.remove();
+					}, 0);
+				}, 0);
+			});
 		});
 
 		function emulateKeyBoard(key, ctrl, shift, alt, element) {
