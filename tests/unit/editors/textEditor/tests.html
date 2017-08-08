@@ -1432,7 +1432,7 @@
 			$classSelector.remove();
 		});
 		var testId = "NullValue set on init.";
-		test(testId, 2, function(){
+		test(testId, 5, function(){
 			var $editor=$("<input id='textEditorNull' />").appendTo("#testBedContainer").igTextEditor({
 					allowNullValue: true,
 					nullValue: 0
@@ -1444,6 +1444,25 @@
 			$editor.igTextEditor("value", null);
 			currentValue = $editor.igTextEditor("value");
 			equal(currentValue, "0" , "The value is not set to the nullValue");
+			$editor.remove();
+
+			//invalid null value:
+			var $editor=$("<input />").appendTo("#testBedContainer").igTextEditor({
+					nullValue: "312",
+					allowNullValue: true,
+					isLimitedToListValues: true,
+					listItems: ["a", "b", "c"],
+					buttonType: "clear"
+				});
+			
+			var currentValue = $editor.igTextEditor("value");
+			strictEqual($editor.igTextEditor("value"), "" , "Initial value should ignore wrong nullValue");
+			$editor.igTextEditor("value", "a");
+			$editor.igTextEditor("value", null);
+			strictEqual($editor.igTextEditor("value"), "" , "Value set should ignore wrong nullValue");
+			$editor.igTextEditor("value", "a");
+			$editor.igTextEditor("clearButton").trigger("click");
+			strictEqual($editor.igTextEditor("value"), "" , "Clear should ignore wrong nullValue");
 			$editor.remove();
 		});
 		var testId = "Test creating on wrong field or wrong options combinations."
@@ -1576,6 +1595,27 @@
 			ok($('#maxLengthTest').parents().hasClass("ui-ignotify-warn"), "The notifier is not shown");
 			$editor.remove();
 		});
+		
+		testId = "Setting listItems on run time";
+		test(testId, 3, function () {
+			var editor = $('#issue481'), items = ["item 1", "item 2", "item 3"],
+			currentVal = editor.igTextEditor("option", "listItems");
+
+			ok(currentVal === null, "ListItems should not be set on initialization");
+				
+			editor.igTextEditor("option", "listItems", items);
+			equal(editor.igTextEditor("option", "listItems").length, items.length, "ListItems were not set on run time.");
+			equal(editor.igTextEditor("option", "listItems")[0], items[0], "ListItems were not set on run time.");
+		});
+
+		testing = "Set text dynamically with maxLength defined";
+		test(testing, 1, function() {
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ maxLength: 5, value: "ade" });
+
+			$editor.igTextEditor("value","abcdefg");
+			equal($editor.igTextEditor("value"), "abcde", "Value is not trimmed properly");
+			$editor.remove();
+		});
 
 		var testId = 'Testing key code event arguments';
 		test(testId, 3, function () {
@@ -1602,7 +1642,49 @@
 				ok(keyU === "s".charCodeAt(0), "Key code is not correct in keyUp event");
 				$editor.remove();
 			}, 300);
-		}); 
+		});
+
+		var testId = 'Test suppressKeyboard option';
+		test(testId, 10, function () {
+			var $editor, ddButton;
+			
+			// Test that the input DOESN'T have focus after the drop down is opened
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ listItems: ["a", "b", "c"], suppressKeyboard: true });
+			$ddButton = $editor.igTextEditor("dropDownButton");
+			$input = $editor.igTextEditor("field");
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$ddButton.click();
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$editor.data("igTextEditor")._listItems().eq(1).click();
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$editor.remove();
+
+			// Test that the input DOESN'T have focus after the drop down is opened (before that the input is focused)
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ listItems: ["a", "b", "c"], suppressKeyboard: true });
+			$ddButton = $editor.igTextEditor("dropDownButton");
+			$input = $editor.igTextEditor("field");
+			$editor.igTextEditor("setFocus");
+			$ddButton.click();
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$input.blur();
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$editor.remove();
+
+			// Test that the input DOES have focus after the drop down is opened
+			$editor = $('<input/>').appendTo("#testBedContainer").igTextEditor({ listItems: ["a", "b", "c"], suppressKeyboard: false });
+			$ddButton = $editor.igTextEditor("dropDownButton");
+			$input = $editor.igTextEditor("field");
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$ddButton.click();
+			ok($input.is(":focus"), "The input should be focused");
+			$editor.data("igTextEditor")._listItems().eq(1).click();
+			ok($input.is(":focus"), "The input should be focused");
+			$ddButton.click();
+			ok($input.is(":focus"), "The input should be focused");
+			$input.blur();
+			ok(!$input.is(":focus"), "The input should not be focused");
+			$editor.remove();
+		});
 	});
 
 	// Helper functions

@@ -780,6 +780,10 @@
 				newValue = this.options.nullValue;
 			}
 
+			if (!this._validateValue(newValue)) {
+				newValue = "";
+			}
+
 			if (textOnly) {
 				this._editorInput.val(newValue);
 			} else {
@@ -1007,6 +1011,7 @@
 			}
 		},
 		_setFocus: function (event) {
+
 			// D.P. 22nd Aug 2016 #226 Can't right-click paste in Edge, double focus event on menu closing
 			if (this._focused) {
 				return;
@@ -1081,9 +1086,17 @@
 					this._updateValue(newValue);
 					this._editorInput.val(this._getDisplayValue());
 				} else {
-					this._clearValue();
-					if (this._focused !== true) {
-						this._exitEditMode();
+
+					// N.A. July 27th, 2017, #1042: Trim value, when its length is larger then the maxLenght one.
+					if (this.options.maxLength) {
+						newValue = newValue.toString().substring(0, this.options.maxLength);
+						this._updateValue(newValue);
+						this._editorInput.val(this._getDisplayValue());
+					} else {
+						this._clearValue();
+						if (this._focused !== true) {
+							this._exitEditMode();
+						}
 					}
 				}
 			} else {
@@ -1584,7 +1597,24 @@
 				$(".selector").%%WidgetName%%("option", "suppressNotifications", true);
 			```
 			*/
-			suppressNotifications: false
+			suppressNotifications: false,
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				Note: When drop down is opened the only way to close it will be using the drop down button.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		css: {
 			/* igWidget element classes go here */
@@ -1792,14 +1822,6 @@
 			switch (option) {
 			case "value":
 				this.value(value);
-
-				//if (this._validateValue(value)) {
-				//	this._updateValue(value);
-				//	this._exitEditMode();
-				//} else {
-				//	this._clearValue();
-				//	this._exitEditMode();
-				//}
 				break;
 			case "placeHolder":
 				this._applyPlaceHolder();
@@ -1884,6 +1906,13 @@
 			}
 
 			initialValue = this.options.value;
+
+			// D.P. Set nullValue if needed. NB! Both value and nullValue *can* be 0 or ""
+			if (this.options.allowNullValue && initialValue === null) {
+				//doesn't really matter what nullValue is, at worst it will be null as well
+				initialValue = this.options.nullValue;
+			}
+
 			if (this.options.maxLength) {
 				if (initialValue && initialValue.toString().length > this.options.maxLength) {
 					initialValue = initialValue.toString().substring(0, this.options.maxLength);
@@ -1899,14 +1928,10 @@
 			if (this._validateValue(initialValue)) {
 				this._setInitialValue(initialValue);
 				this._editorInput.val(this._getDisplayValue());
-			} else if (initialValue === null && !this.options.allowNullValue) {
+			} else {
+				//D.P. 2017-07-27 #1027 Fallback if initial value is not valid
 				this._setInitialValue("");
-			}
-
-			//M.S. 4/19/2017. Issue 779 and issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			if (!this.options.value && this.options.allowNullValue &&
-				this.options.nullValue !== null && this._validateValue(this.options.nullValue)) {
-				this._setOption("value", this.options.nullValue);
+				this._editorInput.val(this._getDisplayValue());
 			}
 
 			this._applyPlaceHolder();
@@ -2866,12 +2891,17 @@
 								this._processValueChanging(currentInputVal);
 								this._enterEditMode();
 							}
-						} else {
+							} else {
+
 							// We repeat the logic in case we don't have dropdown list. On enter the value is updated with the current value into editorInput.
 							this._processValueChanging(currentInputVal);
 
-							// A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
-							this._enterEditMode();
+							//I.G. 27/07/2017 #1090 'igTextEditor in multiline mode removes the existing text on Enter key'
+							if (this.options.textMode !== "multiline") {
+
+							//A. M. 20/07/2016 #98 'Value of numeric editor is not set to 'minValue' after pressing ENTER'
+								this._enterEditMode();
+							}
 						}
 					}
 				} else {
@@ -3453,8 +3483,11 @@
 
 					// Proceed with hiding
 					// D.P. 21 Jun 2016 Bug 220712: igTextEditor - typed text is reverted to previous value in case the drop down is opened
-					if (!this._editMode) {
+					if (!this._editMode && !this.options.suppressKeyboard) {
 						this._editorInput.focus();
+					}
+					if (this._editMode && this.options.suppressKeyboard) {
+						this._editorInput.blur();
 					}
 					this._showDropDownList();
 				}
@@ -4507,10 +4540,10 @@
 		},
 		_setInitialValue: function (value) { // NumericEditor
 			// D.P. 6th Mar 2017 #777 'minValue/maxValue options are not respected at initialization'
-			if (!isNaN(this.options.maxValue) && value > this.options.maxValue) {
-				value = this.options.maxValue;
-			} else if (!isNaN(this.options.minValue) && value < this.options.minValue) {
+			if (!isNaN(this.options.minValue) && this.options.minValue > value) {
 				value = this.options.minValue;
+			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < value) {
+				value = this.options.maxValue;
 			}
 			this._super(value);
 		},
@@ -5099,21 +5132,17 @@
 			return (value1 / value2);
 		},
 
-		//This method validates and updates the value input the hidden input
+		//This method updates the value and the hidden input
+		// D.P. This should not alter the value beyond parsing
 		_updateValue: function (value) { //Numeric Editor
-			// WE should detect dataMode, so we can use the options.
-			var val, dataMode = this.options.dataMode;
-			if (value === "" && this.options.allowNullValue) {
-				val = this.options.nullValue;
-				this._valueInput.val("");
-			} else if (value === this.options.nullValue && value === null) {
-				val = value;
-				this._valueInput.val("");
+			var val = value, dataMode = this.options.dataMode;
+			if (value === null) {
+				value = "";
 			} else {
-				val = this._parseNumericValueByMode(value, this._numericType, dataMode);
-				this._valueInput.val(val);
+				value = val = this._parseNumericValueByMode(value, this._numericType, dataMode);
 			}
 			this.options.value = val;
+			this._valueInput.val(value);
 
 			if (this._dropDownList) {
 				this._updateDropdownSelection(val);
@@ -5244,44 +5273,28 @@
 			this._processTextChanged();
 		},
 		_clearValue: function (textOnly) { //Numeric Editor
-			var newValue;
+			var newValue = 0;
 			if (this.options.allowNullValue) {
 				newValue = this.options.nullValue;
-				if (this.options.nullValue === null) {
-					this._editorInput.val("");
-				} else {
-
-					//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-					if (this._validateValue(newValue)) {
-						this._editorInput.val(this.options.nullValue);
-					} else {
-						this._editorInput.val(this.options.value);
-					}
-				}
-			} else {
-
-				// If the min value is different from zero, we clear the value with the minimum value.
-				if (!isNaN(this.options.minValue) && this.options.minValue > 0) {
-					newValue = this.options.minValue;
-					this._editorInput.val(this.options.minValue);
-				} else if (!isNaN(this.options.maxValue) && this.options.maxValue < 0) {
-					newValue = this.options.maxValue;
-					this._editorInput.val(this.options.maxValue);
-
-				// I.G. 13/04/2017 #942 'When clearing with the 'clear' button, the value is set to 0 even if 0 is not in the list of items'
-				} else if (this.options.isLimitedToListValues) {
-					newValue = "";
-					this._editorInput.val("");
-				} else {
-					if (this.value()) {
-						newValue = 0;
-						this._editorInput.val(0);
-					}
-				}
 			}
 
-			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			if (!textOnly && newValue !== undefined && this._validateValue(newValue)) {
+			// D.P. nullValue does not override min/max
+			// If the min value is different from zero, we clear the value with the minimum value.
+			if (!isNaN(this.options.minValue) && this.options.minValue > newValue) {
+				newValue = this.options.minValue;
+			} else if (!isNaN(this.options.maxValue) && this.options.maxValue < newValue) {
+				newValue = this.options.maxValue;
+			}
+
+			//D.P. This handles both invalid nullValue and 0 not being in the list of items for #942
+			if (!this._validateValue(newValue)) {
+				newValue = "";
+				this._editorInput.val("");
+			} else {
+				this._editorInput.val(newValue);
+			}
+
+			if (!textOnly) {
 				this._updateValue(newValue);
 			}
 		},
@@ -6440,7 +6453,9 @@
 
 			```
 			*/
-			value: null
+			value: null,
+			/* @Ignored@ */
+			suppressKeyboard: false
 		},
 		events: {
 			/* igWidget events go here */
@@ -6479,11 +6494,6 @@
 				this._maskFlagsArray = [ "C", "&", "a", "A", "?", "L", "9", "0", "<", ">", "#" ];
 			}
 			this._promptCharsIndices = [];
-
-			//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-			if (this.options.allowNullValue && !this.options.value && this.options.nullValue) {
-				this.options.value = this.options.nullValue;
-			}
 		},
 		_applyOptions: function () { //igMaskEditor
 			this._getMaskLiteralsAndRequiredPositions();
@@ -6704,7 +6714,8 @@
 				ch, maskFlagsArray = this._maskFlagsArray,
 			length = mask.length, i, j, tempChar;
 
-			value = value ? value.toString() : "";
+			// D.P. Since other numbers are converted, so should be 0
+			value = value === 0 || value ? value.toString() : "";
 			if (length && length > 0) {
 				if (value.indexOf(this.options.unfilledCharsPrompt !== -1)) {
 					i = 225;
@@ -6949,7 +6960,6 @@
 			return dataModeValue;
 		},
 		_updateValue: function (value) { //igMaskEditor
-			var nullValue;
 			if (value === "") {
 
 				// Convert empty value by dataMode
@@ -6964,10 +6974,9 @@
 						this._valueInput.val("");
 						this.options.value = this.options.nullValue;
 					} else {
-						nullValue = this._parseValueByMask(value);
-						this._maskedValue = nullValue;
-						this._valueInput.val(nullValue);
-						this.options.value = nullValue;
+						this._maskedValue = this._parseValueByMask(this.options.nullValue);
+						this.options.value = this._getValueByDataMode();
+						this._valueInput.val(this.options.value);
 
 					}
 				} else {
@@ -6987,10 +6996,15 @@
 			var newValue = "";
 			if (this.options.allowNullValue) {
 				newValue = this.options.nullValue;
+			}
+
+			if (this._validateValue(newValue)) {
 				this._editorInput.val(this._parseValueByMask(newValue));
 			} else {
+				newValue = "";
 				this._editorInput.val(this._maskWithPrompts);
 			}
+
 			if (!textOnly) {
 				this._updateValue(newValue);
 			}
@@ -7093,9 +7107,6 @@
 			this._getMaskLiteralsAndRequiredPositions();
 			if (value === null || value === "") {
 				this._updateValue(value);
-				this._maskedValue = "";
-			} else if (typeof value === "undefined") {
-				this._updateValue("");
 				this._maskedValue = "";
 			} else {
 				this._maskedValue = this._parseValueByMask(value);
@@ -7489,17 +7500,12 @@
 				if (newValue === this._maskWithPrompts) {
 					newValue = "";
 				}
+
 				this._updateValue(newValue);
 
-				//M.S. 4/19/2017. Issue 892 Initially when allowNullValue is true and the value is not set, the value should be equal to nullValue
-				if (this.options.allowNullValue && newValue === null && this.options.nullValue) {
-					this.value(this.options.nullValue);
-				}
-
-				// this._setInitialValue(newValue);
 				//In the applyOption there is initial value false to _editMode variable, so the editor input is changed based on the state of the editor.
 				//if (this._focused === false || this._focused === undefined) {
-					this._editorInput.val(this._editMode ?
+				this._editorInput.val(this._editMode ?
 						this._maskedValue :
 						this._getDisplayValue());
 			} else {
@@ -7894,7 +7900,9 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
 			toUpper: false,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDateEditor */
-			toLower: false
+			toLower: false,
+			/* @Ignored@ */
+			suppressKeyboard: false
 		},
 		events: {
 			/* @Ignored@ This event is inherited from a parent widget and it's not triggered in igDateEditor */
@@ -8009,9 +8017,6 @@
 			if (value === null || value === "") {
 				this._updateValue(value);
 				this._maskedValue = "";
-			} else if (typeof value === "undefined") {
-				this._updateValue("");
-				this._maskedValue = "";
 			} else {
 				//check value
 				if (this._validateValue(value)) {
@@ -8064,10 +8069,6 @@
 			this.options.value = this._getValueBetweenMinMax(this.options.value);
 
 			this._super();
-
-			if (this._maskWithPrompts === undefined) {
-				this._setInitialValue();
-			}
 		},
 		_triggerKeyDown: function (event) { //DateEditor
 			var key = !event.charCode ? event.which : event.charCode,
@@ -9143,9 +9144,12 @@
 		_clearValue: function (textOnly) { //DateEditor
 			var newValue = "", maskedValue = this._maskWithPrompts;
 			if (this.options.allowNullValue) {
-				newValue = this.options.nullValue;
-				if (newValue instanceof Date) {
-					maskedValue = this._updateMaskedValue(this.options.nullValue, true);
+				if (this._validateValue(this.options.nullValue)) {
+					newValue = this.options.nullValue;
+					if (newValue !== null && newValue !== "") {
+						newValue = this._getDateObjectFromValue(this.options.nullValue);
+						maskedValue = this._updateMaskedValue(this.options.nullValue, true);
+					}
 				}
 			}
 			this._editorInput.val(maskedValue);
@@ -10608,7 +10612,7 @@
 
 				//If the value is valid proceed with min/max value
 				parsedVal = this._getDateObjectFromValue(newValue);
-				if (this._isValidDate(parsedVal)) {
+				if (newValue !== null && this._isValidDate(parsedVal)) {
 					if (this.options.maxValue && parsedVal > this.options.maxValue) {
 						newValue = this._getDateObjectFromValue(this.options.maxValue);
 						this._sendNotification("warning",
@@ -10625,11 +10629,20 @@
 							});
 					}
 				}
+
 				if (this._validateValue(newValue)) {
 					this._updateValue(newValue);
 
 					//TODO Update maskedValue according to the new value.
 					this._updateMaskedValue();
+				} else {
+					if (this.options.revertIfNotValid &&
+					!(newValue === null && this.options.allowNullValue)) {
+						newValue = this._valueInput.val();
+						this._updateValue(newValue);
+					} else {
+						this._clearValue();
+					}
 				}
 				this._editorInput.val(this._editMode ?
 					this._maskedValue :
@@ -10835,7 +10848,23 @@
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
 			listItems: null,
 			/* @Ignored@ This option is inherited from a parent widget and it's not applicable for igDatePicker */
-			listWidth: 0
+			listWidth: 0,
+			/* type="bool" Gets/Sets whether the onscreen keyboard (if available on device) should be shown when the dropdown button is clicked/tapped. This option prevents initial focus or removes it when the drop button is clicked/tapped.
+				Note: The option does not perform device detection so its behavior is always active if enabled.
+				```
+				//Initialize
+				$(".selector").%%WidgetName%%({
+					suppressKeyboard : true
+				});
+
+				//Get
+				var readOnly = $(".selector").%%WidgetName%%("option", "suppressKeyboard");
+
+				//Set
+				$(".selector").%%WidgetName%%("option", "suppressKeyboard", true);
+				```
+			*/
+			suppressKeyboard: false
 		},
 		events: {
 			/* cancel="true" Event which is raised when the drop down is opening.
@@ -10961,6 +10990,14 @@
 				this._detachButtonsEvents(this._spinDownButton);
 			}
 		},
+		_setFocus: function (event) {
+			if (this._shouldNotFocusInput) {
+				event.target.blur();
+				delete this._shouldNotFocusInput;
+				return;
+			}
+			this._super(event);
+		},
 		_setBlur: function (event) { // igDatePicker
 			if (this._pickerOpen) {
 				// D.P. 3rd Aug 2016 #174 Ignore blur handling with open picker
@@ -11013,7 +11050,9 @@
 						self._exitEditMode();
 					} else {
 						self._focused = false;
-						self._editorInput.focus();
+						if (!self.options.suppressKeyboard) {
+							self._editorInput.focus();
+						}
 					}
 				},
 				beforeShow: function(/*input*/) {
@@ -11066,6 +11105,21 @@
 					isbeforeShow.call(this);
 					if (self.options.datepickerOptions && self.options.datepickerOptions.beforeShow) {
 						self.options.datepickerOptions.beforeShow.call(this, input);
+					}
+				};
+			}
+			if (self.options.datepickerOptions && self.options.datepickerOptions.onChangeMonthYear) {
+				var isOnChangeMonthYear = regional.onChangeMonthYear;
+				options.onChangeMonthYear  = function () {
+					isOnChangeMonthYear.call(this);
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
+					}
+				};
+			} else {
+				options.onChangeMonthYear  = function () {
+					if (self.options.suppressKeyboard) {
+						self._shouldNotFocusInput = true;
 					}
 				};
 			}
@@ -11295,7 +11349,6 @@
 			this._trigger(this.events.itemSelected, null, args);
 		},
 		_showDropDownList: function () { //DatePicker
-
 			this._dropDownOpened = true;
 
 			// Open Dropdown
@@ -11328,7 +11381,19 @@
 			if (currentInputValue === undefined) {
 				currentInputValue = this._editorInput.val();
 			}
+
 			try {
+				if (this.options.suppressKeyboard) {
+					if (this._focused) {
+
+						// If we are in edit mode and virtual keyboard is visible, we want to hide it before the drop down is opened.
+						this._editorInput.blur();
+					}
+
+					// When suppressKeyboard option for igDatePicker is true, we don't want to focus input.
+					this._shouldNotFocusInput = true;
+				}
+
 				this._editorInput.datepicker("option", "showOptions", { direction: direction });
 
 				// $(this._dropDownList).show("blind", { direction: direction }, this.options.dropDownAnimationDuration);
