@@ -2272,10 +2272,12 @@ $.ig.igValidatorValueRule = $.ig.igValidatorValueRule || $.ig.igValidatorNumberR
 			if ((hasMin || hasMax)) {
 				if (isNumber && !options.date) {
 					value = this._parseNumber(value, options);
-					min = hasMin && minValue;
-					min = value < min ? min.toString() : null;
-					max = hasMax && maxValue;
-					max = value > max ? max.toString() : null;
+					if (hasMin) {
+						min = value < minValue ? minValue.toString() : null;
+					}
+					if (hasMax) {
+						max = value > maxValue ? maxValue.toString() : null;
+					}
 				} else if (isDateParsable && !options.number) {
 					value = new Date(value);
 					if (hasMin) {
