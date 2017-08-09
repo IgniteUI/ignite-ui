@@ -2325,7 +2325,7 @@
 				}
 			} else {
 				orientation = this.options.dropDownOrientation;
-			}
+            }
 			return orientation;
 		},
 		_positionDropDownList: function () {
@@ -2359,11 +2359,11 @@
 					this._dropDownListOrientation = "up";
 					this._dropDownList.removeClass("ui-igedit-dropdown-orientation-bottom");
 					this._dropDownList.addClass("ui-igedit-dropdown-orientation-top");
-				}
+                }
 			}
 
 			// In case we have editor width set into percent, once the window is resized the width of the editor might be changed and we need to set new width for the list
-			this._setDropDownListWidth();
+            this._setDropDownListWidth();
 		},
 		_createList: function () {
 			// Remove items that can't be displayed. isArray, filter polyfills in util
@@ -3438,7 +3438,6 @@
 			var direction;
 			this._positionDropDownList();
 			if (this._dropDownListOrientation === "up") {
-
 				// We need this parameter as part of blind animation we're using
 				direction = "down";
 			} else {
@@ -11209,6 +11208,10 @@
 				}
 			}
 		},
+
+		// I.G. 09/08/2017 #1037 [igDatePicker] initialization optimization - call overided _positionDropDownList.
+        _positionDropDownList: function () { // igDatePicker
+        },
 		_setOption: function (option, value) { // igDatePicker
 			/* igPercentEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
@@ -11364,10 +11367,9 @@
 
 			// Open Dropdown
 			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue;
-			this._cancelBlurDatePickerOpen = true;
-			this._positionDropDownList();
-			if (this._dropDownListOrientation === "up") {
-
+            this._cancelBlurDatePickerOpen = true;
+            this._positionDropDownList();
+			if (this.options.dropDownOrientation  === "top") {
 				//We need this parameter as part of blind animation we're using
 				direction = "up";
 			} else {
@@ -11405,7 +11407,7 @@
 					this._shouldNotFocusInput = true;
 				}
 
-				this._editorInput.datepicker("option", "showOptions", { direction: direction });
+                this._editorInput.datepicker("option", "showOptions", { direction: direction });
 
 				// $(this._dropDownList).show("blind", { direction: direction }, this.options.dropDownAnimationDuration);
 				this._editorInput.datepicker("show");
