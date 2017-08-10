@@ -196,6 +196,15 @@
 		"</table>" +
 		"<div>Text text</div>";
 		
+		var hiddenVBarClass = $.ui.igScroll.prototype.css.verticalScrollThumbDragHidden,
+			hiddenHBarClass = $.ui.igScroll.prototype.css.horizontalScrollThumbDragHidden,
+			hiddenVArrowClass = $.ui.igScroll.prototype.css.verticalScrollArrowHidden,
+			hiddenHArrowClass = $.ui.igScroll.prototype.css.horizontalScrollArrowHidden,
+			vBarThinClass = $.ui.igScroll.prototype.css.verticalScrollThumbDragThin,
+			vBarBigClass = $.ui.igScroll.prototype.css.verticalScrollThumbDragBig,
+			hBarThinClass = $.ui.igScroll.prototype.css.horizontalScrollThumbDragThin,
+			hBarBigClass = $.ui.igScroll.prototype.css.horizontalScrollThumbDragBig;
+			
 		function getTransform3dValueX (jqElem) {
 			var matrix, values, posX;
 			if (jqElem.css("-webkit-transform")) {
@@ -989,7 +998,7 @@
 					equal(hDrag.css("opacity"), 0, "igScroll horizontal scrollbar thumb drag is visible");
 					$("#elemVH").remove();
 					start();
-				}, 1000);
+				}, 2100);
 			}, 650);
 	    });
 		
@@ -1061,12 +1070,14 @@
 			elemContainer.mouseleave();
 			stop();
 			setTimeout(function () {
-				equal(vDrag.css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
-				equal(hDrag.css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
+				ok(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
+				ok(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
 				
 				elemContainer.mouseenter();
-				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
-				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+				console.log(vDrag.attr("class"));
+				notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
+				notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
+				
 				$("#elemVH").remove();
 				start();
 			},2100);
@@ -1088,22 +1099,24 @@
 				elemContainer = $("#elemVH_container");
 
 			elemContainer.mouseenter();
-			equal(arrowUp.css("opacity"), 0, "igScroll scrollbar Arrow Up is visible");
-			equal(arrowDown.css("opacity"), 0, "igScroll scrollbar Arrow Down is visible");
-			equal(arrowLeft.css("opacity"), 0, "igScroll scrollbar Arrow Left is visible");
-			equal(arrowRight.css("opacity"), 0, "igScroll scrollbar Arrow Right is visible");
-			ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is big");
-			ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is big");
+			ok(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+			ok(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+			ok(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+			ok(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+			notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
+			notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
 			
 			vScrollbarContainer.mouseenter();
-			ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
-			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
-			ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
-			ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
-			ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
-			ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
-			equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
-			equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+			notOk(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+			notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+			notOk(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+			notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+			notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
+			notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
+			ok(vDrag.hasClass(vBarBigClass), "igScroll vertical scrollbar thumb drag is not big");
+			notOk(vDrag.hasClass(vBarThinClass), "igScroll vertical scrollbar thumb drag is not big");
+			ok(hDrag.hasClass(hBarBigClass), "igScroll horizontal scrollbar thumb drag is not big");
+			notOk(hDrag.hasClass(hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
 			$("#elemVH").remove();
 	    });
 
@@ -1167,18 +1180,20 @@
 			elemContainer.mouseleave();
 			stop();
 			setTimeout(function () {
-				equal(vDrag.css("opacity"), 0, "igScroll vertical scrollbar thumb is visible");
-				equal(hDrag.css("opacity"), 0, "igScroll horizontal scrollbar thumb is visible");
+				ok(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is visible");
+				ok(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is visible");
 				
 				vScrollbarContainer.mouseenter();
-				ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
-				ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
-				ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
-				ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
-				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
-				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
-				equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
-				equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+				notOk(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+				notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+				notOk(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+				notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+				notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not visible");
+				notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not visible");
+				ok(vDrag.hasClass(vBarBigClass), "igScroll vertical scrollbar thumb drag is not big");
+				notOk(vDrag.hasClass(vBarThinClass), "igScroll vertical scrollbar thumb drag is not big");
+				ok(hDrag.hasClass(hBarBigClass), "igScroll horizontal scrollbar thumb drag is not big");
+				notOk(hDrag.hasClass(hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
 				$("#elemVH").remove();
 				start();
 			},2100);
@@ -1224,7 +1239,7 @@
 			
 			$('#elemVH').igScroll("option", "scrollTop", elemContent.height() - elemContainer.height());
 			vScrollbarContainer.mouseenter();
-			ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
 			
 			$.ig.TestUtil.simulateSingleClick(arrowDown);
 			equal(elemContainer.scrollTop(), elemContent.height() - elemContainer.height(), "igScroll did not scroll properly");
@@ -1654,7 +1669,7 @@
 			
 			$('#elemVH').igScroll("option", "scrollLeft", elemContent.width() - elemContainer.width());
 			hScrollbarContainer.mouseenter();
-			ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
+			notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Down is not visible");
 			
 			$.ig.TestUtil.simulateSingleClick(arrowRight);
 			equal(elemContainer.scrollLeft(), elemContent.width() - elemContainer.width(), "igScroll did not scroll properly");
@@ -2702,24 +2717,28 @@
 			setTimeout(function () {
 				$('#elemVH').igScroll("option", "alwaysVisible", true);
 			
-				ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
-				ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
-				ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
-				ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
-				ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
-				ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
-				equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
-				equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+				notOk(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+				notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+				notOk(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+				notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+				notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
+				notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
+				ok(vDrag.hasClass(vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
+				notOk(hDrag.hasClass(vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+				ok(hDrag.hasClass(hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+				notOk(hDrag.hasClass(hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
 				
-				setTimeout(function () {
-					ok(arrowUp.css("opacity") > 0, "igScroll scrollbar Arrow Up is not visible");
-					ok(arrowDown.css("opacity") > 0, "igScroll scrollbar Arrow Down is not visible");
-					ok(arrowLeft.css("opacity") > 0, "igScroll scrollbar Arrow Left is not visible");
-					ok(arrowRight.css("opacity") > 0, "igScroll scrollbar Arrow Right is not visible");
-					ok(vDrag.css("opacity") > 0, "igScroll vertical scrollbar thumb drag is not big");
-					ok(hDrag.css("opacity") > 0, "igScroll horizontal scrollbar thumb drag is not big");
-					equal(vDrag.css("width"), "9px", "igScroll vertical scrollbar thumb drag is not big");
-					equal(hDrag.css("height"), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+				setTimeout(function () {					
+					notOk(arrowUp.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Up is not visible");
+					notOk(arrowDown.hasClass(hiddenVArrowClass), "igScroll scrollbar Arrow Down is not visible");
+					notOk(arrowLeft.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Left is not visible");
+					notOk(arrowRight.hasClass(hiddenHArrowClass), "igScroll scrollbar Arrow Right is not visible");
+					notOk(vDrag.hasClass(hiddenVBarClass), "igScroll vertical scrollbar thumb drag is not big");
+					notOk(hDrag.hasClass(hiddenHBarClass), "igScroll horizontal scrollbar thumb drag is not big");
+					ok(vDrag.hasClass(vBarBigClass), "9px", "igScroll vertical scrollbar thumb drag is not big");
+					notOk(hDrag.hasClass(vBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
+					ok(hDrag.hasClass(hBarBigClass), "9px", "igScroll horizontal scrollbar thumb drag is not big");
+					notOk(hDrag.hasClass(hBarThinClass), "igScroll horizontal scrollbar thumb drag is not big");
 					
 					$("#elemVH").remove();
 					start();
