@@ -448,25 +448,25 @@
 				}
 			});
 			
-			equal($("#elemVH").css("height"), "400px", "tabindex is the same as the main element");
-			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
-			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
-			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
-			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
+			equal($("#elemVH").css("height"), "400px", "Element initial height is correct");
+			equal($("#elemVH").css("width"), "600px", "Element initial width is correc");
+			equal($("#elemVH_container").css("height"), "400px", "IgScroll's initial contianer height is correct");
+			equal($("#elemVH_container").css("width"), "600px", "IgScroll's initial contianer width is correct");
+			equal($(".igscroll-vcontainer").css("height"), "400px", "IgScroll's initial vertical scrollbar container height is correct");
+			equal($(".igscroll-hcontainer").css("width"), "600px", "IgScroll's initial horizontal scrollbar container width is correct");
 			
 			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
 			$("#elemVH").css("width", "300px")
 			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
 			
-			equal($("#elemVH").css("height"), "400px", "tabindex is the same as the main element");
-			equal($("#elemVH").css("width"), "300px", "tabindex is the same as the main element");
-			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
-			equal($("#elemVH_container").css("width"), "300px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
-			equal($(".igscroll-hcontainer").css("width"), "285px", "tabindex is the same as the main element");
-			equal(eventsFired[0], "resizing", "");
-			equal(eventsFired[1], "resized", "");
+			equal($("#elemVH").css("height"), "400px", "Element height after resising is correct");
+			equal($("#elemVH").css("width"), "300px", "Element width after resizing is correct");
+			equal($("#elemVH_container").css("height"), "400px", "IgScroll's contaner height after resizing is correct");
+			equal($("#elemVH_container").css("width"), "300px", "IgScroll's contaner width after resizing is correct");
+			equal($(".igscroll-vcontainer").css("height"), "400px", "IgScroll's vertical scrollbar container height after resizing is correct");
+			equal($(".igscroll-hcontainer").css("width"), "300px", "IgScroll's horizontal scrollbar container width after resizing is correct");
+			equal(eventsFired[0], "resizing", "Resizing event fired");
+			equal(eventsFired[1], "resized", "Resized event fired");
 			
 	        $("#elemVH").remove();
 	    });
@@ -479,24 +479,30 @@
 				}
 			});
 			
-			equal($("#elemVH").css("height"), "400px", "tabindex is the same as the main element");
-			equal($("#elemVH").css("width"), "600px", "tabindex is the same as the main element");
-			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
-			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
-			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
+			var hThumbWidthPercentage = $("#elemVH_hBar_drag")[0].style.width;
+			
+			equal($("#elemVH").css("height"), "400px", "Element initial height is correct");
+			equal($("#elemVH").css("width"), "600px", "Element initial width is correc");
+			equal($("#elemVH_container").css("height"), "400px", "IgScroll's initial contianer height is correct");
+			equal($("#elemVH_container").css("width"), "600px", "IgScroll's initial contianer width is correct");
+			equal($(".igscroll-vcontainer").css("height"), "400px", "IgScroll's initial vertical scrollbar container height is correct");
+			equal($(".igscroll-hcontainer").css("width"), "600px", "IgScroll's initial horizontal scrollbar container width is correct");
 			
 			//Simulate MutationObserver since it is not supported by PhantomJS prior to 2.0 version
 			$("#elemVH").css("width", "300px")
 			$("#elemVH").data("igScroll")._onElementMutation([{ attributeName: "style" }]);
 			
-			equal($("#elemVH").css("height"), "400px", "tabindex is the same as the main element");
-			equal($("#elemVH").css("width"), "300px", "tabindex is the same as the main element");
-			equal($("#elemVH_container").css("height"), "400px", "tabindex is the same as the main element");
-			equal($("#elemVH_container").css("width"), "600px", "tabindex is the same as the main element");
-			equal($(".igscroll-vcontainer").css("height"), "385px", "tabindex is the same as the main element");
-			equal($(".igscroll-hcontainer").css("width"), "600px", "tabindex is the same as the main element");
-	        //$("#elemVH").remove();
+			equal($("#elemVH").css("height"), "400px", "Element height after resising is the same");
+			equal($("#elemVH").css("width"), "300px", "Element width after resizing is updated");
+			equal($("#elemVH_container").css("height"), "400px", "IgScroll's contaner height after resizing is the same");
+			equal($("#elemVH_container").css("width"), "600px", "IgScroll's contaner width after resizing is the same");
+			equal($(".igscroll-vcontainer").css("height"), "400px", "IgScroll's vertical scrollbar container height after canceling resizing is the same");
+			
+			//The width of the horizontal scrollbar is changed because it fits the element it is child of to 100%, and since we resized that main element to 300px, the scrollbar container also auto resizes.
+			//The rest remains the same though
+			equal($(".igscroll-hcontainer").css("width"), "300px", "IgScroll's horizontal scrollbar container width after canceling resizing is updated");
+			equal($("#elemVH_hBar_drag")[0].style.width, hThumbWidthPercentage, "IgScroll's horizontal scrollbar thumb width % after canceling resizing is the same");
+	        $("#elemVH").remove();
 	    });
 	</script>
 	<script type="text/javascript" src="../../testswarm/inject.js"></script>
