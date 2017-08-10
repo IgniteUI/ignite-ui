@@ -36,11 +36,11 @@
 			// Create a editors
 
 				function loadTestbeds(testbedID) {
-					var testbedIDs = testbedID || ["208808", "209067", "209174", "209912", "209641", "209696",
+					var testbedIDs = testbedID || ["1090", "208808", "209067", "209174", "209912", "209641", "209696",
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695", "876", "809", "942"];					
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695", "876", "809", "942"];
 
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
@@ -48,7 +48,6 @@
 							window[testBed]();
 						}
 					}
-
 				}
 				window.Bug208808Testbed = function () {
 					$("#208808").igDateEditor({ dateInputFormat: "yyyy/MM/dd" });
@@ -500,6 +499,15 @@
 						isLimitedToListValues: true,
 						revertIfNotValid: false,
 						allowNullValue: false
+					});
+				}
+
+				window.Bug1090Testbed = function () {
+					$("<div></div>", { id: "1090Editor" })
+					.appendTo("#testBedContainer")
+					.igTextEditor({
+						textMode : "multiline",
+						height: "100px"
 					});
 				}
 
@@ -1395,6 +1403,72 @@
 					equal(field.val(), "", 'input value is not set to ""' );
 					$("#942Editor").remove();
 					}, 100);
+			});
+			testId = 'Bug 1090';
+			test(testId, 3, function(){
+				var editor = $("#1090Editor"),
+				field = editor.igTextEditor("field"),
+				text = "add some text";
+				typeInInput(text, field);
+				keyInteraction(13, field);
+
+				stop();
+				setTimeout(function () {
+					start();
+					var inputSelection = editor.igTextEditor("getSelectedText"),
+					selectionStart = editor.igTextEditor("getSelectionStart"),
+					selectionEnd = editor.igTextEditor("getSelectionEnd");
+
+					equal(field.val(), text, 'the text is not set');
+					equal(selectionStart, selectionEnd, 'there is selection but should not be');
+					equal("", inputSelection, 'there is selected text but should not be');
+					$("#1090Editor").remove();
+				}, 100);
+			});
+
+			testId = 'Bug 1043 - maxLength not respected on Android';
+			test(testId, 6, function () {
+				var $editor =  $("<input/>").appendTo("#testBedContainer")
+					.igTextEditor({
+						maxLength: 5
+					});
+				$field = $editor.igTextEditor("field");
+
+				$field.focus();
+				var composition = jQuery.Event("compositionstart");
+				$field.trigger(composition);
+				$field.val("12345678");
+				var compositionend = jQuery.Event("compositionend");
+				$field.trigger(compositionend);
+				stop();
+				setTimeout(function () {
+					start();
+					equal($field.val(), "12345", "Text was not trimmed");
+					ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+					equal($editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+						$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+					$field.blur();
+					// test case without start (Chrome Android)
+					$field.focus();
+					$field.select();
+					var compositionupdate = jQuery.Event("compositionupdate");
+					compositionupdate.originalEvent = {data: "2"};
+					$field.val("12");
+					$field[0].setSelectionRange(1,1);
+					$field.trigger(compositionupdate);
+					$field.val("12345678");
+					var compositionend = jQuery.Event("compositionend");
+					$field.trigger(compositionend);
+					stop();
+					setTimeout(function () {
+						start();
+						equal($field.val(), "12345", "Text was not trimmed with update only");
+						ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+						equal($editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+							$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+						$editor.remove();
+					}, 0);
+				}, 0);
 			});
 		});
 
