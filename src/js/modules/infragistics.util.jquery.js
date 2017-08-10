@@ -357,7 +357,8 @@
 	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
 		displayStyle, labelText, tabIndex, reg) {
 		var formatterArgs = arguments[ 0 ];
-		if (typeof formatterArgs === "object" && formatterArgs.hasOwnProperty("val")) {
+		if (typeof formatterArgs === "object" && formatterArgs !== null &&
+				formatterArgs.hasOwnProperty("val")) {
 			val = formatterArgs.val;
 			type = formatterArgs.type;
 			format = formatterArgs.format;
