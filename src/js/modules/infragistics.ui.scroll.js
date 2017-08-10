@@ -640,10 +640,14 @@
 			scrollContainer: "igscroll-container",
 			/* Classes applied to the outer element of the native vertical scrollbar */
 			nativeVScrollOuter: "igscroll-vnative-outer",
+			/* Classes applied to the outer element of the native vertical scrollbar */
+			nativeVScrollOuterSingle: "igscroll-vnative-outer-single",
 			/* Classes applied to the inner element of the native vertical scrollbar */
 			nativeVScrollInner: "igscroll-vnative-inner",
 			/* Classes applied to the outer element of the native horizontal scrollbar */
 			nativeHScrollOuter: "igscroll-hnative-outer",
+			/* Classes applied to the outer element of the native horizontal scrollbar */
+			nativeHScrollOuterSingle: "igscroll-hnative-outer-single",
 			/* Classes applied to the inner element of the native horizontal scrollbar */
 			nativeHScrollInner: "igscroll-hnative-inner",
 			/* Classes applied to the fill element that cover the area between the scrollbars */
@@ -652,16 +656,16 @@
 			verticalScrollContainer: "igscroll-vcontainer",
 			/* Classes applied to the track of the custom vertical scrollbar */
 			verticalScrollTrack: "igscroll-vtrack",
+			/* Classes applied to the track of the custom vertical scrollbar when no horizontal scrollbar is displayed */
+			verticalScrollTrackSingleScrollbar: "igscroll-vtrack-single",
 			/* Classes applied to the arrows of the custom vertical scrollbar */
 			verticalScrollArrow: "igscroll-varrow",
 			/* Classes applied to the Arrow Up of the custom vertical scrollbar */
 			verticalScrollArrowUp: "igscroll-uparrow",
-			/* Classes applied to the Arrow Up of the custom vertical scrollbar when it is active */
-			verticalScrollArrowUpActive: "igscroll-uparrow-active",
 			/* Classes applied to the Arrow Down of the custom vertical scrollbar */
 			verticalScrollArrowDown: "igscroll-downarrow",
-			/* Classes applied to the Arrow Down of the custom vertical scrollbar when it is active */
-			verticalScrollArrowDownActive: "igscroll-downarrow-active",
+			/* Classes applied to the Arrow Down of the custom vertical scrollbar when the horizontal scrollbar is not visible */
+			verticalScrollArrowDownSingleScrollbar: "igscroll-downarrow-single",
 			/* Classes applied to the thumb drag of the custom vertical scrollbar */
 			verticalScrollThumbDrag: "igscroll-vdrag",
 			/* Classes applied to the thumb drag of the custom vertical scrollbar when it is in thin form */
@@ -672,16 +676,16 @@
 			horizontalScrollContainer: "igscroll-hcontainer",
 			/* Classes applied to the track of the custom horizontal scrollbar  */
 			horizontalScrollTrack: "igscroll-htrack",
+			/* Classes applied to the track of the custom horizontal scrollbar when no vertical scrollbar is displayed */
+			horizontalScrollTrackSingleScrollbar: "igscroll-htrack-single",
 			/* Classes applied to the arrows of the custom horizontal scrollbar */
 			horizontalScrollArrow: "igscroll-harrow",
 			/* Classes applied to the Arrow Left of the custom horizontal scrollbar */
 			horizontalScrollArrowLeft: "igscroll-leftarrow",
-			/* Classes applied to the Arrow Left of the custom horizontal scrollbar when it is active */
-			horizontalScrollArrowLeftActive: "igscroll-leftarrow-active",
 			/* Classes applied  to the Arrow Right of the custom horizontal scrollbar */
 			horizontalScrollArrowRight: "igscroll-rightarrow",
-			/* Classes applied to the Arrow Right of the custom horizontal scrollbar when it is active */
-			horizontalScrollArrowRightActive: "igscroll-rightarrow-active",
+			/* Classes applied to the Arrow Right of the custom horizontal scrollbar when the vertical scrollbar is not visible */
+			horizontalScrollArrowRightSingleScrollbar: "igscroll-rightarrow-single",
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar */
 			horizontalScrollThumbDrag: "igscroll-hdrag",
 			/* Classes applied to the thumb drag of the custom horizontal scrollbar when it is in thin form */
@@ -703,17 +707,9 @@
 			```
 			*/
 
-			//width specific
+			/* Get the width/height and update first the container, because the content width/height might change from that */
 			this._elemWidth = this.element.width();
-			this._contentWidth = this._getContentWidth();
-			this._percentInViewH = this._elemWidth / this._contentWidth;
-			this._isScrollableH = this._percentInViewH < 1;
-
-			//height specific
 			this._elemHeight = this.element.height();
-			this._contentHeight = this._getContentHeight();
-			this._percentInViewV = this._elemHeight / this._contentHeight;
-			this._isScrollableV = this._percentInViewV < 1;
 
 			if (this.options.modifyDOM) {
 				this._container.css({
@@ -721,6 +717,16 @@
 					"height": this._elemHeight + "px"
 				});
 			}
+
+			/* width specific */
+			this._contentWidth = this._getContentWidth();
+			this._percentInViewH = this._elemWidth / this._contentWidth;
+			this._isScrollableH = this._percentInViewH < 1;
+
+			/* height specific */
+			this._contentHeight = this._getContentHeight();
+			this._percentInViewV = this._elemHeight / this._contentHeight;
+			this._isScrollableV = this._percentInViewV < 1;
 
 			this._refreshScrollbars();
 
@@ -794,8 +800,6 @@
 			this._contentWidth = this._content[ 0 ].scrollWidth;
 			this._percentInViewH = this._elemWidth / this._contentWidth;
 			this._percentInViewV = this._elemHeight / this._contentHeight;
-			this._customBarArrowsSize = 15;
-			this._customBarEmptySpaceSize = 15;
 
 			//1 equals 100%
 			this._isScrollableV = this._percentInViewV < 1;
@@ -1154,36 +1158,61 @@
 		},
 
 		_refreshScrollbars: function () {
-			var containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
+			var	css = this.css,
+				nativeScrollSize = $.ig.util.getScrollWidth();
 			this._elemHeight = this.element.height();
 			this._elemWidth = this.element.width();
 
 			if (this.options.scrollbarType === "custom" && this._vBarTrack && this._vBarDrag) {
-				// jscs:disable
-				this._vDragHeight = (this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewV;
-				// jscs:enable
-				this._vBarContainer.css("height", (this._elemHeight - this._customBarEmptySpaceSize) + "px");
-				this._vBarDrag.css("height", this._vDragHeight + "px");
-				this._vBarTrack.css("height",
-									this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
+				this._vDragHeight = this._percentInViewV * 100;
+				this._vBarDrag.css("height", this._vDragHeight + "%");
+				/* Update classes if only vertical scrollbar will be visible */
+				if (this._percentInViewH >= 1) {
+					this._vBarTrack.addClass(css.verticalScrollTrackSingleScrollbar);
+					this._vBarArrowDown.addClass(css.verticalScrollArrowDownSingleScrollbar);
+				} else {
+					this._vBarTrack.removeClass(css.verticalScrollTrackSingleScrollbar);
+					this._vBarArrowDown.removeClass(css.verticalScrollArrowDownSingleScrollbar);
+				}
 			} else if (this.options.scrollbarType === "native" && this._vBarContainer && this._vBarDrag) {
-				this._vBarContainer.css("height", (this._elemHeight - containerSizeOffset) + "px");
-				this._vDragHeight = this._getContentHeight();
+				this._vDragHeight = this._content.height();
 				this._vBarDrag.css("height", this._vDragHeight + "px");
+				/* Update classes if only vertical scrollbar will be visible */
+				if (this._percentInViewH >= 1 &&
+					!this._vBarContainer.hasClass(css.nativeVScrollOuterSingle)) {
+					this._vBarContainer.css("bottom", "");
+					this._vBarContainer.addClass(this.css.nativeVScrollOuterSingle);
+				} else if (this._percentInViewH < 1 &&
+					this._vBarContainer.hasClass(css.nativeVScrollOuterSingle)) {
+					this._vBarContainer.removeClass(css.nativeVScrollOuterSingle);
+					this._vBarContainer.css("bottom", nativeScrollSize + "px");
+				}
 			}
 
 			if (this.options.scrollbarType === "custom" && this._hBarTrack && this._hBarDrag) {
-				// jscs:disable
-				this._hDragWidth = (this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewH;
-				// jscs:enable
-				this._hBarContainer.css("width", (this._elemWidth - this._customBarEmptySpaceSize) + "px");
-				this._hBarDrag.css("width", this._hDragWidth + "px");
-				this._hBarTrack.css("width",
-									this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
+				this._hDragWidth = this._percentInViewH * 100;
+				this._hBarDrag.css("width", this._hDragWidth + "%");
+				/* Update classes if only vertical scrollbar will be visible */
+				if (this._percentInViewV >= 1) {
+					this._hBarTrack.addClass(css.horizontalScrollTrackSingleScrollbar);
+					this._hBarArrowRight.addClass(css.horizontalScrollArrowRightSingleScrollbar);
+				} else {
+					this._hBarTrack.removeClass(css.horizontalScrollTrackSingleScrollbar);
+					this._hBarArrowRight.removeClass(css.horizontalScrollArrowRightSingleScrollbar);
+				}
 			} else if (this.options.scrollbarType === "native" && this._hBarContainer && this._hBarDrag) {
-				this._hBarContainer.css("width", (this._elemWidth - containerSizeOffset) + "px");
-				this._hDragWidth = this._getContentWidth();
+				this._hDragWidth = this._content.width();
 				this._hBarDrag.css("width", this._hDragWidth + "px");
+				/* Update classes if only horozontal scrollbar will be visible */
+				if (this._percentInViewV >= 1 &&
+					!this._hBarContainer.hasClass(css.nativeHScrollOuterSingle)) {
+					this._hBarContainer.css("right", "");
+					this._hBarContainer.addClass(css.nativeHScrollOuterSingle);
+				} else if (this._percentInViewV < 1 &&
+					this._hBarContainer.hasClass(css.nativeHScrollOuterSingle)) {
+					this._hBarContainer.removeClass(css.nativeHScrollOuterSingle);
+					this._hBarContainer.css("right", nativeScrollSize + "px");
+				}
 			}
 
 			this._updateScrollBarsVisibility();
@@ -2447,39 +2476,44 @@
 		},
 
 		_updateScrollBarsVisibility: function () {
+			var bRenderScrollbarV = this._isScrollableV &&
+									this._renderVerticalScrollbar,
+				bRenderScrollbarH = this._isScrollableH &&
+									this._renderHorizontalScrollbar,
+				bRemoveScrollbarV = (!this._isScrollableV || !this._renderVerticalScrollbar) &&
+									this._vBarContainer,
+				bRemoveScrollbarH = (!this._isScrollableH || !this._renderHorizontalScrollbar) &&
+									this._hBarContainer;
 			if (this.options.scrollbarType === "none") {
 				return;
 			}
 
 			if (this.options.scrollbarType === "native") {
-				if (this._isScrollableV && !this._vBarContainer && this._renderVerticalScrollbar) {
-					this._initNativeScrollBarV();
-				} else if ((!this._isScrollableV || !this._renderVerticalScrollbar) && this._vBarContainer) {
+				if (bRenderScrollbarV && !this._vBarContainer) {
+					this._initNativeScrollBarV(bRenderScrollbarH);
+				} else if (bRemoveScrollbarV) {
 					this._removeVerticalScrollbar();
 				}
-				if (this._isScrollableH && !this._hBarContainer && this._renderHorizontalScrollbar) {
-					this._initNativeScrollBarH();
-				} else if ((!this._isScrollableH || !this._renderHorizontalScrollbar) && this._hBarContainer) {
+				if (bRenderScrollbarH && !this._hBarContainer) {
+					this._initNativeScrollBarH(bRenderScrollbarV);
+				} else if (bRemoveScrollbarH) {
 					this._removeHorizontalScrollbar();
 				}
 
-				//In case we no longer have any native scrollbars and we have added padding. Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
-				if (!this._vBarContainer && !this._hBarContainer && this._desktopFiller) {
+				//In case we no longer have both native scrollbars. Only for native scrollbars theere is filler on the bottom right angle between the scrollbars
+				if ((!this._vBarContainer || !this._hBarContainer) && this._desktopFiller) {
 					this._desktopFiller.remove();
 					this._desktopFiller = null;
-					this._content
-						.css("padding-right", "0px")
-						.css("padding-bottom", "0px");
 				}
 			} else if (this.options.scrollbarType === "custom") {
-				if (this._isScrollableV && !this._vBarContainer && this._renderVerticalScrollbar) {
-					this._initCustomScrollBarV();
-				} else if ((!this._isScrollableV || !this._renderVerticalScrollbar) && this._vBarContainer) {
+				if (bRenderScrollbarV && !this._vBarContainer) {
+					this._initCustomScrollBarV(bRenderScrollbarH);
+				} else if (bRemoveScrollbarV) {
 					this._removeVerticalScrollbar();
 				}
-				if (this._isScrollableH && !this._hBarContainer && this._renderHorizontalScrollbar) {
-					this._initCustomScrollBarH();
-				} else if ((!this._isScrollableH || !this._renderHorizontalScrollbar) && this._hBarContainer) {
+				if (bRenderScrollbarH && !this._hBarContainer) {
+					this._initCustomScrollBarH(bRenderScrollbarV);
+				} else if (bRemoveScrollbarH) {
 					this._removeHorizontalScrollbar();
 				}
 
@@ -2489,15 +2523,21 @@
 			}
 		},
 
-		_initNativeScrollBarV: function () {
+		_initNativeScrollBarV: function (bRenderScrollbarH) {
 			var css = this.css,
-				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize : 0;
+				nativeScrollSize = $.ig.util.getScrollWidth();
 
 			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
-				.addClass(css.nativeVScrollOuter)
-				.css("height", this._elemHeight - containerSizeOffset + "px");
+				.addClass(css.nativeVScrollOuter);
+			/* Use auto sizing by setting only top and bottom absolute positions, without height */
+			if (!bRenderScrollbarH) {
+				this._vBarContainer.addClass(css.nativeVScrollOuterSingle);
+			} else {
+				this._vBarContainer.css("bottom", nativeScrollSize + "px");
+			}
 
-			this._vDragHeight = this._getContentHeight();
+			/* We need the height without the padding, so we have proper scroll position */
+			this._vDragHeight = this._content.height();
 			this._vBarDrag = $("<div id='" + this.element.attr("id") + "_vBar_inner'></div>")
 				.addClass(css.nativeVScrollInner)
 				.css("height", this._vDragHeight + "px");
@@ -2509,29 +2549,38 @@
 			}
 
 			if ($.ig.util.getScrollHeight() > 0 && this.options.modifyDOM) {
-				this._content.css("padding-right", $.ig.util.getScrollHeight() + "px");
+				this._content.css("padding-right", nativeScrollSize + "px");
 			}
+
+			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
+			if (bRenderScrollbarH && this._bMixedEnvironment && !this._desktopFiller) {
+				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
+					.addClass(css.nativeScrollFiller)
+					.css("height", nativeScrollSize + "px")
+					.css("width", nativeScrollSize + "px");
+				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
+			}
+
 			/* Set the scrollbar position before linking it to the igScroll */
 			this._vBarContainer.scrollTop(this._getContentPositionY());
 			this._setOption("scrollbarV", this._vBarContainer);
-
-			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
-			if (this._bMixedEnvironment && !this._desktopFiller) {
-				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
-					.addClass(css.nativeScrollFiller);
-				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
-			}
 		},
 
-		_initNativeScrollBarH: function () {
+		_initNativeScrollBarH: function (bRenderScrollbarV) {
 			var css = this.css,
-				containerSizeOffset = this._bMixedEnvironment ? this._customBarEmptySpaceSize  : 0;
+				nativeScrollSize = $.ig.util.getScrollWidth();
 
 			this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
-				.addClass(css.nativeHScrollOuter)
-				.css("width", this._elemWidth - containerSizeOffset + "px");
+				.addClass(css.nativeHScrollOuter);
+			/* Use auto sizing by setting only left and right absolute positions, without width */
+			if (!bRenderScrollbarV) {
+				this._hBarContainer.addClass(css.nativeHScrollOuterSingle);
+			} else {
+				this._hBarContainer.css("right", nativeScrollSize + "px");
+			}
 
-			this._hDragWidth = this._getContentWidth();
+			/* We need the width without the padding, so we have proper scroll position */
+			this._hDragWidth = this._content.width();
 			this._hBarDrag = $("<div id='" + this.element.attr("id") + "_hBar_inner'></div>")
 				.addClass(css.nativeHScrollInner)
 				.css("width", this._hDragWidth + "px");
@@ -2542,21 +2591,22 @@
 				this._hBarContainer.append(this._hBarDrag).appendTo(this._container[ 0 ].parentElement);
 			}
 
-			if ($.ig.util.getScrollWidth() > 0 && this.options.modifyDOM) {
-				this._content.css("padding-bottom", $.ig.util.getScrollWidth() + "px");
-			} else {
-				this._hBarContainer.css("bottom", "18px");
+			if (nativeScrollSize > 0 && this.options.modifyDOM) {
+				this._content.css("padding-bottom", nativeScrollSize + "px");
 			}
+
+			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
+			if (bRenderScrollbarV && this._bMixedEnvironment && !this._desktopFiller) {
+				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
+					.addClass(css.nativeScrollFiller)
+					.css("height", nativeScrollSize + "px")
+					.css("width", nativeScrollSize + "px");
+				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
+			}
+
 			/* Set the scrollbar position before linking it to the igScroll */
 			this._hBarContainer.scrollLeft(this._getContentPositionX());
 			this._setOption("scrollbarH", this._hBarContainer);
-
-			//Only for native desktop scrollbars there is filler on the bottom right angle between the scrollbars
-			if (this._bMixedEnvironment && !this._desktopFiller) {
-				this._desktopFiller = $("<div id='" + this.element.attr("id") + "_scrollbarFiller'></div>")
-					.addClass(css.nativeScrollFiller);
-				this._desktopFiller.appendTo(this._container[ 0 ].parentElement);
-			}
 		},
 
 		_removeScrollbars: function() {
@@ -2613,32 +2663,37 @@
 			}
 		},
 
-		_initCustomScrollBarV: function () {
+		/** Initialize the custom vertical scrollbar
+			bRenderScrollbarH - gets wheter or not the horizontal scrollbar will be rendered as well
+		*/
+		_initCustomScrollBarV: function (bRenderScrollbarH) {
 			var css = this.css;
 
 			this._vBarContainer = $("<div id='" + this.element.attr("id") + "_vBar'></div>")
-				.addClass(css.verticalScrollContainer)
-				.css("height", this._elemHeight - this._customBarEmptySpaceSize + "px");
+				.addClass(css.verticalScrollContainer);
 
 			this._vBarArrowUp =	$("<div id='" +	this.element.attr("id") + "_vBar_arrowUp'></div>")
 				.addClass(css.verticalScrollArrow)
 				.addClass(css.verticalScrollArrowUp);
 
 			this._vBarTrack = $("<div id='" + this.element.attr("id") + "_vBar_track'></div>")
-				.addClass(css.verticalScrollTrack)
-				.css("height",
-					this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
+				.addClass(css.verticalScrollTrack);
 
 			this._vBarArrowDown = $("<div id='" + this.element.attr("id") +	"_vBar_arrowDown'></div>")
 				.addClass(css.verticalScrollArrow)
 				.addClass(css.verticalScrollArrowDown);
 
 			// jscs:disable
-			this._vDragHeight = (this._elemHeight - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewV;
+			this._vDragHeight = this._percentInViewV * 100;
 			// jscs:enable
 			this._vBarDrag = $("<span id='" + this.element.attr("id") + "_vBar_drag'></span>")
 				.addClass(css.verticalScrollThumbDrag + " " + css.verticalScrollThumbDragThin)
-				.css("height", this._vDragHeight + "px");
+				.css("height", this._vDragHeight + "%");
+
+			if (!bRenderScrollbarH) {
+				this._vBarTrack.addClass(css.verticalScrollTrackSingleScrollbar);
+				this._vBarArrowDown.addClass(css.verticalScrollArrowDownSingleScrollbar);
+			}
 
 			if (this.options.scrollbarVParent) {
 				this._vBarContainer
@@ -2797,9 +2852,6 @@
 			if (bNoCancel) {
 				this._bMouseDownV = true;
 				this._bUseArrowUp = true;
-				this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUp,
-												this.css.verticalScrollArrowUpActive);
-
 				this._scrollTop(curPosY + scrollStep, false);
 
 				var self = this;
@@ -2812,8 +2864,6 @@
 		_onMouseUpArrowUp: function() {
 			this._bMouseDownV = false;
 			this._bUseArrowUp = true; //We later set it to false with mouseup event of window
-			this._vBarArrowUp.switchClass(this.css.verticalScrollArrowUpActive,
-											this.css.verticalScrollArrowUp);
 			clearTimeout(this._holdTimeoutID);
 		},
 
@@ -2849,8 +2899,6 @@
 			if (bNoCancel) {
 				this._bMouseDownV = true;
 				this._bUseArrowDown = true;
-				this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDown,
-												this.css.verticalScrollArrowDownActive);
 
 				this._scrollTop(curPosY + scrollStep, false);
 
@@ -2864,8 +2912,6 @@
 		_onMouseUpArrowDown: function() {
 			this._bMouseDownV = false;
 			this._bUseArrowDown = true; //We later set it to false with mouseup event of window
-			this._vBarArrowDown.switchClass(this.css.verticalScrollArrowDownActive,
-											this.css.verticalScrollArrowDown);
 			clearTimeout(this._holdTimeoutID);
 		},
 
@@ -3017,8 +3063,6 @@
 			/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
 			if (this._bUseArrowUp) {
 				this._bUseArrowUp = false;
-				this._vBarArrowUp
-					.switchClass(this.css.verticalScrollArrowUpActive, this.css.verticalScrollArrowUp);
 
 				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {
@@ -3031,8 +3075,6 @@
 			}
 			if (this._bUseArrowDown) {
 				this._bUseArrowDown = false;
-				this._vBarArrowDown
-					.switchClass(this.css.verticalScrollArrowDownActive, this.css.verticalScrollArrowDown);
 
 				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {
@@ -3093,32 +3135,37 @@
 			this._bUseVDrag = false;
 		},
 
-		_initCustomScrollBarH: function () {
+		/** Initialize the custom horizontal scrollbar
+			bRenderScrollbarV - gets wheter or not the vertical scrollbar will be rendered as well
+		*/
+		_initCustomScrollBarH: function (bRenderScrollbarV) {
 			var css = this.css;
 
 			this._hBarContainer = $("<div id='" + this.element.attr("id") + "_hBar'></div>")
-				.addClass(css.horizontalScrollContainer)
-				.css("width", this._elemWidth + "px");
+				.addClass(css.horizontalScrollContainer);
 
 			this._hBarArrowLeft = $("<div id='" + this.element.attr("id") + "_hBar_arrowLeft'></div>")
 				.addClass(css.horizontalScrollArrow)
 				.addClass(css.horizontalScrollArrowLeft);
 
 			this._hBarTrack = $("<div id='" + this.element.attr("id") + "_hBar_track'></div>")
-				.addClass(css.horizontalScrollTrack)
-				.css("width",
-					this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize) + "px");
+				.addClass(css.horizontalScrollTrack);
 
 			this._hBarArrowRight = $("<div id='" + this.element.attr("id") + "_hBar_arrowRight'></div>")
 				.addClass(css.horizontalScrollArrow)
 				.addClass(css.horizontalScrollArrowRight);
 
 			// jscs:disable
-			this._hDragWidth = (this._elemWidth - (2 * this._customBarArrowsSize + this._customBarEmptySpaceSize)) * this._percentInViewH;
+			this._hDragWidth = this._percentInViewH * 100;
 			// jscs:enable
 			this._hBarDrag = $("<span id='" + this.element.attr("id") + "_hBar_drag'></span>")
 				.addClass(css.horizontalScrollThumbDrag + " " + css.horizontalScrollThumbDragThin)
-				.css("width", this._hDragWidth + "px");
+				.css("width", this._hDragWidth + "%");
+
+			if (!bRenderScrollbarV) {
+				this._hBarTrack.addClass(css.horizontalScrollTrackSingleScrollbar);
+				this._hBarArrowRight.addClass(css.horizontalScrollArrowRightSingleScrollbar);
+			}
 
 			if (this.options.scrollbarHParent) {
 				this._hBarContainer
@@ -3280,8 +3327,6 @@
 			if (bNoCancel) {
 				this._bMouseDownH = true;
 				this._bUseArrowLeft = true;
-				this._hBarArrowLeft
-					.switchClass(this.css.horizontalScrollArrowLeft, this.css.horizontalScrollArrowLeftActive);
 
 				this._scrollLeft(curPosX + scrollStep, false);
 
@@ -3295,8 +3340,6 @@
 		_onMouseUpArrowLeft: function () {
 			this._bMouseDownH = false;
 			this._bUseArrowLeft = false;
-			this._hBarArrowLeft
-				.switchClass(this.css.horizontalScrollArrowLeftActive, this.css.horizontalScrollArrowLeft);
 
 			clearTimeout(this._holdTimeoutID);
 
@@ -3340,8 +3383,6 @@
 			if (bNoCancel) {
 				this._bMouseDownH = true;
 				this._bUseArrowRight = true;
-				this._hBarArrowRight
-					.switchClass(this.css.horizontalScrollArrowRight, this.css.horizontalScrollArrowRightActive);
 
 				this._scrollLeft(curPosX + scrollStep, false);
 
@@ -3353,8 +3394,6 @@
 		_onMouseUpArrowRight: function () {
 			this._bMouseDownH = false;
 			this._bUseArrowRight = false;
-			this._hBarArrowRight
-				.switchClass(this.css.horizontalScrollArrowRightActive, this.css.horizontalScrollArrowRight);
 
 			clearTimeout(this._holdTimeoutID);
 
@@ -3513,8 +3552,6 @@
 			/* Works even if the mouse is out of the browser boundries and we release the left mouse button */
 			if (this._bUseArrowLeft) {
 				this._bUseArrowLeft = false;
-				this._hBarArrowLeft
-					.switchClass(this.css.horizontalScrollArrowLeftActive, this.css.horizontalScrollArrowLeft);
 
 				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {
@@ -3527,8 +3564,6 @@
 			}
 			if (this._bUseArrowRight) {
 				this._bUseArrowRight = false;
-				this._hBarArrowRight
-					.switchClass(this.css.horizontalScrollArrowRightActive, this.css.horizontalScrollArrowRight);
 
 				if (!this._cancelScrolling) {
 					this._trigger("scrolled", null, {
@@ -3651,7 +3686,9 @@
 			function updateCSS() {
 				if (self._hBarDrag) {
 					// jscs:disable
-					calculatedDest = destX * (self._elemWidth - 2 * self._customBarArrowsSize - self._customBarEmptySpaceSize) / self._getContentWidth();
+					/**	destX * self._percentInViewH - the translated position of the thumb based on the scroll position
+						(self._hBarTrack.width() / self.element.width() - multiple with it since the track is not 100% the width of the container and the thumb will go out of it otherwise */
+					calculatedDest = destX * self._percentInViewH * (self._hBarTrack.width() / self.element.width());
 					// jscs:enable
 					self._hBarDrag
 						.css("-webkit-transform", "translate3d(" + calculatedDest + "px, 0px, 0px)") /* Safari */
@@ -3660,7 +3697,9 @@
 				}
 				if (self._vBarDrag) {
 					// jscs:disable
-					calculatedDest = destY * (self._elemHeight - 2 * self._customBarArrowsSize - self._customBarEmptySpaceSize) / self._getContentHeight();
+					/**	destY * self._percentInViewV - the translated position of the thumb based on the scroll position
+						(self._vBarTrack.height() / self.element.height()) - multiple with it since the track is not 100% the height of the container and the thumb will go out of it otherwise */
+					calculatedDest = destY * self._percentInViewV * (self._vBarTrack.height() / self.element.height());
 					// jscs:enable
 					self._vBarDrag
 						.css("-webkit-transform", "translate3d(0px, " + calculatedDest + "px, 0px)")
