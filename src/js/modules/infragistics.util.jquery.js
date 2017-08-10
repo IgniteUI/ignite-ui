@@ -463,6 +463,9 @@
 			$.ig.regional.defaults = $.extend($.ig._regional,
 				(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
 		}
+		if ($.ig && $.ig.util) {
+			$.ig.util.regional = regional;
+		}
 	};
 
 	// get max zIndex of ui-dialogs - method is usually called by feautures for configuring zIndex of modal dialogs(like filtering, feature chooser, hiding, etc.)
