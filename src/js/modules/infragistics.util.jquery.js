@@ -131,6 +131,13 @@
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
 			display = displayStyle || "inline-block";
+		/* P.Zh. 11 August 2017 - Fixing bug #238125 When headerText contains HTML string the column cell data is broken (contains escaped html) */
+		labelText = labelText
+					.replace(/&/g, "&amp;")
+					.replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;")
+					.replace(/"/g, "&quot;")
+					.replace(/'/g, "&#039;");
 		if (format === "checkbox" && notTemplate) {
 			s = "<span class='ui-igcheckbox-container' style='display:" +
 				display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
