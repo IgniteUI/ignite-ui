@@ -136,7 +136,15 @@
 	};
 
 	$.ig.formatCheckboxes = function (display, val, labelText, tabIndex) {
-		var s = "<span class='ui-igcheckbox-container' style='display:" +
+		var s;
+		/* P.Zh. 11 August 2017 - Fixing bug #238125 When headerText contains HTML string the column cell data is broken (contains escaped html) */
+		labelText = labelText
+					.replace(/&/g, "&amp;")
+					.replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;")
+					.replace(/"/g, "&quot;")
+					.replace(/'/g, "&#039;");
+		s = "<span class='ui-igcheckbox-container' style='display:" +
 			display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
 			val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
 		s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
