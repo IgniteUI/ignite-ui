@@ -389,6 +389,7 @@
 			equal($editor.igNumericEditor("value"), 23, "Editor should have 23 as a value");
 			model.nullValue(null);
 			equal($editor.igNumericEditor("value"), null, "Editor should have null as a value");
+			$editor.remove();
 		});
 	});
 
