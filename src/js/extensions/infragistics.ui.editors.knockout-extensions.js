@@ -289,7 +289,8 @@
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			// Related to #695. Editors should allow empty string.
-			if (value !== "") {
+			// N.A. August 14th, 2017 #1078: Allow setting null values.
+			if (value !== "" && value !== null) {
 				// K.D. Good!
 				if (isNaN(value)) {
 					value = undefined;
@@ -352,7 +353,8 @@
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			// Related to #695. Editors should allow empty string.
-			if (value !== "") {
+			// N.A. August 14th, 2017 #1078: Allow setting null values.
+			if (value !== "" && value !== null) {
 				if (isNaN(value)) {
 					value = undefined;
 				}
@@ -413,7 +415,8 @@
 			value = ko.utils.unwrapObservable(valueAccessor().value);
 
 			// Related to #695. Editors should allow empty string.
-			if (value !== "") {
+			// N.A. August 14th, 2017 #1078: Allow setting null values.
+			if (value !== "" && value !== null) {
 				if (isNaN(value)) {
 					value = undefined;
 				}
