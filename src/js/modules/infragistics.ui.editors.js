@@ -185,10 +185,10 @@
 					//Initialize
 					$(".selector").%%WidgetName%%({
 						validatorOptions : {
-						   successMessage: "Success",
+							successMessage: "Success",
 									 required: true,
 									 onchange: true,
-						   notificationOptions: { mode: "popover" }
+							notificationOptions: { mode: "popover" }
 						}
 					});
 
@@ -3438,7 +3438,6 @@
 			var direction;
 			this._positionDropDownList();
 			if (this._dropDownListOrientation === "up") {
-
 				// We need this parameter as part of blind animation we're using
 				direction = "down";
 			} else {
@@ -11210,6 +11209,10 @@
 				}
 			}
 		},
+
+		// I.G. 09/08/2017 #1037 [igDatePicker] initialization optimization - call overided _positionDropDownList.
+		_positionDropDownList: function () { // igDatePicker
+		},
 		_setOption: function (option, value) { // igDatePicker
 			/* igPercentEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
@@ -11367,8 +11370,7 @@
 			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue;
 			this._cancelBlurDatePickerOpen = true;
 			this._positionDropDownList();
-			if (this._dropDownListOrientation === "up") {
-
+			if (this.options.dropDownOrientation  === "top") {
 				//We need this parameter as part of blind animation we're using
 				direction = "up";
 			} else {
