@@ -7,15 +7,21 @@
 *
 */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.util = $.ig.util || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
 
-    if (!$.ig.util) {
-	    $.ig.util = {};
-
-	    $.extend($.ig.util, {
-
-		    locale: {
+	$.ig.locale.de.util = {
 			    unsupportedBrowser: "Der aktuelle Browser unterstützt HTML5 Canvas Element nicht. <br/>Führen Sie ein Upgrade auf eine der folgenden Versionen durch:",
 			    currentBrowser: "Aktueller Browser: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
@@ -27,9 +33,14 @@
 			    operaDownload: "http://www.opera.com/download/",
 			    chromeDownload: "http://www.google.com/chrome",
 			    firefoxDownload: "http://www.mozilla.com/",
-			    safariDownload: "http://www.apple.com/safari/download/"
-		    }
-	    });
+			    safariDownload: "http://www.apple.com/safari/download/",
+			    defaultSummaryMethodLabelMin: "Min = ",
+			    defaultSummaryMethodLabelMax: "Max = ",
+			    defaultSummaryMethodLabelSum: "Summe = ",
+			    defaultSummaryMethodLabelAvg: "Mittelw. = ",
+			    defaultSummaryMethodLabelCount: "Anzahl = "
+	}
 
-    }
-})(jQuery);
+	$.ig.util.locale = $.ig.util.locale || $.ig.locale.de.util;
+	return $.ig.locale.de.util;
+}));// REMOVE_FROM_COMBINED_FILES

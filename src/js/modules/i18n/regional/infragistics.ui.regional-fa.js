@@ -1,5 +1,14 @@
 ﻿/* Iran (Farsi) +*/
 
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [
+			"jquery"
+		], factory );
+	} else {
+		factory(jQuery);
+	}
+}
 (function ($) {
     $.ig = $.ig || {};
     $.ig.regional = $.ig.regional || {};
@@ -71,6 +80,8 @@
 	    dateTimePattern: 'MM/dd/yyyy hh:mm tt',
 	    timePattern: 'hh:mm tt',
 	    timeLongPattern: 'hh:mm:ss tt',
+		dateTitleFullPattern: 'yy dd MM',
+		dateTitleMonthPattern: 'yy MM',
 	    //
 	    numericNegativePattern: 'n$-',
 	    numericMaxDecimals: 2,
@@ -84,4 +95,4 @@
     if ($.ig.setRegionalDefault) {
 	    $.ig.setRegionalDefault('fa');
     }
-})(jQuery);
+}));// REMOVE_FROM_COMBINED_FILES

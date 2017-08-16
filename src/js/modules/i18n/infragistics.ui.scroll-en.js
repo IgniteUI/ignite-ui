@@ -7,18 +7,25 @@
 *
 */
 
-(function ($) {
-    $.ig = $.ig || {};
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+		$ = $ || {};
+		$.ig = $.ig || {};
+		$.ig.Scroll = $.ig.Scroll || {};
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.en = $.ig.locale.en || {};
 
-    if (!$.ig.Scroll) {
-	    $.ig.Scroll = {};
-
-	    $.extend($.ig.Scroll, {
-		    locale: {
+	    $.ig.locale.en.Scroll = {
 		        errorNoElementLink: 'Element that is being linked does not exists.',
 		        errorNoScrollbarLink: 'Scrollbar element that is being linked does not exists.'
-		    }
-	    });
+		}
 
-    }
-})(jQuery);
+		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.en.Scroll;
+		return $.ig.locale.en.Scroll;
+}));// REMOVE_FROM_COMBINED_FILES

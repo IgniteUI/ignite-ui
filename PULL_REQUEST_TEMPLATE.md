@@ -1,4 +1,4 @@
-Closes # .  
+Closes #ISSUE_NUMBER  
 
-Additional information related to this pull request:
+### Additional information related to this pull request:
 

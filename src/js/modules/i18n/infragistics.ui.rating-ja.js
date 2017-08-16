@@ -7,16 +7,24 @@
 *
 */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory(jQuery);
+	}
+}
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.Rating = $.ig.Rating || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
 
-    if (!$.ig.Rating) {
-	    $.ig.Rating = {};
-
-	    $.extend($.ig.Rating, {
-		    locale: {
-			    setOptionError: '次のオプションはランタイムで変更できません: '
-		    }
-	    });
-    }
-})(jQuery);
+	$.ig.locale.ja.Rating = {
+			setOptionError: '次のオプションはランタイムで変更できません: '
+	}
+	
+	$.ig.Rating.locale = $.ig.Rating.locale || $.ig.locale.ja.Rating;
+	return $.ig.locale.ja.Rating;
+}));// REMOVE_FROM_COMBINED_FILES

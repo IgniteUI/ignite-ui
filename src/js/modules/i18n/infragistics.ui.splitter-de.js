@@ -7,18 +7,25 @@
 *
 */
 
-(function ($) {
-$.ig = $.ig || {};
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+	$ = $ || {};
+    $.ig = $.ig || {};
+	$.ig.Splitter = $.ig.Splitter || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
 
-if (!$.ig.Splitter) {
-	$.ig.Splitter = {};
-
-	$.extend($.ig.Splitter, {
-		locale: {
+	 $.ig.locale.de.Splitter = {
 		    errorPanels: 'Die Anzahl Bereiche muss größer als zwei sein.',
 		    errorSettingOption: 'Option der Fehlereinstellung.'
 		}
-	});
 
-}
-})(jQuery);
+		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.de.Splitter;
+		return $.ig.locale.de.Splitter;
+}));// REMOVE_FROM_COMBINED_FILES

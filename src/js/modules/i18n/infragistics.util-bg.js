@@ -7,15 +7,21 @@
 *
 */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+	$ = $ || {};
     $.ig = $.ig || {};
+	$.ig.util = $.ig.util || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
 
-    if (!$.ig.util) {
-	    $.ig.util = {};
-
-	    $.extend($.ig.util, {
-
-		    locale: {
+	$.ig.locale.bg.util = {
 			    unsupportedBrowser: "Браузърът ви не поддържа HTML5 canvas елемент. <br/>Моля обновете до някоя от следните версии:",
 			    currentBrowser: "Вашият браузър: {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
@@ -27,9 +33,14 @@
 			    operaDownload: "http://www.opera.com/download/",
 			    chromeDownload: "http://www.google.com/chrome",
 			    firefoxDownload: "http://www.mozilla.com/",
-			    safariDownload: "http://www.apple.com/safari/download/"
-		    }
-	    });
+			    safariDownload: "http://www.apple.com/safari/download/",
+			    defaultSummaryMethodLabelMin: "Минимум = ",
+			    defaultSummaryMethodLabelMax: "Максимум = ",
+			    defaultSummaryMethodLabelSum: "Сума = ",
+			    defaultSummaryMethodLabelAvg: "Осреднено = ",
+			    defaultSummaryMethodLabelCount: "Брой = "
+	}
 
-    }
-})(jQuery);
+	$.ig.util.locale = $.ig.util.locale || $.ig.locale.bg.util;
+	return $.ig.locale.bg.util;
+}));// REMOVE_FROM_COMBINED_FILES

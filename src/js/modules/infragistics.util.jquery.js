@@ -32,7 +32,7 @@
 	}
 }
 (function ($) {
-	$.ig = window.$.ig || $.ig || { _isNamespace: true };
+	$.ig = (window.$ && window.$.ig) || $.ig || { _isNamespace: true };
 	window.$ig = window.$ig || $.ig;
 
 	$.fn.startsWith = function (str) {
@@ -122,105 +122,256 @@
 	//checkbox markup classes can be changed
 	//and setting them in a a box can be done by the predefined classes "ui-state-default ui-corner-all ui-igcheckbox-small"
 	$.ig.checkboxMarkupClasses = "";
+	$.ig.getRegionalOptions = function (reg) {
+		if (!reg) {
+			return $.ig.regional.defaults || {};
+		}
+		return (($.type(reg) === "string") ?
+			$.ig.regional[ reg ] : reg) || {};
+	};
+	$.ig.getRegionalValue = function (key, reg) {
+		reg = $.ig.getRegionalOptions(reg);
+		var value = reg[ key ];
+		return (value === undefined) ? $.ig.regional.defaults[ key ] : value;
+	};
 
-	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates,
-		displayStyle, labelText, tabIndex) {
-		var min, y, h, m, s, ms, am, e, day, pattern, len, n, dot, gr,
-			gr0, grps, curS, percS, cur, perc, prefix, i, d = val && val.getTime,
-			reg = $.ig.regional.defaults, pow,
+	$.ig.formatCheckboxes = function (display, val, labelText, tabIndex) {
+		var s = "<span class='ui-igcheckbox-container' style='display:" +
+			display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
+			val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
+		s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
+		s += "<span style='display:block' class='" + (val ? "" : "ui-igcheckbox-small-off ");
+		return s + "ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>";
+	};
+
+	$.ig.formatDates = function (val, d, format, enableUTCDates, dateOffset, reg) {
+		var min, y, h, m, s, ms, am, day, pattern;
+		if (!val) {
+			return "&nbsp;";
+		}
+		if (!d) {
+			return val;
+		}
+		pattern = $.ig.getRegionalValue((format && format !== "null" && format !== "undefined") ?
+			format + "Pattern" : "datePattern", reg) || format;
+		if (dateOffset !== undefined && dateOffset !== null) {
+			val = new Date(val.getTime() + dateOffset);
+		}
+		if (enableUTCDates || (dateOffset !== undefined && dateOffset !== null)) {
+			y = val.getUTCFullYear();
+			m = val.getUTCMonth() + 1;
+			d = val.getUTCDate();
+			h = val.getUTCHours();
+			min = val.getUTCMinutes();
+			s = val.getUTCSeconds();
+			ms = val.getUTCMilliseconds();
+			day = val.getUTCDay();
+		} else {
+			y = val.getFullYear();
+			m = val.getMonth() + 1;
+			d = val.getDate();
+			h = val.getHours();
+			min = val.getMinutes();
+			s = val.getSeconds();
+			ms = val.getMilliseconds();
+			day = val.getDay();
+		}
+
+		// M.P. 25 July 2014: 176543 - $.ig.formatter doesn't work with escaped characters for date formatting
+		pattern = pattern.replace(/\\d/g, "\x06").replace(/\\y/g, "\x07").replace(/\\M/g, "\x08")
+			.replace(/\\m/g, "\x09").replace(/\\t/g, "\x0A").replace(/\\s/g, "\x0B")
+			.replace(/\\f/g, "\x0C").replace(/\\h/g, "\x0D").replace(/\\H/g, "\x0E");
+
+		// remove MMMM, MMM, dddd, ddd, tt, t
+		pattern = pattern.replace("MMMM", "\x01").replace("MMM", "\x02").replace("dddd", "\x03")
+			.replace("ddd", "\x04");
+		if (pattern.indexOf("t") >= 0) {
+			am = (h >= 12) ? $.ig.getRegionalValue("pm", reg) : $.ig.getRegionalValue("am", reg);
+			am = am || " ";
+			if (pattern.indexOf("tt") >= 0) {
+				pattern = pattern.replace("tt", "t");
+			} else if (am.length > 1) {
+				am = am.substring(0, 1);
+			}
+			pattern = pattern.replace("t", "\x05");
+		}
+		if (pattern.indexOf("h") >= 0) {
+			if (h > 12) {
+				h -= 12;
+			}
+
+			// M.P. 2 August 2013 - Fix for bug #147778 Incorrect date formatting when 12 hour format is used
+			if (h === 0) {
+				h = 12;
+			}
+		}
+		pattern = pattern.replace(/H/g, "h");
+
+		// L.A. 23 October 2012 - Fixing bug #125273 Missing leading zeros when using format MM/dd/yyyy for dates before 1000
+		pattern = pattern
+			.replace("yyyy", y < 10 ? "000" + y : y < 100 ? "00" + y : y < 1000 ? "0" + y : y)
+			.replace("yy", ((y = y % 100) < 10) ? "0" + y : y).replace("y", y % 100)
+			.replace("MM", (m < 10) ? "0" + m : m).replace("M", m);
+		pattern = pattern.replace("dd", (d < 10) ? "0" + d : d).replace("d", d);
+		pattern = pattern.replace("hh", (h < 10) ? "0" + h : h).replace("h", h)
+			.replace("mm", (min < 10) ? "0" + min : min).replace("m", min)
+			.replace("ss", (s < 10) ? "0" + s : s).replace("s", s);
+		pattern = pattern.replace("fff", (ms < 10) ? "00" + ms : ((ms < 100) ? "0" + ms : ms))
+			.replace("ff", ((ms = Math.round(ms / 10)) < 10) ? "0" + ms : ms)
+			.replace("f", Math.round(ms / 100));
+		pattern = pattern
+			.replace("\x01", $.ig.getRegionalValue("monthNames", reg)[ m - 1 ])
+			.replace("\x02", $.ig.getRegionalValue("monthNamesShort", reg)[ m - 1 ])
+			.replace("\x05", am);
+		pattern = pattern
+			.replace("\x03", $.ig.getRegionalValue("dayNames", reg)[ day ])
+			.replace("\x04", $.ig.getRegionalValue("dayNamesShort", reg)[ day ]);
+		pattern = pattern.replace(/\x06/g, "d").replace(/\x07/g, "y").replace(/\x08/g, "M")
+			.replace(/\x09/g, "m").replace(/\x0A/g, "t").replace(/\x0B/g, "s")
+			.replace(/\x0C/g, "f").replace("\x0D", "h").replace("\x0E", "H");
+		return pattern;
+	};
+
+	$.ig.formatNumbers = function (n, val, reg, perc, percS, cur, curS, format, i, d) {
+		var prefix, pattern, len, s, min, dot, m, pow, e, gr, gr0, grps;
+		if (!n) {
+			// N.A. 26 April 2013 - Fixing bug #139790 When regional settings, different from english, are used and the decimal separator is different than "." the value is calculated wrong
+			// keep only e, E, -, +, decimal separator and digits
+			val = parseFloat(val.replace("(", "-")
+				.replace(new RegExp("[^0-9\\-eE\\" +
+					$.ig.getRegionalValue("numericDecimalSeparator", reg) + "\\+]", "gm"), "")
+				.replace($.ig.getRegionalValue("numericDecimalSeparator", reg), "."));
+		}
+		if (isNaN(val)) {
+			return "&nbsp;";
+		}
+
+		// M.H. 27 Oct 2014 Fix for bug #183668: when setting column format to percent the formatted value doesn"t reflect proper math to address decimal placement
+		if (perc) {
+			val *= 100;
+		}
+		prefix = cur ? curS : (perc ? percS : "numeric");
+		pattern = $.ig.getRegionalValue(
+			prefix + ((val < 0) ? "Negative" : "Positive") + "Pattern", reg) ||
+			"n";
+		len = format ? format.length : 0;
+
+		// calculate maximum number of decimals
+		if (len > 0 && ((s = format.charAt(0)) === "0" || s === "#")) {
+			min = m = 0;
+			dot = format.indexOf(".");
+			if (dot > 0) {
+				m = len - 1 - dot;
+				while (++dot < len) {
+					if (format.charAt(dot) !== "0") {
+						break;
+					}
+					min++;
+				}
+			}
+		} else {
+			min = $.ig.getRegionalValue(prefix + "MinDecimals", reg) || 0;
+			if (d) {
+				m = 999;
+			} else {
+				m = $.ig.getRegionalValue(prefix + "MaxDecimals", reg);
+				m = (m && !i) ? m : 0;
+			}
+		}
+		if (val < 0) {
+			val = -val;
+		}
+
+		// S.S. March 26, 2013 Bug #137025. IE8 and below do not round numbers in toFixed() so we need to round
+		// them first before passing them to toFixed()
+		// val = (m === 999) ? val.toString(10) : val.toFixed(m);
+		if (m === 999) {
+			val = val.toString(10);
+		} else {
+			if ($.ig.util.isIE && $.ig.util.browserVersion <= 8) {
+				pow = Math.pow(10, m);
+				val = (Math.round(pow * val) / pow).toFixed(m);
+			} else {
+				val = val.toFixed(m);
+			}
+		}
+		if ((i = val.indexOf("E")) < 0) {
+			i = val.indexOf("e");
+		}
+
+		// cut-off E-power (e)
+		e = "";
+		if (i > 0) {
+			e = val.substring(i);
+			val = val.substring(0, i);
+		}
+		dot = val.indexOf(".");
+		len = val.length;
+		i = 0;
+
+		// remove trailing 0s
+		while (dot > 0 && m > min + i && val.charAt(len - 1 - i) === "0") {
+			i++;
+		}
+		if (i > 0) {
+			val = val.substring(0, len -= i);
+		}
+
+		// remove trailing .
+		if (dot === len - 1) {
+			val = val.substring(0, dot);
+		}
+		if (dot > 0) {
+			len = dot;
+		}
+
+		// replace decimal separator
+		s = $.ig.getRegionalValue(prefix + "DecimalSeparator", reg);
+		if (s) {
+			val = val.replace(".", s);
+		}
+
+		// insert group separators
+		s = $.ig.getRegionalValue(prefix + "GroupSeparator", reg);
+		grps = s ? $.ig.getRegionalValue(prefix + "Groups", reg) : "";
+		gr = gr0 = (grps.length > 0) ? grps[ i = 0 ] : 0;
+		while (gr > 0 && --len > 0) {
+			if (--gr === 0) {
+				val = val.substring(0, len) + s + val.substring(len);
+				gr = grps[ ++i ];
+				if (!gr || gr < 1) {
+					gr = gr0;
+				} else {
+					gr0 = gr;
+				}
+			}
+		}
+
+		// replace "n" by number, "$" by symbol and "-" by negative sign
+		s = $.ig.getRegionalValue(prefix + "Symbol", reg) || "";
+		return pattern
+			.replace("-", $.ig.getRegionalValue("negativeSign", reg))
+			.replace("n", val + e).replace("$", s);
+	};
+
+	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
+		displayStyle, labelText, tabIndex, reg) {
+		var n, curS, percS, cur, perc, i, d = val && val.getTime, s,
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
 			display = displayStyle || "inline-block";
 		if (format === "checkbox" && notTemplate) {
-			s = "<span class='ui-igcheckbox-container' style='display:" +
-				display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
-				val + "' aria-label='" + labelText + "' tabindex='" + tabIndex + "'>";
-			s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
-			s += "<span style='display:block' class='" + (val ? "" : "ui-igcheckbox-small-off ");
-			return s + "ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>";
+			return $.ig.formatCheckboxes(display, val, labelText, tabIndex);
 		}
+
 		if (!val && val !== 0 && val !== false) {
 			return "&nbsp;";
 		}
+
 		if (type === "date" || d) {
-			if (!val) {
-				return "&nbsp;";
-			}
-			if (!d) {
-				return val;
-			}
-			pattern = reg[ (format && format !== "null" && format !== "undefined") ?
-				format + "Pattern" : "datePattern" ] || format;
-			if (enableUTCDates) {
-				y = val.getUTCFullYear();
-				m = val.getUTCMonth() + 1;
-				d = val.getUTCDate();
-				h = val.getUTCHours();
-				min = val.getUTCMinutes();
-				s = val.getUTCSeconds();
-				ms = val.getUTCMilliseconds();
-				day = val.getUTCDay();
-			} else {
-				y = val.getFullYear();
-				m = val.getMonth() + 1;
-				d = val.getDate();
-				h = val.getHours();
-				min = val.getMinutes();
-				s = val.getSeconds();
-				ms = val.getMilliseconds();
-				day = val.getDay();
-			}
-
-			// M.P. 25 July 2014: 176543 - $.ig.formatter doesn't work with escaped characters for date formatting
-			pattern = pattern.replace(/\\d/g, "\x06").replace(/\\y/g, "\x07").replace(/\\M/g, "\x08")
-				.replace(/\\m/g, "\x09").replace(/\\t/g, "\x0A").replace(/\\s/g, "\x0B")
-				.replace(/\\f/g, "\x0C").replace(/\\h/g, "\x0D").replace(/\\H/g, "\x0E");
-
-			// remove MMMM, MMM, dddd, ddd, tt, t
-			pattern = pattern.replace("MMMM", "\x01").replace("MMM", "\x02").replace("dddd", "\x03")
-				.replace("ddd", "\x04");
-			if (pattern.indexOf("t") >= 0) {
-				am = (h >= 12) ? reg.pm : reg.am;
-				am = am || " ";
-				if (pattern.indexOf("tt") >= 0) {
-					pattern = pattern.replace("tt", "t");
-				} else if (am.length > 1) {
-					am = am.substring(0, 1);
-				}
-				pattern = pattern.replace("t", "\x05");
-			}
-			if (pattern.indexOf("h") >= 0) {
-				if (h > 12) {
-					h -= 12;
-				}
-
-				// M.P. 2 August 2013 - Fix for bug #147778 Incorrect date formatting when 12 hour format is used
-				if (h === 0) {
-					h = 12;
-				}
-			}
-			pattern = pattern.replace(/H/g, "h");
-
-			// L.A. 23 October 2012 - Fixing bug #125273 Missing leading zeros when using format MM/dd/yyyy for dates before 1000
-			pattern = pattern
-				.replace("yyyy", y < 10 ? "000" + y : y < 100 ? "00" + y : y < 1000 ? "0" + y : y)
-				.replace("yy", ((y = y % 100) < 10) ? "0" + y : y).replace("y", y % 100)
-				.replace("MM", (m < 10) ? "0" + m : m).replace("M", m);
-			pattern = pattern.replace("dd", (d < 10) ? "0" + d : d).replace("d", d);
-			pattern = pattern.replace("hh", (h < 10) ? "0" + h : h).replace("h", h)
-				.replace("mm", (min < 10) ? "0" + min : min).replace("m", min)
-				.replace("ss", (s < 10) ? "0" + s : s).replace("s", s);
-			pattern = pattern.replace("fff", (ms < 10) ? "00" + ms : ((ms < 100) ? "0" + ms : ms))
-				.replace("ff", ((ms = Math.round(ms / 10)) < 10) ? "0" + ms : ms)
-				.replace("f", Math.round(ms / 100));
-			pattern = pattern.replace("\x01", reg.monthNames[ m - 1 ])
-				.replace("\x02", reg.monthNamesShort[ m - 1 ]).replace("\x05", am);
-			pattern = pattern.replace("\x03", reg.dayNames[ day ]).replace("\x04", reg.dayNamesShort[ day ]);
-			pattern = pattern.replace(/\x06/g, "d").replace(/\x07/g, "y").replace(/\x08/g, "M")
-				.replace(/\x09/g, "m").replace(/\x0A/g, "t").replace(/\x0B/g, "s")
-				.replace(/\x0C/g, "f").replace("\x0D", "h").replace("\x0E", "H");
-			return pattern;
+			return $.ig.formatDates(val, d, format, enableUTCDates, dateOffset, reg);
 		}
+
 		d = format === "double";
 		if (!d) {
 			cur = format === (curS = "currency");
@@ -233,122 +384,9 @@
 		}
 		n = typeof val === "number";
 		if (d || n || i || cur || perc || type === "number") {
-			if (!n) {
-
-				// N.A. 26 April 2013 - Fixing bug #139790 When regional settings, different from english, are used and the decimal separator is different than "." the value is calculated wrong
-				// keep only e, E, -, +, decimal separator and digits
-				val = parseFloat(val.replace("(", "-")
-					.replace(new RegExp("[^0-9\\-eE\\" +
-						reg.numericDecimalSeparator + "\\+]", "gm"), "")
-					.replace(reg.numericDecimalSeparator, "."));
-			}
-			if (isNaN(val)) {
-				return "&nbsp;";
-			}
-
-			// M.H. 27 Oct 2014 Fix for bug #183668: when setting column format to percent the formatted value doesn"t reflect proper math to address decimal placement
-			if (perc) {
-				val *= 100;
-			}
-			prefix = cur ? curS : (perc ? percS : "numeric");
-			pattern = reg[ prefix + ((val < 0) ? "Negative" : "Positive") + "Pattern" ] || "n";
-			len = format ? format.length : 0;
-
-			// calculate maximum number of decimals
-			if (len > 0 && ((s = format.charAt(0)) === "0" || s === "#")) {
-				min = m = 0;
-				dot = format.indexOf(".");
-				if (dot > 0) {
-					m = len - 1 - dot;
-					while (++dot < len) {
-						if (format.charAt(dot) !== "0") {
-							break;
-						}
-						min++;
-					}
-				}
-			} else {
-				min = reg[ prefix + "MinDecimals" ] || 0;
-				if (d) {
-					m = 999;
-				} else {
-					m = reg[ prefix + "MaxDecimals" ];
-					m = (m && !i) ? m : 0;
-				}
-			}
-			if (val < 0) {
-				val = -val;
-			}
-
-			// S.S. March 26, 2013 Bug #137025. IE8 and below do not round numbers in toFixed() so we need to round
-			// them first before passing them to toFixed()
-			// val = (m === 999) ? val.toString(10) : val.toFixed(m);
-			if (m === 999) {
-				val = val.toString(10);
-			} else {
-				if ($.ig.util.isIE && $.ig.util.browserVersion <= 8) {
-					pow = Math.pow(10, m);
-					val = (Math.round(pow * val) / pow).toFixed(m);
-				} else {
-					val = val.toFixed(m);
-				}
-			}
-			if ((i = val.indexOf("E")) < 0) {
-				i = val.indexOf("e");
-			}
-
-			// cut-off E-power (e)
-			e = "";
-			if (i > 0) {
-				e = val.substring(i);
-				val = val.substring(0, i);
-			}
-			dot = val.indexOf(".");
-			len = val.length;
-			i = 0;
-
-			// remove trailing 0s
-			while (dot > 0 && m > min + i && val.charAt(len - 1 - i) === "0") {
-				i++;
-			}
-			if (i > 0) {
-				val = val.substring(0, len -= i);
-			}
-
-			// remove trailing .
-			if (dot === len - 1) {
-				val = val.substring(0, dot);
-			}
-			if (dot > 0) {
-				len = dot;
-			}
-
-			// replace decimal separator
-			s = reg[ prefix + "DecimalSeparator" ];
-			if (s) {
-				val = val.replace(".", s);
-			}
-
-			// insert group separators
-			s = reg[ prefix + "GroupSeparator" ];
-			grps = s ? reg[ prefix + "Groups" ] : "";
-			gr = gr0 = (grps.length > 0) ? grps[ i = 0 ] : 0;
-			while (gr > 0 && --len > 0) {
-				if (--gr === 0) {
-					val = val.substring(0, len) + s + val.substring(len);
-					gr = grps[ ++i ];
-					if (!gr || gr < 1) {
-						gr = gr0;
-					} else {
-						gr0 = gr;
-					}
-				}
-			}
-
-			// replace "n" by number, "$" by symbol and "-" by negative sign
-			s = reg[ prefix + "Symbol" ] || "";
-			return pattern.replace("-", reg.negativeSign).replace("n", val + e).replace("$", s);
+			return $.ig.formatNumbers(n, val, reg, perc, percS, cur, curS, format, i, d);
 		}
+
 		if (format) {
 			if (format.indexOf(s = "{0}") >= 0) {
 				return format.replace(s, val);
@@ -374,6 +412,8 @@
 		dateTimePattern: "M/d/yyyy h:mm tt",
 		timePattern: "h:mm tt",
 		timeLongPattern: "h:mm:ss tt",
+		dateTitleFullPattern: "dd MM yy",
+		dateTitleMonthPattern: "MM yy",
 		negativeSign: "-",
 		numericNegativePattern: "-$n",
 		numericDecimalSeparator: ".",
@@ -407,66 +447,6 @@
 		} else {
 			$.ig.regional.defaults = $.extend($.ig._regional,
 				(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
-		}
-	};
-	$.ig.calcSummaries = function (summaryFunction, data, caller, dataType) {
-		var sum = function (data) {
-			var sum = 0,
-				i;
-			for (i = 0; i < data.length; i++) {
-				sum += data[ i ];
-			}
-			return sum;
-		};
-
-		// M.H. 16 Nov. 2011 Fix for bug 97886
-		summaryFunction = summaryFunction.toLowerCase();
-		if (summaryFunction.startsWith("custom")) {
-			summaryFunction = "custom";
-		}
-
-		switch (summaryFunction) {
-			case "min":
-				if (data.length === 0) {
-					if (dataType === "date") {
-						return null;
-					}
-					return 0;
-				}
-				return Math.min.apply(Math, data);
-			case "max":
-				if (data.length === 0) {
-					if (dataType === "date") {
-						return null;
-					}
-					return 0;
-				}
-				return Math.max.apply(Math, data);
-			case "sum":
-				return sum(data);
-			case "avg":
-				if (data.length === 0) {
-					return 0;
-				}
-				return sum(data) / data.length;
-			case "count":
-				return data.length;
-			case "custom":
-
-				// M.H. 30 Sept. 2011 Fix for bug #88717 - fix when caller is string
-				if (caller !== undefined && caller !== null) {
-					if ($.type(caller) === "function") {
-						return caller(data);
-					}
-					if ($.type(caller) === "string") {
-						/*jshint evil:true */
-						caller = eval(caller);
-						return caller(data);
-					}
-				} else {
-					return null;
-				}
-				break;
 		}
 	};
 
@@ -506,6 +486,23 @@
 			return "string";
 		}
 
+	};
+
+	$.ig.toLocalISOString = function (date) {
+		var tzo = -date.getTimezoneOffset(),
+			dif = tzo >= 0 ? "+" : "-",
+			pad = function(num) {
+				var norm = Math.abs(Math.floor(num));
+				return (norm < 10 ? "0" : "") + norm;
+			};
+		return date.getFullYear() +
+			"-" + pad(date.getMonth() + 1) +
+			"-" + pad(date.getDate()) +
+			"T" + pad(date.getHours()) +
+			":" + pad(date.getMinutes()) +
+			":" + pad(date.getSeconds()) +
+			dif + pad(tzo / 60) +
+			":" + pad(tzo % 60);
 	};
 
 	(function ($) {
@@ -565,7 +562,7 @@
 					" callCount: " + meths[ k ].callCount);
 			}
 		};
-	}(jQuery));
+	})($);
 
 	// N.A. 10/17/2013 - Bug #155039: The property "offset" is deprecated in 1.9.
 	$.ig.util.jQueryUIMainVersion = $.ui && $.ui.version &&
@@ -808,7 +805,11 @@
 		if (!widget.events || !widget.events.browserNotSupported ||
 			widget._trigger(widget.events.browserNotSupported)) {
 			var elem = widget.element, o = widget.options,
-				container = $("<div></div>").css("overflow", "auto")
+				container = $("<div></div>")
+					.attr({
+						"data-not-supported-browser": true
+					})
+					.css("overflow", "auto")
 					.addClass(widget.css.unsupportedBrowserClass).appendTo(elem),
 				ul, browserUnsupported;
 			locale = locale || $.ig.util.locale;

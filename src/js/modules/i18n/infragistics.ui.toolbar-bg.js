@@ -7,19 +7,25 @@
 *
 */
 
-(function ($) {
-$.ig = $.ig || {};
-
-if (!$.ig.Toolbar) {
-    $.ig.Toolbar = {};
-
-	$.extend($.ig.Toolbar, {
-
-		locale: {
-			collapseButtonTitle: 'Прибери',
-			expandButtonTitle: 'Отвори'
-		}
-
-	});
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
 }
-})(jQuery);
+(function () {
+	$ = $ || {};
+    $.ig = $.ig || {};
+	$.ig.Toolbar = $.ig.Toolbar || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+
+	$.ig.locale.bg.Toolbar = {
+			collapseButtonTitle: 'Прибери {0}',
+			expandButtonTitle: 'Отвори {0}'
+	}
+	
+	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale.bg.Toolbar;
+	return $.ig.locale.bg.Toolbar;
+}));// REMOVE_FROM_COMBINED_FILES

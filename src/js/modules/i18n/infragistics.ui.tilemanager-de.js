@@ -7,18 +7,25 @@
 *
 */
 
-(function ($) {
-$.ig = $.ig || {};
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+	$ = $ || {};
+    $.ig = $.ig || {};
+	$.ig.TileManager = $.ig.TileManager || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
 
-if (!$.ig.TileManager) {
-	$.ig.TileManager = {};
-
-	$.extend($.ig.TileManager, {
-		locale: {
+	$.ig.locale.de.TileManager = {
 		    renderDataError: "Die Daten wurden nicht erfolgreich abgerufen oder analysiert.",
 		    setOptionItemsLengthError: "The length of the items configurations does not match the number of the tiles."
-		}
-	});
-
-}
-})(jQuery);
+	}
+	
+	$.ig.TileManager.locale = $.ig.TileManager.locale || $.ig.locale.de.TileManager;
+	return $.ig.locale.de.TileManager;
+}));// REMOVE_FROM_COMBINED_FILES

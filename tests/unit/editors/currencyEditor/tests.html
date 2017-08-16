@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                   
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
@@ -61,7 +62,7 @@
 			});
 		}
 		initialized = false;
-		module("Currency Editor ", {
+		module("igCurrencyEditor ", {
 			setup: function() {
 				//pause testing until editors are initialized
 				if (!initialized) {
@@ -135,8 +136,8 @@
 		    var containerInput = $('#currencyEditor5').igCurrencyEditor("field");
 
 		    // For 207132 Can't set groupSeparator to empty string, and decimalSeparator to comma
+			$("#currencyEditor5").igCurrencyEditor("option", "groupSeparator", "");
 		    $("#currencyEditor5").igCurrencyEditor("option", "decimalSeparator", ",");
-		    $("#currencyEditor5").igCurrencyEditor("option", "groupSeparator", "");
 		    $("#currencyEditor5").igCurrencyEditor("option", "value", 1264.89);
 		    equal($("#currencyEditor5").igCurrencyEditor("displayValue"), "$1264,8900000000", "The decimal value is not correct");
 		});
@@ -347,6 +348,43 @@
 			$editor.igCurrencyEditor("spinDown");
 			equal($editor.igCurrencyEditor("getSelectedListItem").text(), "2413,5", "Selected item not correct after spin call in edit mode");
 
+			$editor.remove();
+		});
+		
+		var testId = 'MaxValue SpinUpButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ displayFactor : 1, maxValue: 8, spinDelta: 1, buttonType: "spin" });
+			ok($editor.igCurrencyEditor("spinUpButton").is(":visible"), "Spin up button is hidden");
+			$editor.igCurrencyEditor("value", 8);
+			$editor.blur();
+			ok($editor.igCurrencyEditor("spinUpButton").hasClass("ui-state-disabled"), "Spin up button is not disabled.");
+			$editor.remove();
+		});
+		
+		var testId = 'MinValue SpinDownButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ displayFactor : 1, minValue: 2, spinDelta: 1, buttonType: "spin" });
+			ok($editor.igCurrencyEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
+			$editor.igCurrencyEditor("value", 2);
+			$editor.blur();
+			ok($editor.igCurrencyEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
+			$editor.remove();
+		});
+		
+		var testId = 'Reaching MinValue with clear button disables SpinDownButton';
+		test(testId, 2, function () {
+			var $editor;
+
+			$editor = $('<input/>').appendTo("#testBedContainer").igCurrencyEditor({ displayFactor : 1, maxValue: 8, minValue: 5, spinDelta: 1, buttonType: "spin, clear" });
+			ok($editor.igCurrencyEditor("spinDownButton").is(":visible"), "Spin down button is hidden");
+			$editor.igCurrencyEditor("value", 6);
+			$editor.blur();
+			$editor.igCurrencyEditor("clearButton").click();
+			ok($editor.igCurrencyEditor("spinDownButton").hasClass("ui-state-disabled"), "Spin down button is not disabled.");
 			$editor.remove();
 		});
 	});

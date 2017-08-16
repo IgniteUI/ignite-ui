@@ -7,19 +7,25 @@
 *
 */
 
-(function ($) {
-$.ig = $.ig || {};
-
-if (!$.ig.Toolbar) {
-    $.ig.Toolbar = {};
-
-    $.extend($.ig.Toolbar, {
-
-		locale: {
-			collapseButtonTitle: 'Reduzieren',
-			expandButtonTitle: 'Erweitern'
-		}
-
-	});
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
 }
-})(jQuery);
+(function () {
+	$ = $ || {};
+    $.ig = $.ig || {};
+	$.ig.Toolbar = $.ig.Toolbar || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.de = $.ig.locale.de || {};
+
+	$.ig.locale.de.Toolbar = {
+			collapseButtonTitle: 'Reduzieren {0}',
+			expandButtonTitle: 'Erweitern {0}'
+	}
+	
+	$.ig.Toolbar.locale = $.ig.Toolbar.locale || $.ig.locale.de.Toolbar;
+	return $.ig.locale.de.Toolbar;
+}));// REMOVE_FROM_COMBINED_FILES

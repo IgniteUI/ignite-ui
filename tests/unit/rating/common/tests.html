@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.rating.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
@@ -51,7 +52,7 @@
 		});
 	});
 	// START TESTING
-	module('igRatingCommon');
+	module('igRating Common');
 	var testId = '[ID1] rating common';
 	test(testId, function () {
 		var i, elem, good, main, val0, val, rating = $('#rating1');
@@ -144,7 +145,7 @@
 		ok(good, 'destroyed rating has no child elements');
 		//QUnit.log(good, testId + ' destroyed rating has no child elements');
 	});
-	module('igRatingCommon');
+	module('igRating Common');
 	testId = '[ID2] rating common';
 	test(testId, function () {
 		var val, rating = $('#rating2');

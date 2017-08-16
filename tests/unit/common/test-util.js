@@ -106,17 +106,40 @@
 			}
 		},
 		/**
-		 * Triggers key interaction sequence on an element
-		 * @param key Key code to use for the events
+		 * Triggers key interaction sequence on an element. If the key can produce a char it will replace the current selection.
+		 * @param key Key/Char code to use for the events (TODO - update)
 		 * @param target jQuery object target
 		 * @param special Used for combinations to set true on the event - "altKey", "ctrlKey", "shiftKey"
 		 */
 		keyInteraction: function (key, target, special) {
-			if (!this.keyDownChar(key, target, special)) {
+			// could use an update in the future - https://www.w3.org/TR/DOM-Level-3-Events/#keypress-event-order
+			var char, startPos, endPos, newPos;
+			char = (key > 31) ? String.fromCharCode(key) : "";
+			if (special && char) {
+				char = special === "shiftKey" ? char.toUpperCase() : "";
+				key = char.charCodeAt(0);
+			}
+			if (this.keyDownChar(key, target, special)) {
 				return;
 			}
-			if (!this.keyPressChar(key, target, special)) {
+			if (this.keyPressChar(key, target, special)) {
 				return;
+			}
+			if (char && target[0].selectionEnd !== undefined) {
+				endPos = target[0].selectionEnd;
+				startPos = target[0].selectionStart;
+				target[0].value =
+					target[0].value.substring(0, startPos) +
+					char +
+					target[0].value.substring(endPos);
+				if (startPos !== endPos) {
+					// replaced selection, cursor goes to start + char
+					newPos = startPos + 1;
+				} else {
+					//typing move the cursor +1
+					newPos = endPos + 1;
+				}
+				target[0].selectionStart = target[0].selectionEnd = newPos;
 			}
 			this.keyUpChar(key, target, special);
 		},
@@ -127,7 +150,8 @@
 			if (special) {
 				evt[special] = true;
 			}
-			return target.trigger(evt);
+			target.trigger(evt);
+			return evt.isDefaultPrevented();
 		},
 		keyPressChar: function (key, target, special) {
 			var evt = $.Event("keypress");
@@ -136,7 +160,8 @@
 			if (special) {
 				evt[special] = true;
 			}
-			return target.trigger(evt);
+			target.trigger(evt);
+			return evt.isDefaultPrevented();
 		},
 		keyUpChar: function (key, target, special) {
 			var evt = $.Event("keyup");

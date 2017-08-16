@@ -7,12 +7,21 @@
 *
 */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.Validator = $.ig.Validator || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
 
-    if (!$.ig.Validator) {
-	    $.ig.Validator = {
-		    locale: {
+	$.ig.locale.ja.Validator = {
 		        defaultMessage: "このフィールドは無効です",
 		        selectMessage: "値を選択してください",
 		        rangeSelectMessage: "{0} 以上で {1} 以下の項目を選択してください。",
@@ -35,7 +44,8 @@
 				creditCardMessage: '有効なクレジット カード番号を入力してください。',
 			    equalToMessage: '2 つの値は一致しません',
 			    optionalString: '(オプション)'
-		    }
-	    };
-    }
-})(jQuery);
+	}
+		
+	$.ig.Validator.locale = $.ig.Validator.locale || $.ig.locale.ja.Validator;
+	return $.ig.locale.ja.Validator;
+}));// REMOVE_FROM_COMBINED_FILES

@@ -7,15 +7,21 @@
 *
 */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.VideoPlayer = $.ig.VideoPlayer || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.fr = $.ig.locale.fr || {};
 
-    if (!$.ig.VideoPlayer) {
-	    $.ig.VideoPlayer = {};
-
-	    $.extend($.ig.VideoPlayer, {
-
-		    locale: {
+	$.ig.locale.fr.VideoPlayer = {
 			    liveStream: "Vidéo en direct",
 			    live: "En direct",
 			    paused: "Pause",
@@ -50,9 +56,9 @@
 			    relatedVideos: 'VIDÉOS RELIÉES',
 			    replayButton: 'Rejouer',
 			    replayTooltip: 'Cliquer pour rejouer la dernière vidéo.',
-				noCommercials: 'Browser controls does not support commercials'
-		    }
-	    });
+				noCommercials: 'Les commandes du navigateur ne prennent pas en charge les publicités'
+	}
 
-    }
-})(jQuery);
+	$.ig.VideoPlayer.locale = $.ig.VideoPlayer.locale || $.ig.locale.fr.VideoPlayer;
+	return $.ig.locale.fr.VideoPlayer;
+}));// REMOVE_FROM_COMBINED_FILES

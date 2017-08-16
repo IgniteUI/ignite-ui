@@ -8,9 +8,10 @@
 * Depends on:
 * jquery-1.9.1.js
 * jquery.ui-1.9.0.js
+* jquery.ui.widget.js
 * infragistics.util.js
 * infragistics.util.jquery.js
-* modernizr.js
+* infragistics.ui.widget.js
 */
 
 /*global MSGesture*/
@@ -19,10 +20,7 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery"
+			"./infragistics.ui.widget"
 		], factory );
 	} else {
 
@@ -39,7 +37,7 @@
 									"msReleasePointerCapture" :
 									"releasePointerCapture";
 
-	$.widget("ui.igScroll", {
+	$.widget("ui.igScroll", $.ui.igWidget, {
 		options: {
 			/* type="bool" Sets or gets if the scrollbars should be always visible (on all environments). Otherwise it will be the default behavior. Note: this option is only for the custom scrollbars set through the scrollbarType option.
 			```
@@ -447,9 +445,9 @@
 		},
 		events: {
 			/* cancel="false" Event which is raised after the scroller has been rendered fully
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="event" Gets a reference to the igScroll.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollrendered", function (evt, args) {
@@ -466,14 +464,14 @@
 			rendered: null,
 			/* cancel="true" Event which is raised before scrolling or before each step when having inertia.
 				Return false in order to cancel action.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.smallIncrement to obtain if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
-				Use args.bigIncrement to obtain if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
-				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
-				Use args.stepX to obtain how much the content will be scrolled horizontally
-				Use args.stepY to obtain how much the content will be scrolled vertically
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.smallIncrement" argType="number" Gets if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
+				eventArgument="args.bigIncrement" argType="number" Gets if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
+				eventArgument="args.horizontal" argType="bool" Gets which axis is being used to scroll - horizontal(true) or vertical(false).
+				eventArgument="args.stepX" argType="number" Gets how much the content will be scrolled horizontally.
+				eventArgument="args.stepY" argType="number" Gets how much the content will be scrolled vertically.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollscrolling", function (evt, args) {
@@ -499,12 +497,12 @@
 			*/
 			scrolling: null,
 			/* cancel="false" Event which is raised after scrolling has stopped.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.smallIncrement to obtain if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
-				Use args.bigIncrement to obtain if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
-				Use args.horizontal to obtain which axis is being used to scroll - horizontal(true) or vertical(false).
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.smallIncrement" argType="number" Gets if the content is scrolled by the arrows. 0 - none used, -1 - Arrow Up/Left, 1 - Arrow Down/Right.
+				eventArgument="args.bigIncrement" argType="number" Gets if the content is scrolled by the scrollbar track areas. 0 - none used, -1 - Scrolled Up/Left, 1 - Scrolled Down/Right.
+				eventArgument="args.horizontal" argType="bool" Gets which axis is being used to scroll - horizontal(true) or vertical(false).
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollscrolled", function (evt, args) {
@@ -526,10 +524,10 @@
 			*/
 			scrolled: null,
 			/* cancel="false" Event which is raised when there is mouse click on the scrollbar's thumb drag.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.horizontal" argType="bool" Gets which axis is being used to scroll - horizontal(true) or vertical(false).
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollthumbdragstart", function (evt, args) {
@@ -547,13 +545,12 @@
 			*/
 			thumbDragStart: null,
 			/* cancel="true" Event which is raised when the thumb drag is being moved.
-				Return false in order to cancel action.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
-				Use args.stepX to obtain how much the content will be scrolled horizontally
-				Use args.stepY to obtain how much the content will be scrolled vertically
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.horizontal" argType="bool" Gets which scrollbar thumb is being used - horizontal(true) or vertical(false).
+				eventArgument="args.stepX" argType="number" Gets how much the content will be scrolled horizontally.
+				eventArgument="args.stepY" argType="number" Gets how much the content will be scrolled vertically.
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollthumbdragmove", function (evt, args) {
@@ -575,10 +572,10 @@
 			*/
 			thumbDragMove: null,
 			/* cancel="false" Event which is raised on mouse up from the scrollbar's thumb drag.
-				Function takes arguments evt and args.
-				Use evt.originalEvent (with validation for not null of evt) to obtain reference to event of browser.
-				Use args.owner to obtain reference to igScroll.
-				Use args.horizontal to obtain which scrollbar thumb is being used - horizontal(true) or vertical(false).
+				eventArgument="evt" argType="event" jQuery event object.
+				eventArgument="evt.originalEvent" argType="event" Gets a reference to event of the browser (with validation for not null of evt).
+				eventArgument="args.owner" argType="object" Gets a reference to the igScroll.
+				eventArgument="args.horizontal" argType="bool" Gets which scrollbar thumb is being used - horizontal(true) or vertical(false).
 			```
 				//Delegate
 				$(document).delegate(".selector", "igscrollthumbdragend", function (evt, args) {
@@ -832,7 +829,6 @@
 
 				mouseenter: $.proxy(this._onMouseEnterContainer, this),
 				mouseleave: $.proxy(this._onMouseLeaveContainer, this),
-				dragstart: $.proxy(this._onDragStartElem, this),
 
 				keydown: $.proxy(this._onKeyDown, this)
 			};
@@ -847,7 +843,7 @@
 			this._updateScrollBarsVisibility();
 			this._hideScrollBars(false);
 			if (this.options.alwaysVisible) {
-				if ($.ig.util.isTouch) {
+				if ($.ig.util.isTouchDevice()) {
 					this._showScrollBars(false, true, false);
 				} else {
 					this._showScrollBars(false, false, false);
@@ -896,7 +892,7 @@
 
 			if (key === "alwaysVisible") {
 				if (value === true) {
-					if ($.ig.util.isTouch) {
+					if ($.ig.util.isTouchDevice()) {
 						this._showScrollBars(false, true, false);
 					} else {
 						this._showScrollBars(false, false, false);
@@ -985,7 +981,7 @@
 		},
 
 		_getContentPositionX: function () {
-			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posX = 0;
 				if (this._contentX) {
 					posX = -this._getTransform3dValueX(this._contentX);
@@ -1000,7 +996,7 @@
 		},
 
 		_getContentPositionY: function () {
-			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posY = -this._getTransform3dValueY(this._content);
 
 				return posY;
@@ -1076,7 +1072,7 @@
 			/* Cancels any ongoing inertia otherwise the method call might be ignored */
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
-			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posY = this._getContentPositionY();
 				this._scrollTouchToXY(val, posY, triggerEvents);
 			} else {
@@ -1109,7 +1105,7 @@
 			/* Cancels any ongoing inertia otherwise the method call might be ignored */
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
-			if ($.ig.util.isTouch && !this._bMixedEnvironment) {
+			if ($.ig.util.isTouchDevice() && !this._bMixedEnvironment) {
 				var posX = this._getContentPositionX();
 				this._scrollTouchToXY(posX, val, triggerEvents);
 			} else {
@@ -1197,7 +1193,7 @@
 		_linkElementsH: function (inElements) {
 			this._linkedHElems = [];
 			if (inElements) {
-				for (var index in inElements) {
+				for (var index = 0; index < inElements.length; index++) {
 					var elemObject = $(inElements[ index ]);
 
 					if (elemObject.length) {
@@ -1209,7 +1205,7 @@
 						}
 						this._linkedHElems.push(elemObject);
 					} else {
-						throw new Error($.ig.Scroll.locale.errorNoElementLink);
+						throw new Error(this._getLocaleValue("errorNoElementLink"));
 					}
 				}
 			}
@@ -1220,7 +1216,7 @@
 		_linkElementsV: function (inElements) {
 			this._linkedVElems = [];
 			if (inElements) {
-				for (var index in inElements) {
+				for (var index = 0; index < inElements.length; index++) {
 					var elemObject = $(inElements[ index ]);
 
 					if (elemObject.length) {
@@ -1232,7 +1228,7 @@
 						}
 						this._linkedVElems.push(elemObject);
 					} else {
-						throw new Error($.ig.Scroll.locale.errorNoElementLink);
+						throw new Error(this._getLocaleValue("errorNoElementLink"));
 					}
 				}
 			}
@@ -1272,7 +1268,7 @@
 					}
 					this._linkedHBar = elemObject;
 				} else {
-					throw new Error($.ig.Scroll.locale.errorNoScrollbarLink);
+					throw new Error(this._getLocaleValue("errorNoScrollbarLink"));
 				}
 			}
 
@@ -1313,7 +1309,7 @@
 					}
 					this._linkedVBar = elemObject;
 				} else {
-					throw new Error($.ig.Scroll.locale.errorNoScrollbarLink);
+					throw new Error(this._getLocaleValue("errorNoScrollbarLink"));
 				}
 			}
 
@@ -1408,15 +1404,16 @@
 				this._container.scrollLeft(destX); //No need to check if destY < 0 or > of the content heigh. ScrollLeft handles that.
 				this._syncElemsX(this._container[ 0 ], false);
 				/*self._syncHBar(this._container[ 0 ], false);*/
-
-				var curPosY;
-				if (this.options.scrollOnlyVBar) {
-					curPosY = this._getScrollbarVPosition();
-				} else {
-					curPosY = this._getContentPositionY();
-				}
-				this._updateScrollBarsPos(destX, curPosY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosY;
+			if (this.options.scrollOnlyVBar) {
+				curPosY = this._getScrollbarVPosition();
+			} else {
+				curPosY = this._getContentPositionY();
+			}
+			this._updateScrollBarsPos(destX, curPosY, true);
 
 			return destX - curPosX;
 		},
@@ -1463,15 +1460,16 @@
 				this._container.scrollTop(destY); //No need to check if destY < 0 or > of the content heigh. ScrollTop handles that.
 				this._syncElemsY(this._container[ 0 ], false);
 				/*this._syncVBar(this._container[ 0 ], false);*/
-
-				var curPosX;
-				if (this.options.scrollOnlyHBar) {
-					curPosX = this._getScrollbarHPosition();
-				} else {
-					curPosX = this._getContentPositionX();
-				}
-				this._updateScrollBarsPos(curPosX, destY, true);
 			}
+
+			/* Update custom scrollbars position */
+			var curPosX;
+			if (this.options.scrollOnlyHBar) {
+				curPosX = this._getScrollbarHPosition();
+			} else {
+				curPosX = this._getContentPositionX();
+			}
+			this._updateScrollBarsPos(curPosX, destY, true);
 
 			return destY - curPosY;
 		},
@@ -1508,7 +1506,7 @@
 					return;
 				}
 
-				self._nextY += ((-3 * x * x + 3) * (deltaY > 0 ? 1 : -1) * 2) * smoothingStep;
+				self._nextY += ((-3 * x * x + 3) * deltaY * 2) * smoothingStep;
 				self._scrollToY(self._nextY, true);
 
 				//continue the intertia
@@ -1802,7 +1800,7 @@
 				}
 
 				if (this._linkedHElems.length > 0) {
-					for (index in this._linkedHElems) {
+					for (index = 0; index < this._linkedHElems.length; index++) {
 						//get the current X position
 						var matrixElem = this._linkedHElems[ index ].css("-webkit-transform");
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
@@ -1832,7 +1830,7 @@
 				destX = baseElem.scrollLeft;
 
 				if (this._linkedHElems.length > 0) {
-					for (index in this._linkedHElems) {
+					for (index = 0; index < this._linkedHElems.length; index++) {
 						if (this._linkedHElems[ index ].length) {
 							if (this._linkedHElems[ index ].data("igScroll") !== undefined &&
 									this._linkedHElems[ index ].data("igScroll").options.modifyDOM) {
@@ -1870,7 +1868,7 @@
 				}
 
 				if (this._linkedVElems.length > 0) {
-					for (index in this._linkedVElems) {
+					for (index = 0; index < this._linkedVElems.length; index++) {
 						//get the current X position
 						var matrixElem = this._linkedVElems[ index ].css("-webkit-transform");
 						var valuesElem = matrixElem ? matrixElem.match(/-?[\d\.]+/g) : undefined;
@@ -1900,7 +1898,7 @@
 				destY = baseElem.scrollTop;
 
 				if (this._linkedVElems.length > 0) {
-					for (index in this._linkedVElems) {
+					for (index = 0; index < this._linkedVElems.length; index++) {
 						if (this._linkedVElems[ index ].length) {
 							if (this._linkedVElems[ index ].data("igScroll") !== undefined &&
 									this._linkedVElems[ index ].data("igScroll").options.modifyDOM) {
@@ -2103,7 +2101,11 @@
 				return true;
 			}
 
-			var evt = event.originalEvent;
+			var evt = event.originalEvent,
+				scrollDeltaY = 0,
+				scrollStep = this.options.wheelStep,
+				scrolledY, scrolledYDir;
+
 			cancelAnimationFrame(this._touchInertiaAnimID);
 
 			if (!this._bMixedEnvironment) {
@@ -2113,9 +2115,18 @@
 				this._switchFromTouchToMixed();
 			}
 
+			if (evt.wheelDeltaY) {
+				/* Option supported on Chrome, Safari, Opera.
+				/* 120 is default for mousewheel on these browsers. Other values are for trackpads */
+				scrollDeltaY = -evt.wheelDeltaY / 120;
+			} else if (evt.deltaY) {
+				/* For other browsers that don't provide wheelDelta, use the deltaY to determine direction and pass default values. */
+				scrollDeltaY = evt.deltaY > 0 ? 1 : -1;
+			}
+
 			if (this.options.smoothing) {
 				//Scroll with small inertia
-				this._smoothWheelScrollY(evt.deltaY);
+				this._smoothWheelScrollY(scrollDeltaY);
 			} else {
 				//Normal scroll
 				if (this.options.scrollOnlyVBar) {
@@ -2124,14 +2135,7 @@
 					this._startY = this._getContentPositionY();
 				}
 
-				var scrollStep = this.options.wheelStep,
-					scrollDirection = 0;
-				if (evt.deltaY && evt.deltaY > 0) {
-					scrollDirection = 1;
-				} else if (evt.deltaY) {
-					scrollDirection = -1;
-				}
-				var scrolledY = this._scrollToY(this._startY + scrollDirection * scrollStep, true);
+				scrolledY = this._scrollToY(this._startY + scrollDeltaY * scrollStep, true);
 
 				if (!this._cancelScrolling) {
 					//Trigger scrolled event
@@ -2143,7 +2147,10 @@
 					});
 				}
 
-				return !scrolledY;
+				/* Check if the browser scroll in the oposite direction. Happens in IE when the content's heigh is for ex. 140.3 and not a round number */
+				/* When the content scrolls to the bottom on IE it might start to scroll very small ammoung up and down while scrolling only down with the mouse wheel*/
+				scrolledYDir = scrolledY > 0 ? 1 : -1;
+				return !scrolledY || (Math.abs(scrollDeltaY) === 1 && scrolledYDir !== scrollDeltaY);
 			}
 
 			return false;
@@ -2221,7 +2228,7 @@
 		},
 
 		_onTouchStartContainer: function (event) {
-			if (event.isDefaultPrevented()) {
+			if (event.isDefaultPrevented() || typeof MSGesture === "function") {
 				return;
 			}
 
@@ -2263,7 +2270,8 @@
 		},
 
 		_onTouchMoveContainer: function (event) {
-			if (event.isDefaultPrevented() || this._igScollTouchPrevented) {
+			if (event.isDefaultPrevented() || this._igScollTouchPrevented ||
+					typeof MSGesture === "function") {
 				this._igScollTouchPrevented = false;
 				return;
 			}
@@ -2350,13 +2358,13 @@
 			}
 
 			//On Safari preventing the touchmove would prevent default page scroll behaviour even if there is the element doesn't have overflow
-			if (!$.ig.util.isSafari || ($.ig.util.isSafari && !this._igScollTouchPrevented)) {
+			if (!this._igScollTouchPrevented) {
 				event.preventDefault();
 			}
 		},
 
 		_onTouchEndContainer: function (event) {
-			if (event.isDefaultPrevented()) {
+			if (event.isDefaultPrevented() || typeof MSGesture === "function") {
 				return;
 			}
 			var speedX = 0;
@@ -2427,10 +2435,10 @@
 		},
 
 		_onElementMutation: function (mutations) {
-			for (var key in mutations) {
+			for (var index = 0; index < mutations.length; index++) {
 				/*	Make sure only the style is addressed and that any of the width/height is changed. */
 				/*	The elemWidth/elemHeight are not updated until refresh is called, that is why we can use them as old values. */
-				if (mutations[ key ].attributeName === "style" &&
+				if (mutations[ index ].attributeName === "style" &&
 					(this._elemWidth !== this.element.width() ||
 						this._elemHeight !== this.element.height())) {
 					this._onDimensionsChange();
@@ -2475,7 +2483,7 @@
 					this._removeHorizontalScrollbar();
 				}
 
-				if ($.ig.util.isTouch) {
+				if ($.ig.util.isTouchDevice()) {
 					this._toSimpleScrollbar();
 				}
 			}
@@ -3817,7 +3825,7 @@
 		},
 
 		_onDragStartElem: function (event) {
-			/* Prevent dragging of that element due to causing some unwanted behaviour */
+			/* Prevent dragging of that element due to causing some unwanted behaviour when using the custom scrollbars and you drag on them */
 			event.preventDefault();
 		},
 

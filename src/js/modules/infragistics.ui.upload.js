@@ -11,6 +11,7 @@
  *	jquery.ui.widget.js
  *	infragistics.util.js
  *  infragistics.util.jquery.js
+ *  infragistics.ui.widget.js
  *  infragistics.ui.shared.js
  */
 
@@ -19,12 +20,8 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
-			"./infragistics.ui.shared",
-			"./infragistics.ui.upload-en"
+			"./infragistics.ui.widget",
+			"./infragistics.ui.shared"
 		], factory );
 	} else {
 
@@ -326,7 +323,7 @@
 			*/
 			this.element.unbind(this._internalEvents);
 			this.element.unbind(this.mouseMoveEvent);
-			$.Widget.prototype.destroy.apply(this, arguments);
+			this._superApply(arguments);
 			/* M.H. 10 May 2011 - fix bug 75039: remove unnecessary comment and unnecessary line of code */
 			$.ui.igButton.prototype.destroy.apply(this);
 
@@ -341,7 +338,7 @@
 	});
 	$.extend($.ui.igBrowseButton, { version: "<build_number>" });
 
-	$.widget("ui.igUpload", {
+	$.widget("ui.igUpload", $.ui.igWidget, {
 		_const: {
 			fileNameLimit: 100,
 			AjaxQueueName: "uploadrequestsqueue",
@@ -648,344 +645,6 @@
 			```
 			*/
 			autostartupload: false,
-
-			/* type="string" Get or set label for the first shown browse button. When file is selected for the first time this button is hidden.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelUploadButton : "Choose File"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelUploadButton");
-
-				//Set
-				$(".selector").igUpload("option", "labelUploadButton", "Choose File");
-			```
-			*/
-			labelUploadButton: $.ig.Upload.locale.labelUploadButton,
-			/* type="string" Get or set label for browse button in main container.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelAddButton : "Choose File"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelAddButton");
-
-				//Set
-				$(".selector").igUpload("option", "labelAddButton", "Choose File");
-			```
-			*/
-			labelAddButton: $.ig.Upload.locale.labelAddButton,
-			/* type="string" Get or set label for summary Clear all button. It will be shown only in multiple upload mode.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelClearAllButton : "Clear Uploads"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelClearAllButton");
-
-				//Set
-				$(".selector").igUpload("option", "labelClearAllButton", "Clear Uploads");
-			```
-			*/
-			labelClearAllButton: $.ig.Upload.locale.labelClearAllButton,
-			/* type="string" Get or set template for showing summary template. {0} is count of uploaded files. {1} is total count of file to be uploaded.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelSummaryTemplate : "{0} uploaded from {1}"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelSummaryTemplate");
-
-				//Set
-				$(".selector").igUpload("option", "labelSummaryTemplate", "{0} uploaded from {1}");
-			```
-			*/
-			labelSummaryTemplate: $.ig.Upload.locale.labelSummaryTemplate,
-			/** M.H. 13 May 2011 - fix bug 75042 */
-			/* type="string" Get or set template for showing uploading information in summary progress bar. It will be shown only in multiple upload mode. {0} uploaded filesize. {1} - total file size.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelSummaryProgressBarTemplate : "{0} uploaded from {1}, which is {2}%"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelSummaryProgressBarTemplate");
-
-				//Set
-				$(".selector").igUpload("option", "labelSummaryProgressBarTemplate", "{0} uploaded from {1}, which is {2}%");
-			```
-			*/
-			labelSummaryProgressBarTemplate: $.ig.Upload.locale.labelSummaryProgressBarTemplate,
-			/* type="string" Get or set label for show/hide details button when main container is hidden.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelShowDetails : "More Details"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelShowDetails");
-
-				//Set
-				$(".selector").igUpload("option", "labelShowDetails", "More Details");
-			```
-			*/
-			labelShowDetails: $.ig.Upload.locale.labelShowDetails,
-			/* type="string" Get or set label for show/hide details button when main container is shown.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelHideDetails : "Hide Upload Details"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelHideDetails");
-
-				//Set
-				$(".selector").igUpload("option", "labelHideDetails", "Hide Upload Details");
-			```
-			*/
-			labelHideDetails: $.ig.Upload.locale.labelHideDetails,
-			/* type="string" Get or set label for button cancelling all files. Shown only in multiple upload mode.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelSummaryProgressButtonCancel : "Cancel All Uploads"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelSummaryProgressButtonCancel");
-
-				//Set
-				$(".selector").igUpload("option", "labelSummaryProgressButtonCancel", "Cancel All Uploads");
-			```
-			*/
-			labelSummaryProgressButtonCancel: $.ig.Upload.locale.labelSummaryProgressButtonCancel,
-			/* type="string" Get or set label for start upload batch files. Shown only in multiple upload mode and autostartupload is false.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelSummaryProgressButtonContinue : "Continue Uploading"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelSummaryProgressButtonContinue");
-
-				//Set
-				$(".selector").igUpload("option", "labelSummaryProgressButtonContinue", "Continue Uploading");
-			```
-			*/
-			labelSummaryProgressButtonContinue: $.ig.Upload.locale.labelSummaryProgressButtonContinue,
-			/* type="string" Get or set label when upload is finished. Shown only in multiple upload mode.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelSummaryProgressButtonDone : "File Upload Complete!"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelSummaryProgressButtonDone");
-
-				//Set
-				$(".selector").igUpload("option", "labelSummaryProgressButtonDone", "File Upload Complete!");
-			```
-			*/
-			labelSummaryProgressButtonDone: $.ig.Upload.locale.labelSummaryProgressButtonDone,
-			/* type="string" Get or set filename when it could not be shown the whole file name and should be shorten.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					labelProgressBarFileNameContinue : "Continue with upload"
-				});
-
-				//Get
-				var label = $(".selector").igUpload("option", "labelProgressBarFileNameContinue");
-
-				//Set
-				$(".selector").igUpload("option", "labelProgressBarFileNameContinue", "Continue with upload");
-			```
-			*/
-			labelProgressBarFileNameContinue:  $.ig.Upload.locale.labelProgressBarFileNameContinue,
-			/** Error Messages */
-			/** M.H. 11 May 2011 - fix bug 74621: remove unused property errorMessageMaxFileSizeExceeded */
-			/* type="string" Get or set message shown when max file size of the uploaded file exceeds the limit.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageMaxFileSizeExceeded : "File must be smaller than 50 mb."
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageMaxFileSizeExceeded");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageMaxFileSizeExceeded", "File must be smaller than 50 mb.");
-			```
-			*/
-			errorMessageMaxFileSizeExceeded: $.ig.Upload.locale.errorMessageFileSizeExceeded,
-			/* type="string" Get or set error message when ajax call to get file status throws error.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageGetFileStatus : "Unable to determine upload progress"
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageGetFileStatus");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageGetFileStatus", "Unable to determine upload progress");
-			```
-			*/
-			errorMessageGetFileStatus: $.ig.Upload.locale.errorMessageGetFileStatus,
-			/* type="string" Get or set error message when ajax call to send cancel upload command.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageCancelUpload : "Upload Cancelled"
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageCancelUpload");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageCancelUpload", "Upload Cancelled");
-			```
-			*/
-			errorMessageCancelUpload: $.ig.Upload.locale.errorMessageCancelUpload,
-			/* type="string" Get or set error message when file is not found.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageNoSuchFile : "File not found"
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageNoSuchFile");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageNoSuchFile", "File not found");
-			```
-			*/
-			errorMessageNoSuchFile: $.ig.Upload.locale.errorMessageNoSuchFile,
-			/* type="string" Get or set error message different from the other messages.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageOther : "An error has occurred"
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageOther");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageOther", "An error has occurred");
-			```
-			*/
-			errorMessageOther: $.ig.Upload.locale.errorMessageOther,
-			/* type="string" Get or set error message when file extension validation failed.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageValidatingFileExtension : "File extension not supported"
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageValidatingFileExtension");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageValidatingFileExtension", "File extension not supported");
-			```
-			*/
-			errorMessageValidatingFileExtension: $.ig.Upload.locale.errorMessageValidatingFileExtension,
-			/* type="string" Get or set error message when AJAX Request to get file size throws error.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageAJAXRequestFileSize : "File must be smaller than 50 mb."
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageAJAXRequestFileSize");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageAJAXRequestFileSize", "File must be smaller than 50 mb.");
-			```
-			*/
-			errorMessageAJAXRequestFileSize: $.ig.Upload.locale.errorMessageAJAXRequestFileSize,
-			/* type="string" Get or set error message when trying to remove non existing file.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageTryToRemoveNonExistingFile : "File does not exist"
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageTryToRemoveNonExistingFile");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageTryToRemoveNonExistingFile", "File does not exist");
-			```
-			*/
-			errorMessageTryToRemoveNonExistingFile:
-				$.ig.Upload.locale.errorMessageTryToRemoveNonExistingFile,
-			/* type="string" Get or set error message when trying to start non existing file.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageTryToStartNonExistingFile : "File does not exist"
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageTryToStartNonExistingFile");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageTryToStartNonExistingFile", "File does not exist");
-			```
-			*/
-			errorMessageTryToStartNonExistingFile: $.ig.Upload.locale.errorMessageTryToStartNonExistingFile,
-			/* type="string" Get or set error message when maximum allowed files exceeded.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageMaxUploadedFiles : "File upload limit reached"
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageMaxUploadedFiles");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageMaxUploadedFiles", "File upload limit reached");
-			```
-			*/
-			errorMessageMaxUploadedFiles: $.ig.Upload.locale.errorMessageMaxUploadedFiles,
-			/* type="string" Get or set error message when maximum simultaneous files is less or equal to 0.
-			```
-				//Initialize
-				$(".selector").igUpload({
-					errorMessageMaxSimultaneousFiles : "Can only upload 2 files at a time"
-				});
-
-				//Get
-				var message = $(".selector").igUpload("option", "errorMessageMaxSimultaneousFiles");
-
-				//Set
-				$(".selector").igUpload("option", "errorMessageMaxSimultaneousFiles", "Can only upload 2 files at a time");
-			```
-			*/
-			errorMessageMaxSimultaneousFiles: $.ig.Upload.locale.errorMessageMaxSimultaneousFiles,
-			/* type="string" Get or set error message when trying to drop more than 1 file and mode is single. */
-			errorMessageDropMultipleFilesWhenSingleModel:
-				$.ig.Upload.locale.errorMessageDropMultipleFilesWhenSingleModel,
 			/* type="string" Get or set URL for uploading.
 			```
 				//Initialize
@@ -1219,8 +878,8 @@
 		events: {
 			/* cancel="true" Defines the name of the file upload selecting event. Fired when browse button is pressed.
 			Return false in order to cancel selecting file.
-			Function takes arguments evt and ui.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileselecting", function (evt, ui) {
@@ -1240,10 +899,10 @@
 			fileSelecting: "fileSelecting",
 			/* Defines the name of the file upload selected event. Fired when file is selected from browse dialog.
 			Return false in order to cancel uploading file.
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.filePath to get the name of the uploaded file
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.filePath" argType="string" Gets the name of the uploaded file.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileselected", function (evt, ui) {
@@ -1266,14 +925,14 @@
 			fileSelected: "fileSelected",
 			/* cancel="true" Defines the name of the file uploading event. Fired every time when fileuploader get status for the upload.
 			Return false in order to cancel uploading file.
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.filePath to get the name of the uploaded file
-			Use ui.totalSize to get the file size of the uploaded file
-			Use ui.uploadedBytes to get uploaded bytes
-			Use ui.fileStatus to get current file status
-			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.filePath" argType="string" Gets the name of the uploaded file.
+			eventArgument="ui.totalSize" argType="number" Gets the file size of the uploaded file.
+			eventArgument="ui.uploadedBytes" argType="number" Gets the uploaded bytes.
+			eventArgument="ui.fileStatus" argType="number" Gets the current file status.
+			eventArgument="ui.fileInfo" argType="object" Gets reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileuploading", function (evt, ui) {
@@ -1307,12 +966,12 @@
 			*/
 			fileUploading: "fileUploading",
 			/* Defines the name of the uploaded event. Fired when the file is uploaded
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.filePath to get the name of the uploaded file
-			Use ui.totalSize to get the file size of the uploaded file
-			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.filePath" argType="string" Gets the name of the uploaded file.
+			eventArgument="ui.totalSize" argType="number" Gets the file size of the uploaded file.
+			eventArgument="ui.fileInfo" argType="object" Gets reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from server side), etc.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileuploaded", function (evt, ui) {
@@ -1340,13 +999,13 @@
 			*/
 			fileUploaded: "fileUploaded",
 			/* Defines the name of the file upload cancel event. Fired when the server responses that the file is canceled.
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.filePath to get the name of the uploaded file
-			Use ui.totalSize to get the file size of the uploaded file
-			Use ui.uploadedBytes to get uploaded bytes
-			Use ui.fileStatus to get current file status
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.filePath" argType="string" Gets the name of the uploaded file.
+			eventArgument="ui.totalSize" argType="number" Gets the file size of the uploaded file.
+			eventArgument="ui.uploadedBytes" argType="number" Gets the uploaded bytes.
+			eventArgument="ui.fileStatus" argType="number" Gets the current file status.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileuploadaborted", function (evt, ui) {
@@ -1377,8 +1036,8 @@
 			*/
 			fileUploadAborted: "fileUploadAborted",
 			/* Defines the name of the cancel all button event click. Fired when cancel all button in summary is clicked. Fired only in multiple upload mode.
-			Function takes arguments evt and ui.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadcancelallclicked", function (evt, ui) {
@@ -1397,13 +1056,13 @@
 			*/
 			cancelAllClicked: "cancelAllClicked",
 			/* Defines the name of the file upload error event. Fired when error is occurred.
-			Function takes arguments evt and ui.
-			Use ui.errorCode to get current errorCode
-			Use ui.fileId to get identifier of the file for which the event is fired(after that it can be used API function getFileInfo). NOTE: It is possible to be null in some cases: try to drop multiple files when mode is single , check maximum allowed uploading files fails or check for count of maximum allowed simultaneous files upload fails.
-			Use ui.errorMessage to get detailed error description
-			Use ui.errorType to get error type - it could be clientside or serverside
-			Use ui.serverMessage to get specific server message returned by server - if errorType is serverside
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.errorCode" argType="number" Gets the current errorCode.
+			eventArgument="ui.fileId" argType="number" Gets the identifier of the file for which the event is fired(after that it can be used API function getFileInfo). NOTE: It is possible to be null in some cases: try to drop multiple files when mode is single , check maximum allowed uploading files fails or check for count of maximum allowed simultaneous files upload fails.
+			eventArgument="ui.errorMessage" argType="string" Gets the detailed error description.
+			eventArgument="ui.errorType" argType="string" Gets the error type - it could be clientside or serverside.
+			eventArgument="ui.serverMessage" argType="string" Gets the specific server message returned by server - if errorType is serverside.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadonerror", function (evt, ui) {
@@ -1431,10 +1090,10 @@
 			*/
 			onError: "onError",
 			/* cancel="true" It is fired when validating file extensions
-			Function takes arguments evt and ui.
-			Use ui.fileName to get the full file name
-			Use ui.fileExtension to get file extension
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileName" argType="string" Gets the full file name.
+			eventArgument="ui.fileExtension" argType="string" Gets the file extension.
+			eventArgument="ui.owner" argType="object" Gets the the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadfileextensionsvalidating", function (evt, ui) {
@@ -1456,11 +1115,11 @@
 			*/
 			fileExtensionsValidating: "fileExtensionsValidating",
 			/* It is fired when event onload(of XmlHttpRequest) is fired. This event will be fired only if the browser supports HTML5 file API
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.xhr to get reference to the original XMLHttpRequest object
-			Use ui.fileInfo to get reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from the server-side), etc.
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.xhr" argType="object" Gets reference to the original XMLHttpRequest object.
+			eventArgument="ui.fileInfo" argType="object" Gets reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from the server-side), etc.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadoonxhrload", function (evt, ui) {
@@ -1488,12 +1147,12 @@
 			*/
 			onXHRLoad: "onXHRLoad",
 			/* It is fired before submitting to the server the uploading file(and its additional data if any). It could be used to append additional data fields to the FormData object(if the browser supports HTML5 file API - like newest Chrome, Firefox, IE11+). If the browser does not support HTML5 file API(IE10 and older) it could be added these data fields(as hidden input fields) to the form. Use the public API function addDataFields.
-			Function takes arguments evt and ui.
-			Use ui.fileId to get unique identifier of the file
-			Use ui.fileInfo to get reference to the fileInfo object - containing information for the fileName, fileSize, serverMessage, etc.
-			Use ui.xhr to get reference to the original XMLHttpRequest object(if the browser supports HTML 5 file API - if not it is undefined)
-			Use ui.formData to get reference to FormData object(if the browser supports HTML5 file API) OR reference to jQuery representation of <form>
-			Use ui.owner in order to access the igUpload widget object.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.fileId" argType="number" Gets the unique identifier of the file.
+			eventArgument="ui.fileInfo" argType="object" Gets reference to the fileInfo object - containing information for  fileName, fileSize, serverMessage(if returned from the server-side), etc.
+			eventArgument="ui.xhr" argType="object" Gets reference to the original XMLHttpRequest object(if the browser supports HTML 5 file API - if not it is undefined).
+			eventArgument="ui.formData" argType="object" Gets reference to FormData object(if the browser supports HTML5 file API) OR reference to jQuery representation of <form>.
+			eventArgument="ui.owner" argType="object" Gets the igUpload widget object.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "iguploadonformdatasubmit", function (evt, ui) {
@@ -1737,12 +1396,12 @@
 						.addClass(css.startupBrowseButtonClasses);
 			button.igBrowseButton({
 				multipleFiles: isMultipleFiles,
-				labelText: o.labelUploadButton,
+				labelText: this._getLocaleValue("labelUploadButton"),
 				/* M.H. 13 Feb 2014 Fix for bug #164347: Move input type="file" from document body to the upload container */
 				container: this.container(),
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
 				/* Fix bug #76995 M.H. 25 May 2011 */
-				title: $.ig.Upload.locale.titleUploadFileButtonInit,
+				title: this._getLocaleValue("titleUploadFileButtonInit"),
 				fileselect: function (event, data) {
 					self._initBrowserFileSelect(event, data);
 				},
@@ -1782,7 +1441,7 @@
 			} else if (o.mode === "single" && data.files.length > 1) {
 				/* M.H. 7 May 2015 Fix for bug 193628: Drag and drop files doesn't work
 				do not allow to drag and drop more than 1 file when mode is single */
-				this._setError(o.errorMessageDropMultipleFilesWhenSingleModel,
+				this._setError(this._getLocaleValue("errorMessageDropMultipleFilesWhenSingleModel"),
 								null,
 								this._const.clientSideErrorCode.dropMultipleFilesWhenSingleMode,
 								"clientside");
@@ -1849,8 +1508,8 @@
 			if (clearAllButton.length > 0) {
 				clearAllButton.igButton({
 					/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-					title: $.ig.Upload.locale.titleClearAllButton,
-					labelText: o.labelClearAllButton,
+					title: this._getLocaleValue("titleClearAllButton"),
+					labelText: this._getLocaleValue("labelClearAllButton"),
 					disabled: true,
 					click: function (event) {
 						event.preventDefault();
@@ -1868,11 +1527,11 @@
 
 			$("#" + browseButtonId).igBrowseButton({
 				multipleFiles: (o.mode === "multiple" && o.multipleFiles),
-				labelText: this.options.labelAddButton,
+				labelText: this._getLocaleValue("labelAddButton"),
 				/* M.H. 13 Feb 2014 Fix for bug #164347: Move input type="file" from document body to the upload container */
 				container: this.container(),
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-				title: $.ig.Upload.locale.titleAddFileButton,
+				title: this._getLocaleValue("titleAddFileButton"),
 				/*icons: {primary: "ui-icon-plusthick"}*/
 				fileselect: function (event, data) {
 					self._onBrowseButtonFileSelected(event, false, data);
@@ -1909,7 +1568,7 @@
 				allowUpload = false;
 				/* M.H. 17 Dec 2012 Fix for bug #129469 */
 				if (callEvent === true) {
-					this._setError(o.errorMessageMaxUploadedFiles,
+					this._setError(this._getLocaleValue("errorMessageMaxUploadedFiles"),
 						null,
 						this._const.clientSideErrorCode.maxAllowedUploadingFiles, "clientside");
 				}
@@ -1931,7 +1590,7 @@
 				if (o.mode === "single") {
 					if (countFiles > 1) {
 						/* || allFilesData.uploadingIDs.length > 1) */
-						self._setError(o.errorMessageDropMultipleFilesWhenSingleModel,
+						self._setError(this._getLocaleValue("errorMessageDropMultipleFilesWhenSingleModel"),
 										null,
 										self._const.clientSideErrorCode.dropMultipleFilesWhenSingleMode,
 										"clientside");
@@ -2343,7 +2002,6 @@
 			/* check if exists such button
 			*  if not exists add to markup */
 			var self = this,
-				o = self.options,
 				startUploadButtonId = "_strtuplbtn",
 				startUploadButton = $("#" + this._id(startUploadButtonId)),
 				browseButton = $("#" + this._id("_bb"));
@@ -2353,9 +2011,9 @@
 				$('<button id="' + self._id(startUploadButtonId) + '"></button>')
 					.appendTo($("#" + self._id("_fu")))
 					.igButton({
-						labelText: o.labelSummaryProgressButtonContinue,
+						labelText: this._getLocaleValue("labelSummaryProgressButtonContinue"),
 						/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-						title: $.ig.Upload.locale.titleSingleUploadButtonContinue,
+						title: this._getLocaleValue("titleSingleUploadButtonContinue"),
 						click: function (e) {
 							e.preventDefault();
 							self.startUpload((self.fileInfoData.formNumber - 1), e);
@@ -2434,7 +2092,7 @@
 				onlyIcons: true,
 				icons: { primary: "ui-icon-closethick" },
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-				title: $.ig.Upload.locale.titleCancelUploadButton,
+				title: this._getLocaleValue("titleCancelUploadButton"),
 				click: function (event) {
 					/* M.H. 11 May 2011 - fix bug 75137 - prevent default */
 					event.preventDefault();
@@ -2491,7 +2149,6 @@
 		/* M.H. 10 May 2011 - fix bug 74272: add method to render FileName properly in file upload info */
 		_renderFileName: function (formNumber, fileSize, fn) {
 			var self = this,
-				o = self.options,
 				fileName = fn,
 				previousFileName = "",
 				originalFileSize,
@@ -2510,7 +2167,7 @@
 			}
 			/* autotrim - check for the size */
 			if (singleProgressBarWidth <= 0) {
-				fileName = o.labelProgressBarFileNameContinue;
+				fileName = this._getLocaleValue("labelProgressBarFileNameContinue");
 				progressBarFileName.text(fileName);
 			} else {
 				if (fileSize !== 0 && fileSize !== undefined && fileSize !== null) {
@@ -2529,12 +2186,12 @@
 					if (previousFileName === fileName && fileName.length - 1 > 1) {
 						fileName = fileName.substr(0, (fileName.length - 1) / 2);
 					}
-					progressBarFileName.text(fileName + o.labelProgressBarFileNameContinue);
+					progressBarFileName.text(fileName + this._getLocaleValue("labelProgressBarFileNameContinue"));
 				}
 				if (progressBarFileName.position().left +
 					progressBarFileName.width() +
 					progressBarFileSize.width() >= singleProgressBarWidth) {
-					fileName = o.labelProgressBarFileNameContinue;
+					fileName = this._getLocaleValue("labelProgressBarFileNameContinue");
 				}
 			}
 			singleProgressBar.data("fileName", fileName);
@@ -2571,7 +2228,8 @@
 				isHTML5 = false;
 
 			if (formNumber === null || fileInfo === null || fileInfo === undefined) {
-				self._setError(self.options.errorMessageTryToStartNonExistingFile.replace("{0}", formNumber),
+				self._setError(this._getLocaleValue("errorMessageTryToStartNonExistingFile")
+									.replace("{0}", formNumber),
 									formNumber,
 									self._const.clientSideErrorCode.startUpload, "clientside");
 				return;
@@ -2586,7 +2244,7 @@
 				o.maxFileSize > -1 &&
 				fileSize > o.maxFileSize) {
 				self._removeUploadSetError(formNumber,
-											o.errorMessageMaxFileSizeExceeded,
+											this._getLocaleValue("errorMessageMaxFileSizeExceeded"),
 											self._const.clientSideErrorCode.maxFileSizeExcceeded,
 											"clientside");
 				return false;
@@ -2657,7 +2315,7 @@
 			}
 			/* _spb feature */
 			if (singleFileData.innerStatus === self._const.status.Canceled && isError) {
-				self._setError(o.errorMessageOther.replace("{0}", error),
+				self._setError(this._getLocaleValue("errorMessageOther").replace("{0}", error),
 					formNumber,
 					error, "serverside", serverMessage);
 				return false;
@@ -2665,7 +2323,7 @@
 
 			if (isError === true && status !== self._const.status.NoSuchFile) {
 				self._removeUploadSetError(formNumber,
-											o.errorMessageOther.replace("{0}", error),
+											this._getLocaleValue("errorMessageOther").replace("{0}", error),
 											error,
 											"serverside",
 											serverMessage);
@@ -2729,7 +2387,7 @@
 					return true;
 				}
 				self._removeUploadSetError(formNumber,
-											o.errorMessageNoSuchFile,
+											this._getLocaleValue("errorMessageNoSuchFile"),
 											"nosuchfilekeyid",
 											"serverside",
 											serverMessage);
@@ -2756,7 +2414,7 @@
 					}
 				},
 				error: function () {
-					self._setError(o.errorMessageGetFileStatus,
+					self._setError(this._getLocaleValue("errorMessageGetFileStatus"),
 						formNumber,
 						self._const.clientSideErrorCode.ajaxErrorGetFileStatus, "clientside");
 					/* self._removeUploadSetError(formNumber, o.errorMessageGetFileStatus); */
@@ -2826,7 +2484,7 @@
 								self._onCancelUpload(formNumber);
 							},
 							error: function () {
-								self._setError(o.errorMessageCancelUpload, formNumber,
+								self._setError(this._getLocaleValue("errorMessageCancelUpload"), formNumber,
 									self._const.clientSideErrorCode.ajaxErrorCancelUpload, "clientside");
 								self._removeFileUpload(formNumber);
 							}
@@ -2891,7 +2549,8 @@
 				singleFileInfo = this.getFileInfo(formNumber);
 
 			if (singleFileInfo === null) {
-				self._setError(o.errorMessageTryToRemoveNonExistingFile.replace("{0}", formNumber), formNumber,
+				self._setError(this._getLocaleValue("errorMessageTryToRemoveNonExistingFile")
+					.replace("{0}", formNumber), formNumber,
 					self._const.clientSideErrorCode.removeFileUpload, "clientside");
 				return;
 			}
@@ -3036,11 +2695,58 @@
 				}
 			}
 		},
+		changeLocale: function () {
+			var $button = $("#" + this._id("_ibb")),
+				$sumarryProgressTmp = $("#upload_summplbl"),
+				self = this;
+				this._super();
+
+			if ($sumarryProgressTmp.length) {
+				$sumarryProgressTmp.text(this._getLocaleValue("labelSummaryTemplate")
+					.replace("{0}", this.fileInfoData.countUploadingFiles)
+					.replace("{1}", this.fileInfoData.countTotalFiles));
+			}
+			if ($button.length) {
+				$button.igBrowseButton("option", {
+					labelText: this._getLocaleValue("labelUploadButton"),
+					title: this._getLocaleValue("titleUploadFileButtonInit")
+				});
+			}
+			$button = $("#" + this._id("_bb"));
+			if ($button.length) {
+				$button.igBrowseButton("option", {
+					labelText: this._getLocaleValue("labelAddButton"),
+					title: this._getLocaleValue("titleAddFileButton")
+				});
+			}
+			$button = $("#" + this._id("_clrabtn"));
+			if ($button.length) {
+				$button.igButton("option", {
+					title: this._getLocaleValue("titleClearAllButton"),
+					labelText: this._getLocaleValue("labelClearAllButton")
+				});
+			}
+			$button = $("#" + this._id("_spbtncncl"));
+			if ($button.length) {
+				$button.igButton("option", {
+					title: this._getLocaleValue("titleShowDetailsButton"),
+					labelText: this._getLocaleValue("labelSummaryProgressButtonCancel")
+				});
+			}
+			$button = $("button[id$='cbtn']");
+			if ($button.length) {
+				$button.each(function() {
+					$(this).igButton("option", {
+						title: self._getLocaleValue("labelSummaryProgressButtonCancel")
+					});
+				});
+			}
+		},
 		_setOption: function (key, value) {
 			var originalMode = this.options.mode,
 				originalAutoStartUpload = this.options.autostartupload;
 
-			$.Widget.prototype._setOption.apply(this, arguments);
+			this._superApply(arguments);
 			switch (key) {
 			case "width":
 				this.container().width(value);
@@ -3054,35 +2760,6 @@
 			case "height":
 				this.container().height(value);
 				$("#" + this._id("_bmncntr")).height(value);
-				break;
-			case "labelUploadButton":
-				$("#" + this._id("_ibb")).igBrowseButton("option", "labelText", value);
-				break;
-			case "labelAddButton":
-				$("#" + this._id("_bb")).igBrowseButton("option", "labelText", value);
-				break;
-			case "labelClearAllButton":
-				$("#" + this._id("_clrabtn")).igButton("option", "labelText", value);
-				break;
-			case "labelSummaryTemplate":
-			case "labelSummaryProgressBarTemplate":
-				/* it is set option and it should be refreshed template for summary progress */
-				this._spbRenderProgress();
-				break;
-			case "labelShowDetails":
-			case "labelHideDetails":
-				this._setShowHideDetailsButtonText($("#" + this._id("_shdbtn")).is("hidden"));
-				$("#" + this._id("_shdbtn")).text(value);
-				break;
-			case "labelSummaryProgressButtonCancel":
-				if (this.spbButtonMode === this.summaryButtonModes.cancel) {
-					$("#" + this._id("_spbtncncl")).igButton("option", "labelText", value);
-				}
-				break;
-			case "labelSummaryProgressButtonContinue":
-				if (this.spbButtonMode === this.summaryButtonModes.startupload) {
-					$("#" + this._id("_spbtncncl")).igButton("option", "labelText", value);
-				}
 				break;
 			case "labelSummaryProgressButtonDone":
 				if (this.spbButtonMode === this.summaryButtonModes.done) {
@@ -3266,7 +2943,7 @@
 					self._removeGetFileSizeHTML(formNumber);
 				},
 				error: function () {
-					self._setError(o.errorMessageAJAXRequestFileSize,
+					self._setError(this._getLocaleValue("errorMessageAJAXRequestFileSize"),
 						formNumber,
 						self._const.clientSideErrorCode.ajaxErrorRequestFileSize, "clientside");
 					self._removeGetFileSizeHTML(formNumber);
@@ -3348,17 +3025,19 @@
 			}
 		},
 		_setShowHideDetailsButtonText: function (isHidden) {
-			var o = this.options,
-				showHideDetailsButton = $("#" + this._id("_shdbtn"));
-
+			var showHideDetailsButton = $("#" + this._id("_shdbtn"));
 			if (isHidden) {
-				showHideDetailsButton.text(o.labelShowDetails);
+				showHideDetailsButton.text(this._getLocaleValue("labelShowDetails"));
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-				showHideDetailsButton.attr("title", $.ig.Upload.locale.titleShowDetailsButton);
+				showHideDetailsButton.attr({
+					"data-localeid": "titleShowDetailsButton"
+				});
 			} else {
-				showHideDetailsButton.text(o.labelHideDetails);
+				showHideDetailsButton.text(this._getLocaleValue("labelHideDetails"));
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-				showHideDetailsButton.attr("title", $.ig.Upload.locale.titleHideDetailsButton);
+				showHideDetailsButton.attr({
+					"data-localeid": "titleHideDetailsButton"
+				});
 			}
 		},
 		getFileInfoData: function () {
@@ -3436,7 +3115,8 @@
 		_spbRenderInit: function () {
 			var self = this, o = this.options,
 				css = self.css,
-				uploaderId = this._id("_fu"), labelSummaryButton = o.labelSummaryProgressButtonContinue,
+				uploaderId = this._id("_fu"),
+				labelSummaryButton = this._getLocaleValue("labelSummaryProgressButtonContinue"),
 				summaryProgressContainerId = this._id("_spbcntr"),
 				summaryProgressBarLabelId = this._id("_summpbrlbl"),
 				summaryProgressBarId = this._id("_summpbar"),
@@ -3449,14 +3129,16 @@
 				data,
 				progressData = "progressData",
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-				titleSummaryButton = $.ig.Upload.locale.titleSummaryProgressButtonContinue;
+				titleSummaryButton = this._getLocaleValue("titleSummaryProgressButtonContinue");
 
 			html +=	 '<div id="$summaryProgressContainerId$">';
 			html +=	 '	<div  class="' + css.summaryInformationContainerClass + '">';
-			html +=	 '		<span id="$summaryProgressLabelId$" ';
+			html += '		<span id="$summaryProgressLabelId$"  data-localeid="labelSummaryTemplate" ';
 			html +=	 '			class="' + css.summaryUploadedFilesLabelClass + '"></span>';
-			html +=	 '		<a href="javascript:void(0);" id="$showHideDetailsId$" ';
-			html +=	 '			class="' + css.summaryShowHideDetailsButtonClass + '">$labelShowHideDetails$</a>';
+			html += '		<a href="javascript:void(0);"' +
+							' id="$showHideDetailsId$" data-localeid="titleHideDetailsButton" ';
+			html += '			class="' + css.summaryShowHideDetailsButtonClass +
+										'">$labelShowHideDetails$</a>';
 			html +=	 "	</div>";
 			html +=	 '	<div class="' + css.clearClass + '">';
 			html +=	 '		<button id="$summaryProgressButtonCancelId$"></button>';
@@ -3469,8 +3151,9 @@
 					.replace("$summaryProgressDetailsButtonId$", summaryProgressDetailsButtonId)
 					.replace("$summaryProgressBarId$", summaryProgressBarId)
 					.replace("$showHideDetailsId$", showHideDetailsId)
-					.replace("$labelShowHideDetails$", o.labelHideDetails)
-					.replace("$labelSummaryProgressButtonCancel$", o.labelSummaryProgressButtonCancel)
+					.replace("$labelShowHideDetails$", this._getLocaleValue("labelHideDetails"))
+					.replace("$labelSummaryProgressButtonCancel$",
+					this._getLocaleValue("labelSummaryProgressButtonCancel"))
 					.replace("$summaryProgressButtonCancelId$", summaryProgressButtonCancelId);
 			$(html).appendTo($("#" + uploaderId));
 
@@ -3512,16 +3195,12 @@
 					self._onShowHideDetailsClick();
 				}
 			});
-			/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-			if ($.ig.Upload.locale.titleHideDetailsButton !== false) {
-				$("#" + showHideDetailsId).attr("title", $.ig.Upload.locale.titleHideDetailsButton);
-			}
 			/* if autostartupload is false then bind onclick to submit all forms otherwise to cancel all upload forms */
 
 			if (o.autostartupload) {
-				labelSummaryButton = o.labelSummaryProgressButtonCancel;
+				labelSummaryButton = this._getLocaleValue("labelSummaryProgressButtonCancel");
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-				titleSummaryButton = $.ig.Upload.locale.titleSummaryProgressButtonCancel;
+				titleSummaryButton = this._getLocaleValue("titleSummaryProgressButtonCancel");
 				this.spbButtonMode = this.summaryButtonModes.cancel;
 			}
 
@@ -3537,8 +3216,7 @@
 			}).addClass(css.summaryButtonClass);
 		},
 		_spbRenderProgress: function () {
-			var o = this.options,
-				summaryProgressBar = $("#" + this._id("_summpbar")),
+			var summaryProgressBar = $("#" + this._id("_summpbar")),
 				summaryProgressLabel = $("#" + this._id("_summplbl")),
 				summaryProgressBarLabel = $("#" + this._id("_summpbrlbl")),
 				summaryProgressBarLabel1 = $("#" + this._id("_summpbrlbl_1")),
@@ -3566,11 +3244,12 @@
 			}
 			summaryProgressBar.igProgressBar("option", "value", value);
 			/* M.H. 13 May 2011 - fix bug 75042 */
-			textSummaryProgressBarLabel = o.labelSummaryProgressBarTemplate.replace("{0}",
+			textSummaryProgressBarLabel = this._getLocaleValue("labelSummaryProgressBarTemplate")
+																					.replace("{0}",
 																					this._formatFileSize(fileSizeUploaded)).replace("{1}",
 																					this._formatFileSize(fileSizeTotal)).replace("{2}",
 																					value);
-			summaryProgressLabel.html(o.labelSummaryTemplate.replace("{0}",
+			summaryProgressLabel.html(this._getLocaleValue("labelSummaryTemplate").replace("{0}",
 										data.countUploadingFiles).replace("{1}",
 										data.countTotalFiles));
 			summaryProgressBarLabel.text(textSummaryProgressBarLabel);
@@ -3616,25 +3295,23 @@
 		/* Set different Modes for the Summary Button - Cancel, Done, Submit */
 		_spbSetButtonDone: function () {
 			/* submit all forms and enable cancel action */
-			var o = this.options,
-				button = $("#" + this._id("_spbtncncl"));
+			var button = $("#" + this._id("_spbtncncl"));
 			this.spbButtonMode = this.summaryButtonModes.done;
 			/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
 			button.igButton("option", {
-				"labelText": o.labelSummaryProgressButtonDone,
-				"title": $.ig.Upload.locale.titleSummaryProgressButtonDone,
+				"labelText": this._getLocaleValue("labelSummaryProgressButtonDone"),
+				"title": this._getLocaleValue("titleSummaryProgressButtonDone"),
 				"disabled": true
 			});
 		},
 		_spbSetContinueButton: function () {
 			/* submit all forms and enable cancel action */
-			var o = this.options,
-				button = $("#" + this._id("_spbtncncl"));
+			var button = $("#" + this._id("_spbtncncl"));
 			this.spbButtonMode = this.summaryButtonModes.startupload;
 			button.igButton({
 				/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
-				title: $.ig.Upload.locale.titleSummaryProgressButtonContinue,
-				labelText: o.labelSummaryProgressButtonContinue,
+				title: this._getLocaleValue("titleSummaryProgressButtonContinue"),
+				labelText: this._getLocaleValue("labelSummaryProgressButtonContinue"),
 				disabled: false
 			});
 		},
@@ -3645,8 +3322,8 @@
 			this.spbButtonMode = this.summaryButtonModes.cancel;
 			/* M.H. 12 May 2011 - fix bug 74763: add title to all buttons */
 			cancelButton.igButton("option", {
-				"labelText": this.options.labelSummaryProgressButtonCancel,
-				"title": $.ig.Upload.locale.titleSummaryProgressButtonCancel,
+				"labelText": this._getLocaleValue("labelSummaryProgressButtonCancel"),
+				"title": this._getLocaleValue("titleSummaryProgressButtonCancel"),
 				"disabled": false
 			});
 		},
@@ -3690,7 +3367,7 @@
 				data.uploadingIDs.length >= maxSimultaneousFilesUploads) {
 				canUpload = false;
 				if (maxSimultaneousFilesUploads <= 0) {
-					this._setError(o.errorMessageMaxSimultaneousFiles, null,
+					this._setError(this._getLocaleValue("errorMessageMaxSimultaneousFiles"), null,
 						this._const.clientSideErrorCode.checkCanUpload, "clientside");
 				}
 			}
@@ -3791,7 +3468,7 @@
 			res = $.inArray(ext, arrE) >= 0;
 			if ((callEvent === true && res === false) || !noCancel) {
 				res = false;
-				this._setError(this.options.errorMessageValidatingFileExtension, formNumber,
+				this._setError(this._getLocaleValue("errorMessageValidatingFileExtension"), formNumber,
 							this._const.clientSideErrorCode.extensionValidation, "clientside");
 			}
 			return res;
@@ -3819,7 +3496,7 @@
 		_setError: function (message, fileId, errorCode, errorType, serverMessage) {
 			/* error handling
 			/* error message, errorCode - type int, errorType - serverside|clientside */
-			var eArgs, o = this.options,
+			var eArgs,
 				errC = this._const.errorCode;
 
 			if (serverMessage === undefined) {
@@ -3830,10 +3507,10 @@
 				/* M.H. 11 May 2011 - fix bug 74621: Add messages for most common errors */
 				switch (errorCode) {
 				case errC.MimeTypeValidation:
-					message = o.errorMessageValidatingFileExtension;
+					message = this._getLocaleValue("errorMessageValidatingFileExtension");
 					break;
 				case errC.FileSizeExceeded:
-					message = o.errorMessageMaxFileSizeExceeded;
+					message = this._getLocaleValue("errorMessageMaxFileSizeExceeded");
 					break;
 				}
 			}

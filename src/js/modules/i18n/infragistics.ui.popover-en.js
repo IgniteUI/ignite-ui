@@ -7,18 +7,25 @@
 *
 */
 
-(function($) {
-$.ig = $.ig || {};
-
-if (!$.ig.Popover) {
-	$.ig.Popover = {};
-
-	$.extend( $.ig.Popover, {
-		locale: {
-			popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
-			popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
-		}
-	});
-
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		factory();
+	}
 }
-})(jQuery);
+(function () {
+	$ = $ || {};
+	$.ig = $.ig || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
+	$.ig.Popover = $.ig.Popover || {};
+	
+	$.ig.locale.en.Popover = {
+		popoverOptionChangeNotSupported: "Changing the following option after igPopover has been initialized is not supported:",
+		popoverShowMethodWithoutTarget: "The target parameter of the show function is mandatory when the selectors option is used"
+	};
+
+$.ig.Popover.locale = $.ig.Popover.locale || $.ig.locale.en.Popover;
+return $.ig.locale.en.Popover;
+}));// REMOVE_FROM_COMBINED_FILES

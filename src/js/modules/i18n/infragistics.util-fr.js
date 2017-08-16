@@ -7,15 +7,21 @@
 *
 */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.util = $.ig.util || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.fr = $.ig.locale.fr || {};
 
-    if (!$.ig.util) {
-	    $.ig.util = {};
-
-	    $.extend($.ig.util, {
-
-		    locale: {
+	$.ig.locale.fr.util = {
 			    unsupportedBrowser: "Le navigateur actuel ne prend pas en charge l'élément canvas HTML5. <br/>Essayez la mise à niveau vers l'une des versions suivantes :",
 			    currentBrowser: "Navigateur actuel : {0}",
 			    ie9: "Microsoft Internet Explorer V 9+",
@@ -27,9 +33,14 @@
 			    operaDownload: "http://www.opera.com/download/",
 			    chromeDownload: "http://www.google.com/chrome",
 			    firefoxDownload: "http://www.mozilla.com/",
-			    safariDownload: "http://www.apple.com/safari/download/"
-		    }
-	    });
+			    safariDownload: "http://www.apple.com/safari/download/",
+			    defaultSummaryMethodLabelMin: "Min = ",
+			    defaultSummaryMethodLabelMax: "Max = ",
+			    defaultSummaryMethodLabelSum: "Somme = ",
+			    defaultSummaryMethodLabelAvg: "Moy = ",
+			    defaultSummaryMethodLabelCount: "Décompte = "
+	}
 
-    }
-})(jQuery);
+	$.ig.util.locale = $.ig.util.locale || $.ig.locale.fr.util;
+	return $.ig.locale.fr.util;
+}));// REMOVE_FROM_COMBINED_FILES

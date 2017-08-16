@@ -11,6 +11,7 @@
  * jquery.ui.widget.js
  * infragistics.util.js
  * infragistics.util.jquery.js
+ * infragistics.ui.widget.js
  * infragistics.ui.shared.js
 */
 
@@ -20,12 +21,8 @@
 
 		// AMD. Register as an anonymous module.
 		define( [
-			"jquery",
-			"jquery-ui",
-			"./infragistics.util",
-			"./infragistics.util.jquery",
-			"./infragistics.ui.shared",
-			"./infragistics.ui.zoombar-en"
+			"./infragistics.ui.widget",
+			"./infragistics.ui.shared"
 		], factory );
 	} else {
 
@@ -37,7 +34,7 @@
 	/*
 		igZoombar is a widget based on jQuery UI that provides ability to easily zoom in and out a chart or other compatible control.
 	*/
-	$.widget("ui.igZoombar", {
+	$.widget("ui.igZoombar", $.ui.igWidget, {
 		options: {
 			/* type="object" Specifies a provider class which interfaces the widget that is being zoomed.
 				object Provider class to use. The provider should implement all methods in the $.ig.ZoombarProviderDefault class and is suggested to be extended from it.
@@ -264,12 +261,12 @@
 		},
 		events: {
 			/* cancel="true" Event fired before a zoom action is applied
-			Function takes arguments evt and ui.
-			Use ui.previousZoom.left to get the previous zoom window left position as a fraction of the absolute width of the target
-			Use ui.previousZoom.width to get the previous zoom window width as a fraction of the absolute width of the target
-			Use ui.newZoom.left to get the new zoom window left position as a fraction of the absolute width of the target
-			Use ui.newZoom.width to get the new zoom window width as a fraction of the absolute width of the target
-			Use ui.owner to get reference to igZoombar.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.previousZoom.left" argType="number" Gets the previous zoom window left position as a fraction of the absolute width of the target.
+			eventArgument="ui.previousZoom.width" argType="number" Gets the previous zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.newZoom.left" argType="number" Gets the new zoom window left position as a fraction of the absolute width of the target.
+			eventArgument="ui.newZoom.width" argType="number" Gets the new zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.owner" argType="object" Gets reference to igZoombar.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "igzoombarzoomchanging", function (evt, ui) {
@@ -293,12 +290,12 @@
 			*/
 			zoomChanging: "zoomChanging",
 			/* Event fired after a zoom action is applied.
-			Function takes arguments evt and ui.
-			Use ui.previousZoom.left to get the previous zoom window left position as a fraction of the absolute width of the target
-			Use ui.previousZoom.width to get the previous zoom window width as a fraction of the absolute width of the target
-			Use ui.newZoom.left to get the new zoom window left position as a fraction of the absolute width of the target
-			Use ui.newZoom.width to get the new zoom window width as a fraction of the absolute width of the target
-			Use ui.owner to get reference to igZoombar.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.previousZoom.left" argType="number" Gets the previous zoom window left position as a fraction of the absolute width of the target.
+			eventArgument="ui.previousZoom.width" argType="number" Gets the previous zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.newZoom.left" argType="number" Gets the new zoom window left position as a fraction of the absolute width of the target.
+			eventArgument="ui.newZoom.width" argType="number" Gets the new zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "igzoombarzoomchanged", function (evt, ui) {
@@ -323,16 +320,16 @@
 			zoomChanged: "zoomChanged",
 			/* Event fired after a provider is created based on the options.provider value. If an instance is passed as a value for the option the event won't fire.
 			Use the event when utilizing a custom provider to assign options such as the zoomed widget's instance so that the provider's API is usable when igZoombar initializes its rendering.
-			Function takes arguments evt and ui.
-			Use ui.provider to get the reference the created provider
-			Use ui.owner to get reference to igZoombar
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.provider" argType="object" Gets a reference to the created provider.
+			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			*/
 			providerCreated: "providerCreated",
 			/* cancel="true" Event fired when the user attempts to drag the zoom window.
-			Function takes arguments evt and ui.
-			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
-			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
-			Use ui.owner to get reference to igZoombar.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.zoomWindow.left" argType="number" Gets the current zoom window left position as a fraction of the absolute width of the target
+			eventArgument="ui.zoomWindow.width" argType="number" Gets the current zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "igzoombarwindowdragstarting", function (evt, ui) {
@@ -352,10 +349,10 @@
 			*/
 			windowDragStarting: "windowDragStarting",
 			/* Event fired when the user starts dragging the zoom window.
-			Function takes arguments evt and ui.
-			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
-			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
-			Use ui.owner to get reference to igZoombar.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.zoomWindow.left" argType="number" Gets the current zoom window left position as a fraction of the absolute width of the target
+			eventArgument="ui.zoomWindow.width" argType="number" Gets the current zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "igzoombarwindowdragstarted", function (evt, ui) {
@@ -375,10 +372,10 @@
 			*/
 			windowDragStarted: "windowDragStarted",
 			/* cancel="true" Event fired when the user drags the zoom window.
-			Function takes arguments evt and ui.
-			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
-			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
-			Use ui.owner to get reference to igZoombar.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.zoomWindow.left" argType="number" Gets the current zoom window left position as a fraction of the absolute width of the target
+			eventArgument="ui.zoomWindow.width" argType="number" Gets the current zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "igzoombarwindowdragging", function (evt, ui) {
@@ -398,10 +395,10 @@
 			*/
 			windowDragging: "windowDragging",
 			/* cancel="true" Event fired when the user attemtps to stop dragging the zoom window.
-			Function takes arguments evt and ui.
-			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
-			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
-			Use ui.owner to get reference to igZoombar.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.zoomWindow.left" argType="number" Gets the current zoom window left position as a fraction of the absolute width of the target
+			eventArgument="ui.zoomWindow.width" argType="number" Gets the current zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "igzoombarwindowdragending", function (evt, ui) {
@@ -421,10 +418,10 @@
 			*/
 			windowDragEnding: "windowDragEnding",
 			/* Event fired when the user stops dragging the zoom window.
-			Function takes arguments evt and ui.
-			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
-			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
-			Use ui.owner to get reference to igZoombar.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.zoomWindow.left" argType="number" Gets the current zoom window left position as a fraction of the absolute width of the target
+			eventArgument="ui.zoomWindow.width" argType="number" Gets the current zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "igzoombarwindowdragended", function (evt, ui) {
@@ -444,10 +441,10 @@
 			*/
 			windowDragEnded: "windowDragEnded",
 			/* cancel="true" Event fired when the user resizes the zoom window with the window"s handles.
-			Function takes arguments evt and ui.
-			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
-			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
-			Use ui.owner to get reference to igZoombar.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.zoomWindow.left" argType="number" Gets the current zoom window left position as a fraction of the absolute width of the target
+			eventArgument="ui.zoomWindow.width" argType="number" Gets the current zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "igzoombarwindowresizing", function (evt, ui) {
@@ -467,10 +464,10 @@
 			*/
 			windowResizing: "windowResizing",
 			/* Event fired after the user resizes the zoom window with the window"s handles.
-			Function takes arguments evt and ui.
-			Use ui.zoomWindow.left to get the current zoom window left position as a fraction of the absolute width of the target
-			Use ui.zoomWindow.width to get the current zoom window width as a fraction of the absolute width of the target
-			Use ui.owner to get reference to igZoombar.
+			eventArgument="evt" argType="event" jQuery event object.
+			eventArgument="ui.zoomWindow.left" argType="number" Gets the current zoom window left position as a fraction of the absolute width of the target
+			eventArgument="ui.zoomWindow.width" argType="number" Gets the current zoom window width as a fraction of the absolute width of the target.
+			eventArgument="ui.owner" argType="object" Gets reference to the igZoombar.
 			```
 				//Bind after initialization
 				$(document).delegate(".selector", "igzoombarwindowresized", function (evt, ui) {
@@ -587,7 +584,7 @@
 				case "zoomWindowMoveDistance":
 					break;
 				default:
-					throw new Error($.ig.Zoombar.locale.optionChangeNotSupported + " " + key);
+					throw new Error(this._getLocaleValue("optionChangeNotSupported") + " " + key);
 			}
 			$.Widget.prototype._setOption.apply(this, arguments);
 		},
@@ -1098,11 +1095,11 @@
 				// target is specified we"ll get the element from there
 				if (typeof opts.target === "string") {
 					this._target = $(opts.target);
-				} else if (opts.target instanceof jQuery) {
+				} else if (opts.target instanceof $) {
 					this._target = $(opts.target[ 0 ]);
 				}
 			} else {
-				throw new Error($.ig.Zoombar.locale.zoombarTargetNotSpecified);
+				throw new Error(this._getLocaleValue("zoombarTargetNotSpecified"));
 			}
 			if (opts.provider === $.ig.ZoombarProviderDataChart) {
 				// the target widget should have an igDataChart initialized on it
@@ -1112,7 +1109,7 @@
 						zoomChangedCallback: this._targetWindowChangedHandler
 					});
 				} else {
-					throw new Error($.ig.Zoombar.locale.zoombarTypeNotSupported);
+					throw new Error(this._getLocaleValue("zoombarTypeNotSupported"));
 				}
 			} else {
 				try {
@@ -1120,7 +1117,7 @@
 						zoomChangedCallback: this._targetWindowChangedHandler
 					});
 				} catch (e) {
-					throw new Error($.ig.Zoombar.locale.zoombarProviderNotRecognized + " " + e);
+					throw new Error(this._getLocaleValue("zoombarProviderNotRecognized") + " " + e);
 				}
 			}
 			this._trigger(this.events.providerCreated, null, { owner: this, provider: provider });
@@ -1247,7 +1244,7 @@
 		},
 		_dragCont: function (left, evt) {
 			var ol = this._cw.left, ow = this._cw.width, nl = ol, nw = ow, args, dragging = false, noCancel;
-			if (!this._draggedElement || !(this._draggedElement instanceof jQuery)) {
+			if (!this._draggedElement || !(this._draggedElement instanceof $)) {
 				return;
 			}
 			if (this._draggedElement.hasClass("ui-igzoombar-window-handle-left")) {

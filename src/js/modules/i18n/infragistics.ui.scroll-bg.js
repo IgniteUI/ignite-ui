@@ -7,18 +7,25 @@
 *
 */
 
-(function ($) {
-    $.ig = $.ig || {};
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+		$ = $ || {};
+		$.ig = $.ig || {};
+		$.ig.Scroll = $.ig.Scroll || {};
+		$.ig.locale = $.ig.locale || {};
+		$.ig.locale.bg = $.ig.locale.bg || {};
 
-    if (!$.ig.Scroll) {
-	    $.ig.Scroll = {};
-
-	    $.extend($.ig.Scroll, {
-		    locale: {
+		$.ig.locale.bg.Scroll = {
 		        errorNoElementLink: 'Елементът, който бива свързван, не съществува.',
 		        errorNoScrollbarLink: 'Елементът плъзгач, който бива свързван, не съществува.'
-		    }
-	    });
-
-    }
-})(jQuery);
+		}
+		
+		$.ig.Scroll.locale = $.ig.Scroll.locale || $.ig.locale.bg.Scroll;
+		return $.ig.locale.bg.Scroll;
+}));// REMOVE_FROM_COMBINED_FILES

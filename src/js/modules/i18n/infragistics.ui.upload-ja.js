@@ -7,15 +7,21 @@
 *
 */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.Upload = $.ig.Upload || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.ja = $.ig.locale.ja || {};
 
-    if (!$.ig.Upload) {
-	    $.ig.Upload = {};
-
-	    $.extend($.ig.Upload, {
-
-		    locale: {
+	$.ig.locale.ja.Upload = {
 			    labelUploadButton: "ファイルのアップロード",
 			    labelAddButton: "追加",
 			    labelClearAllButton: "すべてクリア",
@@ -54,8 +60,8 @@
 			    titleSummaryProgressButtonDone: "完了",
 			    titleSingleUploadButtonContinue: "アップロード",
 			    titleClearAllButton: "すべてクリア"
-		    }
-	    });
-
-    }
-})(jQuery);
+	}
+		
+	$.ig.Upload.locale = $.ig.Upload.locale || $.ig.locale.ja.Upload;
+	return $.ig.locale.ja.Upload;
+}));// REMOVE_FROM_COMBINED_FILES

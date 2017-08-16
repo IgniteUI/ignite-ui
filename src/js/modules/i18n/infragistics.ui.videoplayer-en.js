@@ -7,15 +7,21 @@
 *
 */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+    $ = $ || {};
     $.ig = $.ig || {};
+	$.ig.VideoPlayer = $.ig.VideoPlayer || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.en = $.ig.locale.en || {};
 
-    if (!$.ig.VideoPlayer) {
-	    $.ig.VideoPlayer = {};
-
-	    $.extend($.ig.VideoPlayer, {
-
-		    locale: {
+	$.ig.locale.en.VideoPlayer = {
 			    liveStream: "Live video",
 			    live: "Live",
 			    paused: "Paused",
@@ -51,8 +57,8 @@
 			    replayButton: 'Replay',
 			    replayTooltip: 'Click to replay last video.',
 				noCommercials: 'Browser controls does not support commercials'
-		    }
-	    });
+	}
 
-    }
-})(jQuery);
+	$.ig.VideoPlayer.locale = $.ig.VideoPlayer.locale || $.ig.locale.en.VideoPlayer;
+	return $.ig.locale.en.VideoPlayer;
+}));// REMOVE_FROM_COMBINED_FILES

@@ -7,18 +7,25 @@
 *
 */
 
-(function ($) {
+(function (factory) {
+	if (typeof define === "function" && define.amd) {
+		define( [], factory );
+	} else {
+		return factory();
+	}
+}
+(function () {
+	$ = $ || {};
     $.ig = $.ig || {};
-
-    if (!$.ig.Splitter) {
-	    $.ig.Splitter = {};
-
-	    $.extend($.ig.Splitter, {
-		    locale: {
+	$.ig.Splitter = $.ig.Splitter || {};
+	$.ig.locale = $.ig.locale || {};
+	$.ig.locale.bg = $.ig.locale.bg || {};
+	
+	   $.ig.locale.bg.Splitter = {
 		        errorPanels: 'Броят на панелите не може да надвишава два.',
 		        errorSettingOption: 'Грешка в настройката на опцията.'
 		    }
-	    });
 
-    }
-})(jQuery);
+		$.ig.Splitter.locale = $.ig.Splitter.locale || $.ig.locale.bg.Splitter;
+		return $.ig.locale.bg.Splitter;
+}));// REMOVE_FROM_COMBINED_FILES

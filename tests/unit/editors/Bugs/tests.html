@@ -16,10 +16,12 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.widget.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.shared.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
@@ -28,6 +30,7 @@
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" /> 
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../common/test-util.js"></script>
 
 	<script type="text/javascript">
 	/*global window, setTimeout, $, startTesting, QUnit, module, test, ok, equals*/
@@ -35,19 +38,18 @@
 			// Create a editors
 
 				function loadTestbeds(testbedID) {
-					var testbedIDs = testbedID || ["208808", "209067", "209174", "209912", "209641", "209696",
+					var testbedIDs = testbedID || ["1090", "208808", "209067", "209174", "209912", "209641", "209696",
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
 					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
-					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695"];
-					
+					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695", "876", "809", "942"];
+
 					for (var i = 0; i < testbedIDs.length; i++) {
 						var testBed = "Bug" + testbedIDs[i] + "Testbed";
 						if (window[testBed]) {
 							window[testBed]();
 						}
 					}
-
 				}
 				window.Bug208808Testbed = function () {
 					$("#208808").igDateEditor({ dateInputFormat: "yyyy/MM/dd" });
@@ -477,9 +479,43 @@
 						allowNullValue: true 
 					});
 				}
+				
+				window.Bug942Testbed = function () {
+						$("<input/>", { id: "942Editor" })
+						.appendTo("#testBedContainer")
+						.igNumericEditor({
+							buttonType: "clear",
+							listItems: [3, 4, 5],
+							isLimitedToListValues: true,
+							revertIfNotValid: false,
+							value: 3
+						});
+				}
+
+				window.Bug809Testbed = function () {
+					$("<input/>", { id: "809Editor" })
+					.appendTo("#testBedContainer")
+					.igNumericEditor({
+						buttonType: "dropdown",
+						listItems: [3, 4, 5],
+						isLimitedToListValues: true,
+						revertIfNotValid: false,
+						allowNullValue: false
+					});
+				}
+
+				window.Bug1090Testbed = function () {
+					$("<div></div>", { id: "1090Editor" })
+					.appendTo("#testBedContainer")
+					.igTextEditor({
+						textMode : "multiline",
+						height: "100px"
+					});
+				}
 
 				initialized = false;
-				module("Editors Bugs Unit Tests ", {
+
+				module("igEditors Bugs Unit Tests ", {
 					setup: function (assert) {
 						var testID = /^Bug (\d+)/.exec(assert.test.testName).pop();
 						loadTestbeds([testID]);
@@ -807,6 +843,31 @@
 				equal($("#211062Editor1").igDatePicker("field").val(), getDDmmYYYYHHSS(targetDate), "The text should've changed to " + getDDmmYYYYHHSS(targetDate));
 			});
 			
+			testId = 'Bug 876';
+			test(testId, 2, function () {
+				// D.P. Updated for  #876:Warning popup is displayed when maxValue date is selected on the dropdown calendar.
+				var todayDate = new Date(), $editor;
+				
+				todayDate.setHours(0);
+				todayDate.setMinutes(0);
+				todayDate.setSeconds(0);
+				todayDate.setMilliseconds(0);
+				$editor = $("<input />").appendTo("#testBedContainer")
+					.igDatePicker({
+						maxValue: todayDate,
+						dateDisplayFormat: "yy/MM/dd dddd"
+					});
+
+				$editor.igDatePicker("dropDownButton").click();
+				stop();
+				setTimeout(function () {
+					start();
+					$editor.igDatePicker("getCalendar").find(".ui-datepicker-today").find("a").click();
+					equal($editor.igDatePicker("value").getTime(), todayDate.getTime(), "Max value not selected");
+					ok(!$editor.igDatePicker("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message should not be shown");
+					$editor.remove();
+				}, 400); //This timeout is need because the test requires calendar which needs focus
+			});
 			
 			testId = 'Bug 210990';
 			test(testId, 3, function () {
@@ -1252,7 +1313,7 @@
 			});
 
 			var testId = 'Bug 655 - [igMaskEditor] Clearing the displayed value using the clear button is not possible after setting the value to null';
-			test(testId, 6, function () {	
+		test(testId, 6, function () {	
 				var editor =  $("#655Editor"),
 				field = editor.igMaskEditor("field"),
 				clearButton = editor.igMaskEditor("clearButton");
@@ -1288,6 +1349,188 @@
 				equal(editor.igPercentEditor("field").focus().blur().val(), "2,90%", "value should be to 2,90%");//fails prior fix with 2.900,00%
 				equal(editor.igPercentEditor("value"), 0.029, "value should be 0.029"); //fails prior fix and returns 29 instead
 					$("#695Editor").remove();
+			});
+
+			testId = 'Bug 809 - Wrong value is set when we have isLimitedToListValues: true and revertIfNotValid: false';
+			test(testId, 5, function () {
+				var editor =  $("#809Editor");
+				input = editor.igNumericEditor("field"),
+				editor.focus();
+				keyInteraction(38, input); //Arrow Up
+				input.val("");
+				editor.blur();
+				equal(editor.igNumericEditor("value"), "", "Value should be empty string");
+
+				editor.igNumericEditor("option","allowNullValue", "true");
+				editor.focus();
+				keyInteraction(38, input); //Arrow Up
+				keyInteraction(13, input);
+				//input.val(null);
+				editor.igNumericEditor("value", null),
+				editor.blur();
+				equal(editor.igNumericEditor("value"), null, "Value should be null when allowNullValue=true");
+
+				editor.igNumericEditor("option","allowNullValue", "false");
+				editor.igNumericEditor("option","revertIfNotValid", "true");
+				editor.focus();
+				keyInteraction(38, input); //Arrow Up
+				editor.blur();
+				equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
+				editor.focus().val(55);
+				editor.blur();
+				equal(editor.igNumericEditor("value"), 3, "Value should revert to 3 ");
+				ok(editor.igNumericEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "There should be warning notification");
+				$("#809Editor").remove();
+			});
+			testId = 'Bug 942 - When clearing with the "clear" button, the value is set to 0 even if 0 is not in the list of items ';
+			test(testId, 4, function () {
+				var editor =  $("#942Editor");
+				field = editor.igNumericEditor("field");
+				clearButton = editor.igNumericEditor("clearButton"),
+				editor.igNumericEditor("setFocus");
+
+				stop();
+				setTimeout(function () {
+					start();
+					equal(field.val(), 3, 'input value should init with value of 3');
+					clearButton.click();
+					equal(field.val(), "", 'input value is not set to ""');//Prior the fix- the value was set to 0 even if zero is not in the list of items.
+					// test clear without focusing
+					editor.igNumericEditor("value", 4);
+					clearButton.click();
+					equal(field.val(), "", 'input value is not set to ""' );
+					// test clear with invalid list item value
+					editor.igNumericEditor("value", 666);
+					clearButton.click();
+					equal(field.val(), "", 'input value is not set to ""' );
+					$("#942Editor").remove();
+				}, 100);
+			});
+
+			testId = 'Bug 1027 Exception is thrown when typing due to incorrect value/nullValue on init';
+			test(testId, 7, function () {
+				var $editor;
+
+				// value not matching mask (fails validation)
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({ 
+						 inputMask : "9900",
+						 value: "abc" //should be numerics
+					 });
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(49, $editor);
+					$.ig.TestUtil.keyInteraction(50, $editor);
+					$.ig.TestUtil.keyInteraction(51, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(wrong value) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "123_", "(wrong value) Typing did not update Edit text.");
+				$editor.remove();
+				
+				// nullValue not matching mask (fails validation)
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({ 
+						 inputMask : "AA??",
+						 allowNullValue: true,
+						 nullValue: "#5a" //wrong first char
+					 });
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(97, $editor);
+					$.ig.TestUtil.keyInteraction(98, $editor);
+					$.ig.TestUtil.keyInteraction(99, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(wrong nullValue) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "abc_", "(wrong nullValue) Typing did not update Edit text.");
+				$editor.remove();
+
+				// nullValue not a string
+				$editor = $('<input/>').appendTo("#testBedContainer")
+					.igMaskEditor({
+						 allowNullValue: true,
+						 nullValue: 0
+					 });
+				equal($editor.val(), "0", "Null value not applied on Display text.")
+				$editor.trigger("focus").select();
+				try {
+					$.ig.TestUtil.keyInteraction(49, $editor);
+					$.ig.TestUtil.keyInteraction(50, $editor);
+					$.ig.TestUtil.keyInteraction(51, $editor);
+					ok(true);
+				} catch (error) {
+					ok(false, "(numeric nullValue) Typing caused an exception: " + error.message );
+				}
+				equal($editor.val(), "123_______", "(numeric nullValue) Typing did not update Edit text.");
+				$editor.remove();
+			});
+			testId = 'Bug 1090';
+			test(testId, 3, function(){
+				var editor = $("#1090Editor"),
+				field = editor.igTextEditor("field"),
+				text = "add some text";
+				typeInInput(text, field);
+				keyInteraction(13, field);
+
+				stop();
+				setTimeout(function () {
+					start();
+					var inputSelection = editor.igTextEditor("getSelectedText"),
+					selectionStart = editor.igTextEditor("getSelectionStart"),
+					selectionEnd = editor.igTextEditor("getSelectionEnd");
+
+					equal(field.val(), text, 'the text is not set');
+					equal(selectionStart, selectionEnd, 'there is selection but should not be');
+					equal("", inputSelection, 'there is selected text but should not be');
+					$("#1090Editor").remove();
+				}, 100);
+			});
+			testId = 'Bug 1043 - maxLength not respected on Android';
+			test(testId, 6, function () {
+				var $editor =  $("<input/>").appendTo("#testBedContainer")
+					.igTextEditor({
+						maxLength: 5
+					});
+				$field = $editor.igTextEditor("field");
+
+				$field.focus();
+				var composition = jQuery.Event("compositionstart");
+				$field.trigger(composition);
+				$field.val("12345678");
+				var compositionend = jQuery.Event("compositionend");
+				$field.trigger(compositionend);
+				stop();
+				setTimeout(function () {
+					start();
+					equal($field.val(), "12345", "Text was not trimmed");
+					ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+					equal($editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+						$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+					$field.blur();
+					// test case without start (Chrome Android)
+					$field.focus();
+					$field.select();
+					var compositionupdate = jQuery.Event("compositionupdate");
+					compositionupdate.originalEvent = {data: "2"};
+					$field.val("12");
+					$field[0].setSelectionRange(1,1);
+					$field.trigger(compositionupdate);
+					$field.val("12345678");
+					var compositionend = jQuery.Event("compositionend");
+					$field.trigger(compositionend);
+					stop();
+					setTimeout(function () {
+						start();
+						equal($field.val(), "12345", "Text was not trimmed with update only");
+						ok($editor.igTextEditor("editorContainer").hasClass($.ui.igNotifier.prototype.css.warningState), "Warning message not shown");
+						equal($editor.igTextEditor("editorContainer").igNotifier( "container" ).text(),
+							$.ig.Editor.locale.maxLengthErrMsg.replace("{0}", 5), "MaxLength message not correct.");
+						$editor.remove();
+					}, 0);
+				}, 0);
 			});
 		});
 
