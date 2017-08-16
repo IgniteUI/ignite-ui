@@ -8186,12 +8186,11 @@
 			this._spin(this._setNegativeDelta(this.options.spinDelta), true);
 		},
 		_setNegativeDelta: function (delta) {
-			var revDelta = { }, key, value;
+			var revDelta = { }, key;
 			if (typeof delta === "object") {
 				for (key in delta) {
-					value = delta[ key ];
-					if (value !== undefined) {
-						revDelta[ key ] = value * -1;
+					if (delta.hasOwnProperty(key)) {
+						revDelta[ key ] = delta[ key ] * -1;
 					}
 				}
 			} else {
