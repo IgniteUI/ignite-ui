@@ -4459,6 +4459,9 @@
 		},
 		_initialize: function () {
 			this._super();
+
+			// D.P. 8th Aug 2017 #793 Should not initialize with wrong decimal values.
+			this._validateDecimalSettings();
 			this._applyRegionalSettings();
 			this._applyDataModeSettings();
 			this._setNumericType();
@@ -4558,8 +4561,6 @@
 			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
-
-			this._validateDecimalSettings();
 			this._super();
 			this._validateSpinSettings();
 
