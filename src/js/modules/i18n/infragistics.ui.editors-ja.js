@@ -61,7 +61,7 @@
 		scientificFormatErrMsg: '異なる scientificFormat が必要です。"E"、"e"、"E+"、または "e+" のいずれかを選択してください。',
 		spinDeltaIsOfTypeNumber: "異なる spinDelta タイプが必要です。正の数を入力してください。",
 		spinDeltaIsOfTypeNumberForPeriod: "A different type of spinDelta is required for the {0}. A positive number between {1} and {2} should be entered.",
-		spinDeltaIsOfTypeNumberOrObject: "A different type of spinDelta is required. A positive number or an object, defining different time periods deltas, should be entered.",
+		spinDeltaIsOfTypeNumberOrObject: "A different type of spinDelta is required. A positive number or an object, defining different time period deltas, should be entered.",
 		spinDeltaShouldBeInRange: "The spinDelta option for {0} should be between {1} and {2}",
 		spinDeltaCouldntBeNegative: "指定した spinDelta オプションは負数にできません。正の数を入力してください。",
 		spinDeltaContainsExceedsMaxDecimals: "spinDelta に使用可能な最大フラクションは {0} に設定されています。MaxDecimals を変更するか値を小さくしてください。",

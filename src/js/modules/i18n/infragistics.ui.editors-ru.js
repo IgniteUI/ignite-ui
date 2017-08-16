@@ -61,7 +61,7 @@
 			scientificFormatErrMsg: 'Требуется другой scientificFormat. Выберите значение из "E", "e", "E+" и "e+".',
 			spinDeltaIsOfTypeNumber: "Требуется другой тип spinDelta. Следует ввести положительное число.",
 			spinDeltaIsOfTypeNumberForPeriod: "A different type of spinDelta is required for the {0}. A positive number between {1} and {2} should be entered.",
-			spinDeltaIsOfTypeNumberOrObject: "A different type of spinDelta is required. A positive number or an object, defining different time periods deltas, should be entered.",
+			spinDeltaIsOfTypeNumberOrObject: "A different type of spinDelta is required. A positive number or an object, defining different time period deltas, should be entered.",
 			spinDeltaShouldBeInRange: "The spinDelta option for {0} should be between {1} and {2}",
 			spinDeltaCouldntBeNegative: "Параметр spinDelta не может принимать отрицательное значение. Следует ввести положительное число.",
 			spinDeltaContainsExceedsMaxDecimals: "Максимально допустимая дробная часть для spinDelta установлена в {0}. Измените значение параметра MaxDecimals или попробуйте сократить число.",

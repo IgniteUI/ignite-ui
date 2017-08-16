@@ -8183,16 +8183,17 @@
 			this._spin(this.options.spinDelta, true);
 		},
 		_handleSpinDownEvent: function () { // DateEditor
-			this._spin(this._revertDelta(this.options.spinDelta), true);
+			this._spin(this._setNegativeDelta(this.options.spinDelta), true);
 		},
-		_revertDelta: function (delta) {
-			var revDelta = { };
+		_setNegativeDelta: function (delta) {
+			var revDelta = { }, key, value;
 			if (typeof delta === "object") {
-				$.each(delta, function (key, value) {
+				for (key in delta) {
+					value = delta[ key ];
 					if (value !== undefined) {
 						revDelta[ key ] = value * -1;
 					}
-				});
+				}
 			} else {
 				revDelta = delta * -1;
 			}
@@ -10687,7 +10688,7 @@
 		},
 		_spinDownEditMode: function (delta) {
 			this._spinEditMode(delta !== undefined ?
-				this._revertDelta(delta) : this._revertDelta(this.options.spinDelta));
+				this._setNegativeDelta(delta) : this._setNegativeDelta(this.options.spinDelta));
 		},
 
 		// igDateEditor public methods
@@ -10792,7 +10793,7 @@
 				paramType="number" optional="true" The decrease delta. */
 			delta = parseInt(delta, 10);
 			this._spin(!isNaN(delta) && delta >= 0 ?
-				this._revertDelta(delta) : this._revertDelta(this.options.spinDelta));
+				this._setNegativeDelta(delta) : this._setNegativeDelta(this.options.spinDelta));
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.

@@ -61,7 +61,7 @@
 		scientificFormatErrMsg: 'A different scientificFormat is required. Choose a value between "E", "e", "E+" and "e+".',
 		spinDeltaIsOfTypeNumber: "A different type of spinDelta is required. A positive number should be entered.",
 		spinDeltaIsOfTypeNumberForPeriod: "A different type of spinDelta is required for the {0}. A positive number between {1} and {2} should be entered.",
-		spinDeltaIsOfTypeNumberOrObject: "A different type of spinDelta is required. A positive number or an object, defining different time periods deltas, should be entered.",
+		spinDeltaIsOfTypeNumberOrObject: "A different type of spinDelta is required. A positive number or an object, defining different time period deltas, should be entered.",
 		spinDeltaShouldBeInRange: "The spinDelta option for {0} should be between {1} and {2}",
 		spinDeltaCouldntBeNegative: "The spinDelta option cannot be negative. A positive number should be entered.",
 		spinDeltaContainsExceedsMaxDecimals: "Maximum allowed fractions for spinDelta are set to {0}. Either change MaxDecimals or try to shrink your value.",

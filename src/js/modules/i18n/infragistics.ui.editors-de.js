@@ -61,7 +61,7 @@
 		scientificFormatErrMsg: 'Ein anderes scientificFormat ist erforderlich. Wert zwischen "E", "e", "E+" und "e+" wählen.',
 		spinDeltaIsOfTypeNumber: "Ein anderer Typ von spinDelta ist erforderlich. Eine positive Zahl sollte eingegeben werden.",
 		spinDeltaIsOfTypeNumberForPeriod: "A different type of spinDelta is required for the {0}. A positive number between {1} and {2} should be entered.",
-		spinDeltaIsOfTypeNumberOrObject: "A different type of spinDelta is required. A positive number or an object, defining different time periods deltas, should be entered.",
+		spinDeltaIsOfTypeNumberOrObject: "A different type of spinDelta is required. A positive number or an object, defining different time period deltas, should be entered.",
 		spinDeltaShouldBeInRange: "The spinDelta option for {0} should be between {1} and {2}",
 		spinDeltaCouldntBeNegative: "Die spinDelta-Option kann nicht negativ sein. Eine positive Zahl sollte eingegeben werden.",
 		spinDeltaContainsExceedsMaxDecimals: "Maximal erlaubte Bruchzahlen für spinDelta sind auf {0} festgelegt. Entweder MaxDecimals ändern oder versuchen, Ihren Wert zu verringern.",
