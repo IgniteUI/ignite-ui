@@ -4456,10 +4456,10 @@
 			// Allow decimal separator as a char.
 			// When the dataMode is set to int, decimal separator should not be allowed
 			if (dataMode === "double" || dataMode === "float") {
-				numericChars += this._getRegionalSetting("decimalSeparator");
+				numericChars += this._getOptionOrRegionalValue("decimalSeparator");
 
 				// K.D. September 25th, 2015 The decimal separator key on the keyboard is always the 110 and 190 keycodes, which is '.'
-				if (this._getRegionalSetting("decimalSeparator") !== ".") {
+				if (this._getOptionOrRegionalValue("decimalSeparator") !== ".") {
 					numericChars += ".";
 				}
 			}
@@ -4479,7 +4479,7 @@
 			}
 
 			// `A.M. March 07, 2017 #769 Verifying decimalSeparator is a single character`
-			if (this._getRegionalSetting("decimalSeparator").toString().length > 1) {
+			if (this._getOptionOrRegionalValue("decimalSeparator").toString().length > 1) {
 				throw new Error(this._getLocaleValue("decimalSeparatorErrorMsg"));
 			}
 
@@ -4487,8 +4487,8 @@
 			this.options.includeKeys = numericChars;
 
 			// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-			if (this._getRegionalSetting("decimalSeparator") ===
-				this._getRegionalSetting("groupSeparator")) {
+			if (this._getOptionOrRegionalValue("decimalSeparator") ===
+				this._getOptionOrRegionalValue("groupSeparator")) {
 				throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 			}
 		},
@@ -4520,7 +4520,7 @@
 			return result;
 		},
 		_verifyRegionalSettings: $.noop,
-		_getRegionalSetting: function (name) { //Numeric
+		_getOptionOrRegionalValue: function (name) { //Numeric
 			var regName;
 			if (name === "negativeSign" || name === "percentSymbol" ||
 				name === "currencySymbol" || name === "displayFactor") {
@@ -4574,10 +4574,10 @@
 					// Validate if the fractional part is longer than maxDecimals
 					if (delta % 1 !== 0) {
 						fractional = delta.toString().substring(delta.toString().indexOf(".") + 1);
-						if (fractional.toString().length > this._getRegionalSetting("maxDecimals")) {
+						if (fractional.toString().length > this._getOptionOrRegionalValue("maxDecimals")) {
 							throw new Error($.ig.util.stringFormat(
 								this._getLocaleValue("spinDeltaContainsExceedsMaxDecimals"),
-								this._getRegionalSetting("maxDecimals")));
+								this._getOptionOrRegionalValue("maxDecimals")));
 						}
 					}
 				} else {
@@ -4632,8 +4632,8 @@
 			}
 		},
 		_validateDecimalMinMax: function() {
-			if (this._getRegionalSetting("minDecimals") > this._getRegionalSetting("maxDecimals")) {
-				this.options.maxDecimals = this._getRegionalSetting("minDecimals");
+			if (this._getOptionOrRegionalValue("minDecimals") > this._getOptionOrRegionalValue("maxDecimals")) {
+				this.options.maxDecimals = this._getOptionOrRegionalValue("minDecimals");
 			}
 		},
 		_setOption: function (option, value) { // igNumericEditor
@@ -4725,7 +4725,7 @@
 				}
 
 				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-				if (this.options[ option ] === this._getRegionalSetting("groupSeparator")) {
+				if (this.options[ option ] === this._getOptionOrRegionalValue("groupSeparator")) {
 					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 				}
 				break;
@@ -4737,7 +4737,7 @@
 				}
 
 				// A.M. April 12, 2017 #852 Don't allow groupSeparator and groupSeparator to use the same symbol
-				if (this.options[ option ] === this._getRegionalSetting("decimalSeparator")) {
+				if (this.options[ option ] === this._getOptionOrRegionalValue("decimalSeparator")) {
 					throw new Error(this._getLocaleValue("decimalSeparatorEqualsGroupSeparatorErrorMsg"));
 				}
 				break;
@@ -4756,7 +4756,7 @@
 			}
 		},
 		_processValueChanging: function (value) { //NumericEditor
-			var displayFactor = this._getRegionalSetting("displayFactor");
+			var displayFactor = this._getOptionOrRegionalValue("displayFactor");
 			if (typeof value === "string" || value instanceof String) {
 				value = value.trim();
 				value = this._parseNumericValueByMode(value,
@@ -4978,9 +4978,9 @@
 		},
 		_parseNumericValueByMode: function (value, numericEditorType, dataMode) { //NumericEditor
 			var val, stringValue, exponent, exponentIndex,
-				decimalSeparator = this._getRegionalSetting("decimalSeparator"),
-				groupSeparator = this._getRegionalSetting("groupSeparator"),
-				maxDecimals = this._getRegionalSetting("maxDecimals");
+				decimalSeparator = this._getOptionOrRegionalValue("decimalSeparator"),
+				groupSeparator = this._getOptionOrRegionalValue("groupSeparator"),
+				maxDecimals = this._getOptionOrRegionalValue("maxDecimals");
 
 			if (value === null || value === "") { // TODO VERIFY _validateValue and _updateValue both have cases calling parse with null!
 				return value;
@@ -4994,13 +4994,13 @@
 
 				// D.P. 27th Oct 2015 Bug 208296: Don't replace group separator on actual numbers as it can be '.'
 				value = value.toString().replace(new RegExp($.ig.util.escapeRegExp(groupSeparator), "g"), ""); // TODO VERIFY Remove group separator cause parseInt("1,000") returns 1?
-				if (this._getRegionalSetting("negativeSign") !== "-") {
-					value = value.replace(this._getRegionalSetting("negativeSign"), "-");
+				if (this._getOptionOrRegionalValue("negativeSign") !== "-") {
+					value = value.replace(this._getOptionOrRegionalValue("negativeSign"), "-");
 				}
 				if (numericEditorType === "percent") {
-					value = value.replace(this._getRegionalSetting("percentSymbol"), "").trim();
+					value = value.replace(this._getOptionOrRegionalValue("percentSymbol"), "").trim();
 				} else if (numericEditorType === "currency") {
-					value = value.replace(this._getRegionalSetting("currencySymbol"), "").trim();
+					value = value.replace(this._getOptionOrRegionalValue("currencySymbol"), "").trim();
 				}
 
 				// D.P. decimalSeparator replace before any parsing, regardless of mode (ensure scientific decimals are parsed correctly)
@@ -5018,7 +5018,7 @@
 						if (!this.options.scientificFormat) {
 							// D.P. 28th Apr 2017 #761: Wrong value when setting the value to a number with too many digits:
 							// If scientific value when not enabled, expand to fixed-point notation and carry on with processsing
-							stringValue = value.toFixed(this._getRegionalSetting("maxDecimals") + 1);
+							stringValue = value.toFixed(this._getOptionOrRegionalValue("maxDecimals") + 1);
 						} else {
 							//refresh stringValue in case the original value entered has more than one digit before the decimal sep.
 							stringValue = value.toString().toLowerCase();
@@ -5151,7 +5151,7 @@
 		_validateKey: function (event) { //NumericEditor
 			if (this._super(event)) {
 				var dataMode = this.options.dataMode, ch, val,
-					negativeSign = this._getRegionalSetting("negativeSign"), nextCh, prevCh,
+					negativeSign = this._getOptionOrRegionalValue("negativeSign"), nextCh, prevCh,
 					leadPos = 0, nextDirection = 1,
 					cursorPos = this._getCursorPosition(),
 					isDecimal = event.which ? event.which === 46 : false;
@@ -5183,7 +5183,7 @@
 
 				//We need this extra validation in case the user tries to enter decimal separator multiple times
 				if (dataMode === "double" || dataMode === "float") {
-					var decimalSeparator = this._getRegionalSetting("decimalSeparator");
+					var decimalSeparator = this._getOptionOrRegionalValue("decimalSeparator");
 
 					// val = $(event.target).val();
 					if (decimalSeparator !== "." && isDecimal &&
@@ -5311,9 +5311,9 @@
 		},
 		_getDisplayValue: function () { //Numeric Editor
 			var value = this._valueInput.val(),
-				decimalSeparator = this._getRegionalSetting("decimalSeparator"), decimalPoint = ".",
-				minDecimals = this._getRegionalSetting("minDecimals"), dataMode = this.options.dataMode,
-				displayFactor = this._getRegionalSetting("displayFactor"),
+				decimalSeparator = this._getOptionOrRegionalValue("decimalSeparator"), decimalPoint = ".",
+				minDecimals = this._getOptionOrRegionalValue("minDecimals"), dataMode = this.options.dataMode,
+				displayFactor = this._getOptionOrRegionalValue("displayFactor"),
 				stringValue, displayValue, integerDigits, fractionalDigits,
 				scientificValue, scientificExponent, negativeSign,
 				positivePattern, negativePattern, groups, groupSeparator, symbol = "";
@@ -5326,15 +5326,15 @@
 				}
 			}
 			if (this._numericType !== "numeric") {
-				positivePattern = this._getRegionalSetting("positivePattern");
-				symbol = this._getRegionalSetting(this._numericType + "Symbol");
+				positivePattern = this._getOptionOrRegionalValue("positivePattern");
+				symbol = this._getOptionOrRegionalValue(this._numericType + "Symbol");
 			}
-			negativePattern = this._getRegionalSetting("negativePattern");
+			negativePattern = this._getOptionOrRegionalValue("negativePattern");
 
 			// A. M. March 15, 2017 #771 "If the 'groups' option's array contains '0' no groups are rendered"
-			var originalArray = this._getRegionalSetting("groups");
+			var originalArray = this._getOptionOrRegionalValue("groups");
 			groups = originalArray.filter(function(item) {return item !== 0;} );
-			groupSeparator = this._getRegionalSetting("groupSeparator");
+			groupSeparator = this._getOptionOrRegionalValue("groupSeparator");
 			if (this._numericType === "percent" && displayFactor) {
 				value = this._multiplyWithPrecision(value, displayFactor);
 				value = this._parseNumericValueByMode(value, this._numericType, this.options.dataMode);
@@ -5406,7 +5406,7 @@
 			}
 
 			if (value < 0 ) {
-				negativeSign = this._getRegionalSetting("negativeSign");
+				negativeSign = this._getOptionOrRegionalValue("negativeSign");
 				displayValue = displayValue.replace("-", "");
 				displayValue = negativePattern
 					.replace("n", displayValue).replace("$", symbol).replace("-", negativeSign);
@@ -5471,11 +5471,11 @@
 			} else if (val.toString().indexOf("e") !== -1) {
 				val = this._convertScientificToNumeric(val).replace("+", "");
 			}
-			if (this._getRegionalSetting("decimalSeparator") !== ".") {
-				val = val.toString().replace(".", this._getRegionalSetting("decimalSeparator"));
+			if (this._getOptionOrRegionalValue("decimalSeparator") !== ".") {
+				val = val.toString().replace(".", this._getOptionOrRegionalValue("decimalSeparator"));
 			}
-			if (this._getRegionalSetting("negativeSign") !== "-") {
-				val = val.toString().replace("-", this._getRegionalSetting("negativeSign"));
+			if (this._getOptionOrRegionalValue("negativeSign") !== "-") {
+				val = val.toString().replace("-", this._getOptionOrRegionalValue("negativeSign"));
 			}
 			return val;
 		},
@@ -5973,7 +5973,7 @@
 			if (symbol) {
 				this.options.currencySymbol = symbol;
 			} else {
-				return this._getRegionalSetting("currencySymbol");
+				return this._getOptionOrRegionalValue("currencySymbol");
 			}
 		}
 	});
@@ -6083,7 +6083,7 @@
 		},
 		_insert: function (newValue, previousValue, selection) { // Percent Editor
 			var newLenght = newValue.length,
-				displayFactor = this._getRegionalSetting("displayFactor"), diff;
+				displayFactor = this._getOptionOrRegionalValue("displayFactor"), diff;
 			if (!isNaN(newValue = this._parseNumericValueByMode(newValue,
 				this._numericType, this.options.dataMode))) {
 				if (!isNaN(this.options.maxValue) &&
@@ -6136,15 +6136,15 @@
 		_verifyRegionalSettings: function () { //Percent
 
 			if (this.options.displayFactor !== null) {
-				if (typeof this._getRegionalSetting("displayFactor") !== "number") {
+				if (typeof this._getOptionOrRegionalValue("displayFactor") !== "number") {
 					throw new Error(this._getLocaleValue("displayFactorIsOfTypeNumber"));
-				} else if (this._getRegionalSetting("displayFactor") !== 1 &&
-					this._getRegionalSetting("displayFactor") !== 100) {
+				} else if (this._getOptionOrRegionalValue("displayFactor") !== 1 &&
+					this._getOptionOrRegionalValue("displayFactor") !== 100) {
 					throw new Error(this._getLocaleValue("displayFactorAllowedValue"));
 				}
 			}
 		},
-		_getRegionalSetting: function(name) {
+		_getOptionOrRegionalValue: function(name) {
 			var regionalValue = this._super(name);
 
 			// This is needed, cause when value(20.34) is devided by 100, then it becomes 0.2034, and if maxDecimals is 2 then it will be cut to 0.20
@@ -6185,7 +6185,7 @@
 			// value must be numeric
 			if (val !== "" && !isNaN(val)) {
 				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
-				val = this._multiplyWithPrecision(parseFloat(val), this._getRegionalSetting("displayFactor"));
+				val = this._multiplyWithPrecision(parseFloat(val), this._getOptionOrRegionalValue("displayFactor"));
 			}
 			return this._super(val);
 		},
@@ -6220,7 +6220,7 @@
 			if (symbol) {
 				this.options.percentSymbol = symbol;
 			} else {
-				return this._getRegionalSetting("percentSymbol");
+				return this._getOptionOrRegionalValue("percentSymbol");
 			}
 
 		}
