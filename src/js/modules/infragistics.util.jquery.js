@@ -135,6 +135,185 @@
 		return (value === undefined) ? $.ig.regional.defaults[ key ] : value;
 	};
 
+	$.ig.millisecondsToString = function(milliseconds, flag) {
+		var result = parseInt(milliseconds / Math.pow(10, flag.length - 1)).toString();
+			if (flag === "ff") {
+				if (result.length !== 2) {
+					while (result.length < 2) {
+						result = "0" + result;
+					}
+				}
+			} else if (flag === "f") {
+				if (result.length !== 3) {
+					while (result.length < 3) {
+						result = "0" + result;
+					}
+				}
+			}
+			return result;
+	};
+
+	// Flag values are dddd, ddd, dd, d - according to the
+	$.ig.secondsToString = function (seconds, flag) {
+		var result;
+		if (flag === "ss" && seconds < 10) {
+			result = "0" + seconds.toString();
+		} else {
+			result = seconds.toString();
+		}
+		return result;
+	};
+
+	$.ig.minutesToString = function (minutes, flag) {
+		var result;
+		if (flag === "mm" && minutes < 10) {
+			result = "0" + minutes.toString();
+		} else {
+			result = minutes.toString();
+		}
+		return result;
+	};
+
+	// Get before midday, or after middday
+	$.ig.amPmToString = function (hours, flag, regional) {
+		var result;
+		if (hours >= 12) {
+
+			// pm
+			result = $.ig.getRegionalValue("pm", regional);
+		} else {
+			result = $.ig.getRegionalValue("am", regional);
+		}
+		if (flag === "t") {
+			result = result.charAt(0);
+		}
+		return result;
+	};
+
+	$.ig.hoursToString = function (hours, flag) {
+		var result;
+		switch (flag) {
+			case "h": {
+				if (hours > 12) {
+					hours -= 12;
+				}
+
+				// N.A. 3/8/2016 Bug #215548: In 12 hour mode, there isn't 00:00 AM hour, it should be 12:00 AM.
+				if (hours === 0) {
+					hours = 12;
+				}
+				result = hours.toString();
+			}
+				break;
+			case "hh": {
+				if (hours > 12) {
+					hours -= 12;
+				}
+
+				// N.A. 3/8/2016 Bug #215548: In 12 hour mode, there isn't 00:00 AM hour, it should be 12:00 AM.
+				if (hours === 0) {
+					hours = 12;
+				}
+				if (hours < 10) {
+					result = "0" + hours.toString();
+				} else {
+					result = hours.toString();
+				}
+			}
+				break;
+			case "H": {
+				result = hours.toString();
+			}
+				break;
+			case "HH": {
+				if (hours < 10) {
+					result = "0" + hours.toString();
+				} else {
+					result = hours.toString();
+				}
+			}
+				break;
+
+		}
+		return result;
+	};
+
+	$.ig.dateToString = function (date, flag) {
+		var result;
+		switch (flag) {
+			case "dd": {
+				if (date < 10) {
+					result = "0" + date.toString();
+				} else {
+					result = date;
+				}
+			}
+				break;
+			case "d": {
+				result = date.toString();
+			}
+				break;
+		}
+		return result;
+	};
+
+	$.ig.dayToString = function (day, flag, regional) {
+		var result;
+		switch (flag) {
+			case "dddd": {
+				result = $.ig.getRegionalValue("dayNames", regional)[ day ];
+			}
+				break;
+			case "ddd": {
+				result = $.ig.getRegionalValue("dayNamesShort", regional)[ day ];
+			}
+				break;
+		}
+		return result;
+	};
+
+	$.ig.monthToString = function (month, flag, regional) {
+		var result;
+		switch (flag) {
+			case "MMMM": {
+				result = $.ig.getRegionalValue("monthNames", regional)[ month ];
+			}
+				break;
+			case "MMM": {
+				result = $.ig.getRegionalValue("monthNamesShort", regional)[ month ];
+			}
+				break;
+			case "MM": {
+				month++;
+				if (month < 10) {
+					result = "0" + month.toString();
+				} else {
+					result = month;
+				}
+			}
+				break;
+			case "M": {
+				month++;
+				result = month.toString();
+			}
+				break;
+		}
+		return result;
+	};
+
+	$.ig.yearToString = function (year, flag) {
+		var result;
+		if (flag === "yy") {
+			result = year.toString().substring(2);
+		} else if (flag === "y") {
+			result = parseInt(year.toString().substring(2)).toString();
+		} else {
+			result = year.toString();
+		}
+		return result;
+
+	};
+
 	$.ig.formatCheckboxes = function (display, val, labelText, tabIndex) {
 		var s = "<span class='ui-igcheckbox-container' style='display:" +
 			display + ";' role='checkbox' aria-disabled='true' aria-checked='" +
@@ -142,6 +321,83 @@
 		s += "<span class='" + $.ig.checkboxMarkupClasses + "' style='display:inline-block'>";
 		s += "<span style='display:block' class='" + (val ? "" : "ui-igcheckbox-small-off ");
 		return s + "ui-icon ui-icon-check ui-igcheckbox-small-on'></span></span></span>";
+	};
+
+	$.ig.formatDate = function (mask, date, regional) {
+		mask = mask.replace(/\x08/g, " ").replace(/\x09/g, " ");
+		mask = mask.replace(/\\f/g, "\x01").replace(/\\d/g, "\x02")
+			.replace(/\\s/g, "\x03").replace(/\\m/g, "\x04").replace(/\\t/g, "\x05")
+			.replace(/\\H/g, "\x06").replace(/\\h/g, "\x07").replace(/\\M/g, "\x08")
+			.replace(/\\y/g, "\x09");
+
+		// 01-y,02-yy,03-yyyy,04-M,05-MM,06-MMM,07-MMMM,08-d,09-dd
+		// 10-h,11-hh,12-H,13-HH,14-t,15-tt,16-m,17-mm,18-s,19-ss
+		// 20-ddd,21-dddd,22-f,23-ff,24-fff
+		// Temporary remove 0 and 9, as they are valid mask flags
+		// mask = mask.replace(/9/g, "\x11").replace(/0/g, "\x12");
+
+		// Mark all flags as hexadecimal
+		mask = mask.replace(/fff/g, "\x10030")
+			.replace(/ff/g, "\x10031")
+			.replace(/f/g, "\x10032");
+
+		mask = mask.replace(/dddd/g, "\x10033")
+			.replace(/ddd/g, "\x10034")
+			.replace(/dd/g, "\x10035")
+			.replace(/d/g, "\x10036")
+			.replace(/ss/g, "\x10037")
+			.replace(/s/g, "\x10038")
+			.replace(/mm/g, "\x10039")
+			.replace(/m/g, "\x10040");
+		mask = mask.replace(/tt/g, "\x10041")
+			.replace(/t/g, "\x10042")
+			.replace(/HH/g, "\x10043")
+			.replace(/H/g, "\x10044")
+			.replace(/hh/g, "\x10045")
+			.replace(/h/g, "\x10046");
+		mask = mask.replace(/MMMM/g, "\x10047")
+			.replace(/MMM/g, "\x10048")
+			.replace(/MM/g, "\x10049")
+			.replace(/M/g, "\x10050");
+		mask = mask.replace(/yyyy/g, "\x10051")
+			.replace(/yy/g, "\x10052")
+			.replace(/y/g, "\x10053");
+
+		mask = mask.replace(/\x10030/g, $.ig.millisecondsToString(date.getMilliseconds(), "f"))
+			.replace(/\x10031/g, $.ig.millisecondsToString(date.getMilliseconds(), "ff"))
+			.replace(/\x10032/g, $.ig.millisecondsToString(date.getMilliseconds(), "fff"));
+
+		mask = mask.replace(/\x10033/g, $.ig.dayToString(date.getDay(), "dddd"), regional)
+			.replace(/\x10034/g, $.ig.dayToString(date.getDay(), "ddd"), regional)
+			.replace(/\x10035/g, $.ig.dateToString(date.getDate(), "dd"))
+			.replace(/\x10036/g, $.ig.dateToString(date.getDate(), "d"))
+			.replace(/\x10037/g, $.ig.secondsToString(date.getSeconds(), "ss"))
+			.replace(/\x10038/g, $.ig.secondsToString(date.getSeconds(), "s"))
+			.replace(/\x10039/g, $.ig.minutesToString(date.getMinutes(), "mm"))
+			.replace(/\x10040/g, $.ig.minutesToString(date.getMinutes(), "m"))
+
+			.replace(/\x10041/g, $.ig.amPmToString(date.getHours(), "tt"), regional)
+			.replace(/\x10042/g, $.ig.amPmToString(date.getHours(), "t"), regional)
+			.replace(/\x10043/g, $.ig.hoursToString(date.getHours(), "HH"))
+			.replace(/\x10044/g, $.ig.hoursToString(date.getHours(), "H"))
+			.replace(/\x10045/g, $.ig.hoursToString(date.getHours(), "hh"))
+			.replace(/\x10046/g, $.ig.hoursToString(date.getHours(), "h"));
+
+		mask = mask.replace(/\x10047/g, $.ig.monthToString(date.getMonth(), "MMMM"), regional)
+			.replace(/\x10048/g, $.ig.monthToString(date.getMonth(), "MMM"), regional)
+			.replace(/\x10049/g, $.ig.monthToString(date.getMonth(), "MM"), regional)
+			.replace(/\x10050/g, $.ig.monthToString(date.getMonth(), "M"), regional);
+
+		mask = mask.replace(/\x10051/g, $.ig.yearToString(date.getFullYear(), "yyyy"))
+			.replace(/\x10052/g, $.ig.yearToString(date.getFullYear(), "yy"))
+			.replace(/\x10053/g, $.ig.yearToString(date.getFullYear(), "y"));
+
+		// Restore original \\f,d,s,m,etc.
+		mask = mask.replace(/\x01/g, "g").replace(/\x02/g, "d").replace(/\x03/g, "s")
+			.replace(/\x04/g, "m").replace(/\x05/g, "t").replace(/\x06/g, "H")
+			.replace(/\x07/g, "h").replace(/\x08/g, "M").replace(/\x09/g, "y");
+
+		return mask;
 	};
 
 	$.ig.formatDates = function (val, d, format, enableUTCDates, dateOffset, reg) {

@@ -4632,7 +4632,8 @@
 			}
 		},
 		_validateDecimalMinMax: function() {
-			if (this._getOptionOrRegionalValue("minDecimals") > this._getOptionOrRegionalValue("maxDecimals")) {
+			if (this._getOptionOrRegionalValue("minDecimals") >
+				this._getOptionOrRegionalValue("maxDecimals")) {
 				this.options.maxDecimals = this._getOptionOrRegionalValue("minDecimals");
 			}
 		},
@@ -6185,7 +6186,8 @@
 			// value must be numeric
 			if (val !== "" && !isNaN(val)) {
 				// I.G. 11/1/2017 #695 '[igPercentEditor] Focusing the widget causes it's value to be multiplied by 10000 when using regional "de-DE"'
-				val = this._multiplyWithPrecision(parseFloat(val), this._getOptionOrRegionalValue("displayFactor"));
+				val = this._multiplyWithPrecision(parseFloat(val),
+					this._getOptionOrRegionalValue("displayFactor"));
 			}
 			return this._super(val);
 		},
@@ -8197,6 +8199,7 @@
 			var currentMaskValue = this._maskWithPrompts ?
 					this._maskWithPrompts :
 					this._parseValueByMask(""),
+				regional = this.options.regional,
 				dateObj, year, month, day, hours, minutes, seconds, milliseconds;
 			dateObj = newDate ? newDate : this._dateObjectValue;
 
@@ -8316,14 +8319,14 @@
 					if (this._dateIndices.ffLength === 1) {
 						currentMaskValue = this._replaceCharAt(currentMaskValue,
 							this._dateIndices.ff,
-							this._getMilliseconds(milliseconds, 100).toString());
+							$.ig.millisecondsToString(milliseconds, "fff", regional).toString());
 					} else if (this._dateIndices.ffLength === 2) {
 						currentMaskValue = this._replaceStringRange(currentMaskValue,
-							this._getMilliseconds(milliseconds, 10).toString(),
+							$.ig.millisecondsToString(milliseconds, "ff", regional).toString(),
 								this._dateIndices.ff, this._dateIndices.ff + 1);
 					} else {
 						currentMaskValue = this._replaceStringRange(currentMaskValue,
-							this._getMilliseconds(milliseconds, 1).toString(),
+							$.ig.millisecondsToString(milliseconds, "f", regional).toString(),
 								this._dateIndices.ff, this._dateIndices.ff + 2);
 					}
 				}
@@ -8340,14 +8343,13 @@
 		// This method is used to get indices of the date groups within the mask and to convert the date mask into a mask with digit flags valid for igMaskEditor
 		_convertDateMaskToDigitMask: function (mask) {
 			var x, i, j, flag = -1, txt = "", maskVal = mask;
-			if (!maskVal) {
-				maskVal = "";
-			}
-			maskVal = maskVal.replace("dddd", "ddd").replace("ddd,", "").replace("ddd ", "")
-						.replace(" ddd", "").replace("ddd", "");
 
 			this._dateIndices = {};
 			this._dateIndices.fourDigitYear = false;
+
+			if (!maskVal) {
+				maskVal = "";
+			}
 
 			// temporary replace \\f,d,s,m,etc. by \x01-\x09
 			maskVal = maskVal.replace(/\x08/g, " ").replace(/\x09/g, " ");
@@ -9164,6 +9166,13 @@
 			}
 			return newDate;
 		},
+		_getYearShift: function(date) {
+			var newDate;
+
+			newDate = new Date(date.getTime());
+			newDate.setFullYear(date.getFullYear() + this.options.yearShift);
+			return newDate;
+		},
 		_clearDateOffset: function(date) {
 			date.setUTCMinutes(date.getUTCMinutes() -
 				date.getTimezoneOffset() - this.options.displayTimeOffset);
@@ -9418,103 +9427,22 @@
 			return extractedDate;
 
 		},
-		_getDisplayValue: function (newDate) { //igDateEditor
-			var maskVal, dateObject = newDate ? newDate : this._dateObjectValue;
+		_getDisplayValue: function (date) { //igDateEditor
+			var dateObject = date ? date : this._dateObjectValue;
 
 			if (!dateObject) {
 				return "";
+			}
+
+			if (this.options.yearShift !== null) {
+				dateObject = this._getYearShift(dateObject);
 			}
 
 			if (this.options.displayTimeOffset !== null) {
 				dateObject = this._getDateOffset(dateObject);
 			}
 
-			maskVal = this.options.dateDisplayFormat;
-			maskVal = maskVal.replace(/\x08/g, " ").replace(/\x09/g, " ");
-			maskVal = maskVal.replace(/\\f/g, "\x01").replace(/\\d/g, "\x02")
-				.replace(/\\s/g, "\x03").replace(/\\m/g, "\x04").replace(/\\t/g, "\x05")
-				.replace(/\\H/g, "\x06").replace(/\\h/g, "\x07").replace(/\\M/g, "\x08")
-				.replace(/\\y/g, "\x09");
-
-			// 01-y,02-yy,03-yyyy,04-M,05-MM,06-MMM,07-MMMM,08-d,09-dd
-			// 10-h,11-hh,12-H,13-HH,14-t,15-tt,16-m,17-mm,18-s,19-ss
-			// 20-ddd,21-dddd,22-f,23-ff,24-fff
-			// Temporary remove 0 and 9, as they are valid mask flags
-			// maskVal = maskVal.replace(/9/g, "\x11").replace(/0/g, "\x12");
-
-			// Mark all flags as hexadecimal
-			maskVal = maskVal.replace(/fff/g, "\x10030")
-				.replace(/ff/g, "\x10031")
-				.replace(/f/g, "\x10032");
-
-			maskVal = maskVal.replace(/dddd/g, "\x10033")
-				.replace(/ddd/g, "\x10034")
-				.replace(/dd/g, "\x10035")
-				.replace(/d/g, "\x10036")
-				.replace(/ss/g, "\x10037")
-				.replace(/s/g, "\x10038")
-				.replace(/mm/g, "\x10039")
-				.replace(/m/g, "\x10040");
-			maskVal = maskVal.replace(/tt/g, "\x10041")
-				.replace(/t/g, "\x10042")
-				.replace(/HH/g, "\x10043")
-				.replace(/H/g, "\x10044")
-				.replace(/hh/g, "\x10045")
-				.replace(/h/g, "\x10046");
-			maskVal = maskVal.replace(/MMMM/g, "\x10047")
-				.replace(/MMM/g, "\x10048")
-				.replace(/MM/g, "\x10049")
-				.replace(/M/g, "\x10050");
-			maskVal = maskVal.replace(/yyyy/g, "\x10051")
-				.replace(/yy/g, "\x10052")
-				.replace(/y/g, "\x10053");
-
-			maskVal = maskVal.replace(/\x10030/g,
-				this._getMilliseconds(this._getDateField("Milliseconds", dateObject), 1))
-				.replace(/\x10031/g, this._getMilliseconds(this._getDateField("Milliseconds",
-					dateObject), 10))
-				.replace(/\x10032/g, this._getMilliseconds(this._getDateField("Milliseconds",
-					dateObject), 100));
-
-			maskVal = maskVal.replace(/\x10033/g,
-				this._getDay(this._getDateField("Day", dateObject), "dddd"))
-				.replace(/\x10034/g, this._getDay(this._getDateField("Day", dateObject), "ddd"))
-				.replace(/\x10035/g, this._getDate(this._getDateField("Date", dateObject), "dd"))
-				.replace(/\x10036/g, this._getDate(this._getDateField("Date", dateObject), "d"))
-				.replace(/\x10037/g,
-					this._getSeconds(this._getDateField("Seconds", dateObject), "ss"))
-				.replace(/\x10038/g,
-					this._getSeconds(this._getDateField("Seconds", dateObject), "s"))
-				.replace(/\x10039/g,
-					this._getMinutes(this._getDateField("Minutes", dateObject), "mm"))
-				.replace(/\x10040/g,
-					this._getMinutes(this._getDateField("Minutes", dateObject), "m"))
-
-				.replace(/\x10041/g,
-					this._getAMorPM(this._getDateField("Hours", dateObject), "tt"))
-				.replace(/\x10042/g, this._getAMorPM(this._getDateField("Hours", dateObject), "t"))
-				.replace(/\x10043/g, this._getHours(this._getDateField("Hours", dateObject), "HH"))
-				.replace(/\x10044/g, this._getHours(this._getDateField("Hours", dateObject), "H"))
-				.replace(/\x10045/g, this._getHours(this._getDateField("Hours", dateObject), "hh"))
-				.replace(/\x10046/g, this._getHours(this._getDateField("Hours", dateObject), "h"));
-
-			maskVal = maskVal.replace(/\x10047/g,
-				this._getMonth(this._getDateField("Month", dateObject), "MMMM"))
-				.replace(/\x10048/g, this._getMonth(this._getDateField("Month", dateObject), "MMM"))
-				.replace(/\x10049/g, this._getMonth(this._getDateField("Month", dateObject), "MM"))
-				.replace(/\x10050/g, this._getMonth(this._getDateField("Month", dateObject), "M"));
-
-			maskVal = maskVal.replace(/\x10051/g,
-				this._getYear(this._getDateField("FullYear", dateObject), "yyyy"))
-				.replace(/\x10052/g, this._getYear(this._getDateField("FullYear", dateObject), "yy"))
-				.replace(/\x10053/g, this._getYear(this._getDateField("FullYear", dateObject), "y"));
-
-			// Restore original \\f,d,s,m,etc.
-			maskVal = maskVal.replace(/\x01/g, "g").replace(/\x02/g, "d").replace(/\x03/g, "s")
-				.replace(/\x04/g, "m").replace(/\x05/g, "t").replace(/\x06/g, "H")
-				.replace(/\x07/g, "h").replace(/\x08/g, "M").replace(/\x09/g, "y");
-
-			return maskVal;
+			return $.ig.formatDate(this.options.dateDisplayFormat, dateObject, this.options.regional);
 		},
 		_valueFromText: function (text) { //igDateEditor
 			// TODO Verify
@@ -9539,182 +9467,6 @@
 				}
 			}
 			return dataModeValue;
-		},
-
-		// We use flag for different mask flags f milliseconds field in thousands, ff milliseconds field in tenths, fff milliseconds field in hundreds
-		_getMilliseconds: function (milliseconds, flag) {
-			var result = parseInt(milliseconds / flag).toString();
-			if (flag === 10) {
-				if (result.length !== 2) {
-					while (result.length < 2) {
-						result = "0" + result;
-					}
-				}
-			} else if (flag === 1) {
-
-				// Flag 1
-				if (result.length !== 3) {
-					while (result.length < 3) {
-						result = "0" + result;
-					}
-				}
-			}
-			return result;
-		},
-
-		// Flag values are dddd, ddd, dd, d - according to the
-		_getSeconds: function (seconds, flag) {
-			var result;
-			if (flag === "ss" && seconds < 10) {
-				result = "0" + seconds.toString();
-			} else {
-				result = seconds.toString();
-			}
-			return result;
-		},
-		_getMinutes: function (minutes, flag) {
-			var result;
-			if (flag === "mm" && minutes < 10) {
-				result = "0" + minutes.toString();
-			} else {
-				result = minutes.toString();
-			}
-			return result;
-		},
-
-		// Get before midday, or after middday
-		_getAMorPM: function (hours, flag) {
-			var result;
-			if (hours >= 12) {
-
-				// pm
-				result = this._getRegionalValue("pm");
-			} else {
-				result = this._getRegionalValue("am");
-			}
-			if (flag === "t") {
-				result = result.charAt(0);
-			}
-			return result;
-		},
-		_getHours: function (hours, flag) {
-			var result;
-			switch (flag) {
-				case "h": {
-					if (hours > 12) {
-						hours -= 12;
-					}
-
-					// N.A. 3/8/2016 Bug #215548: In 12 hour mode, there isn't 00:00 AM hour, it should be 12:00 AM.
-					if (hours === 0) {
-						hours = 12;
-					}
-					result = hours.toString();
-				}
-					break;
-				case "hh": {
-					if (hours > 12) {
-						hours -= 12;
-					}
-
-					// N.A. 3/8/2016 Bug #215548: In 12 hour mode, there isn't 00:00 AM hour, it should be 12:00 AM.
-					if (hours === 0) {
-						hours = 12;
-					}
-					if (hours < 10) {
-						result = "0" + hours.toString();
-					} else {
-						result = hours.toString();
-					}
-				}
-					break;
-				case "H": {
-					result = hours.toString();
-				}
-					break;
-				case "HH": {
-					if (hours < 10) {
-						result = "0" + hours.toString();
-					} else {
-						result = hours.toString();
-					}
-				}
-					break;
-
-			}
-			return result;
-		},
-		_getDate: function (date, flag) {
-			var result;
-			switch (flag) {
-				case "dd": {
-					if (date < 10) {
-						result = "0" + date.toString();
-					} else {
-						result = date;
-					}
-				}
-					break;
-				case "d": {
-					result = date.toString();
-				}
-					break;
-			}
-			return result;
-		},
-		_getDay: function (day, flag) {
-			var result;
-			switch (flag) {
-				case "dddd": {
-					result = this._getRegionalValue("dayNames")[ day ];
-				}
-					break;
-				case "ddd": {
-					result = this._getRegionalValue("dayNamesShort")[ day ];
-				}
-					break;
-			}
-			return result;
-		},
-		_getMonth: function (month, flag) {
-			var result;
-			switch (flag) {
-				case "MMMM": {
-					result = this._getRegionalValue("monthNames")[ month ];
-				}
-					break;
-				case "MMM": {
-					result = this._getRegionalValue("monthNamesShort")[ month ];
-				}
-					break;
-				case "MM": {
-					month++;
-					if (month < 10) {
-						result = "0" + month.toString();
-					} else {
-						result = month;
-					}
-				}
-					break;
-				case "M": {
-					month++;
-					result = month.toString();
-				}
-					break;
-			}
-			return result;
-		},
-		_getYear: function (year, flag) {
-			var result;
-			if (flag === "yy") {
-				result = year.toString().substring(2);
-			} else if (flag === "y") {
-				result = parseInt(year.toString().substring(2)).toString();
-			} else {
-				result = year.toString();
-			}
-			return result;
-
 		},
 		_handleBackSpaceKey: function () { //igDateEditor
 			var cursorPosition;
