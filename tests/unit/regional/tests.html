@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link type="text/css" href="../../../modules/igniteui/src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
-	<link type="text/css" href="../../../modules/igniteui/src/css/structure/modules/infragistics.ui.grid.css" rel="stylesheet" />
-	<link type="text/css" href="../../../modules/igniteui/src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
-	<link type="text/css" href="../../../modules/igniteui/src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
-	<link type="text/css" href="../../../modules/igniteui/src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
-	<link type="text/css" href="../../../modules/igniteui/src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
-	<link type="text/css" href="../../../modules/igniteui/src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
-	<link type="text/css" href="../../../modules/igniteui/src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.grid.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.editors.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
 	<link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 
 	<script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
@@ -16,31 +16,66 @@
 	<script type="text/javascript" src="../../../bower_components/jquery-ui/jquery-ui.js"></script>
 	<script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
 
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/i18n/infragistics.dataSource-en.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.dataSource-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.util.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.util.jquery.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.dataSource.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.templating.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.ui.widget.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.ui.shared.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.dataSource.js"></script>
-	<script type="text/javascript" src="../../../Source/ClientUI/js/modules/i18n/infragistics.ui.grid-en.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.ui.popover.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.ui.editors.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.ui.notifier.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.ui.validator.js"></script>
-	<script type="text/javascript" src="../../../modules/igniteui/src/js/modules/infragistics.ui.combo.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.dataSource.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.templating.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.dataSource.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.notifier.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.validator.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.combo.js"></script>
 
 	<script type="text/javascript">
-		module("Runtime locale changes", {
+	$(function () {
+		var comboDS = [
+			{ ID: 1, Name: "John", Salary: 2600, HireDate: new Date ("08/01/2017") },
+			{ ID: 2, Name: "Mary", Salary: 600, HireDate: new Date ("08/15/2017") },
+			{ ID: 3, Name: "Maya", Salary: 300, HireDate: new Date ("12/23/2013") },
+			{ ID: 4, Name: "Bob", Salary: 800, HireDate: new Date ("04/14/2010") },
+			{ ID: 5, Name: "Vasya", Salary: 5000, HireDate: new Date ("12/10/2013") },
+			{ ID: 6, Name: "Gery", Salary: 1500, HireDate: new Date ("05/13/2012") },
+			{ ID: 7, Name: "Tsanna", Salary: 5000, HireDate: new Date ("02/11/2013") },
+			{ ID: 8, Name: "Nadya", Salary: 3500, HireDate: new Date ("03/29/2010") }
+		];
+		$("#comboDateRegional").igCombo({
+				dataSource: comboDS,
+				format : "dateLong",
+				textKey: 'HireDate',
+				valueKey: 'ID',
+				regional: "de"
+			});
+		$("#comboNumericRegional").igCombo({
+			dataSource: comboDS,
+			format : "currency",
+			textKey: 'Salary',
+			valueKey: 'ID'
+		});
+		module("Runtime regional changes", {
 			setup: function() {},
 			teardown: function() {}
 		});
-		test("Loading correct regional when setting regional option", 1, function () {
-			ok(true, true);
-		})
+		test("Loading correct regional in combo for date field", 3, function () {
+			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "Dienstag, 1. August 2017");
+			$("#comboDateRegional").igCombo("option", "regional", "bg");
+			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "01 Август 2017 г.");
+			$("#comboDateRegional").igCombo("option", "regional", "ja");
+			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "2017年8月1日");
+		});
+		test("Loading correct regional in combo for numeric field", 3, function () {
+			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "$2,600.00");
+			$("#comboNumericRegional").igCombo("option", "regional", "bg");
+			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "2 600,00 лв");
+			$("#comboNumericRegional").igCombo("option", "regional", "ja");
+			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "¥2,600");
+		});
+	});
 	</script>
 	<style type="text/css">
 	</style>
@@ -53,6 +88,9 @@
 		<ol id="qunit-tests"></ol>
 	</div>
 	<div style="float: left;" id="testbed">
+		<input id="comboDateRegional" />
+		<br />
+		<input id="comboNumericRegional" />
 	</div>
 </body>
 </html>
