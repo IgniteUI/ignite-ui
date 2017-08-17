@@ -367,8 +367,8 @@
 			.replace(/\x10031/g, $.ig.millisecondsToString(date.getMilliseconds(), "ff"))
 			.replace(/\x10032/g, $.ig.millisecondsToString(date.getMilliseconds(), "fff"));
 
-		mask = mask.replace(/\x10033/g, $.ig.dayToString(date.getDay(), "dddd"), regional)
-			.replace(/\x10034/g, $.ig.dayToString(date.getDay(), "ddd"), regional)
+		mask = mask.replace(/\x10033/g, $.ig.dayToString(date.getDay(), "dddd", regional))
+			.replace(/\x10034/g, $.ig.dayToString(date.getDay(), "ddd", regional))
 			.replace(/\x10035/g, $.ig.dateToString(date.getDate(), "dd"))
 			.replace(/\x10036/g, $.ig.dateToString(date.getDate(), "d"))
 			.replace(/\x10037/g, $.ig.secondsToString(date.getSeconds(), "ss"))
@@ -376,17 +376,17 @@
 			.replace(/\x10039/g, $.ig.minutesToString(date.getMinutes(), "mm"))
 			.replace(/\x10040/g, $.ig.minutesToString(date.getMinutes(), "m"))
 
-			.replace(/\x10041/g, $.ig.amPmToString(date.getHours(), "tt"), regional)
-			.replace(/\x10042/g, $.ig.amPmToString(date.getHours(), "t"), regional)
+			.replace(/\x10041/g, $.ig.amPmToString(date.getHours(), "tt", regional))
+			.replace(/\x10042/g, $.ig.amPmToString(date.getHours(), "t", regional))
 			.replace(/\x10043/g, $.ig.hoursToString(date.getHours(), "HH"))
 			.replace(/\x10044/g, $.ig.hoursToString(date.getHours(), "H"))
 			.replace(/\x10045/g, $.ig.hoursToString(date.getHours(), "hh"))
 			.replace(/\x10046/g, $.ig.hoursToString(date.getHours(), "h"));
 
-		mask = mask.replace(/\x10047/g, $.ig.monthToString(date.getMonth(), "MMMM"), regional)
-			.replace(/\x10048/g, $.ig.monthToString(date.getMonth(), "MMM"), regional)
-			.replace(/\x10049/g, $.ig.monthToString(date.getMonth(), "MM"), regional)
-			.replace(/\x10050/g, $.ig.monthToString(date.getMonth(), "M"), regional);
+		mask = mask.replace(/\x10047/g, $.ig.monthToString(date.getMonth(), "MMMM", regional))
+			.replace(/\x10048/g, $.ig.monthToString(date.getMonth(), "MMM", regional))
+			.replace(/\x10049/g, $.ig.monthToString(date.getMonth(), "MM", regional))
+			.replace(/\x10050/g, $.ig.monthToString(date.getMonth(), "M", regional));
 
 		mask = mask.replace(/\x10051/g, $.ig.yearToString(date.getFullYear(), "yyyy"))
 			.replace(/\x10052/g, $.ig.yearToString(date.getFullYear(), "yy"))

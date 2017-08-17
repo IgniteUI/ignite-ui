@@ -4451,7 +4451,7 @@
 
 			// D.P. 8th Aug 2017 #793 Should not initialize with wrong decimal values.
 			this._validateDecimalSettings();
-			this._verifyRegionalSettings();
+			this._validateRegionalSettings();
 			this._applyDataModeSettings();
 			var numericChars = "0123456789", dataMode = this.options.dataMode;
 
@@ -4521,7 +4521,7 @@
 			}
 			return result;
 		},
-		_verifyRegionalSettings: $.noop,
+		_validateRegionalSettings: $.noop,
 		_getOptionOrRegionalValue: function (name) { //Numeric
 			var regName;
 			if (name === "negativeSign" || name === "percentSymbol" ||
@@ -6134,7 +6134,7 @@
 			this._setSpinButtonsState(newValue / displayFactor);
 			this._processTextChanged();
 		},
-		_verifyRegionalSettings: function () { //Percent
+		_validateRegionalSettings: function () { //Percent
 
 			if (this.options.displayFactor !== null) {
 				if (typeof this._getOptionOrRegionalValue("displayFactor") !== "number") {
@@ -7879,7 +7879,7 @@
 		_initialize: function () {
 			var offset = this.options.displayTimeOffset;
 			this._super();
-			this._verifyRegionalSettings();
+			this._validateRegionalSettings();
 			this.options.inputMask =
 				this._convertDateMaskToDigitMask(this.options.dateInputFormat);
 			this._setNumericType();
@@ -7945,7 +7945,7 @@
 				break;
 			}
 		},
-		_verifyRegionalSettings: function () { //DateEditor
+		_validateRegionalSettings: function () { //DateEditor
 			var format;
 			if (this.options.dateInputFormat !== null) {
 				format = this.options.dateInputFormat;
@@ -7965,6 +7965,12 @@
 			} else {
 				this.options.dateDisplayFormat = this.options.dateInputFormat;
 			}
+		},
+		_changeRegional: function() {
+			this._initialize();
+			this._updateValue(this._dateObjectValue);
+			this._updateMaskedValue();
+			this._super();
 		},
 		_setInitialValue: function (value) { //igDateEditor
 			this._maskWithPrompts = this._parseValueByMask("");
