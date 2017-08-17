@@ -2920,8 +2920,8 @@
 				// Test when spinDelta is an object and has invalid values.
 				var errorType = $.ig.Editor.locale.spinDeltaIsOfTypeNumberForPeriod,
 					errorRange = $.ig.Editor.locale.spinDeltaShouldBeInRange;
-				spinData = [ [ { years: -5 }, errorRange, "years", 10 ], [ { months: "two" }, errorType, "months", 12 ],
-							[ { days: 31 }, errorRange, "days", 28 ], [ { hours: "five o'clock" }, errorType, "hours", 12 ],
+				spinData = [ [ { year: -5 }, errorRange, "year", 10 ], [ { month: "two" }, errorType, "month", 12 ],
+							[ { day: 31 }, errorRange, "day", 28 ], [ { hours: "five o'clock" }, errorType, "hours", 12 ],
 							[ { minutes: 61 }, errorRange, "minutes", 60 ], [ { seconds: null }, errorType, "seconds", 60 ],
 							[ { milliseconds: -100 }, errorRange, "milliseconds", 1000 ]];
 				for (index = 0; index < spinData.length; index++) {
@@ -2939,9 +2939,9 @@
 
 				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
 					spinDelta: {
-						years: 4,
-						months: 3,
-						days: 10,
+						year: 4,
+						month: 3,
+						day: 10,
 						hours: 12,
 						minutes: 15,
 						seconds: 10,
@@ -3017,12 +3017,12 @@
 
 				// Setting runtime spinDelta as object
 				throws( function () {
-					$dtEditor.igDateEditor("option", "spinDelta", { days: -3 });
+					$dtEditor.igDateEditor("option", "spinDelta", { day: -3 });
 				}, 'Wrong spinDelta value is not thrown');
-				equal($dtEditor.igDateEditor("option", "spinDelta").days, 10, "Spin delta should be reverted.");
-				equal($dtEditor.igDateEditor("option", "spinDelta").months, 3, "Spin delta should be reverted.");
+				equal($dtEditor.igDateEditor("option", "spinDelta").day, 10, "Spin delta should be reverted.");
+				equal($dtEditor.igDateEditor("option", "spinDelta").month, 3, "Spin delta should be reverted.");
 				
-				$dtEditor.igDateEditor("option", "spinDelta", { days: 3 });
+				$dtEditor.igDateEditor("option", "spinDelta", { day: 3 });
 				// Spin display mode
 				var oldDate = $dtEditor.igDateEditor("value").getDate();
 				clickElement(spinUpButton, false, false);
@@ -3082,7 +3082,7 @@
 				}, {
 					config: {
 						dateInputFormat: "dd",
-						spinDelta: { days: 7 }
+						spinDelta: { day: 7 }
 					},
 					expRes: [{
 						display: "18", value: 18
@@ -3093,7 +3093,7 @@
 				}, {
 					config: {
 						dateInputFormat: "MM",
-						spinDelta: { months: 3 }
+						spinDelta: { month: 3 }
 					},
 					expRes: [{
 						display: "04", value: 3
@@ -3104,7 +3104,7 @@
 				}, {
 					config: {
 						dateInputFormat: "yy",
-						spinDelta: { years: 4 }
+						spinDelta: { year: 4 }
 					},
 					expRes: [{
 						display: "21", value: 2021
@@ -3115,7 +3115,7 @@
 				}, {
 					config: {
 						dateInputFormat: "yyyy",
-						spinDelta: { years: 4 }
+						spinDelta: { year: 4 }
 					},
 					expRes: [{
 						display: "2021", value: 2021
