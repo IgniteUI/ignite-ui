@@ -41,7 +41,7 @@
 					var testbedIDs = testbedID || ["1090", "208808", "209067", "209174", "209912", "209641", "209696",
 						"208809", "208887", "209012", "208350", "208356", "208448", "208036",
 						"208264", "210971", "211010", "211062", "210990", "210106", "211575",
-					"208274", "207546", "207321", "212596", "212374", "212642", "215549", "217214", "216789",
+					"208274", "207546", "207321", "212596", "212374", "212642", "217214", "216789",
 					"218836", "218752", "220479", "220712", "221118", "221494", "221300", "98", "223245", "264", "226", "446", "539", "655", "646", "695", "876", "809", "942"];
 
 					for (var i = 0; i < testbedIDs.length; i++) {
@@ -277,10 +277,6 @@
 					$('#212642Editor1').igDateEditor({
 						dateInputFormat: "yyyy/MM/dd"
 					});
-				}
-
-				window.Bug215549Testbed = function () {
-					$('#215549Editor1').igDatePicker();
 				}
 
 				window.Bug217214Testbed = function () {
@@ -989,14 +985,6 @@
 				equal($('#212642Editor1').igDateEditor("field").val(), "111/10/10", "The value should be \"111/10/10\"");
 				$('#212642Editor1').data("igDateEditor")._enterEditMode();
 				equal($('#212642Editor1').igDateEditor("field").val(), "0111/10/10", "The value should be \"111/10/10\"");
-			});
-			
-			testId = 'Bug 215549';
-			test(testId, 1, function () {
-
-				ok($('#215549Editor1').data("igDatePicker")._dropDownList.hasClass("ui-igedit-dropdown-orientation-bottom"), "The dropDownContainer should be with ui-igedit-dropdown-orientation-bottom class applied");
-				
-				
 			});
 
 			testId = 'Bug 217214';
@@ -1737,7 +1725,6 @@
 
 		
 		<input id="212642Editor1" type="text" value="2015/05/01" />
-		<input id="215549Editor1" type="text" />
 		<input id="217214Editor1" type="text" />
 		
 		

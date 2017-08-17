@@ -185,10 +185,10 @@
 					//Initialize
 					$(".selector").%%WidgetName%%({
 						validatorOptions : {
-						   successMessage: "Success",
+							successMessage: "Success",
 									 required: true,
 									 onchange: true,
-						   notificationOptions: { mode: "popover" }
+							notificationOptions: { mode: "popover" }
 						}
 					});
 
@@ -3441,7 +3441,6 @@
 			var direction;
 			this._positionDropDownList();
 			if (this._dropDownListOrientation === "up") {
-
 				// We need this parameter as part of blind animation we're using
 				direction = "down";
 			} else {
@@ -4448,9 +4447,12 @@
 		},
 		_initialize: function () {
 			this._super();
+			this._setNumericType();
+
+			// D.P. 8th Aug 2017 #793 Should not initialize with wrong decimal values.
+			this._validateDecimalSettings();
 			this._verifyRegionalSettings();
 			this._applyDataModeSettings();
-			this._setNumericType();
 			var numericChars = "0123456789", dataMode = this.options.dataMode;
 
 			// Allow decimal separator as a char.
@@ -4540,8 +4542,6 @@
 			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
-
-			this._validateDecimalSettings();
 			this._super();
 			this._validateSpinSettings();
 
@@ -10887,6 +10887,10 @@
 				}
 			}
 		},
+
+		// I.G. 09/08/2017 #1037 [igDatePicker] initialization optimization - call overided _positionDropDownList.
+		_positionDropDownList: function () { // igDatePicker
+		},
 		_setOption: function (option, value) { // igDatePicker
 			/* igPercentEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
@@ -11044,8 +11048,7 @@
 			var self = this, direction, currentDate = this._dateObjectValue, currentInputValue;
 			this._cancelBlurDatePickerOpen = true;
 			this._positionDropDownList();
-			if (this._dropDownListOrientation === "up") {
-
+			if (this.options.dropDownOrientation  === "top") {
 				//We need this parameter as part of blind animation we're using
 				direction = "up";
 			} else {
