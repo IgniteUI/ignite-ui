@@ -2743,7 +2743,8 @@
 				"compositionend.editor": function () {
 					setTimeout(function () {
 						var value, pastedValue, widgetName = self.widgetName,
-							cursorPosition = self._getCursorPosition();
+							cursorPosition = self._getCursorPosition(),
+							selection = { start: cursorPosition, end: cursorPosition };
 
 						// In that case blur event is triggered before the composition end and the editor has already processed the change.
 						if (self._focused !== true) {
@@ -2765,6 +2766,11 @@
 									pastedValue = value = self._parseValueByMask(value);
 									if (value !== self._maskWithPrompts) {
 										value = self._parseDateFromMaskedValue(value);
+									} else if (self.options.revertIfNotValid) {
+										//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
+										pastedValue = value = self._maskedValue;
+										selection.start = 0;
+										selection.end = value.length;
 									}
 								}
 								break;
@@ -2781,8 +2787,7 @@
 						}
 
 						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
-						self._insert(pastedValue, self._compositionStartValue);
-						self._setCursorPosition(cursorPosition);
+						self._insert(pastedValue, self._compositionStartValue, selection);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -4459,6 +4464,9 @@
 		},
 		_initialize: function () {
 			this._super();
+
+			// D.P. 8th Aug 2017 #793 Should not initialize with wrong decimal values.
+			this._validateDecimalSettings();
 			this._applyRegionalSettings();
 			this._applyDataModeSettings();
 			this._setNumericType();
@@ -4558,8 +4566,6 @@
 			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
-
-			this._validateDecimalSettings();
 			this._super();
 			this._validateSpinSettings();
 
