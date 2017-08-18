@@ -10132,7 +10132,7 @@
 							dayUpdateDelta = true;
 						}
 					}
-					if (delta < 0 && newHour < 12 && newHour - delta >= 12) {
+					if (delta < 0 && newHour <= 12 && newHour - delta >= 12) {
 						dayDelta = (delta !== 0) ? -1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "am") {

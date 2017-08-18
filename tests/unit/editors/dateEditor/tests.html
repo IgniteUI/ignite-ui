@@ -2916,7 +2916,7 @@
 			});
 
 			var testId = 'Spin delta as an object';
-			test(testId, 22, function () {
+			test(testId, 24, function () {
 				// Test when spinDelta is an object and has invalid values.
 				var errorType = $.ig.Editor.locale.spinDeltaIsOfTypeNumberForPeriod,
 					errorRange = $.ig.Editor.locale.spinDeltaShouldBeInRange;
@@ -3094,8 +3094,34 @@
 				expDate = new Date("2017-01-11T01:01:01.001Z"); //Expected date after spin // Date before spin of every period is new Date("2017-01-11T01:01:01.001Z");
 				actDate = $dtEditor.igDateEditor("value"); //Actual date after spin
 				ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
-
 				$dtEditor.remove();
+
+				$dtEditor = $('<input/>').appendTo("#testBedContainer").igDateEditor({
+					value: new Date(2017, 11, 8),
+					dataMode: "date",
+					dateInputFormat: "dateTime",
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					},
+					buttonType: "spin"
+				});
+				spinUpButton = $dtEditor.igDateEditor("spinUpButton");
+				spinDownButton = $dtEditor.igDateEditor("spinDownButton");
+				
+				// Spin up edit mode
+				$dtEditor.igDateEditor("setFocus");
+				$dtEditor.data("igDateEditor")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:00 PM", "Display is properly updated after spinining");
+				clickElement(spinDownButton, false, false);
+				equal($dtEditor.igDateEditor("field").val(), "12/08/2017 12:00 AM", "Display is properly updated after spinining");
+				$dtEditor.trigger("blur").remove();
 			});
 
 			var testId = 'Spin delta as an object in edit mode with different masks';

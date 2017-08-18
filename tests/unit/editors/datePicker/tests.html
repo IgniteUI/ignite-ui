@@ -846,7 +846,7 @@
 			});
 
 			var testId = 'Spin delta as an object';
-			test(testId, 20, function () {
+			test(testId, 22, function () {
 				// Test when spinDelta is an object and has invalid values.
 				var errorType = $.ig.Editor.locale.spinDeltaIsOfTypeNumberForPeriod,
 					errorRange = $.ig.Editor.locale.spinDeltaShouldBeInRange;
@@ -967,8 +967,34 @@
 				clickElement(spinUpButton, false, false);
 				var newDate = $dtPicker.igDatePicker("value").getDate();
 				equal(oldDate, newDate, "Day is updated with 3");
-
 				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date(2017, 11, 8),
+					dataMode: "date",
+					dateInputFormat: "dateTime",
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					},
+					buttonType: "spin"
+				});
+				spinUpButton = $dtPicker.igDatePicker("spinUpButton");
+				spinDownButton = $dtPicker.igDatePicker("spinDownButton");
+				
+				// Spin up edit mode
+				$dtPicker.igDatePicker("setFocus");
+				$dtPicker.data("igDatePicker")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				equal($dtPicker.igDatePicker("field").val(), "12/08/2017 12:00 PM", "Display is properly updated after spinining");
+				clickElement(spinDownButton, false, false);
+				equal($dtPicker.igDatePicker("field").val(), "12/08/2017 12:00 AM", "Display is properly updated after spinining");
+				$dtPicker.trigger("blur").remove();
 			});
 
 			var testId = 'Spin delta as an object in edit mode with different masks';
