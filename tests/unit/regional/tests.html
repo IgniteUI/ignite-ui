@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8" /> 
 	<link type="text/css" href="../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.grid.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
@@ -62,18 +63,18 @@
 			teardown: function() {}
 		});
 		test("Loading correct regional in combo for date field", 3, function () {
-			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "Dienstag, 1. August 2017");
+			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "Dienstag, 1. August 2017", "Date field should be with german regional settings");
 			$("#comboDateRegional").igCombo("option", "regional", "bg");
-			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "01 Август 2017 г.");
+			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "01 Август 2017 г.", "Date field should be with bulgarian regional settings");
 			$("#comboDateRegional").igCombo("option", "regional", "ja");
-			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "2017年8月1日");
+			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "2017年8月1日", "Date field should be with japanese regional settings");
 		});
 		test("Loading correct regional in combo for numeric field", 3, function () {
-			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "$2,600.00");
+			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "$2,600.00", "Numeric field should be with default regional settings");
 			$("#comboNumericRegional").igCombo("option", "regional", "bg");
-			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "2 600,00 лв");
+			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "2 600,00 лв", "Numeric field should be with bulgarian regional settings");
 			$("#comboNumericRegional").igCombo("option", "regional", "ja");
-			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "¥2,600");
+			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "¥2,600", "Numeric field should be with japanese regional settings");
 		});
 	});
 	</script>
