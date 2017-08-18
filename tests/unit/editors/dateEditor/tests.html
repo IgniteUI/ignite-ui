@@ -3451,6 +3451,35 @@
 					$dtEditor.trigger("blur").remove();
 				}
 			});
+
+			var testId = 'Test invalid composition value';
+			test(testId, 3, function () {
+				var $editor =  $("<input/>").appendTo("#testBedContainer")
+					.igDateEditor({
+						value: new Date(2015, 04, 01)
+					});
+				$field = $editor.igDateEditor("field");
+
+				$field.focus();
+				$field[0].setSelectionRange(0,5);
+				var composition = jQuery.Event("compositionstart");
+				$field.trigger(composition);
+				var compositionupdate = jQuery.Event("compositionupdate");
+				$field.val("あいうえお");
+				$field[0].setSelectionRange(5,5);
+				$field.trigger(compositionupdate);
+				var compositionend = jQuery.Event("compositionend");
+				$field.trigger(compositionend);
+				stop();
+				setTimeout(function () {
+					start();
+					equal($field.val(), "05/01/2015", "Text should remain on invalid composition value.");
+					ok($field[0].selectionStart === 0 && $field[0].selectionEnd === 10, "Entire value should be selected.");
+					$field.blur();
+					equal($editor.igDateEditor("value") && $editor.igDateEditor("value").getTime(), new Date(2015, 04, 01).getTime(), "value did not stay the same");
+					$editor.remove();
+				}, 0);
+			});
 		});
 
 		// function emulateKeyBoard(key, ctrl, shift, alt, element) {
