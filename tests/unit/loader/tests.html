@@ -113,8 +113,93 @@
 					}
 				});
 			});
+			
+			test("test 3: Test load resources with multiple locales", function(){
+				stop();
+                var scripts, actualPaths = [],
+                    expectedScripts = [
+						 "infragistics.util-ja.js",
+                        "infragistics.templating-ja.js",
+                        "infragistics.shared-ja.js",
+                        "infragistics.ui.rating-ja.js",
+                        "infragistics.datasource-ja.js",
+						"infragistics.util-en.js",
+                        "infragistics.templating-en.js",
+                        "infragistics.shared-en.js",
+                        "infragistics.ui.rating-en.js",
+                        "infragistics.datasource-en.js",
+						"infragistics.util-de.js",
+                        "infragistics.templating-de.js",
+                        "infragistics.shared-de.js",
+                        "infragistics.ui.rating-de.js",
+                        "infragistics.datasource-de.js",
+                        "infragistics.util-fr.js",
+                        "infragistics.templating-fr.js",
+                        "infragistics.shared-fr.js",
+                        "infragistics.ui.rating-fr.js",
+                        "infragistics.datasource-fr.js",
+                        "infragistics.templating.js",
+                        "infragistics.ui.shared.js",
+                        "infragistics.ui.rating.js",
+                        "infragistics.datasource.js",
+                        "infragistics.ui.layoutmanager.js",
+                        "infragistics.ui.zoombar-fr.js",
+                        "infragistics.ui.splitter-fr.js",
+                        "infragistics.ui.zoombar.js",
+                        "infragistics.ui.splitter.js",
+                        "infragistics.ui.tilemanager-fr.js",
+                        "infragistics.ui.tilemanager.js",
+                        "infragistics.theme.css",
+                        "infragistics.ui.shared.css",
+                        "infragistics.ui.rating.css",
+                        "infragistics.ui.layout.css",
+                        "infragistics.ui.splitter.css",
+                        "infragistics.ui.tilemanager.css",
+                        "infragistics.ui.zoombar.css"];
+					
+					cleanScripts();
+					$.ig.loader({
+                    scriptPath: jsPath,
+                    cssPath: cssPath,
+                    resources: "igTemplating, igShared, igRating, igTileManager, igZoombar",
+					locale: 'en, fr, ja, de',
+                    ready: function () {
+						start();
+                        resourcesLoaded(expectedScripts);
+					}
+				});
+			});
+			
+			test("test 4: Test load resources with multiple regionals", function(){
+				stop();
+                var scripts, actualPaths = [],
+                    expectedScripts = [
+						"infragistics.ui.regional-en.js",
+						"infragistics.ui.regional-fr.js",
+						"infragistics.ui.regional-ja.js",
+						"infragistics.ui.regional-de.js"
+					];
+					
+					cleanScripts();
+					$.ig.loader({
+                    scriptPath: jsPath,
+                    cssPath: cssPath,
+                    resources: "igEditors",
+					regional: 'en, fr, ja, de',
+                    ready: function () {
+						start();
+                        resourcesLoaded(expectedScripts);
+					}
+				});
+			});
         });
-
+		function cleanScripts(){
+			$(document).find("head > script").each(function(){
+				if (this.src.indexOf("ignite-ui/src/js/") > 0 && this.src.indexOf("src/js/infragistics.loader.js") === -1) {
+					$(this).remove();
+				}
+			});
+		}
         function resourcesLoaded(expectedResources){
             //check if expected resources are loaded
             var scripts = $(document).find("head > script"), actualPaths = [];
