@@ -7946,28 +7946,35 @@
 			}
 		},
 		_validateRegionalSettings: function () { //DateEditor
-			var format;
 			if (this.options.dateInputFormat !== null) {
-				format = this.options.dateInputFormat;
-				if (format === "date" || format === "dateLong" || format === "dateTime" ||
-					format === "time" || format === "timeLong") {
-					this.options.dateInputFormat = this._getRegionalValue(format + "Pattern");
+				if (this._inputFormat === undefined) {
+					this._inputFormat = this.options.dateInputFormat;
+				}
+				if (this._inputFormat === "date" || this._inputFormat === "dateLong" ||
+					this._inputFormat === "dateTime" || this._inputFormat === "time" ||
+					this._inputFormat === "timeLong") {
+					this.options.dateInputFormat = this._getRegionalValue(this._inputFormat + "Pattern");
 				}
 			} else {
 				this.options.dateInputFormat = this._getRegionalValue("datePattern");
 			}
 			if (this.options.dateDisplayFormat !== null) {
-				format = this.options.dateDisplayFormat;
-				if (format === "date" || format === "dateLong" || format === "dateTime" ||
-					format === "time" || format === "timeLong") {
-					this.options.dateDisplayFormat = this._getRegionalValue(format + "Pattern");
+				if (this._dispalyFormat === undefined) {
+					this._dispalyFormat = this.options.dateDisplayFormat;
+				}
+				if (this._dispalyFormat === "date" || this._dispalyFormat === "dateLong" ||
+					this._dispalyFormat === "dateTime" || this._dispalyFormat === "time" ||
+					this._dispalyFormat === "timeLong") {
+					this.options.dateDisplayFormat = this._getRegionalValue(this._dispalyFormat + "Pattern");
 				}
 			} else {
 				this.options.dateDisplayFormat = this.options.dateInputFormat;
+				this._dispalyFormat = this._inputFormat;
 			}
 		},
 		_changeRegional: function() {
 			this._initialize();
+			this._applyOptions();
 			this._updateValue(this._dateObjectValue);
 			this._updateMaskedValue();
 			this._super();
@@ -10451,6 +10458,11 @@
 			}
 			this._skipMessages = false;
 			return valid;
+		},
+		_deleteInternalProperties: function () {
+			delete this._inputFormat;
+			delete this._displayFormat;
+			this._super();
 		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownButton: function () {

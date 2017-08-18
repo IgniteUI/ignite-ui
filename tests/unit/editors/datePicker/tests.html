@@ -14,6 +14,9 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-ja.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
@@ -22,6 +25,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.popover.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -843,6 +847,21 @@
 				$input.blur();
 				ok(!$input.is(":focus"), "The input should not be focused");
 				$editor.remove();
+			});
+
+			testId = 'Runtime changes for local and regional options';
+			test(testId, 5, function () {
+				var $editor = $("<input/>").appendTo("#testBedContainer").igDatePicker({ dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) });
+
+				equal($editor.igDatePicker("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
+				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.en.Editor.datePickerButtonTitle, "Title of the button should be in English");
+				$editor.igDatePicker("option", "language", "ja");
+				equal($editor.igDatePicker("dropDownButton").attr("title"), $.ig.locale.ja.Editor.datePickerButtonTitle, "Title of the button should be in Japanese");
+				$editor.igDatePicker("option", "regional", "ja");
+				equal($editor.igDatePicker("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
+				$editor.igDatePicker("setFocus");
+				equal($editor.igDatePicker("field").val(), "2017/08/18 18:06", "Input Format should be in German");
+				$editor.trigger("blur").remove();
 			});
 	    });
 		function mouseInteraction(type, element) {

@@ -17,6 +17,9 @@
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-en.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.validator-en.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.popover-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.notifier-ja.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/infragistics.ui.editors-ja.js"></script>
 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.js"></script>
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.util.jquery.js"></script>
@@ -27,6 +30,7 @@
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.notifier.js"></script>                                     
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.validator.js"></script> 
 	<script type="text/javascript" src="../../../../src/js/modules/infragistics.ui.editors.js"></script>
+	<script type="text/javascript" src="../../../../src/js/modules/i18n/regional/infragistics.ui.regional-i18n.js"></script>
 	
 	<link type="text/css" href="../../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" /> 
 	<script type="text/javascript" src="../../../../bower_components/qunit/qunit/qunit.js"></script>
@@ -3450,6 +3454,21 @@
 					equal($dtEditor.igDateEditor("field").val(), currData.expRes[1].display, 'The display is not as expected');
 					$dtEditor.trigger("blur").remove();
 				}
+			});
+
+			testId = 'Runtime changes for local and regional options';
+			test(testId, 5, function () {
+				var $editor = $("<input/>").appendTo("#testBedContainer").igDateEditor({ buttonType: "spin", dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) });
+
+				equal($editor.igDateEditor("displayValue"), "8/18/2017 6:06 PM", "Format should be in English");
+				equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.en.Editor.spinUpperTitle, "Title of the button should be in English");
+				$editor.igDateEditor("option", "language", "ja");
+				equal($editor.igDateEditor("spinUpButton").attr("title"), $.ig.locale.ja.Editor.spinUpperTitle, "Title of the button should be in Japanese");
+				$editor.igDateEditor("option", "regional", "ja");
+				equal($editor.igDateEditor("displayValue"), "2017/08/18 18:06", "Display Format should be in German");
+				$editor.igDateEditor("setFocus");
+				equal($editor.igDateEditor("field").val(), "2017/08/18 18:06", "Input Format should be in German");
+				$editor.trigger("blur").remove();
 			});
 		});
 
