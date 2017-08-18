@@ -8119,8 +8119,8 @@
 					hours: this._dateIndices.hh24 ? 24 : 12, minutes: 60,
 					seconds: 60, milliseconds: 1000 };
 
-				for (key in delta) {
-					if (delta.hasOwnProperty(key)) {
+				for (key in deltaRanges) {
+					if (deltaRanges.hasOwnProperty(key)) {
 						this._validateSpinSettingsForTimePeriod(key, deltaRanges[ key ]);
 					}
 				}
@@ -8130,6 +8130,11 @@
 		},
 		_validateSpinSettingsForTimePeriod: function(name, maxRange) {
 			var delta = this.options.spinDelta[ name ];
+
+			if (delta === undefined) {
+				this.options.spinDelta[ name ] = 1;
+				return;
+			}
 
 			if (typeof delta !== "number") {
 				throw new Error($.ig.util.stringFormat(
@@ -8208,9 +8213,7 @@
 			return revDelta;
 		},
 		_getDelta: function(delta, name) {
-			return (typeof delta === "object") ?
-				delta[ name ] !== undefined ? delta[ name ] : 1 :
-				delta;
+			return (typeof delta === "object") ? delta[ name ] : delta;
 		},
 		_serializeDate: function (sDate) {
 			if (this.options.dataMode === "date") {
