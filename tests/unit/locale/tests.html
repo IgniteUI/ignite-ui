@@ -12,6 +12,7 @@
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.validator.css" rel="stylesheet" />
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.dialog.css" rel="stylesheet" />
     <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 
     <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
@@ -39,6 +40,8 @@
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.splitter-en.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.datasource-de.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.combo-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.combo-ja.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.combo-es.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.notifier-de.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.tree-de.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.popover-de.js"></script>
@@ -56,6 +59,12 @@
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.layoutmanager.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.tilemanager.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitter.js"></script>
+
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-ja.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-es.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.dialog.js"></script>
 
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
 
@@ -233,6 +242,95 @@
 			equal($("#tree").data("igTree")._getLocaleValue("invalidArgumentType"), $.ig.locale.de.Tree.invalidArgumentType, "_getLocaleValue returned wrong after setting global language.");
 			equal($("#tilemanager").data("igTileManager")._getLocaleValue("setOptionItemsLengthError"), $.ig.locale.de.TileManager.setOptionItemsLengthError, "_getLocaleValue returned wrong after setting global language.");
 		});
+
+		test("Change language - combo ui tests.", 24, function () {
+			var combo = $("<div></div>").attr("id", "combo_lang");
+			combo.appendTo(document.body);
+			combo.igCombo({
+				language: "ja",
+				dataSource: dataSource,
+				textKey: 'Name',
+				valueKey: 'ID',
+				
+				multiSelection: {
+					enabled: true
+				}
+			});
+
+			//check initially set language
+			checkComboUI(combo, $.ig.locale.ja);
+
+			//check option setter
+			combo.igCombo("option", "language", "es");
+			checkComboUI(combo, $.ig.locale.es);
+
+			combo.data("igCombo")._userPreset = null;
+			$.ig.util.changeGlobalLanguage("de");
+			checkComboUI(combo, $.ig.locale.de);
+
+			combo.igCombo("destroy");
+		});
+
+		test("Change language - dialog ui tests.", 15, function () {
+			var dialog = $("<div></div>").attr("id", "dialog_lang");
+			dialog.appendTo(document.body);
+			dialog.igDialog({
+				state: "opened",
+				language: "ja",
+				showPinButton: true,
+				showMinimizeButton: true
+			});
+
+			//check initially set language
+			checkDialogUI(dialog, $.ig.locale.ja);
+
+			//check option setter
+			dialog.igDialog("option", "language", "es");
+			checkDialogUI(dialog, $.ig.locale.es);
+
+			dialog.data("igDialog")._userPreset = null;
+			$.ig.util.changeGlobalLanguage("de");
+			checkDialogUI(dialog, $.ig.locale.de);
+
+			//dialog.igDialog("destroy");
+		});
+
+		function checkComboUI(combo, lang) {
+			// Check drop down button title
+			equal(combo.find("div.ui-igcombo-button").attr("title"), lang.Combo.dropDownButtonTitle, "Drop-down button title not is localized.");
+
+			// Check clear button(“x”) title
+			equal(combo.find("div.ui-igcombo-clear").attr("title"),  lang.Combo.clearButtonTitle, "Check clear button title not is localized.");
+
+			// Check placeholder`s text
+			equal(combo.find("input.ui-igcombo-field").attr("placeholder"), lang.Combo.placeHolder, "Placeholder`s text is not localized");
+
+			// Check 'No match found' text 
+			combo.igCombo("filter", "xxx");
+			equal(combo.igCombo("dropDown").find("li[data-localeid]").text(), lang.Combo.noMatchFoundText , "'No match found' text is not localized.");
+
+			// Check exceptions thrown- for these it should be enough to check _getLocaleValue.
+			equal(combo.data("igCombo")._getLocaleValue("errorIncorrectGroupingKey"), lang.Combo.errorIncorrectGroupingKey, "Error message is incorrect: errorIncorrectGroupingKey.");
+			equal(combo.data("igCombo")._getLocaleValue("notSuported"), lang.Combo.notSuported, "Error message is correct: notSuported.");
+			equal(combo.data("igCombo")._getLocaleValue("errorNoSupportedTextsType"), lang.Combo.errorNoSupportedTextsType, "Error message is incorrect: errorNoSupportedTextsType.");
+			equal(combo.data("igCombo")._getLocaleValue("errorUnrecognizedHighlightMatchesMode"), lang.Combo.errorUnrecognizedHighlightMatchesMode, "Error message is incorrect: errorUnrecognizedHighlightMatchesMode.");
+		}
+
+		function checkDialogUI(dialog, lang) {
+			//Check : “Close”, “Minimize”, “Pin” /”Unpin”(showPinButton: true), “Restore” and  “Maximize” buttons titles.
+
+			equal(dialog.find("a.ui-igdialog-buttonpin").attr("title"), lang.Dialog.pinButtonTitle, "Pin button is not localized.");
+			equal(dialog.find("a.ui-igdialog-buttonclose").attr("title"), lang.Dialog.closeButtonTitle, "Close button is not localized.");
+			equal(dialog.find("a.ui-igdialog-buttonminimize").attr("title"), lang.Dialog.minimizeButtonTitle, "Minimize button is not localized.");
+
+			dialog.find("a.ui-igdialog-buttonpin").click();
+			equal(dialog.find("a.ui-igdialog-buttonpin").attr("title"), lang.Dialog.unpinButtonTitle, "UnPin button is not localized.");
+			dialog.find("a.ui-igdialog-buttonpin").click();
+			
+			dialog.find("a.ui-igdialog-buttonminimize").mousedown();
+			equal(dialog.find("a.ui-igdialog-buttonminimize").attr("title"), lang.Dialog.minimizeButtonTitle, "Maximize button is not localized.");
+			dialog.find("a.ui-igdialog-buttonminimize").mousedown();
+		}
 	});
 	
 	</script>
