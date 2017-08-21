@@ -1,0 +1,633 @@
+/*
+
+    List with Overwritten components for :
+  // jQuery UI - v1.12.1 - 2016-09-14
+
+  1. jQuery UI Accordion
+  2. jQuery UI Auto complete
+  3. jQuery UI Menu
+  4. jQuery UI Date picker
+  5. jQuery UI Dialog
+  6. jQuery UI Progressbar
+  7. jQuery UI Slider
+  8. jQuery UI Tabs
+
+*/
+
+/**********************
+* jQuery UI Accordion *
+**********************/
+
+.ui-accordion .ui-accordion-header.ui-state-hover {
+  .stateHover;
+}
+
+.ui-accordion .ui-accordion-header.ui-state-active {
+  .stateActive;
+}
+
+.ui-accordion .ui-accordion-content {
+  background: @body-bg;
+  color: @text-color;
+}
+
+/*************************
+* jQuery UI Auto complete *
+**************************/
+
+.ui-autocomplete {
+  background: @dropdown-bg;
+}
+
+.ui-autocomplete-loading {
+  background: @dropdown-bg url('images/ui-anim_basic_16x16.gif') right center no-repeat;
+}
+
+/*****************
+* jQuery UI Menu *
+******************/
+
+.ui-menu {
+  background: @dropdown-bg;
+  color: @dropdown-link-color;
+}
+
+.ui-menu .ui-menu {
+  position: absolute;
+}
+
+.ui-menu .ui-menu-item {
+  list-style-image: none;
+}
+
+.ui-menu .ui-menu-item.ui-state-focus {
+  color: @dropdown-link-hover-color;
+  background: @dropdown-link-hover-bg;
+  border: 1px solid @igGray7;
+}
+
+.ui-menu .ui-menu-item.ui-state-active {
+  color: @dropdown-link-active-color;
+  background: @dropdown-link-active-bg;
+  border: 1px solid @accent2;
+}
+
+/************************
+* jQuery UI Date picker *
+*************************/
+
+.ui-datepicker {
+  background: @body-bg;
+  padding: 0;
+}
+.ui-datepicker .ui-datepicker-header {
+  background: @igGray8;
+}
+
+// changing the arrow icons to a simple triangle
+.ui-datepicker .ui-datepicker-prev .ui-icon {
+  &::before { content: '\e64a'}
+}
+
+.ui-datepicker .ui-datepicker-next .ui-icon {
+  &::before { content: '\e646'}
+}
+
+
+.ui-datepicker thead {
+  background: @igGray3;
+}
+
+.ui-datepicker th {
+  color: @text-color;
+  font-size: 0.9em;
+}
+
+// remove default backgrounds, but restore them in active and hover states
+.ui-datepicker .ui-datepicker-calendar a {
+  background: transparent;
+  border: 1px solid transparent;
+  color: @text-color;
+}
+.ui-datepicker .ui-datepicker-calendar a.ui-state-active {
+  .stateActive;
+}
+
+.ui-datepicker .ui-datepicker-calendar a.ui-state-hover {
+  .stateHover;
+}
+
+.ui-datepicker .ui-datepicker-calendar .ui-state-disabled {
+  border: 1px solid transparent;
+  background-color: @body-bg;
+}
+
+.ui-datepicker .ui-datepicker-today a {
+  color: @accent2;
+  font-weight: bold;
+}
+
+.ui-datepicker .ui-datepicker-today a.ui-state-active {
+  color: @text-color;
+}
+
+/*******************
+* jQuery UI Dialog *
+********************/
+
+.ui-dialog {
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  padding: .4em 1em;
+  position: relative;
+}
+
+.ui-dialog .ui-dialog-title {
+  max-width: 60%;
+}
+
+
+.ui-dialog .ui-dialog-content {
+  padding:1em;
+}
+
+.ui-dialog .ui-dialog-buttonpane,
+.ui-dialog .ui-dialog-titlebar{
+
+  padding: 1rem;
+}
+.ui-dialog .ui-dialog-buttonpane {
+  margin-top: 1rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+.ui-dialog .ui-dialog-titlebar{
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.ui-dialog  button {
+  cursor: pointer;
+  margin:0 0 0 .5rem;
+  padding: .4rem 1.5rem;
+}
+
+.ui-dialog button.ui-button-icon-only {
+  padding: 0;
+}
+
+.ui-iggrid-headercaption {
+  border-width:1px;
+}
+
+.ui-dialog,
+.ui-dialog.ui-igdialog {
+  background: @body-bg;
+  border: 1px solid @igGray6;
+  padding: 0; // overrides the default settings in the igDialog structure css
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  background: @igGray8;
+  border: 1px solid @igGray9;
+  color: #FFFFFF;
+}
+
+.ui-dialog .ui-dialog-title,
+.ui-dialog.ui-igdialog .ui-dialog-title {
+  font-weight: normal;
+}
+
+.ui-dialog .ui-dialog-titlebar.ui-state-focus {
+  background: @igGray8;
+  border-color: @accent2;
+}
+
+.ui-dialog .ui-state-focus .ui-dialog-title {
+  color: #FFFFFF;
+}
+
+
+/************************
+* jQuery UI Progressbar *
+************************/
+
+.ui-progressbar {
+  height: 1.3em;
+  background: @igGray3;
+}
+
+.ui-progressbar .ui-progressbar-value {
+  background: @accent2;
+}
+
+/*******************
+* jQuery UI Slider *
+********************/
+
+.ui-slider {
+  border-color: @igGray3;
+  background: @igGray3;
+}
+
+.ui-slider .ui-slider-range {
+  background: @accent2;
+}
+
+/***********************
+* jQuery UI Spinner *
+***********************/
+
+.touch .ui-spinner-button,
+.touchevents .ui-spinner-button,
+.pointerevents .ui-spinner-button
+{
+  width: 1.4em;
+  height: 1.4em;
+
+  // side to side buttons
+  display: inline-block;
+  position: relative;
+}
+
+/*****************
+* jQuery UI Tabs *
+******************/
+.ui-tabs {
+  background: #FFFFFF;
+}
+
+.ui-tabs .ui-tabs-nav {
+  padding: 0;
+  background: @igGray8;
+}
+
+.ui-tabs .ui-tabs-nav li {
+  color: #fff;
+  margin-right: 0;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-state-default {
+  background: @igGray8;
+  border-color: @igGray8;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-state-hover {
+  background: @igGray10;
+  border-color: @igGray10;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-state-active {
+  background: @accent2;
+  border-color: @accent2;
+}
+
+.ui-tabs .ui-tabs-panel {
+  border:1px solid @igGray2;
+}
+
+
+/* Component containers
+----------------------------------*/
+.ui-widget {
+  font-family: @font-family-base;
+  outline:none;
+}
+.ui-widget .ui-widget {
+  outline:none;
+}
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button {
+  font-family: @font-family-base;
+}
+.ui-widget.ui-widget-content {
+  border: 1px solid @table-border-color;
+}
+.ui-widget-content {
+  border: 1px solid @table-border-color;
+  background: @body-bg;
+  color: @text-color;
+}
+.ui-widget-content a {
+  color: @text-color;
+}
+.ui-widget-header {
+  border: 1px solid @igGray8;
+  background: @igGray8;
+  color: #fff;
+  font-weight: normal;
+}
+.ui-widget-header a {
+  color: @text-color;
+}
+
+/* Interaction states
+----------------------------------*/
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default,
+.ui-button,
+
+  /* We use html here because we need a greater specificity to make sure disabled
+  works properly when clicked or hovered */
+html .ui-button.ui-state-disabled:hover,
+html .ui-button.ui-state-disabled:active {
+  .stateNormal;
+}
+.ui-state-default a,
+.ui-state-default a:link,
+.ui-state-default a:visited,
+a.ui-button,
+a:link.ui-button,
+a:visited.ui-button,
+.ui-button {
+  color: @text-color;
+}
+
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-button:hover,
+.ui-button:focus {
+  .stateHover;
+}
+.ui-state-hover a,
+.ui-state-hover a:hover,
+.ui-state-hover a:link,
+.ui-state-hover a:visited,
+.ui-state-focus a,
+.ui-state-focus a:hover,
+.ui-state-focus a:link,
+.ui-state-focus a:visited,
+a.ui-button:hover,
+a.ui-button:focus {
+  color: @text-color;
+}
+
+.ui-visual-focus {
+  box-shadow: 0 0 3px 1px @accent1;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+  .stateActive;
+}
+
+.ui-icon-background,
+.ui-state-active .ui-icon-background {
+  border: @accent1;
+  background-color: #ffffff;
+}
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+  color: @text-color;
+}
+
+/* Interaction Cues
+----------------------------------*/
+
+// Highlight state
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+  .stateActive;
+}
+
+.ui-state-highlight a,
+.ui-widget-content .ui-state-highlight a,
+.ui-widget-header .ui-state-highlight a {
+  color: @highlight-color;
+}
+
+.ui-iggrid-colasc .ui-state-highlight {
+  border-bottom: 0;
+  border-top: 0;
+}
+
+.ui-state-highlight p,
+.ui-state-error p {
+  font-size: 0.8em;
+  line-height: 16px;
+}
+
+// Error State
+.ui-state-error,
+.ui-widget-content .ui-state-error,
+.ui-widget-header .ui-state-error {
+  border: 1px solid @error-border-color;
+  background: #f9e6e7;
+  color: @error-color;
+}
+
+.ui-state-error a,
+.ui-widget-content .ui-state-error a,
+.ui-widget-header .ui-state-error a,
+.ui-state-error-text,
+.ui-widget-content .ui-state-error-text,
+.ui-widget-header .ui-state-error-text {
+  color: @error-color;
+}
+
+// Priority
+.ui-priority-primary,
+.ui-widget-content .ui-priority-primary,
+.ui-widget-header .ui-priority-primary {
+  font-weight: bold;
+}
+
+.ui-priority-secondary,
+.ui-widget-content .ui-priority-secondary,
+.ui-widget-header .ui-priority-secondary {
+  opacity: .7;
+  filter: alpha(opacity=70);
+  font-weight: normal;
+}
+
+// Disabled State
+.ui-state-disabled,
+.ui-widget-content .ui-state-disabled,
+.ui-widget-header .ui-state-disabled {
+  opacity: .35;
+  /*
+      Marin Popov - This is NOT valid css
+      nowhitespace: afterproperty;
+  */
+  filter: alpha(opacity=35);
+  cursor: default !important;
+}
+
+
+/* Icons
+----------------------------------*/
+
+/* states and images */
+.ui-icon {
+  width: 16px;
+  height: 16px;
+  background-position: 16px 16px;
+}
+
+// Default state for buttons
+.ui-icon,
+.ui-widget-content .ui-icon,
+.ui-state-default .ui-icon,
+.ui-widget-header .ui-state-default .ui-icon,
+.ui-iggrid-paging-item.ui-state-default .ui-icon {
+  color: @ui-icons-dark;
+}
+
+// Focus state
+.ui-state-focus .ui-icon,
+.ui-igcombo.ui-state-focus .ui-igcombo-button .ui-icon,
+.ui-igedit.ui-state-focus .ui-igcombo-button .ui-icon,
+.ui-iggrid .ui-igcombo.ui-state-focus .ui-igcombo-button .ui-icon,
+.ui-widget-header .ui-state-focus.ui-state-hover .ui-icon,
+.ui-igcombo-button-focus .ui-icon,
+.ui-state-focus.ui-state-hover .ui-icon {
+  color: @ui-icons-dark;
+}
+
+// Hover state
+.ui-state-hover .ui-icon,
+.ui-state-hover.ui-state-default .ui-icon,
+.ui-igedit.ui-state-hover .ui-igedit-button-common.ui-state-hover .ui-icon,
+.ui-igedit.ui-state-focus .ui-igedit-button-common.ui-state-hover .ui-icon,
+.ui-igedit.ui-state-active .ui-igedit-button-common.ui-state-hover .ui-icon,
+.ui-state-default.ui-state-hover.ui-igedit-button .ui-icon,
+.ui-state-default.ui-state-hover.ui-igcombo-button .ui-icon,
+.ui-igdialog-header.ui-state-focus .ui-igdialog-headerimage.ui-icon {
+  color: @ui-icons-dark;
+}
+
+// EXCEPTION: inputs have a white bg, so icons inside can't be white
+.ui-state-hover.ui-state-default .ui-igcombo-clearicon.ui-icon, // EXCEPTION: hover on combo but not on the dropdown button itself
+.ui-state-hover .ui-state-default > .ui-icon {
+  color: @ui-icons-dark;
+}
+
+// Active state (with accent icons)
+.ui-state-active .ui-icon,
+.ui-state-active.ui-state-hover .ui-icon,
+.ui-igcombo-button.ui-state-active .ui-icon,
+.ui-igedit-button.ui-state-active .ui-icon,
+.ui-iggrid .ui-igcombo-button.ui-state-active .ui-icon,
+.ui-igedit.ui-state-focus .ui-igedit-button-common .ui-icon,
+.ui-igedit.ui-state-active .ui-igedit-button-common .ui-icon,
+.ui-state-hover.ui-state-highlight.ui-igedit-button .ui-icon,
+.ui-state-hover.ui-state-highlight.ui-igcombo-button .ui-icon {
+  color: @ui-icons-accent;
+}
+
+// Highlight state
+.ui-state-highlight .ui-icon,
+.ui-state-highlight.ui-igedit-button .ui-icon,
+.ui-state-highlight.ui-igcombo-button .ui-icon {
+  color: @ui-icons-accent;
+}
+
+// Error state
+.ui-state-error .ui-icon,
+.ui-state-error-text .ui-icon {
+  color: @ui-icons-darker;
+}
+
+// EXCEPTION: Headers in this theme are dark so they need a light icon
+.ui-widget-header .ui-icon,
+.ui-state-default .ui-widget-header.ui-icon {
+  color: @ui-icons-light;
+}
+
+.ui-iggrid-header.ui-state-active .ui-icon,
+.ui-iggrid-header.ui-state-active.ui-state-hover .ui-icon {
+  color: @ui-icons-light;
+}
+
+input.ui-button,
+input.ui-igbutton {
+  border-radius: @border-radius-base !important;
+}
+
+.ui-igcombo-button .ui-state-default {
+  border: 0 !important;
+}
+
+/* positioning */
+.ui-icon-grip-diagonal-se,
+.ui-dialog .ui-icon-grip-diagonal-se {background-position: -80px -224px;}
+
+/* Misc visuals
+----------------------------------*/
+
+/* Corner radius */
+.ui-corner-all {
+  -webkit-border-radius: @border-radius-base;
+  -moz-border-radius: @border-radius-base;
+  border-radius: @border-radius-base;
+}
+
+.ui-corner-top {
+  border-top-left-radius: @border-radius-base;
+  border-top-right-radius: @border-radius-base;
+}
+
+.ui-corner-left {
+  border-top-left-radius: @border-radius-base;
+  border-bottom-left-radius: @border-radius-base;
+}
+
+.ui-corner-right {
+  border-top-right-radius: @border-radius-base;
+  border-bottom-right-radius: @border-radius-base;
+}
+
+.ui-corner-tl {
+  border-top-left-radius: @border-radius-base;
+}
+
+.ui-corner-tr {
+  border-top-right-radius: @border-radius-base;
+}
+
+.ui-corner-bottom {
+  border-bottom-left-radius: @border-radius-base;
+  border-bottom-right-radius: @border-radius-base;
+}
+
+.ui-corner-bl {
+  border-bottom-left-radius: @border-radius-base;
+}
+
+.ui-corner-br {
+  border-bottom-right-radius: @border-radius-base;
+}
+
+/* Overlays */
+.ui-widget-overlay {
+  background: #fff;
+  opacity: .60;
+  filter: alpha(opacity=60);
+}
+
+.ui-widget-shadow {
+  margin: -5px 0 0 -5px;
+  padding: 5px;
+  background: #000;
+  opacity: .20;
+  filter: alpha(opacity=20);
+}
+

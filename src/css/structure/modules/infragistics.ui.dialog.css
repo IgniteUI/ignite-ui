@@ -2,7 +2,7 @@
 .ui-igdialog .ui-igdialog-content, 
 .ui-igdialog-content { 
     position:relative;
-    box-sizing:content-box;  
+    box-sizing:border-box;
     padding:0.5em 1em 1em; 
     border:0; 
     background:none; 
@@ -59,9 +59,16 @@
 
 .touch .ui-dialog .ui-dialog-titlebar,
 .touchevents .ui-dialog .ui-dialog-titlebar,
-.pointerevents .ui-dialog .ui-dialog-titlebar 
+.pointerevents .ui-dialog .ui-dialog-titlebar
 {
     padding: 1em!important;
+}
+
+.ui-dialog-titlebar{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    -moz-border-radius-bottomleft:0;
+    -moz-border-radius-bottomright:0;
 }
 
 .touch .ui-igdialog  .ui-igdialog-headerbutton,
@@ -86,3 +93,42 @@
     margin-left:-8px;
 }
 
+
+.ui-dialog .ui-dialog-titlebar {
+    display: flex;
+    align-items: center;
+    margin: -.1rem -.1rem 0 -.1rem;
+    position: relative;
+    padding: 1rem;
+}
+
+.ui-dialog-title {
+    flex: 1;
+}
+
+
+.ui-dialog .ui-dialog-content {
+    padding: 2rem 1rem;
+    margin: 0 auto;
+    width: 100% !important; // Remove this line after we stop calc the the width wit JS
+}
+
+.ui-igdialog.ui-dialog .ui-dialog-buttonpane,
+.ui-igdialog.ui-dialog .ui-dialog-titlebar {
+    padding: 1rem;
+}
+
+.ui-dialog button.ui-button-icon-only {
+    padding: 0;
+}
+
+.ui-dialog button {
+    cursor: pointer;
+    margin: 0 0 0 .5rem;
+    padding: .4rem 1.5rem;
+}
+
+
+.ui-dialog .ui-dialog-buttonpane {
+    margin-top: 0;
+}
