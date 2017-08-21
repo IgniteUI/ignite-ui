@@ -36,26 +36,37 @@
 
 	<script type="text/javascript">
 	$(function () {
-		var comboDS = [
-			{ ID: 1, Name: "John", Salary: 2600, HireDate: new Date ("08/01/2017") },
-			{ ID: 2, Name: "Mary", Salary: 600, HireDate: new Date ("08/15/2017") },
-			{ ID: 3, Name: "Maya", Salary: 300, HireDate: new Date ("12/23/2013") },
-			{ ID: 4, Name: "Bob", Salary: 800, HireDate: new Date ("04/14/2010") },
-			{ ID: 5, Name: "Vasya", Salary: 5000, HireDate: new Date ("12/10/2013") },
-			{ ID: 6, Name: "Gery", Salary: 1500, HireDate: new Date ("05/13/2012") },
-			{ ID: 7, Name: "Tsanna", Salary: 5000, HireDate: new Date ("02/11/2013") },
-			{ ID: 8, Name: "Nadya", Salary: 3500, HireDate: new Date ("03/29/2010") },
-			{ ID: 9, Name: "Svetlio", Salary: 200, HireDate: new Date ("06/13/2016") }
+		var comboNumbers = [
+			{ ID: 1, Salary: 2600 },
+			{ ID: 2, Salary: 600 },
+			{ ID: 3, Salary: 300 },
+			{ ID: 4, Salary: 800 },
+			{ ID: 5, Salary: 5000 },
+			{ ID: 6, Salary: 1500 },
+			{ ID: 7, Salary: 5000 },
+			{ ID: 8, Salary: 3500 },
+			{ ID: 9, Salary: 200 }
+		];
+		var comboDates = [
+			{ ID: 1, HireDate: new Date ("08/01/2017") },
+			{ ID: 2, HireDate: new Date ("08/15/2017") },
+			{ ID: 3, HireDate: new Date ("12/23/2013") },
+			{ ID: 4, HireDate: new Date ("04/14/2010") },
+			{ ID: 5, HireDate: new Date ("12/10/2013") },
+			{ ID: 6, HireDate: new Date ("05/13/2012") },
+			{ ID: 7, HireDate: new Date ("02/11/2013") },
+			{ ID: 8, HireDate: new Date ("03/29/2010") },
+			{ ID: 9, HireDate: new Date ("06/13/2016") }
 		];
 		$("#comboDateRegional").igCombo({
-				dataSource: comboDS,
+				dataSource: comboDates,
 				format : "dateLong",
 				textKey: 'HireDate',
 				valueKey: 'ID',
 				regional: "de"
 			});
 		$("#comboNumericRegional").igCombo({
-			dataSource: comboDS,
+			dataSource: comboNumbers,
 			format : "currency",
 			textKey: 'Salary',
 			valueKey: 'ID'
