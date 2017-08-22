@@ -83,7 +83,8 @@
 /*////////////////////////////////////igBrowseButton CSS ///////////////////////////////////////////*/
 
 .ui-igbrowsebutton {
-    font-weight:bold; font-size:1.3em;
+    font-weight:bold;
+	font-size:1.3em;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align:center;
 	background:#f2f2f2;
@@ -95,21 +96,18 @@
 
 .ui-igbrowsebutton-filepicker {
     position : absolute;
-	margin: -5px 0 0 -175px;
+	margin: -.5em 0 0 -.175em;
 	padding: 0;
-	width: 220px;
-	height: 30px;
-	fontSize: 14px;
+	width: 22em;
+	height: 3em;
+	font-size: 1.4em;
 	opacity: 0;
 	cursor: pointer;
 	display : none;
-	zIndex :  2147483583;
+	z-index :  99999;
 	filter:alpha(opacity=0);
 }
 
-.ui-igbrowsebutton-label 
-{    
-    }
 /*//////////////////////////END igBrowseButton CSS /////////////////////////////////////////*/
 
 /*//////////////////////////  igButton CSS /////////////////////////////////////////////////*/
@@ -118,28 +116,21 @@
 {
     cursor: pointer;
     display: inline-block;
-    margin-right: 0.1em;
+    margin-right: 0.5em;
     overflow: visible;
-    padding: 0;
     position: relative;
     text-align: center;
     text-decoration: none !important;
 }
 
-.ui-igbutton .ui-state-hover { }
-
-.ui-igbutton .ui-state-focus { }
-
-.ui-igbutton .ui-state-active { }
+.ui-igbutton:last-of-type {
+	margin-right: 0;
+}
 
 .ui-igbutton-icon 
 {
     height: 16px;
     width: 16px;
-}
-
-.ui-igbutton-label  
-{
 }
 
 /*/////////////////////////  END igButton CSS //////////////////////////////////////////////////*/
