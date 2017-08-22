@@ -17,6 +17,7 @@
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.toolbar.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.splitbutton.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.colorpicker.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.upload.css" rel="stylesheet" />
     <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 
     <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
@@ -92,9 +93,11 @@
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-ja.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-de.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-es.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-bg.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.upload.js"></script>
 
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
 
 	<script type="text/javascript">
 
@@ -345,16 +348,36 @@
 
 		});
 
-		//test("Change language -igUpload ui tests.", function () {
-		//	var upload = $("<div></div>").attr("id", "upload_lang");
-		//	upload.appendTo(document.body);
-		//	upload.igUpload({
-		//		language: "ja"
-		//	});
-		//
-		//	//check initially set language
-		//	checkUploadUI(upload, $.ig.locale.ja);
-		//});
+		test("Change language -igUpload ui tests.", function () {
+
+			var createUpload = function () {
+				if ($("#upload_lang").length > 0) {
+					$("#upload_lang").remove();
+				}
+				var upload = $("<div></div>").attr("id", "upload_lang");
+				upload.appendTo(document.body);
+				upload.igUpload({
+				mode: 'multiple', //Multiple
+				autostartupload: false,
+				language: "bg"
+				});
+				return upload;
+			};
+			var upload = createUpload();
+			//check initially set language
+			checkUploadUI(upload, $.ig.locale.bg);
+
+			upload = createUpload();
+			upload.igUpload("option", "language", "es");
+			checkUploadUI(upload, $.ig.locale.es);
+
+			upload = createUpload();
+			upload.data("igUpload")._userPreset = null;
+			$.ig.util.changeGlobalLanguage("de");
+			checkUploadUI(upload, $.ig.locale.de);
+
+			upload.igUpload("destroy");
+		});
 
 		function checkComboUI(combo, lang) {
 			// Check drop down button title
@@ -433,6 +456,61 @@
 		}
 
 		function checkUploadUI(upload, lang) {
+			//check upload btn text
+			var btn = upload.find("button.ui-igstartupbrowsebutton");
+			equal(btn.attr("title"), lang.Upload.labelUploadButton, "Upload button title is localized.");
+			equal(btn.text(), lang.Upload.labelUploadButton, "Upload button text is localized.");
+
+
+			//select file
+			var filePicker = $('#upload_lang_ibb_fp'),
+			eventFileChange = jQuery.Event("change");
+
+			filePicker.trigger(eventFileChange, { filePath: 'test.xml' });
+			//check add button
+			btn = upload.find("#upload_lang_bb");
+			equal(btn.attr("title"), lang.Upload.titleAddFileButton, "Upload Add button title is not localized.");
+			equal(btn.text(), lang.Upload.labelAddButton, "Upload Add button text is not localized.");
+
+			//check clear all button
+			btn = upload.find("button.ui-igupload-button-clear-all");
+			equal(btn.attr("title"), lang.Upload.titleClearAllButton, "Upload clear all button title is not localized.");
+			equal(btn.text(), lang.Upload.labelClearAllButton, "Upload clear all button text is not localized.");
+
+			//check cancel button
+			var cancelBtn = upload.find("button.ui-igupload-cancel-button");
+			equal(cancelBtn.attr("title"), lang.Upload.titleCancelUploadButton, "Upload button title is not localized.");
+
+			//check label summary
+			var label = upload.find("span.ui-igupload-summaryuploadedfiles-label");
+			equal(label.text(), lang.Upload.labelSummaryTemplate.replace("{0}","0").replace("{1}","1"), "Summary for uploaded files is not localized.");
+
+			//check hide details btn
+			var showDetailsBtn = upload.find("a.ui-igupload-showhidedetails-button");
+			equal(showDetailsBtn.text(), lang.Upload.labelHideDetails, "Hide details button is not localized.");
+
+			//check upload summary button
+			var summaryBtn = upload.find(".ui-igupload-summary-button");
+			equal(summaryBtn.attr("title"), lang.Upload.labelSummaryProgressButtonContinue, "Summary upload button is not localized.");
+			equal(summaryBtn.text(), lang.Upload.titleSummaryProgressButtonContinue, "Summary upload button is not localized.");
+
+			cancelBtn.click();
+			//check done button
+			summaryBtn = upload.find(".ui-igupload-summary-button");
+			equal(summaryBtn.attr("title"), lang.Upload.labelSummaryProgressButtonDone, "Summary upload button is not localized.");
+			equal(summaryBtn.text(), lang.Upload.titleSummaryProgressButtonDone, "Summary upload button is not localized.");
+
+			//check error
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageMaxSimultaneousFiles"), lang.Upload.errorMessageMaxSimultaneousFiles, "Error message is incorrect: errorMessageMaxSimultaneousFiles.");
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageValidatingFileExtension"), lang.Upload.errorMessageValidatingFileExtension, "Error message is incorrect: errorMessageValidatingFileExtension.");
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageDropMultipleFilesWhenSingleModel"), lang.Upload.errorMessageDropMultipleFilesWhenSingleModel, "Error message is incorrect: errorMessageDropMultipleFilesWhenSingleModel.");
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageMaxUploadedFiles"), lang.Upload.errorMessageMaxUploadedFiles, "Error message is incorrect: errorMessageMaxUploadedFiles.");
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageTryToStartNonExistingFile"), lang.Upload.errorMessageTryToStartNonExistingFile, "Error message is incorrect: errorMessageTryToStartNonExistingFile.");
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageOther"), lang.Upload.errorMessageOther, "Error message is incorrect: errorMessageOther.");
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageGetFileStatus"), lang.Upload.errorMessageGetFileStatus, "Error message is incorrect: errorMessageGetFileStatus.");
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageCancelUpload"), lang.Upload.errorMessageCancelUpload, "Error message is incorrect: errorMessageCancelUpload.");
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageTryToRemoveNonExistingFile"), lang.Upload.errorMessageTryToRemoveNonExistingFile, "Error message is incorrect: errorMessageTryToRemoveNonExistingFile.");
+			equal(upload.data("igUpload")._getLocaleValue("errorMessageAJAXRequestFileSize"), lang.Upload.errorMessageAJAXRequestFileSize, "Error message is incorrect: errorMessageAJAXRequestFileSize.");
 		}
 	});
 	
