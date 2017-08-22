@@ -2743,7 +2743,8 @@
 				"compositionend.editor": function () {
 					setTimeout(function () {
 						var value, pastedValue, widgetName = self.widgetName,
-							cursorPosition = self._getCursorPosition();
+							cursorPosition = self._getCursorPosition(),
+							selection = { start: cursorPosition, end: cursorPosition };
 
 						// In that case blur event is triggered before the composition end and the editor has already processed the change.
 						if (self._focused !== true) {
@@ -2765,6 +2766,11 @@
 									pastedValue = value = self._parseValueByMask(value);
 									if (value !== self._maskWithPrompts) {
 										value = self._parseDateFromMaskedValue(value);
+									} else if (self.options.revertIfNotValid) {
+										//D.P. Assume empty mask means everything entered was not accepted, attempt to revert
+										pastedValue = value = self._maskedValue;
+										selection.start = 0;
+										selection.end = value.length;
 									}
 								}
 								break;
@@ -2781,8 +2787,7 @@
 						}
 
 						//D.P. 3rd Aug 2017 #1043 Insert handler should handle transformations (trim) and validate
-						self._insert(pastedValue, self._compositionStartValue);
-						self._setCursorPosition(cursorPosition);
+						self._insert(pastedValue, self._compositionStartValue, selection);
 
 						//207318 T.P. 4th Dec 2015, Internal flag needed for specific cases.
 						delete self._inComposition;
@@ -4459,6 +4464,9 @@
 		},
 		_initialize: function () {
 			this._super();
+
+			// D.P. 8th Aug 2017 #793 Should not initialize with wrong decimal values.
+			this._validateDecimalSettings();
 			this._applyRegionalSettings();
 			this._applyDataModeSettings();
 			this._setNumericType();
@@ -4558,8 +4566,6 @@
 			this._super(value);
 		},
 		_applyOptions: function () { // NumericEditor
-
-			this._validateDecimalSettings();
 			this._super();
 			this._validateSpinSettings();
 
@@ -7787,22 +7793,48 @@
 				spin type="string" Spin buttons are located on the right side of the editor
 			*/
 			buttonType: "none",
-			/* type="number" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
+			/* type="number|object" Gets/Sets delta-value which is used to increment or decrement the editor date on spin actions.
 				When not editing (focused) the delta is applied on the day if available in the input mask or the lowest available period.
 				When in edit mode the time period, where the cursor is positioned, is incremented or decremented with the defined delta value.
-				The value can be only a positive integer number, otherwise it will be set as 1, or in the cases with double or float the the whole part will be taken.
+				Accepted values for deltas are positive integer numbers, and the fractional portion of floating point numbers is ignored.
 			```
-				//Initialize
+				//Initialize with number
 				$(".selector").%%WidgetName%%({
 					spinDelta: 10
+				});
+				//Initialize with object
+				$(".selector").%%WidgetName%%({
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					}
 				});
 
 				//Get
 				var spinDelta= $(".selector").%%WidgetName%%("option", "spinDelta");
 
-				//Set
+				//Set with number
 				$(".selector").%%WidgetName%%("option", "spinDelta", 10);
+				//Set with object
+				$(".selector").%%WidgetName%%("option", "spinDelta", { minutes: 15 });
 			```
+			number type="number" Value this value it is applied to all time periods - years, days, minutes, etc.
+			object type="object" A configuration object, which defines specific values for each time period. The option can accept the following format:
+				spinDelta: {
+					year: 4,
+					month: 3,
+					day: 10,
+					hours: 12,
+					minutes: 15,
+					seconds: 10,
+					milliseconds: 100
+				}
+			Time periods that don't have values use 1 as default.
 			*/
 			spinDelta: 1,
 			/* type="bool" Gets/Sets ability to modify only 1 date field on spin events.
@@ -7993,6 +8025,14 @@
 			case "dateInputFormat":
 				this.options[ option ] = prevValue;
 				throw new Error(this._getLocaleValue("setOptionError") + option);
+			case "spinDelta":
+				try {
+					this._validateSpinSettings();
+				} catch (e) {
+					this.options[ option ] = prevValue;
+					throw e;
+				}
+				break;
 			default:
 
 				// In case no propery matches, we call the super. Into the base widget default statement breaks
@@ -8043,17 +8083,7 @@
 			this._setSpinButtonsState(value);
 		},
 		_applyOptions: function () { // DateEditor
-			var delta = this.options.spinDelta;
-
-			if (typeof delta !== "number") {
-				this.options.spinDelta = 1;
-				throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumber"));
-			} else if (delta < 0) {
-				this.options.spinDelta = 1;
-				throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
-			} else {
-				this.options.spinDelta = parseInt(delta, 10);
-			}
+			this._validateSpinSettings();
 
 			if (this.options.centuryThreshold > 99 || this.options.centuryThreshold < 0) {
 				this.options.centuryThreshold = 29;
@@ -8079,6 +8109,47 @@
 			this.options.value = this._getValueBetweenMinMax(this.options.value);
 
 			this._super();
+		},
+		_validateSpinSettings: function() {
+			var delta = this.options.spinDelta, deltaRanges, key;
+
+			if (typeof delta === "number") {
+				if (delta < 0) {
+					throw new Error(this._getLocaleValue("spinDeltaCouldntBeNegative"));
+				} else {
+					this.options.spinDelta = parseInt(delta, 10);
+				}
+			} else if (typeof delta === "object") {
+				deltaRanges = { year: 10, month: 12, day: 28,
+					hours: this._dateIndices.hh24 ? 24 : 12, minutes: 60,
+					seconds: 60, milliseconds: 1000 };
+
+				for (key in deltaRanges) {
+					if (deltaRanges.hasOwnProperty(key)) {
+						this._validateSpinSettingsForTimePeriod(key, deltaRanges[ key ]);
+					}
+				}
+			} else {
+				throw new Error(this._getLocaleValue("spinDeltaIsOfTypeNumberOrObject"));
+			}
+		},
+		_validateSpinSettingsForTimePeriod: function(name, maxRange) {
+			var delta = this.options.spinDelta[ name ];
+
+			if (delta === undefined) {
+				this.options.spinDelta[ name ] = 1;
+				return;
+			}
+
+			if (typeof delta !== "number") {
+				throw new Error($.ig.util.stringFormat(
+					this._getLocaleValue("spinDeltaIsOfTypeNumberForPeriod"), name,  0, maxRange));
+			} else if (delta < 0 || delta > maxRange) {
+				throw new Error($.ig.util.stringFormat(
+					this._getLocaleValue("spinDeltaShouldBeInRange"), name, 0, maxRange));
+			} else {
+				this.options.spinDelta[ name ] = parseInt(delta, 10);
+			}
 		},
 		_triggerKeyDown: function (event) { //DateEditor
 			var key = !event.charCode ? event.which : event.charCode,
@@ -8131,7 +8202,23 @@
 			this._spin(this.options.spinDelta, true);
 		},
 		_handleSpinDownEvent: function () { // DateEditor
-			this._spin(-this.options.spinDelta, true);
+			this._spin(this._setNegativeDelta(this.options.spinDelta), true);
+		},
+		_setNegativeDelta: function (delta) {
+			var revDelta = { }, key;
+			if (typeof delta === "object") {
+				for (key in delta) {
+					if (delta.hasOwnProperty(key)) {
+						revDelta[ key ] = delta[ key ] * -1;
+					}
+				}
+			} else {
+				revDelta = delta * -1;
+			}
+			return revDelta;
+		},
+		_getDelta: function(delta, name) {
+			return (typeof delta === "object") ? delta[ name ] : delta;
 		},
 		_serializeDate: function (sDate) {
 			if (this.options.dataMode === "date") {
@@ -9820,6 +9907,7 @@
 			var isLimited = this.options.limitSpinToCurrentField, newMilliseconds,
 				secondsUpdateDelta = 0, currentSecond, timeSecond, boundary;
 
+			delta = this._getDelta(delta, "milliseconds");
 			switch (this._dateIndices.ffLength) {
 				case 1: boundary = 10; break;
 				case 2: boundary = 100; break;
@@ -9872,6 +9960,7 @@
 			var isLimited = this.options.limitSpinToCurrentField, newSecond,
 				minuteUpdateDelta = 0, currentMinute, timeMinute;
 
+			delta = this._getDelta(delta, "seconds");
 			delta = delta % 60;
 			if (currentSecond + delta >= 60) {
 				if (isLimited) {
@@ -9920,6 +10009,7 @@
 			var isLimited = this.options.limitSpinToCurrentField, newMinute,
 				hourUpdateDelta = 0, currentHour, timeHour;
 
+			delta = this._getDelta(delta, "minutes");
 			delta = delta % 60;
 			if (currentMinute + delta >= 60) {
 				if (isLimited) {
@@ -9971,6 +10061,7 @@
 				newHour, hours, wrapUpHours, wrapDownHours, currentDay, currentAmPm,
 				timeDay, timeAmPm, dayDelta;
 
+			delta = this._getDelta(delta, "hours");
 			if (is24format) {
 				hours = 24;
 				newHour = currentHour + (delta % 24);
@@ -10046,7 +10137,7 @@
 							dayUpdateDelta = true;
 						}
 					}
-					if (delta < 0 && newHour < 12 && newHour - delta >= 12) {
+					if (delta < 0 && newHour <= 12 && newHour - delta >= 12) {
 						dayDelta = (delta !== 0) ? -1 : 0;
 						amPmUpdateDelta = true;
 						if (currentAmPm === "am") {
@@ -10115,6 +10206,7 @@
 				currentMonth, lastDayOfMonth, lastDayOfPreviousMonth, newDay,
 				monthUpdateDelta, timeYear, timeMonth, today;
 
+			delta = this._getDelta(delta, "day");
 			today = new Date();
 			timeYear = this._createYearPosition();
 			if (timeYear === null) {
@@ -10173,6 +10265,8 @@
 		_setMonthEditMode: function (mask, time, currentMonth, delta) {
 			var isLimited = this.options.limitSpinToCurrentField, newMonth, yearUpdateDelta = 0,
 				currentYear, timeYear;
+
+			delta = this._getDelta(delta, "month");
 			if (currentMonth + delta > 12) {
 				if (isLimited) {
 					newMonth = currentMonth;
@@ -10212,6 +10306,8 @@
 		},
 		_setYearEditMode: function (mask, time, currentYear, delta) {
 			var newYear;
+
+			delta = this._getDelta(delta, "year");
 			if (currentYear + delta < 0) {
 				newYear = currentYear;
 			} else {
@@ -10564,10 +10660,12 @@
 
 				// Default behavior is that we always spin up/down day if it is available in the mask.
 				periodName = "Date";
+				delta = this._getDelta(delta, "day");
 			} else if (indices.ff !== undefined) {
 
 				// If day is not available then we spin the smallest time period, that's why we start from milliseconds.
 				periodName = "Milliseconds";
+				delta = this._getDelta(delta, "milliseconds");
 				if (indices.ffLength === 2) {
 					delta = delta * 10;
 				} else if (indices.ffLength === 1) {
@@ -10575,14 +10673,19 @@
 				}
 			} else if (indices.ss !== undefined) {
 				periodName = "Seconds";
+				delta = this._getDelta(delta, "seconds");
 			} else if (indices.mm !== undefined) {
 				periodName = "Minutes";
+				delta = this._getDelta(delta, "minutes");
 			} else if (indices.hh !== undefined) {
 				periodName = "Hours";
+				delta = this._getDelta(delta, "hours");
 			} else if (indices.MM !== undefined) {
 				periodName = "Month";
+				delta = this._getDelta(delta, "month");
 			} else {
 				periodName = "FullYear";
+				delta = this._getDelta(delta, "year");
 			}
 			this._setTimePeriod(periodName, delta, userInteraction);
 		},
@@ -10602,7 +10705,8 @@
 			this._spinEditMode(delta ? delta : this.options.spinDelta);
 		},
 		_spinDownEditMode: function (delta) {
-			this._spinEditMode(delta ? -delta : -this.options.spinDelta);
+			this._spinEditMode(delta !== undefined ?
+				this._setNegativeDelta(delta) : this._setNegativeDelta(this.options.spinDelta));
 		},
 
 		// igDateEditor public methods
@@ -10706,7 +10810,8 @@
 			```
 				paramType="number" optional="true" The decrease delta. */
 			delta = parseInt(delta, 10);
-			this._spin(!isNaN(delta) && delta >= 0 ? -delta : -this.options.spinDelta);
+			this._spin(!isNaN(delta) && delta >= 0 ?
+				this._setNegativeDelta(delta) : this._setNegativeDelta(this.options.spinDelta));
 		},
 		spinUpButton: function () {
 			/* Returns a reference to the spin up UI element of the editor.

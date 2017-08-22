@@ -364,6 +364,21 @@
 
 	$.ig.formatter = function (val, type, format, notTemplate, enableUTCDates, dateOffset,
 		displayStyle, labelText, tabIndex, reg) {
+		var formatterArgs = arguments[ 0 ];
+		if (typeof formatterArgs === "object" && formatterArgs !== null &&
+				formatterArgs.hasOwnProperty("val")) {
+			val = formatterArgs.val;
+			type = formatterArgs.type;
+			format = formatterArgs.format;
+			notTemplate = formatterArgs.notTemplate;
+			enableUTCDates = formatterArgs.enableUTCDates;
+			dateOffset = formatterArgs.dateOffset;
+			displayStyle = formatterArgs.displayStyle;
+			labelText = formatterArgs.labelText;
+			tabIndex = formatterArgs.tabIndex;
+			reg = formatterArgs.reg;
+		}
+
 		var n, curS, percS, cur, perc, i, d = val && val.getTime, s,
 
 			// L.A. 17 October 2012 - Fixing bug #123215 The group rows of a grouped checkbox column are too large
@@ -455,6 +470,9 @@
 		} else {
 			$.ig.regional.defaults = $.extend($.ig._regional,
 				(typeof regional === "string") ? $.ig.regional[ regional ] : regional);
+		}
+		if ($.ig && $.ig.util) {
+			$.ig.util.regional = regional;
 		}
 	};
 
