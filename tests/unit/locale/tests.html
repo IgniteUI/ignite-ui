@@ -13,6 +13,10 @@
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.popover.css" rel="stylesheet" />
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.notifier.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.dialog.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.htmleditor.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.toolbar.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.splitbutton.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.colorpicker.css" rel="stylesheet" />
     <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 
     <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
@@ -22,6 +26,7 @@
     <script type="text/javascript" src="../../../src/js/modules/infragistics.util.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquery.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.util.jquerydeferred.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.templating.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.widget.js"></script>
     <script type="text/javascript" src="../../../src/js/modules/infragistics.ui.shared.js"></script>
@@ -65,6 +70,23 @@
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-de.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.dialog-es.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.dialog.js"></script>
+
+
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.popover.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.splitbutton.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.colorpicker.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.colorpickersplitbutton.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.toolbarbutton.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.toolbar-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.toolbar-ja.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.toolbar-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.toolbar-es.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.toolbar.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.htmleditor-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.htmleditor-ja.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.htmleditor-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.htmleditor-es.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.htmleditor.js"></script>
 
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
 
@@ -271,7 +293,7 @@
 			combo.igCombo("destroy");
 		});
 
-		test("Change language - dialog ui tests.", 15, function () {
+		test("Change language - dialog ui tests.", 18, function () {
 			var dialog = $("<div></div>").attr("id", "dialog_lang");
 			dialog.appendTo(document.body);
 			dialog.igDialog({
@@ -292,7 +314,27 @@
 			$.ig.util.changeGlobalLanguage("de");
 			checkDialogUI(dialog, $.ig.locale.de);
 
-			//dialog.igDialog("destroy");
+			dialog.igDialog("destroy");
+		});
+
+		test("Change language - html editor ui tests.", function () {
+			var htmlEditor = $("<div></div>").attr("id", "htmlEditor_lang");
+			htmlEditor.appendTo(document.body);
+			htmlEditor.igHtmlEditor({
+				language: "ja"
+			});
+
+			//check initially set language
+			checkHtmlEditorUI(htmlEditor, $.ig.locale.ja);
+
+			//check option setter
+			htmlEditor.igHtmlEditor("option", "language", "es");
+			checkHtmlEditorUI(htmlEditor, $.ig.locale.es);
+			
+			htmlEditor.data("igHtmlEditor")._userPreset = null;
+			$.ig.util.changeGlobalLanguage("de");
+			checkHtmlEditorUI(htmlEditor, $.ig.locale.de);
+
 		});
 
 		function checkComboUI(combo, lang) {
@@ -330,6 +372,43 @@
 			dialog.find("a.ui-igdialog-buttonminimize").mousedown();
 			equal(dialog.find("a.ui-igdialog-buttonminimize").attr("title"), lang.Dialog.minimizeButtonTitle, "Maximize button is not localized.");
 			dialog.find("a.ui-igdialog-buttonminimize").mousedown();
+
+			//check errors
+			equal(dialog.data("igDialog")._getLocaleValue("setOptionError"), lang.Dialog.setOptionError, "Error message is incorrect: setOptionError.");
+		}
+
+		function checkHtmlEditorUI(htmlEditor, lang) {
+
+			//check toolbar buttons title
+			var toolbars =  htmlEditor.find("div.ui-igtoolbars-holder > span.ui-igtoolbar");
+			var toolbarButtons = toolbars.find("div[role='button']");
+			toolbarButtons.each(function () {
+				var btn = $(this);
+				if (btn.attr("data-localeid")) {
+					var expectedText =lang.HtmlEditor[btn.attr("data-localeid")];
+					equal(btn.attr("title"), expectedText, "Button title is not localized.");
+				}
+			});
+
+			//check editor drop-down button title
+			var dropdowns = toolbars.find("div.ui-igcombo");
+			dropdowns.each(function () {
+				var dd = $(this), btn = dd.find("div.ui-igcombo-button");
+				equal(btn.attr("title"), lang.Combo[btn.attr("data-localeid")], "Combo button is not localized.");
+			});
+
+			//check drop-down editors text
+			var fontNameCombo = $("#htmlEditor_lang_toolbars_textToolbar_item_fontFamily");
+			equal(JSON.stringify(fontNameCombo.igCombo("option", "dataSource").data()), JSON.stringify(lang.HtmlEditor.fontNames.win), "Combo data is localized.");
+
+			var fontSizeCombo = $("#htmlEditor_lang_toolbars_textToolbar_item_fontSize");
+			equal(JSON.stringify(fontSizeCombo.igCombo("option", "dataSource").data()), JSON.stringify(lang.HtmlEditor.fontSizes), "Combo data is localized.");
+
+			var formatsListCombo =$("#htmlEditor_lang_toolbars_textToolbar_item_formatsList");
+			equal(JSON.stringify(formatsListCombo.igCombo("option", "dataSource").data()), JSON.stringify(lang.HtmlEditor.formatsList), "Combo data is localized.");
+
+			//check view source button title
+			equal(htmlEditor.find("div.ui-igbutton-viewsource").attr("title"), lang.HtmlEditor.viewSourceButtonTitle, "View source button is not localized.");
 		}
 	});
 	

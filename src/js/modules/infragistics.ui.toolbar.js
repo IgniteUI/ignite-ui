@@ -13,6 +13,7 @@
  *   infragistics.util.js
  *   infragistics.util.jquery.js
  *   infragistics.ui.shared.js
+ *   infragistics.ui.widget.js
  *   infragistics.ui.popover.js
  *   infragistics.ui.toolbarbutton.js
  *   infragistics.ui.splitbutton.js
@@ -841,8 +842,8 @@
         },
         _getTooltipByExpandState: function (state) {
 			return (state === "expand" ?
-					$.ig.util.getLocaleValue("Toolbar", "collapseButtonTitle") :
-					$.ig.util.getLocaleValue("Toolbar", "expandButtonTitle"))
+					this._getLocaleValue("collapseButtonTitle") :
+					this._getLocaleValue("expandButtonTitle"))
 				.replace("{0}", this.options.displayName);
         },
 		changeLocale: function() {
