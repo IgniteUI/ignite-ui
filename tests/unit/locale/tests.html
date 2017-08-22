@@ -335,21 +335,13 @@
 
 			//check option setter
 			htmlEditor.igHtmlEditor("option", "language", "es");
-			stop();
-			setTimeout(function () {
-				start();
-				checkHtmlEditorUI(htmlEditor, $.ig.locale.es);
-			}, 200);
+			checkHtmlEditorUI(htmlEditor, $.ig.locale.es);
 			
-			stop();
-			setTimeout(function () {
-				start();
-				htmlEditor.data("igHtmlEditor")._userPreset = null;
-				$.ig.util.changeGlobalLanguage("de");
-				checkHtmlEditorUI(htmlEditor, $.ig.locale.de);
+			htmlEditor.data("igHtmlEditor")._userPreset = null;
+			$.ig.util.changeGlobalLanguage("de");
+			checkHtmlEditorUI(htmlEditor, $.ig.locale.de);
 
-				htmlEditor.igHtmlEditor("destroy");
-			}, 200);
+			htmlEditor.igHtmlEditor("destroy");
 
 		});
 
@@ -427,7 +419,8 @@
 
 			//check drop-down editors text
 			var fontNameCombo = $("#htmlEditor_lang_toolbars_textToolbar_item_fontFamily");
-			equal(JSON.stringify(fontNameCombo.igCombo("option", "dataSource").data()), JSON.stringify(lang.HtmlEditor.fontNames.win), "Combo data is localized.");
+			var comboData =JSON.stringify(fontNameCombo.igCombo("option", "dataSource").data());
+			ok( comboData === JSON.stringify(lang.HtmlEditor.fontNames.win) || comboData === JSON.stringify(lang.HtmlEditor.fontNames.mac), "Combo data is localized.");
 
 			var fontSizeCombo = $("#htmlEditor_lang_toolbars_textToolbar_item_fontSize");
 			equal(JSON.stringify(fontSizeCombo.igCombo("option", "dataSource").data()), JSON.stringify(lang.HtmlEditor.fontSizes), "Combo data is localized.");
