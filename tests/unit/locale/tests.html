@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8" /> 
     <link type="text/css" href="../../../src/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.shared.css" rel="stylesheet" />
     <link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.combo.css" rel="stylesheet" />
@@ -18,6 +19,7 @@
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.splitbutton.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.colorpicker.css" rel="stylesheet" />
 	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.upload.css" rel="stylesheet" />
+	<link type="text/css" href="../../../src/css/structure/modules/infragistics.ui.videoplayer.css" rel="stylesheet" />
     <link type="text/css" href="../../../bower_components/qunit/qunit/qunit.css" rel="stylesheet" media="screen" />
 
     <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
@@ -95,6 +97,13 @@
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-es.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-bg.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.upload.js"></script>
+
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.videoplayer-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.videoplayer-ja.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.videoplayer-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.videoplayer-es.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.videoplayer-bg.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.videoplayer.js"></script>
 
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
 	<script type="text/javascript" src="../../../bower_components/jquery-mockjax/src/jquery.mockjax.js"></script>
@@ -379,6 +388,44 @@
 			upload.igUpload("destroy");
 		});
 
+		test("Change language -igVideoPlayer ui tests.", function () {
+			var createPlayer = function () {
+				if ($("#videoPlayer_lang").length > 0) {
+					$("#videoPlayer_lang").remove();
+				}
+				var videoPlayer = $("<div></div>").attr("id", "videoPlayer_lang");
+				videoPlayer.appendTo(document.body);
+				videoPlayer.igVideoPlayer({
+					language: "bg",
+					width: 300,
+					height: 200,
+					sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+						"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+						"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+						"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+				],
+				});
+				return videoPlayer;
+			}
+
+			var videoPlayer = createPlayer();
+
+			//check initially set language
+			checkVideoPlayerUI(videoPlayer, $.ig.locale.bg);
+
+			videoPlayer = createPlayer();
+			videoPlayer.igVideoPlayer("option", "language", "es");
+			checkVideoPlayerUI(videoPlayer, $.ig.locale.es);
+			
+			videoPlayer = createPlayer();
+			videoPlayer.data("igVideoPlayer")._userPreset = null;
+			$.ig.util.changeGlobalLanguage("de");
+			checkVideoPlayerUI(videoPlayer, $.ig.locale.de);
+
+			$("#videoPlayer_lang").igVideoPlayer("destroy");
+		
+		});
+
 		function checkComboUI(combo, lang) {
 			// Check drop down button title
 			equal(combo.find("div.ui-igcombo-button").attr("title"), lang.Combo.dropDownButtonTitle, "Drop-down button title not is localized.");
@@ -511,6 +558,46 @@
 			equal(upload.data("igUpload")._getLocaleValue("errorMessageCancelUpload"), lang.Upload.errorMessageCancelUpload, "Error message is incorrect: errorMessageCancelUpload.");
 			equal(upload.data("igUpload")._getLocaleValue("errorMessageTryToRemoveNonExistingFile"), lang.Upload.errorMessageTryToRemoveNonExistingFile, "Error message is incorrect: errorMessageTryToRemoveNonExistingFile.");
 			equal(upload.data("igUpload")._getLocaleValue("errorMessageAJAXRequestFileSize"), lang.Upload.errorMessageAJAXRequestFileSize, "Error message is incorrect: errorMessageAJAXRequestFileSize.");
+		}
+
+		function checkVideoPlayerUI(videoPlayer, lang) {
+			//The igVideoPlayer does not render correctly under headless chrome. Due to this UI testing is currently not possible.
+
+			/*
+			//check btns
+			var playBtn = videoPlayer.find("#videoPlayer_lang_title_ctrls_play > span.ui-igplayer-playbutton-icon");
+
+			console.log("title:" + playBtn.html());
+			equal(playBtn.attr("title"), lang.VideoPlayer.play, "Play button is not localized.");
+
+			//start
+			videoPlayer.igVideoPlayer("play");
+
+			var pauseBtn = videoPlayer.find("#videoPlayer_lang_ctrls_play");
+			equal(pauseBtn.attr("title"), lang.VideoPlayer.playing, "Pause button is not localized.");
+			//pause
+			videoPlayer.igVideoPlayer("pause");
+
+			pauseBtn = videoPlayer.find("#videoPlayer_lang_ctrls_play");
+			equal(pauseBtn.attr("title"), lang.VideoPlayer.paused, "Pause button is not localized.");
+
+			var volumeBtn = videoPlayer.find("a.ui-igplayer-volumecontrol");
+			equal(volumeBtn.attr("title"), lang.VideoPlayer.volume, "Volume button is not localized.");
+
+			var fullScrBtn = videoPlayer.find("a.ui-igplayer-fullscreen-button");
+			equal(fullScrBtn.attr("title"), lang.VideoPlayer.enterFullscreen, "Full screen button is not localized.");
+			*/
+
+			equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("play"), lang.VideoPlayer.play, "String is incorrect: play.");
+			equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("playing"), lang.VideoPlayer.playing, "String is incorrect: playing.");
+			equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("paused"), lang.VideoPlayer.paused, "String is incorrect: paused.");
+			equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("volume"), lang.VideoPlayer.volume, "String is incorrect: paused.");
+			equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("enterFullscreen"), lang.VideoPlayer.enterFullscreen, "String is incorrect: paused.");
+
+			//check errors
+			equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("nonDivException"), lang.VideoPlayer.nonDivException, "Error message is incorrect: nonDivException.");
+			equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("unsupportedBrowser"), lang.VideoPlayer.unsupportedBrowser, "Error message is incorrect: unsupportedBrowser.");
+			equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("unsupportedVideoSource"), lang.VideoPlayer.unsupportedVideoSource, "Error message is incorrect: unsupportedVideoSource.");
 		}
 	});
 	
