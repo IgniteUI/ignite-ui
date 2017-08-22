@@ -88,6 +88,12 @@
 	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.htmleditor-es.js"></script>
 	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.htmleditor.js"></script>
 
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-en.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-ja.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-de.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/i18n/infragistics.ui.upload-es.js"></script>
+	<script type="text/javascript" src="../../../src/js/modules/infragistics.ui.upload.js"></script>
+
     <script type="text/javascript" src="../../../bower_components/qunit/qunit/qunit.js"></script>
 
 	<script type="text/javascript">
@@ -329,13 +335,34 @@
 
 			//check option setter
 			htmlEditor.igHtmlEditor("option", "language", "es");
-			checkHtmlEditorUI(htmlEditor, $.ig.locale.es);
+			stop();
+			setTimeout(function () {
+				start();
+				checkHtmlEditorUI(htmlEditor, $.ig.locale.es);
+			}, 200);
 			
-			htmlEditor.data("igHtmlEditor")._userPreset = null;
-			$.ig.util.changeGlobalLanguage("de");
-			checkHtmlEditorUI(htmlEditor, $.ig.locale.de);
+			stop();
+			setTimeout(function () {
+				start();
+				htmlEditor.data("igHtmlEditor")._userPreset = null;
+				$.ig.util.changeGlobalLanguage("de");
+				checkHtmlEditorUI(htmlEditor, $.ig.locale.de);
+
+				htmlEditor.igHtmlEditor("destroy");
+			}, 200);
 
 		});
+
+		//test("Change language -igUpload ui tests.", function () {
+		//	var upload = $("<div></div>").attr("id", "upload_lang");
+		//	upload.appendTo(document.body);
+		//	upload.igUpload({
+		//		language: "ja"
+		//	});
+		//
+		//	//check initially set language
+		//	checkUploadUI(upload, $.ig.locale.ja);
+		//});
 
 		function checkComboUI(combo, lang) {
 			// Check drop down button title
@@ -397,6 +424,7 @@
 				equal(btn.attr("title"), lang.Combo[btn.attr("data-localeid")], "Combo button is not localized.");
 			});
 
+
 			//check drop-down editors text
 			var fontNameCombo = $("#htmlEditor_lang_toolbars_textToolbar_item_fontFamily");
 			equal(JSON.stringify(fontNameCombo.igCombo("option", "dataSource").data()), JSON.stringify(lang.HtmlEditor.fontNames.win), "Combo data is localized.");
@@ -409,6 +437,9 @@
 
 			//check view source button title
 			equal(htmlEditor.find("div.ui-igbutton-viewsource").attr("title"), lang.HtmlEditor.viewSourceButtonTitle, "View source button is not localized.");
+		}
+
+		function checkUploadUI(upload, lang) {
 		}
 	});
 	
