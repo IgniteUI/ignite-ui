@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" /> 
@@ -110,327 +110,448 @@
 
 	<script type="text/javascript">
 
-	$(function () {
-		var dataSource = [
-			{ ID: 1, Name: "John", IsFemale: false },
-			{ ID: 2, Name: "Mary", IsFemale: true },
-			{ ID: 3, Name: "Bob", IsFemale: false }
-		], results = [{
-			Text: 'Food', Expanded: true, Target: "_blank", Nodes: [
-				{ Text: 'Sandwiches', Nodes: [
-					{ Text: 'Ham & Cheese' }
+		$(function () {
+			var dataSource = [
+				{ ID: 1, Name: "John", IsFemale: false },
+				{ ID: 2, Name: "Mary", IsFemale: true },
+				{ ID: 3, Name: "Bob", IsFemale: false }
+			], results = [{
+				Text: 'Food', Expanded: true, Target: "_blank", Nodes: [
+					{ Text: 'Sandwiches', Nodes: [
+						{ Text: 'Ham & Cheese' }
+					]},
+					{ Text: 'Fish' },
+					{ Text: 'Hamburgers' },
+					{ Text: 'Sishi' },
+					{ Text: 'Steaks' }
 				]},
-				{ Text: 'Fish' },
-				{ Text: 'Hamburgers' },
-				{ Text: 'Sishi' },
-				{ Text: 'Steaks' }
-			]},
-			{
-				Text: 'Beverages', Nodes: [
-				{ Text: 'Coke' },
-				{ Text: 'Pepsi' },
-				{ Text: 'Mountain Dew' },
-				{ Text: 'Wine' },
-				{ Text: 'Beer' },
-				{ Text: 'Lemonade' }
-			]},
-			{
-				Text: 'Tech', Nodes: [
-				{ Text: 'Laptops' },
-				{ Text: 'Desktops' },
-				{ Text: 'Tablets' },
-				{ Text: 'Smartphones' },
-				{ Text: 'Mainframes' }
-			]},
-			{
-				Text: 'Literature', Nodes: [
-				{ Text: 'Dostoevsky' },
-				{ Text: 'Vazov' },
-				{ Text: 'Tolstoy' },
-				{ Text: 'Goethe' },
-				{ Text: 'Stainbeck' }
-			]},
-			{
-				Text: 'Accessories', Nodes: [
-				{ Text: 'Mouse' },
-				{ Text: 'Keyboard' },
-				{ Text: 'Microphone' },
-				{ Text: 'Camera' },
-				{ Text: 'Mousepad' }
-			]}
-		];
+				{
+					Text: 'Beverages', Nodes: [
+					{ Text: 'Coke' },
+					{ Text: 'Pepsi' },
+					{ Text: 'Mountain Dew' },
+					{ Text: 'Wine' },
+					{ Text: 'Beer' },
+					{ Text: 'Lemonade' }
+					]},
+				{
+					Text: 'Tech', Nodes: [
+					{ Text: 'Laptops' },
+					{ Text: 'Desktops' },
+					{ Text: 'Tablets' },
+					{ Text: 'Smartphones' },
+					{ Text: 'Mainframes' }
+					]},
+				{
+					Text: 'Literature', Nodes: [
+					{ Text: 'Dostoevsky' },
+					{ Text: 'Vazov' },
+					{ Text: 'Tolstoy' },
+					{ Text: 'Goethe' },
+					{ Text: 'Stainbeck' }
+					]},
+				{
+					Text: 'Accessories', Nodes: [
+					{ Text: 'Mouse' },
+					{ Text: 'Keyboard' },
+					{ Text: 'Microphone' },
+					{ Text: 'Camera' },
+					{ Text: 'Mousepad' }
+					]}
+			];
 
-		// Setup controls
+			// Setup controls
 
-		// Tree
-		$("#combo").igCombo({
-			dataSource: dataSource,
-			textKey: 'Name',
-			valueKey: 'ID',
-			animationShowDuration: 0,
-			animationHideDuration: 0,
-			mode: 'dropdown',
-			multiSelection: {
-				enabled: true
-			}
-		});
-		
-		// Checkbox
-		$("#checkbox").igCheckboxEditor();
-
-		// Currency
-		$("#currency").igCurrencyEditor({
-			buttonType: "spin,clear"
-		});
-
-		// Date Editor
-		$("#dateeditor").igDateEditor({
-			value: "10/10/2010",
-			buttonType: "clear",
-			validatorOptions: { required: true, notificationOptions: { mode: "popover" } }
-		});
-
-		// Date Picker
-		$("#datepicker").igDatePicker({
-			buttonType: "spin,clear"
-		});
-
-		// Mask Editor
-		$("#mask").igMaskEditor({
-			buttonType: "clear",
-			value: "AAAAAAAA"
-		});
-
-		// Numeric Editor
-		$("#numeric").igNumericEditor({
-			dataMode: "double",
-			buttonType: "spin,clear",
-			maxValue: 80000
-		});
-
-		// Percent Editor
-		$("#percent").igPercentEditor({
-			displayFactor: 1,
-			value: 30,
-			buttonType: "spin,clear",
-			positivePattern: "%(n)"
-		});
-
-		// Text Editor
-		$("#text").igTextEditor({
-			includeKeys: "abc",
-			maxLength: 10,
-			selectionOnFocus: "atStart",
-			listItems: ["item1", "item2"],
-			buttonType: "dropdown,spin,clear",
-			preventSubmitOnEnter: true
-		});
-
-		// Tree
-		$('#tree').igTree({
-			dataSource: results
-		});
-
-		// Tile Manager
-		$('#tilemanager').igTileManager({
-			animationDuration: 0,
-			width: 1000,
-			height: 1000
-		});
-		
-
-		module("Runtime locale changes", {
-			setup: function() {},
-			teardown: function() {}
-		});
-			
-		test("Loading correct locales when setting language and locale", 12, function () {
-			var locale = $.ig.locale.ja.Editor;
-			ok(locale, "The ja locale is not loaded.");
-			ok($.ig.Tree.locale, "The tree locale got overwritten");
-			notEqual(locale.spinUpperTitle, $.ig.Editor.locale.spinUpperTitle, "The default locale got overwritten");
-			equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), $.ig.Editor.locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
-			$("#datepicker").igDatePicker("option", "language", "ja");
-			equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), locale.spinUpperTitle, "_getLocaleValue returned wrong after setting language for the Date Picker");
-			var button = $("#datepicker").data("igDatePicker")._dropDownButton;
-			equal(button.attr("title"), locale.datePickerButtonTitle, "The title attribute should be: " + locale.buttonTitle);
-			button = $("#datepicker").data("igDatePicker")._spinUpButton;
-			equal(button.attr("title"), locale.spinUpperTitle, "The title attribute should be: " + locale.spinUpperTitle);
-			button = $("#datepicker").data("igDatePicker")._spinDownButton;
-			equal(button.attr("title"), locale.spinLowerTitle, "The title attribute should be: " + locale.spinLowerTitle);
-			equal($("#numeric").data("igNumericEditor")._getLocaleValue("spinUpperTitle"), $.ig.Editor.locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
-			locale = $.ig.locale.bg.Editor;
-			$("#numeric").igNumericEditor("option", "locale", locale);
-			equal($("#numeric").data("igNumericEditor")._getLocaleValue("spinUpperTitle"), locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
-			button = $("#numeric").data("igNumericEditor")._spinUpButton;
-			equal(button.attr("title"), locale.spinUpperTitle, "The title attribute should be: " + locale.spinUpperTitle);
-			button = $("#numeric").data("igNumericEditor")._spinDownButton;
-			equal(button.attr("title"), locale.spinLowerTitle, "The title attribute should be: " + locale.spinLowerTitle);
-		});
-
-		test("Changing language globally", 10, function () {
-			var locale = $.ig.locale;
-			$.ig.util.changeGlobalLanguage("de");
-			equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), $.ig.locale.de.Editor.spinUpperTitle, "_getLocaleValue returned wrong after setting global language");
-			equal($("#numeric").data("igNumericEditor")._getLocaleValue("spinUpperTitle"), $.ig.locale.bg.Editor.spinUpperTitle, "_getLocaleValue returned wrong after setting global language but having locale object set spefically for an instance.");
-			equal($("#combo").data("igCombo")._getLocaleValue("noMatchFoundText"), $.ig.locale.de.Combo.noMatchFoundText, "_getLocaleValue returned wrong after setting global language.");
-			equal($("#text").data("igTextEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
-			equal($("#checkbox").data("igCheckboxEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
-			equal($("#currency").data("igCurrencyEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
-			equal($("#dateeditor").data("igDateEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
-			equal($("#mask").data("igMaskEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
-			equal($("#tree").data("igTree")._getLocaleValue("invalidArgumentType"), $.ig.locale.de.Tree.invalidArgumentType, "_getLocaleValue returned wrong after setting global language.");
-			equal($("#tilemanager").data("igTileManager")._getLocaleValue("setOptionItemsLengthError"), $.ig.locale.de.TileManager.setOptionItemsLengthError, "_getLocaleValue returned wrong after setting global language.");
-		});
-
-		test("Change language - combo ui tests.", 24, function () {
-			var combo = $("<div></div>").attr("id", "combo_lang");
-			combo.appendTo(document.body);
-			combo.igCombo({
-				language: "ja",
+			// Tree
+			$("#combo").igCombo({
 				dataSource: dataSource,
 				textKey: 'Name',
 				valueKey: 'ID',
-				
+				animationShowDuration: 0,
+				animationHideDuration: 0,
+				mode: 'dropdown',
 				multiSelection: {
 					enabled: true
 				}
 			});
+		
+			// Checkbox
+			$("#checkbox").igCheckboxEditor();
 
-			//check initially set language
-			checkComboUI(combo, $.ig.locale.ja);
-
-			//check option setter
-			combo.igCombo("option", "language", "es");
-			checkComboUI(combo, $.ig.locale.es);
-
-			combo.data("igCombo")._userPreset = null;
-			$.ig.util.changeGlobalLanguage("de");
-			checkComboUI(combo, $.ig.locale.de);
-
-			combo.igCombo("destroy");
-		});
-
-		test("Change language - dialog ui tests.", 18, function () {
-			var dialog = $("<div></div>").attr("id", "dialog_lang");
-			dialog.appendTo(document.body);
-			dialog.igDialog({
-				state: "opened",
-				language: "ja",
-				showPinButton: true,
-				showMinimizeButton: true
+			// Currency
+			$("#currency").igCurrencyEditor({
+				buttonType: "spin,clear"
 			});
 
-			//check initially set language
-			checkDialogUI(dialog, $.ig.locale.ja);
-
-			//check option setter
-			dialog.igDialog("option", "language", "es");
-			checkDialogUI(dialog, $.ig.locale.es);
-
-			dialog.data("igDialog")._userPreset = null;
-			$.ig.util.changeGlobalLanguage("de");
-			checkDialogUI(dialog, $.ig.locale.de);
-
-			dialog.igDialog("destroy");
-		});
-
-		test("Change language - html editor ui tests.", function () {
-			var htmlEditor = $("<div></div>").attr("id", "htmlEditor_lang");
-			htmlEditor.appendTo(document.body);
-			htmlEditor.igHtmlEditor({
-				language: "ja"
+			// Date Editor
+			$("#dateeditor").igDateEditor({
+				value: "10/10/2010",
+				buttonType: "clear",
+				validatorOptions: { required: true, notificationOptions: { mode: "popover" } }
 			});
 
-			//check initially set language
-			checkHtmlEditorUI(htmlEditor, $.ig.locale.ja);
+			// Date Picker
+			$("#datepicker").igDatePicker({
+				buttonType: "spin,clear"
+			});
 
-			//check option setter
-			htmlEditor.igHtmlEditor("option", "language", "es");
-			checkHtmlEditorUI(htmlEditor, $.ig.locale.es);
+			// Mask Editor
+			$("#mask").igMaskEditor({
+				buttonType: "clear",
+				value: "AAAAAAAA"
+			});
+
+			// Numeric Editor
+			$("#numeric").igNumericEditor({
+				dataMode: "double",
+				buttonType: "spin,clear",
+				maxValue: 80000
+			});
+
+			// Percent Editor
+			$("#percent").igPercentEditor({
+				displayFactor: 1,
+				value: 30,
+				buttonType: "spin,clear",
+				positivePattern: "%(n)"
+			});
+
+			// Text Editor
+			$("#text").igTextEditor({
+				includeKeys: "abc",
+				maxLength: 10,
+				selectionOnFocus: "atStart",
+				listItems: ["item1", "item2"],
+				buttonType: "dropdown,spin,clear",
+				preventSubmitOnEnter: true
+			});
+
+			// Tree
+			$('#tree').igTree({
+				dataSource: results
+			});
+
+			// Tile Manager
+			$('#tilemanager').igTileManager({
+				animationDuration: 0,
+				width: 1000,
+				height: 1000
+			});
+		
+
+			module("Runtime locale changes", {
+				setup: function() {},
+				teardown: function() {}
+			});
 			
-			htmlEditor.data("igHtmlEditor")._userPreset = null;
-			$.ig.util.changeGlobalLanguage("de");
-			checkHtmlEditorUI(htmlEditor, $.ig.locale.de);
+			test("Loading correct locales when setting language and locale", 12, function () {
+				var locale = $.ig.locale.ja.Editor;
+				ok(locale, "The ja locale is not loaded.");
+				ok($.ig.Tree.locale, "The tree locale got overwritten");
+				notEqual(locale.spinUpperTitle, $.ig.Editor.locale.spinUpperTitle, "The default locale got overwritten");
+				equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), $.ig.Editor.locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
+				$("#datepicker").igDatePicker("option", "language", "ja");
+				equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), locale.spinUpperTitle, "_getLocaleValue returned wrong after setting language for the Date Picker");
+				var button = $("#datepicker").data("igDatePicker")._dropDownButton;
+				equal(button.attr("title"), locale.datePickerButtonTitle, "The title attribute should be: " + locale.buttonTitle);
+				button = $("#datepicker").data("igDatePicker")._spinUpButton;
+				equal(button.attr("title"), locale.spinUpperTitle, "The title attribute should be: " + locale.spinUpperTitle);
+				button = $("#datepicker").data("igDatePicker")._spinDownButton;
+				equal(button.attr("title"), locale.spinLowerTitle, "The title attribute should be: " + locale.spinLowerTitle);
+				equal($("#numeric").data("igNumericEditor")._getLocaleValue("spinUpperTitle"), $.ig.Editor.locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
+				locale = $.ig.locale.bg.Editor;
+				$("#numeric").igNumericEditor("option", "locale", locale);
+				equal($("#numeric").data("igNumericEditor")._getLocaleValue("spinUpperTitle"), locale.spinUpperTitle, "_getLocaleValue returned wrong before setting language");
+				button = $("#numeric").data("igNumericEditor")._spinUpButton;
+				equal(button.attr("title"), locale.spinUpperTitle, "The title attribute should be: " + locale.spinUpperTitle);
+				button = $("#numeric").data("igNumericEditor")._spinDownButton;
+				equal(button.attr("title"), locale.spinLowerTitle, "The title attribute should be: " + locale.spinLowerTitle);
+			});
 
-			htmlEditor.igHtmlEditor("destroy");
+			test("Changing language globally", 10, function () {
+				var locale = $.ig.locale;
+				$.ig.util.changeGlobalLanguage("de");
+				equal($("#datepicker").data("igDatePicker")._getLocaleValue("spinUpperTitle"), $.ig.locale.de.Editor.spinUpperTitle, "_getLocaleValue returned wrong after setting global language");
+				equal($("#numeric").data("igNumericEditor")._getLocaleValue("spinUpperTitle"), $.ig.locale.bg.Editor.spinUpperTitle, "_getLocaleValue returned wrong after setting global language but having locale object set spefically for an instance.");
+				equal($("#combo").data("igCombo")._getLocaleValue("noMatchFoundText"), $.ig.locale.de.Combo.noMatchFoundText, "_getLocaleValue returned wrong after setting global language.");
+				equal($("#text").data("igTextEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+				equal($("#checkbox").data("igCheckboxEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+				equal($("#currency").data("igCurrencyEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+				equal($("#dateeditor").data("igDateEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+				equal($("#mask").data("igMaskEditor")._getLocaleValue("targetNotSupported"), $.ig.locale.de.Editor.targetNotSupported, "_getLocaleValue returned wrong after setting global language.");
+				equal($("#tree").data("igTree")._getLocaleValue("invalidArgumentType"), $.ig.locale.de.Tree.invalidArgumentType, "_getLocaleValue returned wrong after setting global language.");
+				equal($("#tilemanager").data("igTileManager")._getLocaleValue("setOptionItemsLengthError"), $.ig.locale.de.TileManager.setOptionItemsLengthError, "_getLocaleValue returned wrong after setting global language.");
+			});
 
-		});
-
-		test("Change language -igUpload ui tests.", function () {
-
-			var createUpload = function () {
-				if ($("#upload_lang").length > 0) {
-					$("#upload_lang").remove();
-				}
-				var upload = $("<div></div>").attr("id", "upload_lang");
-				upload.appendTo(document.body);
-				upload.igUpload({
-				mode: 'multiple', //Multiple
-				autostartupload: false,
-				language: "bg"
+			test("Change language - combo ui tests.", 24, function () {
+				var combo = $("<div></div>").attr("id", "combo_lang");
+				combo.appendTo(document.body);
+				combo.igCombo({
+					language: "ja",
+					dataSource: dataSource,
+					textKey: 'Name',
+					valueKey: 'ID',
+				
+					multiSelection: {
+						enabled: true
+					}
 				});
-				return upload;
-			};
-			var upload = createUpload();
-			//check initially set language
-			checkUploadUI(upload, $.ig.locale.bg);
 
-			upload = createUpload();
-			upload.igUpload("option", "language", "es");
-			checkUploadUI(upload, $.ig.locale.es);
+				//check initially set language
+				checkComboUI(combo, $.ig.locale.ja);
 
-			upload = createUpload();
-			upload.data("igUpload")._userPreset = null;
-			$.ig.util.changeGlobalLanguage("de");
-			checkUploadUI(upload, $.ig.locale.de);
+				//check option setter
+				combo.igCombo("option", "language", "es");
+				checkComboUI(combo, $.ig.locale.es);
 
-			upload.igUpload("destroy");
-		});
+				combo.data("igCombo")._userPreset = null;
+				$.ig.util.changeGlobalLanguage("de");
+				checkComboUI(combo, $.ig.locale.de);
 
-		test("Change language -igVideoPlayer ui tests.", function () {
-			var createPlayer = function () {
-				if ($("#videoPlayer_lang").length > 0) {
-					$("#videoPlayer_lang").remove();
+				combo.igCombo("destroy");
+			});
+
+			test("Change language - dialog ui tests.", 18, function () {
+				var dialog = $("<div></div>").attr("id", "dialog_lang");
+				dialog.appendTo(document.body);
+				dialog.igDialog({
+					state: "opened",
+					language: "ja",
+					showPinButton: true,
+					showMinimizeButton: true
+				});
+
+				//check initially set language
+				checkDialogUI(dialog, $.ig.locale.ja);
+
+				//check option setter
+				dialog.igDialog("option", "language", "es");
+				checkDialogUI(dialog, $.ig.locale.es);
+
+				dialog.data("igDialog")._userPreset = null;
+				$.ig.util.changeGlobalLanguage("de");
+				checkDialogUI(dialog, $.ig.locale.de);
+
+				dialog.igDialog("destroy");
+			});
+
+			test("Change language - html editor ui tests.", function () {
+				var htmlEditor = $("<div></div>").attr("id", "htmlEditor_lang");
+				htmlEditor.appendTo(document.body);
+				htmlEditor.igHtmlEditor({
+					language: "ja"
+				});
+
+				//check initially set language
+				checkHtmlEditorUI(htmlEditor, $.ig.locale.ja);
+
+				//check option setter
+				htmlEditor.igHtmlEditor("option", "language", "es");
+				checkHtmlEditorUI(htmlEditor, $.ig.locale.es);
+			
+				htmlEditor.data("igHtmlEditor")._userPreset = null;
+				$.ig.util.changeGlobalLanguage("de");
+				checkHtmlEditorUI(htmlEditor, $.ig.locale.de);
+
+				htmlEditor.igHtmlEditor("destroy");
+
+			});
+
+			test("Change language -igUpload ui tests.", function () {
+
+				var createUpload = function () {
+					if ($("#upload_lang").length > 0) {
+						$("#upload_lang").remove();
+					}
+					var upload = $("<div></div>").attr("id", "upload_lang");
+					upload.appendTo(document.body);
+					upload.igUpload({
+						mode: 'multiple', //Multiple
+						autostartupload: false,
+						language: "bg"
+					});
+					return upload;
+				};
+				var upload = createUpload();
+				//check initially set language
+				checkUploadUI(upload, $.ig.locale.bg);
+
+				upload = createUpload();
+				upload.igUpload("option", "language", "es");
+				checkUploadUI(upload, $.ig.locale.es);
+
+				upload = createUpload();
+				upload.data("igUpload")._userPreset = null;
+				$.ig.util.changeGlobalLanguage("de");
+				checkUploadUI(upload, $.ig.locale.de);
+
+				upload.igUpload("destroy");
+			});
+
+			test("Change language -igVideoPlayer ui tests.", function () {
+				var createPlayer = function () {
+					if ($("#videoPlayer_lang").length > 0) {
+						$("#videoPlayer_lang").remove();
+					}
+					var videoPlayer = $("<div></div>").attr("id", "videoPlayer_lang");
+					videoPlayer.appendTo(document.body);
+					videoPlayer.igVideoPlayer({
+						language: "bg",
+						width: 300,
+						height: 200,
+						sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
+							"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
+							"http://medias.jilion.com/sublimevideo/dartmoor.webm",
+							"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
+						],
+					});
+					return videoPlayer;
 				}
-				var videoPlayer = $("<div></div>").attr("id", "videoPlayer_lang");
+
+				var videoPlayer = createPlayer();
+
+				//check initially set language
+				checkVideoPlayerUI(videoPlayer, $.ig.locale.bg);
+
+				videoPlayer = createPlayer();
+				videoPlayer.igVideoPlayer("option", "language", "es");
+				checkVideoPlayerUI(videoPlayer, $.ig.locale.es);
+			
+				videoPlayer = createPlayer();
+				videoPlayer.data("igVideoPlayer")._userPreset = null;
+				$.ig.util.changeGlobalLanguage("de");
+				checkVideoPlayerUI(videoPlayer, $.ig.locale.de);
+
+				$("#videoPlayer_lang").igVideoPlayer("destroy");
+		
+			});
+
+			test("Test change locale option", function(){
+
+				//combo
+				var combo = $("<div></div>").attr("id", "combo_locale");
+				combo.appendTo(document.body);
+				combo.igCombo({
+					language: "ja",
+					dataSource: dataSource,
+					textKey: 'Name',
+					valueKey: 'ID',
+					locale: { dropDownButtonTitle: "Custom Title"},
+					multiSelection: {
+						enabled: true
+					}
+				});
+
+				// Check drop down button title
+				equal(combo.find("div.ui-igcombo-button").attr("title"), "Custom Title", "Drop-down button title should have the value set in the locale.");
+
+				//change runtime
+				combo.igCombo("option", "locale", { dropDownButtonTitle: "Custom Title 2"});
+
+				equal(combo.find("div.ui-igcombo-button").attr("title"), "Custom Title 2", "Drop-down button title should have the value set in the locale.");
+
+				//clean
+				combo.remove();
+
+				//Editor
+				var editor = $("<div></div>").attr("id", "editor_locale");
+				editor.appendTo(document.body);
+				editor.igCurrencyEditor({
+					buttonType: "spin,clear",
+					language: "ja",
+					locale: { spinUpperTitle: "Custom Text"}
+				});
+
+				equal(editor.data("igCurrencyEditor")._spinUpButton.attr("title"), "Custom Text", "Editor button title should be equal to the set locale value.");
+				//change runtime
+				editor.igCurrencyEditor("option", "locale", { spinUpperTitle: "Custom Text 2"});
+
+				equal(editor.data("igCurrencyEditor")._spinUpButton.attr("title"), "Custom Text 2", "Editor button title should be equal to the set locale value.");
+
+				//clean
+				editor.remove();
+
+				//Dialog
+				var dialog = $("<div></div>").attr("id", "dialog_locale");
+				dialog.appendTo(document.body);
+				dialog.igDialog({
+					state: "opened",
+					language: "ja",
+					showPinButton: true,
+					showMinimizeButton: true,
+					locale: {pinButtonTitle: "Custom Pin Text"}
+				});
+
+				equal(dialog.find("a.ui-igdialog-buttonpin").attr("title"), "Custom Pin Text", "Pin button title should be equal to the set locale value.");
+
+				dialog.igDialog("option", "locale", { pinButtonTitle: "Custom Pin Text 2"});
+
+				equal(dialog.find("a.ui-igdialog-buttonpin").attr("title"), "Custom Pin Text 2", "Pin button title should be equal to the set locale value.");
+
+				//clean
+				dialog.remove();
+
+				var upload = $("<div></div>").attr("id", "upload_locale");
+					upload.appendTo(document.body);
+					upload.igUpload({
+						mode: 'multiple', //Multiple
+						autostartupload: false,
+						language: "bg",
+						locale: {labelUploadButton: "Custom Upload Button text"}
+					});
+
+				equal(upload.find("button.ui-igstartupbrowsebutton").text(), "Custom Upload Button text", "Upload button text should be equal to the set locale value.");
+
+				upload.igUpload("option", "locale", { labelUploadButton: "Custom Upload Button text 2"});
+
+				equal(upload.find("button.ui-igstartupbrowsebutton").text(), "Custom Upload Button text 2", "Upload button text should be equal to the set locale value.");
+
+				//clean
+				upload.remove();
+
+				//html editor
+				var htmlEditor = $("<div></div>").attr("id", "htmlEditor_locale");
+				htmlEditor.appendTo(document.body);
+				htmlEditor.igHtmlEditor({
+					language: "ja",
+					locale: {viewSourceButtonTitle:"Custom"}
+				});
+
+				//check view source button title
+				equal(htmlEditor.find("div.ui-igbutton-viewsource").attr("title"), "Custom", "View source button title should be equal to the set locale value.");
+
+				htmlEditor.igHtmlEditor("option", "locale", { viewSourceButtonTitle: "Custom 2"});
+
+				equal(htmlEditor.find("div.ui-igbutton-viewsource").attr("title"), "Custom 2", "View source button title should be equal to the set locale value.");
+
+				//clean
+				htmlEditor.remove();
+
+				var videoPlayer = $("<div></div>").attr("id", "videoPlayer_locale");
 				videoPlayer.appendTo(document.body);
 				videoPlayer.igVideoPlayer({
-					language: "bg",
-					width: 300,
-					height: 200,
-					sources: ["http://medias.jilion.com/sublimevideo/dartmoor.mov", 
-						"http://medias.jilion.com/sublimevideo/dartmoor.mp4",
-						"http://medias.jilion.com/sublimevideo/dartmoor.webm",
-						"http://medias.jilion.com/sublimevideo/dartmoor.ogv"
-				],
-				});
-				return videoPlayer;
-			}
+						language: "bg",
+						width: 300,
+						height: 200,
+						locale: {play: "Test"}
+					});
 
-			var videoPlayer = createPlayer();
+				equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("play"), "Test", "String is incorrect: play.");
 
-			//check initially set language
-			checkVideoPlayerUI(videoPlayer, $.ig.locale.bg);
+				videoPlayer.igVideoPlayer("option", "locale", { play: "Test 2"});
 
-			videoPlayer = createPlayer();
-			videoPlayer.igVideoPlayer("option", "language", "es");
-			checkVideoPlayerUI(videoPlayer, $.ig.locale.es);
-			
-			videoPlayer = createPlayer();
-			videoPlayer.data("igVideoPlayer")._userPreset = null;
-			$.ig.util.changeGlobalLanguage("de");
-			checkVideoPlayerUI(videoPlayer, $.ig.locale.de);
+				equal(videoPlayer.data("igVideoPlayer")._getLocaleValue("play"), "Test 2", "String is incorrect: play.");
 
-			$("#videoPlayer_lang").igVideoPlayer("destroy");
-		
-		});
+				//clean
+				videoPlayer.remove();
+
+			});
 
 		function checkComboUI(combo, lang) {
 			// Check drop down button title
 			equal(combo.find("div.ui-igcombo-button").attr("title"), lang.Combo.dropDownButtonTitle, "Drop-down button title not is localized.");
 
-			// Check clear button(“x”) title
+			// Check clear button('x') title
 			equal(combo.find("div.ui-igcombo-clear").attr("title"),  lang.Combo.clearButtonTitle, "Check clear button title not is localized.");
 
 			// Check placeholder`s text
@@ -448,7 +569,7 @@
 		}
 
 		function checkDialogUI(dialog, lang) {
-			//Check : “Close”, “Minimize”, “Pin” /”Unpin”(showPinButton: true), “Restore” and  “Maximize” buttons titles.
+			//Check : 'Close', 'Minimize', 'Pin' /'Unpin'(showPinButton: true), 'Restore' and  'Maximize' buttons titles.
 
 			equal(dialog.find("a.ui-igdialog-buttonpin").attr("title"), lang.Dialog.pinButtonTitle, "Pin button is not localized.");
 			equal(dialog.find("a.ui-igdialog-buttonclose").attr("title"), lang.Dialog.closeButtonTitle, "Close button is not localized.");
