@@ -471,8 +471,8 @@
 			/* Event which is raised after the editor value is changed. It can be raised after loosing focus or on spin events.
 				Function takes arguments evt and ui.
 				Use ui.owner to obtain reference to igEditor.
-				Use ui.newValue to obtain the new value.
-				Use ui.originalValue to obtain the original value.
+				Use ui.newValue to obtain the value entered from the user after internal formatting.
+				Use ui.originalValue to obtain the value entered from the user before internal formatting.
 				Use ui.editorInput to obtain reference to the editor input.
 				```
 				$(".selector").on("%%WidgetNameLowered%%valuechanged", function (evt, ui) {
