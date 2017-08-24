@@ -213,6 +213,13 @@
 		}
 	};
 
+	$.ig.util.changeGlobalRegional = function (regional) {
+		$.ig.util.regional = regional;
+		for (var i = 0; i < $.ig.util.widgetStack.length; i++) {
+			$.ig.util.widgetStack[ i ].changeGlobalRegional();
+		}
+	};
+
 	$.ig.util.getLocaleValue = function (collection, key) {
 		var language = $.ig.util.language,
 			locale = $.ig.locale[ language ][ collection ];
