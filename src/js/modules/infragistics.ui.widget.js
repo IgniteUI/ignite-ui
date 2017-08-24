@@ -95,6 +95,9 @@
 			this._superApply(arguments);
 		},
 		_setOption: function (option, value) {
+			if (option === "language" && this.options.language === value) {
+				return;
+			}
 			this._super(option, value);
 
 			switch (option) {
