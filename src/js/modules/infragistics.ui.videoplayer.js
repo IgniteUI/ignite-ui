@@ -2051,7 +2051,7 @@
 			o.banners = [];
 			o.commercials.linkedCommercials = [];
 			o.commercials.embeddedCommercials = [];
-			$.Widget.prototype._createWidget.apply(this, arguments);
+			this._superApply(arguments);
 		},
 
 		_create: function () {
