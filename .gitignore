@@ -51,7 +51,6 @@ dist
 
 # CSS form .SCSS
 _variables.css
-_icons-styles.css
 _jquery-ui-overrides.css
 _mixins.css
 _infragistics-ignite-ui-controls.css
@@ -59,7 +58,6 @@ _ignite-ui-variables.css
 
 # CSS from .LESS
 variables.css
-icons-styles.css
 jquery-ui-overrides.css
 mixins.css
 infragistics-ignite-ui-controls.css

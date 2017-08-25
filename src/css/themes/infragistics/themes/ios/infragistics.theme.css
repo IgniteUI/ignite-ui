@@ -686,6 +686,10 @@ html .ui-button.ui-state-disabled:active {
   background-color: #f8f8f8;
   color: #000000;
 }
+.ui-widget-content .ui-state-default.ui-igedit.ui-igedit-container {
+  background: transparent;
+  border-bottom: transparent;
+}
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited,
@@ -703,9 +707,15 @@ a:visited.ui-button,
 .ui-widget-header .ui-state-focus,
 .ui-button:hover,
 .ui-button:focus {
-  border: 1px solid transparent;
-  background-color: #f8f8f8;
-  color: #007aff;
+  border: 1px solid #cccccc;
+  background-color: #D9D9D9;
+  color: #000000;
+}
+.ui-dialog {
+  padding: 0;
+}
+.ui-dialog .ui-dialog-buttonpane button:last-of-type {
+  margin-right: 0;
 }
 .ui-state-hover a,
 .ui-state-hover a:hover,
@@ -945,6 +955,12 @@ a.ui-button:active,
   background: #000;
   opacity: .20;
   filter: alpha(opacity=20);
+}
+.ui-iggrid-fixedcontainer-left {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-right: 2px solid #007aff !important;
 }
 /***********************************/
 /* Infragistics Ignite UI Controls */
@@ -1501,15 +1517,18 @@ a.ui-button:active,
 .ui-iggrid .ui-widget-content.ui-dialog {
   border: 1px solid #cccccc;
 }
+.ui-iggrid-modaldialog-caption-buttoncontainer .ui-button {
+  font-size: .8em;
+}
 .ui-iggrid-modaldialog-caption-buttoncontainer .ui-button.ui-state-hover {
-  background: #2686ae;
-  border: 1px solid #2788B1;
-  box-shadow: none;
+  border: 1px solid #ffffff;
+  background-color: #ffffff;
+  color: #000000;
 }
 .ui-iggrid-dialog-groupby-button a,
 .ui-iggrid-columnchooser-item a,
 .ui-iggrid-sorting-dialog-unsortedcolumns-sortbybutton a {
-  color: #3BB7EB;
+  color: #007aff;
   text-decoration: none;
 }
 /* Summaries */
