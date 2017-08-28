@@ -10551,9 +10551,6 @@
 			this._skipMessages = false;
 			return valid;
 		},
-		_deleteInternalProperties: function () {
-			this._super();
-		},
 		/* This method is inherited from a parent widget and it's supported in igDateEditor */
 		dropDownButton: function () {
 			/*@Ignored@*/
