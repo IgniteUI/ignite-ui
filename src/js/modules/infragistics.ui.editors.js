@@ -1796,9 +1796,6 @@
 			this._superApply(arguments);
 			this._changeLocaleForNotifier();
 		},
-		changeRegional: function() {
-			this._editorInput.val(this._getDisplayValue());
-		},
 		_setOption: function (option, value) { // igTextEditor
 			/* igTextEditor custom setOption goes here */
 			var prevValue = this.options[ option ];
@@ -5903,6 +5900,9 @@
 			```
 				returnType="string" Current regional */
 			return this._getRegionalValue();
+		},
+		changeRegional: function() { //igNumericEditor
+			this._editorInput.val(this._getDisplayValue());
 		}
 	});
 	$.widget("ui.igCurrencyEditor", $.ui.igNumericEditor, {
