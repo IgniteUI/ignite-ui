@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" /> 
@@ -87,6 +87,14 @@
 			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "2 600,00 лв", "Numeric field should be with bulgarian regional settings");
 			$("#comboNumericRegional").igCombo("option", "regional", "ja");
 			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "¥2,600", "Numeric field should be with japanese regional settings");
+		});
+
+		test("Loading correct regional in combo when changing global regional", function () {
+			$("#comboDateRegional").data("igCombo")._userPreset.regional = null;
+			$("#comboNumericRegional").data("igCombo")._userPreset.regional = null;
+			$.ig.util.changeGlobalRegional("fr");
+			ok($("#comboDateRegional").igCombo("items")[0].element.text() == "Mardi 1 Août 2017", "Date field should be with french regional settings");
+			ok($("#comboNumericRegional").igCombo("items")[0].element.text() == "2 600,00 €", "Numeric field should be with french regional settings");
 		});
 	});
 	</script>

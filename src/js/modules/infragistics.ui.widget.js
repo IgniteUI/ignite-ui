@@ -106,7 +106,7 @@
 				this.changeLocale();
 				break;
 			case "regional":
-				this._changeRegional();
+				this.changeRegional();
 				break;
 			default:
 				break;
@@ -162,7 +162,7 @@
 				$element.text(this._getLocaleValue(key));
 			}
 		},
-		_changeRegional: $.noop,
+		changeRegional: $.noop,
 		changeLocale: function ($container) {
 			var self = this;
 			$container = $container || this.localeContainer || this.element;
@@ -173,6 +173,11 @@
 		changeGlobalLanguage: function () {
 			if (!this._userPreset || !this._userPreset.language) {
 				this._setOption("language", $.ig.util.language);
+			}
+		},
+		changeGlobalRegional: function () {
+			if (!this._userPreset || !this._userPreset.regional) {
+				this._setOption("regional", $.ig.util.regional);
 			}
 		},
 		destroy: function () {
