@@ -393,7 +393,7 @@
 		});
 
 		testId = 'Runtime changes for local and regional options';
-		test(testId, 5, function () {
+		test(testId, 6, function () {
 			var $editor = $("<input/>").appendTo("#testBedContainer").igCurrencyEditor({ buttonType: "spin", value: 1234567.123 });
 
 			equal($editor.igCurrencyEditor("displayValue"), "$1,234,567.12", "Format should be in English");
@@ -404,6 +404,8 @@
 			equal($editor.igCurrencyEditor("displayValue"), "1.234.567,12 €", "Format should be in German");
 			$editor.igCurrencyEditor("setFocus");
 			equal($editor.igCurrencyEditor("field").val(), "1234567,12", "Input Format should be in German");
+			$editor.igCurrencyEditor("option", "regional", "en");
+			equal($editor.igCurrencyEditor("field").val(), "1234567.12", "Input Format should be in German");
 			$editor.trigger("blur").remove();
 		});
 	});

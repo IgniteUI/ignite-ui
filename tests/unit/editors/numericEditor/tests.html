@@ -2530,7 +2530,7 @@
 	});
 
 	testId = 'Runtime changes for local and regional options';
-	test(testId, 5, function () {
+	test(testId, 6, function () {
 		var $editor = $("<input/>").appendTo("#testBedContainer").igNumericEditor({ buttonType: "spin", value: 1234567.123 });
 
 		equal($editor.igNumericEditor("displayValue"), "1,234,567.12", "Format should be in English");
@@ -2541,6 +2541,8 @@
 		equal($editor.igNumericEditor("displayValue"), "1.234.567,12", "Format should be in German");
 		$editor.igNumericEditor("setFocus");
 		equal($editor.igNumericEditor("field").val(), "1234567,12", "Input Format should be in German");
+		$editor.igNumericEditor("option", "regional", "en");
+		equal($editor.igNumericEditor("field").val(), "1234567.12", "Input Format should be in German");
 		$editor.trigger("blur").remove();
 	});
 });
