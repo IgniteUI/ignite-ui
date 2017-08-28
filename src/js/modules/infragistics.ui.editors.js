@@ -1570,23 +1570,6 @@
 				```
 			*/
 			toLower: false,
-			/* type="object" Gets/Sets the strings used for the localization of the component. This includes button titles, error messages etc. Value of the object should contain pairs or key:value members. Note: any sub-option of locale can appear within the main option of igEditor. In this case those values within main options will have highest priority and override corresponding value in locale.
-			```
-				//Initialize
-				$(".selector").%%WidgetName%%({
-					locale: {
-							spinUpperTitle: 'SpinUp'
-					}
-				});
-
-				//Get
-				var locale = $(".selector").%%WidgetName%%("option", "locale");
-
-				//Set
-				$(".selector").%%WidgetName%%("option", "locale", {spinUpperTitle: 'SpinUp'});
-			```
-			*/
-			locale: null,
 			/* type="bool" Disables/Enables default notifications for basic validation scenarios built in the editors such as required list selection, value wrapping around or spin limits.
 			```
 				//Initialize
@@ -8368,6 +8351,9 @@
 			if (!maskVal) {
 				maskVal = "";
 			}
+
+			maskVal = maskVal.replace("dddd", "ddd").replace("ddd,", "").replace("ddd ", "")
+				.replace(" ddd", "").replace("ddd", "");
 
 			// temporary replace \\f,d,s,m,etc. by \x01-\x09
 			maskVal = maskVal.replace(/\x08/g, " ").replace(/\x09/g, " ");

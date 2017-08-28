@@ -233,7 +233,8 @@
 				}
 			}
 				break;
-
+			default:
+				break;
 		}
 		return result;
 	};
@@ -253,6 +254,8 @@
 				result = date.toString();
 			}
 				break;
+			default:
+				break;
 		}
 		return result;
 	};
@@ -267,6 +270,8 @@
 			case "ddd": {
 				result = $.ig.getRegionalValue("dayNamesShort", regional)[ day ];
 			}
+				break;
+			default:
 				break;
 		}
 		return result;
@@ -296,6 +301,8 @@
 				month++;
 				result = month.toString();
 			}
+				break;
+			default:
 				break;
 		}
 		return result;
