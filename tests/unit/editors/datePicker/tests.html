@@ -849,6 +849,269 @@
 				$editor.remove();
 			});
 
+			var testId = 'Spin delta as an object';
+			test(testId, 22, function () {
+				// Test when spinDelta is an object and has invalid values.
+				var errorType = $.ig.Editor.locale.spinDeltaIsOfTypeNumberForPeriod,
+					errorRange = $.ig.Editor.locale.spinDeltaShouldBeInRange;
+				spinData = [ [ { year: -5 }, errorRange, "year", 10 ], [ { month: "two" }, errorType, "month", 12 ],
+							[ { day: 31 }, errorRange, "day", 28 ], [ { hours: "five o'clock" }, errorType, "hours", 12 ],
+							[ { minutes: 61 }, errorRange, "minutes", 60 ], [ { seconds: null }, errorType, "seconds", 60 ],
+							[ { milliseconds: -100 }, errorRange, "milliseconds", 1000 ]];
+				for (index = 0; index < spinData.length; index++) {
+					$dtPicker = $('<input/>').appendTo("#testBedContainer");
+					try {
+						$dtPicker.igDatePicker({
+							spinDelta: spinData[index][0],
+							buttonType : "spin"
+						});
+					} catch(e) {
+						equal(e.message, $.ig.util.stringFormat(spinData[index][1], spinData[index][2], 0, spinData[index][3]));
+					}
+					$dtPicker.remove();
+				}
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					},
+					value: new Date("2017-01-11T01:01:01.001Z"),
+					displayTimeOffset: 120,
+					buttonType : "spin",
+					dateInputFormat: "MM/dd/yyyy HH:mm:ss:fff"
+				});
+
+				spinUpButton = $dtPicker.igDatePicker("spinUpButton");
+				spinDownButton = $dtPicker.igDatePicker("spinDownButton");
+
+				// Spin display mode
+				var oldDate = $dtPicker.igDatePicker("value").getDate();
+				clickElement(spinUpButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate + 10, newDate, "Day is updated with 10");
+				clickElement(spinDownButton, false, false);
+				newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate, newDate, "Day is updated with 10");
+				clickElement(spinDownButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate - 10, newDate, "Day is updated with 10");
+				clickElement(spinUpButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate, newDate, "Day is updated with 10");
+
+				// Spin up edit mode
+				$dtPicker.igDatePicker("setFocus");
+				$dtPicker.data("igDatePicker")._setCursorPosition(0);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(3);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(6);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(15);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(18);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(21);
+				clickElement(spinUpButton, false, false);
+				$dtPicker.trigger("blur");
+
+				expDate = new Date("2021-04-21T13:16:11.101Z"); //Expected date after spin // Date before spin of every period is new Date("2017-01-11T01:01:01.001Z");
+				actDate = $dtPicker.igDatePicker("value"); //Actual date after spin
+				ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
+
+				// Spin down edit mode
+				$dtPicker.igDatePicker("setFocus");
+				$dtPicker.data("igDatePicker")._setCursorPosition(0);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(3);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(6);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(12);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(15);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(18);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.data("igDatePicker")._setCursorPosition(21);
+				clickElement(spinDownButton, false, false);
+				$dtPicker.trigger("blur");
+
+				expDate = new Date("2017-01-11T01:01:01.001Z"); //Expected date after spin // Date before spin of every period is new Date("2017-01-11T01:01:01.001Z");
+				actDate = $dtPicker.igDatePicker("value"); //Actual date after spin
+				ok(actDate.getTime() === expDate.getTime(), "Date is properly updated after spinining each period");
+
+				// Setting runtime spinDelta as object
+				throws( function () {
+					$dtPicker.igDatePicker("option", "spinDelta", { day: -3 });
+				}, 'Wrong spinDelta value is not thrown');
+				equal($dtPicker.igDatePicker("option", "spinDelta").day, 10, "Spin delta should be reverted.");
+				equal($dtPicker.igDatePicker("option", "spinDelta").month, 3, "Spin delta should be reverted.");
+				
+				$dtPicker.igDatePicker("option", "spinDelta", { day: 3 });
+				// Spin display mode
+				var oldDate = $dtPicker.igDatePicker("value").getDate();
+				clickElement(spinUpButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate + 3, newDate, "Day is updated with 3");
+				clickElement(spinDownButton, false, false);
+				newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate, newDate, "Day is updated with 3");
+				clickElement(spinDownButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate - 3, newDate, "Day is updated with 3");
+				clickElement(spinUpButton, false, false);
+				var newDate = $dtPicker.igDatePicker("value").getDate();
+				equal(oldDate, newDate, "Day is updated with 3");
+				$dtPicker.remove();
+
+				$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker({
+					value: new Date(2017, 11, 8),
+					dataMode: "date",
+					dateInputFormat: "dateTime",
+					spinDelta: {
+						year: 4,
+						month: 3,
+						day: 10,
+						hours: 12,
+						minutes: 15,
+						seconds: 10,
+						milliseconds: 100
+					},
+					buttonType: "spin"
+				});
+				spinUpButton = $dtPicker.igDatePicker("spinUpButton");
+				spinDownButton = $dtPicker.igDatePicker("spinDownButton");
+				
+				// Spin up edit mode
+				$dtPicker.igDatePicker("setFocus");
+				$dtPicker.data("igDatePicker")._setCursorPosition(12);
+				clickElement(spinUpButton, false, false);
+				equal($dtPicker.igDatePicker("field").val(), "12/08/2017 12:00 PM", "Display is properly updated after spinining");
+				clickElement(spinDownButton, false, false);
+				equal($dtPicker.igDatePicker("field").val(), "12/08/2017 12:00 AM", "Display is properly updated after spinining");
+				$dtPicker.trigger("blur").remove();
+			});
+
+			var testId = 'Spin delta as an object in edit mode with different masks';
+			test(testId, 28, function () {
+				var $dtPicker, testDate, ind, today;
+
+				today = new Date();
+				testData = [{
+					config: {
+						dateInputFormat: "fff",
+						spinDelta: { milliseconds: 100 }
+					},
+					expRes: [{
+						display: "101", value: 101
+					}, {
+						display: "001", value: 1
+					}],
+					method: "getMilliseconds"
+				}, {
+					config: {
+						dateInputFormat: "ss",
+						spinDelta: { seconds: 30 }
+					},
+					expRes: [{
+						display: "31", value: 31
+					}, {
+						display: "01", value: 1
+					}],
+					method: "getSeconds"
+				}, {
+					config: {
+						dateInputFormat: "mm",
+						spinDelta: { minutes: 15 }
+					},
+					expRes: [{
+						display: "16", value: 16
+					}, {
+						display: "01", value: 1
+					}],
+					method: "getMinutes"
+				}, {
+					config: {
+						dateInputFormat: "dd",
+						spinDelta: { day: 7 }
+					},
+					expRes: [{
+						display: "18", value: 18
+					}, {
+						display: "11", value: 11
+					}],
+					method: "getDate"
+				}, {
+					config: {
+						dateInputFormat: "MM",
+						spinDelta: { month: 3 }
+					},
+					expRes: [{
+						display: "04", value: 3
+					}, {
+						display: "01", value: 0
+					}],
+					method: "getMonth"
+				}, {
+					config: {
+						dateInputFormat: "yy",
+						spinDelta: { year: 4 }
+					},
+					expRes: [{
+						display: "21", value: 2021
+					}, {
+						display: "17", value: 2017
+					}],
+					method: "getFullYear"
+				}, {
+					config: {
+						dateInputFormat: "yyyy",
+						spinDelta: { year: 4 }
+					},
+					expRes: [{
+						display: "2021", value: 2021
+					}, {
+						display: "2017", value: 2017
+					}],
+					method: "getFullYear"
+				}];
+
+				for (ind = 0; ind < testData.length; ind++) {
+					currConfig = { buttonType: "spin", value: new Date("2017-01-11T01:01:01.001Z") };
+					currData = testData[ind];
+					$.extend(currConfig, currData.config);
+					$dtPicker = $('<input/>').appendTo("#testBedContainer").igDatePicker(currConfig);
+					var spinUpButton = $dtPicker.igDatePicker("spinUpButton");
+					var spinDownButton = $dtPicker.igDatePicker("spinDownButton");
+
+					// Edit Mode
+					$dtPicker.igDatePicker("setFocus");
+					$dtPicker.data("igDatePicker")._setCursorPosition(0);
+					clickElement(spinUpButton, false, false);
+					equal($dtPicker.igDatePicker("field").val(), currData.expRes[0].display, 'The display is not as expected');
+					$dtPicker.data("igDatePicker")._setCursorPosition(0);
+					clickElement(spinDownButton, false, false);
+					equal($dtPicker.igDatePicker("field").val(), currData.expRes[1].display, 'The display is not as expected');
+					$dtPicker.trigger("blur")
+
+					// Display Mode
+					clickElement(spinUpButton, false, false);
+					equal($dtPicker.igDatePicker("value")[currData.method](), parseInt(currData.expRes[0].value), 'The value is not as expected');
+					clickElement(spinDownButton, false, false);
+					equal($dtPicker.igDatePicker("value")[currData.method](), parseInt(currData.expRes[1].value), 'The value is not as expected');
+					$dtPicker.remove();
+				}
+			});
+
 			testId = 'Runtime changes for local and regional options';
 			test(testId, 5, function () {
 				var $editor = $("<input/>").appendTo("#testBedContainer").igDatePicker({ dateInputFormat: "dateTime", value: new Date(2017, 7, 18, 18, 6) });
@@ -907,6 +1170,27 @@
 		        evt[special] = true;
 		    }
 		    target.trigger(evt);
+		}
+		function clickElement(element, ctrl, shift) {
+			var mouseDown = jQuery.Event("mousedown"), mouseUp = jQuery.Event("mouseup");
+			ctrl = (typeof ctrl === 'undefined') ? false : ctrl;
+			shift = (typeof shift === 'undefined') ? false : shift;
+			mousedown(element[0], ctrl, shift);
+			mouseup(element[0], ctrl, shift);
+		}
+		function mouseup(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
+		}
+		function mousedown(element, ctrl, shift) {
+			// create a mouse click event
+			var event = document.createEvent('MouseEvents');
+			event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, null, null, ctrl, false, shift, false, 0, null);
+			// send click to element
+			element.dispatchEvent(event);
 		}
 	</script>
 

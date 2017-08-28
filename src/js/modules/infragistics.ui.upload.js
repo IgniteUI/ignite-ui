@@ -2414,7 +2414,7 @@
 					}
 				},
 				error: function () {
-					self._setError(this._getLocaleValue("errorMessageGetFileStatus"),
+					self._setError(self._getLocaleValue("errorMessageGetFileStatus"),
 						formNumber,
 						self._const.clientSideErrorCode.ajaxErrorGetFileStatus, "clientside");
 					/* self._removeUploadSetError(formNumber, o.errorMessageGetFileStatus); */
@@ -2484,7 +2484,7 @@
 								self._onCancelUpload(formNumber);
 							},
 							error: function () {
-								self._setError(this._getLocaleValue("errorMessageCancelUpload"), formNumber,
+								self._setError(self._getLocaleValue("errorMessageCancelUpload"), formNumber,
 									self._const.clientSideErrorCode.ajaxErrorCancelUpload, "clientside");
 								self._removeFileUpload(formNumber);
 							}
@@ -2943,7 +2943,7 @@
 					self._removeGetFileSizeHTML(formNumber);
 				},
 				error: function () {
-					self._setError(this._getLocaleValue("errorMessageAJAXRequestFileSize"),
+					self._setError(self._getLocaleValue("errorMessageAJAXRequestFileSize"),
 						formNumber,
 						self._const.clientSideErrorCode.ajaxErrorRequestFileSize, "clientside");
 					self._removeGetFileSizeHTML(formNumber);

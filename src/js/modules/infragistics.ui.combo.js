@@ -4869,7 +4869,7 @@
 				this._changeLocaleForElement($noMatchFound);
 			}
 		},
-		_changeRegional: function () {
+		changeRegional: function () {
 			this.dataBind();
 		},
 		_setOption: function (option, value) {
