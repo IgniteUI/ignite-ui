@@ -39,8 +39,8 @@
 		}
 		
 		var results = [{
-				Text: 'Food', Expanded: true, Target: "_blank", Nodes: [
-					{ Text: 'Sandwiches', Nodes: [
+				Text: 'Food', __expanded__: true, __checked__: "on", Target: "_blank", Nodes: [
+					{ Text: 'Sandwiches', __expanded__: true, Nodes: [
 						{ Text: 'Ham & Cheese' }
 					]},
 					{ Text: 'Fish' },
@@ -189,6 +189,7 @@
 				$(function () {
 					$('#tree2').igTree({
 						dataSource: results,
+						checkboxMode: "triState",
 						hotTracking: false
 					});
 					$('#tree3').igTree({
@@ -1192,6 +1193,12 @@
 				}
 				var node = $("#tree2").igTree("nodeByPath", "0");
 				equal($("#tree2").igTree("isExpanded", node), true, "The node is not originally expanded");
+				var expandedKey = "__expanded__",
+					checkedKey = "__checked__",
+					nodeData = $("#tree2").igTree("nodeDataFor", "0");
+				equal(nodeData[expandedKey], true, "The data was not correct");
+				equal(nodeData[checkedKey], "on", "The data was not correct");
+				equal($("#tree2").igTree("checkState", node), "on", "The node is not originally expanded");
 				equal(node.children("a").attr("target"), "_blank", "The node is not with the correct target attribute.");
 			});
 			test(testId_9, function () {
